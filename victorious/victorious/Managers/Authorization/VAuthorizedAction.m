@@ -46,7 +46,7 @@ static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationVie
 
 - (BOOL)performFromViewController:(UIViewController *)presentingViewController
                           context:(VAuthorizationContext)authorizationContext
-                       completion:(void(^)(BOOL authorized))completionActionBlock
+                       completion:(VAuthorizedActionCompletion)completionActionBlock
 {
     NSParameterAssert( completionActionBlock != nil );
     NSParameterAssert( presentingViewController != nil );
@@ -64,17 +64,19 @@ static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationVie
     }
     else if ( !self.objectManager.mainUserLoggedIn && !self.objectManager.mainUserProfileComplete )
     {
-        UIViewController<VLoginRegistrationFlow> *loginFlowController = [self.dependencyManager templateValueConformingToProtocol:@protocol(VLoginRegistrationFlow)
-                                                                                                                           forKey:kLoginAndRegistrationViewKey];
-        if ([loginFlowController respondsToSelector:@selector(setAuthorizationContext:)])
-        {
-            [loginFlowController setAuthorizationContext:authorizationContext];
-        }
-        [loginFlowController setCompletionBlock:completionActionBlock];
+        UIViewController<VLoginRegistrationFlow> *loginFlowController = [self loginFlowControllerWithAuthorizationContext:authorizationContext andCompletionBlock:completionActionBlock];
+        
 
-        [presentingViewController presentViewController:loginFlowController
-                                               animated:YES
-                                             completion:nil];
+        if ( loginFlowController != nil )
+        {
+            [presentingViewController presentViewController:loginFlowController animated:YES completion:nil];
+        }
+        else
+        {
+            [self showFailureAlertInViewController:presentingViewController];
+        }
+        
+        
         return NO;
     }
     else
@@ -86,7 +88,7 @@ static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationVie
 
 - (BOOL)prepareInViewController:(UIViewController *)presentingViewController
                         context:(VAuthorizationContext)authorizationContext
-                     completion:(void(^)(BOOL authorized))completionActionBlock
+                     completion:(VAuthorizedActionCompletion)completionActionBlock
 {
     NSParameterAssert( completionActionBlock != nil );
     NSParameterAssert( presentingViewController != nil );
@@ -98,24 +100,51 @@ static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationVie
         return YES;
     }
     
+    UIViewController<VLoginRegistrationFlow> *loginFlowController = [self loginFlowControllerWithAuthorizationContext:authorizationContext andCompletionBlock:completionActionBlock];
+    
+    if ( loginFlowController != nil )
+    {
+        UIView *replicant = [loginFlowController.view snapshotViewAfterScreenUpdates:YES];
+        [presentingViewController.view addSubview:replicant];
+        [presentingViewController.view v_addFitToParentConstraintsToSubview:replicant];
+        
+        self.presentingController = presentingViewController;
+        self.loginController = loginFlowController;
+        self.replicantView = replicant;
+    }
+    else
+    {
+        [self showFailureAlertInViewController:presentingViewController];
+    }
+    
+    return NO;
+}
+
+- (UIViewController <VLoginRegistrationFlow> *)loginFlowControllerWithAuthorizationContext:(VAuthorizationContext)authorizationContext andCompletionBlock:(VAuthorizedActionCompletion)completionActionBlock
+{
     UIViewController<VLoginRegistrationFlow> *loginFlowController = [self.dependencyManager templateValueConformingToProtocol:@protocol(VLoginRegistrationFlow)
                                                                                                                        forKey:kLoginAndRegistrationViewKey];
-    
-    UIView *replicant = [loginFlowController.view snapshotViewAfterScreenUpdates:YES];
-    [presentingViewController.view addSubview:replicant];
-    [presentingViewController.view v_addFitToParentConstraintsToSubview:replicant];
-    
     if ([loginFlowController respondsToSelector:@selector(setAuthorizationContext:)])
     {
         [loginFlowController setAuthorizationContext:authorizationContext];
     }
     [loginFlowController setCompletionBlock:completionActionBlock];
-
-    self.presentingController = presentingViewController;
-    self.loginController = loginFlowController;
-    self.replicantView = replicant;
     
-    return NO;
+    return loginFlowController;
+}
+
+- (void)showFailureAlertInViewController:(UIViewController *)viewController
+{
+    //Login flow was nil for some reason, show an alert to notify the user
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                             message:NSLocalizedString(@"GenericFailMessage", @"")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:nil]];
+    [viewController presentViewController:alertController
+                                 animated:YES
+                               completion:nil];
 }
 
 - (void)execute

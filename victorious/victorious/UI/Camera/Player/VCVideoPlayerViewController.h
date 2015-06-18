@@ -54,6 +54,7 @@
 @property (nonatomic, assign) BOOL toolbarHidden;
 @property (nonatomic, assign) CMTime sliderTouchInteractionStartTime; ///< The time at which a touch slider interaction (scrub) began
 @property (nonatomic, assign) BOOL shouldRestorePlaybackAfterSeeking; ///< YES by default
+@property (nonatomic, readonly) BOOL didFinishPlayingOnce;
 
 - (void)toggleToolbarHidden;
 

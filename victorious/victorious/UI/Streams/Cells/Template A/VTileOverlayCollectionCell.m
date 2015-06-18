@@ -292,6 +292,10 @@ static const CGFloat maxCaptionHeight = 80.0f;
     {
         [self.header setDependencyManager:dependencyManager];
     }
+    if ([self.captionTextView respondsToSelector:@selector(setDependencyManager:)])
+    {
+        [self.captionTextView setDependencyManager:dependencyManager];
+    }
 }
 
 #pragma mark - VStreamCellComponentSpecialization

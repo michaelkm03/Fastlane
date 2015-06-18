@@ -10,6 +10,8 @@
 
 #import "VActionItem.h"
 
+@class VDependencyManager;
+
 /**
  *  The ActionSheetViewController presents a list of VActionItems in a tableView.  ActionsheetViewController has a blurred background and expects to be presented with an instance of VActionSheetViewController as it's transitioning delegate.
  */
@@ -28,6 +30,8 @@
 
 @property (nonatomic, readonly) CGFloat totalHeight;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topAlignmentAvatarViewToBlurredContainerConstraint;
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 /**
  Sets the cell for the supplied item into a loading state.

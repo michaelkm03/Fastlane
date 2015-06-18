@@ -1,31 +1,31 @@
 //
-//  VEndCardModelFactory.m
+//  VEndCardModelBuilder.m
 //  victorious
 //
 //  Created by Patrick Lynch on 4/7/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VEndCardModelFactory.h"
+#import "VEndCardModelBuilder.h"
 #import "VSequence+Fetcher.h"
-#import "VEndCard.h"
+#import "VEndCard+Fetcher.h"
 #import "VEndCardModel.h"
 #import "VUser.h"
 #import "VEndCardActionModel.h"
 
 #define FORCE_SHOW_DEBUG_END_CARD 0
 
-@interface VEndCardModelFactory()
+@interface VEndCardModelBuilder()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
-@implementation VEndCardModelFactory
+@implementation VEndCardModelBuilder
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    return [[VEndCardModelFactory alloc] initWithDependencyManager:dependencyManager];
+    return [[VEndCardModelBuilder alloc] initWithDependencyManager:dependencyManager];
 }
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -74,29 +74,32 @@
     endCardModel.videoAuthorProfileImageURL = [NSURL URLWithString:nextSequence.user.pictureUrl];
     endCardModel.countdownDuration = sequence.endCard.countdownDuration.unsignedIntegerValue;
     endCardModel.dependencyManager = self.dependencyManager;
-    endCardModel.actions = [self createActionsWithSequence:sequence];
+    endCardModel.actions = [self createActionsWithPermissions:sequence.endCard.permissions];
     
     return endCardModel;
 }
 
 #pragma mark - Action creation
 
-- (NSArray *)createActionsWithSequence:(VSequence *)sequence
+- (NSArray *)createActionsWithPermissions:(VSequencePermissions *)permissions
 {
-    // Set up actions
     NSMutableArray *actions = [[NSMutableArray alloc] init];
-    if ( sequence.endCard.canRemix.boolValue )
+    if ( permissions.canRemix )
     {
         [actions addObject:[self actionForGIF]];
     }
-    if ( sequence.endCard.canRepost.boolValue )
+    if ( permissions.canRepost )
     {
         [actions addObject:[self actionForRespost]];
     }
-    if ( sequence.endCard.canShare.boolValue )
+    if ( permissions.canMeme )
     {
-        [actions addObject:[self actionForShare]];
+        [actions addObject:[self actionForMeme]];
     }
+    
+    // There is not currently a permission for sharing, so it is always allowed
+    [actions addObject:[self actionForShare]];
+    
     return [NSArray arrayWithArray:actions];
 }
 
@@ -104,7 +107,7 @@
 {
     VEndCardActionModel *action = [[VEndCardActionModel alloc] init];
     action.identifier = VEndCardActionIdentifierGIF;
-    action.textLabelDefault = NSLocalizedString( @"GIF", @"Created a GIF from this video" );
+    action.textLabelDefault = NSLocalizedString( @"GIF", @"Create a GIF from this video" );
     action.iconImageNameDefault = @"action_gif";
     return action;
 }
@@ -129,6 +132,15 @@
     return action;
 }
 
+- (VEndCardActionModel *)actionForMeme
+{
+    VEndCardActionModel *action = [[VEndCardActionModel alloc] init];
+    action.identifier = VEndCardActionIdentifierMeme;
+    action.textLabelDefault = NSLocalizedString( @"Meme", @"Create a meme from this video" );
+    action.iconImageNameDefault = @"action_meme";
+    return action;
+}
+
 #pragma mark - Debugging/testing
 
 #if FORCE_SHOW_DEBUG_END_CARD
@@ -136,17 +148,15 @@
 {
     VEndCardModel *endCardModel = [[VEndCardModel alloc] init];
     endCardModel.videoTitle = sequence.sequenceDescription;
-    endCardModel.nextSequenceId = nil;
-    endCardModel.nextVideoTitle = nil;
-    endCardModel.nextVideoThumbailImageURL = nil;
+    endCardModel.nextSequenceId = sequence.remoteId;
+    endCardModel.nextVideoTitle = sequence.name;
+    endCardModel.nextVideoThumbailImageURL = sequence.previewImageUrl;
     endCardModel.streamName = sequence.endCard.streamName ?: @"";
-    endCardModel.videoAuthorName = nil;
-    endCardModel.videoAuthorProfileImageURL = nil;
-    endCardModel.countdownDuration = 10;
+    endCardModel.videoAuthorName = sequence.user.name;
+    endCardModel.videoAuthorProfileImageURL = [NSURL URLWithString:sequence.user.pictureUrl];
+    endCardModel.countdownDuration = 10000;
     endCardModel.dependencyManager = self.dependencyManager;
-    NSMutableArray *actions = [[NSMutableArray alloc] init];
-    endCardModel.actions = [self createActionsWithSequence:sequence];
-    
+    endCardModel.actions = [self createActionsWithPermissions:sequence.endCard.permissions];
     return endCardModel;
 }
 

@@ -64,7 +64,7 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
 
 - (void)createTextView
 {
-    UIFont *defaultFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
+    UIFont *defaultFont = [UIFont fontWithName:@"Helvetica" size:16.0f];
     self.textStorage = [[VUserTaggingTextStorage alloc] initWithTextView:nil defaultFont:defaultFont taggingDelegate:self.delegate];
     
     NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];

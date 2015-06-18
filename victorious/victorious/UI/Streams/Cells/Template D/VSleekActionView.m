@@ -61,20 +61,20 @@ static CGFloat const kActionButtonHeight = 31.0f;
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
         VSequence *sequence = (VSequence *)streamItem;
-        if ([sequence canComment])
+        if ( sequence.permissions.canComment )
         {
             [identifier appendString:@"Comment."];
         }
         [identifier appendString:@"Share."];
-        if ([sequence canRepost])
+        if ( sequence.permissions.canRepost )
         {
             [identifier appendString:@"Repost."];
         }
-        if ([sequence canRemix])
+        if ( sequence.permissions.canRemix )
         {
             [identifier appendString:@"Meme."];
         }
-        if ([sequence canRemix] && [sequence isVideo])
+        if ( sequence.permissions.canRemix && [sequence isVideo])
         {
             [identifier appendString:@"Gif."];
         }
@@ -203,7 +203,7 @@ static CGFloat const kActionButtonHeight = 31.0f;
     
     [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingSpace]];
     
-    if ([sequence canComment])
+    if ( sequence.permissions.canComment )
     {
         [actionItems addObject:self.commentButton];
         [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kCommentSpaceToActions]];
@@ -211,17 +211,17 @@ static CGFloat const kActionButtonHeight = 31.0f;
     
     [actionItems addObject:self.shareButton];
     [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace]];
-    if ([sequence canRepost])
+    if ( sequence.permissions.canRepost )
     {
         [actionItems addObject:self.repostButton];
         [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace]];
     }
-    if ([sequence canRemix])
+    if ( sequence.permissions.canRemix )
     {
         [actionItems addObject:self.memeButton];
         [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace]];
     }
-    if ([sequence canRemix] && [sequence isVideo])
+    if ( sequence.permissions.canRemix && [sequence isVideo])
     {
         [actionItems addObject:self.gifButton];
         [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace]];

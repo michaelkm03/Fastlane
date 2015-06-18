@@ -289,7 +289,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         
         [flowControllerResponder registerWithEmail:self.emailField.text
                                           password:self.passwordField.text
-                                        completion:^(BOOL success, NSError *error)
+                                        completion:^(BOOL success, BOOL alreadyRegistered, NSError *error)
          {
              if (!success)
              {
@@ -309,6 +309,10 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     if ( error.code == kVAccountAlreadyExistsError)
     {
         message = NSLocalizedString(@"User already exists", @"");
+    }
+    else if ( error.code == kVPasswordInvalidForExistingUser )
+    {
+        message = NSLocalizedString(@"User already exists but the password is incorrect", @"");
     }
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SignupFail", @"")
                                                     message:message
