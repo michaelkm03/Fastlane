@@ -15,7 +15,7 @@
 @import Accounts;
 
 NSString * const VTwitterManagerErrorDomain = @"twitterManagerError";
-static CGFloat const kTwitterManagerErrorCode = 1;
+CGFloat const VTwitterManagerErrorCanceled = 1;
 
 @interface VTwitterManager()
 
@@ -58,84 +58,53 @@ static CGFloat const kTwitterManagerErrorCode = 1;
                        fromViewController:(UIViewController *)viewController
                            completionBlock:(VTWitterCompletionBlock)completionBlock
 {
-    ACAccountStore *account = [[ACAccountStore alloc] init];
-    ACAccountType *accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-    [account requestAccessToAccountsWithType:accountType options:nil completion:^(BOOL granted, NSError *error)
+    [_accountsHelper selectTwitterAccountWithViewControler:viewController
+                                                completion:^(ACAccount *twitterAccount)
      {
-         if (!granted)
+         if ( twitterAccount == nil )
          {
-             dispatch_async(dispatch_get_main_queue(), ^(void)
-                            {
-                                completionBlock(NO, error);
-                            });
-         }
-         else
-         {
-             NSArray *twitterAccounts = [account accountsWithAccountType:accountType];
-             if ( twitterAccounts.count == 0 )
+             self.oauthToken = nil;
+             self.secret = nil;
+             self.twitterId = nil;
+             
+             if ( completionBlock != nil )
              {
-                 dispatch_async(dispatch_get_main_queue(), ^(void)
-                                {
-                                    NSString *errorMessage = NSLocalizedString(@"NoTwitterMessage", @"");
-                                    NSError *noTwitterError = [NSError errorWithDomain:VTwitterManagerErrorDomain code:kTwitterManagerErrorCode userInfo:@{ NSLocalizedDescriptionKey : errorMessage }];
-                                    if ( completionBlock != nil )
-                                    {
-                                        completionBlock(NO, noTwitterError);
-                                    }
-                                });
+                 completionBlock(NO, [NSError errorWithDomain:VTwitterManagerErrorDomain code:VTwitterManagerErrorCanceled userInfo:nil]);
              }
-             else
-             {
-                 [_accountsHelper selectTwitterAccountWithViewControler:viewController
-                                                             completion:^(ACAccount *twitterAccount)
+             
+             return;
+         }
+         
+         TWAPIManager *twitterApiManager = [[TWAPIManager alloc] init];
+         [twitterApiManager performReverseAuthForAccount:twitterAccount
+                                             withHandler:^(NSData *responseData, NSError *error)
+          {
+              if ( error != nil )
+              {
+                  self.oauthToken = nil;
+                  self.secret = nil;
+                  self.twitterId = nil;
+                  
+                  if ( completionBlock != nil )
                   {
-                      if ( twitterAccount == nil )
-                      {
-                          self.oauthToken = nil;
-                          self.secret = nil;
-                          self.twitterId = nil;
-                          
-                          if ( completionBlock != nil )
-                          {
-                              completionBlock(NO, error);
-                          }
-                          
-                          return;
-                      }
-                      
-                      TWAPIManager *twitterApiManager = [[TWAPIManager alloc] init];
-                      [twitterApiManager performReverseAuthForAccount:twitterAccount
-                                                          withHandler:^(NSData *responseData, NSError *error)
-                       {
-                           if ( error != nil )
-                           {
-                               self.oauthToken = nil;
-                               self.secret = nil;
-                               self.twitterId = nil;
-                               
-                               if ( completionBlock != nil )
-                               {
-                                   completionBlock(NO, error);
-                               }
-                               
-                               return;
-                           }
-                           
-                           NSString *responseStr = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-                           NSDictionary *parsedData = RKDictionaryFromURLEncodedStringWithEncoding(responseStr, NSUTF8StringEncoding);
-                           
-                           self.oauthToken = [parsedData objectForKey:@"oauth_token"];
-                           self.secret = [parsedData objectForKey:@"oauth_token_secret"];
-                           self.twitterId = [parsedData objectForKey:@"user_id"];
-                           
-                           if ( completionBlock != nil )
-                           {
-                               completionBlock(YES, error);
-                           }
-                       }];
-                  }];
-             }
-         }
+                      completionBlock(NO, error);
+                  }
+                  
+                  return;
+              }
+              
+              NSString *responseStr = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+              NSDictionary *parsedData = RKDictionaryFromURLEncodedStringWithEncoding(responseStr, NSUTF8StringEncoding);
+              
+              self.oauthToken = [parsedData objectForKey:@"oauth_token"];
+              self.secret = [parsedData objectForKey:@"oauth_token_secret"];
+              self.twitterId = [parsedData objectForKey:@"user_id"];
+              
+              if ( completionBlock != nil )
+              {
+                  completionBlock(YES, error);
+              }
+          }];
      }];
 }
 

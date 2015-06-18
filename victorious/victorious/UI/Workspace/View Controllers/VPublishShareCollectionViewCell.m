@@ -37,29 +37,12 @@ static NSString * const kOptionsContainerBackgroundKey = @"color.optionsContaine
     self.collectionView.contentInset = kDefaultContentInsets;
 }
 
-+ (CGSize)desiredSizeInCollectionView:(UICollectionView *)collectionView andDependencyManager:(VDependencyManager *)dependencyManager
++ (CGFloat)desiredHeightForDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSArray *shareMenuItems = [dependencyManager shareMenuItems];
     NSUInteger count = shareMenuItems.count;
-    if ( count == 0 )
-    {
-        return CGSizeZero;
-    }
-    
-    CGRect bounds = collectionView.bounds;
-    UIEdgeInsets insets = collectionView.contentInset;
-    if ( [collectionView.collectionViewLayout isKindOfClass:[UICollectionViewFlowLayout class]] )
-    {
-        UIEdgeInsets sectionInset = ((UICollectionViewFlowLayout *)collectionView.collectionViewLayout).sectionInset;
-        insets.right += sectionInset.right;
-        insets.left += sectionInset.left;
-    }
-    
-    CGSize size = bounds.size;
     CGFloat contentHeight = kPreferredRowHeight * ((count + 1) / 2);
-    size.height = contentHeight + kShareLabelHeight + kDefaultContentInsets.top + kDefaultContentInsets.bottom;
-    size.width -= insets.left + insets.right;
-    return size;
+    return contentHeight + kShareLabelHeight + kDefaultContentInsets.top + kDefaultContentInsets.bottom;
 }
 
 #pragma mark - UICollectionViewDataSource

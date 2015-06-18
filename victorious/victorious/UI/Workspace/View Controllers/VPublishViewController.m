@@ -54,7 +54,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 @property (nonatomic, weak) IBOutlet UIView *publishPrompt;
 @property (nonatomic, weak) IBOutlet UIView *captionContainer;
-@property (nonatomic, weak) IBOutlet UIView *captionSeparator;
+@property (nonatomic, weak) IBOutlet UIImageView *captionSeparator;
 @property (weak, nonatomic) IBOutlet UIImageView *previewImageView;
 @property (weak, nonatomic) IBOutlet VPlaceholderTextView *captionTextView;
 @property (weak, nonatomic) IBOutlet UIButton *publishButton;
@@ -69,6 +69,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *previewHeightConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *dividerLineHeightConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *publishButtonHeightConstraint;
+@property (nonatomic, assign) CGFloat cellWidth;
 
 @property (nonatomic, strong) UIDynamicAnimator *animator;
 @property (nonatomic, strong) UIAttachmentBehavior *attachmentBehavior;
@@ -112,6 +113,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self setupCollectionView];
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];
     
@@ -186,7 +189,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     }
 }
 
-- (void)setupShareCard
+- (void)setupCollectionView
 {
     self.collectionView.scrollEnabled = NO;
     self.collectionView.delegate = self;
@@ -198,15 +201,26 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     [self.collectionView registerNib:[VPublishSaveCollectionViewCell nibForCell] forCellWithReuseIdentifier:[VPublishSaveCollectionViewCell suggestedReuseIdentifier]];
     [self.collectionView registerNib:[VPublishShareCollectionViewCell nibForCell] forCellWithReuseIdentifier:[VPublishShareCollectionViewCell suggestedReuseIdentifier]];
     
+    CGFloat width = CGRectGetWidth(self.collectionView.bounds);
+    UIEdgeInsets contentInset = self.collectionView.contentInset;
+    width -= contentInset.right + contentInset.left;
+    UIEdgeInsets sectionInset = ((UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout).sectionInset;
+    width -= sectionInset.right + sectionInset.left;
+    self.cellWidth = width;
+}
+
+- (void)setupShareCard
+{
     self.hasShareCell = [self.dependencyManager shareMenuItems].count != 0;
     
     CGFloat staticHeights = self.publishButtonHeightConstraint.constant + self.previewHeightConstraint.constant + self.dividerLineHeightConstraint.constant;
-    CGSize shareSize = [VPublishShareCollectionViewCell desiredSizeInCollectionView:self.collectionView andDependencyManager:self.dependencyManager];
+    CGFloat shareHeight = [VPublishShareCollectionViewCell desiredHeightForDependencyManager:self.dependencyManager];
+    CGSize shareSize = CGSizeMake(self.cellWidth, shareHeight);
     if ( shareSize.height != 0 )
     {
         shareSize.height += kCollectionViewVerticalSpace;
     }
-    CGFloat collectionViewHeight = [VPublishSaveCollectionViewCell desiredSizeInCollectionView:self.collectionView].height + shareSize.height + kCollectionViewVerticalSpace * 2;
+    CGFloat collectionViewHeight = [VPublishSaveCollectionViewCell desiredHeight] + shareSize.height + kCollectionViewVerticalSpace * 2;
     self.cardHeightConstraint.constant = staticHeights + collectionViewHeight;
 }
 
@@ -575,6 +589,11 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 
 - (void)showAlertForError:(NSError *)error fromShareItemCell:(VShareItemCollectionViewCell *)shareItemCell
 {
+    if ( [error.domain isEqualToString:VTwitterManagerErrorDomain] )
+    {
+        return;
+    }
+    
     __weak VPublishViewController *weakSelf = self;
     void (^retryBlock)(UIAlertAction *) = ^(UIAlertAction *action)
     {
@@ -585,18 +604,9 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
                                                                              message:NSLocalizedString(@"Sorry, we were having some trouble on our end. Please retry.", @"")
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     
-    if ( [error.domain isEqualToString:VTwitterManagerErrorDomain] )
-    {
-        //No accounts were found
-        alertController.message = error.localizedDescription;
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"") style:UIAlertActionStyleCancel handler:nil]];
-    }
-    else
-    {
-        //We encountered a twitter API error
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:nil]];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Retry", @"") style:UIAlertActionStyleDefault handler:retryBlock]];
-    }
+    //We encountered a twitter API error
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:nil]];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Retry", @"") style:UIAlertActionStyleDefault handler:retryBlock]];
     
     [self presentViewController:alertController animated:YES completion:nil];
 }
@@ -648,11 +658,17 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    CGSize size = CGSizeZero;
     if ( [self isSaveCellAtIndexPath:indexPath] )
     {
-        return [VPublishSaveCollectionViewCell desiredSizeInCollectionView:collectionView];
+        size.height = [VPublishSaveCollectionViewCell desiredHeight];
     }
-    return [VPublishShareCollectionViewCell desiredSizeInCollectionView:collectionView andDependencyManager:self.dependencyManager];
+    else
+    {
+        size.height = [VPublishShareCollectionViewCell desiredHeightForDependencyManager:self.dependencyManager];
+    }
+    size.width = self.cellWidth;
+    return size;
 }
 
 #pragma mark - VBackgroundContainer
