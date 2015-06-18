@@ -925,6 +925,15 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
                                          withDependencyManager:self.dependencyManager];
         return userPostAllowed;
     }
+    
+    else if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemMenu])
+    {
+        if ([source.navigationItem.title isEqualToString:NSLocalizedString(@"Remix", nil)])
+        {
+            return NO;
+        }
+    }
+
     return YES;
 }
 
