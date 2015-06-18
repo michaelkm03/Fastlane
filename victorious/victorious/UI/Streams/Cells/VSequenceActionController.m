@@ -15,7 +15,6 @@
 #import "VNode+Fetcher.h"
 #import "VSequence+Fetcher.h"
 #import "VStream+Fetcher.h"
-#import "VUser.h"
 #import "VTracking.h"
 
 #pragma mark - Controllers
