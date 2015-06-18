@@ -181,7 +181,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
          dispatch_async(dispatch_get_main_queue(), ^
                         {
                             [hud hide:YES];
-                            completion(NO, nil, error);
+                            completion(NO, NO, error);
                         });
      }];
 }

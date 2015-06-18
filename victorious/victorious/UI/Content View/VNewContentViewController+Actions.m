@@ -20,6 +20,7 @@
 #import "VObjectManager+Sequence.h"
 #import "VSequence+Fetcher.h"
 #import "VUser+Fetcher.h"
+#import "VSequence+Fetcher.h"
 
 // Activities
 #import "VFacebookActivity.h"
@@ -241,7 +242,10 @@
         [actionItems addObject:deleteItem];
     }
     
-    if (![[[VObjectManager sharedManager] mainUser] isOwner])
+    BOOL isOwner = [[[VObjectManager sharedManager] mainUser] isOwner];
+    BOOL canFlag = self.viewModel.sequence.permissions.canFlagSequence;
+    
+    if ( !isOwner && canFlag )
     {
         VActionItem *flagItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Report/Flag", @"")
                                                              actionIcon:[UIImage imageNamed:@"icon_flag"]
