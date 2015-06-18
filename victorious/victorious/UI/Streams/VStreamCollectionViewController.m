@@ -112,6 +112,8 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 @property (nonatomic, assign) BOOL hasRefreshed;
 
+@property (nonatomic, assign) BOOL isRemixView;
+
 @property (nonatomic, strong) VWorkspacePresenter *workspacePresenter;
 
 @end
@@ -926,12 +928,10 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
         return userPostAllowed;
     }
     
-    else if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemMenu])
+    VStreamCollectionViewController *controller = (VStreamCollectionViewController *) source;
+    if (controller.isRemixView == YES)
     {
-        if ([source.navigationItem.title isEqualToString:NSLocalizedString(@"Remix", nil)])
-        {
-            return NO;
-        }
+        return NO;
     }
 
     return YES;
@@ -974,6 +974,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     remixStream.navigationItem.title = NSLocalizedString(@"Remixes", nil);
     remixStream.currentStream.name = NSLocalizedString(@"Remixes", nil);
+    remixStream.isRemixView = YES;
     
     VNoContentView *noRemixView = [VNoContentView noContentViewWithFrame:remixStream.view.bounds];
     if ( [noRemixView respondsToSelector:@selector(setDependencyManager:)] )
