@@ -217,8 +217,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
-        NSLog( @"%@", [templateDecorator keyPathsForKey:@"registrationScreens"] );
-        
+#warning REMVOE THIS WHEN BACKEND IS SUPPLYING IT
         NSParameterAssert( [templateDecorator setComponentWithFilename:@"suggestedUsers"
                                                             forKeyPath:@"scaffold/loginAndRegistrationView/registrationScreens/10"] );
         
