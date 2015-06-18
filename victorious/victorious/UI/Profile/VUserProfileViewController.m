@@ -16,8 +16,6 @@
 #import "VObjectManager+Users.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VProfileEditViewController.h"
-#import "VFollowerTableViewController.h"
-#import "VFollowingTableViewController.h"
 #import "VMessageContainerViewController.h"
 #import "VObjectManager+Login.h"
 #import "VStream+Fetcher.h"
@@ -42,6 +40,10 @@
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VProfileDeeplinkHandler.h"
 #import "VInboxDeepLinkHandler.h"
+
+#import "VUsersViewController.h"
+#import "VFollowersDataSource.h"
+#import "VUserIsFollowingDataSource.h"
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
@@ -590,7 +592,11 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)followerHandler
 {
-    [self performSegueWithIdentifier:@"toFollowers" sender:self];
+#warning load with template
+    VUsersViewController *usersViewController = [[VUsersViewController alloc] initWithDependencyManager:self.dependencyManager];
+    usersViewController.title = NSLocalizedString( @"Followers", nil );
+    [self.navigationController pushViewController:usersViewController animated:YES];
+    usersViewController.usersDataSource = [[VFollowersDataSource alloc] initWithUser:self.user];
 }
 
 - (void)followingHandler
@@ -601,7 +607,11 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
     else
     {
-        [self performSegueWithIdentifier:@"toFollowing" sender:self];
+#warning load with template
+        VUsersViewController *usersViewController = [[VUsersViewController alloc] initWithDependencyManager:self.dependencyManager];
+        usersViewController.title = NSLocalizedString( @"Followers", nil );
+        [self.navigationController pushViewController:usersViewController animated:YES];
+        usersViewController.usersDataSource = [[VUserIsFollowingDataSource alloc] initWithUser:self.user];
     }
 }
 
