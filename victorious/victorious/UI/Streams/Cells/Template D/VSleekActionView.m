@@ -18,7 +18,6 @@
 #import "VFlexBar.h"
 #import "VActionBarFlexibleSpaceItem.h"
 #import "VActionBarFixedWidthItem.h"
-#import "VRoundedBackgroundButton.h"
 
 // Views + Helpers
 #import "UIView+Autolayout.h"
@@ -34,11 +33,10 @@ static CGFloat const kActionButtonHeight = 31.0f;
 @interface VSleekActionView ()
 
 @property (nonatomic, strong) VRoundedBackgroundButton *commentButton;
-@property (nonatomic, strong) VRoundedBackgroundButton *shareButton;
 @property (nonatomic, strong) VRoundedBackgroundButton *repostButton;
 @property (nonatomic, strong) VRoundedBackgroundButton *memeButton;
 @property (nonatomic, strong) VRoundedBackgroundButton *gifButton;
-@property (nonatomic, strong) VRoundedBackgroundButton *likeButton;
+@property (nonatomic, strong, readwrite) VRoundedBackgroundButton *likeButton;
 @property (nonatomic, strong) NSArray *actionButtons;
 
 @property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
@@ -114,26 +112,9 @@ static CGFloat const kActionButtonHeight = 31.0f;
 {
     if (_commentButton == nil)
     {
-        _commentButton = [[VRoundedBackgroundButton alloc] initWithFrame:CGRectZero];
-        [_commentButton addTarget:self action:@selector(comment:) forControlEvents:UIControlEventTouchUpInside];
-        [_commentButton setImage:[[UIImage imageNamed:@"D_commentIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                        forState:UIControlStateNormal];
-        [_commentButton v_addWidthConstraint:kCommentWidth];
-        [_commentButton v_addHeightConstraint:kActionButtonHeight];
-        _commentButton.translatesAutoresizingMaskIntoConstraints = NO;
-        _commentButton.unselectedColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-        _commentButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey];
+        _commentButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_commentIcon"] action:@selector(comment:)];
     }
     return _commentButton;
-}
-
-- (VRoundedBackgroundButton *)shareButton
-{
-    if (_shareButton == nil)
-    {
-        _shareButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_shareIcon"] action:@selector(share:)];
-    }
-    return _shareButton;
 }
 
 - (VRoundedBackgroundButton *)repostButton
@@ -181,12 +162,9 @@ static CGFloat const kActionButtonHeight = 31.0f;
     _dependencyManager = dependencyManager;
     if (_dependencyManager != nil)
     {
-        //Override the default tint color to always have white text in the comment label
-        self.commentButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey];
-        self.commentButton.titleLabel.font = [_dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
-        self.commentButton.unselectedColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.likeButton.activeColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         
-        self.actionButtons = @[self.shareButton, self.repostButton, self.memeButton, self.gifButton];
+        self.actionButtons = @[ self.likeButton, self.repostButton, self.memeButton, self.gifButton, self.commentButton ];
         [self.actionButtons enumerateObjectsUsingBlock:^(VRoundedBackgroundButton *actionButton, NSUInteger idx, BOOL *stop)
          {
              actionButton.unselectedColor = [_dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
@@ -224,8 +202,6 @@ static CGFloat const kActionButtonHeight = 31.0f;
         [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kCommentSpaceToActions]];
     }
     
-    [actionItems addObject:self.shareButton];
-    [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace]];
     if ( sequence.permissions.canRepost )
     {
         [actionItems addObject:self.repostButton];
@@ -245,20 +221,6 @@ static CGFloat const kActionButtonHeight = 31.0f;
     actionBar.actionItems = actionItems;
     
     self.hasLayedOutActionView = YES;
-}
-
-- (void)updateCommentCountForSequence:(VSequence *)sequence
-{
-    if ([[sequence commentCount] integerValue] == 0)
-    {
-        [self.commentButton setTitle:@""
-                            forState:UIControlStateNormal];
-    }
-    else
-    {
-        [self.commentButton setTitle:[self.largeNumberFormatter stringForInteger:[[sequence commentCount] integerValue]]
-                            forState:UIControlStateNormal];
-    }
 }
 
 - (void)updateRepostButtonForSequence:(VSequence *)sequence

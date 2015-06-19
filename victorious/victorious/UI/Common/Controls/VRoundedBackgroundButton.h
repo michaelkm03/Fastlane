@@ -25,6 +25,11 @@
  */
 @property (nonatomic, copy) UIColor *unselectedColor;
 
+/**
+ *  A color representing the unselected state.
+ */
+@property (nonatomic, copy) UIColor *activeColor;
+
 @property (nonatomic, weak) id associatedObjectForButton;
 
 @property (nonatomic, strong) UIImage *activeImage;

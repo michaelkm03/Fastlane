@@ -60,17 +60,15 @@
     
     _sequence = sequence;
     
-    [self updateActionItemsOnBar:self.actionBar
-                     forSequence:_sequence];
-    [self updateRepostButtonForSequence:_sequence];
-    [self updateCommentCountForSequence:_sequence];
+    [self updateActionItemsOnBar:self.actionBar forSequence:_sequence];
     __weak typeof(self) welf = self;
+    [self updateRepostButtonForSequence:_sequence];
     [self.KVOController observe:sequence
-                        keyPath:NSStringFromSelector(@selector(commentCount))
+                        keyPath:NSStringFromSelector(@selector(repostCount))
                         options:NSKeyValueObservingOptionNew
                           block:^(id observer, VSequence *observedSequence, NSDictionary *change)
      {
-         [welf updateCommentCountForSequence:observedSequence];
+         [welf updateRepostButtonForSequence:_sequence];
      }];
 }
 

@@ -88,11 +88,6 @@
                    forSequence:(VSequence *)sequence;
 
 /**
- *  Subclasses should update any comment count UI they have here.
- */
-- (void)updateCommentCountForSequence:(VSequence *)sequence;
-
-/**
  *  Subclasses should update any repost buttons for the passed in sequence.
  */
 - (void)updateRepostButtonForSequence:(VSequence *)sequence;

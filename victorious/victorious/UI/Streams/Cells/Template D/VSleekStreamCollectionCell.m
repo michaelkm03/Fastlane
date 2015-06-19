@@ -26,6 +26,8 @@
 #import "VHashTagTextView.h"
 #import "VStreamHeaderTimeSince.h"
 #import "VCompatibility.h"
+#import "VSequenceCountsTextView.h"
+#import "VSequenceExpressionsObserver.h"
 
 static const CGFloat kSleekCellHeaderHeight = 50.0f;
 static const CGFloat kSleekCellActionViewHeight = 41.0f;
@@ -37,7 +39,7 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
 //Use this constant adjust the spacing between the caption and comment
 const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This represents the space between the comment label and the view below it and the distance between the caption textView and the view above it
 
-@interface VSleekStreamCollectionCell () <VBackgroundContainer, CCHLinkTextViewDelegate>
+@interface VSleekStreamCollectionCell () <VBackgroundContainer, CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate>
 
 @property (nonatomic, strong) VSequencePreviewView *previewView;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -51,6 +53,9 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 
 @property (nonatomic, strong) UIView *dimmingContainer;
 
+@property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
+@property (nonatomic, weak) IBOutlet VSequenceCountsTextView *countsTextView;
+
 @end
 
 @implementation VSleekStreamCollectionCell
@@ -63,6 +68,24 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     self.captionTextView.textContainerInset = UIEdgeInsetsZero;
     self.captionTextView.linkDelegate = self;
     [self setupDimmingContainer];
+    
+    self.countsTextView.textSelectionDelegate = self;
+}
+
+#pragma mark - VSequenceCountsTextViewDelegate
+
+- (void)likersTextSelected
+{
+    UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(willShowLikersForSequence:fromView:) withSender:self];
+    NSAssert( responder != nil, @"We need an object in the responder chain for commenting or showing comments.");
+    [responder willShowLikersForSequence:self.sequence fromView:self];
+}
+
+- (void)commentsTextSelected
+{
+    UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(willCommentOnSequence:fromView:) withSender:self];
+    NSAssert( responder != nil, @"We need an object in the responder chain for showing likers.");
+    [responder willCommentOnSequence:self.sequence fromView:self];
 }
 
 #pragma mark - VHasManagedDependencies
@@ -87,6 +110,8 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     {
         [self.headerView setDependencyManager:dependencyManager];
     }
+    
+    self.countsTextView.dependencyManager = dependencyManager;
 }
 
 #pragma mark - Property Accessors
@@ -101,6 +126,15 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     [self updateCaptionViewForSequence:sequence];
     [self.previewContainer removeConstraint:self.previewContainerHeightConstraint];
     [self setNeedsUpdateConstraints];
+    
+    __weak typeof(self) welf = self;
+    self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
+    [self.expressionsObserver startObservingWithSequence:sequence onUpdate:^
+     {
+         [welf.sleekActionView.likeButton setActive:sequence.isLikedByMainUser.boolValue];
+         [welf.countsTextView setCommentsCount:sequence.commentCount.integerValue];
+         [welf.countsTextView setLikesCount:sequence.likeCount.integerValue];
+     }];
 }
 
 - (void)setHighlighted:(BOOL)highlighted

@@ -34,7 +34,6 @@ static const CGFloat kActionButtonWidth = 44.0f;
 
 @interface VInsetActionView ()
 
-@property (nonatomic, strong) UIButton *shareButton;
 @property (nonatomic, strong) UIButton *gifButton;
 @property (nonatomic, strong) UIButton *memeButton;
 @property (nonatomic, strong) UIButton *repostButton;
@@ -57,16 +56,6 @@ static const CGFloat kActionButtonWidth = 44.0f;
 }
 
 #pragma mark - Property Accessors
-
-- (UIButton *)shareButton
-{
-    if (_shareButton == nil)
-    {
-        _shareButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_shareIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                                            action:@selector(share:)];
-    }
-    return _shareButton;
-}
 
 - (UIButton *)gifButton
 {
@@ -143,7 +132,6 @@ static const CGFloat kActionButtonWidth = 44.0f;
     
     // Create an array of available action items
     NSMutableArray *justActionItems = [[NSMutableArray alloc] init];
-    [justActionItems addObject:self.shareButton];
     if ( sequence.permissions.canRemix && [sequence isVideo])
     {
         [justActionItems addObject:self.gifButton];
@@ -206,7 +194,6 @@ static const CGFloat kActionButtonWidth = 44.0f;
     _dependencyManager = dependencyManager;
     
     UIColor *imageTintColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-    self.shareButton.tintColor = imageTintColor;
     self.gifButton.tintColor = imageTintColor;
     self.memeButton.tintColor = imageTintColor;
     self.repostButton.tintColor = imageTintColor;

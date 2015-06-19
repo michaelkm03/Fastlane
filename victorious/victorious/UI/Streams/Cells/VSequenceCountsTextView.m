@@ -17,6 +17,8 @@
 static NSString * const kLinkIdentifierValueComments = @"comments";
 static NSString * const kLinkIdentifierValueLikes = @"likes";
 
+static NSString * const kDividerDelimeter = @"•";
+
 @interface VSequenceCountsTextView () <CCHLinkTextViewDelegate>
 
 @property (nonatomic, strong) CCHLinkTextView *countsTextView;
@@ -34,12 +36,27 @@ static NSString * const kLinkIdentifierValueLikes = @"likes";
     self = [super init];
     if ( self != nil )
     {
-        self.backgroundColor = [UIColor clearColor];
-        self.scrollEnabled = NO;
-        self.editable = NO;
-        self.linkDelegate = self;
+        [self commonInit];
     }
     return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    self = [super initWithCoder:coder];
+    if ( self != nil )
+    {
+        [self commonInit];
+    }
+    return self;
+}
+
+- (void)commonInit
+{
+    self.backgroundColor = [UIColor clearColor];
+    self.scrollEnabled = NO;
+    self.editable = NO;
+    self.linkDelegate = self;
 }
 
 #pragma mark - Public
@@ -98,10 +115,10 @@ static NSString * const kLinkIdentifierValueLikes = @"likes";
     
     NSString *likesText = self.likesCount == 1 ? NSLocalizedString( @"LikesSingular", @"" ) : NSLocalizedString( @"LikesPlural", @"" );
     NSString *commentsText = self.commentsCount == 1 ? NSLocalizedString( @"CommentsSingular", @"" ) : NSLocalizedString( @"CommentsPlural", @"" );
-    NSString *text = [NSString stringWithFormat:@"%@ %@ • %@ %@", likesCountText, likesText, commentsCountText, commentsText];
+    NSString *text = [NSString stringWithFormat:@"%@ %@  %@  %@ %@", likesCountText, likesText, kDividerDelimeter, commentsCountText, commentsText];
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:text attributes:attributes];
     
-    NSArray *linkComponents = [text componentsSeparatedByString:@" • "];
+    NSArray *linkComponents = [text componentsSeparatedByString:kDividerDelimeter];
     NSRange likesRanage = [text rangeOfString:linkComponents[0]];
     [attributedString addAttribute:CCHLinkAttributeName value:kLinkIdentifierValueLikes range:likesRanage];
     NSRange commentsRange = [text rangeOfString:linkComponents[1]];
