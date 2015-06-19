@@ -6,44 +6,34 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VTileOverlayCollectionCell.h"
-#import "VLargeNumberFormatter.h"
+#import <CCHLinkTextViewDelegate.h>
 
-// Stream Support
+#import "UIView+AutoLayout.h"
+#import "VTileOverlayCollectionCell.h"
 #import "VSequence+Fetcher.h"
 #import "VSequenceActionsDelegate.h"
-
-// Dependencies
 #import "VDependencyManager.h"
 #import "VDependencyManager+VHighlightContainer.h"
-
-// Views + Helpers
 #import "VSequencePreviewView.h"
-#import "UIView+AutoLayout.h"
 #import "VHashTagTextView.h"
 #import "VPassthroughContainerView.h"
 #import "VStreamHeaderComment.h"
 #import "VLinearGradientView.h"
 #import "VHashTagTextView.h"
-#import <CCHLinkTextViewDelegate.h>
 #import "VSequenceExpressionsObserver.h"
-
 #import "VActionButton.h"
+#import "VSequenceCountsTextView.h"
 
-static const CGFloat kHeaderHeight = 74.0f;
-static const CGFloat kGradientAlpha = 0.3f;
-static const CGFloat kShadowAlpha = 0.5f;
-static const UIEdgeInsets kTextInsets = {0, 20.0f, 20.0f, 20.0f};
-static const CGFloat kPollCellHeightRatio = 0.66875f; //from spec, 214 height for 320 width
-static const CGFloat kMaxCaptionHeight = 80.0f;
-static const CGFloat kButtonBuffer = 5.0f;
-static const CGFloat kButtonWidth = 44.0f;
-static const CGFloat kButtonHeight = 44.0f;
+static const UIEdgeInsets kTextInsets       = { 0, 20.0f, 20.0f, 20.0f };
+static const CGFloat kHeaderHeight          = 74.0f;
+static const CGFloat kGradientAlpha         = 0.3f;
+static const CGFloat kShadowAlpha           = 0.5f;
+static const CGFloat kPollCellHeightRatio   = 0.66875f; //< from spec, 214 height for 320 width
+static const CGFloat kMaxCaptionHeight      = 80.0f;
+static const CGFloat kButtonWidth           = 44.0f;
+static const CGFloat kButtonHeight          = 44.0f;
 
-static NSString * const kLinkIdentifierValueComments = @"comments";
-static NSString * const kLinkIdentifierValueLikes = @"likes";
-
-@interface VTileOverlayCollectionCell () <CCHLinkTextViewDelegate>
+@interface VTileOverlayCollectionCell () <CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate>
 
 @property (nonatomic, strong) UIView *loadingBackgroundContainer;
 @property (nonatomic, strong) UIView *contentContainer;
@@ -56,11 +46,11 @@ static NSString * const kLinkIdentifierValueLikes = @"likes";
 @property (nonatomic, strong) VStreamHeaderComment *header;
 @property (nonatomic, strong) VHashTagTextView *captionTextView;
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
-@property (nonatomic, strong) CCHLinkTextView *countsTextView;
-@property (nonatomic, strong) VLargeNumberFormatter *numberFormatter;
 
 @property (nonatomic, strong) VActionButton *likeButton;
 @property (nonatomic, strong) VActionButton *commentButton;
+
+@property (nonatomic, strong) VSequenceCountsTextView *countsTextView;
 
 @end
 
@@ -138,10 +128,8 @@ static NSString * const kLinkIdentifierValueLikes = @"likes";
     _header.sequence = self.sequence;
     
     // Comments and likes count
-    _countsTextView = [[CCHLinkTextView alloc] init];
-    _countsTextView.backgroundColor = [UIColor clearColor];
-    _countsTextView.scrollEnabled = NO;
-    _countsTextView.editable = NO;
+    _countsTextView = [[VSequenceCountsTextView alloc] init];
+    _countsTextView.textSelectionDelegate = self;
     _countsTextView.textContainerInset = (UIEdgeInsets){ 0, 16.0f, 0.0f, 10.0f };
     [_countsTextView sizeToFit];
     _countsTextView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -210,53 +198,14 @@ static NSString * const kLinkIdentifierValueLikes = @"likes";
     [self updateCaptionViewForSequence:sequence];
     [self updateOverlayGradientsForSequence:sequence];
     
-    self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
     __weak typeof(self) welf = self;
+    self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
     [self.expressionsObserver startObservingWithSequence:sequence onUpdate:^
     {
         [welf.likeButton setActive:sequence.isLikedByMainUser.boolValue];
-        [welf updateCountText];
+        [welf.countsTextView setCommentsCount:sequence.commentCount.integerValue];
+        [welf.countsTextView setLikesCount:sequence.likeCount.integerValue];
     }];
-}
-
-- (void)updateCountText
-{
-    if ( self.dependencyManager == nil )
-    {
-        return;
-    }
-    
-    UIFont *countsFont = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
-    UIColor *countsTextColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    NSDictionary *countsTextAttributes = @{ NSFontAttributeName: countsFont, NSForegroundColorAttributeName: countsTextColor };
-    
-    [self.likeButton setActive:self.sequence.isLikedByMainUser.boolValue];
-    NSString *likesText = [self.numberFormatter stringForInteger:self.sequence.likeCount.integerValue];
-    NSString *commentsText = [self.numberFormatter stringForInteger:self.sequence.commentCount.integerValue];
-    NSString *countsText = [NSString stringWithFormat:@"%@ Likes • %@ Comments", likesText, commentsText];
-    
-    NSMutableAttributedString *attributesCountsText = [[NSMutableAttributedString alloc] initWithString:countsText
-                                                                                            attributes:countsTextAttributes];
-    
-    NSArray *linkComponents = [countsText componentsSeparatedByString:@" • "];
-    NSRange likesRanage = [countsText rangeOfString:linkComponents[0]];
-    [attributesCountsText addAttribute:CCHLinkAttributeName value:kLinkIdentifierValueLikes range:likesRanage];
-    NSRange commentsRange = [countsText rangeOfString:linkComponents[1]];
-    [attributesCountsText addAttribute:CCHLinkAttributeName value:kLinkIdentifierValueComments range:commentsRange];
-    
-    self.countsTextView.attributedText = attributesCountsText;
-    self.countsTextView.linkTextAttributes = countsTextAttributes;
-    self.countsTextView.linkTextTouchAttributes = countsTextAttributes;
-    self.countsTextView.linkDelegate = self;
-}
-
-- (VLargeNumberFormatter *)numberFormatter
-{
-    if ( _numberFormatter == nil )
-    {
-        _numberFormatter = [[VLargeNumberFormatter alloc] init];
-    }
-    return _numberFormatter;
 }
 
 - (void)setHighlighted:(BOOL)highlighted
@@ -281,21 +230,23 @@ static NSString * const kLinkIdentifierValueLikes = @"likes";
 
 - (void)selectedCommentButton:(UIButton *)commentButton
 {
-    [self showComments];
+    [self likersTextSelected];
 }
 
-- (void)showComments
+#pragma mark - VSequenceCountsTextViewDelegate
+
+- (void)likersTextSelected
 {
-    UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(willCommentOnSequence:fromView:) withSender:self];
+    UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(willShowLikersForSequence:fromView:) withSender:self];
     NSAssert( responder != nil, @"We need an object in the responder chain for commenting or showing comments.");
-    [responder willCommentOnSequence:self.sequence fromView:self];
+    [responder willShowLikersForSequence:self.sequence fromView:self];
 }
 
-- (void)showLikers
+- (void)commentsTextSelected
 {
     UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(willCommentOnSequence:fromView:) withSender:self];
     NSAssert( responder != nil, @"We need an object in the responder chain for showing likers.");
-    [responder willShowLikersForSequence:self.sequence fromView:self];
+    [responder willCommentOnSequence:self.sequence fromView:self];
 }
 
 #pragma mark - Internal Methods
@@ -412,8 +363,8 @@ static NSString * const kLinkIdentifierValueLikes = @"likes";
     
     self.commentButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.commentButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
-    
     self.likeButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    self.countsTextView.dependencyManager = dependencyManager;
 }
 
 #pragma mark - VStreamCellComponentSpecialization
@@ -435,21 +386,10 @@ static NSString * const kLinkIdentifierValueLikes = @"likes";
 
 - (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
 {
-    if ( [value isEqualToString:kLinkIdentifierValueComments] )
-    {
-        [self showComments];
-    }
-    else if ( [value isEqualToString:kLinkIdentifierValueLikes] )
-    {
-        [self showLikers];
-    }
-    else
-    {
-        UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(hashTag:tappedFromSequence:fromView:)
-                                                                      withSender:self];
-        NSAssert( responder != nil, @"We need an object in the responder chain for hash tag selection.!" );
-        [responder hashTag:value tappedFromSequence:self.sequence fromView:self];
-    }
+    UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(hashTag:tappedFromSequence:fromView:)
+                                                                  withSender:self];
+    NSAssert( responder != nil, @"We need an object in the responder chain for hash tag selection.!" );
+    [responder hashTag:value tappedFromSequence:self.sequence fromView:self];
 }
 
 #pragma mark - VStreamCellFocus

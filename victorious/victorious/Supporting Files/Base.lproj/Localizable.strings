@@ -625,3 +625,8 @@
 
 "Nice!" = "Nice!";
 "Edit photo" = "Edit photo";
+
+"CommentsSingular" = "Comment";  // e.g. "1 Comment"
+"CommentsPlural" = "Comments";  // e.g. "20 Comments"
+"LikesSingular" = "Like";  // e.g. "1 Like", where "Like" is a noun
+"LikesPlural" = "Likes";  // e.g. "20 Likes", where "Like" is a noun
