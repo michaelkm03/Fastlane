@@ -113,6 +113,8 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 @property (nonatomic, assign) BOOL hasRefreshed;
 
+@property (nonatomic, assign) BOOL isRemixView;
+
 @property (nonatomic, strong) VWorkspacePresenter *workspacePresenter;
 
 @end
@@ -424,6 +426,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
              return;
          }
          weakSelf.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:self dependencyManager:self.dependencyManager];
+         weakSelf.workspacePresenter.showsCreationSheetFromTop = YES;
          [weakSelf.workspacePresenter present];
      }];
 }
@@ -926,6 +929,13 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
                                          withDependencyManager:self.dependencyManager];
         return userPostAllowed;
     }
+    
+    VStreamCollectionViewController *controller = (VStreamCollectionViewController *) source;
+    if ((controller.isRemixView) && ([menuItem.position isEqualToString:VDependencyManagerPositionLeft]))
+    {
+        return self.navigationController.viewControllers.count <= 1;
+    }
+
     return YES;
 }
 
@@ -966,6 +976,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     memeStream.navigationItem.title = NSLocalizedString(@"Memes", nil);
     memeStream.currentStream.name = NSLocalizedString(@"Memes", nil);
+    memeStream.isRemixView = YES;
     
     VNoContentView *noMemeView = [VNoContentView noContentViewWithFrame:memeStream.view.bounds];
     if ( [noMemeView respondsToSelector:@selector(setDependencyManager:)] )
@@ -989,6 +1000,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     gifStream.navigationItem.title = NSLocalizedString(@"Gifs", nil);
     gifStream.currentStream.name = NSLocalizedString(@"Gifs", nil);
+    gifStream.isRemixView = YES;
     
     VNoContentView *noGifView = [VNoContentView noContentViewWithFrame:gifStream.view.bounds];
     if ( [noGifView respondsToSelector:@selector(setDependencyManager:)] )

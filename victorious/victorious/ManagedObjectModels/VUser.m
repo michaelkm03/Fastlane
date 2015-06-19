@@ -20,7 +20,6 @@
 
 @implementation VUser
 
-@dynamic accessLevel;
 @dynamic email;
 @dynamic isDirectMessagingDisabled;
 @dynamic isFollowedByMainUser;

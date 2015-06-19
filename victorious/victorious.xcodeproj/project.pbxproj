@@ -644,7 +644,6 @@
 		BE80780519D778E500EECDEB /* VFullscreenMarqueeController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE80780419D778E500EECDEB /* VFullscreenMarqueeController.m */; };
 		BE88FF7F1A0005FF0064AB28 /* VFullscreenMarqueeCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE88FF7D1A0005FF0064AB28 /* VFullscreenMarqueeCollectionCell.m */; };
 		BE88FF801A0005FF0064AB28 /* VFullscreenMarqueeCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE88FF7E1A0005FF0064AB28 /* VFullscreenMarqueeCollectionCell.xib */; };
-		BE89D981192141D600D97E7F /* VUser+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BE89D980192141D600D97E7F /* VUser+Fetcher.m */; };
 		BE89D98D1921531400D97E7F /* VAbstractFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE89D98C1921531400D97E7F /* VAbstractFilter.m */; };
 		BEA31EE9192292F300A90A10 /* VComment+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA31EE8192292F300A90A10 /* VComment+Fetcher.m */; };
 		BEA78BE519BFAE8C006A1ABC /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA78BDA19BFAE8C006A1ABC /* libOCMock.a */; };
@@ -662,6 +661,11 @@
 		C30AA4F01B0678BB0010CEFE /* VPermission.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4EF1B0678BB0010CEFE /* VPermission.m */; };
 		C30AA4F31B067C370010CEFE /* VPermissionCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4F21B067C370010CEFE /* VPermissionCamera.m */; };
 		C30AA4F61B06B82A0010CEFE /* VPermissionPhotoLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4F51B06B82A0010CEFE /* VPermissionPhotoLibrary.m */; };
+		C35265FB1B28EA09001F093F /* CreateSheet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C35265FA1B28EA09001F093F /* CreateSheet.storyboard */; };
+		C35265FE1B28F167001F093F /* VCreateSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C35265FD1B28F167001F093F /* VCreateSheetViewController.m */; };
+		C35266011B28F1B6001F093F /* VCreateSheetCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C35266001B28F1B6001F093F /* VCreateSheetCollectionViewCell.m */; };
+		C35266041B2A05EA001F093F /* VCreateSheetTransitionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C35266031B2A05EA001F093F /* VCreateSheetTransitionDelegate.m */; };
+		C35266071B2A0907001F093F /* VCreateSheetPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = C35266061B2A0907001F093F /* VCreateSheetPresentationController.m */; };
 		C35AB0A61AF9843700B2AE1B /* VCVideoPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = C35AB0A51AF9843700B2AE1B /* VCVideoPlayerView.m */; };
 		C39413B51B165F7800579A8E /* VPermissionAlertTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C39413B41B165F7800579A8E /* VPermissionAlertTextView.m */; };
 		C39413B81B17B38300579A8E /* VStreamCollectionViewParallaxFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C39413B71B17B38200579A8E /* VStreamCollectionViewParallaxFlowLayout.m */; };
@@ -2140,8 +2144,6 @@
 		BE88FF7C1A0005FF0064AB28 /* VFullscreenMarqueeCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFullscreenMarqueeCollectionCell.h; sourceTree = "<group>"; };
 		BE88FF7D1A0005FF0064AB28 /* VFullscreenMarqueeCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFullscreenMarqueeCollectionCell.m; sourceTree = "<group>"; };
 		BE88FF7E1A0005FF0064AB28 /* VFullscreenMarqueeCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VFullscreenMarqueeCollectionCell.xib; sourceTree = "<group>"; };
-		BE89D97F192141D600D97E7F /* VUser+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VUser+Fetcher.h"; sourceTree = "<group>"; };
-		BE89D980192141D600D97E7F /* VUser+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VUser+Fetcher.m"; sourceTree = "<group>"; };
 		BE89D98B1921531400D97E7F /* VAbstractFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractFilter.h; sourceTree = "<group>"; };
 		BE89D98C1921531400D97E7F /* VAbstractFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractFilter.m; sourceTree = "<group>"; };
 		BE9674F719E335060072E87A /* VElapsedTimeFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VElapsedTimeFormatterTests.m; sourceTree = "<group>"; };
@@ -2195,6 +2197,15 @@
 		C30AA4F21B067C370010CEFE /* VPermissionCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPermissionCamera.m; path = Permissions/VPermissionCamera.m; sourceTree = "<group>"; };
 		C30AA4F41B06B82A0010CEFE /* VPermissionPhotoLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPermissionPhotoLibrary.h; path = Permissions/VPermissionPhotoLibrary.h; sourceTree = "<group>"; };
 		C30AA4F51B06B82A0010CEFE /* VPermissionPhotoLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPermissionPhotoLibrary.m; path = Permissions/VPermissionPhotoLibrary.m; sourceTree = "<group>"; };
+		C35265FA1B28EA09001F093F /* CreateSheet.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = CreateSheet.storyboard; path = "Create Sheet/CreateSheet.storyboard"; sourceTree = "<group>"; };
+		C35265FC1B28F167001F093F /* VCreateSheetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCreateSheetViewController.h; path = "Create Sheet/VCreateSheetViewController.h"; sourceTree = "<group>"; };
+		C35265FD1B28F167001F093F /* VCreateSheetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCreateSheetViewController.m; path = "Create Sheet/VCreateSheetViewController.m"; sourceTree = "<group>"; };
+		C35265FF1B28F1B6001F093F /* VCreateSheetCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCreateSheetCollectionViewCell.h; path = "Create Sheet/VCreateSheetCollectionViewCell.h"; sourceTree = "<group>"; };
+		C35266001B28F1B6001F093F /* VCreateSheetCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCreateSheetCollectionViewCell.m; path = "Create Sheet/VCreateSheetCollectionViewCell.m"; sourceTree = "<group>"; };
+		C35266021B2A05EA001F093F /* VCreateSheetTransitionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCreateSheetTransitionDelegate.h; path = "Create Sheet/VCreateSheetTransitionDelegate.h"; sourceTree = "<group>"; };
+		C35266031B2A05EA001F093F /* VCreateSheetTransitionDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCreateSheetTransitionDelegate.m; path = "Create Sheet/VCreateSheetTransitionDelegate.m"; sourceTree = "<group>"; };
+		C35266051B2A0907001F093F /* VCreateSheetPresentationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCreateSheetPresentationController.h; path = "Create Sheet/VCreateSheetPresentationController.h"; sourceTree = "<group>"; };
+		C35266061B2A0907001F093F /* VCreateSheetPresentationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCreateSheetPresentationController.m; path = "Create Sheet/VCreateSheetPresentationController.m"; sourceTree = "<group>"; };
 		C35AB0A41AF9843700B2AE1B /* VCVideoPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCVideoPlayerView.h; sourceTree = "<group>"; };
 		C35AB0A51AF9843700B2AE1B /* VCVideoPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCVideoPlayerView.m; sourceTree = "<group>"; };
 		C39413B31B165F7800579A8E /* VPermissionAlertTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPermissionAlertTextView.h; path = "UI/Permission Alert/VPermissionAlertTextView.h"; sourceTree = "<group>"; };
@@ -2990,6 +3001,7 @@
 				0314D34819B46B5E00FA363C /* Common */,
 				0314D35B19B46B5E00FA363C /* Content View */,
 				0314D38319B46B5E00FA363C /* Create Poll */,
+				C35265F91B28E349001F093F /* Create Sheet */,
 				A75FAF0019E8AC1E00EB87C1 /* Discover */,
 				A7D707831A7B103C00D9993F /* EndCard */,
 				0314D39019B46B5E00FA363C /* Force Upgrade */,
@@ -5220,8 +5232,6 @@
 				BEA78C2A19C008F0006A1ABC /* VStream+Fetcher.m */,
 				BE11F26319CCADD200DEC776 /* VStreamItem+Fetcher.h */,
 				BE11F26419CCADD200DEC776 /* VStreamItem+Fetcher.m */,
-				BE89D97F192141D600D97E7F /* VUser+Fetcher.h */,
-				BE89D980192141D600D97E7F /* VUser+Fetcher.m */,
 			);
 			path = Fetchers;
 			sourceTree = "<group>";
@@ -5500,6 +5510,22 @@
 				C39B220A1B0A58EF00D3DFE7 /* VPermissionMicrophone.m */,
 			);
 			name = Permissions;
+			sourceTree = "<group>";
+		};
+		C35265F91B28E349001F093F /* Create Sheet */ = {
+			isa = PBXGroup;
+			children = (
+				C35265FA1B28EA09001F093F /* CreateSheet.storyboard */,
+				C35266021B2A05EA001F093F /* VCreateSheetTransitionDelegate.h */,
+				C35266031B2A05EA001F093F /* VCreateSheetTransitionDelegate.m */,
+				C35265FF1B28F1B6001F093F /* VCreateSheetCollectionViewCell.h */,
+				C35266001B28F1B6001F093F /* VCreateSheetCollectionViewCell.m */,
+				C35266051B2A0907001F093F /* VCreateSheetPresentationController.h */,
+				C35266061B2A0907001F093F /* VCreateSheetPresentationController.m */,
+				C35265FC1B28F167001F093F /* VCreateSheetViewController.h */,
+				C35265FD1B28F167001F093F /* VCreateSheetViewController.m */,
+			);
+			name = "Create Sheet";
 			sourceTree = "<group>";
 		};
 		C39864AE1B1E7F7700694AB3 /* Parallax */ = {
@@ -6591,6 +6617,7 @@
 				0362B42119F5F6950036B9C8 /* VUploadProgressView.xib in Resources */,
 				D89D7F7E1A9FF5F400B61783 /* Launch Screen.xib in Resources */,
 				036F38651A0C4DEA0014DF66 /* Arvo-Bold.ttf in Resources */,
+				C35265FB1B28EA09001F093F /* CreateSheet.storyboard in Resources */,
 				036F386B1A0C4DEA0014DF66 /* DroidSans-Bold.ttf in Resources */,
 				03F6E2671AB79E090017826E /* Workspace.storyboard in Resources */,
 				D8C7CF5F19DCCD0D00BA33E5 /* VExperienceEnhancerCell.xib in Resources */,
@@ -6904,6 +6931,7 @@
 				03B83B5D19E0990E00DC04E4 /* VUploadProgressView.m in Sources */,
 				F06F10C61AC2024A0062E1D1 /* VDirectoryCollectionViewController.m in Sources */,
 				A7D378321AEF3CC9007FF197 /* VPassthroughContainerView.m in Sources */,
+				C35265FE1B28F167001F093F /* VCreateSheetViewController.m in Sources */,
 				F0ADB0681AD367970069DF0D /* VImageViewContainer.m in Sources */,
 				039ED29A19C908F400305987 /* VCVideoPlayerToolbarView.m in Sources */,
 				A79869ED1AD7124D00F2564A /* VDiscoverDeepLinkHandler.m in Sources */,
@@ -6974,7 +7002,6 @@
 				0314D4A019B46B5E00FA363C /* VImageSearchResultCell.m in Sources */,
 				A7F711FD1AE1D5A00086F729 /* VHashtagFollowingTableViewController.m in Sources */,
 				D876E1FF1A9DA6CB002CAA29 /* VSolidColorBackground.m in Sources */,
-				BE89D981192141D600D97E7F /* VUser+Fetcher.m in Sources */,
 				A7D378481AF0578A007FF197 /* VImageAsset.m in Sources */,
 				C39413B51B165F7800579A8E /* VPermissionAlertTextView.m in Sources */,
 				A7976D0719FAE8EA00B5A145 /* AVAsset+Orientation.m in Sources */,
@@ -7050,6 +7077,7 @@
 				D8E39BDA19CB7C80007FD86A /* VContentImageCell.m in Sources */,
 				D8D812B01B14EAA200E93B37 /* VModernResetTokenViewController.m in Sources */,
 				D8A411C21AE5B17A000A7229 /* VCreationInfoContainer.m in Sources */,
+				C35266071B2A0907001F093F /* VCreateSheetPresentationController.m in Sources */,
 				D87351881A3120F5006D97B2 /* VCanvasView.m in Sources */,
 				D83AC7AA1AB201A600F63603 /* VPlayerView.m in Sources */,
 				A72005601A030E4700285A9C /* VGoogleAnalyticsTracking.m in Sources */,
@@ -7068,6 +7096,7 @@
 				F0F04AE21B20EEB600F6F401 /* VInsetMarqueeCollectionViewFlowLayout.m in Sources */,
 				F07228261AD8846A00085653 /* VNotification.m in Sources */,
 				F07409751B05876200C44623 /* VCoachmarkView.m in Sources */,
+				C35266011B28F1B6001F093F /* VCreateSheetCollectionViewCell.m in Sources */,
 				A75ED0E11AB7BEFC00C35063 /* VColorType.m in Sources */,
 				037FCF181A8DAF0E00E8ABFC /* VBarButton.m in Sources */,
 				A7A2DFFF1A37813D00F8C705 /* VPurchaseActionCell.m in Sources */,
@@ -7360,6 +7389,7 @@
 				0314D0B919B4698800FA363C /* VObjectManager.m in Sources */,
 				D8E39BDC19CB7C80007FD86A /* VContentPollCell.m in Sources */,
 				D85B70981B0EED0D0038CA5B /* VModernLoginViewController.m in Sources */,
+				C35266041B2A05EA001F093F /* VCreateSheetTransitionDelegate.m in Sources */,
 				0314D0B719B4698800FA363C /* VObjectManager+Users.m in Sources */,
 				A75ED0D61AB79EB500C35063 /* VTextCanvasToolViewController.m in Sources */,
 				BE171E1B1868C211004E5202 /* VUser+RestKit.m in Sources */,

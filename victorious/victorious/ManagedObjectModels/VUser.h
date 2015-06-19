@@ -13,7 +13,6 @@
 
 @interface VUser : NSManagedObject
 
-@property (nonatomic, retain) NSString * accessLevel;
 @property (nonatomic, retain) NSString * email;
 @property (nonatomic, retain) NSNumber * isDirectMessagingDisabled;
 @property (nonatomic, retain) NSNumber * isFollowedByMainUser;
