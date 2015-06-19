@@ -23,6 +23,7 @@
 #import "VSequenceExpressionsObserver.h"
 #import "VActionButton.h"
 #import "VSequenceCountsTextView.h"
+#import "NSString+VParseHelp.h"
 
 static const UIEdgeInsets kTextInsets       = { 0, 20.0f, 20.0f, 20.0f };
 static const CGFloat kHeaderHeight          = 74.0f;
@@ -32,6 +33,9 @@ static const CGFloat kPollCellHeightRatio   = 0.66875f; //< from spec, 214 heigh
 static const CGFloat kMaxCaptionHeight      = 80.0f;
 static const CGFloat kButtonWidth           = 44.0f;
 static const CGFloat kButtonHeight          = 44.0f;
+static const CGFloat kGradientBandThickness = 80.0f;
+static const CGFloat kContentHeightOffset   = 100.0f;
+static const CGFloat kCountsTextViewHeight  = 20.0f;
 
 @interface VTileOverlayCollectionCell () <CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate>
 
@@ -46,11 +50,10 @@ static const CGFloat kButtonHeight          = 44.0f;
 @property (nonatomic, strong) VStreamHeaderComment *header;
 @property (nonatomic, strong) VHashTagTextView *captionTextView;
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
-
 @property (nonatomic, strong) VActionButton *likeButton;
 @property (nonatomic, strong) VActionButton *commentButton;
-
 @property (nonatomic, strong) VSequenceCountsTextView *countsTextView;
+@property (nonatomic, strong) NSLayoutConstraint *contentBottomConstraint;
 
 @end
 
@@ -84,10 +87,14 @@ static const CGFloat kButtonHeight          = 44.0f;
     [self.contentView v_addFitToParentConstraintsToSubview:_loadingBackgroundContainer];
     
     // Content is overlaid on the loading background
-    _contentContainer = [[UIView alloc] initWithFrame:self.contentView.bounds];
+    CGRect bounds = self.contentView.bounds;
+    _contentContainer = [[UIView alloc] initWithFrame:bounds];
     _contentContainer.clipsToBounds = YES;
     [self.contentView addSubview:_contentContainer];
-    [self.contentView v_addFitToParentConstraintsToSubview:_contentContainer];
+    [_overlayContainer v_addPinToLeadingTrailingToSubview:_contentContainer];
+    [_overlayContainer v_addPinToTopToSubview:_contentContainer];
+    _contentBottomConstraint = [NSLayoutConstraint constraintWithItem:_contentContainer attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.contentView  attribute:NSLayoutAttributeBottom multiplier:1.0f constant:0.0f];
+    [self.contentView  addConstraint:_contentBottomConstraint];
     
     // Overlay is overlaid on the content
     _overlayContainer = [[VPassthroughContainerView alloc] initWithFrame:self.contentView.bounds];
@@ -114,9 +121,7 @@ static const CGFloat kButtonHeight          = 44.0f;
     _bottomGradient = [[VLinearGradientView alloc] initWithFrame:CGRectZero];
     _bottomGradient.userInteractionEnabled = NO;
     [_overlayContainer addSubview:_bottomGradient];
-    [_overlayContainer v_addPinToLeadingTrailingToSubview:_bottomGradient];
-    [_overlayContainer v_addPinToBottomToSubview:_bottomGradient];
-    [_bottomGradient v_addHeightConstraint:100.0f];
+    [_overlayContainer v_addFitToParentConstraintsToSubview:_bottomGradient];
     [_bottomGradient setColors:@[ [UIColor clearColor], [UIColor blackColor] ]];
     
     // Add the header
@@ -134,7 +139,7 @@ static const CGFloat kButtonHeight          = 44.0f;
     [_countsTextView sizeToFit];
     _countsTextView.translatesAutoresizingMaskIntoConstraints = NO;
     [_overlayContainer addSubview:_countsTextView];
-    [_countsTextView v_addHeightConstraint:20.0f];
+    [_countsTextView v_addHeightConstraint:kCountsTextViewHeight];
     [_overlayContainer v_addPinToLeadingTrailingToSubview:_countsTextView];
     [_overlayContainer addConstraint:[NSLayoutConstraint constraintWithItem:_countsTextView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_overlayContainer attribute:NSLayoutAttributeBottom multiplier:1.0f constant:-14.0f]];
     
@@ -188,6 +193,22 @@ static const CGFloat kButtonHeight          = 44.0f;
 
 #pragma mark - Property Accessors
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    [self updateBottomGradientLocations];
+}
+
+- (void)updateBottomGradientLocations
+{
+    CGFloat buttonsMidY = CGRectGetMidY(self.likeButton.frame);
+    CGFloat boundsHeight = CGRectGetHeight(self.bounds);
+    CGFloat start = (buttonsMidY - kGradientBandThickness) / boundsHeight;
+    CGFloat end = buttonsMidY / boundsHeight;
+    [self.bottomGradient setLocations:@[ @(start), @(end) ]];
+}
+
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
@@ -205,6 +226,8 @@ static const CGFloat kButtonHeight          = 44.0f;
         [welf.countsTextView setCommentsCount:sequence.commentCount.integerValue];
         [welf.countsTextView setLikesCount:sequence.likeCount.integerValue];
     }];
+    
+    self.contentBottomConstraint.constant = -200;
 }
 
 - (void)setHighlighted:(BOOL)highlighted
@@ -334,8 +357,51 @@ static const CGFloat kButtonHeight          = 44.0f;
         CGFloat width = CGRectGetWidth(bounds);
         return CGSizeMake(width, width * kPollCellHeightRatio);
     }
+    
+    return CGSizeMake( CGRectGetWidth(bounds), CGRectGetWidth(bounds) * (1 / [sequence previewAssetAspectRatio]) + kContentHeightOffset );
+}
+
++ (CGSize)sizeByAddingTextAreaSizeToSize:(CGSize)initialSize
+                                sequence:(VSequence *)sequence
+                       dependencyManager:(VDependencyManager *)dependencyManager
+{
+    CGSize sizeWithText = initialSize;
+    
+    // Top Margins
+    sizeWithText.height = sizeWithText.height;
+    
+    NSValue *textSizeValue = [[self textSizeCache] objectForKey:sequence.remoteId];
+    if (textSizeValue != nil)
+    {
+        return [textSizeValue CGSizeValue];
+    }
+    
+    // Comment size
+    CGFloat textAreaWidth = sizeWithText.width;
+    if (sequence.name.length > 0)
+    {
+        // Inter-Text spacing
+        sizeWithText.height += kCountsTextViewHeight;
         
-    return CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds) * (1 / [sequence previewAssetAspectRatio]));
+        // Caption view size
+        CGSize captionSize = [sequence.name frameSizeForWidth:textAreaWidth
+                                                andAttributes:[self sequenceDescriptionAttributesWithDependencyManager:dependencyManager]];
+        sizeWithText.height += VCEIL(captionSize.height);
+    }
+    
+    // Bottom Margins
+    [[self textSizeCache] setObject:[NSValue valueWithCGSize:sizeWithText] forKey:sequence.remoteId];
+    return sizeWithText;
+}
+
++ (NSCache *)textSizeCache
+{
+    static NSCache *textSizeCache;
+    if (textSizeCache == nil)
+    {
+        textSizeCache = [[NSCache alloc] init];
+    }
+    return textSizeCache;
 }
 
 #pragma mark - VBackgroundContainer
