@@ -35,7 +35,7 @@
     XCTAssertThrows( [VSequencePermissions permissionsWithNumber:nil] );
 }
 
-- (void)testPermissionToPropety
+- (void)testPermissionToProperty
 {
     // The order of these properties should match the order in which the equivalent
     // values of the VSequencePermission enum are defined

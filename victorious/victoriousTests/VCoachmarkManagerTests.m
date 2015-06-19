@@ -376,7 +376,7 @@ static const CGRect kHighRect = { { 0.0f, 0.0f }, { 0.0f, 0.0f } };
                        
                        [expectation fulfill];
                    });
-    [self waitForExpectationsWithTimeout:kAnimationDelay handler:nil];
+    [self waitForExpectationsWithTimeout:kAnimationDelay * 2 handler:nil];
 }
 
 #pragma mark - Hide coachmark tests
