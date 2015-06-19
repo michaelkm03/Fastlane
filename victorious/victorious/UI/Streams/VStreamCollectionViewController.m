@@ -425,6 +425,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
              return;
          }
          weakSelf.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:self dependencyManager:self.dependencyManager];
+         weakSelf.workspacePresenter.showsCreationSheetFromTop = YES;
          [weakSelf.workspacePresenter present];
      }];
 }
