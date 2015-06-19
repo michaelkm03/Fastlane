@@ -110,8 +110,14 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     {
         [self.headerView setDependencyManager:dependencyManager];
     }
-    
-    self.countsTextView.dependencyManager = dependencyManager;
+    if ([self.countsTextView respondsToSelector:@selector(setDependencyManager:)])
+    {
+        [self.countsTextView setDependencyManager:dependencyManager];
+    }
+    if ([self.captionTextView respondsToSelector:@selector(setDependencyManager:)])
+    {
+        [self.captionTextView setDependencyManager:dependencyManager];
+    }
 }
 
 #pragma mark - Property Accessors

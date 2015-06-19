@@ -91,6 +91,7 @@
 "PollAlreadyAnswered"   =   "Poll result was already answered";
 "LoginFail"             =   "Login Failed";
 "GenericFailMessage"    =   "Oops! Something has gone wrong.";
+"FacebookLoginFailed"   =   "Oops! Facebook login failed. Please try again.";
 "NotLoggedInMessage"    =   "Oops! It looks like you're not logged in.";
 "SignupFail"            =   "Account Creation Failed";
 "AccountUpdateFail"     =   "Account Update Failed";
@@ -110,6 +111,7 @@
 "Profile load failed!"  =   "Profile load failed!";
 
 "User already exists"   =   "User already exists";
+"User already exists but the password is incorrect" = "User already exists but the password is incorrect";
 "Invalid email address or password" = "Invalid email address or password";
 "Sorry, I can't display that right now" = "Sorry, I can't display that right now";
 
@@ -166,13 +168,7 @@
 "NoRemixersTitle"       =   "BE THE 1ST TO REMIX!";
 "NoRemixersMessage"     =   "Make this content your own by adding commentary, additional video clips, and more!";
 
-"OwnerSharePollFormat"  =   "Check out this poll by %@!"; //Check out this poll by <creator>! <URL>
-"OwnerShareVideoFormat" =   "Check out \"%@\" by %@!";    //Check out "<video name>" by <creator>! <URL>
-"OwnerShareVideoFormatNoVideoName" = "Check out this video by %@!"; // Check out this videy by <creator>! <URL>
-"OwnerShareImageFormat" =   "Check out this photo by %@!";//Check out this photo by <creator>! <URL>
-"OwnerShareTextFormat" =    "Check out this post from \"%@\""; //Check out this post by <creator>! <URL>
-"OwnerShareLinkFormat"   =    "Check this out!";
-
+// strings for both UGC and creator
 "UGCSharePollFormat"    =   "Check out this poll!";       //Check out this poll! <URL>
 "UGCShareVideoFormat"   =   "Check out this video!";      //Check out this video! <URL>
 "UGCShareGIFFormat"     =   "Check out this gif!";        //Check out this gif! <URL>
@@ -630,3 +626,9 @@
 "CommentsPlural" = "Comments";  // e.g. "20 Comments"
 "LikesSingular" = "Like";  // e.g. "1 Like", where "Like" is a noun
 "LikesPlural" = "Likes";  // e.g. "20 Likes", where "Like" is a noun
+
+"TEXT" = "TEXT";
+"POLL" = "POLL";
+"VIDEO" = "VIDEO";
+"IMAGE" = "IMAGE";
+"Nevermind" = "Nevermind";

@@ -248,6 +248,11 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 10.0f, 10.
     {
         [self.header setDependencyManager:dependencyManager];
     }
+    if ([self.captionTextView respondsToSelector:@selector(setDependencyManager:)])
+    {
+        [self.captionTextView setDependencyManager:dependencyManager];
+    }
+
 }
 
 #pragma mark - Property Accessors

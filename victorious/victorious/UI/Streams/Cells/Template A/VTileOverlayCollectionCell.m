@@ -430,6 +430,7 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     self.commentButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
     self.likeButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.countsTextView.dependencyManager = dependencyManager;
+    self.captionTextView.dependencyManager = dependencyManager;
 }
 
 #pragma mark - VStreamCellComponentSpecialization

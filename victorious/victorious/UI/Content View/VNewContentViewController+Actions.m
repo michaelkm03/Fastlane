@@ -19,7 +19,8 @@
 #import "VNode.h"
 #import "VObjectManager+Sequence.h"
 #import "VSequence+Fetcher.h"
-#import "VUser+Fetcher.h"
+#import "VUser.h"
+#import "VSequence+Fetcher.h"
 
 // Activities
 #import "VFacebookActivity.h"
@@ -64,6 +65,7 @@
     [self disableEndcardAutoplay];
     
     VActionSheetViewController *actionSheetViewController = [VActionSheetViewController actionSheetViewController];
+    actionSheetViewController.dependencyManager = self.dependencyManager;
     VNewContentViewController *contentViewController = self;
     
     [VActionSheetTransitioningDelegate addNewTransitioningDelegateToActionSheetController:actionSheetViewController];
@@ -240,7 +242,9 @@
         [actionItems addObject:deleteItem];
     }
     
-    if (![[[VObjectManager sharedManager] mainUser] isOwner])
+    BOOL canFlag = self.viewModel.sequence.permissions.canFlagSequence;
+    
+    if ( canFlag )
     {
         VActionItem *flagItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Report/Flag", @"")
                                                              actionIcon:[UIImage imageNamed:@"icon_flag"]
