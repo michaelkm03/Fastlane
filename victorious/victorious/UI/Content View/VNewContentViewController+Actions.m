@@ -19,7 +19,8 @@
 #import "VNode.h"
 #import "VObjectManager+Sequence.h"
 #import "VSequence+Fetcher.h"
-#import "VUser+Fetcher.h"
+#import "VUser.h"
+#import "VSequence+Fetcher.h"
 
 // Activities
 #import "VFacebookActivity.h"
@@ -64,6 +65,7 @@
     [self disableEndcardAutoplay];
     
     VActionSheetViewController *actionSheetViewController = [VActionSheetViewController actionSheetViewController];
+    actionSheetViewController.dependencyManager = self.dependencyManager;
     VNewContentViewController *contentViewController = self;
     
     [VActionSheetTransitioningDelegate addNewTransitioningDelegateToActionSheetController:actionSheetViewController];
@@ -138,7 +140,7 @@
 #endif
 
     
-    if (self.viewModel.sequence.canRepost)
+    if (self.viewModel.sequence.permissions.canRepost)
     {
         NSString *localizedRepostRepostedText = [self.viewModel.sequence.hasReposted boolValue] ? NSLocalizedString(@"Reposted", @"") : NSLocalizedString(@"Repost", @"");
         VActionItem *repostItem = [VActionItem defaultActionItemWithTitle:localizedRepostRepostedText
@@ -205,7 +207,7 @@
     shareItem.detailSelectionHandler = shareHandler;
     [actionItems addObject:shareItem];
     
-    if ([self.viewModel.sequence canDelete])
+    if ( self.viewModel.sequence.permissions.canDelete )
     {
         VActionItem *deleteItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Delete", @"")
                                                                actionIcon:[UIImage imageNamed:@"delete-icon"]
@@ -240,7 +242,9 @@
         [actionItems addObject:deleteItem];
     }
     
-    if (![[[VObjectManager sharedManager] mainUser] isOwner])
+    BOOL canFlag = self.viewModel.sequence.permissions.canFlagSequence;
+    
+    if ( canFlag )
     {
         VActionItem *flagItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Report/Flag", @"")
                                                              actionIcon:[UIImage imageNamed:@"icon_flag"]
@@ -266,7 +270,7 @@
         contentViewController:(UIViewController *)contentViewController
     actionSheetViewController:(VActionSheetViewController *)actionSheetViewController
 {
-    if ([self.viewModel.sequence canRemix])
+    if ( self.viewModel.sequence.permissions.canRemix )
     {
         NSString *remixActionTitle = NSLocalizedString(@"RemixVerb", @"");
         if ([self.viewModel.sequence isVideo])

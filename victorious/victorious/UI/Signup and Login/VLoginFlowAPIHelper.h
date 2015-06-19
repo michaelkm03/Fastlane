@@ -48,7 +48,7 @@
  */
 - (void)registerWithEmail:(NSString *)email
                  password:(NSString *)password
-               completion:(void (^)(BOOL, NSError *))completion;
+               completion:(void (^)(BOOL success, BOOL alreadyRegistered, NSError *error))completion;
 
 /**
  *  The user has entered the passed in username and requested update.

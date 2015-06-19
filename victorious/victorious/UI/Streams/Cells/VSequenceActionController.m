@@ -15,7 +15,6 @@
 #import "VNode+Fetcher.h"
 #import "VSequence+Fetcher.h"
 #import "VStream+Fetcher.h"
-#import "VUser+Fetcher.h"
 #import "VTracking.h"
 
 #pragma mark - Controllers
@@ -320,35 +319,45 @@
                                                   onDestructiveButton:nil
                                            otherButtonTitlesAndBlocks:NSLocalizedString(@"Report/Flag", nil),  ^(void)
                                   {
-                                      [self flagActionForSequence:sequence];
+                                      [self flagActionForSequence:sequence fromViewController:viewController];
                                   }, nil];
     [actionSheet showInView:viewController.view];
 }
 
-- (void)flagActionForSequence:(VSequence *)sequence
+- (void)flagActionForSequence:(VSequence *)sequence fromViewController:(UIViewController *)viewController
 {
     [[VObjectManager sharedManager] flagSequence:sequence
                                     successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
-         UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                                                                message:NSLocalizedString(@"ReportContentMessage", @"")
-                                                               delegate:nil
-                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                      otherButtonTitles:nil];
-         [alert show];
+         UIAlertController *alert = [self standardAlertControllerWithTitle:NSLocalizedString(@"ReportedTitle", @"") message:NSLocalizedString(@"ReportContentMessage", @"")];
          
+         [viewController presentViewController:alert animated:YES completion:nil];
      }
                                        failBlock:^(NSOperation *operation, NSError *error)
      {
          VLog(@"Failed to flag sequence %@", sequence);
-         
-         UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WereSorry", @"")
-                                                                message:NSLocalizedString(@"ErrorOccured", @"")
-                                                               delegate:nil
-                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                      otherButtonTitles:nil];
-         [alert show];
+         UIAlertController *alert;
+         if ( error.code == kVCommentAlreadyFlaggedError )
+         {
+             alert = [self standardAlertControllerWithTitle:NSLocalizedString(@"ReportedTitle", @"") message:NSLocalizedString(@"ReportContentMessage", @"")];
+         }
+         else
+         {
+             alert = [self standardAlertControllerWithTitle:NSLocalizedString(@"WereSorry", @"") message:NSLocalizedString(@"ErrorOccured", @"")];
+         }
+         [viewController presentViewController:alert animated:YES completion:nil];
      }];
+}
+
+- (UIAlertController *)standardAlertControllerWithTitle:(NSString *)title message:(NSString *)message
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction
+                               actionWithTitle:NSLocalizedString(@"OK", @"OK action")
+                               style:UIAlertActionStyleDefault
+                               handler:nil];
+    [alert addAction:okAction];
+    return alert;
 }
 
 #pragma mark - Helpers
@@ -358,46 +367,29 @@
 {
     NSString *shareText = @"";
 
-    if ([sequence.user isOwner])
+    if ([sequence isPoll])
     {
-        if ([sequence isPoll])
-        {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerSharePollFormat", nil), sequence.user.name];
-        }
-        else if ([sequence isVideo])
-        {
-            if (sequence.name.length > 0)
-            {
-                shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormat", nil), sequence.name, sequence.user.name];
-            }
-            else
-            {
-                shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormatNoVideoName", nil), sequence.user.name];
-            }
-        }
-        else
-        {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareImageFormat", nil), sequence.user.name];
-        }
+        shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCSharePollFormat", nil), sequence.user.name];
+    }
+    else if ([sequence isGIFVideo])
+    {
+        shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareGIFFormat", nil), sequence.name, sequence.user.name];
+    }
+    else if ([sequence isVideo])
+    {
+        shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareVideoFormat", nil), sequence.name, sequence.user.name];
+    }
+    else if ([sequence isImage])
+    {
+        shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareImageFormat", nil), sequence.user.name];
+    }
+    else if ([sequence isText])
+    {
+        shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareTextFormat", nil), sequence.user.name];
     }
     else
     {
-        if ([sequence isPoll])
-        {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCSharePollFormat", nil), sequence.user.name];
-        }
-        else if ([sequence isGIFVideo])
-        {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareGIFFormat", nil), sequence.name, sequence.user.name];
-        }
-        else if ([sequence isVideo])
-        {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareVideoFormat", nil), sequence.name, sequence.user.name];
-        }
-        else
-        {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareImageFormat", nil), sequence.user.name];
-        }
+        shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareLinkFormat", nil), sequence.user.name];
     }
     
     return shareText;

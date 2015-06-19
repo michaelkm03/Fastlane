@@ -17,7 +17,7 @@
 
 // Models
 #import "VSequence+Fetcher.h"
-#import "VUser+Fetcher.h"
+#import "VUser.h"
 #import "VNode+Fetcher.h"
 #import "VAsset+Fetcher.h"
 
@@ -158,7 +158,7 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
                                                          attribute:NSLayoutAttributeCenterY
                                                         multiplier:1.0f
                                                           constant:0.0f]];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.timeSinceLabel
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.clockImageView
                                                          attribute:NSLayoutAttributeRight
                                                          relatedBy:NSLayoutRelationLessThanOrEqual
                                                             toItem:self

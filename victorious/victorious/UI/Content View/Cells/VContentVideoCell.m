@@ -163,6 +163,11 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     return self.videoPlayerViewController.currentTime;
 }
 
+- (BOOL)didFinishPlayingOnce
+{
+    return self.videoPlayerViewController.didFinishPlayingOnce;
+}
+
 #pragma mark - Video Player
 
 - (void)setupVideoPlayer

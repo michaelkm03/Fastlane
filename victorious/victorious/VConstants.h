@@ -59,6 +59,7 @@ static NSUInteger const kVHashTagSubscriptionDoesNotExistError = 5000;
 static NSUInteger const kVHashTagSubscriptionAlreadyExistsError = 1001;
 
 static NSUInteger const kVAccountAlreadyExistsError     = 1003;
+static NSUInteger const kVPasswordInvalidForExistingUser = 1006;
 static NSUInteger const kVUserBannedError               = 1007;
 static NSUInteger const kVUserOrPasswordInvalidError    = 1010;
 
@@ -152,11 +153,6 @@ static NSString * const   kTemporaryContentStatus = @"temp";
 static NSString * const   kUserStatusComplete = @"complete";
 static NSString * const   kUserStatusIncomplete = @"incomplete";
 static NSString * const __deprecated kNoUserName = @"(none)"; ///< If a user has no username defined, the username field will contain this value
-
-#pragma mark - Access Levels
-
-static NSString * const   kOwnerAccessLevel = @"api_owner";
-static NSString * const   kUserAccessLevel = @"api_user";
 
 #pragma mark - Storyboard IDs
 

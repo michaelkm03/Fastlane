@@ -128,6 +128,7 @@ extern NSString * const VTrackingEventAppStoreProductRequestDidFail; //< Params:
 // Content Interaction
 extern NSString * const VTrackingEventSequenceDidAppearInStream; //< Stream cell became visible while scrolling stream (once per view); Backend mapping: cell-view
 extern NSString * const VTrackingEventViewDidStart; //< "Content was displayed in content view and began playing (if video, make sure any ads are finished first); Backend mapping: view-start"
+extern NSString * const VTrackingEventVideoDidStop; //< Backend mapping: view-stop
 extern NSString * const VTrackingEventUserDidSelectItemFromStream; //< Backend mapping: cell-click
 extern NSString * const VTrackingEventUserDidSelectItemFromMarquee; //< Backend mapping: cell-click
 extern NSString * const VTrackingEventUserDidViewHashtagStream; //< Params: Hashtag

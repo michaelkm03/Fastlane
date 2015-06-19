@@ -103,15 +103,15 @@ static const CGFloat kActionButtonWidth = 44.0f;
     NSMutableString *identifier = [baseIdentifier mutableCopy];
 
     [identifier appendString:@"Share."];
-    if ([sequence canRepost])
+    if ( sequence.permissions.canRepost )
     {
         [identifier appendString:@"Repost."];
     }
-    if ([sequence canRemix])
+    if ( sequence.permissions.canRemix )
     {
         [identifier appendString:@"Meme."];
     }
-    if ([sequence canRemix] && [sequence isVideo])
+    if ( sequence.permissions.canRemix  && [sequence isVideo] )
     {
         [identifier appendString:@"Gif."];
     }
@@ -130,15 +130,15 @@ static const CGFloat kActionButtonWidth = 44.0f;
     // Create an array of available action items
     NSMutableArray *justActionItems = [[NSMutableArray alloc] init];
     [justActionItems addObject:self.shareButton];
-    if ([sequence canRemix] && [sequence isVideo])
+    if ( sequence.permissions.canRemix && [sequence isVideo])
     {
         [justActionItems addObject:self.gifButton];
     }
-    if ([sequence canRemix])
+    if ( sequence.permissions.canRemix )
     {
         [justActionItems addObject:self.memeButton];
     }
-    if ([sequence canRepost])
+    if ( sequence.permissions.canRemix )
     {
         [justActionItems addObject:self.repostButton];
     }

@@ -993,6 +993,11 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     return time.value == duration.value;
 }
 
+- (BOOL)didFinishPlayingOnce
+{
+    return self.finishedFourthQuartile;
+}
+
 #pragma mark - Notifiers
 
 - (void)notifyDelegateReadyToPlayIfReallyReady

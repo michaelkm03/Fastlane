@@ -87,6 +87,6 @@ typedef NS_ENUM(NSInteger, VDefaultVideoEdit)
 - (void)flagSheetFromViewController:(UIViewController *)viewController
                            sequence:(VSequence *)sequence;
 
-- (void)flagActionForSequence:(VSequence *)sequence;
+- (void)flagActionForSequence:(VSequence *)sequence fromViewController:(UIViewController *)viewController;
 
 @end

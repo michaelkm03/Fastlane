@@ -15,6 +15,6 @@
 @dynamic type;
 @dynamic imageURL;
 @dynamic user;
-@dynamic sequence;
+@dynamic sequences;
 
 @end

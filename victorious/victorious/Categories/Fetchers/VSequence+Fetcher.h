@@ -8,6 +8,7 @@
 
 #import "VSequence.h"
 #import "VStreamItem+Fetcher.h"
+#import "VSequencePermissions.h"
 
 @class VAsset;
 @class VUser;
@@ -23,11 +24,7 @@
 - (BOOL)isPreviewWebContent;
 - (BOOL)isPreviewImageContent;
 - (BOOL)isAnnouncement;
-- (BOOL)canDelete;
-- (BOOL)canRemix;
-- (BOOL)canComment;
-- (BOOL)canRepost;
-- (BOOL)isVoteCountVisible;
+- (BOOL)isRemixableType;
 - (BOOL)isGIFVideo;
 - (BOOL)isText;
 
@@ -51,6 +48,7 @@
 
 @property (nonatomic, readonly) NSString *webContentUrl;
 @property (nonatomic, readonly) NSString *webContentPreviewUrl;
+@property (nonatomic, readonly) VSequencePermissions *permissions;
 
 /**
  *  displayOriginalPoster and displayParentUser can be used to show the creator and parent
