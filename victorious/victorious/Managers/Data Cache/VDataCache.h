@@ -15,6 +15,11 @@
  */
 extern NSString * const VDataCacheBundleResourceExtension;
 
+/**
+ Objects conforming to this protocol can
+ be used as the key for other objects
+ stored in VDataCache.
+ */
 @protocol VDataCacheID <NSObject>
 
 @required
@@ -33,9 +38,9 @@ extern NSString * const VDataCacheBundleResourceExtension;
 @interface VDataCache : NSObject
 
 /**
- A local file URL that points to a directory where data should be cached.
- When loading cached data, if none is found in this location, the
- application bundle will be searched as well.
+ A local file URL that points to a directory where cached data will 
+ be stored. When loading cached data, if none is found in this
+ location the application bundle will be searched as well.
  
  This is here for unit testing purposes--there is a good default that 
  will be used if this is not set.

@@ -11,7 +11,23 @@
 NSString * const VDataCacheBundleResourceExtension = @"cachedData";
 static NSString * const kCacheDirectoryName = @"VDataCache";
 
+@interface VDataCache ()
+
+@property (nonatomic) BOOL cacheLocationPrepared;
+
+@end
+
 @implementation VDataCache
+
+- (instancetype)init
+{
+    self = [super init];
+    if ( self != nil )
+    {
+        _cacheLocationPrepared = NO;
+    }
+    return self;
+}
 
 - (BOOL)cacheData:(NSData *)data forID:(id<VDataCacheID>)identifier error:(NSError *__autoreleasing *)error
 {
@@ -73,6 +89,11 @@ static NSString * const kCacheDirectoryName = @"VDataCache";
 
 - (BOOL)preparePathForWritingWithError:(NSError **)error
 {
+    if ( self.cacheLocationPrepared )
+    {
+        return YES;
+    }
+    
     BOOL created = [[NSFileManager defaultManager] createDirectoryAtURL:self.localCachePath withIntermediateDirectories:YES attributes:nil error:error];
     if ( !created )
     {
