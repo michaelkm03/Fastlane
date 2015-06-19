@@ -64,10 +64,7 @@ static const CGFloat kTrimBodyWidth = 5.0f;
 - (void)sharedInit
 {
     
-    self.trimThumbBody = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.frame) - 0.5f * kTrimBodyWidth,
-                                                                kTrimHeadInset,
-                                                                5*kTrimBodyWidth,
-                                                                kTrimHeadHeight)];
+    self.trimThumbBody = [[UIView alloc] init];
     
     self.trimThumbBody.backgroundColor = [UIColor whiteColor];
     [self addSubview:self.trimThumbBody];
@@ -120,7 +117,7 @@ static const CGFloat kTrimBodyWidth = 5.0f;
     //The added 1s avoid a small visible divide between the thumb head and the trimmer line
     self.trimThumbBody.frame = CGRectMake(0.0f,
                                           0.0f,
-                                          5*kTrimBodyWidth,
+                                          3*kTrimBodyWidth,
                                           previewHeight - 4.0f);
     CGFloat scaleFactorX = 0.15f;
     CGFloat scaleFactorY = 0.45f;
@@ -271,7 +268,6 @@ static const CGFloat kTrimBodyWidth = 5.0f;
     {
         return;
     }
-    
     CGVector forceVector = [self v_forceFromVelocity:[gestureRecognizer velocityInView:self] withDensity:0.1];
     forceVector.dy = 0;
     self.pushBehavior.pushDirection = forceVector;

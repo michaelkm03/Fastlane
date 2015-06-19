@@ -478,7 +478,8 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
     self.currentPlayBackOverlayView = [[UIView alloc] initWithFrame:self.view.bounds];
     self.currentPlayBackOverlayView.userInteractionEnabled = NO;
-    self.currentPlayBackOverlayView.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:kTimelineDarkeningAlpha];
+
+    self.currentPlayBackOverlayView.backgroundColor = [UIColor colorWithRed:237.0f/255.0f green:28.0f/255.0f blue:36.0f/255.0f alpha:0.3f];
     [self.view addSubview:self.currentPlayBackOverlayView];
     self.currentPlayBackOverlayView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[overlayView]"
@@ -517,7 +518,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 
 - (void)prepareHashmarks
 {
-    CGFloat kHashmarkHeight = 15.0f;
+    CGFloat kHashmarkHeight = 10.0f;
     CGFloat kHashmarkWidth = 3.0f;
     
     CGFloat kTimeLabelWidth = 40.0f;

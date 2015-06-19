@@ -147,6 +147,7 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.topToolbar.frame.size.width, self.topToolbar.frame.size.height)];
     titleLabel.center = CGPointMake(self.view.center.x, titleLabel.center.y);
     titleLabel.text = NSLocalizedString(@"Edit", @"");
+    titleLabel.text = titleLabel.text.uppercaseString;
     titleLabel.textColor = [UIColor whiteColor];
     titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
     titleLabel.textAlignment = NSTextAlignmentCenter;

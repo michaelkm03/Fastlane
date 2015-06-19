@@ -111,8 +111,6 @@
     [self presentCreateFlowWithInitialCaptureState:initialCaptureState
                              initialImageEditState:VImageToolControllerInitialImageEditStateFilter
                           andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateVideo];
-    
-    
 }
 
 - (void)presentTextOnlyWorkspace
