@@ -50,6 +50,8 @@ typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL
 @property (nonatomic, assign) BOOL disablesNavigationItemsOnKeyboardAppearance;
 @property (nonatomic, assign) BOOL adjustsCanvasViewFrameOnKeyboardAppearance;
 
+@property (nonatomic, assign) BOOL shouldHideBottomBar;
+
 - (void)callCompletionWithSuccess:(BOOL)success
                      previewImage:(UIImage *)previewImage
                  renderedMediaURL:(NSURL *)renderedMediaURL;

@@ -345,8 +345,6 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     VWorkspaceViewController *workspaceViewController;
     workspaceViewController.activityText = NSLocalizedString( @"Rendering...", @"" );
     workspaceViewController.continueText = NSLocalizedString( @"Continue", @"" );
-    NSLog(@"this is getting set");
-    workspaceViewController.title = @"TITLESDKLFJ";
     workspaceViewController.confirmCancelMessage = NSLocalizedString( @"This will discard any content from the camera", @"" );
     if ([self.capturedMediaURL v_hasImageExtension])
     {

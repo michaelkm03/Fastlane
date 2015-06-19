@@ -177,6 +177,10 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
                                                       animationCurve:animationCurve];
                             }
                                                                           willChangeFrameBlock:nil];
+    if (self.toolController.shouldHideToolBar)
+    {
+        self.bottomToolbar.items = nil;
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated

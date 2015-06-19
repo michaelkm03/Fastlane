@@ -509,26 +509,21 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     [self.view addConstraint:self.currentPlayBackWidthConstraint];
 }
 
--(void)setActualDuration:(CMTime)actualDuration
+- (void)setActualDuration:(CMTime)actualDuration
 {
     _actualDuration = actualDuration;
-    NSLog(@"actual duration being set: %f", CMTimeGetSeconds(actualDuration));
     [self prepareHashmarks];
-
 }
 
 - (void)prepareHashmarks
 {
-#warning  Do work here
-    NSLog(@"hashtags getting made");
     CGFloat kHashmarkHeight = 15.0f;
     CGFloat kHashmarkWidth = 3.0f;
     
     CGFloat kTimeLabelWidth = 40.0f;
-    CGFloat kTimeLabelHeight = 30.0f;
+    CGFloat kTimeLabelHeight = 25.0f;
     
-    
-    int kNumberOfHash = 16; // should be 16
+    int kNumberOfHash = 16;
     
     CGFloat startTime = 0.0f;
     CGFloat endTime = CMTimeGetSeconds(self.actualDuration);
@@ -549,18 +544,13 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
             UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,
                                                                            -kTimeLabelHeight - kHashmarkHeight,
                                                                            kTimeLabelWidth, kTimeLabelHeight)];
-            
             timeLabel.textAlignment = NSTextAlignmentCenter;
             float time = startTime + (timeDiff*i);
-            if (((int)time/60)==0)
-            {
-                timeLabel.text = [NSString stringWithFormat:@":%02d",(int)time%60];
-            }
-            else
-            {
-                timeLabel.text = [NSString stringWithFormat:@"%d:%02d",(int)time/60,(int)time%60];
-            }
+            
+            timeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)time/60, (int)time%60];
+            
             timeLabel.textColor = [UIColor lightGrayColor];
+            timeLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
             timeLabel.center = CGPointMake(hashmark.center.x, timeLabel.center.y);
             
             
@@ -569,6 +559,5 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
         }
     }
 }
-
 
 @end
