@@ -92,7 +92,7 @@ typedef NS_ENUM(NSInteger, VDefaultVideoEdit)
 - (void)showLikersFromViewController:(UIViewController *)viewControlle
                             sequence:(VSequence *)sequence;
 
-- (void)likeSequence:(VSequence *)sequence
+- (void)likeSequence:(VSequence *)sequence fromViewController:(UIViewController *)viewController
           completion:(void(^)(BOOL success))completion;
 
 @end

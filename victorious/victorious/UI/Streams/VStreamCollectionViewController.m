@@ -598,17 +598,29 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)willLikeSequence:(VSequence *)sequence completion:(void(^)(BOOL success))completion
 {
-#warning Add like tracking event (and clean up traking you fucker)
-//    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLike];
     
-    [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
-                                              successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                      dependencyManager:self.dependencyManager];
+    [authorization performFromViewController:self context:VAuthorizationContextDefault
+                                          completion:^(BOOL authorized)
      {
-         completion( YES );
-         
-     } failBlock:^(NSOperation *operation, NSError *error)
-     {
-         completion( NO );
+         if ( authorized )
+         {
+             [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
+                                                       successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+              {
+                  completion( YES );
+                  
+              } failBlock:^(NSOperation *operation, NSError *error)
+              {
+                  completion( NO );
+              }];
+         }
+         else
+         {
+             completion( NO );
+         }
      }];
 }
 

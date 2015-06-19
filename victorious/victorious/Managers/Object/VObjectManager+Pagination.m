@@ -478,7 +478,49 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     return [self.paginationManager loadFilter:filter withPageType:pageType successBlock:fullSuccessBlock failBlock:fail];
 }
 
+#pragma mark - Likers
+
+- (RKManagedObjectRequestOperation *)likersForSequence:(VSequence *)sequence
+                                              pageType:(VPageType)pageType
+                                          successBlock:(VSuccessBlock)success
+                                             failBlock:(VFailBlock)fail
+{
+    VAbstractFilter *filter = [self likersFilterForSequence:sequence];
+    
+    VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        //If this is the first page, break the relationship to all the old objects.
+        if ([filter.currentPageNumber isEqualToNumber:@(0)])
+        {
+            [sequence removeLikers:sequence.likers];
+        }
+        
+        for (VUser *liker in resultObjects)
+        {
+            VUser *user = (VUser *)[sequence.managedObjectContext objectWithID:liker.objectID];
+            [sequence addLikersObject:user];
+        }
+        
+        if (success)
+        {
+            success(operation, fullResponse, resultObjects);
+        }
+    };
+    
+    return [self.paginationManager loadFilter:filter withPageType:pageType successBlock:fullSuccessBlock failBlock:fail];
+}
+
 #pragma mark - Filter Fetchers
+
+- (VAbstractFilter *)likersFilterForSequence:(VSequence *)sequence
+{
+    NSString *apiPath = [NSString stringWithFormat:@"/api/sequence/liked_by_users/%@/%@/%@", sequence.remoteId, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
+    VAbstractFilter *filter = (VAbstractFilter *)[self.paginationManager filterForPath:apiPath
+                                                                            entityName:[VAbstractFilter entityName]
+                                                                  managedObjectContext:sequence.managedObjectContext];
+    filter.perPageNumber = @(1000);
+    return filter;
+}
 
 - (VAbstractFilter *)followerFilterForUser:(VUser *)user
 {

@@ -15,6 +15,13 @@ extern const NSInteger kTooManyNewMessagesErrorCode;
 
 @interface VObjectManager (Pagination)
 
+#pragma mark - Likers
+
+- (RKManagedObjectRequestOperation *)likersForSequence:(VSequence *)sequence
+                                              pageType:(VPageType)pageType
+                                          successBlock:(VSuccessBlock)success
+                                             failBlock:(VFailBlock)fail;
+
 #pragma mark Comments
 
 - (RKManagedObjectRequestOperation *)findCommentPageOnSequence:(VSequence *)sequence

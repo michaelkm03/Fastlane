@@ -252,7 +252,7 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
 
 - (void)selectedCommentButton:(UIButton *)commentButton
 {
-    [self likersTextSelected];
+    [self commentsTextSelected];
 }
 
 #pragma mark - VSequenceCountsTextViewDelegate

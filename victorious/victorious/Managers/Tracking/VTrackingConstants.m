@@ -143,6 +143,7 @@ NSString * const VTrackingEventUserDidSelectShare = @"UserDidSelectShare";
 NSString * const VTrackingEventUserDidShare = @"UserDidShare";
 NSString * const VTrackingEventUserShareDidFail = @"UserShareDidFail";
 NSString * const VTrackingEventUserDidSelectRemix = @"UserDidSelectRemix";
+NSString * const VTrackingEventUserDidSelectLike = @"UserDidSelectLike";
 NSString * const VTrackingEventUserDidSelectShowRemixes = @"UserDidSelectShowRemixes";
 NSString * const VTrackingEventUserDidSelectShowReposters = @"UserDidSelectShowReposters";
 NSString * const VTrackingEventUserDidDeletePost = @"UserDidDeletePost";

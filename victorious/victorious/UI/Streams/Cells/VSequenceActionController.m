@@ -177,19 +177,32 @@
     [navigationController pushViewController:remixStream animated:YES];
 }
 
-- (void)likeSequence:(VSequence *)sequence completion:(void(^)(BOOL success))completion
+- (void)likeSequence:(VSequence *)sequence fromViewController:(UIViewController *)viewController
+          completion:(void(^)(BOOL success))completion
 {
-#warning Add like/unlike tracking event (and clean up traking you fucker)
-    //    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRemix];
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLike];
     
-    [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
-                                              successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                      dependencyManager:self.dependencyManager];
+    [authorization performFromViewController:viewController context:VAuthorizationContextDefault
+                                  completion:^(BOOL authorized)
      {
-         completion( YES );
-         
-     } failBlock:^(NSOperation *operation, NSError *error)
-     {
-         completion( NO );
+         if ( authorized )
+         {
+             [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
+                                                       successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+              {
+                  completion( YES );
+                  
+              } failBlock:^(NSOperation *operation, NSError *error)
+              {
+                  completion( NO );
+              }];
+         }
+         else
+         {
+             completion( NO );
+         }
      }];
 }
 

@@ -144,6 +144,7 @@ extern NSString * const VTrackingEventUserDidSelectShare; //< Params: Context
 extern NSString * const VTrackingEventUserDidShare; //< "Params: Context, ShareDestination"
 extern NSString * const VTrackingEventUserShareDidFail; //< Params: ErrorMessage
 extern NSString * const VTrackingEventUserDidSelectRemix; //< Params: Context
+extern NSString * const VTrackingEventUserDidSelectLike; //< Params: Context
 extern NSString * const VTrackingEventUserDidSelectShowRemixes; 
 extern NSString * const VTrackingEventUserDidSelectShowReposters; 
 extern NSString * const VTrackingEventUserDidDeletePost; 
