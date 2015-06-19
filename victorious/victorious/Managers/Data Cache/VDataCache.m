@@ -8,6 +8,7 @@
 
 #import "VDataCache.h"
 
+NSString * const VDataCacheBundleResourceExtension = @"cachedData";
 static NSString * const kCacheDirectoryName = @"VDataCache";
 
 @implementation VDataCache
@@ -29,13 +30,26 @@ static NSString * const kCacheDirectoryName = @"VDataCache";
 - (NSData *)cachedDataForID:(id<VDataCacheID>)identifier
 {
     NSURL *cacheURL = [self pathForCachedDataWithID:identifier];
-    return [NSData dataWithContentsOfURL:cacheURL];
+    NSData *cachedData = [NSData dataWithContentsOfURL:cacheURL];
+    
+    if ( cachedData == nil )
+    {
+        NSURL *bundleURL = [[NSBundle mainBundle] URLForResource:[identifier identifierForDataCache] withExtension:VDataCacheBundleResourceExtension];
+        cachedData = [NSData dataWithContentsOfURL:bundleURL];
+    }
+    return cachedData;
 }
 
 - (BOOL)hasCachedDataForID:(id<VDataCacheID>)identifier
 {
     NSURL *cacheURL = [self pathForCachedDataWithID:identifier];
-    return [[NSFileManager defaultManager] fileExistsAtPath:cacheURL.path];
+    if ( [[NSFileManager defaultManager] fileExistsAtPath:cacheURL.path] )
+    {
+        return YES;
+    }
+    
+    NSURL *bundleURL = [[NSBundle mainBundle] URLForResource:[identifier identifierForDataCache] withExtension:VDataCacheBundleResourceExtension];
+    return bundleURL != nil;
 }
 
 - (NSURL *)localCachePath

@@ -8,6 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ When cached items are included in the application bundle,
+ the filename should be the cache ID with this constant
+ for an extension.
+ */
+extern NSString * const VDataCacheBundleResourceExtension;
+
 @protocol VDataCacheID <NSObject>
 
 @required
@@ -27,8 +34,8 @@
 
 /**
  A local file URL that points to a directory where data should be cached.
- When loading cached data, the application bundle will be searched first
- before this location.
+ When loading cached data, if none is found in this location, the
+ application bundle will be searched as well.
  
  This is here for unit testing purposes--there is a good default that 
  will be used if this is not set.

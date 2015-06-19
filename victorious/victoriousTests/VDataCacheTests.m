@@ -12,6 +12,12 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
+/**
+ This should match the name of a file in the main application bundle with 
+ an extension equal to the VDataCacheBundleResourceExtension constant.
+ */
+static NSString * const kDataCacheTestResourceName = @"VDataCacheTests";
+
 @interface VDataCacheTests : XCTestCase
 
 @property (nonatomic, strong) VDataCache *dataCache1;
@@ -105,6 +111,31 @@
     
     XCTAssertFalse( [self.dataCache2 hasCachedDataForID:[[NSUUID UUID] UUIDString]] );
     XCTAssertNil( [self.dataCache2 cachedDataForID:otherIdentifier] );
+}
+
+- (void)testApplicationBundleCaching
+{
+    XCTAssert( [self.dataCache1 hasCachedDataForID:kDataCacheTestResourceName] );
+    
+    NSURL *dataURL = [[NSBundle mainBundle] URLForResource:kDataCacheTestResourceName withExtension:VDataCacheBundleResourceExtension];
+    
+    NSData *expected = [NSData dataWithContentsOfURL:dataURL];
+    XCTAssertNotNil(expected);
+    
+    NSData *actual = [self.dataCache1 cachedDataForID:kDataCacheTestResourceName];
+    XCTAssertEqualObjects(expected, actual);
+}
+
+- (void)testDiskCacheOverridesAppBundle
+{
+    uint8_t bytes[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    
+    NSData *data = [NSData dataWithBytes:bytes length:10];
+    
+    XCTAssert( [self.dataCache1 cacheData:data forID:kDataCacheTestResourceName error:nil] );
+    NSData *dataOut = [self.dataCache2 cachedDataForID:kDataCacheTestResourceName];
+    
+    XCTAssertEqualObjects(data, dataOut);
 }
 
 @end
