@@ -401,8 +401,6 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
                                                                                 @"kMaximumLabelHeight":@(topPadding)
                                                                                 }
                                                                         views:viewMap]];
-    
-    
 }
 
 - (void)prepareDimmingView
