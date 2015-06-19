@@ -13,7 +13,7 @@
 #import "VObjectManager.h"
 #import "VObjectManager+Comment.h"
 #import "VObjectManager+Login.h"
-#import "VUser+Fetcher.h"
+#import "VUser.h"
 #import "VConstants.h"
 #import "VSequence.h"
 #import "VSequencePermissions.h"
