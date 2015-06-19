@@ -76,36 +76,16 @@
     self.noContentView.frame = self.view.bounds;
     [self.view v_addFitToParentConstraintsToSubview:self.noContentView];
     
-    [self setInitialNoContentAnimationState];
+    [self.noContentView resetInitialAnimationState];
     
     [self refershControlAction:refreshControl];
+    
+    self.extendedLayoutIncludesOpaqueBars = YES;
 }
 
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
-}
-
-#pragma mark - No content view
-
-- (void)setInitialNoContentAnimationState
-{
-    self.noContentView.alpha = 0.0;
-    const CGFloat scale = 0.8f;
-    self.noContentView.transform = CGAffineTransformMakeScale( scale, scale );
-}
-
-- (void)showNoContent
-{
-    [UIView animateWithDuration:0.5f
-                          delay:0.2f
-         usingSpringWithDamping:0.5f
-          initialSpringVelocity:0.5f
-                        options:kNilOptions animations:^{
-        
-         self.noContentView.alpha = 1.0f;
-         self.noContentView.transform = CGAffineTransformIdentity;
-     } completion:nil];
 }
 
 - (void)updateHasContent
@@ -118,11 +98,11 @@
         self.noContentView.title = self.usersDataSource.noContentTitle;
         self.noContentView.message = self.usersDataSource.noContentMessage;
         
-        [self showNoContent];
+        [self.noContentView animateTransitionIn];
     }
     else
     {
-        [self setInitialNoContentAnimationState];
+        [self.noContentView resetInitialAnimationState];
     }
 }
 

@@ -33,4 +33,8 @@
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds titleString:(NSString *)titleString messageString:(NSString *)messageString andDependencyManager:(VDependencyManager *)dependencyManager;
 
+- (void)resetInitialAnimationState;
+
+- (void)animateTransitionIn;
+
 @end

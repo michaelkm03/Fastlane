@@ -10,44 +10,36 @@
 #import "VCommentTextAndMediaView.h"
 #import "VRTCUserPostedAtFormatter.h"
 #import "VDependencyManager+VScaffoldViewController.h"
-
 #import "VLoginViewController.h"
 #import "VCommentCell.h"
-
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+Comment.h"
 #import "VUser.h"
 #import "VUserProfileViewController.h"
-
 #import "UIActionSheet+VBlocks.h"
 #import "NSDate+timeSince.h"
 #import "NSString+VParseHelp.h"
 #import "NSURL+MediaType.h"
-
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VComment+Fetcher.h"
 #import "VAsset.h"
-
 #import "UIImageView+Blurring.h"
-
 #import "UIImage+ImageCreation.h"
-
 #import "VNoContentView.h"
 #import "VDefaultProfileImageView.h"
-
 #import "VEditCommentViewController.h"
 #import "VTransitionDelegate.h"
 #import <SDWebImage/UIImageView+WebCache.h>
-
 #import "VTagStringFormatter.h"
 #import "VTag.h"
 #import "VUserTag.h"
 #import "VTagSensitiveTextView.h"
 #import "VHashtagStreamCollectionViewController.h"
-
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VDependencyManager+VUserProfile.h"
+#import "UIView+AutoLayout.h"
+#import "VNoContentView.h"
 
 @import Social;
 
@@ -56,16 +48,12 @@
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 @property (nonatomic, assign) BOOL hasComments;
 @property (nonatomic, assign) BOOL needsRefresh;
-
 @property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
-
 @property (nonatomic, strong) NSArray *comments;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) VNoContentView *noContentView;
 
 @end
-
-#warning This class uses an X to go back, but isn't presented anywhere anymore
-#warning Update the no comments animation to be more like the likers page
 
 @implementation VCommentsTableViewController
 
@@ -94,6 +82,12 @@
     //This hides the seperators for empty cells
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.needsRefresh = NO;
+    
+    NSArray *nibs = [[NSBundle mainBundle] loadNibNamed:@"VNoContentView" owner:nil options:nil];
+    self.noContentView = nibs.firstObject;
+    self.noContentView.dependencyManager = self.dependencyManager;
+    [self.noContentView resetInitialAnimationState];
+    self.tableView.backgroundView = nil;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -105,16 +99,6 @@
     if (self.needsRefresh)
     {
         [self.refreshControl beginRefreshing];
-        
-        [UIView animateWithDuration:0.5f
-                              delay:0.0f
-             usingSpringWithDamping:0.8f
-              initialSpringVelocity:1.0f
-                            options:UIViewAnimationOptionBeginFromCurrentState
-                         animations:^
-        {
-            self.tableView.contentOffset = CGPointMake(0, -self.refreshControl.bounds.size.height);
-        } completion:nil];
     }
     
     [[VTrackingManager sharedInstance] setValue:VTrackingValueCommentsView forSessionParameterWithKey:VTrackingKeyContext];
@@ -155,20 +139,17 @@
     _hasComments = hasComments;
     if (!hasComments)
     {
-        VNoContentView *noCommentsView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
-        if ( [noCommentsView respondsToSelector:@selector(setDependencyManager:)] )
-        {
-            noCommentsView.dependencyManager = self.dependencyManager;
-        }
-        self.tableView.backgroundView = noCommentsView;
-        noCommentsView.title = NSLocalizedString(@"NoCommentsTitle", @"");
-        noCommentsView.message = NSLocalizedString(@"NoCommentsMessage", @"");
-        noCommentsView.icon = [UIImage imageNamed:@"noCommentIcon"];
+        self.tableView.backgroundView = self.noContentView;
+        self.noContentView.frame = self.tableView.bounds;
+        [self.noContentView animateTransitionIn];
         
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
     else
     {
+        self.tableView.backgroundView = nil;
+        [self.noContentView resetInitialAnimationState];
+        
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         self.tableView.backgroundView = nil;
     }
@@ -306,7 +287,7 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     // Setup required for swipe-to-reveal utility buttons
-    cell.commentCellUtilitiesController = [[VCommentCellUtilitesController alloc] initWithComment:comment cellView:cell delegate:cell];
+    cell.commentCellUtilitiesController = [[VCommentCellUtilitesController alloc] initWithComment:comment cellView:cell delegate:cell permissions:self.sequence.permissions];
     cell.swipeViewController.cellDelegate = cell.commentCellUtilitiesController;
     cell.swipeViewController.controllerDelegate = self;
     cell.commentsUtilitiesDelegate = self;
