@@ -122,9 +122,10 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
                 [welf.delegate trimVideoToolFailed:welf];
                 return;
             }
+            
             welf.playerItem = playerItem;
             welf.trimViewController.maximumEndTime = [playerItem duration];
-            
+
             if (welf.thumbnailDataSource == nil)
             {
                 welf.thumbnailDataSource = [[VAssetThumbnailDataSource alloc] initWithAsset:playerItem.asset
@@ -168,7 +169,10 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
                      [player prerollAtRate:1.0f
                          completionHandler:^(BOOL finished)
                       {
-                          [player play];
+                          dispatch_async(dispatch_get_main_queue(), ^
+                          {
+                              [player play];
+                          });
                       }];
                      break;
                  }
@@ -271,7 +275,10 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
 
 - (void)videoPlayerReadyToPlay:(VCVideoPlayerViewController *)videoPlayer
 {
-    [videoPlayer.player play];
+    dispatch_async(dispatch_get_main_queue(), ^
+    {
+        [videoPlayer.player play];
+    });
 }
 
 - (void)videoPlayerWasTapped
