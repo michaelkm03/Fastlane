@@ -143,6 +143,15 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
     
     [toolBarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
     self.bottomToolbar.items = toolBarItems;
+    
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.topToolbar.frame.size.width, self.topToolbar.frame.size.height)];
+    titleLabel.center = CGPointMake(self.view.center.x, titleLabel.center.y);
+    titleLabel.text = NSLocalizedString(@"Edit", @"");
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleLabel.layer.borderWidth = 1.0f;
+    [self.view addSubview:titleLabel];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -177,7 +186,7 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
                                                       animationCurve:animationCurve];
                             }
                                                                           willChangeFrameBlock:nil];
-    if (self.toolController.shouldHideToolBar)
+    if (self.toolController.shouldBottomBarBeHidden)
     {
         self.bottomToolbar.items = nil;
     }

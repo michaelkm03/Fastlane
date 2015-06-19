@@ -13,7 +13,6 @@
 
 static const CGFloat kTrimHeadHeight = 44.0f;
 static const CGFloat kTrimHeadInset = 4.0f;
-static const CGFloat kTrimHeadWidth = 56.0f;
 static const CGFloat kTrimBodyWidth = 5.0f;
 
 @interface VTrimControl () <UICollisionBehaviorDelegate, UIDynamicAnimatorDelegate>
@@ -39,24 +38,6 @@ static const CGFloat kTrimBodyWidth = 5.0f;
 @property (nonatomic, assign) BOOL hasPerformedInitialLayout;
 
 @end
-
-static inline CGFloat TrimHeadYCenter()
-{
-    return (kTrimHeadInset + kTrimHeadHeight) * 0.5f;
-}
-
-static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
-{
-    if (point.x < xMin)
-    {
-        point.x = xMin;
-    }
-    else if (point.x > xMax)
-    {
-        point.x = xMax;
-    }
-    return point;
-}
 
 @implementation VTrimControl
 
@@ -137,13 +118,13 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
     CGFloat previewHeight = CGRectGetMaxY(self.bounds) - kTrimHeadHeight;
     
     //The added 1s avoid a small visible divide between the thumb head and the trimmer line
-    self.trimThumbBody.frame = CGRectMake(0,
-                                          0,
+    self.trimThumbBody.frame = CGRectMake(0.0f,
+                                          0.0f,
                                           5*kTrimBodyWidth,
-                                          previewHeight - 4);
+                                          previewHeight - 4.0f);
     CGFloat scaleFactorX = 0.15f;
     CGFloat scaleFactorY = 0.45f;
-    UIView *innerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.trimThumbBody.frame.size.width*scaleFactorX, self.trimThumbBody.frame.size.height*scaleFactorY)];
+    UIView *innerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.trimThumbBody.frame.size.width*scaleFactorX, self.trimThumbBody.frame.size.height*scaleFactorY)];
     innerView.center = self.trimThumbBody.center;
     innerView.backgroundColor = [UIColor colorWithWhite:0.8f alpha:1.0f];
     
@@ -161,17 +142,17 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
     [self.trimThumbBody addSubview:bottomLine];
     [self.trimThumbBody addSubview:innerView];
     
-    [self updateThumAndDimmingViewWithNewThumbCenter:self.trimThumbHead.center];
+    [self updateThumAndDimmingViewWithNewThumbCenter:CGPointMake(200.0f, 200.0f)];
     
     if (!self.hasPerformedInitialLayout)
     {
-        UIView *trimOpenView = [[UIView alloc] initWithFrame:CGRectMake(0, kTrimHeadHeight + 4 , kTrimBodyWidth, previewHeight - 4)];
+        UIView *trimOpenView = [[UIView alloc] initWithFrame:CGRectMake(0, kTrimHeadHeight + 4.0f , kTrimBodyWidth, previewHeight - 4.0f)];
         trimOpenView.backgroundColor = [UIColor whiteColor];
         trimOpenView.userInteractionEnabled = NO;
         
         [self addSubview:trimOpenView];
         
-        [self updateThumAndDimmingViewWithNewThumbCenter:CGPointMake(CGRectGetMaxX(self.bounds) - (CGRectGetWidth(self.trimThumbHead.frame) / 2), self.trimThumbHead.center.y)];
+        [self updateThumAndDimmingViewWithNewThumbCenter:CGPointMake(200.0f, 200.0f)];
         self.hasPerformedInitialLayout = YES;
         
         self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self];
@@ -358,9 +339,9 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
     self.selectedDuration =  CMTimeMultiplyByFloat64(self.maxDuration, percentSelected);
 }
 
-- (void)updateThumAndDimmingViewWithNewThumbCenter:(CGPoint)thumbCenter
+- (void)updateThumAndDimmingViewWithNewThumbCenter:(CGPoint)point
 {
-    self.trimThumbBody.center = CGPointMake(thumbCenter.x, 94.0f);
+    self.trimThumbBody.center = CGPointMake(point.x, 94.0f);
     [self sendActionsForControlEvents:UIControlEventValueChanged];
 }
 

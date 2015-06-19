@@ -83,9 +83,8 @@
 @property (nonatomic, strong) NSURL *mediaURL;
 
 /**
- *  Wether its toolbar should be hidden
+ *  If the bottom bar should be hidden
  */
-@property (nonatomic, assign) BOOL shouldHideToolBar;
-
+@property (nonatomic, assign) BOOL shouldBottomBarBeHidden;
 
 @end
