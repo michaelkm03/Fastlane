@@ -401,6 +401,8 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
                                                                                 @"kMaximumLabelHeight":@(topPadding)
                                                                                 }
                                                                         views:viewMap]];
+    
+    
 }
 
 - (void)prepareDimmingView
@@ -506,5 +508,67 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
                                                                         constant:0.0f];
     [self.view addConstraint:self.currentPlayBackWidthConstraint];
 }
+
+-(void)setActualDuration:(CMTime)actualDuration
+{
+    _actualDuration = actualDuration;
+    NSLog(@"actual duration being set: %f", CMTimeGetSeconds(actualDuration));
+    [self prepareHashmarks];
+
+}
+
+- (void)prepareHashmarks
+{
+#warning  Do work here
+    NSLog(@"hashtags getting made");
+    CGFloat kHashmarkHeight = 15.0f;
+    CGFloat kHashmarkWidth = 3.0f;
+    
+    CGFloat kTimeLabelWidth = 40.0f;
+    CGFloat kTimeLabelHeight = 30.0f;
+    
+    
+    int kNumberOfHash = 16; // should be 16
+    
+    CGFloat startTime = 0.0f;
+    CGFloat endTime = CMTimeGetSeconds(self.actualDuration);
+    
+    CGFloat spacing = ([[[[UIApplication sharedApplication] windows] firstObject] frame].size.width)/( (CGFloat) kNumberOfHash);
+    CGFloat timeDiff = (endTime - startTime) / ( (CGFloat) kNumberOfHash);
+    
+    for (int i = 0; i < kNumberOfHash; i++)
+    {
+        UIView  *hashmark = [[UIView alloc] initWithFrame:CGRectMake(i*spacing,  -kHashmarkHeight, kHashmarkWidth, kHashmarkHeight)];
+        hashmark.backgroundColor = [UIColor lightGrayColor];
+        hashmark.clipsToBounds = NO;
+        [self.thumbnailCollectionView addSubview:hashmark];
+        self.thumbnailCollectionView.clipsToBounds = NO;
+        
+        if ((i%3) == 0)
+        {
+            UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,
+                                                                           -kTimeLabelHeight - kHashmarkHeight,
+                                                                           kTimeLabelWidth, kTimeLabelHeight)];
+            
+            timeLabel.textAlignment = NSTextAlignmentCenter;
+            float time = startTime + (timeDiff*i);
+            if (((int)time/60)==0)
+            {
+                timeLabel.text = [NSString stringWithFormat:@":%02d",(int)time%60];
+            }
+            else
+            {
+                timeLabel.text = [NSString stringWithFormat:@"%d:%02d",(int)time/60,(int)time%60];
+            }
+            timeLabel.textColor = [UIColor lightGrayColor];
+            timeLabel.center = CGPointMake(hashmark.center.x, timeLabel.center.y);
+            
+            
+            [self.thumbnailCollectionView addSubview:timeLabel];
+            
+        }
+    }
+}
+
 
 @end

@@ -345,6 +345,8 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     VWorkspaceViewController *workspaceViewController;
     workspaceViewController.activityText = NSLocalizedString( @"Rendering...", @"" );
     workspaceViewController.continueText = NSLocalizedString( @"Continue", @"" );
+    NSLog(@"this is getting set");
+    workspaceViewController.title = @"TITLESDKLFJ";
     workspaceViewController.confirmCancelMessage = NSLocalizedString( @"This will discard any content from the camera", @"" );
     if ([self.capturedMediaURL v_hasImageExtension])
     {
@@ -397,12 +399,8 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         }
     };
     BOOL selectedFromAssetsLibraryOrSearch = self.cameraViewController.didSelectFromWebSearch || self.cameraViewController.didSelectAssetFromLibrary;
-    BOOL shouldShowPublish = YES;
-    if ([self.delegate respondsToSelector:@selector(shouldShowPublishForWorkspaceFlowController:)])
-    {
-        shouldShowPublish = [self.delegate shouldShowPublishForWorkspaceFlowController:self];
-    }
-    workspaceViewController.continueText = shouldShowPublish ? NSLocalizedString(@"Publish", @"") : NSLocalizedString(@"Next", @"");
+
+    workspaceViewController.continueText = NSLocalizedString(@"Next", @"");
     
     [self.flowNavigationController pushViewController:workspaceViewController
                                              animated:!selectedFromAssetsLibraryOrSearch];

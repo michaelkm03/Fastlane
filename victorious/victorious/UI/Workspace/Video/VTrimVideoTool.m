@@ -81,7 +81,7 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
         _trimViewController = [[VTrimmerViewController alloc] initWithDependencyManager:dependencyManager];
         _trimViewController.title = _title;
         _trimViewController.delegate = self;
-        
+
         _videoPlayerController = [[VCVideoPlayerViewController alloc] initWithNibName:nil bundle:nil];
         _videoPlayerController.shouldFireAnalytics = NO;
         _videoPlayerController.loopWithoutComposition = YES;
@@ -170,6 +170,9 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
                       {
                           [player play];
                       }];
+                     
+                     self.trimViewController.actualDuration = player.currentItem.asset.duration;
+                     
                      break;
                  }
                  case AVPlayerStatusUnknown:

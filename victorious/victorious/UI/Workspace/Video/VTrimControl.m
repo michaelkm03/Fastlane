@@ -84,6 +84,7 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
 {
     self.trimThumbHead = [[UIView alloc] initWithFrame:CGRectMake(0, kTrimHeadInset, kTrimHeadWidth, kTrimHeadHeight)];
     self.trimThumbHead.backgroundColor = [UIColor whiteColor];
+    self.trimThumbHead.hidden = YES;
     self.trimThumbHead.layer.cornerRadius = kTrimHeadHeight * 0.5f;
     [self addSubview:self.trimThumbHead];
     self.headGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self
@@ -92,7 +93,7 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
     
     self.trimThumbBody = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.trimThumbHead.frame) - 0.5f * kTrimBodyWidth,
                                                                 CGRectGetMaxY(self.trimThumbHead.frame),
-                                                                kTrimBodyWidth,
+                                                                5*kTrimBodyWidth,
                                                                 CGRectGetMaxY(self.bounds) - CGRectGetMaxY(self.trimThumbHead.frame))];
     self.trimThumbBody.backgroundColor = [UIColor whiteColor];
     [self addSubview:self.trimThumbBody];
@@ -142,7 +143,7 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
     //The added 1s avoid a small visible divide between the thumb head and the trimmer line
     self.trimThumbBody.frame = CGRectMake(CGRectGetMidX(self.trimThumbHead.frame) - 0.5f * kTrimBodyWidth,
                                           CGRectGetMaxY(self.trimThumbHead.frame) - 1.0f,
-                                          kTrimBodyWidth,
+                                          5*kTrimBodyWidth,
                                           previewHeight + kTrimHeadInset/2 + 1.0f);
     [self updateThumAndDimmingViewWithNewThumbCenter:self.trimThumbHead.center];
     
@@ -169,6 +170,8 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
         [self.animator addBehavior:self.collisionBehavior];
     }
 }
+
+
 
 - (UIView *)hitTest:(CGPoint)point
           withEvent:(UIEvent *)event
