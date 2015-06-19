@@ -6517,6 +6517,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = V;
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = Victorious;
 				TargetAttributes = {

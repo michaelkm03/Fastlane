@@ -159,7 +159,6 @@ static const CGFloat kButtonHeight          = 44.0f;
     [_overlayContainer addConstraint:[NSLayoutConstraint constraintWithItem:_captionTextView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_countsTextView attribute:NSLayoutAttributeTop multiplier:1.0f constant:15.0f]];
     
     // Like button
-    
     UIImage *likeInactiveImage = [[UIImage imageNamed:@"A_like"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     UIImage *likeActiveImage = [[UIImage imageNamed:@"A_liked"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     _likeButton = [VActionButton actionButtonWithImage:likeInactiveImage activeImage:likeActiveImage];

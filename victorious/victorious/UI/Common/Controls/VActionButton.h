@@ -11,8 +11,15 @@
 
 @interface VActionButton : UIButton <VActiveButton>
 
-+ (VActionButton *)actionButtonWithImage:(UIImage *)inactiveImage activeImage:(UIImage *)activeImage;
++ (VActionButton *)actionButtonWithImage:(UIImage *)inactiveImage
+                             activeImage:(UIImage *)activeImage;
+
++ (VActionButton *)actionButtonWithImage:(UIImage *)inactiveImage
+                             activeImage:(UIImage *)activeImage
+                         backgroundImage:(UIImage *)backgroundImage;
 
 @property (nonatomic, assign, getter=isActive) BOOL active;
+
+@property (nonatomic, copy) UIColor *activeColor;
 
 @end

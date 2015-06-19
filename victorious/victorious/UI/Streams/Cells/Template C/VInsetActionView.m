@@ -28,16 +28,14 @@
 #import "VLargeNumberFormatter.h"
 #import "VRepostButtonController.h"
 
-#import "VActionButton.h"
-
 static const CGFloat kActionButtonWidth = 44.0f;
 
 @interface VInsetActionView ()
 
-@property (nonatomic, strong) UIButton *gifButton;
-@property (nonatomic, strong) UIButton *memeButton;
-@property (nonatomic, strong) UIButton *repostButton;
-@property (nonatomic, strong) UIButton *likeButton;
+@property (nonatomic, strong) VActionButton *gifButton;
+@property (nonatomic, strong) VActionButton *memeButton;
+@property (nonatomic, strong) VActionButton *repostButton;
+@property (nonatomic, strong, readwrite) VActionButton *likeButton;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VRepostButtonController *repostButtonController;
@@ -61,8 +59,9 @@ static const CGFloat kActionButtonWidth = 44.0f;
 {
     if (_gifButton == nil)
     {
-        _gifButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_gifIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                                          action:@selector(gif:)];
+        UIImage *image = [UIImage imageNamed:@"C_gif"];
+        UIImage *background = [UIImage imageNamed:@"C_background"];
+        _memeButton = [self actionButtonWithImage:image activeImage:nil backgroundImage:background action:@selector(gif:)];
     }
     return _gifButton;
 }
@@ -71,8 +70,9 @@ static const CGFloat kActionButtonWidth = 44.0f;
 {
     if (_memeButton == nil)
     {
-        _memeButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_memeIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                                           action:@selector(meme:)];
+        UIImage *image = [UIImage imageNamed:@"C_meme"];
+        UIImage *background = [UIImage imageNamed:@"C_background"];
+        _memeButton = [self actionButtonWithImage:image activeImage:nil backgroundImage:background action:@selector(meme:)];
     }
     return _memeButton;
 }
@@ -81,8 +81,9 @@ static const CGFloat kActionButtonWidth = 44.0f;
 {
     if (_repostButton == nil)
     {
-        _repostButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_repostIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                                             action:@selector(repost:)];
+        UIImage *image = [UIImage imageNamed:@"C_repost"];
+        UIImage *background = [UIImage imageNamed:@"C_background"];
+        _repostButton = [self actionButtonWithImage:image activeImage:nil backgroundImage:background action:@selector(repost:)];
     }
     return _repostButton;
 }
@@ -91,9 +92,10 @@ static const CGFloat kActionButtonWidth = 44.0f;
 {
     if (_likeButton == nil)
     {
-        UIImage *image = [[UIImage imageNamed:@"C_like"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        UIImage *activeImage = [[UIImage imageNamed:@"C_liked"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        _likeButton = [self actionButtonWithImage:image activeImage:activeImage action:@selector(like:)];
+        UIImage *image = [UIImage imageNamed:@"C_like"];
+        UIImage *active = [UIImage imageNamed:@"C_liked"];
+        UIImage *background = [UIImage imageNamed:@"C_background"];
+        _likeButton = [self actionButtonWithImage:image activeImage:active backgroundImage:background action:@selector(like:)];
     }
     return _likeButton;
 }
@@ -132,6 +134,7 @@ static const CGFloat kActionButtonWidth = 44.0f;
     
     // Create an array of available action items
     NSMutableArray *justActionItems = [[NSMutableArray alloc] init];
+    [justActionItems addObject:self.likeButton];
     if ( sequence.permissions.canRemix && [sequence isVideo])
     {
         [justActionItems addObject:self.gifButton];
@@ -183,8 +186,8 @@ static const CGFloat kActionButtonWidth = 44.0f;
     [self.repostButtonController invalidate];
     self.repostButtonController = [[VRepostButtonController alloc] initWithSequence:sequence
                                                                        repostButton:self.repostButton
-                                                                      repostedImage:[UIImage imageNamed:@"C_repostIcon-success"]
-                                                                    unRepostedImage:[UIImage imageNamed:@"C_repostIcon"]];
+                                                                      repostedImage:[UIImage imageNamed:@"C_reposted"]
+                                                                    unRepostedImage:[UIImage imageNamed:@"C_repost"]];
 }
 
 #pragma mark - VHasManagedDependencies
@@ -201,15 +204,14 @@ static const CGFloat kActionButtonWidth = 44.0f;
 
 #pragma mark - Button Factory
 
-- (UIButton *)actionButtonWithImage:(UIImage *)actionImage action:(SEL)action
+- (VActionButton *)actionButtonWithImage:(UIImage *)actionImage
+                             activeImage:(UIImage *)actionImageActive
+                         backgroundImage:(UIImage *)backgroundImage
+                                  action:(SEL)action
 {
-    return [self actionButtonWithImage:actionImage activeImage:nil action:action];
-}
-
-- (UIButton *)actionButtonWithImage:(UIImage *)actionImage activeImage:(UIImage *)actionImageActive action:(SEL)action
-{
-    VActionButton *actionButton = [VActionButton actionButtonWithImage:actionImage activeImage:actionImageActive];
+    VActionButton *actionButton = [VActionButton actionButtonWithImage:[actionImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] activeImage:[actionImageActive imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] backgroundImage:[backgroundImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
     
+    actionButton.activeColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     actionButton.translatesAutoresizingMaskIntoConstraints = NO;
     actionButton.tintColor = [UIColor blackColor];
     [actionButton addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
