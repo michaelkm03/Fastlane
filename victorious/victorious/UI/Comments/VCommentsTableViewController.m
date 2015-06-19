@@ -86,6 +86,7 @@
     NSArray *nibs = [[NSBundle mainBundle] loadNibNamed:@"VNoContentView" owner:nil options:nil];
     self.noContentView = nibs.firstObject;
     self.noContentView.dependencyManager = self.dependencyManager;
+    self.noContentView.icon = [UIImage imageNamed:@"noMessagesIcon"];
     [self.noContentView resetInitialAnimationState];
     self.tableView.backgroundView = nil;
 }

@@ -25,7 +25,7 @@
 + (VActionButton *)actionButtonWithImage:(UIImage *)inactiveImage
                              activeImage:(UIImage *)activeImage
 {
-    return [self actionButtonWithImage:inactiveImage activeImage:inactiveImage backgroundImage:nil];
+    return [self actionButtonWithImage:inactiveImage activeImage:activeImage backgroundImage:nil];
 }
 
 + (VActionButton *)actionButtonWithImage:(UIImage *)inactiveImage

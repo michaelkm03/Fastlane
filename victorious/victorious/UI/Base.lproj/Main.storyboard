@@ -146,7 +146,8 @@
                                     <constraint firstAttribute="width" constant="49" id="E2U-1I-a7J"/>
                                     <constraint firstAttribute="height" constant="49" id="ci2-zL-inf"/>
                                 </constraints>
-                                <state key="normal" image="Close">
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" image="cameraButtonBack">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -1408,6 +1409,7 @@
         <image name="PostDelete" width="30" height="30"/>
         <image name="SearchIcon" width="30" height="31"/>
         <image name="SearchIconSmall" width="20" height="20"/>
+        <image name="cameraButtonBack" width="22" height="17"/>
         <image name="refreshIcon" width="13" height="15"/>
         <image name="user-icon" width="51" height="74"/>
     </resources>
