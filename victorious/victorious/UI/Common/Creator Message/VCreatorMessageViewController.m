@@ -74,10 +74,17 @@
                                                    lineHeight:23.0f];
     self.messageTextView.attributedText = [[NSAttributedString alloc] initWithString:self.message attributes:attributes];
     
-    [self.view layoutIfNeeded];
-    
+    [self updateBounds];
+}
+
+- (void)updateBounds
+{
     CGRect bounds = self.view.bounds;
     bounds.size.height = self.defaulBoundsHeight + CGRectGetHeight(self.messageTextView.bounds) - self.defaultMessageViewHeight;
+    if ( self.creatorAvatarImageView.hidden )
+    {
+        bounds.size.height -= CGRectGetHeight(self.creatorAvatarImageView.frame);
+    }
     self.view.bounds = bounds;
 }
 
@@ -107,27 +114,27 @@
         self.creatorNameLabel.hidden = YES;
         self.creatorAvatarImageView.hidden = YES;
         
-        return;
+        [self updateBounds];
     }
     else
     {
         self.creatorNameLabel.hidden = NO;
         self.creatorAvatarImageView.hidden = NO;
+        
+        self.quoteImageView.image = [self.quoteImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.quoteImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+        
+        self.creatorNameLabel.text = ownerName;
+        self.creatorNameLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey];
+        self.creatorNameLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
+        
+        self.creatorAvatarImageView.layer.cornerRadius = CGRectGetWidth(self.creatorAvatarImageView.bounds) * 0.5f; // Enough to make it a circle
+        self.creatorAvatarImageView.layer.borderWidth = 1.0f;
+        self.creatorAvatarImageView.layer.borderColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey].CGColor;
+        self.creatorAvatarImageView.layer.masksToBounds = YES;
+        
+        [self.creatorAvatarImageView sd_setImageWithURL:profileImageURL placeholderImage:nil];
     }
-    
-    self.quoteImageView.image = [self.quoteImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    self.quoteImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    
-    self.creatorNameLabel.text = ownerName;
-    self.creatorNameLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey];
-    self.creatorNameLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
-    
-    self.creatorAvatarImageView.layer.cornerRadius = 17.0f; // Enough to make it a circle
-    self.creatorAvatarImageView.layer.borderWidth = 1.0f;
-    self.creatorAvatarImageView.layer.borderColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey].CGColor;
-    self.creatorAvatarImageView.layer.masksToBounds = YES;
-    
-    [self.creatorAvatarImageView sd_setImageWithURL:profileImageURL placeholderImage:nil];
 }
 
 - (BOOL)stringIsValidForDisplay:(NSString *)string
