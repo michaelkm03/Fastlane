@@ -19,7 +19,7 @@
 #import "VNode.h"
 #import "VObjectManager+Sequence.h"
 #import "VSequence+Fetcher.h"
-#import "VUser+Fetcher.h"
+#import "VUser.h"
 #import "VSequence+Fetcher.h"
 
 // Activities
@@ -242,10 +242,9 @@
         [actionItems addObject:deleteItem];
     }
     
-    BOOL isOwner = [[[VObjectManager sharedManager] mainUser] isOwner];
     BOOL canFlag = self.viewModel.sequence.permissions.canFlagSequence;
     
-    if ( !isOwner && canFlag )
+    if ( canFlag )
     {
         VActionItem *flagItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Report/Flag", @"")
                                                              actionIcon:[UIImage imageNamed:@"icon_flag"]

@@ -17,7 +17,7 @@
 
 // Models
 #import "VSequence+Fetcher.h"
-#import "VUser+Fetcher.h"
+#import "VUser.h"
 #import "VNode+Fetcher.h"
 #import "VAsset+Fetcher.h"
 
