@@ -17,10 +17,22 @@
  */
 @interface VSuggestedUsersDataSource : NSObject <UICollectionViewDataSource, VHasManagedDependencies>
 
+/**
+ Allows the datasource to register the cells it intends to use on the collection
+ view into which it will be plugged.
+ */
 - (void)registerCellsForCollectionView:(UICollectionView *)collectionView;
 
+/**
+ Reload the data and call completion block when complete, regardless of success or fail.
+ */
 - (void)refreshWithCompletion:(void(^)())completion;
 
+/**
+ Designed to be forwarded from the collection view delegate, allows the data source
+ (who is the keeper of the cells being used) to calculate the size bsed on the cell
+ and that data it contains.
+ */
 - (CGSize)collectionView:(UICollectionView *)collectionView sizeForItemAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
