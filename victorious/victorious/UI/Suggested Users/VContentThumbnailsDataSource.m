@@ -33,14 +33,14 @@
 
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView
 {
-    NSString *identifier = [VContentThumbnailCell preferredReuseIdentifier];
+    NSString *identifier = [VContentThumbnailCell suggestedReuseIdentifier];
     UINib *nib = [UINib nibWithNibName:identifier bundle:[NSBundle bundleForClass:[self class]]];
     [collectionView registerNib:nib forCellWithReuseIdentifier:identifier];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *identifier = [VContentThumbnailCell preferredReuseIdentifier];
+    NSString *identifier = [VContentThumbnailCell suggestedReuseIdentifier];
     VContentThumbnailCell *cell = (VContentThumbnailCell *)[collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     if ( cell != nil )
     {

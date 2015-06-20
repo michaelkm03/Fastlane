@@ -17,11 +17,6 @@
 
 @implementation VContentThumbnailCell
 
-+ (NSString *)preferredReuseIdentifier
-{
-    return NSStringFromClass([self class]);
-}
-
 - (void)setImageURL:(NSURL *)imageURL
 {
     [self.imageView sd_setImageWithURL:imageURL];
