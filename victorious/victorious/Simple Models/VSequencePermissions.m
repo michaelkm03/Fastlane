@@ -11,7 +11,7 @@
 /**
  Values corresponding to permissions bitmask returned by server.
  */
-typedef NS_OPTIONS( NSInteger, VSequencePermission )
+typedef NS_OPTIONS( NSUInteger, VSequencePermission )
 {
     VSequencePermissionNone                 = 0,
     VSequencePermissionCanDelete            = 1 << 0,
@@ -22,8 +22,8 @@ typedef NS_OPTIONS( NSInteger, VSequencePermission )
     VSequencePermissionCanEditComments      = 1 << 5,
     VSequencePermissionCanDeleteComments    = 1 << 6,
     VSequencePermissionCanFlagSequence      = 1 << 7,
-    VSequencePermissionCanMeme              = 1 << 8,
-    VSequencePermissionCanGif               = 1 << 9,
+    VSequencePermissionCanGif               = 1 << 8,
+    VSequencePermissionCanMeme              = 1 << 9,
     VSequencePermissionCanQuote             = 1 << 10,
 };
 
@@ -59,57 +59,57 @@ typedef NS_OPTIONS( NSInteger, VSequencePermission )
 
 - (BOOL)canDelete
 {
-    return self.value & VSequencePermissionCanDelete;
+    return (self.value & VSequencePermissionCanDelete) != 0ul;
 }
 
 - (BOOL)canRemix
 {
-    return self.value & VSequencePermissionCanRemix;
+    return (self.value & VSequencePermissionCanRemix) != 0ul;
 }
 
 - (BOOL)canComment
 {
-    return self.value & VSequencePermissionCanComment;
+    return (self.value & VSequencePermissionCanComment) != 0ul;
 }
 
 - (BOOL)canRepost
 {
-    return self.value & VSequencePermissionCanRepost;
+    return (self.value & VSequencePermissionCanRepost) != 0ul;
 }
 
 - (BOOL)canDeleteComments
 {
-    return self.value & VSequencePermissionCanDeleteComments;
+    return (self.value & VSequencePermissionCanDeleteComments) != 0ul;
 }
 
 - (BOOL)canShowVoteCount
 {
-    return self.value & VSequencePermissionCanShowVoteCount;
+    return (self.value & VSequencePermissionCanShowVoteCount) != 0ul;
 }
 
 - (BOOL)canFlagSequence
 {
-    return self.value & VSequencePermissionCanFlagSequence;
+    return (self.value & VSequencePermissionCanFlagSequence) != 0ul;
 }
 
 - (BOOL)canEditComments
 {
-    return self.value & VSequencePermissionCanEditComments;
+    return (self.value & VSequencePermissionCanEditComments) != 0ul;
 }
 
 - (BOOL)canMeme
 {
-    return self.value & VSequencePermissionCanMeme;
+    return (self.value & VSequencePermissionCanMeme) != 0ul;
 }
 
 - (BOOL)canGIF
 {
-    return self.value & VSequencePermissionCanGif;
+    return (self.value & VSequencePermissionCanGif) != 0ul;
 }
 
 - (BOOL)canQuote
 {
-    return self.value & VSequencePermissionCanQuote;
+    return (self.value & VSequencePermissionCanQuote) != 0ul;
 }
 
 - (NSString *)description
