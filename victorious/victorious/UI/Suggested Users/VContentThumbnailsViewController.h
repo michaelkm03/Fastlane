@@ -14,6 +14,10 @@
  */
 @interface VContentThumbnailsViewController : UIViewController
 
-@property (nonatomic, strong) UICollectionView *collectionView;
+/**
+ Exposed publicly to allow calling code to create this view controller
+ and a datasource for the collection view and hook them up.
+ */
+@property (nonatomic, strong, readonly) UICollectionView *collectionView;
 
 @end

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "VBackgroundContainer.h"
 #import "VDependencyManager.h"
+#import "VBaseCollectionViewCell.h"
 
 @class VUser;
 
@@ -16,11 +17,9 @@
  Collection cell designed to show some user info and a child collection view of
  sequences thumbnails as part of a suggested users screen.
  */
-@interface VSuggestedUserCell : UICollectionViewCell <VBackgroundContainer>
+@interface VSuggestedUserCell : VBaseCollectionViewCell <VBackgroundContainer>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-
-+ (NSString *)suggestedReuseIdentifier;
 
 - (void)setUser:(VUser *)user;
 

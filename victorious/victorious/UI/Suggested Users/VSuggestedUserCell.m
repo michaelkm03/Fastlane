@@ -38,11 +38,6 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
 
 @implementation VSuggestedUserCell
 
-+ (NSString *)suggestedReuseIdentifier
-{
-    return NSStringFromClass( [self class] );
-}
-
 - (void)awakeFromNib
 {
     self.followButton = [[VFollowUserControl alloc] initWithFrame:self.followButtonContainerView.bounds];

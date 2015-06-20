@@ -11,6 +11,8 @@
 
 @interface VContentThumbnailsViewController () <UICollectionViewDelegateFlowLayout>
 
+@property (nonatomic, strong, readwrite) UICollectionView *collectionView;
+
 @end
 
 @implementation VContentThumbnailsViewController
