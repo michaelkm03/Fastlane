@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "VHasManagedDependencies.h"
 
+/**
+ A collection view that shows suggested users and recent posts for each.
+ */
 @interface VSuggestedUsersViewController : UIViewController <VHasManagedDependencies>
 
 @end

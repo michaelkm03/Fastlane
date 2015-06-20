@@ -128,8 +128,6 @@
     self.creatorAvatarImageView.layer.masksToBounds = YES;
     
     [self.creatorAvatarImageView sd_setImageWithURL:profileImageURL placeholderImage:nil];
-    
-    [self.creatorAvatarImageView setNeedsDisplay];
 }
 
 - (BOOL)stringIsValidForDisplay:(NSString *)string

@@ -56,10 +56,7 @@ static NSString * const kPromptTextKey = @"prompt";
          {
              completion();
          }
-     } failBlock:^(NSOperation *operation, NSError *error)
-     {
-         // TODO: Error message!
-     }];
+     } failBlock:nil];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView sizeForItemAtIndexPath:(NSIndexPath *)indexPath
