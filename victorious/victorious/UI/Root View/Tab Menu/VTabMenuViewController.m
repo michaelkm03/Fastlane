@@ -105,7 +105,6 @@ static const CGFloat kTabBarAnimationTimeInterval = 0.3;
     // Subscribe to notifications for showing and hiding tab bar
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideNotification:) name:kCreationSheetWillShow object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotification:) name:kCreationSheetWillHide object:nil];
-
 }
 
 - (NSUInteger)supportedInterfaceOrientations

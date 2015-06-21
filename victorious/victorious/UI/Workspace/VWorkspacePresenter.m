@@ -8,15 +8,19 @@
 
 #import "VWorkspacePresenter.h"
 
-#import "VDependencyManager+VWorkspace.h"
+// Dependencies
+#import "VDependencyManager.h"
+#import "VCreationFlowShim.h"
+
+// API
 #import "VObjectManager+Users.h"
 
 // Creation UI
 #import "VWorkspaceFlowController.h"
-#import "VImageToolController.h"
-#import "VVideoToolController.h"
 #import "VCreatePollViewController.h"
 #import "VTextWorkspaceFlowController.h"
+#import "VImageToolController.h"
+#import "VVideoToolController.h"
 
 // Action sheet
 #import "VAlertController.h"
@@ -26,28 +30,35 @@
 #import "VTrackingManager.h"
 
 static NSString * const kCreateSheetKey = @"createSheet";
+static NSString * const kCreationFlowKey = @"createFlow";
 
-@interface VWorkspacePresenter () <VWorkspaceFlowControllerDelegate>
+@interface VWorkspacePresenter ()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) UIViewController *viewControllerToPresentOn;
+
+@property (nonatomic, strong) VCreationFlowShim *creationFlowShim;
 
 @end
 
 @implementation VWorkspacePresenter
 
-+ (instancetype)workspacePresenterWithViewControllerToPresentOn:(UIViewController *)viewControllerToPresentOn dependencyManager:(VDependencyManager *)dependencyManager
++ (instancetype)workspacePresenterWithViewControllerToPresentOn:(UIViewController *)viewControllerToPresentOn
+                                              dependencyManager:(VDependencyManager *)dependencyManager
 {
     VWorkspacePresenter *workspacePresenter = [[self alloc] init];
     workspacePresenter.dependencyManager = dependencyManager;
     workspacePresenter.viewControllerToPresentOn = viewControllerToPresentOn;
+    
+    workspacePresenter.creationFlowShim = [dependencyManager templateValueOfType:[VCreationFlowShim class]
+                                                                          forKey:kCreationFlowKey];
     return workspacePresenter;
 }
 
 - (void)present
 {
     NSDictionary *addedDependencies = @{kAnimateFromTopKey : @(self.showsCreationSheetFromTop)};
-    VCreateSheetViewController *createSheet = [self.dependencyManager templateValueOfType:[VCreateSheetViewController class] forKey:kCreateSheetKey withAddedDependencies:addedDependencies];
+    VCreateSheetViewController *createSheet = [self.creationFlowShim createSheetViewControllerWithAddedDependencies:addedDependencies];
     [createSheet setCompletionHandler:^(VCreateSheetViewController *createSheetViewController, VCreateSheetItemIdentifier chosenItemIdentifier)
      {
          [createSheetViewController dismissViewControllerAnimated:YES completion:^
@@ -85,7 +96,7 @@ static NSString * const kCreateSheetKey = @"createSheet";
         case VCreateSheetItemIdentifierPoll:
         {
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreatePollSelected];
-            VCreatePollViewController *createViewController = [VCreatePollViewController newWithDependencyManager:self.dependencyManager];
+            VCreatePollViewController *createViewController = [self.creationFlowShim pollFlowController];
             __weak typeof(self) welf = self;
             createViewController.completionHandler = ^void(VCreatePollViewControllerResult result)
             {
@@ -107,11 +118,10 @@ static NSString * const kCreateSheetKey = @"createSheet";
 {
     [[VTrackingManager sharedInstance] setValue:VTrackingValueCreatePost forSessionParameterWithKey:VTrackingKeyContext];
     
-    VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager workspaceFlowControllerWithAddedDependencies:@{
+    VWorkspaceFlowController *workspaceFlowController = [self.creationFlowShim imageFlowControllerWithAddedDependencies:@{
         VWorkspaceFlowControllerInitialCaptureStateKey: @(initialCaptureState),
         VImageToolControllerInitialImageEditStateKey: @(initialImageEdit),
         VVideoToolControllerInitalVideoEditStateKey: @(initialVideoEdit) }];
-    workspaceFlowController.delegate = self;
     
     [self.viewControllerToPresentOn presentViewController:workspaceFlowController.flowRootViewController
                                                  animated:YES
@@ -127,22 +137,8 @@ static NSString * const kCreateSheetKey = @"createSheet";
 
 - (void)presentTextOnlyWorkspace
 {
-    VTextWorkspaceFlowController *textWorkspaceController = [VTextWorkspaceFlowController textWorkspaceFlowControllerWithDependencyManager:self.dependencyManager];
+    VTextWorkspaceFlowController *textWorkspaceController = [self.creationFlowShim textFlowController];
     [self.viewControllerToPresentOn presentViewController:textWorkspaceController.flowRootViewController animated:YES completion:nil];
-}
-
-#pragma mark - VWorkspaceFlowControllerDelegate
-
-- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
-{
-    [self.viewControllerToPresentOn dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-       finishedWithPreviewImage:(UIImage *)previewImage
-               capturedMediaURL:(NSURL *)capturedMediaURL
-{
-    [self.viewControllerToPresentOn dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

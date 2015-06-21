@@ -23,11 +23,14 @@
 
 static const NSInteger kMinLength = 2;
 
+static NSString * const kCloseIconKey = @"closeIcon";
+
 static char KVOContext;
 
 @interface VCreatePollViewController() <UITextViewDelegate, VWorkspaceFlowControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *closeButton;
 
 @property (weak, nonatomic) IBOutlet UIImageView *leftPreviewImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *rightPreviewImageView;
@@ -91,6 +94,8 @@ static char KVOContext;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.closeButton.image = [self.dependencyManager imageForKey:kCloseIconKey];
     
     self.titleLabel.text = NSLocalizedString(@"NEW POLL", @"");
     self.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];

@@ -660,7 +660,7 @@
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uFq-1W-p8e" userLabel="Left Background">
                                         <rect key="frame" x="0.0" y="0.0" width="160" height="274"/>
-                                        <color key="backgroundColor" red="0.90196078431372551" green="0.9137254901960784" blue="0.92941176470588238" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YgI-Md-qE7" userLabel="Right Background">
                                         <rect key="frame" x="160" y="0.0" width="160" height="274"/>
@@ -909,6 +909,7 @@
                     <connections>
                         <outlet property="addMediaView" destination="nrN-3e-ph5" id="Ich-kg-HuN"/>
                         <outlet property="answersSuperview" destination="rJm-hU-1CC" id="Kga-2P-EeG"/>
+                        <outlet property="closeButton" destination="XZh-ek-sHk" id="SQR-iP-WV4"/>
                         <outlet property="leftAnswerPrompt" destination="83v-Xs-Bp8" id="aAU-bj-QzO"/>
                         <outlet property="leftAnswerTextView" destination="0QX-qc-n1v" id="sDi-lf-5Z8"/>
                         <outlet property="leftAnswerTextViewHeightConstraint" destination="nHG-a2-Wa8" id="dxR-MU-ARa"/>

@@ -140,6 +140,8 @@
 	<string>VCoachmark</string>
 	<key>standard.permissionsAlert</key>
 	<string>VPermissionAlertViewController</string>
+	<key>standard.creationFlow</key>
+	<string>VCreationFlowShim</string>
 	<key>standard.createSheet</key>
 	<string>VCreateSheetViewController</string>
 	<key>publish.screen</key>

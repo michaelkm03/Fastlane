@@ -26,7 +26,7 @@
 #import "VEnvironmentManager.h"
 #import "MBProgressHUD.h"
 
-static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
+static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
 
 @interface VLoadingViewController()
 
@@ -215,6 +215,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
     if ([self.delegate respondsToSelector:@selector(loadingViewController:didFinishLoadingWithDependencyManager:)])
     {
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
+        [templateDecorator setComponentWithFilename:kWorkspaceTemplateName forKeyPath:@"scaffold/createFlow"];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
                 
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
