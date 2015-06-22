@@ -23,6 +23,8 @@ static NSString * const kMacroStreamId               = @"%%STREAM_ID%%";
 static NSString * const kMacroSequenceId             = @"%%SEQUENCE_ID%%";
 static NSString * const kMacroBallisticsCount        = @"%%COUNT%%";
 static NSString * const kMacroShareDestination       = @"%%SHARE_DEST%%";
+static NSString * const kMacroSharedToFacebook       = @"%%FACEBOOK_SHARE%%";
+static NSString * const kMacroSharedToTwitter        = @"%%TWITTER_SHARE%%";
 static NSString * const kMacroNotificationID         = @"%%NOTIF_ID%%";
 static NSString * const kMacroSessionTime            = @"%%SESSION_TIME%%";
 static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
@@ -60,6 +62,8 @@ static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
                                     VTrackingKeySequenceId         : kMacroSequenceId,
                                     VTrackingKeyVoteCount          : kMacroBallisticsCount,
                                     VTrackingKeyShareDestination   : kMacroShareDestination,
+                                    VTrackingKeySharedToFacebook   : kMacroSharedToFacebook,
+                                    VTrackingKeySharedToTwitter    : kMacroSharedToTwitter,
                                     VTrackingKeyNotificationId     : kMacroNotificationID,
                                     VTrackingKeySessionTime        : kMacroSessionTime,
                                     VTrackingKeyLoadTime           : kMacroLoadTime };

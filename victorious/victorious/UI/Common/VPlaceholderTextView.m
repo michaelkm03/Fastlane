@@ -8,8 +8,6 @@
 
 #import "VPlaceholderTextView.h"
 
-#import <AudioToolbox/AudioToolbox.h>
-
 static const CGFloat kPlaceholderAlphaNoText = 0.5f;
 static const CGFloat kPlaceholderAlphaEnteringText = 0.2f;
 
@@ -116,6 +114,11 @@ static const CGFloat kPlaceholderAlphaEnteringText = 0.2f;
                                                                               attributes:typingAttributes];
 }
 
+- (void)setPlaceholderTextColor:(UIColor *)placeholderTextColor
+{
+    self.placeholderTextView.textColor = placeholderTextColor;
+}
+
 - (void)setText:(NSString *)text
 {
     [super setText:text];
@@ -123,10 +126,8 @@ static const CGFloat kPlaceholderAlphaEnteringText = 0.2f;
     [self hidePlaceholderIfUserEnteredText];
 }
 
-- (void)setFont:(UIFont *)font
+- (void)setPlaceholderFont:(UIFont *)font
 {
-    [super setFont:font];
-    
     self.placeholderTextView.font = font;
 }
 
