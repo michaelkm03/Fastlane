@@ -127,7 +127,7 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
     {
         [followResponder unfollowUser:self.user withCompletion:^(VUser *userActedOn)
          {
-             sender.following = self.user.isFollowedByMainUser.boolValue;
+             [sender setFollowing:self.user.isFollowedByMainUser.boolValue animated:YES];
              sender.enabled = YES;
          }];
     }
@@ -135,7 +135,7 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
     {
         [followResponder followUser:self.user withCompletion:^(VUser *userActedOn)
          {
-             sender.following = self.user.isFollowedByMainUser.boolValue;
+             [sender setFollowing:self.user.isFollowedByMainUser.boolValue animated:YES];
              sender.enabled = YES;
          }];
     }
