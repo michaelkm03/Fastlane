@@ -10,6 +10,7 @@
 #import "VHasManagedDependencies.h"
 #import "VJSONHelper.h"
 #import "VSolidColorBackground.h"
+#import "VTemplateImage.h"
 #import "VURLMacroReplacement.h"
 
 typedef BOOL (^TypeTest)(Class);
@@ -20,7 +21,6 @@ static NSString * const kPlistFileExtension = @"plist";
 // multi-purpose keys
 NSString * const VDependencyManagerTitleKey = @"title";
 NSString * const VDependencyManagerBackgroundKey = @"background";
-NSString * const VDependencyManagerImageURLKey = @"imageURL";
 
 // Keys for colors
 NSString * const VDependencyManagerBackgroundColorKey = @"color.background";
@@ -58,7 +58,6 @@ static NSString * const kReferenceIDKey = @"referenceID";
 static NSString * const kClassNameKey = @"name";
 static NSString * const kFontNameKey = @"fontName";
 static NSString * const kFontSizeKey = @"fontSize";
-static NSString * const kImageURLKey = @"imageURL";
 
 // Keys for experiments
 NSString * const VDependencyManagerHistogramEnabledKey = @"histogram_enabled";
@@ -252,7 +251,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
     
     if ( imageDictionary != nil )
     {
-        NSString *imageURL = imageDictionary[kImageURLKey];
+        NSString *imageURL = imageDictionary[VTemplateImageURLKey];
         
         if (![imageURL isKindOfClass:[NSString class]])
         {
