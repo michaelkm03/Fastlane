@@ -30,6 +30,7 @@
 #import "VCoachmarkManager.h"
 #import "VRootViewController.h"
 
+#import "VTemplateDecorator.h"
 #import "VSuggestedUsersViewController.h"
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
@@ -107,7 +108,9 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
         [self askForPushNotificationsPermission];
     }
     
-    VSuggestedUsersViewController *vc = [[VSuggestedUsersViewController alloc] initWithDependencyManager:self.dependencyManager];
+    NSDictionary *suggestedUsers = [VTemplateDecorator dictionaryFromJSONFile:@"suggestedUsers"];
+    VDependencyManager *suggestedUsersDM = [self.dependencyManager childDependencyManagerWithAddedConfiguration:suggestedUsers];
+    VSuggestedUsersViewController *vc = [[VSuggestedUsersViewController alloc] initWithDependencyManager:suggestedUsersDM];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
     [self presentViewController:nav animated:YES completion:nil];
 }

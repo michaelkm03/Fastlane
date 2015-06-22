@@ -1,0 +1,20 @@
+{
+    "background": {
+        "name": "video.background",
+        "sequenceURL": "http:\/\/dev.getvictorious.com\/api\/sequence\/fetch\/13618"
+    },
+    "name": "modernLoginAndRegistration.flow",
+    "signInOptions": ["email", "facebook", "twitter"],
+    "color.accent": {
+        "red": 202,
+        "green": 213,
+        "blue": 247,
+        "alpha": 1
+    },
+    "color.text.placeholder": {
+        "red": 255,
+        "green": 255,
+        "blue": 255,
+        "alpha": 255
+    }
+}

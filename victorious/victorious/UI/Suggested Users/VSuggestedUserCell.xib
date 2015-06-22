@@ -20,7 +20,7 @@
                         </constraints>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qG7-rw-UBB" userLabel="Recent Posts Container">
-                        <rect key="frame" x="11" y="61" width="279" height="68"/>
+                        <rect key="frame" x="0.0" y="61" width="300" height="68"/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="68" id="06O-5a-gef"/>
@@ -66,9 +66,9 @@
                 <constraint firstItem="NvH-FP-frQ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="gTV-IL-0wX" secondAttribute="top" constant="3" id="LSC-kR-i7c"/>
                 <constraint firstItem="OCz-7k-hNp" firstAttribute="leading" secondItem="NvH-FP-frQ" secondAttribute="leading" constant="1" id="Ple-D3-AtZ"/>
                 <constraint firstItem="NvH-FP-frQ" firstAttribute="centerY" secondItem="vVl-PR-T2U" secondAttribute="centerY" priority="500" constant="-8.5" id="QPZ-Uc-PCE"/>
-                <constraint firstAttribute="trailing" secondItem="qG7-rw-UBB" secondAttribute="trailing" constant="10" id="Wf1-Hr-eXZ"/>
+                <constraint firstAttribute="trailing" secondItem="qG7-rw-UBB" secondAttribute="trailing" id="Wf1-Hr-eXZ"/>
                 <constraint firstItem="OCz-7k-hNp" firstAttribute="top" secondItem="NvH-FP-frQ" secondAttribute="bottom" constant="-15" id="gi1-0P-FOX"/>
-                <constraint firstItem="qG7-rw-UBB" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="11" id="jL6-2h-efS"/>
+                <constraint firstItem="qG7-rw-UBB" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="jL6-2h-efS"/>
                 <constraint firstItem="qG7-rw-UBB" firstAttribute="top" relation="greaterThanOrEqual" secondItem="OCz-7k-hNp" secondAttribute="bottom" constant="-11" id="kVi-Wp-1qd"/>
                 <constraint firstItem="vVl-PR-T2U" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="14" id="z0E-kR-Asi"/>
             </constraints>

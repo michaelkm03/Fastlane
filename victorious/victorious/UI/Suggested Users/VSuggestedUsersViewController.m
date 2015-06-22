@@ -9,20 +9,22 @@
 #import "VSuggestedUsersViewController.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VSuggestedUsersDataSource.h"
-#import "VCreatorMessageViewController.h"
 #import "UIView+AutoLayout.h"
 #import "VLoginFlowControllerDelegate.h"
 #import "VAppInfo.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+#import "VLinearGradientView.h"
 
 static NSString * const kBarButtonTintColorKey      = @"color.text.label3";
 static NSString * const VSuggestedUsersPromptKey    = @"prompt";
 
 @interface VSuggestedUsersViewController () <VBackgroundContainer, UICollectionViewDelegateFlowLayout, VLoginFlowScreen>
 
+@property (nonatomic, weak) IBOutlet UIView *collectionContainer;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *creatorMessageContainerHeight;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicator;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *salutationContainerHeight;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *salutationContainerHeight;
 
 @property (nonatomic, weak) IBOutlet UILabel *creatorNameLabel;
 @property (nonatomic, weak) IBOutlet UIImageView *creatorAvatarImageView;
@@ -31,7 +33,7 @@ static NSString * const VSuggestedUsersPromptKey    = @"prompt";
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VSuggestedUsersDataSource *suggestedUsersDataSource;
-@property (nonatomic, strong) VCreatorMessageViewController *creatorMessageViewController;
+@property (nonatomic, strong) VLinearGradientView *gradientMaskView;
 
 @property (nonatomic, assign) BOOL didTransitionIn;
 @property (nonatomic, readonly) BOOL isFinalRegistrationScreen;
@@ -62,28 +64,31 @@ static NSString * const VSuggestedUsersPromptKey    = @"prompt";
     NSString *ownerName = appInfo.ownerName;
     NSURL *profileImageURL = appInfo.profileImageURL;
     
+    self.creatorAvatarImageView.layer.cornerRadius = CGRectGetMidX( self.creatorAvatarImageView.bounds );
+    self.creatorAvatarImageView.layer.borderWidth = 1.0f;
+    self.creatorAvatarImageView.layer.borderColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey].CGColor;
+    self.creatorAvatarImageView.layer.masksToBounds = YES;
+    
     BOOL stringIsValid = ownerName != nil && ownerName.length > 0;
     BOOL profileImageURLIsEmpty = [profileImageURL.absoluteString isEqualToString:@""];
-    if ( !stringIsValid || profileImageURLIsEmpty )
+    if ( stringIsValid && !profileImageURLIsEmpty )
     {
         self.creatorNameLabel.text = ownerName;
-        self.creatorNameLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
+        self.creatorNameLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
         self.creatorNameLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey];
         
         self.quoteImageView.image = [self.quoteImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         self.quoteImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+        
+        [self.creatorAvatarImageView sd_setImageWithURL:profileImageURL placeholderImage:nil];
     }
     else
     {
-        self.creatorNameLabel.hidden = YES;
-        self.creatorAvatarImageView.hidden = YES;
         self.salutationContainerHeight.constant = 0.0;
     }
     
-    self.messageTextView.text = @"Come join our community. \
-    We promise that your information is safe with us! \
-    Come join our community."; //[self.dependencyManager stringForKey:VSuggestedUsersPromptKey];
-    self.messageTextView.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
+    self.messageTextView.text = @"Come join our community.  We promise that your information is safe with us!  Come join our community."; //[self.dependencyManager stringForKey:VSuggestedUsersPromptKey];
+    self.messageTextView.font = [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
     self.messageTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     
     self.collectionView.delegate = self;
@@ -114,6 +119,17 @@ static NSString * const VSuggestedUsersPromptKey    = @"prompt";
     
     [self.delegate configureFlowNavigationItemWithScreen:self];
     self.navigationItem.hidesBackButton = YES;
+    
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+
+    self.gradientMaskView = [[VLinearGradientView alloc] initWithFrame:self.collectionContainer.bounds];
+    [self.gradientMaskView setColors:@[[UIColor clearColor], [UIColor blackColor]]];
+    [self.gradientMaskView setLocations:@[ @(0.0), @(10.0 / CGRectGetHeight(self.collectionContainer.bounds)) ]];
+    self.collectionContainer.maskView = self.gradientMaskView;
 }
 
 - (void)suggestedUsersDidLoad

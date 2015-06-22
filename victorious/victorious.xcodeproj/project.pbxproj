@@ -495,8 +495,7 @@
 		A7A343E51A8D896C000F0BCF /* VHashtagStreamCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A343E41A8D896C000F0BCF /* VHashtagStreamCollectionViewController.m */; };
 		A7A390C51A32441E00709812 /* VButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A390C41A32441E00709812 /* VButton.m */; };
 		A7A390CA1A3257A300709812 /* ContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7A390C91A3257A300709812 /* ContentView.storyboard */; };
-		A7A643231B38AB8E0032D0C6 /* VCreatorMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A643211B38AB8E0032D0C6 /* VCreatorMessageViewController.m */; };
-		A7A643241B38AB8E0032D0C6 /* VCreatorMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7A643221B38AB8E0032D0C6 /* VCreatorMessageViewController.xib */; };
+		A7A643261B38BFC50032D0C6 /* suggestedUsersParent.json in Resources */ = {isa = PBXBuildFile; fileRef = A7A643251B38BFC50032D0C6 /* suggestedUsersParent.json */; };
 		A7A922621AC6166600F4755E /* VContentTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A922611AC6166600F4755E /* VContentTextCell.m */; };
 		A7A922641AC61B3500F4755E /* VContentTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7A922631AC61B3500F4755E /* VContentTextCell.xib */; };
 		A7A9226A1AC9DB5F00F4755E /* VMultiplePickerSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A922691AC9DB5F00F4755E /* VMultiplePickerSelection.m */; };
@@ -1882,9 +1881,7 @@
 		A7A390C31A32441E00709812 /* VButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VButton.h; sourceTree = "<group>"; };
 		A7A390C41A32441E00709812 /* VButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VButton.m; sourceTree = "<group>"; };
 		A7A390C91A3257A300709812 /* ContentView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ContentView.storyboard; sourceTree = "<group>"; };
-		A7A643201B38AB8E0032D0C6 /* VCreatorMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCreatorMessageViewController.h; path = "Creator Message/VCreatorMessageViewController.h"; sourceTree = "<group>"; };
-		A7A643211B38AB8E0032D0C6 /* VCreatorMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCreatorMessageViewController.m; path = "Creator Message/VCreatorMessageViewController.m"; sourceTree = "<group>"; };
-		A7A643221B38AB8E0032D0C6 /* VCreatorMessageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VCreatorMessageViewController.xib; path = "Creator Message/VCreatorMessageViewController.xib"; sourceTree = "<group>"; };
+		A7A643251B38BFC50032D0C6 /* suggestedUsersParent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = suggestedUsersParent.json; sourceTree = "<group>"; };
 		A7A7D5C819DCDA5A00B18AB7 /* VHashTagsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagsTest.m; sourceTree = "<group>"; };
 		A7A922601AC6166600F4755E /* VContentTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentTextCell.h; sourceTree = "<group>"; };
 		A7A922611AC6166600F4755E /* VContentTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentTextCell.m; sourceTree = "<group>"; };
@@ -3096,7 +3093,6 @@
 				D8CA63AF19D51C8D002046E5 /* Action Sheet */,
 				D876E1F91A9DA685002CAA29 /* Background */,
 				D89A50071A000D540010D050 /* Controls */,
-				A77951201B28C93E00D9DB0A /* Creator Message */,
 				BE42842D19DDD0D800AEDBA6 /* DefaultProfileImages */,
 				A776E00A1AE743F3001F25FF /* Floating Navigation View */,
 				D8DF71ED1AFD987B002EA7A5 /* Following */,
@@ -3865,6 +3861,7 @@
 				C39864BB1B266A7600694AB3 /* VDependencyManager+VHighlightContainer.h */,
 				C39864BC1B266A7600694AB3 /* VDependencyManager+VHighlightContainer.m */,
 				A77951071B27D49700D9DB0A /* suggestedUsers.json */,
+				A7A643251B38BFC50032D0C6 /* suggestedUsersParent.json */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -4607,16 +4604,6 @@
 				A77951181B28AB9A00D9DB0A /* VEnvironmentManager.m */,
 			);
 			name = Environment;
-			sourceTree = "<group>";
-		};
-		A77951201B28C93E00D9DB0A /* Creator Message */ = {
-			isa = PBXGroup;
-			children = (
-				A7A643201B38AB8E0032D0C6 /* VCreatorMessageViewController.h */,
-				A7A643211B38AB8E0032D0C6 /* VCreatorMessageViewController.m */,
-				A7A643221B38AB8E0032D0C6 /* VCreatorMessageViewController.xib */,
-			);
-			name = "Creator Message";
 			sourceTree = "<group>";
 		};
 		A77AD4C41A1EFA3D00142F24 /* Automation */ = {
@@ -6595,7 +6582,6 @@
 				0390087419F3A0CF00FD7EDF /* VFullscreenMarqueeStreamItemCell.xib in Resources */,
 				036F38941A0C4DEA0014DF66 /* SourceSansPro-Semibold.ttf in Resources */,
 				036F388E1A0C4DEA0014DF66 /* RobotoSlab-Regular.ttf in Resources */,
-				A7A643241B38AB8E0032D0C6 /* VCreatorMessageViewController.xib in Resources */,
 				036F38911A0C4DEA0014DF66 /* Signika-Light.ttf in Resources */,
 				03FD87D119F96EEB00D93BAA /* VHistogramCell.xib in Resources */,
 				036F388D1A0C4DEA0014DF66 /* RobotoSlab-Bold.ttf in Resources */,
@@ -6755,6 +6741,7 @@
 				036F38681A0C4DEA0014DF66 /* Bitter-Regular.ttf in Resources */,
 				D8E2F6641B17F4D3008B1EC2 /* VEnterProfilePictureCameraViewController.storyboard in Resources */,
 				036F386A1A0C4DEA0014DF66 /* DeliusUnicase-Regular.ttf in Resources */,
+				A7A643261B38BFC50032D0C6 /* suggestedUsersParent.json in Resources */,
 				036F38981A0C4DEA0014DF66 /* Volkhov-Regular.ttf in Resources */,
 				0390086219F38FD700FD7EDF /* Discover.storyboard in Resources */,
 				0314D08719B4688E00FA363C /* Icon-40@2x.png in Resources */,
@@ -7245,7 +7232,6 @@
 				BE7D2E9118EB762A009E488E /* VVoteResult.m in Sources */,
 				D8C5CFE51A68497200EC819F /* VAsset.m in Sources */,
 				03C185BF19B42F0E00E27D05 /* VSequenceUserInteractions.m in Sources */,
-				A7A643231B38AB8E0032D0C6 /* VCreatorMessageViewController.m in Sources */,
 				F0140BC71AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m in Sources */,
 				0306F7A61ADDF939009FE3AA /* VJSONHelper.m in Sources */,
 				D87D70961A9804CD002D4FED /* VNavigationDestinationContainerViewController.m in Sources */,

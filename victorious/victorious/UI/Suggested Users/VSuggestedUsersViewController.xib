@@ -15,6 +15,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VSuggestedUsersViewController">
             <connections>
                 <outlet property="activityIndicator" destination="gzt-T6-5Rq" id="5Xf-3v-Lyl"/>
+                <outlet property="collectionContainer" destination="xt3-kA-osm" id="wVE-Xf-wfo"/>
                 <outlet property="collectionView" destination="Nf5-dV-4j7" id="nLJ-XO-gH8"/>
                 <outlet property="creatorAvatarImageView" destination="HqP-r4-6Td" id="dIq-Hb-xT6"/>
                 <outlet property="creatorNameLabel" destination="Fk6-ss-qBu" id="uvg-o1-mdw"/>
@@ -44,7 +45,7 @@ We promise that your information is safe with us!</string>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qdj-Np-kdf" userLabel="Salutation Container">
-                    <rect key="frame" x="336" y="132" width="252" height="55"/>
+                    <rect key="frame" x="316" y="132" width="252" height="55"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1" text="Creator Salutation (Could be this long)" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fk6-ss-qBu" userLabel="Creator Name">
                             <rect key="frame" x="59" y="6" width="193" height="41"/>
@@ -78,15 +79,6 @@ We promise that your information is safe with us!</string>
                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="gzt-T6-5Rq">
                     <rect key="frame" x="290" y="230" width="20" height="20"/>
                 </activityIndicatorView>
-                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Nf5-dV-4j7">
-                    <rect key="frame" x="0.0" y="195" width="600" height="341"/>
-                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="zDq-TF-hOo">
-                        <size key="itemSize" width="50" height="50"/>
-                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                    </collectionViewFlowLayout>
-                </collectionView>
                 <imageView userInteractionEnabled="NO" alpha="0.30000001192092896" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="quote" translatesAutoresizingMaskIntoConstraints="NO" id="gwT-Z6-aUq" userLabel="Quote">
                     <rect key="frame" x="63" y="22" width="31" height="23"/>
                     <constraints>
@@ -94,19 +86,39 @@ We promise that your information is safe with us!</string>
                         <constraint firstAttribute="height" constant="23" id="tBz-i7-VTj"/>
                     </constraints>
                 </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xt3-kA-osm" userLabel="Collection Container">
+                    <rect key="frame" x="0.0" y="195" width="600" height="341"/>
+                    <subviews>
+                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Nf5-dV-4j7">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="341"/>
+                            <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="zDq-TF-hOo">
+                                <size key="itemSize" width="50" height="50"/>
+                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            </collectionViewFlowLayout>
+                        </collectionView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="Nf5-dV-4j7" firstAttribute="leading" secondItem="xt3-kA-osm" secondAttribute="leading" id="5HW-Sk-OQa"/>
+                        <constraint firstAttribute="bottom" secondItem="Nf5-dV-4j7" secondAttribute="bottom" id="Af8-9o-LkK"/>
+                        <constraint firstAttribute="trailing" secondItem="Nf5-dV-4j7" secondAttribute="trailing" id="Ci2-uR-aRx"/>
+                        <constraint firstItem="Nf5-dV-4j7" firstAttribute="top" secondItem="xt3-kA-osm" secondAttribute="top" id="hA5-hA-kIq"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="Nf5-dV-4j7" firstAttribute="top" secondItem="Qdj-Np-kdf" secondAttribute="bottom" constant="8" id="1TW-MU-T7n"/>
                 <constraint firstItem="rpC-HU-cQA" firstAttribute="top" secondItem="gwT-Z6-aUq" secondAttribute="bottom" constant="-11" id="4oD-Mk-G5b"/>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="rpC-HU-cQA" secondAttribute="trailing" constant="43" id="5cb-1u-Lzd"/>
-                <constraint firstAttribute="trailing" secondItem="Qdj-Np-kdf" secondAttribute="trailing" constant="12" id="Egi-G0-psb"/>
-                <constraint firstItem="Nf5-dV-4j7" firstAttribute="top" secondItem="gzt-T6-5Rq" secondAttribute="bottom" constant="-55" id="MbD-gd-R6t"/>
+                <constraint firstItem="xt3-kA-osm" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="9Wa-w6-JwW"/>
+                <constraint firstAttribute="trailing" secondItem="Qdj-Np-kdf" secondAttribute="trailing" constant="32" id="Egi-G0-psb"/>
+                <constraint firstAttribute="trailing" secondItem="xt3-kA-osm" secondAttribute="trailing" id="FGg-L8-gWb"/>
                 <constraint firstAttribute="centerX" secondItem="gzt-T6-5Rq" secondAttribute="centerX" id="Of6-3j-mcN"/>
-                <constraint firstItem="Nf5-dV-4j7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="SzK-I4-2dF"/>
+                <constraint firstAttribute="bottom" secondItem="xt3-kA-osm" secondAttribute="bottom" id="PTU-m7-SXD"/>
+                <constraint firstItem="xt3-kA-osm" firstAttribute="top" secondItem="gzt-T6-5Rq" secondAttribute="bottom" constant="-55" id="Rbu-YK-UCy"/>
                 <constraint firstItem="rpC-HU-cQA" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="43" id="Z5g-Vm-Yl9"/>
-                <constraint firstAttribute="bottom" secondItem="Nf5-dV-4j7" secondAttribute="bottom" id="ZkD-fJ-SXX"/>
-                <constraint firstAttribute="trailing" secondItem="Nf5-dV-4j7" secondAttribute="trailing" id="gP0-DW-2Cy"/>
+                <constraint firstItem="xt3-kA-osm" firstAttribute="top" secondItem="Qdj-Np-kdf" secondAttribute="bottom" constant="8" id="ash-97-mme"/>
                 <constraint firstItem="rpC-HU-cQA" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="34" id="izM-iZ-ine"/>
                 <constraint firstItem="Qdj-Np-kdf" firstAttribute="top" secondItem="rpC-HU-cQA" secondAttribute="bottom" id="mRF-N4-wuT"/>
                 <constraint firstItem="rpC-HU-cQA" firstAttribute="leading" secondItem="gwT-Z6-aUq" secondAttribute="trailing" constant="8" id="o6p-i3-Zqz"/>
