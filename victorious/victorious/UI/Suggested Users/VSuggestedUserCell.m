@@ -25,7 +25,6 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
 
 @property (nonatomic, strong) VFollowUserControl *followButton;
 @property (nonatomic, strong) VContentThumbnailsViewController *thumbnailsViewController;
-@property (nonatomic, strong) VContentThumbnailsDataSource *thumbnailsDataSource;
 @property (nonatomic, weak) IBOutlet VDefaultProfileImageView *userProfileImage;
 @property (nonatomic, weak) IBOutlet UITextView *usernameTextView;
 @property (nonatomic, weak) IBOutlet UITextView *userTagLingTextView;
@@ -37,6 +36,16 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
 @end
 
 @implementation VSuggestedUserCell
+
++ (NSCache *)dataSourcesCache
+{
+    static NSCache *_dataSourcesCache = nil;
+    if ( !_dataSourcesCache )
+    {
+        _dataSourcesCache = [[NSCache alloc] init];
+    }
+    return _dataSourcesCache;
+}
 
 - (void)awakeFromNib
 {
@@ -65,17 +74,22 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
     self.usernameTextView.text = _user.name;
     self.userTagLingTextView.text = _user.tagline;
     
-    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VSequence *sequence, NSDictionary *bindings)
-                              {
-                                  NSURL *url = [NSURL URLWithString:sequence.previewData];
-                                  return url != nil && url.absoluteString.length > 0;
-                              }];
-    NSArray *recentSequences = [user.recentSequences.array filteredArrayUsingPredicate:predicate];
+    VContentThumbnailsDataSource *thumbnailsDataSource = [[[self class] dataSourcesCache] objectForKey:user.remoteId];
+    if ( thumbnailsDataSource == nil )
+    {
+        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VSequence *sequence, NSDictionary *bindings)
+                                  {
+                                      NSURL *url = [NSURL URLWithString:sequence.previewData];
+                                      return url != nil && url.absoluteString.length > 0;
+                                  }];
+        NSArray *recentSequences = [user.recentSequences.array filteredArrayUsingPredicate:predicate];
+        thumbnailsDataSource = [[VContentThumbnailsDataSource alloc] initWithSequences:recentSequences];
+        self.thumbnailsViewController.collectionView.dataSource = thumbnailsDataSource;
+        [thumbnailsDataSource registerCellsWithCollectionView:self.thumbnailsViewController.collectionView];
+        
+        [[[self class] dataSourcesCache] setObject:thumbnailsDataSource forKey:user.remoteId];
+    }
     
-    self.thumbnailsDataSource = [[VContentThumbnailsDataSource alloc] initWithSequences:recentSequences];
-    self.thumbnailsViewController.collectionView.dataSource = self.thumbnailsDataSource;
-    [self.thumbnailsDataSource registerCellsWithCollectionView:self.thumbnailsViewController.collectionView];
-
     if ( _user.pictureUrl != nil )
     {
         [self.userProfileImage setProfileImageURL:[NSURL URLWithString:_user.pictureUrl]];

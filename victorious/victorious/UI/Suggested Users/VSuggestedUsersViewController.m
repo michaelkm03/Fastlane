@@ -87,7 +87,7 @@ static NSString * const VSuggestedUsersPromptKey    = @"prompt";
         self.salutationContainerHeight.constant = 0.0;
     }
     
-    self.messageTextView.text = @"Come join our community.  We promise that your information is safe with us!  Come join our community."; //[self.dependencyManager stringForKey:VSuggestedUsersPromptKey];
+    self.messageTextView.text = [self.dependencyManager stringForKey:VSuggestedUsersPromptKey];
     self.messageTextView.font = [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
     self.messageTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     

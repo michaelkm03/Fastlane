@@ -18,6 +18,7 @@
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="UX5-Ot-vwr" secondAttribute="trailing" id="JGJ-bh-RZ1"/>
                 <constraint firstItem="UX5-Ot-vwr" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="W8R-Xt-vo0"/>
