@@ -1,5 +1,5 @@
 //
-//  VExpressionController.m
+//  VSequenceExpressionsObserver.m
 //  victorious
 //
 //  Created by Patrick Lynch on 6/16/15.
