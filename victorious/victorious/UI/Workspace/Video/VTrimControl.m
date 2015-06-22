@@ -15,10 +15,10 @@ static const CGFloat kTrimHeadHeight = 44.0f;
 static const CGFloat kTrimHeadInset = 4.0f;
 static const CGFloat kTrimBodyWidth = 5.0f;
 
-CGFloat scaleFactorX = 0.15f; //x-ratio for handle subview on trim control
-CGFloat scaleFactorY = 0.50f; //y-ratio for handle subview on trim control
-CGFloat kLineLength = 1000.0f; //Length of underbar on trim control
-CGFloat kLineThickness = 1.0f; //Thickness of underbar on trim control
+static const CGFloat scaleFactorX = 0.15f; //x-ratio for handle subview on trim control
+static const CGFloat scaleFactorY = 0.50f; //y-ratio for handle subview on trim control
+static const CGFloat kLineLength = 1000.0f; //Length of underbar on trim control
+static const CGFloat kLineThickness = 1.0f; //Thickness of underbar on trim control
 
 @interface VTrimControl () <UICollisionBehaviorDelegate, UIDynamicAnimatorDelegate>
 
@@ -153,8 +153,6 @@ CGFloat kLineThickness = 1.0f; //Thickness of underbar on trim control
     }
 }
 
-
-
 - (UIView *)hitTest:(CGPoint)point
           withEvent:(UIEvent *)event
 {
@@ -228,7 +226,6 @@ CGFloat kLineThickness = 1.0f; //Thickness of underbar on trim control
 
 - (void)panGestureBegan:(UIPanGestureRecognizer *)gestureRecognizer
 {
-  
     self.bodyGestureRecognizer.enabled = (gestureRecognizer == self.bodyGestureRecognizer);
     
    [self.animator removeBehavior:self.clampingBehavior];
@@ -253,7 +250,6 @@ CGFloat kLineThickness = 1.0f; //Thickness of underbar on trim control
 - (void)panGestureFailed:(UIPanGestureRecognizer *)gestureRecognizer
 {
     [self.animator removeBehavior:self.attachmentBehavior];
-  //  [self.animator addBehavior:self.itemBehavior];
     self.bodyGestureRecognizer.enabled = YES;
     self.headGestureRecognizer.enabled = YES;
     
@@ -295,7 +291,7 @@ CGFloat kLineThickness = 1.0f; //Thickness of underbar on trim control
     self.clampingBehavior.frequency = 2;
     self.clampingBehavior.damping = 0.5f;
     self.clampingBehavior.length = 0.0f;
-   [self.animator addBehavior:self.clampingBehavior];
+    [self.animator addBehavior:self.clampingBehavior];
 }
 
 #pragma mark - Convenience accessor

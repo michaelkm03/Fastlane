@@ -22,14 +22,14 @@ static NSString *const emptyCellIdentifier = @"emptyCell";
 
 static const CGFloat kMinimumThumbnailHeight = 70.0f; //The minimum height for the thumbnail preview collection view
 
-CGFloat kHashmarkHeight = 13.0f;
-CGFloat kHashmarkWidth = 2.0f;
+static const CGFloat kHashmarkHeight = 13.0f;
+static const CGFloat kHashmarkWidth = 2.0f;
 
-CGFloat kTimeLabelWidth = 40.0f;
-CGFloat kTimeLabelHeight = 25.0f;
+static const CGFloat kTimeLabelWidth = 40.0f;
+static const CGFloat kTimeLabelHeight = 25.0f;
 
-int kNumberOfHash = 16;
-int kHashesPerTime = 3; //Number hashes per each time label
+static const int kNumberOfHash = 16;
+static const int kHashesPerTime = 3; //Number hashes per each time label
 
 @interface VTrimmerViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
 
@@ -335,13 +335,11 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     self.dimmingViewWidthConstraint.constant = CGRectGetWidth(self.view.bounds) - (CGRectGetWidth(self.view.bounds) * progress);
     [self.view layoutIfNeeded];
     
+    float progressOfThumbs = 1.0f - (self.thumbnailCollectionView.bounds.origin.x / (CGRectGetWidth(self.thumbnailCollectionView.bounds)));
     
-    float result = self.thumbnailCollectionView.bounds.origin.x / (CGRectGetWidth(self.thumbnailCollectionView.bounds));
-    result = 1.0f - result;
-    
-    if (progress > result)
+    if (progress > progressOfThumbs)
     {
-        self.trimControl.trimThumbBody.center = CGPointMake(result*[[[[UIApplication sharedApplication] windows] firstObject] frame].size.width, 94.0f);
+        self.trimControl.trimThumbBody.center = CGPointMake(progressOfThumbs*self.thumbnailCollectionView.bounds.size.width, 94.0f);
     }
 }
 
