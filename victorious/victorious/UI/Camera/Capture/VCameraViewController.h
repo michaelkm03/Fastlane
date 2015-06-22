@@ -36,29 +36,19 @@ typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NS
 @property (nonatomic, assign) BOOL shouldSkipPreview;
 
 /**
- Returns an instance of this class that will initially show a video capture screen.
+ Returns a camera controller with the given dependencyManager.
  */
-+ (VCameraViewController *)cameraViewController;
-
-/**
- Returns an instance of this class that will initially show a still image capture screen.
- */
-+ (VCameraViewController *)cameraViewControllerStartingWithStillCapture;
-
-/**
- Returns an instance of this class that will initially show a still video capture screen.
- */
-+ (VCameraViewController *)cameraViewControllerStartingWithVideoCapture;
++ (VCameraViewController *)cameraViewControllerPhotoVideoWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
  Returns an instance of this class that will only take photos, no video.
  */
-+ (VCameraViewController *)cameraViewControllerLimitedToPhotos;
++ (VCameraViewController *)cameraViewControllerLimitedToPhotosWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
  Returns an instance of this class that will only take video, no photos.
  */
-+ (VCameraViewController *)cameraViewControllerLimitedToVideo;
++ (VCameraViewController *)cameraViewControllerLimitedToVideoWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
  The URL of the media captured by the camera. (May be remote).

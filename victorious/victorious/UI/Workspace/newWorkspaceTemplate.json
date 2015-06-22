@@ -82,6 +82,7 @@
                   ]
     },
     "cameraScreen": {
+        "name": "camera.screen",
         "closeIcon": {
             "imageURL": "cameraButtonClose"
         },

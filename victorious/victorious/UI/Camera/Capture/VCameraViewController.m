@@ -38,6 +38,16 @@ static const NSTimeInterval kCameraShutterShrinkDuration = 0.15;
 static const CGFloat kGradientMagnitude = 20.0f;
 static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 
+static NSString * const kCameraScreenKey = @"cameraScreen";
+static NSString * const kCloseIconKey = @"closeIcon";
+static NSString * const kReverseCameraIconKey = @"reverseCameraIcon";
+static NSString * const kFlashIconKey = @"flashIcon";
+static NSString * const kDisableFlashIconKey = @"disableFlashIcon";
+static NSString * const kGalleryIconKey = @"galleryIcon";
+static NSString * const kSearchIconKey = @"searchIcon";
+static NSString * const kTrashIconKey = @"trashIcon";
+static NSString * const kContinueIconKey = @"continueIcon";
+
 typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 {
     VCameraViewControllerStateDefault,
@@ -105,33 +115,29 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 
 @implementation VCameraViewController
 
-+ (VCameraViewController *)cameraViewController
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    return [[UIStoryboard storyboardWithName:@"Camera" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
-}
-
-+ (VCameraViewController *)cameraViewControllerStartingWithStillCapture
-{
-    VCameraViewController *cameraViewController = [self cameraViewController];
+    VCameraViewController *cameraViewController = [[UIStoryboard storyboardWithName:@"Camera" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
+    cameraViewController.dependencyManager = dependencyManager;
     return cameraViewController;
 }
 
-+ (VCameraViewController *)cameraViewControllerStartingWithVideoCapture
++ (VCameraViewController *)cameraViewControllerPhotoVideoWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    VCameraViewController *cameraViewController = [self cameraViewController];
+    VCameraViewController *cameraViewController = [dependencyManager templateValueOfType:[VCameraViewController class] forKey:kCameraScreenKey];
     return cameraViewController;
 }
 
-+ (VCameraViewController *)cameraViewControllerLimitedToPhotos
++ (VCameraViewController *)cameraViewControllerLimitedToPhotosWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    VCameraViewController *cameraViewController = [self cameraViewController];
+    VCameraViewController *cameraViewController = [dependencyManager templateValueOfType:[VCameraViewController class] forKey:kCameraScreenKey];
     cameraViewController.allowVideo = NO;
     return cameraViewController;
 }
 
-+ (VCameraViewController *)cameraViewControllerLimitedToVideo
++ (VCameraViewController *)cameraViewControllerLimitedToVideoWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    VCameraViewController *cameraViewController = [self cameraViewController];
+    VCameraViewController *cameraViewController = [dependencyManager templateValueOfType:[VCameraViewController class] forKey:kCameraScreenKey];
     cameraViewController.allowPhotos = NO;
     return cameraViewController;
 }
@@ -176,6 +182,13 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 {
     [super viewDidLoad];
     
+    [self.closeButton setImage:[self.dependencyManager imageForKey:kCloseIconKey] forState:UIControlStateNormal];
+    [self.switchCameraButton setImage:[self.dependencyManager imageForKey:kReverseCameraIconKey] forState:UIControlStateNormal];
+    [self.flashButton setImage:[self.dependencyManager imageForKey:kFlashIconKey] forState:UIControlStateNormal];
+    [self.flashButton setImage:[self.dependencyManager imageForKey:kDisableFlashIconKey] forState:UIControlStateSelected];
+    [self.openAlbumButton setImage:[self.dependencyManager imageForKey:kGalleryIconKey] forState:UIControlStateNormal];
+    [self.searchButton setImage:[self.dependencyManager imageForKey:kSearchIconKey] forState:UIControlStateNormal];
+    
     self.cameraControl = [[VCameraControl alloc] initWithFrame:self.cameraControlContainer.bounds];
     self.cameraControl.translatesAutoresizingMaskIntoConstraints = NO;
     self.cameraControl.autoresizingMask = UIViewAutoresizingNone;
@@ -195,10 +208,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 
     UITapGestureRecognizer *focusTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(focus:)];
     [self.previewView addGestureRecognizer:focusTap];
-    
-    UIImage *flashOnImage = [self.flashButton imageForState:UIControlStateSelected];
-    [self.flashButton setImage:flashOnImage forState:(UIControlStateSelected | UIControlStateHighlighted)];
-    [self.flashButton setImage:flashOnImage forState:(UIControlStateSelected | UIControlStateDisabled)];
+
     
     [self.cameraControl addTarget:self
                            action:@selector(capturePhoto:)
@@ -238,6 +248,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 {
     [super viewWillAppear:animated];
     
+    self.cameraControl.defaultTintColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     [self.cameraControl restoreCameraControlToDefault];
     
     self.navigationController.navigationBarHidden = YES;

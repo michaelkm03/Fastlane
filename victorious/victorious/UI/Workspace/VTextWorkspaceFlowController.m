@@ -142,7 +142,7 @@
 
 - (UIViewController *)createCameraViewController
 {
-    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerLimitedToPhotos];
+    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerLimitedToPhotosWithDependencyManager:self.dependencyManager];
     cameraViewController.shouldSkipPreview = YES;
     if ([cameraViewController respondsToSelector:@selector(setDependencyManager:)])
     {

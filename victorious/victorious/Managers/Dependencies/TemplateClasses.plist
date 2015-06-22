@@ -58,6 +58,8 @@
 	<string>VHashtagTool</string>
 	<key>textColor.tool</key>
 	<string>VTextColorTool</string>
+	<key>camera.screen</key>
+	<string>VCameraViewController</string>
 	<key>workspace.screen</key>
 	<string>VWorkspaceViewController</string>
 	<key>workspace</key>
