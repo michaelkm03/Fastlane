@@ -14,6 +14,7 @@
 #import "VDependencyManager+VUserProfile.h"
 #import "VScrollPaginator.h"
 #import "VNoContentView.h"
+#import "VNavigationController.h"
 
 @interface VUsersViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, VScrollPaginatorDelegate>
 
@@ -80,6 +81,7 @@
     
     [self refershControlAction:refreshControl];
     
+    self.edgesForExtendedLayout = UIRectEdgeBottom;
     self.extendedLayoutIncludesOpaqueBars = YES;
 }
 

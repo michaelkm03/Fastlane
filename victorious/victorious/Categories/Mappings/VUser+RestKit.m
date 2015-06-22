@@ -177,7 +177,13 @@
                                                           method:RKRequestMethodAny
                                                      pathPattern:@"/api/hashtag/subscribed_to_list"
                                                          keyPath:@"payload"
-                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
+             [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                          method:RKRequestMethodGET
+                                                     pathPattern:@"/api/sequence/liked_by_users/:sequenceId/:page/:perpage"
+                                                         keyPath:@"payload.users"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
              ];
 }
 
