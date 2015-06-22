@@ -1,5 +1,5 @@
 //
-//  VCreatorMessageView.h
+//  VCreatorMessageViewController.h
 //  victorious
 //
 //  Created by Patrick Lynch on 6/10/15.
@@ -12,12 +12,10 @@
 @class VDependencyManager;
 
 /**
- A reuable view that shows some text as a quote from the creator,
+ A reuable view controller that shows some text as a quote from the creator,
  using an avatar and creator name as a salutation.
  */
-@interface VCreatorMessageView : UIView <VHasManagedDependencies>
-
-+ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
+@interface VCreatorMessageViewController : UIViewController <VHasManagedDependencies>
 
 /**
  The messages to display, appearing beneath styled quotes as if spoken by the creator.

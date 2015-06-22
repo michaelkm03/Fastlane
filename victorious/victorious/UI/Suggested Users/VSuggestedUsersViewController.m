@@ -9,7 +9,7 @@
 #import "VSuggestedUsersViewController.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VSuggestedUsersDataSource.h"
-#import "VCreatorMessageView.h"
+#import "VCreatorMessageViewController.h"
 #import "UIView+AutoLayout.h"
 #import "VLoginFlowControllerDelegate.h"
 
@@ -25,7 +25,7 @@ static NSString * const kBarButtonTintColorKey = @"color.text.label3";
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VSuggestedUsersDataSource *suggestedUsersDataSource;
-@property (nonatomic, strong) VCreatorMessageView *creatorMessageViewController;
+@property (nonatomic, strong) VCreatorMessageViewController *creatorMessageViewController;
 
 @property (nonatomic, assign) BOOL didTransitionIn;
 @property (nonatomic, readonly) BOOL isFinalRegistrationScreen;
@@ -57,11 +57,13 @@ static NSString * const kBarButtonTintColorKey = @"color.text.label3";
                                VDependencyManagerMainTextColorKey : [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey],
                                VDependencyManagerSecondaryTextColorKey : [self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey] };
     VDependencyManager *creatorMessageComponent = [self.dependencyManager childDependencyManagerWithAddedConfiguration:mapping];
-    self.creatorMessageViewController = [VCreatorMessageView newWithDependencyManager:creatorMessageComponent];
+    self.creatorMessageViewController = [[VCreatorMessageViewController alloc] initWithDependencyManager:creatorMessageComponent];
     [self.creatorMessageViewController setMessage:[self.dependencyManager stringForKey:@"prompt"]];
-    [self.creatorMessageContainer addSubview:self.creatorMessageViewController];
-    [self.creatorMessageContainer v_addFitToParentConstraintsToSubview:self.creatorMessageViewController];
-    self.creatorMessageContainerHeight.constant = CGRectGetHeight(self.creatorMessageViewController.bounds);
+    [self.creatorMessageViewController willMoveToParentViewController:self];
+    [self.creatorMessageContainer addSubview:self.creatorMessageViewController.view];
+    [self.creatorMessageViewController didMoveToParentViewController:self];
+    [self.creatorMessageContainer v_addFitToParentConstraintsToSubview:self.creatorMessageViewController.view];
+    self.creatorMessageContainerHeight.constant = CGRectGetHeight(self.creatorMessageViewController.view.bounds);
     [self.creatorMessageContainer layoutIfNeeded];
     
     self.collectionView.delegate = self;

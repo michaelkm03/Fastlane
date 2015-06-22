@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="MuseoSans-300.otf">
+            <string>MuseoSans-300</string>
+        </mutableArray>
+        <mutableArray key="MuseoSans-500.otf">
+            <string>MuseoSans-500</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VCreatorMessageViewController">
+            <connections>
+                <outlet property="creatorAvatarImageView" destination="sIf-Kz-zE1" id="XPL-mg-o0u"/>
+                <outlet property="creatorNameLabel" destination="ndG-ND-XUR" id="9Ec-ge-2W6"/>
+                <outlet property="messageTextView" destination="aEi-MR-XFi" id="euR-uN-A5F"/>
+                <outlet property="quoteImageView" destination="Tch-CG-izx" id="fDR-BQ-arW"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="252" height="329"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Pq-eX-erM" userLabel="Content Container">
+                    <rect key="frame" x="0.0" y="0.0" width="252" height="329"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" alpha="0.29999999999999999" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="quote" translatesAutoresizingMaskIntoConstraints="NO" id="Tch-CG-izx" userLabel="Quote">
+                            <rect key="frame" x="0.0" y="35" width="31" height="23"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="31" id="Dkb-K3-UZg"/>
+                                <constraint firstAttribute="height" constant="23" id="P16-jw-QUI"/>
+                            </constraints>
+                        </imageView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YQr-hb-vIj" userLabel="Salutation Container">
+                            <rect key="frame" x="0.0" y="270" width="252" height="55"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1" text="Creator Salutation (Could be this long)" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ndG-ND-XUR" userLabel="Creator Name">
+                                    <rect key="frame" x="59" y="6" width="193" height="41"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="41" id="hUo-7j-Jk7"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="MuseoSans-300" family="Museo Sans" pointSize="11"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="creator-avatar.png" translatesAutoresizingMaskIntoConstraints="NO" id="sIf-Kz-zE1" userLabel="Creator Image">
+                                    <rect key="frame" x="16" y="8" width="35" height="36"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="36" id="I7r-NZ-gJy"/>
+                                        <constraint firstAttribute="width" constant="35" id="oN0-x1-3h5"/>
+                                    </constraints>
+                                </imageView>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="sIf-Kz-zE1" firstAttribute="centerY" secondItem="ndG-ND-XUR" secondAttribute="centerY" constant="-0.5" id="5hg-pO-kJ8"/>
+                                <constraint firstAttribute="trailing" secondItem="ndG-ND-XUR" secondAttribute="trailing" id="BeV-pH-5KO"/>
+                                <constraint firstAttribute="centerY" secondItem="ndG-ND-XUR" secondAttribute="centerY" constant="1" id="N1W-Qb-Jb6"/>
+                                <constraint firstAttribute="height" constant="55" id="dPk-pJ-xri"/>
+                                <constraint firstItem="ndG-ND-XUR" firstAttribute="leading" secondItem="sIf-Kz-zE1" secondAttribute="trailing" constant="8" id="lg8-ID-Pve"/>
+                            </constraints>
+                        </view>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="aEi-MR-XFi" userLabel="Product Description">
+                            <rect key="frame" x="0.0" y="65" width="252" height="200"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" priority="1" constant="208" id="YiT-an-SoQ"/>
+                            </constraints>
+                            <string key="text">Come join our community.
+We promise that your information is safe with us!  Come join our community.
+We promise that your information is safe with us!  Come join our community.
+We promise that your information is safe with us!</string>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" name="MuseoSans-500" family="Museo Sans" pointSize="17"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                        </textView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="Tch-CG-izx" firstAttribute="leading" secondItem="4Pq-eX-erM" secondAttribute="leading" id="BDn-FF-28P"/>
+                        <constraint firstAttribute="centerY" secondItem="aEi-MR-XFi" secondAttribute="centerY" constant="-0.5" id="QbI-yW-BUM"/>
+                        <constraint firstItem="aEi-MR-XFi" firstAttribute="top" secondItem="Tch-CG-izx" secondAttribute="bottom" constant="7" id="S3M-U2-bkI"/>
+                        <constraint firstAttribute="trailing" secondItem="aEi-MR-XFi" secondAttribute="trailing" id="Tf4-9Y-WqQ"/>
+                        <constraint firstItem="YQr-hb-vIj" firstAttribute="leading" secondItem="4Pq-eX-erM" secondAttribute="leading" id="Zz8-4W-ip3"/>
+                        <constraint firstAttribute="trailing" secondItem="YQr-hb-vIj" secondAttribute="trailing" id="hM5-dA-Loa"/>
+                        <constraint firstItem="YQr-hb-vIj" firstAttribute="top" secondItem="aEi-MR-XFi" secondAttribute="bottom" constant="5" id="i0d-uq-PB5"/>
+                        <constraint firstItem="aEi-MR-XFi" firstAttribute="leading" secondItem="4Pq-eX-erM" secondAttribute="leading" id="wob-bg-zle"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="4Pq-eX-erM" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="6H7-nR-Ime"/>
+                <constraint firstItem="4Pq-eX-erM" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="CDI-8t-qb2"/>
+                <constraint firstAttribute="trailing" secondItem="4Pq-eX-erM" secondAttribute="trailing" id="E8G-e8-t0M"/>
+                <constraint firstAttribute="bottom" secondItem="4Pq-eX-erM" secondAttribute="bottom" id="xsr-55-2In"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="385" y="598"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="creator-avatar.png" width="32" height="32"/>
+        <image name="quote" width="31" height="23"/>
+    </resources>
+</document>

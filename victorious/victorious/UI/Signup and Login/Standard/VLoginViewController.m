@@ -28,7 +28,7 @@
 #import "MBProgressHUD.h"
 #import "UIView+AutoLayout.h"
 #import "VDependencyManager.h"
-#import "VCreatorMessageView.h"
+#import "VCreatorMessageViewController.h"
 #import "UIAlertView+VBlocks.h"
 #import "VDependencyManager+VTracking.h"
 #import "VTwitterAccountsHelper.h"
@@ -54,7 +54,7 @@
 @property (nonatomic, strong) VLinkTextViewHelper *linkTextHelper;
 @property (nonatomic, weak) IBOutlet VAuthorizationContextHelper *authorizationContextHelper;
 
-@property (nonatomic, strong) VCreatorMessageView *creatorMessageView;
+@property (nonatomic, strong) VCreatorMessageViewController *creatorMessageView;
 
 @end
 
@@ -123,10 +123,12 @@
     [self.view v_addFitToParentConstraintsToSubview:self.blurredBackgroundView];
     
     NSString *authorizationContextText = [self.authorizationContextHelper textForContext:self.authorizationContextType];
-    self.creatorMessageView = [[VCreatorMessageView alloc] initWithDependencyManager:self.dependencyManager];
+    self.creatorMessageView = [[VCreatorMessageViewController alloc] initWithDependencyManager:self.dependencyManager];
     [self.creatorMessageView setMessage:authorizationContextText];
-    [self.creatorMessgeContainerView addSubview:self.creatorMessageView];
-    [self.creatorMessgeContainerView v_addFitToParentConstraintsToSubview:self.creatorMessageView];
+    [self.creatorMessageView willMoveToParentViewController:self];
+    [self.creatorMessgeContainerView addSubview:self.creatorMessageView.view];
+    [self.creatorMessageView didMoveToParentViewController:self];
+    [self.creatorMessgeContainerView v_addFitToParentConstraintsToSubview:self.creatorMessageView.view];
     
     // Some prep for VPresentWithBlurViewController animation (this is the order elements animate on screen)
     NSArray *elementsArray = @[ self.creatorMessageView.view,
@@ -351,7 +353,7 @@
 {
     VRegistrationModel *registrationModelForUser = [VRegistrationModel registrationModelWithUser:self.profile];
     
-    if ( [segue.destinationViewController isKindOfClass:[VCreatorMessageView class]] )
+    if ( [segue.destinationViewController isKindOfClass:[VCreatorMessageViewController class]] )
     {
         // Get reference to the embedded container view from storybaord
         self.creatorMessageView = segue.destinationViewController;
