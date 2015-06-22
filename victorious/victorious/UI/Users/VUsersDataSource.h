@@ -29,10 +29,22 @@
  */
 - (NSArray *)users;
 
+/**
+ The title to be displayed in a no content view when the data source returns
+ no results.
+ */
 - (NSString *)noContentTitle;
 
+/**
+ The longer, more detailed message to be displayed in a no content view when
+ the data source returns no results.
+ */
 - (NSString *)noContentMessage;
 
+/**
+ An image to accompany the `noContentTitle` and `noContentMessage` text when
+ the data source returns no results.
+ */
 - (UIImage *)noContentImage;
 
 @end

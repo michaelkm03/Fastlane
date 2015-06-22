@@ -12,8 +12,15 @@
 
 @class VUser;
 
+/**
+ An object designed to be plugged in to an instance of VUsersViewController that
+ provides user data for a list of followers for the provided user.
+ */
 @interface VFollowersDataSource : NSObject <VUsersDataSource>
 
+/**
+ Initializer requiring a VUser object from which to load followers of this user.
+ */
 - (instancetype)initWithUser:(VUser *)user NS_DESIGNATED_INITIALIZER;
 
 @end

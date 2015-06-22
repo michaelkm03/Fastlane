@@ -14,6 +14,9 @@
 
 @interface VUserIsFollowingDataSource : NSObject <VUsersDataSource>
 
+/**
+ Initializer requiring a VUser object from which to load users being followed by this users.
+ */
 - (instancetype)initWithUser:(VUser *)user NS_DESIGNATED_INITIALIZER;
 
 @end

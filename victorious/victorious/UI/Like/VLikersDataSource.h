@@ -12,8 +12,16 @@
 
 @class VSequence;
 
+/**
+ An object designed to be plugged into VUsersViewController's collection view
+ to display a list of users that like the sequence provided.  This class handles
+ loading the data and making it available for display.
+ */
 @interface VLikersDataSource : NSObject <VUsersDataSource>
 
-- (instancetype)initWithUser:(VSequence *)sequence NS_DESIGNATED_INITIALIZER;
+/**
+ Initializer requiring a VSequence obejct from which to load likers.
+ */
+- (instancetype)initWithSequence:(VSequence *)sequence NS_DESIGNATED_INITIALIZER;
 
 @end

@@ -7,13 +7,12 @@
 //
 
 #import "VWorkspaceTool.h"
-#import "VActiveButton.h"
 
 /**
  *  VRoundedBackgroundButtons draw a colored circle behind an icon for the button.
  *  Color swaps between selected and unselected variants.
  */
-@interface VRoundedBackgroundButton : UIButton <VActiveButton>
+@interface VRoundedBackgroundButton : UIButton
 
 /**
  *  A color representing the selected state.
@@ -25,17 +24,27 @@
  */
 @property (nonatomic, copy) UIColor *unselectedColor;
 
+@property (nonatomic, weak) id associatedObjectForButton;
+
 /**
- *  A color representing the unselected state.
+ *  A color representing the active state.
  */
 @property (nonatomic, copy) UIColor *activeColor;
 
-@property (nonatomic, weak) id associatedObjectForButton;
-
+/**
+ The default image to show for the active state.
+ */
 @property (nonatomic, strong) UIImage *activeImage;
 
+/**
+ The default image to show for unselected and inactive state.
+ */
 @property (nonatomic, strong) UIImage *inactiveImage;
 
+/**
+ Uses the the activeImage and activeColor properties to update the appearance
+ of the button
+ */
 @property (nonatomic, assign, getter=isActive) BOOL active;
 
 @end

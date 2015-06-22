@@ -7,9 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VActiveButton.h"
 
-@interface VActionButton : UIButton <VActiveButton>
+/**
+ Button designed for use in stream cells that provides an extended interface
+ to help customize images and colors, as well as adds an `active` state to provide
+ toggle functionality, such as for liking an item.
+ */
+@interface VActionButton : UIButton
 
 + (VActionButton *)actionButtonWithImage:(UIImage *)inactiveImage
                              activeImage:(UIImage *)activeImage;
@@ -18,8 +22,15 @@
                              activeImage:(UIImage *)activeImage
                          backgroundImage:(UIImage *)backgroundImage;
 
+/**
+ Uses the the activeImage and activeColor properties to update the appearance
+ of the button
+ */
 @property (nonatomic, assign, getter=isActive) BOOL active;
 
+/**
+ *  A color representing the active state.
+ */
 @property (nonatomic, copy) UIColor *activeColor;
 
 @end

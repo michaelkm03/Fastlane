@@ -10,6 +10,11 @@
 
 @class VUser, VDependencyManager;
 
+/**
+ A collection view cell designed to display profile, name and other information about a user.
+ Also includes a follow toggle button so that the user can be followed or unfollowed when
+ displayed in a collection view.
+ */
 @interface VUserCell : UICollectionViewCell
 
 + (NSString *)suggestedReuseIdentifier;

@@ -7,7 +7,6 @@
 //
 
 #import "VLikersDataSource.h"
-#import "VSequence.h"
 #import "VObjectManager+Pagination.h"
 
 @interface VLikersDataSource ()
@@ -19,7 +18,7 @@
 
 @implementation VLikersDataSource
 
-- (instancetype)initWithUser:(VSequence *)sequence
+- (instancetype)initWithSequence:(VSequence *)sequence
 {
     NSParameterAssert( sequence != nil );
     

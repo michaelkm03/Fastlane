@@ -1796,7 +1796,6 @@
 		A7724FE71B32498900B1BBB3 /* VSequenceActionResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceActionResponder.h; sourceTree = "<group>"; };
 		A7724FEB1B33422B00B1BBB3 /* VActionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionButton.h; sourceTree = "<group>"; };
 		A7724FEC1B33422B00B1BBB3 /* VActionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionButton.m; sourceTree = "<group>"; };
-		A7724FEE1B33424400B1BBB3 /* VActiveButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActiveButton.h; sourceTree = "<group>"; };
 		A7724FF81B33905000B1BBB3 /* VSequenceCountsTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceCountsTextView.h; sourceTree = "<group>"; };
 		A7724FF91B33905000B1BBB3 /* VSequenceCountsTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceCountsTextView.m; sourceTree = "<group>"; };
 		A7738B001A4A35DF008EA973 /* VSimpleModalTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSimpleModalTransition.h; sourceTree = "<group>"; };
@@ -5929,7 +5928,6 @@
 				D8FFB8E11B0272540022A491 /* VStreamLabel.m */,
 				A7724FEB1B33422B00B1BBB3 /* VActionButton.h */,
 				A7724FEC1B33422B00B1BBB3 /* VActionButton.m */,
-				A7724FEE1B33424400B1BBB3 /* VActiveButton.h */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
