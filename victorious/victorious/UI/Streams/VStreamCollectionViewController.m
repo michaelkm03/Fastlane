@@ -974,8 +974,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
                                                                      forKey:kMemeStreamKey
                                                       withAddedDependencies:@{ kSequenceIDKey: sequenceID }];
     
-    memeStream.navigationItem.title = NSLocalizedString(@"Memes", nil);
-    memeStream.currentStream.name = NSLocalizedString(@"Memes", nil);
+    memeStream.navigationItem.title = NSLocalizedString(memeStream.currentStream.name, nil);
     memeStream.isRemixView = YES;
     
     VNoContentView *noMemeView = [VNoContentView noContentViewWithFrame:memeStream.view.bounds];
@@ -998,8 +997,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
                                                                     forKey:kGifStreamKey
                                                      withAddedDependencies:@{ kSequenceIDKey: sequenceID }];
     
-    gifStream.navigationItem.title = NSLocalizedString(@"Gifs", nil);
-    gifStream.currentStream.name = NSLocalizedString(@"Gifs", nil);
+    gifStream.navigationItem.title = NSLocalizedString(gifStream.currentStream.name, nil);
     gifStream.isRemixView = YES;
     
     VNoContentView *noGifView = [VNoContentView noContentViewWithFrame:gifStream.view.bounds];

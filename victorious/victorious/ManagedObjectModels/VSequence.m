@@ -38,6 +38,8 @@
 @dynamic repostCount;
 @dynamic sequenceDescription;
 @dynamic status;
+@dynamic previewData;
+@dynamic previewType;
 @dynamic adBreaks;
 @dynamic comments;
 @dynamic endCard;
