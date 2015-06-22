@@ -125,7 +125,7 @@ static const CGFloat kMinimumThumbnailHeight = 70.0f; //The minimum height for t
     {
         Float64 progress = (CMTimeGetSeconds(currentPlayTime) - CMTimeGetSeconds([self currentTimeOffset])) / CMTimeGetSeconds(self.maximumTrimDuration);
         CGFloat playbackOverlayWidth = CGRectGetWidth(self.view.bounds) * progress;
-        self.currentPlayBackWidthConstraint.constant = (playbackOverlayWidth >= 0) ? playbackOverlayWidth : 0.0f;
+        self.currentPlayBackWidthConstraint.constant = (playbackOverlayWidth >= 0) ? (playbackOverlayWidth-5.0f) : 0.0f;
         [self.view layoutIfNeeded];
     }
 }
@@ -335,8 +335,6 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     {
         self.trimControl.trimThumbBody.center = CGPointMake(result*[[[[UIApplication sharedApplication] windows] firstObject] frame].size.width, 94.0f);
     }
-    NSLog(@"result: %f", result);
-    NSLog(@"result 2: %f", progress);
 }
 
 
@@ -418,7 +416,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 - (void)prepareDimmingView
 {
     self.trimDimmingView = [[UIView alloc] initWithFrame:self.view.bounds];
-    self.trimDimmingView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
+    self.trimDimmingView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.0f];
     self.trimDimmingView.userInteractionEnabled = NO;
     [self.view addSubview:self.trimDimmingView];
     self.trimDimmingView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -492,24 +490,26 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     self.currentPlayBackOverlayView.backgroundColor = [UIColor colorWithRed:237.0f/255.0f green:28.0f/255.0f blue:36.0f/255.0f alpha:0.3f];
     [self.view addSubview:self.currentPlayBackOverlayView];
     self.currentPlayBackOverlayView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[overlayView]"
+    
+   [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[overlayView]"
                                                                       options:kNilOptions
                                                                       metrics:nil
                                                                         views:@{@"overlayView":self.currentPlayBackOverlayView}]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.currentPlayBackOverlayView
+  [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.currentPlayBackOverlayView
                                                           attribute:NSLayoutAttributeTop
                                                           relatedBy:NSLayoutRelationEqual
                                                              toItem:self.thumbnailCollectionView
                                                           attribute:NSLayoutAttributeTop
                                                          multiplier:1.0f
                                                            constant:0.0f]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.currentPlayBackOverlayView
+   [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.currentPlayBackOverlayView
                                                           attribute:NSLayoutAttributeBottom
                                                           relatedBy:NSLayoutRelationEqual
                                                              toItem:self.thumbnailCollectionView
                                                           attribute:NSLayoutAttributeBottom
                                                          multiplier:1.0f
                                                            constant:0.0f]];
+  
     self.currentPlayBackWidthConstraint = [NSLayoutConstraint constraintWithItem:self.currentPlayBackOverlayView
                                                                        attribute:NSLayoutAttributeWidth
                                                                        relatedBy:NSLayoutRelationEqual
@@ -528,8 +528,8 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 
 - (void)prepareHashmarks
 {
-    CGFloat kHashmarkHeight = 10.0f;
-    CGFloat kHashmarkWidth = 3.0f;
+    CGFloat kHashmarkHeight = 13.0f;
+    CGFloat kHashmarkWidth = 2.0f;
     
     CGFloat kTimeLabelWidth = 40.0f;
     CGFloat kTimeLabelHeight = 25.0f;
@@ -554,19 +554,17 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
         {
             UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,
                                                                            -kTimeLabelHeight - kHashmarkHeight,
-                                                                           kTimeLabelWidth, kTimeLabelHeight)];
+                                                                           kTimeLabelWidth,
+                                                                           kTimeLabelHeight)];
             timeLabel.textAlignment = NSTextAlignmentCenter;
             float time = startTime + (timeDiff*i);
-            
             timeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)time/60, (int)time%60];
             
             timeLabel.textColor = [UIColor lightGrayColor];
             timeLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
             timeLabel.center = CGPointMake(hashmark.center.x, timeLabel.center.y);
             
-            
             [self.thumbnailCollectionView addSubview:timeLabel];
-            
         }
     }
 }

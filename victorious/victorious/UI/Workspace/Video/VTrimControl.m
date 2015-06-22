@@ -32,7 +32,6 @@ static const CGFloat kTrimBodyWidth = 5.0f;
 @property (nonatomic, strong) UIAttachmentBehavior *attachmentBehavior;
 @property (nonatomic, strong) UIAttachmentBehavior *clampingBehavior;
 @property (nonatomic, strong) UICollisionBehavior *collisionBehavior;
-@property (nonatomic, strong) UIDynamicItemBehavior *itemBehavior;
 
 @property (nonatomic, assign) BOOL hasPerformedInitialLayout;
 
@@ -118,7 +117,7 @@ static const CGFloat kTrimBodyWidth = 5.0f;
                                           3*kTrimBodyWidth,
                                           previewHeight - 4.0f);
     CGFloat scaleFactorX = 0.15f;
-    CGFloat scaleFactorY = 0.45f;
+    CGFloat scaleFactorY = 0.50f;
     UIView *innerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.trimThumbBody.frame.size.width*scaleFactorX, self.trimThumbBody.frame.size.height*scaleFactorY)];
     innerView.center = self.trimThumbBody.center;
     innerView.backgroundColor = [UIColor colorWithWhite:0.8f alpha:1.0f];
