@@ -3,35 +3,35 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>${ProductPrefix}Impaulsive</string>
+	<string>${ProductPrefix}DigiTour Official App</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}loganpaul</string>
+	<string>com.getvictorious.${ProductPrefix}digitourofficialapp</string>
 	<key>CFBundleName</key>
-	<string>${ProductPrefix}Impaulsive</string>
+	<string>${ProductPrefix}DigiTourOfficialApp</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb474729179357119</string>
+				<string>fb639394799494167</string>
 			</array>
 		</dict>
 	</array>
 	<key>FacebookAppID</key>
-	<string>474729179357119</string>
+	<string>639394799494167</string>
 	<key>TWITTER_CONSUMER_KEY</key>
-	<string>XXdBky081yIvqIRNSMmtoKALD</string>
+	<string>JMsKdsqWYTvlE5Tvb2QWRJNbM</string>
 	<key>TWITTER_CONSUMER_SECRET</key>
-	<string>E80BvhmMnKmu4z8qLmQxp75P7GRqJkusQKtgEBE467nC8i703B</string>
+	<string>wZPg9GZojhaGZTKOY6ODZpBFmAs8Ea1G5fhioGkGgJ5ySrlfpw</string>
 	<key>VictoriousAppID</key>
-	<integer>58</integer>
+	<integer>59</integer>
 	<key>StagingAppID</key>
-	<integer>73</integer>
+	<integer>74</integer>
 	<key>QAAppID</key>
-	<integer>55</integer>
+	<integer>56</integer>
 	<key>CreatorSalutation</key>
-	<string>Impaulsive</string>
+	<string>DigiTour Official App</string>
 	<key>FlurryAPIKey</key>
-	<string>52BPCHVSMJRXV2GG68GB</string>
+	<string>XQW49HP6WX3SGG7GV6GQ</string>
 </dict>
 </plist>
