@@ -130,7 +130,7 @@ static const int kHashesPerTime = 3; //Number hashes per each time label
     if (CMTIME_COMPARE_INLINE(currentPlayTime, >, kCMTimeZero))
     {
         Float64 progress = (CMTimeGetSeconds(currentPlayTime) - CMTimeGetSeconds([self currentTimeOffset])) / CMTimeGetSeconds(self.maximumTrimDuration);
-        CGFloat playbackOverlayWidth = (CGRectGetWidth(self.view.bounds) * progress) - (self.trimControl.trimThumbBody.frame.size.width/2);
+        CGFloat playbackOverlayWidth = (CGRectGetWidth(self.view.bounds) * progress) - (CGRectGetWidth(self.trimControl.trimThumbBody.frame)/2);
     
         self.currentPlayBackWidthConstraint.constant = (playbackOverlayWidth >= 0) ? playbackOverlayWidth  : 0.0f;
 
@@ -339,10 +339,9 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     
     if (progress > progressOfThumbs)
     {
-        self.trimControl.trimThumbBody.center = CGPointMake(progressOfThumbs*self.thumbnailCollectionView.bounds.size.width, 94.0f);
+        self.trimControl.trimThumbBody.center = CGPointMake(progressOfThumbs*CGRectGetWidth(self.thumbnailCollectionView.bounds), 94.0f);
     }
 }
-
 
 - (void)updateTrimControlTitleWithTime:(CMTime)time
 {
@@ -476,7 +475,6 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
                                                           attribute:NSLayoutAttributeBottom
                                                          multiplier:1.0f
                                                            constant:0.0f]];
-    
     self.currentPlayBackWidthConstraint = [NSLayoutConstraint constraintWithItem:self.currentPlayBackOverlayView
                                                                        attribute:NSLayoutAttributeWidth
                                                                        relatedBy:NSLayoutRelationEqual
@@ -503,7 +501,8 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     
     for (int i = 0; i < kNumberOfHash; i++)
     {
-        UIView  *hashmark = [[UIView alloc] initWithFrame:CGRectMake(i*spacing,  -kHashmarkHeight, kHashmarkWidth, kHashmarkHeight)];
+        CGRect frame = CGRectMake(i*spacing,  -kHashmarkHeight, kHashmarkWidth, kHashmarkHeight);
+        UIView *hashmark = [[UIView alloc] initWithFrame:frame];
         hashmark.backgroundColor = [UIColor lightGrayColor];
         hashmark.clipsToBounds = NO;
         [self.thumbnailCollectionView addSubview:hashmark];

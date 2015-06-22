@@ -117,15 +117,16 @@ static const CGFloat kLineThickness = 1.0f; //Thickness of underbar on trim cont
     //The added 1s avoid a small visible divide between the thumb head and the trimmer line
     self.trimThumbBody.frame = CGRectMake(0.0f,
                                           0.0f,
-                                          3*kTrimBodyWidth,
+                                          3 * kTrimBodyWidth,
                                           previewHeight - 4.0f);
 
-    UIView *innerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.trimThumbBody.frame.size.width*scaleFactorX, self.trimThumbBody.frame.size.height*scaleFactorY)];
+    CGRect rect = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.trimThumbBody.frame) * scaleFactorX, CGRectGetHeight(self.trimThumbBody.frame) * scaleFactorY);
+    UIView *innerView = [[UIView alloc] initWithFrame:rect];
     innerView.center = self.trimThumbBody.center;
     innerView.backgroundColor = [UIColor colorWithWhite:0.8f alpha:1.0f];
     
-    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(self.trimThumbBody.frame.size.width - kLineLength, -kLineThickness, kLineLength, kLineThickness)];
-    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(self.trimThumbBody.frame.size.width - kLineLength, self.trimThumbBody.frame.size.height, kLineLength, kLineThickness)];
+    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.trimThumbBody.frame) - kLineLength, -kLineThickness, kLineLength, kLineThickness)];
+    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.trimThumbBody.frame) - kLineLength, CGRectGetHeight(self.trimThumbBody.frame), kLineLength, kLineThickness)];
 
     topLine.backgroundColor = [UIColor whiteColor];
     bottomLine.backgroundColor = [UIColor whiteColor];
