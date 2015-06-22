@@ -15,7 +15,6 @@
 #import "VNode+Fetcher.h"
 #import "VSequence+Fetcher.h"
 #import "VStream+Fetcher.h"
-#import "VUser+Fetcher.h"
 #import "VTracking.h"
 
 #pragma mark - Controllers
@@ -368,62 +367,29 @@
 {
     NSString *shareText = @"";
 
-    if ([sequence.user isOwner])
+    if ([sequence isPoll])
     {
-        if ([sequence isPoll])
-        {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerSharePollFormat", nil), sequence.user.name];
-        }
-        else if ([sequence isVideo])
-        {
-            if (sequence.name.length > 0)
-            {
-                shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormat", nil), sequence.name, sequence.user.name];
-            }
-            else
-            {
-                shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareVideoFormatNoVideoName", nil), sequence.user.name];
-            }
-        }
-        else if ([sequence isImage])
-        {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareImageFormat", nil), sequence.user.name];
-        }
-        else if ([sequence isText])
-        {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareTextFormat", nil), sequence.user.name];
-        }
-        else
-        {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"OwnerShareLinkFormat", nil), sequence.user.name];
-        }
+        shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCSharePollFormat", nil), sequence.user.name];
+    }
+    else if ([sequence isGIFVideo])
+    {
+        shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareGIFFormat", nil), sequence.name, sequence.user.name];
+    }
+    else if ([sequence isVideo])
+    {
+        shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareVideoFormat", nil), sequence.name, sequence.user.name];
+    }
+    else if ([sequence isImage])
+    {
+        shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareImageFormat", nil), sequence.user.name];
+    }
+    else if ([sequence isText])
+    {
+        shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareTextFormat", nil), sequence.user.name];
     }
     else
     {
-        if ([sequence isPoll])
-        {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCSharePollFormat", nil), sequence.user.name];
-        }
-        else if ([sequence isGIFVideo])
-        {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareGIFFormat", nil), sequence.name, sequence.user.name];
-        }
-        else if ([sequence isVideo])
-        {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareVideoFormat", nil), sequence.name, sequence.user.name];
-        }
-        else if ([sequence isImage])
-        {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareImageFormat", nil), sequence.user.name];
-        }
-        else if ([sequence isText])
-        {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareTextFormat", nil), sequence.user.name];
-        }
-        else
-        {
-            shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareLinkFormat", nil), sequence.user.name];
-        }
+        shareText = [NSString stringWithFormat:NSLocalizedString(@"UGCShareLinkFormat", nil), sequence.user.name];
     }
     
     return shareText;

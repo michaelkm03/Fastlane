@@ -27,7 +27,6 @@
                                   @"profile_image" : VSelectorName(pictureUrl),
                                   @"profile_location" : VSelectorName(location),
                                   @"name" : VSelectorName(name),
-                                  @"access_level" : VSelectorName(accessLevel),
                                   @"token" : VSelectorName(token),
                                   @"token_updated_at" : VSelectorName(tokenUpdatedAt),
                                   @"is_direct_message_disabled" : VSelectorName(isDirectMessagingDisabled),

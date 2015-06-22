@@ -27,7 +27,7 @@
 #import "VAnswer+RestKit.h"
 #import "VAsset.h"
 #import "VMessage+RestKit.h"
-#import "VUser+Fetcher.h"
+#import "VUser.h"
 #import "AVAsset+Orientation.h"
 #import "UIColor+VHex.h"
 
