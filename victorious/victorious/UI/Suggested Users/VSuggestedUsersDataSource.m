@@ -37,7 +37,7 @@ static NSString * const kPromptTextKey = @"prompt";
 - (void)registerCellsForCollectionView:(UICollectionView *)collectionView
 {
     NSString *identifier = [VSuggestedUserCell suggestedReuseIdentifier];
-    UINib *nib = [UINib nibWithNibName:identifier bundle:[NSBundle bundleForClass:[self class]]];
+    UINib *nib = [VSuggestedUserCell nibForCell];
     [collectionView registerNib:nib forCellWithReuseIdentifier:identifier];
 }
 

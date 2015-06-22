@@ -28,7 +28,7 @@
 #import "MBProgressHUD.h"
 #import "UIView+AutoLayout.h"
 #import "VDependencyManager.h"
-#import "VCreatorMessageViewController.h"
+#import "VCreatorMessageView.h"
 #import "UIAlertView+VBlocks.h"
 #import "VDependencyManager+VTracking.h"
 #import "VTwitterAccountsHelper.h"
@@ -54,7 +54,7 @@
 @property (nonatomic, strong) VLinkTextViewHelper *linkTextHelper;
 @property (nonatomic, weak) IBOutlet VAuthorizationContextHelper *authorizationContextHelper;
 
-@property (nonatomic, strong) VCreatorMessageViewController *creatorMessageViewController;
+@property (nonatomic, strong) VCreatorMessageView *creatorMessageView;
 
 @end
 
@@ -123,13 +123,13 @@
     [self.view v_addFitToParentConstraintsToSubview:self.blurredBackgroundView];
     
     NSString *authorizationContextText = [self.authorizationContextHelper textForContext:self.authorizationContextType];
-    self.creatorMessageViewController = [[VCreatorMessageViewController alloc] initWithDependencyManager:self.dependencyManager];
-    [self.creatorMessageViewController setMessage:authorizationContextText];
-    [self.creatorMessgeContainerView addSubview:self.creatorMessageViewController.view];
-    [self.creatorMessgeContainerView v_addFitToParentConstraintsToSubview:self.creatorMessageViewController.view];
+    self.creatorMessageView = [[VCreatorMessageView alloc] initWithDependencyManager:self.dependencyManager];
+    [self.creatorMessageView setMessage:authorizationContextText];
+    [self.creatorMessgeContainerView addSubview:self.creatorMessageView];
+    [self.creatorMessgeContainerView v_addFitToParentConstraintsToSubview:self.creatorMessageView];
     
     // Some prep for VPresentWithBlurViewController animation (this is the order elements animate on screen)
-    NSArray *elementsArray = @[ self.creatorMessageViewController.view,
+    NSArray *elementsArray = @[ self.creatorMessageView.view,
                                 self.signupWithEmailButton,
                                 self.facebookButton,
                                 self.twitterButton,
@@ -351,11 +351,11 @@
 {
     VRegistrationModel *registrationModelForUser = [VRegistrationModel registrationModelWithUser:self.profile];
     
-    if ( [segue.destinationViewController isKindOfClass:[VCreatorMessageViewController class]] )
+    if ( [segue.destinationViewController isKindOfClass:[VCreatorMessageView class]] )
     {
         // Get reference to the embedded container view from storybaord
-        self.creatorMessageViewController = segue.destinationViewController;
-        self.creatorMessageViewController.dependencyManager = self.dependencyManager;
+        self.creatorMessageView = segue.destinationViewController;
+        self.creatorMessageView.dependencyManager = self.dependencyManager;
     }
     else if ([segue.identifier isEqualToString:@"toProfileWithFacebook"])
     {

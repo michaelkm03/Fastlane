@@ -1,17 +1,17 @@
 //
-//  VCreatorMessageViewController.m
+//  VCreatorMessageView.m
 //  victorious
 //
 //  Created by Patrick Lynch on 6/10/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VCreatorMessageViewController.h"
+#import "VCreatorMessageView.h"
 #import "VDependencyManager.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "VAppInfo.h"
 
-@interface VCreatorMessageViewController()
+@interface VCreatorMessageView()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) NSString *message;
@@ -26,28 +26,31 @@
 
 @end
 
-@implementation VCreatorMessageViewController
+@implementation VCreatorMessageView
 
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-    NSString *nibName = NSStringFromClass([self class]);
-    self = [super initWithNibName:nibName bundle:bundle];
-    if ( self != nil )
+    UINib *nib = [UINib nibWithNibName:NSStringFromClass(self) bundle:nil];
+    NSArray *objects = [nib instantiateWithOwner:nil options:nil];
+    for (id object in objects)
     {
-        _dependencyManager = dependencyManager;
+        if ( [object isKindOfClass:self] )
+        {
+            ((VCreatorMessageView *)object).dependencyManager = dependencyManager;
+            return object;
+        }
     }
-    return self;
+    return nil;
 }
 
-- (void)viewDidLoad
+- (void)awakeFromNib
 {
-    [super viewDidLoad];
+    [super awakeFromNib];
     
-    self.view.backgroundColor = [UIColor clearColor];
+    self.backgroundColor = [UIColor clearColor];
     
     self.defaultMessageViewHeight = CGRectGetHeight(self.messageTextView.bounds);
-    self.defaulBoundsHeight = CGRectGetHeight(self.view.bounds);
+    self.defaulBoundsHeight = CGRectGetHeight(self.bounds);
     
     [self applyStyle];
     
@@ -68,7 +71,7 @@
         return;
     }
     
-    NSAssert( self.dependencyManager != nil, @"VCreatorMessageViewController must have a dependency manager before setting message." );
+    NSAssert( self.dependencyManager != nil, @"VCreatorMessageView must have a dependency manager before setting message." );
     NSDictionary *attributes = [self stringAttributesWithFont:[self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]
                                                         color:[self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey]
                                                    lineHeight:23.0f];
@@ -79,13 +82,13 @@
 
 - (void)updateBounds
 {
-    CGRect bounds = self.view.bounds;
+    CGRect bounds = self.bounds;
     bounds.size.height = self.defaulBoundsHeight + CGRectGetHeight(self.messageTextView.bounds) - self.defaultMessageViewHeight;
     if ( self.creatorAvatarImageView.hidden )
     {
         bounds.size.height -= CGRectGetHeight(self.creatorAvatarImageView.frame);
     }
-    self.view.bounds = bounds;
+    self.bounds = bounds;
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager

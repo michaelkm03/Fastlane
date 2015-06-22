@@ -247,7 +247,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationOption];
 }
 
-- (void)selectedTwitterAuthorizationn
+- (void)selectedTwitterAuthorization
 {
     if (self.actionsDisabled)
     {

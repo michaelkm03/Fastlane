@@ -9,7 +9,7 @@
 #import "VSuggestedUsersViewController.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VSuggestedUsersDataSource.h"
-#import "VCreatorMessageViewController.h"
+#import "VCreatorMessageView.h"
 #import "UIView+AutoLayout.h"
 #import "VLoginFlowControllerDelegate.h"
 
@@ -25,7 +25,7 @@ static NSString * const kBarButtonTintColorKey = @"color.text.label3";
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VSuggestedUsersDataSource *suggestedUsersDataSource;
-@property (nonatomic, strong) VCreatorMessageViewController *creatorMessageViewController;
+@property (nonatomic, strong) VCreatorMessageView *creatorMessageViewController;
 
 @property (nonatomic, assign) BOOL didTransitionIn;
 @property (nonatomic, readonly) BOOL isFinalRegistrationScreen;
@@ -57,11 +57,11 @@ static NSString * const kBarButtonTintColorKey = @"color.text.label3";
                                VDependencyManagerMainTextColorKey : [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey],
                                VDependencyManagerSecondaryTextColorKey : [self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey] };
     VDependencyManager *creatorMessageComponent = [self.dependencyManager childDependencyManagerWithAddedConfiguration:mapping];
-    self.creatorMessageViewController = [[VCreatorMessageViewController alloc] initWithDependencyManager:creatorMessageComponent];
+    self.creatorMessageViewController = [VCreatorMessageView newWithDependencyManager:creatorMessageComponent];
     [self.creatorMessageViewController setMessage:[self.dependencyManager stringForKey:@"prompt"]];
-    [self.creatorMessageContainer addSubview:self.creatorMessageViewController.view];
-    [self.creatorMessageContainer v_addFitToParentConstraintsToSubview:self.creatorMessageViewController.view];
-    self.creatorMessageContainerHeight.constant = CGRectGetHeight(self.creatorMessageViewController.view.bounds);
+    [self.creatorMessageContainer addSubview:self.creatorMessageViewController];
+    [self.creatorMessageContainer v_addFitToParentConstraintsToSubview:self.creatorMessageViewController];
+    self.creatorMessageContainerHeight.constant = CGRectGetHeight(self.creatorMessageViewController.bounds);
     [self.creatorMessageContainer layoutIfNeeded];
     
     self.collectionView.delegate = self;
@@ -78,8 +78,6 @@ static NSString * const kBarButtonTintColorKey = @"color.text.label3";
     }];
     
     self.activityIndicator.color = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    
-    self.collectionView.contentInset = UIEdgeInsetsMake( 20.0f, 0, 10.0f, 0 );
     
     self.automaticallyAdjustsScrollViewInsets = YES;
     
@@ -115,7 +113,11 @@ static NSString * const kBarButtonTintColorKey = @"color.text.label3";
          {
              
              self.collectionView.transform = CGAffineTransformMakeTranslation( 0, 0 );
-         } completion:nil];
+         }
+                         completion:^(BOOL finished)
+         {
+             [self.collectionView flashScrollIndicators];
+         }];
     }
 }
 
@@ -142,6 +144,11 @@ static NSString * const kBarButtonTintColorKey = @"color.text.label3";
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     return [self.suggestedUsersDataSource collectionView:collectionView sizeForItemAtIndexPath:indexPath];
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    return UIEdgeInsetsMake( 20.0f, 0, 10.0f, 0 );
 }
 
 @end

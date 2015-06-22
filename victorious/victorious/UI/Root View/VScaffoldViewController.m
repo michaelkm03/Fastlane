@@ -29,7 +29,8 @@
 #import "VRootViewController.h"
 #import "VCoachmarkManager.h"
 #import "VRootViewController.h"
-#import "VHashtagHelper.h"
+
+#import "VSuggestedUsersViewController.h"
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
@@ -105,6 +106,10 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
     {
         [self askForPushNotificationsPermission];
     }
+    
+    VSuggestedUsersViewController *vc = [[VSuggestedUsersViewController alloc] initWithDependencyManager:self.dependencyManager];
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+    [self presentViewController:nav animated:YES completion:nil];
 }
 
 - (void)askForPushNotificationsPermission
