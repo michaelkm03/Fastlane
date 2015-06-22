@@ -1,16 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="MuseoSans-300.otf">
+            <string>MuseoSans-300</string>
+        </mutableArray>
+        <mutableArray key="MuseoSans-500.otf">
+            <string>MuseoSans-500</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VSuggestedUsersViewController">
             <connections>
                 <outlet property="activityIndicator" destination="gzt-T6-5Rq" id="5Xf-3v-Lyl"/>
-                <outlet property="collectionContainer" destination="3Fp-Rk-Cdh" id="Xv9-nH-GZu"/>
                 <outlet property="collectionView" destination="Nf5-dV-4j7" id="nLJ-XO-gH8"/>
-                <outlet property="creatorMessageContainer" destination="Blj-Er-nbo" id="O2c-h0-4YG"/>
-                <outlet property="creatorMessageContainerHeight" destination="07u-z6-pkh" id="ZC8-8H-Mo3"/>
+                <outlet property="creatorAvatarImageView" destination="HqP-r4-6Td" id="dIq-Hb-xT6"/>
+                <outlet property="creatorNameLabel" destination="Fk6-ss-qBu" id="uvg-o1-mdw"/>
+                <outlet property="messageTextView" destination="rpC-HU-cQA" id="Cbo-GQ-Vxl"/>
+                <outlet property="quoteImageView" destination="gwT-Z6-aUq" id="QOt-Hr-Ros"/>
+                <outlet property="salutationContainerHeight" destination="lKn-94-Yc8" id="WfL-oT-vye"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -19,52 +29,95 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="gzt-T6-5Rq">
-                    <rect key="frame" x="290" y="285" width="20" height="20"/>
-                </activityIndicatorView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Blj-Er-nbo" userLabel="Creator Message Container">
-                    <rect key="frame" x="30" y="0.0" width="540" height="250"/>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="rpC-HU-cQA" userLabel="Product Description">
+                    <rect key="frame" x="102" y="34" width="396" height="98"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="250" id="07u-z6-pkh"/>
+                        <constraint firstAttribute="height" priority="1" constant="98" id="TrD-HR-rYY"/>
                     </constraints>
-                </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Fp-Rk-Cdh" userLabel="Collection Container">
-                    <rect key="frame" x="0.0" y="250" width="600" height="286"/>
+                    <string key="text">Come join our community.
+We promise that your information is safe with us!
+Come join our community.
+We promise that your information is safe with us!</string>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" name="MuseoSans-500" family="Museo Sans" pointSize="17"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qdj-Np-kdf" userLabel="Salutation Container">
+                    <rect key="frame" x="336" y="132" width="252" height="55"/>
                     <subviews>
-                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Nf5-dV-4j7">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="286"/>
-                            <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="zDq-TF-hOo">
-                                <size key="itemSize" width="50" height="50"/>
-                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            </collectionViewFlowLayout>
-                        </collectionView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1" text="Creator Salutation (Could be this long)" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fk6-ss-qBu" userLabel="Creator Name">
+                            <rect key="frame" x="59" y="6" width="193" height="41"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="41" id="KtL-dL-Xtg"/>
+                                <constraint firstAttribute="width" priority="1" constant="193" id="hTs-kN-Qwb"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="MuseoSans-300" family="Museo Sans" pointSize="11"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="creator-avatar.png" translatesAutoresizingMaskIntoConstraints="NO" id="HqP-r4-6Td" userLabel="Creator Image">
+                            <rect key="frame" x="16" y="8" width="35" height="36"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="35" id="Z1x-aD-zrB"/>
+                                <constraint firstAttribute="height" constant="36" id="zba-Op-4P1"/>
+                            </constraints>
+                        </imageView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="Nf5-dV-4j7" firstAttribute="leading" secondItem="3Fp-Rk-Cdh" secondAttribute="leading" id="BEX-K9-EGY"/>
-                        <constraint firstItem="Nf5-dV-4j7" firstAttribute="top" secondItem="3Fp-Rk-Cdh" secondAttribute="top" id="DYf-ip-xgW"/>
-                        <constraint firstAttribute="trailing" secondItem="Nf5-dV-4j7" secondAttribute="trailing" id="Iyw-NM-HNW"/>
-                        <constraint firstAttribute="bottom" secondItem="Nf5-dV-4j7" secondAttribute="bottom" id="qef-Ss-rCl"/>
+                        <constraint firstItem="Fk6-ss-qBu" firstAttribute="leading" secondItem="HqP-r4-6Td" secondAttribute="trailing" constant="8" id="0Rf-w8-bZb"/>
+                        <constraint firstAttribute="width" priority="1" constant="252" id="7Ll-sD-WWb"/>
+                        <constraint firstItem="Fk6-ss-qBu" firstAttribute="top" secondItem="Qdj-Np-kdf" secondAttribute="top" constant="6" id="ZDX-mu-bMs"/>
+                        <constraint firstAttribute="bottom" secondItem="Fk6-ss-qBu" secondAttribute="bottom" constant="8" id="fib-6X-GWc"/>
+                        <constraint firstAttribute="trailing" secondItem="Fk6-ss-qBu" secondAttribute="trailing" id="fyo-Sd-0Cy"/>
+                        <constraint firstAttribute="height" constant="55" id="lKn-94-Yc8"/>
+                        <constraint firstItem="HqP-r4-6Td" firstAttribute="centerY" secondItem="Fk6-ss-qBu" secondAttribute="centerY" constant="-0.5" id="zng-sx-FeS"/>
                     </constraints>
                 </view>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="gzt-T6-5Rq">
+                    <rect key="frame" x="290" y="230" width="20" height="20"/>
+                </activityIndicatorView>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Nf5-dV-4j7">
+                    <rect key="frame" x="0.0" y="195" width="600" height="341"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="zDq-TF-hOo">
+                        <size key="itemSize" width="50" height="50"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+                <imageView userInteractionEnabled="NO" alpha="0.30000001192092896" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="quote" translatesAutoresizingMaskIntoConstraints="NO" id="gwT-Z6-aUq" userLabel="Quote">
+                    <rect key="frame" x="63" y="22" width="31" height="23"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="31" id="V18-oR-JPK"/>
+                        <constraint firstAttribute="height" constant="23" id="tBz-i7-VTj"/>
+                    </constraints>
+                </imageView>
             </subviews>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="Blj-Er-nbo" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="30" id="0zA-Bl-XlH"/>
-                <constraint firstItem="gzt-T6-5Rq" firstAttribute="top" secondItem="Blj-Er-nbo" secondAttribute="bottom" constant="35" id="DO5-UW-pnO"/>
-                <constraint firstAttribute="trailing" secondItem="3Fp-Rk-Cdh" secondAttribute="trailing" id="Fbx-fB-PZl"/>
-                <constraint firstItem="3Fp-Rk-Cdh" firstAttribute="top" secondItem="Blj-Er-nbo" secondAttribute="bottom" id="G7z-zK-fK5"/>
-                <constraint firstAttribute="centerX" secondItem="gzt-T6-5Rq" secondAttribute="centerX" id="XpC-8V-lt1"/>
-                <constraint firstAttribute="bottom" secondItem="3Fp-Rk-Cdh" secondAttribute="bottom" id="cr5-fd-y8C"/>
-                <constraint firstItem="Blj-Er-nbo" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="hP8-jO-bBi"/>
-                <constraint firstAttribute="trailing" secondItem="Blj-Er-nbo" secondAttribute="trailing" constant="30" id="knu-Ls-Lkn"/>
-                <constraint firstItem="3Fp-Rk-Cdh" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="r8M-X4-tLn"/>
+                <constraint firstItem="Nf5-dV-4j7" firstAttribute="top" secondItem="Qdj-Np-kdf" secondAttribute="bottom" constant="8" id="1TW-MU-T7n"/>
+                <constraint firstItem="rpC-HU-cQA" firstAttribute="top" secondItem="gwT-Z6-aUq" secondAttribute="bottom" constant="-11" id="4oD-Mk-G5b"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="rpC-HU-cQA" secondAttribute="trailing" constant="43" id="5cb-1u-Lzd"/>
+                <constraint firstAttribute="trailing" secondItem="Qdj-Np-kdf" secondAttribute="trailing" constant="12" id="Egi-G0-psb"/>
+                <constraint firstItem="Nf5-dV-4j7" firstAttribute="top" secondItem="gzt-T6-5Rq" secondAttribute="bottom" constant="-55" id="MbD-gd-R6t"/>
+                <constraint firstAttribute="centerX" secondItem="gzt-T6-5Rq" secondAttribute="centerX" id="Of6-3j-mcN"/>
+                <constraint firstItem="Nf5-dV-4j7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="SzK-I4-2dF"/>
+                <constraint firstItem="rpC-HU-cQA" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="43" id="Z5g-Vm-Yl9"/>
+                <constraint firstAttribute="bottom" secondItem="Nf5-dV-4j7" secondAttribute="bottom" id="ZkD-fJ-SXX"/>
+                <constraint firstAttribute="trailing" secondItem="Nf5-dV-4j7" secondAttribute="trailing" id="gP0-DW-2Cy"/>
+                <constraint firstItem="rpC-HU-cQA" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="34" id="izM-iZ-ine"/>
+                <constraint firstItem="Qdj-Np-kdf" firstAttribute="top" secondItem="rpC-HU-cQA" secondAttribute="bottom" id="mRF-N4-wuT"/>
+                <constraint firstItem="rpC-HU-cQA" firstAttribute="leading" secondItem="gwT-Z6-aUq" secondAttribute="trailing" constant="8" id="o6p-i3-Zqz"/>
+                <constraint firstAttribute="centerX" secondItem="rpC-HU-cQA" secondAttribute="centerX" id="uH6-0x-X4G"/>
             </constraints>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-            <point key="canvasLocation" x="487" y="596"/>
+            <point key="canvasLocation" x="489" y="396"/>
         </view>
     </objects>
+    <resources>
+        <image name="creator-avatar.png" width="32" height="32"/>
+        <image name="quote" width="31" height="23"/>
+    </resources>
 </document>

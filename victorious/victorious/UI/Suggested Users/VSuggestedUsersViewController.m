@@ -12,6 +12,7 @@
 #import "VCreatorMessageViewController.h"
 #import "UIView+AutoLayout.h"
 #import "VLoginFlowControllerDelegate.h"
+#import "VAppInfo.h"
 
 static NSString * const kBarButtonTintColorKey      = @"color.text.label3";
 static NSString * const VSuggestedUsersPromptKey    = @"prompt";
@@ -19,10 +20,14 @@ static NSString * const VSuggestedUsersPromptKey    = @"prompt";
 @interface VSuggestedUsersViewController () <VBackgroundContainer, UICollectionViewDelegateFlowLayout, VLoginFlowScreen>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
-@property (nonatomic, weak) IBOutlet UIView *creatorMessageContainer;
-@property (nonatomic, weak) IBOutlet UIView *collectionContainer;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *creatorMessageContainerHeight;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *salutationContainerHeight;
+
+@property (nonatomic, weak) IBOutlet UILabel *creatorNameLabel;
+@property (nonatomic, weak) IBOutlet UIImageView *creatorAvatarImageView;
+@property (nonatomic, weak) IBOutlet UIImageView *quoteImageView;
+@property (nonatomic, weak) IBOutlet UITextView *messageTextView;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VSuggestedUsersDataSource *suggestedUsersDataSource;
@@ -53,20 +58,33 @@ static NSString * const VSuggestedUsersPromptKey    = @"prompt";
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];
     
-    NSString *authorizationContextText = [self.dependencyManager stringForKey:VSuggestedUsersPromptKey];
-    NSDictionary *mapping = @{ VDependencyManagerHeading3FontKey : [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey],
-                               VDependencyManagerLabel1FontKey : [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey],
-                               VDependencyManagerMainTextColorKey : [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey],
-                               VDependencyManagerSecondaryTextColorKey : [self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey],
-                               VCreatorMessageTextKey : authorizationContextText ?: @"" };
-    VDependencyManager *creatorMessageComponent = [self.dependencyManager childDependencyManagerWithAddedConfiguration:mapping];
-    self.creatorMessageViewController = [[VCreatorMessageViewController alloc] initWithDependencyManager:creatorMessageComponent];
-    [self.creatorMessageViewController willMoveToParentViewController:self];
-    [self.creatorMessageContainer addSubview:self.creatorMessageViewController.view];
-    [self.creatorMessageViewController didMoveToParentViewController:self];
-    [self.creatorMessageContainer v_addFitToParentConstraintsToSubview:self.creatorMessageViewController.view];
-    self.creatorMessageContainerHeight.constant = CGRectGetHeight(self.creatorMessageViewController.view.bounds);
-    [self.creatorMessageContainer layoutIfNeeded];
+    VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
+    NSString *ownerName = appInfo.ownerName;
+    NSURL *profileImageURL = appInfo.profileImageURL;
+    
+    BOOL stringIsValid = ownerName != nil && ownerName.length > 0;
+    BOOL profileImageURLIsEmpty = [profileImageURL.absoluteString isEqualToString:@""];
+    if ( !stringIsValid || profileImageURLIsEmpty )
+    {
+        self.creatorNameLabel.text = ownerName;
+        self.creatorNameLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
+        self.creatorNameLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey];
+        
+        self.quoteImageView.image = [self.quoteImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.quoteImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    }
+    else
+    {
+        self.creatorNameLabel.hidden = YES;
+        self.creatorAvatarImageView.hidden = YES;
+        self.salutationContainerHeight.constant = 0.0;
+    }
+    
+    self.messageTextView.text = @"Come join our community. \
+    We promise that your information is safe with us! \
+    Come join our community."; //[self.dependencyManager stringForKey:VSuggestedUsersPromptKey];
+    self.messageTextView.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
+    self.messageTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     
     self.collectionView.delegate = self;
     self.collectionView.backgroundColor = [UIColor clearColor];
@@ -92,7 +110,7 @@ static NSString * const VSuggestedUsersPromptKey    = @"prompt";
     self.navigationController.view.backgroundColor = [UIColor clearColor];
     self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
     
-    self.collectionView.transform = CGAffineTransformMakeTranslation( 0, CGRectGetHeight(self.collectionView.frame));
+    self.collectionView.transform = CGAffineTransformMakeTranslation( 0, CGRectGetHeight(self.collectionView.frame) );
     
     [self.delegate configureFlowNavigationItemWithScreen:self];
     self.navigationItem.hidesBackButton = YES;
@@ -115,7 +133,6 @@ static NSString * const VSuggestedUsersPromptKey    = @"prompt";
                             options:kNilOptions
                          animations:^
          {
-             
              self.collectionView.transform = CGAffineTransformMakeTranslation( 0, 0 );
          }
                          completion:^(BOOL finished)
