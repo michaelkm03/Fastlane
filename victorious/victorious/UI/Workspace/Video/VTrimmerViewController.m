@@ -326,7 +326,19 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     Float64 progress = CMTimeGetSeconds(self.trimControl.selectedDuration) / CMTimeGetSeconds(self.trimControl.maxDuration);
     self.dimmingViewWidthConstraint.constant = CGRectGetWidth(self.view.bounds) - (CGRectGetWidth(self.view.bounds) * progress);
     [self.view layoutIfNeeded];
+    
+    
+    float result = self.thumbnailCollectionView.bounds.origin.x / (CGRectGetWidth(self.thumbnailCollectionView.bounds));
+    result = 1.0f - result;
+    
+    if (progress > result)
+    {
+        self.trimControl.trimThumbBody.center = CGPointMake(result*[[[[UIApplication sharedApplication] windows] firstObject] frame].size.width, 94.0f);
+    }
+    NSLog(@"result: %f", result);
+    NSLog(@"result 2: %f", progress);
 }
+
 
 - (void)updateTrimControlTitleWithTime:(CMTime)time
 {

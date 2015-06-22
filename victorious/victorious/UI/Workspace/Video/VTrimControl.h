@@ -34,8 +34,15 @@
 @property (nonatomic, readonly) CMTime selectedDuration;
 
 /**
+ *  The current time duration selected by the trim control.
+ */
+@property (nonatomic, readonly) CMTime selectedTime;
+
+/**
  *  The height of the trimmer body plus the vertical inset of the body
  */
 + (CGFloat)topPadding;
+
+@property (nonatomic, strong) UIView *trimThumbBody;
 
 @end

@@ -20,7 +20,6 @@ static const CGFloat kTrimBodyWidth = 5.0f;
 @property (nonatomic, readwrite) CMTime selectedDuration;
 
 @property (nonatomic, strong) UIView *trimThumbHead;
-@property (nonatomic, strong) UIView *trimThumbBody;
 
 @property (nonatomic, strong) UILabel *thumbLabel;
 
@@ -68,7 +67,6 @@ static const CGFloat kTrimBodyWidth = 5.0f;
     
     self.trimThumbBody.backgroundColor = [UIColor whiteColor];
     [self addSubview:self.trimThumbBody];
-    
     
     self.headGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pannedThumb:)];
     self.bodyGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pannedThumb:)];
@@ -340,5 +338,7 @@ static const CGFloat kTrimBodyWidth = 5.0f;
     self.trimThumbBody.center = CGPointMake(point.x, 94.0f);
     [self sendActionsForControlEvents:UIControlEventValueChanged];
 }
+
+
 
 @end
