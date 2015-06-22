@@ -210,6 +210,8 @@
 		038B7F9719DB8EB300F739DF /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 038B7F9619DB8EB300F739DF /* CoreTelephony.framework */; };
 		038B7F9919DB8EBC00F739DF /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 038B7F9819DB8EBC00F739DF /* libz.dylib */; };
 		038C51191B37B3D700A903C2 /* VTemplateImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 038C51181B37B3D700A903C2 /* VTemplateImage.m */; };
+		038C511C1B37C8F500A903C2 /* VTemplateImageSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 038C511B1B37C8F500A903C2 /* VTemplateImageSet.m */; };
+		038C511E1B37CEF800A903C2 /* VTemplateImageSetTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 038C511D1B37CEF800A903C2 /* VTemplateImageSetTests.m */; };
 		0390084619F37B1E00FD7EDF /* Camera.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0390084819F37B1E00FD7EDF /* Camera.storyboard */; };
 		0390085419F38BC600FD7EDF /* ActionSheet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0390085619F38BC600FD7EDF /* ActionSheet.storyboard */; };
 		0390085D19F38D5C00FD7EDF /* VKeyboardInputAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390085F19F38D5C00FD7EDF /* VKeyboardInputAccessoryView.xib */; };
@@ -1371,6 +1373,9 @@
 		038B7F9819DB8EBC00F739DF /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		038C51171B37B3D700A903C2 /* VTemplateImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTemplateImage.h; sourceTree = "<group>"; };
 		038C51181B37B3D700A903C2 /* VTemplateImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateImage.m; sourceTree = "<group>"; };
+		038C511A1B37C8F500A903C2 /* VTemplateImageSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTemplateImageSet.h; sourceTree = "<group>"; };
+		038C511B1B37C8F500A903C2 /* VTemplateImageSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateImageSet.m; sourceTree = "<group>"; };
+		038C511D1B37CEF800A903C2 /* VTemplateImageSetTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateImageSetTests.m; sourceTree = "<group>"; };
 		0390084719F37B1E00FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Camera.storyboard; sourceTree = "<group>"; };
 		0390084A19F37B2800FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Camera.strings; sourceTree = "<group>"; };
 		0390084B19F386E200FD7EDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -3838,6 +3843,8 @@
 				039D02AB1A1043D300DB9236 /* VHasManagedDependencies.h */,
 				038C51171B37B3D700A903C2 /* VTemplateImage.h */,
 				038C51181B37B3D700A903C2 /* VTemplateImage.m */,
+				038C511A1B37C8F500A903C2 /* VTemplateImageSet.h */,
+				038C511B1B37C8F500A903C2 /* VTemplateImageSet.m */,
 				D8B88F981ABA93E400DBAEA0 /* workspaceTemplate.json */,
 			);
 			path = Dependencies;
@@ -5043,6 +5050,7 @@
 				BE49323519E338CE00C0912E /* NSDate+timeSinceTests.m */,
 				A73EAEBF1A4134C10021BB31 /* NSString+Unicode_Tests.m */,
 				03AC453B19BA1F7900CE4351 /* NSStringVCryptoTests.m */,
+				03A7614E1B3232970016B69D /* NSURL+VDataCacheIDTests.m */,
 				BE171D9F1868BE64004E5202 /* Supporting Files */,
 				03D94C2A19DE155400BFAA27 /* Swizzling Support */,
 				039D2FD4197D93C600DFBE60 /* Test Data */,
@@ -5057,6 +5065,7 @@
 				F0C83A321B0ED7DA00A6EC1A /* VCoachmarkPassthroughContainerViewTests.m */,
 				F0C83A341B0F87EF00A6EC1A /* VCoachmarkViewTests.m */,
 				0329B99F1ACBAAFB003BBCC5 /* VContentViewFactoryTests.m */,
+				03A761531B3250410016B69D /* VDataCacheTests.m */,
 				035ABE7D1AD8871F00B6B1A5 /* VDefaultTemplateTests.m */,
 				035FA7771AE188CD0002EE63 /* VDependencyManager_VNavigationMenuItemTests.m */,
 				039420491AB88A9A0087ADFA /* VDependencyManagerImageTests.m */,
@@ -5104,6 +5113,7 @@
 				F0B390BC1A8535E300EE70C7 /* VTagTests.m */,
 				A7792FDD1AE8497200E2ECC1 /* VTemplateDecoratorTests.m */,
 				03A058C01AEF44E200CF39D1 /* VTemplateDownloadManagerTests.m */,
+				038C511D1B37CEF800A903C2 /* VTemplateImageSetTests.m */,
 				03A058BB1AED802400CF39D1 /* VTemplateSerializationTests.m */,
 				F0140BC31AA9468500B95642 /* VTimerManagerTests.m */,
 				A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */,
@@ -5121,8 +5131,6 @@
 				A75FAEFA19E8A6D600EB87C1 /* VVoteSettingManagerTests.m */,
 				A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */,
 				D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */,
-				03A7614E1B3232970016B69D /* NSURL+VDataCacheIDTests.m */,
-				03A761531B3250410016B69D /* VDataCacheTests.m */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -7425,6 +7433,7 @@
 				D85E42811AFA9A0F00A13BD3 /* VImageSequencePreviewView.m in Sources */,
 				A7ECC1BE1AD601040003E00A /* UIImage+VTint.m in Sources */,
 				0314D0B319B4698800FA363C /* VObjectManager+ImageSearch.m in Sources */,
+				038C511C1B37C8F500A903C2 /* VTemplateImageSet.m in Sources */,
 				A743E7E41A0816D500339CB3 /* VPasswordValidator.m in Sources */,
 				0314D48C19B46B5E00FA363C /* VSelectorViewController.m in Sources */,
 				037FCF2B1A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.m in Sources */,
@@ -7635,6 +7644,7 @@
 				A769C3F91A13E7A400698D0C /* VSequenceWebContentTests.m in Sources */,
 				F015BEF31A8A8392008A0D67 /* VUserTaggingTextStorageTests.m in Sources */,
 				0306F7A81ADDF990009FE3AA /* VJSONHelperTests.m in Sources */,
+				038C511E1B37CEF800A903C2 /* VTemplateImageSetTests.m in Sources */,
 				A720052B1A03073B00285A9C /* VMarqueeControllerTests.m in Sources */,
 				A7B98A441A267AAA00C58335 /* VNotificationSettingsStateManagerTests.m in Sources */,
 				A716FC2A1AAE0EF50032AA40 /* VAuthorizedActionTests.m in Sources */,

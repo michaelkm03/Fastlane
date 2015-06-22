@@ -33,4 +33,25 @@ static NSString * const kScaleKey = @"scale";
     return imageJSON[VTemplateImageURLKey] != nil;
 }
 
+- (BOOL)isEqual:(id)object
+{
+    if ( ![object isKindOfClass:[VTemplateImage class]] )
+    {
+        return NO;
+    }
+    
+    VTemplateImage *otherImage = (VTemplateImage *)object;
+    return [otherImage.imageURL isEqual:self.imageURL] &&
+           ([otherImage.scale isEqual:self.scale] ||
+            (otherImage.scale == nil && self.scale == nil));
+}
+
+- (NSUInteger)hash
+{
+    NSUInteger const prime = 37;
+    NSUInteger hash = prime + self.imageURL.hash;
+    hash = prime * hash + self.scale.hash;
+    return hash;
+}
+
 @end
