@@ -3370,12 +3370,11 @@
 			isa = PBXGroup;
 			children = (
 				C39864B41B22349200694AB3 /* Bar Buttons */,
+				0386F8841B38D32C00E8D459 /* Loading View */,
 				030931871A18425B004E9781 /* Menu */,
 				D8DF72241AFEC360002EA7A5 /* Tab Menu */,
 				DB94976E1AAE66C600CCEFD0 /* VFirstTimeInstallHelper.h */,
 				DB94976F1AAE66C600CCEFD0 /* VFirstTimeInstallHelper.m */,
-				0314D3E719B46B5E00FA363C /* VLoadingViewController.h */,
-				0314D3E819B46B5E00FA363C /* VLoadingViewController.m */,
 				0314D3E919B46B5E00FA363C /* VMenuController.h */,
 				0314D3EA19B46B5E00FA363C /* VMenuController.m */,
 				037FCF141A8DAF0E00E8ABFC /* VNavigationController.h */,
@@ -3798,6 +3797,15 @@
 				037FCF231A8DAF5400E8ABFC /* VMultipleContainerViewController.m */,
 			);
 			path = VMultipleContainerViewController;
+			sourceTree = "<group>";
+		};
+		0386F8841B38D32C00E8D459 /* Loading View */ = {
+			isa = PBXGroup;
+			children = (
+				0314D3E719B46B5E00FA363C /* VLoadingViewController.h */,
+				0314D3E819B46B5E00FA363C /* VLoadingViewController.m */,
+			);
+			path = "Loading View";
 			sourceTree = "<group>";
 		};
 		0395575719C142C2005E32FB /* Capture */ = {
