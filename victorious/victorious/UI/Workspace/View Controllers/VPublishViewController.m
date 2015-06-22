@@ -173,6 +173,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     self.captionTextView.textContainerInset = UIEdgeInsetsZero;
     [self.captionTextView setPlaceholderTextColor:[self.dependencyManager colorForKey:VDependencyManagerPlaceholderTextColorKey]];
     self.captionTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    self.captionTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     
     NSString *placeholderText = [self.dependencyManager stringForKey:kPlaceholderTextKey];
     self.captionTextView.placeholderText = NSLocalizedString(placeholderText, @"Caption entry placeholder text");
