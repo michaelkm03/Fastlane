@@ -88,7 +88,7 @@
                        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"NoTwitterTitle", @"")
                                                                                                 message:NSLocalizedString(@"NoTwitterMessage", @"")
                                                                                          preferredStyle:UIAlertControllerStyleAlert];
-                       UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                       UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"")
                                                                           style:UIAlertActionStyleCancel
                                                                         handler:^(UIAlertAction *action)
                                                   {
