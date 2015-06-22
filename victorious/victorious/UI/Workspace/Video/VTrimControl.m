@@ -66,7 +66,6 @@ CGFloat kLineThickness = 1.0f; //Thickness of underbar on trim control
 
 - (void)sharedInit
 {
-    
     self.trimThumbBody = [[UIView alloc] init];
     
     self.trimThumbBody.backgroundColor = [UIColor whiteColor];
@@ -78,7 +77,6 @@ CGFloat kLineThickness = 1.0f; //Thickness of underbar on trim control
     [self.trimThumbBody addGestureRecognizer:self.headGestureRecognizer];
     [self.trimThumbBody addGestureRecognizer:self.bodyGestureRecognizer];
 
-    
     self.trimGestureRecognziers = @[self.bodyGestureRecognizer];
 }
 
@@ -232,13 +230,11 @@ CGFloat kLineThickness = 1.0f; //Thickness of underbar on trim control
 {
   
     self.bodyGestureRecognizer.enabled = (gestureRecognizer == self.bodyGestureRecognizer);
-   // self.headGestureRecognizer.enabled = (gestureRecognizer == self.headGestureRecognizer);
     
    [self.animator removeBehavior:self.clampingBehavior];
     self.attachmentBehavior = [[UIAttachmentBehavior alloc] initWithItem:self.trimThumbBody attachedToAnchor:CGPointMake([gestureRecognizer locationInView:self].x, CGRectGetMidY(self.trimThumbBody.frame))];
     [self.animator addBehavior:self.attachmentBehavior];
     self.pushBehavior.active = NO;
-   // [self.animator removeBehavior:self.itemBehavior];
 }
 
 - (void)pangGestureChanged:(UIPanGestureRecognizer *)gestureRecognizer
