@@ -61,4 +61,18 @@ static NSString * const kMacroReplacement = @"XXXXX";
     return imageMacroJSON[kImageMacroKey] != nil;
 }
 
+- (NSSet *)allImageURLs
+{
+    NSMutableSet *set = [[NSMutableSet alloc] initWithCapacity:self.images.count];
+    for (VTemplateImage *image in self.images)
+    {
+        NSURL *imageURL = image.imageURL;
+        if ( imageURL != nil )
+        {
+            [set addObject:imageURL];
+        }
+    }
+    return set;
+}
+
 @end

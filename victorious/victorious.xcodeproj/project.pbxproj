@@ -206,6 +206,9 @@
 		0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0385FEE818EF41B4009FBD68 /* VImageSearchResult.m */; };
 		0386E1F71A8DDA7F00FC9BDF /* VFollowingStreamCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A343E11A8D6AE1000F0BCF /* VFollowingStreamCollectionViewController.m */; };
 		0386E2001A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386E1FF1A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.m */; };
+		0386F8781B37E52500E8D459 /* VTemplatePackageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F8771B37E52500E8D459 /* VTemplatePackageManager.m */; };
+		0386F87A1B37E7FB00E8D459 /* VTemplatePackageManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F8791B37E7FB00E8D459 /* VTemplatePackageManagerTests.m */; };
+		0386F87C1B37EB8500E8D459 /* templateWithImageURLs.json in Resources */ = {isa = PBXBuildFile; fileRef = 0386F87B1B37EB8500E8D459 /* templateWithImageURLs.json */; };
 		0386F87F1B37F01700E8D459 /* VTemplateImageMacro.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F87E1B37F01700E8D459 /* VTemplateImageMacro.m */; };
 		038B7F9519DB8D2500F739DF /* ADEUMInstrumentation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 038B7F9419DB8D2500F739DF /* ADEUMInstrumentation.framework */; };
 		038B7F9719DB8EB300F739DF /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 038B7F9619DB8EB300F739DF /* CoreTelephony.framework */; };
@@ -1350,6 +1353,10 @@
 		0385FEE818EF41B4009FBD68 /* VImageSearchResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageSearchResult.m; sourceTree = "<group>"; };
 		0386E1FE1A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VNavigationItem.h"; sourceTree = "<group>"; };
 		0386E1FF1A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VNavigationItem.m"; sourceTree = "<group>"; };
+		0386F8761B37E52500E8D459 /* VTemplatePackageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTemplatePackageManager.h; sourceTree = "<group>"; };
+		0386F8771B37E52500E8D459 /* VTemplatePackageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplatePackageManager.m; sourceTree = "<group>"; };
+		0386F8791B37E7FB00E8D459 /* VTemplatePackageManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplatePackageManagerTests.m; sourceTree = "<group>"; };
+		0386F87B1B37EB8500E8D459 /* templateWithImageURLs.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = templateWithImageURLs.json; sourceTree = "<group>"; };
 		0386F87D1B37F01700E8D459 /* VTemplateImageMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTemplateImageMacro.h; sourceTree = "<group>"; };
 		0386F87E1B37F01700E8D459 /* VTemplateImageMacro.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateImageMacro.m; sourceTree = "<group>"; };
 		038A6B121B23C670004C8D03 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Camera.strings; sourceTree = "<group>"; };
@@ -3858,8 +3865,8 @@
 		039D2FD4197D93C600DFBE60 /* Test Data */ = {
 			isa = PBXGroup;
 			children = (
-				A7D3784F1AF0682B007FF197 /* component.json */,
 				F0C83A441B0FDD2B00A6EC1A /* coachmarks.json */,
+				A7D3784F1AF0682B007FF197 /* component.json */,
 				039D2FD5197D93C600DFBE60 /* filters.xml */,
 				A7CFC1C519FEE17B00726772 /* front_landscape_left.m4v */,
 				A7CFC1C619FEE17B00726772 /* front_landscape_right.m4v */,
@@ -3876,6 +3883,7 @@
 				A72004FA1A02FEC000285A9C /* sampleImage.png */,
 				039D02B01A10443200DB9236 /* template.json */,
 				03A058C21AEF59E600CF39D1 /* templateCache.json */,
+				0386F87B1B37EB8500E8D459 /* templateWithImageURLs.json */,
 			);
 			path = "Test Data";
 			sourceTree = "<group>";
@@ -3907,6 +3915,8 @@
 				03A058C81AF05D8300CF39D1 /* VObjectManager+VTemplateDownloaderConformance.m */,
 				03A058BD1AEF44D600CF39D1 /* VTemplateDownloadManager.h */,
 				03A058BE1AEF44D600CF39D1 /* VTemplateDownloadManager.m */,
+				0386F8761B37E52500E8D459 /* VTemplatePackageManager.h */,
+				0386F8771B37E52500E8D459 /* VTemplatePackageManager.m */,
 				03A058B81AED7FB600CF39D1 /* VTemplateSerialization.h */,
 				03A058B91AED7FB600CF39D1 /* VTemplateSerialization.m */,
 			);
@@ -5119,6 +5129,7 @@
 				A7792FDD1AE8497200E2ECC1 /* VTemplateDecoratorTests.m */,
 				03A058C01AEF44E200CF39D1 /* VTemplateDownloadManagerTests.m */,
 				038C511D1B37CEF800A903C2 /* VTemplateImageSetTests.m */,
+				0386F8791B37E7FB00E8D459 /* VTemplatePackageManagerTests.m */,
 				03A058BB1AED802400CF39D1 /* VTemplateSerializationTests.m */,
 				F0140BC31AA9468500B95642 /* VTimerManagerTests.m */,
 				A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */,
@@ -6728,6 +6739,7 @@
 				A7CFC1C919FEE24300726772 /* front_landscape_left.m4v in Resources */,
 				035FA77A1AE1890D0002EE63 /* menuSectionsTemplate.json in Resources */,
 				F0C83A451B0FDD2B00A6EC1A /* coachmarks.json in Resources */,
+				0386F87C1B37EB8500E8D459 /* templateWithImageURLs.json in Resources */,
 				037CB73519CFE02C0084BBED /* sampleImage.jpg in Resources */,
 				03A058C31AEF59E600CF39D1 /* templateCache.json in Resources */,
 				A7CFC1CA19FEE24300726772 /* front_landscape_right.m4v in Resources */,
@@ -6953,6 +6965,7 @@
 				A780ED5E1A933D9300A8CD5D /* VPhotoFilterCollectionViewDataSource.m in Sources */,
 				D8B88F971ABA85F700DBAEA0 /* VWorkspaceShimDestination.m in Sources */,
 				03B83B5519E066AF00DC04E4 /* VUploadTaskSerializer.m in Sources */,
+				0386F8781B37E52500E8D459 /* VTemplatePackageManager.m in Sources */,
 				03B83B5D19E0990E00DC04E4 /* VUploadProgressView.m in Sources */,
 				F06F10C61AC2024A0062E1D1 /* VDirectoryCollectionViewController.m in Sources */,
 				A7D378321AEF3CC9007FF197 /* VPassthroughContainerView.m in Sources */,
@@ -7604,6 +7617,7 @@
 				A70FC0F41A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m in Sources */,
 				A7EB574F1AF841CC006AA1CF /* VURLDetectorTests.m in Sources */,
 				A72005391A03073B00285A9C /* VFileCache+VoteTypeTests.m in Sources */,
+				0386F87A1B37E7FB00E8D459 /* VTemplatePackageManagerTests.m in Sources */,
 				0343AF831A143F550025B9F8 /* AVAsset+OrientationTests.m in Sources */,
 				0329B9A01ACBAAFB003BBCC5 /* VContentViewFactoryTests.m in Sources */,
 				A72005471A03074800285A9C /* VAsyncTestHelper.m in Sources */,

@@ -37,4 +37,10 @@
  */
 - (NSArray *)images;
 
+/**
+ Returns a set of NSURL objects representing
+ all the imageURLs in this image macro.
+ */
+- (NSSet *)allImageURLs;
+
 @end
