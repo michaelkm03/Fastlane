@@ -124,8 +124,10 @@ static const CGFloat kMinimumThumbnailHeight = 70.0f; //The minimum height for t
     if (CMTIME_COMPARE_INLINE(currentPlayTime, >, kCMTimeZero))
     {
         Float64 progress = (CMTimeGetSeconds(currentPlayTime) - CMTimeGetSeconds([self currentTimeOffset])) / CMTimeGetSeconds(self.maximumTrimDuration);
-        CGFloat playbackOverlayWidth = CGRectGetWidth(self.view.bounds) * progress;
-        self.currentPlayBackWidthConstraint.constant = (playbackOverlayWidth >= 0) ? (playbackOverlayWidth-5.0f) : 0.0f;
+        CGFloat playbackOverlayWidth = (CGRectGetWidth(self.view.bounds) * progress) - (self.trimControl.trimThumbBody.frame.size.width/2);
+    
+        self.currentPlayBackWidthConstraint.constant = (playbackOverlayWidth >= 0) ? playbackOverlayWidth  : 0.0f;
+
         [self.view layoutIfNeeded];
     }
 }
