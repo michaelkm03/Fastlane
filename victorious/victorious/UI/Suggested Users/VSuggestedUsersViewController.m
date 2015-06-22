@@ -13,7 +13,8 @@
 #import "UIView+AutoLayout.h"
 #import "VLoginFlowControllerDelegate.h"
 
-static NSString * const kBarButtonTintColorKey = @"color.text.label3";
+static NSString * const kBarButtonTintColorKey      = @"color.text.label3";
+static NSString * const VSuggestedUsersPromptKey    = @"prompt";
 
 @interface VSuggestedUsersViewController () <VBackgroundContainer, UICollectionViewDelegateFlowLayout, VLoginFlowScreen>
 
@@ -52,13 +53,14 @@ static NSString * const kBarButtonTintColorKey = @"color.text.label3";
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];
     
+    NSString *authorizationContextText = [self.dependencyManager stringForKey:VSuggestedUsersPromptKey];
     NSDictionary *mapping = @{ VDependencyManagerHeading3FontKey : [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey],
                                VDependencyManagerLabel1FontKey : [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey],
                                VDependencyManagerMainTextColorKey : [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey],
-                               VDependencyManagerSecondaryTextColorKey : [self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey] };
+                               VDependencyManagerSecondaryTextColorKey : [self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey],
+                               VCreatorMessageTextKey : authorizationContextText ?: @"" };
     VDependencyManager *creatorMessageComponent = [self.dependencyManager childDependencyManagerWithAddedConfiguration:mapping];
     self.creatorMessageViewController = [[VCreatorMessageViewController alloc] initWithDependencyManager:creatorMessageComponent];
-    [self.creatorMessageViewController setMessage:[self.dependencyManager stringForKey:@"prompt"]];
     [self.creatorMessageViewController willMoveToParentViewController:self];
     [self.creatorMessageContainer addSubview:self.creatorMessageViewController.view];
     [self.creatorMessageViewController didMoveToParentViewController:self];

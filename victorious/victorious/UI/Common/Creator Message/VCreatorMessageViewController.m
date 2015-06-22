@@ -11,10 +11,11 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "VAppInfo.h"
 
+NSString * const VCreatorMessageTextKey = @"creatorMessage";
+
 @interface VCreatorMessageViewController()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) NSString *message;
 
 @property (nonatomic, weak) IBOutlet UILabel *creatorNameLabel;
 @property (nonatomic, weak) IBOutlet UIImageView *creatorAvatarImageView;
@@ -54,16 +55,9 @@
     [self updateMessage];
 }
 
-- (void)setMessage:(NSString *)message
-{
-    _message = message;
-    
-    [self updateMessage];
-}
-
 - (void)updateMessage
 {
-    if ( self.dependencyManager == nil || self.message == nil )
+    if ( self.dependencyManager == nil )
     {
         return;
     }
@@ -72,7 +66,8 @@
     NSDictionary *attributes = [self stringAttributesWithFont:[self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]
                                                         color:[self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey]
                                                    lineHeight:23.0f];
-    self.messageTextView.attributedText = [[NSAttributedString alloc] initWithString:self.message attributes:attributes];
+    NSString *message = [self.dependencyManager stringForKey:VCreatorMessageTextKey];
+    self.messageTextView.attributedText = [[NSAttributedString alloc] initWithString:message attributes:attributes];
     
     [self updateBounds];
 }

@@ -123,8 +123,9 @@
     [self.view v_addFitToParentConstraintsToSubview:self.blurredBackgroundView];
     
     NSString *authorizationContextText = [self.authorizationContextHelper textForContext:self.authorizationContextType];
-    self.creatorMessageView = [[VCreatorMessageViewController alloc] initWithDependencyManager:self.dependencyManager];
-    [self.creatorMessageView setMessage:authorizationContextText];
+    NSDictionary *childComponent = @{ VCreatorMessageTextKey : authorizationContextText };
+    VDependencyManager *childDependency = [self.dependencyManager childDependencyManagerWithAddedConfiguration:childComponent];
+    self.creatorMessageView = [[VCreatorMessageViewController alloc] initWithDependencyManager:childDependency];
     [self.creatorMessageView willMoveToParentViewController:self];
     [self.creatorMessgeContainerView addSubview:self.creatorMessageView.view];
     [self.creatorMessageView didMoveToParentViewController:self];

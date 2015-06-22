@@ -11,15 +11,12 @@
 
 @class VDependencyManager;
 
+extern NSString * const VCreatorMessageTextKey;
+
 /**
  A reuable view controller that shows some text as a quote from the creator,
  using an avatar and creator name as a salutation.
  */
 @interface VCreatorMessageViewController : UIViewController <VHasManagedDependencies>
-
-/**
- The messages to display, appearing beneath styled quotes as if spoken by the creator.
- */
-- (void)setMessage:(NSString *)message;
 
 @end
