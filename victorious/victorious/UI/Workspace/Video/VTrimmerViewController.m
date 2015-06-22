@@ -278,7 +278,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{    
+{
     [self updateAndNotify];
     
     if (!CMTimeRangeContainsTime(self.selectedTimeRange, self.currentPlayTime))
