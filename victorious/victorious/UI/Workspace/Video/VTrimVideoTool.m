@@ -293,12 +293,4 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
     }
 }
 
-#pragma mark - Private Methods
-
-- (void)updateStartEndTimesOnVideoPlayer
-{
-    [self.videoPlayerController setStartSeconds:CMTimeGetSeconds(self.trimViewController.selectedTimeRange.start)];
-    [self.videoPlayerController setEndSeconds:CMTimeGetSeconds(CMTimeAdd(self.trimViewController.selectedTimeRange.start, self.trimViewController.selectedTimeRange.duration))];
-}
-
 @end

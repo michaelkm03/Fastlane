@@ -115,7 +115,9 @@ static const CGFloat kMinimumThumbnailHeight = 70.0f; //The minimum height for t
 
 - (CMTimeRange)selectedTimeRange
 {
-    return CMTimeRangeMake([self currentTimeOffset], self.trimControl.selectedDuration);
+    CMTime timeScrolled = CMTimeSubtract([self maximumEndTime], [self currentTimeOffset]);
+    CMTime upperRange = CMTIME_COMPARE_INLINE(timeScrolled, <, self.trimControl.selectedDuration) ? timeScrolled : self.trimControl.selectedDuration;
+    return CMTimeRangeMake([self currentTimeOffset], upperRange);
 }
 
 - (void)setCurrentPlayTime:(CMTime)currentPlayTime
@@ -276,7 +278,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
+{    
     [self updateAndNotify];
     
     if (!CMTimeRangeContainsTime(self.selectedTimeRange, self.currentPlayTime))
