@@ -6,11 +6,13 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "NSArray+VMap.h"
 #import "VDependencyManager.h"
 #import "VHasManagedDependencies.h"
 #import "VJSONHelper.h"
 #import "VSolidColorBackground.h"
 #import "VTemplateImage.h"
+#import "VTemplateImageMacro.h"
 #import "VURLMacroReplacement.h"
 
 typedef BOOL (^TypeTest)(Class);
@@ -74,12 +76,6 @@ NSString * const VDependencyManagerTextWorkspaceFlowKey = @"workspaceText";
 NSString * const VDependencyManagerImageWorkspaceKey = @"imageWorkspace";
 NSString * const VDependencyManagerEditTextWorkspaceKey = @"editTextWorkspace";
 NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
-
-// Keys for image URLs
-static NSString * const kImageCountKey = @"imageCount";
-static NSString * const kImageMacroKey = @"imageMacro";
-static NSString * const kScaleKey = @"scale";
-static NSString * const kMacroReplacement = @"XXXXX";
 
 @interface VDependencyManager ()
 
@@ -387,24 +383,11 @@ static NSString * const kMacroReplacement = @"XXXXX";
 
 - (NSArray *)arrayOfImageURLsWithDictionary:(NSDictionary *)imageDictionary
 {
-    NSNumber *imageCount = imageDictionary[kImageCountKey];
-    NSString *macro = imageDictionary[kImageMacroKey];
-    
-    if ( ![imageCount isKindOfClass:[NSNumber class]] || ![macro isKindOfClass:[NSString class]] )
+    VTemplateImageMacro *macro = [[VTemplateImageMacro alloc] initWithJSON:imageDictionary];
+    return [[macro.images filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"imageURL != nil"]] v_map:^id(VTemplateImage *image)
     {
-        return nil;
-    }
-    
-    NSMutableArray *imageURLs = [[NSMutableArray alloc] initWithCapacity:[imageCount unsignedIntegerValue]];
-    VURLMacroReplacement *macroReplacement = [[VURLMacroReplacement alloc] init];
-    for (NSUInteger n = 0; n < [imageCount unsignedIntegerValue]; n++)
-    {
-        NSString *macroReplacementString = [NSString stringWithFormat:@"%.5lu", (unsigned long)n];
-        [imageURLs addObject:[macroReplacement urlByReplacingMacrosFromDictionary:@{ kMacroReplacement: macroReplacementString}
-                                                                      inURLString:macro]];
-    }
-    
-    return imageURLs;
+        return image.imageURL.absoluteString;
+    }];
 }
 
 - (NSArray *)arrayOfAllImageURLs
@@ -677,7 +660,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
                     [self setChildDependencyManager:childDependencyManager forID:value[VDependencyManagerIDKey]];
                 }
             }
-            else if ( value[kImageMacroKey] != nil )
+            else if ( [VTemplateImageMacro isImageMacroJSON:value] )
             {
                 NSArray *images = [self arrayOfImageURLsWithDictionary:value];
                 [self addImageURLsWithArray:images];

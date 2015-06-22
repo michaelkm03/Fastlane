@@ -19,10 +19,15 @@ extern NSString * const VTemplateImageURLKey; ///< The JSON key that identifes t
 @property (nonatomic, readonly) NSNumber *scale; ///< The scale factor for the image
 
 /**
+ Initializes a new VTemplateImage instance with the given imageURL and scale.
+ */
+- (instancetype)initWithImageURL:(NSURL *)imageURL scale:(NSNumber *)scale NS_DESIGNATED_INITIALIZER;
+
+/**
  Initializes a new VTemplateImage instance
  using a snippet of JSON from a template.
  */
-- (instancetype)initWithJSON:(NSDictionary *)imageJSON NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithJSON:(NSDictionary *)imageJSON;
 
 /**
  Returns YES for an input that looks like an

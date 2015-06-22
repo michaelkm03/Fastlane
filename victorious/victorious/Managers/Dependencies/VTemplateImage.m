@@ -14,18 +14,26 @@ static NSString * const kScaleKey = @"scale";
 
 @implementation VTemplateImage
 
-- (instancetype)initWithJSON:(NSDictionary *)imageJSON
+- (instancetype)initWithImageURL:(NSURL *)imageURL scale:(NSNumber *)scale
 {
     self = [super init];
     if (self != nil )
     {
-        _imageURL = [NSURL URLWithString:imageJSON[VTemplateImageURLKey]];
-        
-        VJSONHelper *helper = [[VJSONHelper alloc] init];
-        NSString *scaleString = imageJSON[kScaleKey];
-        _scale = [helper numberFromJSONValue:scaleString];
+        _imageURL = imageURL;
+        _scale = scale;
     }
     return self;
+}
+
+- (instancetype)initWithJSON:(NSDictionary *)imageJSON
+{
+    NSURL *imageURL = [NSURL URLWithString:imageJSON[VTemplateImageURLKey]];
+    
+    VJSONHelper *helper = [[VJSONHelper alloc] init];
+    NSString *scaleString = imageJSON[kScaleKey];
+    NSNumber *scale = [helper numberFromJSONValue:scaleString];
+    
+    return [self initWithImageURL:imageURL scale:scale];
 }
 
 + (BOOL)isImageJSON:(NSDictionary *)imageJSON
