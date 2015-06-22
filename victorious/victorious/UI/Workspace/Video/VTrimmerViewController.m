@@ -20,8 +20,16 @@
 
 static NSString *const emptyCellIdentifier = @"emptyCell";
 
-static const CGFloat kTimelineDarkeningAlpha = 0.5f;
 static const CGFloat kMinimumThumbnailHeight = 70.0f; //The minimum height for the thumbnail preview collection view
+
+CGFloat kHashmarkHeight = 13.0f;
+CGFloat kHashmarkWidth = 2.0f;
+
+CGFloat kTimeLabelWidth = 40.0f;
+CGFloat kTimeLabelHeight = 25.0f;
+
+int kNumberOfHash = 16;
+int kHashesPerTime = 3; //Number hashes per each time label
 
 @interface VTrimmerViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
 
@@ -31,7 +39,6 @@ static const CGFloat kMinimumThumbnailHeight = 70.0f; //The minimum height for t
 
 @property (nonatomic, strong) UILabel *titleLabel;
 
-@property (nonatomic, strong) UIView *trimDimmingView;
 @property (nonatomic, strong) NSLayoutConstraint *dimmingViewWidthConstraint;
 
 @property (nonatomic, strong) UIView *currentPlayBackOverlayView;
@@ -61,7 +68,6 @@ static const CGFloat kMinimumThumbnailHeight = 70.0f; //The minimum height for t
     [super viewDidLoad];
 
     [self prepareThumbnailCollectionViewAndTitleLabel];
-    [self prepareDimmingView];
     [self preparePlaybackOverlay];
     [self prepareTrimControl];
 }
@@ -415,44 +421,6 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
                                                                         views:viewMap]];
 }
 
-- (void)prepareDimmingView
-{
-    self.trimDimmingView = [[UIView alloc] initWithFrame:self.view.bounds];
-    self.trimDimmingView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.0f];
-    self.trimDimmingView.userInteractionEnabled = NO;
-    [self.view addSubview:self.trimDimmingView];
-    self.trimDimmingView.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    NSDictionary *viewMap = @{@"trimDimmingView":self.trimDimmingView};
-    
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[trimDimmingView]|"
-                                                                      options:kNilOptions
-                                                                      metrics:nil
-                                                                        views:viewMap]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.trimDimmingView
-                                                          attribute:NSLayoutAttributeTop
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.thumbnailCollectionView
-                                                          attribute:NSLayoutAttributeTop
-                                                         multiplier:1.0
-                                                           constant:0.0f]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.trimDimmingView
-                                                          attribute:NSLayoutAttributeBottom
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.thumbnailCollectionView
-                                                          attribute:NSLayoutAttributeBottom
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
-    self.dimmingViewWidthConstraint = [NSLayoutConstraint constraintWithItem:self.trimDimmingView
-                                                                   attribute:NSLayoutAttributeWidth
-                                                                   relatedBy:NSLayoutRelationEqual
-                                                                      toItem:nil
-                                                                   attribute:NSLayoutAttributeNotAnAttribute
-                                                                  multiplier:1.0f
-                                                                    constant:0.0f];
-    [self.view addConstraint:self.dimmingViewWidthConstraint];
-}
-
 - (void)prepareTrimControl
 {
     self.trimControl = [[VTrimControl alloc] initWithFrame:CGRectZero];
@@ -488,30 +456,29 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
     self.currentPlayBackOverlayView = [[UIView alloc] initWithFrame:self.view.bounds];
     self.currentPlayBackOverlayView.userInteractionEnabled = NO;
-
+    
     self.currentPlayBackOverlayView.backgroundColor = [UIColor colorWithRed:237.0f/255.0f green:28.0f/255.0f blue:36.0f/255.0f alpha:0.3f];
     [self.view addSubview:self.currentPlayBackOverlayView];
     self.currentPlayBackOverlayView.translatesAutoresizingMaskIntoConstraints = NO;
-    
-   [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[overlayView]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[overlayView]"
                                                                       options:kNilOptions
                                                                       metrics:nil
                                                                         views:@{@"overlayView":self.currentPlayBackOverlayView}]];
-  [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.currentPlayBackOverlayView
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.currentPlayBackOverlayView
                                                           attribute:NSLayoutAttributeTop
                                                           relatedBy:NSLayoutRelationEqual
                                                              toItem:self.thumbnailCollectionView
                                                           attribute:NSLayoutAttributeTop
                                                          multiplier:1.0f
                                                            constant:0.0f]];
-   [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.currentPlayBackOverlayView
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.currentPlayBackOverlayView
                                                           attribute:NSLayoutAttributeBottom
                                                           relatedBy:NSLayoutRelationEqual
                                                              toItem:self.thumbnailCollectionView
                                                           attribute:NSLayoutAttributeBottom
                                                          multiplier:1.0f
                                                            constant:0.0f]];
-  
+    
     self.currentPlayBackWidthConstraint = [NSLayoutConstraint constraintWithItem:self.currentPlayBackOverlayView
                                                                        attribute:NSLayoutAttributeWidth
                                                                        relatedBy:NSLayoutRelationEqual
@@ -530,14 +497,6 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 
 - (void)prepareHashmarks
 {
-    CGFloat kHashmarkHeight = 13.0f;
-    CGFloat kHashmarkWidth = 2.0f;
-    
-    CGFloat kTimeLabelWidth = 40.0f;
-    CGFloat kTimeLabelHeight = 25.0f;
-    
-    int kNumberOfHash = 16;
-    
     CGFloat startTime = 0.0f;
     CGFloat endTime = CMTimeGetSeconds(self.actualDuration);
     
@@ -552,8 +511,9 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
         [self.thumbnailCollectionView addSubview:hashmark];
         self.thumbnailCollectionView.clipsToBounds = NO;
         
-        if ((i%3) == 0)
+        if ((i%kHashesPerTime) == 0)
         {
+            // add time label
             UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,
                                                                            -kTimeLabelHeight - kHashmarkHeight,
                                                                            kTimeLabelWidth,

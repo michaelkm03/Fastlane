@@ -15,6 +15,11 @@ static const CGFloat kTrimHeadHeight = 44.0f;
 static const CGFloat kTrimHeadInset = 4.0f;
 static const CGFloat kTrimBodyWidth = 5.0f;
 
+CGFloat scaleFactorX = 0.15f; //x-ratio for handle subview on trim control
+CGFloat scaleFactorY = 0.50f; //y-ratio for handle subview on trim control
+CGFloat kLineLength = 1000.0f; //Length of underbar on trim control
+CGFloat kLineThickness = 1.0f; //Thickness of underbar on trim control
+
 @interface VTrimControl () <UICollisionBehaviorDelegate, UIDynamicAnimatorDelegate>
 
 @property (nonatomic, readwrite) CMTime selectedDuration;
@@ -116,15 +121,10 @@ static const CGFloat kTrimBodyWidth = 5.0f;
                                           0.0f,
                                           3*kTrimBodyWidth,
                                           previewHeight - 4.0f);
-    CGFloat scaleFactorX = 0.15f;
-    CGFloat scaleFactorY = 0.50f;
+
     UIView *innerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.trimThumbBody.frame.size.width*scaleFactorX, self.trimThumbBody.frame.size.height*scaleFactorY)];
     innerView.center = self.trimThumbBody.center;
     innerView.backgroundColor = [UIColor colorWithWhite:0.8f alpha:1.0f];
-    
-    
-    CGFloat kLineLength = 400.0f;
-    CGFloat kLineThickness = 1.0f;
     
     UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(self.trimThumbBody.frame.size.width - kLineLength, -kLineThickness, kLineLength, kLineThickness)];
     UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(self.trimThumbBody.frame.size.width - kLineLength, self.trimThumbBody.frame.size.height, kLineLength, kLineThickness)];
@@ -337,7 +337,5 @@ static const CGFloat kTrimBodyWidth = 5.0f;
     self.trimThumbBody.center = CGPointMake(point.x, 94.0f);
     [self sendActionsForControlEvents:UIControlEventValueChanged];
 }
-
-
 
 @end
