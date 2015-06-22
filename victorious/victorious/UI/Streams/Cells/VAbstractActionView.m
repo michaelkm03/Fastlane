@@ -20,6 +20,13 @@
 // Models
 #import "VSequence+Fetcher.h"
 
+NSString * const VCommentIconKey = @"commentIcon";
+NSString * const VShareIconKey = @"shareIcon";
+NSString * const VGifIconKey = @"gifIcon";
+NSString * const VMemeIconKey = @"memeIcon";
+NSString * const VRepostIconKey = @"repostIcon";
+NSString * const VRepostSuccessIconKey = @"repostSuccessIcon";
+
 @interface VAbstractActionView ()
 
 @property (nonatomic, strong) VFlexBar *actionBar;

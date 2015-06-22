@@ -233,7 +233,7 @@ static NSString * const kStoryboardName = @"EndCard";
     NSString *identifier = [VEndCardActionCell cellIdentifier];
     VEndCardActionCell *cell = (VEndCardActionCell *)[collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     VEndCardActionModel *actionModel = self.actions[ indexPath.row ];
-    [cell setModel:actionModel];
+    [cell populateWithDependencyManager:self.dependencyManager andModel:actionModel];
     [cell setFont:[self.dependencyManager fontForKey:VDependencyManagerLabel2FontKey]];
     return cell;
 }
@@ -269,6 +269,14 @@ static NSString * const kStoryboardName = @"EndCard";
     }
     
     self.animator.expandedRatio = expandedRatio;
+}
+
+#pragma mark - Dependency manager updating
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    
 }
 
 @end

@@ -7,12 +7,15 @@
 //
 
 #import "VFollowHashtagControl.h"
-#import "VThemeManager.h"
+#import "VDependencyManager.h"
 
 static const CGFloat kHighlightedTiltRotationAngle = M_PI / 4;
 static const NSTimeInterval kHighlightAnimationDuration = 0.3f;
 static const CGFloat kHighlightTransformPerspective = -1.0 / 200.0f;
 static const CGFloat kForcedAntiAliasingConstant = 0.01f;
+
+static NSString * const kFollowHashtagIconKey = @"FollowHashtag";
+static NSString * const kFollowedHashtagIconKey = @"FollowedHashtag";
 
 @interface VFollowHashtagControl ()
 
@@ -52,20 +55,8 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
     _subscribeImage = [UIImage imageNamed:@"followTag"];
     _unSubscribeImage = [UIImage imageNamed:@"followedHashtag"];
     
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:_subscribeImage];
-    imageView.frame = self.bounds;
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.bounds];
     imageView.contentMode = self.contentMode;
-    
-    if (self.subscribed)
-    {
-        [imageView setImage:_unSubscribeImage];
-    }
-    else
-    {
-        UIImage *sImg = [_subscribeImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        imageView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-        imageView.image = sImg;
-    }
     [self addSubview:imageView];
     
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -115,16 +106,7 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
     
     [self sendActionsForControlEvents:UIControlEventValueChanged];
     
-    if (self.subscribed)
-    {
-        [self.imageView setImage:_unSubscribeImage];
-    }
-    else
-    {
-        UIImage *sImg = [_subscribeImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        self.imageView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-        self.imageView.image = sImg;
-    }
+    [self updateFollowImageView];
 }
 
 #pragma mark - Public Interface
@@ -148,12 +130,6 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
                        options:UIViewAnimationOptionTransitionFlipFromTop | UIViewAnimationOptionBeginFromCurrentState
                     animations:animations
                     completion:nil];
-}
-
-- (void)setTintColor:(UIColor *)tintColor
-{
-    [super setTintColor:tintColor];
-    self.imageView.tintColor = tintColor;
 }
 
 #pragma mark - UIControl
@@ -190,6 +166,24 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
     highLightTranform = CATransform3DRotate(highLightTranform, kHighlightedTiltRotationAngle, 1, 0, 0);
     
     return highLightTranform;
+}
+
+#pragma mark - Appearance styling
+
+- (void)updateFollowImageView
+{
+    self.imageView.image = self.subscribed ? self.unSubscribeImage : self.subscribeImage;
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    if ( dependencyManager != nil )
+    {
+        self.subscribeImage = [dependencyManager tintedImageForKey:kFollowHashtagIconKey];
+        self.unSubscribeImage = [dependencyManager tintedImageForKey:kFollowedHashtagIconKey];
+        [self updateFollowImageView];
+    }
 }
 
 @end

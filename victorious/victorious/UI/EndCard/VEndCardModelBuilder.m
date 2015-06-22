@@ -12,6 +12,7 @@
 #import "VEndCardModel.h"
 #import "VUser.h"
 #import "VEndCardActionModel.h"
+#import "VDependencyManager.h"
 
 #define FORCE_SHOW_DEBUG_END_CARD 0
 
@@ -108,7 +109,7 @@
     VEndCardActionModel *action = [[VEndCardActionModel alloc] init];
     action.identifier = VEndCardActionIdentifierGIF;
     action.textLabelDefault = NSLocalizedString( @"GIF", @"Create a GIF from this video" );
-    action.iconImageNameDefault = @"action_gif";
+    action.iconImageDefault = [self.dependencyManager imageForKey:@"action_gif"];
     return action;
 }
 
@@ -118,8 +119,8 @@
     action.identifier = VEndCardActionIdentifierRepost;
     action.textLabelDefault = NSLocalizedString( @"Repost", @"Post a copy of this video" );
     action.textLabelSuccess = NSLocalizedString( @"Reposted", @"Indicating the video has already been reposted." );
-    action.iconImageNameDefault = @"action_repost";
-    action.iconImageNameSuccess = @"action_success";
+    action.iconImageDefault = [self.dependencyManager imageForKey:@"action_repost"];
+    action.iconImageSuccess = [self.dependencyManager imageForKey:@"action_success"];
     return action;
 }
 
@@ -128,7 +129,7 @@
     VEndCardActionModel *action = [[VEndCardActionModel alloc] init];
     action.identifier = VEndCardActionIdentifierShare;
     action.textLabelDefault = NSLocalizedString( @"Share", @"Share this video" );
-    action.iconImageNameDefault = @"action_share";
+    action.iconImageDefault = [self.dependencyManager imageForKey:@"action_share"];
     return action;
 }
 
@@ -137,7 +138,7 @@
     VEndCardActionModel *action = [[VEndCardActionModel alloc] init];
     action.identifier = VEndCardActionIdentifierMeme;
     action.textLabelDefault = NSLocalizedString( @"Meme", @"Create a meme from this video" );
-    action.iconImageNameDefault = @"action_meme";
+    action.iconImageDefault = [self.dependencyManager imageForKey:@"action_meme"];
     return action;
 }
 

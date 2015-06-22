@@ -13,6 +13,13 @@
 @class VFlexBar;
 @class VSequence;
 
+extern NSString * const VCommentIconKey;
+extern NSString * const VShareIconKey;
+extern NSString * const VGifIconKey;
+extern NSString * const VMemeIconKey;
+extern NSString * const VRepostIconKey;
+extern NSString * const VRepostSuccessIconKey;
+
 /**
  *  VAbstractActionView provides a commmon interface for views that use a horizontal 
  *  list of action buttons for interactivity with a particlar sequence.

@@ -1115,6 +1115,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             self.experienceEnhancerCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VExperienceEnhancerBarCell suggestedReuseIdentifier]
                                                                                     forIndexPath:indexPath];
             self.viewModel.experienceEnhancerController.enhancerBar = self.experienceEnhancerCell.experienceEnhancerBar;
+            self.experienceEnhancerCell.dependencyManager = self.dependencyManager;
             
             [self updateInitialExperienceEnhancerState];
             

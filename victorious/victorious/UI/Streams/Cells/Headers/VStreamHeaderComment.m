@@ -35,6 +35,8 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
 static const CGFloat kCommentButtonWidth = 60.0f;
 static const CGFloat kCommentButtonHeight = 44.0f;
 
+static NSString * const kCommentsIconKey = @"streamComments";
+
 @interface VStreamHeaderComment ()
 
 @property (nonatomic, strong) VLargeNumberFormatter *numberFormatter;
@@ -105,7 +107,8 @@ static const CGFloat kCommentButtonHeight = 44.0f;
         
         self.commentButton = [UIButton buttonWithType:UIButtonTypeCustom];
         self.commentButton.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.commentButton setImage:[[UIImage imageNamed:@"StreamComments"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+        UIImage *commentIcon = [self.dependencyManager imageForKey:kCommentsIconKey];
+        [self.commentButton setImage:[commentIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                             forState:UIControlStateNormal];
         self.commentButton.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -kCommentButtonBuffer);
         self.commentButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;

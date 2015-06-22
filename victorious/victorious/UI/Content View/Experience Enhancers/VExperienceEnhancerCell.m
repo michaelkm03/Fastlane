@@ -7,11 +7,14 @@
 //
 
 #import "VExperienceEnhancerCell.h"
-#import "VThemeManager.h"
+#import "VDependencyManager.h"
 
 static const CGFloat kVExperienceEnhancerCellWidth = 50.0f;
 static const CGFloat kThreePointFiveInchScreenHeight = 480.0f;
 static const CGFloat kTopSpaceIconCompactVertical = 5.0f;
+
+static NSString * const kUnlockedBallisticBackgroundIconKey = @"unlockedBallisticBackground";
+static NSString * const kLockedBallisticBackgroundIconKey = @"lockedBallisticBackground";
 
 @interface VExperienceEnhancerCell ()
 
@@ -20,6 +23,8 @@ static const CGFloat kTopSpaceIconCompactVertical = 5.0f;
 @property (weak, nonatomic) IBOutlet UILabel *experienceEnhancerLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSpaceIconImageViewToContianerConstraint;
 @property (nonatomic, assign) BOOL isUnhighlighting;
+@property (nonatomic, strong) UIImage *unlockedBallisticBackground;
+@property (nonatomic, strong) UIImage *lockedBallisticBackground;
 
 @end
 
@@ -75,7 +80,6 @@ static const CGFloat kTopSpaceIconCompactVertical = 5.0f;
 {
     _experienceEnhancerTitle = [experienceEnhancerTitle copy];
     self.experienceEnhancerLabel.text = _experienceEnhancerTitle;
-    self.experienceEnhancerLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
 }
 
 - (void)setExperienceEnhancerIcon:(UIImage *)experienceEnhancerIcon
@@ -93,20 +97,29 @@ static const CGFloat kTopSpaceIconCompactVertical = 5.0f;
 - (void)setIsLocked:(BOOL)isLocked
 {
     _isLocked = isLocked;
-    
-    UIImage *image = nil;
-    if ( _isLocked )
-    {
-        image = [UIImage imageNamed:@"ballistic-bg-locked"];
-    }
-    else
-    {
-        image = [UIImage imageNamed:@"ballistic-bg"];
-    }
-    
+    [self updateOverlayImageView];
+}
+
+#pragma mark - Appearance styling
+
+- (void)updateOverlayImageView
+{
+    UIImage *image = self.isLocked ? [self.dependencyManager imageForKey:kLockedBallisticBackgroundIconKey] : [self.dependencyManager imageForKey:kUnlockedBallisticBackgroundIconKey];
     if ( image != nil )
     {
         self.experienceEnhancerOverlayImageView.image = image;
+    }
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    if ( dependencyManager != nil )
+    {
+        self.experienceEnhancerLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+        self.lockedBallisticBackground = [dependencyManager imageForKey:kLockedBallisticBackgroundIconKey];
+        self.unlockedBallisticBackground = [dependencyManager imageForKey:kUnlockedBallisticBackgroundIconKey];
+        [self updateOverlayImageView];
     }
 }
 

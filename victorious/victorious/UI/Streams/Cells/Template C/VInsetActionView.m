@@ -59,8 +59,8 @@ static const CGFloat kActionButtonWidth = 44.0f;
 {
     if (_shareButton == nil)
     {
-        _shareButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_shareIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                                            action:@selector(share:)];
+        _shareButton = [self actionButtonWithImageKey:VShareIconKey
+                                               action:@selector(share:)];
     }
     return _shareButton;
 }
@@ -69,8 +69,8 @@ static const CGFloat kActionButtonWidth = 44.0f;
 {
     if (_gifButton == nil)
     {
-        _gifButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_gifIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                                          action:@selector(gif:)];
+        _gifButton = [self actionButtonWithImageKey:VGifIconKey
+                                             action:@selector(gif:)];
     }
     return _gifButton;
 }
@@ -79,8 +79,8 @@ static const CGFloat kActionButtonWidth = 44.0f;
 {
     if (_memeButton == nil)
     {
-        _memeButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_memeIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                                           action:@selector(meme:)];
+        _memeButton = [self actionButtonWithImageKey:VMemeIconKey
+                                              action:@selector(meme:)];
     }
     return _memeButton;
 }
@@ -89,8 +89,8 @@ static const CGFloat kActionButtonWidth = 44.0f;
 {
     if (_repostButton == nil)
     {
-        _repostButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_repostIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                                             action:@selector(repost:)];
+        _repostButton = [self actionButtonWithImageKey:VRepostIconKey
+                                                action:@selector(repost:)];
     }
     return _repostButton;
 }
@@ -179,10 +179,12 @@ static const CGFloat kActionButtonWidth = 44.0f;
 - (void)updateRepostButtonForSequence:(VSequence *)sequence
 {
     [self.repostButtonController invalidate];
+    UIImage *repostImage = [self.dependencyManager imageForKey:VRepostIconKey];
+    UIImage *repostSuccessImage = [self.dependencyManager imageForKey:VRepostSuccessIconKey];
     self.repostButtonController = [[VRepostButtonController alloc] initWithSequence:sequence
                                                                        repostButton:self.repostButton
-                                                                      repostedImage:[UIImage imageNamed:@"C_repostIcon-success"]
-                                                                    unRepostedImage:[UIImage imageNamed:@"C_repostIcon"]];
+                                                                      repostedImage:repostSuccessImage
+                                                                    unRepostedImage:repostImage];
 }
 
 #pragma mark - VHasManagedDependencies
@@ -196,22 +198,33 @@ static const CGFloat kActionButtonWidth = 44.0f;
     self.gifButton.tintColor = imageTintColor;
     self.memeButton.tintColor = imageTintColor;
     self.repostButton.tintColor = imageTintColor;
+    
+    //Update buttons for images from dependencyManager
+    [self updateActionButton:self.shareButton toImageWithKey:VShareIconKey];
+    [self updateActionButton:self.gifButton toImageWithKey:VGifIconKey];
+    [self updateActionButton:self.memeButton toImageWithKey:VMemeIconKey];
+    [self updateRepostButtonForSequence:self.sequence];
 }
 
 #pragma mark - Button Factory
 
-- (UIButton *)actionButtonWithImage:(UIImage *)actionImage
-                             action:(SEL)action
+- (UIButton *)actionButtonWithImageKey:(NSString *)imageKey
+                                action:(SEL)action
 {
     UIButton *actionButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    
+    [self updateActionButton:actionButton toImageWithKey:imageKey];
     actionButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [actionButton setImage:actionImage forState:UIControlStateNormal];
     actionButton.tintColor = [UIColor blackColor];
     [actionButton addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
     [actionButton v_addWidthConstraint:kActionButtonWidth];
     
     return actionButton;
+}
+
+- (void)updateActionButton:(UIButton *)actionButton toImageWithKey:(NSString *)imageKey
+{
+    UIImage *image = [self.dependencyManager imageForKey:imageKey];
+    [actionButton setImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
 }
 
 @end

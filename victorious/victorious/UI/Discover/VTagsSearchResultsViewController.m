@@ -201,6 +201,7 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
              }
          }];
     };
+    customCell.dependencyManager = self.dependencyManager;
     
     return customCell;
 }
