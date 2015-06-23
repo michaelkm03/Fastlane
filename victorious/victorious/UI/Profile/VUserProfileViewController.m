@@ -831,7 +831,10 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     {
         return isCurrentUser;
     }
-    return YES;
+    else
+    {
+        return [super shouldDisplayAccessoryMenuItem:menuItem fromSource:source];
+    }
 }
 
 - (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
