@@ -15,7 +15,6 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "VLinearGradientView.h"
 
-static NSString * const kBarButtonTintColorKey      = @"color.text.label3";
 static NSString * const VSuggestedUsersPromptKey    = @"prompt";
 
 @interface VSuggestedUsersViewController () <VBackgroundContainer, UICollectionViewDelegateFlowLayout, VLoginFlowScreen>
