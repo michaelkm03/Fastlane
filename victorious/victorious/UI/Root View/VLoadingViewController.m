@@ -217,11 +217,6 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
-#warning REMVOE THIS WHEN BACKEND IS SUPPLYING IT
-        NSParameterAssert( [templateDecorator setComponentWithFilename:@"suggestedUsers"
-                                                            forKeyPath:@"scaffold/loginAndRegistrationView/registrationScreens/10"] );
-        [templateDecorator removeTemplateValueForKeyPath:[[templateDecorator keyPathsForKey:@"createSheet"] firstObject]];
-        
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];

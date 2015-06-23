@@ -28,6 +28,10 @@
     self.collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:layout];
     self.collectionView.delegate = self;
     self.collectionView.backgroundColor = [UIColor clearColor];
+    self.collectionView.alwaysBounceHorizontal = YES;
+    self.collectionView.showsHorizontalScrollIndicator = NO;
+    
+    self.collectionView.scrollIndicatorInsets = UIEdgeInsetsMake( 0.0, 12.0f, 0.0f, 12.0f );
     
     [self.view addSubview:self.collectionView];
     [self.view v_addFitToParentConstraintsToSubview:self.collectionView];

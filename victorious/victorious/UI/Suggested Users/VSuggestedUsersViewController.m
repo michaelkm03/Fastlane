@@ -69,6 +69,8 @@ static NSString * const VSuggestedUsersPromptKey    = @"prompt";
     self.creatorAvatarImageView.layer.borderColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey].CGColor;
     self.creatorAvatarImageView.layer.masksToBounds = YES;
     
+    self.collectionView.scrollIndicatorInsets = UIEdgeInsetsMake( 5, 0, 0, 0 );
+    
     BOOL stringIsValid = ownerName != nil && ownerName.length > 0;
     BOOL profileImageURLIsEmpty = [profileImageURL.absoluteString isEqualToString:@""];
     if ( stringIsValid && !profileImageURLIsEmpty )
@@ -185,7 +187,7 @@ static NSString * const VSuggestedUsersPromptKey    = @"prompt";
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
-    return UIEdgeInsetsMake( 20.0f, 0, 10.0f, 0 );
+    return UIEdgeInsetsMake( 12.0f, 0, 10.0f, 0 );
 }
 
 @end
