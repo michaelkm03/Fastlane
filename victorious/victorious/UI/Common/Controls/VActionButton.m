@@ -81,7 +81,6 @@
     {
         self.tintColor = self.unselectedTintColor;
     }
-    [self sizeToFit];
 }
 
 @end

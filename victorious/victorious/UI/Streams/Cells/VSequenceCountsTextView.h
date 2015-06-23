@@ -45,6 +45,11 @@
 - (void)setCommentsCount:(NSInteger)commentsCount;
 
 /**
+ Returns whether the counts provided were displayed according to the internal logic.
+ */
++ (BOOL)canDisplayTextWithCommentCount:(NSInteger)commentCount likesCount:(NSInteger)likesCount;
+
+/**
  Delegate that is notified when the user interacts with the text view.
  */
 @property (nonatomic, weak) id<VSequenceCountsTextViewDelegate> textSelectionDelegate;

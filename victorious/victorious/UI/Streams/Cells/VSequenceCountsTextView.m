@@ -107,26 +107,57 @@ static NSString * const kDividerDelimeter = @"•";
         return;
     }
     
-    UIFont *countsFont = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
-    UIColor *countsTextColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    NSDictionary *attributes = @{ NSFontAttributeName: countsFont, NSForegroundColorAttributeName: countsTextColor };
-    NSString *likesCountText = [self.numberFormatter stringForInteger:self.likesCount];
-    NSString *commentsCountText = [self.numberFormatter stringForInteger:self.commentsCount];
+    UIFont *font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+    UIColor *textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    NSDictionary *attributes = @{ NSFontAttributeName: font, NSForegroundColorAttributeName: textColor };
     
-    NSString *likesText = self.likesCount == 1 ? NSLocalizedString( @"LikesSingular", @"" ) : NSLocalizedString( @"LikesPlural", @"" );
-    NSString *commentsText = self.commentsCount == 1 ? NSLocalizedString( @"CommentsSingular", @"" ) : NSLocalizedString( @"CommentsPlural", @"" );
-    NSString *text = [NSString stringWithFormat:@"%@ %@  %@  %@ %@", likesCountText, likesText, kDividerDelimeter, commentsCountText, commentsText];
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:text attributes:attributes];
+    NSMutableString *displayText = [[NSMutableString alloc] init];
     
-    NSArray *linkComponents = [text componentsSeparatedByString:kDividerDelimeter];
-    NSRange likesRanage = [text rangeOfString:linkComponents[0]];
-    [attributedString addAttribute:CCHLinkAttributeName value:kLinkIdentifierValueLikes range:likesRanage];
-    NSRange commentsRange = [text rangeOfString:linkComponents[1]];
-    [attributedString addAttribute:CCHLinkAttributeName value:kLinkIdentifierValueComments range:commentsRange];
+    NSString *likesText = nil;
+    if ( self.likesCount > 0 )
+    {
+        NSString *formattedNumberString = [self.numberFormatter stringForInteger:self.likesCount];
+        NSString *format = self.likesCount == 1 ? NSLocalizedString( @"LikesSingularFormat", @"" ) : NSLocalizedString( @"LikesPluralFormat", @"" );
+        likesText = [NSString stringWithFormat:format, formattedNumberString];
+        [displayText appendString:likesText];
+    }
+    
+    if ( self.likesCount > 0 && self.commentsCount > 0 )
+    {
+        [displayText appendString:[NSString stringWithFormat:@"  %@  ", kDividerDelimeter]];
+    }
+    
+    NSString *commentsText = nil;
+    if ( self.commentsCount > 0 )
+    {
+        NSString *formattedNumberString = [self.numberFormatter stringForInteger:self.commentsCount];
+        NSString *format = self.commentsCount == 1 ? NSLocalizedString( @"CommentsSingularFormat", @"" ) : NSLocalizedString( @"CommentsPluralFormat", @"" );
+        commentsText = [NSString stringWithFormat:format, formattedNumberString];
+        [displayText appendString:commentsText];
+    }
+    
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:displayText attributes:attributes];
+    
+    if ( likesText != nil )
+    {
+        NSRange likesRanage = [likesText rangeOfString:likesText];
+        [attributedString addAttribute:CCHLinkAttributeName value:kLinkIdentifierValueLikes range:likesRanage];
+    }
+    
+    if ( commentsText != nil )
+    {
+        NSRange commentsRange = [commentsText rangeOfString:commentsText];
+        [attributedString addAttribute:CCHLinkAttributeName value:kLinkIdentifierValueComments range:commentsRange];
+    }
     
     super.attributedText = attributedString; //< Use super because self is overridden
     self.linkTextAttributes = attributes;
     self.linkTextTouchAttributes = attributes;
+}
+
++ (BOOL)canDisplayTextWithCommentCount:(NSInteger)commentCount likesCount:(NSInteger)likesCount
+{
+    return likesCount > 0 || commentCount > 0;
 }
 
 #pragma mark - Overrides

@@ -286,7 +286,7 @@
 - (void)showLikersFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
 {
     VUsersViewController *usersViewController = [[VUsersViewController alloc] initWithDependencyManager:self.dependencyManager];
-    usersViewController.title = NSLocalizedString( @"Likers", nil );
+    usersViewController.title = NSLocalizedString( @"LikersTitle", nil );
     usersViewController.usersDataSource = [[VLikersDataSource alloc] initWithSequence:sequence];
     
     [viewController.navigationController pushViewController:usersViewController animated:YES];

@@ -62,8 +62,6 @@ static const CGFloat kHighlightedScale = 0.8f;
 {
     self.circleLayer.fillColor = self.selected ? self.selectedTintColor.CGColor : self.unselectedTintColor.CGColor;
     self.tintColor = self.selected ? self.selectedTintColor : self.unselectedTintColor;
-    
-    [self sizeToFit];
 }
 
 #pragma mark - Property Accessors
