@@ -19,6 +19,7 @@
 #import <FBKVOController.h>
 #import "VURLMacroReplacement.h"
 #import "VDependencyManager+VHighlightContainer.h"
+#import "VStreamTrackingHelper.h"
 
 static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kSequenceIDKey = @"sequenceID";
@@ -32,6 +33,8 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 @property (nonatomic, readwrite) VStreamItem *currentStreamItem;
 @property (nonatomic, strong) NSMutableSet *registeredReuseIdentifiers;
 
+@property (nonatomic, strong) VStreamTrackingHelper *streamTrackingHelper;
+
 @end
 
 @implementation VAbstractMarqueeController
@@ -43,6 +46,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     {
         _dependencyManager = dependencyManager;
         _registeredReuseIdentifiers = [[NSMutableSet alloc] init];
+        _streamTrackingHelper = [[VStreamTrackingHelper alloc] init];
     }
     return self;
 }
@@ -106,6 +110,8 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
             [self scrolledToPage:self.currentPage];
         }
     }
+    
+    [self updateCellVisibilityTracking];
 }
 
 - (void)selectNextTab
@@ -145,6 +151,39 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 - (NSTimeInterval)timerFireInterval
 {
     return kDefaultMarqueeTimerFireDuration;
+}
+
+#pragma mark - Cell visibility
+
+- (void)updateCellVisibilityTracking
+{
+    const CGRect streamVisibleRect = self.collectionView.bounds;
+    
+    NSArray *visibleCells = self.collectionView.visibleCells;
+    [visibleCells enumerateObjectsUsingBlock:^(UICollectionViewCell *cell, NSUInteger idx, BOOL *stop)
+     {
+         // Calculate visible ratio for the whole cell
+         const CGRect intersection = CGRectIntersection( streamVisibleRect, cell.frame );
+         const float visibleRatio = CGRectGetWidth( intersection ) / CGRectGetWidth( cell.frame );
+         CGFloat roundedRatio = ceilf(visibleRatio * 100) / 100;
+         [self collectionViewCell:cell didUpdateCellVisibility:roundedRatio];
+     }];
+}
+
+- (void)collectionViewCell:(UICollectionViewCell *)cell didUpdateCellVisibility:(CGFloat)visibilityRatio
+{
+    if ( visibilityRatio >= 1.0f )
+    {
+        if ([cell conformsToProtocol:@protocol(VStreamCellTracking)])
+        {
+            VSequence *sequenceToTrack = [(id<VStreamCellTracking>)cell sequenceToTrack];
+            if (sequenceToTrack != nil)
+            {
+                [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithStream:self.stream
+                                                                         sequence:sequenceToTrack];
+            }
+        }
+    }
 }
 
 #pragma mark - UICollectionViewDataSource
