@@ -120,7 +120,7 @@
     action.textLabelDefault = NSLocalizedString( @"Repost", @"Post a copy of this video" );
     action.textLabelSuccess = NSLocalizedString( @"Reposted", @"Indicating the video has already been reposted." );
     action.iconImageDefault = [self.dependencyManager imageForKey:@"action_repost"];
-    action.iconImageSuccess = [self.dependencyManager imageForKey:@"action_success"];
+    action.iconImageSuccess = [self.dependencyManager imageForKey:@"action_repost_success"];
     return action;
 }
 

@@ -175,13 +175,19 @@ static NSString * const kFollowedHashtagIconKey = @"FollowedHashtag";
     self.imageView.image = self.subscribed ? self.unSubscribeImage : self.subscribeImage;
 }
 
+- (void)setTintColor:(UIColor *)tintColor
+{
+    [super setTintColor:tintColor];
+    self.imageView.tintColor = tintColor;
+}
+
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
     if ( dependencyManager != nil )
     {
-        self.subscribeImage = [dependencyManager tintedImageForKey:kFollowHashtagIconKey];
-        self.unSubscribeImage = [dependencyManager tintedImageForKey:kFollowedHashtagIconKey];
+        self.subscribeImage = [dependencyManager imageForKey:kFollowHashtagIconKey];
+        self.unSubscribeImage = [dependencyManager imageForKey:kFollowedHashtagIconKey];
         [self updateFollowImageView];
     }
 }

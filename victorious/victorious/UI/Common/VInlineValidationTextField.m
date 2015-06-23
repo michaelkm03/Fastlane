@@ -80,27 +80,25 @@ static const CGFloat kBottomClearInset = 2.0f;
 {
     _inactivePlaceholder = inactivePlaceholder;
     
-    if ([self isFirstResponder])
-    {
-        self.attributedPlaceholder = self.activePlaceholder;
-    }
-    else
-    {
-        self.attributedPlaceholder = _inactivePlaceholder;
-    }
+    [self updateForFirstResponder];
 }
 
 - (void)setActivePlaceholder:(NSAttributedString *)activePlaceholder
 {
     _activePlaceholder = activePlaceholder;
     
+    [self updateForFirstResponder];
+}
+
+- (void)updateForFirstResponder
+{
     if ([self isFirstResponder])
     {
         self.attributedPlaceholder = self.activePlaceholder;
     }
     else
     {
-        self.attributedPlaceholder = _inactivePlaceholder;
+        self.attributedPlaceholder = self.inactivePlaceholder;
     }
 }
 

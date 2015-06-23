@@ -107,11 +107,6 @@ static NSString * const kFollowedIconKey = @"followedIcon";
     [self updateFollowImageView];
 }
 
-- (void)updateFollowImageView
-{
-    self.imageView.image = self.following ? self.followedImage : self.followImage;
-}
-
 #pragma mark - Public Interface
 
 - (void)setFollowing:(BOOL)following
@@ -185,13 +180,24 @@ static NSString * const kFollowedIconKey = @"followedIcon";
 
 #pragma mark - Appearance styling
 
+- (void)updateFollowImageView
+{
+    self.imageView.image = self.following ? self.followedImage : self.followImage;
+}
+
+- (void)setTintColor:(UIColor *)tintColor
+{
+    [super setTintColor:tintColor];
+    self.imageView.tintColor = tintColor;
+}
+
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
     if ( dependencyManager != nil )
     {
-        self.followImage = [dependencyManager tintedImageForKey:kFollowIconKey];
-        self.followedImage = [dependencyManager tintedImageForKey:kFollowedIconKey];
+        self.followImage = [dependencyManager imageForKey:kFollowIconKey];
+        self.followedImage = [dependencyManager imageForKey:kFollowedIconKey];
         [self updateFollowImageView];
     }
 }
