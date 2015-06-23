@@ -83,8 +83,7 @@
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.needsRefresh = NO;
     
-    NSArray *nibs = [[NSBundle mainBundle] loadNibNamed:@"VNoContentView" owner:nil options:nil];
-    self.noContentView = nibs.firstObject;
+    self.noContentView = [VNoContentView noContentViewWithFrame:self.tableView.bounds];
     self.noContentView.dependencyManager = self.dependencyManager;
     self.noContentView.icon = [UIImage imageNamed:@"noMessagesIcon"];
     [self.noContentView resetInitialAnimationState];

@@ -12,6 +12,10 @@
 
 @class VUser;
 
+/**
+ Data source for VUsersViewController that loads a list of users that the
+ provided user is following.
+ */
 @interface VUserIsFollowingDataSource : NSObject <VUsersDataSource>
 
 /**

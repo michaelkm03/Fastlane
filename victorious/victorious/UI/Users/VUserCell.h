@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VBaseCollectionViewCell.h"
 
 @class VUser, VDependencyManager;
 
@@ -15,11 +16,7 @@
  Also includes a follow toggle button so that the user can be followed or unfollowed when
  displayed in a collection view.
  */
-@interface VUserCell : UICollectionViewCell
-
-+ (NSString *)suggestedReuseIdentifier;
-
-+ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds;
+@interface VUserCell : VBaseCollectionViewCell
 
 - (void)setUser:(VUser *)user;
 

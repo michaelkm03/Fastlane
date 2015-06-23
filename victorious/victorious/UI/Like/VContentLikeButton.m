@@ -1,5 +1,5 @@
 //
-//  VBinaryExpressionControl.m
+//  VContentLikeButton.m
 //  victorious
 //
 //  Created by Patrick Lynch on 6/16/15.
@@ -10,6 +10,11 @@
 #import "VLargeNumberFormatter.h"
 
 static const CGFloat kMargin = 10.0f;
+static const CGFloat kBackgroundAlpha = 0.5f;
+static const UIEdgeInsets kTitleInsets = (UIEdgeInsets){ 0, 8, 0, 0 };
+static const UIEdgeInsets kImageEdgeInsets = (UIEdgeInsets){ 0, -6, 0, 0 };
+static const CGFloat kLabelFontSize = 14.0f;
+static const CGFloat kCornerRadius = 4.0f;
 
 @interface VContentLikeButton()
 
@@ -26,7 +31,7 @@ static const CGFloat kMargin = 10.0f;
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self)
+    if ( self != nil )
     {
         [self commonInit];
     }
@@ -36,7 +41,7 @@ static const CGFloat kMargin = 10.0f;
 - (instancetype)init
 {
     self = [super init];
-    if (self)
+    if ( self != nil )
     {
         [self commonInit];
     }
@@ -48,12 +53,12 @@ static const CGFloat kMargin = 10.0f;
     self.unselectedImage = [[UIImage imageNamed:@"like"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.selectedImage = [[UIImage imageNamed:@"like_selected"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
-    self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
-    [self setTitleEdgeInsets:UIEdgeInsetsMake( 0, 8, 0, 0 )];
-    [self setImageEdgeInsets:UIEdgeInsetsMake( 0, -6, 0, 0 )];
-    [self.titleLabel setFont:[UIFont systemFontOfSize:14.0f]];
+    self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:kBackgroundAlpha];
+    [self setTitleEdgeInsets:kTitleInsets];
+    [self setImageEdgeInsets:kImageEdgeInsets];
+    [self.titleLabel setFont:[UIFont systemFontOfSize:kLabelFontSize]];
     self.tintColor = [UIColor whiteColor];
-    self.layer.cornerRadius = 4.0f;
+    self.layer.cornerRadius = kCornerRadius;
     
     [self setActive:NO];
     

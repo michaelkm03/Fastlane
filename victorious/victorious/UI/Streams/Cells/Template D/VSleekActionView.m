@@ -161,13 +161,13 @@ static CGFloat const kActionButtonHeight = 31.0f;
     _dependencyManager = dependencyManager;
     if (_dependencyManager != nil)
     {
-        self.likeButton.activeColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.likeButton.activeTintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         
         self.actionButtons = @[ self.likeButton, self.repostButton, self.memeButton, self.gifButton, self.commentButton ];
         [self.actionButtons enumerateObjectsUsingBlock:^(VRoundedBackgroundButton *actionButton, NSUInteger idx, BOOL *stop)
          {
              actionButton.unselectedColor = [_dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
-             actionButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+             actionButton.inactiveTintColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
              actionButton.unselectedColor = [_dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
          }];
     }

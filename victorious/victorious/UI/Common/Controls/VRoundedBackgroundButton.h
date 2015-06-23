@@ -27,9 +27,14 @@
 @property (nonatomic, weak) id associatedObjectForButton;
 
 /**
- *  A color representing the active state.
+ *  A tint color to represent the active state.
  */
-@property (nonatomic, copy) UIColor *activeColor;
+@property (nonatomic, copy) UIColor *activeTintColor;
+
+/**
+ *  A tint color to represent the default (non-active) state.
+ */
+@property (nonatomic, copy) UIColor *inactiveTintColor;
 
 /**
  The default image to show for the active state.
@@ -42,7 +47,7 @@
 @property (nonatomic, strong) UIImage *inactiveImage;
 
 /**
- Uses the the activeImage and activeColor properties to update the appearance
+ Uses the the activeImage and activeTintColor properties to update the appearance
  of the button
  */
 @property (nonatomic, assign, getter=isActive) BOOL active;

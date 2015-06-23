@@ -249,8 +249,4 @@
     [self.endCardDelegate actionCellSelected:actionCell atIndex:index];
 }
 
-#pragma mark - VContentLikeButtonProvider
-
-@synthesize likeButton = _likeButton;
-
 @end

@@ -197,9 +197,9 @@ static const CGFloat kActionButtonWidth = 44.0f;
     _dependencyManager = dependencyManager;
     
     UIColor *imageTintColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-    self.gifButton.tintColor = imageTintColor;
-    self.memeButton.tintColor = imageTintColor;
-    self.repostButton.tintColor = imageTintColor;
+    self.gifButton.inactiveTintColor = imageTintColor;
+    self.memeButton.inactiveTintColor = imageTintColor;
+    self.repostButton.inactiveTintColor = imageTintColor;
 }
 
 #pragma mark - Button Factory
@@ -211,9 +211,8 @@ static const CGFloat kActionButtonWidth = 44.0f;
 {
     VActionButton *actionButton = [VActionButton actionButtonWithImage:[actionImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] activeImage:[actionImageActive imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] backgroundImage:[backgroundImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
     
-    actionButton.activeColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    actionButton.activeTintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     actionButton.translatesAutoresizingMaskIntoConstraints = NO;
-    actionButton.tintColor = [UIColor blackColor];
     [actionButton addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
     [actionButton v_addWidthConstraint:kActionButtonWidth];
     

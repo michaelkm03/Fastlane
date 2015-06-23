@@ -15,7 +15,6 @@ static const CGFloat kHighlightedScale = 0.8f;
 @interface VRoundedBackgroundButton ()
 
 @property (nonatomic, strong) CAShapeLayer *circleLayer;
-@property (nonatomic, copy) UIColor *defaultTintColor;
 
 @end
 
@@ -44,12 +43,6 @@ static const CGFloat kHighlightedScale = 0.8f;
 
 #pragma mark - UIControl Overrides
 
-- (void)setTintColor:(UIColor *)tintColor
-{
-    super.tintColor = tintColor;
-    self.defaultTintColor = tintColor;
-}
-
 - (void)setSelected:(BOOL)selected
 {
     [super setSelected:selected];
@@ -68,19 +61,29 @@ static const CGFloat kHighlightedScale = 0.8f;
 - (void)setActive:(BOOL)active
 {
     _active = active;
-    
-    UIImage *image = active ? self.activeImage : self.inactiveImage;
-    if ( self.activeColor != nil )
-    {
-        super.tintColor = active ? self.activeColor : self.defaultTintColor; //< Use super.tintColor, self is overridden
-    }
-    [self setImage:image forState:UIControlStateNormal];
+    [self updateColors];
 }
 
-- (void)setInactiveImage:(UIImage *)inactiveImage
+- (void)setInactiveTintColor:(UIColor *)inactiveTintColor
 {
-    _inactiveImage = inactiveImage;
-    [self setImage:_inactiveImage forState:UIControlStateNormal];
+    _inactiveTintColor = inactiveTintColor;
+    [self updateColors];
+}
+
+- (void)updateColors
+{
+    UIImage *image = self.isActive ? self.activeImage : self.inactiveImage;
+    if ( self.activeTintColor != nil && self.isActive )
+    {
+        self.tintColor = self.activeTintColor;
+    }
+    else
+    {
+        self.tintColor = self.inactiveTintColor;
+    }
+    
+    [self setImage:image forState:UIControlStateNormal];
+    [self sizeToFit];
 }
 
 #pragma mark - Property Accessors

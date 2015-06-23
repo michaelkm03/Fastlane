@@ -21,7 +21,6 @@
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
-@property (nonatomic, assign) BOOL canLoadNextPage;
 @property (nonatomic, strong) VNoContentView *noContentView;
 
 @end
@@ -114,7 +113,6 @@
 {
     [self.usersDataSource refreshWithPageType:VPageTypeFirst completion:^(BOOL success, NSError *error)
      {
-         self.canLoadNextPage = success;  //< Can't load next page until the first page has loaded successfully
          [refreshControl endRefreshing];
          [self updateHasContent];
      }];
@@ -162,11 +160,6 @@
 
 - (void)shouldLoadNextPage
 {
-    if ( !self.canLoadNextPage )
-    {
-        return;
-    }
-    
     [self.usersDataSource refreshWithPageType:VPageTypeNext completion:^(BOOL success, NSError *error)
      {
          if ( success )

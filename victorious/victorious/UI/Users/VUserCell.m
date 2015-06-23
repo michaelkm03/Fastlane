@@ -34,11 +34,6 @@ static const CGFloat kUserCellHeight = 51.0f;
 
 #pragma mark - VSharedCollectionReusableViewMethods
 
-+ (NSString *)suggestedReuseIdentifier
-{
-    return NSStringFromClass(self);
-}
-
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
 {
     return CGSizeMake( CGRectGetWidth(bounds), kUserCellHeight );
@@ -62,7 +57,7 @@ static const CGFloat kUserCellHeight = 51.0f;
 
 - (void)setUser:(VUser *)user
 {
-    if (_user == user)
+    if ( [_user isEqual:user] )
     {
         return;
     }
@@ -131,7 +126,7 @@ static const CGFloat kUserCellHeight = 51.0f;
 {
     // If this is the currently logged in user, then hide the follow button
     VUser *me = [[VObjectManager sharedManager] mainUser];
-    self.followControl.hidden = (self.user == me);
+    self.followControl.hidden = [self.user isEqual:me];
     [self.followControl setFollowing:[me.following containsObject:self.user]
                             animated:animated];
 }

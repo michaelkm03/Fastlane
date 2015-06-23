@@ -1,5 +1,5 @@
 //
-//  VExpressionControl.h
+//  VContentLikeButton.h
 //  victorious
 //
 //  Created by Patrick Lynch on 6/16/15.

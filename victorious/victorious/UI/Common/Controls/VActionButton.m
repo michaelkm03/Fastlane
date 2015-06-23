@@ -11,7 +11,6 @@
 
 @interface VActionButton()
 
-@property (nonatomic, copy) UIColor *defaultTintColor;
 @property (nonatomic, strong) UIImage *inactiveImage;
 @property (nonatomic, strong) UIImage *activeImage;
 @property (nonatomic, strong) UIImage *backgroundImage;
@@ -63,20 +62,29 @@
 - (void)setActive:(BOOL)active
 {
     _active = active;
-    
-    UIImage *image = active ? self.activeImage : self.inactiveImage;
-    if ( self.activeColor != nil )
-    {
-        super.tintColor = active ? self.activeColor : self.defaultTintColor; //< Use super.tintColor, self is overridden
-    }
-    [self setImage:image forState:UIControlStateNormal];
-    [self sizeToFit];
+    [self updateColors];
 }
 
-- (void)setTintColor:(UIColor *)tintColor
+- (void)setInactiveTintColor:(UIColor *)inactiveTintColor
 {
-    super.tintColor = tintColor;
-    self.defaultTintColor = tintColor;
+    _inactiveTintColor = inactiveTintColor;
+    [self updateColors];
+}
+
+- (void)updateColors
+{
+    UIImage *image = self.isActive ? self.activeImage : self.inactiveImage;
+    if ( self.activeTintColor != nil && self.isActive )
+    {
+        self.tintColor = self.activeTintColor;
+    }
+    else
+    {
+        self.tintColor = self.inactiveTintColor;
+    }
+    
+    [self setImage:image forState:UIControlStateNormal];
+    [self sizeToFit];
 }
 
 @end

@@ -34,19 +34,19 @@
     self.sequence = sequence;
     
     [self.KVOController observe:self.sequence keyPath:NSStringFromSelector(@selector(isLikedByMainUser))
-                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                        options:NSKeyValueObservingOptionNew
                           block:^(id observer, id object, NSDictionary *change)
      {
          update();
      }];
     [self.KVOController observe:self.sequence keyPath:NSStringFromSelector(@selector(likeCount))
-                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                        options:NSKeyValueObservingOptionNew
                           block:^(id observer, id object, NSDictionary *change)
      {
          update();
      }];
     [self.KVOController observe:self.sequence keyPath:NSStringFromSelector(@selector(commentCount))
-                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
+                        options:NSKeyValueObservingOptionNew
                           block:^(id observer, id object, NSDictionary *change)
      {
          update();

@@ -23,14 +23,19 @@
                          backgroundImage:(UIImage *)backgroundImage;
 
 /**
- Uses the the activeImage and activeColor properties to update the appearance
+ Uses the the activeImage and activeTintColor properties to update the appearance
  of the button
  */
 @property (nonatomic, assign, getter=isActive) BOOL active;
 
 /**
- *  A color representing the active state.
+ *  A tint color representing the active state.
  */
-@property (nonatomic, copy) UIColor *activeColor;
+@property (nonatomic, copy) UIColor *activeTintColor;
+
+/**
+ *  A tint color representing the default (non-active) state.
+ */
+@property (nonatomic, copy) UIColor *inactiveTintColor;
 
 @end

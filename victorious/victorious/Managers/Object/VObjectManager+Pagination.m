@@ -489,8 +489,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     
     VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        //If this is the first page, break the relationship to all the old objects.
-        if ([filter.currentPageNumber isEqualToNumber:@(0)])
+        if ( pageType == VPageTypeFirst )
         {
             [sequence removeLikers:sequence.likers];
         }
@@ -501,7 +500,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
             [sequence addLikersObject:user];
         }
         
-        if (success)
+        if ( success != nil )
         {
             success(operation, fullResponse, resultObjects);
         }
