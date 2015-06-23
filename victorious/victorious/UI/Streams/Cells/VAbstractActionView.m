@@ -20,12 +20,12 @@
 // Models
 #import "VSequence+Fetcher.h"
 
-NSString * const VCommentIconKey = @"commentIcon";
-NSString * const VShareIconKey = @"shareIcon";
-NSString * const VGifIconKey = @"gifIcon";
-NSString * const VMemeIconKey = @"memeIcon";
-NSString * const VRepostIconKey = @"repostIcon";
-NSString * const VRepostSuccessIconKey = @"repostSuccessIcon";
+NSString * const VCommentIconKey = @"comment_icon";
+NSString * const VShareIconKey = @"share_icon";
+NSString * const VGifIconKey = @"gif_icon";
+NSString * const VMemeIconKey = @"meme_icon";
+NSString * const VRepostIconKey = @"repost_icon";
+NSString * const VRepostSuccessIconKey = @"repost_success_icon";
 
 @interface VAbstractActionView ()
 

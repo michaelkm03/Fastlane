@@ -285,7 +285,7 @@
                        actionSheetViewController:(VActionSheetViewController *)actionSheetViewController
 {
     VActionItem *gifItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Create a GIF", @"")
-                                                        actionIcon:[UIImage imageNamed:@"D_gifIcon"]
+                                                        actionIcon:[UIImage imageNamed:@"D_gif_icon"]
                                                         detailText:self.viewModel.gifCountText];
     [self setupRemixActionItem:gifItem
      withContentViewController:contentViewController
@@ -314,7 +314,7 @@
                         actionSheetViewController:(VActionSheetViewController *)actionSheetViewController
 {
     VActionItem *memeItem = [VActionItem defaultActionItemWithTitle:NSLocalizedString(@"Create a meme", @"")
-                                                         actionIcon:[UIImage imageNamed:@"D_memeIcon"]
+                                                         actionIcon:[UIImage imageNamed:@"D_meme_icon"]
                                                          detailText:self.viewModel.memeCountText];
     [self setupRemixActionItem:memeItem
      withContentViewController:contentViewController

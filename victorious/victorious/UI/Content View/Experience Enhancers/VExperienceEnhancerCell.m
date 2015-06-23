@@ -13,8 +13,8 @@ static const CGFloat kVExperienceEnhancerCellWidth = 50.0f;
 static const CGFloat kThreePointFiveInchScreenHeight = 480.0f;
 static const CGFloat kTopSpaceIconCompactVertical = 5.0f;
 
-static NSString * const kUnlockedBallisticBackgroundIconKey = @"unlockedBallisticBackground";
-static NSString * const kLockedBallisticBackgroundIconKey = @"lockedBallisticBackground";
+static NSString * const kUnlockedBallisticBackgroundIconKey = @"ballistic_background_icon";
+static NSString * const kLockedBallisticBackgroundIconKey = @"locked_ballistic_background_icon";
 
 @interface VExperienceEnhancerCell ()
 

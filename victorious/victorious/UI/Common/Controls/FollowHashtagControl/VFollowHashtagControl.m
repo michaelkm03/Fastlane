@@ -14,8 +14,8 @@ static const NSTimeInterval kHighlightAnimationDuration = 0.3f;
 static const CGFloat kHighlightTransformPerspective = -1.0 / 200.0f;
 static const CGFloat kForcedAntiAliasingConstant = 0.01f;
 
-static NSString * const kFollowHashtagIconKey = @"FollowHashtag";
-static NSString * const kFollowedHashtagIconKey = @"FollowedHashtag";
+static NSString * const kFollowHashtagIconKey = @"follow_hashtag_icon";
+static NSString * const kFollowedHashtagIconKey = @"followed_hashtag_icon";
 
 @interface VFollowHashtagControl ()
 
@@ -52,9 +52,6 @@ static NSString * const kFollowedHashtagIconKey = @"FollowedHashtag";
 
 - (void)sharedInit
 {
-    _subscribeImage = [UIImage imageNamed:@"followTag"];
-    _unSubscribeImage = [UIImage imageNamed:@"followedHashtag"];
-    
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.bounds];
     imageView.contentMode = self.contentMode;
     [self addSubview:imageView];
@@ -186,8 +183,9 @@ static NSString * const kFollowedHashtagIconKey = @"FollowedHashtag";
     _dependencyManager = dependencyManager;
     if ( dependencyManager != nil )
     {
-        self.subscribeImage = [dependencyManager imageForKey:kFollowHashtagIconKey];
+        self.subscribeImage = [[dependencyManager imageForKey:kFollowHashtagIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         self.unSubscribeImage = [dependencyManager imageForKey:kFollowedHashtagIconKey];
+        self.tintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         [self updateFollowImageView];
     }
 }

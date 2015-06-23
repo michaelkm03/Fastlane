@@ -35,7 +35,7 @@ static const CGFloat kCommentButtonBuffer = 5.0f;
 static const CGFloat kCommentButtonWidth = 60.0f;
 static const CGFloat kCommentButtonHeight = 44.0f;
 
-static NSString * const kCommentsIconKey = @"streamComments";
+static NSString * const kCommentsIconKey = @"comment_icon";
 
 @interface VStreamHeaderComment ()
 

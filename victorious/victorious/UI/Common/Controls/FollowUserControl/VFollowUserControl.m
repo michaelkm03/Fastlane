@@ -14,8 +14,8 @@ static const NSTimeInterval kHighlightAnimationDuration = 0.3f;
 static const CGFloat kHighlightTransformPerspective = -1.0 / 200.0f;
 static const CGFloat kForcedAntiAliasingConstant = 0.01f;
 
-static NSString * const kFollowIconKey = @"followIcon";
-static NSString * const kFollowedIconKey = @"followedIcon";
+static NSString * const kFollowIconKey = @"follow_user_icon";
+static NSString * const kFollowedIconKey = @"followed_user_icon";
 
 @interface VFollowUserControl ()
 
@@ -33,7 +33,7 @@ static NSString * const kFollowedIconKey = @"followedIcon";
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
-    if (self)
+    if ( self != nil )
     {
         [self sharedInit];
     }
@@ -43,7 +43,7 @@ static NSString * const kFollowedIconKey = @"followedIcon";
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self)
+    if ( self != nil )
     {
         [self sharedInit];
     }
@@ -196,8 +196,9 @@ static NSString * const kFollowedIconKey = @"followedIcon";
     _dependencyManager = dependencyManager;
     if ( dependencyManager != nil )
     {
-        self.followImage = [dependencyManager imageForKey:kFollowIconKey];
+        self.followImage = [[dependencyManager imageForKey:kFollowIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         self.followedImage = [dependencyManager imageForKey:kFollowedIconKey];
+        self.tintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         [self updateFollowImageView];
     }
 }
