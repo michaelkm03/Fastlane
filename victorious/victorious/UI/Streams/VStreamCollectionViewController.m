@@ -305,6 +305,9 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 {
     [super viewWillDisappear:animated];
     [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
+    
+    // Stop tracking marquee views
+    self.marqueeCellController.shouldTrackMarqueeCellViews = NO;
 }
 
 - (BOOL)shouldAutorotate
@@ -827,18 +830,28 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     const CGRect streamVisibleRect = self.collectionView.bounds;
     
     NSArray *visibleCells = self.collectionView.visibleCells;
-    [visibleCells enumerateObjectsUsingBlock:^(UICollectionViewCell *cell, NSUInteger idx, BOOL *stop)
-     {
-         if ( [VNoContentCollectionViewCellFactory isNoContentCell:cell] )
-         {
-             return;
-         }
-         
-         // Calculate visible ratio for the whole cell
-         const CGRect intersection = CGRectIntersection( streamVisibleRect, cell.frame );
-         const float visibleRatio = CGRectGetHeight( intersection ) / CGRectGetHeight( cell.frame );
-         [self collectionViewCell:cell didUpdateCellVisibility:visibleRatio];
-     }];
+    
+    BOOL shouldTrackMarquee = NO;
+    
+    for (UICollectionViewCell *cell in visibleCells)
+    {
+        if ( ![VNoContentCollectionViewCellFactory isNoContentCell:cell] )
+        {
+            // Calculate visible ratio for the whole cell
+            const CGRect intersection = CGRectIntersection( streamVisibleRect, cell.frame );
+            const float visibleRatio = CGRectGetHeight( intersection ) / CGRectGetHeight( cell.frame );
+            [self collectionViewCell:cell didUpdateCellVisibility:visibleRatio];;
+        }
+        
+        if ([cell isKindOfClass:[VAbstractMarqueeCollectionViewCell class]])
+        {
+            shouldTrackMarquee = YES;
+        }
+    }
+    
+    self.marqueeCellController.shouldTrackMarqueeCellViews = shouldTrackMarquee;
+    // Fire right away to catch any events while scrolling stream
+    [self.marqueeCellController updateCellVisibilityTracking];
 }
 
 - (void)updateCurrentlyPlayingMediaAsset

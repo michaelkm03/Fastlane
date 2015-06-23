@@ -94,6 +94,8 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     [self.dataDelegate marquee:self reloadedStreamWithItems:[self.stream.marqueeItems array]];
     [self registerStreamItemCellsWithCollectionView:self.collectionView forMarqueeItems:[self.stream.marqueeItems array]];
     [self.collectionView reloadData];
+    
+    self.shouldTrackMarqueeCellViews = YES;
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -157,6 +159,11 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 
 - (void)updateCellVisibilityTracking
 {
+    if (!self.shouldTrackMarqueeCellViews)
+    {
+        return;
+    }
+    
     const CGRect streamVisibleRect = self.collectionView.bounds;
     
     NSArray *visibleCells = self.collectionView.visibleCells;
