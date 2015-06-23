@@ -390,7 +390,7 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     }
     
     // Bottom Margins
-    [[self textSizeCache] setObject:[NSValue valueWithCGSize:sizeWithText] forKey:sequence.remoteId];
+    [[self textSizeCache] setObject:[NSValue valueWithCGSize:sizeWithText] forKey:sequence.name];
     return sizeWithText;
 }
 

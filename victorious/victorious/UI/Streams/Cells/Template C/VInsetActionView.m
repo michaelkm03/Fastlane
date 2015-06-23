@@ -61,7 +61,7 @@ static const CGFloat kActionButtonWidth = 44.0f;
     {
         UIImage *image = [UIImage imageNamed:@"C_gif"];
         UIImage *background = [UIImage imageNamed:@"C_background"];
-        _memeButton = [self actionButtonWithImage:image activeImage:nil backgroundImage:background action:@selector(gif:)];
+        _memeButton = [self actionButtonWithImage:image selectedImage:nil backgroundImage:background action:@selector(gif:)];
     }
     return _gifButton;
 }
@@ -72,7 +72,7 @@ static const CGFloat kActionButtonWidth = 44.0f;
     {
         UIImage *image = [UIImage imageNamed:@"C_meme"];
         UIImage *background = [UIImage imageNamed:@"C_background"];
-        _memeButton = [self actionButtonWithImage:image activeImage:nil backgroundImage:background action:@selector(meme:)];
+        _memeButton = [self actionButtonWithImage:image selectedImage:nil backgroundImage:background action:@selector(meme:)];
     }
     return _memeButton;
 }
@@ -83,7 +83,7 @@ static const CGFloat kActionButtonWidth = 44.0f;
     {
         UIImage *image = [UIImage imageNamed:@"C_repost"];
         UIImage *background = [UIImage imageNamed:@"C_background"];
-        _repostButton = [self actionButtonWithImage:image activeImage:nil backgroundImage:background action:@selector(repost:)];
+        _repostButton = [self actionButtonWithImage:image selectedImage:nil backgroundImage:background action:@selector(repost:)];
     }
     return _repostButton;
 }
@@ -95,7 +95,7 @@ static const CGFloat kActionButtonWidth = 44.0f;
         UIImage *image = [UIImage imageNamed:@"C_like"];
         UIImage *active = [UIImage imageNamed:@"C_liked"];
         UIImage *background = [UIImage imageNamed:@"C_background"];
-        _likeButton = [self actionButtonWithImage:image activeImage:active backgroundImage:background action:@selector(like:)];
+        _likeButton = [self actionButtonWithImage:image selectedImage:active backgroundImage:background action:@selector(like:)];
     }
     return _likeButton;
 }
@@ -197,19 +197,19 @@ static const CGFloat kActionButtonWidth = 44.0f;
     _dependencyManager = dependencyManager;
     
     UIColor *imageTintColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-    self.gifButton.inactiveTintColor = imageTintColor;
-    self.memeButton.inactiveTintColor = imageTintColor;
-    self.repostButton.inactiveTintColor = imageTintColor;
+    self.gifButton.selectedTintColor = imageTintColor;
+    self.memeButton.selectedTintColor = imageTintColor;
+    self.repostButton.selectedTintColor = imageTintColor;
 }
 
 #pragma mark - Button Factory
 
 - (VActionButton *)actionButtonWithImage:(UIImage *)actionImage
-                             activeImage:(UIImage *)actionImageActive
+                             selectedImage:(UIImage *)actionImageSelected
                          backgroundImage:(UIImage *)backgroundImage
                                   action:(SEL)action
 {
-    VActionButton *actionButton = [VActionButton actionButtonWithImage:[actionImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] activeImage:[actionImageActive imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] backgroundImage:[backgroundImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+    VActionButton *actionButton = [VActionButton actionButtonWithImage:[actionImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] selectedImage:[actionImageSelected imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] backgroundImage:[backgroundImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
     
     actionButton.activeTintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     actionButton.translatesAutoresizingMaskIntoConstraints = NO;

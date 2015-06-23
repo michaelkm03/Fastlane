@@ -15,27 +15,21 @@
  */
 @interface VActionButton : UIButton
 
-+ (VActionButton *)actionButtonWithImage:(UIImage *)inactiveImage
-                             activeImage:(UIImage *)activeImage;
++ (VActionButton *)actionButtonWithImage:(UIImage *)unselectedImage
+                           selectedImage:(UIImage *)selectedImage;
 
-+ (VActionButton *)actionButtonWithImage:(UIImage *)inactiveImage
-                             activeImage:(UIImage *)activeImage
++ (VActionButton *)actionButtonWithImage:(UIImage *)unselectedImage
+                           selectedImage:(UIImage *)selectedImage
                          backgroundImage:(UIImage *)backgroundImage;
-
-/**
- Uses the the activeImage and activeTintColor properties to update the appearance
- of the button
- */
-@property (nonatomic, assign, getter=isActive) BOOL active;
 
 /**
  *  A tint color representing the active state.
  */
-@property (nonatomic, copy) UIColor *activeTintColor;
+@property (nonatomic, copy) UIColor *selectedTintColor;
 
 /**
  *  A tint color representing the default (non-active) state.
  */
-@property (nonatomic, copy) UIColor *inactiveTintColor;
+@property (nonatomic, copy) UIColor *unselectedTintColor;
 
 @end

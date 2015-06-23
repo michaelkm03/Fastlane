@@ -21,22 +21,20 @@
 
 @implementation VActionButton
 
-+ (VActionButton *)actionButtonWithImage:(UIImage *)inactiveImage
-                             activeImage:(UIImage *)activeImage
++ (VActionButton *)actionButtonWithImage:(UIImage *)unselectedImage
+                           selectedImage:(UIImage *)selectedImage
 {
-    return [self actionButtonWithImage:inactiveImage activeImage:activeImage backgroundImage:nil];
+    return [self actionButtonWithImage:unselectedImage selectedImage:selectedImage backgroundImage:nil];
 }
 
-+ (VActionButton *)actionButtonWithImage:(UIImage *)inactiveImage
-                             activeImage:(UIImage *)activeImage
++ (VActionButton *)actionButtonWithImage:(UIImage *)unselectedImage
+                           selectedImage:(UIImage *)selectedImage
                          backgroundImage:(UIImage *)backgroundImage
 {
     VActionButton *actionButton = [VActionButton buttonWithType:UIButtonTypeSystem];
-    actionButton.inactiveImage = inactiveImage;
-    actionButton.activeImage = activeImage;
-    actionButton.active = NO;
+    [actionButton setImage:selectedImage forState:UIControlStateSelected];
+    [actionButton setImage:unselectedImage forState:UIControlStateSelected];
     actionButton.backgroundImage = backgroundImage;
-    
     return actionButton;
 }
 
@@ -57,33 +55,33 @@
     self.backgroundImageLayer.contentsGravity = kCAGravityResizeAspect;
     self.backgroundImageLayer.contents = (id)self.backgroundImage.CGImage;
     self.backgroundImageLayer.opacity = self.enabled ? 1.0f : 0.5f;
-}
-
-- (void)setActive:(BOOL)active
-{
-    _active = active;
+    
     [self updateColors];
 }
 
-- (void)setInactiveTintColor:(UIColor *)inactiveTintColor
+- (void)setSelected:(BOOL)selected
 {
-    _inactiveTintColor = inactiveTintColor;
+    super.selected = selected;
+    [self updateColors];
+}
+
+- (void)setInselectedTintColor:(UIColor *)unselectedTintColor
+{
+    _unselectedTintColor = unselectedTintColor;
     [self updateColors];
 }
 
 - (void)updateColors
 {
-    UIImage *image = self.isActive ? self.activeImage : self.inactiveImage;
-    if ( self.activeTintColor != nil && self.isActive )
+    if ( self.selectedTintColor != nil && self.selected )
     {
-        self.tintColor = self.activeTintColor;
+        self.tintColor = self.selectedTintColor;
     }
     else
     {
-        self.tintColor = self.inactiveTintColor;
+        self.tintColor = self.unselectedTintColor;
     }
     
-    [self setImage:image forState:UIControlStateNormal];
     [self sizeToFit];
 }
 
