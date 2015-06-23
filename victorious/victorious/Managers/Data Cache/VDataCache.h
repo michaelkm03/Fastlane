@@ -45,7 +45,7 @@ extern NSString * const VDataCacheBundleResourceExtension;
  This is here for unit testing purposes--there is a good default that 
  will be used if this is not set.
  */
-@property (nonatomic, copy) NSURL *localCachePath;
+@property (nonatomic, copy) NSURL *localCacheURL;
 
 /**
  Saves the given data to the cache and associates it with the given ID.
@@ -53,6 +53,12 @@ extern NSString * const VDataCacheBundleResourceExtension;
  overwritten.
  */
 - (BOOL)cacheData:(NSData *)data forID:(id<VDataCacheID>)identifier error:(NSError **)error;
+
+/**
+ Copies the file at the given URL to the cache and associates it with the given ID.
+ If other data has previously been cached with this ID, it will be overwritten.
+ */
+- (BOOL)cacheDataAtURL:(NSURL *)fileURL forID:(id<VDataCacheID>)identifier error:(NSError **)error;
 
 /**
  Retrieves data previously cached with the given ID.

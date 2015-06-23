@@ -33,9 +33,9 @@ static NSString * const kDataCacheTestResourceName = @"VDataCacheTests";
     self.dataCache1 = [[VDataCache alloc] init];
     self.dataCache2 = [[VDataCache alloc] init];
     
-    NSURL *localCachePath = [self temporaryDirectory];
-    self.dataCache1.localCachePath = localCachePath;
-    self.dataCache2.localCachePath = localCachePath;
+    NSURL *localCacheURL = [self temporaryDirectory];
+    self.dataCache1.localCacheURL = localCacheURL;
+    self.dataCache2.localCacheURL = localCacheURL;
 }
 
 - (NSURL *)temporaryDirectory
@@ -49,9 +49,9 @@ static NSString * const kDataCacheTestResourceName = @"VDataCacheTests";
     [super tearDown];
 }
 
-- (void)testDefaultLocalCachePath
+- (void)testDefaultlocalCacheURL
 {
-    XCTAssertNotNil( [[VDataCache alloc] init].localCachePath );
+    XCTAssertNotNil( [[VDataCache alloc] init].localCacheURL );
 }
 
 - (void)testSavingAndRetrievingData
@@ -67,6 +67,23 @@ static NSString * const kDataCacheTestResourceName = @"VDataCacheTests";
     XCTAssertEqualObjects(data, dataOut);
 }
 
+- (void)testCacheFromFile
+{
+    uint8_t bytes[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    
+    NSString *tempFile = [NSTemporaryDirectory() stringByAppendingPathComponent:[[NSUUID UUID] UUIDString]];
+    [[NSFileManager defaultManager] createDirectoryAtPath:NSTemporaryDirectory() withIntermediateDirectories:YES attributes:nil error:nil];
+    
+    NSData *data = [NSData dataWithBytes:bytes length:10];
+    [data writeToFile:tempFile atomically:YES];
+    NSString *identifier = [[NSUUID UUID] UUIDString];
+    
+    XCTAssert( [self.dataCache1 cacheDataAtURL:[NSURL fileURLWithPath:tempFile] forID:identifier error:nil] );
+
+    NSData *dataOut = [self.dataCache2 cachedDataForID:identifier];
+    XCTAssertEqualObjects(data, dataOut);
+}
+
 - (void)testBackupAttributeAppliedToCacheDirectory
 {
     uint8_t bytes[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
@@ -76,7 +93,7 @@ static NSString * const kDataCacheTestResourceName = @"VDataCacheTests";
     
     XCTAssert( [self.dataCache1 cacheData:data forID:identifier error:nil] );
     
-    NSDictionary *dict = [self.dataCache1.localCachePath resourceValuesForKeys:@[NSURLIsExcludedFromBackupKey] error:nil];
+    NSDictionary *dict = [self.dataCache1.localCacheURL resourceValuesForKeys:@[NSURLIsExcludedFromBackupKey] error:nil];
     XCTAssertEqualObjects( dict[NSURLIsExcludedFromBackupKey], @YES );
 }
 

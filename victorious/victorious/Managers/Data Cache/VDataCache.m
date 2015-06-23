@@ -39,13 +39,36 @@ static NSString * const kCacheDirectoryName = @"VDataCache";
         return NO;
     }
     
-    NSURL *cacheURL = [self pathForCachedDataWithID:identifier];
+    NSURL *cacheURL = [self URLForCachedDataWithID:identifier];
     return [data writeToURL:cacheURL atomically:YES];
+}
+
+- (BOOL)cacheDataAtURL:(NSURL *)fileURL forID:(id<VDataCacheID>)identifier error:(NSError *__autoreleasing *)error
+{
+    NSParameterAssert( fileURL != nil );
+    NSParameterAssert( identifier != nil );
+    
+    if ( ![self preparePathForWritingWithError:error] )
+    {
+        return NO;
+    }
+    
+    BOOL isDirectory = NO;
+    if ( ![[NSFileManager defaultManager] fileExistsAtPath:[fileURL path] isDirectory:&isDirectory] ||
+         isDirectory )
+    {
+        return NO;
+    }
+    
+    NSURL *saveURL = [self URLForCachedDataWithID:identifier];
+    return [[NSFileManager defaultManager] copyItemAtURL:fileURL toURL:saveURL error:error];
 }
 
 - (NSData *)cachedDataForID:(id<VDataCacheID>)identifier
 {
-    NSURL *cacheURL = [self pathForCachedDataWithID:identifier];
+    NSParameterAssert( identifier != nil );
+    
+    NSURL *cacheURL = [self URLForCachedDataWithID:identifier];
     NSData *cachedData = [NSData dataWithContentsOfURL:cacheURL];
     
     if ( cachedData == nil )
@@ -58,7 +81,9 @@ static NSString * const kCacheDirectoryName = @"VDataCache";
 
 - (BOOL)hasCachedDataForID:(id<VDataCacheID>)identifier
 {
-    NSURL *cacheURL = [self pathForCachedDataWithID:identifier];
+    NSParameterAssert( identifier != nil );
+    
+    NSURL *cacheURL = [self URLForCachedDataWithID:identifier];
     if ( [[NSFileManager defaultManager] fileExistsAtPath:cacheURL.path] )
     {
         return YES;
@@ -68,23 +93,23 @@ static NSString * const kCacheDirectoryName = @"VDataCache";
     return bundleURL != nil;
 }
 
-- (NSURL *)localCachePath
+- (NSURL *)localCacheURL
 {
-    if ( _localCachePath == nil )
+    if ( _localCacheURL == nil )
     {
         NSURL *caches = [[[NSFileManager defaultManager] URLsForDirectory:NSCachesDirectory inDomains:NSUserDomainMask] firstObject];
         if ( caches == nil )
         {
             return nil;
         }
-        _localCachePath = [caches URLByAppendingPathComponent:kCacheDirectoryName isDirectory:YES];
+        _localCacheURL = [caches URLByAppendingPathComponent:kCacheDirectoryName isDirectory:YES];
     }
-    return _localCachePath;
+    return _localCacheURL;
 }
 
-- (NSURL *)pathForCachedDataWithID:(id<VDataCacheID>)identifier
+- (NSURL *)URLForCachedDataWithID:(id<VDataCacheID>)identifier
 {
-    return [[self localCachePath] URLByAppendingPathComponent:[identifier identifierForDataCache]];
+    return [[self localCacheURL] URLByAppendingPathComponent:[identifier identifierForDataCache]];
 }
 
 - (BOOL)preparePathForWritingWithError:(NSError **)error
@@ -94,13 +119,13 @@ static NSString * const kCacheDirectoryName = @"VDataCache";
         return YES;
     }
     
-    BOOL created = [[NSFileManager defaultManager] createDirectoryAtURL:self.localCachePath withIntermediateDirectories:YES attributes:nil error:error];
+    BOOL created = [[NSFileManager defaultManager] createDirectoryAtURL:self.localCacheURL withIntermediateDirectories:YES attributes:nil error:error];
     if ( !created )
     {
         return NO;
     }
     
-    return [self.localCachePath setResourceValue:@YES forKey:NSURLIsExcludedFromBackupKey error:error];
+    return [self.localCacheURL setResourceValue:@YES forKey:NSURLIsExcludedFromBackupKey error:error];
 }
 
 @end
