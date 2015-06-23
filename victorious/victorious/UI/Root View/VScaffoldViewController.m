@@ -30,9 +30,6 @@
 #import "VCoachmarkManager.h"
 #import "VRootViewController.h"
 
-#import "VTemplateDecorator.h"
-#import "VSuggestedUsersViewController.h"
-
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
 NSString * const VTrackingWelcomeVideoStartKey = @"welcome_video_start";
@@ -107,12 +104,6 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
     {
         [self askForPushNotificationsPermission];
     }
-    
-    NSDictionary *suggestedUsers = [VTemplateDecorator dictionaryFromJSONFile:@"suggestedUsers"];
-    VDependencyManager *suggestedUsersDM = [self.dependencyManager childDependencyManagerWithAddedConfiguration:suggestedUsers];
-    VSuggestedUsersViewController *vc = [[VSuggestedUsersViewController alloc] initWithDependencyManager:suggestedUsersDM];
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-    [self presentViewController:nav animated:YES completion:nil];
 }
 
 - (void)askForPushNotificationsPermission
