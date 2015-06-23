@@ -89,18 +89,18 @@ static const CGFloat kPlaceholderActiveTextWhiteValue = 0.4f;
         self.oldPasswordTextField.activePlaceholder = [[NSAttributedString alloc] initWithString:self.oldPasswordTextField.placeholder
                                                                                       attributes:activePlaceholderAttributes];
         self.oldPasswordTextField.inactivePlaceholder = [[NSAttributedString alloc] initWithString:self.oldPasswordTextField.placeholder
-                                                                                      attributes:placeholderAttributes];
+                                                                                        attributes:placeholderAttributes];
     }
     
     NSString *passwordActivePlaceholder = NSLocalizedString(@"Minimum 8 characters", @"");
     self.confirmPasswordTextField.activePlaceholder = [[NSAttributedString alloc] initWithString:passwordActivePlaceholder
                                                                                       attributes:activePlaceholderAttributes];
     self.confirmPasswordTextField.inactivePlaceholder = [[NSAttributedString alloc] initWithString:passwordActivePlaceholder
-                                                                                      attributes:placeholderAttributes];
+                                                                                        attributes:placeholderAttributes];
     self.changedPasswordTextField.activePlaceholder = [[NSAttributedString alloc] initWithString:passwordActivePlaceholder
                                                                                       attributes:activePlaceholderAttributes];
     self.changedPasswordTextField.inactivePlaceholder = [[NSAttributedString alloc] initWithString:passwordActivePlaceholder
-                                                                                      attributes:placeholderAttributes];
+                                                                                        attributes:placeholderAttributes];
 }
 
 - (NSUInteger)supportedInterfaceOrientations
