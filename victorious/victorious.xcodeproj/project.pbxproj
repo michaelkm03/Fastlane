@@ -1793,7 +1793,6 @@
 		A7724FE21B3248C400B1BBB3 /* VFollowerTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFollowerTableViewCell.h; sourceTree = "<group>"; };
 		A7724FE31B3248C400B1BBB3 /* VFollowerTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowerTableViewCell.m; sourceTree = "<group>"; };
 		A7724FE41B3248C400B1BBB3 /* VFollowerTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VFollowerTableViewCell.xib; sourceTree = "<group>"; };
-		A7724FE71B32498900B1BBB3 /* VSequenceActionResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceActionResponder.h; sourceTree = "<group>"; };
 		A7724FEB1B33422B00B1BBB3 /* VActionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionButton.h; sourceTree = "<group>"; };
 		A7724FEC1B33422B00B1BBB3 /* VActionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionButton.m; sourceTree = "<group>"; };
 		A7724FF81B33905000B1BBB3 /* VSequenceCountsTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceCountsTextView.h; sourceTree = "<group>"; };
@@ -3492,7 +3491,6 @@
 				A7AEF9981A83F1C300A3D3A0 /* VSequenceActionsDelegate.h */,
 				039420401AB7C5CF0087ADFA /* VSequenceActionsSender.h */,
 				A7AEF9991A83F1C300A3D3A0 /* VStreamCollectionViewController.h */,
-				A7724FE71B32498900B1BBB3 /* VSequenceActionResponder.h */,
 				A7AEF99A1A83F1C300A3D3A0 /* VStreamCollectionViewController.m */,
 				A7AEF99B1A83F1C300A3D3A0 /* VStreamCollectionViewDataSource.h */,
 				A7AEF99C1A83F1C300A3D3A0 /* VStreamCollectionViewDataSource.m */,

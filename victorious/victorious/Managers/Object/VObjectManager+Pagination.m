@@ -30,6 +30,8 @@
 
 const NSInteger kTooManyNewMessagesErrorCode = 999;
 
+static const NSInteger kDefaultPageSize = 20;
+
 @implementation VObjectManager (Pagination)
 
 #pragma mark - Comment
@@ -402,8 +404,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     
     VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        //If this is the first page, break the relationship to all the old objects.
-        if ([filter.currentPageNumber isEqualToNumber:@(0)])
+        if ( pageType == VPageTypeFirst )
         {
             [sequence removeReposters:sequence.reposters];
         }
@@ -517,7 +518,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     VAbstractFilter *filter = (VAbstractFilter *)[self.paginationManager filterForPath:apiPath
                                                                             entityName:[VAbstractFilter entityName]
                                                                   managedObjectContext:sequence.managedObjectContext];
-    filter.perPageNumber = @(1000);
+    filter.perPageNumber = @(kDefaultPageSize);
     return filter;
 }
 
@@ -527,7 +528,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     VAbstractFilter *filter = (VAbstractFilter *)[self.paginationManager filterForPath:apiPath
                                                                             entityName:[VAbstractFilter entityName]
                                                                   managedObjectContext:user.managedObjectContext];
-    filter.perPageNumber = @(1000);
+    filter.perPageNumber = @(kDefaultPageSize);
     return filter;
 }
 
@@ -537,7 +538,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     VAbstractFilter *filter = (VAbstractFilter *)[self.paginationManager filterForPath:apiPath
                                                                             entityName:[VAbstractFilter entityName]
                                                                   managedObjectContext:user.managedObjectContext];
-    filter.perPageNumber = @(1000);
+    filter.perPageNumber = @(kDefaultPageSize);
     return filter;
 }
 
