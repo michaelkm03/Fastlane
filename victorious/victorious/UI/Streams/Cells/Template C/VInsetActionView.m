@@ -211,7 +211,7 @@ static const CGFloat kActionButtonWidth = 44.0f;
 {
     VActionButton *actionButton = [VActionButton actionButtonWithImage:[actionImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] selectedImage:[actionImageSelected imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] backgroundImage:[backgroundImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
     
-    actionButton.activeTintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    actionButton.selectedTintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     actionButton.translatesAutoresizingMaskIntoConstraints = NO;
     [actionButton addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
     [actionButton v_addWidthConstraint:kActionButtonWidth];

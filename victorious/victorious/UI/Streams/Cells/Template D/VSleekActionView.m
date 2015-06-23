@@ -148,8 +148,8 @@ static CGFloat const kActionButtonHeight = 31.0f;
     if (_likeButton == nil)
     {
         UIImage *image = [UIImage imageNamed:@"D_like"];
-        UIImage *activeImage = [UIImage imageNamed:@"D_liked"];
-        _likeButton = [self actionButtonWithImage:image activeImage:activeImage action:@selector(like:)];
+        UIImage *selectedImage = [UIImage imageNamed:@"D_liked"];
+        _likeButton = [self actionButtonWithImage:image selectedImage:selectedImage action:@selector(like:)];
     }
     return _likeButton;
 }
@@ -161,14 +161,14 @@ static CGFloat const kActionButtonHeight = 31.0f;
     _dependencyManager = dependencyManager;
     if (_dependencyManager != nil)
     {
-        self.likeButton.activeTintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.likeButton.selectedTintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         
         self.actionButtons = @[ self.likeButton, self.repostButton, self.memeButton, self.gifButton, self.commentButton ];
         [self.actionButtons enumerateObjectsUsingBlock:^(VRoundedBackgroundButton *actionButton, NSUInteger idx, BOOL *stop)
          {
-             actionButton.unselectedColor = [_dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
-             actionButton.inactiveTintColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-             actionButton.unselectedColor = [_dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
+             actionButton.unselectedTintColor = [_dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
+             actionButton.unselectedTintColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+             actionButton.unselectedTintColor = [_dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
          }];
     }
 }
@@ -233,23 +233,22 @@ static CGFloat const kActionButtonHeight = 31.0f;
 
 #pragma mark - Button Factory
 
-- (VRoundedBackgroundButton *)actionButtonWithImage:(UIImage *)actionImage action:(SEL)action
+- (VRoundedBackgroundButton *)actionButtonWithImage:(UIImage *)image action:(SEL)action
 {
-    return [self actionButtonWithImage:actionImage activeImage:nil action:action];
+    return [self actionButtonWithImage:image selectedImage:nil action:action];
 }
 
-- (VRoundedBackgroundButton *)actionButtonWithImage:(UIImage *)actionImage
-                                        activeImage:(UIImage *)actionImageActive
+- (VRoundedBackgroundButton *)actionButtonWithImage:(UIImage *)image
+                                      selectedImage:(UIImage *)selectedImage
                                              action:(SEL)action
 {
     VRoundedBackgroundButton *actionButton = [[VRoundedBackgroundButton alloc] initWithFrame:CGRectMake(0, 0, kActionButtonHeight, kActionButtonHeight)];
     actionButton.translatesAutoresizingMaskIntoConstraints = NO;
-    actionButton.selected = NO;
-    actionButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    actionButton.unselectedColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
+    actionButton.unselectedTintColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
     actionButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    actionButton.inactiveImage = [actionImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    actionButton.activeImage = [actionImageActive imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [actionButton setImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+    [actionButton setImage:[selectedImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateSelected];
+    actionButton.selected = NO;
     [actionButton v_addWidthConstraint:kActionButtonHeight];
     [actionButton v_addHeightConstraint:kActionButtonHeight];
     [actionButton addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];

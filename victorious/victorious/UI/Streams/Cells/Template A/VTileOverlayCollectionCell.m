@@ -164,9 +164,11 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     [_overlayContainer addConstraint:[NSLayoutConstraint constraintWithItem:_captionTextView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_countsTextView attribute:NSLayoutAttributeTop multiplier:1.0f constant:15.0f]];
     
     // Like button
-    UIImage *likeInactiveImage = [[UIImage imageNamed:@"A_like"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    UIImage *likeActiveImage = [[UIImage imageNamed:@"A_liked"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    _likeButton = [VActionButton actionButtonWithImage:likeInactiveImage activeImage:likeActiveImage];
+    UIImage *likeImage = [[UIImage imageNamed:@"A_like"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *likedImage = [[UIImage imageNamed:@"A_liked"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    _likeButton = [[VActionButton alloc] init];
+    [_likeButton setImage:likeImage forState:UIControlStateNormal];
+    [_likeButton setImage:likedImage forState:UIControlStateSelected];
     [_overlayContainer addSubview:_likeButton];
     _likeButton.translatesAutoresizingMaskIntoConstraints = NO;
     [_likeButton v_addWidthConstraint:kButtonWidth];
@@ -178,7 +180,7 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     
     // Comments button
     UIImage *commentImage = [[UIImage imageNamed:@"A_comment"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    _commentButton = [VActionButton actionButtonWithImage:commentImage activeImage:nil];
+    [_commentButton setImage:commentImage forState:UIControlStateNormal];
     [_overlayContainer addSubview:_commentButton];
     _commentButton.translatesAutoresizingMaskIntoConstraints = NO;
     [_commentButton v_addWidthConstraint:kButtonWidth];
@@ -222,7 +224,7 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
     [self.expressionsObserver startObservingWithSequence:sequence onUpdate:^
     {
-        [welf.likeButton setActive:sequence.isLikedByMainUser.boolValue];
+        welf.likeButton.selected = sequence.isLikedByMainUser.boolValue;
         [welf.countsTextView setCommentsCount:sequence.commentCount.integerValue];
         [welf.countsTextView setLikesCount:sequence.likeCount.integerValue];
     }];
@@ -426,9 +428,9 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
         [self.header setDependencyManager:dependencyManager];
     }
     
-    self.commentButton.inactiveTintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    self.commentButton.unselectedTintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.commentButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
-    self.likeButton.inactiveTintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    self.likeButton.unselectedTintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.countsTextView.dependencyManager = dependencyManager;
     self.captionTextView.dependencyManager = dependencyManager;
 }

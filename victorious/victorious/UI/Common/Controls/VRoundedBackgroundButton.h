@@ -14,42 +14,16 @@
  */
 @interface VRoundedBackgroundButton : UIButton
 
-/**
- *  A color representing the selected state.
- */
-@property (nonatomic, copy) UIColor *selectedColor;
-
-/**
- *  A color representing the unselected state.
- */
-@property (nonatomic, copy) UIColor *unselectedColor;
-
 @property (nonatomic, weak) id associatedObjectForButton;
 
 /**
- *  A tint color to represent the active state.
+ *  A tint color to represent the selected state.
  */
-@property (nonatomic, copy) UIColor *activeTintColor;
+@property (nonatomic, copy) UIColor *selectedTintColor;
 
 /**
- *  A tint color to represent the default (non-active) state.
+ *  A tint color to represent the default (non-selected) state.
  */
-@property (nonatomic, copy) UIColor *inactiveTintColor;
-
-/**
- The default image to show for the active state.
- */
-@property (nonatomic, strong) UIImage *activeImage;
-
-/**
- The default image to show for unselected and inactive state.
- */
-@property (nonatomic, strong) UIImage *inactiveImage;
-
-/**
- Uses the the activeImage and activeTintColor properties to update the appearance
- of the button
- */
-@property (nonatomic, assign, getter=isActive) BOOL active;
+@property (nonatomic, copy) UIColor *unselectedTintColor;
 
 @end

@@ -35,7 +35,7 @@ static CGFloat const kActionButtonHeight = 31.0f;
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
-    self.unselectedColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    self.unselectedTintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.titleLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
 }
 

@@ -33,7 +33,7 @@
 {
     VActionButton *actionButton = [VActionButton buttonWithType:UIButtonTypeSystem];
     [actionButton setImage:selectedImage forState:UIControlStateSelected];
-    [actionButton setImage:unselectedImage forState:UIControlStateSelected];
+    [actionButton setImage:unselectedImage forState:UIControlStateNormal];
     actionButton.backgroundImage = backgroundImage;
     return actionButton;
 }
@@ -81,7 +81,6 @@
     {
         self.tintColor = self.unselectedTintColor;
     }
-    
     [self sizeToFit];
 }
 

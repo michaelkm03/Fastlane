@@ -260,6 +260,7 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 10.0f, 10.
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
+    
     [self updatePreviewViewForSequence:sequence];
     self.header.sequence = sequence;
     [self updateCaptionViewForSequence:sequence];
@@ -277,7 +278,7 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 10.0f, 10.
     self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
     [self.expressionsObserver startObservingWithSequence:sequence onUpdate:^
      {
-         [welf.actionView.likeButton setActive:sequence.isLikedByMainUser.boolValue];
+         welf.actionView.likeButton.selected = sequence.isLikedByMainUser.boolValue;
          [welf.countsTextView setCommentsCount:sequence.commentCount.integerValue];
          [welf.countsTextView setLikesCount:sequence.likeCount.integerValue];
      }];

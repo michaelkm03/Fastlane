@@ -137,7 +137,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
     [self.expressionsObserver startObservingWithSequence:sequence onUpdate:^
      {
-         [welf.sleekActionView.likeButton setActive:sequence.isLikedByMainUser.boolValue];
+         welf.sleekActionView.likeButton.selected = sequence.isLikedByMainUser.boolValue;
          [welf.countsTextView setCommentsCount:sequence.commentCount.integerValue];
          [welf.countsTextView setLikesCount:sequence.likeCount.integerValue];
      }];

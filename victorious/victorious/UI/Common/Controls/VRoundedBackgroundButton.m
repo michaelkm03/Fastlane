@@ -32,7 +32,7 @@ static const CGFloat kHighlightedScale = 0.8f;
         [self.layer insertSublayer:self.circleLayer atIndex:0];
     }
     
-    self.circleLayer.fillColor = self.selected ? self.selectedColor.CGColor : self.unselectedColor.CGColor;
+    self.circleLayer.fillColor = self.selected ? self.selectedTintColor.CGColor : self.unselectedTintColor.CGColor;
     self.circleLayer.bounds = self.bounds;
     self.circleLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     UIBezierPath *circlePath = [UIBezierPath bezierPathWithRoundedRect:self.bounds
@@ -47,7 +47,7 @@ static const CGFloat kHighlightedScale = 0.8f;
 {
     [super setSelected:selected];
     
-    self.circleLayer.fillColor = selected ? self.selectedColor.CGColor : self.unselectedColor.CGColor;
+    [self updateColors];
 }
 
 - (void)setHighlighted:(BOOL)highlighted
@@ -58,49 +58,29 @@ static const CGFloat kHighlightedScale = 0.8f;
     self.circleLayer.affineTransform = highlighted ? CGAffineTransformMakeScale(kHighlightedScale, kHighlightedScale) : CGAffineTransformIdentity;
 }
 
-- (void)setActive:(BOOL)active
-{
-    _active = active;
-    [self updateColors];
-}
-
-- (void)setInactiveTintColor:(UIColor *)inactiveTintColor
-{
-    _inactiveTintColor = inactiveTintColor;
-    [self updateColors];
-}
-
 - (void)updateColors
 {
-    UIImage *image = self.isActive ? self.activeImage : self.inactiveImage;
-    if ( self.activeTintColor != nil && self.isActive )
-    {
-        self.tintColor = self.activeTintColor;
-    }
-    else
-    {
-        self.tintColor = self.inactiveTintColor;
-    }
+    self.circleLayer.fillColor = self.selected ? self.selectedTintColor.CGColor : self.unselectedTintColor.CGColor;
+    self.tintColor = self.selected ? self.selectedTintColor : self.unselectedTintColor;
     
-    [self setImage:image forState:UIControlStateNormal];
     [self sizeToFit];
 }
 
 #pragma mark - Property Accessors
 
-- (void)setSelectedColor:(UIColor *)selectedColor
+- (void)setSelectedColor:(UIColor *)selectedTintColor
 {
-    _selectedColor = [selectedColor copy];
+    _selectedTintColor = [selectedTintColor copy];
     
-    self.circleLayer.fillColor = self.selected ? selectedColor.CGColor : self.unselectedColor.CGColor;
+    self.circleLayer.fillColor = self.selected ? selectedTintColor.CGColor : self.unselectedTintColor.CGColor;
     [self setNeedsLayout];
 }
 
-- (void)setUnselectedColor:(UIColor *)unselectedColor
+- (void)setUnselectedTintColor:(UIColor *)unselectedTintColor
 {
-    _unselectedColor = [unselectedColor copy];
+    _unselectedTintColor = [unselectedTintColor copy];
     
-    self.circleLayer.fillColor = self.selected ? self.selectedColor.CGColor : _unselectedColor.CGColor;
+    self.circleLayer.fillColor = self.selected ? self.selectedTintColor.CGColor : _unselectedTintColor.CGColor;
     [self setNeedsLayout];
 }
 

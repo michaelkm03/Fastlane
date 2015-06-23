@@ -116,8 +116,8 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
     [self.toolController.tools enumerateObjectsUsingBlock:^(id <VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
      {
          VRoundedBackgroundButton *workspaceToolButton = [[VRoundedBackgroundButton alloc] initWithFrame:CGRectMake(0, 0, kWorkspaceToolButtonSize, kWorkspaceToolButtonSize)];
-         workspaceToolButton.selectedColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-         workspaceToolButton.unselectedColor = [UIColor colorWithRed:40/255.0f green:45/255.0f blue:48/255.0f alpha:1.0f];
+         workspaceToolButton.selectedTintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+         workspaceToolButton.unselectedTintColor = [UIColor colorWithRed:40/255.0f green:45/255.0f blue:48/255.0f alpha:1.0f];
          workspaceToolButton.selected = NO;
          [workspaceToolButton setImage:[tool icon] forState:UIControlStateNormal];
          [workspaceToolButton setImage:[tool selectedIcon] forState:UIControlStateSelected];
