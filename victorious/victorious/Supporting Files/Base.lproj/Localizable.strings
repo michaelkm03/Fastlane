@@ -20,6 +20,8 @@
 "Notifications"         =   "Notifications";
 "Comments"              =   "Comments";
 "Remixes"               =   "Remixes";
+"GIFs"                  =   "GIFs";
+"Memes"                 =   "Memes";
 "OK"                    =   "OK";
 "CancelButton"          =   "Cancel";
 "DeleteButton"          =   "Delete";
@@ -162,16 +164,13 @@
 "NoRepostersTitle"      =   "BE THE 1st TO REPOST!";
 "NoRepostersMessage"    =   "Share this content with all of your followers!";
 
-"NoRemixersTitle"       =   "BE THE 1ST TO REMIX!";
-"NoRemixersMessage"     =   "Make this content your own by adding commentary, additional video clips, and more!";
+"NoGiffersTitle"       =   "BE THE 1ST TO GIF!";
+"NoGiffersMessage"     =   "Make a GIF by selecting your favorite clip from this video and sharing it with other fans!";
 
-"OwnerSharePollFormat"  =   "Check out this poll by %@!"; //Check out this poll by <creator>! <URL>
-"OwnerShareVideoFormat" =   "Check out \"%@\" by %@!";    //Check out "<video name>" by <creator>! <URL>
-"OwnerShareVideoFormatNoVideoName" = "Check out this video by %@!"; // Check out this videy by <creator>! <URL>
-"OwnerShareImageFormat" =   "Check out this photo by %@!";//Check out this photo by <creator>! <URL>
-"OwnerShareTextFormat" =    "Check out this post from \"%@\""; //Check out this post by <creator>! <URL>
-"OwnerShareLinkFormat"   =    "Check this out!";
+"NoMemersTitle"       =   "BE THE 1ST TO MEME!";
+"NoMemersMessage"     =   "Make this content your own by making it into a meme and sharing it with other fans!";
 
+// strings for both UGC and creator
 "UGCSharePollFormat"    =   "Check out this poll!";       //Check out this poll! <URL>
 "UGCShareVideoFormat"   =   "Check out this video!";      //Check out this video! <URL>
 "UGCShareGIFFormat"     =   "Check out this gif!";        //Check out this gif! <URL>
@@ -285,6 +284,9 @@
 "PublishDescription"    =   "Please enter the caption for your content.";
 
 "PublishDescriptionMinCharacters" = "Please enter a longer description.";
+
+"Sorry, we were having some trouble on our end. Please retry." = "Sorry, we were having some trouble on our end. Please retry.";
+"Retry"                 =   "Retry";
 
 "ReplaceVideo"          =   "Replace Video";
 
@@ -581,12 +583,12 @@
 "We encountered an error trying to edit this video." = "We encountered an error trying to edit this video.";
 
 "#nofilter" = "#nofilter";
-"create a meme" = "create a meme";
-"create a quote" = "create a quote";
+"Create a meme" = "Create a meme";
+"Create a quote" = "Create a quote";
 "Create a GIF" = "Create a GIF";
 "Type your text here!" = "Type your text here!";
 "GIF" = "GIF";
-"quote" = "quote";
+"Quote" = "Quote";
 "GIF MODE" = "GIF MODE";
 "VIDEO MODE" = "VIDEO MODE";
 "Write a caption (optional)" = "Write a caption (optional)";
@@ -624,3 +626,9 @@
 
 "Nice!" = "Nice!";
 "Edit photo" = "Edit photo";
+
+"TEXT" = "TEXT";
+"POLL" = "POLL";
+"VIDEO" = "VIDEO";
+"IMAGE" = "IMAGE";
+"Nevermind" = "Nevermind";

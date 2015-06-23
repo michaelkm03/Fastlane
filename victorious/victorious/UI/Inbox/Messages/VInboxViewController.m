@@ -114,7 +114,6 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.tableView.contentInset = UIEdgeInsetsZero;
     
     [self.refreshControl beginRefreshing];
     [self refresh:nil];

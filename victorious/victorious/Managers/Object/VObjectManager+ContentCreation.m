@@ -27,7 +27,7 @@
 #import "VAnswer+RestKit.h"
 #import "VAsset.h"
 #import "VMessage+RestKit.h"
-#import "VUser+Fetcher.h"
+#import "VUser.h"
 #import "AVAsset+Orientation.h"
 #import "UIColor+VHex.h"
 
@@ -221,6 +221,16 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     else if (publishParameters.captionType == VCaptionTypeQuote)
     {
         parameters[@"subcategory"] = @"secret";
+    }
+    
+    if (publishParameters.shareToFacebook)
+    {
+        parameters[@"facebook_access_token"] = [[VFacebookManager sharedFacebookManager] accessToken];
+    }
+    if (publishParameters.shareToTwitter)
+    {
+        parameters[@"twitter_access_token"] = [VTwitterManager sharedManager].oauthToken;
+        parameters[@"twitter_access_secret"] = [VTwitterManager sharedManager].secret;
     }
     
     if (publishParameters.parentNodeID && ![publishParameters.parentNodeID isEqualToNumber:@(0)])

@@ -66,6 +66,7 @@
 {
     VDiscoverContainerViewController *discoverContainer = [self instantiateFromStoryboard:@"Discover"];
     discoverContainer.dependencyManager = dependencyManager;
+    [dependencyManager configureNavigationItem:discoverContainer.navigationItem];
     return discoverContainer;
 }
 

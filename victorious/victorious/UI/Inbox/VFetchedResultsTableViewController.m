@@ -18,7 +18,7 @@
     [super viewDidLoad];
     
     [self registerCells];
-    
+        
     [self refreshFetchController];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.backgroundView = [[UIView alloc] initWithFrame:self.tableView.frame];

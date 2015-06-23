@@ -130,7 +130,204 @@
             "id": "2C30A9D0-F437-4872-97E9-C6D2787053BF"
         }
     },
-    "defaultWorkspaceDestination": {
+    "publishScreen" :
+    {
+        "name":"publish.screen",
+        "shareMenuItems" :
+        [
+            {
+                "shareType":"facebook",
+                "title":"post to facebook",
+                "icon":
+                {
+                    "imageURL": "share_facebook",
+                    "tintColor":
+                    {
+                        "red": 102,
+                        "alpha": 255,
+                        "blue": 102,
+                        "green": 102
+                    }
+                },
+                "selectedIcon":
+                {
+                    "imageURL": "share_facebook",
+                    "tintColor":
+                    {
+                        "red": 244,
+                        "alpha": 255,
+                        "blue": 35,
+                        "green": 39
+                    }
+                }
+            },
+            {
+                "shareType":"twitter",
+                "title":"post to twitter",
+                "icon":
+                {
+                    "imageURL": "share_twitter",
+                    "tintColor":
+                    {
+                        "red": 102,
+                        "alpha": 255,
+                        "blue": 102,
+                        "green": 102
+                    }
+                },
+                "selectedIcon":
+                {
+                    "imageURL": "share_twitter",
+                    "tintColor":
+                    {
+                        "red": 244,
+                        "alpha": 255,
+                        "blue": 35,
+                        "green": 39
+                    }
+                }
+            }
+        ],
+        "shareText":"Share to:",
+        "saveText":"Save to camera roll",
+        "backButtonText":"Back to edit",
+        "placeholderText":"Please add a caption",
+        "background":
+        {
+            "name":"solidColor.background",
+            "color":
+            {
+                "red": 0,
+                "alpha": 76,
+                "blue": 0,
+                "green": 0
+            }
+        },
+        "color.captionContainer":
+        {
+            "red": 241,
+            "alpha": 255,
+            "blue": 241,
+            "green": 241
+        },
+        "color.optionsContainer":
+        {
+            "red": 255,
+            "alpha": 255,
+            "blue": 255,
+            "green": 255
+        },
+        "color.shareContainer":
+        {
+            "red": 230,
+            "alpha": 255,
+            "blue": 237,
+            "green": 233
+        },
+        "color.caption.separator":
+        {
+            "red": 0,
+            "alpha": 255,
+            "blue": 0,
+            "green": 0
+        },
+        "color.switch":
+        {
+            "red": 0,
+            "alpha": 255,
+            "blue": 0,
+            "green": 255
+        },
+        "color.text.placeholder":
+        {
+            "red": 102,
+            "alpha": 255,
+            "blue": 102,
+            "green": 102
+        },
+        "color.text":
+        {
+            "red": 252,
+            "alpha": 255,
+            "blue": 102,
+            "green": 102
+        },
+        "font.label1":
+        {
+            "fontSize": 14,
+            "fontName": "Helvetica"
+        },
+        "font.paragraph":
+        {
+            "fontSize": 16,
+            "fontName": "Helvetica"
+        },
+        "font.heading1":
+        {
+            "fontSize": 14,
+            "fontName": "Helvetica"
+        },
+        "font.heading2":
+        {
+            "fontSize": 16,
+            "fontName": "Helvetica"
+        },
+        "color.text.content":
+        {
+            "red": 102,
+            "alpha": 255,
+            "blue": 102,
+            "green": 102
+        },
+        "color.link":
+        {
+            "red": 29,
+            "alpha": 255,
+            "blue": 236,
+            "green": 174
+        },
+        "color.link.secondary":
+        {
+            "red": 255,
+            "alpha": 255,
+            "blue": 255,
+            "green": 255
+        },
+        "font.button1":
+        {
+            "fontSize": 18,
+            "fontName": "Helvetica"
+        },
+        "font.button2":
+        {
+            "fontSize": 18,
+            "fontName": "Helvetica"
+        },
+        "color.accent":
+        {
+            "red": 244,
+            "alpha": 255,
+            "blue": 35,
+            "green": 39
+        },
+        "color.accent.secondary":
+        {
+            "red": 102,
+            "alpha": 255,
+            "blue": 102,
+            "green": 102
+        },
+        "color.text.secondary":
+        {
+            "red": 255,
+            "alpha": 255,
+            "blue": 255,
+            "green": 255
+        },
+        "keyboardStyle":"light",
+        "autoEnableMediaSave":true
+    },
+        "defaultWorkspaceDestination": {
         "name": "hiddenWorkspace",
         "imageWorkspace": {
             "name": "workspace.screen",
@@ -160,7 +357,7 @@
                                 "blue": 255,
                                 "green": 255
                             },
-                            "placeholderText": "create a meme",
+                            "placeholderText": "Create a meme",
                             "strokeColor": {
                                 "red": 0,
                                 "alpha": 1,
@@ -176,7 +373,7 @@
                                 "fontSize": 23,
                                 "fontName": "PTSans-Narrow"
                             },
-                            "title": "quote",
+                            "title": "Quote",
                             "horizontalAlignment": "center",
                             "color.text": {
                                 "red": 255,
@@ -272,5 +469,80 @@
             ],
             "videoMinDuration": 3
         }
+    },
+    "createSheet": {
+        "name": "standard.createSheet",
+        "title.button1": "Nevermind",
+        "font.heading1": {
+            "fontSize": 36,
+            "fontName": "Lato-Bold"
+        },
+        "color.text": {
+            "red": 255,
+            "alpha": 1,
+            "blue": 255,
+            "green": 255
+        },
+        "font.heading4": {
+            "fontSize": 15,
+            "fontName": "Lato"
+        },
+        "color.link": {
+            "red": 255,
+            "alpha": 1,
+            "blue": 255,
+            "green": 255
+        },
+        "color.accent": {
+            "red": 105,
+            "alpha": 255,
+            "blue": 64,
+            "green": 12
+        },
+        "background": {
+            "name": "solidColor.background",
+            "color": {
+                "red": 105,
+                "alpha": 240,
+                "blue": 64,
+                "green": 12
+            }
+        },
+        "items": [{
+                  "identifier": "Create GIF",
+                  "title": "GIF",
+                  "icon": {
+                  "imageURL": "createGIFIcon",
+                  "scale": 3
+                  }
+                  }, {
+                  "identifier": "Create Text",
+                  "title": "TEXT",
+                  "icon": {
+                  "imageURL": "createTextIcon",
+                  "scale": 3
+                  }
+                  }, {
+                  "identifier": "Create Poll",
+                  "title": "POLL",
+                  "icon": {
+                  "imageURL": "createPollIcon",
+                  "scale": 3
+                  }
+                  }, {
+                  "identifier": "Create Video",
+                  "title": "VIDEO",
+                  "icon": {
+                  "imageURL": "createVideoIcon",
+                  "scale": 3
+                  }
+                  }, {
+                  "identifier": "Create Image",
+                  "title": "IMAGE",
+                  "icon": {
+                  "imageURL": "createImageIcon",
+                  "scale": 3
+                  }
+                  }]
     }
 }

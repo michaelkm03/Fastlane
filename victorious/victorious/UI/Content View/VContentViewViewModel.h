@@ -167,7 +167,9 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 
 @property (nonatomic, assign) BOOL hasReposted;
 
-@property (nonatomic, readonly) NSString *remixCountText;
+@property (nonatomic, readonly) NSString *memeCountText;
+
+@property (nonatomic, readonly) NSString *gifCountText;
 
 @property (nonatomic, readonly) NSString *repostCountText;
 
@@ -178,8 +180,6 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 @property (nonatomic, readonly) NSString *authorCaption;
 
 @property (nonatomic, readonly) NSURL *avatarForAuthor;
-
-@property (nonatomic, readonly) NSString *shareText;
 
 @property (nonatomic, readonly) NSString *analyticsContentTypeText;
 

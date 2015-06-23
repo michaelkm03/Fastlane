@@ -268,6 +268,21 @@ static NSString * const kMacroReplacement = @"XXXXX";
     return image;
 }
 
+- (UIImage *)tintedImageForKey:(NSString *)key
+{
+    UIImage *image = [self imageForKey:key];
+    NSDictionary *imageDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
+    if ( imageDictionary != nil )
+    {
+        UIColor *tintColor = [[self class] colorFromDictionary:[imageDictionary objectForKey:@"tintColor"]];
+        if ( tintColor != nil )
+        {
+            image = [image v_tintedTemplateImageWithColor:tintColor];
+        }
+    }
+    return image;
+}
+
 - (UIViewController *)viewControllerForKey:(NSString *)key
 {
     return [self templateValueOfType:[UIViewController class] forKey:key];

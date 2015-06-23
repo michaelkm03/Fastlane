@@ -93,7 +93,8 @@ NSString * const VStreamCollectionViewControllerStreamURLKey = @"streamURL";
 NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell";
 NSString * const VStreamCollectionViewControllerMarqueeComponentKey = @"marqueeCell";
 
-static NSString * const kRemixStreamKey = @"remixStream";
+static NSString * const kMemeStreamKey = @"memeStream";
+static NSString * const kGifStreamKey = @"gifStream";
 static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
@@ -111,6 +112,8 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 @property (strong, nonatomic) VSequenceActionController *sequenceActionController;
 
 @property (nonatomic, assign) BOOL hasRefreshed;
+
+@property (nonatomic, assign) BOOL isRemixView;
 
 @property (nonatomic, strong) VWorkspacePresenter *workspacePresenter;
 
@@ -423,6 +426,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
              return;
          }
          weakSelf.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:self dependencyManager:self.dependencyManager];
+         weakSelf.workspacePresenter.showsCreationSheetFromTop = YES;
          [weakSelf.workspacePresenter present];
      }];
 }
@@ -925,6 +929,13 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
                                          withDependencyManager:self.dependencyManager];
         return userPostAllowed;
     }
+    
+    VStreamCollectionViewController *controller = (VStreamCollectionViewController *) source;
+    if ((controller.isRemixView) && ([menuItem.position isEqualToString:VDependencyManagerPositionLeft]))
+    {
+        return self.navigationController.viewControllers.count <= 1;
+    }
+
     return YES;
 }
 
@@ -956,27 +967,50 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 @implementation VDependencyManager (VStreamCollectionViewController)
 
-- (VStreamCollectionViewController *)remixStreamForSequence:(VSequence *)sequence
+- (VStreamCollectionViewController *)memeStreamForSequence:(VSequence *)sequence
 {
     NSString *sequenceID = sequence.remoteId;
-    VStreamCollectionViewController *remixStream = [self templateValueOfType:[VStreamCollectionViewController class]
-                                                                      forKey:kRemixStreamKey
-                                                       withAddedDependencies:@{ kSequenceIDKey: sequenceID }];
+    VStreamCollectionViewController *memeStream = [self templateValueOfType:[VStreamCollectionViewController class]
+                                                                     forKey:kMemeStreamKey
+                                                      withAddedDependencies:@{ kSequenceIDKey: sequenceID }];
     
-    remixStream.navigationItem.title = NSLocalizedString(@"Remixes", nil);
-    remixStream.currentStream.name = NSLocalizedString(@"Remixes", nil);
+    memeStream.navigationItem.title = NSLocalizedString(memeStream.currentStream.name, nil);
+    memeStream.isRemixView = YES;
     
-    VNoContentView *noRemixView = [VNoContentView noContentViewWithFrame:remixStream.view.bounds];
-    if ( [noRemixView respondsToSelector:@selector(setDependencyManager:)] )
+    VNoContentView *noMemeView = [VNoContentView noContentViewWithFrame:memeStream.view.bounds];
+    if ( [noMemeView respondsToSelector:@selector(setDependencyManager:)] )
     {
-        noRemixView.dependencyManager = self;
+        noMemeView.dependencyManager = self;
     }
-    noRemixView.title = NSLocalizedString(@"NoRemixersTitle", @"");
-    noRemixView.message = NSLocalizedString(@"NoRemixersMessage", @"");
-    noRemixView.icon = [UIImage imageNamed:@"noRemixIcon"];
-    remixStream.noContentView = noRemixView;
+    noMemeView.title = NSLocalizedString(@"NoMemersTitle", @"");
+    noMemeView.message = NSLocalizedString(@"NoMemersMessage", @"");
+    noMemeView.icon = [UIImage imageNamed:@"noMemeIcon"];
+    memeStream.noContentView = noMemeView;
     
-    return remixStream;
+    return memeStream;
+}
+
+- (VStreamCollectionViewController *)gifStreamForSequence:(VSequence *)sequence
+{
+    NSString *sequenceID = sequence.remoteId;
+    VStreamCollectionViewController *gifStream = [self templateValueOfType:[VStreamCollectionViewController class]
+                                                                    forKey:kGifStreamKey
+                                                     withAddedDependencies:@{ kSequenceIDKey: sequenceID }];
+    
+    gifStream.navigationItem.title = NSLocalizedString(gifStream.currentStream.name, nil);
+    gifStream.isRemixView = YES;
+    
+    VNoContentView *noGifView = [VNoContentView noContentViewWithFrame:gifStream.view.bounds];
+    if ( [noGifView respondsToSelector:@selector(setDependencyManager:)] )
+    {
+        noGifView.dependencyManager = self;
+    }
+    noGifView.title = NSLocalizedString(@"NoGiffersTitle", @"");
+    noGifView.message = NSLocalizedString(@"NoGiffersMessage", @"");
+    noGifView.icon = [UIImage imageNamed:@"noGifIcon"];
+    gifStream.noContentView = noGifView;
+    
+    return gifStream;
 }
 
 @end

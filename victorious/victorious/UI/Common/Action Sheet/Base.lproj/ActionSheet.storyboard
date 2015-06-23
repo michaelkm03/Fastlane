@@ -79,6 +79,9 @@
                                                             <subviews>
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="repostIcon" translatesAutoresizingMaskIntoConstraints="NO" id="NCA-G7-lHm">
                                                                     <rect key="frame" x="35" y="12" width="22" height="19"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" constant="22" id="DTc-pt-3mx"/>
+                                                                    </constraints>
                                                                 </imageView>
                                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1eU-SV-COV">
                                                                     <rect key="frame" x="85" y="11" width="42" height="21"/>
@@ -145,7 +148,6 @@
                                                 </connections>
                                             </tableView>
                                         </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="bottom" secondItem="dX5-Jj-M61" secondAttribute="bottom" id="92I-as-Tr1"/>
                                             <constraint firstAttribute="width" constant="320" id="EAw-sY-6Iq"/>
@@ -189,10 +191,10 @@
                                     <constraint firstAttribute="centerX" secondItem="Iq4-PT-v1o" secondAttribute="centerX" id="Pcm-UT-eHc"/>
                                     <constraint firstAttribute="trailing" secondItem="ObS-hY-o4S" secondAttribute="trailing" constant="30" id="RjV-yd-fVN"/>
                                     <constraint firstAttribute="centerX" secondItem="bwB-7w-LgK" secondAttribute="centerX" constant="-0.5" id="SCb-8A-lmy"/>
+                                    <constraint firstAttribute="height" constant="343" id="U8h-MH-Fxw"/>
                                     <constraint firstItem="wiR-Nr-0cm" firstAttribute="leading" secondItem="fKP-Uj-Ir7" secondAttribute="leading" id="Xf1-uP-TXO"/>
                                     <constraint firstAttribute="bottom" secondItem="Iq4-PT-v1o" secondAttribute="bottom" constant="35" id="gYv-mn-709"/>
                                     <constraint firstItem="Iq4-PT-v1o" firstAttribute="top" secondItem="fKP-Uj-Ir7" secondAttribute="top" constant="86" id="ipl-RH-gL8"/>
-                                    <constraint firstAttribute="height" constant="343" id="kfC-ap-Bue"/>
                                     <constraint firstItem="ObS-hY-o4S" firstAttribute="leading" secondItem="fKP-Uj-Ir7" secondAttribute="leading" constant="30" id="lmL-rf-I86"/>
                                     <constraint firstAttribute="bottom" secondItem="wiR-Nr-0cm" secondAttribute="bottom" id="oqz-UV-qcQ"/>
                                 </constraints>
@@ -265,7 +267,7 @@
                         <outlet property="actionItemsTableView" destination="dX5-Jj-M61" id="SIw-e4-qbp"/>
                         <outlet property="avatarButton" destination="nGE-Gh-2VM" id="tPl-0O-l0I"/>
                         <outlet property="blurringContainer" destination="fKP-Uj-Ir7" id="40q-wk-3ZO"/>
-                        <outlet property="blurringContainerHeightConstraint" destination="kfC-ap-Bue" id="ucZ-iK-SZh"/>
+                        <outlet property="blurringContainerHeightConstraint" destination="U8h-MH-Fxw" id="H2j-Id-X2a"/>
                         <outlet property="cancelButton" destination="wiR-Nr-0cm" id="lUo-1X-jHG"/>
                         <outlet property="gradientContainer" destination="Iq4-PT-v1o" id="EAM-o5-YDj"/>
                         <outlet property="profileImageView" destination="eob-Pq-0le" id="lCL-Hu-QVe"/>
