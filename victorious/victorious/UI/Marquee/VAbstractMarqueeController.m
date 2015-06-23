@@ -94,8 +94,6 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     [self.dataDelegate marquee:self reloadedStreamWithItems:[self.stream.marqueeItems array]];
     [self registerStreamItemCellsWithCollectionView:self.collectionView forMarqueeItems:[self.stream.marqueeItems array]];
     [self.collectionView reloadData];
-    
-    self.shouldTrackMarqueeCellViews = YES;
 }
 
 #pragma mark - UIScrollViewDelegate
