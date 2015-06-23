@@ -14,6 +14,7 @@ extern NSString * const VExperienceEnhancerBarDidRequireLoginNotification;
 
 @class VExperienceEnhancerBar;
 @class VExperienceEnhancer;
+@class VDependencyManager;
 
 @protocol VExperienceEnhancerBarDataSource <NSObject>
 
@@ -41,6 +42,8 @@ extern NSString * const VExperienceEnhancerBarDidRequireLoginNotification;
 @property (nonatomic, assign) BOOL enabled;
 
 @property (nonatomic, copy) void (^selectionBlock)(VExperienceEnhancer *selectedEnhancer, CGPoint selectionCenter);
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 - (void)reloadData;
 

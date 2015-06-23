@@ -334,7 +334,7 @@
             "tools": [
                 {
                     "selectedIcon": {
-                        "imageURL": "textSelected"
+                        "imageURL": "textIconSelected"
                     },
                     "picker": {
                         "name": "vertical.picker"
@@ -394,7 +394,7 @@
                     ],
                     "name": "text.tool",
                     "icon": {
-                        "imageURL": "text"
+                        "imageURL": "textIcon"
                     }
                 },
                 {
