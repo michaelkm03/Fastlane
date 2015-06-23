@@ -1,5 +1,5 @@
 //
-//  VMarqueeControllerTests.m
+//  VAbstractMarqueeControllerTests.m
 //  victorious
 //
 //  Created by Will Long on 10/1/14.
@@ -18,13 +18,13 @@
 #import "VDependencyManager+VObjectManager.h"
 #import "VUploadManager.h"
 
-@interface VMarqueeControllerTests : XCTestCase
+@interface VAbstractMarqueeControllerTests : XCTestCase
 
 @property (nonatomic, strong) VAbstractMarqueeController *marquee;
 
 @end
 
-@implementation VMarqueeControllerTests
+@implementation VAbstractMarqueeControllerTests
 
 - (void)setUp
 {

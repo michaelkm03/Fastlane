@@ -90,4 +90,14 @@
  */
 @property (nonatomic, assign) BOOL shouldSaveToCameraRoll;
 
+/**
+ *  A boolean indicating whether or not this asset shoudl be shared to facebook on publish
+ */
+@property (nonatomic, assign) BOOL shareToFacebook;
+
+/**
+ *  A boolean indicating whether or not this asset shoudl be shared to twitter on publish
+ */
+@property (nonatomic, assign) BOOL shareToTwitter;
+
 @end

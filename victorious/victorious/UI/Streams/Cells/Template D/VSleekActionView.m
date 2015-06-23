@@ -13,6 +13,7 @@
 
 // Stream Support
 #import "VSequence+Fetcher.h"
+#import "VSequencePermissions.h"
 
 // Action Bar
 #import "VFlexBar.h"
@@ -70,11 +71,11 @@ static CGFloat const kActionButtonHeight = 31.0f;
         {
             [identifier appendString:@"Repost."];
         }
-        if ( sequence.permissions.canRemix )
+        if ( sequence.permissions.canMeme )
         {
             [identifier appendString:@"Meme."];
         }
-        if ( sequence.permissions.canRemix && [sequence isVideo])
+        if ( sequence.permissions.canGIF )
         {
             [identifier appendString:@"Gif."];
         }
@@ -216,12 +217,12 @@ static CGFloat const kActionButtonHeight = 31.0f;
         [actionItems addObject:self.repostButton];
         [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace]];
     }
-    if ( sequence.permissions.canRemix )
+    if ( sequence.permissions.canMeme )
     {
         [actionItems addObject:self.memeButton];
         [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace]];
     }
-    if ( sequence.permissions.canRemix && [sequence isVideo])
+    if ( sequence.permissions.canGIF )
     {
         [actionItems addObject:self.gifButton];
         [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace]];

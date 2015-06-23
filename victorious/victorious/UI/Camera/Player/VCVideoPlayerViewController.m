@@ -795,6 +795,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             {
                 [self.player seekToTime:kCMTimeZero];
             }
+            [self.player setRate:1.0f];
         }
         else
         {
@@ -852,6 +853,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     {
         NSNumber *oldRate = change[NSKeyValueChangeOldKey];
         NSNumber *newRate = change[NSKeyValueChangeNewKey];
+        
         if ((id)oldRate != [NSNull null] && (id)newRate != [NSNull null])
         {
             if ([oldRate floatValue] == 0 && [newRate floatValue] != 0)

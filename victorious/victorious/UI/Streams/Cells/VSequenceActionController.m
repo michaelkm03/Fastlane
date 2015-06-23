@@ -165,13 +165,22 @@
                          completion:completion];
 }
 
-- (void)showRemixersOnNavigationController:(UINavigationController *)navigationController
-                                   sequence:(VSequence *)sequence
-                       andDependencyManager:(VDependencyManager *)dependencyManager
+- (void)showGiffersOnNavigationController:(UINavigationController *)navigationController
+                                 sequence:(VSequence *)sequence
+                     andDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSParameterAssert(sequence != nil);
-    VStreamCollectionViewController *remixStream = [dependencyManager remixStreamForSequence:sequence];
-    [navigationController pushViewController:remixStream animated:YES];
+    VStreamCollectionViewController *gifStream = [dependencyManager gifStreamForSequence:sequence];
+    [navigationController pushViewController:gifStream animated:YES];
+}
+
+- (void)showMemersOnNavigationController:(UINavigationController *)navigationController
+                                sequence:(VSequence *)sequence
+                    andDependencyManager:(VDependencyManager *)dependencyManager
+{
+    NSParameterAssert(sequence != nil);
+    VStreamCollectionViewController *memeStream = [dependencyManager memeStreamForSequence:sequence];
+    [navigationController pushViewController:memeStream animated:YES];
 }
 
 #pragma mark - Repost

@@ -8,6 +8,24 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ *  Describes the completion block of the refreshTwitterTokenWithIdentifier:fromViewController:completionBlock:.
+ *
+ *  @param success Whether or not the twitter authorization was successful.
+ *  @param error The error returned from the api call.
+ */
+typedef void (^VTWitterCompletionBlock) (BOOL success, NSError *error);
+
+/**
+ *  Error domain for all non-Twitter-API errors
+ */
+extern NSString * const VTwitterManagerErrorDomain;
+/**
+ *  Error code representing that the user canceled the share.
+ *  The Twitter acounts manager already shows an alert in these cases.
+ */
+extern CGFloat const VTwitterManagerErrorCanceled;
+
 @interface VTwitterManager : NSObject
 
 @property (nonatomic, readonly) NSString *oauthToken;
@@ -16,7 +34,10 @@
 
 + (VTwitterManager *)sharedManager;
 
-- (BOOL)isLoggedIn;
+/**
+ *  Returns YES when the oauth token, secret, and twitterId are valid.
+ */
+@property (nonatomic, readonly) BOOL authorizedToShare;
 
 /**
  *  Does a twitter reverse oauth and stores the information in the class properties
@@ -25,6 +46,7 @@
  *  @param completionBlock Block that will run after completing.
  */
 - (void)refreshTwitterTokenWithIdentifier:(NSString *)identifier
-                          completionBlock:(void(^)(void))completionBlock;
+                       fromViewController:(UIViewController *)viewController
+                          completionBlock:(VTWitterCompletionBlock)completionBlock;
 
 @end
