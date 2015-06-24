@@ -104,7 +104,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         if (sequenceToRemix != nil)
         {
             _showFailureAlert = ![sequenceToRemix isRemixableType];
-            if ( _showFailureAlert )
+            if ( !_showFailureAlert )
             {
                 [self extractCapturedMediaURLwithSequenceToRemix:sequenceToRemix];
                 [self transitionFromState:_state
