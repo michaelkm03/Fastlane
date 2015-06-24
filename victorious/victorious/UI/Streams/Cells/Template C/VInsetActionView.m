@@ -59,7 +59,7 @@ static const CGFloat kActionButtonWidth = 44.0f;
 {
     if (_shareButton == nil)
     {
-        _shareButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_share_icon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+        _shareButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_shareIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                                             action:@selector(share:)];
     }
     return _shareButton;
@@ -69,7 +69,7 @@ static const CGFloat kActionButtonWidth = 44.0f;
 {
     if (_gifButton == nil)
     {
-        _gifButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_gif_icon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+        _gifButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_gifIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                                           action:@selector(gif:)];
     }
     return _gifButton;
@@ -79,7 +79,7 @@ static const CGFloat kActionButtonWidth = 44.0f;
 {
     if (_memeButton == nil)
     {
-        _memeButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_meme_icon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+        _memeButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_memeIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                                            action:@selector(meme:)];
     }
     return _memeButton;
@@ -89,7 +89,7 @@ static const CGFloat kActionButtonWidth = 44.0f;
 {
     if (_repostButton == nil)
     {
-        _repostButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_repost_icon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+        _repostButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_repostIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                                              action:@selector(repost:)];
     }
     return _repostButton;
@@ -181,8 +181,8 @@ static const CGFloat kActionButtonWidth = 44.0f;
     [self.repostButtonController invalidate];
     self.repostButtonController = [[VRepostButtonController alloc] initWithSequence:sequence
                                                                        repostButton:self.repostButton
-                                                                      repostedImage:[UIImage imageNamed:@"C_repost_success_icon"]
-                                                                    unRepostedImage:[UIImage imageNamed:@"C_repost_icon"]];
+                                                                      repostedImage:[UIImage imageNamed:@"C_repostIcon-success"]
+                                                                    unRepostedImage:[UIImage imageNamed:@"C_repostIcon"]];
 }
 
 #pragma mark - VHasManagedDependencies
