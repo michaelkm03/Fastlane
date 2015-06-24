@@ -11,7 +11,7 @@
 NSString *const HashmarkViewKind = @"HashmarkKind";
 NSString *const TimemarkViewKind = @"TimemarkKind";
 
-const static int kNumberOfHashes = 15;
+const static int kNumberOfHashes = 10;
 const static int kNumberOfTimeLabels = 5;
 
 const static CGFloat kSpacingOfHashes = 25.0f;
@@ -103,10 +103,11 @@ const static CGFloat kSpacingOfTimeLables = 25.0f;
     
     if (attrs)
     {
+        CGRect frame;
         if (kind == HashmarkViewKind)
         {
             //position this reusable view relative to the cells frame
-            CGRect frame = CGRectMake(indexPath.item*(50+kSpacingOfHashes), 0, 50, 50);
+            frame = CGRectMake(indexPath.item*(50+kSpacingOfHashes), 0, 50, 50);
             attrs.frame = frame;
             attrs.zIndex = 3000;
         }
@@ -114,8 +115,22 @@ const static CGFloat kSpacingOfTimeLables = 25.0f;
         {
             //position this reusable view relative to the cells frame
             CGRect frame = CGRectMake(indexPath.item*(50+kSpacingOfTimeLables), 0, 50, 50);
+         
             attrs.frame = frame;
             attrs.zIndex = 3001;
+            
+        }
+        
+        BOOL intersect = CGRectIntersectsRect(frame, self.collectionView.frame);
+        
+        if (CGRectGetMaxX(frame) < self.collectionView.contentOffset.x)
+        {
+            // they don't intersect... do stuff
+            frame = CGRectZero;
+        }
+        else if (CGRectGetMinX(frame) > (self.collectionView.contentOffset.x + CGRectGetWidth(self.collectionView.frame)))
+        {
+            NSLog(@"went off screen to ther gith");
         }
         
     }
