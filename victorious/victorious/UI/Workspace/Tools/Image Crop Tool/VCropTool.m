@@ -28,7 +28,6 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 @property (nonatomic, strong) NSNumber *filterIndexNumber;
 @property (nonatomic, strong, readwrite) VCropToolViewController *cropViewController;
 @property (nonatomic, weak) VCanvasView *canvasView;
-@property (nonatomic, assign) BOOL didCrop;
 
 @end
 
@@ -58,6 +57,13 @@ static NSString * const kFilterIndexKey = @"filterIndex";
 - (CGSize)assetSize
 {
     return self.canvasView.assetSize;
+}
+
+#pragma mark - Property
+
+- (BOOL)didCrop
+{
+    return self.canvasView.didCropPan || self.canvasView.didCropZoom || self.canvasView.didZoomFromDoubleTap;
 }
 
 #pragma mark - VWorkspaceTool

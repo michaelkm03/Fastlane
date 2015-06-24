@@ -81,17 +81,26 @@ static const CGFloat kPlaceholderActiveTextWhiteValue = 0.4f;
         
         [textField applyTextFieldStyle:VTextFieldStyleLoginRegistration];
         textField.delegate = self;
-        textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:textField.placeholder attributes:placeholderAttributes];
     }
     
-    self.oldPasswordTextField.activePlaceholder = [[NSAttributedString alloc] initWithString:self.oldPasswordTextField.placeholder
-                                                                                  attributes:activePlaceholderAttributes];
+    NSString *placeholderText = self.oldPasswordTextField.placeholder;
+    if ( placeholderText != nil )
+    {
+        self.oldPasswordTextField.activePlaceholder = [[NSAttributedString alloc] initWithString:self.oldPasswordTextField.placeholder
+                                                                                      attributes:activePlaceholderAttributes];
+        self.oldPasswordTextField.inactivePlaceholder = [[NSAttributedString alloc] initWithString:self.oldPasswordTextField.placeholder
+                                                                                        attributes:placeholderAttributes];
+    }
     
     NSString *passwordActivePlaceholder = NSLocalizedString(@"Minimum 8 characters", @"");
     self.confirmPasswordTextField.activePlaceholder = [[NSAttributedString alloc] initWithString:passwordActivePlaceholder
                                                                                       attributes:activePlaceholderAttributes];
+    self.confirmPasswordTextField.inactivePlaceholder = [[NSAttributedString alloc] initWithString:passwordActivePlaceholder
+                                                                                        attributes:placeholderAttributes];
     self.changedPasswordTextField.activePlaceholder = [[NSAttributedString alloc] initWithString:passwordActivePlaceholder
                                                                                       attributes:activePlaceholderAttributes];
+    self.changedPasswordTextField.inactivePlaceholder = [[NSAttributedString alloc] initWithString:passwordActivePlaceholder
+                                                                                        attributes:placeholderAttributes];
 }
 
 - (NSUInteger)supportedInterfaceOrientations

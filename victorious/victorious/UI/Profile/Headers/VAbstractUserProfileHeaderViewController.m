@@ -8,7 +8,7 @@
 
 #import "VImageAsset+Fetcher.h"
 #import "VAbstractUserProfileHeaderViewController.h"
-#import "VUser+Fetcher.h"
+#import "VUser.h"
 #import "VDependencyManager.h"
 #import "VLargeNumberFormatter.h"
 #import "VDefaultProfileImageView.h"

@@ -102,6 +102,7 @@ extern NSString * const VDependencyManagerEditTextWorkspaceKey;
  Returns the UIImage with the specified key
  */
 - (UIImage *)imageForKey:(NSString *)key;
+
 /**
  Returns the UIImage with the specified key after applying the tint color provided in the template (if present)
  */

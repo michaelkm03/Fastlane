@@ -2,18 +2,17 @@
 //  VUser.h
 //  victorious
 //
-//  Created by Lawrence Leach on 12/17/14.
-//  Copyright (c) 2014 Victorious. All rights reserved.
+//  Created by Sharif Ahmed on 6/2/15.
+//  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class VComment, VConversation, VHashtag, VMessage, VNotification, VPollResult, VSequence, VUser, VImageAsset;
+@class VComment, VConversation, VHashtag, VImageAsset, VMessage, VNotification, VPollResult, VSequence, VUser;
 
 @interface VUser : NSManagedObject
 
-@property (nonatomic, retain) NSString * accessLevel;
 @property (nonatomic, retain) NSString * email;
 @property (nonatomic, retain) NSNumber * isDirectMessagingDisabled;
 @property (nonatomic, retain) NSNumber * isFollowedByMainUser;
@@ -34,12 +33,11 @@
 @property (nonatomic, retain) NSSet *following;
 @property (nonatomic, retain) NSOrderedSet *hashtags;
 @property (nonatomic, retain) NSSet *messages;
-@property (nonatomic, retain) VNotification *notifications;
+@property (nonatomic, retain) NSSet *notifications;
 @property (nonatomic, retain) NSSet *pollResults;
 @property (nonatomic, retain) NSSet *postedSequences;
-@property (nonatomic, retain) NSSet *remixedSequences;
-@property (nonatomic, retain) NSSet *repostedSequences;
 @property (nonatomic, retain) NSSet *previewAssets;
+@property (nonatomic, retain) NSSet *repostedSequences;
 @end
 
 @interface VUser (CoreDataGeneratedAccessors)
@@ -79,6 +77,11 @@
 - (void)addMessages:(NSSet *)values;
 - (void)removeMessages:(NSSet *)values;
 
+- (void)addNotificationsObject:(VNotification *)value;
+- (void)removeNotificationsObject:(VNotification *)value;
+- (void)addNotifications:(NSSet *)values;
+- (void)removeNotifications:(NSSet *)values;
+
 - (void)addPollResultsObject:(VPollResult *)value;
 - (void)removePollResultsObject:(VPollResult *)value;
 - (void)addPollResults:(NSSet *)values;
@@ -89,20 +92,14 @@
 - (void)addPostedSequences:(NSSet *)values;
 - (void)removePostedSequences:(NSSet *)values;
 
-- (void)addRemixedSequencesObject:(VSequence *)value;
-- (void)removeRemixedSequencesObject:(VSequence *)value;
-- (void)addRemixedSequences:(NSSet *)values;
-- (void)removeRemixedSequences:(NSSet *)values;
+- (void)addPreviewAssetsObject:(VImageAsset *)value;
+- (void)removePreviewAssetsObject:(VImageAsset *)value;
+- (void)addPreviewAssets:(NSSet *)values;
+- (void)removePreviewAssets:(NSSet *)values;
 
 - (void)addRepostedSequencesObject:(VSequence *)value;
 - (void)removeRepostedSequencesObject:(VSequence *)value;
 - (void)addRepostedSequences:(NSSet *)values;
 - (void)removeRepostedSequences:(NSSet *)values;
-
-- (void)addPreviewAssetsObject:(VImageAsset *)values;
-- (void)removePreviewAssetsObject:(VImageAsset *)values;
-- (void)addPreviewAssets:(NSSet *)values;
-- (void)removePreviewAssets:(NSSet *)values;
-
 
 @end

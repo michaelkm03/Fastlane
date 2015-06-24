@@ -108,7 +108,7 @@ static const CGFloat kFollowerCellHeight = 50.0f;
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
-    
+    self.followControl.dependencyManager = dependencyManager;
     self.profileName.font = [_dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
     self.profileLocation.font = [_dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
     self.followControl.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];

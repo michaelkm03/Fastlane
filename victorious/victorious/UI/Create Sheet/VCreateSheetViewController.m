@@ -76,12 +76,22 @@ static const CGFloat kLineSpacing = 40.0f;
     [self.dismissButton setTitleColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey] forState:UIControlStateNormal];
     [self.dismissButton setBackgroundColor:[self.dependencyManager colorForKey:VDependencyManagerAccentColorKey]];
     
-    // Shadow
-    self.dismissButton.layer.masksToBounds = YES;
-    self.dismissButton.layer.shadowOffset = CGSizeMake(0, -kShadowOffset);
-    self.dismissButton.layer.shadowRadius = 1;
-    self.dismissButton.layer.shadowOpacity = 0.4f;
-    self.dismissButton.layer.masksToBounds = NO;
+    // Top line for dismiss button
+    UIView *line = [UIView new];
+    [line setBackgroundColor:[UIColor blackColor]];
+    [line setAlpha:0.25f];
+    line.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.dismissButton addSubview:line];
+    NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[line(1)]"
+                                                                           options:0
+                                                                           metrics:nil
+                                                                             views:NSDictionaryOfVariableBindings(line)];
+    NSArray *horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"|[line]|"
+                                                                             options:0
+                                                                             metrics:nil
+                                                                               views:NSDictionaryOfVariableBindings(line)];
+    [self.dismissButton addConstraints:verticalConstraints];
+    [self.dismissButton addConstraints:horizontalConstraints];
     
     // Set line height and item size for flow layout
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
@@ -153,7 +163,7 @@ static const CGFloat kLineSpacing = 40.0f;
     cell.itemLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     [cell.iconImageView setImage:[menuItem.icon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
     cell.iconImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    
+        
     return cell;
 }
 
@@ -203,16 +213,6 @@ static const CGFloat kLineSpacing = 40.0f;
     return CGSizeMake(CGRectGetWidth(self.view.bounds) - 80, [self heightForMenuItemTitle:menuItem.title]);
 }
 
-- (CGFloat)heightForMenuItemTitle:(NSString *)text
-{
-    UIFont *font = [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
-    CGRect minimumFrame = [text boundingRectWithSize:CGSizeMake(CGRectGetHeight(self.view.bounds), CGFLOAT_MAX)
-                                             options:NSStringDrawingUsesLineFragmentOrigin
-                                          attributes:@{ NSFontAttributeName : font }
-                                             context:nil];
-    return VCEIL(CGRectGetHeight(minimumFrame));
-}
-
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
     NSInteger numberOfCells = [self.menuItems count];
@@ -235,6 +235,18 @@ static const CGFloat kLineSpacing = 40.0f;
     CGFloat statusBarHeight = CGRectGetHeight([[UIApplication sharedApplication] statusBarFrame]);
     NSInteger verticalInset = (CGRectGetHeight(collectionView.bounds) - contentHeight - statusBarHeight) / 2;
     return UIEdgeInsetsMake(verticalInset, 0, verticalInset, 0);
+}
+
+#pragma mark - Helpers
+
+- (CGFloat)heightForMenuItemTitle:(NSString *)text
+{
+    UIFont *font = [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
+    CGRect minimumFrame = [text boundingRectWithSize:CGSizeMake(CGRectGetHeight(self.view.bounds), CGFLOAT_MAX)
+                                             options:NSStringDrawingUsesLineFragmentOrigin
+                                          attributes:@{ NSFontAttributeName : font }
+                                             context:nil];
+    return VCEIL(CGRectGetHeight(minimumFrame));
 }
 
 @end

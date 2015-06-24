@@ -217,7 +217,7 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator setComponentWithFilename:kWorkspaceTemplateName forKeyPath:@"scaffold/createFlow"];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
-                
+        
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];

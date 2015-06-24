@@ -40,3 +40,25 @@ extern NSString * const VCanvasViewAssetSizeBecameAvailableNotification;
 @property (nonatomic, readonly) UIScrollView *canvasScrollView; ///< A zooming scrollview for providing crop functionality.
 
 @end
+
+/**
+ *  Properties in this category are exposed for tracking purposes
+ */
+@interface VCanvasView (InteractionTracking)
+
+/**
+ *  User did pinch to crop.
+ */
+@property (nonatomic, readonly) BOOL didCropZoom;
+
+/**
+ *  User did crop with a pan.
+ */
+@property (nonatomic, readonly) BOOL didCropPan;
+
+/**
+ *  User did crop with a double-tap to zoom.
+ */
+@property (nonatomic, readonly) BOOL didZoomFromDoubleTap;
+
+@end

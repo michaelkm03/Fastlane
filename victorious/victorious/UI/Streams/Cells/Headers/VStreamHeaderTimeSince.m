@@ -27,7 +27,8 @@
 
 // Models
 #import "VSequence+Fetcher.h"
-#import "VUser+Fetcher.h"
+#import "VUser.h"
+
 
 static const CGFloat kLeadingTrailingHeaderSpace = 11.0f;
 static const CGFloat kAvatarSize = 32.0f;
