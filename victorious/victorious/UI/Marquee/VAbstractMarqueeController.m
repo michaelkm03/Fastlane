@@ -182,7 +182,6 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
         if ([cell conformsToProtocol:@protocol(VStreamCellTracking)])
         {
             VSequence *sequenceToTrack = [(id<VStreamCellTracking>)cell sequenceToTrack];
-            NSLog(@"%@", sequenceToTrack.remoteId);
             if (sequenceToTrack != nil)
             {
                 [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithStream:self.stream
