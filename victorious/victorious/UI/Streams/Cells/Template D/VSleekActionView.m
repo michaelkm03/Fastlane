@@ -121,7 +121,7 @@ static CGFloat const kActionButtonHeight = 31.0f;
 {
     if (_repostButton == nil)
     {
-        _repostButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_repost_icon"] action:@selector(repost:)];
+        _repostButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_repostIcon"] action:@selector(repost:)];
     }
     return _repostButton;
 }
@@ -130,7 +130,7 @@ static CGFloat const kActionButtonHeight = 31.0f;
 {
     if (_memeButton == nil)
     {
-        _memeButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_meme_icon"] action:@selector(meme:)];
+        _memeButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_memeIcon"] action:@selector(meme:)];
     }
     return _memeButton;
 }
@@ -139,7 +139,7 @@ static CGFloat const kActionButtonHeight = 31.0f;
 {
     if (_gifButton == nil)
     {
-        _gifButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_gif_icon"] action:@selector(gif:)];
+        _gifButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_gifIcon"] action:@selector(gif:)];
     }
     return _gifButton;
 }
@@ -227,8 +227,8 @@ static CGFloat const kActionButtonHeight = 31.0f;
     [self.repostButtonController invalidate];
     self.repostButtonController = [[VRepostButtonController alloc] initWithSequence:sequence
                                                                        repostButton:self.repostButton
-                                                                      repostedImage:[UIImage imageNamed:@"D_repost_success_icon"]
-                                                                    unRepostedImage:[UIImage imageNamed:@"D_repost_icon"]];
+                                                                      repostedImage:[UIImage imageNamed:@"D_repostIcon-success"]
+                                                                    unRepostedImage:[UIImage imageNamed:@"D_repostIcon"]];
 }
 
 #pragma mark - Button Factory

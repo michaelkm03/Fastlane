@@ -32,8 +32,6 @@ static const CGFloat kLeadingTrailingMargin = 20.0f;
 static const CGFloat kAvatarSize = 32.0f;
 static const CGFloat kItemSpacing = 5.0f;
 
-static NSString * const kCommentsIconKey = @"comment_icon";
-
 @interface VStreamHeaderComment ()
 
 @property (nonatomic, strong) VLargeNumberFormatter *numberFormatter;
