@@ -344,12 +344,6 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
                                     sequence:(VSequence *)sequence
                            dependencyManager:(VDependencyManager *)dependencyManager
 {
-    if ([sequence isPoll])
-    {
-        CGFloat width = CGRectGetWidth(bounds);
-        return CGSizeMake(width, width * kPollCellHeightRatio);
-    }
-    
     // Size the inset cell from top to bottom
     // Use width to ensure 1:1 aspect ratio of previewView
     CGSize actualSize = CGSizeMake(CGRectGetWidth(bounds), 0.0f);
@@ -361,7 +355,8 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     actualSize.height += kCountsTextViewHeight;
     
     // Add 1:1 preview view
-    actualSize.height = actualSize.height + actualSize.width * (1 / [sequence previewAssetAspectRatio]);
+    CGFloat aspect = [sequence isPoll] ? kPollCellHeightRatio : (1 / [sequence previewAssetAspectRatio]);
+    actualSize.height = actualSize.height + actualSize.width * aspect;
     
     return actualSize;
 }
