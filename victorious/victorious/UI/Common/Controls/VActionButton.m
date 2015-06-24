@@ -67,7 +67,7 @@
 
 - (void)updateColors
 {
-    self.tintColor = self.selected ? self.selectedTintColor : self.unselectedTintColor;
+    self.tintColor = self.selected && self.selectedTintColor != nil ? self.selectedTintColor : self.unselectedTintColor;
 }
 
 @end
