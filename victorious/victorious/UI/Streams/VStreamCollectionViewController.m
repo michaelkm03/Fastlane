@@ -113,8 +113,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 @property (nonatomic, assign) BOOL hasRefreshed;
 
-@property (nonatomic, assign) BOOL isRemixView;
-
 @property (nonatomic, strong) VWorkspacePresenter *workspacePresenter;
 
 @end
@@ -930,10 +928,10 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
         return userPostAllowed;
     }
     
-    VStreamCollectionViewController *controller = (VStreamCollectionViewController *) source;
-    if ((controller.isRemixView) && ([menuItem.position isEqualToString:VDependencyManagerPositionLeft]))
+    // Don't show hamburger menu if we are presented
+    if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemMenu] && (self.presentingViewController != nil))
     {
-        return self.navigationController.viewControllers.count <= 1;
+        return NO;
     }
 
     return YES;
@@ -975,7 +973,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
                                                       withAddedDependencies:@{ kSequenceIDKey: sequenceID }];
     
     memeStream.navigationItem.title = NSLocalizedString(memeStream.currentStream.name, nil);
-    memeStream.isRemixView = YES;
     
     VNoContentView *noMemeView = [VNoContentView noContentViewWithFrame:memeStream.view.bounds];
     if ( [noMemeView respondsToSelector:@selector(setDependencyManager:)] )
@@ -998,7 +995,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
                                                      withAddedDependencies:@{ kSequenceIDKey: sequenceID }];
     
     gifStream.navigationItem.title = NSLocalizedString(gifStream.currentStream.name, nil);
-    gifStream.isRemixView = YES;
     
     VNoContentView *noGifView = [VNoContentView noContentViewWithFrame:gifStream.view.bounds];
     if ( [noGifView respondsToSelector:@selector(setDependencyManager:)] )
