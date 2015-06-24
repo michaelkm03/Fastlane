@@ -7,6 +7,7 @@
 //
 
 #import "VEndCardActionCell.h"
+#import "VDependencyManager.h"
 
 static const CGFloat kScaleInactive     = 0.8f;
 static const CGFloat kScaleActive       = 1.0f;
@@ -17,8 +18,10 @@ static const CGFloat kInactiveAlpha     = 0.5f;
 
 @property (nonatomic, weak) IBOutlet UILabel *actionLabel;
 @property (nonatomic, weak) IBOutlet UIImageView *iconImageView;
+@property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
 @property (nonatomic, weak) IBOutlet UIView *containerView;
 @property (nonatomic, readwrite) NSString *actionIdentifier;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VEndCardActionModel *model;
 
 @end
@@ -54,11 +57,12 @@ static const CGFloat kInactiveAlpha     = 0.5f;
     self.actionLabel.alpha = alpha;
 }
 
-- (void)setModel:(VEndCardActionModel *)model
+- (void)populateWithDependencyManager:(VDependencyManager *)dependencyManager andModel:(VEndCardActionModel *)model
 {
-    _model = model;
-    
-    self.actionIdentifier = _model.identifier;
+    self.dependencyManager = dependencyManager;
+    self.model = model;
+        
+    self.actionIdentifier = model.identifier;
     
     [self showDefaultState];
 }
@@ -115,14 +119,14 @@ static const CGFloat kInactiveAlpha     = 0.5f;
 - (void)showDefaultState
 {
     self.actionLabel.text = self.model.textLabelDefault;
-    self.iconImageView.image = [UIImage imageNamed:self.model.iconImageNameDefault];
+    self.iconImageView.image = self.model.iconImageDefault;
 }
 
 - (void)showSuccessState
 {
-    if ( self.model.iconImageNameSuccess != nil )
+    if ( self.model.iconImageSuccess != nil )
     {
-        self.iconImageView.image = [UIImage imageNamed:self.model.iconImageNameSuccess];
+        self.iconImageView.image = self.model.iconImageSuccess;
     }
     
     if ( self.model.textLabelSuccess != nil )

@@ -408,7 +408,7 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
     if (self.sequence.isRemix.boolValue && self.sequence.parentUser != nil)
     {
         NSString *formatString = NSLocalizedString(@"remixedFromFormat", nil);
-        if ([[[[self.sequence firstNode] mp4Asset] playerControlsDisabled] boolValue])
+        if ( self.sequence.isGIFVideo )
         {
             formatString = NSLocalizedString(@"giffedFromFormat", nil);
         }
