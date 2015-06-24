@@ -44,6 +44,7 @@ static const CGFloat kIphone5AndGreaterHeight = 93.0f;
     [super awakeFromNib];
     
     VExperienceEnhancerBar *experienceEnhancerBar = [VExperienceEnhancerBar experienceEnhancerBar];
+    experienceEnhancerBar.dependencyManager = self.dependencyManager;
     experienceEnhancerBar.translatesAutoresizingMaskIntoConstraints = NO;
     [self.contentView addSubview:experienceEnhancerBar];
     
@@ -90,6 +91,12 @@ static const CGFloat kIphone5AndGreaterHeight = 93.0f;
 
     [self.contentView layoutIfNeeded];
     [self.experienceEnhancerBar layoutIfNeeded];
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    self.experienceEnhancerBar.dependencyManager = dependencyManager;
 }
 
 @end

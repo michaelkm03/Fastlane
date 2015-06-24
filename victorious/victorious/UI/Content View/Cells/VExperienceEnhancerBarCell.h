@@ -8,10 +8,11 @@
 
 #import "VBaseCollectionViewCell.h"
 
-@class VExperienceEnhancerBar;
+@class VExperienceEnhancerBar, VDependencyManager;
 
 @interface VExperienceEnhancerBarCell : VBaseCollectionViewCell
 
 @property (nonatomic, weak, readonly) VExperienceEnhancerBar *experienceEnhancerBar;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end

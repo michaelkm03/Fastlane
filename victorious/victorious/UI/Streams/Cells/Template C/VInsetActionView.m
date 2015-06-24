@@ -106,17 +106,17 @@ static const CGFloat kActionButtonWidth = 44.0f;
                           baseIdentifier:(NSString *)baseIdentifier
 {
     NSMutableString *identifier = [baseIdentifier mutableCopy];
-
+    
     [identifier appendString:@"Share."];
     if ( sequence.permissions.canRepost )
     {
         [identifier appendString:@"Repost."];
     }
-    if ( sequence.permissions.canRemix )
+    if ( sequence.permissions.canMeme )
     {
         [identifier appendString:@"Meme."];
     }
-    if ( sequence.permissions.canRemix  && [sequence isVideo] )
+    if ( sequence.permissions.canGIF )
     {
         [identifier appendString:@"Gif."];
     }
@@ -134,16 +134,18 @@ static const CGFloat kActionButtonWidth = 44.0f;
     
     // Create an array of available action items
     NSMutableArray *justActionItems = [[NSMutableArray alloc] init];
+    
     [justActionItems addObject:self.likeButton];
-    if ( sequence.permissions.canRemix && [sequence isVideo])
+    
+    if ( sequence.permissions.canGIF )
     {
         [justActionItems addObject:self.gifButton];
     }
-    if ( sequence.permissions.canRemix )
+    if ( sequence.permissions.canMeme )
     {
         [justActionItems addObject:self.memeButton];
     }
-    if ( sequence.permissions.canRemix )
+    if ( sequence.permissions.canRepost )
     {
         [justActionItems addObject:self.repostButton];
     }
@@ -156,22 +158,22 @@ static const CGFloat kActionButtonWidth = 44.0f;
         return;
     }
     [justActionItems enumerateObjectsUsingBlock:^(UIButton *actionItem, NSUInteger idx, BOOL *stop)
-    {
-        remainingSpace = remainingSpace - [actionItem v_internalWidthConstraint].constant;
-    }];
+     {
+         remainingSpace = remainingSpace - [actionItem v_internalWidthConstraint].constant;
+     }];
     CGFloat spacingWidth = remainingSpace / justActionItems.count;
     // Add our action items and spacing to an array to provide to the action bar
     // Edge spacing should be half the inter-item spacing
     NSMutableArray *actionItemsAndSpacing = [[NSMutableArray alloc] init];
     [actionItemsAndSpacing addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:spacingWidth * 0.5f]];
     [justActionItems enumerateObjectsUsingBlock:^(UIButton *actionButton, NSUInteger idx, BOOL *stop)
-    {
-        [actionItemsAndSpacing addObject:actionButton];
-        if (actionButton != [justActionItems lastObject])
-        {
-            [actionItemsAndSpacing addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:spacingWidth]];
-        }
-    }];
+     {
+         [actionItemsAndSpacing addObject:actionButton];
+         if (actionButton != [justActionItems lastObject])
+         {
+             [actionItemsAndSpacing addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:spacingWidth]];
+         }
+     }];
     [actionItemsAndSpacing addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:spacingWidth * 0.5f]];
     
     actionBar.actionItems = [NSArray arrayWithArray:actionItemsAndSpacing];

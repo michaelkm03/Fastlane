@@ -108,7 +108,6 @@
     UIResponder<VSequenceActionsDelegate> *targetForRepost = [self targetForAction:@selector(willRepostSequence:fromView:completion:)
                                                                         withSender:self];
     NSAssert( targetForRepost != nil, @"We need an object in the responder chain for resposting.");
-
     self.reposting = YES;
     __weak typeof(self) welf = self;
     [targetForRepost willRepostSequence:self.sequence

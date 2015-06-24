@@ -2,14 +2,15 @@
 //  VUser.m
 //  victorious
 //
-//  Created by Lawrence Leach on 12/17/14.
-//  Copyright (c) 2014 Victorious. All rights reserved.
+//  Created by Sharif Ahmed on 6/2/15.
+//  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
 #import "VUser.h"
 #import "VComment.h"
 #import "VConversation.h"
 #import "VHashtag.h"
+#import "VImageAsset.h"
 #import "VMessage.h"
 #import "VNotification.h"
 #import "VPollResult.h"
@@ -42,8 +43,7 @@
 @dynamic notifications;
 @dynamic pollResults;
 @dynamic postedSequences;
-@dynamic remixedSequences;
-@dynamic repostedSequences;
 @dynamic previewAssets;
+@dynamic repostedSequences;
 
 @end

@@ -19,7 +19,6 @@
 "Messages" = "Nachrichten";
 "Notifications" = "Benachrichtungen";
 "Comments" = "Kommentare";
-"Remixes" = "Remixes";
 "OK" = "OK";
 "CancelButton" = "Abbrechen";
 "DeleteButton" = "Löschen";
@@ -156,6 +155,15 @@
 "SuggestedFollowersSing" = "%@ Follower";
 "SuggestedFollowersPlur" = "%@ Follower";
 "SuggestedFollowersK" = "%@ Follower";
+
+"NoRepostersTitle"      =   "BE THE 1st TO REPOST!";
+"NoRepostersMessage"    =   "Share this content with all of your followers!";
+
+"NoGiffersTitle"       =   "BE THE 1ST TO GIF!";
+"NoGiffersMessage"     =   "Make a GIF by selecting your favorite clip from this video and sharing it with other fans!";
+
+"NoMemersTitle"       =   "BE THE 1ST TO MEME!";
+"NoMemersMessage"     =   "Make this content your own by making it into a meme and sharing it with other fans!";
 
 "NoRepostersTitle" = "MACHE DEN 1. REPOST!";
 "NoRepostersMessage" = "Teile diesen Inhalt mit all deinen Anhängern!";
@@ -605,12 +613,12 @@
 "We encountered an error trying to edit this video." = "Beim Bearbeiten dieses Videos ist ein Problem aufgetreten.";
 
 "#nofilter" = "#keinfilter";
-"create a meme" = "ein mem schaffen";
-"create a quote" = "Zitat erstellen";
+"Create a meme" = "Ein mem schaffen";
+"Create a quote" = "Zitat erstellen";
 "Create a GIF" = "GIF erstellen";
 "Type your text here!" = "Gib deinen Text hier ein!";
 "GIF" = "GIF";
-"quote" = "Zitat";
+"Quote" = "Zitat";
 "GIF MODE" = "GIF-MODUS";
 "VIDEO MODE" = "VIDEO-MODUS";
 "Write a caption (optional)" = "Bildunterschrift eingeben (optional)";
