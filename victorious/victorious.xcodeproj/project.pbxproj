@@ -210,6 +210,8 @@
 		0386F87A1B37E7FB00E8D459 /* VTemplatePackageManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F8791B37E7FB00E8D459 /* VTemplatePackageManagerTests.m */; };
 		0386F87C1B37EB8500E8D459 /* templateWithImageURLs.json in Resources */ = {isa = PBXBuildFile; fileRef = 0386F87B1B37EB8500E8D459 /* templateWithImageURLs.json */; };
 		0386F87F1B37F01700E8D459 /* VTemplateImageMacro.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F87E1B37F01700E8D459 /* VTemplateImageMacro.m */; };
+		0386F88C1B390ADE00E8D459 /* VDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F88B1B390ADE00E8D459 /* VDownloadOperation.m */; };
+		0386F88E1B391C6400E8D459 /* VDownloadOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F88D1B391C6400E8D459 /* VDownloadOperationTests.m */; };
 		038B7F9519DB8D2500F739DF /* ADEUMInstrumentation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 038B7F9419DB8D2500F739DF /* ADEUMInstrumentation.framework */; };
 		038B7F9719DB8EB300F739DF /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 038B7F9619DB8EB300F739DF /* CoreTelephony.framework */; };
 		038B7F9919DB8EBC00F739DF /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 038B7F9819DB8EBC00F739DF /* libz.dylib */; };
@@ -1363,6 +1365,9 @@
 		0386F87B1B37EB8500E8D459 /* templateWithImageURLs.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = templateWithImageURLs.json; sourceTree = "<group>"; };
 		0386F87D1B37F01700E8D459 /* VTemplateImageMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTemplateImageMacro.h; sourceTree = "<group>"; };
 		0386F87E1B37F01700E8D459 /* VTemplateImageMacro.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateImageMacro.m; sourceTree = "<group>"; };
+		0386F88A1B390ADE00E8D459 /* VDownloadOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDownloadOperation.h; sourceTree = "<group>"; };
+		0386F88B1B390ADE00E8D459 /* VDownloadOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDownloadOperation.m; sourceTree = "<group>"; };
+		0386F88D1B391C6400E8D459 /* VDownloadOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDownloadOperationTests.m; sourceTree = "<group>"; };
 		038A6B121B23C670004C8D03 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Camera.strings; sourceTree = "<group>"; };
 		038A6B131B23C670004C8D03 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/ActionSheet.strings; sourceTree = "<group>"; };
 		038A6B141B23C670004C8D03 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/VKeyboardInputAccessoryView.strings; sourceTree = "<group>"; };
@@ -3931,6 +3936,8 @@
 		03A058B21AECAD0A00CF39D1 /* Template Downloader */ = {
 			isa = PBXGroup;
 			children = (
+				0386F88A1B390ADE00E8D459 /* VDownloadOperation.h */,
+				0386F88B1B390ADE00E8D459 /* VDownloadOperation.m */,
 				03A058C71AF05D8300CF39D1 /* VObjectManager+VTemplateDownloaderConformance.h */,
 				03A058C81AF05D8300CF39D1 /* VObjectManager+VTemplateDownloaderConformance.m */,
 				03A058BD1AEF44D600CF39D1 /* VTemplateDownloadManager.h */,
@@ -5106,6 +5113,7 @@
 				039420491AB88A9A0087ADFA /* VDependencyManagerImageTests.m */,
 				039D02AE1A10441500DB9236 /* VDependencyManagerTests.m */,
 				A70564CB19E78250004A8387 /* VDiscoverViewControllerTests.m */,
+				0386F88D1B391C6400E8D459 /* VDownloadOperationTests.m */,
 				BE9674F719E335060072E87A /* VElapsedTimeFormatterTests.m */,
 				A743E7EB1A082AD200339CB3 /* VEmailValidatorTests.m */,
 				A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */,
@@ -7198,6 +7206,7 @@
 				D82E76E319F5C06100FFB722 /* VContentPollBallotCell.m in Sources */,
 				A7299E941AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.m in Sources */,
 				F0C83A521B15463A00A6EC1A /* VStream.m in Sources */,
+				0386F88C1B390ADE00E8D459 /* VDownloadOperation.m in Sources */,
 				A7E398731A362578000E4CAC /* NSData+AES.m in Sources */,
 				037FCF261A8DAF5400E8ABFC /* VSegmentedSelectorView.m in Sources */,
 				0314D4DC19B46B5E00FA363C /* VFacebookActivity.m in Sources */,
@@ -7683,6 +7692,7 @@
 				A769FE411ABC17C200888ED8 /* VFirstInstallTests.m in Sources */,
 				03A761541B3250410016B69D /* VDataCacheTests.m in Sources */,
 				A75C649E1ADC4A4E00245125 /* VKeyboardBarViewControllerTests.m in Sources */,
+				0386F88E1B391C6400E8D459 /* VDownloadOperationTests.m in Sources */,
 				A72005281A03073B00285A9C /* VHashTagsTest.m in Sources */,
 				A72005461A03074800285A9C /* VFileSystemTestHelpers.m in Sources */,
 				F0C83A351B0F87EF00A6EC1A /* VCoachmarkViewTests.m in Sources */,
