@@ -29,6 +29,7 @@ static const CGFloat kInsetCellHeaderHeight         = 50.0f;
 static const CGFloat kInsetCellActionViewHeight     = 41.0f;
 static const CGFloat kCountsTextViewHeight          = 20.0f;
 static const CGFloat kTextSeparatorHeight           = 6.0f;
+static const CGFloat kMaxCaptionHeight              = 80.0f;
 static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0f };
 
 @interface VInsetStreamCollectionCell () <CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate>
@@ -41,11 +42,8 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
 @property (nonatomic, strong) VHashTagTextView *captionTextView;
 @property (nonatomic, strong) VSequenceCountsTextView *countsTextView;
 @property (nonatomic, strong) VInsetActionView *actionView;
-
-@property (nonatomic, strong) NSArray *captionConstraints;
-@property (nonatomic, strong) NSArray *noCaptionConstraints;
 @property (nonatomic, strong) NSLayoutConstraint *previewViewHeightConstraint;
-@property (nonatomic, strong) NSLayoutConstraint *commentToCaptionBottomConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *captionHeight;
 
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 
@@ -124,75 +122,40 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
     _captionTextView.linkDelegate = self;
     _captionTextView.backgroundColor = [UIColor clearColor];
     [self.contentView addSubview:_captionTextView];
-    [self.contentView v_addPinToLeadingTrailingToSubview:_captionTextView
-                                                 leading:kTextMargins.left
-                                                trailing:kTextMargins.right];
-    NSLayoutConstraint *previewContainerBottomToCaptionTop = [NSLayoutConstraint constraintWithItem:_previewContainer
-                                                                                          attribute:NSLayoutAttributeBottom
-                                                                                          relatedBy:NSLayoutRelationEqual
-                                                                                             toItem:_captionTextView
-                                                                                          attribute:NSLayoutAttributeTop
-                                                                                         multiplier:1.0f
-                                                                                           constant:-kTextMargins.top];
-
+    [self.contentView v_addPinToLeadingTrailingToSubview:_captionTextView  leading:kTextMargins.left trailing:kTextMargins.right];
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_captionTextView
+                                                                attribute:NSLayoutAttributeTop
+                                                                relatedBy:NSLayoutRelationEqual
+                                                                   toItem:_previewContainer
+                                                                attribute:NSLayoutAttributeBottom
+                                                               multiplier:1.0f
+                                                                  constant:kTextMargins.top]];
+    _captionHeight = [NSLayoutConstraint constraintWithItem:_captionTextView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:kMaxCaptionHeight];
+    [_captionTextView addConstraint:_captionHeight];
     
-    // Comments and likes count
-    _countsTextView = [[VSequenceCountsTextView alloc] init];
-    _countsTextView.contentInset = UIEdgeInsetsMake( 0, -4, 0, 0 );
-    _countsTextView.textSelectionDelegate = self;
-    [_countsTextView sizeToFit];
-    _countsTextView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.contentView addSubview:_countsTextView];
-    [_countsTextView v_addHeightConstraint:kCountsTextViewHeight];
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_captionTextView
-                                                                 attribute:NSLayoutAttributeLeft
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:_countsTextView
-                                                                 attribute:NSLayoutAttributeLeft
-                                                                multiplier:1.0f
-                                                                  constant:0.0f]];
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_captionTextView
-                                                                 attribute:NSLayoutAttributeRight
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:_countsTextView
-                                                                 attribute:NSLayoutAttributeRight
-                                                                multiplier:1.0f
-                                                                  constant:0.0f]];
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_captionTextView
-                                                                  attribute:NSLayoutAttributeBottom
-                                                                  relatedBy:NSLayoutRelationEqual
-                                                                     toItem:_countsTextView
-                                                                  attribute:NSLayoutAttributeTop
-                                                                 multiplier:1.0f
-                                                                   constant:kTextSeparatorHeight]];
     
     _actionView = [[VInsetActionView alloc] initWithFrame:CGRectZero];
     [self.contentView addSubview:_actionView];
     [self.contentView v_addPinToLeadingTrailingToSubview:_actionView];
     [self.contentView v_addPinToBottomToSubview:_actionView];
     [_actionView v_addHeightConstraint:kInsetCellActionViewHeight];
-    NSLayoutConstraint *commentsLabelBottomToActionViewTop = [NSLayoutConstraint constraintWithItem:_countsTextView
-                                                                                          attribute:NSLayoutAttributeBottom
-                                                                                          relatedBy:NSLayoutRelationEqual
-                                                                                             toItem:_actionView
-                                                                                          attribute:NSLayoutAttributeTop
-                                                                                         multiplier:1.0f
-                                                                                           constant:-kTextMargins.bottom];
+
     
-    NSLayoutConstraint *previewViewBottomToCommentsLabelTop = [NSLayoutConstraint constraintWithItem:_previewContainer
-                                                                                           attribute:NSLayoutAttributeBottom
-                                                                                           relatedBy:NSLayoutRelationEqual
-                                                                                              toItem:_countsTextView
-                                                                                           attribute:NSLayoutAttributeTop
-                                                                                          multiplier:1.0f
-                                                                                            constant:-kTextMargins.top];
-    
-    self.captionConstraints = @[previewContainerBottomToCaptionTop, commentsLabelBottomToActionViewTop];
-    self.noCaptionConstraints = @[previewViewBottomToCommentsLabelTop, commentsLabelBottomToActionViewTop];
-    [self.contentView addConstraints:self.captionConstraints];
-    [self.contentView addConstraints:self.noCaptionConstraints];
-    [NSLayoutConstraint deactivateConstraints:self.captionConstraints];
-    [NSLayoutConstraint deactivateConstraints:self.noCaptionConstraints];
+    // Comments and likes count
+    _countsTextView = [[VSequenceCountsTextView alloc] init];
+    _countsTextView.contentInset = UIEdgeInsetsMake( 0, -4, 0, 0 );
+    _countsTextView.textSelectionDelegate = self;
+    [self.contentView addSubview:_countsTextView];
+    _countsTextView.translatesAutoresizingMaskIntoConstraints = NO;
+    [_countsTextView v_addHeightConstraint:kCountsTextViewHeight];
+    [self.contentView v_addPinToLeadingTrailingToSubview:_countsTextView leading:kTextMargins.left trailing:kTextMargins.right];
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_countsTextView
+                                                                  attribute:NSLayoutAttributeTop
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:_captionTextView
+                                                                  attribute:NSLayoutAttributeBottom
+                                                                 multiplier:1.0f
+                                                                   constant:kTextSeparatorHeight]];
     
     // Fixes constraint errors when resizing for certain aspect ratios
     self.contentView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleHeight;
@@ -202,17 +165,6 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
 
 - (void)updateConstraints
 {
-    if (self.sequence.name.length > 0)
-    {
-        [NSLayoutConstraint deactivateConstraints:self.noCaptionConstraints];
-        [NSLayoutConstraint activateConstraints:self.captionConstraints];
-    }
-    else
-    {
-        [NSLayoutConstraint deactivateConstraints:self.captionConstraints];
-        [NSLayoutConstraint activateConstraints:self.noCaptionConstraints];
-    }
-    
     // Add new height constraint for preview container to account for aspect ratio of preview asset
     CGFloat aspectRatio = [self.sequence previewAssetAspectRatio];
     NSLayoutConstraint *heightToWidth = [NSLayoutConstraint constraintWithItem:self.previewContainer
@@ -314,15 +266,18 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
 
 - (void)updateCaptionViewForSequence:(VSequence *)sequence
 {
-    if (sequence.name == nil || self.dependencyManager == nil)
+    if ( sequence.name == nil || sequence.name.length == 0 || self.dependencyManager == nil)
     {
         self.captionTextView.attributedText = nil;
-        self.captionTextView.hidden = YES;
-        return;
+        self.captionHeight.constant = 0.0;
     }
-    self.captionTextView.hidden = NO;
-    self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
-                                                                          attributes:[VInsetStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
+    else
+    {
+        self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
+                                                                              attributes:[VInsetStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
+        self.captionHeight.constant = kMaxCaptionHeight;
+    }
+    [self.captionTextView layoutIfNeeded];
 }
 
 #pragma mark - VBackgroundContainer
@@ -401,7 +356,7 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
     // Top Margins
     sizeWithText.height = sizeWithText.height + kTextMargins.top;
     
-    NSValue *textSizeValue = [[self textSizeCache] objectForKey:sequence.remoteId];
+    NSValue *textSizeValue = [[self textSizeCache] objectForKey:sequence.name];
     if (textSizeValue != nil)
     {
         return [textSizeValue CGSizeValue];
@@ -409,21 +364,19 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
     
     // Comment size
     CGFloat textAreaWidth = sizeWithText.width - kTextMargins.left - kTextMargins.right;
-    if (sequence.name.length > 0)
+    if ( sequence.name != nil && sequence.name.length > 0 )
     {
-        // Inter-Text spacing
-        sizeWithText.height += kCountsTextViewHeight;
-        
         // Caption view size
         CGSize captionSize = [sequence.name frameSizeForWidth:textAreaWidth
                                                 andAttributes:[self sequenceDescriptionAttributesWithDependencyManager:dependencyManager]];
         sizeWithText.height += VCEIL(captionSize.height) + kTextMargins.top;
     }
     
+    sizeWithText.height += kCountsTextViewHeight;
+    
     // Bottom Margins
     sizeWithText.height += kTextMargins.bottom;
-    [[self textSizeCache] setObject:[NSValue valueWithCGSize:sizeWithText]
-                             forKey:sequence.remoteId];
+    [[self textSizeCache] setObject:[NSValue valueWithCGSize:sizeWithText] forKey:sequence.name];
     return sizeWithText;
 }
 

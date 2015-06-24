@@ -306,10 +306,12 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     if ( sequence.name == nil || sequence.name.length == 0 || self.dependencyManager == nil )
     {
         self.captionHeight.constant = 0.0;
-        return;
     }
-    self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
-                                                                          attributes:[VTileOverlayCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
+    else
+    {
+        self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
+                                                                              attributes:[VTileOverlayCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
+    }
 }
 
 #pragma mark - Text Attributes

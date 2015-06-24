@@ -199,7 +199,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 
 - (void)updateCaptionViewForSequence:(VSequence *)sequence
 {
-    if (sequence.name == nil || self.dependencyManager == nil || sequence.name.length == 0)
+    if ( sequence.name == nil || sequence.name.length == 0|| self.dependencyManager == nil)
     {
         self.captionTextView.attributedText = nil;
         self.bottomSpaceCaptionToPreview.constant = 0.0f;
