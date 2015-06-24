@@ -54,7 +54,6 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 @property (nonatomic, strong) UIView *dimmingContainer;
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 @property (nonatomic, weak) IBOutlet VSequenceCountsTextView *countsTextView;
-@property (nonatomic, assign) NSInteger captionTextStartHeight;
 
 @end
 
@@ -70,7 +69,6 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     [self setupDimmingContainer];
     
     self.countsTextView.textSelectionDelegate = self;
-    self.captionTextStartHeight = CGRectGetHeight( self.captionTextView.frame );
 }
 
 #pragma mark - VSequenceCountsTextViewDelegate
