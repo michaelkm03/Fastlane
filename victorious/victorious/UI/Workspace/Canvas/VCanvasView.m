@@ -23,7 +23,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 @property (nonatomic, strong, readwrite) UIImage *sourceImage;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIScrollView *canvasScrollView;
-@property (nonatomic, assign) BOOL didZoomFromDoubleTap;
+@property (nonatomic, assign, readwrite) BOOL didZoomFromDoubleTap;
 @property (nonatomic, assign) BOOL didCropZoom;
 @property (nonatomic, assign) BOOL didCropPan;
 @property (nonatomic, strong) NSCache *renderedImageCache;
@@ -341,7 +341,6 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
         self.didCropZoom = YES;
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCropWorkspaceWithZoom];
     }
-    self.didZoomFromDoubleTap = NO;
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
