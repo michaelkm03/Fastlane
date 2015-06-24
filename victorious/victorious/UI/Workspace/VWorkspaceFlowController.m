@@ -31,7 +31,6 @@
 #import "VCameraViewController.h"
 #import "VWorkspaceViewController.h"
 #import "VPublishViewController.h"
-#import "VWorkspaceNavigationController.h"
 
 // Models
 #import "VSequence+Fetcher.h"
@@ -72,7 +71,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 @property (nonatomic, strong, readwrite) UIImage *previewImage;
 
-@property (nonatomic, strong) VWorkspaceNavigationController *flowNavigationController;
+@property (nonatomic, strong) UINavigationController *flowNavigationController;
 
 @property (nonatomic, weak) VCameraViewController *cameraViewController;
 
@@ -82,7 +81,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 @property (nonatomic, strong) VWorkspacePresenter *workspacePresenter;
 
-@property (nonatomic, copy) void (^presentationCompletionBlock)();
+@property (nonatomic, assign) BOOL showFailureAlert;
 
 @end
 
@@ -95,7 +94,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     {
         _dependencyManager = dependencyManager;
         _state = VWorkspaceFlowControllerStateCapture;
-        _flowNavigationController = [[VWorkspaceNavigationController alloc] init];
+        _flowNavigationController = [[UINavigationController alloc] init];
         _flowNavigationController.navigationBarHidden = YES;
         _flowNavigationController.delegate = self;
         objc_setAssociatedObject(_flowNavigationController, &kAssociatedObjectKey, self, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -104,9 +103,8 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         VSequence *sequenceToRemix = [dependencyManager templateValueOfType:[VSequence class] forKey:VWorkspaceFlowControllerSequenceToRemixKey];
         if (sequenceToRemix != nil)
         {
-            BOOL canRemixSequence = [sequenceToRemix isRemixableType];
-            _flowNavigationController.showAlertWhenAppearing = !canRemixSequence;
-            if ( canRemixSequence )
+            _showFailureAlert = ![sequenceToRemix isRemixableType];
+            if ( _showFailureAlert )
             {
                 [self extractCapturedMediaURLwithSequenceToRemix:sequenceToRemix];
                 [self transitionFromState:_state
@@ -262,6 +260,17 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 - (UIViewController *)flowRootViewController
 {
+    if ( self.showFailureAlert )
+    {
+        UIAlertController *cannotRemixAlert = [UIAlertController alertControllerWithTitle:nil
+                                                                                  message:NSLocalizedString(@"GenericFailMessage", nil)
+                                                                           preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *closeAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                              style:UIAlertActionStyleDefault
+                                                            handler:nil];
+        [cannotRemixAlert addAction:closeAction];
+        return cannotRemixAlert;
+    }
     return self.flowNavigationController;
 }
 
