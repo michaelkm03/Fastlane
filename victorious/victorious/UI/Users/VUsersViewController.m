@@ -22,6 +22,7 @@
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 @property (nonatomic, strong) VNoContentView *noContentView;
+@property (nonatomic, assign) BOOL canLoadNextPage;
 
 @end
 
@@ -78,10 +79,12 @@
     
     [self.noContentView resetInitialAnimationState];
     
+    self.canLoadNextPage = YES;
     [self refershControlAction:refreshControl];
     
     self.edgesForExtendedLayout = UIRectEdgeBottom;
     self.extendedLayoutIncludesOpaqueBars = YES;
+    
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -113,6 +116,7 @@
 {
     [self.usersDataSource refreshWithPageType:VPageTypeFirst completion:^(BOOL success, NSError *error)
      {
+         self.canLoadNextPage = success;
          [refreshControl endRefreshing];
          [self updateHasContent];
      }];
@@ -160,8 +164,14 @@
 
 - (void)shouldLoadNextPage
 {
+    if ( !self.canLoadNextPage )
+    {
+        return;
+    }
+    self.canLoadNextPage = NO;
     [self.usersDataSource refreshWithPageType:VPageTypeNext completion:^(BOOL success, NSError *error)
      {
+         self.canLoadNextPage = success;
          if ( success )
          {
              [self.collectionView reloadData];

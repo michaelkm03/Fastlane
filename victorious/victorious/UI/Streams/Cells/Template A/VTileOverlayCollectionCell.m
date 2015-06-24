@@ -357,11 +357,8 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     // Text size
     actualSize = [self sizeByAddingTextAreaSizeToSize:actualSize sequence:sequence dependencyManager:dependencyManager];
     
-    if ( [VSequenceCountsTextView canDisplayTextWithCommentCount:sequence.commentCount.integerValue
-                                                      likesCount:sequence.likeCount.integerValue] )
-    {
-        actualSize.height += kCountsTextViewHeight;
-    }
+    // Counts textview height
+    actualSize.height += kCountsTextViewHeight;
     
     // Add 1:1 preview view
     actualSize.height = actualSize.height + actualSize.width * (1 / [sequence previewAssetAspectRatio]);
