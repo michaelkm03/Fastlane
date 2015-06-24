@@ -215,8 +215,14 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     if ([self.delegate respondsToSelector:@selector(loadingViewController:didFinishLoadingWithDependencyManager:)])
     {
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
-        [templateDecorator setComponentWithFilename:kWorkspaceTemplateName forKeyPath:@"scaffold/createFlow"];
-        [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
+        [templateDecorator removeTemplateValueForKeyPath:@"createSheet"];
+        [templateDecorator setComponentWithFilename:@"staticCreateSheet" forKeyPath:@"scaffold/createSheet"];
+        [templateDecorator setComponentWithFilename:@"cameraScreen" forKeyPath:@"scaffold/cameraScreen"];
+        [templateDecorator setComponentWithFilename:@"imageWorkspace" forKeyPath:@"scaffold/imageWorkspace"];
+        [templateDecorator setComponentWithFilename:@"videoWorkspace" forKeyPath:@"scaffold/videoWorkspace"];
+        [templateDecorator setComponentWithFilename:@"textWorkspace" forKeyPath:@"scaffold/textWorkspace"];
+        [templateDecorator setComponentWithFilename:@"pollWorkspace" forKeyPath:@"scaffold/pollWorkspace"];
+        [templateDecorator setComponentWithFilename:@"publishScreen" forKeyPath:@"scaffold/publishScreen"];
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate

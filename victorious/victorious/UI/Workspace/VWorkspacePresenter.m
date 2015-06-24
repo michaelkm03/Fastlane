@@ -63,7 +63,7 @@ static NSString * const kCreationFlowKey = @"createFlow";
     
     if (createSheet != nil)
     {
-        [createSheet setCompletionHandler:^(VCreateSheetViewController *createSheetViewController, VCreateSheetItemIdentifier chosenItemIdentifier)
+        [createSheet setCompletionHandler:^(VCreateSheetViewController *createSheetViewController, VCreationType chosenItemIdentifier)
          {
              [createSheetViewController dismissViewControllerAnimated:YES completion:^
               {
@@ -85,30 +85,30 @@ static NSString * const kCreationFlowKey = @"createFlow";
     }
 }
 
-- (void)openWorkspaceWithItemIdentifier:(VCreateSheetItemIdentifier)identifier
+- (void)openWorkspaceWithItemIdentifier:(VCreationType)identifier
 {
     switch (identifier)
     {
-        case VCreateSheetItemIdentifierImage:
+        case VCreationTypeImage:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateImagePostSelected];
             [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateImage];
             break;
-        case VCreateSheetItemIdentifierVideo:
+        case VCreationTypeVideo:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateVideoPostSelected];
             [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo];
             break;
-        case VCreateSheetItemIdentifierText:
+        case VCreationTypeText:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateTextOnlyPostSelected];
             [self presentTextOnlyWorkspace];
             break;
-        case VCreateSheetItemIdentifierGIF:
+        case VCreationTypeGIF:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateGIFPostSelected];
             [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo
                                      initialImageEditState:VImageToolControllerInitialImageEditStateText
                                   andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateGIF];
             
             break;
-        case VCreateSheetItemIdentifierPoll:
+        case VCreationTypePoll:
         {
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreatePollSelected];
             VCreatePollViewController *createViewController = [self.creationFlowShim pollFlowController];
@@ -122,7 +122,7 @@ static NSString * const kCreationFlowKey = @"createFlow";
             [self.viewControllerToPresentOn presentViewController:wrapperNavStack animated:YES completion:nil];
             break;
         }
-        default:
+        case VCreationTypeUnknown:
             break;
     }
 }

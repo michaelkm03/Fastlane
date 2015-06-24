@@ -1,0 +1,27 @@
+{
+    "name": "camera.screen",
+    "closeIcon": {
+        "imageURL": "cameraButtonClose"
+    },
+    "reverseCameraIcon": {
+        "imageURL": "cameraButtonFlip"
+    },
+    "flashIcon": {
+        "imageURL": "cameraButtonFlashOn"
+    },
+    "disableFlashIcon": {
+        "imageURL": "cameraButtonFlashOff"
+    },
+    "galleryIcon": {
+        "imageURL": "cameraButtonSwitchToPhoto"
+    },
+    "searchIcon": {
+        "imageURL": "search-btn"
+    },
+    "trashIcon": {
+        "imageURL": "trash_btn"
+    },
+    "continueIcon": {
+        "imageURL": "cameraButtonNext"
+    }
+}
