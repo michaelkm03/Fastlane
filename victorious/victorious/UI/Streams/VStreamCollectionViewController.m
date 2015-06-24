@@ -115,8 +115,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 @property (nonatomic, strong) VWorkspacePresenter *workspacePresenter;
 
-@property (nonatomic, assign) BOOL isDisappearing;
-
 @end
 
 @implementation VStreamCollectionViewController
@@ -265,10 +263,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
                         keyPath:NSStringFromSelector(@selector(hasHeaderCell))
                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
                          action:@selector(dataSourceDidChange)];
-//    [self.KVOController observe:self.collectionView
-//                        keyPath:NSStringFromSelector(@selector(contentSize))
-//                        options:NSKeyValueObservingOptionOld
-//                         action:@selector(contentSizeChanged)];
     
     [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
@@ -309,9 +303,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    // Used in didLayoutSubviews so we don't track cell views twice
-    self.isDisappearing = YES;
     
     [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
     
@@ -531,11 +522,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     return [self.streamCellFactory minimumLineSpacing];
 }
 
-//- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    [self updateCellVisibilityTracking];
-//}
-
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if ( [cell conformsToProtocol:@protocol(VStreamCellFocus)] )
@@ -746,6 +732,12 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 {
     self.hasRefreshed = YES;
     [self updateNoContentViewAnimated:YES];
+    
+    // Allow cells to populate before we track which are visible
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+    {
+        [self updateCellVisibilityTracking];
+    });
 }
 
 - (void)updateNoContentViewAnimated:(BOOL)animated
@@ -794,11 +786,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     }
 }
 
-//- (void)contentSizeChanged
-//{
-//    [self updateCellVisibilityTracking];
-//}
-
 #pragma mark - UICollectionViewDelegateFlowLayout
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
@@ -843,15 +830,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 }
 
 #pragma mark - Cell visibility
-
-- (void)viewDidLayoutSubviews
-{
-    if (!self.isDisappearing)
-    {
-        // So we can track views of cells visible before scrolling
-        [self updateCellVisibilityTracking];
-    }
-}
 
 - (void)updateCellVisibilityTracking
 {
