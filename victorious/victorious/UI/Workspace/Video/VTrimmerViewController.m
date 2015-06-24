@@ -14,6 +14,9 @@
 // Views
 #import "VThumbnailCell.h"
 #import "VTrimControl.h"
+#import "VHashmarkView.h"
+#import "VTimeMarkView.h"
+#import "VTrimmerFlowLayout.h"
 
 // Dependencies
 #import "VDependencyManager.h"
@@ -28,8 +31,8 @@ static const CGFloat kHashmarkWidth = 2.0f;
 static const CGFloat kTimeLabelWidth = 40.0f;
 static const CGFloat kTimeLabelHeight = 25.0f;
 
-static const int kNumberOfHash = 16;
-static const int kHashesPerTime = 3; //Number hashes per each time label
+static const int kNumberOfHash = 3;
+static const int kHashesPerTime = 3;
 
 @interface VTrimmerViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
 
@@ -66,6 +69,8 @@ static const int kHashesPerTime = 3; //Number hashes per each time label
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.thumbnailCollectionView registerClass:[VTimeMarkView class] forSupplementaryViewOfKind:TimemarkViewKind withReuseIdentifier:@"VTimeMarkView"];
+    [self.thumbnailCollectionView registerClass:[VHashmarkView class] forSupplementaryViewOfKind:HashmarkViewKind withReuseIdentifier:@"VHashmarkView"];
 
     [self prepareThumbnailCollectionViewAndTitleLabel];
     [self preparePlaybackOverlay];
@@ -185,7 +190,7 @@ static const int kHashesPerTime = 3; //Number hashes per each time label
         neededTimeLineWidth = neededTimeLineWidth - frameWidth;
     }
     
-    return numberOfFrames + 1; // 1 extra for a spacer cell
+    return numberOfFrames + 4; // 1 extra for a spacer cell
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
@@ -221,7 +226,32 @@ static const int kHashesPerTime = 3; //Number hashes per each time label
                             });
          }
      }];
+    
     return thumnailCell;
+}
+
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionReusableView *reusableview = nil;
+    
+    NSLog(@"kind: %@", kind);
+    if (kind == HashmarkViewKind)
+    {
+        reusableview = [VHashmarkView collectionReusableViewForCollectionView:collectionView forIndexPath:indexPath withKind:kind];
+    }
+    if (kind == TimemarkViewKind)
+    {
+        CGPoint center = [self.thumbnailCollectionView.collectionViewLayout layoutAttributesForSupplementaryViewOfKind:TimemarkViewKind atIndexPath:indexPath].center;
+        CGFloat percentThrough = center.x / [self timelineWidthForFullTrack];
+        CMTime timeForCell = CMTimeMake(self.maximumEndTime.value * percentThrough, self.maximumEndTime.timescale);
+        CGFloat time = CMTimeGetSeconds(timeForCell);
+        
+        VTimeMarkView *timeMarkView = [VTimeMarkView collectionReusableViewForCollectionView:collectionView forIndexPath:indexPath withKind:kind];
+        timeMarkView.timeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)time/60, (int)time%60];
+        reusableview = timeMarkView;
+    }
+    
+    return reusableview;
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -333,7 +363,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     }
     Float64 progress = CMTimeGetSeconds(self.trimControl.selectedDuration) / CMTimeGetSeconds(self.trimControl.maxDuration);
     self.dimmingViewWidthConstraint.constant = CGRectGetWidth(self.view.bounds) - (CGRectGetWidth(self.view.bounds) * progress);
-    [self.view layoutIfNeeded];
+   [self.view layoutIfNeeded];
     
     float progressOfThumbs = 1.0f - (self.thumbnailCollectionView.bounds.origin.x / (CGRectGetWidth(self.thumbnailCollectionView.bounds)));
     
@@ -348,6 +378,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     NSString *title = [NSString stringWithFormat:@"%@", [NSString stringWithFormat:@"%.2f", CMTimeGetSeconds(time)]];
     self.trimControl.attributedTitle = [[NSAttributedString alloc] initWithString:title
                                                                        attributes:@{NSFontAttributeName: [[_dependencyManager fontForKey:VDependencyManagerLabel3FontKey] fontWithSize:16.0f]}];
+    
 }
 
 - (CGFloat)timelineWidthPerSecond
@@ -369,7 +400,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 
 - (void)prepareThumbnailCollectionViewAndTitleLabel
 {
-    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    UICollectionViewFlowLayout *layout = [[VTrimmerFlowLayout alloc] init];
     CGRect bounds = self.view.bounds;
     layout.itemSize = CGSizeMake(CGRectGetHeight(bounds), CGRectGetHeight(bounds));
     layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
@@ -385,6 +416,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     self.thumbnailCollectionView.bounces = NO;
     self.thumbnailCollectionView.backgroundColor = [UIColor clearColor];
     self.thumbnailCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.thumbnailCollectionView.clipsToBounds = NO;
     [self.view addSubview:self.thumbnailCollectionView];
 
     self.titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -488,7 +520,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 - (void)setActualDuration:(CMTime)actualDuration
 {
     _actualDuration = actualDuration;
-    [self prepareHashmarks];
+   // [self prepareHashmarks];
 }
 
 - (void)prepareHashmarks
