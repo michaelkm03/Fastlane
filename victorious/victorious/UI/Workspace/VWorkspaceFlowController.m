@@ -31,6 +31,7 @@
 #import "VCameraViewController.h"
 #import "VWorkspaceViewController.h"
 #import "VPublishViewController.h"
+#import "VWorkspaceNavigationController.h"
 
 // Models
 #import "VSequence+Fetcher.h"
@@ -43,7 +44,7 @@
 #import "VVCameraShutterOverAnimator.h"
 #import "VWorkspaceToWorkspaceAnimator.h"
 
-// Here be dragons
+// Object association
 #import <objc/runtime.h>
 
 @import AssetsLibrary;
@@ -71,7 +72,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 @property (nonatomic, strong, readwrite) UIImage *previewImage;
 
-@property (nonatomic, strong) UINavigationController *flowNavigationController;
+@property (nonatomic, strong) VWorkspaceNavigationController *flowNavigationController;
 
 @property (nonatomic, weak) VCameraViewController *cameraViewController;
 
@@ -81,6 +82,8 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 @property (nonatomic, strong) VWorkspacePresenter *workspacePresenter;
 
+@property (nonatomic, copy) void (^presentationCompletionBlock)();
+
 @end
 
 @implementation VWorkspaceFlowController
@@ -88,11 +91,11 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
-    if (self)
+    if ( self != nil )
     {
         _dependencyManager = dependencyManager;
         _state = VWorkspaceFlowControllerStateCapture;
-        _flowNavigationController = [[UINavigationController alloc] init];
+        _flowNavigationController = [[VWorkspaceNavigationController alloc] init];
         _flowNavigationController.navigationBarHidden = YES;
         _flowNavigationController.delegate = self;
         objc_setAssociatedObject(_flowNavigationController, &kAssociatedObjectKey, self, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -101,9 +104,14 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         VSequence *sequenceToRemix = [dependencyManager templateValueOfType:[VSequence class] forKey:VWorkspaceFlowControllerSequenceToRemixKey];
         if (sequenceToRemix != nil)
         {
-            [self extractCapturedMediaURLwithSequenceToRemix:sequenceToRemix];
-            [self transitionFromState:_state
-                              toState:VWorkspaceFlowControllerStateEdit];
+            BOOL canRemixSequence = [sequenceToRemix isRemixableType];
+            _flowNavigationController.showAlertWhenAppearing = !canRemixSequence;
+            if ( canRemixSequence )
+            {
+                [self extractCapturedMediaURLwithSequenceToRemix:sequenceToRemix];
+                [self transitionFromState:_state
+                                  toState:VWorkspaceFlowControllerStateEdit];
+            }
         }
         else
         {
@@ -334,7 +342,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     }
     else if (sequence.isVideo)
     {
-        self.capturedMediaURL = [[[sequence firstNode] mp4Asset] dataURL] ;
+        self.capturedMediaURL = [[[sequence firstNode] mp4Asset] dataURL];
     }
 }
 
