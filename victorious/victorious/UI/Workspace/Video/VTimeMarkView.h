@@ -12,15 +12,15 @@
 
 @property (nonatomic, strong) UILabel *timeLabel;
 
-+(NSString*)cellIdentifier;
-+(id)collectionReusableViewForCollectionView:(UICollectionView*)collectionView
-                                     fromNib:(UINib*)nib
-                                forIndexPath:(NSIndexPath*)indexPath
-                                    withKind:(NSString*)kind;
++ (NSString *)cellIdentifier;
++ (id)collectionReusableViewForCollectionView:(UICollectionView *)collectionView
+                                      fromNib:(UINib *)nib
+                                 forIndexPath:(NSIndexPath *)indexPath
+                                     withKind:(NSString *)kind;
 
-+(id)collectionReusableViewForCollectionView:(UICollectionView*)collectionView
-                                forIndexPath:(NSIndexPath*)indexPath withKind:(NSString*)kind;
++ (id)collectionReusableViewForCollectionView:(UICollectionView *)collectionView
+                                 forIndexPath:(NSIndexPath *)indexPath withKind:(NSString *)kind;
 
-+(UINib*)nib;
++ (UINib *)nib;
 
 @end

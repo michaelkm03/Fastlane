@@ -247,6 +247,7 @@ static const int kHashesPerTime = 3;
         CGFloat time = CMTimeGetSeconds(timeForCell);
         
         VTimeMarkView *timeMarkView = [VTimeMarkView collectionReusableViewForCollectionView:collectionView forIndexPath:indexPath withKind:kind];
+        NSLog(@"center: %x", timeMarkView.center.x);
         timeMarkView.timeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)time/60, (int)time%60];
         reusableview = timeMarkView;
     }
@@ -520,44 +521,6 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 - (void)setActualDuration:(CMTime)actualDuration
 {
     _actualDuration = actualDuration;
-   // [self prepareHashmarks];
-}
-
-- (void)prepareHashmarks
-{
-    CGFloat startTime = 0.0f;
-    CGFloat endTime = CMTimeGetSeconds(self.actualDuration);
-    
-    CGFloat spacing = ([[[[UIApplication sharedApplication] windows] firstObject] frame].size.width)/( (CGFloat) kNumberOfHash);
-    CGFloat timeDiff = (endTime - startTime) / ( (CGFloat) kNumberOfHash);
-    
-    for (int i = 0; i < kNumberOfHash; i++)
-    {
-        CGRect frame = CGRectMake(i*spacing,  -kHashmarkHeight, kHashmarkWidth, kHashmarkHeight);
-        UIView *hashmark = [[UIView alloc] initWithFrame:frame];
-        hashmark.backgroundColor = [UIColor lightGrayColor];
-        hashmark.clipsToBounds = NO;
-        [self.thumbnailCollectionView addSubview:hashmark];
-        self.thumbnailCollectionView.clipsToBounds = NO;
-        
-        if ((i%kHashesPerTime) == 0)
-        {
-            // add time label
-            UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,
-                                                                           -kTimeLabelHeight - kHashmarkHeight,
-                                                                           kTimeLabelWidth,
-                                                                           kTimeLabelHeight)];
-            timeLabel.textAlignment = NSTextAlignmentCenter;
-            float time = startTime + (timeDiff*i);
-            timeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)time/60, (int)time%60];
-            
-            timeLabel.textColor = [UIColor lightGrayColor];
-            timeLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
-            timeLabel.center = CGPointMake(hashmark.center.x, timeLabel.center.y);
-            
-            [self.thumbnailCollectionView addSubview:timeLabel];
-        }
-    }
 }
 
 @end

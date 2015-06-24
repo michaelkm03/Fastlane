@@ -22,7 +22,8 @@
 + (id)collectionReusableViewForCollectionView:(UICollectionView *)collectionView
                                       fromNib:(UINib *)nib
                                  forIndexPath:(NSIndexPath *)indexPath
-                                     withKind:(NSString *)kind{
+                                     withKind:(NSString *)kind
+{
     
     NSString *cellIdentifier = [self cellIdentifier];
     [collectionView registerClass:[self class] forSupplementaryViewOfKind:kind withReuseIdentifier:cellIdentifier];
@@ -37,7 +38,7 @@
 }
 
 + (id)collectionReusableViewForCollectionView:(UICollectionView *)collectionView
-                                 forIndexPath:(NSIndexPath *)indexPath withKind:(NSString*)kind
+                                 forIndexPath:(NSIndexPath *)indexPath withKind:(NSString *)kind
 {
     return [[self class] collectionReusableViewForCollectionView:collectionView
                                                          fromNib:[self nib]

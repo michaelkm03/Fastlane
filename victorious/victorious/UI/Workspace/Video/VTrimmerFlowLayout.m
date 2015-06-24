@@ -11,6 +11,12 @@
 NSString *const HashmarkViewKind = @"HashmarkKind";
 NSString *const TimemarkViewKind = @"TimemarkKind";
 
+const static int kNumberOfHashes = 15;
+const static int kNumberOfTimeLabels = 5;
+
+const static CGFloat kSpacingOfHashes = 25.0f;
+const static CGFloat kSpacingOfTimeLables = 25.0f;
+
 
 @implementation VTrimmerFlowLayout
 
@@ -24,7 +30,6 @@ NSString *const TimemarkViewKind = @"TimemarkKind";
 {
     // Call super to get elements
     NSMutableArray* answer = [[super layoutAttributesForElementsInRect:rect] mutableCopy];
-    NSLog(@"size initial answer: %lu", (unsigned long)answer.count);
     
     NSUInteger maxSectionIndex = 0;
     for (NSUInteger idx = 0; idx < [answer count]; ++idx)
@@ -77,34 +82,38 @@ NSString *const TimemarkViewKind = @"TimemarkKind";
     }
     NSLog(@"size initial answer: %lu", (unsigned long)answer.count);
 */
-    
-    UICollectionViewLayoutAttributes *atr1 = [self layoutAttributesForSupplementaryViewOfKind:TimemarkViewKind atIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
-       UICollectionViewLayoutAttributes *atr2 = [self layoutAttributesForSupplementaryViewOfKind:TimemarkViewKind atIndexPath:[NSIndexPath indexPathForItem:500 inSection:0]];
-    atr2.center = CGPointMake(atr2.center.x + 80, atr2.center.y);
-    
-    [answer addObject:atr1];
-    [answer addObject:atr2];
+    for (int i = 0; i < kNumberOfHashes; i++)
+    {
+        UICollectionViewLayoutAttributes *hashtribute = [self layoutAttributesForSupplementaryViewOfKind:HashmarkViewKind atIndexPath:[NSIndexPath indexPathForItem:i inSection:0]];
+        [answer addObject:hashtribute];
+    }
+    for (int i = 0; i < kNumberOfTimeLabels; i++)
+    {
+        UICollectionViewLayoutAttributes *attribute = [self layoutAttributesForSupplementaryViewOfKind:TimemarkViewKind atIndexPath:[NSIndexPath indexPathForItem:i inSection:0]];
+        [answer addObject:attribute];
+    }
+  
     return answer;
 }
 
-- (UICollectionViewLayoutAttributes*)layoutAttributesForSupplementaryViewOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewLayoutAttributes *)layoutAttributesForSupplementaryViewOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
     //create a new layout attributes to represent this reusable view
     UICollectionViewLayoutAttributes *attrs = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:kind withIndexPath:indexPath];
     
-    if(attrs)
+    if (attrs)
     {
-        if(kind == HashmarkViewKind)
+        if (kind == HashmarkViewKind)
         {
             //position this reusable view relative to the cells frame
-            CGRect frame = CGRectMake(0, 0, CGRectGetWidth(self.collectionView.frame), 70);
+            CGRect frame = CGRectMake(indexPath.item*(50+kSpacingOfHashes), 0, 50, 50);
             attrs.frame = frame;
             attrs.zIndex = 3000;
         }
-        if(kind == TimemarkViewKind)
+        if (kind == TimemarkViewKind)
         {
             //position this reusable view relative to the cells frame
-            CGRect frame = CGRectMake(0, 0, 50, 50);
+            CGRect frame = CGRectMake(indexPath.item*(50+kSpacingOfTimeLables), 0, 50, 50);
             attrs.frame = frame;
             attrs.zIndex = 3001;
         }
