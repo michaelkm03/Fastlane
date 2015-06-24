@@ -20,13 +20,6 @@
 // Models
 #import "VSequence+Fetcher.h"
 
-NSString * const VCommentIconKey = @"comment_icon";
-NSString * const VShareIconKey = @"share_icon";
-NSString * const VGifIconKey = @"gif_icon";
-NSString * const VMemeIconKey = @"meme_icon";
-NSString * const VRepostIconKey = @"repost_icon";
-NSString * const VRepostSuccessIconKey = @"repost_success_icon";
-
 @interface VAbstractActionView ()
 
 @property (nonatomic, strong) VFlexBar *actionBar;
@@ -97,11 +90,11 @@ NSString * const VRepostSuccessIconKey = @"repost_success_icon";
 - (void)comment:(id)sender
 {
     UIResponder<VSequenceActionsDelegate> *targetForComment = [self targetForAction:@selector(willCommentOnSequence:fromView:)
-                                              withSender:self];
+                                                                         withSender:self];
     if (targetForComment == nil)
     {
         NSAssert(false, @"We need an object in the respodner chain for commenting.");
-
+        
     }
     [targetForComment willCommentOnSequence:self.sequence
                                    fromView:self];
@@ -127,7 +120,7 @@ NSString * const VRepostSuccessIconKey = @"repost_success_icon";
     {
         NSAssert(false, @"We need an object in the responder chain for resposting.");
     }
-
+    
     self.reposting = YES;
     __weak typeof(self) welf = self;
     [targetForRepost willRepostSequence:self.sequence
