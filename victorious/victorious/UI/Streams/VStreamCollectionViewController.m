@@ -733,7 +733,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     self.hasRefreshed = YES;
     [self updateNoContentViewAnimated:YES];
     
-    // Allow cells to populate before we track which are visible
+    // Allow cells to populate before we track which are visible before user scrolls
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
     {
         [self updateCellVisibilityTracking];
