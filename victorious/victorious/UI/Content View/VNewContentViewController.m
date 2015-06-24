@@ -1594,7 +1594,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)configureLikeButtonWithContentCell:(VContentCell *)contentCell
 {
     VContentLikeButton *likeButton = contentCell.likeButton;
-    if ( contentCell != nil )
+    if ( likeButton != nil )
     {
         VSequence *sequence = self.viewModel.sequence;
         [likeButton addTarget:self action:@selector(selectedLikeButton:) forControlEvents:UIControlEventTouchUpInside];
