@@ -61,7 +61,7 @@ static const CGFloat kActionButtonWidth = 44.0f;
     {
         UIImage *image = [UIImage imageNamed:@"C_gif"];
         UIImage *background = [UIImage imageNamed:@"C_background"];
-        _memeButton = [self actionButtonWithImage:image selectedImage:nil backgroundImage:background action:@selector(gif:)];
+        _gifButton = [self actionButtonWithImage:image selectedImage:nil backgroundImage:background action:@selector(gif:)];
     }
     return _gifButton;
 }
@@ -197,15 +197,16 @@ static const CGFloat kActionButtonWidth = 44.0f;
     _dependencyManager = dependencyManager;
     
     UIColor *imageTintColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-    self.gifButton.selectedTintColor = imageTintColor;
-    self.memeButton.selectedTintColor = imageTintColor;
-    self.repostButton.selectedTintColor = imageTintColor;
+    self.gifButton.unselectedTintColor = imageTintColor;
+    self.memeButton.unselectedTintColor = imageTintColor;
+    self.repostButton.unselectedTintColor = imageTintColor;
+    self.likeButton.unselectedTintColor = imageTintColor;
 }
 
 #pragma mark - Button Factory
 
 - (VActionButton *)actionButtonWithImage:(UIImage *)actionImage
-                             selectedImage:(UIImage *)actionImageSelected
+                           selectedImage:(UIImage *)actionImageSelected
                          backgroundImage:(UIImage *)backgroundImage
                                   action:(SEL)action
 {

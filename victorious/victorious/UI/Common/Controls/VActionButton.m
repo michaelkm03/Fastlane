@@ -31,7 +31,7 @@
                            selectedImage:(UIImage *)selectedImage
                          backgroundImage:(UIImage *)backgroundImage
 {
-    VActionButton *actionButton = [VActionButton buttonWithType:UIButtonTypeSystem];
+    VActionButton *actionButton = [VActionButton buttonWithType:UIButtonTypeCustom];
     [actionButton setImage:selectedImage forState:UIControlStateSelected];
     [actionButton setImage:unselectedImage forState:UIControlStateNormal];
     actionButton.backgroundImage = backgroundImage;
@@ -65,22 +65,9 @@
     [self updateColors];
 }
 
-- (void)setInselectedTintColor:(UIColor *)unselectedTintColor
-{
-    _unselectedTintColor = unselectedTintColor;
-    [self updateColors];
-}
-
 - (void)updateColors
 {
-    if ( self.selectedTintColor != nil && self.selected )
-    {
-        self.tintColor = self.selectedTintColor;
-    }
-    else
-    {
-        self.tintColor = self.unselectedTintColor;
-    }
+    self.tintColor = self.selected ? self.selectedTintColor : self.unselectedTintColor;
 }
 
 @end

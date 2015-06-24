@@ -31,11 +31,11 @@ static CGFloat const kActionButtonHeight = 31.0f;
 
 @interface VSleekActionView ()
 
-@property (nonatomic, strong) VRoundedBackgroundButton *commentButton;
-@property (nonatomic, strong) VRoundedBackgroundButton *repostButton;
-@property (nonatomic, strong) VRoundedBackgroundButton *memeButton;
-@property (nonatomic, strong) VRoundedBackgroundButton *gifButton;
-@property (nonatomic, strong, readwrite) VRoundedBackgroundButton *likeButton;
+@property (nonatomic, strong) VSleekActionButton *commentButton;
+@property (nonatomic, strong) VSleekActionButton *repostButton;
+@property (nonatomic, strong) VSleekActionButton *memeButton;
+@property (nonatomic, strong) VSleekActionButton *gifButton;
+@property (nonatomic, strong, readwrite) VSleekActionButton *likeButton;
 @property (nonatomic, strong) NSArray *actionButtons;
 
 @property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
@@ -107,7 +107,7 @@ static CGFloat const kActionButtonHeight = 31.0f;
     return _largeNumberFormatter;
 }
 
-- (VRoundedBackgroundButton *)commentButton
+- (VSleekActionButton *)commentButton
 {
     if (_commentButton == nil)
     {
@@ -116,7 +116,7 @@ static CGFloat const kActionButtonHeight = 31.0f;
     return _commentButton;
 }
 
-- (VRoundedBackgroundButton *)repostButton
+- (VSleekActionButton *)repostButton
 {
     if (_repostButton == nil)
     {
@@ -125,7 +125,7 @@ static CGFloat const kActionButtonHeight = 31.0f;
     return _repostButton;
 }
 
-- (VRoundedBackgroundButton *)memeButton
+- (VSleekActionButton *)memeButton
 {
     if (_memeButton == nil)
     {
@@ -134,7 +134,7 @@ static CGFloat const kActionButtonHeight = 31.0f;
     return _memeButton;
 }
 
-- (VRoundedBackgroundButton *)gifButton
+- (VSleekActionButton *)gifButton
 {
     if (_gifButton == nil)
     {
@@ -143,7 +143,7 @@ static CGFloat const kActionButtonHeight = 31.0f;
     return _gifButton;
 }
 
-- (VRoundedBackgroundButton *)likeButton
+- (VSleekActionButton *)likeButton
 {
     if (_likeButton == nil)
     {
@@ -161,15 +161,14 @@ static CGFloat const kActionButtonHeight = 31.0f;
     _dependencyManager = dependencyManager;
     if (_dependencyManager != nil)
     {
-        self.likeButton.selectedTintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-        
         self.actionButtons = @[ self.likeButton, self.repostButton, self.memeButton, self.gifButton, self.commentButton ];
-        [self.actionButtons enumerateObjectsUsingBlock:^(VRoundedBackgroundButton *actionButton, NSUInteger idx, BOOL *stop)
+        [self.actionButtons enumerateObjectsUsingBlock:^(VSleekActionButton *actionButton, NSUInteger idx, BOOL *stop)
          {
-             actionButton.unselectedTintColor = [_dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
              actionButton.unselectedTintColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-             actionButton.unselectedTintColor = [_dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
+             actionButton.backgroundColor = [_dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
          }];
+        
+        self.likeButton.selectedTintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     }
 }
 
@@ -233,19 +232,19 @@ static CGFloat const kActionButtonHeight = 31.0f;
 
 #pragma mark - Button Factory
 
-- (VRoundedBackgroundButton *)actionButtonWithImage:(UIImage *)image action:(SEL)action
+- (VSleekActionButton *)actionButtonWithImage:(UIImage *)image action:(SEL)action
 {
     return [self actionButtonWithImage:image selectedImage:nil action:action];
 }
 
-- (VRoundedBackgroundButton *)actionButtonWithImage:(UIImage *)image
+- (VSleekActionButton *)actionButtonWithImage:(UIImage *)image
                                       selectedImage:(UIImage *)selectedImage
                                              action:(SEL)action
 {
-    VRoundedBackgroundButton *actionButton = [[VRoundedBackgroundButton alloc] initWithFrame:CGRectMake(0, 0, kActionButtonHeight, kActionButtonHeight)];
+    VSleekActionButton *actionButton = [[VSleekActionButton alloc] initWithFrame:CGRectMake(0, 0, kActionButtonHeight, kActionButtonHeight)];
     actionButton.translatesAutoresizingMaskIntoConstraints = NO;
     actionButton.unselectedTintColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
-    actionButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    actionButton.selectedTintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     [actionButton setImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     [actionButton setImage:[selectedImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateSelected];
     actionButton.selected = NO;

@@ -9,13 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "VAbstractActionView.h"
 #import "VHasManagedDependencies.h"
-#import "VRoundedBackgroundButton.h"
+#import "VSleekActionButton.h"
 
 /**
  *  An VAbstractActionView for sleek cells.
  */
 @interface VSleekActionView : VAbstractActionView <VHasManagedDependencies>
 
-@property (nonatomic, strong, readonly) VRoundedBackgroundButton *likeButton;
+@property (nonatomic, strong, readonly) VSleekActionButton *likeButton;
 
 @end

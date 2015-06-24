@@ -14,16 +14,16 @@
  */
 @interface VRoundedBackgroundButton : UIButton
 
+/**
+ *  A color representing the selected state.
+ */
+@property (nonatomic, copy) UIColor *selectedColor;
+
+/**
+ *  A color representing the unselected state.
+ */
+@property (nonatomic, copy) UIColor *unselectedColor;
+
 @property (nonatomic, weak) id associatedObjectForButton;
-
-/**
- *  A tint color to represent the selected state.
- */
-@property (nonatomic, copy) UIColor *selectedTintColor;
-
-/**
- *  A tint color to represent the default (non-selected) state.
- */
-@property (nonatomic, copy) UIColor *unselectedTintColor;
 
 @end

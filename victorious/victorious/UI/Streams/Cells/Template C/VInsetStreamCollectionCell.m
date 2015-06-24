@@ -29,7 +29,7 @@ static const CGFloat kInsetCellHeaderHeight         = 50.0f;
 static const CGFloat kInsetCellActionViewHeight     = 41.0f;
 static const CGFloat kCountsTextViewHeight          = 20.0f;
 static const CGFloat kTextSeparatorHeight           = 6.0f;
-static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 10.0f, 10.0f };
+static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0f };
 
 @interface VInsetStreamCollectionCell () <CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate>
 
@@ -134,7 +134,7 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 10.0f, 10.
                                                                                           attribute:NSLayoutAttributeTop
                                                                                          multiplier:1.0f
                                                                                            constant:-kTextMargins.top];
-    
+
     
     // Comments and likes count
     _countsTextView = [[VSequenceCountsTextView alloc] init];
@@ -143,7 +143,7 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 10.0f, 10.
     [_countsTextView sizeToFit];
     _countsTextView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.contentView addSubview:_countsTextView];
-    [self.contentView v_addHeightConstraint:kCountsTextViewHeight];
+    [_countsTextView v_addHeightConstraint:kCountsTextViewHeight];
     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_captionTextView
                                                                  attribute:NSLayoutAttributeLeft
                                                                  relatedBy:NSLayoutRelationEqual
