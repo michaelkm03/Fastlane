@@ -50,11 +50,11 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 @property (nonatomic, weak) IBOutlet VHashTagTextView *captionTextView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomSpaceCaptionToPreview;
 @property (nonatomic, weak ) IBOutlet NSLayoutConstraint *previewContainerHeightConstraint;
-
+@property (nonatomic, weak ) IBOutlet NSLayoutConstraint *captionHeight;
 @property (nonatomic, strong) UIView *dimmingContainer;
-
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 @property (nonatomic, weak) IBOutlet VSequenceCountsTextView *countsTextView;
+@property (nonatomic, assign) NSInteger captionTextStartHeight;
 
 @end
 
@@ -70,6 +70,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     [self setupDimmingContainer];
     
     self.countsTextView.textSelectionDelegate = self;
+    self.captionTextStartHeight = CGRectGetHeight( self.captionTextView.frame );
 }
 
 #pragma mark - VSequenceCountsTextViewDelegate
@@ -202,16 +203,14 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     if ( sequence.name == nil || sequence.name.length == 0|| self.dependencyManager == nil)
     {
         self.captionTextView.attributedText = nil;
-        self.bottomSpaceCaptionToPreview.constant = 0.0f;
-        [self.captionTextView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+        self.captionHeight.constant = 0.0;
     }
     else
     {
-        [self.captionTextView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-        self.bottomSpaceCaptionToPreview.constant = kCaptionMargins.bottom;
         self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
                                                                               attributes:[VSleekStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
     }
+    [self layoutIfNeeded];
 }
 
 #pragma mark - VBackgroundContainer
@@ -310,6 +309,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     }
     
     CGFloat captionWidth = initialSize.width - kCaptionMargins.left - kCaptionMargins.right;
+    sizeWithText.height += kCaptionMargins.top + kCaptionMargins.bottom;
     if (sequence.name.length > 0)
     {
         // Caption view size
@@ -321,7 +321,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
         
         CGSize size = [sequence.name frameSizeForWidth:captionWidth
                                          andAttributes:sharedAttributes];
-        sizeWithText.height = sizeWithText.height + size.height + kCaptionMargins.top + kCaptionMargins.bottom;
+        sizeWithText.height += size.height;
     }
     [[self textSizeCache] setObject:[NSValue valueWithCGSize:sizeWithText]
                              forKey:sequence.name];
