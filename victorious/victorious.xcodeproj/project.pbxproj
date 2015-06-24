@@ -1775,7 +1775,6 @@
 		A769FE4A1ABD051A00888ED8 /* VTrackingEventLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingEventLog.m; sourceTree = "<group>"; };
 		A76D93871B320DD0007A150D /* VSequenceExpressionsObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceExpressionsObserver.m; sourceTree = "<group>"; };
 		A76D938B1B320E02007A150D /* VSequenceExpressionsObserver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VSequenceExpressionsObserver.h; sourceTree = "<group>"; };
-		A76D938C1B320E63007A150D /* VContentLikeButtonProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VContentLikeButtonProvider.h; sourceTree = "<group>"; };
 		A76D938E1B32151B007A150D /* VContentLikeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentLikeButton.h; sourceTree = "<group>"; };
 		A76D938F1B32151B007A150D /* VContentLikeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentLikeButton.m; sourceTree = "<group>"; };
 		A76D93A51B321E68007A150D /* VPageType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPageType.h; sourceTree = "<group>"; };
@@ -6130,7 +6129,6 @@
 				D8E39BC819CB7C80007FD86A /* VContentImageCell.h */,
 				D8E39BC919CB7C80007FD86A /* VContentImageCell.m */,
 				D8E39BCA19CB7C80007FD86A /* VContentImageCell.xib */,
-				A76D938C1B320E63007A150D /* VContentLikeButtonProvider.h */,
 				D82E76E119F5C06100FFB722 /* VContentPollBallotCell.h */,
 				D82E76E219F5C06100FFB722 /* VContentPollBallotCell.m */,
 				D82E76E419F5C06B00FFB722 /* VContentPollBallotCell.xib */,

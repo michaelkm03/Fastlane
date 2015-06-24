@@ -951,25 +951,10 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         case VContentViewSectionContent:
         {
             UICollectionViewCell *cell = [self contentCellForCollectionView:collectionView atIndexPath:indexPath];
-            
-            // If the content cell provides like button and count controls, set it up
-            if ( [cell conformsToProtocol:@protocol(VContentLikeButtonProvider)] )
+            if ( [cell isKindOfClass:[VContentCell class]] )
             {
-                VSequence *sequence = self.viewModel.sequence;
-                
-                id<VContentLikeButtonProvider> provider = (id<VContentLikeButtonProvider>)cell;
-                VContentLikeButton *likeButton = provider.likeButton;
-                
-                [provider.likeButton addTarget:self action:@selector(selectedLikeButton:) forControlEvents:UIControlEventTouchUpInside];
-                
-                self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
-                [self.expressionsObserver startObservingWithSequence:self.viewModel.sequence onUpdate:^
-                {
-                    [likeButton setActive:sequence.isLikedByMainUser.boolValue];
-                    [likeButton setCount:sequence.likeCount.integerValue];
-                }];
+                [self configureLikeButtonWithContentCell:(VContentCell *)cell];
             }
-            
             return cell;
         }
         case VContentViewSectionHistogramOrQuestion:
@@ -1603,6 +1588,23 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                           }
                                                                                           cancel:nil];
     [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)configureLikeButtonWithContentCell:(VContentCell *)contentCell
+{
+    VContentLikeButton *likeButton = contentCell.likeButton;
+    if ( contentCell.likeButton != nil )
+    {
+        VSequence *sequence = self.viewModel.sequence;
+        [likeButton addTarget:self action:@selector(selectedLikeButton:) forControlEvents:UIControlEventTouchUpInside];
+        
+        self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
+        [self.expressionsObserver startObservingWithSequence:self.viewModel.sequence onUpdate:^
+         {
+             [likeButton setActive:sequence.isLikedByMainUser.boolValue];
+             [likeButton setCount:sequence.likeCount.integerValue];
+         }];
+    }
 }
 
 #pragma mark - VExperienceEnhancerControllerDelegate

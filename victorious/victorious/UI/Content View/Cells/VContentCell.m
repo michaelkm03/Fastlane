@@ -9,13 +9,12 @@
 #import "VContentCell.h"
 #import "UIView+Autolayout.h"
 #import <QuartzCore/QuartzCore.h>
-#import "VContentLikeButton.h"
 
 @interface VContentCell () <VEndCardViewControllerDelegate>
 
 @property (nonatomic, weak) UIImageView *animationImageView;
 @property (nonatomic, strong) VEndCardViewController *endCardViewController;
-@property (nonatomic, strong) VContentLikeButton *likeButton;
+@property (nonatomic, strong, readwrite) VContentLikeButton *likeButton;
 
 @end
 

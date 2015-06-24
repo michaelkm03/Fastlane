@@ -9,9 +9,9 @@
 #import "VBaseCollectionViewCell.h"
 #import "VEndCardViewController.h"
 #import "VBackgroundContainer.h"
-#import "VContentLikeButtonProvider.h"
+#import "VContentLikeButton.h"
 
-@interface VContentCell : VBaseCollectionViewCell <VContentLikeButtonProvider>
+@interface VContentCell : VBaseCollectionViewCell
 
 /**
  *  An array of UIImages to use for the animation.
@@ -75,5 +75,10 @@
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
 
 @property (nonatomic, strong) UIView *shrinkingContentView;
+
+/**
+ The like button for the content being displayed.
+ */
+@property (nonatomic, strong, readonly) VContentLikeButton *likeButton;
 
 @end
