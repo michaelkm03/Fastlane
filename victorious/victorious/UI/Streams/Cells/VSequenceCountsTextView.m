@@ -140,13 +140,13 @@ static NSString * const kDividerDelimeter = @"•";
     
     if ( likesText != nil )
     {
-        NSRange likesRanage = [likesText rangeOfString:likesText];
+        NSRange likesRanage = [displayText rangeOfString:likesText];
         [attributedString addAttribute:CCHLinkAttributeName value:kLinkIdentifierValueLikes range:likesRanage];
     }
     
     if ( commentsText != nil )
     {
-        NSRange commentsRange = [commentsText rangeOfString:commentsText];
+        NSRange commentsRange = [displayText rangeOfString:commentsText];
         [attributedString addAttribute:CCHLinkAttributeName value:kLinkIdentifierValueComments range:commentsRange];
     }
     
