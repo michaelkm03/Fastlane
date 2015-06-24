@@ -112,7 +112,7 @@ static CGFloat const kActionButtonHeight = 31.0f;
 {
     if (_commentButton == nil)
     {
-        _commentButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_comment_icon"] action:@selector(comment:)];
+        _commentButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_commentIcon"] action:@selector(comment:)];
     }
     return _commentButton;
 }
