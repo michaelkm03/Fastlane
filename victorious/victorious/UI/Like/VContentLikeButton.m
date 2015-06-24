@@ -61,18 +61,20 @@ static const CGFloat kCornerRadius = 4.0f;
     self.layer.cornerRadius = kCornerRadius;
     
     [self setActive:NO];
-    
-    [self setTranslatesAutoresizingMaskIntoConstraints:NO];
 }
 
 - (void)didMoveToSuperview
 {
-    [self setSizeConstraints];
-    [self setTitle:@"0" forState:UIControlStateNormal];
+    if ( self.superview != nil )
+    {
+        [self addSizeConstraints];
+        [self setTitle:@"0" forState:UIControlStateNormal];
+    }
 }
 
-- (void)setSizeConstraints
+- (void)addSizeConstraints
 {
+    [self setTranslatesAutoresizingMaskIntoConstraints:NO];
     NSDictionary *views = @{ @"button" : self };
     NSDictionary *metrics = @{ @"width" : @(kMargin + CGRectGetWidth(self.imageView.bounds) + kMargin),
                                @"height" : @(kMargin + CGRectGetHeight(self.imageView.bounds) + kMargin) };
