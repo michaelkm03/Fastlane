@@ -13,15 +13,8 @@
 @class VFlexBar;
 @class VSequence;
 
-extern NSString * const VCommentIconKey;
-extern NSString * const VShareIconKey;
-extern NSString * const VGifIconKey;
-extern NSString * const VMemeIconKey;
-extern NSString * const VRepostIconKey;
-extern NSString * const VRepostSuccessIconKey;
-
 /**
- *  VAbstractActionView provides a commmon interface for views that use a horizontal 
+ *  VAbstractActionView provides a commmon interface for views that use a horizontal
  *  list of action buttons for interactivity with a particlar sequence.
  */
 @interface VAbstractActionView : UIView <VStreamCellComponentSpecialization>
@@ -45,7 +38,7 @@ extern NSString * const VRepostSuccessIconKey;
 @end
 
 /**
- *  Call these methods from within subclasses to dispatch the approrpiate sequenceActionDelegate 
+ *  Call these methods from within subclasses to dispatch the approrpiate sequenceActionDelegate
  *  method. Theses are garuanteed to check delegate implementaiton for optional methods.
  */
 @interface VAbstractActionView (VActionMethods)
@@ -78,7 +71,7 @@ extern NSString * const VRepostSuccessIconKey;
 @end
 
 /**
- *  Methods in this category should be subclassed for the action view to update the 
+ *  Methods in this category should be subclassed for the action view to update the
  *  current state of its buttons.
  */
 @interface VAbstractActionView (VUpdateHooks)
