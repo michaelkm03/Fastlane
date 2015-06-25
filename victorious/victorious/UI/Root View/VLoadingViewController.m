@@ -217,6 +217,24 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
+#warning Take this out
+        NSString *keyPath = [[templateDecorator keyPathsForKey:@"screens"] firstObject];
+        NSArray *screens = [templateDecorator templateValueForKeyPath:keyPath];
+        NSDictionary *screen = [[screens firstObject] mutableCopy];
+        
+        for (NSString *keyPath2 in [templateDecorator keyPathsForKey:@"name"])
+        {
+            NSDictionary *dict = [templateDecorator templateValueForKeyPath:[keyPath2 stringByDeletingLastPathComponent]];
+            
+            if ([dict[@"name"] isEqualToString:@"settings.screen"])
+            {
+                NSMutableDictionary *newDict = [dict mutableCopy];
+                newDict[@"likedContentScreen"] = screen;
+                
+                [templateDecorator setTemplateValue:newDict forKeyPath:[keyPath2 stringByDeletingLastPathComponent]];
+            }
+        }
+        
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];

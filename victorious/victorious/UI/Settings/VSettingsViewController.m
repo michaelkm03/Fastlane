@@ -32,19 +32,24 @@
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VCoachmarkManager.h"
 #import "VEnvironmentManager.h"
+#import "VStreamCollectionViewController.h"
 
 static const NSInteger kSettingsSectionIndex         = 0;
 
-static const NSInteger kChangePasswordIndex          = 0;
-static const NSInteger kChromecastButtonIndex        = 2;
-static const NSInteger kPushNotificationsButtonIndex = 3;
-static const NSInteger kResetPurchasesButtonIndex    = 4;
-static const NSInteger kServerEnvironmentButtonIndex = 5;
-static const NSInteger kTrackingButtonIndex          = 6;
-static const NSInteger kResetCoachmarksIndex         = 7;
+static const NSInteger kLikedContentIndex            = 0;
+static const NSInteger kChangePasswordIndex          = 1;
+static const NSInteger kHelpIndex                    = 2;
+static const NSInteger kChromecastButtonIndex        = 3;
+static const NSInteger kPushNotificationsButtonIndex = 4;
+static const NSInteger kResetPurchasesButtonIndex    = 5;
+static const NSInteger kServerEnvironmentButtonIndex = 6;
+static const NSInteger kTrackingButtonIndex          = 7;
+static const NSInteger kResetCoachmarksIndex         = 8;
 
 static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 static NSString * const kSupportEmailKey = @"email.support";
+
+static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 
 @interface VSettingsViewController ()   <MFMailComposeViewControllerDelegate, UIAlertViewDelegate>
 
@@ -203,30 +208,6 @@ static NSString * const kSupportEmailKey = @"email.support";
     self.resetPurchasesCell.detailTextLabel.text = @( count ).stringValue;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (0 == indexPath.section && 1 == indexPath.row)
-    {
-        [self sendHelp:self];
-    }
-    
-    VSettingsTableViewCell *cell = (VSettingsTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-    if ( [cell isKindOfClass:[VSettingsTableViewCell class]] )
-    {
-        NSDictionary *params = @{ VTrackingKeyName : cell.settingName ?: @"" };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSetting parameters:params];
-    }
-    
-    if ( indexPath.row == kResetCoachmarksIndex )
-    {
-        //Reset coachmarks
-        [[self.dependencyManager coachmarkManager] resetShownCoachmarks];
-        [self updateResetCoachmarksCell];
-    }
-    
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-
 - (void)loginStatusDidChange:(NSNotification *)note
 {
     [self.tableView beginUpdates];
@@ -250,6 +231,47 @@ static NSString * const kSupportEmailKey = @"email.support";
         self.logoutButton.style = VButtonStylePrimary;
         self.logoutButton.accessibilityIdentifier = VAutomationIdentifierSettingsLogIn;
     }
+}
+
+- (void)pushLikedContent
+{
+    VStreamCollectionViewController  *likedContentViewController = [self.dependencyManager
+                                                                   templateValueOfType:[VStreamCollectionViewController class]
+                                                                   forKey:kLikedContentScreenKey];
+    [self.navigationController pushViewController:likedContentViewController animated:YES];
+}
+
+#pragma mark - TableView Delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (0 == indexPath.section)
+    {
+        if ( indexPath.row == kLikedContentIndex )
+        {
+            [self pushLikedContent];
+        }
+        else if (indexPath.row == kHelpIndex )
+        {
+            [self sendHelp:self];
+        }
+        else if ( indexPath.row == kResetCoachmarksIndex )
+        {
+            //Reset coachmarks
+            [[self.dependencyManager coachmarkManager] resetShownCoachmarks];
+            [self updateResetCoachmarksCell];
+        }
+    }
+    
+    // Tracking
+    VSettingsTableViewCell *cell = (VSettingsTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    if ( [cell isKindOfClass:[VSettingsTableViewCell class]] )
+    {
+        NSDictionary *params = @{ VTrackingKeyName : cell.settingName ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSetting parameters:params];
+    }
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - Actions
