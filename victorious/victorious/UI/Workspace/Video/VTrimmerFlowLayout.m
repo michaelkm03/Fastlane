@@ -103,35 +103,30 @@ const static CGFloat kSpacingOfTimeLables = 25.0f;
     
     if (attrs)
     {
-        CGRect frame;
+        CGRect frame = CGRectZero;
         if (kind == HashmarkViewKind)
         {
             //position this reusable view relative to the cells frame
-            frame = CGRectMake(indexPath.item*(50+kSpacingOfHashes), 0, 50, 50);
-            attrs.frame = frame;
+            frame = CGRectMake(indexPath.item*(50+kSpacingOfHashes), -10, 50, 50);
             attrs.zIndex = 3000;
         }
-        if (kind == TimemarkViewKind)
+        else if (kind == TimemarkViewKind)
         {
             //position this reusable view relative to the cells frame
-            CGRect frame = CGRectMake(indexPath.item*(50+kSpacingOfTimeLables), 0, 50, 50);
+            frame = CGRectMake(indexPath.item*(50+kSpacingOfTimeLables), -0, 50, 50);
          
-            attrs.frame = frame;
             attrs.zIndex = 3001;
             
         }
         
-        BOOL intersect = CGRectIntersectsRect(frame, self.collectionView.frame);
-        
-        if (CGRectGetMaxX(frame) < self.collectionView.contentOffset.x)
+        if ((CGRectGetMaxX(frame) < self.collectionView.contentOffset.x)||((CGRectGetMinX(frame) > (self.collectionView.contentOffset.x + CGRectGetWidth(self.collectionView.frame)))))
         {
-            // they don't intersect... do stuff
             frame = CGRectZero;
         }
-        else if (CGRectGetMinX(frame) > (self.collectionView.contentOffset.x + CGRectGetWidth(self.collectionView.frame)))
-        {
-            frame = CGRectMake(self.collectionView.contentOffset.x + CGRectGetWidth(self.collectionView.frame) - 50, 0, 50, 50);
-        }
+
+
+        
+        attrs.frame = frame;
         
     }
     return attrs;
