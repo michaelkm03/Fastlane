@@ -20,8 +20,6 @@
 #import "VDependencyManager+VUserProfile.h"
 #import "VScrollPaginator.h"
 
-static const int kReloadOffset = 12;
-
 @interface VFollowerTableViewController () <VScrollPaginatorDelegate>
 
 @property (nonatomic, strong)   NSArray    *followers;
@@ -45,6 +43,8 @@ static const int kReloadOffset = 12;
     
     [self.tableView registerNib:[VFollowerTableViewCell nibForCell]
          forCellReuseIdentifier:[VFollowerTableViewCell suggestedReuseIdentifier]];
+    [self.tableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f)];
+    self.automaticallyAdjustsScrollViewInsets = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -146,8 +146,7 @@ static const int kReloadOffset = 12;
 {
     VSuccessBlock followerSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
-        self.followers = [resultObjects sortedArrayUsingDescriptors:@[sort]];
+        self.followers = resultObjects;
         [self setHasFollowers:self.followers.count];
         
         [self.tableView reloadData];
@@ -176,9 +175,7 @@ static const int kReloadOffset = 12;
 {
     VSuccessBlock followerSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
-        NSSet *uniqueFollowers = [NSSet setWithArray:[self.followers arrayByAddingObjectsFromArray:resultObjects]];
-        self.followers = [[uniqueFollowers allObjects] sortedArrayUsingDescriptors:@[sort]];
+        self.followers = [self.followers arrayByAddingObjectsFromArray:resultObjects];
         [self setHasFollowers:self.followers.count];
         
         [self.tableView reloadData];
