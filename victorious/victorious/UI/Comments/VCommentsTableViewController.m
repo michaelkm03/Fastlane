@@ -85,8 +85,10 @@
     
     self.noContentView = [VNoContentView noContentViewWithFrame:self.tableView.bounds];
     self.noContentView.dependencyManager = self.dependencyManager;
-    self.noContentView.icon = [UIImage imageNamed:@"noMessagesIcon"];
     [self.noContentView resetInitialAnimationState];
+    self.noContentView.title = NSLocalizedString(@"NoCommentsTitle", @"");
+    self.noContentView.message = NSLocalizedString(@"NoCommentsMessage", @"");
+    self.noContentView.icon = [UIImage imageNamed:@"noCommentIcon"];
     self.tableView.backgroundView = nil;
 }
 
