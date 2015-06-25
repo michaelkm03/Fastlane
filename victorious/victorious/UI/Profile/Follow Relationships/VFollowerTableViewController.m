@@ -19,6 +19,8 @@
 #import "MBProgressHUD.h"
 #import "VDependencyManager+VUserProfile.h"
 
+static const int kReloadOffset = 12;
+
 @interface VFollowerTableViewController ()
 
 @property (nonatomic, strong)   NSArray    *followers;
@@ -98,6 +100,14 @@
                                                                    forIndexPath:indexPath];
     cell.profile = self.followers[indexPath.row];
     cell.dependencyManager = self.dependencyManager;
+    
+    
+    NSInteger maximumNumberOfRows = [tableView numberOfRowsInSection:indexPath.section];
+    if (indexPath.row >= maximumNumberOfRows - kReloadOffset)
+    {
+        [self loadMoreFollowers];
+    }
+    
 
     return cell;
 }
