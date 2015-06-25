@@ -198,8 +198,6 @@ static NSString * const kFollowedIconKey = @"followed_user_icon";
     {
         self.followImage = [[dependencyManager imageForKey:kFollowIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         self.followedImage = [dependencyManager imageForKey:kFollowedIconKey];
-        NSAssert( self.followImage, @"Missing template image. for key \"%@\"", kFollowIconKey );
-        NSAssert( self.followedImage, @"Missing template image for key \"%@\"", kFollowedIconKey );
         self.tintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         [self updateFollowImageView];
     }
