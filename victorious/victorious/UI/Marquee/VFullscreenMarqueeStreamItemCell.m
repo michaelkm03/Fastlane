@@ -53,6 +53,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     [super setStreamItem:streamItem];
         
     self.nameLabel.text = streamItem.name;
+    self.nameLabel.numberOfLines = 3;
     [self layoutIfNeeded];
 
     //Timer for marquee details auto-hiding
