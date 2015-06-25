@@ -142,8 +142,11 @@ static NSString * const kCreationFlowKey = @"createFlow";
 //        VImageToolControllerInitialImageEditStateKey: @(initialImageEdit),
 //        VVideoToolControllerInitalVideoEditStateKey: @(initialVideoEdit) }];
     
-    VDependencyManager *dependencyManagerForContentType = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{VCreationFlowControllerCreationTypeKey: @(VCreationTypeImage)}];
-    VCreationFlowController *flowController = [[VCreationFlowController alloc] initWithDependencyManager:dependencyManagerForContentType];
+//    VDependencyManager *dependencyManagerForContentType = [self.dependencyManager childDependencyManagerWithAddedConfiguration:];
+//    VCreationFlowController *flowController = [[VCreationFlowController alloc] initWithDependencyManager:dependencyManagerForContentType];
+    VCreationFlowController *flowController = [self.dependencyManager templateValueOfType:[VCreationFlowController class]
+                                                                                   forKey:@"creationFlow"
+                                                                    withAddedDependencies:@{VCreationFlowControllerCreationTypeKey: @(VCreationTypeImage)}];
     [self.viewControllerToPresentOn presentViewController:flowController
                                                  animated:YES
                                                completion:nil];

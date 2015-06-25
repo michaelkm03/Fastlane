@@ -303,6 +303,7 @@
 		99F4DB51782658B7D034EC2F /* libPods-victorious-test.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7B45F61E6B2831D5E9459C3 /* libPods-victorious-test.a */; };
 		9F95A0FBA78C16AF3EA43793 /* libPods-victorious.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */; };
 		A673A3301B34E602004D4D8C /* newWorkspaceTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = A673A32F1B34E602004D4D8C /* newWorkspaceTemplate.json */; };
+		A682F4FE1B3C829E009B6DBE /* creationFlow.json in Resources */ = {isa = PBXBuildFile; fileRef = A682F4FD1B3C829E009B6DBE /* creationFlow.json */; };
 		A6EC32671B3B488200824022 /* staticCreateSheet.json in Resources */ = {isa = PBXBuildFile; fileRef = A6EC32661B3B488200824022 /* staticCreateSheet.json */; };
 		A6EC326A1B3B4ACF00824022 /* VCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6EC32691B3B4ACF00824022 /* VCreationFlowController.m */; };
 		A6EC326D1B3B4E5300824022 /* VAvatarCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6EC326C1B3B4E5300824022 /* VAvatarCreationFlowController.m */; };
@@ -1583,6 +1584,7 @@
 		8E360EC509E852CE3E872948 /* Pods-victorious-test.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.debug.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.debug.xcconfig"; sourceTree = "<group>"; };
 		910A7A7036C6609BF5F7723D /* Pods-victorious-test.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.staging.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.staging.xcconfig"; sourceTree = "<group>"; };
 		A673A32F1B34E602004D4D8C /* newWorkspaceTemplate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = newWorkspaceTemplate.json; sourceTree = "<group>"; };
+		A682F4FD1B3C829E009B6DBE /* creationFlow.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = creationFlow.json; sourceTree = "<group>"; };
 		A6EC32661B3B488200824022 /* staticCreateSheet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = staticCreateSheet.json; sourceTree = "<group>"; };
 		A6EC32681B3B4ACF00824022 /* VCreationFlowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreationFlowController.h; sourceTree = "<group>"; };
 		A6EC32691B3B4ACF00824022 /* VCreationFlowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCreationFlowController.m; sourceTree = "<group>"; };
@@ -5963,6 +5965,7 @@
 				A6EC32721B3B508B00824022 /* cameraScreen.json */,
 				D87351851A3120DB006D97B2 /* Canvas */,
 				A6EC32811B3B569B00824022 /* Creation Flow Strategies */,
+				A682F4FD1B3C829E009B6DBE /* creationFlow.json */,
 				A6EC32941B3B5A6600824022 /* imageVideoTemplateScreen.json */,
 				A6EC32761B3B50AE00824022 /* imageWorkspace.json */,
 				A673A32F1B34E602004D4D8C /* newWorkspaceTemplate.json */,
@@ -6753,6 +6756,7 @@
 				D80A94EB1A546E680035D788 /* VThumbnailCell.xib in Resources */,
 				D85B706F1B0EAF3F0038CA5B /* FindFriendsTableView.xib in Resources */,
 				DB2A48F719DF2D1000CB687B /* Localizable.strings in Resources */,
+				A682F4FE1B3C829E009B6DBE /* creationFlow.json in Resources */,
 				035926D31B1EA33400E910A7 /* Quicksand-Light.ttf in Resources */,
 				A7E2EFD21A49066F00372547 /* EditComment.storyboard in Resources */,
 				03F28F4B19F44728008BB3F7 /* VCommentCell.xib in Resources */,

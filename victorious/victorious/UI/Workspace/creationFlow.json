@@ -1,0 +1,15 @@
+{
+    "name":"creation.flow",
+    "cameraScreen":{
+        "referenceID":"testingCameraScreen"
+    },
+    "imageVideoLibrary":{
+        "referenceID":"testingImageVideoLibrary"
+    },
+    "imageWorkspace":{
+        "referenceID":"testingImageWorkspace"
+    },
+    "publishScreen":{
+        "referenceID": "testingPublishScreen"
+    }
+}

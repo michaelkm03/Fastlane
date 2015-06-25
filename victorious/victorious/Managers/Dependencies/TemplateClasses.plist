@@ -22,6 +22,8 @@
 	<string>VStandardLoginFlowViewController</string>
 	<key>standard.workspaceFlow</key>
 	<string>VWorkspaceFlowController</string>
+	<key>creation.flow</key>
+	<string>VCreationFlowController</string>
 	<key>translucent.background</key>
 	<string>VTranslucentBackground</string>
 	<key>blurredImage.background</key>

@@ -64,7 +64,9 @@ static NSString * const kCameraScreenKey = @"cameraScreen";
     __weak VImageCreationFlowStrategy *weakSelf = self;
     self.imageVideoLibraryViewController.userSelectedCamera = ^void()
     {
-        [weakSelf.flowNavigationController pushViewController:weakSelf.cameraViewController animated:YES];
+        [weakSelf.flowNavigationController presentViewController:weakSelf.cameraViewController
+                                                        animated:YES
+                                                      completion:nil];
     };
     
     self.imageVideoLibraryViewController.userSelectedSearch = ^void()
@@ -80,7 +82,6 @@ static NSString * const kCameraScreenKey = @"cameraScreen";
 - (void)setupCamera
 {
     _cameraViewController = [VCameraViewController cameraViewControllerLimitedToPhotosWithDependencyManager:self.dependencyManager];
-    
     __weak VImageCreationFlowStrategy *weakSelf = self;
     _cameraViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
@@ -90,14 +91,9 @@ static NSString * const kCameraScreenKey = @"cameraScreen";
             weakSelf.workspaceViewController.mediaURL = capturedMediaURL;
             VImageToolController *toolController = (VImageToolController *)weakSelf.workspaceViewController.toolController;
             [toolController setDefaultImageTool:VImageToolControllerInitialImageEditStateText];
-            
             [weakSelf.flowNavigationController pushViewController:weakSelf.workspaceViewController animated:YES];
         }
-        else
-        {
-            [weakSelf.flowNavigationController popViewControllerAnimated:YES];
-            
-        }
+        [weakSelf.flowNavigationController dismissViewControllerAnimated:YES completion:nil];
     };
 }
 

@@ -1,5 +1,6 @@
 {
     "name": "camera.screen",
+    "id":"testingCameraScreen",
     "closeIcon": {
         "imageURL": "cameraButtonClose"
     },
