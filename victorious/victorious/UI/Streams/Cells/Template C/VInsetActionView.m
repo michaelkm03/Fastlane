@@ -153,6 +153,10 @@ static const CGFloat kActionButtonWidth = 44.0f;
     
     [justActionItems addObject:self.likeButton];
     
+    if ( sequence.permissions.canComment )
+    {
+        [justActionItems addObject:self.commentButton];
+    }
     if ( sequence.permissions.canGIF )
     {
         [justActionItems addObject:self.gifButton];
@@ -164,10 +168,6 @@ static const CGFloat kActionButtonWidth = 44.0f;
     if ( sequence.permissions.canRepost )
     {
         [justActionItems addObject:self.repostButton];
-    }
-    if ( sequence.permissions.canComment )
-    {
-        [justActionItems addObject:self.commentButton];
     }
     
     // Calculate spacing
