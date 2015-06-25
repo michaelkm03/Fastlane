@@ -222,9 +222,15 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
     [self.expressionsObserver startObservingWithSequence:sequence onUpdate:^
      {
          welf.actionView.likeButton.selected = sequence.isLikedByMainUser.boolValue;
-         [welf.countsTextView setCommentsCount:sequence.commentCount.integerValue];
-         [welf.countsTextView setLikesCount:sequence.likeCount.integerValue];
+         [welf updateCountsTextViewForSequence:sequence];
      }];
+}
+
+- (void)updateCountsTextViewForSequence:(VSequence *)sequence
+{
+    self.countsTextView.hideComments = !sequence.permissions.canComment;
+    [self.countsTextView setCommentsCount:sequence.commentCount.integerValue];
+    [self.countsTextView setLikesCount:sequence.likeCount.integerValue];
 }
 
 - (void)setHighlighted:(BOOL)highlighted
@@ -262,7 +268,7 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
         self.captionTextView.attributedText = nil;
         [self.captionTextView layoutIfNeeded];
         CGFloat spacing = CGRectGetHeight( self.captionTextView.frame );
-        self.countsVerticalSpacing.constant = -spacing;
+        self.countsVerticalSpacing.constant = -spacing - kTextMargins.top;
     }
     else
     {
@@ -346,7 +352,7 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
     CGSize sizeWithText = initialSize;
     
     // Top Margins
-    sizeWithText.height = sizeWithText.height + kTextMargins.top;
+    sizeWithText.height = sizeWithText.height;
     
     NSValue *textSizeValue = [[self textSizeCache] objectForKey:sequence.remoteId];
     if (textSizeValue != nil)
@@ -361,7 +367,7 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
         // Caption view size
         CGSize captionSize = [sequence.name frameSizeForWidth:textAreaWidth
                                                 andAttributes:[self sequenceDescriptionAttributesWithDependencyManager:dependencyManager]];
-        sizeWithText.height += VCEIL(captionSize.height);
+        sizeWithText.height += VCEIL(captionSize.height) + kTextMargins.top;
     }
     
     sizeWithText.height += kCountsTextViewHeight;

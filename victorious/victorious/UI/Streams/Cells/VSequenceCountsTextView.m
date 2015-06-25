@@ -122,13 +122,13 @@ static NSString * const kDividerDelimeter = @"•";
         [displayText appendString:likesText];
     }
     
-    if ( self.likesCount > 0 && self.commentsCount > 0 )
+    if ( self.likesCount > 0 && self.commentsCount > 0 && !self.hideComments )
     {
         [displayText appendString:[NSString stringWithFormat:@"  %@  ", kDividerDelimeter]];
     }
     
     NSString *commentsText = nil;
-    if ( self.commentsCount > 0 )
+    if ( self.commentsCount > 0 && !self.hideComments )
     {
         NSString *formattedNumberString = [self.numberFormatter stringForInteger:self.commentsCount];
         NSString *format = self.commentsCount == 1 ? NSLocalizedString( @"CommentsSingularFormat", @"" ) : NSLocalizedString( @"CommentsPluralFormat", @"" );

@@ -193,6 +193,7 @@ static CGFloat const kActionButtonHeight = 31.0f;
     [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingSpace]];
     
     [actionItems addObject:self.likeButton];
+    
     [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace]];
     
     if ( sequence.permissions.canComment )

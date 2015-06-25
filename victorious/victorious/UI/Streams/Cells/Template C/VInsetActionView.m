@@ -35,6 +35,7 @@ static const CGFloat kActionButtonWidth = 44.0f;
 @property (nonatomic, strong) VActionButton *gifButton;
 @property (nonatomic, strong) VActionButton *memeButton;
 @property (nonatomic, strong) VActionButton *repostButton;
+@property (nonatomic, strong) VActionButton *commentButton;
 @property (nonatomic, strong, readwrite) VActionButton *likeButton;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -100,6 +101,17 @@ static const CGFloat kActionButtonWidth = 44.0f;
     return _likeButton;
 }
 
+- (UIButton *)commentButton
+{
+    if (_commentButton == nil)
+    {
+        UIImage *image = [UIImage imageNamed:@"C_comment"];
+        UIImage *background = [UIImage imageNamed:@"C_background"];
+        _commentButton = [self actionButtonWithImage:image selectedImage:nil backgroundImage:background action:@selector(comment:)];
+    }
+    return _commentButton;
+}
+
 #pragma mark - VUpdateHooks
 
 + (NSString *)reuseIdentifierForSequence:(VSequence *)sequence
@@ -119,6 +131,10 @@ static const CGFloat kActionButtonWidth = 44.0f;
     if ( sequence.permissions.canGIF )
     {
         [identifier appendString:@"Gif."];
+    }
+    if ( sequence.permissions.canComment )
+    {
+        [identifier appendString:@"Comment."];
     }
     
     return [NSString stringWithString:identifier];
@@ -148,6 +164,10 @@ static const CGFloat kActionButtonWidth = 44.0f;
     if ( sequence.permissions.canRepost )
     {
         [justActionItems addObject:self.repostButton];
+    }
+    if ( sequence.permissions.canComment )
+    {
+        [justActionItems addObject:self.commentButton];
     }
     
     // Calculate spacing
@@ -203,6 +223,7 @@ static const CGFloat kActionButtonWidth = 44.0f;
     self.memeButton.unselectedTintColor = imageTintColor;
     self.repostButton.unselectedTintColor = imageTintColor;
     self.likeButton.unselectedTintColor = imageTintColor;
+    self.commentButton.unselectedTintColor = imageTintColor;
 }
 
 #pragma mark - Button Factory

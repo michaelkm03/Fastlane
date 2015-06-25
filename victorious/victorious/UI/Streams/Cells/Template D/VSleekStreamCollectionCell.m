@@ -38,6 +38,7 @@ static const CGFloat kSleekCellActionViewTopConstraintHeight = 8.0f; //This repr
 static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
 //Use this constant adjust the spacing between the caption and comment
 const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This represents the space between the comment label and the view below it and the distance between the caption textView and the view above it
+const CGFloat kHiddenCaptionsMarginTop = 10.0f;
 
 @interface VSleekStreamCollectionCell () <VBackgroundContainer, CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate>
 
@@ -137,9 +138,15 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     [self.expressionsObserver startObservingWithSequence:sequence onUpdate:^
      {
          welf.sleekActionView.likeButton.selected = sequence.isLikedByMainUser.boolValue;
-         [welf.countsTextView setCommentsCount:sequence.commentCount.integerValue];
-         [welf.countsTextView setLikesCount:sequence.likeCount.integerValue];
+         [welf updateCountsTextViewForSequence:sequence];
      }];
+}
+
+- (void)updateCountsTextViewForSequence:(VSequence *)sequence
+{
+    self.countsTextView.hideComments = !sequence.permissions.canComment;
+    [self.countsTextView setCommentsCount:sequence.commentCount.integerValue];
+    [self.countsTextView setLikesCount:sequence.likeCount.integerValue];
 }
 
 - (void)setHighlighted:(BOOL)highlighted
@@ -201,12 +208,14 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     if ( sequence.name == nil || sequence.name.length == 0|| self.dependencyManager == nil)
     {
         self.captionTextView.attributedText = nil;
-        self.captionHeight.constant = 0.0;
+        self.captionHeight.constant = 0.0f;
+        self.bottomSpaceCaptionToPreview.constant = -kHiddenCaptionsMarginTop;
     }
     else
     {
         self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
                                                                               attributes:[VSleekStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
+        self.bottomSpaceCaptionToPreview.constant = 0.0f;
     }
     [self layoutIfNeeded];
 }
@@ -320,6 +329,10 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
         CGSize size = [sequence.name frameSizeForWidth:captionWidth
                                          andAttributes:sharedAttributes];
         sizeWithText.height += size.height;
+    }
+    else
+    {
+        sizeWithText.height -= kHiddenCaptionsMarginTop;
     }
     [[self textSizeCache] setObject:[NSValue valueWithCGSize:sizeWithText]
                              forKey:sequence.remoteId];

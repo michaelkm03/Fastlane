@@ -56,4 +56,6 @@
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
+@property (nonatomic, assign) BOOL hideComments;
+
 @end

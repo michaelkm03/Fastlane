@@ -270,6 +270,11 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
 
 - (void)updateCountsTextViewForSequence:(VSequence *)sequence
 {
+    if ( !sequence.permissions.canComment )
+    {
+        self.commentButton.hidden = YES;
+        self.countsTextView.hideComments = YES;
+    }
     [self.countsTextView setCommentsCount:sequence.commentCount.integerValue];
     [self.countsTextView setLikesCount:sequence.likeCount.integerValue];
 }
