@@ -119,7 +119,10 @@ static const CGFloat kActionButtonWidth = 44.0f;
 {
     NSMutableString *identifier = [baseIdentifier mutableCopy];
     
-    [identifier appendString:@"Share."];
+    if ( sequence.permissions.canLike )
+    {
+        [identifier appendString:@"Like."];
+    }
     if ( sequence.permissions.canRepost )
     {
         [identifier appendString:@"Repost."];
@@ -151,8 +154,10 @@ static const CGFloat kActionButtonWidth = 44.0f;
     // Create an array of available action items
     NSMutableArray *justActionItems = [[NSMutableArray alloc] init];
     
-    [justActionItems addObject:self.likeButton];
-    
+    if ( sequence.permissions.canLike )
+    {
+        [justActionItems addObject:self.likeButton];
+    }
     if ( sequence.permissions.canComment )
     {
         [justActionItems addObject:self.commentButton];

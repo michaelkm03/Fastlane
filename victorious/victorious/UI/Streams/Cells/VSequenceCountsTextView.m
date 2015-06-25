@@ -114,7 +114,7 @@ static NSString * const kDividerDelimeter = @"•";
     NSMutableString *displayText = [[NSMutableString alloc] init];
     
     NSString *likesText = nil;
-    if ( self.likesCount > 0 )
+    if ( self.likesCount > 0 && !self.hideLikes )
     {
         NSString *formattedNumberString = [self.numberFormatter stringForInteger:self.likesCount];
         NSString *format = self.likesCount == 1 ? NSLocalizedString( @"LikesSingularFormat", @"" ) : NSLocalizedString( @"LikesPluralFormat", @"" );
@@ -122,7 +122,7 @@ static NSString * const kDividerDelimeter = @"•";
         [displayText appendString:likesText];
     }
     
-    if ( self.likesCount > 0 && self.commentsCount > 0 && !self.hideComments )
+    if ( self.likesCount > 0 && self.commentsCount > 0 && (!self.hideComments && !self.hideLikes) )
     {
         [displayText appendString:[NSString stringWithFormat:@"  %@  ", kDividerDelimeter]];
     }

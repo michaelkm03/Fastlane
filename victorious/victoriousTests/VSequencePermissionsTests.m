@@ -49,7 +49,8 @@
                                 VSelectorName( canFlagSequence ),
                                 VSelectorName( canGIF ),
                                 VSelectorName( canMeme ),
-                                VSelectorName( canQuote ) ];
+                                VSelectorName( canQuote ),
+                                VSelectorName( canLike ) ];
     
     // This loop sets one permission, then iterates throguh all permissions and makes sure that
     // only the one that was set in the raw bitmask value now reads YES while all others read NO

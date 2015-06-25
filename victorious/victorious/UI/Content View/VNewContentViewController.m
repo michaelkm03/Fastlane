@@ -1597,14 +1597,21 @@ referenceSizeForHeaderInSection:(NSInteger)section
     if ( likeButton != nil )
     {
         VSequence *sequence = self.viewModel.sequence;
-        [likeButton addTarget:self action:@selector(selectedLikeButton:) forControlEvents:UIControlEventTouchUpInside];
-        
-        self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
-        [self.expressionsObserver startObservingWithSequence:self.viewModel.sequence onUpdate:^
-         {
-             [likeButton setActive:sequence.isLikedByMainUser.boolValue];
-             [likeButton setCount:sequence.likeCount.integerValue];
-         }];
+        if ( sequence.permissions.canLike )
+        {
+            [likeButton addTarget:self action:@selector(selectedLikeButton:) forControlEvents:UIControlEventTouchUpInside];
+            
+            self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
+            [self.expressionsObserver startObservingWithSequence:sequence onUpdate:^
+             {
+                 [likeButton setActive:sequence.isLikedByMainUser.boolValue];
+                 [likeButton setCount:sequence.likeCount.integerValue];
+             }];
+        }
+        else
+        {
+            likeButton.hidden = YES;
+        }
     }
 }
 

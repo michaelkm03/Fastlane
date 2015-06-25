@@ -145,6 +145,7 @@ const CGFloat kHiddenCaptionsMarginTop = 10.0f;
 - (void)updateCountsTextViewForSequence:(VSequence *)sequence
 {
     self.countsTextView.hideComments = !sequence.permissions.canComment;
+    self.countsTextView.hideLikes = !sequence.permissions.canLike;
     [self.countsTextView setCommentsCount:sequence.commentCount.integerValue];
     [self.countsTextView setLikesCount:sequence.likeCount.integerValue];
 }

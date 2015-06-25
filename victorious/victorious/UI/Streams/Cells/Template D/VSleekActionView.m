@@ -60,11 +60,14 @@ static CGFloat const kActionButtonHeight = 31.0f;
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
         VSequence *sequence = (VSequence *)streamItem;
+        if ( sequence.permissions.canLike )
+        {
+            [identifier appendString:@"Like."];
+        }
         if ( sequence.permissions.canComment )
         {
             [identifier appendString:@"Comment."];
         }
-        [identifier appendString:@"Share."];
         if ( sequence.permissions.canRepost )
         {
             [identifier appendString:@"Repost."];
@@ -192,10 +195,11 @@ static CGFloat const kActionButtonHeight = 31.0f;
     
     [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingSpace]];
     
-    [actionItems addObject:self.likeButton];
-    
-    [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace]];
-    
+    if ( sequence.permissions.canLike )
+    {
+        [actionItems addObject:self.likeButton];
+        [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kCommentSpaceToActions]];
+    }
     if ( sequence.permissions.canComment )
     {
         [actionItems addObject:self.commentButton];

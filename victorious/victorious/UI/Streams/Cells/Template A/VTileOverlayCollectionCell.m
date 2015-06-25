@@ -53,6 +53,8 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
 @property (nonatomic, strong) VSequenceCountsTextView *countsTextView;
 
 @property (nonatomic, strong) NSLayoutConstraint *captionHeight;
+@property (nonatomic, strong) NSLayoutConstraint *commentToLikeButtonHorizontalSpacing;
+@property (nonatomic, strong) NSLayoutConstraint *likeButtonWidth;
 
 @end
 
@@ -167,6 +169,7 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     [_overlayContainer addSubview:_likeButton];
     _likeButton.translatesAutoresizingMaskIntoConstraints = NO;
     [_likeButton v_addWidthConstraint:kButtonWidth];
+    _likeButtonWidth = [_likeButton v_internalWidthConstraint];
     [_likeButton v_addHeightConstraint:kButtonHeight];
     [_overlayContainer addConstraint:[NSLayoutConstraint constraintWithItem:_likeButton attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_overlayContainer attribute:NSLayoutAttributeLeading multiplier:1.0 constant:12.0f]];
     [_overlayContainer addConstraint:[NSLayoutConstraint constraintWithItem:_likeButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_captionTextView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0f]];
@@ -273,7 +276,18 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     if ( !sequence.permissions.canComment )
     {
         self.commentButton.hidden = YES;
-        self.countsTextView.hideComments = YES;
+        self.countsTextView.hideComments = !sequence.permissions.canComment;
+    }
+    if ( !sequence.permissions.canLike )
+    {
+        self.likeButton.hidden = YES;
+        self.likeButtonWidth.constant = 0.0;
+        self.countsTextView.hideLikes = !sequence.permissions.canLike;
+    }
+    else
+    {
+        self.likeButton.hidden = NO;
+        self.likeButtonWidth.constant = kButtonWidth;
     }
     [self.countsTextView setCommentsCount:sequence.commentCount.integerValue];
     [self.countsTextView setLikesCount:sequence.likeCount.integerValue];
