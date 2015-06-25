@@ -150,6 +150,9 @@
 "NotFollowingTitle"     =   "RUH-ROH! YOU HAVEN'T FOLLOWED ANYONE YET";
 "NotFollowingMessage"   =   "Follow other people to see their content in your stream. It's a great way to find new content or make new friends.";
 
+"NoLikersMessage"       =   "Show the community what you think is important by liking your favorite content.";
+"NoLikersTitle"         =   "NOBODY LIKES THIS...YET!";
+
 "ProfileNoFollowersTitle"      =   "BE THE FIRST TO FOLLOW THIS USER";
 "ProfileNoFollowersMessage"    =   "Build your community by following other users. You'll be alerted when they post new content.";
 
@@ -626,6 +629,12 @@
 
 "Nice!" = "Nice!";
 "Edit photo" = "Edit photo";
+
+"CommentsSingularFormat" = "%@ Comment";  // e.g. "1 Comment"
+"CommentsPluralFormat" = "%@ Comments";  // e.g. "20 Comments"
+"LikesSingularFormat" = "%@ Like";  // e.g. "1 Like", where "Like" is a noun
+"LikesPluralFormat" = "%@ Likes";  // e.g. "20 Likes", where "Like" is a noun
+"LikersTitle" = "Likers";
 
 "TEXT" = "TEXT";
 "POLL" = "POLL";

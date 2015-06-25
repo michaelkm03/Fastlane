@@ -555,6 +555,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
     UICollectionViewCell *cell = [self.streamCellFactory collectionView:self.collectionView
                                                       cellForStreamItem:sequence atIndexPath:indexPath];
+    
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
     
     return cell;
@@ -595,6 +596,34 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
                                               preloadedImage:nil
                                             defaultVideoEdit:defaultEdit
                                                   completion:nil];
+}
+
+- (void)willLikeSequence:(VSequence *)sequence completion:(void(^)(BOOL success))completion
+{
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLike];
+    
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                      dependencyManager:self.dependencyManager];
+    [authorization performFromViewController:self context:VAuthorizationContextDefault
+                                          completion:^(BOOL authorized)
+     {
+         if ( authorized )
+         {
+             [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
+                                                       successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+              {
+                  completion( YES );
+                  
+              } failBlock:^(NSOperation *operation, NSError *error)
+              {
+                  completion( NO );
+              }];
+         }
+         else
+         {
+             completion( NO );
+         }
+     }];
 }
 
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view
@@ -639,6 +668,11 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 - (void)showRepostersForSequence:(VSequence *)sequence
 {
     [self.sequenceActionController showRepostersFromViewController:self sequence:sequence];
+}
+
+- (void)willShowLikersForSequence:(VSequence *)sequence fromView:(UIView *)view
+{
+    [self.sequenceActionController showLikersFromViewController:self sequence:sequence];
 }
 
 #pragma mark - Actions

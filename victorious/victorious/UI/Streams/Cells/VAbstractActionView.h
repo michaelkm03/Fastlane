@@ -68,6 +68,11 @@
  */
 - (void)gif:(id)sender;
 
+/**
+ *  Dispatch the sequence like message to the current sequence actions delegate.
+ */
+- (void)like:(id)sender;
+
 @end
 
 /**
@@ -81,11 +86,6 @@
  */
 - (void)updateActionItemsOnBar:(VFlexBar *)actionBar
                    forSequence:(VSequence *)sequence;
-
-/**
- *  Subclasses should update any comment count UI they have here.
- */
-- (void)updateCommentCountForSequence:(VSequence *)sequence;
 
 /**
  *  Subclasses should update any repost buttons for the passed in sequence.

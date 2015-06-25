@@ -48,6 +48,8 @@
 
 #import "VAppInfo.h"
 #import "VDependencyManager+VUserProfile.h"
+#import "VUsersViewController.h"
+#import "VLikersDataSource.h"
 
 @interface VSequenceActionController () <VWorkspaceFlowControllerDelegate>
 
@@ -183,6 +185,35 @@
     [navigationController pushViewController:memeStream animated:YES];
 }
 
+- (void)likeSequence:(VSequence *)sequence fromViewController:(UIViewController *)viewController
+          completion:(void(^)(BOOL success))completion
+{
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLike];
+    
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                      dependencyManager:self.dependencyManager];
+    [authorization performFromViewController:viewController context:VAuthorizationContextDefault
+                                  completion:^(BOOL authorized)
+     {
+         if ( authorized )
+         {
+             [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
+                                                       successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+              {
+                  completion( YES );
+                  
+              } failBlock:^(NSOperation *operation, NSError *error)
+              {
+                  completion( NO );
+              }];
+         }
+         else
+         {
+             completion( NO );
+         }
+     }];
+}
+
 #pragma mark - Repost
 
 - (BOOL)canRespost
@@ -259,6 +290,15 @@
     VReposterTableViewController *vc = [[VReposterTableViewController alloc] initWithDependencyManager:self.dependencyManager];
     vc.sequence = sequence;
     [viewController.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)showLikersFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
+{
+    VUsersViewController *usersViewController = [[VUsersViewController alloc] initWithDependencyManager:self.dependencyManager];
+    usersViewController.title = NSLocalizedString( @"LikersTitle", nil );
+    usersViewController.usersDataSource = [[VLikersDataSource alloc] initWithSequence:sequence];
+    
+    [viewController.navigationController pushViewController:usersViewController animated:YES];
 }
 
 #pragma mark - Share

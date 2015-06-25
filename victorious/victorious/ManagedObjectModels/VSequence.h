@@ -46,6 +46,10 @@
 @property (nonatomic, retain) VTracking *tracking;
 @property (nonatomic, retain) VUser *user;
 @property (nonatomic, retain) NSSet *voteResults;
+@property (nonatomic, retain) NSNumber * likeCount;
+@property (nonatomic, retain) NSNumber * isLikedByMainUser;
+@property (nonatomic, retain) NSSet *likers;
+
 @end
 
 @interface VSequence (CoreDataGeneratedAccessors)
@@ -99,5 +103,10 @@
 - (void)removeVoteResultsObject:(VVoteResult *)value;
 - (void)addVoteResults:(NSSet *)values;
 - (void)removeVoteResults:(NSSet *)values;
+
+- (void)addLikersObject:(VUser *)value;
+- (void)removeLikersObject:(VUser *)value;
+- (void)addLikers:(NSSet *)values;
+- (void)removeLikers:(NSSet *)values;
 
 @end

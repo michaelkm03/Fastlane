@@ -30,6 +30,8 @@
 
 const NSInteger kTooManyNewMessagesErrorCode = 999;
 
+static const NSInteger kDefaultPageSize = 40;
+
 @implementation VObjectManager (Pagination)
 
 #pragma mark - Comment
@@ -402,8 +404,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     
     VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        //If this is the first page, break the relationship to all the old objects.
-        if ([filter.currentPageNumber isEqualToNumber:@(0)])
+        if ( pageType == VPageTypeFirst )
         {
             [sequence removeReposters:sequence.reposters];
         }
@@ -478,7 +479,48 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     return [self.paginationManager loadFilter:filter withPageType:pageType successBlock:fullSuccessBlock failBlock:fail];
 }
 
+#pragma mark - Likers
+
+- (RKManagedObjectRequestOperation *)likersForSequence:(VSequence *)sequence
+                                              pageType:(VPageType)pageType
+                                          successBlock:(VSuccessBlock)success
+                                             failBlock:(VFailBlock)fail
+{
+    VAbstractFilter *filter = [self likersFilterForSequence:sequence];
+    
+    VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        if ( pageType == VPageTypeFirst )
+        {
+            [sequence removeLikers:sequence.likers];
+        }
+        
+        for (VUser *liker in resultObjects)
+        {
+            VUser *user = (VUser *)[sequence.managedObjectContext objectWithID:liker.objectID];
+            [sequence addLikersObject:user];
+        }
+        
+        if ( success != nil )
+        {
+            success(operation, fullResponse, resultObjects);
+        }
+    };
+    
+    return [self.paginationManager loadFilter:filter withPageType:pageType successBlock:fullSuccessBlock failBlock:fail];
+}
+
 #pragma mark - Filter Fetchers
+
+- (VAbstractFilter *)likersFilterForSequence:(VSequence *)sequence
+{
+    NSString *apiPath = [NSString stringWithFormat:@"/api/sequence/liked_by_users/%@/%@/%@", sequence.remoteId, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
+    VAbstractFilter *filter = (VAbstractFilter *)[self.paginationManager filterForPath:apiPath
+                                                                            entityName:[VAbstractFilter entityName]
+                                                                  managedObjectContext:sequence.managedObjectContext];
+    filter.perPageNumber = @(kDefaultPageSize);
+    return filter;
+}
 
 - (VAbstractFilter *)followerFilterForUser:(VUser *)user
 {
@@ -486,7 +528,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     VAbstractFilter *filter = (VAbstractFilter *)[self.paginationManager filterForPath:apiPath
                                                                             entityName:[VAbstractFilter entityName]
                                                                   managedObjectContext:user.managedObjectContext];
-    filter.perPageNumber = @(100);
+    filter.perPageNumber = @(kDefaultPageSize);
     return filter;
 }
 
@@ -496,7 +538,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     VAbstractFilter *filter = (VAbstractFilter *)[self.paginationManager filterForPath:apiPath
                                                                             entityName:[VAbstractFilter entityName]
                                                                   managedObjectContext:user.managedObjectContext];
-    filter.perPageNumber = @(1000);
+    filter.perPageNumber = @(kDefaultPageSize);
     return filter;
 }
 

@@ -32,10 +32,11 @@ static const CGFloat kActionButtonWidth = 44.0f;
 
 @interface VInsetActionView ()
 
-@property (nonatomic, strong) UIButton *shareButton;
-@property (nonatomic, strong) UIButton *gifButton;
-@property (nonatomic, strong) UIButton *memeButton;
-@property (nonatomic, strong) UIButton *repostButton;
+@property (nonatomic, strong) VActionButton *gifButton;
+@property (nonatomic, strong) VActionButton *memeButton;
+@property (nonatomic, strong) VActionButton *repostButton;
+@property (nonatomic, strong) VActionButton *commentButton;
+@property (nonatomic, strong, readwrite) VActionButton *likeButton;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VRepostButtonController *repostButtonController;
@@ -55,22 +56,13 @@ static const CGFloat kActionButtonWidth = 44.0f;
 
 #pragma mark - Property Accessors
 
-- (UIButton *)shareButton
-{
-    if (_shareButton == nil)
-    {
-        _shareButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_shareIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                                            action:@selector(share:)];
-    }
-    return _shareButton;
-}
-
 - (UIButton *)gifButton
 {
     if (_gifButton == nil)
     {
-        _gifButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_gifIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                                          action:@selector(gif:)];
+        UIImage *image = [UIImage imageNamed:@"C_gif"];
+        UIImage *background = [UIImage imageNamed:@"C_background"];
+        _gifButton = [self actionButtonWithImage:image selectedImage:nil backgroundImage:background action:@selector(gif:)];
     }
     return _gifButton;
 }
@@ -79,8 +71,9 @@ static const CGFloat kActionButtonWidth = 44.0f;
 {
     if (_memeButton == nil)
     {
-        _memeButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_memeIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                                           action:@selector(meme:)];
+        UIImage *image = [UIImage imageNamed:@"C_meme"];
+        UIImage *background = [UIImage imageNamed:@"C_background"];
+        _memeButton = [self actionButtonWithImage:image selectedImage:nil backgroundImage:background action:@selector(meme:)];
     }
     return _memeButton;
 }
@@ -89,10 +82,34 @@ static const CGFloat kActionButtonWidth = 44.0f;
 {
     if (_repostButton == nil)
     {
-        _repostButton = [self actionButtonWithImage:[[UIImage imageNamed:@"C_repostIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                                             action:@selector(repost:)];
+        UIImage *image = [UIImage imageNamed:@"C_repost"];
+        UIImage *background = [UIImage imageNamed:@"C_background"];
+        _repostButton = [self actionButtonWithImage:image selectedImage:nil backgroundImage:background action:@selector(repost:)];
     }
     return _repostButton;
+}
+
+- (UIButton *)likeButton
+{
+    if (_likeButton == nil)
+    {
+        UIImage *image = [UIImage imageNamed:@"C_like"];
+        UIImage *active = [UIImage imageNamed:@"C_liked"];
+        UIImage *background = [UIImage imageNamed:@"C_background"];
+        _likeButton = [self actionButtonWithImage:image selectedImage:active backgroundImage:background action:@selector(like:)];
+    }
+    return _likeButton;
+}
+
+- (UIButton *)commentButton
+{
+    if (_commentButton == nil)
+    {
+        UIImage *image = [UIImage imageNamed:@"C_comment"];
+        UIImage *background = [UIImage imageNamed:@"C_background"];
+        _commentButton = [self actionButtonWithImage:image selectedImage:nil backgroundImage:background action:@selector(comment:)];
+    }
+    return _commentButton;
 }
 
 #pragma mark - VUpdateHooks
@@ -115,6 +132,10 @@ static const CGFloat kActionButtonWidth = 44.0f;
     {
         [identifier appendString:@"Gif."];
     }
+    if ( sequence.permissions.canComment )
+    {
+        [identifier appendString:@"Comment."];
+    }
     
     return [NSString stringWithString:identifier];
 }
@@ -129,7 +150,13 @@ static const CGFloat kActionButtonWidth = 44.0f;
     
     // Create an array of available action items
     NSMutableArray *justActionItems = [[NSMutableArray alloc] init];
-    [justActionItems addObject:self.shareButton];
+    
+    [justActionItems addObject:self.likeButton];
+    
+    if ( sequence.permissions.canComment )
+    {
+        [justActionItems addObject:self.commentButton];
+    }
     if ( sequence.permissions.canGIF )
     {
         [justActionItems addObject:self.gifButton];
@@ -181,8 +208,8 @@ static const CGFloat kActionButtonWidth = 44.0f;
     [self.repostButtonController invalidate];
     self.repostButtonController = [[VRepostButtonController alloc] initWithSequence:sequence
                                                                        repostButton:self.repostButton
-                                                                      repostedImage:[UIImage imageNamed:@"C_repostIcon-success"]
-                                                                    unRepostedImage:[UIImage imageNamed:@"C_repostIcon"]];
+                                                                      repostedImage:[UIImage imageNamed:@"C_reposted"]
+                                                                    unRepostedImage:[UIImage imageNamed:@"C_repost"]];
 }
 
 #pragma mark - VHasManagedDependencies
@@ -192,22 +219,24 @@ static const CGFloat kActionButtonWidth = 44.0f;
     _dependencyManager = dependencyManager;
     
     UIColor *imageTintColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-    self.shareButton.tintColor = imageTintColor;
-    self.gifButton.tintColor = imageTintColor;
-    self.memeButton.tintColor = imageTintColor;
-    self.repostButton.tintColor = imageTintColor;
+    self.gifButton.unselectedTintColor = imageTintColor;
+    self.memeButton.unselectedTintColor = imageTintColor;
+    self.repostButton.unselectedTintColor = imageTintColor;
+    self.likeButton.unselectedTintColor = imageTintColor;
+    self.commentButton.unselectedTintColor = imageTintColor;
 }
 
 #pragma mark - Button Factory
 
-- (UIButton *)actionButtonWithImage:(UIImage *)actionImage
-                             action:(SEL)action
+- (VActionButton *)actionButtonWithImage:(UIImage *)actionImage
+                           selectedImage:(UIImage *)actionImageSelected
+                         backgroundImage:(UIImage *)backgroundImage
+                                  action:(SEL)action
 {
-    UIButton *actionButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    VActionButton *actionButton = [VActionButton actionButtonWithImage:[actionImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] selectedImage:[actionImageSelected imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] backgroundImage:[backgroundImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
     
+    actionButton.selectedTintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     actionButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [actionButton setImage:actionImage forState:UIControlStateNormal];
-    actionButton.tintColor = [UIColor blackColor];
     [actionButton addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
     [actionButton v_addWidthConstraint:kActionButtonWidth];
     

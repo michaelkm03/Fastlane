@@ -52,5 +52,8 @@
 @dynamic tracking;
 @dynamic user;
 @dynamic voteResults;
+@dynamic likeCount;
+@dynamic isLikedByMainUser;
+@dynamic likers;
 
 @end
