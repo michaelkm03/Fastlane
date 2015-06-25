@@ -16,6 +16,7 @@ const static int kNumberOfTimeLabels = 5;
 
 const static CGFloat kSpacingOfHashes = 25.0f;
 const static CGFloat kSpacingOfTimeLables = 25.0f;
+const static CGFloat kMarginSpacing = 80.0f;
 
 
 @implementation VTrimmerFlowLayout
@@ -114,20 +115,27 @@ const static CGFloat kSpacingOfTimeLables = 25.0f;
         {
             //position this reusable view relative to the cells frame
             frame = CGRectMake(indexPath.item*(50+kSpacingOfTimeLables), -0, 50, 50);
-         
             attrs.zIndex = 3001;
-            
         }
-        
-        if ((CGRectGetMaxX(frame) < self.collectionView.contentOffset.x)||((CGRectGetMinX(frame) > (self.collectionView.contentOffset.x + CGRectGetWidth(self.collectionView.frame)))))
+        if (CGRectGetMaxX(frame) < (self.collectionView.contentOffset.x - kMarginSpacing))
+        {
+            // asset is too far to the left... shift it to the right
+            NSLog(@"something went too far to the left... popping it right");
+            frame = CGRectMake(self.collectionView.contentOffset.x, 0, 50, 50);
+        }
+        if (CGRectGetMinX(frame) > (self.collectionView.contentOffset.x + CGRectGetWidth(self.collectionView.frame) + kMarginSpacing))
+        {
+            // asset is too far to the right... move it to the left
+            NSLog(@"something went too far to the right... popping it left");
+
+            frame = CGRectMake(self.collectionView.contentOffset.x, 0, 50, 50);
+        }
+        /*
+        if (CGRectGetMaxX(self.collectionView.frame) < CGRectGetMaxX(frame))
         {
             frame = CGRectZero;
-        }
-
-
-        
+        }*/
         attrs.frame = frame;
-        
     }
     return attrs;
 }
