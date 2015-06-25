@@ -136,10 +136,11 @@ static NSString * const kCreationFlowKey = @"createFlow";
 {
     [[VTrackingManager sharedInstance] setValue:VTrackingValueCreatePost forSessionParameterWithKey:VTrackingKeyContext];
     
-    VWorkspaceFlowController *workspaceFlowController = [self.creationFlowShim imageFlowControllerWithAddedDependencies:@{
-        VWorkspaceFlowControllerInitialCaptureStateKey: @(initialCaptureState),
-        VImageToolControllerInitialImageEditStateKey: @(initialImageEdit),
-        VVideoToolControllerInitalVideoEditStateKey: @(initialVideoEdit) }];
+#warning Remember to re-add the edit state stuff 
+//    VWorkspaceFlowController *workspaceFlowController = [self.creationFlowShim imageFlowControllerWithAddedDependencies:@{
+//        VWorkspaceFlowControllerInitialCaptureStateKey: @(initialCaptureState),
+//        VImageToolControllerInitialImageEditStateKey: @(initialImageEdit),
+//        VVideoToolControllerInitalVideoEditStateKey: @(initialVideoEdit) }];
     
     VDependencyManager *dependencyManagerForContentType = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{VCreationFlowControllerCreationTypeKey: @(VCreationTypeImage)}];
     VCreationFlowController *flowController = [[VCreationFlowController alloc] initWithDependencyManager:dependencyManagerForContentType];
