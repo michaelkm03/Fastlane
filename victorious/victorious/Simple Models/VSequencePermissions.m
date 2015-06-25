@@ -69,7 +69,6 @@ typedef NS_OPTIONS( NSUInteger, VSequencePermission )
 
 - (BOOL)canComment
 {
-    return NO;
     return (self.value & VSequencePermissionCanComment) != 0ul;
 }
 
