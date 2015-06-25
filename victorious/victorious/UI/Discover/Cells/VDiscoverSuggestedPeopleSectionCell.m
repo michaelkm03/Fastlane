@@ -6,15 +6,15 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VSuggestedPeopleCell.h"
-#import "VSuggestedPersonCollectionViewCell.h"
+#import "VDiscoverSuggestedPeopleSectionCell.h"
+#import "VDiscoverSuggestedPersonCell.h"
 #import "VDependencyManager.h"
 
-@implementation VSuggestedPeopleCell
+@implementation VDiscoverSuggestedPeopleSectionCell
 
 + (CGFloat)cellHeight
 {
-    return [VSuggestedPersonCollectionViewCell cellHeight];
+    return [VDiscoverSuggestedPersonCell cellHeight];
 }
 
 - (void)awakeFromNib

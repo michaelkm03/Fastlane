@@ -1,12 +1,12 @@
 //
-//  VSuggestedPersonCollectionViewCell.m
+//  VDiscoverSuggestedPersonCell.m
 //  victorious
 //
 //  Created by Patrick Lynch on 10/3/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VSuggestedPersonCollectionViewCell.h"
+#import "VDiscoverSuggestedPersonCell.h"
 #import "VDefaultProfileImageView.h"
 #import "VFollowUserControl.h"
 #import "VFollowersTextFormatter.h"
@@ -15,7 +15,7 @@
 #import "VFollowResponder.h"
 #import <KVOController/FBKVOController.h>
 
-@interface VSuggestedPersonCollectionViewCell()
+@interface VDiscoverSuggestedPersonCell()
 
 @property (nonatomic, weak) IBOutlet VFollowUserControl *followButton;
 @property (nonatomic, weak) IBOutlet VDefaultProfileImageView *profileImageView;
@@ -24,7 +24,7 @@
 
 @end
 
-@implementation VSuggestedPersonCollectionViewCell
+@implementation VDiscoverSuggestedPersonCell
 
 + (CGFloat)cellHeight
 {

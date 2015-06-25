@@ -10,7 +10,7 @@
 
 #import "VHasManagedDependencies.h"
 
-@interface VSuggestedPeopleCell : UITableViewCell <VHasManagedDependencies>
+@interface VDiscoverSuggestedPeopleSectionCell : UITableViewCell <VHasManagedDependencies>
 
 + (CGFloat)cellHeight;
 

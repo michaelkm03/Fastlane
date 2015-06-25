@@ -13,4 +13,6 @@
 
 + (NSArray *)descriptors;
 
++ (RKEntityMapping *)smallEntityMapping;
+
 @end

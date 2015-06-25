@@ -9,7 +9,7 @@
 #import "VModernResetPasswordViewController.h"
 
 // Views + Helpers
-#import "VLoginFlowControllerResponder.h"
+#import "VLoginFlowControllerDelegate.h"
 #import "VPasswordValidator.h"
 #import "VInlineValidationTextField.h"
 #import "UIColor+VBrightness.h"
@@ -22,7 +22,7 @@
 static NSString * const kPromptKey = @"prompt";
 static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
-@interface VModernResetPasswordViewController () <UITextFieldDelegate, VBackgroundContainer>
+@interface VModernResetPasswordViewController () <UITextFieldDelegate, VBackgroundContainer, VLoginFlowScreen>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -36,6 +36,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @end
 
 @implementation VModernResetPasswordViewController
+
+@synthesize delegate = _delegate;
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -175,14 +177,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 {
     if ([self shouldChangePassword])
     {
-        id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(updateWithNewPassword:)
-                                                                               withSender:self];
-        if (flowControllerResponder == nil)
-        {
-            NSAssert(false, @"We need a flow controller for changing password");
-        }
-
-        [flowControllerResponder updateWithNewPassword:self.passwordTextField.text];
+        [self.delegate updateWithNewPassword:self.passwordTextField.text];
     }
 }
 
