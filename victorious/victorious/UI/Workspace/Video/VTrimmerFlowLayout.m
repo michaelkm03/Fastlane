@@ -130,7 +130,7 @@ const static CGFloat kSpacingOfTimeLables = 25.0f;
         }
         else if (CGRectGetMinX(frame) > (self.collectionView.contentOffset.x + CGRectGetWidth(self.collectionView.frame)))
         {
-            NSLog(@"went off screen to ther gith");
+            frame = CGRectMake(self.collectionView.contentOffset.x + CGRectGetWidth(self.collectionView.frame) - 50, 0, 50, 50);
         }
         
     }
