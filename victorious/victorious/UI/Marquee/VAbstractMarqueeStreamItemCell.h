@@ -10,13 +10,14 @@
 #import "VBaseCollectionViewCell.h"
 #import "VStreamCellSpecialization.h"
 #import "VHighlightContainer.h"
+#import "VStreamCellTracking.h"
 
 @class VStreamItem, VUser, VAbstractMarqueeStreamItemCell, VDependencyManager, VStreamItemPreviewView;
 
 /**
     A collection view cell that displays stream item content in a marquee
  */
-@interface VAbstractMarqueeStreamItemCell : VBaseCollectionViewCell <VStreamCellComponentSpecialization, VHighlighting>
+@interface VAbstractMarqueeStreamItemCell : VBaseCollectionViewCell <VStreamCellComponentSpecialization, VHighlighting, VStreamCellTracking>
 
 @property (nonatomic, strong) VStreamItem *streamItem; ///< Stream item to display
 @property (nonatomic, strong) IBOutlet UIView *previewContainer; ///< The view that will be filled with a VSequencePreviewView to display 
