@@ -18,13 +18,15 @@
 #import "VConstants.h"
 #import "MBProgressHUD.h"
 #import "VDependencyManager+VUserProfile.h"
+#import "VScrollPaginator.h"
 
 static const int kReloadOffset = 12;
 
-@interface VFollowerTableViewController ()
+@interface VFollowerTableViewController () <VScrollPaginatorDelegate>
 
 @property (nonatomic, strong)   NSArray    *followers;
 @property (nonatomic) BOOL isMe;
+@property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 
 @end
 
@@ -35,6 +37,9 @@ static const int kReloadOffset = 12;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.scrollPaginator = [[VScrollPaginator alloc] init];
+    self.scrollPaginator.delegate = self;
 
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
     
@@ -100,16 +105,18 @@ static const int kReloadOffset = 12;
                                                                    forIndexPath:indexPath];
     cell.profile = self.followers[indexPath.row];
     cell.dependencyManager = self.dependencyManager;
-    
-    
-    NSInteger maximumNumberOfRows = [tableView numberOfRowsInSection:indexPath.section];
-    if (indexPath.row >= maximumNumberOfRows - kReloadOffset)
-    {
-        [self loadMoreFollowers];
-    }
-    
 
     return cell;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [self.scrollPaginator scrollViewDidScroll:scrollView];
+}
+
+- (void)shouldLoadNextPage
+{
+    [self loadMoreFollowers];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
