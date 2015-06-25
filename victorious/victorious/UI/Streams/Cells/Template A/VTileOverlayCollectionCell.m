@@ -293,7 +293,7 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     [self.contentContainer v_addPinToTopToSubview:self.previewView];
     [self.contentContainer v_addPinToLeadingTrailingToSubview:self.previewView];
     
-    CGFloat bottom = 0.0; //CGRectGetHeight(self.captionTextView.frame) + kButtonHeight;
+    CGFloat bottom = CGRectGetHeight(self.captionTextView.frame) + kButtonHeight;
     NSDictionary *views = @{ @"previewView" : self.previewView };
     NSDictionary *metrics = @{ @"bottom" : @(bottom) };
     NSArray *constraintsV = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[previewView]-bottom-|" options:kNilOptions metrics:metrics views:views];

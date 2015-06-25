@@ -56,7 +56,7 @@
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gyd-x0-d0C" customClass="VSleekActionView">
-                        <rect key="frame" x="-1" y="422" width="304" height="41"/>
+                        <rect key="frame" x="-1" y="414" width="304" height="41"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="41" id="fqP-L2-g3J"/>
@@ -66,7 +66,7 @@
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <constraints>
-                <constraint firstItem="gyd-x0-d0C" firstAttribute="top" secondItem="0yG-Rl-S8H" secondAttribute="bottom" constant="8" id="4Lz-bm-mk1"/>
+                <constraint firstItem="gyd-x0-d0C" firstAttribute="top" secondItem="0yG-Rl-S8H" secondAttribute="bottom" id="4Lz-bm-mk1"/>
                 <constraint firstItem="6Ls-Bo-1cB" firstAttribute="top" secondItem="21k-Mb-C9q" secondAttribute="bottom" id="6Ss-kI-5vd"/>
                 <constraint firstItem="21k-Mb-C9q" firstAttribute="top" secondItem="k5V-32-ew9" secondAttribute="top" id="7cz-ba-bg5"/>
                 <constraint firstItem="0yG-Rl-S8H" firstAttribute="leading" secondItem="k5V-32-ew9" secondAttribute="leading" id="8bB-MR-Pfk"/>
