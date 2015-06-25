@@ -171,7 +171,7 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
                                                                            withSender:self];
     if (flowControllerResponder == nil)
     {
-        NSAssert(false, @"We need a flow controller in teh respodner chain for facebook.");
+        NSAssert(false, @"We need a flow controller in the respodner chain for facebook.");
     }
     [flowControllerResponder selectedFacebookAuthorizationWithCompletion:^(BOOL success)
     {
