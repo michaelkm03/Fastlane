@@ -361,7 +361,7 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
         // Caption view size
         CGSize captionSize = [sequence.name frameSizeForWidth:textAreaWidth
                                                 andAttributes:[self sequenceDescriptionAttributesWithDependencyManager:dependencyManager]];
-        sizeWithText.height += VCEIL(captionSize.height) + kTextMargins.top;
+        sizeWithText.height += VCEIL(captionSize.height);
     }
     
     sizeWithText.height += kCountsTextViewHeight;
