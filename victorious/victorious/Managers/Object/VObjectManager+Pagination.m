@@ -486,7 +486,7 @@ const NSInteger kTooManyNewMessagesErrorCode = 999;
     VAbstractFilter *filter = (VAbstractFilter *)[self.paginationManager filterForPath:apiPath
                                                                             entityName:[VAbstractFilter entityName]
                                                                   managedObjectContext:user.managedObjectContext];
-    filter.perPageNumber = @(1000);
+    filter.perPageNumber = @(100);
     return filter;
 }
 
