@@ -43,7 +43,6 @@
 @dynamic notifications;
 @dynamic pollResults;
 @dynamic recentSequences;
-@dynamic remixedSequences;
 @dynamic previewAssets;
 @dynamic repostedSequences;
 

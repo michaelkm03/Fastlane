@@ -36,7 +36,6 @@
 @property (nonatomic, retain) NSSet *notifications;
 @property (nonatomic, retain) NSSet *pollResults;
 @property (nonatomic, retain) NSOrderedSet *recentSequences;
-@property (nonatomic, retain) NSSet *remixedSequences;
 @property (nonatomic, retain) NSSet *previewAssets;
 @property (nonatomic, retain) NSSet *repostedSequences;
 

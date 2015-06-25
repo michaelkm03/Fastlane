@@ -51,7 +51,6 @@ static NSString * const kShimmerAnimationKey = @"shimmerAnimation";
 
 - (void)sharedInit
 {
-    _image = [UIImage imageNamed:@"pat_geometric"];
     _renderedImageCache = [[NSCache alloc] init];
 }
 

@@ -8,7 +8,7 @@
 
 extern NSString * const VInviteFriendTableViewCellNibName;
 
-@class VUser, VFollowUserControl;
+@class VUser, VFollowUserControl, VDependencyManager;
 
 @interface VInviteFriendTableViewCell : UITableViewCell
 
@@ -17,6 +17,7 @@ extern NSString * const VInviteFriendTableViewCellNibName;
 @property (nonatomic, readonly) BOOL haveRelationship;
 @property (nonatomic, weak) IBOutlet VFollowUserControl *followUserControl;
 @property (nonatomic, assign) BOOL shouldAnimateFollowing;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 - (void)updateFollowStatus;
 

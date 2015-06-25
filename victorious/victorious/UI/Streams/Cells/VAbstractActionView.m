@@ -90,11 +90,11 @@
 - (void)comment:(id)sender
 {
     UIResponder<VSequenceActionsDelegate> *targetForComment = [self targetForAction:@selector(willCommentOnSequence:fromView:)
-                                              withSender:self];
+                                                                         withSender:self];
     if (targetForComment == nil)
     {
         NSAssert(false, @"We need an object in the respodner chain for commenting.");
-
+        
     }
     [targetForComment willCommentOnSequence:self.sequence
                                    fromView:self];
@@ -120,7 +120,7 @@
     {
         NSAssert(false, @"We need an object in the responder chain for resposting.");
     }
-
+    
     self.reposting = YES;
     __weak typeof(self) welf = self;
     [targetForRepost willRepostSequence:self.sequence

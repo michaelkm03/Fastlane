@@ -14,7 +14,7 @@
 @class VSequence;
 
 /**
- *  VAbstractActionView provides a commmon interface for views that use a horizontal 
+ *  VAbstractActionView provides a commmon interface for views that use a horizontal
  *  list of action buttons for interactivity with a particlar sequence.
  */
 @interface VAbstractActionView : UIView <VStreamCellComponentSpecialization>
@@ -38,7 +38,7 @@
 @end
 
 /**
- *  Call these methods from within subclasses to dispatch the approrpiate sequenceActionDelegate 
+ *  Call these methods from within subclasses to dispatch the approrpiate sequenceActionDelegate
  *  method. Theses are garuanteed to check delegate implementaiton for optional methods.
  */
 @interface VAbstractActionView (VActionMethods)
@@ -71,7 +71,7 @@
 @end
 
 /**
- *  Methods in this category should be subclassed for the action view to update the 
+ *  Methods in this category should be subclassed for the action view to update the
  *  current state of its buttons.
  */
 @interface VAbstractActionView (VUpdateHooks)

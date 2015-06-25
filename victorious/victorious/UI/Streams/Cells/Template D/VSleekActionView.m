@@ -58,7 +58,7 @@ static CGFloat const kActionButtonHeight = 31.0f;
                             baseIdentifier:(NSString *)baseIdentifier
 {
     NSMutableString *identifier = [baseIdentifier mutableCopy];
-
+    
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
         VSequence *sequence = (VSequence *)streamItem;

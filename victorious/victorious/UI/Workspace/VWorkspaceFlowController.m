@@ -43,7 +43,7 @@
 #import "VVCameraShutterOverAnimator.h"
 #import "VWorkspaceToWorkspaceAnimator.h"
 
-// Here be dragons
+// Object association
 #import <objc/runtime.h>
 
 @import AssetsLibrary;
@@ -81,6 +81,8 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 @property (nonatomic, strong) VWorkspacePresenter *workspacePresenter;
 
+@property (nonatomic, assign) BOOL showFailureAlert;
+
 @end
 
 @implementation VWorkspaceFlowController
@@ -88,7 +90,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
-    if (self)
+    if ( self != nil )
     {
         _dependencyManager = dependencyManager;
         _state = VWorkspaceFlowControllerStateCapture;
@@ -101,9 +103,13 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         VSequence *sequenceToRemix = [dependencyManager templateValueOfType:[VSequence class] forKey:VWorkspaceFlowControllerSequenceToRemixKey];
         if (sequenceToRemix != nil)
         {
-            [self extractCapturedMediaURLwithSequenceToRemix:sequenceToRemix];
-            [self transitionFromState:_state
-                              toState:VWorkspaceFlowControllerStateEdit];
+            _showFailureAlert = ![sequenceToRemix isRemixableType];
+            if ( !_showFailureAlert )
+            {
+                [self extractCapturedMediaURLwithSequenceToRemix:sequenceToRemix];
+                [self transitionFromState:_state
+                                  toState:VWorkspaceFlowControllerStateEdit];
+            }
         }
         else
         {
@@ -254,6 +260,17 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 - (UIViewController *)flowRootViewController
 {
+    if ( self.showFailureAlert )
+    {
+        UIAlertController *cannotRemixAlert = [UIAlertController alertControllerWithTitle:nil
+                                                                                  message:NSLocalizedString(@"GenericFailMessage", nil)
+                                                                           preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *closeAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                              style:UIAlertActionStyleDefault
+                                                            handler:nil];
+        [cannotRemixAlert addAction:closeAction];
+        return cannotRemixAlert;
+    }
     return self.flowNavigationController;
 }
 
@@ -334,7 +351,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     }
     else if (sequence.isVideo)
     {
-        self.capturedMediaURL = [[[sequence firstNode] mp4Asset] dataURL] ;
+        self.capturedMediaURL = [[[sequence firstNode] mp4Asset] dataURL];
     }
 }
 

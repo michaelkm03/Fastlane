@@ -396,6 +396,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                      }
                  }];
             };
+            customCell.dependencyManager = self.dependencyManager;
             cell = customCell;
         }
     }

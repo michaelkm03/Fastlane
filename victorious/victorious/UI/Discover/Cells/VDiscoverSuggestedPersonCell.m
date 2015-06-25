@@ -26,28 +26,6 @@
 
 @implementation VDiscoverSuggestedPersonCell
 
-+ (UIImage *)followedImage
-{
-    static UIImage *followedImage;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^(void)
-                  {
-                      followedImage = [UIImage imageNamed:@"folllowedIcon"];
-                  });
-    return followedImage;
-}
-
-+ (UIImage *)followImage
-{
-    static UIImage *followImage;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^(void)
-                  {
-                      followImage = [UIImage imageNamed:@"folllowIcon"];
-                  });
-    return followImage;
-}
-
 + (CGFloat)cellHeight
 {
     return 155.0f;
@@ -65,6 +43,7 @@
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
+    self.followButton.dependencyManager = dependencyManager;
     if ( _dependencyManager != nil )
     {
         self.usernameLabel.font = [_dependencyManager fontForKey:VDependencyManagerLabel3FontKey];

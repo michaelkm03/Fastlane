@@ -19,8 +19,6 @@
 - (void)setUser:(VUser *)user
        animated:(BOOL)animated;
 
-+ (UIImage *)followedImage;
-+ (UIImage *)followImage;
 + (CGFloat)cellHeight;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;

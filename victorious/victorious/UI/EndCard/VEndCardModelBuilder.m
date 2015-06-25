@@ -12,8 +12,16 @@
 #import "VEndCardModel.h"
 #import "VUser.h"
 #import "VEndCardActionModel.h"
+#import "VDependencyManager.h"
 
 #define FORCE_SHOW_DEBUG_END_CARD 0
+
+static NSString * const kGifActionIconKey = @"action_gif_icon";
+static NSString * const kRepostActionIconKey = @"action_repost_icon";
+static NSString * const kRepostSuccessActionIconKey = @"action_repost_success_icon";
+static NSString * const kShareActionIconKey = @"action_share_icon";
+static NSString * const kMemeActionIconKey = @"action_meme_icon";
+
 
 @interface VEndCardModelBuilder()
 
@@ -31,7 +39,7 @@
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
-    if (self)
+    if ( self != nil )
     {
         _dependencyManager = dependencyManager;
     }
@@ -84,13 +92,13 @@
 - (NSArray *)createActionsWithPermissions:(VSequencePermissions *)permissions
 {
     NSMutableArray *actions = [[NSMutableArray alloc] init];
-    if ( permissions.canRemix )
+    if ( permissions.canGIF )
     {
         [actions addObject:[self actionForGIF]];
     }
     if ( permissions.canRepost )
     {
-        [actions addObject:[self actionForRespost]];
+        [actions addObject:[self actionForRepost]];
     }
     if ( permissions.canMeme )
     {
@@ -108,18 +116,18 @@
     VEndCardActionModel *action = [[VEndCardActionModel alloc] init];
     action.identifier = VEndCardActionIdentifierGIF;
     action.textLabelDefault = NSLocalizedString( @"GIF", @"Create a GIF from this video" );
-    action.iconImageNameDefault = @"action_gif";
+    action.iconImageDefault = [self.dependencyManager imageForKey:kGifActionIconKey];
     return action;
 }
 
-- (VEndCardActionModel *)actionForRespost
+- (VEndCardActionModel *)actionForRepost
 {
     VEndCardActionModel *action = [[VEndCardActionModel alloc] init];
     action.identifier = VEndCardActionIdentifierRepost;
     action.textLabelDefault = NSLocalizedString( @"Repost", @"Post a copy of this video" );
     action.textLabelSuccess = NSLocalizedString( @"Reposted", @"Indicating the video has already been reposted." );
-    action.iconImageNameDefault = @"action_repost";
-    action.iconImageNameSuccess = @"action_success";
+    action.iconImageDefault = [self.dependencyManager imageForKey:kRepostActionIconKey];
+    action.iconImageSuccess = [self.dependencyManager imageForKey:kRepostSuccessActionIconKey];
     return action;
 }
 
@@ -128,7 +136,7 @@
     VEndCardActionModel *action = [[VEndCardActionModel alloc] init];
     action.identifier = VEndCardActionIdentifierShare;
     action.textLabelDefault = NSLocalizedString( @"Share", @"Share this video" );
-    action.iconImageNameDefault = @"action_share";
+    action.iconImageDefault = [self.dependencyManager imageForKey:kShareActionIconKey];
     return action;
 }
 
@@ -137,7 +145,7 @@
     VEndCardActionModel *action = [[VEndCardActionModel alloc] init];
     action.identifier = VEndCardActionIdentifierMeme;
     action.textLabelDefault = NSLocalizedString( @"Meme", @"Create a meme from this video" );
-    action.iconImageNameDefault = @"action_meme";
+    action.iconImageDefault = [self.dependencyManager imageForKey:kMemeActionIconKey];
     return action;
 }
 

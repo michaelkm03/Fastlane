@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class VDependencyManager;
+
 IB_DESIGNABLE
 
 /**
@@ -25,5 +27,7 @@ IB_DESIGNABLE
  */
 - (void)setFollowing:(BOOL)following
             animated:(BOOL)animated;
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
