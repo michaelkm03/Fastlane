@@ -367,7 +367,7 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
 {
     CGSize sizeWithText = initialSize;
     
-    NSValue *textSizeValue = [[self textSizeCache] objectForKey:sequence.name];
+    NSValue *textSizeValue = [[self textSizeCache] objectForKey:sequence.remoteId];
     if ( textSizeValue != nil )
     {
         return [textSizeValue CGSizeValue];
@@ -382,7 +382,7 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
         sizeWithText.height += VCEIL(captionSize.height);
     }
     
-    [[self textSizeCache] setObject:[NSValue valueWithCGSize:sizeWithText] forKey:sequence.name];
+    [[self textSizeCache] setObject:[NSValue valueWithCGSize:sizeWithText] forKey:sequence.remoteId];
     return sizeWithText;
 }
 

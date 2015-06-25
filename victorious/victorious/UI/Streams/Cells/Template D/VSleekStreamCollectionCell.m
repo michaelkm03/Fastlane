@@ -300,7 +300,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 {
     CGSize sizeWithText = initialSize;
     
-    NSValue *textSizeValue = [[self textSizeCache] objectForKey:sequence.name];
+    NSValue *textSizeValue = [[self textSizeCache] objectForKey:sequence.remoteId];
     if (textSizeValue != nil)
     {
         return [textSizeValue CGSizeValue];
@@ -322,7 +322,7 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
         sizeWithText.height += size.height;
     }
     [[self textSizeCache] setObject:[NSValue valueWithCGSize:sizeWithText]
-                             forKey:sequence.name];
+                             forKey:sequence.remoteId];
     return sizeWithText;
 }
 

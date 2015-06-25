@@ -348,7 +348,7 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
     // Top Margins
     sizeWithText.height = sizeWithText.height + kTextMargins.top;
     
-    NSValue *textSizeValue = [[self textSizeCache] objectForKey:sequence.name];
+    NSValue *textSizeValue = [[self textSizeCache] objectForKey:sequence.remoteId];
     if (textSizeValue != nil)
     {
         return [textSizeValue CGSizeValue];
@@ -368,7 +368,7 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
     
     // Bottom Margins
     sizeWithText.height += kTextMargins.bottom;
-    [[self textSizeCache] setObject:[NSValue valueWithCGSize:sizeWithText] forKey:sequence.name];
+    [[self textSizeCache] setObject:[NSValue valueWithCGSize:sizeWithText] forKey:sequence.remoteId];
     return sizeWithText;
 }
 
