@@ -28,7 +28,6 @@ static const CGFloat kAspectRatio                   = 0.94375f; //< 320 ÷ 302
 static const CGFloat kInsetCellHeaderHeight         = 50.0f;
 static const CGFloat kInsetCellActionViewHeight     = 41.0f;
 static const CGFloat kCountsTextViewHeight          = 20.0f;
-static const CGFloat kTextSeparatorHeight           = 6.0f;
 static const CGFloat kMaxCaptionHeight              = 80.0f;
 static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0f };
 
@@ -43,8 +42,7 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
 @property (nonatomic, strong) VSequenceCountsTextView *countsTextView;
 @property (nonatomic, strong) VInsetActionView *actionView;
 @property (nonatomic, strong) NSLayoutConstraint *previewViewHeightConstraint;
-@property (nonatomic, strong) NSLayoutConstraint *captionHeight;
-
+@property (nonatomic, strong) NSLayoutConstraint *countsVerticalSpacing;
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 
 @end
@@ -130,9 +128,7 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
                                                                 attribute:NSLayoutAttributeBottom
                                                                multiplier:1.0f
                                                                   constant:kTextMargins.top]];
-    _captionHeight = [NSLayoutConstraint constraintWithItem:_captionTextView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:kMaxCaptionHeight];
-    [_captionTextView addConstraint:_captionHeight];
-    
+    [_captionTextView addConstraint:[NSLayoutConstraint constraintWithItem:_captionTextView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:kMaxCaptionHeight]];
     
     _actionView = [[VInsetActionView alloc] initWithFrame:CGRectZero];
     [self.contentView addSubview:_actionView];
@@ -149,13 +145,14 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
     _countsTextView.translatesAutoresizingMaskIntoConstraints = NO;
     [_countsTextView v_addHeightConstraint:kCountsTextViewHeight];
     [self.contentView v_addPinToLeadingTrailingToSubview:_countsTextView leading:kTextMargins.left trailing:kTextMargins.right];
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_countsTextView
-                                                                  attribute:NSLayoutAttributeTop
-                                                                  relatedBy:NSLayoutRelationEqual
-                                                                     toItem:_captionTextView
-                                                                  attribute:NSLayoutAttributeBottom
-                                                                 multiplier:1.0f
-                                                                   constant:kTextSeparatorHeight]];
+    _countsVerticalSpacing = [NSLayoutConstraint constraintWithItem:_countsTextView
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:_captionTextView
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1.0f
+                                                           constant:0.0];
+    [self.contentView addConstraint:_countsVerticalSpacing];
     
     // Fixes constraint errors when resizing for certain aspect ratios
     self.contentView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleHeight;
@@ -217,12 +214,6 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
     self.header.sequence = sequence;
     [self updateCaptionViewForSequence:sequence];
     self.actionView.sequence = sequence;
-    if ([self.captionTextView v_internalHeightConstraint] != nil)
-    {
-        // CaptionTextView sometimes screws with layout with compression resistance.
-        [self.captionTextView removeConstraint:[self.captionTextView v_internalHeightConstraint]];
-    }
-    // Remove current height constraint on preview view to account for potential new aspect ratio
     [self.contentView removeConstraint:self.previewViewHeightConstraint];
     [self setNeedsUpdateConstraints];
     
@@ -269,15 +260,16 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
     if ( sequence.name == nil || sequence.name.length == 0 || self.dependencyManager == nil)
     {
         self.captionTextView.attributedText = nil;
-        self.captionHeight.constant = 0.0;
+        [self.captionTextView layoutIfNeeded];
+        CGFloat spacing = CGRectGetHeight( self.captionTextView.frame );
+        self.countsVerticalSpacing.constant = -spacing;
     }
     else
     {
         self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
                                                                               attributes:[VInsetStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
-        self.captionHeight.constant = kMaxCaptionHeight;
+        self.countsVerticalSpacing.constant = 0.0;
     }
-    [self.captionTextView layoutIfNeeded];
 }
 
 #pragma mark - VBackgroundContainer
