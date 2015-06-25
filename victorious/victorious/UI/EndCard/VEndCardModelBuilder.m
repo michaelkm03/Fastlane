@@ -39,7 +39,7 @@ static NSString * const kMemeActionIconKey = @"action_meme_icon";
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
-    if (self)
+    if ( self != nil )
     {
         _dependencyManager = dependencyManager;
     }
@@ -92,13 +92,13 @@ static NSString * const kMemeActionIconKey = @"action_meme_icon";
 - (NSArray *)createActionsWithPermissions:(VSequencePermissions *)permissions
 {
     NSMutableArray *actions = [[NSMutableArray alloc] init];
-    if ( permissions.canRemix )
+    if ( permissions.canGIF )
     {
         [actions addObject:[self actionForGIF]];
     }
     if ( permissions.canRepost )
     {
-        [actions addObject:[self actionForRespost]];
+        [actions addObject:[self actionForRepost]];
     }
     if ( permissions.canMeme )
     {
@@ -120,7 +120,7 @@ static NSString * const kMemeActionIconKey = @"action_meme_icon";
     return action;
 }
 
-- (VEndCardActionModel *)actionForRespost
+- (VEndCardActionModel *)actionForRepost
 {
     VEndCardActionModel *action = [[VEndCardActionModel alloc] init];
     action.identifier = VEndCardActionIdentifierRepost;
