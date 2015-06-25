@@ -34,8 +34,8 @@ static NSString * const kDependencyManagerShareTypeKey = @"shareType";
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSString *title = [dependencyManager stringForKey:VDependencyManagerTitleKey];
-    UIImage *icon = [dependencyManager tintedImageForKey:kDependencyManagerIconKey];
-    UIImage *selectedIcon = [dependencyManager tintedImageForKey:kDependencyManagerSelectedIconKey];
+    UIImage *icon = [dependencyManager imageForKey:kDependencyManagerIconKey];
+    UIImage *selectedIcon = [dependencyManager imageForKey:kDependencyManagerSelectedIconKey];
     VShareType shareType = [self shareTypeFromString:[dependencyManager stringForKey:kDependencyManagerShareTypeKey]];
     return [self initWithTitle:title
                           icon:icon
