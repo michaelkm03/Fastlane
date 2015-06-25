@@ -63,6 +63,8 @@ static NSString * const VSuggestedUsersPromptKey    = @"prompt";
     NSString *ownerName = appInfo.ownerName;
     NSURL *profileImageURL = appInfo.profileImageURL;
     
+    self.view.backgroundColor = [UIColor clearColor];
+    
     self.creatorAvatarImageView.layer.cornerRadius = CGRectGetMidX( self.creatorAvatarImageView.bounds );
     self.creatorAvatarImageView.layer.borderWidth = 1.0f;
     self.creatorAvatarImageView.layer.borderColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey].CGColor;
