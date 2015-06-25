@@ -15,6 +15,7 @@
 // Views + Helpers
 #import "VLoginFlowControllerDelegate.h"
 #import "UIView+AutoLayout.h"
+#import "UIAlertController+VSimpleAlert.h"
 
 // ViewControllers
 #import "VPromptCarouselViewController.h"
@@ -158,11 +159,9 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 
 - (void)showErrorWithMessage:(NSString *)message
 {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"LoginFail", @"")
-                                                                   message:message
-                                                            preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"") style:UIAlertActionStyleCancel handler:nil];
-    [alert addAction:action];
+    UIAlertController *alert = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"LoginFail", @"")
+                                                                         message:message
+                                                            andCancelButtonTitle:NSLocalizedString(@"OK", @"")];
     [self presentViewController:alert animated:YES completion:nil];
 }
 
