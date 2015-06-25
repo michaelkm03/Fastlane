@@ -45,7 +45,6 @@ static NSString * const kBackButtonTitleKey = @"backButtonText";
 static NSString * const kPlaceholderTextKey = @"placeholderText";
 static NSString * const kShareContainerBackgroundColor = @"color.shareContainer";
 static NSString * const kCaptionContainerBackgroundColor = @"color.captionContainer";
-static NSString * const kCaptionSeparatorColor = @"color.caption.separator";
 static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 @interface VPublishViewController () <UICollisionBehaviorDelegate, UITextViewDelegate, UIGestureRecognizerDelegate, VContentInputAccessoryViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, VPublishShareCollectionViewCellDelegate, VBackgroundContainer>
@@ -137,7 +136,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     
     [self setupCaptionTextView];
     
-    self.captionSeparator.backgroundColor = [self.dependencyManager colorForKey:kCaptionSeparatorColor];
+    self.captionSeparator.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
     
     NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
     UIFont *cancelButtonFont = [self.dependencyManager fontForKey:VDependencyManagerButton2FontKey];

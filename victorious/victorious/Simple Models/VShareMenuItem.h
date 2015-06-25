@@ -25,15 +25,19 @@ typedef NS_ENUM(NSInteger, VShareType)
     Creates a new menu item with the provided properties.
  
     @param title The display title of this share menu item.
-    @param icon The unselected icon of this share menu item.
+    @param unselectedIcon The unselected icon of this share menu item.
     @param selectedIcon The selected icon of this share menu item.
+    @param unselectedColor The unselected color of this share menu item.
+    @param selectedColor The selected color of this share menu item.
     @param shareType A typedef describing what social network this share menu item represents.
  
     @return A new share menu item setup with the provided properties.
  */
 - (instancetype)initWithTitle:(NSString *)title
-                         icon:(UIImage *)icon
+               unselectedIcon:(UIImage *)unselectedIcon
                  selectedIcon:(UIImage *)selectedIcon
+              unselectedColor:(UIColor *)unselectedColor
+                selectedColor:(UIColor *)selectedColor
                     shareType:(VShareType)shareType;
 
 /**
@@ -42,8 +46,10 @@ typedef NS_ENUM(NSInteger, VShareType)
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 @property (nonatomic, readonly) NSString *title; ///< The display title of this share menu item.
-@property (nonatomic, readonly) UIImage *icon; ///< The unselected icon of this share menu item.
+@property (nonatomic, readonly) UIImage *unselectedIcon; ///< The unselected icon of this share menu item.
 @property (nonatomic, readonly) UIImage *selectedIcon; ///< The selected icon of this share menu item.
+@property (nonatomic, readonly) UIColor *unselectedColor; ///< The unselected color of this share menu item.
+@property (nonatomic, readonly) UIColor *selectedColor; ///< The selected color of this share menu item.
 @property (nonatomic, readonly) VShareType shareType; ///< A typedef describing what social network this share menu item represents.
 
 @end
