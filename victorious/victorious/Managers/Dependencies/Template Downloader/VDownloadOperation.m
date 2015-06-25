@@ -8,6 +8,9 @@
 
 #import "VDownloadOperation.h"
 
+NSString * const VDownloadOperationErrorDomain = @"VDownloadOperationErrorDomain";
+const NSInteger VDownloadOperationErrorBadStatusCode = 100;
+
 @interface VDownloadOperation ()
 
 @property (nonatomic, readonly) VDownloadOperationCompletion completion;
@@ -32,51 +35,38 @@
 
 - (void)main
 {
-    __block NSTimeInterval retryTimer = self.retryInterval;
-    __block BOOL success = NO;
     self.semaphore = dispatch_semaphore_create(0);
     
-    while ( !success )
+    self.downloadTask = [[NSURLSession sharedSession] downloadTaskWithURL:self.url
+                                                        completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error)
     {
-        self.downloadTask = [[NSURLSession sharedSession] downloadTaskWithURL:self.url
-                                                            completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error)
+        if ( error != nil || ![self isOKResponseCode:[(NSHTTPURLResponse *)response statusCode]] )
         {
-            if ( error != nil || ![self isOKResponseCode:[(NSHTTPURLResponse *)response statusCode]] )
+            NSError *errorToPassToCompletionBlock = error;
+            if ( errorToPassToCompletionBlock == nil )
             {
-                NSString *errorMessage = error.localizedDescription;
-                if ( errorMessage == nil )
-                {
-                    NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
-                    errorMessage = [NSString stringWithFormat:@"%ld %@", (long)statusCode, [NSHTTPURLResponse localizedStringForStatusCode:statusCode]];
-                }
-                
-                // purposely using NSLog rather than VLog; I want this log to be present in release builds to help troubleshoot template errors at runtime.
-                NSLog( @"Error downloading [%@]: %@", self.url.absoluteString, errorMessage );
-                
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(retryTimer * NSEC_PER_SEC)),
-                               dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
-                               ^(void)
-                {
-                    retryTimer *= 2;
-                    dispatch_semaphore_signal(self.semaphore);
-                });
-                return;
+                NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
+                NSString *errorMessage = [NSString stringWithFormat:@"%ld %@", (long)statusCode, [NSHTTPURLResponse localizedStringForStatusCode:statusCode]];
+                errorToPassToCompletionBlock = [NSError errorWithDomain:VDownloadOperationErrorDomain code:VDownloadOperationErrorBadStatusCode userInfo:@{ NSLocalizedDescriptionKey: errorMessage }];
             }
+            
+            // purposely using NSLog rather than VLog; I want this log to be present in release builds to help troubleshoot template errors at runtime.
+            NSLog( @"Error downloading [%@]: %@", self.url.absoluteString, errorToPassToCompletionBlock.localizedDescription );
+            
             if ( self.completion != nil )
             {
-                self.completion(location);
+                self.completion(errorToPassToCompletionBlock, response, nil);
             }
-            success = YES;
-            dispatch_semaphore_signal(self.semaphore);
-        }];
-        [self.downloadTask resume];
-        dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
-        
-        if ( self.cancelled )
-        {
-            break;
+            return;
         }
-    }
+        if ( self.completion != nil )
+        {
+            self.completion(nil, response, location);
+        }
+        dispatch_semaphore_signal(self.semaphore);
+    }];
+    [self.downloadTask resume];
+    dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
 }
 
 - (void)cancel

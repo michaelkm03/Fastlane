@@ -43,17 +43,51 @@
     stubRequest(@"GET", url.absoluteString).andReturn(200).withBody(testBody);
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"download callback"];
-    self.operation = [[VDownloadOperation alloc] initWithURL:url completion:^(NSURL *downloadedFile)
+    self.operation = [[VDownloadOperation alloc] initWithURL:url completion:^(NSError *error, NSURLResponse *response, NSURL *downloadedFile)
     {
         NSData *data = [NSData dataWithContentsOfURL:downloadedFile];
         NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         XCTAssertEqualObjects(string, testBody);
+        XCTAssertNil(error);
         [expectation fulfill];
     }];
     [self.operationQueue addOperation:self.operation];
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
 }
 
+- (void)testDownloadFailed
+{
+    NSURL *url = [NSURL URLWithString:@"http://www.example.com/one"];
+    NSError *err = [NSError errorWithDomain:@"really bad" code:666 userInfo:nil];
+
+    stubRequest(@"GET", url.absoluteString).andFailWithError(err);
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"download callback"];
+    self.operation = [[VDownloadOperation alloc] initWithURL:url completion:^(NSError *error, NSURLResponse *response, NSURL *downloadedFile)
+    {
+        XCTAssertEqualObjects(err, error);
+        [expectation fulfill];
+    }];
+    [self.operationQueue addOperation:self.operation];
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+}
+
+- (void)testNotOKResponseCode
+{
+    NSURL *url = [NSURL URLWithString:@"http://www.example.com/two"];
+    
+    stubRequest(@"GET", url.absoluteString).andReturn(500);
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"download callback"];
+    self.operation = [[VDownloadOperation alloc] initWithURL:url completion:^(NSError *error, NSURLResponse *response, NSURL *downloadedFile)
+    {
+        XCTAssertNotNil(error);
+        [expectation fulfill];
+    }];
+    [self.operationQueue addOperation:self.operation];
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+}
+/*
 - (void)testRetry
 {
     __block BOOL failedOnce = NO;
@@ -119,5 +153,6 @@
     [self.operationQueue addOperation:self.operation];
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
 }
+*/
 
 @end
