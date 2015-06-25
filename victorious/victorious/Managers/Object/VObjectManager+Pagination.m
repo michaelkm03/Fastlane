@@ -30,7 +30,7 @@
 
 const NSInteger kTooManyNewMessagesErrorCode = 999;
 
-static const NSInteger kDefaultPageSize = 20;
+static const NSInteger kDefaultPageSize = 40;
 
 @implementation VObjectManager (Pagination)
 

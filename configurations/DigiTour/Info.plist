@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>${ProductPrefix}DigiTour Official App</string>
+	<string>${ProductPrefix}Digi</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.getvictorious.${ProductPrefix}digitourofficialapp</string>
 	<key>CFBundleName</key>
@@ -30,7 +30,7 @@
 	<key>QAAppID</key>
 	<integer>56</integer>
 	<key>CreatorSalutation</key>
-	<string>DigiTour Official App</string>
+	<string>Digi</string>
 	<key>FlurryAPIKey</key>
 	<string>XQW49HP6WX3SGG7GV6GQ</string>
 </dict>

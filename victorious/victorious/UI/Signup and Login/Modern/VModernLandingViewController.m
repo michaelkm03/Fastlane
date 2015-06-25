@@ -15,6 +15,7 @@
 // Views + Helpers
 #import "VLoginFlowControllerDelegate.h"
 #import "UIView+AutoLayout.h"
+#import "UIAlertController+VSimpleAlert.h"
 
 // ViewControllers
 #import "VPromptCarouselViewController.h"
@@ -152,6 +153,16 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 - (IBAction)loginWithFacebook:(id)sender
 {
     [self.delegate selectedFacebookAuthorization];
+}
+
+#pragma mark - Helpers
+
+- (void)showErrorWithMessage:(NSString *)message
+{
+    UIAlertController *alert = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"LoginFail", @"")
+                                                                         message:message
+                                                            andCancelButtonTitle:NSLocalizedString(@"OK", @"")];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - VBackgroundContainer

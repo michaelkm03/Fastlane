@@ -9,7 +9,7 @@
                 {
                     "filterIndex": 0,
                     "picker": {
-                      "name": "vertical.multiplePicker",
+                      "name": "vertical.multiplePicker"
                     },
                     "title": "hashtag",
                     "icon": {
@@ -140,25 +140,25 @@
                 "title":"post to facebook",
                 "icon":
                 {
-                    "imageURL": "share_facebook",
-                    "tintColor":
-                    {
-                        "red": 102,
-                        "alpha": 255,
-                        "blue": 102,
-                        "green": 102
-                    }
+                    "imageURL": "share_facebook"
                 },
                 "selectedIcon":
                 {
-                    "imageURL": "share_facebook",
-                    "tintColor":
-                    {
-                        "red": 244,
-                        "alpha": 255,
-                        "blue": 35,
-                        "green": 39
-                    }
+                    "imageURL": "share_facebook"
+                },
+                "color.accent":
+                {
+                    "red": 59,
+                    "alpha": 255,
+                    "blue": 152,
+                    "green": 89
+                },
+                "color.accent.secondary":
+                {
+                    "red": 102,
+                    "alpha": 255,
+                    "blue": 102,
+                    "green": 102
                 }
             },
             {
@@ -166,25 +166,25 @@
                 "title":"post to twitter",
                 "icon":
                 {
-                    "imageURL": "share_twitter",
-                    "tintColor":
-                    {
-                        "red": 102,
-                        "alpha": 255,
-                        "blue": 102,
-                        "green": 102
-                    }
+                    "imageURL": "share_twitter"
                 },
                 "selectedIcon":
                 {
-                    "imageURL": "share_twitter",
-                    "tintColor":
-                    {
-                        "red": 244,
-                        "alpha": 255,
-                        "blue": 35,
-                        "green": 39
-                    }
+                    "imageURL": "share_twitter"
+                },
+                "color.accent":
+                {
+                    "red": 50,
+                    "alpha": 255,
+                    "blue": 218,
+                    "green": 106
+                },
+                "color.accent.secondary":
+                {
+                    "red": 102,
+                    "alpha": 255,
+                    "blue": 102,
+                    "green": 102
                 }
             }
         ],
@@ -224,19 +224,19 @@
             "blue": 237,
             "green": 233
         },
-        "color.caption.separator":
-        {
-            "red": 0,
-            "alpha": 255,
-            "blue": 0,
-            "green": 0
-        },
-        "color.switch":
+        "color.accent":
         {
             "red": 0,
             "alpha": 255,
             "blue": 0,
             "green": 255
+        },
+        "color.accent.secondary":
+        {
+            "red": 0,
+            "alpha": 255,
+            "blue": 0,
+            "green": 0
         },
         "color.text.placeholder":
         {
@@ -302,20 +302,6 @@
         {
             "fontSize": 18,
             "fontName": "Helvetica"
-        },
-        "color.accent":
-        {
-            "red": 244,
-            "alpha": 255,
-            "blue": 35,
-            "green": 39
-        },
-        "color.accent.secondary":
-        {
-            "red": 102,
-            "alpha": 255,
-            "blue": 102,
-            "green": 102
         },
         "color.text.secondary":
         {

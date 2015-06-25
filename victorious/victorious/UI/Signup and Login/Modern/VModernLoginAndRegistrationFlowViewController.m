@@ -263,11 +263,6 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
         {
             [self onAuthenticationFinishedWithSuccess:success];
         }
-        else
-        {
-            NSString *message = NSLocalizedString(@"GenericFailMessage", @"");
-            [self showErrorWithMessage:message];
-        }
     }];
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterSelected];
