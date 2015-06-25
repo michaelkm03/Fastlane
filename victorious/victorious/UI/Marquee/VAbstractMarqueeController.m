@@ -169,8 +169,8 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
      {
          // Calculate visible ratio for the whole cell
          const CGRect intersection = CGRectIntersection( streamVisibleRect, cell.frame );
-         const float visibleRatio = CGRectGetWidth( intersection ) / CGRectGetWidth( cell.frame );
-         CGFloat roundedRatio = ceilf(visibleRatio * 100) / 100;
+         const CGFloat visibleRatio = CGRectGetWidth( intersection ) / CGRectGetWidth( cell.frame );
+         CGFloat roundedRatio = VCEIL(visibleRatio * 100) / 100;
          [self collectionViewCell:cell didUpdateCellVisibility:roundedRatio];
      }];
 }

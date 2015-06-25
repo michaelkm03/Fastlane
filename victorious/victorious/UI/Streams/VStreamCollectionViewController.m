@@ -845,7 +845,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
         {
             // Calculate visible ratio for the whole cell
             const CGRect intersection = CGRectIntersection( streamVisibleRect, cell.frame );
-            const float visibleRatio = CGRectGetHeight( intersection ) / CGRectGetHeight( cell.frame );
+            const CGFloat visibleRatio = CGRectGetHeight( intersection ) / CGRectGetHeight( cell.frame );
             [self collectionViewCell:cell didUpdateCellVisibility:visibleRatio];
         }
         
