@@ -64,6 +64,8 @@
 	<string>VWorkspaceViewController</string>
 	<key>workspace</key>
 	<string>VWorkspaceShimDestination</string>
+	<key>imageVideoLibary.screen</key>
+	<string>VImageVideoLibraryViewController</string>
 	<key>workspaceText</key>
 	<string>VTextWorkspaceFlowController</string>
 	<key>sideMenu.scaffold</key>

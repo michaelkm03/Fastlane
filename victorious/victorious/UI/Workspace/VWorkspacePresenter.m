@@ -22,6 +22,9 @@
 #import "VImageToolController.h"
 #import "VVideoToolController.h"
 
+// New CreationUI
+#import "VCreationFlowController.h"
+
 // Action sheet
 #import "VAlertController.h"
 #import "VCreateSheetViewController.h"
@@ -138,7 +141,9 @@ static NSString * const kCreationFlowKey = @"createFlow";
         VImageToolControllerInitialImageEditStateKey: @(initialImageEdit),
         VVideoToolControllerInitalVideoEditStateKey: @(initialVideoEdit) }];
     
-    [self.viewControllerToPresentOn presentViewController:workspaceFlowController.flowRootViewController
+    VDependencyManager *dependencyManagerForContentType = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{VCreationFlowControllerCreationTypeKey: @(VCreationTypeImage)}];
+    VCreationFlowController *flowController = [[VCreationFlowController alloc] initWithDependencyManager:dependencyManagerForContentType];
+    [self.viewControllerToPresentOn presentViewController:flowController
                                                  animated:YES
                                                completion:nil];
 }

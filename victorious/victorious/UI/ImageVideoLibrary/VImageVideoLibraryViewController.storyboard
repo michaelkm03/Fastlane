@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="wNb-de-0q3">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--Image Video Library View Controller-->
+        <scene sceneID="B9P-N5-ysR">
+            <objects>
+                <viewController id="wNb-de-0q3" customClass="VImageVideoLibraryViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="flT-EO-4Q8"/>
+                        <viewControllerLayoutGuide type="bottom" id="ky4-75-pUK"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="POz-Ex-Y5d">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Image Video Library" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RED-la-Usw">
+                                <rect key="frame" x="224" y="289" width="153" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qmy-Hq-xw6">
+                                <rect key="frame" x="16" y="550" width="54" height="30"/>
+                                <state key="normal" title="Camera">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="tappedCamera:" destination="wNb-de-0q3" eventType="touchUpInside" id="w8i-il-8ns"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="unl-Gs-o4P">
+                                <rect key="frame" x="536" y="550" width="48" height="30"/>
+                                <state key="normal" title="Search">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="tappedSearch:" destination="wNb-de-0q3" eventType="touchUpInside" id="n3H-QO-2hU"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ky4-75-pUK" firstAttribute="top" secondItem="qmy-Hq-xw6" secondAttribute="bottom" constant="20" id="0Zd-K3-CLK"/>
+                            <constraint firstAttribute="centerY" secondItem="RED-la-Usw" secondAttribute="centerY" id="6AJ-nJ-Nvq"/>
+                            <constraint firstItem="ky4-75-pUK" firstAttribute="top" secondItem="unl-Gs-o4P" secondAttribute="bottom" constant="20" id="E0r-HY-Gwe"/>
+                            <constraint firstItem="unl-Gs-o4P" firstAttribute="trailing" secondItem="POz-Ex-Y5d" secondAttribute="trailingMargin" id="Fgv-sA-2Vm"/>
+                            <constraint firstItem="qmy-Hq-xw6" firstAttribute="leading" secondItem="POz-Ex-Y5d" secondAttribute="leadingMargin" id="Rdq-Mb-ZYV"/>
+                            <constraint firstAttribute="centerX" secondItem="RED-la-Usw" secondAttribute="centerX" id="ZBh-vL-0ap"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="lCR-ab-gK0"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8wn-IY-18Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="927" y="368"/>
+        </scene>
+    </scenes>
+</document>

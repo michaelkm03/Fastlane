@@ -1,5 +1,5 @@
 //
-//  VStandardCreationFlowController.h
+//  VCreationFlowController.h
 //  victorious
 //
 //  Created by Michael Sena on 6/24/15.
@@ -7,13 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VCreationTypes.h"
+#import "VHasManagedDependencies.h"
 
-@class VStandardCreationFlowController;
+@class VCreationFlowController;
 
 /**
  *  A delegate for responding to events of the creation flow controller.
  */
-@protocol VStandardCreationFlowControllerDelegate <NSObject>
+@protocol VCreationFlowControllerDelegate <NSObject>
 
 @required
 
@@ -24,7 +26,7 @@
  *  @param previewImage            A preview image representing the just created content.
  *  @param capturedMediaURL        An NSURL of the location of the rendered content.
  */
-- (void)creationFLowController:(VStandardCreationFlowController *)creationFlowController
+- (void)creationFLowController:(VCreationFlowController *)creationFlowController
       finishedWithPreviewImage:(UIImage *)previewImage
               capturedMediaURL:(NSURL *)capturedMediaURL;
 
@@ -34,12 +36,18 @@
  *  Notifies the delgate of a cancel. Presenters should dismiss the creationFlowController here. 
  *  If not implemented the creation flow controller will dismiss itself.
  */
-- (void)creationFlowControllerDidCancel:(VStandardCreationFlowController *)creationFlowController;
+- (void)creationFlowControllerDidCancel:(VCreationFlowController *)creationFlowController;
 
 @end
 
-@interface VStandardCreationFlowController : UINavigationController
+/**
+ *  Use this key to inject the appropriate VCreationType into the CreationFlowController. 
+ *  Wrap the enum value in an NSNumber like so: ```VCreationTypeImage```.
+ */
+extern NSString * const VCreationFlowControllerCreationTypeKey;
 
-@property (nonatomic, weak) id <VStandardCreationFlowControllerDelegate> creationFlowDelegate;
+@interface VCreationFlowController : UINavigationController <VHasManagedDependencies>
+
+@property (nonatomic, weak) id <VCreationFlowControllerDelegate> creationFlowDelegate;
 
 @end
