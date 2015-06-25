@@ -30,7 +30,7 @@ extern NSString * const VEndCardActionIdentifierMeme;
 
 @property (nonatomic, strong) NSString *textLabelDefault;
 @property (nonatomic, strong) NSString *textLabelSuccess;
-@property (nonatomic, strong) NSString *iconImageNameDefault;
-@property (nonatomic, strong) NSString *iconImageNameSuccess;
+@property (nonatomic, strong) UIImage *iconImageDefault;
+@property (nonatomic, strong) UIImage *iconImageSuccess;
 
 @end

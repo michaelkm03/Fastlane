@@ -16,15 +16,11 @@
 
 static CGFloat const kCommentWidth = 68.0f;
 static CGFloat const kActionButtonHeight = 31.0f;
+static NSString * const kCommentIconKey = @"commentIcon";
 
 @implementation VRoundedCommentButton
 
 #pragma mark - UIView
-
-- (void)layoutSubviews
-{
-    [self setImage:[UIImage imageNamed:@"D_commentIcon"] forState:UIControlStateNormal];
-}
 
 - (CGSize)intrinsicContentSize
 {
@@ -37,6 +33,7 @@ static CGFloat const kActionButtonHeight = 31.0f;
 {
     self.unselectedColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.titleLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+    [self setImage:[dependencyManager imageForKey:kCommentIconKey] forState:UIControlStateNormal];
 }
 
 @end

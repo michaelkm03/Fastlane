@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "VEndCardActionModel.h"
 
+@class VDependencyManager;
+
 /**
  A collection view cell shown in the end card that offers users a way to
  perform actions using the current sequence, such as share, respost, etc.
@@ -38,7 +40,7 @@
  cell will be empty (no title or image) until this is called with valid
  values assigned to propertes of `VEndCardActionModel`.
  */
-- (void)setModel:(VEndCardActionModel *)model;
+- (void)populateWithDependencyManager:(VDependencyManager *)dependencyManager andModel:(VEndCardActionModel *)model;
 
 /**
  Sets the title label font.

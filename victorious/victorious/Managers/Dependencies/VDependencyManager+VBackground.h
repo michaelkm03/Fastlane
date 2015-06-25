@@ -16,7 +16,7 @@
 @interface VDependencyManager (VBackground)
 
 /**
- *  A background or nil if unable to find one.
+ *  A background or nil if unable to find one for the default background key.
  */
 - (VBackground *)background;
 
@@ -24,5 +24,10 @@
  *  A background to use in place of content while loading.
  */
 - (VBackground *)loadingBackground;
+
+/**
+ *  A background for the specified key.
+ */
+- (VBackground *)backgroundForKey:(NSString *)key;
 
 @end

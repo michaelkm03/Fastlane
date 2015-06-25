@@ -14,8 +14,8 @@
 #import "VFileCache.h"
 #import "VFileCache+VVoteType.h"
 #import "VPurchaseStringMaker.h"
-#import "VCreatorInfoHelper.h"
 #import "VDependencyManager.h"
+#import "VCreatorInfoHelper.h"
 
 static const CGFloat kRestorePurchaseDescriptionFontSize = 11.0f;
 static const CGFloat kRestorePurchaseDescriptionGrayLevel = 0.557f;

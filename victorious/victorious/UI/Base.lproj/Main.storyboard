@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2yS-vh-N7a">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2yS-vh-N7a">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
@@ -146,7 +146,8 @@
                                     <constraint firstAttribute="width" constant="49" id="E2U-1I-a7J"/>
                                     <constraint firstAttribute="height" constant="49" id="ci2-zL-inf"/>
                                 </constraints>
-                                <state key="normal" image="Close">
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" image="cameraButtonBack">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -474,7 +475,7 @@
                                     <constraint firstAttribute="height" constant="54" placeholder="YES" id="qUi-pL-afI"/>
                                 </constraints>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="20" placeholderIntrinsicHeight="20" image="SearchIconSmall" translatesAutoresizingMaskIntoConstraints="NO" id="xTc-ax-2nu">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="20" placeholderIntrinsicHeight="20" image="A_search_small_icon" translatesAutoresizingMaskIntoConstraints="NO" id="xTc-ax-2nu">
                                 <rect key="frame" x="13" y="18" width="20" height="20"/>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
@@ -1071,7 +1072,7 @@
                                     <constraint firstAttribute="height" constant="54" placeholder="YES" id="n2g-Me-wG1"/>
                                 </constraints>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="20" placeholderIntrinsicHeight="20" image="SearchIconSmall" translatesAutoresizingMaskIntoConstraints="NO" id="eda-2b-Ysq">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="20" placeholderIntrinsicHeight="20" image="A_search_small_icon" translatesAutoresizingMaskIntoConstraints="NO" id="eda-2b-Ysq">
                                 <rect key="frame" x="13" y="18" width="20" height="20"/>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
@@ -1401,6 +1402,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="A_search_small_icon" width="20" height="20"/>
         <image name="Close" width="17" height="17"/>
         <image name="MessageCamera" width="22" height="23"/>
         <image name="PollCreateOr" width="48" height="52"/>
@@ -1408,6 +1410,7 @@
         <image name="PostDelete" width="30" height="30"/>
         <image name="SearchIcon" width="30" height="31"/>
         <image name="SearchIconSmall" width="20" height="20"/>
+        <image name="cameraButtonBack" width="22" height="17"/>
         <image name="refreshIcon" width="13" height="15"/>
         <image name="user-icon" width="51" height="74"/>
     </resources>

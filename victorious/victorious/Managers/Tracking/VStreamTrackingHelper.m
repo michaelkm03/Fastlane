@@ -91,7 +91,8 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     
     NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
                               VTrackingKeyTimeStamp : [NSDate date],
-                              VTrackingKeyUrls : sequence.tracking.cellView };
+                              VTrackingKeyUrls : sequence.tracking.cellView,
+                              VTrackingKeyStreamId : stream.trackingIdentifier ?: @""};
     [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream
                                        parameters:params
                                           eventId:sequence.remoteId];

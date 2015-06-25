@@ -17,8 +17,6 @@
 #import "VSequence.h"
 #import "VUser.h"
 
-#import "VFollowUserControl.h"
-
 #import "VAuthorizedAction.h"
 
 @interface VReposterTableViewController ()
@@ -95,6 +93,8 @@
     {
         [self followActionForCell:weakCell];
     };
+    
+    cell.dependencyManager = self.dependencyManager;
     
     return cell;
 }

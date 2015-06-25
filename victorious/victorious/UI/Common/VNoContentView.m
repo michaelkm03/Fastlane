@@ -115,4 +115,24 @@ static NSString * const kMessageFontKey = @"font.heading4";
     return size;
 }
 
+- (void)resetInitialAnimationState
+{
+    self.alpha = 0.0;
+    const CGFloat scale = 0.8f;
+    self.transform = CGAffineTransformMakeScale( scale, scale );
+}
+
+- (void)animateTransitionIn
+{
+    [UIView animateWithDuration:0.5f
+                          delay:0.2f
+         usingSpringWithDamping:0.5f
+          initialSpringVelocity:0.5f
+                        options:kNilOptions animations:^
+     {
+         self.alpha = 1.0f;
+         self.transform = CGAffineTransformIdentity;
+     } completion:nil];
+}
+
 @end

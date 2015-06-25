@@ -12,7 +12,6 @@
 #import "VUserProfileViewController.h"
 
 //Cells
-#import "VInviteFriendTableViewCell.h"
 #import "VFollowerTableViewCell.h"
 
 #import "VUser.h"

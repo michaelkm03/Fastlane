@@ -61,9 +61,13 @@ typedef NS_ENUM(NSInteger, VDefaultVideoEdit)
  *  @param sequence             A valid sequence. Can't be nil.
  *  @param dependencyManager    A valid dependency manager.
  */
-- (void)showRemixersOnNavigationController:(UINavigationController *)navigationController
-                                  sequence:(VSequence *)sequence
-                      andDependencyManager:(VDependencyManager *)dependencyManager;
+- (void)showGiffersOnNavigationController:(UINavigationController *)navigationController
+                                 sequence:(VSequence *)sequence
+                     andDependencyManager:(VDependencyManager *)dependencyManager;
+
+- (void)showMemersOnNavigationController:(UINavigationController *)navigationController
+                                sequence:(VSequence *)sequence
+                    andDependencyManager:(VDependencyManager *)dependencyManager;
 
 - (void)repostActionFromViewController:(UIViewController *)viewController
                                   node:(VNode *)node;
@@ -88,5 +92,11 @@ typedef NS_ENUM(NSInteger, VDefaultVideoEdit)
                            sequence:(VSequence *)sequence;
 
 - (void)flagActionForSequence:(VSequence *)sequence fromViewController:(UIViewController *)viewController;
+
+- (void)showLikersFromViewController:(UIViewController *)viewControlle
+                            sequence:(VSequence *)sequence;
+
+- (void)likeSequence:(VSequence *)sequence fromViewController:(UIViewController *)viewController
+          completion:(void(^)(BOOL success))completion;
 
 @end

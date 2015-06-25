@@ -20,6 +20,8 @@
 "Notifications"         =   "Notifications";
 "Comments"              =   "Comments";
 "Remixes"               =   "Remixes";
+"GIFs"                  =   "GIFs";
+"Memes"                 =   "Memes";
 "OK"                    =   "OK";
 "CancelButton"          =   "Cancel";
 "DeleteButton"          =   "Delete";
@@ -148,6 +150,9 @@
 "NotFollowingTitle"     =   "RUH-ROH! YOU HAVEN'T FOLLOWED ANYONE YET";
 "NotFollowingMessage"   =   "Follow other people to see their content in your stream. It's a great way to find new content or make new friends.";
 
+"NoLikersMessage"       =   "Show the community what you think is important by liking your favorite content.";
+"NoLikersTitle"         =   "NOBODY LIKES THIS...YET!";
+
 "ProfileNoFollowersTitle"      =   "BE THE FIRST TO FOLLOW THIS USER";
 "ProfileNoFollowersMessage"    =   "Build your community by following other users. You'll be alerted when they post new content.";
 
@@ -162,8 +167,11 @@
 "NoRepostersTitle"      =   "BE THE 1st TO REPOST!";
 "NoRepostersMessage"    =   "Share this content with all of your followers!";
 
-"NoRemixersTitle"       =   "BE THE 1ST TO REMIX!";
-"NoRemixersMessage"     =   "Make this content your own by adding commentary, additional video clips, and more!";
+"NoGiffersTitle"       =   "BE THE 1ST TO GIF!";
+"NoGiffersMessage"     =   "Make a GIF by selecting your favorite clip from this video and sharing it with other fans!";
+
+"NoMemersTitle"       =   "BE THE 1ST TO MEME!";
+"NoMemersMessage"     =   "Make this content your own by making it into a meme and sharing it with other fans!";
 
 // strings for both UGC and creator
 "UGCSharePollFormat"    =   "Check out this poll!";       //Check out this poll! <URL>
@@ -578,12 +586,12 @@
 "We encountered an error trying to edit this video." = "We encountered an error trying to edit this video.";
 
 "#nofilter" = "#nofilter";
-"create a meme" = "create a meme";
-"create a quote" = "create a quote";
+"Create a meme" = "Create a meme";
+"Create a quote" = "Create a quote";
 "Create a GIF" = "Create a GIF";
 "Type your text here!" = "Type your text here!";
 "GIF" = "GIF";
-"quote" = "quote";
+"Quote" = "Quote";
 "GIF MODE" = "GIF MODE";
 "VIDEO MODE" = "VIDEO MODE";
 "Write a caption (optional)" = "Write a caption (optional)";
@@ -621,6 +629,12 @@
 
 "Nice!" = "Nice!";
 "Edit photo" = "Edit photo";
+
+"CommentsSingularFormat" = "%@ Comment";  // e.g. "1 Comment"
+"CommentsPluralFormat" = "%@ Comments";  // e.g. "20 Comments"
+"LikesSingularFormat" = "%@ Like";  // e.g. "1 Like", where "Like" is a noun
+"LikesPluralFormat" = "%@ Likes";  // e.g. "20 Likes", where "Like" is a noun
+"LikersTitle" = "Likers";
 
 "TEXT" = "TEXT";
 "POLL" = "POLL";

@@ -9,7 +9,7 @@
                 {
                     "filterIndex": 0,
                     "picker": {
-                      "name": "vertical.multiplePicker",
+                      "name": "vertical.multiplePicker"
                     },
                     "title": "hashtag",
                     "icon": {
@@ -140,25 +140,25 @@
                 "title":"post to facebook",
                 "icon":
                 {
-                    "imageURL": "share_facebook",
-                    "tintColor":
-                    {
-                        "red": 102,
-                        "alpha": 255,
-                        "blue": 102,
-                        "green": 102
-                    }
+                    "imageURL": "share_facebook"
                 },
                 "selectedIcon":
                 {
-                    "imageURL": "share_facebook",
-                    "tintColor":
-                    {
-                        "red": 244,
-                        "alpha": 255,
-                        "blue": 35,
-                        "green": 39
-                    }
+                    "imageURL": "share_facebook"
+                },
+                "color.accent":
+                {
+                    "red": 59,
+                    "alpha": 255,
+                    "blue": 152,
+                    "green": 89
+                },
+                "color.accent.secondary":
+                {
+                    "red": 102,
+                    "alpha": 255,
+                    "blue": 102,
+                    "green": 102
                 }
             },
             {
@@ -166,25 +166,25 @@
                 "title":"post to twitter",
                 "icon":
                 {
-                    "imageURL": "share_twitter",
-                    "tintColor":
-                    {
-                        "red": 102,
-                        "alpha": 255,
-                        "blue": 102,
-                        "green": 102
-                    }
+                    "imageURL": "share_twitter"
                 },
                 "selectedIcon":
                 {
-                    "imageURL": "share_twitter",
-                    "tintColor":
-                    {
-                        "red": 244,
-                        "alpha": 255,
-                        "blue": 35,
-                        "green": 39
-                    }
+                    "imageURL": "share_twitter"
+                },
+                "color.accent":
+                {
+                    "red": 50,
+                    "alpha": 255,
+                    "blue": 218,
+                    "green": 106
+                },
+                "color.accent.secondary":
+                {
+                    "red": 102,
+                    "alpha": 255,
+                    "blue": 102,
+                    "green": 102
                 }
             }
         ],
@@ -224,19 +224,19 @@
             "blue": 237,
             "green": 233
         },
-        "color.caption.separator":
-        {
-            "red": 0,
-            "alpha": 255,
-            "blue": 0,
-            "green": 0
-        },
-        "color.switch":
+        "color.accent":
         {
             "red": 0,
             "alpha": 255,
             "blue": 0,
             "green": 255
+        },
+        "color.accent.secondary":
+        {
+            "red": 0,
+            "alpha": 255,
+            "blue": 0,
+            "green": 0
         },
         "color.text.placeholder":
         {
@@ -303,20 +303,6 @@
             "fontSize": 18,
             "fontName": "Helvetica"
         },
-        "color.accent":
-        {
-            "red": 244,
-            "alpha": 255,
-            "blue": 35,
-            "green": 39
-        },
-        "color.accent.secondary":
-        {
-            "red": 102,
-            "alpha": 255,
-            "blue": 102,
-            "green": 102
-        },
         "color.text.secondary":
         {
             "red": 255,
@@ -334,7 +320,7 @@
             "tools": [
                 {
                     "selectedIcon": {
-                        "imageURL": "textSelected"
+                        "imageURL": "textIconSelected"
                     },
                     "picker": {
                         "name": "vertical.picker"
@@ -357,7 +343,7 @@
                                 "blue": 255,
                                 "green": 255
                             },
-                            "placeholderText": "create a meme",
+                            "placeholderText": "Create a meme",
                             "strokeColor": {
                                 "red": 0,
                                 "alpha": 1,
@@ -373,7 +359,7 @@
                                 "fontSize": 23,
                                 "fontName": "PTSans-Narrow"
                             },
-                            "title": "quote",
+                            "title": "Quote",
                             "horizontalAlignment": "center",
                             "color.text": {
                                 "red": 255,
@@ -394,7 +380,7 @@
                     ],
                     "name": "text.tool",
                     "icon": {
-                        "imageURL": "text"
+                        "imageURL": "textIcon"
                     }
                 },
                 {
@@ -431,7 +417,7 @@
             "tools": [
                 {
                     "selectedIcon": {
-                        "imageURL": "videoSelected"
+                        "imageURL": "videoIconSelected"
                     },
                     "videoMuted": false,
                     "frameDurationValue": 1,
@@ -439,7 +425,7 @@
                     "frameDurationTimescale": 24,
                     "name": "trim.video.tool",
                     "icon": {
-                        "imageURL": "video"
+                        "imageURL": "videoIcon"
                     }
                 },
                 {
@@ -469,80 +455,5 @@
             ],
             "videoMinDuration": 3
         }
-    },
-    "createSheet": {
-        "name": "standard.createSheet",
-        "title.button1": "Nevermind",
-        "font.heading1": {
-            "fontSize": 36,
-            "fontName": "Lato-Bold"
-        },
-        "color.text": {
-            "red": 255,
-            "alpha": 1,
-            "blue": 255,
-            "green": 255
-        },
-        "font.heading4": {
-            "fontSize": 15,
-            "fontName": "Lato"
-        },
-        "color.link": {
-            "red": 255,
-            "alpha": 1,
-            "blue": 255,
-            "green": 255
-        },
-        "color.accent": {
-            "red": 105,
-            "alpha": 255,
-            "blue": 64,
-            "green": 12
-        },
-        "background": {
-            "name": "solidColor.background",
-            "color": {
-                "red": 105,
-                "alpha": 240,
-                "blue": 64,
-                "green": 12
-            }
-        },
-        "items": [{
-                  "identifier": "Create GIF",
-                  "title": "GIF",
-                  "icon": {
-                  "imageURL": "createGIFIcon",
-                  "scale": 3
-                  }
-                  }, {
-                  "identifier": "Create Text",
-                  "title": "TEXT",
-                  "icon": {
-                  "imageURL": "createTextIcon",
-                  "scale": 3
-                  }
-                  }, {
-                  "identifier": "Create Poll",
-                  "title": "POLL",
-                  "icon": {
-                  "imageURL": "createPollIcon",
-                  "scale": 3
-                  }
-                  }, {
-                  "identifier": "Create Video",
-                  "title": "VIDEO",
-                  "icon": {
-                  "imageURL": "createVideoIcon",
-                  "scale": 3
-                  }
-                  }, {
-                  "identifier": "Create Image",
-                  "title": "IMAGE",
-                  "icon": {
-                  "imageURL": "createImageIcon",
-                  "scale": 3
-                  }
-                  }]
     }
 }

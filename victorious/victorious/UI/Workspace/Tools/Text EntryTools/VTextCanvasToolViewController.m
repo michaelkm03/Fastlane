@@ -41,7 +41,7 @@
 
     for ( VRoundedBackgroundButton *button in @[ self.buttonCamera, self.buttonClear, self.buttonImageSearch ] )
     {
-        button.selectedColor = button.unselectedColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        button.selectedColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     }
     
     [self setShouldProvideClearOption:NO animated:NO];
