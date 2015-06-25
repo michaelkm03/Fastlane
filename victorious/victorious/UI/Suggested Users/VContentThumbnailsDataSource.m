@@ -9,10 +9,14 @@
 #import "VContentThumbnailsDataSource.h"
 #import "VSequence+Fetcher.h"
 #import "VContentThumbnailCell.h"
+#import "VImageAsset.h"
+#import "VImageAssetFinder.h"
+#import "UIImage+Resize.h"
 
 @interface VContentThumbnailsDataSource()
 
 @property (nonatomic, strong) NSArray *sequences;
+@property (nonatomic, strong) VImageAssetFinder *assetFinder;
 
 @end
 
@@ -26,7 +30,14 @@
     self = [super init];
     if ( self != nil )
     {
-        _sequences = sequences;
+        
+        _assetFinder = [[VImageAssetFinder alloc] init];
+        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VSequence *sequence, NSDictionary *bindings)
+                                  {
+                                      VImageAsset *asset = [self.assetFinder smallestAssetFromAssets:sequence.previewAssets];
+                                      return asset.imageURL.length > 0 && [NSURL URLWithString:asset.imageURL] != nil;
+                                  }];
+        _sequences = [sequences filteredArrayUsingPredicate:predicate];
     }
     return self;
 }
@@ -40,13 +51,17 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    id<UICollectionViewDelegateFlowLayout> delegate = (id<UICollectionViewDelegateFlowLayout>)collectionView.delegate;
+    CGSize cellSize = [delegate collectionView:collectionView layout:collectionView.collectionViewLayout sizeForItemAtIndexPath:indexPath];
+    
     NSString *identifier = [VContentThumbnailCell suggestedReuseIdentifier];
     VContentThumbnailCell *cell = (VContentThumbnailCell *)[collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     if ( cell != nil )
     {
         VSequence *sequence = self.sequences[ indexPath.row ];
-        NSURL *previewURL = [NSURL URLWithString:sequence.previewData];
-        [cell setImageURL:previewURL];
+        VImageAsset *asset = [self.assetFinder assetWithPreferredMaximumSize:cellSize fromAssets:sequence.previewAssets];
+        NSURL *imageURL = [NSURL URLWithString:asset.imageURL];
+        [cell setImageURL:imageURL];
         return cell;
     }
     return nil;

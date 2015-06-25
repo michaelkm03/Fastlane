@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import UIKit;
 
 /**
  A data source that drives a VContentThumbnailViewController, providing cells

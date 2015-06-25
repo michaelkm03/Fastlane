@@ -30,6 +30,8 @@
 #import "VCoachmarkManager.h"
 #import "VRootViewController.h"
 
+#import "VSuggestedUsersViewController.h"
+
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
 NSString * const VTrackingWelcomeVideoStartKey = @"welcome_video_start";
@@ -104,6 +106,10 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
     {
         [self askForPushNotificationsPermission];
     }
+    
+    VSuggestedUsersViewController* vc = [[VSuggestedUsersViewController alloc] initWithDependencyManager:self.dependencyManager];
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+    [self presentViewController:nav animated:YES completion:nil];
 }
 
 - (void)askForPushNotificationsPermission
