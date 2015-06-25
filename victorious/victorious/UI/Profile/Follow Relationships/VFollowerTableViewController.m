@@ -43,8 +43,8 @@
     
     [self.tableView registerNib:[VFollowerTableViewCell nibForCell]
          forCellReuseIdentifier:[VFollowerTableViewCell suggestedReuseIdentifier]];
-    [self.tableView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f)];
     self.automaticallyAdjustsScrollViewInsets = NO;
+    self.edgesForExtendedLayout = UIRectEdgeBottom;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -179,6 +179,7 @@
         [self setHasFollowers:self.followers.count];
         
         [self.tableView reloadData];
+        [self.tableView flashScrollIndicators];
     };
     
     if (self.profile != nil)
