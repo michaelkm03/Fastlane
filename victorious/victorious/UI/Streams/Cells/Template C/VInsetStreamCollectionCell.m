@@ -29,6 +29,9 @@
 #import "VStreamHeaderTimeSince.h"
 #import "VCompatibility.h"
 #import "VStreamCollectionViewController.h"
+#import "VSequenceCountsTextView.h"
+#import "VSequenceExpressionsObserver.h"
+#import "VLayoutComponent.h"
 
 static const CGFloat kAspectRatio = 0.94375f; // 320/302
 static const CGFloat kInsetCellHeaderHeight = 50.0f;
@@ -181,6 +184,35 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     
     // Fixes constraint errors when resizing for certain aspect ratios
     self.contentView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleHeight;
+}
+
++ (VLayoutComponentCollection *)cellLayoutCollection
+{
+    static VLayoutComponentCollection *collection;
+    if ( collection != nil )
+    {
+        collection = [[VLayoutComponentCollection alloc] init];
+        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kInsetCellHeaderHeight)];
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, VSequence *sequence, VDependencyManager *dependencyManager)
+         {
+             return CGSizeMake( 0.0f, size.width * (1 / [sequence previewAssetAspectRatio] ) );
+         }];
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, VSequence *sequence, VDependencyManager *dependencyManager)
+         {
+             NSDictionary *attributes = [self sequenceDescriptionAttributesWithDependencyManager:dependencyManager];
+             CGFloat textHeight =  VCEIL( [sequence.name frameSizeForWidth:size.width andAttributes:attributes].height );
+             return CGSizeMake( 0.0f, textHeight );
+         }];
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, VSequence *sequence, VDependencyManager *dependencyManager)
+         {
+             CGFloat height = sequence.name.length < 0 ? kTextMargins.top : 0.0f;
+             return CGSizeMake( 0.0f, kTextMargins.top );
+         }];
+        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kCountsTextViewHeight)];
+        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kInsetCellActionViewHeight)];
+    }
+    
+    return collection;
 }
 
 - (void)handleTapGestureForCommentLabel:(UIGestureRecognizer *)recognizer
@@ -423,7 +455,13 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     // Add 1:1 preview view
     actualSize.height = actualSize.height + actualSize.width * (1 / [sequence previewAssetAspectRatio]);
     
-    return actualSize;
+    
+    CGSize base = CGSizeMake( CGRectGetWidth(bounds), 0.0 );
+    CGSize collectionSize = [[[self class] cellLayoutCollection] totalSizeWithBaseSize:base sequence:sequence
+                                                                     dependencyManager:dependencyManager];
+    NSLog( @">>>>> Actual: %@  <<>>  Collection: %@", NSStringFromCGSize(actualSize), NSStringFromCGSize(collectionSize) );
+    
+    return collectionSize;
 }
 
 + (CGSize)sizeByAddingTextAreaSizeToSize:(CGSize)initialSize
