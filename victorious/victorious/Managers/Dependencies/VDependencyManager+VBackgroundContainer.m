@@ -18,13 +18,18 @@ static const char kAssociatedBackgroundKey;
 
 - (void)addBackgroundToBackgroundHost:(id <VBackgroundContainer>)backgroundHost
 {
+    [self addBackgroundToBackgroundHost:backgroundHost forKey:nil];
+}
+
+- (void)addBackgroundToBackgroundHost:(id <VBackgroundContainer>)backgroundHost forKey:(NSString *)key
+{
     if (![backgroundHost respondsToSelector:@selector(backgroundContainerView)])
     {
         return;
     }
     
-    [self addBackground:[self background]
-        asSubviewOfView:[backgroundHost backgroundContainerView]];
+    VBackground *background = key == nil ? [self background] : [self backgroundForKey:key];
+    [self addBackground:background asSubviewOfView:[backgroundHost backgroundContainerView]];
 }
 
 - (void)addLoadingBackgroundToBackgroundHost:(id <VBackgroundContainer>)backgroundContainer

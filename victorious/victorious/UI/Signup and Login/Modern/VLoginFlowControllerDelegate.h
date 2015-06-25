@@ -1,5 +1,5 @@
 //
-//  VLoginFlowControllerResponder.h
+//  VLoginFlowControllerDelegate.h
 //  victorious
 //
 //  Created by Michael Sena on 5/21/15.
@@ -8,7 +8,32 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol VLoginFlowControllerResponder <NSObject>
+@protocol VLoginFlowControllerDelegate;
+
+/**
+ * Protocol adopted by the individual screens (usually UIViewControllers) that represent
+ * the flow managed by a login flow controller.
+ */
+@protocol VLoginFlowScreen <NSObject>
+
+/**
+ * Delegate to which VLoginFlowScreens report events to keep the login
+ * flow moving throuhg its various screens.
+ */
+@property (nonatomic, weak) id<VLoginFlowControllerDelegate> delegate;
+
+@optional
+
+/**
+ * When using VLoginFlowControllerDelegate to configure navigation items through
+ * `configureFlowNavigationItemWithScreen:`, this method provides the action for
+ * right bar buttons that navigate through the flow ("Next" or "Done").
+ */
+- (void)onContinue:(id)sender;
+
+@end
+
+@protocol VLoginFlowControllerDelegate <NSObject>
 
 /**
  * The login flow should cancel and dismiss.
@@ -28,12 +53,12 @@
 /**
  *  The user wants to authorize with their twitter account.
  */
-- (void)selectedTwitterAuthorizationWithCompletion:(void(^)(BOOL success))completion;
+- (void)selectedTwitterAuthorization;
 
 /**
  *  The user wants to authorize with their facebook account.
  */
-- (void)selectedFacebookAuthorizationWithCompletion:(void(^)(BOOL success))completion;
+- (void)selectedFacebookAuthorization;
 
 /**
  *  The user has entered an email and password and wants to login.
@@ -91,5 +116,10 @@
  *  The user has requested to continue along the registration flow.
  */
 - (void)continueRegistrationFlow;
+
+/**
+ * Adds the proper navigation bar items for navigation throw the login flow.
+ */
+- (void)configureFlowNavigationItemWithScreen:(UIViewController <VLoginFlowScreen> *)loginFlowScreen;
 
 @end

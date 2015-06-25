@@ -15,12 +15,12 @@
 
 // Views + Helpers
 #import "VInlineValidationTextField.h"
-#import "VLoginFlowControllerResponder.h"
+#import "VLoginFlowControllerDelegate.h"
 
 static NSString *kPromptKey = @"prompt";
 static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
-@interface VModernEnterNameViewController () <VBackgroundContainer, UITextFieldDelegate>
+@interface VModernEnterNameViewController () <VBackgroundContainer, UITextFieldDelegate, VLoginFlowScreen>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -73,11 +73,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                                                            attributes:placeholderTextFieldAttributes];
     [self.dependencyManager addBackgroundToBackgroundHost:self];
     
-    UIBarButtonItem *nextItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", nil)
-                                                                 style:UIBarButtonItemStylePlain
-                                                                target:self
-                                                                action:@selector(next:)];
-    self.navigationItem.rightBarButtonItem = nextItem;
+    [self.delegate configureFlowNavigationItemWithScreen:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -89,22 +85,18 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     self.navigationItem.hidesBackButton = YES;
 }
 
-#pragma mark - Target/Action
+#pragma mark - VLoginFlowScreen
 
-- (void)next:(id)sender
+@synthesize delegate = _delegate;
+
+- (void)onContinue:(id)sender
 {
     if ([self shouldSetUsername:self.nameField.text])
     {
         [self.view endEditing:YES];
         
-        id<VLoginFlowControllerResponder> loginFlowController = [self targetForAction:@selector(setUsername:)
-                                                                           withSender:self];
-        if (loginFlowController == nil)
-        {
-            NSAssert(false, @"We need a login flow responder for updating username.");
-        }
-        
-        [loginFlowController setUsername:[self.nameField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
+        NSString *username = [self.nameField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        [self.delegate setUsername:username];
     }
 }
 
@@ -112,7 +104,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [self next:nil];
+    [self onContinue:nil];
     return YES;
 }
 

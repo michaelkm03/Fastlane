@@ -19,13 +19,13 @@
 #import "VPasswordValidator.h"
 #import "VEmailValidator.h"
 #import "VBackgroundContainer.h"
-#import "VLoginFlowControllerResponder.h"
+#import "VLoginFlowControllerDelegate.h"
 #import "UIColor+VBrightness.h"
 
 static NSString * const kPromptKey = @"prompt";
 static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
-@interface VModernRegisterViewController () <UITextFieldDelegate, VBackgroundContainer>
+@interface VModernRegisterViewController () <UITextFieldDelegate, VBackgroundContainer, VLoginFlowScreen>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -119,11 +119,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     self.passwordField.activePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Minimum 8 characters", @"")
                                                                            attributes:activePlaceholderAttributes];
     
-    self.nextButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", @"")
-                                                       style:UIBarButtonItemStylePlain
-                                                      target:self
-                                                      action:@selector(signup)];
-    self.navigationItem.rightBarButtonItem = self.nextButton;
+    [self.delegate configureFlowNavigationItemWithScreen:self];
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];
 }
@@ -162,6 +158,26 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     self.passwordField.text = nil;
 }
 
+#pragma mark - VLoginFlowScreen
+
+@synthesize delegate = _delegate;
+
+- (void)onContinue:(id)sender
+{
+    if ([self shouldSignUp])
+    {
+        [self.delegate registerWithEmail:self.emailField.text
+                                password:self.passwordField.text
+                              completion:^(BOOL success, BOOL alreadyRegistered, NSError *error)
+         {
+             if (!success)
+             {
+                 [self failedWithError:error];
+             }
+         }];
+    }
+}
+
 #pragma mark - Notifications
 
 - (void)textFieldDidChange:(NSNotification *)notification
@@ -193,7 +209,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     else if (textField == self.passwordField)
     {
         //TODO: TRACKING User pressed enter on password
-        [self signup];
+        [self onContinue:nil];
     }
     
     return YES;
@@ -280,14 +296,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 {
     if ([self shouldSignUp])
     {
-        id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(registerWithEmail:password:completion:)
-                                                                               withSender:self];
-        if (flowControllerResponder == nil)
-        {
-            NSAssert(false, @"We need a flow controller responder in the responder chain for registering.");
-        }
-        
-        [flowControllerResponder registerWithEmail:self.emailField.text
+        [self.delegate registerWithEmail:self.emailField.text
                                           password:self.passwordField.text
                                         completion:^(BOOL success, BOOL alreadyRegistered, NSError *error)
          {

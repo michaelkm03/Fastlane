@@ -12,7 +12,7 @@
 @import CoreText;
 @import AudioToolbox;
 
-#import "VLoginFlowControllerResponder.h"
+#import "VLoginFlowControllerDelegate.h"
 
 // Dependencies
 #import "VDependencyManager.h"
@@ -31,13 +31,14 @@ static NSString * const kButtonPromptKey                    = @"buttonPrompt";
 static NSString * const kButtonSuccessMessageKey            = @"buttonSuccessMessage";
 static NSString * const kShouldRequestCameraPermissionsKey  = @"shouldAskCameraPermissions";
 
-@interface VEnterProfilePictureCameraViewController () <VWorkspaceFlowControllerDelegate, VBackgroundContainer>
+@interface VEnterProfilePictureCameraViewController () <VWorkspaceFlowControllerDelegate, VBackgroundContainer, VLoginFlowScreen>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, weak) IBOutlet UILabel *promptLabel;
 @property (nonatomic, weak) IBOutlet UIButton *avatarButton;
 @property (nonatomic, weak) IBOutlet UIButton *addProfilePictureButton;
+@property (nonatomic, readonly) BOOL isFinalRegistrationScreen;
 
 @property (nonatomic, assign) BOOL hasSelectedAvatar;
 
@@ -61,11 +62,8 @@ static NSString * const kShouldRequestCameraPermissionsKey  = @"shouldAskCameraP
 {
     [super viewDidLoad];
     
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", nil)
-                                                                   style:UIBarButtonItemStyleDone
-                                                                  target:self
-                                                                  action:@selector(userPressedDone)];
-    self.navigationItem.rightBarButtonItem = doneButton;
+    [self.delegate configureFlowNavigationItemWithScreen:self];
+    
     self.navigationItem.hidesBackButton = YES;
     
     self.avatarButton.imageView.image = [self.avatarButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -81,6 +79,25 @@ static NSString * const kShouldRequestCameraPermissionsKey  = @"shouldAskCameraP
     self.avatarButton.layer.masksToBounds = YES;
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];
+}
+
+#pragma mark - VLoginFlowScreen
+
+@synthesize delegate = _delegate;
+
+- (void)onContinue:(id)sender
+{
+    NSNumber *profileImageRequiredValue = [self.dependencyManager numberForKey:VDependencyManagerProfileImageRequiredKey];
+    const BOOL isProfileImageRequired = (profileImageRequiredValue == nil) ? YES : [profileImageRequiredValue boolValue];
+    
+    if (isProfileImageRequired && !self.hasSelectedAvatar)
+    {
+        [self showAvatarValidationFailedAnimation];
+    }
+    else
+    {
+        [self.delegate continueRegistrationFlow];
+    }
 }
 
 #pragma mark - Target/Action
@@ -101,27 +118,6 @@ static NSString * const kShouldRequestCameraPermissionsKey  = @"shouldAskCameraP
 {
     self.avatarButton.highlighted = NO;
     self.addProfilePictureButton.highlighted = NO;
-}
-
-- (void)userPressedDone
-{
-    NSNumber *profileImageRequiredValue = [self.dependencyManager numberForKey:VDependencyManagerProfileImageRequiredKey];
-    const BOOL isProfileImageRequired = (profileImageRequiredValue == nil) ? YES : [profileImageRequiredValue boolValue];
-    
-    if (isProfileImageRequired && !self.hasSelectedAvatar)
-    {
-        [self showAvatarValidationFailedAnimation];
-    }
-    else
-    {
-        id <VLoginFlowControllerResponder> flowController = [self targetForAction:@selector(continueRegistrationFlow)
-                                                                       withSender:self];
-        if (flowController == nil)
-        {
-            NSAssert(false, @"We need a flow controller for finishing profile creation.");
-        }
-        [flowController continueRegistrationFlow];
-    }
 }
 
 #pragma mark - VBackgroundContainer
@@ -147,7 +143,7 @@ static NSString * const kShouldRequestCameraPermissionsKey  = @"shouldAskCameraP
     [self dismissViewControllerAnimated:YES
                              completion:^
      {
-         id <VLoginFlowControllerResponder> flowController = [self targetForAction:@selector(setProfilePictureFilePath:)
+         id <VLoginFlowControllerDelegate> flowController = [self targetForAction:@selector(setProfilePictureFilePath:)
                                                                         withSender:self];
          if (flowController == nil)
          {
@@ -265,7 +261,7 @@ static NSString * const kShouldRequestCameraPermissionsKey  = @"shouldAskCameraP
             else
             {
                 // We don't have permissions just continue
-                [self userPressedDone];
+                [self onContinue:nil];
             }
         }];
     }

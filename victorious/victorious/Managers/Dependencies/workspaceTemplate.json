@@ -431,7 +431,7 @@
             "tools": [
                 {
                     "selectedIcon": {
-                        "imageURL": "videoSelected"
+                        "imageURL": "videoIconSelected"
                     },
                     "videoMuted": false,
                     "frameDurationValue": 1,
@@ -439,7 +439,7 @@
                     "frameDurationTimescale": 24,
                     "name": "trim.video.tool",
                     "icon": {
-                        "imageURL": "video"
+                        "imageURL": "videoIcon"
                     }
                 },
                 {
