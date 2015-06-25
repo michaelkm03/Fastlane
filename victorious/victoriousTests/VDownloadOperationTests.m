@@ -14,7 +14,6 @@
 
 @interface VDownloadOperationTests : XCTestCase
 
-@property (nonatomic, strong) VDownloadOperation *operation;
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
 
 @end
@@ -43,7 +42,7 @@
     stubRequest(@"GET", url.absoluteString).andReturn(200).withBody(testBody);
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"download callback"];
-    self.operation = [[VDownloadOperation alloc] initWithURL:url completion:^(NSError *error, NSURLResponse *response, NSURL *downloadedFile)
+    VDownloadOperation *operation = [[VDownloadOperation alloc] initWithURL:url completion:^(NSError *error, NSURLResponse *response, NSURL *downloadedFile)
     {
         NSData *data = [NSData dataWithContentsOfURL:downloadedFile];
         NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
@@ -51,7 +50,7 @@
         XCTAssertNil(error);
         [expectation fulfill];
     }];
-    [self.operationQueue addOperation:self.operation];
+    [self.operationQueue addOperation:operation];
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
 }
 
@@ -63,12 +62,12 @@
     stubRequest(@"GET", url.absoluteString).andFailWithError(err);
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"download callback"];
-    self.operation = [[VDownloadOperation alloc] initWithURL:url completion:^(NSError *error, NSURLResponse *response, NSURL *downloadedFile)
+    VDownloadOperation *operation = [[VDownloadOperation alloc] initWithURL:url completion:^(NSError *error, NSURLResponse *response, NSURL *downloadedFile)
     {
         XCTAssertEqualObjects(err, error);
         [expectation fulfill];
     }];
-    [self.operationQueue addOperation:self.operation];
+    [self.operationQueue addOperation:operation];
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
 }
 
@@ -79,13 +78,52 @@
     stubRequest(@"GET", url.absoluteString).andReturn(500);
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"download callback"];
-    self.operation = [[VDownloadOperation alloc] initWithURL:url completion:^(NSError *error, NSURLResponse *response, NSURL *downloadedFile)
+    VDownloadOperation *operation = [[VDownloadOperation alloc] initWithURL:url completion:^(NSError *error, NSURLResponse *response, NSURL *downloadedFile)
     {
         XCTAssertNotNil(error);
         [expectation fulfill];
     }];
-    [self.operationQueue addOperation:self.operation];
+    [self.operationQueue addOperation:operation];
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
+}
+
+- (void)testProgressObjectCreated
+{
+    NSProgress *progress = [[NSProgress alloc] initWithParent:nil userInfo:nil];
+    [progress becomeCurrentWithPendingUnitCount:1];
+    __unused VDownloadOperation *operation = [[VDownloadOperation alloc] initWithURL:[NSURL URLWithString:@"http://www.example.com/three"]
+                                                                 completion:^(NSError *error, NSURLResponse *response, NSURL *downloadedFile)
+    {
+    }];
+    [progress resignCurrent];
+    XCTAssertEqual(progress.completedUnitCount, 0); // if the VDownloadOperation initializer failed to create an NSProgress object, completedUnitCount will be 1.
+}
+
+- (void)testProgressObjectUpdated
+{
+    NSURL *url = [NSURL URLWithString:@"http://www.example.com/one"];
+    NSString *testBody = @"hello world";
+    
+    stubRequest(@"GET", url.absoluteString).andReturn(200).withBody(testBody);
+
+    NSProgress *progress = [NSProgress progressWithTotalUnitCount:1];
+    [progress becomeCurrentWithPendingUnitCount:1];
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"download callback"];
+    VDownloadOperation *operation = [[VDownloadOperation alloc] initWithURL:url completion:^(NSError *error, NSURLResponse *response, NSURL *downloadedFile)
+    {
+        NSData *data = [NSData dataWithContentsOfURL:downloadedFile];
+        NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        XCTAssertEqualObjects(string, testBody);
+        XCTAssertNil(error);
+        [expectation fulfill];
+    }];
+    [progress resignCurrent];
+    XCTAssertEqual(progress.completedUnitCount, 0);
+    
+    [self.operationQueue addOperation:operation];
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    XCTAssertGreaterThan(progress.completedUnitCount, 0);
 }
 /*
 - (void)testRetry

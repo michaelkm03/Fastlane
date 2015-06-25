@@ -40,6 +40,8 @@ typedef void (^VDownloadOperationCompletion)(NSError *error, NSURLResponse *resp
 
 /**
  Initializes a new instance of this class with the given url and completion block.
+ Creates an NSProgress object on the current thread to represent the progress
+ of this instance's download.
  
  NOTE: The completion block will not be called if the task is cancelled before it's complete.
  */
