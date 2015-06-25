@@ -16,16 +16,20 @@ static NSString * const kDependencyManagerShareTypeKey = @"shareType";
 @implementation VShareMenuItem
 
 - (instancetype)initWithTitle:(NSString *)title
-                         icon:(UIImage *)icon
+               unselectedIcon:(UIImage *)unselectedIcon
                  selectedIcon:(UIImage *)selectedIcon
+              unselectedColor:(UIColor *)unselectedColor
+                selectedColor:(UIColor *)selectedColor
                     shareType:(VShareType)shareType
 {
     self = [super init];
     if ( self != nil )
     {
         _title = title;
-        _icon = icon;
+        _unselectedIcon = unselectedIcon;
         _selectedIcon = selectedIcon;
+        _unselectedColor = unselectedColor;
+        _selectedColor = selectedColor;
         _shareType = shareType;
     }
     return self;
@@ -34,12 +38,16 @@ static NSString * const kDependencyManagerShareTypeKey = @"shareType";
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSString *title = [dependencyManager stringForKey:VDependencyManagerTitleKey];
-    UIImage *icon = [dependencyManager imageForKey:kDependencyManagerIconKey];
+    UIImage *unselectedIcon = [dependencyManager imageForKey:kDependencyManagerIconKey];
     UIImage *selectedIcon = [dependencyManager imageForKey:kDependencyManagerSelectedIconKey];
+    UIColor *unselectedColor = [dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
+    UIColor *selectedColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     VShareType shareType = [self shareTypeFromString:[dependencyManager stringForKey:kDependencyManagerShareTypeKey]];
     return [self initWithTitle:title
-                          icon:icon
+                unselectedIcon:unselectedIcon
                   selectedIcon:selectedIcon
+               unselectedColor:unselectedColor
+                 selectedColor:selectedColor
                      shareType:shareType];
 }
 

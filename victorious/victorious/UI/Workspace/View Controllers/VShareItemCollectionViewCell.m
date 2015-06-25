@@ -33,7 +33,7 @@
     self.dependencyManager = dependencyManager;
     self.shareMenuItem = menuItem;
     self.state = VShareItemCellStateUnselected;
-    [self.button setImage:[menuItem.icon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+    [self.button setImage:[menuItem.unselectedIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     [self.button setImage:[menuItem.selectedIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateSelected];
     self.button.activityIndicatorTintColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
 }
@@ -62,7 +62,7 @@
 
 - (void)updateButtonTintColor
 {
-    UIColor *tintColor = self.state == VShareItemCellStateSelected ? [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey] : [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
+    UIColor *tintColor = self.state == VShareItemCellStateSelected ? self.shareMenuItem.selectedColor : self.shareMenuItem.unselectedColor;
     self.button.tintColor = tintColor;
     self.button.layer.borderColor = tintColor.CGColor;
 }
