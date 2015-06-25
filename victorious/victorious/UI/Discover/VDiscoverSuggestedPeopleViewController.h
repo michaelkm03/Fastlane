@@ -19,9 +19,9 @@
 
 @end
 
-@interface VSuggestedPeopleCollectionViewController : UICollectionViewController <VDiscoverViewControllerProtocol>
+@interface VDiscoverSuggestedPeopleViewController : UICollectionViewController <VDiscoverViewControllerProtocol>
 
-+ (VSuggestedPeopleCollectionViewController *)instantiateFromStoryboard:(NSString *)storyboardName;
++ (VDiscoverSuggestedPeopleViewController *)instantiateFromStoryboard:(NSString *)storyboardName;
 
 - (void)refresh:(BOOL)shouldClearCurrentContent;
 

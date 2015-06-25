@@ -10,17 +10,17 @@
 #import <UIKit/UIKit.h>
 #import "NSObject+VMethodSwizzling.h"
 #import "VDiscoverViewController.h"
-#import "VSuggestedPeopleCell.h"
+#import "VDiscoverSuggestedPeopleSectionCell.h"
 #import "VNoContentTableViewCell.h"
 #import "VTrendingTagCell.h"
-#import "VSuggestedPeopleCollectionViewController.h"
+#import "VDiscoverSuggestedPeopleViewController.h"
 #import "VDummyModels.h"
 #import "VTestHelpers.h"
 #import "VDiscoverHeaderView.h"
 
 @interface VDiscoverViewController (UnitTest)
 
-@property (nonatomic, strong) VSuggestedPeopleCollectionViewController *suggestedPeopleViewController;
+@property (nonatomic, strong) VDiscoverSuggestedPeopleViewController *suggestedPeopleViewController;
 @property (nonatomic, strong) NSArray *trendingTags;
 @property (nonatomic, strong) NSError *error;
 @property (nonatomic, assign) BOOL hasLoadedOnce;
@@ -39,7 +39,7 @@
 
 @end
 
-@interface VSuggestedPeopleCollectionViewController (UnitTest)
+@interface VDiscoverSuggestedPeopleViewController (UnitTest)
 
 - (void)reload;
 
@@ -64,7 +64,7 @@
     // Replace these with empty blocks to prevent them from making actual calls to the server
     self.originalDiscoverRefresh = [VDiscoverViewController v_swizzleMethod:@selector(reload)
                                                               withBlock:^{}];
-    self.originalSuggestedPeopleRefresh = [VSuggestedPeopleCollectionViewController v_swizzleMethod:@selector(reload)
+    self.originalSuggestedPeopleRefresh = [VDiscoverSuggestedPeopleViewController v_swizzleMethod:@selector(reload)
                                                                                       withBlock:^{}];
     
     self.viewController = [[VDiscoverViewController alloc] init];
@@ -82,7 +82,7 @@
     
     [VDiscoverViewController v_restoreOriginalImplementation:self.originalDiscoverRefresh
                                                    forMethod:@selector(reload)];
-    [VSuggestedPeopleCollectionViewController v_restoreOriginalImplementation:self.originalSuggestedPeopleRefresh
+    [VDiscoverSuggestedPeopleViewController v_restoreOriginalImplementation:self.originalSuggestedPeopleRefresh
                                                                     forMethod:@selector(reload)];
     
     if ( self.originalShowHashtagStream != nil )
@@ -149,7 +149,7 @@
     self.viewController.suggestedPeopleViewController.suggestedUsers = [VDummyModels createUsers:2];
     
     cell = [self.viewController tableView:self.tableView cellForRowAtIndexPath:VIndexPathMake(0, VDiscoverViewControllerSectionSuggestedPeople)];
-    XCTAssert( [cell isKindOfClass:[VSuggestedPeopleCell class]], @"Cell should be a valid VSuggestedPeopleCell" );
+    XCTAssert( [cell isKindOfClass:[VDiscoverSuggestedPeopleSectionCell class]], @"Cell should be a valid VSuggestedPeopleCell" );
 }
 
 - (void)testTrendingCell

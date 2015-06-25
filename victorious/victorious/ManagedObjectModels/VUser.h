@@ -35,9 +35,10 @@
 @property (nonatomic, retain) NSSet *messages;
 @property (nonatomic, retain) NSSet *notifications;
 @property (nonatomic, retain) NSSet *pollResults;
-@property (nonatomic, retain) NSSet *postedSequences;
+@property (nonatomic, retain) NSOrderedSet *recentSequences;
 @property (nonatomic, retain) NSSet *previewAssets;
 @property (nonatomic, retain) NSSet *repostedSequences;
+
 @end
 
 @interface VUser (CoreDataGeneratedAccessors)
@@ -87,10 +88,10 @@
 - (void)addPollResults:(NSSet *)values;
 - (void)removePollResults:(NSSet *)values;
 
-- (void)addPostedSequencesObject:(VSequence *)value;
-- (void)removePostedSequencesObject:(VSequence *)value;
-- (void)addPostedSequences:(NSSet *)values;
-- (void)removePostedSequences:(NSSet *)values;
+- (void)addRecentSequencesObject:(VSequence *)value;
+- (void)removeRecentSequencesObject:(VSequence *)value;
+- (void)addRecentSequences:(NSOrderedSet *)values;
+- (void)removeRecentSequences:(NSOrderedSet *)values;
 
 - (void)addPreviewAssetsObject:(VImageAsset *)value;
 - (void)removePreviewAssetsObject:(VImageAsset *)value;

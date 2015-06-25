@@ -1,5 +1,5 @@
 //
-//  VSuggestedPersonCollectionViewCell.h
+//  VDiscoverSuggestedPersonCell.h
 //  victorious
 //
 //  Created by Patrick Lynch on 10/3/14.
@@ -11,7 +11,7 @@
 
 @class VDependencyManager;
 
-@interface VSuggestedPersonCollectionViewCell : UICollectionViewCell
+@interface VDiscoverSuggestedPersonCell : UICollectionViewCell
 
 @property (nonatomic, strong) VUser *user;
 

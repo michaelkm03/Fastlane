@@ -8,6 +8,7 @@
 
 #import "VUser+RestKit.h"
 #import "VImageAsset+RestKit.h"
+#import "VSequence+RestKit.h"
 
 @implementation VUser (RestKit)
 
@@ -48,6 +49,12 @@
                                                                                               toKeyPath:VSelectorName(previewAssets)
                                                                                             withMapping:[VImageAsset entityMapping]];
     [mapping addPropertyMapping:previewAssetsMapping];
+    
+    
+    RKRelationshipMapping *recentSequencesMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"recent_sequences"
+                                                                                              toKeyPath:VSelectorName(recentSequences)
+                                                                                            withMapping:[VSequence smallEntityMapping]];
+    [mapping addPropertyMapping:recentSequencesMapping];
     
     [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"userId"}];
     [mapping addConnectionForRelationship:@"conversation" connectedBy:@{@"remoteId" : @"other_interlocutor_user_id"}];
