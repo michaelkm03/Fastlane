@@ -60,7 +60,7 @@ static NSString * const kOptionsContainerBackgroundKey = @"color.optionsContaine
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VShareItemCollectionViewCell *shareItemCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VShareItemCollectionViewCell suggestedReuseIdentifier] forIndexPath:indexPath];
-    [shareItemCell populateWithShareMenuItem:self.shareMenuItems[indexPath.row] andDependencyManager:self.dependencyManager];
+    [shareItemCell populateWithShareMenuItem:self.shareMenuItems[indexPath.row] andBackgroundColor:[self.dependencyManager colorForKey:kOptionsContainerBackgroundKey]];
     return shareItemCell;
 }
 
@@ -127,10 +127,11 @@ static NSString * const kOptionsContainerBackgroundKey = @"color.optionsContaine
         self.shareLabel.text = NSLocalizedString(shareText, @"");
         self.shareLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         self.shareLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
-        self.contentView.backgroundColor = [dependencyManager colorForKey:kOptionsContainerBackgroundKey];
+        UIColor *backgroundColor = [dependencyManager colorForKey:kOptionsContainerBackgroundKey];
+        self.contentView.backgroundColor = backgroundColor;
         for ( VShareItemCollectionViewCell *cell in self.collectionView.visibleCells )
         {
-            cell.dependencyManager = dependencyManager;
+            [cell updateToBackgroundColor:backgroundColor];
         }
     }
 }
