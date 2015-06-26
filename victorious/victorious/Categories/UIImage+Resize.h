@@ -26,4 +26,9 @@
  */
 - (CGAffineTransform)transformForCurrentOrientationWithSize:(CGSize)newSize;
 
+/**
+ * Resizes the image smoothly (mip mapping) with high interpolation quality.
+ */
+- (UIImage *)smoothResizedImageWithNewSize:(CGSize)newSize;
+
 @end

@@ -11,6 +11,7 @@
 #import "VContentThumbnailCell.h"
 #import "VImageAsset.h"
 #import "VImageAssetFinder.h"
+#import "UIImage+Resize.h"
 
 @interface VContentThumbnailsDataSource()
 
@@ -106,7 +107,7 @@
                        UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:imageURL]];
                        if ( image != nil )
                        {
-                           UIImage *resized = [welf resizedImage:image newSize:size];
+                           UIImage *resized = [image smoothResizedImageWithNewSize:size];
                            dispatch_async( dispatch_get_main_queue(), ^
                                           {
                                               [[welf cache] setObject:resized forKey:imageURL.absoluteString];
@@ -115,23 +116,6 @@
                        }
                    });
     
-}
-
-- (UIImage *)resizedImage:(UIImage *)image newSize:(CGSize)newSize
-{
-    CGRect newRect = CGRectIntegral(CGRectMake(0, 0, newSize.width, newSize.height));
-    CGImageRef imageRef = image.CGImage;
-    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
-    CGAffineTransform flipVertical = CGAffineTransformMake(1, 0, 0, -1, 0, newSize.height);
-    CGContextConcatCTM(context, flipVertical);
-    CGContextDrawImage(context, newRect, imageRef);
-    CGImageRef newImageRef = CGBitmapContextCreateImage(context);
-    UIImage *newImage = [UIImage imageWithCGImage:newImageRef];
-    CGImageRelease(newImageRef);
-    UIGraphicsEndImageContext();
-    return newImage;
 }
 
 @end

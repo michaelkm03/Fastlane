@@ -9,6 +9,7 @@
 #import "VContentThumbnailCell.h"
 #import "UIImageView+WebCache.h"
 #import "UIImage+Resize.h"
+#import "UIImageView+VLoadingAnimations.h"
 
 @interface VContentThumbnailCell()
 
@@ -25,14 +26,13 @@
 
 - (void)setImage:(UIImage *)image animated:(BOOL)animated
 {
-    self.imageView.image = image;
     if ( animated )
     {
-        self.imageView.alpha = 0.0f;
-        [UIView animateWithDuration:0.4f animations:^
-         {
-             self.imageView.alpha = 1.0f;
-         }];
+        [self.imageView fadeInImage:image];
+    }
+    else
+    {
+        self.imageView.image = image;
     }
 }
 
