@@ -98,6 +98,12 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
                                 animated:YES];
 }
 
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    self.followUserControl.dependencyManager = dependencyManager;
+}
+
 #pragma mark - Button Actions
 
 - (IBAction)followUnfollowUser:(id)sender

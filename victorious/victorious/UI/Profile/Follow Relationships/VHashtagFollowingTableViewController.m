@@ -209,6 +209,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
             [self subscribeToTagAction:hashtag];
         }
     };
+    customCell.dependencyManager = self.dependencyManager;
     
     return customCell;
 }

@@ -48,15 +48,29 @@ static NSString * const kCreateSheetKey = @"createSheet";
 {
     NSDictionary *addedDependencies = @{kAnimateFromTopKey : @(self.showsCreationSheetFromTop)};
     VCreateSheetViewController *createSheet = [self.dependencyManager templateValueOfType:[VCreateSheetViewController class] forKey:kCreateSheetKey withAddedDependencies:addedDependencies];
-    [createSheet setCompletionHandler:^(VCreateSheetViewController *createSheetViewController, VCreateSheetItemIdentifier chosenItemIdentifier)
-     {
-         [createSheetViewController dismissViewControllerAnimated:YES completion:^
-          {
-              [self openWorkspaceWithItemIdentifier:chosenItemIdentifier];
-          }];
-         
-     }];
-    [self.viewControllerToPresentOn presentViewController:createSheet animated:YES completion:nil];
+    
+    if (createSheet != nil)
+    {
+        [createSheet setCompletionHandler:^(VCreateSheetViewController *createSheetViewController, VCreateSheetItemIdentifier chosenItemIdentifier)
+         {
+             [createSheetViewController dismissViewControllerAnimated:YES completion:^
+              {
+                  [self openWorkspaceWithItemIdentifier:chosenItemIdentifier];
+              }];
+             
+         }];
+        [self.viewControllerToPresentOn presentViewController:createSheet animated:YES completion:nil];
+    }
+    else
+    {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                       message:NSLocalizedString(@"GenericFailMessage", @"")
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                  style:UIAlertActionStyleCancel
+                                                handler:nil]];
+        [self.viewControllerToPresentOn presentViewController:alert animated:YES completion:nil];
+    }
 }
 
 - (void)openWorkspaceWithItemIdentifier:(VCreateSheetItemIdentifier)identifier

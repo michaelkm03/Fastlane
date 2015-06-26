@@ -186,7 +186,13 @@
              
              [RKResponseDescriptor responseDescriptorWithMapping:[self payloadContentMapping]
                                                           method:RKRequestMethodGET
-                                                     pathPattern:@"/api/sequence/remixes_by_sequence_with_marquee/:sequenceID/:page/:perpage"
+                                                     pathPattern:@"/api/sequence/gifs_by_sequence_with_marquee/:sequenceID/:page/:perpage"
+                                                         keyPath:@"payload"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
+             [RKResponseDescriptor responseDescriptorWithMapping:[self payloadContentMapping]
+                                                          method:RKRequestMethodGET
+                                                     pathPattern:@"/api/sequence/memes_by_sequence_with_marquee/:sequenceID/:page/:perpage"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
              

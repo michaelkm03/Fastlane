@@ -26,6 +26,8 @@
 #import "VHashTagTextView.h"
 #import "VStreamHeaderTimeSince.h"
 #import "VCompatibility.h"
+#import "VSequenceCountsTextView.h"
+#import "VSequenceExpressionsObserver.h"
 
 static const CGFloat kSleekCellHeaderHeight = 50.0f;
 static const CGFloat kSleekCellActionViewHeight = 41.0f;
@@ -36,8 +38,9 @@ static const CGFloat kSleekCellActionViewTopConstraintHeight = 8.0f; //This repr
 static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
 //Use this constant adjust the spacing between the caption and comment
 const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This represents the space between the comment label and the view below it and the distance between the caption textView and the view above it
+const CGFloat kHiddenCaptionsMarginTop = 10.0f;
 
-@interface VSleekStreamCollectionCell () <VBackgroundContainer, CCHLinkTextViewDelegate>
+@interface VSleekStreamCollectionCell () <VBackgroundContainer, CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate>
 
 @property (nonatomic, strong) VSequencePreviewView *previewView;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -48,8 +51,10 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 @property (nonatomic, weak) IBOutlet VHashTagTextView *captionTextView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomSpaceCaptionToPreview;
 @property (nonatomic, weak ) IBOutlet NSLayoutConstraint *previewContainerHeightConstraint;
-
+@property (nonatomic, weak ) IBOutlet NSLayoutConstraint *captionHeight;
 @property (nonatomic, strong) UIView *dimmingContainer;
+@property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
+@property (nonatomic, weak) IBOutlet VSequenceCountsTextView *countsTextView;
 
 @end
 
@@ -63,6 +68,24 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     self.captionTextView.textContainerInset = UIEdgeInsetsZero;
     self.captionTextView.linkDelegate = self;
     [self setupDimmingContainer];
+    
+    self.countsTextView.textSelectionDelegate = self;
+}
+
+#pragma mark - VSequenceCountsTextViewDelegate
+
+- (void)likersTextSelected
+{
+    UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(willShowLikersForSequence:fromView:) withSender:self];
+    NSAssert( responder != nil, @"We need an object in the responder chain for commenting or showing comments.");
+    [responder willShowLikersForSequence:self.sequence fromView:self];
+}
+
+- (void)commentsTextSelected
+{
+    UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(willCommentOnSequence:fromView:) withSender:self];
+    NSAssert( responder != nil, @"We need an object in the responder chain for showing likers.");
+    [responder willCommentOnSequence:self.sequence fromView:self];
 }
 
 #pragma mark - VHasManagedDependencies
@@ -87,11 +110,14 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     {
         [self.headerView setDependencyManager:dependencyManager];
     }
+    if ([self.countsTextView respondsToSelector:@selector(setDependencyManager:)])
+    {
+        [self.countsTextView setDependencyManager:dependencyManager];
+    }
     if ([self.captionTextView respondsToSelector:@selector(setDependencyManager:)])
     {
         [self.captionTextView setDependencyManager:dependencyManager];
     }
-    
 }
 
 #pragma mark - Property Accessors
@@ -106,6 +132,21 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
     [self updateCaptionViewForSequence:sequence];
     [self.previewContainer removeConstraint:self.previewContainerHeightConstraint];
     [self setNeedsUpdateConstraints];
+    
+    __weak typeof(self) welf = self;
+    self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
+    [self.expressionsObserver startObservingWithSequence:sequence onUpdate:^
+     {
+         welf.sleekActionView.likeButton.selected = sequence.isLikedByMainUser.boolValue;
+         [welf updateCountsTextViewForSequence:sequence];
+     }];
+}
+
+- (void)updateCountsTextViewForSequence:(VSequence *)sequence
+{
+    self.countsTextView.hideComments = !sequence.permissions.canComment;
+    [self.countsTextView setCommentsCount:sequence.commentCount.integerValue];
+    [self.countsTextView setLikesCount:sequence.likeCount.integerValue];
 }
 
 - (void)setHighlighted:(BOOL)highlighted
@@ -164,19 +205,19 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 
 - (void)updateCaptionViewForSequence:(VSequence *)sequence
 {
-    if (sequence.name == nil || self.dependencyManager == nil || sequence.name.length == 0)
+    if ( sequence.name == nil || sequence.name.length == 0|| self.dependencyManager == nil)
     {
         self.captionTextView.attributedText = nil;
-        self.bottomSpaceCaptionToPreview.constant = 0.0f;
-        [self.captionTextView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+        self.captionHeight.constant = 0.0f;
+        self.bottomSpaceCaptionToPreview.constant = -kHiddenCaptionsMarginTop;
     }
     else
     {
-        [self.captionTextView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-        self.bottomSpaceCaptionToPreview.constant = kCaptionMargins.bottom;
         self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
                                                                               attributes:[VSleekStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
+        self.bottomSpaceCaptionToPreview.constant = 0.0f;
     }
+    [self layoutIfNeeded];
 }
 
 #pragma mark - VBackgroundContainer
@@ -268,13 +309,14 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
 {
     CGSize sizeWithText = initialSize;
     
-    NSValue *textSizeValue = [[self textSizeCache] objectForKey:sequence.name];
+    NSValue *textSizeValue = [[self textSizeCache] objectForKey:sequence.remoteId];
     if (textSizeValue != nil)
     {
         return [textSizeValue CGSizeValue];
     }
     
     CGFloat captionWidth = initialSize.width - kCaptionMargins.left - kCaptionMargins.right;
+    sizeWithText.height += kCaptionMargins.top + kCaptionMargins.bottom;
     if (sequence.name.length > 0)
     {
         // Caption view size
@@ -286,10 +328,14 @@ const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This repre
         
         CGSize size = [sequence.name frameSizeForWidth:captionWidth
                                          andAttributes:sharedAttributes];
-        sizeWithText.height = sizeWithText.height + size.height + kCaptionMargins.top + kCaptionMargins.bottom;
+        sizeWithText.height += size.height;
+    }
+    else
+    {
+        sizeWithText.height -= kHiddenCaptionsMarginTop;
     }
     [[self textSizeCache] setObject:[NSValue valueWithCGSize:sizeWithText]
-                             forKey:sequence.name];
+                             forKey:sequence.remoteId];
     return sizeWithText;
 }
 

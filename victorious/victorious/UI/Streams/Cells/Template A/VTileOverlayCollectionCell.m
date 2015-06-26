@@ -6,34 +6,36 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VTileOverlayCollectionCell.h"
+#import <CCHLinkTextViewDelegate.h>
 
-// Stream Support
+#import "UIView+AutoLayout.h"
+#import "VTileOverlayCollectionCell.h"
 #import "VSequence+Fetcher.h"
 #import "VSequenceActionsDelegate.h"
-
-// Dependencies
 #import "VDependencyManager.h"
 #import "VDependencyManager+VHighlightContainer.h"
-
-// Views + Helpers
 #import "VSequencePreviewView.h"
-#import "UIView+AutoLayout.h"
 #import "VHashTagTextView.h"
 #import "VPassthroughContainerView.h"
 #import "VStreamHeaderComment.h"
 #import "VLinearGradientView.h"
 #import "VHashTagTextView.h"
-#import <CCHLinkTextViewDelegate.h>
+#import "VSequenceExpressionsObserver.h"
+#import "VActionButton.h"
+#import "VSequenceCountsTextView.h"
+#import "NSString+VParseHelp.h"
 
-static const CGFloat kHeaderHeight = 74.0f;
-static const CGFloat kGradientAlpha = 0.5f;
-static const UIEdgeInsets kTextInsets = {0, 20.0f, 20.0f, 20.0f};
-static const CGFloat kPollCellHeightRatio = 0.66875f; //from spec, 214 height for 320 width
-static const CGFloat minCaptionHeight = 25.0f;
-static const CGFloat maxCaptionHeight = 80.0f;
+static const UIEdgeInsets kTextInsets       = { 0.0f, 20.0f, 5.0f, 20.0f };
+static const CGFloat kHeaderHeight          = 74.0f;
+static const CGFloat kGradientAlpha         = 0.3f;
+static const CGFloat kShadowAlpha           = 0.5f;
+static const CGFloat kPollCellHeightRatio   = 0.66875f; //< from spec, 214 height for 320 width
+static const CGFloat kMaxCaptionHeight      = 80.0f;
+static const CGFloat kButtonWidth           = 44.0f;
+static const CGFloat kButtonHeight          = 44.0f;
+static const CGFloat kCountsTextViewHeight  = 20.0f;
 
-@interface VTileOverlayCollectionCell () <CCHLinkTextViewDelegate>
+@interface VTileOverlayCollectionCell () <CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate>
 
 @property (nonatomic, strong) UIView *loadingBackgroundContainer;
 @property (nonatomic, strong) UIView *contentContainer;
@@ -45,6 +47,12 @@ static const CGFloat maxCaptionHeight = 80.0f;
 @property (nonatomic, strong) VLinearGradientView *bottomGradient;
 @property (nonatomic, strong) VStreamHeaderComment *header;
 @property (nonatomic, strong) VHashTagTextView *captionTextView;
+@property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
+@property (nonatomic, strong) VActionButton *likeButton;
+@property (nonatomic, strong) VActionButton *commentButton;
+@property (nonatomic, strong) VSequenceCountsTextView *countsTextView;
+
+@property (nonatomic, strong) NSLayoutConstraint *captionHeight;
 
 @end
 
@@ -102,16 +110,14 @@ static const CGFloat maxCaptionHeight = 80.0f;
     [_overlayContainer v_addPinToLeadingTrailingToSubview:_topGradient];
     [_overlayContainer v_addPinToTopToSubview:_topGradient];
     [_topGradient v_addHeightConstraint:kHeaderHeight];
-    UIColor *gradientBlack = [[UIColor blackColor] colorWithAlphaComponent:0.3];
-    [_topGradient setColors:@[gradientBlack, [UIColor clearColor]]];
+    [_topGradient setColors:@[ [[UIColor blackColor] colorWithAlphaComponent:kGradientAlpha], [UIColor clearColor] ]];
     
     // And the bottom
     _bottomGradient = [[VLinearGradientView alloc] initWithFrame:CGRectZero];
     _bottomGradient.userInteractionEnabled = NO;
     [_overlayContainer addSubview:_bottomGradient];
-    [_overlayContainer v_addPinToLeadingTrailingToSubview:_bottomGradient];
-    [_overlayContainer v_addPinToBottomToSubview:_bottomGradient];
-    [_bottomGradient setColors:@[[UIColor clearColor], gradientBlack]];
+    [_overlayContainer v_addFitToParentConstraintsToSubview:_bottomGradient];
+    [_bottomGradient setColors:@[ [UIColor clearColor], [UIColor blackColor]]];
     
     // Add the header
     _header = [[VStreamHeaderComment alloc] initWithFrame:CGRectZero];
@@ -119,7 +125,17 @@ static const CGFloat maxCaptionHeight = 80.0f;
     [_overlayContainer v_addPinToLeadingTrailingToSubview:_header];
     [_overlayContainer v_addPinToTopToSubview:_header];
     [_header v_addHeightConstraint:kHeaderHeight];
-    _header.sequence = self.sequence;
+    
+    // Comments and likes count
+    _countsTextView = [[VSequenceCountsTextView alloc] init];
+    _countsTextView.textSelectionDelegate = self;
+    _countsTextView.textContainerInset = (UIEdgeInsets){ 0.0f, 16.0f, 0.0f, 10.0f };
+    [_countsTextView sizeToFit];
+    _countsTextView.translatesAutoresizingMaskIntoConstraints = NO;
+    [_overlayContainer addSubview:_countsTextView];
+    [_countsTextView addConstraint:[NSLayoutConstraint constraintWithItem:_countsTextView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:kCountsTextViewHeight]];
+    [_overlayContainer v_addPinToLeadingTrailingToSubview:_countsTextView];
+    [_overlayContainer addConstraint:[NSLayoutConstraint constraintWithItem:_countsTextView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_overlayContainer attribute:NSLayoutAttributeBottom multiplier:1.0f constant:-14.0f]];
     
     // The caption Text view
     NSTextStorage *textStorage = [[NSTextStorage alloc] initWithString:@""];
@@ -137,32 +153,60 @@ static const CGFloat maxCaptionHeight = 80.0f;
     _captionTextView.textContainerInset = kTextInsets;
     _captionTextView.backgroundColor = [UIColor clearColor];
     [_overlayContainer addSubview:_captionTextView];
-    [_overlayContainer v_addPinToBottomToSubview:_captionTextView];
     [_overlayContainer v_addPinToLeadingTrailingToSubview:_captionTextView];
-    [_captionTextView addConstraint:[NSLayoutConstraint constraintWithItem:_captionTextView
-                                                                 attribute:NSLayoutAttributeHeight
-                                                                 relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                                                    toItem:nil
-                                                                 attribute:NSLayoutAttributeNotAnAttribute
-                                                                multiplier:1.0f
-                                                                  constant:minCaptionHeight]];
-    [_captionTextView addConstraint:[NSLayoutConstraint constraintWithItem:_captionTextView
-                                                                 attribute:NSLayoutAttributeHeight
-                                                                 relatedBy:NSLayoutRelationLessThanOrEqual
-                                                                    toItem:nil
-                                                                 attribute:NSLayoutAttributeNotAnAttribute
-                                                                multiplier:1.0f
-                                                                  constant:maxCaptionHeight]];
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_captionTextView
-                                                                 attribute:NSLayoutAttributeTop
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:_bottomGradient
-                                                                 attribute:NSLayoutAttributeTop
-                                                                multiplier:1.0f
-                                                                  constant:0.0f]];
+    _captionHeight = [NSLayoutConstraint constraintWithItem:_captionTextView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:kMaxCaptionHeight];
+    [_captionTextView addConstraint:_captionHeight];
+    [_overlayContainer addConstraint:[NSLayoutConstraint constraintWithItem:_captionTextView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_countsTextView attribute:NSLayoutAttributeTop multiplier:1.0f constant:0.0f]];
+    
+    // Like button
+    UIImage *likeImage = [[UIImage imageNamed:@"A_like"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *likedImage = [[UIImage imageNamed:@"A_liked"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    _likeButton = [[VActionButton alloc] init];
+    [_likeButton setImage:likeImage forState:UIControlStateNormal];
+    [_likeButton setImage:likedImage forState:UIControlStateSelected];
+    [_overlayContainer addSubview:_likeButton];
+    _likeButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [_likeButton v_addWidthConstraint:kButtonWidth];
+    [_likeButton v_addHeightConstraint:kButtonHeight];
+    [_overlayContainer addConstraint:[NSLayoutConstraint constraintWithItem:_likeButton attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_overlayContainer attribute:NSLayoutAttributeLeading multiplier:1.0 constant:12.0f]];
+    [_overlayContainer addConstraint:[NSLayoutConstraint constraintWithItem:_likeButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_captionTextView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0f]];
+    
+    [_likeButton addTarget:self action:@selector(selectedLikeButton:) forControlEvents:UIControlEventTouchUpInside];
+    
+    // Comments button
+    UIImage *commentImage = [[UIImage imageNamed:@"A_comment"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    _commentButton = [[VActionButton alloc] init];
+    [_commentButton setImage:commentImage forState:UIControlStateNormal];
+    [_overlayContainer addSubview:_commentButton];
+    _commentButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [_commentButton v_addWidthConstraint:kButtonWidth];
+    [_commentButton v_addHeightConstraint:kButtonHeight];
+    [_overlayContainer addConstraint:[NSLayoutConstraint constraintWithItem:_commentButton attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_likeButton attribute:NSLayoutAttributeRight multiplier:1.0 constant:0.0f]];
+    [_overlayContainer addConstraint:[NSLayoutConstraint constraintWithItem:_commentButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_captionTextView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0f]];
+    
+    [_commentButton addTarget:self action:@selector(selectedCommentButton:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self layoutIfNeeded];
 }
 
 #pragma mark - Property Accessors
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    [self updateBottomGradientLocations];
+}
+
+- (void)updateBottomGradientLocations
+{
+    CGFloat gradientBandThickness = 60.0f;
+    CGFloat startPointY = CGRectGetMinY( self.captionTextView.frame);
+    CGFloat boundsHeight = CGRectGetHeight(self.bounds);
+    CGFloat start = (startPointY - gradientBandThickness) / boundsHeight;
+    CGFloat end = startPointY / boundsHeight;
+    [self.bottomGradient setLocations:@[ @(start), @(end) ]];
+}
 
 - (void)setSequence:(VSequence *)sequence
 {
@@ -171,7 +215,14 @@ static const CGFloat maxCaptionHeight = 80.0f;
     [self updatePreviewViewForSequence:sequence];
     self.header.sequence = sequence;
     [self updateCaptionViewForSequence:sequence];
-    [self updateOverlayGradientsForSequence:sequence];
+    
+    __weak typeof(self) welf = self;
+    self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
+    [self.expressionsObserver startObservingWithSequence:sequence onUpdate:^
+    {
+        welf.likeButton.selected = sequence.isLikedByMainUser.boolValue;
+        [welf updateCountsTextViewForSequence:sequence];
+    }];
 }
 
 - (void)setHighlighted:(BOOL)highlighted
@@ -181,7 +232,52 @@ static const CGFloat maxCaptionHeight = 80.0f;
     [self.dependencyManager setHighlighted:highlighted onHost:self];
 }
 
+- (void)selectedLikeButton:(UIButton *)likeButton
+{
+    UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(willLikeSequence:completion:)
+                                                                  withSender:self];
+    
+    NSAssert( responder != nil , @"We need an object in the responder chain for liking.");
+    likeButton.enabled = NO;
+    [responder willLikeSequence:self.sequence completion:^(BOOL success)
+     {
+         likeButton.enabled = YES;
+     }];
+}
+
+- (void)selectedCommentButton:(UIButton *)commentButton
+{
+    [self commentsTextSelected];
+}
+
+#pragma mark - VSequenceCountsTextViewDelegate
+
+- (void)likersTextSelected
+{
+    UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(willShowLikersForSequence:fromView:) withSender:self];
+    NSAssert( responder != nil, @"We need an object in the responder chain for commenting or showing comments.");
+    [responder willShowLikersForSequence:self.sequence fromView:self];
+}
+
+- (void)commentsTextSelected
+{
+    UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(willCommentOnSequence:fromView:) withSender:self];
+    NSAssert( responder != nil, @"We need an object in the responder chain for showing likers.");
+    [responder willCommentOnSequence:self.sequence fromView:self];
+}
+
 #pragma mark - Internal Methods
+
+- (void)updateCountsTextViewForSequence:(VSequence *)sequence
+{
+    if ( !sequence.permissions.canComment )
+    {
+        self.commentButton.hidden = YES;
+        self.countsTextView.hideComments = YES;
+    }
+    [self.countsTextView setCommentsCount:sequence.commentCount.integerValue];
+    [self.countsTextView setLikesCount:sequence.likeCount.integerValue];
+}
 
 - (void)updatePreviewViewForSequence:(VSequence *)sequence
 {
@@ -194,7 +290,15 @@ static const CGFloat maxCaptionHeight = 80.0f;
     [self.previewView removeFromSuperview];
     self.previewView = [VSequencePreviewView sequencePreviewViewWithSequence:sequence];
     [self.contentContainer addSubview:self.previewView];
-    [self.contentContainer v_addFitToParentConstraintsToSubview:self.previewView];
+    [self.contentContainer v_addPinToTopToSubview:self.previewView];
+    [self.contentContainer v_addPinToLeadingTrailingToSubview:self.previewView];
+    
+    CGFloat bottom = CGRectGetHeight(self.captionTextView.frame) + kButtonHeight;
+    NSDictionary *views = @{ @"previewView" : self.previewView };
+    NSDictionary *metrics = @{ @"bottom" : @(bottom) };
+    NSArray *constraintsV = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[previewView]-bottom-|" options:kNilOptions metrics:metrics views:views];
+    [self.contentContainer addConstraints:constraintsV];
+    
     if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
     {
         [self.previewView setDependencyManager:self.dependencyManager];
@@ -202,34 +306,17 @@ static const CGFloat maxCaptionHeight = 80.0f;
     [self.previewView setSequence:sequence];
 }
 
-- (void)updateOverlayGradientsForSequence:(VSequence *)sequence
-{
-    BOOL bottomGradientHidden = NO;
-    if ([sequence isText])
-    {
-        bottomGradientHidden = YES;
-    }
-    if ([sequence.nameEmbeddedInContent boolValue])
-    {
-        bottomGradientHidden = YES;
-    }
-    if (sequence.name.length == 0)
-    {
-        bottomGradientHidden = YES;
-    }
-    self.bottomGradient.hidden = bottomGradientHidden;
-}
-
 - (void)updateCaptionViewForSequence:(VSequence *)sequence
 {
-    if (sequence.name == nil || self.dependencyManager == nil)
+    if ( sequence.name == nil || sequence.name.length == 0 || self.dependencyManager == nil )
     {
-        self.captionTextView.hidden = YES;
-        return;
+        self.captionHeight.constant = 0.0;
     }
-    self.captionTextView.hidden = NO;
-    self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
-                                                                          attributes:[VTileOverlayCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
+    else
+    {
+        self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
+                                                                              attributes:[VTileOverlayCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
+    }
 }
 
 #pragma mark - Text Attributes
@@ -247,7 +334,7 @@ static const CGFloat maxCaptionHeight = 80.0f;
     
     NSShadow *shadow = [NSShadow new];
     [shadow setShadowBlurRadius:4.0f];
-    [shadow setShadowColor:[[UIColor blackColor] colorWithAlphaComponent:kGradientAlpha]];
+    [shadow setShadowColor:[[UIColor blackColor] colorWithAlphaComponent:kShadowAlpha]];
     [shadow setShadowOffset:CGSizeMake(0, 0)];
     attributes[NSShadowAttributeName] = shadow;
     
@@ -262,13 +349,56 @@ static const CGFloat maxCaptionHeight = 80.0f;
                                     sequence:(VSequence *)sequence
                            dependencyManager:(VDependencyManager *)dependencyManager
 {
-    if ([sequence isPoll])
+    // Size the inset cell from top to bottom
+    // Use width to ensure 1:1 aspect ratio of previewView
+    CGSize actualSize = CGSizeMake(CGRectGetWidth(bounds), 0.0f);
+    
+    // Text size
+    actualSize = [self sizeByAddingTextAreaSizeToSize:actualSize sequence:sequence dependencyManager:dependencyManager];
+    
+    // Counts textview height
+    actualSize.height += kCountsTextViewHeight;
+    
+    // Add 1:1 preview view
+    CGFloat aspect = [sequence isPoll] ? kPollCellHeightRatio : (1 / [sequence previewAssetAspectRatio]);
+    actualSize.height = actualSize.height + actualSize.width * aspect;
+    
+    return actualSize;
+}
+
++ (CGSize)sizeByAddingTextAreaSizeToSize:(CGSize)initialSize
+                                sequence:(VSequence *)sequence
+                       dependencyManager:(VDependencyManager *)dependencyManager
+{
+    CGSize sizeWithText = initialSize;
+    
+    NSValue *textSizeValue = [[self textSizeCache] objectForKey:sequence.remoteId];
+    if ( textSizeValue != nil )
     {
-        CGFloat width = CGRectGetWidth(bounds);
-        return CGSizeMake(width, width * kPollCellHeightRatio);
+        return [textSizeValue CGSizeValue];
     }
-        
-    return CGSizeMake(CGRectGetWidth(bounds), CGRectGetWidth(bounds) * (1 / [sequence previewAssetAspectRatio]));
+    
+    // caption size
+    if (sequence.name.length > 0)
+    {
+        // Caption view size
+        NSDictionary *attributes = [self sequenceDescriptionAttributesWithDependencyManager:dependencyManager];
+        CGSize captionSize = [sequence.name frameSizeForWidth:sizeWithText.width andAttributes:attributes];
+        sizeWithText.height += VCEIL(captionSize.height);
+    }
+    
+    [[self textSizeCache] setObject:[NSValue valueWithCGSize:sizeWithText] forKey:sequence.remoteId];
+    return sizeWithText;
+}
+
++ (NSCache *)textSizeCache
+{
+    static NSCache *textSizeCache;
+    if (textSizeCache == nil)
+    {
+        textSizeCache = [[NSCache alloc] init];
+    }
+    return textSizeCache;
 }
 
 #pragma mark - VBackgroundContainer
@@ -292,10 +422,12 @@ static const CGFloat maxCaptionHeight = 80.0f;
     {
         [self.header setDependencyManager:dependencyManager];
     }
-    if ([self.captionTextView respondsToSelector:@selector(setDependencyManager:)])
-    {
-        [self.captionTextView setDependencyManager:dependencyManager];
-    }
+    
+    self.commentButton.unselectedTintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    self.commentButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+    self.likeButton.unselectedTintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    self.countsTextView.dependencyManager = dependencyManager;
+    self.captionTextView.dependencyManager = dependencyManager;
 }
 
 #pragma mark - VStreamCellComponentSpecialization
@@ -317,15 +449,10 @@ static const CGFloat maxCaptionHeight = 80.0f;
 
 - (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
 {
-    UIResponder<VSequenceActionsDelegate> *targetForHashTagSelection = [self targetForAction:@selector(hashTag:tappedFromSequence:fromView:)
-                                                                                  withSender:self];
-    if (targetForHashTagSelection == nil)
-    {
-        NSAssert(false, @"We need an object in the responder chain for hash tag selection.!");
-    }
-    [targetForHashTagSelection hashTag:value
-                    tappedFromSequence:self.sequence
-                              fromView:self];
+    UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(hashTag:tappedFromSequence:fromView:)
+                                                                  withSender:self];
+    NSAssert( responder != nil, @"We need an object in the responder chain for hash tag selection.!" );
+    [responder hashTag:value tappedFromSequence:self.sequence fromView:self];
 }
 
 #pragma mark - VStreamCellFocus

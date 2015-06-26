@@ -56,7 +56,11 @@ static const UIEdgeInsets kLabelEdgeInsets = { 0, 10, 0, 10 };
     if ( self.activityIndicator == nil )
     {
         self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-        self.activityIndicator.center = CGPointMake(CGRectGetWidth(self.frame) / 2.0, CGRectGetHeight(self.frame) / 2.0);
+        if ( self.activityIndicatorTintColor != nil )
+        {
+            self.activityIndicator.color = self.activityIndicatorTintColor;
+        }
+        self.activityIndicator.center = CGPointMake(CGRectGetWidth(self.bounds) / 2.0, CGRectGetHeight(self.bounds) / 2.0);
         [self addSubview:_activityIndicator];
         [self.activityIndicator startAnimating];
         self.activityIndicator.alpha = 0.0f;
@@ -69,6 +73,7 @@ static const UIEdgeInsets kLabelEdgeInsets = { 0, 10, 0, 10 };
     [self createActivityIndicator];
     
     [self setTitleColor:[self.titleLabel.textColor colorWithAlphaComponent:0.0f] forState:UIControlStateNormal];
+    [[self imageView] setAlpha:0.0f];
     [UIView animateWithDuration:kActivityIndicatorShowDuration animations:^
      {
          self.activityIndicator.alpha = 1.0f;
@@ -76,14 +81,27 @@ static const UIEdgeInsets kLabelEdgeInsets = { 0, 10, 0, 10 };
                      completion:nil];
 }
 
+- (void)setActivityIndicatorTintColor:(UIColor *)activityIndicatorTintColor
+{
+    _activityIndicatorTintColor = activityIndicatorTintColor;
+    self.activityIndicator.color = activityIndicatorTintColor;
+}
+
 - (void)hideActivityIndicator
 {
+    if ( !self.activityIndicator.isAnimating )
+    {
+        //Not currently animating, no reason to perform the animations below
+        return;
+    }
+    
     [self createActivityIndicator];
     
     self.activityIndicator.alpha = 0.0f;
     [UIView animateWithDuration:kActivityIndicatorShowDuration animations:^
      {
          [self setTitleColor:[self.titleLabel.textColor colorWithAlphaComponent:1.0f] forState:UIControlStateNormal];
+         [[self imageView] setAlpha:1.0f];
      }
                      completion:nil];
 }

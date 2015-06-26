@@ -105,6 +105,7 @@
 #import "VCoachmarkDisplayer.h"
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VCoachmarkManager.h"
+#import "VSequenceExpressionsObserver.h"
 
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
@@ -165,6 +166,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, strong) NSDate *videoLoadedDate;
 
 @property (nonatomic, assign) BOOL hasBeenPresented;
+
+@property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 
 @end
 
@@ -746,6 +749,15 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)selectedLikeButton:(UIButton *)likeButton
+{
+    likeButton.enabled = NO;
+    [self.sequenceActionController likeSequence:self.viewModel.sequence fromViewController:self completion:^(BOOL success)
+     {
+         likeButton.enabled = YES;
+     }];
+}
+
 #pragma mark - Private Mehods
 
 - (void)removeCollectionViewFromContainer
@@ -932,104 +944,18 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     VContentViewSection vSection = indexPath.section;
     switch (vSection)
     {
         case VContentViewSectionContent:
-            switch (self.viewModel.type)
         {
-            case VContentViewTypeInvalid:
-                return nil;
-            case VContentViewTypeImage:
+            UICollectionViewCell *cell = [self contentCellForCollectionView:collectionView atIndexPath:indexPath];
+            if ( [cell isKindOfClass:[VContentCell class]] )
             {
-                VContentImageCell *imageCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]
-                                                                                         forIndexPath:indexPath];
-                [imageCell.contentImageView sd_setImageWithURL:self.viewModel.imageURLRequest.URL
-                                              placeholderImage:self.placeholderImage?:nil];
-                self.contentCell = imageCell;
-                self.contentCell.endCardDelegate = self;
-                return imageCell;
+                [self configureLikeButtonWithContentCell:(VContentCell *)cell];
             }
-            case VContentViewTypeGIFVideo:
-            case VContentViewTypeVideo:
-            {
-                if (self.videoCell)
-                {
-                    return self.videoCell;
-                }
-
-                VContentVideoCell *videoCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]
-                                                                                         forIndexPath:indexPath];
-                videoCell.tracking = self.viewModel.sequence.tracking;
-                videoCell.delegate = self;
-                videoCell.speed = self.viewModel.speed;
-                videoCell.loop = self.viewModel.loop;
-                videoCell.playerControlsDisabled = self.viewModel.playerControlsDisabled;
-                videoCell.audioMuted = self.viewModel.audioMuted;
-                self.videoCell = videoCell;
-                self.contentCell = videoCell;
-                __weak typeof(self) welf = self;
-                [self.videoCell setAnimateAlongsizePlayControlsBlock:^(BOOL playControlsHidden)
-                {
-                    const BOOL shouldHide = playControlsHidden && !welf.videoCell.isEndCardShowing;
-                    welf.moreButton.alpha = shouldHide ? 0.0f : 1.0f;
-                    welf.closeButton.alpha = shouldHide ? 0.0f : 1.0f;
-                }];
-                videoCell.endCardDelegate = self;
-                videoCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
-                return videoCell;
-            }
-            case VContentViewTypeText:
-            {
-                VContentTextCell *textCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentTextCell suggestedReuseIdentifier]
-                                                                                       forIndexPath:indexPath];
-                textCell.dependencyManager = self.dependencyManager;
-                [textCell setTextContent:self.viewModel.textContent
-                         backgroundColor:self.viewModel.textBackgroundColor
-                      backgroundImageURL:self.viewModel.textBackgroundImageURL];
-                self.contentCell = textCell;
-                return textCell;
-            }
-            case VContentViewTypePoll:
-            {
-                VContentPollCell *pollCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollCell suggestedReuseIdentifier]
-                                                                                       forIndexPath:indexPath];
-                pollCell.answerAThumbnailMediaURL = self.viewModel.answerAThumbnailMediaURL;
-                if (self.viewModel.answerAIsVideo)
-                {
-                    [pollCell setAnswerAIsVideowithVideoURL:self.viewModel.answerAVideoUrl];
-                }
-                pollCell.answerBThumbnailMediaURL = self.viewModel.answerBThumbnailMediaURL;
-                if (self.viewModel.answerBIsVideo)
-                {
-                    [pollCell setAnswerBIsVideowithVideoURL:self.viewModel.answerBVideoUrl];
-                }
-                __weak typeof(pollCell) weakPollCell = pollCell;
-                __weak typeof(self) welf = self;
-                pollCell.onAnswerASelection = ^void(BOOL isVideo, NSURL *mediaURL)
-                {
-                    NSDictionary *params = @{ VTrackingKeyIndex : @0, VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
-                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectPollMedia parameters:params];
-                    
-                    [welf showLightBoxWithMediaURL:mediaURL
-                                      previewImage:weakPollCell.answerAPreviewImage
-                                           isVideo:isVideo
-                                        sourceView:weakPollCell.answerAContainer];
-                };
-                pollCell.onAnswerBSelection = ^void(BOOL isVideo, NSURL *mediaURL)
-                {
-                    NSDictionary *params = @{ VTrackingKeyIndex : @1, VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
-                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectPollMedia parameters:params];
-                    
-                    [welf showLightBoxWithMediaURL:mediaURL
-                                      previewImage:weakPollCell.answerBPreviewImage
-                                           isVideo:isVideo
-                                        sourceView:weakPollCell.answerBContainer];
-                };
-                
-                self.pollCell = pollCell;
-                return pollCell;
-            }
+            return cell;
         }
         case VContentViewSectionHistogramOrQuestion:
         {
@@ -1115,6 +1041,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             self.experienceEnhancerCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VExperienceEnhancerBarCell suggestedReuseIdentifier]
                                                                                     forIndexPath:indexPath];
             self.viewModel.experienceEnhancerController.enhancerBar = self.experienceEnhancerCell.experienceEnhancerBar;
+            self.experienceEnhancerCell.dependencyManager = self.dependencyManager;
             
             [self updateInitialExperienceEnhancerState];
             
@@ -1319,6 +1246,105 @@ referenceSizeForHeaderInSection:(NSInteger)section
     if ( !self.rotationHelper.isLandscape && isContentSection )
     {
         [self.contentCollectionView setContentOffset:CGPointMake(0, 0) animated:YES];
+    }
+}
+
+- (UICollectionViewCell *)contentCellForCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath
+{
+    switch (self.viewModel.type)
+    {
+        case VContentViewTypeInvalid:
+            return nil;
+        case VContentViewTypeImage:
+        {
+            VContentImageCell *imageCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]
+                                                                                     forIndexPath:indexPath];
+            [imageCell.contentImageView sd_setImageWithURL:self.viewModel.imageURLRequest.URL
+                                          placeholderImage:self.placeholderImage?:nil];
+            self.contentCell = imageCell;
+            self.contentCell.endCardDelegate = self;
+            return imageCell;
+        }
+        case VContentViewTypeGIFVideo:
+        case VContentViewTypeVideo:
+        {
+            if (self.videoCell)
+            {
+                return self.videoCell;
+            }
+            
+            VContentVideoCell *videoCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]
+                                                                                     forIndexPath:indexPath];
+            videoCell.tracking = self.viewModel.sequence.tracking;
+            videoCell.delegate = self;
+            videoCell.speed = self.viewModel.speed;
+            videoCell.loop = self.viewModel.loop;
+            videoCell.playerControlsDisabled = self.viewModel.playerControlsDisabled;
+            videoCell.audioMuted = self.viewModel.audioMuted;
+            self.videoCell = videoCell;
+            self.contentCell = videoCell;
+            __weak typeof(self) welf = self;
+            [self.videoCell setAnimateAlongsizePlayControlsBlock:^(BOOL playControlsHidden)
+             {
+                 const BOOL shouldHide = playControlsHidden && !welf.videoCell.isEndCardShowing;
+                 welf.moreButton.alpha = shouldHide ? 0.0f : 1.0f;
+                 welf.closeButton.alpha = shouldHide ? 0.0f : 1.0f;
+             }];
+            videoCell.endCardDelegate = self;
+            videoCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
+            return videoCell;
+        }
+        case VContentViewTypeText:
+        {
+            VContentTextCell *textCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentTextCell suggestedReuseIdentifier]
+                                                                                   forIndexPath:indexPath];
+            textCell.dependencyManager = self.dependencyManager;
+            [textCell setTextContent:self.viewModel.textContent
+                     backgroundColor:self.viewModel.textBackgroundColor
+                  backgroundImageURL:self.viewModel.textBackgroundImageURL];
+            self.contentCell = textCell;
+            return textCell;
+        }
+        case VContentViewTypePoll:
+        {
+            VContentPollCell *pollCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollCell suggestedReuseIdentifier]
+                                                                                   forIndexPath:indexPath];
+            pollCell.answerAThumbnailMediaURL = self.viewModel.answerAThumbnailMediaURL;
+            if (self.viewModel.answerAIsVideo)
+            {
+                [pollCell setAnswerAIsVideowithVideoURL:self.viewModel.answerAVideoUrl];
+            }
+            pollCell.answerBThumbnailMediaURL = self.viewModel.answerBThumbnailMediaURL;
+            if (self.viewModel.answerBIsVideo)
+            {
+                [pollCell setAnswerBIsVideowithVideoURL:self.viewModel.answerBVideoUrl];
+            }
+            __weak typeof(pollCell) weakPollCell = pollCell;
+            __weak typeof(self) welf = self;
+            pollCell.onAnswerASelection = ^void(BOOL isVideo, NSURL *mediaURL)
+            {
+                NSDictionary *params = @{ VTrackingKeyIndex : @0, VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
+                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectPollMedia parameters:params];
+                
+                [welf showLightBoxWithMediaURL:mediaURL
+                                  previewImage:weakPollCell.answerAPreviewImage
+                                       isVideo:isVideo
+                                    sourceView:weakPollCell.answerAContainer];
+            };
+            pollCell.onAnswerBSelection = ^void(BOOL isVideo, NSURL *mediaURL)
+            {
+                NSDictionary *params = @{ VTrackingKeyIndex : @1, VTrackingKeyMediaType : [mediaURL pathExtension] ?: @"" };
+                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectPollMedia parameters:params];
+                
+                [welf showLightBoxWithMediaURL:mediaURL
+                                  previewImage:weakPollCell.answerBPreviewImage
+                                       isVideo:isVideo
+                                    sourceView:weakPollCell.answerBContainer];
+            };
+            
+            self.pollCell = pollCell;
+            return pollCell;
+        }
     }
 }
 
@@ -1565,6 +1591,23 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
+- (void)configureLikeButtonWithContentCell:(VContentCell *)contentCell
+{
+    VContentLikeButton *likeButton = contentCell.likeButton;
+    if ( likeButton != nil )
+    {
+        VSequence *sequence = self.viewModel.sequence;
+        [likeButton addTarget:self action:@selector(selectedLikeButton:) forControlEvents:UIControlEventTouchUpInside];
+        
+        self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
+        [self.expressionsObserver startObservingWithSequence:self.viewModel.sequence onUpdate:^
+         {
+             [likeButton setActive:sequence.isLikedByMainUser.boolValue];
+             [likeButton setCount:sequence.likeCount.integerValue];
+         }];
+    }
+}
+
 #pragma mark - VExperienceEnhancerControllerDelegate
 
 - (void)experienceEnhancersDidUpdate
@@ -1790,6 +1833,13 @@ referenceSizeForHeaderInSection:(NSInteger)section
     self.navigationController.delegate = contentViewController;
     contentViewController.transitioningDelegate = self.repopulateTransitionDelegate;
     [self.navigationController pushViewController:contentViewController animated:YES];
+}
+
+#pragma mark - VSequenceActionsDelegate
+
+- (void)willCommentOnSequence:(VSequence *)sequenceObject fromView:(UIView *)commentView
+{
+    [self.sequenceActionController showCommentsFromViewController:self sequence:sequenceObject];
 }
 
 #pragma mark - UINavigationControllerDelegate

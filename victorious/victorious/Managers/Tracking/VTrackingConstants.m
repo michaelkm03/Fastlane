@@ -57,6 +57,7 @@ NSString * const VTrackingEventUserDidCropWorkspaceWithDoubleTap = @"UserDidCrop
 NSString * const VTrackingEventUserDidFinishWorkspaceEdits = @"UserDidFinishWorkspaceEdits";
 
 NSString * const VTrackingEventUserDidPublishContent = @"UserDidPublishContent";
+NSString * const VTrackingEventUserDidSharePublishedContent = @"UserDidSharePublishedContent";
 NSString * const VTrackingEventUserDidCancelPublish = @"UserDidCancelPublish";
 
 // Polls
@@ -143,6 +144,7 @@ NSString * const VTrackingEventUserDidSelectShare = @"UserDidSelectShare";
 NSString * const VTrackingEventUserDidShare = @"UserDidShare";
 NSString * const VTrackingEventUserShareDidFail = @"UserShareDidFail";
 NSString * const VTrackingEventUserDidSelectRemix = @"UserDidSelectRemix";
+NSString * const VTrackingEventUserDidSelectLike = @"UserDidSelectLike";
 NSString * const VTrackingEventUserDidSelectShowRemixes = @"UserDidSelectShowRemixes";
 NSString * const VTrackingEventUserDidSelectShowReposters = @"UserDidSelectShowReposters";
 NSString * const VTrackingEventUserDidDeletePost = @"UserDidDeletePost";
@@ -252,6 +254,8 @@ NSString * const VTrackingKeySequenceId = @"SequenceId";
 NSString * const VTrackingKeyVoteCount = @"VoteCount";
 NSString * const VTrackingKeyUrls = @"Urls";
 NSString * const VTrackingKeyShareDestination = @"ShareDestination";
+NSString * const VTrackingKeySharedToFacebook = @"SharedToFacebook";
+NSString * const VTrackingKeySharedToTwitter = @"SharedToTwitter";
 NSString * const VTrackingKeySequenceCategory = @"SequenceCategory";
 NSString * const VTrackingKeyNotificationId = @"NotificationId";
 NSString * const VTrackingKeySessionTime = @"SessionTime";

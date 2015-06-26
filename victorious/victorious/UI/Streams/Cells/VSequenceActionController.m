@@ -48,6 +48,8 @@
 
 #import "VAppInfo.h"
 #import "VDependencyManager+VUserProfile.h"
+#import "VUsersViewController.h"
+#import "VLikersDataSource.h"
 
 @interface VSequenceActionController () <VWorkspaceFlowControllerDelegate>
 
@@ -165,13 +167,51 @@
                          completion:completion];
 }
 
-- (void)showRemixersOnNavigationController:(UINavigationController *)navigationController
-                                   sequence:(VSequence *)sequence
-                       andDependencyManager:(VDependencyManager *)dependencyManager
+- (void)showGiffersOnNavigationController:(UINavigationController *)navigationController
+                                 sequence:(VSequence *)sequence
+                     andDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSParameterAssert(sequence != nil);
-    VStreamCollectionViewController *remixStream = [dependencyManager remixStreamForSequence:sequence];
-    [navigationController pushViewController:remixStream animated:YES];
+    VStreamCollectionViewController *gifStream = [dependencyManager gifStreamForSequence:sequence];
+    [navigationController pushViewController:gifStream animated:YES];
+}
+
+- (void)showMemersOnNavigationController:(UINavigationController *)navigationController
+                                sequence:(VSequence *)sequence
+                    andDependencyManager:(VDependencyManager *)dependencyManager
+{
+    NSParameterAssert(sequence != nil);
+    VStreamCollectionViewController *memeStream = [dependencyManager memeStreamForSequence:sequence];
+    [navigationController pushViewController:memeStream animated:YES];
+}
+
+- (void)likeSequence:(VSequence *)sequence fromViewController:(UIViewController *)viewController
+          completion:(void(^)(BOOL success))completion
+{
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLike];
+    
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                      dependencyManager:self.dependencyManager];
+    [authorization performFromViewController:viewController context:VAuthorizationContextDefault
+                                  completion:^(BOOL authorized)
+     {
+         if ( authorized )
+         {
+             [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
+                                                       successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+              {
+                  completion( YES );
+                  
+              } failBlock:^(NSOperation *operation, NSError *error)
+              {
+                  completion( NO );
+              }];
+         }
+         else
+         {
+             completion( NO );
+         }
+     }];
 }
 
 #pragma mark - Repost
@@ -250,6 +290,15 @@
     VReposterTableViewController *vc = [[VReposterTableViewController alloc] initWithDependencyManager:self.dependencyManager];
     vc.sequence = sequence;
     [viewController.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)showLikersFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
+{
+    VUsersViewController *usersViewController = [[VUsersViewController alloc] initWithDependencyManager:self.dependencyManager];
+    usersViewController.title = NSLocalizedString( @"LikersTitle", nil );
+    usersViewController.usersDataSource = [[VLikersDataSource alloc] initWithSequence:sequence];
+    
+    [viewController.navigationController pushViewController:usersViewController animated:YES];
 }
 
 #pragma mark - Share

@@ -8,24 +8,37 @@
 
 #import "VProfileFollowingContainerViewController.h"
 #import "VHashtagFollowingTableViewController.h"
-#import "VFollowingTableViewController.h"
 #import "VTabBarViewController.h"
 #import "VTabInfo.h"
 #import "VThemeManager.h"
 #import "VDependencyManager.h"
+#import "VUsersViewController.h"
+#import "VUserIsFollowingDataSource.h"
+#import "VObjectManager.h"
 
 @interface VProfileFollowingContainerViewController ()
 
-@property (nonatomic, weak)   IBOutlet UIView   *headerView;
-@property (nonatomic, weak)   IBOutlet UIView   *containerView;
+@property (nonatomic, weak) IBOutlet UIView *headerView;
+@property (nonatomic, weak) IBOutlet UIView *containerView;
 
 @property (nonatomic, strong) VTabBarViewController *tabBarViewController;
 @property (nonatomic, strong) VHashtagFollowingTableViewController *hashtagFollowingViewController;
-@property (nonatomic, strong) VFollowingTableViewController *userFollowingViewController;
+@property (nonatomic, strong) VUsersViewController *userFollowingViewController;
 
 @end
 
 @implementation VProfileFollowingContainerViewController
+
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    self = [super init];
+    if ( self != nil )
+    {
+        _dependencyManager = dependencyManager;
+        _tabBarViewController = [[VTabBarViewController alloc] init];
+    }
+    return self;
+}
 
 - (void)awakeFromNib
 {
@@ -65,7 +78,10 @@
 
 - (void)addInnerViewControllersToTabController:(VTabBarViewController *)tabViewController
 {
-    self.userFollowingViewController = [[VFollowingTableViewController alloc] initWithDependencyManager:self.dependencyManager];
+    self.userFollowingViewController = [[VUsersViewController alloc] initWithDependencyManager:self.dependencyManager];
+    VUser *user = [VObjectManager sharedManager].mainUser;
+    self.userFollowingViewController.usersDataSource = [[VUserIsFollowingDataSource alloc] initWithUser:user];
+    
     self.hashtagFollowingViewController = [[VHashtagFollowingTableViewController alloc] initWithDependencyManager:self.dependencyManager];
     
     tabViewController.viewControllers = @[v_newTab(self.userFollowingViewController, [UIImage imageNamed:@"tabIconUser"]),

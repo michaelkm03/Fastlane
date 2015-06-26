@@ -13,6 +13,9 @@
  */
 @interface VPlaceholderTextView : UITextView
 
+- (void)setPlaceholderTextColor:(UIColor *)placeholderTextColor;
+- (void)setPlaceholderFont:(UIFont *)font;
+
 @property (nonatomic, copy) NSString *placeholderText; ///< The placeholder text to display in the placeholder view.
 
 @end

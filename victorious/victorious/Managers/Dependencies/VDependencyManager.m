@@ -14,6 +14,7 @@
 #import "VTemplateImage.h"
 #import "VTemplateImageMacro.h"
 #import "VURLMacroReplacement.h"
+#import "UIImage+VTint.h"
 
 typedef BOOL (^TypeTest)(Class);
 

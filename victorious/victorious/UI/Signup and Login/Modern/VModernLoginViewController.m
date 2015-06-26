@@ -22,7 +22,7 @@
 #import "VInlineValidationTextField.h"
 #import "VEmailValidator.h"
 #import "VPasswordValidator.h"
-#import "VLoginFlowControllerResponder.h"
+#import "VLoginFlowControllerDelegate.h"
 #import "UIColor+VBrightness.h"
 
 @import CoreText;
@@ -30,7 +30,7 @@
 static NSString * const kPromptKey = @"prompt";
 static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
-@interface VModernLoginViewController () <UITextFieldDelegate, VBackgroundContainer, CCHLinkTextViewDelegate>
+@interface VModernLoginViewController () <UITextFieldDelegate, VBackgroundContainer, CCHLinkTextViewDelegate, VLoginFlowScreen>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -48,6 +48,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @end
 
 @implementation VModernLoginViewController
+
+@synthesize delegate = _delegate;
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -270,7 +272,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 {
     if ([self shouldLogin])
     {
-        id <VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(loginWithEmail:password:completion:)
+        id <VLoginFlowControllerDelegate> flowControllerResponder = [self targetForAction:@selector(loginWithEmail:password:completion:)
                                                                                 withSender:self];
         if (flowControllerResponder == nil)
         {
@@ -362,14 +364,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
 {
-    id<VLoginFlowControllerResponder> loginFlowController = [self targetForAction:@selector(forgotPasswordWithInitialEmail:)
-                                                                       withSender:self];
-    if (loginFlowController == nil)
-    {
-        NSAssert(false, @"We need a responder for forgotPassword!");
-    }
-    
-    [loginFlowController forgotPasswordWithInitialEmail:self.emailField.text];
+    [self.delegate forgotPasswordWithInitialEmail:self.emailField.text];
 }
 
 @end

@@ -13,8 +13,9 @@
 #import <CCHLinkTextView/CCHLinkTextViewDelegate.h>
 
 // Views + Helpers
-#import "VLoginFlowControllerResponder.h"
+#import "VLoginFlowControllerDelegate.h"
 #import "UIView+AutoLayout.h"
+#import "UIAlertController+VSimpleAlert.h"
 
 // ViewControllers
 #import "VPromptCarouselViewController.h"
@@ -36,7 +37,7 @@ static NSString * const kTwitterKey = @"twitter";
 
 static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 
-@interface VModernLandingViewController () <CCHLinkTextViewDelegate, VBackgroundContainer>
+@interface VModernLandingViewController () <CCHLinkTextViewDelegate, VBackgroundContainer, VLoginFlowScreen>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -48,6 +49,8 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 @end
 
 @implementation VModernLandingViewController
+
+@synthesize delegate = _delegate;
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -134,64 +137,31 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 
 - (void)login
 {
-    id <VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(selectedLogin)
-                                                                            withSender:self];
-    if (flowControllerResponder == nil)
-    {
-        NSAssert(false, @"We need a flow controller in the responder chain for logging in.");
-    }
-    [flowControllerResponder selectedLogin];
+    [self.delegate selectedLogin];
 }
 
 - (IBAction)toRegsiter:(id)sender
 {
-    id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(selectedRegister)
-                                                                           withSender:self];
-    if (flowControllerResponder == nil)
-    {
-        NSAssert(false, @"We need a flow controller in the responder chain for registerring.");
-    }
-    [flowControllerResponder selectedRegister];
+    [self.delegate selectedRegister];
 }
 
 - (IBAction)loginWithTwitter:(id)sender
 {
-    id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(selectedTwitterAuthorizationWithCompletion:)
-                                                                           withSender:self];
-    if (flowControllerResponder == nil)
-    {
-        NSAssert(false, @"We need a flow controller in the responder chain for registerring.");
-    }
-    [flowControllerResponder selectedTwitterAuthorizationWithCompletion:nil];
+    [self.delegate selectedTwitterAuthorization];
 }
 
 - (IBAction)loginWithFacebook:(id)sender
 {
-    id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(selectedFacebookAuthorizationWithCompletion:)
-                                                                           withSender:self];
-    if (flowControllerResponder == nil)
-    {
-        NSAssert(false, @"We need a flow controller in teh respodner chain for facebook.");
-    }
-    [flowControllerResponder selectedFacebookAuthorizationWithCompletion:^(BOOL success)
-    {
-        if (!success)
-        {
-            NSString *message = NSLocalizedString(@"FacebookLoginFailed", @"");
-            [self showErrorWithMessage:message];
-        }
-    }];
+    [self.delegate selectedFacebookAuthorization];
 }
 
 #pragma mark - Helpers
 
 - (void)showErrorWithMessage:(NSString *)message
 {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"LoginFail", @"")
-                                                                   message:message
-                                                            preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"") style:UIAlertActionStyleCancel handler:nil];
-    [alert addAction:action];
+    UIAlertController *alert = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"LoginFail", @"")
+                                                                         message:message
+                                                            andCancelButtonTitle:NSLocalizedString(@"OK", @"")];
     [self presentViewController:alert animated:YES completion:nil];
 }
 
@@ -206,20 +176,13 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 
 - (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
 {
-    id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(showTermsOfService)
-                                                                           withSender:self];
-    if (flowControllerResponder == nil)
-    {
-        NSAssert(false, @"We need a flow controller in the responder chain for terms of service.");
-    }
-    
     if ([value isEqualToString:kTermsOfServiceLinkValue])
     {
-        [flowControllerResponder showTermsOfService];
+        [self.delegate showTermsOfService];
     }
     else
     {
-        [flowControllerResponder showPrivacyPolicy];
+        [self.delegate showPrivacyPolicy];
     }
 }
 

@@ -28,6 +28,7 @@ extern NSString * const kMarqueeURLKey;
 @property (nonatomic, readonly) VStreamItem *currentStreamItem; ///< The stream item currently being displayed
 @property (nonatomic, strong) VStream *stream; ///< The Marquee Stream
 @property (nonatomic, readonly) VTimerManager *autoScrollTimerManager; ///< The timer in control of auto scroll
+@property (nonatomic, assign) BOOL shouldTrackMarqueeCellViews; ///< Whether or not cell_view tracking events are sent for marquee items
 
 /**
     The dependencyManager used to style the streamItem cells that are managed by this marquee controller.
@@ -81,6 +82,11 @@ extern NSString * const kMarqueeURLKey;
  Spot for subclasses to override to respond to changes in marquee content, will be called after changes to the "marqueeItems" array associated with our stream
  */
 - (void)marqueeItemsUpdated;
+
+/**
+ Sends visibility tracking events for current visible marquee cell
+ */
+- (void)updateCellVisibilityTracking;
 
 #pragma mark - Abstract methods
 

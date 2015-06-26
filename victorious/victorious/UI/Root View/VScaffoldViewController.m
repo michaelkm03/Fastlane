@@ -24,15 +24,11 @@
 #import "VPushNotificationManager.h"
 #import "VContentDeepLinkHandler.h"
 #import "VMultipleContainer.h"
-#import "VFollowingHelper.h"
-#import "VFollowResponder.h"
-#import "VURLSelectionResponder.h"
 #import "VDependencyManager+VTracking.h"
 #import "VSessionTimer.h"
 #import "VRootViewController.h"
 #import "VCoachmarkManager.h"
 #import "VRootViewController.h"
-#import "VHashtagHelper.h"
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
@@ -43,14 +39,12 @@ NSString * const VTrackingWelcomeGetStartedTapKey = @"get_started_tap";
 
 static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
 
-@interface VScaffoldViewController () <VLightweightContentViewControllerDelegate, VDeeplinkSupporter, VURLSelectionResponder, VRootViewControllerContainedViewController>
+@interface VScaffoldViewController () <VLightweightContentViewControllerDelegate, VDeeplinkSupporter, VRootViewControllerContainedViewController>
 
 @property (nonatomic, assign, readwrite) BOOL hasBeenShown;
 @property (nonatomic, assign) BOOL isForcedRegistrationComplete;
 
 @property (nonatomic, strong) VAuthorizedAction *authorizedAction;
-@property (nonatomic, strong) VFollowingHelper *followHelper;
-@property (nonatomic, strong) VHashtagHelper *hashtagHelper;
 @property (nonatomic, readonly) VDependencyManager *firstTimeContentDependency;
 @property (nonatomic, strong) VSessionTimer *sessionTimer;
 
@@ -66,9 +60,6 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
         _dependencyManager = dependencyManager;
         _coachmarkManager = [[VCoachmarkManager alloc] initWithDependencyManager:_dependencyManager];
         _coachmarkManager.allowCoachmarks = [self hasShownFirstTimeUserExperience];
-        _followHelper = [[VFollowingHelper alloc] initWithDependencyManager:dependencyManager
-                                                  viewControllerToPresentOn:self];
-        _hashtagHelper = [[VHashtagHelper alloc] init];
     }
     return self;
 }
@@ -359,37 +350,7 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
     VLog(@"WARNING: %@ does not override -displayResultOfNavigation:", NSStringFromClass([self class]));
 }
 
-#pragma mark - VFollowing
-
-- (void)followUser:(VUser *)user
-    withCompletion:(VFollowEventCompletion)completion
-{
-    [self.followHelper followUser:user
-                   withCompletion:completion];
-}
-
-- (void)unfollowUser:(VUser *)user
-      withCompletion:(VFollowEventCompletion)completion
-{
-    [self.followHelper unfollowUser:user
-                     withCompletion:completion];
-}
-
-#pragma mark - VHashtag
-
-- (void)followHashtag:(NSString *)hashtag successBlock:(void (^)(NSArray *))success failureBlock:(void (^)(NSError *))failure
-{
-    [self.hashtagHelper followHashtag:hashtag successBlock:success failureBlock:failure];
-}
-
-- (void)unfollowHashtag:(NSString *)hashtag successBlock:(void (^)(NSArray *))success failureBlock:(void (^)(NSError *))failure
-{
-    [self.hashtagHelper unfollowHashtag:hashtag successBlock:success failureBlock:failure];
-}
-
-#pragma mark - VURLSelectionResponder
-
-- (void)URLSelected:(NSURL *)URL
+- (void)showWebBrowserWithURL:(NSURL *)URL
 {
     VContentViewFactory *contentViewFactory = [self.dependencyManager contentViewFactory];
     UIViewController *contentView = [contentViewFactory webContentViewControllerWithURL:URL];

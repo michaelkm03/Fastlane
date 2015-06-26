@@ -223,6 +223,16 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         parameters[@"subcategory"] = @"secret";
     }
     
+    if (publishParameters.shareToFacebook)
+    {
+        parameters[@"facebook_access_token"] = [[VFacebookManager sharedFacebookManager] accessToken];
+    }
+    if (publishParameters.shareToTwitter)
+    {
+        parameters[@"twitter_access_token"] = [VTwitterManager sharedManager].oauthToken;
+        parameters[@"twitter_access_secret"] = [VTwitterManager sharedManager].secret;
+    }
+    
     if (publishParameters.parentNodeID && ![publishParameters.parentNodeID isEqualToNumber:@(0)])
     {
         NSString *loopParam = [self stringForLoopType:publishParameters.loopType];
