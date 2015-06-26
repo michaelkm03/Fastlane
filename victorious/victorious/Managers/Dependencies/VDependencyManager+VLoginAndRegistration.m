@@ -13,7 +13,7 @@ NSString * const VScreenSuccessMessageKey            = @"screenSuccessMessage";
 NSString * const VButtonPromptKey                    = @"buttonPrompt";
 NSString * const VButtonSuccessMessageKey            = @"buttonSuccessMessage";
 NSString * const VShouldRequestCameraPermissionsKey  = @"shouldAskCameraPermissions";
-NSString * const VDisplayWithSocialSignup            = @"displayWithSocialSignup";
+NSString * const VDisplayWithSocialRegistration      = @"displayWithSocialRegistration";
 
 @implementation VDependencyManager (VLoginAndRegistration)
 

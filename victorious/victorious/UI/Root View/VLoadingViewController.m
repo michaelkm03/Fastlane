@@ -219,9 +219,9 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         
         NSString *registrationScreensKey = [templateDecorator keyPathsForKey:@"registrationScreens"].firstObject;
         NSArray *registrationScreens = [templateDecorator templateValueForKeyPath:registrationScreensKey];
-        NSInteger lastIndex = registrationScreens.count;
-        NSString *keyPath = [NSString stringWithFormat:@"%@/%@/displayWithSocialSignup", registrationScreensKey, @(lastIndex) ];
-        [templateDecorator setTemplateValue:@YES forKeyPath:keyPath];
+        NSInteger lastIndex = registrationScreens.count-1;
+        NSString *keyPath = [NSString stringWithFormat:@"%@/%@/displayWithSocialRegistration", registrationScreensKey, @(lastIndex) ];
+        NSParameterAssert( [templateDecorator setTemplateValue:@YES forKeyPath:keyPath] );
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate

@@ -13,7 +13,7 @@ extern NSString * const VScreenSuccessMessageKey;
 extern NSString * const VButtonPromptKey;
 extern NSString * const VButtonSuccessMessageKey;
 extern NSString * const VShouldRequestCameraPermissionsKey;
-extern NSString * const VDisplayWithSocialSignup;
+extern NSString * const VDisplayWithSocialRegistration;
 
 @interface VDependencyManager (VLoginAndRegistration)
 

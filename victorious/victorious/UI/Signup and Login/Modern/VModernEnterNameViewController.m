@@ -87,7 +87,7 @@
 
 - (BOOL)displaysAfterSocialRegistration
 {
-    NSNumber *value = [self.dependencyManager numberForKey:VDisplayWithSocialSignup];
+    NSNumber *value = [self.dependencyManager numberForKey:VDisplayWithSocialRegistration];
     return value.boolValue;
 }
 

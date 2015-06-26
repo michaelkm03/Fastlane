@@ -14,8 +14,7 @@
 #import "VAppInfo.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "VLinearGradientView.h"
-
-static NSString * const VSuggestedUsersPromptKey    = @"prompt";
+#import "VDependencyManager+VLoginAndRegistration.h"
 
 @interface VSuggestedUsersViewController () <VBackgroundContainer, UICollectionViewDelegateFlowLayout, VLoginFlowScreen>
 
@@ -90,7 +89,7 @@ static NSString * const VSuggestedUsersPromptKey    = @"prompt";
         self.salutationContainerHeight.constant = 0.0;
     }
     
-    self.messageTextView.text = [self.dependencyManager stringForKey:VSuggestedUsersPromptKey];
+    self.messageTextView.text = [self.dependencyManager stringForKey:VScreenPromptKey];
     self.messageTextView.font = [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
     self.messageTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     
@@ -164,6 +163,12 @@ static NSString * const VSuggestedUsersPromptKey    = @"prompt";
 #pragma mark - VLoginFlowScreen
 
 @synthesize delegate = _delegate;
+
+- (BOOL)displaysAfterSocialRegistration
+{
+    NSNumber *value = [self.dependencyManager numberForKey:VDisplayWithSocialRegistration];
+    return value.boolValue;
+}
 
 - (void)onContinue:(id)sender
 {
