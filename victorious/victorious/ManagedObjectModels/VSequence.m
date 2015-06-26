@@ -51,6 +51,7 @@
 @dynamic reposters;
 @dynamic tracking;
 @dynamic user;
+@dynamic recentUser;
 @dynamic voteResults;
 @dynamic likeCount;
 @dynamic isLikedByMainUser;

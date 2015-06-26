@@ -45,6 +45,7 @@
 @property (nonatomic, retain) NSSet *reposters;
 @property (nonatomic, retain) VTracking *tracking;
 @property (nonatomic, retain) VUser *user;
+@property (nonatomic, retain) VUser *recentUser;
 @property (nonatomic, retain) NSSet *voteResults;
 @property (nonatomic, retain) NSNumber * likeCount;
 @property (nonatomic, retain) NSNumber * isLikedByMainUser;
