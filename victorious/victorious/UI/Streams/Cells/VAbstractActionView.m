@@ -20,13 +20,6 @@
 // Models
 #import "VSequence+Fetcher.h"
 
-NSString * const VCommentIconKey = @"comment_icon";
-NSString * const VShareIconKey = @"share_icon";
-NSString * const VGifIconKey = @"gif_icon";
-NSString * const VMemeIconKey = @"meme_icon";
-NSString * const VRepostIconKey = @"repost_icon";
-NSString * const VRepostSuccessIconKey = @"repost_success_icon";
-
 @interface VAbstractActionView ()
 
 @property (nonatomic, strong) VFlexBar *actionBar;
@@ -67,17 +60,15 @@ NSString * const VRepostSuccessIconKey = @"repost_success_icon";
     
     _sequence = sequence;
     
-    [self updateActionItemsOnBar:self.actionBar
-                     forSequence:_sequence];
-    [self updateRepostButtonForSequence:_sequence];
-    [self updateCommentCountForSequence:_sequence];
+    [self updateActionItemsOnBar:self.actionBar forSequence:_sequence];
     __weak typeof(self) welf = self;
+    [self updateRepostButtonForSequence:_sequence];
     [self.KVOController observe:sequence
-                        keyPath:NSStringFromSelector(@selector(commentCount))
+                        keyPath:NSStringFromSelector(@selector(repostCount))
                         options:NSKeyValueObservingOptionNew
                           block:^(id observer, VSequence *observedSequence, NSDictionary *change)
      {
-         [welf updateCommentCountForSequence:observedSequence];
+         [welf updateRepostButtonForSequence:_sequence];
      }];
 }
 
@@ -97,12 +88,8 @@ NSString * const VRepostSuccessIconKey = @"repost_success_icon";
 - (void)comment:(id)sender
 {
     UIResponder<VSequenceActionsDelegate> *targetForComment = [self targetForAction:@selector(willCommentOnSequence:fromView:)
-                                              withSender:self];
-    if (targetForComment == nil)
-    {
-        NSAssert(false, @"We need an object in the respodner chain for commenting.");
-
-    }
+                                                                         withSender:self];
+    NSAssert( targetForComment != nil, @"We need an object in the respodner chain for commenting.");
     [targetForComment willCommentOnSequence:self.sequence
                                    fromView:self];
 }
@@ -111,10 +98,7 @@ NSString * const VRepostSuccessIconKey = @"repost_success_icon";
 {
     UIResponder<VSequenceActionsDelegate> *targetForShare = [self targetForAction:@selector(willShareSequence:fromView:)
                                                                        withSender:self];
-    if (targetForShare == nil)
-    {
-        NSAssert(false, @"We need an object in the responder chain for sharing.");
-    }
+    NSAssert( targetForShare != nil, @"We need an object in the responder chain for sharing.");
     [targetForShare willShareSequence:self.sequence
                              fromView:self];
 }
@@ -123,11 +107,7 @@ NSString * const VRepostSuccessIconKey = @"repost_success_icon";
 {
     UIResponder<VSequenceActionsDelegate> *targetForRepost = [self targetForAction:@selector(willRepostSequence:fromView:completion:)
                                                                         withSender:self];
-    if (targetForRepost == nil)
-    {
-        NSAssert(false, @"We need an object in the responder chain for resposting.");
-    }
-
+    NSAssert( targetForRepost != nil, @"We need an object in the responder chain for resposting.");
     self.reposting = YES;
     __weak typeof(self) welf = self;
     [targetForRepost willRepostSequence:self.sequence
@@ -142,10 +122,7 @@ NSString * const VRepostSuccessIconKey = @"repost_success_icon";
 {
     UIResponder<VSequenceActionsDelegate> *targetForMeme = [self targetForAction:@selector(willRemixSequence:fromView:videoEdit:)
                                                                       withSender:self];
-    if (targetForMeme == nil)
-    {
-        NSAssert(false, @"We need an object in the responder chain for memeing.");
-    }
+    NSAssert( targetForMeme != nil, @"We need an object in the responder chain for memeing.");
     [targetForMeme willRemixSequence:self.sequence
                             fromView:self
                            videoEdit:VDefaultVideoEditSnapshot];
@@ -155,13 +132,32 @@ NSString * const VRepostSuccessIconKey = @"repost_success_icon";
 {
     UIResponder<VSequenceActionsDelegate> *targetForGIF = [self targetForAction:@selector(willRemixSequence:fromView:videoEdit:)
                                                                      withSender:self];
-    if (targetForGIF == nil)
-    {
-        NSAssert(false, @"We need an object in the responder chain for gifing.");
-    }
+    NSAssert( targetForGIF != nil , @"We need an object in the responder chain for gifing.");
     [targetForGIF willRemixSequence:self.sequence
                            fromView:self
                           videoEdit:VDefaultVideoEditGIF];
+}
+
+- (void)like:(id)sender
+{
+    UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(willLikeSequence:completion:)
+                                                                     withSender:self];
+    
+    NSAssert( responder != nil , @"We need an object in the responder chain for liking.");
+    
+    UIButton *button = nil;
+    if ( [sender isKindOfClass:[UIButton class]] )
+    {
+        button = sender;
+        button.enabled = NO;
+    }
+    [responder willLikeSequence:self.sequence completion:^(BOOL success)
+    {
+        if ( button != nil )
+        {
+            button.enabled = YES;
+        }
+    }];
 }
 
 @end

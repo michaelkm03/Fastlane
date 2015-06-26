@@ -6,21 +6,13 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VInsetStreamCollectionCell.h"
-
-// Libraries
-#import <FBKVOController.h>
 #import <CCHLinkTextView/CCHLinkTextViewDelegate.h>
 
-// Stream Support
+#import "VInsetStreamCollectionCell.h"
 #import "VSequence+Fetcher.h"
 #import "VImageAsset+Fetcher.h"
-
-// Dependencies
 #import "VDependencyManager.h"
 #import "VDependencyManager+VHighlightContainer.h"
-
-// Views + Helpers
 #import "VSequencePreviewView.h"
 #import "UIView+AutoLayout.h"
 #import "NSString+VParseHelp.h"
@@ -29,14 +21,17 @@
 #import "VStreamHeaderTimeSince.h"
 #import "VCompatibility.h"
 #import "VStreamCollectionViewController.h"
+#import "VSequenceCountsTextView.h"
+#import "VSequenceExpressionsObserver.h"
 
-static const CGFloat kAspectRatio = 0.94375f; // 320/302
-static const CGFloat kInsetCellHeaderHeight = 50.0f;
-static const CGFloat kInsetCellActionViewHeight = 41.0f;
-static const UIEdgeInsets kTextMargins = {10.0f, 10.0f, 10.0f, 10.0f}; // The margins that should be around BOTH the caption and label (treating them together as a single unit)
-static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space between the label and textView. It's slightly smaller than the those separating the label and textview from their respective bottom and top to neighboring views so that the centers of words are better aligned
+static const CGFloat kAspectRatio                   = 0.94375f; //< 320 ÷ 302
+static const CGFloat kInsetCellHeaderHeight         = 50.0f;
+static const CGFloat kInsetCellActionViewHeight     = 41.0f;
+static const CGFloat kCountsTextViewHeight          = 20.0f;
+static const CGFloat kMaxCaptionHeight              = 80.0f;
+static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0f };
 
-@interface VInsetStreamCollectionCell () <CCHLinkTextViewDelegate>
+@interface VInsetStreamCollectionCell () <CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VStreamHeaderTimeSince *header;
@@ -44,13 +39,11 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 @property (nonatomic, strong) UIView *dimmingContainer;
 @property (nonatomic, strong) VSequencePreviewView *previewView;
 @property (nonatomic, strong) VHashTagTextView *captionTextView;
-@property (nonatomic, strong) UILabel *commentsLabel;
+@property (nonatomic, strong) VSequenceCountsTextView *countsTextView;
 @property (nonatomic, strong) VInsetActionView *actionView;
-
-@property (nonatomic, strong) NSArray *captionConstraints;
-@property (nonatomic, strong) NSArray *noCaptionConstraints;
 @property (nonatomic, strong) NSLayoutConstraint *previewViewHeightConstraint;
-@property (nonatomic, strong) NSLayoutConstraint *commentToCaptionBottomConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *countsVerticalSpacing;
+@property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 
 @end
 
@@ -127,86 +120,48 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     _captionTextView.linkDelegate = self;
     _captionTextView.backgroundColor = [UIColor clearColor];
     [self.contentView addSubview:_captionTextView];
-    [self.contentView v_addPinToLeadingTrailingToSubview:_captionTextView
-                                                 leading:kTextMargins.left
-                                                trailing:kTextMargins.right];
-    NSLayoutConstraint *previewContainerBottomToCaptionTop = [NSLayoutConstraint constraintWithItem:_previewContainer
-                                                                                          attribute:NSLayoutAttributeBottom
-                                                                                          relatedBy:NSLayoutRelationEqual
-                                                                                             toItem:_captionTextView
-                                                                                          attribute:NSLayoutAttributeTop
-                                                                                         multiplier:1.0f
-                                                                                           constant:-kTextMargins.top];
-    // Comments Label
-    _commentsLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    [self.contentView addSubview:_commentsLabel];
-    [self.contentView v_addPinToLeadingTrailingToSubview:_commentsLabel
-                                                 leading:kTextMargins.left
-                                                trailing:kTextMargins.right];
-    self.commentToCaptionBottomConstraint = [NSLayoutConstraint constraintWithItem:_captionTextView
-                                                                         attribute:NSLayoutAttributeBottom
-                                                                         relatedBy:NSLayoutRelationEqual
-                                                                            toItem:_commentsLabel
-                                                                         attribute:NSLayoutAttributeTop
-                                                                        multiplier:1.0f
-                                                                          constant:-kTextSeparatorHeight];
+    [self.contentView v_addPinToLeadingTrailingToSubview:_captionTextView  leading:kTextMargins.left trailing:kTextMargins.right];
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_captionTextView
+                                                                attribute:NSLayoutAttributeTop
+                                                                relatedBy:NSLayoutRelationEqual
+                                                                   toItem:_previewContainer
+                                                                attribute:NSLayoutAttributeBottom
+                                                               multiplier:1.0f
+                                                                  constant:kTextMargins.top]];
+    [_captionTextView addConstraint:[NSLayoutConstraint constraintWithItem:_captionTextView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:kMaxCaptionHeight]];
     
     _actionView = [[VInsetActionView alloc] initWithFrame:CGRectZero];
     [self.contentView addSubview:_actionView];
     [self.contentView v_addPinToLeadingTrailingToSubview:_actionView];
     [self.contentView v_addPinToBottomToSubview:_actionView];
     [_actionView v_addHeightConstraint:kInsetCellActionViewHeight];
-    NSLayoutConstraint *commentsLabelBottomToActionViewTop = [NSLayoutConstraint constraintWithItem:_commentsLabel
-                                                                                          attribute:NSLayoutAttributeBottom
-                                                                                          relatedBy:NSLayoutRelationEqual
-                                                                                             toItem:_actionView
-                                                                                          attribute:NSLayoutAttributeTop
-                                                                                         multiplier:1.0f
-                                                                                           constant:-kTextMargins.bottom];
+
     
-    NSLayoutConstraint *previewViewBottomToCommentsLabelTop = [NSLayoutConstraint constraintWithItem:_previewContainer
-                                                                                           attribute:NSLayoutAttributeBottom
-                                                                                           relatedBy:NSLayoutRelationEqual
-                                                                                              toItem:_commentsLabel
-                                                                                           attribute:NSLayoutAttributeTop
-                                                                                          multiplier:1.0f
-                                                                                            constant:-kTextMargins.top];
-    
-    self.captionConstraints = @[previewContainerBottomToCaptionTop, self.commentToCaptionBottomConstraint, commentsLabelBottomToActionViewTop];
-    self.noCaptionConstraints = @[previewViewBottomToCommentsLabelTop, commentsLabelBottomToActionViewTop];
-    [self.contentView addConstraints:self.captionConstraints];
-    [self.contentView addConstraints:self.noCaptionConstraints];
-    [NSLayoutConstraint deactivateConstraints:self.captionConstraints];
-    [NSLayoutConstraint deactivateConstraints:self.noCaptionConstraints];
+    // Comments and likes count
+    _countsTextView = [[VSequenceCountsTextView alloc] init];
+    _countsTextView.contentInset = UIEdgeInsetsMake( 0, -4, 0, 0 );
+    _countsTextView.textSelectionDelegate = self;
+    [self.contentView addSubview:_countsTextView];
+    _countsTextView.translatesAutoresizingMaskIntoConstraints = NO;
+    [_countsTextView v_addHeightConstraint:kCountsTextViewHeight];
+    [self.contentView v_addPinToLeadingTrailingToSubview:_countsTextView leading:kTextMargins.left trailing:kTextMargins.right];
+    _countsVerticalSpacing = [NSLayoutConstraint constraintWithItem:_countsTextView
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:_captionTextView
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1.0f
+                                                           constant:0.0];
+    [self.contentView addConstraint:_countsVerticalSpacing];
     
     // Fixes constraint errors when resizing for certain aspect ratios
     self.contentView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleHeight;
-}
-
-- (void)handleTapGestureForCommentLabel:(UIGestureRecognizer *)recognizer
-{
-    UIResponder<VSequenceActionsDelegate> *targetForCommentLabelSelection = [self targetForAction:@selector(willCommentOnSequence:fromView:)
-                                                                                       withSender:self];
-    NSAssert(targetForCommentLabelSelection != nil, @"We need an object in the responder chain for hash tag selection.!");
-    
-    [targetForCommentLabelSelection willCommentOnSequence:self.sequence fromView:self];
 }
 
 #pragma mark - UIView
 
 - (void)updateConstraints
 {
-    if (self.sequence.name.length > 0)
-    {
-        [NSLayoutConstraint deactivateConstraints:self.noCaptionConstraints];
-        [NSLayoutConstraint activateConstraints:self.captionConstraints];
-    }
-    else
-    {
-        [NSLayoutConstraint deactivateConstraints:self.captionConstraints];
-        [NSLayoutConstraint activateConstraints:self.noCaptionConstraints];
-    }
-    
     // Add new height constraint for preview container to account for aspect ratio of preview asset
     CGFloat aspectRatio = [self.sequence previewAssetAspectRatio];
     NSLayoutConstraint *heightToWidth = [NSLayoutConstraint constraintWithItem:self.previewContainer
@@ -227,6 +182,8 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
+    
+    self.countsTextView.dependencyManager = dependencyManager;
     
     if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
     {
@@ -252,19 +209,28 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
+    
     [self updatePreviewViewForSequence:sequence];
     self.header.sequence = sequence;
     [self updateCaptionViewForSequence:sequence];
-    [self reloadCommentsCountForSequence:sequence];
     self.actionView.sequence = sequence;
-    if ([self.captionTextView v_internalHeightConstraint] != nil)
-    {
-        // CaptionTextView sometimes screws with layout with compression resistance.
-        [self.captionTextView removeConstraint:[self.captionTextView v_internalHeightConstraint]];
-    }
-    // Remove current height constraint on preview view to account for potential new aspect ratio
     [self.contentView removeConstraint:self.previewViewHeightConstraint];
     [self setNeedsUpdateConstraints];
+    
+    __weak typeof(self) welf = self;
+    self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
+    [self.expressionsObserver startObservingWithSequence:sequence onUpdate:^
+     {
+         welf.actionView.likeButton.selected = sequence.isLikedByMainUser.boolValue;
+         [welf updateCountsTextViewForSequence:sequence];
+     }];
+}
+
+- (void)updateCountsTextViewForSequence:(VSequence *)sequence
+{
+    self.countsTextView.hideComments = !sequence.permissions.canComment;
+    [self.countsTextView setCommentsCount:sequence.commentCount.integerValue];
+    [self.countsTextView setLikesCount:sequence.likeCount.integerValue];
 }
 
 - (void)setHighlighted:(BOOL)highlighted
@@ -297,26 +263,19 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 
 - (void)updateCaptionViewForSequence:(VSequence *)sequence
 {
-    if (sequence.name == nil || self.dependencyManager == nil)
+    if ( sequence.name == nil || sequence.name.length == 0 || self.dependencyManager == nil)
     {
         self.captionTextView.attributedText = nil;
-        self.captionTextView.hidden = YES;
-        return;
+        [self.captionTextView layoutIfNeeded];
+        CGFloat spacing = CGRectGetHeight( self.captionTextView.frame );
+        self.countsVerticalSpacing.constant = -spacing - kTextMargins.top;
     }
-    self.captionTextView.hidden = NO;
-    self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
-                                                                          attributes:[VInsetStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
-}
-
-- (void)reloadCommentsCountForSequence:(VSequence *)sequence
-{
-    NSAttributedString *commentText = [[self class] attributedCommentTextForSequence:sequence andDependencyManager:self.dependencyManager];
-    [self.commentsLabel setAttributedText:commentText];
-    self.commentToCaptionBottomConstraint.constant = commentText.length == 0 ? 0.0f : -kTextSeparatorHeight;
-    
-    [self.commentsLabel setUserInteractionEnabled:YES];
-    UIGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGestureForCommentLabel:)];
-    [self.commentsLabel addGestureRecognizer: tapGesture];
+    else
+    {
+        self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
+                                                                              attributes:[VInsetStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
+        self.countsVerticalSpacing.constant = 0.0;
+    }
 }
 
 #pragma mark - VBackgroundContainer
@@ -348,51 +307,11 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 
 #pragma mark - NSAttributedString Attributes
 
-+ (NSAttributedString *)attributedCommentTextForSequence:(VSequence *)sequence
-                                    andDependencyManager:(VDependencyManager *)dependencyManager
-{
-    return [[NSAttributedString alloc] initWithString:[self stringForCommentTextWithSequence:sequence]
-                                           attributes:[self sequenceCommentCountAttributesWithDependencyManager:dependencyManager]];
-}
-
-+ (NSString *)stringForCommentTextWithSequence:(VSequence *)sequence
-{
-    NSNumber *commentCount = [sequence commentCount];
-    NSString *commentsString = nil;
-    NSInteger cCount = [commentCount integerValue];
-    if ( sequence.permissions.canComment )
-    {
-        //Users can comment on this sequence, return a string based on comment count
-        if (cCount == 0)
-        {
-            commentsString = NSLocalizedString(@"LeaveAComment", @"");
-        }
-        else
-        {
-            commentsString = [NSString stringWithFormat:@"%@ %@", [commentCount stringValue], [commentCount integerValue] == 1 ? NSLocalizedString(@"Comment", @"") : NSLocalizedString(@"Comments", @"")];
-        }
-    }
-    else
-    {
-        //Users aren't allowed to comment on this, so return an empty string
-        commentsString = @"";
-    }
-    return commentsString;
-}
-
 + (NSDictionary *)sequenceDescriptionAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     return @{
              NSForegroundColorAttributeName: [dependencyManager colorForKey:VDependencyManagerContentTextColorKey],
              NSFontAttributeName: [dependencyManager fontForKey:VDependencyManagerParagraphFontKey]
-             };
-}
-
-+ (NSDictionary *)sequenceCommentCountAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
-{
-    return @{
-             NSFontAttributeName : [dependencyManager fontForKey:VDependencyManagerLabel3FontKey],
-             NSForegroundColorAttributeName: [dependencyManager colorForKey:VDependencyManagerContentTextColorKey]
              };
 }
 
@@ -408,10 +327,10 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     
     // Use width to ensure 1:1 aspect ratio of previewView
     CGSize actualSize = CGSizeMake(fullWidth, 0.0f);
-
+    
     // Add header
     actualSize.height = actualSize.height + kInsetCellHeaderHeight;
-
+    
     // Text size
     actualSize = [self sizeByAddingTextAreaSizeToSize:actualSize
                                              sequence:sequence
@@ -433,8 +352,8 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     CGSize sizeWithText = initialSize;
     
     // Top Margins
-    sizeWithText.height = sizeWithText.height + kTextMargins.top;
-
+    sizeWithText.height = sizeWithText.height;
+    
     NSValue *textSizeValue = [[self textSizeCache] objectForKey:sequence.remoteId];
     if (textSizeValue != nil)
     {
@@ -443,33 +362,19 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
     
     // Comment size
     CGFloat textAreaWidth = sizeWithText.width - kTextMargins.left - kTextMargins.right;
-    NSString *commentsString = [self stringForCommentTextWithSequence:sequence];
-    BOOL hasCommentString = commentsString.length != 0;
-    CGSize commentSize = CGSizeZero;
-    if ( hasCommentString )
+    if ( sequence.name != nil && sequence.name.length > 0 )
     {
-        commentSize = [[self stringForCommentTextWithSequence:sequence] frameSizeForWidth:textAreaWidth
-                                                                            andAttributes:[self sequenceCommentCountAttributesWithDependencyManager:dependencyManager]];
-    }
-    sizeWithText.height += VCEIL(commentSize.height);
-    if (sequence.name.length > 0)
-    {
-        if ( hasCommentString )
-        {
-            // Inter-Text spacing
-            sizeWithText.height += kTextSeparatorHeight;
-        }
-
         // Caption view size
         CGSize captionSize = [sequence.name frameSizeForWidth:textAreaWidth
                                                 andAttributes:[self sequenceDescriptionAttributesWithDependencyManager:dependencyManager]];
-        sizeWithText.height += VCEIL(captionSize.height);
+        sizeWithText.height += VCEIL(captionSize.height) + kTextMargins.top;
     }
+    
+    sizeWithText.height += kCountsTextViewHeight;
     
     // Bottom Margins
     sizeWithText.height += kTextMargins.bottom;
-    [[self textSizeCache] setObject:[NSValue valueWithCGSize:sizeWithText]
-                             forKey:sequence.remoteId];
+    [[self textSizeCache] setObject:[NSValue valueWithCGSize:sizeWithText] forKey:sequence.remoteId];
     return sizeWithText;
 }
 
@@ -530,6 +435,22 @@ static const CGFloat kTextSeparatorHeight = 6.0f; // This represents the space b
 - (VSequence *)sequenceToTrack
 {
     return self.sequence;
+}
+
+#pragma mark - VSequenceCountsTextViewDelegate
+
+- (void)likersTextSelected
+{
+    UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(willShowLikersForSequence:fromView:) withSender:self];
+    NSAssert( responder != nil, @"We need an object in the responder chain for commenting or showing comments.");
+    [responder willShowLikersForSequence:self.sequence fromView:self];
+}
+
+- (void)commentsTextSelected
+{
+    UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(willCommentOnSequence:fromView:) withSender:self];
+    NSAssert( responder != nil, @"We need an object in the responder chain for showing likers.");
+    [responder willCommentOnSequence:self.sequence fromView:self];
 }
 
 @end

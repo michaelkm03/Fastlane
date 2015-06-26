@@ -14,6 +14,7 @@
 #import "VAnswer.h"
 #import "VAsset.h"
 #import "VPollResult.h"
+#import "VPageType.h"
 
 #import "NSCharacterSet+VURLParts.h"
 
@@ -22,6 +23,38 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
 @implementation VObjectManager (Sequence)
 
 #pragma mark - Sequences
+
+- (RKManagedObjectRequestOperation *)toggleLikeWithSequence:(VSequence *)sequence
+                                               successBlock:(VSuccessBlock)success
+                                                  failBlock:(VFailBlock)fail
+{
+    NSString *apiPath = sequence.isLikedByMainUser.boolValue ? @"/api/sequence/unlike" : @"/api/sequence/like";
+    
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id result, NSArray *resultObjects)
+    {
+        if ( sequence.isLikedByMainUser.boolValue )
+        {
+            sequence.isLikedByMainUser = @NO;
+            sequence.likeCount = @(sequence.likeCount.integerValue - 1);
+        }
+        else
+        {
+            sequence.isLikedByMainUser = @YES;
+            sequence.likeCount = @(sequence.likeCount.integerValue + 1);
+        }
+        
+        if ( success != nil )
+        {
+            success( operation, result, resultObjects );
+        }
+    };
+    
+    return [self POST:apiPath
+               object:nil
+           parameters:@{ @"sequence_id":  sequence.remoteId }
+         successBlock:fullSuccess
+            failBlock:fail];
+}
 
 - (RKManagedObjectRequestOperation *)removeSequence:(VSequence *)sequence
                                        successBlock:(VSuccessBlock)success

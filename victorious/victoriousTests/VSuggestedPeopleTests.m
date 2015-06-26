@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
-#import "VSuggestedPeopleCollectionViewController.h"
+#import "VDiscoverSuggestedPeopleViewController.h"
 #import "VDummyModels.h"
 #import "NSObject+VMethodSwizzling.h"
 
-@interface VSuggestedPeopleCollectionViewController (UnitTest)
+@interface VDiscoverSuggestedPeopleViewController (UnitTest)
 
 - (NSArray *)usersByRemovingUser:(VUser *)user fromUsers:(NSArray *)users;
 - (void)reload;
@@ -25,7 +25,7 @@
 @property (nonatomic, strong) VUser *userNotPresent;
 @property (nonatomic, strong) VUser *userToRemove;
 @property (nonatomic, strong) NSArray *users;
-@property (nonatomic, strong) VSuggestedPeopleCollectionViewController *viewController;
+@property (nonatomic, strong) VDiscoverSuggestedPeopleViewController *viewController;
 @property (nonatomic, assign) NSUInteger startCount;
 
 @end
@@ -36,7 +36,7 @@
 {
     [super setUp];
     
-    self.viewController = [VSuggestedPeopleCollectionViewController instantiateFromStoryboard:@"Discover"];
+    self.viewController = [VDiscoverSuggestedPeopleViewController instantiateFromStoryboard:@"Discover"];
     
     self.startCount = 10;
     self.users = [VDummyModels createUsers:self.startCount];
@@ -46,7 +46,7 @@
 
 - (void)testRefresh
 {
-    IMP imp = [VSuggestedPeopleCollectionViewController v_swizzleMethod:@selector(reload) withBlock:^{}];
+    IMP imp = [VDiscoverSuggestedPeopleViewController v_swizzleMethod:@selector(reload) withBlock:^{}];
     
     NSUInteger count = 5;
     
@@ -65,7 +65,7 @@
     XCTAssertFalse( self.viewController.hasLoadedOnce );
     XCTAssertEqual( self.viewController.suggestedUsers.count, (NSUInteger)0 );
     
-    [VSuggestedPeopleCollectionViewController v_restoreOriginalImplementation:imp forMethod:@selector(reload)];
+    [VDiscoverSuggestedPeopleViewController v_restoreOriginalImplementation:imp forMethod:@selector(reload)];
 }
 
 @end

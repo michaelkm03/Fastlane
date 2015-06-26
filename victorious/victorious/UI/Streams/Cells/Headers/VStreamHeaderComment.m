@@ -31,11 +31,6 @@
 static const CGFloat kLeadingTrailingMargin = 20.0f;
 static const CGFloat kAvatarSize = 32.0f;
 static const CGFloat kItemSpacing = 5.0f;
-static const CGFloat kCommentButtonBuffer = 5.0f;
-static const CGFloat kCommentButtonWidth = 60.0f;
-static const CGFloat kCommentButtonHeight = 44.0f;
-
-static NSString * const kCommentsIconKey = @"comment_icon";
 
 @interface VStreamHeaderComment ()
 
@@ -45,7 +40,6 @@ static NSString * const kCommentsIconKey = @"comment_icon";
 @property (nonatomic, strong) VFlexBar *actionBar;
 @property (nonatomic, strong) VDefaultProfileButton *profileButton;
 @property (nonatomic, strong) VCreationInfoContainer *creationInfoContainer;
-@property (nonatomic, strong) UIButton *commentButton;
 
 @end
 
@@ -105,29 +99,15 @@ static NSString * const kCommentsIconKey = @"comment_icon";
             [self.creationInfoContainer setDependencyManager:self.dependencyManager];
         }
         
-        self.commentButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.commentButton.translatesAutoresizingMaskIntoConstraints = NO;
-        UIImage *commentIcon = [self.dependencyManager imageForKey:kCommentsIconKey];
-        [self.commentButton setImage:[commentIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
-                            forState:UIControlStateNormal];
-        self.commentButton.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -kCommentButtonBuffer);
-        self.commentButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-        [self.commentButton addTarget:self action:@selector(selectedCommentButton:) forControlEvents:UIControlEventTouchUpInside];
-        [self.commentButton v_addWidthConstraint:kCommentButtonWidth];
-        [self.commentButton v_addHeightConstraint:kCommentButtonHeight];
-        
         self.actionBar.actionItems = @[[VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingMargin],
                                        self.profileButton,
                                        [VActionBarFixedWidthItem fixedWidthItemWithWidth:kItemSpacing],
                                        self.creationInfoContainer,
-                                       self.commentButton,
                                        [VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingMargin]];
         [self.actionBar v_addPinToTopBottomToSubview:self.creationInfoContainer];
         [self updateUserAvatarForSequence:self.sequence];
         [self updateInfoContainerForSequence:self.sequence];
-        [self updateCommentButtonForSequence:self.sequence];
     }
-    [self applyStyle];
 }
 
 #pragma mark - Target/Action
@@ -145,38 +125,14 @@ static NSString * const kCommentsIconKey = @"comment_icon";
                                 fromView:self];
 }
 
-- (void)selectedCommentButton:(UIButton *)commentButton
-{
-    UIResponder<VSequenceActionsDelegate> *targetForComment = [self targetForAction:@selector(willCommentOnSequence:fromView:)
-                                                                         withSender:self];
-    if (targetForComment == nil)
-    {
-        NSAssert(false, @"We need an object in the responder chain for commenting.");
-    }
-    [targetForComment willCommentOnSequence:self.sequence
-                                   fromView:self];
-}
-
 #pragma mark - Property Accessors
 
 - (void)setSequence:(VSequence *)sequence
 {
-    [self.KVOController unobserve:_sequence
-                          keyPath:NSStringFromSelector(@selector(commentCount))];
-    
     _sequence = sequence;
-    
-    __weak typeof(self) welf = self;
-    [self.KVOController observe:_sequence
-                        keyPath:NSStringFromSelector(@selector(commentCount))
-                        options:NSKeyValueObservingOptionNew block:^(id observer, VSequence *observedSequence, NSDictionary *change)
-    {
-        [welf updateCommentButtonForSequence:observedSequence];
-    }];
     
     [self updateInfoContainerForSequence:sequence];
     [self updateUserAvatarForSequence:sequence];
-    [self updateCommentButtonForSequence:sequence];
 }
 
 #pragma mark - VHasManagedDependencies
@@ -189,22 +145,6 @@ static NSString * const kCommentsIconKey = @"comment_icon";
     {
         [self.creationInfoContainer setDependencyManager:dependencyManager];
     }
-    [self applyStyle];
-}
-
-#pragma mark - Internal Methods
-
-- (void)applyStyle
-{
-    self.commentButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    self.commentButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
-}
-
-- (void)updateCommentButtonForSequence:(VSequence *)sequence
-{
-    [self.commentButton setHidden:!sequence.permissions.canComment];
-    NSString *commentCount = self.sequence.commentCount.integerValue ? [self.numberFormatter stringForInteger:self.sequence.commentCount.integerValue] : @"";
-    [self.commentButton setTitle:commentCount forState:UIControlStateNormal];
 }
 
 - (void)updateInfoContainerForSequence:(VSequence *)sequence

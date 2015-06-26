@@ -9,7 +9,6 @@
 #import "VDependencyManager.h"
 #import "VHasManagedDependencies.h"
 #import "VNavigationDestinationsProvider.h"
-#import "VHashtagResponder.h"
 
 #import <UIKit/UIKit.h>
 
@@ -34,7 +33,7 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
  This base class does not do any custom view loading--loadView
  implementation is up to subclasses.
  */
-@interface VScaffoldViewController : UIViewController <VHasManagedDependencies, VNavigationDestinationsProvider, VHashtagResponder>
+@interface VScaffoldViewController : UIViewController <VHasManagedDependencies, VNavigationDestinationsProvider>
 
 /**
  A dependency manager that contains appearance data
@@ -118,5 +117,7 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
  as well as anything custom.
  */
 - (void)displayResultOfNavigation:(UIViewController *)viewController animated:(BOOL)animated;
+
+- (void)showWebBrowserWithURL:(NSURL *)URL;
 
 @end

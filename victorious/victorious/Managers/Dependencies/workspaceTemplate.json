@@ -9,7 +9,7 @@
                 {
                     "filterIndex": 0,
                     "picker": {
-                      "name": "vertical.multiplePicker",
+                      "name": "vertical.multiplePicker"
                     },
                     "title": "hashtag",
                     "icon": {
@@ -130,7 +130,8 @@
             "id": "2C30A9D0-F437-4872-97E9-C6D2787053BF"
         }
     },
-    "publishScreen" : {
+    "publishScreen" :
+    {
         "name":"publish.screen",
         "shareMenuItems" :
         [
@@ -139,25 +140,25 @@
                 "title":"post to facebook",
                 "icon":
                 {
-                    "imageURL": "share_facebook",
-                    "tintColor":
-                    {
-                        "red": 102,
-                        "alpha": 255,
-                        "blue": 102,
-                        "green": 102
-                    }
+                    "imageURL": "share_facebook"
                 },
                 "selectedIcon":
                 {
-                    "imageURL": "share_facebook",
-                    "tintColor":
-                    {
-                        "red": 244,
-                        "alpha": 255,
-                        "blue": 35,
-                        "green": 39
-                    }
+                    "imageURL": "share_facebook"
+                },
+                "color.accent":
+                {
+                    "red": 59,
+                    "alpha": 255,
+                    "blue": 152,
+                    "green": 89
+                },
+                "color.accent.secondary":
+                {
+                    "red": 102,
+                    "alpha": 255,
+                    "blue": 102,
+                    "green": 102
                 }
             },
             {
@@ -165,25 +166,25 @@
                 "title":"post to twitter",
                 "icon":
                 {
-                    "imageURL": "share_twitter",
-                    "tintColor":
-                    {
-                        "red": 102,
-                        "alpha": 255,
-                        "blue": 102,
-                        "green": 102
-                    }
+                    "imageURL": "share_twitter"
                 },
                 "selectedIcon":
                 {
-                    "imageURL": "share_twitter",
-                    "tintColor":
-                    {
-                        "red": 244,
-                        "alpha": 255,
-                        "blue": 35,
-                        "green": 39
-                    }
+                    "imageURL": "share_twitter"
+                },
+                "color.accent":
+                {
+                    "red": 50,
+                    "alpha": 255,
+                    "blue": 218,
+                    "green": 106
+                },
+                "color.accent.secondary":
+                {
+                    "red": 102,
+                    "alpha": 255,
+                    "blue": 102,
+                    "green": 102
                 }
             }
         ],
@@ -223,19 +224,19 @@
             "blue": 237,
             "green": 233
         },
-        "color.caption.separator":
-        {
-            "red": 0,
-            "alpha": 255,
-            "blue": 0,
-            "green": 0
-        },
-        "color.switch":
+        "color.accent":
         {
             "red": 0,
             "alpha": 255,
             "blue": 0,
             "green": 255
+        },
+        "color.accent.secondary":
+        {
+            "red": 0,
+            "alpha": 255,
+            "blue": 0,
+            "green": 0
         },
         "color.text.placeholder":
         {
@@ -301,20 +302,6 @@
         {
             "fontSize": 18,
             "fontName": "Helvetica"
-        },
-        "color.accent":
-        {
-            "red": 244,
-            "alpha": 255,
-            "blue": 35,
-            "green": 39
-        },
-        "color.accent.secondary":
-        {
-            "red": 102,
-            "alpha": 255,
-            "blue": 102,
-            "green": 102
         },
         "color.text.secondary":
         {
@@ -396,138 +383,77 @@
                         "imageURL": "textIcon"
                     }
                 },
-                "picker": {
-                    "name": "vertical.picker"
-                },
-                "filterIndex": 2,
-                "title": "text",
-                "tools": [
-                    {
-                        "verticalAlignment": "bottom",
-                        "shouldForceUppercase": true,
-                        "font.paragraph": {
-                            "fontSize": 50,
-                            "fontName": "Impact"
-                        },
-                        "title": "meme",
-                        "horizontalAlignment": "center",
-                        "color.text": {
-                            "red": 255,
-                            "alpha": 1,
-                            "blue": 255,
-                            "green": 255
-                        },
-                        "placeholderText": "create a meme",
-                        "strokeColor": {
-                            "red": 0,
-                            "alpha": 1,
-                            "blue": 0,
-                            "green": 0
-                        },
-                        "strokeWidth": -5,
-                        "name": "textType.tool"
+                {
+                    "selectedIcon": {
+                        "imageURL": "filterSelected"
                     },
-                    {
-                        "verticalAlignment": "center",
-                        "font.paragraph": {
-                            "fontSize": 23,
-                            "fontName": "PTSans-Narrow"
-                        },
-                        "title": "quote",
-                        "horizontalAlignment": "center",
-                        "color.text": {
-                            "red": 255,
-                            "alpha": 1,
-                            "blue": 255,
-                            "green": 255
-                        },
-                        "placeholderText": "create a quote",
-                        "strokeColor": {
-                            "red": 255,
-                            "alpha": 1,
-                            "blue": 255,
-                            "green": 255
-                        },
-                        "strokeWidth": 0,
-                        "name": "textType.tool"
+                    "picker": {
+                        "name": "vertical.picker"
+                    },
+                    "filterIndex": 0,
+                    "title": "filters",
+                    "tools": [],
+                    "name": "filter.tool",
+                    "icon": {
+                        "imageURL": "filter"
                     }
-                ],
-                "name": "text.tool",
-                "icon": {
-                    "imageURL": "text"
-                }
-            },
-            {
-                "selectedIcon": {
-                    "imageURL": "filterSelected"
                 },
-                "picker": {
-                    "name": "vertical.picker"
-                },
-                "filterIndex": 0,
-                "title": "filters",
-                "tools": [],
-                "name": "filter.tool",
-                "icon": {
-                    "imageURL": "filter"
+                {
+                    "filterIndex": 1,
+                    "title": "crop",
+                    "icon": {
+                        "imageURL": "crop"
+                    },
+                    "name": "crop.tool",
+                    "selectedIcon": {
+                        "imageURL": "cropSelected"
+                    }
                 }
-            },
-            {
-                "filterIndex": 1,
-                "title": "crop",
-                "icon": {
-                    "imageURL": "crop"
+            ]
+        },
+        "videoWorkspace": {
+            "videoMaxDuration": 15,
+            "name": "workspace.screen",
+            "tools": [
+                {
+                    "selectedIcon": {
+                        "imageURL": "videoIconSelected"
+                    },
+                    "videoMuted": false,
+                    "frameDurationValue": 1,
+                    "title": "VIDEO MODE",
+                    "frameDurationTimescale": 24,
+                    "name": "trim.video.tool",
+                    "icon": {
+                        "imageURL": "videoIcon"
+                    }
                 },
-                "name": "crop.tool",
-                "selectedIcon": {
-                    "imageURL": "cropSelected"
-                }
-            }
-        ]
-    },
-    "videoWorkspace": {
-        "videoMaxDuration": 15,
-        "name": "workspace.screen",
-        "tools": [
-            {
-                "selectedIcon": {
-                    "imageURL": "videoSelected"
+                {
+                    "selectedIcon": {
+                        "imageURL": "GIFSelected"
+                    },
+                    "isGIF": true,
+                    "videoMuted": true,
+                    "frameDurationValue": 1,
+                    "title": "GIF MODE",
+                    "frameDurationTimescale": 8,
+                    "name": "trim.video.tool",
+                    "icon": {
+                        "imageURL": "GIF"
+                    }
                 },
-                "videoMuted": false,
-                "frameDurationValue": 1,
-                "title": "VIDEO MODE",
-                "frameDurationTimescale": 24,
-                "name": "trim.video.tool",
-                "icon": {
-                    "imageURL": "video"
+                {
+                    "title": "meme",
+                    "icon": {
+                        "imageURL": "meme"
+                    },
+                    "name": "snapshot.video.tool",
+                    "selectedIcon": {
+                        "imageURL": "memeSelected"
+                    }
                 }
-            },
-            {
-                "selectedIcon": {
-                    "imageURL": "GIFSelected"
-                },
-                "isGIF": true,
-                "videoMuted": true,
-                "frameDurationValue": 1,
-                "title": "GIF MODE",
-                "frameDurationTimescale": 8,
-                "name": "trim.video.tool",
-                "icon": {
-                    "imageURL": "GIF"
-                }
-            },
-            {
-                "title": "meme",
-                "icon": {
-                    "imageURL": "meme"
-                },
-                "name": "snapshot.video.tool",
-                "selectedIcon": {
-                    "imageURL": "memeSelected"
-                }
-            }
-        ],
-        "videoMinDuration": 3
-    }
+            ],
+            "videoMinDuration": 3
+        }
     }
 }

@@ -9,7 +9,7 @@
 #import "VModernResetTokenViewController.h"
 
 // Views + Helpers
-#import "VLoginFlowControllerResponder.h"
+#import "VLoginFlowControllerDelegate.h"
 
 // Dependencies
 #import "VDependencyManager.h"
@@ -21,7 +21,7 @@
 static NSString *kPromptKey = @"prompt";
 static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
-@interface VModernResetTokenViewController () <UITextFieldDelegate, VBackgroundContainer>
+@interface VModernResetTokenViewController () <UITextFieldDelegate, VBackgroundContainer, VLoginFlowScreen>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -88,11 +88,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];
     
-    UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", @"")
-                                                       style:UIBarButtonItemStylePlain
-                                                      target:self
-                                                      action:@selector(resetPasswordWithTextFieldToken)];
-    self.navigationItem.rightBarButtonItem = nextButton;
+    [self.delegate configureFlowNavigationItemWithScreen:self];
 
 }
 
@@ -103,37 +99,27 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     [self.codeTextField becomeFirstResponder];
 }
 
+#pragma mark - VLoginFlowScreen
+
+@synthesize delegate = _delegate;
+
+- (void)onContinue:(id)sender
+{
+    [self.delegate setResetToken:self.codeTextField.text];
+}
+
 #pragma mark - Target/Action
 
 - (IBAction)resendEmail:(id)sender
 {
-    id<VLoginFlowControllerResponder> flowController = [self targetForAction:@selector(forgotPasswordWithInitialEmail:)
-                                                                  withSender:self];
-    if (flowController == nil)
-    {
-        NSAssert(false, @"We need a flow controller for forgot password");
-    }
-    [flowController forgotPasswordWithInitialEmail:nil];
-}
-
-#pragma mark - Internal Methods
-
-- (void)resetPasswordWithTextFieldToken
-{
-    id<VLoginFlowControllerResponder> flowController = [self targetForAction:@selector(setResetToken:)
-                                                                  withSender:self];
-    if (flowController == nil)
-    {
-        NSAssert(false, @"We need a flow controller for reset tokens.");
-    }
-    [flowController setResetToken:self.codeTextField.text];
+    [self.delegate forgotPasswordWithInitialEmail:nil];
 }
 
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [self resetPasswordWithTextFieldToken];
+    [self onContinue:nil];
     return YES;
 }
 

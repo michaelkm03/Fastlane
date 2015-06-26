@@ -9,10 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "VAbstractActionView.h"
 #import "VHasManagedDependencies.h"
+#import "VActionButton.h"
 
 /**
  *  VInsetActionView is a VAbstractActionView subclass for use in insetCollectionCells.
  */
 @interface VInsetActionView : VAbstractActionView <VHasManagedDependencies>
+
+@property (nonatomic, strong, readonly) VActionButton *likeButton;
 
 @end

@@ -18,11 +18,13 @@
 #import "VConstants.h"
 #import "MBProgressHUD.h"
 #import "VDependencyManager+VUserProfile.h"
+#import "VScrollPaginator.h"
 
-@interface VFollowerTableViewController ()
+@interface VFollowerTableViewController () <VScrollPaginatorDelegate>
 
 @property (nonatomic, strong)   NSArray    *followers;
 @property (nonatomic) BOOL isMe;
+@property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 
 @end
 
@@ -33,11 +35,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.scrollPaginator = [[VScrollPaginator alloc] init];
+    self.scrollPaginator.delegate = self;
 
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
     
     [self.tableView registerNib:[VFollowerTableViewCell nibForCell]
          forCellReuseIdentifier:[VFollowerTableViewCell suggestedReuseIdentifier]];
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.edgesForExtendedLayout = UIRectEdgeBottom;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -102,6 +109,16 @@
     return cell;
 }
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [self.scrollPaginator scrollViewDidScroll:scrollView];
+}
+
+- (void)shouldLoadNextPage
+{
+    [self loadMoreFollowers];
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VUser *user = self.followers[indexPath.row];
@@ -129,8 +146,7 @@
 {
     VSuccessBlock followerSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
-        self.followers = [resultObjects sortedArrayUsingDescriptors:@[sort]];
+        self.followers = resultObjects;
         [self setHasFollowers:self.followers.count];
         
         [self.tableView reloadData];
@@ -159,12 +175,11 @@
 {
     VSuccessBlock followerSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
-        NSSet *uniqueFollowers = [NSSet setWithArray:[self.followers arrayByAddingObjectsFromArray:resultObjects]];
-        self.followers = [[uniqueFollowers allObjects] sortedArrayUsingDescriptors:@[sort]];
+        self.followers = [self.followers arrayByAddingObjectsFromArray:resultObjects];
         [self setHasFollowers:self.followers.count];
         
         [self.tableView reloadData];
+        [self.tableView flashScrollIndicators];
     };
     
     if (self.profile != nil)
