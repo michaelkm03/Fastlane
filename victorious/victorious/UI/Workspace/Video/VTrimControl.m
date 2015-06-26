@@ -71,9 +71,11 @@ static const CGFloat kLineThickness = 1.0f; //Thickness of underbar on trim cont
 - (void)sharedInit
 {
     self.trimThumbBody = [[UIView alloc] init];
+    self.leftHandle = [[UIView alloc] init];
     
     self.trimThumbBody.backgroundColor = [UIColor whiteColor];
     [self addSubview:self.trimThumbBody];
+    [self addSubview:self.leftHandle];
     
     self.headGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pannedThumb:)];
     self.bodyGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pannedThumb:)];
@@ -116,10 +118,9 @@ static const CGFloat kLineThickness = 1.0f; //Thickness of underbar on trim cont
 
 - (void)layoutSubviews
 {
-    CGFloat previewHeight = CGRectGetMaxY(self.bounds) - kTrimHeadHeight;
-    NSLog(@"preview Height: %f", previewHeight);
     if (!self.hasPerformedInitialLayout)
     {
+        CGFloat previewHeight = CGRectGetMaxY(self.bounds) - kTrimHeadHeight;
         //The added 1s avoid a small visible divide between the thumb head and the trimmer line
         self.trimThumbBody.frame = CGRectMake(0.0f,
                                               0.0f,
@@ -143,15 +144,13 @@ static const CGFloat kLineThickness = 1.0f; //Thickness of underbar on trim cont
         
         [self updateThumAndDimmingViewWithNewThumbCenter:CGPointMake(200.0f, 200.0f)];
         
-        self.leftHandle = [[UIView alloc] initWithFrame:CGRectMake(0, kTrimHeadHeight + 4.0f , kTrimBodyWidth, previewHeight - 4.0f)];
+        self.leftHandle.frame = CGRectMake(0, kTrimHeadHeight + 4.0f , kTrimBodyWidth, previewHeight - 4.0f);
         self.leftHandle.backgroundColor = [UIColor whiteColor];
         self.leftHandle.userInteractionEnabled = NO;
         
-        [self addSubview:self.leftHandle];
-        
         [self updateThumAndDimmingViewWithNewThumbCenter:CGPointMake(200.0f, 200.0f)];
         self.hasPerformedInitialLayout = YES;
-        
+        NSLog(@"this getting called");
         self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self];
         self.animator.delegate = self;
         [self.animator addBehavior:self.collisionBehavior];
@@ -333,7 +332,7 @@ static const CGFloat kLineThickness = 1.0f; //Thickness of underbar on trim cont
 - (void)updateThumAndDimmingViewWithNewThumbCenter:(CGPoint)point
 {
     self.trimThumbBody.center = CGPointMake(point.x, CGRectGetMaxY(self.bounds) - kTrimHeadHeight - 2);
-    self.leftHandle.center = CGPointMake(self.leftHandle.center.x, self.trimThumbBody.center.y);
+    self.leftHandle.center = CGPointMake(self.leftHandle.center.x, CGRectGetMaxY(self.bounds) - kTrimHeadHeight - 2);
     [self sendActionsForControlEvents:UIControlEventValueChanged];
 }
 
