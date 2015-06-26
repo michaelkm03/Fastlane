@@ -510,6 +510,7 @@ static NSString * const kVAPIParamContext = @"context";
         for ( VUser *user in users )
         {
             [self.mainUser addFollowingObject:user];
+            user.isFollowedByMainUser = @YES;
             user.numberOfFollowers = @(user.numberOfFollowers.integerValue + 1);
         }
         self.mainUser.numberOfFollowing = @(self.mainUser.following.count);
