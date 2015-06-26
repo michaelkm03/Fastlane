@@ -17,9 +17,20 @@ typedef NS_ENUM(NSUInteger, VSuggestedUserRetryCellState)
     VSuggestedUserRetryCellStateLoading
 };
 
+/**
+ Collection cell designed to look like the VSuggestedUserCell and provide prompts for
+ tapping to reload and show an indicator when content is loading.
+ */
 @interface VSuggestedUserRetryCell : VBaseCollectionViewCell <VBackgroundContainer>
 
+/**
+ The dependency manager used to style this cell.
+ */
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+
+/**
+ The state of this cell. Updating this property will hide or show the loading state of this cell.
+ */
 @property (nonatomic, assign) VSuggestedUserRetryCellState state;
 
 @end
