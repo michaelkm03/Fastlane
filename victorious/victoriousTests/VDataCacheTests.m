@@ -84,6 +84,30 @@ static NSString * const kDataCacheTestResourceName = @"VDataCacheTests";
     XCTAssertEqualObjects(data, dataOut);
 }
 
+- (void)testCacheFromFileAgain
+{
+    uint8_t bytes[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    uint8_t moreBytes[] = { 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 };
+
+    NSString *tempDirectory = NSTemporaryDirectory();
+    NSString *tempFile = [tempDirectory stringByAppendingPathComponent:[[NSUUID UUID] UUIDString]];
+    NSString *anotherTempFile = [tempDirectory stringByAppendingPathComponent:[[NSUUID UUID] UUIDString]];
+    [[NSFileManager defaultManager] createDirectoryAtPath:tempDirectory withIntermediateDirectories:YES attributes:nil error:nil];
+    
+    NSData *data = [NSData dataWithBytes:bytes length:10];
+    [data writeToFile:tempFile atomically:YES];
+    NSString *identifier = [[NSUUID UUID] UUIDString];
+    
+    NSData *moreData = [NSData dataWithBytes:moreBytes length:10];
+    [moreData writeToFile:anotherTempFile atomically:YES];
+    
+    XCTAssert( [self.dataCache1 cacheDataAtURL:[NSURL fileURLWithPath:tempFile] forID:identifier error:nil] );
+    XCTAssert( [self.dataCache1 cacheDataAtURL:[NSURL fileURLWithPath:anotherTempFile] forID:identifier error:nil] );
+    
+    NSData *dataOut = [self.dataCache2 cachedDataForID:identifier];
+    XCTAssertEqualObjects(moreData, dataOut);
+}
+
 - (void)testBackupAttributeAppliedToCacheDirectory
 {
     uint8_t bytes[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };

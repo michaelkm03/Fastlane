@@ -61,6 +61,13 @@ static NSString * const kCacheDirectoryName = @"VDataCache";
     }
     
     NSURL *saveURL = [self URLForCachedDataWithID:identifier];
+    if ( [[NSFileManager defaultManager] fileExistsAtPath:[saveURL path]] )
+    {
+        if ( ![[NSFileManager defaultManager] removeItemAtURL:saveURL error:error] )
+        {
+            return NO;
+        }
+    }
     return [[NSFileManager defaultManager] copyItemAtURL:fileURL toURL:saveURL error:error];
 }
 
@@ -119,10 +126,19 @@ static NSString * const kCacheDirectoryName = @"VDataCache";
         return YES;
     }
     
-    BOOL created = [[NSFileManager defaultManager] createDirectoryAtURL:self.localCacheURL withIntermediateDirectories:YES attributes:nil error:error];
+    NSError *myError = nil;
+    BOOL created = [[NSFileManager defaultManager] createDirectoryAtURL:self.localCacheURL withIntermediateDirectories:YES attributes:nil error:&myError];
     if ( !created )
     {
-        return NO;
+        BOOL isDirectory = NO;
+        if ( ![[NSFileManager defaultManager] fileExistsAtPath:self.localCacheURL.path isDirectory:&isDirectory] || !isDirectory )
+        {
+            if ( error != nil )
+            {
+                *error = myError;
+            }
+            return NO;
+        }
     }
     
     return [self.localCacheURL setResourceValue:@YES forKey:NSURLIsExcludedFromBackupKey error:error];
