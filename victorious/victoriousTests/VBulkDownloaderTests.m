@@ -51,53 +51,15 @@
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"download callback"];
     VBulkDownloader *operation = [[VBulkDownloader alloc] initWithURLs:urls
-                                                            completion:^(void)
+                                                            completion:^(NSURL *originalURL, NSError *error, NSURLResponse *response, NSURL *downloadedFile)
     {
-        VDataCache *dataCache = [[VDataCache alloc] init];
-        NSData *cachedData = [dataCache cachedDataForID:url];
+        XCTAssertEqualObjects(originalURL, url);
+        NSData *cachedData = [NSData dataWithContentsOfURL:downloadedFile];
         NSString *stringFromData = [[NSString alloc] initWithData:cachedData encoding:NSUTF8StringEncoding];
         XCTAssertEqualObjects( stringFromData, testBody);
         
         [expectation fulfill];
     }];
-    [self.operationQueue addOperation:operation];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
-}
-
-- (void)testOperationFinishes
-{
-    NSURL *url1 = [NSURL URLWithString:@"http://www.example.com/one"];
-    NSURL *url2 = [NSURL URLWithString:@"http://www.example.com/two"];
-    NSURL *url3 = [NSURL URLWithString:@"http://www.example.com/three"];
-    NSURL *url4 = [NSURL URLWithString:@"http://www.example.com/four"];
-    NSURL *url5 = [NSURL URLWithString:@"http://www.example.com/five"];
-    NSString *testBody1 = @"hello world 1";
-    NSString *testBody2 = @"hello world 2";
-    NSString *testBody3 = @"hello world 3";
-    NSString *testBody4 = @"hello world 4";
-    NSString *testBody5 = @"hello world 5";
-    
-    stubRequest(@"GET", url1.absoluteString).andReturn(200).withBody(testBody1);
-    stubRequest(@"GET", url2.absoluteString).andReturn(200).withBody(testBody2);
-    stubRequest(@"GET", url3.absoluteString).andReturn(200).withBody(testBody3);
-    stubRequest(@"GET", url4.absoluteString).andReturn(200).withBody(testBody4);
-    stubRequest(@"GET", url5.absoluteString).andReturn(200).withBody(testBody5);
-    
-    NSSet *urls = [NSSet setWithObjects:url1, url2, url3, url4, url5, nil];
-    
-    VBulkDownloader *operation = [[VBulkDownloader alloc] initWithURLs:urls completion:nil];
-    
-    XCTestExpectation *operationFinishExpectation = [self expectationWithDescription:@"operation should finish"];
-    [self.KVOController observe:operation keyPath:@"isFinished" options:NSKeyValueObservingOptionNew block:^(id observer, id object, NSDictionary *change)
-    {
-        BOOL newFinished = [change[NSKeyValueChangeNewKey] boolValue];
-        if ( newFinished )
-        {
-            [operationFinishExpectation fulfill];
-        }
-    }];
-    
-    operation.dataCache = self.dataCache;
     [self.operationQueue addOperation:operation];
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
 }
@@ -121,35 +83,70 @@
     stubRequest(@"GET", url4.absoluteString).andReturn(200).withBody(testBody4);
     stubRequest(@"GET", url5.absoluteString).andReturn(200).withBody(testBody5);
     
+    __block BOOL downloadedUrl1 = NO;
+    __block BOOL downloadedUrl2 = NO;
+    __block BOOL downloadedUrl3 = NO;
+    __block BOOL downloadedUrl4 = NO;
+    __block BOOL downloadedUrl5 = NO;
+    
     NSSet *urls = [NSSet setWithObjects:url1, url2, url3, url4, url5, nil];
     
-    XCTestExpectation *expectation = [self expectationWithDescription:@"download callback"];
-    VBulkDownloader *operation = [[VBulkDownloader alloc] initWithURLs:urls
-                                                            completion:^(void)
+    __block VBulkDownloader *operation = [[VBulkDownloader alloc] initWithURLs:urls
+                                                                    completion:^(NSURL *originalURL, NSError *error, NSURLResponse *response, NSURL *downloadedFile)
     {
-        NSData *cachedData1 = [self.dataCache cachedDataForID:url1];
-        NSString *stringFromData1 = [[NSString alloc] initWithData:cachedData1 encoding:NSUTF8StringEncoding];
-        XCTAssertEqualObjects( stringFromData1, testBody1);
-        
-        NSData *cachedData2 = [self.dataCache cachedDataForID:url2];
-        NSString *stringFromData2 = [[NSString alloc] initWithData:cachedData2 encoding:NSUTF8StringEncoding];
-        XCTAssertEqualObjects( stringFromData2, testBody2);
-        
-        NSData *cachedData3 = [self.dataCache cachedDataForID:url3];
-        NSString *stringFromData3 = [[NSString alloc] initWithData:cachedData3 encoding:NSUTF8StringEncoding];
-        XCTAssertEqualObjects( stringFromData3, testBody3);
-        
-        NSData *cachedData4 = [self.dataCache cachedDataForID:url4];
-        NSString *stringFromData4 = [[NSString alloc] initWithData:cachedData4 encoding:NSUTF8StringEncoding];
-        XCTAssertEqualObjects( stringFromData4, testBody4);
-        
-        NSData *cachedData5 = [self.dataCache cachedDataForID:url5];
-        NSString *stringFromData5 = [[NSString alloc] initWithData:cachedData5 encoding:NSUTF8StringEncoding];
-        XCTAssertEqualObjects( stringFromData5, testBody5);
-        
-        [expectation fulfill];
+        if ( [originalURL isEqual:url1] )
+        {
+            NSData *downloadedData = [NSData dataWithContentsOfURL:downloadedFile];
+            NSString *stringFromData = [[NSString alloc] initWithData:downloadedData encoding:NSUTF8StringEncoding];
+            XCTAssertEqualObjects( stringFromData, testBody1);
+            downloadedUrl1 = YES;
+        }
+        else if ( [originalURL isEqual:url2] )
+        {
+            NSData *downloadedData = [NSData dataWithContentsOfURL:downloadedFile];
+            NSString *stringFromData = [[NSString alloc] initWithData:downloadedData encoding:NSUTF8StringEncoding];
+            XCTAssertEqualObjects( stringFromData, testBody2);
+            downloadedUrl2 = YES;
+        }
+        else if ( [originalURL isEqual:url3] )
+        {
+            NSData *downloadedData = [NSData dataWithContentsOfURL:downloadedFile];
+            NSString *stringFromData = [[NSString alloc] initWithData:downloadedData encoding:NSUTF8StringEncoding];
+            XCTAssertEqualObjects( stringFromData, testBody3);
+            downloadedUrl3 = YES;
+        }
+        else if ( [originalURL isEqual:url4] )
+        {
+            NSData *downloadedData = [NSData dataWithContentsOfURL:downloadedFile];
+            NSString *stringFromData = [[NSString alloc] initWithData:downloadedData encoding:NSUTF8StringEncoding];
+            XCTAssertEqualObjects( stringFromData, testBody4);
+            downloadedUrl4 = YES;
+        }
+        else if ( [originalURL isEqual:url5] )
+        {
+            NSData *downloadedData = [NSData dataWithContentsOfURL:downloadedFile];
+            NSString *stringFromData = [[NSString alloc] initWithData:downloadedData encoding:NSUTF8StringEncoding];
+            XCTAssertEqualObjects( stringFromData, testBody5);
+            downloadedUrl5 = YES;
+        }
+        XCTAssertFalse(operation.isFinished);
     }];
-    operation.dataCache = self.dataCache;
+    
+    XCTestExpectation *operationFinishExpectation = [self expectationWithDescription:@"operation should finish"];
+    [self.KVOController observe:operation keyPath:@"isFinished" options:NSKeyValueObservingOptionNew block:^(id observer, id object, NSDictionary *change)
+    {
+        BOOL newFinished = [change[NSKeyValueChangeNewKey] boolValue];
+        if ( newFinished )
+        {
+            XCTAssert( downloadedUrl1 );
+            XCTAssert( downloadedUrl2 );
+            XCTAssert( downloadedUrl3 );
+            XCTAssert( downloadedUrl4 );
+            XCTAssert( downloadedUrl5 );
+            [operationFinishExpectation fulfill];
+        }
+    }];
+    
     [self.operationQueue addOperation:operation];
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
 }

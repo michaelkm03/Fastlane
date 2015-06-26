@@ -79,7 +79,7 @@ const NSInteger VDownloadOperationErrorBadStatusCode = 100;
 
     if ( self.completion != nil )
     {
-        self.completion(error, response, nil);
+        self.completion(self.url, error, response, nil);
         self.completion = nil;
     }
 }
@@ -97,6 +97,10 @@ const NSInteger VDownloadOperationErrorBadStatusCode = 100;
 
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location
 {
+    if ( downloadTask != self.downloadTask )
+    {
+        return;
+    }
     if ( ![self isOKResponseCode:[(NSHTTPURLResponse *)downloadTask.response statusCode]] )
     {
         NSInteger statusCode = [(NSHTTPURLResponse *)downloadTask.response statusCode];
@@ -118,7 +122,7 @@ const NSInteger VDownloadOperationErrorBadStatusCode = 100;
         [self.progress setUserInfoObject:@1 forKey:NSProgressFileCompletedCountKey];
         if ( self.completion != nil )
         {
-            self.completion(nil, downloadTask.response, location);
+            self.completion(self.url, nil, downloadTask.response, location);
             self.completion = nil;
         }
     }
@@ -126,6 +130,10 @@ const NSInteger VDownloadOperationErrorBadStatusCode = 100;
 
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
 {
+    if ( task != self.downloadTask )
+    {
+        return;
+    }
     if ( error != nil )
     {
         [self handleError:error response:task.response];

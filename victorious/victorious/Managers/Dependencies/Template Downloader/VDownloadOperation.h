@@ -14,6 +14,7 @@ extern const NSInteger VDownloadOperationErrorBadStatusCode; ///< Indicates that
 /**
  Completion block to be called on an arbitrary background thread when the operation completes.
  
+ @param originalURL The URL that was originally requested
  @param error If an error occurs during download, this parameter will have information on the error.
               If the download succeeds, this parameter will be nil.
  @param downloadedFile location on disk of the file that's been downloaded. It will
@@ -21,7 +22,7 @@ extern const NSInteger VDownloadOperationErrorBadStatusCode; ///< Indicates that
                        somewhere more permanent immediately. If file was not suc-
                        cessfully downloaded, this will be nil.
  */
-typedef void (^VDownloadOperationCompletion)(NSError *error, NSURLResponse *response, NSURL *downloadedFile);
+typedef void (^VDownloadOperationCompletion)(NSURL *originalURL, NSError *error, NSURLResponse *response, NSURL *downloadedFile);
 
 /**
  An NSOperation subclass to download a single 

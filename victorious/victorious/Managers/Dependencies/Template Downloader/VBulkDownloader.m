@@ -25,14 +25,13 @@ static const NSInteger kMaxConcurrentDownloads = 3;
 
 @implementation VBulkDownloader
 
-- (instancetype)initWithURLs:(NSSet *)urls completion:(VBulkDownloadCompletion)completionBlock
+- (instancetype)initWithURLs:(NSSet *)urls completion:(VDownloadOperationCompletion)completionBlock
 {
     self = [super init];
     if ( self != nil )
     {
         _urls = [urls copy];
         _waitingToDownload = [urls mutableCopy];
-        _dataCache = [[VDataCache alloc] init];
         _operationQueue = [[NSOperationQueue alloc] init];
         _operationQueue.maxConcurrentOperationCount = kMaxConcurrentDownloads;
         _privateQueue = dispatch_queue_create("VBulkDownloader", DISPATCH_QUEUE_SERIAL);
@@ -42,28 +41,8 @@ static const NSInteger kMaxConcurrentDownloads = 3;
         NSMutableArray *operations = [[NSMutableArray alloc] initWithCapacity:urls.count];
         for (NSURL *url in urls)
         {
-            __weak typeof(self) weakSelf = self;
             VDownloadOperation *downloadOperation = [[VDownloadOperation alloc] initWithURL:url
-                                                                                 completion:^(NSError *error, NSURLResponse *response, NSURL *downloadedFile)
-            {
-                typeof(weakSelf) strongSelf = weakSelf;
-                if ( strongSelf != nil )
-                {
-                    [strongSelf.dataCache cacheDataAtURL:downloadedFile forID:url error:nil];
-                    dispatch_sync(strongSelf.privateQueue, ^(void)
-                    {
-                        [strongSelf.waitingToDownload removeObject:url];
-                        
-                        if ( strongSelf.waitingToDownload.count == 0 )
-                        {
-                            if (completionBlock)
-                            {
-                                completionBlock();
-                            }
-                        }
-                    });
-                }
-            }];
+                                                                                 completion:completionBlock];
             [operations addObject:downloadOperation];
         }
         _operations = operations;
