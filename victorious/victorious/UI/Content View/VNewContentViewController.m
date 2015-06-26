@@ -1291,8 +1291,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
                  const BOOL shouldHide = playControlsHidden && !welf.videoCell.isEndCardShowing;
                  welf.moreButton.alpha = shouldHide ? 0.0f : 1.0f;
                  welf.closeButton.alpha = shouldHide ? 0.0f : 1.0f;
-                 welf.likeButton.transform = playControlsHidden ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, -50.0f);
-                 welf.likeButton.hidden = welf.videoCell.isEndCardShowing;
+                 welf.likeButton.transform = playControlsHidden ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, -CGRectGetHeight(welf.likeButton.bounds));
              }];
             videoCell.endCardDelegate = self;
             videoCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
@@ -1364,6 +1363,10 @@ referenceSizeForHeaderInSection:(NSInteger)section
             [self.scrollPaginator scrollViewDidScroll:scrollView];
         }
     }
+
+    VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
+    self.likeButton.alpha = 1.0f - layout.percentCloseToLockPointFromCatchPoint;
+    VLog(@"%f", layout.percentCloseToLockPointFromCatchPoint);
 }
 
 #pragma mark - VContentVideoCellDelegate
@@ -1755,6 +1758,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)replaySelectedFromEndCard:(VEndCardViewController *)endCardViewController
 {
+    self.likeButton.alpha = 1.0f;
     [self.videoCell seekToStart];
     [endCardViewController transitionOutAllWithBackground:YES completion:^
      {
