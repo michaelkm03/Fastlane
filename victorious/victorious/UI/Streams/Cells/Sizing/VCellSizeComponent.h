@@ -1,5 +1,5 @@
 //
-//  VLayoutComponent.h
+//  VCellSizeComponent.h
 //  victorious
 //
 //  Created by Patrick Lynch on 6/26/15.
@@ -14,15 +14,15 @@
  Calculates a size that is determined by some unique aspects of a cell according to
  the specified user info that is passed in.
  */
-typedef CGSize(^VLayoutComponentDynamicSize)(CGSize, NSDictionary *userInfo);
+typedef CGSize(^VDynamicCellSizeBlock)(CGSize, NSDictionary *userInfo);
 
 /**
  A model object used internally to store constant size values and dynamic size blocks
- used later on by VLayoutComponentCollection to calculate sizes for collection view cells.
+ used later on by VCellSizeCollection to calculate sizes for collection view cells.
  */
-@interface VLayoutComponent : NSObject
+@interface VCellSizeComponent : NSObject
 
-- (instancetype)initWithConstantSize:(CGSize)constantSize dynamicSize:(VLayoutComponentDynamicSize)dynamicSize;
+- (instancetype)initWithConstantSize:(CGSize)constantSize dynamicSize:(VDynamicCellSizeBlock)dynamicSize;
 
 /**
  A constant size which will never change depending on the content
@@ -33,6 +33,6 @@ typedef CGSize(^VLayoutComponentDynamicSize)(CGSize, NSDictionary *userInfo);
 /**
  A block that calculates size based on some content in the cell.
  */
-@property (nonatomic, copy, readonly) VLayoutComponentDynamicSize dynamicSize;
+@property (nonatomic, copy, readonly) VDynamicCellSizeBlock dynamicSize;
 
 @end

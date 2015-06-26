@@ -23,7 +23,7 @@
 #import "VStreamCollectionViewController.h"
 #import "VSequenceCountsTextView.h"
 #import "VSequenceExpressionsObserver.h"
-#import "VLayoutComponentCollection.h"
+#import "VCellSizeCollection.h"
 #import "VCellSizingUserInfoKeys.h"
 
 static const CGFloat kInsetCellHeaderHeight         = 50.0f;
@@ -159,12 +159,12 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
     self.contentView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleHeight;
 }
 
-+ (VLayoutComponentCollection *)cellLayoutCollection
++ (VCellSizeCollection *)cellLayoutCollection
 {
-    static VLayoutComponentCollection *collection;
+    static VCellSizeCollection *collection;
     if ( collection == nil )
     {
-        collection = [[VLayoutComponentCollection alloc] init];
+        collection = [[VCellSizeCollection alloc] init];
         [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kInsetCellHeaderHeight)];
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
@@ -364,7 +364,7 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
 {
     CGSize base = CGSizeMake( CGRectGetWidth(bounds), 0.0 );
     NSDictionary *userInfo = @{ kCellSizingSequenceKey : sequence,
-                                VLayoutComponentCacheKey : sequence.name ?: @"",
+                                VCellSizeCacheKey : sequence.name ?: @"",
                                 kCellSizingDependencyManagerKey : dependencyManager };
     return [[[self class] cellLayoutCollection] totalSizeWithBaseSize:base userInfo:userInfo];
 }

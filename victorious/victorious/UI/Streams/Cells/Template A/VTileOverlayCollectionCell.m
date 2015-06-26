@@ -24,7 +24,7 @@
 #import "VActionButton.h"
 #import "VSequenceCountsTextView.h"
 #import "NSString+VParseHelp.h"
-#import "VLayoutComponentCollection.h"
+#import "VCellSizeCollection.h"
 #import "VCellSizingUserInfoKeys.h"
 
 static const UIEdgeInsets kTextInsets       = { 0.0f, 20.0f, 5.0f, 20.0f };
@@ -196,12 +196,12 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     return [sequence isPoll] ? kPollCellHeightRatio : (1 / [sequence previewAssetAspectRatio]);
 }
 
-+ (VLayoutComponentCollection *)cellLayoutCollection
++ (VCellSizeCollection *)cellLayoutCollection
 {
-    static VLayoutComponentCollection *collection;
+    static VCellSizeCollection *collection;
     if ( collection == nil )
     {
-        collection = [[VLayoutComponentCollection alloc] init];
+        collection = [[VCellSizeCollection alloc] init];
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
              VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
@@ -389,7 +389,7 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
 {
     CGSize base = CGSizeMake( CGRectGetWidth(bounds), 0.0 );
     NSDictionary *userInfo = @{ kCellSizingSequenceKey : sequence,
-                                VLayoutComponentCacheKey : sequence.name ?: @"",
+                                VCellSizeCacheKey : sequence.name ?: @"",
                                 kCellSizingDependencyManagerKey : dependencyManager };
     return [[[self class] cellLayoutCollection] totalSizeWithBaseSize:base userInfo:userInfo];
 }

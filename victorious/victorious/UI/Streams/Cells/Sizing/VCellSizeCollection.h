@@ -1,5 +1,5 @@
 //
-//  VLayoutComponentCollection.h
+//  VCellSizeCollection.h
 //  victorious
 //
 //  Created by Patrick Lynch on 6/25/15.
@@ -7,19 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VLayoutComponent.h"
+#import "VCellSizeComponent.h"
 
 /**
  A key used internally to unique identify size of layouts for caching purposes.
  */
-extern NSString * const VLayoutComponentCacheKey;
+extern NSString * const VCellSizeCacheKey;
 
 /**
  An object used by stream cells to model the constant and dynamic sizes of its components,
  then use that modelling to calculate the cell size required when displayed in a
  collection view.
  */
-@interface VLayoutComponentCollection : NSObject
+@interface VCellSizeCollection : NSObject
 
 /**
  Add a constant size to this layout, which will never change depending on the content
@@ -32,7 +32,7 @@ extern NSString * const VLayoutComponentCacheKey;
  The block will be called during size calculations and should return the additional size
  required to accomodate some sub-component of a cell.
  */
-- (void)addComponentWithDynamicSize:(VLayoutComponentDynamicSize)dynamicSize;
+- (void)addComponentWithDynamicSize:(VDynamicCellSizeBlock)dynamicSize;
 
 /**
  Calculates the total size requires for the layout by adding all dynamic and constant

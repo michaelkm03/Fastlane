@@ -1,24 +1,24 @@
 //
-//  VLayoutComponentCollection.m
+//  VCellSizeCollection.m
 //  victorious
 //
 //  Created by Patrick Lynch on 6/25/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VLayoutComponentCollection.h"
+#import "VCellSizeCollection.h"
 
-NSString * const VLayoutComponentCacheKey = @"cacheKey";
+NSString * const VCellSizeCacheKey = @"cacheKey";
 
 
-@interface VLayoutComponentCollection ()
+@interface VCellSizeCollection ()
 
 @property (nonatomic, strong) NSMutableArray *layoutComponents;
 @property (nonatomic, strong) NSCache *cache;
 
 @end
 
-@implementation VLayoutComponentCollection
+@implementation VCellSizeCollection
 
 - (instancetype)init
 {
@@ -33,19 +33,19 @@ NSString * const VLayoutComponentCacheKey = @"cacheKey";
 
 - (void)addComponentWithConstantSize:(CGSize)constantSize
 {
-    VLayoutComponent *component = [[VLayoutComponent alloc] initWithConstantSize:constantSize dynamicSize:nil];
+    VCellSizeComponent *component = [[VCellSizeComponent alloc] initWithConstantSize:constantSize dynamicSize:nil];
     [self.layoutComponents addObject:component];
 }
 
-- (void)addComponentWithDynamicSize:(VLayoutComponentDynamicSize)dynamicSize
+- (void)addComponentWithDynamicSize:(VDynamicCellSizeBlock)dynamicSize
 {
-    VLayoutComponent *component = [[VLayoutComponent alloc] initWithConstantSize:CGSizeZero dynamicSize:dynamicSize];
+    VCellSizeComponent *component = [[VCellSizeComponent alloc] initWithConstantSize:CGSizeZero dynamicSize:dynamicSize];
     [self.layoutComponents addObject:component];
 }
 
-- (void)addComponentWithComponentWithConstantSize:(CGSize)constantSize dynamicSize:(VLayoutComponentDynamicSize)dynamicSize
+- (void)addComponentWithComponentWithConstantSize:(CGSize)constantSize dynamicSize:(VDynamicCellSizeBlock)dynamicSize
 {
-    VLayoutComponent *component = [[VLayoutComponent alloc] initWithConstantSize:constantSize dynamicSize:dynamicSize];
+    VCellSizeComponent *component = [[VCellSizeComponent alloc] initWithConstantSize:constantSize dynamicSize:dynamicSize];
     [self.layoutComponents addObject:component];
 }
 
@@ -53,9 +53,9 @@ NSString * const VLayoutComponentCacheKey = @"cacheKey";
 {
     CGSize total = base;
     
-    id cacheKey = userInfo[ VLayoutComponentCacheKey ];
+    id cacheKey = userInfo[ VCellSizeCacheKey ];
     
-    NSAssert( cacheKey != nil, @"Calling code must provide a value for `%@` in the userInfo parameter", VLayoutComponentCacheKey );
+    NSAssert( cacheKey != nil, @"Calling code must provide a value for `%@` in the userInfo parameter", VCellSizeCacheKey );
     
     NSValue *cachedValue = (NSValue *)[self.cache objectForKey:cacheKey];
     if ( cachedValue != nil )
@@ -63,7 +63,7 @@ NSString * const VLayoutComponentCacheKey = @"cacheKey";
         return cachedValue.CGSizeValue;
     }
     
-    for ( VLayoutComponent *component in self.layoutComponents )
+    for ( VCellSizeComponent *component in self.layoutComponents )
     {
         if ( component.dynamicSize != nil )
         {

@@ -21,7 +21,7 @@
 #import "VCompatibility.h"
 #import "VSequenceCountsTextView.h"
 #import "VSequenceExpressionsObserver.h"
-#import "VLayoutComponentCollection.h"
+#import "VCellSizeCollection.h"
 #import "VCellSizingUserInfoKeys.h"
 
 // These values must match the constraint values in interface builder
@@ -64,12 +64,12 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
     self.countsTextView.textSelectionDelegate = self;
 }
 
-+ (VLayoutComponentCollection *)cellLayoutCollection
++ (VCellSizeCollection *)cellLayoutCollection
 {
-    static VLayoutComponentCollection *collection;
+    static VCellSizeCollection *collection;
     if ( collection == nil )
     {
-        collection = [[VLayoutComponentCollection alloc] init];
+        collection = [[VCellSizeCollection alloc] init];
         [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kSleekCellHeaderHeight)];
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
@@ -299,7 +299,7 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
 {
     CGSize base = CGSizeMake( CGRectGetWidth(bounds), 0.0 );
     NSDictionary *userInfo = @{ kCellSizingSequenceKey : sequence,
-                                VLayoutComponentCacheKey : sequence.name ?: @"",
+                                VCellSizeCacheKey : sequence.name ?: @"",
                                 kCellSizingDependencyManagerKey : dependencyManager };
     return [[[self class] cellLayoutCollection] totalSizeWithBaseSize:base userInfo:userInfo];
 }
