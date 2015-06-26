@@ -14,7 +14,7 @@
 #import "VEndCardActionModel.h"
 #import "VDependencyManager.h"
 
-#define FORCE_SHOW_DEBUG_END_CARD 0
+#define FORCE_SHOW_DEBUG_END_CARD 1
 
 static NSString * const kGifActionIconKey = @"action_gif_icon";
 static NSString * const kRepostActionIconKey = @"action_repost_icon";

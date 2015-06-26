@@ -169,6 +169,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 
+@property (nonatomic, strong) VContentLikeButton *likeButton;
+
 @end
 
 @implementation VNewContentViewController
@@ -1289,6 +1291,8 @@ referenceSizeForHeaderInSection:(NSInteger)section
                  const BOOL shouldHide = playControlsHidden && !welf.videoCell.isEndCardShowing;
                  welf.moreButton.alpha = shouldHide ? 0.0f : 1.0f;
                  welf.closeButton.alpha = shouldHide ? 0.0f : 1.0f;
+                 welf.likeButton.transform = playControlsHidden ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, -50.0f);
+                 welf.likeButton.hidden = welf.videoCell.isEndCardShowing;
              }];
             videoCell.endCardDelegate = self;
             videoCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
@@ -1395,6 +1399,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                   VTrackingKeyLoadTime : @(videoLoadTime) };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
     }
+    [UIView animateWithDuration:0.5f
+                     animations:^
+     {
+         self.likeButton.alpha = 1.0f;
+     }];
 }
 
 - (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell withTotalTime:(CMTime)totalTime
@@ -1404,6 +1413,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
     {
         self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:totalTime]];
     }
+    [UIView animateWithDuration:0.5f
+                     animations:^
+     {
+         self.likeButton.alpha = 0.0f;
+     }];
 }
 
 - (void)videoCellWillStartPlaying:(VContentVideoCell *)videoCell
@@ -1593,18 +1607,22 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)configureLikeButtonWithContentCell:(VContentCell *)contentCell
 {
-    VContentLikeButton *likeButton = contentCell.likeButton;
-    if ( likeButton != nil )
+    self.likeButton = contentCell.likeButton;
+    if ( self.likeButton != nil )
     {
         VSequence *sequence = self.viewModel.sequence;
-        [likeButton addTarget:self action:@selector(selectedLikeButton:) forControlEvents:UIControlEventTouchUpInside];
+        [self.likeButton addTarget:self action:@selector(selectedLikeButton:) forControlEvents:UIControlEventTouchUpInside];
         
         self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
         [self.expressionsObserver startObservingWithSequence:self.viewModel.sequence onUpdate:^
          {
-             [likeButton setActive:sequence.isLikedByMainUser.boolValue];
-             [likeButton setCount:sequence.likeCount.integerValue];
+             [self.likeButton setActive:sequence.isLikedByMainUser.boolValue];
+             [self.likeButton setCount:sequence.likeCount.integerValue];
          }];
+        if (self.viewModel.type == VContentViewTypeVideo)
+        {
+            self.likeButton.alpha = 0.0f;
+        }
     }
 }
 
