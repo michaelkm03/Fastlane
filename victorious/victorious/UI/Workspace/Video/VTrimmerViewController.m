@@ -185,7 +185,7 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
         numberOfFrames++;
         neededTimeLineWidth = neededTimeLineWidth - frameWidth;
     }
-    self.numberOfFrames = numberOfFrames - 1;
+    self.numberOfFrames = ((int) numberOfFrames) - 1;
     return numberOfFrames; // 1 extra for a spacer cell
 }
 
@@ -194,7 +194,6 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
 {
     VThumbnailCell *thumnailCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VThumbnailCell suggestedReuseIdentifier]
                                                                              forIndexPath:indexPath];
-    thumnailCell.frame = CGRectMake(thumnailCell.frame.origin.x, thumnailCell.frame.origin.y, MIN(thumnailCell.frame.size.height, self.trimControl.trimThumbBody.frame.size.height), thumnailCell.frame.size.height);
     CGPoint center = [self.thumbnailCollectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath].center;
     CGFloat percentThrough = center.x / [self timelineWidthForFullTrack];
     CMTime timeForCell = CMTimeMake(self.maximumEndTime.value * percentThrough, self.maximumEndTime.timescale);

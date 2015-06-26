@@ -38,6 +38,9 @@
  */
 + (CGFloat)topPadding;
 
+/**
+ *  The view for the handle of the trimmer control
+ */
 @property (nonatomic, strong) UIView *trimThumbBody;
 
 @end

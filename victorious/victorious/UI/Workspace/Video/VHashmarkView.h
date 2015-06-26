@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+/**
+ *  The view responsible for displaying hashmarkso on the trimmer control
+ */
 @interface VHashmarkView : UICollectionReusableView
 
 

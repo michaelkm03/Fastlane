@@ -10,7 +10,9 @@
 
 extern NSString * const HashmarkViewKind;
 extern NSString * const TimemarkViewKind;
-
+/**
+ *  The flow layout responsible for handling the display of supplementary views on the trimmer control
+ */
 @interface VTrimmerFlowLayout : UICollectionViewFlowLayout
 
 @end

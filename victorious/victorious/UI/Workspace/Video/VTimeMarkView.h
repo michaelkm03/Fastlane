@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+/**
+ *  The view responsible for displaying timemarks on the trimmer control
+ */
 @interface VTimeMarkView : UICollectionReusableView
 
 @property (nonatomic, strong) UILabel *timeLabel;

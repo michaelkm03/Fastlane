@@ -151,7 +151,6 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
     titleLabel.textColor = [UIColor whiteColor];
     titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
     titleLabel.textAlignment = NSTextAlignmentCenter;
-    titleLabel.layer.borderWidth = 1.0f;
     [self.view addSubview:titleLabel];
 }
 

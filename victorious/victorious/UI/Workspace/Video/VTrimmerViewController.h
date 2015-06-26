@@ -79,12 +79,6 @@
 @property (nonatomic, assign) CMTime maximumTrimDuration;
 
 /**
- *  The actual duration of the video.
- */
-@property (nonatomic, assign) CMTime actualDuration;
-
-
-/**
  *  The current play time. This updates the progress bar indicating playback over the thumbnail timeline.
  */
 @property (nonatomic, assign) CMTime currentPlayTime;
