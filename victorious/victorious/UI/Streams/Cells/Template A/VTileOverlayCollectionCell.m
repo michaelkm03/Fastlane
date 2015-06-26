@@ -353,6 +353,7 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     }
     else
     {
+        self.captionHeight.constant = kMaxCaptionHeight;
         self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
                                                                               attributes:[VTileOverlayCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
     }
