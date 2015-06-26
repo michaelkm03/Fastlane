@@ -1418,11 +1418,15 @@ referenceSizeForHeaderInSection:(NSInteger)section
     {
         self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:totalTime]];
     }
-    [UIView animateWithDuration:0.5f
-                     animations:^
-     {
-         self.likeButton.alpha = 0.0f;
-     }];
+    
+    if (self.viewModel.videoViewModel.endCardViewModel != nil)
+    {
+        [UIView animateWithDuration:0.5f
+                         animations:^
+         {
+             self.likeButton.alpha = 0.0f;
+         }];
+    }
 }
 
 - (void)videoCellWillStartPlaying:(VContentVideoCell *)videoCell
