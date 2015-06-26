@@ -113,7 +113,10 @@
                            dispatch_async( dispatch_get_main_queue(), ^
                                           {
                                               [[welf cache] setObject:resized forKey:imageURL.absoluteString];
-                                              completion( resized, YES );
+                                              if ( completion != nil )
+                                              {
+                                                  completion( resized, YES );
+                                              }
                                           });
                        }
                    });
