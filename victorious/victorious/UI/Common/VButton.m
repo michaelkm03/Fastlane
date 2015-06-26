@@ -60,7 +60,7 @@ static const UIEdgeInsets kLabelEdgeInsets = { 0, 10, 0, 10 };
         {
             self.activityIndicator.color = self.activityIndicatorTintColor;
         }
-        self.activityIndicator.center = CGPointMake(CGRectGetWidth(self.bounds) / 2.0, CGRectGetHeight(self.bounds) / 2.0);
+        [self updateActivityIndicatorCenter];
         [self addSubview:_activityIndicator];
         [self.activityIndicator startAnimating];
         self.activityIndicator.alpha = 0.0f;
@@ -227,6 +227,17 @@ static const UIEdgeInsets kLabelEdgeInsets = { 0, 10, 0, 10 };
 - (CGFloat)cornerRadius
 {
     return self.layer.cornerRadius;
+}
+
+- (void)setBounds:(CGRect)bounds
+{
+    [super setBounds:bounds];
+    [self updateActivityIndicatorCenter];
+}
+
+- (void)updateActivityIndicatorCenter
+{
+    self.activityIndicator.center = CGPointMake(CGRectGetWidth(self.bounds) / 2.0, CGRectGetHeight(self.bounds) / 2.0);
 }
 
 - (void)applyAnimatedHighlight:(BOOL)highlighted

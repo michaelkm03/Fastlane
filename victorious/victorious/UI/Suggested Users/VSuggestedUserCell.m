@@ -27,7 +27,7 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
 @property (nonatomic, strong) VContentThumbnailsViewController *thumbnailsViewController;
 @property (nonatomic, weak) IBOutlet VDefaultProfileImageView *userProfileImage;
 @property (nonatomic, weak) IBOutlet UITextView *usernameTextView;
-@property (nonatomic, weak) IBOutlet UITextView *userTagLingTextView;
+@property (nonatomic, weak) IBOutlet UITextView *userTagLineTextView;
 @property (nonatomic, weak) IBOutlet UIView *followButtonContainerView;
 @property (nonatomic, weak) IBOutlet UIView *userStreamContainerView;
 
@@ -72,7 +72,7 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
     _user = user;
     
     self.usernameTextView.text = _user.name;
-    self.userTagLingTextView.text = _user.tagline;
+    self.userTagLineTextView.text = _user.tagline;
     
     VContentThumbnailsDataSource *thumbnailsDataSource = [[[self class] dataSourcesCache] objectForKey:user.remoteId];
     if ( thumbnailsDataSource == nil )
@@ -106,11 +106,11 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
     self.usernameTextView.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
     self.usernameTextView.textColor = [self.dependencyManager colorForKey:kTextTitleColorKey];
     
-    self.userTagLingTextView.font = [self.dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
-    self.userTagLingTextView.textColor = [self.dependencyManager colorForKey:kTextBodyColorKey];
+    self.userTagLineTextView.font = [self.dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
+    self.userTagLineTextView.textColor = [self.dependencyManager colorForKey:kTextBodyColorKey];
     
     self.usernameTextView.textColor = [self.dependencyManager colorForKey:kTextTitleColorKey];
-    self.userTagLingTextView.textColor = [self.dependencyManager colorForKey:kTextBodyColorKey];
+    self.userTagLineTextView.textColor = [self.dependencyManager colorForKey:kTextBodyColorKey];
     
     [self.dependencyManager addBackgroundToBackgroundHost:self forKey:@"background.detail"];
 }
