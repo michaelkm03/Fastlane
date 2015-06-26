@@ -63,11 +63,7 @@ static NSString * const kPromptTextKey = @"prompt";
                                        return [user isKindOfClass:[VUser class]] && user.recentSequences.count > 0;
                                    }];
          NSArray *usersFilteredForRecentSequences = [resultObjects filteredArrayUsingPredicate:predicate];
-#warning REMOVE THIS TESTING CODE
-         if ( self.retryCell != nil )
-         {
-             self.suggestedUsers = usersFilteredForRecentSequences;
-         }
+         self.suggestedUsers = usersFilteredForRecentSequences;
          if ( completion != nil )
          {
              completion();

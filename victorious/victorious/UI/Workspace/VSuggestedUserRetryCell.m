@@ -63,7 +63,7 @@ static NSString * const kBackgroundKey = @"background.detail";
     else
     {
         [self.tapToRetryButton showActivityIndicator];
-        self.loadStateLabel.text = NSLocalizedString(@"Loading...", nil);
+        self.loadStateLabel.text = NSLocalizedString(@"Finding fans to connect with...", nil);
     }
 }
 
