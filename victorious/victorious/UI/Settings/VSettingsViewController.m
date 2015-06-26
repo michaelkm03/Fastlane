@@ -33,6 +33,7 @@
 #import "VCoachmarkManager.h"
 #import "VEnvironmentManager.h"
 #import "VStreamCollectionViewController.h"
+#import "UIAlertController+VSimpleAlert.h"
 
 static const NSInteger kSettingsSectionIndex         = 0;
 
@@ -479,17 +480,16 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
-    if (MFMailComposeResultFailed == result)
+    [self dismissViewControllerAnimated:YES completion:^
     {
-        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EmailFail", @"Unable to Email")
-                                                               message:error.localizedDescription
-                                                              delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                     otherButtonTitles:nil];
-        [alert show];
-    }
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
+        if (MFMailComposeResultFailed == result)
+        {
+            UIAlertController *alert = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"EmailFail", @"Unable to Email")
+                                                                                 message:error.localizedDescription
+                                                                    andCancelButtonTitle:NSLocalizedString(@"OK", @"OK")];
+            [self presentViewController:alert animated:YES completion:nil];
+        }
+    }];
 }
 
 #pragma mark - VNavigationDestination
