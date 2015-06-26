@@ -325,11 +325,6 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
          {
              [self onAuthenticationFinishedWithSuccess:YES];
          }
-         else
-         {
-             NSString *message = NSLocalizedString(@"GenericFailMessage", @"");
-             [self showErrorWithMessage:message];
-         }
      }];;
 }
 
