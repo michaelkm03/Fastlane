@@ -325,7 +325,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
          {
              [self onAuthenticationFinishedWithSuccess:YES];
          }
-     }];;
+     }];
 }
 
 - (void)registerWithEmail:(NSString *)email
