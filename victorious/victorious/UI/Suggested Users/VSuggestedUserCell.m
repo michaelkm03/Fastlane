@@ -63,7 +63,7 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
-    
+    self.followButton.dependencyManager = dependencyManager;
     [self applyStyle];
 }
 
