@@ -76,7 +76,7 @@
     if ( stringIsValid && !profileImageURLIsEmpty )
     {
         self.creatorNameLabel.text = ownerName;
-        self.creatorNameLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
+        self.creatorNameLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
         self.creatorNameLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey];
         
         self.quoteImageView.image = [self.quoteImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -86,12 +86,15 @@
     }
     else
     {
-        self.salutationContainerHeight.constant = 0.0;
+        self.salutationContainerHeight.constant = 0.0f;
     }
     
-    self.messageTextView.text = [self.dependencyManager stringForKey:VScreenPromptKey];
-    self.messageTextView.font = [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
+    self.messageTextView.text = [self.dependencyManager stringForKey:VSuggestedUsersPromptKey];
+    self.messageTextView.font = [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
     self.messageTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    self.messageTextView.contentInset = UIEdgeInsetsZero;
+    self.messageTextView.textContainer.lineFragmentPadding = 0.0f;
+    self.messageTextView.textContainerInset = UIEdgeInsetsZero;
     
     self.collectionView.delegate = self;
     self.collectionView.backgroundColor = [UIColor clearColor];
