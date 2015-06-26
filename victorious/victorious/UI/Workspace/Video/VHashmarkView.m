@@ -13,8 +13,8 @@
 - (void)awakeFromNib
 {
 
-        UIView *hash = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 5, 20)];
-        hash.backgroundColor = [UIColor redColor];
+        UIView *hash = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 3, 15)];
+        hash.backgroundColor = [UIColor lightGrayColor];
         [self addSubview:hash];
 
 }

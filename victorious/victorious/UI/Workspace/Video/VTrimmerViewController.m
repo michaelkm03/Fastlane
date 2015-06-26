@@ -75,6 +75,8 @@ static const int kHashesPerTime = 3;
     [self prepareThumbnailCollectionViewAndTitleLabel];
     [self preparePlaybackOverlay];
     [self prepareTrimControl];
+    
+    self.thumbnailCollectionView.layer.borderWidth = 2.0f;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -190,7 +192,7 @@ static const int kHashesPerTime = 3;
         neededTimeLineWidth = neededTimeLineWidth - frameWidth;
     }
     
-    return numberOfFrames + 4; // 1 extra for a spacer cell
+    return numberOfFrames; // 1 extra for a spacer cell
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
@@ -234,7 +236,6 @@ static const int kHashesPerTime = 3;
 {
     UICollectionReusableView *reusableview = nil;
     
-    NSLog(@"kind: %@", kind);
     if (kind == HashmarkViewKind)
     {
         reusableview = [VHashmarkView collectionReusableViewForCollectionView:collectionView forIndexPath:indexPath withKind:kind];
@@ -247,8 +248,8 @@ static const int kHashesPerTime = 3;
         CGFloat time = CMTimeGetSeconds(timeForCell);
         
         VTimeMarkView *timeMarkView = [VTimeMarkView collectionReusableViewForCollectionView:collectionView forIndexPath:indexPath withKind:kind];
-        NSLog(@"center: %x", timeMarkView.center.x);
         timeMarkView.timeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)time/60, (int)time%60];
+        timeMarkView.timeLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
         reusableview = timeMarkView;
     }
     
@@ -362,15 +363,16 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
         [self.delegate trimmerViewController:self
                   didUpdateSelectedTimeRange:[self selectedTimeRange]];
     }
-    Float64 progress = CMTimeGetSeconds(self.trimControl.selectedDuration) / CMTimeGetSeconds(self.trimControl.maxDuration);
+    Float64 progress = CMTimeGetSeconds(self.trimControl.selectedDuration) / CMTimeGetSeconds(self.maxDuration);
     self.dimmingViewWidthConstraint.constant = CGRectGetWidth(self.view.bounds) - (CGRectGetWidth(self.view.bounds) * progress);
    [self.view layoutIfNeeded];
     
-    float progressOfThumbs = 1.0f - (self.thumbnailCollectionView.bounds.origin.x / (CGRectGetWidth(self.thumbnailCollectionView.bounds)));
+    float progressOfThumbs = 1.0f - (self.thumbnailCollectionView.contentOffset.x / (CGRectGetWidth(self.thumbnailCollectionView.bounds)));
     
+
     if (progress > progressOfThumbs)
     {
-        self.trimControl.trimThumbBody.center = CGPointMake(progressOfThumbs*CGRectGetWidth(self.thumbnailCollectionView.bounds), 94.0f);
+        self.trimControl.trimThumbBody.center = CGPointMake(progressOfThumbs*CGRectGetWidth(self.thumbnailCollectionView.bounds), self.trimControl.trimThumbBody.center.y);
     }
 }
 
@@ -419,6 +421,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     self.thumbnailCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
     self.thumbnailCollectionView.clipsToBounds = NO;
     [self.view addSubview:self.thumbnailCollectionView];
+    
 
     self.titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     self.titleLabel.text = NSLocalizedString(self.title, @"");
@@ -458,6 +461,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     [self.trimControl addTarget:self
                          action:@selector(trimSelectionChanged:)
                forControlEvents:UIControlEventValueChanged];
+    
     [self.view addSubview:self.trimControl];
     
     NSDictionary *viewMap = @{@"trimControl": self.trimControl};

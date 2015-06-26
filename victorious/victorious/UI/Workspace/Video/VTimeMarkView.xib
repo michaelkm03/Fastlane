@@ -9,8 +9,7 @@
         <collectionReusableView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="U6b-Vx-4bR" customClass="VTimeMarkView">
             <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
             <autoresizingMask key="autoresizingMask"/>
-            <color key="backgroundColor" red="0.41442850040000001" green="1" blue="0.47679497180000002" alpha="1" colorSpace="calibratedRGB"/>
-            <point key="canvasLocation" x="224.5" y="268.5"/>
+            <point key="canvasLocation" x="224" y="293"/>
         </collectionReusableView>
     </objects>
 </document>

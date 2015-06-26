@@ -11,11 +11,11 @@
 NSString *const HashmarkViewKind = @"HashmarkKind";
 NSString *const TimemarkViewKind = @"TimemarkKind";
 
-const static int kNumberOfHashes = 10;
-const static int kNumberOfTimeLabels = 5;
+const static int kNumberOfHashes = 30;
+const static int kNumberOfTimeLabels = 10;
 
-const static CGFloat kSpacingOfHashes = 25.0f;
-const static CGFloat kSpacingOfTimeLables = 25.0f;
+const static CGFloat kSpacingOfHashes = 33.333f;
+const static CGFloat kSpacingOfTimeLables = 100.0f;
 const static CGFloat kMarginSpacing = 80.0f;
 
 
@@ -83,14 +83,17 @@ const static CGFloat kMarginSpacing = 80.0f;
     }
     NSLog(@"size initial answer: %lu", (unsigned long)answer.count);
 */
+    
+    int index =  (int) (self.collectionView.contentOffset.x/kSpacingOfHashes);
     for (int i = 0; i < kNumberOfHashes; i++)
     {
-        UICollectionViewLayoutAttributes *hashtribute = [self layoutAttributesForSupplementaryViewOfKind:HashmarkViewKind atIndexPath:[NSIndexPath indexPathForItem:i inSection:0]];
+        UICollectionViewLayoutAttributes *hashtribute = [self layoutAttributesForSupplementaryViewOfKind:HashmarkViewKind atIndexPath:[NSIndexPath indexPathForItem:index+i inSection:0]];
         [answer addObject:hashtribute];
     }
+    index =  (int) (self.collectionView.contentOffset.x/kSpacingOfTimeLables);
     for (int i = 0; i < kNumberOfTimeLabels; i++)
     {
-        UICollectionViewLayoutAttributes *attribute = [self layoutAttributesForSupplementaryViewOfKind:TimemarkViewKind atIndexPath:[NSIndexPath indexPathForItem:i inSection:0]];
+        UICollectionViewLayoutAttributes *attribute = [self layoutAttributesForSupplementaryViewOfKind:TimemarkViewKind atIndexPath:[NSIndexPath indexPathForItem:i+index inSection:0]];
         [answer addObject:attribute];
     }
   
@@ -108,36 +111,35 @@ const static CGFloat kMarginSpacing = 80.0f;
         if (kind == HashmarkViewKind)
         {
             //position this reusable view relative to the cells frame
-            frame = CGRectMake(indexPath.item*(50+kSpacingOfHashes), -10, 50, 50);
+            frame = CGRectMake(indexPath.item*(kSpacingOfHashes) + 25, -15, 50, 50);
             attrs.zIndex = 3000;
         }
         else if (kind == TimemarkViewKind)
         {
             //position this reusable view relative to the cells frame
-            frame = CGRectMake(indexPath.item*(50+kSpacingOfTimeLables), -0, 50, 50);
+            frame = CGRectMake(indexPath.item*(kSpacingOfTimeLables), -49, 50, 50);
             attrs.zIndex = 3001;
         }
-        if (CGRectGetMaxX(frame) < (self.collectionView.contentOffset.x - kMarginSpacing))
-        {
-            // asset is too far to the left... shift it to the right
-            NSLog(@"something went too far to the left... popping it right");
-            frame = CGRectMake(self.collectionView.contentOffset.x, 0, 50, 50);
-        }
-        if (CGRectGetMinX(frame) > (self.collectionView.contentOffset.x + CGRectGetWidth(self.collectionView.frame) + kMarginSpacing))
-        {
-            // asset is too far to the right... move it to the left
-            NSLog(@"something went too far to the right... popping it left");
-
-            frame = CGRectMake(self.collectionView.contentOffset.x, 0, 50, 50);
-        }
-        /*
-        if (CGRectGetMaxX(self.collectionView.frame) < CGRectGetMaxX(frame))
+        
+        CGRect visibleRect;
+        visibleRect.origin = self.collectionView.contentOffset;
+        visibleRect.size = self.collectionView.bounds.size;
+        
+        if (!CGRectIntersectsRect(visibleRect, frame))
         {
             frame = CGRectZero;
-        }*/
+        }
+   
         attrs.frame = frame;
     }
     return attrs;
+}
+
+- (NSInteger)indexForOffset:(CGFloat)offset spacing:(CGFloat)spacing
+{
+    CGFloat indexf = offset/spacing;
+    
+    return 4;
 }
 
 @end

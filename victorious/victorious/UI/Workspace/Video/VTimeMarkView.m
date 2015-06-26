@@ -23,9 +23,10 @@
     }*/
     self.timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
     self.timeLabel.text  = @"00:00";
-    self.timeLabel.textColor = [UIColor redColor];
-    self.timeLabel.layer.borderColor = [UIColor blueColor].CGColor;
+    self.timeLabel.textColor = [UIColor lightGrayColor];
+    self.timeLabel.layer.borderColor = [UIColor whiteColor].CGColor;
     self.timeLabel.layer.borderWidth = 2.0f;
+    self.timeLabel.textAlignment = NSTextAlignmentCenter;
     [self addSubview:self.timeLabel];
     
     NSLog(@"awaking the timeview from nib");
