@@ -535,9 +535,4 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     [self.view addConstraint:self.currentPlayBackWidthConstraint];
 }
 
-- (void)setActualDuration:(CMTime)actualDuration
-{
-    _actualDuration = actualDuration;
-}
-
 @end

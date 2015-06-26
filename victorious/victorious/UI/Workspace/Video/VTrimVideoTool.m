@@ -174,9 +174,7 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
                               [player play];
                           });
                       }];
-                     
-                     self.trimViewController.actualDuration = player.currentItem.asset.duration;
-                     
+                                          
                      break;
                  }
                  case AVPlayerStatusUnknown:
