@@ -94,7 +94,7 @@
 		0314D4DC19B46B5E00FA363C /* VFacebookActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D40219B46B5E00FA363C /* VFacebookActivity.m */; };
 		0314D4FD19B46B5E00FA363C /* VTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D44419B46B5E00FA363C /* VTableViewCell.m */; };
 		0314D50A19B46BCB00FA363C /* UIView+Masking.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D50919B46BCB00FA363C /* UIView+Masking.m */; };
-		031E36ED1B3CF57600CB21B4 /* VBulkDownloaderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 031E36EC1B3CF57600CB21B4 /* VBulkDownloaderTests.m */; };
+		031E36ED1B3CF57600CB21B4 /* VBulkDownloadOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 031E36EC1B3CF57600CB21B4 /* VBulkDownloadOperationTests.m */; };
 		0326BBBA19A8183800D995DA /* VPushNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0326BBB919A8183800D995DA /* VPushNotificationManager.m */; };
 		0326C36019F8226200DBC341 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0326C35F19F8226200DBC341 /* Images.xcassets */; };
 		032954A51A9FF4E000698119 /* VURLMacroReplacement.m in Sources */ = {isa = PBXBuildFile; fileRef = 032954A41A9FF4E000698119 /* VURLMacroReplacement.m */; };
@@ -211,7 +211,7 @@
 		0386F87A1B37E7FB00E8D459 /* VTemplatePackageManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F8791B37E7FB00E8D459 /* VTemplatePackageManagerTests.m */; };
 		0386F87C1B37EB8500E8D459 /* templateWithImageURLs.json in Resources */ = {isa = PBXBuildFile; fileRef = 0386F87B1B37EB8500E8D459 /* templateWithImageURLs.json */; };
 		0386F87F1B37F01700E8D459 /* VTemplateImageMacro.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F87E1B37F01700E8D459 /* VTemplateImageMacro.m */; };
-		0386F8871B38F76700E8D459 /* VBulkDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F8861B38F76700E8D459 /* VBulkDownloader.m */; };
+		0386F8871B38F76700E8D459 /* VBulkDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F8861B38F76700E8D459 /* VBulkDownloadOperation.m */; };
 		0386F88C1B390ADE00E8D459 /* VDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F88B1B390ADE00E8D459 /* VDownloadOperation.m */; };
 		0386F88E1B391C6400E8D459 /* VDownloadOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F88D1B391C6400E8D459 /* VDownloadOperationTests.m */; };
 		038B7F9519DB8D2500F739DF /* ADEUMInstrumentation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 038B7F9419DB8D2500F739DF /* ADEUMInstrumentation.framework */; };
@@ -1199,7 +1199,7 @@
 		0314D44419B46B5E00FA363C /* VTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTableViewCell.m; sourceTree = "<group>"; };
 		0314D50819B46BCB00FA363C /* UIView+Masking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Masking.h"; sourceTree = "<group>"; };
 		0314D50919B46BCB00FA363C /* UIView+Masking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Masking.m"; sourceTree = "<group>"; };
-		031E36EC1B3CF57600CB21B4 /* VBulkDownloaderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBulkDownloaderTests.m; sourceTree = "<group>"; };
+		031E36EC1B3CF57600CB21B4 /* VBulkDownloadOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBulkDownloadOperationTests.m; sourceTree = "<group>"; };
 		0326BBB819A8183800D995DA /* VPushNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPushNotificationManager.h; sourceTree = "<group>"; };
 		0326BBB919A8183800D995DA /* VPushNotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPushNotificationManager.m; sourceTree = "<group>"; };
 		0326C35F19F8226200DBC341 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -1368,8 +1368,8 @@
 		0386F87B1B37EB8500E8D459 /* templateWithImageURLs.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = templateWithImageURLs.json; sourceTree = "<group>"; };
 		0386F87D1B37F01700E8D459 /* VTemplateImageMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTemplateImageMacro.h; sourceTree = "<group>"; };
 		0386F87E1B37F01700E8D459 /* VTemplateImageMacro.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateImageMacro.m; sourceTree = "<group>"; };
-		0386F8851B38F76700E8D459 /* VBulkDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBulkDownloader.h; sourceTree = "<group>"; };
-		0386F8861B38F76700E8D459 /* VBulkDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBulkDownloader.m; sourceTree = "<group>"; };
+		0386F8851B38F76700E8D459 /* VBulkDownloadOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBulkDownloadOperation.h; sourceTree = "<group>"; };
+		0386F8861B38F76700E8D459 /* VBulkDownloadOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBulkDownloadOperation.m; sourceTree = "<group>"; };
 		0386F88A1B390ADE00E8D459 /* VDownloadOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDownloadOperation.h; sourceTree = "<group>"; };
 		0386F88B1B390ADE00E8D459 /* VDownloadOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDownloadOperation.m; sourceTree = "<group>"; };
 		0386F88D1B391C6400E8D459 /* VDownloadOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDownloadOperationTests.m; sourceTree = "<group>"; };
@@ -3941,8 +3941,8 @@
 		03A058B21AECAD0A00CF39D1 /* Template Downloader */ = {
 			isa = PBXGroup;
 			children = (
-				0386F8851B38F76700E8D459 /* VBulkDownloader.h */,
-				0386F8861B38F76700E8D459 /* VBulkDownloader.m */,
+				0386F8851B38F76700E8D459 /* VBulkDownloadOperation.h */,
+				0386F8861B38F76700E8D459 /* VBulkDownloadOperation.m */,
 				0386F88A1B390ADE00E8D459 /* VDownloadOperation.h */,
 				0386F88B1B390ADE00E8D459 /* VDownloadOperation.m */,
 				03A058C71AF05D8300CF39D1 /* VObjectManager+VTemplateDownloaderConformance.h */,
@@ -5110,7 +5110,7 @@
 				F028F3E81AC0F2BB00ABFDDC /* VAppInfoTests.m */,
 				A709640419F0738200CE6633 /* VApplicationTrackingTests.m */,
 				A716FC291AAE0EF50032AA40 /* VAuthorizedActionTests.m */,
-				031E36EC1B3CF57600CB21B4 /* VBulkDownloaderTests.m */,
+				031E36EC1B3CF57600CB21B4 /* VBulkDownloadOperationTests.m */,
 				F0C83A3A1B0F9EF900A6EC1A /* VCoachmarkManagerTests.m */,
 				F0C83A321B0ED7DA00A6EC1A /* VCoachmarkPassthroughContainerViewTests.m */,
 				F0C83A341B0F87EF00A6EC1A /* VCoachmarkViewTests.m */,
@@ -7305,7 +7305,7 @@
 				D85B70791B0EAF3F0038CA5B /* VInviteFriendTableViewCell.m in Sources */,
 				D85E42871AFA9A2F00A13BD3 /* VPollSequencePreviewView.m in Sources */,
 				BE11447E19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m in Sources */,
-				0386F8871B38F76700E8D459 /* VBulkDownloader.m in Sources */,
+				0386F8871B38F76700E8D459 /* VBulkDownloadOperation.m in Sources */,
 				D8758D1F1B0FDE11008C6C0D /* VDependencyManager+VStatusBarStyle.m in Sources */,
 				D800A61A1AF01B6100F1A06A /* VCameraCoachMarkAnimator.m in Sources */,
 				A75C64A91ADDE00900245125 /* VTextFragmentsBuilder.swift in Sources */,
@@ -7702,7 +7702,7 @@
 				03A761541B3250410016B69D /* VDataCacheTests.m in Sources */,
 				A75C649E1ADC4A4E00245125 /* VKeyboardBarViewControllerTests.m in Sources */,
 				0386F88E1B391C6400E8D459 /* VDownloadOperationTests.m in Sources */,
-				031E36ED1B3CF57600CB21B4 /* VBulkDownloaderTests.m in Sources */,
+				031E36ED1B3CF57600CB21B4 /* VBulkDownloadOperationTests.m in Sources */,
 				A72005281A03073B00285A9C /* VHashTagsTest.m in Sources */,
 				A72005461A03074800285A9C /* VFileSystemTestHelpers.m in Sources */,
 				F0C83A351B0F87EF00A6EC1A /* VCoachmarkViewTests.m in Sources */,

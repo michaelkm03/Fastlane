@@ -1,5 +1,5 @@
 //
-//  VBulkDownloader.m
+//  VBulkDownloadOperation.m
 //  victorious
 //
 //  Created by Josh Hinman on 6/22/15.
@@ -8,13 +8,13 @@
 
 #import "NSArray+VMap.h"
 #import "NSURL+VDataCacheID.h"
-#import "VBulkDownloader.h"
+#import "VBulkDownloadOperation.h"
 #import "VDataCache.h"
 #import "VDownloadOperation.h"
 
 static const NSInteger kMaxConcurrentDownloads = 3;
 
-@interface VBulkDownloader ()
+@interface VBulkDownloadOperation ()
 
 @property (nonatomic, readonly) NSMutableSet *waitingToDownload;
 @property (nonatomic, readonly) NSOperationQueue *operationQueue;
@@ -23,13 +23,14 @@ static const NSInteger kMaxConcurrentDownloads = 3;
 
 @end
 
-@implementation VBulkDownloader
+@implementation VBulkDownloadOperation
 
 - (instancetype)initWithURLs:(NSSet *)urls completion:(VDownloadOperationCompletion)completionBlock
 {
     self = [super init];
     if ( self != nil )
     {
+        _shouldRetry = NO;
         _urls = [urls copy];
         _waitingToDownload = [urls mutableCopy];
         _operationQueue = [[NSOperationQueue alloc] init];

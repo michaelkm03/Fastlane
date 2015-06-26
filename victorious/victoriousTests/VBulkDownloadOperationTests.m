@@ -1,5 +1,5 @@
 //
-//  VBulkDownloaderTests.m
+//  VBulkDownloadOperationTests.m
 //  victorious
 //
 //  Created by Josh Hinman on 6/25/15.
@@ -9,20 +9,20 @@
 #import "FBKVOController.h"
 #import "Nocilla.h"
 #import "NSURL+VDataCacheID.h"
-#import "VBulkDownloader.h"
+#import "VBulkDownloadOperation.h"
 #import "VDataCache.h"
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-@interface VBulkDownloaderTests : XCTestCase
+@interface VBulkDownloadOperationTests : XCTestCase
 
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
 @property (nonatomic, strong) VDataCache *dataCache;
 
 @end
 
-@implementation VBulkDownloaderTests
+@implementation VBulkDownloadOperationTests
 
 - (void)setUp
 {
@@ -50,7 +50,7 @@
     NSSet *urls = [NSSet setWithObject:url];
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"download callback"];
-    VBulkDownloader *operation = [[VBulkDownloader alloc] initWithURLs:urls
+    VBulkDownloadOperation *operation = [[VBulkDownloadOperation alloc] initWithURLs:urls
                                                             completion:^(NSURL *originalURL, NSError *error, NSURLResponse *response, NSURL *downloadedFile)
     {
         XCTAssertEqualObjects(originalURL, url);
@@ -91,7 +91,7 @@
     
     NSSet *urls = [NSSet setWithObjects:url1, url2, url3, url4, url5, nil];
     
-    __block VBulkDownloader *operation = [[VBulkDownloader alloc] initWithURLs:urls
+    __block VBulkDownloadOperation *operation = [[VBulkDownloadOperation alloc] initWithURLs:urls
                                                                     completion:^(NSURL *originalURL, NSError *error, NSURLResponse *response, NSURL *downloadedFile)
     {
         if ( [originalURL isEqual:url1] )
@@ -150,40 +150,46 @@
     [self.operationQueue addOperation:operation];
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
 }
-/*
- - (void)testRetry
- {
- __block BOOL failedOnce = NO;
- NSURL *url = [NSURL URLWithString:@"http://www.example.com/one"];
- NSString *testBody = @"hello world";
- 
- stubRequest(@"GET", url.absoluteString).andDo(^(NSDictionary * __autoreleasing *headers, NSInteger *status, id<LSHTTPBody> __autoreleasing *body)
- {
- if ( failedOnce )
- {
- *status = 200;
- *body = testBody;
- }
- else
- {
- *status = 500;
- failedOnce = YES;
- }
- });
- 
- XCTestExpectation *expectation = [self expectationWithDescription:@"download callback"];
- self.operation = [[VDownloadOperation alloc] initWithURL:url completion:^(NSURL *downloadedFile)
- {
- NSData *data = [NSData dataWithContentsOfURL:downloadedFile];
- NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
- XCTAssertEqualObjects(string, testBody);
- [expectation fulfill];
- }];
- self.operation.retryInterval = 0;
- [self.operationQueue addOperation:self.operation];
- [self waitForExpectationsWithTimeout:2.0 handler:nil];
- }
- 
+
+- (void)testRetryDefault
+{
+    VBulkDownloadOperation *operation = [[VBulkDownloadOperation alloc] initWithURLs:[NSSet set] completion:nil];
+    XCTAssertFalse(operation.shouldRetry);
+}
+// - (void)testRetry
+// {
+//     __block BOOL failedOnce = NO;
+//     NSURL *url = [NSURL URLWithString:@"http://www.example.com/one"];
+//     NSString *testBody = @"hello world";
+//     
+//     stubRequest(@"GET", url.absoluteString).andDo(^(NSDictionary * __autoreleasing *headers, NSInteger *status, id<LSHTTPBody> __autoreleasing *body)
+//     {
+//         if ( failedOnce )
+//         {
+//             *status = 200;
+//             *body = testBody;
+//         }
+//         else
+//         {
+//             *status = 500;
+//             failedOnce = YES;
+//         }
+//     });
+//     
+//     XCTestExpectation *expectation = [self expectationWithDescription:@"download callback"];
+//     VBulkDownloader *operation = [[VBulkDownloader alloc] initWithURLs:[NSSet setWithObject:url] completion:^(void)
+//     {
+//         NSData *data = [NSData dataWithContentsOfURL:downloadedFile];
+//         NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+//         XCTAssertEqualObjects(string, testBody);
+//         [expectation fulfill];
+//     }];
+//     operation.dataCache = self.dataCache;
+////     self.operation.retryInterval = 0;
+//     [self.operationQueue addOperation:operation];
+//     [self waitForExpectationsWithTimeout:2.0 handler:nil];
+// }
+ /*
  - (void)testFiveRetries
  {
  __block NSInteger failCount = 0;

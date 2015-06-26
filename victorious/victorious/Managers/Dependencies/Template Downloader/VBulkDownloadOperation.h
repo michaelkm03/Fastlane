@@ -1,5 +1,5 @@
 //
-//  VBulkDownloader.h
+//  VBulkDownloadOperation.h
 //  victorious
 //
 //  Created by Josh Hinman on 6/22/15.
@@ -17,9 +17,16 @@
  internal operation queue. Can be configured to retry failed
  downloads.
  */
-@interface VBulkDownloader : NSOperation
+@interface VBulkDownloadOperation : NSOperation
 
 @property (nonatomic, readonly) NSSet *urls; ///< The URLs being downloaded
+
+/**
+ If YES, failed downloads will be retried.
+ If NO, the completion block will be called for failed downloads.
+
+ */
+@property (nonatomic) BOOL shouldRetry;
 
 /**
  Initializes a new instance of VBulkDownloader with the given urls and completion block.
