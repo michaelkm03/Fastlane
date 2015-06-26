@@ -77,7 +77,7 @@ static NSString * const VSuggestedUsersPromptKey    = @"prompt";
     if ( stringIsValid && !profileImageURLIsEmpty )
     {
         self.creatorNameLabel.text = ownerName;
-        self.creatorNameLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
+        self.creatorNameLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
         self.creatorNameLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey];
         
         self.quoteImageView.image = [self.quoteImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -91,7 +91,7 @@ static NSString * const VSuggestedUsersPromptKey    = @"prompt";
     }
     
     self.messageTextView.text = [self.dependencyManager stringForKey:VSuggestedUsersPromptKey];
-    self.messageTextView.font = [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
+    self.messageTextView.font = [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
     self.messageTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.messageTextView.contentInset = UIEdgeInsetsZero;
     self.messageTextView.textContainer.lineFragmentPadding = 0.0f;
