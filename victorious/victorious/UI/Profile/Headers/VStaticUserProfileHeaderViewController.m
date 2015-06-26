@@ -68,9 +68,7 @@ static const CGFloat kMinimumBlurredImageSize = 50.0;
     NSURL *imageURL = [self getBestAvailableImageForMinimuimSize:minimumSize];
     if ( imageURL == nil || imageURL.absoluteString.length == 0 )
     {
-        [self.backgroundImageView setBlurredImageWithClearImage:[UIImage imageNamed:@"LaunchImage"]
-                                               placeholderImage:nil
-                                                      tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
+        [self clearBackgroundImage];
     }
     else if ( ![self.backgroundImageView.sd_imageURL isEqual:imageURL] )
     {
@@ -81,7 +79,7 @@ static const CGFloat kMinimumBlurredImageSize = 50.0;
 
 - (void)clearBackgroundImage
 {
-    [self.backgroundImageView setBlurredImageWithClearImage:[UIImage imageNamed:@"Default"]
+    [self.backgroundImageView setBlurredImageWithClearImage:[UIImage imageNamed:@"LaunchImage"]
                                            placeholderImage:nil
                                                   tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.5f]];
 }

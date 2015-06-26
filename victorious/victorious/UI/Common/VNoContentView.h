@@ -33,4 +33,15 @@
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds titleString:(NSString *)titleString messageString:(NSString *)messageString andDependencyManager:(VDependencyManager *)dependencyManager;
 
+/**
+ Resets animation state to prepare for a call to `animateTransitionIn`.
+ */
+- (void)resetInitialAnimationState;
+
+/**
+ Animates the no content view's message and icon UI using a springy
+ scale-up and fade-in animation.
+ */
+- (void)animateTransitionIn;
+
 @end

@@ -36,6 +36,10 @@
 
 - (void)hashTag:(NSString *)hashtag tappedFromSequence:(VSequence *)sequence fromView:(UIView *)view;
 
+- (void)willShowLikersForSequence:(VSequence *)sequence fromView:(UIView *)view;
+
+- (void)willLikeSequence:(VSequence *)sequence completion:(void(^)(BOOL success))completion;
+
 /**
  *  Shows any reposters for the given sequence.
  */

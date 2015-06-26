@@ -20,9 +20,12 @@
 
 // Action sheet
 #import "VAlertController.h"
+#import "VCreateSheetViewController.h"
 
 // Tracking
 #import "VTrackingManager.h"
+
+static NSString * const kCreateSheetKey = @"createSheet";
 
 @interface VWorkspacePresenter () <VWorkspaceFlowControllerDelegate>
 
@@ -43,50 +46,73 @@
 
 - (void)present
 {
-    VAlertController *alertControler = [VAlertController actionSheetWithTitle:nil message:nil];
-    [alertControler addAction:[VAlertAction cancelButtonWithTitle:NSLocalizedString(@"CancelButton", @"Cancel button") handler:^(VAlertAction *action)
-                               {
-                                   [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateCancelSelected];
-                               }]];
-    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Video Post", @"") handler:^(VAlertAction *action)
-                               {
-                                   [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateVideoPostSelected];
-                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo];
-                               }]];
-    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create an Image Post", @"") handler:^(VAlertAction *action)
-                               {
-                                   [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateImagePostSelected];
-                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateImage];
-                               }]];
-    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a GIF", @"Create a gif action button.")
-                                                    handler:^(VAlertAction *action)
-                               {
-                                   [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateGIFPostSelected];
-                                   [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo
-                                                            initialImageEditState:VImageToolControllerInitialImageEditStateText
-                                                         andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateGIF];
-                               }]];
-    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Text Post", @"Create a text post action button.")
-                                                    handler:^(VAlertAction *action)
-                               {
-                                   [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateTextOnlyPostSelected];
-                                   
-                                   [self presentTextOnlyWorkspace];
-                               }]];
-    [alertControler addAction:[VAlertAction buttonWithTitle:NSLocalizedString(@"Create a Poll", @"") handler:^(VAlertAction *action)
-                               {
-                                   [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreatePollSelected];
-                                   VCreatePollViewController *createViewController = [VCreatePollViewController newWithDependencyManager:self.dependencyManager];
-                                   __weak typeof(self) welf = self;
-                                   createViewController.completionHandler = ^void(VCreatePollViewControllerResult result)
-                                   {
-                                       [welf.viewControllerToPresentOn dismissViewControllerAnimated:YES
-                                                                completion:nil];
-                                   };
-                                   UINavigationController *wrapperNavStack = [[UINavigationController alloc] initWithRootViewController:createViewController];
-                                   [self.viewControllerToPresentOn presentViewController:wrapperNavStack animated:YES completion:nil];
-                               }]];
-    [alertControler presentInViewController:self.viewControllerToPresentOn animated:YES completion:nil];
+    NSDictionary *addedDependencies = @{kAnimateFromTopKey : @(self.showsCreationSheetFromTop)};
+    VCreateSheetViewController *createSheet = [self.dependencyManager templateValueOfType:[VCreateSheetViewController class] forKey:kCreateSheetKey withAddedDependencies:addedDependencies];
+    
+    if (createSheet != nil)
+    {
+        [createSheet setCompletionHandler:^(VCreateSheetViewController *createSheetViewController, VCreateSheetItemIdentifier chosenItemIdentifier)
+         {
+             [createSheetViewController dismissViewControllerAnimated:YES completion:^
+              {
+                  [self openWorkspaceWithItemIdentifier:chosenItemIdentifier];
+              }];
+             
+         }];
+        [self.viewControllerToPresentOn presentViewController:createSheet animated:YES completion:nil];
+    }
+    else
+    {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                       message:NSLocalizedString(@"GenericFailMessage", @"")
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
+                                                  style:UIAlertActionStyleCancel
+                                                handler:nil]];
+        [self.viewControllerToPresentOn presentViewController:alert animated:YES completion:nil];
+    }
+}
+
+- (void)openWorkspaceWithItemIdentifier:(VCreateSheetItemIdentifier)identifier
+{
+    switch (identifier)
+    {
+        case VCreateSheetItemIdentifierImage:
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateImagePostSelected];
+            [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateImage];
+            break;
+        case VCreateSheetItemIdentifierVideo:
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateVideoPostSelected];
+            [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo];
+            break;
+        case VCreateSheetItemIdentifierText:
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateTextOnlyPostSelected];
+            [self presentTextOnlyWorkspace];
+            break;
+        case VCreateSheetItemIdentifierGIF:
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateGIFPostSelected];
+            [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo
+                                     initialImageEditState:VImageToolControllerInitialImageEditStateText
+                                  andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateGIF];
+            
+            break;
+        case VCreateSheetItemIdentifierPoll:
+        {
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreatePollSelected];
+            VCreatePollViewController *createViewController = [VCreatePollViewController newWithDependencyManager:self.dependencyManager];
+            __weak typeof(self) welf = self;
+            createViewController.completionHandler = ^void(VCreatePollViewControllerResult result)
+            {
+                [welf.viewControllerToPresentOn dismissViewControllerAnimated:YES
+                                                                   completion:nil];
+            };
+            UINavigationController *wrapperNavStack = [[UINavigationController alloc] initWithRootViewController:createViewController];
+            [self.viewControllerToPresentOn presentViewController:wrapperNavStack animated:YES completion:nil];
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 - (void)presentCreateFlowWithInitialCaptureState:(VWorkspaceFlowControllerInitialCaptureState)initialCaptureState

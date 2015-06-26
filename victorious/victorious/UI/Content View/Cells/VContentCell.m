@@ -14,6 +14,7 @@
 
 @property (nonatomic, weak) UIImageView *animationImageView;
 @property (nonatomic, strong) VEndCardViewController *endCardViewController;
+@property (nonatomic, strong, readwrite) VContentLikeButton *likeButton;
 
 @end
 
@@ -27,13 +28,6 @@
 }
 
 #pragma mark - Initialization
-
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    
-    [self setup];
-}
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -71,6 +65,20 @@
     self.minSize = CGSizeMake( self.frame.size.width, 0.0f );
     
     self.repeatCount = 1;
+    
+    [self setupLikeButton];
+}
+
+- (void)setupLikeButton
+{
+    VContentLikeButton *likeButton = [[VContentLikeButton alloc] init];
+    [self addSubview:likeButton];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:likeButton attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-12.0f]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:likeButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottomMargin multiplier:1.0 constant:-3.0f]];
+    
+    [self layoutIfNeeded];
+    
+    self.likeButton = likeButton;
 }
 
 - (void)prepareForReuse

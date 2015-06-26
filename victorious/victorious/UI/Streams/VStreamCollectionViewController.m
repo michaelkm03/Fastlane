@@ -93,7 +93,8 @@ NSString * const VStreamCollectionViewControllerStreamURLKey = @"streamURL";
 NSString * const VStreamCollectionViewControllerCellComponentKey = @"streamCell";
 NSString * const VStreamCollectionViewControllerMarqueeComponentKey = @"marqueeCell";
 
-static NSString * const kRemixStreamKey = @"remixStream";
+static NSString * const kMemeStreamKey = @"memeStream";
+static NSString * const kGifStreamKey = @"gifStream";
 static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
@@ -302,7 +303,11 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
     [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
+    
+    // Stop tracking marquee views
+    self.marqueeCellController.shouldTrackMarqueeCellViews = NO;
 }
 
 - (BOOL)shouldAutorotate
@@ -423,6 +428,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
              return;
          }
          weakSelf.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:self dependencyManager:self.dependencyManager];
+         weakSelf.workspacePresenter.showsCreationSheetFromTop = YES;
          [weakSelf.workspacePresenter present];
      }];
 }
@@ -553,6 +559,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
     UICollectionViewCell *cell = [self.streamCellFactory collectionView:self.collectionView
                                                       cellForStreamItem:sequence atIndexPath:indexPath];
+    
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
     
     return cell;
@@ -593,6 +600,34 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
                                               preloadedImage:nil
                                             defaultVideoEdit:defaultEdit
                                                   completion:nil];
+}
+
+- (void)willLikeSequence:(VSequence *)sequence completion:(void(^)(BOOL success))completion
+{
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLike];
+    
+    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                      dependencyManager:self.dependencyManager];
+    [authorization performFromViewController:self context:VAuthorizationContextDefault
+                                          completion:^(BOOL authorized)
+     {
+         if ( authorized )
+         {
+             [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
+                                                       successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+              {
+                  completion( YES );
+                  
+              } failBlock:^(NSOperation *operation, NSError *error)
+              {
+                  completion( NO );
+              }];
+         }
+         else
+         {
+             completion( NO );
+         }
+     }];
 }
 
 - (void)willShareSequence:(VSequence *)sequence fromView:(UIView *)view
@@ -637,6 +672,11 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 - (void)showRepostersForSequence:(VSequence *)sequence
 {
     [self.sequenceActionController showRepostersFromViewController:self sequence:sequence];
+}
+
+- (void)willShowLikersForSequence:(VSequence *)sequence fromView:(UIView *)view
+{
+    [self.sequenceActionController showLikersFromViewController:self sequence:sequence];
 }
 
 #pragma mark - Actions
@@ -726,6 +766,12 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 {
     self.hasRefreshed = YES;
     [self updateNoContentViewAnimated:YES];
+    
+    // Allow cells to populate before we track which are visible before user scrolls
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+    {
+        [self updateCellVisibilityTracking];
+    });
 }
 
 - (void)updateNoContentViewAnimated:(BOOL)animated
@@ -824,18 +870,28 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     const CGRect streamVisibleRect = self.collectionView.bounds;
     
     NSArray *visibleCells = self.collectionView.visibleCells;
-    [visibleCells enumerateObjectsUsingBlock:^(UICollectionViewCell *cell, NSUInteger idx, BOOL *stop)
-     {
-         if ( [VNoContentCollectionViewCellFactory isNoContentCell:cell] )
-         {
-             return;
-         }
-         
-         // Calculate visible ratio for the whole cell
-         const CGRect intersection = CGRectIntersection( streamVisibleRect, cell.frame );
-         const float visibleRatio = CGRectGetHeight( intersection ) / CGRectGetHeight( cell.frame );
-         [self collectionViewCell:cell didUpdateCellVisibility:visibleRatio];
-     }];
+    
+    BOOL shouldTrackMarquee = NO;
+    
+    for (UICollectionViewCell *cell in visibleCells)
+    {
+        if ( ![VNoContentCollectionViewCellFactory isNoContentCell:cell] )
+        {
+            // Calculate visible ratio for the whole cell
+            const CGRect intersection = CGRectIntersection( streamVisibleRect, cell.frame );
+            const CGFloat visibleRatio = CGRectGetHeight( intersection ) / CGRectGetHeight( cell.frame );
+            [self collectionViewCell:cell didUpdateCellVisibility:visibleRatio];
+        }
+        
+        if ([cell isKindOfClass:[VAbstractMarqueeCollectionViewCell class]])
+        {
+            shouldTrackMarquee = YES;
+        }
+    }
+    
+    self.marqueeCellController.shouldTrackMarqueeCellViews = shouldTrackMarquee;
+    // Fire right away to catch any events while scrolling stream
+    [self.marqueeCellController updateCellVisibilityTracking];
 }
 
 - (void)updateCurrentlyPlayingMediaAsset
@@ -925,6 +981,13 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
                                          withDependencyManager:self.dependencyManager];
         return userPostAllowed;
     }
+    
+    // Don't show hamburger menu if we are presented
+    if ( [menuItem.identifier isEqualToString:VDependencyManagerAccessoryItemMenu] && (self.presentingViewController != nil))
+    {
+        return NO;
+    }
+
     return YES;
 }
 
@@ -956,27 +1019,48 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 @implementation VDependencyManager (VStreamCollectionViewController)
 
-- (VStreamCollectionViewController *)remixStreamForSequence:(VSequence *)sequence
+- (VStreamCollectionViewController *)memeStreamForSequence:(VSequence *)sequence
 {
     NSString *sequenceID = sequence.remoteId;
-    VStreamCollectionViewController *remixStream = [self templateValueOfType:[VStreamCollectionViewController class]
-                                                                      forKey:kRemixStreamKey
-                                                       withAddedDependencies:@{ kSequenceIDKey: sequenceID }];
+    VStreamCollectionViewController *memeStream = [self templateValueOfType:[VStreamCollectionViewController class]
+                                                                     forKey:kMemeStreamKey
+                                                      withAddedDependencies:@{ kSequenceIDKey: sequenceID }];
     
-    remixStream.navigationItem.title = NSLocalizedString(@"Remixes", nil);
-    remixStream.currentStream.name = NSLocalizedString(@"Remixes", nil);
+    memeStream.navigationItem.title = NSLocalizedString(memeStream.currentStream.name, nil);
     
-    VNoContentView *noRemixView = [VNoContentView noContentViewWithFrame:remixStream.view.bounds];
-    if ( [noRemixView respondsToSelector:@selector(setDependencyManager:)] )
+    VNoContentView *noMemeView = [VNoContentView noContentViewWithFrame:memeStream.view.bounds];
+    if ( [noMemeView respondsToSelector:@selector(setDependencyManager:)] )
     {
-        noRemixView.dependencyManager = self;
+        noMemeView.dependencyManager = self;
     }
-    noRemixView.title = NSLocalizedString(@"NoRemixersTitle", @"");
-    noRemixView.message = NSLocalizedString(@"NoRemixersMessage", @"");
-    noRemixView.icon = [UIImage imageNamed:@"noRemixIcon"];
-    remixStream.noContentView = noRemixView;
+    noMemeView.title = NSLocalizedString(@"NoMemersTitle", @"");
+    noMemeView.message = NSLocalizedString(@"NoMemersMessage", @"");
+    noMemeView.icon = [UIImage imageNamed:@"noMemeIcon"];
+    memeStream.noContentView = noMemeView;
     
-    return remixStream;
+    return memeStream;
+}
+
+- (VStreamCollectionViewController *)gifStreamForSequence:(VSequence *)sequence
+{
+    NSString *sequenceID = sequence.remoteId;
+    VStreamCollectionViewController *gifStream = [self templateValueOfType:[VStreamCollectionViewController class]
+                                                                    forKey:kGifStreamKey
+                                                     withAddedDependencies:@{ kSequenceIDKey: sequenceID }];
+    
+    gifStream.navigationItem.title = NSLocalizedString(gifStream.currentStream.name, nil);
+    
+    VNoContentView *noGifView = [VNoContentView noContentViewWithFrame:gifStream.view.bounds];
+    if ( [noGifView respondsToSelector:@selector(setDependencyManager:)] )
+    {
+        noGifView.dependencyManager = self;
+    }
+    noGifView.title = NSLocalizedString(@"NoGiffersTitle", @"");
+    noGifView.message = NSLocalizedString(@"NoGiffersMessage", @"");
+    noGifView.icon = [UIImage imageNamed:@"noGifIcon"];
+    gifStream.noContentView = noGifView;
+    
+    return gifStream;
 }
 
 @end

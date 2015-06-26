@@ -7,12 +7,15 @@
 //
 
 #import "VFollowUserControl.h"
-#import "VThemeManager.h"
+#import "VDependencyManager.h"
 
 static const CGFloat kHighlightedTiltRotationAngle = M_PI / 4;
 static const NSTimeInterval kHighlightAnimationDuration = 0.3f;
 static const CGFloat kHighlightTransformPerspective = -1.0 / 200.0f;
 static const CGFloat kForcedAntiAliasingConstant = 0.01f;
+
+static NSString * const kFollowIconKey = @"follow_user_icon";
+static NSString * const kFollowedIconKey = @"followed_user_icon";
 
 @interface VFollowUserControl ()
 
@@ -20,7 +23,6 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
 
 @property (nonatomic) UIImage *followImage;
 @property (nonatomic) UIImage *followedImage;
-@property (nonatomic) UIImage *unFollowImage;
 
 @end
 
@@ -31,7 +33,7 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
-    if (self)
+    if ( self != nil )
     {
         [self sharedInit];
     }
@@ -41,7 +43,7 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self)
+    if ( self != nil )
     {
         [self sharedInit];
     }
@@ -50,28 +52,9 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
 
 - (void)sharedInit
 {
-#if TARGET_INTERFACE_BUILDER
-    _followImage = [UIImage imageNamed:@"folllowIcon" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
-    _followedImage = [UIImage imageNamed:@"folllowedIcon" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
-#else
-    _followImage = [UIImage imageNamed:@"folllowIcon"];
-    _followedImage = [UIImage imageNamed:@"folllowedIcon"];
-#endif
-
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:_followImage];
-    imageView.frame = self.bounds;
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.bounds];
     imageView.contentMode = self.contentMode;
     
-    if (self.following)
-    {
-        [imageView setImage:_followedImage];
-    }
-    else
-    {
-        UIImage *sImg = [_followImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        imageView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-        imageView.image = sImg;
-    }
     [self addSubview:imageView];
     
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -121,17 +104,7 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
     
     [self sendActionsForControlEvents:UIControlEventValueChanged];
     
-    if (self.following)
-    {
-        [self.imageView setImage:_followedImage];
-    }
-    else
-    {
-        UIImage *sImg = [_followImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        self.imageView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-        self.imageView.image = sImg;
-    }
-
+    [self updateFollowImageView];
 }
 
 #pragma mark - Public Interface
@@ -160,12 +133,6 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
                        options:UIViewAnimationOptionTransitionFlipFromTop | UIViewAnimationOptionBeginFromCurrentState
                     animations:animations
                     completion:nil];
-}
-
-- (void)setTintColor:(UIColor *)tintColor
-{
-    [super setTintColor:tintColor];
-    self.imageView.tintColor = tintColor;
 }
 
 #pragma mark - UIControl
@@ -210,7 +177,32 @@ static const CGFloat kForcedAntiAliasingConstant = 0.01f;
     
     return highLightTranform;
 }
-                                           
+
+#pragma mark - Appearance styling
+
+- (void)updateFollowImageView
+{
+    self.imageView.image = self.following ? self.followedImage : self.followImage;
+}
+
+- (void)setTintColor:(UIColor *)tintColor
+{
+    [super setTintColor:tintColor];
+    self.imageView.tintColor = tintColor;
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    if ( dependencyManager != nil )
+    {
+        self.followImage = [[dependencyManager imageForKey:kFollowIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.followedImage = [dependencyManager imageForKey:kFollowedIconKey];
+        self.tintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        [self updateFollowImageView];
+    }
+}
+    
 #pragma mark - Interface Builder
 
 - (void)prepareForInterfaceBuilder

@@ -11,6 +11,7 @@
 #import "VJSONHelper.h"
 #import "VSolidColorBackground.h"
 #import "VURLMacroReplacement.h"
+#import "UIImage+VTint.h"
 
 typedef BOOL (^TypeTest)(Class);
 

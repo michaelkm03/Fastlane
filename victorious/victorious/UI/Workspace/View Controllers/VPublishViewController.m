@@ -22,26 +22,53 @@
 
 #import "NSURL+MediaType.h"
 
+#import "VPublishSaveCollectionViewCell.h"
+#import "VPublishShareCollectionViewCell.h"
+#import "VShareItemCollectionViewCell.h"
+#import "VShareMenuItem.h"
+#import "VDependencyManager+VShareMenuItem.h"
+#import "VFacebookManager.h"
+#import "VTwitterManager.h"
+#import "VDependencyManager+VBackgroundContainer.h"
+#import "VDependencyManager+VKeyboardStyle.h"
+
 @import AssetsLibrary;
 
 static const CGFloat kTriggerVelocity = 500.0f;
 static const CGFloat kSnapDampingConstant = 0.9f;
 static const CGFloat kTopSpacePublishPrompt = 50.0f;
 static const CGFloat kAccessoryViewHeight = 44.0f;
+static const CGFloat kCollectionViewVerticalSpace = 8.0f;
+static const UIEdgeInsets kCollectionViewEdgeInsets = { 8.0f, 9.0f, 8.0f, 9.0f };
+static NSUInteger const kMaxCaptionLength = 120;
+static NSString * const kBackButtonTitleKey = @"backButtonText";
+static NSString * const kPlaceholderTextKey = @"placeholderText";
+static NSString * const kShareContainerBackgroundColor = @"color.shareContainer";
+static NSString * const kCaptionContainerBackgroundColor = @"color.captionContainer";
+static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
-@interface VPublishViewController () <UICollisionBehaviorDelegate, UITextViewDelegate, UIGestureRecognizerDelegate, VContentInputAccessoryViewDelegate>
+@interface VPublishViewController () <UICollisionBehaviorDelegate, UITextViewDelegate, UIGestureRecognizerDelegate, VContentInputAccessoryViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, VPublishShareCollectionViewCellDelegate, VBackgroundContainer>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, weak) IBOutlet UIView *publishPrompt;
+@property (nonatomic, weak) IBOutlet UIView *captionContainer;
+@property (nonatomic, weak) IBOutlet UIImageView *captionSeparator;
 @property (weak, nonatomic) IBOutlet UIImageView *previewImageView;
 @property (weak, nonatomic) IBOutlet VPlaceholderTextView *captionTextView;
 @property (weak, nonatomic) IBOutlet UIButton *publishButton;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (strong, nonatomic) IBOutlet UIPanGestureRecognizer *panGestureRecognizer;
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *tapGestureRecognizer;
-@property (weak, nonatomic) IBOutlet UILabel *saveToCameraRollLabel;
-@property (weak, nonatomic) IBOutlet UISwitch *cameraRollSwitch;
+@property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, strong) VPublishSaveCollectionViewCell *saveContentCell;
+@property (nonatomic, strong) VPublishShareCollectionViewCell *shareContentCell;
+@property (nonatomic, assign) BOOL hasShareCell;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *cardHeightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *previewHeightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *dividerLineHeightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *publishButtonHeightConstraint;
+@property (nonatomic, assign) CGFloat cellWidth;
 
 @property (nonatomic, strong) UIDynamicAnimator *animator;
 @property (nonatomic, strong) UIAttachmentBehavior *attachmentBehavior;
@@ -86,12 +113,14 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 {
     [super viewDidLoad];
     
+    [self setupCollectionView];
+    
+    [self.dependencyManager addBackgroundToBackgroundHost:self];
+    
     self.publishButton.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    [self.publishButton setTitleColor:[self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey]
+    [self.publishButton setTitleColor:[self.dependencyManager colorForKey:VDependencyManagerSecondaryLinkColorKey]
                              forState:UIControlStateNormal];
-    self.captionTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    self.saveToCameraRollLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
-    self.cameraRollSwitch.onTintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    [self.publishButton.titleLabel setFont:[self.dependencyManager fontForKey:VDependencyManagerButton1FontKey]];
     
     __weak typeof(self) welf = self;
     
@@ -104,36 +133,95 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     {
         welf.publishPrompt.transform = CGAffineTransformIdentity;
     };
-
-    self.captionTextView.placeholderText = NSLocalizedString(@"Write a caption (optional)", @"Caption entry placeholder text");
-    UIFont *label3Font = [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
-    if (label3Font != nil)
-    {
-        self.captionTextView.typingAttributes = @{NSFontAttributeName: label3Font};
-    }
     
-    VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), kAccessoryViewHeight)];
-    self.captionTextView.textContainerInset = UIEdgeInsetsMake(10, 6, 0, 6);
-    self.captionTextView.backgroundColor = [UIColor clearColor];
-    inputAccessoryView.textInputView = self.captionTextView;
-    inputAccessoryView.maxCharacterLength = 120;
-    inputAccessoryView.delegate = self;
-    inputAccessoryView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    self.captionTextView.inputAccessoryView = inputAccessoryView;
+    [self setupCaptionTextView];
+    
+    self.captionSeparator.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
     
     NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
-    UIFont *headerFont = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
-    if (headerFont != nil)
+    UIFont *cancelButtonFont = [self.dependencyManager fontForKey:VDependencyManagerButton2FontKey];
+    if (cancelButtonFont != nil)
     {
-        attributes[NSFontAttributeName] = headerFont;
+        attributes[NSFontAttributeName] = cancelButtonFont;
     }
-    self.cancelButton.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Cancel", @"")
+    NSString *cancelButtonText = [self.dependencyManager stringForKey:kBackButtonTitleKey];
+    self.cancelButton.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(cancelButtonText, @"")
                                                                                   attributes:attributes];
-    UIColor *textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    UIColor *textColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey];
     [self.cancelButton setTitleColor:textColor ?: [UIColor whiteColor]
                             forState:UIControlStateNormal];
     
     self.previewImageView.image = self.publishParameters.previewImage;
+    
+    [self setupShareCard];
+}
+
+- (void)setupCaptionTextView
+{
+    self.captionContainer.backgroundColor = [self.dependencyManager colorForKey:kCaptionContainerBackgroundColor];
+    
+    VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), kAccessoryViewHeight)];
+    inputAccessoryView.textInputView = self.captionTextView;
+    inputAccessoryView.maxCharacterLength = kMaxCaptionLength;
+    inputAccessoryView.delegate = self;
+    inputAccessoryView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    
+    self.captionTextView.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
+    self.captionTextView.backgroundColor = [UIColor clearColor];
+    self.captionTextView.inputAccessoryView = inputAccessoryView;
+    self.captionTextView.textContainerInset = UIEdgeInsetsZero;
+    [self.captionTextView setPlaceholderTextColor:[self.dependencyManager colorForKey:VDependencyManagerPlaceholderTextColorKey]];
+    self.captionTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    self.captionTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    
+    NSString *placeholderText = [self.dependencyManager stringForKey:kPlaceholderTextKey];
+    self.captionTextView.placeholderText = NSLocalizedString(placeholderText, @"Caption entry placeholder text");
+    UIFont *font = [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
+    if ( font != nil )
+    {
+        self.captionTextView.typingAttributes = @{NSFontAttributeName: font};
+        self.captionTextView.font = font;
+    }
+    UIFont *placeholderFont = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
+    if ( placeholderFont != nil )
+    {
+        [self.captionTextView setPlaceholderFont:placeholderFont];
+    }
+}
+
+- (void)setupCollectionView
+{
+    self.collectionView.scrollEnabled = NO;
+    self.collectionView.delegate = self;
+    self.collectionView.backgroundColor = [self.dependencyManager colorForKey:kShareContainerBackgroundColor];
+    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+    flowLayout.sectionInset = kCollectionViewEdgeInsets;
+    flowLayout.minimumLineSpacing = kCollectionViewVerticalSpace;
+    
+    [self.collectionView registerNib:[VPublishSaveCollectionViewCell nibForCell] forCellWithReuseIdentifier:[VPublishSaveCollectionViewCell suggestedReuseIdentifier]];
+    [self.collectionView registerNib:[VPublishShareCollectionViewCell nibForCell] forCellWithReuseIdentifier:[VPublishShareCollectionViewCell suggestedReuseIdentifier]];
+    
+    CGFloat width = CGRectGetWidth(self.collectionView.bounds);
+    UIEdgeInsets contentInset = self.collectionView.contentInset;
+    width -= contentInset.right + contentInset.left;
+    UIEdgeInsets sectionInset = ((UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout).sectionInset;
+    width -= sectionInset.right + sectionInset.left;
+    self.cellWidth = width;
+}
+
+- (void)setupShareCard
+{
+    self.hasShareCell = [self.dependencyManager shareMenuItems].count != 0;
+    
+    CGFloat staticHeights = self.publishButtonHeightConstraint.constant + self.previewHeightConstraint.constant + self.dividerLineHeightConstraint.constant;
+    CGFloat shareHeight = [VPublishShareCollectionViewCell desiredHeightForDependencyManager:self.dependencyManager];
+    CGSize shareSize = CGSizeMake(self.cellWidth, shareHeight);
+    if ( shareSize.height != 0 )
+    {
+        shareSize.height += kCollectionViewVerticalSpace;
+    }
+    CGFloat collectionViewHeight = [VPublishSaveCollectionViewCell desiredHeight] + shareSize.height + kCollectionViewVerticalSpace * 2;
+    self.cardHeightConstraint.constant = staticHeights + collectionViewHeight;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -169,7 +257,12 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     
     self.publishParameters.caption = self.captionTextView.text;
     self.publishParameters.captionType = VCaptionTypeNormal;
-    self.publishParameters.shouldSaveToCameraRoll = self.cameraRollSwitch.on;
+    
+    self.publishParameters.shouldSaveToCameraRoll = self.saveContentCell.cameraRollSwitch.on;
+    
+    NSIndexSet *shareParams = self.shareContentCell.selectedShareTypes;
+    self.publishParameters.shareToFacebook = [shareParams containsIndex:VShareTypeFacebook];
+    self.publishParameters.shareToTwitter = [shareParams containsIndex:VShareTypeTwitter];
     
     [self trackPublishWithPublishParameters:self.publishParameters];
     
@@ -222,6 +315,9 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
         params[ VTrackingKeyTextType ] = publishParameters.textToolType ?: @"";
         params[ VTrackingKeyTextLength ] = @(publishParameters.embeddedText.length);
     }
+    
+    params[ VTrackingKeySharedToFacebook ] = @( publishParameters.shareToFacebook );
+    params[ VTrackingKeySharedToTwitter ] = @( publishParameters.shareToTwitter );
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidPublishContent
                                        parameters:[NSDictionary dictionaryWithDictionary:params]];
@@ -381,7 +477,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
-    BOOL onCameraRollSwitch = CGRectContainsPoint(self.cameraRollSwitch.bounds, [touch locationInView:self.cameraRollSwitch]);
+    BOOL onCameraRollSwitch = CGRectContainsPoint(self.saveContentCell.cameraRollSwitch.bounds, [touch locationInView:self.saveContentCell.cameraRollSwitch]);
     BOOL onCaptionTextView = CGRectContainsPoint(self.captionTextView.bounds, [touch locationInView:self.captionTextView]);
     if (onCameraRollSwitch || onCaptionTextView)
     {
@@ -437,6 +533,160 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     [collision setTranslatesReferenceBoundsIntoBoundaryWithInsets:edgeInsets];
     
     [self.animator addBehavior:collision];
+}
+
+- (BOOL)isSaveCellAtIndexPath:(NSIndexPath *)indexPath
+{
+    //The save cell should ALWAYS be the last cell in the table
+    return indexPath.row == [self.collectionView numberOfItemsInSection:indexPath.section] - 1;
+}
+
+- (void)shareCollectionViewSelectedShareItemCell:(VShareItemCollectionViewCell *)shareItemCell
+{
+    __weak VPublishViewController *weakSelf = self;
+    if ( shareItemCell.shareMenuItem.shareType == VShareTypeFacebook )
+    {
+        if ( ![VFacebookManager sharedFacebookManager].authorizedToShare )
+        {
+            shareItemCell.state = VShareItemCellStateLoading;
+            [[VFacebookManager sharedFacebookManager] requestPublishPermissionsOnSuccess:^
+             {
+                 shareItemCell.state = VShareItemCellStateSelected;
+             }
+                                                                               onFailure:^(NSError *error)
+             {
+                 [weakSelf showAlertForError:error fromShareItemCell:shareItemCell];
+                 shareItemCell.state = VShareItemCellStateUnselected;
+             }];
+        }
+        else
+        {
+            shareItemCell.state = VShareItemCellStateSelected;
+        }
+    }
+    else if ( shareItemCell.shareMenuItem.shareType == VShareTypeTwitter )
+    {
+        if ( ![VTwitterManager sharedManager].authorizedToShare )
+        {
+            shareItemCell.state = VShareItemCellStateLoading;
+            [[VTwitterManager sharedManager] refreshTwitterTokenWithIdentifier:[[VTwitterManager sharedManager] twitterId]
+                                                            fromViewController:self
+                                                               completionBlock:^(BOOL success, NSError *error)
+             {
+                 shareItemCell.state = success ? VShareItemCellStateSelected : VShareItemCellStateUnselected;
+                 if ( !success )
+                 {
+                     [weakSelf showAlertForError:error fromShareItemCell:shareItemCell];
+                 }
+             }];
+        }
+        else
+        {
+            shareItemCell.state = VShareItemCellStateSelected;
+        }
+    }
+}
+
+- (void)showAlertForError:(NSError *)error fromShareItemCell:(VShareItemCollectionViewCell *)shareItemCell
+{
+    if ( [error.domain isEqualToString:VTwitterManagerErrorDomain] )
+    {
+        return;
+    }
+    
+    __weak VPublishViewController *weakSelf = self;
+    void (^retryBlock)(UIAlertAction *) = ^(UIAlertAction *action)
+    {
+        [weakSelf shareCollectionViewSelectedShareItemCell:shareItemCell];
+    };
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                             message:NSLocalizedString(@"Sorry, we were having some trouble on our end. Please retry.", @"")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+    //We encountered a twitter API error
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:nil]];
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Retry", @"") style:UIAlertActionStyleDefault handler:retryBlock]];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+#pragma mark - UICollectionViewDataSource
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
+    return 1;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    if ( self.hasShareCell )
+    {
+        return 2;
+    }
+    return 1;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionViewCell *cell;
+    if ( [self isSaveCellAtIndexPath:indexPath] )
+    {
+        if ( self.saveContentCell == nil )
+        {
+            VPublishSaveCollectionViewCell *saveCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VPublishSaveCollectionViewCell suggestedReuseIdentifier] forIndexPath:indexPath];
+            saveCell.dependencyManager = self.dependencyManager;
+            self.saveContentCell = saveCell;
+        }
+        cell = self.saveContentCell;
+    }
+    else
+    {
+        if ( self.shareContentCell == nil )
+        {
+            VPublishShareCollectionViewCell *shareCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VPublishShareCollectionViewCell suggestedReuseIdentifier] forIndexPath:indexPath];
+            shareCell.dependencyManager = self.dependencyManager;
+            shareCell.delegate = self;
+            self.shareContentCell = shareCell;
+        }
+        cell = self.shareContentCell;
+    }
+    return cell;
+}
+
+#pragma mark - Layout methods
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGSize size = CGSizeZero;
+    if ( [self isSaveCellAtIndexPath:indexPath] )
+    {
+        size.height = [VPublishSaveCollectionViewCell desiredHeight];
+    }
+    else
+    {
+        size.height = [VPublishShareCollectionViewCell desiredHeightForDependencyManager:self.dependencyManager];
+    }
+    size.width = self.cellWidth;
+    return size;
+}
+
+#pragma mark - VBackgroundContainer
+
+- (UIView *)backgroundContainerView
+{
+    return self.view;
+}
+
+@end
+
+static NSString * const kPublishScreenKey = @"publishScreen";
+
+@implementation VDependencyManager (VPublishViewController)
+
+- (VPublishViewController *)newPublishViewController
+{
+    return (VPublishViewController *)[self viewControllerForKey:kPublishScreenKey];
 }
 
 @end

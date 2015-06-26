@@ -122,7 +122,9 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
 
 - (CMTimeRange)selectedTimeRange
 {
-    return CMTimeRangeMake([self currentTimeOffset], self.trimControl.selectedDuration);
+    CMTime timeScrolled = CMTimeSubtract([self maximumEndTime], [self currentTimeOffset]);
+    CMTime upperRange = CMTIME_COMPARE_INLINE(timeScrolled, <, self.trimControl.selectedDuration) ? timeScrolled : self.trimControl.selectedDuration;
+    return CMTimeRangeMake([self currentTimeOffset], upperRange);
 }
 
 - (void)setCurrentPlayTime:(CMTime)currentPlayTime

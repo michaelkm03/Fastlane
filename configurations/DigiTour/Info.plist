@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>${ProductPrefix}Digi</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.getvictorious.${ProductPrefix}digitourofficialapp</string>
+	<key>CFBundleName</key>
+	<string>${ProductPrefix}DigiTourOfficialApp</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb639394799494167</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>639394799494167</string>
+	<key>TWITTER_CONSUMER_KEY</key>
+	<string>JMsKdsqWYTvlE5Tvb2QWRJNbM</string>
+	<key>TWITTER_CONSUMER_SECRET</key>
+	<string>wZPg9GZojhaGZTKOY6ODZpBFmAs8Ea1G5fhioGkGgJ5ySrlfpw</string>
+	<key>VictoriousAppID</key>
+	<integer>59</integer>
+	<key>StagingAppID</key>
+	<integer>74</integer>
+	<key>QAAppID</key>
+	<integer>56</integer>
+	<key>CreatorSalutation</key>
+	<string>Digi</string>
+	<key>FlurryAPIKey</key>
+	<string>XQW49HP6WX3SGG7GV6GQ</string>
+</dict>
+</plist>

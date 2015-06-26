@@ -10,7 +10,7 @@
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Users.h"
-
+#import "VSequence.h"
 #import "VUser.h"
 #import "VComment+RestKit.h"
 
@@ -131,7 +131,9 @@
     VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
         //Since this is a POST not a DELETE we need to manually remove the comment.
+        VSequence *sequence = comment.sequence;
         [commentToRemove.managedObjectContext deleteObject:commentToRemove];
+        sequence.commentCount = @(sequence.comments.count-1);
         
         [commentToRemove.managedObjectContext saveToPersistentStore:nil];
         

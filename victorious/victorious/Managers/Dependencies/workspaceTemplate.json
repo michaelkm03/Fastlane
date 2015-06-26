@@ -9,7 +9,7 @@
                 {
                     "filterIndex": 0,
                     "picker": {
-                      "name": "vertical.multiplePicker",
+                      "name": "vertical.multiplePicker"
                     },
                     "title": "hashtag",
                     "icon": {
@@ -130,14 +130,197 @@
             "id": "2C30A9D0-F437-4872-97E9-C6D2787053BF"
         }
     },
-    "defaultWorkspaceDestination": {
+    "publishScreen" :
+    {
+        "name":"publish.screen",
+        "shareMenuItems" :
+        [
+            {
+                "shareType":"facebook",
+                "title":"post to facebook",
+                "icon":
+                {
+                    "imageURL": "share_facebook"
+                },
+                "selectedIcon":
+                {
+                    "imageURL": "share_facebook"
+                },
+                "color.accent":
+                {
+                    "red": 59,
+                    "alpha": 255,
+                    "blue": 152,
+                    "green": 89
+                },
+                "color.accent.secondary":
+                {
+                    "red": 102,
+                    "alpha": 255,
+                    "blue": 102,
+                    "green": 102
+                }
+            },
+            {
+                "shareType":"twitter",
+                "title":"post to twitter",
+                "icon":
+                {
+                    "imageURL": "share_twitter"
+                },
+                "selectedIcon":
+                {
+                    "imageURL": "share_twitter"
+                },
+                "color.accent":
+                {
+                    "red": 50,
+                    "alpha": 255,
+                    "blue": 218,
+                    "green": 106
+                },
+                "color.accent.secondary":
+                {
+                    "red": 102,
+                    "alpha": 255,
+                    "blue": 102,
+                    "green": 102
+                }
+            }
+        ],
+        "shareText":"Share to:",
+        "saveText":"Save to camera roll",
+        "backButtonText":"Back to edit",
+        "placeholderText":"Please add a caption",
+        "background":
+        {
+            "name":"solidColor.background",
+            "color":
+            {
+                "red": 0,
+                "alpha": 76,
+                "blue": 0,
+                "green": 0
+            }
+        },
+        "color.captionContainer":
+        {
+            "red": 241,
+            "alpha": 255,
+            "blue": 241,
+            "green": 241
+        },
+        "color.optionsContainer":
+        {
+            "red": 255,
+            "alpha": 255,
+            "blue": 255,
+            "green": 255
+        },
+        "color.shareContainer":
+        {
+            "red": 230,
+            "alpha": 255,
+            "blue": 237,
+            "green": 233
+        },
+        "color.accent":
+        {
+            "red": 0,
+            "alpha": 255,
+            "blue": 0,
+            "green": 255
+        },
+        "color.accent.secondary":
+        {
+            "red": 0,
+            "alpha": 255,
+            "blue": 0,
+            "green": 0
+        },
+        "color.text.placeholder":
+        {
+            "red": 102,
+            "alpha": 255,
+            "blue": 102,
+            "green": 102
+        },
+        "color.text":
+        {
+            "red": 252,
+            "alpha": 255,
+            "blue": 102,
+            "green": 102
+        },
+        "font.label1":
+        {
+            "fontSize": 14,
+            "fontName": "Helvetica"
+        },
+        "font.paragraph":
+        {
+            "fontSize": 16,
+            "fontName": "Helvetica"
+        },
+        "font.heading1":
+        {
+            "fontSize": 14,
+            "fontName": "Helvetica"
+        },
+        "font.heading2":
+        {
+            "fontSize": 16,
+            "fontName": "Helvetica"
+        },
+        "color.text.content":
+        {
+            "red": 102,
+            "alpha": 255,
+            "blue": 102,
+            "green": 102
+        },
+        "color.link":
+        {
+            "red": 29,
+            "alpha": 255,
+            "blue": 236,
+            "green": 174
+        },
+        "color.link.secondary":
+        {
+            "red": 255,
+            "alpha": 255,
+            "blue": 255,
+            "green": 255
+        },
+        "font.button1":
+        {
+            "fontSize": 18,
+            "fontName": "Helvetica"
+        },
+        "font.button2":
+        {
+            "fontSize": 18,
+            "fontName": "Helvetica"
+        },
+        "color.text.secondary":
+        {
+            "red": 255,
+            "alpha": 255,
+            "blue": 255,
+            "green": 255
+        },
+        "keyboardStyle":"light",
+        "autoEnableMediaSave":true
+    },
+        "defaultWorkspaceDestination": {
         "name": "hiddenWorkspace",
         "imageWorkspace": {
             "name": "workspace.screen",
             "tools": [
                 {
                     "selectedIcon": {
-                        "imageURL": "textSelected"
+                        "imageURL": "textIconSelected"
                     },
                     "picker": {
                         "name": "vertical.picker"
@@ -160,7 +343,7 @@
                                 "blue": 255,
                                 "green": 255
                             },
-                            "placeholderText": "create a meme",
+                            "placeholderText": "Create a meme",
                             "strokeColor": {
                                 "red": 0,
                                 "alpha": 1,
@@ -176,7 +359,7 @@
                                 "fontSize": 23,
                                 "fontName": "PTSans-Narrow"
                             },
-                            "title": "quote",
+                            "title": "Quote",
                             "horizontalAlignment": "center",
                             "color.text": {
                                 "red": 255,
@@ -197,7 +380,7 @@
                     ],
                     "name": "text.tool",
                     "icon": {
-                        "imageURL": "text"
+                        "imageURL": "textIcon"
                     }
                 },
                 {
@@ -234,7 +417,7 @@
             "tools": [
                 {
                     "selectedIcon": {
-                        "imageURL": "videoSelected"
+                        "imageURL": "videoIconSelected"
                     },
                     "videoMuted": false,
                     "frameDurationValue": 1,
@@ -242,7 +425,7 @@
                     "frameDurationTimescale": 24,
                     "name": "trim.video.tool",
                     "icon": {
-                        "imageURL": "video"
+                        "imageURL": "videoIcon"
                     }
                 },
                 {

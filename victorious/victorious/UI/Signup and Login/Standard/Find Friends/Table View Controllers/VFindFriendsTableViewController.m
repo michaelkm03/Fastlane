@@ -574,6 +574,8 @@
              }
          }];
     };
+    
+    cell.dependencyManager = self.dependencyManager;
 
     return cell;
 }

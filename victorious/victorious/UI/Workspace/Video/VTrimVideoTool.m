@@ -122,9 +122,10 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
                 [welf.delegate trimVideoToolFailed:welf];
                 return;
             }
+            
             welf.playerItem = playerItem;
             welf.trimViewController.maximumEndTime = [playerItem duration];
-            
+
             if (welf.thumbnailDataSource == nil)
             {
                 welf.thumbnailDataSource = [[VAssetThumbnailDataSource alloc] initWithAsset:playerItem.asset
@@ -168,7 +169,10 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
                      [player prerollAtRate:1.0f
                          completionHandler:^(BOOL finished)
                       {
-                          [player play];
+                          dispatch_async(dispatch_get_main_queue(), ^
+                          {
+                              [player play];
+                          });
                       }];
                      
                      self.trimViewController.actualDuration = player.currentItem.asset.duration;
@@ -274,7 +278,10 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
 
 - (void)videoPlayerReadyToPlay:(VCVideoPlayerViewController *)videoPlayer
 {
-    [videoPlayer.player play];
+    dispatch_async(dispatch_get_main_queue(), ^
+    {
+        [videoPlayer.player play];
+    });
 }
 
 - (void)videoPlayerWasTapped
@@ -287,14 +294,6 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
     {
         [self.videoPlayerController.player play];
     }
-}
-
-#pragma mark - Private Methods
-
-- (void)updateStartEndTimesOnVideoPlayer
-{
-    [self.videoPlayerController setStartSeconds:CMTimeGetSeconds(self.trimViewController.selectedTimeRange.start)];
-    [self.videoPlayerController setEndSeconds:CMTimeGetSeconds(CMTimeAdd(self.trimViewController.selectedTimeRange.start, self.trimViewController.selectedTimeRange.duration))];
 }
 
 @end

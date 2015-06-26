@@ -137,6 +137,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     experienceEnhancerCell.experienceEnhancerIcon = enhancerForIndexPath.iconImage;
     experienceEnhancerCell.isLocked = enhancerForIndexPath.isLocked;
     experienceEnhancerCell.enabled = self.enabled;
+    experienceEnhancerCell.dependencyManager = self.dependencyManager;
     return experienceEnhancerCell;
 }
 
@@ -264,6 +265,17 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
      }
                      completion:nil];
     
+}
+
+#pragma mark - Appearance styling
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    for ( VExperienceEnhancerCell *cell in self.collectionView.visibleCells )
+    {
+        cell.dependencyManager = dependencyManager;
+    }
 }
 
 @end

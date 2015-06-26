@@ -8,11 +8,14 @@
 
 #import "VBaseCollectionViewCell.h"
 
+@class VDependencyManager;
+
 @interface VExperienceEnhancerCell : VBaseCollectionViewCell
 
 @property (nonatomic, copy) NSString *experienceEnhancerTitle;
 @property (nonatomic, strong) UIImage *experienceEnhancerIcon;
 @property (nonatomic, assign) BOOL isLocked;
 @property (nonatomic, assign) BOOL enabled;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end

@@ -8,6 +8,7 @@
 
 #import "VUser+RestKit.h"
 #import "VImageAsset+RestKit.h"
+#import "VSequence+RestKit.h"
 
 @implementation VUser (RestKit)
 
@@ -27,7 +28,6 @@
                                   @"profile_image" : VSelectorName(pictureUrl),
                                   @"profile_location" : VSelectorName(location),
                                   @"name" : VSelectorName(name),
-                                  @"access_level" : VSelectorName(accessLevel),
                                   @"token" : VSelectorName(token),
                                   @"token_updated_at" : VSelectorName(tokenUpdatedAt),
                                   @"is_direct_message_disabled" : VSelectorName(isDirectMessagingDisabled),
@@ -49,6 +49,12 @@
                                                                                               toKeyPath:VSelectorName(previewAssets)
                                                                                             withMapping:[VImageAsset entityMapping]];
     [mapping addPropertyMapping:previewAssetsMapping];
+    
+    
+    RKRelationshipMapping *recentSequencesMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"recent_sequences"
+                                                                                              toKeyPath:VSelectorName(recentSequences)
+                                                                                            withMapping:[VSequence smallEntityMapping]];
+    [mapping addPropertyMapping:recentSequencesMapping];
     
     [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"userId"}];
     [mapping addConnectionForRelationship:@"conversation" connectedBy:@{@"remoteId" : @"other_interlocutor_user_id"}];
@@ -178,7 +184,13 @@
                                                           method:RKRequestMethodAny
                                                      pathPattern:@"/api/hashtag/subscribed_to_list"
                                                          keyPath:@"payload"
-                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
+             [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                          method:RKRequestMethodGET
+                                                     pathPattern:@"/api/sequence/liked_by_users/:sequenceId/:page/:perpage"
+                                                         keyPath:@"payload.users"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
              ];
 }
 

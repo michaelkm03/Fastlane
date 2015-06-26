@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "VHasManagedDependencies.h"
+#import "VDependencyManager.h"
 
 @class VPublishParameters;
 
@@ -22,5 +23,14 @@
 @property (nonatomic, copy, readonly) void (^animateInBlock)(void); ///< PublishViewController wants this to be called by animators
 
 @property (nonatomic, strong) VPublishParameters *publishParameters; ///< Publish parameters that are to be configured by this publishViewController
+
+@end
+
+@interface VDependencyManager (VPublishViewController)
+
+/**
+    Creates and returns a new publish view controller based on the contents of this dependency manager.
+ */
+- (VPublishViewController *)newPublishViewController;
 
 @end

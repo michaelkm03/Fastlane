@@ -130,10 +130,10 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
+    self.followHashtagControl.dependencyManager = dependencyManager;
     self.hashTagLabel.backgroundColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.hashTagLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.hashTagLabel.font = [_dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
-    self.followHashtagControl.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
 }
 
 @end

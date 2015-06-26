@@ -25,8 +25,9 @@
 #import "VObjectManager+Login.h"
 #import "VConstants.h"
 
-// Validator
+// Validation
 #import "VEmailValidator.h"
+#import "UIAlertController+VSimpleAlert.h"
 
 static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
@@ -94,6 +95,11 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
           {
               dispatch_async(dispatch_get_main_queue(), ^
                              {
+                                 UIAlertController *alertController = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"TwitterDeniedTitle", @"")
+                                                                                                                message:NSLocalizedString(@"TwitterTroubleshooting", @"")
+                                                                                                   andCancelButtonTitle:NSLocalizedString(@"OK", @"")];
+                                 [self.viewControllerToPresentOn presentViewController:alertController animated:YES completion:nil];
+                                 
                                  [hud hide:YES];
                                  completion(NO);
                              });
@@ -120,6 +126,10 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
      {
          dispatch_async(dispatch_get_main_queue(), ^(void)
                         {
+                            UIAlertController *alertController = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"LoginFail", @"")
+                                                                                                           message:NSLocalizedString(@"FacebookLoginFailed", @"")
+                                                                                              andCancelButtonTitle:NSLocalizedString(@"OK", @"")];
+                            [self.viewControllerToPresentOn presentViewController:alertController animated:YES completion:nil];
                             [hud hide:YES];
                             completion(NO);
                         });

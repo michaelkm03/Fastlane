@@ -14,10 +14,15 @@ static NSString * const kLoadingBackgroundKey = @"loadingBackground";
 
 @implementation VDependencyManager (VBackground)
 
-- (VBackground *)background
+- (VBackground *)backgroundForKey:(NSString *)key
 {
     return [self templateValueOfType:[VBackground class]
-                              forKey:kBackgroundKey];
+                              forKey:key];
+}
+
+- (VBackground *)background
+{
+    return [self backgroundForKey:kBackgroundKey];
 }
 
 - (VBackground *)loadingBackground

@@ -9,9 +9,10 @@
 #import "VModernResetPasswordViewController.h"
 
 // Views + Helpers
-#import "VLoginFlowControllerResponder.h"
+#import "VLoginFlowControllerDelegate.h"
 #import "VPasswordValidator.h"
 #import "VInlineValidationTextField.h"
+#import "UIColor+VBrightness.h"
 
 // Dependencies
 #import "VDependencyManager.h"
@@ -21,7 +22,7 @@
 static NSString * const kPromptKey = @"prompt";
 static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
-@interface VModernResetPasswordViewController () <UITextFieldDelegate, VBackgroundContainer>
+@interface VModernResetPasswordViewController () <UITextFieldDelegate, VBackgroundContainer, VLoginFlowScreen>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -35,6 +36,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @end
 
 @implementation VModernResetPasswordViewController
+
+@synthesize delegate = _delegate;
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -75,22 +78,44 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                           NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey],
                                           NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]
                                           };
+    UIColor *placeholderColor = [self.dependencyManager colorForKey:VDependencyManagerPlaceholderTextColorKey];
+    
+    UIColor *activePlaceholderColor;
+    if ([placeholderColor v_colorLuminance] == VColorLuminanceBright)
+    {
+        activePlaceholderColor = [placeholderColor v_colorDarkenedBy:0.3f];
+    }
+    else
+    {
+        activePlaceholderColor = [placeholderColor v_colorDarkenedBy:0.3f];
+    }
+    
     NSDictionary *placeholderTextFieldAttributes = @{
                                                      NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey],
-                                                     NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerPlaceholderTextColorKey],
+                                                     NSForegroundColorAttributeName: placeholderColor,
                                                      };
+    NSDictionary *activePlaceholderTextFieldAttributes = @{
+                                                           NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey],
+                                                           NSForegroundColorAttributeName: activePlaceholderColor
+                                                           };
+    
+    
     self.passwordTextField.textColor = textFieldAttributes[NSForegroundColorAttributeName];
     self.passwordTextField.font = textFieldAttributes[NSFontAttributeName];
     self.passwordTextField.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    self.passwordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter a new Password", nil)
-                                                                                   attributes:placeholderTextFieldAttributes];
+    self.passwordTextField.activePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter a new Password", nil)
+                                                                                   attributes:activePlaceholderTextFieldAttributes];
+    self.passwordTextField.inactivePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter a new Password", nil)
+                                                                                 attributes:placeholderTextFieldAttributes];
     self.passwordTextField.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
     
     self.confirmPasswordTextField.textColor = textFieldAttributes[NSForegroundColorAttributeName];
     self.confirmPasswordTextField.font = textFieldAttributes[NSFontAttributeName];
     self.confirmPasswordTextField.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    self.confirmPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Confirm your new password", nil)
-                                                                                   attributes:textFieldAttributes];
+    self.confirmPasswordTextField.activePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Confirm your new password", nil)
+                                                                                   attributes:activePlaceholderTextFieldAttributes];
+    self.confirmPasswordTextField.inactivePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Confirm your new password", nil)
+                                                                                        attributes:textFieldAttributes];
     self.confirmPasswordTextField.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:self.passwordTextField];
@@ -152,14 +177,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 {
     if ([self shouldChangePassword])
     {
-        id<VLoginFlowControllerResponder> flowControllerResponder = [self targetForAction:@selector(updateWithNewPassword:)
-                                                                               withSender:self];
-        if (flowControllerResponder == nil)
-        {
-            NSAssert(false, @"We need a flow controller for changing password");
-        }
-
-        [flowControllerResponder updateWithNewPassword:self.passwordTextField.text];
+        [self.delegate updateWithNewPassword:self.passwordTextField.text];
     }
 }
 
