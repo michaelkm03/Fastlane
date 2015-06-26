@@ -709,7 +709,7 @@
 		D80BE58C1AB203E300219803 /* VLoopingCompositionGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = D80BE58B1AB203E300219803 /* VLoopingCompositionGenerator.m */; };
 		D80C615B19D0F692006AE41A /* VProgressBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = D80C615A19D0F692006AE41A /* VProgressBarView.m */; };
 		D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D811BBBD19B92F75007398BF /* homeHeaderImage.png */; };
-		D814040B1AB372320099EC4B /* VWorkspacePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = D814040A1AB372320099EC4B /* VWorkspacePresenter.m */; };
+		D814040B1AB372320099EC4B /* VCreationFlowPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = D814040A1AB372320099EC4B /* VCreationFlowPresenter.m */; };
 		D816F7E41A966A0B00120798 /* UIScrollView+VCenterContent.m in Sources */ = {isa = PBXBuildFile; fileRef = D816F7E31A966A0B00120798 /* UIScrollView+VCenterContent.m */; };
 		D825B8821B20B9A8004179B4 /* VModernResetTokenViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D825B8841B20B9A8004179B4 /* VModernResetTokenViewController.storyboard */; };
 		D8282B1E1AE74074005D9DCF /* VRoundedCommentButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D8282B1D1AE74074005D9DCF /* VRoundedCommentButton.m */; };
@@ -2315,8 +2315,8 @@
 		D80C615A19D0F692006AE41A /* VProgressBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VProgressBarView.m; sourceTree = "<group>"; };
 		D811BBBD19B92F75007398BF /* homeHeaderImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homeHeaderImage.png; sourceTree = "<group>"; };
 		D811BBBE19B92F75007398BF /* homeHeaderImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homeHeaderImage@2x.png"; sourceTree = "<group>"; };
-		D81404091AB372320099EC4B /* VWorkspacePresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWorkspacePresenter.h; sourceTree = "<group>"; };
-		D814040A1AB372320099EC4B /* VWorkspacePresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWorkspacePresenter.m; sourceTree = "<group>"; };
+		D81404091AB372320099EC4B /* VCreationFlowPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreationFlowPresenter.h; sourceTree = "<group>"; };
+		D814040A1AB372320099EC4B /* VCreationFlowPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCreationFlowPresenter.m; sourceTree = "<group>"; };
 		D816F7E21A966A0B00120798 /* UIScrollView+VCenterContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+VCenterContent.h"; sourceTree = "<group>"; };
 		D816F7E31A966A0B00120798 /* UIScrollView+VCenterContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+VCenterContent.m"; sourceTree = "<group>"; };
 		D825B8831B20B9A8004179B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/VModernResetTokenViewController.storyboard; sourceTree = "<group>"; };
@@ -5991,8 +5991,8 @@
 				A75ED0411AB1FEA300C35063 /* VTextWorkspaceFlowController.m */,
 				D80BAB581A688D83003A3068 /* VWorkspaceFlowController.h */,
 				D80BAB591A688D83003A3068 /* VWorkspaceFlowController.m */,
-				D81404091AB372320099EC4B /* VWorkspacePresenter.h */,
-				D814040A1AB372320099EC4B /* VWorkspacePresenter.m */,
+				D81404091AB372320099EC4B /* VCreationFlowPresenter.h */,
+				D814040A1AB372320099EC4B /* VCreationFlowPresenter.m */,
 				D8B88F951ABA85F700DBAEA0 /* VWorkspaceShimDestination.h */,
 				D8B88F961ABA85F700DBAEA0 /* VWorkspaceShimDestination.m */,
 				03F6E2691AB79E090017826E /* Workspace.storyboard */,
@@ -7300,7 +7300,7 @@
 				A7ECC1C11AD60ECE0003E00A /* UIColor+VHex.m in Sources */,
 				A6EC32871B3B56B300824022 /* VImageCreationFlowStrategy.m in Sources */,
 				A70FC10A1A2D558200F5BBDE /* VPurchase.m in Sources */,
-				D814040B1AB372320099EC4B /* VWorkspacePresenter.m in Sources */,
+				D814040B1AB372320099EC4B /* VCreationFlowPresenter.m in Sources */,
 				DB34DC5C1A09B5AF001EC711 /* VLiveRailAdViewController.m in Sources */,
 				0309318D1A18425B004E9781 /* VMenuCollectionViewCell.m in Sources */,
 				D87AD2A81AD46DB300C481D0 /* VDownloadManager.m in Sources */,

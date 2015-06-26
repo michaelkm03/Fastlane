@@ -16,7 +16,7 @@
 
 NSString * const VCreationFlowControllerCreationTypeKey = @"creationType";
 
-@interface VCreationFlowController ()
+@interface VCreationFlowController () <VCreationFlowStrategyDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, strong) VCreationFlowStrategy *strategy;
 
@@ -45,17 +45,32 @@ NSString * const VCreationFlowControllerCreationTypeKey = @"creationType";
     if (self != nil)
     {
         _strategy = strategy;
+        _strategy.delegate = self;
+        self.delegate = strategy;
     }
     return self;
 }
 
-#pragma mark - overrides
+#pragma mark - View Lifecycle
 
-- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
+// Force Status bar hidden
+- (UIViewController *)childViewControllerForStatusBarHidden
 {
-    [super pushViewController:viewController animated:animated];
+    return nil;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
     
-    
+    self.navigationBar.barTintColor = [UIColor blackColor];
+    self.navigationBar.translucent = NO;
+    self.delegate = self.strategy;
 }
 
 #pragma mark - Notifying Delegate
@@ -71,6 +86,22 @@ NSString * const VCreationFlowControllerCreationTypeKey = @"creationType";
         [self dismissViewControllerAnimated:YES
                                  completion:nil];
     }
+}
+
+#pragma mark - VCreationFlowStrategyDelegate
+
+- (void)creationFlowStrategy:(VCreationFlowStrategy *)strategy
+    finishedWithPreviewImage:(UIImage *)previewImage
+            capturedMediaURL:(NSURL *)capturedMediaURL
+{
+    [self.creationFlowDelegate creationFLowController:self
+                             finishedWithPreviewImage:previewImage
+                                     capturedMediaURL:capturedMediaURL];
+}
+
+- (void)creationFlowStrategyDidCancel:(VCreationFlowStrategy *)strategy
+{
+    [self cancel];
 }
 
 @end

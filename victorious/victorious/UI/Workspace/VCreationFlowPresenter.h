@@ -1,5 +1,5 @@
 //
-//  VWorkspacePresenter.h
+//  VCreationFlowPresenter.h
 //  victorious
 //
 //  Created by Michael Sena on 3/10/15.
@@ -10,7 +10,7 @@
 
 @class VDependencyManager;
 
-@interface VWorkspacePresenter : NSObject
+@interface VCreationFlowPresenter : NSObject
 
 /**
  A Boolean that determines whether or not the creation sheet shows its
@@ -18,7 +18,7 @@
  */
 @property (nonatomic, assign) BOOL showsCreationSheetFromTop;
 
-+ (instancetype)workspacePresenterWithViewControllerToPresentOn:(UIViewController *)viewControllerToPresentOn dependencyManager:(VDependencyManager *)dependencyManager;
++ (instancetype)creationFlowPresenterWithViewControllerToPresentOn:(UIViewController *)viewControllerToPresentOn dependencyManager:(VDependencyManager *)dependencyManager;
 
 - (void)present;
 

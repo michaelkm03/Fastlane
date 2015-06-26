@@ -9,14 +9,14 @@
 #import "VWorkspaceShimDestination.h"
 #import "VDependencyManager.h"
 #import "VCoachmarkDisplayer.h"
-#import "VWorkspacePresenter.h"
+#import "VCreationFlowPresenter.h"
 #import "VRootViewController.h"
 
 @interface VWorkspaceShimDestination () <VCoachmarkDisplayer>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) id<VNavigationDestination> workspaceDestination;
-@property (nonatomic, strong) VWorkspacePresenter *workspacePresenter;
+@property (nonatomic, strong) VCreationFlowPresenter *creationFlowPresenter;
 
 @end
 
@@ -34,9 +34,9 @@
 
 - (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
 {
-    self.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:[VRootViewController rootViewController]
+    self.creationFlowPresenter = [VCreationFlowPresenter creationFlowPresenterWithViewControllerToPresentOn:[VRootViewController rootViewController]
                                                                                  dependencyManager:self.dependencyManager];
-    [self.workspacePresenter present];
+    [self.creationFlowPresenter present];
     return NO;
 }
 

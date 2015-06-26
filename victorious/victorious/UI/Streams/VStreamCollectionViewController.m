@@ -59,7 +59,7 @@
 #import "UIViewController+VLayoutInsets.h"
 
 #import "VURLMacroReplacement.h"
-#import "VWorkspacePresenter.h"
+#import "VCreationFlowPresenter.h"
 #import "VConstants.h"
 #import "VTracking.h"
 #import "VHashtagStreamCollectionViewController.h"
@@ -113,7 +113,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 @property (nonatomic, assign) BOOL hasRefreshed;
 
-@property (nonatomic, strong) VWorkspacePresenter *workspacePresenter;
+@property (nonatomic, strong) VCreationFlowPresenter *creationFlowPresenter;
 
 @end
 
@@ -423,9 +423,9 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
          {
              return;
          }
-         weakSelf.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:self dependencyManager:self.dependencyManager];
-         weakSelf.workspacePresenter.showsCreationSheetFromTop = YES;
-         [weakSelf.workspacePresenter present];
+         weakSelf.creationFlowPresenter = [VCreationFlowPresenter creationFlowPresenterWithViewControllerToPresentOn:self dependencyManager:self.dependencyManager];
+         weakSelf.creationFlowPresenter.showsCreationSheetFromTop = YES;
+         [weakSelf.creationFlowPresenter present];
      }];
 }
 

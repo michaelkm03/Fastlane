@@ -25,7 +25,7 @@
 // Category
 #import "NSURL+MediaType.h"
 #import "UIActionSheet+VBlocks.h"
-#import "VWorkspacePresenter.h"
+#import "VCreationFlowPresenter.h"
 
 // ViewControllers
 #import "VCameraViewController.h"
@@ -79,7 +79,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
 
-@property (nonatomic, strong) VWorkspacePresenter *workspacePresenter;
+@property (nonatomic, strong) VCreationFlowPresenter *workspacePresenter;
 
 @end
 
@@ -188,6 +188,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         __weak typeof(VPublishViewController) *weakPublishViewController = publishViewController;
         publishViewController.completion = ^void(BOOL published)
         {
+#warning Request for permission first
             if (publishParameters.shouldSaveToCameraRoll)
             {
                 if ([welf.capturedMediaURL v_hasImageExtension])
@@ -244,7 +245,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 - (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
 {
-    self.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:[VRootViewController rootViewController]
+    self.workspacePresenter = [VCreationFlowPresenter creationFlowPresenterWithViewControllerToPresentOn:[VRootViewController rootViewController]
                                                                                  dependencyManager:self.dependencyManager];
     [self.workspacePresenter present];
     return NO;

@@ -11,6 +11,9 @@
 // Dependencies
 #import "VDependencyManager.h"
 
+// Publishing
+#import "VPublishParameters.h"
+
 // ViewControllers
 #import "VCameraViewController.h"
 #import "VImageVideoLibraryViewController.h"
@@ -19,6 +22,9 @@
 
 // ToolController
 #import "VImageToolController.h"
+
+// Animators
+#import "VPublishBlurOverAnimator.h"
 
 static NSString * const kImageVideoLibraryKey = @"imageVideoLibrary";
 static NSString * const kCameraScreenKey = @"cameraScreen";
@@ -29,7 +35,13 @@ static NSString * const kCameraScreenKey = @"cameraScreen";
 @property (nonatomic, strong) VCameraViewController *cameraViewController;
 @property (nonatomic, strong) VImageVideoLibraryViewController *imageVideoLibraryViewController;
 @property (nonatomic, strong) VWorkspaceViewController *workspaceViewController;
+
 @property (nonatomic, strong) VPublishViewController *publishViewController;
+@property (nonatomic, strong) VPublishBlurOverAnimator *publishPushAnimator;
+
+// Creation Results
+@property (nonatomic, strong) UIImage *previewImage;
+@property (nonatomic, strong) NSURL *renderedMediaURL;
 
 @end
 
@@ -87,13 +99,20 @@ static NSString * const kCameraScreenKey = @"cameraScreen";
     {
         if (finished)
         {
+            [weakSelf setupWorkspace];
             weakSelf.workspaceViewController.previewImage = previewImage;
             weakSelf.workspaceViewController.mediaURL = capturedMediaURL;
             VImageToolController *toolController = (VImageToolController *)weakSelf.workspaceViewController.toolController;
             [toolController setDefaultImageTool:VImageToolControllerInitialImageEditStateText];
-            [weakSelf.flowNavigationController pushViewController:weakSelf.workspaceViewController animated:YES];
+            [weakSelf.flowNavigationController dismissViewControllerAnimated:YES completion:^
+            {
+                 [weakSelf.flowNavigationController pushViewController:weakSelf.workspaceViewController animated:YES];
+            }];
         }
-        [weakSelf.flowNavigationController dismissViewControllerAnimated:YES completion:nil];
+        else
+        {
+            [weakSelf.flowNavigationController dismissViewControllerAnimated:YES completion:nil];
+        }
     };
 }
 
@@ -111,7 +130,11 @@ static NSString * const kCameraScreenKey = @"cameraScreen";
     {
         if (finished)
         {
-            [weakSelf.flowNavigationController pushViewController:weakSelf.publishViewController animated:YES];
+            weakSelf.renderedMediaURL = renderedMediaURL;
+            weakSelf.previewImage = previewImage;
+            [weakSelf pushPublishScreenWithRenderedMediaURL:renderedMediaURL
+                                               previewImage:previewImage
+                                              fromWorkspace:weakSelf.workspaceViewController];
         }
         else
         {
@@ -122,6 +145,7 @@ static NSString * const kCameraScreenKey = @"cameraScreen";
 
 - (void)setupPublishScreen
 {
+    _publishPushAnimator = [[VPublishBlurOverAnimator alloc] init];
     _publishViewController = [self.dependencyManager newPublishViewController];
     __weak VImageCreationFlowStrategy *weakSelf = self;
     _publishViewController.completion = ^void(BOOL published)
@@ -129,12 +153,53 @@ static NSString * const kCameraScreenKey = @"cameraScreen";
         if (published)
         {
             // We're done!
+            [weakSelf.delegate creationFlowStrategy:weakSelf
+                           finishedWithPreviewImage:weakSelf.previewImage
+                                   capturedMediaURL:weakSelf.renderedMediaURL];
         }
         else
         {
             [weakSelf.flowNavigationController popViewControllerAnimated:YES];
         }
     };
+}
+
+- (void)pushPublishScreenWithRenderedMediaURL:(NSURL *)renderedMediaURL
+                                 previewImage:(UIImage *)previewImage
+                                fromWorkspace:(VWorkspaceViewController *)workspace
+{
+    VPublishParameters *publishParameters = [[VPublishParameters alloc] init];
+    publishParameters.mediaToUploadURL = renderedMediaURL;
+    publishParameters.previewImage = previewImage;
+
+    VImageToolController *imageToolController = (VImageToolController *)workspace.toolController;
+    publishParameters.embeddedText = imageToolController.embeddedText;
+    publishParameters.textToolType = imageToolController.textToolType;
+    publishParameters.filterName = imageToolController.filterName;
+    publishParameters.didCrop = imageToolController.didCrop;
+    publishParameters.isVideo = NO;
+    
+    self.publishViewController.publishParameters = publishParameters;
+    [self.flowNavigationController pushViewController:self.publishViewController animated:YES];
+}
+
+#pragma mark - UINavigationControllerDelegate
+
+- (id <UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+                                   animationControllerForOperation:(UINavigationControllerOperation)operation
+                                                fromViewController:(UIViewController *)fromVC
+                                                  toViewController:(UIViewController *)toVC
+{
+    if ([toVC isKindOfClass:[VPublishViewController class]] || [fromVC isKindOfClass:[VPublishViewController class]])
+    {
+        BOOL pushing = (operation == UINavigationControllerOperationPush);
+
+//        [navigationController setNavigationBarHidden:pushing animated:YES];
+        self.publishPushAnimator.presenting = pushing;
+
+        return self.publishPushAnimator;
+    }
+    return nil;
 }
 
 @end

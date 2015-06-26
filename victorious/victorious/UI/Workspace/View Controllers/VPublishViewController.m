@@ -114,6 +114,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 {
     [super viewDidLoad];
     
+    self.navigationItem.hidesBackButton = YES;
+    
     [self setupCollectionView];
     
     [self.dependencyManager addBackgroundToBackgroundHost:self];

@@ -17,44 +17,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rB7-pY-luZ" userLabel="Blurred Image Background">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="600"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rB7-pY-luZ" userLabel="Blurred Image Background">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="556"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </imageView>
-                            <view contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="8c5-o3-ehb" userLabel="Canvas Container" customClass="VCanvasView">
-                                <rect key="frame" x="0.0" y="44" width="375" height="375"/>
+                            <view contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8c5-o3-ehb" userLabel="Canvas Container" customClass="VCanvasView">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="375"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="8c5-o3-ehb" secondAttribute="height" multiplier="1:1" id="O18-Ux-5Zy"/>
                                 </constraints>
                             </view>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uLJ-ZJ-TSs" userLabel="Top Toolbar">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="u6w-gn-U2Y"/>
-                                </constraints>
-                                <items>
-                                    <barButtonItem image="cameraButtonBack" id="by5-os-pzS">
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <action selector="close:" destination="63Q-Vo-LWD" id="6Lb-w0-Gu9"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="9tq-gs-IN4">
-                                        <color key="tintColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
-                                    </barButtonItem>
-                                    <barButtonItem title="Continue" id="wbF-Jm-Fnh">
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <action selector="publish:" destination="63Q-Vo-LWD" id="1Q5-i3-8b5"/>
-                                        </connections>
-                                    </barButtonItem>
-                                </items>
-                                <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </toolbar>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tla-hc-Ct5" userLabel="Bottom Toolbar">
-                                <rect key="frame" x="0.0" y="540" width="375" height="60"/>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" misplaced="YES" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tla-hc-Ct5" userLabel="Bottom Toolbar">
+                                <rect key="frame" x="0.0" y="496" width="375" height="60"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="6uL-QQ-bId"/>
@@ -65,14 +40,11 @@
                         </subviews>
                         <color key="backgroundColor" red="0.1176470588" green="0.1176470588" blue="0.1176470588" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="uLJ-ZJ-TSs" secondAttribute="trailing" id="7Ye-Dk-Lgz"/>
                             <constraint firstAttribute="trailing" secondItem="tla-hc-Ct5" secondAttribute="trailing" id="9HD-AO-jIy"/>
                             <constraint firstAttribute="trailing" secondItem="rB7-pY-luZ" secondAttribute="trailing" id="AHv-Vk-wIg"/>
                             <constraint firstItem="8c5-o3-ehb" firstAttribute="leading" secondItem="i4i-d2-DXm" secondAttribute="leading" id="IrH-KS-hgs"/>
-                            <constraint firstItem="8c5-o3-ehb" firstAttribute="top" secondItem="9wC-ZN-KU8" secondAttribute="bottom" constant="44" id="Uz7-kB-w8t"/>
-                            <constraint firstItem="uLJ-ZJ-TSs" firstAttribute="top" secondItem="9wC-ZN-KU8" secondAttribute="bottom" id="Wch-on-DA4"/>
+                            <constraint firstItem="8c5-o3-ehb" firstAttribute="top" secondItem="9wC-ZN-KU8" secondAttribute="bottom" id="Uz7-kB-w8t"/>
                             <constraint firstItem="rB7-pY-luZ" firstAttribute="leading" secondItem="i4i-d2-DXm" secondAttribute="leading" id="bTn-W9-qxk"/>
-                            <constraint firstItem="uLJ-ZJ-TSs" firstAttribute="leading" secondItem="i4i-d2-DXm" secondAttribute="leading" id="dhy-kg-bS3"/>
                             <constraint firstAttribute="trailing" secondItem="8c5-o3-ehb" secondAttribute="trailing" id="mnj-S4-eXt"/>
                             <constraint firstItem="tla-hc-Ct5" firstAttribute="leading" secondItem="i4i-d2-DXm" secondAttribute="leading" id="pdG-8B-6bD"/>
                             <constraint firstItem="jpg-hF-EPF" firstAttribute="top" secondItem="tla-hc-Ct5" secondAttribute="bottom" id="pnB-hJ-LMB"/>
@@ -80,24 +52,28 @@
                             <constraint firstItem="jpg-hF-EPF" firstAttribute="top" secondItem="rB7-pY-luZ" secondAttribute="bottom" id="wke-BM-e98"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="Ugb-os-Hcg">
+                        <barButtonItem key="rightBarButtonItem" title="Publish" id="OHG-Tb-Qqe">
+                            <connections>
+                                <action selector="publish:" destination="63Q-Vo-LWD" id="asR-bs-40q"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <nil key="simulatedStatusBarMetrics"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="600"/>
                     <connections>
-                        <outlet property="backButton" destination="by5-os-pzS" id="jWH-qZ-60H"/>
                         <outlet property="blurredBackgroundImageView" destination="rB7-pY-luZ" id="Gwp-ON-jBt"/>
                         <outlet property="bottomToolbar" destination="tla-hc-Ct5" id="QiO-Fi-Arc"/>
                         <outlet property="canvasView" destination="8c5-o3-ehb" id="DSZ-xC-dlK"/>
-                        <outlet property="continueButton" destination="wbF-Jm-Fnh" id="7bj-Dh-hVf"/>
-                        <outlet property="topToolbar" destination="uLJ-ZJ-TSs" id="VtT-RG-Hlb"/>
                         <outlet property="verticalSpaceBottomBarToContainer" destination="pnB-hJ-LMB" id="LEH-SF-w5l"/>
                         <outlet property="verticalSpaceCanvasToTopOfContainerConstraint" destination="Uz7-kB-w8t" id="Yca-9A-jZ7"/>
-                        <outlet property="verticalSpaceTopBarToContainer" destination="Wch-on-DA4" id="u8E-hq-mUE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="29c-Qz-2Z5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-115.5" y="-361"/>
+            <point key="canvasLocation" x="-323.5" y="-365"/>
         </scene>
         <!--Ticker Picker View Controller-->
         <scene sceneID="RfN-22-BQF">
@@ -219,7 +195,4 @@
             <point key="canvasLocation" x="-756" y="402"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="cameraButtonBack" width="22" height="17"/>
-    </resources>
 </document>

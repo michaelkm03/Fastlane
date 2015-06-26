@@ -1,12 +1,12 @@
 //
-//  VWorkspacePresenter.m
+//  VCreationFlowPresenter.m
 //  victorious
 //
 //  Created by Michael Sena on 3/10/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VWorkspacePresenter.h"
+#import "VCreationFlowPresenter.h"
 
 // Dependencies
 #import "VDependencyManager.h"
@@ -35,7 +35,7 @@
 static NSString * const kCreateSheetKey = @"createSheet";
 static NSString * const kCreationFlowKey = @"createFlow";
 
-@interface VWorkspacePresenter ()
+@interface VCreationFlowPresenter () <VCreationFlowControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) UIViewController *viewControllerToPresentOn;
@@ -44,12 +44,12 @@ static NSString * const kCreationFlowKey = @"createFlow";
 
 @end
 
-@implementation VWorkspacePresenter
+@implementation VCreationFlowPresenter
 
-+ (instancetype)workspacePresenterWithViewControllerToPresentOn:(UIViewController *)viewControllerToPresentOn
++ (instancetype)creationFlowPresenterWithViewControllerToPresentOn:(UIViewController *)viewControllerToPresentOn
                                               dependencyManager:(VDependencyManager *)dependencyManager
 {
-    VWorkspacePresenter *workspacePresenter = [[self alloc] init];
+    VCreationFlowPresenter *workspacePresenter = [[self alloc] init];
     workspacePresenter.dependencyManager = dependencyManager;
     workspacePresenter.viewControllerToPresentOn = viewControllerToPresentOn;
     
@@ -147,6 +147,7 @@ static NSString * const kCreationFlowKey = @"createFlow";
     VCreationFlowController *flowController = [self.dependencyManager templateValueOfType:[VCreationFlowController class]
                                                                                    forKey:@"creationFlow"
                                                                     withAddedDependencies:@{VCreationFlowControllerCreationTypeKey: @(VCreationTypeImage)}];
+    flowController.creationFlowDelegate = self;
     [self.viewControllerToPresentOn presentViewController:flowController
                                                  animated:YES
                                                completion:nil];
@@ -163,6 +164,15 @@ static NSString * const kCreationFlowKey = @"createFlow";
 {
     VTextWorkspaceFlowController *textWorkspaceController = [self.creationFlowShim textFlowController];
     [self.viewControllerToPresentOn presentViewController:textWorkspaceController.flowRootViewController animated:YES completion:nil];
+}
+
+#pragma mark - VCreationFlowController
+
+- (void)creationFLowController:(VCreationFlowController *)creationFlowController
+      finishedWithPreviewImage:(UIImage *)previewImage
+              capturedMediaURL:(NSURL *)capturedMediaURL
+{
+    [self.viewControllerToPresentOn dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

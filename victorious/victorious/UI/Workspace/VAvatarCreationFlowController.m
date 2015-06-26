@@ -14,5 +14,4 @@
 
 @implementation VAvatarCreationFlowController
 
-
 @end
