@@ -87,12 +87,15 @@ static NSString * const VSuggestedUsersPromptKey    = @"prompt";
     }
     else
     {
-        self.salutationContainerHeight.constant = 0.0;
+        self.salutationContainerHeight.constant = 0.0f;
     }
     
     self.messageTextView.text = [self.dependencyManager stringForKey:VSuggestedUsersPromptKey];
     self.messageTextView.font = [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
     self.messageTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    self.messageTextView.contentInset = UIEdgeInsetsZero;
+    self.messageTextView.textContainer.lineFragmentPadding = 0.0f;
+    self.messageTextView.textContainerInset = UIEdgeInsetsZero;
     
     self.collectionView.delegate = self;
     self.collectionView.backgroundColor = [UIColor clearColor];
