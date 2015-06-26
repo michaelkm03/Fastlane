@@ -393,6 +393,17 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
             return 0;
         }
     }
+    else if (kSettingsSectionIndex == indexPath.section && kLikedContentIndex == indexPath.row)
+    {
+        if ([VObjectManager sharedManager].mainUserLoggedIn)
+        {
+            return self.tableView.rowHeight;
+        }
+        else
+        {
+            return 0;
+        }
+    }
     
     return self.tableView.rowHeight;
 }

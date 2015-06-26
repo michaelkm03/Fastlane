@@ -460,6 +460,7 @@
                         <outletCollection property="rightLabels" destination="iA5-m7-nZ8" id="3aM-0T-VgP"/>
                         <outletCollection property="labels" destination="A70-cw-6uE" id="Jf8-fY-4uM"/>
                         <outletCollection property="labels" destination="FNb-Ni-uJN" id="t2h-2h-SLk"/>
+                        <outletCollection property="labels" destination="r0B-CY-cMb" id="1uU-bP-mfq"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pFQ-S7-584" userLabel="First Responder" sceneMemberID="firstResponder"/>
