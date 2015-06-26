@@ -1364,9 +1364,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
         }
     }
 
-    VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
-    self.likeButton.alpha = 1.0f - layout.percentCloseToLockPointFromCatchPoint;
-    VLog(@"%f", layout.percentCloseToLockPointFromCatchPoint);
+    if (self.viewModel.type == VContentViewTypeVideo)
+    {
+        VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
+        self.likeButton.alpha = 1.0f - layout.percentCloseToLockPointFromCatchPoint;
+    }
 }
 
 #pragma mark - VContentVideoCellDelegate
