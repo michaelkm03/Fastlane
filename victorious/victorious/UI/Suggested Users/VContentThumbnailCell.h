@@ -15,9 +15,6 @@
  */
 @interface VContentThumbnailCell : VBaseCollectionViewCell
 
-/**
- The image to display in the cell.
- */
-- (void)setImageURL:(NSURL *)imageURL;
+- (void)setImage:(UIImage *)image animated:(BOOL)animated;
 
 @end
