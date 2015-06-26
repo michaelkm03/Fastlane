@@ -362,16 +362,6 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
     return [[[self class] cellLayoutCollection] totalSizeWithBaseSize:base sequence:sequence dependencyManager:dependencyManager];
 }
 
-+ (NSCache *)textSizeCache
-{
-    static NSCache *textSizeCache;
-    if (textSizeCache == nil)
-    {
-        textSizeCache = [[NSCache alloc] init];
-    }
-    return textSizeCache;
-}
-
 #pragma mark - CCHLinkTextViewDelegate
 
 - (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value

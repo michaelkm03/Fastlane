@@ -7,6 +7,7 @@
 //
 
 #import "VLayoutComponent.h"
+#import "VSequence.h"
 
 @interface VLayoutComponent()
 
@@ -35,6 +36,7 @@
 @interface VLayoutComponentCollection ()
 
 @property (nonatomic, strong) NSMutableArray *layoutComponents;
+@property (nonatomic, strong) NSCache *cache;
 
 @end
 
@@ -46,6 +48,7 @@
     if ( self != nil )
     {
         _layoutComponents = [[NSMutableArray alloc] init];
+        _cache = [[NSCache alloc] init];
     }
     return self;
 }
@@ -72,6 +75,12 @@
 {
     CGSize total = base;
     
+    NSValue *cachedValue = (NSValue *)[self.cache objectForKey:sequence.name];
+    if ( cachedValue != nil )
+    {
+        return cachedValue.CGSizeValue;
+    }
+    
     for ( VLayoutComponent *component in self.layoutComponents )
     {
         if ( component.dynamicSize != nil )
@@ -84,6 +93,8 @@
         total.width += component.constantSize.width;
         total.height += component.constantSize.height;
     }
+    
+    [self.cache setObject:[NSValue valueWithCGSize:total] forKey:sequence.name];
     
     return total;
 }

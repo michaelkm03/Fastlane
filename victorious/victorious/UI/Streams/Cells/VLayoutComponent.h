@@ -22,7 +22,6 @@ typedef CGSize(^VLayoutComponentDynamicSize)(CGSize, VSequence *, VDependencyMan
 
 @end
 
-
 @interface VLayoutComponentCollection : NSObject
 
 - (void)addComponentWithConstantSize:(CGSize)constantSize;
