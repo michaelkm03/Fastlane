@@ -78,11 +78,11 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
     if ( thumbnailsDataSource == nil )
     {
         thumbnailsDataSource = [[VContentThumbnailsDataSource alloc] initWithSequences:user.recentSequences.array];
-        self.thumbnailsViewController.collectionView.dataSource = thumbnailsDataSource;
         [thumbnailsDataSource registerCellsWithCollectionView:self.thumbnailsViewController.collectionView];
         
         [[[self class] dataSourcesCache] setObject:thumbnailsDataSource forKey:user.remoteId];
     }
+    self.thumbnailsViewController.collectionView.dataSource = thumbnailsDataSource;
     
     if ( _user.pictureUrl != nil )
     {

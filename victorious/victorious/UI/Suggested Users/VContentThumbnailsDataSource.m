@@ -11,7 +11,6 @@
 #import "VContentThumbnailCell.h"
 #import "VImageAsset.h"
 #import "VImageAssetFinder.h"
-#import "UIImage+Resize.h"
 
 @interface VContentThumbnailsDataSource()
 
@@ -61,7 +60,11 @@
         VSequence *sequence = self.sequences[ indexPath.row ];
         VImageAsset *asset = [self.assetFinder assetWithPreferredMaximumSize:cellSize fromAssets:sequence.previewAssets];
         NSURL *imageURL = [NSURL URLWithString:asset.imageURL];
-        [cell setImageURL:imageURL];
+        __weak typeof(cell) weakCell = cell;
+        [self loadImageWith:imageURL withSize:cellSize completion:^(UIImage *image, BOOL didDownload)
+         {
+             [weakCell setImage:image animated:didDownload];
+         }];
         return cell;
     }
     return nil;
@@ -70,6 +73,65 @@
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     return self.sequences.count;
+}
+
+- (NSCache *)cache
+{
+    static NSCache *_cache;
+    if ( _cache == nil )
+    {
+        _cache = [[NSCache alloc] init];
+    }
+    return _cache;
+}
+
+- (void)loadImageWith:(NSURL *)imageURL withSize:(CGSize)size completion:(void(^)(UIImage *image, BOOL didDownload))completion
+{
+    static dispatch_queue_t resizeQueue;
+    if ( resizeQueue == nil )
+    {
+        resizeQueue = dispatch_queue_create( "com.victorious.suggestedUsersResizeQueue", DISPATCH_QUEUE_CONCURRENT );
+    }
+    
+    UIImage *cachedImage = [[self cache] objectForKey:imageURL.absoluteString];
+    if ( cachedImage != nil )
+    {
+        completion( cachedImage, NO );
+        return;
+    }
+    
+    __weak typeof(self) welf = self;
+    dispatch_async( resizeQueue, ^
+                   {
+                       UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:imageURL]];
+                       if ( image != nil )
+                       {
+                           UIImage *resized = [welf resizedImage:image newSize:size];
+                           dispatch_async( dispatch_get_main_queue(), ^
+                                          {
+                                              [[welf cache] setObject:resized forKey:imageURL.absoluteString];
+                                              completion( resized, YES );
+                                          });
+                       }
+                   });
+    
+}
+
+- (UIImage *)resizedImage:(UIImage *)image newSize:(CGSize)newSize
+{
+    CGRect newRect = CGRectIntegral(CGRectMake(0, 0, newSize.width, newSize.height));
+    CGImageRef imageRef = image.CGImage;
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+    CGAffineTransform flipVertical = CGAffineTransformMake(1, 0, 0, -1, 0, newSize.height);
+    CGContextConcatCTM(context, flipVertical);
+    CGContextDrawImage(context, newRect, imageRef);
+    CGImageRef newImageRef = CGBitmapContextCreateImage(context);
+    UIImage *newImage = [UIImage imageWithCGImage:newImageRef];
+    CGImageRelease(newImageRef);
+    UIGraphicsEndImageContext();
+    return newImage;
 }
 
 @end

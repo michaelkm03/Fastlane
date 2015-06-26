@@ -107,7 +107,7 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
         [self askForPushNotificationsPermission];
     }
     
-    VSuggestedUsersViewController* vc = [[VSuggestedUsersViewController alloc] initWithDependencyManager:self.dependencyManager];
+    VSuggestedUsersViewController *vc = [[VSuggestedUsersViewController alloc] initWithDependencyManager:self.dependencyManager];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
     [self presentViewController:nav animated:YES completion:nil];
 }
