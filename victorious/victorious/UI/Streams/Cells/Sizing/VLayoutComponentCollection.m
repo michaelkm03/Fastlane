@@ -1,36 +1,14 @@
 //
-//  VLayoutComponent.m
+//  VLayoutComponentCollection.m
 //  victorious
 //
 //  Created by Patrick Lynch on 6/25/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VLayoutComponent.h"
-#import "VSequence.h"
+#import "VLayoutComponentCollection.h"
 
-@interface VLayoutComponent()
-
-@property (nonatomic, assign, readwrite) CGSize constantSize;
-
-@property (nonatomic, copy, readwrite) VLayoutComponentDynamicSize dynamicSize;
-
-@end
-
-@implementation VLayoutComponent
-
-- (instancetype)initWithConstantSize:(CGSize)constantSize dynamicSize:(VLayoutComponentDynamicSize)dynamicSize
-{
-    self = [super init];
-    if ( self != nil )
-    {
-        self.constantSize = constantSize;
-        self.dynamicSize = dynamicSize;
-    }
-    return self;
-}
-
-@end
+NSString * const VLayoutComponentCacheKey = @"cacheKey";
 
 
 @interface VLayoutComponentCollection ()
@@ -71,11 +49,15 @@
     [self.layoutComponents addObject:component];
 }
 
-- (CGSize)totalSizeWithBaseSize:(CGSize)base sequence:(VSequence *)sequence dependencyManager:(VDependencyManager *)dependencyManager
+- (CGSize)totalSizeWithBaseSize:(CGSize)base userInfo:(NSDictionary *)userInfo
 {
     CGSize total = base;
     
-    NSValue *cachedValue = (NSValue *)[self.cache objectForKey:sequence.name];
+    id cacheKey = userInfo[ VLayoutComponentCacheKey ];
+    
+    NSAssert( cacheKey != nil, @"Calling code must provide a value for `%@` in the userInfo parameter", VLayoutComponentCacheKey );
+    
+    NSValue *cachedValue = (NSValue *)[self.cache objectForKey:cacheKey];
     if ( cachedValue != nil )
     {
         return cachedValue.CGSizeValue;
@@ -85,7 +67,7 @@
     {
         if ( component.dynamicSize != nil )
         {
-            CGSize size = component.dynamicSize( base, sequence, dependencyManager );
+            CGSize size = component.dynamicSize( base, userInfo );
             total.width += size.width;
             total.height += size.height;
         }
@@ -94,7 +76,7 @@
         total.height += component.constantSize.height;
     }
     
-    [self.cache setObject:[NSValue valueWithCGSize:total] forKey:sequence.name];
+    [self.cache setObject:[NSValue valueWithCGSize:total] forKey:cacheKey];
     
     return total;
 }

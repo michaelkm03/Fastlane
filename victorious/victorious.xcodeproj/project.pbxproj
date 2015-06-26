@@ -306,6 +306,8 @@
 		A70564BC19E7817C004A8387 /* VObjectManager+Discover.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564BB19E7817C004A8387 /* VObjectManager+Discover.m */; };
 		A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564C119E781EE004A8387 /* VNoContentTableViewCell.m */; };
 		A70564C719E7820A004A8387 /* VHashtag+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564C619E7820A004A8387 /* VHashtag+RestKit.m */; };
+		A705F4501B3DC7AC007DBD3C /* VLayoutComponentCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F44F1B3DC7AC007DBD3C /* VLayoutComponentCollection.m */; };
+		A705F4531B3DC7C1007DBD3C /* VLayoutComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F4521B3DC7C1007DBD3C /* VLayoutComponent.m */; };
 		A708C9581A7FFF67000EE1EE /* VContentViewRotationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A708C9571A7FFF67000EE1EE /* VContentViewRotationHelper.m */; };
 		A708C95B1A8067B9000EE1EE /* VContentRepopulateTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A708C95A1A8067B9000EE1EE /* VContentRepopulateTransition.m */; };
 		A709642419F0A13800CE6633 /* VTracking+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A709642319F0A13800CE6633 /* VTracking+RestKit.m */; };
@@ -426,7 +428,6 @@
 		A761C9D41A48B1E500F0D0F9 /* UIView+AutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = A761C9D31A48B1E500F0D0F9 /* UIView+AutoLayout.m */; };
 		A761C9D71A48CB9800F0D0F9 /* VSwipeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A761C9D61A48CB9800F0D0F9 /* VSwipeView.m */; };
 		A76567141B3B1DAA002721F3 /* VSleekActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A76567131B3B1DAA002721F3 /* VSleekActionButton.m */; };
-		A76567501B3C99AE002721F3 /* VLayoutComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = A765674F1B3C99AE002721F3 /* VLayoutComponent.m */; };
 		A769C3D71A12DD5000698D0C /* VUserManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3D61A12DD5000698D0C /* VUserManagerTests.m */; };
 		A769C3E91A13176700698D0C /* VWebBrowserActions.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3DA1A13176700698D0C /* VWebBrowserActions.m */; };
 		A769C3EA1A13176700698D0C /* VWebBrowserHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3DC1A13176700698D0C /* VWebBrowserHeaderViewController.m */; };
@@ -453,8 +454,6 @@
 		A7724FED1B33422B00B1BBB3 /* VActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A7724FEC1B33422B00B1BBB3 /* VActionButton.m */; };
 		A7724FF11B33746A00B1BBB3 /* VCreatorInfoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7724FF01B33746A00B1BBB3 /* VCreatorInfoHelper.m */; };
 		A7724FFB1B33905000B1BBB3 /* VSequenceCountsTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7724FF91B33905000B1BBB3 /* VSequenceCountsTextView.m */; };
-		A7724FFB1B33905000B1BBB3 /* VSequenceCountsTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7724FF91B33905000B1BBB3 /* VSequenceCountsTextView.m */; };
-		A7724FF11B33746A00B1BBB3 /* VCreatorInfoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7724FF01B33746A00B1BBB3 /* VCreatorInfoHelper.m */; };
 		A7738B041A4A35DF008EA973 /* VSimpleModalTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A7738B011A4A35DF008EA973 /* VSimpleModalTransition.m */; };
 		A7738B051A4A35DF008EA973 /* VTransitionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A7738B031A4A35DF008EA973 /* VTransitionDelegate.m */; };
 		A7738B081A4A36C9008EA973 /* VTransitionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A7738B071A4A36C9008EA973 /* VTransitionModel.m */; };
@@ -1593,6 +1592,11 @@
 		A70564C519E7820A004A8387 /* VHashtag+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VHashtag+RestKit.h"; sourceTree = "<group>"; };
 		A70564C619E7820A004A8387 /* VHashtag+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VHashtag+RestKit.m"; sourceTree = "<group>"; };
 		A70564CB19E78250004A8387 /* VDiscoverViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverViewControllerTests.m; sourceTree = "<group>"; };
+		A705F44E1B3DC7AC007DBD3C /* VLayoutComponentCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLayoutComponentCollection.h; path = Sizing/VLayoutComponentCollection.h; sourceTree = "<group>"; };
+		A705F44F1B3DC7AC007DBD3C /* VLayoutComponentCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VLayoutComponentCollection.m; path = Sizing/VLayoutComponentCollection.m; sourceTree = "<group>"; };
+		A705F4511B3DC7C1007DBD3C /* VLayoutComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLayoutComponent.h; path = Sizing/VLayoutComponent.h; sourceTree = "<group>"; };
+		A705F4521B3DC7C1007DBD3C /* VLayoutComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VLayoutComponent.m; path = Sizing/VLayoutComponent.m; sourceTree = "<group>"; };
+		A705F4541B3DC839007DBD3C /* VCellSizingUserInfoKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VCellSizingUserInfoKeys.h; sourceTree = "<group>"; };
 		A708C9561A7FFF67000EE1EE /* VContentViewRotationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentViewRotationHelper.h; sourceTree = "<group>"; };
 		A708C9571A7FFF67000EE1EE /* VContentViewRotationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewRotationHelper.m; sourceTree = "<group>"; };
 		A708C9591A8067B9000EE1EE /* VContentRepopulateTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentRepopulateTransition.h; sourceTree = "<group>"; };
@@ -1769,8 +1773,6 @@
 		A761C9D61A48CB9800F0D0F9 /* VSwipeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSwipeView.m; sourceTree = "<group>"; };
 		A76567121B3B1DAA002721F3 /* VSleekActionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSleekActionButton.h; sourceTree = "<group>"; };
 		A76567131B3B1DAA002721F3 /* VSleekActionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSleekActionButton.m; sourceTree = "<group>"; };
-		A765674E1B3C99AE002721F3 /* VLayoutComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLayoutComponent.h; sourceTree = "<group>"; };
-		A765674F1B3C99AE002721F3 /* VLayoutComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLayoutComponent.m; sourceTree = "<group>"; };
 		A7696A5219F7287F003017E6 /* VSuggestedPeopleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSuggestedPeopleTests.m; sourceTree = "<group>"; };
 		A769C3D61A12DD5000698D0C /* VUserManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserManagerTests.m; sourceTree = "<group>"; };
 		A769C3D91A13176700698D0C /* VWebBrowserActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWebBrowserActions.h; sourceTree = "<group>"; };
@@ -1815,10 +1817,6 @@
 		A7724FF01B33746A00B1BBB3 /* VCreatorInfoHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCreatorInfoHelper.m; sourceTree = "<group>"; };
 		A7724FF81B33905000B1BBB3 /* VSequenceCountsTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceCountsTextView.h; sourceTree = "<group>"; };
 		A7724FF91B33905000B1BBB3 /* VSequenceCountsTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceCountsTextView.m; sourceTree = "<group>"; };
-		A7724FF81B33905000B1BBB3 /* VSequenceCountsTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceCountsTextView.h; sourceTree = "<group>"; };
-		A7724FF91B33905000B1BBB3 /* VSequenceCountsTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceCountsTextView.m; sourceTree = "<group>"; };
-		A7724FEF1B33746A00B1BBB3 /* VCreatorInfoHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreatorInfoHelper.h; sourceTree = "<group>"; };
-		A7724FF01B33746A00B1BBB3 /* VCreatorInfoHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCreatorInfoHelper.m; sourceTree = "<group>"; };
 		A7738B001A4A35DF008EA973 /* VSimpleModalTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSimpleModalTransition.h; sourceTree = "<group>"; };
 		A7738B011A4A35DF008EA973 /* VSimpleModalTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSimpleModalTransition.m; sourceTree = "<group>"; };
 		A7738B021A4A35DF008EA973 /* VTransitionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTransitionDelegate.h; sourceTree = "<group>"; };
@@ -4277,6 +4275,17 @@
 			path = HelveticaNeue;
 			sourceTree = "<group>";
 		};
+		A705F44D1B3DC787007DBD3C /* Sizing */ = {
+			isa = PBXGroup;
+			children = (
+				A705F44E1B3DC7AC007DBD3C /* VLayoutComponentCollection.h */,
+				A705F44F1B3DC7AC007DBD3C /* VLayoutComponentCollection.m */,
+				A705F4511B3DC7C1007DBD3C /* VLayoutComponent.h */,
+				A705F4521B3DC7C1007DBD3C /* VLayoutComponent.m */,
+			);
+			name = Sizing;
+			sourceTree = "<group>";
+		};
 		A70FC0F81A2D40B400F5BBDE /* Purchases */ = {
 			isa = PBXGroup;
 			children = (
@@ -4809,23 +4818,23 @@
 			isa = PBXGroup;
 			children = (
 				F0AD21711AF32359001BDCC6 /* NoContentCollectionViewCell */,
+				A705F44D1B3DC787007DBD3C /* Sizing */,
 				D8DF71E11AFC3476002EA7A5 /* Template A */,
 				0308B1161AB2AE9700144E53 /* Template C */,
 				D8B44CC51ADCB3A3006340E8 /* Template D */,
 				D87E25ED1AE180DA008F0769 /* VAbstractActionView.h */,
 				D87E25EE1AE180DA008F0769 /* VAbstractActionView.m */,
+				A705F4541B3DC839007DBD3C /* VCellSizingUserInfoKeys.h */,
 				D893674E1ADDE1B9001D2426 /* VRepostButtonController.h */,
 				D893674F1ADDE1B9001D2426 /* VRepostButtonController.m */,
 				A7AEF9731A83F1C300A3D3A0 /* VSequenceActionController.h */,
 				A7AEF9741A83F1C300A3D3A0 /* VSequenceActionController.m */,
+				A7724FF81B33905000B1BBB3 /* VSequenceCountsTextView.h */,
+				A7724FF91B33905000B1BBB3 /* VSequenceCountsTextView.m */,
 				0308B1121AB2A80900144E53 /* VStreamCellFactory.h */,
 				D888B43E1B01A32A00EA470D /* VStreamCellFocus.h */,
 				D8D122F41AFFEA2600F29BD5 /* VStreamCellSpecialization.h */,
 				C39864B01B1E9F6100694AB3 /* VStreamCellTracking.h */,
-				A7724FF81B33905000B1BBB3 /* VSequenceCountsTextView.h */,
-				A7724FF91B33905000B1BBB3 /* VSequenceCountsTextView.m */,
-				A765674E1B3C99AE002721F3 /* VLayoutComponent.h */,
-				A765674F1B3C99AE002721F3 /* VLayoutComponent.m */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -7157,6 +7166,7 @@
 				A7EECAD51A377FA000A8BAE1 /* VPurchaseSettingsViewController.m in Sources */,
 				A72005701A03ECDC00285A9C /* VTrackingURLRequest.m in Sources */,
 				A7D378411AEF4ED5007FF197 /* VFloatingUserProfileHeaderViewController.m in Sources */,
+				A705F4501B3DC7AC007DBD3C /* VLayoutComponentCollection.m in Sources */,
 				A75ED0C71AB7971400C35063 /* VColorOptionCell.m in Sources */,
 				F0E0F1B61AE8BFE200143CBF /* VInsetMarqueeController.m in Sources */,
 				D8E39BD819CB7C80007FD86A /* VContentCommentsCell.m in Sources */,
@@ -7323,6 +7333,7 @@
 				A7ECC1C11AD60ECE0003E00A /* UIColor+VHex.m in Sources */,
 				A70FC10A1A2D558200F5BBDE /* VPurchase.m in Sources */,
 				D814040B1AB372320099EC4B /* VWorkspacePresenter.m in Sources */,
+				A705F4531B3DC7C1007DBD3C /* VLayoutComponent.m in Sources */,
 				DB34DC5C1A09B5AF001EC711 /* VLiveRailAdViewController.m in Sources */,
 				0309318D1A18425B004E9781 /* VMenuCollectionViewCell.m in Sources */,
 				D87AD2A81AD46DB300C481D0 /* VDownloadManager.m in Sources */,
@@ -7615,7 +7626,6 @@
 				D8CA63C119D5DEE2002046E5 /* UIView+MotionEffects.m in Sources */,
 				A7AEF9C61A83F2AD00A3D3A0 /* VFollowersTextFormatter.m in Sources */,
 				A75ED0BB1AB78C7400C35063 /* VHashtagTool.m in Sources */,
-				A76567501B3C99AE002721F3 /* VLayoutComponent.m in Sources */,
 				F0AD21841AF43EB3001BDCC6 /* VCardDirectoryCellDecorator.m in Sources */,
 				A743E7E71A08173B00339CB3 /* VEmailValidator.m in Sources */,
 				D8DF71EC1AFC4A61002EA7A5 /* VStreamHeaderComment.m in Sources */,

@@ -23,9 +23,9 @@
 #import "VStreamCollectionViewController.h"
 #import "VSequenceCountsTextView.h"
 #import "VSequenceExpressionsObserver.h"
-#import "VLayoutComponent.h"
+#import "VLayoutComponentCollection.h"
+#import "VCellSizingUserInfoKeys.h"
 
-static const CGFloat kAspectRatio                   = 0.94375f; //< 320 ÷ 302
 static const CGFloat kInsetCellHeaderHeight         = 50.0f;
 static const CGFloat kInsetCellActionViewHeight     = 41.0f;
 static const CGFloat kCountsTextViewHeight          = 20.0f;
@@ -166,18 +166,22 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
     {
         collection = [[VLayoutComponentCollection alloc] init];
         [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kInsetCellHeaderHeight)];
-        [collection addComponentWithDynamicSize:^CGSize(CGSize size, VSequence *sequence, VDependencyManager *dependencyManager)
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
+             VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
              return CGSizeMake( 0.0f, size.width  / [sequence previewAssetAspectRatio] );
          }];
-        [collection addComponentWithDynamicSize:^CGSize(CGSize size, VSequence *sequence, VDependencyManager *dependencyManager)
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
+             VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
+             VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
              NSDictionary *attributes = [self sequenceDescriptionAttributesWithDependencyManager:dependencyManager];
              CGFloat textHeight =  VCEIL( [sequence.name frameSizeForWidth:size.width andAttributes:attributes].height );
              return CGSizeMake( 0.0f, textHeight );
          }];
-        [collection addComponentWithDynamicSize:^CGSize(CGSize size, VSequence *sequence, VDependencyManager *dependencyManager)
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
+             VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
              CGFloat height = sequence.name.length > 0 ? kTextMargins.top : 0.0f;
              return CGSizeMake( 0.0f, height );
          }];
@@ -359,7 +363,10 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
                            dependencyManager:(VDependencyManager *)dependencyManager
 {
     CGSize base = CGSizeMake( CGRectGetWidth(bounds), 0.0 );
-    return [[[self class] cellLayoutCollection] totalSizeWithBaseSize:base sequence:sequence dependencyManager:dependencyManager];
+    NSDictionary *userInfo = @{ kCellSizingSequenceKey : sequence,
+                                VLayoutComponentCacheKey : sequence.name ?: @"",
+                                kCellSizingDependencyManagerKey : dependencyManager };
+    return [[[self class] cellLayoutCollection] totalSizeWithBaseSize:base userInfo:userInfo];
 }
 
 #pragma mark - CCHLinkTextViewDelegate

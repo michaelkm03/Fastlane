@@ -24,7 +24,8 @@
 #import "VActionButton.h"
 #import "VSequenceCountsTextView.h"
 #import "NSString+VParseHelp.h"
-#import "VLayoutComponent.h"
+#import "VLayoutComponentCollection.h"
+#import "VCellSizingUserInfoKeys.h"
 
 static const UIEdgeInsets kTextInsets       = { 0.0f, 20.0f, 5.0f, 20.0f };
 static const CGFloat kHeaderHeight          = 74.0f;
@@ -201,12 +202,15 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     if ( collection == nil )
     {
         collection = [[VLayoutComponentCollection alloc] init];
-        [collection addComponentWithDynamicSize:^CGSize(CGSize size, VSequence *sequence, VDependencyManager *dependencyManager)
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
+             VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
              return CGSizeMake( 0.0f, size.width * [[self class] aspectRatioForSequence:sequence] );
          }];
-        [collection addComponentWithDynamicSize:^CGSize(CGSize size, VSequence *sequence, VDependencyManager *dependencyManager)
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
+             VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
+             VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
              NSDictionary *attributes = [self sequenceDescriptionAttributesWithDependencyManager:dependencyManager];
              CGFloat textHeight = 0.0f;
              if ( sequence.name.length > 0 )
@@ -384,7 +388,10 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
                            dependencyManager:(VDependencyManager *)dependencyManager
 {
     CGSize base = CGSizeMake( CGRectGetWidth(bounds), 0.0 );
-    return [[[self class] cellLayoutCollection] totalSizeWithBaseSize:base sequence:sequence dependencyManager:dependencyManager];
+    NSDictionary *userInfo = @{ kCellSizingSequenceKey : sequence,
+                                VLayoutComponentCacheKey : sequence.name ?: @"",
+                                kCellSizingDependencyManagerKey : dependencyManager };
+    return [[[self class] cellLayoutCollection] totalSizeWithBaseSize:base userInfo:userInfo];
 }
 
 #pragma mark - VBackgroundContainer

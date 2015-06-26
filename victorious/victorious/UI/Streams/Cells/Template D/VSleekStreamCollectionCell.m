@@ -7,18 +7,11 @@
 //
 
 #import "VSleekStreamCollectionCell.h"
-
-// Libraries
 #import <CCHLinkTextView/CCHLinkTextViewDelegate.h>
 
-// Stream Support
 #import "VSequence+Fetcher.h"
-
-// Dependencies
 #import "VDependencyManager.h"
 #import "VDependencyManager+VHighlightContainer.h"
-
-// Views + Helpers
 #import "VSequencePreviewView.h"
 #import "UIView+AutoLayout.h"
 #import "NSString+VParseHelp.h"
@@ -28,7 +21,8 @@
 #import "VCompatibility.h"
 #import "VSequenceCountsTextView.h"
 #import "VSequenceExpressionsObserver.h"
-#import "VLayoutComponent.h"
+#import "VLayoutComponentCollection.h"
+#import "VCellSizingUserInfoKeys.h"
 
 // These values must match the constraint values in interface builder
 static const CGFloat kSleekCellHeaderHeight = 50.0f;
@@ -77,8 +71,10 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
     {
         collection = [[VLayoutComponentCollection alloc] init];
         [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kSleekCellHeaderHeight)];
-        [collection addComponentWithDynamicSize:^CGSize(CGSize size, VSequence *sequence, VDependencyManager *dependencyManager)
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
+             VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
+             VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
              NSDictionary *attributes = [self sequenceDescriptionAttributesWithDependencyManager:dependencyManager];
              CGFloat textHeight = 0.0f;
              if ( sequence.name.length > 0 )
@@ -93,8 +89,9 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
              return CGSizeMake( 0.0f, textHeight );
          }];
         [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kCountsTextViewHeight)];
-        [collection addComponentWithDynamicSize:^CGSize(CGSize size, VSequence *sequence, VDependencyManager *dependencyManager)
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
+             VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
              CGFloat previewHeight =  size.width  / [sequence previewAssetAspectRatio];
              return CGSizeMake( 0.0f, previewHeight );
          }];
@@ -301,8 +298,10 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
                            dependencyManager:(VDependencyManager *)dependencyManager
 {
     CGSize base = CGSizeMake( CGRectGetWidth(bounds), 0.0 );
-    CGSize size = [[[self class] cellLayoutCollection] totalSizeWithBaseSize:base sequence:sequence dependencyManager:dependencyManager];
-    return size;
+    NSDictionary *userInfo = @{ kCellSizingSequenceKey : sequence,
+                                VLayoutComponentCacheKey : sequence.name ?: @"",
+                                kCellSizingDependencyManagerKey : dependencyManager };
+    return [[[self class] cellLayoutCollection] totalSizeWithBaseSize:base userInfo:userInfo];
 }
 
 #pragma mark - VStreamCellFocus
