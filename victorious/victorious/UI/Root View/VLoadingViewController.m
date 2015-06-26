@@ -220,7 +220,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
 #warning Take this out
         NSString *keyPath = [[templateDecorator keyPathsForKey:@"screens"] firstObject];
         NSArray *screens = [templateDecorator templateValueForKeyPath:keyPath];
-        NSDictionary *screen = [[screens firstObject] mutableCopy];
+        NSDictionary *screen = [[screens lastObject] mutableCopy];
         
         for (NSString *keyPath2 in [templateDecorator keyPathsForKey:@"name"])
         {
