@@ -88,6 +88,8 @@
 
 - (void)loadImageWith:(NSURL *)imageURL withSize:(CGSize)size completion:(void(^)(UIImage *image, BOOL didDownload))completion
 {
+    NSParameterAssert( completion != nil );
+    
     static dispatch_queue_t resizeQueue;
     if ( resizeQueue == nil )
     {
