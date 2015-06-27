@@ -51,7 +51,7 @@ CGFloat const VTwitterManagerErrorCanceled = 1;
 
 - (BOOL)authorizedToShare
 {
-    return self.secret && self.oauthToken && self.twitterId;
+    return self.secret != nil && self.oauthToken != nil && self.twitterId != nil;
 }
 
 - (void)refreshTwitterTokenWithIdentifier:(NSString *)identifier
