@@ -21,10 +21,8 @@ static NSString * const kShownCoachmarksKey = @"shownCoachmarks";
 static NSString * const kReturnedCoachmarksKey = @"coachmarks";
 static NSString * const kPassthroughContainerViewKey = @"passthroughContainerView";
 static const CGFloat kAnimationDuration = 0.4f;
-static const CGFloat kCoachmarkHorizontalInset = 24.0f;
 static const CGFloat kCoachmarkVerticalInset = 5.0f;
 static const CGFloat kAnimationVerticalOffset = 10.0f;
-static const CGFloat kAnimationDelay = 1.0f;
 
 @interface VCoachmarkManager () <VCoachmarkPassthroughContainerViewDelegate>
 
@@ -64,9 +62,9 @@ static const CGFloat kAnimationDelay = 1.0f;
     
     NSString *identifier = [viewController screenIdentifier];
     NSMutableArray *validTooltips = [[NSMutableArray alloc] init];
-    CGFloat width = CGRectGetWidth(viewController.view.bounds) - kCoachmarkHorizontalInset * 2;
     for ( VCoachmark *coachmark in self.coachmarks )
     {
+        CGFloat width = CGRectGetWidth(viewController.view.bounds) - coachmark.horizontalInset * 2;
         if ( !coachmark.hasBeenShown && [coachmark.displayScreens containsObject:identifier] )
         {
             if ( [coachmark.displayTarget isEqualToString:identifier] )
@@ -88,6 +86,7 @@ static const CGFloat kAnimationDelay = 1.0f;
     
     for ( VCoachmark *tooltip in validTooltips )
     {
+        CGFloat width = CGRectGetWidth(viewController.view.bounds) - tooltip.horizontalInset * 2;
         //Didn't have a toast to show, try to show the possible tooltips
         if ( [self addTooltipCoachmark:tooltip withWidth:width toViewController:viewController] )
         {
@@ -95,6 +94,22 @@ static const CGFloat kAnimationDelay = 1.0f;
         }
     }
     return NO;
+}
+
+- (void)triggerSpecificCoachmark:(NSString *)remoteID onViewController:(UIViewController *)viewController atLocation:(CGRect)location
+{
+    for ( VCoachmark *coachmark in self.coachmarks )
+    {
+#warning Temporary
+        if ( [coachmark.remoteId isEqualToString:remoteID] )
+//        if ( !coachmark.hasBeenShown && [coachmark.remoteId isEqualToString:remoteID] )
+        {
+            coachmark.horizontalInset = 10;
+            coachmark.animationDelay = 0;
+            CGFloat width = CGRectGetWidth(viewController.view.bounds) - coachmark.horizontalInset * 2;
+            [self addTooltipCoachmark:coachmark withWidth:width toViewController:viewController atLocation:location];
+        }
+    }
 }
 
 - (void)hideCoachmarkViewInViewController:(UIViewController *)viewController animated:(BOOL)animated
@@ -154,25 +169,30 @@ static const CGFloat kAnimationDelay = 1.0f;
     
     if ( foundDisplayableCoachmark )
     {
-        CGFloat arrowCenter = CGRectGetMidX(menuItemLocation) - kCoachmarkHorizontalInset;
-        CGFloat viewHeight = CGRectGetHeight(viewController.view.bounds) - [viewController v_layoutInsets].top;
-        VTooltipArrowDirection direction = CGRectGetMidY(menuItemLocation) > viewHeight / 2 ? VTooltipArrowDirectionDown : VTooltipArrowDirectionUp;
-        
-        //Enforce min and max arrow center values
-        arrowCenter = MAX(arrowCenter, VMinimumTooltipArrowLocation);
-        arrowCenter = MIN(arrowCenter, width - VMinimumTooltipArrowLocation);
-        
-        VCoachmarkView *coachmarkView = [VCoachmarkView tooltipCoachmarkViewWithCoachmark:coachmark
-                                                                                    width:width
-                                                                    arrowHorizontalOffset:arrowCenter
-                                                                        andArrowDirection:direction];
-        coachmarkView.frame = [self frameForTooltipCoachmarkViewWithSize:coachmarkView.frame.size
-                                                          arrowDirection:direction
-                                                       andTargetLocation:menuItemLocation
-                                                        inViewController:viewController];
-        [self addCoachmarkView:coachmarkView toViewController:viewController];
+        [self addTooltipCoachmark:coachmark withWidth:width toViewController:viewController atLocation:menuItemLocation];
     }
     return foundDisplayableCoachmark;
+}
+
+- (void)addTooltipCoachmark:(VCoachmark *)coachmark withWidth:(CGFloat)width toViewController:(UIViewController *)viewController atLocation:(CGRect)location
+{
+    CGFloat arrowCenter = CGRectGetMidX(location) - coachmark.horizontalInset;
+    CGFloat viewHeight = CGRectGetHeight(viewController.view.bounds) - [viewController v_layoutInsets].top;
+    VTooltipArrowDirection direction = CGRectGetMidY(location) > viewHeight / 2 ? VTooltipArrowDirectionDown : VTooltipArrowDirectionUp;
+    
+    //Enforce min and max arrow center values
+    arrowCenter = MAX(arrowCenter, VMinimumTooltipArrowLocation);
+    arrowCenter = MIN(arrowCenter, width - VMinimumTooltipArrowLocation);
+    
+    VCoachmarkView *coachmarkView = [VCoachmarkView tooltipCoachmarkViewWithCoachmark:coachmark
+                                                                                width:width
+                                                                arrowHorizontalOffset:arrowCenter
+                                                                    andArrowDirection:direction];
+    coachmarkView.frame = [self frameForTooltipCoachmarkViewWithSize:coachmarkView.frame.size
+                                                      arrowDirection:direction
+                                                   andTargetLocation:location
+                                                    inViewController:viewController];
+    [self addCoachmarkView:coachmarkView toViewController:viewController];
 }
 
 - (void)removePassthroughContainerView:(VCoachmarkPassthroughContainerView *)passthroughContainerView animated:(BOOL)animated
@@ -212,7 +232,7 @@ static const CGFloat kAnimationDelay = 1.0f;
     passthroughOverlay.frame = view.bounds;
     [self associateView:keyView withCoachmarkPassthroughContainerView:passthroughOverlay];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kAnimationDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(coachmarkView.coachmark.animationDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                    {
                        if ( [self.removedPassthroughOverlays containsObject:passthroughOverlay] )
                        {
@@ -396,7 +416,9 @@ static const CGFloat kAnimationDelay = 1.0f;
 
 - (NSArray *)savedShownStatesOfCoachmarks
 {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:kShownCoachmarksKey];
+#warning Temporary
+    return @[];
+//    return [[NSUserDefaults standardUserDefaults] objectForKey:kShownCoachmarksKey];
 }
 
 @end

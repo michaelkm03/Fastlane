@@ -24,6 +24,9 @@
 #import "VSequenceCountsTextView.h"
 #import "VSequenceExpressionsObserver.h"
 
+#import "VCoachmark.h"
+#import "VCoachmarkView.h"
+
 static const CGFloat kAspectRatio                   = 0.94375f; //< 320 ÷ 302
 static const CGFloat kInsetCellHeaderHeight         = 50.0f;
 static const CGFloat kInsetCellActionViewHeight     = 41.0f;

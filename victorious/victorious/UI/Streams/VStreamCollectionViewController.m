@@ -602,7 +602,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
                                                   completion:nil];
 }
 
-- (void)willLikeSequence:(VSequence *)sequence completion:(void(^)(BOOL success))completion
+- (void)willLikeSequence:(VSequence *)sequence withView:(UIView *)view completion:(void(^)(BOOL success))completion
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLike];
     
@@ -613,6 +613,9 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
      {
          if ( authorized )
          {
+             CGRect likeButtonFrame = [view convertRect:view.bounds toView:self.view];
+             [[self.dependencyManager coachmarkManager] triggerSpecificCoachmark:kLikeButtonCoachmarkIdentifier onViewController:self atLocation:likeButtonFrame];
+             
              [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
                                                        successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
               {

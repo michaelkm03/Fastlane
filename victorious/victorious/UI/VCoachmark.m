@@ -20,6 +20,9 @@ static NSString * const kToastVerticalLocationTopKey = @"top";
 static NSString * const kToastVerticalLocationMiddleKey = @"middle";
 static NSString * const kToastVerticalLocationBottomKey = @"bottom";
 
+static const CGFloat kAnimationDelay = 1.0f;
+static const CGFloat kCoachmarkHorizontalInset = 24.0f;
+
 @implementation VCoachmark
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -38,6 +41,8 @@ static NSString * const kToastVerticalLocationBottomKey = @"bottom";
         _toastLocation = [self toastVerticalLocationFromString:[dependencyManager stringForKey:kToastVerticalLocationKey]];
         _displayDuration = [[dependencyManager numberForKey:kDisplayDurationKey] unsignedIntegerValue];
         _hasBeenShown = NO;
+        _animationDelay = kAnimationDelay;
+        _horizontalInset = kCoachmarkHorizontalInset;
     }
     return self;
 }

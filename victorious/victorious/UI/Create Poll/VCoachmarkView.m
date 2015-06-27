@@ -13,7 +13,7 @@
 
 static const CGFloat kTooltipArrowHeight = 14.0f;
 static const CGFloat kTooltipArrowWidth = 26.0f;
-static const CGFloat kMinimumTooltipArrowInset = 8.0f;
+static const CGFloat kMinimumTooltipArrowInset = 0.0f;
 const CGFloat VMinimumTooltipArrowLocation = kTooltipArrowWidth / 2 + kMinimumTooltipArrowInset;
 
 static const CGFloat kHorizontalLabelInset = 20.0f;
