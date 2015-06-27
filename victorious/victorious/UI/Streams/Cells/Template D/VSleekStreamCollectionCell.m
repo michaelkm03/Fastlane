@@ -48,6 +48,7 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
 @property (nonatomic, strong) UIView *dimmingContainer;
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 @property (nonatomic, weak) IBOutlet VSequenceCountsTextView *countsTextView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *captiontoPreviewVerticalSpacing;
 
 @end
 
@@ -82,10 +83,10 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
              {
                  CGFloat textWidth = size.width - kCaptionMargins.left - kCaptionMargins.right;
                  textHeight = VCEIL( [sequence.name frameSizeForWidth:textWidth andAttributes:attributes].height );
+                 textHeight += kCaptionToPreviewVerticalSpacing;
              }
              return CGSizeMake( 0.0f, textHeight );
          }];
-        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kCaptionToPreviewVerticalSpacing)];
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
              VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
@@ -235,6 +236,7 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
     {
         self.captionTextView.attributedText = nil;
         self.captionHeight.constant = 0.0f;
+        self.captiontoPreviewVerticalSpacing.constant = 0.0f;
         self.bottomSpaceCaptionToPreview.constant = -kHiddenCaptionsMarginTop;
     }
     else
@@ -242,6 +244,7 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
         self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
                                                                               attributes:[VSleekStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
         self.bottomSpaceCaptionToPreview.constant = 0.0f;
+        self.captiontoPreviewVerticalSpacing.constant = kCaptionToPreviewVerticalSpacing;
         self.captionHeight.constant = kMaxCaptionTextViewHeight;
     }
     [self layoutIfNeeded];

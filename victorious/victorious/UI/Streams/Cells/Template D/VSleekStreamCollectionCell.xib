@@ -85,6 +85,7 @@
             <connections>
                 <outlet property="captionHeight" destination="vjm-N9-XLg" id="v0t-Zi-2sT"/>
                 <outlet property="captionTextView" destination="6Ls-Bo-1cB" id="bIh-mH-QI3"/>
+                <outlet property="captiontoPreviewVerticalSpacing" destination="BRh-C8-fTH" id="hYp-oR-WGR"/>
                 <outlet property="countsTextView" destination="txH-sw-s2T" id="Djj-IK-Q61"/>
                 <outlet property="headerView" destination="21k-Mb-C9q" id="qKP-yg-aYp"/>
                 <outlet property="loadingBackgroundContainer" destination="JB7-zc-ces" id="dXU-4M-ad5"/>
