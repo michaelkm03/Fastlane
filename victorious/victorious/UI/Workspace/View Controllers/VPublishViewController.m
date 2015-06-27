@@ -504,16 +504,40 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 {
     if ( saveSwitch.on && self.photoLibraryPermission.permissionState != VPermissionStateAuthorized )
     {
-        __weak VPublishViewController *weakSelf = self;
-        [self.photoLibraryPermission requestPermissionInViewController:self
-                                                 withCompletionHandler:^(BOOL granted, VPermissionState state, NSError *error)
-         {
-             saveSwitch.on = granted;
-             if ( granted )
+        if ( self.photoLibraryPermission.permissionState == VPermissionStateSystemDenied )
+        {
+            //Denied the system prompt, display an alert to let them know they need to go grant it through settings
+            UIAlertController *deniedAlertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                           message:NSLocalizedString(@"CameraRollDenied", nil) preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                               style:UIAlertActionStyleDefault
+                                                             handler:^(UIAlertAction *action)
+                                       {
+                                           saveSwitch.on = NO;
+                                       }];
+            [deniedAlertController addAction:okAction];
+            [self presentViewController:deniedAlertController
+                               animated:YES
+                             completion:nil];
+        }
+        else
+        {
+            __weak VPublishViewController *weakSelf = self;
+            [self.photoLibraryPermission requestPermissionInViewController:self
+                                                     withCompletionHandler:^(BOOL granted, VPermissionState state, NSError *error)
              {
-                 [saveSwitch removeTarget:weakSelf action:@selector(toggledSaveSwitch:) forControlEvents:UIControlEventValueChanged];
-             }
-         }];
+                 saveSwitch.on = granted;
+                 if ( granted )
+                 {
+                     [saveSwitch removeTarget:weakSelf action:@selector(toggledSaveSwitch:) forControlEvents:UIControlEventValueChanged];
+                 }
+                 if ( state == VPermissionStatePromptDenied )
+                 {
+                     //Already shown the first prompt once, no reason to show it again
+                     weakSelf.photoLibraryPermission.shouldShowInitialPrompt = NO;
+                 }
+             }];
+        }
     }
 }
 
