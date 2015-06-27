@@ -426,8 +426,11 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     self.commentButton.unselectedTintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.commentButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
     self.likeButton.unselectedTintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    self.countsTextView.dependencyManager = dependencyManager;
     self.captionTextView.dependencyManager = dependencyManager;
+    
+    UIFont *font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+    UIColor *textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    self.countsTextView.textAttributes = @{ NSFontAttributeName: font, NSForegroundColorAttributeName: textColor };
 }
 
 #pragma mark - VStreamCellComponentSpecialization

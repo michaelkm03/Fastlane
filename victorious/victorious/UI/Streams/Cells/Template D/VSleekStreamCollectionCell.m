@@ -110,14 +110,14 @@ const CGFloat kHiddenCaptionsMarginTop = 10.0f;
     {
         [self.headerView setDependencyManager:dependencyManager];
     }
-    if ([self.countsTextView respondsToSelector:@selector(setDependencyManager:)])
-    {
-        [self.countsTextView setDependencyManager:dependencyManager];
-    }
     if ([self.captionTextView respondsToSelector:@selector(setDependencyManager:)])
     {
         [self.captionTextView setDependencyManager:dependencyManager];
     }
+    
+    UIFont *font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+    UIColor *textColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    self.countsTextView.textAttributes = @{ NSFontAttributeName: font, NSForegroundColorAttributeName: textColor };
 }
 
 #pragma mark - Property Accessors

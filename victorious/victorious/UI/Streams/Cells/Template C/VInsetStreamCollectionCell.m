@@ -183,8 +183,6 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
 {
     _dependencyManager = dependencyManager;
     
-    self.countsTextView.dependencyManager = dependencyManager;
-    
     if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
     {
         [self.previewView setDependencyManager:self.dependencyManager];
@@ -201,7 +199,10 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
     {
         [self.captionTextView setDependencyManager:dependencyManager];
     }
-
+    
+    UIFont *font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+    UIColor *textColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    self.countsTextView.textAttributes = @{ NSFontAttributeName: font, NSForegroundColorAttributeName: textColor };
 }
 
 #pragma mark - Property Accessors
