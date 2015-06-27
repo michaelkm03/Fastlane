@@ -24,7 +24,6 @@ static const CGFloat kUserCellHeight = 51.0f;
 
 @property (weak, nonatomic) IBOutlet VDefaultProfileImageView *userImageView;
 @property (nonatomic, weak) IBOutlet UILabel *userName;
-@property (nonatomic, weak) IBOutlet UILabel *userLocation;
 @property (nonatomic, weak) IBOutlet VFollowUserControl *followControl;
 @property (nonatomic, strong) VUser *user;
 
@@ -77,7 +76,6 @@ static const CGFloat kUserCellHeight = 51.0f;
     
     [self.userImageView setProfileImageURL:[NSURL URLWithString:user.pictureUrl]];
     self.userName.text = user.name;
-    self.userLocation.text = user.location;
     self.followControl.enabled = YES;
     
     [self updateFollowingAnimated:NO];
@@ -90,7 +88,6 @@ static const CGFloat kUserCellHeight = 51.0f;
     _dependencyManager = dependencyManager;
     
     self.userName.font = [_dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
-    self.userLocation.font = [_dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
     self.userImageView.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.followControl.dependencyManager = dependencyManager;
 }
