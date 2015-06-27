@@ -22,7 +22,6 @@
 #import "VTOSViewController.h"
 #import "VPrivacyPoliciesViewController.h"
 #import "VEnterProfilePictureCameraViewController.h"
-
 #import "VLoginFlowControllerDelegate.h"
 
 static NSString * const kRegistrationScreens = @"registrationScreens";
@@ -399,6 +398,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
             if (![self.topViewController isKindOfClass:[VModernResetTokenViewController class]])
             {
                 UIViewController *resetTokenScreen = [self.dependencyManager viewControllerForKey:@"resetTokenScreen"];
+                [self setDelegateForScreensInArray:@[resetTokenScreen]];
                 [self pushViewController:resetTokenScreen
                                 animated:YES];
             }
@@ -423,6 +423,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
         {
             // show change password screen.
             UIViewController *changePasswordScreen = [welf.dependencyManager viewControllerForKey:@"changePasswordScreen"];
+            [welf setDelegateForScreensInArray:@[changePasswordScreen]];
             [welf pushViewController:changePasswordScreen
                             animated:YES];
         }
