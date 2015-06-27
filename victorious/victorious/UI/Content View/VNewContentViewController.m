@@ -1616,10 +1616,16 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)configureLikeButtonWithContentCell:(VContentCell *)contentCell forSequence:(VSequence *)sequence
 {
-    self.likeButton = contentCell.likeButton;
-    
-    if ( self.likeButton != nil && sequence.permissions.canLike )
+    if ( contentCell.likeButton == nil )
     {
+        return;
+    }
+    
+    if ( sequence.permissions.canLike )
+    {
+        self.likeButton = contentCell.likeButton;
+        self.likeButton.hidden = NO;
+        
         [self.likeButton addTarget:self action:@selector(selectedLikeButton:) forControlEvents:UIControlEventTouchUpInside];
         
         self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
@@ -1632,6 +1638,10 @@ referenceSizeForHeaderInSection:(NSInteger)section
         {
             self.likeButton.alpha = 0.0f;
         }
+    }
+    else
+    {
+        contentCell.likeButton.hidden = YES;
     }
 }
 
