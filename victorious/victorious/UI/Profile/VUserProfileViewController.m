@@ -682,8 +682,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     if ([self isDisplayingFloatingProfileHeader] && [self isCurrentUser])
     {
-        CGFloat offset = [(VFloatingUserProfileHeaderViewController *)self.profileHeaderViewController followersBarHeight];
-        BOOL shouldHideTitle = verticalOffset >= CGRectGetHeight(self.profileHeaderViewController.view.bounds) - offset - 20;
+        BOOL shouldHideTitle = [(VStreamNavigationViewFloatingController *)self.navigationViewfloatingController visibility] > 0.4f;
         self.navigationItem.title = shouldHideTitle ? @"" : [self.dependencyManager stringForKey:VDependencyManagerTitleKey];
     }
 }

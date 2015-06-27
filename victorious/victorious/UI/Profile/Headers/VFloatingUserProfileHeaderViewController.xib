@@ -8,7 +8,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VFloatingUserProfileHeaderViewController">
             <connections>
                 <outlet property="backgroundImageView" destination="Nua-VV-KOT" id="JWb-8j-a9j"/>
-                <outlet property="followersButton" destination="Ezs-M5-j6u" id="wYq-HB-fa7"/>
                 <outlet property="followersHeader" destination="Mu0-ll-MRk" id="03Y-W8-1US"/>
                 <outlet property="followersLabel" destination="deh-3g-hYk" id="Z2w-Vc-IbT"/>
                 <outlet property="followingButton" destination="PdG-wg-hxI" id="mP5-64-wZZ"/>
