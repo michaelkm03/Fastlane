@@ -176,7 +176,8 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
              VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
              VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
              NSDictionary *attributes = [self sequenceDescriptionAttributesWithDependencyManager:dependencyManager];
-             CGFloat textHeight =  VCEIL( [sequence.name frameSizeForWidth:size.width andAttributes:attributes].height );
+             CGFloat textWidth = size.width - kTextMargins.left - kTextMargins.right;
+             CGFloat textHeight = VCEIL( [sequence.name frameSizeForWidth:textWidth andAttributes:attributes].height );
              return CGSizeMake( 0.0f, textHeight );
          }];
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
