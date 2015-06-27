@@ -63,7 +63,7 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
-    
+    self.followButton.dependencyManager = dependencyManager;
     [self applyStyle];
 }
 
@@ -77,18 +77,12 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
     VContentThumbnailsDataSource *thumbnailsDataSource = [[[self class] dataSourcesCache] objectForKey:user.remoteId];
     if ( thumbnailsDataSource == nil )
     {
-        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VSequence *sequence, NSDictionary *bindings)
-                                  {
-                                      NSURL *url = [NSURL URLWithString:sequence.previewData];
-                                      return url != nil && url.absoluteString.length > 0;
-                                  }];
-        NSArray *recentSequences = [user.recentSequences.array filteredArrayUsingPredicate:predicate];
-        thumbnailsDataSource = [[VContentThumbnailsDataSource alloc] initWithSequences:recentSequences];
-        self.thumbnailsViewController.collectionView.dataSource = thumbnailsDataSource;
+        thumbnailsDataSource = [[VContentThumbnailsDataSource alloc] initWithSequences:user.recentSequences.array];
         [thumbnailsDataSource registerCellsWithCollectionView:self.thumbnailsViewController.collectionView];
         
         [[[self class] dataSourcesCache] setObject:thumbnailsDataSource forKey:user.remoteId];
     }
+    self.thumbnailsViewController.collectionView.dataSource = thumbnailsDataSource;
     
     if ( _user.pictureUrl != nil )
     {

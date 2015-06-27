@@ -306,6 +306,9 @@
 		A70564BC19E7817C004A8387 /* VObjectManager+Discover.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564BB19E7817C004A8387 /* VObjectManager+Discover.m */; };
 		A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564C119E781EE004A8387 /* VNoContentTableViewCell.m */; };
 		A70564C719E7820A004A8387 /* VHashtag+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564C619E7820A004A8387 /* VHashtag+RestKit.m */; };
+		A705F44A1B3CC00D007DBD3C /* VUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F4451B3CC00D007DBD3C /* VUserCell.m */; };
+		A705F44B1B3CC00D007DBD3C /* VUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A705F4461B3CC00D007DBD3C /* VUserCell.xib */; };
+		A705F44C1B3CC00D007DBD3C /* VUsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F4491B3CC00D007DBD3C /* VUsersViewController.m */; };
 		A708C9581A7FFF67000EE1EE /* VContentViewRotationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A708C9571A7FFF67000EE1EE /* VContentViewRotationHelper.m */; };
 		A708C95B1A8067B9000EE1EE /* VContentRepopulateTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A708C95A1A8067B9000EE1EE /* VContentRepopulateTransition.m */; };
 		A709642419F0A13800CE6633 /* VTracking+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A709642319F0A13800CE6633 /* VTracking+RestKit.m */; };
@@ -437,21 +440,17 @@
 		A769FE411ABC17C200888ED8 /* VFirstInstallTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A769FE401ABC17C200888ED8 /* VFirstInstallTests.m */; };
 		A769FE451ABCFCE900888ED8 /* VTrackingSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A769FE441ABCFCE900888ED8 /* VTrackingSettingsViewController.m */; };
 		A769FE4B1ABD051A00888ED8 /* VTrackingEventLog.m in Sources */ = {isa = PBXBuildFile; fileRef = A769FE4A1ABD051A00888ED8 /* VTrackingEventLog.m */; };
-		A76D93831B31F54C007A150D /* VObjectManager+Sequence.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D0A619B4698800FA363C /* VObjectManager+Sequence.m */; };
 		A76D938A1B320DD0007A150D /* VSequenceExpressionsObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D93871B320DD0007A150D /* VSequenceExpressionsObserver.m */; };
 		A76D93921B32151B007A150D /* VContentLikeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D938F1B32151B007A150D /* VContentLikeButton.m */; };
 		A771D0241A043AE8007CB0A5 /* VTrackingManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */; };
 		A7724FD31B3241D100B1BBB3 /* VFollowersDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7724FD01B3241D100B1BBB3 /* VFollowersDataSource.m */; };
 		A7724FD41B3241D100B1BBB3 /* VUserIsFollowingDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7724FD21B3241D100B1BBB3 /* VUserIsFollowingDataSource.m */; };
-		A7724FDC1B3241FD00B1BBB3 /* VUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7724FD71B3241FD00B1BBB3 /* VUserCell.m */; };
-		A7724FDD1B3241FD00B1BBB3 /* VUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7724FD81B3241FD00B1BBB3 /* VUserCell.xib */; };
-		A7724FDE1B3241FD00B1BBB3 /* VUsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7724FDB1B3241FD00B1BBB3 /* VUsersViewController.m */; };
 		A7724FE11B32432D00B1BBB3 /* VLikersDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7724FE01B32432D00B1BBB3 /* VLikersDataSource.m */; };
 		A7724FE51B3248C400B1BBB3 /* VFollowerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7724FE31B3248C400B1BBB3 /* VFollowerTableViewCell.m */; };
 		A7724FE61B3248C400B1BBB3 /* VFollowerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7724FE41B3248C400B1BBB3 /* VFollowerTableViewCell.xib */; };
 		A7724FED1B33422B00B1BBB3 /* VActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A7724FEC1B33422B00B1BBB3 /* VActionButton.m */; };
-		A7724FFB1B33905000B1BBB3 /* VSequenceCountsTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7724FF91B33905000B1BBB3 /* VSequenceCountsTextView.m */; };
 		A7724FF11B33746A00B1BBB3 /* VCreatorInfoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7724FF01B33746A00B1BBB3 /* VCreatorInfoHelper.m */; };
+		A7724FFB1B33905000B1BBB3 /* VSequenceCountsTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7724FF91B33905000B1BBB3 /* VSequenceCountsTextView.m */; };
 		A7738B041A4A35DF008EA973 /* VSimpleModalTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A7738B011A4A35DF008EA973 /* VSimpleModalTransition.m */; };
 		A7738B051A4A35DF008EA973 /* VTransitionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A7738B031A4A35DF008EA973 /* VTransitionDelegate.m */; };
 		A7738B081A4A36C9008EA973 /* VTransitionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A7738B071A4A36C9008EA973 /* VTransitionModel.m */; };
@@ -1590,6 +1589,12 @@
 		A70564C519E7820A004A8387 /* VHashtag+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VHashtag+RestKit.h"; sourceTree = "<group>"; };
 		A70564C619E7820A004A8387 /* VHashtag+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VHashtag+RestKit.m"; sourceTree = "<group>"; };
 		A70564CB19E78250004A8387 /* VDiscoverViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverViewControllerTests.m; sourceTree = "<group>"; };
+		A705F4441B3CC00D007DBD3C /* VUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserCell.h; sourceTree = "<group>"; };
+		A705F4451B3CC00D007DBD3C /* VUserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserCell.m; sourceTree = "<group>"; };
+		A705F4461B3CC00D007DBD3C /* VUserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VUserCell.xib; sourceTree = "<group>"; };
+		A705F4471B3CC00D007DBD3C /* VUsersDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUsersDataSource.h; sourceTree = "<group>"; };
+		A705F4481B3CC00D007DBD3C /* VUsersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUsersViewController.h; sourceTree = "<group>"; };
+		A705F4491B3CC00D007DBD3C /* VUsersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUsersViewController.m; sourceTree = "<group>"; };
 		A708C9561A7FFF67000EE1EE /* VContentViewRotationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentViewRotationHelper.h; sourceTree = "<group>"; };
 		A708C9571A7FFF67000EE1EE /* VContentViewRotationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewRotationHelper.m; sourceTree = "<group>"; };
 		A708C9591A8067B9000EE1EE /* VContentRepopulateTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentRepopulateTransition.h; sourceTree = "<group>"; };
@@ -1793,12 +1798,6 @@
 		A7724FD01B3241D100B1BBB3 /* VFollowersDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowersDataSource.m; sourceTree = "<group>"; };
 		A7724FD11B3241D100B1BBB3 /* VUserIsFollowingDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserIsFollowingDataSource.h; sourceTree = "<group>"; };
 		A7724FD21B3241D100B1BBB3 /* VUserIsFollowingDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserIsFollowingDataSource.m; sourceTree = "<group>"; };
-		A7724FD61B3241FD00B1BBB3 /* VUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserCell.h; sourceTree = "<group>"; };
-		A7724FD71B3241FD00B1BBB3 /* VUserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserCell.m; sourceTree = "<group>"; };
-		A7724FD81B3241FD00B1BBB3 /* VUserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VUserCell.xib; sourceTree = "<group>"; };
-		A7724FD91B3241FD00B1BBB3 /* VUsersDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUsersDataSource.h; sourceTree = "<group>"; };
-		A7724FDA1B3241FD00B1BBB3 /* VUsersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUsersViewController.h; sourceTree = "<group>"; };
-		A7724FDB1B3241FD00B1BBB3 /* VUsersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUsersViewController.m; sourceTree = "<group>"; };
 		A7724FDF1B32432D00B1BBB3 /* VLikersDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLikersDataSource.h; sourceTree = "<group>"; };
 		A7724FE01B32432D00B1BBB3 /* VLikersDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLikersDataSource.m; sourceTree = "<group>"; };
 		A7724FE21B3248C400B1BBB3 /* VFollowerTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFollowerTableViewCell.h; sourceTree = "<group>"; };
@@ -1806,10 +1805,10 @@
 		A7724FE41B3248C400B1BBB3 /* VFollowerTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VFollowerTableViewCell.xib; sourceTree = "<group>"; };
 		A7724FEB1B33422B00B1BBB3 /* VActionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionButton.h; sourceTree = "<group>"; };
 		A7724FEC1B33422B00B1BBB3 /* VActionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionButton.m; sourceTree = "<group>"; };
-		A7724FF81B33905000B1BBB3 /* VSequenceCountsTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceCountsTextView.h; sourceTree = "<group>"; };
-		A7724FF91B33905000B1BBB3 /* VSequenceCountsTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceCountsTextView.m; sourceTree = "<group>"; };
 		A7724FEF1B33746A00B1BBB3 /* VCreatorInfoHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreatorInfoHelper.h; sourceTree = "<group>"; };
 		A7724FF01B33746A00B1BBB3 /* VCreatorInfoHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCreatorInfoHelper.m; sourceTree = "<group>"; };
+		A7724FF81B33905000B1BBB3 /* VSequenceCountsTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceCountsTextView.h; sourceTree = "<group>"; };
+		A7724FF91B33905000B1BBB3 /* VSequenceCountsTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceCountsTextView.m; sourceTree = "<group>"; };
 		A7738B001A4A35DF008EA973 /* VSimpleModalTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSimpleModalTransition.h; sourceTree = "<group>"; };
 		A7738B011A4A35DF008EA973 /* VSimpleModalTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSimpleModalTransition.m; sourceTree = "<group>"; };
 		A7738B021A4A35DF008EA973 /* VTransitionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTransitionDelegate.h; sourceTree = "<group>"; };
@@ -4589,12 +4588,12 @@
 		A7724FD51B3241FD00B1BBB3 /* Users */ = {
 			isa = PBXGroup;
 			children = (
-				A7724FD61B3241FD00B1BBB3 /* VUserCell.h */,
-				A7724FD71B3241FD00B1BBB3 /* VUserCell.m */,
-				A7724FD81B3241FD00B1BBB3 /* VUserCell.xib */,
-				A7724FD91B3241FD00B1BBB3 /* VUsersDataSource.h */,
-				A7724FDA1B3241FD00B1BBB3 /* VUsersViewController.h */,
-				A7724FDB1B3241FD00B1BBB3 /* VUsersViewController.m */,
+				A705F4441B3CC00D007DBD3C /* VUserCell.h */,
+				A705F4451B3CC00D007DBD3C /* VUserCell.m */,
+				A705F4461B3CC00D007DBD3C /* VUserCell.xib */,
+				A705F4471B3CC00D007DBD3C /* VUsersDataSource.h */,
+				A705F4481B3CC00D007DBD3C /* VUsersViewController.h */,
+				A705F4491B3CC00D007DBD3C /* VUsersViewController.m */,
 			);
 			path = Users;
 			sourceTree = "<group>";
@@ -6686,6 +6685,7 @@
 				036F387F1A0C4DEA0014DF66 /* Montserrat-Regular.ttf in Resources */,
 				035926D21B1EA33400E910A7 /* Quicksand-Bold.ttf in Resources */,
 				03FD87D719F96F8700D93BAA /* VContentVideoCell.xib in Resources */,
+				A705F44B1B3CC00D007DBD3C /* VUserCell.xib in Resources */,
 				0390087019F3A01A00FD7EDF /* VNotificationCell.xib in Resources */,
 				036F38771A0C4DEA0014DF66 /* Lato-Bold.ttf in Resources */,
 				0390087419F3A0CF00FD7EDF /* VFullscreenMarqueeStreamItemCell.xib in Resources */,
@@ -6844,7 +6844,6 @@
 				039B614A19F2166900CB2796 /* homeHeaderImage@2x.png in Resources */,
 				036F38731A0C4DEA0014DF66 /* Jura-DemiBold.ttf in Resources */,
 				03FD87E819FAC19300D93BAA /* VLightboxViewController.xib in Resources */,
-				A7724FDD1B3241FD00B1BBB3 /* VUserCell.xib in Resources */,
 				A75ED0C81AB7971400C35063 /* VColorOptionCell.xib in Resources */,
 				036F38741A0C4DEA0014DF66 /* Jura-Medium.ttf in Resources */,
 				D8D812AD1B14EA1800E93B37 /* VModernResetPasswordViewController.storyboard in Resources */,
@@ -7243,7 +7242,6 @@
 				0314D48719B46B5E00FA363C /* VActivityIndicatorView.m in Sources */,
 				037D2D591A196B9800947A22 /* VUserProfileNavigationDestination.m in Sources */,
 				030931931A184285004E9781 /* VNavigationMenuItem.m in Sources */,
-				A7724FDE1B3241FD00B1BBB3 /* VUsersViewController.m in Sources */,
 				A7F711F91AE1D5A00086F729 /* VProfileEditViewController.m in Sources */,
 				DBB1A0501A00AF4500E16D62 /* VOpenXAdViewController.m in Sources */,
 				D89367461ADDBA96001D2426 /* VActionBarFlexibleSpaceItem.m in Sources */,
@@ -7541,7 +7539,6 @@
 				03C185B919B42E5D00E27D05 /* OAuth+Additions.m in Sources */,
 				D85B70821B0EAF3F0038CA5B /* VLoginWithEmailViewController.m in Sources */,
 				0309318E1A18425B004E9781 /* VMenuCollectionViewDataSource.m in Sources */,
-				A7724FDC1B3241FD00B1BBB3 /* VUserCell.m in Sources */,
 				BE42842919DDC19100AEDBA6 /* VDefaultProfileButton.m in Sources */,
 				A75FAF1719E8AC1E00EB87C1 /* VDiscoverSuggestedPeopleSectionCell.m in Sources */,
 				F0C83A551B156D1700A6EC1A /* VCoachmarkManager+VObjectAssociation.m in Sources */,
@@ -7555,6 +7552,7 @@
 				A720055E1A030E4700285A9C /* VApplicationTracking.m in Sources */,
 				039420431AB7D1A70087ADFA /* VDependencyManager+VTracking.m in Sources */,
 				D8758D221B0FDEE3008C6C0D /* VDependencyManager+VKeyboardStyle.m in Sources */,
+				A705F44A1B3CC00D007DBD3C /* VUserCell.m in Sources */,
 				D8DF71F11AFD987B002EA7A5 /* VFollowingHelper.m in Sources */,
 				F0F04AF71B2A37CB00F6F401 /* VDependencyManager+VShareMenuItem.m in Sources */,
 				A769FE451ABCFCE900888ED8 /* VTrackingSettingsViewController.m in Sources */,
@@ -7652,6 +7650,7 @@
 				D893674D1ADDDD5E001D2426 /* VSleekActionView.m in Sources */,
 				A7724FED1B33422B00B1BBB3 /* VActionButton.m in Sources */,
 				035FA78E1AE6C4E20002EE63 /* VUnreadMessageCountCoordinator.m in Sources */,
+				A705F44C1B3CC00D007DBD3C /* VUsersViewController.m in Sources */,
 				BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */,
 				03C185C819B42FD600E27D05 /* main.m in Sources */,
 				D8360CEA19E3640000D7E260 /* VNewContentViewController+Actions.m in Sources */,
@@ -7817,7 +7816,6 @@
 				F0C83A331B0ED7DA00A6EC1A /* VCoachmarkPassthroughContainerViewTests.m in Sources */,
 				A72005401A03073B00285A9C /* VSuggestedPeopleTests.m in Sources */,
 				A743E7EC1A082AD200339CB3 /* VEmailValidatorTests.m in Sources */,
-				A76D93831B31F54C007A150D /* VObjectManager+Sequence.m in Sources */,
 				0343AF841A143FD20025B9F8 /* NSDate+timeSinceTests.m in Sources */,
 				F0D3CFB71A8C3FDE00EAD55E /* VKeyboardInputAccessoryViewTests.m in Sources */,
 				A75ED0E91AB8CC0A00C35063 /* VStreamContentPermissionsTests.m in Sources */,

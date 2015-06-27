@@ -110,4 +110,16 @@
     return self.dimmingContainer;
 }
 
+#pragma mark - Tracking
+
+- (VSequence *)sequenceToTrack
+{
+    if ([self.streamItem isKindOfClass:[VSequence class]])
+    {
+        return (VSequence *)self.streamItem;
+    }
+    
+    return nil;
+}
+
 @end

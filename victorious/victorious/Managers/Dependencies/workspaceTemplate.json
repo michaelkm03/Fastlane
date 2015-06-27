@@ -148,10 +148,10 @@
                 },
                 "color.accent":
                 {
-                    "red": 59,
+                    "red": 61,
                     "alpha": 255,
-                    "blue": 152,
-                    "green": 89
+                    "blue": 150,
+                    "green": 90
                 },
                 "color.accent.secondary":
                 {
@@ -174,10 +174,10 @@
                 },
                 "color.accent":
                 {
-                    "red": 50,
+                    "red": 85,
                     "alpha": 255,
-                    "blue": 218,
-                    "green": 106
+                    "blue": 238,
+                    "green": 172
                 },
                 "color.accent.secondary":
                 {
