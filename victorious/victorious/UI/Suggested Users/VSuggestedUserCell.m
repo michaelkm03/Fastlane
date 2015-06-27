@@ -19,7 +19,6 @@
 #import "VSequence.h"
 
 static NSString * const kTextTitleColorKey = @"color.text.label1";
-static NSString * const kTextBodyColorKey = @"color.text.label2";
 
 @interface VSuggestedUserCell ()
 
@@ -27,7 +26,6 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
 @property (nonatomic, strong) VContentThumbnailsViewController *thumbnailsViewController;
 @property (nonatomic, weak) IBOutlet VDefaultProfileImageView *userProfileImage;
 @property (nonatomic, weak) IBOutlet UITextView *usernameTextView;
-@property (nonatomic, weak) IBOutlet UITextView *userTagLineTextView;
 @property (nonatomic, weak) IBOutlet UIView *followButtonContainerView;
 @property (nonatomic, weak) IBOutlet UIView *userStreamContainerView;
 
@@ -72,7 +70,6 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
     _user = user;
     
     self.usernameTextView.text = _user.name;
-    self.userTagLineTextView.text = _user.tagline;
     
     VContentThumbnailsDataSource *thumbnailsDataSource = [[[self class] dataSources] objectForKey:user.remoteId];
     if ( thumbnailsDataSource == nil )
@@ -99,12 +96,6 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
     
     self.usernameTextView.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
     self.usernameTextView.textColor = [self.dependencyManager colorForKey:kTextTitleColorKey];
-    
-    self.userTagLineTextView.font = [self.dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
-    self.userTagLineTextView.textColor = [self.dependencyManager colorForKey:kTextBodyColorKey];
-    
-    self.usernameTextView.textColor = [self.dependencyManager colorForKey:kTextTitleColorKey];
-    self.userTagLineTextView.textColor = [self.dependencyManager colorForKey:kTextBodyColorKey];
     
     [self.dependencyManager addBackgroundToBackgroundHost:self forKey:@"background.detail"];
 }
