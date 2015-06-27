@@ -31,6 +31,7 @@
 #import "VTwitterManager.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VDependencyManager+VKeyboardStyle.h"
+#import "VPermissionPhotoLibrary.h"
 
 @import AssetsLibrary;
 
@@ -46,6 +47,7 @@ static NSString * const kPlaceholderTextKey = @"placeholderText";
 static NSString * const kShareContainerBackgroundColor = @"color.shareContainer";
 static NSString * const kCaptionContainerBackgroundColor = @"color.captionContainer";
 static NSString * const kKeyboardStyleKey = @"keyboardStyle";
+static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
 
 @interface VPublishViewController () <UICollisionBehaviorDelegate, UITextViewDelegate, UIGestureRecognizerDelegate, VContentInputAccessoryViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, VPublishShareCollectionViewCellDelegate, VBackgroundContainer>
 
@@ -63,6 +65,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) VPublishSaveCollectionViewCell *saveContentCell;
 @property (nonatomic, strong) VPublishShareCollectionViewCell *shareContentCell;
+@property (nonatomic, strong) VPermissionPhotoLibrary *photoLibraryPermission;
 @property (nonatomic, assign) BOOL hasShareCell;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *cardHeightConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *previewHeightConstraint;
@@ -112,6 +115,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.photoLibraryPermission = [[VPermissionPhotoLibrary alloc] initWithDependencyManager:self.dependencyManager];
     
     [self setupCollectionView];
     
@@ -493,6 +498,25 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     return YES;
 }
 
+#pragma mark - Custom actions
+
+- (void)toggledSaveSwitch:(UISwitch *)saveSwitch
+{
+    if ( saveSwitch.on && self.photoLibraryPermission.permissionState != VPermissionStateAuthorized )
+    {
+        __weak VPublishViewController *weakSelf = self;
+        [self.photoLibraryPermission requestPermissionInViewController:self
+                                                 withCompletionHandler:^(BOOL granted, VPermissionState state, NSError *error)
+         {
+             saveSwitch.on = granted;
+             if ( granted )
+             {
+                 [saveSwitch removeTarget:weakSelf action:@selector(toggledSaveSwitch:) forControlEvents:UIControlEventValueChanged];
+             }
+         }];
+    }
+}
+
 #pragma mark - VContentInputAccessoryViewDelegate
 
 - (BOOL)shouldLimitTextEntryForInputAccessoryView:(VContentInputAccessoryView *)inputAccessoryView
@@ -636,6 +660,25 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         {
             VPublishSaveCollectionViewCell *saveCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VPublishSaveCollectionViewCell suggestedReuseIdentifier] forIndexPath:indexPath];
             saveCell.dependencyManager = self.dependencyManager;
+            
+            //Determine switch state
+            if ( self.photoLibraryPermission.permissionState == VPermissionStateAuthorized )
+            {
+                NSNumber *autoEnableSave = [_dependencyManager numberForKey:kEnableMediaSaveKey];
+                if ( autoEnableSave != nil )
+                {
+                    saveCell.cameraRollSwitch.on = [autoEnableSave boolValue];
+                }
+                else
+                {
+                    saveCell.cameraRollSwitch.on = YES;
+                }
+            }
+            else
+            {
+                [saveCell.cameraRollSwitch addTarget:self action:@selector(toggledSaveSwitch:) forControlEvents:UIControlEventValueChanged];
+            }
+            
             self.saveContentCell = saveCell;
         }
         cell = self.saveContentCell;
