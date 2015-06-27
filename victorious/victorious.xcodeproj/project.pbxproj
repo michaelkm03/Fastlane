@@ -457,7 +457,6 @@
 		A769FE411ABC17C200888ED8 /* VFirstInstallTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A769FE401ABC17C200888ED8 /* VFirstInstallTests.m */; };
 		A769FE451ABCFCE900888ED8 /* VTrackingSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A769FE441ABCFCE900888ED8 /* VTrackingSettingsViewController.m */; };
 		A769FE4B1ABD051A00888ED8 /* VTrackingEventLog.m in Sources */ = {isa = PBXBuildFile; fileRef = A769FE4A1ABD051A00888ED8 /* VTrackingEventLog.m */; };
-		A76D93831B31F54C007A150D /* VObjectManager+Sequence.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D0A619B4698800FA363C /* VObjectManager+Sequence.m */; };
 		A76D938A1B320DD0007A150D /* VSequenceExpressionsObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D93871B320DD0007A150D /* VSequenceExpressionsObserver.m */; };
 		A76D93921B32151B007A150D /* VContentLikeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D938F1B32151B007A150D /* VContentLikeButton.m */; };
 		A771D0241A043AE8007CB0A5 /* VTrackingManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */; };
@@ -7919,7 +7918,6 @@
 				F0C83A331B0ED7DA00A6EC1A /* VCoachmarkPassthroughContainerViewTests.m in Sources */,
 				A72005401A03073B00285A9C /* VSuggestedPeopleTests.m in Sources */,
 				A743E7EC1A082AD200339CB3 /* VEmailValidatorTests.m in Sources */,
-				A76D93831B31F54C007A150D /* VObjectManager+Sequence.m in Sources */,
 				0343AF841A143FD20025B9F8 /* NSDate+timeSinceTests.m in Sources */,
 				F0D3CFB71A8C3FDE00EAD55E /* VKeyboardInputAccessoryViewTests.m in Sources */,
 				A75ED0E91AB8CC0A00C35063 /* VStreamContentPermissionsTests.m in Sources */,
