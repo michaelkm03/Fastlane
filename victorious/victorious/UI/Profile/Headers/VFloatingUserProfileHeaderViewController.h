@@ -11,4 +11,6 @@
 
 @interface VFloatingUserProfileHeaderViewController : VAbstractUserProfileHeaderViewController
 
+- (CGFloat)followersBarHeight;
+
 @end

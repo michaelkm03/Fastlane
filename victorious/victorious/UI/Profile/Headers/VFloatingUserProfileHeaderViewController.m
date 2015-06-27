@@ -30,12 +30,14 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *primaryActionButtonTopConstraint;
 @property (nonatomic, assign) CGFloat primaryActionButtonStartTop;
 @property (nonatomic, strong) VDefaultProfileImageView *floatingProfileImageView;
+@property (weak, nonatomic) IBOutlet UIButton *followersButton;
 
 @end
 
 @implementation VFloatingUserProfileHeaderViewController
 
 @synthesize loading = _loading;
+@synthesize followersButton = _followersButton;
 
 - (void)loadView
 {
@@ -229,6 +231,13 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
     self.followingHeader.textColor = contentTextColor;
     
     self.usersStatusDivider.backgroundColor = [contentTextColor colorWithAlphaComponent:0.45f];
+}
+
+#pragma mark - Methods
+
+- (CGFloat)followersBarHeight
+{
+    return CGRectGetHeight(self.followersButton.bounds);
 }
 
 @end

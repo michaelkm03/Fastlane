@@ -40,6 +40,7 @@
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VProfileDeeplinkHandler.h"
 #import "VInboxDeepLinkHandler.h"
+#import "VFloatingUserProfileHeaderViewController.h"
 
 #import "VUsersViewController.h"
 #import "VFollowersDataSource.h"
@@ -54,7 +55,6 @@ static NSString *kEditProfileSegueIdentifier = @"toEditProfile";
 static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
 
 static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
-static const CGFloat kHideTitleOffset = 145.0f;
 
 @interface VUserProfileViewController () <VUserProfileHeaderDelegate, MBProgressHUDDelegate, VNotAuthorizedDataSourceDelegate, VNavigationViewFloatingControllerDelegate>
 
@@ -682,7 +682,8 @@ static const CGFloat kHideTitleOffset = 145.0f;
 {
     if ([self isDisplayingFloatingProfileHeader] && [self isCurrentUser])
     {
-        BOOL shouldHideTitle = verticalOffset >= [self floatingHeaderAnimationThresholdStart] + kHideTitleOffset;
+        CGFloat offset = [(VFloatingUserProfileHeaderViewController *)self.profileHeaderViewController followersBarHeight];
+        BOOL shouldHideTitle = verticalOffset >= CGRectGetHeight(self.profileHeaderViewController.view.bounds) - offset - 20;
         self.navigationItem.title = shouldHideTitle ? @"" : [self.dependencyManager stringForKey:VDependencyManagerTitleKey];
     }
 }
