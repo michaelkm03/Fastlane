@@ -9,6 +9,17 @@
 #import <FacebookSDK/FBSession.h>
 #import <Foundation/Foundation.h>
 
+/**
+ Error domain for publish permissions errors
+ */
+extern NSString * const VFacebookManagerPublishPermissionsErrorDomain;
+
+/**
+ Error code representing that we failed to acquire publish permissions.
+ The Facebook manager DOES NOT show an alert in these cases.
+ */
+extern CGFloat const VFacebookManagerErrorPublishPermissionsFailure;
+
 @interface VFacebookManager : NSObject
 
 + (VFacebookManager *)sharedFacebookManager;

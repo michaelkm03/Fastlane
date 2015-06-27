@@ -10,6 +10,9 @@
 
 #import <FacebookSDK/FacebookSDK.h>
 
+NSString * const VFacebookManagerPublishPermissionsErrorDomain = @"facebookManagerError";
+CGFloat const VFacebookManagerErrorPublishPermissionsFailure = 1;
+
 static NSString * const kPublishActionsPermissionKey = @"publish_actions";
 static NSString * const kPublicProfilePermissionKey = @"public_profile";
 static NSString * const kUserFriendsPermissionKey = @"user_friends";
@@ -158,6 +161,7 @@ static NSString * const kEmailPermissionKey = @"email";
             {
                 if (failureBlock)
                 {
+                    error = [self updatedPublishError:error];
                     failureBlock(error);
                 }
             }
@@ -181,11 +185,30 @@ static NSString * const kEmailPermissionKey = @"email";
             {
                 if (failureBlock)
                 {
+                    error = [self updatedPublishError:error];
                     failureBlock(error);
                 }
             }
         }];
     }
+}
+
+- (NSError *)updatedPublishError:(NSError *)error
+{
+    if ( [self couldBePublishPermissionsFailureError:error] )
+    {
+        error = [NSError errorWithDomain:VFacebookManagerPublishPermissionsErrorDomain
+                                    code:VFacebookManagerErrorPublishPermissionsFailure
+                                userInfo:nil];
+    }
+    return error;
+}
+
+- (BOOL)couldBePublishPermissionsFailureError:(NSError *)error
+{
+    BOOL isFromFacebookSDK = [error.domain isEqualToString:FacebookSDKDomain];
+    BOOL hasPermissionsErrorCode = error.code == FBErrorLoginFailedOrCancelled;
+    return error == nil || ( isFromFacebookSDK && hasPermissionsErrorCode );
 }
 
 - (void)logout
