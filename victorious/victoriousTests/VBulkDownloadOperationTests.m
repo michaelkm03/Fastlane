@@ -54,10 +54,32 @@
                                                             completion:^(NSURL *originalURL, NSError *error, NSURLResponse *response, NSURL *downloadedFile)
     {
         XCTAssertEqualObjects(originalURL, url);
+        XCTAssertNil(error);
         NSData *cachedData = [NSData dataWithContentsOfURL:downloadedFile];
         NSString *stringFromData = [[NSString alloc] initWithData:cachedData encoding:NSUTF8StringEncoding];
         XCTAssertEqualObjects( stringFromData, testBody);
         
+        [expectation fulfill];
+    }];
+    [self.operationQueue addOperation:operation];
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+}
+
+- (void)testFailedDownloadWithRetriesTurnedOff
+{
+    NSURL *url = [NSURL URLWithString:@"http://www.example.com/single"];
+    NSError *err = [NSError errorWithDomain:@"really bad" code:666 userInfo:nil];
+    
+    stubRequest(@"GET", url.absoluteString).andFailWithError(err);
+    
+    NSSet *urls = [NSSet setWithObject:url];
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"download callback"];
+    VBulkDownloadOperation *operation = [[VBulkDownloadOperation alloc] initWithURLs:urls
+                                                                          completion:^(NSURL *originalURL, NSError *error, NSURLResponse *response, NSURL *downloadedFile)
+    {
+        XCTAssertEqualObjects(originalURL, url);
+        XCTAssertEqualObjects(err, error);
         [expectation fulfill];
     }];
     [self.operationQueue addOperation:operation];
@@ -156,72 +178,75 @@
     VBulkDownloadOperation *operation = [[VBulkDownloadOperation alloc] initWithURLs:[NSSet set] completion:nil];
     XCTAssertFalse(operation.shouldRetry);
 }
-// - (void)testRetry
-// {
-//     __block BOOL failedOnce = NO;
-//     NSURL *url = [NSURL URLWithString:@"http://www.example.com/one"];
-//     NSString *testBody = @"hello world";
-//     
-//     stubRequest(@"GET", url.absoluteString).andDo(^(NSDictionary * __autoreleasing *headers, NSInteger *status, id<LSHTTPBody> __autoreleasing *body)
-//     {
-//         if ( failedOnce )
-//         {
-//             *status = 200;
-//             *body = testBody;
-//         }
-//         else
-//         {
-//             *status = 500;
-//             failedOnce = YES;
-//         }
-//     });
-//     
-//     XCTestExpectation *expectation = [self expectationWithDescription:@"download callback"];
-//     VBulkDownloader *operation = [[VBulkDownloader alloc] initWithURLs:[NSSet setWithObject:url] completion:^(void)
-//     {
-//         NSData *data = [NSData dataWithContentsOfURL:downloadedFile];
-//         NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-//         XCTAssertEqualObjects(string, testBody);
-//         [expectation fulfill];
-//     }];
-//     operation.dataCache = self.dataCache;
-////     self.operation.retryInterval = 0;
-//     [self.operationQueue addOperation:operation];
-//     [self waitForExpectationsWithTimeout:2.0 handler:nil];
-// }
- /*
- - (void)testFiveRetries
- {
- __block NSInteger failCount = 0;
- NSURL *url = [NSURL URLWithString:@"http://www.example.com/one"];
- NSString *testBody = @"hello world";
- 
- stubRequest(@"GET", url.absoluteString).andDo(^(NSDictionary * __autoreleasing *headers, NSInteger *status, id<LSHTTPBody> __autoreleasing *body)
- {
- if ( failCount >= 5 )
- {
- *status = 200;
- *body = testBody;
- }
- else
- {
- *status = 500;
- failCount++;
- }
- });
- 
- XCTestExpectation *expectation = [self expectationWithDescription:@"download callback"];
- self.operation = [[VDownloadOperation alloc] initWithURL:url completion:^(NSURL *downloadedFile)
- {
- NSData *data = [NSData dataWithContentsOfURL:downloadedFile];
- NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
- XCTAssertEqualObjects(string, testBody);
- [expectation fulfill];
- }];
- self.operation.retryInterval = 0;
- [self.operationQueue addOperation:self.operation];
- [self waitForExpectationsWithTimeout:2.0 handler:nil];
- }
- */
+
+- (void)testRetry
+{
+    __block BOOL failedOnce = NO;
+    NSURL *url = [NSURL URLWithString:@"http://www.example.com/one"];
+    NSString *testBody = @"hello world";
+    
+    stubRequest(@"GET", url.absoluteString).andDo(^(NSDictionary * __autoreleasing *headers, NSInteger *status, id<LSHTTPBody> __autoreleasing *body)
+    {
+        if ( failedOnce )
+        {
+            *status = 200;
+            *body = testBody;
+        }
+        else
+        {
+            *status = 500;
+            failedOnce = YES;
+        }
+    });
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"download callback"];
+    VBulkDownloadOperation *operation = [[VBulkDownloadOperation alloc] initWithURLs:[NSSet setWithObject:url] completion:^(NSURL *originalURL, NSError *error, NSURLResponse *response, NSURL *downloadedFile)
+    {
+        XCTAssertFalse(error);
+        NSData *data = [NSData dataWithContentsOfURL:downloadedFile];
+        NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        XCTAssertEqualObjects(string, testBody);
+        [expectation fulfill];
+    }];
+    operation.shouldRetry = YES;
+    operation.retryInterval = 0;
+    [self.operationQueue addOperation:operation];
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+}
+
+- (void)testFiveRetries
+{
+    __block NSInteger failCount = 0;
+    NSURL *url = [NSURL URLWithString:@"http://www.example.com/one"];
+    NSString *testBody = @"hello world";
+    
+    stubRequest(@"GET", url.absoluteString).andDo(^(NSDictionary * __autoreleasing *headers, NSInteger *status, id<LSHTTPBody> __autoreleasing *body)
+    {
+        if ( failCount >= 5 )
+        {
+            *status = 200;
+            *body = testBody;
+        }
+        else
+        {
+            *status = 500;
+            failCount++;
+        }
+    });
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"download callback"];
+    VBulkDownloadOperation *operation = [[VBulkDownloadOperation alloc] initWithURLs:[NSSet setWithObject:url] completion:^(NSURL *originalURL, NSError *error, NSURLResponse *response, NSURL *downloadedFile)
+    {
+        XCTAssertFalse(error);
+        NSData *data = [NSData dataWithContentsOfURL:downloadedFile];
+        NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        XCTAssertEqualObjects(string, testBody);
+        [expectation fulfill];
+    }];
+    operation.shouldRetry = YES;
+    operation.retryInterval = 0;
+    [self.operationQueue addOperation:operation];
+    [self waitForExpectationsWithTimeout:222.0 handler:nil];
+}
 
 @end
