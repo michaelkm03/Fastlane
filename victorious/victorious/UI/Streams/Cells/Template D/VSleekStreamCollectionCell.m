@@ -29,6 +29,7 @@ static const CGFloat kSleekCellHeaderHeight = 50.0f;
 static const CGFloat kSleekCellActionViewHeight = 48.0f;
 static const CGFloat kCountsTextViewHeight = 29.0f;
 static const CGFloat kHiddenCaptionsMarginTop = 10.0f;
+static const CGFloat kCaptionToPreviewVerticalSpacing = 7.0f;
 static const CGFloat kMaxCaptionTextViewHeight = 200.0f;
 static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
 
@@ -82,19 +83,16 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
                  CGFloat textWidth = size.width - kCaptionMargins.left - kCaptionMargins.right;
                  textHeight = VCEIL( [sequence.name frameSizeForWidth:textWidth andAttributes:attributes].height );
              }
-             else
-             {
-                 textHeight = -kHiddenCaptionsMarginTop;
-             }
              return CGSizeMake( 0.0f, textHeight );
          }];
-        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kCountsTextViewHeight)];
+        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kCaptionToPreviewVerticalSpacing)];
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
              VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
              CGFloat previewHeight =  size.width  / [sequence previewAssetAspectRatio];
              return CGSizeMake( 0.0f, previewHeight );
          }];
+        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kCountsTextViewHeight)];
         [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kSleekCellActionViewHeight)];
     }
     return collection;
