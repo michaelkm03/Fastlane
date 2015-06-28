@@ -444,6 +444,11 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
         {
             [self onAuthenticationFinishedWithSuccess:YES];
         }
+        else
+        {
+            [self popToViewController:[self.loginScreens firstObject]
+                             animated:YES];
+        }
     }];
 }
 

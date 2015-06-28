@@ -40,6 +40,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, strong) VEmailValidator *emailValidator;
 @property (nonatomic, strong) NSString *deviceToken;
 @property (nonatomic, strong) NSString *userToken;
+@property (nonatomic, strong) NSString *resetPasswordEmail;
 
 @end
 
@@ -308,6 +309,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
      {
          [hud hide:YES];
          self.deviceToken = resultObjects[0];
+         self.resetPasswordEmail = email;
          completion(YES, nil);
      }
                                                        failBlock:^(NSOperation *operation, NSError *error)
@@ -402,7 +404,20 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                                   successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          [hud hide:YES];
-         completion(YES, nil);
+         [self loginWithEmail:self.resetPasswordEmail
+                     password:password
+                   completion:^(BOOL success, NSError *error)
+          {
+              if (success)
+              {
+                  completion(YES, nil);
+              }
+              else
+              {
+                  completion(NO, error);
+              }
+              
+          }];
      }
                                                      failBlock:^(NSOperation *operation, NSError *error)
      {
