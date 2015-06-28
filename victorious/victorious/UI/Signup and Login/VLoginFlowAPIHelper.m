@@ -416,7 +416,6 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
               {
                   completion(NO, error);
               }
-              
           }];
      }
                                                      failBlock:^(NSOperation *operation, NSError *error)
