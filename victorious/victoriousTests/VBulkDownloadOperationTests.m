@@ -116,42 +116,45 @@
     __block VBulkDownloadOperation *operation = [[VBulkDownloadOperation alloc] initWithURLs:urls
                                                                     completion:^(NSURL *originalURL, NSError *error, NSURLResponse *response, NSURL *downloadedFile)
     {
-        if ( [originalURL isEqual:url1] )
+        @synchronized(self)
         {
-            NSData *downloadedData = [NSData dataWithContentsOfURL:downloadedFile];
-            NSString *stringFromData = [[NSString alloc] initWithData:downloadedData encoding:NSUTF8StringEncoding];
-            XCTAssertEqualObjects( stringFromData, testBody1);
-            downloadedUrl1 = YES;
+            if ( [originalURL isEqual:url1] )
+            {
+                NSData *downloadedData = [NSData dataWithContentsOfURL:downloadedFile];
+                NSString *stringFromData = [[NSString alloc] initWithData:downloadedData encoding:NSUTF8StringEncoding];
+                XCTAssertEqualObjects( stringFromData, testBody1);
+                downloadedUrl1 = YES;
+            }
+            else if ( [originalURL isEqual:url2] )
+            {
+                NSData *downloadedData = [NSData dataWithContentsOfURL:downloadedFile];
+                NSString *stringFromData = [[NSString alloc] initWithData:downloadedData encoding:NSUTF8StringEncoding];
+                XCTAssertEqualObjects( stringFromData, testBody2);
+                downloadedUrl2 = YES;
+            }
+            else if ( [originalURL isEqual:url3] )
+            {
+                NSData *downloadedData = [NSData dataWithContentsOfURL:downloadedFile];
+                NSString *stringFromData = [[NSString alloc] initWithData:downloadedData encoding:NSUTF8StringEncoding];
+                XCTAssertEqualObjects( stringFromData, testBody3);
+                downloadedUrl3 = YES;
+            }
+            else if ( [originalURL isEqual:url4] )
+            {
+                NSData *downloadedData = [NSData dataWithContentsOfURL:downloadedFile];
+                NSString *stringFromData = [[NSString alloc] initWithData:downloadedData encoding:NSUTF8StringEncoding];
+                XCTAssertEqualObjects( stringFromData, testBody4);
+                downloadedUrl4 = YES;
+            }
+            else if ( [originalURL isEqual:url5] )
+            {
+                NSData *downloadedData = [NSData dataWithContentsOfURL:downloadedFile];
+                NSString *stringFromData = [[NSString alloc] initWithData:downloadedData encoding:NSUTF8StringEncoding];
+                XCTAssertEqualObjects( stringFromData, testBody5);
+                downloadedUrl5 = YES;
+            }
+            XCTAssertFalse(operation.isFinished);
         }
-        else if ( [originalURL isEqual:url2] )
-        {
-            NSData *downloadedData = [NSData dataWithContentsOfURL:downloadedFile];
-            NSString *stringFromData = [[NSString alloc] initWithData:downloadedData encoding:NSUTF8StringEncoding];
-            XCTAssertEqualObjects( stringFromData, testBody2);
-            downloadedUrl2 = YES;
-        }
-        else if ( [originalURL isEqual:url3] )
-        {
-            NSData *downloadedData = [NSData dataWithContentsOfURL:downloadedFile];
-            NSString *stringFromData = [[NSString alloc] initWithData:downloadedData encoding:NSUTF8StringEncoding];
-            XCTAssertEqualObjects( stringFromData, testBody3);
-            downloadedUrl3 = YES;
-        }
-        else if ( [originalURL isEqual:url4] )
-        {
-            NSData *downloadedData = [NSData dataWithContentsOfURL:downloadedFile];
-            NSString *stringFromData = [[NSString alloc] initWithData:downloadedData encoding:NSUTF8StringEncoding];
-            XCTAssertEqualObjects( stringFromData, testBody4);
-            downloadedUrl4 = YES;
-        }
-        else if ( [originalURL isEqual:url5] )
-        {
-            NSData *downloadedData = [NSData dataWithContentsOfURL:downloadedFile];
-            NSString *stringFromData = [[NSString alloc] initWithData:downloadedData encoding:NSUTF8StringEncoding];
-            XCTAssertEqualObjects( stringFromData, testBody5);
-            downloadedUrl5 = YES;
-        }
-        XCTAssertFalse(operation.isFinished);
     }];
     
     XCTestExpectation *operationFinishExpectation = [self expectationWithDescription:@"operation should finish"];

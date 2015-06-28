@@ -72,4 +72,10 @@ extern NSString * const VDataCacheBundleResourceExtension;
  */
 - (BOOL)hasCachedDataForID:(id<VDataCacheID>)identifier;
 
+/**
+ Given an NSSet of IDs, returns the subset
+ for which we don't have cached data.
+ */
+- (NSSet *)setOfIDsWithoutCachedDataFromIDSet:(NSSet *)setOfIDs;
+
 @end

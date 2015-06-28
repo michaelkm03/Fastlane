@@ -179,4 +179,20 @@ static NSString * const kDataCacheTestResourceName = @"VDataCacheTests";
     XCTAssertEqualObjects(data, dataOut);
 }
 
+- (void)testMissingSet
+{
+    uint8_t bytes[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    
+    NSString *identifier = [[NSUUID UUID] UUIDString];
+    NSData *data = [NSData dataWithBytes:bytes length:10];
+    
+    XCTAssert( [self.dataCache1 cacheData:data forID:identifier error:nil] );
+    
+    NSString *otherIdentifier = [[NSUUID UUID] UUIDString];
+    
+    NSSet *expected = [NSSet setWithObject:otherIdentifier];
+    NSSet *actual = [self.dataCache1 setOfIDsWithoutCachedDataFromIDSet:[NSSet setWithObjects:identifier, otherIdentifier, nil]];
+    XCTAssertEqualObjects(expected, actual);
+}
+
 @end

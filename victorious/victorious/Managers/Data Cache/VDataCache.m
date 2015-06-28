@@ -119,6 +119,19 @@ static NSString * const kCacheDirectoryName = @"VDataCache";
     return [[self localCacheURL] URLByAppendingPathComponent:[identifier identifierForDataCache]];
 }
 
+- (NSSet *)setOfIDsWithoutCachedDataFromIDSet:(NSSet *)setOfIDs
+{
+    NSMutableSet *returnValue = [[NSMutableSet alloc] initWithCapacity:setOfIDs.count];
+    for (id<VDataCacheID> identifier in setOfIDs)
+    {
+        if ( ![self hasCachedDataForID:identifier] )
+        {
+            [returnValue addObject:identifier];
+        }
+    }
+    return returnValue;
+}
+
 - (BOOL)preparePathForWritingWithError:(NSError **)error
 {
     if ( self.cacheLocationPrepared )
