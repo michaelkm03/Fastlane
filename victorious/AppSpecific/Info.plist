@@ -34,14 +34,6 @@
 				<string>fb664946900317058</string>
 			</array>
 		</dict>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>com.getvictorious.deeplinking.scheme</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>vapp1</string>
-			</array>
-		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>900</string>
