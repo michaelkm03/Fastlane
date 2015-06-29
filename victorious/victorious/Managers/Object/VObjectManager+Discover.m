@@ -27,19 +27,11 @@
         }
     };
     
-    VFailBlock fullFailure = ^(NSOperation *operation, NSError *error)
-    {
-        if ( fail != nil)
-        {
-            fail( operation, error );
-        }
-    };
-    
     return [self GET:@"/api/discover/users"
               object:nil
           parameters:nil
         successBlock:fullSuccess
-           failBlock:fullFailure];
+           failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)getSuggestedHashtags:(VSuccessBlock)success
