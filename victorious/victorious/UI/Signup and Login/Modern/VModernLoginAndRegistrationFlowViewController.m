@@ -259,9 +259,9 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     [self.loginFlowHelper selectedTwitterAuthorizationWithCompletion:^(BOOL success)
     {
         self.actionsDisabled = NO;
-        if (success)
+        if ( success )
         {
-            [self onAuthenticationFinishedWithSuccess:success];
+            [self continueRegistrationFlowAfterSocialRegistration];
         }
     }];
     
@@ -281,9 +281,9 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     [self.loginFlowHelper selectedFacebookAuthorizationWithCompletion:^(BOOL success)
     {
         self.actionsDisabled = NO;
-        if (success)
+        if ( success )
         {
-            [self onAuthenticationFinishedWithSuccess:success];
+            [self continueRegistrationFlowAfterSocialRegistration];
         }
         else
         {
@@ -502,6 +502,20 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     }
 }
 
+- (void)continueRegistrationFlowAfterSocialRegistration
+{
+    UIViewController *nextRegisterViewController = [self nextScreenInSocialRegistrationAfter:self.topViewController inArray:self.registrationScreens];
+    if ( nextRegisterViewController == nil )
+    {
+        [self onAuthenticationFinishedWithSuccess:YES];
+    }
+    else
+    {
+        [self pushViewController:nextRegisterViewController
+                        animated:YES];
+    }
+}
+
 - (void)onAuthenticationFinishedWithSuccess:(BOOL)success
 {
     if ( success )
@@ -518,6 +532,19 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
              self.completionBlock(success);
          }
      }];
+}
+
+- (UIViewController *)nextScreenInSocialRegistrationAfter:(UIViewController *)currentViewController inArray:(NSArray *)array
+{
+    for ( UIViewController *viewController in array )
+    {
+        id<VLoginFlowScreen> screen = (id<VLoginFlowScreen>)viewController;
+        if ( [screen respondsToSelector:@selector(displaysAfterSocialRegistration)] && [screen displaysAfterSocialRegistration] )
+        {
+            return viewController;
+        }
+    }
+    return nil;
 }
 
 - (UIViewController *)nextScreenAfter:(UIViewController *)viewController

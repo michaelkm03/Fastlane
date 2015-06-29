@@ -13,12 +13,12 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1374328719478033</string>
+				<string>fb664946900317058</string>
 			</array>
 		</dict>
 	</array>
 	<key>FacebookAppID</key>
-	<string>1374328719478033</string>
+	<string>664946900317058</string>
 	<key>FacebookDisplayName</key>
 	<string>VictoriousApp Dev</string>
 	<key>TWITTER_CONSUMER_KEY</key>

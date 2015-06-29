@@ -3,17 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "stream-gif.png"
+      "filename" : "D_gifIcon.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "stream-gif@2x.png"
+      "filename" : "D_gifIcon@2x.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "stream-gif@3x.png"
+      "filename" : "D_gifIcon@3x.png"
     }
   ],
   "info" : {
