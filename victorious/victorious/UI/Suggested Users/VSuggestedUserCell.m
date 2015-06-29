@@ -77,13 +77,7 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
     VContentThumbnailsDataSource *thumbnailsDataSource = [[[self class] dataSources] objectForKey:user.remoteId];
     if ( thumbnailsDataSource == nil )
     {
-        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VSequence *sequence, NSDictionary *bindings)
-                                  {
-                                      NSURL *url = [NSURL URLWithString:sequence.previewData];
-                                      return url != nil && url.absoluteString.length > 0;
-                                  }];
-        NSArray *recentSequences = [user.recentSequences.array filteredArrayUsingPredicate:predicate];
-        thumbnailsDataSource = [[VContentThumbnailsDataSource alloc] initWithSequences:recentSequences];
+        thumbnailsDataSource = [[VContentThumbnailsDataSource alloc] initWithSequences:user.recentSequences.array];
         [thumbnailsDataSource registerCellsWithCollectionView:self.thumbnailsViewController.collectionView];
         
         [[[self class] dataSources] setObject:thumbnailsDataSource forKey:user.remoteId];

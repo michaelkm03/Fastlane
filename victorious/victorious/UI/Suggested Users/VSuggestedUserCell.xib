@@ -55,6 +55,7 @@
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="HM5-U2-708" firstAttribute="leading" secondItem="NvH-FP-frQ" secondAttribute="trailing" constant="8" id="1f4-01-CpY"/>
                 <constraint firstAttribute="bottom" secondItem="qG7-rw-UBB" secondAttribute="bottom" constant="13" id="45n-jR-azw"/>
