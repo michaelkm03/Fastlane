@@ -46,15 +46,13 @@
 - (BOOL)displayCoachmarkViewInViewController:(UIViewController <VCoachmarkDisplayer> *)viewController;
 
 /**
-    Manually shows a coachmark in the provided view controller if possible.
-    This method uses the viewController's responder chain to find a suitable menu item to point to
-    when appropriate. To support this, this method must be called at or after viewDidAppear.
+    Manually shows a tooltip coachmark in the provided view controller if possible
  
     @param remoteID The ID of the coachmark you'd like to show
     @param viewController The view controller that will house the coachmark
     @param location of the view which the coachmark tooltip will point toward
   */
-- (void)triggerSpecificCoachmark:(NSString *)remoteID inViewController:(UIViewController *)viewController atLocation:(CGRect)location;
+- (void)triggerSpecificCoachmarkWithIdentifier:(NSString *)remoteID inViewController:(UIViewController *)viewController atLocation:(CGRect)location;
 
 /**
     Hides the coachmark view associated with the provided view controller.
