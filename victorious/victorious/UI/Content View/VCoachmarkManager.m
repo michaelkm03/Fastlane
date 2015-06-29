@@ -110,6 +110,9 @@ static const CGFloat kAnimationVerticalOffset = 10.0f;
                 coachmark.animationDelay = 0.0f;
             }
             
+            // Hide any current coachmark before showing active coachmark
+            [self hideCoachmarkViewInViewController:viewController animated:YES];
+            
             CGFloat width = CGRectGetWidth(viewController.view.bounds) - coachmark.horizontalInset * 2;
             [self addTooltipCoachmark:coachmark withWidth:width toViewController:viewController atLocation:location];
         }
