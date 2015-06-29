@@ -174,7 +174,6 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
                               [player play];
                           });
                       }];
-                                          
                      break;
                  }
                  case AVPlayerStatusUnknown:
