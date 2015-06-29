@@ -36,7 +36,6 @@ static const CGFloat kFloatProfileImageSize = 57.0f;
 @implementation VFloatingUserProfileHeaderViewController
 
 @synthesize loading = _loading;
-@synthesize followersButton = _followersButton;
 
 - (void)loadView
 {

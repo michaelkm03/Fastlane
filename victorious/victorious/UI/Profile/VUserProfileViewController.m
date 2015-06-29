@@ -215,6 +215,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [self attemptToRefreshProfileUI];
     
     self.navigationViewfloatingController.animationEnabled = YES;
+    
+    self.navigationItem.title = self.title;
 }
 
 - (void)viewDidLayoutSubviews
