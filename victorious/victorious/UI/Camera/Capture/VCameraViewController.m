@@ -348,6 +348,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     VWorkspaceFlowControllerContext initialContext = VWorkspaceFlowControllerContextContentCreation;
     NSNumber *injectedContext = [self.dependencyManager numberForKey:VWorkspaceFlowControllerContextKey];
     initialContext = (injectedContext != nil) ? [injectedContext integerValue] : initialContext;
+    self.captureController.context = initialContext;
     
     VPermission *cameraPermission;
     if (initialContext == VWorkspaceFlowControllerContextContentCreation)
