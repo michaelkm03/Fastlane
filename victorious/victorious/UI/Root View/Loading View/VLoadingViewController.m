@@ -19,7 +19,7 @@
 #import "VUser.h"
 #import "VReachability.h"
 #import "VTemplateDecorator.h"
-#import "VTemplateDownloadManager.h"
+#import "VTemplateDownloadOperation.h"
 #import "VUserManager.h"
 #import "VLaunchScreenProvider.h"
 #import "UIView+AutoLayout.h"
@@ -34,7 +34,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
 @property (nonatomic, weak) IBOutlet UILabel *reachabilityLabel;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *reachabilityLabelPositionConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *reachabilityLabelHeightConstraint;
-@property (nonatomic, strong) VTemplateDownloadManager *templateDownloadManager;
+@property (nonatomic, strong) VTemplateDownloadOperation *templateDownloadManager;
 
 @end
 
@@ -152,10 +152,11 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
 {
     VEnvironmentManager *environmentManager = [VEnvironmentManager sharedInstance];
     
-    self.templateDownloadManager = [[VTemplateDownloadManager alloc] initWithDownloader:[VObjectManager sharedManager]];
+    self.templateDownloadManager = [[VTemplateDownloadOperation alloc] initWithDownloader:[VObjectManager sharedManager] completion:nil];
     self.templateDownloadManager.templateCacheFileLocation = [self urlForTemplateCacheForEnvironment:[environmentManager currentEnvironment]];
     self.templateDownloadManager.templateLocationInBundle = [self urlForTemplateInBundleForEnvironment:[environmentManager currentEnvironment]];
     
+#if 0
     __weak typeof(self) weakSelf = self;
     [self.templateDownloadManager loadTemplateWithCompletion:^(NSDictionary *templateConfiguration)
     {
@@ -187,6 +188,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
             }
         });
     }];
+#endif
 }
 
 - (NSURL *)urlForTemplateCacheForEnvironment:(VEnvironment *)environment

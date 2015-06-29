@@ -251,8 +251,8 @@
 		039ED29E19C908F400305987 /* VVideoDownloadProgressIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ED29819C908F400305987 /* VVideoDownloadProgressIndicatorView.m */; };
 		03A058BA1AED7FB600CF39D1 /* VTemplateSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058B91AED7FB600CF39D1 /* VTemplateSerialization.m */; };
 		03A058BC1AED802400CF39D1 /* VTemplateSerializationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058BB1AED802400CF39D1 /* VTemplateSerializationTests.m */; };
-		03A058BF1AEF44D600CF39D1 /* VTemplateDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058BE1AEF44D600CF39D1 /* VTemplateDownloadManager.m */; };
-		03A058C11AEF44E200CF39D1 /* VTemplateDownloadManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058C01AEF44E200CF39D1 /* VTemplateDownloadManagerTests.m */; };
+		03A058BF1AEF44D600CF39D1 /* VTemplateDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058BE1AEF44D600CF39D1 /* VTemplateDownloadOperation.m */; };
+		03A058C11AEF44E200CF39D1 /* VTemplateDownloadOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058C01AEF44E200CF39D1 /* VTemplateDownloadOperationTests.m */; };
 		03A058C31AEF59E600CF39D1 /* templateCache.json in Resources */ = {isa = PBXBuildFile; fileRef = 03A058C21AEF59E600CF39D1 /* templateCache.json */; };
 		03A058C91AF05D8300CF39D1 /* VObjectManager+VTemplateDownloaderConformance.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058C81AF05D8300CF39D1 /* VObjectManager+VTemplateDownloaderConformance.m */; };
 		03A2AD971926B9460034EB80 /* UIViewController+ForceOrientationChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */; };
@@ -1491,9 +1491,9 @@
 		03A058B81AED7FB600CF39D1 /* VTemplateSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTemplateSerialization.h; sourceTree = "<group>"; };
 		03A058B91AED7FB600CF39D1 /* VTemplateSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateSerialization.m; sourceTree = "<group>"; };
 		03A058BB1AED802400CF39D1 /* VTemplateSerializationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateSerializationTests.m; sourceTree = "<group>"; };
-		03A058BD1AEF44D600CF39D1 /* VTemplateDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTemplateDownloadManager.h; sourceTree = "<group>"; };
-		03A058BE1AEF44D600CF39D1 /* VTemplateDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateDownloadManager.m; sourceTree = "<group>"; };
-		03A058C01AEF44E200CF39D1 /* VTemplateDownloadManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateDownloadManagerTests.m; sourceTree = "<group>"; };
+		03A058BD1AEF44D600CF39D1 /* VTemplateDownloadOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTemplateDownloadOperation.h; sourceTree = "<group>"; };
+		03A058BE1AEF44D600CF39D1 /* VTemplateDownloadOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateDownloadOperation.m; sourceTree = "<group>"; };
+		03A058C01AEF44E200CF39D1 /* VTemplateDownloadOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateDownloadOperationTests.m; sourceTree = "<group>"; };
 		03A058C21AEF59E600CF39D1 /* templateCache.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = templateCache.json; sourceTree = "<group>"; };
 		03A058C71AF05D8300CF39D1 /* VObjectManager+VTemplateDownloaderConformance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+VTemplateDownloaderConformance.h"; sourceTree = "<group>"; };
 		03A058C81AF05D8300CF39D1 /* VObjectManager+VTemplateDownloaderConformance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+VTemplateDownloaderConformance.m"; sourceTree = "<group>"; };
@@ -4024,8 +4024,8 @@
 				0386F88B1B390ADE00E8D459 /* VDownloadOperation.m */,
 				03A058C71AF05D8300CF39D1 /* VObjectManager+VTemplateDownloaderConformance.h */,
 				03A058C81AF05D8300CF39D1 /* VObjectManager+VTemplateDownloaderConformance.m */,
-				03A058BD1AEF44D600CF39D1 /* VTemplateDownloadManager.h */,
-				03A058BE1AEF44D600CF39D1 /* VTemplateDownloadManager.m */,
+				03A058BD1AEF44D600CF39D1 /* VTemplateDownloadOperation.h */,
+				03A058BE1AEF44D600CF39D1 /* VTemplateDownloadOperation.m */,
 				0386F8761B37E52500E8D459 /* VTemplatePackageManager.h */,
 				0386F8771B37E52500E8D459 /* VTemplatePackageManager.m */,
 				03A058B81AED7FB600CF39D1 /* VTemplateSerialization.h */,
@@ -5298,7 +5298,7 @@
 				F0804A6C1A892A5800A0E1A1 /* VTagStringFormatterTests.m */,
 				F0B390BC1A8535E300EE70C7 /* VTagTests.m */,
 				A7792FDD1AE8497200E2ECC1 /* VTemplateDecoratorTests.m */,
-				03A058C01AEF44E200CF39D1 /* VTemplateDownloadManagerTests.m */,
+				03A058C01AEF44E200CF39D1 /* VTemplateDownloadOperationTests.m */,
 				038C511D1B37CEF800A903C2 /* VTemplateImageSetTests.m */,
 				0386F8791B37E7FB00E8D459 /* VTemplatePackageManagerTests.m */,
 				03A058BB1AED802400CF39D1 /* VTemplateSerializationTests.m */,
@@ -7483,7 +7483,7 @@
 				D800A61A1AF01B6100F1A06A /* VCameraCoachMarkAnimator.m in Sources */,
 				A75C64A91ADDE00900245125 /* VTextFragmentsBuilder.swift in Sources */,
 				D85B70751B0EAF3F0038CA5B /* VFindInstagramFriendsViewController.m in Sources */,
-				03A058BF1AEF44D600CF39D1 /* VTemplateDownloadManager.m in Sources */,
+				03A058BF1AEF44D600CF39D1 /* VTemplateDownloadOperation.m in Sources */,
 				D8EC36E91AB3EC7600FB0CEB /* VAssetLoader.m in Sources */,
 				D85B70771B0EAF3F0038CA5B /* VSuggestedFriendsTableViewController.m in Sources */,
 				A7AEF9C71A83F2AD00A3D3A0 /* VLargeNumberFormatter.m in Sources */,
@@ -7830,7 +7830,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F0C83A3B1B0F9EF900A6EC1A /* VCoachmarkManagerTests.m in Sources */,
-				03A058C11AEF44E200CF39D1 /* VTemplateDownloadManagerTests.m in Sources */,
+				03A058C11AEF44E200CF39D1 /* VTemplateDownloadOperationTests.m in Sources */,
 				D80BAB571A688673003A3068 /* VNodeFetcherTests.m in Sources */,
 				A77AD4FB1A1FF33100142F24 /* VAlertControllerAdvancedTests.m in Sources */,
 				A70417631A365EE80042CABD /* VPurchaseRecordTests.m in Sources */,

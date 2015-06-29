@@ -1,12 +1,12 @@
 //
-//  VTemplateDownloadManagerTests.m
+//  VTemplateDownloadOperationTests.m
 //  victorious
 //
 //  Created by Josh Hinman on 4/25/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VTemplateDownloadManager.h"
+#import "VTemplateDownloadOperation.h"
 #import "VTemplateSerialization.h"
 
 #import <UIKit/UIKit.h>
@@ -83,11 +83,19 @@
 
 #pragma mark -
 
-@interface VTemplateDownloadManagerTests : XCTestCase
+@interface VTemplateDownloadOperationTests : XCTestCase
+
+@property (nonatomic, strong) NSOperationQueue *operationQueue;
 
 @end
 
-@implementation VTemplateDownloadManagerTests
+@implementation VTemplateDownloadOperationTests
+
+- (void)setUp
+{
+    [super setUp];
+    self.operationQueue = [[NSOperationQueue alloc] init];
+}
 
 - (void)testTemplateDownload
 {
@@ -96,13 +104,14 @@
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"Download manager should call its completion block"];
     
-    VTemplateDownloadManager *manager = [[VTemplateDownloadManager alloc] initWithDownloader:downloader];
-    [manager loadTemplateWithCompletion:^(NSDictionary *templateConfiguration)
+    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader
+                                                                                                completion:^(NSDictionary *templateConfiguration)
     {
         NSDictionary *expected = downloader.mockTemplateDictionary;
         XCTAssertEqualObjects(templateConfiguration, expected);
         [expectation fulfill];
     }];
+    [self.operationQueue addOperation:downloadOperation];
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
@@ -114,14 +123,15 @@
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"Download manager should call its completion block"];
     
-    VTemplateDownloadManager *manager = [[VTemplateDownloadManager alloc] initWithDownloader:[[VBasicTemplateDownloaderMock alloc] init]];
-    manager.timeout = 0.01;
-    manager.templateCacheFileLocation = templateFileURL;
-    [manager loadTemplateWithCompletion:^(NSDictionary *templateConfiguration)
+    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:[[VBasicTemplateDownloaderMock alloc] init]
+                                                                                                completion:^(NSDictionary *templateConfiguration)
     {
         XCTAssertEqualObjects(templateConfiguration, expectedTemplateConfiguration);
         [expectation fulfill];
     }];
+    downloadOperation.timeout = 0.01;
+    downloadOperation.templateCacheFileLocation = templateFileURL;
+    [self.operationQueue addOperation:downloadOperation];
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
@@ -136,13 +146,14 @@
     VBasicTemplateDownloaderMock *downloader = [[VBasicTemplateDownloaderMock alloc] init];
     downloader.mockError = [NSError errorWithDomain:@"bad" code:999 userInfo:nil];
     
-    VTemplateDownloadManager *manager = [[VTemplateDownloadManager alloc] initWithDownloader:downloader];
-    manager.templateCacheFileLocation = templateFileURL;
-    [manager loadTemplateWithCompletion:^(NSDictionary *templateConfiguration)
+    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader
+                                                                                      completion:^(NSDictionary *templateConfiguration)
     {
         XCTAssertEqualObjects(templateConfiguration, expectedTemplateConfiguration);
         [expectation fulfill];
     }];
+    downloadOperation.templateCacheFileLocation = templateFileURL;
+    [self.operationQueue addOperation:downloadOperation];
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
@@ -155,15 +166,16 @@
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"Download manager should call its completion block"];
     
-    VTemplateDownloadManager *manager = [[VTemplateDownloadManager alloc] initWithDownloader:[[VBasicTemplateDownloaderMock alloc] init]];
-    manager.timeout = 0.01;
-    manager.templateCacheFileLocation = templateCacheURL;
-    manager.templateLocationInBundle = templateBundleURL;
-    [manager loadTemplateWithCompletion:^(NSDictionary *templateConfiguration)
+    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:[[VBasicTemplateDownloaderMock alloc] init]
+                                                                                                completion:^(NSDictionary *templateConfiguration)
     {
         XCTAssertEqualObjects(templateConfiguration, expectedTemplateConfiguration);
         [expectation fulfill];
     }];
+    downloadOperation.timeout = 0.01;
+    downloadOperation.templateCacheFileLocation = templateCacheURL;
+    downloadOperation.templateLocationInBundle = templateBundleURL;
+    [self.operationQueue addOperation:downloadOperation];
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
@@ -177,9 +189,8 @@
     NSURL *templateCacheURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:[[NSUUID UUID] UUIDString]]];
     XCTestExpectation *expectation = [self expectationWithDescription:@"Download manager should call its completion block"];
     
-    VTemplateDownloadManager *manager = [[VTemplateDownloadManager alloc] initWithDownloader:downloader];
-    manager.templateCacheFileLocation = templateCacheURL;
-    [manager loadTemplateWithCompletion:^(NSDictionary *templateConfiguration)
+    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader
+                                                                                                completion:^(NSDictionary *templateConfiguration)
     {
         NSData *templateData = [NSData dataWithContentsOfURL:templateCacheURL];
         XCTAssertNotNil(templateData);
@@ -189,6 +200,8 @@
         
         [expectation fulfill];
     }];
+    downloadOperation.templateCacheFileLocation = templateCacheURL;
+    [self.operationQueue addOperation:downloadOperation];
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
@@ -209,15 +222,16 @@
         [successExpectation fulfill];
     };
     
-    VTemplateDownloadManager *manager = [[VTemplateDownloadManager alloc] initWithDownloader:downloader];
-    manager.templateCacheFileLocation = templateFileURL;
-    manager.timeout = 0.1;
-    [manager loadTemplateWithCompletion:^(NSDictionary *templateConfiguration)
+    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader
+                                                                                                completion:^(NSDictionary *templateConfiguration)
     {
         XCTAssertEqualObjects(templateConfiguration, expectedTemplateConfiguration);
         [callbackExpectation fulfill];
     }];
+    downloadOperation.templateCacheFileLocation = templateFileURL;
+    downloadOperation.timeout = 0.1;
     
+    [self.operationQueue addOperation:downloadOperation];
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 
@@ -229,14 +243,14 @@
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"Download manager should call its completion block"];
     
-    VTemplateDownloadManager *manager = [[VTemplateDownloadManager alloc] initWithDownloader:downloader];
-    manager.timeout = 0.01;
-    [manager loadTemplateWithCompletion:^(NSDictionary *templateConfiguration)
+    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader completion:^(NSDictionary *templateConfiguration)
     {
         NSDictionary *expected = downloader.mockTemplateDictionary;
         XCTAssertEqualObjects(templateConfiguration, expected);
         [expectation fulfill];
     }];
+    downloadOperation.timeout = 0.01;
+    [self.operationQueue addOperation:downloadOperation];
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
 

@@ -1,5 +1,5 @@
 //
-//  VTemplateDownloadManager.m
+//  VTemplateDownloadOperation.m
 //  victorious
 //
 //  Created by Josh Hinman on 4/25/15.
@@ -7,12 +7,12 @@
 //
 
 #import "VConstants.h"
-#import "VTemplateDownloadManager.h"
+#import "VTemplateDownloadOperation.h"
 #import "VTemplateSerialization.h"
 #import "VEnvironmentManager.h"
 #import "VSessionTimer.h"
 
-@interface VTemplateDownloadManager ()
+@interface VTemplateDownloadOperation ()
 
 @property (nonatomic, strong) dispatch_queue_t privateQueue;
 @property (nonatomic, strong) NSUUID *currentDownloadID;
@@ -23,27 +23,27 @@
 
 static const NSTimeInterval kDefaultTimeout = 5.0;
 
-@implementation VTemplateDownloadManager
+@implementation VTemplateDownloadOperation
 
-- (instancetype)initWithDownloader:(id<VTemplateDownloader>)downloader
+- (instancetype)initWithDownloader:(id<VTemplateDownloader>)downloader completion:(VTemplateLoadCompletion)completion
 {
     NSParameterAssert(downloader != nil);
     self = [super init];
     if ( self != nil )
     {
         _privateQueue = dispatch_queue_create("com.getvictorious.VTemplateDownloadManager", DISPATCH_QUEUE_SERIAL);
+        _completion = [completion copy];
         _downloader = downloader;
         _timeout = kDefaultTimeout;
     }
     return self;
 }
 
-- (void)loadTemplateWithCompletion:(VTemplateLoadCompletion)completion
+- (void)main
 {
     NSParameterAssert(self.downloader != nil);
     dispatch_async(self.privateQueue, ^(void)
     {
-        self.completion = completion;
         self.retryInterval = self.timeout;
         
         __weak typeof(self) weakSelf = self;

@@ -1,5 +1,5 @@
 //
-//  VTemplateDownloadManager.h
+//  VTemplateDownloadOperation.h
 //  victorious
 //
 //  Created by Josh Hinman on 4/25/15.
@@ -36,7 +36,7 @@ typedef void (^VTemplateLoadCompletion)(NSDictionary *templateConfiguration);
  this class will provide one that was included in the app
  bundle.
  */
-@interface VTemplateDownloadManager : NSObject
+@interface VTemplateDownloadOperation : NSOperation
 
 /**
  The location on disk where the most recently
@@ -64,12 +64,6 @@ typedef void (^VTemplateLoadCompletion)(NSDictionary *templateConfiguration);
 /**
  Initializes a new template download manager with a downloader
  */
-- (instancetype)initWithDownloader:(id<VTemplateDownloader>)downloader NS_DESIGNATED_INITIALIZER;
-
-/**
- Loads this app's template. The completion block 
- will be called on an arbitrary thread.
- */
-- (void)loadTemplateWithCompletion:(VTemplateLoadCompletion)completion;
+- (instancetype)initWithDownloader:(id<VTemplateDownloader>)downloader completion:(VTemplateLoadCompletion)completion NS_DESIGNATED_INITIALIZER;
 
 @end
