@@ -7,7 +7,9 @@
 //
 
 #import "VConstants.h"
+#import "VDataCache.h"
 #import "VTemplateDownloadOperation.h"
+#import "VTemplatePackageManager.h"
 #import "VTemplateSerialization.h"
 #import "VEnvironmentManager.h"
 #import "VSessionTimer.h"
@@ -47,6 +49,7 @@ static const NSTimeInterval kDefaultTimeout = 5.0;
 
 - (void)main
 {
+    NSParameterAssert(self.templateConfigurationCacheID != nil);
     self.retryInterval = self.timeout;
     
     __weak typeof(self) weakSelf = self;
@@ -115,31 +118,26 @@ static const NSTimeInterval kDefaultTimeout = 5.0;
 
 - (void)saveTemplateToCache:(NSData *)templateData
 {
-    if ( self.templateCacheFileLocation != nil )
-    {
-        [templateData writeToURL:self.templateCacheFileLocation atomically:YES];
-    }
+    NSParameterAssert(templateData != nil);
+    [self.dataCache cacheData:templateData forID:self.templateConfigurationCacheID error:nil];
 }
 
 - (void)loadTemplateFromCache
 {
-    NSData *templateData = [NSData dataWithContentsOfURL:self.templateCacheFileLocation];
+    NSData *templateData = [self.dataCache cachedDataForID:self.templateConfigurationCacheID];
     if ( templateData == nil )
     {
-        [self loadTemplateFromBundle];
         return;
     }
     
     NSDictionary *template = [VTemplateSerialization templateConfigurationDictionaryWithData:templateData];
-    [self notifyDelegateWithTemplateConfiguration:template];
-}
-
-- (void)loadTemplateFromBundle
-{
-    NSData *templateData = [NSData dataWithContentsOfURL:self.templateLocationInBundle];
-    if ( templateData != nil )
+    
+    VTemplatePackageManager *packageManager = [[VTemplatePackageManager alloc] initWithTemplateJSON:template];
+    NSSet *urls = [packageManager referencedURLs];
+    NSSet *missingURLs = [self.dataCache setOfIDsWithoutCachedDataFromIDSet:urls];
+    
+    if ( missingURLs.count == 0 )
     {
-        NSDictionary *template = [VTemplateSerialization templateConfigurationDictionaryWithData:templateData];
         [self notifyDelegateWithTemplateConfiguration:template];
     }
 }

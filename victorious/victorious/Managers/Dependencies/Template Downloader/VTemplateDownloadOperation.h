@@ -48,6 +48,9 @@ typedef void (^VTemplateDownloaderCompletion)(NSData *templateData, NSError *err
 
 #pragma mark -
 
+@class VDataCache;
+@protocol VDataCacheID;
+
 /**
  Provides a fresh, piping-hot template straight off the wire
  when available, otherwise falls back on the most recently
@@ -58,16 +61,17 @@ typedef void (^VTemplateDownloaderCompletion)(NSData *templateData, NSError *err
 @interface VTemplateDownloadOperation : NSOperation
 
 /**
- The location on disk where the most recently
- downloaded template will be stored.
+ An instance of VDataCache used for storing & retrieving template data.
+ If this is not set, there is a suitable default that will be used.
  */
-@property (nonatomic, copy) NSURL *templateCacheFileLocation;
+@property (nonatomic, strong) VDataCache *dataCache;
 
 /**
- The location within the app bundle where a last-
- resort copy of the template can be found.
+ The VDataCacheID that will be used to store & retrieve the
+ template configuration in the instance of VDataCache
+ provided in the dataCache property.
  */
-@property (nonatomic, copy) NSURL *templateLocationInBundle;
+@property (nonatomic, copy) id<VDataCacheID> templateConfigurationCacheID;
 
 /**
  The downloader that was provided at initialization time
