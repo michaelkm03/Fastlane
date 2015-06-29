@@ -372,6 +372,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
              {
                  self.userDeniedPermissionsPrePrompt = NO;
                  startCapture(NO);
+                 [self setFrontFacingCamera];
              }
              else
              {
@@ -448,6 +449,46 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     };
     
     return startCapture;
+}
+
+- (void)setFrontFacingCamera
+{
+    if (self.captureController.devices.count > 1)
+    {
+        AVCaptureDevice *newDevice;
+        // Sets the front facing camera
+        newDevice = self.captureController.devices[1];
+    
+        [self replacePreviewViewWithSnapshot];
+        [MBProgressHUD showHUDAddedTo:self.previewSnapshot animated:YES];
+        __typeof(self) __weak weakSelf = self;
+        self.state = VCameraViewControllerStateInitializingHardware;
+        [self.captureController setCurrentDevice:newDevice withCompletion:^(NSError *error)
+         {
+             __typeof(weakSelf) strongSelf = weakSelf;
+             if (strongSelf)
+             {
+                 dispatch_async(dispatch_get_main_queue(), ^(void)
+                                {
+                                    [MBProgressHUD hideAllHUDsForView:strongSelf.previewSnapshot animated:NO];
+                                    
+                                    [UIView animateWithDuration:kAnimationDuration
+                                                     animations:^(void)
+                                     {
+                                         strongSelf.previewSnapshot.alpha = 0.0f;
+                                         strongSelf.previewView.alpha = 1.0f;
+                                         [strongSelf configureFlashButton];
+                                     }
+                                                     completion:^(BOOL finished)
+                                     {
+                                         [strongSelf restoreLivePreview];
+                                         strongSelf.state = VCameraViewControllerStateDefault;
+                                     }];
+                                    [strongSelf updateOrientation];
+                                });
+             }
+         }];
+    }
 }
 
 #pragma mark - Property Accessors
