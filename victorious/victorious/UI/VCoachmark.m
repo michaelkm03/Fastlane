@@ -22,6 +22,7 @@ static NSString * const kToastVerticalLocationBottomKey = @"bottom";
 
 static const CGFloat kAnimationDelay = 1.0f;
 static const CGFloat kCoachmarkHorizontalInset = 24.0f;
+static const CGFloat kCoachmarkVerticalInset = 5.0f;
 
 @implementation VCoachmark
 
@@ -43,6 +44,7 @@ static const CGFloat kCoachmarkHorizontalInset = 24.0f;
         _hasBeenShown = NO;
         _animationDelay = kAnimationDelay;
         _horizontalInset = kCoachmarkHorizontalInset;
+        _verticalInset = kCoachmarkVerticalInset;
     }
     return self;
 }

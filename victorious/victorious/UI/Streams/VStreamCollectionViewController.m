@@ -614,7 +614,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
          if ( authorized )
          {
              CGRect likeButtonFrame = [view convertRect:view.bounds toView:self.view];
-             [[self.dependencyManager coachmarkManager] triggerSpecificCoachmark:kLikeButtonCoachmarkIdentifier onViewController:self atLocation:likeButtonFrame];
+             [[self.dependencyManager coachmarkManager] triggerSpecificCoachmark:kLikeButtonCoachmarkIdentifier inViewController:self atLocation:likeButtonFrame];
              
              [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
                                                        successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)

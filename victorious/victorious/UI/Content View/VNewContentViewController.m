@@ -751,6 +751,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)selectedLikeButton:(UIButton *)likeButton
 {
+    CGRect likeButtonFrame = [likeButton convertRect:likeButton.bounds toView:self.view];
+    [[self.dependencyManager coachmarkManager] triggerSpecificCoachmark:kLikeButtonCoachmarkIdentifier inViewController:self atLocation:likeButtonFrame];
+    
     likeButton.enabled = NO;
     [self.sequenceActionController likeSequence:self.viewModel.sequence fromViewController:self completion:^(BOOL success)
      {

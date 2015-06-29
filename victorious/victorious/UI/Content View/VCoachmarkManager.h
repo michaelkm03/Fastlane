@@ -52,8 +52,9 @@
  
     @param remoteID The ID of the coachmark you'd like to show
     @param viewController The view controller that will house the coachmark
+    @param location of the view which the coachmark tooltip will point toward
   */
-- (void)triggerSpecificCoachmark:(NSString *)remoteID onViewController:(UIViewController *)viewController atLocation:(CGRect)location;
+- (void)triggerSpecificCoachmark:(NSString *)remoteID inViewController:(UIViewController *)viewController atLocation:(CGRect)location;
 
 /**
     Hides the coachmark view associated with the provided view controller.
