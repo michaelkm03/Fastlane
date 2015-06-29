@@ -31,6 +31,13 @@
  */
 - (void)onContinue:(id)sender;
 
+/**
+ * Indicates to the registration flow controller whether this screen should be displayed
+ * after a successul sign up with Facebook or Twitter.  If not implemented, the registration
+ * flow will skip this screen.
+ */
+- (BOOL)displaysAfterSocialRegistration;
+
 @end
 
 @protocol VLoginFlowControllerDelegate <NSObject>

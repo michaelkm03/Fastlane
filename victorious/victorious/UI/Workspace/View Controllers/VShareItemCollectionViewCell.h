@@ -33,10 +33,16 @@ typedef NS_ENUM(NSInteger, VShareItemCellState)
     @property menuItem The share menu item that this cell should represent.
     @property dependencyManager The dependency manager that will style this cell.
  */
-- (void)populateWithShareMenuItem:(VShareMenuItem *)menuItem andDependencyManager:(VDependencyManager *)dependencyManager;
+- (void)populateWithShareMenuItem:(VShareMenuItem *)menuItem andBackgroundColor:(UIColor *)backgroundColor;
+
+/**
+    Sets the background color of the cell and it's share button appropriately based on the provided background color.
+ 
+    @property backgroundColor The background color that should be used to color the cell appropriately.
+ */
+- (void)updateToBackgroundColor:(UIColor *)backgroundColor;
 
 @property (nonatomic, assign) VShareItemCellState state; ///< The current state of this cell.
-@property (nonatomic, strong) VDependencyManager *dependencyManager; ///< The dependency manager used to style this cell.
 @property (nonatomic, readonly) VShareMenuItem *shareMenuItem; ///< The share menu item that this cell represents.
 
 @end

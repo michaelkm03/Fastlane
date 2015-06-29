@@ -490,16 +490,7 @@ static const NSInteger kDefaultPageSize = 40;
     
     VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        if ( pageType == VPageTypeFirst )
-        {
-            [sequence removeLikers:sequence.likers];
-        }
-        
-        for (VUser *liker in resultObjects)
-        {
-            VUser *user = (VUser *)[sequence.managedObjectContext objectWithID:liker.objectID];
-            [sequence addLikersObject:user];
-        }
+        [sequence addLikers:[NSSet setWithArray:resultObjects]];
         
         if ( success != nil )
         {

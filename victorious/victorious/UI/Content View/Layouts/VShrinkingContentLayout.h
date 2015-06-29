@@ -25,4 +25,9 @@ static const CGFloat VShrinkingContentLayoutMinimumContentHeight = 125.0f;
  */
 @interface VShrinkingContentLayout : UICollectionViewFlowLayout
 
+/**
+ *  How close the collection view is to the lock point relative to the catch point.
+ */
+- (CGFloat)percentCloseToLockPointFromCatchPoint;
+
 @end
