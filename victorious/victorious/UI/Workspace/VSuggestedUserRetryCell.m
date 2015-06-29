@@ -13,6 +13,7 @@
 
 static NSString * const kTextTitleColorKey = @"color.text.label1";
 static NSString * const kBackgroundKey = @"background.detail";
+static CGFloat const kHighlightedAlpha = 0.7f;
 
 @interface VSuggestedUserRetryCell ()
 
@@ -50,6 +51,18 @@ static NSString * const kBackgroundKey = @"background.detail";
         self.loadStateLabel.textColor = textColor;
         [self.tapToRetryButton setTitleColor:textColor forState:UIControlStateNormal];
     }
+}
+
+- (void)setHighlighted:(BOOL)highlighted
+{
+    if ( highlighted == self.highlighted )
+    {
+        return;
+    }
+    
+    [super setHighlighted:highlighted];
+    CGFloat targetAlpha = highlighted ? kHighlightedAlpha : 1.0f;
+    self.alpha = targetAlpha;
 }
 
 - (void)setState:(VSuggestedUserRetryCellState)state

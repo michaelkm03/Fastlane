@@ -37,14 +37,14 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
 
 @implementation VSuggestedUserCell
 
-+ (NSCache *)dataSourcesCache
++ (NSMutableDictionary *)dataSources
 {
-    static NSCache *_dataSourcesCache = nil;
-    if ( !_dataSourcesCache )
+    static NSMutableDictionary *_dataSources = nil;
+    if ( _dataSources == nil )
     {
-        _dataSourcesCache = [[NSCache alloc] init];
+        _dataSources = [[NSMutableDictionary alloc] init];
     }
-    return _dataSourcesCache;
+    return _dataSources;
 }
 
 - (void)awakeFromNib
@@ -74,7 +74,7 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
     self.usernameTextView.text = _user.name;
     self.userTagLineTextView.text = _user.tagline;
     
-    VContentThumbnailsDataSource *thumbnailsDataSource = [[[self class] dataSourcesCache] objectForKey:user.remoteId];
+    VContentThumbnailsDataSource *thumbnailsDataSource = [[[self class] dataSources] objectForKey:user.remoteId];
     if ( thumbnailsDataSource == nil )
     {
         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VSequence *sequence, NSDictionary *bindings)
@@ -84,11 +84,11 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
                                   }];
         NSArray *recentSequences = [user.recentSequences.array filteredArrayUsingPredicate:predicate];
         thumbnailsDataSource = [[VContentThumbnailsDataSource alloc] initWithSequences:recentSequences];
-        self.thumbnailsViewController.collectionView.dataSource = thumbnailsDataSource;
         [thumbnailsDataSource registerCellsWithCollectionView:self.thumbnailsViewController.collectionView];
         
-        [[[self class] dataSourcesCache] setObject:thumbnailsDataSource forKey:user.remoteId];
+        [[[self class] dataSources] setObject:thumbnailsDataSource forKey:user.remoteId];
     }
+    self.thumbnailsViewController.collectionView.dataSource = thumbnailsDataSource;
     
     if ( _user.pictureUrl != nil )
     {

@@ -14,6 +14,7 @@
 #import "VAppInfo.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "VLinearGradientView.h"
+#import "VSuggestedUserRetryCell.h"
 
 static NSString * const VSuggestedUsersPromptKey    = @"prompt";
 
@@ -194,6 +195,30 @@ static NSString * const VSuggestedUsersPromptKey    = @"prompt";
     if ( self.suggestedUsersDataSource.isDisplayingRetryCell )
     {
         [self refreshSuggestedUsers];
+    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self updateRetryCellToHighlighted:YES];
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self updateRetryCellToHighlighted:NO];
+}
+
+- (void)updateRetryCellToHighlighted:(BOOL)highlighted
+{
+    if ( self.suggestedUsersDataSource.isDisplayingRetryCell )
+    {
+        for ( UICollectionViewCell *cell in self.collectionView.visibleCells )
+        {
+            if ( [cell isKindOfClass:[VSuggestedUserRetryCell class]] )
+            {
+                [cell setHighlighted:highlighted];
+            }
+        }
     }
 }
 

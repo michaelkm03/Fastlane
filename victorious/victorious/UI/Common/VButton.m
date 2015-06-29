@@ -8,6 +8,7 @@
 
 #import "VButton.h"
 #import "UIColor+VBrightness.h"
+#import "UIView+AutoLayout.h"
 
 static const CGFloat kCornderRadius                 = 3.0f;
 static const CGFloat kBorderWidth                   = 1.5f;
@@ -34,7 +35,7 @@ static const UIEdgeInsets kLabelEdgeInsets = { 0, 10, 0, 10 };
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
     self = [super initWithCoder:coder];
-    if (self)
+    if ( self != nil )
     {
         [self commonInit];
     }
@@ -44,7 +45,7 @@ static const UIEdgeInsets kLabelEdgeInsets = { 0, 10, 0, 10 };
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self)
+    if ( self != nil )
     {
         [self commonInit];
     }
@@ -60,8 +61,8 @@ static const UIEdgeInsets kLabelEdgeInsets = { 0, 10, 0, 10 };
         {
             self.activityIndicator.color = self.activityIndicatorTintColor;
         }
-        [self updateActivityIndicatorCenter];
         [self addSubview:_activityIndicator];
+        [self v_addCenterToParentContraintsToSubview:_activityIndicator];
         [self.activityIndicator startAnimating];
         self.activityIndicator.alpha = 0.0f;
     }
@@ -227,17 +228,6 @@ static const UIEdgeInsets kLabelEdgeInsets = { 0, 10, 0, 10 };
 - (CGFloat)cornerRadius
 {
     return self.layer.cornerRadius;
-}
-
-- (void)setBounds:(CGRect)bounds
-{
-    [super setBounds:bounds];
-    [self updateActivityIndicatorCenter];
-}
-
-- (void)updateActivityIndicatorCenter
-{
-    self.activityIndicator.center = CGPointMake(CGRectGetWidth(self.bounds) / 2.0, CGRectGetHeight(self.bounds) / 2.0);
 }
 
 - (void)applyAnimatedHighlight:(BOOL)highlighted
