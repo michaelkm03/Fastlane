@@ -131,6 +131,13 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     [self.passwordTextField becomeFirstResponder];
 }
 
+#pragma mark - VLoginFlowScreen
+
+- (void)onContinue:(id)sender
+{
+    [self changePassword];
+}
+
 #pragma mark - VBackgroundContainer
 
 - (UIView *)backgroundContainerView

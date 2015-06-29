@@ -23,6 +23,8 @@
 #import "VPrivacyPoliciesViewController.h"
 #import "VEnterProfilePictureCameraViewController.h"
 #import "VLoginFlowControllerDelegate.h"
+#import "UIAlertController+VSimpleAlert.h"
+#import "VModernResetPasswordViewController.h"
 
 static NSString * const kRegistrationScreens = @"registrationScreens";
 static NSString * const kLoginScreens = @"loginScreens";
@@ -422,8 +424,9 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
         if (success)
         {
             // show change password screen.
-            UIViewController *changePasswordScreen = [welf.dependencyManager viewControllerForKey:@"changePasswordScreen"];
+            VModernResetPasswordViewController *changePasswordScreen = (VModernResetPasswordViewController *)[welf.dependencyManager viewControllerForKey:@"changePasswordScreen"];
             [welf setDelegateForScreensInArray:@[changePasswordScreen]];
+            [welf configureFlowNavigationItemWithScreen:changePasswordScreen];
             [welf pushViewController:changePasswordScreen
                             animated:YES];
         }
@@ -446,8 +449,12 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
         }
         else
         {
-            [self popToViewController:[self.loginScreens firstObject]
-                             animated:YES];
+            UIAlertController *alert = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"ResetPasswordErrorFailTitle", nil)
+                                                                                 message:NSLocalizedString(@"ResetPasswordErrorFailMessage", nil)
+                                                                    andCancelButtonTitle:NSLocalizedString(@"OK", nil)];
+            [self presentViewController:alert animated:YES completion:nil];
+            
+            [self popToRootViewControllerAnimated:YES];
         }
     }];
 }
