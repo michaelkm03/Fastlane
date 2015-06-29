@@ -27,10 +27,10 @@
 // These values must match the constraint values in interface builder
 static const CGFloat kSleekCellHeaderHeight = 50.0f;
 static const CGFloat kSleekCellActionViewHeight = 48.0f;
-static const CGFloat kCountsTextViewHeight = 29.0f;
 static const CGFloat kHiddenCaptionsMarginTop = 10.0f;
 static const CGFloat kCaptionToPreviewVerticalSpacing = 7.0f;
 static const CGFloat kMaxCaptionTextViewHeight = 200.0f;
+static const CGFloat kCountsTextViewMinHeight = 29.0f;
 static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
 
 @interface VSleekStreamCollectionCell () <VBackgroundContainer, CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate>
@@ -93,7 +93,13 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
              CGFloat previewHeight =  size.width  / [sequence previewAssetAspectRatio];
              return CGSizeMake( 0.0f, previewHeight );
          }];
-        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kCountsTextViewHeight)];
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
+         {
+             CGFloat textWidth = size.width - kCaptionMargins.left - kCaptionMargins.right;
+             VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
+             NSDictionary *attributes = [[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager];
+             return CGSizeMake( 0.0f, MAX( kCountsTextViewMinHeight, [@"" frameSizeForWidth:textWidth andAttributes:attributes].height ) );
+         }];
         [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kSleekCellActionViewHeight)];
     }
     return collection;
@@ -142,9 +148,14 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
         [self.captionTextView setDependencyManager:dependencyManager];
     }
     
-    UIFont *font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
-    UIColor *textColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-    self.countsTextView.textAttributes = @{ NSFontAttributeName: font, NSForegroundColorAttributeName: textColor };
+    [self.countsTextView setTextAttributes:[[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager]];
+}
+
++ (NSDictionary *)sequenceCountsAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    UIFont *font = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+    UIColor *textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    return @{ NSFontAttributeName: font, NSForegroundColorAttributeName: textColor };
 }
 
 #pragma mark - Property Accessors
