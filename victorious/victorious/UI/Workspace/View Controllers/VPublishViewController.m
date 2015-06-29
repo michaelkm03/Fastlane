@@ -594,19 +594,34 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         return;
     }
     
-    __weak VPublishViewController *weakSelf = self;
-    void (^retryBlock)(UIAlertAction *) = ^(UIAlertAction *action)
+    NSArray *actions;
+    NSString *alertMessage;
+    if ( shareItemCell.shareMenuItem.shareType == VShareTypeFacebook && [error.domain isEqualToString:VFacebookManagerErrorDomain] )
     {
-        [weakSelf shareCollectionViewSelectedShareItemCell:shareItemCell];
-    };
-    
+        //This CAN signal that we don't have publish permissions for facebook, don't prompt the user to retry.
+        alertMessage = NSLocalizedString(@"We failed to retrieve publish permissions.", nil);
+        actions = @[ [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"") style:UIAlertActionStyleDefault handler:nil] ];
+    }
+    else
+    {
+        //We encountered a social network API error, allow the user to retry.
+        alertMessage = NSLocalizedString(@"Sorry, we were having some trouble on our end. Please retry.", @"");
+        __weak VPublishViewController *weakSelf = self;
+        void (^retryBlock)(UIAlertAction *) = ^(UIAlertAction *action)
+        {
+            [weakSelf shareCollectionViewSelectedShareItemCell:shareItemCell];
+        };
+        UIAlertAction *retryAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Retry", @"") style:UIAlertActionStyleDefault handler:retryBlock];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:nil];
+        actions = @[ cancelAction, retryAction ];
+    }
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
-                                                                             message:NSLocalizedString(@"Sorry, we were having some trouble on our end. Please retry.", @"")
+                                                                             message:alertMessage
                                                                       preferredStyle:UIAlertControllerStyleAlert];
-    
-    //We encountered a twitter API error
-    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:nil]];
-    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Retry", @"") style:UIAlertActionStyleDefault handler:retryBlock]];
+    for ( UIAlertAction *action in actions )
+    {
+        [alertController addAction:action];
+    }
     
     [self presentViewController:alertController animated:YES completion:nil];
 }

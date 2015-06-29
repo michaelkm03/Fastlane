@@ -10,6 +10,9 @@
 
 #import <FacebookSDK/FacebookSDK.h>
 
+NSString * const VFacebookManagerErrorDomain = @"facebookManagerError";
+CGFloat const VFacebookManagerErrorPublishPermissionsFailure = 1;
+
 static NSString * const kPublishActionsPermissionKey = @"publish_actions";
 static NSString * const kPublicProfilePermissionKey = @"public_profile";
 static NSString * const kUserFriendsPermissionKey = @"user_friends";
@@ -57,7 +60,7 @@ static NSString * const kEmailPermissionKey = @"email";
 {
     if (FBSession.activeSession.state == FBSessionStateOpen || FBSession.activeSession.state == FBSessionStateOpenTokenExtended)
     {
-        if (successBlock)
+        if ( successBlock != nil )
         {
             successBlock();
         }
@@ -66,7 +69,7 @@ static NSString * const kEmailPermissionKey = @"email";
     {
         [self loginWithBehavior:FBSessionLoginBehaviorUseSystemAccountIfPresent onSuccess:successBlock onFailure:failureBlock];
     }
-    else if (failureBlock)
+    else if ( failureBlock != nil )
     {
         failureBlock(nil);
     }
@@ -95,7 +98,7 @@ static NSString * const kEmailPermissionKey = @"email";
         {
             case FBSessionStateOpen:
             {
-                if (successBlock)
+                if ( successBlock != nil )
                 {
                     successBlock();
                 }
@@ -113,7 +116,7 @@ static NSString * const kEmailPermissionKey = @"email";
                     return;
                 }
                 
-                if (failureBlock)
+                if ( failureBlock != nil )
                 {
                     failureBlock(error);
                 }
@@ -134,7 +137,7 @@ static NSString * const kEmailPermissionKey = @"email";
 {
     if ([self grantedPublishPermission])
     {
-        if (successBlock)
+        if ( successBlock != nil )
         {
             successBlock();
         }
@@ -149,15 +152,16 @@ static NSString * const kEmailPermissionKey = @"email";
         {
             if ([self grantedPublishPermission])
             {
-                if (successBlock)
+                if ( successBlock != nil )
                 {
                     successBlock();
                 }
             }
             else
             {
-                if (failureBlock)
+                if ( failureBlock != nil )
                 {
+                    error = [self updatedPublishError:error];
                     failureBlock(error);
                 }
             }
@@ -172,20 +176,39 @@ static NSString * const kEmailPermissionKey = @"email";
         {
             if ([self grantedPublishPermission])
             {
-                if (successBlock)
+                if ( successBlock != nil )
                 {
                     successBlock();
                 }
             }
             else
             {
-                if (failureBlock)
+                if ( failureBlock != nil )
                 {
+                    error = [self updatedPublishError:error];
                     failureBlock(error);
                 }
             }
         }];
     }
+}
+
+- (NSError *)updatedPublishError:(NSError *)error
+{
+    if ( [self couldBePublishPermissionsFailureError:error] )
+    {
+        error = [NSError errorWithDomain:VFacebookManagerErrorDomain
+                                    code:VFacebookManagerErrorPublishPermissionsFailure
+                                userInfo:nil];
+    }
+    return error;
+}
+
+- (BOOL)couldBePublishPermissionsFailureError:(NSError *)error
+{
+    BOOL isFromFacebookSDK = [error.domain isEqualToString:FacebookSDKDomain];
+    BOOL hasPermissionsErrorCode = error.code == FBErrorLoginFailedOrCancelled;
+    return error == nil || ( isFromFacebookSDK && hasPermissionsErrorCode );
 }
 
 - (void)logout
@@ -259,7 +282,7 @@ static NSString * const kEmailPermissionKey = @"email";
                                                parameters:params
                                                   handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error)
          {
-             if (error)
+             if ( error != nil )
              {
                  // An error occurred, we need to handle the error
                  // See: https://developers.facebook.com/docs/ios/errors
@@ -277,7 +300,7 @@ static NSString * const kEmailPermissionKey = @"email";
                      // Handle the publish feed callback
                      NSDictionary *urlParams = RKDictionaryFromURLEncodedStringWithEncoding([resultURL query] , NSUTF8StringEncoding);
                      
-                     if (![urlParams valueForKey:@"post_id"])
+                     if ( [urlParams valueForKey:@"post_id"] == nil )
                      {
                          // User cancelled.
                          NSLog(@"User cancelled.");
