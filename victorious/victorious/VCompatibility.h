@@ -33,4 +33,9 @@
 #define VCGFLOAT_VALUE floatValue
 #endif
 
+#if !defined(CLAMP)
+#define CLAMP(MinValue, Value, MaxValue) MAX(MIN(Value, MaxValue), MinValue)
 #endif
+
+#endif
+

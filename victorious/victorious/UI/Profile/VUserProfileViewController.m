@@ -40,6 +40,7 @@
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VProfileDeeplinkHandler.h"
 #import "VInboxDeepLinkHandler.h"
+#import "VFloatingUserProfileHeaderViewController.h"
 
 #import "VUsersViewController.h"
 #import "VFollowersDataSource.h"
@@ -241,6 +242,9 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [self setupFloatingView];
     
     [self updateAccessoryItems];
+    
+    // Hide title if necessary
+    [self updateTitleVisibilityWithVerticalOffset:self.collectionView.contentOffset.y];
 }
 
 - (void)updateAccessoryItems
@@ -264,18 +268,29 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     if ( parent != nil && [self isDisplayingFloatingProfileHeader] && self.navigationViewfloatingController == nil )
     {
         UIView *floatingView = self.profileHeaderViewController.floatingProfileImage;
-        const CGFloat middle = CGRectGetMidY(self.profileHeaderViewController.view.bounds);
-        const CGFloat thresholdStart = middle - kScrollAnimationThreshholdHeight * 0.5f;
-        const CGFloat thresholdEnd = middle + kScrollAnimationThreshholdHeight * 0.5f;
         self.navigationViewfloatingController = [[VStreamNavigationViewFloatingController alloc] initWithFloatingView:floatingView
                                                                                          floatingParentViewController:parent
-                                                                                         verticalScrollThresholdStart:thresholdStart
-                                                                                           verticalScrollThresholdEnd:thresholdEnd];
+                                                                                         verticalScrollThresholdStart:[self floatingHeaderAnimationThresholdStart]
+                                                                                           verticalScrollThresholdEnd:[self floatingHeaderAnimationThresholdEnd]];
         self.navigationViewfloatingController.delegate = self;
         self.navigationViewfloatingController.animationEnabled = YES;
         self.navigationBarShouldAutoHide = NO;
         self.navigationItem.title = self.title;
     }
+}
+
+- (CGFloat)floatingHeaderAnimationThresholdStart
+{
+    const CGFloat middle = CGRectGetMidY(self.profileHeaderViewController.view.bounds);
+    const CGFloat thresholdStart = middle - kScrollAnimationThreshholdHeight * 0.5f;
+    return thresholdStart;
+}
+
+- (CGFloat)floatingHeaderAnimationThresholdEnd
+{
+    const CGFloat middle = CGRectGetMidY(self.profileHeaderViewController.view.bounds);
+    const CGFloat thresholdEnd = middle + kScrollAnimationThreshholdHeight * 0.5f;
+    return thresholdEnd;
 }
 
 #pragma mark -
@@ -652,6 +667,25 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
              [self.currentProfileCell layoutIfNeeded];
          }
                          completion:nil];
+    }
+}
+
+#pragma mark - Scroll
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [super scrollViewDidScroll:scrollView];
+    
+    // Hide title if necessary
+    [self updateTitleVisibilityWithVerticalOffset:scrollView.contentOffset.y];
+}
+
+- (void)updateTitleVisibilityWithVerticalOffset:(CGFloat)verticalOffset
+{
+    if ([self isDisplayingFloatingProfileHeader] && [self isCurrentUser])
+    {
+        BOOL shouldHideTitle = [(VStreamNavigationViewFloatingController *)self.navigationViewfloatingController visibility] > 0.4f;
+        self.navigationItem.title = shouldHideTitle ? @"" : [self.dependencyManager stringForKey:VDependencyManagerTitleKey];
     }
 }
 

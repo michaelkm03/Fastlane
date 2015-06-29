@@ -169,6 +169,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 
+@property (nonatomic, strong) VContentLikeButton *likeButton;
+
 @end
 
 @implementation VNewContentViewController
@@ -1289,6 +1291,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
                  const BOOL shouldHide = playControlsHidden && !welf.videoCell.isEndCardShowing;
                  welf.moreButton.alpha = shouldHide ? 0.0f : 1.0f;
                  welf.closeButton.alpha = shouldHide ? 0.0f : 1.0f;
+                 welf.likeButton.transform = playControlsHidden ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, -CGRectGetHeight(welf.likeButton.bounds));
              }];
             videoCell.endCardDelegate = self;
             videoCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
@@ -1360,6 +1363,12 @@ referenceSizeForHeaderInSection:(NSInteger)section
             [self.scrollPaginator scrollViewDidScroll:scrollView];
         }
     }
+
+    if (self.viewModel.type == VContentViewTypeVideo)
+    {
+        VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
+        self.likeButton.alpha = 1.0f - layout.percentCloseToLockPointFromCatchPoint;
+    }
 }
 
 #pragma mark - VContentVideoCellDelegate
@@ -1395,6 +1404,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                   VTrackingKeyLoadTime : @(videoLoadTime) };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
     }
+    [UIView animateWithDuration:0.5f
+                     animations:^
+     {
+         self.likeButton.alpha = 1.0f;
+     }];
 }
 
 - (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell withTotalTime:(CMTime)totalTime
@@ -1403,6 +1417,15 @@ referenceSizeForHeaderInSection:(NSInteger)section
     if (!self.enteringRealTimeComment)
     {
         self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:totalTime]];
+    }
+    
+    if (self.viewModel.videoViewModel.endCardViewModel != nil)
+    {
+        [UIView animateWithDuration:0.5f
+                         animations:^
+         {
+             self.likeButton.alpha = 0.0f;
+         }];
     }
 }
 
@@ -1593,18 +1616,22 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)configureLikeButtonWithContentCell:(VContentCell *)contentCell
 {
-    VContentLikeButton *likeButton = contentCell.likeButton;
-    if ( likeButton != nil )
+    self.likeButton = contentCell.likeButton;
+    if ( self.likeButton != nil )
     {
         VSequence *sequence = self.viewModel.sequence;
-        [likeButton addTarget:self action:@selector(selectedLikeButton:) forControlEvents:UIControlEventTouchUpInside];
+        [self.likeButton addTarget:self action:@selector(selectedLikeButton:) forControlEvents:UIControlEventTouchUpInside];
         
         self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
         [self.expressionsObserver startObservingWithSequence:self.viewModel.sequence onUpdate:^
          {
-             [likeButton setActive:sequence.isLikedByMainUser.boolValue];
-             [likeButton setCount:sequence.likeCount.integerValue];
+             [self.likeButton setActive:sequence.isLikedByMainUser.boolValue];
+             [self.likeButton setCount:sequence.likeCount.integerValue];
          }];
+        if (self.viewModel.type == VContentViewTypeVideo)
+        {
+            self.likeButton.alpha = 0.0f;
+        }
     }
 }
 
@@ -1737,6 +1764,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)replaySelectedFromEndCard:(VEndCardViewController *)endCardViewController
 {
+    self.likeButton.alpha = 1.0f;
     [self.videoCell seekToStart];
     [endCardViewController transitionOutAllWithBackground:YES completion:^
      {

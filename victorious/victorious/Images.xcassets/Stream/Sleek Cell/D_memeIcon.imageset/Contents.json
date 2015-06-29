@@ -3,17 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "stream-meme.png"
+      "filename" : "D_memeIcon.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "stream-meme@2x.png"
+      "filename" : "D_memeIcon@2x.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "stream-meme@3x.png"
+      "filename" : "D_memeIcon@3x.png"
     }
   ],
   "info" : {
