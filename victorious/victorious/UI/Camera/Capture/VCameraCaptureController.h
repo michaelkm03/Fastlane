@@ -10,6 +10,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "VWorkspaceContext.h"
+
 @class AVCaptureDevice, AVCaptureSession, VCameraVideoEncoder, VWorkspaceFlowController;
 
 extern NSString * const VCameraCaptureControllerErrorDomain;
@@ -105,6 +107,7 @@ extern const NSInteger VCameraCaptureControllerErrorCode;
 /*
  *  context of wherein the camera controller is being presented
  */
-@property (nonatomic, assign) NSInteger context;
+
+@property (nonatomic, assign) VWorkspaceFlowControllerContext context;
 
 @end
