@@ -21,8 +21,6 @@
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        NSLog( @"SUGGESTED USERS = %@", resultObjects );
-        
         if (success != nil)
         {
             success(operation, fullResponse, resultObjects);
@@ -31,8 +29,6 @@
     
     VFailBlock fullFailure = ^(NSOperation *operation, NSError *error)
     {
-        NSLog( @"SUGGESTED USERS FAILED" );
-        
         if ( fail != nil)
         {
             fail( operation, error );

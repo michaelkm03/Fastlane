@@ -24,47 +24,65 @@
     return @"Sequence";
 }
 
-+ (RKEntityMapping *)smallEntityMapping
++ (NSDictionary *)attributePropertyMapping
 {
-    RKEntityMapping *mapping = [RKEntityMapping mappingForEntityForName:[self entityName]
-                                                   inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
+    return @{ @"category"       :   VSelectorName(category),
+              @"id"             :   VSelectorName(remoteId),
+              @"created_by"     :   VSelectorName(createdBy),
+              @"name"           :   VSelectorName(name),
+              @"preview_image"  :   VSelectorName(previewImagesObject),
+              @"released_at"    :   VSelectorName(releasedAt),
+              @"description"    :   VSelectorName(sequenceDescription),
+              @"status"         :   VSelectorName(status),
+              @"is_complete"    :   VSelectorName(isComplete),
+              @"is_remix"       :   VSelectorName(isRemix),
+              @"is_repost"      :   VSelectorName(isRepost),
+              @"am_liking"      :   VSelectorName(isLikedByMainUser),
+              @"game_status"    :   VSelectorName(gameStatus),
+              @"permissions"    :   VSelectorName(permissionsMask),
+              @"name_embedded_in_content"   : VSelectorName(nameEmbeddedInContent),
+              @"sequence_counts.comments"   : VSelectorName(commentCount),
+              @"sequence_counts.gifs"   : VSelectorName(gifCount),
+              @"sequence_counts.memes"  :   VSelectorName(memeCount),
+              @"sequence_counts.reposts"    : VSelectorName(repostCount),
+              @"sequence_counts.likes"    : VSelectorName(likeCount),
+              @"preview.type"           : VSelectorName(previewType),
+              @"preview.data"           : VSelectorName(previewData),
+              @"stream_content_type" :   VSelectorName(streamContentType),
+              @"has_reposted"   :   VSelectorName(hasReposted),
+    };
+}
+
++ (RKEntityMapping *)simpleMapping
+{
+    NSDictionary *propertyMap = [self attributePropertyMapping];
+    
+    RKEntityMapping *mapping = [RKEntityMapping
+                                mappingForEntityForName:[self entityName]
+                                inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
+    
+    mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
+    
+    [mapping addAttributeMappingsFromDictionary:propertyMap];
     
     RKRelationshipMapping *previewAssetsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview.assets"
                                                                                               toKeyPath:VSelectorName(previewAssets)
                                                                                             withMapping:[VImageAsset entityMapping]];
+    
     [mapping addPropertyMapping:previewAssetsMapping];
+    
+    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(nodes) mapping:[VNode entityMapping]];
+    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(comments) mapping:[VComment entityMapping]];
+    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(user) mapping:[VUser simpleMapping]];
+    
+    [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"sequenceId"}];
     
     return mapping;
 }
 
 + (RKEntityMapping *)entityMapping
 {
-    NSDictionary *propertyMap = @{ @"category"       :   VSelectorName(category),
-                                   @"id"             :   VSelectorName(remoteId),
-                                   @"created_by"     :   VSelectorName(createdBy),
-                                   @"name"           :   VSelectorName(name),
-                                   @"preview_image"  :   VSelectorName(previewImagesObject),
-                                   @"released_at"    :   VSelectorName(releasedAt),
-                                   @"description"    :   VSelectorName(sequenceDescription),
-                                   @"status"         :   VSelectorName(status),
-                                   @"is_complete"    :   VSelectorName(isComplete),
-                                   @"is_remix"       :   VSelectorName(isRemix),
-                                   @"is_repost"      :   VSelectorName(isRepost),
-                                   @"am_liking"      :   VSelectorName(isLikedByMainUser),
-                                   @"game_status"    :   VSelectorName(gameStatus),
-                                   @"permissions"    :   VSelectorName(permissionsMask),
-                                   @"parent_user_id" :   VSelectorName(parentUserId),
-                                   @"name_embedded_in_content"   : VSelectorName(nameEmbeddedInContent),
-                                   @"sequence_counts.comments"   : VSelectorName(commentCount),
-                                   @"sequence_counts.gifs"   : VSelectorName(gifCount),
-                                   @"sequence_counts.memes"  :   VSelectorName(memeCount),
-                                   @"sequence_counts.reposts"    : VSelectorName(repostCount),
-                                   @"sequence_counts.likes"    : VSelectorName(likeCount),
-                                   @"preview.type"           : VSelectorName(previewType),
-                                   @"preview.data"           : VSelectorName(previewData),
-                                   @"stream_content_type" :   VSelectorName(streamContentType),
-                                   @"has_reposted"   :   VSelectorName(hasReposted),
-                                   };
+    NSDictionary *propertyMap = [self attributePropertyMapping];
 
     RKEntityMapping *mapping = [RKEntityMapping
                                 mappingForEntityForName:[self entityName]
@@ -83,7 +101,6 @@
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(nodes) mapping:[VNode entityMapping]];
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(comments) mapping:[VComment entityMapping]];
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(user) mapping:[VUser entityMapping]];
-    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(recentUser) mapping:[VUser entityMapping]];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"parent_user"
                                                                             toKeyPath:@"parentUser"
                                                                           withMapping:[VUser entityMapping]]];
