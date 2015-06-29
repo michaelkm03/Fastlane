@@ -938,6 +938,8 @@
 		F04DC6BA1AC724E500FBCD50 /* VCrossFadingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = F04DC6B91AC724E500FBCD50 /* VCrossFadingImageView.m */; };
 		F04DC6C01AC7791300FBCD50 /* VCrossFadingLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F04DC6BF1AC7791300FBCD50 /* VCrossFadingLabel.m */; };
 		F04DC6CA1AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F04DC6C91AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m */; };
+		F0537DA91B3DA8FE00152A2D /* VSuggestedUserRetryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0537DA81B3DA8FE00152A2D /* VSuggestedUserRetryCell.m */; };
+		F0537DAB1B3DAAF800152A2D /* VSuggestedUserRetryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0537DAA1B3DAAF800152A2D /* VSuggestedUserRetryCell.xib */; };
 		F05AA9821A83F6E3002F8917 /* VInlineSearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05AA97F1A83F6E3002F8917 /* VInlineSearchTableViewController.m */; };
 		F06F10C01AC1E11C0062E1D1 /* VCollectionsDirectoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10BF1AC1E11C0062E1D1 /* VCollectionsDirectoryCell.m */; };
 		F06F10C21AC1E13A0062E1D1 /* VCollectionsDirectoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F06F10C11AC1E13A0062E1D1 /* VCollectionsDirectoryCell.xib */; };
@@ -2771,6 +2773,9 @@
 		F04DC6BF1AC7791300FBCD50 /* VCrossFadingLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCrossFadingLabel.m; sourceTree = "<group>"; };
 		F04DC6C81AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBlurredMarqueeCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		F04DC6C91AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBlurredMarqueeCollectionViewFlowLayout.m; sourceTree = "<group>"; };
+		F0537DA71B3DA8FE00152A2D /* VSuggestedUserRetryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSuggestedUserRetryCell.h; sourceTree = "<group>"; };
+		F0537DA81B3DA8FE00152A2D /* VSuggestedUserRetryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSuggestedUserRetryCell.m; sourceTree = "<group>"; };
+		F0537DAA1B3DAAF800152A2D /* VSuggestedUserRetryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSuggestedUserRetryCell.xib; sourceTree = "<group>"; };
 		F05AA97E1A83F6E3002F8917 /* VInlineSearchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInlineSearchTableViewController.h; sourceTree = "<group>"; };
 		F05AA97F1A83F6E3002F8917 /* VInlineSearchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInlineSearchTableViewController.m; sourceTree = "<group>"; };
 		F05AA9841A8401D0002F8917 /* VUserTaggingTextStorageDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserTaggingTextStorageDelegate.h; sourceTree = "<group>"; };
@@ -4679,6 +4684,9 @@
 				A77951301B28F7F400D9DB0A /* VContentThumbnailsDataSource.m */,
 				A779512C1B28F61C00D9DB0A /* VContentThumbnailsViewController.h */,
 				A779512D1B28F61C00D9DB0A /* VContentThumbnailsViewController.m */,
+				F0537DA71B3DA8FE00152A2D /* VSuggestedUserRetryCell.h */,
+				F0537DA81B3DA8FE00152A2D /* VSuggestedUserRetryCell.m */,
+				F0537DAA1B3DAAF800152A2D /* VSuggestedUserRetryCell.xib */,
 				A779510F1B27DDB800D9DB0A /* VSuggestedUserCell.h */,
 				A77951101B27DDB800D9DB0A /* VSuggestedUserCell.m */,
 				A77951111B27DDB800D9DB0A /* VSuggestedUserCell.xib */,
@@ -6859,6 +6867,7 @@
 				036F38801A0C4DEA0014DF66 /* OpenSans-Bold.ttf in Resources */,
 				6617DB3A19F3EB53008C1FF5 /* VContentPollCell.xib in Resources */,
 				036F38881A0C4DEA0014DF66 /* PTSans-Narrow.ttf in Resources */,
+				F0537DAB1B3DAAF800152A2D /* VSuggestedUserRetryCell.xib in Resources */,
 				036F38761A0C4DEA0014DF66 /* Kreon-Regular.ttf in Resources */,
 				D8B88F991ABA93E400DBAEA0 /* workspaceTemplate.json in Resources */,
 				039B614A19F2166900CB2796 /* homeHeaderImage@2x.png in Resources */,
@@ -7325,6 +7334,7 @@
 				A7D707991A7C144C00D9993F /* VCountdownViewController.m in Sources */,
 				A7D7079F1A7C144C00D9993F /* VEndCardModel.m in Sources */,
 				D8B14E0819DA3B0B004D72D2 /* VShrinkingContentLayout.m in Sources */,
+				F0537DA91B3DA8FE00152A2D /* VSuggestedUserRetryCell.m in Sources */,
 				F0C83A581B161BF500A6EC1A /* VStreamItemPreviewView.m in Sources */,
 				D85B709B1B0EF0520038CA5B /* VModernRegisterViewController.m in Sources */,
 				0314D07319B4670A00FA363C /* UIImageView+Blurring.m in Sources */,
