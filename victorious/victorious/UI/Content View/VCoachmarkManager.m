@@ -105,9 +105,9 @@ static const CGFloat kAnimationVerticalOffset = 10.0f;
             if ([coachmark.remoteId isEqualToString:kLikeButtonCoachmarkIdentifier])
             {
                 // Since like buttons are close to the edge of the screen, horizontal inset needs to be smaller
-                coachmark.horizontalInset = 10;
+                coachmark.horizontalInset = 10.0f;
                 // Coachmark should appear right away when user presses like button
-                coachmark.animationDelay = 0;
+                coachmark.animationDelay = 0.0f;
             }
             
             CGFloat width = CGRectGetWidth(viewController.view.bounds) - coachmark.horizontalInset * 2;
