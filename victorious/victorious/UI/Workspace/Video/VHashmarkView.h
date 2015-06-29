@@ -7,21 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VBaseSupplementaryView.h"
 /**
  *  The view responsible for displaying hashmarkso on the trimmer control
  */
-@interface VHashmarkView : UICollectionReusableView
-
-
-+ (NSString *)cellIdentifier;
-+ (id)collectionReusableViewForCollectionView:(UICollectionView *)collectionView
-                                      fromNib:(UINib *)nib
-                                 forIndexPath:(NSIndexPath *)indexPath
-                                     withKind:(NSString *)kind;
+@interface VHashmarkView : VBaseSupplementaryView
 
 + (id)collectionReusableViewForCollectionView:(UICollectionView *)collectionView
                                  forIndexPath:(NSIndexPath *)indexPath withKind:(NSString *)kind;
-
-+ (UINib *)nib;
 
 @end

@@ -23,4 +23,18 @@
                           bundle:nil];
 }
 
++ (NSString *)nibName
+{
+    
+    NSLog(@"cell id %@", [self cellIdentifier]);
+    return [self cellIdentifier];
+}
+
++ (NSString *)cellIdentifier
+{
+    static NSString* _cellIdentifier = nil;
+    _cellIdentifier = NSStringFromClass([self class]);
+    return _cellIdentifier;
+}
+
 @end

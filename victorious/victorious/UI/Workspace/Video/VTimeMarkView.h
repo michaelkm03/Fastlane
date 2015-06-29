@@ -7,22 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VBaseSupplementaryView.h"
 /**
  *  The view responsible for displaying timemarks on the trimmer control
  */
-@interface VTimeMarkView : UICollectionReusableView
+@interface VTimeMarkView : VBaseSupplementaryView
 
 @property (nonatomic, strong) UILabel *timeLabel;
 
-+ (NSString *)cellIdentifier;
-+ (id)collectionReusableViewForCollectionView:(UICollectionView *)collectionView
-                                      fromNib:(UINib *)nib
-                                 forIndexPath:(NSIndexPath *)indexPath
-                                     withKind:(NSString *)kind;
-
 + (id)collectionReusableViewForCollectionView:(UICollectionView *)collectionView
                                  forIndexPath:(NSIndexPath *)indexPath withKind:(NSString *)kind;
-
-+ (UINib *)nib;
 
 @end

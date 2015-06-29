@@ -64,9 +64,10 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.thumbnailCollectionView registerClass:[VTimeMarkView class] forSupplementaryViewOfKind:TimemarkViewKind withReuseIdentifier:@"VTimeMarkView"];
-    [self.thumbnailCollectionView registerClass:[VHashmarkView class] forSupplementaryViewOfKind:HashmarkViewKind withReuseIdentifier:@"VHashmarkView"];
-
+    NSLog(@"registering supplementary views");
+    [self.thumbnailCollectionView registerNib:[VTimeMarkView nibForCell] forSupplementaryViewOfKind:TimemarkViewKind withReuseIdentifier:[VTimeMarkView cellIdentifier]];
+    [self.thumbnailCollectionView registerNib:[VHashmarkView nibForCell] forSupplementaryViewOfKind:HashmarkViewKind withReuseIdentifier:[VHashmarkView cellIdentifier]];
+    NSLog(@"should have registered items");
     [self prepareThumbnailCollectionViewAndTitleLabel];
     [self preparePlaybackOverlay];
     [self prepareTrimControl];

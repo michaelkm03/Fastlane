@@ -24,46 +24,20 @@
                                  forIndexPath:(NSIndexPath *)indexPath
                                      withKind:(NSString *)kind
 {
-    
     NSString *cellIdentifier = [self cellIdentifier];
-    [collectionView registerClass:[self class] forSupplementaryViewOfKind:kind withReuseIdentifier:cellIdentifier];
-    [collectionView registerNib:nib forSupplementaryViewOfKind:kind withReuseIdentifier:cellIdentifier];
+    NSLog(@"CELL ID %@", cellIdentifier);
     VHashmarkView *cell = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:cellIdentifier forIndexPath:indexPath];
+    NSLog(@"about to return cell");
     return cell;
-}
-
-- (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes
-{
-    [super applyLayoutAttributes:layoutAttributes];
 }
 
 + (id)collectionReusableViewForCollectionView:(UICollectionView *)collectionView
                                  forIndexPath:(NSIndexPath *)indexPath withKind:(NSString *)kind
 {
     return [[self class] collectionReusableViewForCollectionView:collectionView
-                                                         fromNib:[self nib]
+                                                         fromNib:[self nibForCell]
                                                     forIndexPath:indexPath
                                                         withKind:kind];
-}
-
-+ (NSString *)nibName
-{
-    return [self cellIdentifier];
-}
-
-+ (NSString *)cellIdentifier
-{
-    static NSString* _cellIdentifier = nil;
-    _cellIdentifier = NSStringFromClass([self class]);
-    return _cellIdentifier;
-}
-
-+ (UINib *)nib
-{
-    NSBundle *classBundle = [NSBundle bundleForClass:[self class]];
-    UINib *nib = [UINib nibWithNibName:[self nibName]
-                                 bundle:classBundle];
-    return nib;
 }
 
 @end
