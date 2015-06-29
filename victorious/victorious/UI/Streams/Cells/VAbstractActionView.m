@@ -20,9 +20,6 @@
 // Models
 #import "VSequence+Fetcher.h"
 
-#import "VCoachmarkView.h"
-#import "VCoachmark.h"
-
 @interface VAbstractActionView ()
 
 @property (nonatomic, strong) VFlexBar *actionBar;
