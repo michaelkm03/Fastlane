@@ -217,12 +217,6 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
-        NSString *registrationScreensKey = [templateDecorator keyPathsForKey:@"registrationScreens"].firstObject;
-        NSArray *registrationScreens = [templateDecorator templateValueForKeyPath:registrationScreensKey];
-        NSInteger lastIndex = registrationScreens.count-1;
-        NSString *keyPath = [NSString stringWithFormat:@"%@/%@/displayWithSocialRegistration", registrationScreensKey, @(lastIndex) ];
-        NSParameterAssert( [templateDecorator setTemplateValue:@YES forKeyPath:keyPath] );
-        
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];

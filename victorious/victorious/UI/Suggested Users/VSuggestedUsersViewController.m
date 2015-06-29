@@ -15,6 +15,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "VLinearGradientView.h"
 #import "VDependencyManager+VLoginAndRegistration.h"
+#import "VSuggestedUserRetryCell.h"
 
 @interface VSuggestedUsersViewController () <VBackgroundContainer, UICollectionViewDelegateFlowLayout, VLoginFlowScreen>
 
@@ -102,12 +103,8 @@
     [self.suggestedUsersDataSource registerCellsForCollectionView:self.collectionView];
     self.collectionView.dataSource = self.suggestedUsersDataSource;
     
-    __weak typeof(self) welf = self;
     [self.activityIndicator startAnimating];
-    [self.suggestedUsersDataSource refreshWithCompletion:^
-    {
-        [welf suggestedUsersDidLoad];
-    }];
+    [self refreshSuggestedUsers];
     
     self.activityIndicator.color = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     
@@ -197,6 +194,25 @@
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
     return UIEdgeInsetsMake( 12.0f, 0, 10.0f, 0 );
+}
+
+#pragma mark - UICollectionViewDelegate
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ( self.suggestedUsersDataSource.isDisplayingRetryCell )
+    {
+        [self refreshSuggestedUsers];
+    }
+}
+
+- (void)refreshSuggestedUsers
+{
+    __weak typeof(self) welf = self;
+    [self.suggestedUsersDataSource refreshWithCompletion:^
+     {
+         [welf suggestedUsersDidLoad];
+     }];
 }
 
 @end
