@@ -8,6 +8,8 @@
 
 #import "VContentThumbnailCell.h"
 #import "UIImageView+WebCache.h"
+#import "UIImage+Resize.h"
+#import "UIImageView+VLoadingAnimations.h"
 
 @interface VContentThumbnailCell()
 
@@ -17,9 +19,21 @@
 
 @implementation VContentThumbnailCell
 
-- (void)setImageURL:(NSURL *)imageURL
+- (void)prepareForReuse
 {
-    [self.imageView sd_setImageWithURL:imageURL];
+    self.imageView.image = nil;
+}
+
+- (void)setImage:(UIImage *)image animated:(BOOL)animated
+{
+    if ( animated )
+    {
+        [self.imageView fadeInImage:image];
+    }
+    else
+    {
+        self.imageView.image = image;
+    }
 }
 
 @end

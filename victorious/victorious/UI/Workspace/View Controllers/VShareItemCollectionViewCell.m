@@ -28,14 +28,14 @@
     self.button.layer.borderWidth = 1.0f;
 }
 
-- (void)populateWithShareMenuItem:(VShareMenuItem *)menuItem andDependencyManager:(VDependencyManager *)dependencyManager
+- (void)populateWithShareMenuItem:(VShareMenuItem *)menuItem andBackgroundColor:(UIColor *)backgroundColor
 {
-    self.dependencyManager = dependencyManager;
     self.shareMenuItem = menuItem;
+    self.backgroundColor = backgroundColor;
     self.state = VShareItemCellStateUnselected;
     [self.button setImage:[menuItem.unselectedIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     [self.button setImage:[menuItem.selectedIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateSelected];
-    self.button.activityIndicatorTintColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
+    self.button.activityIndicatorTintColor = menuItem.unselectedColor;
 }
 
 #pragma mark - Setters
@@ -55,16 +55,33 @@
         BOOL isSelected = state == VShareItemCellStateSelected;
         self.button.selected = isSelected;
     }
-    [self updateButtonTintColor];
+    [self updateButtonAppearance];
+}
+
+- (void)updateToBackgroundColor:(UIColor *)backgroundColor
+{
+    self.backgroundColor = backgroundColor;
+    [self updateButtonAppearance];
 }
 
 #pragma mark - Private methods
 
-- (void)updateButtonTintColor
+- (void)updateButtonAppearance
 {
-    UIColor *tintColor = self.state == VShareItemCellStateSelected ? self.shareMenuItem.selectedColor : self.shareMenuItem.unselectedColor;
-    self.button.tintColor = tintColor;
-    self.button.layer.borderColor = tintColor.CGColor;
+    if ( self.state == VShareItemCellStateSelected )
+    {
+        UIColor *tintColor = self.shareMenuItem.selectedColor;
+        self.button.tintColor = self.backgroundColor;
+        self.button.backgroundColor = tintColor;
+        self.button.layer.borderColor = tintColor.CGColor;
+    }
+    else
+    {
+        UIColor *tintColor = self.shareMenuItem.unselectedColor;
+        self.button.tintColor = tintColor;
+        self.button.backgroundColor = self.backgroundColor;
+        self.button.layer.borderColor = tintColor.CGColor;
+    }
 }
 
 @end

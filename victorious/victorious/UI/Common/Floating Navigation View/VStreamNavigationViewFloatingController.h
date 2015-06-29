@@ -19,4 +19,6 @@
         verticalScrollThresholdStart:(CGFloat)verticalScrollThresholdStart
           verticalScrollThresholdEnd:(CGFloat)verticalScrollThresholdEnd NS_DESIGNATED_INITIALIZER;
 
+@property (nonatomic, assign, readonly) CGFloat visibility;
+
 @end
