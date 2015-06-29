@@ -94,7 +94,7 @@ typedef NS_ENUM( NSUInteger, VToastVerticalLocation )
 @property (nonatomic, assign) CGFloat horizontalInset;
 
 /**
- How much this coachmark's view should be inset vertically from view it's referencing. Defaults to 10.0f;
+ How much this coachmark's view should be inset vertically from view it's referencing. Defaults to 5.0f;
  */
 @property (nonatomic, assign) CGFloat verticalInset;
 
