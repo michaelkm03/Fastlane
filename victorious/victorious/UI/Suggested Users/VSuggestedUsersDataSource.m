@@ -58,7 +58,6 @@ static NSString * const kPromptTextKey = @"prompt";
      {
          self.loadedOnce = YES;
          self.isLoadingSuggestedUsers = NO;
-         
          NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VUser *user, NSDictionary *bindings)
                                    {
                                        return [user isKindOfClass:[VUser class]] && user.recentSequences.count > 0;
@@ -69,7 +68,6 @@ static NSString * const kPromptTextKey = @"prompt";
          {
              completion();
          }
-         
      }
                                             failBlock:^(NSOperation *operation, NSError *error)
      {
