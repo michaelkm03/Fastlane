@@ -306,6 +306,7 @@
 		A70564BC19E7817C004A8387 /* VObjectManager+Discover.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564BB19E7817C004A8387 /* VObjectManager+Discover.m */; };
 		A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564C119E781EE004A8387 /* VNoContentTableViewCell.m */; };
 		A70564C719E7820A004A8387 /* VHashtag+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564C619E7820A004A8387 /* VHashtag+RestKit.m */; };
+		A705F4571B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F4561B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m */; };
 		A705F4501B3DC7AC007DBD3C /* VCellSizeCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F44F1B3DC7AC007DBD3C /* VCellSizeCollection.m */; };
 		A705F4531B3DC7C1007DBD3C /* VCellSizeComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F4521B3DC7C1007DBD3C /* VCellSizeComponent.m */; };
 		A705F44A1B3CC00D007DBD3C /* VUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F4451B3CC00D007DBD3C /* VUserCell.m */; };
@@ -1593,6 +1594,8 @@
 		A70564C519E7820A004A8387 /* VHashtag+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VHashtag+RestKit.h"; sourceTree = "<group>"; };
 		A70564C619E7820A004A8387 /* VHashtag+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VHashtag+RestKit.m"; sourceTree = "<group>"; };
 		A70564CB19E78250004A8387 /* VDiscoverViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverViewControllerTests.m; sourceTree = "<group>"; };
+		A705F4551B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VLoginAndRegistration.h"; sourceTree = "<group>"; };
+		A705F4561B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VLoginAndRegistration.m"; sourceTree = "<group>"; };
 		A705F44E1B3DC7AC007DBD3C /* VCellSizeCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCellSizeCollection.h; path = Sizing/VCellSizeCollection.h; sourceTree = "<group>"; };
 		A705F44F1B3DC7AC007DBD3C /* VCellSizeCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCellSizeCollection.m; path = Sizing/VCellSizeCollection.m; sourceTree = "<group>"; };
 		A705F4511B3DC7C1007DBD3C /* VCellSizeComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCellSizeComponent.h; path = Sizing/VCellSizeComponent.h; sourceTree = "<group>"; };
@@ -3920,6 +3923,8 @@
 				D8758D211B0FDEE3008C6C0D /* VDependencyManager+VKeyboardStyle.m */,
 				C39864BB1B266A7600694AB3 /* VDependencyManager+VHighlightContainer.h */,
 				C39864BC1B266A7600694AB3 /* VDependencyManager+VHighlightContainer.m */,
+				A705F4551B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.h */,
+				A705F4561B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -7475,6 +7480,7 @@
 				D85B70741B0EAF3F0038CA5B /* VFindFriendsTableViewController.m in Sources */,
 				A779512E1B28F61C00D9DB0A /* VContentThumbnailsViewController.m in Sources */,
 				03811D3419353486005687FF /* VAlertViewBlockDelegate.m in Sources */,
+				A705F4571B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m in Sources */,
 				BE171E0C1868C211004E5202 /* VNode+Fetcher.m in Sources */,
 				D8758D251B100571008C6C0D /* VTwitterAccountsHelper.m in Sources */,
 				D8E5A4ED1AAA72C30019F231 /* VBlurOverPresentationController.m in Sources */,
