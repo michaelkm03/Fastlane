@@ -43,7 +43,6 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
 
 @property (nonatomic, assign) int numberOfFrames;
 
-
 @end
 
 @implementation VTrimmerViewController
