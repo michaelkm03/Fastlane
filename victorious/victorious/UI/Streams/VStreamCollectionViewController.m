@@ -608,13 +608,16 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                       dependencyManager:self.dependencyManager];
+    
+    __weak typeof(self) welf = self;
     [authorization performFromViewController:self context:VAuthorizationContextDefault
                                           completion:^(BOOL authorized)
      {
+         __strong typeof(self) strongSelf = welf;
          if ( authorized )
          {
-             CGRect likeButtonFrame = [view convertRect:view.bounds toView:self.view];
-             [[self.dependencyManager coachmarkManager] triggerSpecificCoachmark:kLikeButtonCoachmarkIdentifier inViewController:self atLocation:likeButtonFrame];
+             CGRect likeButtonFrame = [view convertRect:view.bounds toView:strongSelf.view];
+             [[strongSelf.dependencyManager coachmarkManager] triggerSpecificCoachmark:kLikeButtonCoachmarkIdentifier inViewController:strongSelf atLocation:likeButtonFrame];
              
              [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
                                                        successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
