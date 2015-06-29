@@ -148,8 +148,8 @@ static CGFloat const kActionButtonHeight = 31.0f;
 {
     if (_likeButton == nil)
     {
-        UIImage *image = [UIImage imageNamed:@"D_like"];
-        UIImage *selectedImage = [UIImage imageNamed:@"D_liked"];
+        UIImage *image = [UIImage imageNamed:@"D_likeIcon"];
+        UIImage *selectedImage = [UIImage imageNamed:@"D_likedIcon"];
         _likeButton = [self actionButtonWithImage:image selectedImage:selectedImage action:@selector(like:)];
     }
     return _likeButton;

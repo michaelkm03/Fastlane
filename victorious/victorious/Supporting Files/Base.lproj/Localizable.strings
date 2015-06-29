@@ -45,6 +45,7 @@
 "Save"                  =   "Save";
 "Continue"              =   "Continue";
 "Loading..."            =   "Loading...";
+"Finding fans to connect with..." = "Finding fans to connect with...";
 
 "Featured"              =   "Featured";
 "Recent"                =   "Recent";
@@ -289,6 +290,7 @@
 "PublishDescriptionMinCharacters" = "Please enter a longer description.";
 
 "Sorry, we were having some trouble on our end. Please retry." = "Sorry, we were having some trouble on our end. Please retry.";
+"We failed to retrieve publish permissions." = "We failed to retrieve publish permissions.";
 "Retry"                 =   "Retry";
 
 "ReplaceVideo"          =   "Replace Video";

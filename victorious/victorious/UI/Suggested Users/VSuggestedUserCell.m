@@ -35,14 +35,14 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
 
 @implementation VSuggestedUserCell
 
-+ (NSCache *)dataSourcesCache
++ (NSMutableDictionary *)dataSources
 {
-    static NSCache *_dataSourcesCache = nil;
-    if ( !_dataSourcesCache )
+    static NSMutableDictionary *_dataSources = nil;
+    if ( _dataSources == nil )
     {
-        _dataSourcesCache = [[NSCache alloc] init];
+        _dataSources = [[NSMutableDictionary alloc] init];
     }
-    return _dataSourcesCache;
+    return _dataSources;
 }
 
 - (void)awakeFromNib
@@ -71,13 +71,13 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
     
     self.usernameTextView.text = _user.name;
     
-    VContentThumbnailsDataSource *thumbnailsDataSource = [[[self class] dataSourcesCache] objectForKey:user.remoteId];
+    VContentThumbnailsDataSource *thumbnailsDataSource = [[[self class] dataSources] objectForKey:user.remoteId];
     if ( thumbnailsDataSource == nil )
     {
         thumbnailsDataSource = [[VContentThumbnailsDataSource alloc] initWithSequences:user.recentSequences.array];
         [thumbnailsDataSource registerCellsWithCollectionView:self.thumbnailsViewController.collectionView];
         
-        [[[self class] dataSourcesCache] setObject:thumbnailsDataSource forKey:user.remoteId];
+        [[[self class] dataSources] setObject:thumbnailsDataSource forKey:user.remoteId];
     }
     self.thumbnailsViewController.collectionView.dataSource = thumbnailsDataSource;
     
