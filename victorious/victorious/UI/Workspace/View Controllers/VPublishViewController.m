@@ -506,39 +506,57 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     {
         if ( self.photoLibraryPermission.permissionState == VPermissionStateSystemDenied )
         {
-            //Denied the system prompt, display an alert to let them know they need to go grant it through settings
-            UIAlertController *deniedAlertController = [UIAlertController alertControllerWithTitle:nil
-                                                                                           message:NSLocalizedString(@"CameraRollDenied", nil) preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
-                                                               style:UIAlertActionStyleDefault
-                                                             handler:^(UIAlertAction *action)
-                                       {
-                                           saveSwitch.on = NO;
-                                       }];
-            [deniedAlertController addAction:okAction];
-            [self presentViewController:deniedAlertController
-                               animated:YES
-                             completion:nil];
+            [self showGrantCameraPermissionThroughSettingsAlert];
         }
         else
         {
-            __weak VPublishViewController *weakSelf = self;
-            [self.photoLibraryPermission requestPermissionInViewController:self
-                                                     withCompletionHandler:^(BOOL granted, VPermissionState state, NSError *error)
-             {
-                 saveSwitch.on = granted;
-                 if ( granted )
-                 {
-                     [saveSwitch removeTarget:weakSelf action:@selector(toggledSaveSwitch:) forControlEvents:UIControlEventValueChanged];
-                 }
-                 if ( state == VPermissionStatePromptDenied )
-                 {
-                     //Already shown the first prompt once, no reason to show it again
-                     weakSelf.photoLibraryPermission.shouldShowInitialPrompt = NO;
-                 }
-             }];
+            [self showCameraPermissionsRequest];
         }
     }
+}
+
+- (void)showGrantCameraPermissionThroughSettingsAlert
+{
+    //Denied the system prompt, display an alert to let them know they need to go grant it through settings
+    UIAlertController *deniedAlertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                   message:NSLocalizedString(@"CameraRollDenied", nil) preferredStyle:UIAlertControllerStyleAlert];
+    __weak VPublishViewController *weakSelf = self;
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                       style:UIAlertActionStyleDefault
+                                                     handler:^(UIAlertAction *action)
+                               {
+                                   weakSelf.saveContentCell.cameraRollSwitch.on = NO;
+                               }];
+    [deniedAlertController addAction:okAction];
+    [self presentViewController:deniedAlertController
+                       animated:YES
+                     completion:nil];
+}
+
+- (void)showCameraPermissionsRequest
+{
+    __weak VPublishViewController *weakSelf = self;
+    [self.photoLibraryPermission requestPermissionInViewController:self
+                                             withCompletionHandler:^(BOOL granted, VPermissionState state, NSError *error)
+     {
+         VPublishViewController *strongSelf = weakSelf;
+         if ( strongSelf == nil )
+         {
+             return;
+         }
+         
+         UISwitch *saveSwitch = strongSelf.saveContentCell.cameraRollSwitch;
+         saveSwitch.on = granted;
+         if ( granted )
+         {
+             [saveSwitch removeTarget:strongSelf action:@selector(toggledSaveSwitch:) forControlEvents:UIControlEventValueChanged];
+         }
+         if ( state == VPermissionStatePromptDenied )
+         {
+             //Already shown the first prompt once, no reason to show it again
+             strongSelf.photoLibraryPermission.shouldShowInitialPrompt = NO;
+         }
+     }];
 }
 
 #pragma mark - VContentInputAccessoryViewDelegate
