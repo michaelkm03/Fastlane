@@ -8,11 +8,11 @@
 
 #import "VLikersDataSource.h"
 #import "VObjectManager+Pagination.h"
+#import "VSequence.h"
 
 @interface VLikersDataSource ()
 
 @property (nonatomic, strong) VSequence *sequence;
-@property (nonatomic, strong) NSArray *likers;
 
 @end
 
@@ -52,12 +52,6 @@
     [[VObjectManager sharedManager] likersForSequence:self.sequence pageType:pageType
                                          successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
-         if ( pageType == VPageTypeFirst )
-         {
-             self.likers = @[];
-         }
-         
-         self.likers = [self.likers arrayByAddingObjectsFromArray:resultObjects];
          completion( YES, nil );
          
      } failBlock:^(NSOperation *operation, NSError *error)
@@ -68,7 +62,7 @@
 
 - (NSArray *)users
 {
-    return self.likers;
+    return self.sequence.likers.allObjects;
 }
 
 @end

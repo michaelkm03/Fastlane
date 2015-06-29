@@ -35,10 +35,12 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
         if ( sequence.isLikedByMainUser.boolValue )
         {
             sequence.isLikedByMainUser = @NO;
+            [sequence removeLikersObject:self.mainUser];
             sequence.likeCount = @(sequence.likeCount.integerValue - 1);
         }
         else
         {
+            [sequence addLikersObject:self.mainUser];
             sequence.isLikedByMainUser = @YES;
             sequence.likeCount = @(sequence.likeCount.integerValue + 1);
         }
