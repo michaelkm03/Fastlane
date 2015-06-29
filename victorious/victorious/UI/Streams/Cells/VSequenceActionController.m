@@ -203,7 +203,7 @@
          if ( authorized )
          {
              CGRect likeButtonFrame = [actionView convertRect:actionView.bounds toView:viewController.view];
-             [[strongSelf.dependencyManager coachmarkManager] triggerSpecificCoachmark:kLikeButtonCoachmarkIdentifier inViewController:viewController atLocation:likeButtonFrame];
+             [[strongSelf.dependencyManager coachmarkManager] triggerSpecificCoachmarkWithIdentifier:kLikeButtonCoachmarkIdentifier inViewController:viewController atLocation:likeButtonFrame];
              
              [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
                                                        successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)

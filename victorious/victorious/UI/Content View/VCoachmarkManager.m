@@ -96,7 +96,7 @@ static const CGFloat kAnimationVerticalOffset = 10.0f;
     return NO;
 }
 
-- (void)triggerSpecificCoachmark:(NSString *)remoteID inViewController:(UIViewController *)viewController atLocation:(CGRect)location
+- (void)triggerSpecificCoachmarkWithIdentifier:(NSString *)remoteID inViewController:(UIViewController *)viewController atLocation:(CGRect)location
 {
     for ( VCoachmark *coachmark in self.coachmarks )
     {
