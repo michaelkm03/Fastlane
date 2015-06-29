@@ -20,8 +20,6 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
 
 @property (nonatomic, weak) IBOutlet UIImageView *profileImage;
 @property (nonatomic, weak) IBOutlet UILabel *profileName;
-@property (nonatomic, weak) IBOutlet UILabel *profileLocation;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *userInfoWidthConstraint;
 @property (nonatomic, weak) IBOutlet UIView *labelsSuperview;
 @property (nonatomic, strong) UIImage *followIcon;
 @property (nonatomic, strong) UIImage *unfollowIcon;
@@ -39,17 +37,6 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
     self.profileImage.clipsToBounds = YES;
     
     self.profileName.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
-    self.profileLocation.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
-    
-    // Constraint to lock user info in place even when the view changes
-    self.userInfoWidthConstraint = [NSLayoutConstraint constraintWithItem:self.labelsSuperview
-                                                                attribute:NSLayoutAttributeTrailing
-                                                                relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                                                   toItem:self.profileName
-                                                                attribute:NSLayoutAttributeTrailing
-                                                               multiplier:1.0f
-                                                                 constant:10.0f];
-    [self addConstraint:self.userInfoWidthConstraint];
 }
 
 - (void)prepareForReuse
@@ -66,7 +53,6 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
     [self.profileImage sd_setImageWithURL:[NSURL URLWithString:profile.pictureUrl]
                          placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
     self.profileName.text = profile.name;
-    self.profileLocation.text = profile.location;
     
     NSInteger profileID = profile.remoteId.integerValue;
     NSInteger mainUserID = [VObjectManager sharedManager].mainUser.remoteId.integerValue;

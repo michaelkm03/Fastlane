@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -15,45 +16,18 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1CM-za-AlC">
-                        <rect key="frame" x="20" y="9" width="32" height="33"/>
+                        <rect key="frame" x="20" y="9" width="32" height="32"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="33" id="Vgy-mj-ZbA"/>
-                            <constraint firstAttribute="width" constant="32" id="na7-PM-s7o"/>
+                            <constraint firstAttribute="width" secondItem="1CM-za-AlC" secondAttribute="height" multiplier="1:1" id="3yR-2B-YA0"/>
+                            <constraint firstAttribute="width" constant="32" id="NST-Ah-Lrt"/>
                         </constraints>
                     </imageView>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r9g-eu-gf2" userLabel="Labels Superview">
-                        <rect key="frame" x="65" y="10" width="108" height="31"/>
-                        <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="John Appleseed" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5fj-5f-CB3" userLabel="Name Label">
-                                <rect key="frame" x="0.0" y="0.0" width="98" height="16"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cupertino, CA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G5K-7H-rF2" userLabel="Location Label">
-                                <rect key="frame" x="0.0" y="17" width="108" height="14"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="G5K-7H-rF2" secondAttribute="trailing" priority="750" id="687-D6-eLx"/>
-                            <constraint firstItem="5fj-5f-CB3" firstAttribute="leading" secondItem="r9g-eu-gf2" secondAttribute="leading" id="7iW-Hz-aDb"/>
-                            <constraint firstItem="5fj-5f-CB3" firstAttribute="top" secondItem="r9g-eu-gf2" secondAttribute="top" id="Hkd-lq-sd6"/>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="5fj-5f-CB3" secondAttribute="trailing" priority="750" constant="10" id="Lgb-4y-MVb"/>
-                            <constraint firstItem="G5K-7H-rF2" firstAttribute="top" secondItem="5fj-5f-CB3" secondAttribute="bottom" constant="1" id="jzK-wn-fok"/>
-                            <constraint firstAttribute="bottom" secondItem="G5K-7H-rF2" secondAttribute="bottom" id="qbm-hz-4nk"/>
-                            <constraint firstItem="G5K-7H-rF2" firstAttribute="leading" secondItem="r9g-eu-gf2" secondAttribute="leading" id="r3t-ag-0t8"/>
-                        </constraints>
-                    </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I2u-S5-LXJ" customClass="VFollowUserControl">
-                        <rect key="frame" x="253" y="11" width="42" height="27"/>
+                        <rect key="frame" x="250" y="12" width="42" height="26"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="42" id="4Ea-1i-tRY"/>
-                            <constraint firstAttribute="height" constant="27" id="YM4-0C-zHI"/>
+                            <constraint firstAttribute="height" constant="26" id="YM4-0C-zHI"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="following" value="YES"/>
@@ -62,25 +36,29 @@
                             <action selector="followUnfollowUser:" destination="afQ-rA-05v" eventType="touchUpInside" id="4mw-in-d7e"/>
                         </connections>
                     </view>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="John Appleseed" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5fj-5f-CB3" userLabel="Name Label">
+                        <rect key="frame" x="67" y="9" width="175" height="32"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="I2u-S5-LXJ" firstAttribute="leading" secondItem="5fj-5f-CB3" secondAttribute="trailing" constant="8" id="INk-Qx-yST"/>
                     <constraint firstAttribute="centerY" secondItem="1CM-za-AlC" secondAttribute="centerY" constant="-0.5" id="Ken-zi-p3y"/>
-                    <constraint firstItem="I2u-S5-LXJ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="r9g-eu-gf2" secondAttribute="trailing" constant="10" id="LWq-2T-Pd0"/>
-                    <constraint firstAttribute="centerY" secondItem="I2u-S5-LXJ" secondAttribute="centerY" constant="0.5" id="ObB-HG-S5s"/>
-                    <constraint firstItem="r9g-eu-gf2" firstAttribute="leading" secondItem="jwz-bZ-rDa" secondAttribute="leading" constant="65" id="YoW-Fp-ANB"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="I2u-S5-LXJ" secondAttribute="trailing" constant="17" id="ZYQ-Va-xI5"/>
-                    <constraint firstAttribute="centerY" secondItem="r9g-eu-gf2" secondAttribute="centerY" id="agg-tJ-5Zv"/>
+                    <constraint firstItem="5fj-5f-CB3" firstAttribute="leading" secondItem="1CM-za-AlC" secondAttribute="trailing" constant="15" id="PhV-QZ-MSI"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="I2u-S5-LXJ" secondAttribute="trailing" constant="20" id="ZYQ-Va-xI5"/>
+                    <constraint firstItem="I2u-S5-LXJ" firstAttribute="centerY" secondItem="5fj-5f-CB3" secondAttribute="centerY" id="eUu-uu-h5v"/>
                     <constraint firstItem="1CM-za-AlC" firstAttribute="leading" secondItem="jwz-bZ-rDa" secondAttribute="leading" constant="20" id="gcv-0R-Yei"/>
+                    <constraint firstItem="5fj-5f-CB3" firstAttribute="height" secondItem="1CM-za-AlC" secondAttribute="height" id="hlZ-s4-DSw"/>
+                    <constraint firstItem="I2u-S5-LXJ" firstAttribute="centerY" secondItem="1CM-za-AlC" secondAttribute="centerY" id="sn7-qN-Wqz"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
             <connections>
                 <outlet property="followUserControl" destination="I2u-S5-LXJ" id="yCS-yK-nXs"/>
-                <outlet property="labelsSuperview" destination="r9g-eu-gf2" id="X5e-lx-RkJ"/>
                 <outlet property="profileImage" destination="1CM-za-AlC" id="NLt-HB-PPr"/>
-                <outlet property="profileLocation" destination="G5K-7H-rF2" id="upt-tl-i6O"/>
                 <outlet property="profileName" destination="5fj-5f-CB3" id="W6i-4n-DXK"/>
-                <outlet property="userInfoWidthConstraint" destination="YoW-Fp-ANB" id="58T-in-VLC"/>
             </connections>
             <point key="canvasLocation" x="-92" y="13.5"/>
         </tableViewCell>
