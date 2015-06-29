@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import "FBKVOController.h"
 #import "VTemplateDownloadOperation.h"
 #import "VTemplateSerialization.h"
 
@@ -36,6 +37,42 @@
         }
         completion(templateData, self.mockError);
     });
+}
+
+@end
+
+#pragma mark -
+
+@interface VTemplateDownloadOperationTestDelegate : NSObject <VTemplateDownloadOperationDelegate>
+
+@property (nonatomic, copy) void (^didFinishLoadingWithTemplateConfiguration)(NSDictionary *configuration);
+@property (nonatomic, strong) NSOperationQueue *operationQueue;
+
+@end
+
+@implementation VTemplateDownloadOperationTestDelegate
+
+- (instancetype)initWithOperationQueue:(NSOperationQueue *)operationQueue
+{
+    self = [super init];
+    if ( self != nil)
+    {
+        _operationQueue = operationQueue;
+    }
+    return self;
+}
+
+- (void)templateDownloadOperation:(VTemplateDownloadOperation *)downloadOperation didFinishLoadingTemplateConfiguration:(NSDictionary *)configuration
+{
+    if ( self.didFinishLoadingWithTemplateConfiguration != nil )
+    {
+        self.didFinishLoadingWithTemplateConfiguration(configuration);
+    }
+}
+
+- (void)templateDownloadOperation:(VTemplateDownloadOperation *)downloadOperation needsAnOperationAddedToTheQueue:(NSOperation *)operation
+{
+    [self.operationQueue addOperation:operation];
 }
 
 @end
@@ -97,20 +134,28 @@
     self.operationQueue = [[NSOperationQueue alloc] init];
 }
 
+- (void)tearDown
+{
+    [super tearDown];
+}
+
 - (void)testTemplateDownload
 {
     VBasicTemplateDownloaderMock *downloader = [[VBasicTemplateDownloaderMock alloc] init];
     downloader.mockTemplateDictionary = @{ @"hello": @"world" };
     
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Download manager should call its completion block"];
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Delegate callback"];
     
-    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader
-                                                                                                completion:^(NSDictionary *templateConfiguration)
+    VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
+    delegate.didFinishLoadingWithTemplateConfiguration = ^(NSDictionary *templateConfiguration)
     {
         NSDictionary *expected = downloader.mockTemplateDictionary;
         XCTAssertEqualObjects(templateConfiguration, expected);
         [expectation fulfill];
-    }];
+    };
+    
+    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
+    
     [self.operationQueue addOperation:downloadOperation];
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
@@ -121,14 +166,17 @@
     NSData *templateData = [NSData dataWithContentsOfURL:templateFileURL];
     NSDictionary *expectedTemplateConfiguration = [VTemplateSerialization templateConfigurationDictionaryWithData:templateData];
     
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Download manager should call its completion block"];
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Delegate callback"];
     
-    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:[[VBasicTemplateDownloaderMock alloc] init]
-                                                                                                completion:^(NSDictionary *templateConfiguration)
+    VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
+    delegate.didFinishLoadingWithTemplateConfiguration = ^(NSDictionary *templateConfiguration)
     {
         XCTAssertEqualObjects(templateConfiguration, expectedTemplateConfiguration);
         [expectation fulfill];
-    }];
+    };
+    
+    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:[[VBasicTemplateDownloaderMock alloc] init]
+                                                                                               andDelegate:delegate];
     downloadOperation.timeout = 0.01;
     downloadOperation.templateCacheFileLocation = templateFileURL;
     [self.operationQueue addOperation:downloadOperation];
@@ -141,17 +189,19 @@
     NSData *templateData = [NSData dataWithContentsOfURL:templateFileURL];
     NSDictionary *expectedTemplateConfiguration = [VTemplateSerialization templateConfigurationDictionaryWithData:templateData];
     
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Download manager should call its completion block"];
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Delegate callback"];
 
     VBasicTemplateDownloaderMock *downloader = [[VBasicTemplateDownloaderMock alloc] init];
     downloader.mockError = [NSError errorWithDomain:@"bad" code:999 userInfo:nil];
-    
-    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader
-                                                                                      completion:^(NSDictionary *templateConfiguration)
+
+    VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
+    delegate.didFinishLoadingWithTemplateConfiguration = ^(NSDictionary *templateConfiguration)
     {
         XCTAssertEqualObjects(templateConfiguration, expectedTemplateConfiguration);
         [expectation fulfill];
-    }];
+    };
+    
+    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
     downloadOperation.templateCacheFileLocation = templateFileURL;
     [self.operationQueue addOperation:downloadOperation];
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
@@ -164,14 +214,16 @@
     NSData *templateData = [NSData dataWithContentsOfURL:templateBundleURL];
     NSDictionary *expectedTemplateConfiguration = [VTemplateSerialization templateConfigurationDictionaryWithData:templateData];
     
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Download manager should call its completion block"];
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Delegate callback"];
     
-    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:[[VBasicTemplateDownloaderMock alloc] init]
-                                                                                                completion:^(NSDictionary *templateConfiguration)
+    VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
+    delegate.didFinishLoadingWithTemplateConfiguration = ^(NSDictionary *templateConfiguration)
     {
         XCTAssertEqualObjects(templateConfiguration, expectedTemplateConfiguration);
         [expectation fulfill];
-    }];
+    };
+    
+    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:[[VBasicTemplateDownloaderMock alloc] init] andDelegate:delegate];
     downloadOperation.timeout = 0.01;
     downloadOperation.templateCacheFileLocation = templateCacheURL;
     downloadOperation.templateLocationInBundle = templateBundleURL;
@@ -187,10 +239,10 @@
     downloader.mockTemplateDictionary = expected;
 
     NSURL *templateCacheURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:[[NSUUID UUID] UUIDString]]];
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Download manager should call its completion block"];
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Delegate callback"];
     
-    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader
-                                                                                                completion:^(NSDictionary *templateConfiguration)
+    VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
+    delegate.didFinishLoadingWithTemplateConfiguration = ^(NSDictionary *templateConfiguration)
     {
         NSData *templateData = [NSData dataWithContentsOfURL:templateCacheURL];
         XCTAssertNotNil(templateData);
@@ -199,7 +251,9 @@
         XCTAssertEqualObjects(expected, actual);
         
         [expectation fulfill];
-    }];
+    };
+    
+    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
     downloadOperation.templateCacheFileLocation = templateCacheURL;
     [self.operationQueue addOperation:downloadOperation];
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
@@ -211,7 +265,7 @@
     NSData *templateData = [NSData dataWithContentsOfURL:templateFileURL];
     NSDictionary *expectedTemplateConfiguration = [VTemplateSerialization templateConfigurationDictionaryWithData:templateData];
     
-    XCTestExpectation *callbackExpectation = [self expectationWithDescription:@"Download manager should call its completion block"];
+    XCTestExpectation *callbackExpectation = [self expectationWithDescription:@"Delegate callback"];
     XCTestExpectation *successExpectation = [self expectationWithDescription:@"Download manager should keep retrying until successful download"];
     
     VFailingTemplateDownloaderMock *downloader = [[VFailingTemplateDownloaderMock alloc] init];
@@ -222,12 +276,14 @@
         [successExpectation fulfill];
     };
     
-    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader
-                                                                                                completion:^(NSDictionary *templateConfiguration)
+    VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
+    delegate.didFinishLoadingWithTemplateConfiguration = ^(NSDictionary *templateConfiguration)
     {
         XCTAssertEqualObjects(templateConfiguration, expectedTemplateConfiguration);
         [callbackExpectation fulfill];
-    }];
+    };
+    
+    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
     downloadOperation.templateCacheFileLocation = templateFileURL;
     downloadOperation.timeout = 0.1;
     
@@ -241,15 +297,81 @@
     downloader.mockTemplateDictionary = @{ @"hello": @"world" };
     downloader.failCount = 3;
     
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Download manager should call its completion block"];
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Delegate callback"];
     
-    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader completion:^(NSDictionary *templateConfiguration)
+    VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
+    delegate.didFinishLoadingWithTemplateConfiguration = ^(NSDictionary *templateConfiguration)
     {
         NSDictionary *expected = downloader.mockTemplateDictionary;
         XCTAssertEqualObjects(templateConfiguration, expected);
         [expectation fulfill];
-    }];
+    };
+    
+    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
     downloadOperation.timeout = 0.01;
+    [self.operationQueue addOperation:downloadOperation];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
+}
+
+- (void)testRetryDefault
+{
+    VFailingTemplateDownloaderMock *downloader = [[VFailingTemplateDownloaderMock alloc] init];
+    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:nil];
+    XCTAssertTrue(downloadOperation.shouldRetry);
+}
+
+- (void)testNoRetry
+{
+    VFailingTemplateDownloaderMock *downloader = [[VFailingTemplateDownloaderMock alloc] init];
+    downloader.mockTemplateDictionary = @{ @"hello": @"world" };
+    downloader.failCount = 1;
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Delegate callback"];
+    
+    VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
+    delegate.didFinishLoadingWithTemplateConfiguration = ^(NSDictionary *templateConfiguration)
+    {
+        XCTAssertNil(templateConfiguration);
+        [expectation fulfill];
+    };
+    
+    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
+    downloadOperation.timeout = 0.01;
+    downloadOperation.shouldRetry = NO;
+    [self.operationQueue addOperation:downloadOperation];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
+}
+
+- (void)testOperationFinishesAtTheRightTime
+{
+    VBasicTemplateDownloaderMock *downloader = [[VBasicTemplateDownloaderMock alloc] init];
+    downloader.mockTemplateDictionary = @{ @"hello": @"world" };
+    
+    __block VTemplateDownloadOperation *downloadOperation;
+    XCTestExpectation *completionExpectation = [self expectationWithDescription:@"Delegate callback"];
+    
+    VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
+    delegate.didFinishLoadingWithTemplateConfiguration = ^(NSDictionary *templateConfiguration)
+    {
+        XCTAssertFalse(downloadOperation.isFinished);
+        [completionExpectation fulfill];
+    };
+    
+    downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
+    
+    XCTestExpectation *finishExpectation = [self expectationWithDescription:@"isFinished KVO notification"];
+    [self.KVOController observe:downloadOperation
+                        keyPath:NSStringFromSelector(@selector(isFinished))
+                        options:NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+    {
+        BOOL isFinished = [change[NSKeyValueChangeNewKey] boolValue];
+        if ( isFinished )
+        {
+            [finishExpectation fulfill];
+        }
+    }];
+    
     [self.operationQueue addOperation:downloadOperation];
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }

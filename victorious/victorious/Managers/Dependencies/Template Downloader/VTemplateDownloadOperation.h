@@ -27,7 +27,26 @@ typedef void (^VTemplateDownloaderCompletion)(NSData *templateData, NSError *err
 
 @end
 
-typedef void (^VTemplateLoadCompletion)(NSDictionary *templateConfiguration);
+#pragma mark -
+
+@class VTemplateDownloadOperation;
+
+@protocol VTemplateDownloadOperationDelegate <NSObject>
+
+/**
+ Notifies the delegate that a template has been successfully loaded
+ */
+- (void)templateDownloadOperation:(VTemplateDownloadOperation *)downloadOperation didFinishLoadingTemplateConfiguration:(NSDictionary *)configuration;
+
+/**
+ Notifies the delegate that a new operation needs to be added to an operation queue. (Any operation queue will do!)
+ These operations may continue running after the template download operation finishes.
+ */
+- (void)templateDownloadOperation:(VTemplateDownloadOperation *)downloadOperation needsAnOperationAddedToTheQueue:(NSOperation *)operation;
+
+@end
+
+#pragma mark -
 
 /**
  Provides a fresh, piping-hot template straight off the wire
@@ -56,14 +75,27 @@ typedef void (^VTemplateLoadCompletion)(NSDictionary *templateConfiguration);
 @property (nonatomic, readonly) id<VTemplateDownloader> downloader;
 
 /**
+ The delegate that was provided at initialization time
+ */
+@property (nonatomic, weak, readonly) id<VTemplateDownloadOperationDelegate> delegate;
+
+/**
  The manager will give the downloader this much time 
  to do its thing before moving on to cached options.
  */
 @property (nonatomic) NSTimeInterval timeout;
 
 /**
- Initializes a new template download manager with a downloader
+ If YES, this operation will not stop until a template has 
+ been either downloaded or loaded from cache. If NO, any
+ failure will cause the completion block to be called with
+ a nil dictionary. The default is YES.
  */
-- (instancetype)initWithDownloader:(id<VTemplateDownloader>)downloader completion:(VTemplateLoadCompletion)completion NS_DESIGNATED_INITIALIZER;
+@property (nonatomic) BOOL shouldRetry;
+
+/**
+ Initializes a new template download manager with a downloader and a delegate
+ */
+- (instancetype)initWithDownloader:(id<VTemplateDownloader>)downloader andDelegate:(id<VTemplateDownloadOperationDelegate>)delegate NS_DESIGNATED_INITIALIZER;
 
 @end

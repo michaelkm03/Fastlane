@@ -152,7 +152,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
 {
     VEnvironmentManager *environmentManager = [VEnvironmentManager sharedInstance];
     
-    self.templateDownloadManager = [[VTemplateDownloadOperation alloc] initWithDownloader:[VObjectManager sharedManager] completion:nil];
+    self.templateDownloadManager = [[VTemplateDownloadOperation alloc] initWithDownloader:[VObjectManager sharedManager] andDelegate:nil];
     self.templateDownloadManager.templateCacheFileLocation = [self urlForTemplateCacheForEnvironment:[environmentManager currentEnvironment]];
     self.templateDownloadManager.templateLocationInBundle = [self urlForTemplateInBundleForEnvironment:[environmentManager currentEnvironment]];
     

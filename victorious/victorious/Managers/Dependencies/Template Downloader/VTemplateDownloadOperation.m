@@ -15,9 +15,11 @@
 @interface VTemplateDownloadOperation ()
 
 @property (nonatomic, strong) dispatch_queue_t privateQueue;
+@property (nonatomic, strong) dispatch_semaphore_t semaphore;
 @property (nonatomic, strong) NSUUID *currentDownloadID;
 @property (nonatomic) NSTimeInterval retryInterval;
-@property (nonatomic, copy) VTemplateLoadCompletion completion;
+@property (nonatomic, strong) NSProgress *progress;
+@property (nonatomic) BOOL delegateNotified;
 
 @end
 
@@ -25,56 +27,57 @@ static const NSTimeInterval kDefaultTimeout = 5.0;
 
 @implementation VTemplateDownloadOperation
 
-- (instancetype)initWithDownloader:(id<VTemplateDownloader>)downloader completion:(VTemplateLoadCompletion)completion
+- (instancetype)initWithDownloader:(id<VTemplateDownloader>)downloader andDelegate:(id<VTemplateDownloadOperationDelegate>)delegate
 {
     NSParameterAssert(downloader != nil);
     self = [super init];
     if ( self != nil )
     {
         _privateQueue = dispatch_queue_create("com.getvictorious.VTemplateDownloadManager", DISPATCH_QUEUE_SERIAL);
-        _completion = [completion copy];
+        _semaphore = dispatch_semaphore_create(0);
+        _delegate = delegate;
+        _delegateNotified = NO;
         _downloader = downloader;
         _timeout = kDefaultTimeout;
+        _shouldRetry = YES;
+        _progress = [NSProgress progressWithTotalUnitCount:1];
     }
     return self;
 }
 
 - (void)main
 {
-    NSParameterAssert(self.downloader != nil);
-    dispatch_async(self.privateQueue, ^(void)
+    self.retryInterval = self.timeout;
+    
+    __weak typeof(self) weakSelf = self;
+    NSUUID *downloadID = [[NSUUID alloc] init];
+    self.currentDownloadID = downloadID;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.timeout * NSEC_PER_SEC)),
+                   self.privateQueue,
+                   ^(void)
     {
-        self.retryInterval = self.timeout;
-        
-        __weak typeof(self) weakSelf = self;
-        NSUUID *downloadID = [[NSUUID alloc] init];
-        self.currentDownloadID = downloadID;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.timeout * NSEC_PER_SEC)),
-                       self.privateQueue,
-                       ^(void)
+        typeof(weakSelf) strongSelf = weakSelf;
+        if ( strongSelf != nil )
         {
-            typeof(weakSelf) strongSelf = weakSelf;
-            if ( strongSelf != nil )
+            if ( [downloadID isEqual:strongSelf.currentDownloadID] )
             {
-                if ( [downloadID isEqual:strongSelf.currentDownloadID] )
-                {
-                    [strongSelf downloadTimerExpired];
-                }
+                [strongSelf downloadTimerExpired];
             }
-        });
-        
-        [self.downloader downloadTemplateWithCompletion:^(NSData *templateData, NSError *error)
-        {
-            if ( error != nil )
-            {
-                [weakSelf downloadDidFinishWithData:nil];
-            }
-            else
-            {
-                [weakSelf downloadDidFinishWithData:templateData];
-            }
-        }];
+        }
     });
+    
+    [self.downloader downloadTemplateWithCompletion:^(NSData *templateData, NSError *error)
+    {
+        if ( error != nil )
+        {
+            [weakSelf downloadDidFinishWithData:nil];
+        }
+        else
+        {
+            [weakSelf downloadDidFinishWithData:templateData];
+        }
+    }];
+    dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
 }
 
 - (void)downloadTimerExpired
@@ -95,7 +98,7 @@ static const NSTimeInterval kDefaultTimeout = 5.0;
         }
         if ( configuration == nil )
         {
-            if ( self.completion != nil )
+            if ( self.delegate != nil )
             {
                 [self loadTemplateFromCache];
             }
@@ -105,7 +108,7 @@ static const NSTimeInterval kDefaultTimeout = 5.0;
         else
         {
             [self saveTemplateToCache:data];
-            [self executeCallbackWithTemplateConfiguration:configuration];
+            [self notifyDelegateWithTemplateConfiguration:configuration];
         }
     });
 }
@@ -128,7 +131,7 @@ static const NSTimeInterval kDefaultTimeout = 5.0;
     }
     
     NSDictionary *template = [VTemplateSerialization templateConfigurationDictionaryWithData:templateData];
-    [self executeCallbackWithTemplateConfiguration:template];
+    [self notifyDelegateWithTemplateConfiguration:template];
 }
 
 - (void)loadTemplateFromBundle
@@ -137,21 +140,29 @@ static const NSTimeInterval kDefaultTimeout = 5.0;
     if ( templateData != nil )
     {
         NSDictionary *template = [VTemplateSerialization templateConfigurationDictionaryWithData:templateData];
-        [self executeCallbackWithTemplateConfiguration:template];
+        [self notifyDelegateWithTemplateConfiguration:template];
     }
 }
 
-- (void)executeCallbackWithTemplateConfiguration:(NSDictionary *)configuration
+- (void)notifyDelegateWithTemplateConfiguration:(NSDictionary *)configuration
 {
-    if ( self.completion != nil )
+    if ( self.delegateNotified )
     {
-        self.completion(configuration);
-        self.completion = nil;
+        return;
     }
+    [self.delegate templateDownloadOperation:self didFinishLoadingTemplateConfiguration:configuration];
+    self.delegateNotified = YES;
+    dispatch_semaphore_signal(self.semaphore);
 }
 
 - (void)retryTemplateDownload
 {
+    if ( !self.shouldRetry )
+    {
+        [self notifyDelegateWithTemplateConfiguration:nil];
+        return;
+    }
+    
     __weak typeof(self) weakSelf = self;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.retryInterval * NSEC_PER_SEC)), self.privateQueue, ^(void)
     {
