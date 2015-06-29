@@ -408,14 +408,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                      password:password
                    completion:^(BOOL success, NSError *error)
           {
-              if (success)
-              {
-                  completion(YES, nil);
-              }
-              else
-              {
-                  completion(NO, error);
-              }
+              completion(success, error);
           }];
      }
                                                      failBlock:^(NSOperation *operation, NSError *error)
