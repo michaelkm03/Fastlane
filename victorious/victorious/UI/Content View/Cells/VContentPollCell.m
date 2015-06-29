@@ -155,7 +155,7 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
     self.answerAIsVideo = YES;
     self.answerAMediaURL = videoURL;
     
-    [self.answerAButton setImage:[UIImage imageNamed:@"Play"] forState:UIControlStateNormal];
+    [self.answerAButton setImage:[UIImage imageNamed:@"PlayIcon"] forState:UIControlStateNormal];
     
     if (self.aVideoPlayerViewController != nil)
     {
@@ -171,7 +171,7 @@ static const CGFloat kDesiredPollCellHeight = 214.0f;
     self.answerBIsVideo = YES;
     self.answerBMediaURL = videoURL;
     
-    [self.answerBButton setImage:[UIImage imageNamed:@"Play"] forState:UIControlStateNormal];
+    [self.answerBButton setImage:[UIImage imageNamed:@"PlayIcon"] forState:UIControlStateNormal];
     
     if (self.bVideoPlayerViewController != nil)
     {
