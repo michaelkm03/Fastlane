@@ -10,7 +10,7 @@
 
 #import <FacebookSDK/FacebookSDK.h>
 
-NSString * const VFacebookManagerPublishPermissionsErrorDomain = @"facebookManagerError";
+NSString * const VFacebookManagerErrorDomain = @"facebookManagerError";
 CGFloat const VFacebookManagerErrorPublishPermissionsFailure = 1;
 
 static NSString * const kPublishActionsPermissionKey = @"publish_actions";
@@ -69,7 +69,7 @@ static NSString * const kEmailPermissionKey = @"email";
     {
         [self loginWithBehavior:FBSessionLoginBehaviorUseSystemAccountIfPresent onSuccess:successBlock onFailure:failureBlock];
     }
-    if ( failureBlock != nil )
+    else if ( failureBlock != nil )
     {
         failureBlock(nil);
     }
@@ -197,7 +197,7 @@ static NSString * const kEmailPermissionKey = @"email";
 {
     if ( [self couldBePublishPermissionsFailureError:error] )
     {
-        error = [NSError errorWithDomain:VFacebookManagerPublishPermissionsErrorDomain
+        error = [NSError errorWithDomain:VFacebookManagerErrorDomain
                                     code:VFacebookManagerErrorPublishPermissionsFailure
                                 userInfo:nil];
     }

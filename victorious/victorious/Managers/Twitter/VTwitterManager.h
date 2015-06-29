@@ -19,8 +19,8 @@ typedef void (^VTWitterCompletionBlock) (BOOL success, NSError *error);
 /**
  *  Error domain for all non-Twitter-API errors
  */
-
 extern NSString * const VTwitterManagerErrorDomain;
+
 /**
  *  Error code representing that the user canceled the share.
  *  The Twitter acounts manager already shows an alert in these cases.

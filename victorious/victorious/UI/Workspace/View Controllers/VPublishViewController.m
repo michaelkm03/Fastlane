@@ -596,7 +596,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     
     NSArray *actions;
     NSString *alertMessage;
-    if ( shareItemCell.shareMenuItem.shareType == VShareTypeFacebook && [error.domain isEqualToString:VFacebookManagerPublishPermissionsErrorDomain] )
+    if ( shareItemCell.shareMenuItem.shareType == VShareTypeFacebook && [error.domain isEqualToString:VFacebookManagerErrorDomain] )
     {
         //This CAN signal that we don't have publish permissions for facebook, don't prompt the user to retry.
         alertMessage = NSLocalizedString(@"We failed to retrieve publish permissions.", nil);
@@ -624,11 +624,6 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     }
     
     [self presentViewController:alertController animated:YES completion:nil];
-}
-
-- (BOOL)isFacebookPublishPermissionsError:(NSError *)error
-{
-    return error == nil || error.code == 2;
 }
 
 #pragma mark - UICollectionViewDataSource

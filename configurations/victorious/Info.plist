@@ -10,6 +10,22 @@
 	<string>${ProductPrefix}victorious</string>
 	<key>CFBundleURLTypes</key>
 	<array>
+		<array>
+			<dict>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>fb664946900317058</string>
+				</array>
+			</dict>
+			<dict>
+				<key>CFBundleURLName</key>
+				<string>com.getvictorious.deeplinking.scheme</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>vapp1</string>
+				</array>
+			</dict>
+		</array>
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
@@ -18,7 +34,7 @@
 		</dict>
 	</array>
 	<key>FacebookAppID</key>
-	<string>1374328719478033</string>
+	<string>664946900317058</string>
 	<key>FacebookDisplayName</key>
 	<string>VictoriousApp Dev</string>
 	<key>TWITTER_CONSUMER_KEY</key>

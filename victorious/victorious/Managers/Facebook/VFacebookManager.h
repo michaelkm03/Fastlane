@@ -12,7 +12,7 @@
 /**
  Error domain for publish permissions errors
  */
-extern NSString * const VFacebookManagerPublishPermissionsErrorDomain;
+extern NSString * const VFacebookManagerErrorDomain;
 
 /**
  Error code representing that we failed to acquire publish permissions.
