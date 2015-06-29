@@ -29,6 +29,8 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 @property (nonatomic, assign) BOOL adDidStart;
 @property (nonatomic, assign) BOOL videoDidStart;
 
+@property (nonatomic, strong) void (^animateAlongSideBlock)(BOOL controlsHidden);
+
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *loadingIndicator;
 @property (nonatomic, weak) IBOutlet UILabel *videoFailedLabel;
 
@@ -182,6 +184,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     self.videoPlayerViewController.view.frame = self.contentView.bounds;
     self.videoPlayerViewController.shouldContinuePlayingAfterDismissal = YES;
     self.videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = YES;
+    self.videoPlayerViewController.animateWithPlayControls = self.animateAlongSideBlock;
     if (self.tracking != nil)
     {
         [self.videoPlayerViewController enableTrackingWithTrackingItem:self.tracking];
@@ -300,7 +303,8 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
 
 - (void)setAnimateAlongsizePlayControlsBlock:(void (^)(BOOL playControlsHidden))animateWithPlayControls
 {
-    self.videoPlayerViewController.animateWithPlayControls = animateWithPlayControls;
+    self.animateAlongSideBlock = animateWithPlayControls;
+    self.videoPlayerViewController.animateWithPlayControls = self.animateAlongSideBlock;
 }
 
 - (void)prepareForRemoval
