@@ -296,4 +296,21 @@
     return transform;
 }
 
+- (UIImage *)smoothResizedImageWithNewSize:(CGSize)newSize
+{
+    CGRect newRect = CGRectIntegral(CGRectMake(0, 0, newSize.width, newSize.height));
+    CGImageRef imageRef = self.CGImage;
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+    CGAffineTransform flipVertical = CGAffineTransformMake(1, 0, 0, -1, 0, newSize.height);
+    CGContextConcatCTM(context, flipVertical);
+    CGContextDrawImage(context, newRect, imageRef);
+    CGImageRef newImageRef = CGBitmapContextCreateImage(context);
+    UIImage *newImage = [UIImage imageWithCGImage:newImageRef];
+    CGImageRelease(newImageRef);
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+
 @end
