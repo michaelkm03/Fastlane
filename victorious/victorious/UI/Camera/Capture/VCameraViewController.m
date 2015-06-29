@@ -371,7 +371,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
              // If we don't need mic permission, call the capture start block right away
              if (initialContext == VWorkspaceFlowControllerContextProfileImage || !self.allowVideo)
              {
-                 //[self setFrontFacingCamera];
                  self.userDeniedPermissionsPrePrompt = NO;
                  startCapture(NO);
              }
