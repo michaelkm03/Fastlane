@@ -10,7 +10,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class AVCaptureDevice, AVCaptureSession, VCameraVideoEncoder;
+@class AVCaptureDevice, AVCaptureSession, VCameraVideoEncoder, VWorkspaceFlowController;
 
 extern NSString * const VCameraCaptureControllerErrorDomain;
 extern const NSInteger VCameraCaptureControllerErrorCode;
@@ -100,5 +100,11 @@ extern const NSInteger VCameraCaptureControllerErrorCode;
  *  Exposed so that consumers can KVO imageOutput's properties for UI fun and profit.
  */
 @property (nonatomic, strong, readonly) AVCaptureStillImageOutput *imageOutput;
+
+
+/*
+ *  context of wherein the camera controller is being presented
+ */
+@property (nonatomic, assign) NSInteger context;
 
 @end

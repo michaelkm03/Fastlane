@@ -348,6 +348,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     VWorkspaceFlowControllerContext initialContext = VWorkspaceFlowControllerContextContentCreation;
     NSNumber *injectedContext = [self.dependencyManager numberForKey:VWorkspaceFlowControllerContextKey];
     initialContext = (injectedContext != nil) ? [injectedContext integerValue] : initialContext;
+    self.captureController.context = initialContext;
     
     VPermission *cameraPermission;
     if (initialContext == VWorkspaceFlowControllerContextContentCreation)
@@ -370,9 +371,9 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
              // If we don't need mic permission, call the capture start block right away
              if (initialContext == VWorkspaceFlowControllerContextProfileImage || !self.allowVideo)
              {
+                 //[self setFrontFacingCamera];
                  self.userDeniedPermissionsPrePrompt = NO;
                  startCapture(NO);
-                 [self setFrontFacingCamera];
              }
              else
              {
@@ -449,46 +450,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     };
     
     return startCapture;
-}
-
-- (void)setFrontFacingCamera
-{
-    if (self.captureController.devices.count > 1)
-    {
-        AVCaptureDevice *newDevice;
-        // Sets the front facing camera
-        newDevice = self.captureController.devices[1];
-    
-        [self replacePreviewViewWithSnapshot];
-        [MBProgressHUD showHUDAddedTo:self.previewSnapshot animated:YES];
-        __typeof(self) __weak weakSelf = self;
-        self.state = VCameraViewControllerStateInitializingHardware;
-        [self.captureController setCurrentDevice:newDevice withCompletion:^(NSError *error)
-         {
-             __typeof(weakSelf) strongSelf = weakSelf;
-             if (strongSelf)
-             {
-                 dispatch_async(dispatch_get_main_queue(), ^(void)
-                                {
-                                    [MBProgressHUD hideAllHUDsForView:strongSelf.previewSnapshot animated:NO];
-                                    
-                                    [UIView animateWithDuration:kAnimationDuration
-                                                     animations:^(void)
-                                     {
-                                         strongSelf.previewSnapshot.alpha = 0.0f;
-                                         strongSelf.previewView.alpha = 1.0f;
-                                         [strongSelf configureFlashButton];
-                                     }
-                                                     completion:^(BOOL finished)
-                                     {
-                                         [strongSelf restoreLivePreview];
-                                         strongSelf.state = VCameraViewControllerStateDefault;
-                                     }];
-                                    [strongSelf updateOrientation];
-                                });
-             }
-         }];
-    }
 }
 
 #pragma mark - Property Accessors
