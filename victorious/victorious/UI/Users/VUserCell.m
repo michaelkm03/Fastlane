@@ -48,7 +48,7 @@ static const CGFloat kUserCellHeight = 51.0f;
     self.userImageView.clipsToBounds = YES;
     self.userImageView.layer.borderWidth = 1.0;
     self.userImageView.layer.borderColor = [UIColor whiteColor].CGColor;
-    self.contentView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
+    self.contentView.backgroundColor = [UIColor clearColor];
 }
 
 #pragma mark - Public

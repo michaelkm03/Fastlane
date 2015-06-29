@@ -35,8 +35,8 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
     self.profileImage.layer.borderWidth = 1.0;
     self.profileImage.layer.borderColor = [UIColor whiteColor].CGColor;
     self.profileImage.clipsToBounds = YES;
-    
     self.profileName.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
+    self.contentView.backgroundColor = [UIColor clearColor];
 }
 
 - (void)prepareForReuse
