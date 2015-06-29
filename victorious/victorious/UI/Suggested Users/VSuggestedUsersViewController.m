@@ -201,30 +201,6 @@ static NSString * const VSuggestedUsersPromptKey    = @"prompt";
     }
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self updateRetryCellToHighlighted:YES];
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self updateRetryCellToHighlighted:NO];
-}
-
-- (void)updateRetryCellToHighlighted:(BOOL)highlighted
-{
-    if ( self.suggestedUsersDataSource.isDisplayingRetryCell )
-    {
-        for ( UICollectionViewCell *cell in self.collectionView.visibleCells )
-        {
-            if ( [cell isKindOfClass:[VSuggestedUserRetryCell class]] )
-            {
-                [cell setHighlighted:highlighted];
-            }
-        }
-    }
-}
-
 - (void)refreshSuggestedUsers
 {
     __weak typeof(self) welf = self;
