@@ -151,8 +151,6 @@ static const CGFloat kActionButtonWidth = 44.0f;
     // Create an array of available action items
     NSMutableArray *justActionItems = [[NSMutableArray alloc] init];
     
-    NSLog( @"%@ +=+ MEME: %@, GIF:  %@", sequence.name, @(sequence.permissions.canMeme), @(sequence.permissions.canGIF) );
-    
     [justActionItems addObject:self.likeButton];
     
     if ( sequence.permissions.canComment )

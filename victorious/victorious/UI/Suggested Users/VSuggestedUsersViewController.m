@@ -89,7 +89,7 @@
         self.salutationContainerHeight.constant = 0.0f;
     }
     
-    self.messageTextView.text = [self.dependencyManager stringForKey:VSuggestedUsersPromptKey];
+    self.messageTextView.text = [self.dependencyManager stringForKey:VScreenPromptKey];
     self.messageTextView.font = [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
     self.messageTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.messageTextView.contentInset = UIEdgeInsetsZero;

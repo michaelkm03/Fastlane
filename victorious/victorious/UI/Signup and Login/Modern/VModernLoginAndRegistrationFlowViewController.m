@@ -541,11 +541,8 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
 
 - (UIViewController *)nextScreenInSocialRegistrationAfter:(UIViewController *)currentViewController inArray:(NSArray *)array
 {
-    NSInteger index = [array indexOfObject:currentViewController];
-    NSInteger startIndex = index == NSNotFound ? 0 : index;
-    for ( NSInteger i = startIndex+1; i < (NSInteger)array.count; i++ )
+    for ( UIViewController *viewController in array )
     {
-        UIViewController *viewController = array[i];
         id<VLoginFlowScreen> screen = (id<VLoginFlowScreen>)viewController;
         if ( [screen respondsToSelector:@selector(displaysAfterSocialRegistration)] && [screen displaysAfterSocialRegistration] )
         {
