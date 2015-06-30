@@ -252,6 +252,7 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 28.0f, 5.0f, 28.0f };
     {
         self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
                                                                               attributes:[VSleekStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
+        self.captiontoPreviewVerticalSpacing.constant = kCaptionToPreviewVerticalSpacing;
         self.captionHeight.constant = kMaxCaptionTextViewHeight;
     }
     [self layoutIfNeeded];
