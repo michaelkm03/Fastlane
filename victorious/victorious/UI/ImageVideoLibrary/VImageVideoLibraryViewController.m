@@ -8,31 +8,41 @@
 
 #import "VImageVideoLibraryViewController.h"
 
+// Views + Helpers
+#import "VFlexBar.h"
+#import "VCompatibility.h"
+
 @interface VImageVideoLibraryViewController () <UIPopoverPresentationControllerDelegate>
+
+@property (strong, nonatomic) IBOutlet VFlexBar *alternateCaptureOptionsFlexBar;
 
 @end
 
 @implementation VImageVideoLibraryViewController
 
+#pragma mark - VHasManagedDependencies
+
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    VImageVideoLibraryViewController *galleryViewController = (VImageVideoLibraryViewController *)[[UIStoryboard storyboardWithName:NSStringFromClass(self) bundle:[NSBundle bundleForClass:self]] instantiateInitialViewController];
-    return galleryViewController;
+    UIStoryboard *storyboardForImageVideoGallery = [UIStoryboard storyboardWithName:NSStringFromClass(self)
+                                                                             bundle:[NSBundle bundleForClass:self]];
+    return [storyboardForImageVideoGallery instantiateInitialViewController];
 }
 
-#pragma mark - Target/Action
+#pragma mark - View Lifecycle
 
-- (IBAction)tappedCamera:(id)sender
+- (void)viewDidLayoutSubviews
 {
-    if (self.userSelectedCamera != nil)
+    CGFloat fullWidth = CGRectGetWidth(self.view.bounds);
+    if (self.alternateCaptureOptions.count > 0)
     {
-        self.userSelectedCamera();
+        CGFloat widthPerElement = VFLOOR(fullWidth / self.alternateCaptureOptions.count);
+        
+        for (VImageLibraryAlternateCaptureOption *alternateOption in self.alternateCaptureOptions)
+        {
+            // add buttons to flex bar
+        }
     }
-}
-
-- (IBAction)tappedSearch:(id)sender
-{
-    
 }
 
 #pragma mark - Segue
@@ -57,6 +67,32 @@
                                                                traitCollection:(UITraitCollection *)traitCollection
 {
     return UIModalPresentationNone;
+}
+
+@end
+
+#pragma mark - VImageLibraryAlternateCaptureOption
+
+@interface VImageLibraryAlternateCaptureOption ()
+
+@property (nonatomic, copy) VImageLibraryAlternateCaptureOption *selectionBlock;
+
+@end
+
+@implementation VImageLibraryAlternateCaptureOption
+
+- (instancetype)initWithTitle:(NSString *)title
+                         icon:(UIImage *)icon
+            andSelectionBlock:(VImageVideoLibraryAlternateCaptureSelection)selectionBlock
+{
+    self = [super init];
+    if (self != nil)
+    {
+        _title = title;
+        _icon = icon;
+        _selectionBlock = [selectionBlock copy];
+    }
+    return self;
 }
 
 @end

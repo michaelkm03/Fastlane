@@ -73,19 +73,20 @@ static NSString * const kCameraScreenKey = @"cameraScreen";
 {
     self.imageVideoLibraryViewController = [self.dependencyManager templateValueOfType:[VImageVideoLibraryViewController class] forKey:kImageVideoLibraryKey];
     
-    __weak VImageCreationFlowStrategy *weakSelf = self;
-    self.imageVideoLibraryViewController.userSelectedCamera = ^void()
-    {
-        [weakSelf.flowNavigationController presentViewController:weakSelf.cameraViewController
-                                                        animated:YES
-                                                      completion:nil];
-    };
+    VImageLibraryAlternateCaptureOption *cameraCaptureOption = [[VImageLibraryAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Camera", nil)
+                                                                                                                     icon:[UIImage imageNamed:@"PostCamera"]
+                                                                                                        andSelectionBlock:^
+                                                                {
+                                                                    // Goto Camera
+                                                                }];
+    VImageLibraryAlternateCaptureOption *searchCpatureOption = [[VImageLibraryAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Search", nil)
+                                                                                                                     icon:[UIImage imageNamed:@"D_search_small_icon"]
+                                                                                                        andSelectionBlock:^
+                                                                {
+                                                                    // Go to Search
+                                                                }];
     
-    self.imageVideoLibraryViewController.userSelectedSearch = ^void()
-    {
-        
-    };
-    
+    self.imageVideoLibraryViewController.alternateCaptureOptions = @[cameraCaptureOption, searchCpatureOption];
     return self.imageVideoLibraryViewController;
 }
 
