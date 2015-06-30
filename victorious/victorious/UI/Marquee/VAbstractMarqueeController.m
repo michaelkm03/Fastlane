@@ -275,7 +275,8 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     for (VStreamItem *marqueeItem in marqueeItems)
     {
         NSString *reuseIdentifierForSequence = [marqueeStreamItemCellClass reuseIdentifierForStreamItem:marqueeItem
-                                                                                         baseIdentifier:nil dependencyManager:self.dependencyManager];
+                                                                                         baseIdentifier:nil
+                                                                                      dependencyManager:self.dependencyManager];
         
         if (![self.registeredReuseIdentifiers containsObject:reuseIdentifierForSequence])
         {
