@@ -94,7 +94,8 @@
 /**
  *  The user has entered a new password.
  */
-- (void)updateWithNewPassword:(NSString *)newPassword;
+- (void)updateWithNewPassword:(NSString *)newPassword
+                   completion:(void(^)(BOOL success))completion;
 
 /**
  *  The user would like to see the terms of service.
@@ -121,5 +122,15 @@
  * Adds the proper navigation bar items for navigation throw the login flow.
  */
 - (void)configureFlowNavigationItemWithScreen:(UIViewController <VLoginFlowScreen> *)loginFlowScreen;
+
+/**
+ *  The delegate should dismiss itself.
+ */
+- (void)onAuthenticationFinished;
+
+/**
+ *  The delegate should return to the root of the login flow.
+ */
+- (void)returnToLandingScreen;
 
 @end

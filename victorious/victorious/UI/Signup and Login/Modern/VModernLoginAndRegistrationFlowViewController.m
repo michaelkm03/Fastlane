@@ -23,8 +23,6 @@
 #import "VPrivacyPoliciesViewController.h"
 #import "VEnterProfilePictureCameraViewController.h"
 #import "VLoginFlowControllerDelegate.h"
-#import "UIAlertController+VSimpleAlert.h"
-#import "VModernResetPasswordViewController.h"
 
 static NSString * const kRegistrationScreens = @"registrationScreens";
 static NSString * const kLoginScreens = @"loginScreens";
@@ -424,9 +422,8 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
         if (success)
         {
             // show change password screen.
-            VModernResetPasswordViewController *changePasswordScreen = (VModernResetPasswordViewController *)[welf.dependencyManager viewControllerForKey:@"changePasswordScreen"];
+            UIViewController *changePasswordScreen = [welf.dependencyManager viewControllerForKey:@"changePasswordScreen"];
             [welf setDelegateForScreensInArray:@[changePasswordScreen]];
-            [welf configureFlowNavigationItemWithScreen:changePasswordScreen];
             [welf pushViewController:changePasswordScreen
                             animated:YES];
         }
@@ -434,6 +431,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
 }
 
 - (void)updateWithNewPassword:(NSString *)newPassword
+                   completion:(void (^)(BOOL))completion
 {
     if (self.actionsDisabled)
     {
@@ -449,12 +447,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
         }
         else
         {
-            UIAlertController *alert = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"ResetPasswordErrorFailTitle", nil)
-                                                                                 message:NSLocalizedString(@"ResetPasswordErrorFailMessage", nil)
-                                                                    andCancelButtonTitle:NSLocalizedString(@"OK", nil)];
-            [self presentViewController:alert animated:YES completion:nil];
-            
-            [self popToRootViewControllerAnimated:YES];
+            completion(success);
         }
     }];
 }
@@ -563,6 +556,17 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
                                                                               style:style
                                                                              target:loginFlowScreen
                                                                              action:@selector(onContinue:)];
+}
+
+- (void)onAuthenticationFinished
+{
+    [self onAuthenticationFinishedWithSuccess:YES];
+}
+
+- (void)returnToLandingScreen
+{
+    [self popToViewController:[self.loginScreens firstObject]
+                     animated:YES];
 }
 
 #pragma mark - VBackgroundContainer

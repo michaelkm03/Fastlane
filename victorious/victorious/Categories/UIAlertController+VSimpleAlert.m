@@ -14,8 +14,21 @@
                                        message:(NSString *)message
                           andCancelButtonTitle:(NSString *)cancelButtontitle
 {
+    return [self simpleAlertControllerWithTitle:title
+                                        message:message
+                           andCancelButtonTitle:cancelButtontitle
+                                  cancelHandler:nil];
+}
+
++ (instancetype)simpleAlertControllerWithTitle:(NSString *)title
+                                       message:(NSString *)message
+                          andCancelButtonTitle:(NSString *)cancelButtontitle
+                                 cancelHandler:(void (^)(UIAlertAction *action))handler
+{
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelButtontitle style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelButtontitle
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:handler];
     [alertController addAction:cancelAction];
     
     return alertController;
