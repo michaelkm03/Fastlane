@@ -206,15 +206,15 @@ static NSUInteger const kMaxNumberOfActionButtons = 4;
     {
         [actionButtons addObject:self.repostButton];
     }
-    if ( sequence.permissions.canMeme )
-    {
-        [actionButtons addObject:self.memeButton];
-    }
-    
-    //Don't add GIF if we already have our kMaxNumberOfActionButtons buttons to show
-    if ( sequence.permissions.canGIF && actionButtons.count != kMaxNumberOfActionButtons )
+    if ( sequence.permissions.canGIF )
     {
         [actionButtons addObject:self.gifButton];
+    }
+    
+    //Don't add meme if we already have our kMaxNumberOfActionButtons buttons to show
+    if ( sequence.permissions.canMeme && actionButtons.count != kMaxNumberOfActionButtons)
+    {
+        [actionButtons addObject:self.memeButton];
     }
     
     CGFloat interButtonSpace = actionBarWidth;
