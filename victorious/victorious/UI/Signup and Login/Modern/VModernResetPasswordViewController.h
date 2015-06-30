@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 
 #import "VHasManagedDependencies.h"
+#import "VLoginFlowControllerDelegate.h"
 
-@interface VModernResetPasswordViewController : UIViewController <VHasManagedDependencies>
+@interface VModernResetPasswordViewController : UIViewController <VHasManagedDependencies, VLoginFlowScreen>
 
 @end

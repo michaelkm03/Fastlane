@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import <CCHLinkTextView.h>
-#import "VHasManagedDependencies.h"
 
 /**
  Delegate for VSequenceCountsTextView designed to let calling code know when
@@ -32,7 +31,7 @@
  A text view that displays comment and liker counts, handling all of the completed
  attributes string and tappable text configuration internally.
  */
-@interface VSequenceCountsTextView : CCHLinkTextView <VHasManagedDependencies>
+@interface VSequenceCountsTextView : CCHLinkTextView
 
 /**
  Updates the text with the number of likes.
@@ -54,8 +53,8 @@
  */
 @property (nonatomic, weak) id<VSequenceCountsTextViewDelegate> textSelectionDelegate;
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
-
 @property (nonatomic, assign) BOOL hideComments;
+
+@property (nonatomic, strong) NSDictionary *textAttributes;
 
 @end
