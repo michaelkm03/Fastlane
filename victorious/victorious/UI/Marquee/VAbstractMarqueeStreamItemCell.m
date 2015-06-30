@@ -95,7 +95,8 @@
     NSString *identifier = baseIdentifier == nil ? [[NSMutableString alloc] init] : [baseIdentifier copy];
     identifier = [NSString stringWithFormat:@"%@.%@", identifier, NSStringFromClass(self)];
     identifier = [VStreamItemPreviewView reuseIdentifierForStreamItem:streamItem
-                                                       baseIdentifier:identifier dependencyManager:dependencyManager];
+                                                       baseIdentifier:identifier
+                                                    dependencyManager:dependencyManager];
     return identifier;
 }
 

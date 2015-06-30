@@ -50,7 +50,8 @@
     for (VSequence *sequence in streamItems)
     {
         NSString *reuseIdentifierForSequence = [VTileOverlayCollectionCell reuseIdentifierForStreamItem:sequence
-                                                                                         baseIdentifier:@"" dependencyManager:self.dependencyManager];
+                                                                                         baseIdentifier:@""
+                                                                                      dependencyManager:self.dependencyManager];
         if (![self.registeredReuseIdentifiers containsObject:reuseIdentifierForSequence])
         {
             [collectionView registerClass:[VTileOverlayCollectionCell class]
@@ -68,7 +69,8 @@
     }
     
     NSString *reuseIdentifierForSequence = [VTileOverlayCollectionCell reuseIdentifierForStreamItem:(VSequence *)streamItem
-                                                                                     baseIdentifier:@"" dependencyManager:self.dependencyManager];
+                                                                                     baseIdentifier:@""
+                                                                                  dependencyManager:self.dependencyManager];
     if (![self.registeredReuseIdentifiers containsObject:reuseIdentifierForSequence])
     {
         [collectionView registerClass:[VTileOverlayCollectionCell class]
