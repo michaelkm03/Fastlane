@@ -37,7 +37,11 @@ NSString * const VCreationFlowControllerCreationTypeKey = @"creationType";
     VCreationFlowStrategy *strategy = [VCreationFlowStrategy newCreationFlowStrategyWithDependencyManager:dependencyManager
                                                                                      creationType:creationType
                                                                          flowNavigationController:self];
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)];
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                  target:self
+                                                                                  action:@selector(cancel)];
+#warning move this to dependency manager
+    cancelButton.tintColor = [UIColor whiteColor];
     UIViewController *rootViewController = [strategy rootViewControllerForCreationFlow];
     rootViewController.navigationItem.leftBarButtonItem = cancelButton;
 

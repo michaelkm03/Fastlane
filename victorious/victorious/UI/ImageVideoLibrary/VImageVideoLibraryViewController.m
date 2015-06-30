@@ -8,7 +8,7 @@
 
 #import "VImageVideoLibraryViewController.h"
 
-@interface VImageVideoLibraryViewController ()
+@interface VImageVideoLibraryViewController () <UIPopoverPresentationControllerDelegate>
 
 @end
 
@@ -33,6 +33,30 @@
 - (IBAction)tappedSearch:(id)sender
 {
     
+}
+
+#pragma mark - Segue
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"albumsPopover"])
+    {
+        // Set delegate to self so we can show as a real popover (Non-adaptive).
+        UIViewController *destinationViewController = segue.destinationViewController;
+        destinationViewController.popoverPresentationController.delegate = self;
+        // Inset the popover a bit
+        CGSize preferredContentSize = CGSizeMake(CGRectGetWidth(self.view.bounds) - 50.0f,
+                                                 CGRectGetHeight(self.view.bounds) - 200.0f);
+        destinationViewController.preferredContentSize = preferredContentSize;
+    }
+}
+
+#pragma mark - UIPopoverPresentationControllerDelegate
+
+- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller
+                                                               traitCollection:(UITraitCollection *)traitCollection
+{
+    return UIModalPresentationNone;
 }
 
 @end
