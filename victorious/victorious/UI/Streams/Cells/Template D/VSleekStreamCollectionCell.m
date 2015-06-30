@@ -239,17 +239,18 @@ const CGFloat kHiddenCaptionsMarginTop = 10.0f;
 
 + (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem
                             baseIdentifier:(NSString *)baseIdentifier
+                         dependencyManager:(VDependencyManager *)dependencyManager
 {
     NSString *identifier = baseIdentifier == nil ? [[NSString alloc] init] : baseIdentifier;
     identifier = [NSString stringWithFormat:@"%@.%@", identifier, NSStringFromClass(self)];
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
         identifier = [VSequencePreviewView reuseIdentifierForSequence:(VSequence *)streamItem
-                                                       baseIdentifier:identifier];
+                                                       baseIdentifier:identifier dependencyManager:dependencyManager];
     }
     
     return [VSleekActionView reuseIdentifierForStreamItem:streamItem
-                                           baseIdentifier:identifier];
+                                           baseIdentifier:identifier dependencyManager:dependencyManager];
 }
 
 #pragma mark - Class Methods

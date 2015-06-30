@@ -51,7 +51,7 @@
             NSAssert(false, @"This factory can only handle sequences.");
         }
         NSString *reuseIdentifierForSequence = [VSleekStreamCollectionCell reuseIdentifierForStreamItem:streamItem
-                                                                                         baseIdentifier:@""];
+                                                                                         baseIdentifier:@"" dependencyManager:self.dependencyManager];
         
         if (![self.registeredReuseIdentifiers containsObject:reuseIdentifierForSequence])
         {
@@ -71,7 +71,7 @@
     
     VSequence *sequence = (VSequence *)streamItem;
     NSString *reuseIdentifierForSequence = [VSleekStreamCollectionCell reuseIdentifierForStreamItem:streamItem
-                                                                                     baseIdentifier:@""];
+                                                                                     baseIdentifier:@"" dependencyManager:self.dependencyManager];
     
     if (![self.registeredReuseIdentifiers containsObject:reuseIdentifierForSequence])
     {

@@ -75,7 +75,7 @@
 #pragma mark - VStreamCellSpecialization
 
 + (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem
-                            baseIdentifier:(NSString *)baseIdentifier
+                            baseIdentifier:(NSString *)baseIdentifier dependencyManager:(VDependencyManager *)dependencyManager
 {
     NSAssert(false, @"Implement in subclasses");
     return nil;

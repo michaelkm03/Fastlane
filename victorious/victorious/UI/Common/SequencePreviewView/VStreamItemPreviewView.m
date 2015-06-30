@@ -81,7 +81,7 @@
 
 #pragma mark - VStreamCellComponentSpecialization
 
-+ (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem baseIdentifier:(NSString *)baseIdentifier
++ (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem baseIdentifier:(NSString *)baseIdentifier dependencyManager:(VDependencyManager *)dependencyManager
 {
     return [NSString stringWithFormat:@"%@.%@", baseIdentifier, NSStringFromClass([self classTypeForStreamItem:streamItem])];
 }

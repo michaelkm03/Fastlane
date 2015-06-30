@@ -115,11 +115,11 @@ static const CGFloat kActionButtonWidth = 44.0f;
 #pragma mark - VUpdateHooks
 
 + (NSString *)reuseIdentifierForSequence:(VSequence *)sequence
-                          baseIdentifier:(NSString *)baseIdentifier
+                          baseIdentifier:(NSString *)baseIdentifier dependencyManager:(VDependencyManager *)dependencyManager
 {
     NSMutableString *identifier = [baseIdentifier mutableCopy];
     
-    //if ( [dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue )
+    if ( [dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue )
     {
         [identifier appendString:@"Like."];
     }

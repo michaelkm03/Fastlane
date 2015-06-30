@@ -217,6 +217,17 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
+        NSArray *streamCellKeyPaths = [templateDecorator keyPathsForKey:@"streamCell"];
+        for ( NSString *keyPath in streamCellKeyPaths )
+        {
+            NSString *likeButtonEnabledPath = [NSString stringWithFormat:@"%@/%@", keyPath, @"likeButtonEnabled"];
+            NSParameterAssert( [templateDecorator setTemplateValue:@YES forKeyPath:likeButtonEnabledPath] );
+        }
+        
+        NSString *contentViewKeyPath = [templateDecorator keyPathsForKey:@"contentView"].firstObject;
+        NSString *likeButtonEnabledPath = [NSString stringWithFormat:@"%@/%@", contentViewKeyPath, @"likeButtonEnabled"];
+        NSParameterAssert( [templateDecorator setTemplateValue:@YES forKeyPath:likeButtonEnabledPath] );
+        
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];

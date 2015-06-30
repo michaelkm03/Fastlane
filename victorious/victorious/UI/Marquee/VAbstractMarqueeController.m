@@ -226,7 +226,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     Class marqueeStreamItemCellClass = [[self class] marqueeStreamItemCellClass];
     NSAssert([marqueeStreamItemCellClass isSubclassOfClass:[VAbstractMarqueeStreamItemCell class]], @"Class returned from marqueeStreamItemCellClass must be a subclass of VAbstractMarqueeStreamItemCell");
 
-    NSString *reuseIdentifierForSequence = [marqueeStreamItemCellClass reuseIdentifierForStreamItem:item baseIdentifier:nil];
+    NSString *reuseIdentifierForSequence = [marqueeStreamItemCellClass reuseIdentifierForStreamItem:item baseIdentifier:nil dependencyManager:self.dependencyManager];
     
     if (![self.registeredReuseIdentifiers containsObject:reuseIdentifierForSequence])
     {
@@ -235,7 +235,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
         [self.registeredReuseIdentifiers addObject:reuseIdentifierForSequence];
     }
     
-    cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[marqueeStreamItemCellClass reuseIdentifierForStreamItem:item baseIdentifier:nil] forIndexPath:indexPath];
+    cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[marqueeStreamItemCellClass reuseIdentifierForStreamItem:item baseIdentifier:nil dependencyManager:self.dependencyManager] forIndexPath:indexPath];
     cell.dependencyManager = self.dependencyManager;
     cell.streamItem = item;
     
@@ -275,7 +275,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     for (VStreamItem *marqueeItem in marqueeItems)
     {
         NSString *reuseIdentifierForSequence = [marqueeStreamItemCellClass reuseIdentifierForStreamItem:marqueeItem
-                                                                                         baseIdentifier:nil];
+                                                                                         baseIdentifier:nil dependencyManager:self.dependencyManager];
         
         if (![self.registeredReuseIdentifiers containsObject:reuseIdentifierForSequence])
         {
