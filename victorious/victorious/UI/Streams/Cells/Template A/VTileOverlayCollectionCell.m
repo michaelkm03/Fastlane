@@ -278,11 +278,12 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
         self.commentButton.hidden = YES;
         self.countsTextView.hideComments = !sequence.permissions.canComment;
     }
-    if ( !sequence.permissions.canLike )
+    const BOOL canLike = [self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue;
+    if ( !canLike )
     {
         self.likeButton.hidden = YES;
         self.likeButtonWidth.constant = 0.0;
-        self.countsTextView.hideLikes = !sequence.permissions.canLike;
+        self.countsTextView.hideLikes = !canLike;
     }
     else
     {

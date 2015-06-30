@@ -119,7 +119,7 @@ static const CGFloat kActionButtonWidth = 44.0f;
 {
     NSMutableString *identifier = [baseIdentifier mutableCopy];
     
-    if ( sequence.permissions.canLike )
+    //if ( [dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue )
     {
         [identifier appendString:@"Like."];
     }
@@ -154,7 +154,7 @@ static const CGFloat kActionButtonWidth = 44.0f;
     // Create an array of available action items
     NSMutableArray *justActionItems = [[NSMutableArray alloc] init];
     
-    if ( sequence.permissions.canLike )
+    if ( [self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue )
     {
         [justActionItems addObject:self.likeButton];
     }

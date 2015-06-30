@@ -35,6 +35,5 @@
 @property (nonatomic, readonly) BOOL canMeme;
 @property (nonatomic, readonly) BOOL canGIF;
 @property (nonatomic, readonly) BOOL canQuote;
-@property (nonatomic, readonly) BOOL canLike;
 
 @end

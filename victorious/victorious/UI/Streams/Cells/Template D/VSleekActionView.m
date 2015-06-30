@@ -60,7 +60,7 @@ static CGFloat const kActionButtonHeight = 31.0f;
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
         VSequence *sequence = (VSequence *)streamItem;
-        if ( sequence.permissions.canLike )
+        //if ( [dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue )
         {
             [identifier appendString:@"Like."];
         }
@@ -195,7 +195,7 @@ static CGFloat const kActionButtonHeight = 31.0f;
     
     [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingSpace]];
     
-    if ( sequence.permissions.canLike )
+    if ( [self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue )
     {
         [actionItems addObject:self.likeButton];
         [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kCommentSpaceToActions]];

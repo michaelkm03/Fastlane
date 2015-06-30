@@ -228,8 +228,10 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
 
 - (void)updateCountsTextViewForSequence:(VSequence *)sequence
 {
+    const BOOL canLike = [self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue;
+    
     self.countsTextView.hideComments = !sequence.permissions.canComment;
-    self.countsTextView.hideLikes = !sequence.permissions.canLike;
+    self.countsTextView.hideLikes = !canLike;
     [self.countsTextView setCommentsCount:sequence.commentCount.integerValue];
     [self.countsTextView setLikesCount:sequence.likeCount.integerValue];
 }

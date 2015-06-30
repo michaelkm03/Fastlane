@@ -1621,7 +1621,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
         return;
     }
     
-    if ( sequence.permissions.canLike )
+    if ( [self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue )
     {
         self.likeButton = contentCell.likeButton;
         self.likeButton.hidden = NO;
