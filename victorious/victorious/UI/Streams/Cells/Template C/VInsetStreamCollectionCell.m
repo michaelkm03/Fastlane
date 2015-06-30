@@ -201,7 +201,7 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
              CGFloat textWidth = size.width - kTextMargins.left - kTextMargins.right;
              VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
              NSDictionary *attributes = [[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager];
-             return CGSizeMake( 0.0f, MAX( kCountsTextViewMinHeight, [@"" frameSizeForWidth:textWidth andAttributes:attributes].height ) );
+             return CGSizeMake( 0.0f, MAX( kCountsTextViewMinHeight, [@"V" frameSizeForWidth:textWidth andAttributes:attributes].height ) );
          }];
         [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kInsetCellActionViewHeight)];
     }
