@@ -27,11 +27,10 @@
 // These values must match the constraint values in interface builder
 static const CGFloat kSleekCellHeaderHeight = 50.0f;
 static const CGFloat kSleekCellActionViewHeight = 48.0f;
-static const CGFloat kHiddenCaptionsMarginTop = 10.0f;
 static const CGFloat kCaptionToPreviewVerticalSpacing = 7.0f;
 static const CGFloat kMaxCaptionTextViewHeight = 200.0f;
 static const CGFloat kCountsTextViewMinHeight = 29.0f;
-static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
+static const UIEdgeInsets kCaptionMargins = { 0.0f, 28.0f, 5.0f, 28.0f };
 
 @interface VSleekStreamCollectionCell () <VBackgroundContainer, CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate>
 
@@ -42,7 +41,6 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
 @property (nonatomic, weak) IBOutlet VSleekActionView *sleekActionView;
 @property (nonatomic, weak) IBOutlet VStreamHeaderTimeSince *headerView;
 @property (nonatomic, weak) IBOutlet VHashTagTextView *captionTextView;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomSpaceCaptionToPreview;
 @property (nonatomic, weak ) IBOutlet NSLayoutConstraint *previewContainerHeightConstraint;
 @property (nonatomic, weak ) IBOutlet NSLayoutConstraint *captionHeight;
 @property (nonatomic, strong) UIView *dimmingContainer;
@@ -93,6 +91,7 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
              CGFloat previewHeight =  size.width  / [sequence previewAssetAspectRatio];
              return CGSizeMake( 0.0f, previewHeight );
          }];
+        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kSleekCellActionViewHeight)];
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
              CGFloat textWidth = size.width - kCaptionMargins.left - kCaptionMargins.right;
@@ -100,7 +99,7 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
              NSDictionary *attributes = [[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager];
              return CGSizeMake( 0.0f, MAX( kCountsTextViewMinHeight, [@"" frameSizeForWidth:textWidth andAttributes:attributes].height ) );
          }];
-        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kSleekCellActionViewHeight)];
+        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kCaptionMargins.bottom)];
     }
     return collection;
 }
@@ -248,14 +247,11 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
         self.captionTextView.attributedText = nil;
         self.captionHeight.constant = 0.0f;
         self.captiontoPreviewVerticalSpacing.constant = 0.0f;
-        self.bottomSpaceCaptionToPreview.constant = -kHiddenCaptionsMarginTop;
     }
     else
     {
         self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
                                                                               attributes:[VSleekStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
-        self.bottomSpaceCaptionToPreview.constant = 0.0f;
-        self.captiontoPreviewVerticalSpacing.constant = kCaptionToPreviewVerticalSpacing;
         self.captionHeight.constant = kMaxCaptionTextViewHeight;
     }
     [self layoutIfNeeded];
