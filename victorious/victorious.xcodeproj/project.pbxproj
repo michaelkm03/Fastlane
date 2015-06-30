@@ -301,13 +301,15 @@
 		669EBBE51A30239100DE317D /* VTickerPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 669EBBE31A30239100DE317D /* VTickerPickerViewController.m */; };
 		99F4DB51782658B7D034EC2F /* libPods-victorious-test.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7B45F61E6B2831D5E9459C3 /* libPods-victorious-test.a */; };
 		9F95A0FBA78C16AF3EA43793 /* libPods-victorious.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */; };
+		A601FB491B4354D10050536C /* VImageCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB481B4354D10050536C /* VImageCreationFlowController.m */; };
+		A601FB4F1B4355A30050536C /* VBaseCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB4E1B4355A30050536C /* VBaseCreationFlowController.m */; };
 		A650EFD71B421AAA005529E5 /* VCreationFlowPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = D814040A1AB372320099EC4B /* VCreationFlowPresenter.m */; };
 		A650EFDA1B421F61005529E5 /* VAssetGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A650EFD91B421F61005529E5 /* VAssetGridViewController.m */; };
 		A650EFDD1B422378005529E5 /* VAssetCollectionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A650EFDC1B422378005529E5 /* VAssetCollectionListViewController.m */; };
 		A650EFE01B42297A005529E5 /* VAssetCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A650EFDF1B42297A005529E5 /* VAssetCollectionViewCell.m */; };
 		A673A3301B34E602004D4D8C /* newWorkspaceTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = A673A32F1B34E602004D4D8C /* newWorkspaceTemplate.json */; };
 		A682F4FC1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = A682F4FB1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.m */; };
-		A682F4FE1B3C829E009B6DBE /* creationFlow.json in Resources */ = {isa = PBXBuildFile; fileRef = A682F4FD1B3C829E009B6DBE /* creationFlow.json */; };
+		A682F4FE1B3C829E009B6DBE /* imageCreationFlow.json in Resources */ = {isa = PBXBuildFile; fileRef = A682F4FD1B3C829E009B6DBE /* imageCreationFlow.json */; };
 		A6EC32671B3B488200824022 /* staticCreateSheet.json in Resources */ = {isa = PBXBuildFile; fileRef = A6EC32661B3B488200824022 /* staticCreateSheet.json */; };
 		A6EC326A1B3B4ACF00824022 /* VCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6EC32691B3B4ACF00824022 /* VCreationFlowController.m */; };
 		A6EC326D1B3B4E5300824022 /* VAvatarCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6EC326C1B3B4E5300824022 /* VAvatarCreationFlowController.m */; };
@@ -1607,6 +1609,10 @@
 		83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.qa.xcconfig"; sourceTree = "<group>"; };
 		8E360EC509E852CE3E872948 /* Pods-victorious-test.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.debug.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.debug.xcconfig"; sourceTree = "<group>"; };
 		910A7A7036C6609BF5F7723D /* Pods-victorious-test.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.staging.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.staging.xcconfig"; sourceTree = "<group>"; };
+		A601FB471B4354D10050536C /* VImageCreationFlowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageCreationFlowController.h; sourceTree = "<group>"; };
+		A601FB481B4354D10050536C /* VImageCreationFlowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageCreationFlowController.m; sourceTree = "<group>"; };
+		A601FB4D1B4355A30050536C /* VBaseCreationFlowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBaseCreationFlowController.h; sourceTree = "<group>"; };
+		A601FB4E1B4355A30050536C /* VBaseCreationFlowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBaseCreationFlowController.m; sourceTree = "<group>"; };
 		A650EFD81B421F61005529E5 /* VAssetGridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAssetGridViewController.h; sourceTree = "<group>"; };
 		A650EFD91B421F61005529E5 /* VAssetGridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAssetGridViewController.m; sourceTree = "<group>"; };
 		A650EFDB1B422378005529E5 /* VAssetCollectionListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAssetCollectionListViewController.h; sourceTree = "<group>"; };
@@ -1616,7 +1622,7 @@
 		A673A32F1B34E602004D4D8C /* newWorkspaceTemplate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = newWorkspaceTemplate.json; sourceTree = "<group>"; };
 		A682F4FA1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+VSimpleAlert.h"; sourceTree = "<group>"; };
 		A682F4FB1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertController+VSimpleAlert.m"; sourceTree = "<group>"; };
-		A682F4FD1B3C829E009B6DBE /* creationFlow.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = creationFlow.json; sourceTree = "<group>"; };
+		A682F4FD1B3C829E009B6DBE /* imageCreationFlow.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = imageCreationFlow.json; sourceTree = "<group>"; };
 		A6EC32661B3B488200824022 /* staticCreateSheet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = staticCreateSheet.json; sourceTree = "<group>"; };
 		A6EC32681B3B4ACF00824022 /* VCreationFlowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreationFlowController.h; sourceTree = "<group>"; };
 		A6EC32691B3B4ACF00824022 /* VCreationFlowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCreationFlowController.m; sourceTree = "<group>"; };
@@ -4334,6 +4340,17 @@
 			path = Pickers;
 			sourceTree = "<group>";
 		};
+		A601FB461B4354750050536C /* Creation Flows */ = {
+			isa = PBXGroup;
+			children = (
+				A601FB471B4354D10050536C /* VImageCreationFlowController.h */,
+				A601FB481B4354D10050536C /* VImageCreationFlowController.m */,
+				A601FB4D1B4355A30050536C /* VBaseCreationFlowController.h */,
+				A601FB4E1B4355A30050536C /* VBaseCreationFlowController.m */,
+			);
+			path = "Creation Flows";
+			sourceTree = "<group>";
+		};
 		A6EC32811B3B569B00824022 /* Creation Flow Strategies */ = {
 			isa = PBXGroup;
 			children = (
@@ -6126,7 +6143,8 @@
 				A6EC32721B3B508B00824022 /* cameraScreen.json */,
 				D87351851A3120DB006D97B2 /* Canvas */,
 				A6EC32811B3B569B00824022 /* Creation Flow Strategies */,
-				A682F4FD1B3C829E009B6DBE /* creationFlow.json */,
+				A601FB461B4354750050536C /* Creation Flows */,
+				A682F4FD1B3C829E009B6DBE /* imageCreationFlow.json */,
 				A6EC32941B3B5A6600824022 /* imageVideoTemplateScreen.json */,
 				A6EC32761B3B50AE00824022 /* imageWorkspace.json */,
 				A673A32F1B34E602004D4D8C /* newWorkspaceTemplate.json */,
@@ -6140,6 +6158,8 @@
 				A6EC326C1B3B4E5300824022 /* VAvatarCreationFlowController.m */,
 				A6EC32681B3B4ACF00824022 /* VCreationFlowController.h */,
 				A6EC32691B3B4ACF00824022 /* VCreationFlowController.m */,
+				D81404091AB372320099EC4B /* VCreationFlowPresenter.h */,
+				D814040A1AB372320099EC4B /* VCreationFlowPresenter.m */,
 				A6F0D5E81B3641C50017F955 /* VCreationFlowShim.h */,
 				A6F0D5E91B3641C50017F955 /* VCreationFlowShim.m */,
 				A6EC326E1B3B4E9B00824022 /* VCreationTypes.h */,
@@ -6152,8 +6172,6 @@
 				A75ED0411AB1FEA300C35063 /* VTextWorkspaceFlowController.m */,
 				D80BAB581A688D83003A3068 /* VWorkspaceFlowController.h */,
 				D80BAB591A688D83003A3068 /* VWorkspaceFlowController.m */,
-				D81404091AB372320099EC4B /* VCreationFlowPresenter.h */,
-				D814040A1AB372320099EC4B /* VCreationFlowPresenter.m */,
 				D8B88F951ABA85F700DBAEA0 /* VWorkspaceShimDestination.h */,
 				D8B88F961ABA85F700DBAEA0 /* VWorkspaceShimDestination.m */,
 				03F6E2691AB79E090017826E /* Workspace.storyboard */,
@@ -6922,7 +6940,7 @@
 				D80A94EB1A546E680035D788 /* VThumbnailCell.xib in Resources */,
 				D85B706F1B0EAF3F0038CA5B /* FindFriendsTableView.xib in Resources */,
 				DB2A48F719DF2D1000CB687B /* Localizable.strings in Resources */,
-				A682F4FE1B3C829E009B6DBE /* creationFlow.json in Resources */,
+				A682F4FE1B3C829E009B6DBE /* imageCreationFlow.json in Resources */,
 				A77951361B29021D00D9DB0A /* VContentThumbnailCell.xib in Resources */,
 				035926D31B1EA33400E910A7 /* Quicksand-Light.ttf in Resources */,
 				A7E2EFD21A49066F00372547 /* EditComment.storyboard in Resources */,
@@ -7222,6 +7240,7 @@
 				F07E825D1AEF35BE00821CEA /* VDiscoverHeaderView.m in Sources */,
 				A6EC328D1B3B56CB00824022 /* VTextCreationFlowStrategy.m in Sources */,
 				A6EC32841B3B569B00824022 /* VCreationFlowStrategy.m in Sources */,
+				A601FB491B4354D10050536C /* VImageCreationFlowController.m in Sources */,
 				A7EB574D1AF8402A006AA1CF /* VURLDetector.m in Sources */,
 				A75FAF2119E8AC1E00EB87C1 /* VDiscoverViewController.m in Sources */,
 				0314D48919B46B5E00FA363C /* VContentInputAccessoryView.m in Sources */,
@@ -7463,6 +7482,7 @@
 				037FCF261A8DAF5400E8ABFC /* VSegmentedSelectorView.m in Sources */,
 				0314D4DC19B46B5E00FA363C /* VFacebookActivity.m in Sources */,
 				A7D707991A7C144C00D9993F /* VCountdownViewController.m in Sources */,
+				A601FB4F1B4355A30050536C /* VBaseCreationFlowController.m in Sources */,
 				A7D7079F1A7C144C00D9993F /* VEndCardModel.m in Sources */,
 				D8B14E0819DA3B0B004D72D2 /* VShrinkingContentLayout.m in Sources */,
 				F0537DA91B3DA8FE00152A2D /* VSuggestedUserRetryCell.m in Sources */,

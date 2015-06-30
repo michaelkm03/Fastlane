@@ -16,6 +16,9 @@
 #import "VObjectManager+Users.h"
 
 // Creation UI
+#import "VBaseCreationFlowController.h"
+
+#warning Maybe delete these
 #import "VWorkspaceFlowController.h"
 #import "VCreatePollViewController.h"
 #import "VTextWorkspaceFlowController.h"
@@ -94,11 +97,12 @@ static NSString * const kCreationFlowKey = @"createFlow";
     {
         case VCreationTypeImage:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateImagePostSelected];
-            [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateImage];
+            [self presentCreateFlowWithKey:@"imageCreateFlow"];
             break;
         case VCreationTypeVideo:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateVideoPostSelected];
-            [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo];
+            [self presentCreateFlowWithKey:@"videoCreateFlow"];
+//            [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo];
             break;
         case VCreationTypeText:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateTextOnlyPostSelected];
@@ -130,6 +134,18 @@ static NSString * const kCreationFlowKey = @"createFlow";
     }
 }
 
+- (void)presentCreateFlowWithKey:(NSString *)key
+{
+    VBaseCreationFlowController *flowController = [self.dependencyManager templateValueOfType:[VBaseCreationFlowController class]
+                                                                                                  forKey:key];
+    flowController.creationFlowDelegate = self;
+    [self.viewControllerToPresentOn presentViewController:flowController
+                                                 animated:YES
+                                               completion:nil];
+}
+
+
+
 - (void)presentCreateFlowWithInitialCaptureState:(VWorkspaceFlowControllerInitialCaptureState)initialCaptureState
                            initialImageEditState:(VImageToolControllerInitialImageEditState)initialImageEdit
                         andInitialVideoEditState:(VVideoToolControllerInitialVideoEditState)initialVideoEdit
@@ -144,9 +160,11 @@ static NSString * const kCreationFlowKey = @"createFlow";
     
 //    VDependencyManager *dependencyManagerForContentType = [self.dependencyManager childDependencyManagerWithAddedConfiguration:];
 //    VCreationFlowController *flowController = [[VCreationFlowController alloc] initWithDependencyManager:dependencyManagerForContentType];
-    VCreationFlowController *flowController = [self.dependencyManager templateValueOfType:[VCreationFlowController class]
-                                                                                   forKey:@"creationFlow"
-                                                                    withAddedDependencies:@{VCreationFlowControllerCreationTypeKey: @(VCreationTypeImage)}];
+    VBaseCreationFlowController *flowController = [self.dependencyManager templateValueOfType:[VBaseCreationFlowController class]
+                                                                                       forKey:@"imageCreateFlow"];
+//    VCreationFlowController *flowController = [self.dependencyManager templateValueOfType:[VCreationFlowController class]
+//                                                                                   forKey:@"creationFlow"
+//                                                                    withAddedDependencies:@{VCreationFlowControllerCreationTypeKey: @(VCreationTypeImage)}];
     flowController.creationFlowDelegate = self;
     [self.viewControllerToPresentOn presentViewController:flowController
                                                  animated:YES

@@ -1,9 +1,9 @@
 {
-    "name":"creation.flow",
+    "name":"image.creationFlow",
     "cameraScreen":{
         "referenceID":"testingCameraScreen"
     },
-    "imageVideoLibrary":{
+    "captureScreen":{
         "referenceID":"testingImageVideoLibrary"
     },
     "imageWorkspace":{
