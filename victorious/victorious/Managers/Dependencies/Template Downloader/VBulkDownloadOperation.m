@@ -74,10 +74,16 @@ static const NSTimeInterval kDefaultRetryInterval = 2.0;
                                                                          completion:^(NSURL *originalURL, NSError *error, NSURLResponse *response, NSURL *downloadedFile)
     {
         typeof(weakSelf) strongSelf = weakSelf;
-        if ( strongSelf == nil )
+        if ( strongSelf == nil || strongSelf.isCancelled )
         {
             return;
         }
+        
+        if ( strongSelf.completion != nil )
+        {
+            strongSelf.completion(originalURL, error, response, downloadedFile);
+        }
+        
         if ( error != nil && strongSelf.shouldRetry )
         {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(retryInterval * NSEC_PER_SEC)),
@@ -90,15 +96,7 @@ static const NSTimeInterval kDefaultRetryInterval = 2.0;
             });
             return;
         }
-        if ( strongSelf.isCancelled )
-        {
-            return;
-        }
         
-        if ( strongSelf.completion != nil )
-        {
-            strongSelf.completion(originalURL, error, response, downloadedFile);
-        }
         strongSelf.progress.completedUnitCount++;
         
         dispatch_async(strongSelf.privateQueue, ^(void)

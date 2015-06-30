@@ -24,8 +24,9 @@
 
 /**
  If YES, failed downloads will be retried.
- If NO, the completion block will be called for failed downloads.
- Default is NO.
+
+ NOTE: The completion block will still be called for every unsucessful download, so setting this
+ property to YES may cause your completion block to be called more than once for the same URL.
  */
 @property (nonatomic) BOOL shouldRetry;
 

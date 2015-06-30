@@ -202,14 +202,22 @@
         }
     });
     
-    XCTestExpectation *expectation = [self expectationWithDescription:@"download callback"];
+    XCTestExpectation *successExpectation = [self expectationWithDescription:@"callback on success"];
+    XCTestExpectation *failureExpectation = [self expectationWithDescription:@"callback on failure"];
     VBulkDownloadOperation *operation = [[VBulkDownloadOperation alloc] initWithURLs:[NSSet setWithObject:url] completion:^(NSURL *originalURL, NSError *error, NSURLResponse *response, NSURL *downloadedFile)
     {
-        XCTAssertFalse(error);
-        NSData *data = [NSData dataWithContentsOfURL:downloadedFile];
-        NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        XCTAssertEqualObjects(string, testBody);
-        [expectation fulfill];
+        if ( error == nil )
+        {
+            NSData *data = [NSData dataWithContentsOfURL:downloadedFile];
+            NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            XCTAssertEqualObjects(string, testBody);
+            [successExpectation fulfill];
+        }
+        else
+        {
+            XCTAssertNil(downloadedFile);
+            [failureExpectation fulfill];
+        }
     }];
     operation.shouldRetry = YES;
     operation.retryInterval = 0;
@@ -220,6 +228,7 @@
 - (void)testFiveRetries
 {
     __block NSInteger failCount = 0;
+    __block BOOL success = NO;
     NSURL *url = [NSURL URLWithString:@"http://www.example.com/one"];
     NSString *testBody = @"hello world";
     
@@ -229,6 +238,7 @@
         {
             *status = 200;
             *body = testBody;
+            success = YES;
         }
         else
         {
@@ -240,16 +250,19 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"download callback"];
     VBulkDownloadOperation *operation = [[VBulkDownloadOperation alloc] initWithURLs:[NSSet setWithObject:url] completion:^(NSURL *originalURL, NSError *error, NSURLResponse *response, NSURL *downloadedFile)
     {
-        XCTAssertFalse(error);
-        NSData *data = [NSData dataWithContentsOfURL:downloadedFile];
-        NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        XCTAssertEqualObjects(string, testBody);
-        [expectation fulfill];
+        if ( success )
+        {
+            XCTAssertFalse(error);
+            NSData *data = [NSData dataWithContentsOfURL:downloadedFile];
+            NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            XCTAssertEqualObjects(string, testBody);
+            [expectation fulfill];
+        }
     }];
     operation.shouldRetry = YES;
     operation.retryInterval = 0;
     [self.operationQueue addOperation:operation];
-    [self waitForExpectationsWithTimeout:222.0 handler:nil];
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
 }
 
 @end
