@@ -347,7 +347,8 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
         identifier = [VSequencePreviewView reuseIdentifierForStreamItem:streamItem
-                                                         baseIdentifier:identifier dependencyManager:dependencyManager];
+                                                         baseIdentifier:identifier
+                                                      dependencyManager:dependencyManager];
     }
     return identifier;
 }

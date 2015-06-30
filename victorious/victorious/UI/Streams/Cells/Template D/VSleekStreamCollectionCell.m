@@ -281,7 +281,8 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
     }
     
     return [VSleekActionView reuseIdentifierForStreamItem:streamItem
-                                           baseIdentifier:identifier dependencyManager:dependencyManager];
+                                           baseIdentifier:identifier
+                                        dependencyManager:dependencyManager];
 }
 
 #pragma mark - Class Methods
