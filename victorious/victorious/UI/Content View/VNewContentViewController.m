@@ -1286,13 +1286,16 @@ referenceSizeForHeaderInSection:(NSInteger)section
             self.videoCell = videoCell;
             self.contentCell = videoCell;
             __weak typeof(self) welf = self;
-            [self.videoCell setAnimateAlongsizePlayControlsBlock:^(BOOL playControlsHidden)
-             {
-                 const BOOL shouldHide = playControlsHidden && !welf.videoCell.isEndCardShowing;
-                 welf.moreButton.alpha = shouldHide ? 0.0f : 1.0f;
-                 welf.closeButton.alpha = shouldHide ? 0.0f : 1.0f;
-                 welf.likeButton.transform = playControlsHidden ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, -CGRectGetHeight(welf.likeButton.bounds));
-             }];
+            if ( !videoCell.playerControlsDisabled  )
+            {
+                [self.videoCell setAnimateAlongsizePlayControlsBlock:^(BOOL playControlsHidden)
+                 {
+                     const BOOL shouldHide = playControlsHidden && !welf.videoCell.isEndCardShowing;
+                     welf.moreButton.alpha = shouldHide ? 0.0f : 1.0f;
+                     welf.closeButton.alpha = shouldHide ? 0.0f : 1.0f;
+                     welf.likeButton.transform = playControlsHidden ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, -CGRectGetHeight(welf.likeButton.bounds));
+                 }];
+            }
             videoCell.endCardDelegate = self;
             videoCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
             return videoCell;

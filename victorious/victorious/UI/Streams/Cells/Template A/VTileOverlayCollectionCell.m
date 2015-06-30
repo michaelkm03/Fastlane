@@ -227,7 +227,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
          {
              VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
              NSDictionary *attributes = [[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager];
-             return CGSizeMake( 0.0f, MAX( kCountsTextViewMinHeight, [@"" frameSizeForWidth:size.width andAttributes:attributes].height ) );
+             return CGSizeMake( 0.0f, MAX( kCountsTextViewMinHeight, [@"V" frameSizeForWidth:size.width andAttributes:attributes].height ) );
          }];
     }
     return collection;
