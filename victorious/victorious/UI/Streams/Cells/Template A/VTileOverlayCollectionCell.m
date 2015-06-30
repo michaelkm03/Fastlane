@@ -139,8 +139,6 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     [_overlayContainer v_addPinToLeadingTrailingToSubview:_countsTextView];
     [_overlayContainer addConstraint:[NSLayoutConstraint constraintWithItem:_countsTextView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_overlayContainer attribute:NSLayoutAttributeBottom multiplier:1.0f constant:-14.0f]];
     
-    _countsTextView.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.5f];
-    
     // The caption Text view
     NSTextStorage *textStorage = [[NSTextStorage alloc] initWithString:@""];
     NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
