@@ -113,8 +113,11 @@ static NSString * const kDividerDelimeter = @"•";
     
     NSMutableString *displayText = [[NSMutableString alloc] init];
     
+    const BOOL willShowLikes = self.likesCount > 0 && !self.hideLikes;
+    const BOOL willShowComments = self.commentsCount > 0 && !self.hideComments;
+    
     NSString *likesText = nil;
-    if ( self.likesCount > 0 && !self.hideLikes )
+    if ( willShowLikes )
     {
         NSString *formattedNumberString = [self.numberFormatter stringForInteger:self.likesCount];
         NSString *format = self.likesCount == 1 ? NSLocalizedString( @"LikesSingularFormat", @"" ) : NSLocalizedString( @"LikesPluralFormat", @"" );
@@ -122,13 +125,13 @@ static NSString * const kDividerDelimeter = @"•";
         [displayText appendString:likesText];
     }
     
-    if ( self.likesCount > 0 && self.commentsCount > 0 && (!self.hideComments && !self.hideLikes) )
+    if ( willShowLikes && willShowComments )
     {
         [displayText appendString:[NSString stringWithFormat:@"  %@  ", kDividerDelimeter]];
     }
     
     NSString *commentsText = nil;
-    if ( self.commentsCount > 0 && !self.hideComments )
+    if ( willShowComments )
     {
         NSString *formattedNumberString = [self.numberFormatter stringForInteger:self.commentsCount];
         NSString *format = self.commentsCount == 1 ? NSLocalizedString( @"CommentsSingularFormat", @"" ) : NSLocalizedString( @"CommentsPluralFormat", @"" );

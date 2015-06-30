@@ -86,7 +86,9 @@
     return NO;
 }
 
-+ (NSString *)reuseIdentifierForSequence:(VSequence *)sequence baseIdentifier:(NSString *)baseIdentifier dependencyManager:(VDependencyManager *)dependencyManager
++ (NSString *)reuseIdentifierForSequence:(VSequence *)sequence
+                          baseIdentifier:(NSString *)baseIdentifier
+                       dependencyManager:(VDependencyManager *)dependencyManager
 {
     return [self reuseIdentifierForStreamItem:sequence baseIdentifier:baseIdentifier dependencyManager:dependencyManager];
 }

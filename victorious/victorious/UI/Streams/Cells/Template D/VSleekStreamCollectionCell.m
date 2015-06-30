@@ -246,7 +246,8 @@ const CGFloat kHiddenCaptionsMarginTop = 10.0f;
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
         identifier = [VSequencePreviewView reuseIdentifierForSequence:(VSequence *)streamItem
-                                                       baseIdentifier:identifier dependencyManager:dependencyManager];
+                                                       baseIdentifier:identifier
+                                                    dependencyManager:dependencyManager];
     }
     
     return [VSleekActionView reuseIdentifierForStreamItem:streamItem

@@ -26,6 +26,7 @@
  *  relayout or reconfiguration when reused.
  */
 + (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem
-                            baseIdentifier:(NSString *)baseIdentifier dependencyManager:(VDependencyManager *)dependencyManager;
+                            baseIdentifier:(NSString *)baseIdentifier
+                         dependencyManager:(VDependencyManager *)dependencyManager;
 
 @end

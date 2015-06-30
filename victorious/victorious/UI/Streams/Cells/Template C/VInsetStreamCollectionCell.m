@@ -296,7 +296,8 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
 #pragma mark - VStreamCellComponentSpecialization
 
 + (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem
-                            baseIdentifier:(NSString *)baseIdentifier dependencyManager:(VDependencyManager *)dependencyManager
+                            baseIdentifier:(NSString *)baseIdentifier
+                         dependencyManager:(VDependencyManager *)dependencyManager
 {
     NSString *identifier = baseIdentifier == nil ? [[NSMutableString alloc] init] : [baseIdentifier copy];
     identifier = [NSString stringWithFormat:@"%@.%@", identifier, NSStringFromClass(self)];

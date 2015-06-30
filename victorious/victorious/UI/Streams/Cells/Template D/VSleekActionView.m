@@ -53,7 +53,8 @@ static CGFloat const kActionButtonHeight = 31.0f;
 #pragma mark - Reuse Identifiers
 
 + (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem
-                            baseIdentifier:(NSString *)baseIdentifier dependencyManager:(VDependencyManager *)dependencyManager
+                            baseIdentifier:(NSString *)baseIdentifier
+                         dependencyManager:(VDependencyManager *)dependencyManager
 {
     NSMutableString *identifier = [baseIdentifier mutableCopy];
     

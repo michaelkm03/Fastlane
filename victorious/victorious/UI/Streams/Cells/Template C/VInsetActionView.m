@@ -115,7 +115,8 @@ static const CGFloat kActionButtonWidth = 44.0f;
 #pragma mark - VUpdateHooks
 
 + (NSString *)reuseIdentifierForSequence:(VSequence *)sequence
-                          baseIdentifier:(NSString *)baseIdentifier dependencyManager:(VDependencyManager *)dependencyManager
+                          baseIdentifier:(NSString *)baseIdentifier
+                       dependencyManager:(VDependencyManager *)dependencyManager
 {
     NSMutableString *identifier = [baseIdentifier mutableCopy];
     

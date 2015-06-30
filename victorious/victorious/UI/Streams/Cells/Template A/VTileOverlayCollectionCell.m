@@ -448,14 +448,16 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
 #pragma mark - VStreamCellComponentSpecialization
 
 + (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem
-                            baseIdentifier:(NSString *)baseIdentifier dependencyManager:(VDependencyManager *)dependencyManager
+                            baseIdentifier:(NSString *)baseIdentifier
+                         dependencyManager:(VDependencyManager *)dependencyManager
 {
     NSString *identifier = baseIdentifier == nil ? [[NSMutableString alloc] init] : [baseIdentifier copy];
     identifier = [NSString stringWithFormat:@"%@.%@", identifier, NSStringFromClass(self)];
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
         identifier = [VSequencePreviewView reuseIdentifierForSequence:(VSequence *)streamItem
-                                                       baseIdentifier:identifier dependencyManager:dependencyManager];
+                                                       baseIdentifier:identifier
+                                                    dependencyManager:dependencyManager];
     }
     return identifier;
 }
