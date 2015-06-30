@@ -54,7 +54,7 @@
                     <constraint firstItem="I2u-S5-LXJ" firstAttribute="centerY" secondItem="1CM-za-AlC" secondAttribute="centerY" id="sn7-qN-Wqz"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="followUserControl" destination="I2u-S5-LXJ" id="yCS-yK-nXs"/>
                 <outlet property="profileImage" destination="1CM-za-AlC" id="NLt-HB-PPr"/>
