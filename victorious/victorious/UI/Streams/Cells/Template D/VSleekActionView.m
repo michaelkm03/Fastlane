@@ -222,12 +222,8 @@ static NSUInteger const kMaxNumberOfActionButtons = 4;
         [actionButtons addObject:self.memeButton];
     }
     
-    CGFloat interButtonSpace = actionBarWidth;
-    for ( VSleekActionButton *actionButton in actionButtons )
-    {
-        interButtonSpace -= CGRectGetWidth(actionButton.bounds);
-    }
-    interButtonSpace = interButtonSpace / kMaxNumberOfActionButtons;
+    CGFloat summedButtonWidths = kActionButtonHeight * kMaxNumberOfActionButtons;
+    CGFloat interButtonSpace = ( actionBarWidth - summedButtonWidths ) / kMaxNumberOfActionButtons;
 
     NSMutableArray *actionItems = [[NSMutableArray alloc] init];
     //The buttons should be inset from either edge of the cell by half the width of the space between each of them

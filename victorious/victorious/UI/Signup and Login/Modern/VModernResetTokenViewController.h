@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "VHasManagedDependencies.h"
+#import "VLoginFlowControllerDelegate.h"
 
-@interface VModernResetTokenViewController : UIViewController <VHasManagedDependencies>
+@interface VModernResetTokenViewController : UIViewController <VHasManagedDependencies, VLoginFlowScreen>
 
 @end
