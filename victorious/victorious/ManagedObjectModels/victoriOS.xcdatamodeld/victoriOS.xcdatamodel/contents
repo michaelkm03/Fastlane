@@ -209,6 +209,7 @@
         <relationship name="parentUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="childSequences" inverseEntity="User" syncable="YES"/>
         <relationship name="pollResults" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PollResult" inverseName="sequence" inverseEntity="PollResult" syncable="YES"/>
         <relationship name="previewAssets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ImageAsset" inverseName="sequences" inverseEntity="ImageAsset" syncable="YES"/>
+        <relationship name="recentUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="recentSequences" inverseEntity="User" syncable="YES"/>
         <relationship name="reposters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="repostedSequences" inverseEntity="User" syncable="YES"/>
         <relationship name="tracking" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Tracking" inverseName="sequence" inverseEntity="Tracking" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="sequences" inverseEntity="User" syncable="YES"/>
@@ -273,7 +274,7 @@
         <relationship name="notifications" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Notification" inverseName="user" inverseEntity="Notification" syncable="YES"/>
         <relationship name="pollResults" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PollResult" inverseName="user" inverseEntity="PollResult" syncable="YES"/>
         <relationship name="previewAssets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ImageAsset" inverseName="user" inverseEntity="ImageAsset" syncable="YES"/>
-        <relationship name="recentSequences" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Sequence" syncable="YES"/>
+        <relationship name="recentSequences" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Sequence" inverseName="recentUser" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="repostedSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="reposters" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="sequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="user" inverseEntity="Sequence" syncable="YES"/>
     </entity>
@@ -303,7 +304,7 @@
         <element name="NotificationSettings" positionX="621" positionY="-747" width="128" height="150"/>
         <element name="PollResult" positionX="1582" positionY="-36" width="128" height="118"/>
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
-        <element name="Sequence" positionX="1078" positionY="-540" width="128" height="570"/>
+        <element name="Sequence" positionX="1078" positionY="-540" width="128" height="585"/>
         <element name="Stream" positionX="1069" positionY="-792" width="128" height="133"/>
         <element name="StreamItem" positionX="871" positionY="-765" width="128" height="118"/>
         <element name="Tracking" positionX="828" positionY="-630" width="128" height="225"/>
