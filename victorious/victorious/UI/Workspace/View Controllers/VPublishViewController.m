@@ -32,6 +32,7 @@
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VDependencyManager+VKeyboardStyle.h"
 #import "VPermissionPhotoLibrary.h"
+#import "VDependencyManager+VTracking.h"
 
 @import AssetsLibrary;
 
@@ -110,6 +111,13 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.dependencyManager trackView];
 }
 
 - (void)viewDidLoad

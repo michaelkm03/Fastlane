@@ -17,6 +17,7 @@
 // Views + Helpers
 #import "VInlineValidationTextField.h"
 #import "VLoginFlowControllerDelegate.h"
+#import "VDependencyManager+VTracking.h"
 
 @interface VModernEnterNameViewController () <VBackgroundContainer, UITextFieldDelegate, VLoginFlowScreen>
 
@@ -81,6 +82,8 @@
     [self.nameField becomeFirstResponder];
     
     self.navigationItem.hidesBackButton = YES;
+    
+    [self.dependencyManager trackView];
 }
 
 #pragma mark - VLoginFlowScreen

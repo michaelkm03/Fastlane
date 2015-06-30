@@ -106,6 +106,7 @@
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VCoachmarkManager.h"
 #import "VSequenceExpressionsObserver.h"
+#import "VDependencyManager+VTracking.h"
 
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
@@ -492,6 +493,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.dependencyManager trackView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardDidChangeFrame:)

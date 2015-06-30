@@ -33,4 +33,8 @@ extern NSString * const VTrackingBallisticCountKey;
  */
 - (NSArray *)trackingURLsForKey:(NSString *)eventURLKey;
 
+- (void)trackViewWithParameters:(NSDictionary *)parameters;
+
+- (void)trackView;
+
 @end

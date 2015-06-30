@@ -18,6 +18,7 @@
 #import "VLinkTextViewHelper.h"
 #import "CCHLinkTextView.h"
 #import "CCHLinkTextViewDelegate.h"
+#import "VDependencyManager+VTracking.h"
 
 @interface VEnterResetTokenViewController () <UITextFieldDelegate, CCHLinkTextViewDelegate>
 
@@ -71,6 +72,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.dependencyManager trackView];
 
     if (self.userToken)
     {

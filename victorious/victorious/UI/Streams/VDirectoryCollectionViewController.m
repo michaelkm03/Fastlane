@@ -27,6 +27,7 @@
 #import "VCoachmarkManager.h"
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VDependencyManager+VNavigationItem.h"
+#import "VDependencyManager+VTracking.h"
 
 static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kMarqueeKey = @"marqueeCell";
@@ -168,6 +169,8 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.dependencyManager trackView];
     
     // Layout may have changed between awaking from nib and being added to the container of the SoS
     [self.collectionView.collectionViewLayout invalidateLayout];

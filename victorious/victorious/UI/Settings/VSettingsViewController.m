@@ -32,6 +32,7 @@
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VCoachmarkManager.h"
 #import "VEnvironmentManager.h"
+#import "VDependencyManager+VTracking.h"
 
 static const NSInteger kSettingsSectionIndex         = 0;
 
@@ -116,6 +117,8 @@ static NSString * const kSupportEmailKey = @"email.support";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.dependencyManager trackView];
     
     [self updateLogoutButtonState];
     

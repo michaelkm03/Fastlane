@@ -38,6 +38,7 @@
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "UIResponder+VResponderChain.h"
 #import "VDependencyManager+VNavigationItem.h"
+#import "VDependencyManager+VTracking.h"
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 
@@ -133,6 +134,8 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
         [self displayConversationForUser:self.userWithQueuedConversation animated:YES];
         self.userWithQueuedConversation = nil;
     }
+    
+    [self.dependencyManager trackView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

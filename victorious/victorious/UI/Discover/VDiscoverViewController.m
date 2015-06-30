@@ -34,6 +34,7 @@
 #import "VCoachmarkDisplayer.h"
 #import "UIViewController+VLayoutInsets.h"
 #import "VHashtagResponder.h"
+#import "VDependencyManager+VTracking.h"
 
 static NSString * const kVSuggestedPeopleIdentifier = @"VSuggestedPeopleCell";
 static NSString * const kVTrendingTagIdentifier = @"VTrendingTagCell";
@@ -102,6 +103,9 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.dependencyManager trackView];
+    
     if ( self.hasLoadedOnce )
     {
         [self.tableView reloadData];

@@ -236,6 +236,8 @@ extern NSString * const VTrackingEventWelcomeDidStart; //< Backend mapping: welc
 extern NSString * const VTrackingEventUserDidSelectRegistrationOption; //< Backend mapping: register_button_tap
 extern NSString * const VTrackingEventUserDidSelectSignUpSubmit; //< Backend mapping: sign_up_button_tap
 
+extern NSString * const VTrackingEventComponentDidBecomeVisible; //< Backend mapping: viewability
+
 // Tracking Event Parameters
 extern NSString * const VTrackingKeyCurrentSection; //< "Which major section is selected, such as ""Home"", ""Indbox"", ""Profile"", etc.",
 extern NSString * const VTrackingKeySection; //< The section of the app that is being selected (not the CurrentSection).

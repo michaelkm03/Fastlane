@@ -21,6 +21,7 @@
 #import "VBackgroundContainer.h"
 #import "VLoginFlowControllerDelegate.h"
 #import "UIColor+VBrightness.h"
+#import "VDependencyManager+VTracking.h"
 
 static NSString * const kPromptKey = @"prompt";
 static NSString * const kKeyboardStyleKey = @"keyboardStyle";
@@ -148,6 +149,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     [self.passwordField resignFirstResponder];
     [self.emailField clearValidation];
     [self.passwordField clearValidation];
+    
+    [self.dependencyManager trackView];
 }
 
 - (void)viewDidDisappear:(BOOL)animated

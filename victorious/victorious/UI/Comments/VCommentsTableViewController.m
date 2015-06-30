@@ -40,6 +40,7 @@
 #import "VDependencyManager+VUserProfile.h"
 #import "UIView+AutoLayout.h"
 #import "VNoContentView.h"
+#import "VDependencyManager+VTracking.h"
 
 @import Social;
 
@@ -111,6 +112,13 @@
     [super viewWillDisappear:animated];
     
     [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.dependencyManager trackView];
 }
 
 #pragma mark - Property Accessors

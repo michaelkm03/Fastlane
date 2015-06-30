@@ -7,6 +7,7 @@
 //
 
 #import "VModernResetPasswordViewController.h"
+#import "VDependencyManager+VTracking.h"
 
 // Views + Helpers
 #import "VLoginFlowControllerDelegate.h"
@@ -128,6 +129,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.dependencyManager trackView];
     
     [self.delegate configureFlowNavigationItemWithScreen:self];
     [self.passwordTextField becomeFirstResponder];

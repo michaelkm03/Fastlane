@@ -26,6 +26,8 @@
 
 // Video
 #import "VVideoWorkspaceTool.h"
+#import "VDependencyManager+VTracking.h"
+#import "VDependencyManager+VTracking.h"
 
 @import AVFoundation;
 
@@ -148,6 +150,8 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.dependencyManager trackView];
     
     [self.toolController setupDefaultTool];
     

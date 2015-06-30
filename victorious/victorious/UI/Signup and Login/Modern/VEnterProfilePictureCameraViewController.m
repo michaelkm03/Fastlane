@@ -24,6 +24,7 @@
 #import "VWorkspaceFlowController.h"
 #import "VImageToolController.h"
 #import "VPermissionCamera.h"
+#import "VDependencyManager+VTracking.h"
 
 @interface VEnterProfilePictureCameraViewController () <VWorkspaceFlowControllerDelegate, VBackgroundContainer, VLoginFlowScreen>
 
@@ -51,6 +52,13 @@
 }
 
 #pragma mark - View Lifecycle
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.dependencyManager trackView];
+}
 
 - (void)viewDidLoad
 {

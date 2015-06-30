@@ -81,6 +81,7 @@
 #import "VCoachmarkManager.h"
 #import "VCoachmarkDisplayer.h"
 #import "VDependencyManager+VCoachmarkManager.h"
+#import "VDependencyManager+VTracking.h"
 
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
 
@@ -270,6 +271,8 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.dependencyManager trackView];
 
     if ( self.streamDataSource.count == 0 )
     {

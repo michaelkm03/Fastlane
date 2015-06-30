@@ -225,3 +225,5 @@ WelcomeVideoDidEnd,Backend mapping: welcome_video_end
 WelcomeDidStart,Backend mapping: welcome_start
 UserDidSelectRegistrationOption,Backend mapping: register_button_tap
 UserDidSelectSignUpSubmit,Backend mapping: sign_up_button_tap
+,
+ComponentDidBecomeVisible,Backend mapping: viewability
