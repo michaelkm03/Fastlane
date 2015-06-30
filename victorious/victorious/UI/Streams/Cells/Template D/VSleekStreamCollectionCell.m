@@ -76,11 +76,11 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
              VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
-             VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
-             NSDictionary *attributes = [self sequenceDescriptionAttributesWithDependencyManager:dependencyManager];
              CGFloat textHeight = 0.0f;
              if ( sequence.name.length > 0 )
              {
+                 VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
+                 NSDictionary *attributes = [self sequenceDescriptionAttributesWithDependencyManager:dependencyManager];
                  CGFloat textWidth = size.width - kCaptionMargins.left - kCaptionMargins.right;
                  textHeight = VCEIL( [sequence.name frameSizeForWidth:textWidth andAttributes:attributes].height );
                  textHeight += kCaptionToPreviewVerticalSpacing;

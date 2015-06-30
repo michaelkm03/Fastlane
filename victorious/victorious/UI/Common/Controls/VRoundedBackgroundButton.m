@@ -31,8 +31,8 @@ static const CGFloat kHighlightedScale = 0.8f;
         self.circleLayer = [CAShapeLayer layer];
         [self.layer insertSublayer:self.circleLayer atIndex:0];
     }
-    
-    self.circleLayer.fillColor = self.selected ? self.selectedColor.CGColor : self.unselectedColor.CGColor;
+    BOOL useSelectedColor = self.selected && self.selectedColor.CGColor;
+    self.circleLayer.fillColor = useSelectedColor ? self.selectedColor.CGColor : self.unselectedColor.CGColor;
     self.circleLayer.bounds = self.bounds;
     self.circleLayer.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     UIBezierPath *circlePath = [UIBezierPath bezierPathWithRoundedRect:self.bounds
