@@ -201,7 +201,7 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
              {
                  self.sequence = sequence;
                  self.mediaUrl = asset.dataURL;
-                 [self.videoPlayerViewController enableTrackingWithTrackingItem:sequence.tracking];
+                 [self.videoPlayerViewController enableTrackingWithTrackingItem:sequence.tracking streamID:nil];
                  [self showVideo];
              }
              else
