@@ -10,6 +10,12 @@
 
 @class VDependencyManager;
 
+@protocol VPublishSaveCollectionViewCellDelegate <NSObject>
+
+- (UIViewController *)viewControllerForPermissions;
+
+@end
+
 /**
     A cell displaying a switch and a prompt.
  */
@@ -22,5 +28,6 @@
 
 @property (nonatomic, weak) IBOutlet UISwitch *cameraRollSwitch; ///< The switch displayed by this cell.
 @property (nonatomic, strong) VDependencyManager *dependencyManager; ///< The dependency manager used to style this cell.
+@property (nonatomic, weak) id delegate;
 
 @end

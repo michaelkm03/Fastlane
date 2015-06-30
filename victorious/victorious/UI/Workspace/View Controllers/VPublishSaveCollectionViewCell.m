@@ -10,7 +10,6 @@
 #import "VDependencyManager.h"
 
 static NSString * const kSaveTextKey = @"saveText";
-static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
 static NSString * const kOptionsContainerBackgroundKey = @"color.optionsContainer";
 
 static CGFloat const kDesiredHeight = 43.0f;
@@ -34,15 +33,6 @@ static CGFloat const kDesiredHeight = 43.0f;
         self.saveContentLabel.text = NSLocalizedString(saveText, @"");
         self.contentView.backgroundColor = [_dependencyManager colorForKey:kOptionsContainerBackgroundKey];
         self.cameraRollSwitch.onTintColor = [_dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-        NSNumber *autoEnableSave = [_dependencyManager numberForKey:kEnableMediaSaveKey];
-        if ( autoEnableSave != nil )
-        {
-            self.cameraRollSwitch.on = [autoEnableSave boolValue];
-        }
-        else
-        {
-            self.cameraRollSwitch.on = YES;
-        }
     }
 }
 

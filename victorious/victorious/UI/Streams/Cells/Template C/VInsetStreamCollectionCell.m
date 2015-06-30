@@ -23,8 +23,9 @@
 #import "VStreamCollectionViewController.h"
 #import "VSequenceCountsTextView.h"
 #import "VSequenceExpressionsObserver.h"
+#import "VCellSizeCollection.h"
+#import "VCellSizingUserInfoKeys.h"
 
-static const CGFloat kAspectRatio                   = 0.94375f; //< 320 ÷ 302
 static const CGFloat kInsetCellHeaderHeight         = 50.0f;
 static const CGFloat kInsetCellActionViewHeight     = 41.0f;
 static const CGFloat kCountsTextViewHeight          = 20.0f;
@@ -156,6 +157,48 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
     
     // Fixes constraint errors when resizing for certain aspect ratios
     self.contentView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleHeight;
+}
+
++ (VCellSizeCollection *)cellLayoutCollection
+{
+    static VCellSizeCollection *collection;
+    if ( collection == nil )
+    {
+        collection = [[VCellSizeCollection alloc] init];
+        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kInsetCellHeaderHeight)];
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
+         {
+             VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
+             return CGSizeMake( 0.0f, size.width  / [sequence previewAssetAspectRatio] );
+         }];
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
+         {
+             VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
+             VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
+             NSDictionary *attributes = [self sequenceDescriptionAttributesWithDependencyManager:dependencyManager];
+             CGFloat textWidth = size.width - kTextMargins.left - kTextMargins.right;
+             CGFloat textHeight = VCEIL( [sequence.name frameSizeForWidth:textWidth andAttributes:attributes].height );
+             return CGSizeMake( 0.0f, textHeight );
+         }];
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
+         {
+             VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
+             CGFloat height = sequence.name.length > 0 ? kTextMargins.top : 0.0f;
+             return CGSizeMake( 0.0f, height );
+         }];
+        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kCountsTextViewHeight)];
+        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kInsetCellActionViewHeight)];
+    }
+    return collection;
+}
+
+- (void)handleTapGestureForCommentLabel:(UIGestureRecognizer *)recognizer
+{
+    UIResponder<VSequenceActionsDelegate> *targetForCommentLabelSelection = [self targetForAction:@selector(willCommentOnSequence:fromView:)
+                                                                                       withSender:self];
+    NSAssert(targetForCommentLabelSelection != nil, @"We need an object in the responder chain for hash tag selection.!");
+    
+    [targetForCommentLabelSelection willCommentOnSequence:self.sequence fromView:self];
 }
 
 #pragma mark - UIView
@@ -321,75 +364,14 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
 
 #pragma mark - Sizing
 
-+ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds
-                                    sequence:(VSequence *)sequence
++ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence
                            dependencyManager:(VDependencyManager *)dependencyManager
 {
-    // Size the inset cell from top to bottom
-    CGFloat width = CGRectGetWidth(bounds);
-    CGFloat fullWidth = VFLOOR(width * kAspectRatio);
-    
-    // Use width to ensure 1:1 aspect ratio of previewView
-    CGSize actualSize = CGSizeMake(fullWidth, 0.0f);
-    
-    // Add header
-    actualSize.height = actualSize.height + kInsetCellHeaderHeight;
-    
-    // Text size
-    actualSize = [self sizeByAddingTextAreaSizeToSize:actualSize
-                                             sequence:sequence
-                                    dependencyManager:dependencyManager];
-    
-    // Action View
-    actualSize.height = actualSize.height + kInsetCellActionViewHeight;
-    
-    // Add 1:1 preview view
-    actualSize.height = actualSize.height + actualSize.width * (1 / [sequence previewAssetAspectRatio]);
-    
-    return actualSize;
-}
-
-+ (CGSize)sizeByAddingTextAreaSizeToSize:(CGSize)initialSize
-                                sequence:(VSequence *)sequence
-                       dependencyManager:(VDependencyManager *)dependencyManager
-{
-    CGSize sizeWithText = initialSize;
-    
-    // Top Margins
-    sizeWithText.height = sizeWithText.height;
-    
-    NSValue *textSizeValue = [[self textSizeCache] objectForKey:sequence.remoteId];
-    if (textSizeValue != nil)
-    {
-        return [textSizeValue CGSizeValue];
-    }
-    
-    // Comment size
-    CGFloat textAreaWidth = sizeWithText.width - kTextMargins.left - kTextMargins.right;
-    if ( sequence.name != nil && sequence.name.length > 0 )
-    {
-        // Caption view size
-        CGSize captionSize = [sequence.name frameSizeForWidth:textAreaWidth
-                                                andAttributes:[self sequenceDescriptionAttributesWithDependencyManager:dependencyManager]];
-        sizeWithText.height += VCEIL(captionSize.height) + kTextMargins.top;
-    }
-    
-    sizeWithText.height += kCountsTextViewHeight;
-    
-    // Bottom Margins
-    sizeWithText.height += kTextMargins.bottom;
-    [[self textSizeCache] setObject:[NSValue valueWithCGSize:sizeWithText] forKey:sequence.remoteId];
-    return sizeWithText;
-}
-
-+ (NSCache *)textSizeCache
-{
-    static NSCache *textSizeCache;
-    if (textSizeCache == nil)
-    {
-        textSizeCache = [[NSCache alloc] init];
-    }
-    return textSizeCache;
+    CGSize base = CGSizeMake( CGRectGetWidth(bounds), 0.0 );
+    NSDictionary *userInfo = @{ kCellSizingSequenceKey : sequence,
+                                VCellSizeCacheKey : sequence.remoteId ?: @"",
+                                kCellSizingDependencyManagerKey : dependencyManager };
+    return [[[self class] cellLayoutCollection] totalSizeWithBaseSize:base userInfo:userInfo];
 }
 
 #pragma mark - CCHLinkTextViewDelegate

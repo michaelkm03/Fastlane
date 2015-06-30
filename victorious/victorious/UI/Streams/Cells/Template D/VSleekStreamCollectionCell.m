@@ -7,18 +7,11 @@
 //
 
 #import "VSleekStreamCollectionCell.h"
-
-// Libraries
 #import <CCHLinkTextView/CCHLinkTextViewDelegate.h>
 
-// Stream Support
 #import "VSequence+Fetcher.h"
-
-// Dependencies
 #import "VDependencyManager.h"
 #import "VDependencyManager+VHighlightContainer.h"
-
-// Views + Helpers
 #import "VSequencePreviewView.h"
 #import "UIView+AutoLayout.h"
 #import "NSString+VParseHelp.h"
@@ -28,17 +21,17 @@
 #import "VCompatibility.h"
 #import "VSequenceCountsTextView.h"
 #import "VSequenceExpressionsObserver.h"
+#import "VCellSizeCollection.h"
+#import "VCellSizingUserInfoKeys.h"
 
+// These values must match the constraint values in interface builder
 static const CGFloat kSleekCellHeaderHeight = 50.0f;
-static const CGFloat kSleekCellActionViewHeight = 41.0f;
-static const CGFloat kPreviewToActionViewSpacing = 8.0f;
-static const CGFloat kActionViewBottomSpacing = 28.0f;
-static const CGFloat kSleekCellActionViewBottomConstraintHeight = 34.0f; //This represents the space between the bottom of the cell and the actionView
-static const CGFloat kSleekCellActionViewTopConstraintHeight = 8.0f; //This represents the space between the bottom of the content and the top of the actionView
+static const CGFloat kSleekCellActionViewHeight = 48.0f;
+static const CGFloat kCountsTextViewHeight = 29.0f;
+static const CGFloat kHiddenCaptionsMarginTop = 10.0f;
+static const CGFloat kCaptionToPreviewVerticalSpacing = 7.0f;
+static const CGFloat kMaxCaptionTextViewHeight = 200.0f;
 static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
-//Use this constant adjust the spacing between the caption and comment
-const CGFloat kSleekCellTextNeighboringViewSeparatorHeight = 10.0f; //This represents the space between the comment label and the view below it and the distance between the caption textView and the view above it
-const CGFloat kHiddenCaptionsMarginTop = 10.0f;
 
 @interface VSleekStreamCollectionCell () <VBackgroundContainer, CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate>
 
@@ -55,6 +48,7 @@ const CGFloat kHiddenCaptionsMarginTop = 10.0f;
 @property (nonatomic, strong) UIView *dimmingContainer;
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 @property (nonatomic, weak) IBOutlet VSequenceCountsTextView *countsTextView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *captiontoPreviewVerticalSpacing;
 
 @end
 
@@ -70,6 +64,39 @@ const CGFloat kHiddenCaptionsMarginTop = 10.0f;
     [self setupDimmingContainer];
     
     self.countsTextView.textSelectionDelegate = self;
+}
+
++ (VCellSizeCollection *)cellLayoutCollection
+{
+    static VCellSizeCollection *collection;
+    if ( collection == nil )
+    {
+        collection = [[VCellSizeCollection alloc] init];
+        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kSleekCellHeaderHeight)];
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
+         {
+             VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
+             VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
+             NSDictionary *attributes = [self sequenceDescriptionAttributesWithDependencyManager:dependencyManager];
+             CGFloat textHeight = 0.0f;
+             if ( sequence.name.length > 0 )
+             {
+                 CGFloat textWidth = size.width - kCaptionMargins.left - kCaptionMargins.right;
+                 textHeight = VCEIL( [sequence.name frameSizeForWidth:textWidth andAttributes:attributes].height );
+                 textHeight += kCaptionToPreviewVerticalSpacing;
+             }
+             return CGSizeMake( 0.0f, textHeight );
+         }];
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
+         {
+             VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
+             CGFloat previewHeight =  size.width  / [sequence previewAssetAspectRatio];
+             return CGSizeMake( 0.0f, previewHeight );
+         }];
+        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kCountsTextViewHeight)];
+        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kSleekCellActionViewHeight)];
+    }
+    return collection;
 }
 
 #pragma mark - VSequenceCountsTextViewDelegate
@@ -212,6 +239,7 @@ const CGFloat kHiddenCaptionsMarginTop = 10.0f;
     {
         self.captionTextView.attributedText = nil;
         self.captionHeight.constant = 0.0f;
+        self.captiontoPreviewVerticalSpacing.constant = 0.0f;
         self.bottomSpaceCaptionToPreview.constant = -kHiddenCaptionsMarginTop;
     }
     else
@@ -219,6 +247,8 @@ const CGFloat kHiddenCaptionsMarginTop = 10.0f;
         self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
                                                                               attributes:[VSleekStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
         self.bottomSpaceCaptionToPreview.constant = 0.0f;
+        self.captiontoPreviewVerticalSpacing.constant = kCaptionToPreviewVerticalSpacing;
+        self.captionHeight.constant = kMaxCaptionTextViewHeight;
     }
     [self layoutIfNeeded];
 }
@@ -256,17 +286,6 @@ const CGFloat kHiddenCaptionsMarginTop = 10.0f;
 
 #pragma mark - Class Methods
 
-+ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
-{
-    CGFloat width = CGRectGetWidth(bounds);
-    CGFloat height = width +
-                     kSleekCellHeaderHeight +
-                     kSleekCellActionViewHeight +
-                     kSleekCellActionViewBottomConstraintHeight +
-                     kSleekCellActionViewTopConstraintHeight;
-    return CGSizeMake(width, height);
-}
-
 + (NSDictionary *)sequenceDescriptionAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
@@ -281,77 +300,14 @@ const CGFloat kHiddenCaptionsMarginTop = 10.0f;
 
 #pragma mark - Sizing
 
-+ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds
-                                    sequence:(VSequence *)sequence
++ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence
                            dependencyManager:(VDependencyManager *)dependencyManager
 {
-    // Size the inset cell from top to bottom
-    // Use width to ensure 1:1 aspect ratio of previewView
-    CGSize actualSize = CGSizeMake(CGRectGetWidth(bounds), 0.0f);
-
-    // Add header
-    actualSize.height = actualSize.height + kSleekCellHeaderHeight;
-
-    // Text size
-    actualSize = [self sizeByAddingTextAreaSizeToSize:actualSize
-                                             sequence:sequence
-                                    dependencyManager:dependencyManager];
-    
-    // Add 1:1 preview view
-    actualSize.height = actualSize.height + actualSize.width * (1 / [sequence previewAssetAspectRatio]);
-    
-    // Action View
-    actualSize.height = actualSize.height + kPreviewToActionViewSpacing;
-    actualSize.height = actualSize.height + kSleekCellActionViewHeight;
-    actualSize.height = actualSize.height + kActionViewBottomSpacing;
-    
-    return actualSize;
-}
-
-+ (CGSize)sizeByAddingTextAreaSizeToSize:(CGSize)initialSize
-                                sequence:(VSequence *)sequence
-                       dependencyManager:(VDependencyManager *)dependencyManager
-{
-    CGSize sizeWithText = initialSize;
-    
-    NSValue *textSizeValue = [[self textSizeCache] objectForKey:sequence.remoteId];
-    if (textSizeValue != nil)
-    {
-        return [textSizeValue CGSizeValue];
-    }
-    
-    CGFloat captionWidth = initialSize.width - kCaptionMargins.left - kCaptionMargins.right;
-    sizeWithText.height += kCaptionMargins.top + kCaptionMargins.bottom;
-    if (sequence.name.length > 0)
-    {
-        // Caption view size
-        static NSDictionary *sharedAttributes = nil;
-        if (sharedAttributes == nil)
-        {
-            sharedAttributes = [self sequenceDescriptionAttributesWithDependencyManager:dependencyManager];
-        }
-        
-        CGSize size = [sequence.name frameSizeForWidth:captionWidth
-                                         andAttributes:sharedAttributes];
-        sizeWithText.height += size.height;
-    }
-    else
-    {
-        sizeWithText.height -= kHiddenCaptionsMarginTop;
-    }
-    [[self textSizeCache] setObject:[NSValue valueWithCGSize:sizeWithText]
-                             forKey:sequence.remoteId];
-    return sizeWithText;
-}
-
-+ (NSCache *)textSizeCache
-{
-    static NSCache *textCache;
-    if (textCache == nil)
-    {
-        textCache = [[NSCache alloc] init];
-    }
-    return textCache;
+    CGSize base = CGSizeMake( CGRectGetWidth(bounds), 0.0 );
+    NSDictionary *userInfo = @{ kCellSizingSequenceKey : sequence,
+                                VCellSizeCacheKey : sequence.name ?: @"",
+                                kCellSizingDependencyManagerKey : dependencyManager };
+    return [[[self class] cellLayoutCollection] totalSizeWithBaseSize:base userInfo:userInfo];
 }
 
 #pragma mark - VStreamCellFocus
