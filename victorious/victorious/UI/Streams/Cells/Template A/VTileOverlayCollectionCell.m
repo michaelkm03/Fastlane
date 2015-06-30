@@ -27,15 +27,15 @@
 #import "VCellSizeCollection.h"
 #import "VCellSizingUserInfoKeys.h"
 
-static const UIEdgeInsets kTextInsets       = { 0.0f, 20.0f, 5.0f, 20.0f };
-static const CGFloat kHeaderHeight          = 74.0f;
-static const CGFloat kGradientAlpha         = 0.3f;
-static const CGFloat kShadowAlpha           = 0.5f;
-static const CGFloat kPollCellHeightRatio   = 0.66875f; //< from spec, 214 height for 320 width
-static const CGFloat kMaxCaptionHeight      = 80.0f;
-static const CGFloat kButtonWidth           = 44.0f;
-static const CGFloat kButtonHeight          = 44.0f;
-static const CGFloat kCountsTextViewHeight  = 20.0f;
+static const UIEdgeInsets kTextInsets           = { 0.0f, 20.0f, 5.0f, 20.0f };
+static const CGFloat kHeaderHeight              = 74.0f;
+static const CGFloat kGradientAlpha             = 0.3f;
+static const CGFloat kShadowAlpha               = 0.5f;
+static const CGFloat kPollCellHeightRatio       = 0.66875f; //< from spec, 214 height for 320 width
+static const CGFloat kCountsTextViewMinHeight   = 80.0f;
+static const CGFloat kButtonWidth               = 44.0f;
+static const CGFloat kButtonHeight              = 44.0f;
+static const CGFloat kCountsTextViewHeight      = 20.0f;
 
 @interface VTileOverlayCollectionCell () <CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate>
 
@@ -156,7 +156,7 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     _captionTextView.backgroundColor = [UIColor clearColor];
     [_overlayContainer addSubview:_captionTextView];
     [_overlayContainer v_addPinToLeadingTrailingToSubview:_captionTextView];
-    _captionHeight = [NSLayoutConstraint constraintWithItem:_captionTextView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:kMaxCaptionHeight];
+    _captionHeight = [NSLayoutConstraint constraintWithItem:_captionTextView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:kCountsTextViewMinHeight];
     [_captionTextView addConstraint:_captionHeight];
     [_overlayContainer addConstraint:[NSLayoutConstraint constraintWithItem:_captionTextView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_countsTextView attribute:NSLayoutAttributeTop multiplier:1.0f constant:0.0f]];
     
@@ -223,7 +223,12 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
              }
              return CGSizeMake( 0.0f, textHeight );
          }];
-        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kCountsTextViewHeight)];
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
+         {
+             VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
+             NSDictionary *attributes = [[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager];
+             return CGSizeMake( 0.0f, MAX( kCountsTextViewMinHeight, [@"" frameSizeForWidth:size.width andAttributes:attributes].height ) );
+         }];
     }
     return collection;
 }
@@ -353,7 +358,7 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     }
     else
     {
-        self.captionHeight.constant = kMaxCaptionHeight;
+        self.captionHeight.constant = kCountsTextViewMinHeight;
         self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
                                                                               attributes:[VTileOverlayCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
     }
@@ -420,8 +425,16 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     self.commentButton.unselectedTintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.commentButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
     self.likeButton.unselectedTintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    self.countsTextView.dependencyManager = dependencyManager;
     self.captionTextView.dependencyManager = dependencyManager;
+    
+    [self.countsTextView setTextAttributes:[[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager]];
+}
+
++ (NSDictionary *)sequenceCountsAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    UIFont *font = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+    UIColor *textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    return @{ NSFontAttributeName: font, NSForegroundColorAttributeName: textColor };
 }
 
 #pragma mark - VStreamCellComponentSpecialization
