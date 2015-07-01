@@ -65,7 +65,6 @@ const int64_t kProgressTotalCount = 100;
 
 - (void)handleError:(NSError *)error response:(NSURLResponse *)response
 {
-    [self.progress cancel];
     // purposely using NSLog rather than VLog; I want this log to be present in release builds to help troubleshoot template errors at runtime.
     NSLog( @"Error downloading [%@]: %@", self.url.absoluteString, error.localizedDescription );
 
