@@ -34,19 +34,29 @@ extern NSString * const VTrackingBallisticCountKey;
 - (NSArray *)trackingURLsForKey:(NSString *)eventURLKey;
 
 /**
- Uses VTrackingManager to track a view for this component if it contains the "view" tracking key.
+ Uses VTrackingManager to track a view of the provided view controller if self contains the "view" tracking key.
  
- @param parameters Dictionary of parameters to include with the event.
+ @param viewController The view controller spawned by this instance of VDependencyManager that
+ contains tracking keys and other values relative to it.
  */
 - (void)v_trackViewWillAppear:(UIViewController *)viewController;
 
 /**
- Uses VTrackingManager to track a view for this component if it contains the "view" tracking key.
+ Uses VTrackingManager to track a view of the provided view controller if self contains the "view" tracking key.
  
- @see trackViewWithParameters:parameters to track the event with additional parameters.
+ @param viewController The view controller spawned by this instance of VDependencyManager that
+ contains tracking keys and other values relative to it.
+ @param parameters Dictionary of parameters to include with the event.
  */
 - (void)v_trackViewWillAppear:(UIViewController *)viewController withParameters:(NSDictionary *)parameters;
 
+/**
+ Updates state management to prevent tracking views when returning to the viewc controller
+ after popping or dismissing, i.e. going back or closing.
+ 
+ @param viewController The view controller spawned by this instance of VDependencyManager that
+ contains tracking keys and other values relative to it.
+ */
 - (void)v_trackViewWillDisappear:(UIViewController *)viewController;
 
 @end
