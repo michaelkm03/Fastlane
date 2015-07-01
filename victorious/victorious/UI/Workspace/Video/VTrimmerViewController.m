@@ -41,7 +41,7 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VTrimmerFlowLayout *trimmerFlowLayout;
 
-@property (nonatomic, assign) int numberOfFrames;
+@property (nonatomic, assign) NSInteger numberOfFrames;
 
 @end
 
@@ -64,10 +64,7 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"registering supplementary views");
-    [self.thumbnailCollectionView registerNib:[VTimeMarkView nibForCell] forSupplementaryViewOfKind:TimemarkViewKind withReuseIdentifier:[VTimeMarkView cellIdentifier]];
-    [self.thumbnailCollectionView registerNib:[VHashmarkView nibForCell] forSupplementaryViewOfKind:HashmarkViewKind withReuseIdentifier:[VHashmarkView cellIdentifier]];
-    NSLog(@"should have registered items");
+
     [self prepareThumbnailCollectionViewAndTitleLabel];
     [self preparePlaybackOverlay];
     [self prepareTrimControl];
@@ -76,6 +73,7 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self registerSupplementaryViews];
     self.titleLabel.alpha = 1.0f;
 }
 
@@ -134,9 +132,7 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
     {
         Float64 progress = (CMTimeGetSeconds(currentPlayTime) - CMTimeGetSeconds([self currentTimeOffset])) / CMTimeGetSeconds(self.maximumTrimDuration);
         CGFloat playbackOverlayWidth = (CGRectGetWidth(self.view.bounds) * progress) - (CGRectGetWidth(self.trimControl.trimThumbBody.frame)/2);
-    
-        self.currentPlayBackWidthConstraint.constant = (playbackOverlayWidth >= 0) ? playbackOverlayWidth  : 0.0f;
-
+        self.currentPlayBackWidthConstraint.constant = ((playbackOverlayWidth >= 0) && (playbackOverlayWidth <= CGRectGetMaxX(self.trimControl.trimThumbBody.frame))) ? playbackOverlayWidth  : 0.0f;
         [self.view layoutIfNeeded];
     }
 }
@@ -187,13 +183,14 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
         numberOfFrames++;
         neededTimeLineWidth = neededTimeLineWidth - frameWidth;
     }
-    self.numberOfFrames = ((int) numberOfFrames) - 1;
+    self.numberOfFrames = numberOfFrames - 1;
     return numberOfFrames; // 1 extra for a spacer cell
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     VThumbnailCell *thumnailCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VThumbnailCell suggestedReuseIdentifier]
                                                                              forIndexPath:indexPath];
     CGPoint center = [self.thumbnailCollectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath].center;
@@ -204,9 +201,7 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
     [self.thumbnailDataSource trimmerViewController:self
                                    thumbnailForTime:timeForCell
                                         withSuccess:^(UIImage *thumbnail, CMTime timeForImage, id generatingDataSource)
-    
      {
-
          CMTime timeValue = [weakCell.valueForThumbnail CMTimeValue];
          if (CMTIME_COMPARE_INLINE(timeValue, ==, timeForImage))
          {
@@ -214,17 +209,15 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
                             {
                                 weakCell.thumbnail = thumbnail;
                                 [weakCell.activityIndicator stopAnimating];
-
                             });
          }
-         [weakCell.activityIndicator stopAnimating];
-
      }
      withFailure:^(NSError *error)
      {
          [weakCell.activityIndicator stopAnimating];
          weakCell.frame = CGRectZero;
      }];
+    thumnailCell.clipsToBounds = YES;
     return thumnailCell;
 }
 
@@ -241,7 +234,7 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
         CGPoint center = [self.thumbnailCollectionView.collectionViewLayout layoutAttributesForSupplementaryViewOfKind:TimemarkViewKind atIndexPath:indexPath].center;
         CGFloat percentThrough = center.x / [self timelineWidthForFullTrack];
         CMTime timeForCell = CMTimeMake(self.maximumEndTime.value * percentThrough, self.maximumEndTime.timescale);
-        CGFloat time = CMTimeGetSeconds(timeForCell);
+        Float64 time = CMTimeGetSeconds(timeForCell);
         
         VTimeMarkView *timeMarkView = [VTimeMarkView collectionReusableViewForCollectionView:collectionView forIndexPath:indexPath withKind:kind];
         timeMarkView.timeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)time/60, (int)time%60];
@@ -259,7 +252,6 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger numberOfItems = [self collectionView:collectionView
-    
                             numberOfItemsInSection:indexPath.section];
     
     // Empty Cell
@@ -268,7 +260,8 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
         return CGSizeMake(0, 0);
     }
     
-    return CGSizeMake(CGRectGetHeight(collectionView.frame), CGRectGetHeight(collectionView.frame));
+    [self.currentPlayBackOverlayView updateConstraintsIfNeeded];
+    return CGSizeMake(CGRectGetHeight(self.currentPlayBackOverlayView.frame), CGRectGetHeight(self.currentPlayBackOverlayView.frame));
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
@@ -357,24 +350,21 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     self.dimmingViewWidthConstraint.constant = CGRectGetWidth(self.view.bounds) - (CGRectGetWidth(self.view.bounds) * progress);
    [self.view layoutIfNeeded];
     
-    float progressOfThumbs = 1.0f - (self.thumbnailCollectionView.contentOffset.x / (CGRectGetWidth(self.thumbnailCollectionView.bounds)));
+    CGFloat progressOfThumbs = 1.0f - (self.thumbnailCollectionView.contentOffset.x / (CGRectGetWidth(self.thumbnailCollectionView.bounds)));
     
-
     if (progress > progressOfThumbs)
     {
         self.trimControl.trimThumbBody.center = CGPointMake(progressOfThumbs*CGRectGetWidth(self.thumbnailCollectionView.bounds), self.trimControl.trimThumbBody.center.y);
     }
-
     
     for (UICollectionViewCell *cell in [self.thumbnailCollectionView visibleCells])
     {
         NSIndexPath *indexPath = [self.thumbnailCollectionView indexPathForCell:cell];
-        NSUInteger lastIndex = [indexPath indexAtPosition:[indexPath length] - 1];
+        NSInteger lastIndex = [indexPath indexAtPosition:[indexPath length] - 1];
         lastIndex = lastIndex + 1;
-        if ((int)lastIndex == self.numberOfFrames)
+        if (lastIndex == self.numberOfFrames)
         {
             CGRect frame;;
-            
             frame.size = cell.frame.size;
             frame.origin = CGPointMake(cell.frame.origin.x - self.thumbnailCollectionView.contentOffset.x, cell.frame.origin.y + self.thumbnailCollectionView.contentOffset.y);
             
@@ -391,7 +381,6 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     NSString *title = [NSString stringWithFormat:@"%@", [NSString stringWithFormat:@"%.2f", CMTimeGetSeconds(time)]];
     self.trimControl.attributedTitle = [[NSAttributedString alloc] initWithString:title
                                                                        attributes:@{NSFontAttributeName: [[_dependencyManager fontForKey:VDependencyManagerLabel3FontKey] fontWithSize:16.0f]}];
-    
 }
 
 - (CGFloat)timelineWidthPerSecond
@@ -432,7 +421,6 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     self.thumbnailCollectionView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, kCollectionViewRightInset);
     
     [self.view addSubview:self.thumbnailCollectionView];
-    
 
     self.titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     self.titleLabel.text = NSLocalizedString(self.title, @"");
@@ -499,7 +487,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 
 - (void)preparePlaybackOverlay
 {
-    CGRect frame = CGRectMake(0, 0, 50.0f, 55.0f);
+    CGRect frame = CGRectMake(0, 0, 100.0f, 55.0f);
     self.currentPlayBackOverlayView = [[UIView alloc] initWithFrame:frame];
     self.currentPlayBackOverlayView.userInteractionEnabled = NO;
     
@@ -533,6 +521,12 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
                                                                       multiplier:1.0f
                                                                         constant:0.0f];
     [self.view addConstraint:self.currentPlayBackWidthConstraint];
+}
+
+- (void)registerSupplementaryViews
+{
+    [self.thumbnailCollectionView registerNib:[VTimeMarkView nibForCell] forSupplementaryViewOfKind:TimemarkViewKind withReuseIdentifier:[VTimeMarkView cellIdentifier]];
+    [self.thumbnailCollectionView registerNib:[VHashmarkView nibForCell] forSupplementaryViewOfKind:HashmarkViewKind withReuseIdentifier:[VHashmarkView cellIdentifier]];
 }
 
 @end

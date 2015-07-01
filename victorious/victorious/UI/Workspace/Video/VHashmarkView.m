@@ -12,11 +12,9 @@
 
 - (void)awakeFromNib
 {
-
         UIView *hash = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 3, 15)];
         hash.backgroundColor = [UIColor lightGrayColor];
         [self addSubview:hash];
-
 }
 
 + (id)collectionReusableViewForCollectionView:(UICollectionView *)collectionView
@@ -25,9 +23,7 @@
                                      withKind:(NSString *)kind
 {
     NSString *cellIdentifier = [self cellIdentifier];
-    NSLog(@"CELL ID %@", cellIdentifier);
     VHashmarkView *cell = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:cellIdentifier forIndexPath:indexPath];
-    NSLog(@"about to return cell");
     return cell;
 }
 

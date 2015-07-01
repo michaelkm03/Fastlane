@@ -34,22 +34,6 @@ const static CGFloat kTimemarkOffsetY = -49.0f;
     // Call super to get elements
     NSMutableArray *answer = [[super layoutAttributesForElementsInRect:rect] mutableCopy];
     
-    NSUInteger maxSectionIndex = 0;
-    for (NSUInteger idx = 0; idx < [answer count]; ++idx)
-    {
-        UICollectionViewLayoutAttributes *layoutAttributes = answer[idx];
-
-        if (layoutAttributes.representedElementCategory == UICollectionElementCategoryCell || layoutAttributes.representedElementCategory == UICollectionElementCategorySupplementaryView)
-        {
-            // Keep track of the largest section index found in the rect (maxSectionIndex)
-            NSUInteger sectionIndex = (NSUInteger)layoutAttributes.indexPath.section;
-            if (sectionIndex > maxSectionIndex)
-            {
-                maxSectionIndex = sectionIndex;
-            }
-        }
-    }
-    
     int index =  (int) (self.collectionView.contentOffset.x/kSpacingOfHashes);
     for (int i = 0; i < kNumberOfHashes; i++)
     {

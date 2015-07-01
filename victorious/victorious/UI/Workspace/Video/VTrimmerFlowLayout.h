@@ -16,5 +16,3 @@ extern NSString * const TimemarkViewKind;
 @interface VTrimmerFlowLayout : UICollectionViewFlowLayout
 
 @end
-
-

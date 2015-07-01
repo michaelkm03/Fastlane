@@ -14,7 +14,6 @@
 static const CGFloat kTrimHeadHeight = 44.0f;
 static const CGFloat kTrimHeadInset = 4.0f;
 static const CGFloat kTrimBodyWidth = 5.0f;
-static const CGFloat kMarginAboveTrimControl = 48.0f;
 
 static const CGFloat scaleFactorX = 0.15f; //x-ratio for handle subview on trim control
 static const CGFloat scaleFactorY = 0.50f; //y-ratio for handle subview on trim control
@@ -124,13 +123,13 @@ static const CGFloat kLineThickness = 1.0f; //Thickness of underbar on trim cont
         CGFloat previewHeight = CGRectGetMaxY(self.bounds) - kTrimHeadHeight;
         //The added 1s avoid a small visible divide between the thumb head and the trimmer line
         self.trimThumbBody.frame = CGRectMake(0.0f,
-                                              kMarginAboveTrimControl,
+                                              CGRectGetHeight(self.bounds) - previewHeight + 4.0f,
                                               3 * kTrimBodyWidth,
                                               previewHeight - 4.0f);
         
         CGRect rect = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.trimThumbBody.frame) * scaleFactorX, CGRectGetHeight(self.trimThumbBody.frame) * scaleFactorY);
         UIView *innerView = [[UIView alloc] initWithFrame:rect];
-        innerView.center = CGPointMake(self.trimThumbBody.center.x, self.trimThumbBody.center.y - kMarginAboveTrimControl);
+        innerView.center = CGPointMake(self.trimThumbBody.center.x, CGRectGetHeight(self.trimThumbBody.frame)/2);
         innerView.backgroundColor = [UIColor colorWithWhite:0.8f alpha:1.0f];
         
         self.topBar = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.trimThumbBody.frame) - kLineLength, -kLineThickness, kLineLength, kLineThickness)];

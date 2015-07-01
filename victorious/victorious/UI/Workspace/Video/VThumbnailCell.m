@@ -19,15 +19,14 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
-   // [self.activityIndicator startAnimating];
+    self.activityIndicator.hidesWhenStopped = YES;
+    [self.activityIndicator startAnimating];
 }
 
 - (void)setThumbnail:(UIImage *)thumbnail
 {
     self.thumbnailImageView.image = thumbnail;
     [self.activityIndicator stopAnimating];
-
 }
 
 - (UIImage *)thumbnail
@@ -38,7 +37,6 @@
 - (void)prepareForReuse
 {
     [super prepareForReuse];
-    
     self.thumbnailImageView.image = nil;
 }
 
