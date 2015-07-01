@@ -47,10 +47,8 @@
 #import "VUserProfileViewController.h"
 #import "VPurchaseViewController.h"
 
-// Workspace
-#import "VWorkspaceFlowController.h"
-#import "VImageToolController.h"
-#import "VVideoToolController.h"
+// Media Attachments
+#import "VMediaAttachmentPresenter.h"
 
 // Transitioning
 #import "VLightboxTransitioningDelegate.h"
@@ -112,7 +110,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VWorkspaceFlowControllerDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer>
 
 @property (nonatomic, strong) NSUserActivity *handoffObject;
 
@@ -138,6 +136,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 // Text input
 @property (nonatomic, weak) VKeyboardInputAccessoryView *textEntryView;
 @property (nonatomic, strong) VElapsedTimeFormatter *elapsedTimeFormatter;
+@property (nonatomic, strong) VMediaAttachmentPresenter *mediaAttachmentPresenter;
 
 // Constraints
 @property (nonatomic, weak) NSLayoutConstraint *bottomKeyboardToContainerBottomConstraint;
@@ -1583,14 +1582,28 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     void (^showCamera)(void) = ^void(void)
     {
-        VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager templateValueOfType:[VWorkspaceFlowController class]
-                                                                                                 forKey:VDependencyManagerWorkspaceFlowKey
-                                                                                  withAddedDependencies:@{VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateFilter),
-                                                                                                          VVideoToolControllerInitalVideoEditStateKey:@(VVideoToolControllerInitialVideoEditStateVideo)}];
-        
-        workspaceFlowController.delegate = self;
-        workspaceFlowController.videoEnabled = YES;
-        [self presentViewController:workspaceFlowController.flowRootViewController animated:YES completion:nil];
+        self.mediaAttachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithViewControllerToPresentOn:self
+                                                                                           dependencymanager:self.dependencyManager];
+        __weak typeof(self) welf = self;
+        self.mediaAttachmentPresenter.completion = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
+        {
+            welf.mediaURL = mediaURL;
+            [welf.textEntryView setSelectedThumbnail:previewImage];
+            
+            [welf dismissViewControllerAnimated:YES completion:^
+             {
+                 welf.mediaAttachmentPresenter = nil;
+                 [welf.textEntryView startEditing];
+                 
+                 [UIView animateWithDuration:0.0f
+                                  animations:^
+                  {
+                      [welf.contentCollectionView reloadData];
+                      [welf.contentCollectionView.collectionViewLayout invalidateLayout];
+                  }];
+             }];
+        };
+        [self.mediaAttachmentPresenter present];
     };
     
     if (self.mediaURL == nil)
@@ -1896,38 +1909,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)userActivityWasContinued:(NSUserActivity *)userActivity
 {
     [self.videoCell pause];
-}
-
-#pragma mark - VWorkspaceFlowControllerDelegate
-
-- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-       finishedWithPreviewImage:(UIImage *)previewImage
-               capturedMediaURL:(NSURL *)capturedMediaURL
-{
-    self.mediaURL = capturedMediaURL;
-    [self.textEntryView setSelectedThumbnail:previewImage];
-
-    [self dismissViewControllerAnimated:YES completion:^
-     {
-         [self.textEntryView startEditing];
-         
-         [UIView animateWithDuration:0.0f
-                          animations:^
-          {
-              [self.contentCollectionView reloadData];
-              [self.contentCollectionView.collectionViewLayout invalidateLayout];
-          }];
-     }];
-}
-
-- (BOOL)shouldShowPublishForWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-{
-    return NO;
 }
 
 #pragma mark - VHashtagSelectionResponder

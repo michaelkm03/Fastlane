@@ -251,8 +251,8 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
 
 - (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
 {
-    self.workspacePresenter = [VCreationFlowPresenter creationFlowPresenterWithViewControllerToPresentOn:[VRootViewController rootViewController]
-                                                                                 dependencyManager:self.dependencyManager];
+    self.workspacePresenter = [[VCreationFlowPresenter alloc] initWithViewControllerToPresentOn:[VRootViewController rootViewController]
+                                                                              dependencymanager:self.dependencyManager];
     [self.workspacePresenter present];
     return NO;
 }

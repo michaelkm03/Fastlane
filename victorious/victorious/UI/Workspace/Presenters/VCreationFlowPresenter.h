@@ -6,20 +6,19 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "VAbstractPresenter.h"
 
 @class VDependencyManager;
 
-@interface VCreationFlowPresenter : NSObject
+/**
+ *  Presents the creation flow for the app.
+ */
+@interface VCreationFlowPresenter : VAbstractPresenter
 
 /**
  A Boolean that determines whether or not the creation sheet shows its
  animation from the top of the screen.
  */
 @property (nonatomic, assign) BOOL showsCreationSheetFromTop;
-
-+ (instancetype)creationFlowPresenterWithViewControllerToPresentOn:(UIViewController *)viewControllerToPresentOn dependencyManager:(VDependencyManager *)dependencyManager;
-
-- (void)present;
 
 @end

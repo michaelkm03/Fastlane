@@ -37,25 +37,22 @@ static NSString * const kCreationFlowKey = @"createFlow";
 
 @interface VCreationFlowPresenter () <VCreationFlowControllerDelegate>
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, weak) UIViewController *viewControllerToPresentOn;
-
 @property (nonatomic, strong) VCreationFlowShim *creationFlowShim;
 
 @end
 
 @implementation VCreationFlowPresenter
 
-+ (instancetype)creationFlowPresenterWithViewControllerToPresentOn:(UIViewController *)viewControllerToPresentOn
-                                              dependencyManager:(VDependencyManager *)dependencyManager
+- (instancetype)initWithViewControllerToPresentOn:(UIViewController *)viewControllerToPresentOn dependencymanager:(VDependencyManager *)dependencyManager
 {
-    VCreationFlowPresenter *workspacePresenter = [[self alloc] init];
-    workspacePresenter.dependencyManager = dependencyManager;
-    workspacePresenter.viewControllerToPresentOn = viewControllerToPresentOn;
-    
-    workspacePresenter.creationFlowShim = [dependencyManager templateValueOfType:[VCreationFlowShim class]
-                                                                          forKey:kCreationFlowKey];
-    return workspacePresenter;
+    self = [super initWithViewControllerToPresentOn:viewControllerToPresentOn
+                                  dependencymanager:dependencyManager];
+    if (self != nil)
+    {
+        _creationFlowShim = [dependencyManager templateValueOfType:[VCreationFlowShim class]
+                                                           forKey:kCreationFlowKey];
+    }
+    return self;
 }
 
 - (void)present

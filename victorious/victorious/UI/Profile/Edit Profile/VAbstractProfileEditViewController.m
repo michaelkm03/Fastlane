@@ -7,8 +7,6 @@
 //
 
 #import "VAbstractProfileEditViewController.h"
-#import "VWorkspaceFlowController.h"
-#import "VImageToolController.h"
 #import "VUser.h"
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageEffects.h"
@@ -20,12 +18,13 @@
 #import "VDefaultProfileImageView.h"
 #import "UIImageView+VLoadingAnimations.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "VEditProfilePicturePresenter.h"
 
 static const CGFloat kTextColor = 0.355f;
 static const CGFloat kPlaceholderAlpha = 0.3f;
 static const CGFloat kBlurredWhiteAlpha = 0.3f;
 
-@interface VAbstractProfileEditViewController () <VContentInputAccessoryViewDelegate, VWorkspaceFlowControllerDelegate>
+@interface VAbstractProfileEditViewController () <VContentInputAccessoryViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UILabel *tagLinePlaceholderLabel;
 @property (nonatomic, weak) IBOutlet VDefaultProfileImageView *profileImageView;
@@ -37,6 +36,8 @@ static const CGFloat kBlurredWhiteAlpha = 0.3f;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTaglineTextViewBottomToContainer;
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+
+@property (nonatomic, strong) VEditProfilePicturePresenter *editProfilePicturePresenter;
 
 @end
 
@@ -195,14 +196,24 @@ static const CGFloat kBlurredWhiteAlpha = 0.3f;
 
 - (IBAction)takePicture:(id)sender
 {
-    NSDictionary *addedDependencies = @{ VImageToolControllerInitialImageEditStateKey : @(VImageToolControllerInitialImageEditStateFilter),
-                                         VWorkspaceFlowControllerContextKey : @(VWorkspaceFlowControllerContextProfileImage) };
-    VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager workspaceFlowControllerWithAddedDependencies:addedDependencies];
-    workspaceFlowController.delegate = self;
-    workspaceFlowController.videoEnabled = NO;
-    [self presentViewController:workspaceFlowController.flowRootViewController
-                       animated:YES
-                     completion:nil];
+    self.editProfilePicturePresenter = [[VEditProfilePicturePresenter alloc] initWithViewControllerToPresentOn:self
+                                                                                                    dependencymanager:self.dependencyManager];
+    __weak typeof(self) welf = self;
+    self.editProfilePicturePresenter.completion = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectImageForEditProfile];
+        
+        welf.profileImageView.image = previewImage;
+        welf.updatedProfileImage = mediaURL;
+        
+        [welf.backgroundImageView setBlurredImageWithClearImage:previewImage
+                                               placeholderImage:nil
+                                                      tintColor:[UIColor colorWithWhite:1.0 alpha:kBlurredWhiteAlpha]];
+        welf.tableView.backgroundView = welf.backgroundImageView;
+        welf.editProfilePicturePresenter = nil;
+        [welf dismissViewControllerAnimated:YES completion:nil];
+    };
+    [self.editProfilePicturePresenter present];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -246,36 +257,6 @@ static const CGFloat kBlurredWhiteAlpha = 0.3f;
 }
 
 - (BOOL)shouldAddHashTagsForInputAccessoryView:(VContentInputAccessoryView *)inputAccessoryView
-{
-    return NO;
-}
-
-#pragma mark - VWorkspaceFlowControllerDelegate
-
-- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
-{
-    [self dismissViewControllerAnimated:YES
-                             completion:nil];
-}
-
-- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-       finishedWithPreviewImage:(UIImage *)previewImage
-               capturedMediaURL:(NSURL *)capturedMediaURL
-{
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectImageForEditProfile];
-    
-    self.profileImageView.image = previewImage;
-    self.updatedProfileImage = capturedMediaURL;
-
-    [self.backgroundImageView setBlurredImageWithClearImage:previewImage
-                                           placeholderImage:nil
-                                                  tintColor:[UIColor colorWithWhite:1.0 alpha:kBlurredWhiteAlpha]];
-    self.tableView.backgroundView = self.backgroundImageView;
-    [self dismissViewControllerAnimated:YES
-                             completion:nil];
-}
-
-- (BOOL)shouldShowPublishForWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
 {
     return NO;
 }

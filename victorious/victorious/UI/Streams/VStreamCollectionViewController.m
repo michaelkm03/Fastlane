@@ -427,7 +427,8 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
          {
              return;
          }
-         weakSelf.creationFlowPresenter = [VCreationFlowPresenter creationFlowPresenterWithViewControllerToPresentOn:self dependencyManager:self.dependencyManager];
+         weakSelf.creationFlowPresenter = [[VCreationFlowPresenter alloc] initWithViewControllerToPresentOn:self
+                                                                                          dependencymanager:self.dependencyManager];
          weakSelf.creationFlowPresenter.showsCreationSheetFromTop = YES;
          [weakSelf.creationFlowPresenter present];
      }];

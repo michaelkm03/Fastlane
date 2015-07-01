@@ -11,6 +11,8 @@
 // Dependencies
 #import "VDependencyManager.h"
 
+NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
+
 @interface VImageCreationFlowController ()
 
 @end

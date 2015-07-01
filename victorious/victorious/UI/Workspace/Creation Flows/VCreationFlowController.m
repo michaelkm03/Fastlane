@@ -23,29 +23,6 @@ NSString * const VCreationFLowCaptureScreenKey = @"captureScreen";
 
 @implementation VCreationFlowController
 
-+ (instancetype)newCreationFlowControllerWithCreationType:(VCreationType)type
-                                     andDependencyManager:(VDependencyManager *)dependencyManager
-{
-    VCreationFlowController *creationFlowController;
-    switch (type)
-    {
-        case VCreationTypeImage:
-            creationFlowController = [[VImageCreationFlowController alloc] initWithDependencyManager:dependencyManager];
-            break;
-        case VCreationTypeGIF:
-            break;
-        case VCreationTypePoll:
-            break;
-        case VCreationTypeText:
-            break;
-        case VCreationTypeVideo:
-            break;
-        case VCreationTypeUnknown:
-            return nil;
-    }
-    return creationFlowController;
-}
-
 #pragma mark - Init methods
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager

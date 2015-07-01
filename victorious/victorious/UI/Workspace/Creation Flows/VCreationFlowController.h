@@ -43,15 +43,16 @@ extern NSString * const VCreationFLowCaptureScreenKey;
  */
 - (void)creationFlowControllerDidCancel:(VCreationFlowController *)creationFlowController;
 
+/**
+ *  Asks the delegate whether or not the creation flow should show a publish screen for
+ *  creating a new sequence. If this is not implemented the creation flow will show
+ *  a publish screen.
+ */
+- (BOOL)shouldShowPublishScreenForFlowController;
+
 @end
 
 @interface VCreationFlowController : UINavigationController <VHasManagedDependencies>
-
-/**
- *  Use this method to get an appropriate CreationFLowController for the passed in type.
- */
-+ (instancetype)newCreationFlowControllerWithCreationType:(VCreationType)type
-                                     andDependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
  *  The VCreationFlowControllerDelegate for this flow controller.
