@@ -16,7 +16,7 @@
 #import "VObjectManager+Users.h"
 
 // Creation UI
-#import "VBaseCreationFlowController.h"
+#import "VCreationFlowController.h"
 
 #warning Maybe delete these
 #import "VWorkspaceFlowController.h"
@@ -24,9 +24,6 @@
 #import "VTextWorkspaceFlowController.h"
 #import "VImageToolController.h"
 #import "VVideoToolController.h"
-
-// New CreationUI
-#import "VCreationFlowController.h"
 
 // Action sheet
 #import "VAlertController.h"
@@ -136,7 +133,7 @@ static NSString * const kCreationFlowKey = @"createFlow";
 
 - (void)presentCreateFlowWithKey:(NSString *)key
 {
-    VBaseCreationFlowController *flowController = [self.dependencyManager templateValueOfType:[VBaseCreationFlowController class]
+    VCreationFlowController *flowController = [self.dependencyManager templateValueOfType:[VCreationFlowController class]
                                                                                                   forKey:key];
     flowController.creationFlowDelegate = self;
     [self.viewControllerToPresentOn presentViewController:flowController
@@ -160,7 +157,7 @@ static NSString * const kCreationFlowKey = @"createFlow";
     
 //    VDependencyManager *dependencyManagerForContentType = [self.dependencyManager childDependencyManagerWithAddedConfiguration:];
 //    VCreationFlowController *flowController = [[VCreationFlowController alloc] initWithDependencyManager:dependencyManagerForContentType];
-    VBaseCreationFlowController *flowController = [self.dependencyManager templateValueOfType:[VBaseCreationFlowController class]
+    VCreationFlowController *flowController = [self.dependencyManager templateValueOfType:[VCreationFlowController class]
                                                                                        forKey:@"imageCreateFlow"];
 //    VCreationFlowController *flowController = [self.dependencyManager templateValueOfType:[VCreationFlowController class]
 //                                                                                   forKey:@"creationFlow"

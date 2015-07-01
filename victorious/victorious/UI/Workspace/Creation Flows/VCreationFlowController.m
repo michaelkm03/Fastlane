@@ -1,12 +1,12 @@
 //
-//  VBaseCreationFlowController.m
+//  VCreationFlowController.m
 //  victorious
 //
 //  Created by Michael Sena on 6/30/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VBaseCreationFlowController.h"
+#import "VCreationFlowController.h"
 
 // Dependencies
 #import "VDependencyManager.h"
@@ -17,16 +17,16 @@
 // Keys
 NSString * const VCreationFLowCaptureScreenKey = @"captureScreen";
 
-@interface VBaseCreationFlowController ()
+@interface VCreationFlowController ()
 
 @end
 
-@implementation VBaseCreationFlowController
+@implementation VCreationFlowController
 
 + (instancetype)newCreationFlowControllerWithCreationType:(VCreationType)type
                                      andDependencyManager:(VDependencyManager *)dependencyManager
 {
-    VBaseCreationFlowController *creationFlowController;
+    VCreationFlowController *creationFlowController;
     switch (type)
     {
         case VCreationTypeImage:
