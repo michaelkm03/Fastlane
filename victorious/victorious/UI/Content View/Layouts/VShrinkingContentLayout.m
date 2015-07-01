@@ -303,4 +303,11 @@ static const NSInteger kAllCommentsZIndex = 6666;
     return lockPoint;
 }
 
+- (CGFloat)percentCloseToLockPointFromCatchPoint
+{
+    CGFloat totalDiff = [self lockPoint].y - [self catchPoint].y;
+    CGFloat currentDelta = self.collectionView.contentOffset.y - [self catchPoint].y;
+    return CLAMP(0.0f, currentDelta/ totalDiff, 1.0f);
+}
+
 @end

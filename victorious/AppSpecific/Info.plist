@@ -31,7 +31,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1374328719478033</string>
+				<string>fb664946900317058</string>
 			</array>
 		</dict>
 		<dict>
@@ -48,7 +48,9 @@
 	<key>CreatorSalutation</key>
 	<string>Debug Victorious</string>
 	<key>FacebookAppID</key>
-	<string>1374328719478033</string>
+	<string>664946900317058</string>
+	<key>FacebookDisplayName</key>
+	<string>VictoriousApp Dev</string>
 	<key>FlurryAPIKey</key>
 	<string>XXXXXXXXXX</string>
 	<key>GAID</key>

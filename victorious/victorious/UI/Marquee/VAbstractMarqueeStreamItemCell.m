@@ -89,12 +89,14 @@
 #pragma mark - VStreamCellComponentSpecialization
 
 + (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem
-                          baseIdentifier:(NSString *)baseIdentifier
+                            baseIdentifier:(NSString *)baseIdentifier
+                         dependencyManager:(VDependencyManager *)dependencyManager
 {
     NSString *identifier = baseIdentifier == nil ? [[NSMutableString alloc] init] : [baseIdentifier copy];
     identifier = [NSString stringWithFormat:@"%@.%@", identifier, NSStringFromClass(self)];
     identifier = [VStreamItemPreviewView reuseIdentifierForStreamItem:streamItem
-                                                       baseIdentifier:identifier];
+                                                       baseIdentifier:identifier
+                                                    dependencyManager:dependencyManager];
     return identifier;
 }
 

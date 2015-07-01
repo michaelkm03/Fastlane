@@ -26,7 +26,7 @@
 /**
  *  Returns an appropriate reuse identifier for the provided sequence and base identifier.
  */
-+ (NSString *)reuseIdentifierForSequence:(VSequence *)sequence baseIdentifier:(NSString *)baseIdentifier;
++ (NSString *)reuseIdentifierForSequence:(VSequence *)sequence baseIdentifier:(NSString *)baseIdentifier dependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
  *  The factory method for the VSequencePreviewView, will provide a concrete subclass specialized to

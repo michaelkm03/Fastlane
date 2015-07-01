@@ -306,15 +306,11 @@
 {
     VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {
-        NSArray *indexPaths = [self.tableView.tableView indexPathsForVisibleRows];
-        for (NSIndexPath *indexPath in indexPaths)
+        for ( VInviteFriendTableViewCell *inviteFriendCell in self.tableView.tableView.visibleCells )
         {
-            // Get table row
-            VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[self.tableView.tableView cellForRowAtIndexPath:indexPath];
-
             // Update follow/unfollow icon
-            cell.shouldAnimateFollowing = YES;
-            [cell updateFollowStatus];
+            inviteFriendCell.shouldAnimateFollowing = YES;
+            [inviteFriendCell updateFollowStatus];
         }
     };
     [[VObjectManager sharedManager] followUsers:self.usersNotFollowing withSuccessBlock:successBlock failBlock:nil];

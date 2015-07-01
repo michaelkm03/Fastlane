@@ -10,6 +10,8 @@
 
 #import "VHasManagedDependencies.h"
 
+@class VSuggestedUserRetryCell;
+
 /**
  Data source for a collection view designed to display suggested users.  Loads users
  from the suggested users end point and creates and configures the suggested users
@@ -34,5 +36,10 @@
  and that data it contains.
  */
 - (CGSize)collectionView:(UICollectionView *)collectionView sizeForItemAtIndexPath:(NSIndexPath *)indexPath;
+
+/**
+ Indicates whether or not the "retry" cell is currently displaying
+ */
+@property (nonatomic, readonly) BOOL isDisplayingRetryCell;
 
 @end
