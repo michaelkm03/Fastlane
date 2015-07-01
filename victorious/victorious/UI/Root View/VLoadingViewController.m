@@ -217,19 +217,6 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
-        NSString *keyPath = [[templateDecorator keyPathsForKey:@"coachmarks"] firstObject];
-        NSMutableArray *coachmarks = [[templateDecorator templateValueForKeyPath:keyPath] mutableCopy];
-        NSMutableDictionary *firstCoachmark = [[coachmarks firstObject] mutableCopy];
-        
-        firstCoachmark[@"currentScreenText"] = @"You just liked a post! You can find all your liked content in your profile.";
-        firstCoachmark[@"relatedScreenText"] = @"You just liked a post! You can find all your liked content in your profile.";
-        firstCoachmark[@"id"] = @"like_button_coachmark";
-        [firstCoachmark removeObjectForKey:@"displayScreens"];
-        [firstCoachmark removeObjectForKey:@"displayTarget"];
-        
-        [coachmarks insertObject:firstCoachmark atIndex:0];
-        [templateDecorator setTemplateValue:coachmarks forKeyPath:keyPath];
-        
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];
