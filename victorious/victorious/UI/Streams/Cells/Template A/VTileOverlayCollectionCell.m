@@ -442,7 +442,15 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     self.likeButton.unselectedTintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.captionTextView.dependencyManager = dependencyManager;
     
+    [self.countsTextView setLinkAttributes:[[self class] sequenceCountsActiveAttributesWithDependencyManager:dependencyManager]];
     [self.countsTextView setTextAttributes:[[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager]];
+}
+
++ (NSDictionary *)sequenceCountsActiveAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    UIFont *font = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+    UIColor *textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    return @{ NSFontAttributeName: font, NSForegroundColorAttributeName: textColor };
 }
 
 + (NSDictionary *)sequenceCountsAttributesWithDependencyManager:(VDependencyManager *)dependencyManager

@@ -262,7 +262,15 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
         [self.captionTextView setDependencyManager:dependencyManager];
     }
     
+    [self.countsTextView setLinkAttributes:[[self class] sequenceCountsActiveAttributesWithDependencyManager:dependencyManager]];
     [self.countsTextView setTextAttributes:[[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager]];
+}
+
++ (NSDictionary *)sequenceCountsActiveAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    UIFont *font = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+    UIColor *textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    return @{ NSFontAttributeName: font, NSForegroundColorAttributeName: textColor };
 }
 
 + (NSDictionary *)sequenceCountsAttributesWithDependencyManager:(VDependencyManager *)dependencyManager

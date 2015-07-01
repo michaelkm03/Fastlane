@@ -65,4 +65,6 @@
 
 @property (nonatomic, strong) NSDictionary *textAttributes;
 
+@property (nonatomic, strong) NSDictionary *linkAttributes;
+
 @end
