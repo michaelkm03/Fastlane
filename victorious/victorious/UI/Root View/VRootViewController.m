@@ -99,6 +99,8 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     [[VTrackingManager sharedInstance] addDelegate:self.applicationTracking];
     
     [[VObjectManager sharedManager] resetSessionID];
+   
+    [[VObjectManager sharedManager] setExperimentIDs:[self.dependencyManager stringForKey:VDependencyManagerExperimentKeyIDs]];
     
     self.sessionTimer = [[VSessionTimer alloc] init];
     
