@@ -207,6 +207,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
              VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
              return CGSizeMake( 0.0f, size.width * [[self class] aspectRatioForSequence:sequence] );
          }];
+        [collection addComponentWithConstantSize:CGSizeMake( 0.0, -kButtonHeight )];
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
              VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
@@ -216,11 +217,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
              if ( sequence.name.length > 0 )
              {
                  textHeight = VCEIL( [sequence.name frameSizeForWidth:size.width andAttributes:attributes].height );
-             }
-             else
-             {
-                 textHeight = 0.0f;
-             }
+             };
              return CGSizeMake( 0.0f, textHeight );
          }];
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
