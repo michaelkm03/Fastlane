@@ -38,13 +38,15 @@ extern NSString * const VTrackingBallisticCountKey;
  
  @param parameters Dictionary of parameters to include with the event.
  */
-- (void)trackViewWithParameters:(NSDictionary *)parameters;
+- (void)v_trackViewWillAppear:(UIViewController *)viewController;
 
 /**
  Uses VTrackingManager to track a view for this component if it contains the "view" tracking key.
  
  @see trackViewWithParameters:parameters to track the event with additional parameters.
  */
-- (void)trackView;
+- (void)v_trackViewWillAppear:(UIViewController *)viewController withParameters:(NSDictionary *)parameters;
+
+- (void)v_trackViewWillDisappear:(UIViewController *)viewController;
 
 @end

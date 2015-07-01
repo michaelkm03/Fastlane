@@ -116,6 +116,8 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     [super viewWillAppear:animated];
     
+    [self.dependencyManager v_trackViewWillAppear:self];
+    
     [self.refreshControl beginRefreshing];
     [self refresh:nil];
 }
@@ -134,13 +136,14 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
         [self displayConversationForUser:self.userWithQueuedConversation animated:YES];
         self.userWithQueuedConversation = nil;
     }
-    
-    [self.dependencyManager trackView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [self.dependencyManager v_trackViewWillDisappear:self];
+    
     [[VTrackingManager sharedInstance] endEvent:@"Inbox"];
     if (self.refreshRequest.isExecuting)
     {

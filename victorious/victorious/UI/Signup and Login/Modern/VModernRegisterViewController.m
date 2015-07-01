@@ -141,16 +141,23 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     [self.emailField becomeFirstResponder];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.dependencyManager v_trackViewWillAppear:self];
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [self.dependencyManager v_trackViewWillDisappear:self];
 
     [self.emailField resignFirstResponder];
     [self.passwordField resignFirstResponder];
     [self.emailField clearValidation];
     [self.passwordField clearValidation];
-    
-    [self.dependencyManager trackView];
 }
 
 - (void)viewDidDisappear:(BOOL)animated

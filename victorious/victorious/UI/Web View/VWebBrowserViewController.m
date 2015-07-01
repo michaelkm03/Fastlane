@@ -164,6 +164,8 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 {
     [super viewWillDisappear:animated];
     
+    [self.dependencyManager v_trackViewWillDisappear:self];
+    
     [self.webView stopLoading];
 }
 
@@ -171,7 +173,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 {
     [super viewWillAppear:animated];
     
-    [self.dependencyManager trackView];
+    [self.dependencyManager v_trackViewWillAppear:self];
 }
 
 - (BOOL)prefersStatusBarHidden

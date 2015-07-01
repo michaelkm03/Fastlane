@@ -151,7 +151,7 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
 {
     [super viewWillAppear:animated];
     
-    [self.dependencyManager trackView];
+    [self.dependencyManager v_trackViewWillAppear:self];
     
     [self.toolController setupDefaultTool];
     
@@ -186,6 +186,8 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [self.dependencyManager v_trackViewWillDisappear:self];
     
     self.keyboardManager = nil;
 }

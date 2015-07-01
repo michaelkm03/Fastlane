@@ -130,10 +130,17 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 {
     [super viewWillAppear:animated];
     
-    [self.dependencyManager trackView];
+    [self.dependencyManager v_trackViewWillAppear:self];
     
     [self.delegate configureFlowNavigationItemWithScreen:self];
     [self.passwordTextField becomeFirstResponder];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [self.dependencyManager v_trackViewWillDisappear:self];
 }
 
 #pragma mark - VLoginFlowScreen

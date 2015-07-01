@@ -73,7 +73,7 @@
 {
     [super viewWillAppear:animated];
     
-    [self.dependencyManager trackView];
+    [self.dependencyManager v_trackViewWillAppear:self];
 
     if (self.userToken)
     {
@@ -81,6 +81,13 @@
         self.userToken = nil;
         [self textFieldShouldReturn:self.codeField];
     }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [self.dependencyManager v_trackViewWillDisappear:self];
 }
 
 - (IBAction)pressedBack:(id)sender

@@ -118,7 +118,7 @@ static NSString * const kSupportEmailKey = @"email.support";
 {
     [super viewWillAppear:animated];
     
-    [self.dependencyManager trackView];
+    [self.dependencyManager v_trackViewWillAppear:self];
     
     [self updateLogoutButtonState];
     
@@ -180,6 +180,9 @@ static NSString * const kSupportEmailKey = @"email.support";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [self.dependencyManager v_trackViewWillDisappear:self];
+    
     [[VTrackingManager sharedInstance] endEvent:VTrackingEventSettingsDidAppear];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];

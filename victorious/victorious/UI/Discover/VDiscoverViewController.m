@@ -104,7 +104,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 {
     [super viewWillAppear:animated];
     
-    [self.dependencyManager trackView];
+    [self.dependencyManager v_trackViewWillAppear:self];
     
     if ( self.hasLoadedOnce )
     {
@@ -130,6 +130,9 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [self.dependencyManager v_trackViewWillDisappear:self];
+    
     [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
     
     // Note if we're pushing another view controller onto the nav stack or if we're presenting

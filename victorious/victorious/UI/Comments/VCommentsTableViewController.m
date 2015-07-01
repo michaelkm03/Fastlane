@@ -111,6 +111,8 @@
 {
     [super viewWillDisappear:animated];
     
+    [self.dependencyManager v_trackViewWillDisappear:self];
+    
     [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
 }
 
@@ -118,7 +120,7 @@
 {
     [super viewWillAppear:animated];
     
-    [self.dependencyManager trackView];
+    [self.dependencyManager v_trackViewWillAppear:self];
 }
 
 #pragma mark - Property Accessors

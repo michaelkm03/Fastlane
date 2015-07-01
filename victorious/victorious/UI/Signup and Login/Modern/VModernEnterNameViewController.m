@@ -83,7 +83,14 @@
     
     self.navigationItem.hidesBackButton = YES;
     
-    [self.dependencyManager trackView];
+    [self.dependencyManager v_trackViewWillAppear:self];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [self.dependencyManager v_trackViewWillDisappear:self];
 }
 
 #pragma mark - VLoginFlowScreen

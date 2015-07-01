@@ -494,7 +494,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 {
     [super viewWillAppear:animated];
     
-    [self.dependencyManager trackView];
+    [self.dependencyManager v_trackViewWillAppear:self];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardDidChangeFrame:)
@@ -598,6 +598,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [self.dependencyManager v_trackViewWillDisappear:self];
+    
     [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
     
     if ( self.videoCell != nil && !self.videoCell.didFinishPlayingOnce  )
