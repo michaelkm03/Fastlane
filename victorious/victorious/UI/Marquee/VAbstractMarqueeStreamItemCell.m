@@ -14,7 +14,6 @@
 #import "VSequence+Fetcher.h"
 #import "UIView+AutoLayout.h"
 #import "VStreamItemPreviewView.h"
-#import "VStreamCellFocus.h"
 
 @interface VAbstractMarqueeStreamItemCell () <VSharedCollectionReusableViewMethods>
 
