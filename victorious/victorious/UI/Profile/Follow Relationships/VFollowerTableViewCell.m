@@ -148,8 +148,8 @@ static const CGFloat kFollowerCellHeight = 50.0f;
     // If this is the currently logged in user, then hide the follow button
     VUser *me = [[VObjectManager sharedManager] mainUser];
     self.followControl.hidden = (self.profile == me);
-    [self.followControl setFollowing:[me.following containsObject:self.profile]
-                            animated:animated];
+    [self.followControl setFollowingUser:[me.following containsObject:self.profile]
+                                animated:animated];
 }
 
 @end

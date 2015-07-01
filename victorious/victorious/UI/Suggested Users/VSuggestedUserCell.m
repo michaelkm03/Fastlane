@@ -112,7 +112,7 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
     {
         [followResponder unfollowUser:self.user withCompletion:^(VUser *userActedOn)
          {
-             [sender setFollowing:self.user.isFollowedByMainUser.boolValue animated:YES];
+             [sender setFollowingUser:self.user.isFollowedByMainUser.boolValue animated:YES];
              sender.enabled = YES;
          }];
     }
@@ -120,7 +120,7 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
     {
         [followResponder followUser:self.user withCompletion:^(VUser *userActedOn)
          {
-             [sender setFollowing:self.user.isFollowedByMainUser.boolValue animated:YES];
+             [sender setFollowingUser:self.user.isFollowedByMainUser.boolValue animated:YES];
              sender.enabled = YES;
          }];
     }

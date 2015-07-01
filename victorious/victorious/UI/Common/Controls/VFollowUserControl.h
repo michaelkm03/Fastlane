@@ -6,28 +6,22 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
-@class VDependencyManager;
-
-IB_DESIGNABLE
+#import "VFollowControl.h"
 
 /**
  *  A UIControl subclass for managing the Follow/UnFollow control. Manages the display/animation of the control. Use UIControlEvents to be informed of user interactions.
  */
-@interface VFollowUserControl : UIControl
+@interface VFollowUserControl : VFollowControl
 
 /**
  *  The state of the control, this determines how the follow contorl should display.
  */
-@property (nonatomic) IBInspectable BOOL following;
+@property (nonatomic, assign, getter = isFollowingUser) BOOL followingUser;
 
 /**
  *  Performs an animated transition to thew new state. Does nothing if following already is equal to the parameter.
  */
-- (void)setFollowing:(BOOL)following
-            animated:(BOOL)animated;
-
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
+- (void)setFollowingUser:(BOOL)followingUser
+                animated:(BOOL)animated;
 
 @end

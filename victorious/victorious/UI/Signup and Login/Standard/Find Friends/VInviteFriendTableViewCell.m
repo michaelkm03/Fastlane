@@ -80,8 +80,8 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
         return;
     }
     
-    [self.followUserControl setFollowing:self.haveRelationship
-                                animated:YES];
+    [self.followUserControl setFollowingUser:self.haveRelationship
+                                    animated:YES];
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
