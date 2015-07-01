@@ -108,6 +108,9 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     self.tableView.estimatedRowHeight = VConversationCellHeight;
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.edgesForExtendedLayout = UIRectEdgeBottom;
+    
     [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
