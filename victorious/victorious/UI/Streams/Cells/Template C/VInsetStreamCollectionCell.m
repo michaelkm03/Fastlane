@@ -23,11 +23,12 @@
 #import "VStreamCollectionViewController.h"
 #import "VSequenceCountsTextView.h"
 #import "VSequenceExpressionsObserver.h"
+#import "VCellSizeCollection.h"
+#import "VCellSizingUserInfoKeys.h"
 
-static const CGFloat kAspectRatio                   = 0.94375f; //< 320 ÷ 302
 static const CGFloat kInsetCellHeaderHeight         = 50.0f;
 static const CGFloat kInsetCellActionViewHeight     = 41.0f;
-static const CGFloat kCountsTextViewHeight          = 20.0f;
+static const CGFloat kCountsTextViewMinHeight       = 20.0f;
 static const CGFloat kMaxCaptionHeight              = 80.0f;
 static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0f };
 
@@ -143,7 +144,13 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
     _countsTextView.textSelectionDelegate = self;
     [self.contentView addSubview:_countsTextView];
     _countsTextView.translatesAutoresizingMaskIntoConstraints = NO;
-    [_countsTextView v_addHeightConstraint:kCountsTextViewHeight];
+    [_countsTextView addConstraint:[NSLayoutConstraint constraintWithItem:_countsTextView
+                                                                attribute:NSLayoutAttributeHeight
+                                                                relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                                   toItem:nil
+                                                                attribute:NSLayoutAttributeNotAnAttribute
+                                                               multiplier:1.0f
+                                                                 constant:kCountsTextViewMinHeight]];
     [self.contentView v_addPinToLeadingTrailingToSubview:_countsTextView leading:kTextMargins.left trailing:kTextMargins.right];
     _countsVerticalSpacing = [NSLayoutConstraint constraintWithItem:_countsTextView
                                                           attribute:NSLayoutAttributeTop
@@ -156,6 +163,58 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
     
     // Fixes constraint errors when resizing for certain aspect ratios
     self.contentView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleHeight;
+}
+
++ (VCellSizeCollection *)cellLayoutCollection
+{
+    static VCellSizeCollection *collection;
+    if ( collection == nil )
+    {
+        collection = [[VCellSizeCollection alloc] init];
+        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kInsetCellHeaderHeight)];
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
+         {
+             VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
+             return CGSizeMake( 0.0f, size.width  / [sequence previewAssetAspectRatio] );
+         }];
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
+         {
+             VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
+             CGFloat textHeight = 0.0f;
+             if ( sequence.name.length > 0 )
+             {
+                 VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
+                 CGFloat textWidth = size.width - kTextMargins.left - kTextMargins.right;
+                 NSDictionary *attributes = [self sequenceDescriptionAttributesWithDependencyManager:dependencyManager];
+                 textHeight = VCEIL( [sequence.name frameSizeForWidth:textWidth andAttributes:attributes].height );
+             }
+             return CGSizeMake( 0.0f, textHeight );
+         }];
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
+         {
+             VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
+             CGFloat height = sequence.name.length > 0 ? kTextMargins.top : 0.0f;
+             return CGSizeMake( 0.0f, height );
+         }];
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
+         {
+             CGFloat textWidth = size.width - kTextMargins.left - kTextMargins.right;
+             VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
+             NSDictionary *attributes = [[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager];
+             return CGSizeMake( 0.0f, MAX( kCountsTextViewMinHeight, [@"" frameSizeForWidth:textWidth andAttributes:attributes].height ) );
+         }];
+        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kInsetCellActionViewHeight)];
+    }
+    return collection;
+}
+
+- (void)handleTapGestureForCommentLabel:(UIGestureRecognizer *)recognizer
+{
+    UIResponder<VSequenceActionsDelegate> *targetForCommentLabelSelection = [self targetForAction:@selector(willCommentOnSequence:fromView:)
+                                                                                       withSender:self];
+    NSAssert(targetForCommentLabelSelection != nil, @"We need an object in the responder chain for hash tag selection.!");
+    
+    [targetForCommentLabelSelection willCommentOnSequence:self.sequence fromView:self];
 }
 
 #pragma mark - UIView
@@ -183,8 +242,6 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
 {
     _dependencyManager = dependencyManager;
     
-    self.countsTextView.dependencyManager = dependencyManager;
-    
     if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
     {
         [self.previewView setDependencyManager:self.dependencyManager];
@@ -201,7 +258,15 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
     {
         [self.captionTextView setDependencyManager:dependencyManager];
     }
+    
+    [self.countsTextView setTextAttributes:[[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager]];
+}
 
++ (NSDictionary *)sequenceCountsAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    UIFont *font = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+    UIColor *textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    return @{ NSFontAttributeName: font, NSForegroundColorAttributeName: textColor };
 }
 
 #pragma mark - Property Accessors
@@ -317,75 +382,14 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
 
 #pragma mark - Sizing
 
-+ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds
-                                    sequence:(VSequence *)sequence
++ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence
                            dependencyManager:(VDependencyManager *)dependencyManager
 {
-    // Size the inset cell from top to bottom
-    CGFloat width = CGRectGetWidth(bounds);
-    CGFloat fullWidth = VFLOOR(width * kAspectRatio);
-    
-    // Use width to ensure 1:1 aspect ratio of previewView
-    CGSize actualSize = CGSizeMake(fullWidth, 0.0f);
-    
-    // Add header
-    actualSize.height = actualSize.height + kInsetCellHeaderHeight;
-    
-    // Text size
-    actualSize = [self sizeByAddingTextAreaSizeToSize:actualSize
-                                             sequence:sequence
-                                    dependencyManager:dependencyManager];
-    
-    // Action View
-    actualSize.height = actualSize.height + kInsetCellActionViewHeight;
-    
-    // Add 1:1 preview view
-    actualSize.height = actualSize.height + actualSize.width * (1 / [sequence previewAssetAspectRatio]);
-    
-    return actualSize;
-}
-
-+ (CGSize)sizeByAddingTextAreaSizeToSize:(CGSize)initialSize
-                                sequence:(VSequence *)sequence
-                       dependencyManager:(VDependencyManager *)dependencyManager
-{
-    CGSize sizeWithText = initialSize;
-    
-    // Top Margins
-    sizeWithText.height = sizeWithText.height;
-    
-    NSValue *textSizeValue = [[self textSizeCache] objectForKey:sequence.remoteId];
-    if (textSizeValue != nil)
-    {
-        return [textSizeValue CGSizeValue];
-    }
-    
-    // Comment size
-    CGFloat textAreaWidth = sizeWithText.width - kTextMargins.left - kTextMargins.right;
-    if ( sequence.name != nil && sequence.name.length > 0 )
-    {
-        // Caption view size
-        CGSize captionSize = [sequence.name frameSizeForWidth:textAreaWidth
-                                                andAttributes:[self sequenceDescriptionAttributesWithDependencyManager:dependencyManager]];
-        sizeWithText.height += VCEIL(captionSize.height) + kTextMargins.top;
-    }
-    
-    sizeWithText.height += kCountsTextViewHeight;
-    
-    // Bottom Margins
-    sizeWithText.height += kTextMargins.bottom;
-    [[self textSizeCache] setObject:[NSValue valueWithCGSize:sizeWithText] forKey:sequence.remoteId];
-    return sizeWithText;
-}
-
-+ (NSCache *)textSizeCache
-{
-    static NSCache *textSizeCache;
-    if (textSizeCache == nil)
-    {
-        textSizeCache = [[NSCache alloc] init];
-    }
-    return textSizeCache;
+    CGSize base = CGSizeMake( CGRectGetWidth(bounds), 0.0 );
+    NSDictionary *userInfo = @{ kCellSizingSequenceKey : sequence,
+                                VCellSizeCacheKey : sequence.remoteId ?: @"",
+                                kCellSizingDependencyManagerKey : dependencyManager };
+    return [[[self class] cellLayoutCollection] totalSizeWithBaseSize:base userInfo:userInfo];
 }
 
 #pragma mark - CCHLinkTextViewDelegate

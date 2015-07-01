@@ -53,23 +53,27 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
 - (void)setupButtonConfigurations
 {
     VCommentsUtilityButtonConfiguration *sharedConfig = [VCommentsUtilityButtonConfiguration sharedInstance];
+    NSMutableArray *mutableButtonConfigs = [[NSMutableArray alloc] init];
     
-    if ( self.permissions.canEditComments && self.permissions.canDeleteComments )
+    // Eventually the backend will include this logic in a permissions mask property for a VComment
+    // Until then, we do the logic here
+    BOOL isMainUserOwnerOfComment = [[VObjectManager sharedManager].mainUser isEqual:self.comment.user];
+    
+    if ( isMainUserOwnerOfComment || self.permissions.canEditComments )
     {
-        self.buttonConfigs = @[ sharedConfig.editButtonConfig, sharedConfig.deleteButtonConfig ];
+        [mutableButtonConfigs addObject:sharedConfig.editButtonConfig];
     }
-    else if ( self.permissions.canEditComments )
+    
+    if ( isMainUserOwnerOfComment || self.permissions.canDeleteComments )
     {
-        self.buttonConfigs = @[ sharedConfig.editButtonConfig ];
+        [mutableButtonConfigs addObject:sharedConfig.deleteButtonConfig];
     }
-    else if ( self.permissions.canDeleteComments )
+    
+    if ( !isMainUserOwnerOfComment && [self commentIsFlaggable:self.comment]  )
     {
-        self.buttonConfigs = @[ sharedConfig.deleteButtonConfig ];
+        [mutableButtonConfigs addObject:sharedConfig.flagButtonConfig];
     }
-    else if ( [self commentIsFlaggable:self.comment]  )
-    {
-        self.buttonConfigs = @[ sharedConfig.flagButtonConfig ];
-    }
+    self.buttonConfigs = [NSArray arrayWithArray:mutableButtonConfigs];
 }
 
 #pragma mark - Server actions

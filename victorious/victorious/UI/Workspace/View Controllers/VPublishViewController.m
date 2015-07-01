@@ -31,6 +31,7 @@
 #import "VTwitterManager.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VDependencyManager+VKeyboardStyle.h"
+#import "VPermissionPhotoLibrary.h"
 
 @import AssetsLibrary;
 
@@ -46,6 +47,7 @@ static NSString * const kPlaceholderTextKey = @"placeholderText";
 static NSString * const kShareContainerBackgroundColor = @"color.shareContainer";
 static NSString * const kCaptionContainerBackgroundColor = @"color.captionContainer";
 static NSString * const kKeyboardStyleKey = @"keyboardStyle";
+static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
 
 @interface VPublishViewController () <UICollisionBehaviorDelegate, UITextViewDelegate, UIGestureRecognizerDelegate, VContentInputAccessoryViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, VPublishShareCollectionViewCellDelegate, VBackgroundContainer>
 
@@ -63,6 +65,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) VPublishSaveCollectionViewCell *saveContentCell;
 @property (nonatomic, strong) VPublishShareCollectionViewCell *shareContentCell;
+@property (nonatomic, strong) VPermissionPhotoLibrary *photoLibraryPermission;
 @property (nonatomic, assign) BOOL hasShareCell;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *cardHeightConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *previewHeightConstraint;
@@ -112,6 +115,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.photoLibraryPermission = [[VPermissionPhotoLibrary alloc] initWithDependencyManager:self.dependencyManager];
     
     [self setupCollectionView];
     
@@ -493,6 +498,67 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     return YES;
 }
 
+#pragma mark - Custom actions
+
+- (void)toggledSaveSwitch:(UISwitch *)saveSwitch
+{
+    if ( saveSwitch.on && self.photoLibraryPermission.permissionState != VPermissionStateAuthorized )
+    {
+        if ( self.photoLibraryPermission.permissionState == VPermissionStateSystemDenied )
+        {
+            [self showGrantCameraPermissionThroughSettingsAlert];
+        }
+        else
+        {
+            [self showCameraPermissionsRequest];
+        }
+    }
+}
+
+- (void)showGrantCameraPermissionThroughSettingsAlert
+{
+    //Denied the system prompt, display an alert to let them know they need to go grant it through settings
+    UIAlertController *deniedAlertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                   message:NSLocalizedString(@"CameraRollDenied", nil) preferredStyle:UIAlertControllerStyleAlert];
+    __weak VPublishViewController *weakSelf = self;
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                       style:UIAlertActionStyleDefault
+                                                     handler:^(UIAlertAction *action)
+                               {
+                                   weakSelf.saveContentCell.cameraRollSwitch.on = NO;
+                               }];
+    [deniedAlertController addAction:okAction];
+    [self presentViewController:deniedAlertController
+                       animated:YES
+                     completion:nil];
+}
+
+- (void)showCameraPermissionsRequest
+{
+    __weak VPublishViewController *weakSelf = self;
+    [self.photoLibraryPermission requestPermissionInViewController:self
+                                             withCompletionHandler:^(BOOL granted, VPermissionState state, NSError *error)
+     {
+         VPublishViewController *strongSelf = weakSelf;
+         if ( strongSelf == nil )
+         {
+             return;
+         }
+         
+         UISwitch *saveSwitch = strongSelf.saveContentCell.cameraRollSwitch;
+         saveSwitch.on = granted;
+         if ( granted )
+         {
+             [saveSwitch removeTarget:strongSelf action:@selector(toggledSaveSwitch:) forControlEvents:UIControlEventValueChanged];
+         }
+         if ( state == VPermissionStatePromptDenied )
+         {
+             //Already shown the first prompt once, no reason to show it again
+             strongSelf.photoLibraryPermission.shouldShowInitialPrompt = NO;
+         }
+     }];
+}
+
 #pragma mark - VContentInputAccessoryViewDelegate
 
 - (BOOL)shouldLimitTextEntryForInputAccessoryView:(VContentInputAccessoryView *)inputAccessoryView
@@ -594,19 +660,34 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         return;
     }
     
-    __weak VPublishViewController *weakSelf = self;
-    void (^retryBlock)(UIAlertAction *) = ^(UIAlertAction *action)
+    NSArray *actions;
+    NSString *alertMessage;
+    if ( shareItemCell.shareMenuItem.shareType == VShareTypeFacebook && [error.domain isEqualToString:VFacebookManagerErrorDomain] )
     {
-        [weakSelf shareCollectionViewSelectedShareItemCell:shareItemCell];
-    };
-    
+        //This CAN signal that we don't have publish permissions for facebook, don't prompt the user to retry.
+        alertMessage = NSLocalizedString(@"We failed to retrieve publish permissions.", nil);
+        actions = @[ [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"") style:UIAlertActionStyleDefault handler:nil] ];
+    }
+    else
+    {
+        //We encountered a social network API error, allow the user to retry.
+        alertMessage = NSLocalizedString(@"Sorry, we were having some trouble on our end. Please retry.", @"");
+        __weak VPublishViewController *weakSelf = self;
+        void (^retryBlock)(UIAlertAction *) = ^(UIAlertAction *action)
+        {
+            [weakSelf shareCollectionViewSelectedShareItemCell:shareItemCell];
+        };
+        UIAlertAction *retryAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Retry", @"") style:UIAlertActionStyleDefault handler:retryBlock];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:nil];
+        actions = @[ cancelAction, retryAction ];
+    }
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
-                                                                             message:NSLocalizedString(@"Sorry, we were having some trouble on our end. Please retry.", @"")
+                                                                             message:alertMessage
                                                                       preferredStyle:UIAlertControllerStyleAlert];
-    
-    //We encountered a twitter API error
-    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"") style:UIAlertActionStyleCancel handler:nil]];
-    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Retry", @"") style:UIAlertActionStyleDefault handler:retryBlock]];
+    for ( UIAlertAction *action in actions )
+    {
+        [alertController addAction:action];
+    }
     
     [self presentViewController:alertController animated:YES completion:nil];
 }
@@ -636,6 +717,25 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
         {
             VPublishSaveCollectionViewCell *saveCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VPublishSaveCollectionViewCell suggestedReuseIdentifier] forIndexPath:indexPath];
             saveCell.dependencyManager = self.dependencyManager;
+            
+            //Determine switch state
+            if ( self.photoLibraryPermission.permissionState == VPermissionStateAuthorized )
+            {
+                NSNumber *autoEnableSave = [_dependencyManager numberForKey:kEnableMediaSaveKey];
+                if ( autoEnableSave != nil )
+                {
+                    saveCell.cameraRollSwitch.on = [autoEnableSave boolValue];
+                }
+                else
+                {
+                    saveCell.cameraRollSwitch.on = YES;
+                }
+            }
+            else
+            {
+                [saveCell.cameraRollSwitch addTarget:self action:@selector(toggledSaveSwitch:) forControlEvents:UIControlEventValueChanged];
+            }
+            
             self.saveContentCell = saveCell;
         }
         cell = self.saveContentCell;

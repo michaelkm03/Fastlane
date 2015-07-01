@@ -9,6 +9,7 @@
 #import "VHasManagedDependencies.h"
 #import "VNavigationDestination.h"
 #import "VAuthorizationContextProvider.h"
+#import "VWorkspaceContext.h"
 
 @class VWorkspaceFlowController;
 
@@ -52,14 +53,6 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerInitialCaptureState)
 {
     VWorkspaceFlowControllerInitialCaptureStateImage, // Default
     VWorkspaceFlowControllerInitialCaptureStateVideo,
-};
-
-// The context in which we're opening the workspace
-typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerContext)
-{
-    VWorkspaceFlowControllerContextProfileImage,
-    VWorkspaceFlowControllerContextProfileImageRegistration,
-    VWorkspaceFlowControllerContextContentCreation,
 };
 
 // For determining how to ask for camera permissions

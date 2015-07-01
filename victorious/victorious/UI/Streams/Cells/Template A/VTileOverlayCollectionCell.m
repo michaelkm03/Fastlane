@@ -24,16 +24,18 @@
 #import "VActionButton.h"
 #import "VSequenceCountsTextView.h"
 #import "NSString+VParseHelp.h"
+#import "VCellSizeCollection.h"
+#import "VCellSizingUserInfoKeys.h"
 
-static const UIEdgeInsets kTextInsets       = { 0.0f, 20.0f, 5.0f, 20.0f };
-static const CGFloat kHeaderHeight          = 74.0f;
-static const CGFloat kGradientAlpha         = 0.3f;
-static const CGFloat kShadowAlpha           = 0.5f;
-static const CGFloat kPollCellHeightRatio   = 0.66875f; //< from spec, 214 height for 320 width
-static const CGFloat kMaxCaptionHeight      = 80.0f;
-static const CGFloat kButtonWidth           = 44.0f;
-static const CGFloat kButtonHeight          = 44.0f;
-static const CGFloat kCountsTextViewHeight  = 20.0f;
+static const UIEdgeInsets kTextInsets           = { 0.0f, 20.0f, 5.0f, 20.0f };
+static const CGFloat kHeaderHeight              = 74.0f;
+static const CGFloat kGradientAlpha             = 0.3f;
+static const CGFloat kShadowAlpha               = 0.5f;
+static const CGFloat kPollCellHeightRatio       = 0.66875f; //< from spec, 214 height for 320 width
+static const CGFloat kCountsTextViewMinHeight   = 80.0f;
+static const CGFloat kButtonWidth               = 44.0f;
+static const CGFloat kButtonHeight              = 44.0f;
+static const CGFloat kCountsTextViewHeight      = 20.0f;
 
 @interface VTileOverlayCollectionCell () <CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate>
 
@@ -154,7 +156,7 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     _captionTextView.backgroundColor = [UIColor clearColor];
     [_overlayContainer addSubview:_captionTextView];
     [_overlayContainer v_addPinToLeadingTrailingToSubview:_captionTextView];
-    _captionHeight = [NSLayoutConstraint constraintWithItem:_captionTextView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:kMaxCaptionHeight];
+    _captionHeight = [NSLayoutConstraint constraintWithItem:_captionTextView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:kCountsTextViewMinHeight];
     [_captionTextView addConstraint:_captionHeight];
     [_overlayContainer addConstraint:[NSLayoutConstraint constraintWithItem:_captionTextView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_countsTextView attribute:NSLayoutAttributeTop multiplier:1.0f constant:0.0f]];
     
@@ -189,6 +191,48 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     [self layoutIfNeeded];
 }
 
++ (CGFloat)aspectRatioForSequence:(VSequence *)sequence
+{
+    return [sequence isPoll] ? kPollCellHeightRatio : (1 / [sequence previewAssetAspectRatio]);
+}
+
++ (VCellSizeCollection *)cellLayoutCollection
+{
+    static VCellSizeCollection *collection;
+    if ( collection == nil )
+    {
+        collection = [[VCellSizeCollection alloc] init];
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
+         {
+             VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
+             return CGSizeMake( 0.0f, size.width * [[self class] aspectRatioForSequence:sequence] );
+         }];
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
+         {
+             VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
+             VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
+             NSDictionary *attributes = [self sequenceDescriptionAttributesWithDependencyManager:dependencyManager];
+             CGFloat textHeight = 0.0f;
+             if ( sequence.name.length > 0 )
+             {
+                 textHeight = VCEIL( [sequence.name frameSizeForWidth:size.width andAttributes:attributes].height );
+             }
+             else
+             {
+                 textHeight = 0.0f;
+             }
+             return CGSizeMake( 0.0f, textHeight );
+         }];
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
+         {
+             VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
+             NSDictionary *attributes = [[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager];
+             return CGSizeMake( 0.0f, MAX( kCountsTextViewMinHeight, [@"" frameSizeForWidth:size.width andAttributes:attributes].height ) );
+         }];
+    }
+    return collection;
+}
+
 #pragma mark - Property Accessors
 
 - (void)layoutSubviews
@@ -201,7 +245,7 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
 - (void)updateBottomGradientLocations
 {
     CGFloat gradientBandThickness = 60.0f;
-    CGFloat startPointY = CGRectGetMinY( self.captionTextView.frame);
+    CGFloat startPointY = CGRectGetMinY(self.captionTextView.frame);
     CGFloat boundsHeight = CGRectGetHeight(self.bounds);
     CGFloat start = (startPointY - gradientBandThickness) / boundsHeight;
     CGFloat end = startPointY / boundsHeight;
@@ -293,10 +337,10 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     [self.contentContainer v_addPinToTopToSubview:self.previewView];
     [self.contentContainer v_addPinToLeadingTrailingToSubview:self.previewView];
     
-    CGFloat bottom = CGRectGetHeight(self.captionTextView.frame) + kButtonHeight;
     NSDictionary *views = @{ @"previewView" : self.previewView };
-    NSDictionary *metrics = @{ @"bottom" : @(bottom) };
-    NSArray *constraintsV = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[previewView]-bottom-|" options:kNilOptions metrics:metrics views:views];
+    CGFloat height = CGRectGetWidth(self.bounds) * [[self class] aspectRatioForSequence:sequence];
+    NSDictionary *metrics = @{ @"height" : @(height) };
+    NSArray *constraintsV = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[previewView(height)]" options:kNilOptions metrics:metrics views:views];
     [self.contentContainer addConstraints:constraintsV];
     
     if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
@@ -308,12 +352,13 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
 
 - (void)updateCaptionViewForSequence:(VSequence *)sequence
 {
-    if ( sequence.name == nil || sequence.name.length == 0 || self.dependencyManager == nil )
+    if ( sequence.name.length == 0 || self.dependencyManager == nil )
     {
         self.captionHeight.constant = 0.0;
     }
     else
     {
+        self.captionHeight.constant = kCountsTextViewMinHeight;
         self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
                                                                               attributes:[VTileOverlayCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
     }
@@ -345,60 +390,14 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
 
 #pragma mark - Sizing
 
-+ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds
-                                    sequence:(VSequence *)sequence
++ (CGSize)actualSizeWithCollectionViewBounds:(CGRect)bounds sequence:(VSequence *)sequence
                            dependencyManager:(VDependencyManager *)dependencyManager
 {
-    // Size the inset cell from top to bottom
-    // Use width to ensure 1:1 aspect ratio of previewView
-    CGSize actualSize = CGSizeMake(CGRectGetWidth(bounds), 0.0f);
-    
-    // Text size
-    actualSize = [self sizeByAddingTextAreaSizeToSize:actualSize sequence:sequence dependencyManager:dependencyManager];
-    
-    // Counts textview height
-    actualSize.height += kCountsTextViewHeight;
-    
-    // Add 1:1 preview view
-    CGFloat aspect = [sequence isPoll] ? kPollCellHeightRatio : (1 / [sequence previewAssetAspectRatio]);
-    actualSize.height = actualSize.height + actualSize.width * aspect;
-    
-    return actualSize;
-}
-
-+ (CGSize)sizeByAddingTextAreaSizeToSize:(CGSize)initialSize
-                                sequence:(VSequence *)sequence
-                       dependencyManager:(VDependencyManager *)dependencyManager
-{
-    CGSize sizeWithText = initialSize;
-    
-    NSValue *textSizeValue = [[self textSizeCache] objectForKey:sequence.remoteId];
-    if ( textSizeValue != nil )
-    {
-        return [textSizeValue CGSizeValue];
-    }
-    
-    // caption size
-    if (sequence.name.length > 0)
-    {
-        // Caption view size
-        NSDictionary *attributes = [self sequenceDescriptionAttributesWithDependencyManager:dependencyManager];
-        CGSize captionSize = [sequence.name frameSizeForWidth:sizeWithText.width andAttributes:attributes];
-        sizeWithText.height += VCEIL(captionSize.height);
-    }
-    
-    [[self textSizeCache] setObject:[NSValue valueWithCGSize:sizeWithText] forKey:sequence.remoteId];
-    return sizeWithText;
-}
-
-+ (NSCache *)textSizeCache
-{
-    static NSCache *textSizeCache;
-    if (textSizeCache == nil)
-    {
-        textSizeCache = [[NSCache alloc] init];
-    }
-    return textSizeCache;
+    CGSize base = CGSizeMake( CGRectGetWidth(bounds), 0.0 );
+    NSDictionary *userInfo = @{ kCellSizingSequenceKey : sequence,
+                                VCellSizeCacheKey : sequence.name ?: @"",
+                                kCellSizingDependencyManagerKey : dependencyManager };
+    return [[[self class] cellLayoutCollection] totalSizeWithBaseSize:base userInfo:userInfo];
 }
 
 #pragma mark - VBackgroundContainer
@@ -426,8 +425,16 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     self.commentButton.unselectedTintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.commentButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
     self.likeButton.unselectedTintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    self.countsTextView.dependencyManager = dependencyManager;
     self.captionTextView.dependencyManager = dependencyManager;
+    
+    [self.countsTextView setTextAttributes:[[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager]];
+}
+
++ (NSDictionary *)sequenceCountsAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    UIFont *font = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+    UIColor *textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    return @{ NSFontAttributeName: font, NSForegroundColorAttributeName: textColor };
 }
 
 #pragma mark - VStreamCellComponentSpecialization

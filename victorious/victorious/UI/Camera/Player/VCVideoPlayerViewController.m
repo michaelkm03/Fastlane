@@ -199,6 +199,15 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 #pragma mark - Properties
 
+- (void)setAnimateWithPlayControls:(void (^)(BOOL))animateWithPlayControls
+{
+    _animateWithPlayControls = animateWithPlayControls;
+    if (_animateWithPlayControls != nil)
+    {
+        self.animateWithPlayControls(self.toolbarHidden);
+    }
+}
+
 - (void)setIsAudioEnabled:(BOOL)isAudioEnabled
 {
     _isAudioEnabled = isAudioEnabled;

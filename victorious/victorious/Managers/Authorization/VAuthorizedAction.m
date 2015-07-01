@@ -101,7 +101,6 @@ static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationVie
     }
     
     UIViewController<VLoginRegistrationFlow> *loginFlowController = [self loginFlowControllerWithAuthorizationContext:authorizationContext andCompletionBlock:completionActionBlock];
-    
     if ( loginFlowController != nil )
     {
         UIView *replicant = [loginFlowController.view snapshotViewAfterScreenUpdates:YES];

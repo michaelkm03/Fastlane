@@ -8,6 +8,8 @@
 
 #import "VDependencyManager.h"
 
+extern NSString * const VKeyboardStyleKey;
+
 @interface VDependencyManager (VKeyboardStyle)
 
 /**

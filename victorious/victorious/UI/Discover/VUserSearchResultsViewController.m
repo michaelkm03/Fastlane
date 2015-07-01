@@ -192,7 +192,7 @@
     [self.navigationController pushViewController:profileViewController animated:YES];
 }
 
-#pragma mark - VFollowing
+#pragma mark - VFollowResponder
 
 - (void)followUser:(VUser *)user
     withCompletion:(VFollowEventCompletion)completion
