@@ -69,15 +69,17 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
 {
     _user = user;
     
+    NSNumber *cacheKey = user.remoteId ?: @0;
+    
     self.usernameTextView.text = _user.name;
     
-    VContentThumbnailsDataSource *thumbnailsDataSource = [[[self class] dataSources] objectForKey:user.remoteId];
+    VContentThumbnailsDataSource *thumbnailsDataSource = [[[self class] dataSources] objectForKey:cacheKey];
     if ( thumbnailsDataSource == nil )
     {
         thumbnailsDataSource = [[VContentThumbnailsDataSource alloc] initWithSequences:user.recentSequences.array];
         [thumbnailsDataSource registerCellsWithCollectionView:self.thumbnailsViewController.collectionView];
         
-        [[[self class] dataSources] setObject:thumbnailsDataSource forKey:user.remoteId];
+        [[[self class] dataSources] setObject:thumbnailsDataSource forKey:cacheKey];
     }
     self.thumbnailsViewController.collectionView.dataSource = thumbnailsDataSource;
     
