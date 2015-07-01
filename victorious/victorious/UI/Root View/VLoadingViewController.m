@@ -225,6 +225,8 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
             {
                 NSString *screenName = [value lastPathComponent];
                 NSString *trackingKeyPath = [[keyPath stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"tracking"];
+                // Creates a fake URL with the screen names so you can see which screen component is being tracked
+                // Turn on APPLICATION_TRACKING_LOGGING_ENABLED macro to see it print in the console
                 NSArray *urls = @[ [NSString stringWithFormat:@"http://www.tracking.com/%@", screenName] ];
                 NSDictionary *dictionary = @{ @"view" : urls };
                 NSParameterAssert( [templateDecorator setTemplateValue:dictionary forKeyPath:trackingKeyPath] );
@@ -232,6 +234,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                 [allScreenNames addObject:value];
             }
         }
+        // This prints out a list of all the components in the current template
         NSLog( @"%@", allScreenNames );
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
