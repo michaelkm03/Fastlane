@@ -25,10 +25,8 @@
 #import "VLargeNumberFormatter.h"
 #import "VRepostButtonController.h"
 
-static CGFloat const kLeadingTrailingSpace = 15.0f;
-static CGFloat const kCommentSpaceToActions = 22.0f;
-static CGFloat const kInterActionSpace = 23.0f;
 static CGFloat const kActionButtonHeight = 31.0f;
+static NSUInteger const kMaxNumberOfActionButtons = 4;
 
 @interface VSleekActionView ()
 
@@ -54,17 +52,21 @@ static CGFloat const kActionButtonHeight = 31.0f;
 
 + (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem
                             baseIdentifier:(NSString *)baseIdentifier
+                         dependencyManager:(VDependencyManager *)dependencyManager
 {
     NSMutableString *identifier = [baseIdentifier mutableCopy];
     
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
         VSequence *sequence = (VSequence *)streamItem;
+        if ( [dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue )
+        {
+            [identifier appendString:@"Like."];
+        }
         if ( sequence.permissions.canComment )
         {
             [identifier appendString:@"Comment."];
         }
-        [identifier appendString:@"Share."];
         if ( sequence.permissions.canRepost )
         {
             [identifier appendString:@"Repost."];
@@ -148,8 +150,8 @@ static CGFloat const kActionButtonHeight = 31.0f;
 {
     if (_likeButton == nil)
     {
-        UIImage *image = [UIImage imageNamed:@"D_like"];
-        UIImage *selectedImage = [UIImage imageNamed:@"D_liked"];
+        UIImage *image = [UIImage imageNamed:@"D_likeIcon"];
+        UIImage *selectedImage = [UIImage imageNamed:@"D_likedIcon"];
         _likeButton = [self actionButtonWithImage:image selectedImage:selectedImage action:@selector(like:)];
     }
     return _likeButton;
@@ -188,36 +190,58 @@ static CGFloat const kActionButtonHeight = 31.0f;
         return;
     }
     
-    NSMutableArray *actionItems = [[NSMutableArray alloc] init];
+    CGFloat actionBarWidth = CGRectGetWidth(actionBar.bounds);
+    if ( actionBarWidth == 0.0f )
+    {
+        //Nothing to do yet
+        return;
+    }
     
-    [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingSpace]];
+    NSMutableArray *actionButtons = [[NSMutableArray alloc] init];
     
-    [actionItems addObject:self.likeButton];
-    
-    [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace]];
-    
+    if ( [self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue )
+    {
+        [actionButtons addObject:self.likeButton];
+    }
     if ( sequence.permissions.canComment )
     {
-        [actionItems addObject:self.commentButton];
-        [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kCommentSpaceToActions]];
+        [actionButtons addObject:self.commentButton];
     }
-    
     if ( sequence.permissions.canRepost )
     {
-        [actionItems addObject:self.repostButton];
-        [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace]];
-    }
-    if ( sequence.permissions.canMeme )
-    {
-        [actionItems addObject:self.memeButton];
-        [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace]];
+        [actionButtons addObject:self.repostButton];
     }
     if ( sequence.permissions.canGIF )
     {
-        [actionItems addObject:self.gifButton];
-        [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:kInterActionSpace]];
+        [actionButtons addObject:self.gifButton];
     }
+    
+    //Don't add meme if we already have our kMaxNumberOfActionButtons buttons to show
+    if ( sequence.permissions.canMeme && actionButtons.count != kMaxNumberOfActionButtons)
+    {
+        [actionButtons addObject:self.memeButton];
+    }
+    
+    CGFloat summedButtonWidths = kActionButtonHeight * kMaxNumberOfActionButtons;
+    CGFloat interButtonSpace = ( actionBarWidth - summedButtonWidths ) / kMaxNumberOfActionButtons;
+
+    NSMutableArray *actionItems = [[NSMutableArray alloc] init];
+    //The buttons should be inset from either edge of the cell by half the width of the space between each of them
+    [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:interButtonSpace / 2]];
+    for ( NSUInteger index = 0; index < MIN(actionButtons.count, kMaxNumberOfActionButtons - 1); index++ )
+    {
+        VSleekActionButton *actionButton = actionButtons[index];
+        [actionItems addObject:actionButton];
+        [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:interButtonSpace]];
+    }
+    
+    if ( actionButtons.count == kMaxNumberOfActionButtons )
+    {
+        [actionItems addObject:[actionButtons lastObject]];
+    }
+    
     [actionItems addObject:[VActionBarFlexibleSpaceItem flexibleSpaceItem]];
+    
     actionBar.actionItems = actionItems;
     
     self.hasLayedOutActionView = YES;

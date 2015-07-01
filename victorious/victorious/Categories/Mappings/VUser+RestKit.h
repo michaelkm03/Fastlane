@@ -15,4 +15,11 @@
 
 - (BOOL)isEqualToUser:(VUser *)user;
 
+/**
+ A mapping that includes no "major" relationships, such as sequences, comments or other users.
+ This is provided to avoid recusive mappings when user objects are a child of a sequence
+ or other such relationships.
+ */
++ (RKEntityMapping *)simpleMapping;
+
 @end

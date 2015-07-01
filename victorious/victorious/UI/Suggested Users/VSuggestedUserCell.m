@@ -19,7 +19,6 @@
 #import "VSequence.h"
 
 static NSString * const kTextTitleColorKey = @"color.text.label1";
-static NSString * const kTextBodyColorKey = @"color.text.label2";
 
 @interface VSuggestedUserCell ()
 
@@ -27,7 +26,6 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
 @property (nonatomic, strong) VContentThumbnailsViewController *thumbnailsViewController;
 @property (nonatomic, weak) IBOutlet VDefaultProfileImageView *userProfileImage;
 @property (nonatomic, weak) IBOutlet UITextView *usernameTextView;
-@property (nonatomic, weak) IBOutlet UITextView *userTagLingTextView;
 @property (nonatomic, weak) IBOutlet UIView *followButtonContainerView;
 @property (nonatomic, weak) IBOutlet UIView *userStreamContainerView;
 
@@ -37,14 +35,14 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
 
 @implementation VSuggestedUserCell
 
-+ (NSCache *)dataSourcesCache
++ (NSMutableDictionary *)dataSources
 {
-    static NSCache *_dataSourcesCache = nil;
-    if ( !_dataSourcesCache )
+    static NSMutableDictionary *_dataSources = nil;
+    if ( _dataSources == nil )
     {
-        _dataSourcesCache = [[NSCache alloc] init];
+        _dataSources = [[NSMutableDictionary alloc] init];
     }
-    return _dataSourcesCache;
+    return _dataSources;
 }
 
 - (void)awakeFromNib
@@ -72,23 +70,16 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
     _user = user;
     
     self.usernameTextView.text = _user.name;
-    self.userTagLingTextView.text = _user.tagline;
     
-    VContentThumbnailsDataSource *thumbnailsDataSource = [[[self class] dataSourcesCache] objectForKey:user.remoteId];
+    VContentThumbnailsDataSource *thumbnailsDataSource = [[[self class] dataSources] objectForKey:user.remoteId];
     if ( thumbnailsDataSource == nil )
     {
-        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VSequence *sequence, NSDictionary *bindings)
-                                  {
-                                      NSURL *url = [NSURL URLWithString:sequence.previewData];
-                                      return url != nil && url.absoluteString.length > 0;
-                                  }];
-        NSArray *recentSequences = [user.recentSequences.array filteredArrayUsingPredicate:predicate];
-        thumbnailsDataSource = [[VContentThumbnailsDataSource alloc] initWithSequences:recentSequences];
-        self.thumbnailsViewController.collectionView.dataSource = thumbnailsDataSource;
+        thumbnailsDataSource = [[VContentThumbnailsDataSource alloc] initWithSequences:user.recentSequences.array];
         [thumbnailsDataSource registerCellsWithCollectionView:self.thumbnailsViewController.collectionView];
         
-        [[[self class] dataSourcesCache] setObject:thumbnailsDataSource forKey:user.remoteId];
+        [[[self class] dataSources] setObject:thumbnailsDataSource forKey:user.remoteId];
     }
+    self.thumbnailsViewController.collectionView.dataSource = thumbnailsDataSource;
     
     if ( _user.pictureUrl != nil )
     {
@@ -105,12 +96,6 @@ static NSString * const kTextBodyColorKey = @"color.text.label2";
     
     self.usernameTextView.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
     self.usernameTextView.textColor = [self.dependencyManager colorForKey:kTextTitleColorKey];
-    
-    self.userTagLingTextView.font = [self.dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
-    self.userTagLingTextView.textColor = [self.dependencyManager colorForKey:kTextBodyColorKey];
-    
-    self.usernameTextView.textColor = [self.dependencyManager colorForKey:kTextTitleColorKey];
-    self.userTagLingTextView.textColor = [self.dependencyManager colorForKey:kTextBodyColorKey];
     
     [self.dependencyManager addBackgroundToBackgroundHost:self forKey:@"background.detail"];
 }

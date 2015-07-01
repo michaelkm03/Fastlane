@@ -22,7 +22,6 @@
 #import "VTOSViewController.h"
 #import "VPrivacyPoliciesViewController.h"
 #import "VEnterProfilePictureCameraViewController.h"
-
 #import "VLoginFlowControllerDelegate.h"
 
 static NSString * const kRegistrationScreens = @"registrationScreens";
@@ -259,9 +258,9 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     [self.loginFlowHelper selectedTwitterAuthorizationWithCompletion:^(BOOL success)
     {
         self.actionsDisabled = NO;
-        if (success)
+        if ( success )
         {
-            [self onAuthenticationFinishedWithSuccess:success];
+            [self continueRegistrationFlowAfterSocialRegistration];
         }
     }];
     
@@ -281,9 +280,9 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     [self.loginFlowHelper selectedFacebookAuthorizationWithCompletion:^(BOOL success)
     {
         self.actionsDisabled = NO;
-        if (success)
+        if ( success )
         {
-            [self onAuthenticationFinishedWithSuccess:success];
+            [self continueRegistrationFlowAfterSocialRegistration];
         }
         else
         {
@@ -325,12 +324,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
          {
              [self onAuthenticationFinishedWithSuccess:YES];
          }
-         else
-         {
-             NSString *message = NSLocalizedString(@"GenericFailMessage", @"");
-             [self showErrorWithMessage:message];
-         }
-     }];;
+     }];
 }
 
 - (void)registerWithEmail:(NSString *)email
@@ -399,6 +393,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
             if (![self.topViewController isKindOfClass:[VModernResetTokenViewController class]])
             {
                 UIViewController *resetTokenScreen = [self.dependencyManager viewControllerForKey:@"resetTokenScreen"];
+                [self setDelegateForScreensInArray:@[resetTokenScreen]];
                 [self pushViewController:resetTokenScreen
                                 animated:YES];
             }
@@ -423,6 +418,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
         {
             // show change password screen.
             UIViewController *changePasswordScreen = [welf.dependencyManager viewControllerForKey:@"changePasswordScreen"];
+            [welf setDelegateForScreensInArray:@[changePasswordScreen]];
             [welf pushViewController:changePasswordScreen
                             animated:YES];
         }
@@ -430,6 +426,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
 }
 
 - (void)updateWithNewPassword:(NSString *)newPassword
+                   completion:(void (^)(BOOL))completion
 {
     if (self.actionsDisabled)
     {
@@ -442,6 +439,10 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
         if (success)
         {
             [self onAuthenticationFinishedWithSuccess:YES];
+        }
+        else
+        {
+            completion(success);
         }
     }];
 }
@@ -507,6 +508,20 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     }
 }
 
+- (void)continueRegistrationFlowAfterSocialRegistration
+{
+    UIViewController *nextRegisterViewController = [self nextScreenInSocialRegistrationAfter:self.topViewController inArray:self.registrationScreens];
+    if ( nextRegisterViewController == nil )
+    {
+        [self onAuthenticationFinishedWithSuccess:YES];
+    }
+    else
+    {
+        [self pushViewController:nextRegisterViewController
+                        animated:YES];
+    }
+}
+
 - (void)onAuthenticationFinishedWithSuccess:(BOOL)success
 {
     if ( success )
@@ -523,6 +538,19 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
              self.completionBlock(success);
          }
      }];
+}
+
+- (UIViewController *)nextScreenInSocialRegistrationAfter:(UIViewController *)currentViewController inArray:(NSArray *)array
+{
+    for ( UIViewController *viewController in array )
+    {
+        id<VLoginFlowScreen> screen = (id<VLoginFlowScreen>)viewController;
+        if ( [screen respondsToSelector:@selector(displaysAfterSocialRegistration)] && [screen displaysAfterSocialRegistration] )
+        {
+            return viewController;
+        }
+    }
+    return nil;
 }
 
 - (UIViewController *)nextScreenAfter:(UIViewController *)viewController
@@ -550,6 +578,17 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
                                                                               style:style
                                                                              target:loginFlowScreen
                                                                              action:@selector(onContinue:)];
+}
+
+- (void)onAuthenticationFinished
+{
+    [self onAuthenticationFinishedWithSuccess:YES];
+}
+
+- (void)returnToLandingScreen
+{
+    [self popToViewController:[self.loginScreens firstObject]
+                     animated:YES];
 }
 
 #pragma mark - VBackgroundContainer

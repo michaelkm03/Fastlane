@@ -14,8 +14,8 @@
 #import "VAppInfo.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "VLinearGradientView.h"
-
-static NSString * const VSuggestedUsersPromptKey    = @"prompt";
+#import "VDependencyManager+VLoginAndRegistration.h"
+#import "VSuggestedUserRetryCell.h"
 
 @interface VSuggestedUsersViewController () <VBackgroundContainer, UICollectionViewDelegateFlowLayout, VLoginFlowScreen>
 
@@ -77,7 +77,7 @@ static NSString * const VSuggestedUsersPromptKey    = @"prompt";
     if ( stringIsValid && !profileImageURLIsEmpty )
     {
         self.creatorNameLabel.text = ownerName;
-        self.creatorNameLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
+        self.creatorNameLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
         self.creatorNameLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey];
         
         self.quoteImageView.image = [self.quoteImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -87,12 +87,15 @@ static NSString * const VSuggestedUsersPromptKey    = @"prompt";
     }
     else
     {
-        self.salutationContainerHeight.constant = 0.0;
+        self.salutationContainerHeight.constant = 0.0f;
     }
     
-    self.messageTextView.text = [self.dependencyManager stringForKey:VSuggestedUsersPromptKey];
-    self.messageTextView.font = [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
+    self.messageTextView.text = [self.dependencyManager stringForKey:VScreenPromptKey];
+    self.messageTextView.font = [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
     self.messageTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    self.messageTextView.contentInset = UIEdgeInsetsZero;
+    self.messageTextView.textContainer.lineFragmentPadding = 0.0f;
+    self.messageTextView.textContainerInset = UIEdgeInsetsZero;
     
     self.collectionView.delegate = self;
     self.collectionView.backgroundColor = [UIColor clearColor];
@@ -100,12 +103,8 @@ static NSString * const VSuggestedUsersPromptKey    = @"prompt";
     [self.suggestedUsersDataSource registerCellsForCollectionView:self.collectionView];
     self.collectionView.dataSource = self.suggestedUsersDataSource;
     
-    __weak typeof(self) welf = self;
     [self.activityIndicator startAnimating];
-    [self.suggestedUsersDataSource refreshWithCompletion:^
-    {
-        [welf suggestedUsersDidLoad];
-    }];
+    [self refreshSuggestedUsers];
     
     self.activityIndicator.color = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     
@@ -165,6 +164,12 @@ static NSString * const VSuggestedUsersPromptKey    = @"prompt";
 
 @synthesize delegate = _delegate;
 
+- (BOOL)displaysAfterSocialRegistration
+{
+    NSNumber *value = [self.dependencyManager numberForKey:VDisplayWithSocialRegistration];
+    return value.boolValue;
+}
+
 - (void)onContinue:(id)sender
 {
     [self.delegate continueRegistrationFlow];
@@ -189,6 +194,25 @@ static NSString * const VSuggestedUsersPromptKey    = @"prompt";
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
     return UIEdgeInsetsMake( 12.0f, 0, 10.0f, 0 );
+}
+
+#pragma mark - UICollectionViewDelegate
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ( self.suggestedUsersDataSource.isDisplayingRetryCell )
+    {
+        [self refreshSuggestedUsers];
+    }
+}
+
+- (void)refreshSuggestedUsers
+{
+    __weak typeof(self) welf = self;
+    [self.suggestedUsersDataSource refreshWithCompletion:^
+     {
+         [welf suggestedUsersDidLoad];
+     }];
 }
 
 @end

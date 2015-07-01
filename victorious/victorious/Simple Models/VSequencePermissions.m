@@ -24,7 +24,7 @@ typedef NS_OPTIONS( NSUInteger, VSequencePermission )
     VSequencePermissionCanFlagSequence      = 1 << 7,
     VSequencePermissionCanGif               = 1 << 8,
     VSequencePermissionCanMeme              = 1 << 9,
-    VSequencePermissionCanQuote             = 1 << 10,
+    VSequencePermissionCanQuote             = 1 << 10
 };
 
 @interface VSequencePermissions()

@@ -16,6 +16,7 @@
 
 @property (nonatomic, strong) AVPlayer *player;
 @property (nonatomic, strong) AVPlayerLayer *playerLayer;
+@property (nonatomic, strong) AVPlayerItem *newestPlayerItem;
 @property (nonatomic, readonly) BOOL isPlayingVideo;
 @property (nonatomic, strong) VVideoUtils *videoUtils;
 
@@ -48,18 +49,27 @@
         [self.layer addSublayer:self.playerLayer];
         self.playerLayer.frame = self.bounds;
         self.playerLayer.opacity = 0.0f;
+        
+        __weak VVideoView *weakSelf = self;
         [self.KVOController observe:self.playerLayer
                            keyPaths:@[@"readyForDisplay"]
                             options:NSKeyValueObservingOptionNew
                               block:^(id observer, AVPlayerLayer *playerLayer, NSDictionary *change)
          {
-             if (playerLayer.isReadyForDisplay)
+             VVideoView *strongSelf = weakSelf;
+             if ( strongSelf == nil )
+             {
+                 return;
+             }
+             
+             AVPlayerItem *newestPlayerItem = strongSelf.newestPlayerItem;
+             if ([playerLayer.player.currentItem isEqual:newestPlayerItem] && playerLayer.isReadyForDisplay)
              {
                  playerLayer.opacity = 1.0f;
              }
          }];
         
-        self.backgroundColor = [UIColor blackColor];
+        self.backgroundColor = [UIColor clearColor];
         
         self.videoUtils = [[VVideoUtils alloc] init];
     }
@@ -68,10 +78,15 @@
     self.player.muted = audioMuted;
     
     _itemURL = itemURL;
-    
-    [self.videoUtils createPlayerItemWithURL:itemURL loop:loop readyCallback:^(AVPlayerItem *playerItem, CMTime duration)
+    self.newestPlayerItem = nil;
+    self.playerLayer.opacity = 0.0f;
+    [self.videoUtils createPlayerItemWithURL:itemURL loop:loop readyCallback:^(AVPlayerItem *playerItem, NSURL *composedItemURL, CMTime duration)
      {
-         [self didFinishAssetCreation:playerItem];
+         if ( [composedItemURL isEqual:_itemURL] )
+         {
+             self.newestPlayerItem = playerItem;
+             [self didFinishAssetCreation:playerItem];
+         }
      }];
     
     [[NSNotificationCenter defaultCenter] addObserver:self

@@ -169,6 +169,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 
+@property (nonatomic, strong) VContentLikeButton *likeButton;
+
 @end
 
 @implementation VNewContentViewController
@@ -582,6 +584,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         self.hasBeenPresented = YES;
         
         NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
+                                  VTrackingKeyStreamId : self.viewModel.streamId,
                                   VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
                                   VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[] };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
@@ -599,6 +602,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     {
         Float64 currentTimeSeconds = CMTimeGetSeconds(self.videoCell.currentTime);
         NSDictionary *params = @{ VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStop,
+                                  VTrackingKeyStreamId : self.viewModel.streamId,
                                   VTrackingKeyTimeCurrent : @( (NSUInteger)(currentTimeSeconds * 1000) ) };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidStop parameters:params];
     }
@@ -953,7 +957,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             UICollectionViewCell *cell = [self contentCellForCollectionView:collectionView atIndexPath:indexPath];
             if ( [cell isKindOfClass:[VContentCell class]] )
             {
-                [self configureLikeButtonWithContentCell:(VContentCell *)cell];
+                [self configureLikeButtonWithContentCell:(VContentCell *)cell forSequence:self.viewModel.sequence];
             }
             return cell;
         }
@@ -1284,12 +1288,16 @@ referenceSizeForHeaderInSection:(NSInteger)section
             self.videoCell = videoCell;
             self.contentCell = videoCell;
             __weak typeof(self) welf = self;
-            [self.videoCell setAnimateAlongsizePlayControlsBlock:^(BOOL playControlsHidden)
-             {
-                 const BOOL shouldHide = playControlsHidden && !welf.videoCell.isEndCardShowing;
-                 welf.moreButton.alpha = shouldHide ? 0.0f : 1.0f;
-                 welf.closeButton.alpha = shouldHide ? 0.0f : 1.0f;
-             }];
+            if ( !videoCell.playerControlsDisabled  )
+            {
+                [self.videoCell setAnimateAlongsizePlayControlsBlock:^(BOOL playControlsHidden)
+                 {
+                     const BOOL shouldHide = playControlsHidden && !welf.videoCell.isEndCardShowing;
+                     welf.moreButton.alpha = shouldHide ? 0.0f : 1.0f;
+                     welf.closeButton.alpha = shouldHide ? 0.0f : 1.0f;
+                     welf.likeButton.transform = playControlsHidden ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, -CGRectGetHeight(welf.likeButton.bounds));
+                 }];
+            }
             videoCell.endCardDelegate = self;
             videoCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
             return videoCell;
@@ -1360,6 +1368,12 @@ referenceSizeForHeaderInSection:(NSInteger)section
             [self.scrollPaginator scrollViewDidScroll:scrollView];
         }
     }
+
+    if (self.viewModel.type == VContentViewTypeVideo)
+    {
+        VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
+        self.likeButton.alpha = 1.0f - layout.percentCloseToLockPointFromCatchPoint;
+    }
 }
 
 #pragma mark - VContentVideoCellDelegate
@@ -1390,11 +1404,17 @@ referenceSizeForHeaderInSection:(NSInteger)section
         
         NSUInteger videoLoadTime = [[NSDate date] timeIntervalSinceDate:self.videoLoadedDate] * 1000;
         NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
+                                  VTrackingKeyStreamId : self.viewModel.streamId,
                                   VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
                                   VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[],
                                   VTrackingKeyLoadTime : @(videoLoadTime) };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
     }
+    [UIView animateWithDuration:0.5f
+                     animations:^
+     {
+         self.likeButton.alpha = 1.0f;
+     }];
 }
 
 - (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell withTotalTime:(CMTime)totalTime
@@ -1403,6 +1423,15 @@ referenceSizeForHeaderInSection:(NSInteger)section
     if (!self.enteringRealTimeComment)
     {
         self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:totalTime]];
+    }
+    
+    if (self.viewModel.videoViewModel.endCardViewModel != nil)
+    {
+        [UIView animateWithDuration:0.5f
+                         animations:^
+         {
+             self.likeButton.alpha = 0.0f;
+         }];
     }
 }
 
@@ -1591,20 +1620,34 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
-- (void)configureLikeButtonWithContentCell:(VContentCell *)contentCell
+- (void)configureLikeButtonWithContentCell:(VContentCell *)contentCell forSequence:(VSequence *)sequence
 {
-    VContentLikeButton *likeButton = contentCell.likeButton;
-    if ( likeButton != nil )
+    if ( contentCell.likeButton == nil )
     {
-        VSequence *sequence = self.viewModel.sequence;
-        [likeButton addTarget:self action:@selector(selectedLikeButton:) forControlEvents:UIControlEventTouchUpInside];
+        return;
+    }
+    
+    if ( [self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue )
+    {
+        self.likeButton = contentCell.likeButton;
+        self.likeButton.hidden = NO;
+        
+        [self.likeButton addTarget:self action:@selector(selectedLikeButton:) forControlEvents:UIControlEventTouchUpInside];
         
         self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
         [self.expressionsObserver startObservingWithSequence:self.viewModel.sequence onUpdate:^
          {
-             [likeButton setActive:sequence.isLikedByMainUser.boolValue];
-             [likeButton setCount:sequence.likeCount.integerValue];
+             [self.likeButton setActive:sequence.isLikedByMainUser.boolValue];
+             [self.likeButton setCount:sequence.likeCount.integerValue];
          }];
+        if (self.viewModel.type == VContentViewTypeVideo)
+        {
+            self.likeButton.alpha = 0.0f;
+        }
+    }
+    else
+    {
+        contentCell.likeButton.hidden = YES;
     }
 }
 
@@ -1737,6 +1780,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)replaySelectedFromEndCard:(VEndCardViewController *)endCardViewController
 {
+    self.likeButton.alpha = 1.0f;
     [self.videoCell seekToStart];
     [endCardViewController transitionOutAllWithBackground:YES completion:^
      {

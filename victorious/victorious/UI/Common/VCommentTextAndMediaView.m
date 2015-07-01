@@ -76,7 +76,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
     [self addSubview:mediaThumbnailView];
     self.mediaThumbnailView = mediaThumbnailView;
     
-    UIImageView *playIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Play"]];
+    UIImageView *playIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlayIcon"]];
     playIcon.translatesAutoresizingMaskIntoConstraints = NO;
     playIcon.hidden = YES;
     [self addSubview:playIcon];
