@@ -236,9 +236,8 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 
 - (void)pushLikedContent
 {
-    VStreamCollectionViewController  *likedContentViewController = [self.dependencyManager
-                                                                   templateValueOfType:[VStreamCollectionViewController class]
-                                                                   forKey:kLikedContentScreenKey];
+    VStreamCollectionViewController *likedContentViewController = [self.dependencyManager templateValueOfType:[VStreamCollectionViewController class]
+                                                                                                       forKey:kLikedContentScreenKey];
     [self.navigationController pushViewController:likedContentViewController animated:YES];
 }
 
