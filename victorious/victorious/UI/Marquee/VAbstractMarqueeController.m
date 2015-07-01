@@ -20,6 +20,8 @@
 #import "VURLMacroReplacement.h"
 #import "VDependencyManager+VHighlightContainer.h"
 #import "VStreamTrackingHelper.h"
+#import "VStreamCellFocus.h"
+#import "VStreamItemPreviewView.h"
 
 static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kSequenceIDKey = @"sequenceID";
@@ -29,6 +31,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 @interface VAbstractMarqueeController ()
 
 @property (nonatomic, readwrite) NSUInteger currentPage;
+@property (nonatomic, assign) NSUInteger currentFocusPage;
 @property (nonatomic, readwrite) VTimerManager *autoScrollTimerManager;
 @property (nonatomic, readwrite) VStreamItem *currentStreamItem;
 @property (nonatomic, strong) NSMutableSet *registeredReuseIdentifiers;
@@ -111,7 +114,32 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
         }
     }
     
+    [self updateFocus];
+    
     [self updateCellVisibilityTracking];
+}
+
+- (void)updateFocus
+{
+    //Update the focus of preview views that conform to VStreamCellFocus
+    CGFloat pageWidth = self.collectionView.frame.size.width;
+    NSInteger currentFocusPage = ( self.collectionView.contentOffset.x + pageWidth / 2 ) / pageWidth;
+    currentFocusPage = MIN( currentFocusPage, (NSInteger)self.stream.marqueeItems.count - 1 );
+    currentFocusPage = MAX( currentFocusPage, 0 );
+
+    if ( (NSUInteger)currentFocusPage != self.currentFocusPage )
+    {
+        self.currentFocusPage = currentFocusPage;
+        VStreamItem *focusedStreamItem = self.stream.marqueeItems[currentFocusPage];
+        for ( VAbstractMarqueeStreamItemCell *cell in self.collectionView.visibleCells )
+        {
+            if ( [cell.previewView conformsToProtocol:@protocol(VStreamCellFocus)] )
+            {
+                BOOL hasFocus = [focusedStreamItem isEqual:cell.streamItem];
+                [(VStreamItemPreviewView <VStreamCellFocus> *)cell.previewView setHasFocus:hasFocus];
+            }
+        }
+    }
 }
 
 - (void)selectNextTab
