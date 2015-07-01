@@ -58,12 +58,8 @@ static NSString * const kPromptTextKey = @"prompt";
      {
          self.loadedOnce = YES;
          self.isLoadingSuggestedUsers = NO;
-         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VUser *user, NSDictionary *bindings)
-                                   {
-                                       return [user isKindOfClass:[VUser class]] && user.recentSequences.count > 0;
-                                   }];
-         NSArray *usersFilteredForRecentSequences = [resultObjects filteredArrayUsingPredicate:predicate];
-         self.suggestedUsers = usersFilteredForRecentSequences;
+         
+         self.suggestedUsers = resultObjects;
          if ( completion != nil )
          {
              completion();

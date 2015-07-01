@@ -52,17 +52,21 @@ static NSUInteger const kMaxNumberOfActionButtons = 4;
 
 + (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem
                             baseIdentifier:(NSString *)baseIdentifier
+                         dependencyManager:(VDependencyManager *)dependencyManager
 {
     NSMutableString *identifier = [baseIdentifier mutableCopy];
     
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
         VSequence *sequence = (VSequence *)streamItem;
+        if ( [dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue )
+        {
+            [identifier appendString:@"Like."];
+        }
         if ( sequence.permissions.canComment )
         {
             [identifier appendString:@"Comment."];
         }
-        [identifier appendString:@"Share."];
         if ( sequence.permissions.canRepost )
         {
             [identifier appendString:@"Repost."];
@@ -195,13 +199,14 @@ static NSUInteger const kMaxNumberOfActionButtons = 4;
     
     NSMutableArray *actionButtons = [[NSMutableArray alloc] init];
     
-    [actionButtons addObject:self.likeButton];
-
+    if ( [self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue )
+    {
+        [actionButtons addObject:self.likeButton];
+    }
     if ( sequence.permissions.canComment )
     {
         [actionButtons addObject:self.commentButton];
     }
-    
     if ( sequence.permissions.canRepost )
     {
         [actionButtons addObject:self.repostButton];
