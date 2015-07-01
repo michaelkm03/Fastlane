@@ -187,7 +187,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     self.videoPlayerViewController.animateWithPlayControls = self.animateAlongSideBlock;
     if (self.tracking != nil)
     {
-        [self.videoPlayerViewController enableTrackingWithTrackingItem:self.tracking];
+        [self.videoPlayerViewController enableTrackingWithTrackingItem:self.tracking streamID:self.viewModel.streamID];
     }
     
     [self addVideoPlayerViewController:self.videoPlayerViewController];
