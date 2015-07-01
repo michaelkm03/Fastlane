@@ -90,43 +90,4 @@
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
 }
 
-- (void)testProgressObjectCreated
-{
-    NSProgress *progress = [[NSProgress alloc] initWithParent:nil userInfo:nil];
-    [progress becomeCurrentWithPendingUnitCount:1];
-    __unused VDownloadOperation *operation = [[VDownloadOperation alloc] initWithURL:[NSURL URLWithString:@"http://www.example.com/three"]
-                                                                 completion:^(NSURL *originalURL, NSError *error, NSURLResponse *response, NSURL *downloadedFile)
-    {
-    }];
-    [progress resignCurrent];
-    XCTAssertEqual(progress.completedUnitCount, 0); // if the VDownloadOperation initializer failed to create an NSProgress object, completedUnitCount will be 1.
-}
-
-- (void)testProgressObjectUpdated
-{
-    NSURL *url = [NSURL URLWithString:@"http://www.example.com/one"];
-    NSString *testBody = @"hello world";
-    
-    stubRequest(@"GET", url.absoluteString).andReturn(200).withBody(testBody);
-
-    NSProgress *progress = [NSProgress progressWithTotalUnitCount:1];
-    [progress becomeCurrentWithPendingUnitCount:1];
-    
-    XCTestExpectation *expectation = [self expectationWithDescription:@"download callback"];
-    VDownloadOperation *operation = [[VDownloadOperation alloc] initWithURL:url completion:^(NSURL *originalURL, NSError *error, NSURLResponse *response, NSURL *downloadedFile)
-    {
-        NSData *data = [NSData dataWithContentsOfURL:downloadedFile];
-        NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        XCTAssertEqualObjects(string, testBody);
-        XCTAssertNil(error);
-        [expectation fulfill];
-    }];
-    [progress resignCurrent];
-    XCTAssertEqual(progress.completedUnitCount, 0);
-    
-    [self.operationQueue addOperation:operation];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
-    XCTAssertGreaterThanOrEqual(progress.completedUnitCount, progress.totalUnitCount);
-}
-
 @end

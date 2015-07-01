@@ -20,7 +20,6 @@
 @property (nonatomic, strong) dispatch_semaphore_t semaphore;
 @property (nonatomic, strong) NSUUID *currentDownloadID;
 @property (nonatomic) NSTimeInterval retryInterval;
-@property (nonatomic, strong) NSProgress *progress;
 @property (nonatomic) BOOL delegateNotified;
 
 @end
@@ -42,7 +41,6 @@ static const NSTimeInterval kDefaultTimeout = 5.0;
         _downloader = downloader;
         _timeout = kDefaultTimeout;
         _shouldRetry = YES;
-        _progress = [NSProgress progressWithTotalUnitCount:1];
     }
     return self;
 }

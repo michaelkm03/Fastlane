@@ -17,7 +17,6 @@ const int64_t kProgressTotalCount = 100;
 @property (nonatomic, copy) VDownloadOperationCompletion completion;
 @property (nonatomic, strong) dispatch_semaphore_t semaphore;
 @property (nonatomic, strong) NSURLSessionTask *downloadTask;
-@property (nonatomic, strong) NSProgress *progress;
 
 @end
 
@@ -31,7 +30,6 @@ const int64_t kProgressTotalCount = 100;
         _url = url;
         _completion = [completionBlock copy];
         _retryInterval = 1;
-        _progress = [NSProgress progressWithTotalUnitCount:kProgressTotalCount];
     }
     return self;
 }
@@ -77,14 +75,6 @@ const int64_t kProgressTotalCount = 100;
 
 #pragma mark - NSURLSessionDownloadDelegate methods
 
-- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
-{
-    if ( totalBytesExpectedToWrite > 0 )
-    {
-        self.progress.completedUnitCount = (int64_t)VCEIL((CGFloat)bytesWritten / (CGFloat)totalBytesExpectedToWrite * (CGFloat)kProgressTotalCount);
-    }
-}
-
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location
 {
     if ( downloadTask != self.downloadTask )
@@ -100,7 +90,6 @@ const int64_t kProgressTotalCount = 100;
     }
     else
     {
-        self.progress.completedUnitCount = kProgressTotalCount;
         if ( self.completion != nil )
         {
             self.completion(self.url, nil, downloadTask.response, location);

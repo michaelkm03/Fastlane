@@ -20,7 +20,6 @@
 @interface VBulkDownloadOperation : NSOperation
 
 @property (nonatomic, readonly) NSSet *urls; ///< The URLs being downloaded
-@property (nonatomic, readonly) NSProgress *progress; ///< Use this property to monitor the file download progress
 
 /**
  If YES, failed downloads will be retried.

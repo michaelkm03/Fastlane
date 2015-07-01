@@ -41,21 +41,17 @@ static const NSTimeInterval kDefaultRetryInterval = 2.0;
         _operationQueue.maxConcurrentOperationCount = kMaxConcurrentDownloads;
         _privateQueue = dispatch_queue_create("VBulkDownloader", DISPATCH_QUEUE_SERIAL);
         _semaphore = dispatch_semaphore_create(0);
-        _progress = [NSProgress progressWithTotalUnitCount:(NSInteger)urls.count];
     }
     return self;
 }
 
 - (void)main
 {
-    [self.progress becomeCurrentWithPendingUnitCount:self.urls.count];
     NSMutableArray *operations = [[NSMutableArray alloc] initWithCapacity:self.urls.count];
     for (NSURL *url in self.urls)
     {
         [operations addObject:[self downloadOperationForURL:url retryInterval:self.retryInterval]];
     }
-    [self.progress resignCurrent];
-    
     [self.operationQueue addOperations:operations waitUntilFinished:NO];
     dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
 }
