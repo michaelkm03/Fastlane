@@ -584,6 +584,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         self.hasBeenPresented = YES;
         
         NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
+                                  VTrackingKeyStreamId : self.viewModel.streamId,
                                   VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
                                   VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[] };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
@@ -601,6 +602,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     {
         Float64 currentTimeSeconds = CMTimeGetSeconds(self.videoCell.currentTime);
         NSDictionary *params = @{ VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStop,
+                                  VTrackingKeyStreamId : self.viewModel.streamId,
                                   VTrackingKeyTimeCurrent : @( (NSUInteger)(currentTimeSeconds * 1000) ) };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidStop parameters:params];
     }
@@ -1402,6 +1404,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
         
         NSUInteger videoLoadTime = [[NSDate date] timeIntervalSinceDate:self.videoLoadedDate] * 1000;
         NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
+                                  VTrackingKeyStreamId : self.viewModel.streamId,
                                   VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
                                   VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[],
                                   VTrackingKeyLoadTime : @(videoLoadTime) };
