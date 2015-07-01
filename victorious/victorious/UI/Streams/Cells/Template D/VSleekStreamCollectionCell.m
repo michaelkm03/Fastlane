@@ -181,7 +181,10 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 28.0f, 5.0f, 28.0f };
 
 - (void)updateCountsTextViewForSequence:(VSequence *)sequence
 {
+    const BOOL canLike = [self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue;
+        
     self.countsTextView.hideComments = !sequence.permissions.canComment;
+    self.countsTextView.hideLikes = !canLike;
     [self.countsTextView setCommentsCount:sequence.commentCount.integerValue];
     [self.countsTextView setLikesCount:sequence.likeCount.integerValue];
 }
@@ -274,17 +277,20 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 28.0f, 5.0f, 28.0f };
 
 + (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem
                             baseIdentifier:(NSString *)baseIdentifier
+                         dependencyManager:(VDependencyManager *)dependencyManager
 {
     NSString *identifier = baseIdentifier == nil ? [[NSString alloc] init] : baseIdentifier;
     identifier = [NSString stringWithFormat:@"%@.%@", identifier, NSStringFromClass(self)];
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
         identifier = [VSequencePreviewView reuseIdentifierForSequence:(VSequence *)streamItem
-                                                       baseIdentifier:identifier];
+                                                       baseIdentifier:identifier
+                                                    dependencyManager:dependencyManager];
     }
     
     return [VSleekActionView reuseIdentifierForStreamItem:streamItem
-                                           baseIdentifier:identifier];
+                                           baseIdentifier:identifier
+                                        dependencyManager:dependencyManager];
 }
 
 #pragma mark - Class Methods

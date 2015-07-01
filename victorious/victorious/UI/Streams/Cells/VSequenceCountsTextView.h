@@ -53,7 +53,15 @@
  */
 @property (nonatomic, weak) id<VSequenceCountsTextViewDelegate> textSelectionDelegate;
 
+/**
+ Determines where the comments count can show according to permissions, regarless of its value.
+ */
 @property (nonatomic, assign) BOOL hideComments;
+
+/**
+ Determines where the likes count can show according to permissions, regarless of its value.
+ */
+@property (nonatomic, assign) BOOL hideLikes;
 
 @property (nonatomic, strong) NSDictionary *textAttributes;
 
