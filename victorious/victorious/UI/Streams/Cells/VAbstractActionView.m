@@ -60,6 +60,7 @@
     
     _sequence = sequence;
     
+    [self layoutIfNeeded];
     [self updateActionItemsOnBar:self.actionBar forSequence:_sequence];
     __weak typeof(self) welf = self;
     [self updateRepostButtonForSequence:_sequence];
@@ -75,7 +76,8 @@
 #pragma mark - VStreamCellSpecialization
 
 + (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem
-                            baseIdentifier:(NSString *)baseIdentifier
+                            baseIdentifier:(NSString *)baseIdentifie
+                         dependencyManager:(VDependencyManager *)dependencyManager
 {
     NSAssert(false, @"Implement in subclasses");
     return nil;

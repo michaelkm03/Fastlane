@@ -19,7 +19,12 @@
 
 @implementation VSequence (RestKit)
 
-+ (NSDictionary *)propertyMap
++ (NSString *)entityName
+{
+    return @"Sequence";
+}
+
++ (NSDictionary *)attributePropertyMapping
 {
     return @{ @"category"       :   VSelectorName(category),
               @"id"             :   VSelectorName(remoteId),
@@ -35,7 +40,6 @@
               @"am_liking"      :   VSelectorName(isLikedByMainUser),
               @"game_status"    :   VSelectorName(gameStatus),
               @"permissions"    :   VSelectorName(permissionsMask),
-              @"parent_user_id" :   VSelectorName(parentUserId),
               @"name_embedded_in_content"   : VSelectorName(nameEmbeddedInContent),
               @"sequence_counts.comments"   : VSelectorName(commentCount),
               @"sequence_counts.gifs"   : VSelectorName(gifCount),
@@ -49,14 +53,9 @@
     };
 }
 
-+ (NSString *)entityName
++ (RKEntityMapping *)simpleMapping
 {
-    return @"Sequence";
-}
-
-+ (RKEntityMapping *)smallEntityMapping
-{
-    NSDictionary *propertyMap = [[self class] propertyMap];
+    NSDictionary *propertyMap = [self attributePropertyMapping];
     
     RKEntityMapping *mapping = [RKEntityMapping
                                 mappingForEntityForName:[self entityName]
@@ -69,23 +68,12 @@
     RKRelationshipMapping *previewAssetsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview.assets"
                                                                                               toKeyPath:VSelectorName(previewAssets)
                                                                                             withMapping:[VImageAsset entityMapping]];
+    
     [mapping addPropertyMapping:previewAssetsMapping];
     
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(nodes) mapping:[VNode entityMapping]];
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(comments) mapping:[VComment entityMapping]];
-    
-    RKRelationshipMapping *voteResultMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"sequence_counts.votetypes"
-                                                                                           toKeyPath:VSelectorName(voteResults)
-                                                                                         withMapping:[VVoteResult entityMapping]];
-    RKRelationshipMapping *adBreaksMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"ad_breaks"
-                                                                                         toKeyPath:VSelectorName(adBreaks)
-                                                                                       withMapping:[VAdBreak entityMapping]];
-    RKRelationshipMapping *trackingMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"tracking"
-                                                                                         toKeyPath:VSelectorName(tracking)
-                                                                                       withMapping:[VTracking entityMapping]];
-    [mapping addPropertyMapping:voteResultMapping];
-    [mapping addPropertyMapping:adBreaksMapping];
-    [mapping addPropertyMapping:trackingMapping];
+    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(user) mapping:[VUser simpleMapping]];
     
     [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"sequenceId"}];
     
@@ -94,7 +82,7 @@
 
 + (RKEntityMapping *)entityMapping
 {
-    NSDictionary *propertyMap = [[self class] propertyMap];
+    NSDictionary *propertyMap = [self attributePropertyMapping];
 
     RKEntityMapping *mapping = [RKEntityMapping
                                 mappingForEntityForName:[self entityName]
