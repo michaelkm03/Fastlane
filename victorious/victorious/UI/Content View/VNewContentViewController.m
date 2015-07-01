@@ -955,7 +955,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             UICollectionViewCell *cell = [self contentCellForCollectionView:collectionView atIndexPath:indexPath];
             if ( [cell isKindOfClass:[VContentCell class]] )
             {
-                [self configureLikeButtonWithContentCell:(VContentCell *)cell];
+                [self configureLikeButtonWithContentCell:(VContentCell *)cell forSequence:self.viewModel.sequence];
             }
             return cell;
         }
@@ -1614,12 +1614,18 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
-- (void)configureLikeButtonWithContentCell:(VContentCell *)contentCell
+- (void)configureLikeButtonWithContentCell:(VContentCell *)contentCell forSequence:(VSequence *)sequence
 {
-    self.likeButton = contentCell.likeButton;
-    if ( self.likeButton != nil )
+    if ( contentCell.likeButton == nil )
     {
-        VSequence *sequence = self.viewModel.sequence;
+        return;
+    }
+    
+    if ( [self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue )
+    {
+        self.likeButton = contentCell.likeButton;
+        self.likeButton.hidden = NO;
+        
         [self.likeButton addTarget:self action:@selector(selectedLikeButton:) forControlEvents:UIControlEventTouchUpInside];
         
         self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
@@ -1632,6 +1638,10 @@ referenceSizeForHeaderInSection:(NSInteger)section
         {
             self.likeButton.alpha = 0.0f;
         }
+    }
+    else
+    {
+        contentCell.likeButton.hidden = YES;
     }
 }
 

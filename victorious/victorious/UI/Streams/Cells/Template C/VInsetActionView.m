@@ -116,10 +116,14 @@ static const CGFloat kActionButtonWidth = 44.0f;
 
 + (NSString *)reuseIdentifierForSequence:(VSequence *)sequence
                           baseIdentifier:(NSString *)baseIdentifier
+                       dependencyManager:(VDependencyManager *)dependencyManager
 {
     NSMutableString *identifier = [baseIdentifier mutableCopy];
     
-    [identifier appendString:@"Share."];
+    if ( [dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue )
+    {
+        [identifier appendString:@"Like."];
+    }
     if ( sequence.permissions.canRepost )
     {
         [identifier appendString:@"Repost."];
@@ -151,8 +155,10 @@ static const CGFloat kActionButtonWidth = 44.0f;
     // Create an array of available action items
     NSMutableArray *justActionItems = [[NSMutableArray alloc] init];
     
-    [justActionItems addObject:self.likeButton];
-    
+    if ( [self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue )
+    {
+        [justActionItems addObject:self.likeButton];
+    }
     if ( sequence.permissions.canComment )
     {
         [justActionItems addObject:self.commentButton];

@@ -26,7 +26,7 @@
 /**
  *  Returns a stream preview view class for the provided stream and base identifier.
  */
-+ (NSString *)reuseIdentifierForStream:(VStream *)stream baseIdentifier:(NSString *)baseIdentifier;
++ (NSString *)reuseIdentifierForStream:(VStream *)stream baseIdentifier:(NSString *)baseIdentifier dependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
  *  The factory method for the VStreamPreviewView, will provide a concrete subclass specialized to
