@@ -227,6 +227,9 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
          {
              VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
              NSDictionary *attributes = [[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager];
+             
+             // FIXME: The use of "V" is just to get a good size for *something* in this text field since
+             // we can't know what the actual text for the label is in a static method
              return CGSizeMake( 0.0f, MAX( kCountsTextViewMinHeight, [@"V" frameSizeForWidth:size.width andAttributes:attributes].height ) );
          }];
     }

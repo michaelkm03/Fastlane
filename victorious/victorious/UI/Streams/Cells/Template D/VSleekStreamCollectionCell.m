@@ -98,6 +98,9 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
              CGFloat textWidth = size.width - kCaptionMargins.left - kCaptionMargins.right;
              VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
              NSDictionary *attributes = [[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager];
+             
+             // FIXME: The use of "V" is just to get a good size for *something* in this text field since
+             // we can't know what the actual text for the label is in a static method
              return CGSizeMake( 0.0f, MAX( kCountsTextViewMinHeight, [@"V" frameSizeForWidth:textWidth andAttributes:attributes].height ) );
          }];
         [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kSleekCellActionViewHeight)];
