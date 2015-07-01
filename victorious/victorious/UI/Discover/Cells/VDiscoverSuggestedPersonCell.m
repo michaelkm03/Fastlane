@@ -119,7 +119,8 @@
 
 - (IBAction)onFollow:(VFollowUserControl *)sender
 {
-    void (^followAction)() = ^void(){
+    void (^followAction)() = ^void()
+    {
         id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
                                                                           withSender:nil];
         NSAssert(followResponder != nil, @"VFollowerTableViewCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
