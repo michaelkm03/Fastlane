@@ -30,6 +30,13 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     return self;
 }
 
+#pragma mark - UIViewController
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 @end
 
 

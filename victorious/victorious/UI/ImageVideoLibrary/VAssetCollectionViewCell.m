@@ -8,14 +8,19 @@
 
 #import "VAssetCollectionViewCell.h"
 
+@interface VAssetCollectionViewCell ()
+
+@property (strong, nonatomic) IBOutlet UIView *selectionView;
+
+@end
+
 @implementation VAssetCollectionViewCell
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+- (void)setSelected:(BOOL)selected
+{
+    [super setSelected:selected];
+    
+    self.selectionView.alpha = selected ? 1.0f : 0.0f;
 }
-*/
 
 @end

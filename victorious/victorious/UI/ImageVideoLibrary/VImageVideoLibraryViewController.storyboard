@@ -16,12 +16,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pOy-CZ-N66">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="473"/>
-                                <connections>
-                                    <segue destination="o2k-Tc-TXK" kind="embed" id="Ebc-Ws-32b"/>
-                                </connections>
-                            </containerView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7zK-Dm-W0S" userLabel="Flex Action Items Container" customClass="VFlexBar">
                                 <rect key="frame" x="0.0" y="473" width="600" height="63"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -29,6 +23,12 @@
                                     <constraint firstAttribute="height" constant="63" id="33J-6z-QSG"/>
                                 </constraints>
                             </view>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pOy-CZ-N66">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="473"/>
+                                <connections>
+                                    <segue destination="o2k-Tc-TXK" kind="embed" id="Ebc-Ws-32b"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -93,17 +93,26 @@
                                             <rect key="frame" x="0.0" y="0.0" width="95" height="95"/>
                                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         </imageView>
+                                        <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0ee-qo-pcY">
+                                            <rect key="frame" x="0.0" y="0.0" width="95" height="95"/>
+                                            <color key="backgroundColor" red="0.33333333329999998" green="0.67450980390000004" blue="0.93333333330000001" alpha="0.25" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </view>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <constraints>
+                                    <constraint firstItem="0ee-qo-pcY" firstAttribute="leading" secondItem="4K7-39-7vY" secondAttribute="leading" id="B9F-Co-KOG"/>
                                     <constraint firstAttribute="trailing" secondItem="aAC-dw-XFb" secondAttribute="trailing" id="FT3-WU-4Bh"/>
                                     <constraint firstAttribute="bottom" secondItem="aAC-dw-XFb" secondAttribute="bottom" id="KeX-xa-iPU"/>
                                     <constraint firstItem="aAC-dw-XFb" firstAttribute="leading" secondItem="4K7-39-7vY" secondAttribute="leading" id="Wtg-nM-wvu"/>
                                     <constraint firstItem="aAC-dw-XFb" firstAttribute="top" secondItem="4K7-39-7vY" secondAttribute="top" id="cvJ-sL-3ep"/>
+                                    <constraint firstItem="0ee-qo-pcY" firstAttribute="top" secondItem="4K7-39-7vY" secondAttribute="top" id="jjt-LY-pTv"/>
+                                    <constraint firstAttribute="bottom" secondItem="0ee-qo-pcY" secondAttribute="bottom" id="tdS-iW-KhB"/>
+                                    <constraint firstAttribute="trailing" secondItem="0ee-qo-pcY" secondAttribute="trailing" id="wR7-0Q-4tv"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="imageView" destination="aAC-dw-XFb" id="Cem-1A-JuD"/>
+                                    <outlet property="selectionView" destination="0ee-qo-pcY" id="I6E-6E-2aO"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
