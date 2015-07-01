@@ -1194,9 +1194,12 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         {
             if (self.viewModel.type == VContentViewTypePoll)
             {
-                CGSize sizedBallot = [VContentPollBallotCell actualSizeWithAnswerA:[[NSAttributedString alloc] initWithString:self.viewModel.answerALabelText
+                NSString *answerAtext = self.viewModel.answerALabelText ?: @"";
+                NSString *answerBText = self.viewModel.answerBLabelText ?: @"";
+                
+                CGSize sizedBallot = [VContentPollBallotCell actualSizeWithAnswerA:[[NSAttributedString alloc] initWithString:answerAtext
                                                                                                                    attributes:@{NSFontAttributeName : [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]}]
-                                                                           answerB:[[NSAttributedString alloc] initWithString:self.viewModel.answerBLabelText
+                                                                           answerB:[[NSAttributedString alloc] initWithString:answerBText
                                                                                                                    attributes:@{NSFontAttributeName : [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]}]
                                                                        maximumSize:CGSizeMake(CGRectGetWidth(collectionView.bounds), 100.0)];
                 return sizedBallot;
