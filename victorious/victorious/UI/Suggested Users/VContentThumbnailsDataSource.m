@@ -30,14 +30,8 @@
     self = [super init];
     if ( self != nil )
     {
-        
         _assetFinder = [[VImageAssetFinder alloc] init];
-        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(VSequence *sequence, NSDictionary *bindings)
-                                  {
-                                      VImageAsset *asset = [self.assetFinder smallestAssetFromAssets:sequence.previewAssets];
-                                      return asset.imageURL.length > 0 && [NSURL URLWithString:asset.imageURL] != nil;
-                                  }];
-        _sequences = [sequences filteredArrayUsingPredicate:predicate];
+        _sequences = sequences;
     }
     return self;
 }
