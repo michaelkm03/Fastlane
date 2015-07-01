@@ -215,9 +215,8 @@ static NSUInteger const kMaxNumberOfActionButtons = 4;
     {
         [actionButtons addObject:self.gifButton];
     }
-    
-    //Don't add meme if we already have our kMaxNumberOfActionButtons buttons to show
-    if ( sequence.permissions.canMeme && actionButtons.count != kMaxNumberOfActionButtons)
+    //Only add meme for image content and if we don't already have our kMaxNumberOfActionButtons buttons to show
+    if ( sequence.permissions.canMeme && sequence.isImage && actionButtons.count != kMaxNumberOfActionButtons )
     {
         [actionButtons addObject:self.memeButton];
     }
