@@ -126,7 +126,7 @@
     
     [self.operationQueue addOperation:operation];
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
-    XCTAssertGreaterThan(progress.completedUnitCount, 0);
+    XCTAssertGreaterThanOrEqual(progress.completedUnitCount, progress.totalUnitCount);
 }
 
 @end

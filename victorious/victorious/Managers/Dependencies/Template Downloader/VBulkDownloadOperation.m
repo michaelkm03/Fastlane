@@ -97,8 +97,6 @@ static const NSTimeInterval kDefaultRetryInterval = 2.0;
             return;
         }
         
-        strongSelf.progress.completedUnitCount++;
-        
         dispatch_async(strongSelf.privateQueue, ^(void)
         {
             [strongSelf.waitingToDownload removeObject:originalURL];

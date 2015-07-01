@@ -10,6 +10,7 @@
 
 NSString * const VDownloadOperationErrorDomain = @"VDownloadOperationErrorDomain";
 const NSInteger VDownloadOperationErrorBadStatusCode = 100;
+const int64_t kProgressTotalCount = 100;
 
 @interface VDownloadOperation () <NSURLSessionDownloadDelegate>
 
@@ -30,16 +31,7 @@ const NSInteger VDownloadOperationErrorBadStatusCode = 100;
         _url = url;
         _completion = [completionBlock copy];
         _retryInterval = 1;
-        _progress = [[NSProgress alloc] initWithParent:[NSProgress currentProgress] userInfo:@{
-                                                                                               NSProgressFileOperationKindKey: NSProgressFileOperationKindDownloading,
-                                                                                               NSProgressFileTotalCountKey: @1,
-                                                                                               NSProgressFileCompletedCountKey: @0,
-                                                                                               }];
-        _progress.pausable = NO;
-        _progress.kind = NSProgressKindFile;
-
-        __weak typeof(self) weakSelf = self;
-        _progress.cancellationHandler = ^{ [weakSelf cancel]; };
+        _progress = [NSProgress progressWithTotalUnitCount:kProgressTotalCount];
     }
     return self;
 }
@@ -88,11 +80,10 @@ const NSInteger VDownloadOperationErrorBadStatusCode = 100;
 
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 {
-    if ( self.progress.totalUnitCount != totalBytesExpectedToWrite )
+    if ( totalBytesExpectedToWrite > 0 )
     {
-        self.progress.totalUnitCount = totalBytesExpectedToWrite;
+        self.progress.completedUnitCount = (int64_t)VCEIL((CGFloat)bytesWritten / (CGFloat)totalBytesExpectedToWrite * (CGFloat)kProgressTotalCount);
     }
-    self.progress.completedUnitCount = totalBytesWritten;
 }
 
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location
@@ -110,16 +101,7 @@ const NSInteger VDownloadOperationErrorBadStatusCode = 100;
     }
     else
     {
-        if ( self.progress.totalUnitCount > 0)
-        {
-            self.progress.completedUnitCount = self.progress.totalUnitCount;
-        }
-        else
-        {
-            self.progress.totalUnitCount = 1;
-            self.progress.completedUnitCount = 1;
-        }
-        [self.progress setUserInfoObject:@1 forKey:NSProgressFileCompletedCountKey];
+        self.progress.completedUnitCount = kProgressTotalCount;
         if ( self.completion != nil )
         {
             self.completion(self.url, nil, downloadTask.response, location);
