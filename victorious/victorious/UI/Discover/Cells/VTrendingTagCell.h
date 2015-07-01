@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class VHashtag, VFollowHashtagControl, VDependencyManager;
+@class VHashtag, VFollowControl, VDependencyManager;
 
 @interface VTrendingTagCell : UITableViewCell
 
@@ -25,7 +25,7 @@
 /**
  The control for the subscribe / unsubscribe button
  */
-@property (nonatomic, weak) IBOutlet VFollowHashtagControl *followHashtagControl;
+@property (nonatomic, weak) IBOutlet VFollowControl *followHashtagControl;
 
 /**
  Hashtag property to format

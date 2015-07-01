@@ -15,15 +15,18 @@ static const NSTimeInterval kHighlightAnimationDuration = 0.3f;
 static const CGFloat kHighlightTransformPerspective = -1.0 / 200.0f;
 static const CGFloat kForcedAntiAliasingConstant = 0.01f;
 
-static NSString * const kFollowHashtagIconKey = @"follow_hashtag_icon";
-static NSString * const kFollowedHashtagIconKey = @"followed_hashtag_icon";
+static NSString * const kFollowIconKey = @"follow_icon";
+static NSString * const kFollowedCheckmarkIconKey = @"followed_checkmark_icon";
+static NSString * const kFollowedBackgroundIconKey = @"followed_background_icon";
 
 @interface VFollowControl ()
 
-@property (nonatomic, weak) UIImageView *imageView;
+@property (nonatomic, strong) UIImageView *backgroundImageView;
+@property (nonatomic, strong) UIImageView *imageView;
 
-@property (nonatomic, assign) UIImage *onImage;
-@property (nonatomic, assign) UIImage *offImage;
+@property (nonatomic, strong) UIImage *onImage;
+@property (nonatomic, strong) UIImage *offImage;
+@property (nonatomic, strong) UIImage *selectedBackgroundImage;
 
 @end
 
@@ -51,8 +54,16 @@ static NSString * const kFollowedHashtagIconKey = @"followed_hashtag_icon";
 
 - (void)sharedInit
 {
+    UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:self.bounds];
+    backgroundImageView.backgroundColor = [UIColor clearColor];
+    backgroundImageView.contentMode = UIViewContentModeScaleToFill;
+    [self addSubview:backgroundImageView];
+    [self v_addFitToParentConstraintsToSubview:backgroundImageView];
+    _backgroundImageView = backgroundImageView;
+    
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.bounds];
-    imageView.contentMode = self.contentMode;
+    imageView.backgroundColor = [UIColor clearColor];
+    imageView.contentMode = UIViewContentModeCenter;
     [self addSubview:imageView];
     [self v_addFitToParentConstraintsToSubview:imageView];
     _imageView = imageView;
@@ -66,8 +77,8 @@ static NSString * const kFollowedHashtagIconKey = @"followed_hashtag_icon";
     
     [self performHighlightAnimations:^
      {
-         self.imageView.layer.transform = highlighted ? [self highlightTransform] : CATransform3DIdentity;
-         self.imageView.layer.shadowOpacity = kForcedAntiAliasingConstant;
+         self.layer.transform = highlighted ? [self highlightTransform] : CATransform3DIdentity;
+         self.layer.shadowOpacity = kForcedAntiAliasingConstant;
      }];
 }
 
@@ -94,6 +105,11 @@ static NSString * const kFollowedHashtagIconKey = @"followed_hashtag_icon";
     return highLightTranform;
 }
 
+- (void)setFollowing:(BOOL)following animated:(BOOL)animated
+{
+    [self setFollowing:following animated:animated withAnimationBlock:nil];
+}
+
 - (void)setFollowing:(BOOL)following animated:(BOOL)animated withAnimationBlock:(void (^)(void))animationBlock
 {
     void (^fullAnimationBlock)(void) = ^
@@ -111,7 +127,7 @@ static NSString * const kFollowedHashtagIconKey = @"followed_hashtag_icon";
         return;
     }
     
-    [UIView transitionWithView:self.imageView
+    [UIView transitionWithView:self
                       duration:kHighlightAnimationDuration
                        options:UIViewAnimationOptionTransitionFlipFromTop | UIViewAnimationOptionBeginFromCurrentState
                     animations:fullAnimationBlock
@@ -122,7 +138,15 @@ static NSString * const kFollowedHashtagIconKey = @"followed_hashtag_icon";
 
 - (void)updateFollowImageView
 {
-    self.imageView.image = self.isFollowing ? self.onImage : self.offImage;
+    UIImage *backgroundImage = nil;
+    UIImage *foregroundImage = self.offImage;
+    if ( self.following )
+    {
+        backgroundImage = self.selectedBackgroundImage;
+        foregroundImage = self.onImage;
+    }
+    self.backgroundImageView.image = backgroundImage;
+    self.imageView.image = foregroundImage;
 }
 
 #pragma mark - Setters
@@ -130,7 +154,7 @@ static NSString * const kFollowedHashtagIconKey = @"followed_hashtag_icon";
 - (void)setTintColor:(UIColor *)tintColor
 {
     [super setTintColor:tintColor];
-    self.imageView.tintColor = tintColor;
+    self.backgroundImageView.tintColor = tintColor;
 }
 
 - (void)setFollowing:(BOOL)following
@@ -147,8 +171,16 @@ static NSString * const kFollowedHashtagIconKey = @"followed_hashtag_icon";
     _dependencyManager = dependencyManager;
     if ( dependencyManager != nil )
     {
-        self.onImage = [dependencyManager imageForKey:kFollowedHashtagIconKey];
-        self.offImage = [[dependencyManager imageForKey:kFollowHashtagIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+#warning MAKE BACKEND DRIVEN
+        /*
+        self.onImage = [[dependencyManager imageForKey:kFollowedCheckmarkIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        self.offImage = [[dependencyManager imageForKey:kFollowIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        self.selectedBackgroundImage = [[dependencyManager imageForKey:kFollowedBackgroundIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        */
+        self.onImage = [[UIImage imageNamed:kFollowedCheckmarkIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        self.offImage = [[UIImage imageNamed:kFollowIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        self.selectedBackgroundImage = [[UIImage imageNamed:kFollowedBackgroundIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        
         self.tintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         [self updateFollowImageView];
     }

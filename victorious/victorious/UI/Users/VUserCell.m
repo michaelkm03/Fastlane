@@ -13,7 +13,7 @@
 #import "VUser.h"
 #import "VDependencyManager.h"
 #import "VDefaultProfileButton.h"
-#import "VFollowUserControl.h"
+#import "VFollowControl.h"
 #import "VDefaultProfileImageView.h"
 #import "UIImageView+VLoadingAnimations.h"
 #import <KVOController/FBKVOController.h>
@@ -24,7 +24,7 @@ static const CGFloat kUserCellHeight = 51.0f;
 
 @property (weak, nonatomic) IBOutlet VDefaultProfileImageView *userImageView;
 @property (nonatomic, weak) IBOutlet UILabel *userName;
-@property (nonatomic, weak) IBOutlet VFollowUserControl *followControl;
+@property (nonatomic, weak) IBOutlet VFollowControl *followControl;
 @property (nonatomic, strong) VUser *user;
 
 @end
@@ -94,7 +94,7 @@ static const CGFloat kUserCellHeight = 51.0f;
 
 #pragma mark - Target/Action
 
-- (IBAction)tappedFollowControl:(VFollowUserControl *)sender
+- (IBAction)tappedFollowControl:(VFollowControl *)sender
 {
     id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
                                                                       withSender:nil];
@@ -123,8 +123,8 @@ static const CGFloat kUserCellHeight = 51.0f;
     // If this is the currently logged in user, then hide the follow button
     VUser *me = [[VObjectManager sharedManager] mainUser];
     self.followControl.hidden = [self.user isEqual:me];
-    [self.followControl setFollowingUser:[me.following containsObject:self.user]
-                                animated:animated];
+    [self.followControl setFollowing:[me.following containsObject:self.user]
+                            animated:animated];
 }
 
 @end

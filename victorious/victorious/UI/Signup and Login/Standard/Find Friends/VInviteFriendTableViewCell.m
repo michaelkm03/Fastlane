@@ -11,10 +11,8 @@
 #import "VThemeManager.h"
 #import "VObjectManager.h"
 #import "VObjectManager+Login.h"
-#import "VFollowUserControl.h"
+#import "VFollowControl.h"
 #import <SDWebImage/UIImageView+WebCache.h>
-
-NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCell";
 
 @interface VInviteFriendTableViewCell ()
 
@@ -37,6 +35,16 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
     self.profileImage.clipsToBounds = YES;
     self.profileName.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
     self.contentView.backgroundColor = [UIColor clearColor];
+}
+
++ (UINib *)nibForCell
+{
+    return [UINib nibWithNibName:NSStringFromClass([self class]) bundle:nil];
+}
+
++ (NSString *)suggestedReuseIdentifier
+{
+    return NSStringFromClass([self class]);
 }
 
 - (void)prepareForReuse
@@ -80,8 +88,8 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
         return;
     }
     
-    [self.followUserControl setFollowingUser:self.haveRelationship
-                                    animated:YES];
+    [self.followUserControl setFollowing:self.haveRelationship
+                                animated:YES];
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager

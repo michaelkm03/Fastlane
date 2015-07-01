@@ -15,7 +15,7 @@
 #import "VDependencyManager.h"
 #import "VConstants.h"
 #import "VAuthorizedAction.h"
-#import "VFollowerTableViewCell.h"
+#import "VInviteFriendTableViewCell.h"
 #import "VNoContentView.h"
 #import "UIVIew+AutoLayout.h"
 #import "VFollowingHelper.h"
@@ -100,8 +100,8 @@
     self.tableView.dataSource = self;
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
     
-    [self.tableView registerNib:[VFollowerTableViewCell nibForCell]
-         forCellReuseIdentifier:[VFollowerTableViewCell suggestedReuseIdentifier]];
+    [self.tableView registerNib:[VInviteFriendTableViewCell nibForCell]
+         forCellReuseIdentifier:[VInviteFriendTableViewCell suggestedReuseIdentifier]];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
     [self.tableView setKeyboardDismissMode:UIScrollViewKeyboardDismissModeOnDrag];
 }
@@ -170,8 +170,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VFollowerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[VFollowerTableViewCell suggestedReuseIdentifier]
-                                                                   forIndexPath:indexPath];
+    VInviteFriendTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[VInviteFriendTableViewCell suggestedReuseIdentifier]
+                                                                       forIndexPath:indexPath];
     VUser *profile = self.searchResults[indexPath.row];
     
     cell.profile = profile;
@@ -182,7 +182,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [VFollowerTableViewCell desiredSizeWithCollectionViewBounds:tableView.bounds].height;
+    return [VInviteFriendTableViewCell desiredSizeWithCollectionViewBounds:tableView.bounds].height;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

@@ -448,8 +448,6 @@
 		A7724FD31B3241D100B1BBB3 /* VFollowersDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7724FD01B3241D100B1BBB3 /* VFollowersDataSource.m */; };
 		A7724FD41B3241D100B1BBB3 /* VUserIsFollowingDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7724FD21B3241D100B1BBB3 /* VUserIsFollowingDataSource.m */; };
 		A7724FE11B32432D00B1BBB3 /* VLikersDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A7724FE01B32432D00B1BBB3 /* VLikersDataSource.m */; };
-		A7724FE51B3248C400B1BBB3 /* VFollowerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7724FE31B3248C400B1BBB3 /* VFollowerTableViewCell.m */; };
-		A7724FE61B3248C400B1BBB3 /* VFollowerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7724FE41B3248C400B1BBB3 /* VFollowerTableViewCell.xib */; };
 		A7724FED1B33422B00B1BBB3 /* VActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A7724FEC1B33422B00B1BBB3 /* VActionButton.m */; };
 		A7724FF11B33746A00B1BBB3 /* VCreatorInfoHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7724FF01B33746A00B1BBB3 /* VCreatorInfoHelper.m */; };
 		A7724FFB1B33905000B1BBB3 /* VSequenceCountsTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7724FF91B33905000B1BBB3 /* VSequenceCountsTextView.m */; };
@@ -934,8 +932,6 @@
 		F028F3BE1ABA20A000ABFDDC /* NSDictionary+VJSONLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3BD1ABA20A000ABFDDC /* NSDictionary+VJSONLogging.m */; };
 		F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */; };
 		F028F3E91AC0F2BB00ABFDDC /* VAppInfoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3E81AC0F2BB00ABFDDC /* VAppInfoTests.m */; };
-		F0411E7C1B44449800557176 /* VFollowHashtagControl.m in Sources */ = {isa = PBXBuildFile; fileRef = F0411E791B44449800557176 /* VFollowHashtagControl.m */; };
-		F0411E7D1B44449800557176 /* VFollowUserControl.m in Sources */ = {isa = PBXBuildFile; fileRef = F0411E7B1B44449800557176 /* VFollowUserControl.m */; };
 		F04DC6BA1AC724E500FBCD50 /* VCrossFadingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = F04DC6B91AC724E500FBCD50 /* VCrossFadingImageView.m */; };
 		F04DC6C01AC7791300FBCD50 /* VCrossFadingLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F04DC6BF1AC7791300FBCD50 /* VCrossFadingLabel.m */; };
 		F04DC6CA1AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F04DC6C91AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m */; };
@@ -1811,9 +1807,6 @@
 		A7724FD21B3241D100B1BBB3 /* VUserIsFollowingDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserIsFollowingDataSource.m; sourceTree = "<group>"; };
 		A7724FDF1B32432D00B1BBB3 /* VLikersDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLikersDataSource.h; sourceTree = "<group>"; };
 		A7724FE01B32432D00B1BBB3 /* VLikersDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLikersDataSource.m; sourceTree = "<group>"; };
-		A7724FE21B3248C400B1BBB3 /* VFollowerTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFollowerTableViewCell.h; sourceTree = "<group>"; };
-		A7724FE31B3248C400B1BBB3 /* VFollowerTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowerTableViewCell.m; sourceTree = "<group>"; };
-		A7724FE41B3248C400B1BBB3 /* VFollowerTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VFollowerTableViewCell.xib; sourceTree = "<group>"; };
 		A7724FEB1B33422B00B1BBB3 /* VActionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionButton.h; sourceTree = "<group>"; };
 		A7724FEC1B33422B00B1BBB3 /* VActionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionButton.m; sourceTree = "<group>"; };
 		A7724FEF1B33746A00B1BBB3 /* VCreatorInfoHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreatorInfoHelper.h; sourceTree = "<group>"; };
@@ -2768,10 +2761,6 @@
 		F028F3E51AC0D9E800ABFDDC /* VAppInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAppInfo.h; sourceTree = "<group>"; };
 		F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAppInfo.m; sourceTree = "<group>"; };
 		F028F3E81AC0F2BB00ABFDDC /* VAppInfoTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAppInfoTests.m; sourceTree = "<group>"; };
-		F0411E781B44449800557176 /* VFollowHashtagControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFollowHashtagControl.h; sourceTree = "<group>"; };
-		F0411E791B44449800557176 /* VFollowHashtagControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowHashtagControl.m; sourceTree = "<group>"; };
-		F0411E7A1B44449800557176 /* VFollowUserControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFollowUserControl.h; sourceTree = "<group>"; };
-		F0411E7B1B44449800557176 /* VFollowUserControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowUserControl.m; sourceTree = "<group>"; };
 		F04DC6B81AC724E500FBCD50 /* VCrossFadingImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCrossFadingImageView.h; path = ../../Categories/VCrossFadingImageView.h; sourceTree = "<group>"; };
 		F04DC6B91AC724E500FBCD50 /* VCrossFadingImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCrossFadingImageView.m; path = ../../Categories/VCrossFadingImageView.m; sourceTree = "<group>"; };
 		F04DC6BE1AC7791300FBCD50 /* VCrossFadingLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCrossFadingLabel.h; sourceTree = "<group>"; };
@@ -5041,9 +5030,6 @@
 		A7F711E01AE1D5A00086F729 /* Follow Relationships */ = {
 			isa = PBXGroup;
 			children = (
-				A7724FE21B3248C400B1BBB3 /* VFollowerTableViewCell.h */,
-				A7724FE31B3248C400B1BBB3 /* VFollowerTableViewCell.m */,
-				A7724FE41B3248C400B1BBB3 /* VFollowerTableViewCell.xib */,
 				A7724FCF1B3241D100B1BBB3 /* VFollowersDataSource.h */,
 				A7724FD01B3241D100B1BBB3 /* VFollowersDataSource.m */,
 				A7F711E71AE1D5A00086F729 /* VHashtagFollowingTableViewController.h */,
@@ -5995,7 +5981,8 @@
 		D89A50071A000D540010D050 /* Controls */ = {
 			isa = PBXGroup;
 			children = (
-				F0411E7E1B4444B200557176 /* Follow Controls */,
+				F065A4081B433C7B00F0281B /* VFollowControl.h */,
+				F065A4091B433C7B00F0281B /* VFollowControl.m */,
 				D89F1CD81ABE747000AF14A5 /* VRoundedBackgroundButton.h */,
 				D89F1CD91ABE747000AF14A5 /* VRoundedBackgroundButton.m */,
 				D8FFB8E01B0272540022A491 /* VStreamLabel.h */,
@@ -6391,19 +6378,6 @@
 			name = TimerManager;
 			sourceTree = "<group>";
 		};
-		F0411E7E1B4444B200557176 /* Follow Controls */ = {
-			isa = PBXGroup;
-			children = (
-				F065A4081B433C7B00F0281B /* VFollowControl.h */,
-				F065A4091B433C7B00F0281B /* VFollowControl.m */,
-				F0411E781B44449800557176 /* VFollowHashtagControl.h */,
-				F0411E791B44449800557176 /* VFollowHashtagControl.m */,
-				F0411E7A1B44449800557176 /* VFollowUserControl.h */,
-				F0411E7B1B44449800557176 /* VFollowUserControl.m */,
-			);
-			name = "Follow Controls";
-			sourceTree = "<group>";
-		};
 		F04C2E5E1AE17DCD00FF74B7 /* DirectoryCellFactories */ = {
 			isa = PBXGroup;
 			children = (
@@ -6785,7 +6759,6 @@
 				03FD87D519F96F6900D93BAA /* VNoContentTableViewCell.xib in Resources */,
 				A7D378441AEF4ED5007FF197 /* VStaticUserProfileHeaderViewController.xib in Resources */,
 				D8E7EBCC19CCA540007DA693 /* VSectionHandleReusableView.xib in Resources */,
-				A7724FE61B3248C400B1BBB3 /* VFollowerTableViewCell.xib in Resources */,
 				D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */,
 				D8B44CD31ADCB3A4006340E8 /* VSleekStreamCollectionCell.xib in Resources */,
 				036F38791A0C4DEA0014DF66 /* LeagueGothic-Regular.otf in Resources */,
@@ -7368,7 +7341,6 @@
 				0314D49819B46B5E00FA363C /* VRTCUserPostedAtFormatter.m in Sources */,
 				F0B390B91A852C7E00EE70C7 /* VTag.m in Sources */,
 				F0F04AD61B1E271A00F6F401 /* VConversation.m in Sources */,
-				F0411E7D1B44449800557176 /* VFollowUserControl.m in Sources */,
 				0314D4D319B46B5E00FA363C /* VSideMenuViewController.m in Sources */,
 				039D02AD1A1043D300DB9236 /* VDependencyManager.m in Sources */,
 				A70564BC19E7817C004A8387 /* VObjectManager+Discover.m in Sources */,
@@ -7498,7 +7470,6 @@
 				669EBBE41A30239100DE317D /* VBasicToolPickerCell.m in Sources */,
 				DB82857A19F6DD3D006C6E2F /* VAdPlayerView.m in Sources */,
 				0314D0B519B4698800FA363C /* VObjectManager+Pagination.m in Sources */,
-				F0411E7C1B44449800557176 /* VFollowHashtagControl.m in Sources */,
 				0386E2001A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.m in Sources */,
 				A7D378691AF45B7C007FF197 /* VSequencePermissions.m in Sources */,
 				F0C83A2D1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.m in Sources */,
@@ -7663,7 +7634,6 @@
 				D8E39BBC19CB7C58007FD86A /* VRealtimeCommentsViewModel.m in Sources */,
 				A790C82A1A01980F00C4F208 /* VTrackingManager.m in Sources */,
 				C39864BD1B266A7700694AB3 /* VDependencyManager+VHighlightContainer.m in Sources */,
-				A7724FE51B3248C400B1BBB3 /* VFollowerTableViewCell.m in Sources */,
 				A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */,
 				F0F04AD31B1E1EAE00F6F401 /* VUser.m in Sources */,
 				F0B390C31A88502D00EE70C7 /* VTagDictionary.m in Sources */,

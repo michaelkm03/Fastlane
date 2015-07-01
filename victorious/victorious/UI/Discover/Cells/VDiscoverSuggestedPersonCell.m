@@ -8,7 +8,7 @@
 
 #import "VDiscoverSuggestedPersonCell.h"
 #import "VDefaultProfileImageView.h"
-#import "VFollowUserControl.h"
+#import "VFollowControl.h"
 #import "VFollowersTextFormatter.h"
 #import "VObjectManager+Users.h"
 #import "VDependencyManager.h"
@@ -18,7 +18,7 @@
 
 @interface VDiscoverSuggestedPersonCell()
 
-@property (nonatomic, weak) IBOutlet VFollowUserControl *followButton;
+@property (nonatomic, weak) IBOutlet VFollowControl *followButton;
 @property (nonatomic, weak) IBOutlet VDefaultProfileImageView *profileImageView;
 @property (nonatomic, weak) IBOutlet UILabel *usernameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *descriptionLabel;
@@ -114,16 +114,16 @@
     // If this is the currently logged in user, then hide the follow button
     VUser *me = [[VObjectManager sharedManager] mainUser];
     self.followButton.hidden = (self.user == me);
-    [self.followButton setFollowingUser:self.user.isFollowedByMainUser.boolValue animated:animated];
+    [self.followButton setFollowing:self.user.isFollowedByMainUser.boolValue animated:animated];
 }
 
-- (IBAction)onFollow:(VFollowUserControl *)sender
+- (IBAction)onFollow:(VFollowControl *)sender
 {
     void (^followAction)() = ^void()
     {
         id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
                                                                           withSender:nil];
-        NSAssert(followResponder != nil, @"VFollowerTableViewCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
+        NSAssert(followResponder != nil, @"VDiscoverSuggestedPersonCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
         sender.enabled = NO;
         if (sender.following)
         {

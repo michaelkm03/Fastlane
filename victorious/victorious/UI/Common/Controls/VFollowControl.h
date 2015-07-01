@@ -12,6 +12,7 @@
 
 @interface VFollowControl : UIControl
 
+- (void)setFollowing:(BOOL)following animated:(BOOL)animated;
 - (void)setFollowing:(BOOL)following animated:(BOOL)animated withAnimationBlock:(void (^)(void))animationBlock;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;

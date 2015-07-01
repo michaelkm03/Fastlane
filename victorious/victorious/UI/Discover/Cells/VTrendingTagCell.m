@@ -12,7 +12,7 @@
 #import "VHashTags.h"
 #import "VConstants.h"
 #import "VHashtag.h"
-#import "VFollowHashtagControl.h"
+#import "VFollowControl.h"
 #import "VDependencyManager.h"
 
 static const UIEdgeInsets kHashtagLabelEdgeInsets = { 0, 6, 0, 7 };
@@ -100,8 +100,8 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 
 - (void)updateSubscribeStatusAnimated:(BOOL)animated
 {
-    [self.followHashtagControl setSubscribed:self.isSubscribedToTag
-                                    animated:animated];
+    [self.followHashtagControl setFollowing:self.isSubscribedToTag
+                                   animated:animated];
 }
 
 - (IBAction)followUnfollowHashtag:(id)sender

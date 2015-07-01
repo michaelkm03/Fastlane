@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VDiscoverSuggestedPersonCell"/>
@@ -31,12 +32,12 @@
                         <color key="textColor" red="0.13725490196078433" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e30-NG-QZb" customClass="VFollowUserControl">
-                        <rect key="frame" x="26" y="128" width="42" height="27"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e30-NG-QZb" customClass="VFollowControl">
+                        <rect key="frame" x="34" y="127" width="28" height="28"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="27" id="3Xz-UF-7Y0"/>
-                            <constraint firstAttribute="width" constant="42" id="HVU-Z7-g9u"/>
+                            <constraint firstAttribute="height" constant="28" id="3Xz-UF-7Y0"/>
+                            <constraint firstAttribute="width" secondItem="e30-NG-QZb" secondAttribute="height" multiplier="1:1" id="UfJ-GE-Zb0"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="following" value="YES"/>

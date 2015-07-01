@@ -8,7 +8,7 @@
 
 #import "VSuggestedUserCell.h"
 #import "VDependencyManager+VBackgroundContainer.h"
-#import "VFollowUserControl.h"
+#import "VFollowControl.h"
 #import "VFollowResponder.h"
 #import "VUser.h"
 #import "UIView+AutoLayout.h"
@@ -22,7 +22,7 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
 
 @interface VSuggestedUserCell ()
 
-@property (nonatomic, strong) VFollowUserControl *followButton;
+@property (nonatomic, strong) VFollowControl *followButton;
 @property (nonatomic, strong) VContentThumbnailsViewController *thumbnailsViewController;
 @property (nonatomic, weak) IBOutlet VDefaultProfileImageView *userProfileImage;
 @property (nonatomic, weak) IBOutlet UITextView *usernameTextView;
@@ -47,7 +47,7 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
 
 - (void)awakeFromNib
 {
-    self.followButton = [[VFollowUserControl alloc] initWithFrame:self.followButtonContainerView.bounds];
+    self.followButton = [[VFollowControl alloc] initWithFrame:self.followButtonContainerView.bounds];
     [self.followButtonContainerView addSubview:self.followButton];
     [self.followButtonContainerView v_addFitToParentConstraintsToSubview:self.followButton];
     [self.followButton addTarget:self action:@selector(followButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -100,7 +100,7 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
     [self.dependencyManager addBackgroundToBackgroundHost:self forKey:@"background.detail"];
 }
 
-- (IBAction)followButtonPressed:(VFollowUserControl *)sender
+- (IBAction)followButtonPressed:(VFollowControl *)sender
 {
     id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
                                                                       withSender:nil];
@@ -112,7 +112,7 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
     {
         [followResponder unfollowUser:self.user withCompletion:^(VUser *userActedOn)
          {
-             [sender setFollowingUser:self.user.isFollowedByMainUser.boolValue animated:YES];
+             [sender setFollowing:self.user.isFollowedByMainUser.boolValue animated:YES];
              sender.enabled = YES;
          }];
     }
@@ -120,7 +120,7 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
     {
         [followResponder followUser:self.user withCompletion:^(VUser *userActedOn)
          {
-             [sender setFollowingUser:self.user.isFollowedByMainUser.boolValue animated:YES];
+             [sender setFollowing:self.user.isFollowedByMainUser.boolValue animated:YES];
              sender.enabled = YES;
          }];
     }

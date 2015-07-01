@@ -46,7 +46,7 @@
 - (void)loadView
 {
     self.view = [VFindFriendsTableView newFromNibWithOwner:self];
-    [self.tableView.tableView registerNib:[UINib nibWithNibName:VInviteFriendTableViewCellNibName bundle:nil] forCellReuseIdentifier:VInviteFriendTableViewCellNibName];
+    [self.tableView.tableView registerNib:[VInviteFriendTableViewCell nibForCell] forCellReuseIdentifier:[VInviteFriendTableViewCell suggestedReuseIdentifier]];
     
 }
 
@@ -535,7 +535,7 @@
     NSInteger section = indexPath.section;
     VUser *profile;
 
-    VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[tableView dequeueReusableCellWithIdentifier:VInviteFriendTableViewCellNibName forIndexPath:indexPath];
+    VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[tableView dequeueReusableCellWithIdentifier:[VInviteFriendTableViewCell suggestedReuseIdentifier] forIndexPath:indexPath];
     if (section == 0)
     {
         profile = self.usersNotFollowing[indexPath.row];
