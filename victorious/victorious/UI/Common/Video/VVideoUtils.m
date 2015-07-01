@@ -53,7 +53,7 @@ static const int64_t kAssetLoopClippingScale = 100;
 
 - (void)createPlayerItemWithURL:(NSURL *)itemURL
                            loop:(BOOL)loop
-                  readyCallback:(void(^)(AVPlayerItem *, CMTime originalAssetDuration))onReady
+                  readyCallback:(void(^)(AVPlayerItem *, NSURL *, CMTime originalAssetDuration))onReady
 {
     dispatch_async( dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 ), ^void
                    {
@@ -77,7 +77,7 @@ static const int64_t kAssetLoopClippingScale = 100;
                                                                {
                                                                    if ( onReady != nil )
                                                                    {
-                                                                       onReady( playerItem, asset.duration );
+                                                                       onReady( playerItem, itemURL, asset.duration );
                                                                    }
                                                                });
                                             }];
