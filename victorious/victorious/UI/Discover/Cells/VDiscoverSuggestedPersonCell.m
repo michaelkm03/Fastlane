@@ -14,6 +14,7 @@
 #import "VDependencyManager.h"
 #import "VFollowResponder.h"
 #import <KVOController/FBKVOController.h>
+#import "VAuthorizedAction.h"
 
 @interface VDiscoverSuggestedPersonCell()
 
@@ -118,26 +119,45 @@
 
 - (IBAction)onFollow:(VFollowUserControl *)sender
 {
-    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
-                                                                           withSender:nil];
-    NSAssert(followResponder != nil, @"VFollowerTableViewCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
-    sender.enabled = NO;
-    if (sender.following)
+    void (^followAction)() = ^void(){
+        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
+                                                                          withSender:nil];
+        NSAssert(followResponder != nil, @"VFollowerTableViewCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
+        sender.enabled = NO;
+        if (sender.following)
+        {
+            [followResponder unfollowUser:self.user
+                           withCompletion:^(VUser *userActedOn)
+             {
+                 sender.enabled = YES;
+             }];
+        }
+        else
+        {
+            [followResponder followUser:self.user
+                         withCompletion:^(VUser *userActedOn)
+             {
+                 sender.enabled = YES;
+             }];
+        }
+    };
+    
+    VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                         dependencyManager:self.dependencyManager];
+    UIViewController *nearestViewController = [self targetForAction:@selector(presentViewController:animated:completion:) withSender:self];
+    [authorizedAction performFromViewController:nearestViewController
+                                         context:VAuthorizationContextFollowUser
+                                      completion:^(BOOL authorized)
     {
-        [followResponder unfollowUser:self.user
-                            withCompletion:^(VUser *userActedOn)
-         {
-             sender.enabled = YES;
-         }];
-    }
-    else
-    {
-        [followResponder followUser:self.user
-                          withCompletion:^(VUser *userActedOn)
-         {
-             sender.enabled = YES;
-         }];
-    }
+        if (authorized)
+        {
+            followAction();
+        }
+        else
+        {
+            sender.enabled = YES;
+        }
+    }];
 }
 
 @end
