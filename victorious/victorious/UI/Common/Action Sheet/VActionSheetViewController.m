@@ -31,7 +31,7 @@
 #import "VDependencyManager.h"
 
 
-@interface VActionSheetViewController () <UITableViewDelegate, UITableViewDataSource, CCHLinkTextViewDelegate, UIGestureRecognizerDelegate>
+@interface VActionSheetViewController () <UITableViewDelegate, UITableViewDataSource, CCHLinkTextViewDelegate, UIGestureRecognizerDelegate, UITextViewDelegate>
 
 @property (nonatomic, strong) NSArray *addedItems;
 @property (nonatomic, strong) NSArray *actionItems;
@@ -49,9 +49,16 @@
 @property (weak, nonatomic) IBOutlet UIView *gradientContainer;
 @property (weak, nonatomic) IBOutlet VHashTagTextView *titleTextView;
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *tapAwayGestureRecognizer;
+@property (weak, nonatomic) IBOutlet UIView *emptySpaceContainer;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewTopSpace;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewBottomSpace;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *horizontalSpace;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *blurringContainerHeightConstraint;
 @property (nonatomic, strong) CAGradientLayer *gradient;
+
+// For ignoring the tap gesture when we've clicked a hashtag
+@property (nonatomic, assign) BOOL hashtagPressed;
 
 @end
 
@@ -77,7 +84,7 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     self.titleTextView.text = nil;
     self.usernameLabel.text = nil;
     self.userCaptionLabel.text = nil;
-
+    
     UIToolbar *blurredView = [[UIToolbar alloc] initWithFrame:CGRectMake(0,
                                                                          0,
                                                                          CGRectGetWidth(self.blurringContainer.bounds),
@@ -104,6 +111,8 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     [super viewWillAppear:animated];
     
     self.view.userInteractionEnabled = YES;
+    
+    self.tapAwayGestureRecognizer.enabled = YES;
     
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
@@ -144,6 +153,11 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
 
 - (IBAction)pressedTapAwayButton:(id)sender
 {
+    if (self.hashtagPressed)
+    {
+        self.hashtagPressed = NO;
+        return;
+    }
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -319,17 +333,30 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
         attributes[NSParagraphStyleAttributeName] = paragraphStyle;
     }
     
-    NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:self.descriptionItem.title
+    NSString *st = [[self.descriptionItem.title stringByAppendingString:self.descriptionItem.title] stringByAppendingString:self.descriptionItem.title];
+    NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:st
                                                                                                 attributes:attributes];
-    [self.tapAwayGestureRecognizer requireGestureRecognizerToFail:self.titleTextView.linkGestureRecognizer];
     self.titleTextView.attributedText = mutableAttributedString;
     self.titleTextView.linkDelegate = self;
+}
+
+- (void)viewDidLayoutSubviews
+{
+    // Turn scrolling on on our text view if necessary
+    CGRect rect = [self.titleTextView.attributedText boundingRectWithSize:CGSizeMake(CGRectGetWidth(self.view.bounds) - self.horizontalSpace.constant * 2, CGFLOAT_MAX)
+                                                                  options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                                                  context:nil];
+    if (ceilf(CGRectGetHeight(rect)) > CGRectGetMaxY(self.emptySpaceContainer.frame) - self.textViewBottomSpace.constant - self.textViewTopSpace.constant)
+    {
+        self.titleTextView.scrollEnabled = YES;
+    }
 }
 
 #pragma mark - CCHLinkTextViewDelegate
 
 - (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
 {
+    self.hashtagPressed = YES;
     if (self.descriptionItem.hashTagSelectionHandler)
     {
         self.descriptionItem.hashTagSelectionHandler(value);
