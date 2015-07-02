@@ -8,7 +8,7 @@
 
 #import "VDependencyManager.h"
 
-static NSString * const kLikeButtonCoachmarkIdentifier = @"like_button_coachmark";
+extern NSString * const VLikeButtonCoachmarkIdentifier;
 
 /**
     A convenient category for getting the coachmark manager managed by the scaffold

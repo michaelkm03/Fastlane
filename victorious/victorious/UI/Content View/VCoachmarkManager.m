@@ -102,7 +102,7 @@ static const CGFloat kAnimationVerticalOffset = 10.0f;
     {
         if ( !coachmark.hasBeenShown && [coachmark.remoteId isEqualToString:remoteID] )
         {
-            if ([coachmark.remoteId isEqualToString:kLikeButtonCoachmarkIdentifier])
+            if ([coachmark.remoteId isEqualToString:VLikeButtonCoachmarkIdentifier])
             {
                 // Since like buttons are close to the edge of the screen, horizontal inset needs to be smaller
                 coachmark.horizontalInset = 10.0f;
