@@ -101,6 +101,7 @@
 		032954A71A9FFD9100698119 /* VURLMacroReplacementTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 032954A61A9FFD9100698119 /* VURLMacroReplacementTests.m */; };
 		032954AB1AA0FDB800698119 /* NSCharacterSet+VURLParts.m in Sources */ = {isa = PBXBuildFile; fileRef = 032954AA1AA0FDB800698119 /* NSCharacterSet+VURLParts.m */; };
 		0329B9A01ACBAAFB003BBCC5 /* VContentViewFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0329B99F1ACBAAFB003BBCC5 /* VContentViewFactoryTests.m */; };
+		032F49421B44D5D4005325CA /* VRunBlockOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 032F49411B44D5D4005325CA /* VRunBlockOperation.m */; };
 		0330D42B1A6F5BAE007EEEE4 /* NSURL+VPathHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0330D42A1A6F5BAE007EEEE4 /* NSURL+VPathHelper.m */; };
 		0343AF831A143F550025B9F8 /* AVAsset+OrientationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */; };
 		0343AF841A143FD20025B9F8 /* NSDate+timeSinceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE49323519E338CE00C0912E /* NSDate+timeSinceTests.m */; };
@@ -323,12 +324,12 @@
 		A70564BC19E7817C004A8387 /* VObjectManager+Discover.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564BB19E7817C004A8387 /* VObjectManager+Discover.m */; };
 		A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564C119E781EE004A8387 /* VNoContentTableViewCell.m */; };
 		A70564C719E7820A004A8387 /* VHashtag+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564C619E7820A004A8387 /* VHashtag+RestKit.m */; };
-		A705F4571B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F4561B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m */; };
-		A705F4501B3DC7AC007DBD3C /* VCellSizeCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F44F1B3DC7AC007DBD3C /* VCellSizeCollection.m */; };
-		A705F4531B3DC7C1007DBD3C /* VCellSizeComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F4521B3DC7C1007DBD3C /* VCellSizeComponent.m */; };
 		A705F44A1B3CC00D007DBD3C /* VUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F4451B3CC00D007DBD3C /* VUserCell.m */; };
 		A705F44B1B3CC00D007DBD3C /* VUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A705F4461B3CC00D007DBD3C /* VUserCell.xib */; };
 		A705F44C1B3CC00D007DBD3C /* VUsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F4491B3CC00D007DBD3C /* VUsersViewController.m */; };
+		A705F4501B3DC7AC007DBD3C /* VCellSizeCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F44F1B3DC7AC007DBD3C /* VCellSizeCollection.m */; };
+		A705F4531B3DC7C1007DBD3C /* VCellSizeComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F4521B3DC7C1007DBD3C /* VCellSizeComponent.m */; };
+		A705F4571B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = A705F4561B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m */; };
 		A708C9581A7FFF67000EE1EE /* VContentViewRotationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A708C9571A7FFF67000EE1EE /* VContentViewRotationHelper.m */; };
 		A708C95B1A8067B9000EE1EE /* VContentRepopulateTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A708C95A1A8067B9000EE1EE /* VContentRepopulateTransition.m */; };
 		A709642419F0A13800CE6633 /* VTracking+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A709642319F0A13800CE6633 /* VTracking+RestKit.m */; };
@@ -1240,6 +1241,8 @@
 		032954A91AA0FDB800698119 /* NSCharacterSet+VURLParts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSCharacterSet+VURLParts.h"; sourceTree = "<group>"; };
 		032954AA1AA0FDB800698119 /* NSCharacterSet+VURLParts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSCharacterSet+VURLParts.m"; sourceTree = "<group>"; };
 		0329B99F1ACBAAFB003BBCC5 /* VContentViewFactoryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewFactoryTests.m; sourceTree = "<group>"; };
+		032F49401B44D5D4005325CA /* VRunBlockOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRunBlockOperation.h; sourceTree = "<group>"; };
+		032F49411B44D5D4005325CA /* VRunBlockOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRunBlockOperation.m; sourceTree = "<group>"; };
 		0330D4281A6ED98D007EEEE4 /* VNavigationDestinationsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationDestinationsProvider.h; sourceTree = "<group>"; };
 		0330D4291A6F5BAE007EEEE4 /* NSURL+VPathHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+VPathHelper.h"; sourceTree = "<group>"; };
 		0330D42A1A6F5BAE007EEEE4 /* NSURL+VPathHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+VPathHelper.m"; sourceTree = "<group>"; };
@@ -1637,19 +1640,19 @@
 		A70564C519E7820A004A8387 /* VHashtag+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VHashtag+RestKit.h"; sourceTree = "<group>"; };
 		A70564C619E7820A004A8387 /* VHashtag+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VHashtag+RestKit.m"; sourceTree = "<group>"; };
 		A70564CB19E78250004A8387 /* VDiscoverViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverViewControllerTests.m; sourceTree = "<group>"; };
-		A705F4551B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VLoginAndRegistration.h"; sourceTree = "<group>"; };
-		A705F4561B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VLoginAndRegistration.m"; sourceTree = "<group>"; };
-		A705F44E1B3DC7AC007DBD3C /* VCellSizeCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCellSizeCollection.h; path = Sizing/VCellSizeCollection.h; sourceTree = "<group>"; };
-		A705F44F1B3DC7AC007DBD3C /* VCellSizeCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCellSizeCollection.m; path = Sizing/VCellSizeCollection.m; sourceTree = "<group>"; };
-		A705F4511B3DC7C1007DBD3C /* VCellSizeComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCellSizeComponent.h; path = Sizing/VCellSizeComponent.h; sourceTree = "<group>"; };
-		A705F4521B3DC7C1007DBD3C /* VCellSizeComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCellSizeComponent.m; path = Sizing/VCellSizeComponent.m; sourceTree = "<group>"; };
-		A705F4541B3DC839007DBD3C /* VCellSizingUserInfoKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VCellSizingUserInfoKeys.h; sourceTree = "<group>"; };
 		A705F4441B3CC00D007DBD3C /* VUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserCell.h; sourceTree = "<group>"; };
 		A705F4451B3CC00D007DBD3C /* VUserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserCell.m; sourceTree = "<group>"; };
 		A705F4461B3CC00D007DBD3C /* VUserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VUserCell.xib; sourceTree = "<group>"; };
 		A705F4471B3CC00D007DBD3C /* VUsersDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUsersDataSource.h; sourceTree = "<group>"; };
 		A705F4481B3CC00D007DBD3C /* VUsersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUsersViewController.h; sourceTree = "<group>"; };
 		A705F4491B3CC00D007DBD3C /* VUsersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUsersViewController.m; sourceTree = "<group>"; };
+		A705F44E1B3DC7AC007DBD3C /* VCellSizeCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCellSizeCollection.h; path = Sizing/VCellSizeCollection.h; sourceTree = "<group>"; };
+		A705F44F1B3DC7AC007DBD3C /* VCellSizeCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCellSizeCollection.m; path = Sizing/VCellSizeCollection.m; sourceTree = "<group>"; };
+		A705F4511B3DC7C1007DBD3C /* VCellSizeComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCellSizeComponent.h; path = Sizing/VCellSizeComponent.h; sourceTree = "<group>"; };
+		A705F4521B3DC7C1007DBD3C /* VCellSizeComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCellSizeComponent.m; path = Sizing/VCellSizeComponent.m; sourceTree = "<group>"; };
+		A705F4541B3DC839007DBD3C /* VCellSizingUserInfoKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VCellSizingUserInfoKeys.h; sourceTree = "<group>"; };
+		A705F4551B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VLoginAndRegistration.h"; sourceTree = "<group>"; };
+		A705F4561B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VLoginAndRegistration.m"; sourceTree = "<group>"; };
 		A708C9561A7FFF67000EE1EE /* VContentViewRotationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentViewRotationHelper.h; sourceTree = "<group>"; };
 		A708C9571A7FFF67000EE1EE /* VContentViewRotationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewRotationHelper.m; sourceTree = "<group>"; };
 		A708C9591A8067B9000EE1EE /* VContentRepopulateTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentRepopulateTransition.h; sourceTree = "<group>"; };
@@ -3953,16 +3956,18 @@
 				C39864BC1B266A7600694AB3 /* VDependencyManager+VHighlightContainer.m */,
 				D8758D201B0FDEE3008C6C0D /* VDependencyManager+VKeyboardStyle.h */,
 				D8758D211B0FDEE3008C6C0D /* VDependencyManager+VKeyboardStyle.m */,
+				A705F4551B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.h */,
+				A705F4561B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m */,
 				0386E1FE1A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.h */,
 				0386E1FF1A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.m */,
 				037D2D5D1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.h */,
 				037D2D5E1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.m */,
-				F0F04AF51B2A37CB00F6F401 /* VDependencyManager+VShareMenuItem.h */,
-				F0F04AF61B2A37CB00F6F401 /* VDependencyManager+VShareMenuItem.m */,
 				037D2D5A1A1A588D00947A22 /* VDependencyManager+VObjectManager.h */,
 				037D2D5B1A1A588D00947A22 /* VDependencyManager+VObjectManager.m */,
 				037FCF291A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.h */,
 				037FCF2A1A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.m */,
+				F0F04AF51B2A37CB00F6F401 /* VDependencyManager+VShareMenuItem.h */,
+				F0F04AF61B2A37CB00F6F401 /* VDependencyManager+VShareMenuItem.m */,
 				D8758D1D1B0FDE11008C6C0D /* VDependencyManager+VStatusBarStyle.h */,
 				D8758D1E1B0FDE11008C6C0D /* VDependencyManager+VStatusBarStyle.m */,
 				039420411AB7D1A70087ADFA /* VDependencyManager+VTracking.h */,
@@ -3981,14 +3986,6 @@
 				038C511A1B37C8F500A903C2 /* VTemplateImageSet.h */,
 				038C511B1B37C8F500A903C2 /* VTemplateImageSet.m */,
 				D8B88F981ABA93E400DBAEA0 /* workspaceTemplate.json */,
-				D8758D1D1B0FDE11008C6C0D /* VDependencyManager+VStatusBarStyle.h */,
-				D8758D1E1B0FDE11008C6C0D /* VDependencyManager+VStatusBarStyle.m */,
-				D8758D201B0FDEE3008C6C0D /* VDependencyManager+VKeyboardStyle.h */,
-				D8758D211B0FDEE3008C6C0D /* VDependencyManager+VKeyboardStyle.m */,
-				C39864BB1B266A7600694AB3 /* VDependencyManager+VHighlightContainer.h */,
-				C39864BC1B266A7600694AB3 /* VDependencyManager+VHighlightContainer.m */,
-				A705F4551B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.h */,
-				A705F4561B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -4048,6 +4045,8 @@
 				0386F88B1B390ADE00E8D459 /* VDownloadOperation.m */,
 				03A058C71AF05D8300CF39D1 /* VObjectManager+VTemplateDownloaderConformance.h */,
 				03A058C81AF05D8300CF39D1 /* VObjectManager+VTemplateDownloaderConformance.m */,
+				032F49401B44D5D4005325CA /* VRunBlockOperation.h */,
+				032F49411B44D5D4005325CA /* VRunBlockOperation.m */,
 				03A058BD1AEF44D600CF39D1 /* VTemplateDownloadOperation.h */,
 				03A058BE1AEF44D600CF39D1 /* VTemplateDownloadOperation.m */,
 				0386F8761B37E52500E8D459 /* VTemplatePackageManager.h */,
@@ -7721,6 +7720,7 @@
 				A733D8FC1A23D0980053E9F1 /* VNotificationSettings.m in Sources */,
 				A7ECC1BA1AD5EAA60003E00A /* NSURL+VCustomScheme.m in Sources */,
 				0314D48819B46B5E00FA363C /* VCommentTextAndMediaView.m in Sources */,
+				032F49421B44D5D4005325CA /* VRunBlockOperation.m in Sources */,
 				D888B52B1A86FC7800B34149 /* VRadialGradientView.m in Sources */,
 				D8D3B7241AB264D400CF966C /* AVAsset+VVideoCompositionWithFrameDuration.m in Sources */,
 				D8D812AB1B14EA0200E93B37 /* VModernResetPasswordViewController.m in Sources */,

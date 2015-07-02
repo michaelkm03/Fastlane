@@ -87,7 +87,14 @@ typedef void (^VTemplateDownloaderCompletion)(NSData *templateData, NSError *err
  The manager will give the downloader this much time 
  to do its thing before moving on to cached options.
  */
-@property (nonatomic) NSTimeInterval timeout;
+@property (nonatomic) NSTimeInterval templateDownloadTimeout;
+
+/**
+ The manager will allow for this much time to download
+ referenced images within the template. Typically this
+ is larger than the templateDownloadTimeout.
+ */
+@property (nonatomic) NSTimeInterval imageDownloadTimeout;
 
 /**
  If YES, this operation will not stop until a template has 

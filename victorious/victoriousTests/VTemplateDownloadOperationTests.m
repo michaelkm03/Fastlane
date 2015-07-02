@@ -7,7 +7,9 @@
 //
 
 #import "FBKVOController.h"
+#import "Nocilla.h"
 #import "NSString+VDataCacheID.h"
+#import "NSURL+VDataCacheID.h"
 #import "VTemplateDownloadOperation.h"
 #import "VTemplateSerialization.h"
 
@@ -140,10 +142,16 @@
 
     self.dataCache = [[VDataCache alloc] init];
     self.dataCache.localCacheURL = temporaryDirectory;
+    
+    [[LSNocilla sharedInstance] start];
 }
 
 - (void)tearDown
 {
+    [self.operationQueue cancelAllOperations];
+    [self.operationQueue waitUntilAllOperationsAreFinished];
+    [[LSNocilla sharedInstance] clearStubs];
+    [[LSNocilla sharedInstance] stop];
     [super tearDown];
 }
 
@@ -187,7 +195,8 @@
     
     VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:[[VBasicTemplateDownloaderMock alloc] init]
                                                                                                andDelegate:delegate];
-    downloadOperation.timeout = 0.01;
+    downloadOperation.shouldRetry = NO;
+    downloadOperation.templateDownloadTimeout = 0.01;
     downloadOperation.templateConfigurationCacheID = templateCacheID;
     downloadOperation.dataCache = self.dataCache;
     [self.operationQueue addOperation:downloadOperation];
@@ -281,7 +290,7 @@
     
     VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
     downloadOperation.templateConfigurationCacheID = templateCacheID;
-    downloadOperation.timeout = 0.1;
+    downloadOperation.templateDownloadTimeout = 0.1;
     
     [self.operationQueue addOperation:downloadOperation];
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
@@ -304,7 +313,7 @@
     };
     
     VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
-    downloadOperation.timeout = 0.01;
+    downloadOperation.templateDownloadTimeout = 0.01;
     downloadOperation.templateConfigurationCacheID = [[NSUUID UUID] UUIDString];
     [self.operationQueue addOperation:downloadOperation];
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
@@ -333,7 +342,7 @@
     };
     
     VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
-    downloadOperation.timeout = 0.01;
+    downloadOperation.templateDownloadTimeout = 0.01;
     downloadOperation.shouldRetry = NO;
     downloadOperation.templateConfigurationCacheID = [[NSUUID UUID] UUIDString];
     [self.operationQueue addOperation:downloadOperation];
@@ -371,6 +380,67 @@
         }
     }];
     
+    [self.operationQueue addOperation:downloadOperation];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
+}
+
+- (void)testImageDownload
+{
+    NSURL *imageURL = [NSURL URLWithString:@"http://www.example.com/myImage"];
+    VBasicTemplateDownloaderMock *downloader = [[VBasicTemplateDownloaderMock alloc] init];
+    downloader.mockTemplateDictionary = @{ @"image": @{ @"imageURL": imageURL.absoluteString } };
+    
+    char bytes[] = { 1, 2, 3, 4, 5 };
+    NSData *imageData = [NSData dataWithBytes:bytes length:5];
+    stubRequest(@"GET", imageURL.absoluteString).andReturn(200).withBody(imageData);
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Delegate callback"];
+    
+    VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
+    delegate.didFinishLoadingWithTemplateConfiguration = ^(NSDictionary *templateConfiguration)
+    {
+        NSDictionary *expected = downloader.mockTemplateDictionary;
+        XCTAssertEqualObjects(templateConfiguration, expected);
+        
+        NSData *imageDataFromCache = [self.dataCache cachedDataForID:imageURL];
+        XCTAssertEqualObjects(imageData, imageDataFromCache);
+        
+        [expectation fulfill];
+    };
+    
+    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
+    downloadOperation.templateConfigurationCacheID = [[NSUUID UUID] UUIDString];
+    downloadOperation.dataCache = self.dataCache;
+    [self.operationQueue addOperation:downloadOperation];
+    [self waitForExpectationsWithTimeout:1.0 handler:nil];
+}
+
+- (void)testDownloaderFallsBackOnCacheAfterImageDownloadError
+{
+    NSString *templateCacheID = [[NSUUID UUID] UUIDString];
+    NSURL *templateFileURL = [[NSBundle bundleForClass:[self class]] URLForResource:@"templateCache" withExtension:@"json"];
+    NSData *templateData = [NSData dataWithContentsOfURL:templateFileURL];
+    [self.dataCache cacheData:templateData forID:templateCacheID error:nil];
+    NSDictionary *expectedTemplateConfiguration = [VTemplateSerialization templateConfigurationDictionaryWithData:templateData];
+    
+    NSURL *imageURL = [NSURL URLWithString:@"http://www.example.com/myImage"];
+    VBasicTemplateDownloaderMock *downloader = [[VBasicTemplateDownloaderMock alloc] init];
+    downloader.mockTemplateDictionary = @{ @"image": @{ @"imageURL": imageURL.absoluteString } };
+    
+    stubRequest(@"GET", imageURL.absoluteString).andFailWithError([NSError errorWithDomain:@"really bad" code:666 userInfo:nil]);
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Delegate callback"];
+    
+    VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
+    delegate.didFinishLoadingWithTemplateConfiguration = ^(NSDictionary *templateConfiguration)
+    {
+        XCTAssertEqualObjects(templateConfiguration, expectedTemplateConfiguration);
+        [expectation fulfill];
+    };
+    
+    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
+    downloadOperation.templateConfigurationCacheID = templateCacheID;
+    downloadOperation.dataCache = self.dataCache;
     [self.operationQueue addOperation:downloadOperation];
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
