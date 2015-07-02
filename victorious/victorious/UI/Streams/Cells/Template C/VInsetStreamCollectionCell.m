@@ -31,6 +31,7 @@ static const CGFloat kInsetCellActionViewHeight     = 41.0f;
 static const CGFloat kCountsTextViewMinHeight       = 20.0f;
 static const CGFloat kMaxCaptionHeight              = 80.0f;
 static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0f };
+static const UIEdgeInsets kCaptionInsets            = { 4.0, 0.0, 4.0, 0.0  };
 
 @interface VInsetStreamCollectionCell () <CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate>
 
@@ -117,7 +118,7 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
     _captionTextView = [[VHashTagTextView alloc] initWithFrame:CGRectZero textContainer:textContainer];
     _captionTextView.scrollEnabled = NO;
     _captionTextView.editable = NO;
-    _captionTextView.textContainerInset = UIEdgeInsetsZero;
+    _captionTextView.textContainerInset = kCaptionInsets;
     _captionTextView.linkDelegate = self;
     _captionTextView.backgroundColor = [UIColor clearColor];
     [self.contentView addSubview:_captionTextView];
@@ -187,6 +188,7 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
                  CGFloat textWidth = size.width - kTextMargins.left - kTextMargins.right;
                  NSDictionary *attributes = [self sequenceDescriptionAttributesWithDependencyManager:dependencyManager];
                  textHeight = VCEIL( [sequence.name frameSizeForWidth:textWidth andAttributes:attributes].height );
+                 textHeight += kCaptionInsets.bottom + kCaptionInsets.top;
              }
              return CGSizeMake( 0.0f, textHeight );
          }];

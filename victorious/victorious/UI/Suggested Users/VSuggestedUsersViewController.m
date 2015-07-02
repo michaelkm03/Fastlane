@@ -95,7 +95,7 @@
     self.messageTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.messageTextView.contentInset = UIEdgeInsetsZero;
     self.messageTextView.textContainer.lineFragmentPadding = 0.0f;
-    self.messageTextView.textContainerInset = UIEdgeInsetsZero;
+    self.messageTextView.textContainerInset = UIEdgeInsetsMake( 4.0, 0.0, 4.0, 0.0 );
     
     self.collectionView.delegate = self;
     self.collectionView.backgroundColor = [UIColor clearColor];

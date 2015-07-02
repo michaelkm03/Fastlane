@@ -27,7 +27,7 @@
 #import "VCellSizeCollection.h"
 #import "VCellSizingUserInfoKeys.h"
 
-static const UIEdgeInsets kTextInsets           = { 0.0f, 20.0f, 5.0f, 20.0f };
+static const UIEdgeInsets kTextInsets           = { 4.0f, 20.0f, 5.0f, 20.0f };
 static const CGFloat kHeaderHeight              = 74.0f;
 static const CGFloat kGradientAlpha             = 0.3f;
 static const CGFloat kShadowAlpha               = 0.5f;
