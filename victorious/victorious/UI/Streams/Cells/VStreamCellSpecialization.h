@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class VStreamItem;
+@class VStreamItem, VDependencyManager;
 
 /**
  *  Stream cells that conform to this protcol desire specialization. When a cell or cell
@@ -26,6 +26,7 @@
  *  relayout or reconfiguration when reused.
  */
 + (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem
-                            baseIdentifier:(NSString *)baseIdentifier;
+                            baseIdentifier:(NSString *)baseIdentifier
+                         dependencyManager:(VDependencyManager *)dependencyManager;
 
 @end

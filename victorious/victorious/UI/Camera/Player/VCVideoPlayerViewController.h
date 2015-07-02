@@ -67,9 +67,10 @@
 
 /**
  Enables video tracking through an instance of VTrackingManager using data from
- a valid VTracking instance.
+ a valid VTracking instance and a provided stream ID if this video was loaded
+ from a  stream.
  */
-- (void)enableTrackingWithTrackingItem:(VTracking *)tracking;
+- (void)enableTrackingWithTrackingItem:(VTracking *)tracking  streamID:(NSString *)streamID;
 
 /**
  Disables tracking and releases reference to any current tracking item.  To re-enable, 

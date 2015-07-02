@@ -55,6 +55,8 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
 @property (nonatomic, strong) VSequenceCountsTextView *countsTextView;
 
 @property (nonatomic, strong) NSLayoutConstraint *captionHeight;
+@property (nonatomic, strong) NSLayoutConstraint *commentToLikeButtonHorizontalSpacing;
+@property (nonatomic, strong) NSLayoutConstraint *likeButtonWidth;
 
 @end
 
@@ -169,6 +171,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     [_overlayContainer addSubview:_likeButton];
     _likeButton.translatesAutoresizingMaskIntoConstraints = NO;
     [_likeButton v_addWidthConstraint:kButtonWidth];
+    _likeButtonWidth = [_likeButton v_internalWidthConstraint];
     [_likeButton v_addHeightConstraint:kButtonHeight];
     [_overlayContainer addConstraint:[NSLayoutConstraint constraintWithItem:_likeButton attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_overlayContainer attribute:NSLayoutAttributeLeading multiplier:1.0 constant:12.0f]];
     [_overlayContainer addConstraint:[NSLayoutConstraint constraintWithItem:_likeButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_captionTextView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0f]];
@@ -207,6 +210,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
              VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
              return CGSizeMake( 0.0f, size.width * [[self class] aspectRatioForSequence:sequence] );
          }];
+        [collection addComponentWithConstantSize:CGSizeMake( 0.0, -kButtonHeight )];
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
              VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
@@ -216,18 +220,17 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
              if ( sequence.name.length > 0 )
              {
                  textHeight = VCEIL( [sequence.name frameSizeForWidth:size.width andAttributes:attributes].height );
-             }
-             else
-             {
-                 textHeight = 0.0f;
-             }
+             };
              return CGSizeMake( 0.0f, textHeight );
          }];
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
              VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
              NSDictionary *attributes = [[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager];
-             return CGSizeMake( 0.0f, MAX( kCountsTextViewMinHeight, [@"" frameSizeForWidth:size.width andAttributes:attributes].height ) );
+             
+             // FIXME: The use of "V" is just to get a good size for *something* in this text field since
+             // we can't know what the actual text for the label is in a static method
+             return CGSizeMake( 0.0f, MAX( kCountsTextViewMinHeight, [@"V" frameSizeForWidth:size.width andAttributes:attributes].height ) );
          }];
     }
     return collection;
@@ -317,7 +320,19 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     if ( !sequence.permissions.canComment )
     {
         self.commentButton.hidden = YES;
-        self.countsTextView.hideComments = YES;
+        self.countsTextView.hideComments = !sequence.permissions.canComment;
+    }
+    const BOOL canLike = [self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue;
+    if ( !canLike )
+    {
+        self.likeButton.hidden = YES;
+        self.likeButtonWidth.constant = 0.0;
+        self.countsTextView.hideLikes = !canLike;
+    }
+    else
+    {
+        self.likeButton.hidden = NO;
+        self.likeButtonWidth.constant = kButtonWidth;
     }
     [self.countsTextView setCommentsCount:sequence.commentCount.integerValue];
     [self.countsTextView setLikesCount:sequence.likeCount.integerValue];
@@ -441,13 +456,15 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
 
 + (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem
                             baseIdentifier:(NSString *)baseIdentifier
+                         dependencyManager:(VDependencyManager *)dependencyManager
 {
     NSString *identifier = baseIdentifier == nil ? [[NSMutableString alloc] init] : [baseIdentifier copy];
     identifier = [NSString stringWithFormat:@"%@.%@", identifier, NSStringFromClass(self)];
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
         identifier = [VSequencePreviewView reuseIdentifierForSequence:(VSequence *)streamItem
-                                                       baseIdentifier:identifier];
+                                                       baseIdentifier:identifier
+                                                    dependencyManager:dependencyManager];
     }
     return identifier;
 }
