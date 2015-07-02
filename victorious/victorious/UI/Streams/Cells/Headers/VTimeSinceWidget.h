@@ -1,5 +1,5 @@
 //
-//  VStreamHeaderComment.h
+//  VTimeSinceWidget.h
 //  victorious
 //
 //  Created by Michael Sena on 5/7/15.
@@ -7,17 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+
 #import "VHasManagedDependencies.h"
 
 @class VSequence;
 
 /**
- *  A Stream header with a comment button on the right.
+ *  VTimeSinceWidget displays the elapsed time since a particular 
+ *  sequence was posted.
  */
-@interface VStreamHeaderComment : UIView <VHasManagedDependencies>
+@interface VTimeSinceWidget : UIView <VHasManagedDependencies>
 
 /**
- *  The sequence for this header to represent.
+ *  The sequence represented by this time since view.
  */
 @property (nonatomic, strong) VSequence *sequence;
 

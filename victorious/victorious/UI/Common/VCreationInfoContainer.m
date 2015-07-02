@@ -23,7 +23,6 @@
 
 // Formatters
 #import "VLargeNumberFormatter.h"
-#import "NSDate+timeSince.h"
 
 // Views + Helpers
 #import "UIView+Autolayout.h"
@@ -33,9 +32,6 @@
 // Respdoner Chain
 #import "VSequenceActionsDelegate.h"
 
-static const CGFloat kClockSize = 8.5f;
-static const CGFloat kSpaceCreatorLabelToClockImageView = 4.0f;
-static const CGFloat kSpaceClockImageViewToTimeSinceLabel = 3.0f;
 static const CGFloat kDefaultHeight = 44.0f;
 static const CGFloat kVerticalPaddingToCenterLabels = 0.0f;
 static const CGFloat kHorizontalHitPadding = 44.0f;
@@ -49,8 +45,6 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
 @property (nonatomic, strong) VStreamLabel *creatorLabel;
 @property (nonatomic, strong) VStreamLabel *parentUserLabel;
 @property (nonatomic, strong) VStreamLabel *otherPostersLabel;
-@property (nonatomic, strong) UIImageView *clockImageView;
-@property (nonatomic, strong) UILabel *timeSinceLabel;
 
 @property (nonatomic, strong) NSArray *singleLineConstraints;
 @property (nonatomic, strong) NSArray *multiLineConstraints;
@@ -105,21 +99,6 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
     self.parentUserLabel.delegate = self;
     [self addSubview:self.parentUserLabel];
     
-    UIImage *clockImage = [[UIImage imageNamed:@"StreamDate"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    self.clockImageView = [[UIImageView alloc] initWithImage:clockImage];
-    self.clockImageView.contentMode = UIViewContentModeScaleAspectFit;
-    self.clockImageView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.clockImageView v_addWidthConstraint:kClockSize];
-    [self.clockImageView v_addHeightConstraint:kClockSize];
-    [self addSubview:self.clockImageView];
-
-    self.timeSinceLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    self.timeSinceLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    self.timeSinceLabel.textAlignment = NSTextAlignmentLeft;
-    [self.timeSinceLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-    [self.timeSinceLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-    [self addSubview:self.timeSinceLabel];
-    
     self.otherPostersLabel = [[VStreamLabel alloc] initWithFrame:CGRectZero];
     self.otherPostersLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.otherPostersLabel.textAlignment = NSTextAlignmentLeft;
@@ -136,32 +115,15 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
     NSDictionary *viewDictionary = @{
                                      @"creatorLabel":self.creatorLabel,
                                      @"parentUserLabel":self.parentUserLabel,
-                                     @"clockImageView":self.clockImageView,
-                                     @"timeSinceLabel":self.timeSinceLabel,
                                      @"otherPostersLabel":self.otherPostersLabel
                                      };
     
     if (!self.layedOutDefaultConstraints)
     {
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[creatorLabel]-kSpaceCreatorLabelToClockImageView-[clockImageView]-kSpaceClockImageViewToTimeSinceLabel-[timeSinceLabel]|"
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[creatorLabel]|"
                                                                      options:kNilOptions
-                                                                     metrics:@{@"kSpaceCreatorLabelToClockImageView": @(kSpaceCreatorLabelToClockImageView),
-                                                                               @"kSpaceClockImageViewToTimeSinceLabel": @(kSpaceClockImageViewToTimeSinceLabel)}
+                                                                     metrics:nil
                                                                        views:viewDictionary]];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.clockImageView
-                                                         attribute:NSLayoutAttributeCenterY
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:self.creatorLabel
-                                                         attribute:NSLayoutAttributeCenterY
-                                                        multiplier:1.0f
-                                                          constant:0.0f]];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.timeSinceLabel
-                                                         attribute:NSLayoutAttributeCenterY
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:self.clockImageView
-                                                         attribute:NSLayoutAttributeCenterY
-                                                        multiplier:1.0f
-                                                          constant:0.0f]];
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[parentUserLabel][otherPostersLabel]"
                                                                      options:kNilOptions
                                                                      metrics:nil
@@ -305,14 +267,6 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
              [welf updateWithSequence:_sequence];
          }];
     }
-}
-
-- (void)setShouldShowTimeSince:(BOOL)shouldShowTimeSince
-{
-    _shouldShowTimeSince = shouldShowTimeSince;
-    
-    self.clockImageView.hidden = !shouldShowTimeSince;
-    self.timeSinceLabel.hidden = !shouldShowTimeSince;
 }
 
 #pragma mark - Action Forwarding
@@ -478,7 +432,6 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
     [self.otherPostersLabel setAttributedText:[self othersFormattedStringHighlighted:YES]
                           forStreamLabelState:VStreamLabelStateHighlighted];
     
-    self.timeSinceLabel.text = [sequence.releasedAt timeSince];
     [self setNeedsUpdateConstraints];
 }
 
@@ -510,10 +463,6 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
     }
     
     _dependencyManager = dependencyManager;
-
-    self.timeSinceLabel.font = [_dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
-    self.timeSinceLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    self.clockImageView.tintColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
 }
 
 #pragma mark - VActionBarFlexibleWidth

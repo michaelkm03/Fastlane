@@ -23,6 +23,7 @@
 #import "VDefaultProfileButton.h"
 #import "VLargeNumberFormatter.h"
 #import "UIView+AutoLayout.h"
+#import "VTimeSinceWidget.h"
 
 // Models
 #import "VSequence+Fetcher.h"
@@ -32,6 +33,7 @@
 static const CGFloat kLeadingTrailingHeaderSpace = 11.0f;
 static const CGFloat kAvatarSize = 32.0f;
 static const CGFloat kSpaceAvatarToLabels = 7.0f;
+static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
 
 @interface VStreamHeaderTimeSince ()
 
@@ -39,6 +41,7 @@ static const CGFloat kSpaceAvatarToLabels = 7.0f;
 @property (nonatomic, strong) VFlexBar *actionBar;
 @property (nonatomic, strong) VDefaultProfileButton *profileButton;
 @property (nonatomic, strong) VCreationInfoContainer *creationInfoContainer;
+@property (nonatomic, strong) VTimeSinceWidget *timeSinceWidget;
 
 @end
 
@@ -97,11 +100,21 @@ static const CGFloat kSpaceAvatarToLabels = 7.0f;
             [creationContainer setDependencyManager:self.dependencyManager];
         }
         self.creationInfoContainer = creationContainer;
+        self.creationInfoContainer.shouldShowTimeSince = NO;
+        
+        self.timeSinceWidget = [[VTimeSinceWidget alloc] initWithFrame:CGRectZero];
+        if ([self.timeSinceWidget respondsToSelector:@selector(setDependencyManager:)])
+        {
+            [self.timeSinceWidget setDependencyManager:self.dependencyManager];
+        }
+        self.timeSinceWidget.sequence = self.sequence;
         
         self.actionBar.actionItems = @[[VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingHeaderSpace],
                                        button,
                                        [VActionBarFixedWidthItem fixedWidthItemWithWidth:kSpaceAvatarToLabels],
                                        creationContainer,
+                                       [VActionBarFixedWidthItem fixedWidthItemWithWidth:kSpaceLabelsToTimestamp],
+                                       self.timeSinceWidget,
                                        [VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingHeaderSpace]];
         [self.actionBar v_addPinToTopBottomToSubview:self.creationInfoContainer];
         [self updateUserAvatarForSequence:self.sequence];
@@ -116,6 +129,7 @@ static const CGFloat kSpaceAvatarToLabels = 7.0f;
     _sequence = sequence;
     
     self.creationInfoContainer.sequence = sequence;
+    self.timeSinceWidget.sequence = sequence;
     [self.profileButton setProfileImageURL:[NSURL URLWithString:sequence.displayOriginalPoster.pictureUrl]
                                   forState:UIControlStateNormal];
     
@@ -146,6 +160,10 @@ static const CGFloat kSpaceAvatarToLabels = 7.0f;
     if ([self.creationInfoContainer respondsToSelector:@selector(setDependencyManager:)])
     {
         [self.creationInfoContainer setDependencyManager:dependencyManager];
+    }
+    if ([self.timeSinceWidget respondsToSelector:@selector(setDependencyManager:)])
+    {
+        [self.timeSinceWidget setDependencyManager:dependencyManager];
     }
     self.profileButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
 }
