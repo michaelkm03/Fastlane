@@ -8,6 +8,9 @@
 
 #import "VImageVideoLibraryViewController.h"
 
+// ViewControllers
+#import "VAssetGridViewController.h"
+
 // Views + Helpers
 #import "VFlexBar.h"
 #import "VCompatibility.h"
@@ -19,6 +22,8 @@
 @end
 
 @implementation VImageVideoLibraryViewController
+
+@synthesize handler;
 
 #pragma mark - VHasManagedDependencies
 
@@ -33,15 +38,15 @@
 
 - (void)viewDidLayoutSubviews
 {
-    CGFloat fullWidth = CGRectGetWidth(self.view.bounds);
+//    CGFloat fullWidth = CGRectGetWidth(self.view.bounds);
     if (self.alternateCaptureOptions.count > 0)
     {
-        CGFloat widthPerElement = VFLOOR(fullWidth / self.alternateCaptureOptions.count);
-        
-        for (VImageLibraryAlternateCaptureOption *alternateOption in self.alternateCaptureOptions)
-        {
-            // add buttons to flex bar
-        }
+//        CGFloat widthPerElement = VFLOOR(fullWidth / self.alternateCaptureOptions.count);
+//        
+//        for (VImageLibraryAlternateCaptureOption *alternateOption in self.alternateCaptureOptions)
+//        {
+//            // add buttons to flex bar
+//        }
     }
 }
 
@@ -58,6 +63,21 @@
         CGSize preferredContentSize = CGSizeMake(CGRectGetWidth(self.view.bounds) - 50.0f,
                                                  CGRectGetHeight(self.view.bounds) - 200.0f);
         destinationViewController.preferredContentSize = preferredContentSize;
+    }
+    else if ([segue.identifier isEqualToString:@"assetGridEmbed"])
+    {
+        VAssetGridViewController *destinationViewController = segue.destinationViewController;
+        destinationViewController.handler = ^void(UIImage *previewImage, NSURL *capturedMediaURL)
+        {
+#warning Remove me
+            NSData *dataWithURL = [NSData dataWithContentsOfURL:capturedMediaURL];
+            UIImage *imageFromData = [UIImage imageWithData:dataWithURL];
+            
+            if (self.handler)
+            {
+                self.handler(previewImage, capturedMediaURL);
+            }
+        };
     }
 }
 

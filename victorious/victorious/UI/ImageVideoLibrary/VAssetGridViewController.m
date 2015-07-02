@@ -12,15 +12,22 @@
 #import "VAssetCollectionViewCell.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
+#import "UIImage+Resize.h"
+
 @import Photos;
 
 @interface VAssetGridViewController ()
 
 @property (nonatomic, strong) PHFetchResult *allPhotosResult;
 
+@property (nonatomic, strong) UIImage *selectedFullSizeImage;
+@property (nonatomic, strong) NSURL *imageFileURL;
+
 @end
 
 @implementation VAssetGridViewController
+
+@synthesize handler;
 
 - (void)viewDidLoad
 {
@@ -85,26 +92,84 @@
         VLog(@"download progress: %f", progress);
         progressHud.progress = progress;
     };
-    [[PHImageManager defaultManager] requestImageForAsset:asset
-                                               targetSize:CGSizeZero
-                                              contentMode:PHImageContentModeDefault
-                                                  options:fullSizeRequestOptions
-                                            resultHandler:^(UIImage *result, NSDictionary *info)
-     {
-
-     }];
+    __weak typeof(self) welf = self;
+//    [[PHImageManager defaultManager] requestImageForAsset:asset
+//                                               targetSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)
+//                                              contentMode:PHImageContentModeDefault
+//                                                  options:fullSizeRequestOptions
+//                                            resultHandler:^(UIImage *result, NSDictionary *info)
+//     {
+//         welf.selectedFullSizeImage = result;
+//     }];
     [[PHImageManager defaultManager] requestImageDataForAsset:asset
                                                       options:fullSizeRequestOptions
                                                 resultHandler:^(NSData *imageData, NSString *dataUTI, UIImageOrientation orientation, NSDictionary *info)
      {
-         [progressHud hide:YES afterDelay:0.25f];
-
-         UIImage *imageFromData = [UIImage imageWithData:imageData];
-         UIImage *imageWithProperOrientation = [UIImage imageWithCGImage:imageFromData.CGImage scale:1.0f orientation:orientation];
-
+         dispatch_async(dispatch_get_main_queue(), ^
+         {
+             [progressHud hide:YES afterDelay:0.25f];
+         });
+         [welf callCompletionWithAsset:asset
+                              imageData:imageData
+                               orientation:orientation
+                                      info:info];
          VLog(@"request handler info: %@", info);
      }];
 }
+
+- (void)callCompletionWithAsset:(PHAsset *)asset
+                      imageData:(NSData *)imageData
+                    orientation:(UIImageOrientation)orientation
+                           info:(NSDictionary *)info
+{
+    __weak typeof(self) welf = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+    {
+        UIImage *imageFromData = [UIImage imageWithData:imageData];
+        UIImage *imageWithProperOrientation = [[UIImage imageWithCGImage:imageFromData.CGImage scale:1.0f orientation:orientation] fixOrientation];
+        NSURL *urlForAsset = [welf temporaryURLForAsset:asset];
+        [welf saveImage:imageWithProperOrientation
+                  toURL:urlForAsset];
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            __strong typeof (welf) strongSelf = welf;
+            strongSelf.selectedFullSizeImage = imageWithProperOrientation;
+            strongSelf.imageFileURL = urlForAsset;
+            
+#warning Remove me
+            NSData *dataWithURL = [NSData dataWithContentsOfURL:urlForAsset];
+            UIImage *imageFromData = [UIImage imageWithData:dataWithURL];
+            
+            if (strongSelf.handler != nil)
+            {
+                strongSelf.handler(strongSelf.selectedFullSizeImage, strongSelf.imageFileURL);
+            }
+        });
+    });
+}
+
+- (void)saveImage:(UIImage *)image
+            toURL:(NSURL *)fileURL
+{
+    NSData *imageData = UIImageJPEGRepresentation(image, 1.0f);
+    NSError *error = nil;
+    [imageData writeToURL:fileURL options:NSDataWritingAtomic error:&error];
+}
+
+- (NSURL *)temporaryURLForAsset:(PHAsset *)asset
+{
+    NSURL *baseURL = [self cacheDirectoryURL];
+    
+    NSUUID *uuid = [NSUUID UUID];
+    
+    return  [baseURL URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpeg", uuid.UUIDString]];
+}
+
+- (NSURL *)cacheDirectoryURL
+{
+    return [[[NSFileManager defaultManager] URLsForDirectory:NSCachesDirectory inDomains:NSUserDomainMask] firstObject];
+}
+
 
 - (PHAsset *)assetForIndexPath:(NSIndexPath *)indexPath
 {

@@ -14,25 +14,19 @@
 // Subclasses
 #import "VImageCreationFlowController.h"
 
-// Keys
-NSString * const VCreationFLowCaptureScreenKey = @"captureScreen";
-
 @interface VCreationFlowController ()
 
 @end
 
 @implementation VCreationFlowController
 
-#pragma mark - Init methods
+#pragma mark - VHasManagedDependencies
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    self = [super init];
+    self = [self init];
     if (self != nil)
     {
-        UIViewController *captureViewController = [dependencyManager viewControllerForKey:VCreationFLowCaptureScreenKey];
-        [self addCloseButtonToViewController:captureViewController];
-        [self pushViewController:captureViewController animated:NO];
     }
     return self;
 }
@@ -47,30 +41,6 @@ NSString * const VCreationFLowCaptureScreenKey = @"captureScreen";
     self.navigationBar.barTintColor = [UIColor blackColor];
     self.navigationBar.translucent = NO;
     self.navigationBar.tintColor = [UIColor whiteColor];
-}
-
-#pragma mark - Target/Action
-
-- (void)selectedCancel:(UIBarButtonItem *)cancelButton
-{
-    if ([self.creationFlowDelegate respondsToSelector:@selector(creationFlowControllerDidCancel:)])
-    {
-        [self.creationFlowDelegate creationFlowControllerDidCancel:self];
-    }
-    else
-    {
-        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-    }
-}
-
-#pragma mark - Navigation Item Configuration
-
-- (void)addCloseButtonToViewController:(UIViewController *)viewController
-{
-    UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                 target:self
-                                                                                 action:@selector(selectedCancel:)];
-    viewController.navigationItem.leftBarButtonItem = closeButton;
 }
 
 @end

@@ -1616,6 +1616,7 @@
 		A601FB5B1B4369550050536C /* VEditProfilePicturePresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEditProfilePicturePresenter.m; sourceTree = "<group>"; };
 		A601FB5D1B437E2B0050536C /* VAbstractPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractPresenter.h; sourceTree = "<group>"; };
 		A601FB5E1B437E2B0050536C /* VAbstractPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractPresenter.m; sourceTree = "<group>"; };
+		A61697441B45D02A00ECC846 /* VMediaSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMediaSource.h; sourceTree = "<group>"; };
 		A650EFD81B421F61005529E5 /* VAssetGridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAssetGridViewController.h; sourceTree = "<group>"; };
 		A650EFD91B421F61005529E5 /* VAssetGridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAssetGridViewController.m; sourceTree = "<group>"; };
 		A650EFDB1B422378005529E5 /* VAssetCollectionListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAssetCollectionListViewController.h; sourceTree = "<group>"; };
@@ -4333,6 +4334,7 @@
 				A601FB481B4354D10050536C /* VImageCreationFlowController.m */,
 				A601FB4D1B4355A30050536C /* VCreationFlowController.h */,
 				A601FB4E1B4355A30050536C /* VCreationFlowController.m */,
+				A61697441B45D02A00ECC846 /* VMediaSource.h */,
 			);
 			path = "Creation Flows";
 			sourceTree = "<group>";

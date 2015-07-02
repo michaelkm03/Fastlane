@@ -7,10 +7,11 @@
 //
 
 #import "VHasManagedDependencies.h"
+#import "VMediaSource.h"
 
 @class VImageLibraryAlternateCaptureOption;
 
-@interface VImageVideoLibraryViewController : UIViewController <VHasManagedDependencies>
+@interface VImageVideoLibraryViewController : UIViewController <VHasManagedDependencies, VMediaSource>
 
 /**
  *  An array of `VImageLibraryAlternateCaptureOption`s for providing the user 
