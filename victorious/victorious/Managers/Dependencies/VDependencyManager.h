@@ -46,6 +46,7 @@ extern NSString * const VDependencyManagerHistogramEnabledKey;
 extern NSString * const VDependencyManagerProfileImageRequiredKey;
 extern NSString * const VDependencyManagerPauseVideoWhenCommentingKey;
 extern NSString * const VDependencyManagerLikeButtonEnabledKey;
+extern NSString * const VDependencyManagerExperimentKeyIDs;
 
 // Keys for view controllers
 extern NSString * const VDependencyManagerScaffoldViewControllerKey; ///< The "scaffold" is the view controller that sits at the root of the view controller heirarchy

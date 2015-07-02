@@ -333,7 +333,12 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
 - (void)sendActionsForControlEvents:(UIControlEvents)controlEvents
 {
     [self updateSelectedDuration];
-    [super sendActionsForControlEvents:controlEvents];
+    
+    // Make sure we don't have a nil target
+    if (self.allTargets.count > 0 && ![self.allTargets containsObject:[NSNull null]])
+    {
+        [super sendActionsForControlEvents:controlEvents];
+    }
 }
 
 #pragma mark - Private Methods

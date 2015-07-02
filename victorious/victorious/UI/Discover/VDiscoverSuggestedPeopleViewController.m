@@ -77,7 +77,7 @@ static const UIEdgeInsets kCollectionViewEdgeInsets = {0, 0, 0, 0};
 
 - (void)reload
 {
-    [[VObjectManager sharedManager] getSuggestedUsers:^(NSOperation *operation, id result, NSArray *resultObjects)
+    [[VObjectManager sharedManager] getDiscoverUsers:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          [self didLoadWithUsers:resultObjects];
      }

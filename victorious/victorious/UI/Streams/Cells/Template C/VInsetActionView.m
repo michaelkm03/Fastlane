@@ -163,17 +163,18 @@ static const CGFloat kActionButtonWidth = 44.0f;
     {
         [justActionItems addObject:self.commentButton];
     }
+    if ( sequence.permissions.canRepost )
+    {
+        [justActionItems addObject:self.repostButton];
+    }
     if ( sequence.permissions.canGIF )
     {
         [justActionItems addObject:self.gifButton];
     }
-    if ( sequence.permissions.canMeme )
+    //Only add meme for image content
+    if ( sequence.permissions.canMeme && sequence.isImage )
     {
         [justActionItems addObject:self.memeButton];
-    }
-    if ( sequence.permissions.canRepost )
-    {
-        [justActionItems addObject:self.repostButton];
     }
     
     // Calculate spacing
