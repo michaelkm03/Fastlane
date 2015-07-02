@@ -228,6 +228,9 @@ static NSString * const kVTermsOfServiceURL = @"tosURL";
                                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                           otherButtonTitles:nil];
     [alert show];
+    
+    [MBProgressHUD hideHUDForView:self.view
+                         animated:YES];
 }
 
 #pragma mark - Actions
