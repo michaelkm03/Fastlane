@@ -9,12 +9,11 @@
 #import "VLikedContentStreamCollectionViewController.h"
 #import "VNoContentView.h"
 #import "UIStoryboard+VMainStoryboard.h"
-#import "NSString+VParseHelp.h"
-#import "VDependencyManager+VObjectManager.h"
-#import "VStream+Fetcher.h"
-#import "VObjectManager+Pagination.h"
+#import "VObjectManager+Login.h"
 
 @interface VLikedContentStreamCollectionViewController ()
+
+@property (nonatomic, assign) BOOL shouldRefreshOnView;
 
 @end
 
@@ -36,20 +35,52 @@
 {
     [super viewDidLoad];
     
-    NSLog(@"view loaded");
+    self.shouldRefreshOnView = YES;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(loginStatusDidChange:)
+                                                 name:kLoggedInChangedNotification
+                                               object:[VObjectManager sharedManager]];
 }
 
-- (void)refreshWithCompletion:(void (^)(void))completionBlock
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if ( self.shouldRefreshOnView )
+    {
+        [self refreshWithCompletion:nil];
+        self.shouldRefreshOnView = NO;
+    }
+}
+
+- (void)loginStatusDidChange:(NSNotification *)notification
+{
+    [self.streamDataSource unloadStream];
+    self.shouldRefreshOnView = YES;
+}
+
+- (void)refreshWithCompletion:(void(^)(void))completionBlock
 {
     [super refreshWithCompletion:^
      {
          [self dataSourceDidRefresh];
+         
+         if ( completionBlock != nil )
+         {
+             completionBlock();
+         }
      }];
 }
 
 - (void)dataSourceDidRefresh
 {
-    if ( self.streamDataSource.count == 0 )
+    if ( self.streamDataSource.count == 0 && !self.streamDataSource.hasHeaderCell )
     {
         if ( self.noContentView == nil )
         {
@@ -58,9 +89,9 @@
             {
                 noContentView.dependencyManager = self.dependencyManager;
             }
-            noContentView.title = NSLocalizedString( @"Haven't liked anything", @"" );
-            noContentView.message = NSLocalizedString( @"You can't liked any posts lol", @"" );
-            noContentView.icon = [UIImage imageNamed:@"tabIconHashtag"];
+            noContentView.title = NSLocalizedString( @"No Likes", @"" );
+            noContentView.message = NSLocalizedString( @"You haven't liked anything yet!", @"" );
+            noContentView.icon = [UIImage imageNamed:@"noFollowersIcon"];
             self.noContentView = noContentView;
         }
         
