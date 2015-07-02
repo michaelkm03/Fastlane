@@ -45,8 +45,6 @@ static NSString * const kDevDefaultAPIKey = @"XXXXXXXXXX";
                                @"param6" : @"value5" };
     
     self.unwantedKeys = @[ @"param2", @"param4" ];
-    
-    XCTAssert( self.flurryTracking.enabled );
 }
 
 - (void)testInfoPlistData
