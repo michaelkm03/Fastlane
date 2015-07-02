@@ -17,7 +17,7 @@
 #import "VSequencePreviewView.h"
 #import "VHashTagTextView.h"
 #import "VPassthroughContainerView.h"
-#import "VStreamHeaderComment.h"
+#import "VStreamHeaderTimeSince.h"
 #import "VLinearGradientView.h"
 #import "VHashTagTextView.h"
 #import "VSequenceExpressionsObserver.h"
@@ -47,7 +47,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
 @property (nonatomic, strong) VPassthroughContainerView *overlayContainer;
 @property (nonatomic, strong) VLinearGradientView *topGradient;
 @property (nonatomic, strong) VLinearGradientView *bottomGradient;
-@property (nonatomic, strong) VStreamHeaderComment *header;
+@property (nonatomic, strong) VStreamHeaderTimeSince *header;
 @property (nonatomic, strong) VHashTagTextView *captionTextView;
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 @property (nonatomic, strong) VActionButton *likeButton;
@@ -124,7 +124,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     [_bottomGradient setColors:@[ [UIColor clearColor], [UIColor blackColor]]];
     
     // Add the header
-    _header = [[VStreamHeaderComment alloc] initWithFrame:CGRectZero];
+    _header = [[VStreamHeaderTimeSince alloc] initWithFrame:CGRectZero];
     [_overlayContainer addSubview:_header];
     [_overlayContainer v_addPinToLeadingTrailingToSubview:_header];
     [_overlayContainer v_addPinToTopToSubview:_header];
