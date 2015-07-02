@@ -23,7 +23,6 @@
 #import "VDefaultProfileButton.h"
 #import "VLargeNumberFormatter.h"
 #import "UIView+AutoLayout.h"
-#import "VTimeSinceWidget.h"
 
 // Models
 #import "VSequence+Fetcher.h"
@@ -40,7 +39,6 @@ static const CGFloat kSpaceAvatarToLabels = 7.0f;
 @property (nonatomic, strong) VFlexBar *actionBar;
 @property (nonatomic, strong) VDefaultProfileButton *profileButton;
 @property (nonatomic, strong) VCreationInfoContainer *creationInfoContainer;
-@property (nonatomic, strong) VTimeSinceWidget *timeSinceWidget;
 
 @end
 
@@ -100,13 +98,6 @@ static const CGFloat kSpaceAvatarToLabels = 7.0f;
         }
         self.creationInfoContainer = creationContainer;
         
-        self.timeSinceWidget = [[VTimeSinceWidget alloc] initWithFrame:CGRectZero];
-        if ([self.timeSinceWidget respondsToSelector:@selector(setDependencyManager:)])
-        {
-            [self.timeSinceWidget setDependencyManager:self.dependencyManager];
-        }
-        self.timeSinceWidget.sequence = self.sequence;
-        
         self.actionBar.actionItems = @[[VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingHeaderSpace],
                                        button,
                                        [VActionBarFixedWidthItem fixedWidthItemWithWidth:kSpaceAvatarToLabels],
@@ -125,7 +116,6 @@ static const CGFloat kSpaceAvatarToLabels = 7.0f;
     _sequence = sequence;
     
     self.creationInfoContainer.sequence = sequence;
-    self.timeSinceWidget.sequence = sequence;
     [self.profileButton setProfileImageURL:[NSURL URLWithString:sequence.displayOriginalPoster.pictureUrl]
                                   forState:UIControlStateNormal];
     
@@ -156,10 +146,6 @@ static const CGFloat kSpaceAvatarToLabels = 7.0f;
     if ([self.creationInfoContainer respondsToSelector:@selector(setDependencyManager:)])
     {
         [self.creationInfoContainer setDependencyManager:dependencyManager];
-    }
-    if ([self.timeSinceWidget respondsToSelector:@selector(setDependencyManager:)])
-    {
-        [self.timeSinceWidget setDependencyManager:dependencyManager];
     }
     self.profileButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
 }
