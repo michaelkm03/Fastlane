@@ -85,6 +85,8 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
 
 - (void)sharedInit
 {
+    self.shouldShowTimeSince = YES;
+    
     self.largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
     
     self.creatorLabel = [[VStreamLabel alloc] initWithFrame:CGRectZero];
@@ -96,7 +98,7 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
     self.parentUserLabel = [[VStreamLabel alloc] initWithFrame:CGRectZero];
     self.parentUserLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.parentUserLabel.textAlignment = NSTextAlignmentLeft;
-    self.parentUserLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
+    self.parentUserLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     self.parentUserLabel.horizontalLayoutPriority = UILayoutPriorityDefaultLow;
     [self.parentUserLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh
                                                           forAxis:UILayoutConstraintAxisHorizontal];
@@ -114,6 +116,8 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
     self.timeSinceLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     self.timeSinceLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.timeSinceLabel.textAlignment = NSTextAlignmentLeft;
+    [self.timeSinceLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [self.timeSinceLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self addSubview:self.timeSinceLabel];
     
     self.otherPostersLabel = [[VStreamLabel alloc] initWithFrame:CGRectZero];
@@ -139,7 +143,7 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
     
     if (!self.layedOutDefaultConstraints)
     {
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[creatorLabel]-kSpaceCreatorLabelToClockImageView-[clockImageView]-kSpaceClockImageViewToTimeSinceLabel-[timeSinceLabel]"
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[creatorLabel]-kSpaceCreatorLabelToClockImageView-[clockImageView]-kSpaceClockImageViewToTimeSinceLabel-[timeSinceLabel]|"
                                                                      options:kNilOptions
                                                                      metrics:@{@"kSpaceCreatorLabelToClockImageView": @(kSpaceCreatorLabelToClockImageView),
                                                                                @"kSpaceClockImageViewToTimeSinceLabel": @(kSpaceClockImageViewToTimeSinceLabel)}
@@ -154,15 +158,8 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
         [self addConstraint:[NSLayoutConstraint constraintWithItem:self.timeSinceLabel
                                                          attribute:NSLayoutAttributeCenterY
                                                          relatedBy:NSLayoutRelationEqual
-                                                            toItem:self.creatorLabel
+                                                            toItem:self.clockImageView
                                                          attribute:NSLayoutAttributeCenterY
-                                                        multiplier:1.0f
-                                                          constant:0.0f]];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.clockImageView
-                                                         attribute:NSLayoutAttributeRight
-                                                         relatedBy:NSLayoutRelationLessThanOrEqual
-                                                            toItem:self
-                                                         attribute:NSLayoutAttributeRight
                                                         multiplier:1.0f
                                                           constant:0.0f]];
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[parentUserLabel][otherPostersLabel]"

@@ -99,7 +99,6 @@ static const CGFloat kSpaceAvatarToLabels = 7.0f;
             [creationContainer setDependencyManager:self.dependencyManager];
         }
         self.creationInfoContainer = creationContainer;
-        self.creationInfoContainer.shouldShowTimeSince = NO;
         
         self.timeSinceWidget = [[VTimeSinceWidget alloc] initWithFrame:CGRectZero];
         if ([self.timeSinceWidget respondsToSelector:@selector(setDependencyManager:)])
@@ -112,7 +111,6 @@ static const CGFloat kSpaceAvatarToLabels = 7.0f;
                                        button,
                                        [VActionBarFixedWidthItem fixedWidthItemWithWidth:kSpaceAvatarToLabels],
                                        creationContainer,
-                                       self.timeSinceWidget,
                                        [VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingHeaderSpace]];
         [self.actionBar v_addPinToTopBottomToSubview:self.creationInfoContainer];
         [self updateUserAvatarForSequence:self.sequence];

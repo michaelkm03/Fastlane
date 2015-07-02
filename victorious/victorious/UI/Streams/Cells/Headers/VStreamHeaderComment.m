@@ -28,7 +28,7 @@
 #import "UIView+AutoLayout.h"
 #import "VLargeNumberFormatter.h"
 
-static const CGFloat kLeadingTrailingMargin = 20.0f;
+static const CGFloat kLeadingTrailingMargin = 8.0f;
 static const CGFloat kAvatarSize = 32.0f;
 static const CGFloat kItemSpacing = 5.0f;
 
