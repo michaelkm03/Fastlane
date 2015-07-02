@@ -218,15 +218,16 @@ static NSString * const kVTermsOfServiceURL = @"tosURL";
     {
         message = NSLocalizedString(@"User already exists", @"");
     }
-    UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SignupFail", @"")
-                                                           message:message
-                                                          delegate:nil
-                                                 cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                 otherButtonTitles:nil];
+    else if ( error.code == kVPasswordInvalidForExistingUser )
+    {
+        message = NSLocalizedString(@"User already exists but the password is incorrect", @"");
+    }
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SignupFail", @"")
+                                                    message:message
+                                                   delegate:nil
+                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                          otherButtonTitles:nil];
     [alert show];
-    
-    [MBProgressHUD hideHUDForView:self.view
-                         animated:YES];
 }
 
 #pragma mark - Actions
