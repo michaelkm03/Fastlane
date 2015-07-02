@@ -47,7 +47,8 @@ typedef NS_ENUM(NSInteger, VMonetizationPartner)
 + (instancetype)videoCellViewModelWithItemURL:(NSURL *)itemURL
                                  withAdSystem:(VMonetizationPartner)monetizationPartner
                                   withDetails:(NSArray *)details
-                                     withLoop:(BOOL)loop;
+                                     withLoop:(BOOL)loop
+                                 withStreamID:(NSString *)streamID;
 
 /**
  Content URL
@@ -68,6 +69,11 @@ typedef NS_ENUM(NSInteger, VMonetizationPartner)
  NSArray that contains all of the ad details
  */
 @property (nonatomic, readonly) NSArray *monetizationDetails;
+
+/**
+ The id of the stream from which this video was loaded
+ */
+@property (nonatomic, readonly) NSString *streamID;
 
 /**
  All the data necessary to display and populate the end card

@@ -210,6 +210,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
              VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
              return CGSizeMake( 0.0f, size.width * [[self class] aspectRatioForSequence:sequence] );
          }];
+        [collection addComponentWithConstantSize:CGSizeMake( 0.0, -kButtonHeight )];
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
              VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
@@ -219,18 +220,17 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
              if ( sequence.name.length > 0 )
              {
                  textHeight = VCEIL( [sequence.name frameSizeForWidth:size.width andAttributes:attributes].height );
-             }
-             else
-             {
-                 textHeight = 0.0f;
-             }
+             };
              return CGSizeMake( 0.0f, textHeight );
          }];
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
              VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
              NSDictionary *attributes = [[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager];
-             return CGSizeMake( 0.0f, MAX( kCountsTextViewMinHeight, [@"" frameSizeForWidth:size.width andAttributes:attributes].height ) );
+             
+             // FIXME: The use of "V" is just to get a good size for *something* in this text field since
+             // we can't know what the actual text for the label is in a static method
+             return CGSizeMake( 0.0f, MAX( kCountsTextViewMinHeight, [@"V" frameSizeForWidth:size.width andAttributes:attributes].height ) );
          }];
     }
     return collection;
