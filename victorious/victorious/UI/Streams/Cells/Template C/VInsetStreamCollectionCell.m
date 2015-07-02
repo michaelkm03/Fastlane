@@ -79,7 +79,7 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
     [self.contentView v_addPinToTopToSubview:_header];
     [_header v_addHeightConstraint:kInsetCellHeaderHeight];
     
-    // Next preview container, left to right, 1:1 aspect ratio
+    // Next preview container
     _previewContainer = [[UIView alloc] initWithFrame:CGRectZero];
     _previewContainer.clipsToBounds = YES;
     [self.contentView addSubview:_previewContainer];
@@ -88,15 +88,6 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
                                                                              options:kNilOptions
                                                                              metrics:0
                                                                                views:NSDictionaryOfVariableBindings(_header, _previewContainer)]];
-    NSLayoutConstraint *heightToWidth = [NSLayoutConstraint constraintWithItem:_previewContainer
-                                                                     attribute:NSLayoutAttributeHeight
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:_previewContainer
-                                                                     attribute:NSLayoutAttributeWidth
-                                                                    multiplier:1.0f
-                                                                      constant:0.0f];
-    [self.contentView addConstraint:heightToWidth];
-    _previewViewHeightConstraint = heightToWidth;
     
     // Dimming view
     _dimmingContainer = [UIView new];
