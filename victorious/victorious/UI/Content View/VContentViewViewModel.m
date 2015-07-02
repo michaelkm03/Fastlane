@@ -89,7 +89,7 @@
     {
         _sequence = sequence;
         
-        _streamId = streamId;
+        _streamId = streamId ?: @"";
         
         _dependencyManager = dependencyManager;
         
