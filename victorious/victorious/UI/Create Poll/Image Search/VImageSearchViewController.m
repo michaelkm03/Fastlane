@@ -251,7 +251,7 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
                                                                           imageProcessingBlock:nil
                                                                                        success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
         {
-            __typeof(self) strongSelf = weakSelf;
+            __strong __typeof(self) strongSelf = weakSelf;
             if (strongSelf)
             {
                 NSData *jpegData = UIImageJPEGRepresentation(image, VConstantJPEGCompressionQuality);
@@ -266,7 +266,7 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
         }
                                                                                        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error)
         {
-            __typeof(self) strongSelf = weakSelf;
+            __strong __typeof(self) strongSelf = weakSelf;
             if (strongSelf)
             {
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ImageDownloadFailed", @"")

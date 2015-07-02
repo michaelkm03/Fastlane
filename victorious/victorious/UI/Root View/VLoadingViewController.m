@@ -161,7 +161,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
     {
         dispatch_async(dispatch_get_main_queue(), ^(void)
         {
-            typeof(weakSelf) strongSelf = weakSelf;
+            __strong typeof(weakSelf) strongSelf = weakSelf;
             if ( strongSelf != nil )
             {
                 strongSelf.templateDownloadManager = nil;

@@ -280,7 +280,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
         typeof(self) __weak weakSelf = self;
         self.backgroundTaskID = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void)
         {
-            typeof(weakSelf) strongSelf = weakSelf;
+            __strong typeof(weakSelf) strongSelf = weakSelf;
             if (strongSelf)
             {
                 dispatch_sync(self.sessionQueue, ^(void)
