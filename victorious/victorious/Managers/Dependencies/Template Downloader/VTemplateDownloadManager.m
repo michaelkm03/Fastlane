@@ -155,7 +155,7 @@ static const NSTimeInterval kDefaultTimeout = 5.0;
     __weak typeof(self) weakSelf = self;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.retryInterval * NSEC_PER_SEC)), self.privateQueue, ^(void)
     {
-        __strong typeof(self) strongSelf = weakSelf;
+        __strong typeof(weakSelf) strongSelf = weakSelf;
         if ( strongSelf != nil )
         {
             strongSelf.retryInterval *= 2.0;
