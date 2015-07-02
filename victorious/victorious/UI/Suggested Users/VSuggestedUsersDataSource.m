@@ -40,8 +40,10 @@ static NSString * const kPromptTextKey = @"prompt";
 
 - (void)registerCellsForCollectionView:(UICollectionView *)collectionView
 {
-    [collectionView registerNib:[VSuggestedUserCell nibForCell] forCellWithReuseIdentifier:[VSuggestedUserCell suggestedReuseIdentifier]];
-    [collectionView registerNib:[VSuggestedUserRetryCell nibForCell] forCellWithReuseIdentifier:[VSuggestedUserRetryCell suggestedReuseIdentifier]];
+    [collectionView registerNib:[VSuggestedUserCell nibForCell]
+     forCellWithReuseIdentifier:[VSuggestedUserCell suggestedReuseIdentifier]];
+    [collectionView registerNib:[VSuggestedUserRetryCell nibForCell]
+     forCellWithReuseIdentifier:[VSuggestedUserRetryCell suggestedReuseIdentifier]];
 }
 
 - (void)refreshWithCompletion:(void(^)())completion
@@ -58,7 +60,6 @@ static NSString * const kPromptTextKey = @"prompt";
      {
          self.loadedOnce = YES;
          self.isLoadingSuggestedUsers = NO;
-         
          self.suggestedUsers = resultObjects;
          if ( completion != nil )
          {
