@@ -35,6 +35,8 @@
 
 - (void)tearDown
 {
+    [self.operationQueue cancelAllOperations];
+    [self.operationQueue waitUntilAllOperationsAreFinished];
     [[LSNocilla sharedInstance] clearStubs];
     [[LSNocilla sharedInstance] stop];
     [super tearDown];

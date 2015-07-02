@@ -50,7 +50,6 @@ const int64_t kProgressTotalCount = 100;
 {
     [super cancel];
     [self.downloadTask cancel];
-    dispatch_semaphore_signal(self.semaphore);
 }
 
 /**
@@ -77,6 +76,10 @@ const int64_t kProgressTotalCount = 100;
 
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location
 {
+    if ( self.isCancelled )
+    {
+        return;
+    }
     if ( downloadTask != self.downloadTask )
     {
         return;
@@ -104,7 +107,7 @@ const int64_t kProgressTotalCount = 100;
     {
         return;
     }
-    if ( error != nil )
+    if ( error != nil && !self.isCancelled )
     {
         [self handleError:error response:task.response];
     }

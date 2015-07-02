@@ -57,7 +57,7 @@ static const NSTimeInterval kDefaultTimeout = 5.0;
                    self.privateQueue,
                    ^(void)
     {
-        typeof(weakSelf) strongSelf = weakSelf;
+        __strong typeof(weakSelf) strongSelf = weakSelf;
         if ( strongSelf != nil )
         {
             if ( [downloadID isEqual:strongSelf.currentDownloadID] )

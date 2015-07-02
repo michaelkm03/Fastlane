@@ -54,6 +54,7 @@ static const NSTimeInterval kDefaultRetryInterval = 2.0;
     }
     [self.operationQueue addOperations:operations waitUntilFinished:NO];
     dispatch_semaphore_wait(self.semaphore, DISPATCH_TIME_FOREVER);
+    [self.operationQueue waitUntilAllOperationsAreFinished];
 }
 
 - (void)cancel
@@ -69,7 +70,7 @@ static const NSTimeInterval kDefaultRetryInterval = 2.0;
     VDownloadOperation *downloadOperation = [[VDownloadOperation alloc] initWithURL:url
                                                                          completion:^(NSURL *originalURL, NSError *error, NSURLResponse *response, NSURL *downloadedFile)
     {
-        typeof(weakSelf) strongSelf = weakSelf;
+        __strong typeof(weakSelf) strongSelf = weakSelf;
         if ( strongSelf == nil || strongSelf.isCancelled )
         {
             return;
