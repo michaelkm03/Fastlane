@@ -394,7 +394,8 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     }
     else if (kSettingsSectionIndex == indexPath.section && kLikedContentIndex == indexPath.row)
     {
-        if ([VObjectManager sharedManager].mainUserLoggedIn)
+        BOOL likeButtonOn = [[self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey] boolValue];
+        if ([VObjectManager sharedManager].mainUserLoggedIn && likeButtonOn)
         {
             return self.tableView.rowHeight;
         }
