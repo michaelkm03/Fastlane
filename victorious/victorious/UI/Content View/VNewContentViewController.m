@@ -756,7 +756,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (void)selectedLikeButton:(UIButton *)likeButton
 {
     likeButton.enabled = NO;
-    [self.sequenceActionController likeSequence:self.viewModel.sequence fromViewController:self completion:^(BOOL success)
+    [self.sequenceActionController likeSequence:self.viewModel.sequence fromViewController:self withActionView:likeButton completion:^(BOOL success)
      {
          likeButton.enabled = YES;
      }];

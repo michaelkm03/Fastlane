@@ -281,12 +281,12 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
 
 - (void)selectedLikeButton:(UIButton *)likeButton
 {
-    UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(willLikeSequence:completion:)
+    UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(willLikeSequence:withView:completion:)
                                                                   withSender:self];
     
     NSAssert( responder != nil , @"We need an object in the responder chain for liking.");
     likeButton.enabled = NO;
-    [responder willLikeSequence:self.sequence completion:^(BOOL success)
+    [responder willLikeSequence:self.sequence withView:likeButton completion:^(BOOL success)
      {
          likeButton.enabled = YES;
      }];
