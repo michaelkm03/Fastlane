@@ -89,9 +89,9 @@
             {
                 noContentView.dependencyManager = self.dependencyManager;
             }
-            noContentView.title = NSLocalizedString( @"No Likes", @"" );
-            noContentView.message = NSLocalizedString( @"You haven't liked anything yet!", @"" );
-            noContentView.icon = [UIImage imageNamed:@"noFollowersIcon"];
+            noContentView.title = NSLocalizedString( @"NOTHING LIKED YET", @"" );
+            noContentView.message = NSLocalizedString( @"Posts you like will appear here.", @"" );
+            noContentView.icon = [UIImage imageNamed:@"liked_stream_empty"];
             self.noContentView = noContentView;
         }
         
