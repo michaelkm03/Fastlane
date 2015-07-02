@@ -99,8 +99,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     [[VTrackingManager sharedInstance] addDelegate:self.applicationTracking];
     
     [[VObjectManager sharedManager] resetSessionID];
-   
-    [[VObjectManager sharedManager] setExperimentIDs:[self.dependencyManager stringForKey:VDependencyManagerExperimentKeyIDs]];
     
     self.sessionTimer = [[VSessionTimer alloc] init];
     
@@ -271,6 +269,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         // VDeeplinkReceiver depends on scaffold being visible already, so make sure this is in this completion block
         [self.deepLinkReceiver receiveQueuedDeeplink];
     }];
+    [[VObjectManager sharedManager] setExperimentIDs:[self.dependencyManager stringForKey:VDependencyManagerExperimentKeyIDs]];
 }
 
 - (void)showViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void(^)(void))completion
