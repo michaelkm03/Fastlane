@@ -42,16 +42,16 @@
 
 - (void)testEnableTracking
 {
-    XCTAssertNoThrow( [self.videoPlayer enableTrackingWithTrackingItem:self.trackingItem] );
+    XCTAssertNoThrow( [self.videoPlayer enableTrackingWithTrackingItem:self.trackingItem streamID:nil] );
     XCTAssert( self.videoPlayer.isTrackingEnabled );
 }
 
 - (void)testEnableTrackingError
 {
-    [self.videoPlayer enableTrackingWithTrackingItem:nil];
+    [self.videoPlayer enableTrackingWithTrackingItem:nil streamID:nil];
     XCTAssertFalse( self.videoPlayer.isTrackingEnabled );
     
-    XCTAssertThrows( [self.videoPlayer enableTrackingWithTrackingItem:(VTracking *)[NSObject new]] );
+    XCTAssertThrows( [self.videoPlayer enableTrackingWithTrackingItem:(VTracking *)[NSObject new] streamID:nil] );
     XCTAssertFalse( self.videoPlayer.isTrackingEnabled );
 }
 

@@ -67,6 +67,7 @@ static const CGFloat kSpacing = 2.0f;
     _timeSinceLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     _timeSinceLabel.translatesAutoresizingMaskIntoConstraints = NO;
     _timeSinceLabel.textAlignment = NSTextAlignmentLeft;
+    [_timeSinceLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self addSubview:self.timeSinceLabel];
     
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_clockImageView]-(spacing)-[_timeSinceLabel]|"

@@ -16,4 +16,9 @@
 @property (nonatomic, readonly) BOOL enabled;
 @property (nonatomic, strong) NSArray *unwantedParameterKeys;
 
+/**
+ Starts a session with the Flurry SDK
+ */
+- (void)enable;
+
 @end
