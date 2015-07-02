@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2yS-vh-N7a">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2yS-vh-N7a">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
@@ -1269,6 +1269,48 @@
             </objects>
             <point key="canvasLocation" x="-3071" y="-233"/>
         </scene>
+        <!--Liked Content Stream Collection View Controller-->
+        <scene sceneID="KbV-Nk-Obh">
+            <objects>
+                <viewController storyboardIdentifier="VLikedContentStreamCollectionViewController" id="WHt-4I-fSO" customClass="VLikedContentStreamCollectionViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Rnn-EP-R19"/>
+                        <viewControllerLayoutGuide type="bottom" id="yQy-xm-RaZ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="eOe-2T-YBX">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="9AB-O1-gDi">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="DP6-Im-zup">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                                <connections>
+                                    <outlet property="delegate" destination="WHt-4I-fSO" id="3xC-a8-nzh"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="9AB-O1-gDi" firstAttribute="width" secondItem="eOe-2T-YBX" secondAttribute="width" id="M9k-lJ-SOC"/>
+                            <constraint firstAttribute="centerX" secondItem="9AB-O1-gDi" secondAttribute="centerX" id="Stf-b5-ije"/>
+                            <constraint firstAttribute="centerY" secondItem="9AB-O1-gDi" secondAttribute="centerY" id="TKm-2d-5oZ"/>
+                            <constraint firstItem="9AB-O1-gDi" firstAttribute="height" secondItem="eOe-2T-YBX" secondAttribute="height" id="sHd-jd-6va"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="9AB-O1-gDi" id="Dnt-hf-KQe"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jJc-NY-LQh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2644" y="-228"/>
+        </scene>
         <!--Following Stream Collection View Controller-->
         <scene sceneID="uvu-Hs-VRa">
             <objects>
@@ -1409,7 +1451,6 @@
         <image name="PostCamera" width="34" height="26"/>
         <image name="PostDelete" width="30" height="30"/>
         <image name="SearchIcon" width="30" height="31"/>
-        <image name="SearchIconSmall" width="20" height="20"/>
         <image name="cameraButtonBack" width="22" height="17"/>
         <image name="refreshIcon" width="13" height="15"/>
         <image name="user-icon" width="51" height="74"/>

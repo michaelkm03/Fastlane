@@ -77,7 +77,7 @@
 	<key>stream.screen</key>
 	<string>VStreamCollectionViewController</string>
 	<key>likedContentStream.screen</key>
-	<string>VStreamCollectionViewController</string>
+	<string>VLikedContentStreamCollectionViewController</string>
 	<key>hashtagStream.screen</key>
 	<string>VHashtagStreamCollectionViewController</string>
 	<key>standard.contentView</key>

@@ -32,7 +32,7 @@
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VCoachmarkManager.h"
 #import "VEnvironmentManager.h"
-#import "VStreamCollectionViewController.h"
+#import "VLikedContentStreamCollectionViewController.h"
 #import "UIAlertController+VSimpleAlert.h"
 
 static const NSInteger kSettingsSectionIndex         = 0;
@@ -236,7 +236,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 
 - (void)pushLikedContent
 {
-    VStreamCollectionViewController *likedContentViewController = [self.dependencyManager templateValueOfType:[VStreamCollectionViewController class]
+    VLikedContentStreamCollectionViewController *likedContentViewController = [self.dependencyManager templateValueOfType:[VLikedContentStreamCollectionViewController class]
                                                                                                        forKey:kLikedContentScreenKey];
     [self.navigationController pushViewController:likedContentViewController animated:YES];
 }
