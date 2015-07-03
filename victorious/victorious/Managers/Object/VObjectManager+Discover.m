@@ -27,6 +27,24 @@
         }
     };
     
+    return [self GET:@"/api/discover/suggested_users"
+              object:nil
+          parameters:nil
+        successBlock:fullSuccess
+           failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)getDiscoverUsers:(VSuccessBlock)success
+                                             failBlock:(VFailBlock)fail
+{
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        if (success != nil)
+        {
+            success(operation, fullResponse, resultObjects);
+        }
+    };
+    
     return [self GET:@"/api/discover/users"
               object:nil
           parameters:nil

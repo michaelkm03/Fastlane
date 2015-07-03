@@ -281,10 +281,11 @@
     }
     cell.profileImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     [cell.profileImageView setProfileImageURL:[NSURL URLWithString:comment.user.pictureUrl]];
+    __weak typeof(self) welf = self;
     cell.onProfileImageTapped = ^(void)
     {
-        VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:comment.user];
-        [self.navigationController pushViewController:profileViewController animated:YES];
+        VUserProfileViewController *profileViewController = [welf.dependencyManager userProfileViewControllerWithUser:comment.user];
+        [welf.navigationController pushViewController:profileViewController animated:YES];
     };
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     

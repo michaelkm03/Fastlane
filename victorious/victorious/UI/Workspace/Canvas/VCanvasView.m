@@ -166,7 +166,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     __weak typeof(self) welf = self;
     void (^imageFinishedLoadingBlock)(UIImage *sourceImage, BOOL animate) = ^void(UIImage *sourceImage, BOOL animate)
     {
-        __strong typeof(self) strongSelf = welf;
+        __strong typeof(welf) strongSelf = welf;
         strongSelf.sourceImage = sourceImage;
         [strongSelf layoutSubviews];
         

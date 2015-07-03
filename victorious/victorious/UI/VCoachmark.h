@@ -83,4 +83,19 @@ typedef NS_ENUM( NSUInteger, VToastVerticalLocation )
  */
 @property (nonatomic, assign) BOOL hasBeenShown;
 
+/**
+ Delay before the coachmark animates on screen. Defaults to 1.0f.
+ */
+@property (nonatomic, assign) CGFloat animationDelay;
+
+/**
+ How much this coachmark's view should be inset horizontally from it's super view's bounds. Defaults to 24.0f;
+ */
+@property (nonatomic, assign) CGFloat horizontalInset;
+
+/**
+ How much this coachmark's view should be inset vertically from view it's referencing. Defaults to 5.0f;
+ */
+@property (nonatomic, assign) CGFloat verticalInset;
+
 @end

@@ -38,7 +38,7 @@
 
 - (void)willShowLikersForSequence:(VSequence *)sequence fromView:(UIView *)view;
 
-- (void)willLikeSequence:(VSequence *)sequence completion:(void(^)(BOOL success))completion;
+- (void)willLikeSequence:(VSequence *)sequence withView:(UIView *)view completion:(void(^)(BOOL success))completion;
 
 /**
  *  Shows any reposters for the given sequence.

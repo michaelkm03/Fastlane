@@ -131,6 +131,7 @@
                            withCompletion:^(VUser *userActedOn)
              {
                  sender.enabled = YES;
+                 [self populateData];
              }];
         }
         else
@@ -139,6 +140,7 @@
                          withCompletion:^(VUser *userActedOn)
              {
                  sender.enabled = YES;
+                 [self populateData];
              }];
         }
     };
