@@ -13,11 +13,9 @@
 #import "VObjectManager+Login.h"
 #import "VPurchaseManager.h"
 #import "VVoteType.h"
+#import "VExperienceEnhancerResponder.h"
 
 #import <KVOController/FBKVOController.h>
-
-NSString * const VExperienceEnhancerBarDidRequireLoginNotification = @"VExperienceEnhancerBarDidRequiredLoginNotification";
-NSString * const VExperienceEnhancerBarDidRequirePurchasePrompt = @"VExperienceEnhancerBarDidRequirePurchasePrompt";
 
 const CGFloat VExperienceEnhancerDesiredMinimumHeight = 60.0f;
 
@@ -177,27 +175,33 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     }
     
     VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
-    
-    // Check if the user must buy this experience enhancer first
-    if ( enhancerForIndexPath.isLocked  )
+   
+    if ( ![VObjectManager sharedManager].authorized )  // Check if the user is logged in first
     {
-        NSDictionary *userInfo = @{ @"experienceEnhancer" : enhancerForIndexPath };
-        [[NSNotificationCenter defaultCenter] postNotificationName:VExperienceEnhancerBarDidRequirePurchasePrompt object:nil userInfo:userInfo];
-        return;
+        id<VExperienceEnhancerResponder>responder = [self targetForAction:@selector(authorizeWithCompletion:) withSender:self];
+        NSAssert( responder != nil, @"Could not find adopter of `VExperienceEnhancerResponder` in responder chain." );
+        [responder authorizeWithCompletion:^(BOOL authorized)
+        {
+            if ( authorized )
+            {
+                [self selectExperienceEnhancerAtIndexPath:indexPath];
+            }
+        }];
+        
     }
-    
-    // Check if the user is logged in first
-    if ( ![VObjectManager sharedManager].authorized )
+    else if ( enhancerForIndexPath.isLocked  ) // Check if the user must buy this experience enhancer first
     {
-        NSDictionary *userInfo = @{ @"experienceEnhancerIndexPath" : indexPath };
-        [[NSNotificationCenter defaultCenter] postNotificationName:VExperienceEnhancerBarDidRequireLoginNotification object:nil userInfo:userInfo];
-        return;
+        id<VExperienceEnhancerResponder>responder = [self targetForAction:@selector(showPurchaseViewController:) withSender:self];
+        NSAssert( responder != nil, @"Could not find adopter of `VExperienceEnhancerResponder` in responder chain." );
+        [responder showPurchaseViewController:enhancerForIndexPath.voteType];
     }
-    
-    [self selectExperienceEnhancerAtIndex:indexPath];
+    else
+    {
+        [self selectExperienceEnhancerAtIndexPath:indexPath];
+    }
 }
 
-- (void)selectExperienceEnhancerAtIndex:(NSIndexPath *)indexPath
+- (void)selectExperienceEnhancerAtIndexPath:(NSIndexPath *)indexPath
 {
     VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
     

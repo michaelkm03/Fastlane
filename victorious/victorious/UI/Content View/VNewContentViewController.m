@@ -106,13 +106,14 @@
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VCoachmarkManager.h"
 #import "VSequenceExpressionsObserver.h"
+#import "VExperienceEnhancerResponder.h"
 
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VWorkspaceFlowControllerDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VWorkspaceFlowControllerDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder>
 
 @property (nonatomic, strong) NSUserActivity *handoffObject;
 
@@ -684,49 +685,33 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     }
 }
 
-#pragma mark - Notification Handlers
+#pragma mark - VExperienceEnhancerResponder
 
-- (void)showPurchaseViewController:(NSNotification *)notification
+- (void)showPurchaseViewController:(VVoteType *)voteType
 {
-    if ( notification.userInfo == nil )
-    {
-        return;
-    }
-    
-    VExperienceEnhancer *experienceEnhander = (VExperienceEnhancer *)notification.userInfo[ @"experienceEnhancer" ];
-    if ( experienceEnhander == nil )
-    {
-        return;
-    }
-    
-    NSDictionary *params = @{ VTrackingKeyProductIdentifier : experienceEnhander.voteType.productIdentifier ?: @"" };
+    NSDictionary *params = @{ VTrackingKeyProductIdentifier : voteType.productIdentifier ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLockedVoteType parameters:params];
     
     VPurchaseViewController *viewController = [VPurchaseViewController newWithDependencyManager:self.dependencyManager];
-    viewController.voteType = experienceEnhander.voteType;
+    viewController.voteType = voteType;
     viewController.transitioningDelegate = self.modalTransitionDelegate;
     viewController.delegate = self;
     [self presentViewController:viewController animated:YES completion:nil];
 }
 
-- (void)experienceEnhancerDidRequireLogin:(NSNotification *)notification
+- (void)authorizeWithCompletion:(void(^)(BOOL))completion
 {
     __weak typeof(self) welf = self;
     [welf.authorizedAction performFromViewController:self context:VAuthorizationContextVoteBallistic completion:^(BOOL authorized)
      {
-         if (!authorized)
+         if ( completion != nil )
          {
-             return;
-         }
-         // Use the provided index path of the selected emotive ballistic that trigger the notificiation
-         // to perform the authorized action once authorization is successful
-         NSIndexPath *experienceEnhancerIndexPath = notification.userInfo[ @"experienceEnhancerIndexPath" ];
-         if ( experienceEnhancerIndexPath != nil )
-         {
-             [welf.experienceEnhancerCell.experienceEnhancerBar selectExperienceEnhancerAtIndex:experienceEnhancerIndexPath];
+             completion( authorized );
          }
      }];
 }
+
+#pragma mark - Notification Handlers
 
 - (void)keyboardDidChangeFrame:(NSNotification *)notification
 {
