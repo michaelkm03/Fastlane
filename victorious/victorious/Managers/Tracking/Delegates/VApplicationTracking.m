@@ -76,6 +76,7 @@ static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
                                  VTrackingEventUserDidSelectSignUpSubmit           : VTrackingSignUpButtonTapKey };
         
         _macroReplacement = [[VURLMacroReplacement alloc] init];
+        _requestQueue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0 );
     }
     return self;
 }
@@ -146,8 +147,8 @@ static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
         return NO;
     }
     
-    dispatch_queue_t queue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0 );
-    dispatch_async( queue, ^{
+    dispatch_async( self.requestQueue, ^(void)
+    {
         [self sendRequest:request];
     });
     
