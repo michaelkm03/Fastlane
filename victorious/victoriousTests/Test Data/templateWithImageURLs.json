@@ -3,6 +3,9 @@
         "imageURL": "http://www.example.com/myImage",
         "scale": 2
     },
+    "secureImage": {
+        "imageURL": "https://www.example.com/secretImage"
+    },
     "legacyImage": {
         "imageURL": "C_menu"
     },

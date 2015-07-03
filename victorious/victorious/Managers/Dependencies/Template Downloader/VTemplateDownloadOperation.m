@@ -47,6 +47,7 @@ static const NSTimeInterval kDefaultImageDownloadTimeout = 15.0;
         _delegateNotified = NO;
         _templateDownloaded = NO;
         _downloader = downloader;
+        _dataCache = [[VDataCache alloc] init];
         _templateDownloadTimeout = kDefaultTemplateDownloadTimeout;
         _imageDownloadTimeout = kDefaultImageDownloadTimeout;
         _shouldRetry = YES;

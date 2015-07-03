@@ -155,6 +155,14 @@
     [super tearDown];
 }
 
+- (void)testDefaultCache
+{
+    VBasicTemplateDownloaderMock *downloader = [[VBasicTemplateDownloaderMock alloc] init];
+    VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
+    VTemplateDownloadOperation *operation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
+    XCTAssertNotNil(operation.dataCache);
+}
+
 - (void)testTemplateDownload
 {
     VBasicTemplateDownloaderMock *downloader = [[VBasicTemplateDownloaderMock alloc] init];

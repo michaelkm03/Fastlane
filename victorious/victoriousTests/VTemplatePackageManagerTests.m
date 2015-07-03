@@ -30,9 +30,19 @@
     self.urls = [self.packageManager referencedURLs];
 }
 
+- (void)testExcludesNonHTTPURLs
+{
+    XCTAssertFalse( [self.urls containsObject:[NSURL URLWithString:@"C_menu"]] );
+}
+
 - (void)testPlainImage
 {
     XCTAssert( [self.urls containsObject:[NSURL URLWithString:@"http://www.example.com/myImage"]] );
+}
+
+- (void)testHTTPS
+{
+    XCTAssert( [self.urls containsObject:[NSURL URLWithString:@"https://www.example.com/secretImage"]] );
 }
 
 - (void)testImageSet

@@ -12,6 +12,7 @@
 #import "VConstants.h"
 #import "VDependencyManager.h"
 #import "VEnvironment.h"
+#import "VEnvironment+VDataCacheID.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Users.h"
@@ -28,12 +29,13 @@
 
 static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
 
-@interface VLoadingViewController()
+@interface VLoadingViewController() <VTemplateDownloadOperationDelegate>
 
 @property (nonatomic, weak) IBOutlet UIView *backgroundContainer;
 @property (nonatomic, weak) IBOutlet UILabel *reachabilityLabel;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *reachabilityLabelPositionConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *reachabilityLabelHeightConstraint;
+@property (nonatomic, strong) NSOperationQueue *operationQueue;
 @property (nonatomic, strong) VTemplateDownloadOperation *templateDownloadManager;
 
 @end
@@ -63,7 +65,9 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
     launchScreen.translatesAutoresizingMaskIntoConstraints = NO;
     [self.backgroundContainer addSubview:launchScreen];
     [self.backgroundContainer v_addFitToParentConstraintsToSubview:launchScreen];
-        
+    
+    self.operationQueue = [[NSOperationQueue alloc] init];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kVReachabilityChangedNotification object:nil];
 }
 
@@ -152,64 +156,9 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
 {
     VEnvironmentManager *environmentManager = [VEnvironmentManager sharedInstance];
     
-#if 0
-    self.templateDownloadManager = [[VTemplateDownloadOperation alloc] initWithDownloader:[VObjectManager sharedManager] andDelegate:nil];
-    self.templateDownloadManager.templateCacheFileLocation = [self urlForTemplateCacheForEnvironment:[environmentManager currentEnvironment]];
-    self.templateDownloadManager.templateLocationInBundle = [self urlForTemplateInBundleForEnvironment:[environmentManager currentEnvironment]];
-    
-    __weak typeof(self) weakSelf = self;
-    [self.templateDownloadManager loadTemplateWithCompletion:^(NSDictionary *templateConfiguration)
-    {
-        dispatch_async(dispatch_get_main_queue(), ^(void)
-        {
-            typeof(weakSelf) strongSelf = weakSelf;
-            if ( strongSelf != nil )
-            {
-                strongSelf.templateDownloadManager = nil;
-                
-                // First try to log in with stored user (token from keychain)
-                const BOOL loginWithStoredUserDidSucceed = [[VObjectManager sharedManager] loginWithExistingToken];
-                if ( loginWithStoredUserDidSucceed )
-                {
-                    [strongSelf onDoneLoadingWithTemplateConfiguration:templateConfiguration];
-                }
-                else
-                {
-                    // Log in through server using saved password
-                    [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
-                     {
-                         [strongSelf onDoneLoadingWithTemplateConfiguration:templateConfiguration];
-                     }
-                                                                                onError:^(NSError *error, BOOL thirdPartyAPIFailed)
-                     {
-                         [strongSelf onDoneLoadingWithTemplateConfiguration:templateConfiguration];
-                     }];
-                }
-            }
-        });
-    }];
-#endif
-}
-
-- (NSURL *)urlForTemplateCacheForEnvironment:(VEnvironment *)environment
-{
-    static NSString * const templateCacheFolderName = @"templates";
-    
-    NSArray *paths = [[NSFileManager defaultManager] URLsForDirectory:NSCachesDirectory inDomains:NSUserDomainMask];
-    NSURL *cachePath = [paths firstObject];
-    if ( cachePath != nil )
-    {
-        cachePath = [cachePath URLByAppendingPathComponent:templateCacheFolderName];
-        [[NSFileManager defaultManager] createDirectoryAtURL:cachePath withIntermediateDirectories:YES attributes:nil error:nil];
-    }
-    return [cachePath URLByAppendingPathComponent:environment.name];
-}
-
-- (NSURL *)urlForTemplateInBundleForEnvironment:(VEnvironment *)environment
-{
-    static NSString * const templateFileFormat = @"%@.template";
-    static NSString * const templateFileExtension = @"json";
-    return [[NSBundle bundleForClass:[self class]] URLForResource:[NSString stringWithFormat:templateFileFormat, environment.name] withExtension:templateFileExtension];
+    self.templateDownloadManager = [[VTemplateDownloadOperation alloc] initWithDownloader:[VObjectManager sharedManager] andDelegate:self];
+    self.templateDownloadManager.templateConfigurationCacheID = environmentManager.currentEnvironment.templateCacheIdentifier;
+    [self.operationQueue addOperation:self.templateDownloadManager];
 }
 
 - (void)onDoneLoadingWithTemplateConfiguration:(NSDictionary *)templateConfiguration
@@ -224,6 +173,44 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                                                 dictionaryOfClassesByTemplateName:nil];
         [self.delegate loadingViewController:self didFinishLoadingWithDependencyManager:dependencyManager];
     }
+}
+
+#pragma mark - VTemplateDownloadOperationDelegate methods
+
+- (void)templateDownloadOperation:(VTemplateDownloadOperation *)downloadOperation didFinishLoadingTemplateConfiguration:(NSDictionary *)configuration
+{
+    dispatch_async(dispatch_get_main_queue(), ^(void)
+    {
+        if ( downloadOperation != self.templateDownloadManager )
+        {
+            return;
+        }
+        self.templateDownloadManager = nil;
+        
+        // First try to log in with stored user (token from keychain)
+        const BOOL loginWithStoredUserDidSucceed = [[VObjectManager sharedManager] loginWithExistingToken];
+        if ( loginWithStoredUserDidSucceed )
+        {
+            [self onDoneLoadingWithTemplateConfiguration:configuration];
+        }
+        else
+        {
+            // Log in through server using saved password
+            [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
+            {
+                [self onDoneLoadingWithTemplateConfiguration:configuration];
+            }
+                                                                       onError:^(NSError *error, BOOL thirdPartyAPIFailed)
+            {
+                [self onDoneLoadingWithTemplateConfiguration:configuration];
+            }];
+        }
+    });
+}
+
+- (void)templateDownloadOperation:(VTemplateDownloadOperation *)downloadOperation needsAnOperationAddedToTheQueue:(NSOperation *)operation
+{
+    [self.operationQueue addOperation:operation];
 }
 
 @end

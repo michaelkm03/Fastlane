@@ -50,7 +50,7 @@
         if ( [VTemplateImage isImageJSON:dict] )
         {
             VTemplateImage *image = [[VTemplateImage alloc] initWithJSON:dict];
-            if ( image.imageURL != nil )
+            if ( image.imageURL != nil && [[self validSchemes] containsObject:[image.imageURL.scheme lowercaseString]] )
             {
                 [set addObject:image.imageURL];
             }
@@ -80,6 +80,17 @@
             [self scanForURLsInCollection:value andAddToSet:set];
         }
     }
+}
+
+- (NSSet *)validSchemes
+{
+    static NSSet *validSchemes;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^(void)
+    {
+        validSchemes = [NSSet setWithObjects:@"http", @"https", nil];
+    });
+    return validSchemes;
 }
 
 @end
