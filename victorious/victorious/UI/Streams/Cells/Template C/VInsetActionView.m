@@ -225,12 +225,20 @@ static const CGFloat kActionButtonWidth = 44.0f;
 {
     _dependencyManager = dependencyManager;
     
-    UIColor *imageTintColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
-    self.gifButton.unselectedTintColor = imageTintColor;
-    self.memeButton.unselectedTintColor = imageTintColor;
-    self.repostButton.unselectedTintColor = imageTintColor;
-    self.likeButton.unselectedTintColor = imageTintColor;
-    self.commentButton.unselectedTintColor = imageTintColor;
+    UIColor *unselectedTintColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+    UIColor *selectedTintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    
+    self.gifButton.unselectedTintColor = unselectedTintColor;
+    self.memeButton.unselectedTintColor = unselectedTintColor;
+    self.repostButton.unselectedTintColor = unselectedTintColor;
+    self.likeButton.unselectedTintColor = unselectedTintColor;
+    self.commentButton.unselectedTintColor = unselectedTintColor;
+    
+    self.gifButton.selectedTintColor = selectedTintColor;
+    self.memeButton.selectedTintColor = selectedTintColor;
+    self.repostButton.selectedTintColor = selectedTintColor;
+    self.likeButton.selectedTintColor = selectedTintColor;
+    self.commentButton.selectedTintColor = selectedTintColor;
 }
 
 #pragma mark - Button Factory
@@ -242,7 +250,6 @@ static const CGFloat kActionButtonWidth = 44.0f;
 {
     VActionButton *actionButton = [VActionButton actionButtonWithImage:[actionImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] selectedImage:[actionImageSelected imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] backgroundImage:[backgroundImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
     
-    actionButton.selectedTintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     actionButton.translatesAutoresizingMaskIntoConstraints = NO;
     [actionButton addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
     [actionButton v_addWidthConstraint:kActionButtonWidth];

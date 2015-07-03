@@ -194,11 +194,6 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     [self layoutIfNeeded];
 }
 
-+ (CGFloat)aspectRatioForSequence:(VSequence *)sequence
-{
-    return [sequence isPoll] ? kPollCellHeightRatio : (1 / [sequence previewAssetAspectRatio]);
-}
-
 + (VCellSizeCollection *)cellLayoutCollection
 {
     static VCellSizeCollection *collection;
@@ -208,7 +203,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
              VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
-             return CGSizeMake( 0.0f, size.width * [[self class] aspectRatioForSequence:sequence] );
+             return CGSizeMake( 0.0f, size.width / [sequence previewAssetAspectRatio] );
          }];
         [collection addComponentWithConstantSize:CGSizeMake( 0.0, -kButtonHeight )];
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
@@ -353,7 +348,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     [self.contentContainer v_addPinToLeadingTrailingToSubview:self.previewView];
     
     NSDictionary *views = @{ @"previewView" : self.previewView };
-    CGFloat height = CGRectGetWidth(self.bounds) * [[self class] aspectRatioForSequence:sequence];
+    CGFloat height = CGRectGetWidth(self.bounds) / [sequence previewAssetAspectRatio];
     NSDictionary *metrics = @{ @"height" : @(height) };
     NSArray *constraintsV = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[previewView(height)]" options:kNilOptions metrics:metrics views:views];
     [self.contentContainer addConstraints:constraintsV];

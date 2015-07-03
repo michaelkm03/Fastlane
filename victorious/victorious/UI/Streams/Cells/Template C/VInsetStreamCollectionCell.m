@@ -45,6 +45,7 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
 @property (nonatomic, strong) NSLayoutConstraint *previewViewHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *countsVerticalSpacing;
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
+@property (nonatomic, strong) UIView *separatorView;
 
 @end
 
@@ -127,7 +128,19 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
     [self.contentView v_addPinToLeadingTrailingToSubview:_actionView];
     [self.contentView v_addPinToBottomToSubview:_actionView];
     [_actionView v_addHeightConstraint:kInsetCellActionViewHeight];
-
+    
+    _separatorView = [[UIView alloc] initWithFrame:CGRectZero];
+    [self.contentView addSubview:_separatorView];
+    _separatorView.backgroundColor = [UIColor clearColor];
+    [_separatorView v_addHeightConstraint:1.0f];
+    [self.contentView v_addPinToLeadingTrailingToSubview:_separatorView];
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_separatorView
+                                                                 attribute:NSLayoutAttributeBottom
+                                                                 relatedBy:NSLayoutRelationEqual
+                                                                    toItem:_actionView
+                                                                 attribute:NSLayoutAttributeTop
+                                                                multiplier:1.0f
+                                                                  constant:0.0f]];
     
     // Comments and likes count
     _countsTextView = [[VSequenceCountsTextView alloc] init];
@@ -197,7 +210,7 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
              // we can't know what the actual text for the label is in a static method
              return CGSizeMake( 0.0f, MAX( kCountsTextViewMinHeight, [@"V" frameSizeForWidth:textWidth andAttributes:attributes].height ) );
          }];
-        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kInsetCellActionViewHeight)];
+        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kInsetCellActionViewHeight + kTextMargins.top)];
     }
     return collection;
 }
@@ -254,6 +267,7 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
     }
     
     [self.countsTextView setTextAttributes:[[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager]];
+    [self.separatorView setBackgroundColor:[dependencyManager colorForKey:VDependencyManagerSecondaryLinkColorKey]];
 }
 
 + (NSDictionary *)sequenceCountsAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
