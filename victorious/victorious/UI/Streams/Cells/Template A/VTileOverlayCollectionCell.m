@@ -31,7 +31,6 @@ static const UIEdgeInsets kTextInsets           = { 0.0f, 20.0f, 5.0f, 20.0f };
 static const CGFloat kHeaderHeight              = 74.0f;
 static const CGFloat kGradientAlpha             = 0.3f;
 static const CGFloat kShadowAlpha               = 0.5f;
-static const CGFloat kPollCellHeightRatio       = 0.66875f; //< from spec, 214 height for 320 width
 static const CGFloat kCountsTextViewMinHeight   = 80.0f;
 static const CGFloat kButtonWidth               = 44.0f;
 static const CGFloat kButtonHeight              = 44.0f;
