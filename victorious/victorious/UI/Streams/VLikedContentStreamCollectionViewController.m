@@ -93,9 +93,11 @@
             noContentView.message = NSLocalizedString( @"Posts you like will appear here.", @"" );
             noContentView.icon = [UIImage imageNamed:@"liked_stream_empty"];
             self.noContentView = noContentView;
+            [(VNoContentView *)self.noContentView resetInitialAnimationState];
         }
         
         self.collectionView.backgroundView = self.noContentView;
+        [(VNoContentView *)self.noContentView animateTransitionIn];
     }
     else
     {

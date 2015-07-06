@@ -504,7 +504,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 {
     [self dismissViewControllerAnimated:YES completion:^
     {
-        if (MFMailComposeResultFailed == result)
+        if (result == MFMailComposeResultFailed)
         {
             UIAlertController *alert = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"EmailFail", @"Unable to Email")
                                                                                  message:error.localizedDescription
