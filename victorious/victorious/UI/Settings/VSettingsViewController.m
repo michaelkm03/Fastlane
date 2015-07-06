@@ -37,15 +37,18 @@
 
 static const NSInteger kSettingsSectionIndex         = 0;
 
-static const NSInteger kLikedContentIndex            = 0;
-static const NSInteger kChangePasswordIndex          = 1;
-static const NSInteger kHelpIndex                    = 2;
-static const NSInteger kChromecastButtonIndex        = 3;
-static const NSInteger kPushNotificationsButtonIndex = 4;
-static const NSInteger kResetPurchasesButtonIndex    = 5;
-static const NSInteger kServerEnvironmentButtonIndex = 6;
-static const NSInteger kTrackingButtonIndex          = 7;
-static const NSInteger kResetCoachmarksIndex         = 8;
+typedef NS_ENUM(NSInteger, VSettingsAction)
+{
+    VSettingsActionLikedContent,
+    VSettingsActionChangePassword,
+    VSettingsActionHelp,
+    VSettingsActionChromecast,
+    VSettingsActionNotifications,
+    VSettingsActionResetPurchases,
+    VSettingsActionServerEnvironment,
+    VSettingsActionTracking,
+    VSettingsActionResetCoachmarks
+};
 
 static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 static NSString * const kSupportEmailKey = @"email.support";
@@ -65,7 +68,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 @property (nonatomic, assign) BOOL showTrackingAlertSetting;
 @property (nonatomic, assign) BOOL showPushNotificationSettings;
 @property (nonatomic, assign) BOOL showPurchaseSettings;
-@property (nonatomic, assign) BOOL showChangePassword;
 @property (nonatomic, assign) BOOL showResetCoachmarks;
 
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
@@ -153,8 +155,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     self.showPurchaseSettings = [VPurchaseManager sharedInstance].isPurchasingEnabled;
     self.showPushNotificationSettings = YES;
     
-    self.showChangePassword = [VObjectManager sharedManager].mainUserLoggedIn && ![VObjectManager sharedManager].mainUserLoggedInWithSocial;
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStatusDidChange:) name:kLoggedInChangedNotification object:nil];
     [self.tableView reloadData];
 }
@@ -171,7 +171,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 {
     if ( self.showResetCoachmarks )
     {
-        UITableViewCell *tableViewCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:kResetCoachmarksIndex inSection:0]];
+        UITableViewCell *tableViewCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:VSettingsActionResetCoachmarks inSection:0]];
         UILabel *label = tableViewCell.textLabel;
         NSArray *shownCoachmarks = [[NSUserDefaults standardUserDefaults] objectForKey:@"shownCoachmarks"];
         BOOL canResetCoachmarks = shownCoachmarks != nil && shownCoachmarks.count > 0;
@@ -241,21 +241,33 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     [self.navigationController pushViewController:likedContentViewController animated:YES];
 }
 
+- (BOOL)showLikedContent
+{
+#warning Remove this negation once server adds support
+    BOOL likeButtonOn = ![[self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey] boolValue];
+    return [VObjectManager sharedManager].mainUserLoggedIn && likeButtonOn;
+}
+
+- (BOOL)showChangePassword
+{
+    return [VObjectManager sharedManager].mainUserLoggedIn && ![VObjectManager sharedManager].mainUserLoggedInWithSocial;
+}
+
 #pragma mark - TableView Delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (0 == indexPath.section)
+    if (indexPath.section == 0)
     {
-        if ( indexPath.row == kLikedContentIndex )
+        if ( indexPath.row == VSettingsActionLikedContent )
         {
             [self pushLikedContent];
         }
-        else if (indexPath.row == kHelpIndex )
+        else if (indexPath.row == VSettingsActionHelp )
         {
             [self sendHelp:self];
         }
-        else if ( indexPath.row == kResetCoachmarksIndex )
+        else if ( indexPath.row == VSettingsActionResetCoachmarks )
         {
             //Reset coachmarks
             [[self.dependencyManager coachmarkManager] resetShownCoachmarks];
@@ -315,7 +327,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (kSettingsSectionIndex == indexPath.section && kChromecastButtonIndex == indexPath.row)
+    if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionChromecast)
     {
         if (self.showChromeCastButton)
         {
@@ -326,7 +338,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
             return 0;
         }
     }
-    else if (kSettingsSectionIndex == indexPath.section && kServerEnvironmentButtonIndex == indexPath.row)
+    else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionServerEnvironment)
     {
         if (self.showEnvironmentSetting)
         {
@@ -337,7 +349,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
             return 0;
         }
     }
-    else if (kSettingsSectionIndex == indexPath.section && kResetCoachmarksIndex == indexPath.row)
+    else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionResetCoachmarks)
     {
         if ( self.showResetCoachmarks )
         {
@@ -348,9 +360,9 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
             return 0;
         }
     }
-    else if (kSettingsSectionIndex == indexPath.section && kChangePasswordIndex == indexPath.row)
+    else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionChangePassword)
     {
-        if ( self.showChangePassword )
+        if ( [self showChangePassword] )
         {
             return self.tableView.rowHeight;
         }
@@ -359,7 +371,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
             return 0;
         }
     }
-    else if (kSettingsSectionIndex == indexPath.section && kPushNotificationsButtonIndex == indexPath.row)
+    else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionNotifications)
     {
         if (self.showPushNotificationSettings && [VObjectManager sharedManager].mainUserLoggedIn)
         {
@@ -370,7 +382,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
             return 0;
         }
     }
-    else if (kSettingsSectionIndex == indexPath.section && kResetPurchasesButtonIndex == indexPath.row)
+    else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionResetPurchases)
     {
         if (self.showPurchaseSettings)
         {
@@ -381,7 +393,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
             return 0;
         }
     }
-    else if (kSettingsSectionIndex == indexPath.section && kTrackingButtonIndex == indexPath.row)
+    else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionTracking)
     {
         if (self.showTrackingAlertSetting)
         {
@@ -392,11 +404,9 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
             return 0;
         }
     }
-    else if (kSettingsSectionIndex == indexPath.section && kLikedContentIndex == indexPath.row)
+    else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionLikedContent)
     {
-#warning Remove this negation once server adds support
-        BOOL likeButtonOn = ![[self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey] boolValue];
-        if ([VObjectManager sharedManager].mainUserLoggedIn && likeButtonOn)
+        if ([self showLikedContent])
         {
             return self.tableView.rowHeight;
         }
