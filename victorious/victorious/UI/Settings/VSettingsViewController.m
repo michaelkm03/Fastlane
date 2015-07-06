@@ -243,8 +243,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 
 - (BOOL)showLikedContent
 {
-#warning Remove this negation once server adds support
-    BOOL likeButtonOn = ![[self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey] boolValue];
+    BOOL likeButtonOn = [[self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey] boolValue];
     return [VObjectManager sharedManager].mainUserLoggedIn && likeButtonOn;
 }
 

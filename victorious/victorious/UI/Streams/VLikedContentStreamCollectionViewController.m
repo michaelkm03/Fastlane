@@ -14,6 +14,7 @@
 @interface VLikedContentStreamCollectionViewController ()
 
 @property (nonatomic, assign) BOOL shouldRefreshOnView;
+@property (nonatomic, strong) NSMutableArray *streamItemsToRemove;
 
 @end
 
@@ -46,6 +47,12 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    // Remove any cells which we've unliked
+    for (VStreamItem *streamItem in self.streamItemsToRemove)
+    {
+        [self.streamDataSource removeStreamItem:streamItem];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -57,6 +64,16 @@
         [self refreshWithCompletion:nil];
         self.shouldRefreshOnView = NO;
     }
+}
+
+- (NSMutableArray *)streamItemsToRemove
+{
+    if (_streamItemsToRemove == nil)
+    {
+        _streamItemsToRemove = [NSMutableArray new];
+    }
+    
+    return _streamItemsToRemove;
 }
 
 - (void)loginStatusDidChange:(NSNotification *)notification
@@ -103,6 +120,34 @@
     {
         self.collectionView.backgroundView = nil;
     }
+}
+
+- (void)willLikeSequence:(VSequence *)sequence withView:(UIView *)view completion:(void(^)(BOOL success))completion
+{
+    __weak typeof(self) welf = self;
+    [super willLikeSequence:sequence withView:view completion:^(BOOL success)
+    {
+        __strong typeof(self) strongSelf = welf;
+        NSIndexPath *likedIndexPath = [strongSelf.streamDataSource indexPathForItem:sequence];
+        
+        if (likedIndexPath != nil && success)
+        {
+            // Save cell index path for removal
+            if (!sequence.isLikedByMainUser.boolValue)
+            {
+                [strongSelf.streamItemsToRemove addObject:sequence];
+            }
+            else if ([strongSelf.streamItemsToRemove containsObject:sequence])
+            {
+                [strongSelf.streamItemsToRemove removeObject:sequence];
+            }
+        }
+        
+        if (completion != nil)
+        {
+            completion(success);
+        }
+    }];
 }
 
 @end
