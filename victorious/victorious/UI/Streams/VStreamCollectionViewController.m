@@ -272,7 +272,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 {
     [super viewWillAppear:animated];
     
-    [self.dependencyManager v_trackViewWillAppear:self];
+    [self.dependencyManager trackViewWillAppear:self];
 
     if ( self.streamDataSource.count == 0 )
     {
@@ -307,7 +307,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 {
     [super viewWillDisappear:animated];
     
-    [self.dependencyManager v_trackViewWillDisappear:self];
+    [self.dependencyManager trackViewWillDisappear:self];
     
     [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
     

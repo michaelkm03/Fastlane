@@ -35,12 +35,12 @@ static const char kAssociatedObjectViewWasHiddenKey;
     return tracking[ eventURLKey ] ?: @[];
 }
 
-- (void)v_trackViewWillAppear:(UIViewController *)viewController
+- (void)trackViewWillAppear:(UIViewController *)viewController
 {
-    [self v_trackViewWillAppear:viewController withParameters:nil];
+    [self trackViewWillAppear:viewController withParameters:nil];
 }
 
-- (void)v_trackViewWillAppear:(UIViewController *)viewController withParameters:(NSDictionary *)parameters
+- (void)trackViewWillAppear:(UIViewController *)viewController withParameters:(NSDictionary *)parameters
 {
     NSNumber *number = objc_getAssociatedObject( viewController, &kAssociatedObjectViewWasHiddenKey );
     BOOL wasHidden = number.boolValue;
@@ -63,7 +63,7 @@ static const char kAssociatedObjectViewWasHiddenKey;
     objc_setAssociatedObject( viewController, &kAssociatedObjectViewWasHiddenKey, @NO, OBJC_ASSOCIATION_ASSIGN );
 }
 
-- (void)v_trackViewWillDisappear:(UIViewController *)viewController
+- (void)trackViewWillDisappear:(UIViewController *)viewController
 {
     BOOL wasHidden = viewController.navigationController.viewControllers.count > 1 || viewController.presentedViewController != nil;
     objc_setAssociatedObject( viewController, &kAssociatedObjectViewWasHiddenKey, @(wasHidden), OBJC_ASSOCIATION_ASSIGN );

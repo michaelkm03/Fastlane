@@ -39,7 +39,7 @@ extern NSString * const VTrackingBallisticCountKey;
  @param viewController The view controller spawned by this instance of VDependencyManager that
  contains tracking keys and other values relative to it.
  */
-- (void)v_trackViewWillAppear:(UIViewController *)viewController;
+- (void)trackViewWillAppear:(UIViewController *)viewController;
 
 /**
  Uses VTrackingManager to track a view of the provided view controller if self contains the "view" tracking key.
@@ -48,7 +48,7 @@ extern NSString * const VTrackingBallisticCountKey;
  contains tracking keys and other values relative to it.
  @param parameters Dictionary of parameters to include with the event.
  */
-- (void)v_trackViewWillAppear:(UIViewController *)viewController withParameters:(NSDictionary *)parameters;
+- (void)trackViewWillAppear:(UIViewController *)viewController withParameters:(NSDictionary *)parameters;
 
 /**
  Updates state management to prevent tracking views when returning to the viewc controller
@@ -57,6 +57,6 @@ extern NSString * const VTrackingBallisticCountKey;
  @param viewController The view controller spawned by this instance of VDependencyManager that
  contains tracking keys and other values relative to it.
  */
-- (void)v_trackViewWillDisappear:(UIViewController *)viewController;
+- (void)trackViewWillDisappear:(UIViewController *)viewController;
 
 @end

@@ -179,7 +179,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     [self.emailField clearValidation];
     [self.passwordField clearValidation];
     
-    [self.dependencyManager v_trackViewWillAppear:self];
+    [self.dependencyManager trackViewWillAppear:self];
 }
 
 - (void)viewDidDisappear:(BOOL)animated

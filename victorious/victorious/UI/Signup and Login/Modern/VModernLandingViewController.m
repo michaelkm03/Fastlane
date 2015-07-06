@@ -67,14 +67,14 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 {
     [super viewWillAppear:animated];
     
-    [self.dependencyManager v_trackViewWillAppear:self];
+    [self.dependencyManager trackViewWillAppear:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
-    [self.dependencyManager v_trackViewWillDisappear:self];
+    [self.dependencyManager trackViewWillDisappear:self];
 }
 
 - (void)viewDidLoad

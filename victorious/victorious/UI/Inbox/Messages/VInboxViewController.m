@@ -116,7 +116,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     [super viewWillAppear:animated];
     
-    [self.dependencyManager v_trackViewWillAppear:self];
+    [self.dependencyManager trackViewWillAppear:self];
     
     [self.refreshControl beginRefreshing];
     [self refresh:nil];
@@ -142,7 +142,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     [super viewWillDisappear:animated];
     
-    [self.dependencyManager v_trackViewWillDisappear:self];
+    [self.dependencyManager trackViewWillDisappear:self];
     
     [[VTrackingManager sharedInstance] endEvent:@"Inbox"];
     if (self.refreshRequest.isExecuting)

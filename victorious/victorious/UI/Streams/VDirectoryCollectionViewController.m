@@ -164,7 +164,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 {
     [super viewWillDisappear:animated];
     
-    [self.dependencyManager v_trackViewWillDisappear:self];
+    [self.dependencyManager trackViewWillDisappear:self];
     
     [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
 }
@@ -173,7 +173,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 {
     [super viewWillAppear:animated];
     
-    [self.dependencyManager v_trackViewWillAppear:self];
+    [self.dependencyManager trackViewWillAppear:self];
     
     // Layout may have changed between awaking from nib and being added to the container of the SoS
     [self.collectionView.collectionViewLayout invalidateLayout];
