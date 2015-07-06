@@ -37,6 +37,7 @@
 - (void)prepareForReuse
 {
     [super prepareForReuse];
+    [self.activityIndicator startAnimating];
     self.thumbnailImageView.image = nil;
 }
 
