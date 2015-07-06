@@ -262,7 +262,7 @@ static const UIEdgeInsets kTextMargins              = { 10.0f, 10.0f, 0.0f, 10.0
         [self.captionTextView setDependencyManager:dependencyManager];
     }
     
-    [self.countsTextView setLinkAttributes:[[self class] sequenceCountsActiveAttributesWithDependencyManager:dependencyManager]];
+    [self.countsTextView setTextHighlightAttributes:[[self class] sequenceCountsActiveAttributesWithDependencyManager:dependencyManager]];
     [self.countsTextView setTextAttributes:[[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager]];
 }
 

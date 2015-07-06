@@ -163,7 +163,7 @@ static NSString * const kDividerDelimeter = @"•";
     
     super.attributedText = attributedString; //< Use super because self is overridden
     self.linkTextAttributes = self.textAttributes;
-    self.linkTextTouchAttributes = self.linkAttributes ?: self.textAttributes;
+    self.linkTextTouchAttributes = self.textHighlightAttributes ?: self.textAttributes;
 }
 
 + (BOOL)canDisplayTextWithCommentCount:(NSInteger)commentCount likesCount:(NSInteger)likesCount

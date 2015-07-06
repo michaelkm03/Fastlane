@@ -442,7 +442,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     self.likeButton.unselectedTintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.captionTextView.dependencyManager = dependencyManager;
     
-    [self.countsTextView setLinkAttributes:[[self class] sequenceCountsActiveAttributesWithDependencyManager:dependencyManager]];
+    [self.countsTextView setTextHighlightAttributes:[[self class] sequenceCountsActiveAttributesWithDependencyManager:dependencyManager]];
     [self.countsTextView setTextAttributes:[[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager]];
 }
 
