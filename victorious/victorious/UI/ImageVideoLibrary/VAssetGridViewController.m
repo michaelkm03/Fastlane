@@ -39,6 +39,16 @@
     self.allPhotosResult = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:allPhotosOptions];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    for (NSIndexPath *selectedIndexPaths in self.collectionView.indexPathsForSelectedItems)
+    {
+        [self.collectionView deselectItemAtIndexPath:selectedIndexPaths animated:NO];
+    }
+}
+
 #pragma mark <UICollectionViewDataSource>
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -72,6 +82,11 @@
 {
     [self downloadAsset:[self assetForIndexPath:indexPath]];
     [collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:YES];
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+
 }
 
 #pragma mark - Private Methods

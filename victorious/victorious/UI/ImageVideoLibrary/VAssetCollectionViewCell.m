@@ -16,6 +16,13 @@
 
 @implementation VAssetCollectionViewCell
 
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    
+    self.selectionView.alpha = 0.0f;
+}
+
 - (void)setSelected:(BOOL)selected
 {
     [super setSelected:selected];
