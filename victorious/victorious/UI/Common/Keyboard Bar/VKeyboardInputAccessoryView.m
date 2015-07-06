@@ -290,6 +290,12 @@ shouldChangeTextInRange:(NSRange)range
 - (void)updateSendButton
 {
     self.sendButton.enabled = (self.selectedMedia || (self.composedText.length > 0));
+    
+    NSString *textWithoutSpace = [self.composedText stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if (!textWithoutSpace.length)
+    {
+        self.sendButton.enabled = NO;
+    }
 }
 
 - (void)setDelegate:(id<VKeyboardInputAccessoryViewDelegate>)delegate
