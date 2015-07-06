@@ -502,14 +502,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                              selector:@selector(keyboardDidChangeFrame:)
                                                  name:VInputAccessoryViewKeyboardFrameDidChangeNotification
                                                object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(experienceEnhancerDidRequireLogin:)
-                                                 name:VExperienceEnhancerBarDidRequireLoginNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(showPurchaseViewController:)
-                                                 name:VExperienceEnhancerBarDidRequirePurchasePrompt
-                                               object:nil];
     
     [self.navigationController setNavigationBarHidden:YES
                                              animated:YES];
@@ -627,9 +619,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:VInputAccessoryViewKeyboardFrameDidChangeNotification
                                                   object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:VExperienceEnhancerBarDidRequirePurchasePrompt
-                                                  object:nil];
     
     self.contentCollectionView.delegate = nil;
     self.videoCell.delegate = nil;
@@ -683,32 +672,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         default:
             return nil;
     }
-}
-
-#pragma mark - VExperienceEnhancerResponder
-
-- (void)showPurchaseViewController:(VVoteType *)voteType
-{
-    NSDictionary *params = @{ VTrackingKeyProductIdentifier : voteType.productIdentifier ?: @"" };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLockedVoteType parameters:params];
-    
-    VPurchaseViewController *viewController = [VPurchaseViewController newWithDependencyManager:self.dependencyManager];
-    viewController.voteType = voteType;
-    viewController.transitioningDelegate = self.modalTransitionDelegate;
-    viewController.delegate = self;
-    [self presentViewController:viewController animated:YES completion:nil];
-}
-
-- (void)authorizeWithCompletion:(void(^)(BOOL))completion
-{
-    __weak typeof(self) welf = self;
-    [welf.authorizedAction performFromViewController:self context:VAuthorizationContextVoteBallistic completion:^(BOOL authorized)
-     {
-         if ( completion != nil )
-         {
-             completion( authorized );
-         }
-     }];
 }
 
 #pragma mark - Notification Handlers
@@ -1960,6 +1923,32 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (NSString *)screenIdentifier
 {
     return [self.dependencyManager stringForKey:VDependencyManagerIDKey];
+}
+
+#pragma mark - VExperienceEnhancerResponder
+
+- (void)showPurchaseViewController:(VVoteType *)voteType
+{
+    NSDictionary *params = @{ VTrackingKeyProductIdentifier : voteType.productIdentifier ?: @"" };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLockedVoteType parameters:params];
+    
+    VPurchaseViewController *viewController = [VPurchaseViewController newWithDependencyManager:self.dependencyManager];
+    viewController.voteType = voteType;
+    viewController.transitioningDelegate = self.modalTransitionDelegate;
+    viewController.delegate = self;
+    [self presentViewController:viewController animated:YES completion:nil];
+}
+
+- (void)authorizeWithCompletion:(void(^)(BOOL))completion
+{
+    __weak typeof(self) welf = self;
+    [welf.authorizedAction performFromViewController:self context:VAuthorizationContextVoteBallistic completion:^(BOOL authorized)
+     {
+         if ( completion != nil )
+         {
+             completion( authorized );
+         }
+     }];
 }
 
 @end

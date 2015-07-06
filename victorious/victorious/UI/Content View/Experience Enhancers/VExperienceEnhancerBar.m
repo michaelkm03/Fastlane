@@ -14,6 +14,7 @@
 #import "VPurchaseManager.h"
 #import "VVoteType.h"
 #import "VExperienceEnhancerResponder.h"
+#import "UIResponder+VResponderChain.h"
 
 #import <KVOController/FBKVOController.h>
 
@@ -178,7 +179,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
    
     if ( ![VObjectManager sharedManager].authorized )  // Check if the user is logged in first
     {
-        id<VExperienceEnhancerResponder>responder = [self targetForAction:@selector(authorizeWithCompletion:) withSender:self];
+        id<VExperienceEnhancerResponder>responder = [self v_targetConformingToProtocol:@protocol(VExperienceEnhancerResponder)];
         NSAssert( responder != nil, @"Could not find adopter of `VExperienceEnhancerResponder` in responder chain." );
         [responder authorizeWithCompletion:^(BOOL authorized)
         {
@@ -191,7 +192,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     }
     else if ( enhancerForIndexPath.isLocked  ) // Check if the user must buy this experience enhancer first
     {
-        id<VExperienceEnhancerResponder>responder = [self targetForAction:@selector(showPurchaseViewController:) withSender:self];
+        id<VExperienceEnhancerResponder>responder = [self v_targetConformingToProtocol:@protocol(VExperienceEnhancerResponder)];
         NSAssert( responder != nil, @"Could not find adopter of `VExperienceEnhancerResponder` in responder chain." );
         [responder showPurchaseViewController:enhancerForIndexPath.voteType];
     }
