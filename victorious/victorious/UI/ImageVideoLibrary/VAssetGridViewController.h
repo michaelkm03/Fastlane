@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "VMediaSource.h"
 
+@class PHFetchResult;
+
 /**
  *  A completion block the AssetGridViewController will call to provide the results of the user selecting an asset.
  *
@@ -18,5 +20,7 @@
 typedef void (^VAssetSelectionHandler)(UIImage *previewImage, NSURL *capturedMediaURL);
 
 @interface VAssetGridViewController : UICollectionViewController <VMediaSource>
+
+@property (nonatomic, strong) PHFetchResult *assetsToDisplay;
 
 @end

@@ -12,13 +12,12 @@
 #import "VAssetCollectionViewCell.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
+// Image Resizing
 #import "UIImage+Resize.h"
 
 @import Photos;
 
 @interface VAssetGridViewController ()
-
-@property (nonatomic, strong) PHFetchResult *allPhotosResult;
 
 @property (nonatomic, strong) UIImage *selectedFullSizeImage;
 @property (nonatomic, strong) NSURL *imageFileURL;
@@ -33,10 +32,13 @@
 {
     [super viewDidLoad];
     
-    PHFetchOptions *allPhotosOptions = [PHFetchOptions new];
-    allPhotosOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
-    
-    self.allPhotosResult = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:allPhotosOptions];
+    // If we don't have a fetch result to display just show all images.
+    if (self.assetsToDisplay == nil)
+    {
+        PHFetchOptions *allPhotosOptions = [PHFetchOptions new];
+        allPhotosOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
+        self.assetsToDisplay = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:allPhotosOptions];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -49,11 +51,20 @@
     }
 }
 
-#pragma mark <UICollectionViewDataSource>
+#pragma mark - Property Accessors
+
+- (void)setAssetsToDisplay:(PHFetchResult *)assetsToDisplay
+{
+    _assetsToDisplay = assetsToDisplay;
+    
+    [self.collectionView reloadData];
+}
+
+#pragma mark UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.allPhotosResult.count;
+    return self.assetsToDisplay.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -104,18 +115,9 @@
     fullSizeRequestOptions.networkAccessAllowed = YES;
     fullSizeRequestOptions.progressHandler = ^void(double progress, NSError *error, BOOL *stop, NSDictionary *info)
     {
-        VLog(@"download progress: %f", progress);
         progressHud.progress = progress;
     };
     __weak typeof(self) welf = self;
-//    [[PHImageManager defaultManager] requestImageForAsset:asset
-//                                               targetSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)
-//                                              contentMode:PHImageContentModeDefault
-//                                                  options:fullSizeRequestOptions
-//                                            resultHandler:^(UIImage *result, NSDictionary *info)
-//     {
-//         welf.selectedFullSizeImage = result;
-//     }];
     [[PHImageManager defaultManager] requestImageDataForAsset:asset
                                                       options:fullSizeRequestOptions
                                                 resultHandler:^(NSData *imageData, NSString *dataUTI, UIImageOrientation orientation, NSDictionary *info)
@@ -124,11 +126,11 @@
          {
              [progressHud hide:YES afterDelay:0.25f];
          });
+#warning Add some error handling here!
          [welf callCompletionWithAsset:asset
-                              imageData:imageData
-                               orientation:orientation
-                                      info:info];
-         VLog(@"request handler info: %@", info);
+                             imageData:imageData
+                           orientation:orientation
+                                  info:info];
      }];
 }
 
@@ -150,11 +152,7 @@
             __strong typeof (welf) strongSelf = welf;
             strongSelf.selectedFullSizeImage = imageWithProperOrientation;
             strongSelf.imageFileURL = urlForAsset;
-            
-#warning Remove me
-            NSData *dataWithURL = [NSData dataWithContentsOfURL:urlForAsset];
-            UIImage *imageFromData = [UIImage imageWithData:dataWithURL];
-            
+
             if (strongSelf.handler != nil)
             {
                 strongSelf.handler(strongSelf.selectedFullSizeImage, strongSelf.imageFileURL);
@@ -185,10 +183,9 @@
     return [[[NSFileManager defaultManager] URLsForDirectory:NSCachesDirectory inDomains:NSUserDomainMask] firstObject];
 }
 
-
 - (PHAsset *)assetForIndexPath:(NSIndexPath *)indexPath
 {
-    return [self.allPhotosResult objectAtIndex:indexPath.row];
+    return [self.assetsToDisplay objectAtIndex:indexPath.row];
 }
 
 @end

@@ -8,75 +8,120 @@
 
 #import "VAssetCollectionListViewController.h"
 
+#import "VAssetGroupTableViewCell.h"
+
 @import Photos;
 
 static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 
 @interface VAssetCollectionListViewController ()
 
-@property (strong) NSArray *collectionsFetchResults;
+@property (nonatomic, strong) NSNumberFormatter *numberFormatter;
+@property (nonatomic, strong) NSCache *cachedFetchResultsForCollections;
 
 @end
 
 @implementation VAssetCollectionListViewController
 
+#pragma mark - View Lifecycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    PHFetchOptions *fetchOptions = [[PHFetchOptions alloc] init];
-//    fetchOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d", PHAssetMediaTypeImage];
-//    fetchOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(creationDate)) ascending:NO]];
+    self.cachedFetchResultsForCollections = [[NSCache alloc] init];
+    self.numberFormatter = [[NSNumberFormatter alloc] init];
+    self.numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
+    self.numberFormatter.locale = [NSLocale currentLocale];
+    self.numberFormatter.groupingSeparator = [[NSLocale currentLocale] objectForKey:NSLocaleGroupingSeparator];
+}
 
-    PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
-                                                                          subtype:PHAssetCollectionSubtypeAny
-                                                                          options:fetchOptions];
-    PHFetchResult *userAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
-                                                                         subtype:PHAssetCollectionSubtypeAny
-                                                                         options:fetchOptions];
+#pragma mark - Property Accessors
+
+- (void)setAssetCollections:(NSArray *)assetCollections
+{
+    _assetCollections = assetCollections;
     
-//    PHFetchResult *topLevelCollections = [PHCollection fetchTopLevelUserCollectionsWithOptions:fetchOptions];
-    self.collectionsFetchResults = @[smartAlbums, userAlbums];
+    [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return self.collectionsFetchResults.count;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    PHFetchResult *fetchResultForSection = self.collectionsFetchResults[section];
-    return fetchResultForSection.count;
+    return self.assetCollections.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kAlbumCellReuseIdentifier
+    VAssetGroupTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kAlbumCellReuseIdentifier
                                                             forIndexPath:indexPath];
+    // Set the localized title on the cell
+    PHAssetCollection *collection = self.assetCollections[indexPath.row];
+    cell.groupTitleLabel.text = collection.localizedTitle;
+
+    // Fetch the items in the collection
+    PHFetchResult *itemsInCollection = [self fetchResultForAssetsInCollection:collection];
     
-    // Configure cell
-    PHFetchResult *fetchResult = self.collectionsFetchResults[indexPath.section];
-    PHAssetCollection *collection = fetchResult[indexPath.row];
-    cell.textLabel.text = collection.localizedTitle;
+    // Set the count on the subtitle label
+    cell.groupSubtitleLabel.text = [self.numberFormatter stringFromNumber:@(itemsInCollection.count)];
     
-    PHFetchResult *itemsInCollection = [PHAsset fetchAssetsInAssetCollection:collection
-                                                                     options:nil];
+    // Use the first asset as a thumbnail
     PHAsset *firstAsset = [itemsInCollection firstObject];
-    
     [[PHImageManager defaultManager] requestImageForAsset:firstAsset
-                                               targetSize:CGSizeMake(44, 44)
+                                               targetSize:CGSizeMake(40, 40)
                                               contentMode:PHImageContentModeAspectFill
                                                   options:nil
                                             resultHandler:^(UIImage *result, NSDictionary *info)
      {
-         cell.imageView.image = result;
-         [cell layoutIfNeeded];
+         cell.groupImageView.image = result;
      }];
-    
+
     return cell;
+}
+
+#pragma mark - Table View Delegate
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([tableView.indexPathsForSelectedRows containsObject:indexPath])
+    {
+        return nil;
+    }
+    return indexPath;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    PHAssetCollection *collectionForIndexPath = self.assetCollections[indexPath.row];
+    
+    if (self.collectionSelectionHandler != nil)
+    {
+        self.collectionSelectionHandler(collectionForIndexPath);
+    }
+    
+    [self.presentingViewController dismissViewControllerAnimated:YES
+                                                      completion:nil];
+}
+
+#pragma mark - Private Methods
+
+- (PHFetchResult *)fetchResultForAssetsInCollection:(PHAssetCollection *)collection
+{
+    PHFetchResult *resultForCollection = [self.cachedFetchResultsForCollections objectForKey:collection];
+    if (resultForCollection == nil)
+    {
+        resultForCollection = [PHAsset fetchAssetsInAssetCollection:collection
+                                                            options:nil];
+        [self.cachedFetchResultsForCollections setObject:resultForCollection
+                                                  forKey:collection];
+    }
+    return resultForCollection;
 }
 
 @end

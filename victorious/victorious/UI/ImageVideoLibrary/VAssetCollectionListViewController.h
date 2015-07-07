@@ -8,12 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-typedef NS_ENUM(NSInteger, VAssetType)
-{
-    VAssetTypePhoto,
-    VAssetTypeVideo
-};
+@class PHAssetCollection;
 
 @interface VAssetCollectionListViewController : UITableViewController
+
+@property (nonatomic, strong) NSArray *assetCollections;
+
+/**
+ *  A handler for colleciton selection. Dismisses self after calling this handler.
+ */
+@property (nonatomic, copy) void (^collectionSelectionHandler)(PHAssetCollection *selectedCollection);
 
 @end

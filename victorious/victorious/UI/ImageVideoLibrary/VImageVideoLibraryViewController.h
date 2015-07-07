@@ -11,6 +11,12 @@
 
 @class VImageLibraryAlternateCaptureOption;
 
+typedef NS_ENUM(NSInteger, VAssetType)
+{
+    VAssetTypePhoto,
+    VAssetTypeVideo
+};
+
 @interface VImageVideoLibraryViewController : UIViewController <VHasManagedDependencies, VMediaSource>
 
 /**

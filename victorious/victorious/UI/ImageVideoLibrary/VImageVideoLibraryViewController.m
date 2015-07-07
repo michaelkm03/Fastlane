@@ -10,14 +10,19 @@
 
 // ViewControllers
 #import "VAssetGridViewController.h"
+#import "VAssetCollectionListViewController.h"
 
 // Views + Helpers
 #import "VFlexBar.h"
 #import "VCompatibility.h"
 
+@import Photos;
+
 @interface VImageVideoLibraryViewController () <UIPopoverPresentationControllerDelegate>
 
-@property (strong, nonatomic) IBOutlet VFlexBar *alternateCaptureOptionsFlexBar;
+@property (nonatomic, strong) IBOutlet VFlexBar *alternateCaptureOptionsFlexBar;
+
+@property (nonatomic, weak) VAssetGridViewController *gridViewController;
 
 @end
 
@@ -34,22 +39,6 @@
     return [storyboardForImageVideoGallery instantiateInitialViewController];
 }
 
-#pragma mark - View Lifecycle
-
-- (void)viewDidLayoutSubviews
-{
-//    CGFloat fullWidth = CGRectGetWidth(self.view.bounds);
-    if (self.alternateCaptureOptions.count > 0)
-    {
-//        CGFloat widthPerElement = VFLOOR(fullWidth / self.alternateCaptureOptions.count);
-//        
-//        for (VImageLibraryAlternateCaptureOption *alternateOption in self.alternateCaptureOptions)
-//        {
-//            // add buttons to flex bar
-//        }
-    }
-}
-
 #pragma mark - Segue
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -57,7 +46,15 @@
     if ([segue.identifier isEqualToString:@"albumsPopover"])
     {
         // Set delegate to self so we can show as a real popover (Non-adaptive).
-        UIViewController *destinationViewController = segue.destinationViewController;
+        VAssetCollectionListViewController *destinationViewController = (VAssetCollectionListViewController *)segue.destinationViewController;
+        destinationViewController.assetCollections = [self assetCollectionsForContentType:VAssetTypePhoto];
+        __weak typeof(self) welf = self;
+        destinationViewController.collectionSelectionHandler = ^void(PHAssetCollection *collection)
+        {
+            welf.gridViewController.assetsToDisplay = [PHAsset fetchAssetsInAssetCollection:collection
+                                                                                    options:nil];
+        };
+        
         destinationViewController.popoverPresentationController.delegate = self;
         // Inset the popover a bit
         CGSize preferredContentSize = CGSizeMake(CGRectGetWidth(self.view.bounds) - 50.0f,
@@ -66,13 +63,9 @@
     }
     else if ([segue.identifier isEqualToString:@"assetGridEmbed"])
     {
-        VAssetGridViewController *destinationViewController = segue.destinationViewController;
-        destinationViewController.handler = ^void(UIImage *previewImage, NSURL *capturedMediaURL)
+        self.gridViewController = segue.destinationViewController;
+        self.gridViewController.handler = ^void(UIImage *previewImage, NSURL *capturedMediaURL)
         {
-#warning Remove me
-            NSData *dataWithURL = [NSData dataWithContentsOfURL:capturedMediaURL];
-            UIImage *imageFromData = [UIImage imageWithData:dataWithURL];
-            
             if (self.handler)
             {
                 self.handler(previewImage, capturedMediaURL);
@@ -87,6 +80,48 @@
                                                                traitCollection:(UITraitCollection *)traitCollection
 {
     return UIModalPresentationNone;
+}
+
+#pragma mark - Private Methods
+
+- (NSArray *)assetCollectionsForContentType:(VAssetType)type
+{
+    // Fetch all albums
+    PHFetchOptions *fetchOptions = [[PHFetchOptions alloc] init];
+    PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
+                                                                          subtype:PHAssetCollectionSubtypeAny
+                                                                          options:fetchOptions];
+    PHFetchResult *userAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
+                                                                         subtype:PHAssetCollectionSubtypeAny
+                                                                         options:fetchOptions];
+
+    // Figure out Photos media type based on our media type
+    PHAssetMediaType mediaType = (type == VAssetTypePhoto) ? PHAssetMediaTypeImage : PHAssetMediaTypeVideo;
+    PHFetchOptions *mediaTypeOptions = [[PHFetchOptions alloc] init];
+    mediaTypeOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d", mediaType];
+    
+    // Add collections to array if collection contains at least 1 asset of media type
+    NSMutableArray *assetCollections = [[NSMutableArray alloc] init];
+    for (PHAssetCollection *collection in smartAlbums)
+    {
+        PHFetchResult *albumMediaTypeResults = [PHAsset fetchAssetsInAssetCollection:collection
+                                                                             options:mediaTypeOptions];
+        if (albumMediaTypeResults.count > 0)
+        {
+            [assetCollections addObject:collection];
+        }
+    }
+    for (PHAssetCollection *collection in userAlbums)
+    {
+        PHFetchResult *albumMediaTypeResults = [PHAsset fetchAssetsInAssetCollection:collection
+                                                                             options:mediaTypeOptions];
+        if (albumMediaTypeResults.count > 0)
+        {
+            [assetCollections addObject:collection];
+        }
+    }
+    
+    return [NSArray arrayWithArray:assetCollections];
 }
 
 @end

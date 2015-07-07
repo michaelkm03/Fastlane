@@ -19,7 +19,7 @@
 #import "VCreationFlowController.h"
 
 #warning Maybe delete these
-#import "VWorkspaceFlowController.h"
+//#import "VWorkspaceFlowController.h"
 #import "VCreatePollViewController.h"
 #import "VTextWorkspaceFlowController.h"
 #import "VImageToolController.h"
@@ -34,10 +34,15 @@
 
 static NSString * const kCreateSheetKey = @"createSheet";
 static NSString * const kCreationFlowKey = @"createFlow";
+static NSString * const kImageCreationFlowKey = @"imageCreateFlow";
+static NSString * const kGIFCreationFlowKey = @"gifCreateFlow";
+static NSString * const kVideoCreateFlow = @"videoCreateFlow";
+static NSString * const kPollCreateFlow = @"pollCreateFlow";
+static NSString * const kTextCreateFlow = @"textCreateFlow";
 
 @interface VCreationFlowPresenter () <VCreationFlowControllerDelegate>
 
-@property (nonatomic, strong) VCreationFlowShim *creationFlowShim;
+//@property (nonatomic, strong) VCreationFlowShim *creationFlowShim;
 
 @end
 
@@ -49,8 +54,8 @@ static NSString * const kCreationFlowKey = @"createFlow";
                                   dependencymanager:dependencyManager];
     if (self != nil)
     {
-        _creationFlowShim = [dependencyManager templateValueOfType:[VCreationFlowShim class]
-                                                           forKey:kCreationFlowKey];
+//        _creationFlowShim = [dependencyManager templateValueOfType:[VCreationFlowShim class]
+//                                                           forKey:kCreationFlowKey];
     }
     return self;
 }
@@ -91,11 +96,11 @@ static NSString * const kCreationFlowKey = @"createFlow";
     {
         case VCreationTypeImage:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateImagePostSelected];
-            [self presentCreateFlowWithKey:@"imageCreateFlow"];
+            [self presentCreateFlowWithKey:kImageCreationFlowKey];
             break;
         case VCreationTypeVideo:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateVideoPostSelected];
-            [self presentCreateFlowWithKey:@"videoCreateFlow"];
+            [self presentCreateFlowWithKey:kVideoCreateFlow];
 //            [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo];
             break;
         case VCreationTypeText:
@@ -104,23 +109,22 @@ static NSString * const kCreationFlowKey = @"createFlow";
             break;
         case VCreationTypeGIF:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateGIFPostSelected];
-            [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo
-                                     initialImageEditState:VImageToolControllerInitialImageEditStateText
-                                  andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateGIF];
+#warning Set this to GIF
+            [self presentCreateFlowWithKey:kGIFCreationFlowKey];
             
             break;
         case VCreationTypePoll:
         {
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreatePollSelected];
-            VCreatePollViewController *createViewController = [self.creationFlowShim pollFlowController];
+//            VCreatePollViewController *createViewController = [self.creationFlowShim pollFlowController];
             __weak typeof(self) welf = self;
-            createViewController.completionHandler = ^void(VCreatePollViewControllerResult result)
-            {
-                [welf.viewControllerToPresentOn dismissViewControllerAnimated:YES
-                                                                   completion:nil];
-            };
-            UINavigationController *wrapperNavStack = [[UINavigationController alloc] initWithRootViewController:createViewController];
-            [self.viewControllerToPresentOn presentViewController:wrapperNavStack animated:YES completion:nil];
+//            createViewController.completionHandler = ^void(VCreatePollViewControllerResult result)
+//            {
+//                [welf.viewControllerToPresentOn dismissViewControllerAnimated:YES
+//                                                                   completion:nil];
+//            };
+//            UINavigationController *wrapperNavStack = [[UINavigationController alloc] initWithRootViewController:createViewController];
+//            [self.viewControllerToPresentOn presentViewController:wrapperNavStack animated:YES completion:nil];
             break;
         }
         case VCreationTypeUnknown:
@@ -130,6 +134,8 @@ static NSString * const kCreationFlowKey = @"createFlow";
 
 - (void)presentCreateFlowWithKey:(NSString *)key
 {
+    [[VTrackingManager sharedInstance] setValue:VTrackingValueCreatePost forSessionParameterWithKey:VTrackingKeyContext];
+    
     VCreationFlowController *flowController = [self.dependencyManager templateValueOfType:[VCreationFlowController class]
                                                                                                   forKey:key];
     flowController.creationFlowDelegate = self;
@@ -138,44 +144,10 @@ static NSString * const kCreationFlowKey = @"createFlow";
                                                completion:nil];
 }
 
-
-
-- (void)presentCreateFlowWithInitialCaptureState:(VWorkspaceFlowControllerInitialCaptureState)initialCaptureState
-                           initialImageEditState:(VImageToolControllerInitialImageEditState)initialImageEdit
-                        andInitialVideoEditState:(VVideoToolControllerInitialVideoEditState)initialVideoEdit
-{
-    [[VTrackingManager sharedInstance] setValue:VTrackingValueCreatePost forSessionParameterWithKey:VTrackingKeyContext];
-    
-#warning Remember to re-add the edit state stuff 
-//    VWorkspaceFlowController *workspaceFlowController = [self.creationFlowShim imageFlowControllerWithAddedDependencies:@{
-//        VWorkspaceFlowControllerInitialCaptureStateKey: @(initialCaptureState),
-//        VImageToolControllerInitialImageEditStateKey: @(initialImageEdit),
-//        VVideoToolControllerInitalVideoEditStateKey: @(initialVideoEdit) }];
-    
-//    VDependencyManager *dependencyManagerForContentType = [self.dependencyManager childDependencyManagerWithAddedConfiguration:];
-//    VCreationFlowController *flowController = [[VCreationFlowController alloc] initWithDependencyManager:dependencyManagerForContentType];
-    VCreationFlowController *flowController = [self.dependencyManager templateValueOfType:[VCreationFlowController class]
-                                                                                       forKey:@"imageCreateFlow"];
-//    VCreationFlowController *flowController = [self.dependencyManager templateValueOfType:[VCreationFlowController class]
-//                                                                                   forKey:@"creationFlow"
-//                                                                    withAddedDependencies:@{VCreationFlowControllerCreationTypeKey: @(VCreationTypeImage)}];
-    flowController.creationFlowDelegate = self;
-    [self.viewControllerToPresentOn presentViewController:flowController
-                                                 animated:YES
-                                               completion:nil];
-}
-
-- (void)presentCreateFlowWithInitialCaptureState:(VWorkspaceFlowControllerInitialCaptureState)initialCaptureState
-{
-    [self presentCreateFlowWithInitialCaptureState:initialCaptureState
-                             initialImageEditState:VImageToolControllerInitialImageEditStateFilter
-                          andInitialVideoEditState:VVideoToolControllerInitialVideoEditStateVideo];
-}
-
 - (void)presentTextOnlyWorkspace
 {
-    VTextWorkspaceFlowController *textWorkspaceController = [self.creationFlowShim textFlowController];
-    [self.viewControllerToPresentOn presentViewController:textWorkspaceController.flowRootViewController animated:YES completion:nil];
+//    VTextWorkspaceFlowController *textWorkspaceController = [self.creationFlowShim textFlowController];
+//    [self.viewControllerToPresentOn presentViewController:textWorkspaceController.flowRootViewController animated:YES completion:nil];
 }
 
 #pragma mark - VCreationFlowController
