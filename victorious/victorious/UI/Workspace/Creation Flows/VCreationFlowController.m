@@ -37,10 +37,36 @@
 {
     [super viewDidLoad];
     
-    // setup from dependencymanager
+#warning setup from dependencymanager
     self.navigationBar.barTintColor = [UIColor blackColor];
     self.navigationBar.translucent = NO;
     self.navigationBar.tintColor = [UIColor whiteColor];
+}
+
+#pragma mark - Public Methods
+
+- (void)addCloseButtonToViewController:(UIViewController *)viewController
+{
+#warning Templatize me
+    UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                 target:self
+                                                                                 action:@selector(selectedCancel:)];
+    viewController.navigationItem.leftBarButtonItem = closeButton;
+}
+
+#pragma mark - Target/Action
+
+- (void)selectedCancel:(UIBarButtonItem *)cancelButton
+{
+    self.delegate = nil;
+    if ([self.creationFlowDelegate respondsToSelector:@selector(creationFlowControllerDidCancel:)])
+    {
+        [self.creationFlowDelegate creationFlowControllerDidCancel:self];
+    }
+    else
+    {
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 @end

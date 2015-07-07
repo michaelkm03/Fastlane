@@ -21,7 +21,6 @@
 
 @interface VTextWorkspaceFlowController() <UINavigationControllerDelegate, VTextListener, VTextCanvasToolDelegate>
 
-@property (nonatomic, strong) UINavigationController *flowNavigationController;
 @property (nonatomic, strong) VWorkspaceViewController *textWorkspaceViewController;
 @property (nonatomic, strong) VTextCanvasToolViewController *textCanvasToolViewController;
 @property (nonatomic, strong) VTextToolController *textToolController;
@@ -71,10 +70,9 @@
              }
          }];
         
-        // Create the nav controller and present the workspace
-        _flowNavigationController = [[UINavigationController alloc] init];
-        _flowNavigationController.navigationBarHidden = YES;
-        [_flowNavigationController pushViewController:_textWorkspaceViewController animated:NO];
+        // Add the close button and push the workspace
+        [self addCloseButtonToViewController:_textWorkspaceViewController];
+        [self pushViewController:_textWorkspaceViewController animated:NO];
     }
     return self;
 }
@@ -93,7 +91,9 @@
     VWorkspaceViewController *workspace = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerEditTextWorkspaceKey];
     workspace.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
     {
-        [self.flowNavigationController dismissViewControllerAnimated:YES completion:nil];
+        [self.creationFlowDelegate creationFLowController:self
+                                 finishedWithPreviewImage:previewImage
+                                         capturedMediaURL:renderedMediaURL];
     };
     workspace.showCloseButton = YES;
     workspace.continueText = NSLocalizedString( @"Publish", @"Label for button that will publish content." );
@@ -101,13 +101,6 @@
     workspace.confirmCancelMessage = NSLocalizedString( @"This will discard any content added to your post", @"" );
     workspace.shouldConfirmCancels = YES;
     return workspace;
-}
-
-#pragma mark - Property Accessors
-
-- (UIViewController *)flowRootViewController
-{
-    return self.flowNavigationController;
 }
 
 #pragma mark - VTextListener
@@ -123,13 +116,13 @@
 - (void)textCanvasToolDidSelectCamera:(VTextCanvasToolViewController *)textCanvasToolViewController
 {
     self.mediaCaptureViewController = [self createCameraViewController];
-    [self.flowNavigationController presentViewController:self.mediaCaptureViewController animated:YES completion:nil];
+    [self presentViewController:self.mediaCaptureViewController animated:YES completion:nil];
 }
 
 - (void)textCanvasToolDidSelectImageSearch:(VTextCanvasToolViewController *)textCanvasToolViewController
 {
     self.mediaCaptureViewController = [self createImageSearchViewController];
-    [self.flowNavigationController presentViewController:self.mediaCaptureViewController animated:YES completion:nil];
+    [self presentViewController:self.mediaCaptureViewController animated:YES completion:nil];
 }
 
 - (void)textCanvasToolDidSelectClearImage:(VTextCanvasToolViewController *)textCanvasToolViewController

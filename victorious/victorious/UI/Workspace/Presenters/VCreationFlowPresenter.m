@@ -19,7 +19,6 @@
 #import "VCreationFlowController.h"
 
 #warning Maybe delete these
-//#import "VWorkspaceFlowController.h"
 #import "VCreatePollViewController.h"
 #import "VTextWorkspaceFlowController.h"
 #import "VImageToolController.h"
@@ -42,23 +41,9 @@ static NSString * const kTextCreateFlow = @"textCreateFlow";
 
 @interface VCreationFlowPresenter () <VCreationFlowControllerDelegate>
 
-//@property (nonatomic, strong) VCreationFlowShim *creationFlowShim;
-
 @end
 
 @implementation VCreationFlowPresenter
-
-- (instancetype)initWithViewControllerToPresentOn:(UIViewController *)viewControllerToPresentOn dependencymanager:(VDependencyManager *)dependencyManager
-{
-    self = [super initWithViewControllerToPresentOn:viewControllerToPresentOn
-                                  dependencymanager:dependencyManager];
-    if (self != nil)
-    {
-//        _creationFlowShim = [dependencyManager templateValueOfType:[VCreationFlowShim class]
-//                                                           forKey:kCreationFlowKey];
-    }
-    return self;
-}
 
 - (void)present
 {
@@ -101,11 +86,10 @@ static NSString * const kTextCreateFlow = @"textCreateFlow";
         case VCreationTypeVideo:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateVideoPostSelected];
             [self presentCreateFlowWithKey:kVideoCreateFlow];
-//            [self presentCreateFlowWithInitialCaptureState:VWorkspaceFlowControllerInitialCaptureStateVideo];
             break;
         case VCreationTypeText:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateTextOnlyPostSelected];
-            [self presentTextOnlyWorkspace];
+            [self presentCreateFlowWithKey:kTextCreateFlow];
             break;
         case VCreationTypeGIF:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateGIFPostSelected];
@@ -142,12 +126,6 @@ static NSString * const kTextCreateFlow = @"textCreateFlow";
     [self.viewControllerToPresentOn presentViewController:flowController
                                                  animated:YES
                                                completion:nil];
-}
-
-- (void)presentTextOnlyWorkspace
-{
-    VTextWorkspaceFlowController *textWorkspaceController = [VTextWorkspaceFlowController textWorkspaceFlowControllerWithDependencyManager:self.dependencyManager];
-    [self.viewControllerToPresentOn presentViewController:textWorkspaceController.flowRootViewController animated:YES completion:nil];
 }
 
 #pragma mark - VCreationFlowController

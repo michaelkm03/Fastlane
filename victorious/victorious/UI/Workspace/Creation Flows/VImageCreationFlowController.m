@@ -58,7 +58,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
         [self addCompleitonHandlerToMediaSource:viewController];
         [self addCloseButtonToViewController:viewController];
         [self pushViewController:viewController animated:YES];
-        
         [self setupPublishScreen];
     }
     return self;
@@ -75,21 +74,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return UIStatusBarStyleLightContent;
-}
-
-#pragma mark - Target/Action
-
-- (void)selectedCancel:(UIBarButtonItem *)cancelButton
-{
-    self.delegate = nil;
-    if ([self.creationFlowDelegate respondsToSelector:@selector(creationFlowControllerDidCancel:)])
-    {
-        [self.creationFlowDelegate creationFlowControllerDidCancel:self];
-    }
-    else
-    {
-        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-    }
 }
 
 #pragma mark - Private Methods
@@ -184,16 +168,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 
     self.publishViewContorller.publishParameters = publishParameters;
     [self pushViewController:self.publishViewContorller animated:YES];
-}
-
-#pragma mark Navigation Item Configuration
-
-- (void)addCloseButtonToViewController:(UIViewController *)viewController
-{
-    UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                 target:self
-                                                                                 action:@selector(selectedCancel:)];
-    viewController.navigationItem.leftBarButtonItem = closeButton;
 }
 
 #pragma mark - UINavigationControllerDelegate

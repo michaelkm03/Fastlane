@@ -59,4 +59,9 @@ extern NSString * const VCreationFLowCaptureScreenKey;
  */
 @property (nonatomic, weak) id <VCreationFlowControllerDelegate> creationFlowDelegate;
 
+/**
+ *  Convenience for subclasses to add a templated close button to their viewControllers.
+ */
+- (void)addCloseButtonToViewController:(UIViewController *)viewController;
+
 @end
