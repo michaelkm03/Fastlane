@@ -1,5 +1,8 @@
 {
     "name":"image.creationFlow",
+    "closeIcon": {
+        "imageURL":"cameraButtonClose"
+    },
     "cameraScreen":{
         "referenceID":"testingCameraScreen"
     },

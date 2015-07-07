@@ -14,7 +14,13 @@
 // Subclasses
 #import "VImageCreationFlowController.h"
 
+static NSString * const kCloseButtonIconKey = @"closeIcon";
+
 @interface VCreationFlowController ()
+
+@property (nonatomic, strong) UIBarButtonItem *nextButton;
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
@@ -27,6 +33,7 @@
     self = [self init];
     if (self != nil)
     {
+        _dependencyManager = dependencyManager;
     }
     return self;
 }
@@ -43,18 +50,60 @@
     self.navigationBar.tintColor = [UIColor whiteColor];
 }
 
+#pragma mark - Property Accessors
+
+- (void)setNextButtonEnabled:(BOOL)nextButtonEnabled
+{
+    _nextButtonEnabled = nextButtonEnabled;
+    self.nextButton.enabled = nextButtonEnabled;
+}
+
 #pragma mark - Public Methods
 
 - (void)addCloseButtonToViewController:(UIViewController *)viewController
 {
-#warning Templatize me
-    UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                 target:self
-                                                                                 action:@selector(selectedCancel:)];
+    UIImage *closeImage = [self.dependencyManager imageForKey:kCloseButtonIconKey];
+    UIBarButtonItem *closeButton;
+    
+    if (closeImage != nil)
+    {
+        closeButton = [[UIBarButtonItem alloc] initWithImage:closeImage
+                                                       style:UIBarButtonItemStyleDone
+                                                      target:self
+                                                      action:@selector(selectedCancel:)];
+    }
+    else
+    {
+        closeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                      target:self
+                                                                      action:@selector(selectedCancel:)];
+    }
     viewController.navigationItem.leftBarButtonItem = closeButton;
 }
 
+- (void)addNextButtonToViewController:(UIViewController *)viewController
+{
+    self.nextButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", nil)
+                                                                   style:UIBarButtonItemStylePlain
+                                                                  target:self
+                                                                  action:@selector(selectedNext:)];
+    self.nextButton.enabled = self.nextButtonEnabled;
+    if (viewController.navigationItem.rightBarButtonItems != nil)
+    {
+        viewController.navigationItem.rightBarButtonItems = [viewController.navigationItem.rightBarButtonItems arrayByAddingObject:self.nextButton];
+    }
+    else
+    {
+        viewController.navigationItem.rightBarButtonItem = self.nextButton;
+    }
+}
+
 #pragma mark - Target/Action
+
+- (void)selectedNext:(id)sender
+{
+    // Override in subclasses
+}
 
 - (void)selectedCancel:(UIBarButtonItem *)cancelButton
 {

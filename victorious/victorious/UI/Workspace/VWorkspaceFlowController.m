@@ -366,7 +366,6 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     {
         workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];
         workspaceViewController.disablesInpectorOnKeyboardAppearance = YES;
-        workspaceViewController.disablesNavigationItemsOnKeyboardAppearance = YES;
         workspaceViewController.adjustsCanvasViewFrameOnKeyboardAppearance = YES;
         workspaceViewController.initalEditState = [self.dependencyManager templateValueOfType:[NSNumber class] forKey:VImageToolControllerInitialImageEditStateKey];
         workspaceViewController.mediaURL = self.capturedMediaURL;

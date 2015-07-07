@@ -60,8 +60,19 @@ extern NSString * const VCreationFLowCaptureScreenKey;
 @property (nonatomic, weak) id <VCreationFlowControllerDelegate> creationFlowDelegate;
 
 /**
+ *  Defaults to NO.
+ */
+@property (nonatomic, assign) BOOL nextButtonEnabled;
+
+/**
  *  Convenience for subclasses to add a templated close button to their viewControllers.
  */
 - (void)addCloseButtonToViewController:(UIViewController *)viewController;
+
+- (void)addNextButtonToViewController:(UIViewController *)viewController;
+
+#pragma mark - Overrides
+
+- (void)selectedNext:(id)sender;
 
 @end

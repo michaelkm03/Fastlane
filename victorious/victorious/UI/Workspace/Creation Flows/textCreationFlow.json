@@ -1,5 +1,8 @@
 {
     "name":"text.creationFlow",
+    "closeIcon": {
+        "imageURL":"cameraButtonClose"
+    },
     "defaultText": "Type your text here!",
     "characterLimit" : 140,
     "editTextWorkspace": {

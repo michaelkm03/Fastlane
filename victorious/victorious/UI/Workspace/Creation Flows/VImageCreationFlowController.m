@@ -57,6 +57,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
                                                                           withAddedDependencies:nil];
         [self addCompleitonHandlerToMediaSource:viewController];
         [self addCloseButtonToViewController:viewController];
+        [self addNextButtonToViewController:viewController];
         [self pushViewController:viewController animated:YES];
         [self setupPublishScreen];
     }
@@ -76,6 +77,16 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     return UIStatusBarStyleLightContent;
 }
 
+#pragma mark - Overrides
+
+- (void)selectedNext:(id)sender
+{
+    if (self.workspaceViewController.mediaURL != nil)
+    {
+        [self pushViewController:self.workspaceViewController animated:YES];
+    }
+}
+
 #pragma mark - Private Methods
 
 - (void)addCompleitonHandlerToMediaSource:(id<VMediaSource>)mediaSource
@@ -91,7 +102,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
             welf.workspaceViewController.mediaURL = capturedMediaURL;
             VImageToolController *toolController = (VImageToolController *)welf.workspaceViewController.toolController;
             [toolController setDefaultImageTool:VImageToolControllerInitialImageEditStateText];
-            [welf pushViewController:welf.workspaceViewController animated:YES];
+            welf.nextButtonEnabled = YES;
         }
         else
         {
@@ -103,8 +114,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 - (void)setupWorkspace
 {
     _workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];
-    _workspaceViewController.disablesInpectorOnKeyboardAppearance = YES;
-    _workspaceViewController.disablesNavigationItemsOnKeyboardAppearance = YES;
     _workspaceViewController.adjustsCanvasViewFrameOnKeyboardAppearance = YES;
     _workspaceViewController.continueText = NSLocalizedString(@"Publish", @"");
     _workspaceViewController.continueButtonEnabled = YES;
@@ -123,6 +132,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
         else
         {
             [welf popViewControllerAnimated:YES];
+            welf.nextButtonEnabled = NO;
         }
     };
 }
@@ -185,6 +195,16 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
         return self.publishAnimator;
     }
     return nil;
+}
+
+- (void)navigationController:(UINavigationController *)navigationController
+      willShowViewController:(UIViewController *)viewController
+                    animated:(BOOL)animated
+{
+    if (viewController == [self.viewControllers firstObject])
+    {
+        self.nextButtonEnabled = NO;
+    }
 }
 
 @end
