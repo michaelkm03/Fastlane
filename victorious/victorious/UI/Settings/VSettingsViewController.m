@@ -33,19 +33,28 @@
 #import "VCoachmarkManager.h"
 #import "VEnvironmentManager.h"
 #import "VDependencyManager+VTracking.h"
+#import "VLikedContentStreamCollectionViewController.h"
+#import "UIAlertController+VSimpleAlert.h"
 
 static const NSInteger kSettingsSectionIndex         = 0;
 
-static const NSInteger kChangePasswordIndex          = 0;
-static const NSInteger kChromecastButtonIndex        = 2;
-static const NSInteger kPushNotificationsButtonIndex = 3;
-static const NSInteger kResetPurchasesButtonIndex    = 4;
-static const NSInteger kServerEnvironmentButtonIndex = 5;
-static const NSInteger kTrackingButtonIndex          = 6;
-static const NSInteger kResetCoachmarksIndex         = 7;
+typedef NS_ENUM(NSInteger, VSettingsAction)
+{
+    VSettingsActionLikedContent,
+    VSettingsActionChangePassword,
+    VSettingsActionHelp,
+    VSettingsActionChromecast,
+    VSettingsActionNotifications,
+    VSettingsActionResetPurchases,
+    VSettingsActionServerEnvironment,
+    VSettingsActionTracking,
+    VSettingsActionResetCoachmarks
+};
 
 static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 static NSString * const kSupportEmailKey = @"email.support";
+
+static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 
 @interface VSettingsViewController ()   <MFMailComposeViewControllerDelegate, UIAlertViewDelegate>
 
@@ -60,7 +69,6 @@ static NSString * const kSupportEmailKey = @"email.support";
 @property (nonatomic, assign) BOOL showTrackingAlertSetting;
 @property (nonatomic, assign) BOOL showPushNotificationSettings;
 @property (nonatomic, assign) BOOL showPurchaseSettings;
-@property (nonatomic, assign) BOOL showChangePassword;
 @property (nonatomic, assign) BOOL showResetCoachmarks;
 
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
@@ -150,8 +158,6 @@ static NSString * const kSupportEmailKey = @"email.support";
     self.showPurchaseSettings = [VPurchaseManager sharedInstance].isPurchasingEnabled;
     self.showPushNotificationSettings = YES;
     
-    self.showChangePassword = [VObjectManager sharedManager].mainUserLoggedIn && ![VObjectManager sharedManager].mainUserLoggedInWithSocial;
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStatusDidChange:) name:kLoggedInChangedNotification object:nil];
     [self.tableView reloadData];
 }
@@ -168,7 +174,7 @@ static NSString * const kSupportEmailKey = @"email.support";
 {
     if ( self.showResetCoachmarks )
     {
-        UITableViewCell *tableViewCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:kResetCoachmarksIndex inSection:0]];
+        UITableViewCell *tableViewCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:VSettingsActionResetCoachmarks inSection:0]];
         UILabel *label = tableViewCell.textLabel;
         NSArray *shownCoachmarks = [[NSUserDefaults standardUserDefaults] objectForKey:@"shownCoachmarks"];
         BOOL canResetCoachmarks = shownCoachmarks != nil && shownCoachmarks.count > 0;
@@ -209,30 +215,6 @@ static NSString * const kSupportEmailKey = @"email.support";
     self.resetPurchasesCell.detailTextLabel.text = @( count ).stringValue;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (0 == indexPath.section && 1 == indexPath.row)
-    {
-        [self sendHelp:self];
-    }
-    
-    VSettingsTableViewCell *cell = (VSettingsTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-    if ( [cell isKindOfClass:[VSettingsTableViewCell class]] )
-    {
-        NSDictionary *params = @{ VTrackingKeyName : cell.settingName ?: @"" };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSetting parameters:params];
-    }
-    
-    if ( indexPath.row == kResetCoachmarksIndex )
-    {
-        //Reset coachmarks
-        [[self.dependencyManager coachmarkManager] resetShownCoachmarks];
-        [self updateResetCoachmarksCell];
-    }
-    
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-
 - (void)loginStatusDidChange:(NSNotification *)note
 {
     [self.tableView beginUpdates];
@@ -256,6 +238,57 @@ static NSString * const kSupportEmailKey = @"email.support";
         self.logoutButton.style = VButtonStylePrimary;
         self.logoutButton.accessibilityIdentifier = VAutomationIdentifierSettingsLogIn;
     }
+}
+
+- (void)pushLikedContent
+{
+    VLikedContentStreamCollectionViewController *likedContentViewController = [self.dependencyManager templateValueOfType:[VLikedContentStreamCollectionViewController class]
+                                                                                                       forKey:kLikedContentScreenKey];
+    [self.navigationController pushViewController:likedContentViewController animated:YES];
+}
+
+- (BOOL)showLikedContent
+{
+    BOOL likeButtonOn = [[self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey] boolValue];
+    return [VObjectManager sharedManager].mainUserLoggedIn && likeButtonOn;
+}
+
+- (BOOL)showChangePassword
+{
+    return [VObjectManager sharedManager].mainUserLoggedIn && ![VObjectManager sharedManager].mainUserLoggedInWithSocial;
+}
+
+#pragma mark - TableView Delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0)
+    {
+        if ( indexPath.row == VSettingsActionLikedContent )
+        {
+            [self pushLikedContent];
+        }
+        else if (indexPath.row == VSettingsActionHelp )
+        {
+            [self sendHelp:self];
+        }
+        else if ( indexPath.row == VSettingsActionResetCoachmarks )
+        {
+            //Reset coachmarks
+            [[self.dependencyManager coachmarkManager] resetShownCoachmarks];
+            [self updateResetCoachmarksCell];
+        }
+    }
+    
+    // Tracking
+    VSettingsTableViewCell *cell = (VSettingsTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    if ( [cell isKindOfClass:[VSettingsTableViewCell class]] )
+    {
+        NSDictionary *params = @{ VTrackingKeyName : cell.settingName ?: @"" };
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSetting parameters:params];
+    }
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - Actions
@@ -299,7 +332,7 @@ static NSString * const kSupportEmailKey = @"email.support";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (kSettingsSectionIndex == indexPath.section && kChromecastButtonIndex == indexPath.row)
+    if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionChromecast)
     {
         if (self.showChromeCastButton)
         {
@@ -310,7 +343,7 @@ static NSString * const kSupportEmailKey = @"email.support";
             return 0;
         }
     }
-    else if (kSettingsSectionIndex == indexPath.section && kServerEnvironmentButtonIndex == indexPath.row)
+    else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionServerEnvironment)
     {
         if (self.showEnvironmentSetting)
         {
@@ -321,7 +354,7 @@ static NSString * const kSupportEmailKey = @"email.support";
             return 0;
         }
     }
-    else if (kSettingsSectionIndex == indexPath.section && kResetCoachmarksIndex == indexPath.row)
+    else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionResetCoachmarks)
     {
         if ( self.showResetCoachmarks )
         {
@@ -332,9 +365,9 @@ static NSString * const kSupportEmailKey = @"email.support";
             return 0;
         }
     }
-    else if (kSettingsSectionIndex == indexPath.section && kChangePasswordIndex == indexPath.row)
+    else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionChangePassword)
     {
-        if ( self.showChangePassword )
+        if ( [self showChangePassword] )
         {
             return self.tableView.rowHeight;
         }
@@ -343,7 +376,7 @@ static NSString * const kSupportEmailKey = @"email.support";
             return 0;
         }
     }
-    else if (kSettingsSectionIndex == indexPath.section && kPushNotificationsButtonIndex == indexPath.row)
+    else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionNotifications)
     {
         if (self.showPushNotificationSettings && [VObjectManager sharedManager].mainUserLoggedIn)
         {
@@ -354,7 +387,7 @@ static NSString * const kSupportEmailKey = @"email.support";
             return 0;
         }
     }
-    else if (kSettingsSectionIndex == indexPath.section && kResetPurchasesButtonIndex == indexPath.row)
+    else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionResetPurchases)
     {
         if (self.showPurchaseSettings)
         {
@@ -365,9 +398,20 @@ static NSString * const kSupportEmailKey = @"email.support";
             return 0;
         }
     }
-    else if (kSettingsSectionIndex == indexPath.section && kTrackingButtonIndex == indexPath.row)
+    else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionTracking)
     {
         if (self.showTrackingAlertSetting)
+        {
+            return self.tableView.rowHeight;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionLikedContent)
+    {
+        if ([self showLikedContent])
         {
             return self.tableView.rowHeight;
         }
@@ -463,17 +507,16 @@ static NSString * const kSupportEmailKey = @"email.support";
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
-    if (MFMailComposeResultFailed == result)
+    [self dismissViewControllerAnimated:YES completion:^
     {
-        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EmailFail", @"Unable to Email")
-                                                               message:error.localizedDescription
-                                                              delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                     otherButtonTitles:nil];
-        [alert show];
-    }
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
+        if (result == MFMailComposeResultFailed)
+        {
+            UIAlertController *alert = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"EmailFail", @"Unable to Email")
+                                                                                 message:error.localizedDescription
+                                                                    andCancelButtonTitle:NSLocalizedString(@"OK", @"OK")];
+            [self presentViewController:alert animated:YES completion:nil];
+        }
+    }];
 }
 
 #pragma mark - VNavigationDestination

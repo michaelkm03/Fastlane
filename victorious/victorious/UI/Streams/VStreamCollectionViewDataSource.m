@@ -89,6 +89,13 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
     return [NSIndexPath indexPathForItem:(NSInteger)index inSection:section];
 }
 
+- (void)removeStreamItem:(VStreamItem *)streamItem
+{
+    NSMutableOrderedSet *tempSet = [NSMutableOrderedSet orderedSetWithOrderedSet:self.stream.streamItems];
+    [tempSet removeObject:streamItem];
+    self.stream.streamItems = tempSet;
+}
+
 - (NSUInteger)count
 {
     return self.stream.streamItems.count;

@@ -196,11 +196,17 @@
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
              
+             [RKResponseDescriptor responseDescriptorWithMapping:[self payloadContentMapping]
+                                                          method:RKRequestMethodGET
+                                                     pathPattern:@"/api/sequence/detail_list_by_liked/:page"
+                                                         keyPath:@"payload"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
              [RKResponseDescriptor responseDescriptorWithMapping:[self basePayloadContentMapping]
                                                           method:RKRequestMethodGET
                                                      pathPattern:@"/api/sequence/detail_list_by_user/:userid/:page/:perpage"
                                                          keyPath:@""
-                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]
               ];
 }
 

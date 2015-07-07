@@ -16,6 +16,9 @@
 - (RKManagedObjectRequestOperation *)getSuggestedUsers:(VSuccessBlock)success
                                              failBlock:(VFailBlock)fail;
 
+- (RKManagedObjectRequestOperation *)getDiscoverUsers:(VSuccessBlock)success
+                                            failBlock:(VFailBlock)fail;
+
 - (RKManagedObjectRequestOperation *)getSuggestedHashtags:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail;
 

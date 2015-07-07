@@ -83,6 +83,12 @@ extern NSString *const VStreamCollectionDataSourceDidChangeNotification;
  */
 - (NSIndexPath *)indexPathForItem:(VStreamItem *)streamItem;
 
+/**
+ *  Removes a certain stream item from the data source
+ *
+ *  @param streamItem Stream item to remove
+ */
+- (void)removeStreamItem:(VStreamItem *)streamItem;
 
 /**
  *  The primary way to load a stream.

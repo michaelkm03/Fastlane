@@ -33,6 +33,7 @@
 static const CGFloat kLeadingTrailingHeaderSpace = 11.0f;
 static const CGFloat kAvatarSize = 32.0f;
 static const CGFloat kSpaceAvatarToLabels = 7.0f;
+static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
 
 @interface VStreamHeaderTimeSince ()
 
@@ -112,6 +113,7 @@ static const CGFloat kSpaceAvatarToLabels = 7.0f;
                                        button,
                                        [VActionBarFixedWidthItem fixedWidthItemWithWidth:kSpaceAvatarToLabels],
                                        creationContainer,
+                                       [VActionBarFixedWidthItem fixedWidthItemWithWidth:kSpaceLabelsToTimestamp],
                                        self.timeSinceWidget,
                                        [VActionBarFixedWidthItem fixedWidthItemWithWidth:kLeadingTrailingHeaderSpace]];
         [self.actionBar v_addPinToTopBottomToSubview:self.creationInfoContainer];

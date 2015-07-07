@@ -189,7 +189,7 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
     self.captionTextView.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
     self.captionTextView.backgroundColor = [UIColor clearColor];
     self.captionTextView.inputAccessoryView = inputAccessoryView;
-    self.captionTextView.textContainerInset = UIEdgeInsetsZero;
+    self.captionTextView.textContainerInset = UIEdgeInsetsMake( 4.0, 0.0, 4.0, 0.0 );
     [self.captionTextView setPlaceholderTextColor:[self.dependencyManager colorForKey:VDependencyManagerPlaceholderTextColorKey]];
     self.captionTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.captionTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];

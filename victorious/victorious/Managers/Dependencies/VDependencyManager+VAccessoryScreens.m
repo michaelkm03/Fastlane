@@ -134,8 +134,8 @@ static const char kAssociatedObjectSourceViewControllerKey;
         id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)destination;
         VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock = ^(NSInteger badgeNumber)
         {
-            typeof (weakBarButton) strongBarButton = weakBarButton;
-            typeof (weakSource) strongSource = weakSource;
+            __strong typeof (weakBarButton) strongBarButton = weakBarButton;
+            __strong typeof (weakSource) strongSource = weakSource;
             
             if ( strongBarButton != nil && strongSource != nil )
             {

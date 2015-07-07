@@ -100,6 +100,8 @@
 
 - (CGSize)sizeWithCollectionViewBounds:(CGRect)bounds ofCellForStreamItem:(VStreamItem *)streamItem
 {
+    UIEdgeInsets edgeInsets = [self sectionInsets];
+    bounds.size.width -= edgeInsets.left + edgeInsets.right;
     if ( [self.noContentCollectionViewCellFactory shouldDisplayNoContentCellForContentClass:[streamItem class]] )
     {
         return [self.noContentCollectionViewCellFactory cellSizeForCollectionViewBounds:bounds];
@@ -119,7 +121,7 @@
 
 - (UIEdgeInsets)sectionInsets
 {
-    return UIEdgeInsetsMake(10.0f, 0.0f, 10.0f, 0.0f);
+    return UIEdgeInsetsMake(10.0f, 10.0f, 10.0f, 10.0f);
 }
 
 @end

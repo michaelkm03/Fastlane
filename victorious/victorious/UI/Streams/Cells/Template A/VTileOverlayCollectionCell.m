@@ -17,7 +17,7 @@
 #import "VSequencePreviewView.h"
 #import "VHashTagTextView.h"
 #import "VPassthroughContainerView.h"
-#import "VStreamHeaderComment.h"
+#import "VStreamHeaderTimeSince.h"
 #import "VLinearGradientView.h"
 #import "VHashTagTextView.h"
 #import "VSequenceExpressionsObserver.h"
@@ -27,11 +27,10 @@
 #import "VCellSizeCollection.h"
 #import "VCellSizingUserInfoKeys.h"
 
-static const UIEdgeInsets kTextInsets           = { 0.0f, 20.0f, 5.0f, 20.0f };
+static const UIEdgeInsets kTextInsets           = { 4.0f, 20.0f, 5.0f, 20.0f };
 static const CGFloat kHeaderHeight              = 74.0f;
 static const CGFloat kGradientAlpha             = 0.3f;
 static const CGFloat kShadowAlpha               = 0.5f;
-static const CGFloat kPollCellHeightRatio       = 0.66875f; //< from spec, 214 height for 320 width
 static const CGFloat kCountsTextViewMinHeight   = 80.0f;
 static const CGFloat kButtonWidth               = 44.0f;
 static const CGFloat kButtonHeight              = 44.0f;
@@ -47,7 +46,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
 @property (nonatomic, strong) VPassthroughContainerView *overlayContainer;
 @property (nonatomic, strong) VLinearGradientView *topGradient;
 @property (nonatomic, strong) VLinearGradientView *bottomGradient;
-@property (nonatomic, strong) VStreamHeaderComment *header;
+@property (nonatomic, strong) VStreamHeaderTimeSince *header;
 @property (nonatomic, strong) VHashTagTextView *captionTextView;
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 @property (nonatomic, strong) VActionButton *likeButton;
@@ -124,7 +123,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     [_bottomGradient setColors:@[ [UIColor clearColor], [UIColor blackColor]]];
     
     // Add the header
-    _header = [[VStreamHeaderComment alloc] initWithFrame:CGRectZero];
+    _header = [[VStreamHeaderTimeSince alloc] initWithFrame:CGRectZero];
     [_overlayContainer addSubview:_header];
     [_overlayContainer v_addPinToLeadingTrailingToSubview:_header];
     [_overlayContainer v_addPinToTopToSubview:_header];
@@ -194,11 +193,6 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     [self layoutIfNeeded];
 }
 
-+ (CGFloat)aspectRatioForSequence:(VSequence *)sequence
-{
-    return [sequence isPoll] ? kPollCellHeightRatio : (1 / [sequence previewAssetAspectRatio]);
-}
-
 + (VCellSizeCollection *)cellLayoutCollection
 {
     static VCellSizeCollection *collection;
@@ -208,7 +202,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
              VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
-             return CGSizeMake( 0.0f, size.width * [[self class] aspectRatioForSequence:sequence] );
+             return CGSizeMake( 0.0f, size.width / [sequence previewAssetAspectRatio] );
          }];
         [collection addComponentWithConstantSize:CGSizeMake( 0.0, -kButtonHeight )];
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
@@ -281,12 +275,12 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
 
 - (void)selectedLikeButton:(UIButton *)likeButton
 {
-    UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(willLikeSequence:completion:)
+    UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(willLikeSequence:withView:completion:)
                                                                   withSender:self];
     
     NSAssert( responder != nil , @"We need an object in the responder chain for liking.");
     likeButton.enabled = NO;
-    [responder willLikeSequence:self.sequence completion:^(BOOL success)
+    [responder willLikeSequence:self.sequence withView:likeButton completion:^(BOOL success)
      {
          likeButton.enabled = YES;
      }];
@@ -353,7 +347,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     [self.contentContainer v_addPinToLeadingTrailingToSubview:self.previewView];
     
     NSDictionary *views = @{ @"previewView" : self.previewView };
-    CGFloat height = CGRectGetWidth(self.bounds) * [[self class] aspectRatioForSequence:sequence];
+    CGFloat height = CGRectGetWidth(self.bounds) / [sequence previewAssetAspectRatio];
     NSDictionary *metrics = @{ @"height" : @(height) };
     NSArray *constraintsV = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[previewView(height)]" options:kNilOptions metrics:metrics views:views];
     [self.contentContainer addConstraints:constraintsV];
@@ -442,7 +436,15 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     self.likeButton.unselectedTintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.captionTextView.dependencyManager = dependencyManager;
     
+    [self.countsTextView setTextHighlightAttributes:[[self class] sequenceCountsActiveAttributesWithDependencyManager:dependencyManager]];
     [self.countsTextView setTextAttributes:[[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager]];
+}
+
++ (NSDictionary *)sequenceCountsActiveAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    UIFont *font = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+    UIColor *textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    return @{ NSFontAttributeName: font, NSForegroundColorAttributeName: textColor };
 }
 
 + (NSDictionary *)sequenceCountsAttributesWithDependencyManager:(VDependencyManager *)dependencyManager

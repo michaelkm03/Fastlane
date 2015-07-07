@@ -640,6 +640,11 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     {
         [segue.destinationViewController setDependencyManager:self.dependencyManager];
     }
+    if ( [segue.destinationViewController isKindOfClass:[VAbstractProfileEditViewController class]])
+    {
+        VAbstractProfileEditViewController *editVC = (VAbstractProfileEditViewController *)segue.destinationViewController;
+        editVC.profile = self.user;
+    }
 }
 
 #pragma mark - Animation
