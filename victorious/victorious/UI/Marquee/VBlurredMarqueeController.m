@@ -9,7 +9,7 @@
 #import "VBlurredMarqueeController.h"
 #import "VBlurredMarqueeCollectionViewCell.h"
 #import "VBlurredMarqueeStreamItemCell.h"
-#import "VCrossFadingLabel.h"
+#import "VCrossFadingMarqueeLabel.h"
 #import "VCrossFadingImageView.h"
 #import "VTimerManager.h"
 #import "VStream+Fetcher.h"
@@ -95,8 +95,8 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     }
     
     NSMutableArray *contentNames = [[NSMutableArray alloc] init];
-    
-    NSInteger marqueeItemsCount = self.stream.marqueeItems.count;
+    NSArray *marqueeItems = [self.stream.marqueeItems array];
+    NSInteger marqueeItemsCount = marqueeItems.count;
     if ( self.crossfadingBlurredImageView.imageViewCount != marqueeItemsCount )
     {
         [self.crossfadingBlurredImageView setupWithNumberOfImageViews:marqueeItemsCount];
@@ -104,14 +104,14 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     
     self.firstImageLoaded = NO;
     
-    for ( VStreamItem *streamItem in self.stream.marqueeItems )
+    for ( VStreamItem *streamItem in marqueeItems )
     {
         [self loadContentForStreamItem:streamItem andUpdateSubviewsAtIndex:[self.stream.marqueeItems indexOfObject:streamItem]];
         NSString *streamName = streamItem.name ?: @"";
         [contentNames addObject:streamName];
     }
     
-    [self.crossfadingLabel setupWithStrings:contentNames andTextAttributes:[self labelTextAttributes]];
+    self.crossfadingLabel.marqueeItems = marqueeItems;
     self.crossfadingLabel.hidden = !self.showedInitialDisplayAnimation;
     
     //Set the content offset to a safe value
@@ -170,10 +170,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     if ( !self.showedInitialDisplayAnimation && self.firstImageLoaded && self.backgroundCellIsVisible )
     {
         self.showedInitialDisplayAnimation = YES;
-        
-        //The first image has loaded and we haven't yet performed the
-        self.crossfadingLabel.alpha = 0.0f;
-        
+                
         dispatch_async(dispatch_get_main_queue(), ^
         {
             if ( self.collectionView.hidden )
@@ -193,26 +190,6 @@ static const CGFloat kOffsetOvershoot = 20.0f;
 - (BOOL)stringIsValidForURL:(NSString *)stringForURL
 {
     return stringForURL != nil && ![stringForURL isEqualToString:@""];
-}
-
-- (NSDictionary *)labelTextAttributes
-{
-    if ( self.dependencyManager == nil )
-    {
-        return nil;
-    }
-    
-    return @{
-             NSFontAttributeName : [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey],
-             NSForegroundColorAttributeName : [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey]
-             };
-}
-
-
-- (void)setDependencyManager:(VDependencyManager *)dependencyManager
-{
-    [super setDependencyManager:dependencyManager];
-    self.crossfadingLabel.textAttributes = [self labelTextAttributes];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -268,6 +245,12 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     }
     
     return cell;
+}
+
+- (void)setCrossfadingLabel:(VCrossFadingMarqueeLabel *)crossfadingLabel
+{
+    _crossfadingLabel = crossfadingLabel;
+    crossfadingLabel.dependencyManager = self.dependencyManager;
 }
 
 - (UIColor *)tintColorForCrossFadingBlurredImageView

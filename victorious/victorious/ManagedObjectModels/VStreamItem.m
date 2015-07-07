@@ -1,9 +1,9 @@
 //
 //  VStreamItem.m
-//  victorious
+//  
 //
-//  Created by Will Long on 9/23/14.
-//  Copyright (c) 2014 Victorious. All rights reserved.
+//  Created by Sharif Ahmed on 7/6/15.
+//
 //
 
 #import "VStreamItem.h"
@@ -16,6 +16,8 @@
 @dynamic previewImagesObject;
 @dynamic remoteId;
 @dynamic streamContentType;
+@dynamic headline;
+@dynamic marquees;
 @dynamic streams;
 
 @end

@@ -20,6 +20,7 @@
 + (NSDictionary *)propertyMap
 {
     return @{
+             @"entry_label"         :   VSelectorName(headline),
              @"id"                  :   VSelectorName(remoteId),
              @"stream_id"           :   VSelectorName(streamId),
              @"stream_content_type" :   VSelectorName(streamContentType),
@@ -39,7 +40,8 @@
                                 mappingForEntityForName:[self entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
-    mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
+    //Identification attributes are AND-ed (see RKFetchRequestManagedObjectCache.m line 58)
+    mapping.identificationAttributes = @[ VSelectorName(remoteId), VSelectorName(headline) ];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     

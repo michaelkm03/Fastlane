@@ -22,25 +22,24 @@
 #import "VStreamItemPreviewView.h"
 
 // Dependencies
-#import "VDependencyManager.h"
+#import "VDependencyManager+VBackgroundContainer.h"
+
+#import "VMarqueeCaptionView.h"
 
 CGFloat const kVDetailVisibilityDuration = 3.0f;
 CGFloat const kVDetailHideDuration = 2.0f;
 static NSTimeInterval const kVDetailHideTime = 0.2f;
-static CGFloat const kVDetailBounceOffset = 38.0f;
-static CGFloat const kVDetailStartOverflowOffset = 42.0f;
+static CGFloat const kVDetailBounceOffset = 36.0f;
+static CGFloat const kVDetailStartOverflowOffset = 40.0f;
 static NSTimeInterval const kVDetailBounceTime = 0.35f;
 static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 320 width
 
 @interface VFullscreenMarqueeStreamItemCell ()
 
 @property (nonatomic, assign) BOOL detailsVisible;
-@property (nonatomic, weak) IBOutlet UILabel *nameLabel;
-@property (nonatomic, weak) IBOutlet UIView *detailsContainer;
 @property (nonatomic, weak) IBOutlet UIView *detailsBackgroundView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *detailsContainerTopToStreamItemBottom;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelTopLayoutConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *labelBottomLayoutConstraint;
+@property (nonatomic, weak) IBOutlet VMarqueeCaptionView *marqueeCaptionView;
 
 @property (nonatomic, strong) NSTimer *hideTimer;
 
@@ -51,10 +50,12 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
 - (void)setStreamItem:(VStreamItem *)streamItem
 {
     [super setStreamItem:streamItem];
-        
-    self.nameLabel.text = streamItem.name;
-    self.nameLabel.numberOfLines = 3;
-    [self layoutIfNeeded];
+    
+    if ( streamItem != nil )
+    {
+        self.marqueeCaptionView.marqueeItem = streamItem;
+        [self layoutIfNeeded];
+    }
 
     //Timer for marquee details auto-hiding
     [self setDetailsContainerVisible:YES animated:NO];
@@ -67,9 +68,7 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
     
     if ( dependencyManager != nil )
     {
-        self.detailsContainer.backgroundColor = [dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
-        self.nameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-        self.nameLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
+        self.marqueeCaptionView.dependencyManager = dependencyManager;
     }
 }
 
@@ -93,13 +92,19 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
 
 - (void)setDetailsContainerVisible:(BOOL)visible animated:(BOOL)animated
 {
+    if ( self.marqueeCaptionView.captionLabel.text == nil )
+    {
+        //Never make the details container visible if there is no caption
+        visible = NO;
+    }
+    
     if (_detailsVisible == visible)
     {
         return;
     }
     _detailsVisible = visible;
     
-    CGFloat detailsContainerHeight = CGRectGetHeight(self.detailsContainer.bounds);
+    CGFloat detailsContainerHeight = CGRectGetHeight(self.detailsBackgroundView.bounds);
     
     CGFloat targetConstraintValue = visible ? - kVDetailStartOverflowOffset : - detailsContainerHeight;
     
@@ -159,6 +164,11 @@ static CGFloat const kVCellHeightRatio = 0.884375; //from spec, 283 height for 3
 - (UIView *)loadingBackgroundContainerView
 {
     return self.previewContainer;
+}
+
+- (UIView *)backgroundView
+{
+    return self.detailsBackgroundView;
 }
 
 @end

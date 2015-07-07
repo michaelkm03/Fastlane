@@ -29,6 +29,7 @@
     return @{ @"category"       :   VSelectorName(category),
               @"id"             :   VSelectorName(remoteId),
               @"created_by"     :   VSelectorName(createdBy),
+              @"entry_label"    :   VSelectorName(headline),
               @"name"           :   VSelectorName(name),
               @"preview_image"  :   VSelectorName(previewImagesObject),
               @"released_at"    :   VSelectorName(releasedAt),
@@ -61,7 +62,8 @@
                                 mappingForEntityForName:[self entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
-    mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
+    //Identification attributes are AND-ed (see RKFetchRequestManagedObjectCache.m line 58)
+    mapping.identificationAttributes = @[ VSelectorName(remoteId), VSelectorName(headline) ];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     

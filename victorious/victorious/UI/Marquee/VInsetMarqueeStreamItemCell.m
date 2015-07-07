@@ -14,6 +14,7 @@
 #import <objc/runtime.h>
 #import "VStreamItemPreviewView.h"
 #import "UIView+AutoLayout.h"
+#import "VMarqueeCaptionView.h"
 
 static const CGFloat kOverlayOpacity = 0.2f;
 static const CGFloat kOverlayWhiteAmount = 0.0f;
@@ -24,7 +25,7 @@ static const CGSize kShadowOffset = { 0.0f, 2.0f };
 
 @interface VInsetMarqueeStreamItemCell ()
 
-@property (nonatomic, weak) IBOutlet UILabel *titleLabel; //The label displaying the title of the content
+@property (nonatomic, weak) IBOutlet VMarqueeCaptionView *marqueeCaptionView; //The label displaying the title of the content
 @property (nonatomic, weak) IBOutlet UIView *gradientContainer; //The view containing the black gradient behind the titleLabel
 @property (nonatomic, strong) CAGradientLayer *gradientLayer; //The gradient displayed in the gradient container
 @property (nonatomic, weak) IBOutlet UIView *overlayContainer; //An overlay to apply to the imageView
@@ -55,14 +56,13 @@ static const CGSize kShadowOffset = { 0.0f, 2.0f };
 - (void)setStreamItem:(VStreamItem *)streamItem
 {
     [super setStreamItem:streamItem];
-    
-    if ( [self.titleLabel.text isEqualToString:streamItem.name] )
+    if ( streamItem != nil )
     {
-        return;
+        self.marqueeCaptionView.marqueeItem = streamItem;
+        NSTextAlignment alignment = self.marqueeCaptionView.hasHeadline ? NSTextAlignmentCenter : NSTextAlignmentLeft;
+        [self.marqueeCaptionView.captionLabel setTextAlignment:alignment];
+        [self updateGradientLayer];
     }
-    
-    self.titleLabel.text = streamItem.name;
-    [self updateGradientLayer];
 }
 
 - (void)updateGradientLayer
@@ -98,7 +98,7 @@ static const CGSize kShadowOffset = { 0.0f, 2.0f };
     [super setDependencyManager:dependencyManager];
     if ( dependencyManager != nil )
     {
-        [self.titleLabel setFont:[dependencyManager fontForKey:VDependencyManagerHeaderFontKey]];
+        self.marqueeCaptionView.dependencyManager = self.dependencyManager;
         [self.contentContainer setBackgroundColor:[dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey]];
         [self updateGradientLayer];
     }
