@@ -15,9 +15,8 @@
 #import "UIStoryboard+VMainStoryboard.h"
 #import "victorious-Swift.h"  // for NSString+Unicode (imports all Swift files)
 
-#import "VWorkspaceFlowController.h"
-#import "VImageToolController.h"
-#import "VVideoToolController.h"
+// Media Creation
+#import "VMediaAttachmentPresenter.h"
 
 #import "VDependencyManager+VWorkspace.h"
 
@@ -27,7 +26,7 @@ static NSString * const kCloseIconKey = @"closeIcon";
 
 static char KVOContext;
 
-@interface VCreatePollViewController() <UITextViewDelegate, VWorkspaceFlowControllerDelegate>
+@interface VCreatePollViewController() <UITextViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *closeButton;
@@ -60,6 +59,7 @@ static char KVOContext;
 
 @property (strong, nonatomic) NSURL *firstMediaURL;
 @property (strong, nonatomic) NSURL *secondMediaURL;
+@property (strong, nonatomic) VMediaAttachmentPresenter *attachmentPresenter;
 
 @property (nonatomic, assign) BOOL didPublish;
 
@@ -305,15 +305,14 @@ static char KVOContext;
 
 - (IBAction)mediaButtonAction:(id)sender
 {
-    VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager workspaceFlowControllerWithAddedDependencies:@{
-        VImageToolControllerInitialImageEditStateKey: @(VImageToolControllerInitialImageEditStateFilter),
-        VVideoToolControllerInitalVideoEditStateKey: @(VVideoToolControllerInitialVideoEditStateVideo),
-    }];
-    workspaceFlowController.delegate = self;
-    workspaceFlowController.videoEnabled = YES;
-    [self presentViewController:workspaceFlowController.flowRootViewController
-                       animated:YES
-                     completion:nil];
+    self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithViewControllerToPresentOn:self dependencymanager:self.dependencyManager];
+    __weak typeof(self) welf = self;
+    self.attachmentPresenter.completion = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
+    {
+        [welf imagePickerFinishedWithURL:mediaURL
+                            previewImage:previewImage];
+    };
+    [self.attachmentPresenter present];
 }
 
 - (IBAction)clearLeftMedia:(id)sender
@@ -599,28 +598,6 @@ static char KVOContext;
             }
         }
     }
-}
-
-#pragma mark - VWorkspaceFlowControllerDelegate
-
-- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-       finishedWithPreviewImage:(UIImage *)previewImage
-               capturedMediaURL:(NSURL *)capturedMediaURL
-{
-    [self imagePickerFinishedWithURL:capturedMediaURL
-                        previewImage:previewImage];
-
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (BOOL)shouldShowPublishForWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-{
-    return NO;
 }
 
 @end

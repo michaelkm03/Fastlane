@@ -71,6 +71,8 @@ extern NSString * const VCreationFLowCaptureScreenKey;
 
 - (void)addNextButtonToViewController:(UIViewController *)viewController;
 
+- (NSString *)localizedEditingFinishedText;
+
 #pragma mark - Overrides
 
 - (void)selectedNext:(id)sender;

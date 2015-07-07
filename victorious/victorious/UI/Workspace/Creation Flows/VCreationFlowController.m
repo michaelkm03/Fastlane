@@ -102,6 +102,17 @@ static NSString * const kBarTintColorKey = @"barTintColor";
     }
 }
 
+- (NSString *)localizedEditingFinishedText
+{
+    NSString *editingFinishedText = NSLocalizedString(@"Publish", @"");
+    if (![self.creationFlowDelegate respondsToSelector:@selector(shouldShowPublishScreenForFlowController)])
+    {
+        return editingFinishedText;
+    }
+    editingFinishedText = [self.creationFlowDelegate shouldShowPublishScreenForFlowController] ? editingFinishedText : NSLocalizedString(@"Next", @"");
+    return editingFinishedText;
+}
+
 #pragma mark - Target/Action
 
 - (void)selectedNext:(id)sender

@@ -115,7 +115,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 {
     _workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];
     _workspaceViewController.adjustsCanvasViewFrameOnKeyboardAppearance = YES;
-    _workspaceViewController.continueText = NSLocalizedString(@"Publish", @"");
+    _workspaceViewController.continueText = [self localizedEditingFinishedText];
     _workspaceViewController.continueButtonEnabled = YES;
 
     __weak typeof(self) welf = self;
@@ -125,9 +125,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
         {
             welf.renderedMediaURL = renderedMediaURL;
             welf.previewImage = previewImage;
-            [welf pushPublishScreenWithRenderedMediaURL:renderedMediaURL
-                                               previewImage:previewImage
-                                              fromWorkspace:welf.workspaceViewController];
+            [welf afterEditingFinished];
         }
         else
         {
@@ -159,6 +157,31 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
             [welf popViewControllerAnimated:YES];
         }
     };
+}
+
+- (void)afterEditingFinished
+{
+    if ([self.creationFlowDelegate respondsToSelector:@selector(shouldShowPublishScreenForFlowController)])
+    {
+        if ( [self.creationFlowDelegate shouldShowPublishScreenForFlowController])
+        {
+            [self pushPublishScreenWithRenderedMediaURL:self.renderedMediaURL
+                                           previewImage:self.previewImage
+                                          fromWorkspace:self.workspaceViewController];
+        }
+        else
+        {
+            [self.creationFlowDelegate creationFLowController:self
+                                     finishedWithPreviewImage:self.previewImage
+                                             capturedMediaURL:self.renderedMediaURL];
+        }
+    }
+    else
+    {
+        [self.creationFlowDelegate creationFLowController:self
+                                 finishedWithPreviewImage:self.previewImage
+                                         capturedMediaURL:self.renderedMediaURL];
+    }
 }
 
 - (void)pushPublishScreenWithRenderedMediaURL:(NSURL *)renderedMediaURL

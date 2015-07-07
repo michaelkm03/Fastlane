@@ -22,6 +22,7 @@
 
 - (void)present
 {
+#warning Add an action sheet to pick between image/video/GIF?
     VImageCreationFlowController *imageCreationFlowController = [self.dependencyManager templateValueOfType:[VImageCreationFlowController class]
                                                                                                      forKey:VImageCreationFlowControllerKey];
     imageCreationFlowController.creationFlowDelegate = self;
@@ -40,6 +41,8 @@
     {
         self.completion(YES, previewImage, capturedMediaURL);
     }
+    [self.viewControllerToPresentOn dismissViewControllerAnimated:YES
+                                                       completion:nil];
 }
 
 - (void)creationFlowControllerDidCancel:(VCreationFlowController *)creationFlowController
