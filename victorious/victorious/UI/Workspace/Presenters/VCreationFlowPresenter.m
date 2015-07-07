@@ -146,8 +146,8 @@ static NSString * const kTextCreateFlow = @"textCreateFlow";
 
 - (void)presentTextOnlyWorkspace
 {
-//    VTextWorkspaceFlowController *textWorkspaceController = [self.creationFlowShim textFlowController];
-//    [self.viewControllerToPresentOn presentViewController:textWorkspaceController.flowRootViewController animated:YES completion:nil];
+    VTextWorkspaceFlowController *textWorkspaceController = [VTextWorkspaceFlowController textWorkspaceFlowControllerWithDependencyManager:self.dependencyManager];
+    [self.viewControllerToPresentOn presentViewController:textWorkspaceController.flowRootViewController animated:YES completion:nil];
 }
 
 #pragma mark - VCreationFlowController

@@ -1,7 +1,7 @@
 {
-    "name": "workspaceText",
+    "name":"text.creationFlow",
     "defaultText": "Type your text here!",
-    "characterLimit": 140,
+    "characterLimit" : 140,
     "editTextWorkspace": {
         "name": "workspace.screen",
         "tools": [
