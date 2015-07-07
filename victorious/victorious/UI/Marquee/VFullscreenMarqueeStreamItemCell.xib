@@ -57,7 +57,7 @@
                                 </connections>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="srX-bT-pIQ" firstAttribute="leading" secondItem="crg-Mz-P2X" secondAttribute="leading" id="UuI-Ee-Jfk"/>
                             <constraint firstAttribute="trailing" secondItem="srX-bT-pIQ" secondAttribute="trailing" id="XQV-C7-hKf"/>
