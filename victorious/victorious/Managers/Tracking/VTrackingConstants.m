@@ -2,7 +2,7 @@
 // victorious/victorious/Managers/Tracking/VTrackingConstants.m 
 // victorious 
 // 
-// Generated from CSV using script "tracking_generate_constants.sh" on 05/26/15. 
+// Generated from CSV using script "tracking_generate_constants.sh" on 06/30/15. 
 // Copyright (c) 2015 Victorious. All rights reserved. 
 // 
 
@@ -57,7 +57,6 @@ NSString * const VTrackingEventUserDidCropWorkspaceWithDoubleTap = @"UserDidCrop
 NSString * const VTrackingEventUserDidFinishWorkspaceEdits = @"UserDidFinishWorkspaceEdits";
 
 NSString * const VTrackingEventUserDidPublishContent = @"UserDidPublishContent";
-NSString * const VTrackingEventUserDidSharePublishedContent = @"UserDidSharePublishedContent";
 NSString * const VTrackingEventUserDidCancelPublish = @"UserDidCancelPublish";
 
 // Polls
@@ -75,7 +74,6 @@ NSString * const VTrackingEventUserDidCancelFailedUpload = @"UserDidCancelFailed
 NSString * const VTrackingEventLoginDidShow = @"LoginDidShow";
 NSString * const VTrackingEventUserDidCancelLogin = @"UserDidCancelLogin";
 NSString * const VTrackingEventUserDidLogOut = @"UserDidLogOut";
-
 NSString * const VTrackingEventUserDidSelectSignupWithEmail = @"UserDidSelectSignupWithEmail";
 NSString * const VTrackingEventUserDidSelectLoginWithEmail = @"UserDidSelectLoginWithEmail";
 NSString * const VTrackingEventSignupWithEmailDidFail = @"SignupWithEmailDidFail";
@@ -129,6 +127,7 @@ NSString * const VTrackingEventAppStoreProductRequestDidFail = @"AppStoreProduct
 // Content Interaction
 NSString * const VTrackingEventSequenceDidAppearInStream = @"SequenceDidAppearInStream";
 NSString * const VTrackingEventViewDidStart = @"ViewDidStart";
+NSString * const VTrackingEventVideoDidStop = @"VideoDidStop";
 NSString * const VTrackingEventUserDidSelectItemFromStream = @"UserDidSelectItemFromStream";
 NSString * const VTrackingEventUserDidSelectItemFromMarquee = @"UserDidSelectItemFromMarquee";
 NSString * const VTrackingEventUserDidViewHashtagStream = @"UserDidViewHashtagStream";
@@ -145,6 +144,7 @@ NSString * const VTrackingEventUserDidShare = @"UserDidShare";
 NSString * const VTrackingEventUserShareDidFail = @"UserShareDidFail";
 NSString * const VTrackingEventUserDidSelectRemix = @"UserDidSelectRemix";
 NSString * const VTrackingEventUserDidSelectLike = @"UserDidSelectLike";
+NSString * const VTrackingEventUserDidSelectShowLikes = @"UserDidSelectShowLikes";
 NSString * const VTrackingEventUserDidSelectShowRemixes = @"UserDidSelectShowRemixes";
 NSString * const VTrackingEventUserDidSelectShowReposters = @"UserDidSelectShowReposters";
 NSString * const VTrackingEventUserDidDeletePost = @"UserDidDeletePost";
@@ -170,7 +170,6 @@ NSString * const VTrackingEventVideoDidComplete100 = @"VideoDidComplete100";
 NSString * const VTrackingEventVideoDidFail = @"VideoDidFail";
 NSString * const VTrackingEventVideoDidStall = @"VideoDidStall";
 NSString * const VTrackingEventVideoDidSkip = @"VideoDidSkip";
-NSString * const VTrackingEventVideoDidStop = @"VideoDidStop";
 
 // Find Friends
 NSString * const VTrackingEventUserDidSelectFindFriends = @"UserDidSelectFindFriends";
@@ -237,6 +236,8 @@ NSString * const VTrackingEventWelcomeDidStart = @"WelcomeDidStart";
 NSString * const VTrackingEventUserDidSelectRegistrationOption = @"UserDidSelectRegistrationOption";
 NSString * const VTrackingEventUserDidSelectSignUpSubmit = @"UserDidSelectSignUpSubmit";
 
+NSString * const VTrackingEventComponentDidBecomeVisible = @"ComponentDidBecomeVisible";
+
 // Tracking Event Parameters
 NSString * const VTrackingKeyCurrentSection = @"CurrentSection";
 NSString * const VTrackingKeySection = @"Section";
@@ -276,7 +277,6 @@ NSString * const VTrackingKeyRemoteId = @"RemoteId";
 NSString * const VTrackingKeyIndex = @"Index";
 NSString * const VTrackingKeyUserLoggedIn = @"UserLoggedIn";
 NSString * const VTrackingKeyLoadTime = @"LoadTime";
-NSString * const VTrackingKeyTimeSinceBoot = @"TimeSinceBoot";
 
 // Tracking Event Values
 // ContentType values

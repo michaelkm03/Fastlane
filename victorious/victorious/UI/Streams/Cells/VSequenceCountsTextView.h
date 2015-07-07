@@ -63,6 +63,16 @@
  */
 @property (nonatomic, assign) BOOL hideLikes;
 
+/**
+ The attributes used to render attributed text in this text view.
+ */
 @property (nonatomic, strong) NSDictionary *textAttributes;
+
+/**
+ The attribtues used to render attributed text of links when in the highlighted state
+ If this property is never set, there will be no highlighted state and the existing
+ attributes in the `textAttributes` property will continue to render.
+ */
+@property (nonatomic, strong) NSDictionary *textHighlightAttributes;
 
 @end

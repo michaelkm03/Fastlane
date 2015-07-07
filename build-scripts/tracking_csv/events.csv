@@ -64,8 +64,7 @@ UserDidCancelFailedUpload,
 LoginDidShow,Params: CurrentSection
 UserDidCancelLogin,User exited out of the login prompt
 UserDidLogOut,
-,
-UserDidSelectSignupWithEmail,Backend mapping: sign_up_button_tap
+UserDidSelectSignupWithEmail,
 UserDidSelectLoginWithEmail,
 SignupWithEmailDidFail,Params: ErrorMessage
 SignupWithEmailDidSucceed,
@@ -118,6 +117,7 @@ AppStoreProductRequestDidFail,Params: ErrorMessage
 // Content Interaction,
 SequenceDidAppearInStream,Stream cell became visible while scrolling stream (once per view); Backend mapping: cell-view
 ViewDidStart,"Content was displayed in content view and began playing (if video, make sure any ads are finished first); Backend mapping: view-start"
+VideoDidStop,Backend mapping: video-stop
 UserDidSelectItemFromStream,Backend mapping: cell-click
 UserDidSelectItemFromMarquee,Backend mapping: cell-click
 UserDidViewHashtagStream,Params: Hashtag
@@ -133,6 +133,8 @@ UserDidSelectShare,Params: Context
 UserDidShare,"Params: Context, ShareDestination"
 UserShareDidFail,Params: ErrorMessage
 UserDidSelectRemix,Params: Context
+UserDidSelectLike,
+UserDidSelectShowLikes,
 UserDidSelectShowRemixes,
 UserDidSelectShowReposters,
 UserDidDeletePost,
@@ -214,12 +216,14 @@ NextVideoDidAutoPlay,
 ,
 // First Time User Experience (FTUE),
 UserDidStartCreateProfile,Backend mapping: create_profile_start
-ApplicationDidBoot,Backend mapping: first_boot
-UserDidStartRegistration, Backend mapping: registration_start
+UserDidStartRegistration,Backend mapping: registration_start
 UserDidFinishRegistration,Backend mapping: registration_end
-UserDidSelectRegistrationDone,Backend mapping: done_button_tap
+UserDidSelectRegistrationDone,Backend mapping: create_profile_done_button_tap
 UserDidSelectWelcomeGetStarted,Backend mapping: get_started_tap
 WelcomeVideoDidStart,Backend mapping: welcome_video_start
 WelcomeVideoDidEnd,Backend mapping: welcome_video_end
 WelcomeDidStart,Backend mapping: welcome_start
-UserDidSelectRegister,Backend mapping: register_button_tap
+UserDidSelectRegistrationOption,Backend mapping: register_button_tap
+UserDidSelectSignUpSubmit,Backend mapping: sign_up_button_tap
+,
+ComponentDidBecomeVisible,Backend mapping: viewability

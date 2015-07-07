@@ -20,7 +20,7 @@
 @property (nonatomic, retain) NSNumber * isRead;
 @property (nonatomic, retain) NSString * type;
 @property (nonatomic, retain) NSDate * updatedAt;
-@property (nonatomic, retain) NSNumber * remoteId;
+@property (nonatomic, retain) NSString * remoteId;
 @property (nonatomic, retain) NSString * subject;
 @property (nonatomic, retain) NSNumber * displayOrder;
 @property (nonatomic, retain) VUser *user;
