@@ -60,13 +60,13 @@ static const char kAssociatedObjectViewWasHiddenKey;
                                            parameters:[NSDictionary dictionaryWithDictionary:combined]];
     }
     
-    objc_setAssociatedObject( viewController, &kAssociatedObjectViewWasHiddenKey, @NO, OBJC_ASSOCIATION_ASSIGN );
+    objc_setAssociatedObject( viewController, &kAssociatedObjectViewWasHiddenKey, @NO, OBJC_ASSOCIATION_RETAIN_NONATOMIC );
 }
 
 - (void)trackViewWillDisappear:(UIViewController *)viewController
 {
     BOOL wasHidden = viewController.navigationController.viewControllers.count > 1 || viewController.presentedViewController != nil;
-    objc_setAssociatedObject( viewController, &kAssociatedObjectViewWasHiddenKey, @(wasHidden), OBJC_ASSOCIATION_ASSIGN );
+    objc_setAssociatedObject( viewController, &kAssociatedObjectViewWasHiddenKey, @(wasHidden), OBJC_ASSOCIATION_RETAIN_NONATOMIC );
 }
 
 @end
