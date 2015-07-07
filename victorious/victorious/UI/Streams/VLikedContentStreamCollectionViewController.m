@@ -61,6 +61,7 @@
     
     if ( self.shouldRefreshOnView )
     {
+        [self.refreshControl beginRefreshing];
         [self refreshWithCompletion:nil];
         self.shouldRefreshOnView = NO;
     }
