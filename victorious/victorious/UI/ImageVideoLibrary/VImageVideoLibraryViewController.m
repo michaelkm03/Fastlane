@@ -39,6 +39,33 @@
     return [storyboardForImageVideoGallery instantiateInitialViewController];
 }
 
+#pragma mark - Init
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self != nil)
+    {
+        [self sharedInit];
+    }
+    return self;
+}
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self != nil)
+    {
+        [self sharedInit];
+    }
+    return self;
+}
+
+- (void)sharedInit
+{
+    _typeOfAssetToSelect = VAssetTypePhoto;
+}
+
 #pragma mark - Segue
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -47,7 +74,7 @@
     {
         // Set delegate to self so we can show as a real popover (Non-adaptive).
         VAssetCollectionListViewController *destinationViewController = (VAssetCollectionListViewController *)segue.destinationViewController;
-        destinationViewController.assetCollections = [self assetCollectionsForContentType:VAssetTypePhoto];
+        destinationViewController.assetCollections = [self assetCollectionsForContentType:self.typeOfAssetToSelect];
         __weak typeof(self) welf = self;
         destinationViewController.collectionSelectionHandler = ^void(PHAssetCollection *collection)
         {

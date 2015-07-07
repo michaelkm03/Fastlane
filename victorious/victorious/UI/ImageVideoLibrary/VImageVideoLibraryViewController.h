@@ -20,6 +20,11 @@ typedef NS_ENUM(NSInteger, VAssetType)
 @interface VImageVideoLibraryViewController : UIViewController <VHasManagedDependencies, VMediaSource>
 
 /**
+ *  Determines what the user is allowed to select. Defaults to VAssetTypePhoto.
+ */
+@property (nonatomic, assign) VAssetType typeOfAssetToSelect;
+
+/**
  *  An array of `VImageLibraryAlternateCaptureOption`s for providing the user 
  *  alternate options of media selection.
  */
