@@ -130,45 +130,6 @@
      }];
 }
 
-- (IBAction)close:(id)sender
-{
-    if (self.shouldConfirmCancels)
-    {
-        __weak typeof(self) welf = self;
-        UIActionSheet *confirmExitActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"This will discard any content from the camera", @"")
-                                                                   cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-                                                                      onCancelButton:nil
-                                                              destructiveButtonTitle:NSLocalizedString(@"Discard", nil)
-                                                                 onDestructiveButton:^
-                                                 {
-                                                     [welf callCompletionWithSuccess:NO
-                                                                        previewImage:nil
-                                                                    renderedMediaURL:nil];
-                                                 }
-                                                          otherButtonTitlesAndBlocks:nil, nil];
-        [confirmExitActionSheet showInView:self.view];
-        return;
-    }
-    [self callCompletionWithSuccess:NO
-                       previewImage:nil
-                   renderedMediaURL:nil];
-}
-
-- (void)confirmCancel
-{
-    __weak typeof(self) welf = self;
-    UIActionSheet *confirmExitActionSheet = [[UIActionSheet alloc] initWithTitle:self.confirmCancelMessage
-                                                               cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-                                                                  onCancelButton:nil
-                                                          destructiveButtonTitle:NSLocalizedString(@"Discard", nil)
-                                                             onDestructiveButton:^
-                                             {
-                                                 welf.completionBlock(NO, nil, nil);
-                                             }
-                                                      otherButtonTitlesAndBlocks:nil, nil];
-    [confirmExitActionSheet showInView:self.view];
-}
-
 #pragma mark - VCoachmarkDisplayer
 
 - (NSString *)screenIdentifier
