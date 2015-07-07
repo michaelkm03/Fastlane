@@ -18,6 +18,7 @@
 #import "VLinkTextViewHelper.h"
 #import "CCHLinkTextView.h"
 #import "CCHLinkTextViewDelegate.h"
+#import "VDependencyManager+VTracking.h"
 
 @interface VEnterResetTokenViewController () <UITextFieldDelegate, CCHLinkTextViewDelegate>
 
@@ -71,6 +72,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.dependencyManager trackViewWillAppear:self];
 
     if (self.userToken)
     {
@@ -78,6 +81,13 @@
         self.userToken = nil;
         [self textFieldShouldReturn:self.codeField];
     }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [self.dependencyManager trackViewWillDisappear:self];
 }
 
 - (IBAction)pressedBack:(id)sender

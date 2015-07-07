@@ -2,7 +2,7 @@
 // victorious/victorious/Managers/Tracking/VTrackingConstants.h 
 // victorious 
 // 
-// Generated from CSV using script "tracking_generate_constants.sh" on 05/26/15. 
+// Generated from CSV using script "tracking_generate_constants.sh" on 06/30/15. 
 // Copyright (c) 2015 Victorious. All rights reserved. 
 // 
 
@@ -74,8 +74,7 @@ extern NSString * const VTrackingEventUserDidCancelFailedUpload;
 extern NSString * const VTrackingEventLoginDidShow; //< Params: CurrentSection
 extern NSString * const VTrackingEventUserDidCancelLogin; //< User exited out of the login prompt
 extern NSString * const VTrackingEventUserDidLogOut; 
-
-extern NSString * const VTrackingEventUserDidSelectSignupWithEmail;
+extern NSString * const VTrackingEventUserDidSelectSignupWithEmail; 
 extern NSString * const VTrackingEventUserDidSelectLoginWithEmail; 
 extern NSString * const VTrackingEventSignupWithEmailDidFail; //< Params: ErrorMessage
 extern NSString * const VTrackingEventSignupWithEmailDidSucceed; 
@@ -128,7 +127,7 @@ extern NSString * const VTrackingEventAppStoreProductRequestDidFail; //< Params:
 // Content Interaction
 extern NSString * const VTrackingEventSequenceDidAppearInStream; //< Stream cell became visible while scrolling stream (once per view); Backend mapping: cell-view
 extern NSString * const VTrackingEventViewDidStart; //< "Content was displayed in content view and began playing (if video, make sure any ads are finished first); Backend mapping: view-start"
-extern NSString * const VTrackingEventVideoDidStop; //< Backend mapping: view-stop
+extern NSString * const VTrackingEventVideoDidStop; //< Backend mapping: video-stop
 extern NSString * const VTrackingEventUserDidSelectItemFromStream; //< Backend mapping: cell-click
 extern NSString * const VTrackingEventUserDidSelectItemFromMarquee; //< Backend mapping: cell-click
 extern NSString * const VTrackingEventUserDidViewHashtagStream; //< Params: Hashtag
@@ -144,7 +143,8 @@ extern NSString * const VTrackingEventUserDidSelectShare; //< Params: Context
 extern NSString * const VTrackingEventUserDidShare; //< "Params: Context, ShareDestination"
 extern NSString * const VTrackingEventUserShareDidFail; //< Params: ErrorMessage
 extern NSString * const VTrackingEventUserDidSelectRemix; //< Params: Context
-extern NSString * const VTrackingEventUserDidSelectLike; //< Params: Context
+extern NSString * const VTrackingEventUserDidSelectLike; 
+extern NSString * const VTrackingEventUserDidSelectShowLikes; 
 extern NSString * const VTrackingEventUserDidSelectShowRemixes; 
 extern NSString * const VTrackingEventUserDidSelectShowReposters; 
 extern NSString * const VTrackingEventUserDidDeletePost; 
@@ -226,15 +226,17 @@ extern NSString * const VTrackingEventNextVideoDidAutoPlay;
 
 // First Time User Experience (FTUE)
 extern NSString * const VTrackingEventUserDidStartCreateProfile; //< Backend mapping: create_profile_start
-extern NSString * const VTrackingEventUserDidStartRegistration; //<  Backend mapping: registration_start
+extern NSString * const VTrackingEventUserDidStartRegistration; //< Backend mapping: registration_start
 extern NSString * const VTrackingEventUserDidFinishRegistration; //< Backend mapping: registration_end
-extern NSString * const VTrackingEventUserDidSelectRegistrationDone; //< Backend mapping: done_button_tap
+extern NSString * const VTrackingEventUserDidSelectRegistrationDone; //< Backend mapping: create_profile_done_button_tap
 extern NSString * const VTrackingEventUserDidSelectWelcomeGetStarted; //< Backend mapping: get_started_tap
 extern NSString * const VTrackingEventWelcomeVideoDidStart; //< Backend mapping: welcome_video_start
 extern NSString * const VTrackingEventWelcomeVideoDidEnd; //< Backend mapping: welcome_video_end
 extern NSString * const VTrackingEventWelcomeDidStart; //< Backend mapping: welcome_start
 extern NSString * const VTrackingEventUserDidSelectRegistrationOption; //< Backend mapping: register_button_tap
 extern NSString * const VTrackingEventUserDidSelectSignUpSubmit; //< Backend mapping: sign_up_button_tap
+
+extern NSString * const VTrackingEventComponentDidBecomeVisible; //< Backend mapping: viewability
 
 // Tracking Event Parameters
 extern NSString * const VTrackingKeyCurrentSection; //< "Which major section is selected, such as ""Home"", ""Indbox"", ""Profile"", etc.",
@@ -253,8 +255,8 @@ extern NSString * const VTrackingKeySequenceId; //< Backend mapping: %%SEQUENCE_
 extern NSString * const VTrackingKeyVoteCount; //< The number of votes (emotive ballistic/experience enhancer throws) that occurred; Backend mapping: %%COUNT%%
 extern NSString * const VTrackingKeyUrls; //< An array of 1 or more URLs with replaceable macros receied from the server
 extern NSString * const VTrackingKeyShareDestination; //< "An identifier for a share action, usually provided by the system (Facebook, Twitter, Email, SMS, etc.); Backend mapping: %%SHARE_DEST%%",
-extern NSString * const VTrackingKeySharedToFacebook; //< "An identifier for a share to Facebook not through the action sheet. Backend mapping: %%FACEBOOK_SHARE%%",
-extern NSString * const VTrackingKeySharedToTwitter;//< "An identifier for a share to Twitter not through the action sheet. Backend mapping: %%TWITTER_SHARE%%",
+extern NSString * const VTrackingKeySharedToFacebook; //< An identifier for a share to Facebook not through the action sheet. Backend mapping: %%FACEBOOK_SHARE%%
+extern NSString * const VTrackingKeySharedToTwitter; //< An identifier for a share to Twitter not through the action sheet. Backend mapping: %%TWITTER_SHARE%%
 extern NSString * const VTrackingKeySequenceCategory; //< A string representing the 'category' property of a sequence
 extern NSString * const VTrackingKeyNotificationId; //< The ID of the push notification that spawned the process in which the tracking event has occurred; Backend mapping: %%NOTIF_ID%%
 extern NSString * const VTrackingKeySessionTime; //< An integer value representing milliseconds of an activity's duration; Backend mapping: %%SESSION_TIME%%
