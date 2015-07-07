@@ -78,7 +78,7 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
 - (void)addTextViewToContainer
 {
     UIFont *defaultFont = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
-    self.textStorage = [[VUserTaggingTextStorage alloc] initWithTextView:nil defaultFont:defaultFont taggingDelegate:self.delegate];
+    self.textStorage = [[VUserTaggingTextStorage alloc] initWithTextView:nil defaultFont:defaultFont taggingDelegate:self.delegate dependencyManager:self.dependencyManager];
     
     NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
     [self.textStorage addLayoutManager:layoutManager];

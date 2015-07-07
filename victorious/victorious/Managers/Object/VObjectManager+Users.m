@@ -398,6 +398,7 @@ static NSString * const kVAPIParamContext = @"context";
 }
 
 - (RKManagedObjectRequestOperation *)findUsersBySearchString:(NSString *)search_string
+                                                  sequenceID:(NSString *)sequenceID
                                                        limit:(NSInteger)pageLimit
                                                      context:(NSString *)context
                                             withSuccessBlock:(VSuccessBlock)success
@@ -415,6 +416,10 @@ static NSString * const kVAPIParamContext = @"context";
     if (context != nil)
     {
         userSearchURL = [NSString stringWithFormat:@"%@/%@", userSearchURL, context];
+    }
+    if (sequenceID != nil)
+    {
+        userSearchURL = [NSString stringWithFormat:@"%@/%@", userSearchURL, sequenceID];
     }
     return [self GET:userSearchURL
               object:nil
