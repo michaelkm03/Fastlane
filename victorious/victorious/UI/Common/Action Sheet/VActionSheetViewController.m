@@ -333,9 +333,8 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
         attributes[NSParagraphStyleAttributeName] = paragraphStyle;
     }
     
-    NSString *st = [[self.descriptionItem.title stringByAppendingString:self.descriptionItem.title] stringByAppendingString:self.descriptionItem.title];
-    NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:st
-                                                                                                attributes:attributes];
+    NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:self.descriptionItem.title];
+    
     self.titleTextView.attributedText = mutableAttributedString;
     self.titleTextView.linkDelegate = self;
 }
