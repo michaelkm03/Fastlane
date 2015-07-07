@@ -57,7 +57,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
                                                                           withAddedDependencies:nil];
         [self addCompleitonHandlerToMediaSource:viewController];
         [self addCloseButtonToViewController:viewController];
-        [self addNextButtonToViewController:viewController];
         [self pushViewController:viewController animated:YES];
         [self setupPublishScreen];
     }
@@ -89,16 +88,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     return UIStatusBarStyleLightContent;
 }
 
-#pragma mark - Overrides
-
-- (void)selectedNext:(id)sender
-{
-    if (self.workspaceViewController.mediaURL != nil)
-    {
-        [self pushViewController:self.workspaceViewController animated:YES];
-    }
-}
-
 #pragma mark - Private Methods
 
 - (void)addCompleitonHandlerToMediaSource:(id<VMediaSource>)mediaSource
@@ -109,10 +98,13 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
         if (capturedMediaURL != nil)
         {
             [welf setupWorkspace];
+            self.workspaceViewController.mediaURL = capturedMediaURL;
+            self.workspaceViewController.previewImage = previewImage;
 
             VImageToolController *toolController = (VImageToolController *)welf.workspaceViewController.toolController;
             [toolController setDefaultImageTool:VImageToolControllerInitialImageEditStateText];
-            welf.nextButtonEnabled = YES;
+
+            [self pushViewController:self.workspaceViewController animated:YES];
         }
         else
         {
@@ -142,7 +134,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
         else
         {
             [welf popViewControllerAnimated:YES];
-            welf.nextButtonEnabled = NO;
         }
     };
 }
@@ -190,9 +181,9 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     }
     else
     {
-        [self.creationFlowDelegate creationFLowController:self
-                                 finishedWithPreviewImage:self.previewImage
-                                         capturedMediaURL:self.renderedMediaURL];
+        [self pushPublishScreenWithRenderedMediaURL:self.renderedMediaURL
+                                       previewImage:self.previewImage
+                                      fromWorkspace:self.workspaceViewController];
     }
 }
 
@@ -230,16 +221,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
         return self.publishAnimator;
     }
     return nil;
-}
-
-- (void)navigationController:(UINavigationController *)navigationController
-      willShowViewController:(UIViewController *)viewController
-                    animated:(BOOL)animated
-{
-    if (viewController == [self.viewControllers firstObject])
-    {
-        self.nextButtonEnabled = NO;
-    }
 }
 
 @end

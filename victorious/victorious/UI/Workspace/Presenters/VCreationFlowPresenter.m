@@ -18,6 +18,9 @@
 // Creation UI
 #import "VCreationFlowController.h"
 
+// Authorization
+#import "VAuthorizedAction.h"
+
 #warning Maybe delete these
 #import "VCreatePollViewController.h"
 #import "VTextWorkspaceFlowController.h"
@@ -46,6 +49,26 @@ static NSString * const kTextCreateFlow = @"textCreateFlow";
 @implementation VCreationFlowPresenter
 
 - (void)present
+{
+    VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                         dependencyManager:self.dependencyManager];
+    [authorizedAction performFromViewController:self.viewControllerToPresentOn
+                                        context:VAuthorizationContextCreatePost
+                                     completion:^(BOOL authorized)
+     {
+         if (authorized)
+         {
+             [self authorizedPresent];
+         }
+         else
+         {
+             // Not authorized
+#warning call a completion or delegate?
+         }
+     }];
+}
+
+- (void)authorizedPresent
 {
     NSDictionary *addedDependencies = @{kAnimateFromTopKey : @(self.showsCreationSheetFromTop)};
 
