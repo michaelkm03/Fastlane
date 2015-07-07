@@ -10,11 +10,14 @@
 
 // Dependencies
 #import "VDependencyManager.h"
+#import "VSolidColorBackground.h"
 
 // Subclasses
 #import "VImageCreationFlowController.h"
 
 static NSString * const kCloseButtonIconKey = @"closeIcon";
+static NSString * const kBarBackgroundKey = @"navBarBackground";
+static NSString * const kBarTintColorKey = @"barTintColor";
 
 @interface VCreationFlowController ()
 
@@ -44,10 +47,11 @@ static NSString * const kCloseButtonIconKey = @"closeIcon";
 {
     [super viewDidLoad];
     
-#warning setup from dependencymanager
-    self.navigationBar.barTintColor = [UIColor blackColor];
+    VSolidColorBackground *background = [self.dependencyManager templateValueOfType:[VSolidColorBackground class]
+                                                                             forKey:kBarBackgroundKey];
+    self.navigationBar.barTintColor = background.backgroundColor;
     self.navigationBar.translucent = NO;
-    self.navigationBar.tintColor = [UIColor whiteColor];
+    self.navigationBar.tintColor = [self.dependencyManager colorForKey:kBarTintColorKey];
 }
 
 #pragma mark - Property Accessors
