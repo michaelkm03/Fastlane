@@ -93,24 +93,12 @@ static NSString * const kTextCreateFlow = @"textCreateFlow";
             break;
         case VCreationTypeGIF:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateGIFPostSelected];
-#warning Set this to GIF
             [self presentCreateFlowWithKey:kGIFCreationFlowKey];
-            
             break;
         case VCreationTypePoll:
-        {
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreatePollSelected];
-//            VCreatePollViewController *createViewController = [self.creationFlowShim pollFlowController];
-            __weak typeof(self) welf = self;
-//            createViewController.completionHandler = ^void(VCreatePollViewControllerResult result)
-//            {
-//                [welf.viewControllerToPresentOn dismissViewControllerAnimated:YES
-//                                                                   completion:nil];
-//            };
-//            UINavigationController *wrapperNavStack = [[UINavigationController alloc] initWithRootViewController:createViewController];
-//            [self.viewControllerToPresentOn presentViewController:wrapperNavStack animated:YES completion:nil];
+            [self presentCreateFlowWithKey:kPollCreateFlow];
             break;
-        }
         case VCreationTypeUnknown:
             break;
     }
