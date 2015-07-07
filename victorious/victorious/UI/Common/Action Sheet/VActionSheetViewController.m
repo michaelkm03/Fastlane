@@ -57,9 +57,6 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *blurringContainerHeightConstraint;
 @property (nonatomic, strong) CAGradientLayer *gradient;
 
-// For ignoring the tap gesture when we've clicked a hashtag
-@property (nonatomic, assign) BOOL hashtagPressed;
-
 @end
 
 static const CGFloat kBlurrGradientHeight = 10.0f;
@@ -112,7 +109,7 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     
     self.view.userInteractionEnabled = YES;
     
-    self.tapAwayGestureRecognizer.enabled = YES;
+    self.tapAwayGestureRecognizer.delegate = self;
     
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
@@ -153,11 +150,6 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
 
 - (IBAction)pressedTapAwayButton:(id)sender
 {
-    if (self.hashtagPressed)
-    {
-        self.hashtagPressed = NO;
-        return;
-    }
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -333,7 +325,8 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
         attributes[NSParagraphStyleAttributeName] = paragraphStyle;
     }
     
-    NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:self.descriptionItem.title];
+    NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:self.descriptionItem.title
+                                                                                                attributes:attributes];
     
     self.titleTextView.attributedText = mutableAttributedString;
     self.titleTextView.linkDelegate = self;
@@ -355,7 +348,6 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
 
 - (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
 {
-    self.hashtagPressed = YES;
     if (self.descriptionItem.hashTagSelectionHandler)
     {
         self.descriptionItem.hashTagSelectionHandler(value);
@@ -370,5 +362,18 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
          [self.titleTextView setDependencyManager:dependencyManager];
      }
  }
+
+#pragma mark - Gesture Recognizer Delegate
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    CGPoint location = [gestureRecognizer locationInView:self.titleTextView];
+    __block BOOL shouldRecognize = YES;
+    [self.titleTextView enumerateLinkRangesContainingLocation:location usingBlock:^(NSRange range)
+    {
+        shouldRecognize = NO;
+    }];
+    return shouldRecognize;
+}
 
 @end
