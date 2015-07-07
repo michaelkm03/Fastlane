@@ -40,8 +40,8 @@
 #pragma mark - Dependency Manager
 #import "VDependencyManager.h"
 
-#pragma mark - Workflow
-#import "VWorkspaceFlowController.h"
+#pragma mark - Remixing
+#import "VRemixPresenter.h"
 #import "VImageToolController.h"
 #import "VVideoToolController.h"
 #import "VAuthorizedAction.h"
@@ -51,9 +51,10 @@
 #import "VUsersViewController.h"
 #import "VLikersDataSource.h"
 
-@interface VSequenceActionController () <VWorkspaceFlowControllerDelegate>
+@interface VSequenceActionController ()
 
 @property (nonatomic, strong) UIViewController *viewControllerPresentingWorkspace;
+@property (nonatomic, strong) VRemixPresenter *remixPresenter;
 
 @end
 
@@ -108,14 +109,7 @@
 {
     NSAssert( ![sequence isPoll], @"You cannot remix polls." );
     NSMutableDictionary *addedDependencies = [[NSMutableDictionary alloc] init];
-    if (sequence)
-    {
-        [addedDependencies setObject:sequence forKey:VWorkspaceFlowControllerSequenceToRemixKey];
-    }
-    if (preloadedImage)
-    {
-        [addedDependencies setObject:preloadedImage forKey:VWorkspaceFlowControllerPreloadedImageKey];
-    }
+
     [addedDependencies setObject:@(VImageToolControllerInitialImageEditStateText) forKey:VImageToolControllerInitialImageEditStateKey];
     VVideoToolControllerInitialVideoEditState editState;
     switch (defaultVideoEdit)
@@ -140,16 +134,11 @@
          {
              return;
          }
-         
-         VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager templateValueOfType:[VWorkspaceFlowController class]
-                                                                                                  forKey:VDependencyManagerWorkspaceFlowKey
-                                                                                   withAddedDependencies:addedDependencies];
-         
-         workspaceFlowController.delegate = self;
+         self.remixPresenter = [[VRemixPresenter alloc] initWithViewControllerToPresentOn:viewController
+                                                                                    dependencymanager:self.dependencyManager
+                                                                                      sequenceToRemix:sequence];
+         [self.remixPresenter present];
          self.viewControllerPresentingWorkspace = viewController;
-         [viewController presentViewController:workspaceFlowController.flowRootViewController
-                                      animated:YES
-                                    completion:nil];
      }];
 }
 
@@ -442,28 +431,6 @@
     }
     
     return shareText;
-}
-
-#pragma mark - VWorkspaceFlowControllerDelegate
-
-- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
-{
-    [self.viewControllerPresentingWorkspace dismissViewControllerAnimated:YES
-                                                               completion:^
-     {
-         self.viewControllerPresentingWorkspace = nil;
-     }];
-}
-
-- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-       finishedWithPreviewImage:(UIImage *)previewImage
-               capturedMediaURL:(NSURL *)capturedMediaURL
-{
-    [self.viewControllerPresentingWorkspace dismissViewControllerAnimated:YES
-                                                               completion:^
-     {
-         self.viewControllerPresentingWorkspace = nil;
-     }];
 }
 
 @end

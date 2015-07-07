@@ -318,6 +318,7 @@
 		A6DAEB541B4C43BA00935EA0 /* VTextWorkspaceFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DAEB531B4C43BA00935EA0 /* VTextWorkspaceFlowController.m */; };
 		A6DAEB571B4C43D100935EA0 /* VPollCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DAEB561B4C43D100935EA0 /* VPollCreationFlowController.m */; };
 		A6DAEB591B4C442B00935EA0 /* pollCreationFlow.json in Resources */ = {isa = PBXBuildFile; fileRef = A6DAEB581B4C442B00935EA0 /* pollCreationFlow.json */; };
+		A6DAEB5C1B4C786E00935EA0 /* VRemixPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DAEB5B1B4C786E00935EA0 /* VRemixPresenter.m */; };
 		A6EC32671B3B488200824022 /* staticCreateSheet.json in Resources */ = {isa = PBXBuildFile; fileRef = A6EC32661B3B488200824022 /* staticCreateSheet.json */; };
 		A6EC32731B3B508B00824022 /* cameraScreen.json in Resources */ = {isa = PBXBuildFile; fileRef = A6EC32721B3B508B00824022 /* cameraScreen.json */; };
 		A6EC32771B3B50AE00824022 /* imageWorkspace.json in Resources */ = {isa = PBXBuildFile; fileRef = A6EC32761B3B50AE00824022 /* imageWorkspace.json */; };
@@ -1638,6 +1639,8 @@
 		A6DAEB551B4C43D100935EA0 /* VPollCreationFlowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPollCreationFlowController.h; sourceTree = "<group>"; };
 		A6DAEB561B4C43D100935EA0 /* VPollCreationFlowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollCreationFlowController.m; sourceTree = "<group>"; };
 		A6DAEB581B4C442B00935EA0 /* pollCreationFlow.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = pollCreationFlow.json; sourceTree = "<group>"; };
+		A6DAEB5A1B4C786E00935EA0 /* VRemixPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRemixPresenter.h; sourceTree = "<group>"; };
+		A6DAEB5B1B4C786E00935EA0 /* VRemixPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRemixPresenter.m; sourceTree = "<group>"; };
 		A6EC32661B3B488200824022 /* staticCreateSheet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = staticCreateSheet.json; sourceTree = "<group>"; };
 		A6EC326E1B3B4E9B00824022 /* VCreationTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VCreationTypes.h; sourceTree = "<group>"; };
 		A6EC32721B3B508B00824022 /* cameraScreen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = cameraScreen.json; sourceTree = "<group>"; };
@@ -4364,6 +4367,8 @@
 				A601FB5B1B4369550050536C /* VEditProfilePicturePresenter.m */,
 				A601FB571B43657F0050536C /* VMediaAttachmentPresenter.h */,
 				A601FB581B43657F0050536C /* VMediaAttachmentPresenter.m */,
+				A6DAEB5A1B4C786E00935EA0 /* VRemixPresenter.h */,
+				A6DAEB5B1B4C786E00935EA0 /* VRemixPresenter.m */,
 			);
 			path = Presenters;
 			sourceTree = "<group>";
@@ -7585,6 +7590,7 @@
 				036E87B21ACB6B3F00E5AAAD /* VContentViewFactory.m in Sources */,
 				DBF8B4B11A79F8F300CFFD47 /* VUserSearchResultsViewController.m in Sources */,
 				BE6C15251880A31A00469BA8 /* VAnswerAction.m in Sources */,
+				A6DAEB5C1B4C786E00935EA0 /* VRemixPresenter.m in Sources */,
 				A779510E1B27DBBD00D9DB0A /* VSuggestedUsersDataSource.m in Sources */,
 				669EBBE51A30239100DE317D /* VTickerPickerViewController.m in Sources */,
 				3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */,

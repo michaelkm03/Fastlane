@@ -64,6 +64,18 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     return self;
 }
 
+#pragma mark -  Public Methods
+
+- (void)remixWithPreviewImage:(UIImage *)previewImage
+                     mediaURL:(NSURL *)mediaURL
+{
+    [self setupWorkspace];
+    self.workspaceViewController.mediaURL = mediaURL;
+    self.workspaceViewController.previewImage = previewImage;
+    [self addCloseButtonToViewController:self.workspaceViewController];
+    self.viewControllers = @[self.workspaceViewController];
+}
+
 #pragma mark - UIViewController
 
 - (void)viewDidLoad
@@ -98,8 +110,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
         {
             [welf setupWorkspace];
 
-            welf.workspaceViewController.previewImage = previewImage;
-            welf.workspaceViewController.mediaURL = capturedMediaURL;
             VImageToolController *toolController = (VImageToolController *)welf.workspaceViewController.toolController;
             [toolController setDefaultImageTool:VImageToolControllerInitialImageEditStateText];
             welf.nextButtonEnabled = YES;
@@ -117,7 +127,9 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     _workspaceViewController.adjustsCanvasViewFrameOnKeyboardAppearance = YES;
     _workspaceViewController.continueText = [self localizedEditingFinishedText];
     _workspaceViewController.continueButtonEnabled = YES;
-
+    _workspaceViewController.previewImage = self.previewImage;
+    _workspaceViewController.mediaURL = self.renderedMediaURL;
+    
     __weak typeof(self) welf = self;
     _workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
     {

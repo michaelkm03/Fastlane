@@ -12,4 +12,11 @@ extern NSString * const VImageCreationFlowControllerKey;
 
 @interface VImageCreationFlowController : VCreationFlowController
 
+/**
+ *  To force this image creation flow controller into remixing mode provide it with a previewImage 
+ *  and mediaURL to use for remixing.
+ */
+- (void)remixWithPreviewImage:(UIImage *)previewImage
+                     mediaURL:(NSURL *)mediaURL;
+
 @end
