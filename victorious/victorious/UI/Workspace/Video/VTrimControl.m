@@ -14,6 +14,7 @@
 static const CGFloat kTrimHeadHeight = 44.0f;
 static const CGFloat kTrimHeadInset = 4.0f;
 static const CGFloat kTrimBodyWidth = 5.0f;
+const CGFloat kMaximumTrimHeight = 92.0f;
 
 static const CGFloat scaleFactorX = 0.15f; //x-ratio for handle subview on trim control
 static const CGFloat scaleFactorY = 0.50f; //y-ratio for handle subview on trim control
@@ -100,10 +101,7 @@ static const CGFloat kLineThickness = 1.0f; //Thickness of underbar on trim cont
                  isTracking = YES;
                  *stop = YES;
                  break;
-             case UIGestureRecognizerStatePossible:
-             case UIGestureRecognizerStateEnded:
-             case UIGestureRecognizerStateCancelled:
-             case UIGestureRecognizerStateFailed:
+             default:
                  break;
          }
      }];
@@ -121,11 +119,11 @@ static const CGFloat kLineThickness = 1.0f; //Thickness of underbar on trim cont
     if (!self.hasPerformedInitialLayout)
     {
         CGFloat previewHeight = CGRectGetMaxY(self.bounds) - kTrimHeadHeight;
-        //The added 1s avoid a small visible divide between the thumb head and the trimmer line
+
         self.trimThumbBody.frame = CGRectMake(0.0f,
                                               CGRectGetHeight(self.bounds) - previewHeight + 4.0f,
-                                              3 * kTrimBodyWidth,
-                                              previewHeight - 4.0f);
+                                              3*kTrimBodyWidth,
+                                              MIN(previewHeight - 4.0f, kMaximumTrimHeight));
         
         CGRect rect = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.trimThumbBody.frame) * scaleFactorX, CGRectGetHeight(self.trimThumbBody.frame) * scaleFactorY);
         UIView *innerView = [[UIView alloc] initWithFrame:rect];
@@ -144,7 +142,7 @@ static const CGFloat kLineThickness = 1.0f; //Thickness of underbar on trim cont
         
         [self updateThumAndDimmingViewWithNewThumbCenter:CGPointMake(200.0f, 200.0f)];
         
-        self.leftHandle.frame = CGRectMake(0, kTrimHeadHeight + 4.0f , kTrimBodyWidth, previewHeight - 4.0f);
+        self.leftHandle.frame = CGRectMake(0, kTrimHeadHeight + 4.0f , kTrimBodyWidth, MIN(kMaximumTrimHeight, previewHeight - 4.0f));
         self.leftHandle.backgroundColor = [UIColor whiteColor];
         self.leftHandle.userInteractionEnabled = NO;
         
@@ -153,8 +151,8 @@ static const CGFloat kLineThickness = 1.0f; //Thickness of underbar on trim cont
         self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self];
         self.animator.delegate = self;
         [self.animator addBehavior:self.collisionBehavior];
+        [self updateThumAndDimmingViewWithNewThumbCenter:CGPointMake(200.0f, 200.0f)];
     }
-    [self updateThumAndDimmingViewWithNewThumbCenter:CGPointMake(200.0f, 200.0f)];
 }
 
 - (UIView *)hitTest:(CGPoint)point

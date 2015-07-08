@@ -251,6 +251,7 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    CGSize size;
     NSInteger numberOfItems = [self collectionView:collectionView
                             numberOfItemsInSection:indexPath.section];
     
@@ -261,7 +262,10 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
     }
     
     [self.currentPlayBackOverlayView updateConstraintsIfNeeded];
-    return CGSizeMake(CGRectGetHeight(self.currentPlayBackOverlayView.frame), CGRectGetHeight(self.currentPlayBackOverlayView.frame));
+
+    CGFloat width = MIN(kMaximumTrimHeight, CGRectGetHeight(self.currentPlayBackOverlayView.frame));
+    size = CGSizeMake(width, width);
+    return size;
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
@@ -364,7 +368,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
         lastIndex = lastIndex + 1;
         if (lastIndex == self.numberOfFrames)
         {
-            CGRect frame;;
+            CGRect frame;
             frame.size = cell.frame.size;
             frame.origin = CGPointMake(cell.frame.origin.x - self.thumbnailCollectionView.contentOffset.x, cell.frame.origin.y + self.thumbnailCollectionView.contentOffset.y);
             
@@ -487,7 +491,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 
 - (void)preparePlaybackOverlay
 {
-    CGRect frame = CGRectMake(0, 0, 100.0f, 55.0f);
+    CGRect frame = CGRectMake(0, 0, 123.6f, 55.0f);
     self.currentPlayBackOverlayView = [[UIView alloc] initWithFrame:frame];
     self.currentPlayBackOverlayView.userInteractionEnabled = NO;
     

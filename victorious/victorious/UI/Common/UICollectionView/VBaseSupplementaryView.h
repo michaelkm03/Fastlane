@@ -15,8 +15,14 @@
  */
 @interface VBaseSupplementaryView : UICollectionReusableView <VSharedCollectionReusableViewMethods>
 
+/*
+ *  Returns the cell identifier for the supplementary view
+ */
 + (NSString *)cellIdentifier;
 
+/*
+ *  Returns the nib for the supplementary view
+ */
 + (UINib *)nibForCell;
 
 @end
