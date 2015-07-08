@@ -125,10 +125,10 @@ static NSString * const kSupportEmailKey = @"email.support";
     
     [self updatePurchasesCount];
     
-#ifdef V_NO_SWITCH_ENVIRONMENTS
-    self.showEnvironmentSetting = NO;
-#else
+#ifdef V_SWITCH_ENVIRONMENTS
     self.showEnvironmentSetting = YES;
+#else
+    self.showEnvironmentSetting = NO;
 #endif
     
 #ifdef V_NO_TRACKING_ALERTS
