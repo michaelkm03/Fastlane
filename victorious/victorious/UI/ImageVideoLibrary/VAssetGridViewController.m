@@ -121,6 +121,8 @@
     progressHud.dimBackground = YES;
     [progressHud show:YES];
     
+#warning Update this with image/video support
+    
     PHImageRequestOptions *fullSizeRequestOptions = [[PHImageRequestOptions alloc] init];
     fullSizeRequestOptions.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
     fullSizeRequestOptions.version = PHImageRequestOptionsVersionCurrent;
@@ -136,13 +138,11 @@
      {
          dispatch_async(dispatch_get_main_queue(), ^
          {
-             [progressHud hide:YES afterDelay:0.25f];
+             [welf callCompletionWithAsset:asset
+                                 imageData:imageData
+                               orientation:orientation
+                                      info:info];
          });
-#warning Add some error handling here!
-         [welf callCompletionWithAsset:asset
-                             imageData:imageData
-                           orientation:orientation
-                                  info:info];
      }];
 }
 
@@ -161,6 +161,9 @@
                   toURL:urlForAsset];
         dispatch_async(dispatch_get_main_queue(), ^
         {
+            MBProgressHUD *hudForView = [MBProgressHUD HUDForView:self.navigationController.view];
+            [hudForView hide:YES];
+            
             __strong typeof (welf) strongSelf = welf;
             strongSelf.selectedFullSizeImage = imageWithProperOrientation;
             strongSelf.imageFileURL = urlForAsset;

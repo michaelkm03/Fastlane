@@ -175,7 +175,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 
             VImageToolController *toolController = (VImageToolController *)welf.workspaceViewController.toolController;
             [toolController setDefaultImageTool:VImageToolControllerInitialImageEditStateText];
-
+            
             [self pushViewController:self.workspaceViewController animated:YES];
         }
         else

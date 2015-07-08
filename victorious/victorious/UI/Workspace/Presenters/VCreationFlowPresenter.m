@@ -21,12 +21,6 @@
 // Authorization
 #import "VAuthorizedAction.h"
 
-#warning Maybe delete these
-#import "VCreatePollViewController.h"
-#import "VTextWorkspaceFlowController.h"
-#import "VImageToolController.h"
-#import "VVideoToolController.h"
-
 // Action sheet
 #import "VAlertController.h"
 #import "VCreateSheetViewController.h"
@@ -59,11 +53,6 @@ static NSString * const kTextCreateFlow = @"textCreateFlow";
          if (authorized)
          {
              [self authorizedPresent];
-         }
-         else
-         {
-             // Not authorized
-#warning call a completion or delegate?
          }
      }];
 }
