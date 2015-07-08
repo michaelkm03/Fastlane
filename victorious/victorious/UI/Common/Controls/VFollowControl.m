@@ -16,8 +16,8 @@ static const CGFloat kHighlightTransformPerspective = -1.0 / 200.0f;
 static const CGFloat kForcedAntiAliasingConstant = 0.01f;
 
 static NSString * const kFollowIconKey = @"follow_icon";
-static NSString * const kFollowedCheckmarkIconKey = @"followed_checkmark_icon";
-static NSString * const kFollowedBackgroundIconKey = @"followed_background_icon";
+static NSString * const kFollowedCheckmarkIconKey = @"following_checkmark_icon";
+static NSString * const kFollowedBackgroundIconKey = @"following_ground_icon";
 
 @interface VFollowControl ()
 
@@ -171,15 +171,9 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_background_icon"
     _dependencyManager = dependencyManager;
     if ( dependencyManager != nil )
     {
-#warning MAKE BACKEND DRIVEN
-        /*
         self.onImage = [[dependencyManager imageForKey:kFollowedCheckmarkIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         self.offImage = [[dependencyManager imageForKey:kFollowIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         self.selectedBackgroundImage = [[dependencyManager imageForKey:kFollowedBackgroundIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        */
-        self.onImage = [[UIImage imageNamed:kFollowedCheckmarkIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        self.offImage = [[UIImage imageNamed:kFollowIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        self.selectedBackgroundImage = [[UIImage imageNamed:kFollowedBackgroundIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         
         self.tintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         [self updateFollowImageView];

@@ -21,11 +21,11 @@
                         </constraints>
                     </imageView>
                     <view contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="Jms-c7-tBR" customClass="VFollowControl">
-                        <rect key="frame" x="274" y="12" width="26" height="26"/>
+                        <rect key="frame" x="272" y="11" width="28" height="28"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="Jms-c7-tBR" secondAttribute="height" multiplier="1:1" id="AMz-iO-fJ6"/>
-                            <constraint firstAttribute="height" constant="26" id="j4x-hv-soa"/>
+                            <constraint firstAttribute="height" constant="28" id="j4x-hv-soa"/>
                         </constraints>
                         <connections>
                             <action selector="tappedFollowControl:" destination="gTV-IL-0wX" eventType="touchUpInside" id="KQf-mA-uM7"/>
@@ -39,7 +39,7 @@
                         </constraints>
                     </view>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ymj-O6-dqo" userLabel="Profile Name">
-                        <rect key="frame" x="67" y="9" width="199" height="32"/>
+                        <rect key="frame" x="67" y="9" width="197" height="32"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>

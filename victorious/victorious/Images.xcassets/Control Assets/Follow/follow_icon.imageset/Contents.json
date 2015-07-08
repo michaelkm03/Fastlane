@@ -3,16 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "folllowed-hashtag-icon.png"
+      "filename" : "follow.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "folllowed-hashtag-icon@2x.png"
+      "filename" : "follow@2X.png"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x"
+      "scale" : "3x",
+      "filename" : "follow@3X.png"
     }
   ],
   "info" : {
