@@ -31,6 +31,8 @@ static const CGSize kShadowOffset = { 0.0f, 2.0f };
 @property (nonatomic, weak) IBOutlet UIView *overlayContainer; //An overlay to apply to the imageView
 @property (nonatomic, weak) IBOutlet UIView *contentContainer; //The container for all variable cell content, will have shadow applied to it
 
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *centerLabelConstraint;
+
 @end
 
 @implementation VInsetMarqueeStreamItemCell
@@ -59,8 +61,9 @@ static const CGSize kShadowOffset = { 0.0f, 2.0f };
     if ( streamItem != nil )
     {
         self.marqueeCaptionView.marqueeItem = streamItem;
-        NSTextAlignment alignment = self.marqueeCaptionView.hasHeadline ? NSTextAlignmentCenter : NSTextAlignmentLeft;
-        [self.marqueeCaptionView.captionLabel setTextAlignment:alignment];
+        BOOL hasHeadline = self.marqueeCaptionView.hasHeadline;
+        self.centerLabelConstraint.active = hasHeadline;
+        self.marqueeCaptionView.captionLabel.textAlignment = hasHeadline ? NSTextAlignmentCenter : NSTextAlignmentLeft;
         [self updateGradientLayer];
     }
 }

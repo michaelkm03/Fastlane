@@ -72,7 +72,7 @@ static const CGFloat kVisibilitySpan = 1.9f;
         [self.imageViewContainers addObject:imageViewContainer];
     }
     
-    self.offset = self.offset;
+    [self refresh];
 }
 
 - (void)reset

@@ -27,11 +27,6 @@
 - (void)setMarqueeItem:(VStreamItem *)marqueeItem
 {
     BOOL firstItem = self.marqueeItem == nil;
-    if ( [_marqueeItem isEqual:marqueeItem] )
-    {
-        //No need to update
-        return;
-    }
     _marqueeItem = marqueeItem;
 
     BOOL hasHeadline = marqueeItem.headline != nil;
@@ -53,6 +48,7 @@
     
     _hasHeadline = hasHeadline;
     [self updateDividerConstraints];
+    [self updateFont];
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager

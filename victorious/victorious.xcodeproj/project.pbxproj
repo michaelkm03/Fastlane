@@ -6438,12 +6438,12 @@
 		F04DC6CB1ACA4AEC00FBCD50 /* CrossFadingViews */ = {
 			isa = PBXGroup;
 			children = (
+				F0411E821B4AE5D300557176 /* VAbstractCrossFadingView.h */,
+				F0411E831B4AE5D300557176 /* VAbstractCrossFadingView.m */,
 				F04DC6B81AC724E500FBCD50 /* VCrossFadingImageView.h */,
 				F04DC6B91AC724E500FBCD50 /* VCrossFadingImageView.m */,
 				F0411E8B1B4B1B9D00557176 /* VCrossFadingMarqueeLabel.h */,
 				F0411E8C1B4B1B9D00557176 /* VCrossFadingMarqueeLabel.m */,
-				F0411E821B4AE5D300557176 /* VAbstractCrossFadingView.h */,
-				F0411E831B4AE5D300557176 /* VAbstractCrossFadingView.m */,
 				F0ADB0661AD367970069DF0D /* VImageViewContainer.h */,
 				F0ADB0671AD367970069DF0D /* VImageViewContainer.m */,
 			);
@@ -6516,6 +6516,7 @@
 			isa = PBXGroup;
 			children = (
 				F04DC6CB1ACA4AEC00FBCD50 /* CrossFadingViews */,
+				F0411E8E1B4B20A500557176 /* VBlurredMarqueeCaptionView.xib */,
 				F089E3571AC486170076DC4D /* VBlurredMarqueeCollectionViewCell.h */,
 				F089E3581AC486170076DC4D /* VBlurredMarqueeCollectionViewCell.m */,
 				F089E3611AC486A60076DC4D /* VBlurredMarqueeCollectionViewCell.xib */,
@@ -6523,7 +6524,6 @@
 				F04DC6C91AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m */,
 				F089E35B1AC4863F0076DC4D /* VBlurredMarqueeController.h */,
 				F089E35C1AC4863F0076DC4D /* VBlurredMarqueeController.m */,
-				F0411E8E1B4B20A500557176 /* VBlurredMarqueeCaptionView.xib */,
 				F089E35E1AC486620076DC4D /* VBlurredMarqueeStreamItemCell.h */,
 				F089E35F1AC486620076DC4D /* VBlurredMarqueeStreamItemCell.m */,
 				F089E3631AC486B40076DC4D /* VBlurredMarqueeStreamItemCell.xib */,

@@ -45,6 +45,15 @@ static const CGFloat kShadowOpacity = 0.4f;
     self.previewContainerBottomConstraint.constant = kLabelHeight + kLabelBottomConstraintHeight;
 }
 
+- (void)setBounds:(CGRect)bounds
+{
+    [super setBounds:bounds];
+    
+    //Update the shadow path around the preview container
+    CGPathRef shadowPath = [[UIBezierPath bezierPathWithRect:self.previewContainer.bounds] CGPath];
+    [self.previewContainer.layer setShadowPath:shadowPath];
+}
+
 - (void)updateToPreviewView:(VStreamItemPreviewView *)previewView
 {
     if ( previewView == nil )
