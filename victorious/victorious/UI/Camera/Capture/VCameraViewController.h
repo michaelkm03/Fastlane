@@ -66,6 +66,11 @@ typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NS
 @property (nonatomic, assign, getter=isToolBarHidden) BOOL toolbarHidden;
 
 /**
+ *  Call this to hide the search and album buttons.
+ */
+- (void)hideSearchAndAlbumButtons;
+
+/**
  *  An animated version of the toolsHidden setter.
  */
 - (void)setToolbarHidden:(BOOL)toolbarHidden

@@ -94,6 +94,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 @property (nonatomic) BOOL allowVideo; ///< THIS property specifies whether we SHOULD allow video (according to the wishes of the calling class)
 @property (nonatomic) BOOL videoEnabled; ///< THIS property specifies whether we CAN allow video (according to device restrictions)
 @property (nonatomic) BOOL allowPhotos;
+@property (nonatomic) BOOL disableSearchAndGallery;
 
 @property (nonatomic, readwrite) BOOL didSelectAssetFromLibrary;
 @property (nonatomic, readwrite) BOOL didSelectFromWebSearch;
@@ -181,6 +182,11 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if (self.disableSearchAndGallery)
+    {
+        [self hideSearchAndAlbumButtons];
+    }
     
     [self.closeButton setImage:[self.dependencyManager imageForKey:kCloseIconKey] forState:UIControlStateNormal];
     [self.switchCameraButton setImage:[self.dependencyManager imageForKey:kReverseCameraIconKey] forState:UIControlStateNormal];
@@ -459,6 +465,18 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     };
     
     return startCapture;
+}
+
+#pragma mark - Public Methods
+
+- (void)hideSearchAndAlbumButtons
+{
+    self.disableSearchAndGallery = YES;
+    
+    self.openAlbumButton.hidden = YES;
+    self.openAlbumButton = nil;
+    self.searchButton.hidden = YES;
+    self.searchButton = nil;
 }
 
 #pragma mark - Property Accessors
