@@ -10,7 +10,6 @@
 #import "VConstants.h"
 #import "VDataCache.h"
 #import "VBulkDownloadOperation.h"
-#import "VRunBlockOperation.h"
 #import "VTemplateDownloadOperation.h"
 #import "VTemplatePackageManager.h"
 #import "VTemplateSerialization.h"
@@ -26,7 +25,7 @@
 @property (nonatomic) BOOL delegateNotified;
 @property (nonatomic) BOOL templateDownloaded;
 @property (nonatomic, strong) VBulkDownloadOperation *bulkDownloadOperation;
-@property (nonatomic, strong) VRunBlockOperation *saveTemplateOperation;
+@property (nonatomic, strong) NSBlockOperation *saveTemplateOperation;
 
 @end
 
@@ -138,14 +137,11 @@ static const NSTimeInterval kDefaultImageDownloadTimeout = 15.0;
                 __strong typeof(weakSelf) strongSelf = weakSelf;
                 if ( strongSelf != nil )
                 {
-                    dispatch_async(strongSelf.privateQueue, ^(void)
+                    if ( !strongSelf.isCancelled )
                     {
-                        if ( !strongSelf.isCancelled )
-                        {
-                            [strongSelf.dataCache cacheData:data forID:strongSelf.templateConfigurationCacheID error:nil];
-                            [strongSelf notifyDelegateWithTemplateConfiguration:configuration];
-                        }
-                    });
+                        [strongSelf.dataCache cacheData:data forID:strongSelf.templateConfigurationCacheID error:nil];
+                        [strongSelf notifyDelegateWithTemplateConfiguration:configuration];
+                    }
                 }
             };
             
@@ -161,9 +157,14 @@ static const NSTimeInterval kDefaultImageDownloadTimeout = 15.0;
             self.bulkDownloadOperation = [[VBulkDownloadOperation alloc] initWithURLs:missingURLs completion:[self downloadOperationCompletion]];
             self.bulkDownloadOperation.shouldRetry = self.shouldRetry;
             
-            self.saveTemplateOperation = [[VRunBlockOperation alloc] init];
-            self.saveTemplateOperation.block = saveTemplateToDiskAndNotifyDelegate;
-            self.saveTemplateOperation.queue = self.privateQueue;
+            self.saveTemplateOperation = [NSBlockOperation blockOperationWithBlock:^(void)
+            {
+                __strong typeof(weakSelf) strongSelf = weakSelf;
+                if ( strongSelf != nil )
+                {
+                    dispatch_sync(strongSelf.privateQueue, saveTemplateToDiskAndNotifyDelegate);
+                }
+            }];
             [self.saveTemplateOperation addDependency:self.bulkDownloadOperation];
             
             [self.delegate templateDownloadOperation:self needsAnOperationAddedToTheQueue:self.bulkDownloadOperation];
