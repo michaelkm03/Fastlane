@@ -89,7 +89,7 @@
     {
         _sequence = sequence;
         
-        _streamId = streamId;
+        _streamId = streamId ?: @"";
         
         _dependencyManager = dependencyManager;
         
@@ -291,7 +291,8 @@
         self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
                                                                     withAdSystem:VMonetizationPartnerNone
                                                                      withDetails:nil
-                                                                        withLoop:[self loop]];
+                                                                        withLoop:[self loop]
+                                                                    withStreamID:self.streamId];
         return;
     }
 #endif
@@ -303,14 +304,16 @@
         self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
                                                                     withAdSystem:self.monetizationPartner
                                                                      withDetails:self.monetizationDetails
-                                                                        withLoop:[self loop]];
+                                                                        withLoop:[self loop]
+                                                                    withStreamID:self.streamId];
     }
     else
     {
         self.videoViewModel = [VVideoCellViewModel videoCellViewModelWithItemURL:[self videoURL]
                                                                     withAdSystem:VMonetizationPartnerNone
                                                                      withDetails:nil
-                                                                        withLoop:[self loop]];
+                                                                        withLoop:[self loop]
+                                                                    withStreamID:self.streamId];
     }
     
     VEndCardModelBuilder *endCardBuilder = [[VEndCardModelBuilder alloc] initWithDependencyManager:self.dependencyManager];

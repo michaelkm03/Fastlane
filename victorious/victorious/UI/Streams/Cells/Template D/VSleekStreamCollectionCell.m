@@ -27,11 +27,11 @@
 // These values must match the constraint values in interface builder
 static const CGFloat kSleekCellHeaderHeight = 50.0f;
 static const CGFloat kSleekCellActionViewHeight = 48.0f;
-static const CGFloat kCountsTextViewHeight = 29.0f;
-static const CGFloat kHiddenCaptionsMarginTop = 10.0f;
 static const CGFloat kCaptionToPreviewVerticalSpacing = 7.0f;
 static const CGFloat kMaxCaptionTextViewHeight = 200.0f;
-static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
+static const CGFloat kCountsTextViewMinHeight = 29.0f;
+static const UIEdgeInsets kCaptionMargins = { 0.0f, 28.0f, 5.0f, 28.0f };
+static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
 
 @interface VSleekStreamCollectionCell () <VBackgroundContainer, CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate>
 
@@ -42,7 +42,6 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
 @property (nonatomic, weak) IBOutlet VSleekActionView *sleekActionView;
 @property (nonatomic, weak) IBOutlet VStreamHeaderTimeSince *headerView;
 @property (nonatomic, weak) IBOutlet VHashTagTextView *captionTextView;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomSpaceCaptionToPreview;
 @property (nonatomic, weak ) IBOutlet NSLayoutConstraint *previewContainerHeightConstraint;
 @property (nonatomic, weak ) IBOutlet NSLayoutConstraint *captionHeight;
 @property (nonatomic, strong) UIView *dimmingContainer;
@@ -59,7 +58,7 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
     [super awakeFromNib];
     
     self.previewContainer.clipsToBounds = YES;
-    self.captionTextView.textContainerInset = UIEdgeInsetsZero;
+    self.captionTextView.textContainerInset = kCaptionInsets;
     self.captionTextView.linkDelegate = self;
     [self setupDimmingContainer];
     
@@ -76,16 +75,21 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
              VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
-             VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
-             NSDictionary *attributes = [self sequenceDescriptionAttributesWithDependencyManager:dependencyManager];
              CGFloat textHeight = 0.0f;
              if ( sequence.name.length > 0 )
              {
+                 VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
+                 NSDictionary *attributes = [self sequenceDescriptionAttributesWithDependencyManager:dependencyManager];
                  CGFloat textWidth = size.width - kCaptionMargins.left - kCaptionMargins.right;
                  textHeight = VCEIL( [sequence.name frameSizeForWidth:textWidth andAttributes:attributes].height );
-                 textHeight += kCaptionToPreviewVerticalSpacing;
+                 textHeight += kCaptionInsets.top + kCaptionInsets.bottom;
              }
              return CGSizeMake( 0.0f, textHeight );
+         }];
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
+         {
+            VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
+            return CGSizeMake( 0.0f, sequence.name.length > 0 ? kCaptionToPreviewVerticalSpacing : 0.0f );
          }];
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
@@ -93,8 +97,18 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
              CGFloat previewHeight =  size.width  / [sequence previewAssetAspectRatio];
              return CGSizeMake( 0.0f, previewHeight );
          }];
-        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kCountsTextViewHeight)];
         [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kSleekCellActionViewHeight)];
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
+         {
+             CGFloat textWidth = size.width - kCaptionMargins.left - kCaptionMargins.right;
+             VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
+             NSDictionary *attributes = [[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager];
+             
+             // FIXME: The use of "V" is just to get a good size for *something* in this text field since
+             // we can't know what the actual text for the label is in a static method
+             return CGSizeMake( 0.0f, MAX( kCountsTextViewMinHeight, [@"V" frameSizeForWidth:textWidth andAttributes:attributes].height ) );
+         }];
+        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kCaptionMargins.bottom)];
     }
     return collection;
 }
@@ -137,14 +151,27 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
     {
         [self.headerView setDependencyManager:dependencyManager];
     }
-    if ([self.countsTextView respondsToSelector:@selector(setDependencyManager:)])
-    {
-        [self.countsTextView setDependencyManager:dependencyManager];
-    }
     if ([self.captionTextView respondsToSelector:@selector(setDependencyManager:)])
     {
         [self.captionTextView setDependencyManager:dependencyManager];
     }
+    
+    [self.countsTextView setTextHighlightAttributes:[[self class] sequenceCountsActiveAttributesWithDependencyManager:dependencyManager]];
+    [self.countsTextView setTextAttributes:[[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager]];
+}
+
++ (NSDictionary *)sequenceCountsActiveAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    UIFont *font = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+    UIColor *textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    return @{ NSFontAttributeName: font, NSForegroundColorAttributeName: textColor };
+}
+
++ (NSDictionary *)sequenceCountsAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    UIFont *font = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+    UIColor *textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    return @{ NSFontAttributeName: font, NSForegroundColorAttributeName: textColor };
 }
 
 #pragma mark - Property Accessors
@@ -171,7 +198,10 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
 
 - (void)updateCountsTextViewForSequence:(VSequence *)sequence
 {
+    const BOOL canLike = [self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue;
+        
     self.countsTextView.hideComments = !sequence.permissions.canComment;
+    self.countsTextView.hideLikes = !canLike;
     [self.countsTextView setCommentsCount:sequence.commentCount.integerValue];
     [self.countsTextView setLikesCount:sequence.likeCount.integerValue];
 }
@@ -237,13 +267,11 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
         self.captionTextView.attributedText = nil;
         self.captionHeight.constant = 0.0f;
         self.captiontoPreviewVerticalSpacing.constant = 0.0f;
-        self.bottomSpaceCaptionToPreview.constant = -kHiddenCaptionsMarginTop;
     }
     else
     {
         self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
                                                                               attributes:[VSleekStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
-        self.bottomSpaceCaptionToPreview.constant = 0.0f;
         self.captiontoPreviewVerticalSpacing.constant = kCaptionToPreviewVerticalSpacing;
         self.captionHeight.constant = kMaxCaptionTextViewHeight;
     }
@@ -266,17 +294,20 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 45.0f, 5.0f, 10.0f };
 
 + (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem
                             baseIdentifier:(NSString *)baseIdentifier
+                         dependencyManager:(VDependencyManager *)dependencyManager
 {
     NSString *identifier = baseIdentifier == nil ? [[NSString alloc] init] : baseIdentifier;
     identifier = [NSString stringWithFormat:@"%@.%@", identifier, NSStringFromClass(self)];
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
         identifier = [VSequencePreviewView reuseIdentifierForSequence:(VSequence *)streamItem
-                                                       baseIdentifier:identifier];
+                                                       baseIdentifier:identifier
+                                                    dependencyManager:dependencyManager];
     }
     
     return [VSleekActionView reuseIdentifierForStreamItem:streamItem
-                                           baseIdentifier:identifier];
+                                           baseIdentifier:identifier
+                                        dependencyManager:dependencyManager];
 }
 
 #pragma mark - Class Methods

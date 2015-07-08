@@ -23,6 +23,7 @@
 // Dependencies
 #import "VDependencyManager.h"
 #import "VDependencyManager+VBackgroundContainer.h"
+#import "VDependencyManager+VTracking.h"
 
 @import CoreText;
 
@@ -61,6 +62,20 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 }
 
 #pragma mark - View Lifecycle
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.dependencyManager trackViewWillAppear:self];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [self.dependencyManager trackViewWillDisappear:self];
+}
 
 - (void)viewDidLoad
 {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -20,24 +20,6 @@
                             <constraint firstAttribute="width" constant="32" id="uAQ-LJ-JAY"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ymj-O6-dqo" userLabel="Profile Name">
-                        <rect key="frame" x="67" y="3" width="183" height="21"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="21" id="qTJ-C9-ipN"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KtK-am-7LX" userLabel="Profile Location">
-                        <rect key="frame" x="66" y="25" width="184" height="21"/>
-                        <constraints>
-                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="21" id="kes-3h-mZe"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <view contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="Jms-c7-tBR" customClass="VFollowUserControl">
                         <rect key="frame" x="258" y="12" width="42" height="26"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -56,31 +38,32 @@
                             <constraint firstAttribute="height" constant="1" id="x7s-xv-MJJ"/>
                         </constraints>
                     </view>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ymj-O6-dqo" userLabel="Profile Name">
+                        <rect key="frame" x="67" y="9" width="183" height="32"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="1td-aP-Spn" secondAttribute="trailing" id="1d6-Tf-efh"/>
-                <constraint firstItem="KtK-am-7LX" firstAttribute="leading" secondItem="P8a-7j-45E" secondAttribute="trailing" constant="14" id="1y0-kB-sgp"/>
                 <constraint firstAttribute="centerY" secondItem="P8a-7j-45E" secondAttribute="centerY" constant="0.5" id="7Ef-ga-WuP"/>
-                <constraint firstItem="KtK-am-7LX" firstAttribute="top" secondItem="ymj-O6-dqo" secondAttribute="bottom" constant="1" id="GWM-9Y-USy"/>
-                <constraint firstItem="ymj-O6-dqo" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="3" id="LUF-cf-Y2M"/>
+                <constraint firstItem="P8a-7j-45E" firstAttribute="centerY" secondItem="Jms-c7-tBR" secondAttribute="centerY" id="98X-nM-zGt"/>
                 <constraint firstItem="P8a-7j-45E" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="20" id="McX-tb-ERK"/>
                 <constraint firstAttribute="bottom" secondItem="1td-aP-Spn" secondAttribute="bottom" constant="1" id="QPy-s5-GFa"/>
-                <constraint firstItem="Jms-c7-tBR" firstAttribute="leading" secondItem="KtK-am-7LX" secondAttribute="trailing" constant="8" id="UcC-ej-sBE"/>
                 <constraint firstItem="Jms-c7-tBR" firstAttribute="leading" secondItem="ymj-O6-dqo" secondAttribute="trailing" constant="8" id="W05-5H-9cG"/>
                 <constraint firstAttribute="trailing" secondItem="Jms-c7-tBR" secondAttribute="trailing" constant="20" id="Zwg-3P-ugW"/>
-                <constraint firstItem="P8a-7j-45E" firstAttribute="width" secondItem="P8a-7j-45E" secondAttribute="height" multiplier="1:1" id="lcm-qr-4qJ"/>
+                <constraint firstItem="P8a-7j-45E" firstAttribute="height" secondItem="ymj-O6-dqo" secondAttribute="height" id="nQg-p4-CFL"/>
                 <constraint firstItem="1td-aP-Spn" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="q6e-vl-SVo"/>
-                <constraint firstAttribute="centerY" secondItem="Jms-c7-tBR" secondAttribute="centerY" constant="0.5" id="qXL-08-Q5n"/>
                 <constraint firstItem="ymj-O6-dqo" firstAttribute="leading" secondItem="P8a-7j-45E" secondAttribute="trailing" constant="15" id="tSd-Cf-QpD"/>
-                <constraint firstAttribute="bottom" secondItem="KtK-am-7LX" secondAttribute="bottom" constant="5" id="wig-y1-0Jw"/>
+                <constraint firstItem="P8a-7j-45E" firstAttribute="centerY" secondItem="ymj-O6-dqo" secondAttribute="centerY" id="vV8-na-at0"/>
             </constraints>
             <connections>
                 <outlet property="followControl" destination="Jms-c7-tBR" id="gaa-Yw-eJq"/>
                 <outlet property="userImageView" destination="P8a-7j-45E" id="AHn-NU-kJj"/>
-                <outlet property="userLocation" destination="KtK-am-7LX" id="fa5-Lm-Jp1"/>
                 <outlet property="userName" destination="ymj-O6-dqo" id="WHD-V0-5w1"/>
             </connections>
         </collectionViewCell>

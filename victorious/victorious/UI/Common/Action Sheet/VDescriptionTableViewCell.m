@@ -44,7 +44,7 @@ static const UIEdgeInsets kTextInsets        = { 12.0f, 30.0f, 13.0f, 30.0f};
 {
     [super awakeFromNib];
     
-    self.descriptionTextView.textContainerInset = UIEdgeInsetsZero;
+    self.descriptionTextView.textContainerInset = UIEdgeInsetsMake( 4.0, 0.0, 4.0, 0.0 );
     self.descriptionTextView.delegate = self;
     self.descriptionTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
 }

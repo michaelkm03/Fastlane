@@ -23,6 +23,11 @@ NSString * const VDependencyManagerProfileEditButtonStylePill = @"rounded";
 - (VUserProfileViewController *)userProfileViewControllerWithUser:(VUser *)user
 {
     NSAssert( user != nil, @"Cannot create a VUserProfileViewController with a nil `user` parameter." );
+    // The assert is compiled out in staging+ so we shoudl still bail out if user is nil.
+    if (user == nil)
+    {
+        return nil;
+    }
     return [self templateValueOfType:[VUserProfileViewController class] forKey:VDependencyManagerUserProfileViewComponentKey
                withAddedDependencies:@{ VDependencyManagerUserKey: user }];
 }

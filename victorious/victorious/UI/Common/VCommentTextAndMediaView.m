@@ -55,7 +55,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
     self.textView.editable = NO;
     self.textView.scrollEnabled = NO;
     self.textView.userInteractionEnabled = YES;
-    self.textView.textContainerInset = UIEdgeInsetsZero;
+    self.textView.textContainerInset = UIEdgeInsetsMake( 4.0, 0.0, 4.0, 0.0 );
     self.textView.textContainer.lineFragmentPadding = 0.0f;
     self.textView.dataDetectorTypes = UIDataDetectorTypeLink;
     self.textView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
@@ -76,7 +76,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
     [self addSubview:mediaThumbnailView];
     self.mediaThumbnailView = mediaThumbnailView;
     
-    UIImageView *playIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Play"]];
+    UIImageView *playIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlayIcon"]];
     playIcon.translatesAutoresizingMaskIntoConstraints = NO;
     playIcon.hidden = YES;
     [self addSubview:playIcon];

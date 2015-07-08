@@ -7,12 +7,14 @@
 //
 
 #import "VModernResetPasswordViewController.h"
+#import "VDependencyManager+VTracking.h"
 
 // Views + Helpers
 #import "VLoginFlowControllerDelegate.h"
 #import "VPasswordValidator.h"
 #import "VInlineValidationTextField.h"
 #import "UIColor+VBrightness.h"
+#import "UIAlertController+VSimpleAlert.h"
 
 // Dependencies
 #import "VDependencyManager.h"
@@ -128,7 +130,24 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 {
     [super viewWillAppear:animated];
     
+    [self.dependencyManager trackViewWillAppear:self];
+    
+    [self.delegate configureFlowNavigationItemWithScreen:self];
     [self.passwordTextField becomeFirstResponder];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [self.dependencyManager trackViewWillDisappear:self];
+}
+
+#pragma mark - VLoginFlowScreen
+
+- (void)onContinue:(id)sender
+{
+    [self changePassword];
 }
 
 #pragma mark - VBackgroundContainer
@@ -177,7 +196,24 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 {
     if ([self shouldChangePassword])
     {
-        [self.delegate updateWithNewPassword:self.passwordTextField.text];
+        [self.delegate updateWithNewPassword:self.passwordTextField.text
+                                  completion:^(BOOL success)
+        {
+            if (success)
+            {
+                [self.delegate onAuthenticationFinished];
+            }
+            else
+            {
+                UIAlertController *alert = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"ResetPasswordErrorFailTitle", nil)
+                                                                                     message:NSLocalizedString(@"ResetPasswordErrorFailMessage", nil)
+                                                                        andCancelButtonTitle:NSLocalizedString(@"OK", nil)
+                                                                               cancelHandler:^(UIAlertAction *action) {
+                                                                                   [self.delegate returnToLandingScreen];
+                                                                               }];
+                [self presentViewController:alert animated:YES completion:nil];
+            }
+        }];
     }
 }
 

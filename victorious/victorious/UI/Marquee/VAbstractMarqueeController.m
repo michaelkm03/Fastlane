@@ -20,6 +20,8 @@
 #import "VURLMacroReplacement.h"
 #import "VDependencyManager+VHighlightContainer.h"
 #import "VStreamTrackingHelper.h"
+#import "VStreamCellFocus.h"
+#import "VStreamItemPreviewView.h"
 
 static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kSequenceIDKey = @"sequenceID";
@@ -29,6 +31,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 @interface VAbstractMarqueeController ()
 
 @property (nonatomic, readwrite) NSUInteger currentPage;
+@property (nonatomic, assign) NSUInteger currentFocusPage;
 @property (nonatomic, readwrite) VTimerManager *autoScrollTimerManager;
 @property (nonatomic, readwrite) VStreamItem *currentStreamItem;
 @property (nonatomic, strong) NSMutableSet *registeredReuseIdentifiers;
@@ -111,7 +114,32 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
         }
     }
     
+    [self updateFocus];
+    
     [self updateCellVisibilityTracking];
+}
+
+- (void)updateFocus
+{
+    //Update the focus of preview views that conform to VStreamCellFocus
+    CGFloat pageWidth = self.collectionView.frame.size.width;
+    NSInteger currentFocusPage = ( self.collectionView.contentOffset.x + pageWidth / 2 ) / pageWidth;
+    currentFocusPage = MIN( currentFocusPage, (NSInteger)self.stream.marqueeItems.count - 1 );
+    currentFocusPage = MAX( currentFocusPage, 0 );
+
+    if ( (NSUInteger)currentFocusPage != self.currentFocusPage )
+    {
+        self.currentFocusPage = currentFocusPage;
+        VStreamItem *focusedStreamItem = self.stream.marqueeItems[currentFocusPage];
+        for ( VAbstractMarqueeStreamItemCell *cell in self.collectionView.visibleCells )
+        {
+            if ( [cell.previewView conformsToProtocol:@protocol(VStreamCellFocus)] )
+            {
+                BOOL hasFocus = [focusedStreamItem isEqual:cell.streamItem];
+                [(VStreamItemPreviewView <VStreamCellFocus> *)cell.previewView setHasFocus:hasFocus];
+            }
+        }
+    }
 }
 
 - (void)selectNextTab
@@ -226,7 +254,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     Class marqueeStreamItemCellClass = [[self class] marqueeStreamItemCellClass];
     NSAssert([marqueeStreamItemCellClass isSubclassOfClass:[VAbstractMarqueeStreamItemCell class]], @"Class returned from marqueeStreamItemCellClass must be a subclass of VAbstractMarqueeStreamItemCell");
 
-    NSString *reuseIdentifierForSequence = [marqueeStreamItemCellClass reuseIdentifierForStreamItem:item baseIdentifier:nil];
+    NSString *reuseIdentifierForSequence = [marqueeStreamItemCellClass reuseIdentifierForStreamItem:item baseIdentifier:nil dependencyManager:self.dependencyManager];
     
     if (![self.registeredReuseIdentifiers containsObject:reuseIdentifierForSequence])
     {
@@ -235,7 +263,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
         [self.registeredReuseIdentifiers addObject:reuseIdentifierForSequence];
     }
     
-    cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[marqueeStreamItemCellClass reuseIdentifierForStreamItem:item baseIdentifier:nil] forIndexPath:indexPath];
+    cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[marqueeStreamItemCellClass reuseIdentifierForStreamItem:item baseIdentifier:nil dependencyManager:self.dependencyManager] forIndexPath:indexPath];
     cell.dependencyManager = self.dependencyManager;
     cell.streamItem = item;
     
@@ -275,7 +303,8 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     for (VStreamItem *marqueeItem in marqueeItems)
     {
         NSString *reuseIdentifierForSequence = [marqueeStreamItemCellClass reuseIdentifierForStreamItem:marqueeItem
-                                                                                         baseIdentifier:nil];
+                                                                                         baseIdentifier:nil
+                                                                                      dependencyManager:self.dependencyManager];
         
         if (![self.registeredReuseIdentifiers containsObject:reuseIdentifierForSequence])
         {

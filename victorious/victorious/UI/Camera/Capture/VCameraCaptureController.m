@@ -10,6 +10,7 @@
 #import "VCameraCaptureController.h"
 #import "VCameraVideoEncoder.h"
 #import "VConstants.h"
+#import "VWorkspaceFlowController.h"
 
 @import AVFoundation;
 
@@ -142,6 +143,17 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 
 - (void)startRunningWithVideoEnabled:(BOOL)videoEnabled andCompletion:(void (^)(NSError *))completion
 {
+    if ((self.context ==  VWorkspaceFlowControllerContextProfileImage ) || (self.context == VWorkspaceFlowControllerContextProfileImageRegistration ))
+    {
+        for (AVCaptureDevice *device in self.devices)
+        {
+            if (([device position] == AVCaptureDevicePositionFront) && [device hasMediaType:AVMediaTypeVideo])
+            {
+                self.currentDevice = device;
+            }
+        }
+    }
+    
     dispatch_async(self.sessionQueue, ^(void)
     {
         if (self.captureSession.isRunning)
@@ -268,7 +280,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
         typeof(self) __weak weakSelf = self;
         self.backgroundTaskID = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void)
         {
-            typeof(weakSelf) strongSelf = weakSelf;
+            __strong typeof(weakSelf) strongSelf = weakSelf;
             if (strongSelf)
             {
                 dispatch_sync(self.sessionQueue, ^(void)

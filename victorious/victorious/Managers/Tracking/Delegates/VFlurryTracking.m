@@ -11,12 +11,13 @@
 
 #define FLURRY_TRACKING_LOGGING_ENABLED 0
 
-#if DEBUG && FLURRY_TRACKING_LOGGING_ENABLED
+#if FLURRY_TRACKING_LOGGING_ENABLED
 #warning Tracking logging is enabled. Please remember to disable it when you're done debugging.
 #endif
 
 @interface VFlurryTracking()
 
+@property (nonatomic, readwrite) BOOL enabled;
 @property (nonatomic, readonly) NSString *appVersionString;
 @property (nonatomic, readonly) NSString *apiKey;
 
@@ -24,26 +25,16 @@
 
 @implementation VFlurryTracking
 
-- (instancetype)init
+- (void)enable
 {
-    self = [super init];
-    if (self)
+    NSString *appVersion = self.appVersionString;
+    NSString *apiKey = self.apiKey;
+    if ( appVersion != nil && apiKey != nil )
     {
-        NSString *apiKey = self.apiKey;
-        if ( apiKey != nil )
-        {
-            NSString *appVersion = self.appVersionString;
-            if ( appVersion != nil )
-            {
-                // Call this before startSession:
-                [Flurry setAppVersion:appVersion];
-            };
-            
-            [Flurry startSession:apiKey];
-            _enabled = YES;
-        }
+        [Flurry setAppVersion:appVersion];
+        [Flurry startSession:apiKey];
+        self.enabled = YES;
     }
-    return self;
 }
 
 - (NSString *)appVersionString
@@ -97,7 +88,7 @@
     NSDictionary *filteredParameters = [self filteredDictionaryExcludingKeys:self.unwantedParameterKeys fromDictionary:parameters];
     [Flurry logEvent:eventName withParameters:filteredParameters];
     
-#if DEBUG && FLURRY_TRACKING_LOGGING_ENABLED
+#if FLURRY_TRACKING_LOGGING_ENABLED
     NSString *params = @"";
     for ( NSString *key in filteredParameters )
     {

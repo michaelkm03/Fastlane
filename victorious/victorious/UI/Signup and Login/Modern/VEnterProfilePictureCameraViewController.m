@@ -17,19 +17,14 @@
 // Dependencies
 #import "VDependencyManager.h"
 #import "VDependencyManager+VWorkspace.h"
+#import "VDependencyManager+VLoginAndRegistration.h"
+#import "VDependencyManager+VBackgroundContainer.h"
 
 // Camera + Workspace
 #import "VWorkspaceFlowController.h"
 #import "VImageToolController.h"
 #import "VPermissionCamera.h"
-
-#import "VDependencyManager+VBackgroundContainer.h"
-
-static NSString * const kScreenPromptKey                    = @"prompt";
-static NSString * const kScreenSuccessMessageKey            = @"screenSuccessMessage";
-static NSString * const kButtonPromptKey                    = @"buttonPrompt";
-static NSString * const kButtonSuccessMessageKey            = @"buttonSuccessMessage";
-static NSString * const kShouldRequestCameraPermissionsKey  = @"shouldAskCameraPermissions";
+#import "VDependencyManager+VTracking.h"
 
 @interface VEnterProfilePictureCameraViewController () <VWorkspaceFlowControllerDelegate, VBackgroundContainer, VLoginFlowScreen>
 
@@ -58,6 +53,20 @@ static NSString * const kShouldRequestCameraPermissionsKey  = @"shouldAskCameraP
 
 #pragma mark - View Lifecycle
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.dependencyManager trackViewWillAppear:self];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [self.dependencyManager trackViewWillDisappear:self];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -69,10 +78,10 @@ static NSString * const kShouldRequestCameraPermissionsKey  = @"shouldAskCameraP
     self.avatarButton.imageView.image = [self.avatarButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.avatarButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     
-    NSString *prompt = [self.dependencyManager stringForKey:kScreenPromptKey] ?: @"";
+    NSString *prompt = [self.dependencyManager stringForKey:VScreenPromptKey] ?: @"";
     [self setScreenPrompt:prompt];
     
-    NSString *buttonPrompt = [self.dependencyManager stringForKey:kButtonPromptKey] ?: @"";
+    NSString *buttonPrompt = [self.dependencyManager stringForKey:VButtonPromptKey] ?: @"";
     [self setButtonPrompt:buttonPrompt];
     
     self.avatarButton.layer.cornerRadius = CGRectGetHeight(self.avatarButton.bounds) / 2;
@@ -84,6 +93,12 @@ static NSString * const kShouldRequestCameraPermissionsKey  = @"shouldAskCameraP
 #pragma mark - VLoginFlowScreen
 
 @synthesize delegate = _delegate;
+
+- (BOOL)displaysAfterSocialRegistration
+{
+    NSNumber *value = [self.dependencyManager numberForKey:VDisplayWithSocialRegistration];
+    return value.boolValue;
+}
 
 - (void)onContinue:(id)sender
 {
@@ -152,13 +167,13 @@ static NSString * const kShouldRequestCameraPermissionsKey  = @"shouldAskCameraP
          [flowController setProfilePictureFilePath:capturedMediaURL];
          [self.avatarButton setImage:previewImage forState:UIControlStateNormal];
          
-         NSString *screenSuccessMessage = [self.dependencyManager stringForKey:kScreenSuccessMessageKey];
+         NSString *screenSuccessMessage = [self.dependencyManager stringForKey:VScreenSuccessMessageKey];
          if (screenSuccessMessage != nil)
          {
              [self setScreenPrompt:screenSuccessMessage];
          }
          
-         NSString *buttonSuccessMessage = [self.dependencyManager stringForKey:kButtonSuccessMessageKey];
+         NSString *buttonSuccessMessage = [self.dependencyManager stringForKey:VButtonSuccessMessageKey];
          if (buttonSuccessMessage != nil)
          {
              [self setButtonPrompt:buttonSuccessMessage];
@@ -230,7 +245,7 @@ static NSString * const kShouldRequestCameraPermissionsKey  = @"shouldAskCameraP
 
 - (void)showCameraOnViewController:(UIViewController *)viewController
 {
-    BOOL shouldRequestPermissions = [self.dependencyManager numberForKey:kShouldRequestCameraPermissionsKey].boolValue;
+    BOOL shouldRequestPermissions = [self.dependencyManager numberForKey:VShouldRequestCameraPermissionsKey].boolValue;
 
     void (^showCamera)(void) = ^void(void)
     {

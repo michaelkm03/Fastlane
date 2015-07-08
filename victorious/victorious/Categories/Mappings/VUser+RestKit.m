@@ -19,23 +19,42 @@
 
 #pragma mark - RestKit
 
++ (NSDictionary *)attributePropertyMapping
+{
+    return @{ @"id" : VSelectorName(remoteId),
+              @"email" : VSelectorName(email),
+              @"profile_tagline" : VSelectorName(tagline),
+              @"profile_image" : VSelectorName(pictureUrl),
+              @"profile_location" : VSelectorName(location),
+              @"name" : VSelectorName(name),
+              @"token" : VSelectorName(token),
+              @"token_updated_at" : VSelectorName(tokenUpdatedAt),
+              @"is_direct_message_disabled" : VSelectorName(isDirectMessagingDisabled),
+              @"status" : VSelectorName(status),
+              @"am_following" : VSelectorName(isFollowedByMainUser),
+              @"number_of_followers" : VSelectorName(numberOfFollowers),
+    };
+}
+
++ (RKEntityMapping *)simpleMapping
+{
+    NSDictionary *propertyMap = [self attributePropertyMapping];
+    
+    RKEntityMapping *mapping = [RKEntityMapping
+                                mappingForEntityForName:[self entityName]
+                                inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
+    mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
+    [mapping addAttributeMappingsFromDictionary:propertyMap];
+    RKRelationshipMapping *previewAssetsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview.assets"
+                                                                                              toKeyPath:VSelectorName(previewAssets)
+                                                                                            withMapping:[VImageAsset entityMapping]];
+    [mapping addPropertyMapping:previewAssetsMapping];
+    return mapping;
+}
+
 + (RKEntityMapping *)entityMapping
 {
-    NSDictionary *propertyMap = @{
-                                  @"id" : VSelectorName(remoteId),
-                                  @"email" : VSelectorName(email),
-                                  @"profile_tagline" : VSelectorName(tagline),
-                                  @"profile_image" : VSelectorName(pictureUrl),
-                                  @"profile_location" : VSelectorName(location),
-                                  @"name" : VSelectorName(name),
-                                  @"token" : VSelectorName(token),
-                                  @"token_updated_at" : VSelectorName(tokenUpdatedAt),
-                                  @"is_direct_message_disabled" : VSelectorName(isDirectMessagingDisabled),
-                                  @"status" : VSelectorName(status),
-                                  @"am_following" : VSelectorName(isFollowedByMainUser),
-                                  @"number_of_followers" : VSelectorName(numberOfFollowers),
-                                  };
-    
+    NSDictionary *propertyMap = [self attributePropertyMapping];
 
     RKEntityMapping *mapping = [RKEntityMapping
                                 mappingForEntityForName:[self entityName]
@@ -53,7 +72,7 @@
     
     RKRelationshipMapping *recentSequencesMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"recent_sequences"
                                                                                               toKeyPath:VSelectorName(recentSequences)
-                                                                                            withMapping:[VSequence smallEntityMapping]];
+                                                                                            withMapping:[VSequence simpleMapping]];
     [mapping addPropertyMapping:recentSequencesMapping];
     
     [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"userId"}];
@@ -177,6 +196,12 @@
              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                           method:RKRequestMethodAny
                                                      pathPattern:@"/api/discover/users"
+                                                         keyPath:@"payload"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
+             [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                          method:RKRequestMethodAny
+                                                     pathPattern:@"/api/discover/suggested_users"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
              

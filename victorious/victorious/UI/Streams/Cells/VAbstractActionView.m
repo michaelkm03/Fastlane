@@ -60,6 +60,7 @@
     
     _sequence = sequence;
     
+    [self layoutIfNeeded];
     [self updateActionItemsOnBar:self.actionBar forSequence:_sequence];
     __weak typeof(self) welf = self;
     [self updateRepostButtonForSequence:_sequence];
@@ -75,7 +76,8 @@
 #pragma mark - VStreamCellSpecialization
 
 + (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem
-                            baseIdentifier:(NSString *)baseIdentifier
+                            baseIdentifier:(NSString *)baseIdentifie
+                         dependencyManager:(VDependencyManager *)dependencyManager
 {
     NSAssert(false, @"Implement in subclasses");
     return nil;
@@ -140,7 +142,7 @@
 
 - (void)like:(id)sender
 {
-    UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(willLikeSequence:completion:)
+    UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(willLikeSequence:withView:completion:)
                                                                      withSender:self];
     
     NSAssert( responder != nil , @"We need an object in the responder chain for liking.");
@@ -151,7 +153,7 @@
         button = sender;
         button.enabled = NO;
     }
-    [responder willLikeSequence:self.sequence completion:^(BOOL success)
+    [responder willLikeSequence:self.sequence withView:sender completion:^(BOOL success)
     {
         if ( button != nil )
         {

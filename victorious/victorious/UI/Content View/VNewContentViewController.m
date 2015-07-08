@@ -104,6 +104,7 @@
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VCoachmarkManager.h"
 #import "VSequenceExpressionsObserver.h"
+#import "VDependencyManager+VTracking.h"
 
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
@@ -492,6 +493,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 {
     [super viewWillAppear:animated];
     
+    [self.dependencyManager trackViewWillAppear:self];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardDidChangeFrame:)
                                                  name:UIKeyboardDidChangeFrameNotification
@@ -583,6 +586,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         self.hasBeenPresented = YES;
         
         NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
+                                  VTrackingKeyStreamId : self.viewModel.streamId,
                                   VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
                                   VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[] };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
@@ -594,12 +598,16 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [self.dependencyManager trackViewWillDisappear:self];
+    
     [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
     
     if ( self.videoCell != nil && !self.videoCell.didFinishPlayingOnce  )
     {
         Float64 currentTimeSeconds = CMTimeGetSeconds(self.videoCell.currentTime);
         NSDictionary *params = @{ VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStop,
+                                  VTrackingKeyStreamId : self.viewModel.streamId,
                                   VTrackingKeyTimeCurrent : @( (NSUInteger)(currentTimeSeconds * 1000) ) };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidStop parameters:params];
     }
@@ -753,7 +761,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (void)selectedLikeButton:(UIButton *)likeButton
 {
     likeButton.enabled = NO;
-    [self.sequenceActionController likeSequence:self.viewModel.sequence fromViewController:self completion:^(BOOL success)
+    [self.sequenceActionController likeSequence:self.viewModel.sequence fromViewController:self withActionView:likeButton completion:^(BOOL success)
      {
          likeButton.enabled = YES;
      }];
@@ -954,7 +962,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             UICollectionViewCell *cell = [self contentCellForCollectionView:collectionView atIndexPath:indexPath];
             if ( [cell isKindOfClass:[VContentCell class]] )
             {
-                [self configureLikeButtonWithContentCell:(VContentCell *)cell];
+                [self configureLikeButtonWithContentCell:(VContentCell *)cell forSequence:self.viewModel.sequence];
             }
             return cell;
         }
@@ -1191,9 +1199,12 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         {
             if (self.viewModel.type == VContentViewTypePoll)
             {
-                CGSize sizedBallot = [VContentPollBallotCell actualSizeWithAnswerA:[[NSAttributedString alloc] initWithString:self.viewModel.answerALabelText
+                NSString *answerAtext = self.viewModel.answerALabelText ?: @"";
+                NSString *answerBText = self.viewModel.answerBLabelText ?: @"";
+                
+                CGSize sizedBallot = [VContentPollBallotCell actualSizeWithAnswerA:[[NSAttributedString alloc] initWithString:answerAtext
                                                                                                                    attributes:@{NSFontAttributeName : [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]}]
-                                                                           answerB:[[NSAttributedString alloc] initWithString:self.viewModel.answerBLabelText
+                                                                           answerB:[[NSAttributedString alloc] initWithString:answerBText
                                                                                                                    attributes:@{NSFontAttributeName : [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey]}]
                                                                        maximumSize:CGSizeMake(CGRectGetWidth(collectionView.bounds), 100.0)];
                 return sizedBallot;
@@ -1285,13 +1296,16 @@ referenceSizeForHeaderInSection:(NSInteger)section
             self.videoCell = videoCell;
             self.contentCell = videoCell;
             __weak typeof(self) welf = self;
-            [self.videoCell setAnimateAlongsizePlayControlsBlock:^(BOOL playControlsHidden)
-             {
-                 const BOOL shouldHide = playControlsHidden && !welf.videoCell.isEndCardShowing;
-                 welf.moreButton.alpha = shouldHide ? 0.0f : 1.0f;
-                 welf.closeButton.alpha = shouldHide ? 0.0f : 1.0f;
-                 welf.likeButton.transform = playControlsHidden ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, -CGRectGetHeight(welf.likeButton.bounds));
-             }];
+            if ( !videoCell.playerControlsDisabled  )
+            {
+                [self.videoCell setAnimateAlongsizePlayControlsBlock:^(BOOL playControlsHidden)
+                 {
+                     const BOOL shouldHide = playControlsHidden && !welf.videoCell.isEndCardShowing;
+                     welf.moreButton.alpha = shouldHide ? 0.0f : 1.0f;
+                     welf.closeButton.alpha = shouldHide ? 0.0f : 1.0f;
+                     welf.likeButton.transform = playControlsHidden ? CGAffineTransformIdentity : CGAffineTransformMakeTranslation(0, -CGRectGetHeight(welf.likeButton.bounds));
+                 }];
+            }
             videoCell.endCardDelegate = self;
             videoCell.minSize = CGSizeMake( self.contentCell.minSize.width, VShrinkingContentLayoutMinimumContentHeight );
             return videoCell;
@@ -1398,6 +1412,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
         
         NSUInteger videoLoadTime = [[NSDate date] timeIntervalSinceDate:self.videoLoadedDate] * 1000;
         NSDictionary *params = @{ VTrackingKeyTimeStamp : [NSDate date],
+                                  VTrackingKeyStreamId : self.viewModel.streamId,
                                   VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
                                   VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[],
                                   VTrackingKeyLoadTime : @(videoLoadTime) };
@@ -1627,12 +1642,18 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
-- (void)configureLikeButtonWithContentCell:(VContentCell *)contentCell
+- (void)configureLikeButtonWithContentCell:(VContentCell *)contentCell forSequence:(VSequence *)sequence
 {
-    self.likeButton = contentCell.likeButton;
-    if ( self.likeButton != nil )
+    if ( contentCell.likeButton == nil )
     {
-        VSequence *sequence = self.viewModel.sequence;
+        return;
+    }
+    
+    if ( [self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue )
+    {
+        self.likeButton = contentCell.likeButton;
+        self.likeButton.hidden = NO;
+        
         [self.likeButton addTarget:self action:@selector(selectedLikeButton:) forControlEvents:UIControlEventTouchUpInside];
         
         self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
@@ -1645,6 +1666,10 @@ referenceSizeForHeaderInSection:(NSInteger)section
         {
             self.likeButton.alpha = 0.0f;
         }
+    }
+    else
+    {
+        contentCell.likeButton.hidden = YES;
     }
 }
 

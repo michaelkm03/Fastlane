@@ -17,7 +17,7 @@
 #import "VSequencePreviewView.h"
 #import "VHashTagTextView.h"
 #import "VPassthroughContainerView.h"
-#import "VStreamHeaderComment.h"
+#import "VStreamHeaderTimeSince.h"
 #import "VLinearGradientView.h"
 #import "VHashTagTextView.h"
 #import "VSequenceExpressionsObserver.h"
@@ -27,15 +27,14 @@
 #import "VCellSizeCollection.h"
 #import "VCellSizingUserInfoKeys.h"
 
-static const UIEdgeInsets kTextInsets       = { 0.0f, 20.0f, 5.0f, 20.0f };
-static const CGFloat kHeaderHeight          = 74.0f;
-static const CGFloat kGradientAlpha         = 0.3f;
-static const CGFloat kShadowAlpha           = 0.5f;
-static const CGFloat kPollCellHeightRatio   = 0.66875f; //< from spec, 214 height for 320 width
-static const CGFloat kMaxCaptionHeight      = 80.0f;
-static const CGFloat kButtonWidth           = 44.0f;
-static const CGFloat kButtonHeight          = 44.0f;
-static const CGFloat kCountsTextViewHeight  = 20.0f;
+static const UIEdgeInsets kTextInsets           = { 4.0f, 20.0f, 5.0f, 20.0f };
+static const CGFloat kHeaderHeight              = 74.0f;
+static const CGFloat kGradientAlpha             = 0.3f;
+static const CGFloat kShadowAlpha               = 0.5f;
+static const CGFloat kCountsTextViewMinHeight   = 80.0f;
+static const CGFloat kButtonWidth               = 44.0f;
+static const CGFloat kButtonHeight              = 44.0f;
+static const CGFloat kCountsTextViewHeight      = 20.0f;
 
 @interface VTileOverlayCollectionCell () <CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate>
 
@@ -47,7 +46,7 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
 @property (nonatomic, strong) VPassthroughContainerView *overlayContainer;
 @property (nonatomic, strong) VLinearGradientView *topGradient;
 @property (nonatomic, strong) VLinearGradientView *bottomGradient;
-@property (nonatomic, strong) VStreamHeaderComment *header;
+@property (nonatomic, strong) VStreamHeaderTimeSince *header;
 @property (nonatomic, strong) VHashTagTextView *captionTextView;
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 @property (nonatomic, strong) VActionButton *likeButton;
@@ -55,6 +54,8 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
 @property (nonatomic, strong) VSequenceCountsTextView *countsTextView;
 
 @property (nonatomic, strong) NSLayoutConstraint *captionHeight;
+@property (nonatomic, strong) NSLayoutConstraint *commentToLikeButtonHorizontalSpacing;
+@property (nonatomic, strong) NSLayoutConstraint *likeButtonWidth;
 
 @end
 
@@ -122,7 +123,7 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     [_bottomGradient setColors:@[ [UIColor clearColor], [UIColor blackColor]]];
     
     // Add the header
-    _header = [[VStreamHeaderComment alloc] initWithFrame:CGRectZero];
+    _header = [[VStreamHeaderTimeSince alloc] initWithFrame:CGRectZero];
     [_overlayContainer addSubview:_header];
     [_overlayContainer v_addPinToLeadingTrailingToSubview:_header];
     [_overlayContainer v_addPinToTopToSubview:_header];
@@ -156,7 +157,7 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     _captionTextView.backgroundColor = [UIColor clearColor];
     [_overlayContainer addSubview:_captionTextView];
     [_overlayContainer v_addPinToLeadingTrailingToSubview:_captionTextView];
-    _captionHeight = [NSLayoutConstraint constraintWithItem:_captionTextView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:kMaxCaptionHeight];
+    _captionHeight = [NSLayoutConstraint constraintWithItem:_captionTextView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:kCountsTextViewMinHeight];
     [_captionTextView addConstraint:_captionHeight];
     [_overlayContainer addConstraint:[NSLayoutConstraint constraintWithItem:_captionTextView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_countsTextView attribute:NSLayoutAttributeTop multiplier:1.0f constant:0.0f]];
     
@@ -169,6 +170,7 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     [_overlayContainer addSubview:_likeButton];
     _likeButton.translatesAutoresizingMaskIntoConstraints = NO;
     [_likeButton v_addWidthConstraint:kButtonWidth];
+    _likeButtonWidth = [_likeButton v_internalWidthConstraint];
     [_likeButton v_addHeightConstraint:kButtonHeight];
     [_overlayContainer addConstraint:[NSLayoutConstraint constraintWithItem:_likeButton attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_overlayContainer attribute:NSLayoutAttributeLeading multiplier:1.0 constant:12.0f]];
     [_overlayContainer addConstraint:[NSLayoutConstraint constraintWithItem:_likeButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_captionTextView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0f]];
@@ -191,11 +193,6 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     [self layoutIfNeeded];
 }
 
-+ (CGFloat)aspectRatioForSequence:(VSequence *)sequence
-{
-    return [sequence isPoll] ? kPollCellHeightRatio : (1 / [sequence previewAssetAspectRatio]);
-}
-
 + (VCellSizeCollection *)cellLayoutCollection
 {
     static VCellSizeCollection *collection;
@@ -205,8 +202,9 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
              VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
-             return CGSizeMake( 0.0f, size.width * [[self class] aspectRatioForSequence:sequence] );
+             return CGSizeMake( 0.0f, size.width / [sequence previewAssetAspectRatio] );
          }];
+        [collection addComponentWithConstantSize:CGSizeMake( 0.0, -kButtonHeight )];
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
              VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
@@ -216,14 +214,18 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
              if ( sequence.name.length > 0 )
              {
                  textHeight = VCEIL( [sequence.name frameSizeForWidth:size.width andAttributes:attributes].height );
-             }
-             else
-             {
-                 textHeight = 0.0f;
-             }
+             };
              return CGSizeMake( 0.0f, textHeight );
          }];
-        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kCountsTextViewHeight)];
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
+         {
+             VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
+             NSDictionary *attributes = [[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager];
+             
+             // FIXME: The use of "V" is just to get a good size for *something* in this text field since
+             // we can't know what the actual text for the label is in a static method
+             return CGSizeMake( 0.0f, MAX( kCountsTextViewMinHeight, [@"V" frameSizeForWidth:size.width andAttributes:attributes].height ) );
+         }];
     }
     return collection;
 }
@@ -273,12 +275,12 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
 
 - (void)selectedLikeButton:(UIButton *)likeButton
 {
-    UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(willLikeSequence:completion:)
+    UIResponder<VSequenceActionsDelegate> *responder = [self targetForAction:@selector(willLikeSequence:withView:completion:)
                                                                   withSender:self];
     
     NSAssert( responder != nil , @"We need an object in the responder chain for liking.");
     likeButton.enabled = NO;
-    [responder willLikeSequence:self.sequence completion:^(BOOL success)
+    [responder willLikeSequence:self.sequence withView:likeButton completion:^(BOOL success)
      {
          likeButton.enabled = YES;
      }];
@@ -312,7 +314,19 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     if ( !sequence.permissions.canComment )
     {
         self.commentButton.hidden = YES;
-        self.countsTextView.hideComments = YES;
+        self.countsTextView.hideComments = !sequence.permissions.canComment;
+    }
+    const BOOL canLike = [self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey].boolValue;
+    if ( !canLike )
+    {
+        self.likeButton.hidden = YES;
+        self.likeButtonWidth.constant = 0.0;
+        self.countsTextView.hideLikes = !canLike;
+    }
+    else
+    {
+        self.likeButton.hidden = NO;
+        self.likeButtonWidth.constant = kButtonWidth;
     }
     [self.countsTextView setCommentsCount:sequence.commentCount.integerValue];
     [self.countsTextView setLikesCount:sequence.likeCount.integerValue];
@@ -333,7 +347,7 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     [self.contentContainer v_addPinToLeadingTrailingToSubview:self.previewView];
     
     NSDictionary *views = @{ @"previewView" : self.previewView };
-    CGFloat height = CGRectGetWidth(self.bounds) * [[self class] aspectRatioForSequence:sequence];
+    CGFloat height = CGRectGetWidth(self.bounds) / [sequence previewAssetAspectRatio];
     NSDictionary *metrics = @{ @"height" : @(height) };
     NSArray *constraintsV = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[previewView(height)]" options:kNilOptions metrics:metrics views:views];
     [self.contentContainer addConstraints:constraintsV];
@@ -353,7 +367,7 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     }
     else
     {
-        self.captionHeight.constant = kMaxCaptionHeight;
+        self.captionHeight.constant = kCountsTextViewMinHeight;
         self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
                                                                               attributes:[VTileOverlayCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
     }
@@ -420,21 +434,39 @@ static const CGFloat kCountsTextViewHeight  = 20.0f;
     self.commentButton.unselectedTintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.commentButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
     self.likeButton.unselectedTintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    self.countsTextView.dependencyManager = dependencyManager;
     self.captionTextView.dependencyManager = dependencyManager;
+    
+    [self.countsTextView setTextHighlightAttributes:[[self class] sequenceCountsActiveAttributesWithDependencyManager:dependencyManager]];
+    [self.countsTextView setTextAttributes:[[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager]];
+}
+
++ (NSDictionary *)sequenceCountsActiveAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    UIFont *font = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+    UIColor *textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    return @{ NSFontAttributeName: font, NSForegroundColorAttributeName: textColor };
+}
+
++ (NSDictionary *)sequenceCountsAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    UIFont *font = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+    UIColor *textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    return @{ NSFontAttributeName: font, NSForegroundColorAttributeName: textColor };
 }
 
 #pragma mark - VStreamCellComponentSpecialization
 
 + (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem
                             baseIdentifier:(NSString *)baseIdentifier
+                         dependencyManager:(VDependencyManager *)dependencyManager
 {
     NSString *identifier = baseIdentifier == nil ? [[NSMutableString alloc] init] : [baseIdentifier copy];
     identifier = [NSString stringWithFormat:@"%@.%@", identifier, NSStringFromClass(self)];
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
         identifier = [VSequencePreviewView reuseIdentifierForSequence:(VSequence *)streamItem
-                                                       baseIdentifier:identifier];
+                                                       baseIdentifier:identifier
+                                                    dependencyManager:dependencyManager];
     }
     return identifier;
 }

@@ -14,9 +14,9 @@
 #import "VAppInfo.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "VLinearGradientView.h"
+#import "VDependencyManager+VLoginAndRegistration.h"
 #import "VSuggestedUserRetryCell.h"
-
-static NSString * const VSuggestedUsersPromptKey    = @"prompt";
+#import "VDependencyManager+VTracking.h"
 
 @interface VSuggestedUsersViewController () <VBackgroundContainer, UICollectionViewDelegateFlowLayout, VLoginFlowScreen>
 
@@ -52,6 +52,20 @@ static NSString * const VSuggestedUsersPromptKey    = @"prompt";
         _dependencyManager = dependencyManager;
     }
     return self;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.dependencyManager trackViewWillAppear:self];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [self.dependencyManager trackViewWillDisappear:self];
 }
 
 - (void)viewDidLoad
@@ -91,12 +105,12 @@ static NSString * const VSuggestedUsersPromptKey    = @"prompt";
         self.salutationContainerHeight.constant = 0.0f;
     }
     
-    self.messageTextView.text = [self.dependencyManager stringForKey:VSuggestedUsersPromptKey];
+    self.messageTextView.text = [self.dependencyManager stringForKey:VScreenPromptKey];
     self.messageTextView.font = [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
     self.messageTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.messageTextView.contentInset = UIEdgeInsetsZero;
     self.messageTextView.textContainer.lineFragmentPadding = 0.0f;
-    self.messageTextView.textContainerInset = UIEdgeInsetsZero;
+    self.messageTextView.textContainerInset = UIEdgeInsetsMake( 4.0, 0.0, 4.0, 0.0 );
     
     self.collectionView.delegate = self;
     self.collectionView.backgroundColor = [UIColor clearColor];
@@ -164,6 +178,12 @@ static NSString * const VSuggestedUsersPromptKey    = @"prompt";
 #pragma mark - VLoginFlowScreen
 
 @synthesize delegate = _delegate;
+
+- (BOOL)displaysAfterSocialRegistration
+{
+    NSNumber *value = [self.dependencyManager numberForKey:VDisplayWithSocialRegistration];
+    return value.boolValue;
+}
 
 - (void)onContinue:(id)sender
 {
