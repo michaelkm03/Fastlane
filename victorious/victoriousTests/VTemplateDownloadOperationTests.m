@@ -394,7 +394,7 @@
 
 - (void)testImageDownload
 {
-    NSURL *imageURL = [NSURL URLWithString:@"http://www.example.com/myImage"];
+    NSURL *imageURL = [NSURL URLWithString:@"http://www.example.com/testImageDownload"];
     VBasicTemplateDownloaderMock *downloader = [[VBasicTemplateDownloaderMock alloc] init];
     downloader.mockTemplateDictionary = @{ @"image": @{ @"imageURL": imageURL.absoluteString } };
     
@@ -431,7 +431,7 @@
     [self.dataCache cacheData:templateData forID:templateCacheID error:nil];
     NSDictionary *expectedTemplateConfiguration = [VTemplateSerialization templateConfigurationDictionaryWithData:templateData];
     
-    NSURL *imageURL = [NSURL URLWithString:@"http://www.example.com/myImage"];
+    NSURL *imageURL = [NSURL URLWithString:@"http://www.example.com/testDownloaderFallsBackOnCacheAfterImageDownloadError"];
     VBasicTemplateDownloaderMock *downloader = [[VBasicTemplateDownloaderMock alloc] init];
     downloader.mockTemplateDictionary = @{ @"image": @{ @"imageURL": imageURL.absoluteString } };
     
@@ -449,6 +449,7 @@
     VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
     downloadOperation.templateConfigurationCacheID = templateCacheID;
     downloadOperation.dataCache = self.dataCache;
+    downloadOperation.shouldRetry = NO;
     [self.operationQueue addOperation:downloadOperation];
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
