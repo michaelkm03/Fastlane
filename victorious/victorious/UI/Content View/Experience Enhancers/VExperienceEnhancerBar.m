@@ -174,8 +174,6 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     {
         return;
     }
-    
-    VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
    
     if ( ![VObjectManager sharedManager].authorized )  // Check if the user is logged in first
     {
@@ -188,13 +186,6 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
                 [self selectExperienceEnhancerAtIndexPath:indexPath];
             }
         }];
-        
-    }
-    else if ( enhancerForIndexPath.isLocked  ) // Check if the user must buy this experience enhancer first
-    {
-        id<VExperienceEnhancerResponder>responder = [self v_targetConformingToProtocol:@protocol(VExperienceEnhancerResponder)];
-        NSAssert( responder != nil, @"Could not find adopter of `VExperienceEnhancerResponder` in responder chain." );
-        [responder showPurchaseViewController:enhancerForIndexPath.voteType];
     }
     else
     {
@@ -205,21 +196,29 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 - (void)selectExperienceEnhancerAtIndexPath:(NSIndexPath *)indexPath
 {
     VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
-    
-    // Incrememnt the vote count
-    [enhancerForIndexPath vote];
-    
-    // Call the selection block (configured in VNewContentViewController) to play the animations
-    if (self.selectionBlock)
+    if ( enhancerForIndexPath.isLocked  ) // Check if the user must buy this experience enhancer first
     {
-        UICollectionViewCell *selectedCell = [self.collectionView cellForItemAtIndexPath:indexPath];
-        CGPoint convertedCenter = [selectedCell.superview convertPoint:selectedCell.center toView:self];
-        self.selectionBlock(enhancerForIndexPath, convertedCenter);
+        id<VExperienceEnhancerResponder>responder = [self v_targetConformingToProtocol:@protocol(VExperienceEnhancerResponder)];
+        NSAssert( responder != nil, @"Could not find adopter of `VExperienceEnhancerResponder` in responder chain." );
+        [responder showPurchaseViewController:enhancerForIndexPath.voteType];
     }
-    
-    if ( [self.delegate respondsToSelector:@selector(experienceEnhancerSelected:)] )
+    else
     {
-        [self.delegate experienceEnhancerSelected:enhancerForIndexPath];
+        // Incrememnt the vote count
+        [enhancerForIndexPath vote];
+        
+        // Call the selection block (configured in VNewContentViewController) to play the animations
+        if (self.selectionBlock)
+        {
+            UICollectionViewCell *selectedCell = [self.collectionView cellForItemAtIndexPath:indexPath];
+            CGPoint convertedCenter = [selectedCell.superview convertPoint:selectedCell.center toView:self];
+            self.selectionBlock(enhancerForIndexPath, convertedCenter);
+        }
+        
+        if ( [self.delegate respondsToSelector:@selector(experienceEnhancerSelected:)] )
+        {
+            [self.delegate experienceEnhancerSelected:enhancerForIndexPath];
+        }
     }
 }
 

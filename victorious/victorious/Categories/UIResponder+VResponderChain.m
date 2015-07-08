@@ -23,8 +23,9 @@
         {
             return;
         }
+        responder = [responder nextResponder];
     }
-    while (( responder = [responder nextResponder] ));
+    while ( responder != nil );
 }
 
 - (id)v_targetConformingToProtocol:(Protocol *)protocol
@@ -38,8 +39,9 @@
         {
             return responder;
         }
+        responder = [responder nextResponder];
     }
-    while (( responder = [responder nextResponder] ));
+    while ( responder != nil );
     return nil;
 }
 

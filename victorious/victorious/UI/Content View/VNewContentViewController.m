@@ -1947,8 +1947,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)authorizeWithCompletion:(void(^)(BOOL))completion
 {
-    __weak typeof(self) welf = self;
-    [welf.authorizedAction performFromViewController:self context:VAuthorizationContextVoteBallistic completion:^(BOOL authorized)
+    [self.authorizedAction performFromViewController:self context:VAuthorizationContextVoteBallistic completion:^(BOOL authorized)
      {
          if ( completion != nil )
          {

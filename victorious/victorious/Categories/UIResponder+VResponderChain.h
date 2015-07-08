@@ -18,7 +18,7 @@
 - (void)v_walkWithBlock:(void(^)(UIResponder *responder, BOOL *stop))block;
 
 /**
- Walks the responder chain test for conformance to the provided protocol and 
+ Walks the responder chain testing for conformance to the provided protocol and 
  returns any resonder that does so.  Intended as a complement to `targetForAction:withSender`
  that allows locating an object in the responder chain by protocol instead of
  by a specific selector.
