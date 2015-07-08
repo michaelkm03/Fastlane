@@ -24,7 +24,6 @@
 @property (nonatomic, weak, readonly) UIImageView        *playIcon; ///< Default is hidden. Show for video content
 @property (nonatomic)                 CGFloat            preferredMaxLayoutWidth; ///< Used when calculating intrinsicContentSize
 @property (nonatomic)                 BOOL               hasMedia;                ///< If YES, the size of the media thumbnail is included in the intrinsicContentSize
-@property (nonatomic, assign) BOOL autoPlay;
 @property (nonatomic, copy)           void               (^onMediaTapped)(); ///< Called when the user taps the media icon
 
 @property (nonatomic) UIFont *textFont;
