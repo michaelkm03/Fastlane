@@ -45,6 +45,9 @@ static const CGFloat kBlurredWhiteAlpha = 0.3f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    [self applySyle];
+    [self updateWithProfile:self.profile];
     
     self.usernameTextField.delegate = self;
     self.locationTextField.delegate = self;
@@ -67,9 +70,7 @@ static const CGFloat kBlurredWhiteAlpha = 0.3f;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [self applySyle];
-    
+
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
@@ -123,14 +124,6 @@ static const CGFloat kBlurredWhiteAlpha = 0.3f;
     heightForRowAtIndexPath:indexPath];
 }
 
-#pragma mark - VHasManagedDependencies
-
-- (void)setDependencyManager:(VDependencyManager *)dependencyManager
-{
-    _dependencyManager = dependencyManager;
-    [self applySyle];
-}
-
 #pragma mark - Private Methods
 
 - (void)applySyle
@@ -156,13 +149,8 @@ static const CGFloat kBlurredWhiteAlpha = 0.3f;
     self.tagLinePlaceholderLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
 }
 
-#pragma mark - Property Accessors
-
-- (void)setProfile:(VUser *)profile
+- (void)updateWithProfile:(VUser *)profile
 {
-    NSAssert([NSThread isMainThread], @"");
-    _profile = profile;
- 
     self.usernameTextField.text = profile.name;
     self.taglineTextView.text = profile.tagline;
     self.locationTextField.text = profile.location;

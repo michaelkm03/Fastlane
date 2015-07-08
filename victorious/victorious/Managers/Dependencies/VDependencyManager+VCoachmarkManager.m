@@ -10,6 +10,8 @@
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VScaffoldViewController.h"
 
+NSString * const VLikeButtonCoachmarkIdentifier = @"like_button_coachmark";
+
 @implementation VDependencyManager (VCoachmarkManager)
 
 - (VCoachmarkManager *)coachmarkManager

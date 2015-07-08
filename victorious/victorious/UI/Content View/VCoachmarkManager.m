@@ -16,15 +16,13 @@
 #import "VTimerManager.h"
 #import "VCoachmarkPassthroughContainerView.h"
 #import "VCoachmarkManager+VObjectAssociation.h"
+#import "VDependencyManager+VCoachmarkManager.h"
 
 static NSString * const kShownCoachmarksKey = @"shownCoachmarks";
 static NSString * const kReturnedCoachmarksKey = @"coachmarks";
 static NSString * const kPassthroughContainerViewKey = @"passthroughContainerView";
 static const CGFloat kAnimationDuration = 0.4f;
-static const CGFloat kCoachmarkHorizontalInset = 24.0f;
-static const CGFloat kCoachmarkVerticalInset = 5.0f;
 static const CGFloat kAnimationVerticalOffset = 10.0f;
-static const CGFloat kAnimationDelay = 1.0f;
 
 @interface VCoachmarkManager () <VCoachmarkPassthroughContainerViewDelegate>
 
@@ -64,9 +62,9 @@ static const CGFloat kAnimationDelay = 1.0f;
     
     NSString *identifier = [viewController screenIdentifier];
     NSMutableArray *validTooltips = [[NSMutableArray alloc] init];
-    CGFloat width = CGRectGetWidth(viewController.view.bounds) - kCoachmarkHorizontalInset * 2;
     for ( VCoachmark *coachmark in self.coachmarks )
     {
+        CGFloat width = CGRectGetWidth(viewController.view.bounds) - coachmark.horizontalInset * 2;
         if ( !coachmark.hasBeenShown && [coachmark.displayScreens containsObject:identifier] )
         {
             if ( [coachmark.displayTarget isEqualToString:identifier] )
@@ -74,7 +72,7 @@ static const CGFloat kAnimationDelay = 1.0f;
                 //Found a toast to display, display it!
                 VCoachmarkView *coachmarkView = [VCoachmarkView toastCoachmarkViewWithCoachmark:coachmark
                                                                                        andWidth:width];
-                coachmarkView.frame = [self frameForToastCoachmarkViewWithSize:coachmarkView.frame.size andToastLocation:coachmarkView.coachmark.toastLocation inViewController:viewController];
+                coachmarkView.frame = [self frameForToastCoachmarkView:coachmarkView andToastLocation:coachmarkView.coachmark.toastLocation inViewController:viewController];
                 [self addCoachmarkView:coachmarkView toViewController:viewController];
                 return YES;
             }
@@ -88,6 +86,7 @@ static const CGFloat kAnimationDelay = 1.0f;
     
     for ( VCoachmark *tooltip in validTooltips )
     {
+        CGFloat width = CGRectGetWidth(viewController.view.bounds) - tooltip.horizontalInset * 2;
         //Didn't have a toast to show, try to show the possible tooltips
         if ( [self addTooltipCoachmark:tooltip withWidth:width toViewController:viewController] )
         {
@@ -95,6 +94,29 @@ static const CGFloat kAnimationDelay = 1.0f;
         }
     }
     return NO;
+}
+
+- (void)triggerSpecificCoachmarkWithIdentifier:(NSString *)remoteID inViewController:(UIViewController *)viewController atLocation:(CGRect)location
+{
+    for ( VCoachmark *coachmark in self.coachmarks )
+    {
+        if ( !coachmark.hasBeenShown && [coachmark.remoteId isEqualToString:remoteID] )
+        {
+            if ([coachmark.remoteId isEqualToString:VLikeButtonCoachmarkIdentifier])
+            {
+                // Since like buttons are close to the edge of the screen, horizontal inset needs to be smaller
+                coachmark.horizontalInset = 10.0f;
+                // Coachmark should appear right away when user presses like button
+                coachmark.animationDelay = 0.0f;
+            }
+            
+            // Hide any current coachmark before showing active coachmark
+            [self hideCoachmarkViewInViewController:viewController animated:YES];
+            
+            CGFloat width = CGRectGetWidth(viewController.view.bounds) - coachmark.horizontalInset * 2;
+            [self addTooltipCoachmark:coachmark withWidth:width toViewController:viewController atLocation:location];
+        }
+    }
 }
 
 - (void)hideCoachmarkViewInViewController:(UIViewController *)viewController animated:(BOOL)animated
@@ -154,25 +176,30 @@ static const CGFloat kAnimationDelay = 1.0f;
     
     if ( foundDisplayableCoachmark )
     {
-        CGFloat arrowCenter = CGRectGetMidX(menuItemLocation) - kCoachmarkHorizontalInset;
-        CGFloat viewHeight = CGRectGetHeight(viewController.view.bounds) - [viewController v_layoutInsets].top;
-        VTooltipArrowDirection direction = CGRectGetMidY(menuItemLocation) > viewHeight / 2 ? VTooltipArrowDirectionDown : VTooltipArrowDirectionUp;
-        
-        //Enforce min and max arrow center values
-        arrowCenter = MAX(arrowCenter, VMinimumTooltipArrowLocation);
-        arrowCenter = MIN(arrowCenter, width - VMinimumTooltipArrowLocation);
-        
-        VCoachmarkView *coachmarkView = [VCoachmarkView tooltipCoachmarkViewWithCoachmark:coachmark
-                                                                                    width:width
-                                                                    arrowHorizontalOffset:arrowCenter
-                                                                        andArrowDirection:direction];
-        coachmarkView.frame = [self frameForTooltipCoachmarkViewWithSize:coachmarkView.frame.size
-                                                          arrowDirection:direction
-                                                       andTargetLocation:menuItemLocation
-                                                        inViewController:viewController];
-        [self addCoachmarkView:coachmarkView toViewController:viewController];
+        [self addTooltipCoachmark:coachmark withWidth:width toViewController:viewController atLocation:menuItemLocation];
     }
     return foundDisplayableCoachmark;
+}
+
+- (void)addTooltipCoachmark:(VCoachmark *)coachmark withWidth:(CGFloat)width toViewController:(UIViewController *)viewController atLocation:(CGRect)location
+{
+    CGFloat arrowCenter = CGRectGetMidX(location) - coachmark.horizontalInset;
+    CGFloat viewHeight = CGRectGetHeight(viewController.view.bounds) - [viewController v_layoutInsets].top;
+    VTooltipArrowDirection direction = CGRectGetMidY(location) > viewHeight / 2 ? VTooltipArrowDirectionDown : VTooltipArrowDirectionUp;
+    
+    //Enforce min and max arrow center values
+    arrowCenter = MAX(arrowCenter, VMinimumTooltipArrowLocation);
+    arrowCenter = MIN(arrowCenter, width - VMinimumTooltipArrowLocation);
+    
+    VCoachmarkView *coachmarkView = [VCoachmarkView tooltipCoachmarkViewWithCoachmark:coachmark
+                                                                                width:width
+                                                                arrowHorizontalOffset:arrowCenter
+                                                                    andArrowDirection:direction];
+    coachmarkView.frame = [self frameForTooltipCoachmarkView:coachmarkView
+                                                      arrowDirection:direction
+                                                   andTargetLocation:location
+                                                    inViewController:viewController];
+    [self addCoachmarkView:coachmarkView toViewController:viewController];
 }
 
 - (void)removePassthroughContainerView:(VCoachmarkPassthroughContainerView *)passthroughContainerView animated:(BOOL)animated
@@ -212,7 +239,7 @@ static const CGFloat kAnimationDelay = 1.0f;
     passthroughOverlay.frame = view.bounds;
     [self associateView:keyView withCoachmarkPassthroughContainerView:passthroughOverlay];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kAnimationDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(coachmarkView.coachmark.animationDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                    {
                        if ( [self.removedPassthroughOverlays containsObject:passthroughOverlay] )
                        {
@@ -254,8 +281,9 @@ static const CGFloat kAnimationDelay = 1.0f;
     [self.hideTimers removeObject:timerManager];
 }
 
-- (CGRect)frameForTooltipCoachmarkViewWithSize:(CGSize)size arrowDirection:(VTooltipArrowDirection)arrowDirection andTargetLocation:(CGRect)targetLocation inViewController:(UIViewController *)viewController
+- (CGRect)frameForTooltipCoachmarkView:(VCoachmarkView *)coachmarkView arrowDirection:(VTooltipArrowDirection)arrowDirection andTargetLocation:(CGRect)targetLocation inViewController:(UIViewController *)viewController
 {
+    CGSize size = coachmarkView.frame.size;
     CGRect frame = [self centeredCoachmarkViewFrameWithSize:size inViewController:viewController];
     
     //Check to see that we can properly point to the intended location
@@ -276,11 +304,11 @@ static const CGFloat kAnimationDelay = 1.0f;
     switch (arrowDirection)
     {
         case VTooltipArrowDirectionUp:
-            yOrigin = CGRectGetMaxY(targetLocation) + kCoachmarkVerticalInset;
+            yOrigin = CGRectGetMaxY(targetLocation) + coachmarkView.coachmark.verticalInset;
             break;
             
         case VTooltipArrowDirectionDown:
-            yOrigin = CGRectGetMinY(targetLocation) - CGRectGetHeight(frame) - kCoachmarkVerticalInset;
+            yOrigin = CGRectGetMinY(targetLocation) - CGRectGetHeight(frame) - coachmarkView.coachmark.verticalInset;
             break;
             
         default:
@@ -290,15 +318,16 @@ static const CGFloat kAnimationDelay = 1.0f;
     return frame;
 }
 
-- (CGRect)frameForToastCoachmarkViewWithSize:(CGSize)size andToastLocation:(VToastVerticalLocation)toastLocation inViewController:(UIViewController *)viewController
+- (CGRect)frameForToastCoachmarkView:(VCoachmarkView *)coachmarkView andToastLocation:(VToastVerticalLocation)toastLocation inViewController:(UIViewController *)viewController
 {
+    CGSize size = coachmarkView.frame.size;
     CGRect frame = [self centeredCoachmarkViewFrameWithSize:size inViewController:viewController];
     CGFloat yOrigin = 0;
     CGFloat topBarHeight = [viewController v_layoutInsets].top;
     switch (toastLocation)
     {
         case VToastVerticalLocationTop:
-            yOrigin = topBarHeight + kCoachmarkVerticalInset;
+            yOrigin = topBarHeight + coachmarkView.coachmark.verticalInset;
             break;
             
         case VToastVerticalLocationMiddle:
@@ -306,7 +335,7 @@ static const CGFloat kAnimationDelay = 1.0f;
             break;
             
         case VToastVerticalLocationBottom:
-            yOrigin = CGRectGetHeight(viewController.view.bounds) - size.height - kCoachmarkVerticalInset;
+            yOrigin = CGRectGetHeight(viewController.view.bounds) - size.height - coachmarkView.coachmark.verticalInset;
             break;
             
         default:

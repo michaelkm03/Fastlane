@@ -22,6 +22,7 @@
 #import "VWebBrowserHeaderLayoutManager.h"
 #import "VDependencyManager+VWebBrowser.h"
 #import "VDependencyManager+VAccessoryScreens.h"
+#import "VDependencyManager+VTracking.h"
 
 static NSString * const kURLKey = @"url";
 
@@ -163,7 +164,16 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 {
     [super viewWillDisappear:animated];
     
+    [self.dependencyManager trackViewWillDisappear:self];
+    
     [self.webView stopLoading];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.dependencyManager trackViewWillAppear:self];
 }
 
 - (BOOL)prefersStatusBarHidden
