@@ -20,7 +20,7 @@
 @property (nonatomic, strong) IBOutlet UIView *containerView;
 @property (nonatomic, strong) IBOutlet OAStackView *stackView;
 
-@property (nonatomic, strong) UIViewController<VCaptureContainedViewController> *viewControllerToContain;
+@property (nonatomic, strong) UIViewController *viewControllerToContain;
 
 @end
 
@@ -43,6 +43,7 @@
     for (VAlternateCaptureOption *alternateOption in self.alternateCaptureOptions)
     {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+        button.tintColor = [UIColor whiteColor];
         [button setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
         [button setImage:alternateOption.icon forState:UIControlStateNormal];
         [button setTitle:alternateOption.title forState:UIControlStateNormal];
@@ -61,14 +62,14 @@
     [self.containerView v_addFitToParentConstraintsToSubview:self.viewControllerToContain.view];
     [self.viewControllerToContain didMoveToParentViewController:self];
     
-    self.navigationItem.titleView = [self.viewControllerToContain titleView];
+    self.navigationItem.titleView = self.viewControllerToContain.navigationItem.titleView;
 }
 
 #pragma mark - Public Methods
 
-- (void)setContainedViewController:(UIViewController<VCaptureContainedViewController> *)viewController
+- (void)setContainedViewController:(UIViewController *)viewController
 {
-    _viewControllerToContain = viewController;    
+    _viewControllerToContain = viewController;
 }
 
 #pragma mark - Target/Action

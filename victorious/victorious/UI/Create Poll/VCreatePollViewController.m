@@ -311,6 +311,8 @@ static char KVOContext;
     {
         [welf imagePickerFinishedWithURL:mediaURL
                             previewImage:previewImage];
+        [welf dismissViewControllerAnimated:YES
+                                 completion:nil];
     };
     [self.attachmentPresenter present];
 }

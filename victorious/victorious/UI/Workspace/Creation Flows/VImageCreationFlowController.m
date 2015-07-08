@@ -14,6 +14,7 @@
 #import "VAssetGridViewController.h"
 #import "VCameraViewController.h"
 #import "VImageSearchViewController.h"
+#import "VAssetCollectionListViewController.h"
 
 // Workspace
 #import "VWorkspaceViewController.h"
@@ -30,14 +31,19 @@
 #import "VDependencyManager.h"
 #import "VMediaSource.h"
 
+@import Photos;
+
 // Keys
 NSString * const VCreationFLowCaptureScreenKey = @"captureScreen";
 NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 
-@interface VImageCreationFlowController () <UINavigationControllerDelegate>
+@interface VImageCreationFlowController () <UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate>
+
+@property (nonatomic, strong) NSArray *cachedAssetCollections;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
+@property (nonatomic, strong) VAssetGridViewController *gridViewController;
 @property (nonatomic, strong) VWorkspaceViewController *workspaceViewController;
 
 @property (nonatomic, strong) VPublishViewController *publishViewContorller;
@@ -64,10 +70,10 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
         [self addCloseButtonToViewController:captureContainer];
         [self setViewControllers:@[captureContainer]];
         
-        VAssetGridViewController *gridViewController = [VAssetGridViewController assetGridViewController];
-        
-        [captureContainer setContainedViewController:gridViewController];
-        [self addCompleitonHandlerToMediaSource:gridViewController];
+        self.gridViewController = [VAssetGridViewController assetGridViewController];
+        self.gridViewController.collectionToDisplay = [self defaultCollection];
+        [captureContainer setContainedViewController:self.gridViewController];
+        [self addCompleitonHandlerToMediaSource:self.gridViewController];
         [self setupPublishScreen];
     }
     return self;
@@ -91,6 +97,11 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 {
     [super viewDidLoad];
     self.delegate = self;
+    __weak typeof(self) welf = self;
+    self.gridViewController.alternateFolderSelectionHandler = ^()
+    {
+        [welf presentAssetFoldersList];
+    };
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -100,12 +111,111 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 
 #pragma mark - Private Methods
 
+- (PHAssetCollection *)defaultCollection
+{
+    return [[self assetCollections] firstObject];
+}
+
+- (void)presentAssetFoldersList
+{
+    // Present alternate folder
+    VAssetCollectionListViewController *listVC = [VAssetCollectionListViewController assetCollectionListViewController];
+    listVC.collectionSelectionHandler = ^void(PHAssetCollection *assetCollection)
+    {
+        self.gridViewController.collectionToDisplay = assetCollection;
+    };
+    listVC.assetCollections = [self assetCollections];
+    listVC.modalPresentationStyle = UIModalPresentationPopover;
+
+    UIPopoverPresentationController *popoverPresentation = listVC.popoverPresentationController;
+    popoverPresentation.delegate = self;
+    CGSize preferredContentSize = CGSizeMake(CGRectGetWidth(self.view.bounds) - 50.0f,
+                                             CGRectGetHeight(self.view.bounds) - 200.0f);
+    listVC.preferredContentSize = preferredContentSize;
+    UIViewController *topViewContorller = [self.viewControllers firstObject];
+    popoverPresentation.sourceView = topViewContorller.navigationItem.titleView;
+    popoverPresentation.sourceRect = CGRectMake(CGRectGetMidX(popoverPresentation.sourceView.bounds),
+                                                CGRectGetMaxY(popoverPresentation.sourceView.bounds) + CGRectGetHeight(popoverPresentation.sourceView.bounds),
+                                                0.0f,
+                                                CGRectGetHeight(popoverPresentation.sourceView.bounds));
+
+    [self presentViewController:listVC animated:YES completion:nil];
+}
+
+- (NSArray *)assetCollections
+{
+    if (self.cachedAssetCollections != nil)
+    {
+        return self.cachedAssetCollections;
+    }
+    
+#warning cleanup this fetching and sorting. Pretty un-optimized
+    
+    // Fetch all albums
+    PHFetchOptions *fetchOptions = [[PHFetchOptions alloc] init];
+    PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
+                                                                          subtype:PHAssetCollectionSubtypeAny
+                                                                          options:fetchOptions];
+    PHFetchResult *userAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
+                                                                         subtype:PHAssetCollectionSubtypeAny
+                                                                         options:fetchOptions];
+    
+    // Figure out Photos media type based on our media type
+    PHAssetMediaType mediaType = PHAssetMediaTypeImage;
+    PHFetchOptions *mediaTypeOptions = [[PHFetchOptions alloc] init];
+    mediaTypeOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d", mediaType];
+    
+    // Add collections to array if collection contains at least 1 asset of media type
+    NSMutableArray *assetCollections = [[NSMutableArray alloc] init];
+    for (PHAssetCollection *collection in smartAlbums)
+    {
+        PHFetchResult *albumMediaTypeResults = [PHAsset fetchAssetsInAssetCollection:collection
+                                                                             options:mediaTypeOptions];
+        if (albumMediaTypeResults.count > 0)
+        {
+            [assetCollections addObject:collection];
+        }
+    }
+    for (PHAssetCollection *collection in userAlbums)
+    {
+        PHFetchResult *albumMediaTypeResults = [PHAsset fetchAssetsInAssetCollection:collection
+                                                                             options:mediaTypeOptions];
+        if (albumMediaTypeResults.count > 0)
+        {
+            [assetCollections addObject:collection];
+        }
+    }
+    
+    // Sort by count and store for later use
+    self.cachedAssetCollections = [assetCollections sortedArrayUsingComparator:^NSComparisonResult(PHAssetCollection *collection1, PHAssetCollection *collection2)
+                                   {
+                                       PHFetchResult *albumMediaTypeResults1 = [PHAsset fetchAssetsInAssetCollection:collection1
+                                                                                                             options:mediaTypeOptions];
+                                       PHFetchResult *albumMediaTypeResults2 = [PHAsset fetchAssetsInAssetCollection:collection2
+                                                                                                             options:mediaTypeOptions];
+                                       if (albumMediaTypeResults1.count > albumMediaTypeResults2.count)
+                                       {
+                                           return NSOrderedAscending;
+                                       }
+                                       else if (albumMediaTypeResults2.count > albumMediaTypeResults1.count)
+                                       {
+                                           return NSOrderedDescending;
+                                       }
+                                       else
+                                       {
+                                           return NSOrderedSame;
+                                       }
+                                   }];
+    return self.cachedAssetCollections;
+}
+
 - (NSArray *)alternateCaptureOptions
 {
     void (^cameraSelectionBlock)() = ^void()
     {
         // Camera
         VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerLimitedToPhotosWithDependencyManager:self.dependencyManager];
+        [cameraViewController hideSearchAndAlbumButtons];
         cameraViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMeidaURL)
         {
             if (finished)
@@ -293,6 +403,14 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
         return self.publishAnimator;
     }
     return nil;
+}
+
+#pragma mark - UIPopoverPresentationControllerDelegate
+
+- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller
+                                                               traitCollection:(UITraitCollection *)traitCollection
+{
+    return UIModalPresentationNone;
 }
 
 @end

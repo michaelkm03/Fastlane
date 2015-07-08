@@ -11,18 +11,18 @@
 @class VAlternateCaptureOption;
 @class VDependencyManager;
 
-@protocol VCaptureContainedViewController <NSObject>
-
-- (UIView *)titleView;
-
-@end
-
 @interface VCaptureContainerViewController : UIViewController
 
 + (instancetype)captureContainerWithDependencyManager:(VDependencyManager *)dependencyManager;
 
-- (void)setContainedViewController:(UIViewController<VCaptureContainedViewController> *)viewController;
+/**
+ *  Supports forwarding the contained ViewController's navigationItem's titleView to the captureContainer's titleView.
+ */
+- (void)setContainedViewController:(UIViewController *)viewController;
 
+/**
+ *  An array of VAlternateCaptureOptions.
+ */
 @property (nonatomic, strong) NSArray *alternateCaptureOptions;
 
 @end

@@ -21,6 +21,9 @@
 
 @property (nonatomic, strong) UIImage *selectedFullSizeImage;
 @property (nonatomic, strong) NSURL *imageFileURL;
+@property (nonatomic, strong) UIButton *alternateFolderButton;
+
+@property (nonatomic, strong) PHFetchResult *assetsToDisplay;
 
 @end
 
@@ -35,7 +38,18 @@
     NSBundle *bundleForClass = [NSBundle bundleForClass:self];
     UIStoryboard *storyboardForClass = [UIStoryboard storyboardWithName:NSStringFromClass(self)
                                                                  bundle:bundleForClass];
-    return [storyboardForClass instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
+    VAssetGridViewController *gridViewController =  [storyboardForClass instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
+
+    UIButton *alternateFolderButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [alternateFolderButton setTitle:@"folder▼"
+                           forState:UIControlStateNormal];
+    [alternateFolderButton addTarget:gridViewController
+                              action:@selector(selectedFolderPicker:)
+                    forControlEvents:UIControlEventTouchUpInside];
+    gridViewController.navigationItem.titleView = alternateFolderButton;
+    gridViewController.alternateFolderButton = alternateFolderButton;
+    
+    return gridViewController;
 }
 
 #pragma mark - View Lifecycle
@@ -47,7 +61,7 @@
     // If we don't have a fetch result to display just show all images.
     if (self.assetsToDisplay == nil)
     {
-        PHFetchOptions *allPhotosOptions = [PHFetchOptions new];
+        PHFetchOptions *allPhotosOptions = [[PHFetchOptions alloc] init];
         allPhotosOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
         self.assetsToDisplay = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:allPhotosOptions];
     }
@@ -65,14 +79,36 @@
 
 #pragma mark - Property Accessors
 
-- (void)setAssetsToDisplay:(PHFetchResult *)assetsToDisplay
+- (void)setCollectionToDisplay:(PHAssetCollection *)collectionToDisplay
 {
-    _assetsToDisplay = assetsToDisplay;
+    _collectionToDisplay = collectionToDisplay;
     
+    [self.alternateFolderButton setTitle:collectionToDisplay.localizedTitle
+                                forState:UIControlStateNormal];
+    
+    PHFetchOptions *fetchOptions = [[PHFetchOptions alloc] init];
+    fetchOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
+    self.assetsToDisplay = [PHAsset fetchAssetsInAssetCollection:collectionToDisplay
+                                                         options:fetchOptions];
+
+    // Reload and scroll to top
     [self.collectionView reloadData];
+    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]
+                                atScrollPosition:UICollectionViewScrollPositionTop
+                                        animated:NO];
 }
 
-#pragma mark UICollectionViewDataSource
+#pragma mark - Target / Action
+
+- (void)selectedFolderPicker:(UIButton *)button
+{
+    if (self.alternateFolderSelectionHandler != nil)
+    {
+        self.alternateFolderSelectionHandler();
+    }
+}
+
+#pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
@@ -121,8 +157,6 @@
     progressHud.dimBackground = YES;
     [progressHud show:YES];
     
-#warning Update this with image/video support
-    
     PHImageRequestOptions *fullSizeRequestOptions = [[PHImageRequestOptions alloc] init];
     fullSizeRequestOptions.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
     fullSizeRequestOptions.version = PHImageRequestOptionsVersionCurrent;
@@ -131,19 +165,44 @@
     {
         progressHud.progress = progress;
     };
+    
     __weak typeof(self) welf = self;
-    [[PHImageManager defaultManager] requestImageDataForAsset:asset
-                                                      options:fullSizeRequestOptions
-                                                resultHandler:^(NSData *imageData, NSString *dataUTI, UIImageOrientation orientation, NSDictionary *info)
-     {
-         dispatch_async(dispatch_get_main_queue(), ^
-         {
-             [welf callCompletionWithAsset:asset
-                                 imageData:imageData
-                               orientation:orientation
-                                      info:info];
-         });
-     }];
+    switch (asset.mediaType)
+    {
+        case PHAssetMediaTypeImage:
+        {
+            [[PHImageManager defaultManager] requestImageDataForAsset:asset
+                                                              options:fullSizeRequestOptions
+                                                        resultHandler:^(NSData *imageData, NSString *dataUTI, UIImageOrientation orientation, NSDictionary *info)
+             {
+                 dispatch_async(dispatch_get_main_queue(), ^
+                                {
+                                    [welf callCompletionWithAsset:asset
+                                                        imageData:imageData
+                                                      orientation:orientation
+                                                             info:info];
+                                });
+             }];
+            break;
+        }
+        case PHAssetMediaTypeVideo:
+        {
+            [[PHImageManager defaultManager] requestExportSessionForVideo:asset
+                                                                  options:nil
+                                                             exportPreset:AVAssetExportPreset1280x720
+                                                            resultHandler:^(AVAssetExportSession *exportSession, NSDictionary *info)
+             {
+                 // Save video
+             }];
+            break;
+        }
+        default:
+        {
+            NSAssert(false, @"Unsopported photos media type.");
+            break;
+        }
+    }
+
 }
 
 - (void)callCompletionWithAsset:(PHAsset *)asset
