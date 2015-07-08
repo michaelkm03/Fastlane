@@ -34,6 +34,7 @@
 #import "VCoachmarkDisplayer.h"
 #import "UIViewController+VLayoutInsets.h"
 #import "VHashtagResponder.h"
+#import "VDependencyManager+VTracking.h"
 
 static NSString * const kVSuggestedPeopleIdentifier = @"VSuggestedPeopleCell";
 static NSString * const kVTrendingTagIdentifier = @"VTrendingTagCell";
@@ -102,6 +103,9 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.dependencyManager trackViewWillAppear:self];
+    
     if ( self.hasLoadedOnce )
     {
         [self.tableView reloadData];
@@ -126,6 +130,9 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [self.dependencyManager trackViewWillDisappear:self];
+    
     [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
     
     // Note if we're pushing another view controller onto the nav stack or if we're presenting

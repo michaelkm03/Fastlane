@@ -40,6 +40,7 @@
 #import "VDependencyManager+VUserProfile.h"
 #import "UIView+AutoLayout.h"
 #import "VNoContentView.h"
+#import "VDependencyManager+VTracking.h"
 #import "VTableViewStreamFocusHelper.h"
 
 @import Social;
@@ -114,11 +115,21 @@
     [[VTrackingManager sharedInstance] setValue:VTrackingValueCommentsView forSessionParameterWithKey:VTrackingKeyContext];
 }
 
-- (void)viewWillDisppear:(BOOL)animated
+- (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
+    [self.dependencyManager trackViewWillDisappear:self];
+    
+    [[VTrackingManager sharedInstance] endEvent:VTrackingEventCommentsDidAppear];
     [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.dependencyManager trackViewWillAppear:self];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -356,12 +367,6 @@
     
     // Update cell focus for videos
     [self.focusHelper updateFocus];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [[VTrackingManager sharedInstance] endEvent:VTrackingEventCommentsDidAppear];
 }
 
 #pragma mark - VSwipeViewControllerDelegate

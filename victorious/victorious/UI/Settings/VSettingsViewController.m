@@ -32,6 +32,7 @@
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VCoachmarkManager.h"
 #import "VEnvironmentManager.h"
+#import "VDependencyManager+VTracking.h"
 #import "VLikedContentStreamCollectionViewController.h"
 #import "UIAlertController+VSimpleAlert.h"
 
@@ -125,6 +126,8 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 {
     [super viewWillAppear:animated];
     
+    [self.dependencyManager trackViewWillAppear:self];
+    
     [self updateLogoutButtonState];
     
     self.serverEnvironmentCell.detailTextLabel.text = [[[VEnvironmentManager sharedInstance] currentEnvironment] name];
@@ -183,6 +186,9 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [self.dependencyManager trackViewWillDisappear:self];
+    
     [[VTrackingManager sharedInstance] endEvent:VTrackingEventSettingsDidAppear];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];

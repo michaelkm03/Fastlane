@@ -106,6 +106,7 @@
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VCoachmarkManager.h"
 #import "VSequenceExpressionsObserver.h"
+#import "VDependencyManager+VTracking.h"
 
 // Cell focus
 #import "VCollectionViewStreamFocusHelper.h"
@@ -500,6 +501,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 {
     [super viewWillAppear:animated];
     
+    [self.dependencyManager trackViewWillAppear:self];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardDidChangeFrame:)
                                                  name:UIKeyboardDidChangeFrameNotification
@@ -606,6 +609,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [self.dependencyManager trackViewWillDisappear:self];
+    
     [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
     
     if ( self.videoCell != nil && !self.videoCell.didFinishPlayingOnce  )

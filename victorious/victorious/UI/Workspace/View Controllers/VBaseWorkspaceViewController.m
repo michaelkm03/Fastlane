@@ -26,6 +26,8 @@
 
 // Video
 #import "VVideoWorkspaceTool.h"
+#import "VDependencyManager+VTracking.h"
+#import "VDependencyManager+VTracking.h"
 
 @import AVFoundation;
 
@@ -149,6 +151,8 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
 {
     [super viewWillAppear:animated];
     
+    [self.dependencyManager trackViewWillAppear:self];
+    
     [self.toolController setupDefaultTool];
     
     [self.workspaceToolButtons enumerateObjectsUsingBlock:^(VRoundedBackgroundButton *toolButton, NSUInteger idx, BOOL *stop)
@@ -182,6 +186,8 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [self.dependencyManager trackViewWillDisappear:self];
     
     self.keyboardManager = nil;
 }
