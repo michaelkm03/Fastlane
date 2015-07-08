@@ -210,6 +210,14 @@ static NSCache *_sharedImageCache = nil;
     {
         self.mediaPreviewURL = comment.previewImageURL;
         self.mediaIsVideo = [comment.mediaUrl v_hasVideoExtension];
+        if (self.mediaIsVideo)
+        {
+            self.commentAndMediaView.shouldAutoplay = comment.shouldAutoplay;
+            if (comment.shouldAutoplay)
+            {
+                self.commentAndMediaView.autoplayURL = [NSURL URLWithString:comment.mediaUrl];
+            }
+        }
     }
 
     self.commentCellUtilitiesController = [[VCommentCellUtilitesController alloc] initWithComment:self.comment
@@ -222,7 +230,7 @@ static NSCache *_sharedImageCache = nil;
 - (void)setHasMedia:(BOOL)hasMedia
 {
     _hasMedia = hasMedia;
-    self.commentAndMediaView.mediaThumbnailView.hidden = !hasMedia;
+    self.commentAndMediaView.mediaThumbnailView.hidden = !hasMedia || self.comment.shouldAutoplay;
     self.commentAndMediaView.hasMedia = hasMedia;
 }
 
