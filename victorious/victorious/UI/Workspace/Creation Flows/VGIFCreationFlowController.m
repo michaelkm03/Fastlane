@@ -10,6 +10,7 @@
 
 // Capture
 #import "VCaptureContainerViewController.h"
+#import "VAlternateCaptureOption.h"
 #import "VAssetGridViewController.h"
 
 // Workspace

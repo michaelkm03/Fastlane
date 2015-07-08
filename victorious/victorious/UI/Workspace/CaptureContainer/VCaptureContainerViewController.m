@@ -8,6 +8,9 @@
 
 #import "VCaptureContainerViewController.h"
 
+// API
+#import "VAlternateCaptureOption.h"
+
 // Views + Helpers
 #import <OAStackView/OAStackView.h>
 #import "UIView+Autolayout.h"
@@ -84,26 +87,6 @@
     }];
 
     alternateCaptureOption.selectionBlock();
-}
-
-@end
-
-#pragma mark - VAlternateCaptureOption
-
-@implementation VAlternateCaptureOption
-
-- (instancetype)initWithTitle:(NSString *)title
-                         icon:(UIImage *)icon
-            andSelectionBlock:(VImageVideoLibraryAlternateCaptureSelection)selectionBlock
-{
-    self = [super init];
-    if (self != nil)
-    {
-        _title = title;
-        _icon = icon;
-        _selectionBlock = [selectionBlock copy];
-    }
-    return self;
 }
 
 @end

@@ -12,6 +12,8 @@
 
 @interface VAssetCollectionListViewController : UITableViewController
 
++ (instancetype)assetCollectionListViewController;
+
 @property (nonatomic, strong) NSArray *assetCollections;
 
 /**

@@ -23,6 +23,14 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 
 @implementation VAssetCollectionListViewController
 
++ (instancetype)assetCollectionListViewController
+{
+    NSBundle *bundleForClass = [NSBundle bundleForClass:self];
+    UIStoryboard *storyboardForClass = [UIStoryboard storyboardWithName:NSStringFromClass(self)
+                                                                 bundle:bundleForClass];
+    return [storyboardForClass instantiateInitialViewController];
+}
+
 #pragma mark - View Lifecycle
 
 - (void)viewDidLoad
