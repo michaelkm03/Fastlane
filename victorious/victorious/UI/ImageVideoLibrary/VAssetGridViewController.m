@@ -28,6 +28,18 @@
 
 @synthesize handler;
 
+#pragma mark - Factory Method
+
++ (instancetype)assetGridViewController
+{
+    NSBundle *bundleForClass = [NSBundle bundleForClass:self];
+    UIStoryboard *storyboardForClass = [UIStoryboard storyboardWithName:NSStringFromClass(self)
+                                                                 bundle:bundleForClass];
+    return [storyboardForClass instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
+}
+
+#pragma mark - View Lifecycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -186,6 +198,13 @@
 - (PHAsset *)assetForIndexPath:(NSIndexPath *)indexPath
 {
     return [self.assetsToDisplay objectAtIndex:indexPath.row];
+}
+
+#pragma mark - VCaptureContainedViewController
+
+- (UIView *)titleView
+{
+    return nil;
 }
 
 @end

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "VMediaSource.h"
+#import "VCaptureContainerViewController.h"
 
 @class PHFetchResult;
 
@@ -19,7 +20,9 @@
  */
 typedef void (^VAssetSelectionHandler)(UIImage *previewImage, NSURL *capturedMediaURL);
 
-@interface VAssetGridViewController : UICollectionViewController <VMediaSource>
+@interface VAssetGridViewController : UICollectionViewController <VMediaSource, VCaptureContainedViewController>
+
++ (instancetype)assetGridViewController;
 
 @property (nonatomic, strong) PHFetchResult *assetsToDisplay;
 

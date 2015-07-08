@@ -1,36 +1,31 @@
 //
-//  VImageVideoLibraryViewController.h
+//  VCaptureContainerViewController.h
 //  victorious
 //
-//  Created by Michael Sena on 6/24/15.
+//  Created by Michael Sena on 7/7/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VHasManagedDependencies.h"
-#import "VMediaSource.h"
+#import <UIKit/UIKit.h>
 
-@class VImageLibraryAlternateCaptureOption;
+@class VDependencyManager;
 
-typedef NS_ENUM(NSInteger, VAssetType)
-{
-    VAssetTypePhoto,
-    VAssetTypeVideo
-};
+@protocol VCaptureContainedViewController <NSObject>
 
-@interface VImageVideoLibraryViewController : UIViewController <VHasManagedDependencies, VMediaSource>
+- (UIView *)titleView;
 
-/**
- *  Determines what the user is allowed to select. Defaults to VAssetTypePhoto.
- */
-@property (nonatomic, assign) VAssetType typeOfAssetToSelect;
+@end
 
-/**
- *  An array of `VImageLibraryAlternateCaptureOption`s for providing the user 
- *  alternate options of media selection.
- */
+@interface VCaptureContainerViewController : UIViewController
+
++ (instancetype)captureContainerWithDependencyManager:(VDependencyManager *)dependencyManager;
+
+- (void)setContainedViewController:(UIViewController<VCaptureContainedViewController> *)viewController;
+
 @property (nonatomic, strong) NSArray *alternateCaptureOptions;
 
 @end
+
 
 #pragma mark - Alternate Options
 
@@ -42,7 +37,7 @@ typedef void (^VImageVideoLibraryAlternateCaptureSelection)();
 /**
  *  A model object to pass to the image video library to allow the user to select other options.
  */
-@interface VImageLibraryAlternateCaptureOption : NSObject
+@interface VAlternateCaptureOption : NSObject
 
 /**
  *  The designated initializer for creating alternate capture option objects. All parameters are required.

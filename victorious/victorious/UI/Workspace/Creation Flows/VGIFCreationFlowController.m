@@ -8,6 +8,10 @@
 
 #import "VGIFCreationFlowController.h"
 
+// Capture
+#import "VCaptureContainerViewController.h"
+#import "VAssetGridViewController.h"
+
 // Workspace
 #import "VWorkspaceViewController.h"
 #import "VVideoToolController.h"
@@ -22,7 +26,6 @@
 // Dependencies
 #import "VDependencyManager.h"
 #import "VMediaSource.h"
-#import "VImageVideoLibraryViewController.h"
 
 @interface VGIFCreationFlowController () <UINavigationControllerDelegate>
 
@@ -49,13 +52,16 @@
     {
         _dependencyManager = dependencyManager;
         
-        VImageVideoLibraryViewController *viewController = [dependencyManager templateValueConformingToProtocol:@protocol(VMediaSource)
-                                                                                                       forKey:VCreationFLowCaptureScreenKey
-                                                                                        withAddedDependencies:nil];
-        viewController.typeOfAssetToSelect = VAssetTypeVideo;
-        [self addCompleitonHandlerToMediaSource:viewController];
-        [self addCloseButtonToViewController:viewController];
-        [self pushViewController:viewController animated:YES];
+        VCaptureContainerViewController *captureContainer = [VCaptureContainerViewController captureContainerWithDependencyManager:dependencyManager];
+        [captureContainer setAlternateCaptureOptions:[self alternateCaptureOptions]];
+        [self addCloseButtonToViewController:captureContainer];
+        [self setViewControllers:@[captureContainer]];
+        
+        VAssetGridViewController *gridViewController = [VAssetGridViewController assetGridViewController];
+        
+        [captureContainer setContainedViewController:gridViewController];
+        [self addCompleitonHandlerToMediaSource:gridViewController];
+
     }
     return self;
 }
@@ -74,6 +80,23 @@
 }
 
 #pragma mark - Private Methods
+
+- (NSArray *)alternateCaptureOptions
+{
+    VAlternateCaptureOption *cameraOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Camera", nil)
+                                                                                      icon:[UIImage imageNamed:@""]
+                                                                         andSelectionBlock:^
+                                             {
+                                                 // Camera
+                                             }];
+    VAlternateCaptureOption *searchOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Search", nil)
+                                                                                      icon:[UIImage imageNamed:@""]
+                                                                         andSelectionBlock:^
+                                             {
+                                                 // Search
+                                             }];
+    return @[cameraOption, searchOption];
+}
 
 - (void)addCompleitonHandlerToMediaSource:(id<VMediaSource>)mediaSource
 {
@@ -97,7 +120,6 @@
         }
     };
 }
-
 
 - (void)setupPublishScreen
 {

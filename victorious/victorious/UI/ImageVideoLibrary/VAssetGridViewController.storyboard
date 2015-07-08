@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <scenes>
+        <!--Asset Grid View Controller-->
+        <scene sceneID="1xN-nc-6d0">
+            <objects>
+                <collectionViewController storyboardIdentifier="VAssetGridViewController" id="AjX-fm-XMv" customClass="VAssetGridViewController" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" id="2a9-vO-x6F">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.14901960780000001" green="0.14901960780000001" blue="0.14901960780000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="RjI-6O-ViI">
+                            <size key="itemSize" width="95" height="95"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="12" minY="12" maxX="12" maxY="12"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="VAssetCollectionViewCell" id="9lA-yL-MWa" customClass="VAssetCollectionViewCell">
+                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="95" height="95"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YU8-um-NoN">
+                                            <rect key="frame" x="0.0" y="0.0" width="95" height="95"/>
+                                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        </imageView>
+                                        <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wGW-pi-1De">
+                                            <rect key="frame" x="0.0" y="0.0" width="95" height="95"/>
+                                            <color key="backgroundColor" red="0.33333333329999998" green="0.67450980390000004" blue="0.93333333330000001" alpha="0.25" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </view>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <constraints>
+                                    <constraint firstItem="YU8-um-NoN" firstAttribute="top" secondItem="9lA-yL-MWa" secondAttribute="top" id="8Q4-4q-ung"/>
+                                    <constraint firstAttribute="trailing" secondItem="YU8-um-NoN" secondAttribute="trailing" id="DKy-7T-ekP"/>
+                                    <constraint firstItem="wGW-pi-1De" firstAttribute="leading" secondItem="9lA-yL-MWa" secondAttribute="leading" id="H0U-zz-fiU"/>
+                                    <constraint firstAttribute="trailing" secondItem="wGW-pi-1De" secondAttribute="trailing" id="KFV-Nn-I1a"/>
+                                    <constraint firstItem="YU8-um-NoN" firstAttribute="leading" secondItem="9lA-yL-MWa" secondAttribute="leading" id="R2d-Je-ASu"/>
+                                    <constraint firstItem="wGW-pi-1De" firstAttribute="top" secondItem="9lA-yL-MWa" secondAttribute="top" id="VJK-RO-Wm4"/>
+                                    <constraint firstAttribute="bottom" secondItem="wGW-pi-1De" secondAttribute="bottom" id="oMf-Bw-WT3"/>
+                                    <constraint firstAttribute="bottom" secondItem="YU8-um-NoN" secondAttribute="bottom" id="wZM-Io-HAc"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="imageView" destination="YU8-um-NoN" id="qAm-eD-GgI"/>
+                                    <outlet property="selectionView" destination="wGW-pi-1De" id="2sZ-Yt-NfK"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="AjX-fm-XMv" id="pdX-Nc-gCS"/>
+                            <outlet property="delegate" destination="AjX-fm-XMv" id="2H9-eJ-qc8"/>
+                        </connections>
+                    </collectionView>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="G8u-Kc-3jx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="595" y="-91"/>
+        </scene>
+    </scenes>
+</document>
