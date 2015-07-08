@@ -8,6 +8,10 @@
 
 #import "VStreamFocusHelper.h"
 
+/**
+ A subclass of VStreamFocusHelper to enable focus
+ funcionality in collection views.
+ */
 @interface VCollectionViewStreamFocusHelper : VStreamFocusHelper
 
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView;

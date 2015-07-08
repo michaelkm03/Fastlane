@@ -8,6 +8,10 @@
 
 #import "VStreamFocusHelper.h"
 
+/**
+ A subclass of VStreamFocusHelper to enable focus
+ funcionality in table views.
+ */
 @interface VTableViewStreamFocusHelper : VStreamFocusHelper
 
 - (instancetype)initWithTableView:(UITableView *)tableView;

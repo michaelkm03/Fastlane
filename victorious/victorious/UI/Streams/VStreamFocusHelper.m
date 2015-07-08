@@ -9,7 +9,7 @@
 #import "VStreamFocusHelper.h"
 #import "VStreamCellFocus.h"
 
-static const CGFloat VDefaultFocusVisibilityRatio = 0.9f;
+static const CGFloat VDefaultFocusVisibilityRatio = 0.8f;
 
 @implementation VStreamFocusHelper
 
@@ -79,6 +79,12 @@ static const CGFloat VDefaultFocusVisibilityRatio = 0.9f;
     {
         [self endFocusOnCell:cell];
     }
+}
+
+- (CGFloat)visibilityRatio
+{
+    CGFloat clamped = MIN(_visibilityRatio, 1);
+    return MAX(clamped, 0);
 }
 
 #pragma mark - Overrides
