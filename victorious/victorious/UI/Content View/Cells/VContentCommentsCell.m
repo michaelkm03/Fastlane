@@ -218,6 +218,10 @@ static NSCache *_sharedImageCache = nil;
                 self.commentAndMediaView.autoplayURL = [NSURL URLWithString:comment.mediaUrl];
             }
         }
+        else
+        {
+            self.commentAndMediaView.shouldAutoplay = NO;
+        }
     }
 
     self.commentCellUtilitiesController = [[VCommentCellUtilitesController alloc] initWithComment:self.comment
