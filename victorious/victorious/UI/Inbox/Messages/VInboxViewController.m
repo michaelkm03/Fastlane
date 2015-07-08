@@ -38,6 +38,7 @@
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "UIResponder+VResponderChain.h"
 #import "VDependencyManager+VNavigationItem.h"
+#import "VDependencyManager+VTracking.h"
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 
@@ -115,6 +116,8 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     [super viewWillAppear:animated];
     
+    [self.dependencyManager trackViewWillAppear:self];
+    
     [self.refreshControl beginRefreshing];
     [self refresh:nil];
 }
@@ -138,6 +141,9 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [self.dependencyManager trackViewWillDisappear:self];
+    
     [[VTrackingManager sharedInstance] endEvent:@"Inbox"];
     if (self.refreshRequest.isExecuting)
     {

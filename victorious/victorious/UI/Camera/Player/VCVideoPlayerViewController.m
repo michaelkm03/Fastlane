@@ -1059,6 +1059,15 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     self.trackingItem = nil;
 }
 
+- (NSString *)streamID
+{
+    if ( _streamID != nil )
+    {
+        return _streamID;
+    }
+    return @"";
+}
+
 #pragma mark - UIGestureRecognizerDelegate
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer

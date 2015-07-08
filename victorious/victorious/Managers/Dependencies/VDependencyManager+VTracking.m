@@ -6,7 +6,9 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import <objc/runtime.h>
 #import "VDependencyManager+VTracking.h"
+#import "VTrackingManager.h"
 
 NSString * const VTrackingStartKey                      = @"start";
 NSString * const VTrackingStopKey                       = @"stop";
@@ -20,7 +22,10 @@ NSString * const VTrackingCreateProfileDoneButtonTapKey = @"create_profile_done_
 NSString * const VTrackingRegisteButtonTapKey           = @"register_button_tap";
 NSString * const VTrackingSignUpButtonTapKey            = @"sign_up_button_tap";
 
+static NSString * const kTrackingViewKey                = @"view";
 static NSString * const kTrackingKey                    = @"tracking";
+
+static const char kAssociatedObjectViewWasHiddenKey;
 
 @implementation VDependencyManager (VTracking)
 
@@ -28,6 +33,40 @@ static NSString * const kTrackingKey                    = @"tracking";
 {
     NSDictionary *tracking = [self templateValueOfType:[NSDictionary class] forKey:kTrackingKey];
     return tracking[ eventURLKey ] ?: @[];
+}
+
+- (void)trackViewWillAppear:(UIViewController *)viewController
+{
+    [self trackViewWillAppear:viewController withParameters:nil];
+}
+
+- (void)trackViewWillAppear:(UIViewController *)viewController withParameters:(NSDictionary *)parameters
+{
+    NSNumber *number = objc_getAssociatedObject( viewController, &kAssociatedObjectViewWasHiddenKey );
+    BOOL wasHidden = number.boolValue;
+    if ( !wasHidden )
+    {
+        NSArray *urls = [self trackingURLsForKey:kTrackingViewKey];
+        
+        if ( urls  == nil )
+        {
+            VLog( @"A template component must have a tracking 'viewability' to be tracked with `trackViewWithParameters:`." );
+            return;
+        }
+        
+        NSMutableDictionary *combined = [[NSMutableDictionary alloc] initWithDictionary:parameters];
+        combined[ VTrackingKeyUrls ] = urls;
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventComponentDidBecomeVisible
+                                           parameters:[NSDictionary dictionaryWithDictionary:combined]];
+    }
+    
+    objc_setAssociatedObject( viewController, &kAssociatedObjectViewWasHiddenKey, @NO, OBJC_ASSOCIATION_RETAIN_NONATOMIC );
+}
+
+- (void)trackViewWillDisappear:(UIViewController *)viewController
+{
+    BOOL wasHidden = viewController.navigationController.viewControllers.count > 1 || viewController.presentedViewController != nil;
+    objc_setAssociatedObject( viewController, &kAssociatedObjectViewWasHiddenKey, @(wasHidden), OBJC_ASSOCIATION_RETAIN_NONATOMIC );
 }
 
 @end

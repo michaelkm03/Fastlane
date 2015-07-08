@@ -264,7 +264,7 @@ static const NSTimeInterval kAnimationDuration = 0.2;
                 typeof(self) __weak weakSelf = self;
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kFinishedTaskDisplayTime * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void)
                                {
-                                   typeof(weakSelf) strongSelf = weakSelf;
+                                   __strong typeof(weakSelf) strongSelf = weakSelf;
                                    if (strongSelf && [strongSelf.uploadProgressViews containsObject:uploadProgressView])
                                    {
                                        [self removeUpload:uploadProgressView animated:YES];

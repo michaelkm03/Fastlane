@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="kYh-dZ-t7J">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="kYh-dZ-t7J">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -64,7 +64,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xIg-N5-kgX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5542" y="-1345.5"/>
+            <point key="canvasLocation" x="-10391.25" y="-1421.3028169014083"/>
         </scene>
         <!--Settings-->
         <scene sceneID="sS9-Sh-Zfa">
@@ -78,6 +78,26 @@
                         <sections>
                             <tableViewSection id="iAG-GC-4SW">
                                 <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="r0B-CY-cMb" style="IBUITableViewCellStyleDefault" id="CsK-sK-e3v" customClass="VSettingsTableViewCell">
+                                        <rect key="frame" x="0.0" y="99" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CsK-sK-e3v" id="tNd-FX-x1f">
+                                            <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Posts I've Liked" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="r0B-CY-cMb">
+                                                    <rect key="frame" x="15" y="0.0" width="270" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="label" destination="r0B-CY-cMb" id="mtA-xF-j4V"/>
+                                        </connections>
+                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="xmy-by-M88" style="IBUITableViewCellStyleDefault" id="g7K-HM-Hn1" customClass="VSettingsTableViewCell">
                                         <rect key="frame" x="0.0" y="99" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -96,7 +116,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="label" destination="xmy-by-M88" id="Hwc-do-h6E"/>
-                                            <segue destination="Tch-Qc-dzd" kind="push" id="Ve9-kD-Gat"/>
+                                            <segue destination="Tch-Qc-dzd" kind="show" id="Ve9-kD-Gat"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="Ywp-Nm-FQ2" style="IBUITableViewCellStyleDefault" id="8Vp-DR-kUb" customClass="VSettingsTableViewCell">
@@ -164,7 +184,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="label" destination="c84-Tn-JWi" id="cDY-io-YF9"/>
-                                            <segue destination="2cC-vU-QEc" kind="push" id="KBD-ko-rAS"/>
+                                            <segue destination="2cC-vU-QEc" kind="show" id="KBD-ko-rAS"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="16U-jQ-75p" detailTextLabel="mv4-9Z-Mit" style="IBUITableViewCellStyleValue1" id="OQL-l9-rlJ" customClass="VSettingsTableViewCell">
@@ -192,7 +212,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="label" destination="16U-jQ-75p" id="GPh-BK-t45"/>
-                                            <segue destination="0nf-aa-3V6" kind="push" id="RfN-cX-kio"/>
+                                            <segue destination="0nf-aa-3V6" kind="show" id="RfN-cX-kio"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="jjo-ti-snK" detailTextLabel="U7G-Km-0yw" style="IBUITableViewCellStyleValue1" id="nwQ-31-lr9" customClass="VSettingsTableViewCell">
@@ -220,7 +240,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="label" destination="jjo-ti-snK" id="D16-sW-k9y"/>
-                                            <segue destination="6fa-Sd-wUR" kind="push" id="TH6-Ms-vjl"/>
+                                            <segue destination="6fa-Sd-wUR" kind="show" id="TH6-Ms-vjl"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="A70-cw-6uE" style="IBUITableViewCellStyleDefault" id="4Fr-do-ylo" customClass="VSettingsTableViewCell">
@@ -241,7 +261,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="label" destination="A70-cw-6uE" id="IJb-Lf-bsm"/>
-                                            <segue destination="p5c-fI-FBT" kind="push" id="bje-i4-g0X"/>
+                                            <segue destination="p5c-fI-FBT" kind="show" id="bje-i4-g0X"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="FNb-Ni-uJN" style="IBUITableViewCellStyleDefault" id="rci-iZ-Ffn" customClass="VSettingsTableViewCell">
@@ -293,7 +313,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="label" destination="yLq-Ze-kTh" id="mT7-UE-exb"/>
-                                            <segue destination="bDt-FM-3G4" kind="push" id="3z8-Mo-x2W"/>
+                                            <segue destination="bDt-FM-3G4" kind="show" id="3z8-Mo-x2W"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -318,7 +338,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="label" destination="mrn-LJ-NES" id="5n7-tR-eUd"/>
-                                            <segue destination="uRj-bL-JcU" kind="push" identifier="toAboutUs" id="Ds5-C5-aJc"/>
+                                            <segue destination="uRj-bL-JcU" kind="show" identifier="toAboutUs" id="Ds5-C5-aJc"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="vRt-M4-9nW" style="IBUITableViewCellStyleDefault" id="0L1-DZ-eiR" customClass="VSettingsTableViewCell">
@@ -339,7 +359,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="label" destination="vRt-M4-9nW" id="3yq-8Y-AGK"/>
-                                            <segue destination="lSu-os-HMa" kind="push" identifier="toPrivacyPolicies" id="dbw-tl-K2f"/>
+                                            <segue destination="lSu-os-HMa" kind="show" identifier="toPrivacyPolicies" id="dbw-tl-K2f"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -440,12 +460,13 @@
                         <outletCollection property="rightLabels" destination="iA5-m7-nZ8" id="3aM-0T-VgP"/>
                         <outletCollection property="labels" destination="A70-cw-6uE" id="Jf8-fY-4uM"/>
                         <outletCollection property="labels" destination="FNb-Ni-uJN" id="t2h-2h-SLk"/>
+                        <outletCollection property="labels" destination="r0B-CY-cMb" id="1uU-bP-mfq"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pFQ-S7-584" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <customObject id="KZM-ng-iup" customClass="VVideoSettings"/>
             </objects>
-            <point key="canvasLocation" x="-4828" y="-2426"/>
+            <point key="canvasLocation" x="-9052.5" y="-2562.676056338028"/>
         </scene>
         <!--Terms of Service-->
         <scene sceneID="80e-2h-oqv">
@@ -464,7 +485,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iy9-Va-wjh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4802" y="-1345.5"/>
+            <point key="canvasLocation" x="-9003.75" y="-1421.3028169014083"/>
         </scene>
         <!--New Environment-->
         <scene sceneID="WT7-1V-Wdy">
@@ -584,7 +605,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wg2-rQ-jp8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3661" y="-438.5"/>
+            <point key="canvasLocation" x="-6864.375" y="-463.20422535211264"/>
         </scene>
         <!--Change Password-->
         <scene sceneID="jgg-OK-3hB">
@@ -703,7 +724,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IwE-mi-tse" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3304" y="-1345.5"/>
+            <point key="canvasLocation" x="-6195" y="-1421.3028169014083"/>
         </scene>
         <!--Privacy Policy-->
         <scene sceneID="Dbm-PF-rlC">
@@ -722,7 +743,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UNw-LC-tuc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4418" y="-1345.5"/>
+            <point key="canvasLocation" x="-8283.75" y="-1421.3028169014083"/>
         </scene>
         <!--Server Environment-->
         <scene sceneID="quU-xZ-2Jq">
@@ -753,7 +774,7 @@
                     <navigationItem key="navigationItem" title="Server Environment" id="Pog-vT-DdP">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="aKy-FP-SPS">
                             <connections>
-                                <segue destination="weE-Ki-5IQ" kind="push" id="xIr-VI-cmI"/>
+                                <segue destination="weE-Ki-5IQ" kind="show" id="xIr-VI-cmI"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -761,7 +782,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Imd-KZ-Wo5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3661" y="-1345.5"/>
+            <point key="canvasLocation" x="-6864.375" y="-1421.3028169014083"/>
         </scene>
         <!--Purchase Settings-->
         <scene sceneID="oSl-bU-Faw">
@@ -857,7 +878,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mG7-xu-zJg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4041" y="-1345.5"/>
+            <point key="canvasLocation" x="-7576.875" y="-1421.3028169014083"/>
         </scene>
         <!--Video Autoplay Settings-->
         <scene sceneID="xfB-WG-Eh5">
@@ -894,7 +915,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hZd-LQ-jLU" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <customObject id="WPS-3i-wyQ" customClass="VVideoSettings"/>
             </objects>
-            <point key="canvasLocation" x="-5182" y="-1345.5"/>
+            <point key="canvasLocation" x="-9716.25" y="-1421.3028169014083"/>
         </scene>
         <!--Tracking Settings-->
         <scene sceneID="8Zb-26-6Dw">
@@ -931,12 +952,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AkG-Qq-U2G" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <customObject id="XnR-en-b6Q" customClass="VVideoSettings"/>
             </objects>
-            <point key="canvasLocation" x="-5906" y="-1345.5"/>
+            <point key="canvasLocation" x="-11073.75" y="-1421.3028169014083"/>
         </scene>
     </scenes>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

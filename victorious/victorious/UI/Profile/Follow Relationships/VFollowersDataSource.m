@@ -42,13 +42,13 @@
 - (NSString *)noContentTitle
 {
     const BOOL isCurrentUser = [[VObjectManager sharedManager].mainUser isEqual:self.user];
-    return isCurrentUser ? NSLocalizedString( @"ProfileNoFollowersTitle", @"" ) : NSLocalizedString( @"NoFollowersTitle", @"" );
+    return isCurrentUser ? NSLocalizedString( @"NoFollowersTitle", @"" ) : NSLocalizedString( @"ProfileNoFollowersTitle", @"" );
 }
 
 - (NSString *)noContentMessage
 {
     const BOOL isCurrentUser = [[VObjectManager sharedManager].mainUser isEqual:self.user];
-    return isCurrentUser ? NSLocalizedString( @"ProfileNoFollowersMessage", @"" ) : NSLocalizedString( @"NoFollowersMessage", @"" );
+    return isCurrentUser ? NSLocalizedString( @"NoFollowersMessage", @"" ) : NSLocalizedString( @"ProfileNoFollowersMessage", @"" );
 }
 
 - (UIImage *)noContentImage
