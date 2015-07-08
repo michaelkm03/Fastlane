@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-#import "VSequence.h"
-
 @class VTagSensitiveTextView;
 /**
  This view is used inside the comment and messaging views
