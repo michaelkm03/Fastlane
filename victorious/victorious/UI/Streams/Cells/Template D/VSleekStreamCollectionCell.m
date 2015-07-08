@@ -23,6 +23,7 @@
 #import "VSequenceExpressionsObserver.h"
 #import "VCellSizeCollection.h"
 #import "VCellSizingUserInfoKeys.h"
+#import "VActionButtonAnimationController.h"
 
 // These values must match the constraint values in interface builder
 static const CGFloat kSleekCellHeaderHeight = 50.0f;
@@ -46,6 +47,7 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
 @property (nonatomic, weak ) IBOutlet NSLayoutConstraint *captionHeight;
 @property (nonatomic, strong) UIView *dimmingContainer;
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
+@property (nonatomic, strong) VActionButtonAnimationController *actionButtonAnimationController;
 @property (nonatomic, weak) IBOutlet VSequenceCountsTextView *countsTextView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *captiontoPreviewVerticalSpacing;
 
@@ -63,6 +65,7 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
     [self setupDimmingContainer];
     
     self.countsTextView.textSelectionDelegate = self;
+    self.actionButtonAnimationController = [[VActionButtonAnimationController alloc] init];
 }
 
 + (VCellSizeCollection *)cellLayoutCollection
@@ -191,8 +194,11 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
     self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
     [self.expressionsObserver startObservingWithSequence:sequence onUpdate:^
      {
-         welf.sleekActionView.likeButton.selected = sequence.isLikedByMainUser.boolValue;
          [welf updateCountsTextViewForSequence:sequence];
+         [welf.actionButtonAnimationController setButton:welf.sleekActionView.likeButton
+                                                selected:sequence.isLikedByMainUser.boolValue];
+         [welf.actionButtonAnimationController setButton:welf.sleekActionView.repostButton
+                                                selected:sequence.hasReposted.boolValue];
      }];
 }
 

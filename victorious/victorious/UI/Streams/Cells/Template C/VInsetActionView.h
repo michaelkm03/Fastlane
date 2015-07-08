@@ -16,6 +16,10 @@
  */
 @interface VInsetActionView : VAbstractActionView <VHasManagedDependencies>
 
+@property (nonatomic, strong, readonly) VActionButton *gifButton;
+@property (nonatomic, strong, readonly) VActionButton *memeButton;
+@property (nonatomic, strong, readonly) VActionButton *repostButton;
+@property (nonatomic, strong, readonly) VActionButton *commentButton;
 @property (nonatomic, strong, readonly) VActionButton *likeButton;
 
 @end
