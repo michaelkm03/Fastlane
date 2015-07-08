@@ -212,9 +212,9 @@ static const char kAssociatedObjectSourceViewControllerKey;
     return nil;
 }
 
-- (VBarButton *)barButtonFromNavigationItem:(UINavigationItem *)navigationItme forIdentifier:(NSString *)identifier
+- (VBarButton *)barButtonFromNavigationItem:(UINavigationItem *)navigationItem forIdentifier:(NSString *)identifier
 {
-    UIBarButtonItem *barButtonItem = [self barButtonItemFromNavigationItem:navigationItme forIdentifier:identifier];
+    UIBarButtonItem *barButtonItem = [self barButtonItemFromNavigationItem:navigationItem forIdentifier:identifier];
     VBarButton *barButton = (VBarButton *)barButtonItem.customView;
     if ( barButton != nil && [barButton isKindOfClass:[VBarButton class]] )
     {
@@ -223,7 +223,7 @@ static const char kAssociatedObjectSourceViewControllerKey;
     return nil;
 }
 
-- (UIBarButtonItem *)barButtonItemFromNavigationItem:(UINavigationItem *)navigationItme forIdentifier:(NSString *)identifier
+- (UIBarButtonItem *)barButtonItemFromNavigationItem:(UINavigationItem *)navigationItem forIdentifier:(NSString *)identifier
 {
     __block VBarButtonItem *foundItem = nil;
     NSPredicate *searchPredicate = [NSPredicate predicateWithBlock:^BOOL(VBarButtonItem *item, NSDictionary *bindings)
@@ -231,13 +231,13 @@ static const char kAssociatedObjectSourceViewControllerKey;
         return [item isKindOfClass:[VBarButtonItem class]] && [item.menuItem.identifier isEqualToString:identifier];
     }];
     
-    foundItem = [navigationItme.leftBarButtonItems filteredArrayUsingPredicate:searchPredicate].firstObject;
+    foundItem = [navigationItem.leftBarButtonItems filteredArrayUsingPredicate:searchPredicate].firstObject;
     if ( foundItem != nil )
     {
         return foundItem;
     }
     
-    foundItem = [navigationItme.rightBarButtonItems filteredArrayUsingPredicate:searchPredicate].firstObject;
+    foundItem = [navigationItem.rightBarButtonItems filteredArrayUsingPredicate:searchPredicate].firstObject;
     if ( foundItem != nil )
     {
         return foundItem;

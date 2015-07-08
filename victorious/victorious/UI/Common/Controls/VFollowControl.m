@@ -107,30 +107,21 @@ static NSString * const kFollowedBackgroundIconKey = @"following_ground_icon";
 
 - (void)setFollowing:(BOOL)following animated:(BOOL)animated
 {
-    [self setFollowing:following animated:animated withAnimationBlock:nil];
-}
-
-- (void)setFollowing:(BOOL)following animated:(BOOL)animated withAnimationBlock:(void (^)(void))animationBlock
-{
-    void (^fullAnimationBlock)(void) = ^
+    void (^animationBlock)(void) = ^
     {
         self.following = following;
-        if ( animationBlock != nil )
-        {
-            animationBlock();
-        }
     };
     
     if ( !animated )
     {
-        fullAnimationBlock();
+        animationBlock();
         return;
     }
     
     [UIView transitionWithView:self
                       duration:kHighlightAnimationDuration
                        options:UIViewAnimationOptionTransitionFlipFromTop | UIViewAnimationOptionBeginFromCurrentState
-                    animations:fullAnimationBlock
+                    animations:animationBlock
                     completion:nil];
 }
 
