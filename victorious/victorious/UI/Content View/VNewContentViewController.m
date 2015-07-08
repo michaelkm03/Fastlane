@@ -600,7 +600,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [self.contentCollectionView flashScrollIndicators];
     
     // Update cell focus
-    [self.focusHelper updateCellFocus];
+    [self.focusHelper updateFocus];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -644,6 +644,14 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     self.videoCell.delegate = nil;
     
     [self.commentHighlighter stopAnimations];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    // Stop all video cells
+    [self.focusHelper endFocusOnAllCells];
 }
 
 - (void)presentViewController:(UIViewController *)viewControllerToPresent
@@ -1371,8 +1379,8 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    // End focus on this cell
-    [self.focusHelper manuallyEndFocusOnCell:cell];
+    // End focus on this cell to stop video if there is one
+    [self.focusHelper endFocusOnCell:cell];
 }
 
 #pragma mark UIScrollViewDelegate
@@ -1395,7 +1403,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     }
     
     // Update focus on cells
-    [self.focusHelper updateCellFocus];
+    [self.focusHelper updateFocus];
 }
 
 #pragma mark - VContentVideoCellDelegate

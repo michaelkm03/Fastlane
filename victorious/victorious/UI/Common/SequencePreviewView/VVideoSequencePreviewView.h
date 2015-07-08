@@ -12,6 +12,6 @@
 /**
  *  A Sequence preview view for video sequences.
  */
-@interface VVideoSequencePreviewView : VSequencePreviewView <VStreamCellFocus>
+@interface VVideoSequencePreviewView : VSequencePreviewView <VCellFocus>
 
 @end

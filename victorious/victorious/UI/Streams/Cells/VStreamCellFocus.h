@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol VStreamCellFocus <NSObject>
+@protocol VCellFocus <NSObject>
 
 /**
  *  Informs the reciever that is thas the focus of the user and should do any 

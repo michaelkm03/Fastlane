@@ -697,8 +697,9 @@
 		C39B220B1B0A58EF00D3DFE7 /* VPermissionMicrophone.m in Sources */ = {isa = PBXBuildFile; fileRef = C39B220A1B0A58EF00D3DFE7 /* VPermissionMicrophone.m */; };
 		C39B220E1B0A693600D3DFE7 /* VPermissionProfilePicture.m in Sources */ = {isa = PBXBuildFile; fileRef = C39B220D1B0A693600D3DFE7 /* VPermissionProfilePicture.m */; };
 		C3E772141B44B3FD005809A5 /* VLikedContentStreamCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E772131B44B3FD005809A5 /* VLikedContentStreamCollectionViewController.m */; };
-		C3E772201B4DBA78005809A5 /* VAbstractStreamFocusHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E7721F1B4DBA78005809A5 /* VAbstractStreamFocusHelper.m */; };
+		C3E772201B4DBA78005809A5 /* VStreamFocusHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E7721F1B4DBA78005809A5 /* VStreamFocusHelper.m */; };
 		C3E772231B4DBC96005809A5 /* VCollectionViewStreamFocusHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E772221B4DBC96005809A5 /* VCollectionViewStreamFocusHelper.m */; };
+		C3E772271B4DD163005809A5 /* VTableViewStreamFocusHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E772261B4DD163005809A5 /* VTableViewStreamFocusHelper.m */; };
 		D800A61A1AF01B6100F1A06A /* VCameraCoachMarkAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D800A6191AF01B6100F1A06A /* VCameraCoachMarkAnimator.m */; };
 		D80536241B17B4310049B77A /* VPromptCarouselViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D80536231B17B4310049B77A /* VPromptCarouselViewController.m */; };
 		D80536271B17B5CB0049B77A /* VPromptCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D80536261B17B5CB0049B77A /* VPromptCollectionViewCell.m */; };
@@ -2304,10 +2305,12 @@
 		C39B220D1B0A693600D3DFE7 /* VPermissionProfilePicture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPermissionProfilePicture.m; path = Permissions/VPermissionProfilePicture.m; sourceTree = "<group>"; };
 		C3E772121B44B3FD005809A5 /* VLikedContentStreamCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLikedContentStreamCollectionViewController.h; sourceTree = "<group>"; };
 		C3E772131B44B3FD005809A5 /* VLikedContentStreamCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLikedContentStreamCollectionViewController.m; sourceTree = "<group>"; };
-		C3E7721E1B4DBA78005809A5 /* VAbstractStreamFocusHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractStreamFocusHelper.h; sourceTree = "<group>"; };
-		C3E7721F1B4DBA78005809A5 /* VAbstractStreamFocusHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractStreamFocusHelper.m; sourceTree = "<group>"; };
+		C3E7721E1B4DBA78005809A5 /* VStreamFocusHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamFocusHelper.h; sourceTree = "<group>"; };
+		C3E7721F1B4DBA78005809A5 /* VStreamFocusHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamFocusHelper.m; sourceTree = "<group>"; };
 		C3E772211B4DBC96005809A5 /* VCollectionViewStreamFocusHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCollectionViewStreamFocusHelper.h; sourceTree = "<group>"; };
 		C3E772221B4DBC96005809A5 /* VCollectionViewStreamFocusHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCollectionViewStreamFocusHelper.m; sourceTree = "<group>"; };
+		C3E772251B4DD163005809A5 /* VTableViewStreamFocusHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTableViewStreamFocusHelper.h; sourceTree = "<group>"; };
+		C3E772261B4DD163005809A5 /* VTableViewStreamFocusHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTableViewStreamFocusHelper.m; sourceTree = "<group>"; };
 		C7B45F61E6B2831D5E9459C3 /* libPods-victorious-test.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-victorious-test.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D800A6161AEEAA0F00F1A06A /* VCompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCompatibility.h; sourceTree = "<group>"; };
 		D800A6181AF01B6100F1A06A /* VCameraCoachMarkAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCameraCoachMarkAnimator.h; sourceTree = "<group>"; };
@@ -3524,6 +3527,7 @@
 		0314D43319B46B5E00FA363C /* Streams */ = {
 			isa = PBXGroup;
 			children = (
+				C3E772241B4DD12A005809A5 /* Focus */,
 				C39864AE1B1E7F7700694AB3 /* Parallax */,
 				A7AEF96C1A83F1C300A3D3A0 /* Cells */,
 				F06F10C31AC201B90062E1D1 /* Directory */,
@@ -3544,10 +3548,6 @@
 				A7AEF99C1A83F1C300A3D3A0 /* VStreamCollectionViewDataSource.m */,
 				C3E772121B44B3FD005809A5 /* VLikedContentStreamCollectionViewController.h */,
 				C3E772131B44B3FD005809A5 /* VLikedContentStreamCollectionViewController.m */,
-				C3E7721E1B4DBA78005809A5 /* VAbstractStreamFocusHelper.h */,
-				C3E7721F1B4DBA78005809A5 /* VAbstractStreamFocusHelper.m */,
-				C3E772211B4DBC96005809A5 /* VCollectionViewStreamFocusHelper.h */,
-				C3E772221B4DBC96005809A5 /* VCollectionViewStreamFocusHelper.m */,
 			);
 			path = Streams;
 			sourceTree = "<group>";
@@ -5734,6 +5734,19 @@
 			name = "Bar Buttons";
 			sourceTree = "<group>";
 		};
+		C3E772241B4DD12A005809A5 /* Focus */ = {
+			isa = PBXGroup;
+			children = (
+				C3E7721E1B4DBA78005809A5 /* VStreamFocusHelper.h */,
+				C3E7721F1B4DBA78005809A5 /* VStreamFocusHelper.m */,
+				C3E772211B4DBC96005809A5 /* VCollectionViewStreamFocusHelper.h */,
+				C3E772221B4DBC96005809A5 /* VCollectionViewStreamFocusHelper.m */,
+				C3E772251B4DD163005809A5 /* VTableViewStreamFocusHelper.h */,
+				C3E772261B4DD163005809A5 /* VTableViewStreamFocusHelper.m */,
+			);
+			name = Focus;
+			sourceTree = "<group>";
+		};
 		D80A94D31A535DFA0035D788 /* Video */ = {
 			isa = PBXGroup;
 			children = (
@@ -7164,6 +7177,7 @@
 				A7B98A3D1A264D0900C58335 /* VNotificationSettingCell.m in Sources */,
 				BEA31EE9192292F300A90A10 /* VComment+Fetcher.m in Sources */,
 				A79869EE1AD7124D00F2564A /* VInboxDeepLinkHandler.m in Sources */,
+				C3E772271B4DD163005809A5 /* VTableViewStreamFocusHelper.m in Sources */,
 				C39413B81B17B38300579A8E /* VStreamCollectionViewParallaxFlowLayout.m in Sources */,
 				0314D48219B46B5E00FA363C /* VCommentsContainerViewController.m in Sources */,
 				A758DC421ABA09F800EB4604 /* VFirstInstallManager.m in Sources */,
@@ -7658,7 +7672,7 @@
 				DBDD7D5F1A97F4EE0023CBF9 /* VLocationManager.m in Sources */,
 				A7724FE11B32432D00B1BBB3 /* VLikersDataSource.m in Sources */,
 				F0F04AE51B29E12B00F6F401 /* VPublishShareCollectionViewCell.m in Sources */,
-				C3E772201B4DBA78005809A5 /* VAbstractStreamFocusHelper.m in Sources */,
+				C3E772201B4DBA78005809A5 /* VStreamFocusHelper.m in Sources */,
 				D839D6921B16A64000FAFBD0 /* VEnterProfilePictureCameraViewController.m in Sources */,
 				DB531B561A425A7200B4ADC8 /* VHashtag.m in Sources */,
 				A7ECC1CC1AD617480003E00A /* VImageToolController.m in Sources */,

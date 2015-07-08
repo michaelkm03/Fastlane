@@ -19,7 +19,7 @@
 /**
  *  VTileOverlayCollectionCell a.k.a. Template A cell.
  */
-@interface VTileOverlayCollectionCell : VBaseCollectionViewCell <VHasManagedDependencies, VBackgroundContainer, VStreamCellComponentSpecialization, VStreamCellFocus, VStreamCellTracking, VHighlighting>
+@interface VTileOverlayCollectionCell : VBaseCollectionViewCell <VHasManagedDependencies, VBackgroundContainer, VStreamCellComponentSpecialization, VCellFocus, VStreamCellTracking, VHighlighting>
 
 /**
  *  Sizing method. All parameters are required.

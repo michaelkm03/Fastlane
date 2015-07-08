@@ -40,6 +40,7 @@
 #import "VDependencyManager+VUserProfile.h"
 #import "UIView+AutoLayout.h"
 #import "VNoContentView.h"
+#import "VTableViewStreamFocusHelper.h"
 
 @import Social;
 
@@ -52,6 +53,7 @@
 @property (nonatomic, strong) NSArray *comments;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VNoContentView *noContentView;
+@property (nonatomic, strong) VTableViewStreamFocusHelper *focusHelper;
 
 @end
 
@@ -90,6 +92,9 @@
     self.noContentView.message = NSLocalizedString(@"NoCommentsMessage", @"");
     self.noContentView.icon = [UIImage imageNamed:@"noCommentIcon"];
     self.tableView.backgroundView = nil;
+    
+    // Initialize our focus helper
+    self.focusHelper = [[VTableViewStreamFocusHelper alloc] initWithTableView:self.tableView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -103,6 +108,9 @@
         [self.refreshControl beginRefreshing];
     }
     
+    // Update cell focus
+    [self.focusHelper updateFocus];
+    
     [[VTrackingManager sharedInstance] setValue:VTrackingValueCommentsView forSessionParameterWithKey:VTrackingKeyContext];
 }
 
@@ -111,6 +119,13 @@
     [super viewWillDisappear:animated];
     
     [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    [self.focusHelper endFocusOnAllCells];
 }
 
 #pragma mark - Property Accessors
@@ -324,6 +339,12 @@
     }
 }
 
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // End focus on this cell to stop video if there is one
+    [self.focusHelper endFocusOnCell:cell];
+}
+
 #pragma mark - UITableViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -332,6 +353,9 @@
     {
         [self loadNextPageAction];
     }
+    
+    // Update cell focus for videos
+    [self.focusHelper updateFocus];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

@@ -524,9 +524,9 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ( [cell conformsToProtocol:@protocol(VStreamCellFocus)] )
+    if ( [cell conformsToProtocol:@protocol(VCellFocus)] )
     {
-        [(id <VStreamCellFocus>)cell setHasFocus:NO];
+        [(id <VCellFocus>)cell setHasFocus:NO];
     }
 }
 
@@ -915,10 +915,10 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
              return;
          }
          
-         id <VStreamCellFocus>focusCell;
-         if ( [cell conformsToProtocol:@protocol(VStreamCellFocus)] )
+         id <VCellFocus>focusCell;
+         if ( [cell conformsToProtocol:@protocol(VCellFocus)] )
          {
-             focusCell = (id <VStreamCellFocus>)cell;
+             focusCell = (id <VCellFocus>)cell;
          }
          
          // Calculate visible ratio for just the media content of the cell
@@ -930,17 +930,17 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
              const float mediaContentVisibleRatio = CGRectGetHeight( contentIntersection ) / CGRectGetHeight( contentFrameInCell );
              if ( mediaContentVisibleRatio >= 0.8f )
              {
-                 if ( [cell conformsToProtocol:@protocol(VStreamCellFocus)] )
+                 if ( [cell conformsToProtocol:@protocol(VCellFocus)] )
                  {
-                     [(id <VStreamCellFocus>)cell setHasFocus:YES];
+                     [(id <VCellFocus>)cell setHasFocus:YES];
                  }
                  didPlayVideo = YES;
              }
              else
              {
-                 if ( [cell conformsToProtocol:@protocol(VStreamCellFocus)] )
+                 if ( [cell conformsToProtocol:@protocol(VCellFocus)] )
                  {
-                     [(id <VStreamCellFocus>)cell setHasFocus:NO];
+                     [(id <VCellFocus>)cell setHasFocus:NO];
                  }
              }
          }

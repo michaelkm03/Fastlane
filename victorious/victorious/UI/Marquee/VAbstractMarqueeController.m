@@ -133,10 +133,10 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
         VStreamItem *focusedStreamItem = self.stream.marqueeItems[currentFocusPage];
         for ( VAbstractMarqueeStreamItemCell *cell in self.collectionView.visibleCells )
         {
-            if ( [cell.previewView conformsToProtocol:@protocol(VStreamCellFocus)] )
+            if ( [cell.previewView conformsToProtocol:@protocol(VCellFocus)] )
             {
                 BOOL hasFocus = [focusedStreamItem isEqual:cell.streamItem];
-                [(VStreamItemPreviewView <VStreamCellFocus> *)cell.previewView setHasFocus:hasFocus];
+                [(VStreamItemPreviewView <VCellFocus> *)cell.previewView setHasFocus:hasFocus];
             }
         }
     }

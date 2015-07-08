@@ -19,21 +19,23 @@
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView
 {
     self = [super init];
-    if (self != nil)
+    if (self)
     {
         _collectionView = collectionView;
     }
     return self;
 }
 
-- (void)updateCellFocus
+#pragma mark - Overrides
+
+- (UIScrollView *)scrollView
 {
-    [super updateFocusWithScrollView:self.collectionView visibleCells:self.collectionView.visibleCells];
+    return self.collectionView;
 }
 
-- (void)manuallyEndFocusOnCollectionViewCell:(UICollectionViewCell *)cell
+- (NSArray *)visibleCells
 {
-    [super manuallyEndFocusOnCell:cell];
+    return self.collectionView.visibleCells;
 }
 
 @end

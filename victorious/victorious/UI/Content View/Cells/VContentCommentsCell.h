@@ -15,7 +15,7 @@
 /**
  *  UICollectionViewCell for representing a general comment on an item.
  */
-@interface VContentCommentsCell : VSwipeCollectionViewCell <VStreamCellFocus>
+@interface VContentCommentsCell : VSwipeCollectionViewCell <VCellFocus>
 
 @property (nonatomic, strong) VComment *comment;
 @property (nonatomic, readonly) NSURL *mediaURL;

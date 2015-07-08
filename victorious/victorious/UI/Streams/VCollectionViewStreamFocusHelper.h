@@ -6,13 +6,10 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VAbstractStreamFocusHelper.h"
+#import "VStreamFocusHelper.h"
 
-@interface VCollectionViewStreamFocusHelper : VAbstractStreamFocusHelper
+@interface VCollectionViewStreamFocusHelper : VStreamFocusHelper
 
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView;
-
-- (void)updateCellFocus;
-- (void)manuallyEndFocusOnCollectionViewCell:(UICollectionViewCell *)cell;
 
 @end
