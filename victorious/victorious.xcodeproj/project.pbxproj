@@ -335,7 +335,6 @@
 		A6EC327B1B3B50C400824022 /* publishScreen.json in Resources */ = {isa = PBXBuildFile; fileRef = A6EC327A1B3B50C400824022 /* publishScreen.json */; };
 		A6EC327D1B3B50E300824022 /* pollWorkspace.json in Resources */ = {isa = PBXBuildFile; fileRef = A6EC327C1B3B50E200824022 /* pollWorkspace.json */; };
 		A6EC32951B3B5A6600824022 /* imageVideoTemplateScreen.json in Resources */ = {isa = PBXBuildFile; fileRef = A6EC32941B3B5A6600824022 /* imageVideoTemplateScreen.json */; };
-		A6EC32991B3B5AED00824022 /* VImageVideoLibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6EC32981B3B5AED00824022 /* VImageVideoLibraryViewController.m */; };
 		A6F0D5EA1B3641C50017F955 /* VCreationFlowShim.m in Sources */ = {isa = PBXBuildFile; fileRef = A6F0D5E91B3641C50017F955 /* VCreationFlowShim.m */; };
 		A70417631A365EE80042CABD /* VPurchaseRecordTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A70417621A365EE80042CABD /* VPurchaseRecordTests.m */; };
 		A70564BC19E7817C004A8387 /* VObjectManager+Discover.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564BB19E7817C004A8387 /* VObjectManager+Discover.m */; };
@@ -1670,7 +1669,6 @@
 		A6EC327A1B3B50C400824022 /* publishScreen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = publishScreen.json; sourceTree = "<group>"; };
 		A6EC327C1B3B50E200824022 /* pollWorkspace.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = pollWorkspace.json; sourceTree = "<group>"; };
 		A6EC32941B3B5A6600824022 /* imageVideoTemplateScreen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = imageVideoTemplateScreen.json; sourceTree = "<group>"; };
-		A6EC32981B3B5AED00824022 /* VImageVideoLibraryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageVideoLibraryViewController.m; sourceTree = "<group>"; };
 		A6F0D5E81B3641C50017F955 /* VCreationFlowShim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreationFlowShim.h; sourceTree = "<group>"; };
 		A6F0D5E91B3641C50017F955 /* VCreationFlowShim.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCreationFlowShim.m; sourceTree = "<group>"; };
 		A70417621A365EE80042CABD /* VPurchaseRecordTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseRecordTests.m; sourceTree = "<group>"; };
@@ -4423,7 +4421,6 @@
 				A631F0951B4D99B600CC6C80 /* VAssetGridViewController.storyboard */,
 				A6CC23C51B4B2A0600141DD6 /* VAssetGroupTableViewCell.h */,
 				A6CC23C61B4B2A0600141DD6 /* VAssetGroupTableViewCell.m */,
-				A6EC32981B3B5AED00824022 /* VImageVideoLibraryViewController.m */,
 			);
 			path = ImageVideoLibrary;
 			sourceTree = "<group>";
@@ -7728,7 +7725,6 @@
 				039ED29E19C908F400305987 /* VVideoDownloadProgressIndicatorView.m in Sources */,
 				A75ED00C1AB0B6D100C35063 /* VFilterTool.m in Sources */,
 				A75ED0BA1AB78C7400C35063 /* VHashtagPickerDataSource.m in Sources */,
-				A6EC32991B3B5AED00824022 /* VImageVideoLibraryViewController.m in Sources */,
 				D8B827DD19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m in Sources */,
 				F0F04AC11B1E053900F6F401 /* VStream.m in Sources */,
 				BE799B9219C8A91C0023CE88 /* VNode.m in Sources */,
