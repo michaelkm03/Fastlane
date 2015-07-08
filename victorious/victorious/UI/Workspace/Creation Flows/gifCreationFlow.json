@@ -1,0 +1,24 @@
+{
+    "name":"gif.creationFlow",
+    "closeIcon": {
+        "imageURL":"cameraButtonClose"
+    },
+    "navBarBackground": {
+        "name": "solidColor.background",
+        "color": {
+            "red": 0,
+            "alpha": 255,
+            "blue": 0,
+            "green": 0
+        }
+    },
+    "barTintColor": {
+        "red": 255,
+        "alpha": 255,
+        "blue": 255,
+        "green": 255
+    },
+    "captureScreen":{
+        "referenceID":"testingImageVideoLibrary"
+    }
+}

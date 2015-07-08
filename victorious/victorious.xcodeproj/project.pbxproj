@@ -319,6 +319,10 @@
 		A6DAEB571B4C43D100935EA0 /* VPollCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DAEB561B4C43D100935EA0 /* VPollCreationFlowController.m */; };
 		A6DAEB591B4C442B00935EA0 /* pollCreationFlow.json in Resources */ = {isa = PBXBuildFile; fileRef = A6DAEB581B4C442B00935EA0 /* pollCreationFlow.json */; };
 		A6DAEB5C1B4C786E00935EA0 /* VRemixPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DAEB5B1B4C786E00935EA0 /* VRemixPresenter.m */; };
+		A6DAEB5F1B4C8DCA00935EA0 /* VVideoCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DAEB5E1B4C8DCA00935EA0 /* VVideoCreationFlowController.m */; };
+		A6DAEB621B4C8DF900935EA0 /* VGIFCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DAEB611B4C8DF900935EA0 /* VGIFCreationFlowController.m */; };
+		A6DAEB641B4C94AE00935EA0 /* gifCreationFlow.json in Resources */ = {isa = PBXBuildFile; fileRef = A6DAEB631B4C94AE00935EA0 /* gifCreationFlow.json */; };
+		A6DAEB661B4C94B800935EA0 /* videoCreationFlow.json in Resources */ = {isa = PBXBuildFile; fileRef = A6DAEB651B4C94B800935EA0 /* videoCreationFlow.json */; };
 		A6EC32671B3B488200824022 /* staticCreateSheet.json in Resources */ = {isa = PBXBuildFile; fileRef = A6EC32661B3B488200824022 /* staticCreateSheet.json */; };
 		A6EC32731B3B508B00824022 /* cameraScreen.json in Resources */ = {isa = PBXBuildFile; fileRef = A6EC32721B3B508B00824022 /* cameraScreen.json */; };
 		A6EC32771B3B50AE00824022 /* imageWorkspace.json in Resources */ = {isa = PBXBuildFile; fileRef = A6EC32761B3B50AE00824022 /* imageWorkspace.json */; };
@@ -1641,6 +1645,12 @@
 		A6DAEB581B4C442B00935EA0 /* pollCreationFlow.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = pollCreationFlow.json; sourceTree = "<group>"; };
 		A6DAEB5A1B4C786E00935EA0 /* VRemixPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRemixPresenter.h; sourceTree = "<group>"; };
 		A6DAEB5B1B4C786E00935EA0 /* VRemixPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRemixPresenter.m; sourceTree = "<group>"; };
+		A6DAEB5D1B4C8DCA00935EA0 /* VVideoCreationFlowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoCreationFlowController.h; sourceTree = "<group>"; };
+		A6DAEB5E1B4C8DCA00935EA0 /* VVideoCreationFlowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoCreationFlowController.m; sourceTree = "<group>"; };
+		A6DAEB601B4C8DF900935EA0 /* VGIFCreationFlowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGIFCreationFlowController.h; sourceTree = "<group>"; };
+		A6DAEB611B4C8DF900935EA0 /* VGIFCreationFlowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VGIFCreationFlowController.m; sourceTree = "<group>"; };
+		A6DAEB631B4C94AE00935EA0 /* gifCreationFlow.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = gifCreationFlow.json; sourceTree = "<group>"; };
+		A6DAEB651B4C94B800935EA0 /* videoCreationFlow.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = videoCreationFlow.json; sourceTree = "<group>"; };
 		A6EC32661B3B488200824022 /* staticCreateSheet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = staticCreateSheet.json; sourceTree = "<group>"; };
 		A6EC326E1B3B4E9B00824022 /* VCreationTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VCreationTypes.h; sourceTree = "<group>"; };
 		A6EC32721B3B508B00824022 /* cameraScreen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = cameraScreen.json; sourceTree = "<group>"; };
@@ -4352,6 +4362,12 @@
 				A6DAEB551B4C43D100935EA0 /* VPollCreationFlowController.h */,
 				A6DAEB561B4C43D100935EA0 /* VPollCreationFlowController.m */,
 				A6DAEB581B4C442B00935EA0 /* pollCreationFlow.json */,
+				A6DAEB5D1B4C8DCA00935EA0 /* VVideoCreationFlowController.h */,
+				A6DAEB5E1B4C8DCA00935EA0 /* VVideoCreationFlowController.m */,
+				A6DAEB601B4C8DF900935EA0 /* VGIFCreationFlowController.h */,
+				A6DAEB611B4C8DF900935EA0 /* VGIFCreationFlowController.m */,
+				A6DAEB631B4C94AE00935EA0 /* gifCreationFlow.json */,
+				A6DAEB651B4C94B800935EA0 /* videoCreationFlow.json */,
 			);
 			path = "Creation Flows";
 			sourceTree = "<group>";
@@ -6920,7 +6936,9 @@
 				D8E7EBCC19CCA540007DA693 /* VSectionHandleReusableView.xib in Resources */,
 				A7724FE61B3248C400B1BBB3 /* VFollowerTableViewCell.xib in Resources */,
 				D811BBBF19B92F75007398BF /* homeHeaderImage.png in Resources */,
+				A6DAEB661B4C94B800935EA0 /* videoCreationFlow.json in Resources */,
 				D8B44CD31ADCB3A4006340E8 /* VSleekStreamCollectionCell.xib in Resources */,
+				A6DAEB641B4C94AE00935EA0 /* gifCreationFlow.json in Resources */,
 				036F38791A0C4DEA0014DF66 /* LeagueGothic-Regular.otf in Resources */,
 				D8D8129E1B13849E00E93B37 /* VModernLoginViewController.storyboard in Resources */,
 				A7E398601A34F6E1000E4CAC /* creator-avatar@2x.png in Resources */,
@@ -7232,6 +7250,7 @@
 				A7B514551A4517A80074282F /* VSwipeViewController.m in Sources */,
 				0314D50A19B46BCB00FA363C /* UIView+Masking.m in Sources */,
 				F0AD217D1AF43E3D001BDCC6 /* VShowcaseDirectoryCell.m in Sources */,
+				A6DAEB5F1B4C8DCA00935EA0 /* VVideoCreationFlowController.m in Sources */,
 				F07E825D1AEF35BE00821CEA /* VDiscoverHeaderView.m in Sources */,
 				A601FB491B4354D10050536C /* VImageCreationFlowController.m in Sources */,
 				A7EB574D1AF8402A006AA1CF /* VURLDetector.m in Sources */,
@@ -7464,6 +7483,7 @@
 				D8360CF019E3768300D7E260 /* VExperienceEnhancerController.m in Sources */,
 				D8FFB8E21B0272540022A491 /* VStreamLabel.m in Sources */,
 				0308B1191AB2B00100144E53 /* VInsetStreamCollectionCell.m in Sources */,
+				A6DAEB621B4C8DF900935EA0 /* VGIFCreationFlowController.m in Sources */,
 				F05AA9821A83F6E3002F8917 /* VInlineSearchTableViewController.m in Sources */,
 				BEC833BE19D364A500341EA9 /* VPollResult.m in Sources */,
 				03CF1520195CFBE600F6477B /* NSArray+VMap.m in Sources */,

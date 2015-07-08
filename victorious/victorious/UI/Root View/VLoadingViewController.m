@@ -225,6 +225,8 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
         [templateDecorator setComponentWithFilename:@"imageVideoTemplateScreen" forKeyPath:@"scaffold/imageVideoLibrary"];
         [templateDecorator setComponentWithFilename:@"imageCreationFlow" forKeyPath:@"scaffold/imageCreateFlow"];
         [templateDecorator setComponentWithFilename:@"textCreationFlow" forKeyPath:@"scaffold/textCreateFlow"];
+        [templateDecorator setComponentWithFilename:@"gifCreationFlow" forKeyPath:@"scaffold/gifCreateFlow"];
+        [templateDecorator setComponentWithFilename:@"videoCreationFlow" forKeyPath:@"scaffold/videoCreateFlow"];
         
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate

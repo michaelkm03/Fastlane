@@ -74,6 +74,10 @@
 	<string>VTextWorkspaceFlowController</string>
 	<key>poll.creationFlow</key>
 	<string>VPollCreationFlowController</string>
+	<key>video.creationFlow</key>
+	<string>VVideoCreationFlowController</string>
+	<key>gif.creationFlow</key>
+	<string>VGIFCreationFlowController</string>
 	<key>pollCreation.screen</key>
 	<string>VCreatePollViewController</string>
 	<key>sideMenu.scaffold</key>

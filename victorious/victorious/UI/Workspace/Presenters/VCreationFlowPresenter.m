@@ -132,7 +132,7 @@ static NSString * const kTextCreateFlow = @"textCreateFlow";
     [[VTrackingManager sharedInstance] setValue:VTrackingValueCreatePost forSessionParameterWithKey:VTrackingKeyContext];
     
     VCreationFlowController *flowController = [self.dependencyManager templateValueOfType:[VCreationFlowController class]
-                                                                                                  forKey:key];
+                                                                                   forKey:key];
     flowController.creationFlowDelegate = self;
     [self.viewControllerToPresentOn presentViewController:flowController
                                                  animated:YES
