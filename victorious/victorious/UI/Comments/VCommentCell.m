@@ -62,4 +62,16 @@ static const UIEdgeInsets kTextInsets        = { 39.0f, 66.0f, 11.0f, 55.0f };
     [self.profileImageView setup];
 }
 
+#pragma mark - Focus
+
+- (void)setHasFocus:(BOOL)hasFocus
+{
+    self.commentTextView.inFocus = hasFocus;
+}
+
+- (CGRect)contentArea
+{
+    return self.commentTextView.videoView.frame;
+}
+
 @end

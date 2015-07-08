@@ -379,4 +379,16 @@ static NSCache *_sharedImageCache = nil;
     return _defaultStringAttributes;
 }
 
+#pragma mark - Focus
+
+- (void)setHasFocus:(BOOL)hasFocus
+{
+    self.commentAndMediaView.inFocus = hasFocus;
+}
+
+- (CGRect)contentArea
+{
+    return self.commentAndMediaView.videoView.frame;
+}
+
 @end

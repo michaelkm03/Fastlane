@@ -8,11 +8,13 @@
 
 #import "VSwipeTableViewCell.h"
 
+#import "VStreamCellFocus.h"
+
 @class VCommentTextAndMediaView, VDefaultProfileImageView;
 
 extern NSString * const kVCommentCellNibName;
 
-@interface VCommentCell : VSwipeTableViewCell
+@interface VCommentCell : VSwipeTableViewCell <VStreamCellFocus>
 
 @property (nonatomic, weak, readwrite) IBOutlet UILabel                   *usernameLabel;
 @property (nonatomic, weak, readonly)  IBOutlet VCommentTextAndMediaView  *commentTextView;

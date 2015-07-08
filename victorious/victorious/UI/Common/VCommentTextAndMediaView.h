@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "VVideoView.h"
+
 @class VTagSensitiveTextView;
 /**
  This view is used inside the comment and messaging views
@@ -28,6 +30,9 @@
 @property (nonatomic, strong) VTagSensitiveTextView *textView;
 @property (nonatomic, assign) BOOL shouldAutoplay;
 @property (nonatomic, strong) NSURL *autoplayURL;
+
+@property (nonatomic, strong, readonly) VVideoView *videoView;
+@property (nonatomic, assign) BOOL inFocus;
 
 /**
  Returns the ideal height for instances of this view

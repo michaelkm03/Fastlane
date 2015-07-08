@@ -107,6 +107,9 @@
 #import "VCoachmarkManager.h"
 #import "VSequenceExpressionsObserver.h"
 
+// Cell focus
+#import "VCollectionViewStreamFocusHelper.h"
+
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
@@ -170,6 +173,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 
 @property (nonatomic, strong) VContentLikeButton *likeButton;
+
+@property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
 
 @end
 
@@ -485,6 +490,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                          forDecorationViewOfKind:VShrinkingContentLayoutContentBackgroundView];
     
     self.viewModel.experienceEnhancerController.delegate = self;
+
+    self.focusHelper = [[VCollectionViewStreamFocusHelper alloc] initWithCollectionView:self.contentCollectionView];
     
     [self.viewModel reloadData];
 }
@@ -591,6 +598,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     }
     
     [self.contentCollectionView flashScrollIndicators];
+    
+    // Update cell focus
+    [self.focusHelper updateCellFocus];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -1359,6 +1369,12 @@ referenceSizeForHeaderInSection:(NSInteger)section
     }
 }
 
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    // End focus on this cell
+    [self.focusHelper manuallyEndFocusOnCell:cell];
+}
+
 #pragma mark UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -1377,6 +1393,9 @@ referenceSizeForHeaderInSection:(NSInteger)section
         VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
         self.likeButton.alpha = 1.0f - layout.percentCloseToLockPointFromCatchPoint;
     }
+    
+    // Update focus on cells
+    [self.focusHelper updateCellFocus];
 }
 
 #pragma mark - VContentVideoCellDelegate

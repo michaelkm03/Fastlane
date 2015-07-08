@@ -12,7 +12,6 @@
 #import "VVideoLightboxViewController.h"
 #import "VTagSensitiveTextView.h"
 #import "UIView+AutoLayout.h"
-#import "VVideoView.h"
 #import "VComment+Fetcher.h"
 
 static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
@@ -293,6 +292,15 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
     [self.videoView play];
 }
 
+- (void)setInFocus:(BOOL)inFocus
+{
+    _inFocus = inFocus;
+    if (self.shouldAutoplay)
+    {
+        inFocus ? [self.videoView play] : [self.videoView pause];
+    }
+}
+
 #pragma mark - Actions
 
 - (void)mediaTapped:(UIButton *)sender
@@ -392,6 +400,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
     self.onMediaTapped = nil;
     self.playIcon.hidden = YES;
     [self.videoView removeFromSuperview];
+    self.videoView = nil;
 }
 
 @end
