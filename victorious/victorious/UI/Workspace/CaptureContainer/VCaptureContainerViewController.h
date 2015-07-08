@@ -60,4 +60,9 @@ typedef void (^VImageVideoLibraryAlternateCaptureSelection)();
  */
 @property (nonatomic, readonly) UIImage *icon;
 
+/**
+ *  Add a selection block to alternate capture options and hoook up in Capture Container.
+ */
+@property (nonatomic, copy, readonly) VImageVideoLibraryAlternateCaptureSelection selectionBlock;
+
 @end

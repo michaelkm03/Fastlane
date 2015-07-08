@@ -11,6 +11,8 @@
 // Capture
 #import "VCaptureContainerViewController.h"
 #import "VAssetGridViewController.h"
+#import "VCameraViewController.h"
+#import "VImageSearchViewController.h"
 
 // Workspace
 #import "VWorkspaceViewController.h"
@@ -99,19 +101,64 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 
 - (NSArray *)alternateCaptureOptions
 {
+    void (^cameraSelectionBlock)() = ^void()
+    {
+        // Camera
+        VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerLimitedToPhotosWithDependencyManager:self.dependencyManager];
+        cameraViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMeidaURL)
+        {
+            if (finished)
+            {
+                [self pushWorkspaceWithMediaURL:capturedMeidaURL
+                                andPreviewImage:previewImage];
+            }
+            
+            [self dismissViewControllerAnimated:YES completion:nil];
+        };
+        // Wrapped in nav
+        UINavigationController *cameraNavController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
+        [self presentViewController:cameraNavController animated:YES completion:nil];
+    };
+    
+    void (^searchSelectionBlock)() = ^void()
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSelectImageSearch];
+        
+        // Image search
+        VImageSearchViewController *imageSearchViewController = [VImageSearchViewController newImageSearchViewController];
+        imageSearchViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+        {
+            if (finished)
+            {
+                [self pushWorkspaceWithMediaURL:capturedMediaURL andPreviewImage:previewImage];
+            }
+            
+            [self dismissViewControllerAnimated:YES
+                                     completion:nil];
+        };
+        [self presentViewController:imageSearchViewController
+                           animated:YES
+                         completion:nil];
+    };
+    
     VAlternateCaptureOption *cameraOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Camera", nil)
                                                                                       icon:[UIImage imageNamed:@""]
-                                                                         andSelectionBlock:^
-                                             {
-                                                 // Camera
-                                             }];
+                                                                         andSelectionBlock:cameraSelectionBlock];
     VAlternateCaptureOption *searchOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Search", nil)
                                                                                       icon:[UIImage imageNamed:@""]
-                                                                         andSelectionBlock:^
-                                             {
-                                                 // Search
-                                             }];
+                                                                         andSelectionBlock:searchSelectionBlock];
     return @[cameraOption, searchOption];
+}
+
+- (void)pushWorkspaceWithMediaURL:(NSURL *)mediaURL
+                  andPreviewImage:(UIImage *)previewImage
+{
+    [self setupWorkspace];
+    self.workspaceViewController.previewImage = previewImage;
+    self.workspaceViewController.mediaURL = mediaURL;
+    VImageToolController *toolController = (VImageToolController *)self.workspaceViewController.toolController;
+    [toolController setDefaultImageTool:VImageToolControllerInitialImageEditStateText];
+    [self pushViewController:self.workspaceViewController animated:YES];
 }
 
 - (void)addCompleitonHandlerToMediaSource:(id<VMediaSource>)mediaSource

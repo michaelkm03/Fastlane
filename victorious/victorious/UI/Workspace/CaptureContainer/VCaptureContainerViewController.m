@@ -43,6 +43,7 @@
         [button setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
         [button setImage:alternateOption.icon forState:UIControlStateNormal];
         [button setTitle:alternateOption.title forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(selectedAlternateOption:) forControlEvents:UIControlEventTouchUpInside];
         button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
         button.translatesAutoresizingMaskIntoConstraints = NO;
         [self.stackView addArrangedSubview:button];
@@ -67,15 +68,27 @@
     _viewControllerToContain = viewController;    
 }
 
+#pragma mark - Target/Action
+
+- (void)selectedAlternateOption:(UIButton *)button
+{
+    // Kind of hacky check on title
+    __block VAlternateCaptureOption *alternateCaptureOption;
+    [self.alternateCaptureOptions enumerateObjectsUsingBlock:^(VAlternateCaptureOption *option, NSUInteger idx, BOOL *stop)
+    {
+        if ([option.title isEqualToString:[button titleForState:UIControlStateNormal]])
+        {
+            alternateCaptureOption = option;
+            *stop = YES;
+        }
+    }];
+
+    alternateCaptureOption.selectionBlock();
+}
+
 @end
 
 #pragma mark - VAlternateCaptureOption
-
-@interface VAlternateCaptureOption ()
-
-@property (nonatomic, copy) VAlternateCaptureOption *selectionBlock;
-
-@end
 
 @implementation VAlternateCaptureOption
 
