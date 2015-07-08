@@ -131,10 +131,10 @@ static NSString * const kSupportEmailKey = @"email.support";
     self.showEnvironmentSetting = NO;
 #endif
     
-#ifdef V_NO_TRACKING_ALERTS
-    self.showTrackingAlertSetting = NO;
-#else
+#ifdef V_TRACKING_ALERTS
     self.showTrackingAlertSetting = YES;
+#else
+    self.showTrackingAlertSetting = NO;
 #endif
     
 #ifdef V_SHOW_COACHMARK_RESET
