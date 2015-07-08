@@ -14,6 +14,7 @@ extern NSString * const kVCommentCellNibName;
 
 @interface VCommentCell : VSwipeTableViewCell
 
+@property (nonatomic, strong) VSequence *sequence;
 @property (nonatomic, weak, readwrite) IBOutlet UILabel                   *usernameLabel;
 @property (nonatomic, weak, readonly)  IBOutlet VCommentTextAndMediaView  *commentTextView;
 @property (nonatomic, weak, readonly)  IBOutlet UILabel                   *timeLabel;

@@ -240,7 +240,6 @@
     VCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:kVCommentCellNibName forIndexPath:indexPath];
     VComment *comment = self.comments[indexPath.row];
     
-    
     cell.timeLabel.text = [comment.postedAt timeSince];
     if (comment.realtime.integerValue < 0)
     {
@@ -268,10 +267,21 @@
         cell.commentTextView.hasMedia = YES;
         cell.commentTextView.mediaThumbnailView.hidden = NO;
         [cell.commentTextView.mediaThumbnailView sd_setImageWithURL:comment.previewImageURL];
+        
         if ([comment.mediaUrl isKindOfClass:[NSString class]] && [comment.mediaUrl v_hasVideoExtension])
         {
             cell.commentTextView.onMediaTapped = [cell.commentTextView standardMediaTapHandlerWithMediaURL:[NSURL URLWithString:comment.mediaUrl] presentingViewController:self];
             cell.commentTextView.playIcon.hidden = NO;
+            
+            cell.commentTextView.shouldAutoplay = comment.shouldAutoplay;
+            if (comment.shouldAutoplay)
+            {
+                cell.commentTextView.autoplayURL = [NSURL URLWithString:comment.mediaUrl];
+            }
+        }
+        else
+        {
+            cell.commentTextView.shouldAutoplay = NO;
         }
     }
     else

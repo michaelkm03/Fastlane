@@ -451,6 +451,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         // onto the video asset orientation to adjust our preview image accordingly
         AVAsset *asset = [AVAsset assetWithURL:[NSURL URLWithString:tempComment.mediaUrl]];
         tempComment.assetOrientation = @( asset.videoOrientation );
+        tempComment.shouldAutoplay = [NSNumber numberWithBool:YES];
     }
     
     [sequence addCommentsObject:tempComment];

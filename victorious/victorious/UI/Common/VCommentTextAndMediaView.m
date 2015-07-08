@@ -11,6 +11,9 @@
 #import "VThemeManager.h"
 #import "VVideoLightboxViewController.h"
 #import "VTagSensitiveTextView.h"
+#import "UIView+AutoLayout.h"
+#import "VVideoView.h"
+#import "VComment+Fetcher.h"
 
 static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
 
@@ -21,6 +24,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
 @property (nonatomic, readwrite) UIImageView *mediaThumbnailView;
 @property (nonatomic, readwrite) UIImageView *playIcon;
 @property (nonatomic, strong) UIView *mediaBackground;
+@property (nonatomic, strong) VVideoView *videoView;
 
 @end
 
@@ -205,7 +209,6 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
                                                         multiplier:1.0f
                                                           constant:0.0f]];
         
-        
         self.addedConstraints = YES;
     }
     
@@ -256,6 +259,38 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
     self.mediaButton.hidden = !hasMedia;
     self.mediaBackground.hidden = !hasMedia;
     [self invalidateIntrinsicContentSize];
+}
+
+- (void)setShouldAutoplay:(BOOL)shouldAutoplay
+{
+    _shouldAutoplay = shouldAutoplay;
+    
+    if (shouldAutoplay)
+    {
+        if (self.videoView == nil)
+        {
+            self.videoView = [[VVideoView alloc] init];
+        }
+        
+        self.playIcon.hidden = YES;
+        
+        [self.mediaButton addSubview:self.videoView];
+        [self.mediaButton v_addFitToParentConstraintsToSubview:self.videoView];
+    }
+    
+    [self invalidateIntrinsicContentSize];
+}
+
+- (void)setAutoplayURL:(NSURL *)autoplayURL
+{
+    if (_autoplayURL == autoplayURL)
+    {
+        return;
+    }
+    
+    _autoplayURL = autoplayURL;
+    [self.videoView setItemURL:_autoplayURL loop:YES audioMuted:YES];
+    [self.videoView play];
 }
 
 #pragma mark - Actions
@@ -356,6 +391,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
     self.hasMedia = NO;
     self.onMediaTapped = nil;
     self.playIcon.hidden = YES;
+    [self.videoView removeFromSuperview];
 }
 
 @end

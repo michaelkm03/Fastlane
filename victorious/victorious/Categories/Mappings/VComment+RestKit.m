@@ -31,7 +31,8 @@
                                   @"posted_at" : VSelectorName(postedAt),
                                   @"thumbnail_url" : VSelectorName(thumbnailUrl),
                                   @"realtime" : VSelectorName(realtime),
-                                  @"asset_id" : VSelectorName(assetId)
+                                  @"asset_id" : VSelectorName(assetId),
+                                  @"is_gif_style" : VSelectorName(shouldAutoplay)
                                   };
 
     RKEntityMapping *mapping = [RKEntityMapping
