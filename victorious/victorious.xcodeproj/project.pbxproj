@@ -5677,6 +5677,8 @@
 		BE171DE91868C211004E5202 /* ManagedObjectModels */ = {
 			isa = PBXGroup;
 			children = (
+				A7DAFCA81B4EDACE00B51C92 /* GIFSearchResult.swift */,
+				A7DAFCAC1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift */,
 				BE89D98B1921531400D97E7F /* VAbstractFilter.h */,
 				BE89D98C1921531400D97E7F /* VAbstractFilter.m */,
 				DBDBE6EC1A16736C00DA1BB2 /* VAdBreak.h */,
@@ -5732,8 +5734,6 @@
 				F0F04AD21B1E1EAE00F6F401 /* VUser.m */,
 				BE7D2E8F18EB762A009E488E /* VVoteResult.h */,
 				BE7D2E9018EB762A009E488E /* VVoteResult.m */,
-				A7DAFCA81B4EDACE00B51C92 /* GIFSearchResult.swift */,
-				A7DAFCAC1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift */,
 			);
 			path = ManagedObjectModels;
 			sourceTree = "<group>";

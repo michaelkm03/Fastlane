@@ -32,21 +32,17 @@ private extension UIView {
     }
 }
 
-class GIFSearchSearchBar: UISearchBar {
- 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-        if let textField = self.findSubview({ $0 is UITextField }) as? UITextField {
-            textField.textColor = UIColor.whiteColor()
-            textField.backgroundColor = UIColor(white: 0.2, alpha: 1.0)
-        }
+private extension UISearchBar {
+    
+    var textField: UITextField? {
+        return self.findSubview({ $0 is UITextField }) as? UITextField
     }
 }
 
 class GIFSearchViewController: UIViewController, UICollectionViewDelegateFlowLayout, VCaptureContainedViewController, VMediaSource {
 
     @IBOutlet private weak var collectionView: UICollectionView!
+    @IBOutlet private weak var searchBar: UISearchBar!
     
     private let _searchDataSource = GIFSearchDataSource()
     private var _sizes = [CGSize]()
@@ -61,6 +57,9 @@ class GIFSearchViewController: UIViewController, UICollectionViewDelegateFlowLay
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.searchBar.textField?.textColor = UIColor.whiteColor()
+        self.searchBar.textField?.backgroundColor = UIColor(white: 0.2, alpha: 1.0)
         
         self.collectionView.dataSource = _searchDataSource
         self.collectionView.delegate = self
@@ -110,7 +109,11 @@ class GIFSearchViewController: UIViewController, UICollectionViewDelegateFlowLay
     // MARK: - VCaptureContainerViewController
     
     func titleView() -> UIView? {
-        return nil
+        var label = UILabel()
+        label.text = "GIF"
+        label.textColor = UIColor.whiteColor()
+        label.sizeToFit()
+        return label
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout

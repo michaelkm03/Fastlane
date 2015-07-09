@@ -18,6 +18,8 @@ class GIFSearchCell: UICollectionViewCell {
     }
 }
 
+private let kHeaderReuseIdentifier = "GIFSearchAttributionView"
+
 // Collection view data source that lods GIF search results from backend and creates
 // and populated data on cells to show in results collection view
 class GIFSearchDataSource: NSObject, UICollectionViewDataSource {
@@ -61,5 +63,13 @@ class GIFSearchDataSource: NSObject, UICollectionViewDataSource {
             return cell
         }
         fatalError( "Could not find cell." )
+    }
+    
+    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+        
+        if let attributionView = collectionView.dequeueReusableSupplementaryViewOfKind( UICollectionElementKindSectionHeader, withReuseIdentifier: kHeaderReuseIdentifier, forIndexPath: indexPath ) as? UICollectionReusableView {
+            return attributionView
+        }
+        fatalError( "Could not find reuseable view." )
     }
 }
