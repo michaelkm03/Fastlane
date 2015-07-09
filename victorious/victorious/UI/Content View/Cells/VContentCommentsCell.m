@@ -212,8 +212,10 @@ static NSCache *_sharedImageCache = nil;
         self.mediaIsVideo = [comment.mediaUrl v_hasVideoExtension];
         if (self.mediaIsVideo)
         {
-            self.commentAndMediaView.shouldAutoplay = comment.shouldAutoplay;
-            if (comment.shouldAutoplay)
+            BOOL shouldAutoplay = [comment.shouldAutoplay boolValue];
+            
+            self.commentAndMediaView.shouldAutoplay = shouldAutoplay;
+            if (shouldAutoplay)
             {
                 self.commentAndMediaView.autoplayURL = [NSURL URLWithString:comment.mediaUrl];
             }

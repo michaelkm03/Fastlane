@@ -299,8 +299,11 @@
             cell.commentTextView.onMediaTapped = [cell.commentTextView standardMediaTapHandlerWithMediaURL:[NSURL URLWithString:comment.mediaUrl] presentingViewController:self];
             cell.commentTextView.playIcon.hidden = NO;
             
-            cell.commentTextView.shouldAutoplay = comment.shouldAutoplay;
-            if (comment.shouldAutoplay)
+            // Determine if this is a gif
+            BOOL shouldAutoplay = [comment.shouldAutoplay boolValue];
+            
+            cell.commentTextView.shouldAutoplay = shouldAutoplay;
+            if (shouldAutoplay)
             {
                 cell.commentTextView.autoplayURL = [NSURL URLWithString:comment.mediaUrl];
             }
