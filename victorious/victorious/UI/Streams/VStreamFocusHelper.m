@@ -43,7 +43,6 @@ static const CGFloat VDefaultFocusVisibilityRatio = 0.8f;
          
          if ( CGRectGetHeight( contentFrameInCell ) > 0.0 )
          {
-             NSLog(@"%@", NSStringFromCGRect([focusCell contentArea]));
              // Convert media view's frame to parent view of scroll view
              CGRect mediaVisibility = [(UIView *)focusCell convertRect:[focusCell contentArea] toView:self.scrollView.superview];
              
