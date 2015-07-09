@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VAssetGridViewController.h"
+#import "VAssetCollectionGridViewController.h"
 
 // Views + Helpers
 #import "VAssetCollectionViewCell.h"
@@ -18,7 +18,11 @@
 
 @import Photos;
 
-@interface VAssetGridViewController () <UICollectionViewDelegateFlowLayout>
+@interface VAssetCollectionGridViewController () <UICollectionViewDelegateFlowLayout, PHPhotoLibraryChangeObserver>
+
+@property (nonatomic, strong) PHCachingImageManager *imageManager;
+
+@property (nonatomic, assign) CGRect previousPrefetchRect;
 
 @property (nonatomic, strong) UIImage *selectedFullSizeImage;
 @property (nonatomic, strong) NSURL *imageFileURL;
@@ -28,29 +32,37 @@
 
 @end
 
-@implementation VAssetGridViewController
+@implementation VAssetCollectionGridViewController
 
 @synthesize handler;
 
-#pragma mark - Factory Method
+#pragma mark - Lifecycle Methods
 
 + (instancetype)assetGridViewController
 {
     NSBundle *bundleForClass = [NSBundle bundleForClass:self];
     UIStoryboard *storyboardForClass = [UIStoryboard storyboardWithName:NSStringFromClass(self)
                                                                  bundle:bundleForClass];
-    VAssetGridViewController *gridViewController =  [storyboardForClass instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
+    return [storyboardForClass instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
+}
 
-    UIButton *alternateFolderButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [alternateFolderButton setTitle:@"folder▼"
-                           forState:UIControlStateNormal];
-    [alternateFolderButton addTarget:gridViewController
-                              action:@selector(selectedFolderPicker:)
-                    forControlEvents:UIControlEventTouchUpInside];
-    gridViewController.navigationItem.titleView = alternateFolderButton;
-    gridViewController.alternateFolderButton = alternateFolderButton;
+- (void)dealloc
+{
+    [[PHPhotoLibrary sharedPhotoLibrary] unregisterChangeObserver:self];
+}
+
+- (void)awakeFromNib
+{
+    self.imageManager = [[PHCachingImageManager alloc] init];
+    [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
     
-    return gridViewController;
+    self.alternateFolderButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [self.alternateFolderButton setTitle:@"folder▼"
+                                forState:UIControlStateNormal];
+    [self.alternateFolderButton addTarget:self
+                                   action:@selector(selectedFolderPicker:)
+                         forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.titleView = self.alternateFolderButton;
 }
 
 #pragma mark - View Lifecycle
@@ -59,13 +71,25 @@
 {
     [super viewDidLoad];
     
-    // If we don't have a fetch result to display just show all images.
-    if (self.assetsToDisplay == nil)
+    switch ([PHPhotoLibrary authorizationStatus])
     {
-        PHFetchOptions *allPhotosOptions = [[PHFetchOptions alloc] init];
-        allPhotosOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
-        self.assetsToDisplay = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:allPhotosOptions];
+        case PHAuthorizationStatusNotDetermined:
+            break;
+        case PHAuthorizationStatusAuthorized:
+            break;
+        case PHAuthorizationStatusDenied:
+            break;
+        case PHAuthorizationStatusRestricted:
+            break;
     }
+    
+    // If we don't have a fetch result to display just show all images.
+//    if (self.assetsToDisplay == nil)
+//    {
+//        PHFetchOptions *allPhotosOptions = [[PHFetchOptions alloc] init];
+//        allPhotosOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
+//        self.assetsToDisplay = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:allPhotosOptions];
+//    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -156,6 +180,13 @@
     CGFloat widthWithoutInsetAndPadding = fullWidth - collectionViewLayout.sectionInset.left - collectionViewLayout.sectionInset.right - (2 * collectionViewLayout.minimumInteritemSpacing);
     CGFloat itemWidth = widthWithoutInsetAndPadding / 3;
     return CGSizeMake(VFLOOR(itemWidth), VFLOOR(itemWidth));
+}
+
+#pragma mark - PHPhotoLibraryChangeObserver
+
+- (void)photoLibraryDidChange:(PHChange *)changeInstance
+{
+    
 }
 
 #pragma mark - Private Methods
@@ -259,7 +290,7 @@
     
     NSUUID *uuid = [NSUUID UUID];
     
-    return  [baseURL URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpeg", uuid.UUIDString]];
+    return [baseURL URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpeg", uuid.UUIDString]];
 }
 
 - (NSURL *)cacheDirectoryURL

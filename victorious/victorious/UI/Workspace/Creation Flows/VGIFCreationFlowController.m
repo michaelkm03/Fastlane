@@ -11,7 +11,7 @@
 // Capture
 #import "VCaptureContainerViewController.h"
 #import "VAlternateCaptureOption.h"
-#import "VAssetGridViewController.h"
+#import "VAssetCollectionGridViewController.h"
 
 // Workspace
 #import "VWorkspaceViewController.h"
@@ -58,7 +58,7 @@
         [self addCloseButtonToViewController:captureContainer];
         [self setViewControllers:@[captureContainer]];
         
-        VAssetGridViewController *gridViewController = [VAssetGridViewController assetGridViewController];
+        VAssetCollectionGridViewController *gridViewController = [VAssetCollectionGridViewController assetGridViewController];
         
         [captureContainer setContainedViewController:gridViewController];
         [self addCompleitonHandlerToMediaSource:gridViewController];

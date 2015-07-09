@@ -11,7 +11,7 @@
 // Capture
 #import "VCaptureContainerViewController.h"
 #import "VAlternateCaptureOption.h"
-#import "VAssetGridViewController.h"
+#import "VAssetCollectionGridViewController.h"
 #import "VCameraViewController.h"
 #import "VImageSearchViewController.h"
 #import "VAssetCollectionListViewController.h"
@@ -44,7 +44,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, strong) VAssetCollectionListViewController *listViewController;
-@property (nonatomic, strong) VAssetGridViewController *gridViewController;
+@property (nonatomic, strong) VAssetCollectionGridViewController *gridViewController;
 @property (nonatomic, strong) VWorkspaceViewController *workspaceViewController;
 
 @property (nonatomic, strong) VPublishViewController *publishViewContorller;
@@ -73,7 +73,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
         [self setViewControllers:@[captureContainer]];
         
         _listViewController = [VAssetCollectionListViewController assetCollectionListViewController];
-        _gridViewController = [VAssetGridViewController assetGridViewController];
+        _gridViewController = [VAssetCollectionGridViewController assetGridViewController];
         _gridViewController.collectionToDisplay = [self defaultCollection];
         [captureContainer setContainedViewController:self.gridViewController];
         [self addCompleitonHandlerToMediaSource:self.gridViewController];

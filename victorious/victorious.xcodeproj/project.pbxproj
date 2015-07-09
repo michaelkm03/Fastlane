@@ -307,10 +307,10 @@
 		A601FB591B43657F0050536C /* VMediaAttachmentPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB581B43657F0050536C /* VMediaAttachmentPresenter.m */; };
 		A601FB5C1B4369550050536C /* VEditProfilePicturePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB5B1B4369550050536C /* VEditProfilePicturePresenter.m */; };
 		A601FB5F1B437E2B0050536C /* VAbstractPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB5E1B437E2B0050536C /* VAbstractPresenter.m */; };
-		A631F0961B4D99B600CC6C80 /* VAssetGridViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A631F0951B4D99B600CC6C80 /* VAssetGridViewController.storyboard */; };
+		A631F0961B4D99B600CC6C80 /* VAssetCollectionGridViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A631F0951B4D99B600CC6C80 /* VAssetCollectionGridViewController.storyboard */; };
 		A631F0981B4D99BF00CC6C80 /* VAssetCollectionListViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A631F0971B4D99BF00CC6C80 /* VAssetCollectionListViewController.storyboard */; };
 		A631F09B1B4DB52700CC6C80 /* VAlternateCaptureOption.m in Sources */ = {isa = PBXBuildFile; fileRef = A631F09A1B4DB52700CC6C80 /* VAlternateCaptureOption.m */; };
-		A650EFDA1B421F61005529E5 /* VAssetGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A650EFD91B421F61005529E5 /* VAssetGridViewController.m */; };
+		A650EFDA1B421F61005529E5 /* VAssetCollectionGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A650EFD91B421F61005529E5 /* VAssetCollectionGridViewController.m */; };
 		A650EFDD1B422378005529E5 /* VAssetCollectionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A650EFDC1B422378005529E5 /* VAssetCollectionListViewController.m */; };
 		A650EFE01B42297A005529E5 /* VAssetCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A650EFDF1B42297A005529E5 /* VAssetCollectionViewCell.m */; };
 		A673A3301B34E602004D4D8C /* newWorkspaceTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = A673A32F1B34E602004D4D8C /* newWorkspaceTemplate.json */; };
@@ -318,6 +318,7 @@
 		A682F4FE1B3C829E009B6DBE /* imageCreationFlow.json in Resources */ = {isa = PBXBuildFile; fileRef = A682F4FD1B3C829E009B6DBE /* imageCreationFlow.json */; };
 		A6CC23C71B4B2A0600141DD6 /* VAssetGroupTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CC23C61B4B2A0600141DD6 /* VAssetGroupTableViewCell.m */; };
 		A6CC23CB1B4B57A500141DD6 /* textCreationFlow.json in Resources */ = {isa = PBXBuildFile; fileRef = A6CC23CA1B4B57A500141DD6 /* textCreationFlow.json */; };
+		A6D51BE71B4F33D700703AB0 /* VLibraryAuthorizationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A6D51BE61B4F33D700703AB0 /* VLibraryAuthorizationCell.m */; };
 		A6DAEB541B4C43BA00935EA0 /* VTextWorkspaceFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DAEB531B4C43BA00935EA0 /* VTextWorkspaceFlowController.m */; };
 		A6DAEB571B4C43D100935EA0 /* VPollCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DAEB561B4C43D100935EA0 /* VPollCreationFlowController.m */; };
 		A6DAEB591B4C442B00935EA0 /* pollCreationFlow.json in Resources */ = {isa = PBXBuildFile; fileRef = A6DAEB581B4C442B00935EA0 /* pollCreationFlow.json */; };
@@ -1629,12 +1630,12 @@
 		A601FB5D1B437E2B0050536C /* VAbstractPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractPresenter.h; sourceTree = "<group>"; };
 		A601FB5E1B437E2B0050536C /* VAbstractPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractPresenter.m; sourceTree = "<group>"; };
 		A61697441B45D02A00ECC846 /* VMediaSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMediaSource.h; sourceTree = "<group>"; };
-		A631F0951B4D99B600CC6C80 /* VAssetGridViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VAssetGridViewController.storyboard; sourceTree = "<group>"; };
+		A631F0951B4D99B600CC6C80 /* VAssetCollectionGridViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VAssetCollectionGridViewController.storyboard; sourceTree = "<group>"; };
 		A631F0971B4D99BF00CC6C80 /* VAssetCollectionListViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VAssetCollectionListViewController.storyboard; sourceTree = "<group>"; };
 		A631F0991B4DB52700CC6C80 /* VAlternateCaptureOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAlternateCaptureOption.h; sourceTree = "<group>"; };
 		A631F09A1B4DB52700CC6C80 /* VAlternateCaptureOption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAlternateCaptureOption.m; sourceTree = "<group>"; };
-		A650EFD81B421F61005529E5 /* VAssetGridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAssetGridViewController.h; sourceTree = "<group>"; };
-		A650EFD91B421F61005529E5 /* VAssetGridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAssetGridViewController.m; sourceTree = "<group>"; };
+		A650EFD81B421F61005529E5 /* VAssetCollectionGridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAssetCollectionGridViewController.h; sourceTree = "<group>"; };
+		A650EFD91B421F61005529E5 /* VAssetCollectionGridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAssetCollectionGridViewController.m; sourceTree = "<group>"; };
 		A650EFDB1B422378005529E5 /* VAssetCollectionListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAssetCollectionListViewController.h; sourceTree = "<group>"; };
 		A650EFDC1B422378005529E5 /* VAssetCollectionListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAssetCollectionListViewController.m; sourceTree = "<group>"; };
 		A650EFDE1B42297A005529E5 /* VAssetCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAssetCollectionViewCell.h; sourceTree = "<group>"; };
@@ -1646,6 +1647,8 @@
 		A6CC23C51B4B2A0600141DD6 /* VAssetGroupTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAssetGroupTableViewCell.h; sourceTree = "<group>"; };
 		A6CC23C61B4B2A0600141DD6 /* VAssetGroupTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAssetGroupTableViewCell.m; sourceTree = "<group>"; };
 		A6CC23CA1B4B57A500141DD6 /* textCreationFlow.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = textCreationFlow.json; sourceTree = "<group>"; };
+		A6D51BE51B4F33D700703AB0 /* VLibraryAuthorizationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLibraryAuthorizationCell.h; sourceTree = "<group>"; };
+		A6D51BE61B4F33D700703AB0 /* VLibraryAuthorizationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLibraryAuthorizationCell.m; sourceTree = "<group>"; };
 		A6DAEB521B4C43BA00935EA0 /* VTextWorkspaceFlowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextWorkspaceFlowController.h; sourceTree = "<group>"; };
 		A6DAEB531B4C43BA00935EA0 /* VTextWorkspaceFlowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextWorkspaceFlowController.m; sourceTree = "<group>"; };
 		A6DAEB551B4C43D100935EA0 /* VPollCreationFlowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPollCreationFlowController.h; sourceTree = "<group>"; };
@@ -4419,16 +4422,18 @@
 		A6EC32961B3B5AD800824022 /* ImageVideoLibrary */ = {
 			isa = PBXGroup;
 			children = (
+				A650EFD81B421F61005529E5 /* VAssetCollectionGridViewController.h */,
+				A650EFD91B421F61005529E5 /* VAssetCollectionGridViewController.m */,
+				A631F0951B4D99B600CC6C80 /* VAssetCollectionGridViewController.storyboard */,
 				A650EFDB1B422378005529E5 /* VAssetCollectionListViewController.h */,
 				A650EFDC1B422378005529E5 /* VAssetCollectionListViewController.m */,
 				A631F0971B4D99BF00CC6C80 /* VAssetCollectionListViewController.storyboard */,
 				A650EFDE1B42297A005529E5 /* VAssetCollectionViewCell.h */,
 				A650EFDF1B42297A005529E5 /* VAssetCollectionViewCell.m */,
-				A650EFD81B421F61005529E5 /* VAssetGridViewController.h */,
-				A650EFD91B421F61005529E5 /* VAssetGridViewController.m */,
-				A631F0951B4D99B600CC6C80 /* VAssetGridViewController.storyboard */,
 				A6CC23C51B4B2A0600141DD6 /* VAssetGroupTableViewCell.h */,
 				A6CC23C61B4B2A0600141DD6 /* VAssetGroupTableViewCell.m */,
+				A6D51BE51B4F33D700703AB0 /* VLibraryAuthorizationCell.h */,
+				A6D51BE61B4F33D700703AB0 /* VLibraryAuthorizationCell.m */,
 			);
 			path = ImageVideoLibrary;
 			sourceTree = "<group>";
@@ -6991,7 +6996,7 @@
 				C30AA4D71B043E890010CEFE /* PermissionAlert.storyboard in Resources */,
 				036F38951A0C4DEA0014DF66 /* Ubuntu-Medium.ttf in Resources */,
 				036F38841A0C4DEA0014DF66 /* PlayfairDisplay-Bold.ttf in Resources */,
-				A631F0961B4D99B600CC6C80 /* VAssetGridViewController.storyboard in Resources */,
+				A631F0961B4D99B600CC6C80 /* VAssetCollectionGridViewController.storyboard in Resources */,
 				036F386E1A0C4DEA0014DF66 /* JosefinSans-SemiBold.ttf in Resources */,
 				A75C64981AD78DCA00245125 /* VTextPostViewController.xib in Resources */,
 				0362B42119F5F6950036B9C8 /* VUploadProgressView.xib in Resources */,
@@ -7401,6 +7406,7 @@
 				C39413B51B165F7800579A8E /* VPermissionAlertTextView.m in Sources */,
 				A7976D0719FAE8EA00B5A145 /* AVAsset+Orientation.m in Sources */,
 				F079FAB31B183ABC009833CD /* VFailureStreamItemPreviewView.m in Sources */,
+				A6D51BE71B4F33D700703AB0 /* VLibraryAuthorizationCell.m in Sources */,
 				BE89D98D1921531400D97E7F /* VAbstractFilter.m in Sources */,
 				A75ED0B71AB78C7400C35063 /* VHashtagOptionCell.m in Sources */,
 				A7B98A3F1A264D0900C58335 /* VNotificationSettingsViewController.m in Sources */,
@@ -7928,7 +7934,7 @@
 				0372587519D61B0800836B3F /* VUploadTaskCreator.m in Sources */,
 				0314D0B019B4698800FA363C /* VObjectManager+DeviceRegistration.m in Sources */,
 				0314D09019B4694600FA363C /* VInteractionManager.m in Sources */,
-				A650EFDA1B421F61005529E5 /* VAssetGridViewController.m in Sources */,
+				A650EFDA1B421F61005529E5 /* VAssetCollectionGridViewController.m in Sources */,
 				A7B514541A4517A80074282F /* VSwipeTableViewCell.m in Sources */,
 				BE2C071219D5E842002AB82A /* VFullscreenMarqueeTabIndicatorView.m in Sources */,
 				F0A82AF71AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m in Sources */,

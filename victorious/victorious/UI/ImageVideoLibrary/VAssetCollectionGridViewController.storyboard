@@ -2,12 +2,13 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Asset Grid View Controller-->
+        <!--Asset Collection Grid View Controller-->
         <scene sceneID="1xN-nc-6d0">
             <objects>
-                <collectionViewController storyboardIdentifier="VAssetGridViewController" id="AjX-fm-XMv" customClass="VAssetGridViewController" sceneMemberID="viewController">
+                <collectionViewController storyboardIdentifier="VAssetCollectionGridViewController" id="AjX-fm-XMv" customClass="VAssetCollectionGridViewController" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" id="2a9-vO-x6F">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -51,6 +52,50 @@
                                     <outlet property="imageView" destination="YU8-um-NoN" id="qAm-eD-GgI"/>
                                     <outlet property="selectionView" destination="wGW-pi-1De" id="2sZ-Yt-NfK"/>
                                 </connections>
+                            </collectionViewCell>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="VLibraryAuthorizationCell" id="LZl-cw-FVv" customClass="VLibraryAuthorizationCell">
+                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bvs-cP-crM">
+                                            <rect key="frame" x="80" y="139" width="160" height="42"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eMT-sn-Oss">
+                                                    <rect key="frame" x="0.0" y="0.0" width="160" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0rh-DB-V41">
+                                                    <rect key="frame" x="0.0" y="21" width="160" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstItem="0rh-DB-V41" firstAttribute="top" secondItem="eMT-sn-Oss" secondAttribute="bottom" id="MM6-5l-vcM"/>
+                                                <constraint firstItem="eMT-sn-Oss" firstAttribute="leading" secondItem="bvs-cP-crM" secondAttribute="leading" id="XxK-iT-Qrx"/>
+                                                <constraint firstItem="eMT-sn-Oss" firstAttribute="top" secondItem="bvs-cP-crM" secondAttribute="top" id="bV4-0Q-GaM"/>
+                                                <constraint firstAttribute="bottom" secondItem="0rh-DB-V41" secondAttribute="bottom" id="cWq-1W-aRk"/>
+                                                <constraint firstAttribute="trailing" secondItem="eMT-sn-Oss" secondAttribute="trailing" id="egX-1G-wwA"/>
+                                                <constraint firstAttribute="trailing" secondItem="0rh-DB-V41" secondAttribute="trailing" id="g9X-tM-T9z"/>
+                                                <constraint firstItem="0rh-DB-V41" firstAttribute="leading" secondItem="bvs-cP-crM" secondAttribute="leading" id="suV-AY-960"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="trailingMargin" secondItem="bvs-cP-crM" secondAttribute="trailing" constant="72" id="6rw-3k-mCg"/>
+                                    <constraint firstItem="bvs-cP-crM" firstAttribute="leading" secondItem="LZl-cw-FVv" secondAttribute="leadingMargin" constant="72" id="ajp-pn-cFj"/>
+                                    <constraint firstAttribute="centerY" secondItem="bvs-cP-crM" secondAttribute="centerY" id="jgo-xk-Wrf"/>
+                                </constraints>
+                                <size key="customSize" width="320" height="320"/>
                             </collectionViewCell>
                         </cells>
                         <connections>

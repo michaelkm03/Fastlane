@@ -11,7 +11,7 @@
 
 @class PHAssetCollection;
 
-@interface VAssetGridViewController : UICollectionViewController <VMediaSource>
+@interface VAssetCollectionGridViewController : UICollectionViewController <VMediaSource>
 
 /**
  *  Factory method for this ViewController. Use this to grab a new instance of assetGridViewController;
