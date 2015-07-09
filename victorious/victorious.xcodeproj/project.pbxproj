@@ -4365,24 +4365,24 @@
 		A601FB461B4354750050536C /* Creation Flows */ = {
 			isa = PBXGroup;
 			children = (
+				A6DAEB631B4C94AE00935EA0 /* gifCreationFlow.json */,
 				A682F4FD1B3C829E009B6DBE /* imageCreationFlow.json */,
+				A6DAEB581B4C442B00935EA0 /* pollCreationFlow.json */,
 				A6CC23CA1B4B57A500141DD6 /* textCreationFlow.json */,
 				A601FB4D1B4355A30050536C /* VCreationFlowController.h */,
 				A601FB4E1B4355A30050536C /* VCreationFlowController.m */,
+				A6DAEB601B4C8DF900935EA0 /* VGIFCreationFlowController.h */,
+				A6DAEB611B4C8DF900935EA0 /* VGIFCreationFlowController.m */,
+				A6DAEB651B4C94B800935EA0 /* videoCreationFlow.json */,
 				A601FB471B4354D10050536C /* VImageCreationFlowController.h */,
 				A601FB481B4354D10050536C /* VImageCreationFlowController.m */,
 				A61697441B45D02A00ECC846 /* VMediaSource.h */,
-				A6DAEB521B4C43BA00935EA0 /* VTextWorkspaceFlowController.h */,
-				A6DAEB531B4C43BA00935EA0 /* VTextWorkspaceFlowController.m */,
 				A6DAEB551B4C43D100935EA0 /* VPollCreationFlowController.h */,
 				A6DAEB561B4C43D100935EA0 /* VPollCreationFlowController.m */,
-				A6DAEB581B4C442B00935EA0 /* pollCreationFlow.json */,
+				A6DAEB521B4C43BA00935EA0 /* VTextWorkspaceFlowController.h */,
+				A6DAEB531B4C43BA00935EA0 /* VTextWorkspaceFlowController.m */,
 				A6DAEB5D1B4C8DCA00935EA0 /* VVideoCreationFlowController.h */,
 				A6DAEB5E1B4C8DCA00935EA0 /* VVideoCreationFlowController.m */,
-				A6DAEB601B4C8DF900935EA0 /* VGIFCreationFlowController.h */,
-				A6DAEB611B4C8DF900935EA0 /* VGIFCreationFlowController.m */,
-				A6DAEB631B4C94AE00935EA0 /* gifCreationFlow.json */,
-				A6DAEB651B4C94B800935EA0 /* videoCreationFlow.json */,
 			);
 			path = "Creation Flows";
 			sourceTree = "<group>";
@@ -4407,11 +4407,11 @@
 		A6DAEB6B1B4CBB3800935EA0 /* CaptureContainer */ = {
 			isa = PBXGroup;
 			children = (
+				A631F0991B4DB52700CC6C80 /* VAlternateCaptureOption.h */,
+				A631F09A1B4DB52700CC6C80 /* VAlternateCaptureOption.m */,
 				A6DAEB6C1B4CBDCB00935EA0 /* VCaptureContainerViewController.h */,
 				A6DAEB6D1B4CBDCB00935EA0 /* VCaptureContainerViewController.m */,
 				A6DAEB6F1B4CBDDA00935EA0 /* VCaptureContainerViewController.storyboard */,
-				A631F0991B4DB52700CC6C80 /* VAlternateCaptureOption.h */,
-				A631F09A1B4DB52700CC6C80 /* VAlternateCaptureOption.m */,
 			);
 			path = CaptureContainer;
 			sourceTree = "<group>";
@@ -5167,9 +5167,9 @@
 		A7ECC1D01AD6178F0003E00A /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				F0F04AF81B2DE0AE00F6F401 /* Publish */,
 				A7ECC1D11AD6178F0003E00A /* VBaseWorkspaceViewController.h */,
 				A7ECC1D21AD6178F0003E00A /* VBaseWorkspaceViewController.m */,
-				F0F04AF81B2DE0AE00F6F401 /* Publish */,
 				A7ECC1D51AD6178F0003E00A /* VWorkspaceViewController.h */,
 				A7ECC1D61AD6178F0003E00A /* VWorkspaceViewController.m */,
 			);
@@ -6206,9 +6206,9 @@
 				A7ECC1D01AD6178F0003E00A /* View Controllers */,
 				034D1A8B1AAFF00200EB7B2D /* VPublishViewController.xib */,
 				A77B11691ACB42890018E932 /* VTextListener.h */,
+				B041DB9D1B41E49A00E1F36D /* VWorkspaceContext.h */,
 				D80BAB581A688D83003A3068 /* VWorkspaceFlowController.h */,
 				D80BAB591A688D83003A3068 /* VWorkspaceFlowController.m */,
-				B041DB9D1B41E49A00E1F36D /* VWorkspaceContext.h */,
 				D8B88F951ABA85F700DBAEA0 /* VWorkspaceShimDestination.h */,
 				D8B88F961ABA85F700DBAEA0 /* VWorkspaceShimDestination.m */,
 				03F6E2691AB79E090017826E /* Workspace.storyboard */,

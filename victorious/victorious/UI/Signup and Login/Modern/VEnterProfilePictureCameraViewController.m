@@ -21,12 +21,11 @@
 #import "VDependencyManager+VBackgroundContainer.h"
 
 // Camera + Workspace
-#import "VWorkspaceFlowController.h"
-#import "VImageToolController.h"
+#import "VEditProfilePicturePresenter.h"
 #import "VPermissionCamera.h"
 #import "VDependencyManager+VTracking.h"
 
-@interface VEnterProfilePictureCameraViewController () <VWorkspaceFlowControllerDelegate, VBackgroundContainer, VLoginFlowScreen>
+@interface VEnterProfilePictureCameraViewController () <VBackgroundContainer, VLoginFlowScreen>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -34,6 +33,8 @@
 @property (nonatomic, weak) IBOutlet UIButton *avatarButton;
 @property (nonatomic, weak) IBOutlet UIButton *addProfilePictureButton;
 @property (nonatomic, readonly) BOOL isFinalRegistrationScreen;
+
+@property (nonatomic, strong) VEditProfilePicturePresenter *profilePicturePresetner;
 
 @property (nonatomic, assign) BOOL hasSelectedAvatar;
 
@@ -142,50 +143,6 @@
     return self.view;
 }
 
-#pragma mark - VWorkspaceFlowControllerDelegate
-
-- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
-{
-    [self dismissViewControllerAnimated:YES
-                             completion:nil];
-}
-
-- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-       finishedWithPreviewImage:(UIImage *)previewImage
-               capturedMediaURL:(NSURL *)capturedMediaURL
-{
-    self.hasSelectedAvatar = YES;
-    [self dismissViewControllerAnimated:YES
-                             completion:^
-     {
-         id <VLoginFlowControllerDelegate> flowController = [self targetForAction:@selector(setProfilePictureFilePath:)
-                                                                        withSender:self];
-         if (flowController == nil)
-         {
-             NSAssert(false, @"We need a flow controller for setting the profile picture!");
-         }
-         [flowController setProfilePictureFilePath:capturedMediaURL];
-         [self.avatarButton setImage:previewImage forState:UIControlStateNormal];
-         
-         NSString *screenSuccessMessage = [self.dependencyManager stringForKey:VScreenSuccessMessageKey];
-         if (screenSuccessMessage != nil)
-         {
-             [self setScreenPrompt:screenSuccessMessage];
-         }
-         
-         NSString *buttonSuccessMessage = [self.dependencyManager stringForKey:VButtonSuccessMessageKey];
-         if (buttonSuccessMessage != nil)
-         {
-             [self setButtonPrompt:buttonSuccessMessage];
-         }
-     }];
-}
-
-- (BOOL)shouldShowPublishForWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-{
-    return NO;
-}
-
 #pragma mark - Private Methods
 
 - (void)setScreenPrompt:(NSString *)message
@@ -247,16 +204,40 @@
 {
     BOOL shouldRequestPermissions = [self.dependencyManager numberForKey:VShouldRequestCameraPermissionsKey].boolValue;
 
+    __weak typeof(self) welf = self;
     void (^showCamera)(void) = ^void(void)
     {
-        NSDictionary *addedDependencies = @{ VImageToolControllerInitialImageEditStateKey : @(VImageToolControllerInitialImageEditStateFilter),
-                                             VWorkspaceFlowControllerContextKey : @(VWorkspaceFlowControllerContextProfileImageRegistration) };
-        VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager workspaceFlowControllerWithAddedDependencies:addedDependencies];
-        workspaceFlowController.delegate = self;
-        workspaceFlowController.videoEnabled = NO;
-        [viewController presentViewController:workspaceFlowController.flowRootViewController
-                                     animated:YES
-                                   completion:nil];
+        welf.profilePicturePresetner = [[VEditProfilePicturePresenter alloc] initWithViewControllerToPresentOn:self
+                                                                                             dependencymanager:self.dependencyManager];
+        welf.profilePicturePresetner.completion = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
+        {
+            if (success)
+            {
+                id <VLoginFlowControllerDelegate> flowController = [self targetForAction:@selector(setProfilePictureFilePath:)
+                                                                              withSender:self];
+                if (flowController == nil)
+                {
+                    NSAssert(false, @"We need a flow controller for setting the profile picture!");
+                }
+                [flowController setProfilePictureFilePath:mediaURL];
+                [welf.avatarButton setImage:previewImage forState:UIControlStateNormal];
+                
+                NSString *screenSuccessMessage = [self.dependencyManager stringForKey:VScreenSuccessMessageKey];
+                if (screenSuccessMessage != nil)
+                {
+                    [welf setScreenPrompt:screenSuccessMessage];
+                }
+                
+                NSString *buttonSuccessMessage = [self.dependencyManager stringForKey:VButtonSuccessMessageKey];
+                if (buttonSuccessMessage != nil)
+                {
+                    [welf setButtonPrompt:buttonSuccessMessage];
+                }
+            }
+            
+            [welf dismissViewControllerAnimated:YES completion:nil];
+        };
+        [welf.profilePicturePresetner present];
     };
     
     if (!shouldRequestPermissions)

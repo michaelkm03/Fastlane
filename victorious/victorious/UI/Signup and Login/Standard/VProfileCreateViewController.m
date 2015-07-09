@@ -7,7 +7,7 @@
 //
 
 #import "VProfileCreateViewController.h"
-#import "VWorkspaceFlowController.h"
+#import "VEditProfilePicturePresenter.h"
 #import "VImageToolController.h"
 
 #import "VUser.h"
@@ -34,7 +34,7 @@
 @import CoreLocation;
 @import AddressBookUI;
 
-@interface VProfileCreateViewController () <UITextFieldDelegate, TTTAttributedLabelDelegate, VWorkspaceFlowControllerDelegate, VLocationManagerDelegate>
+@interface VProfileCreateViewController () <UITextFieldDelegate, TTTAttributedLabelDelegate, VLocationManagerDelegate>
 
 @property (nonatomic, weak) IBOutlet UITextField *usernameTextField;
 @property (nonatomic, weak) IBOutlet UITextField *locationTextField;
@@ -51,6 +51,8 @@
 @property (nonatomic, assign) CGFloat previousKeyboardHeight;
 
 @property (nonatomic, assign) BOOL hasLocationAlreadyBeenAutoFilled;
+
+@property (nonatomic, strong) VEditProfilePicturePresenter *presenter;
 
 @end
 
@@ -381,14 +383,18 @@
 
 - (IBAction)takePicture:(id)sender
 {
-    NSDictionary *addedDependencies = @{ VImageToolControllerInitialImageEditStateKey : @(VImageToolControllerInitialImageEditStateFilter),
-                                         VWorkspaceFlowControllerContextKey : @(VWorkspaceFlowControllerContextProfileImage) };
-    VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager workspaceFlowControllerWithAddedDependencies:addedDependencies];
-    workspaceFlowController.delegate = self;
-    workspaceFlowController.videoEnabled = NO;
-    [self presentViewController:workspaceFlowController.flowRootViewController
-                       animated:YES
-                     completion:nil];
+    self.presenter = [[VEditProfilePicturePresenter alloc] initWithViewControllerToPresentOn:self
+                                                                           dependencymanager:self.dependencyManager];
+    __weak typeof(self) welf = self;
+    self.presenter.completion = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
+    {
+        welf.profileImageView.image = previewImage;
+        welf.registrationModel.selectedImage = previewImage;
+        welf.registrationModel.profileImageURL = mediaURL;
+        [welf dismissViewControllerAnimated:YES
+                                 completion:nil];
+    };
+    [self.presenter present];
 }
 
 - (IBAction)exit:(id)sender
@@ -483,30 +489,6 @@
     {
         self.registrationModel.locationText = self.locationTextField.text;
     }
-}
-
-#pragma mark - VWorkspaceFlowControllerDelegate
-
-- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
-{
-    [self dismissViewControllerAnimated:YES
-                             completion:nil];
-}
-
-- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-       finishedWithPreviewImage:(UIImage *)previewImage
-               capturedMediaURL:(NSURL *)capturedMediaURL
-{
-    self.profileImageView.image = previewImage;
-    self.registrationModel.selectedImage = previewImage;
-    self.registrationModel.profileImageURL = capturedMediaURL;
-    [self dismissViewControllerAnimated:YES
-                             completion:nil];
-}
-
-- (BOOL)shouldShowPublishForWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-{
-    return NO;
 }
 
 @end
