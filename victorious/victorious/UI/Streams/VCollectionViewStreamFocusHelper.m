@@ -19,7 +19,7 @@
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView
 {
     self = [super init];
-    if (self)
+    if (self != nil)
     {
         _collectionView = collectionView;
     }

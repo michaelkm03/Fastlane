@@ -19,7 +19,7 @@
 - (instancetype)initWithTableView:(UITableView *)tableView
 {
     self = [super init];
-    if (self)
+    if (self != nil)
     {
         _tableView = tableView;
     }
