@@ -510,6 +510,7 @@
 		A779513D1B2A3C9A00D9DB0A /* VSuggestedUsersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A779513B1B2A3C9A00D9DB0A /* VSuggestedUsersViewController.xib */; };
 		A779A5301B4F144A000311B4 /* GIFSearchResult+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A779A52F1B4F144A000311B4 /* GIFSearchResult+Extensions.swift */; };
 		A779A5321B4F144F000311B4 /* GIFSearchResult+RestKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A779A5311B4F144F000311B4 /* GIFSearchResult+RestKit.swift */; };
+		A779A5341B4F2AA8000311B4 /* GIFSearchViewController+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A779A5331B4F2AA8000311B4 /* GIFSearchViewController+Layout.swift */; };
 		A77AD4C71A1EFDB400142F24 /* VFollowersTextFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4C61A1EFDB400142F24 /* VFollowersTextFormatterTests.m */; };
 		A77AD4EF1A1FD8B600142F24 /* VAlertAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4E61A1FD8B600142F24 /* VAlertAction.m */; };
 		A77AD4F01A1FD8B600142F24 /* VAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4E81A1FD8B600142F24 /* VAlertController.m */; };
@@ -1957,6 +1958,7 @@
 		A779513B1B2A3C9A00D9DB0A /* VSuggestedUsersViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VSuggestedUsersViewController.xib; path = "victorious/UI/Suggested Users/VSuggestedUsersViewController.xib"; sourceTree = SOURCE_ROOT; };
 		A779A52F1B4F144A000311B4 /* GIFSearchResult+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GIFSearchResult+Extensions.swift"; sourceTree = "<group>"; };
 		A779A5311B4F144F000311B4 /* GIFSearchResult+RestKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GIFSearchResult+RestKit.swift"; sourceTree = "<group>"; };
+		A779A5331B4F2AA8000311B4 /* GIFSearchViewController+Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "GIFSearchViewController+Layout.swift"; path = "GIFSearch/GIFSearchViewController+Layout.swift"; sourceTree = "<group>"; };
 		A77AD4C51A1EFA3D00142F24 /* VAutomation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAutomation.h; sourceTree = "<group>"; };
 		A77AD4C61A1EFDB400142F24 /* VFollowersTextFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowersTextFormatterTests.m; sourceTree = "<group>"; };
 		A77AD4E51A1FD8B600142F24 /* VAlertAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAlertAction.h; path = "Alert Controller/VAlertAction.h"; sourceTree = "<group>"; };
@@ -4995,6 +4997,7 @@
 				A7A0617E1B4DB5B500E8FFCF /* GIFSearch.storyboard */,
 				A7423D781B4DD7FC00745EF4 /* GIFSearchDataSource.swift */,
 				A7A0617C1B4DB39900E8FFCF /* GIFSearchViewController.swift */,
+				A779A5331B4F2AA8000311B4 /* GIFSearchViewController+Layout.swift */,
 			);
 			name = GIFSearch;
 			sourceTree = "<group>";
@@ -7540,6 +7543,7 @@
 				D87AD2B11AD48AC500C481D0 /* VAsset+VCachedData.m in Sources */,
 				F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */,
 				A75ED0031AB0B6B400C35063 /* VTextToolViewController.m in Sources */,
+				A779A5341B4F2AA8000311B4 /* GIFSearchViewController+Layout.swift in Sources */,
 				F0C83A631B162DE200A6EC1A /* VImageStreamPreviewView.m in Sources */,
 				BE799B8F19C8A91C0023CE88 /* VInteraction.m in Sources */,
 				D8D8958919E88C2100632663 /* VExperienceEnhancerBarCell.m in Sources */,

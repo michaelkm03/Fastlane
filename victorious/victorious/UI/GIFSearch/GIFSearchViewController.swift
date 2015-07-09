@@ -36,11 +36,10 @@ private extension UISearchBar {
 
 class GIFSearchViewController: UIViewController, VMediaSource {
 
-    @IBOutlet private weak var collectionView: UICollectionView!
-    @IBOutlet private weak var searchBar: UISearchBar!
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var searchBar: UISearchBar!
     
-    private let _searchDataSource = GIFSearchDataSource()
-    private var _displaySizes = [CGSize]()
+    let searchDataSource = GIFSearchDataSource()
     
     static func viewControllerFromStoryboard() -> GIFSearchViewController {
         let bundle = UIStoryboard(name: "GIFSearch", bundle: nil)
@@ -57,7 +56,7 @@ class GIFSearchViewController: UIViewController, VMediaSource {
         self.searchBar.textField?.textColor = UIColor.whiteColor()
         self.searchBar.textField?.backgroundColor = UIColor(white: 0.2, alpha: 1.0)
         
-        self.collectionView.dataSource = _searchDataSource
+        self.collectionView.dataSource = self.searchDataSource
         self.collectionView.delegate = self
         self.searchBar.placeholder = NSLocalizedString( "Search", comment:"" )
         
@@ -71,49 +70,14 @@ class GIFSearchViewController: UIViewController, VMediaSource {
     }
     
     private func performSearch( _ searchText: String = "" ) {
-        _searchDataSource.performSearch( searchText ) {
-            self.updateSizes( self._searchDataSource.results )
+        self.searchDataSource.performSearch( searchText ) {
             self.self.collectionView.reloadData()
         }
     }
     
     private func clearSearch() {
-        _searchDataSource.clear()
+        self.searchDataSource.clear()
         self.collectionView.reloadData()
-    }
-    
-    private func updateSizes( results: [GIFSearchResult] ) {
-        
-        let insets = (self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionInset ?? UIEdgeInsets()
-        let totalWidth = self.collectionView.bounds.width - insets.left - insets.right
-        _displaySizes = [CGSize]( count: results.count, repeatedValue: CGSizeZero )
-        for var i = 0; i < results.count-1; i+=2 {
-            let gifA = results[i]
-            let gifB = results[i+1]
-            
-            var sizeA = gifA.assetSize
-            var sizeB = gifB.assetSize
-            
-            let hRatioA = sizeA.height / sizeB.height
-            let hRatioB = sizeB.height / sizeA.height
-            
-            if hRatioA >= 1.0 {
-                sizeB.width /= hRatioB
-                sizeB.height /= hRatioB
-            }
-            else if hRatioB >= 1.0 {
-                sizeA.width /= hRatioA
-                sizeA.height /= hRatioA
-            }
-            
-            let ratioA = sizeA.width / (sizeA.width + sizeB.width)
-            let widthA = floor( totalWidth * ratioA )
-            _displaySizes[i] = CGSize(width: widthA, height: widthA / gifA.aspectRatio )
-            
-            let ratioB = sizeB.width / (sizeA.width + sizeB.width)
-            let widthB = floor( totalWidth * ratioB )
-            _displaySizes[i+1] = CGSize(width: widthB, height: widthB / gifB.aspectRatio )
-        }
     }
     
     // MARK: - VMediaSource
@@ -130,13 +94,5 @@ extension GIFSearchViewController : UISearchBarDelegate {
         else {
             self.performSearch( searchText )
         }
-    }
-}
-    
-extension GIFSearchViewController : UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        
-        return _displaySizes[ indexPath.row ]
     }
 }

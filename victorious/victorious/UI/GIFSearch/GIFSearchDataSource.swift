@@ -11,10 +11,23 @@ import UIKit
 /// Cell to represent GIF search result in a collectin of search results
 class GIFSearchCell: UICollectionViewCell {
     
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet private weak var imageView: UIImageView!
     
     static var suggestedReuseIdentifier: String {
         return NSStringFromClass(self).pathExtension
+    }
+    
+    var assetUrl: NSURL? {
+        didSet {
+            if let url = self.assetUrl {
+                self.imageView.alpha = self.imageView.image == nil ? 0.0 : 1.0
+                self.imageView.sd_setImageWithURL( url, completed: { (image, error, cacheType, url) -> Void in
+                    UIView.animateWithDuration( 0.5, animations: {
+                        self.imageView.alpha = 1.0
+                    })
+                })
+            }
+        }
     }
 }
 
@@ -22,11 +35,23 @@ class GIFSearchCell: UICollectionViewCell {
 /// and populated data on cells to show in results collection view
 class GIFSearchDataSource: NSObject {
     
+    struct Section {
+        let results: [GIFSearchResult]
+        
+        subscript( index: Int ) -> GIFSearchResult {
+            return self.results[ index ]
+        }
+        
+        var count: Int {
+            return self.results.count
+        }
+    }
+    
     private let kHeaderReuseIdentifier = "GIFSearchAttributionView"
     
-    private var _results = [GIFSearchResult]()
-    var results: [GIFSearchResult] {
-        return _results
+    private var _sections = [Section]()
+    var sections: [Section] {
+        return _sections
     }
     
     private var _currentOperation: NSOperation?
@@ -37,9 +62,13 @@ class GIFSearchDataSource: NSObject {
     func performSearch( searchText:String, completion: (()->())? ) {
         
         _currentOperation?.cancel()
-        _currentOperation = VObjectManager.sharedManager().searchForGIF( [ searchText ],
+        _currentOperation = VObjectManager.sharedManager().searchForGIF( [ searchText == "" ? "sponge" : searchText ],
             success: { (results) in
-                self._results = results
+                
+                self._sections = []
+                for var i = 0; i < results.count-1; i+=2 {
+                    self._sections.append( Section(results:[results[i], results[i+1]]) )
+                }
                 completion?()
                 
             }, failure: { (error) in
@@ -50,29 +79,26 @@ class GIFSearchDataSource: NSObject {
     
     /// Clears the backing model collection
     func clear() {
-        _results = []
+        _sections = []
     }
 }
 
 extension GIFSearchDataSource : UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.results.count
+        return self.sections[ section ].count
+    }
+    
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return self.sections.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let gifSearchResult = self.results[ indexPath.row ]
+        let gifSearchResult = self.sections[ indexPath.section ][ indexPath.row ]
         
         let identifier = GIFSearchCell.suggestedReuseIdentifier
-        if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( identifier, forIndexPath: indexPath ) as? GIFSearchCell,
-            let url = NSURL(string: gifSearchResult.thumbnailStillUrl) {
-                
-            cell.imageView.alpha = cell.imageView.image == nil ? 0.0 : 1.0
-            cell.imageView.sd_setImageWithURL( url, completed: { (image, error, cacheType, url) -> Void in
-                UIView.animateWithDuration( 0.5, animations: {
-                    cell.imageView.alpha = 1.0
-                })
-            })
+        if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( identifier, forIndexPath: indexPath ) as? GIFSearchCell {
+            cell.assetUrl = NSURL(string: gifSearchResult.thumbnailStillUrl)
             return cell
         }
         fatalError( "Could not find cell." )
