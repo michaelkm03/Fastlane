@@ -11,13 +11,14 @@
 // Views + Helpers
 #import "VAssetCollectionViewCell.h"
 #import <MBProgressHUD/MBProgressHUD.h>
+#import "VCompatibility.h"
 
 // Image Resizing
 #import "UIImage+Resize.h"
 
 @import Photos;
 
-@interface VAssetGridViewController ()
+@interface VAssetGridViewController () <UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) UIImage *selectedFullSizeImage;
 @property (nonatomic, strong) NSURL *imageFileURL;
@@ -145,9 +146,16 @@
     [collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:YES];
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
-{
+#pragma mark - UICollectionViewDelegateFlowLayout
 
+- (CGSize)collectionView:(UICollectionView *)collectionView
+                  layout:(UICollectionViewFlowLayout *)collectionViewLayout
+  sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGFloat fullWidth = CGRectGetWidth(collectionView.bounds);
+    CGFloat widthWithoutInsetAndPadding = fullWidth - collectionViewLayout.sectionInset.left - collectionViewLayout.sectionInset.right - (2 * collectionViewLayout.minimumInteritemSpacing);
+    CGFloat itemWidth = widthWithoutInsetAndPadding / 3;
+    return CGSizeMake(VFLOOR(itemWidth), VFLOOR(itemWidth));
 }
 
 #pragma mark - Private Methods
