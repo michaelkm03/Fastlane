@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  A completion block the AssetGridViewController will call to provide the results of the user selecting an asset.
  *
@@ -18,6 +20,8 @@ typedef void (^VMediaSelectionHandler)(UIImage *previewImage, NSURL *capturedMed
 
 @protocol VMediaSource <NSObject>
 
-@property (nonatomic, copy) VMediaSelectionHandler handler;
+@property (nonatomic, copy, nullable) VMediaSelectionHandler handler;
 
 @end
+
+NS_ASSUME_NONNULL_END

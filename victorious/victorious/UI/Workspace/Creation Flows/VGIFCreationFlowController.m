@@ -10,7 +10,7 @@
 
 // Capture
 #import "VCaptureContainerViewController.h"
-#import "VAssetGridViewController.h"
+#import "victorious-Swift.h" // For VTextPostBackgroundLayout
 
 // Workspace
 #import "VWorkspaceViewController.h"
@@ -57,10 +57,9 @@
         [self addCloseButtonToViewController:captureContainer];
         [self setViewControllers:@[captureContainer]];
         
-        VAssetGridViewController *gridViewController = [VAssetGridViewController assetGridViewController];
-        
-        [captureContainer setContainedViewController:gridViewController];
-        [self addCompleitonHandlerToMediaSource:gridViewController];
+        GIFSearchViewController *gifSearchViewController = [GIFSearchViewController viewControllerFromStoryboard];
+        [captureContainer setContainedViewController:gifSearchViewController];
+        [self addCompleitonHandlerToMediaSource:gifSearchViewController];
 
     }
     return self;

@@ -10,9 +10,11 @@
 
 @class VDependencyManager;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol VCaptureContainedViewController <NSObject>
 
-- (UIView *)titleView;
+- (UIView *__nullable)titleView;
 
 @end
 
@@ -66,3 +68,5 @@ typedef void (^VImageVideoLibraryAlternateCaptureSelection)();
 @property (nonatomic, copy, readonly) VImageVideoLibraryAlternateCaptureSelection selectionBlock;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -30,6 +30,8 @@
 #import "VCoachmarkManager.h"
 #import "VRootViewController.h"
 
+#import "VCreationFlowController.h"
+
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
 NSString * const VTrackingWelcomeVideoStartKey = @"welcome_video_start";
@@ -85,6 +87,9 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
              [self askForPushNotificationsPermission];
          }];
     }
+    
+    VCreationFlowController *flowController = [self.dependencyManager templateValueOfType:[VCreationFlowController class] forKey:@"gifCreateFlow"];
+    [self presentViewController:flowController animated:YES completion:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated

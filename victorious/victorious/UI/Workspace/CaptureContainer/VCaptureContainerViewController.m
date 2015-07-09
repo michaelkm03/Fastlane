@@ -12,6 +12,8 @@
 #import <OAStackView/OAStackView.h>
 #import "UIView+Autolayout.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface VCaptureContainerViewController ()
 
 @property (nonatomic, strong) IBOutlet UIView *containerView;
@@ -51,6 +53,7 @@
 
     self.stackView.distribution = OAStackViewDistributionFillEqually;
     
+    NSAssert( self.viewControllerToContain != nil, @"The contained view controller must be set before this view is loaded using `setContainedViewController:`" );
     
     // Setup contained VC
     [self addChildViewController:self.viewControllerToContain];
@@ -107,3 +110,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

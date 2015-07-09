@@ -33,8 +33,11 @@
 #import "VStream+RestKit.h"
 #import "VNotificationSettings+RestKit.h"
 #import "VEnvironmentManager.h"
+#import "VGIFSearchResult+RestKit.h"
 
 #define EnableRestKitLogs 0 // Set to "1" to see RestKit logging, but please remember to set it back to "0" before committing your changes.
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface VObjectManager ()
 
@@ -47,7 +50,7 @@
 
 @implementation VObjectManager
 
-+ (void)setupObjectManagerWithUploadManager:(VUploadManager *)uploadManager
++ (void)setupObjectManagerWithUploadManager:(VUploadManager *__nonnull)uploadManager
 {
 #if DEBUG && EnableRestKitLogs
     RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
@@ -124,6 +127,7 @@
     [self addResponseDescriptorsFromArray:[VStream descriptors]];
     [self addResponseDescriptorsFromArray:[VHashtag descriptors]];
     [self addResponseDescriptorsFromArray:[VNotificationSettings descriptors]];
+    [self addResponseDescriptorsFromArray:[VGIFSearchResult descriptors]];
     
     [self addResponseDescriptorsFromArray: @[errorDescriptor,
                                              verrorDescriptor,
@@ -138,7 +142,7 @@
     self.objectCache = [[NSCache alloc] init];
 }
 
-- (VUser *)mainUser
+- (VUser *__nullable)mainUser
 {
     NSAssert([NSThread isMainThread], @"mainUser should be accessed only from the main thread");
     return _mainUser;
@@ -264,10 +268,10 @@
 }
 
 - (RKManagedObjectRequestOperation *)GET:(NSString *)path
-                                  object:(id)object
-                              parameters:(NSDictionary *)parameters
-                            successBlock:(VSuccessBlock)successBlock
-                               failBlock:(VFailBlock)failBlock
+                                  object:(id __nullable)object
+                              parameters:(NSDictionary *__nullable)parameters
+                            successBlock:(VSuccessBlock __nullable)successBlock
+                               failBlock:(VFailBlock __nullable)failBlock
 {
     return [self requestMethod:RKRequestMethodGET
                         object:object
@@ -278,10 +282,10 @@
 }
 
 - (RKManagedObjectRequestOperation *)POST:(NSString *)path
-                                   object:(id)object
-                               parameters:(NSDictionary *)parameters
-                             successBlock:(VSuccessBlock)successBlock
-                                failBlock:(VFailBlock)failBlock
+                                   object:(id __nullable)object
+                               parameters:(NSDictionary *__nullable)parameters
+                             successBlock:(VSuccessBlock __nullable)successBlock
+                                failBlock:(VFailBlock __nullable)failBlock
 {
     return [self requestMethod:RKRequestMethodPOST
                         object:object
@@ -292,10 +296,10 @@
 }
 
 - (RKManagedObjectRequestOperation *)DELETE:(NSString *)path
-                                     object:(id)object
-                                 parameters:(NSDictionary *)parameters
-                               successBlock:(VSuccessBlock)successBlock
-                                  failBlock:(VFailBlock)failBlock
+                                     object:(id __nullable)object
+                                 parameters:(NSDictionary *__nullable)parameters
+                               successBlock:(VSuccessBlock __nullable)successBlock
+                                  failBlock:(VFailBlock __nullable)failBlock
 {
     return [self requestMethod:RKRequestMethodDELETE
                         object:object
@@ -360,7 +364,7 @@
 
         if (!error && successBlock)
         {
-            successBlock(operation, mutableResponseObject, nil);
+            successBlock(operation, mutableResponseObject, @[]);
         }
         else
         {
@@ -396,10 +400,10 @@
                            userInfo:@{NSLocalizedDescriptionKey: errorMessage}];
 }
 
-- (NSManagedObject *)objectForID:(NSNumber *)objectID
-                           idKey:(NSString *)idKey
-                      entityName:(NSString *)entityName
-            managedObjectContext:(NSManagedObjectContext *)context
+- (NSManagedObject *__nullable)objectForID:(NSNumber *)objectID
+                                      idKey:(NSString *)idKey
+                                 entityName:(NSString *)entityName
+                       managedObjectContext:(NSManagedObjectContext *)context
 {
     NSManagedObject *object = [self.objectCache objectForKey:[entityName stringByAppendingString:objectID.stringValue]];
     if (object)
@@ -542,5 +546,7 @@
 {
     self.sessionID = [[NSUUID UUID] UUIDString];
 }
+
+NS_ASSUME_NONNULL_END
 
 @end

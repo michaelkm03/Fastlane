@@ -9,16 +9,18 @@
 #import "RKObjectManager.h"
 #import "VLoginType.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class VUploadManager, VPaginationManager, VUser;
 
 /*! Block that executes when the request succeeds. */
-typedef void (^VSuccessBlock) (NSOperation *operation, id result, NSArray *resultObjects);
+typedef void (^VSuccessBlock) (NSOperation *__nullable operation, id __nullable result, NSArray *resultObjects);
 /*! Block that executes when the request fails. */
-typedef void (^VFailBlock) (NSOperation *operation, NSError *error);
+typedef void (^VFailBlock) (NSOperation *__nullable operation, NSError *__nullable error);
 
 @interface VObjectManager : RKObjectManager
 
-@property (nonatomic, readonly) VUser *mainUser; ///< The user the is currently logged in.
+@property (nonatomic, readonly, nullable) VUser *mainUser; ///< The user the is currently logged in.
 
 @property (nonatomic, readonly) VLoginType mainUserLoginType; ///< The type of login for the current user's current session.
 
@@ -33,3 +35,5 @@ typedef void (^VFailBlock) (NSOperation *operation, NSError *error);
 - (void)resetSessionID;
 
 @end
+
+NS_ASSUME_NONNULL_END
