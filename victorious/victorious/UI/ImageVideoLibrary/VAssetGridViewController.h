@@ -13,12 +13,19 @@
 
 @interface VAssetGridViewController : UICollectionViewController <VMediaSource>
 
+/**
+ *  Factory method for this ViewController. Use this to grab a new instance of assetGridViewController;
+ */
 + (instancetype)assetGridViewController;
 
+/**
+ *  Set this to the collection you want to display in the grid.
+ */
 @property (nonatomic, strong) PHAssetCollection *collectionToDisplay;
 
-@property (nonatomic, assign) BOOL alternateFolderButtonEnabled;
-
+/**
+ *  Provide the gridViewController a selection handelr to be notified
+ */
 @property (nonatomic, copy) void (^alternateFolderSelectionHandler)();
 
 @end

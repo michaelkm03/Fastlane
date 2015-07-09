@@ -43,6 +43,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
+@property (nonatomic, strong) VAssetCollectionListViewController *listViewController;
 @property (nonatomic, strong) VAssetGridViewController *gridViewController;
 @property (nonatomic, strong) VWorkspaceViewController *workspaceViewController;
 
@@ -71,8 +72,9 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
         [self addCloseButtonToViewController:captureContainer];
         [self setViewControllers:@[captureContainer]];
         
-        self.gridViewController = [VAssetGridViewController assetGridViewController];
-        self.gridViewController.collectionToDisplay = [self defaultCollection];
+        _listViewController = [VAssetCollectionListViewController assetCollectionListViewController];
+        _gridViewController = [VAssetGridViewController assetGridViewController];
+        _gridViewController.collectionToDisplay = [self defaultCollection];
         [captureContainer setContainedViewController:self.gridViewController];
         [self addCompleitonHandlerToMediaSource:self.gridViewController];
         [self setupPublishScreen];
@@ -109,25 +111,25 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 
 - (PHAssetCollection *)defaultCollection
 {
-    return [[self assetCollections] firstObject];
+    return nil;
+//    return [[self assetCollections] firstObject];
 }
 
 - (void)presentAssetFoldersList
 {
     // Present alternate folder
-    VAssetCollectionListViewController *listVC = [VAssetCollectionListViewController assetCollectionListViewController];
-    listVC.collectionSelectionHandler = ^void(PHAssetCollection *assetCollection)
+    __weak typeof(self) welf = self;
+    self.listViewController.collectionSelectionHandler = ^void(PHAssetCollection *assetCollection)
     {
-        self.gridViewController.collectionToDisplay = assetCollection;
+        welf.gridViewController.collectionToDisplay = assetCollection;
     };
-    listVC.assetCollections = [self assetCollections];
-    listVC.modalPresentationStyle = UIModalPresentationPopover;
+    self.listViewController.modalPresentationStyle = UIModalPresentationPopover;
 
-    UIPopoverPresentationController *popoverPresentation = listVC.popoverPresentationController;
+    UIPopoverPresentationController *popoverPresentation = self.listViewController.popoverPresentationController;
     popoverPresentation.delegate = self;
     CGSize preferredContentSize = CGSizeMake(CGRectGetWidth(self.view.bounds) - 50.0f,
                                              CGRectGetHeight(self.view.bounds) - 200.0f);
-    listVC.preferredContentSize = preferredContentSize;
+    self.listViewController.preferredContentSize = preferredContentSize;
     UIViewController *topViewContorller = [self.viewControllers firstObject];
     popoverPresentation.sourceView = topViewContorller.navigationItem.titleView;
     popoverPresentation.sourceRect = CGRectMake(CGRectGetMidX(popoverPresentation.sourceView.bounds),
@@ -135,74 +137,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
                                                 0.0f,
                                                 CGRectGetHeight(popoverPresentation.sourceView.bounds));
 
-    [self presentViewController:listVC animated:YES completion:nil];
-}
-
-- (NSArray *)assetCollections
-{
-    if (self.cachedAssetCollections != nil)
-    {
-        return self.cachedAssetCollections;
-    }
-    
-#warning cleanup this fetching and sorting. Pretty un-optimized
-    
-    // Fetch all albums
-    PHFetchOptions *fetchOptions = [[PHFetchOptions alloc] init];
-    PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
-                                                                          subtype:PHAssetCollectionSubtypeAny
-                                                                          options:fetchOptions];
-    PHFetchResult *userAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
-                                                                         subtype:PHAssetCollectionSubtypeAny
-                                                                         options:fetchOptions];
-    
-    // Figure out Photos media type based on our media type
-    PHAssetMediaType mediaType = PHAssetMediaTypeImage;
-    PHFetchOptions *mediaTypeOptions = [[PHFetchOptions alloc] init];
-    mediaTypeOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d", mediaType];
-    
-    // Add collections to array if collection contains at least 1 asset of media type
-    NSMutableArray *assetCollections = [[NSMutableArray alloc] init];
-    for (PHAssetCollection *collection in smartAlbums)
-    {
-        PHFetchResult *albumMediaTypeResults = [PHAsset fetchAssetsInAssetCollection:collection
-                                                                             options:mediaTypeOptions];
-        if (albumMediaTypeResults.count > 0)
-        {
-            [assetCollections addObject:collection];
-        }
-    }
-    for (PHAssetCollection *collection in userAlbums)
-    {
-        PHFetchResult *albumMediaTypeResults = [PHAsset fetchAssetsInAssetCollection:collection
-                                                                             options:mediaTypeOptions];
-        if (albumMediaTypeResults.count > 0)
-        {
-            [assetCollections addObject:collection];
-        }
-    }
-    
-    // Sort by count and store for later use
-    self.cachedAssetCollections = [assetCollections sortedArrayUsingComparator:^NSComparisonResult(PHAssetCollection *collection1, PHAssetCollection *collection2)
-                                   {
-                                       PHFetchResult *albumMediaTypeResults1 = [PHAsset fetchAssetsInAssetCollection:collection1
-                                                                                                             options:mediaTypeOptions];
-                                       PHFetchResult *albumMediaTypeResults2 = [PHAsset fetchAssetsInAssetCollection:collection2
-                                                                                                             options:mediaTypeOptions];
-                                       if (albumMediaTypeResults1.count > albumMediaTypeResults2.count)
-                                       {
-                                           return NSOrderedAscending;
-                                       }
-                                       else if (albumMediaTypeResults2.count > albumMediaTypeResults1.count)
-                                       {
-                                           return NSOrderedDescending;
-                                       }
-                                       else
-                                       {
-                                           return NSOrderedSame;
-                                       }
-                                   }];
-    return self.cachedAssetCollections;
+    [self presentViewController:self.listViewController animated:YES completion:nil];
 }
 
 - (NSArray *)alternateCaptureOptions

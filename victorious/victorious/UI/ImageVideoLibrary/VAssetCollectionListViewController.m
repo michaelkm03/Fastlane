@@ -14,14 +14,19 @@
 
 static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 
-@interface VAssetCollectionListViewController ()
+@interface VAssetCollectionListViewController () <PHPhotoLibraryChangeObserver>
+
+@property (nonatomic, strong) NSMutableSet *fetchResults;
+@property (nonatomic, strong) NSArray *collections;
+@property (nonatomic, strong) NSArray *assetFetchResultForCollections;
 
 @property (nonatomic, strong) NSNumberFormatter *numberFormatter;
-@property (nonatomic, strong) NSCache *cachedFetchResultsForCollections;
 
 @end
 
 @implementation VAssetCollectionListViewController
+
+#pragma mark - Lifecycle
 
 + (instancetype)assetCollectionListViewController
 {
@@ -31,26 +36,25 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
     return [storyboardForClass instantiateInitialViewController];
 }
 
-#pragma mark - View Lifecycle
-
-- (void)viewDidLoad
+- (void)dealloc
 {
-    [super viewDidLoad];
-    
-    self.cachedFetchResultsForCollections = [[NSCache alloc] init];
+    [[PHPhotoLibrary sharedPhotoLibrary] unregisterChangeObserver:self];
+}
+
+- (void)awakeFromNib
+{
+    self.fetchResults = [[NSMutableSet alloc] init];
     self.numberFormatter = [[NSNumberFormatter alloc] init];
     self.numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
     self.numberFormatter.locale = [NSLocale currentLocale];
     self.numberFormatter.groupingSeparator = [[NSLocale currentLocale] objectForKey:NSLocaleGroupingSeparator];
-}
 
-#pragma mark - Property Accessors
-
-- (void)setAssetCollections:(NSArray *)assetCollections
-{
-    _assetCollections = assetCollections;
-    
-    [self.tableView reloadData];
+    // Fetch once on awakeFromNib
+    [self fetchCollectionsWithCompletion:^
+     {
+         [self.tableView reloadData];
+     }];
+    [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
 }
 
 #pragma mark - Table view data source
@@ -62,7 +66,7 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.assetCollections.count;
+    return self.collections.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -70,17 +74,17 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
     VAssetGroupTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kAlbumCellReuseIdentifier
                                                             forIndexPath:indexPath];
     // Set the localized title on the cell
-    PHAssetCollection *collection = self.assetCollections[indexPath.row];
+    PHAssetCollection *collection = self.collections[indexPath.row];
     cell.groupTitleLabel.text = collection.localizedTitle;
 
-    // Fetch the items in the collection
-    PHFetchResult *itemsInCollection = [self fetchResultForAssetsInCollection:collection];
+    PHFetchResult *fetchResultForCollection = self.assetFetchResultForCollections[indexPath.row];
+    [self.fetchResults addObject:fetchResultForCollection];
     
     // Set the count on the subtitle label
-    cell.groupSubtitleLabel.text = [self.numberFormatter stringFromNumber:@(itemsInCollection.count)];
+    cell.groupSubtitleLabel.text = [self.numberFormatter stringFromNumber:@(fetchResultForCollection.count)];
     
     // Use the first asset as a thumbnail
-    PHAsset *firstAsset = [itemsInCollection firstObject];
+    PHAsset *firstAsset = [fetchResultForCollection firstObject];
     [[PHImageManager defaultManager] requestImageForAsset:firstAsset
                                                targetSize:CGSizeMake(40, 40)
                                               contentMode:PHImageContentModeAspectFill
@@ -106,7 +110,7 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    PHAssetCollection *collectionForIndexPath = self.assetCollections[indexPath.row];
+    PHAssetCollection *collectionForIndexPath = self.collections[indexPath.row];
     
     if (self.collectionSelectionHandler != nil)
     {
@@ -117,19 +121,90 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
                                                       completion:nil];
 }
 
+#pragma mark - PHPhotoLibraryChangeObserver
+
+- (void)photoLibraryDidChange:(PHChange *)changeInstance
+{
+    dispatch_async(dispatch_get_main_queue(), ^
+    {
+        VLog(@"Library changed!!!");
+        BOOL dirty = NO;
+        for (PHFetchResult *fetchResult in self.fetchResults)
+        {
+            if ([changeInstance changeDetailsForFetchResult:fetchResult])
+            {
+                dirty = YES;
+                break;
+            }
+        }
+        
+        if (dirty)
+        {
+            [self fetchCollectionsWithCompletion:^
+             {
+                 //TODO: Animate change result
+                 [self.tableView reloadData];
+             }];
+        }
+    });
+}
+
 #pragma mark - Private Methods
 
-- (PHFetchResult *)fetchResultForAssetsInCollection:(PHAssetCollection *)collection
+// Completion is called on main Queue
+- (void)fetchCollectionsWithCompletion:(void(^)())success
 {
-    PHFetchResult *resultForCollection = [self.cachedFetchResultsForCollections objectForKey:collection];
-    if (resultForCollection == nil)
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
     {
-        resultForCollection = [PHAsset fetchAssetsInAssetCollection:collection
-                                                            options:nil];
-        [self.cachedFetchResultsForCollections setObject:resultForCollection
-                                                  forKey:collection];
-    }
-    return resultForCollection;
+        // Fetch all albums
+        PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
+                                                                              subtype:PHAssetCollectionSubtypeAny
+                                                                              options:nil];
+        PHFetchResult *userAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
+                                                                             subtype:PHAssetCollectionSubtypeAny
+                                                                             options:nil];
+        [self.fetchResults addObject:smartAlbums];
+        [self.fetchResults addObject:userAlbums];
+        
+        // Configure fetch options for media type and creation date
+        PHAssetMediaType mediaType = PHAssetMediaTypeImage;
+        PHFetchOptions *assetFetchOptions = [[PHFetchOptions alloc] init];
+        assetFetchOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d", mediaType];
+        assetFetchOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
+        
+        // We're going to add apropirate collecitons and fetch requests to these arrays
+        NSMutableArray *assetCollections = [[NSMutableArray alloc] init];
+        NSMutableArray *assetCollectionsFetchResutls = [[NSMutableArray alloc] init];
+        
+        // Add collections and fetch requests to array if collection contains at least 1 asset of media type
+        for (PHAssetCollection *collection in smartAlbums)
+        {
+            PHFetchResult *albumMediaTypeResults = [PHAsset fetchAssetsInAssetCollection:collection
+                                                                                 options:assetFetchOptions];
+            [self.fetchResults addObject:albumMediaTypeResults];
+            if (albumMediaTypeResults.count > 0)
+            {
+                [assetCollections addObject:collection];
+                [assetCollectionsFetchResutls addObject:albumMediaTypeResults];
+            }
+        }
+        for (PHAssetCollection *collection in userAlbums)
+        {
+            PHFetchResult *albumMediaTypeResults = [PHAsset fetchAssetsInAssetCollection:collection
+                                                                                 options:assetFetchOptions];
+            [self.fetchResults addObject:albumMediaTypeResults];
+            if (albumMediaTypeResults.count > 0)
+            {
+                [assetCollections addObject:collection];
+                [assetCollectionsFetchResutls addObject:albumMediaTypeResults];
+            }
+        }
+        
+        self.collections = assetCollections;
+        self.assetFetchResultForCollections = assetCollectionsFetchResutls;
+        
+        dispatch_async(dispatch_get_main_queue(), success);
+    });
 }
 
 @end

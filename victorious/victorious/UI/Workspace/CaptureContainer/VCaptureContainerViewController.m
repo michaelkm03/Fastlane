@@ -67,6 +67,11 @@
     self.navigationItem.titleView = self.viewControllerToContain.navigationItem.titleView;
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 #pragma mark - Public Methods
 
 - (void)setContainedViewController:(UIViewController *)viewController

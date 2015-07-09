@@ -12,9 +12,10 @@
 
 @interface VAssetCollectionListViewController : UITableViewController
 
+/**
+ *  Factory method for this ViewController. Use this to get an instance of VAssetCollectionListViewController.
+ */
 + (instancetype)assetCollectionListViewController;
-
-@property (nonatomic, strong) NSArray *assetCollections;
 
 /**
  *  A handler for colleciton selection. Dismisses self after calling this handler.
