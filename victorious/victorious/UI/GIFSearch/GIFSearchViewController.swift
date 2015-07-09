@@ -39,7 +39,7 @@ private extension UISearchBar {
     }
 }
 
-class GIFSearchViewController: UIViewController, UICollectionViewDelegateFlowLayout, VCaptureContainedViewController, VMediaSource {
+class GIFSearchViewController: UIViewController, UICollectionViewDelegateFlowLayout, VMediaSource {
 
     @IBOutlet private weak var collectionView: UICollectionView!
     @IBOutlet private weak var searchBar: UISearchBar!
@@ -67,6 +67,8 @@ class GIFSearchViewController: UIViewController, UICollectionViewDelegateFlowLay
             self.updateSizes( self._searchDataSource.results )
             self.collectionView.reloadData()
         }
+        
+        self.title = "GIF"
     }
     
     func updateSizes( results: [GIFSearchResult] ) {
@@ -105,16 +107,6 @@ class GIFSearchViewController: UIViewController, UICollectionViewDelegateFlowLay
     // MARK: - VCaptureContainerViewController
     
     var handler: VMediaSelectionHandler?
-    
-    // MARK: - VCaptureContainerViewController
-    
-    func titleView() -> UIView? {
-        var label = UILabel()
-        label.text = "GIF"
-        label.textColor = UIColor.whiteColor()
-        label.sizeToFit()
-        return label
-    }
     
     // MARK: - UICollectionViewDelegateFlowLayout
     

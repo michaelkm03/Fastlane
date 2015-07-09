@@ -100,21 +100,31 @@ static NSString * const kDividerDelimeter = @"•";
     return _numberFormatter;
 }
 
+- (void)setTextAttributes:(NSDictionary *)textAttributes
+{
+    _textAttributes = textAttributes;
+    
+    NSParameterAssert( _textAttributes!= nil );
+    NSParameterAssert( _textAttributes[ NSFontAttributeName ] != nil );
+    NSParameterAssert( _textAttributes[ NSForegroundColorAttributeName ] != nil );
+    
+    [self updateCountText];
+}
+
 - (void)updateCountText
 {
-    if ( self.dependencyManager == nil )
+    if ( self.textAttributes == nil )
     {
         return;
     }
     
-    UIFont *font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
-    UIColor *textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    NSDictionary *attributes = @{ NSFontAttributeName: font, NSForegroundColorAttributeName: textColor };
-    
     NSMutableString *displayText = [[NSMutableString alloc] init];
     
+    const BOOL willShowLikes = self.likesCount > 0 && !self.hideLikes;
+    const BOOL willShowComments = self.commentsCount > 0 && !self.hideComments;
+    
     NSString *likesText = nil;
-    if ( self.likesCount > 0 )
+    if ( willShowLikes )
     {
         NSString *formattedNumberString = [self.numberFormatter stringForInteger:self.likesCount];
         NSString *format = self.likesCount == 1 ? NSLocalizedString( @"LikesSingularFormat", @"" ) : NSLocalizedString( @"LikesPluralFormat", @"" );
@@ -122,13 +132,13 @@ static NSString * const kDividerDelimeter = @"•";
         [displayText appendString:likesText];
     }
     
-    if ( self.likesCount > 0 && self.commentsCount > 0 && !self.hideComments )
+    if ( willShowLikes && willShowComments )
     {
         [displayText appendString:[NSString stringWithFormat:@"  %@  ", kDividerDelimeter]];
     }
     
     NSString *commentsText = nil;
-    if ( self.commentsCount > 0 && !self.hideComments )
+    if ( willShowComments )
     {
         NSString *formattedNumberString = [self.numberFormatter stringForInteger:self.commentsCount];
         NSString *format = self.commentsCount == 1 ? NSLocalizedString( @"CommentsSingularFormat", @"" ) : NSLocalizedString( @"CommentsPluralFormat", @"" );
@@ -136,7 +146,8 @@ static NSString * const kDividerDelimeter = @"•";
         [displayText appendString:commentsText];
     }
     
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:displayText attributes:attributes];
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:displayText
+                                                                                         attributes:self.textAttributes];
     
     if ( likesText != nil )
     {
@@ -151,8 +162,8 @@ static NSString * const kDividerDelimeter = @"•";
     }
     
     super.attributedText = attributedString; //< Use super because self is overridden
-    self.linkTextAttributes = attributes;
-    self.linkTextTouchAttributes = attributes;
+    self.linkTextAttributes = self.textAttributes;
+    self.linkTextTouchAttributes = self.textHighlightAttributes ?: self.textAttributes;
 }
 
 + (BOOL)canDisplayTextWithCommentCount:(NSInteger)commentCount likesCount:(NSInteger)likesCount

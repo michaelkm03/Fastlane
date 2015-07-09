@@ -12,13 +12,12 @@
 #import "VDependencyManager.h"
 #import "VDependencyManager+VKeyboardStyle.h"
 #import "VDependencyManager+VBackgroundContainer.h"
+#import "VDependencyManager+VLoginAndRegistration.h"
 
 // Views + Helpers
 #import "VInlineValidationTextField.h"
 #import "VLoginFlowControllerDelegate.h"
-
-static NSString *kPromptKey = @"prompt";
-static NSString *kKeyboardStyleKey = @"keyboardStyle";
+#import "VDependencyManager+VTracking.h"
 
 @interface VModernEnterNameViewController () <VBackgroundContainer, UITextFieldDelegate, VLoginFlowScreen>
 
@@ -54,7 +53,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                        NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey],
                                        NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]
                                        };
-    self.promptLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString([self.dependencyManager stringForKey:kPromptKey], nil)
+    self.promptLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString([self.dependencyManager stringForKey:VScreenPromptKey], nil)
                                                                       attributes:promptAttributes];
 
     NSDictionary *fieldAttributes = @{
@@ -68,7 +67,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     self.nameField.font = fieldAttributes[NSFontAttributeName];
     self.nameField.textColor = fieldAttributes[NSForegroundColorAttributeName];
     self.nameField.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    self.nameField.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
+    self.nameField.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:VKeyboardStyleKey];
     self.nameField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter name", nil)
                                                                            attributes:placeholderTextFieldAttributes];
     [self.dependencyManager addBackgroundToBackgroundHost:self];
@@ -83,9 +82,24 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     [self.nameField becomeFirstResponder];
     
     self.navigationItem.hidesBackButton = YES;
+    
+    [self.dependencyManager trackViewWillAppear:self];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [self.dependencyManager trackViewWillDisappear:self];
 }
 
 #pragma mark - VLoginFlowScreen
+
+- (BOOL)displaysAfterSocialRegistration
+{
+    NSNumber *value = [self.dependencyManager numberForKey:VDisplayWithSocialRegistration];
+    return value.boolValue;
+}
 
 @synthesize delegate = _delegate;
 

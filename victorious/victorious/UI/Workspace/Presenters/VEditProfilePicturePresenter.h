@@ -19,6 +19,11 @@ typedef void(^VEditProfilePictureCompletion)(BOOL success, UIImage *previewImage
 @interface VEditProfilePicturePresenter : VAbstractPresenter
 
 /**
+ *  Setting this to YES allows the camera to show a contextual permission dialog pre-prompting the user.
+ */
+@property (nonatomic, assign) BOOL isRegistration;
+
+/**
  *  A completion block for the presenter. Be sure to retain this presenter if providing a completion block.
  */
 @property (nonatomic, copy) VEditProfilePictureCompletion completion;

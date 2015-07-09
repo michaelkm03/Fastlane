@@ -38,7 +38,8 @@
 #import "UIActionSheet+VBlocks.h"
 
 #pragma mark - Dependency Manager
-#import "VDependencyManager.h"
+#import "VCoachmarkManager.h"
+#import "VDependencyManager+VCoachmarkManager.h"
 
 #pragma mark - Remixing
 #import "VRemixPresenter.h"
@@ -175,17 +176,24 @@
 }
 
 - (void)likeSequence:(VSequence *)sequence fromViewController:(UIViewController *)viewController
+      withActionView:(UIView *)actionView
           completion:(void(^)(BOOL success))completion
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLike];
     
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                       dependencyManager:self.dependencyManager];
+    
+    __weak typeof(self) welf = self;
     [authorization performFromViewController:viewController context:VAuthorizationContextDefault
                                   completion:^(BOOL authorized)
      {
+         __strong typeof(self) strongSelf = welf;
          if ( authorized )
          {
+             CGRect likeButtonFrame = [actionView convertRect:actionView.bounds toView:viewController.view];
+             [[strongSelf.dependencyManager coachmarkManager] triggerSpecificCoachmarkWithIdentifier:VLikeButtonCoachmarkIdentifier inViewController:viewController atLocation:likeButtonFrame];
+             
              [[VObjectManager sharedManager] toggleLikeWithSequence:sequence
                                                        successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
               {

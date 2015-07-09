@@ -194,7 +194,6 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         __weak typeof(VPublishViewController) *weakPublishViewController = publishViewController;
         publishViewController.completion = ^void(BOOL published)
         {
-#warning Request for permission first
             if (publishParameters.shouldSaveToCameraRoll)
             {
                 if ([welf.capturedMediaURL v_hasImageExtension])

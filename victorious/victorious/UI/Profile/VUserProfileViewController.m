@@ -623,7 +623,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     else
     {
         VUsersViewController *usersViewController = [[VUsersViewController alloc] initWithDependencyManager:self.dependencyManager];
-        usersViewController.title = NSLocalizedString( @"Followers", nil );
+        usersViewController.title = NSLocalizedString( @"Following", nil );
         usersViewController.usersDataSource = [[VUserIsFollowingDataSource alloc] initWithUser:self.user];
         
         [self.navigationController pushViewController:usersViewController animated:YES];
@@ -639,6 +639,11 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     if ( [segue.destinationViewController respondsToSelector:@selector(setDependencyManager:)] )
     {
         [segue.destinationViewController setDependencyManager:self.dependencyManager];
+    }
+    if ( [segue.destinationViewController isKindOfClass:[VAbstractProfileEditViewController class]])
+    {
+        VAbstractProfileEditViewController *editVC = (VAbstractProfileEditViewController *)segue.destinationViewController;
+        editVC.profile = self.user;
     }
 }
 

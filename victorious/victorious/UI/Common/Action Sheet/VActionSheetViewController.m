@@ -31,7 +31,7 @@
 #import "VDependencyManager.h"
 
 
-@interface VActionSheetViewController () <UITableViewDelegate, UITableViewDataSource, CCHLinkTextViewDelegate, UIGestureRecognizerDelegate>
+@interface VActionSheetViewController () <UITableViewDelegate, UITableViewDataSource, CCHLinkTextViewDelegate, UIGestureRecognizerDelegate, UITextViewDelegate>
 
 @property (nonatomic, strong) NSArray *addedItems;
 @property (nonatomic, strong) NSArray *actionItems;
@@ -49,6 +49,10 @@
 @property (weak, nonatomic) IBOutlet UIView *gradientContainer;
 @property (weak, nonatomic) IBOutlet VHashTagTextView *titleTextView;
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *tapAwayGestureRecognizer;
+@property (weak, nonatomic) IBOutlet UIView *emptySpaceContainer;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewTopSpace;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewBottomSpace;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *horizontalSpace;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *blurringContainerHeightConstraint;
 @property (nonatomic, strong) CAGradientLayer *gradient;
@@ -77,7 +81,7 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     self.titleTextView.text = nil;
     self.usernameLabel.text = nil;
     self.userCaptionLabel.text = nil;
-
+    
     UIToolbar *blurredView = [[UIToolbar alloc] initWithFrame:CGRectMake(0,
                                                                          0,
                                                                          CGRectGetWidth(self.blurringContainer.bounds),
@@ -104,6 +108,8 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     [super viewWillAppear:animated];
     
     self.view.userInteractionEnabled = YES;
+    
+    self.tapAwayGestureRecognizer.delegate = self;
     
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
@@ -321,9 +327,21 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     
     NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:self.descriptionItem.title
                                                                                                 attributes:attributes];
-    [self.tapAwayGestureRecognizer requireGestureRecognizerToFail:self.titleTextView.linkGestureRecognizer];
+    
     self.titleTextView.attributedText = mutableAttributedString;
     self.titleTextView.linkDelegate = self;
+}
+
+- (void)viewDidLayoutSubviews
+{
+    // Turn scrolling on on our text view if necessary
+    CGRect rect = [self.titleTextView.attributedText boundingRectWithSize:CGSizeMake(CGRectGetWidth(self.view.bounds) - self.horizontalSpace.constant * 2, CGFLOAT_MAX)
+                                                                  options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                                                  context:nil];
+    if (ceilf(CGRectGetHeight(rect)) > CGRectGetMaxY(self.emptySpaceContainer.frame) - self.textViewBottomSpace.constant - self.textViewTopSpace.constant)
+    {
+        self.titleTextView.scrollEnabled = YES;
+    }
 }
 
 #pragma mark - CCHLinkTextViewDelegate
@@ -344,5 +362,18 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
          [self.titleTextView setDependencyManager:dependencyManager];
      }
  }
+
+#pragma mark - Gesture Recognizer Delegate
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    CGPoint location = [gestureRecognizer locationInView:self.titleTextView];
+    __block BOOL shouldRecognize = YES;
+    [self.titleTextView enumerateLinkRangesContainingLocation:location usingBlock:^(NSRange range)
+    {
+        shouldRecognize = NO;
+    }];
+    return shouldRecognize;
+}
 
 @end

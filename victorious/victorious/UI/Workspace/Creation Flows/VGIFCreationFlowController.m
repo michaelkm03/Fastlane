@@ -6,11 +6,14 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import "victorious-Swift.h"
+
 #import "VGIFCreationFlowController.h"
 
 // Capture
 #import "VCaptureContainerViewController.h"
-#import "victorious-Swift.h" // For VTextPostBackgroundLayout
+#import "VAlternateCaptureOption.h"
+#import "VAssetGridViewController.h"
 
 // Workspace
 #import "VWorkspaceViewController.h"
@@ -112,10 +115,6 @@
             [toolController setDefaultVideoTool:VVideoToolControllerInitialVideoEditStateGIF];
             
             [self pushViewController:self.workspaceViewController animated:YES];
-        }
-        else
-        {
-#warning Add some error handling here
         }
     };
 }

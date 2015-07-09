@@ -8,6 +8,9 @@
 
 #import "VCaptureContainerViewController.h"
 
+// API
+#import "VAlternateCaptureOption.h"
+
 // Views + Helpers
 #import <OAStackView/OAStackView.h>
 #import "UIView+Autolayout.h"
@@ -19,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) IBOutlet UIView *containerView;
 @property (nonatomic, strong) IBOutlet OAStackView *stackView;
 
-@property (nonatomic, strong) UIViewController<VCaptureContainedViewController> *viewControllerToContain;
+@property (nonatomic, strong) UIViewController *viewControllerToContain;
 
 @end
 
@@ -42,6 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
     for (VAlternateCaptureOption *alternateOption in self.alternateCaptureOptions)
     {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+        button.tintColor = [UIColor whiteColor];
         [button setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
         [button setImage:alternateOption.icon forState:UIControlStateNormal];
         [button setTitle:alternateOption.title forState:UIControlStateNormal];
@@ -61,14 +65,14 @@ NS_ASSUME_NONNULL_BEGIN
     [self.containerView v_addFitToParentConstraintsToSubview:self.viewControllerToContain.view];
     [self.viewControllerToContain didMoveToParentViewController:self];
     
-    self.navigationItem.titleView = [self.viewControllerToContain titleView];
+    self.navigationItem.titleView = self.viewControllerToContain.navigationItem.titleView;
 }
 
 #pragma mark - Public Methods
 
-- (void)setContainedViewController:(UIViewController<VCaptureContainedViewController> *)viewController
+- (void)setContainedViewController:(UIViewController *)viewController
 {
-    _viewControllerToContain = viewController;    
+    _viewControllerToContain = viewController;
 }
 
 #pragma mark - Target/Action
@@ -87,26 +91,6 @@ NS_ASSUME_NONNULL_BEGIN
     }];
 
     alternateCaptureOption.selectionBlock();
-}
-
-@end
-
-#pragma mark - VAlternateCaptureOption
-
-@implementation VAlternateCaptureOption
-
-- (instancetype)initWithTitle:(NSString *)title
-                         icon:(UIImage *)icon
-            andSelectionBlock:(VImageVideoLibraryAlternateCaptureSelection)selectionBlock
-{
-    self = [super init];
-    if (self != nil)
-    {
-        _title = title;
-        _icon = icon;
-        _selectionBlock = [selectionBlock copy];
-    }
-    return self;
 }
 
 @end

@@ -14,6 +14,7 @@
 @property (nonatomic, assign, readwrite) VMonetizationPartner monetizationPartner;
 @property (nonatomic, strong, readwrite) NSArray *monetizationDetails;
 @property (nonatomic, assign, readwrite) BOOL loop;
+@property (nonatomic, strong, readwrite) NSString *streamID;
 
 @end
 
@@ -23,6 +24,7 @@
                                  withAdSystem:(VMonetizationPartner)monetizationPartner
                                   withDetails:(NSArray *)details
                                      withLoop:(BOOL)loop
+                                 withStreamID:(NSString *)streamID
 {
     if (![itemURL isKindOfClass:[NSURL class]])
     {
@@ -34,6 +36,7 @@
     videoCellViewModel.monetizationPartner = monetizationPartner;
     videoCellViewModel.monetizationDetails = details;
     videoCellViewModel.loop = loop;
+    videoCellViewModel.streamID = streamID;
     return videoCellViewModel;
 }
 

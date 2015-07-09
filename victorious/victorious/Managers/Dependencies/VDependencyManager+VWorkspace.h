@@ -17,11 +17,4 @@
  */
 - (NSArray /* VWorkspaceTool */ *)workspaceTools;
 
-/**
- Returns a new VWorkspaceFlowController instance according to the template configuration
- 
- @param extraDependencies Extra dependencies to pass on to the returned VWorkspaceFlowController instance
- */
-- (VWorkspaceFlowController *)workspaceFlowControllerWithAddedDependencies:(NSDictionary *)extraDependencies;
-
 @end

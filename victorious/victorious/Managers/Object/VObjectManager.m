@@ -491,6 +491,11 @@ NS_ASSUME_NONNULL_BEGIN
     {
         [request addValue:self.sessionID forHTTPHeaderField:@"X-Client-Session-ID"];
     }
+   
+    if (self.experimentIDs != nil)
+    {
+        [request addValue:self.experimentIDs forHTTPHeaderField:@"X-Client-Experiment-IDs"];
+    }
     
     NSString *locale = [[[NSBundle mainBundle] preferredLocalizations] firstObject];
     if ( locale != nil )

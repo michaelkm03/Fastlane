@@ -29,7 +29,6 @@
 #import "VPermissionPhotoLibrary.h"
 #import "VPermissionMicrophone.h"
 #import "VPermissionProfilePicture.h"
-#import "VWorkspaceFlowController.h"
 
 static const NSTimeInterval kAnimationDuration = 0.4;
 static const NSTimeInterval kErrorMessageDisplayDuration = 3.0;
@@ -94,6 +93,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 @property (nonatomic) BOOL allowVideo; ///< THIS property specifies whether we SHOULD allow video (according to the wishes of the calling class)
 @property (nonatomic) BOOL videoEnabled; ///< THIS property specifies whether we CAN allow video (according to device restrictions)
 @property (nonatomic) BOOL allowPhotos;
+@property (nonatomic) BOOL disableSearchAndGallery;
 
 @property (nonatomic, readwrite) BOOL didSelectAssetFromLibrary;
 @property (nonatomic, readwrite) BOOL didSelectFromWebSearch;
@@ -164,6 +164,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 
 - (void)commonInit
 {
+    self.context = VWorkspaceFlowControllerContextContentCreation;
     self.allowPhotos = YES;
     self.allowVideo = YES;
     self.videoEnabled = YES;
@@ -181,6 +182,11 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if (self.disableSearchAndGallery)
+    {
+        [self hideSearchAndAlbumButtons];
+    }
     
     [self.closeButton setImage:[self.dependencyManager imageForKey:kCloseIconKey] forState:UIControlStateNormal];
     [self.switchCameraButton setImage:[self.dependencyManager imageForKey:kReverseCameraIconKey] forState:UIControlStateNormal];
@@ -356,12 +362,10 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
         return;
     }
     
-    VWorkspaceFlowControllerContext initialContext = VWorkspaceFlowControllerContextContentCreation;
-    NSNumber *injectedContext = [self.dependencyManager numberForKey:VWorkspaceFlowControllerContextKey];
-    initialContext = (injectedContext != nil) ? [injectedContext integerValue] : initialContext;
+    self.captureController.context = self.context;
     
     VPermission *cameraPermission;
-    if (initialContext == VWorkspaceFlowControllerContextContentCreation)
+    if (self.context == VWorkspaceFlowControllerContextContentCreation)
     {
         cameraPermission = [[VPermissionCamera alloc] initWithDependencyManager:self.dependencyManager];
     }
@@ -379,7 +383,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
              void (^startCapture)(BOOL videoEnabled) = [self startCaptureBlock];
              
              // If we don't need mic permission, call the capture start block right away
-             if (initialContext == VWorkspaceFlowControllerContextProfileImage || !self.allowVideo)
+             if (self.context == VWorkspaceFlowControllerContextProfileImage || !self.allowVideo)
              {
                  self.userDeniedPermissionsPrePrompt = NO;
                  startCapture(NO);
@@ -414,7 +418,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
          {
              self.userDeniedPermissionsPrePrompt = YES;
              self.state = VCameraViewControllerStatePermissionDenied;
-             if (state == VPermissionStatePromptDenied && (initialContext == VWorkspaceFlowControllerContextProfileImageRegistration))
+             if (state == VPermissionStatePromptDenied && (self.context == VWorkspaceFlowControllerContextProfileImageRegistration))
              {
                  if (self.completionBlock)
                  {
@@ -459,6 +463,18 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     };
     
     return startCapture;
+}
+
+#pragma mark - Public Methods
+
+- (void)hideSearchAndAlbumButtons
+{
+    self.disableSearchAndGallery = YES;
+    
+    self.openAlbumButton.hidden = YES;
+    self.openAlbumButton = nil;
+    self.searchButton.hidden = YES;
+    self.searchButton = nil;
 }
 
 #pragma mark - Property Accessors
@@ -756,7 +772,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
         self.state = VCameraViewControllerStateInitializingHardware;
         [self.captureController setCurrentDevice:newDevice withCompletion:^(NSError *error)
          {
-             __typeof(weakSelf) strongSelf = weakSelf;
+             __strong __typeof(weakSelf) strongSelf = weakSelf;
              if (strongSelf)
              {
                  dispatch_async(dispatch_get_main_queue(), ^(void)

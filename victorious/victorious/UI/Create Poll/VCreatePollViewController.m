@@ -14,11 +14,9 @@
 #import "VObjectManager+ContentCreation.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "victorious-Swift.h"  // for NSString+Unicode (imports all Swift files)
-
+#import "VDependencyManager.h"
 // Media Creation
 #import "VMediaAttachmentPresenter.h"
-
-#import "VDependencyManager+VWorkspace.h"
 
 static const NSInteger kMinLength = 2;
 
@@ -311,6 +309,8 @@ static char KVOContext;
     {
         [welf imagePickerFinishedWithURL:mediaURL
                             previewImage:previewImage];
+        [welf dismissViewControllerAnimated:YES
+                                 completion:nil];
     };
     [self.attachmentPresenter present];
 }

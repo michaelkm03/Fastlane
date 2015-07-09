@@ -89,7 +89,7 @@
                 {
                     void (^updateBadgeBlock)() = ^(void)
                     {
-                        __typeof(weakSelf) strongSelf = weakSelf;
+                        __strong __typeof(weakSelf) strongSelf = weakSelf;
                         
                         if (strongSelf != nil)
                         {

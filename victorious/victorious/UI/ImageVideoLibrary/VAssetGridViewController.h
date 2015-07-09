@@ -8,22 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import "VMediaSource.h"
-#import "VCaptureContainerViewController.h"
 
-@class PHFetchResult;
+@class PHAssetCollection;
 
-/**
- *  A completion block the AssetGridViewController will call to provide the results of the user selecting an asset.
- *
- *  @param previewImage A preview image of the asset the user has selected. (may be low quality)
- *  @param capturedMediaURL An NSUrl pointing to selected asset. Will be on disk (not iCloud).
- */
-typedef void (^VAssetSelectionHandler)(UIImage *previewImage, NSURL *capturedMediaURL);
-
-@interface VAssetGridViewController : UICollectionViewController <VMediaSource, VCaptureContainedViewController>
+@interface VAssetGridViewController : UICollectionViewController <VMediaSource>
 
 + (instancetype)assetGridViewController;
 
-@property (nonatomic, strong) PHFetchResult *assetsToDisplay;
+@property (nonatomic, strong) PHAssetCollection *collectionToDisplay;
+
+@property (nonatomic, assign) BOOL alternateFolderButtonEnabled;
+
+@property (nonatomic, copy) void (^alternateFolderSelectionHandler)();
 
 @end

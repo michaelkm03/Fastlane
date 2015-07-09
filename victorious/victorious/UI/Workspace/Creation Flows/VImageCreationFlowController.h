@@ -7,6 +7,7 @@
 //
 
 #import "VCreationFlowController.h"
+#import "VWorkspaceContext.h"
 
 extern NSString * const VImageCreationFlowControllerKey;
 
@@ -18,5 +19,10 @@ extern NSString * const VImageCreationFlowControllerKey;
  */
 - (void)remixWithPreviewImage:(UIImage *)previewImage
                      mediaURL:(NSURL *)mediaURL;
+
+/**
+ *  The context for image creation. Defualts to contentCreation.
+ */
+@property (nonatomic, assign) VWorkspaceFlowControllerContext context;
 
 @end
