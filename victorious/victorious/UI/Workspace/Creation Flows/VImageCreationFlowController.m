@@ -260,10 +260,10 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     };
     
     VAlternateCaptureOption *cameraOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Camera", nil)
-                                                                                      icon:[UIImage imageNamed:@""]
+                                                                                      icon:[UIImage imageNamed:@"contententry_cameraicon"]
                                                                          andSelectionBlock:cameraSelectionBlock];
     VAlternateCaptureOption *searchOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Search", nil)
-                                                                                      icon:[UIImage imageNamed:@""]
+                                                                                      icon:[UIImage imageNamed:@"contententry_searchbaricon"]
                                                                          andSelectionBlock:searchSelectionBlock];
     return @[cameraOption, searchOption];
 }

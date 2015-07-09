@@ -40,6 +40,7 @@
 {
     [super viewDidLoad];
 
+    // Create alternateOption buttons
     for (VAlternateCaptureOption *alternateOption in self.alternateCaptureOptions)
     {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -50,11 +51,11 @@
         [button addTarget:self action:@selector(selectedAlternateOption:) forControlEvents:UIControlEventTouchUpInside];
         button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
         button.translatesAutoresizingMaskIntoConstraints = NO;
+        // Move the image a bit to the left
+        button.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
         [self.stackView addArrangedSubview:button];
     }
-
     self.stackView.distribution = OAStackViewDistributionFillEqually;
-    
     
     // Setup contained VC
     [self addChildViewController:self.viewControllerToContain];
@@ -62,6 +63,7 @@
     [self.containerView v_addFitToParentConstraintsToSubview:self.viewControllerToContain.view];
     [self.viewControllerToContain didMoveToParentViewController:self];
     
+    // Forward navigationItem
     self.navigationItem.titleView = self.viewControllerToContain.navigationItem.titleView;
 }
 
