@@ -10,7 +10,6 @@
 
 // Dependencies
 #import "VDependencyManager.h"
-#import "VCreationFlowShim.h"
 
 // API
 #import "VObjectManager+Users.h"

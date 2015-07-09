@@ -115,10 +115,6 @@
             
             [self pushViewController:self.workspaceViewController animated:YES];
         }
-        else
-        {
-#warning Add some error handling here
-        }
     };
 }
 

@@ -24,6 +24,9 @@
 // Animators
 #import "VPublishBlurOverAnimator.h"
 
+// Views + Helpers
+#import "UIAlertController+VSimpleAlert.h"
+
 // Dependencies
 #import "VDependencyManager.h"
 #import "VMediaSource.h"
@@ -113,10 +116,6 @@
             [toolController setDefaultVideoTool:VVideoToolControllerInitialVideoEditStateGIF];
             
             [self pushViewController:self.workspaceViewController animated:YES];
-        }
-        else
-        {
-#warning Add some error handling here
         }
     };
 }

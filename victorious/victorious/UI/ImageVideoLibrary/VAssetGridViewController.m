@@ -87,6 +87,8 @@
                                 forState:UIControlStateNormal];
     
     PHFetchOptions *fetchOptions = [[PHFetchOptions alloc] init];
+    fetchOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d", PHAssetMediaTypeImage];
+
     fetchOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
     self.assetsToDisplay = [PHAsset fetchAssetsInAssetCollection:collectionToDisplay
                                                          options:fetchOptions];

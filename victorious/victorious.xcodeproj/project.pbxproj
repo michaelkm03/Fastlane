@@ -335,7 +335,6 @@
 		A6EC327B1B3B50C400824022 /* publishScreen.json in Resources */ = {isa = PBXBuildFile; fileRef = A6EC327A1B3B50C400824022 /* publishScreen.json */; };
 		A6EC327D1B3B50E300824022 /* pollWorkspace.json in Resources */ = {isa = PBXBuildFile; fileRef = A6EC327C1B3B50E200824022 /* pollWorkspace.json */; };
 		A6EC32951B3B5A6600824022 /* imageVideoTemplateScreen.json in Resources */ = {isa = PBXBuildFile; fileRef = A6EC32941B3B5A6600824022 /* imageVideoTemplateScreen.json */; };
-		A6F0D5EA1B3641C50017F955 /* VCreationFlowShim.m in Sources */ = {isa = PBXBuildFile; fileRef = A6F0D5E91B3641C50017F955 /* VCreationFlowShim.m */; };
 		A70417631A365EE80042CABD /* VPurchaseRecordTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A70417621A365EE80042CABD /* VPurchaseRecordTests.m */; };
 		A70564BC19E7817C004A8387 /* VObjectManager+Discover.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564BB19E7817C004A8387 /* VObjectManager+Discover.m */; };
 		A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564C119E781EE004A8387 /* VNoContentTableViewCell.m */; };
@@ -1671,8 +1670,6 @@
 		A6EC327A1B3B50C400824022 /* publishScreen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = publishScreen.json; sourceTree = "<group>"; };
 		A6EC327C1B3B50E200824022 /* pollWorkspace.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = pollWorkspace.json; sourceTree = "<group>"; };
 		A6EC32941B3B5A6600824022 /* imageVideoTemplateScreen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = imageVideoTemplateScreen.json; sourceTree = "<group>"; };
-		A6F0D5E81B3641C50017F955 /* VCreationFlowShim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreationFlowShim.h; sourceTree = "<group>"; };
-		A6F0D5E91B3641C50017F955 /* VCreationFlowShim.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCreationFlowShim.m; sourceTree = "<group>"; };
 		A70417621A365EE80042CABD /* VPurchaseRecordTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseRecordTests.m; sourceTree = "<group>"; };
 		A70564BA19E7817C004A8387 /* VObjectManager+Discover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+Discover.h"; sourceTree = "<group>"; };
 		A70564BB19E7817C004A8387 /* VObjectManager+Discover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+Discover.m"; sourceTree = "<group>"; };
@@ -6203,8 +6200,6 @@
 				A6EC327A1B3B50C400824022 /* publishScreen.json */,
 				A7ECC1C31AD617480003E00A /* Tool Controllers */,
 				D8D945F71A2EA51D0089D271 /* Tools */,
-				A6F0D5E81B3641C50017F955 /* VCreationFlowShim.h */,
-				A6F0D5E91B3641C50017F955 /* VCreationFlowShim.m */,
 				A6EC326E1B3B4E9B00824022 /* VCreationTypes.h */,
 				D80A94D31A535DFA0035D788 /* Video */,
 				A6EC32781B3B50B700824022 /* videoWorkspace.json */,
@@ -6214,8 +6209,6 @@
 				D80BAB581A688D83003A3068 /* VWorkspaceFlowController.h */,
 				D80BAB591A688D83003A3068 /* VWorkspaceFlowController.m */,
 				B041DB9D1B41E49A00E1F36D /* VWorkspaceContext.h */,
-				D81404091AB372320099EC4B /* VWorkspacePresenter.h */,
-				D814040A1AB372320099EC4B /* VWorkspacePresenter.m */,
 				D8B88F951ABA85F700DBAEA0 /* VWorkspaceShimDestination.h */,
 				D8B88F961ABA85F700DBAEA0 /* VWorkspaceShimDestination.m */,
 				03F6E2691AB79E090017826E /* Workspace.storyboard */,
@@ -7836,7 +7829,6 @@
 				A7ECC1BE1AD601040003E00A /* UIImage+VTint.m in Sources */,
 				0314D0B319B4698800FA363C /* VObjectManager+ImageSearch.m in Sources */,
 				A743E7E41A0816D500339CB3 /* VPasswordValidator.m in Sources */,
-				A6F0D5EA1B3641C50017F955 /* VCreationFlowShim.m in Sources */,
 				0314D48C19B46B5E00FA363C /* VSelectorViewController.m in Sources */,
 				037FCF2B1A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.m in Sources */,
 				D8FC09071A51DBC100E5FBE4 /* VPlaceholderTextView.m in Sources */,
