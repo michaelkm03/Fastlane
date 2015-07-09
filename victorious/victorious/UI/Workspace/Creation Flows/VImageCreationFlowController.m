@@ -105,16 +105,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     };
 }
 
-- (BOOL)prefersStatusBarHidden
-{
-    return YES;
-}
-
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return UIStatusBarStyleLightContent;
-}
-
 #pragma mark - Private Methods
 
 - (PHAssetCollection *)defaultCollection
