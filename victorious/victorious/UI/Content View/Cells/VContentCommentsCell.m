@@ -236,7 +236,7 @@ static NSCache *_sharedImageCache = nil;
 - (void)setHasMedia:(BOOL)hasMedia
 {
     _hasMedia = hasMedia;
-    self.commentAndMediaView.mediaThumbnailView.hidden = !hasMedia || self.comment.shouldAutoplay;
+    self.commentAndMediaView.mediaThumbnailView.hidden = !hasMedia || [self.comment.shouldAutoplay boolValue];
     self.commentAndMediaView.hasMedia = hasMedia;
 }
 
