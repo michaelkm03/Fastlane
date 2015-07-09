@@ -13,12 +13,12 @@
 #import "VContentInputAccessoryView.h"
 #import "VConstants.h"
 #import "VNavigationController.h"
-#import "VDependencyManager+VWorkspace.h"
 #import "VTemplateBackgroundView.h"
 #import "VDefaultProfileImageView.h"
 #import "UIImageView+VLoadingAnimations.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "VEditProfilePicturePresenter.h"
+#import "VDependencyManager.h"
 
 static const CGFloat kTextColor = 0.355f;
 static const CGFloat kPlaceholderAlpha = 0.3f;
@@ -189,16 +189,20 @@ static const CGFloat kBlurredWhiteAlpha = 0.3f;
     __weak typeof(self) welf = self;
     self.editProfilePicturePresenter.completion = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
     {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectImageForEditProfile];
+        if (success)
+        {
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectImageForEditProfile];
+            
+            welf.profileImageView.image = previewImage;
+            welf.updatedProfileImage = mediaURL;
+            
+            [welf.backgroundImageView setBlurredImageWithClearImage:previewImage
+                                                   placeholderImage:nil
+                                                          tintColor:[UIColor colorWithWhite:1.0 alpha:kBlurredWhiteAlpha]];
+            welf.tableView.backgroundView = welf.backgroundImageView;
+            welf.editProfilePicturePresenter = nil;
+        }
         
-        welf.profileImageView.image = previewImage;
-        welf.updatedProfileImage = mediaURL;
-        
-        [welf.backgroundImageView setBlurredImageWithClearImage:previewImage
-                                               placeholderImage:nil
-                                                      tintColor:[UIColor colorWithWhite:1.0 alpha:kBlurredWhiteAlpha]];
-        welf.tableView.backgroundView = welf.backgroundImageView;
-        welf.editProfilePicturePresenter = nil;
         [welf dismissViewControllerAnimated:YES completion:nil];
     };
     [self.editProfilePicturePresenter present];

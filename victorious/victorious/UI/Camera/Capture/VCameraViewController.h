@@ -7,6 +7,7 @@
 //
 
 #import "VHasManagedDependencies.h"
+#import "VWorkspaceContext.h"
 
 typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL);
 
@@ -64,6 +65,12 @@ typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NS
  *  A property indicating whether the camera controls are on screen.
  */
 @property (nonatomic, assign, getter=isToolBarHidden) BOOL toolbarHidden;
+
+/**
+ *  A context for this cameraViewController to configure it's permission dialogs with. Defaults to
+ *  VWorkspaceFlowControllerContextContentCreation.
+ */
+@property (nonatomic, assign) VWorkspaceFlowControllerContext context;
 
 /**
  *  Call this to hide the search and album buttons.

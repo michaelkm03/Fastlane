@@ -6,15 +6,11 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VDependencyManager+VWorkspace.h"
-#import "VWorkspaceFlowController.h"
-#import "VImageToolController.h"
-#import "VVideoToolController.h"
-
-#import "VContentInputAccessoryView.h"
 #import "VKeyboardBarViewController.h"
-#import "VLoginViewController.h"
 
+#import "VMediaAttachmentPresenter.h"
+#import "VContentInputAccessoryView.h"
+#import "VLoginViewController.h"
 #import "VObjectManager+Login.h"
 #import "UIActionSheet+VBlocks.h"
 #import "VConstants.h"
@@ -24,13 +20,14 @@
 
 static const CGFloat kTextInputFieldMaxLines = 3.0f;
 
-@interface VKeyboardBarViewController() <UITextViewDelegate, VWorkspaceFlowControllerDelegate>
+@interface VKeyboardBarViewController() <UITextViewDelegate>
 
 @property (nonatomic, weak, readwrite) IBOutlet UIView *textViewContainer;
 @property (nonatomic, strong, readwrite) UITextView *textView;
 @property (weak, nonatomic) IBOutlet UIButton *mediaButton;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 @property (nonatomic, strong) NSURL *mediaURL;
+@property (nonatomic, strong) VMediaAttachmentPresenter *attachmentPresenter;
 
 @property (nonatomic, assign, readonly) CGFloat maxTextFieldHeight;
 
@@ -192,13 +189,23 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
     
     void (^showCamera)(void) = ^void(void)
     {
-        VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager workspaceFlowControllerWithAddedDependencies:@{ VImageToolControllerInitialImageEditStateKey: @(VImageToolControllerInitialImageEditStateFilter),
-                                                                                                                                    VVideoToolControllerInitalVideoEditStateKey: @(VVideoToolControllerInitialVideoEditStateVideo) }];
-        workspaceFlowController.delegate = self;
-        workspaceFlowController.videoEnabled = YES;
-        [self presentViewController:workspaceFlowController.flowRootViewController
-                           animated:YES
-                         completion:nil];
+        self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithViewControllerToPresentOn:self
+                                                                                      dependencymanager:self.dependencyManager];
+        __weak typeof(self) welf = self;
+        self.attachmentPresenter.completion = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
+        {
+            if (success)
+            {
+                welf.mediaURL = mediaURL;
+                [welf.mediaButton setImage:previewImage forState:UIControlStateNormal];
+            }
+            [welf dismissViewControllerAnimated:YES
+                                     completion:^
+             {
+                 [welf enableOrDisableSendButtonAsAppropriate];
+             }];
+        };
+        [self.attachmentPresenter present];
     };
     
     if (self.mediaURL == nil)
@@ -334,32 +341,6 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
             }
         }
     }
-}
-
-#pragma mark - VWorkspaceFlowControllerDelegate
-
-- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
-{
-    [self dismissViewControllerAnimated:YES
-                             completion:nil];
-}
-
-- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-       finishedWithPreviewImage:(UIImage *)previewImage
-               capturedMediaURL:(NSURL *)capturedMediaURL
-{
-    self.mediaURL = capturedMediaURL;
-    [self.mediaButton setImage:previewImage forState:UIControlStateNormal];
-    [self dismissViewControllerAnimated:YES
-                             completion:^
-     {
-         [self enableOrDisableSendButtonAsAppropriate];
-     }];
-}
-
-- (BOOL)shouldShowPublishForWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-{
-    return NO;
 }
 
 @end

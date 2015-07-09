@@ -10,7 +10,6 @@
 #import "VCameraCaptureController.h"
 #import "VCameraVideoEncoder.h"
 #import "VConstants.h"
-#import "VWorkspaceFlowController.h"
 
 @import AVFoundation;
 

@@ -16,7 +16,6 @@
 
 // Dependencies
 #import "VDependencyManager.h"
-#import "VDependencyManager+VWorkspace.h"
 #import "VDependencyManager+VLoginAndRegistration.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 
@@ -209,6 +208,7 @@
     {
         welf.profilePicturePresetner = [[VEditProfilePicturePresenter alloc] initWithViewControllerToPresentOn:self
                                                                                              dependencymanager:self.dependencyManager];
+        welf.profilePicturePresetner.isRegistration = YES;
         welf.profilePicturePresetner.completion = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
         {
             if (success)

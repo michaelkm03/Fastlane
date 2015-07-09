@@ -9,27 +9,22 @@
 #import "VProfileCreateViewController.h"
 #import "VEditProfilePicturePresenter.h"
 #import "VImageToolController.h"
-
+#import "VDependencyManager.h"
 #import "VUser.h"
 #import "TTTAttributedLabel.h"
-#import "VDependencyManager+VWorkspace.h"
 #import "VUserManager.h"
-#import <MBProgressHUD/MBProgressHUD.h>
-
 #import "VContentInputAccessoryView.h"
-
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Websites.h"
-
 #import "VConstants.h"
 #import "UIImageView+WebCache.h"
-
 #import "UIAlertView+VBlocks.h"
 #import "VAutomation.h"
 #import "VButton.h"
 #import "VDefaultProfileImageView.h"
-
 #import "VLocationManager.h"
+
+#import <MBProgressHUD/MBProgressHUD.h>
 
 @import CoreLocation;
 @import AddressBookUI;
@@ -385,6 +380,7 @@
 {
     self.presenter = [[VEditProfilePicturePresenter alloc] initWithViewControllerToPresentOn:self
                                                                            dependencymanager:self.dependencyManager];
+    self.presenter.isRegistration = YES;
     __weak typeof(self) welf = self;
     self.presenter.completion = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
     {

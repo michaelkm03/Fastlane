@@ -65,6 +65,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     {
         _dependencyManager = dependencyManager;
         
+        _context = VWorkspaceFlowControllerContextContentCreation;
         VCaptureContainerViewController *captureContainer = [VCaptureContainerViewController captureContainerWithDependencyManager:dependencyManager];
         [captureContainer setAlternateCaptureOptions:[self alternateCaptureOptions]];
         [self addCloseButtonToViewController:captureContainer];
@@ -216,6 +217,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
         // Camera
         VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerLimitedToPhotosWithDependencyManager:self.dependencyManager];
         [cameraViewController hideSearchAndAlbumButtons];
+        cameraViewController.context = self.context;
         cameraViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMeidaURL)
         {
             if (finished)

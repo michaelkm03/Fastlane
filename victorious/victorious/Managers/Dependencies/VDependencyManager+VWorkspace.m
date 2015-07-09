@@ -19,12 +19,4 @@ static NSString * const kToolsKey = @"tools";
     return [self arrayOfValuesConformingToProtocol:@protocol(VWorkspaceTool) forKey:kToolsKey];
 }
 
-- (VWorkspaceFlowController *)workspaceFlowControllerWithAddedDependencies:(NSDictionary *)extraDependencies
-{
-    VWorkspaceFlowController *workspaceFlowController = [self templateValueOfType:[VWorkspaceFlowController class]
-                                                                           forKey:VDependencyManagerWorkspaceFlowKey
-                                                            withAddedDependencies:extraDependencies];
-    return workspaceFlowController;
-}
-
 @end
