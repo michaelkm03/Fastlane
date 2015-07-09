@@ -2032,6 +2032,7 @@
 		A7D378681AF45B7C007FF197 /* VSequencePermissions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequencePermissions.m; sourceTree = "<group>"; };
 		A7D3786A1AF4625D007FF197 /* VEndCard+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VEndCard+Fetcher.h"; sourceTree = "<group>"; };
 		A7D3786B1AF4625D007FF197 /* VEndCard+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VEndCard+Fetcher.m"; sourceTree = "<group>"; };
+		A7D406BE1B4611D30025D6B9 /* VExperienceEnhancerResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExperienceEnhancerResponder.h; sourceTree = "<group>"; };
 		A7D7076E1A79671C00D9993F /* VAutoplaySettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAutoplaySettingsViewController.h; sourceTree = "<group>"; };
 		A7D7076F1A79671C00D9993F /* VAutoplaySettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAutoplaySettingsViewController.m; sourceTree = "<group>"; };
 		A7D707711A797B8A00D9993F /* VVideoSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoSettings.h; sourceTree = "<group>"; };
@@ -3275,6 +3276,7 @@
 				D8917EA119F8498F0070BDBB /* VVideoCellViewModel.m */,
 				0394204B1AB9026C0087ADFA /* VVoteType.h */,
 				0394204C1AB9026C0087ADFA /* VVoteType.m */,
+				A7D406BE1B4611D30025D6B9 /* VExperienceEnhancerResponder.h */,
 			);
 			path = "Content View";
 			sourceTree = "<group>";

@@ -36,7 +36,7 @@
 #import "VLikedContentStreamCollectionViewController.h"
 #import "UIAlertController+VSimpleAlert.h"
 
-static const NSInteger kSettingsSectionIndex         = 0;
+static const NSInteger kSettingsSectionIndex = 0;
 
 typedef NS_ENUM(NSInteger, VSettingsAction)
 {
