@@ -72,7 +72,8 @@ static const CGSize kShadowOffset = { 0.0f, 2.0f };
     [self layoutIfNeeded];
     
     CGRect gradientBounds = self.gradientContainer.bounds;
-    if ( self.streamItem.name == nil || [self.streamItem.name isEqualToString:@""] )
+    NSString *captionViewText = self.marqueeCaptionView.captionLabel.text;
+    if ( captionViewText == nil || [captionViewText isEqualToString:@""] )
     {
         [self.gradientLayer removeFromSuperlayer];
         self.gradientLayer = nil;
