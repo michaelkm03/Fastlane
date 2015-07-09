@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "victorious-Swift.h"
+
 #import "NSArray+VMap.h"
 #import "VEnvironment.h"
 #import "VErrorMessage.h"
@@ -33,7 +35,6 @@
 #import "VStream+RestKit.h"
 #import "VNotificationSettings+RestKit.h"
 #import "VEnvironmentManager.h"
-#import "VGIFSearchResult+RestKit.h"
 
 #define EnableRestKitLogs 0 // Set to "1" to see RestKit logging, but please remember to set it back to "0" before committing your changes.
 
@@ -127,7 +128,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self addResponseDescriptorsFromArray:[VStream descriptors]];
     [self addResponseDescriptorsFromArray:[VHashtag descriptors]];
     [self addResponseDescriptorsFromArray:[VNotificationSettings descriptors]];
-    [self addResponseDescriptorsFromArray:[VGIFSearchResult descriptors]];
+    [self addResponseDescriptorsFromArray:[GIFSearchResult descriptors]];
     
     [self addResponseDescriptorsFromArray: @[errorDescriptor,
                                              verrorDescriptor,

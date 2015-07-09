@@ -22,8 +22,8 @@ class GIFSearchCell: UICollectionViewCell {
 // and populated data on cells to show in results collection view
 class GIFSearchDataSource: NSObject, UICollectionViewDataSource {
     
-    private var _results = [VGIFSearchResult]()
-    var results: [VGIFSearchResult] {
+    private var _results = [GIFSearchResult]()
+    var results: [GIFSearchResult] {
         return _results
     }
     

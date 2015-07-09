@@ -11,7 +11,7 @@ import Foundation
 // Provides methods for searching for GIFs through the backend
 extension VObjectManager {
     
-    func searchForGIF( keywords: [String], success:(([VGIFSearchResult])->())?, failure:((NSError?)->())? ) -> RKManagedObjectRequestOperation {
+    func searchForGIF( keywords: [String], success:(([GIFSearchResult])->())?, failure:((NSError?)->())? ) -> RKManagedObjectRequestOperation {
         
         let keywordList: String = join( ",", keywords )
         let escapedKeywordList = keywordList.stringByAddingPercentEncodingWithAllowedCharacters( NSCharacterSet.alphanumericCharacterSet() )
@@ -19,7 +19,7 @@ extension VObjectManager {
         let abstractFilter = self.filterForKeywords( escapedKeywordList! )
         
         let fullSuccess: VSuccessBlock =  { (operaiton: NSOperation?, result: AnyObject?, resultObjects: [AnyObject]) -> Void in
-            success?( resultObjects as? [VGIFSearchResult] ?? [] )
+            success?( resultObjects as? [GIFSearchResult] ?? [] )
         }
         
         let fullFail: VFailBlock =  { (operation: NSOperation?, error: NSError? ) -> Void in

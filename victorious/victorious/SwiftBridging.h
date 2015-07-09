@@ -30,7 +30,6 @@
 // Victorious Models
 #import "VAbstractFilter.h"
 #import "VSEquence.h"
-#import "VGIFSearchResult.h"
 
 #import "VTextPostTextView.h"
 #import "VObjectManager.h"

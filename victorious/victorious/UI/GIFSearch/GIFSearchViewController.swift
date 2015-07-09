@@ -8,7 +8,7 @@
 
 import UIKit
 
-private extension VGIFSearchResult {
+private extension GIFSearchResult {
     var aspectRatio: CGFloat {
         return CGFloat(self.width.integerValue) / CGFloat(self.height.integerValue)
     }
@@ -70,7 +70,7 @@ class GIFSearchViewController: UIViewController, UICollectionViewDelegateFlowLay
         }
     }
     
-    func updateSizes( results: [VGIFSearchResult] ) {
+    func updateSizes( results: [GIFSearchResult] ) {
         
         let totalWidth = CGRectGetWidth(self.collectionView.bounds)
         _sizes = [CGSize]( count: results.count, repeatedValue: CGSizeZero )
