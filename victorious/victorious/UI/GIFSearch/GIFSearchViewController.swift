@@ -40,7 +40,7 @@ class GIFSearchViewController: UIViewController, VMediaSource {
     @IBOutlet private weak var searchBar: UISearchBar!
     
     private let _searchDataSource = GIFSearchDataSource()
-    private var _sizes = [CGSize]()
+    private var _displaySizes = [CGSize]()
     
     static func viewControllerFromStoryboard() -> GIFSearchViewController {
         let bundle = UIStoryboard(name: "GIFSearch", bundle: nil)
@@ -84,8 +84,9 @@ class GIFSearchViewController: UIViewController, VMediaSource {
     
     private func updateSizes( results: [GIFSearchResult] ) {
         
-        let totalWidth = CGRectGetWidth(self.collectionView.bounds)
-        _sizes = [CGSize]( count: results.count, repeatedValue: CGSizeZero )
+        let insets = (self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionInset ?? UIEdgeInsets()
+        let totalWidth = self.collectionView.bounds.width - insets.left - insets.right
+        _displaySizes = [CGSize]( count: results.count, repeatedValue: CGSizeZero )
         for var i = 0; i < results.count-1; i+=2 {
             let gifA = results[i]
             let gifB = results[i+1]
@@ -107,11 +108,11 @@ class GIFSearchViewController: UIViewController, VMediaSource {
             
             let ratioA = sizeA.width / (sizeA.width + sizeB.width)
             let widthA = floor( totalWidth * ratioA )
-            _sizes[i] = CGSize(width: widthA, height: widthA / gifA.aspectRatio )
+            _displaySizes[i] = CGSize(width: widthA, height: widthA / gifA.aspectRatio )
             
             let ratioB = sizeB.width / (sizeA.width + sizeB.width)
             let widthB = floor( totalWidth * ratioB )
-            _sizes[i+1] = CGSize(width: widthB, height: widthB / gifB.aspectRatio )
+            _displaySizes[i+1] = CGSize(width: widthB, height: widthB / gifB.aspectRatio )
         }
     }
     
@@ -136,6 +137,6 @@ extension GIFSearchViewController : UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
-        return _sizes[ indexPath.row ]
+        return _displaySizes[ indexPath.row ]
     }
 }
