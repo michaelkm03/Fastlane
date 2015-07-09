@@ -38,7 +38,7 @@
 {
     self.visibilitySpan = 1.0f;
     self.offset = 0.0f;
-    self.opaqueOutsideArrayRange = YES;
+    self.clampsOffset = YES;
 }
 
 - (void)updateVisibleViewsForOffset:(CGFloat)offset
@@ -94,7 +94,7 @@
     }
     
     CGFloat maxOffset = (CGFloat)( self.crossFadingViews.count - 1 );
-    if ( self.opaqueOutsideArrayRange )
+    if ( self.clampsOffset )
     {
         if ( offset < 0.0f )
         {

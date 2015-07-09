@@ -42,7 +42,7 @@ typedef NS_ENUM(NSUInteger, VCrossFadingCurve)
         to a value outside this normalized range. Defaults to NO, allowing for offset values outside
         the [0, numberOfCrossFadingViews - 1] range to cause a partially transparent view to be shown.
  */
-@property (nonatomic, assign) BOOL opaqueOutsideArrayRange;
+@property (nonatomic, assign) BOOL clampsOffset;
 
 /**
     Determines the alpha of the visible views.

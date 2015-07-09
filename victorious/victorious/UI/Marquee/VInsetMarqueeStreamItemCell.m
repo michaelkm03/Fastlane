@@ -30,8 +30,7 @@ static const CGSize kShadowOffset = { 0.0f, 2.0f };
 @property (nonatomic, strong) CAGradientLayer *gradientLayer; //The gradient displayed in the gradient container
 @property (nonatomic, weak) IBOutlet UIView *overlayContainer; //An overlay to apply to the imageView
 @property (nonatomic, weak) IBOutlet UIView *contentContainer; //The container for all variable cell content, will have shadow applied to it
-
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *centerLabelConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *centerLabelConstraint; //Must be strong so that we can turn it on and off as needed
 
 @end
 

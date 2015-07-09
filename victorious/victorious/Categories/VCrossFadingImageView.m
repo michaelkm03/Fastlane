@@ -54,7 +54,7 @@ static const CGFloat kVisibilitySpan = 1.9f;
     self.imageViewContainers = [[NSMutableArray alloc] init];
     self.loadedStreamItems = [[NSMutableDictionary alloc] init];
     self.visibilitySpan = kVisibilitySpan;
-    self.opaqueOutsideArrayRange = YES;
+    self.clampsOffset = YES;
 }
 
 #pragma mark - View setup

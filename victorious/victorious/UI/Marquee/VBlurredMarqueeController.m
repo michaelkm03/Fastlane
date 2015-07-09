@@ -169,6 +169,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
 {
     if ( !self.showedInitialDisplayAnimation && self.firstImageLoaded && self.backgroundCellIsVisible )
     {
+        self.crossfadingLabel.clampsOffset = NO;
         self.showedInitialDisplayAnimation = YES;
                 
         dispatch_async(dispatch_get_main_queue(), ^
@@ -201,7 +202,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
         {
             [self.collectionView setContentOffset:self.offsetTarget animated:YES];
             self.shouldAnimateToTarget = NO;
-            self.crossfadingLabel.opaqueOutsideArrayRange = YES;
+            self.crossfadingLabel.clampsOffset = YES;
         }
     }
     
