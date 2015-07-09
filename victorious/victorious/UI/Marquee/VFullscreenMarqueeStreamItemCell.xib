@@ -18,20 +18,20 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="crg-Mz-P2X" userLabel="Details Background Container">
-                        <rect key="frame" x="0.0" y="303" width="361" height="102"/>
+                        <rect key="frame" x="0.0" y="303" width="361" height="103"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="srX-bT-pIQ" userLabel="Marquee Caption View" customClass="VMarqueeCaptionView">
                                 <rect key="frame" x="0.0" y="0.0" width="361" height="63"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nyn-I2-UXP" userLabel="Divider Line">
-                                        <rect key="frame" x="98" y="44" width="165" height="2"/>
+                                        <rect key="frame" x="160" y="44" width="42" height="2"/>
                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="2" id="G8D-41-W5Q"/>
                                         </constraints>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="760" verticalCompressionResistancePriority="760" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MAY-IU-fEu">
-                                        <rect key="frame" x="20" y="17" width="321" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MAY-IU-fEu">
+                                        <rect key="frame" x="160" y="17" width="42" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -39,11 +39,14 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="Nyn-I2-UXP" firstAttribute="leading" secondItem="srX-bT-pIQ" secondAttribute="leading" constant="98" id="2xj-sY-HxH"/>
-                                    <constraint firstItem="MAY-IU-fEu" firstAttribute="leading" secondItem="srX-bT-pIQ" secondAttribute="leading" constant="20" id="AAT-g2-xOv"/>
-                                    <constraint firstAttribute="trailing" secondItem="Nyn-I2-UXP" secondAttribute="trailing" constant="98" id="H4X-Nz-H6a"/>
-                                    <constraint firstAttribute="trailing" secondItem="MAY-IU-fEu" secondAttribute="trailing" constant="20" id="L1j-WM-bNd"/>
+                                    <constraint firstItem="Nyn-I2-UXP" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="srX-bT-pIQ" secondAttribute="leading" constant="98" id="2xj-sY-HxH"/>
+                                    <constraint firstItem="MAY-IU-fEu" firstAttribute="leading" secondItem="Nyn-I2-UXP" secondAttribute="leading" priority="750" id="9Iy-Do-xd4"/>
+                                    <constraint firstItem="MAY-IU-fEu" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="srX-bT-pIQ" secondAttribute="leading" constant="20" id="AAT-g2-xOv"/>
+                                    <constraint firstAttribute="centerX" secondItem="MAY-IU-fEu" secondAttribute="centerX" id="C9A-ac-iOs"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Nyn-I2-UXP" secondAttribute="trailing" constant="98" id="H4X-Nz-H6a"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="MAY-IU-fEu" secondAttribute="trailing" constant="20" id="L1j-WM-bNd"/>
                                     <constraint firstAttribute="bottom" secondItem="Nyn-I2-UXP" secondAttribute="bottom" constant="17" id="Sg0-fn-D7P"/>
+                                    <constraint firstItem="MAY-IU-fEu" firstAttribute="trailing" secondItem="Nyn-I2-UXP" secondAttribute="trailing" priority="750" id="SjS-1B-Bsm"/>
                                     <constraint firstItem="MAY-IU-fEu" firstAttribute="top" secondItem="srX-bT-pIQ" secondAttribute="top" constant="17" id="Yfj-Rx-99p"/>
                                     <constraint firstItem="Nyn-I2-UXP" firstAttribute="top" secondItem="MAY-IU-fEu" secondAttribute="bottom" constant="6" id="aOn-8D-xKX"/>
                                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="MAY-IU-fEu" secondAttribute="bottom" constant="17" id="dPp-bB-2Wr"/>

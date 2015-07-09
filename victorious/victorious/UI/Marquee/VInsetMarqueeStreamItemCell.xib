@@ -25,10 +25,10 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Arx-NR-LSu" userLabel="GrandientContainer">
-                                <rect key="frame" x="0.0" y="298" width="314" height="52"/>
+                                <rect key="frame" x="0.0" y="298" width="314" height="51"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WBU-OL-Rpb" customClass="VMarqueeCaptionView">
-                                        <rect key="frame" x="0.0" y="0.0" width="314" height="52"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="314" height="51"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="singlePixelLine" translatesAutoresizingMaskIntoConstraints="NO" id="Ody-W6-i0b">
                                                 <rect key="frame" x="136" y="0.0" width="42" height="1"/>
@@ -37,13 +37,13 @@
                                                 </constraints>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="singlePixelLine" translatesAutoresizingMaskIntoConstraints="NO" id="OOV-eY-mk6">
-                                                <rect key="frame" x="136" y="38" width="42" height="1"/>
+                                                <rect key="frame" x="136" y="37" width="42" height="1"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="CL5-hG-jXI"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="760" verticalCompressionResistancePriority="760" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DaZ-fg-S5e">
-                                                <rect key="frame" x="136" y="9" width="42" height="21"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DaZ-fg-S5e">
+                                                <rect key="frame" x="136" y="9" width="42" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 <nil key="highlightedColor"/>
@@ -51,18 +51,22 @@
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstItem="Ody-W6-i0b" firstAttribute="trailing" secondItem="DaZ-fg-S5e" secondAttribute="trailing" id="1FK-7t-RlQ"/>
+                                            <constraint firstItem="Ody-W6-i0b" firstAttribute="trailing" secondItem="DaZ-fg-S5e" secondAttribute="trailing" priority="750" id="1FK-7t-RlQ"/>
+                                            <constraint firstItem="OOV-eY-mk6" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="WBU-OL-Rpb" secondAttribute="leading" constant="10" id="9Yh-iL-F45"/>
                                             <constraint firstItem="Ody-W6-i0b" firstAttribute="trailing" secondItem="OOV-eY-mk6" secondAttribute="trailing" id="FA4-qO-QvM"/>
                                             <constraint firstItem="DaZ-fg-S5e" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="WBU-OL-Rpb" secondAttribute="leading" constant="12" id="HHc-aN-uYq"/>
                                             <constraint firstItem="Ody-W6-i0b" firstAttribute="top" secondItem="WBU-OL-Rpb" secondAttribute="top" id="IyC-ry-Too"/>
+                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Ody-W6-i0b" secondAttribute="trailing" constant="10" id="K7o-xZ-nnh"/>
                                             <constraint firstAttribute="centerX" secondItem="DaZ-fg-S5e" secondAttribute="centerX" id="MCC-x5-sZL"/>
+                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="OOV-eY-mk6" secondAttribute="trailing" constant="10" id="N0c-dv-jgd"/>
                                             <constraint firstItem="Ody-W6-i0b" firstAttribute="leading" secondItem="OOV-eY-mk6" secondAttribute="leading" id="PUF-ke-Z56"/>
                                             <constraint firstItem="OOV-eY-mk6" firstAttribute="top" secondItem="DaZ-fg-S5e" secondAttribute="bottom" constant="8" id="RP1-eG-3cX"/>
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="DaZ-fg-S5e" secondAttribute="trailing" constant="12" id="TAj-PH-ISK"/>
+                                            <constraint firstItem="Ody-W6-i0b" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="WBU-OL-Rpb" secondAttribute="leading" constant="10" id="kLJ-hh-kWq"/>
                                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="DaZ-fg-S5e" secondAttribute="bottom" constant="8" id="kXY-kn-h00"/>
                                             <constraint firstItem="DaZ-fg-S5e" firstAttribute="top" secondItem="Ody-W6-i0b" secondAttribute="bottom" constant="8" id="lKk-t2-zNS"/>
                                             <constraint firstItem="DaZ-fg-S5e" firstAttribute="top" relation="greaterThanOrEqual" secondItem="WBU-OL-Rpb" secondAttribute="top" constant="8" id="rpI-e9-N5n"/>
-                                            <constraint firstItem="Ody-W6-i0b" firstAttribute="leading" secondItem="DaZ-fg-S5e" secondAttribute="leading" id="rsz-Jk-yad"/>
+                                            <constraint firstItem="Ody-W6-i0b" firstAttribute="leading" secondItem="DaZ-fg-S5e" secondAttribute="leading" priority="750" id="rsz-Jk-yad"/>
                                             <constraint firstItem="DaZ-fg-S5e" firstAttribute="leading" secondItem="WBU-OL-Rpb" secondAttribute="leading" priority="250" constant="12" id="uwH-F0-cpP"/>
                                             <constraint firstAttribute="bottom" secondItem="OOV-eY-mk6" secondAttribute="bottom" constant="13" id="xR8-Eg-znv"/>
                                         </constraints>
