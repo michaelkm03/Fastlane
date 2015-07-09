@@ -15,23 +15,18 @@
 
 @interface VContentThumbnailsDataSource()
 
-@property (nonatomic, strong) NSArray *sequences;
 @property (nonatomic, strong) VImageAssetFinder *assetFinder;
 
 @end
 
 @implementation VContentThumbnailsDataSource
 
-#pragma mark - UICollectionViewDataSource
-
-- (instancetype)initWithSequences:(NSArray *)sequences
+- (instancetype)init
 {
-    NSParameterAssert( sequences != nil );
     self = [super init];
     if ( self != nil )
     {
         _assetFinder = [[VImageAssetFinder alloc] init];
-        _sequences = sequences;
     }
     return self;
 }
@@ -42,6 +37,8 @@
     UINib *nib = [UINib nibWithNibName:identifier bundle:[NSBundle bundleForClass:[self class]]];
     [collectionView registerNib:nib forCellWithReuseIdentifier:identifier];
 }
+
+#pragma mark - UICollectionViewDataSource
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
