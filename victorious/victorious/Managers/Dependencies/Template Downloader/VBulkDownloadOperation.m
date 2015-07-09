@@ -81,12 +81,16 @@ static const NSTimeInterval kDefaultRetryInterval = 2.0;
             strongSelf.completion(originalURL, error, response, downloadedFile);
         }
         
-        if ( error != nil && strongSelf.shouldRetry )
+        if ( [strongSelf shouldRetryWithError:error] )
         {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(retryInterval * NSEC_PER_SEC)),
                            dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
                            ^(void)
             {
+                if ( strongSelf.isCancelled )
+                {
+                    return;
+                }
                 NSTimeInterval doubledInterval = retryInterval * 2;
                 VDownloadOperation *operation = [strongSelf downloadOperationForURL:url retryInterval:doubledInterval];
                 [strongSelf.operationQueue addOperation:operation];
@@ -105,6 +109,28 @@ static const NSTimeInterval kDefaultRetryInterval = 2.0;
     }];
     downloadOperation.retryInterval = retryInterval;
     return downloadOperation;
+}
+
+- (BOOL)shouldRetryWithError:(NSError *)error
+{
+    if ( error == nil || !self.shouldRetry || ![error.domain isEqualToString:NSURLErrorDomain] )
+    {
+        return NO;
+    }
+    return [[[self class] setOfRecoverableErrorCodes] containsObject:@(error.code)];
+}
+
++ (NSSet *)setOfRecoverableErrorCodes
+{
+    static NSSet *recoverableErrorCodes;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^(void)
+    {
+        recoverableErrorCodes = [NSSet setWithObjects:@(NSURLErrorCancelled), @(NSURLErrorTimedOut), @(NSURLErrorCannotFindHost), @(NSURLErrorCannotConnectToHost),
+                                 @(NSURLErrorNetworkConnectionLost), @(NSURLErrorDNSLookupFailed), @(NSURLErrorNotConnectedToInternet), @(NSURLErrorInternationalRoamingOff),
+                                 @(NSURLErrorCallIsActive), @(NSURLErrorDataNotAllowed), @(NSURLErrorCannotLoadFromNetwork), nil];
+    });
+    return recoverableErrorCodes;
 }
 
 @end

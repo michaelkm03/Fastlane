@@ -22,7 +22,7 @@
 @property (nonatomic, readonly) NSSet *urls; ///< The URLs being downloaded
 
 /**
- If YES, failed downloads will be retried. Default is NO.
+ If YES, failed downloads will be retried when they fail for a recoverable reason (e.g. no connection). Default is NO.
 
  NOTE: The completion block will still be called for every unsucessful download, so setting this
  property to YES may cause your completion block to be called more than once for the same URL.

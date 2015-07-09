@@ -186,23 +186,10 @@
 
 - (void)testRetry
 {
-    __block BOOL failedOnce = NO;
     NSURL *url = [NSURL URLWithString:@"http://www.example.com/one"];
     NSString *testBody = @"hello world";
     
-    stubRequest(@"GET", url.absoluteString).andDo(^(NSDictionary * __autoreleasing *headers, NSInteger *status, id<LSHTTPBody> __autoreleasing *body)
-    {
-        if ( failedOnce )
-        {
-            *status = 200;
-            *body = testBody;
-        }
-        else
-        {
-            *status = 500;
-            failedOnce = YES;
-        }
-    });
+    stubRequest(@"GET", url.absoluteString).andFailWithError([NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorDNSLookupFailed userInfo:nil]);
     
     XCTestExpectation *successExpectation = [self expectationWithDescription:@"callback on success"];
     XCTestExpectation *failureExpectation = [self expectationWithDescription:@"callback on failure"];
@@ -218,6 +205,10 @@
         else
         {
             XCTAssertNil(downloadedFile);
+            
+            [[LSNocilla sharedInstance] clearStubs];
+            stubRequest(@"GET", url.absoluteString).andReturn(200).withBody(testBody);
+        
             [failureExpectation fulfill];
         }
     }];
@@ -234,20 +225,7 @@
     NSURL *url = [NSURL URLWithString:@"http://www.example.com/one"];
     NSString *testBody = @"hello world";
     
-    stubRequest(@"GET", url.absoluteString).andDo(^(NSDictionary * __autoreleasing *headers, NSInteger *status, id<LSHTTPBody> __autoreleasing *body)
-    {
-        if ( failCount >= 5 )
-        {
-            *status = 200;
-            *body = testBody;
-            success = YES;
-        }
-        else
-        {
-            *status = 500;
-            failCount++;
-        }
-    });
+    stubRequest(@"GET", url.absoluteString).andFailWithError([NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorDNSLookupFailed userInfo:nil]);
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"download callback"];
     VBulkDownloadOperation *operation = [[VBulkDownloadOperation alloc] initWithURLs:[NSSet setWithObject:url] completion:^(NSURL *originalURL, NSError *error, NSURLResponse *response, NSURL *downloadedFile)
@@ -259,6 +237,16 @@
             NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             XCTAssertEqualObjects(string, testBody);
             [expectation fulfill];
+        }
+        else if ( failCount >= 5 )
+        {
+            [[LSNocilla sharedInstance] clearStubs];
+            stubRequest(@"GET", url.absoluteString).andReturn(200).withBody(testBody);
+            success = YES;
+        }
+        else
+        {
+            failCount++;
         }
     }];
     operation.shouldRetry = YES;
