@@ -20,10 +20,21 @@
 
 @property (nonatomic, strong) NSDictionary *mockTemplateDictionary;
 @property (nonatomic, strong) NSError *mockError;
+@property (nonatomic, strong, readonly) dispatch_queue_t privateQueue;
 
 @end
 
 @implementation VBasicTemplateDownloaderMock
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self != nil)
+    {
+        _privateQueue = dispatch_queue_create("VFailingTemplateDownloaderMock", DISPATCH_QUEUE_SERIAL);
+    }
+    return self;
+}
 
 - (void)downloadTemplateWithCompletion:(VTemplateDownloaderCompletion)completion
 {
@@ -31,7 +42,7 @@
     {
         return;
     }
-    dispatch_async(dispatch_get_main_queue(), ^(void)
+    dispatch_async(self.privateQueue, ^(void)
     {
         NSData *templateData = nil;
         if ( self.mockTemplateDictionary != nil )
@@ -48,7 +59,7 @@
 
 @interface VTemplateDownloadOperationTestDelegate : NSObject <VTemplateDownloadOperationDelegate>
 
-@property (nonatomic, copy) void (^didFinishLoadingWithTemplateConfiguration)(NSDictionary *configuration);
+@property (nonatomic, copy) void (^didFallbackOnCache)();
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
 
 @end
@@ -65,11 +76,11 @@
     return self;
 }
 
-- (void)templateDownloadOperation:(VTemplateDownloadOperation *)downloadOperation didFinishLoadingTemplateConfiguration:(NSDictionary *)configuration
+- (void)templateDownloadOperationDidFallbackOnCache:(VTemplateDownloadOperation *)downloadOperation
 {
-    if ( self.didFinishLoadingWithTemplateConfiguration != nil )
+    if ( self.didFallbackOnCache != nil )
     {
-        self.didFinishLoadingWithTemplateConfiguration(configuration);
+        self.didFallbackOnCache();
     }
 }
 
@@ -90,10 +101,21 @@
 @property (nonatomic, strong) NSDictionary *mockTemplateDictionary;
 @property (nonatomic, copy) void (^successCompletion)(); ///< Will be called on success
 @property (nonatomic) NSInteger failCount;
+@property (nonatomic, strong, readonly) dispatch_queue_t privateQueue;
 
 @end
 
 @implementation VFailingTemplateDownloaderMock
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self != nil)
+    {
+        _privateQueue = dispatch_queue_create("VFailingTemplateDownloaderMock", DISPATCH_QUEUE_SERIAL);
+    }
+    return self;
+}
 
 - (void)downloadTemplateWithCompletion:(VTemplateDownloaderCompletion)completion
 {
@@ -101,7 +123,7 @@
     {
         return;
     }
-    dispatch_async(dispatch_get_main_queue(), ^(void)
+    dispatch_async(self.privateQueue, ^(void)
     {
         if ( self.failCount > 0 )
         {
@@ -168,20 +190,14 @@
     VBasicTemplateDownloaderMock *downloader = [[VBasicTemplateDownloaderMock alloc] init];
     downloader.mockTemplateDictionary = @{ @"hello": @"world" };
     
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Delegate callback"];
-    
     VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
-    delegate.didFinishLoadingWithTemplateConfiguration = ^(NSDictionary *templateConfiguration)
-    {
-        NSDictionary *expected = downloader.mockTemplateDictionary;
-        XCTAssertEqualObjects(templateConfiguration, expected);
-        [expectation fulfill];
-    };
     
     VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
     downloadOperation.templateConfigurationCacheID = [[NSUUID UUID] UUIDString];
-    [self.operationQueue addOperation:downloadOperation];
-    [self waitForExpectationsWithTimeout:1.0 handler:nil];
+    [self.operationQueue addOperations:@[downloadOperation] waitUntilFinished:YES];
+    
+    NSDictionary *expected = downloader.mockTemplateDictionary;
+    XCTAssertEqualObjects(downloadOperation.templateConfiguration, expected);
 }
 
 - (void)testDownloaderFallsBackOnCacheAfterTimeout
@@ -195,11 +211,6 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"Delegate callback"];
     
     VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
-    delegate.didFinishLoadingWithTemplateConfiguration = ^(NSDictionary *templateConfiguration)
-    {
-        XCTAssertEqualObjects(templateConfiguration, expectedTemplateConfiguration);
-        [expectation fulfill];
-    };
     
     VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:[[VBasicTemplateDownloaderMock alloc] init]
                                                                                                andDelegate:delegate];
@@ -207,6 +218,13 @@
     downloadOperation.templateDownloadTimeout = 0.01;
     downloadOperation.templateConfigurationCacheID = templateCacheID;
     downloadOperation.dataCache = self.dataCache;
+    
+    delegate.didFallbackOnCache = ^(void)
+    {
+        XCTAssertEqualObjects(downloadOperation.templateConfiguration, expectedTemplateConfiguration);
+        [expectation fulfill];
+    };
+    
     [self.operationQueue addOperation:downloadOperation];
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }
@@ -220,22 +238,24 @@
     NSDictionary *expectedTemplateConfiguration = [VTemplateSerialization templateConfigurationDictionaryWithData:templateData];
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"Delegate callback"];
-
+    
     VBasicTemplateDownloaderMock *downloader = [[VBasicTemplateDownloaderMock alloc] init];
     downloader.mockError = [NSError errorWithDomain:@"bad" code:999 userInfo:nil];
-
+    
     VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
-    delegate.didFinishLoadingWithTemplateConfiguration = ^(NSDictionary *templateConfiguration)
-    {
-        XCTAssertEqualObjects(templateConfiguration, expectedTemplateConfiguration);
-        [expectation fulfill];
-    };
     
     VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
     downloadOperation.templateConfigurationCacheID = templateCacheID;
     downloadOperation.dataCache = self.dataCache;
+    
+    delegate.didFallbackOnCache = ^(void)
+    {
+        XCTAssertEqualObjects(downloadOperation.templateConfiguration, expectedTemplateConfiguration);
+        [expectation fulfill];
+    };
+    
     [self.operationQueue addOperation:downloadOperation];
-    [self waitForExpectationsWithTimeout:1.0 handler:nil];
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
 }
 
 - (void)testDownloaderSavesNewTemplate
@@ -244,30 +264,24 @@
     
     VBasicTemplateDownloaderMock *downloader = [[VBasicTemplateDownloaderMock alloc] init];
     downloader.mockTemplateDictionary = expected;
-
+    
     NSString *templateCacheID = [[NSUUID UUID] UUIDString];
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Delegate callback"];
     
     VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
-    delegate.didFinishLoadingWithTemplateConfiguration = ^(NSDictionary *templateConfiguration)
-    {
-        NSData *templateData = [self.dataCache cachedDataForID:templateCacheID];
-        XCTAssertNotNil(templateData);
-        
-        if ( templateData != nil )
-        {
-            NSDictionary *actual = [VTemplateSerialization templateConfigurationDictionaryWithData:templateData];
-            XCTAssertEqualObjects(expected, actual);
-        }
-        
-        [expectation fulfill];
-    };
     
     VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
     downloadOperation.templateConfigurationCacheID = templateCacheID;
     downloadOperation.dataCache = self.dataCache;
-    [self.operationQueue addOperation:downloadOperation];
-    [self waitForExpectationsWithTimeout:1.0 handler:nil];
+    [self.operationQueue addOperations:@[downloadOperation] waitUntilFinished:YES];
+    
+    NSData *templateData = [self.dataCache cachedDataForID:templateCacheID];
+    XCTAssertNotNil(templateData);
+    
+    if ( templateData != nil )
+    {
+        NSDictionary *actual = [VTemplateSerialization templateConfigurationDictionaryWithData:templateData];
+        XCTAssertEqualObjects(expected, actual);
+    }
 }
 
 - (void)testDownloaderFallsBackOnCacheOnErrorButContinuesTryingToDownloadTemplate
@@ -290,18 +304,20 @@
     };
     
     VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
-    delegate.didFinishLoadingWithTemplateConfiguration = ^(NSDictionary *templateConfiguration)
-    {
-        XCTAssertEqualObjects(templateConfiguration, expectedTemplateConfiguration);
-        [callbackExpectation fulfill];
-    };
     
     VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
     downloadOperation.templateConfigurationCacheID = templateCacheID;
+    downloadOperation.dataCache = self.dataCache;
     downloadOperation.templateDownloadTimeout = 0.1;
     
+    delegate.didFallbackOnCache = ^(void)
+    {
+        XCTAssertEqualObjects(downloadOperation.templateConfiguration, expectedTemplateConfiguration);
+        [callbackExpectation fulfill];
+    };
+    
     [self.operationQueue addOperation:downloadOperation];
-    [self waitForExpectationsWithTimeout:1.0 handler:nil];
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
 }
 
 - (void)testDownloaderKeepsTryingToDownloadIfItHasNothingToFallBackOn
@@ -310,21 +326,15 @@
     downloader.mockTemplateDictionary = @{ @"hello": @"world" };
     downloader.failCount = 3;
     
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Delegate callback"];
-    
     VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
-    delegate.didFinishLoadingWithTemplateConfiguration = ^(NSDictionary *templateConfiguration)
-    {
-        NSDictionary *expected = downloader.mockTemplateDictionary;
-        XCTAssertEqualObjects(templateConfiguration, expected);
-        [expectation fulfill];
-    };
     
     VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
     downloadOperation.templateDownloadTimeout = 0.01;
     downloadOperation.templateConfigurationCacheID = [[NSUUID UUID] UUIDString];
-    [self.operationQueue addOperation:downloadOperation];
-    [self waitForExpectationsWithTimeout:1.0 handler:nil];
+    [self.operationQueue addOperations:@[downloadOperation] waitUntilFinished:YES];
+    
+    NSDictionary *expected = downloader.mockTemplateDictionary;
+    XCTAssertEqualObjects(downloadOperation.templateConfiguration, expected);
 }
 
 - (void)testRetryDefault
@@ -340,56 +350,15 @@
     downloader.mockTemplateDictionary = @{ @"hello": @"world" };
     downloader.failCount = 1;
     
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Delegate callback"];
-    
     VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
-    delegate.didFinishLoadingWithTemplateConfiguration = ^(NSDictionary *templateConfiguration)
-    {
-        XCTAssertNil(templateConfiguration);
-        [expectation fulfill];
-    };
     
     VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
     downloadOperation.templateDownloadTimeout = 0.01;
     downloadOperation.shouldRetry = NO;
     downloadOperation.templateConfigurationCacheID = [[NSUUID UUID] UUIDString];
-    [self.operationQueue addOperation:downloadOperation];
-    [self waitForExpectationsWithTimeout:1.0 handler:nil];
-}
-
-- (void)testOperationFinishesAtTheRightTime
-{
-    VBasicTemplateDownloaderMock *downloader = [[VBasicTemplateDownloaderMock alloc] init];
-    downloader.mockTemplateDictionary = @{ @"hello": @"world" };
+    [self.operationQueue addOperations:@[downloadOperation] waitUntilFinished:YES];
     
-    __block VTemplateDownloadOperation *downloadOperation;
-    XCTestExpectation *completionExpectation = [self expectationWithDescription:@"Delegate callback"];
-    
-    VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
-    delegate.didFinishLoadingWithTemplateConfiguration = ^(NSDictionary *templateConfiguration)
-    {
-        XCTAssertFalse(downloadOperation.isFinished);
-        [completionExpectation fulfill];
-    };
-    
-    downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
-    downloadOperation.templateConfigurationCacheID = [[NSUUID UUID] UUIDString];
-    
-    XCTestExpectation *finishExpectation = [self expectationWithDescription:@"isFinished KVO notification"];
-    [self.KVOController observe:downloadOperation
-                        keyPath:NSStringFromSelector(@selector(isFinished))
-                        options:NSKeyValueObservingOptionNew
-                          block:^(id observer, id object, NSDictionary *change)
-    {
-        BOOL isFinished = [change[NSKeyValueChangeNewKey] boolValue];
-        if ( isFinished )
-        {
-            [finishExpectation fulfill];
-        }
-    }];
-    
-    [self.operationQueue addOperation:downloadOperation];
-    [self waitForExpectationsWithTimeout:1.0 handler:nil];
+    XCTAssertNil(downloadOperation.templateConfiguration);
 }
 
 - (void)testImageDownload
@@ -402,25 +371,18 @@
     NSData *imageData = [NSData dataWithBytes:bytes length:5];
     stubRequest(@"GET", imageURL.absoluteString).andReturn(200).withBody(imageData);
     
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Delegate callback"];
-    
     VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
-    delegate.didFinishLoadingWithTemplateConfiguration = ^(NSDictionary *templateConfiguration)
-    {
-        NSDictionary *expected = downloader.mockTemplateDictionary;
-        XCTAssertEqualObjects(templateConfiguration, expected);
-        
-        NSData *imageDataFromCache = [self.dataCache cachedDataForID:imageURL];
-        XCTAssertEqualObjects(imageData, imageDataFromCache);
-        
-        [expectation fulfill];
-    };
     
     VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
     downloadOperation.templateConfigurationCacheID = [[NSUUID UUID] UUIDString];
     downloadOperation.dataCache = self.dataCache;
-    [self.operationQueue addOperation:downloadOperation];
-    [self waitForExpectationsWithTimeout:1.0 handler:nil];
+    [self.operationQueue addOperations:@[downloadOperation] waitUntilFinished:YES];
+    
+    NSDictionary *expected = downloader.mockTemplateDictionary;
+    XCTAssertEqualObjects(downloadOperation.templateConfiguration, expected);
+    
+    NSData *imageDataFromCache = [self.dataCache cachedDataForID:imageURL];
+    XCTAssertEqualObjects(imageData, imageDataFromCache);
 }
 
 - (void)testDownloaderFallsBackOnCacheAfterImageDownloadError
@@ -440,16 +402,18 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"Delegate callback"];
     
     VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
-    delegate.didFinishLoadingWithTemplateConfiguration = ^(NSDictionary *templateConfiguration)
-    {
-        XCTAssertEqualObjects(templateConfiguration, expectedTemplateConfiguration);
-        [expectation fulfill];
-    };
     
     VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
     downloadOperation.templateConfigurationCacheID = templateCacheID;
     downloadOperation.dataCache = self.dataCache;
     downloadOperation.shouldRetry = NO;
+    
+    delegate.didFallbackOnCache = ^(void)
+    {
+        XCTAssertEqualObjects(downloadOperation.templateConfiguration, expectedTemplateConfiguration);
+        [expectation fulfill];
+    };
+    
     [self.operationQueue addOperation:downloadOperation];
     [self waitForExpectationsWithTimeout:1.0 handler:nil];
 }

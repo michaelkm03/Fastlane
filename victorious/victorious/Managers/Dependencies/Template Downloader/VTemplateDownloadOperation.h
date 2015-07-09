@@ -17,6 +17,10 @@
  */
 typedef void (^VTemplateDownloaderCompletion)(NSData *templateData, NSError *error);
 
+/**
+ Objects conforming to this protocol are capable 
+ of loading template data from a server.
+ */
 @protocol VTemplateDownloader <NSObject>
 
 /**
@@ -34,15 +38,18 @@ typedef void (^VTemplateDownloaderCompletion)(NSData *templateData, NSError *err
 @protocol VTemplateDownloadOperationDelegate <NSObject>
 
 /**
- Notifies the delegate that a template has been successfully loaded
- */
-- (void)templateDownloadOperation:(VTemplateDownloadOperation *)downloadOperation didFinishLoadingTemplateConfiguration:(NSDictionary *)configuration;
-
-/**
  Notifies the delegate that a new operation needs to be added to an operation queue. (Any operation queue will do!)
  These operations may continue running after the template download operation finishes.
  */
 - (void)templateDownloadOperation:(VTemplateDownloadOperation *)downloadOperation needsAnOperationAddedToTheQueue:(NSOperation *)operation;
+
+@optional
+
+/**
+ Notifies the delegate that due to a timeout, a cached template was
+ loaded and can be read from the templateConfiguration property.
+ */
+- (void)templateDownloadOperationDidFallbackOnCache:(VTemplateDownloadOperation *)downloadOperation;
 
 @end
 
@@ -103,6 +110,14 @@ typedef void (^VTemplateDownloaderCompletion)(NSData *templateData, NSError *err
  a nil dictionary. The default is YES.
  */
 @property (nonatomic) BOOL shouldRetry;
+
+/**
+ When this operation is done (or sometimes earlier--see the
+ templateDownloadOperationDidFallbackOnCache: method on 
+ VTemplateDownloadOperationDelegate), this property will 
+ be populated with the template that was downloaded.
+ */
+@property (nonatomic, readonly) NSDictionary *templateConfiguration;
 
 /**
  Initializes a new template download manager with a downloader and a delegate

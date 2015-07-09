@@ -22,8 +22,9 @@
 @property (nonatomic, strong) dispatch_semaphore_t semaphore;
 @property (nonatomic, strong) NSUUID *currentDownloadID;
 @property (nonatomic) NSTimeInterval retryInterval;
-@property (nonatomic) BOOL delegateNotified;
+@property (nonatomic) BOOL cacheUsed;
 @property (nonatomic) BOOL templateDownloaded;
+@property (nonatomic, strong, readwrite) NSDictionary *templateConfiguration;
 @property (nonatomic, strong) VBulkDownloadOperation *bulkDownloadOperation;
 @property (nonatomic, strong) NSBlockOperation *saveTemplateOperation;
 
@@ -43,7 +44,7 @@ static const NSTimeInterval kDefaultImageDownloadTimeout = 15.0;
         _privateQueue = dispatch_queue_create("com.getvictorious.VTemplateDownloadManager", DISPATCH_QUEUE_SERIAL);
         _semaphore = dispatch_semaphore_create(0);
         _delegate = delegate;
-        _delegateNotified = NO;
+        _cacheUsed = NO;
         _templateDownloaded = NO;
         _downloader = downloader;
         _dataCache = [[VDataCache alloc] init];
@@ -132,7 +133,7 @@ static const NSTimeInterval kDefaultImageDownloadTimeout = 15.0;
         else
         {
             __weak typeof(self) weakSelf = self;
-            void (^saveTemplateToDiskAndNotifyDelegate)() = ^(void)
+            void (^saveTemplateToDiskAndSignal)() = ^(void)
             {
                 __strong typeof(weakSelf) strongSelf = weakSelf;
                 if ( strongSelf != nil )
@@ -140,7 +141,8 @@ static const NSTimeInterval kDefaultImageDownloadTimeout = 15.0;
                     if ( !strongSelf.isCancelled )
                     {
                         [strongSelf.dataCache cacheData:data forID:strongSelf.templateConfigurationCacheID error:nil];
-                        [strongSelf notifyDelegateWithTemplateConfiguration:configuration];
+                        strongSelf.templateConfiguration = configuration;
+                        dispatch_semaphore_signal(strongSelf.semaphore);
                     }
                 }
             };
@@ -148,7 +150,7 @@ static const NSTimeInterval kDefaultImageDownloadTimeout = 15.0;
             NSSet *missingURLs = [self missingReferencedURLsFromTemplate:configuration];
             if ( missingURLs.count == 0 )
             {
-                saveTemplateToDiskAndNotifyDelegate();
+                saveTemplateToDiskAndSignal();
                 return;
             }
             
@@ -162,7 +164,7 @@ static const NSTimeInterval kDefaultImageDownloadTimeout = 15.0;
                 __strong typeof(weakSelf) strongSelf = weakSelf;
                 if ( strongSelf != nil )
                 {
-                    dispatch_sync(strongSelf.privateQueue, saveTemplateToDiskAndNotifyDelegate);
+                    dispatch_sync(strongSelf.privateQueue, saveTemplateToDiskAndSignal);
                 }
             }];
             [self.saveTemplateOperation addDependency:self.bulkDownloadOperation];
@@ -216,23 +218,30 @@ static const NSTimeInterval kDefaultImageDownloadTimeout = 15.0;
     });
 }
 
-- (BOOL)loadTemplateFromCache
+- (void)loadTemplateFromCache
 {
+    if ( self.cacheUsed )
+    {
+        return;
+    }
+    
     NSData *templateData = [self.dataCache cachedDataForID:self.templateConfigurationCacheID];
     if ( templateData == nil )
     {
-        return NO;
+        return;
     }
     
     NSDictionary *template = [VTemplateSerialization templateConfigurationDictionaryWithData:templateData];
-    NSSet *missingURLs = [self missingReferencedURLsFromTemplate:template];
     
-    if ( missingURLs.count == 0 )
+    if ( template != nil )
     {
-        [self notifyDelegateWithTemplateConfiguration:template];
-        return YES;
+        self.templateConfiguration = template;
+        if ( [self.delegate respondsToSelector:@selector(templateDownloadOperationDidFallbackOnCache:)] )
+        {
+            [self.delegate templateDownloadOperationDidFallbackOnCache:self];
+        }
+        self.cacheUsed = YES;
     }
-    return NO;
 }
 
 - (NSSet *)missingReferencedURLsFromTemplate:(NSDictionary *)template
@@ -242,21 +251,11 @@ static const NSTimeInterval kDefaultImageDownloadTimeout = 15.0;
     return [self.dataCache setOfIDsWithoutCachedDataFromIDSet:urls];
 }
 
-- (void)notifyDelegateWithTemplateConfiguration:(NSDictionary *)configuration
-{
-    if ( !self.delegateNotified )
-    {
-        [self.delegate templateDownloadOperation:self didFinishLoadingTemplateConfiguration:configuration];
-        self.delegateNotified = YES;
-    }
-    dispatch_semaphore_signal(self.semaphore);
-}
-
 - (void)retryTemplateDownload
 {
     if ( !self.shouldRetry )
     {
-        [self notifyDelegateWithTemplateConfiguration:nil];
+        dispatch_semaphore_signal(self.semaphore);
         return;
     }
     
