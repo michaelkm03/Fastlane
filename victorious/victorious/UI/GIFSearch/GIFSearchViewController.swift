@@ -8,17 +8,11 @@
 
 import UIKit
 
-private extension GIFSearchResult {
-    var aspectRatio: CGFloat {
-        return CGFloat(self.width.integerValue) / CGFloat(self.height.integerValue)
-    }
-    
-    var assetSize: CGSize {
-        return CGSize(width: CGFloat(self.width.integerValue), height: CGFloat(self.height.integerValue) )
-    }
-}
-
 private extension UIView {
+    
+    /// UIView extension
+    /// parameter `pattern`: Closure to call to determine if view is the one sought
+    /// returns: A view that passes the test or nil
     func findSubview( pattern: (UIView)->(Bool) ) -> UIView? {
         for subview in self.subviews as! [UIView] {
             if pattern( subview ) {
@@ -34,12 +28,13 @@ private extension UIView {
 
 private extension UISearchBar {
     
+    /// Returns the text field into which users type their search string
     var textField: UITextField? {
         return self.findSubview({ $0 is UITextField }) as? UITextField
     }
 }
 
-class GIFSearchViewController: UIViewController, UICollectionViewDelegateFlowLayout, VMediaSource {
+class GIFSearchViewController: UIViewController, VMediaSource {
 
     @IBOutlet private weak var collectionView: UICollectionView!
     @IBOutlet private weak var searchBar: UISearchBar!
@@ -58,20 +53,36 @@ class GIFSearchViewController: UIViewController, UICollectionViewDelegateFlowLay
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.searchBar.delegate = self
         self.searchBar.textField?.textColor = UIColor.whiteColor()
         self.searchBar.textField?.backgroundColor = UIColor(white: 0.2, alpha: 1.0)
         
         self.collectionView.dataSource = _searchDataSource
         self.collectionView.delegate = self
-        _searchDataSource.reload() {
-            self.updateSizes( self._searchDataSource.results )
-            self.collectionView.reloadData()
-        }
+        self.searchBar.placeholder = NSLocalizedString( "Search", comment:"" )
         
-        self.title = "GIF"
+        var label = UILabel()
+        label.text = NSLocalizedString( "GIF", comment:"" )
+        label.textColor = UIColor.whiteColor()
+        label.sizeToFit()
+        self.navigationItem.titleView = label
+        
+        self.performSearch()
     }
     
-    func updateSizes( results: [GIFSearchResult] ) {
+    private func performSearch( _ searchText: String = "" ) {
+        _searchDataSource.performSearch( searchText ) {
+            self.updateSizes( self._searchDataSource.results )
+            self.self.collectionView.reloadData()
+        }
+    }
+    
+    private func clearSearch() {
+        _searchDataSource.clear()
+        self.collectionView.reloadData()
+    }
+    
+    private func updateSizes( results: [GIFSearchResult] ) {
         
         let totalWidth = CGRectGetWidth(self.collectionView.bounds)
         _sizes = [CGSize]( count: results.count, repeatedValue: CGSizeZero )
@@ -104,11 +115,24 @@ class GIFSearchViewController: UIViewController, UICollectionViewDelegateFlowLay
         }
     }
     
-    // MARK: - VCaptureContainerViewController
+    // MARK: - VMediaSource
     
     var handler: VMediaSelectionHandler?
+}
+
+extension GIFSearchViewController : UISearchBarDelegate {
     
-    // MARK: - UICollectionViewDelegateFlowLayout
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        if count( searchText ) == 0 {
+            self.clearSearch()
+        }
+        else {
+            self.performSearch( searchText )
+        }
+    }
+}
+    
+extension GIFSearchViewController : UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         

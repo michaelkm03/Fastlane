@@ -27,7 +27,7 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="GIFSearchCell" id="jzn-p0-A5p" customClass="GIFSearchCell" customModule="victorious" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="44" width="102" height="102"/>
+                                        <rect key="frame" x="0.0" y="50" width="102" height="102"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="102" height="102"/>
@@ -68,7 +68,7 @@
                                     </constraints>
                                 </collectionReusableView>
                             </collectionView>
-                            <searchBar contentMode="redraw" barStyle="black" searchBarStyle="prominent" placeholder="Search GIFs" translatesAutoresizingMaskIntoConstraints="NO" id="ahe-Of-ru5">
+                            <searchBar contentMode="redraw" barStyle="black" searchBarStyle="prominent" text="" translatesAutoresizingMaskIntoConstraints="NO" id="ahe-Of-ru5">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                 <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <textInputTraits key="textInputTraits"/>

@@ -508,6 +508,8 @@
 		A77951351B29021D00D9DB0A /* VContentThumbnailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951331B29021D00D9DB0A /* VContentThumbnailCell.m */; };
 		A77951361B29021D00D9DB0A /* VContentThumbnailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A77951341B29021D00D9DB0A /* VContentThumbnailCell.xib */; };
 		A779513D1B2A3C9A00D9DB0A /* VSuggestedUsersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A779513B1B2A3C9A00D9DB0A /* VSuggestedUsersViewController.xib */; };
+		A779A5301B4F144A000311B4 /* GIFSearchResult+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A779A52F1B4F144A000311B4 /* GIFSearchResult+Extensions.swift */; };
+		A779A5321B4F144F000311B4 /* GIFSearchResult+RestKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A779A5311B4F144F000311B4 /* GIFSearchResult+RestKit.swift */; };
 		A77AD4C71A1EFDB400142F24 /* VFollowersTextFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4C61A1EFDB400142F24 /* VFollowersTextFormatterTests.m */; };
 		A77AD4EF1A1FD8B600142F24 /* VAlertAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4E61A1FD8B600142F24 /* VAlertAction.m */; };
 		A77AD4F01A1FD8B600142F24 /* VAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = A77AD4E81A1FD8B600142F24 /* VAlertController.m */; };
@@ -617,7 +619,6 @@
 		A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D8532319F6F3B100EDBFF8 /* VTracking.m */; };
 		A7DAFCA71B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCA61B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift */; };
 		A7DAFCA91B4EDACE00B51C92 /* GIFSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCA81B4EDACE00B51C92 /* GIFSearchResult.swift */; };
-		A7DAFCAB1B4EDD7800B51C92 /* GIFSearchResult+RestKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCAA1B4EDD7800B51C92 /* GIFSearchResult+RestKit.swift */; };
 		A7DAFCAD1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCAC1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift */; };
 		A7E2EFCB1A49001000372547 /* VEditCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E2EFCA1A49001000372547 /* VEditCommentViewController.m */; };
 		A7E2EFD21A49066F00372547 /* EditComment.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7E2EFD11A49066F00372547 /* EditComment.storyboard */; };
@@ -1954,6 +1955,8 @@
 		A77951331B29021D00D9DB0A /* VContentThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentThumbnailCell.m; path = "victorious/UI/Suggested Users/VContentThumbnailCell.m"; sourceTree = SOURCE_ROOT; };
 		A77951341B29021D00D9DB0A /* VContentThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VContentThumbnailCell.xib; path = "victorious/UI/Suggested Users/VContentThumbnailCell.xib"; sourceTree = SOURCE_ROOT; };
 		A779513B1B2A3C9A00D9DB0A /* VSuggestedUsersViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VSuggestedUsersViewController.xib; path = "victorious/UI/Suggested Users/VSuggestedUsersViewController.xib"; sourceTree = SOURCE_ROOT; };
+		A779A52F1B4F144A000311B4 /* GIFSearchResult+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GIFSearchResult+Extensions.swift"; sourceTree = "<group>"; };
+		A779A5311B4F144F000311B4 /* GIFSearchResult+RestKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GIFSearchResult+RestKit.swift"; sourceTree = "<group>"; };
 		A77AD4C51A1EFA3D00142F24 /* VAutomation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAutomation.h; sourceTree = "<group>"; };
 		A77AD4C61A1EFDB400142F24 /* VFollowersTextFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowersTextFormatterTests.m; sourceTree = "<group>"; };
 		A77AD4E51A1FD8B600142F24 /* VAlertAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAlertAction.h; path = "Alert Controller/VAlertAction.h"; sourceTree = "<group>"; };
@@ -2151,7 +2154,6 @@
 		A7D8532319F6F3B100EDBFF8 /* VTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTracking.m; sourceTree = "<group>"; };
 		A7DAFCA61B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VObjectManager+GIFSearch.swift"; sourceTree = "<group>"; };
 		A7DAFCA81B4EDACE00B51C92 /* GIFSearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchResult.swift; sourceTree = "<group>"; };
-		A7DAFCAA1B4EDD7800B51C92 /* GIFSearchResult+RestKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GIFSearchResult+RestKit.swift"; sourceTree = "<group>"; };
 		A7DAFCAC1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Extensions.swift"; sourceTree = "<group>"; };
 		A7E2EFC91A49001000372547 /* VEditCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEditCommentViewController.h; sourceTree = "<group>"; };
 		A7E2EFCA1A49001000372547 /* VEditCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEditCommentViewController.m; sourceTree = "<group>"; };
@@ -5565,6 +5567,7 @@
 		BE171DAF1868C211004E5202 /* Fetchers */ = {
 			isa = PBXGroup;
 			children = (
+				A779A52F1B4F144A000311B4 /* GIFSearchResult+Extensions.swift */,
 				D86528F41AE838F1003832AC /* VAnswer+Fetcher.h */,
 				D86528F51AE838F1003832AC /* VAnswer+Fetcher.m */,
 				D8C5CFE61A68835100EC819F /* VAsset+Fetcher.h */,
@@ -5585,7 +5588,6 @@
 				BEA78C2A19C008F0006A1ABC /* VStream+Fetcher.m */,
 				BE11F26319CCADD200DEC776 /* VStreamItem+Fetcher.h */,
 				BE11F26419CCADD200DEC776 /* VStreamItem+Fetcher.m */,
-				A7DAFCAA1B4EDD7800B51C92 /* GIFSearchResult+RestKit.swift */,
 			);
 			path = Fetchers;
 			sourceTree = "<group>";
@@ -5593,6 +5595,7 @@
 		BE171DB61868C211004E5202 /* Mappings */ = {
 			isa = PBXGroup;
 			children = (
+				A779A5311B4F144F000311B4 /* GIFSearchResult+RestKit.swift */,
 				BE24782D193E9E8E0074191C /* VAbstractFilter+RestKit.h */,
 				BE24782E193E9E8E0074191C /* VAbstractFilter+RestKit.m */,
 				DBAD776519F7752D00B6A939 /* VAdBreak+RestKit.h */,
@@ -7471,7 +7474,6 @@
 				D8E7EBCB19CCA540007DA693 /* VSectionHandleReusableView.m in Sources */,
 				D8332DBD1A7C275800C3FEE0 /* VCameraControl.m in Sources */,
 				A7A922621AC6166600F4755E /* VContentTextCell.m in Sources */,
-				A7DAFCAB1B4EDD7800B51C92 /* GIFSearchResult+RestKit.swift in Sources */,
 				0314D4AE19B46B5E00FA363C /* VNotificationCell.m in Sources */,
 				A7ECC1CF1AD617480003E00A /* VVideoToolController.m in Sources */,
 				A720055F1A030E4700285A9C /* VFlurryTracking.m in Sources */,
@@ -7480,6 +7482,7 @@
 				0314D4D019B46B5E00FA363C /* VLoadingViewController.m in Sources */,
 				C39B220E1B0A693600D3DFE7 /* VPermissionProfilePicture.m in Sources */,
 				BE5DE3F618DA72140047B67E /* VInteractionAction.m in Sources */,
+				A779A5321B4F144F000311B4 /* GIFSearchResult+RestKit.swift in Sources */,
 				A7D707821A7AFDA900D9993F /* VEndCard+RestKit.m in Sources */,
 				03484BFE192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m in Sources */,
 				DBF8B4B41A79F91300CFFD47 /* VTagsSearchResultsViewController.m in Sources */,
@@ -7557,6 +7560,7 @@
 				D82E76E319F5C06100FFB722 /* VContentPollBallotCell.m in Sources */,
 				A7299E941AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.m in Sources */,
 				A7E398731A362578000E4CAC /* NSData+AES.m in Sources */,
+				A779A5301B4F144A000311B4 /* GIFSearchResult+Extensions.swift in Sources */,
 				037FCF261A8DAF5400E8ABFC /* VSegmentedSelectorView.m in Sources */,
 				0314D4DC19B46B5E00FA363C /* VFacebookActivity.m in Sources */,
 				A7D707991A7C144C00D9993F /* VCountdownViewController.m in Sources */,
