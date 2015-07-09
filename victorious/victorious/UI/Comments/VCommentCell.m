@@ -71,7 +71,7 @@ static const UIEdgeInsets kTextInsets        = { 39.0f, 66.0f, 11.0f, 55.0f };
 
 - (CGRect)contentArea
 {
-    return self.commentTextView.videoView.frame;
+    return [self convertRect:self.commentTextView.frame toView:self];
 }
 
 @end

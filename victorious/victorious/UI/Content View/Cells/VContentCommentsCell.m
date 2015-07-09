@@ -390,7 +390,7 @@ static NSCache *_sharedImageCache = nil;
 
 - (CGRect)contentArea
 {
-    return self.commentAndMediaView.videoView.frame;
+    return [self convertRect:self.commentAndMediaView.frame toView:self];
 }
 
 @end

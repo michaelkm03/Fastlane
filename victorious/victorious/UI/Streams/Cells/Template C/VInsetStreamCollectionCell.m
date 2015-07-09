@@ -442,7 +442,7 @@ static const UIEdgeInsets kCaptionInsets            = { 4.0, 0.0, 4.0, 0.0  };
 
 - (CGRect)contentArea
 {
-    return self.previewView.frame;
+    return self.previewContainer.frame;
 }
 
 #pragma mark - VHighlightContainer
