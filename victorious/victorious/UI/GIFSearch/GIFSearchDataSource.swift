@@ -8,35 +8,13 @@
 
 import UIKit
 
-/// Cell to represent GIF search result in a collectin of search results
-class GIFSearchCell: UICollectionViewCell {
-    
-    @IBOutlet private weak var imageView: UIImageView!
-    
-    static var suggestedReuseIdentifier: String {
-        return NSStringFromClass(self).pathExtension
-    }
-    
-    var assetUrl: NSURL? {
-        didSet {
-            if let url = self.assetUrl {
-                self.imageView.alpha = self.imageView.image == nil ? 0.0 : 1.0
-                self.imageView.sd_setImageWithURL( url, completed: { (image, error, cacheType, url) -> Void in
-                    UIView.animateWithDuration( 0.5, animations: {
-                        self.imageView.alpha = 1.0
-                    })
-                })
-            }
-        }
-    }
-}
-
 /// Collection view data source that lods GIF search results from backend and creates
 /// and populated data on cells to show in results collection view
 class GIFSearchDataSource: NSObject {
     
     struct Section {
         let results: [GIFSearchResult]
+        let isHighlighted: Bool
         
         subscript( index: Int ) -> GIFSearchResult {
             return self.results[ index ]
@@ -54,6 +32,22 @@ class GIFSearchDataSource: NSObject {
         return _sections
     }
     
+    func removeHighlightSection( forIndexPath indexPath: NSIndexPath ) -> Int {
+        let resultToHighlight = _sections[ indexPath.section ][ indexPath.row ]
+        let section = Section(results: [ resultToHighlight ], isHighlighted: true )
+        let highlightedSectionIndex = indexPath.section + 1
+        _sections.removeAtIndex( highlightedSectionIndex )
+        return highlightedSectionIndex
+    }
+    
+    func addHighlightSection( forIndexPath indexPath: NSIndexPath ) -> Int {
+        let resultToHighlight = _sections[ indexPath.section ][ indexPath.row ]
+        let section = Section(results: [ resultToHighlight ], isHighlighted: true )
+        let newSectionIndex = indexPath.section + 1
+        _sections.insert( section, atIndex: newSectionIndex )
+        return newSectionIndex
+    }
+    
     private var _currentOperation: NSOperation?
     
     /// Fetches data from the server and repopulates its backing model collection
@@ -67,7 +61,7 @@ class GIFSearchDataSource: NSObject {
                 
                 self._sections = []
                 for var i = 0; i < results.count-1; i+=2 {
-                    self._sections.append( Section(results:[results[i], results[i+1]]) )
+                    self._sections.append( Section(results:[results[i], results[i+1]], isHighlighted: false) )
                 }
                 completion?()
                 
@@ -99,6 +93,7 @@ extension GIFSearchDataSource : UICollectionViewDataSource {
         let identifier = GIFSearchCell.suggestedReuseIdentifier
         if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( identifier, forIndexPath: indexPath ) as? GIFSearchCell {
             cell.assetUrl = NSURL(string: gifSearchResult.thumbnailStillUrl)
+            cell.tintColor = UIColor.blueColor()
             return cell
         }
         fatalError( "Could not find cell." )

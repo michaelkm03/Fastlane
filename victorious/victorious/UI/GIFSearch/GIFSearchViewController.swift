@@ -60,13 +60,35 @@ class GIFSearchViewController: UIViewController, VMediaSource {
         self.collectionView.delegate = self
         self.searchBar.placeholder = NSLocalizedString( "Search", comment:"" )
         
-        var label = UILabel()
-        label.text = NSLocalizedString( "GIF", comment:"" )
-        label.textColor = UIColor.whiteColor()
-        label.sizeToFit()
-        self.navigationItem.titleView = label
+        self.navigationItem.titleView = self.titleViewWithTitle( NSLocalizedString( "GIF", comment:"" ) )
         
         self.performSearch()
+    }
+    
+    func addHighlightedSection( forItemAtIndexPath indexPath: NSIndexPath ) {
+        self.collectionView.performBatchUpdates({
+                var newSectionIndex = self.searchDataSource.addHighlightSection(forIndexPath: indexPath)
+                self.collectionView.insertSections( NSIndexSet(index: newSectionIndex) )
+            },
+            completion: { (completed) in
+                let newIndexPath = NSIndexPath(forRow: 0, inSection: newSectionIndex)
+                self.collectionView.scrollToItemAtIndexPath( newIndexPath, atScrollPosition: .CenteredHorizontally, animated: true )
+        })
+    }
+    
+    func removeHighlightedSection( forItemAtIndexPath indexPath: NSIndexPath ) {
+        self.collectionView.performBatchUpdates({
+            let removedSectionIndex = self.searchDataSource.removeHighlightSection(forIndexPath: indexPath)
+            self.collectionView.deleteSections( NSIndexSet(index: removedSectionIndex) )
+        }, completion: nil )
+    }
+    
+    private func titleViewWithTitle( text: String ) -> UIView {
+        var label = UILabel()
+        label.text = text
+        label.textColor = UIColor.whiteColor()
+        label.sizeToFit()
+        return label
     }
     
     private func performSearch( _ searchText: String = "" ) {
@@ -94,5 +116,9 @@ extension GIFSearchViewController : UISearchBarDelegate {
         else {
             self.performSearch( searchText )
         }
+    }
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
     }
 }

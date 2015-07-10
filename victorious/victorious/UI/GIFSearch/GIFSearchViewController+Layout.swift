@@ -12,13 +12,36 @@ private let kHeaderHeight: CGFloat = 50.0
 
 extension GIFSearchViewController : UICollectionViewDelegateFlowLayout {
     
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        if let cell = collectionView.cellForItemAtIndexPath( indexPath ) as? GIFSearchCell {
+            let section = self.searchDataSource.sections[ indexPath.section ]
+            
+            if section.isHighlighted {
+            }
+            else {
+                cell.focused = !cell.focused
+                if cell.focused {
+                    self.addHighlightedSection( forItemAtIndexPath: indexPath )
+                }
+                else {
+                    self.removeHighlightedSection( forItemAtIndexPath: indexPath )
+                }
+            }
+        }
+    }
+    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
         let insets = (self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionInset ?? UIEdgeInsets()
         let totalWidth = self.collectionView.bounds.width - insets.left - insets.right
         let section = self.searchDataSource.sections[ indexPath.section ]
-        let displaySizes = section.displaySizes( withinWidth: totalWidth )
-        return displaySizes[ indexPath.row ]
+        if section.count == 1 {
+            return CGSize(width: totalWidth, height: 300.0)
+        }
+        else {
+            let displaySizes = section.displaySizes( withinWidth: totalWidth )
+            return displaySizes[ indexPath.row ]
+        }
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
@@ -26,13 +49,15 @@ extension GIFSearchViewController : UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0.0, left: 10.0, bottom: section == 0 ? 10.0 : 0.0, right: 10.0)
+        let isLast = section == self.searchDataSource.sections.count-1
+        return UIEdgeInsets(top: 0.0, left: 10.0, bottom: isLast ? 10.0 : 0.0, right: 10.0)
     }
 }
 
 private extension GIFSearchDataSource.Section {
     
     func displaySizes( withinWidth totalWidth: CGFloat ) -> [CGSize] {
+        assert( self.results.count == 2, "This method only calculates sizes for sections with exactly 2 results" )
         
         var output = [CGSize](count: self.results.count, repeatedValue: CGSize.zeroSize)
         

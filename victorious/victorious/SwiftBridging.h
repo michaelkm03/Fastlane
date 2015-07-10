@@ -37,3 +37,6 @@
 #import "VPageType.h"
 #import "VCaptureContainerViewController.h"
 #import "VMediaSource.h"
+
+// Categories
+#import "UIImage+VTint.h"
