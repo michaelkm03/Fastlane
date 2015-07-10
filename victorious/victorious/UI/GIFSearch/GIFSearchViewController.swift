@@ -34,17 +34,15 @@ private extension UISearchBar {
     }
 }
 
-private extension NSIndexPath {
-    
-    func asIndexSet() -> NSIndexSet {
-        return NSIndexSet(index: self.section )
-    }
-}
-
 class GIFSearchViewController: UIViewController, VMediaSource {
+    
+    static let headerViewHeight: CGFloat = 50.0
+    static let defaultSectionMargin: CGFloat = 10.0
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var searchBar: UISearchBar!
+    
+    var selectedIndexPath: NSIndexPath?
     
     let searchDataSource = GIFSearchDataSource()
     
@@ -72,23 +70,6 @@ class GIFSearchViewController: UIViewController, VMediaSource {
         self.performSearch()
     }
     
-    func showFullSize( forItemAtIndexPath indexPath: NSIndexPath ) {
-        
-        self.collectionView.performBatchUpdates({
-            self.searchDataSource.addHighlightSection(forIndexPath: indexPath )
-            self.collectionView.insertSections( indexPath.nextSectionIndexPath().asIndexSet() )
-        }, completion: nil)
-        
-        self.collectionView.scrollToItemAtIndexPath( indexPath.nextSectionIndexPath(), atScrollPosition: .CenteredVertically, animated: true )
-    }
-    
-    func hideFullSize( forItemAtIndexPath indexPath: NSIndexPath ) {
-        self.collectionView.performBatchUpdates({
-            //let indexPathRemoved = self.searchDataSource.removeHighlightSection(forIndexPath: indexPath )
-            //self.collectionView.deleteSections( indexPathRemoved.asIndexSet() )
-        }, completion: nil )
-    }
-    
     private func titleViewWithTitle( text: String ) -> UIView {
         var label = UILabel()
         label.text = text
@@ -106,6 +87,15 @@ class GIFSearchViewController: UIViewController, VMediaSource {
     private func clearSearch() {
         self.searchDataSource.clear()
         self.collectionView.reloadData()
+    }
+    
+    func updateSelectionState() {
+        for indexPath in self.collectionView.indexPathsForVisibleItems() as! [NSIndexPath] {
+            if let selectedIndexPath = self.selectedIndexPath,
+                let cell = self.collectionView.cellForItemAtIndexPath(indexPath) {
+                cell.selected = (indexPath == selectedIndexPath)
+            }
+        }
     }
     
     // MARK: - VMediaSource

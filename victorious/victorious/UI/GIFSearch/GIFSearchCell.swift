@@ -30,10 +30,14 @@ class GIFSearchCell: UICollectionViewCell {
         }
     }
     
-    var focused: Bool = false {
+    override var selected: Bool {
         didSet {
-            self.imageView.alpha = self.focused ? 0.5 : 1.0
-            self.backgroundColor = self.focused ? self.tintColor : UIColor.clearColor()
+            self.imageView.alpha = self.selected ? 0.5 : 1.0
+            self.backgroundColor = self.selected ? self.tintColor : UIColor.clearColor()
         }
     }
+}
+
+class GIFSearchCellFullsize: GIFSearchCell {
+    
 }
