@@ -14,6 +14,8 @@ static const CGFloat kHighlightedTiltRotationAngle = M_PI / 4;
 static const NSTimeInterval kHighlightAnimationDuration = 0.3f;
 static const CGFloat kHighlightTransformPerspective = -1.0 / 200.0f;
 static const CGFloat kForcedAntiAliasingConstant = 0.01f;
+static const CGFloat kActivityIndicatorShowDuration = 0.5f;
+static const CGFloat kActivityIndicatorHideDuration = 0.3f;
 
 static NSString * const kFollowIconKey = @"follow_user_icon";
 static NSString * const kFollowedCheckmarkIconKey = @"followed_user_icon";
@@ -23,6 +25,9 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
 
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 @property (nonatomic, strong) UIImageView *imageView;
+
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, strong) UIColor *activityIndicatorTintColor;
 
 @property (nonatomic, strong) UIImage *onImage;
 @property (nonatomic, strong) UIImage *offImage;
@@ -80,6 +85,67 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
          self.layer.transform = highlighted ? [self highlightTransform] : CATransform3DIdentity;
          self.layer.shadowOpacity = kForcedAntiAliasingConstant;
      }];
+}
+
+#pragma mark - Activity indicator management
+
+- (void)createActivityIndicator
+{
+    if ( self.activityIndicator == nil )
+    {
+        self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        if ( self.activityIndicatorTintColor != nil )
+        {
+            self.activityIndicator.color = self.activityIndicatorTintColor;
+        }
+        [self addSubview:_activityIndicator];
+        [self v_addCenterToParentContraintsToSubview:_activityIndicator];
+        [self.activityIndicator startAnimating];
+        self.activityIndicator.alpha = 0.0f;
+    }
+}
+
+- (void)setActivityIndicatorTintColor:(UIColor *)activityIndicatorTintColor
+{
+    _activityIndicatorTintColor = activityIndicatorTintColor;
+    self.activityIndicator.color = activityIndicatorTintColor;
+}
+
+- (void)setShowActivityIndicator:(BOOL)showActivityIndicator
+{
+    _showActivityIndicator = showActivityIndicator;
+    if ( showActivityIndicator )
+    {
+        [self createActivityIndicator];
+        
+        self.imageView.alpha = 0.0f;
+        self.backgroundImageView.alpha = 0.0f;
+        [UIView animateWithDuration:kActivityIndicatorShowDuration animations:^
+         {
+             self.activityIndicator.alpha = 1.0f;
+         }
+                         completion:nil];
+    }
+    else
+    {
+        self.activityIndicator.alpha = 0.0f;
+        if ( !self.activityIndicator.isAnimating )
+        {
+            //Activity indicator isn't showing, don't animate the imageview re-appearance
+            self.imageView.alpha = 1.0f;
+            self.backgroundImageView.alpha = 1.0f;
+        }
+        else
+        {
+            //Animate the imageView alpha change
+            [UIView animateWithDuration:kActivityIndicatorHideDuration animations:^
+             {
+                 self.imageView.alpha = 1.0f;
+                 self.backgroundImageView.alpha = 1.0f;
+             }
+                             completion:nil];
+        }
+    }
 }
 
 #pragma mark - Animations
@@ -166,7 +232,9 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
         self.offImage = [[dependencyManager imageForKey:kFollowIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         self.selectedBackgroundImage = [[dependencyManager imageForKey:kFollowedBackgroundIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         
-        self.tintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        UIColor *tintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        self.tintColor = tintColor;
+        self.activityIndicatorTintColor = tintColor;
         [self updateFollowImageView];
     }
 }

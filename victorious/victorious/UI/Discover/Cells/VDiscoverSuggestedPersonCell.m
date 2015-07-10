@@ -125,12 +125,14 @@
                                                                           withSender:nil];
         NSAssert(followResponder != nil, @"VDiscoverSuggestedPersonCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
         sender.enabled = NO;
+        sender.showActivityIndicator = YES;
         if (sender.following)
         {
             [followResponder unfollowUser:self.user
                            withCompletion:^(VUser *userActedOn)
              {
                  sender.enabled = YES;
+                 sender.showActivityIndicator = NO;
                  [self populateData];
              }];
         }
@@ -140,6 +142,7 @@
                          withCompletion:^(VUser *userActedOn)
              {
                  sender.enabled = YES;
+                 sender.showActivityIndicator = NO;
                  [self populateData];
              }];
         }

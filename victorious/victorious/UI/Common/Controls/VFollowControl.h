@@ -36,4 +36,6 @@
  */
 @property (nonatomic, assign, getter = isFollowing) BOOL following;
 
+@property (nonatomic, assign) BOOL showActivityIndicator;
+
 @end

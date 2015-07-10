@@ -349,7 +349,7 @@
 		A72005411A03073B00285A9C /* VApplicationTrackingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A709640419F0738200CE6633 /* VApplicationTrackingTests.m */; };
 		A72005431A03073B00285A9C /* VVideoTrackingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A73AFB7B19F573AB0005A9EA /* VVideoTrackingTests.m */; };
 		A72005441A03073B00285A9C /* VExperienceEnhancerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */; };
-		A72005451A03073B00285A9C /* VFollowUserControlTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D805CE301A005A470014EE2A /* VFollowUserControlTests.m */; };
+		A72005451A03073B00285A9C /* VFollowControlTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D805CE301A005A470014EE2A /* VFollowControlTests.m */; };
 		A72005461A03074800285A9C /* VFileSystemTestHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = A719CD5819F6D5030019E866 /* VFileSystemTestHelpers.m */; };
 		A72005471A03074800285A9C /* VAsyncTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D94C2919DE155400BFAA27 /* VAsyncTestHelper.m */; };
 		A72005481A03074800285A9C /* VDummyModels.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAEFE19E8AB2C00EB87C1 /* VDummyModels.m */; };
@@ -2305,7 +2305,7 @@
 		D80536231B17B4310049B77A /* VPromptCarouselViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPromptCarouselViewController.m; sourceTree = "<group>"; };
 		D80536251B17B5CB0049B77A /* VPromptCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPromptCollectionViewCell.h; sourceTree = "<group>"; };
 		D80536261B17B5CB0049B77A /* VPromptCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPromptCollectionViewCell.m; sourceTree = "<group>"; };
-		D805CE301A005A470014EE2A /* VFollowUserControlTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowUserControlTests.m; sourceTree = "<group>"; };
+		D805CE301A005A470014EE2A /* VFollowControlTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowControlTests.m; sourceTree = "<group>"; };
 		D80A94D91A536C8C0035D788 /* VTrimmerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrimmerViewController.h; sourceTree = "<group>"; };
 		D80A94DA1A536C8C0035D788 /* VTrimmerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrimmerViewController.m; sourceTree = "<group>"; };
 		D80A94DC1A53941D0035D788 /* VTrimControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrimControl.h; sourceTree = "<group>"; };
@@ -5204,7 +5204,7 @@
 				DB61811B1AB206D700DED29F /* VFirstTimeInstallHelperTests.m */,
 				A70AFE631A1684880027549F /* VFlurryTrackingTests.m */,
 				A77AD4C61A1EFDB400142F24 /* VFollowersTextFormatterTests.m */,
-				D805CE301A005A470014EE2A /* VFollowUserControlTests.m */,
+				D805CE301A005A470014EE2A /* VFollowControlTests.m */,
 				A7A7D5C819DCDA5A00B18AB7 /* VHashTagsTest.m */,
 				D8AF00F01A129CD100B147C4 /* VHashTagTextViewTests.m */,
 				D89AC2BE19F1FEA700921131 /* VHistogramDataSourceTests.m */,
@@ -7763,7 +7763,7 @@
 				D8DCE5921ADD85820004B782 /* VActionBarTests.m in Sources */,
 				A72005371A03073B00285A9C /* VVoteSettingManagerTests.m in Sources */,
 				F0804A6B1A8916BC00A0E1A1 /* VTagDictionaryTests.m in Sources */,
-				A72005451A03073B00285A9C /* VFollowUserControlTests.m in Sources */,
+				A72005451A03073B00285A9C /* VFollowControlTests.m in Sources */,
 				A720053B1A03073B00285A9C /* VPasswordValidationTests.m in Sources */,
 				A72005411A03073B00285A9C /* VApplicationTrackingTests.m in Sources */,
 				A720053F1A03073B00285A9C /* VDiscoverViewControllerTests.m in Sources */,
