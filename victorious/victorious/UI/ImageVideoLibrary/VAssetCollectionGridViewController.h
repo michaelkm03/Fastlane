@@ -10,13 +10,14 @@
 #import "VMediaSource.h"
 
 @class PHAssetCollection;
+@class VDependencyManager;
 
 @interface VAssetCollectionGridViewController : UICollectionViewController <VMediaSource>
 
 /**
  *  Factory method for this ViewController. Use this to grab a new instance of assetGridViewController;
  */
-+ (instancetype)assetGridViewController;
++ (instancetype)assetGridViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
  *  Set this to the collection you want to display in the grid.

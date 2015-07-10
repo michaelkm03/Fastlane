@@ -58,8 +58,7 @@
         [self addCloseButtonToViewController:captureContainer];
         [self setViewControllers:@[captureContainer]];
         
-        VAssetCollectionGridViewController *gridViewController = [VAssetCollectionGridViewController assetGridViewController];
-        
+        VAssetCollectionGridViewController *gridViewController = [VAssetCollectionGridViewController assetGridViewControllerWithDependencyManager:dependencyManager];
         [captureContainer setContainedViewController:gridViewController];
         [self addCompleitonHandlerToMediaSource:gridViewController];
 

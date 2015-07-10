@@ -73,7 +73,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
         [self setViewControllers:@[captureContainer]];
         
         _listViewController = [VAssetCollectionListViewController assetCollectionListViewController];
-        _gridViewController = [VAssetCollectionGridViewController assetGridViewController];
+        _gridViewController = [VAssetCollectionGridViewController assetGridViewControllerWithDependencyManager:dependencyManager];
         _gridViewController.collectionToDisplay = [self defaultCollection];
         [captureContainer setContainedViewController:self.gridViewController];
         [self addCompleitonHandlerToMediaSource:self.gridViewController];
@@ -112,7 +112,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 - (PHAssetCollection *)defaultCollection
 {
     return nil;
-//    return [[self assetCollections] firstObject];
 }
 
 - (void)presentAssetFoldersList

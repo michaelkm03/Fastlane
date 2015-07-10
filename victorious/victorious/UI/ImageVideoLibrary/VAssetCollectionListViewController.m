@@ -8,6 +8,9 @@
 
 #import "VAssetCollectionListViewController.h"
 
+// Permissions
+#import "VPermissionPhotoLibrary.h"
+
 #import "VAssetGroupTableViewCell.h"
 
 @import Photos;
@@ -15,6 +18,9 @@
 static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 
 @interface VAssetCollectionListViewController () <PHPhotoLibraryChangeObserver>
+
+@property (nonatomic, strong) VPermissionPhotoLibrary *libraryPermissions;
+@property (nonatomic, assign) BOOL needsFetch;
 
 @property (nonatomic, strong) NSMutableSet *fetchResults;
 @property (nonatomic, strong) NSArray *collections;
@@ -49,24 +55,46 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
     self.numberFormatter.locale = [NSLocale currentLocale];
     self.numberFormatter.groupingSeparator = [[NSLocale currentLocale] objectForKey:NSLocaleGroupingSeparator];
 
+    self.libraryPermissions = [[VPermissionPhotoLibrary alloc] init];
+    
     // Fetch once on awakeFromNib
-    [self fetchCollectionsWithCompletion:^
-     {
-         [self.tableView reloadData];
-     }];
-    [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
+    if ([self.libraryPermissions permissionState] == VPermissionStateAuthorized)
+    {
+        self.needsFetch = NO;
+        [self fetchCollectionsWithCompletion:^
+         {
+             [self.tableView reloadData];
+         }];
+        [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
+    }
+}
+
+#pragma mark - View Lifecycle
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (([self.libraryPermissions permissionState] == VPermissionStateAuthorized) && self.needsFetch)
+    {
+        self.needsFetch = NO;
+        [self fetchCollectionsWithCompletion:^
+         {
+             [self.tableView reloadData];
+         }];
+        [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
+    }
 }
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.collections.count;
+    if ([self.libraryPermissions permissionState] == VPermissionStateAuthorized)
+    {
+        return self.collections.count;
+    }
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

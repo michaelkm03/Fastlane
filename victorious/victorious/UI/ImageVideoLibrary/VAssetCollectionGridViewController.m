@@ -8,8 +8,12 @@
 
 #import "VAssetCollectionGridViewController.h"
 
+// Permissions
+#import "VPermissionPhotoLibrary.h"
+
 // Views + Helpers
 #import "VAssetCollectionViewCell.h"
+#import "VLibraryAuthorizationCell.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "VCompatibility.h"
 
@@ -30,6 +34,11 @@
 
 @property (nonatomic, strong) PHFetchResult *assetsToDisplay;
 
+@property (nonatomic, strong) VPermissionPhotoLibrary *libraryPermission;
+@property (nonatomic, assign) BOOL needsFetch;
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
 @end
 
 @implementation VAssetCollectionGridViewController
@@ -38,31 +47,19 @@
 
 #pragma mark - Lifecycle Methods
 
-+ (instancetype)assetGridViewController
++ (instancetype)assetGridViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSBundle *bundleForClass = [NSBundle bundleForClass:self];
     UIStoryboard *storyboardForClass = [UIStoryboard storyboardWithName:NSStringFromClass(self)
                                                                  bundle:bundleForClass];
-    return [storyboardForClass instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
+    VAssetCollectionGridViewController *gridViewController = [storyboardForClass instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
+    gridViewController.dependencyManager = dependencyManager;
+    return gridViewController;
 }
 
 - (void)dealloc
 {
     [[PHPhotoLibrary sharedPhotoLibrary] unregisterChangeObserver:self];
-}
-
-- (void)awakeFromNib
-{
-    self.imageManager = [[PHCachingImageManager alloc] init];
-    [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
-    
-    self.alternateFolderButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.alternateFolderButton setTitle:@"folder▼"
-                                forState:UIControlStateNormal];
-    [self.alternateFolderButton addTarget:self
-                                   action:@selector(selectedFolderPicker:)
-                         forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.titleView = self.alternateFolderButton;
 }
 
 #pragma mark - View Lifecycle
@@ -71,25 +68,19 @@
 {
     [super viewDidLoad];
     
-    switch ([PHPhotoLibrary authorizationStatus])
+    self.libraryPermission = [[VPermissionPhotoLibrary alloc] initWithDependencyManager:self.dependencyManager];
+    if ([self.libraryPermission permissionState] == VPermissionStateAuthorized)
     {
-        case PHAuthorizationStatusNotDetermined:
-            break;
-        case PHAuthorizationStatusAuthorized:
-            break;
-        case PHAuthorizationStatusDenied:
-            break;
-        case PHAuthorizationStatusRestricted:
-            break;
+        [self prepareImageManagerAndRegisterAsObserver];
     }
     
-    // If we don't have a fetch result to display just show all images.
-//    if (self.assetsToDisplay == nil)
-//    {
-//        PHFetchOptions *allPhotosOptions = [[PHFetchOptions alloc] init];
-//        allPhotosOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
-//        self.assetsToDisplay = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:allPhotosOptions];
-//    }
+    self.alternateFolderButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [self.alternateFolderButton setTitle:@"folder▼"
+                                forState:UIControlStateNormal];
+    [self.alternateFolderButton addTarget:self
+                                   action:@selector(selectedFolderPicker:)
+                         forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.titleView = self.alternateFolderButton;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -107,6 +98,11 @@
 - (void)setCollectionToDisplay:(PHAssetCollection *)collectionToDisplay
 {
     _collectionToDisplay = collectionToDisplay;
+
+    if (_collectionToDisplay == nil)
+    {
+        return;
+    }
     
     [self.alternateFolderButton setTitle:collectionToDisplay.localizedTitle
                                 forState:UIControlStateNormal];
@@ -120,9 +116,12 @@
 
     // Reload and scroll to top
     [self.collectionView reloadData];
-    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]
-                                atScrollPosition:UICollectionViewScrollPositionTop
-                                        animated:NO];
+    if ([self.collectionView numberOfItemsInSection:0] > 0)
+    {
+        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]
+                                    atScrollPosition:UICollectionViewScrollPositionTop
+                                            animated:NO];
+    }
 }
 
 #pragma mark - Target / Action
@@ -139,16 +138,66 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.assetsToDisplay.count;
+    NSInteger numberOfItems;
+    switch ([self.libraryPermission permissionState])
+    {
+        case VPermissionStatePromptDenied:
+        case VPermissionStateUnknown:
+        case VPermissionStateSystemDenied:
+            // We treat all of these the same as 1 since we show our authorization cell.
+            numberOfItems = 1;
+            break;
+        case VPermissionStateAuthorized:
+            numberOfItems = self.assetsToDisplay.count;
+            break;
+        case VPermissionUnsupported:
+            // We should never get here
+            numberOfItems = 0;
+            break;
+    }
+    return numberOfItems;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    UICollectionViewCell *cell;
+    
+    switch ([self.libraryPermission permissionState])
+    {
+        case VPermissionStatePromptDenied:
+        case VPermissionStateUnknown:
+            // Show the allow access cell
+            cell = [self allowAccessCellWithCollectionView:collectionView
+                                              forIndexPath:indexPath];
+            break;
+        case VPermissionStateSystemDenied:
+            // Show the fix in settings
+            cell = [self assetCellWithCollectionView:collectionView
+                                        andIndexPath:indexPath];
+            break;
+        case VPermissionStateAuthorized:
+            // We're all good show the asset cell
+            cell = [self assetCellWithCollectionView:collectionView andIndexPath:indexPath];
+            break;
+        case VPermissionUnsupported:
+            // We should never get here
+            break;
+    }
+    
+    return cell;
+}
+
+#pragma mark Helpers
+
+- (UICollectionViewCell *)assetCellWithCollectionView:(UICollectionView *)collectionView
+                                         andIndexPath:(NSIndexPath *)indexPath
+
+{
     VAssetCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VAssetCollectionViewCell suggestedReuseIdentifier]
-                                                                                forIndexPath:indexPath];
+                                                                               forIndexPath:indexPath];
     
+    // Configure cell for asset
     PHAsset *assetAtIndexPath = [self assetForIndexPath:indexPath];
-    
     [[PHImageManager defaultManager] requestImageForAsset:assetAtIndexPath
                                                targetSize:CGSizeMake(95, 95)
                                               contentMode:PHImageContentModeAspectFill
@@ -162,12 +211,59 @@
     return cell;
 }
 
+- (UICollectionViewCell *)allowAccessCellWithCollectionView:(UICollectionView *)collectionView
+                                           forIndexPath:(NSIndexPath *)indexPath
+{
+    VLibraryAuthorizationCell *authorizationCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VLibraryAuthorizationCell suggestedReuseIdentifier]
+                                                                                             forIndexPath:indexPath];
+    // Configure allow access text
+    return authorizationCell;
+}
+
+- (UICollectionViewCell *)systemDeniedCellWithCollectionView:(UICollectionView *)collectionView
+                                                forIndexPath:(NSIndexPath *)indexPath
+{
+    VLibraryAuthorizationCell *authorizationCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VLibraryAuthorizationCell suggestedReuseIdentifier]
+                                                                                             forIndexPath:indexPath];
+    // Configure system denied text
+    return authorizationCell;
+}
+
 #pragma mark - UICollectionViewDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self downloadAsset:[self assetForIndexPath:indexPath]];
-    [collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:YES];
+    switch ([self.libraryPermission permissionState])
+    {
+        case VPermissionStatePromptDenied:
+        case VPermissionStateUnknown:
+        {
+            
+            // Show the permission request
+            [self.libraryPermission requestPermissionInViewController:self
+                                                withCompletionHandler:^(BOOL granted, VPermissionState state, NSError *error)
+            {
+                if (state == VPermissionStateAuthorized)
+                {
+                    [self prepareImageManagerAndRegisterAsObserver];
+                }
+                [self.collectionView reloadData];
+            }];
+            break;
+            break;
+        }
+        case VPermissionStateAuthorized:
+        {
+            // We're all good download the asset for the cell
+            [self downloadAsset:[self assetForIndexPath:indexPath]];
+            [collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:YES];
+            break;
+        }
+        case VPermissionStateSystemDenied:
+        case VPermissionUnsupported:
+            // Nothing to do here
+            break;
+    }
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -176,10 +272,24 @@
                   layout:(UICollectionViewFlowLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat fullWidth = CGRectGetWidth(collectionView.bounds);
-    CGFloat widthWithoutInsetAndPadding = fullWidth - collectionViewLayout.sectionInset.left - collectionViewLayout.sectionInset.right - (2 * collectionViewLayout.minimumInteritemSpacing);
-    CGFloat itemWidth = widthWithoutInsetAndPadding / 3;
-    return CGSizeMake(VFLOOR(itemWidth), VFLOOR(itemWidth));
+    switch ([self.libraryPermission permissionState])
+    {
+        case VPermissionStatePromptDenied:
+        case VPermissionStateSystemDenied:
+        case VPermissionStateUnknown:
+            return CGSizeMake(320.0, 320.0);
+            break;
+        case VPermissionStateAuthorized:
+        {
+            CGFloat fullWidth = CGRectGetWidth(collectionView.bounds);
+            CGFloat widthWithoutInsetAndPadding = fullWidth - collectionViewLayout.sectionInset.left - collectionViewLayout.sectionInset.right - (2 * collectionViewLayout.minimumInteritemSpacing);
+            CGFloat itemWidth = widthWithoutInsetAndPadding / 3;
+            return CGSizeMake(VFLOOR(itemWidth), VFLOOR(itemWidth));
+        }
+        case VPermissionUnsupported:
+            return CGSizeZero;
+            break;
+    }
 }
 
 #pragma mark - PHPhotoLibraryChangeObserver
@@ -303,11 +413,10 @@
     return [self.assetsToDisplay objectAtIndex:indexPath.row];
 }
 
-#pragma mark - VCaptureContainedViewController
-
-- (UIView *)titleView
+- (void)prepareImageManagerAndRegisterAsObserver
 {
-    return nil;
+    self.imageManager = [[PHCachingImageManager alloc] init];
+    [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
 }
 
 @end
