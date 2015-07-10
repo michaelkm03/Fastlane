@@ -38,20 +38,12 @@ static const CGFloat kShadowOpacity = 0.4f;
     self.previewContainer.layer.shadowColor = [UIColor blackColor].CGColor;
     self.previewContainer.layer.shadowOffset = CGSizeMake(0.0f, kShadowOffsetY);
     self.previewContainer.layer.shadowOpacity = kShadowOpacity;
+    self.previewContainer.layer.shouldRasterize = YES;
     
     self.previewContainerTopConstraint.constant = kPreviewTopConstraintHeight;
     self.previewContainerLeftConstraint.constant = kPreviewHorizontalInset;
     self.previewContainerRightConstraint.constant = kPreviewHorizontalInset;
     self.previewContainerBottomConstraint.constant = kLabelHeight + kLabelBottomConstraintHeight;
-}
-
-- (void)setBounds:(CGRect)bounds
-{
-    [super setBounds:bounds];
-    
-    //Update the shadow path around the preview container
-    CGPathRef shadowPath = [[UIBezierPath bezierPathWithRect:self.previewContainer.bounds] CGPath];
-    [self.previewContainer.layer setShadowPath:shadowPath];
 }
 
 - (void)updateToPreviewView:(VStreamItemPreviewView *)previewView

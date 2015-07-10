@@ -33,7 +33,6 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 @property (nonatomic, readwrite) NSUInteger currentPage;
 @property (nonatomic, assign) NSUInteger currentFocusPage;
 @property (nonatomic, readwrite) VTimerManager *autoScrollTimerManager;
-@property (nonatomic, readwrite) VStreamItem *currentStreamItem;
 @property (nonatomic, strong) NSMutableSet *registeredReuseIdentifiers;
 
 @property (nonatomic, strong) VStreamTrackingHelper *streamTrackingHelper;
@@ -97,6 +96,9 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     [self.dataDelegate marquee:self reloadedStreamWithItems:[self.stream.marqueeItems array]];
     [self registerStreamItemCellsWithCollectionView:self.collectionView forMarqueeItems:[self.stream.marqueeItems array]];
     [self.collectionView reloadData];
+    NSUInteger marqueeItemsCount = self.stream.marqueeItems.count;
+    self.collectionView.scrollEnabled = marqueeItemsCount != 1;
+    [self enableTimer];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -144,6 +146,12 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 
 - (void)selectNextTab
 {
+    if ( !self.collectionView.isScrollEnabled )
+    {
+        //We've locked the scrolling, meaning we shouldn't have it animate either
+        return;
+    }
+    
     CGFloat pageWidth = CGRectGetWidth(self.collectionView.bounds);
     NSUInteger currentPage = ( self.collectionView.contentOffset.x / pageWidth ) + 1;
     if (currentPage == self.stream.marqueeItems.count)
@@ -156,7 +164,6 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 
 - (void)scrolledToPage:(NSInteger)currentPage
 {
-    self.currentStreamItem = [self.stream.marqueeItems objectAtIndex:currentPage];
     [self enableTimer];
 }
 
@@ -279,6 +286,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     [self registerStreamItemCellsWithCollectionView:collectionView forMarqueeItems:[self.stream.marqueeItems array]];
     collectionView.delegate = self;
     collectionView.dataSource = self;
+    _collectionView.scrollEnabled = self.stream.marqueeItems.count != 1;
     ((UICollectionViewFlowLayout *)collectionView.collectionViewLayout).sectionInset = UIEdgeInsetsZero;
 }
 

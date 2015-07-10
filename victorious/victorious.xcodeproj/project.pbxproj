@@ -1015,6 +1015,7 @@
 		F0F04AF11B29E6AC00F6F401 /* VShareItemCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0F04AF01B29E6AC00F6F401 /* VShareItemCollectionViewCell.xib */; };
 		F0F04AF41B29E8FE00F6F401 /* VShareMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F04AF31B29E8FE00F6F401 /* VShareMenuItem.m */; };
 		F0F04AF71B2A37CB00F6F401 /* VDependencyManager+VShareMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F04AF61B2A37CB00F6F401 /* VDependencyManager+VShareMenuItem.m */; };
+		F0FC972D1B4F3FB70098AFCB /* VStreamItem+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC972C1B4F3FB70098AFCB /* VStreamItem+RestKit.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2914,6 +2915,8 @@
 		F0F04AF31B29E8FE00F6F401 /* VShareMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShareMenuItem.m; sourceTree = "<group>"; };
 		F0F04AF51B2A37CB00F6F401 /* VDependencyManager+VShareMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VShareMenuItem.h"; sourceTree = "<group>"; };
 		F0F04AF61B2A37CB00F6F401 /* VDependencyManager+VShareMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VShareMenuItem.m"; sourceTree = "<group>"; };
+		F0FC972B1B4F3FB70098AFCB /* VStreamItem+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VStreamItem+RestKit.h"; sourceTree = "<group>"; };
+		F0FC972C1B4F3FB70098AFCB /* VStreamItem+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VStreamItem+RestKit.m"; sourceTree = "<group>"; };
 		F0FFBA351AD5B1DC00283936 /* VMarqueeDataDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeDataDelegate.h; sourceTree = "<group>"; };
 		F0FFBA361AD5B1EE00283936 /* VMarqueeSelectionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeSelectionDelegate.h; sourceTree = "<group>"; };
 		FA9A96A39C05C50C7D098A8E /* Pods-test.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.qa.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.qa.xcconfig"; sourceTree = "<group>"; };
@@ -5456,6 +5459,8 @@
 				BE171DCC1868C211004E5202 /* VSequence+RestKit.m */,
 				BE11F23919CB44B900DEC776 /* VStream+RestKit.h */,
 				BE11F23A19CB44B900DEC776 /* VStream+RestKit.m */,
+				F0FC972B1B4F3FB70098AFCB /* VStreamItem+RestKit.h */,
+				F0FC972C1B4F3FB70098AFCB /* VStreamItem+RestKit.m */,
 				A709642219F0A13800CE6633 /* VTracking+RestKit.h */,
 				A709642319F0A13800CE6633 /* VTracking+RestKit.m */,
 				BE171DD31868C211004E5202 /* VUser+RestKit.h */,
@@ -7697,6 +7702,7 @@
 				035FA78E1AE6C4E20002EE63 /* VUnreadMessageCountCoordinator.m in Sources */,
 				A705F44C1B3CC00D007DBD3C /* VUsersViewController.m in Sources */,
 				BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */,
+				F0FC972D1B4F3FB70098AFCB /* VStreamItem+RestKit.m in Sources */,
 				03C185C819B42FD600E27D05 /* main.m in Sources */,
 				D8360CEA19E3640000D7E260 /* VNewContentViewController+Actions.m in Sources */,
 				D8D812B51B14FE5B00E93B37 /* VLoginFlowAPIHelper.m in Sources */,

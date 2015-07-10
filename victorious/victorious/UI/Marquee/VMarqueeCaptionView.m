@@ -29,7 +29,7 @@
     BOOL firstItem = self.marqueeItem == nil;
     _marqueeItem = marqueeItem;
 
-    BOOL hasHeadline = marqueeItem.headline != nil;
+    BOOL hasHeadline = marqueeItem.headline != nil || [marqueeItem.headline isEqualToString:@""];
     self.hasHeadline = hasHeadline;
     if ( !hasHeadline && firstItem )
     {

@@ -25,7 +25,6 @@ extern NSString * const kMarqueeURLKey;
 @property (nonatomic, weak) id <VMarqueeDataDelegate> dataDelegate; ///< The object that should be notified of changes in marquee content
 
 @property (nonatomic, strong) UICollectionView *collectionView; ///< The colletion view used to display the streamItems
-@property (nonatomic, readonly) VStreamItem *currentStreamItem; ///< The stream item currently being displayed
 @property (nonatomic, strong) VStream *stream; ///< The Marquee Stream
 @property (nonatomic, readonly) VTimerManager *autoScrollTimerManager; ///< The timer in control of auto scroll
 @property (nonatomic, assign) BOOL shouldTrackMarqueeCellViews; ///< Whether or not cell_view tracking events are sent for marquee items

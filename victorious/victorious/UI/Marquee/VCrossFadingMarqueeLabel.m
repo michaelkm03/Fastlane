@@ -57,7 +57,7 @@ static NSString * const kCaptionViewNibName = @"VBlurredMarqueeCaptionView";
 
 - (void)setMarqueeItems:(NSArray *)marqueeItems
 {
-    if ( [self.marqueeItems isEqualToArray:marqueeItems] )
+    if ( _marqueeItems == marqueeItems )
     {
         return;
     }

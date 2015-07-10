@@ -28,10 +28,10 @@
                         </collectionViewFlowLayout>
                     </collectionView>
                     <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HAb-QG-4Oh" customClass="VCrossFadingMarqueeLabel">
-                        <rect key="frame" x="0.0" y="243" width="360" height="66"/>
+                        <rect key="frame" x="0.0" y="235" width="360" height="74"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="66" id="rgU-1L-bkf"/>
+                            <constraint firstAttribute="height" constant="74" id="rgU-1L-bkf"/>
                         </constraints>
                     </view>
                 </subviews>

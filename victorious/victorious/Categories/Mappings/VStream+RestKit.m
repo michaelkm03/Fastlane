@@ -9,6 +9,7 @@
 #import "VStream+RestKit.h"
 
 #import "VSequence+RestKit.h"
+#import "VStreamItem+RestKit.h"
 
 @implementation VStream (RestKit)
 
@@ -40,8 +41,7 @@
                                 mappingForEntityForName:[self entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
-    //Identification attributes are AND-ed (see RKFetchRequestManagedObjectCache.m line 58)
-    mapping.identificationAttributes = @[ VSelectorName(remoteId), VSelectorName(headline) ];
+    mapping.identificationAttributes = [VStreamItem mappingIdentificationAttributes];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     
@@ -62,7 +62,7 @@
                                 mappingForEntityForName:[self entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
-    mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
+    mapping.identificationAttributes = [VStreamItem mappingIdentificationAttributes];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     
@@ -87,7 +87,7 @@
                                 mappingForEntityForName:[self entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
-    mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
+    mapping.identificationAttributes = [VStreamItem mappingIdentificationAttributes];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     

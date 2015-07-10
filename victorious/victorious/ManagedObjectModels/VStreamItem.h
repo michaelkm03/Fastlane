@@ -13,11 +13,11 @@
 
 @interface VStreamItem : NSManagedObject
 
-@property (nonatomic, retain) NSString * name;
+@property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) id previewImagesObject;
-@property (nonatomic, retain) NSString * remoteId;
-@property (nonatomic, retain) NSString * streamContentType;
-@property (nonatomic, retain) NSString * headline;
+@property (nonatomic, retain) NSString *remoteId;
+@property (nonatomic, retain) NSString *streamContentType;
+@property (nonatomic, retain) NSString *headline;
 @property (nonatomic, retain) NSSet *marquees;
 @property (nonatomic, retain) NSSet *streams;
 @end

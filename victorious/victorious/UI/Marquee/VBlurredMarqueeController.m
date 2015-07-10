@@ -59,6 +59,13 @@ static const CGFloat kOffsetOvershoot = 20.0f;
 
 - (void)selectNextTab
 {
+    if ( !self.collectionView.isScrollEnabled && CGPointEqualToPoint(CGPointZero, self.collectionView.contentOffset) )
+    {
+        //We've locked the scrolling and are already scrolled to
+        //an appropriate spot, don't animate more.
+        return;
+    }
+    
     CGFloat pageWidth = CGRectGetWidth(self.collectionView.bounds);
     NSUInteger currentPage = ( self.collectionView.contentOffset.x / pageWidth ) + 1;
     CGFloat overshootAmount = kOffsetOvershoot;
