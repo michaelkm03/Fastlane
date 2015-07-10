@@ -15,17 +15,12 @@ extension GIFSearchViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if let cell = collectionView.cellForItemAtIndexPath( indexPath ) as? GIFSearchCell {
             let section = self.searchDataSource.sections[ indexPath.section ]
-            
-            if section.isHighlighted {
+            cell.focused = !cell.focused
+            if cell.focused {
+                self.showFullSize( forItemAtIndexPath: indexPath )
             }
             else {
-                cell.focused = !cell.focused
-                if cell.focused {
-                    self.addHighlightedSection( forItemAtIndexPath: indexPath )
-                }
-                else {
-                    self.removeHighlightedSection( forItemAtIndexPath: indexPath )
-                }
+                self.hideFullSize( forItemAtIndexPath: indexPath )
             }
         }
     }

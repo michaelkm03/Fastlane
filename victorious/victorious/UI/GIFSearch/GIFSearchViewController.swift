@@ -34,6 +34,13 @@ private extension UISearchBar {
     }
 }
 
+private extension NSIndexPath {
+    
+    func asIndexSet() -> NSIndexSet {
+        return NSIndexSet(index: self.section )
+    }
+}
+
 class GIFSearchViewController: UIViewController, VMediaSource {
 
     @IBOutlet weak var collectionView: UICollectionView!
@@ -65,21 +72,20 @@ class GIFSearchViewController: UIViewController, VMediaSource {
         self.performSearch()
     }
     
-    func addHighlightedSection( forItemAtIndexPath indexPath: NSIndexPath ) {
+    func showFullSize( forItemAtIndexPath indexPath: NSIndexPath ) {
+        
         self.collectionView.performBatchUpdates({
-                var newSectionIndex = self.searchDataSource.addHighlightSection(forIndexPath: indexPath)
-                self.collectionView.insertSections( NSIndexSet(index: newSectionIndex) )
-            },
-            completion: { (completed) in
-                let newIndexPath = NSIndexPath(forRow: 0, inSection: newSectionIndex)
-                self.collectionView.scrollToItemAtIndexPath( newIndexPath, atScrollPosition: .CenteredHorizontally, animated: true )
-        })
+            self.searchDataSource.addHighlightSection(forIndexPath: indexPath )
+            self.collectionView.insertSections( indexPath.nextSectionIndexPath().asIndexSet() )
+        }, completion: nil)
+        
+        self.collectionView.scrollToItemAtIndexPath( indexPath.nextSectionIndexPath(), atScrollPosition: .CenteredVertically, animated: true )
     }
     
-    func removeHighlightedSection( forItemAtIndexPath indexPath: NSIndexPath ) {
+    func hideFullSize( forItemAtIndexPath indexPath: NSIndexPath ) {
         self.collectionView.performBatchUpdates({
-            let removedSectionIndex = self.searchDataSource.removeHighlightSection(forIndexPath: indexPath)
-            self.collectionView.deleteSections( NSIndexSet(index: removedSectionIndex) )
+            //let indexPathRemoved = self.searchDataSource.removeHighlightSection(forIndexPath: indexPath )
+            //self.collectionView.deleteSections( indexPathRemoved.asIndexSet() )
         }, completion: nil )
     }
     

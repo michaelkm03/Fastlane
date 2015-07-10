@@ -8,13 +8,23 @@
 
 import UIKit
 
+extension NSIndexPath {
+    
+    func nextSection() -> Int {
+        return self.section + 1
+    }
+    
+    func nextSectionIndexPath() -> NSIndexPath {
+        return NSIndexPath(forRow: 0, inSection: self.section + 1 )
+    }
+}
+
 /// Collection view data source that lods GIF search results from backend and creates
 /// and populated data on cells to show in results collection view
 class GIFSearchDataSource: NSObject {
     
     struct Section {
         let results: [GIFSearchResult]
-        let isHighlighted: Bool
         
         subscript( index: Int ) -> GIFSearchResult {
             return self.results[ index ]
@@ -32,20 +42,17 @@ class GIFSearchDataSource: NSObject {
         return _sections
     }
     
-    func removeHighlightSection( forIndexPath indexPath: NSIndexPath ) -> Int {
+    func removeHighlightSection( forIndexPath indexPath: NSIndexPath ) {
         let resultToHighlight = _sections[ indexPath.section ][ indexPath.row ]
-        let section = Section(results: [ resultToHighlight ], isHighlighted: true )
-        let highlightedSectionIndex = indexPath.section + 1
-        _sections.removeAtIndex( highlightedSectionIndex )
-        return highlightedSectionIndex
+        let section = Section(results: [ resultToHighlight ] )
+        _sections.removeAtIndex( indexPath.nextSection() )
     }
     
-    func addHighlightSection( forIndexPath indexPath: NSIndexPath ) -> Int {
-        let resultToHighlight = _sections[ indexPath.section ][ indexPath.row ]
-        let section = Section(results: [ resultToHighlight ], isHighlighted: true )
-        let newSectionIndex = indexPath.section + 1
-        _sections.insert( section, atIndex: newSectionIndex )
-        return newSectionIndex
+    func addHighlightSection( forIndexPath indexPath: NSIndexPath ) {
+        let section = _sections[ indexPath.section ]
+        let resultToHighlight = section[ indexPath.row ]
+        let childSection = Section(results: [ resultToHighlight ] )
+        _sections.insert( childSection, atIndex: indexPath.nextSection() )
     }
     
     private var _currentOperation: NSOperation?
@@ -61,7 +68,7 @@ class GIFSearchDataSource: NSObject {
                 
                 self._sections = []
                 for var i = 0; i < results.count-1; i+=2 {
-                    self._sections.append( Section(results:[results[i], results[i+1]], isHighlighted: false) )
+                    self._sections.append( Section(results:[results[i], results[i+1]] ) )
                 }
                 completion?()
                 
