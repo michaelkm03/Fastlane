@@ -2,7 +2,7 @@
 // victorious/victorious/Managers/Tracking/VTrackingConstants.m 
 // victorious 
 // 
-// Generated from CSV using script "tracking_generate_constants.sh" on 06/30/15. 
+// Generated from CSV using script "tracking_generate_constants.sh" on 07/09/15. 
 // Copyright (c) 2015 Victorious. All rights reserved. 
 // 
 
@@ -238,6 +238,9 @@ NSString * const VTrackingEventUserDidSelectSignUpSubmit = @"UserDidSelectSignUp
 
 NSString * const VTrackingEventComponentDidBecomeVisible = @"ComponentDidBecomeVisible";
 
+// Permissions
+NSString * const VTrackingEventUserPermissionDidChange = @"UserPermissionDidChange";
+
 // Tracking Event Parameters
 NSString * const VTrackingKeyCurrentSection = @"CurrentSection";
 NSString * const VTrackingKeySection = @"Section";
@@ -277,6 +280,8 @@ NSString * const VTrackingKeyRemoteId = @"RemoteId";
 NSString * const VTrackingKeyIndex = @"Index";
 NSString * const VTrackingKeyUserLoggedIn = @"UserLoggedIn";
 NSString * const VTrackingKeyLoadTime = @"LoadTime";
+NSString * const VTrackingKeyPermissionName = @"PermissionName";
+NSString * const VTrackingKeyPermissionState = @"PermissionState";
 
 // Tracking Event Values
 // ContentType values
@@ -308,3 +313,22 @@ NSString * const VTrackingValueMessage = @"Message";
 // Menu types
 NSString * const VTrackingValueHamburgerMenu = @"HamburgerMenu";
 NSString * const VTrackingValueTabBar = @"TabBar";
+
+// Permission State
+NSString * const VTrackingValueContactsDidAllow = @"ContactsDidAllow";
+NSString * const VTrackingValueCameraDidAllow = @"CameraDidAllow";
+NSString * const VTrackingValueMicrophoneDidAllow = @"MicrophoneDidAllow";
+NSString * const VTrackingValuePhotolibraryDidAllow = @"PhotolibraryDidAllow";
+NSString * const VTrackingValueFacebookDidAllow = @"FacebookDidAllow";
+NSString * const VTrackingValueTwitterDidAllow = @"TwitterDidAllow";
+NSString * const VTrackingValueLocationDidAllow = @"LocationDidAllow";
+NSString * const VTrackingValueUsertagInComment = @"UsertagInComment";
+NSString * const VTrackingValuePostFromFollowed = @"PostFromFollowed";
+NSString * const VTrackingValuePostFromCreator = @"PostFromCreator";
+NSString * const VTrackingValueNewCommentOnMyPost = @"NewCommentOnMyPost";
+NSString * const VTrackingValuePostOnFollowedHashtag = @"PostOnFollowedHashtag";
+NSString * const VTrackingValueNewPrivateMessage = @"NewPrivateMessage";
+NSString * const VTrackingValueNewFollower = @"NewFollower";
+NSString * const VTrackingValueAuthorized = @"Authorized";
+NSString * const VTrackingValueDenied = @"Denied";
+NSString * const VTrackingValueUnknown = @"Unknown";

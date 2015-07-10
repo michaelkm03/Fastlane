@@ -8,6 +8,8 @@
 
 #import <FacebookSDK/FBSession.h>
 #import <Foundation/Foundation.h>
+#import "VPermission.h"
+#import "VPermissionsTrackingHelper.h"
 
 /**
  Error domain for publish permissions errors
@@ -78,5 +80,7 @@ extern CGFloat const VFacebookManagerErrorPublishPermissionsFailure;
        previewUrl:(NSURL *)previewUrl;
 
 @property (nonatomic, readonly) BOOL authorizedToShare;
+
+@property (nonatomic, strong) VPermissionsTrackingHelper *permissionsTrackingHelper;
 
 @end

@@ -9,12 +9,15 @@
 #import "VFindContactsTableViewController.h"
 #import "VFindFriendsTableView.h"
 #import "VObjectManager+Users.h"
+#import "VPermission.h"
+#import "VPermissionsTrackingHelper.h"
 
 @import AddressBook;
 
 @interface VFindContactsTableViewController ()
 
 @property (nonatomic) ABAddressBookRef addressBook;
+@property (nonatomic, strong) VPermissionsTrackingHelper *permissionTrackingHelper;
 
 @end
 
@@ -31,6 +34,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.permissionTrackingHelper = [[VPermissionsTrackingHelper alloc] init];
     [self.tableView setConnectPromptLabelText:NSLocalizedString(@"FindContacts", @"")];
     [self.tableView setSafetyInfoLabelText:NSLocalizedString(@"ContactsSafety", @"")];
     [self.tableView.connectButton setTitle:NSLocalizedString(@"Access Your Contacts", @"") forState:UIControlStateNormal];
@@ -48,11 +52,12 @@
 - (void)connectToSocialNetworkWithPossibleUserInteraction:(BOOL)userInteraction completion:(void (^)(BOOL, NSError *))completionBlock
 {
     ABAuthorizationStatus authStatus = ABAddressBookGetAuthorizationStatus();
-    
+    NSString *trackingState;
     switch (authStatus)
     {
         case kABAuthorizationStatusAuthorized:
         {
+            trackingState = VTrackingValueAuthorized;
             ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
             if (addressBook)
             {
@@ -81,6 +86,7 @@
             
         case kABAuthorizationStatusDenied:
         {
+            trackingState = VTrackingValueDenied;
             if (completionBlock)
             {
                 completionBlock(NO, nil);
@@ -98,6 +104,7 @@
         }
         case kABAuthorizationStatusRestricted:
         {
+            trackingState = VTrackingValueDenied;
             if (completionBlock)
             {
                 completionBlock(NO, nil);
@@ -116,6 +123,7 @@
             
         case kABAuthorizationStatusNotDetermined:
         {
+            trackingState = VTrackingValueUnknown;
             if (userInteraction)
             {
                 ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
@@ -150,6 +158,7 @@
             break;
         }
     }
+    [self.permissionTrackingHelper permissionsDidChange:VTrackingValueContactsDidAllow permissionState:trackingState];
 }
 
 - (void)loadFriendsFromSocialNetworkWithCompletion:(void (^)(NSArray *, NSError *))completionBlock

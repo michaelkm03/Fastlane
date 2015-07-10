@@ -10,6 +10,8 @@
 
 #import "VDependencyManager.h"
 #import "VPermissionAlertViewController.h"
+#import "VPermissionsTrackingHelper.h"
+#import "VTrackingConstants.h"
 
 static NSString * const VPermissionAlertViewControllerKey = @"permissionsAlert";
 
@@ -67,6 +69,9 @@ typedef void (^VPermissionRequestCompletionHandler)(BOOL granted, VPermissionSta
  */
 @property (nonatomic, assign) BOOL shouldShowInitialPrompt;
 
+
+@property (nonatomic, strong) VPermissionsTrackingHelper *permissionsTrackingHelper;
+
 /**
  Prompts the user for a certain permission if necessary. If the user has already
  granted access to this permission or denied the system prompt, the completion 
@@ -94,5 +99,14 @@ typedef void (^VPermissionRequestCompletionHandler)(BOOL granted, VPermissionSta
  Subclasses should override this and prompt for permission appropriately
  */
 - (void)requestSystemPermissionWithCompletion:(VPermissionRequestCompletionHandler)completion;
+
+/**
+ Subclasses should override this and prompt for permission tracking appropriately
+ 
+ @param trackingStatus should be one of VTrackingValueAuthorized, etc..
+ */
+- (void)trackingPermission:(NSString *)trackingStatus;
+
++ (NSString *)stringFromPermissionState:(VPermissionState)permissionState;
 
 @end

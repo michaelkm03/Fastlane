@@ -14,6 +14,7 @@
 #import "VPermissionAlertAnimator.h"
 #import "VRoundedImageView.h"
 #import "VAppInfo.h"
+#import "VPermissionsTrackingHelper.h"
 
 static const CGFloat kMaxAlertHeightDifferenceFromSuperview = 100.0f;
 static const CGFloat kTextViewCornerRadius = 24.0f;
@@ -27,6 +28,8 @@ static NSString * const kDenyButtonTitleKey = @"title.button2";
 @property (strong, nonatomic) VDependencyManager *dependencyManager;
 
 @property (strong, nonatomic) VPermissionAlertTransitionDelegate *transitionDelegate;
+
+@property (strong, nonatomic) VPermissionsTrackingHelper *permissionsTrackingHelper;
 
 @property (weak, nonatomic) IBOutlet UIView *alertContainerView;
 @property (weak, nonatomic) IBOutlet UITextView *messageTextView;
@@ -71,7 +74,7 @@ static NSString * const kDenyButtonTitleKey = @"title.button2";
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor clearColor];
-    
+    self.permissionsTrackingHelper = [[VPermissionsTrackingHelper alloc] init];
     self.alertContainerView.layer.cornerRadius = kTextViewCornerRadius;
     self.alertContainerView.clipsToBounds = YES;
     

@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "VPermission.h"
 
 /**
  *  Describes the completion block of the refreshTwitterTokenWithIdentifier:fromViewController:completionBlock:.

@@ -29,6 +29,11 @@
     }
 }
 
+- (void)trackingPermission:(NSString *)trackingStatus
+{
+    [self.permissionsTrackingHelper permissionsDidChange:VTrackingValueCameraDidAllow permissionState:trackingStatus];
+}
+
 - (void)requestSystemPermissionWithCompletion:(VPermissionRequestCompletionHandler)completion
 {
     // Completion handler is required

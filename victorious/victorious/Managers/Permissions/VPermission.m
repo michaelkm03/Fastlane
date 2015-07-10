@@ -17,6 +17,7 @@
     {
         _dependencyManager = dependencyManager;
         _shouldShowInitialPrompt = YES;
+        _permissionsTrackingHelper = [[VPermissionsTrackingHelper alloc] init];
     }
     return self;
 }
@@ -27,6 +28,7 @@
     VPermissionState state = [self permissionState];
     if (state == VPermissionStateAuthorized)
     {
+        // already have authorization
         if (completion != nil)
         {
             completion(YES, state, nil);
@@ -36,6 +38,7 @@
     
     if (state == VPermissionStateSystemDenied || state == VPermissionUnsupported)
     {
+        // were already denied authorization
         if (completion != nil)
         {
             completion(NO, state, nil);
@@ -49,6 +52,7 @@
     }
     else
     {
+        // need to request permission for the first time, so we must track it
         VPermissionAlertViewController *permissionAlert = [self.dependencyManager templateValueOfType:[VPermissionAlertViewController class]
                                                                                                forKey:VPermissionAlertViewControllerKey];
         permissionAlert.messageText = [self messageWithDependencyManager:permissionAlert.dependencyManager];
@@ -57,6 +61,7 @@
          {
              [alert dismissViewControllerAnimated:YES completion:nil];
              [self requestSystemPermissionWithCompletion:completion];
+             [self trackingPermission:VTrackingValueAuthorized];
          }];
         [permissionAlert setDenyHandler:^(VPermissionAlertViewController *alert)
          {
@@ -67,9 +72,28 @@
                       completion(NO, VPermissionStatePromptDenied, nil);
                   }
               }];
+             [self trackingPermission:VTrackingValueDenied];
          }];
         [viewController presentViewController:permissionAlert animated:YES completion:nil];
     }
+}
+
++ (NSString *)stringFromPermissionState:(VPermissionState)permissionState
+{
+    NSString *string;
+    switch (permissionState)
+    {
+        case VPermissionStateAuthorized:
+            string = VTrackingValueAuthorized;
+            break;
+        case VPermissionStateSystemDenied:
+            string = VTrackingValueDenied;
+            break;
+        default:
+            string = VTrackingValueUnknown;
+            break;
+    }
+    return string;
 }
 
 #pragma mark - Overrides
@@ -87,6 +111,11 @@
 }
 
 - (void)requestSystemPermissionWithCompletion:(VPermissionRequestCompletionHandler)completion
+{
+    NSAssert( NO, @"This method must be overidden in a subclass." );
+}
+
+- (void)trackingPermission:(NSString *)trackingStatus
 {
     NSAssert( NO, @"This method must be overidden in a subclass." );
 }

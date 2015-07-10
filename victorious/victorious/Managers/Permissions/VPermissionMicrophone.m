@@ -31,6 +31,11 @@
     }
 }
 
+- (void)trackingPermission:(NSString *)trackingStatus
+{
+    [self.permissionsTrackingHelper permissionsDidChange:VTrackingValueMicrophoneDidAllow permissionState:trackingStatus];
+}
+
 - (void)requestSystemPermissionWithCompletion:(VPermissionRequestCompletionHandler)completion
 {
     // Completion handler is required

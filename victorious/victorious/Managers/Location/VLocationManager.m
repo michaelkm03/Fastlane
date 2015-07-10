@@ -8,6 +8,9 @@
 
 #import "VLocationManager.h"
 #import <CoreLocation/CLAvailability.h>
+#import "VPermissionsTrackingHelper.h"
+#import "VPermission.h"
+
 @import AddressBookUI;
 
 #define EnableLocationInfoLogging 0  // Set this to 1 in order to view location details in the console log window
@@ -18,6 +21,7 @@
 @property (nonatomic, strong) NSString *latitude;
 @property (nonatomic, strong) NSString *longitude;
 @property (nonatomic, strong) NSString *postalCode;
+@property (nonatomic, strong) VPermissionsTrackingHelper *permissionsTrackingHelper;
 
 @end
 
@@ -45,6 +49,7 @@
     {
         _locationManager = [[CLLocationManager alloc] init];
         _locationManager.delegate = self;
+        _permissionsTrackingHelper = [[VPermissionsTrackingHelper alloc] init];
     }
     
     return self;
@@ -130,6 +135,15 @@
     {
         self.permissionGranted = YES;
         [manager startUpdatingLocation];
+        [self.permissionsTrackingHelper permissionsDidChange:VTrackingValueLocationDidAllow permissionState:VTrackingValueAuthorized];
+    }
+    else if (status == kCLAuthorizationStatusDenied || status == kCLAuthorizationStatusRestricted)
+    {
+        [self.permissionsTrackingHelper permissionsDidChange:VTrackingValueLocationDidAllow permissionState:VTrackingValueDenied];
+    }
+    else if (status == kCLAuthorizationStatusNotDetermined)
+    {
+        [self.permissionsTrackingHelper permissionsDidChange:VTrackingValueLocationDidAllow permissionState:VTrackingValueUnknown];
     }
 }
 

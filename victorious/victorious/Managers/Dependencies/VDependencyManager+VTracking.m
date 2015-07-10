@@ -21,6 +21,7 @@ NSString * const VTrackingRegistrationStartKey          = @"registration_start";
 NSString * const VTrackingCreateProfileDoneButtonTapKey = @"create_profile_done_button_tap";
 NSString * const VTrackingRegisteButtonTapKey           = @"register_button_tap";
 NSString * const VTrackingSignUpButtonTapKey            = @"sign_up_button_tap";
+NSString * const VTrackingPermissionKey                 = @"permission_change";
 
 static NSString * const kTrackingViewKey                = @"view";
 static NSString * const kTrackingKey                    = @"tracking";

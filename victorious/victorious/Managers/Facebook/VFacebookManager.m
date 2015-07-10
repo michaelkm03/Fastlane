@@ -133,14 +133,28 @@ static NSString * const kEmailPermissionKey = @"email";
     return [[FBSession activeSession] hasGranted:kPublishActionsPermissionKey];
 }
 
+- (void)trackPermissions
+{
+    if ([[FBSession activeSession] hasGranted:kPublishActionsPermissionKey])
+    {
+        [self.permissionsTrackingHelper permissionsDidChange:VTrackingValueFacebookDidAllow permissionState:VTrackingValueAuthorized];
+    }
+    else
+    {
+        [self.permissionsTrackingHelper permissionsDidChange:VTrackingValueFacebookDidAllow permissionState:VTrackingValueUnknown];
+    }
+}
+
 - (void)requestPublishPermissionsOnSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *error))failureBlock
 {
     if ([self grantedPublishPermission])
     {
         if ( successBlock != nil )
         {
+            [self trackPermissions];
             successBlock();
         }
+        
         return;
     }
     
@@ -150,6 +164,7 @@ static NSString * const kEmailPermissionKey = @"email";
                                                 defaultAudience:FBSessionDefaultAudienceEveryone
                                               completionHandler:^(FBSession *session, NSError *error)
         {
+            [self trackPermissions];
             if ([self grantedPublishPermission])
             {
                 if ( successBlock != nil )
@@ -174,6 +189,7 @@ static NSString * const kEmailPermissionKey = @"email";
                                               allowLoginUI:YES
                                          completionHandler:^(FBSession *session, FBSessionState status, NSError *error)
         {
+            [self trackPermissions];
             if ([self grantedPublishPermission])
             {
                 if ( successBlock != nil )

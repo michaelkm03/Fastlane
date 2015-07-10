@@ -28,6 +28,7 @@ static NSString * const kMacroSharedToTwitter        = @"%%TWITTER_SHARE%%";
 static NSString * const kMacroNotificationID         = @"%%NOTIF_ID%%";
 static NSString * const kMacroSessionTime            = @"%%SESSION_TIME%%";
 static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
+static NSString * const kMacroPermission             = @"%%PERMISSION_CHANGE%%";
 
 #define APPLICATION_TRACKING_LOGGING_ENABLED 0
 #define APPLICATION_TEMPLATE_MAPPING_LOGGING_ENABLED 0
@@ -73,7 +74,8 @@ static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
                                  VTrackingEventUserDidFinishRegistration           : VTrackingRegistrationEndKey,
                                  VTrackingEventUserDidSelectRegistrationDone       : VTrackingCreateProfileDoneButtonTapKey,
                                  VTrackingEventUserDidSelectRegistrationOption     : VTrackingRegisteButtonTapKey,
-                                 VTrackingEventUserDidSelectSignUpSubmit           : VTrackingSignUpButtonTapKey };
+                                 VTrackingEventUserDidSelectSignUpSubmit           : VTrackingSignUpButtonTapKey,
+                                 VTrackingEventUserPermissionDidChange             : VTrackingPermissionKey };
         
         _macroReplacement = [[VURLMacroReplacement alloc] init];
         _requestQueue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0 );
