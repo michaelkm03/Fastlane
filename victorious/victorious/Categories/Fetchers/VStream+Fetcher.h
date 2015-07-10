@@ -17,6 +17,7 @@ extern NSString * const VStreamFilterTypePopular;
 
 - (BOOL)isHashtagStream;
 - (BOOL)hasMarquee;
+- (BOOL)hasMarqueeID;
 
 + (VStream *)streamForUser:(VUser *)user; ///<Returns the stream for a user.  Note: stream object will be the mainQueueManagedObjectContext.
 + (VStream *)streamForPath:(NSString *)apiPath inContext:(NSManagedObjectContext *)context; ///< Returns a stream with the given api path

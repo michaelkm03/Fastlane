@@ -448,7 +448,8 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
-        [self showContentViewForSequence:(VSequence *)streamItem inStreamWithID:marquee.stream.streamId withPreviewImage:image];
+        NSString *marqueeStreamID = [marquee.stream hasMarqueeID] ? marquee.stream.marqueeId : marquee.stream.streamId;
+        [self showContentViewForSequence:(VSequence *)streamItem inStreamWithID:marqueeStreamID withPreviewImage:image];
     }
     else if ( [streamItem isSingleStream] )
     {

@@ -221,6 +221,7 @@
         <attribute name="filterName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="hashtag" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
         <attribute name="isUserPostAllowed" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="marqueeId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="streamId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="trackingIdentifier" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="marqueeItems" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="StreamItem" inverseName="marquees" inverseEntity="StreamItem" syncable="YES"/>
@@ -305,7 +306,7 @@
         <element name="PollResult" positionX="1582" positionY="-36" width="128" height="118"/>
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
         <element name="Sequence" positionX="1078" positionY="-540" width="128" height="585"/>
-        <element name="Stream" positionX="1069" positionY="-792" width="128" height="133"/>
+        <element name="Stream" positionX="1069" positionY="-792" width="128" height="195"/>
         <element name="StreamItem" positionX="871" positionY="-765" width="128" height="118"/>
         <element name="Tracking" positionX="828" positionY="-630" width="128" height="225"/>
         <element name="User" positionX="1321" positionY="-324" width="128" height="450"/>

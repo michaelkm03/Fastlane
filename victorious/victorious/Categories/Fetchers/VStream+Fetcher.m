@@ -27,6 +27,11 @@
     return self.marqueeItems.count > 0;
 }
 
+- (BOOL)hasMarqueeID
+{
+    return self.marqueeId != nil && ![self.marqueeId isEqualToString:@""];
+}
+
 + (VStream *)streamForUser:(VUser *)user
 {
     NSString *escapedRemoteId = [(user.remoteId.stringValue ?: @"0") stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];

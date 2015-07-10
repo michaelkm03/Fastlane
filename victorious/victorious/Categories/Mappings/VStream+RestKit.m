@@ -22,6 +22,7 @@
     return @{
              @"id"                  :   VSelectorName(remoteId),
              @"stream_id"           :   VSelectorName(streamId),
+             @"marquee_id"          :   VSelectorName(marqueeId),
              @"stream_content_type" :   VSelectorName(streamContentType),
              @"name"                :   VSelectorName(name),
              @"preview_image"       :   VSelectorName(previewImagesObject),

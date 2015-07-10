@@ -19,6 +19,7 @@
 @dynamic isUserPostAllowed;
 @dynamic trackingIdentifier;
 @dynamic streamId;
+@dynamic marqueeId;
 @dynamic marqueeItems;
 @dynamic streamItems;
 
