@@ -7,11 +7,14 @@
 //
 
 #import "VForcedWorkspaceContainerViewController.h"
+#import "VTextWorkspaceFlowController.h"
 
 @interface VForcedWorkspaceContainerViewController ()
 
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+
+@property (strong, nonatomic) VDependencyManager *dependencyManager;
 
 @end
 
@@ -21,10 +24,12 @@
 {
     [super viewDidLoad];
     
-    [self addChildViewController:self.textWorkspaceViewController];
-    [self.containerView addSubview:self.textWorkspaceViewController.view];
-    self.textWorkspaceViewController.view.frame = self.containerView.frame;
-    [self.textWorkspaceViewController didMoveToParentViewController:self];
+    VTextWorkspaceFlowController *flow = [VTextWorkspaceFlowController textWorkspaceFlowControllerWithDependencyManager:self.dependencyManager];
+    
+    [self addChildViewController:flow.flowRootViewController];
+    [self.containerView addSubview:flow.flowRootViewController.view];
+    flow.flowRootViewController.view.frame = self.containerView.frame;
+    [flow.flowRootViewController didMoveToParentViewController:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated

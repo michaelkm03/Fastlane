@@ -24,7 +24,7 @@
 #import "VEnterProfilePictureCameraViewController.h"
 #import "VLoginFlowControllerDelegate.h"
 
-#import "VTextWorkspaceFlowController.h"
+#import "VForcedWorkspaceContainerViewController.h"
 
 static NSString * const kRegistrationScreens = @"registrationScreens";
 static NSString * const kLoginScreens = @"loginScreens";
@@ -508,8 +508,10 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     {
         if ([self shouldShowForcedCreation])
         {
-            VTextWorkspaceFlowController *forcedCreationScreen = [VTextWorkspaceFlowController textWorkspaceFlowControllerWithDependencyManager:self.dependencyManager];
-            [self pushViewController:forcedCreationScreen.flowRootViewController animated:YES];
+            UIStoryboard *sb = [UIStoryboard storyboardWithName:@"VForcedWorkspaceContainerViewController" bundle:[NSBundle mainBundle]];
+            VForcedWorkspaceContainerViewController *forcedCreationScreen = [sb instantiateViewControllerWithIdentifier:@"VForcedWorkspaceContainerViewController"];
+            [forcedCreationScreen setDependencyManager:self.dependencyManager];
+            [self pushViewController:forcedCreationScreen animated:YES];
         }
         else
         {

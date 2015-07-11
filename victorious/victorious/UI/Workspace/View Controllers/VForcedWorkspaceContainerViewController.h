@@ -11,6 +11,4 @@
 
 @interface VForcedWorkspaceContainerViewController : UIViewController <VHasManagedDependencies>
 
-@property (nonatomic, strong) UIViewController *textWorkspaceViewController;
-
 @end
