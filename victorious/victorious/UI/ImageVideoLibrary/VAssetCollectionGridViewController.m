@@ -16,6 +16,7 @@
 #import "VLibraryAuthorizationCell.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "VCompatibility.h"
+#import "UIView+AutoLayout.h"
 
 // Image Resizing
 #import "UIImage+Resize.h"
@@ -62,25 +63,46 @@
     [[PHPhotoLibrary sharedPhotoLibrary] unregisterChangeObserver:self];
 }
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.libraryPermission = [[VPermissionPhotoLibrary alloc] initWithDependencyManager:self.dependencyManager];
+}
+
 #pragma mark - View Lifecycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.libraryPermission = [[VPermissionPhotoLibrary alloc] initWithDependencyManager:self.dependencyManager];
     if ([self.libraryPermission permissionState] == VPermissionStateAuthorized)
     {
         [self prepareImageManagerAndRegisterAsObserver];
     }
     
-    self.alternateFolderButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.alternateFolderButton setTitle:@"folder▼"
-                                forState:UIControlStateNormal];
+    UIView *containerView = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    self.alternateFolderButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.alternateFolderButton setTitle:@"asdf" forState:UIControlStateNormal];
     [self.alternateFolderButton addTarget:self
                                    action:@selector(selectedFolderPicker:)
                          forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.titleView = self.alternateFolderButton;
+    self.alternateFolderButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [containerView addSubview:self.alternateFolderButton];
+    
+    UIImageView *dropdownImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gallery_dropdown_arrow"]];
+    dropdownImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [containerView addSubview:dropdownImageView];
+    [containerView v_addPinToTopBottomToSubview:self.alternateFolderButton];
+    [containerView v_addPinToTopBottomToSubview:dropdownImageView];
+    [containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[alternateFolderButton][dropdownImageView]|"
+                                                                          options:kNilOptions
+                                                                          metrics:nil
+                                                                            views:@{@"dropdownImageView":dropdownImageView,
+                                                                                    @"alternateFolderButton":self.alternateFolderButton}]];
+    
+    self.navigationItem.titleView = containerView;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -121,6 +143,33 @@
         [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]
                                     atScrollPosition:UICollectionViewScrollPositionTop
                                             animated:NO];
+    }
+}
+
+- (void)setOnAuthorizationHandler:(void (^)(BOOL))onAuthorizationHandler
+{
+    _onAuthorizationHandler = onAuthorizationHandler;
+    
+    // If authorization handler is being cleared bail
+    if (_onAuthorizationHandler == nil)
+    {
+        return;
+    }
+    
+    switch ([self.libraryPermission permissionState])
+    {
+        case VPermissionStatePromptDenied:
+        case VPermissionStateUnknown:
+            break;
+        case VPermissionStateSystemDenied:
+            onAuthorizationHandler(NO);
+            break;
+        case VPermissionStateAuthorized:
+            onAuthorizationHandler(YES);
+            break;
+        case VPermissionUnsupported:
+            // We should never get here
+            break;
     }
 }
 
@@ -246,6 +295,10 @@
                 if (state == VPermissionStateAuthorized)
                 {
                     [self prepareImageManagerAndRegisterAsObserver];
+                }
+                if (self.onAuthorizationHandler != nil)
+                {
+                    self.onAuthorizationHandler(granted);
                 }
                 [self.collectionView reloadData];
             }];

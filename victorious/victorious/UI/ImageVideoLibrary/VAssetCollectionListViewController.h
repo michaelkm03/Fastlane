@@ -22,4 +22,9 @@
  */
 @property (nonatomic, copy) void (^collectionSelectionHandler)(PHAssetCollection *selectedCollection);
 
+/**
+ *  Fetches the collections. Called on the main thread.
+ */
+- (void)fetchDefaultCollectionWithCompletion:(void (^)(PHAssetCollection *collection))completion;
+
 @end

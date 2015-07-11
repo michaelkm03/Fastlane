@@ -177,7 +177,16 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
     });
 }
 
-#pragma mark - Private Methods
+#pragma mark - Fetching
+
+- (void)fetchDefaultCollectionWithCompletion:(void (^)(PHAssetCollection *collection))completion
+{
+    NSParameterAssert(completion != nil);
+    [self fetchCollectionsWithCompletion:^
+    {
+        completion([self.collections firstObject]);
+    }];
+}
 
 // Completion is called on main Queue
 - (void)fetchCollectionsWithCompletion:(void(^)())success

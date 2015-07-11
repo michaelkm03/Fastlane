@@ -25,8 +25,15 @@
 @property (nonatomic, strong) PHAssetCollection *collectionToDisplay;
 
 /**
- *  Provide the gridViewController a selection handelr to be notified
+ *  Provide the gridViewController a selection handelr to be notified when the user selects an item in the grid. 
+ *  Called on the main thread.
  */
 @property (nonatomic, copy) void (^alternateFolderSelectionHandler)();
+
+/**
+ *  Assign a handler to be notified when the user has granted or denied permission to the user's library. 
+ *  Called immediately if the user has already responded to the system authorization prompt.
+ */
+@property (nonatomic, copy) void (^onAuthorizationHandler)(BOOL authorized);
 
 @end
