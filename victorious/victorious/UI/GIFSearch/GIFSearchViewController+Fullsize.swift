@@ -23,6 +23,9 @@ extension GIFSearchViewController {
         
         if let sectionInserted = sectionInserted {
             let indexPath = NSIndexPath(forRow: 0, inSection: sectionInserted)
+            if let cell = self.collectionView.cellForItemAtIndexPath( indexPath ) {
+                self.collectionView.sendSubviewToBack( cell )
+            }
             self.collectionView.scrollToItemAtIndexPath( indexPath, atScrollPosition: .CenteredVertically,  animated: true )
         }
     }

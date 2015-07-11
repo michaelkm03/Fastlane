@@ -11,6 +11,8 @@
 @class VVideoView;
 @class AVPlayer;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol VVideoViewDelegtae <NSObject>
 
 /**
@@ -31,9 +33,9 @@
  and complete method `setItemURL:loop:audioMuted` that will use default values
  for `loop:` and `audioMuted:` parameters (both NO).
  */
-@property (nonatomic, strong) NSURL *itemURL;
+@property (nonatomic, strong) NSURL *__nullable itemURL;
 
-@property (nonatomic, weak) id<VVideoViewDelegtae> delegate;
+@property (nonatomic, weak) IBOutlet id<VVideoViewDelegtae> delegate;
 
 /**
  Set the URL of the asset to play.
@@ -47,9 +49,15 @@
  */
 - (void)play;
 
+- (void)playFromStart;
+
 /**
  Pause playback.  If already paused, this is a no-op.
  */
 - (void)pause;
+
+- (void)reset;
+
+NS_ASSUME_NONNULL_END
 
 @end

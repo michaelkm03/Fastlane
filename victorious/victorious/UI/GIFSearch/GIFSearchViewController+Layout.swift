@@ -35,13 +35,18 @@ extension GIFSearchViewController : UICollectionViewDelegateFlowLayout {
         let totalHeight = self.collectionView.bounds.height - insets.top - insets.bottom
         let totalSize = CGSize(width: totalWidth, height: totalHeight )
         
-        let section = self.searchDataSource.sections[ indexPath.section ]
-        if section.count == 1 {
-            return section.displaySize(withinSize: totalSize)
+        if self.searchDataSource.sections.count == 0 {
+            return CGSize(width: totalSize.width, height: GIFSearchViewController.noContentCellHeight)
         }
         else {
-            let displaySizes = section.displaySizes( withinSize: totalSize )
-            return displaySizes[ indexPath.row ]
+            let section = self.searchDataSource.sections[ indexPath.section ]
+            if section.count == 1 {
+                return section.displaySize(withinSize: totalSize)
+            }
+            else {
+                let displaySizes = section.displaySizes( withinSize: totalSize )
+                return displaySizes[ indexPath.row ]
+            }
         }
     }
     

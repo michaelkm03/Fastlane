@@ -28,6 +28,10 @@ private extension NSIndexPath {
 /// and populated data on cells to show in results collection view
 class GIFSearchDataSource: NSObject {
     
+    enum State: Int {
+        case Loading, Content, Error
+    }
+    
     // For organizing search results into grouped sections
     struct Section {
         
@@ -55,12 +59,16 @@ class GIFSearchDataSource: NSObject {
         var insertedSection: Int? = nil
     }
     
+    private var _state: State = .Loading
+    
     private let kHeaderReuseIdentifier = "GIFSearchAttributionView"
     
     private var _sections = [Section]()
     var sections: [Section] {
         return _sections
     }
+    
+    private var _mostRecentSearchTerm: String?
     
     private var _highlightedSection: (section: Section, indexPath: NSIndexPath)?
     
@@ -72,7 +80,7 @@ class GIFSearchDataSource: NSObject {
         var result = ChangeResult()
         if let highlightedSection = _highlightedSection {
             let sectionIndex = highlightedSection.indexPath.section
-            _sections.removeAtIndex( highlightedSection.indexPath.section )
+            _sections.removeAtIndex( sectionIndex )
             _highlightedSection = nil
             result.deletedSection = sectionIndex
         }
@@ -106,10 +114,13 @@ class GIFSearchDataSource: NSObject {
     /// parameter `completion`: A closure to be call when the operation is complete
     func performSearch( searchText:String, completion: (()->())? ) {
         
+        _state = .Loading
         _currentOperation?.cancel()
         _currentOperation = VObjectManager.sharedManager().searchForGIF( [ searchText == "" ? "sponge" : searchText ],
             success: { (results) in
-                self._sections = []
+                self.clear()
+                self._mostRecentSearchTerm = searchText
+                self._state = .Content
                 for var i = 0; i < results.count-1; i+=2 {
                     let results = [results[i], results[i+1]]
                     let section = Section( results:results, isFullSize: false )
@@ -117,37 +128,75 @@ class GIFSearchDataSource: NSObject {
                 }
                 completion?()
             },
-            failure: { (error) in
+            failure: { (error, cancelled: Bool) in
+                if !cancelled {
+                    self.clear()
+                    self._state = .Error
+                }
                 completion?()
             }
         )
     }
     
-    /// Clears the backing model collection
+    /// Clears the backing model, highlighted section and cancels any in-progress search operation
     func clear() {
+        _mostRecentSearchTerm = nil
+        _currentOperation?.cancel()
+        _highlightedSection = nil
         _sections = []
+    }
+    
+    var noContentCellText: String {
+        switch _state {
+        case .Error:
+            return "Error loading results. :("
+        case .Content where self.sections.count == 0:
+            if let searchText = _mostRecentSearchTerm {
+                return "No results for \"\(searchText)\" :("
+            }
+            else  {
+                return "No results :("
+            }
+        default:
+            return ""
+        }
     }
 }
 
 extension GIFSearchDataSource : UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.sections[ section ].count
+        return self.sections.count == 0 ? 1 : self.sections[ section ].count
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return self.sections.count
+        return self.sections.count == 0 ? 1 : self.sections.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let gifSearchResult = self.sections[ indexPath.section ][ indexPath.row ]
-        
-        let identifier = GIFSearchCell.suggestedReuseIdentifier
-        if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( identifier, forIndexPath: indexPath ) as? GIFSearchCell {
-            cell.assetUrl = NSURL(string: gifSearchResult.thumbnailStillUrl)
-            cell.tintColor = UIColor.blueColor()
-            cell.selected = NSSet(array: collectionView.indexPathsForSelectedItems() ).containsObject( indexPath )
-            return cell
+        if self.sections.count == 0 {
+            if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( GIFSearchCellNoContent.suggestedReuseIdentifier, forIndexPath: indexPath ) as? GIFSearchCellNoContent {
+                cell.text = self.noContentCellText
+                return cell
+            }
+        }
+        else {
+            let section = self.sections[ indexPath.section ]
+            let result = section.results[ indexPath.row ]
+            if section.isFullSize {
+                if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( GIFSearchCellFullsize.suggestedReuseIdentifier, forIndexPath: indexPath ) as? GIFSearchCellFullsize {
+                    cell.assetUrl = NSURL(string: result.mp4Url)
+                    return cell
+                }
+            }
+            else {
+                if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( GIFSearchCell.suggestedReuseIdentifier, forIndexPath: indexPath ) as? GIFSearchCell {
+                    cell.assetUrl = NSURL(string: result.thumbnailStillUrl)
+                    cell.tintColor = UIColor.blueColor()
+                    cell.selected = NSSet(array: collectionView.indexPathsForSelectedItems() ).containsObject( indexPath )
+                    return cell
+                }
+            }
         }
         fatalError( "Could not find cell." )
     }

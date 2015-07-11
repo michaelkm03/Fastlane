@@ -63,6 +63,8 @@
         GIFSearchViewController *gifSearchViewController = [GIFSearchViewController viewControllerFromStoryboard];
         [captureContainer setContainedViewController:gifSearchViewController];
         [self addCompleitonHandlerToMediaSource:gifSearchViewController];
+        
+        [self addCompleitonHandlerToMediaSource:gifSearchViewController];
 
     }
     return self;
@@ -105,17 +107,10 @@
     __weak typeof(self) welf = self;
     mediaSource.handler = ^void(UIImage *previewImage, NSURL *capturedMediaURL)
     {
-        if (capturedMediaURL != nil)
-        {
-            [welf setupWorkspace];
-            self.workspaceViewController.mediaURL = capturedMediaURL;
-            self.workspaceViewController.previewImage = previewImage;
-            
-            VVideoToolController *toolController = (VVideoToolController *)welf.workspaceViewController.toolController;
-            [toolController setDefaultVideoTool:VVideoToolControllerInitialVideoEditStateGIF];
-            
-            [self pushViewController:self.workspaceViewController animated:YES];
-        }
+        NSLog( @"%@", capturedMediaURL );
+        [welf pushPublishScreenWithRenderedMediaURL:capturedMediaURL
+                                       previewImage:previewImage
+                                      fromWorkspace:welf.workspaceViewController];
     };
 }
 
@@ -202,7 +197,6 @@
     publishParameters.mediaToUploadURL = renderedMediaURL;
     publishParameters.previewImage = previewImage;
     
-//    VVideoToolController *videoToolController = (VVideoToolController *)workspace.toolController;
     publishParameters.isGIF = YES;
     
     self.publishViewContorller.publishParameters = publishParameters;

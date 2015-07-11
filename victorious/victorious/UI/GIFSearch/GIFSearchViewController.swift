@@ -36,11 +36,18 @@ private extension UISearchBar {
 
 class GIFSearchViewController: UIViewController, VMediaSource {
     
+    enum Action: Selector {
+        case Next = "onNext:"
+    }
+    
     static let headerViewHeight: CGFloat = 50.0
     static let defaultSectionMargin: CGFloat = 10.0
+    static let noContentCellHeight: CGFloat = 150.0
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var searchBar: UISearchBar!
+    
+    let operationQueue = NSOperationQueue()
     
     var selectedIndexPath: NSIndexPath?
     
@@ -67,7 +74,34 @@ class GIFSearchViewController: UIViewController, VMediaSource {
         
         self.navigationItem.titleView = self.titleViewWithTitle( NSLocalizedString( "GIF", comment:"" ) )
         
+        let nextTitle = NSLocalizedString( "Next", comment: "" )
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: nextTitle, style: .Plain, target: self, action: Action.Next.rawValue )
+        
         self.performSearch()
+    }
+    
+    func onNext( sender: AnyObject? ) {
+        if let indexPath = self.selectedIndexPath {
+            let gif = self.searchDataSource.sections[ indexPath.section ][ indexPath.row ]
+            if let previewImageURL = NSURL(string: gif.thumbnailStillUrl), let videoURL = NSURL(string: gif.mp4Url ) {
+                let imageOperation = LoadImageOperation(remoteURL: previewImageURL)
+                let videoOperation = StreamToFileOperation(remoteURL: videoURL)
+                imageOperation.addDependency( videoOperation )
+                imageOperation.completionBlock = {
+                    if let image = imageOperation.image, let mediaURL = videoOperation.mediaURL {
+                        self.handler?( image, mediaURL )
+                    }
+                    else if let error = imageOperation.error {
+                        println( "Error loading image: \(error)" )
+                    }
+                    else if let error = videoOperation.error {
+                        println( "Error loading video: \(error)" )
+                    }
+                }
+                self.operationQueue.addOperation( videoOperation )
+                self.operationQueue.addOperation( imageOperation )
+            }
+        }
     }
     
     private func titleViewWithTitle( text: String ) -> UIView {
@@ -80,7 +114,8 @@ class GIFSearchViewController: UIViewController, VMediaSource {
     
     private func performSearch( _ searchText: String = "" ) {
         self.searchDataSource.performSearch( searchText ) {
-            self.self.collectionView.reloadData()
+            self.collectionView.setContentOffset( CGPoint.zeroPoint, animated: true )
+            self.collectionView.reloadData()
         }
     }
     
@@ -106,12 +141,8 @@ class GIFSearchViewController: UIViewController, VMediaSource {
 extension GIFSearchViewController : UISearchBarDelegate {
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        if count( searchText ) == 0 {
-            self.clearSearch()
-        }
-        else {
-            self.performSearch( searchText )
-        }
+        self.clearSearch()
+        self.performSearch( searchText )
     }
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {

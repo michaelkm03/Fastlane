@@ -8,6 +8,8 @@
 
 /**
  Use this file to import Objective-C headers that need to be exposed to any Swift code.
+ Unlike other lists of Objective-C important statements, this list is actually important
+ and should be kept organized and commented.
  */
 
 // iOS Frameworks
@@ -37,6 +39,5 @@
 #import "VPageType.h"
 #import "VCaptureContainerViewController.h"
 #import "VMediaSource.h"
-
-// Categories
+#import "VVideoView.h"
 #import "UIImage+VTint.h"

@@ -66,6 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self.viewControllerToContain didMoveToParentViewController:self];
     
     self.navigationItem.titleView = self.viewControllerToContain.navigationItem.titleView;
+    self.navigationItem.rightBarButtonItems = self.viewControllerToContain.navigationItem.rightBarButtonItems;
 }
 
 #pragma mark - Public Methods

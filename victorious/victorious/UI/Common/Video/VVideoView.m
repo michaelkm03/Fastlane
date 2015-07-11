@@ -12,11 +12,13 @@
 
 @import AVFoundation;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface VVideoView()
 
-@property (nonatomic, strong) AVPlayer *player;
-@property (nonatomic, strong) AVPlayerLayer *playerLayer;
-@property (nonatomic, strong) AVPlayerItem *newestPlayerItem;
+@property (nonatomic, strong) AVPlayer *__nullable player;
+@property (nonatomic, strong) AVPlayerLayer *__nullable playerLayer;
+@property (nonatomic, strong) AVPlayerItem *__nullable newestPlayerItem;
 @property (nonatomic, readonly) BOOL isPlayingVideo;
 @property (nonatomic, strong) VVideoUtils *videoUtils;
 
@@ -29,7 +31,16 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)setItemURL:(NSURL *)itemURL
+- (void)reset
+{
+    [self.playerLayer removeFromSuperlayer];
+    self.playerLayer = nil;
+    [self.player pause];
+    self.player = nil;
+    self.itemURL = nil;
+}
+
+- (void)setItemURL:(NSURL *__nullable)itemURL
 {
     [self setItemURL:itemURL loop:NO audioMuted:NO];
 }
@@ -142,6 +153,13 @@
     }
 }
 
+- (void)playFromStart
+{
+    [self.player pause];
+    [self.player.currentItem seekToTime:kCMTimeZero];
+    [self.player play];
+}
+
 - (void)pause
 {
     if ( self.isPlayingVideo )
@@ -150,5 +168,7 @@
         [self.player pause];
     }
 }
+
+NS_ASSUME_NONNULL_END
 
 @end
