@@ -78,6 +78,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
         _gridViewController.collectionToDisplay = [self defaultCollection];
         [captureContainer setContainedViewController:_gridViewController];
         [self addCompleitonHandlerToMediaSource:_gridViewController];
+
         [self setupPublishScreen];
     }
     return self;
@@ -100,11 +101,27 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // We need to be the delegate for the publish animation, and the gesture delegate for the pop to work
     self.delegate = self;
+    self.interactivePopGestureRecognizer.delegate = (id<UIGestureRecognizerDelegate>)self;
+    
+    // Present the collections list when the user selects the folder button
     __weak typeof(self) welf = self;
     self.gridViewController.alternateFolderSelectionHandler = ^()
     {
         [welf presentAssetFoldersList];
+    };
+    
+    // On authorization is called immediately if we have already determined authorization status
+    __weak VAssetCollectionListViewController *weakListViewController = _listViewController;
+    __weak VAssetCollectionGridViewController *weakGridViewController = _gridViewController;
+    _gridViewController.onAuthorizationHandler = ^void(BOOL authorized)
+    {
+        [weakListViewController fetchDefaultCollectionWithCompletion:^(PHAssetCollection *collection)
+         {
+             weakGridViewController.collectionToDisplay = collection;
+         }];
     };
 }
 
@@ -183,7 +200,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
                            animated:YES
                          completion:nil];
     };
-    
+#warning Add these to localized strings
     VAlternateCaptureOption *cameraOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Camera", nil)
                                                                                       icon:[UIImage imageNamed:@"contententry_cameraicon"]
                                                                          andSelectionBlock:cameraSelectionBlock];
