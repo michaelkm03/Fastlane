@@ -683,6 +683,8 @@
 		C30AA4F01B0678BB0010CEFE /* VPermission.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4EF1B0678BB0010CEFE /* VPermission.m */; };
 		C30AA4F31B067C370010CEFE /* VPermissionCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4F21B067C370010CEFE /* VPermissionCamera.m */; };
 		C30AA4F61B06B82A0010CEFE /* VPermissionPhotoLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4F51B06B82A0010CEFE /* VPermissionPhotoLibrary.m */; };
+		C3475B6D1B507087007C3782 /* VForcedWorkspaceContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3475B6C1B507087007C3782 /* VForcedWorkspaceContainerViewController.m */; };
+		C3475B6F1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3475B6E1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard */; };
 		C35265FB1B28EA09001F093F /* CreateSheet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C35265FA1B28EA09001F093F /* CreateSheet.storyboard */; };
 		C35265FE1B28F167001F093F /* VCreateSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C35265FD1B28F167001F093F /* VCreateSheetViewController.m */; };
 		C35266011B28F1B6001F093F /* VCreateSheetCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C35266001B28F1B6001F093F /* VCreateSheetCollectionViewCell.m */; };
@@ -2274,6 +2276,9 @@
 		C30AA4F21B067C370010CEFE /* VPermissionCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPermissionCamera.m; path = Permissions/VPermissionCamera.m; sourceTree = "<group>"; };
 		C30AA4F41B06B82A0010CEFE /* VPermissionPhotoLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPermissionPhotoLibrary.h; path = Permissions/VPermissionPhotoLibrary.h; sourceTree = "<group>"; };
 		C30AA4F51B06B82A0010CEFE /* VPermissionPhotoLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPermissionPhotoLibrary.m; path = Permissions/VPermissionPhotoLibrary.m; sourceTree = "<group>"; };
+		C3475B6B1B507087007C3782 /* VForcedWorkspaceContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VForcedWorkspaceContainerViewController.h; sourceTree = "<group>"; };
+		C3475B6C1B507087007C3782 /* VForcedWorkspaceContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VForcedWorkspaceContainerViewController.m; sourceTree = "<group>"; };
+		C3475B6E1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VForcedWorkspaceContainerViewController.storyboard; sourceTree = "<group>"; };
 		C35265FA1B28EA09001F093F /* CreateSheet.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = CreateSheet.storyboard; path = "Create Sheet/CreateSheet.storyboard"; sourceTree = "<group>"; };
 		C35265FC1B28F167001F093F /* VCreateSheetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCreateSheetViewController.h; path = "Create Sheet/VCreateSheetViewController.h"; sourceTree = "<group>"; };
 		C35265FD1B28F167001F093F /* VCreateSheetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCreateSheetViewController.m; path = "Create Sheet/VCreateSheetViewController.m"; sourceTree = "<group>"; };
@@ -5018,6 +5023,9 @@
 		A7ECC1D01AD6178F0003E00A /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				C3475B6E1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard */,
+				C3475B6B1B507087007C3782 /* VForcedWorkspaceContainerViewController.h */,
+				C3475B6C1B507087007C3782 /* VForcedWorkspaceContainerViewController.m */,
 				A7ECC1D11AD6178F0003E00A /* VBaseWorkspaceViewController.h */,
 				A7ECC1D21AD6178F0003E00A /* VBaseWorkspaceViewController.m */,
 				F0F04AF81B2DE0AE00F6F401 /* Publish */,
@@ -6874,6 +6882,7 @@
 				D8D8958B19E88D5500632663 /* VExperienceEnhancerBarCell.xib in Resources */,
 				0390086E19F39F9900FD7EDF /* VMessageCell.xib in Resources */,
 				A7A390CA1A3257A300709812 /* ContentView.storyboard in Resources */,
+				C3475B6F1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard in Resources */,
 				A7D707A21A7C145E00D9993F /* EndCard.storyboard in Resources */,
 				036F386F1A0C4DEA0014DF66 /* JosefinSlab-Bold.ttf in Resources */,
 				036F38711A0C4DEA0014DF66 /* Junction-bold.otf in Resources */,
@@ -7394,6 +7403,7 @@
 				D87D70961A9804CD002D4FED /* VNavigationDestinationContainerViewController.m in Sources */,
 				F0AD21761AF43DFA001BDCC6 /* VCollectionsDirectoryCellFactory.m in Sources */,
 				03C185BC19B42E5D00E27D05 /* TWSignedRequest.m in Sources */,
+				C3475B6D1B507087007C3782 /* VForcedWorkspaceContainerViewController.m in Sources */,
 				A7AEF9D01A83F2F500A3D3A0 /* VVideoUtils.m in Sources */,
 				BEA78C2B19C008F0006A1ABC /* VStream+Fetcher.m in Sources */,
 				D84559001ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m in Sources */,

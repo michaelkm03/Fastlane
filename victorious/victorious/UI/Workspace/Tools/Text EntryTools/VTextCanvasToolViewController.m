@@ -19,6 +19,7 @@
 @property (nonatomic, weak) IBOutlet VRoundedBackgroundButton *buttonImageSearch;
 @property (nonatomic, weak) IBOutlet VRoundedBackgroundButton *buttonCamera;
 @property (nonatomic, weak) IBOutlet VRoundedBackgroundButton *buttonClear;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceConstraint;
 
 @property (nonatomic, strong, readwrite) VEditableTextPostViewController *textPostViewController;
 

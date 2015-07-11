@@ -18,10 +18,11 @@
 #import "VTextListener.h"
 #import "VCameraViewController.h"
 #import "VImageSearchViewController.h"
+#import "VForcedWorkspaceContainerViewController.h"
 
 @interface VTextWorkspaceFlowController() <UINavigationControllerDelegate, VTextListener, VTextCanvasToolDelegate>
 
-@property (nonatomic, strong) UINavigationController *flowNavigationController;
+@property (nonatomic, strong) UIViewController *flowNavigationController;
 @property (nonatomic, strong) VWorkspaceViewController *textWorkspaceViewController;
 @property (nonatomic, strong) VTextCanvasToolViewController *textCanvasToolViewController;
 @property (nonatomic, strong) VTextToolController *textToolController;
@@ -71,10 +72,20 @@
              }
          }];
         
-        // Create the nav controller and present the workspace
-        _flowNavigationController = [[UINavigationController alloc] init];
-        _flowNavigationController.navigationBarHidden = YES;
-        [_flowNavigationController pushViewController:_textWorkspaceViewController animated:NO];
+        if ([[self.dependencyManager numberForKey:@"forcedContentCreation"] boolValue])
+        {
+            // Create the nav controller and present the workspace
+            _flowNavigationController = [[UIStoryboard storyboardWithName:@"VForcedWorkspaceContainerViewController" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"VForcedWorkspaceContainerViewController"];
+            [(VForcedWorkspaceContainerViewController *)_flowNavigationController setTextWorkspaceViewController:_textWorkspaceViewController];
+        }
+        else
+        {
+            // Create the nav controller and present the workspace
+            _flowNavigationController = [[UINavigationController alloc] init];
+            [(UINavigationController *)_flowNavigationController setNavigationBarHidden:YES];
+            [(UINavigationController *)_flowNavigationController pushViewController:_textWorkspaceViewController animated:NO];
+        }
+
     }
     return self;
 }
@@ -123,13 +134,13 @@
 - (void)textCanvasToolDidSelectCamera:(VTextCanvasToolViewController *)textCanvasToolViewController
 {
     self.mediaCaptureViewController = [self createCameraViewController];
-    [self.flowNavigationController presentViewController:self.mediaCaptureViewController animated:YES completion:nil];
+    [self.flowRootViewController presentViewController:self.mediaCaptureViewController animated:YES completion:nil];
 }
 
 - (void)textCanvasToolDidSelectImageSearch:(VTextCanvasToolViewController *)textCanvasToolViewController
 {
     self.mediaCaptureViewController = [self createImageSearchViewController];
-    [self.flowNavigationController presentViewController:self.mediaCaptureViewController animated:YES completion:nil];
+    [self.flowRootViewController presentViewController:self.mediaCaptureViewController animated:YES completion:nil];
 }
 
 - (void)textCanvasToolDidSelectClearImage:(VTextCanvasToolViewController *)textCanvasToolViewController

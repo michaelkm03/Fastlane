@@ -24,6 +24,8 @@
 #import "VEnterProfilePictureCameraViewController.h"
 #import "VLoginFlowControllerDelegate.h"
 
+#import "VTextWorkspaceFlowController.h"
+
 static NSString * const kRegistrationScreens = @"registrationScreens";
 static NSString * const kLoginScreens = @"loginScreens";
 static NSString * const kLandingScreen = @"landingScreen";
@@ -201,6 +203,11 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
 - (BOOL)isFinalRegistrationScreen:(UIViewController *)viewController
 {
     return [[self.registrationScreens lastObject] isEqual:viewController];
+}
+
+- (BOOL)shouldShowForcedCreation
+{
+    return [[self.dependencyManager numberForKey:@"forcedContentCreation"] boolValue];
 }
 
 - (void)cancelLoginAndRegistration
@@ -499,7 +506,15 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     UIViewController *nextRegisterViewController = [self nextScreenAfter:self.topViewController inArray:self.registrationScreens];
     if (nextRegisterViewController == self.topViewController)
     {
-        [self onAuthenticationFinishedWithSuccess:YES];
+        if ([self shouldShowForcedCreation])
+        {
+            VTextWorkspaceFlowController *forcedCreationScreen = [VTextWorkspaceFlowController textWorkspaceFlowControllerWithDependencyManager:self.dependencyManager];
+            [self pushViewController:forcedCreationScreen.flowRootViewController animated:YES];
+        }
+        else
+        {
+            [self onAuthenticationFinishedWithSuccess:YES];
+        }
     }
     else
     {
@@ -530,6 +545,8 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     }
     
     [self.view endEditing:YES];
+    
+    
     [self.presentingViewController dismissViewControllerAnimated:YES
                                                       completion:^
      {

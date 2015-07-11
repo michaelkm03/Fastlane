@@ -217,6 +217,15 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
+        NSString *keyPath = [[templateDecorator keyPathsForKey:@"loginAndRegistrationView"] firstObject];
+        
+        NSMutableDictionary *dict = [[templateDecorator templateValueForKeyPath:keyPath] mutableCopy];
+        
+        dict[@"registrationScreens"] = @[[dict[@"registrationScreens"] lastObject]];
+        dict[@"forcedContentCreation"] = @YES;
+        
+        [templateDecorator setTemplateValue:dict forKeyPath:keyPath];
+                
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];
