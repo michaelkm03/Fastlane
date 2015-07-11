@@ -19,6 +19,8 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 
 @interface VAssetCollectionListViewController () <PHPhotoLibraryChangeObserver>
 
+@property (nonatomic, assign) PHAssetMediaType mediaType;
+
 @property (nonatomic, strong) VPermissionPhotoLibrary *libraryPermissions;
 @property (nonatomic, assign) BOOL needsFetch;
 
@@ -34,12 +36,21 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 
 #pragma mark - Lifecycle
 
-+ (instancetype)assetCollectionListViewController
++ (instancetype)assetCollectionListViewControllerWithMediaType:(PHAssetMediaType)mediaType
 {
     NSBundle *bundleForClass = [NSBundle bundleForClass:self];
     UIStoryboard *storyboardForClass = [UIStoryboard storyboardWithName:NSStringFromClass(self)
                                                                  bundle:bundleForClass];
-    return [storyboardForClass instantiateInitialViewController];
+    VAssetCollectionListViewController *listViewController = [storyboardForClass instantiateInitialViewController];
+    if (mediaType == PHAssetMediaTypeImage || mediaType == PHAssetMediaTypeVideo)
+    {
+        listViewController.mediaType = mediaType;
+    }
+    else
+    {
+        NSAssert(false, @"Unsupported media type!");
+    }
+    return listViewController;
 }
 
 - (void)dealloc
@@ -195,9 +206,8 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
         [self.fetchResults addObject:userAlbums];
         
         // Configure fetch options for media type and creation date
-        PHAssetMediaType mediaType = PHAssetMediaTypeImage;
         PHFetchOptions *assetFetchOptions = [[PHFetchOptions alloc] init];
-        assetFetchOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d", mediaType];
+        assetFetchOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d", self.mediaType];
         assetFetchOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
         
         // We're going to add apropirate collecitons and fetch requests to these arrays

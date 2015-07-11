@@ -12,6 +12,7 @@
 #import "VCaptureContainerViewController.h"
 #import "VAlternateCaptureOption.h"
 #import "VAssetCollectionGridViewController.h"
+#import "VAssetCollectionListViewController.h"
 
 // Workspace
 #import "VWorkspaceViewController.h"
@@ -31,10 +32,12 @@
 #import "VDependencyManager.h"
 #import "VMediaSource.h"
 
-@interface VVideoCreationFlowController () <UINavigationControllerDelegate>
+@interface VVideoCreationFlowController () <UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
+@property (nonatomic, strong) VAssetCollectionListViewController *listViewController;
+@property (nonatomic, strong) VAssetCollectionGridViewController *gridViewController;
 @property (nonatomic, strong) VWorkspaceViewController *workspaceViewController;
 
 @property (nonatomic, strong) VPublishViewController *publishViewContorller;
@@ -61,9 +64,11 @@
         [self addCloseButtonToViewController:captureContainer];
         [self setViewControllers:@[captureContainer]];
         
-        VAssetCollectionGridViewController *gridViewController = [VAssetCollectionGridViewController assetGridViewControllerWithDependencyManager:dependencyManager];
-        [captureContainer setContainedViewController:gridViewController];
-        [self addCompleitonHandlerToMediaSource:gridViewController];
+        _listViewController = [VAssetCollectionListViewController assetCollectionListViewControllerWithMediaType:PHAssetMediaTypeVideo];
+        _gridViewController = [VAssetCollectionGridViewController assetGridViewControllerWithDependencyManager:dependencyManager
+                                                                                                     mediaType:PHAssetMediaTypeVideo];
+        [captureContainer setContainedViewController:_gridViewController];
+        [self addCompleitonHandlerToMediaSource:_gridViewController];
     }
     return self;
 }
@@ -74,6 +79,11 @@
 {
     [super viewDidLoad];
     self.delegate = self;
+    __weak typeof(self) welf = self;
+    self.gridViewController.alternateFolderSelectionHandler = ^()
+    {
+        [welf presentAssetFoldersList];
+    };
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -82,6 +92,31 @@
 }
 
 #pragma mark - Private Methods
+
+- (void)presentAssetFoldersList
+{
+    // Present alternate folder
+    __weak typeof(self) welf = self;
+    self.listViewController.collectionSelectionHandler = ^void(PHAssetCollection *assetCollection)
+    {
+        welf.gridViewController.collectionToDisplay = assetCollection;
+    };
+    self.listViewController.modalPresentationStyle = UIModalPresentationPopover;
+    
+    UIPopoverPresentationController *popoverPresentation = self.listViewController.popoverPresentationController;
+    popoverPresentation.delegate = self;
+    CGSize preferredContentSize = CGSizeMake(CGRectGetWidth(self.view.bounds) - 50.0f,
+                                             CGRectGetHeight(self.view.bounds) - 200.0f);
+    self.listViewController.preferredContentSize = preferredContentSize;
+    UIViewController *topViewContorller = [self.viewControllers firstObject];
+    popoverPresentation.sourceView = topViewContorller.navigationItem.titleView;
+    popoverPresentation.sourceRect = CGRectMake(CGRectGetMidX(popoverPresentation.sourceView.bounds),
+                                                CGRectGetMaxY(popoverPresentation.sourceView.bounds) + CGRectGetHeight(popoverPresentation.sourceView.bounds),
+                                                0.0f,
+                                                CGRectGetHeight(popoverPresentation.sourceView.bounds));
+    
+    [self presentViewController:self.listViewController animated:YES completion:nil];
+}
 
 - (NSArray *)alternateCaptureOptions
 {
@@ -225,6 +260,14 @@
         return self.publishAnimator;
     }
     return nil;
+}
+
+#pragma mark - UIPopoverPresentationControllerDelegate
+
+- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller
+                                                               traitCollection:(UITraitCollection *)traitCollection
+{
+    return UIModalPresentationNone;
 }
 
 @end

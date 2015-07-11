@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "VMediaSource.h"
 
-@class PHAssetCollection;
+@import Photos;
 @class VDependencyManager;
 
 @interface VAssetCollectionGridViewController : UICollectionViewController <VMediaSource>
@@ -17,7 +17,8 @@
 /**
  *  Factory method for this ViewController. Use this to grab a new instance of assetGridViewController;
  */
-+ (instancetype)assetGridViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager;
++ (instancetype)assetGridViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager
+                                                   mediaType:(PHAssetMediaType)mediaType;
 
 /**
  *  Set this to the collection you want to display in the grid.

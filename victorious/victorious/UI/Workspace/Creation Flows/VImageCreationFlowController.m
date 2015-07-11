@@ -72,11 +72,12 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
         [self addCloseButtonToViewController:captureContainer];
         [self setViewControllers:@[captureContainer]];
         
-        _listViewController = [VAssetCollectionListViewController assetCollectionListViewController];
-        _gridViewController = [VAssetCollectionGridViewController assetGridViewControllerWithDependencyManager:dependencyManager];
+        _listViewController = [VAssetCollectionListViewController assetCollectionListViewControllerWithMediaType:PHAssetMediaTypeImage];
+        _gridViewController = [VAssetCollectionGridViewController assetGridViewControllerWithDependencyManager:dependencyManager
+                                                                                                     mediaType:PHAssetMediaTypeImage];
         _gridViewController.collectionToDisplay = [self defaultCollection];
-        [captureContainer setContainedViewController:self.gridViewController];
-        [self addCompleitonHandlerToMediaSource:self.gridViewController];
+        [captureContainer setContainedViewController:_gridViewController];
+        [self addCompleitonHandlerToMediaSource:_gridViewController];
         [self setupPublishScreen];
     }
     return self;

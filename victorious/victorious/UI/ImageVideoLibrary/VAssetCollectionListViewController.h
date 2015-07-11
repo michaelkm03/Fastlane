@@ -8,14 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@class PHAssetCollection;
+@import Photos;
 
 @interface VAssetCollectionListViewController : UITableViewController
 
 /**
  *  Factory method for this ViewController. Use this to get an instance of VAssetCollectionListViewController.
  */
-+ (instancetype)assetCollectionListViewController;
++ (instancetype)assetCollectionListViewControllerWithMediaType:(PHAssetMediaType)mediaType;
 
 /**
  *  A handler for colleciton selection. Dismisses self after calling this handler.

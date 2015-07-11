@@ -24,6 +24,7 @@
 
 @interface VAssetCollectionGridViewController () <UICollectionViewDelegateFlowLayout, PHPhotoLibraryChangeObserver>
 
+@property (nonatomic, assign) PHAssetMediaType mediaType;
 @property (nonatomic, strong) PHCachingImageManager *imageManager;
 
 @property (nonatomic, assign) CGRect previousPrefetchRect;
@@ -48,12 +49,14 @@
 #pragma mark - Lifecycle Methods
 
 + (instancetype)assetGridViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager
+                                                   mediaType:(PHAssetMediaType)mediaType
 {
     NSBundle *bundleForClass = [NSBundle bundleForClass:self];
     UIStoryboard *storyboardForClass = [UIStoryboard storyboardWithName:NSStringFromClass(self)
                                                                  bundle:bundleForClass];
     VAssetCollectionGridViewController *gridViewController = [storyboardForClass instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
     gridViewController.dependencyManager = dependencyManager;
+    gridViewController.mediaType = mediaType;
     return gridViewController;
 }
 
@@ -108,8 +111,7 @@
                                 forState:UIControlStateNormal];
     
     PHFetchOptions *fetchOptions = [[PHFetchOptions alloc] init];
-    fetchOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d", PHAssetMediaTypeImage];
-
+    fetchOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d", self.mediaType];
     fetchOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
     self.assetsToDisplay = [PHAsset fetchAssetsInAssetCollection:collectionToDisplay
                                                          options:fetchOptions];

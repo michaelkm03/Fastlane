@@ -58,7 +58,8 @@
         [self addCloseButtonToViewController:captureContainer];
         [self setViewControllers:@[captureContainer]];
         
-        VAssetCollectionGridViewController *gridViewController = [VAssetCollectionGridViewController assetGridViewControllerWithDependencyManager:dependencyManager];
+        VAssetCollectionGridViewController *gridViewController = [VAssetCollectionGridViewController assetGridViewControllerWithDependencyManager:dependencyManager
+                                                                                                                                        mediaType:PHAssetMediaTypeVideo];
         [captureContainer setContainedViewController:gridViewController];
         [self addCompleitonHandlerToMediaSource:gridViewController];
 
