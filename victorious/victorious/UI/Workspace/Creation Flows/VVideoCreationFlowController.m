@@ -35,6 +35,8 @@
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
+@property (nonatomic, strong) VAssetCollectionListViewController *listViewController;
+@property (nonatomic, strong) VAssetCollectionGridViewController *gridViewController;
 @property (nonatomic, strong) VWorkspaceViewController *workspaceViewController;
 
 @property (nonatomic, strong) VPublishViewController *publishViewContorller;
@@ -61,7 +63,7 @@
         [self addCloseButtonToViewController:captureContainer];
         [self setViewControllers:@[captureContainer]];
         
-        VAssetCollectionGridViewController *gridViewController = [VAssetCollectionGridViewController assetGridViewControllerWithDependencyManager:dependencyManager];
+        _gridViewController = [VAssetCollectionGridViewController assetGridViewControllerWithDependencyManager:dependencyManager];
         [captureContainer setContainedViewController:gridViewController];
         [self addCompleitonHandlerToMediaSource:gridViewController];
     }
@@ -73,7 +75,28 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // We need to be the delegate for the publish animation, and the gesture delegate for the pop to work
     self.delegate = self;
+    self.interactivePopGestureRecognizer.delegate = (id<UIGestureRecognizerDelegate>)self;
+    
+    // Present the collections list when the user selects the folder button
+    __weak typeof(self) welf = self;
+    self.gridViewController.alternateFolderSelectionHandler = ^()
+    {
+        [welf presentAssetFoldersList];
+    };
+    
+    // On authorization is called immediately if we have already determined authorization status
+    __weak VAssetCollectionListViewController *weakListViewController = _listViewController;
+    __weak VAssetCollectionGridViewController *weakGridViewController = _gridViewController;
+    _gridViewController.onAuthorizationHandler = ^void(BOOL authorized)
+    {
+        [weakListViewController fetchDefaultCollectionWithCompletion:^(PHAssetCollection *collection)
+         {
+             weakGridViewController.collectionToDisplay = collection;
+         }];
+    };
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

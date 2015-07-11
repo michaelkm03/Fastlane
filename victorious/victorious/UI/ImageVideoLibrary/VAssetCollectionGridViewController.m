@@ -81,10 +81,12 @@
         [self prepareImageManagerAndRegisterAsObserver];
     }
     
-    UIView *containerView = [[UIView alloc] initWithFrame:CGRectZero];
+    // NavigationItem titleView has a bug if you set a view with size zero
+    UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
     
     self.alternateFolderButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.alternateFolderButton setTitle:@"asdf" forState:UIControlStateNormal];
+    [self.alternateFolderButton setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     [self.alternateFolderButton addTarget:self
                                    action:@selector(selectedFolderPicker:)
                          forControlEvents:UIControlEventTouchUpInside];
@@ -93,6 +95,8 @@
     
     UIImageView *dropdownImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gallery_dropdown_arrow"]];
     dropdownImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [dropdownImageView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+    [dropdownImageView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
     [containerView addSubview:dropdownImageView];
     [containerView v_addPinToTopBottomToSubview:self.alternateFolderButton];
     [containerView v_addPinToTopBottomToSubview:dropdownImageView];
