@@ -218,9 +218,9 @@ def main(argv):
         print 'If no <environment> parameter is provided, the system will use PRODUCTION.'
         print ''
         print 'examples:'
-        print './pre_build.py 24     <-- will use PRODUCTION'
+        print './vams_prebuild.py awesomeness ios     <-- will use PRODUCTION'
         print '  -- OR --'
-        print './pre_build.py 24 qa  <-- will use QA'
+        print './vams_prebuild.py awesomeness ios qa  <-- will use QA'
         print ''
         return 1
 
