@@ -22,7 +22,6 @@
 // Theme Manager
 #import "VThemeManager.h"
 
-#import "VSequence.h"
 #import "VDependencyManager.h"
 
 const NSInteger kSearchTableDesiredMinimumHeight = 100;
