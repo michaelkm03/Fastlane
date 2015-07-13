@@ -9,6 +9,7 @@
 #import "VMarqueeCaptionView.h"
 #import "VStreamItem.h"
 #import "VDependencyManager.h"
+#import "VEditorializationItem.h"
 
 @interface VMarqueeCaptionView ()
 
@@ -29,7 +30,9 @@
     BOOL firstItem = self.marqueeItem == nil;
     _marqueeItem = marqueeItem;
 
-    BOOL hasHeadline = marqueeItem.headline != nil || [marqueeItem.headline isEqualToString:@""];
+    VEditorializationItem *editorialization = marqueeItem.editorialization;
+    
+    BOOL hasHeadline = editorialization.headline.length > 0;
     self.hasHeadline = hasHeadline;
     if ( !hasHeadline && firstItem )
     {
@@ -81,7 +84,7 @@
 
 - (void)updateLabelText
 {
-    NSString *captionText = self.hasHeadline ? self.marqueeItem.headline : self.marqueeItem.name;
+    NSString *captionText = self.hasHeadline ? self.marqueeItem.editorialization.headline : self.marqueeItem.name;
     self.captionLabel.text = captionText;
 }
 

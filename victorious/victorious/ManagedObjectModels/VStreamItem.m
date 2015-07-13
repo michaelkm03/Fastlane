@@ -2,11 +2,12 @@
 //  VStreamItem.m
 //  
 //
-//  Created by Sharif Ahmed on 7/6/15.
+//  Created by Sharif Ahmed on 7/13/15.
 //
 //
 
 #import "VStreamItem.h"
+#import "VEditorializationItem.h"
 #import "VStream.h"
 
 
@@ -16,8 +17,10 @@
 @dynamic previewImagesObject;
 @dynamic remoteId;
 @dynamic streamContentType;
-@dynamic headline;
+@dynamic streamId;
+@dynamic parentStreamId;
 @dynamic marquees;
 @dynamic streams;
+@dynamic editorialization;
 
 @end

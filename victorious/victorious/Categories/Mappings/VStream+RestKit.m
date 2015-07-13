@@ -9,7 +9,8 @@
 #import "VStream+RestKit.h"
 
 #import "VSequence+RestKit.h"
-#import "VStreamItem+RestKit.h"
+
+#import "VEditorializationItem.h"
 
 @implementation VStream (RestKit)
 
@@ -21,7 +22,6 @@
 + (NSDictionary *)propertyMap
 {
     return @{
-             @"entry_label"         :   VSelectorName(headline),
              @"id"                  :   VSelectorName(remoteId),
              @"stream_id"           :   VSelectorName(streamId),
              @"stream_content_type" :   VSelectorName(streamContentType),
@@ -32,39 +32,40 @@
              };
 }
 
++ (RKEntityMapping *)mappingBase
+{
+    NSDictionary *propertyMap = [VStream propertyMap];
+    
+    RKEntityMapping *mapping = [RKEntityMapping
+                                mappingForEntityForName:[VStream entityName]
+                                inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
+    
+    mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
+    
+    [mapping addAttributeMappingsFromDictionary:propertyMap];
+    
+    return mapping;
+}
+
 //This will map stream items from the "stream_items"-keyed array of streams inside each stream in the payload
 + (RKEntityMapping *)entityMapping
 {
-    NSDictionary *propertyMap = [[self class] propertyMap];
-    
-    RKEntityMapping *mapping = [RKEntityMapping
-                                mappingForEntityForName:[self entityName]
-                                inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
-    
-    mapping.identificationAttributes = [VStreamItem mappingIdentificationAttributes];
-    
-    [mapping addAttributeMappingsFromDictionary:propertyMap];
+    RKEntityMapping *mapping = [VStream mappingBase];
     
     RKRelationshipMapping *sequenceMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"stream_items"
                                                                                          toKeyPath:VSelectorName(streamItems)
                                                                                        withMapping:[[self class] streamItemMapping]];
     [mapping addPropertyMapping:sequenceMapping];
-
+    
+    [self addEditorializationConnectionToEntityMapping:mapping];
+    
     return mapping;
 }
 
 //This will map from the top level
 + (RKEntityMapping *)payloadContentMapping
 {
-    NSDictionary *propertyMap = [[self class] propertyMap];
-    
-    RKEntityMapping *mapping = [RKEntityMapping
-                                mappingForEntityForName:[self entityName]
-                                inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
-    
-    mapping.identificationAttributes = [VStreamItem mappingIdentificationAttributes];
-    
-    [mapping addAttributeMappingsFromDictionary:propertyMap];
+    RKEntityMapping *mapping = [VStream mappingBase];
     
     RKRelationshipMapping *marqueeMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"marquee"
                                                                                         toKeyPath:VSelectorName(marqueeItems)
@@ -81,15 +82,7 @@
 
 + (RKEntityMapping *)basePayloadContentMapping
 {
-    NSDictionary *propertyMap = [[self class] propertyMap];
-    
-    RKEntityMapping *mapping = [RKEntityMapping
-                                mappingForEntityForName:[self entityName]
-                                inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
-    
-    mapping.identificationAttributes = [VStreamItem mappingIdentificationAttributes];
-    
-    [mapping addAttributeMappingsFromDictionary:propertyMap];
+    RKEntityMapping *mapping = [VStream mappingBase];
     
     RKRelationshipMapping *contentMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"payload"
                                                                                         toKeyPath:VSelectorName(streamItems)
@@ -107,11 +100,11 @@
      {
          if ( [[representation valueForKey:@"nodes"] isKindOfClass:[NSArray class]] )
          {
-             return [VSequence entityMapping];
+             return [self editorializedSequenceMapping];
          }
          else
          {
-             return [VStream childStreamMapping];
+             return [self childStreamMapping];
          }
      }];
     
@@ -120,11 +113,7 @@
 
 + (RKEntityMapping *)childStreamMapping
 {
-    NSDictionary *propertyMap = [[self class] propertyMap];
-    RKEntityMapping *mapping = [RKEntityMapping mappingForEntityForName:[VStream entityName]
-                                                   inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
-    [mapping addAttributeMappingsFromDictionary:propertyMap];
-    return mapping;
+    return [self mappingBase];
 }
 
 + (RKDynamicMapping *)listByStreamMapping
@@ -135,7 +124,7 @@
                                                               objectMapping:[VStream entityMapping]]];
     
     [contentMapping addMatcher:[RKObjectMappingMatcher matcherWithPredicate:[NSPredicate predicateWithFormat:@"stream_content_type == nil"]
-                                                              objectMapping:[VSequence entityMapping]]];
+                                                              objectMapping:[self editorializedSequenceMapping]]];
     
     return contentMapping;
 }
@@ -204,6 +193,20 @@
                                                          keyPath:@""
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
               ];
+}
+
+#pragma mark - helpers
+
++ (void)addEditorializationConnectionToEntityMapping:(RKEntityMapping *)mapping
+{
+    [mapping addConnectionForRelationship:VSelectorName(editorialization) connectedBy:@{@"parentStreamId" : @"streamId", @"remoteId" : @"streamItemId"}];
+}
+
++ (RKEntityMapping *)editorializedSequenceMapping
+{
+    RKEntityMapping *editorializedMapping = [VSequence entityMapping];
+    [self addEditorializationConnectionToEntityMapping:editorializedMapping];
+    return editorializedMapping;
 }
 
 @end

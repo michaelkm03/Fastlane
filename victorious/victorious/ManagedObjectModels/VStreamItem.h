@@ -2,24 +2,26 @@
 //  VStreamItem.h
 //  
 //
-//  Created by Sharif Ahmed on 7/6/15.
+//  Created by Sharif Ahmed on 7/13/15.
 //
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class VStream;
+@class VEditorializationItem, VStream;
 
 @interface VStreamItem : NSManagedObject
 
-@property (nonatomic, retain) NSString *name;
+@property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) id previewImagesObject;
-@property (nonatomic, retain) NSString *remoteId;
-@property (nonatomic, retain) NSString *streamContentType;
-@property (nonatomic, retain) NSString *headline;
+@property (nonatomic, retain) NSString * remoteId;
+@property (nonatomic, retain) NSString * streamContentType;
+@property (nonatomic, retain) NSString * streamId;
+@property (nonatomic, retain) NSString * parentStreamId;
 @property (nonatomic, retain) NSSet *marquees;
 @property (nonatomic, retain) NSSet *streams;
+@property (nonatomic, retain) VEditorializationItem *editorialization;
 @end
 
 @interface VStreamItem (CoreDataGeneratedAccessors)
