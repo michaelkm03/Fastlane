@@ -108,6 +108,7 @@
     mediaSource.handler = ^void(UIImage *previewImage, NSURL *capturedMediaURL)
     {
         NSLog( @"%@", capturedMediaURL );
+        [self setupPublishScreen];
         [welf pushPublishScreenWithRenderedMediaURL:capturedMediaURL
                                        previewImage:previewImage
                                       fromWorkspace:welf.workspaceViewController];

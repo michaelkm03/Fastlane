@@ -80,27 +80,53 @@ class GIFSearchViewController: UIViewController, VMediaSource {
         self.performSearch()
     }
     
+    func downloadPathForRemotePath( remotePath: String ) -> String {
+        let filename = remotePath.lastPathComponent
+        let paths = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true )
+        if var path = paths.first as? String {
+            //path = path.stringByAppendingPathComponent( "com.getvictorious.gifSearch" )
+            path = path.stringByAppendingPathComponent( filename )
+            return path
+        }
+        fatalError( "Unable to find file path for temporary media download." )
+    }
+    
     func onNext( sender: AnyObject? ) {
         if let indexPath = self.selectedIndexPath {
-            let gif = self.searchDataSource.sections[ indexPath.section ][ indexPath.row ]
-            if let previewImageURL = NSURL(string: gif.thumbnailStillUrl), let videoURL = NSURL(string: gif.mp4Url ) {
+            let selectedGIF = self.searchDataSource.sections[ indexPath.section ][ indexPath.row ]
+            self.loadMedia( selectedGIF ) { (previewImage, mediaUrl, error) in
+                
+                if let previewImage = previewImage, let mediaURL = mediaUrl {
+                    self.handler?( previewImage, mediaURL )
+                }
+                else {
+                    println( "Error: \(error)" )
+                }
+            }
+        }
+    }
+    
+    private func loadMedia( gifSearchResult: GIFSearchResult, completion: (previewImage: UIImage?, mediaUrl: NSURL?, error: NSError?)->()) {
+        
+        let downloadPath = self.downloadPathForRemotePath( gifSearchResult.mp4Url )
+        if let previewImageURL = NSURL(string: gifSearchResult.thumbnailStillUrl),
+            let videoURL = NSURL(string: gifSearchResult.mp4Url ),
+            let videoOutputStream = NSOutputStream(toFileAtPath: downloadPath, append: false ) {
+                
                 let imageOperation = LoadImageOperation(remoteURL: previewImageURL)
-                let videoOperation = StreamToFileOperation(remoteURL: videoURL)
-                imageOperation.addDependency( videoOperation )
-                imageOperation.completionBlock = {
-                    if let image = imageOperation.image, let mediaURL = videoOperation.mediaURL {
-                        self.handler?( image, mediaURL )
-                    }
-                    else if let error = imageOperation.error {
-                        println( "Error loading image: \(error)" )
-                    }
-                    else if let error = videoOperation.error {
-                        println( "Error loading video: \(error)" )
+                let videoOperation = AFURLConnectionOperation(request: NSURLRequest(URL: videoURL))
+                videoOperation.completionBlock = {
+                    dispatch_async(dispatch_get_main_queue()) {
+                        completion(
+                            previewImage: imageOperation.image,
+                            mediaUrl: NSURL(string: downloadPath),
+                            error: nil )
                     }
                 }
-                self.operationQueue.addOperation( videoOperation )
+                videoOperation.outputStream = videoOutputStream
+                videoOperation.addDependency( imageOperation )
                 self.operationQueue.addOperation( imageOperation )
-            }
+                self.operationQueue.addOperation( videoOperation )
         }
     }
     

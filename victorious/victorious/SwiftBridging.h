@@ -29,6 +29,9 @@
 // SDWebImage
 #import <SDWebImage/UIImageView+WebCache.h>
 
+
+#import <AFNetworking/AFNetworking.h>
+
 // Victorious Models
 #import "VAbstractFilter.h"
 #import "VSEquence.h"
