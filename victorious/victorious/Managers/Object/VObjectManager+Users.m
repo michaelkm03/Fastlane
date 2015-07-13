@@ -413,14 +413,17 @@ static NSString * const kVAPIParamContext = @"context";
     };
     NSString *escapedSearchString = [search_string stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
     NSString *userSearchURL = [NSString stringWithFormat:@"/api/userinfo/search/%@/%ld", escapedSearchString, (long)pageLimit];
-    if (context != nil)
+    if ( context != nil )
     {
-        userSearchURL = [NSString stringWithFormat:@"%@/%@", userSearchURL, context];
+        userSearchURL = [userSearchURL stringByAppendingPathComponent:context];
     }
     if (sequenceID != nil)
     {
-        userSearchURL = [NSString stringWithFormat:@"%@/%@", userSearchURL, sequenceID];
+        userSearchURL = [userSearchURL stringByAppendingPathComponent:sequenceID];
     }
+    
+    NSLog(@"user search url %@", userSearchURL);
+    
     return [self GET:userSearchURL
               object:nil
           parameters:nil

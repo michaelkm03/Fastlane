@@ -52,8 +52,8 @@ static NSString * const kSequenceIdKey = @"sequenceId";
 {
     VCommentsContainerViewController *viewController = (VCommentsContainerViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:kCommentsContainerStoryboardID];
     VSequence *sequence = [dependencyManager templateValueOfType:[VSequence class] forKey:kSequenceKey];
-    NSDictionary *dic = @{ kSequenceIdKey : sequence.remoteId };
-    viewController.dependencyManager = [dependencyManager childDependencyManagerWithAddedConfiguration:dic];
+    NSDictionary *configuration = @{ kSequenceIdKey : sequence.remoteId };
+    viewController.dependencyManager = [dependencyManager childDependencyManagerWithAddedConfiguration:configuration];
     viewController.sequence = sequence;
     return viewController;
 }

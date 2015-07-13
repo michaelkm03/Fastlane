@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-@class VDependencyManager, VUsersAndTagsSearchViewController, VSequence;
+@class VDependencyManager, VUsersAndTagsSearchViewController;
 
 extern NSString * const kVUserSearchResultsChangedNotification;
 extern NSString * const kVHashtagsSearchResultsChangedNotification;
@@ -37,6 +37,5 @@ extern NSString * const kVHashtagsSearchResultsChangedNotification;
 @property (nonatomic, weak) IBOutlet UIView *opaqueBackgroundView;
 @property (nonatomic, weak) IBOutlet UIView *searchBarTopHorizontalRule;
 @property (nonatomic, weak) IBOutlet UIButton *closeButton;
-@property (nonatomic, strong) VSequence *sequence;
 
 @end
