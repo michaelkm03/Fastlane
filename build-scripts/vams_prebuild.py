@@ -17,7 +17,6 @@ import hashlib
 import subprocess
 import urllib
 
-
 _LOGIN_ENDPOINT = '/api/login'
 _ASSETS_ENDPOINT = '/api/app/appassets_by_build_name'
 _TEMPLATE_ENDPOINT = '/api/app/template'
@@ -131,43 +130,47 @@ def retrieveAppDetails(app_name):
         'Date':_DEFAULT_HEADER_DATE
     }
     response = requests.get(url, headers=headers)
-
     json = response.json()
-    payload = json['payload']
-    app_title = payload['app_title']
-    app_title = app_title.replace(' ','')
-    assets = payload['assets']
-    platform_assets = assets[_DEFAULT_PLATFORM]
+    error_code = json['error']
 
-    current_cnt = 0
+    if error_code == 0:
+        payload = json['payload']
+        app_title = payload['app_title']
+        app_title = app_title.replace(' ','')
+        assets = payload['assets']
+        platform_assets = assets[_DEFAULT_PLATFORM]
 
-    global _CONFIG_DIRECTORY
+        current_cnt = 0
+        
+        global _CONFIG_DIRECTORY
 
-    if _DEFAULT_PLATFORM == 'ios':
-        _CONFIG_DIRECTORY = 'configurations/'
+        if _DEFAULT_PLATFORM == 'ios':
+            _CONFIG_DIRECTORY = 'configurations/'
 
-    config_directory = '%s%s' % (_CONFIG_DIRECTORY, app_title)
-    if not os.path.exists(config_directory):
-        os.makedirs(config_directory)
+        config_directory = '%s%s' % (_CONFIG_DIRECTORY, app_title)
+        if not os.path.exists(config_directory):
+            os.makedirs(config_directory)
 
-    print '\nDownloading the Most Recent Art Assets for %s...' % app_title
-    for asset in platform_assets:
+        print '\nDownloading the Most Recent Art Assets for %s...' % app_title
+        for asset in platform_assets:
 
-        if not platform_assets[asset] == None:
-            img_url = platform_assets[asset]
-            asset_name = asset.replace('_', '-')
-            new_file = '%s/%s.png' % (config_directory, asset_name)
+            if not platform_assets[asset] == None:
+                img_url = platform_assets[asset]
+                asset_name = asset.replace('_', '-')
+                new_file = '%s/%s.png' % (config_directory, asset_name)
 
-            print '%s (%s)' % (asset_name, platform_assets[asset])
+                print '%s (%s)' % (asset_name, platform_assets[asset])
 
-            urllib.urlretrieve(img_url,new_file)
-            current_cnt = current_cnt+1
+                urllib.urlretrieve(img_url,new_file)
+                current_cnt = current_cnt+1
 
-    print '\n%s images downloaded' % current_cnt
-    print ''
+        print '\n%s images downloaded' % current_cnt
+        print ''
 
-    # Now set the app config data
-    setAppConfig(json)
+        # Now set the app config data
+        setAppConfig(json)
+    else:
+        print 'No updated data for "%s" found in the Victorious backend' % app_name
 
 
 def setAppConfig(json_obj):
@@ -197,6 +200,9 @@ def setAppConfig(json_obj):
     f = open(config_file, 'w')
     f.write(app_config)
     f.close()
+    
+    print 'Configuration and assets applied successfully!'
+    print ''
 
 
 def main(argv):
@@ -224,7 +230,6 @@ def main(argv):
     if platform == 'ios':
         _DEFAULT_PLATFORM = 'ios'
 
-
     if len(argv) == 4:
         server = argv[3]
     else:
@@ -238,6 +243,8 @@ def main(argv):
         _DEFAULT_HOST = _STAGING_HOST
     elif server.lower() == 'production':
         _DEFAULT_HOST = _PRODUCTION_HOST
+    elif server.lower() == 'localhost':
+        _DEFAULT_HOST = 'http://localhost:8887'
     else:
         _DEFAULT_HOST = _PRODUCTION_HOST
         
@@ -245,15 +252,12 @@ def main(argv):
     print 'Using host: %s' % _DEFAULT_HOST
     print ''
 
-    # Authenticate
     if authenticateUser():
         retrieveAppDetails(app_name)
     else:
          print 'There was a problem authenticating with the Victorious backend. Exiting now...'
+         
          return 1
-
-    print 'Configuration and assets applied successfully!'
-    print ''
     
     return 0
 
