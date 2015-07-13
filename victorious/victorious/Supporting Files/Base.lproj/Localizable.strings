@@ -204,6 +204,8 @@
 "CameraRollDenied"      =   "Please grant access to your photos in Settings -> Privacy.";
 "CameraFailed"          =   "Unable to start camera";
 "CameraSwitchFailed"    =   "Unable to switch camera mode";
+"Camera"                =   "Camera";   // Insteady of image library use the camera
+"Search"                =   "Search";   // Insteady of image library use web search
 "StillCaptureFailed"    =   "Unable to take picture";
 "VideoCaptureFailed"    =   "Unable to record video";
 "VideoSaveFailed"       =   "Unable to save video";
@@ -598,6 +600,7 @@
 "VIDEO MODE" = "VIDEO MODE";
 "Write a caption (optional)" = "Write a caption (optional)";
 "Rendering..." = "Rendering...";
+"Exporting..." = "Exporting...";
 "Render failure" = "Render failure";
 "Publishing..." = "Publishing...";
 "Upload failure" = "Upload failure";

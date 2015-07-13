@@ -13,6 +13,7 @@
 #import "VAlternateCaptureOption.h"
 #import "VAssetCollectionGridViewController.h"
 #import "VAssetCollectionListViewController.h"
+#import "VVideoAssetDownloader.h"
 
 // Workspace
 #import "VWorkspaceViewController.h"
@@ -27,6 +28,7 @@
 
 // Views + Helpers
 #import "UIAlertController+VSimpleAlert.h"
+#import <MBProgressHUD/MBProgressHUD.h>
 
 // Dependencies
 #import "VDependencyManager.h"
@@ -39,6 +41,7 @@ static NSString * const kVideoWorkspaceKey = @"videoWorkspace";
 
 @property (nonatomic, strong) VAssetCollectionListViewController *listViewController;
 @property (nonatomic, strong) VAssetCollectionGridViewController *gridViewController;
+@property (nonatomic, strong) VVideoAssetDownloader *downloader;
 @property (nonatomic, strong) VWorkspaceViewController *workspaceViewController;
 
 @property (nonatomic, strong) VPublishViewController *publishViewContorller;
@@ -91,19 +94,28 @@ static NSString * const kVideoWorkspaceKey = @"videoWorkspace";
     };
     self.gridViewController.assetSelectionHandler = ^(PHAsset *selectedAsset)
     {
-#warning download the asset
-#warning  move this to a helper method
-//        if (capturedMediaURL != nil)
-//        {
-//            [welf setupWorkspace];
-//            self.workspaceViewController.mediaURL = capturedMediaURL;
-//            self.workspaceViewController.previewImage = previewImage;
-//            
-//            VVideoToolController *toolController = (VVideoToolController *)welf.workspaceViewController.toolController;
-//            [toolController setDefaultVideoTool:VVideoToolControllerInitialVideoEditStateGIF];
-//            
-//            [self pushViewController:self.workspaceViewController animated:YES];
-//        }
+        MBProgressHUD *progressHud = [MBProgressHUD showHUDAddedTo:welf.view
+                                                          animated:YES];
+        progressHud.mode = MBProgressHUDModeAnnularDeterminate;
+        welf.downloader = [[VVideoAssetDownloader alloc] initWithImageAsset:selectedAsset];
+        [welf.downloader downloadWithProgress:^(double progress, NSString *localizedProgress)
+         {
+             //
+             VLog(@"%f", progress);
+             progressHud.progress = progress;
+             progressHud.labelText = localizedProgress;
+         }
+                               completion:^(NSError *error, NSURL *downloadedFileURL, UIImage *previewImage)
+         {
+             //
+             [progressHud hide:YES];
+             if (downloadedFileURL != nil)
+             {
+                 [welf setupWorkspace];
+                 welf.workspaceViewController.mediaURL = downloadedFileURL;
+                 [welf pushViewController:welf.workspaceViewController animated:YES];
+             }
+         }];
     };
     
     // On authorization is called immediately if we have already determined authorization status

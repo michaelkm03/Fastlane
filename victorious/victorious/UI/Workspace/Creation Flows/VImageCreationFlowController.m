@@ -15,6 +15,7 @@
 #import "VCameraViewController.h"
 #import "VImageSearchViewController.h"
 #import "VAssetCollectionListViewController.h"
+#import "VImageAssetDownlaoder.h"
 
 // Workspace
 #import "VWorkspaceViewController.h"
@@ -31,6 +32,7 @@
 #import "VDependencyManager.h"
 
 @import Photos;
+#import <MBProgressHUD/MBProgressHUD.h>
 
 // Keys
 NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
@@ -43,11 +45,13 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 
 @property (nonatomic, strong) VAssetCollectionListViewController *listViewController;
 @property (nonatomic, strong) VAssetCollectionGridViewController *gridViewController;
+@property (nonatomic, strong) VImageAssetDownlaoder *downloader;
 @property (nonatomic, strong) VWorkspaceViewController *workspaceViewController;
 
 @property (nonatomic, strong) VPublishViewController *publishViewContorller;
 @property (nonatomic, strong) VPublishBlurOverAnimator *publishAnimator;
 
+// These come from the workspace not capture
 @property (nonatomic, strong) NSURL *renderedMediaURL;
 @property (nonatomic, strong) UIImage *previewImage;
 
@@ -82,7 +86,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 
 #pragma mark -  Public Methods
 
-- (void)remixWithPreviewImage:(UIImage *)previewImage
+- (void)remixWithPreviewImage:(UIImage *)previewImage\
                      mediaURL:(NSURL *)mediaURL
 {
     [self setupWorkspace];
@@ -110,7 +114,19 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     };
     self.gridViewController.assetSelectionHandler = ^(PHAsset *selectedAsset)
     {
-#warning Download/grab the asset from the user's photo library
+        MBProgressHUD *hudForView = [MBProgressHUD showHUDAddedTo:welf.view animated:YES];
+        hudForView.mode = MBProgressHUDModeAnnularDeterminate;
+        welf.downloader = [[VImageAssetDownlaoder alloc] initWithImageAsset:selectedAsset];
+        [welf.downloader downloadWithProgress:^(double progress)
+         {
+             hudForView.progress = progress;
+         }
+                                   completion:^(NSError *error, NSURL *downloadedFileURL, UIImage *previewImage)
+         {
+             [hudForView hide:YES];
+             [welf pushWorkspaceWithMediaURL:downloadedFileURL
+                             andPreviewImage:previewImage];
+         }];
     };
     
     // On authorization is called immediately if we have already determined authorization status
@@ -220,26 +236,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     [toolController setDefaultImageTool:VImageToolControllerInitialImageEditStateText];
     [self pushViewController:self.workspaceViewController animated:YES];
 }
-
-//- (void)addCompleitonHandlerToMediaSource:(id<VMediaSource>)mediaSource
-//{
-#warning Move this to a helper method for pushing the workspace
-//    __weak typeof(self) welf = self;
-//    mediaSource.handler = ^void(UIImage *previewImage, NSURL *capturedMediaURL)
-//    {
-//        if (capturedMediaURL != nil)
-//        {
-//            [welf setupWorkspace];
-//            self.workspaceViewController.mediaURL = capturedMediaURL;
-//            self.workspaceViewController.previewImage = previewImage;
-//
-//            VImageToolController *toolController = (VImageToolController *)welf.workspaceViewController.toolController;
-//            [toolController setDefaultImageTool:VImageToolControllerInitialImageEditStateText];
-//            
-//            [self pushViewController:self.workspaceViewController animated:YES];
-//        }
-//    };
-//}
 
 - (void)setupWorkspace
 {

@@ -316,6 +316,7 @@
 		A673A3301B34E602004D4D8C /* newWorkspaceTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = A673A32F1B34E602004D4D8C /* newWorkspaceTemplate.json */; };
 		A682F4FC1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = A682F4FB1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.m */; };
 		A682F4FE1B3C829E009B6DBE /* imageCreationFlow.json in Resources */ = {isa = PBXBuildFile; fileRef = A682F4FD1B3C829E009B6DBE /* imageCreationFlow.json */; };
+		A692AE121B5480E0003A874B /* NSIndexSet+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = A692AE111B5480E0003A874B /* NSIndexSet+Convenience.m */; };
 		A6CC23C71B4B2A0600141DD6 /* VAssetGroupTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CC23C61B4B2A0600141DD6 /* VAssetGroupTableViewCell.m */; };
 		A6CC23CB1B4B57A500141DD6 /* textCreationFlow.json in Resources */ = {isa = PBXBuildFile; fileRef = A6CC23CA1B4B57A500141DD6 /* textCreationFlow.json */; };
 		A6D51BE71B4F33D700703AB0 /* VLibraryAuthorizationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A6D51BE61B4F33D700703AB0 /* VLibraryAuthorizationCell.m */; };
@@ -329,6 +330,8 @@
 		A6DAEB661B4C94B800935EA0 /* videoCreationFlow.json in Resources */ = {isa = PBXBuildFile; fileRef = A6DAEB651B4C94B800935EA0 /* videoCreationFlow.json */; };
 		A6DAEB6E1B4CBDCB00935EA0 /* VCaptureContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6DAEB6D1B4CBDCB00935EA0 /* VCaptureContainerViewController.m */; };
 		A6DAEB701B4CBDDA00935EA0 /* VCaptureContainerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6DAEB6F1B4CBDDA00935EA0 /* VCaptureContainerViewController.storyboard */; };
+		A6E2E76B1B544D79008A1CA9 /* VImageAssetDownlaoder.m in Sources */ = {isa = PBXBuildFile; fileRef = A6E2E76A1B544D79008A1CA9 /* VImageAssetDownlaoder.m */; };
+		A6E2E76E1B545328008A1CA9 /* VVideoAssetDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = A6E2E76D1B545328008A1CA9 /* VVideoAssetDownloader.m */; };
 		A6EC32671B3B488200824022 /* staticCreateSheet.json in Resources */ = {isa = PBXBuildFile; fileRef = A6EC32661B3B488200824022 /* staticCreateSheet.json */; };
 		A6EC32731B3B508B00824022 /* cameraScreen.json in Resources */ = {isa = PBXBuildFile; fileRef = A6EC32721B3B508B00824022 /* cameraScreen.json */; };
 		A6EC32771B3B50AE00824022 /* imageWorkspace.json in Resources */ = {isa = PBXBuildFile; fileRef = A6EC32761B3B50AE00824022 /* imageWorkspace.json */; };
@@ -1643,6 +1646,8 @@
 		A682F4FA1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+VSimpleAlert.h"; sourceTree = "<group>"; };
 		A682F4FB1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertController+VSimpleAlert.m"; sourceTree = "<group>"; };
 		A682F4FD1B3C829E009B6DBE /* imageCreationFlow.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = imageCreationFlow.json; path = ../imageCreationFlow.json; sourceTree = "<group>"; };
+		A692AE101B5480E0003A874B /* NSIndexSet+Convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexSet+Convenience.h"; sourceTree = "<group>"; };
+		A692AE111B5480E0003A874B /* NSIndexSet+Convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexSet+Convenience.m"; sourceTree = "<group>"; };
 		A6CC23C51B4B2A0600141DD6 /* VAssetGroupTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAssetGroupTableViewCell.h; sourceTree = "<group>"; };
 		A6CC23C61B4B2A0600141DD6 /* VAssetGroupTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAssetGroupTableViewCell.m; sourceTree = "<group>"; };
 		A6CC23CA1B4B57A500141DD6 /* textCreationFlow.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = textCreationFlow.json; sourceTree = "<group>"; };
@@ -1664,6 +1669,10 @@
 		A6DAEB6C1B4CBDCB00935EA0 /* VCaptureContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCaptureContainerViewController.h; sourceTree = "<group>"; };
 		A6DAEB6D1B4CBDCB00935EA0 /* VCaptureContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCaptureContainerViewController.m; sourceTree = "<group>"; };
 		A6DAEB6F1B4CBDDA00935EA0 /* VCaptureContainerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VCaptureContainerViewController.storyboard; sourceTree = "<group>"; };
+		A6E2E7691B544D79008A1CA9 /* VImageAssetDownlaoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageAssetDownlaoder.h; sourceTree = "<group>"; };
+		A6E2E76A1B544D79008A1CA9 /* VImageAssetDownlaoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageAssetDownlaoder.m; sourceTree = "<group>"; };
+		A6E2E76C1B545328008A1CA9 /* VVideoAssetDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoAssetDownloader.h; sourceTree = "<group>"; };
+		A6E2E76D1B545328008A1CA9 /* VVideoAssetDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoAssetDownloader.m; sourceTree = "<group>"; };
 		A6EC32661B3B488200824022 /* staticCreateSheet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = staticCreateSheet.json; sourceTree = "<group>"; };
 		A6EC326E1B3B4E9B00824022 /* VCreationTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VCreationTypes.h; sourceTree = "<group>"; };
 		A6EC32721B3B508B00824022 /* cameraScreen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = cameraScreen.json; sourceTree = "<group>"; };
@@ -4432,6 +4441,10 @@
 				A6CC23C61B4B2A0600141DD6 /* VAssetGroupTableViewCell.m */,
 				A6D51BE51B4F33D700703AB0 /* VLibraryAuthorizationCell.h */,
 				A6D51BE61B4F33D700703AB0 /* VLibraryAuthorizationCell.m */,
+				A6E2E7691B544D79008A1CA9 /* VImageAssetDownlaoder.h */,
+				A6E2E76A1B544D79008A1CA9 /* VImageAssetDownlaoder.m */,
+				A6E2E76C1B545328008A1CA9 /* VVideoAssetDownloader.h */,
+				A6E2E76D1B545328008A1CA9 /* VVideoAssetDownloader.m */,
 			);
 			path = ImageVideoLibrary;
 			sourceTree = "<group>";
@@ -5535,6 +5548,8 @@
 				A74B430C1B0BB8AC003C19A0 /* UIResponder+VResponderChain.m */,
 				A682F4FA1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.h */,
 				A682F4FB1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.m */,
+				A692AE101B5480E0003A874B /* NSIndexSet+Convenience.h */,
+				A692AE111B5480E0003A874B /* NSIndexSet+Convenience.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -7284,6 +7299,7 @@
 				A601FB491B4354D10050536C /* VImageCreationFlowController.m in Sources */,
 				A7EB574D1AF8402A006AA1CF /* VURLDetector.m in Sources */,
 				A75FAF2119E8AC1E00EB87C1 /* VDiscoverViewController.m in Sources */,
+				A6E2E76B1B544D79008A1CA9 /* VImageAssetDownlaoder.m in Sources */,
 				0314D48919B46B5E00FA363C /* VContentInputAccessoryView.m in Sources */,
 				A7A2E0071A38E44B00F8C705 /* VPurchaseViewController.m in Sources */,
 				D85B707C1B0EAF3F0038CA5B /* VTabInfo.m in Sources */,
@@ -7422,6 +7438,7 @@
 				A7D707A01A7C144C00D9993F /* VEndCardViewController.m in Sources */,
 				0314D07219B4670A00FA363C /* UIImage+Resize.m in Sources */,
 				A7AEF9D11A83F2F500A3D3A0 /* VVideoView.m in Sources */,
+				A692AE121B5480E0003A874B /* NSIndexSet+Convenience.m in Sources */,
 				F0E0F1B31AE8BFC700143CBF /* VInsetMarqueeStreamItemCell.m in Sources */,
 				D8F8B1EC1AC4C47B00AA2DB7 /* VTilePatternBackgroundView.m in Sources */,
 				D8DF71DD1AFBE12B002EA7A5 /* VStreamHeaderTimeSince.m in Sources */,
@@ -7955,6 +7972,7 @@
 				039ED29C19C908F400305987 /* VCVideoPlayerViewController.m in Sources */,
 				BE42842C19DDD0D500AEDBA6 /* VDefaultProfileImageView.m in Sources */,
 				D8DF71E41AFC3681002EA7A5 /* VTitleOverlayStreamCellFactory.m in Sources */,
+				A6E2E76E1B545328008A1CA9 /* VVideoAssetDownloader.m in Sources */,
 				0314D4AC19B46B5E00FA363C /* VMessageTableDataSource.m in Sources */,
 				A7F1CDA51A673DE9003CB936 /* VScrollPaginator.m in Sources */,
 				D85B70831B0EAF3F0038CA5B /* VProfileCreateViewController.m in Sources */,

@@ -63,8 +63,6 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
         VAssetCollectionGridViewController *gridViewController = [VAssetCollectionGridViewController assetGridViewControllerWithDependencyManager:dependencyManager
                                                                                                                                         mediaType:PHAssetMediaTypeVideo];
         [captureContainer setContainedViewController:gridViewController];
-        [self addCompleitonHandlerToMediaSource:gridViewController];
-
     }
     return self;
 }

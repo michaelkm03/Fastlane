@@ -8,8 +8,12 @@
 
 #import "VBaseCollectionViewCell.h"
 
+@class PHAsset;
+
 @interface VAssetCollectionViewCell : VBaseCollectionViewCell
 
-@property (strong, nonatomic) IBOutlet UIImageView *imageView;
+@property (nonatomic, strong) PHAsset *asset;
+
+- (void)refetchImage;
 
 @end

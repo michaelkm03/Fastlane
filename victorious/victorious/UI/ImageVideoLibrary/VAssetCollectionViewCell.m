@@ -10,6 +10,7 @@
 
 @interface VAssetCollectionViewCell ()
 
+@property (strong, nonatomic) IBOutlet UIImageView *imageView;
 @property (strong, nonatomic) IBOutlet UIView *selectionView;
 
 @end
