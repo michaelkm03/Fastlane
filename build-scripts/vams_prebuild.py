@@ -38,7 +38,7 @@ _QA_HOST = 'http://qa.getvictorious.com'
 _DEV_HOST = 'http://dev.getvictorious.com'
 
 _AUTH_TOKEN = ''
-_CONFIG_DIRECTORY = '../app/configuration/'
+_CONFIG_DIRECTORY = 'app/configuration/'
 
 
 def authenticateUser():
@@ -144,7 +144,7 @@ def retrieveAppDetails(app_name):
     global _CONFIG_DIRECTORY
 
     if _DEFAULT_PLATFORM == 'ios':
-        _CONFIG_DIRECTORY = '../configurations/'
+        _CONFIG_DIRECTORY = 'configurations/'
 
     config_directory = '%s%s' % (_CONFIG_DIRECTORY, app_title)
     if not os.path.exists(config_directory):
