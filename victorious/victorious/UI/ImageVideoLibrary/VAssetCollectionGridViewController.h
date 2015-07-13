@@ -7,12 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VMediaSource.h"
 
 @import Photos;
 @class VDependencyManager;
 
-@interface VAssetCollectionGridViewController : UICollectionViewController <VMediaSource>
+@interface VAssetCollectionGridViewController : UICollectionViewController
 
 /**
  *  Factory method for this ViewController. Use this to grab a new instance of assetGridViewController;
@@ -26,10 +25,15 @@
 @property (nonatomic, strong) PHAssetCollection *collectionToDisplay;
 
 /**
- *  Provide the gridViewController a selection handelr to be notified when the user selects an item in the grid. 
+ *  Provide the gridViewController a selection handler to be notified when the user requests the other folders in their library.
  *  Called on the main thread.
  */
 @property (nonatomic, copy) void (^alternateFolderSelectionHandler)();
+
+/**
+ *  Provide the gridViewController a selection handler to be notified when the user selects an item in the grid.
+ */
+@property (nonatomic, copy) void (^assetSelectionHandler)(PHAsset *selectedAsset);
 
 /**
  *  Assign a handler to be notified when the user has granted or denied permission to the user's library. 

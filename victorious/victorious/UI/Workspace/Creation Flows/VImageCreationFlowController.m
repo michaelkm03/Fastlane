@@ -29,7 +29,6 @@
 
 // Dependencies
 #import "VDependencyManager.h"
-#import "VMediaSource.h"
 
 @import Photos;
 
@@ -77,8 +76,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
                                                                                                      mediaType:PHAssetMediaTypeImage];
         _gridViewController.collectionToDisplay = [self defaultCollection];
         [captureContainer setContainedViewController:_gridViewController];
-        [self addCompleitonHandlerToMediaSource:_gridViewController];
-
         [self setupPublishScreen];
     }
     return self;
@@ -111,6 +108,10 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     self.gridViewController.alternateFolderSelectionHandler = ^()
     {
         [welf presentAssetFoldersList];
+    };
+    self.gridViewController.assetSelectionHandler = ^(PHAsset *selectedAsset)
+    {
+#warning Download/grab the asset from the user's photo library
     };
     
     // On authorization is called immediately if we have already determined authorization status
@@ -221,24 +222,25 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     [self pushViewController:self.workspaceViewController animated:YES];
 }
 
-- (void)addCompleitonHandlerToMediaSource:(id<VMediaSource>)mediaSource
-{
-    __weak typeof(self) welf = self;
-    mediaSource.handler = ^void(UIImage *previewImage, NSURL *capturedMediaURL)
-    {
-        if (capturedMediaURL != nil)
-        {
-            [welf setupWorkspace];
-            self.workspaceViewController.mediaURL = capturedMediaURL;
-            self.workspaceViewController.previewImage = previewImage;
-
-            VImageToolController *toolController = (VImageToolController *)welf.workspaceViewController.toolController;
-            [toolController setDefaultImageTool:VImageToolControllerInitialImageEditStateText];
-            
-            [self pushViewController:self.workspaceViewController animated:YES];
-        }
-    };
-}
+//- (void)addCompleitonHandlerToMediaSource:(id<VMediaSource>)mediaSource
+//{
+#warning Move this to a helper method for pushing the workspace
+//    __weak typeof(self) welf = self;
+//    mediaSource.handler = ^void(UIImage *previewImage, NSURL *capturedMediaURL)
+//    {
+//        if (capturedMediaURL != nil)
+//        {
+//            [welf setupWorkspace];
+//            self.workspaceViewController.mediaURL = capturedMediaURL;
+//            self.workspaceViewController.previewImage = previewImage;
+//
+//            VImageToolController *toolController = (VImageToolController *)welf.workspaceViewController.toolController;
+//            [toolController setDefaultImageTool:VImageToolControllerInitialImageEditStateText];
+//            
+//            [self pushViewController:self.workspaceViewController animated:YES];
+//        }
+//    };
+//}
 
 - (void)setupWorkspace
 {
