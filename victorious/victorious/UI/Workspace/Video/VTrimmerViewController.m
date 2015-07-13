@@ -263,7 +263,7 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
     
     [self.currentPlayBackOverlayView updateConstraintsIfNeeded];
 
-    CGFloat width = MIN(kMaximumTrimHeight, CGRectGetHeight(self.currentPlayBackOverlayView.frame));
+    CGFloat width = MIN(VTrimControlMaximumHeight, CGRectGetHeight(self.currentPlayBackOverlayView.frame));
     size = CGSizeMake(width, width);
     return size;
 }

@@ -43,7 +43,7 @@ const static CGFloat kTimemarkOffsetY = -49.0f;
     index =  (int) (self.collectionView.contentOffset.x/kSpacingOfTimeLables);
     for (int i = 0; i < kNumberOfTimeLabels; i++)
     {
-        UICollectionViewLayoutAttributes *attribute = [self layoutAttributesForSupplementaryViewOfKind:TimemarkViewKind atIndexPath:[NSIndexPath indexPathForItem:i+index inSection:0]];
+        UICollectionViewLayoutAttributes *attribute = [self layoutAttributesForSupplementaryViewOfKind:TimemarkViewKind atIndexPath:[NSIndexPath indexPathForItem:i + index inSection:0]];
         [answer addObject:attribute];
     }
   

@@ -12,7 +12,7 @@
 #import <CoreMedia/CMTimeRange.h>
 
 // maximum height of the trim control
-extern CGFloat const kMaximumTrimHeight;
+extern CGFloat const VTrimControlMaximumHeight;
 
 // Sends UIControlEventValueChanged on new selection
 
