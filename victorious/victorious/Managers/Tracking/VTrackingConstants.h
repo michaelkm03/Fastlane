@@ -256,7 +256,7 @@ extern NSString * const VTrackingKeyStreamId; //< A string containing the stream
 extern NSString * const VTrackingKeyTimeStamp; //< A string containing a timestamp with the following format: yyyy-MM-dd HH:mm:ss; Backend mapping %%TIME_STAMP%%
 extern NSString * const VTrackingKeySequenceId; //< Backend mapping: %%SEQUENCE_ID%%
 extern NSString * const VTrackingKeyVoteCount; //< The number of votes (emotive ballistic/experience enhancer throws) that occurred; Backend mapping: %%COUNT%%
-extern NSString * const VTrackingKeyUrls; //< An array of 1 or more URLs with replaceable macros receied from the server
+extern NSString * const VTrackingKeyUrls; //< An array of 1 or more URLs with replaceable macros received from the server
 extern NSString * const VTrackingKeyShareDestination; //< "An identifier for a share action, usually provided by the system (Facebook, Twitter, Email, SMS, etc.); Backend mapping: %%SHARE_DEST%%",
 extern NSString * const VTrackingKeySharedToFacebook; //< An identifier for a share to Facebook not through the action sheet. Backend mapping: %%FACEBOOK_SHARE%%
 extern NSString * const VTrackingKeySharedToTwitter; //< An identifier for a share to Twitter not through the action sheet. Backend mapping: %%TWITTER_SHARE%%

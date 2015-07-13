@@ -266,12 +266,12 @@ static NSString * const kMacroPermission             = @"%%PERMISSION_CHANGE%%";
     NSString *key = self.keyForEventMapping[ eventName ];
     NSArray *urls = [self.dependencyManager trackingURLsForKey:key];
     
-#if APPLICATION_TEMPLATE_MAPPING_LOGGING_ENABLED
+//#if APPLICATION_TEMPLATE_MAPPING_LOGGING_ENABLED
     if ( urls.count > 0 )
     {
         NSLog( @"Application Tracking :: Adding Template URLS to event: %@\n%@.", eventName, urls );
     }
-#endif
+//#endif
     
     return urls;
 }

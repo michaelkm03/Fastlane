@@ -30,7 +30,6 @@
 #import "VPermissionMicrophone.h"
 #import "VPermissionProfilePicture.h"
 #import "VWorkspaceFlowController.h"
-#import "VPermissionsTrackingHelper.h"
 
 static const NSTimeInterval kAnimationDuration = 0.4;
 static const NSTimeInterval kErrorMessageDisplayDuration = 3.0;
@@ -97,8 +96,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 @property (nonatomic, strong) VCameraCoachMarkAnimator *coachMarkAnimator;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-
-@property (nonatomic, strong) VPermissionsTrackingHelper *permissionsTrackingHelper;
 
 // We need to track of this as we don't want to pre-prompt for
 // a permission more than once per session
@@ -168,7 +165,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     self.initialCaptureMode = self.videoQuality;
     self.state = VCameraViewControllerStateDefault;
     self.captureAnimationQueue = dispatch_queue_create("capture animation queue, waits for animation to transition to capture state", DISPATCH_QUEUE_SERIAL);
-    self.permissionsTrackingHelper = [[VPermissionsTrackingHelper alloc] init];
 }
 
 - (void)dealloc

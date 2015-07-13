@@ -107,6 +107,4 @@ typedef void (^VPermissionRequestCompletionHandler)(BOOL granted, VPermissionSta
  */
 - (void)trackingPermission:(NSString *)trackingStatus;
 
-+ (NSString *)stringFromPermissionState:(VPermissionState)permissionState;
-
 @end
