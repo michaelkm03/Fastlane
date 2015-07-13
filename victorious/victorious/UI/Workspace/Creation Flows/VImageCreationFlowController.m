@@ -33,7 +33,6 @@
 @import Photos;
 
 // Keys
-NSString * const VCreationFLowCaptureScreenKey = @"captureScreen";
 NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 
 @interface VImageCreationFlowController () <UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate>

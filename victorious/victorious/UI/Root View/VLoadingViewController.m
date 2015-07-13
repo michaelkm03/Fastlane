@@ -222,7 +222,6 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
         [templateDecorator setComponentWithFilename:@"videoWorkspace" forKeyPath:@"scaffold/videoWorkspace"];
         [templateDecorator setComponentWithFilename:@"pollCreationFlow" forKeyPath:@"scaffold/pollCreateFlow"];
         [templateDecorator setComponentWithFilename:@"publishScreen" forKeyPath:@"scaffold/publishScreen"];
-        [templateDecorator setComponentWithFilename:@"imageVideoTemplateScreen" forKeyPath:@"scaffold/imageVideoLibrary"];
         [templateDecorator setComponentWithFilename:@"imageCreationFlow" forKeyPath:@"scaffold/imageCreateFlow"];
         [templateDecorator setComponentWithFilename:@"textCreationFlow" forKeyPath:@"scaffold/textCreateFlow"];
         [templateDecorator setComponentWithFilename:@"gifCreationFlow" forKeyPath:@"scaffold/gifCreateFlow"];

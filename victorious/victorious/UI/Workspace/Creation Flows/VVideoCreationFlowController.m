@@ -31,6 +31,8 @@
 // Dependencies
 #import "VDependencyManager.h"
 
+static NSString * const kVideoWorkspaceKey = @"videoWorkspace";
+
 @interface VVideoCreationFlowController () <UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -191,7 +193,7 @@
 
 - (void)setupWorkspace
 {
-    _workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];
+    _workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:kVideoWorkspaceKey];
     _workspaceViewController.adjustsCanvasViewFrameOnKeyboardAppearance = YES;
     _workspaceViewController.continueText = [self localizedEditingFinishedText];
     _workspaceViewController.continueButtonEnabled = YES;

@@ -28,6 +28,8 @@
 #import "VDependencyManager.h"
 #import "VMediaSource.h"
 
+static NSString * const kGifWorkspaceKey = @"gifWorkspace";
+
 @interface VGIFCreationFlowController () <UINavigationControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -144,7 +146,7 @@
 
 - (void)setupWorkspace
 {
-    _workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];
+    _workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:kGifWorkspaceKey];
     _workspaceViewController.adjustsCanvasViewFrameOnKeyboardAppearance = YES;
     _workspaceViewController.continueText = [self localizedEditingFinishedText];
     _workspaceViewController.continueButtonEnabled = YES;

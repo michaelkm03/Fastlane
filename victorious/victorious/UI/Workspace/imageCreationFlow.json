@@ -21,9 +21,6 @@
     "cameraScreen":{
         "referenceID":"testingCameraScreen"
     },
-    "captureScreen":{
-        "referenceID":"testingImageVideoLibrary"
-    },
     "imageWorkspace":{
         "referenceID":"testingImageWorkspace"
     },
