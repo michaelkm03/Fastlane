@@ -35,6 +35,7 @@ _PRODUCTION_HOST = 'http://api.getvictorious.com'
 _STAGING_HOST = 'http://staging.getvictorious.com'
 _QA_HOST = 'http://qa.getvictorious.com'
 _DEV_HOST = 'http://dev.getvictorious.com'
+_LOCAL_HOST = 'http://localhost:8887'
 
 _AUTH_TOKEN = ''
 _CONFIG_DIRECTORY = 'app/configuration/'
@@ -194,7 +195,8 @@ def setAppConfig(json_obj):
 
     print 'Applying Most Recent App Configuration Data to %s' % app_title
     print ''
-    print app_config
+    # Uncomment out the following line to display the retrieved config data
+    # print app_config
 
     # Write config file to disk
     f = open(config_file, 'w')
@@ -244,7 +246,7 @@ def main(argv):
     elif server.lower() == 'production':
         _DEFAULT_HOST = _PRODUCTION_HOST
     elif server.lower() == 'localhost':
-        _DEFAULT_HOST = 'http://localhost:8887'
+        _DEFAULT_HOST = _LOCAL_HOST
     else:
         _DEFAULT_HOST = _PRODUCTION_HOST
         
