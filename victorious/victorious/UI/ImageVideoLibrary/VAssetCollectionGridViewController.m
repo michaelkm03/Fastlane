@@ -17,6 +17,7 @@
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "VCompatibility.h"
 #import "UIView+AutoLayout.h"
+#import "NSIndexSet+Convenience.h"
 
 // Image Resizing
 #import "UIImage+Resize.h"
@@ -356,11 +357,59 @@
 
 - (void)photoLibraryDidChange:(PHChange *)changeInstance
 {
-#warning Deal with new assets in our corrent asset collection
+    // Call might come on any background queue. Re-dispatch to the main queue to handle it.
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        // check if there are changes to the assets (insertions, deletions, updates)
+        PHFetchResultChangeDetails *collectionChanges = [changeInstance changeDetailsForFetchResult:self.assetsToDisplay];
+        if (collectionChanges)
+        {
+            // get the new fetch result
+            self.assetsToDisplay = [collectionChanges fetchResultAfterChanges];
+            
+            UICollectionView *collectionView = self.collectionView;
+            
+            if (![collectionChanges hasIncrementalChanges] || [collectionChanges hasMoves])
+            {
+                // we need to reload all if the incremental diffs are not available
+                [collectionView reloadData];
+                
+            }
+            else
+            {
+                // if we have incremental diffs, tell the collection view to animate insertions and deletions
+                [collectionView performBatchUpdates:^
+                {
+                    NSIndexSet *removedIndexes = [collectionChanges removedIndexes];
+                    if ([removedIndexes count])
+                    {
+                        [collectionView deleteItemsAtIndexPaths:[removedIndexes indexPathsFromIndexesWithSecion:0]];
+                    }
+                    NSIndexSet *insertedIndexes = [collectionChanges insertedIndexes];
+                    if ([insertedIndexes count])
+                    {
+                        [collectionView insertItemsAtIndexPaths:[insertedIndexes indexPathsFromIndexesWithSecion:0]];
+                    }
+                    NSIndexSet *changedIndexes = [collectionChanges changedIndexes];
+                    if ([changedIndexes count])
+                    {
+                        [collectionView reloadItemsAtIndexPaths:[changedIndexes indexPathsFromIndexesWithSecion:0]];
+                    }
+                } completion:NULL];
+            }
+            
+            [self resetCachedAssets];
+        }
+    });
 }
 
 #pragma mark - Private Methods
 
+- (void)resetCachedAssets
+{
+    [self.imageManager stopCachingImagesForAllAssets];
+    self.previousPrefetchRect = CGRectZero;
+}
 
 - (PHAsset *)assetForIndexPath:(NSIndexPath *)indexPath
 {
@@ -372,113 +421,5 @@
     self.imageManager = [[PHCachingImageManager alloc] init];
     [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
 }
-
-#warning Move this block to operations helper methods
-
-//- (void)downloadAsset:(PHAsset *)asset
-//{
-//    MBProgressHUD *progressHud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-//    progressHud.mode = MBProgressHUDModeAnnularDeterminate;
-//    progressHud.dimBackground = YES;
-//    [progressHud show:YES];
-//    
-//    PHImageRequestOptions *fullSizeRequestOptions = [[PHImageRequestOptions alloc] init];
-//    fullSizeRequestOptions.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
-//    fullSizeRequestOptions.version = PHImageRequestOptionsVersionCurrent;
-//    fullSizeRequestOptions.networkAccessAllowed = YES;
-//    fullSizeRequestOptions.progressHandler = ^void(double progress, NSError *error, BOOL *stop, NSDictionary *info)
-//    {
-//        progressHud.progress = progress;
-//    };
-//    
-//    __weak typeof(self) welf = self;
-//    switch (asset.mediaType)
-//    {
-//        case PHAssetMediaTypeImage:
-//        {
-//            [[PHImageManager defaultManager] requestImageDataForAsset:asset
-//                                                              options:fullSizeRequestOptions
-//                                                        resultHandler:^(NSData *imageData, NSString *dataUTI, UIImageOrientation orientation, NSDictionary *info)
-//             {
-//                 dispatch_async(dispatch_get_main_queue(), ^
-//                                {
-//                                    [welf callCompletionWithAsset:asset
-//                                                        imageData:imageData
-//                                                      orientation:orientation
-//                                                             info:info];
-//                                });
-//             }];
-//            break;
-//        }
-//        case PHAssetMediaTypeVideo:
-//        {
-//            [[PHImageManager defaultManager] requestExportSessionForVideo:asset
-//                                                                  options:nil
-//                                                             exportPreset:AVAssetExportPreset1280x720
-//                                                            resultHandler:^(AVAssetExportSession *exportSession, NSDictionary *info)
-//             {
-//                 // Save video
-//             }];
-//            break;
-//        }
-//        default:
-//        {
-//            NSAssert(false, @"Unsopported photos media type.");
-//            break;
-//        }
-//    }
-//}
-
-//- (void)callCompletionWithAsset:(PHAsset *)asset
-//                      imageData:(NSData *)imageData
-//                    orientation:(UIImageOrientation)orientation
-//                           info:(NSDictionary *)info
-//{
-//    __weak typeof(self) welf = self;
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
-//    {
-//        UIImage *imageFromData = [UIImage imageWithData:imageData];
-//        UIImage *imageWithProperOrientation = [[UIImage imageWithCGImage:imageFromData.CGImage scale:1.0f orientation:orientation] fixOrientation];
-//        NSURL *urlForAsset = [welf temporaryURLForAsset:asset];
-//        [welf saveImage:imageWithProperOrientation
-//                  toURL:urlForAsset];
-//        dispatch_async(dispatch_get_main_queue(), ^
-//        {
-//            MBProgressHUD *hudForView = [MBProgressHUD HUDForView:self.navigationController.view];
-//            [hudForView hide:YES];
-//            
-//            __strong typeof (welf) strongSelf = welf;
-//            strongSelf.selectedFullSizeImage = imageWithProperOrientation;
-//            strongSelf.imageFileURL = urlForAsset;
-//
-//            if (strongSelf.handler != nil)
-//            {
-//                strongSelf.handler(strongSelf.selectedFullSizeImage, strongSelf.imageFileURL);
-//            }
-//        });
-//    });
-//}
-
-//- (void)saveImage:(UIImage *)image
-//            toURL:(NSURL *)fileURL
-//{
-//    NSData *imageData = UIImageJPEGRepresentation(image, 1.0f);
-//    NSError *error = nil;
-//    [imageData writeToURL:fileURL options:NSDataWritingAtomic error:&error];
-//}
-
-//- (NSURL *)temporaryURLForAsset:(PHAsset *)asset
-//{
-//    NSURL *baseURL = [self cacheDirectoryURL];
-//    
-//    NSUUID *uuid = [NSUUID UUID];
-//    
-//    return [baseURL URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpeg", uuid.UUIDString]];
-//}
-//
-//- (NSURL *)cacheDirectoryURL
-//{
-//    return [[[NSFileManager defaultManager] URLsForDirectory:NSCachesDirectory inDomains:NSUserDomainMask] firstObject];
-//}
 
 @end
