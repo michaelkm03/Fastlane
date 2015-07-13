@@ -335,7 +335,6 @@
 		A6EC32791B3B50B700824022 /* videoWorkspace.json in Resources */ = {isa = PBXBuildFile; fileRef = A6EC32781B3B50B700824022 /* videoWorkspace.json */; };
 		A6EC327B1B3B50C400824022 /* publishScreen.json in Resources */ = {isa = PBXBuildFile; fileRef = A6EC327A1B3B50C400824022 /* publishScreen.json */; };
 		A6EC327D1B3B50E300824022 /* pollWorkspace.json in Resources */ = {isa = PBXBuildFile; fileRef = A6EC327C1B3B50E200824022 /* pollWorkspace.json */; };
-		A6EC32951B3B5A6600824022 /* imageVideoTemplateScreen.json in Resources */ = {isa = PBXBuildFile; fileRef = A6EC32941B3B5A6600824022 /* imageVideoTemplateScreen.json */; };
 		A70417631A365EE80042CABD /* VPurchaseRecordTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A70417621A365EE80042CABD /* VPurchaseRecordTests.m */; };
 		A70564BC19E7817C004A8387 /* VObjectManager+Discover.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564BB19E7817C004A8387 /* VObjectManager+Discover.m */; };
 		A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A70564C119E781EE004A8387 /* VNoContentTableViewCell.m */; };
@@ -1672,7 +1671,6 @@
 		A6EC32781B3B50B700824022 /* videoWorkspace.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = videoWorkspace.json; sourceTree = "<group>"; };
 		A6EC327A1B3B50C400824022 /* publishScreen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = publishScreen.json; sourceTree = "<group>"; };
 		A6EC327C1B3B50E200824022 /* pollWorkspace.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = pollWorkspace.json; sourceTree = "<group>"; };
-		A6EC32941B3B5A6600824022 /* imageVideoTemplateScreen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = imageVideoTemplateScreen.json; sourceTree = "<group>"; };
 		A70417621A365EE80042CABD /* VPurchaseRecordTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseRecordTests.m; sourceTree = "<group>"; };
 		A70564BA19E7817C004A8387 /* VObjectManager+Discover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+Discover.h"; sourceTree = "<group>"; };
 		A70564BB19E7817C004A8387 /* VObjectManager+Discover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+Discover.m"; sourceTree = "<group>"; };
@@ -6196,7 +6194,6 @@
 				D87351851A3120DB006D97B2 /* Canvas */,
 				A6DAEB6B1B4CBB3800935EA0 /* CaptureContainer */,
 				A601FB461B4354750050536C /* Creation Flows */,
-				A6EC32941B3B5A6600824022 /* imageVideoTemplateScreen.json */,
 				A6EC32761B3B50AE00824022 /* imageWorkspace.json */,
 				A673A32F1B34E602004D4D8C /* newWorkspaceTemplate.json */,
 				669EBBDE1A30234A00DE317D /* Pickers */,
@@ -6926,7 +6923,6 @@
 				036F388C1A0C4DEA0014DF66 /* Raleway-SemiBold.ttf in Resources */,
 				036F38851A0C4DEA0014DF66 /* PlayfairDisplay-Regular.ttf in Resources */,
 				D85B706E1B0EAF3F0038CA5B /* login.strings in Resources */,
-				A6EC32951B3B5A6600824022 /* imageVideoTemplateScreen.json in Resources */,
 				036F38971A0C4DEA0014DF66 /* Volkhov-Bold.ttf in Resources */,
 				DB2A494319DF44CF00CB687B /* settings.storyboard in Resources */,
 				036F38691A0C4DEA0014DF66 /* DeliusUnicase-Bold.ttf in Resources */,
