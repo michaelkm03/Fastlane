@@ -11,6 +11,8 @@
 #import "VHasManagedDependencies.h"
 #import "VTextListener.h"
 
+extern NSString * const kDefaultTextKey;
+
 @class VEditableTextPostViewController;
 
 /**

@@ -205,11 +205,6 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     return [[self.registrationScreens lastObject] isEqual:viewController];
 }
 
-- (BOOL)shouldShowForcedCreation
-{
-    return [[self.dependencyManager numberForKey:@"forcedContentCreation"] boolValue];
-}
-
 - (void)cancelLoginAndRegistration
 {
     if (self.actionsDisabled)
@@ -506,17 +501,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     UIViewController *nextRegisterViewController = [self nextScreenAfter:self.topViewController inArray:self.registrationScreens];
     if (nextRegisterViewController == self.topViewController)
     {
-        if ([self shouldShowForcedCreation])
-        {
-            UIStoryboard *sb = [UIStoryboard storyboardWithName:@"VForcedWorkspaceContainerViewController" bundle:[NSBundle mainBundle]];
-            VForcedWorkspaceContainerViewController *forcedCreationScreen = [sb instantiateViewControllerWithIdentifier:@"VForcedWorkspaceContainerViewController"];
-            [forcedCreationScreen setDependencyManager:self.dependencyManager];
-            [self pushViewController:forcedCreationScreen animated:YES];
-        }
-        else
-        {
-            [self onAuthenticationFinishedWithSuccess:YES];
-        }
+        [self onAuthenticationFinishedWithSuccess:YES];
     }
     else
     {

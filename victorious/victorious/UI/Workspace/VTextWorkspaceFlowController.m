@@ -34,11 +34,23 @@
 
 @implementation VTextWorkspaceFlowController
 
-+ (VTextWorkspaceFlowController *)textWorkspaceFlowControllerWithDependencyManager:(VDependencyManager *)dependencyManager
++ (VTextWorkspaceFlowController *)textWorkspaceFlowControllerWithDependencyManager:(VDependencyManager *)dependencyManager addedDependencies:(NSDictionary *)addedDependencies
 {
     NSAssert(dependencyManager != nil, @"Workspace flow controller needs a dependency manager");
     VDependencyManager *dependencyManagerToUse = dependencyManager;
+    
+    // Add dependencies if necessary
+    if (addedDependencies != nil)
+    {
+        return [dependencyManagerToUse templateValueOfType:[VTextWorkspaceFlowController class] forKey:VDependencyManagerTextWorkspaceFlowKey withAddedDependencies:addedDependencies];
+    }
+    
     return [dependencyManagerToUse templateValueOfType:[VTextWorkspaceFlowController class] forKey:VDependencyManagerTextWorkspaceFlowKey];
+}
+
++ (VTextWorkspaceFlowController *)textWorkspaceFlowControllerWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    return [VTextWorkspaceFlowController textWorkspaceFlowControllerWithDependencyManager:dependencyManager addedDependencies:nil];
 }
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager

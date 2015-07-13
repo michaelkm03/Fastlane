@@ -18,7 +18,7 @@
 #import "UIView+AutoLayout.h"
 #import "CCHLinkGestureRecognizer.h"
 
-static NSString * const kDefaultTextKey = @"defaultText";
+NSString * const kDefaultTextKey = @"defaultText";
 static NSString * const kCharacterLimit = @"characterLimit";
 static const CGFloat kAccessoryViewHeight = 44.0f;
 

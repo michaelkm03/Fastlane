@@ -221,7 +221,13 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         
         NSMutableDictionary *dict = [[templateDecorator templateValueForKeyPath:keyPath] mutableCopy];
         
-        dict[@"registrationScreens"] = @[[dict[@"registrationScreens"] lastObject]];
+        NSDictionary *textPostScreen = @{@"name" : @"forcedContentCreation.screen",
+                                         @"color.text" : @{ @"red" : @255, @"blue" : @255, @"green" : @255, @"alpha" : @255 },
+                                         @"prompt" : @"What is your favorite NigaHiga or HigaTV Video?",
+                                         @"placeholderText": @"Whooooooooo!"
+                                         };
+        
+        dict[@"registrationScreens"] = @[[dict[@"registrationScreens"] lastObject], textPostScreen];
         dict[@"forcedContentCreation"] = @YES;
         
         [templateDecorator setTemplateValue:dict forKeyPath:keyPath];

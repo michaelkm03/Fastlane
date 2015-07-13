@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "VHasManagedDependencies.h"
+#import "VLoginFlowControllerDelegate.h"
 
-@interface VForcedWorkspaceContainerViewController : UIViewController <VHasManagedDependencies>
+@interface VForcedWorkspaceContainerViewController : UIViewController <VHasManagedDependencies, VLoginFlowScreen>
 
 @end
