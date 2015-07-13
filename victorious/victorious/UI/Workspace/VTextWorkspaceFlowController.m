@@ -9,7 +9,6 @@
 #import "VTextWorkspaceFlowController.h"
 #import "VDependencyManager+VWorkspace.h"
 #import "VWorkspaceViewController.h"
-#import "VTextToolController.h"
 #import "VRootViewController.h"
 #import "VTextCanvasToolViewController.h"
 #import "VWorkspaceTool.h"
@@ -84,10 +83,10 @@
              }
          }];
         
-            // Create the nav controller and present the workspace
-            _flowNavigationController = [[UINavigationController alloc] init];
-            [_flowNavigationController setNavigationBarHidden:YES];
-            [_flowNavigationController pushViewController:_textWorkspaceViewController animated:NO];
+        // Create the nav controller and present the workspace
+        _flowNavigationController = [[UINavigationController alloc] init];
+        [_flowNavigationController setNavigationBarHidden:YES];
+        [_flowNavigationController pushViewController:_textWorkspaceViewController animated:NO];
     }
     return self;
 }
@@ -129,6 +128,10 @@
 {
     BOOL enabled = self.textCanvasToolViewController.textPostViewController.textOutput.length > 0;
     [self.textWorkspaceViewController.continueButton setEnabled:enabled];
+    if ([self.delegate respondsToSelector:@selector(contentDidBecomePublishable:)])
+    {
+        [self.delegate contentDidBecomePublishable:enabled];
+    }
 }
 
 #pragma mark - VTextCanvasToolDelegate

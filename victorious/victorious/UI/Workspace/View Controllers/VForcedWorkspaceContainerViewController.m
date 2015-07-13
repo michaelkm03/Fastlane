@@ -18,7 +18,10 @@ static NSString * const kShowsSkipButtonKey = @"showsSkipButton";
 static NSString * const kSkipButtonTextKey = @"skipButtonText";
 static NSString * const kDoneButtonTextKey = @"doneButtonText";
 
-@interface VForcedWorkspaceContainerViewController ()
+@interface VForcedWorkspaceContainerViewController () <VTextWorkspaceFlowControllerDelegate>
+
+@property (strong, nonatomic) VTextWorkspaceFlowController *flowController;
+@property (assign, nonatomic) BOOL ableToPublish;
 
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
@@ -53,10 +56,15 @@ static NSString * const kDoneButtonTextKey = @"doneButtonText";
     // Add text workspace as child view controller
     [self configureWorkspace];
     
+    // Disable swipe back gesture
+    self.navigationItem.hidesBackButton = YES;
+    
     self.titleLabel.text = [self.dependencyManager stringForKey:kPromptKey];
     self.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
     self.doneButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
     self.titleLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    
+    [self updateDoneButton:NO];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -89,12 +97,16 @@ static NSString * const kDoneButtonTextKey = @"doneButtonText";
 - (void)configureWorkspace
 {
     // Replace default text in workspace dependency manager with one from ours
-    VTextWorkspaceFlowController *textFlow = [VTextWorkspaceFlowController textWorkspaceFlowControllerWithDependencyManager:self.dependencyManager addedDependencies:@{kDefaultTextKey : [self.dependencyManager stringForKey:kPlaceholderTextKey]}];
+    NSDictionary *dependencies = @{kDefaultTextKey : [self.dependencyManager stringForKey:kPlaceholderTextKey]};
+    self.flowController = [VTextWorkspaceFlowController textWorkspaceFlowControllerWithDependencyManager:self.dependencyManager
+                                                                                       addedDependencies:dependencies];
+    self.flowController.delegate = self;
     
-    [self addChildViewController:textFlow.flowRootViewController];
-    [self.containerView addSubview:textFlow.flowRootViewController.view];
-    textFlow.flowRootViewController.view.frame = self.containerView.frame;
-    [textFlow.flowRootViewController didMoveToParentViewController:self];
+    // Add workspace as child view controller
+    [self addChildViewController:self.flowController.flowRootViewController];
+    [self.containerView addSubview:self.flowController.flowRootViewController.view];
+    self.flowController.flowRootViewController.view.frame = self.containerView.frame;
+    [self.flowController.flowRootViewController didMoveToParentViewController:self];
 }
 
 - (BOOL)showsSkipButton
@@ -102,9 +114,21 @@ static NSString * const kDoneButtonTextKey = @"doneButtonText";
     return [[self.dependencyManager numberForKey:kShowsSkipButtonKey] boolValue];
 }
 
-- (void)updateDoneButton
+- (void)updateDoneButton:(BOOL)animated
 {
-    
+    if ([self showsSkipButton] && !self.ableToPublish)
+    {
+        [self.doneButton setTitle:[self.dependencyManager stringForKey:kSkipButtonTextKey] forState:UIControlStateNormal];
+    }
+    else
+    {
+        [self.doneButton setTitle:[self.dependencyManager stringForKey:kDoneButtonTextKey] forState:UIControlStateNormal];
+        self.doneButton.enabled = self.ableToPublish;
+        [UIView animateWithDuration:animated ? 0.2 : 0 animations:^
+         {
+             self.doneButton.layer.opacity = self.ableToPublish ? 1.0f : 0.5f;
+         }];
+    }
 }
 
 #pragma mark - Actions
@@ -112,6 +136,14 @@ static NSString * const kDoneButtonTextKey = @"doneButtonText";
 - (IBAction)pressedDone:(id)sender
 {
     [self.delegate continueRegistrationFlow];
+}
+
+#pragma mark - Text Post Flow Controller
+
+- (void)contentDidBecomePublishable:(BOOL)publishable
+{
+    self.ableToPublish = publishable;
+    [self updateDoneButton:YES];
 }
 
 #pragma mark - VLoginFlowScreen

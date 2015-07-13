@@ -9,6 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "VHasManagedDependencies.h"
 #import "VNavigationDestination.h"
+#import "VTextToolController.h"
+#import "VTextListener.h"
+
+@protocol VTextWorkspaceFlowControllerDelegate <NSObject>
+
+- (void)contentDidBecomePublishable:(BOOL)publishable;
+
+@end
 
 /**
  The top-level manager of text post creation, which creates all the tools necessary to 
@@ -25,5 +33,12 @@
  *  The workspace flow controller will be deallocated after did cancel or finished is called on it's delegate.
  */
 @property (nonatomic, readonly) UIViewController *flowRootViewController;
+
+/**
+ *  The text tool controller used in this workspace.
+ */
+@property (nonatomic, readonly) VTextToolController *textToolController;
+
+@property (nonatomic, weak) id<VTextWorkspaceFlowControllerDelegate> delegate;
 
 @end
