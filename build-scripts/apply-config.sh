@@ -34,7 +34,7 @@ if [ "$A_FLAG" == "-a" -a "$CONFIGURATION" == "" ]; then
 fi
 
 # Grab the latest assets and configuration data from VAMS.
-python build-scripts/vams_prebuild.py $FOLDER ios localhost
+python build-scripts/vams_prebuild.py $FOLDER ios
 sleep 3
 
 FOLDER="configurations/$FOLDER"
