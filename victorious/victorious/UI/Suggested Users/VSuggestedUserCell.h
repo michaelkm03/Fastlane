@@ -21,6 +21,6 @@
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
-- (void)setUser:(VUser *)user;
+@property (nonatomic, strong) VUser *user;
 
 @end

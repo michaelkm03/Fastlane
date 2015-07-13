@@ -3,33 +3,35 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>${ProductPrefix}Cartoon Hangover</string>
+	<string>${ProductPrefix}Janoskians</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}Cartoon-Hangover</string>
+	<string>com.getvictorious.${ProductPrefix}janoskians</string>
+	<key>CFBundleName</key>
+	<string>${ProductPrefix}TheJanoskians</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb927481803964901</string>
+				<string>fb606773379464458</string>
 			</array>
 		</dict>
 	</array>
 	<key>FacebookAppID</key>
-	<string>927481803964901</string>
+	<string>606773379464458</string>
 	<key>TWITTER_CONSUMER_KEY</key>
-	<string>IW6EvEWilSkKDh2KgMnx5F0xK</string>
+	<string>OP9IHKZkMVK7nNEI5vH6DHgc9</string>
 	<key>TWITTER_CONSUMER_SECRET</key>
-	<string>tirEuRE5jrOJ4qoBrXKJuIFXRAtuAlMBZRD72BqY4dRmuEU1hZ</string>
+	<string>dDvQdnUSn5nv6mnCaKSR4AvCk0D6F43HJf7JBnozAU1C6FIakB</string>
 	<key>VictoriousAppID</key>
-	<integer>6</integer>
+	<integer>62</integer>
 	<key>StagingAppID</key>
-	<integer>6</integer>
+	<integer>77</integer>
 	<key>QAAppID</key>
-	<integer>6</integer>
+	<integer>65</integer>
 	<key>CreatorSalutation</key>
-	<string></string>
+	<string>Janoskians</string>
 	<key>FlurryAPIKey</key>
-	<string>5VDQV2TBRSQ7KY7JCPJX</string>
+	<string>5YYK856KX8SPFRVKZMR8</string>
 </dict>
 </plist>

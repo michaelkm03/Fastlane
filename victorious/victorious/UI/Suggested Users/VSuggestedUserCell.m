@@ -22,14 +22,13 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
 
 @interface VSuggestedUserCell ()
 
+@property (nonatomic, strong) VContentThumbnailsDataSource *thumbnailsDataSource;
 @property (nonatomic, strong) VFollowUserControl *followButton;
 @property (nonatomic, strong) VContentThumbnailsViewController *thumbnailsViewController;
 @property (nonatomic, weak) IBOutlet VDefaultProfileImageView *userProfileImage;
 @property (nonatomic, weak) IBOutlet UITextView *usernameTextView;
 @property (nonatomic, weak) IBOutlet UIView *followButtonContainerView;
 @property (nonatomic, weak) IBOutlet UIView *userStreamContainerView;
-
-@property (nonatomic, strong) VUser *user;
 
 @end
 
@@ -56,6 +55,16 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
     [self.userStreamContainerView addSubview:self.thumbnailsViewController.view];
     [self.userStreamContainerView v_addFitToParentConstraintsToSubview:self.thumbnailsViewController.view];
     self.userStreamContainerView.backgroundColor = [UIColor clearColor];
+    
+    self.thumbnailsDataSource = [[VContentThumbnailsDataSource alloc] init];
+    self.thumbnailsViewController.collectionView.dataSource = self.thumbnailsDataSource;
+    [self.thumbnailsDataSource registerCellsWithCollectionView:self.thumbnailsViewController.collectionView];
+}
+
+- (void)prepareForReuse
+{
+    self.thumbnailsDataSource.sequences = @[];
+    [self.thumbnailsViewController.collectionView reloadData];
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -71,15 +80,8 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
     
     self.usernameTextView.text = _user.name;
     
-    VContentThumbnailsDataSource *thumbnailsDataSource = [[[self class] dataSources] objectForKey:user.remoteId];
-    if ( thumbnailsDataSource == nil )
-    {
-        thumbnailsDataSource = [[VContentThumbnailsDataSource alloc] initWithSequences:user.recentSequences.array];
-        [thumbnailsDataSource registerCellsWithCollectionView:self.thumbnailsViewController.collectionView];
-        
-        [[[self class] dataSources] setObject:thumbnailsDataSource forKey:user.remoteId];
-    }
-    self.thumbnailsViewController.collectionView.dataSource = thumbnailsDataSource;
+    self.thumbnailsDataSource.sequences = user.recentSequences.array;
+    [self.thumbnailsViewController.collectionView reloadData];
     
     if ( _user.pictureUrl != nil )
     {
