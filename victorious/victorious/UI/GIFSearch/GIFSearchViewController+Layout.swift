@@ -36,7 +36,7 @@ extension GIFSearchViewController : UICollectionViewDelegateFlowLayout {
         let totalSize = CGSize(width: totalWidth, height: totalHeight )
         
         if self.searchDataSource.sections.count == 0 {
-            return CGSize(width: totalSize.width, height: GIFSearchViewController.noContentCellHeight)
+            return CGSize(width: totalSize.width, height: kNoContentCellHeight)
         }
         else {
             let section = self.searchDataSource.sections[ indexPath.section ]
@@ -51,16 +51,20 @@ extension GIFSearchViewController : UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.bounds.width, height: section == 0 ? GIFSearchViewController.headerViewHeight : 0.0 )
+        return CGSize(width: collectionView.bounds.width, height: section == 0 ? kHeaderViewHeight : 0.0 )
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        let margin = GIFSearchViewController.defaultSectionMargin
+        let margin = kDefaultSectionMargin
         var insets = UIEdgeInsets(top: 0.0, left: margin, bottom: 0.0, right: margin)
         if section == self.searchDataSource.sections.count-1 {
-            insets.bottom = GIFSearchViewController.defaultSectionMargin
+            insets.bottom = kDefaultSectionMargin
         }
         return insets
+    }
+    
+    func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        cell.tintColor = self.dependencyManager?.colorForKey( VDependencyManagerLinkColorKey )
     }
 }
 
@@ -69,7 +73,7 @@ private extension GIFSearchDataSource.Section {
     
     func displaySize( withinSize totalSize: CGSize ) -> CGSize {
         let gif = self.results[0]
-        let maxHeight = totalSize.height - GIFSearchDataSource.Section.minMargin * 2.0
+        let maxHeight = totalSize.height - GIFSearchDataSource.Section.kMinMargin * 2.0
         return CGSize(width: totalSize.width, height: min(totalSize.width / gif.aspectRatio, maxHeight) )
     }
     

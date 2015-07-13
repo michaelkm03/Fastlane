@@ -37,7 +37,7 @@ class GIFSearchDataSource: NSObject {
         
         // The minimum amount of top and bottom space between a fullsize
         // search result and the colleciton view bounds
-        static let minMargin: CGFloat = 50.0
+        static let kMinMargin: CGFloat = 50.0
         
         let results: [GIFSearchResult]
         
@@ -59,29 +59,22 @@ class GIFSearchDataSource: NSObject {
         var insertedSection: Int? = nil
     }
     
-    private var _state: State = .Loading
-    
     private let kHeaderReuseIdentifier = "GIFSearchAttributionView"
     
-    private var _sections = [Section]()
-    var sections: [Section] {
-        return _sections
-    }
-    
-    private var _mostRecentSearchTerm: String?
-    
-    private var _highlightedSection: (section: Section, indexPath: NSIndexPath)?
-    
-    private var _currentOperation: NSOperation?
+    private var state: State = .Loading
+    private(set) var sections = [Section]()
+    private var mostRecentSearchTerm: String?
+    private var highlightedSection: (section: Section, indexPath: NSIndexPath)?
+    private var currentOperation: NSOperation?
     
     // Removes the current full size asset section, wherever it may be
     // returns: whether or not the total section count was changed
     func removeHighlightSection() -> ChangeResult {
         var result = ChangeResult()
-        if let highlightedSection = _highlightedSection {
+        if let highlightedSection = self.highlightedSection {
             let sectionIndex = highlightedSection.indexPath.section
-            _sections.removeAtIndex( sectionIndex )
-            _highlightedSection = nil
+            self.sections.removeAtIndex( sectionIndex )
+            self.highlightedSection = nil
             result.deletedSection = sectionIndex
         }
         return result
@@ -100,10 +93,10 @@ class GIFSearchDataSource: NSObject {
             return indexPath
         }()
         
-        let resultToHighlight = _sections[ targetIndexPath.section ][ targetIndexPath.row ]
+        let resultToHighlight = self.sections[ targetIndexPath.section ][ targetIndexPath.row ]
         let section = Section(results: [ resultToHighlight ], isFullSize: true )
-        _sections.insert( section, atIndex: targetIndexPath.nextSection() )
-        _highlightedSection = (section, targetIndexPath.nextSectionIndexPath())
+        self.sections.insert( section, atIndex: targetIndexPath.nextSection() )
+        self.highlightedSection = (section, targetIndexPath.nextSectionIndexPath())
         
         result.insertedSection = targetIndexPath.nextSection()
         return result
@@ -114,24 +107,24 @@ class GIFSearchDataSource: NSObject {
     /// parameter `completion`: A closure to be call when the operation is complete
     func performSearch( searchText:String, completion: (()->())? ) {
         
-        _state = .Loading
-        _currentOperation?.cancel()
-        _currentOperation = VObjectManager.sharedManager().searchForGIF( [ searchText == "" ? "sponge" : searchText ],
+        self.state = .Loading
+        self.currentOperation?.cancel()
+        self.currentOperation = VObjectManager.sharedManager().searchForGIF( [ searchText == "" ? "sponge" : searchText ],
             success: { (results) in
                 self.clear()
-                self._mostRecentSearchTerm = searchText
-                self._state = .Content
+                self.mostRecentSearchTerm = searchText
+                self.state = .Content
                 for var i = 0; i < results.count-1; i+=2 {
                     let results = [results[i], results[i+1]]
                     let section = Section( results:results, isFullSize: false )
-                    self._sections.append( section )
+                    self.sections.append( section )
                 }
                 completion?()
             },
             failure: { (error, cancelled: Bool) in
                 if !cancelled {
                     self.clear()
-                    self._state = .Error
+                    self.state = .Error
                 }
                 completion?()
             }
@@ -140,18 +133,19 @@ class GIFSearchDataSource: NSObject {
     
     /// Clears the backing model, highlighted section and cancels any in-progress search operation
     func clear() {
-        _mostRecentSearchTerm = nil
-        _currentOperation?.cancel()
-        _highlightedSection = nil
-        _sections = []
+        self.mostRecentSearchTerm = nil
+        self.currentOperation?.cancel()
+        self.highlightedSection = nil
+        
+        sections = []
     }
     
     var noContentCellText: String {
-        switch _state {
+        switch self.state {
         case .Error:
             return "Error loading results. :("
         case .Content where self.sections.count == 0:
-            if let searchText = _mostRecentSearchTerm {
+            if let searchText = self.mostRecentSearchTerm {
                 return "No results for \"\(searchText)\" :("
             }
             else  {
@@ -192,7 +186,6 @@ extension GIFSearchDataSource : UICollectionViewDataSource {
             else {
                 if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( GIFSearchCell.suggestedReuseIdentifier, forIndexPath: indexPath ) as? GIFSearchCell {
                     cell.assetUrl = NSURL(string: result.thumbnailStillUrl)
-                    cell.tintColor = UIColor.blueColor()
                     cell.selected = NSSet(array: collectionView.indexPathsForSelectedItems() ).containsObject( indexPath )
                     return cell
                 }

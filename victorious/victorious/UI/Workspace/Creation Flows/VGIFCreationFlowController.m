@@ -53,14 +53,14 @@
     self = [super initWithDependencyManager:dependencyManager];
     if (self != nil)
     {
-        _dependencyManager = dependencyManager;
+        self.dependencyManager = dependencyManager;
         
         VCaptureContainerViewController *captureContainer = [VCaptureContainerViewController captureContainerWithDependencyManager:dependencyManager];
         [captureContainer setAlternateCaptureOptions:[self alternateCaptureOptions]];
         [self addCloseButtonToViewController:captureContainer];
         [self setViewControllers:@[captureContainer]];
         
-        GIFSearchViewController *gifSearchViewController = [GIFSearchViewController viewControllerFromStoryboard];
+        GIFSearchViewController *gifSearchViewController = [GIFSearchViewController gifSearchWithDependencyManager:dependencyManager];
         [captureContainer setContainedViewController:gifSearchViewController];
         [self addCompleitonHandlerToMediaSource:gifSearchViewController];
         
@@ -117,11 +117,11 @@
 
 - (void)setupPublishScreen
 {
-    _publishAnimator = [[VPublishBlurOverAnimator alloc] init];
-    _publishViewContorller = [self.dependencyManager newPublishViewController];
+    self.publishAnimator = [[VPublishBlurOverAnimator alloc] init];
+    self.publishViewContorller = [self.dependencyManager newPublishViewController];
     
     __weak typeof(self) welf = self;
-    _publishViewContorller.completion = ^void(BOOL published)
+    self.publishViewContorller.completion = ^void(BOOL published)
     {
         if (published)
         {
@@ -141,15 +141,13 @@
 
 - (void)setupWorkspace
 {
-    _workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];
-    _workspaceViewController.adjustsCanvasViewFrameOnKeyboardAppearance = YES;
-    _workspaceViewController.continueText = [self localizedEditingFinishedText];
-    _workspaceViewController.continueButtonEnabled = YES;
-    _workspaceViewController.previewImage = self.previewImage;
-    _workspaceViewController.mediaURL = self.renderedMediaURL;
+    self.workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];
+    self.workspaceViewController.adjustsCanvasViewFrameOnKeyboardAppearance = YES;
+    self.workspaceViewController.continueText = [self localizedEditingFinishedText];
+    self.workspaceViewController.continueButtonEnabled = YES;
     
     __weak typeof(self) welf = self;
-    _workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
+    self.workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
     {
         if (finished)
         {

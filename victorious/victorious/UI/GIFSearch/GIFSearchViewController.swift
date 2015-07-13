@@ -40,22 +40,25 @@ class GIFSearchViewController: UIViewController, VMediaSource {
         case Next = "onNext:"
     }
     
-    static let headerViewHeight: CGFloat = 50.0
-    static let defaultSectionMargin: CGFloat = 10.0
-    static let noContentCellHeight: CGFloat = 150.0
+    let kHeaderViewHeight: CGFloat = 50.0
+    let kDefaultSectionMargin: CGFloat = 10.0
+    let kNoContentCellHeight: CGFloat = 150.0
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var searchBar: UISearchBar!
     
-    let operationQueue = NSOperationQueue()
-    
     var selectedIndexPath: NSIndexPath?
-    
     let searchDataSource = GIFSearchDataSource()
+    private(set) var dependencyManager: VDependencyManager?
+    private lazy var mediaHelper = GIFSearchMediaHelper()
     
-    static func viewControllerFromStoryboard() -> GIFSearchViewController {
+    // VMediaSource
+    var handler: VMediaSelectionHandler?
+    
+    static func gifSearchWithDependencyManager( depndencyManager: VDependencyManager ) -> GIFSearchViewController {
         let bundle = UIStoryboard(name: "GIFSearch", bundle: nil)
         if let viewController = bundle.instantiateInitialViewController() as? GIFSearchViewController {
+            viewController.dependencyManager = depndencyManager
             return viewController
         }
         fatalError( "Could not load GIFSearchViewController from storyboard." )
@@ -65,8 +68,11 @@ class GIFSearchViewController: UIViewController, VMediaSource {
         super.viewDidLoad()
         
         self.searchBar.delegate = self
-        self.searchBar.textField?.textColor = UIColor.whiteColor()
-        self.searchBar.textField?.backgroundColor = UIColor(white: 0.2, alpha: 1.0)
+        if let searchTextField = self.searchBar.textField {
+            searchTextField.font = self.dependencyManager?.fontForKey(VDependencyManagerHeading3FontKey)
+            searchTextField.textColor = UIColor.whiteColor()
+            searchTextField.backgroundColor = UIColor(white: 0.2, alpha: 1.0)
+        }
         
         self.collectionView.dataSource = self.searchDataSource
         self.collectionView.delegate = self
@@ -80,21 +86,10 @@ class GIFSearchViewController: UIViewController, VMediaSource {
         self.performSearch()
     }
     
-    func downloadPathForRemotePath( remotePath: String ) -> String {
-        let filename = remotePath.lastPathComponent
-        let paths = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true )
-        if var path = paths.first as? String {
-            //path = path.stringByAppendingPathComponent( "com.getvictorious.gifSearch" )
-            path = path.stringByAppendingPathComponent( filename )
-            return path
-        }
-        fatalError( "Unable to find file path for temporary media download." )
-    }
-    
     func onNext( sender: AnyObject? ) {
         if let indexPath = self.selectedIndexPath {
             let selectedGIF = self.searchDataSource.sections[ indexPath.section ][ indexPath.row ]
-            self.loadMedia( selectedGIF ) { (previewImage, mediaUrl, error) in
+            self.mediaHelper.loadMedia( selectedGIF ) { (previewImage, mediaUrl, error) in
                 
                 if let previewImage = previewImage, let mediaURL = mediaUrl {
                     self.handler?( previewImage, mediaURL )
@@ -103,30 +98,6 @@ class GIFSearchViewController: UIViewController, VMediaSource {
                     println( "Error: \(error)" )
                 }
             }
-        }
-    }
-    
-    private func loadMedia( gifSearchResult: GIFSearchResult, completion: (previewImage: UIImage?, mediaUrl: NSURL?, error: NSError?)->()) {
-        
-        let downloadPath = self.downloadPathForRemotePath( gifSearchResult.mp4Url )
-        if let previewImageURL = NSURL(string: gifSearchResult.thumbnailStillUrl),
-            let videoURL = NSURL(string: gifSearchResult.mp4Url ),
-            let videoOutputStream = NSOutputStream(toFileAtPath: downloadPath, append: false ) {
-                
-                let imageOperation = LoadImageOperation(remoteURL: previewImageURL)
-                let videoOperation = AFURLConnectionOperation(request: NSURLRequest(URL: videoURL))
-                videoOperation.completionBlock = {
-                    dispatch_async(dispatch_get_main_queue()) {
-                        completion(
-                            previewImage: imageOperation.image,
-                            mediaUrl: NSURL(string: downloadPath),
-                            error: nil )
-                    }
-                }
-                videoOperation.outputStream = videoOutputStream
-                videoOperation.addDependency( imageOperation )
-                self.operationQueue.addOperation( imageOperation )
-                self.operationQueue.addOperation( videoOperation )
         }
     }
     
@@ -158,10 +129,6 @@ class GIFSearchViewController: UIViewController, VMediaSource {
             }
         }
     }
-    
-    // MARK: - VMediaSource
-    
-    var handler: VMediaSelectionHandler?
 }
 
 extension GIFSearchViewController : UISearchBarDelegate {

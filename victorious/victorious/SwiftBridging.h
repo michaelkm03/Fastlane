@@ -44,3 +44,4 @@
 #import "VMediaSource.h"
 #import "VVideoView.h"
 #import "UIImage+VTint.h"
+#import "VDependencyManager.h"
