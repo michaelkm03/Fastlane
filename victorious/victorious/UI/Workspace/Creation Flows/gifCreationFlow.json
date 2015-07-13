@@ -18,7 +18,35 @@
         "blue": 255,
         "green": 255
     },
-    "captureScreen":{
-        "referenceID":"testingImageVideoLibrary"
+    "gifWorkspace": {
+        "videoMaxDuration": 15,
+        "name": "workspace.screen",
+        "tools": [
+                  {
+                  "selectedIcon": {
+                  "imageURL": "GIFSelected"
+                  },
+                  "isGIF": true,
+                  "videoMuted": true,
+                  "frameDurationValue": 1,
+                  "title": "GIF MODE",
+                  "frameDurationTimescale": 8,
+                  "name": "trim.video.tool",
+                  "icon": {
+                  "imageURL": "GIF"
+                  }
+                  },
+                  {
+                  "title": "meme",
+                  "icon": {
+                  "imageURL": "meme"
+                  },
+                  "name": "snapshot.video.tool",
+                  "selectedIcon": {
+                  "imageURL": "memeSelected"
+                  }
+                  }
+                  ],
+        "videoMinDuration": 3
     }
 }

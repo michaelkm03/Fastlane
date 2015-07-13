@@ -89,6 +89,12 @@ class GIFSearchViewController: UIViewController, VMediaSource {
     func onNext( sender: AnyObject? ) {
         if let indexPath = self.selectedIndexPath {
             let selectedGIF = self.searchDataSource.sections[ indexPath.section ][ indexPath.row ]
+            
+            var progressHUD = MBProgressHUD.showHUDAddedTo( self.view, animated: true )
+            progressHUD.mode = .Indeterminate
+            progressHUD.dimBackground = true
+            progressHUD.show(true)
+            
             self.mediaHelper.loadMedia( selectedGIF ) { (previewImage, mediaUrl, error) in
                 
                 if let previewImage = previewImage, let mediaURL = mediaUrl {
@@ -97,6 +103,8 @@ class GIFSearchViewController: UIViewController, VMediaSource {
                 else {
                     println( "Error: \(error)" )
                 }
+                
+                progressHUD.hide(true)
             }
         }
     }
@@ -119,15 +127,6 @@ class GIFSearchViewController: UIViewController, VMediaSource {
     private func clearSearch() {
         self.searchDataSource.clear()
         self.collectionView.reloadData()
-    }
-    
-    func updateSelectionState() {
-        for indexPath in self.collectionView.indexPathsForVisibleItems() as! [NSIndexPath] {
-            if let selectedIndexPath = self.selectedIndexPath,
-                let cell = self.collectionView.cellForItemAtIndexPath(indexPath) {
-                cell.selected = (indexPath == selectedIndexPath)
-            }
-        }
     }
 }
 

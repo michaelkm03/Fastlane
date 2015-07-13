@@ -12,12 +12,8 @@ extension GIFSearchViewController : UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let section = self.searchDataSource.sections[ indexPath.section ]
-        if let cell = collectionView.cellForItemAtIndexPath( indexPath ) as? GIFSearchCell {
-            
-            if section.isFullSize {
-                cell.selected = false
-            }
-            else if self.selectedIndexPath == indexPath {
+        if collectionView.cellForItemAtIndexPath( indexPath ) is GIFSearchResultCell {
+            if self.selectedIndexPath == indexPath {
                 self.hideFullSize( forItemAtIndexPath: indexPath )
                 self.selectedIndexPath = nil
             }
@@ -26,6 +22,10 @@ extension GIFSearchViewController : UICollectionViewDelegateFlowLayout {
                 self.selectedIndexPath = indexPath
             }
         }
+    }
+    
+    func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return collectionView.cellForItemAtIndexPath( indexPath ) is GIFSearchResultCell
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {

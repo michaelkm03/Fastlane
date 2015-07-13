@@ -39,7 +39,7 @@ static NSString * const kBarTintColorKey = @"barTintColor";
     return self;
 }
 
-#pragma mark - View Lifecycle
+#pragma mark - UIViewController
 
 - (void)viewDidLoad
 {
@@ -50,6 +50,16 @@ static NSString * const kBarTintColorKey = @"barTintColor";
     self.navigationBar.barTintColor = background.backgroundColor;
     self.navigationBar.translucent = NO;
     self.navigationBar.tintColor = [self.dependencyManager colorForKey:kBarTintColorKey];
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 #pragma mark - Public Methods
@@ -74,6 +84,7 @@ static NSString * const kBarTintColorKey = @"barTintColor";
     }
     viewController.navigationItem.leftBarButtonItem = closeButton;
 }
+
 
 - (NSString *)localizedEditingFinishedText
 {

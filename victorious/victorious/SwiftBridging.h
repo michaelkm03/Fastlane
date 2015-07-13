@@ -8,8 +8,6 @@
 
 /**
  Use this file to import Objective-C headers that need to be exposed to any Swift code.
- Unlike other lists of Objective-C important statements, this list is actually important
- and should be kept organized and commented.
  */
 
 // iOS Frameworks
@@ -29,13 +27,17 @@
 // SDWebImage
 #import <SDWebImage/UIImageView+WebCache.h>
 
+// MBProgressHUD
+#import <MBProgressHUD/MBProgressHUD.h>
 
+// AFNetworking
 #import <AFNetworking/AFNetworking.h>
 
 // Victorious Models
 #import "VAbstractFilter.h"
 #import "VSEquence.h"
 
+// Everything else
 #import "VTextPostTextView.h"
 #import "VObjectManager.h"
 #import "VPaginationManager.h"

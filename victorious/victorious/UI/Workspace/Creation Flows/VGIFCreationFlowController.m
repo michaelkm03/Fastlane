@@ -13,7 +13,7 @@
 // Capture
 #import "VCaptureContainerViewController.h"
 #import "VAlternateCaptureOption.h"
-#import "VAssetGridViewController.h"
+#import "VAssetCollectionGridViewController.h"
 
 // Workspace
 #import "VWorkspaceViewController.h"
@@ -29,6 +29,8 @@
 // Dependencies
 #import "VDependencyManager.h"
 #import "VMediaSource.h"
+
+static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 
 @interface VGIFCreationFlowController () <UINavigationControllerDelegate>
 
@@ -62,8 +64,6 @@
         
         GIFSearchViewController *gifSearchViewController = [GIFSearchViewController gifSearchWithDependencyManager:dependencyManager];
         [captureContainer setContainedViewController:gifSearchViewController];
-        [self addCompleitonHandlerToMediaSource:gifSearchViewController];
-        
         [self addCompleitonHandlerToMediaSource:gifSearchViewController];
 
     }

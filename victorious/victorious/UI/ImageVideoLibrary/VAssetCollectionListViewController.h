@@ -8,17 +8,23 @@
 
 #import <UIKit/UIKit.h>
 
-@class PHAssetCollection;
+@import Photos;
 
 @interface VAssetCollectionListViewController : UITableViewController
 
-+ (instancetype)assetCollectionListViewController;
-
-@property (nonatomic, strong) NSArray *assetCollections;
+/**
+ *  Factory method for this ViewController. Use this to get an instance of VAssetCollectionListViewController.
+ */
++ (instancetype)assetCollectionListViewControllerWithMediaType:(PHAssetMediaType)mediaType;
 
 /**
  *  A handler for colleciton selection. Dismisses self after calling this handler.
  */
 @property (nonatomic, copy) void (^collectionSelectionHandler)(PHAssetCollection *selectedCollection);
+
+/**
+ *  Fetches the collections. Called on the main thread.
+ */
+- (void)fetchDefaultCollectionWithCompletion:(void (^)(PHAssetCollection *collection))completion;
 
 @end

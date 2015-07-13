@@ -89,7 +89,7 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
     }
     
     VCreationFlowController *flowController = [self.dependencyManager templateValueOfType:[VCreationFlowController class] forKey:@"gifCreateFlow"];
-    //[self presentViewController:flowController animated:YES completion:nil];
+    [self presentViewController:flowController animated:YES completion:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated

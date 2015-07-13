@@ -42,6 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     [super viewDidLoad];
 
+    // Create alternateOption buttons
     for (VAlternateCaptureOption *alternateOption in self.alternateCaptureOptions)
     {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -52,9 +53,10 @@ NS_ASSUME_NONNULL_BEGIN
         [button addTarget:self action:@selector(selectedAlternateOption:) forControlEvents:UIControlEventTouchUpInside];
         button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
         button.translatesAutoresizingMaskIntoConstraints = NO;
+        // Move the image a bit to the left
+        button.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
         [self.stackView addArrangedSubview:button];
     }
-
     self.stackView.distribution = OAStackViewDistributionFillEqually;
     
     NSAssert( self.viewControllerToContain != nil, @"The contained view controller must be set before this view is loaded using `setContainedViewController:`" );
@@ -65,8 +67,14 @@ NS_ASSUME_NONNULL_BEGIN
     [self.containerView v_addFitToParentConstraintsToSubview:self.viewControllerToContain.view];
     [self.viewControllerToContain didMoveToParentViewController:self];
     
+    // Forward navigationItem
     self.navigationItem.titleView = self.viewControllerToContain.navigationItem.titleView;
     self.navigationItem.rightBarButtonItems = self.viewControllerToContain.navigationItem.rightBarButtonItems;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
 }
 
 #pragma mark - Public Methods

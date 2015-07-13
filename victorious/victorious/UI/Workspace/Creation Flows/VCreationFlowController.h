@@ -12,6 +12,7 @@
 
 @class VCreationFlowController;
 @class VDependencyManager;
+@class VAlternateCaptureOption;
 
 extern NSString * const VCreationFLowCaptureScreenKey;
 
@@ -65,5 +66,9 @@ extern NSString * const VCreationFLowCaptureScreenKey;
 - (void)addCloseButtonToViewController:(UIViewController *)viewController;
 
 - (NSString *)localizedEditingFinishedText;
+
+@property (nonatomic, strong, readonly) VAlternateCaptureOption *cameraCaptureOption;
+
+@property (nonatomic, strong, readonly) VAlternateCaptureOption *searchCaptureOption;
 
 @end
