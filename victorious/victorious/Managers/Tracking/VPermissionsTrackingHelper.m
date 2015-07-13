@@ -14,7 +14,6 @@
 #import "VFacebookManager.h"
 #import "VTwitterManager.h"
 #import "VNotificationSettings.h"
-#import "NSDictionary+Merge.h"
 #import "VLocationManager.h"
 
 @implementation VPermissionsTrackingHelper

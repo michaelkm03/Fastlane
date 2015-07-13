@@ -75,7 +75,7 @@ static NSString * const kMacroPermission             = @"%%PERMISSION_CHANGE%%";
                                  VTrackingEventUserDidSelectRegistrationDone       : VTrackingCreateProfileDoneButtonTapKey,
                                  VTrackingEventUserDidSelectRegistrationOption     : VTrackingRegisteButtonTapKey,
                                  VTrackingEventUserDidSelectSignUpSubmit           : VTrackingSignUpButtonTapKey,
-                                 VTrackingEventUserPermissionDidChange             : VTrackingPermissionKey };
+                                 VTrackingEventUserPermissionDidChange             : VTrackingPermissionChangeKey };
         
         _macroReplacement = [[VURLMacroReplacement alloc] init];
         _requestQueue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0 );

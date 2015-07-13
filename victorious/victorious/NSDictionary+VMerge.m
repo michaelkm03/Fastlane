@@ -6,11 +6,11 @@
 //
 //
 
-#import "NSDictionary+Merge.h"
+#import "NSDictionary+VMerge.h"
 
 @implementation NSDictionary (Merge)
 
-- (NSDictionary *)mergeWithDictionary:(NSDictionary *)dictionary
+- (NSDictionary *)v_dictionaryByMergingWithDictionary:(NSDictionary *)dictionary
 {
     if (self == nil)
     {
@@ -22,14 +22,13 @@
     }
     NSMutableDictionary *melf = [self mutableCopy];
     
-    for (id key in [dictionary allKeys])
+    for (id key in dictionary)
     {
         id obj = [dictionary objectForKey:key];
         [melf setObject:obj forKey:key];
-        
     }
     
-    for (id key in [self allKeys])
+    for (id key in self)
     {
         id object = [self objectForKey:key];
         [melf setObject:object forKey:key];

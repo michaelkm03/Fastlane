@@ -10,6 +10,6 @@
 
 @interface NSDictionary (Merge)
 
-- (NSDictionary *)mergeWithDictionary:(NSDictionary *)dictionary;
+- (NSDictionary *)v_dictionaryByMergingWithDictionary:(NSDictionary *)dictionary;
 
 @end

@@ -105,6 +105,6 @@ typedef void (^VPermissionRequestCompletionHandler)(BOOL granted, VPermissionSta
  
  @param trackingStatus should be one of VTrackingValueAuthorized, etc..
  */
-- (void)trackingPermission:(NSString *)trackingStatus;
+- (void)trackPermission:(NSString *)trackingStatus;
 
 @end

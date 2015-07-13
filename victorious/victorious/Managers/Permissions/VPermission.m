@@ -61,7 +61,7 @@
          {
              [alert dismissViewControllerAnimated:YES completion:nil];
              [self requestSystemPermissionWithCompletion:completion];
-             [self trackingPermission:VTrackingValueAuthorized];
+             [self trackPermission:VTrackingValueAuthorized];
          }];
         [permissionAlert setDenyHandler:^(VPermissionAlertViewController *alert)
          {
@@ -72,7 +72,7 @@
                       completion(NO, VPermissionStatePromptDenied, nil);
                   }
               }];
-             [self trackingPermission:VTrackingValueDenied];
+             [self trackPermission:VTrackingValueDenied];
          }];
         [viewController presentViewController:permissionAlert animated:YES completion:nil];
     }
@@ -80,20 +80,18 @@
 
 + (NSString *)stringFromPermissionState:(VPermissionState)permissionState
 {
-    NSString *string;
     switch (permissionState)
     {
         case VPermissionStateAuthorized:
-            string = VTrackingValueAuthorized;
+            return VTrackingValueAuthorized;
             break;
         case VPermissionStateSystemDenied:
-            string = VTrackingValueDenied;
+            return VTrackingValueDenied;
             break;
         default:
-            string = VTrackingValueUnknown;
+            return VTrackingValueUnknown;
             break;
     }
-    return string;
 }
 
 #pragma mark - Overrides
@@ -115,7 +113,7 @@
     NSAssert( NO, @"This method must be overidden in a subclass." );
 }
 
-- (void)trackingPermission:(NSString *)trackingStatus
+- (void)trackPermission:(NSString *)trackingStatus
 {
     NSAssert( NO, @"This method must be overidden in a subclass." );
 }
