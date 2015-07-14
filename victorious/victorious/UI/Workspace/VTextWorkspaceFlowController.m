@@ -103,16 +103,28 @@
 - (VWorkspaceViewController *)createTextWorkspaceWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     VWorkspaceViewController *workspace = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerEditTextWorkspaceKey];
-    workspace.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
+    VWorkspaceCompletion completion = self.publishCompletionBlock;
+    if (completion == nil)
     {
-        [self.flowNavigationController dismissViewControllerAnimated:YES completion:nil];
-    };
+        completion = ^(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
+        {
+            [self.flowNavigationController dismissViewControllerAnimated:YES completion:nil];
+        };
+        
+    }
+    workspace.completionBlock = completion;
     workspace.showCloseButton = YES;
     workspace.continueText = NSLocalizedString( @"Publish", @"Label for button that will publish content." );
     workspace.activityText = NSLocalizedString( @"Publishing...", @"Label indicating that content is being published." );
     workspace.confirmCancelMessage = NSLocalizedString( @"This will discard any content added to your post", @"" );
     workspace.shouldConfirmCancels = YES;
     return workspace;
+}
+
+- (void)publishContent
+{
+    // Publish text post
+    [self.textWorkspaceViewController publishContent];
 }
 
 #pragma mark - Property Accessors

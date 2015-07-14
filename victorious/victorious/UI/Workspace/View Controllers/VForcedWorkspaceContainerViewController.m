@@ -63,7 +63,7 @@ static NSString * const kStatusBarStyleKey = @"statusBarStyle";
     // Disable swipe back gesture
     self.navigationItem.hidesBackButton = YES;
     
-    self.titleLabel.text = [self.dependencyManager stringForKey:kPromptKey];
+    self.titleLabel.text = NSLocalizedString([self.dependencyManager stringForKey:kPromptKey], @"");
     self.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
     self.doneButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
     self.titleLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
@@ -107,6 +107,12 @@ static NSString * const kStatusBarStyleKey = @"statusBarStyle";
                                                                                        addedDependencies:dependencies];
     self.flowController.delegate = self;
     
+    __weak typeof(self) welf = self;
+    self.flowController.publishCompletionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
+    {
+        [welf.delegate continueRegistrationFlow];
+    };
+    
     // Add workspace as child view controller
     [self addChildViewController:self.flowController.flowRootViewController];
     [self.containerView addSubview:self.flowController.flowRootViewController.view];
@@ -123,11 +129,14 @@ static NSString * const kStatusBarStyleKey = @"statusBarStyle";
 {
     if ([self showsSkipButton] && !self.ableToPublish)
     {
-        [self.doneButton setTitle:[self.dependencyManager stringForKey:kSkipButtonTextKey] forState:UIControlStateNormal];
+        [self.doneButton setTitle:NSLocalizedString([self.dependencyManager stringForKey:kSkipButtonTextKey], @"")
+                         forState:UIControlStateNormal];
     }
     else
     {
-        [self.doneButton setTitle:[self.dependencyManager stringForKey:kDoneButtonTextKey] forState:UIControlStateNormal];
+        [self.doneButton setTitle:NSLocalizedString([self.dependencyManager stringForKey:kDoneButtonTextKey], @"")
+                         forState:UIControlStateNormal];
+        
         self.doneButton.enabled = self.ableToPublish;
         [UIView animateWithDuration:animated ? 0.2 : 0 animations:^
          {
@@ -140,7 +149,7 @@ static NSString * const kStatusBarStyleKey = @"statusBarStyle";
 
 - (IBAction)pressedDone:(id)sender
 {
-    [self.delegate continueRegistrationFlow];
+    [self.flowController publishContent];
 }
 
 #pragma mark - Text Post Flow Controller

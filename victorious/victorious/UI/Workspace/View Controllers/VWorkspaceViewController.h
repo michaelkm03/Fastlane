@@ -16,4 +16,6 @@
 @property (nonatomic, strong) NSString *activityText;
 @property (nonatomic, strong) NSString *confirmCancelMessage;
 
+- (void)publishContent;
+
 @end

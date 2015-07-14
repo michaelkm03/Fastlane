@@ -11,6 +11,7 @@
 #import "VNavigationDestination.h"
 #import "VTextToolController.h"
 #import "VTextListener.h"
+#import "VBaseWorkspaceViewController.h"
 
 @protocol VTextWorkspaceFlowControllerDelegate <NSObject>
 
@@ -34,11 +35,10 @@
  */
 @property (nonatomic, readonly) UIViewController *flowRootViewController;
 
-/**
- *  The text tool controller used in this workspace.
- */
-@property (nonatomic, readonly) VTextToolController *textToolController;
-
 @property (nonatomic, weak) id<VTextWorkspaceFlowControllerDelegate> delegate;
+
+@property (nonatomic, copy) VWorkspaceCompletion publishCompletionBlock;
+
+- (void)publishContent;
 
 @end

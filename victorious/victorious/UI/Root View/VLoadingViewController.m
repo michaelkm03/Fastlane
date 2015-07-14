@@ -232,7 +232,10 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                          @"hashtagText" : @"FIRSTPOST"
                                          };
         
-        dict[@"registrationScreens"] = @[[dict[@"registrationScreens"] lastObject], textPostScreen];
+        NSMutableArray *screens = [dict[@"registrationScreens"] mutableCopy];
+        [screens addObject:textPostScreen];
+        
+        dict[@"registrationScreens"] = screens;
         
         [templateDecorator setTemplateValue:dict forKeyPath:keyPath];
                 
