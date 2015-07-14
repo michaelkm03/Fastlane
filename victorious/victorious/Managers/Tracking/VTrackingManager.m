@@ -55,7 +55,7 @@
         _durationEvents = [[NSMutableDictionary alloc] init];
         _sessionParameters = [[NSMutableDictionary alloc] init];
         
-#ifndef V_NO_TRACKING_ALERTS
+#ifdef V_TRACKING_ALERTS
         _eventLog = [[VTrackingEventLog alloc] init];
         [_eventLog clearEvents];
 #endif
@@ -149,7 +149,7 @@
         return;
     }
     
-#ifndef V_NO_TRACKING_ALERTS
+#ifdef V_TRACKING_ALERTS
     [self.eventLog logEvent:eventName parameters:parameters];
 #endif
     
