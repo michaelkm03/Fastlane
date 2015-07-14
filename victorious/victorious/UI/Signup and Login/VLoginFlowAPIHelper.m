@@ -283,7 +283,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
                                                                style:UIAlertActionStyleCancel
                                                              handler:nil];
-        UIAlertAction *retryAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Retry?", nil)
+        UIAlertAction *retryAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Retry", nil)
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction *action)
                                       {
@@ -333,7 +333,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                                                completion(NO, error);
                                                            });
                                         }];
-         UIAlertAction *retryAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Retry?", nil)
+         UIAlertAction *retryAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Retry", nil)
                                                                style:UIAlertActionStyleDefault
                                                              handler:^(UIAlertAction *action)
                                        {

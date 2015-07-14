@@ -61,10 +61,10 @@
                        NSDictionary *params = @{ VTrackingKeyErrorMessage : error.localizedDescription ?: @"" };
                        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailDenied parameters:params];
                        
-                       UIAlertController *accessNotGrantedAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"You didn't give us access", @"")
-                                                                                                 message:NSLocalizedString(@"You have to grant us access in settings.", @"")
+                       UIAlertController *accessNotGrantedAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"TwitterDeniedTitle", @"")
+                                                                                                 message:NSLocalizedString(@"TwitterDenied", @"")
                                                                                           preferredStyle:UIAlertControllerStyleAlert];
-                       [accessNotGrantedAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"")
+                       [accessNotGrantedAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
                                                                                  style:UIAlertActionStyleCancel
                                                                                handler:^(UIAlertAction *action)
                                                          {
