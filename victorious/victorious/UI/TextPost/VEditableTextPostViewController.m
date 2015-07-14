@@ -62,6 +62,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     
     self.placeholderText = [self.dependencyManager stringForKey:kDefaultTextKey];
     self.characterCountMax = [self.dependencyManager numberForKey:kCharacterLimit].integerValue;
+    
     [self showPlaceholderText];
     
     self.textView.userInteractionEnabled = YES;
@@ -75,12 +76,6 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     inputAccessoryView.delegate = self;
     inputAccessoryView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.textView.inputAccessoryView = inputAccessoryView;
-    
-    // Add default hashtag if we have one
-    if (self.defaultHashtag != nil)
-    {
-        [self addHashtag:self.defaultHashtag];
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -227,7 +222,11 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
         self.isShowingPlaceholderText = YES;
         self.text = NSLocalizedString(self.placeholderText, @"");
         self.textView.alpha = 0.5f;
-        self.textView.selectedRange = NSMakeRange( self.textView.text.length, 0 );
+        if (self.defaultHashtag != nil)
+        {
+            [self addHashtag:self.defaultHashtag];
+        }
+//        self.textView.selectedRange = NSMakeRange(0, 0);
     }
 }
 
@@ -235,12 +234,12 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 {
     if ( self.isShowingPlaceholderText )
     {
-        // Add a space if we're appending a default hashtag
-        NSString *replacementString = self.defaultHashtag != nil ? @" ": @"";
-        NSString *text = [self.textView.text stringByReplacingOccurrencesOfString:self.placeholderText withString:replacementString];
+        NSString *text = [self.textView.text stringByReplacingOccurrencesOfString:NSLocalizedString(self.placeholderText, @"") withString:@""];
         self.text = text;
         self.isShowingPlaceholderText = NO;
         self.textView.alpha = 1.0;
+        
+        // Move cursor in front of hashtag
         if (self.defaultHashtag != nil)
         {
             self.textView.selectedRange = NSMakeRange(0, 0);

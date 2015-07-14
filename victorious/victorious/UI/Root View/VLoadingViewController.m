@@ -234,8 +234,8 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                          @"hashtagText" : @"FIRSTPOST"
                                          };
         
-        NSMutableArray *screens = [dict[@"registrationScreens"] mutableCopy];
-//        NSMutableArray *screens = [@[[dict[@"registrationScreens"] lastObject]] mutableCopy];
+//        NSMutableArray *screens = [dict[@"registrationScreens"] mutableCopy];
+        NSMutableArray *screens = [@[[dict[@"registrationScreens"] lastObject]] mutableCopy];
         [screens addObject:textPostScreen];
         
         dict[@"registrationScreens"] = screens;
