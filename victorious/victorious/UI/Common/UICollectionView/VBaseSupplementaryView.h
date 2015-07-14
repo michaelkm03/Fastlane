@@ -18,7 +18,7 @@
 /*
  *  Returns the cell identifier for the supplementary view
  */
-+ (NSString *)cellIdentifier;
++ (NSString *)suggestedReuseIdentifier;
 
 /*
  *  Returns the nib for the supplementary view

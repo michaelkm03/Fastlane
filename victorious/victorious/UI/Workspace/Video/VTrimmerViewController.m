@@ -529,8 +529,8 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 
 - (void)registerSupplementaryViews
 {
-    [self.thumbnailCollectionView registerNib:[VTimeMarkView nibForCell] forSupplementaryViewOfKind:TimemarkViewKind withReuseIdentifier:[VTimeMarkView cellIdentifier]];
-    [self.thumbnailCollectionView registerNib:[VHashmarkView nibForCell] forSupplementaryViewOfKind:HashmarkViewKind withReuseIdentifier:[VHashmarkView cellIdentifier]];
+    [self.thumbnailCollectionView registerNib:[VTimeMarkView nibForCell] forSupplementaryViewOfKind:TimemarkViewKind withReuseIdentifier:[VTimeMarkView suggestedReuseIdentifier]];
+    [self.thumbnailCollectionView registerNib:[VHashmarkView nibForCell] forSupplementaryViewOfKind:HashmarkViewKind withReuseIdentifier:[VHashmarkView suggestedReuseIdentifier]];
 }
 
 @end

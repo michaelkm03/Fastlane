@@ -24,7 +24,7 @@
                                  forIndexPath:(NSIndexPath *)indexPath
                                      withKind:(NSString *)kind
 {
-    NSString *cellIdentifier = [self cellIdentifier];
+    NSString *cellIdentifier = [self suggestedReuseIdentifier];
     VTimeMarkView *cell = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:cellIdentifier forIndexPath:indexPath];
     return cell;
 }
