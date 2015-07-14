@@ -6,7 +6,7 @@
 # Copyright 2015 Victorious Inc. All Rights Reserved.
 
 """
-Posts Test Fairy build information for a specific app to the Victorious backend.
+Posts a Test Fairy build url for a specific app to the Victorious backend.
 
 """
 import requests
@@ -15,26 +15,10 @@ import os
 import hashlib
 import subprocess
 import urllib
+import vams_common as vams
 
-_LOGIN_ENDPOINT = '/api/login'
-_VICTORIOUS_ENDPOINT = '/api/app/update_appstore'
-
-_DEFAULT_VAMS_USERID = 0
-_DEFAULT_VAMS_USER = 'vicky@example.com'
-_DEFAULT_VAMS_PASSWORD = 'abc123456'
-
-_DEFAULT_USERAGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36 aid:1 uuid:FFFFFFFF-0000-0000-0000-FFFFFFFFFFFF build:1'
-_DEFAULT_HEADERS = ''
-_DEFAULT_HEADER_DATE = ''
-
-_DEFAULT_PLATFORM = 'android'
+_VICTORIOUS_ENDPOINT = '/api/app/update_testfairy_url'
 _DEFAULT_HOST = ''
-_PRODUCTION_HOST = 'http://api.getvictorious.com'
-_STAGING_HOST = 'http://staging.getvictorious.com'
-_QA_HOST = 'http://qa.getvictorious.com'
-_DEV_HOST = 'http://dev.getvictorious.com'
-_LOCAL_HOST = 'http://localhost:8887'
-
 _AUTH_TOKEN = ''
 
 
@@ -45,12 +29,11 @@ def authenticateUser():
     :return:
         A JSON object of details returned by the Victorious backend API.
     """
-    url = '%s%s' % (_DEFAULT_HOST, _LOGIN_ENDPOINT)
+    url = '%s%s' % (_DEFAULT_HOST, vams._LOGIN_ENDPOINT)
 
-    global _DEFAULT_HEADER_DATE
-    _DEFAULT_HEADER_DATE = subprocess.check_output("date", shell=True).rstrip()
-    postData = {'email':_DEFAULT_VAMS_USER,'password':_DEFAULT_VAMS_PASSWORD}
-    headers = {'User-Agent':_DEFAULT_USERAGENT,'Date':_DEFAULT_HEADER_DATE}
+    vams._DEFAULT_HEADER_DATE = subprocess.check_output("date", shell=True).rstrip()
+    postData = {'email':vams._DEFAULT_VAMS_USER,'password':vams._DEFAULT_VAMS_PASSWORD}
+    headers = {'User-Agent':vams._DEFAULT_USERAGENT,'Date':vams._DEFAULT_HEADER_DATE}
     r = requests.post(url, data=postData, headers=headers)
 
     if not r.status_code == 200:
@@ -78,14 +61,13 @@ def setAuthenticationToken(json_object):
         to a global variable.
     """
     global _AUTH_TOKEN
-    global _DEFAULT_VAMS_USERID
 
     payload = json_object['payload']
     if 'token' in payload:
         _AUTH_TOKEN = payload['token']
 
     if 'user_id' in json_object:
-        _DEFAULT_VAMS_USERID = json_object['user_id']
+        vams._DEFAULT_VAMS_USERID = json_object['user_id']
 
 
 def calcAuthHash(endpoint, reqMethod):
@@ -101,7 +83,8 @@ def calcAuthHash(endpoint, reqMethod):
     :return:
         A SHA1 hash used to authenticate subsequent requests
     """
-    return hashlib.sha1(_DEFAULT_HEADER_DATE + endpoint + _DEFAULT_USERAGENT + _AUTH_TOKEN + reqMethod).hexdigest()
+    return hashlib.sha1(vams._DEFAULT_HEADER_DATE + endpoint + vams._DEFAULT_USERAGENT + _AUTH_TOKEN +
+                        reqMethod).hexdigest()
 
 
 def postTestFairyURL(app_name, testfairy_url):
@@ -125,18 +108,19 @@ def postTestFairyURL(app_name, testfairy_url):
     req_hash = calcAuthHash(uri, 'POST')
 
     field_name = 'android_testfairy_url'
-    if _DEFAULT_PLATFORM == 'ios':
+    if vams._DEFAULT_PLATFORM == 'ios':
         field_name = 'ios_testfairy_url'
 
-    auth_header = 'BASIC %s:%s' % (_DEFAULT_VAMS_USERID, req_hash)
+    auth_header = 'BASIC %s:%s' % (vams._DEFAULT_VAMS_USERID, req_hash)
     headers = {
         'Authorization':auth_header,
-        'User-Agent':_DEFAULT_USERAGENT,
-        'Date':_DEFAULT_HEADER_DATE
+        'User-Agent':vams._DEFAULT_USERAGENT,
+        'Date':vams._DEFAULT_HEADER_DATE
     }
     postData = {
         'build_name':app_name,
         'name':field_name,
+        'platform':vams.DEFAULT_PLATFORM,
         'value':testfairy_url
     }
     response = requests.post(url, data=postData, headers=headers)
@@ -169,13 +153,12 @@ def main(argv):
         print ''
         return 1
 
-    global _DEFAULT_HOST
-    global _DEFAULT_PLATFORM
+    vams.init()
 
     app_name = argv[1]
     platform = argv[2]
     if platform == 'ios':
-        _DEFAULT_PLATFORM = 'ios'
+        vams._DEFAULT_PLATFORM = 'ios'
 
     url = argv[3]
 
@@ -184,18 +167,19 @@ def main(argv):
     else:
         server = ''
 
+    global _DEFAULT_HOST
     if server.lower() == 'dev':
-        _DEFAULT_HOST = _DEV_HOST
+        _DEFAULT_HOST = vams._DEV_HOST
     elif server.lower() == 'qa':
-        _DEFAULT_HOST = _QA_HOST
+        _DEFAULT_HOST = vams._QA_HOST
     elif server.lower() == 'staging':
-        _DEFAULT_HOST = _STAGING_HOST
+        _DEFAULT_HOST = vams._STAGING_HOST
     elif server.lower() == 'production':
-        _DEFAULT_HOST = _PRODUCTION_HOST
+        _DEFAULT_HOST = vams._PRODUCTION_HOST
     elif server.lower() == 'localhost':
-        _DEFAULT_HOST = _LOCAL_HOST
+        _DEFAULT_HOST = vams._LOCAL_HOST
     else:
-        _DEFAULT_HOST = _PRODUCTION_HOST
+        _DEFAULT_HOST = vams._PRODUCTION_HOST
         
     print ''
     print 'Using host: %s' % _DEFAULT_HOST
