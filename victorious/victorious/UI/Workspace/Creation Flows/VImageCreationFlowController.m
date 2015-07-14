@@ -16,6 +16,7 @@
 #import "VImageSearchViewController.h"
 #import "VAssetCollectionListViewController.h"
 #import "VImageAssetDownlaoder.h"
+#import "UIAlertController+VSimpleAlert.h"
 
 // Workspace
 #import "VWorkspaceViewController.h"
@@ -44,6 +45,7 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
+@property (nonatomic, strong) VCaptureContainerViewController *captureContainerViewController;
 @property (nonatomic, strong) VAssetCollectionListViewController *listViewController;
 @property (nonatomic, strong) VAssetCollectionGridViewController *gridViewController;
 @property (nonatomic, strong) VImageAssetDownlaoder *downloader;
@@ -70,17 +72,16 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
         _dependencyManager = dependencyManager;
         
         _context = VCameraContextContentCreation;
-        VCaptureContainerViewController *captureContainer = [VCaptureContainerViewController captureContainerWithDependencyManager:dependencyManager];
-        [captureContainer setAlternateCaptureOptions:[self alternateCaptureOptions]];
-        [self addCloseButtonToViewController:captureContainer];
-        [self setViewControllers:@[captureContainer]];
+        self.captureContainerViewController = [VCaptureContainerViewController captureContainerWithDependencyManager:dependencyManager];
+        [self.captureContainerViewController setAlternateCaptureOptions:[self alternateCaptureOptions]];
+        [self addCloseButtonToViewController:self.captureContainerViewController];
+        [self setViewControllers:@[self.captureContainerViewController]];
         
         _listViewController = [VAssetCollectionListViewController assetCollectionListViewControllerWithMediaType:PHAssetMediaTypeImage];
         _gridViewController = [self.dependencyManager templateValueOfType:[VAssetCollectionGridViewController class]
                                                                    forKey:kImageVideoLibrary
                                                     withAddedDependencies:@{VAssetCollectionGridViewControllerMediaType:@(PHAssetMediaTypeImage)}];
-        _gridViewController.collectionToDisplay = [self defaultCollection];
-        [captureContainer setContainedViewController:_gridViewController];
+        [self.captureContainerViewController setContainedViewController:_gridViewController];
         [self setupPublishScreen];
     }
     return self;
@@ -125,10 +126,20 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
                                    completion:^(NSError *error, NSURL *downloadedFileURL, UIImage *previewImage)
          {
              [hudForView hide:YES];
-             [welf prepareWorkspaceWithMediaURL:downloadedFileURL
-                             andPreviewImage:previewImage];
-             [welf pushViewController:welf.workspaceViewController
-                             animated:YES];
+             if (error == nil)
+             {
+                 [welf prepareWorkspaceWithMediaURL:downloadedFileURL
+                                    andPreviewImage:previewImage];
+                 [welf pushViewController:welf.workspaceViewController
+                                 animated:YES];
+             }
+             else
+             {
+                 UIAlertController *alert = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"LibraryCaptureFailed", nil)
+                                                                                      message:error.localizedDescription
+                                                                         andCancelButtonTitle:NSLocalizedString(@"OK", nil)];
+                 [welf presentViewController:alert animated:YES completion:nil];
+             }
          }];
     };
     
@@ -145,11 +156,6 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 }
 
 #pragma mark - Private Methods
-
-- (PHAssetCollection *)defaultCollection
-{
-    return nil;
-}
 
 - (void)presentAssetFoldersList
 {
@@ -333,6 +339,37 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 
 #pragma mark - UINavigationControllerDelegate
 
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    // Cleanup as we enter exist different states
+    if (viewController == self.captureContainerViewController)
+    {
+        BOOL removed = [[NSFileManager defaultManager] removeItemAtURL:self.workspaceViewController.mediaURL
+                                                                 error:nil];
+        if (removed)
+        {
+            VLog(@"Removed captured file");
+        }
+        else
+        {
+            VLog(@"Failed to remove captured file!");
+        }
+    }
+    if ([viewController isKindOfClass:[VWorkspaceViewController class]])
+    {
+        BOOL removed = [[NSFileManager defaultManager] removeItemAtURL:self.renderedMediaURL
+                                                                 error:nil];
+        if (removed)
+        {
+            VLog(@"Removed rendered file");
+        }
+        else
+        {
+            VLog(@"Failed to remove rendered file!");
+        }
+    }
+}
+
 - (id <UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
                                    animationControllerForOperation:(UINavigationControllerOperation)operation
                                                 fromViewController:(UIViewController *)fromVC
@@ -345,6 +382,7 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
         
         return self.publishAnimator;
     }
+
     return nil;
 }
 
