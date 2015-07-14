@@ -10,7 +10,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "VWorkspaceContext.h"
+#import "VCameraContext.h"
 
 @class AVCaptureDevice, AVCaptureSession, VCameraVideoEncoder, VWorkspaceFlowController;
 

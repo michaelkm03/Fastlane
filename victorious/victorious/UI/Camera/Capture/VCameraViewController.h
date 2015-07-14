@@ -7,7 +7,7 @@
 //
 
 #import "VHasManagedDependencies.h"
-#import "VWorkspaceContext.h"
+#import "VCameraContext.h"
 
 typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL);
 

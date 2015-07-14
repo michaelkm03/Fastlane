@@ -9,7 +9,7 @@
 #import "VHasManagedDependencies.h"
 #import "VNavigationDestination.h"
 #import "VAuthorizationContextProvider.h"
-#import "VWorkspaceContext.h"
+#import "VCameraContext.h"
 
 @class VWorkspaceFlowController;
 

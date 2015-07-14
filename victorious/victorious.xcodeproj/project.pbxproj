@@ -2221,7 +2221,7 @@
 		A7FE8C3D19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = HelveticaNeueLightItalic.ttf; sourceTree = "<group>"; };
 		A7FE8C3F19EDF14700B91EF2 /* VFileCacheTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFileCacheTests.m; sourceTree = "<group>"; };
 		AF22E63145F29BF59A08F94E /* Pods-victorious.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.debug.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.debug.xcconfig"; sourceTree = "<group>"; };
-		B041DB9D1B41E49A00E1F36D /* VWorkspaceContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VWorkspaceContext.h; sourceTree = "<group>"; };
+		B041DB9D1B41E49A00E1F36D /* VCameraContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VCameraContext.h; sourceTree = "<group>"; };
 		B07BFD5F1B26761D00784FC8 /* VHashtagHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagHelper.h; sourceTree = "<group>"; };
 		B07BFD601B26761D00784FC8 /* VHashtagHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashtagHelper.m; sourceTree = "<group>"; };
 		B07BFD621B26780900784FC8 /* VHashtagResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagResponder.h; sourceTree = "<group>"; };
@@ -6228,7 +6228,7 @@
 				A7ECC1D01AD6178F0003E00A /* View Controllers */,
 				034D1A8B1AAFF00200EB7B2D /* VPublishViewController.xib */,
 				A77B11691ACB42890018E932 /* VTextListener.h */,
-				B041DB9D1B41E49A00E1F36D /* VWorkspaceContext.h */,
+				B041DB9D1B41E49A00E1F36D /* VCameraContext.h */,
 				D80BAB581A688D83003A3068 /* VWorkspaceFlowController.h */,
 				D80BAB591A688D83003A3068 /* VWorkspaceFlowController.m */,
 				D8B88F951ABA85F700DBAEA0 /* VWorkspaceShimDestination.h */,
