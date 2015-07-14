@@ -419,11 +419,9 @@ static NSString * const kVAPIParamContext = @"context";
     }
     if (sequenceID != nil)
     {
-        userSearchURL = [userSearchURL stringByAppendingPathComponent:sequenceID];
+        userSearchURL = [userSearchURL stringByAppendingString:[NSString stringWithFormat:@"?sequence_id=%@", sequenceID]];
     }
-    
-    NSLog(@"user search url %@", userSearchURL);
-    
+        
     return [self GET:userSearchURL
               object:nil
           parameters:nil
