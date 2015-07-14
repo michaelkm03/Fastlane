@@ -236,6 +236,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                          };
         
         NSMutableArray *screens = [dict[@"registrationScreens"] mutableCopy];
+        // Uncomment this to skip all registration screens
 //        NSMutableArray *screens = [@[[dict[@"registrationScreens"] lastObject]] mutableCopy];
         [screens addObject:textPostScreen];
         
