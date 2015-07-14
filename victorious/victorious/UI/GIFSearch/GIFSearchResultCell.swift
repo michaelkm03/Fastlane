@@ -8,36 +8,41 @@
 
 import UIKit
 
-extension UICollectionViewCell {
-    
-    static var suggestedReuseIdentifier: String {
-        return NSStringFromClass(self).pathExtension
-    }
-}
-
 /// Cell to represent GIF search result in a collectin of search results
 class GIFSearchResultCell: UICollectionViewCell {
     
+    @IBOutlet private weak var emptyView: UIView!
     @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var overlayView: UIView!
+    
     
     var assetUrl: NSURL? {
         didSet {
             if let url = self.assetUrl {
-                let shouldAnimate = self.assetUrl != oldValue
-                self.imageView.hidden = shouldAnimate ? true : false
-                self.imageView.sd_setImageWithURL( url, completed: { (image, error, cacheType, url) in
-                    UIView.animateWithDuration( shouldAnimate ? 0.5 : 0.0, animations: {
-                        self.imageView.hidden = false
-                    })
-                })
+                self.loadImage( url )
             }
         }
     }
     
+    private func loadImage( url: NSURL ) {
+        self.imageView.sd_setImageWithURL( url, completed: { (image, error, cacheType, url) in
+            
+            if cacheType == .None {
+                self.imageView.alpha = 0.0
+                UIView.animateWithDuration(0.5) {
+                    self.imageView.alpha = 1.0
+                }
+            }
+            else {
+                self.imageView.alpha = 1.0
+            }
+        })
+    }
+    
     override var selected: Bool {
         didSet {
-            self.imageView.alpha = self.selected ? 0.5 : 1.0
-            self.backgroundColor = self.selected ? self.tintColor : UIColor.clearColor()
+            self.overlayView.alpha = self.selected ? 0.5 : 0.0
+            self.overlayView.backgroundColor = self.selected ? self.tintColor : UIColor.clearColor()
         }
     }
 }

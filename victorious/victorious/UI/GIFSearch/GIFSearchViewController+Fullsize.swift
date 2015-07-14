@@ -28,6 +28,14 @@ extension GIFSearchViewController {
             }
             self.collectionView.scrollToItemAtIndexPath( indexPath, atScrollPosition: .CenteredVertically,  animated: true )
         }
+        
+        // Update the current selectedIndexPath, adjusting for the newly inserted section
+        if let selectedIndexPath = self.selectedIndexPath where selectedIndexPath.section < indexPath.section {
+            self.selectedIndexPath = NSIndexPath(forRow: indexPath.row, inSection: indexPath.section-1)
+        }
+        else {
+            self.selectedIndexPath = indexPath
+        }
     }
     
     func hideFullSize( forItemAtIndexPath indexPath: NSIndexPath ) {
@@ -35,6 +43,9 @@ extension GIFSearchViewController {
             let result = self.searchDataSource.removeHighlightSection()
             self.collectionView.applyDataSourceChanges( result )
         }, completion: nil )
+        
+        // Clear the current selectedIndexPath
+        self.selectedIndexPath = nil
     }
 }
 

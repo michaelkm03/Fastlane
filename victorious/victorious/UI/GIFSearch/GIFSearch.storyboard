@@ -67,20 +67,38 @@
                                             <rect key="frame" x="0.0" y="0.0" width="102" height="102"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zv5-eY-VaX" userLabel="emptyView">
+                                                    <rect key="frame" x="1" y="1" width="100" height="100"/>
+                                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.75" colorSpace="calibratedRGB"/>
+                                                </view>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jT7-0T-Z0S">
                                                     <rect key="frame" x="0.0" y="0.0" width="102" height="102"/>
                                                 </imageView>
+                                                <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fVM-ce-a29" userLabel="Overlay">
+                                                    <rect key="frame" x="0.0" y="0.0" width="102" height="102"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="fVM-ce-a29" secondAttribute="trailing" id="3Hv-Lc-qVU"/>
+                                            <constraint firstAttribute="bottom" secondItem="Zv5-eY-VaX" secondAttribute="bottom" constant="1" id="Eg7-2q-Udw"/>
+                                            <constraint firstItem="Zv5-eY-VaX" firstAttribute="leading" secondItem="jzn-p0-A5p" secondAttribute="leading" constant="1" id="TNg-Bj-NVj"/>
                                             <constraint firstAttribute="bottom" secondItem="jT7-0T-Z0S" secondAttribute="bottom" id="UFM-fR-eqi"/>
+                                            <constraint firstItem="Zv5-eY-VaX" firstAttribute="top" secondItem="jzn-p0-A5p" secondAttribute="top" constant="1" id="gNu-02-QhS"/>
                                             <constraint firstItem="jT7-0T-Z0S" firstAttribute="leading" secondItem="jzn-p0-A5p" secondAttribute="leading" id="hJi-tc-ZI3"/>
                                             <constraint firstItem="jT7-0T-Z0S" firstAttribute="top" secondItem="jzn-p0-A5p" secondAttribute="top" id="i7M-Md-wa0"/>
+                                            <constraint firstAttribute="bottom" secondItem="fVM-ce-a29" secondAttribute="bottom" id="jcP-fU-tnl"/>
                                             <constraint firstAttribute="trailing" secondItem="jT7-0T-Z0S" secondAttribute="trailing" id="ka4-4T-2Jj"/>
+                                            <constraint firstAttribute="trailing" secondItem="Zv5-eY-VaX" secondAttribute="trailing" constant="1" id="rUQ-GT-Z2T"/>
+                                            <constraint firstItem="fVM-ce-a29" firstAttribute="top" secondItem="jzn-p0-A5p" secondAttribute="top" id="tBW-h3-C1f"/>
+                                            <constraint firstItem="fVM-ce-a29" firstAttribute="leading" secondItem="jzn-p0-A5p" secondAttribute="leading" id="vL1-zh-xt1"/>
                                         </constraints>
                                         <connections>
+                                            <outlet property="emptyView" destination="Zv5-eY-VaX" id="i3c-HO-SCr"/>
                                             <outlet property="imageView" destination="jT7-0T-Z0S" id="Q3Q-PP-sIx"/>
+                                            <outlet property="overlayView" destination="fVM-ce-a29" id="H0S-oi-SGq"/>
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="GIFSearchNoContentCell" id="yQx-pk-lcY" userLabel="GIFSearchNoContentCell" customClass="GIFSearchNoContentCell" customModule="victorious" customModuleProvider="target">

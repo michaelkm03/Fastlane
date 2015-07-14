@@ -88,6 +88,7 @@ class GIFSearchViewController: UIViewController, VMediaSource {
     
     func onNext( sender: AnyObject? ) {
         if let indexPath = self.selectedIndexPath {
+            
             let selectedGIF = self.searchDataSource.sections[ indexPath.section ][ indexPath.row ]
             
             var progressHUD = MBProgressHUD.showHUDAddedTo( self.view, animated: true )

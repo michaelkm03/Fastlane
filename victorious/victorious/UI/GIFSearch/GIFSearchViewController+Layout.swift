@@ -11,15 +11,14 @@ import UIKit
 extension GIFSearchViewController : UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        
         let section = self.searchDataSource.sections[ indexPath.section ]
         if collectionView.cellForItemAtIndexPath( indexPath ) is GIFSearchResultCell {
             if self.selectedIndexPath == indexPath {
                 self.hideFullSize( forItemAtIndexPath: indexPath )
-                self.selectedIndexPath = nil
             }
             else {
                 self.showFullSize( forItemAtIndexPath: indexPath )
-                self.selectedIndexPath = indexPath
             }
         }
     }

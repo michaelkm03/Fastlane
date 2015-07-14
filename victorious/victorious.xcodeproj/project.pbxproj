@@ -498,6 +498,7 @@
 		A778B4481B544370004F9F54 /* GIFSearchMediaHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A778B4471B544370004F9F54 /* GIFSearchMediaHelper.swift */; };
 		A778B44A1B545699004F9F54 /* GIFSearchPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A778B4491B545699004F9F54 /* GIFSearchPreviewCell.swift */; };
 		A778B44C1B5456BC004F9F54 /* GIFSearchNoContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A778B44B1B5456BC004F9F54 /* GIFSearchNoContentCell.swift */; };
+		A778B44E1B55937F004F9F54 /* UICollectionViewCell+Reuse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A778B44D1B55937F004F9F54 /* UICollectionViewCell+Reuse.swift */; };
 		A7792FD71AE8209200E2ECC1 /* VTemplateDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = A7792FD61AE8209200E2ECC1 /* VTemplateDecorator.m */; };
 		A7792FDE1AE8497200E2ECC1 /* VTemplateDecoratorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7792FDD1AE8497200E2ECC1 /* VTemplateDecoratorTests.m */; };
 		A77951061B27D22D00D9DB0A /* VSuggestedUsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951051B27D22D00D9DB0A /* VSuggestedUsersViewController.m */; };
@@ -1944,6 +1945,7 @@
 		A778B4471B544370004F9F54 /* GIFSearchMediaHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GIFSearchMediaHelper.swift; path = GIFSearch/GIFSearchMediaHelper.swift; sourceTree = "<group>"; };
 		A778B4491B545699004F9F54 /* GIFSearchPreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GIFSearchPreviewCell.swift; path = GIFSearch/GIFSearchPreviewCell.swift; sourceTree = "<group>"; };
 		A778B44B1B5456BC004F9F54 /* GIFSearchNoContentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GIFSearchNoContentCell.swift; path = GIFSearch/GIFSearchNoContentCell.swift; sourceTree = "<group>"; };
+		A778B44D1B55937F004F9F54 /* UICollectionViewCell+Reuse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+Reuse.swift"; sourceTree = "<group>"; };
 		A7792FD51AE8209200E2ECC1 /* VTemplateDecorator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTemplateDecorator.h; sourceTree = "<group>"; };
 		A7792FD61AE8209200E2ECC1 /* VTemplateDecorator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateDecorator.m; sourceTree = "<group>"; };
 		A7792FDD1AE8497200E2ECC1 /* VTemplateDecoratorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateDecoratorTests.m; sourceTree = "<group>"; };
@@ -5532,6 +5534,9 @@
 				BE799BAF19C8DF4B0023CE88 /* OrderedSets */,
 				0314D06219B466C100FA363C /* UIActivityViewController+VStatusBarHandling.h */,
 				0314D06319B466C100FA363C /* UIActivityViewController+VStatusBarHandling.m */,
+				A682F4FA1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.h */,
+				A682F4FB1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.m */,
+				A778B44D1B55937F004F9F54 /* UICollectionViewCell+Reuse.swift */,
 				A77FB9211A897200003E9AA2 /* UIColor+VBrightness.h */,
 				A77FB9221A897200003E9AA2 /* UIColor+VBrightness.m */,
 				A7ECC1BF1AD60ECE0003E00A /* UIColor+VHex.h */,
@@ -5556,6 +5561,8 @@
 				BE11447D19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m */,
 				0314D05C19B4663C00FA363C /* UINavigationController+RotationMethodForwarding.h */,
 				0314D05D19B4663C00FA363C /* UINavigationController+RotationMethodForwarding.m */,
+				A74B430B1B0BB8AC003C19A0 /* UIResponder+VResponderChain.h */,
+				A74B430C1B0BB8AC003C19A0 /* UIResponder+VResponderChain.m */,
 				D816F7E21A966A0B00120798 /* UIScrollView+VCenterContent.h */,
 				D816F7E31A966A0B00120798 /* UIScrollView+VCenterContent.m */,
 				039D02B21A104C4500DB9236 /* UIStoryboard+VMainStoryboard.h */,
@@ -5580,10 +5587,6 @@
 				03811D3319353486005687FF /* VAlertViewBlockDelegate.m */,
 				BE46F02B19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.h */,
 				BE46F02C19D0CC3700CD7EF6 /* VConversation+UnreadMessageCount.m */,
-				A74B430B1B0BB8AC003C19A0 /* UIResponder+VResponderChain.h */,
-				A74B430C1B0BB8AC003C19A0 /* UIResponder+VResponderChain.m */,
-				A682F4FA1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.h */,
-				A682F4FB1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -7842,6 +7845,7 @@
 				A75FAF1719E8AC1E00EB87C1 /* VDiscoverSuggestedPeopleSectionCell.m in Sources */,
 				F0C83A551B156D1700A6EC1A /* VCoachmarkManager+VObjectAssociation.m in Sources */,
 				0314D4B319B46B5E00FA363C /* VImageLightboxViewController.m in Sources */,
+				A778B44E1B55937F004F9F54 /* UICollectionViewCell+Reuse.swift in Sources */,
 				F089E35D1AC4863F0076DC4D /* VBlurredMarqueeController.m in Sources */,
 				A7D3784B1AF057FF007FF197 /* VImageAsset+RestKit.m in Sources */,
 				A7F711F81AE1D5A00086F729 /* VAbstractProfileEditViewController.m in Sources */,
