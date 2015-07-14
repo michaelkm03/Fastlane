@@ -393,21 +393,6 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
     }];
 }
 
-- (NSArray *)arrayOfAllImageURLs
-{
-    if ( self.imageURLs == nil )
-    {
-        return [self.parentManager arrayOfAllImageURLs];
-    }
-    
-    __block NSArray *allImageURLs;
-    dispatch_sync(self.privateQueue, ^(void)
-    {
-        allImageURLs = [self.imageURLs copy];
-    });
-    return allImageURLs;
-}
-
 #pragma mark - Singleton dependencies
 
 - (id)singletonObjectOfType:(Class)expectedType forKey:(NSString *)key

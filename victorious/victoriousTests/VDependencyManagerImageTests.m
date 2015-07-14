@@ -42,28 +42,4 @@
     XCTAssertEqualObjects(images[4], @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00004.png");
 }
 
-- (void)testAllImageURLs
-{
-    NSArray *images = [self.dependencyManager arrayOfAllImageURLs];
-    XCTAssertEqual(images.count, 18u);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00000.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00001.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00002.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00003.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00004.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00000.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00001.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00002.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00003.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00004.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00005.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00006.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00007.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00008.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00009.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00010.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00011.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00012.png"]);
-}
-
 @end

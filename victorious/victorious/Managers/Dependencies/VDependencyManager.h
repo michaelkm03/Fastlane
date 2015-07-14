@@ -161,11 +161,6 @@ extern NSString * const VDependencyManagerEditTextWorkspaceKey;
 - (NSArray *)arrayOfImageURLsForKey:(NSString *)key;
 
 /**
- Returns an array of all image URLs that appear in the template.
- */
-- (NSArray *)arrayOfAllImageURLs;
-
-/**
  Returns the value stored for the specified key in the configuration
  dictionary of this instance, if present, or the closest ancestor.
  
