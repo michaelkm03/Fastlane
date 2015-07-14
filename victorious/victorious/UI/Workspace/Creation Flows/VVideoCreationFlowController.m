@@ -34,6 +34,7 @@
 #import "VDependencyManager.h"
 
 static NSString * const kVideoWorkspaceKey = @"videoWorkspace";
+static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 
 @interface VVideoCreationFlowController () <UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate>
 
@@ -69,8 +70,10 @@ static NSString * const kVideoWorkspaceKey = @"videoWorkspace";
         [self setViewControllers:@[captureContainer]];
         
         _listViewController = [VAssetCollectionListViewController assetCollectionListViewControllerWithMediaType:PHAssetMediaTypeVideo];
-        _gridViewController = [VAssetCollectionGridViewController assetGridViewControllerWithDependencyManager:dependencyManager
-                                                                                                     mediaType:PHAssetMediaTypeVideo];
+        _gridViewController = [dependencyManager templateValueOfType:[VAssetCollectionGridViewController class]
+                                                              forKey:kImageVideoLibrary
+                                               withAddedDependencies:@{VAssetCollectionGridViewControllerMediaType: @(PHAssetMediaTypeVideo)}];
+
         [captureContainer setContainedViewController:_gridViewController];
     }
     return self;

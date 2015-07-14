@@ -66,6 +66,8 @@
 	<string>VCameraViewController</string>
 	<key>workspace.screen</key>
 	<string>VWorkspaceViewController</string>
+	<key>imageVideoGallery.screen</key>
+	<string>VAssetCollectionGridViewController</string>
 	<key>workspace</key>
 	<string>VWorkspaceShimDestination</string>
 	<key>text.creationFlow</key>

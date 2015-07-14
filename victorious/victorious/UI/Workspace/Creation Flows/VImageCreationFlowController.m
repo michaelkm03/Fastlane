@@ -36,6 +36,7 @@
 
 // Keys
 NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
+static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 
 @interface VImageCreationFlowController () <UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate>
 
@@ -75,8 +76,9 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
         [self setViewControllers:@[captureContainer]];
         
         _listViewController = [VAssetCollectionListViewController assetCollectionListViewControllerWithMediaType:PHAssetMediaTypeImage];
-        _gridViewController = [VAssetCollectionGridViewController assetGridViewControllerWithDependencyManager:dependencyManager
-                                                                                                     mediaType:PHAssetMediaTypeImage];
+        _gridViewController = [self.dependencyManager templateValueOfType:[VAssetCollectionGridViewController class]
+                                                                   forKey:kImageVideoLibrary
+                                                    withAddedDependencies:@{VAssetCollectionGridViewControllerMediaType:@(PHAssetMediaTypeImage)}];
         _gridViewController.collectionToDisplay = [self defaultCollection];
         [captureContainer setContainedViewController:_gridViewController];
         [self setupPublishScreen];

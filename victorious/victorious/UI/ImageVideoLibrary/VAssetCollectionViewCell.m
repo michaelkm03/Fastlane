@@ -51,17 +51,23 @@
     requestOptions.resizeMode = PHImageRequestOptionsResizeModeFast;
     requestOptions.networkAccessAllowed = YES;
     
-    [self.imageManager requestImageForAsset:asset
-                                 targetSize:desiredSize
-                                contentMode:PHImageContentModeAspectFill
-                                    options:requestOptions
-                              resultHandler:^(UIImage *result, NSDictionary *info)
-     {
-         if ([_asset.localIdentifier isEqualToString:asset.localIdentifier])
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+    {
+        [self.imageManager requestImageForAsset:asset
+                                     targetSize:desiredSize
+                                    contentMode:PHImageContentModeAspectFill
+                                        options:requestOptions
+                                  resultHandler:^(UIImage *result, NSDictionary *info)
          {
-             self.imageView.image = result;
-         }
-     }];
+             dispatch_async(dispatch_get_main_queue(), ^
+                            {
+                                if ([_asset.localIdentifier isEqualToString:asset.localIdentifier])
+                                {
+                                    self.imageView.image = result;
+                                }
+                            });
+         }];
+    });
 }
 
 @end

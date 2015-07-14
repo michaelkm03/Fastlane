@@ -59,10 +59,11 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
         [captureContainer setAlternateCaptureOptions:[self alternateCaptureOptions]];
         [self addCloseButtonToViewController:captureContainer];
         [self setViewControllers:@[captureContainer]];
-        
-        VAssetCollectionGridViewController *gridViewController = [VAssetCollectionGridViewController assetGridViewControllerWithDependencyManager:dependencyManager
-                                                                                                                                        mediaType:PHAssetMediaTypeVideo];
-        [captureContainer setContainedViewController:gridViewController];
+
+#warning FIXME Or wait for Patrick's merge
+//        VAssetCollectionGridViewController *gridViewController = [VAssetCollectionGridViewController assetGridViewControllerWithDependencyManager:dependencyManager
+//                                                                                                                                        mediaType:PHAssetMediaTypeVideo];
+//        [captureContainer setContainedViewController:gridViewController];
     }
     return self;
 }
@@ -201,7 +202,6 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
     publishParameters.mediaToUploadURL = renderedMediaURL;
     publishParameters.previewImage = previewImage;
     
-//    VVideoToolController *videoToolController = (VVideoToolController *)workspace.toolController;
     publishParameters.isGIF = YES;
     
     self.publishViewContorller.publishParameters = publishParameters;
