@@ -67,7 +67,6 @@
                                       return ![hashtagsAfter containsObject:hashtag];
                                   }];
     self.collectedHashtagsRemoved = [[hashtagsBefore filteredArrayUsingPredicate:removedFilter] v_map:removeHashmarkBlock];
-    NSLog(@"%@", self.collectedHashtagsRemoved);
 }
 
 - (void)resetCollectedHashtagEdits
