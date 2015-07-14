@@ -36,7 +36,7 @@
 #import "VLikedContentStreamCollectionViewController.h"
 #import "UIAlertController+VSimpleAlert.h"
 
-static const NSInteger kSettingsSectionIndex         = 0;
+static const NSInteger kSettingsSectionIndex = 0;
 
 typedef NS_ENUM(NSInteger, VSettingsAction)
 {
@@ -136,16 +136,16 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     
     [self updatePurchasesCount];
     
-#ifdef V_NO_SWITCH_ENVIRONMENTS
-    self.showEnvironmentSetting = NO;
-#else
+#ifdef V_SWITCH_ENVIRONMENTS
     self.showEnvironmentSetting = YES;
+#else
+    self.showEnvironmentSetting = NO;
 #endif
     
-#ifdef V_NO_TRACKING_ALERTS
-    self.showTrackingAlertSetting = NO;
-#else
+#ifdef V_TRACKING_ALERTS
     self.showTrackingAlertSetting = YES;
+#else
+    self.showTrackingAlertSetting = NO;
 #endif
     
 #ifdef V_SHOW_COACHMARK_RESET

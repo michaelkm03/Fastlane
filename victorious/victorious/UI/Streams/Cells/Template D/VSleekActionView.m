@@ -82,8 +82,10 @@ static NSUInteger const kMaxNumberOfActionButtons = 4;
     }
     else
     {
+#ifndef NS_BLOCK_ASSERTIONS
         NSString *errorString = [NSString stringWithFormat:@"This action view isn't prepared to handle streamItems of class %@", NSStringFromClass([streamItem class])];
         NSAssert(false, errorString);
+#endif
     }
     
     return [NSString stringWithString:identifier];

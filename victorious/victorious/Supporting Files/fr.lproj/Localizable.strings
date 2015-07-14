@@ -1,13 +1,10 @@
-
 /* 
   Localizable.strings
   victorious
+
   Created by Gary Philipp on 12/23/13.
   Copyright (c) 2013 Victorious Inc. All rights reserved.
 */
-
-
-
 "Home" = "Accueil";
 "Create" = "Créer";
 "Channel" = "Canal";
@@ -19,6 +16,9 @@
 "Messages" = "Messages";
 "Notifications" = "Notifications";
 "Comments" = "Commentaires";
+"Remixes" = "Remixes";
+"GIFs" = "GIF";
+"Memes" = "Mèmes";
 "OK" = "OK";
 "CancelButton" = "Annuler";
 "DeleteButton" = "Supprimer";
@@ -42,6 +42,7 @@
 "Save" = "Sauvegarder";
 "Continue" = "Continuer";
 "Loading..." = "Chargement...";
+"Finding fans to connect with..." = "Recherche de fans avec qui se connecter...";
 
 "Featured" = "À la une";
 "Recent" = "Récents";
@@ -90,6 +91,7 @@
 "PollAlreadyAnswered" = "Vous avez déjà répondu à ce sondage";
 "LoginFail" = "Échec de la connexion";
 "GenericFailMessage" = "Oups ! Une erreur s'est produite.";
+"FacebookLoginFailed" = "Oups ! La connexion à Facebook a échoué. Veuillez réessayer.";
 "NotLoggedInMessage" = "Oups ! Il semblerait que vous ne soyez pas connecté(e).";
 "SignupFail" = "Échec de création du compte";
 "AccountUpdateFail" = "Échec de la mise à jour du compte";
@@ -109,6 +111,7 @@
 "Profile load failed!" = "Échec de chargement du profil !";
 
 "User already exists" = "L'utilisateur existe déjà";
+"User already exists but the password is incorrect" = "L'utilisateur existe, mais le mot de passe est incorrect.";
 "Invalid email address or password" = "Adresse e-mail ou mot de passe invalide";
 "Sorry, I can't display that right now" = "Désolé, je ne peux pas afficher cela pour le moment";
 
@@ -145,6 +148,9 @@
 "NotFollowingTitle" = "OH OH ! VOUS NE SUIVEZ ENCORE PERSONNE";
 "NotFollowingMessage" = "Suivez d'autres utilisateurs pour visualiser leur contenu dans votre flux. C'est une manière sympa de découvrir un nouveau contenu ou de se faire de nouveaux amis.";
 
+"NoLikersMessage" = "Montrez à la communauté ce que vous jugez important en aimant votre contenu favori.";
+"NoLikersTitle" = "PERSONNE N'AIME CECI... POUR L'INSTANT !";
+
 "ProfileNoFollowersTitle" = "SOYEZ LE PREMIER À SUIVRE CET UTILISATEUR";
 "ProfileNoFollowersMessage" = "Établissez votre communauté en suivant d'autres utilisateurs. Vous serez alerté(e) lors de la publication de nouveau contenu.";
 
@@ -156,35 +162,17 @@
 "SuggestedFollowersPlur" = "%@ abonnés";
 "SuggestedFollowersK" = "%@ abonnés";
 
-"NoRepostersTitle"      =   "BE THE 1st TO REPOST!";
-"NoRepostersMessage"    =   "Share this content with all of your followers!";
-
-"NoGiffersTitle"       =   "BE THE 1ST TO GIF!";
-"NoGiffersMessage"     =   "Make a GIF by selecting your favorite clip from this video and sharing it with other fans!";
-
-"NoMemersTitle"       =   "BE THE 1ST TO MEME!";
-"NoMemersMessage"     =   "Make this content your own by making it into a meme and sharing it with other fans!";
-
 "NoRepostersTitle" = "SOYEZ LE PREMIER À REPUBLIER !";
 "NoRepostersMessage" = "Partagez ce contenu avec tous vos abonnés !";
 
-"NoRemixersTitle" = "SOYEZ LE PREMIER À REMIXER !";
-"NoRemixersMessage" = "Appropriez-vous ce contenu en ajoutant des commentaires, des clips vidéos supplémentaires et plus encore !";
+"NoGiffersTitle" = "SOYEZ LE PREMIER À FAIRE UN GIF !";
+"NoGiffersMessage" = "Faites un GIF en sélectionnant votre clip préféré de la vidéo et partagez-le avec d'autres fans !";
 
-/* Check out this poll by <creator>! <URL> */
-"OwnerSharePollFormat" = "Découvrez ce sondage par %@ !";
-/* Check out "<video name>" by <creator>! <URL> */
-"OwnerShareVideoFormat" = "Découvrez « %@ » par%@ !";
-/* Check out this videy by <creator>! <URL> */
-"OwnerShareVideoFormatNoVideoName" = "Découvrez cette vidéo de %@ !";
-/* Check out this photo by <creator>! <URL> */
-"OwnerShareImageFormat" = "Découvrez cette photo de %@ !";
-/* Check out this post by <creator>! <URL> */
-"OwnerShareTextFormat" = "Découvrez cette publication de « %@ » !";
-/* Check this out */
-"OwnerShareLinkFormat"   =    "Regarde ça!";
-/* Check out this poll! <URL> */
-"UGCSharePollFormat" = "Ce sondage pourrait vous intéresser !";
+"NoMemersTitle" = "SOYEZ LE PREMIER À FAIRE UN MÈME !";
+"NoMemersMessage" = "Appropriez-vous ce contenu en créant un mème et en le partageant avec d'autres fans !";
+
+// strings for both UGC and creator
+"UGCSharePollFormat" = "Ce sondage pourrait vous intéresser !"; //Check out this poll! <URL>
 /* Check out this video! <URL> */
 "UGCShareVideoFormat" = "Cette vidéo pourrait vous intéresser !";
 /* Check out this gif! <URL> */
@@ -193,8 +181,8 @@
 "UGCShareImageFormat" = "Cette photo pourrait vous intéresser !";
 /* Check out this post! <URL> */
 "UGCShareTextFormat" = "Découvrez cette publication !";
-/* Check this out */
-"UGCShareLinkFormat"   =    "Regarde ça!";
+"UGCShareLinkFormat" = "Regardez cela !";
+
 /* Check out this post from the <creator name> app! */
 "EmailShareSubjectFormat" = "Découvrez cette publication de l'application %@ !";
 
@@ -302,6 +290,10 @@
 "PublishDescription" = "Veuillez saisir une légende pour votre contenu.";
 
 "PublishDescriptionMinCharacters" = "Veuillez saisir une description plus longue.";
+
+"Sorry, we were having some trouble on our end. Please retry." = "Désolé, nous rencontrons des difficultés. Veuillez réessayer.";
+"We failed to retrieve publish permissions." = "Nous n'avons pas pu récupérer les autorisations de publication.";
+"Retry" = "Réessayer";
 
 "ReplaceVideo" = "Remplacer la vidéo";
 
@@ -436,6 +428,7 @@
 
 "Logout" = "Déconnexion";
 
+
 "UserBannedTitle" = "Oh oh !";
 "UserBannedMessage" = "Malheureusement, vous êtes un membre banni de la communauté. Vous pourrez toujours visualiser le contenu, mais ne pourrez ni publier, ni interagir avec d'autres utilisateurs.";
 
@@ -506,7 +499,6 @@
 
 "NoHashtagsTitle" = "Aucun mot dièse ici !";
 "NoHashtagsMessage" = "Aucune publication trouvée contenant le mot dièse #%@";
-
 "Type your feedback here..." = "Tapez votre commentaire ici...";
 "Device:" = "Appareil :";
 "OS Version:" = "Version du système d'exploitation :";
@@ -613,16 +605,18 @@
 "We encountered an error trying to edit this video." = "Une erreur est survenue lors de la modification de cette vidéo.";
 
 "#nofilter" = "#nofilter";
-"Create a meme" = "Créer un MEME";
+"Create a meme" = "Créer un mème";
 "Create a quote" = "Créer une citation";
 "Create a GIF" = "Créer un GIF";
 "Type your text here!" = "Tapez votre texte ici !";
 "GIF" = "GIF";
-"Quote" = "Citation";
+
 "GIF MODE" = "MODE GIF";
 "VIDEO MODE" = "MODE VIDÉO";
 "Write a caption (optional)" = "Rédiger une légende (facultatif)";
+
 "Render failure" = "Échec du rendu";
+
 "Upload failure" = "Échec de téléchargement";
 
 "Before you can take and share photos with the community, we need access to your camera. Allow camera access now?" = "Avant de pouvoir prendre des photos et les partager avec la communauté, nous devons accéder à votre appareil photo. Autoriser l'accès à l'appareil-photo maintenant ?";
@@ -633,7 +627,7 @@
 "Follow content from other fans." = "Suivez le contenu d'autres fans.";
 "Share creations with the community." = "Partagez des créations avec la communauté.";
 "Join in on the conversation." = "Rejoignez la conversation.";
-"By signing up you are agreeing to our \\nterms of service and privacy policy." = "En vous inscrivant, vous acceptez nos\nconditions générales et politique de confidentialité.";
+"By signing up you are agreeing to our \nterms of service and privacy policy." = "En vous inscrivant, vous acceptez nos\nconditions générales et politique de confidentialité.";
 "Sign up with Email" = "S'inscrire via e-mail";
 "Sign up with Facebook" = "S'inscrire via Facebook";
 "Create an account and join the community." = "Créez un compte et rejoignez la communauté.";
@@ -652,3 +646,22 @@
 "Enter a new Password" = "Saisissez un nouveau mot de passe";
 "Confirm your new password" = "Confirmez votre nouveau mot de passe";
 "Welcome Back!" = "Contents de vous revoir !";
+
+"Nice!" = "Super !";
+"Edit photo" = "Modifier la photo";
+
+/* e.g. "1 Comment" */
+"CommentsSingularFormat" = "%@ commentaire";
+/* e.g. "20 Comments" */
+"CommentsPluralFormat" = "%@ commentaires";
+/* e.g. "1 Like", where "Like" is a noun */
+"LikesSingularFormat" = "%@ mention J'aime";
+/* e.g. "20 Likes", where "Like" is a noun */
+"LikesPluralFormat" = "%@ mentions J'aime";
+"LikersTitle" = "Personnes qui aiment";
+
+"TEXT" = "TEXTE";
+"POLL" = "SONDAGE";
+"VIDEO" = "VIDÉO";
+"IMAGE" = "IMAGE";
+"Nevermind" = "Peu importe";

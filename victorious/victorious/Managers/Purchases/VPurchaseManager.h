@@ -111,7 +111,7 @@ NSString * const VPurchaseManagerProductsDidUpdateNotification;
  */
 - (VProduct *)purchaseableProductForProductIdentifier:(NSString *)productIdentifier;
 
-#ifndef V_NO_RESET_PURCHASES
+#ifdef V_RESET_PURCHASES
 
 /**
  For testing a debugging purposes, this will erase the local purchase record.

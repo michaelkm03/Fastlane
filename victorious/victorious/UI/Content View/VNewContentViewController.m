@@ -104,6 +104,7 @@
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VCoachmarkManager.h"
 #import "VSequenceExpressionsObserver.h"
+#import "VExperienceEnhancerResponder.h"
 #import "VDependencyManager+VTracking.h"
 
 #define HANDOFFENABLED 0
@@ -111,7 +112,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder>
 
 @property (nonatomic, strong) NSUserActivity *handoffObject;
 
@@ -503,14 +504,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                              selector:@selector(keyboardDidChangeFrame:)
                                                  name:VInputAccessoryViewKeyboardFrameDidChangeNotification
                                                object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(experienceEnhancerDidRequireLogin:)
-                                                 name:VExperienceEnhancerBarDidRequireLoginNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(showPurchaseViewController:)
-                                                 name:VExperienceEnhancerBarDidRequirePurchasePrompt
-                                               object:nil];
     
     [self.navigationController setNavigationBarHidden:YES
                                              animated:YES];
@@ -631,9 +624,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:VInputAccessoryViewKeyboardFrameDidChangeNotification
                                                   object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:VExperienceEnhancerBarDidRequirePurchasePrompt
-                                                  object:nil];
     
     self.contentCollectionView.delegate = nil;
     self.videoCell.delegate = nil;
@@ -690,48 +680,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 }
 
 #pragma mark - Notification Handlers
-
-- (void)showPurchaseViewController:(NSNotification *)notification
-{
-    if ( notification.userInfo == nil )
-    {
-        return;
-    }
-    
-    VExperienceEnhancer *experienceEnhander = (VExperienceEnhancer *)notification.userInfo[ @"experienceEnhancer" ];
-    if ( experienceEnhander == nil )
-    {
-        return;
-    }
-    
-    NSDictionary *params = @{ VTrackingKeyProductIdentifier : experienceEnhander.voteType.productIdentifier ?: @"" };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLockedVoteType parameters:params];
-    
-    VPurchaseViewController *viewController = [VPurchaseViewController newWithDependencyManager:self.dependencyManager];
-    viewController.voteType = experienceEnhander.voteType;
-    viewController.transitioningDelegate = self.modalTransitionDelegate;
-    viewController.delegate = self;
-    [self presentViewController:viewController animated:YES completion:nil];
-}
-
-- (void)experienceEnhancerDidRequireLogin:(NSNotification *)notification
-{
-    __weak typeof(self) welf = self;
-    [welf.authorizedAction performFromViewController:self context:VAuthorizationContextVoteBallistic completion:^(BOOL authorized)
-     {
-         if (!authorized)
-         {
-             return;
-         }
-         // Use the provided index path of the selected emotive ballistic that trigger the notificiation
-         // to perform the authorized action once authorization is successful
-         NSIndexPath *experienceEnhancerIndexPath = notification.userInfo[ @"experienceEnhancerIndexPath" ];
-         if ( experienceEnhancerIndexPath != nil )
-         {
-             [welf.experienceEnhancerCell.experienceEnhancerBar selectExperienceEnhancerAtIndex:experienceEnhancerIndexPath];
-         }
-     }];
-}
 
 - (void)keyboardDidChangeFrame:(NSNotification *)notification
 {
@@ -1962,6 +1910,31 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (NSString *)screenIdentifier
 {
     return [self.dependencyManager stringForKey:VDependencyManagerIDKey];
+}
+
+#pragma mark - VExperienceEnhancerResponder
+
+- (void)showPurchaseViewController:(VVoteType *)voteType
+{
+    NSDictionary *params = @{ VTrackingKeyProductIdentifier : voteType.productIdentifier ?: @"" };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLockedVoteType parameters:params];
+    
+    VPurchaseViewController *viewController = [VPurchaseViewController newWithDependencyManager:self.dependencyManager];
+    viewController.voteType = voteType;
+    viewController.transitioningDelegate = self.modalTransitionDelegate;
+    viewController.delegate = self;
+    [self presentViewController:viewController animated:YES completion:nil];
+}
+
+- (void)authorizeWithCompletion:(void(^)(BOOL))completion
+{
+    [self.authorizedAction performFromViewController:self context:VAuthorizationContextVoteBallistic completion:^(BOOL authorized)
+     {
+         if ( completion != nil )
+         {
+             completion( authorized );
+         }
+     }];
 }
 
 @end
