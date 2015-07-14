@@ -10,11 +10,14 @@
 #import "VHasManagedDependencies.h"
 #import "VNavigationDestination.h"
 #import "VTextToolController.h"
-#import "VTextListener.h"
 #import "VBaseWorkspaceViewController.h"
 
 @protocol VTextWorkspaceFlowControllerDelegate <NSObject>
 
+/**
+ Gets called when the content changes state between being
+ publishable and not being publishable.
+ */
 - (void)contentDidBecomePublishable:(BOOL)publishable;
 
 @end
@@ -35,10 +38,22 @@
  */
 @property (nonatomic, readonly) UIViewController *flowRootViewController;
 
+/**
+ Text workspace flow controller's delegate for responding to content
+ becoming publishable.
+ */
 @property (nonatomic, weak) id<VTextWorkspaceFlowControllerDelegate> delegate;
 
+/**
+ A completion block that will get called after content publishes. If this is not
+ set, the text workspace will dismiss itself.
+ */
 @property (nonatomic, copy) VWorkspaceCompletion publishCompletionBlock;
 
+
+/**
+ Publishes the current content in the workspace.
+ */
 - (void)publishContent;
 
 @end

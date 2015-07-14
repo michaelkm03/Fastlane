@@ -57,6 +57,10 @@ extern NSString * const kDefaultTextKey;
  */
 @property (nonatomic, assign) BOOL isEditing;
 
+/**
+ Adds a hashtag to the text view's placeholder text and also appends it to the
+ end of the text when the user starts typing.
+ */
 @property (nonatomic, strong) NSString *defaultHashtag;
 
 /**

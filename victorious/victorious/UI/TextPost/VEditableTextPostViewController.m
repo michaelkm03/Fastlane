@@ -235,7 +235,9 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 {
     if ( self.isShowingPlaceholderText )
     {
-        NSString *text = [self.textView.text stringByReplacingOccurrencesOfString:self.placeholderText withString:self.defaultHashtag != nil ? @" ": @""];
+        // Add a space if we're appending a default hashtag
+        NSString *replacementString = self.defaultHashtag != nil ? @" ": @"";
+        NSString *text = [self.textView.text stringByReplacingOccurrencesOfString:self.placeholderText withString:replacementString];
         self.text = text;
         self.isShowingPlaceholderText = NO;
         self.textView.alpha = 1.0;

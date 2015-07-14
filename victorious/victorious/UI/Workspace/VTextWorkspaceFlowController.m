@@ -151,13 +151,13 @@
 - (void)textCanvasToolDidSelectCamera:(VTextCanvasToolViewController *)textCanvasToolViewController
 {
     self.mediaCaptureViewController = [self createCameraViewController];
-    [self.flowRootViewController presentViewController:self.mediaCaptureViewController animated:YES completion:nil];
+    [self.flowNavigationController presentViewController:self.mediaCaptureViewController animated:YES completion:nil];
 }
 
 - (void)textCanvasToolDidSelectImageSearch:(VTextCanvasToolViewController *)textCanvasToolViewController
 {
     self.mediaCaptureViewController = [self createImageSearchViewController];
-    [self.flowRootViewController presentViewController:self.mediaCaptureViewController animated:YES completion:nil];
+    [self.flowNavigationController presentViewController:self.mediaCaptureViewController animated:YES completion:nil];
 }
 
 - (void)textCanvasToolDidSelectClearImage:(VTextCanvasToolViewController *)textCanvasToolViewController

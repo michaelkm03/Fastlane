@@ -532,8 +532,6 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     }
     
     [self.view endEditing:YES];
-    
-    
     [self.presentingViewController dismissViewControllerAnimated:YES
                                                       completion:^
      {
