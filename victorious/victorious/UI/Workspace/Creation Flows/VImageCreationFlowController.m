@@ -163,12 +163,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     CGSize preferredContentSize = CGSizeMake(CGRectGetWidth(self.view.bounds) - 50.0f,
                                              CGRectGetHeight(self.view.bounds) - 200.0f);
     self.listViewController.preferredContentSize = preferredContentSize;
-    UIViewController *topViewContorller = [self.viewControllers firstObject];
-    popoverPresentation.sourceView = topViewContorller.navigationItem.titleView;
-    popoverPresentation.sourceRect = CGRectMake(CGRectGetMidX(popoverPresentation.sourceView.bounds),
-                                                CGRectGetMaxY(popoverPresentation.sourceView.bounds) + CGRectGetHeight(popoverPresentation.sourceView.bounds),
-                                                0.0f,
-                                                CGRectGetHeight(popoverPresentation.sourceView.bounds));
+    popoverPresentation.sourceView = self.navigationBar;
 
     [self presentViewController:self.listViewController animated:YES completion:nil];
 }
@@ -216,7 +211,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
                            animated:YES
                          completion:nil];
     };
-#warning Add these to localized strings
     VAlternateCaptureOption *cameraOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Camera", nil)
                                                                                       icon:[UIImage imageNamed:@"contententry_cameraicon"]
                                                                          andSelectionBlock:cameraSelectionBlock];

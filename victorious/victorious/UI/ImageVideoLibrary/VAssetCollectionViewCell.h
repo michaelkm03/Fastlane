@@ -8,12 +8,21 @@
 
 #import "VBaseCollectionViewCell.h"
 
-@class PHAsset;
+@import Photos;
 
+/**
+ *  VAssetCollectionViewCell displays a PHAsset in a collectionViewCell.
+ */
 @interface VAssetCollectionViewCell : VBaseCollectionViewCell
 
+/**
+ *  The PHAsset that this cell will fetch image data for.
+ */
 @property (nonatomic, strong) PHAsset *asset;
 
-- (void)refetchImage;
+/**
+ *  The image manager that this cell will use to fetch it's assets. 
+ */
+@property (nonatomic, strong) PHImageManager *imageManager;
 
 @end

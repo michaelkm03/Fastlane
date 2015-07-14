@@ -12,7 +12,6 @@ typedef NS_OPTIONS(NSUInteger, VMediaAttachmentType)
 {
     VMediaAttachmentTypeImage   = 1 << 0,
     VMediaAttachmentTypeVideo   = 1 << 1,
-    VMediaAttachmentTypeGIF     = 1 << 2,
 };
 
 /**

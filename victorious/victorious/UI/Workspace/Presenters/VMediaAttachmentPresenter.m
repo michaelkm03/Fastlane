@@ -10,9 +10,12 @@
 
 // Creation
 #import "VImageCreationFlowController.h"
+#import "VVideoCreationFlowController.h"
 
 // Dependencies
 #import "VDependencyManager.h"
+
+static NSString * const kVideoCreateFlow = @"videoCreateFlow";
 
 @interface VMediaAttachmentPresenter () <VCreationFlowControllerDelegate>
 
@@ -62,22 +65,14 @@
                                                             handler:^(UIAlertAction *action)
                                       {
                                           // Video
-#warning Implement Video
+                                          VVideoCreationFlowController *videoCreationFlowController = [self.dependencyManager templateValueOfType:[VVideoCreationFlowController class]
+                                                                                                                                           forKey:kVideoCreateFlow];
+                                          videoCreationFlowController.creationFlowDelegate = self;
+                                          [self.viewControllerToPresentOn presentViewController:videoCreationFlowController
+                                                                                       animated:YES
+                                                                                     completion:nil];
                                       }];
         [attachmentActionSheet addAction:videoAction];
-    }
-    
-    if (self.attachmentTypes & VMediaAttachmentTypeGIF)
-    {
-        // GIF
-        UIAlertAction *gifAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"GIF", nil)
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction *action)
-                                    {
-                                        // Show GIF
-#warning implement gif attachments
-                                    }];
-        [attachmentActionSheet addAction:gifAction];
     }
     
     // Cancel

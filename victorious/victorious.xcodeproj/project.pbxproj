@@ -317,6 +317,7 @@
 		A682F4FC1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = A682F4FB1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.m */; };
 		A682F4FE1B3C829E009B6DBE /* imageCreationFlow.json in Resources */ = {isa = PBXBuildFile; fileRef = A682F4FD1B3C829E009B6DBE /* imageCreationFlow.json */; };
 		A692AE121B5480E0003A874B /* NSIndexSet+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = A692AE111B5480E0003A874B /* NSIndexSet+Convenience.m */; };
+		A692AE151B54881E003A874B /* UICollectionView+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = A692AE141B54881E003A874B /* UICollectionView+Convenience.m */; };
 		A6CC23C71B4B2A0600141DD6 /* VAssetGroupTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CC23C61B4B2A0600141DD6 /* VAssetGroupTableViewCell.m */; };
 		A6CC23CB1B4B57A500141DD6 /* textCreationFlow.json in Resources */ = {isa = PBXBuildFile; fileRef = A6CC23CA1B4B57A500141DD6 /* textCreationFlow.json */; };
 		A6D51BE71B4F33D700703AB0 /* VLibraryAuthorizationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A6D51BE61B4F33D700703AB0 /* VLibraryAuthorizationCell.m */; };
@@ -1648,6 +1649,8 @@
 		A682F4FD1B3C829E009B6DBE /* imageCreationFlow.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = imageCreationFlow.json; path = ../imageCreationFlow.json; sourceTree = "<group>"; };
 		A692AE101B5480E0003A874B /* NSIndexSet+Convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexSet+Convenience.h"; sourceTree = "<group>"; };
 		A692AE111B5480E0003A874B /* NSIndexSet+Convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexSet+Convenience.m"; sourceTree = "<group>"; };
+		A692AE131B54881E003A874B /* UICollectionView+Convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UICollectionView+Convenience.h"; sourceTree = "<group>"; };
+		A692AE141B54881E003A874B /* UICollectionView+Convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UICollectionView+Convenience.m"; sourceTree = "<group>"; };
 		A6CC23C51B4B2A0600141DD6 /* VAssetGroupTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAssetGroupTableViewCell.h; sourceTree = "<group>"; };
 		A6CC23C61B4B2A0600141DD6 /* VAssetGroupTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAssetGroupTableViewCell.m; sourceTree = "<group>"; };
 		A6CC23CA1B4B57A500141DD6 /* textCreationFlow.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = textCreationFlow.json; sourceTree = "<group>"; };
@@ -5550,6 +5553,8 @@
 				A682F4FB1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.m */,
 				A692AE101B5480E0003A874B /* NSIndexSet+Convenience.h */,
 				A692AE111B5480E0003A874B /* NSIndexSet+Convenience.m */,
+				A692AE131B54881E003A874B /* UICollectionView+Convenience.h */,
+				A692AE141B54881E003A874B /* UICollectionView+Convenience.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -7941,6 +7946,7 @@
 				0314D2E319B46AF300FA363C /* VUserManager.m in Sources */,
 				D8360CF319E379C200D7E260 /* VExperienceEnhancer.m in Sources */,
 				D8B70FE71A8015E500090C5E /* VInlineValidationTextField.m in Sources */,
+				A692AE151B54881E003A874B /* UICollectionView+Convenience.m in Sources */,
 				037FCF0A1A8B0CE500E8ABFC /* VFollowUserControl.m in Sources */,
 				0314D4DA19B46B5E00FA363C /* VSettingsViewController.m in Sources */,
 				D8C8F5731A0400DF006BE3E8 /* VExtendedView.m in Sources */,

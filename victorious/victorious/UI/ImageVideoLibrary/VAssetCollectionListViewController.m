@@ -247,10 +247,12 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
             }
         }
         
-        self.collections = assetCollections;
-        self.assetFetchResultForCollections = assetCollectionsFetchResutls;
-        
-        dispatch_async(dispatch_get_main_queue(), success);
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            self.collections = assetCollections;
+            self.assetFetchResultForCollections = assetCollectionsFetchResutls;
+            dispatch_async(dispatch_get_main_queue(), success);
+        });
     });
 }
 

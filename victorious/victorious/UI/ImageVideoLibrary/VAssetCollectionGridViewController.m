@@ -18,6 +18,7 @@
 #import "VCompatibility.h"
 #import "UIView+AutoLayout.h"
 #import "NSIndexSet+Convenience.h"
+#import "UICollectionView+Convenience.h"
 
 // Image Resizing
 #import "UIImage+Resize.h"
@@ -119,6 +120,13 @@
     {
         [self.collectionView deselectItemAtIndexPath:selectedIndexPaths animated:NO];
     }
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self updateCachedAssets];
 }
 
 #pragma mark - Property Accessors
@@ -250,16 +258,9 @@
                                                                                forIndexPath:indexPath];
     
     // Configure cell for asset
+    cell.imageManager = self.imageManager;
     PHAsset *assetAtIndexPath = [self assetForIndexPath:indexPath];
-    [[PHImageManager defaultManager] requestImageForAsset:assetAtIndexPath
-                                               targetSize:CGSizeMake(95, 95)
-                                              contentMode:PHImageContentModeAspectFill
-                                                  options:nil
-                                            resultHandler:^(UIImage *result, NSDictionary *info)
-     {
-         VAssetCollectionViewCell *cellForResult = (VAssetCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-         cellForResult.imageView.image = result;
-     }];
+    cell.asset = assetAtIndexPath;
     
     return cell;
 }
@@ -337,8 +338,7 @@
         case VPermissionStatePromptDenied:
         case VPermissionStateSystemDenied:
         case VPermissionStateUnknown:
-#warning Fix this
-            return CGSizeMake(320.0, 320.0);
+            return CGSizeMake(200.0, 200.0);
             break;
         case VPermissionStateAuthorized:
         {
@@ -395,6 +395,10 @@
                     {
                         [collectionView reloadItemsAtIndexPaths:[changedIndexes indexPathsFromIndexesWithSecion:0]];
                     }
+                    [collectionChanges enumerateMovesWithBlock:^(NSUInteger fromIndex, NSUInteger toIndex)
+                    {
+                        [collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:toIndex inSection:0]]];
+                    }];
                 } completion:NULL];
             }
             
@@ -403,12 +407,113 @@
     });
 }
 
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [self updateCachedAssets];
+}
+
 #pragma mark - Private Methods
 
 - (void)resetCachedAssets
 {
     [self.imageManager stopCachingImagesForAllAssets];
     self.previousPrefetchRect = CGRectZero;
+}
+
+- (void)updateCachedAssets
+{
+    if (![self isViewLoaded])
+    {
+        return;
+    }
+    
+    // The preheat window is twice the height of the visible rect
+    CGRect preheatRect = self.collectionView.bounds;
+    preheatRect = CGRectInset(preheatRect, 0.0f, -0.5f * CGRectGetHeight(preheatRect));
+    
+    // If scrolled by a "reasonable" amount...
+    CGFloat delta = ABS(CGRectGetMidY(preheatRect) - CGRectGetMidY(self.previousPrefetchRect));
+    if (delta > CGRectGetHeight(self.collectionView.bounds) / 3.0f)
+    {
+        
+        // Compute the assets to start caching and to stop caching.
+        NSMutableArray *addedIndexPaths = [NSMutableArray array];
+        NSMutableArray *removedIndexPaths = [NSMutableArray array];
+        
+        [self computeDifferenceBetweenRect:self.previousPrefetchRect
+                                   andRect:preheatRect
+                            removedHandler:^(CGRect removedRect)
+        {
+            NSArray *indexPaths = [self.collectionView indexPathsInRect:removedRect];
+            [removedIndexPaths addObjectsFromArray:indexPaths];
+        }
+                              addedHandler:^(CGRect addedRect)
+        {
+            NSArray *indexPaths = [self.collectionView indexPathsInRect:addedRect];
+            [addedIndexPaths addObjectsFromArray:indexPaths];
+        }];
+        
+        NSArray *assetsToStartCaching = [self assetsAtIndexPaths:addedIndexPaths];
+        NSArray *assetsToStopCaching = [self assetsAtIndexPaths:removedIndexPaths];
+        
+        [self.imageManager startCachingImagesForAssets:assetsToStartCaching
+                                            targetSize:[self desiredImageSize]
+                                           contentMode:PHImageContentModeAspectFill
+                                               options:nil];
+        [self.imageManager stopCachingImagesForAssets:assetsToStopCaching
+                                           targetSize:[self desiredImageSize]
+                                          contentMode:PHImageContentModeAspectFill
+                                              options:nil];
+        
+        self.previousPrefetchRect = preheatRect;
+    }
+}
+
+- (CGSize)desiredImageSize
+{
+    CGFloat scale = [UIScreen mainScreen].scale;
+    CGSize cellSize = [self collectionView:self.collectionView
+                                    layout:self.collectionViewLayout
+                    sizeForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+    return CGSizeMake(cellSize.width * scale, cellSize.height * scale);
+}
+
+- (void)computeDifferenceBetweenRect:(CGRect)oldRect andRect:(CGRect)newRect removedHandler:(void (^)(CGRect removedRect))removedHandler addedHandler:(void (^)(CGRect addedRect))addedHandler
+{
+    if (CGRectIntersectsRect(newRect, oldRect))
+    {
+        CGFloat oldMaxY = CGRectGetMaxY(oldRect);
+        CGFloat oldMinY = CGRectGetMinY(oldRect);
+        CGFloat newMaxY = CGRectGetMaxY(newRect);
+        CGFloat newMinY = CGRectGetMinY(newRect);
+        if (newMaxY > oldMaxY)
+        {
+            CGRect rectToAdd = CGRectMake(newRect.origin.x, oldMaxY, newRect.size.width, (newMaxY - oldMaxY));
+            addedHandler(rectToAdd);
+        }
+        if (oldMinY > newMinY)
+        {
+            CGRect rectToAdd = CGRectMake(newRect.origin.x, newMinY, newRect.size.width, (oldMinY - newMinY));
+            addedHandler(rectToAdd);
+        }
+        if (newMaxY < oldMaxY)
+        {
+            CGRect rectToRemove = CGRectMake(newRect.origin.x, newMaxY, newRect.size.width, (oldMaxY - newMaxY));
+            removedHandler(rectToRemove);
+        }
+        if (oldMinY < newMinY)
+        {
+            CGRect rectToRemove = CGRectMake(newRect.origin.x, oldMinY, newRect.size.width, (newMinY - oldMinY));
+            removedHandler(rectToRemove);
+        }
+    }
+    else
+    {
+        addedHandler(newRect);
+        removedHandler(oldRect);
+    }
 }
 
 - (PHAsset *)assetForIndexPath:(NSIndexPath *)indexPath
@@ -420,6 +525,22 @@
 {
     self.imageManager = [[PHCachingImageManager alloc] init];
     [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
+}
+
+- (NSArray *)assetsAtIndexPaths:(NSArray *)indexPaths
+{
+    if (indexPaths.count == 0)
+    {
+        return nil;
+    }
+    
+    NSMutableArray *assets = [NSMutableArray arrayWithCapacity:indexPaths.count];
+    for (NSIndexPath *indexPath in indexPaths)
+    {
+        PHAsset *asset = self.assetsToDisplay[indexPath.item];
+        [assets addObject:asset];
+    }
+    return assets;
 }
 
 @end
