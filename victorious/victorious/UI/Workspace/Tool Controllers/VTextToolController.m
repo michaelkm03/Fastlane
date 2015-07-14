@@ -110,6 +110,7 @@
                                            backgroundColor:[self currentColorSelection]
                                                   mediaURL:renderedAssetURL
                                               previewImage:[self textPostPreviewImage]
+                                                    forced:[self publishIsForced]
                                                 completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
      {
          completion( YES, nil, nil, nil );

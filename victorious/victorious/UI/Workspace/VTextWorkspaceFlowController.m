@@ -123,6 +123,11 @@
 
 - (void)publishContent
 {
+    if ([self.delegate respondsToSelector:@selector(isCreationForced)])
+    {
+        self.textToolController.publishIsForced = [self.delegate isCreationForced];
+    }
+    
     // Publish text post
     [self.textWorkspaceViewController publishContent];
 }

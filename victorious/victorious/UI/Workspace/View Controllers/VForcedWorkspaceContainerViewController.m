@@ -160,6 +160,11 @@ static NSString * const kStatusBarStyleKey = @"statusBarStyle";
     [self updateDoneButton:YES];
 }
 
+- (BOOL)isCreationForced
+{
+    return YES;
+}
+
 #pragma mark - VLoginFlowScreen
 
 @synthesize delegate = _delegate;

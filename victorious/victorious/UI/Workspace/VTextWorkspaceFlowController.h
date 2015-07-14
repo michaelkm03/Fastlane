@@ -20,6 +20,13 @@
  */
 - (void)contentDidBecomePublishable:(BOOL)publishable;
 
+
+/**
+ Informs the flow controller whether or not creation of
+ content is forced.
+ */
+- (BOOL)isCreationForced;
+
 @end
 
 /**
