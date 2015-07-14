@@ -23,6 +23,7 @@
 #import "VTemplateDownloadOperation.h"
 #import "VUserManager.h"
 #import "VLaunchScreenProvider.h"
+#import "VLoginOperation.h"
 #import "UIView+AutoLayout.h"
 #import "VEnvironmentManager.h"
 #import "MBProgressHUD.h"
@@ -37,6 +38,8 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *reachabilityLabelHeightConstraint;
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
 @property (nonatomic, strong) VTemplateDownloadOperation *templateDownloadManager;
+@property (nonatomic, strong) VLoginOperation *loginOperation;
+@property (nonatomic, strong) NSBlockOperation *finishLoadingOperation;
 
 @end
 
@@ -81,7 +84,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
     }
     else
     {
-        [self loadTemplate];
+        [self startLoading];
     }
 }
 
@@ -146,19 +149,39 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
     else
     {
         [self hideReachabilityNotice];
-        [self loadTemplate];
+        [self startLoading];
     }
 }
 
 #pragma mark - Loading
 
-- (void)loadTemplate
+- (void)startLoading
 {
     VEnvironmentManager *environmentManager = [VEnvironmentManager sharedInstance];
     
+    self.loginOperation = [[VLoginOperation alloc] init];
+    [self.operationQueue addOperation:self.loginOperation];
+    
     self.templateDownloadManager = [[VTemplateDownloadOperation alloc] initWithDownloader:[VObjectManager sharedManager] andDelegate:self];
     self.templateDownloadManager.templateConfigurationCacheID = environmentManager.currentEnvironment.templateCacheIdentifier;
+    [self.templateDownloadManager addDependency:self.loginOperation];
     [self.operationQueue addOperation:self.templateDownloadManager];
+    
+    __weak typeof(self) weakSelf = self;
+    self.finishLoadingOperation = [NSBlockOperation blockOperationWithBlock:^(void)
+    {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if ( strongSelf != nil )
+        {
+            dispatch_async(dispatch_get_main_queue(), ^(void)
+            {
+                [strongSelf onDoneLoadingWithTemplateConfiguration:strongSelf.templateDownloadManager.templateConfiguration];
+            });
+        }
+    }];
+    [self.finishLoadingOperation addDependency:self.templateDownloadManager];
+    [self.finishLoadingOperation addDependency:self.loginOperation];
+    [self.operationQueue addOperation:self.finishLoadingOperation];
 }
 
 - (void)onDoneLoadingWithTemplateConfiguration:(NSDictionary *)templateConfiguration
@@ -177,35 +200,13 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
 
 #pragma mark - VTemplateDownloadOperationDelegate methods
 
-- (void)templateDownloadOperation:(VTemplateDownloadOperation *)downloadOperation didFinishLoadingTemplateConfiguration:(NSDictionary *)configuration
+- (void)templateDownloadOperationDidFallbackOnCache:(VTemplateDownloadOperation *)downloadOperation
 {
-    dispatch_async(dispatch_get_main_queue(), ^(void)
+    if ( downloadOperation != self.templateDownloadManager )
     {
-        if ( downloadOperation != self.templateDownloadManager )
-        {
-            return;
-        }
-        self.templateDownloadManager = nil;
-        
-        // First try to log in with stored user (token from keychain)
-        const BOOL loginWithStoredUserDidSucceed = [[VObjectManager sharedManager] loginWithExistingToken];
-        if ( loginWithStoredUserDidSucceed )
-        {
-            [self onDoneLoadingWithTemplateConfiguration:configuration];
-        }
-        else
-        {
-            // Log in through server using saved password
-            [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
-            {
-                [self onDoneLoadingWithTemplateConfiguration:configuration];
-            }
-                                                                       onError:^(NSError *error, BOOL thirdPartyAPIFailed)
-            {
-                [self onDoneLoadingWithTemplateConfiguration:configuration];
-            }];
-        }
-    });
+        return;
+    }
+    [self.finishLoadingOperation removeDependency:downloadOperation];
 }
 
 - (void)templateDownloadOperation:(VTemplateDownloadOperation *)downloadOperation needsAnOperationAddedToTheQueue:(NSOperation *)operation

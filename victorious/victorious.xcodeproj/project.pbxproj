@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0306F7A61ADDF939009FE3AA /* VJSONHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0306F7A51ADDF939009FE3AA /* VJSONHelper.m */; };
 		0306F7A81ADDF990009FE3AA /* VJSONHelperTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0306F7A71ADDF990009FE3AA /* VJSONHelperTests.m */; };
+		0307F8411B4F3BA400342C13 /* VLoginOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0307F8401B4F3BA400342C13 /* VLoginOperation.m */; };
 		0308B1191AB2B00100144E53 /* VInsetStreamCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0308B1181AB2B00100144E53 /* VInsetStreamCollectionCell.m */; };
 		0309318D1A18425B004E9781 /* VMenuCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 030931891A18425B004E9781 /* VMenuCollectionViewCell.m */; };
 		0309318E1A18425B004E9781 /* VMenuCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0309318B1A18425B004E9781 /* VMenuCollectionViewDataSource.m */; };
@@ -1049,6 +1050,8 @@
 		0306F7A41ADDF939009FE3AA /* VJSONHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VJSONHelper.h; sourceTree = "<group>"; };
 		0306F7A51ADDF939009FE3AA /* VJSONHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VJSONHelper.m; sourceTree = "<group>"; };
 		0306F7A71ADDF990009FE3AA /* VJSONHelperTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VJSONHelperTests.m; sourceTree = "<group>"; };
+		0307F83F1B4F3BA400342C13 /* VLoginOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLoginOperation.h; sourceTree = "<group>"; };
+		0307F8401B4F3BA400342C13 /* VLoginOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLoginOperation.m; sourceTree = "<group>"; };
 		0308B0EC1AB20B2B00144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/VPublishViewController.strings; sourceTree = "<group>"; };
 		0308B0ED1AB20B2C00144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Profile.strings; sourceTree = "<group>"; };
 		0308B0EE1AB20B2C00144E53 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/VKeyboardInputAccessoryView.strings; sourceTree = "<group>"; };
@@ -3913,6 +3916,8 @@
 			children = (
 				0314D3E719B46B5E00FA363C /* VLoadingViewController.h */,
 				0314D3E819B46B5E00FA363C /* VLoadingViewController.m */,
+				0307F83F1B4F3BA400342C13 /* VLoginOperation.h */,
+				0307F8401B4F3BA400342C13 /* VLoginOperation.m */,
 			);
 			path = "Loading View";
 			sourceTree = "<group>";
@@ -7719,6 +7724,7 @@
 				D8E39BDC19CB7C80007FD86A /* VContentPollCell.m in Sources */,
 				D85B70981B0EED0D0038CA5B /* VModernLoginViewController.m in Sources */,
 				C35266041B2A05EA001F093F /* VCreateSheetTransitionDelegate.m in Sources */,
+				0307F8411B4F3BA400342C13 /* VLoginOperation.m in Sources */,
 				0314D0B719B4698800FA363C /* VObjectManager+Users.m in Sources */,
 				A75ED0D61AB79EB500C35063 /* VTextCanvasToolViewController.m in Sources */,
 				BE171E1B1868C211004E5202 /* VUser+RestKit.m in Sources */,

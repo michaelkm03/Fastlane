@@ -105,6 +105,17 @@ static const NSTimeInterval kDefaultImageDownloadTimeout = 15.0;
     dispatch_semaphore_signal(self.semaphore);
 }
 
+- (NSDictionary *)templateConfiguration
+{
+    // TODO: protect against deadlock
+    __block NSDictionary *templateConfiguration;
+    dispatch_sync(self.privateQueue, ^(void)
+    {
+        templateConfiguration = _templateConfiguration;
+    });
+    return templateConfiguration;
+}
+
 - (void)downloadTimerExpired
 {
     [self loadTemplateFromCache];
@@ -132,8 +143,10 @@ static const NSTimeInterval kDefaultImageDownloadTimeout = 15.0;
         }
         else
         {
+            self.templateConfiguration = configuration;
+            
             __weak typeof(self) weakSelf = self;
-            void (^saveTemplateToDiskAndSignal)() = ^(void)
+            void (^saveTemplateToDisk)() = ^(void)
             {
                 __strong typeof(weakSelf) strongSelf = weakSelf;
                 if ( strongSelf != nil )
@@ -141,16 +154,24 @@ static const NSTimeInterval kDefaultImageDownloadTimeout = 15.0;
                     if ( !strongSelf.isCancelled )
                     {
                         [strongSelf.dataCache cacheData:data forID:strongSelf.templateConfigurationCacheID error:nil];
-                        strongSelf.templateConfiguration = configuration;
-                        dispatch_semaphore_signal(strongSelf.semaphore);
                     }
+                }
+            };
+            
+            void (^signal)() = ^(void)
+            {
+                __strong typeof(weakSelf) strongSelf = weakSelf;
+                if ( strongSelf != nil )
+                {
+                    dispatch_semaphore_signal(strongSelf.semaphore);
                 }
             };
             
             NSSet *missingURLs = [self missingReferencedURLsFromTemplate:configuration];
             if ( missingURLs.count == 0 )
             {
-                saveTemplateToDiskAndSignal();
+                saveTemplateToDisk();
+                signal();
                 return;
             }
             
@@ -164,13 +185,17 @@ static const NSTimeInterval kDefaultImageDownloadTimeout = 15.0;
                 __strong typeof(weakSelf) strongSelf = weakSelf;
                 if ( strongSelf != nil )
                 {
-                    dispatch_sync(strongSelf.privateQueue, saveTemplateToDiskAndSignal);
+                    dispatch_sync(strongSelf.privateQueue, saveTemplateToDisk);
                 }
             }];
             [self.saveTemplateOperation addDependency:self.bulkDownloadOperation];
             
+            NSOperation *signalOperation = [NSBlockOperation blockOperationWithBlock:signal];
+            [signalOperation addDependency:self.bulkDownloadOperation];
+            
             [self.delegate templateDownloadOperation:self needsAnOperationAddedToTheQueue:self.bulkDownloadOperation];
             [self.delegate templateDownloadOperation:self needsAnOperationAddedToTheQueue:self.saveTemplateOperation];
+            [self.delegate templateDownloadOperation:self needsAnOperationAddedToTheQueue:signalOperation];
         }
     });
 }
