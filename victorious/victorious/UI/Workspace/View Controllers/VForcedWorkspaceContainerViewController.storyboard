@@ -59,16 +59,10 @@
                             <constraint firstItem="k7T-dr-I3V" firstAttribute="trailing" secondItem="5it-fb-XVV" secondAttribute="trailing" constant="10" id="UiW-4v-0ME"/>
                             <constraint firstItem="k7T-dr-I3V" firstAttribute="top" secondItem="X7j-lW-Dul" secondAttribute="bottom" constant="-20" id="ZSy-km-afM"/>
                             <constraint firstAttribute="centerX" secondItem="k7T-dr-I3V" secondAttribute="centerX" id="aei-wM-POM"/>
-                            <constraint firstItem="cWK-rJ-aBu" firstAttribute="centerY" secondItem="5it-fb-XVV" secondAttribute="centerY" constant="-0.5" id="gLu-aW-Y97"/>
                             <constraint firstAttribute="centerY" secondItem="8Qm-1p-FJc" secondAttribute="centerY" id="jE6-yb-Yrt"/>
                             <constraint firstItem="k7T-dr-I3V" firstAttribute="leading" secondItem="cWK-rJ-aBu" secondAttribute="leading" constant="-65" id="lkN-U3-yj0"/>
                             <constraint firstItem="cWK-rJ-aBu" firstAttribute="top" secondItem="X7j-lW-Dul" secondAttribute="bottom" constant="10" id="s9v-Gi-CGZ"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="gLu-aW-Y97"/>
-                            </mask>
-                        </variation>
                     </view>
                     <connections>
                         <outlet property="containerView" destination="8Qm-1p-FJc" id="HvS-8e-Vec"/>

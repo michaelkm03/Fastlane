@@ -217,12 +217,14 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
+#warning Testing code
         NSString *keyPath = [[templateDecorator keyPathsForKey:@"loginAndRegistrationView"] firstObject];
         
         NSMutableDictionary *dict = [[templateDecorator templateValueForKeyPath:keyPath] mutableCopy];
         
         NSDictionary *textPostScreen = @{@"name" : @"forcedContentCreation.screen",
                                          @"color.text" : @{ @"red" : @255, @"blue" : @255, @"green" : @255, @"alpha" : @255 },
+                                         @"font.heading4" : @{ @"fontName" : @"Lato", @"fontSize" : @16 },
                                          @"prompt" : @"What is your favorite NigaHiga or HigaTV Video?",
                                          @"placeholderText": @"Type your text here!",
                                          @"doneButtonText" : @"Done",
@@ -233,6 +235,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                          };
         
         NSMutableArray *screens = [dict[@"registrationScreens"] mutableCopy];
+//        NSMutableArray *screens = [@[[dict[@"registrationScreens"] lastObject]] mutableCopy];
         [screens addObject:textPostScreen];
         
         dict[@"registrationScreens"] = screens;
