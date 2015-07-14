@@ -231,7 +231,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                          @"skipButtonText" : @"Skip",
                                          @"showsSkipButton" : @NO,
                                          @"statusBarStyle" : @"light",
-                                         @"hashtagText" : @"FIRSTPOST"
+                                         @"hashtagText" : @"#firstpost"
                                          };
         
 //        NSMutableArray *screens = [dict[@"registrationScreens"] mutableCopy];
