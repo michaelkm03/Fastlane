@@ -8,83 +8,16 @@
 """
 Posts a Test Fairy build url for a specific app to the Victorious backend.
 
+This script is used by the following Victorious repositories:
+https://github.com/TouchFrame/VictoriousAndroid
+https://github.com/TouchFrame/VictoriousiOS
 """
 import requests
 import sys
-import os
-import hashlib
-import subprocess
-import urllib
 import vams_common as vams
 
 _VICTORIOUS_ENDPOINT = '/api/app/update_testfairy_url'
 _DEFAULT_HOST = ''
-_AUTH_TOKEN = ''
-
-
-def authenticateUser():
-    """
-    Authenticates a user against the Victorious backend API.
-
-    :return:
-        A JSON object of details returned by the Victorious backend API.
-    """
-    url = '%s%s' % (_DEFAULT_HOST, vams._LOGIN_ENDPOINT)
-
-    vams._DEFAULT_HEADER_DATE = subprocess.check_output("date", shell=True).rstrip()
-    postData = {'email':vams._DEFAULT_VAMS_USER,'password':vams._DEFAULT_VAMS_PASSWORD}
-    headers = {'User-Agent':vams._DEFAULT_USERAGENT,'Date':vams._DEFAULT_HEADER_DATE}
-    r = requests.post(url, data=postData, headers=headers)
-
-    if not r.status_code == 200:
-        return False
-
-    response = r.json()
-
-    # Return the authentication JSON object
-    setAuthenticationToken(response)
-
-    return True
-
-
-def setAuthenticationToken(json_object):
-    """
-    Checks to see if there is a user token in the JSON response object
-    of a login call. If there is, the script stores it in the global
-    variable
-
-    :param json_object:
-        The response object from a authentication call. (May be blank.)
-
-    :return:
-        Nothing - If token object exists in JSON payload, then it is saved
-        to a global variable.
-    """
-    global _AUTH_TOKEN
-
-    payload = json_object['payload']
-    if 'token' in payload:
-        _AUTH_TOKEN = payload['token']
-
-    if 'user_id' in json_object:
-        vams._DEFAULT_VAMS_USERID = json_object['user_id']
-
-
-def calcAuthHash(endpoint, reqMethod):
-    """
-    Calculates the Victorious backend authentication hash
-
-    :param endpoint:
-        The API endpoint being called
-
-    :param reqMethod:
-        The request method type 'GET' or 'POST'
-
-    :return:
-        A SHA1 hash used to authenticate subsequent requests
-    """
-    return hashlib.sha1(vams._DEFAULT_HEADER_DATE + endpoint + vams._DEFAULT_USERAGENT + _AUTH_TOKEN +
-                        reqMethod).hexdigest()
 
 
 def postTestFairyURL(app_name, testfairy_url):
@@ -105,7 +38,7 @@ def postTestFairyURL(app_name, testfairy_url):
     # Calculate request hash
     uri = '%s/%s' % (_VICTORIOUS_ENDPOINT, app_name)
     url = '%s%s' % (_DEFAULT_HOST, uri)
-    req_hash = calcAuthHash(uri, 'POST')
+    req_hash = vams.calcAuthHash(uri, 'POST')
 
     field_name = 'android_testfairy_url'
     if vams._DEFAULT_PLATFORM == 'ios':
@@ -120,7 +53,7 @@ def postTestFairyURL(app_name, testfairy_url):
     postData = {
         'build_name':app_name,
         'name':field_name,
-        'platform':vams.DEFAULT_PLATFORM,
+        'platform':vams._DEFAULT_PLATFORM,
         'value':testfairy_url
     }
     response = requests.post(url, data=postData, headers=headers)
@@ -185,7 +118,7 @@ def main(argv):
     print 'Using host: %s' % _DEFAULT_HOST
     print ''
 
-    if authenticateUser():
+    if vams.authenticateUser(_DEFAULT_HOST):
         postTestFairyURL(app_name, url)
     else:
          print 'There was a problem authenticating with the Victorious backend. Exiting now...'

@@ -9,85 +9,23 @@
 Authenticates with the Victorious backend, retrieves the latest app configuration data,
 app assets and writes them to a temporary directory.
 
-This script assumes it is being run from the root of the VictoriousAndroid directory.
+This script assumes it is being run from the root of the code directory.
+
+This script is used by the following Victorious repositories:
+https://github.com/TouchFrame/VictoriousAndroid
+https://github.com/TouchFrame/VictoriousiOS
 """
 import requests
 import sys
 import os
-import hashlib
-import subprocess
 import urllib
 import vams_common as vams
 
 _ASSETS_ENDPOINT = '/api/app/appassets_by_build_name'
 _DEFAULT_HOST = ''
 
-_AUTH_TOKEN = ''
 _CONFIG_DIRECTORY = 'app/configuration/'
 
-
-def authenticateUser():
-    """
-    Authenticates a user against the Victorious backend API.
-
-    :return:
-        A JSON object of details returned by the Victorious backend API.
-    """
-    url = '%s%s' % (_DEFAULT_HOST, vams._LOGIN_ENDPOINT)
-
-    vams._DEFAULT_HEADER_DATE = subprocess.check_output("date", shell=True).rstrip()
-    postData = {'email':vams._DEFAULT_VAMS_USER,'password':vams._DEFAULT_VAMS_PASSWORD}
-    headers = {'User-Agent':vams._DEFAULT_USERAGENT,'Date':vams._DEFAULT_HEADER_DATE}
-    r = requests.post(url, data=postData, headers=headers)
-
-    if not r.status_code == 200:
-        return False
-
-    response = r.json()
-
-    # Return the authentication JSON object
-    setAuthenticationToken(response)
-
-    return True
-
-
-def setAuthenticationToken(json_object):
-    """
-    Checks to see if there is a user token in the JSON response object
-    of a login call. If there is, the script stores it in the global
-    variable
-
-    :param json_object:
-        The response object from a authentication call. (May be blank.)
-
-    :return:
-        Nothing - If token object exists in JSON payload, then it is saved
-        to a global variable.
-    """
-    global _AUTH_TOKEN
-
-    payload = json_object['payload']
-    if 'token' in payload:
-        _AUTH_TOKEN = payload['token']
-
-    if 'user_id' in json_object:
-        vams._DEFAULT_VAMS_USERID = json_object['user_id']
-
-
-def calcAuthHash(endpoint, reqMethod):
-    """
-    Calculates the Victorious backend authentication hash
-
-    :param endpoint:
-        The API endpoint being called
-
-    :param reqMethod:
-        The request method type 'GET' or 'POST'
-
-    :return:
-        A SHA1 hash used to authenticate subsequent requests
-    """
-    return hashlib.sha1(vams._DEFAULT_HEADER_DATE + endpoint + vams._DEFAULT_USERAGENT + _AUTH_TOKEN + reqMethod).hexdigest()
 
 
 def retrieveAppDetails(app_name):
@@ -105,7 +43,7 @@ def retrieveAppDetails(app_name):
     # Calculate request hash
     uri = '%s/%s' % (_ASSETS_ENDPOINT, app_name)
     url = '%s%s' % (_DEFAULT_HOST, uri)
-    req_hash = calcAuthHash(uri, 'GET')
+    req_hash = vams.calcAuthHash(uri, 'GET')
 
     auth_header = 'BASIC %s:%s' % (vams._DEFAULT_VAMS_USERID, req_hash)
     headers = {
@@ -232,16 +170,14 @@ def main(argv):
         _DEFAULT_HOST = vams._LOCAL_HOST
     else:
         _DEFAULT_HOST = vams._PRODUCTION_HOST
-        
-    print ''
-    print 'Using host: %s' % _DEFAULT_HOST
-    print ''
 
-    if authenticateUser():
+    # Uncomment the following line to display the host being accessed
+    # print 'Using host: %s' % _DEFAULT_HOST
+
+    if vams.authenticateUser(_DEFAULT_HOST):
         retrieveAppDetails(app_name)
     else:
          print 'There was a problem authenticating with the Victorious backend. Exiting now...'
-         
          return 1
     
     return 0
