@@ -1,9 +1,9 @@
 //
 //  VStreamItem.h
-//  
+//  victorious
 //
 //  Created by Sharif Ahmed on 7/13/15.
-//
+//  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -18,13 +18,18 @@
 @property (nonatomic, retain) NSString * remoteId;
 @property (nonatomic, retain) NSString * streamContentType;
 @property (nonatomic, retain) NSString * streamId;
-@property (nonatomic, retain) NSString * parentStreamId;
+@property (nonatomic, retain) NSString * headline;
+@property (nonatomic, retain) NSSet *editorializations;
 @property (nonatomic, retain) NSSet *marquees;
 @property (nonatomic, retain) NSSet *streams;
-@property (nonatomic, retain) VEditorializationItem *editorialization;
 @end
 
 @interface VStreamItem (CoreDataGeneratedAccessors)
+
+- (void)addEditorializationsObject:(VEditorializationItem *)value;
+- (void)removeEditorializationsObject:(VEditorializationItem *)value;
+- (void)addEditorializations:(NSSet *)values;
+- (void)removeEditorializations:(NSSet *)values;
 
 - (void)addMarqueesObject:(VStream *)value;
 - (void)removeMarqueesObject:(VStream *)value;

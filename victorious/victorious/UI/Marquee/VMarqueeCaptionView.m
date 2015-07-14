@@ -7,7 +7,7 @@
 //
 
 #import "VMarqueeCaptionView.h"
-#import "VStreamItem.h"
+#import "VStreamItem+Fetcher.h"
 #import "VDependencyManager.h"
 #import "VEditorializationItem.h"
 
@@ -18,21 +18,21 @@
 @property (nonatomic, strong) UIFont *captionFont;
 @property (nonatomic, strong) UIFont *headlineFont;
 @property (nonatomic, readwrite) BOOL hasHeadline;
+@property (nonatomic, readwrite) VStreamItem *marqueeItem;
+@property (nonatomic, strong) VEditorializationItem *editorialization;
 
 @end
 
 @implementation VMarqueeCaptionView
 
-#pragma mark - Setters
-
-- (void)setMarqueeItem:(VStreamItem *)marqueeItem
+- (void)setupWithMarqueeItem:(VStreamItem *)marqueeItem fromStreamWithApiPath:(NSString *)apiPath
 {
     BOOL firstItem = self.marqueeItem == nil;
-    _marqueeItem = marqueeItem;
-
-    VEditorializationItem *editorialization = marqueeItem.editorialization;
+    self.marqueeItem = marqueeItem;
     
-    BOOL hasHeadline = editorialization.headline.length > 0;
+    self.editorialization = [marqueeItem editorializationForStreamWithApiPath:apiPath];
+    
+    BOOL hasHeadline = self.editorialization.marqueeHeadline.length > 0;
     self.hasHeadline = hasHeadline;
     if ( !hasHeadline && firstItem )
     {
@@ -40,6 +40,8 @@
     }
     [self updateLabelText];
 }
+
+#pragma mark - Setters
 
 - (void)setHasHeadline:(BOOL)hasHeadline
 {
@@ -84,7 +86,7 @@
 
 - (void)updateLabelText
 {
-    NSString *captionText = self.hasHeadline ? self.marqueeItem.editorialization.headline : self.marqueeItem.name;
+    NSString *captionText = self.hasHeadline ? self.editorialization.marqueeHeadline : self.marqueeItem.name;
     self.captionLabel.text = captionText;
 }
 

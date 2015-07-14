@@ -16,11 +16,13 @@
  */
 @interface VCrossFadingMarqueeLabel : VAbstractCrossFadingView
 
+- (void)setupWithMarqueeItems:(NSArray *)marqueeItems fromStreamWithApiPath:(NSString *)apiPath;
+
 /**
     An array of stream items whose captions or headlines will
         populate the cross fading labels as appropriate.
  */
-@property (nonatomic, strong) NSArray *marqueeItems;
+@property (nonatomic, readonly) NSArray *marqueeItems;
 
 /**
     The dependency manager used to style the labels contained in this view.

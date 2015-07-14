@@ -85,12 +85,6 @@
     return cell;
 }
 
-- (void)setupStreamItemCell:(VAbstractMarqueeStreamItemCell *)streamItemCell withDependencyManager:(VDependencyManager *)dependencyManager andStreamItem:(VStreamItem *)streamItem
-{
-    streamItemCell.dependencyManager = dependencyManager;
-    streamItemCell.streamItem = streamItem;
-}
-
 + (Class)marqueeStreamItemCellClass
 {
     return [VFullscreenMarqueeStreamItemCell class];

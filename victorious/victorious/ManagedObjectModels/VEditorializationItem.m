@@ -1,9 +1,9 @@
 //
 //  VEditorializationItem.m
-//  
+//  victorious
 //
 //  Created by Sharif Ahmed on 7/13/15.
-//
+//  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
 #import "VEditorializationItem.h"
@@ -12,9 +12,10 @@
 
 @implementation VEditorializationItem
 
-@dynamic streamItemId;
 @dynamic headline;
-@dynamic streamId;
+@dynamic apiPath;
+@dynamic streamItemId;
+@dynamic marqueeHeadline;
 @dynamic streamItem;
 
 @end

@@ -30,6 +30,7 @@
     return @{ @"category"       :   VSelectorName(category),
               @"id"             :   VSelectorName(remoteId),
               @"created_by"     :   VSelectorName(createdBy),
+              @"entry_label"    :   VSelectorName(headline),
               @"name"           :   VSelectorName(name),
               @"preview_image"  :   VSelectorName(previewImagesObject),
               @"released_at"    :   VSelectorName(releasedAt),
@@ -66,12 +67,6 @@
     mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
-    
-    RKRelationshipMapping *editorializationMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:nil
-                                                                                                 toKeyPath:VSelectorName(editorialization)
-                                                                                               withMapping:[VEditorializationItem entityMapping]];
-    
-    [mapping addPropertyMapping:editorializationMapping];
     
     return mapping;
 }

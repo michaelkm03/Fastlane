@@ -54,12 +54,12 @@ static const CGSize kShadowOffset = { 0.0f, 2.0f };
     return CGSizeMake(side, side);
 }
 
-- (void)setStreamItem:(VStreamItem *)streamItem
+- (void)setupWithStreamItem:(VStreamItem *)streamItem fromStreamWithApiPath:(NSString *)apiPath
 {
-    [super setStreamItem:streamItem];
+    [super setupWithStreamItem:streamItem fromStreamWithApiPath:apiPath];
     if ( streamItem != nil )
     {
-        self.marqueeCaptionView.marqueeItem = streamItem;
+        [self.marqueeCaptionView setupWithMarqueeItem:streamItem fromStreamWithApiPath:apiPath];
         BOOL hasHeadline = self.marqueeCaptionView.hasHeadline;
         self.centerLabelConstraint.active = hasHeadline;
         self.marqueeCaptionView.captionLabel.textAlignment = hasHeadline ? NSTextAlignmentCenter : NSTextAlignmentLeft;

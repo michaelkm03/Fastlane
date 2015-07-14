@@ -31,7 +31,7 @@
                                 mappingForEntityForName:[self entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
-    mapping.identificationAttributes = @[ VSelectorName(streamId), VSelectorName(streamItemId) ];
+    mapping.identificationAttributes = @[ VSelectorName(streamItemId), VSelectorName(apiPath) ];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     

@@ -272,7 +272,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     
     cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[marqueeStreamItemCellClass reuseIdentifierForStreamItem:item baseIdentifier:nil dependencyManager:self.dependencyManager] forIndexPath:indexPath];
     cell.dependencyManager = self.dependencyManager;
-    cell.streamItem = item;
+    [cell setupWithStreamItem:item fromStreamWithApiPath:self.stream.apiPath];
     
     // Add highlight view
     [self.dependencyManager addHighlightViewToHost:cell];
@@ -339,11 +339,6 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 {
     NSAssert(false, @"Subclasses must override desiredSizeWithCollectionViewBounds: in VAbstractMarqueeController");
     return CGSizeZero;
-}
-
-- (void)setupStreamItemCell:(VAbstractMarqueeStreamItemCell *)streamItemCell withDependencyManager:(VDependencyManager *)dependencyManager andStreamItem:(VStreamItem *)streamItem
-{
-    NSAssert(false, @"Subclasses must override setupStreamItemCell:withDependencyManager:andStreamItem: in VAbstractMarqueeController");
 }
 
 + (Class)marqueeStreamItemCellClass

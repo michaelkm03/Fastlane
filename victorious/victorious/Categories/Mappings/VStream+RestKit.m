@@ -24,6 +24,7 @@
     return @{
              @"id"                  :   VSelectorName(remoteId),
              @"stream_id"           :   VSelectorName(streamId),
+             @"entry_label"         :   VSelectorName(headline),
              @"stream_content_type" :   VSelectorName(streamContentType),
              @"name"                :   VSelectorName(name),
              @"preview_image"       :   VSelectorName(previewImagesObject),
@@ -54,10 +55,8 @@
     
     RKRelationshipMapping *sequenceMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"stream_items"
                                                                                          toKeyPath:VSelectorName(streamItems)
-                                                                                       withMapping:[[self class] streamItemMapping]];
+                                                                                       withMapping:[self streamItemMapping]];
     [mapping addPropertyMapping:sequenceMapping];
-    
-    [self addEditorializationConnectionToEntityMapping:mapping];
     
     return mapping;
 }
@@ -69,12 +68,12 @@
     
     RKRelationshipMapping *marqueeMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"marquee"
                                                                                         toKeyPath:VSelectorName(marqueeItems)
-                                                                                      withMapping:[[self class] listByStreamMapping]];
+                                                                                      withMapping:[self listByStreamMapping]];
     [mapping addPropertyMapping:marqueeMapping];
     
     RKRelationshipMapping *contentMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"content"
                                                                                         toKeyPath:VSelectorName(streamItems)
-                                                                                      withMapping:[[self class] listByStreamMapping]];
+                                                                                      withMapping:[self listByStreamMapping]];
     [mapping addPropertyMapping:contentMapping];
     
     return mapping;
@@ -86,7 +85,7 @@
     
     RKRelationshipMapping *contentMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"payload"
                                                                                         toKeyPath:VSelectorName(streamItems)
-                                                                                      withMapping:[[self class] listByStreamMapping]];
+                                                                                      withMapping:[self listByStreamMapping]];
     [mapping addPropertyMapping:contentMapping];
     
     return mapping;
@@ -100,7 +99,7 @@
      {
          if ( [[representation valueForKey:@"nodes"] isKindOfClass:[NSArray class]] )
          {
-             return [self editorializedSequenceMapping];
+             return [VSequence entityMapping];
          }
          else
          {
@@ -121,10 +120,10 @@
     RKDynamicMapping *contentMapping = [RKDynamicMapping new];
     
     [contentMapping addMatcher:[RKObjectMappingMatcher matcherWithPredicate:[NSPredicate predicateWithFormat:@"stream_content_type != nil"]
-                                                              objectMapping:[VStream entityMapping]]];
+                                                              objectMapping:[self entityMapping]]];
     
     [contentMapping addMatcher:[RKObjectMappingMatcher matcherWithPredicate:[NSPredicate predicateWithFormat:@"stream_content_type == nil"]
-                                                              objectMapping:[self editorializedSequenceMapping]]];
+                                                              objectMapping:[VSequence entityMapping]]];
     
     return contentMapping;
 }
@@ -193,20 +192,6 @@
                                                          keyPath:@""
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
               ];
-}
-
-#pragma mark - helpers
-
-+ (void)addEditorializationConnectionToEntityMapping:(RKEntityMapping *)mapping
-{
-    [mapping addConnectionForRelationship:VSelectorName(editorialization) connectedBy:@{@"parentStreamId" : @"streamId", @"remoteId" : @"streamItemId"}];
-}
-
-+ (RKEntityMapping *)editorializedSequenceMapping
-{
-    RKEntityMapping *editorializedMapping = [VSequence entityMapping];
-    [self addEditorializationConnectionToEntityMapping:editorializedMapping];
-    return editorializedMapping;
 }
 
 @end

@@ -19,6 +19,8 @@ static NSString * const kCaptionViewNibName = @"VBlurredMarqueeCaptionView";
 @property (nonatomic, strong) UIColor *tintColor;
 @property (nonatomic, strong) UIFont *captionFont;
 @property (nonatomic, strong) UIFont *headlineFont;
+@property (nonatomic, strong) NSString *streamApiPath;
+@property (nonatomic, readwrite) NSArray *marqueeItems;
 
 @end
 
@@ -35,13 +37,21 @@ static NSString * const kCaptionViewNibName = @"VBlurredMarqueeCaptionView";
     self.marqueeCaptionViews = nil;
 }
 
+- (void)setupWithMarqueeItems:(NSArray *)marqueeItems fromStreamWithApiPath:(NSString *)apiPath
+{
+    [self reset];
+    self.streamApiPath = apiPath;
+    self.marqueeItems = marqueeItems;
+    [self populateCaptionViews];
+}
+
 - (void)populateCaptionViews
 {
     NSMutableArray *captionViews = [[NSMutableArray alloc] init];
     for ( VStreamItem *marqueeItem in self.marqueeItems )
     {
         VMarqueeCaptionView *captionView = [[[NSBundle mainBundle] loadNibNamed:kCaptionViewNibName owner:self options:nil] firstObject];
-        captionView.marqueeItem = marqueeItem;
+        [captionView setupWithMarqueeItem:marqueeItem fromStreamWithApiPath:self.streamApiPath];
         [self addSubview:captionView];
         [self v_addPinToLeadingTrailingToSubview:captionView];
         [self v_addCenterVerticallyConstraintsToSubview:captionView];
@@ -53,18 +63,6 @@ static NSString * const kCaptionViewNibName = @"VBlurredMarqueeCaptionView";
     self.marqueeCaptionViews = [NSArray arrayWithArray:captionViews];
     [self updateCaptionViewAppearance];
     [self refresh];
-}
-
-- (void)setMarqueeItems:(NSArray *)marqueeItems
-{
-    if ( _marqueeItems == marqueeItems )
-    {
-        return;
-    }
-    
-    [self reset];
-    _marqueeItems = marqueeItems;
-    [self populateCaptionViews];
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager

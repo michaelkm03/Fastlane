@@ -118,7 +118,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
         [contentNames addObject:streamName];
     }
     
-    self.crossfadingLabel.marqueeItems = marqueeItems;
+    [self.crossfadingLabel setupWithMarqueeItems:marqueeItems fromStreamWithApiPath:self.stream.apiPath];
     self.crossfadingLabel.hidden = !self.showedInitialDisplayAnimation;
     
     //Set the content offset to a safe value
@@ -282,15 +282,6 @@ static const CGFloat kOffsetOvershoot = 20.0f;
         }
         [self.crossfadingBlurredImageView updateBlurredImageViewForImage:image fromPreviewView:previewView withTintColor:[self tintColorForCrossFadingBlurredImageView] atIndex:index animated:animated withConcurrentAnimations:animations];
     }];
-}
-
-- (void)setupStreamItemCell:(VAbstractMarqueeStreamItemCell *)streamItemCell withDependencyManager:(VDependencyManager *)dependencyManager andStreamItem:(VStreamItem *)streamItem
-{
-    streamItemCell.dependencyManager = dependencyManager;
-    if ( self.showedInitialDisplayAnimation )
-    {
-        streamItemCell.streamItem = streamItem;
-    }
 }
 
 + (Class)marqueeStreamItemCellClass

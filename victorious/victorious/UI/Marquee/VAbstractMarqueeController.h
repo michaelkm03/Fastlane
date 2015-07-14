@@ -110,22 +110,6 @@ extern NSString * const kMarqueeURLKey;
 - (void)registerCollectionViewCellWithCollectionView:(UICollectionView *)collectionView;
 
 /**
-    Overridden by subclasses to provide the dependency manager and stream item to the provided cell as necessary.
-    Most cases will simply use the following implementation:
-
-    - (void)setupStreamItemCell:(VAbstractMarqueeStreamItemCell *)streamItemCell withDependencyManager:(VDependencyManager *)dependencyManager andStreamItem:(VStreamItem *)streamItem
-    {
-        streamItemCell.dependencyManager = dependencyManager;
-        streamItemCell.streamItem = streamItem;
-    }
- 
-    @param streamItemCell The stream item cell that should be populated with the provided dependency manager and stream item.
-    @param dependencyManager The dependency manager that should be used to style the cell.
-    @param streamItem The stream item whose content should populate the streamItemCell.
- */
-- (void)setupStreamItemCell:(VAbstractMarqueeStreamItemCell *)streamItemCell withDependencyManager:(VDependencyManager *)dependencyManager andStreamItem:(VStreamItem *)streamItem;
-
-/**
     Overridden by subclasses to provide an appropriate subclass of VAbstractMarqueeStreamItemCell whose reuse will be managed by this class.
  */
 + (Class)marqueeStreamItemCellClass;

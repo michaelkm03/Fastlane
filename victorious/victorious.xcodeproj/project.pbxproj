@@ -1015,8 +1015,8 @@
 		F0FC977B1B543E2E0098AFCB /* VEditorializationItem+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC977A1B543E2E0098AFCB /* VEditorializationItem+RestKit.m */; };
 		F0FC97841B545DB90098AFCB /* VStream.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97831B545DB90098AFCB /* VStream.m */; };
 		F0FC97871B545DB90098AFCB /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97861B545DB90098AFCB /* VSequence.m */; };
-		F0FC978C1B5464C20098AFCB /* VStreamItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97891B5464C20098AFCB /* VStreamItem.m */; };
-		F0FC978D1B5464C20098AFCB /* VEditorializationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC978B1B5464C20098AFCB /* VEditorializationItem.m */; };
+		F0FC97961B546FBC0098AFCB /* VEditorializationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97951B546FBC0098AFCB /* VEditorializationItem.m */; };
+		F0FC97A51B547BA80098AFCB /* VStreamItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97A41B547BA80098AFCB /* VStreamItem.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2916,10 +2916,10 @@
 		F0FC97831B545DB90098AFCB /* VStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStream.m; sourceTree = "<group>"; };
 		F0FC97851B545DB90098AFCB /* VSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequence.h; sourceTree = "<group>"; };
 		F0FC97861B545DB90098AFCB /* VSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequence.m; sourceTree = "<group>"; };
-		F0FC97881B5464C20098AFCB /* VStreamItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamItem.h; sourceTree = "<group>"; };
-		F0FC97891B5464C20098AFCB /* VStreamItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamItem.m; sourceTree = "<group>"; };
-		F0FC978A1B5464C20098AFCB /* VEditorializationItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEditorializationItem.h; sourceTree = "<group>"; };
-		F0FC978B1B5464C20098AFCB /* VEditorializationItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEditorializationItem.m; sourceTree = "<group>"; };
+		F0FC97941B546FBC0098AFCB /* VEditorializationItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEditorializationItem.h; sourceTree = "<group>"; };
+		F0FC97951B546FBC0098AFCB /* VEditorializationItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEditorializationItem.m; sourceTree = "<group>"; };
+		F0FC97A31B547BA80098AFCB /* VStreamItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamItem.h; sourceTree = "<group>"; };
+		F0FC97A41B547BA80098AFCB /* VStreamItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamItem.m; sourceTree = "<group>"; };
 		F0FFBA351AD5B1DC00283936 /* VMarqueeDataDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeDataDelegate.h; sourceTree = "<group>"; };
 		F0FFBA361AD5B1EE00283936 /* VMarqueeSelectionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeSelectionDelegate.h; sourceTree = "<group>"; };
 		FA9A96A39C05C50C7D098A8E /* Pods-test.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.qa.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.qa.xcconfig"; sourceTree = "<group>"; };
@@ -5530,13 +5530,15 @@
 				BEC833BA19D3646E00341EA9 /* VComment.m */,
 				F0F04AD41B1E271A00F6F401 /* VConversation.h */,
 				F0F04AD51B1E271A00F6F401 /* VConversation.m */,
-				F0FC978A1B5464C20098AFCB /* VEditorializationItem.h */,
-				F0FC978B1B5464C20098AFCB /* VEditorializationItem.m */,
+				F0FC97941B546FBC0098AFCB /* VEditorializationItem.h */,
+				F0FC97951B546FBC0098AFCB /* VEditorializationItem.m */,
 				A7D7077D1A7AFD8200D9993F /* VEndCard.h */,
 				A7D7077E1A7AFD8200D9993F /* VEndCard.m */,
 				DB531B541A425A7200B4ADC8 /* VHashtag.h */,
 				DB531B551A425A7200B4ADC8 /* VHashtag.m */,
 				A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */,
+				F0FC97A31B547BA80098AFCB /* VStreamItem.h */,
+				F0FC97A41B547BA80098AFCB /* VStreamItem.m */,
 				A7D378461AF0578A007FF197 /* VImageAsset.h */,
 				A7D378471AF0578A007FF197 /* VImageAsset.m */,
 				0385FEE718EF41B4009FBD68 /* VImageSearchResult.h */,
@@ -5563,8 +5565,6 @@
 				F0FC97861B545DB90098AFCB /* VSequence.m */,
 				F0FC97821B545DB90098AFCB /* VStream.h */,
 				F0FC97831B545DB90098AFCB /* VStream.m */,
-				F0FC97881B5464C20098AFCB /* VStreamItem.h */,
-				F0FC97891B5464C20098AFCB /* VStreamItem.m */,
 				A7D8532219F6F3B100EDBFF8 /* VTracking.h */,
 				A7D8532319F6F3B100EDBFF8 /* VTracking.m */,
 				F0F04AD11B1E1EAE00F6F401 /* VUser.h */,
@@ -7222,7 +7222,7 @@
 				D8C7CF5D19DCCD0200BA33E5 /* VExperienceEnhancerCell.m in Sources */,
 				BE5C7388187E37E500A3340D /* VConversation+RestKit.m in Sources */,
 				A7D7077F1A7AFD8200D9993F /* VEndCard.m in Sources */,
-				F0FC978D1B5464C20098AFCB /* VEditorializationItem.m in Sources */,
+				F0FC97961B546FBC0098AFCB /* VEditorializationItem.m in Sources */,
 				0314D4A019B46B5E00FA363C /* VImageSearchResultCell.m in Sources */,
 				A7F711FD1AE1D5A00086F729 /* VHashtagFollowingTableViewController.m in Sources */,
 				D876E1FF1A9DA6CB002CAA29 /* VSolidColorBackground.m in Sources */,
@@ -7569,6 +7569,7 @@
 				0394204D1AB9026C0087ADFA /* VVoteType.m in Sources */,
 				0314D2E219B46AF300FA363C /* VThemeManager.m in Sources */,
 				D80BAB5A1A688D83003A3068 /* VWorkspaceFlowController.m in Sources */,
+				F0FC97A51B547BA80098AFCB /* VStreamItem.m in Sources */,
 				D8DF71E71AFC3784002EA7A5 /* VTileOverlayCollectionCell.m in Sources */,
 				A75C64941AD78DCA00245125 /* VEditableTextPostViewController.m in Sources */,
 				BE171E141868C211004E5202 /* VNode+RestKit.m in Sources */,
@@ -7611,7 +7612,6 @@
 				A705F44A1B3CC00D007DBD3C /* VUserCell.m in Sources */,
 				F0FC97871B545DB90098AFCB /* VSequence.m in Sources */,
 				D8DF71F11AFD987B002EA7A5 /* VFollowingHelper.m in Sources */,
-				F0FC978C1B5464C20098AFCB /* VStreamItem.m in Sources */,
 				F0F04AF71B2A37CB00F6F401 /* VDependencyManager+VShareMenuItem.m in Sources */,
 				A769FE451ABCFCE900888ED8 /* VTrackingSettingsViewController.m in Sources */,
 				A77AD4F21A1FD8B600142F24 /* VAlertControllerBasic.m in Sources */,

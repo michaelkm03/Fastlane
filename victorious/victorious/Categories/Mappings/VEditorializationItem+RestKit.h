@@ -10,4 +10,6 @@
 
 @interface VEditorializationItem (RestKit)
 
++ (NSString *)entityName;
+
 @end
