@@ -30,6 +30,9 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 
 @property (nonatomic, strong) NSNumberFormatter *numberFormatter;
 
+// Only fetch every 30 seconds.
+@property (nonatomic, strong) NSDate *lastFetch;
+
 @end
 
 @implementation VAssetCollectionListViewController
@@ -170,7 +173,8 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
         BOOL dirty = NO;
         for (PHFetchResult *fetchResult in self.fetchResults)
         {
-            if ([changeInstance changeDetailsForFetchResult:fetchResult])
+            PHFetchResultChangeDetails *changeDetails = [changeInstance changeDetailsForFetchResult:fetchResult];
+            if (![changeDetails hasIncrementalChanges])
             {
                 dirty = YES;
                 break;
@@ -202,7 +206,15 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 // Completion is called on main Queue
 - (void)fetchCollectionsWithCompletion:(void(^)())success
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+    // Only fetch once every 30 seconds. This method is expensive and photo library can be noisy when syncing.
+    if ([[NSDate date] timeIntervalSinceDate:self.lastFetch] < 30)
+    {
+        return;
+    }
+    
+    NSMutableSet *setCopy = [[NSMutableSet alloc] initWithCapacity:self.fetchResults.count];
+    [setCopy setSet:self.fetchResults];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^
     {
         // Fetch all albums
         PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
@@ -211,8 +223,8 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
         PHFetchResult *userAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
                                                                              subtype:PHAssetCollectionSubtypeAny
                                                                              options:nil];
-        [self.fetchResults addObject:smartAlbums];
-        [self.fetchResults addObject:userAlbums];
+        [setCopy addObject:smartAlbums];
+        [setCopy addObject:userAlbums];
         
         // Configure fetch options for media type and creation date
         PHFetchOptions *assetFetchOptions = [[PHFetchOptions alloc] init];
@@ -228,7 +240,7 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
         {
             PHFetchResult *albumMediaTypeResults = [PHAsset fetchAssetsInAssetCollection:collection
                                                                                  options:assetFetchOptions];
-            [self.fetchResults addObject:albumMediaTypeResults];
+            [setCopy addObject:albumMediaTypeResults];
             if (albumMediaTypeResults.count > 0)
             {
                 [assetCollections addObject:collection];
@@ -239,7 +251,7 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
         {
             PHFetchResult *albumMediaTypeResults = [PHAsset fetchAssetsInAssetCollection:collection
                                                                                  options:assetFetchOptions];
-            [self.fetchResults addObject:albumMediaTypeResults];
+            [setCopy addObject:albumMediaTypeResults];
             if (albumMediaTypeResults.count > 0)
             {
                 [assetCollections addObject:collection];
@@ -249,6 +261,8 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
         
         dispatch_async(dispatch_get_main_queue(), ^
         {
+            self.lastFetch = [NSDate date];
+            self.fetchResults = setCopy;
             self.collections = assetCollections;
             self.assetFetchResultForCollections = assetCollectionsFetchResutls;
             dispatch_async(dispatch_get_main_queue(), success);

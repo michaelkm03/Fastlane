@@ -36,7 +36,7 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
 @interface VAssetCollectionGridViewController () <UICollectionViewDelegateFlowLayout, PHPhotoLibraryChangeObserver>
 
 @property (nonatomic, assign) PHAssetMediaType mediaType;
-@property (nonatomic, strong) PHImageManager *imageManager;
+@property (nonatomic, strong) PHCachingImageManager *imageManager;
 
 @property (nonatomic, assign) CGRect previousPrefetchRect;
 
@@ -376,118 +376,116 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
     // Call might come on any background queue. Re-dispatch to the main queue to handle it.
     dispatch_async(dispatch_get_main_queue(), ^
     {
-        [self.collectionView reloadData];
         // check if there are changes to the assets (insertions, deletions, updates)
-//        PHFetchResultChangeDetails *collectionChanges = [changeInstance changeDetailsForFetchResult:self.assetsToDisplay];
-//        if (collectionChanges)
-//        {
-//            // get the new fetch result
-//            self.assetsToDisplay = [collectionChanges fetchResultAfterChanges];
-//            
-//            UICollectionView *collectionView = self.collectionView;
-//            
-//            if (![collectionChanges hasIncrementalChanges] || [collectionChanges hasMoves])
-//            {
-//                // we need to reload all if the incremental diffs are not available
-//                [collectionView reloadData];
-//                
-//            }
-//            else
-//            {
-//                // if we have incremental diffs, tell the collection view to animate insertions and deletions
-//                [collectionView performBatchUpdates:^
-//                {
-//                    NSIndexSet *removedIndexes = [collectionChanges removedIndexes];
-//                    if ([removedIndexes count])
-//                    {
-//                        [collectionView deleteItemsAtIndexPaths:[removedIndexes indexPathsFromIndexesWithSecion:0]];
-//                    }
-//                    NSIndexSet *insertedIndexes = [collectionChanges insertedIndexes];
-//                    if ([insertedIndexes count])
-//                    {
-//                        [collectionView insertItemsAtIndexPaths:[insertedIndexes indexPathsFromIndexesWithSecion:0]];
-//                    }
-//                    NSIndexSet *changedIndexes = [collectionChanges changedIndexes];
-//                    if ([changedIndexes count])
-//                    {
-//                        [collectionView reloadItemsAtIndexPaths:[changedIndexes indexPathsFromIndexesWithSecion:0]];
-//                    }
-//                    [collectionChanges enumerateMovesWithBlock:^(NSUInteger fromIndex, NSUInteger toIndex)
-//                    {
-//                        [collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:toIndex inSection:0]]];
-//                    }];
-//                } completion:NULL];
-//            }
-//            
-//            [self resetCachedAssets];
-//        }
+        PHFetchResultChangeDetails *collectionChanges = [changeInstance changeDetailsForFetchResult:self.assetsToDisplay];
+        if (collectionChanges)
+        {
+            // get the new fetch result
+            self.assetsToDisplay = [collectionChanges fetchResultAfterChanges];
+            
+            UICollectionView *collectionView = self.collectionView;
+            
+            if (![collectionChanges hasIncrementalChanges] || [collectionChanges hasMoves])
+            {
+                // we need to reload all if the incremental diffs are not available
+                [collectionView reloadData];
+            }
+            else
+            {
+                // if we have incremental diffs, tell the collection view to animate insertions and deletions
+                [collectionView performBatchUpdates:^
+                {
+                    NSIndexSet *removedIndexes = [collectionChanges removedIndexes];
+                    if ([removedIndexes count])
+                    {
+                        [collectionView deleteItemsAtIndexPaths:[removedIndexes indexPathsFromIndexesWithSecion:0]];
+                    }
+                    NSIndexSet *insertedIndexes = [collectionChanges insertedIndexes];
+                    if ([insertedIndexes count])
+                    {
+                        [collectionView insertItemsAtIndexPaths:[insertedIndexes indexPathsFromIndexesWithSecion:0]];
+                    }
+                    NSIndexSet *changedIndexes = [collectionChanges changedIndexes];
+                    if ([changedIndexes count])
+                    {
+                        [collectionView reloadItemsAtIndexPaths:[changedIndexes indexPathsFromIndexesWithSecion:0]];
+                    }
+                    [collectionChanges enumerateMovesWithBlock:^(NSUInteger fromIndex, NSUInteger toIndex)
+                    {
+                        [collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:toIndex inSection:0]]];
+                    }];
+                } completion:NULL];
+            }
+            
+            [self resetCachedAssets];
+        }
     });
 }
 
 #pragma mark - UIScrollViewDelegate
-//
-//- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-//{
-//    [self updateCachedAssets];
-//}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [self updateCachedAssets];
+}
 
 #pragma mark - Private Methods
 
-//- (void)resetCachedAssets
-//{
-//    [self.imageManager stopCachingImagesForAllAssets];
-//    self.previousPrefetchRect = CGRectZero;
-//}
+- (void)resetCachedAssets
+{
+    [self.imageManager stopCachingImagesForAllAssets];
+    self.previousPrefetchRect = CGRectZero;
+}
 
-//- (void)updateCachedAssets
-//{
-//    BOOL isAuthorized = [self.libraryPermission permissionState] == VPermissionStateAuthorized;
-//    if (![self isViewLoaded] || !isAuthorized)
-//    {
-//        return;
-//    }
-//    
-//    // The preheat window is twice the height of the visible rect
-//    CGRect preheatRect = self.collectionView.bounds;
-//    preheatRect = CGRectInset(preheatRect, 0.0f, -0.5f * CGRectGetHeight(preheatRect));
-//    
-//    // If scrolled by a "reasonable" amount...
-//    CGFloat delta = ABS(CGRectGetMidY(preheatRect) - CGRectGetMidY(self.previousPrefetchRect));
-//    if (delta > CGRectGetHeight(self.collectionView.bounds) / 3.0f)
-//    {
-//        
-//        // Compute the assets to start caching and to stop caching.
-//        NSMutableArray *addedIndexPaths = [NSMutableArray array];
-//        NSMutableArray *removedIndexPaths = [NSMutableArray array];
-//        
-//        [self computeDifferenceBetweenRect:self.previousPrefetchRect
-//                                   andRect:preheatRect
-//                            removedHandler:^(CGRect removedRect)
-//        {
-//            NSArray *indexPaths = [self.collectionView indexPathsInRect:removedRect];
-//            [removedIndexPaths addObjectsFromArray:indexPaths];
-//        }
-//                              addedHandler:^(CGRect addedRect)
-//        {
-//            NSArray *indexPaths = [self.collectionView indexPathsInRect:addedRect];
-//            [addedIndexPaths addObjectsFromArray:indexPaths];
-//        }];
-//        
-//        NSArray *assetsToStartCaching = [self assetsAtIndexPaths:addedIndexPaths];
-//        NSArray *assetsToStopCaching = [self assetsAtIndexPaths:removedIndexPaths];
-//        
-//        [self.imageManager startCachingImagesForAssets:assetsToStartCaching
-//                                            targetSize:[self desiredImageSize]
-//                                           contentMode:PHImageContentModeAspectFill
-//                                               options:nil];
-//        [self.imageManager stopCachingImagesForAssets:assetsToStopCaching
-//                                           targetSize:[self desiredImageSize]
-//                                          contentMode:PHImageContentModeAspectFill
-//                                              options:nil];
-//        
-//        self.previousPrefetchRect = preheatRect;
-//    }
-//}
+- (void)updateCachedAssets
+{
+    BOOL isAuthorized = [self.libraryPermission permissionState] == VPermissionStateAuthorized;
+    if (![self isViewLoaded] || !isAuthorized)
+    {
+        return;
+    }
+    
+    // The preheat window is twice the height of the visible rect
+    CGRect preheatRect = self.collectionView.bounds;
+    preheatRect = CGRectInset(preheatRect, 0.0f, -0.5f * CGRectGetHeight(preheatRect));
+    
+    // If scrolled by a "reasonable" amount...
+    CGFloat delta = ABS(CGRectGetMidY(preheatRect) - CGRectGetMidY(self.previousPrefetchRect));
+    if (delta > CGRectGetHeight(self.collectionView.bounds) / 3.0f)
+    {
+        
+        // Compute the assets to start caching and to stop caching.
+        NSMutableArray *addedIndexPaths = [NSMutableArray array];
+        NSMutableArray *removedIndexPaths = [NSMutableArray array];
+        
+        [self computeDifferenceBetweenRect:self.previousPrefetchRect
+                                   andRect:preheatRect
+                            removedHandler:^(CGRect removedRect)
+        {
+            NSArray *indexPaths = [self.collectionView indexPathsInRect:removedRect];
+            [removedIndexPaths addObjectsFromArray:indexPaths];
+        }
+                              addedHandler:^(CGRect addedRect)
+        {
+            NSArray *indexPaths = [self.collectionView indexPathsInRect:addedRect];
+            [addedIndexPaths addObjectsFromArray:indexPaths];
+        }];
+        
+        NSArray *assetsToStartCaching = [self assetsAtIndexPaths:addedIndexPaths];
+        NSArray *assetsToStopCaching = [self assetsAtIndexPaths:removedIndexPaths];
+        
+        [self.imageManager startCachingImagesForAssets:assetsToStartCaching
+                                            targetSize:[self desiredImageSize]
+                                           contentMode:PHImageContentModeAspectFill
+                                               options:nil];
+        [self.imageManager stopCachingImagesForAssets:assetsToStopCaching
+                                           targetSize:[self desiredImageSize]
+                                          contentMode:PHImageContentModeAspectFill
+                                              options:nil];
+        
+        self.previousPrefetchRect = preheatRect;
+    }
+}
 
 - (CGSize)desiredImageSize
 {
