@@ -23,6 +23,7 @@
 #import "VSequenceExpressionsObserver.h"
 #import "VCellSizeCollection.h"
 #import "VCellSizingUserInfoKeys.h"
+#import "VListicleView.h"
 
 // These values must match the constraint values in interface builder
 static const CGFloat kSleekCellHeaderHeight = 50.0f;
@@ -48,6 +49,7 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 @property (nonatomic, weak) IBOutlet VSequenceCountsTextView *countsTextView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *captiontoPreviewVerticalSpacing;
+@property (nonatomic, strong) IBOutlet VListicleView *listicleView;
 
 @end
 
@@ -155,6 +157,10 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
     {
         [self.captionTextView setDependencyManager:dependencyManager];
     }
+    if ([self.listicleView respondsToSelector:@selector(setDependencyManager:)])
+    {
+        [self.listicleView setDependencyManager:dependencyManager];
+    }
     
     [self.countsTextView setTextHighlightAttributes:[[self class] sequenceCountsActiveAttributesWithDependencyManager:dependencyManager]];
     [self.countsTextView setTextAttributes:[[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager]];
@@ -182,6 +188,7 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
     
     [self updatePreviewViewForSequence:sequence];
     self.headerView.sequence = sequence;
+    self.listicleView.sequence = sequence;
     self.sleekActionView.sequence = sequence;
     [self updateCaptionViewForSequence:sequence];
     [self.previewContainer removeConstraint:self.previewContainerHeightConstraint];
