@@ -225,6 +225,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         NSDictionary *textPostScreen = @{@"name" : @"forcedContentCreation.screen",
                                          @"color.text" : @{ @"red" : @255, @"blue" : @255, @"green" : @255, @"alpha" : @255 },
                                          @"font.heading4" : @{ @"fontName" : @"Lato", @"fontSize" : @16 },
+                                         @"font.button1" : @{ @"fontName" : @"Lato", @"fontSize" : @16 },
                                          @"prompt" : @"What is your favorite NigaHiga or HigaTV Video?",
                                          @"placeholderText": @"Type your text here!",
                                          @"doneButtonText" : @"Done",
@@ -234,8 +235,8 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
                                          @"hashtagText" : @"#firstpost"
                                          };
         
-//        NSMutableArray *screens = [dict[@"registrationScreens"] mutableCopy];
-        NSMutableArray *screens = [@[[dict[@"registrationScreens"] lastObject]] mutableCopy];
+        NSMutableArray *screens = [dict[@"registrationScreens"] mutableCopy];
+//        NSMutableArray *screens = [@[[dict[@"registrationScreens"] lastObject]] mutableCopy];
         [screens addObject:textPostScreen];
         
         dict[@"registrationScreens"] = screens;

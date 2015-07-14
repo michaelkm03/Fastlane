@@ -65,7 +65,7 @@ static NSString * const kStatusBarStyleKey = @"statusBarStyle";
     
     self.titleLabel.text = NSLocalizedString([self.dependencyManager stringForKey:kPromptKey], @"");
     self.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
-    self.doneButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
+    self.doneButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerButton1FontKey];
     self.titleLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     
     [self updateDoneButton:NO];
