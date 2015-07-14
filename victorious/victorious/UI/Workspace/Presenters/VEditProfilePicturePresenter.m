@@ -25,7 +25,7 @@
     VImageCreationFlowController *imageCreationFlowController = [self.dependencyManager templateValueOfType:[VImageCreationFlowController class]
                                                                                                      forKey:VImageCreationFlowControllerKey];
     imageCreationFlowController.creationFlowDelegate = self;
-    imageCreationFlowController.context = self.isRegistration ? VWorkspaceFlowControllerContextProfileImageRegistration : VWorkspaceFlowControllerContextProfileImage;
+    imageCreationFlowController.context = self.isRegistration ? VCameraContextProfileImageRegistration : VCameraContextProfileImage;
     
     [self.viewControllerToPresentOn presentViewController:imageCreationFlowController
                                                  animated:YES

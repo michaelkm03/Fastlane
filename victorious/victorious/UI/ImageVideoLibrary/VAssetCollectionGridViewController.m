@@ -94,7 +94,7 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
     // NavigationItem titleView has a bug if you set a view with size zero
     UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
     
-    self.alternateFolderButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.alternateFolderButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [self.alternateFolderButton setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     [self.alternateFolderButton addTarget:self
                                    action:@selector(selectedFolderPicker:)
@@ -103,17 +103,25 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
     [containerView addSubview:self.alternateFolderButton];
     
     UIImageView *dropdownImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gallery_dropdown_arrow"]];
+    dropdownImageView.contentMode = UIViewContentModeScaleAspectFit;
     dropdownImageView.translatesAutoresizingMaskIntoConstraints = NO;
-    [dropdownImageView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-    [dropdownImageView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
     [containerView addSubview:dropdownImageView];
     [containerView v_addPinToTopBottomToSubview:self.alternateFolderButton];
     [containerView v_addPinToTopBottomToSubview:dropdownImageView];
-    [containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[alternateFolderButton][dropdownImageView]|"
-                                                                          options:kNilOptions
-                                                                          metrics:nil
-                                                                            views:@{@"dropdownImageView":dropdownImageView,
-                                                                                    @"alternateFolderButton":self.alternateFolderButton}]];
+    [containerView addConstraint:[NSLayoutConstraint constraintWithItem:self.alternateFolderButton
+                                                              attribute:NSLayoutAttributeCenterX
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:containerView
+                                                              attribute:NSLayoutAttributeCenterX
+                                                             multiplier:1.0f
+                                                               constant:0.0f]];
+     [containerView addConstraint:[NSLayoutConstraint constraintWithItem:dropdownImageView
+                                                               attribute:NSLayoutAttributeLeading
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:self.alternateFolderButton
+                                                               attribute:NSLayoutAttributeTrailing
+                                                              multiplier:1.0f
+                                                                constant:0.0f]];
     
     self.navigationItem.titleView = containerView;
 }
@@ -132,7 +140,7 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
 {
     [super viewDidAppear:animated];
     
-//    [self updateCachedAssets];
+    [self updateCachedAssets];
 }
 
 #pragma mark - Property Accessors

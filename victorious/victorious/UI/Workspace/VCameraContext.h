@@ -13,7 +13,7 @@
 // The context in which we're opening the workspace
 typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerContext)
 {
-    VWorkspaceFlowControllerContextProfileImage,
-    VWorkspaceFlowControllerContextProfileImageRegistration,
-    VWorkspaceFlowControllerContextContentCreation,
+    VCameraContextProfileImage,
+    VCameraContextProfileImageRegistration,
+    VCameraContextContentCreation,
 };

@@ -164,7 +164,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 
 - (void)commonInit
 {
-    self.context = VWorkspaceFlowControllerContextContentCreation;
+    self.context = VCameraContextContentCreation;
     self.allowPhotos = YES;
     self.allowVideo = YES;
     self.videoEnabled = YES;
@@ -365,7 +365,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     self.captureController.context = self.context;
     
     VPermission *cameraPermission;
-    if (self.context == VWorkspaceFlowControllerContextContentCreation)
+    if (self.context == VCameraContextContentCreation)
     {
         cameraPermission = [[VPermissionCamera alloc] initWithDependencyManager:self.dependencyManager];
     }
@@ -383,7 +383,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
              void (^startCapture)(BOOL videoEnabled) = [self startCaptureBlock];
              
              // If we don't need mic permission, call the capture start block right away
-             if (self.context == VWorkspaceFlowControllerContextProfileImage || !self.allowVideo)
+             if (self.context == VCameraContextProfileImage || !self.allowVideo)
              {
                  self.userDeniedPermissionsPrePrompt = NO;
                  startCapture(NO);
@@ -418,7 +418,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
          {
              self.userDeniedPermissionsPrePrompt = YES;
              self.state = VCameraViewControllerStatePermissionDenied;
-             if (state == VPermissionStatePromptDenied && (self.context == VWorkspaceFlowControllerContextProfileImageRegistration))
+             if (state == VPermissionStatePromptDenied && (self.context == VCameraContextProfileImageRegistration))
              {
                  if (self.completionBlock)
                  {

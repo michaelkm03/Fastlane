@@ -69,7 +69,7 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
     {
         _dependencyManager = dependencyManager;
         
-        _context = VWorkspaceFlowControllerContextContentCreation;
+        _context = VCameraContextContentCreation;
         VCaptureContainerViewController *captureContainer = [VCaptureContainerViewController captureContainerWithDependencyManager:dependencyManager];
         [captureContainer setAlternateCaptureOptions:[self alternateCaptureOptions]];
         [self addCloseButtonToViewController:captureContainer];
@@ -88,12 +88,11 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 
 #pragma mark -  Public Methods
 
-- (void)remixWithPreviewImage:(UIImage *)previewImage\
+- (void)remixWithPreviewImage:(UIImage *)previewImage
                      mediaURL:(NSURL *)mediaURL
 {
     [self setupWorkspace];
-    self.workspaceViewController.mediaURL = mediaURL;
-    self.workspaceViewController.previewImage = previewImage;
+    [self prepareWorkspaceWithMediaURL:mediaURL andPreviewImage:previewImage];
     [self addCloseButtonToViewController:self.workspaceViewController];
     self.viewControllers = @[self.workspaceViewController];
 }
@@ -126,8 +125,10 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
                                    completion:^(NSError *error, NSURL *downloadedFileURL, UIImage *previewImage)
          {
              [hudForView hide:YES];
-             [welf pushWorkspaceWithMediaURL:downloadedFileURL
+             [welf prepareWorkspaceWithMediaURL:downloadedFileURL
                              andPreviewImage:previewImage];
+             [welf pushViewController:welf.workspaceViewController
+                             animated:YES];
          }];
     };
     
@@ -166,6 +167,9 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
                                              CGRectGetHeight(self.view.bounds) - 200.0f);
     self.listViewController.preferredContentSize = preferredContentSize;
     popoverPresentation.sourceView = self.navigationBar;
+    popoverPresentation.sourceRect = CGRectMake(CGRectGetMidX(self.navigationBar.bounds),
+                                                CGRectGetMaxY(self.navigationBar.bounds),
+                                                0.0f, 0.0f);
 
     [self presentViewController:self.listViewController animated:YES completion:nil];
 }
@@ -182,8 +186,9 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
         {
             if (finished)
             {
-                [self pushWorkspaceWithMediaURL:capturedMeidaURL
-                                andPreviewImage:previewImage];
+                [self prepareWorkspaceWithMediaURL:capturedMeidaURL
+                                   andPreviewImage:previewImage];
+                [self pushViewController:self.workspaceViewController animated:YES];
             }
             
             [self dismissViewControllerAnimated:YES completion:nil];
@@ -203,7 +208,8 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
         {
             if (finished)
             {
-                [self pushWorkspaceWithMediaURL:capturedMediaURL andPreviewImage:previewImage];
+                [self prepareWorkspaceWithMediaURL:capturedMediaURL andPreviewImage:previewImage];
+                [self pushViewController:self.workspaceViewController animated:YES];
             }
             
             [self dismissViewControllerAnimated:YES
@@ -222,15 +228,14 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
     return @[cameraOption, searchOption];
 }
 
-- (void)pushWorkspaceWithMediaURL:(NSURL *)mediaURL
-                  andPreviewImage:(UIImage *)previewImage
+- (void)prepareWorkspaceWithMediaURL:(NSURL *)mediaURL
+                     andPreviewImage:(UIImage *)previewImage
 {
     [self setupWorkspace];
     self.workspaceViewController.previewImage = previewImage;
     self.workspaceViewController.mediaURL = mediaURL;
     VImageToolController *toolController = (VImageToolController *)self.workspaceViewController.toolController;
     [toolController setDefaultImageTool:VImageToolControllerInitialImageEditStateText];
-    [self pushViewController:self.workspaceViewController animated:YES];
 }
 
 - (void)setupWorkspace
