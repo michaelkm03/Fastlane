@@ -34,7 +34,7 @@
     videoRequestOptions.networkAccessAllowed = YES;
     videoRequestOptions.version = PHVideoRequestOptionsVersionCurrent;
     videoRequestOptions.deliveryMode = PHVideoRequestOptionsDeliveryModeAutomatic;
-    NSString *localizedDownloadString = NSLocalizedString(@"Exporting", nil);
+    NSString *localizedDownloadString = NSLocalizedString(@"Exporting...", nil);
     videoRequestOptions.progressHandler = ^void(double progress, NSError *error, BOOL *stop, NSDictionary *info)
     {
         // We are downloading from iCloud
