@@ -57,8 +57,10 @@ extern NSString * const kDefaultTextKey;
  */
 @property (nonatomic, assign) BOOL isEditing;
 
+@property (nonatomic, strong) NSString *defaultHashtag;
+
 /**
- Programmatically embed a hashtag in the text at the currently selelected range.
+ Programmatically embed a hashtag in the text at the currently selected range.
  */
 - (BOOL)addHashtag:(NSString *)hashtagText;
 

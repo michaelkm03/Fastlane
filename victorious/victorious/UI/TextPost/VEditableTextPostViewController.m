@@ -75,6 +75,12 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     inputAccessoryView.delegate = self;
     inputAccessoryView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.textView.inputAccessoryView = inputAccessoryView;
+    
+    // Add default hashtag if we have one
+    if (self.defaultHashtag != nil)
+    {
+        [self addHashtag:self.defaultHashtag];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -156,7 +162,11 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 
 - (void)addHashtagToText:(NSString *)hashtag
 {
-    [self hidePlaceholderText];
+    BOOL shouldNotRemovePlaceholder = self.defaultHashtag != nil && [hashtag isEqualToString:self.defaultHashtag];
+    if (!shouldNotRemovePlaceholder)
+    {
+        [self hidePlaceholderText];
+    }
     
     NSString *hashtagTextWithHashMark = [VHashTags stringWithPrependedHashmarkFromString:hashtag];
     if ( ![self.text containsString:hashtagTextWithHashMark] )
@@ -225,10 +235,14 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 {
     if ( self.isShowingPlaceholderText )
     {
-        NSString *text = [self.textView.text stringByReplacingOccurrencesOfString:self.placeholderText withString:@""];
+        NSString *text = [self.textView.text stringByReplacingOccurrencesOfString:self.placeholderText withString:self.defaultHashtag != nil ? @" ": @""];
         self.text = text;
         self.isShowingPlaceholderText = NO;
         self.textView.alpha = 1.0;
+        if (self.defaultHashtag != nil)
+        {
+            self.textView.selectedRange = NSMakeRange(0, 0);
+        }
     }
 }
 

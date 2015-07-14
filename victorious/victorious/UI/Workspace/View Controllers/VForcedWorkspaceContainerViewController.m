@@ -10,13 +10,17 @@
 #import "VTextWorkspaceFlowController.h"
 #import "VEditableTextPostViewController.h"
 #import "VDependencyManager.h"
+#import "UIView+AutoLayout.h"
+#import "VDependencyManager+VStatusBarStyle.h"
+
+NSString * const kHashtagKey = @"hashtagText";
 
 static NSString * const kPromptKey = @"prompt";
-static NSString * const kHashtagKey = @"hashtagText";
 static NSString * const kPlaceholderTextKey = @"placeholderText";
 static NSString * const kShowsSkipButtonKey = @"showsSkipButton";
 static NSString * const kSkipButtonTextKey = @"skipButtonText";
 static NSString * const kDoneButtonTextKey = @"doneButtonText";
+static NSString * const kStatusBarStyleKey = @"statusBarStyle";
 
 @interface VForcedWorkspaceContainerViewController () <VTextWorkspaceFlowControllerDelegate>
 
@@ -89,15 +93,16 @@ static NSString * const kDoneButtonTextKey = @"doneButtonText";
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return UIStatusBarStyleLightContent;
+    return [self.dependencyManager statusBarStyleForKey:kStatusBarStyleKey];
 }
 
 #pragma mark - Helpers
 
 - (void)configureWorkspace
 {
-    // Replace default text in workspace dependency manager with one from ours
-    NSDictionary *dependencies = @{kDefaultTextKey : [self.dependencyManager stringForKey:kPlaceholderTextKey]};
+    // Replace default text in workspace dependency manager with one from ours and inject default hashtag
+    NSDictionary *dependencies = @{kDefaultTextKey : [self.dependencyManager stringForKey:kPlaceholderTextKey],
+                                   kHashtagKey : [self.dependencyManager stringForKey:kHashtagKey]};
     self.flowController = [VTextWorkspaceFlowController textWorkspaceFlowControllerWithDependencyManager:self.dependencyManager
                                                                                        addedDependencies:dependencies];
     self.flowController.delegate = self;
@@ -105,7 +110,7 @@ static NSString * const kDoneButtonTextKey = @"doneButtonText";
     // Add workspace as child view controller
     [self addChildViewController:self.flowController.flowRootViewController];
     [self.containerView addSubview:self.flowController.flowRootViewController.view];
-    self.flowController.flowRootViewController.view.frame = self.containerView.frame;
+    [self.containerView v_addFitToParentConstraintsToSubview:self.flowController.flowRootViewController.view];
     [self.flowController.flowRootViewController didMoveToParentViewController:self];
 }
 

@@ -10,6 +10,8 @@
 #import "VHasManagedDependencies.h"
 #import "VLoginFlowControllerDelegate.h"
 
+extern NSString * const kHashtagKey;
+
 @interface VForcedWorkspaceContainerViewController : UIViewController <VHasManagedDependencies, VLoginFlowScreen>
 
 @end

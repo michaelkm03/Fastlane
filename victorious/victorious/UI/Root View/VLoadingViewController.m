@@ -224,14 +224,15 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         NSDictionary *textPostScreen = @{@"name" : @"forcedContentCreation.screen",
                                          @"color.text" : @{ @"red" : @255, @"blue" : @255, @"green" : @255, @"alpha" : @255 },
                                          @"prompt" : @"What is your favorite NigaHiga or HigaTV Video?",
-                                         @"placeholderText": @"Whooooooooo!",
+                                         @"placeholderText": @"Type your text here!",
                                          @"doneButtonText" : @"Done",
                                          @"skipButtonText" : @"Skip",
-                                         @"showsSkipButton" : @NO
+                                         @"showsSkipButton" : @NO,
+                                         @"statusBarStyle" : @"light",
+                                         @"hashtagText" : @"FIRSTPOST"
                                          };
         
         dict[@"registrationScreens"] = @[[dict[@"registrationScreens"] lastObject], textPostScreen];
-        dict[@"forcedContentCreation"] = @YES;
         
         [templateDecorator setTemplateValue:dict forKeyPath:keyPath];
                 
