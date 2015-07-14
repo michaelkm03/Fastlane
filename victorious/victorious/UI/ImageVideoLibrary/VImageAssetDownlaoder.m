@@ -10,6 +10,8 @@
 
 #import "UIImage+Resize.h"
 
+NSString * const VImageAssetDownlaoderErrorDomain = @"com.victorious.VImageAssetDownlaoderErrorDomain";
+
 @interface VImageAssetDownlaoder ()
 
 @property (nonatomic, strong) PHAsset *asset;
@@ -44,35 +46,71 @@
             progressHandler(progress);
         }
     };
+    
+    if (self.asset.representsBurst)
+    {
+        PHFetchOptions *burstFetchOption = [[PHFetchOptions alloc] init];
+        burstFetchOption.includeAllBurstAssets = YES;
+        PHFetchResult *automaticBurstSelection = [PHAsset fetchAssetsWithBurstIdentifier:self.asset.burstIdentifier
+                                                                                 options:burstFetchOption];
+        PHAsset *pickedBurstAsset;
+        for (PHAsset *burstAsset in automaticBurstSelection)
+        {
+            if (burstAsset.burstSelectionTypes | PHAssetBurstSelectionTypeUserPick)
+            {
+                pickedBurstAsset = burstAsset;
+                break;
+            }
+        }
+        if (pickedBurstAsset == nil)
+        {
+            self.asset = [automaticBurstSelection firstObject];
+        }
+        else
+        {
+            self.asset = pickedBurstAsset;
+        }
+        
+    }
 
     [[PHImageManager defaultManager] requestImageDataForAsset:self.asset
                                                       options:fullSizeRequestOptions
                                                 resultHandler:^(NSData *imageData, NSString *dataUTI, UIImageOrientation orientation, NSDictionary *info)
      {
+         if (imageData == nil)
+         {
+             NSError *downloadFailure = [NSError errorWithDomain:VImageAssetDownlaoderErrorDomain
+                                                            code:0
+                                                        userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"ImageDownloadFailed", nil)}];
+             completion(downloadFailure, nil, nil);
+             return;
+         }
+         // This handler is always called on main thread per header
          dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
                         {
                             UIImage *imageFromData = [UIImage imageWithData:imageData];
                             UIImage *imageWithProperOrientation = [[UIImage imageWithCGImage:imageFromData.CGImage scale:1.0f orientation:orientation] fixOrientation];
                             NSURL *urlForAsset = [self temporaryURLForAsset:self.asset];
-                            [self saveImage:imageWithProperOrientation
-                                      toURL:urlForAsset];
+                            NSError *error;
+                            NSData *imageData = UIImageJPEGRepresentation(imageWithProperOrientation, 1.0f);
+                            BOOL success = [imageData writeToURL:urlForAsset options:NSDataWritingAtomic error:&error];
+                            
                             dispatch_async(dispatch_get_main_queue(), ^
                                            {
-                                               completion(nil, urlForAsset, imageWithProperOrientation);
+                                               if (success)
+                                               {
+                                                   completion(nil, urlForAsset, imageWithProperOrientation);
+                                               }
+                                               else
+                                               {
+                                                   completion(error, nil, nil);
+                                               }
                                            });
                         });
      }];
 }
 
 #pragma mark - Convenience
-
-- (void)saveImage:(UIImage *)image
-            toURL:(NSURL *)fileURL
-{
-    NSData *imageData = UIImageJPEGRepresentation(image, 1.0f);
-    NSError *error = nil;
-    [imageData writeToURL:fileURL options:NSDataWritingAtomic error:&error];
-}
 
 - (NSURL *)temporaryURLForAsset:(PHAsset *)asset
 {
