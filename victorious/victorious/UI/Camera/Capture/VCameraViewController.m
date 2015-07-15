@@ -471,17 +471,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     return startCapture;
 }
 
-#pragma mark - Public Methods
-
-- (void)hideSearchAndAlbumButtons
-{
-    self.disableSearchAndGallery = YES;
-    self.openAlbumButton.hidden = YES;
-    self.openAlbumButton = nil;
-    self.searchButton.hidden = YES;
-    self.searchButton = nil;
-}
-
 #pragma mark - Property Accessors
 
 - (void)setToolbarHidden:(BOOL)toolsHidden
