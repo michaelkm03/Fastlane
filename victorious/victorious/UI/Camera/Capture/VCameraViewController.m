@@ -190,11 +190,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 {
     [super viewDidLoad];
     
-    if (self.disableSearchAndGallery)
-    {
-        [self hideSearchAndAlbumButtons];
-    }
-    
     [self.closeButton setImage:[self.dependencyManager imageForKey:kCloseIconKey] forState:UIControlStateNormal];
     [self.switchCameraButton setImage:[self.dependencyManager imageForKey:kReverseCameraIconKey] forState:UIControlStateNormal];
     [self.flashButton setImage:[self.dependencyManager imageForKey:kFlashIconKey] forState:UIControlStateNormal];
