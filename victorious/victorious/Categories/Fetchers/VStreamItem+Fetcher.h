@@ -39,4 +39,11 @@
  */
 - (NSURL *)previewImageUrl;
 
+/**
+ *  Returns the appropriate editorialization stream id
+ *
+ *  @return The apporpriate editorialization item for the provided stream id.
+ */
+- (VEditorializationItem *)editorializationForStreamWithApiPath:(NSString *)apiPath;
+
 @end

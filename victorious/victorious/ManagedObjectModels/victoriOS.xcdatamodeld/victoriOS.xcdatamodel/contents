@@ -79,6 +79,13 @@
         <relationship name="messages" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Message" inverseName="conversation" inverseEntity="Message" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="conversation" inverseEntity="User" syncable="YES"/>
     </entity>
+    <entity name="EditorializationItem" representedClassName="VEditorializationItem" syncable="YES">
+        <attribute name="apiPath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="headline" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="marqueeHeadline" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="streamItemId" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="streamItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StreamItem" inverseName="editorializations" inverseEntity="StreamItem" syncable="YES"/>
+    </entity>
     <entity name="EndCard" representedClassName="VEndCard" syncable="YES">
         <attribute name="canRemix" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="canRepost" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -221,16 +228,18 @@
         <attribute name="filterName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="hashtag" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
         <attribute name="isUserPostAllowed" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="streamId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="trackingIdentifier" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="marqueeItems" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="StreamItem" inverseName="marquees" inverseEntity="StreamItem" syncable="YES"/>
         <relationship name="streamItems" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="StreamItem" inverseName="streams" inverseEntity="StreamItem" syncable="YES"/>
     </entity>
     <entity name="StreamItem" representedClassName="VStreamItem" isAbstract="YES" syncable="YES">
+        <attribute name="headline" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="previewImagesObject" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="remoteId" optional="YES" attributeType="String" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="streamContentType" optional="YES" attributeType="String" regularExpressionString="(content|stream)?" syncable="YES"/>
+        <attribute name="streamId" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="editorializations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="EditorializationItem" inverseName="streamItem" inverseEntity="EditorializationItem" syncable="YES"/>
         <relationship name="marquees" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Stream" inverseName="marqueeItems" inverseEntity="Stream" syncable="YES"/>
         <relationship name="streams" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Stream" inverseName="streamItems" inverseEntity="Stream" syncable="YES"/>
     </entity>
@@ -292,21 +301,22 @@
         <element name="Asset" positionX="646" positionY="-441" width="128" height="240"/>
         <element name="Comment" positionX="1078" positionY="38" width="128" height="315"/>
         <element name="Conversation" positionX="1528" positionY="-468" width="128" height="148"/>
+        <element name="EditorializationItem" positionX="657" positionY="-612" width="128" height="120"/>
         <element name="EndCard" positionX="693" positionY="-648" width="128" height="165"/>
         <element name="Hashtag" positionX="1087" positionY="-630" width="128" height="90"/>
         <element name="ImageAsset" positionX="423" positionY="-594" width="128" height="135"/>
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
         <element name="InteractionAction" positionX="495" positionY="-162" width="128" height="105"/>
         <element name="Message" positionX="1582" positionY="-271" width="128" height="180"/>
-        <element name="Node" positionX="817" positionY="-180" width="128" height="133"/>
+        <element name="Node" positionX="817" positionY="-180" width="128" height="135"/>
         <element name="NodeAction" positionX="835" positionY="-9" width="128" height="90"/>
         <element name="Notification" positionX="1593" positionY="87" width="128" height="210"/>
         <element name="NotificationSettings" positionX="621" positionY="-747" width="128" height="150"/>
         <element name="PollResult" positionX="1582" positionY="-36" width="128" height="118"/>
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
         <element name="Sequence" positionX="1078" positionY="-540" width="128" height="585"/>
-        <element name="Stream" positionX="1069" positionY="-792" width="128" height="133"/>
-        <element name="StreamItem" positionX="871" positionY="-765" width="128" height="118"/>
+        <element name="Stream" positionX="1069" positionY="-792" width="128" height="165"/>
+        <element name="StreamItem" positionX="871" positionY="-765" width="128" height="180"/>
         <element name="Tracking" positionX="828" positionY="-630" width="128" height="225"/>
         <element name="User" positionX="1321" positionY="-324" width="128" height="450"/>
         <element name="VoteResult" positionX="864" positionY="164" width="128" height="90"/>
