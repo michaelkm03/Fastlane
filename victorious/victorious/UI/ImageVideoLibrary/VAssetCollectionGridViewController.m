@@ -24,6 +24,8 @@
 #import <MBProgressHUD/MBProgressHUD.h>
 @import Photos;
 
+static NSInteger const kScreenSizeCacheTrigger = 3.0f;
+
 NSString * const VAssetCollectionGridViewControllerMediaType = @"assetGridViewControllerMediaType";
 static NSString * const kAccessUndeterminedPromptKey = @"accessUndeterminedPrompt";
 static NSString * const kAccessUndeterminedCalltoActionKey = @"accessUndeterminedCalltoAction";
@@ -465,7 +467,7 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
     
     // If scrolled by a "reasonable" amount...
     CGFloat delta = ABS(CGRectGetMidY(preheatRect) - CGRectGetMidY(self.previousPrefetchRect));
-    if (delta > CGRectGetHeight(self.collectionView.bounds) / 3.0f)
+    if (delta > CGRectGetHeight(self.collectionView.bounds) / kScreenSizeCacheTrigger)
     {
         // Compute the assets to start caching and to stop caching.
         NSMutableArray *addedIndexPaths = [NSMutableArray array];
