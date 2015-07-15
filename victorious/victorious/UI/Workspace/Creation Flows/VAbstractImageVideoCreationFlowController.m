@@ -17,6 +17,7 @@
 #import "VAssetCollectionListViewController.h"
 #import "VAssetDownloader.h"
 #import "UIAlertController+VSimpleAlert.h"
+#import "VCollectionListPresentationController.h"
 
 // Workspace
 #import "VWorkspaceViewController.h"
@@ -36,7 +37,7 @@
 // Keys
 NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 
-@interface VAbstractImageVideoCreationFlowController () <UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate>
+@interface VAbstractImageVideoCreationFlowController () <UINavigationControllerDelegate, UIViewControllerTransitioningDelegate>
 
 @property (nonatomic, strong) NSArray *cachedAssetCollections;
 
@@ -158,18 +159,8 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     {
         welf.gridViewController.collectionToDisplay = assetCollection;
     };
-    self.listViewController.modalPresentationStyle = UIModalPresentationPopover;
-
-    UIPopoverPresentationController *popoverPresentation = self.listViewController.popoverPresentationController;
-    popoverPresentation.delegate = self;
-    CGSize preferredContentSize = CGSizeMake(CGRectGetWidth(self.view.bounds) - 50.0f,
-                                             CGRectGetHeight(self.view.bounds) - 200.0f);
-    self.listViewController.preferredContentSize = preferredContentSize;
-    popoverPresentation.sourceView = self.navigationBar;
-    popoverPresentation.sourceRect = CGRectMake(CGRectGetMidX(self.navigationBar.bounds),
-                                                CGRectGetMaxY(self.navigationBar.bounds),
-                                                0.0f, 0.0f);
-
+    self.listViewController.modalPresentationStyle = UIModalPresentationCustom;
+//    self.listViewController.transitioningDelegate = self;
     [self presentViewController:self.listViewController animated:YES completion:nil];
 }
 
@@ -368,12 +359,12 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     }
 }
 
-#pragma mark - UIPopoverPresentationControllerDelegate
+#pragma mark - UIViewControllerTransitioningDelegate
 
-- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller
-                                                               traitCollection:(UITraitCollection *)traitCollection
+- (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented presentingViewController:(UIViewController *)presenting sourceViewController:(UIViewController *)source
 {
-    return UIModalPresentationNone;
+    return [[VCollectionListPresentationController alloc] initWithPresentedViewController:self.listViewController
+                                                                 presentingViewController:self];
 }
 
 @end

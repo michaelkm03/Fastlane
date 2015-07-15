@@ -9,13 +9,16 @@
 #import "VAssetCollectionListViewController.h"
 #import "VPermissionPhotoLibrary.h"
 #import "VAssetGroupTableViewCell.h"
+#import "VCollectionListPresentationController.h"
 
 @import Photos;
 
 // Cell is registered with this key in the storyboard
 static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 
-@interface VAssetCollectionListViewController () <PHPhotoLibraryChangeObserver>
+@interface VAssetCollectionListViewController () <UITableViewDataSource, UITableViewDelegate, PHPhotoLibraryChangeObserver, UIViewControllerTransitioningDelegate>
+
+@property (nonatomic, strong) IBOutlet UITableView *tableView;
 
 @property (nonatomic, assign) PHAssetMediaType mediaType;
 
@@ -43,6 +46,7 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
     UIStoryboard *storyboardForClass = [UIStoryboard storyboardWithName:NSStringFromClass(self)
                                                                  bundle:bundleForClass];
     VAssetCollectionListViewController *listViewController = [storyboardForClass instantiateInitialViewController];
+    listViewController.transitioningDelegate = listViewController;
     if (mediaType == PHAssetMediaTypeImage || mediaType == PHAssetMediaTypeVideo)
     {
         listViewController.mediaType = mediaType;
@@ -84,6 +88,11 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 {
     [super viewWillAppear:animated];
     
+    for (NSIndexPath *selectedIndexPath in self.tableView.indexPathsForSelectedRows)
+    {
+        [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:NO];
+    }
+    
     if (([self.libraryPermissions permissionState] == VPermissionStateAuthorized) && self.needsFetch)
     {
         self.needsFetch = NO;
@@ -93,6 +102,14 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
          }];
         [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
     }
+}
+
+#pragma mark - Target/Action
+
+- (IBAction)tappedAway:(id)sender
+{
+    [self.presentingViewController dismissViewControllerAnimated:YES
+                                                      completion:nil];
 }
 
 #pragma mark - Table view data source
@@ -267,6 +284,14 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
     self.numberFormatter.locale = [NSLocale currentLocale];
     self.numberFormatter.groupingSeparator = [[NSLocale currentLocale] objectForKey:NSLocaleGroupingSeparator];
     return formatter;
+}
+
+#pragma mark - UIViewControllerTransitioningDelegate
+
+- (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented presentingViewController:(UIViewController *)presenting sourceViewController:(UIViewController *)source
+{
+    return [[VCollectionListPresentationController alloc] initWithPresentedViewController:presented
+                                                                 presentingViewController:source];
 }
 
 @end
