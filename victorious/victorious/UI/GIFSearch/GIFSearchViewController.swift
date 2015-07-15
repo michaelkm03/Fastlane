@@ -22,8 +22,9 @@ import UIKit
 /// as part of a content creation flow.
 class GIFSearchViewController: UIViewController {
     
-    enum Action: Selector {
-        case Next = "onNext:"
+    /// Enum of selector strings used in this class
+    private enum Action: Selector {
+        case Next = "onNextSelected:"
     }
 
     @IBOutlet weak var collectionView: UICollectionView!
@@ -55,7 +56,7 @@ class GIFSearchViewController: UIViewController {
         self.scrollPaginator.delegate = self
         
         self.searchBar.delegate = self
-        if let searchTextField = self.searchBar.textField {
+        if let searchTextField = self.searchBar.v_textField {
             searchTextField.font = self.dependencyManager?.fontForKey(VDependencyManagerHeading3FontKey)
             searchTextField.textColor = UIColor.whiteColor()
             searchTextField.backgroundColor = UIColor(white: 0.2, alpha: 1.0)
@@ -76,19 +77,7 @@ class GIFSearchViewController: UIViewController {
         self.performSearch()
     }
     
-    func performSearch( _ searchText: String = "", pageType: VPageType = .First ) {
-        self.searchDataSource.performSearch( searchText, pageType: pageType ) {
-            self.collectionView.reloadData()
-        }
-    }
-    
-    func clearSearch() {
-        self.searchDataSource.clear()
-        self.collectionView.reloadData()
-        self.collectionView.setContentOffset( CGPoint.zeroPoint, animated: false )
-    }
-    
-    func onNext( sender: AnyObject? ) {
+    func onNextSelected( sender: AnyObject? ) {
         if let indexPath = self.selectedIndexPath {
             
             let selectedGIF = self.searchDataSource.sections[ indexPath.section ][ indexPath.row ]
@@ -110,6 +99,18 @@ class GIFSearchViewController: UIViewController {
                 progressHUD.hide(true)
             }
         }
+    }
+    
+    private func performSearch( _ searchText: String = "", pageType: VPageType = .First ) {
+        self.searchDataSource.performSearch( searchText, pageType: pageType ) {
+            self.collectionView.reloadData()
+        }
+    }
+    
+    private func clearSearch() {
+        self.searchDataSource.clear()
+        self.collectionView.reloadData()
+        self.collectionView.setContentOffset( CGPoint.zeroPoint, animated: false )
     }
     
     private func titleViewWithTitle( text: String ) -> UIView {
@@ -161,28 +162,10 @@ extension GIFSearchViewController : VScrollPaginatorDelegate {
     }
 }
 
-private extension UIView {
-    
-    /// UIView extension
-    /// parameter `pattern`: Closure to call to determine if view is the one sought
-    /// returns: A view that passes the test or nil
-    func findSubview( pattern: (UIView)->(Bool) ) -> UIView? {
-        for subview in self.subviews as! [UIView] {
-            if pattern( subview ) {
-                return subview
-            }
-            else if let result = subview.findSubview( pattern ) {
-                return result
-            }
-        }
-        return nil
-    }
-}
-
 private extension UISearchBar {
     
-    /// Returns the text field into which users type their search string
-    var textField: UITextField? {
-        return self.findSubview({ $0 is UITextField }) as? UITextField
+    /// Finds the `UITextField` subview into which users type their search string
+    var v_textField: UITextField? {
+        return self.v_findSubview({ $0 is UITextField }) as? UITextField
     }
 }
