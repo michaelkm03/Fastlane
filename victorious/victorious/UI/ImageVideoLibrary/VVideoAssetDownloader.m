@@ -8,6 +8,9 @@
 
 #import "VVideoAssetDownloader.h"
 
+
+NSString * const VVideoAssetDownloaderErrorDomain = @"com.victorious.VVideoAssetDownlaoderErrorDomain";
+
 @interface VVideoAssetDownloader ()
 
 @property (nonatomic, strong) PHAsset *asset;
@@ -61,7 +64,8 @@
          {
              dispatch_async(dispatch_get_main_queue(), ^
                             {
-                                completion(nil, nil, nil);
+                                NSError *error = [NSError errorWithDomain:VVideoAssetDownloaderErrorDomain code:0 userInfo:nil];
+                                completion(error, nil, nil);
                             });
          }
      }];
