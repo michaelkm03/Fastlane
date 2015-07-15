@@ -247,15 +247,14 @@ static const CGFloat kBlurredWhiteAlpha = 0.3f;
 }
 
 - (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-       finishedWithPreviewImage:(UIImage *)previewImage
-               capturedMediaURL:(NSURL *)capturedMediaURL
+  finishedWithPublishParameters:(VPublishParameters *)publishParameters
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectImageForEditProfile];
     
-    self.profileImageView.image = previewImage;
-    self.updatedProfileImage = capturedMediaURL;
+    self.profileImageView.image = publishParameters.previewImage;
+    self.updatedProfileImage = publishParameters.mediaToUploadURL;
 
-    [self.backgroundImageView setBlurredImageWithClearImage:previewImage
+    [self.backgroundImageView setBlurredImageWithClearImage:publishParameters.previewImage
                                            placeholderImage:nil
                                                   tintColor:[UIColor colorWithWhite:1.0 alpha:kBlurredWhiteAlpha]];
     self.tableView.backgroundView = self.backgroundImageView;

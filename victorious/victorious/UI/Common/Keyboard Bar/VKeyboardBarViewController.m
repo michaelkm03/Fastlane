@@ -345,11 +345,10 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
 }
 
 - (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-       finishedWithPreviewImage:(UIImage *)previewImage
-               capturedMediaURL:(NSURL *)capturedMediaURL
+  finishedWithPublishParameters:(VPublishParameters *)publishParameters
 {
-    self.mediaURL = capturedMediaURL;
-    [self.mediaButton setImage:previewImage forState:UIControlStateNormal];
+    self.mediaURL = publishParameters.mediaToUploadURL;
+    [self.mediaButton setImage:publishParameters.previewImage forState:UIControlStateNormal];
     [self dismissViewControllerAnimated:YES
                              completion:^
      {

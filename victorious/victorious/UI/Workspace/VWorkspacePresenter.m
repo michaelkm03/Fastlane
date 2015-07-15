@@ -153,8 +153,7 @@ static NSString * const kCreateSheetKey = @"createSheet";
 }
 
 - (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-       finishedWithPreviewImage:(UIImage *)previewImage
-               capturedMediaURL:(NSURL *)capturedMediaURL
+  finishedWithPublishParameters:(VPublishParameters *)publishParameters
 {
     [self.viewControllerToPresentOn dismissViewControllerAnimated:YES completion:nil];
 }

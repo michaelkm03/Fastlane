@@ -494,12 +494,11 @@
 }
 
 - (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-       finishedWithPreviewImage:(UIImage *)previewImage
-               capturedMediaURL:(NSURL *)capturedMediaURL
+  finishedWithPublishParameters:(VPublishParameters *)publishParameters
 {
-    self.profileImageView.image = previewImage;
-    self.registrationModel.selectedImage = previewImage;
-    self.registrationModel.profileImageURL = capturedMediaURL;
+    self.profileImageView.image = publishParameters.previewImage;
+    self.registrationModel.selectedImage = publishParameters.previewImage;
+    self.registrationModel.profileImageURL = publishParameters.mediaToUploadURL;
     [self dismissViewControllerAnimated:YES
                              completion:nil];
 }

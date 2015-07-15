@@ -464,8 +464,7 @@
 }
 
 - (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-       finishedWithPreviewImage:(UIImage *)previewImage
-               capturedMediaURL:(NSURL *)capturedMediaURL
+  finishedWithPublishParameters:(VPublishParameters *)publishParameters
 {
     [self.viewControllerPresentingWorkspace dismissViewControllerAnimated:YES
                                                                completion:^

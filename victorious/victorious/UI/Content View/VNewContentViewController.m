@@ -1958,11 +1958,10 @@ referenceSizeForHeaderInSection:(NSInteger)section
 }
 
 - (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-       finishedWithPreviewImage:(UIImage *)previewImage
-               capturedMediaURL:(NSURL *)capturedMediaURL
+  finishedWithPublishParameters:(VPublishParameters *)publishParameters
 {
-    self.mediaURL = capturedMediaURL;
-    [self.textEntryView setSelectedThumbnail:previewImage];
+    self.mediaURL = publishParameters.mediaToUploadURL;
+    [self.textEntryView setSelectedThumbnail:publishParameters.previewImage];
 
     [self dismissViewControllerAnimated:YES completion:^
      {

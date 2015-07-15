@@ -604,11 +604,10 @@ static char KVOContext;
 }
 
 - (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-       finishedWithPreviewImage:(UIImage *)previewImage
-               capturedMediaURL:(NSURL *)capturedMediaURL
+  finishedWithPublishParameters:(VPublishParameters *)publishParameters
 {
-    [self imagePickerFinishedWithURL:capturedMediaURL
-                        previewImage:previewImage];
+    [self imagePickerFinishedWithURL:publishParameters.mediaToUploadURL
+                        previewImage:publishParameters.previewImage];
 
     [self dismissViewControllerAnimated:YES completion:nil];
 }

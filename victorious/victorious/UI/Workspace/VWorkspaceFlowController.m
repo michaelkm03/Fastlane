@@ -145,48 +145,16 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     {
         NSAssert((self.renderedMeidaURL != nil), @"We need a rendered media url to begin publishing!");
         
+        VPublishParameters *publishParameters = [self currentPublishParameters];
+        
         if ([self.delegate respondsToSelector:@selector(shouldShowPublishForWorkspaceFlowController:)])
         {
             BOOL shouldShowPublish = [self.delegate shouldShowPublishForWorkspaceFlowController:self];
             if (!shouldShowPublish)
             {
-                [self notifyDelegateOfFinishWithPreviewImage:self.previewImage
-                                            capturedMediaURL:self.renderedMeidaURL];
+                [self notifyDelegateOfFinishWithPublishParameters:publishParameters];
                 return;
             }
-        }
-        
-        VPublishParameters *publishParameters = [[VPublishParameters alloc] init];
-        publishParameters.mediaToUploadURL = self.renderedMeidaURL;
-        publishParameters.previewImage = self.previewImage;
-        if ([[self.flowNavigationController topViewController] isKindOfClass:[VWorkspaceViewController class]])
-        {
-            VWorkspaceViewController *workspace = (VWorkspaceViewController *)[self.flowNavigationController topViewController];
-            if ([workspace.toolController isKindOfClass:[VVideoToolController class]])
-            {
-                VVideoToolController *videoToolController = (VVideoToolController *)workspace.toolController;
-                publishParameters.isGIF = videoToolController.isGIF;
-                publishParameters.isVideo = YES;
-                publishParameters.didTrim = videoToolController.didTrim;
-            }
-            else if ([workspace.toolController isKindOfClass:[VImageToolController class]])
-            {
-                VImageToolController *imageToolController = (VImageToolController *)workspace.toolController;
-                publishParameters.embeddedText = imageToolController.embeddedText;
-                publishParameters.textToolType = imageToolController.textToolType;
-                publishParameters.filterName = imageToolController.filterName;
-                publishParameters.didCrop = imageToolController.didCrop;
-                publishParameters.isVideo = NO;
-            }
-        }
-        VSequence *sequenceToRemix = [self.dependencyManager templateValueOfType:[VSequence class]
-                                                                          forKey:VWorkspaceFlowControllerSequenceToRemixKey];
-        if (sequenceToRemix)
-        {
-            NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-            formatter.numberStyle = NSNumberFormatterDecimalStyle;
-            publishParameters.parentSequenceID = [formatter numberFromString:sequenceToRemix.remoteId];
-            publishParameters.parentNodeID = [sequenceToRemix firstNode].remoteId;
         }
         
         VPublishViewController *publishViewController = [self.dependencyManager newPublishViewController];
@@ -208,8 +176,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
             if (published)
             {
                 __strong typeof (welf) strongSelf = welf;
-                [strongSelf notifyDelegateOfFinishWithPreviewImage:strongSelf.previewImage
-                                                  capturedMediaURL:strongSelf.renderedMeidaURL];
+                [strongSelf notifyDelegateOfFinishWithPublishParameters:[strongSelf currentPublishParameters]];
             }
             else
             {
@@ -232,6 +199,44 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         NSAssert(false, @"Not a valid transition");
     }
     self.state = newState;
+}
+
+- (VPublishParameters *)currentPublishParameters
+{
+    VPublishParameters *publishParameters = [[VPublishParameters alloc] init];
+    publishParameters.mediaToUploadURL = self.renderedMeidaURL;
+    publishParameters.previewImage = self.previewImage;
+    if ([[self.flowNavigationController topViewController] isKindOfClass:[VWorkspaceViewController class]])
+    {
+        VWorkspaceViewController *workspace = (VWorkspaceViewController *)[self.flowNavigationController topViewController];
+        if ([workspace.toolController isKindOfClass:[VVideoToolController class]])
+        {
+            VVideoToolController *videoToolController = (VVideoToolController *)workspace.toolController;
+            publishParameters.isGIF = videoToolController.isGIF;
+            publishParameters.isVideo = YES;
+            publishParameters.didTrim = videoToolController.didTrim;
+        }
+        else if ([workspace.toolController isKindOfClass:[VImageToolController class]])
+        {
+            VImageToolController *imageToolController = (VImageToolController *)workspace.toolController;
+            publishParameters.embeddedText = imageToolController.embeddedText;
+            publishParameters.textToolType = imageToolController.textToolType;
+            publishParameters.filterName = imageToolController.filterName;
+            publishParameters.didCrop = imageToolController.didCrop;
+            publishParameters.isVideo = NO;
+        }
+    }
+    VSequence *sequenceToRemix = [self.dependencyManager templateValueOfType:[VSequence class]
+                                                                      forKey:VWorkspaceFlowControllerSequenceToRemixKey];
+    if (sequenceToRemix)
+    {
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        formatter.numberStyle = NSNumberFormatterDecimalStyle;
+        publishParameters.parentSequenceID = [formatter numberFromString:sequenceToRemix.remoteId];
+        publishParameters.parentNodeID = [sequenceToRemix firstNode].remoteId;
+    }
+    
+    return publishParameters;
 }
 
 #pragma mark - VAuthorizationContextProvider
@@ -446,14 +451,11 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     objc_setAssociatedObject(self.flowNavigationController, &kAssociatedObjectKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)notifyDelegateOfFinishWithPreviewImage:(UIImage *)previewImage
-                              capturedMediaURL:(NSURL *)capturedMediaURL
+- (void)notifyDelegateOfFinishWithPublishParameters:(VPublishParameters *)publishParameters
 {
     if (self.delegate != nil)
     {
-        [self.delegate workspaceFlowController:self
-                      finishedWithPreviewImage:previewImage
-                              capturedMediaURL:capturedMediaURL];
+        [self.delegate workspaceFlowController:self finishedWithPublishParameters:publishParameters];
     }
     else
     {

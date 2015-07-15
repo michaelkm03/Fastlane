@@ -151,8 +151,7 @@
 }
 
 - (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-       finishedWithPreviewImage:(UIImage *)previewImage
-               capturedMediaURL:(NSURL *)capturedMediaURL
+  finishedWithPublishParameters:(VPublishParameters *)publishParameters
 {
     self.hasSelectedAvatar = YES;
     [self dismissViewControllerAnimated:YES
@@ -164,8 +163,8 @@
          {
              NSAssert(false, @"We need a flow controller for setting the profile picture!");
          }
-         [flowController setProfilePictureFilePath:capturedMediaURL];
-         [self.avatarButton setImage:previewImage forState:UIControlStateNormal];
+         [flowController setProfilePictureFilePath:publishParameters.mediaToUploadURL];
+         [self.avatarButton setImage:publishParameters.previewImage forState:UIControlStateNormal];
          
          NSString *screenSuccessMessage = [self.dependencyManager stringForKey:VScreenSuccessMessageKey];
          if (screenSuccessMessage != nil)

@@ -10,6 +10,7 @@
 #import "VNavigationDestination.h"
 #import "VAuthorizationContextProvider.h"
 #import "VWorkspaceContext.h"
+#import "VPublishParameters.h"
 
 @class VWorkspaceFlowController;
 
@@ -29,12 +30,10 @@
  *  Notifies the delegate that the workspaceflow is complete and ready to be dismissed.
  *
  *  @param workspaceFlowController The workspaceFlowController that just finished.
- *  @param previewImage            A preview image representing the just created content.
- *  @param capturedMediaURL        An NSURL of the location of the rendered content.
+ *  @param publishParameters       An object that contains info about the media being published.
  */
 - (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-       finishedWithPreviewImage:(UIImage *)previewImage
-               capturedMediaURL:(NSURL *)capturedMediaURL;
+  finishedWithPublishParameters:(VPublishParameters *)publishParameters;
 
 @optional
 
