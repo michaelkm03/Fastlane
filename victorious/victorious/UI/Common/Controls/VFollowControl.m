@@ -15,7 +15,7 @@ static const NSTimeInterval kHighlightAnimationDuration = 0.3f;
 static const CGFloat kHighlightTransformPerspective = -1.0 / 200.0f;
 static const CGFloat kForcedAntiAliasingConstant = 0.01f;
 static const CGFloat kActivityIndicatorShowDuration = 0.5f;
-static const CGFloat kActivityIndicatorHideDuration = 0.3f;
+static const CGFloat kActivityIndicatorHideDuration = 0.0f;
 
 static NSString * const kFollowIconKey = @"follow_user_icon";
 static NSString * const kFollowedCheckmarkIconKey = @"followed_user_icon";
@@ -100,9 +100,9 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
         }
         [self addSubview:_activityIndicator];
         [self v_addCenterToParentContraintsToSubview:_activityIndicator];
-        [self.activityIndicator startAnimating];
         self.activityIndicator.alpha = 0.0f;
     }
+    [self.activityIndicator startAnimating];
 }
 
 - (void)setActivityIndicatorTintColor:(UIColor *)activityIndicatorTintColor

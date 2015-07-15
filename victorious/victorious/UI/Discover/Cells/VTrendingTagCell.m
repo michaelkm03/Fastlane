@@ -59,6 +59,7 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
         return;
     }
 
+    self.followHashtagControl.showActivityIndicator = !shouldCellRespond;
     _shouldCellRespond = shouldCellRespond;
 }
 
