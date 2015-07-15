@@ -7,6 +7,7 @@
 //
 
 #import "VStreamItem+Fetcher.h"
+#import "VEditorializationItem+Restkit.h"
 
 static NSString * const kVStreamContentTypeContent = @"content";
 static NSString * const kVStreamContentTypeStream = @"stream";
@@ -65,6 +66,32 @@ static NSString * const kVStreamContentTypeStream = @"stream";
     }
     
     return [NSURL URLWithString:previewImageString];
+}
+
+- (VEditorializationItem *)editorializationForStreamWithApiPath:(NSString *)apiPath
+{
+    NSManagedObjectContext *context = self.managedObjectContext;
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[VEditorializationItem entityName]];
+    NSPredicate *idFilter = [NSPredicate predicateWithFormat:@"%K == %@ AND %K == %@", @"apiPath", apiPath, @"streamItemId", self.remoteId];
+    [request setPredicate:idFilter];
+    NSError *error = nil;
+    VEditorializationItem *editorializationItem = [[context executeFetchRequest:request error:&error] firstObject];
+    if (error != nil)
+    {
+        VLog(@"Error occured in editorializationForStreamWithApiPath: %@", error);
+    }
+    
+    if ( editorializationItem == nil )
+    {
+        //Create a new one if it doesn't exist
+        editorializationItem = [NSEntityDescription insertNewObjectForEntityForName:[VEditorializationItem entityName]
+                                               inManagedObjectContext:context];
+        editorializationItem.apiPath = apiPath;
+        editorializationItem.streamItemId = self.remoteId;
+        [editorializationItem.managedObjectContext saveToPersistentStore:nil];
+    }
+    
+    return editorializationItem;
 }
 
 @end

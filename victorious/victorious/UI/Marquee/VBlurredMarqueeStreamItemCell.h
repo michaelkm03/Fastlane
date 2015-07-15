@@ -10,6 +10,9 @@
 
 @class VStreamItemPreviewView;
 
+/**
+    A cell representing a single stream item in the blurred marquee.
+ */
 @interface VBlurredMarqueeStreamItemCell : VAbstractMarqueeStreamItemCell
 
 /**
@@ -19,6 +22,16 @@
  */
 - (void)updateToPreviewView:(VStreamItemPreviewView *)previewView;
 
+/**
+    The optimal frame for content in this cell given the bounds of the collection view it
+        will be present in. Assumes that the provided bounds have already taken the
+        content and section insets of the collectionView into consideration.
+ 
+    @param bounds The bounds of the collection view that will contain this cell minus the appropriate
+        section or content edge insets.
+    
+    @return The optimal frame for content in this cell.
+ */
 + (CGRect)frameForPreviewViewInCellWithBounds:(CGRect)bounds;
 
 @end
