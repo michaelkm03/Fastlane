@@ -33,6 +33,8 @@
 static const NSTimeInterval kDefaultTemplateDownloadTimeout = 5.0;
 static const NSTimeInterval kDefaultImageDownloadTimeout = 15.0;
 
+static char kPrivateQueueSpecific;
+
 @implementation VTemplateDownloadOperation
 
 - (instancetype)initWithDownloader:(id<VTemplateDownloader>)downloader andDelegate:(id<VTemplateDownloadOperationDelegate>)delegate
@@ -42,6 +44,7 @@ static const NSTimeInterval kDefaultImageDownloadTimeout = 15.0;
     if ( self != nil )
     {
         _privateQueue = dispatch_queue_create("com.getvictorious.VTemplateDownloadManager", DISPATCH_QUEUE_SERIAL);
+        dispatch_queue_set_specific(_privateQueue, &kPrivateQueueSpecific, &kPrivateQueueSpecific, NULL);
         _semaphore = dispatch_semaphore_create(0);
         _delegate = delegate;
         _cacheUsed = NO;
@@ -107,7 +110,11 @@ static const NSTimeInterval kDefaultImageDownloadTimeout = 15.0;
 
 - (NSDictionary *)templateConfiguration
 {
-    // TODO: protect against deadlock
+    if ( dispatch_get_specific(&kPrivateQueueSpecific) )
+    {
+        return _templateConfiguration;
+    }
+    
     __block NSDictionary *templateConfiguration;
     dispatch_sync(self.privateQueue, ^(void)
     {
