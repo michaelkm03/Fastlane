@@ -411,18 +411,24 @@ static NSString * const kVAPIParamContext = @"context";
             success(operation, fullResponse, resultObjects);
         }
     };
+    NSURLComponents *components = [[NSURLComponents alloc] init];
     NSString *escapedSearchString = [search_string stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
-    NSString *userSearchURL = [NSString stringWithFormat:@"/api/userinfo/search/%@/%ld", escapedSearchString, (long)pageLimit];
+    NSString *path = [NSString stringWithFormat:@"/api/userinfo/search/%@/%ld", escapedSearchString, (long)pageLimit];
+    NSString *url;
     if ( context != nil )
     {
-        userSearchURL = [userSearchURL stringByAppendingPathComponent:context];
+        path = [path stringByAppendingPathComponent:context];
     }
     if (sequenceID != nil)
     {
-        userSearchURL = [userSearchURL stringByAppendingString:[NSString stringWithFormat:@"?sequence_id=%@", sequenceID]];
+        NSURLQueryItem *sequenceQuery = [NSURLQueryItem queryItemWithName:@"sequence_id" value:sequenceID];
+        components.queryItems = @[sequenceQuery];
     }
-        
-    return [self GET:userSearchURL
+
+    components.path = path;
+    url = components.URL.absoluteString;
+    
+    return [self GET:url
               object:nil
           parameters:nil
         successBlock:fullSuccess
