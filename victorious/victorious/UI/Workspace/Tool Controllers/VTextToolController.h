@@ -38,7 +38,7 @@
 /**
  An object that can receive updates when the text post is edited.
  */
-@property (nonatomic, strong) id<VTextListener> textListener;
+@property (nonatomic, weak) id<VTextListener> textListener;
 
 - (void)setMediaURL:(NSURL *)newMediaURL previewImage:(UIImage *)previewImage;
 

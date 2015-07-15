@@ -106,9 +106,10 @@
     VWorkspaceCompletion completion = self.publishCompletionBlock;
     if (completion == nil)
     {
+        __weak typeof(self) welf = self;
         completion = ^(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
         {
-            [self.flowNavigationController dismissViewControllerAnimated:YES completion:nil];
+            [welf.flowNavigationController dismissViewControllerAnimated:YES completion:nil];
         };
         
     }
