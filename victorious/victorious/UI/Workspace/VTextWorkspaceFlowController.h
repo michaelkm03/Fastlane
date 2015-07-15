@@ -31,7 +31,8 @@
 
 /**
  The top-level manager of text post creation, which creates all the tools necessary to 
- perform the process from start to completion.
+ perform the process from start to completion. You must keep a strong reference to this
+ controller in order for it to function properly.
  */
 @interface VTextWorkspaceFlowController : NSObject <VHasManagedDependencies, VNavigationDestination>
 
@@ -42,8 +43,6 @@
 
 /**
  *  Present this viewcontroller.
- *  @note: The WorkspaceFlowController IS retained by this viewcontroller.
- *  The workspace flow controller will be deallocated after did cancel or finished is called on it's delegate.
  */
 @property (nonatomic, readonly) UIViewController *flowRootViewController;
 
