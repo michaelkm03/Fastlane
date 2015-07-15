@@ -14,7 +14,11 @@ https://github.com/TouchFrame/VictoriousiOS
 """
 import requests
 import sys
+import subprocess
 import vams_common as vams
+
+# Supress compiled files
+sys.dont_write_bytecode = True
 
 _VICTORIOUS_ENDPOINT = '/api/app/update_testfairy_url'
 _DEFAULT_HOST = ''
@@ -64,8 +68,15 @@ def postTestFairyURL(app_name, testfairy_url):
         print 'An error occurred posting the Test Fairy URL for %s.' % app_name
         return 1
 
+    # Clean-up compiled python files
+    cleanUp()
+
     print 'Test Fairy URL posted successfully for %s!' % app_name
     print ''
+
+
+def cleanUp():
+    subprocess.call("find . -name '*.pyc' -delete", shell=True)
 
 
 def main(argv):

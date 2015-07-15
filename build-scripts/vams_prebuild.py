@@ -17,16 +17,18 @@ https://github.com/TouchFrame/VictoriousiOS
 """
 import requests
 import sys
+import subprocess
 import os
 import urllib
 import vams_common as vams
 
+# Supress compiled files
+sys.dont_write_bytecode = True
+
 _ASSETS_ENDPOINT = '/api/app/appassets_by_build_name'
 _DEFAULT_HOST = ''
 
-_CONFIG_DIRECTORY = 'app/configuration/'
-
-
+_CONFIG_DIRECTORY = ''
 
 def retrieveAppDetails(app_name):
     """
@@ -63,13 +65,8 @@ def retrieveAppDetails(app_name):
         platform_assets = assets[vams._DEFAULT_PLATFORM]
 
         current_cnt = 0
-        
-        global _CONFIG_DIRECTORY
 
-        if vams._DEFAULT_PLATFORM == 'ios':
-            _CONFIG_DIRECTORY = 'configurations/'
-
-        config_directory = '%s%s' % (_CONFIG_DIRECTORY, app_title)
+        config_directory = '%s/%s' % (_CONFIG_DIRECTORY, app_title)
         if not os.path.exists(config_directory):
             os.makedirs(config_directory)
 
@@ -108,7 +105,7 @@ def setAppConfig(json_obj):
     app_title = payload['app_title']
     app_title = app_title.replace(' ','')
 
-    config_directory = '%s%s' % (_CONFIG_DIRECTORY, app_title)
+    config_directory = '%s/%s' % (_CONFIG_DIRECTORY, app_title)
     file_name = 'config.xml'
     if vams._DEFAULT_PLATFORM == 'ios':
         file_name = 'Info.plist'
@@ -123,37 +120,54 @@ def setAppConfig(json_obj):
     f = open(config_file, 'w')
     f.write(app_config)
     f.close()
-    
+
+    # Clean-up compiled python files
+    cleanUp()
+
     print 'Configuration and assets applied successfully!'
     print ''
 
 
-def main(argv):
-    if len(argv) < 3:
+def cleanUp():
+    subprocess.call("find . -name '*.pyc' -delete", shell=True)
+
+
+def showUsage():
         print ''
-        print 'Usage: ./vams_prebuild.py <app_name> <platform> <environment>'
+        print 'Usage: ./vams_prebuild.py <app_name> <folder> <platform> <environment>'
         print ''
         print '<app_name> is the name of the application data to retrieve from VAMS.'
+        print '<folder> is the name of the directory where app assets should be downloaded to.'
         print '<platform> is the OS platform for which the assets need to be downloaded for.'
         print '<environment> is the server environment to retrieve the application data from.'
         print 'If no <environment> parameter is provided, the system will use PRODUCTION.'
         print ''
         print 'examples:'
-        print './vams_prebuild.py awesomeness ios     <-- will use PRODUCTION'
+        print './vams_prebuild.py awesomeness configurations ios     <-- will use PRODUCTION'
         print '  -- OR --'
-        print './vams_prebuild.py awesomeness ios qa  <-- will use QA'
+        print './vams_prebuild.py awesomeness configurations ios qa  <-- will use QA'
         print ''
         return 1
+
+
+def main(argv):
+    if len(argv) < 4:
+        showUsage()
 
     vams.init()
 
     app_name = argv[1]
-    platform = argv[2]
+
+    global _CONFIG_DIRECTORY
+    folder = argv[2]
+    _CONFIG_DIRECTORY = folder
+
+    platform = argv[3]
     if platform == 'ios':
         vams._DEFAULT_PLATFORM = 'ios'
 
-    if len(argv) == 4:
-        server = argv[3]
+    if len(argv) == 5:
+        server = argv[4]
     else:
         server = ''
 

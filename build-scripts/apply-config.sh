@@ -34,8 +34,8 @@ if [ "$A_FLAG" == "-a" -a "$CONFIGURATION" == "" ]; then
 fi
 
 # Grab the latest assets and configuration data from VAMS.
-python build-scripts/vams_prebuild.py $FOLDER ios
-sleep 3
+# DO NOT put a trailing slash after the configurations directory.
+python build-scripts/vams_prebuild.py $FOLDER configurations ios dev
 
 FOLDER="configurations/$FOLDER"
 

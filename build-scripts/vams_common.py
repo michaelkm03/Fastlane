@@ -10,8 +10,12 @@ A set of global variables to be shared and set between the vams_prebuild and vam
 import requests
 import subprocess
 import hashlib
+import sys
 
 def init():
+    # Supress compiled files
+    sys.dont_write_bytecode = True
+
     global _LOGIN_ENDPOINT
     global _DEFAULT_VAMS_USERID
     global _DEFAULT_VAMS_USER
