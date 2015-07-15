@@ -59,13 +59,10 @@
                                         options:requestOptions
                                   resultHandler:^(UIImage *result, NSDictionary *info)
          {
-             dispatch_async(dispatch_get_main_queue(), ^
-                            {
-                                if ([_asset.localIdentifier isEqualToString:asset.localIdentifier])
-                                {
-                                    self.imageView.image = result;
-                                }
-                            });
+             if ([_asset.localIdentifier isEqualToString:asset.localIdentifier])
+             {
+                 self.imageView.image = result;
+             }
          }];
     });
 }
