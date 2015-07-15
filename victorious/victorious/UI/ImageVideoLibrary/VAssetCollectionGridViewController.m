@@ -14,8 +14,6 @@
 // Views + Helpers
 #import "VAssetCollectionViewCell.h"
 #import "VLibraryAuthorizationCell.h"
-#import <MBProgressHUD/MBProgressHUD.h>
-#import "VCompatibility.h"
 #import "UIView+AutoLayout.h"
 #import "NSIndexSet+Convenience.h"
 #import "UICollectionView+Convenience.h"
@@ -23,6 +21,7 @@
 // Image Resizing
 #import "UIImage+Resize.h"
 
+#import <MBProgressHUD/MBProgressHUD.h>
 @import Photos;
 
 NSString * const VAssetCollectionGridViewControllerMediaType = @"assetGridViewControllerMediaType";
@@ -35,21 +34,19 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
 
 @interface VAssetCollectionGridViewController () <UICollectionViewDelegateFlowLayout, PHPhotoLibraryChangeObserver>
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
+@property (nonatomic, strong) VPermissionPhotoLibrary *libraryPermission;
 @property (nonatomic, assign) PHAssetMediaType mediaType;
 @property (nonatomic, strong) PHCachingImageManager *imageManager;
+@property (nonatomic, strong) PHFetchResult *assetsToDisplay;
 
 @property (nonatomic, assign) CGRect previousPrefetchRect;
 
 @property (nonatomic, strong) UIImage *selectedFullSizeImage;
 @property (nonatomic, strong) NSURL *imageFileURL;
 @property (nonatomic, strong) UIButton *alternateFolderButton;
-
-@property (nonatomic, strong) PHFetchResult *assetsToDisplay;
-
-@property (nonatomic, strong) VPermissionPhotoLibrary *libraryPermission;
-@property (nonatomic, assign) BOOL needsFetch;
-
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) UIImageView *dropdownImageView;
 
 @end
 
@@ -91,7 +88,7 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
         [self prepareImageManagerAndRegisterAsObserver];
     }
     
-    // NavigationItem titleView has a bug if you set a view with size zero
+    // NavigationItem titleView doesn't resize properly. Give it a "big enough" starting size
     UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
     
     self.alternateFolderButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -102,12 +99,13 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
     self.alternateFolderButton.translatesAutoresizingMaskIntoConstraints = NO;
     [containerView addSubview:self.alternateFolderButton];
     
-    UIImageView *dropdownImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gallery_dropdown_arrow"]];
-    dropdownImageView.contentMode = UIViewContentModeScaleAspectFit;
-    dropdownImageView.translatesAutoresizingMaskIntoConstraints = NO;
-    [containerView addSubview:dropdownImageView];
+    self.dropdownImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gallery_dropdown_arrow"]];
+    self.dropdownImageView.contentMode = UIViewContentModeScaleAspectFit;
+    self.dropdownImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.dropdownImageView.hidden = YES;
+    [containerView addSubview:self.dropdownImageView];
     [containerView v_addPinToTopBottomToSubview:self.alternateFolderButton];
-    [containerView v_addPinToTopBottomToSubview:dropdownImageView];
+    [containerView v_addPinToTopBottomToSubview:self.dropdownImageView];
     [containerView addConstraint:[NSLayoutConstraint constraintWithItem:self.alternateFolderButton
                                                               attribute:NSLayoutAttributeCenterX
                                                               relatedBy:NSLayoutRelationEqual
@@ -115,7 +113,7 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
                                                               attribute:NSLayoutAttributeCenterX
                                                              multiplier:1.0f
                                                                constant:0.0f]];
-     [containerView addConstraint:[NSLayoutConstraint constraintWithItem:dropdownImageView
+     [containerView addConstraint:[NSLayoutConstraint constraintWithItem:self.dropdownImageView
                                                                attribute:NSLayoutAttributeLeading
                                                                relatedBy:NSLayoutRelationEqual
                                                                   toItem:self.alternateFolderButton
@@ -156,6 +154,7 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
     
     [self.alternateFolderButton setTitle:collectionToDisplay.localizedTitle
                                 forState:UIControlStateNormal];
+    self.dropdownImageView.hidden = NO;
     
     PHFetchOptions *fetchOptions = [[PHFetchOptions alloc] init];
     fetchOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d", self.mediaType];

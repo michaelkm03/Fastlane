@@ -25,13 +25,9 @@
 
 static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 
-@interface VImageCreationFlowController ()
-
-@end
-
 @implementation VImageCreationFlowController
 
-- (VAssetCollectionListViewController *)listViewController
+- (VAssetCollectionListViewController *)collectionListViewController
 {
     return [VAssetCollectionListViewController assetCollectionListViewControllerWithMediaType:PHAssetMediaTypeImage];
 }

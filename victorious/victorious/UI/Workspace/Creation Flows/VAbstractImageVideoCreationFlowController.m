@@ -77,7 +77,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
         [self addCloseButtonToViewController:self.captureContainerViewController];
         [self setViewControllers:@[self.captureContainerViewController]];
         
-        _listViewController = [self listViewController];
+        _listViewController = [self collectionListViewController];
         _gridViewController = [self gridViewControllerWithDependencyManager:dependencyManager];
         [self.captureContainerViewController setContainedViewController:_gridViewController];
         [self setupPublishScreen];
