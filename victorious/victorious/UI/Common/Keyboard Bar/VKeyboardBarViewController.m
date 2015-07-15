@@ -30,7 +30,7 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
 @property (nonatomic, strong, readwrite) UITextView *textView;
 @property (weak, nonatomic) IBOutlet UIButton *mediaButton;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
-@property (nonatomic, strong) NSURL *mediaURL;
+@property (nonatomic, strong) VPublishParameters *publishParameters;
 
 @property (nonatomic, assign, readonly) CGFloat maxTextFieldHeight;
 
@@ -129,13 +129,13 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
 {
     [self.mediaButton setImage:[UIImage imageNamed:@"MessageCamera"] forState:UIControlStateNormal];
     self.textView.text = nil;
-    self.mediaURL = nil;
+    self.publishParameters.mediaToUploadURL = nil;
     [self textViewDidChange:self.textView];
 }
 
 - (void)enableOrDisableSendButtonAsAppropriate
 {
-    self.sendButton.enabled = self.mediaURL || (self.textView.text.length > 0);
+    self.sendButton.enabled = self.publishParameters.mediaToUploadURL != nil || (self.textView.text.length > 0);
     
     NSString *textWithoutSpace = [self.textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     if (textWithoutSpace.length == 0)
@@ -156,10 +156,10 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
     
     [self.textView resignFirstResponder];
 
-    if ([self.delegate respondsToSelector:@selector(keyboardBar:didComposeWithText:mediaURL:)])
+    if ([self.delegate respondsToSelector:@selector(keyboardBar:didComposeWithText:publishParameters:)])
     {
         NSString *text = [self.textStorage databaseFormattedString];
-        [self.delegate keyboardBar:self didComposeWithText:text mediaURL:self.mediaURL];
+        [self.delegate keyboardBar:self didComposeWithText:text publishParameters:self.publishParameters];
     }
     if (self.shouldAutoClearOnCompose)
     {
@@ -172,7 +172,7 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
     [self.textView resignFirstResponder];
     [self.mediaButton setImage:[UIImage imageNamed:@"MessageCamera"] forState:UIControlStateNormal];
     self.textView.text = nil;
-    self.mediaURL = nil;
+    self.publishParameters.mediaToUploadURL = nil;
     
     if ([self.delegate respondsToSelector:@selector(didCancelKeyboardBar:)])
     {
@@ -201,7 +201,7 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
                          completion:nil];
     };
     
-    if (self.mediaURL == nil)
+    if (self.publishParameters.mediaToUploadURL == nil)
     {
         showCamera();
         return;
@@ -214,7 +214,7 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
     
     void (^clearMediaSelection)(void) = ^void(void)
     {
-        self.mediaURL = nil;
+        self.publishParameters.mediaToUploadURL = nil;
         [self.mediaButton setImage:[UIImage imageNamed:@"MessageCamera"] forState:UIControlStateNormal];
     };
     
@@ -347,7 +347,7 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
 - (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
   finishedWithPublishParameters:(VPublishParameters *)publishParameters
 {
-    self.mediaURL = publishParameters.mediaToUploadURL;
+    self.publishParameters = publishParameters;
     [self.mediaButton setImage:publishParameters.previewImage forState:UIControlStateNormal];
     [self dismissViewControllerAnimated:YES
                              completion:^

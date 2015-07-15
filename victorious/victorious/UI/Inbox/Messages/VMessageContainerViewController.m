@@ -216,12 +216,12 @@ static const NSUInteger kCharacterLimit = 1024;
     return _conversationTableViewController;
 }
 
-- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL
+- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text publishParameters:(VPublishParameters *)publishParameters
 {
     keyboardBar.sendButtonEnabled = NO;
     VMessageViewController *messageViewController = (VMessageViewController *)self.conversationTableViewController;
     self.busyView.hidden = NO;
-    [messageViewController.tableDataSource createMessageWithText:text mediaURL:mediaURL completion:^(NSError *error)
+    [messageViewController.tableDataSource createMessageWithText:text mediaURL:publishParameters.mediaToUploadURL completion:^(NSError *error)
     {
         keyboardBar.sendButtonEnabled = YES;
         self.busyView.hidden = YES;

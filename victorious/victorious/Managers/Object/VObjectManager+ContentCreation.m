@@ -330,14 +330,14 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 #pragma mark - Comment
 
 - (AFHTTPRequestOperation *)addRealtimeCommentWithText:(NSString *)text
-                                              mediaURL:(NSURL *)mediaURL
+                                     publishParameters:(VPublishParameters *)publishParameters
                                                 toAsset:(VAsset *)asset
                                                 atTime:(NSNumber *)time
                                           successBlock:(VSuccessBlock)success
                                              failBlock:(VFailBlock)fail
 {
     return [self addCommentWithText:text
-                           mediaURL:mediaURL
+                  publishParameters:(VPublishParameters *)publishParameters
                          toSequence:asset.node.sequence
                               asset:asset
                           andParent:nil
@@ -347,14 +347,14 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 }
 
 - (AFHTTPRequestOperation *)addCommentWithText:(NSString *)text
-                                      mediaURL:(NSURL *)mediaURL
+                             publishParameters:(VPublishParameters *)publishParameters
                                     toSequence:(VSequence *)sequence
                                      andParent:(VComment *)parent
                                   successBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail
 {
     return [self addCommentWithText:text
-                           mediaURL:mediaURL
+                  publishParameters:(VPublishParameters *)publishParameters
                          toSequence:sequence
                               asset:nil
                           andParent:parent
@@ -364,7 +364,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 }
 
 - (AFHTTPRequestOperation *)addCommentWithText:(NSString *)text
-                                      mediaURL:(NSURL *)mediaURL
+                             publishParameters:(VPublishParameters *)publishParameters
                                     toSequence:(VSequence *)sequence
                                          asset:(VAsset *)asset
                                      andParent:(VComment *)parent
@@ -374,7 +374,11 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 {
     NSMutableDictionary *parameters = [@{@"sequence_id" : sequence.remoteId ?: [NSNull null],
                                          @"parent_id" : parent.remoteId.stringValue ?: [NSNull null],
-                                         @"text" : text ?: [NSNull null]} mutableCopy];
+                                         @"text" : text ?: [NSNull null],
+                                         @"is_gif_style": publishParameters.isGIF ? @"true" : @"false"} mutableCopy];
+    
+    NSURL *mediaURL = publishParameters.mediaToUploadURL;
+    
     NSDictionary *allURLs;
     if (mediaURL != nil)
     {

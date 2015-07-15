@@ -121,7 +121,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, strong) NSUserActivity *handoffObject;
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
-@property (nonatomic, strong) NSURL *mediaURL;
+@property (nonatomic, strong) VPublishParameters *publishParameters;
 @property (nonatomic, assign) BOOL hasAutoPlayed;
 
 @property (nonatomic, weak) IBOutlet UICollectionView *contentCollectionView;
@@ -1502,7 +1502,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
          [welf submitCommentWithText:inputAccessoryView.composedText];
          
          [inputAccessoryView clearTextAndResign];
-         welf.mediaURL = nil;
+         welf.publishParameters.mediaToUploadURL = nil;
          
          NSNumber *experimentValue = [self.dependencyManager numberForKey:VDependencyManagerPauseVideoWhenCommentingKey];
          if (experimentValue != nil)
@@ -1608,7 +1608,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     __weak typeof(self) welf = self;
     [self.viewModel addCommentWithText:commentText
-                              mediaURL:welf.mediaURL
+                              publishParameters:welf.publishParameters
                               realTime:welf.realtimeCommentBeganTime
                             completion:^(BOOL succeeded)
      {
@@ -1635,7 +1635,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
         [self presentViewController:workspaceFlowController.flowRootViewController animated:YES completion:nil];
     };
     
-    if (self.mediaURL == nil)
+    if (self.publishParameters.mediaToUploadURL == nil)
     {
         showCamera();
         return;
@@ -1643,7 +1643,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     
     void (^clearMediaSelection)(void) = ^void(void)
     {
-        self.mediaURL = nil;
+        self.publishParameters.mediaToUploadURL = nil;
         [self.textEntryView setSelectedThumbnail:nil];
     };
     
@@ -1960,7 +1960,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
   finishedWithPublishParameters:(VPublishParameters *)publishParameters
 {
-    self.mediaURL = publishParameters.mediaToUploadURL;
+    self.publishParameters = publishParameters;
     [self.textEntryView setSelectedThumbnail:publishParameters.previewImage];
 
     [self dismissViewControllerAnimated:YES completion:^

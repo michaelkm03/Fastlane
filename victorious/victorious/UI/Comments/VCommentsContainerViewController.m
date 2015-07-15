@@ -139,9 +139,9 @@ static NSString * const kSequenceKey = @"sequence";
 
 #pragma mark - VKeyboardBarDelegate
 
-- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL
+- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text publishParameters:(VPublishParameters *)publishParameters
 {
-    if ((!text || !text.length) && (!mediaURL || !mediaURL.absoluteString.length))
+    if ((!text || !text.length) && (publishParameters == nil || !publishParameters.mediaToUploadURL.absoluteString.length))
     {
         return;
     }
@@ -163,7 +163,7 @@ static NSString * const kSequenceKey = @"sequence";
     };
     
     [[VObjectManager sharedManager] addCommentWithText:text
-                                              mediaURL:mediaURL
+                                              publishParameters:publishParameters
                                             toSequence:_sequence
                                              andParent:nil
                                           successBlock:success
