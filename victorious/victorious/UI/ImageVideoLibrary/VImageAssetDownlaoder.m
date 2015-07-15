@@ -49,28 +49,7 @@ NSString * const VImageAssetDownlaoderErrorDomain = @"com.victorious.VImageAsset
     
     if (self.asset.representsBurst)
     {
-        PHFetchOptions *burstFetchOption = [[PHFetchOptions alloc] init];
-        burstFetchOption.includeAllBurstAssets = YES;
-        PHFetchResult *automaticBurstSelection = [PHAsset fetchAssetsWithBurstIdentifier:self.asset.burstIdentifier
-                                                                                 options:burstFetchOption];
-        PHAsset *pickedBurstAsset;
-        for (PHAsset *burstAsset in automaticBurstSelection)
-        {
-            if (burstAsset.burstSelectionTypes | PHAssetBurstSelectionTypeUserPick)
-            {
-                pickedBurstAsset = burstAsset;
-                break;
-            }
-        }
-        if (pickedBurstAsset == nil)
-        {
-            self.asset = [automaticBurstSelection firstObject];
-        }
-        else
-        {
-            self.asset = pickedBurstAsset;
-        }
-        
+        self.asset = [self assetForBurstAsset:self.asset];
     }
 
     [[PHImageManager defaultManager] requestImageDataForAsset:self.asset
@@ -111,6 +90,49 @@ NSString * const VImageAssetDownlaoderErrorDomain = @"com.victorious.VImageAsset
 }
 
 #pragma mark - Convenience
+
+- (PHAsset *)assetForBurstAsset:(PHAsset *)burstAsset
+{
+    PHFetchOptions *burstFetchOption = [[PHFetchOptions alloc] init];
+    burstFetchOption.includeAllBurstAssets = YES;
+    PHFetchResult *automaticBurstSelection = [PHAsset fetchAssetsWithBurstIdentifier:self.asset.burstIdentifier
+                                                                             options:burstFetchOption];
+    // Find user pick first
+    PHAsset *pickedBurstAsset;
+    for (PHAsset *burstAsset in automaticBurstSelection)
+    {
+        if (burstAsset.burstSelectionTypes | PHAssetBurstSelectionTypeUserPick)
+        {
+            pickedBurstAsset = burstAsset;
+            break;
+        }
+    }
+    // Return it if we find it
+    if (pickedBurstAsset != nil)
+    {
+        return pickedBurstAsset;
+    }
+    // Look for auto-pick
+    PHAsset *autoPickedBurstAsset;
+    for (PHAsset *burstAsset in automaticBurstSelection)
+    {
+        if (burstAsset.burstSelectionTypes | PHAssetBurstSelectionTypeAutoPick)
+        {
+            pickedBurstAsset = burstAsset;
+            break;
+        }
+    }
+    // Return it if we find it
+    if (autoPickedBurstAsset != nil)
+    {
+        return pickedBurstAsset;
+    }
+    else
+    {
+        // Just return the first one
+        return [automaticBurstSelection firstObject];
+    }
+}
 
 - (NSURL *)temporaryURLForAsset:(PHAsset *)asset
 {
