@@ -89,7 +89,6 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 @property (nonatomic, copy) NSDictionary *classesByTemplateName;
 @property (nonatomic, strong) NSMutableDictionary *singletonsByID; ///< This dictionary should only be accessed from the privateQueue
 @property (nonatomic, strong) NSMutableDictionary *childDependencyManagersByID; ///< This dictionary should only be accessed from the privateQueue
-@property (nonatomic, strong) NSMutableArray *imageURLs; ///< This array should only be accessed from the privateQueue
 @property (nonatomic) dispatch_queue_t privateQueue;
 
 @end
@@ -111,7 +110,6 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
         {
             _singletonsByID = [[NSMutableDictionary alloc] init];
             _childDependencyManagersByID = [[NSMutableDictionary alloc] init];
-            _imageURLs = [[NSMutableArray alloc] init];
         }
         [self scanConfiguration:_configuration];
         
@@ -641,7 +639,6 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
  1. Finds all component definitions, creates child dependency
     managers for them, and adds those child DMs to the 
     self.childDependencyManagersByID dictionary
- 2. Finds all image URLs and adds them to the self.imageURLs array
  */
 - (void)scanConfiguration:(NSDictionary *)dictionary
 {
@@ -657,11 +654,6 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
                     VDependencyManager *childDependencyManager = [self childDependencyManagerWithAddedConfiguration:value];
                     [self setChildDependencyManager:childDependencyManager forID:value[VDependencyManagerIDKey]];
                 }
-            }
-            else if ( [VTemplateImageMacro isImageMacroJSON:value] )
-            {
-                NSArray *images = [self arrayOfImageURLsWithDictionary:value];
-                [self addImageURLsWithArray:images];
             }
             else
             {
@@ -734,32 +726,6 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
         childDependencyManager = self.childDependencyManagersByID[objectID];
     });
     return childDependencyManager;
-}
-
-- (void)addImageURL:(NSString *)imageURL
-{
-    if ( self.imageURLs == nil )
-    {
-        [self.parentManager addImageURL:imageURL];
-        return;
-    }
-    dispatch_barrier_async(self.privateQueue, ^(void)
-    {
-        [self.imageURLs addObject:imageURL];
-    });
-}
-
-- (void)addImageURLsWithArray:(NSArray *)imageArray
-{
-    if ( self.imageURLs == nil )
-    {
-        [self.parentManager addImageURLsWithArray:imageArray];
-        return;
-    }
-    dispatch_barrier_async(self.privateQueue, ^(void)
-    {
-        [self.imageURLs addObjectsFromArray:imageArray];
-    });
 }
 
 /**
