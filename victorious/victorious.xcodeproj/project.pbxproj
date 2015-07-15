@@ -499,6 +499,9 @@
 		A778B44A1B545699004F9F54 /* GIFSearchPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A778B4491B545699004F9F54 /* GIFSearchPreviewCell.swift */; };
 		A778B44C1B5456BC004F9F54 /* GIFSearchNoContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A778B44B1B5456BC004F9F54 /* GIFSearchNoContentCell.swift */; };
 		A778B44E1B55937F004F9F54 /* UICollectionViewCell+Reuse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A778B44D1B55937F004F9F54 /* UICollectionViewCell+Reuse.swift */; };
+		A778B4501B559E49004F9F54 /* GIFSearchDataSource+Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A778B44F1B559E49004F9F54 /* GIFSearchDataSource+Collection.swift */; };
+		A778B4521B55B8B5004F9F54 /* GIFSearchActivityFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A778B4511B55B8B5004F9F54 /* GIFSearchActivityFooter.swift */; };
+		A778B4541B55D931004F9F54 /* GIFSearchViewController+Scrolling.swift in Sources */ = {isa = PBXBuildFile; fileRef = A778B4531B55D931004F9F54 /* GIFSearchViewController+Scrolling.swift */; };
 		A7792FD71AE8209200E2ECC1 /* VTemplateDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = A7792FD61AE8209200E2ECC1 /* VTemplateDecorator.m */; };
 		A7792FDE1AE8497200E2ECC1 /* VTemplateDecoratorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7792FDD1AE8497200E2ECC1 /* VTemplateDecoratorTests.m */; };
 		A77951061B27D22D00D9DB0A /* VSuggestedUsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951051B27D22D00D9DB0A /* VSuggestedUsersViewController.m */; };
@@ -514,7 +517,7 @@
 		A779513D1B2A3C9A00D9DB0A /* VSuggestedUsersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A779513B1B2A3C9A00D9DB0A /* VSuggestedUsersViewController.xib */; };
 		A779A5301B4F144A000311B4 /* GIFSearchResult+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A779A52F1B4F144A000311B4 /* GIFSearchResult+Extensions.swift */; };
 		A779A5321B4F144F000311B4 /* GIFSearchResult+RestKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A779A5311B4F144F000311B4 /* GIFSearchResult+RestKit.swift */; };
-		A779A5341B4F2AA8000311B4 /* GIFSearchViewController+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A779A5331B4F2AA8000311B4 /* GIFSearchViewController+Layout.swift */; };
+		A779A5341B4F2AA8000311B4 /* GIFSearchViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A779A5331B4F2AA8000311B4 /* GIFSearchViewController+Delegate.swift */; };
 		A779A5361B4F378D000311B4 /* GIFSearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A779A5351B4F378D000311B4 /* GIFSearchResultCell.swift */; };
 		A779A5381B506D8E000311B4 /* GIFSearchViewController+Fullsize.swift in Sources */ = {isa = PBXBuildFile; fileRef = A779A5371B506D8E000311B4 /* GIFSearchViewController+Fullsize.swift */; };
 		A779A53C1B50AA15000311B4 /* LoadImageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A779A53B1B50AA15000311B4 /* LoadImageOperation.swift */; };
@@ -1946,6 +1949,9 @@
 		A778B4491B545699004F9F54 /* GIFSearchPreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GIFSearchPreviewCell.swift; path = GIFSearch/GIFSearchPreviewCell.swift; sourceTree = "<group>"; };
 		A778B44B1B5456BC004F9F54 /* GIFSearchNoContentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GIFSearchNoContentCell.swift; path = GIFSearch/GIFSearchNoContentCell.swift; sourceTree = "<group>"; };
 		A778B44D1B55937F004F9F54 /* UICollectionViewCell+Reuse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+Reuse.swift"; sourceTree = "<group>"; };
+		A778B44F1B559E49004F9F54 /* GIFSearchDataSource+Collection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GIFSearchDataSource+Collection.swift"; sourceTree = "<group>"; };
+		A778B4511B55B8B5004F9F54 /* GIFSearchActivityFooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GIFSearchActivityFooter.swift; path = GIFSearch/GIFSearchActivityFooter.swift; sourceTree = "<group>"; };
+		A778B4531B55D931004F9F54 /* GIFSearchViewController+Scrolling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "GIFSearchViewController+Scrolling.swift"; path = "GIFSearch/GIFSearchViewController+Scrolling.swift"; sourceTree = "<group>"; };
 		A7792FD51AE8209200E2ECC1 /* VTemplateDecorator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTemplateDecorator.h; sourceTree = "<group>"; };
 		A7792FD61AE8209200E2ECC1 /* VTemplateDecorator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateDecorator.m; sourceTree = "<group>"; };
 		A7792FDD1AE8497200E2ECC1 /* VTemplateDecoratorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateDecoratorTests.m; sourceTree = "<group>"; };
@@ -1970,7 +1976,7 @@
 		A779513B1B2A3C9A00D9DB0A /* VSuggestedUsersViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VSuggestedUsersViewController.xib; path = "victorious/UI/Suggested Users/VSuggestedUsersViewController.xib"; sourceTree = SOURCE_ROOT; };
 		A779A52F1B4F144A000311B4 /* GIFSearchResult+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GIFSearchResult+Extensions.swift"; sourceTree = "<group>"; };
 		A779A5311B4F144F000311B4 /* GIFSearchResult+RestKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GIFSearchResult+RestKit.swift"; sourceTree = "<group>"; };
-		A779A5331B4F2AA8000311B4 /* GIFSearchViewController+Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "GIFSearchViewController+Layout.swift"; path = "GIFSearch/GIFSearchViewController+Layout.swift"; sourceTree = "<group>"; };
+		A779A5331B4F2AA8000311B4 /* GIFSearchViewController+Delegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "GIFSearchViewController+Delegate.swift"; path = "GIFSearch/GIFSearchViewController+Delegate.swift"; sourceTree = "<group>"; };
 		A779A5351B4F378D000311B4 /* GIFSearchResultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GIFSearchResultCell.swift; path = GIFSearch/GIFSearchResultCell.swift; sourceTree = "<group>"; };
 		A779A5371B506D8E000311B4 /* GIFSearchViewController+Fullsize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "GIFSearchViewController+Fullsize.swift"; path = "GIFSearch/GIFSearchViewController+Fullsize.swift"; sourceTree = "<group>"; };
 		A779A53B1B50AA15000311B4 /* LoadImageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoadImageOperation.swift; path = GIFSearch/LoadImageOperation.swift; sourceTree = "<group>"; };
@@ -5012,14 +5018,17 @@
 			isa = PBXGroup;
 			children = (
 				A7A0617E1B4DB5B500E8FFCF /* GIFSearch.storyboard */,
-				A779A5351B4F378D000311B4 /* GIFSearchResultCell.swift */,
+				A778B4511B55B8B5004F9F54 /* GIFSearchActivityFooter.swift */,
 				A7423D781B4DD7FC00745EF4 /* GIFSearchDataSource.swift */,
+				A778B44F1B559E49004F9F54 /* GIFSearchDataSource+Collection.swift */,
 				A778B4471B544370004F9F54 /* GIFSearchMediaHelper.swift */,
 				A778B44B1B5456BC004F9F54 /* GIFSearchNoContentCell.swift */,
 				A778B4491B545699004F9F54 /* GIFSearchPreviewCell.swift */,
+				A779A5351B4F378D000311B4 /* GIFSearchResultCell.swift */,
 				A7A0617C1B4DB39900E8FFCF /* GIFSearchViewController.swift */,
+				A779A5331B4F2AA8000311B4 /* GIFSearchViewController+Delegate.swift */,
 				A779A5371B506D8E000311B4 /* GIFSearchViewController+Fullsize.swift */,
-				A779A5331B4F2AA8000311B4 /* GIFSearchViewController+Layout.swift */,
+				A778B4531B55D931004F9F54 /* GIFSearchViewController+Scrolling.swift */,
 				A779A53B1B50AA15000311B4 /* LoadImageOperation.swift */,
 			);
 			name = GIFSearch;
@@ -7344,6 +7353,7 @@
 				0314D48919B46B5E00FA363C /* VContentInputAccessoryView.m in Sources */,
 				A7A2E0071A38E44B00F8C705 /* VPurchaseViewController.m in Sources */,
 				D85B707C1B0EAF3F0038CA5B /* VTabInfo.m in Sources */,
+				A778B4521B55B8B5004F9F54 /* GIFSearchActivityFooter.swift in Sources */,
 				A7ECC1CD1AD617480003E00A /* VTextToolController.m in Sources */,
 				A779A5381B506D8E000311B4 /* GIFSearchViewController+Fullsize.swift in Sources */,
 				BE799BB519C8DF5B0023CE88 /* VSequence+OrderedSet.m in Sources */,
@@ -7425,6 +7435,7 @@
 				D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */,
 				A7F711FE1AE1D5A00086F729 /* VProfileFollowingContainerViewController.m in Sources */,
 				0314D4A319B46B5E00FA363C /* VCreatePollViewController.m in Sources */,
+				A778B4541B55D931004F9F54 /* GIFSearchViewController+Scrolling.swift in Sources */,
 				A7EECAD51A377FA000A8BAE1 /* VPurchaseSettingsViewController.m in Sources */,
 				A72005701A03ECDC00285A9C /* VTrackingURLRequest.m in Sources */,
 				A7423D791B4DD7FC00745EF4 /* GIFSearchDataSource.swift in Sources */,
@@ -7569,7 +7580,7 @@
 				D87AD2B11AD48AC500C481D0 /* VAsset+VCachedData.m in Sources */,
 				F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */,
 				A75ED0031AB0B6B400C35063 /* VTextToolViewController.m in Sources */,
-				A779A5341B4F2AA8000311B4 /* GIFSearchViewController+Layout.swift in Sources */,
+				A779A5341B4F2AA8000311B4 /* GIFSearchViewController+Delegate.swift in Sources */,
 				F0C83A631B162DE200A6EC1A /* VImageStreamPreviewView.m in Sources */,
 				BE799B8F19C8A91C0023CE88 /* VInteraction.m in Sources */,
 				D8D8958919E88C2100632663 /* VExperienceEnhancerBarCell.m in Sources */,
@@ -7998,6 +8009,7 @@
 				D8B70FE71A8015E500090C5E /* VInlineValidationTextField.m in Sources */,
 				037FCF0A1A8B0CE500E8ABFC /* VFollowUserControl.m in Sources */,
 				0314D4DA19B46B5E00FA363C /* VSettingsViewController.m in Sources */,
+				A778B4501B559E49004F9F54 /* GIFSearchDataSource+Collection.swift in Sources */,
 				D8C8F5731A0400DF006BE3E8 /* VExtendedView.m in Sources */,
 				0372587519D61B0800836B3F /* VUploadTaskCreator.m in Sources */,
 				0314D0B019B4698800FA363C /* VObjectManager+DeviceRegistration.m in Sources */,

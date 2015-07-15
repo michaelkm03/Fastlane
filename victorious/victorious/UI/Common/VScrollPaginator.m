@@ -8,6 +8,8 @@
 
 #import "VScrollPaginator.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 #define LOG_PAGINATION_EVENTS 0
 #if LOG_PAGINATION_EVENTS
 #warning VScrollPaginator is logging pagination events.  Please turn this off before merging.
@@ -50,3 +52,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

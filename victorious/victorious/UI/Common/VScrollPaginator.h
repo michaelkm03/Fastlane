@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "VAbstractFilter+RestKit.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol VScrollPaginatorDelegate <NSObject>
 
 @optional
@@ -29,7 +31,7 @@
 
 @interface VScrollPaginator : NSObject
 
-@property (nonatomic, weak) IBOutlet id<VScrollPaginatorDelegate> delegate;
+@property (nonatomic, weak) IBOutlet id<VScrollPaginatorDelegate> __nullable delegate;
 
 /*
  Drives the calculations of when next and previous pages should be loaded,
@@ -40,3 +42,6 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView;
 
 @end
+
+
+NS_ASSUME_NONNULL_END

@@ -11,25 +11,33 @@ import Foundation
 // Provides methods for searching for GIFs through the backend
 extension VObjectManager {
     
-    func searchForGIF( keywords: [String], success:(([GIFSearchResult])->())?, failure:((NSError?, cancelled: Bool)->())? ) -> RKManagedObjectRequestOperation {
+    typealias GIFSearchSuccess = (results: [GIFSearchResult]) -> ()
+    
+    typealias GIFSearchFailure = (error: NSError?, cancelled: Bool) -> ()
+    
+    func searchForGIF( keywords: [String], pageType:VPageType, success:GIFSearchSuccess?, failure:GIFSearchFailure? ) -> RKManagedObjectRequestOperation? {
         
         let keywordList: String = join( ",", keywords )
-        let escapedKeywordList = keywordList.stringByAddingPercentEncodingWithAllowedCharacters( NSCharacterSet.alphanumericCharacterSet() )
-        // FIXME: Force unwrap, wish there was a guard!
-        let abstractFilter = self.filterForKeywords( escapedKeywordList! )
+        let charSet = NSCharacterSet.alphanumericCharacterSet()
+        let escapedKeywordList = keywordList.stringByAddingPercentEncodingWithAllowedCharacters( charSet )!
+        
+        var filter = self.filterForKeywords( escapedKeywordList )
+        if !filter.canLoadPageType( pageType ) || self.paginationManager.isLoadingFilter( filter ) {
+            return nil
+        }
         
         let fullSuccess: VSuccessBlock =  { (operaiton: NSOperation?, result: AnyObject?, resultObjects: [AnyObject]) -> Void in
-            success?( resultObjects as? [GIFSearchResult] ?? [] )
+            success?( results: resultObjects as? [GIFSearchResult] ?? [] )
         }
-        
         let fullFail: VFailBlock =  { (operation: NSOperation?, error: NSError? ) -> Void in
-            failure?( error, cancelled: operation?.cancelled ?? false )
+            failure?( error: error, cancelled: operation?.cancelled ?? false )
         }
         
-        return self.paginationManager.loadFilter( abstractFilter, withPageType: VPageType.First, successBlock: fullSuccess, failBlock: fullFail )
+        return self.paginationManager.loadFilter( filter, withPageType: pageType, successBlock: fullSuccess, failBlock: fullFail )
     }
     
     func filterForKeywords( keywordList: String ) -> VAbstractFilter {
+        
         let page = VPaginationManagerPageNumberMacro
         let perPage = VPaginationManagerItemsPerPageMacro
         let path = "/api/image/gif_search/\(keywordList)/\(page)/\(perPage)"

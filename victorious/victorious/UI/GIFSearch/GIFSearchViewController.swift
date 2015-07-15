@@ -34,6 +34,15 @@ private extension UISearchBar {
     }
 }
 
+extension GIFSearchViewController : UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        self.clearSearch()
+        self.performSearch( searchBar.text )
+        searchBar.resignFirstResponder()
+    }
+}
+
 class GIFSearchViewController: UIViewController, VMediaSource {
     
     enum Action: Selector {
@@ -41,8 +50,11 @@ class GIFSearchViewController: UIViewController, VMediaSource {
     }
     
     let kHeaderViewHeight: CGFloat = 50.0
+    let kFooterViewHeight: CGFloat = 50.0
     let kDefaultSectionMargin: CGFloat = 10.0
-    let kNoContentCellHeight: CGFloat = 150.0
+    let kNoContentCellHeight: CGFloat = 80.0
+    
+    private var scrollPaginator = VScrollPaginator()
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -67,6 +79,8 @@ class GIFSearchViewController: UIViewController, VMediaSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.scrollPaginator.delegate = self
+        
         self.searchBar.delegate = self
         if let searchTextField = self.searchBar.textField {
             searchTextField.font = self.dependencyManager?.fontForKey(VDependencyManagerHeading3FontKey)
@@ -86,7 +100,19 @@ class GIFSearchViewController: UIViewController, VMediaSource {
         self.performSearch()
     }
     
-    func onNext( sender: AnyObject? ) {
+    func performSearch( _ searchText: String = "", pageType: VPageType = .First ) {
+        self.searchDataSource.performSearch( searchText, pageType: pageType ) {
+            self.collectionView.reloadData()
+        }
+    }
+    
+    func clearSearch() {
+        self.searchDataSource.clear()
+        self.collectionView.reloadData()
+        self.collectionView.setContentOffset( CGPoint.zeroPoint, animated: false )
+    }
+    
+    private func onNext( sender: AnyObject? ) {
         if let indexPath = self.selectedIndexPath {
             
             let selectedGIF = self.searchDataSource.sections[ indexPath.section ][ indexPath.row ]
@@ -116,29 +142,5 @@ class GIFSearchViewController: UIViewController, VMediaSource {
         label.textColor = UIColor.whiteColor()
         label.sizeToFit()
         return label
-    }
-    
-    private func performSearch( _ searchText: String = "" ) {
-        self.searchDataSource.performSearch( searchText ) {
-            self.collectionView.setContentOffset( CGPoint.zeroPoint, animated: true )
-            self.collectionView.reloadData()
-        }
-    }
-    
-    private func clearSearch() {
-        self.searchDataSource.clear()
-        self.collectionView.reloadData()
-    }
-}
-
-extension GIFSearchViewController : UISearchBarDelegate {
-    
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        self.clearSearch()
-        self.performSearch( searchText )
-    }
-    
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
     }
 }

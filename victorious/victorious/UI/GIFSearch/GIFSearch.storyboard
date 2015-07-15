@@ -22,7 +22,7 @@
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="sjA-Lx-uDC">
                                     <size key="itemSize" width="102" height="102"/>
                                     <size key="headerReferenceSize" width="50" height="50"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="50" height="50"/>
                                     <inset key="sectionInset" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
@@ -39,8 +39,8 @@
                                                         <outlet property="delegate" destination="c5h-qB-UfL" id="KLJ-gp-bq9"/>
                                                     </connections>
                                                 </view>
-                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="jY3-bw-i3y">
-                                                    <rect key="frame" x="128" y="107" width="37" height="37"/>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="jY3-bw-i3y">
+                                                    <rect key="frame" x="137" y="116" width="20" height="20"/>
                                                 </activityIndicatorView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -114,43 +114,76 @@
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="Arz-in-0j6">
+                                                    <rect key="frame" x="115" y="84" width="20" height="20"/>
+                                                </activityIndicatorView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="bsd-YZ-qgl" secondAttribute="trailing" constant="8" id="Cah-lV-T5v"/>
+                                            <constraint firstAttribute="centerX" secondItem="Arz-in-0j6" secondAttribute="centerX" constant="0.5" id="LI7-Cn-JkD"/>
                                             <constraint firstItem="bsd-YZ-qgl" firstAttribute="leading" secondItem="yQx-pk-lcY" secondAttribute="leading" constant="8" id="ava-Wb-zX2"/>
                                             <constraint firstAttribute="bottom" secondItem="bsd-YZ-qgl" secondAttribute="bottom" constant="8" id="dOx-ND-sks"/>
                                             <constraint firstItem="bsd-YZ-qgl" firstAttribute="top" secondItem="yQx-pk-lcY" secondAttribute="top" constant="8" id="kEA-ee-yGW"/>
+                                            <constraint firstAttribute="centerY" secondItem="Arz-in-0j6" secondAttribute="centerY" id="uUb-vw-JTH"/>
                                         </constraints>
                                         <size key="customSize" width="251" height="188"/>
                                         <connections>
+                                            <outlet property="activityIndicator" destination="Arz-in-0j6" id="JC9-FT-kyq"/>
                                             <outlet property="label" destination="bsd-YZ-qgl" id="Gc2-HP-ukd"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
-                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="GIFSearchAttributionView" id="jZ0-fk-t5u">
+                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="GIFSearchAttributionView" id="GEq-7O-fl6">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="giphy_attribution" translatesAutoresizingMaskIntoConstraints="NO" id="BJe-VA-oc5">
+                                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="giphy_attribution" translatesAutoresizingMaskIntoConstraints="NO" id="2bB-vU-NvB">
                                             <rect key="frame" x="237" y="16" width="125" height="17"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="17" id="4oa-Yf-KlI"/>
-                                                <constraint firstAttribute="width" constant="125" id="knM-BH-ter"/>
+                                                <constraint firstAttribute="width" constant="125" id="2nF-zk-WYi"/>
+                                                <constraint firstAttribute="height" constant="17" id="vXl-rO-C9v"/>
                                             </constraints>
                                         </imageView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="centerX" secondItem="BJe-VA-oc5" secondAttribute="centerX" constant="0.5" id="G4y-3o-v6h"/>
-                                        <constraint firstAttribute="centerY" secondItem="BJe-VA-oc5" secondAttribute="centerY" constant="0.5" id="NiW-Q9-DJh"/>
+                                        <constraint firstAttribute="centerY" secondItem="2bB-vU-NvB" secondAttribute="centerY" constant="0.5" id="uHY-4Q-mdG"/>
+                                        <constraint firstAttribute="centerX" secondItem="2bB-vU-NvB" secondAttribute="centerX" constant="0.5" id="zNR-J6-l1N"/>
                                     </constraints>
+                                </collectionReusableView>
+                                <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="GIFSearchActivityFooter" id="zQf-Yx-FrH" customClass="GIFSearchActivityFooter" customModule="victorious" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <activityIndicatorView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="Zp9-Ch-ErL">
+                                            <rect key="frame" x="290" y="15" width="20" height="20"/>
+                                        </activityIndicatorView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bdi-Gm-gNs">
+                                            <rect key="frame" x="8" y="8" width="584" height="34"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Bdi-Gm-gNs" secondAttribute="bottom" constant="8" id="4KE-5T-sTk"/>
+                                        <constraint firstAttribute="centerY" secondItem="Zp9-Ch-ErL" secondAttribute="centerY" id="R3A-iR-Xh1"/>
+                                        <constraint firstAttribute="centerX" secondItem="Zp9-Ch-ErL" secondAttribute="centerX" id="Rlk-3w-2Jd"/>
+                                        <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="Bdi-Gm-gNs" secondAttribute="trailing" constant="8" id="Ukl-LC-eBu"/>
+                                        <constraint firstItem="Bdi-Gm-gNs" firstAttribute="top" relation="lessThanOrEqual" secondItem="zQf-Yx-FrH" secondAttribute="top" constant="8" id="Yw1-5B-Nax"/>
+                                        <constraint firstItem="Bdi-Gm-gNs" firstAttribute="leading" relation="lessThanOrEqual" secondItem="zQf-Yx-FrH" secondAttribute="leading" constant="8" id="ify-uB-AL0"/>
+                                    </constraints>
+                                    <connections>
+                                        <outlet property="activityIndicator" destination="Zp9-Ch-ErL" id="qdI-5l-2Uz"/>
+                                        <outlet property="label" destination="Bdi-Gm-gNs" id="KUz-7t-sSM"/>
+                                    </connections>
                                 </collectionReusableView>
                             </collectionView>
                             <searchBar contentMode="redraw" barStyle="black" searchBarStyle="prominent" text="" translatesAutoresizingMaskIntoConstraints="NO" id="ahe-Of-ru5">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                 <color key="barTintColor" white="0.0" alpha="0.46000000000000002" colorSpace="calibratedWhite"/>
-                                <textInputTraits key="textInputTraits" keyboardType="webSearch" keyboardAppearance="alert" returnKeyType="done"/>
+                                <textInputTraits key="textInputTraits" keyboardType="webSearch" keyboardAppearance="alert" returnKeyType="search"/>
                             </searchBar>
                         </subviews>
                         <color key="backgroundColor" red="0.19607843137254902" green="0.19607843137254902" blue="0.19607843137254902" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

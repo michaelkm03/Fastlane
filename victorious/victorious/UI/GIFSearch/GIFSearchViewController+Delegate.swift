@@ -1,5 +1,5 @@
 //
-//  GIFSearchViewController+Layout.swift
+//  GIFSearchViewController+Delegate.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 7/9/15.
@@ -32,7 +32,7 @@ extension GIFSearchViewController : UICollectionViewDelegateFlowLayout {
         let insets = (self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionInset ?? UIEdgeInsets()
         let totalWidth = self.collectionView.bounds.width - insets.left - insets.right
         let totalHeight = self.collectionView.bounds.height - insets.top - insets.bottom
-        let totalSize = CGSize(width: totalWidth, height: totalHeight )
+        let totalSize = CGSize(width: totalWidth, height: totalHeight)
         
         if self.searchDataSource.sections.count == 0 {
             return CGSize(width: totalSize.width, height: kNoContentCellHeight)
@@ -50,16 +50,22 @@ extension GIFSearchViewController : UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.bounds.width, height: section == 0 ? kHeaderViewHeight : 0.0 )
+        let isFirstSection = section == 0
+        return CGSize(width: collectionView.bounds.width, height: isFirstSection ? kHeaderViewHeight : 0.0 )
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        let margin = kDefaultSectionMargin
-        var insets = UIEdgeInsets(top: 0.0, left: margin, bottom: 0.0, right: margin)
-        if section == self.searchDataSource.sections.count-1 {
-            insets.bottom = kDefaultSectionMargin
+        if let selectedIndexPath = self.selectedIndexPath where selectedIndexPath.section == section -  1 {
+            return UIEdgeInsets(top: kDefaultSectionMargin, left: kDefaultSectionMargin, bottom: kDefaultSectionMargin, right: kDefaultSectionMargin)
         }
-        return insets
+        else {
+            return UIEdgeInsets(top: 0.0, left: kDefaultSectionMargin, bottom: 0.0, right: kDefaultSectionMargin)
+        }
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        let isLastSection = section == collectionView.numberOfSections() - 1
+        return CGSize(width: collectionView.bounds.width, height: isLastSection ? kFooterViewHeight : 0.0 )
     }
     
     func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {

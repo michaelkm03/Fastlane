@@ -11,10 +11,14 @@ import UIKit
 class GIFSearchNoContentCell: UICollectionViewCell {
     
     @IBOutlet private weak var label: UILabel!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
     var text: String = "" {
         didSet {
             self.label.text = text
+            if text != "" {
+                self.activityIndicator.hidden = true
+            }
         }
     }
     
@@ -25,6 +29,7 @@ class GIFSearchNoContentCell: UICollectionViewCell {
     var loading: Bool = true {
         didSet {
             self.clear()
+            self.activityIndicator.hidden = false
         }
     }
 }

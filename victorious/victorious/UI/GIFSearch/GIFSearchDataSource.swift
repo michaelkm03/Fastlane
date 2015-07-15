@@ -28,6 +28,8 @@ private extension NSIndexPath {
 /// and populated data on cells to show in results collection view
 class GIFSearchDataSource: NSObject {
     
+    let operationQueue = NSOperationQueue()
+    
     enum State: Int {
         case Loading, Content, Error
     }
@@ -59,11 +61,13 @@ class GIFSearchDataSource: NSObject {
         var insertedSection: Int? = nil
     }
     
-    private let kHeaderReuseIdentifier = "GIFSearchAttributionView"
+    // Reuse identifiers for header and footer views (set in storyboard)
+    static let kHeaderReuseIdentifier = "GIFSearchAttributionView"
+    static let kFooterReuseIdentifier = "GIFSearchActivityFooter"
     
-    private var state: State = .Loading
+    private(set) var state: State = .Content
     private(set) var sections = [Section]()
-    private var mostRecentSearchTerm: String?
+    private(set) var mostRecentSearchText: String?
     private var highlightedSection: (section: Section, indexPath: NSIndexPath)?
     private var currentOperation: NSOperation?
     
@@ -105,14 +109,25 @@ class GIFSearchDataSource: NSObject {
     /// Fetches data from the server and repopulates its backing model collection
     /// parameter `searchTerm:` A string to be used for the GIF search on the server
     /// parameter `completion`: A closure to be call when the operation is complete
-    func performSearch( searchText:String, completion: (()->())? ) {
+    func performSearch( searchText:String, pageType: VPageType, completion: (()->())? ) {
+        
+        // Only allow one next page load at a time
+        if self.state == .Loading && pageType == .Next {
+            completion?()
+            return
+        }
+        
+        // Cancel any previous loads
+        self.currentOperation?.cancel()
         
         self.state = .Loading
-        self.currentOperation?.cancel()
         self.currentOperation = VObjectManager.sharedManager().searchForGIF( [ searchText == "" ? "sponge" : searchText ],
+            pageType: pageType,
             success: { (results) in
-                self.clear()
-                self.mostRecentSearchTerm = searchText
+                if pageType == .First {
+                    self.sections = []
+                }
+                self.mostRecentSearchText = searchText
                 self.state = .Content
                 for var i = 0; i < results.count-1; i+=2 {
                     let results = [results[i], results[i+1]]
@@ -123,7 +138,9 @@ class GIFSearchDataSource: NSObject {
             },
             failure: { (error, cancelled: Bool) in
                 if !cancelled {
-                    self.clear()
+                    if pageType == .First {
+                        self.clear()
+                    }
                     self.state = .Error
                 }
                 completion?()
@@ -133,72 +150,9 @@ class GIFSearchDataSource: NSObject {
     
     /// Clears the backing model, highlighted section and cancels any in-progress search operation
     func clear() {
-        self.mostRecentSearchTerm = nil
+        self.mostRecentSearchText = nil
         self.currentOperation?.cancel()
         self.highlightedSection = nil
-        
-        sections = []
-    }
-    
-    var noContentCellText: String {
-        switch self.state {
-        case .Error:
-            return "Error loading results. :("
-        case .Content where self.sections.count == 0:
-            if let searchText = self.mostRecentSearchTerm {
-                return "No results for \"\(searchText)\" :("
-            }
-            else  {
-                return "No results :("
-            }
-        default:
-            return ""
-        }
-    }
-}
-
-extension GIFSearchDataSource : UICollectionViewDataSource {
-    
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.sections.count == 0 ? 1 : self.sections[ section ].count
-    }
-    
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return self.sections.count == 0 ? 1 : self.sections.count
-    }
-    
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if self.sections.count == 0 {
-            if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( GIFSearchNoContentCell.suggestedReuseIdentifier, forIndexPath: indexPath ) as? GIFSearchNoContentCell {
-                cell.text = self.noContentCellText
-                return cell
-            }
-        }
-        else {
-            let section = self.sections[ indexPath.section ]
-            let result = section.results[ indexPath.row ]
-            if section.isFullSize {
-                if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( GIFSearchPreviewCell.suggestedReuseIdentifier, forIndexPath: indexPath ) as? GIFSearchPreviewCell {
-                    cell.assetUrl = NSURL(string: result.mp4Url)
-                    return cell
-                }
-            }
-            else {
-                if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( GIFSearchResultCell.suggestedReuseIdentifier, forIndexPath: indexPath ) as? GIFSearchResultCell {
-                    cell.assetUrl = NSURL(string: result.thumbnailStillUrl)
-                    cell.selected = NSSet(array: collectionView.indexPathsForSelectedItems() ).containsObject( indexPath )
-                    return cell
-                }
-            }
-        }
-        fatalError( "Could not find cell." )
-    }
-    
-    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-        
-        if let attributionView = collectionView.dequeueReusableSupplementaryViewOfKind( UICollectionElementKindSectionHeader, withReuseIdentifier: kHeaderReuseIdentifier, forIndexPath: indexPath ) as? UICollectionReusableView {
-            return attributionView
-        }
-        fatalError( "Could not find reuseable view." )
+        self.sections = []
     }
 }
