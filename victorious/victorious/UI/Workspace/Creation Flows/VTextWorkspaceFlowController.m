@@ -16,7 +16,6 @@
 #import "NSDictionary+VJSONLogging.h"
 #import "VEditableTextPostViewController.h"
 #import "VTextListener.h"
-#import "VCameraViewController.h"
 #import "VImageSearchViewController.h"
 #import "VMediaAttachmentPresenter.h"
 

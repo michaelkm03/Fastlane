@@ -68,7 +68,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     {
         _dependencyManager = dependencyManager;
         
-        _context = VCameraContextContentCreation;
         self.captureContainerViewController = [VCaptureContainerViewController captureContainerWithDependencyManager:dependencyManager];
         [self.captureContainerViewController setAlternateCaptureOptions:[self alternateCaptureOptions]];
         [self addCloseButtonToViewController:self.captureContainerViewController];
@@ -169,20 +168,19 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     void (^cameraSelectionBlock)() = ^void()
     {
         // Camera
-        VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerLimitedToPhotosWithDependencyManager:self.dependencyManager];
-        [cameraViewController hideSearchAndAlbumButtons];
-        cameraViewController.context = self.context;
-        cameraViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMeidaURL)
-        {
-            if (finished)
-            {
-                [self prepareWorkspaceWithMediaURL:capturedMeidaURL
-                                   andPreviewImage:previewImage];
-                [self pushViewController:self.workspaceViewController animated:YES];
-            }
-            
-            [self dismissViewControllerAnimated:YES completion:nil];
-        };
+        VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerWithContext:self.context
+                                                                                           dependencyManager:self.dependencyManager
+                                                                                               resultHanlder:^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+                                                       {
+                                                           if (finished)
+                                                           {
+                                                               [self prepareWorkspaceWithMediaURL:capturedMediaURL
+                                                                                  andPreviewImage:previewImage];
+                                                               [self pushViewController:self.workspaceViewController animated:YES];
+                                                           }
+                                                           
+                                                           [self dismissViewControllerAnimated:YES completion:nil];
+                                                       }];
         // Wrapped in nav
         UINavigationController *cameraNavController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
         [self presentViewController:cameraNavController animated:YES completion:nil];

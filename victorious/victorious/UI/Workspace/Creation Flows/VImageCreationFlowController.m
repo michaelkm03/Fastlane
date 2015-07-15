@@ -27,6 +27,16 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 
 @implementation VImageCreationFlowController
 
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    self = [super initWithDependencyManager:dependencyManager];
+    if (self != nil)
+    {
+        [self setContext:VCameraContextImageContentCreation];
+    }
+    return self;
+}
+
 - (VAssetCollectionListViewController *)collectionListViewController
 {
     return [VAssetCollectionListViewController assetCollectionListViewControllerWithMediaType:PHAssetMediaTypeImage];

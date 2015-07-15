@@ -60,6 +60,8 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 
 @interface VCameraViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, VCameraVideoEncoderDelegate>
 
+@property (nonatomic, copy) VMediaCaptureCompletion completionBlock;
+@property (nonatomic, assign) VCameraContext context;
 @property (nonatomic, assign) VCameraViewControllerState state;
 @property (nonatomic, readwrite) NSURL *capturedMediaURL;
 @property (nonatomic, strong, readwrite) UIImage *previewImage;
@@ -122,23 +124,29 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     return cameraViewController;
 }
 
-+ (VCameraViewController *)cameraViewControllerPhotoVideoWithDependencyManager:(VDependencyManager *)dependencyManager
++ (VCameraViewController *)cameraViewControllerWithContext:(VCameraContext)cameraContext
+                                         dependencyManager:(VDependencyManager *)dependencyManager
+                                             resultHanlder:(VMediaCaptureCompletion)handler
 {
     VCameraViewController *cameraViewController = [dependencyManager templateValueOfType:[VCameraViewController class] forKey:kCameraScreenKey];
-    return cameraViewController;
-}
-
-+ (VCameraViewController *)cameraViewControllerLimitedToPhotosWithDependencyManager:(VDependencyManager *)dependencyManager
-{
-    VCameraViewController *cameraViewController = [dependencyManager templateValueOfType:[VCameraViewController class] forKey:kCameraScreenKey];
-    cameraViewController.allowVideo = NO;
-    return cameraViewController;
-}
-
-+ (VCameraViewController *)cameraViewControllerLimitedToVideoWithDependencyManager:(VDependencyManager *)dependencyManager
-{
-    VCameraViewController *cameraViewController = [dependencyManager templateValueOfType:[VCameraViewController class] forKey:kCameraScreenKey];
-    cameraViewController.allowPhotos = NO;
+    switch (cameraContext)
+    {
+        case VCameraContextImageContentCreation:
+        case VCameraContextProfileImage:
+        case VCameraContextProfileImageRegistration:
+            cameraViewController.allowPhotos = YES;
+            cameraViewController.allowVideo = NO;
+            break;
+        case VCameraContextVideoContentCreation:
+            cameraViewController.allowPhotos = NO;
+            break;
+        case VCameraContextImageVideoContentCreation:
+            cameraViewController.allowPhotos = YES;
+            cameraViewController.allowVideo = YES;
+            break;
+    }
+    cameraViewController.context = cameraContext;
+    cameraViewController.completionBlock = handler;
     return cameraViewController;
 }
 
@@ -164,7 +172,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 
 - (void)commonInit
 {
-    self.context = VCameraContextContentCreation;
     self.allowPhotos = YES;
     self.allowVideo = YES;
     self.videoEnabled = YES;
@@ -364,7 +371,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     self.captureController.context = self.context;
     
     VPermission *cameraPermission;
-    if (self.context == VCameraContextContentCreation)
+    if (self.context == VCameraContextProfileImage || self.context == VCameraContextProfileImageRegistration)
     {
         cameraPermission = [[VPermissionCamera alloc] initWithDependencyManager:self.dependencyManager];
     }

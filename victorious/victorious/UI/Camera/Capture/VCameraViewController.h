@@ -14,11 +14,15 @@ typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NS
 @interface VCameraViewController : UIViewController <VHasManagedDependencies>
 
 /**
- This completion block will be called when the user finishes capturing media
- 
- @param finished YES if the user chose media, NO if the user cancelled.
+ *  Factory method for the camera. All parameters are required.
+ *
+ *  @param cameraContext A context for use in configuring permission text.
+ *  @param dependencyManager A dependency manager to use for configuring templated values.
+ *  @param resultHandler A handler for dealing with the results of the camera.
  */
-@property (nonatomic, copy) VMediaCaptureCompletion completionBlock;
++ (VCameraViewController *)cameraViewControllerWithContext:(VCameraContext)cameraContext
+                                         dependencyManager:(VDependencyManager *)dependencyManager
+                                             resultHanlder:(VMediaCaptureCompletion)resultHandler;
 
 /**
  If YES, the most recently captured media was
@@ -35,21 +39,6 @@ typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NS
  *  If YES, the camera will call it's completion block immediately after taking the picture/video.
  */
 @property (nonatomic, assign) BOOL shouldSkipPreview;
-
-/**
- Returns a camera controller with the given dependencyManager.
- */
-+ (VCameraViewController *)cameraViewControllerPhotoVideoWithDependencyManager:(VDependencyManager *)dependencyManager;
-
-/**
- Returns an instance of this class that will only take photos, no video.
- */
-+ (VCameraViewController *)cameraViewControllerLimitedToPhotosWithDependencyManager:(VDependencyManager *)dependencyManager;
-
-/**
- Returns an instance of this class that will only take video, no photos.
- */
-+ (VCameraViewController *)cameraViewControllerLimitedToVideoWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
  The URL of the media captured by the camera. (May be remote).
@@ -70,12 +59,7 @@ typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NS
  *  A context for this cameraViewController to configure it's permission dialogs with. Defaults to
  *  VWorkspaceFlowControllerContextContentCreation.
  */
-@property (nonatomic, assign) VCameraContext context;
-
-/**
- *  Call this to hide the search and album buttons.
- */
-- (void)hideSearchAndAlbumButtons;
+@property (nonatomic, assign, readonly) VCameraContext context;
 
 /**
  *  An animated version of the toolsHidden setter.
