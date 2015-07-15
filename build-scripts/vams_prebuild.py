@@ -70,6 +70,9 @@ def retrieveAppDetails(app_name):
         if not os.path.exists(config_directory):
             os.makedirs(config_directory)
 
+        # Uncomment the following line to log out the directory being used for assets and config data
+        # print "\nUsing Directory: %s" % config_directory
+
         print '\nDownloading the Most Recent Art Assets for %s...' % app_title
         for asset in platform_assets:
 
