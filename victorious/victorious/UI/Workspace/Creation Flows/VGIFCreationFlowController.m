@@ -31,7 +31,7 @@
 
 static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 
-@interface VGIFCreationFlowController () <UINavigationControllerDelegate>
+@interface VGIFCreationFlowController () <UINavigationControllerDelegate, GIFSearchViewControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -62,8 +62,10 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
         [self setViewControllers:@[captureContainer]];
         
         GIFSearchViewController *gifSearchViewController = [GIFSearchViewController gifSearchWithDependencyManager:dependencyManager];
+        gifSearchViewController.delegate = self;
         [captureContainer setContainedViewController:gifSearchViewController];
-        [self addCompleitonHandlerToMediaSource:gifSearchViewController];
+        
+        [self setupPublishScreen];
     }
     return self;
 }
@@ -98,19 +100,6 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
                                                  // Search
                                              }];
     return @[cameraOption, searchOption];
-}
-
-- (void)addCompleitonHandlerToMediaSource:(id<VMediaSource>)mediaSource
-{
-    __weak typeof(self) welf = self;
-    mediaSource.handler = ^void(UIImage *previewImage, NSURL *capturedMediaURL)
-    {
-        NSLog( @"%@", capturedMediaURL );
-        [self setupPublishScreen];
-        [welf pushPublishScreenWithRenderedMediaURL:capturedMediaURL
-                                       previewImage:previewImage
-                                      fromWorkspace:welf.workspaceViewController];
-    };
 }
 
 - (void)setupPublishScreen
@@ -198,6 +187,15 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
     
     self.publishViewContorller.publishParameters = publishParameters;
     [self pushViewController:self.publishViewContorller animated:YES];
+}
+
+#pragma mark - GIFSearchViewControllerDelegate
+
+- (void)GIFSelectedWithPreviewImage:(UIImage *)previewImage capturedMediaURL:(NSURL *)capturedMediaURL
+{
+    [self pushPublishScreenWithRenderedMediaURL:capturedMediaURL
+                                   previewImage:previewImage
+                                  fromWorkspace:self.workspaceViewController];
 }
 
 #pragma mark - UINavigationControllerDelegate

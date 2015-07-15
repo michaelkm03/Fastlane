@@ -8,6 +8,11 @@
 
 import UIKit
 
+@objc protocol GIFSearchViewControllerDelegate {
+    
+    func GIFSelected( #previewImage: UIImage, capturedMediaURL: NSURL )
+}
+
 class GIFSearchViewController: UIViewController {
     
     enum Action: Selector {
@@ -31,6 +36,8 @@ class GIFSearchViewController: UIViewController {
     let scrollPaginator = VScrollPaginator()
     let searchDataSource = GIFSearchDataSource()
     private lazy var mediaHelper = GIFSearchMediaHelper()
+    
+    var delegate: GIFSearchViewControllerDelegate?
     
     static func gifSearchWithDependencyManager( depndencyManager: VDependencyManager ) -> GIFSearchViewController {
         let bundle = UIStoryboard(name: "GIFSearch", bundle: nil)
@@ -90,10 +97,10 @@ class GIFSearchViewController: UIViewController {
             progressHUD.dimBackground = true
             progressHUD.show(true)
             
-            self.mediaHelper.loadMedia( selectedGIF ) { (previewImage, mediaUrl, error) in
+            self.mediaHelper.loadMedia( selectedGIF ) { (previewImage, mediaURL, error) in
                 
-                if let previewImage = previewImage, let mediaURL = mediaUrl {
-                    //self.handler?( previewImage, mediaURL )
+                if let previewImage = previewImage, let mediaURL = mediaURL {
+                    self.delegate?.GIFSelected( previewImage: previewImage, capturedMediaURL: mediaURL )
                 }
                 else {
                     println( "Error: \(error)" )
