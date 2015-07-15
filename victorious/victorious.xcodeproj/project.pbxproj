@@ -1015,6 +1015,11 @@
 		F0F04AF11B29E6AC00F6F401 /* VShareItemCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0F04AF01B29E6AC00F6F401 /* VShareItemCollectionViewCell.xib */; };
 		F0F04AF41B29E8FE00F6F401 /* VShareMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F04AF31B29E8FE00F6F401 /* VShareMenuItem.m */; };
 		F0F04AF71B2A37CB00F6F401 /* VDependencyManager+VShareMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F04AF61B2A37CB00F6F401 /* VDependencyManager+VShareMenuItem.m */; };
+		F0FC97331B507EB40098AFCB /* VInStreamCommentCellContents.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97321B507EB40098AFCB /* VInStreamCommentCellContents.m */; };
+		F0FC97361B509C3D0098AFCB /* VInStreamCommentsController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97351B509C3D0098AFCB /* VInStreamCommentsController.m */; };
+		F0FC97A81B5563960098AFCB /* VInStreamCommentsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97A71B5563960098AFCB /* VInStreamCommentsCell.m */; };
+		F0FC97AA1B5563A40098AFCB /* VInStreamCommentsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0FC97A91B5563A40098AFCB /* VInStreamCommentsCell.xib */; };
+		F0FC97AD1B56B3910098AFCB /* VInStreamMediaLink.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97AC1B56B3910098AFCB /* VInStreamMediaLink.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2916,6 +2921,15 @@
 		F0F04AF31B29E8FE00F6F401 /* VShareMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShareMenuItem.m; sourceTree = "<group>"; };
 		F0F04AF51B2A37CB00F6F401 /* VDependencyManager+VShareMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VShareMenuItem.h"; sourceTree = "<group>"; };
 		F0F04AF61B2A37CB00F6F401 /* VDependencyManager+VShareMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VShareMenuItem.m"; sourceTree = "<group>"; };
+		F0FC97311B507EB40098AFCB /* VInStreamCommentCellContents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInStreamCommentCellContents.h; sourceTree = "<group>"; };
+		F0FC97321B507EB40098AFCB /* VInStreamCommentCellContents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInStreamCommentCellContents.m; sourceTree = "<group>"; };
+		F0FC97341B509C3D0098AFCB /* VInStreamCommentsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInStreamCommentsController.h; sourceTree = "<group>"; };
+		F0FC97351B509C3D0098AFCB /* VInStreamCommentsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInStreamCommentsController.m; sourceTree = "<group>"; };
+		F0FC97A61B5563960098AFCB /* VInStreamCommentsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInStreamCommentsCell.h; sourceTree = "<group>"; };
+		F0FC97A71B5563960098AFCB /* VInStreamCommentsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInStreamCommentsCell.m; sourceTree = "<group>"; };
+		F0FC97A91B5563A40098AFCB /* VInStreamCommentsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VInStreamCommentsCell.xib; sourceTree = "<group>"; };
+		F0FC97AB1B56B3910098AFCB /* VInStreamMediaLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInStreamMediaLink.h; sourceTree = "<group>"; };
+		F0FC97AC1B56B3910098AFCB /* VInStreamMediaLink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInStreamMediaLink.m; sourceTree = "<group>"; };
 		F0FFBA351AD5B1DC00283936 /* VMarqueeDataDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeDataDelegate.h; sourceTree = "<group>"; };
 		F0FFBA361AD5B1EE00283936 /* VMarqueeSelectionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeSelectionDelegate.h; sourceTree = "<group>"; };
 		FA9A96A39C05C50C7D098A8E /* Pods-test.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.qa.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.qa.xcconfig"; sourceTree = "<group>"; };
@@ -6090,6 +6104,15 @@
 				D8B44CCA1ADCB3A4006340E8 /* VSleekStreamCollectionCell.h */,
 				D8B44CCB1ADCB3A4006340E8 /* VSleekStreamCollectionCell.m */,
 				D8B44CCC1ADCB3A4006340E8 /* VSleekStreamCollectionCell.xib */,
+				F0FC97311B507EB40098AFCB /* VInStreamCommentCellContents.h */,
+				F0FC97321B507EB40098AFCB /* VInStreamCommentCellContents.m */,
+				F0FC97341B509C3D0098AFCB /* VInStreamCommentsController.h */,
+				F0FC97351B509C3D0098AFCB /* VInStreamCommentsController.m */,
+				F0FC97AB1B56B3910098AFCB /* VInStreamMediaLink.h */,
+				F0FC97AC1B56B3910098AFCB /* VInStreamMediaLink.m */,
+				F0FC97A61B5563960098AFCB /* VInStreamCommentsCell.h */,
+				F0FC97A71B5563960098AFCB /* VInStreamCommentsCell.m */,
+				F0FC97A91B5563A40098AFCB /* VInStreamCommentsCell.xib */,
 			);
 			path = "Template D";
 			sourceTree = "<group>";
@@ -6784,6 +6807,7 @@
 				A7299E931AA5331000B6BC1F /* VCardDirectoryCell.xib in Resources */,
 				03FD87D919F96FB700D93BAA /* VDiscoverSuggestedPersonCell.xib in Resources */,
 				036F38931A0C4DEA0014DF66 /* SourceSansPro-Regular.ttf in Resources */,
+				F0FC97AA1B5563A40098AFCB /* VInStreamCommentsCell.xib in Resources */,
 				03C1858619B42C9100E27D05 /* Roboto-Light.ttf in Resources */,
 				F0F04AEC1B29E15500F6F401 /* VPublishSaveCollectionViewCell.xib in Resources */,
 				F089E3621AC486A60076DC4D /* VBlurredMarqueeCollectionViewCell.xib in Resources */,
@@ -7392,6 +7416,7 @@
 				F0140BC71AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m in Sources */,
 				0306F7A61ADDF939009FE3AA /* VJSONHelper.m in Sources */,
 				D87D70961A9804CD002D4FED /* VNavigationDestinationContainerViewController.m in Sources */,
+				F0FC97331B507EB40098AFCB /* VInStreamCommentCellContents.m in Sources */,
 				F0AD21761AF43DFA001BDCC6 /* VCollectionsDirectoryCellFactory.m in Sources */,
 				03C185BC19B42E5D00E27D05 /* TWSignedRequest.m in Sources */,
 				A7AEF9D01A83F2F500A3D3A0 /* VVideoUtils.m in Sources */,
@@ -7473,6 +7498,7 @@
 				D8CA63BB19D5240C002046E5 /* VActionSheetPresentationAnimator.m in Sources */,
 				037CB74519CFE8D20084BBED /* VUploadTaskInformation.m in Sources */,
 				BE171E161868C211004E5202 /* VRule+RestKit.m in Sources */,
+				F0FC97A81B5563960098AFCB /* VInStreamCommentsCell.m in Sources */,
 				0314D4B619B46B5E00FA363C /* VLightboxTransitioningDelegate.m in Sources */,
 				D816F7E41A966A0B00120798 /* UIScrollView+VCenterContent.m in Sources */,
 				0314D4D219B46B5E00FA363C /* VRootViewController.m in Sources */,
@@ -7483,6 +7509,7 @@
 				A75ED0B11AB78C7400C35063 /* VTextColorTool.m in Sources */,
 				A743E7E01A08160300339CB3 /* VFileCache.m in Sources */,
 				035FA7881AE6C4D50002EE63 /* VNotificationsViewController.m in Sources */,
+				F0FC97AD1B56B3910098AFCB /* VInStreamMediaLink.m in Sources */,
 				D85B70721B0EAF3F0038CA5B /* VFindFacebookFriendsTableViewController.m in Sources */,
 				A7ECC1D91AD6178F0003E00A /* VWorkspaceViewController.m in Sources */,
 				BE11F23B19CB44B900DEC776 /* VStream+RestKit.m in Sources */,
@@ -7494,6 +7521,7 @@
 				BE171E0C1868C211004E5202 /* VNode+Fetcher.m in Sources */,
 				D8758D251B100571008C6C0D /* VTwitterAccountsHelper.m in Sources */,
 				D8E5A4ED1AAA72C30019F231 /* VBlurOverPresentationController.m in Sources */,
+				F0FC97361B509C3D0098AFCB /* VInStreamCommentsController.m in Sources */,
 				A77951061B27D22D00D9DB0A /* VSuggestedUsersViewController.m in Sources */,
 				A77951121B27DDB800D9DB0A /* VSuggestedUserCell.m in Sources */,
 				D8E39BDF19CB7C80007FD86A /* VContentBackgroundSupplementaryView.m in Sources */,

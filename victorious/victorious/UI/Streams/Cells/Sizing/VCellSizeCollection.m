@@ -81,4 +81,9 @@ NSString * const VCellSizeCacheKey = @"cacheKey";
     return total;
 }
 
+- (void)removeSizeCacheForItemWithCacheKey:(NSString *)key
+{
+    [self.cache removeObjectForKey:key];
+}
+
 @end

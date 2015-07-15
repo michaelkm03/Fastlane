@@ -29,9 +29,16 @@
                                     sequence:(VSequence *)sequence
                            dependencyManager:(VDependencyManager *)dependencyManager;
 
+- (void)purgeSizeCacheValue;
+
 /**
  *  The sequence for this VSleekStreamCollectionCell to represent.
  */
 @property (nonatomic, strong) VSequence *sequence;
+
+/**
+ *
+ */
+@property (nonatomic, readonly) BOOL needsRefresh;
 
 @end

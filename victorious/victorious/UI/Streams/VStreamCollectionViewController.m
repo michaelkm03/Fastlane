@@ -34,6 +34,7 @@
 //Views
 #import "VNoContentView.h"
 #import "VStreamCellFocus.h"
+#import "VSleekStreamCellFactory.h"
 
 //Data models
 #import "VStream+Fetcher.h"
@@ -285,7 +286,12 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
          to rotate in case it's timer has been invalidated by the presentation of another viewController
          */
         [self.marqueeCellController enableTimer];
-    } 
+    }
+    
+    if ( [self.streamCellFactory isKindOfClass:[VSleekStreamCellFactory class]] )
+    {
+        [(VSleekStreamCellFactory *)self.streamCellFactory updateVisibleCellsInCollectionView:self.collectionView];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -56,11 +56,21 @@
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="txH-sw-s2T" userLabel="Counts Text View" customClass="VSequenceCountsTextView">
                         <rect key="frame" x="28" y="440" width="246" height="33"/>
                         <constraints>
-                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="22" id="pSO-yQ-oco"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="22" id="cfE-4e-8TD"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     </textView>
+                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="j5x-K6-9xu">
+                        <rect key="frame" x="0.0" y="473" width="302" height="49"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="zUD-km-aDb">
+                            <size key="itemSize" width="10" height="10"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                    </collectionView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
@@ -69,16 +79,20 @@
                 <constraint firstItem="21k-Mb-C9q" firstAttribute="top" secondItem="k5V-32-ew9" secondAttribute="top" id="7cz-ba-bg5"/>
                 <constraint firstItem="0yG-Rl-S8H" firstAttribute="leading" secondItem="k5V-32-ew9" secondAttribute="leading" id="8bB-MR-Pfk"/>
                 <constraint firstItem="0yG-Rl-S8H" firstAttribute="top" secondItem="6Ls-Bo-1cB" secondAttribute="bottom" constant="7" id="BRh-C8-fTH"/>
+                <constraint firstItem="j5x-K6-9xu" firstAttribute="top" secondItem="txH-sw-s2T" secondAttribute="bottom" id="EDl-v9-JeG"/>
                 <constraint firstItem="txH-sw-s2T" firstAttribute="top" secondItem="gyd-x0-d0C" secondAttribute="bottom" id="EX9-ci-fVC"/>
                 <constraint firstAttribute="trailing" secondItem="txH-sw-s2T" secondAttribute="trailing" constant="28" id="FAm-gt-jNT"/>
                 <constraint firstAttribute="trailing" secondItem="21k-Mb-C9q" secondAttribute="trailing" id="MKP-9f-S0E"/>
                 <constraint firstAttribute="trailing" secondItem="6Ls-Bo-1cB" secondAttribute="trailing" constant="10" id="Oa7-2d-TrN"/>
+                <constraint firstItem="j5x-K6-9xu" firstAttribute="leading" secondItem="k5V-32-ew9" secondAttribute="leading" id="QHS-3o-zcd"/>
                 <constraint firstAttribute="trailing" secondItem="0yG-Rl-S8H" secondAttribute="trailing" id="aos-SC-C9i"/>
                 <constraint firstAttribute="trailing" secondItem="gyd-x0-d0C" secondAttribute="trailing" constant="-1" id="dv4-PW-cKq"/>
+                <constraint firstAttribute="bottom" secondItem="j5x-K6-9xu" secondAttribute="bottom" constant="1" id="dxi-2J-A1B"/>
                 <constraint firstItem="gyd-x0-d0C" firstAttribute="leading" secondItem="k5V-32-ew9" secondAttribute="leading" constant="-1" id="erY-pN-MTf"/>
                 <constraint firstItem="21k-Mb-C9q" firstAttribute="leading" secondItem="k5V-32-ew9" secondAttribute="leading" id="fSo-qn-QmP"/>
                 <constraint firstItem="txH-sw-s2T" firstAttribute="leading" secondItem="k5V-32-ew9" secondAttribute="leading" constant="28" id="gka-8W-TOs"/>
                 <constraint firstItem="6Ls-Bo-1cB" firstAttribute="leading" secondItem="k5V-32-ew9" secondAttribute="leading" constant="45" id="hxm-u0-3dS"/>
+                <constraint firstAttribute="trailing" secondItem="j5x-K6-9xu" secondAttribute="trailing" id="iAv-Ml-nbS"/>
                 <constraint firstItem="gyd-x0-d0C" firstAttribute="top" secondItem="JB7-zc-ces" secondAttribute="bottom" id="sO8-oq-v8W"/>
             </constraints>
             <size key="customSize" width="543" height="356"/>
@@ -88,6 +102,7 @@
                 <outlet property="captiontoPreviewVerticalSpacing" destination="BRh-C8-fTH" id="hYp-oR-WGR"/>
                 <outlet property="countsTextView" destination="txH-sw-s2T" id="Djj-IK-Q61"/>
                 <outlet property="headerView" destination="21k-Mb-C9q" id="qKP-yg-aYp"/>
+                <outlet property="inStreamCommentsCollectionView" destination="j5x-K6-9xu" id="ZL0-Mf-PGF"/>
                 <outlet property="loadingBackgroundContainer" destination="JB7-zc-ces" id="dXU-4M-ad5"/>
                 <outlet property="previewContainer" destination="0yG-Rl-S8H" id="cof-z2-mUe"/>
                 <outlet property="previewContainerHeightConstraint" destination="Gk5-tf-7Rn" id="T1y-x4-adB"/>

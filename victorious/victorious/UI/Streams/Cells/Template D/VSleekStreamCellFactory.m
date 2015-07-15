@@ -116,4 +116,22 @@
     return UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
+- (void)updateVisibleCellsInCollectionView:(UICollectionView *)collectionView
+{
+    NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+    for ( VSleekStreamCollectionCell *cell in collectionView.visibleCells )
+    {
+        if ( cell.needsRefresh )
+        {
+            [indexPaths addObject:[collectionView indexPathForCell:cell]];
+            [cell purgeSizeCacheValue];
+        }
+    }
+    
+    if ( indexPaths.count > 0 )
+    {
+        [collectionView reloadItemsAtIndexPaths:indexPaths];
+    }
+}
+
 @end

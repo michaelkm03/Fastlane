@@ -23,6 +23,9 @@
 #import "VSequenceExpressionsObserver.h"
 #import "VCellSizeCollection.h"
 #import "VCellSizingUserInfoKeys.h"
+#import "VInStreamCommentCellContents.h"
+#import "VInStreamCommentsController.h"
+#import <FBKVOController.h>
 
 // These values must match the constraint values in interface builder
 static const CGFloat kSleekCellHeaderHeight = 50.0f;
@@ -32,6 +35,7 @@ static const CGFloat kMaxCaptionTextViewHeight = 200.0f;
 static const CGFloat kCountsTextViewMinHeight = 29.0f;
 static const UIEdgeInsets kCaptionMargins = { 0.0f, 28.0f, 5.0f, 28.0f };
 static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
+static const NSUInteger kMaxNumberOfInStreamComments = 3;
 
 @interface VSleekStreamCollectionCell () <VBackgroundContainer, CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate>
 
@@ -48,6 +52,10 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 @property (nonatomic, weak) IBOutlet VSequenceCountsTextView *countsTextView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *captiontoPreviewVerticalSpacing;
+@property (nonatomic, strong) VInStreamCommentsController *inStreamCommentsController;
+@property (nonatomic, weak) IBOutlet UICollectionView *inStreamCommentsCollectionView;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *inStreamCommentsCollectionViewBottomConstraint;
+@property (nonatomic, readwrite) BOOL needsRefresh;
 
 @end
 
@@ -63,6 +71,8 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
     [self setupDimmingContainer];
     
     self.countsTextView.textSelectionDelegate = self;
+    
+    self.inStreamCommentsController = [[VInStreamCommentsController alloc] initWithCollectionView:self.inStreamCommentsCollectionView];
 }
 
 + (VCellSizeCollection *)cellLayoutCollection
@@ -108,7 +118,21 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
              // we can't know what the actual text for the label is in a static method
              return CGSizeMake( 0.0f, MAX( kCountsTextViewMinHeight, [@"V" frameSizeForWidth:textWidth andAttributes:attributes].height ) );
          }];
-        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kCaptionMargins.bottom)];
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
+        {
+            VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
+#warning LOGIC NEEDS REVISION
+            if ( sequence.commentCount.integerValue == 0 || sequence.comments.count == 0 )
+            {
+                return CGSizeMake( 0.0f, kCaptionMargins.bottom);
+            }
+            
+            VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
+            BOOL showPreviousCommentsCellEnabled = sequence.commentCount.unsignedIntegerValue > kMaxNumberOfInStreamComments;
+            NSArray *commentCellContents = [VInStreamCommentCellContents inStreamCommentsForComments:[self inStreamCommentsArrayForSequence:sequence] andDependencyManager:dependencyManager];
+            CGFloat height = [VInStreamCommentsController desiredHeightForCommentCellContents:commentCellContents withCollectionViewWidth:size.width withShowPreviousCommentsCellEnabled:showPreviousCommentsCellEnabled];
+            return CGSizeMake( 0.0f, height );
+        }];
     }
     return collection;
 }
@@ -178,7 +202,14 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
 
 - (void)setSequence:(VSequence *)sequence
 {
+    [self.KVOController unobserve:_sequence];
+    
     _sequence = sequence;
+    
+    [self.KVOController observe:_sequence
+                        keyPath:@"comments"
+                        options:NSKeyValueObservingOptionNew
+                         action:@selector(commentsUpdated)];
     
     [self updatePreviewViewForSequence:sequence];
     self.headerView.sequence = sequence;
@@ -194,6 +225,9 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
          welf.sleekActionView.likeButton.selected = sequence.isLikedByMainUser.boolValue;
          [welf updateCountsTextViewForSequence:sequence];
      }];
+    
+    self.inStreamCommentsCollectionViewBottomConstraint.active = sequence.comments.count > 0;
+    self.inStreamCommentsController.commentCellContents = [VInStreamCommentCellContents inStreamCommentsForComments:[[self class] inStreamCommentsArrayForSequence:self.sequence] andDependencyManager:self.dependencyManager];
 }
 
 - (void)updateCountsTextViewForSequence:(VSequence *)sequence
@@ -331,7 +365,7 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
 {
     CGSize base = CGSizeMake( CGRectGetWidth(bounds), 0.0 );
     NSDictionary *userInfo = @{ kCellSizingSequenceKey : sequence,
-                                VCellSizeCacheKey : sequence.name ?: @"",
+                                VCellSizeCacheKey : [self cacheKeyForSequence:sequence],
                                 kCellSizingDependencyManagerKey : dependencyManager };
     return [[[self class] cellLayoutCollection] totalSizeWithBaseSize:base userInfo:userInfo];
 }
@@ -383,6 +417,28 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
 - (VSequence *)sequenceToTrack
 {
     return self.sequence;
+}
+
+- (void)commentsUpdated
+{
+    self.needsRefresh = YES;
+}
+
+- (void)purgeSizeCacheValue
+{
+    [[[self class] cellLayoutCollection] removeSizeCacheForItemWithCacheKey:[[self class] cacheKeyForSequence:self.sequence]];
+    self.needsRefresh = NO;
+}
+
++ (NSString *)cacheKeyForSequence:(VSequence *)sequence
+{
+    return sequence.remoteId ?: @"";
+}
+
++ (NSArray *)inStreamCommentsArrayForSequence:(VSequence *)sequence
+{
+    NSArray *comments = [sequence.comments array];
+    return [comments subarrayWithRange:NSMakeRange(0, MIN(comments.count, kMaxNumberOfInStreamComments))];
 }
 
 @end

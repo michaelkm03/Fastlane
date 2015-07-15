@@ -44,4 +44,6 @@ extern NSString * const VCellSizeCacheKey;
  */
 - (CGSize)totalSizeWithBaseSize:(CGSize)base userInfo:(NSDictionary *)userInfo;
 
+- (void)removeSizeCacheForItemWithCacheKey:(NSString *)key;
+
 @end

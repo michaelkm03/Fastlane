@@ -96,7 +96,10 @@ static const NSInteger kDefaultPageSize = 40;
             {
                 NSMutableOrderedSet *comments = [[NSMutableOrderedSet alloc] initWithArray:resultObjects];
                 [comments addObjectsFromArray:sequence.comments.array];
-                sequenceInContext.comments = [comments copy];
+                if ( ![sequence.comments isEqualToOrderedSet:sequenceInContext.comments] )
+                {
+                    sequenceInContext.comments = [comments copy];
+                }
             }
             else
             {
