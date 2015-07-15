@@ -648,5 +648,5 @@
 "IMAGE" = "IMAGE";
 "Nevermind" = "Nevermind";
 
-"NOTHING LIKED YET" = "NOTHING LIKED YET";
-"Posts you like will appear here." = "Posts you like will appear here.";
+"NOTHING LIKED YET" = "NOTHING LIKED YET"; // Liked content no content view
+"Posts you like will appear here." = "Posts you like will appear here."; // Liked content no content view

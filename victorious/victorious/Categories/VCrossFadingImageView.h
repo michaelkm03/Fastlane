@@ -6,15 +6,14 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "VAbstractCrossFadingView.h"
 
 @class VStreamItemPreviewView;
 
 /**
-    A view that loads, blurs, and crossfades between images from the provided imageURLs. The alpha of these images
-        can be manipulated by the "offset" property
+    A view that loads, blurs, and crossfades between images from the provided imageURLs.
  */
-@interface VCrossFadingImageView : UIView
+@interface VCrossFadingImageView : VAbstractCrossFadingView
 
 /**
     Adds a number of blank image views to this view with proper constraints
@@ -40,16 +39,6 @@
                                atIndex:(NSInteger)index
                               animated:(BOOL)animated
               withConcurrentAnimations:(void (^)(void))concurrentAnimations;
-
-
-/**
-    Determines how much of each image retrieved from each imageURL is shown based on the image's position in the imageURLs array.
-        At an offset of 0, the image at index 0 is shown at full opacity;
-        at an offset of 0.5, the image at index 0 is shown at 0.5 alpha and the image at index 1 is shown at 0.5 alpha, and so on.
-        This value caps it's values between 0 and the count of items in the imageURLs array - 1;
-        this is done so that this view never displays only a fully-transparent image. Defaults to 0.0f.
- */
-@property (nonatomic, assign) CGFloat offset;
 
 /**
     The number of imageViews inside this view
