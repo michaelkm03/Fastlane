@@ -50,6 +50,7 @@ struct GIFSearchMediaHelper {
     }
     
     private func downloadPathForRemotePath( remotePath: String ) -> String {
+        
         let filename = remotePath.lastPathComponent
         let paths = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true )
         if var path = paths.first as? String {

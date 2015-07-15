@@ -8,58 +8,24 @@
 
 import UIKit
 
-private extension UIView {
-    
-    /// UIView extension
-    /// parameter `pattern`: Closure to call to determine if view is the one sought
-    /// returns: A view that passes the test or nil
-    func findSubview( pattern: (UIView)->(Bool) ) -> UIView? {
-        for subview in self.subviews as! [UIView] {
-            if pattern( subview ) {
-                return subview
-            }
-            else if let result = subview.findSubview( pattern ) {
-                return result
-            }
-        }
-        return nil
-    }
-}
-
-private extension UISearchBar {
-    
-    /// Returns the text field into which users type their search string
-    var textField: UITextField? {
-        return self.findSubview({ $0 is UITextField }) as? UITextField
-    }
-}
-
-extension GIFSearchViewController : UISearchBarDelegate {
-    
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        self.clearSearch()
-        self.performSearch( searchBar.text )
-        searchBar.resignFirstResponder()
-    }
-}
-
 class GIFSearchViewController: UIViewController, VMediaSource {
     
     enum Action: Selector {
         case Next = "onNext:"
     }
     
-    let kHeaderViewHeight: CGFloat = 50.0
-    let kFooterViewHeight: CGFloat = 50.0
-    let kDefaultSectionMargin: CGFloat = 10.0
-    let kNoContentCellHeight: CGFloat = 80.0
-    let kItemSpacing: CGFloat = 2.0
+    let kHeaderViewHeight: CGFloat      = 50.0
+    let kFooterViewHeight: CGFloat      = 50.0
+    let kDefaultSectionMargin: CGFloat  = 10.0
+    let kNoContentCellHeight: CGFloat   = 80.0
+    let kItemSpacing: CGFloat           = 2.0
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var searchBar: UISearchBar!
     
     var selectedIndexPath: NSIndexPath?
     var previewSection: Int?
+    private var isScrollViewDecelerating = false
     private(set) var dependencyManager: VDependencyManager?
     
     let scrollPaginator = VScrollPaginator()
@@ -96,8 +62,11 @@ class GIFSearchViewController: UIViewController, VMediaSource {
         
         self.navigationItem.titleView = self.titleViewWithTitle( NSLocalizedString( "GIF", comment:"" ) )
         
-        let nextTitle = NSLocalizedString( "Next", comment: "" )
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: nextTitle, style: .Plain, target: self, action: Action.Next.rawValue )
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: NSLocalizedString("Next", comment: ""),
+            style: .Plain,
+            target: self,
+            action: Action.Next.rawValue )
         
         self.performSearch()
     }
@@ -114,7 +83,7 @@ class GIFSearchViewController: UIViewController, VMediaSource {
         self.collectionView.setContentOffset( CGPoint.zeroPoint, animated: false )
     }
     
-    private func onNext( sender: AnyObject? ) {
+    func onNext( sender: AnyObject? ) {
         if let indexPath = self.selectedIndexPath {
             
             let selectedGIF = self.searchDataSource.sections[ indexPath.section ][ indexPath.row ]
@@ -144,5 +113,71 @@ class GIFSearchViewController: UIViewController, VMediaSource {
         label.textColor = UIColor.whiteColor()
         label.sizeToFit()
         return label
+    }
+}
+
+extension GIFSearchViewController : UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        self.clearSearch()
+        self.performSearch( searchBar.text )
+        searchBar.resignFirstResponder()
+    }
+}
+
+extension GIFSearchViewController : UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        
+        self.scrollPaginator.scrollViewDidScroll( scrollView )
+        
+        if !self.isScrollViewDecelerating && self.searchBar.isFirstResponder() {
+            self.searchBar.resignFirstResponder()
+        }
+        
+        self.isScrollViewDecelerating = true
+    }
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        self.isScrollViewDecelerating = false
+    }
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        self.isScrollViewDecelerating = false
+    }
+}
+
+extension GIFSearchViewController : VScrollPaginatorDelegate {
+    
+    func shouldLoadNextPage() {
+        if let searchText = self.searchBar.text {
+            self.performSearch(searchText, pageType: .Next)
+        }
+    }
+}
+
+private extension UIView {
+    
+    /// UIView extension
+    /// parameter `pattern`: Closure to call to determine if view is the one sought
+    /// returns: A view that passes the test or nil
+    func findSubview( pattern: (UIView)->(Bool) ) -> UIView? {
+        for subview in self.subviews as! [UIView] {
+            if pattern( subview ) {
+                return subview
+            }
+            else if let result = subview.findSubview( pattern ) {
+                return result
+            }
+        }
+        return nil
+    }
+}
+
+private extension UISearchBar {
+    
+    /// Returns the text field into which users type their search string
+    var textField: UITextField? {
+        return self.findSubview({ $0 is UITextField }) as? UITextField
     }
 }

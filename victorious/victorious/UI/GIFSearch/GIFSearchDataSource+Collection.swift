@@ -54,7 +54,7 @@ extension GIFSearchDataSource : UICollectionViewDataSource {
     
     // MARK: - Helpers
     
-    func configureNoContentCell( cell: GIFSearchNoContentCell, forState state: GIFSearchDataSource.State ) {
+    private func configureNoContentCell( cell: GIFSearchNoContentCell, forState state: GIFSearchDataSource.State ) {
         switch state {
         case .Error:
             cell.text = "Error loading results. :("

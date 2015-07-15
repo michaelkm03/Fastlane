@@ -18,7 +18,7 @@ class GIFSearchResultCell: UICollectionViewCell {
     
     var assetUrl: NSURL? {
         didSet {
-            if let url = self.assetUrl {
+            if let url = self.assetUrl where self.assetUrl != oldValue {
                 self.loadImage( url )
             }
         }

@@ -8,6 +8,8 @@
 
 import UIKit
 
+/// The full size cell that plays the GIF video asset when an item is selected
+/// from the list of GIF search results
 class GIFSearchPreviewCell: UICollectionViewCell {
     
     @IBOutlet private weak var videoView: VVideoView!

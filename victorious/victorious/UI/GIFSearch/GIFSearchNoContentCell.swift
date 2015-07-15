@@ -8,6 +8,7 @@
 
 import UIKit
 
+// A cell used to show a loading, error or no results state in GIF search
 class GIFSearchNoContentCell: UICollectionViewCell {
     
     @IBOutlet private weak var label: UILabel!

@@ -67,7 +67,6 @@ class GIFSearchDataSource: NSObject {
     private(set) var sections = [Section]()
     private(set) var mostRecentSearchText: String?
     private var highlightedSection: (section: Section, indexPath: NSIndexPath)?
-    private var currentOperation: NSOperation?
     
     // Removes the current full size asset section, wherever it may be
     // returns: whether or not the total section count was changed
@@ -115,11 +114,8 @@ class GIFSearchDataSource: NSObject {
             return
         }
         
-        // Cancel any previous loads
-        self.currentOperation?.cancel()
-        
         self.state = .Loading
-        self.currentOperation = VObjectManager.sharedManager().searchForGIF( [ searchText == "" ? "sponge" : searchText ],
+        VObjectManager.sharedManager().searchForGIF( [ searchText == "" ? "sponge" : searchText ],
             pageType: pageType,
             success: { (results) in
                 if pageType == .First {
@@ -149,7 +145,6 @@ class GIFSearchDataSource: NSObject {
     /// Clears the backing model, highlighted section and cancels any in-progress search operation
     func clear() {
         self.mostRecentSearchText = nil
-        self.currentOperation?.cancel()
         self.highlightedSection = nil
         self.sections = []
     }
