@@ -35,7 +35,9 @@
  */
 @interface VTextWorkspaceFlowController : NSObject <VHasManagedDependencies, VNavigationDestination>
 
-+ (VTextWorkspaceFlowController *)textWorkspaceFlowControllerWithDependencyManager:(VDependencyManager *)dependencyManager addedDependencies:(NSDictionary *)addedDependencies;
++ (VTextWorkspaceFlowController *)textWorkspaceFlowControllerWithDependencyManager:(VDependencyManager *)dependencyManager
+                                                                 addedDependencies:(NSDictionary *)addedDependencies;
+
 + (VTextWorkspaceFlowController *)textWorkspaceFlowControllerWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
