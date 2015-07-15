@@ -15,7 +15,7 @@ extern CGFloat const kVDetailVisibilityDuration;
 extern CGFloat const kVDetailHideDuration;
 
 /**
- *  A cell that displays a streamItem for a Marquee
+ *  A cell that represents a single stream item in the fullscreen marquee.
  */
 @interface VFullscreenMarqueeStreamItemCell : VAbstractMarqueeStreamItemCell <VBackgroundContainer>
 

@@ -25,7 +25,6 @@ extern NSString * const kMarqueeURLKey;
 @property (nonatomic, weak) id <VMarqueeDataDelegate> dataDelegate; ///< The object that should be notified of changes in marquee content
 
 @property (nonatomic, strong) UICollectionView *collectionView; ///< The colletion view used to display the streamItems
-@property (nonatomic, readonly) VStreamItem *currentStreamItem; ///< The stream item currently being displayed
 @property (nonatomic, strong) VStream *stream; ///< The Marquee Stream
 @property (nonatomic, readonly) VTimerManager *autoScrollTimerManager; ///< The timer in control of auto scroll
 @property (nonatomic, assign) BOOL shouldTrackMarqueeCellViews; ///< Whether or not cell_view tracking events are sent for marquee items
@@ -109,22 +108,6 @@ extern NSString * const kMarqueeURLKey;
     Overridden by subclasses to register the proper VAbstractMarqueeCollectionViewCell subclass with the provided collectionView.
  */
 - (void)registerCollectionViewCellWithCollectionView:(UICollectionView *)collectionView;
-
-/**
-    Overridden by subclasses to provide the dependency manager and stream item to the provided cell as necessary.
-    Most cases will simply use the following implementation:
-
-    - (void)setupStreamItemCell:(VAbstractMarqueeStreamItemCell *)streamItemCell withDependencyManager:(VDependencyManager *)dependencyManager andStreamItem:(VStreamItem *)streamItem
-    {
-        streamItemCell.dependencyManager = dependencyManager;
-        streamItemCell.streamItem = streamItem;
-    }
- 
-    @param streamItemCell The stream item cell that should be populated with the provided dependency manager and stream item.
-    @param dependencyManager The dependency manager that should be used to style the cell.
-    @param streamItem The stream item whose content should populate the streamItemCell.
- */
-- (void)setupStreamItemCell:(VAbstractMarqueeStreamItemCell *)streamItemCell withDependencyManager:(VDependencyManager *)dependencyManager andStreamItem:(VStreamItem *)streamItem;
 
 /**
     Overridden by subclasses to provide an appropriate subclass of VAbstractMarqueeStreamItemCell whose reuse will be managed by this class.

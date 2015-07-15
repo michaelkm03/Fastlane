@@ -10,6 +10,8 @@
 
 #import "VSequence+RestKit.h"
 
+#import "VEditorializationItem.h"
+
 @implementation VStream (RestKit)
 
 + (NSString *)entityName
@@ -22,6 +24,7 @@
     return @{
              @"id"                  :   VSelectorName(remoteId),
              @"stream_id"           :   VSelectorName(streamId),
+             @"entry_label"         :   VSelectorName(headline),
              @"stream_content_type" :   VSelectorName(streamContentType),
              @"name"                :   VSelectorName(name),
              @"preview_image"       :   VSelectorName(previewImagesObject),
@@ -30,48 +33,47 @@
              };
 }
 
-//This will map stream items from the "stream_items"-keyed array of streams inside each stream in the payload
-+ (RKEntityMapping *)entityMapping
++ (RKEntityMapping *)mappingBase
 {
-    NSDictionary *propertyMap = [[self class] propertyMap];
+    NSDictionary *propertyMap = [VStream propertyMap];
     
     RKEntityMapping *mapping = [RKEntityMapping
-                                mappingForEntityForName:[self entityName]
+                                mappingForEntityForName:[VStream entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
     mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     
+    return mapping;
+}
+
+//This will map stream items from the "stream_items"-keyed array of streams inside each stream in the payload
++ (RKEntityMapping *)entityMapping
+{
+    RKEntityMapping *mapping = [VStream mappingBase];
+    
     RKRelationshipMapping *sequenceMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"stream_items"
                                                                                          toKeyPath:VSelectorName(streamItems)
-                                                                                       withMapping:[[self class] streamItemMapping]];
+                                                                                       withMapping:[self streamItemMapping]];
     [mapping addPropertyMapping:sequenceMapping];
-
+    
     return mapping;
 }
 
 //This will map from the top level
 + (RKEntityMapping *)payloadContentMapping
 {
-    NSDictionary *propertyMap = [[self class] propertyMap];
-    
-    RKEntityMapping *mapping = [RKEntityMapping
-                                mappingForEntityForName:[self entityName]
-                                inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
-    
-    mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
-    
-    [mapping addAttributeMappingsFromDictionary:propertyMap];
+    RKEntityMapping *mapping = [VStream mappingBase];
     
     RKRelationshipMapping *marqueeMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"marquee"
                                                                                         toKeyPath:VSelectorName(marqueeItems)
-                                                                                      withMapping:[[self class] listByStreamMapping]];
+                                                                                      withMapping:[self listByStreamMapping]];
     [mapping addPropertyMapping:marqueeMapping];
     
     RKRelationshipMapping *contentMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"content"
                                                                                         toKeyPath:VSelectorName(streamItems)
-                                                                                      withMapping:[[self class] listByStreamMapping]];
+                                                                                      withMapping:[self listByStreamMapping]];
     [mapping addPropertyMapping:contentMapping];
     
     return mapping;
@@ -79,19 +81,11 @@
 
 + (RKEntityMapping *)basePayloadContentMapping
 {
-    NSDictionary *propertyMap = [[self class] propertyMap];
-    
-    RKEntityMapping *mapping = [RKEntityMapping
-                                mappingForEntityForName:[self entityName]
-                                inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
-    
-    mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
-    
-    [mapping addAttributeMappingsFromDictionary:propertyMap];
+    RKEntityMapping *mapping = [VStream mappingBase];
     
     RKRelationshipMapping *contentMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"payload"
                                                                                         toKeyPath:VSelectorName(streamItems)
-                                                                                      withMapping:[[self class] listByStreamMapping]];
+                                                                                      withMapping:[self listByStreamMapping]];
     [mapping addPropertyMapping:contentMapping];
     
     return mapping;
@@ -109,7 +103,7 @@
          }
          else
          {
-             return [VStream childStreamMapping];
+             return [self childStreamMapping];
          }
      }];
     
@@ -118,11 +112,7 @@
 
 + (RKEntityMapping *)childStreamMapping
 {
-    NSDictionary *propertyMap = [[self class] propertyMap];
-    RKEntityMapping *mapping = [RKEntityMapping mappingForEntityForName:[VStream entityName]
-                                                   inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
-    [mapping addAttributeMappingsFromDictionary:propertyMap];
-    return mapping;
+    return [self mappingBase];
 }
 
 + (RKDynamicMapping *)listByStreamMapping
@@ -130,7 +120,7 @@
     RKDynamicMapping *contentMapping = [RKDynamicMapping new];
     
     [contentMapping addMatcher:[RKObjectMappingMatcher matcherWithPredicate:[NSPredicate predicateWithFormat:@"stream_content_type != nil"]
-                                                              objectMapping:[VStream entityMapping]]];
+                                                              objectMapping:[self entityMapping]]];
     
     [contentMapping addMatcher:[RKObjectMappingMatcher matcherWithPredicate:[NSPredicate predicateWithFormat:@"stream_content_type == nil"]
                                                               objectMapping:[VSequence entityMapping]]];
