@@ -11,7 +11,7 @@
 // Capture
 #import "VAssetCollectionListViewController.h"
 #import "VAssetCollectionGridViewController.h"
-#import "VImageAssetDownlaoder.h"
+#import "VImageAssetDownloader.h"
 
 // Edit
 #import "VWorkspaceViewController.h"
@@ -63,7 +63,7 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 
 - (VAssetDownloader *)downloaderWithAsset:(PHAsset *)asset
 {
-    return [[VImageAssetDownlaoder alloc] initWithAsset:asset];
+    return [[VImageAssetDownloader alloc] initWithAsset:asset];
 }
 
 @end

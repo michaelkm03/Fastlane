@@ -1,24 +1,24 @@
 //
-//  VImageAssetDownlaoder.m
+//  VImageAssetDownloader.m
 //  victorious
 //
 //  Created by Michael Sena on 7/13/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VImageAssetDownlaoder.h"
+#import "VImageAssetDownloader.h"
 
 #import "UIImage+Resize.h"
 
-NSString * const VImageAssetDownlaoderErrorDomain = @"com.victorious.VImageAssetDownlaoderErrorDomain";
+NSString * const VImageAssetDownloaderErrorDomain = @"com.victorious.VImageAssetDownloaderErrorDomain";
 
-@interface VImageAssetDownlaoder ()
+@interface VImageAssetDownloader ()
 
 @property (nonatomic, strong) PHAsset *asset;
 
 @end
 
-@implementation VImageAssetDownlaoder
+@implementation VImageAssetDownloader
 
 - (instancetype)initWithAsset:(PHAsset *)asset
 {
