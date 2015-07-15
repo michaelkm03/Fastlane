@@ -16,10 +16,10 @@
 
 @implementation VVideoAssetDownloader
 
-- (instancetype)initWithImageAsset:(PHAsset *)asset
+- (instancetype)initWithAsset:(PHAsset *)asset
 {
     NSParameterAssert(asset.mediaType == PHAssetMediaTypeVideo);
-    self = [super init];
+    self = [super initWithAsset:asset];
     if (self != nil)
     {
         _asset = asset;

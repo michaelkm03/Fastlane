@@ -15,7 +15,7 @@
 
 // Dependencies
 #import "VDependencyManager.h"
-#import "VImageCreationFlowController.h"
+#import "VAbstractImageVideoCreationFlowController.h"
 
 static NSString * const kImageCreationFlowKey = @"imageCreateFlow";
 
@@ -68,7 +68,7 @@ static NSString * const kImageCreationFlowKey = @"imageCreateFlow";
     }
     if ([self.sequenceToRemix isImage])
     {
-        VImageCreationFlowController *flowController = [self.dependencyManager templateValueOfType:[VImageCreationFlowController class]
+        VAbstractImageVideoCreationFlowController *flowController = [self.dependencyManager templateValueOfType:[VAbstractImageVideoCreationFlowController class]
                                                                                             forKey:kImageCreationFlowKey];
         flowController.creationFlowDelegate = self;
         [flowController remixWithPreviewImage:nil mediaURL:remixURL];

@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VCreationFlowController.h"
+#import "VAbstractImageVideoCreationFlowController.h"
 
-@interface VVideoCreationFlowController : VCreationFlowController
+@interface VVideoCreationFlowController : VAbstractImageVideoCreationFlowController
 
 @end

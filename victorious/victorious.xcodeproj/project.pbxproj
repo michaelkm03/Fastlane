@@ -301,7 +301,7 @@
 		669EBBE51A30239100DE317D /* VTickerPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 669EBBE31A30239100DE317D /* VTickerPickerViewController.m */; };
 		99F4DB51782658B7D034EC2F /* libPods-victorious-test.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7B45F61E6B2831D5E9459C3 /* libPods-victorious-test.a */; };
 		9F95A0FBA78C16AF3EA43793 /* libPods-victorious.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */; };
-		A601FB491B4354D10050536C /* VImageCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB481B4354D10050536C /* VImageCreationFlowController.m */; };
+		A601FB491B4354D10050536C /* VAbstractImageVideoCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB481B4354D10050536C /* VAbstractImageVideoCreationFlowController.m */; };
 		A601FB4F1B4355A30050536C /* VCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB4E1B4355A30050536C /* VCreationFlowController.m */; };
 		A601FB531B4363240050536C /* VCreationFlowPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB521B4363240050536C /* VCreationFlowPresenter.m */; };
 		A601FB591B43657F0050536C /* VMediaAttachmentPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB581B43657F0050536C /* VMediaAttachmentPresenter.m */; };
@@ -316,6 +316,8 @@
 		A673A3301B34E602004D4D8C /* newWorkspaceTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = A673A32F1B34E602004D4D8C /* newWorkspaceTemplate.json */; };
 		A682F4FC1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = A682F4FB1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.m */; };
 		A682F4FE1B3C829E009B6DBE /* imageCreationFlow.json in Resources */ = {isa = PBXBuildFile; fileRef = A682F4FD1B3C829E009B6DBE /* imageCreationFlow.json */; };
+		A6886CF91B55EC4F00D4F6F8 /* VImageCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6886CF81B55EC4F00D4F6F8 /* VImageCreationFlowController.m */; };
+		A6886CFC1B5612F300D4F6F8 /* VAssetDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = A6886CFB1B5612F300D4F6F8 /* VAssetDownloader.m */; };
 		A692AE121B5480E0003A874B /* NSIndexSet+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = A692AE111B5480E0003A874B /* NSIndexSet+Convenience.m */; };
 		A692AE151B54881E003A874B /* UICollectionView+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = A692AE141B54881E003A874B /* UICollectionView+Convenience.m */; };
 		A6CC23C71B4B2A0600141DD6 /* VAssetGroupTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CC23C61B4B2A0600141DD6 /* VAssetGroupTableViewCell.m */; };
@@ -1639,8 +1641,8 @@
 		83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.qa.xcconfig"; sourceTree = "<group>"; };
 		8E360EC509E852CE3E872948 /* Pods-victorious-test.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.debug.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.debug.xcconfig"; sourceTree = "<group>"; };
 		910A7A7036C6609BF5F7723D /* Pods-victorious-test.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.staging.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.staging.xcconfig"; sourceTree = "<group>"; };
-		A601FB471B4354D10050536C /* VImageCreationFlowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageCreationFlowController.h; sourceTree = "<group>"; };
-		A601FB481B4354D10050536C /* VImageCreationFlowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageCreationFlowController.m; sourceTree = "<group>"; };
+		A601FB471B4354D10050536C /* VAbstractImageVideoCreationFlowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractImageVideoCreationFlowController.h; sourceTree = "<group>"; };
+		A601FB481B4354D10050536C /* VAbstractImageVideoCreationFlowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractImageVideoCreationFlowController.m; sourceTree = "<group>"; };
 		A601FB4D1B4355A30050536C /* VCreationFlowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreationFlowController.h; sourceTree = "<group>"; };
 		A601FB4E1B4355A30050536C /* VCreationFlowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCreationFlowController.m; sourceTree = "<group>"; };
 		A601FB511B4363240050536C /* VCreationFlowPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreationFlowPresenter.h; sourceTree = "<group>"; };
@@ -1666,6 +1668,10 @@
 		A682F4FA1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+VSimpleAlert.h"; sourceTree = "<group>"; };
 		A682F4FB1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertController+VSimpleAlert.m"; sourceTree = "<group>"; };
 		A682F4FD1B3C829E009B6DBE /* imageCreationFlow.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = imageCreationFlow.json; path = ../imageCreationFlow.json; sourceTree = "<group>"; };
+		A6886CF71B55EC4F00D4F6F8 /* VImageCreationFlowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageCreationFlowController.h; sourceTree = "<group>"; };
+		A6886CF81B55EC4F00D4F6F8 /* VImageCreationFlowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageCreationFlowController.m; sourceTree = "<group>"; };
+		A6886CFA1B5612F300D4F6F8 /* VAssetDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAssetDownloader.h; sourceTree = "<group>"; };
+		A6886CFB1B5612F300D4F6F8 /* VAssetDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAssetDownloader.m; sourceTree = "<group>"; };
 		A692AE101B5480E0003A874B /* NSIndexSet+Convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexSet+Convenience.h"; sourceTree = "<group>"; };
 		A692AE111B5480E0003A874B /* NSIndexSet+Convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexSet+Convenience.m"; sourceTree = "<group>"; };
 		A692AE131B54881E003A874B /* UICollectionView+Convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UICollectionView+Convenience.h"; sourceTree = "<group>"; };
@@ -4408,8 +4414,8 @@
 				A6DAEB601B4C8DF900935EA0 /* VGIFCreationFlowController.h */,
 				A6DAEB611B4C8DF900935EA0 /* VGIFCreationFlowController.m */,
 				A6DAEB651B4C94B800935EA0 /* videoCreationFlow.json */,
-				A601FB471B4354D10050536C /* VImageCreationFlowController.h */,
-				A601FB481B4354D10050536C /* VImageCreationFlowController.m */,
+				A601FB471B4354D10050536C /* VAbstractImageVideoCreationFlowController.h */,
+				A601FB481B4354D10050536C /* VAbstractImageVideoCreationFlowController.m */,
 				A61697441B45D02A00ECC846 /* VMediaSource.h */,
 				A6DAEB551B4C43D100935EA0 /* VPollCreationFlowController.h */,
 				A6DAEB561B4C43D100935EA0 /* VPollCreationFlowController.m */,
@@ -4417,6 +4423,8 @@
 				A6DAEB531B4C43BA00935EA0 /* VTextWorkspaceFlowController.m */,
 				A6DAEB5D1B4C8DCA00935EA0 /* VVideoCreationFlowController.h */,
 				A6DAEB5E1B4C8DCA00935EA0 /* VVideoCreationFlowController.m */,
+				A6886CF71B55EC4F00D4F6F8 /* VImageCreationFlowController.h */,
+				A6886CF81B55EC4F00D4F6F8 /* VImageCreationFlowController.m */,
 			);
 			path = "Creation Flows";
 			sourceTree = "<group>";
@@ -4469,6 +4477,8 @@
 				A6E2E76A1B544D79008A1CA9 /* VImageAssetDownlaoder.m */,
 				A6E2E76C1B545328008A1CA9 /* VVideoAssetDownloader.h */,
 				A6E2E76D1B545328008A1CA9 /* VVideoAssetDownloader.m */,
+				A6886CFA1B5612F300D4F6F8 /* VAssetDownloader.h */,
+				A6886CFB1B5612F300D4F6F8 /* VAssetDownloader.m */,
 			);
 			path = ImageVideoLibrary;
 			sourceTree = "<group>";
@@ -7322,7 +7332,7 @@
 				F0AD217D1AF43E3D001BDCC6 /* VShowcaseDirectoryCell.m in Sources */,
 				A6DAEB5F1B4C8DCA00935EA0 /* VVideoCreationFlowController.m in Sources */,
 				F07E825D1AEF35BE00821CEA /* VDiscoverHeaderView.m in Sources */,
-				A601FB491B4354D10050536C /* VImageCreationFlowController.m in Sources */,
+				A601FB491B4354D10050536C /* VAbstractImageVideoCreationFlowController.m in Sources */,
 				A7EB574D1AF8402A006AA1CF /* VURLDetector.m in Sources */,
 				A75FAF2119E8AC1E00EB87C1 /* VDiscoverViewController.m in Sources */,
 				A6E2E76B1B544D79008A1CA9 /* VImageAssetDownlaoder.m in Sources */,
@@ -7493,6 +7503,7 @@
 				0314D4D019B46B5E00FA363C /* VLoadingViewController.m in Sources */,
 				C39B220E1B0A693600D3DFE7 /* VPermissionProfilePicture.m in Sources */,
 				BE5DE3F618DA72140047B67E /* VInteractionAction.m in Sources */,
+				A6886CFC1B5612F300D4F6F8 /* VAssetDownloader.m in Sources */,
 				A7D707821A7AFDA900D9993F /* VEndCard+RestKit.m in Sources */,
 				03484BFE192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m in Sources */,
 				DBF8B4B41A79F91300CFFD47 /* VTagsSearchResultsViewController.m in Sources */,
@@ -7711,6 +7722,7 @@
 				A743E7E01A08160300339CB3 /* VFileCache.m in Sources */,
 				035FA7881AE6C4D50002EE63 /* VNotificationsViewController.m in Sources */,
 				D85B70721B0EAF3F0038CA5B /* VFindFacebookFriendsTableViewController.m in Sources */,
+				A6886CF91B55EC4F00D4F6F8 /* VImageCreationFlowController.m in Sources */,
 				A7ECC1D91AD6178F0003E00A /* VWorkspaceViewController.m in Sources */,
 				BE11F23B19CB44B900DEC776 /* VStream+RestKit.m in Sources */,
 				D8D812B81B15819600E93B37 /* VModernFlowControllerAnimationController.m in Sources */,

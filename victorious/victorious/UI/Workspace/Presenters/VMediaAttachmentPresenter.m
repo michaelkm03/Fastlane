@@ -9,7 +9,7 @@
 #import "VMediaAttachmentPresenter.h"
 
 // Creation
-#import "VImageCreationFlowController.h"
+#import "VAbstractImageVideoCreationFlowController.h"
 #import "VVideoCreationFlowController.h"
 
 // Dependencies
@@ -47,7 +47,7 @@ static NSString * const kVideoCreateFlow = @"videoCreateFlow";
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction *action)
                                       {
-                                          VImageCreationFlowController *imageCreationFlowController = [self.dependencyManager templateValueOfType:[VImageCreationFlowController class]
+                                          VAbstractImageVideoCreationFlowController *imageCreationFlowController = [self.dependencyManager templateValueOfType:[VAbstractImageVideoCreationFlowController class]
                                                                                                                                            forKey:VImageCreationFlowControllerKey];
                                           imageCreationFlowController.creationFlowDelegate = self;
                                           [self.viewControllerToPresentOn presentViewController:imageCreationFlowController

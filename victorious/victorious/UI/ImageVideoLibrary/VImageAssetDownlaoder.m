@@ -20,10 +20,10 @@ NSString * const VImageAssetDownlaoderErrorDomain = @"com.victorious.VImageAsset
 
 @implementation VImageAssetDownlaoder
 
-- (instancetype)initWithImageAsset:(PHAsset *)asset
+- (instancetype)initWithAsset:(PHAsset *)asset
 {
     NSParameterAssert(asset.mediaType == PHAssetMediaTypeImage);
-    self = [super init];
+    self = [super initWithAsset:asset];
     if (self != nil)
     {
         _asset = asset;
@@ -31,7 +31,7 @@ NSString * const VImageAssetDownlaoderErrorDomain = @"com.victorious.VImageAsset
     return self;
 }
 
-- (void)downloadWithProgress:(void (^)(double progress))progressHandler
+- (void)downloadWithProgress:(void (^)(double progress, NSString *localizedProgress))progressHandler
                   completion:(void (^)(NSError *error, NSURL *downloadedFileURL, UIImage *previewImage))completion
 
 {
@@ -43,7 +43,7 @@ NSString * const VImageAssetDownlaoderErrorDomain = @"com.victorious.VImageAsset
     {
         if (progressHandler != nil)
         {
-            progressHandler(progress);
+            progressHandler(progress, NSLocalizedString(@"Exporting...", nil));
         }
     };
     

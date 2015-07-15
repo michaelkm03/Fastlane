@@ -13,7 +13,7 @@
 #import "VSolidColorBackground.h"
 
 // Subclasses
-#import "VImageCreationFlowController.h"
+#import "VAbstractImageVideoCreationFlowController.h"
 
 static NSString * const kCloseButtonIconKey = @"closeIcon";
 static NSString * const kBarBackgroundKey = @"navBarBackground";
