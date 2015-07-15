@@ -7,14 +7,16 @@
 //
 
 #import "NSArray+VMap.h"
+#import "NSURL+VDataCacheID.h"
+#import "VDataCache.h"
 #import "VDependencyManager.h"
 #import "VHasManagedDependencies.h"
 #import "VJSONHelper.h"
 #import "VSolidColorBackground.h"
 #import "VTemplateImage.h"
 #import "VTemplateImageMacro.h"
+#import "VTemplatePackageManager.h"
 #import "VURLMacroReplacement.h"
-#import "UIImage+VTint.h"
 
 typedef BOOL (^TypeTest)(Class);
 
@@ -245,24 +247,32 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 
 - (UIImage *)imageForKey:(NSString *)key
 {
-    UIImage *image = nil;
     NSDictionary *imageDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
     
     if ( imageDictionary != nil )
     {
-        NSString *imageURL = imageDictionary[VTemplateImageURLKey];
+        NSString *imageURLString = imageDictionary[VTemplateImageURLKey];
         
-        if (![imageURL isKindOfClass:[NSString class]])
+        if (![imageURLString isKindOfClass:[NSString class]])
         {
             return nil;
         }
-        image = [UIImage imageNamed:imageURL];
+        
+        NSURL *imageURL = [NSURL URLWithString:imageURLString];
+        if ( imageURL != nil &&
+             imageURL.scheme.length > 0 &&
+             [[VTemplatePackageManager validSchemes] containsObject:imageURL.scheme] )
+        {
+            NSData *imageData = [[[VDataCache alloc] init] cachedDataForID:imageURL];
+            return [UIImage imageWithData:imageData];
+        }
+        
+        return [UIImage imageNamed:imageURLString];
     }
     else
     {
-        image = [self templateValueOfType:[UIImage class] forKey:key];
+        return [self templateValueOfType:[UIImage class] forKey:key];
     }
-    return image;
 }
 
 - (UIViewController *)viewControllerForKey:(NSString *)key

@@ -93,5 +93,8 @@
     },
     "myImage": {
         "imageURL": "C_menu"
+    },
+    "myRemoteImage": {
+        "imageURL": "http://www.example.com/testRemoteImage"
     }
 }

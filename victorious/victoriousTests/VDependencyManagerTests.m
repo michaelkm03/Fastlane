@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "NSURL+VDataCacheID.h"
+#import "VDataCache.h"
 #import "VDependencyManager.h"
 #import "VSideMenuViewController.h"
 
@@ -485,6 +487,22 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
                                                             dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
     UIImage *actual = [dependencyManager imageForKey:@"myImage"];
     XCTAssertEqualObjects(actual, sampleImage);
+}
+
+- (void)testRemoteImage
+{
+    NSURL *imageBundleURL = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleImage" withExtension:@"png"];
+    NSData *imageData = [NSData dataWithContentsOfURL:imageBundleURL];
+    UIImage *expected = [UIImage imageWithData:imageData];
+
+    VDataCache *dataCache = [[VDataCache alloc] init];
+    NSError *error = nil;
+    [dataCache cacheDataAtURL:imageBundleURL forID:[NSURL URLWithString:@"http://www.example.com/testRemoteImage"] error:&error];
+    XCTAssertNil(error);
+    
+    UIImage *actual = [self.dependencyManager imageForKey:@"myRemoteImage"];
+    XCTAssert( [actual isKindOfClass:[UIImage class]] );
+    XCTAssert( CGSizeEqualToSize(expected.size, actual.size) );
 }
 
 #pragma mark - Dictionaries

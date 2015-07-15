@@ -30,4 +30,12 @@
  */
 - (NSSet *)referencedURLs;
 
+/**
+ Returns a set of NSString objects for each URL scheme that
+ the package manager considers to be valid. URLs appearing
+ in the template that contain a scheme not in this set will
+ not be included in the `referencedURLs` property.
+ */
++ (NSSet *)validSchemes;
+
 @end

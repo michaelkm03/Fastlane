@@ -50,7 +50,7 @@
         if ( [VTemplateImage isImageJSON:dict] )
         {
             VTemplateImage *image = [[VTemplateImage alloc] initWithJSON:dict];
-            if ( image.imageURL != nil && [[self validSchemes] containsObject:[image.imageURL.scheme lowercaseString]] )
+            if ( image.imageURL != nil && [[[self class] validSchemes] containsObject:[image.imageURL.scheme lowercaseString]] )
             {
                 [set addObject:image.imageURL];
             }
@@ -82,7 +82,7 @@
     }
 }
 
-- (NSSet *)validSchemes
++ (NSSet *)validSchemes
 {
     static NSSet *validSchemes;
     static dispatch_once_t onceToken;
