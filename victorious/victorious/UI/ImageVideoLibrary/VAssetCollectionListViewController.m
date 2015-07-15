@@ -7,14 +7,12 @@
 //
 
 #import "VAssetCollectionListViewController.h"
-
-// Permissions
 #import "VPermissionPhotoLibrary.h"
-
 #import "VAssetGroupTableViewCell.h"
 
 @import Photos;
 
+// Cell is registered with this key in the storyboard
 static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 
 @interface VAssetCollectionListViewController () <PHPhotoLibraryChangeObserver>
@@ -29,6 +27,9 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 @property (nonatomic, strong) NSArray *assetFetchResultForCollections;
 
 @property (nonatomic, strong) NSNumberFormatter *numberFormatter;
+
+// Only fetch every 30 seconds.
+@property (nonatomic, strong) NSDate *lastFetch;
 
 @end
 
@@ -61,10 +62,7 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 - (void)awakeFromNib
 {
     self.fetchResults = [[NSMutableSet alloc] init];
-    self.numberFormatter = [[NSNumberFormatter alloc] init];
-    self.numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
-    self.numberFormatter.locale = [NSLocale currentLocale];
-    self.numberFormatter.groupingSeparator = [[NSLocale currentLocale] objectForKey:NSLocaleGroupingSeparator];
+    self.numberFormatter = [self createNumberFormatter];
 
     self.libraryPermissions = [[VPermissionPhotoLibrary alloc] init];
     
@@ -123,15 +121,7 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
     cell.groupSubtitleLabel.text = [self.numberFormatter stringFromNumber:@(fetchResultForCollection.count)];
     
     // Use the first asset as a thumbnail
-    PHAsset *firstAsset = [fetchResultForCollection firstObject];
-    [[PHImageManager defaultManager] requestImageForAsset:firstAsset
-                                               targetSize:CGSizeMake(40, 40)
-                                              contentMode:PHImageContentModeAspectFill
-                                                  options:nil
-                                            resultHandler:^(UIImage *result, NSDictionary *info)
-     {
-         cell.groupImageView.image = result;
-     }];
+    cell.asset = [fetchResultForCollection firstObject];
 
     return cell;
 }
@@ -170,7 +160,8 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
         BOOL dirty = NO;
         for (PHFetchResult *fetchResult in self.fetchResults)
         {
-            if ([changeInstance changeDetailsForFetchResult:fetchResult])
+            PHFetchResultChangeDetails *changeDetails = [changeInstance changeDetailsForFetchResult:fetchResult];
+            if (![changeDetails hasIncrementalChanges])
             {
                 dirty = YES;
                 break;
@@ -202,7 +193,16 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 // Completion is called on main Queue
 - (void)fetchCollectionsWithCompletion:(void(^)())success
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+    // Only fetch once every 30 seconds. This method is expensive and photo library can be noisy when syncing.
+    if ([[NSDate date] timeIntervalSinceDate:self.lastFetch] < 30)
+    {
+        return;
+    }
+    
+    VLog(@"Fetching collections");
+    
+    NSMutableSet *newFetchResults = [[NSMutableSet alloc] init];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^
     {
         // Fetch all albums
         PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
@@ -211,8 +211,8 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
         PHFetchResult *userAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
                                                                              subtype:PHAssetCollectionSubtypeAny
                                                                              options:nil];
-        [self.fetchResults addObject:smartAlbums];
-        [self.fetchResults addObject:userAlbums];
+        [newFetchResults addObject:smartAlbums];
+        [newFetchResults addObject:userAlbums];
         
         // Configure fetch options for media type and creation date
         PHFetchOptions *assetFetchOptions = [[PHFetchOptions alloc] init];
@@ -228,7 +228,7 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
         {
             PHFetchResult *albumMediaTypeResults = [PHAsset fetchAssetsInAssetCollection:collection
                                                                                  options:assetFetchOptions];
-            [self.fetchResults addObject:albumMediaTypeResults];
+            [newFetchResults addObject:albumMediaTypeResults];
             if (albumMediaTypeResults.count > 0)
             {
                 [assetCollections addObject:collection];
@@ -239,7 +239,7 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
         {
             PHFetchResult *albumMediaTypeResults = [PHAsset fetchAssetsInAssetCollection:collection
                                                                                  options:assetFetchOptions];
-            [self.fetchResults addObject:albumMediaTypeResults];
+            [newFetchResults addObject:albumMediaTypeResults];
             if (albumMediaTypeResults.count > 0)
             {
                 [assetCollections addObject:collection];
@@ -247,11 +247,26 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
             }
         }
         
-        self.collections = assetCollections;
-        self.assetFetchResultForCollections = assetCollectionsFetchResutls;
-        
-        dispatch_async(dispatch_get_main_queue(), success);
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            self.lastFetch = [NSDate date];
+            self.fetchResults = newFetchResults;
+            self.collections = assetCollections;
+            self.assetFetchResultForCollections = assetCollectionsFetchResutls;
+            dispatch_async(dispatch_get_main_queue(), success);
+        });
     });
+}
+
+#pragma mark - Private Methods
+
+- (NSNumberFormatter *)createNumberFormatter
+{
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    self.numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
+    self.numberFormatter.locale = [NSLocale currentLocale];
+    self.numberFormatter.groupingSeparator = [[NSLocale currentLocale] objectForKey:NSLocaleGroupingSeparator];
+    return formatter;
 }
 
 @end

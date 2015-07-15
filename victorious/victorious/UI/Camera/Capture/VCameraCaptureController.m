@@ -142,7 +142,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 
 - (void)startRunningWithVideoEnabled:(BOOL)videoEnabled andCompletion:(void (^)(NSError *))completion
 {
-    if ((self.context ==  VWorkspaceFlowControllerContextProfileImage ) || (self.context == VWorkspaceFlowControllerContextProfileImageRegistration ))
+    if ((self.context == VCameraContextProfileImage) || (self.context == VCameraContextProfileImageRegistration))
     {
         for (AVCaptureDevice *device in self.devices)
         {

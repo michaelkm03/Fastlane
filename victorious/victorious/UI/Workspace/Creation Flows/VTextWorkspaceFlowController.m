@@ -18,12 +18,14 @@
 #import "VTextListener.h"
 #import "VCameraViewController.h"
 #import "VImageSearchViewController.h"
+#import "VMediaAttachmentPresenter.h"
 
 @interface VTextWorkspaceFlowController() <UINavigationControllerDelegate, VTextListener, VTextCanvasToolDelegate>
 
 @property (nonatomic, strong) VWorkspaceViewController *textWorkspaceViewController;
 @property (nonatomic, strong) VTextCanvasToolViewController *textCanvasToolViewController;
 @property (nonatomic, strong) VTextToolController *textToolController;
+@property (nonatomic, strong) VMediaAttachmentPresenter *attachmentPresenter;
 
 @property (nonatomic, strong) UIViewController *mediaCaptureViewController;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -114,8 +116,7 @@
 
 - (void)textCanvasToolDidSelectCamera:(VTextCanvasToolViewController *)textCanvasToolViewController
 {
-    self.mediaCaptureViewController = [self createCameraViewController];
-    [self presentViewController:self.mediaCaptureViewController animated:YES completion:nil];
+    [self presentCameraViewController];
 }
 
 - (void)textCanvasToolDidSelectImageSearch:(VTextCanvasToolViewController *)textCanvasToolViewController
@@ -132,20 +133,19 @@
 
 #pragma mark - Choosing background image
 
-- (UIViewController *)createCameraViewController
+- (void)presentCameraViewController
 {
-    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerLimitedToPhotosWithDependencyManager:self.dependencyManager];
-    cameraViewController.shouldSkipPreview = YES;
-    if ([cameraViewController respondsToSelector:@selector(setDependencyManager:)])
-    {
-        [cameraViewController setDependencyManager:self.dependencyManager];
-    }
+    self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithViewControllerToPresentOn:self
+                                                                                  dependencymanager:self.dependencyManager];
+    self.attachmentPresenter.attachmentTypes = VMediaAttachmentTypeImage;
     __weak typeof(self) welf = self;
-    cameraViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+    self.attachmentPresenter.completion = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
     {
-        [welf didCaptureMediaWithURL:capturedMediaURL previewImage:previewImage];
+        [welf dismissViewControllerAnimated:YES
+                                 completion:nil];
+        [welf didCaptureMediaWithURL:mediaURL previewImage:previewImage];
     };
-    return cameraViewController;
+    [self.attachmentPresenter present];
 }
 
 - (UIViewController *)createImageSearchViewController

@@ -22,8 +22,6 @@
 	<string>VModernLoginAndRegistrationFlowViewController</string>
 	<key>standard.loginAndRegistrationView</key>
 	<string>VStandardLoginFlowViewController</string>
-	<key>standard.workspaceFlow</key>
-	<string>VWorkspaceFlowController</string>
 	<key>image.creationFlow</key>
 	<string>VImageCreationFlowController</string>
 	<key>translucent.background</key>
@@ -66,6 +64,8 @@
 	<string>VCameraViewController</string>
 	<key>workspace.screen</key>
 	<string>VWorkspaceViewController</string>
+	<key>imageVideoGallery.screen</key>
+	<string>VAssetCollectionGridViewController</string>
 	<key>workspace</key>
 	<string>VWorkspaceShimDestination</string>
 	<key>text.creationFlow</key>

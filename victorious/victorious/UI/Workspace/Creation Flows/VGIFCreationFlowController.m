@@ -28,7 +28,6 @@
 
 // Dependencies
 #import "VDependencyManager.h"
-#import "VMediaSource.h"
 
 static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 
@@ -65,7 +64,6 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
         GIFSearchViewController *gifSearchViewController = [GIFSearchViewController gifSearchWithDependencyManager:dependencyManager];
         [captureContainer setContainedViewController:gifSearchViewController];
         [self addCompleitonHandlerToMediaSource:gifSearchViewController];
-
     }
     return self;
 }

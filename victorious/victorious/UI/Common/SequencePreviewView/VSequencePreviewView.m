@@ -67,8 +67,10 @@
     }
     else
     {
+#ifndef NS_BLOCK_ASSERTIONS
         NSString *errorString = [NSString stringWithFormat:@"VSequencePreviewView cannot handle streamItem of class %@!", NSStringFromClass([streamItem class])];
-        NSAssert(false, errorString);        
+        NSAssert(false, errorString);
+#endif
     }
 }
 

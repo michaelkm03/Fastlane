@@ -43,7 +43,6 @@
 #import "VPaginationManager.h"
 #import "VPageType.h"
 #import "VCaptureContainerViewController.h"
-#import "VMediaSource.h"
 #import "VVideoView.h"
 #import "UIImage+VTint.h"
 #import "VDependencyManager.h"

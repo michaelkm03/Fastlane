@@ -61,22 +61,24 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bvs-cP-crM">
-                                            <rect key="frame" x="80" y="139" width="160" height="42"/>
+                                            <rect key="frame" x="8" y="139" width="304" height="42"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eMT-sn-Oss">
-                                                    <rect key="frame" x="0.0" y="0.0" width="160" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eMT-sn-Oss">
+                                                    <rect key="frame" x="0.0" y="0.0" width="304" height="21"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0rh-DB-V41">
-                                                    <rect key="frame" x="0.0" y="21" width="160" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0rh-DB-V41">
+                                                    <rect key="frame" x="0.0" y="21" width="304" height="21"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstItem="0rh-DB-V41" firstAttribute="top" secondItem="eMT-sn-Oss" secondAttribute="bottom" id="MM6-5l-vcM"/>
                                                 <constraint firstItem="eMT-sn-Oss" firstAttribute="leading" secondItem="bvs-cP-crM" secondAttribute="leading" id="XxK-iT-Qrx"/>
@@ -91,11 +93,15 @@
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <constraints>
-                                    <constraint firstAttribute="trailingMargin" secondItem="bvs-cP-crM" secondAttribute="trailing" constant="72" id="6rw-3k-mCg"/>
-                                    <constraint firstItem="bvs-cP-crM" firstAttribute="leading" secondItem="LZl-cw-FVv" secondAttribute="leadingMargin" constant="72" id="ajp-pn-cFj"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="bvs-cP-crM" secondAttribute="trailing" id="6rw-3k-mCg"/>
+                                    <constraint firstItem="bvs-cP-crM" firstAttribute="leading" secondItem="LZl-cw-FVv" secondAttribute="leadingMargin" id="ajp-pn-cFj"/>
                                     <constraint firstAttribute="centerY" secondItem="bvs-cP-crM" secondAttribute="centerY" id="jgo-xk-Wrf"/>
                                 </constraints>
                                 <size key="customSize" width="320" height="320"/>
+                                <connections>
+                                    <outlet property="callToActionLabel" destination="0rh-DB-V41" id="mUu-BR-IK6"/>
+                                    <outlet property="promptLabel" destination="eMT-sn-Oss" id="o5J-nE-xZG"/>
+                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>
@@ -106,7 +112,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G8u-Kc-3jx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="595" y="-91"/>
+            <point key="canvasLocation" x="85" y="-195"/>
         </scene>
     </scenes>
 </document>

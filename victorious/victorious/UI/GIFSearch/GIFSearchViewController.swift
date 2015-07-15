@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GIFSearchViewController: UIViewController, VMediaSource {
+class GIFSearchViewController: UIViewController {
     
     enum Action: Selector {
         case Next = "onNext:"
@@ -31,9 +31,6 @@ class GIFSearchViewController: UIViewController, VMediaSource {
     let scrollPaginator = VScrollPaginator()
     let searchDataSource = GIFSearchDataSource()
     private lazy var mediaHelper = GIFSearchMediaHelper()
-    
-    // VMediaSource
-    var handler: VMediaSelectionHandler?
     
     static func gifSearchWithDependencyManager( depndencyManager: VDependencyManager ) -> GIFSearchViewController {
         let bundle = UIStoryboard(name: "GIFSearch", bundle: nil)
@@ -96,7 +93,7 @@ class GIFSearchViewController: UIViewController, VMediaSource {
             self.mediaHelper.loadMedia( selectedGIF ) { (previewImage, mediaUrl, error) in
                 
                 if let previewImage = previewImage, let mediaURL = mediaUrl {
-                    self.handler?( previewImage, mediaURL )
+                    //self.handler?( previewImage, mediaURL )
                 }
                 else {
                     println( "Error: \(error)" )

@@ -8,10 +8,28 @@
 
 #import <UIKit/UIKit.h>
 
+@class PHAsset;
+
+/**
+ *  Represents an asset collection in a tableView. Assign a representative 
+ *  asset to the asset property.
+ */
 @interface VAssetGroupTableViewCell : UITableViewCell
 
-@property (strong, nonatomic) IBOutlet UIImageView *groupImageView;
+/**
+ *  An asset to use to represent the asset collection.
+ */
+@property (strong, nonatomic) PHAsset *asset;
+
+/**
+ *  The title label for the cell.
+ */
 @property (strong, nonatomic) IBOutlet UILabel *groupTitleLabel;
+
+/**
+ *  A subtitle label for the cell. Use this to inform the user of the number of
+ *  assets in the collection.
+ */
 @property (strong, nonatomic) IBOutlet UILabel *groupSubtitleLabel;
 
 @end

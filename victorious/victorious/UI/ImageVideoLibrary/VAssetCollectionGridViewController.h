@@ -8,16 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+#import "VHasManagedDependencies.h"
 @import Photos;
-@class VDependencyManager;
 
-@interface VAssetCollectionGridViewController : UICollectionViewController
+extern NSString * const VAssetCollectionGridViewControllerMediaType;
 
 /**
- *  Factory method for this ViewController. Use this to grab a new instance of assetGridViewController;
+ *  Must inject a PHAssetMediaType using the key: 
  */
-+ (instancetype)assetGridViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager
-                                                   mediaType:(PHAssetMediaType)mediaType;
+@interface VAssetCollectionGridViewController : UICollectionViewController <VHasManagedDependencies>
 
 /**
  *  Set this to the collection you want to display in the grid.
