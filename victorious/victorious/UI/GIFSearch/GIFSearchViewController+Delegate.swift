@@ -14,10 +14,10 @@ extension GIFSearchViewController : UICollectionViewDelegate {
         let section = self.searchDataSource.sections[ indexPath.section ]
         if collectionView.cellForItemAtIndexPath( indexPath ) is GIFSearchResultCell {
             if self.selectedIndexPath == indexPath {
-                self.hideFullSize( forItemAtIndexPath: indexPath )
+                self.hidePreviewForResult( indexPath )
             }
             else {
-                self.showFullSize( forItemAtIndexPath: indexPath )
+                self.showPreviewForResult( indexPath )
             }
         }
     }

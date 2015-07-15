@@ -8,22 +8,23 @@
 
 import UIKit
 
+/// Delegate that handles events that originate from within a `GIFSearchViewController`
 @objc protocol GIFSearchViewControllerDelegate {
     
-    func GIFSelected( #previewImage: UIImage, capturedMediaURL: NSURL )
+    /// The user selected a GIF image and wants to proceed with it in a creation flow.
+    ///
+    /// :param: `previewImage` A small, stille image that is loaded into memory and ready to display
+    /// :param: `capturedMediaURL` The file URL of the GIF's mp4 video asset downloaded to a file temporary location on the device
+    func GIFSelectedWithPreviewImage( previewImage: UIImage, capturedMediaURL: NSURL )
 }
 
+/// View controller that allows users to search for GIF files using the Giphy API
+/// as part of a content creation flow.
 class GIFSearchViewController: UIViewController {
     
     enum Action: Selector {
         case Next = "onNext:"
     }
-    
-    let kHeaderViewHeight: CGFloat      = 50.0
-    let kFooterViewHeight: CGFloat      = 50.0
-    let kDefaultSectionMargin: CGFloat  = 10.0
-    let kNoContentCellHeight: CGFloat   = 80.0
-    let kItemSpacing: CGFloat           = 2.0
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -100,7 +101,7 @@ class GIFSearchViewController: UIViewController {
             self.mediaHelper.loadMedia( selectedGIF ) { (previewImage, mediaURL, error) in
                 
                 if let previewImage = previewImage, let mediaURL = mediaURL {
-                    self.delegate?.GIFSelected( previewImage: previewImage, capturedMediaURL: mediaURL )
+                    self.delegate?.GIFSelectedWithPreviewImage( previewImage, capturedMediaURL: mediaURL )
                 }
                 else {
                     println( "Error: \(error)" )

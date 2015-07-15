@@ -1,5 +1,5 @@
 //
-//  GIFSearchViewController+Fullsize.swift
+//  GIFSearchViewController+Preview.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 7/10/15.
@@ -8,11 +8,14 @@
 
 import UIKit
 
-// Methods that handle showing full size version of assets.  Designed to work with
-// indexPaths so its easy to call these when a cell is selected or deselected
+/// Methods that handle showing full size version of assets.  Designed to work with
+/// indexPaths so its easy to call these when a cell is selected or deselected
 extension GIFSearchViewController {
     
-    func showFullSize( forItemAtIndexPath indexPath: NSIndexPath ) {
+    /// Inserts a new section into the collection view that shows a fullsize preview video for the GIF search result
+    ///
+    /// :param: indexPath The index path of the GIF search result for which to show the preview video
+    func showPreviewForResult( indexPath: NSIndexPath ) {
         var sectionInserted: Int?
         
         self.collectionView.performBatchUpdates({
@@ -39,7 +42,10 @@ extension GIFSearchViewController {
         }
     }
     
-    func hideFullSize( forItemAtIndexPath indexPath: NSIndexPath ) {
+    /// Removes the section showing a GIF search result preview at the specified index path
+    ///
+    /// :param: indexPath The index path of the GIF search result for which to hide the preview
+    func hidePreviewForResult( indexPath: NSIndexPath ) {
         self.collectionView.performBatchUpdates({
             let result = self.searchDataSource.removeHighlightSection()
             self.collectionView.applyDataSourceChanges( result )
@@ -54,9 +60,12 @@ extension GIFSearchViewController {
     }
 }
 
-// Conveninece method to insert/delete sections during a batch update
+/// Conveninece method to insert/delete sections during a batch update
 private extension UICollectionView {
     
+    /// Inserts or deletes sections according to the inserted and deleted sections indicated in the result
+    ///
+    /// :param: result A `GIFSearchDataSource.ChangeResult` that contains info about which sections to insert or delete
     func applyDataSourceChanges( result: GIFSearchDataSource.ChangeResult ) {
         
         if let insertedSection = result.insertedSection {

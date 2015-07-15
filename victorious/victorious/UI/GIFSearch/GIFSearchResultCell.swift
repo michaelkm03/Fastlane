@@ -15,7 +15,7 @@ class GIFSearchResultCell: UICollectionViewCell {
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var overlayView: UIView!
     
-    
+    /// Sets the image asset URL to show in this cell
     var assetUrl: NSURL? {
         didSet {
             if let url = self.assetUrl where self.assetUrl != oldValue {
