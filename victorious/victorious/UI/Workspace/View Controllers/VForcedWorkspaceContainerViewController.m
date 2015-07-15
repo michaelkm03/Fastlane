@@ -149,7 +149,14 @@ static NSString * const kStatusBarStyleKey = @"statusBarStyle";
 
 - (IBAction)pressedDone:(id)sender
 {
-    [self.flowController publishContent];
+    if ([self showsSkipButton] && !self.ableToPublish)
+    {
+        [self.delegate continueRegistrationFlow];
+    }
+    else
+    {
+        [self.flowController publishContent];
+    }
 }
 
 #pragma mark - Text Post Flow Controller
