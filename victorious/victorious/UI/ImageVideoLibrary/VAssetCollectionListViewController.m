@@ -199,6 +199,8 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
         return;
     }
     
+    VLog(@"Fetching collections");
+    
     NSMutableSet *newFetchResults = [[NSMutableSet alloc] init];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^
     {

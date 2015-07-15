@@ -277,6 +277,8 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
         if (published)
         {
             welf.delegate = nil;
+            [welf cleanupCapturedFile];
+            [welf cleanupRenderedFile];
             // We're done!
             [welf.creationFlowDelegate creationFLowController:welf
                                      finishedWithPreviewImage:welf.previewImage
@@ -330,6 +332,34 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     [self pushViewController:self.publishViewContorller animated:YES];
 }
 
+- (void)cleanupCapturedFile
+{
+    BOOL removed = [[NSFileManager defaultManager] removeItemAtURL:self.workspaceViewController.mediaURL
+                                                             error:nil];
+    if (removed)
+    {
+        VLog(@"Removed captured file");
+    }
+    else
+    {
+        VLog(@"Failed to remove captured file!");
+    }
+}
+
+- (void)cleanupRenderedFile
+{
+    BOOL removed = [[NSFileManager defaultManager] removeItemAtURL:self.renderedMediaURL
+                                                             error:nil];
+    if (removed)
+    {
+        VLog(@"Removed rendered file");
+    }
+    else
+    {
+        VLog(@"Failed to remove rendered file!");
+    }
+}
+
 #pragma mark - UINavigationControllerDelegate
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
@@ -337,29 +367,11 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     // Cleanup as we enter exist different states
     if (viewController == self.captureContainerViewController)
     {
-        BOOL removed = [[NSFileManager defaultManager] removeItemAtURL:self.workspaceViewController.mediaURL
-                                                                 error:nil];
-        if (removed)
-        {
-            VLog(@"Removed captured file");
-        }
-        else
-        {
-            VLog(@"Failed to remove captured file!");
-        }
+        [self cleanupCapturedFile];
     }
     if ([viewController isKindOfClass:[VWorkspaceViewController class]])
     {
-        BOOL removed = [[NSFileManager defaultManager] removeItemAtURL:self.renderedMediaURL
-                                                                 error:nil];
-        if (removed)
-        {
-            VLog(@"Removed rendered file");
-        }
-        else
-        {
-            VLog(@"Failed to remove rendered file!");
-        }
+        [self cleanupRenderedFile];
     }
 }
 
