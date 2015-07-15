@@ -96,6 +96,26 @@
     XCTAssertEqual( [(UIImage *)actualArray[1] scale], 3.0f );
 }
 
+- (void)testArrayOfLiteralImages
+{
+    NSURL *imageBundleURL1 = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleImage" withExtension:@"png"];
+    NSData *imageData1 = [NSData dataWithContentsOfURL:imageBundleURL1];
+    UIImage *image1 = [UIImage imageWithData:imageData1];
+    
+    NSURL *imageBundleURL2 = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleImage2" withExtension:@"png"];
+    NSData *imageData2 = [NSData dataWithContentsOfURL:imageBundleURL2];
+    UIImage *image2 = [UIImage imageWithData:imageData2];
+    
+    VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.dependencyManager
+                                                                                configuration:@{ @"myLiteralImages": @[ image1, image2] }
+                                                            dictionaryOfClassesByTemplateName:nil];
+
+    NSArray *images = [dependencyManager arrayOfValuesOfType:[UIImage class] forKey:@"myLiteralImages"];
+    XCTAssertEqual(images.count, 2u);
+    XCTAssertEqualObjects(image1, images[0]);
+    XCTAssertEqualObjects(image2, images[1]);
+}
+
 - (void)testArrayOfImageURLs
 {
     NSArray *images = [self.dependencyManager arrayOfImageURLsForKey:@"myImages"];
