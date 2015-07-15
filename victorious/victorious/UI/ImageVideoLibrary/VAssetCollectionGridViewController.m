@@ -39,7 +39,7 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
 @property (nonatomic, strong) VPermissionPhotoLibrary *libraryPermission;
 @property (nonatomic, assign) PHAssetMediaType mediaType;
 @property (nonatomic, strong) PHCachingImageManager *imageManager;
-@property (nonatomic, strong) PHFetchResult *assetsToDisplay;
+@property (nonatomic, strong) PHFetchResult *fetchResultForAssetsToDisplay;
 
 @property (nonatomic, assign) CGRect previousPrefetchRect;
 
@@ -65,16 +65,19 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
     return gridViewController;
 }
 
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self != nil)
+    {
+        _libraryPermission = [[VPermissionPhotoLibrary alloc] initWithDependencyManager:self.dependencyManager];
+    }
+    return self;
+}
+
 - (void)dealloc
 {
     [[PHPhotoLibrary sharedPhotoLibrary] unregisterChangeObserver:self];
-}
-
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    
-    self.libraryPermission = [[VPermissionPhotoLibrary alloc] initWithDependencyManager:self.dependencyManager];
 }
 
 #pragma mark - View Lifecycle
@@ -126,7 +129,7 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
     PHFetchOptions *fetchOptions = [[PHFetchOptions alloc] init];
     fetchOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d", self.mediaType];
     fetchOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
-    self.assetsToDisplay = [PHAsset fetchAssetsInAssetCollection:collectionToDisplay
+    self.fetchResultForAssetsToDisplay = [PHAsset fetchAssetsInAssetCollection:collectionToDisplay
                                                          options:fetchOptions];
 
     // Reload and scroll to top
@@ -190,7 +193,7 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
             numberOfItems = 1;
             break;
         case VPermissionStateAuthorized:
-            numberOfItems = self.assetsToDisplay.count;
+            numberOfItems = self.fetchResultForAssetsToDisplay.count;
             break;
         case VPermissionUnsupported:
             // We should never get here
@@ -351,11 +354,11 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
     dispatch_async(dispatch_get_main_queue(), ^
     {
         // check if there are changes to the assets (insertions, deletions, updates)
-        PHFetchResultChangeDetails *collectionChanges = [changeInstance changeDetailsForFetchResult:self.assetsToDisplay];
+        PHFetchResultChangeDetails *collectionChanges = [changeInstance changeDetailsForFetchResult:self.fetchResultForAssetsToDisplay];
         if (collectionChanges)
         {
             // get the new fetch result
-            self.assetsToDisplay = [collectionChanges fetchResultAfterChanges];
+            self.fetchResultForAssetsToDisplay = [collectionChanges fetchResultAfterChanges];
             
             UICollectionView *collectionView = self.collectionView;
             
@@ -464,7 +467,6 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
     CGFloat delta = ABS(CGRectGetMidY(preheatRect) - CGRectGetMidY(self.previousPrefetchRect));
     if (delta > CGRectGetHeight(self.collectionView.bounds) / 3.0f)
     {
-        
         // Compute the assets to start caching and to stop caching.
         NSMutableArray *addedIndexPaths = [NSMutableArray array];
         NSMutableArray *removedIndexPaths = [NSMutableArray array];
@@ -545,7 +547,7 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
 
 - (PHAsset *)assetForIndexPath:(NSIndexPath *)indexPath
 {
-    return [self.assetsToDisplay objectAtIndex:indexPath.row];
+    return [self.fetchResultForAssetsToDisplay objectAtIndex:indexPath.row];
 }
 
 - (void)prepareImageManagerAndRegisterAsObserver
@@ -564,7 +566,7 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
     NSMutableArray *assets = [NSMutableArray arrayWithCapacity:indexPaths.count];
     for (NSIndexPath *indexPath in indexPaths)
     {
-        PHAsset *asset = self.assetsToDisplay[indexPath.item];
+        PHAsset *asset = self.fetchResultForAssetsToDisplay[indexPath.item];
         [assets addObject:asset];
     }
     return assets;
