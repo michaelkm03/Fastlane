@@ -315,7 +315,12 @@ static const CGFloat kLineThickness = 1.0f; //Thickness of underbar on trim cont
 - (void)sendActionsForControlEvents:(UIControlEvents)controlEvents
 {
     [self updateSelectedDuration];
-    [super sendActionsForControlEvents:controlEvents];
+    
+    // Make sure we don't have a nil target
+    if (self.allTargets.count > 0 && ![self.allTargets containsObject:[NSNull null]])
+    {
+        [super sendActionsForControlEvents:controlEvents];
+    }
 }
 
 #pragma mark - Private Methods

@@ -15,6 +15,7 @@
 #import "VScrollPaginator.h"
 #import "VNoContentView.h"
 #import "VNavigationController.h"
+#import "VDependencyManager+VTracking.h"
 
 @interface VUsersViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, VScrollPaginatorDelegate>
 
@@ -39,6 +40,20 @@
 }
 
 #pragma mark - View contorller lifecycle
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.dependencyManager trackViewWillAppear:self];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [self.dependencyManager trackViewWillDisappear:self];
+}
 
 - (void)viewDidLoad
 {

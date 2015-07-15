@@ -7,6 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "Nocilla.h"
 #import "NSObject+VMethodSwizzling.h"
 #import "VApplicationTracking.h"
 #import "VTrackingURLRequest.h"
@@ -56,18 +57,27 @@
     
     XCTAssertNotNil( self.applicationTracking.parameterMacroMapping );
     XCTAssertNotEqual( self.applicationTracking.parameterMacroMapping.allKeys.count, (NSUInteger)0 );
+    
+    [[LSNocilla sharedInstance] start];
 }
 
 - (void)tearDown
 {
-    [super tearDown];
-    
     [VApplicationTracking v_restoreOriginalImplementation:self.applicationObjectManagerImp forMethod:@selector(applicationObjectManager)];
     [VApplicationTracking v_restoreOriginalImplementation:self.sendRequestImp forMethod:@selector(sendRequest:)];
+
+    [[LSNocilla sharedInstance] clearStubs];
+    [[LSNocilla sharedInstance] stop];
+    [super tearDown];
 }
 
 - (void)testTrackEvents
 {
+    self.applicationTracking.requestQueue = dispatch_queue_create("VApplicationTrackingTests", DISPATCH_QUEUE_SERIAL);
+    stubRequest(@"GET", @"http://www.apple.com").andReturn(200);
+    stubRequest(@"GET", @"http://www.yahoo.com").andReturn(200);
+    stubRequest(@"GET", @"http://www.google.com").andReturn(200);
+    
     NSArray *urls = @[ @"http://www.apple.com", @"http://www.yahoo.com", @"http://www.google.com" ];
     XCTAssertEqual( [self.applicationTracking trackEventWithUrls:urls andParameters:nil], 0 );
     
@@ -80,12 +90,19 @@
     
     urls = @[ [NSNull null], [NSNull null] ];
     XCTAssertEqual( [self.applicationTracking trackEventWithUrls:urls andParameters:nil], 2 );
+    
+    dispatch_sync(self.applicationTracking.requestQueue, ^{ }); // wait for tracking calls to finish!
 }
 
 - (void)testTrackEvent
 {
+    self.applicationTracking.requestQueue = dispatch_queue_create("VApplicationTrackingTests", DISPATCH_QUEUE_SERIAL);
+    stubRequest(@"GET", @"http://www.google.com").andReturn(200);
+    
     XCTAssert( [self.applicationTracking trackEventWithUrl:@"http://www.google.com" andParameters:nil] );
     XCTAssert( [self.applicationTracking trackEventWithUrl:@"http://www.google.com" andParameters:@{}] );
+    
+    dispatch_sync(self.applicationTracking.requestQueue, ^{ }); // wait for tracking calls to finish!
 }
 
 - (void)testTrackEventNoValuesInvalid

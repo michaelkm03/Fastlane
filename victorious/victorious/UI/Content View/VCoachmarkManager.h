@@ -46,6 +46,15 @@
 - (BOOL)displayCoachmarkViewInViewController:(UIViewController <VCoachmarkDisplayer> *)viewController;
 
 /**
+    Manually shows a tooltip coachmark in the provided view controller if possible
+ 
+    @param remoteID The ID of the coachmark you'd like to show
+    @param viewController The view controller that will house the coachmark
+    @param location of the view which the coachmark tooltip will point toward
+  */
+- (void)triggerSpecificCoachmarkWithIdentifier:(NSString *)remoteID inViewController:(UIViewController *)viewController atLocation:(CGRect)location;
+
+/**
     Hides the coachmark view associated with the provided view controller.
     This method should be called from viewWillDisappear.
  

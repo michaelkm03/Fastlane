@@ -746,7 +746,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
         self.state = VCameraViewControllerStateInitializingHardware;
         [self.captureController setCurrentDevice:newDevice withCompletion:^(NSError *error)
          {
-             __typeof(weakSelf) strongSelf = weakSelf;
+             __strong __typeof(weakSelf) strongSelf = weakSelf;
              if (strongSelf)
              {
                  dispatch_async(dispatch_get_main_queue(), ^(void)

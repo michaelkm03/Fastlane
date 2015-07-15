@@ -64,7 +64,8 @@ static BOOL isRunningTests(void) __attribute__((const));
     [[VTrackingManager sharedInstance] addDelegate:[[VGoogleAnalyticsTracking alloc] init]];
     
     VFlurryTracking *flurryTracking = [[VFlurryTracking alloc] init];
-    flurryTracking.unwantedParameterKeys = @[ VTrackingKeySequenceId, VTrackingKeyStreamId, VTrackingKeyTimeStamp ];
+    flurryTracking.unwantedParameterKeys = @[ VTrackingKeySequenceId, VTrackingKeyUrls, VTrackingKeyStreamId, VTrackingKeyTimeStamp ];
+    [flurryTracking enable];
     [[VTrackingManager sharedInstance] addDelegate:flurryTracking];
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

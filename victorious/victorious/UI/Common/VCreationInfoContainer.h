@@ -27,7 +27,7 @@
 @property (nonatomic, strong) VSequence *sequence;
 
 /**
- *  Whether or not the timeSince label and clock icon should be visible.
+ *  Whether or not the timeSince label and clock icon should be visible. Defaults to YES.
  */
 @property (nonatomic, assign) BOOL shouldShowTimeSince;
 

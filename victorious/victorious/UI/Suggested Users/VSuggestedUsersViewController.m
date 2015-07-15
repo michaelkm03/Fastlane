@@ -16,6 +16,7 @@
 #import "VLinearGradientView.h"
 #import "VDependencyManager+VLoginAndRegistration.h"
 #import "VSuggestedUserRetryCell.h"
+#import "VDependencyManager+VTracking.h"
 
 @interface VSuggestedUsersViewController () <VBackgroundContainer, UICollectionViewDelegateFlowLayout, VLoginFlowScreen>
 
@@ -51,6 +52,20 @@
         _dependencyManager = dependencyManager;
     }
     return self;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.dependencyManager trackViewWillAppear:self];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [self.dependencyManager trackViewWillDisappear:self];
 }
 
 - (void)viewDidLoad
@@ -95,7 +110,7 @@
     self.messageTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.messageTextView.contentInset = UIEdgeInsetsZero;
     self.messageTextView.textContainer.lineFragmentPadding = 0.0f;
-    self.messageTextView.textContainerInset = UIEdgeInsetsZero;
+    self.messageTextView.textContainerInset = UIEdgeInsetsMake( 4.0, 0.0, 4.0, 0.0 );
     
     self.collectionView.delegate = self;
     self.collectionView.backgroundColor = [UIColor clearColor];

@@ -21,6 +21,7 @@
 #import "VDependencyManager.h"
 #import "VAppInfo.h"
 #import "VDependencyManager+VNavigationItem.h"
+#import "VDependencyManager+VTracking.h"
 
 @import MessageUI;
 
@@ -63,6 +64,20 @@
     
     [self.dependencyManager configureNavigationItem:self.navigationItem ];
     [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.dependencyManager trackViewWillAppear:self];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [self.dependencyManager trackViewWillDisappear:self];
 }
 
 - (void)viewDidLoad
