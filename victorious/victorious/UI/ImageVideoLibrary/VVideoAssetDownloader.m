@@ -41,9 +41,9 @@
         if (progressHandler != nil)
         {
             dispatch_async(dispatch_get_main_queue(), ^
-            {
-                progressHandler(progress, localizedDownloadString);
-            });
+                           {
+                               progressHandler(progress, localizedDownloadString);
+                           });
         }
     };
     
