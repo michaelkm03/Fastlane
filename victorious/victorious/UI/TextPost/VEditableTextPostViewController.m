@@ -222,11 +222,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
         NSRange cursorPosition = NSMakeRange( self.textView.text.length, 0 );
         if (self.defaultHashtag != nil)
         {
-            NSRange placeholderRange = [self.textView.text rangeOfString:self.placeholderText];
-            if (placeholderRange.location != NSNotFound)
-            {
-                cursorPosition = NSMakeRange( placeholderRange.length, 0 );
-            }
+            cursorPosition = NSMakeRange( 0, 0 );
         }
         
         // Set proper cursor position
