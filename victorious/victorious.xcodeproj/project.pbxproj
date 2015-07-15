@@ -306,6 +306,7 @@
 		03CF1520195CFBE600F6477B /* NSArray+VMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CF151F195CFBE600F6477B /* NSArray+VMap.m */; };
 		03DE266B1B336E5D00C9F680 /* VDataCacheTests.cachedData in Resources */ = {isa = PBXBuildFile; fileRef = 03DE266A1B336E5D00C9F680 /* VDataCacheTests.cachedData */; };
 		03F28F4B19F44728008BB3F7 /* VCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03F28F4A19F44728008BB3F7 /* VCommentCell.xib */; };
+		03F2F7951B560B8E00F2EF16 /* sampleImage2.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F2F7941B560B8E00F2EF16 /* sampleImage2.png */; };
 		03F6E2671AB79E090017826E /* Workspace.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03F6E2691AB79E090017826E /* Workspace.storyboard */; };
 		03F9D286191D77B000576AEE /* UIImage+VSolidColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F9D285191D77B000576AEE /* UIImage+VSolidColor.m */; };
 		03FD87D119F96EEB00D93BAA /* VHistogramCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FD87D019F96EEB00D93BAA /* VHistogramCell.xib */; };
@@ -1624,6 +1625,7 @@
 		03F2F7621B55829100F2EF16 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Profile.strings; sourceTree = "<group>"; };
 		03F2F7631B55829100F2EF16 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		03F2F7691B55829200F2EF16 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Discover.strings; sourceTree = "<group>"; };
+		03F2F7941B560B8E00F2EF16 /* sampleImage2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sampleImage2.png; sourceTree = "<group>"; };
 		03F6E2681AB79E090017826E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Workspace.storyboard; sourceTree = "<group>"; };
 		03F6E26A1AB79E100017826E /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Workspace.strings; sourceTree = "<group>"; };
 		03F6E26B1AB79E130017826E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Workspace.strings; sourceTree = "<group>"; };
@@ -4040,6 +4042,7 @@
 				A7CFC1B919FAF64700726772 /* portrait.m4v */,
 				037CB73419CFE02C0084BBED /* sampleImage.jpg */,
 				A72004FA1A02FEC000285A9C /* sampleImage.png */,
+				03F2F7941B560B8E00F2EF16 /* sampleImage2.png */,
 				039D02B01A10443200DB9236 /* template.json */,
 				03A058C21AEF59E600CF39D1 /* templateCache.json */,
 				0386F87B1B37EB8500E8D459 /* templateWithImageURLs.json */,
@@ -7033,6 +7036,7 @@
 				F0C83A451B0FDD2B00A6EC1A /* coachmarks.json in Resources */,
 				0386F87C1B37EB8500E8D459 /* templateWithImageURLs.json in Resources */,
 				037CB73519CFE02C0084BBED /* sampleImage.jpg in Resources */,
+				03F2F7951B560B8E00F2EF16 /* sampleImage2.png in Resources */,
 				03A058C31AEF59E600CF39D1 /* templateCache.json in Resources */,
 				A7CFC1CA19FEE24300726772 /* front_landscape_right.m4v in Resources */,
 				039420481AB88A450087ADFA /* image-template.json in Resources */,

@@ -360,9 +360,18 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
         {
             dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)templateObject objectForKey:kReferenceIDKey]];
         }
-        else if ( !typeTest([NSDictionary class]) && [templateObject isKindOfClass:[NSDictionary class]] )
+        else if ( !typeTest([NSDictionary class]) && [templateObject isKindOfClass:[NSDictionary class]] && [self isDictionaryAComponent:templateObject] )
         {
             dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)templateObject objectForKey:VDependencyManagerIDKey]];
+        }
+        else if ( !typeTest([NSDictionary class]) && [templateObject isKindOfClass:[NSDictionary class]] && [VTemplateImage isImageJSON:templateObject] )
+        {
+            VTemplateImage *templateImage = [[VTemplateImage alloc] initWithJSON:templateObject];
+            UIImage *image = [self imageWithTemplateImage:templateImage];
+            if ( image != nil )
+            {
+                [returnValue addObject:image];
+            }
         }
         else if ( typeTest([templateObject class]) )
         {
@@ -799,6 +808,25 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
     else
     {
         return component;
+    }
+}
+
+- (UIImage *)imageWithTemplateImage:(VTemplateImage *)templateImage
+{
+    NSData *imageData = [[[VDataCache alloc] init] cachedDataForID:templateImage.imageURL];
+    
+    if ( imageData == nil )
+    {
+        return nil;
+    }
+    
+    if ( templateImage.scale == nil )
+    {
+        return [UIImage imageWithData:imageData];
+    }
+    else
+    {
+        return [[UIImage alloc] initWithData:imageData scale:[templateImage.scale VCGFLOAT_VALUE]];
     }
 }
 

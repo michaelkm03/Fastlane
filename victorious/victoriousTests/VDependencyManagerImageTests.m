@@ -68,6 +68,34 @@
     XCTAssert( CGSizeEqualToSize(expected.size, actual.size) );
 }
 
+- (void)testImageArray
+{
+    NSURL *imageBundleURL1 = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleImage" withExtension:@"png"];
+    NSData *imageData1 = [NSData dataWithContentsOfURL:imageBundleURL1];
+    UIImage *expected1 = [UIImage imageWithData:imageData1];
+    
+    NSURL *imageBundleURL2 = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleImage2" withExtension:@"png"];
+    NSData *imageData2 = [NSData dataWithContentsOfURL:imageBundleURL2];
+    UIImage *expected2 = [[UIImage alloc] initWithData:imageData2 scale:3.0f];
+    
+    VDataCache *dataCache = [[VDataCache alloc] init];
+    NSError *error = nil;
+    [dataCache cacheDataAtURL:imageBundleURL1 forID:[NSURL URLWithString:@"http://www.example.com/testImageArrayOne"] error:&error];
+    XCTAssertNil(error);
+    
+    error = nil;
+    [dataCache cacheDataAtURL:imageBundleURL2 forID:[NSURL URLWithString:@"http://www.example.com/testImageArrayTwo"] error:&error];
+    XCTAssertNil(error);
+    
+    NSArray *actualArray = [self.dependencyManager arrayOfValuesOfType:[UIImage class] forKey:@"myBasicImageArray"];
+    XCTAssertEqual(actualArray.count, 2u);
+    XCTAssert( [actualArray[0] isKindOfClass:[UIImage class]] );
+    XCTAssert( [actualArray[1] isKindOfClass:[UIImage class]] );
+    XCTAssert( CGSizeEqualToSize([actualArray[0] size], expected1.size) );
+    XCTAssert( CGSizeEqualToSize([actualArray[1] size], expected2.size) );
+    XCTAssertEqual( [(UIImage *)actualArray[1] scale], 3.0f );
+}
+
 - (void)testArrayOfImageURLs
 {
     NSArray *images = [self.dependencyManager arrayOfImageURLsForKey:@"myImages"];

@@ -13,6 +13,15 @@
         "imageMacro": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/ballistics\/6\/images\/tomato_XXXXX.png",
         "scale": 2
     },
+    "myBasicImageArray": [
+        {
+            "imageURL": "http://www.example.com/testImageArrayOne"
+        },
+        {
+            "imageURL": "http://www.example.com/testImageArrayTwo",
+            "scale": 3
+        }
+    ],
     "myImage": {
         "imageURL": "C_menu"
     },
