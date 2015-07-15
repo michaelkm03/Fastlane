@@ -28,7 +28,7 @@ typedef NS_ENUM( NSInteger, VPurchaseSettingsTableViewSections )
 typedef NS_ENUM( NSInteger, VPurchaseSettingsAction )
 {
     VPurchaseSettingsActionRestore,
-#ifndef V_NO_RESET_PURCHASES
+#ifdef V_RESET_PURCHASES
     VPurchaseSettingsActionReset,
 #endif
     VPurchaseSettingsActionCount
@@ -167,7 +167,7 @@ static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
                  [self restorePurchases];
              }];
         }
-#ifndef V_NO_RESET_PURCHASES
+#ifdef V_RESET_PURCHASES
         else if ( indexPath.row == VPurchaseSettingsActionReset )
         {
             [cell.button setTitle: @"Reset Purchases" forState:UIControlStateNormal];

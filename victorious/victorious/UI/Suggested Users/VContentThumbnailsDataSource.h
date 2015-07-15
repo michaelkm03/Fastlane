@@ -15,10 +15,9 @@
 @interface VContentThumbnailsDataSource : NSObject <UICollectionViewDataSource>
 
 /**
- Designated initializer requires an array of sequences to populate
- each of the collection view cells with.
+ Array of sequences to populate each of the collection view cells with.
  */
-- (instancetype)initWithSequences:(NSArray *)sequences NS_DESIGNATED_INITIALIZER;
+@property (nonatomic, strong) NSArray *sequences;
 
 /**
  Call during initialization to allow this class to register the

@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 
 extern const CGFloat VExperienceEnhancerDesiredMinimumHeight;
-extern NSString * const VExperienceEnhancerBarDidRequirePurchasePrompt;
-extern NSString * const VExperienceEnhancerBarDidRequireLoginNotification;
 
 @class VExperienceEnhancerBar;
 @class VExperienceEnhancer;
@@ -46,10 +44,5 @@ extern NSString * const VExperienceEnhancerBarDidRequireLoginNotification;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 - (void)reloadData;
-
-/**
- Allows calling code to simulate the throwing of an emotive ballistc/experience enhancer.
- */
-- (void)selectExperienceEnhancerAtIndex:(NSIndexPath *)indexPath;
 
 @end

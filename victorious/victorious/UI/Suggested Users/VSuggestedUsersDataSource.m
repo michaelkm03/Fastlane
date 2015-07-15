@@ -115,7 +115,7 @@ static NSString * const kPromptTextKey = @"prompt";
                                                                                           forIndexPath:indexPath];
         suggestedUserCell.dependencyManager = self.dependencyManager;
         VUser *user = self.suggestedUsers[ indexPath.row ];
-        [suggestedUserCell setUser:user];
+        suggestedUserCell.user = user;
         cell = suggestedUserCell;
     }
     return cell;

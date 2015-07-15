@@ -19,7 +19,16 @@
  */
 @interface VAbstractMarqueeStreamItemCell : VBaseCollectionViewCell <VStreamCellComponentSpecialization, VHighlighting, VStreamCellTracking>
 
-@property (nonatomic, strong) VStreamItem *streamItem; ///< Stream item to display
+/**
+    Internally just sets the streamItem to the provided object. Subclasses can
+        override to support the display of editorialized content, but must call super.
+ 
+    @param streamItem The stream item who's content will be displayed in the stream item cell.
+    @param apiPath The api path of the stream containing this stream item.
+ */
+- (void)setupWithStreamItem:(VStreamItem *)streamItem fromStreamWithApiPath:(NSString *)apiPath;
+
+@property (nonatomic, readonly) VStreamItem *streamItem; ///< Stream item to display
 @property (nonatomic, strong) IBOutlet UIView *previewContainer; ///< The view that will be filled with a VSequencePreviewView to display 
 @property (nonatomic, strong) VDependencyManager *dependencyManager; ///< The dependencyManager that is used to style the cell and the content it displays
 @property (nonatomic, strong) VStreamItemPreviewView *previewView;

@@ -11,7 +11,7 @@
 #import "VBlurredMarqueeController.h"
 #import "VStreamItem+Fetcher.h"
 #import "VCrossFadingImageView.h"
-#import "VCrossFadingLabel.h"
+#import "VCrossFadingMarqueeLabel.h"
 #import "VStream.h"
 #import "VDependencyManager.h"
 #import "VAbstractMarqueeController.h"
@@ -19,7 +19,7 @@
 @interface VBlurredMarqueeCollectionViewCell ()
 
 @property (nonatomic, weak) IBOutlet VCrossFadingImageView *crossfadingBlurredImageView;
-@property (nonatomic, weak) IBOutlet VCrossFadingLabel *crossfadingLabel;
+@property (nonatomic, weak) IBOutlet VCrossFadingMarqueeLabel *crossfadingLabel;
 
 @end
 

@@ -33,7 +33,6 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 @property (nonatomic, readwrite) NSUInteger currentPage;
 @property (nonatomic, assign) NSUInteger currentFocusPage;
 @property (nonatomic, readwrite) VTimerManager *autoScrollTimerManager;
-@property (nonatomic, readwrite) VStreamItem *currentStreamItem;
 @property (nonatomic, strong) NSMutableSet *registeredReuseIdentifiers;
 
 @property (nonatomic, strong) VStreamTrackingHelper *streamTrackingHelper;
@@ -97,6 +96,9 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     [self.dataDelegate marquee:self reloadedStreamWithItems:[self.stream.marqueeItems array]];
     [self registerStreamItemCellsWithCollectionView:self.collectionView forMarqueeItems:[self.stream.marqueeItems array]];
     [self.collectionView reloadData];
+    NSUInteger marqueeItemsCount = self.stream.marqueeItems.count;
+    self.collectionView.scrollEnabled = marqueeItemsCount != 1;
+    [self enableTimer];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -144,6 +146,12 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 
 - (void)selectNextTab
 {
+    if ( !self.collectionView.isScrollEnabled )
+    {
+        //We've locked the scrolling, meaning we shouldn't have it animate either
+        return;
+    }
+    
     CGFloat pageWidth = CGRectGetWidth(self.collectionView.bounds);
     NSUInteger currentPage = ( self.collectionView.contentOffset.x / pageWidth ) + 1;
     if (currentPage == self.stream.marqueeItems.count)
@@ -156,7 +164,6 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 
 - (void)scrolledToPage:(NSInteger)currentPage
 {
-    self.currentStreamItem = [self.stream.marqueeItems objectAtIndex:currentPage];
     [self enableTimer];
 }
 
@@ -265,7 +272,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     
     cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[marqueeStreamItemCellClass reuseIdentifierForStreamItem:item baseIdentifier:nil dependencyManager:self.dependencyManager] forIndexPath:indexPath];
     cell.dependencyManager = self.dependencyManager;
-    cell.streamItem = item;
+    [cell setupWithStreamItem:item fromStreamWithApiPath:self.stream.apiPath];
     
     // Add highlight view
     [self.dependencyManager addHighlightViewToHost:cell];
@@ -279,6 +286,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     [self registerStreamItemCellsWithCollectionView:collectionView forMarqueeItems:[self.stream.marqueeItems array]];
     collectionView.delegate = self;
     collectionView.dataSource = self;
+    _collectionView.scrollEnabled = self.stream.marqueeItems.count != 1;
     ((UICollectionViewFlowLayout *)collectionView.collectionViewLayout).sectionInset = UIEdgeInsetsZero;
 }
 
@@ -331,11 +339,6 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 {
     NSAssert(false, @"Subclasses must override desiredSizeWithCollectionViewBounds: in VAbstractMarqueeController");
     return CGSizeZero;
-}
-
-- (void)setupStreamItemCell:(VAbstractMarqueeStreamItemCell *)streamItemCell withDependencyManager:(VDependencyManager *)dependencyManager andStreamItem:(VStreamItem *)streamItem
-{
-    NSAssert(false, @"Subclasses must override setupStreamItemCell:withDependencyManager:andStreamItem: in VAbstractMarqueeController");
 }
 
 + (Class)marqueeStreamItemCellClass
