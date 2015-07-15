@@ -4435,6 +4435,19 @@
 			path = Presenters;
 			sourceTree = "<group>";
 		};
+		A6886D131B56378700D4F6F8 /* Sample JSON */ = {
+			isa = PBXGroup;
+			children = (
+				A6EC32721B3B508B00824022 /* cameraScreen.json */,
+				A6EC32761B3B50AE00824022 /* imageWorkspace.json */,
+				A673A32F1B34E602004D4D8C /* newWorkspaceTemplate.json */,
+				A6EC327C1B3B50E200824022 /* pollWorkspace.json */,
+				A6EC327A1B3B50C400824022 /* publishScreen.json */,
+				A6EC32781B3B50B700824022 /* videoWorkspace.json */,
+			);
+			name = "Sample JSON";
+			sourceTree = "<group>";
+		};
 		A6DAEB6B1B4CBB3800935EA0 /* CaptureContainer */ = {
 			isa = PBXGroup;
 			children = (
@@ -6231,22 +6244,17 @@
 		D8A93F131A2E84A9009B8A18 /* Workspace */ = {
 			isa = PBXGroup;
 			children = (
+				A6886D131B56378700D4F6F8 /* Sample JSON */,
 				D86BF3591A42683E00C9F420 /* Animators */,
-				A6EC32721B3B508B00824022 /* cameraScreen.json */,
 				D87351851A3120DB006D97B2 /* Canvas */,
 				A6DAEB6B1B4CBB3800935EA0 /* CaptureContainer */,
 				A601FB461B4354750050536C /* Creation Flows */,
-				A6EC32761B3B50AE00824022 /* imageWorkspace.json */,
-				A673A32F1B34E602004D4D8C /* newWorkspaceTemplate.json */,
 				669EBBDE1A30234A00DE317D /* Pickers */,
-				A6EC327C1B3B50E200824022 /* pollWorkspace.json */,
 				A601FB501B43630E0050536C /* Presenters */,
-				A6EC327A1B3B50C400824022 /* publishScreen.json */,
 				A7ECC1C31AD617480003E00A /* Tool Controllers */,
 				D8D945F71A2EA51D0089D271 /* Tools */,
 				A6EC326E1B3B4E9B00824022 /* VCreationTypes.h */,
 				D80A94D31A535DFA0035D788 /* Video */,
-				A6EC32781B3B50B700824022 /* videoWorkspace.json */,
 				A7ECC1D01AD6178F0003E00A /* View Controllers */,
 				D8B88F951ABA85F700DBAEA0 /* VWorkspaceShimDestination.h */,
 				D8B88F961ABA85F700DBAEA0 /* VWorkspaceShimDestination.m */,
