@@ -66,9 +66,8 @@ def retrieveAppDetails(app_name):
 
         current_cnt = 0
 
-        config_directory = '%s/%s' % (_CONFIG_DIRECTORY, app_title)
-        if not os.path.exists(config_directory):
-            os.makedirs(config_directory)
+        if not os.path.exists(_CONFIG_DIRECTORY):
+            os.makedirs(_CONFIG_DIRECTORY)
 
         # Uncomment the following line to log out the directory being used for assets and config data
         # print "\nUsing Directory: %s" % config_directory
@@ -79,7 +78,7 @@ def retrieveAppDetails(app_name):
             if not platform_assets[asset] == None:
                 img_url = platform_assets[asset]
                 asset_name = asset.replace('_', '-')
-                new_file = '%s/%s.png' % (config_directory, asset_name)
+                new_file = '%s/%s.png' % (_CONFIG_DIRECTORY, asset_name)
 
                 print '%s (%s)' % (asset_name, platform_assets[asset])
 
@@ -108,11 +107,10 @@ def setAppConfig(json_obj):
     app_title = payload['app_title']
     app_title = app_title.replace(' ','')
 
-    config_directory = '%s/%s' % (_CONFIG_DIRECTORY, app_title)
     file_name = 'config.xml'
     if vams._DEFAULT_PLATFORM == 'ios':
         file_name = 'Info.plist'
-    config_file = '%s/%s' % (config_directory, file_name)
+    config_file = '%s/%s' % (_CONFIG_DIRECTORY, file_name)
 
     print 'Applying Most Recent App Configuration Data to %s' % app_title
     print ''
@@ -132,38 +130,40 @@ def setAppConfig(json_obj):
 
 
 def cleanUp():
-    subprocess.call("find . -name '*.pyc' -delete", shell=True)
+    subprocess.call('find . -name \'*.pyc\' -delete', shell=True)
 
 
-def showUsage():
+def showProperUsage():
         print ''
-        print 'Usage: ./vams_prebuild.py <app_name> <folder> <platform> <environment>'
+        print 'Usage: ./vams_prebuild.py <app_name> <config_path> <platform> <environment> <port>'
         print ''
         print '<app_name> is the name of the application data to retrieve from VAMS.'
-        print '<folder> is the name of the directory where app assets should be downloaded to.'
+        print '<config_path> is the path on disk where the application data is to be written to.'
         print '<platform> is the OS platform for which the assets need to be downloaded for.'
-        print '<environment> is the server environment to retrieve the application data from.'
-        print 'If no <environment> parameter is provided, the system will use PRODUCTION.'
+        print '<environment> OPTIONAL: Is the server environment to retrieve the application data from.'
+        print '<port> OPTIONAL: Will only be used if <environment> is set to local'
+        print ''
+        print 'NOTE: If no <environment> parameter is provided, the system will use PRODUCTION.'
         print ''
         print 'examples:'
-        print './vams_prebuild.py awesomeness configurations ios     <-- will use PRODUCTION'
+        print './vams_prebuild.py awesomeness configurations/awesomenesstv ios     <-- will use PRODUCTION'
         print '  -- OR --'
-        print './vams_prebuild.py awesomeness configurations ios qa  <-- will use QA'
+        print './vams_prebuild.py awesomeness configurations/awesomenesstv ios qa  <-- will use QA'
         print ''
         return 1
 
 
 def main(argv):
     if len(argv) < 4:
-        showUsage()
+        showProperUsage()
 
     vams.init()
 
     app_name = argv[1]
+    app_path = argv[2]
 
     global _CONFIG_DIRECTORY
-    folder = argv[2]
-    _CONFIG_DIRECTORY = folder
+    _CONFIG_DIRECTORY = app_path
 
     platform = argv[3]
     if platform == 'ios':
@@ -173,6 +173,9 @@ def main(argv):
         server = argv[4]
     else:
         server = ''
+
+    if len(argv) == 6:
+        vams._DEFAULT_LOCAL_PORT = argv[5]
 
     global _DEFAULT_HOST
     if server.lower() == 'dev':
@@ -184,7 +187,7 @@ def main(argv):
     elif server.lower() == 'production':
         _DEFAULT_HOST = vams._PRODUCTION_HOST
     elif server.lower() == 'localhost':
-        _DEFAULT_HOST = vams._LOCAL_HOST
+        _DEFAULT_HOST = "%s:%s" % (vams._LOCAL_HOST, vams._DEFAULT_LOCAL_PORT)
     else:
         _DEFAULT_HOST = vams._PRODUCTION_HOST
 

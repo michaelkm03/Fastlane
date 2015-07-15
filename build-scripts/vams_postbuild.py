@@ -50,15 +50,15 @@ def postTestFairyURL(app_name, testfairy_url):
 
     auth_header = 'BASIC %s:%s' % (vams._DEFAULT_VAMS_USERID, req_hash)
     headers = {
-        'Authorization':auth_header,
-        'User-Agent':vams._DEFAULT_USERAGENT,
-        'Date':vams._DEFAULT_HEADER_DATE
+        'Authorization': auth_header,
+        'User-Agent': vams._DEFAULT_USERAGENT,
+        'Date': vams._DEFAULT_HEADER_DATE
     }
     postData = {
-        'build_name':app_name,
-        'name':field_name,
-        'platform':vams._DEFAULT_PLATFORM,
-        'value':testfairy_url
+        'build_name': app_name,
+        'name': field_name,
+        'platform': vams._DEFAULT_PLATFORM,
+        'value': testfairy_url
     }
     response = requests.post(url, data=postData, headers=headers)
     json = response.json()
@@ -82,13 +82,15 @@ def cleanUp():
 def main(argv):
     if len(argv) < 4:
         print ''
-        print 'Usage: ./vams_postbuild.py <app_name> <platform> <url> <environment>'
+        print 'Usage: ./vams_postbuild.py <app_name> <platform> <url> <environment> <port>'
         print ''
         print '<app_name> is the name of the application in VAMS that you want to post data to.'
         print '<platform> is the OS platform for which this data is applicable.'
         print '<url> is the Test Fairy project url to be sent to backend'
-        print '<environment> is the server environment to post the data to.'
-        print 'If no <environment> parameter is provided, the system will use PRODUCTION.'
+        print '<environment> OPTIONAL: Is the server environment to post the data to.'
+        print '<port> OPTIONAL: Will only be used if <environment> is set to localhost'
+        print ''
+        print 'NOTE: If no <environment> parameter is provided, the system will use PRODUCTION.'
         print ''
         print 'examples:'
         print './vams_postbuild.py awesomenesstv ios http://my-url     <-- will use PRODUCTION'
@@ -111,6 +113,9 @@ def main(argv):
     else:
         server = ''
 
+    if len(argv[6]):
+        vams._DEFAULT_LOCAL_PORT = argv[5]
+
     global _DEFAULT_HOST
     if server.lower() == 'dev':
         _DEFAULT_HOST = vams._DEV_HOST
@@ -121,7 +126,7 @@ def main(argv):
     elif server.lower() == 'production':
         _DEFAULT_HOST = vams._PRODUCTION_HOST
     elif server.lower() == 'localhost':
-        _DEFAULT_HOST = vams._LOCAL_HOST
+        _DEFAULT_HOST = '%s:%s' % (vams._LOCAL_HOST, vams._LOCAL_HOST)
     else:
         _DEFAULT_HOST = vams._PRODUCTION_HOST
         

@@ -29,6 +29,7 @@ def init():
     global _QA_HOST
     global _DEV_HOST
     global _LOCAL_HOST
+    global _DEFAULT_LOCAL_PORT
     global _AUTH_TOKEN
 
     _LOGIN_ENDPOINT = '/api/login'
@@ -43,11 +44,12 @@ def init():
 
 
     _DEFAULT_PLATFORM = 'android'
-    _PRODUCTION_HOST = 'http://api.getvictorious.com'
-    _STAGING_HOST = 'http://staging.getvictorious.com'
+    _PRODUCTION_HOST = 'https://api.getvictorious.com'
+    _STAGING_HOST = 'https://staging.getvictorious.com'
     _QA_HOST = 'http://qa.getvictorious.com'
     _DEV_HOST = 'http://dev.getvictorious.com'
     _LOCAL_HOST = 'http://localhost:8887'
+    _DEFAULT_LOCAL_PORT = '8887'
 
     _AUTH_TOKEN = ''
 
@@ -60,17 +62,21 @@ def authenticateUser(host):
     """
     url = '%s%s' % (host, _LOGIN_ENDPOINT)
 
-    postData = {'email':_DEFAULT_VAMS_USER,'password':_DEFAULT_VAMS_PASSWORD}
-    headers = {'User-Agent':_DEFAULT_USERAGENT,'Date':_DEFAULT_HEADER_DATE}
-    r = requests.post(url, data=postData, headers=headers)
+    postData = {
+        'email': _DEFAULT_VAMS_USER,
+        'password': _DEFAULT_VAMS_PASSWORD
+    }
+    headers = {
+        'User-Agent': _DEFAULT_USERAGENT,
+        'Date': _DEFAULT_HEADER_DATE
+    }
+    response = requests.post(url, data=postData, headers=headers)
 
-    if not r.status_code == 200:
+    if not response.status_code == 200:
         return False
 
-    response = r.json()
-
     # Return the authentication JSON object
-    setAuthenticationToken(response)
+    setAuthenticationToken(response.json)
 
     return True
 
