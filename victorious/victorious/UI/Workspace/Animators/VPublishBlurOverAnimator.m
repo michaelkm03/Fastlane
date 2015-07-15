@@ -55,8 +55,6 @@ static const NSTimeInterval kBlurOverDismissTransitionDuration = 0.5f;
     }
     else
     {
-        [[transitionContext containerView] addSubview:toViewController.view];
-        [[transitionContext containerView] sendSubviewToBack:toViewController.view];
         [self animateToNewViewControllerWithContext:transitionContext];
     }
 }

@@ -21,13 +21,11 @@
 // Workspace
 #import "VWorkspaceViewController.h"
 #import "VImageToolController.h"
-#import "VPublishViewController.h"
 
 // Publishing
+#import "VPublishPresenter.h"
+#import "VPublishViewController.h"
 #import "VPublishParameters.h"
-
-// Animators
-#import "VPublishBlurOverAnimator.h"
 
 // Dependencies
 #import "VDependencyManager.h"
@@ -50,8 +48,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 @property (nonatomic, strong) VAssetDownloader *downloader;
 @property (nonatomic, strong) VWorkspaceViewController *workspaceViewController;
 
-@property (nonatomic, strong) VPublishViewController *publishViewContorller;
-@property (nonatomic, strong) VPublishBlurOverAnimator *publishAnimator;
+@property (nonatomic, strong) VPublishPresenter *publishPresenter;
 
 // These come from the workspace not capture
 @property (nonatomic, strong) NSURL *renderedMediaURL;
@@ -79,7 +76,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
         _listViewController = [self collectionListViewController];
         _gridViewController = [self gridViewControllerWithDependencyManager:dependencyManager];
         [self.captureContainerViewController setContainedViewController:_gridViewController];
-        [self setupPublishScreen];
     }
     return self;
 }
@@ -265,13 +261,13 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     };
 }
 
-- (void)setupPublishScreen
+- (void)setupPublishPresenter
 {
-    _publishAnimator = [[VPublishBlurOverAnimator alloc] init];
-    _publishViewContorller = [self.dependencyManager newPublishViewController];
+    self.publishPresenter = [[VPublishPresenter alloc] initWithViewControllerToPresentOn:self
+                                                                       dependencymanager:self.dependencyManager];
 
     __weak typeof(self) welf = self;
-    _publishViewContorller.completion = ^void(BOOL published)
+    self.publishPresenter.completion = ^void(BOOL published)
     {
         if (published)
         {
@@ -283,11 +279,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
                                      finishedWithPreviewImage:welf.previewImage
                                              capturedMediaURL:welf.renderedMediaURL];
         }
-        else
-        {
-            // Cancelled
-            [welf popViewControllerAnimated:YES];
-        }
     };
 }
 
@@ -297,9 +288,9 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     {
         if ( [self.creationFlowDelegate shouldShowPublishScreenForFlowController])
         {
-            [self pushPublishScreenWithRenderedMediaURL:self.renderedMediaURL
-                                           previewImage:self.previewImage
-                                          fromWorkspace:self.workspaceViewController];
+            [self toPublishScreenWithRenderedMediaURL:self.renderedMediaURL
+                                         previewImage:self.previewImage
+                                        fromWorkspace:self.workspaceViewController];
         }
         else
         {
@@ -310,25 +301,28 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     }
     else
     {
-        [self pushPublishScreenWithRenderedMediaURL:self.renderedMediaURL
-                                       previewImage:self.previewImage
-                                      fromWorkspace:self.workspaceViewController];
+        [self toPublishScreenWithRenderedMediaURL:self.renderedMediaURL
+                                     previewImage:self.previewImage
+                                    fromWorkspace:self.workspaceViewController];
     }
 }
 
-- (void)pushPublishScreenWithRenderedMediaURL:(NSURL *)renderedMediaURL
-                                 previewImage:(UIImage *)previewImage
-                                fromWorkspace:(VWorkspaceViewController *)workspace
+- (void)toPublishScreenWithRenderedMediaURL:(NSURL *)renderedMediaURL
+                               previewImage:(UIImage *)previewImage
+                              fromWorkspace:(VWorkspaceViewController *)workspace
 {
+    // Setup presenter
+    [self setupPublishPresenter];
+    
+    // Configure parameters
     VPublishParameters *publishParameters = [[VPublishParameters alloc] init];
     publishParameters.mediaToUploadURL = renderedMediaURL;
     publishParameters.previewImage = previewImage;
-
     [self configurePublishParameters:publishParameters
                        withWorkspace:workspace];
+    self.publishPresenter.publishParameters = publishParameters;
 
-    self.publishViewContorller.publishParameters = publishParameters;
-    [self pushViewController:self.publishViewContorller animated:YES];
+    [self.publishPresenter present];
 }
 
 - (void)cleanupCapturedFile
@@ -372,22 +366,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     {
         [self cleanupRenderedFile];
     }
-}
-
-- (id <UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
-                                   animationControllerForOperation:(UINavigationControllerOperation)operation
-                                                fromViewController:(UIViewController *)fromVC
-                                                  toViewController:(UIViewController *)toVC
-{
-    if ([toVC isKindOfClass:[VPublishViewController class]] || [fromVC isKindOfClass:[VPublishViewController class]])
-    {
-        BOOL pushing = (operation == UINavigationControllerOperationPush);
-        self.publishAnimator.presenting = pushing;
-        
-        return self.publishAnimator;
-    }
-
-    return nil;
 }
 
 #pragma mark - UIPopoverPresentationControllerDelegate

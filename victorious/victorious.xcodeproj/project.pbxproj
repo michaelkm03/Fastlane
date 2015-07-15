@@ -340,6 +340,7 @@
 		A6E104D81B56C88D0062392A /* VPublishViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6E104CF1B56C88D0062392A /* VPublishViewController.xib */; };
 		A6E104D91B56C88D0062392A /* VShareItemCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A6E104D11B56C88D0062392A /* VShareItemCollectionViewCell.m */; };
 		A6E104DA1B56C88D0062392A /* VShareItemCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6E104D21B56C88D0062392A /* VShareItemCollectionViewCell.xib */; };
+		A6E104DD1B56C8C20062392A /* VPublishPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A6E104DC1B56C8C20062392A /* VPublishPresenter.m */; };
 		A6E2E76B1B544D79008A1CA9 /* VImageAssetDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = A6E2E76A1B544D79008A1CA9 /* VImageAssetDownloader.m */; };
 		A6E2E76E1B545328008A1CA9 /* VVideoAssetDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = A6E2E76D1B545328008A1CA9 /* VVideoAssetDownloader.m */; };
 		A6EC32671B3B488200824022 /* staticCreateSheet.json in Resources */ = {isa = PBXBuildFile; fileRef = A6EC32661B3B488200824022 /* staticCreateSheet.json */; };
@@ -1702,6 +1703,8 @@
 		A6E104D01B56C88D0062392A /* VShareItemCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VShareItemCollectionViewCell.h; path = Publish/VShareItemCollectionViewCell.h; sourceTree = "<group>"; };
 		A6E104D11B56C88D0062392A /* VShareItemCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VShareItemCollectionViewCell.m; path = Publish/VShareItemCollectionViewCell.m; sourceTree = "<group>"; };
 		A6E104D21B56C88D0062392A /* VShareItemCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VShareItemCollectionViewCell.xib; path = Publish/VShareItemCollectionViewCell.xib; sourceTree = "<group>"; };
+		A6E104DB1B56C8C20062392A /* VPublishPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPublishPresenter.h; sourceTree = "<group>"; };
+		A6E104DC1B56C8C20062392A /* VPublishPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPublishPresenter.m; sourceTree = "<group>"; };
 		A6E2E7691B544D79008A1CA9 /* VImageAssetDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageAssetDownloader.h; sourceTree = "<group>"; };
 		A6E2E76A1B544D79008A1CA9 /* VImageAssetDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageAssetDownloader.m; sourceTree = "<group>"; };
 		A6E2E76C1B545328008A1CA9 /* VVideoAssetDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoAssetDownloader.h; sourceTree = "<group>"; };
@@ -6818,6 +6821,8 @@
 				A6E104D01B56C88D0062392A /* VShareItemCollectionViewCell.h */,
 				A6E104D11B56C88D0062392A /* VShareItemCollectionViewCell.m */,
 				A6E104D21B56C88D0062392A /* VShareItemCollectionViewCell.xib */,
+				A6E104DB1B56C8C20062392A /* VPublishPresenter.h */,
+				A6E104DC1B56C8C20062392A /* VPublishPresenter.m */,
 			);
 			name = Publish;
 			sourceTree = "<group>";
@@ -7818,6 +7823,7 @@
 				A769FE4B1ABD051A00888ED8 /* VTrackingEventLog.m in Sources */,
 				D8D3B7211AB2643500CF966C /* AVComposition+VMutedAudioMix.m in Sources */,
 				03C185B919B42E5D00E27D05 /* OAuth+Additions.m in Sources */,
+				A6E104DD1B56C8C20062392A /* VPublishPresenter.m in Sources */,
 				D85B70821B0EAF3F0038CA5B /* VLoginWithEmailViewController.m in Sources */,
 				0309318E1A18425B004E9781 /* VMenuCollectionViewDataSource.m in Sources */,
 				BE42842919DDC19100AEDBA6 /* VDefaultProfileButton.m in Sources */,
