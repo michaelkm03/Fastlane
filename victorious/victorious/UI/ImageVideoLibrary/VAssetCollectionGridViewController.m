@@ -87,41 +87,8 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
     {
         [self prepareImageManagerAndRegisterAsObserver];
     }
-    
-    // NavigationItem titleView doesn't resize properly. Give it a "big enough" starting size
-    UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
-    
-    self.alternateFolderButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.alternateFolderButton setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-    [self.alternateFolderButton addTarget:self
-                                   action:@selector(selectedFolderPicker:)
-                         forControlEvents:UIControlEventTouchUpInside];
-    self.alternateFolderButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [containerView addSubview:self.alternateFolderButton];
-    
-    self.dropdownImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gallery_dropdown_arrow"]];
-    self.dropdownImageView.contentMode = UIViewContentModeScaleAspectFit;
-    self.dropdownImageView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.dropdownImageView.hidden = YES;
-    [containerView addSubview:self.dropdownImageView];
-    [containerView v_addPinToTopBottomToSubview:self.alternateFolderButton];
-    [containerView v_addPinToTopBottomToSubview:self.dropdownImageView];
-    [containerView addConstraint:[NSLayoutConstraint constraintWithItem:self.alternateFolderButton
-                                                              attribute:NSLayoutAttributeCenterX
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:containerView
-                                                              attribute:NSLayoutAttributeCenterX
-                                                             multiplier:1.0f
-                                                               constant:0.0f]];
-     [containerView addConstraint:[NSLayoutConstraint constraintWithItem:self.dropdownImageView
-                                                               attribute:NSLayoutAttributeLeading
-                                                               relatedBy:NSLayoutRelationEqual
-                                                                  toItem:self.alternateFolderButton
-                                                               attribute:NSLayoutAttributeTrailing
-                                                              multiplier:1.0f
-                                                                constant:0.0f]];
-    
-    self.navigationItem.titleView = containerView;
+
+    self.navigationItem.titleView = [self createContainerViewForAlternateCollectionSelection];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -437,6 +404,43 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
 }
 
 #pragma mark - Private Methods
+
+- (UIView *)createContainerViewForAlternateCollectionSelection
+{
+    // NavigationItem titleView doesn't resize properly. Give it a "big enough" starting size
+    UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
+    
+    self.alternateFolderButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [self.alternateFolderButton setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+    [self.alternateFolderButton addTarget:self
+                                   action:@selector(selectedFolderPicker:)
+                         forControlEvents:UIControlEventTouchUpInside];
+    self.alternateFolderButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [containerView addSubview:self.alternateFolderButton];
+    
+    self.dropdownImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gallery_dropdown_arrow"]];
+    self.dropdownImageView.contentMode = UIViewContentModeScaleAspectFit;
+    self.dropdownImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.dropdownImageView.hidden = YES;
+    [containerView addSubview:self.dropdownImageView];
+    [containerView v_addPinToTopBottomToSubview:self.alternateFolderButton];
+    [containerView v_addPinToTopBottomToSubview:self.dropdownImageView];
+    [containerView addConstraint:[NSLayoutConstraint constraintWithItem:self.alternateFolderButton
+                                                              attribute:NSLayoutAttributeCenterX
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:containerView
+                                                              attribute:NSLayoutAttributeCenterX
+                                                             multiplier:1.0f
+                                                               constant:0.0f]];
+    [containerView addConstraint:[NSLayoutConstraint constraintWithItem:self.dropdownImageView
+                                                              attribute:NSLayoutAttributeLeading
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:self.alternateFolderButton
+                                                              attribute:NSLayoutAttributeTrailing
+                                                             multiplier:1.0f
+                                                               constant:0.0f]];
+    return containerView;
+}
 
 - (void)resetCachedAssets
 {
