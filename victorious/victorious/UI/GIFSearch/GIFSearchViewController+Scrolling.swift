@@ -25,10 +25,4 @@ extension GIFSearchViewController : VScrollPaginatorDelegate {
             self.performSearch(searchText, pageType: .Next)
         }
     }
-    
-    func shouldLoadPreviousPage() {
-        if let searchText = self.searchBar.text {
-            self.performSearch(searchText, pageType: .Previous)
-        }
-    }
 }

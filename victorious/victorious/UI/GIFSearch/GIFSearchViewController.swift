@@ -53,15 +53,17 @@ class GIFSearchViewController: UIViewController, VMediaSource {
     let kFooterViewHeight: CGFloat = 50.0
     let kDefaultSectionMargin: CGFloat = 10.0
     let kNoContentCellHeight: CGFloat = 80.0
-    
-    private var scrollPaginator = VScrollPaginator()
+    let kItemSpacing: CGFloat = 2.0
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var searchBar: UISearchBar!
     
     var selectedIndexPath: NSIndexPath?
-    let searchDataSource = GIFSearchDataSource()
+    var previewSection: Int?
     private(set) var dependencyManager: VDependencyManager?
+    
+    let scrollPaginator = VScrollPaginator()
+    let searchDataSource = GIFSearchDataSource()
     private lazy var mediaHelper = GIFSearchMediaHelper()
     
     // VMediaSource

@@ -22,19 +22,20 @@ extension GIFSearchViewController {
         }, completion: nil)
         
         if let sectionInserted = sectionInserted {
-            let indexPath = NSIndexPath(forRow: 0, inSection: sectionInserted)
-            if let cell = self.collectionView.cellForItemAtIndexPath( indexPath ) {
+            let previewCellIndexPath = NSIndexPath(forRow: 0, inSection: sectionInserted)
+            if let cell = self.collectionView.cellForItemAtIndexPath( previewCellIndexPath ) {
                 self.collectionView.sendSubviewToBack( cell )
             }
-            self.collectionView.scrollToItemAtIndexPath( indexPath, atScrollPosition: .CenteredVertically,  animated: true )
-        }
-        
-        // Update the current selectedIndexPath, adjusting for the newly inserted section
-        if let selectedIndexPath = self.selectedIndexPath where selectedIndexPath.section < indexPath.section {
-            self.selectedIndexPath = NSIndexPath(forRow: indexPath.row, inSection: indexPath.section-1)
-        }
-        else {
-            self.selectedIndexPath = indexPath
+            self.collectionView.scrollToItemAtIndexPath( previewCellIndexPath,
+                atScrollPosition: .CenteredVertically,
+                animated: true )
+            
+            self.selectedIndexPath = NSIndexPath(forRow: indexPath.row, inSection: sectionInserted - 1)
+            self.previewSection = sectionInserted
+            
+            self.collectionView.performBatchUpdates({
+                self.collectionView.collectionViewLayout.invalidateLayout()
+            }, completion:nil )
         }
     }
     
@@ -44,8 +45,12 @@ extension GIFSearchViewController {
             self.collectionView.applyDataSourceChanges( result )
         }, completion: nil )
         
-        // Clear the current selectedIndexPath
         self.selectedIndexPath = nil
+        self.previewSection = nil
+        
+        self.collectionView.performBatchUpdates({
+            self.collectionView.collectionViewLayout.invalidateLayout()
+        }, completion:nil )
     }
 }
 

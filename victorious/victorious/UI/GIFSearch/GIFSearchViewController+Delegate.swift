@@ -11,7 +11,6 @@ import UIKit
 extension GIFSearchViewController : UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        
         let section = self.searchDataSource.sections[ indexPath.section ]
         if collectionView.cellForItemAtIndexPath( indexPath ) is GIFSearchResultCell {
             if self.selectedIndexPath == indexPath {
@@ -29,9 +28,10 @@ extension GIFSearchViewController : UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
-        let insets = (self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionInset ?? UIEdgeInsets()
-        let totalWidth = self.collectionView.bounds.width - insets.left - insets.right
-        let totalHeight = self.collectionView.bounds.height - insets.top - insets.bottom
+        let insets = (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionInset ?? UIEdgeInsets()
+        let numRowsInSection = collectionView.numberOfItemsInSection(indexPath.section)
+        let totalWidth = collectionView.bounds.width - insets.left - insets.right - kItemSpacing * CGFloat(numRowsInSection - 1)
+        let totalHeight = collectionView.bounds.height - insets.top - insets.bottom
         let totalSize = CGSize(width: totalWidth, height: totalHeight)
         
         if self.searchDataSource.sections.count == 0 {
@@ -40,11 +40,11 @@ extension GIFSearchViewController : UICollectionViewDelegateFlowLayout {
         else {
             let section = self.searchDataSource.sections[ indexPath.section ]
             if section.count == 1 {
-                return section.displaySize(withinSize: totalSize)
+                return section.previewSectionCellSize(withinSize: totalSize)
             }
             else {
-                let displaySizes = section.displaySizes( withinSize: totalSize )
-                return displaySizes[ indexPath.row ]
+                let sizes = section.resultSectionDisplaySizes( withinSize: totalSize )
+                return sizes[ indexPath.row ]
             }
         }
     }
@@ -55,12 +55,16 @@ extension GIFSearchViewController : UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        if let selectedIndexPath = self.selectedIndexPath where selectedIndexPath.section == section -  1 {
+        if let previewSection = self.previewSection where previewSection == section {
             return UIEdgeInsets(top: kDefaultSectionMargin, left: kDefaultSectionMargin, bottom: kDefaultSectionMargin, right: kDefaultSectionMargin)
         }
         else {
-            return UIEdgeInsets(top: 0.0, left: kDefaultSectionMargin, bottom: 0.0, right: kDefaultSectionMargin)
+            return UIEdgeInsets(top: kItemSpacing, left: kDefaultSectionMargin, bottom: 0, right: kDefaultSectionMargin)
         }
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 2
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
@@ -76,13 +80,13 @@ extension GIFSearchViewController : UICollectionViewDelegateFlowLayout {
 // Provides some size calculation methods to be used when determine sizes for cells in a collection view
 private extension GIFSearchDataSource.Section {
     
-    func displaySize( withinSize totalSize: CGSize ) -> CGSize {
+    func previewSectionCellSize( withinSize totalSize: CGSize ) -> CGSize {
         let gif = self.results[0]
         let maxHeight = totalSize.height - GIFSearchDataSource.Section.kMinMargin * 2.0
         return CGSize(width: totalSize.width, height: min(totalSize.width / gif.aspectRatio, maxHeight) )
     }
     
-    func displaySizes( withinSize totalSize: CGSize ) -> [CGSize] {
+    func resultSectionDisplaySizes( withinSize totalSize: CGSize ) -> [CGSize] {
         assert( self.results.count == 2, "This method only calculates sizes for sections with exactly 2 results" )
         
         var output = [CGSize](count: self.results.count, repeatedValue: CGSize.zeroSize)

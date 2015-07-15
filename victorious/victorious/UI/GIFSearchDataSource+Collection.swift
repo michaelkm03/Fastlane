@@ -35,7 +35,6 @@ extension GIFSearchDataSource : UICollectionViewDataSource {
             }
         }
         else if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( GIFSearchResultCell.suggestedReuseIdentifier, forIndexPath: indexPath ) as? GIFSearchResultCell {
-            
             cell.assetUrl = NSURL(string: result.thumbnailStillUrl)
             cell.selected = NSSet(array: collectionView.indexPathsForSelectedItems() ).containsObject( indexPath )
             return cell
@@ -44,7 +43,6 @@ extension GIFSearchDataSource : UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-        
         if let attributionView = collectionView.dequeueReusableSupplementaryViewOfKind( UICollectionElementKindSectionHeader, withReuseIdentifier: GIFSearchDataSource.kHeaderReuseIdentifier, forIndexPath: indexPath ) as? UICollectionReusableView where indexPath.section == 0 {
             return attributionView
         }
@@ -66,11 +64,10 @@ extension GIFSearchDataSource : UICollectionViewDataSource {
             cell.text = {
                 if let searchText = self.mostRecentSearchText {
                     return "No results for \"\(searchText)\" :("
-                }
-                else  {
+                } else  {
                     return "No results :("
                 }
-                }()
+            }()
         case .Loading:
             cell.text = ""
             cell.loading = true

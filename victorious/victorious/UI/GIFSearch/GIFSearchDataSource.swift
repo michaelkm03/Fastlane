@@ -28,8 +28,6 @@ private extension NSIndexPath {
 /// and populated data on cells to show in results collection view
 class GIFSearchDataSource: NSObject {
     
-    let operationQueue = NSOperationQueue()
-    
     enum State: Int {
         case Loading, Content, Error
     }
@@ -112,7 +110,7 @@ class GIFSearchDataSource: NSObject {
     func performSearch( searchText:String, pageType: VPageType, completion: (()->())? ) {
         
         // Only allow one next page load at a time
-        if self.state == .Loading && pageType == .Next {
+        if self.state == .Loading {
             completion?()
             return
         }

@@ -25,4 +25,14 @@ class LoadImageOperation: NSOperation {
                 self.image = image
         }
     }
+    
+    var mainQueueCompletionBlock: (()->())? {
+        didSet {
+            if let block = self.mainQueueCompletionBlock {
+                self.completionBlock = {
+                    dispatch_async( dispatch_get_main_queue(), block )
+                }
+            }
+        }
+    }
 }
