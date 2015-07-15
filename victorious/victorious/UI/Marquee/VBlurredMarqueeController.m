@@ -101,7 +101,6 @@ static const CGFloat kOffsetOvershoot = 20.0f;
         self.loadingPreviewViews = [[NSMutableArray alloc] init];
     }
     
-    NSMutableArray *contentNames = [[NSMutableArray alloc] init];
     NSArray *marqueeItems = [self.stream.marqueeItems array];
     NSInteger marqueeItemsCount = marqueeItems.count;
     if ( self.crossfadingBlurredImageView.imageViewCount != marqueeItemsCount )
@@ -114,8 +113,6 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     for ( VStreamItem *streamItem in marqueeItems )
     {
         [self loadContentForStreamItem:streamItem andUpdateSubviewsAtIndex:[self.stream.marqueeItems indexOfObject:streamItem]];
-        NSString *streamName = streamItem.name ?: @"";
-        [contentNames addObject:streamName];
     }
     
     [self.crossfadingLabel setupWithMarqueeItems:marqueeItems fromStreamWithApiPath:self.stream.apiPath];

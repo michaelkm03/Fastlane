@@ -450,10 +450,24 @@ static const NSInteger kDefaultPageSize = 40;
         NSString *apiPath = stream.apiPath;
         
         //Strip the marqueeItems and streamItems from the newly returned stream
+        BOOL marqueeNeedsUpdate = NO;
         for (VStreamItem *marqueeItem in fullStream.marqueeItems )
         {
             VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:marqueeItem.objectID];
+            if ( !marqueeNeedsUpdate )
+            {
+                //Check marquees to see if we do after all
+                VEditorializationItem *oldItem = [streamItemInContext editorializationForStreamWithApiPath:apiPath];
+                BOOL bothNil = oldItem.marqueeHeadline == nil && marqueeItem.headline == nil;
+                BOOL headlineIsSame = [oldItem.marqueeHeadline isEqualToString:marqueeItem.headline];
+                if ( !( bothNil || headlineIsSame ) )
+                {
+                    //The editorialization item has changed or been created anew, we need to update the marquee
+                    marqueeNeedsUpdate = YES;
+                }
+            }
             [self addEditorializationToStreamItem:streamItemInContext inStreamWithApiPath:apiPath usingHeadline:marqueeItem.headline inMarquee:YES];
+            marqueeItem.headline = nil;
             [marqueeItems addObject:streamItemInContext];
         }
         
@@ -461,10 +475,11 @@ static const NSInteger kDefaultPageSize = 40;
         {
             VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:streamItem.objectID];
             [self addEditorializationToStreamItem:streamItemInContext inStreamWithApiPath:apiPath usingHeadline:streamItem.headline inMarquee:NO];
+            streamItem.headline = nil;
             [streamItems addObject:streamItemInContext];
         }
         stream.streamItems = streamItems;
-        if ( ![marqueeItems isEqualToOrderedSet:stream.marqueeItems] )
+        if ( ![marqueeItems isEqualToOrderedSet:stream.marqueeItems] || marqueeNeedsUpdate )
         {
             stream.marqueeItems = marqueeItems;
         }
