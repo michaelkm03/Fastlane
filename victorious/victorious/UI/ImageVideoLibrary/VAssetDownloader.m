@@ -21,5 +21,4 @@
     NSAssert(false, @"Implement in subclasses!");
 }
 
-
 @end

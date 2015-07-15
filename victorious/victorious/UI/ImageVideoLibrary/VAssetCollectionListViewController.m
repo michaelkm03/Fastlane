@@ -7,14 +7,12 @@
 //
 
 #import "VAssetCollectionListViewController.h"
-
-// Permissions
 #import "VPermissionPhotoLibrary.h"
-
 #import "VAssetGroupTableViewCell.h"
 
 @import Photos;
 
+// Cell is registered with this key in the storyboard
 static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 
 @interface VAssetCollectionListViewController () <PHPhotoLibraryChangeObserver>
@@ -64,10 +62,7 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 - (void)awakeFromNib
 {
     self.fetchResults = [[NSMutableSet alloc] init];
-    self.numberFormatter = [[NSNumberFormatter alloc] init];
-    self.numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
-    self.numberFormatter.locale = [NSLocale currentLocale];
-    self.numberFormatter.groupingSeparator = [[NSLocale currentLocale] objectForKey:NSLocaleGroupingSeparator];
+    self.numberFormatter = [self createNumberFormatter];
 
     self.libraryPermissions = [[VPermissionPhotoLibrary alloc] init];
     
@@ -212,8 +207,7 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
         return;
     }
     
-    NSMutableSet *setCopy = [[NSMutableSet alloc] initWithCapacity:self.fetchResults.count];
-    [setCopy setSet:self.fetchResults];
+    NSMutableSet *newFetchResults = [[NSMutableSet alloc] init];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^
     {
         // Fetch all albums
@@ -223,8 +217,8 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
         PHFetchResult *userAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum
                                                                              subtype:PHAssetCollectionSubtypeAny
                                                                              options:nil];
-        [setCopy addObject:smartAlbums];
-        [setCopy addObject:userAlbums];
+        [newFetchResults addObject:smartAlbums];
+        [newFetchResults addObject:userAlbums];
         
         // Configure fetch options for media type and creation date
         PHFetchOptions *assetFetchOptions = [[PHFetchOptions alloc] init];
@@ -240,7 +234,7 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
         {
             PHFetchResult *albumMediaTypeResults = [PHAsset fetchAssetsInAssetCollection:collection
                                                                                  options:assetFetchOptions];
-            [setCopy addObject:albumMediaTypeResults];
+            [newFetchResults addObject:albumMediaTypeResults];
             if (albumMediaTypeResults.count > 0)
             {
                 [assetCollections addObject:collection];
@@ -251,7 +245,7 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
         {
             PHFetchResult *albumMediaTypeResults = [PHAsset fetchAssetsInAssetCollection:collection
                                                                                  options:assetFetchOptions];
-            [setCopy addObject:albumMediaTypeResults];
+            [newFetchResults addObject:albumMediaTypeResults];
             if (albumMediaTypeResults.count > 0)
             {
                 [assetCollections addObject:collection];
@@ -262,12 +256,23 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
         dispatch_async(dispatch_get_main_queue(), ^
         {
             self.lastFetch = [NSDate date];
-            self.fetchResults = setCopy;
+            self.fetchResults = newFetchResults;
             self.collections = assetCollections;
             self.assetFetchResultForCollections = assetCollectionsFetchResutls;
             dispatch_async(dispatch_get_main_queue(), success);
         });
     });
+}
+
+#pragma mark - Private Methods
+
+- (NSNumberFormatter *)createNumberFormatter
+{
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    self.numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
+    self.numberFormatter.locale = [NSLocale currentLocale];
+    self.numberFormatter.groupingSeparator = [[NSLocale currentLocale] objectForKey:NSLocaleGroupingSeparator];
+    return formatter;
 }
 
 @end

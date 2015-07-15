@@ -26,7 +26,6 @@
 
 // Dependencies
 #import "VDependencyManager.h"
-#import "VMediaSource.h"
 
 static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 
@@ -98,25 +97,6 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
                                                  // Search
                                              }];
     return @[cameraOption, searchOption];
-}
-
-- (void)addCompleitonHandlerToMediaSource:(id<VMediaSource>)mediaSource
-{
-    __weak typeof(self) welf = self;
-    mediaSource.handler = ^void(UIImage *previewImage, NSURL *capturedMediaURL)
-    {
-        if (capturedMediaURL != nil)
-        {
-            [welf setupWorkspace];
-            self.workspaceViewController.mediaURL = capturedMediaURL;
-            self.workspaceViewController.previewImage = previewImage;
-            
-            VVideoToolController *toolController = (VVideoToolController *)welf.workspaceViewController.toolController;
-            [toolController setDefaultVideoTool:VVideoToolControllerInitialVideoEditStateGIF];
-            
-            [self pushViewController:self.workspaceViewController animated:YES];
-        }
-    };
 }
 
 - (void)setupPublishScreen
