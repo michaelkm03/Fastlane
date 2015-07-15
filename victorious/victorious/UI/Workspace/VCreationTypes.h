@@ -22,4 +22,14 @@ typedef NS_ENUM(NSInteger, VCreationType)
     VCreationTypeUnknown
 };
 
+/**
+ * Shared enum type because a few different classes use it
+ */
+typedef NS_ENUM(NSInteger, VCameraContext)
+{
+    VCameraContextProfileImage,
+    VCameraContextProfileImageRegistration,
+    VCameraContextContentCreation,
+};
+
 #endif

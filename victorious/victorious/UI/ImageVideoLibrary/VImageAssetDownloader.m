@@ -58,7 +58,7 @@ NSString * const VImageAssetDownloaderErrorDomain = @"com.victorious.VImageAsset
      {
          if (imageData == nil)
          {
-             NSError *downloadFailure = [NSError errorWithDomain:VImageAssetDownlaoderErrorDomain
+             NSError *downloadFailure = [NSError errorWithDomain:VImageAssetDownloaderErrorDomain
                                                             code:0
                                                         userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"ImageDownloadFailed", nil)}];
              completion(downloadFailure, nil, nil);

@@ -7,7 +7,7 @@
 //
 
 #import "VHasManagedDependencies.h"
-#import "VCameraContext.h"
+#import "VCreationTypes.h"
 
 typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL);
 
@@ -70,7 +70,7 @@ typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NS
  *  A context for this cameraViewController to configure it's permission dialogs with. Defaults to
  *  VWorkspaceFlowControllerContextContentCreation.
  */
-@property (nonatomic, assign) VWorkspaceFlowControllerContext context;
+@property (nonatomic, assign) VCameraContext context;
 
 /**
  *  Call this to hide the search and album buttons.

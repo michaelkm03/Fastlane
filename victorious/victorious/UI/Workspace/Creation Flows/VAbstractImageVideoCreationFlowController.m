@@ -38,7 +38,6 @@
 // Keys
 NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 
-
 @interface VAbstractImageVideoCreationFlowController () <UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (nonatomic, strong) NSArray *cachedAssetCollections;

@@ -7,7 +7,7 @@
 //
 
 #import "VCreationFlowController.h"
-#import "VCameraContext.h"
+#import "VCreationTypes.h"
 
 extern NSString * const VImageCreationFlowControllerKey;
 
@@ -23,7 +23,7 @@ extern NSString * const VImageCreationFlowControllerKey;
 /**
  *  The context for image creation. Defualts to contentCreation.
  */
-@property (nonatomic, assign) VWorkspaceFlowControllerContext context;
+@property (nonatomic, assign) VCameraContext context;
 
 @end
 

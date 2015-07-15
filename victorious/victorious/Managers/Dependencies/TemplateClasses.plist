@@ -22,8 +22,6 @@
 	<string>VModernLoginAndRegistrationFlowViewController</string>
 	<key>standard.loginAndRegistrationView</key>
 	<string>VStandardLoginFlowViewController</string>
-	<key>standard.workspaceFlow</key>
-	<string>VWorkspaceFlowController</string>
 	<key>image.creationFlow</key>
 	<string>VImageCreationFlowController</string>
 	<key>translucent.background</key>

@@ -7,10 +7,7 @@
 //
 
 #import "VCameraCaptureVideoSize.h"
-
-#import <Foundation/Foundation.h>
-
-#import "VCameraContext.h"
+#import "VCreationTypes.h"
 
 @class AVCaptureDevice, AVCaptureSession, VCameraVideoEncoder, VWorkspaceFlowController;
 
@@ -108,6 +105,6 @@ extern const NSInteger VCameraCaptureControllerErrorCode;
  *  context of wherein the camera controller is being presented
  */
 
-@property (nonatomic, assign) VWorkspaceFlowControllerContext context;
+@property (nonatomic, assign) VCameraContext context;
 
 @end
