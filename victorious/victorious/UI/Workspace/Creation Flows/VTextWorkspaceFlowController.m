@@ -18,6 +18,7 @@
 #import "VTextListener.h"
 #import "VCameraViewController.h"
 #import "VImageSearchViewController.h"
+#import "VMediaAttachmentPresenter.h"
 
 @interface VTextWorkspaceFlowController() <UINavigationControllerDelegate, VTextListener, VTextCanvasToolDelegate>
 
@@ -114,8 +115,7 @@
 
 - (void)textCanvasToolDidSelectCamera:(VTextCanvasToolViewController *)textCanvasToolViewController
 {
-    self.mediaCaptureViewController = [self createCameraViewController];
-    [self presentViewController:self.mediaCaptureViewController animated:YES completion:nil];
+    [self presentCameraViewController];
 }
 
 - (void)textCanvasToolDidSelectImageSearch:(VTextCanvasToolViewController *)textCanvasToolViewController
@@ -132,20 +132,16 @@
 
 #pragma mark - Choosing background image
 
-- (UIViewController *)createCameraViewController
+- (void)presentCameraViewController
 {
-    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerLimitedToPhotosWithDependencyManager:self.dependencyManager];
-    cameraViewController.shouldSkipPreview = YES;
-    if ([cameraViewController respondsToSelector:@selector(setDependencyManager:)])
+    VMediaAttachmentPresenter *attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithViewControllerToPresentOn:self
+                                                                                                        dependencymanager:self.dependencyManager];
+    attachmentPresenter.attachmentTypes = VMediaAttachmentTypeImage;
+    attachmentPresenter.completion = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
     {
-        [cameraViewController setDependencyManager:self.dependencyManager];
-    }
-    __weak typeof(self) welf = self;
-    cameraViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-    {
-        [welf didCaptureMediaWithURL:capturedMediaURL previewImage:previewImage];
+        [self didCaptureMediaWithURL:mediaURL previewImage:previewImage];
     };
-    return cameraViewController;
+    [attachmentPresenter present];
 }
 
 - (UIViewController *)createImageSearchViewController

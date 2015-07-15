@@ -40,6 +40,26 @@ static NSString * const kVideoCreateFlow = @"videoCreateFlow";
                                                                                    message:NSLocalizedString(@"Pick an attachment style", nil)
                                                                             preferredStyle:UIAlertControllerStyleActionSheet];
 
+    
+    void (^imageActionHandler)(void) = ^void(void)
+    {
+        VAbstractImageVideoCreationFlowController *imageCreationFlowController = [self.dependencyManager templateValueOfType:[VAbstractImageVideoCreationFlowController class]
+                                                                                                                      forKey:VImageCreationFlowControllerKey];
+        imageCreationFlowController.creationFlowDelegate = self;
+        [self.viewControllerToPresentOn presentViewController:imageCreationFlowController
+                                                     animated:YES
+                                                   completion:nil];
+    };
+    void (^videoActionHandler)(void) = ^void(void)
+    {
+        VVideoCreationFlowController *videoCreationFlowController = [self.dependencyManager templateValueOfType:[VVideoCreationFlowController class]
+                                                                                                         forKey:kVideoCreateFlow];
+        videoCreationFlowController.creationFlowDelegate = self;
+        [self.viewControllerToPresentOn presentViewController:videoCreationFlowController
+                                                     animated:YES
+                                                   completion:nil];
+    };
+    
     if (self.attachmentTypes & VMediaAttachmentTypeImage)
     {
         // Image
@@ -47,12 +67,7 @@ static NSString * const kVideoCreateFlow = @"videoCreateFlow";
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction *action)
                                       {
-                                          VAbstractImageVideoCreationFlowController *imageCreationFlowController = [self.dependencyManager templateValueOfType:[VAbstractImageVideoCreationFlowController class]
-                                                                                                                                           forKey:VImageCreationFlowControllerKey];
-                                          imageCreationFlowController.creationFlowDelegate = self;
-                                          [self.viewControllerToPresentOn presentViewController:imageCreationFlowController
-                                                                                       animated:YES
-                                                                                     completion:nil];
+                                          imageActionHandler();
                                       }];
         [attachmentActionSheet addAction:imageAction];
     }
@@ -64,24 +79,36 @@ static NSString * const kVideoCreateFlow = @"videoCreateFlow";
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction *action)
                                       {
-                                          // Video
-                                          VVideoCreationFlowController *videoCreationFlowController = [self.dependencyManager templateValueOfType:[VVideoCreationFlowController class]
-                                                                                                                                           forKey:kVideoCreateFlow];
-                                          videoCreationFlowController.creationFlowDelegate = self;
-                                          [self.viewControllerToPresentOn presentViewController:videoCreationFlowController
-                                                                                       animated:YES
-                                                                                     completion:nil];
+                                          videoActionHandler();
                                       }];
         [attachmentActionSheet addAction:videoAction];
     }
     
-    // Cancel
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
-                                                           style:UIAlertActionStyleCancel
-                                                         handler:nil];
-    [attachmentActionSheet addAction:cancelAction];
-    
-    [self.viewControllerToPresentOn presentViewController:attachmentActionSheet animated:YES completion:nil];
+    // If we only have one option then just show it.
+    if (attachmentActionSheet.actions.count == 1)
+    {
+        if (self.attachmentTypes & VMediaAttachmentTypeImage)
+        {
+            imageActionHandler();
+        }
+        else
+        {
+            videoActionHandler();
+        }
+    }
+    else if (attachmentActionSheet.actions.count > 1)
+    {
+        // Cancel
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
+                                                               style:UIAlertActionStyleCancel
+                                                             handler:nil];
+        [attachmentActionSheet addAction:cancelAction];
+        [self.viewControllerToPresentOn presentViewController:attachmentActionSheet animated:YES completion:nil];
+    }
+    else // Invalid state
+    {
+        NSAssert(false, @"Invalid attachment types!");
+    }
 }
 
 #pragma mark - VCreationFlowControllerDelegate

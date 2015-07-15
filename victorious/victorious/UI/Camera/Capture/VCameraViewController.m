@@ -214,7 +214,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 
     UITapGestureRecognizer *focusTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(focus:)];
     [self.previewView addGestureRecognizer:focusTap];
-
     
     [self.cameraControl addTarget:self
                            action:@selector(capturePhoto:)
@@ -470,7 +469,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 - (void)hideSearchAndAlbumButtons
 {
     self.disableSearchAndGallery = YES;
-    
     self.openAlbumButton.hidden = YES;
     self.openAlbumButton = nil;
     self.searchButton.hidden = YES;

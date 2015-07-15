@@ -10,6 +10,9 @@
 
 @interface NSIndexSet (Convenience)
 
+/**
+ *  Generates an array of indexpaths from the index set with the passed section.
+ */
 - (NSArray *)indexPathsFromIndexesWithSecion:(NSInteger)section;
 
 @end

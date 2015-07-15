@@ -20,7 +20,9 @@ typedef NS_OPTIONS(NSUInteger, VMediaAttachmentType)
 typedef void(^VMediaAttachmentCompletion)(BOOL success, UIImage *previewImage, NSURL *mediaURL);
 
 /**
- *  A presenter for attaching media to various parts of the app.
+ *  A presenter for attaching media to various parts of the app. NOTE: When there are two ore more attachment types this 
+ *  presenter will first present an action sheet then the appropriate flow. If there is a single attachment type, then no 
+ *  action sheet will be show and we move straight to capturing an attachmet.
  */
 @interface VMediaAttachmentPresenter : VAbstractPresenter
 
