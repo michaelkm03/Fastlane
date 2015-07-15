@@ -15,7 +15,6 @@ static const NSTimeInterval kHighlightAnimationDuration = 0.3f;
 static const CGFloat kHighlightTransformPerspective = -1.0 / 200.0f;
 static const CGFloat kForcedAntiAliasingConstant = 0.01f;
 static const CGFloat kActivityIndicatorShowDuration = 0.5f;
-static const CGFloat kActivityIndicatorHideDuration = 0.0f;
 
 static NSString * const kFollowIconKey = @"follow_user_icon";
 static NSString * const kFollowedCheckmarkIconKey = @"followed_user_icon";
@@ -129,22 +128,8 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
     else
     {
         self.activityIndicator.alpha = 0.0f;
-        if ( !self.activityIndicator.isAnimating )
-        {
-            //Activity indicator isn't showing, don't animate the imageview re-appearance
-            self.imageView.alpha = 1.0f;
-            self.backgroundImageView.alpha = 1.0f;
-        }
-        else
-        {
-            //Animate the imageView alpha change
-            [UIView animateWithDuration:kActivityIndicatorHideDuration animations:^
-             {
-                 self.imageView.alpha = 1.0f;
-                 self.backgroundImageView.alpha = 1.0f;
-             }
-                             completion:nil];
-        }
+        self.imageView.alpha = 1.0f;
+        self.backgroundImageView.alpha = 1.0f;
     }
 }
 
