@@ -121,15 +121,7 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
     cell.groupSubtitleLabel.text = [self.numberFormatter stringFromNumber:@(fetchResultForCollection.count)];
     
     // Use the first asset as a thumbnail
-    PHAsset *firstAsset = [fetchResultForCollection firstObject];
-    [[PHImageManager defaultManager] requestImageForAsset:firstAsset
-                                               targetSize:CGSizeMake(40, 40)
-                                              contentMode:PHImageContentModeAspectFill
-                                                  options:nil
-                                            resultHandler:^(UIImage *result, NSDictionary *info)
-     {
-         cell.groupImageView.image = result;
-     }];
+    cell.asset = [fetchResultForCollection firstObject];
 
     return cell;
 }
