@@ -382,7 +382,7 @@
                                                                            dependencymanager:self.dependencyManager];
     self.presenter.isRegistration = YES;
     __weak typeof(self) welf = self;
-    self.presenter.completion = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
+    self.presenter.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
     {
         welf.profileImageView.image = previewImage;
         welf.registrationModel.selectedImage = previewImage;

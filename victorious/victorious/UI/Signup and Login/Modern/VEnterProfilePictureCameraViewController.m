@@ -209,7 +209,7 @@
         welf.profilePicturePresetner = [[VEditProfilePicturePresenter alloc] initWithViewControllerToPresentOn:self
                                                                                              dependencymanager:self.dependencyManager];
         welf.profilePicturePresetner.isRegistration = YES;
-        welf.profilePicturePresetner.completion = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
+        welf.profilePicturePresetner.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
         {
             if (success)
             {
