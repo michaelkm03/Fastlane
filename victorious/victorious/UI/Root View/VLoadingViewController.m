@@ -217,14 +217,6 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
-#warning Testing code - Remove when server adds support
-        NSString *keyPath = [[templateDecorator keyPathsForKey:@"likedContentScreen"] firstObject];
-        NSMutableDictionary *dict = [[templateDecorator templateValueForKeyPath:keyPath] mutableCopy];
-        dict[@"noContentTitle"] = @"NOTHING LIKED YET";
-        dict[@"noContentSubtitle"] = @"Posts you like will appear here.";
-        dict[@"noContentIcon"] = @{ @"imageURL" : @"liked_stream_empty" };
-        [templateDecorator setTemplateValue:dict forKeyPath:keyPath];
-        
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];
