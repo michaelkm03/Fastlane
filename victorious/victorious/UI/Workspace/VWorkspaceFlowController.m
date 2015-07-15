@@ -228,7 +228,7 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
     }
     VSequence *sequenceToRemix = [self.dependencyManager templateValueOfType:[VSequence class]
                                                                       forKey:VWorkspaceFlowControllerSequenceToRemixKey];
-    if (sequenceToRemix)
+    if (sequenceToRemix != nil)
     {
         NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
         formatter.numberStyle = NSNumberFormatterDecimalStyle;

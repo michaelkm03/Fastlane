@@ -141,7 +141,7 @@ static NSString * const kSequenceKey = @"sequence";
 
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text publishParameters:(VPublishParameters *)publishParameters
 {
-    if ((!text || !text.length) && (publishParameters == nil || !publishParameters.mediaToUploadURL.absoluteString.length))
+    if ((text == nil || text.length == 0) && (publishParameters == nil || publishParameters.mediaToUploadURL.absoluteString.length == 0))
     {
         return;
     }
