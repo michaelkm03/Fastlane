@@ -11,8 +11,9 @@
 @class VDependencyManager;
 
 /**
- *  VAbstractPresenter defines an interface and base behavior for presenters. Presenters are transient objects 
- *  that are not retained. If you provide a VAbstractPresenter subclass with a completion block you must retain the presenter.
+ *  VAbstractPresenter defines an interface and base behavior for presenters. Presenters should be reatined
+ *  by calling code, they are not retained by the system or through any trickery of the API.
+ *  If you provide a VAbstractPresenter subclass with a completion block you must retain the presenter.
  */
 @interface VAbstractPresenter : NSObject
 
