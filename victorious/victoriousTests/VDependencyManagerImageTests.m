@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import "NSURL+VDataCacheID.h"
+#import "VDataCache.h"
 #import "VDependencyManager.h"
 
 #import <UIKit/UIKit.h>
@@ -29,6 +31,41 @@
     NSData *testData = [NSData dataWithContentsOfURL:[[NSBundle bundleForClass:[self class]] URLForResource:@"image-template" withExtension:@"json"]];
     NSDictionary *configuration = [NSJSONSerialization JSONObjectWithData:testData options:0 error:nil];
     self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:baseDependencyManager configuration:configuration dictionaryOfClassesByTemplateName:nil];
+}
+
+- (void)testImageWithName
+{
+    UIImage *expected = [UIImage imageNamed:@"C_menu"];
+    XCTAssertNotNil(expected); // This assert will fail if the "C_menu" image is ever removed from our project
+    UIImage *actual = [self.dependencyManager imageForKey:@"myImage"];
+    XCTAssertEqualObjects(expected, actual);
+}
+
+- (void)testImage
+{
+    // This test will fail if the "C_menu" image is ever removed from our project
+    UIImage *sampleImage = [UIImage imageNamed:@"C_menu"];
+    VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
+                                                                                configuration:@{ @"myImage": sampleImage }
+                                                            dictionaryOfClassesByTemplateName:nil];
+    UIImage *actual = [dependencyManager imageForKey:@"myImage"];
+    XCTAssertEqualObjects(actual, sampleImage);
+}
+
+- (void)testRemoteImage
+{
+    NSURL *imageBundleURL = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleImage" withExtension:@"png"];
+    NSData *imageData = [NSData dataWithContentsOfURL:imageBundleURL];
+    UIImage *expected = [UIImage imageWithData:imageData];
+    
+    VDataCache *dataCache = [[VDataCache alloc] init];
+    NSError *error = nil;
+    [dataCache cacheDataAtURL:imageBundleURL forID:[NSURL URLWithString:@"http://www.example.com/testRemoteImage"] error:&error];
+    XCTAssertNil(error);
+    
+    UIImage *actual = [self.dependencyManager imageForKey:@"myRemoteImage"];
+    XCTAssert( [actual isKindOfClass:[UIImage class]] );
+    XCTAssert( CGSizeEqualToSize(expected.size, actual.size) );
 }
 
 - (void)testArrayOfImageURLs
