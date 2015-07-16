@@ -67,7 +67,6 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
     UIStoryboard *workspaceStoryboard = [UIStoryboard storyboardWithName:@"Workspace" bundle:nil];
     VBaseWorkspaceViewController *workspaceViewController = [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
     workspaceViewController.dependencyManager = dependencyManager;
-    
     return workspaceViewController;
 }
 

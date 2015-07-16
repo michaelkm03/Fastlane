@@ -28,10 +28,6 @@
 static NSString * const kVideoWorkspaceKey = @"videoWorkspace";
 static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 
-@interface VVideoCreationFlowController ()
-
-@end
-
 @implementation VVideoCreationFlowController
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -58,7 +54,9 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 
 - (VWorkspaceViewController *)workspaceViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    return (VWorkspaceViewController *)[dependencyManager viewControllerForKey:kVideoWorkspaceKey];
+    return [dependencyManager templateValueOfType:[VWorkspaceViewController class]
+                                           forKey:kVideoWorkspaceKey
+                            withAddedDependencies:@{VVideoToolControllerInitalVideoEditStateKey:@(VVideoToolControllerInitialVideoEditStateVideo)}];
 }
 
 - (void)prepareInitialEditStateWithWorkspace:(VWorkspaceViewController *)workspace

@@ -200,8 +200,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     _workspaceViewController.adjustsCanvasViewFrameOnKeyboardAppearance = YES;
     _workspaceViewController.continueText = [self shouldShowPublishText] ? NSLocalizedString(@"Publish", @"") : NSLocalizedString(@"Next", @"");
     _workspaceViewController.continueButtonEnabled = YES;
-    _workspaceViewController.previewImage = self.previewImage;
-    _workspaceViewController.mediaURL = self.renderedMediaURL;
     
     __weak typeof(self) welf = self;
     _workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
