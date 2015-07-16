@@ -136,15 +136,6 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
     
     [toolBarItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil]];
     self.bottomToolbar.items = toolBarItems;
-    
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.topToolbar.frame), CGRectGetHeight(self.topToolbar.frame))];
-    titleLabel.center = CGPointMake(self.view.center.x, titleLabel.center.y);
-    titleLabel.text = NSLocalizedString(@"Edit", @"");
-    titleLabel.text = titleLabel.text.uppercaseString;
-    titleLabel.textColor = [UIColor whiteColor];
-    titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
-    titleLabel.textAlignment = NSTextAlignmentCenter;
-    [self.view addSubview:titleLabel];
 }
 
 - (void)viewWillAppear:(BOOL)animated
