@@ -21,7 +21,7 @@
 
 @implementation VPublishPresenter
 
-- (instancetype)initWithViewDependencymanager:(VDependencyManager *)dependencyManager
+- (instancetype)initWithDependencymanager:(VDependencyManager *)dependencyManager
 {
     self = [super initWithDependencymanager:dependencyManager];
     if (self != nil)
@@ -38,6 +38,7 @@
 
 - (void)presentOnViewController:(UIViewController *)viewControllerToPresentOn
 {
+    self.viewControllerPresentedOn = viewControllerToPresentOn;
     [viewControllerToPresentOn presentViewController:self.publishViewController
                                             animated:YES
                                           completion:nil];

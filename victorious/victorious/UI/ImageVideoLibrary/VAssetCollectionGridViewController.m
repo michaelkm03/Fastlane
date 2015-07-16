@@ -13,10 +13,7 @@
 
 // Views + Helpers
 #import "VAssetCollectionGridDataSource.h"
-
-#warning Remove these?
-#import "VAssetCollectionViewCell.h"
-#import "VLibraryAuthorizationCell.h"
+#import "VAssetCollectionUnauthorizedDataSource.h"
 #import "UIView+AutoLayout.h"
 
 // Image Resizing
@@ -26,23 +23,21 @@
 @import Photos;
 
 NSString * const VAssetCollectionGridViewControllerMediaType = @"assetGridViewControllerMediaType";
-static NSString * const kAccessUndeterminedPromptKey = @"accessUndeterminedPrompt";
-static NSString * const kAccessUndeterminedCalltoActionKey = @"accessUndeterminedCalltoAction";
-static NSString * const kAccessDeniedPromptKey = @"accessDeniedPrompt";
-static NSString * const kNotAuthorizedTextColorKey = @"notAuthorizedTextColor";
-static NSString * const kNotAuthorizedPromptFont = @"notAuthorizedPromptFont";
-static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToActionFont";
 
-@interface VAssetCollectionGridViewController () <UICollectionViewDelegateFlowLayout>
+@interface VAssetCollectionGridViewController () <VAssetCollectionUnauthorizedDataSourceDelegate, VAssetCollectionGridDataSourceDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, strong) VPermissionPhotoLibrary *libraryPermission;
 @property (nonatomic, strong) VAssetCollectionGridDataSource *assetDataSource;
+@property (nonatomic, strong) VAssetCollectionUnauthorizedDataSource *unauthorizedDataSource;
 @property (nonatomic, assign) PHAssetMediaType mediaType;
 
 @property (nonatomic, strong) UIButton *alternateFolderButton;
 @property (nonatomic, strong) UIImageView *dropdownImageView;
+
+@property (nonatomic, strong) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -58,7 +53,6 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
     VAssetCollectionGridViewController *gridViewController = [storyboardForClass instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
     gridViewController.dependencyManager = dependencyManager;
     gridViewController.mediaType = [[dependencyManager numberForKey:VAssetCollectionGridViewControllerMediaType] integerValue];
-    gridViewController.assetDataSource = [[VAssetCollectionGridDataSource alloc] initWithMediaType:gridViewController.mediaType];
     gridViewController.libraryPermission = [[VPermissionPhotoLibrary alloc] initWithDependencyManager:dependencyManager];
     return gridViewController;
 }
@@ -69,7 +63,22 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
 {
     [super viewDidLoad];
     
-    self.assetDataSource.collectionView = self.collectionView;
+    switch ([self.libraryPermission permissionState])
+    {
+        case VPermissionStatePromptDenied:
+        case VPermissionStateUnknown:
+        case VPermissionStateSystemDenied:
+        case VPermissionUnsupported:
+            self.unauthorizedDataSource = [[VAssetCollectionUnauthorizedDataSource alloc] initWithDependencyManager:self.dependencyManager];
+            self.unauthorizedDataSource.delegate = self;
+            [self setCollectionViewDataSourceTo:self.unauthorizedDataSource];
+            break;
+        case VPermissionStateAuthorized:
+            [self.activityIndicator startAnimating];
+            [self setupAssetDataSource];
+            [self setCollectionViewDataSourceTo:self.assetDataSource];
+            break;
+    }
 
     self.navigationItem.titleView = [self createContainerViewForAlternateCollectionSelection];
 }
@@ -102,6 +111,7 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
         return;
     }
     
+    [self.activityIndicator stopAnimating];
     [self.alternateFolderButton setTitle:collectionToDisplay.localizedTitle
                                 forState:UIControlStateNormal];
     self.dropdownImageView.hidden = NO;
@@ -139,143 +149,42 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
     [self.delegate gridViewControllerWantsToViewAlternateCollections:self];
 }
 
-#pragma mark - UICollectionViewDataSource
+#pragma mark - VAssetCollectionUnauthorizedDataSourceDelegate
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+- (void)unauthorizedDataSource:(VAssetCollectionUnauthorizedDataSource *)dataSource
+        authorizationChangedTo:(BOOL)authorizationStatus
 {
-    NSInteger numberOfItems;
-    switch ([self.libraryPermission permissionState])
+    if (authorizationStatus)
     {
-        case VPermissionStatePromptDenied:
-        case VPermissionStateUnknown:
-        case VPermissionStateSystemDenied:
-            // We treat all of these the same as 1 since we show our authorization cell.
-            numberOfItems = 1;
-            break;
-        case VPermissionStateAuthorized:
-#warning Remove me
-            numberOfItems = -1;
-            break;
-        case VPermissionUnsupported:
-            // We should never get here
-            numberOfItems = 0;
-            break;
-    }
-    return numberOfItems;
-}
-
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    UICollectionViewCell *cell;
-    
-    switch ([self.libraryPermission permissionState])
-    {
-        case VPermissionStatePromptDenied:
-        case VPermissionStateUnknown:
-            // Show the allow access cell
-            cell = [self allowAccessCellWithCollectionView:collectionView
-                                              forIndexPath:indexPath];
-            break;
-        case VPermissionStateSystemDenied:
-            // Show the fix in settings
-#warning CREATE UNAUTHORIZED DATA SOURCE
-            break;
-        case VPermissionStateAuthorized:
-        case VPermissionUnsupported:
-            // We should never get here
-            break;
-    }
-    
-    return cell;
-}
-
-#pragma mark Helpers
-
-- (UICollectionViewCell *)allowAccessCellWithCollectionView:(UICollectionView *)collectionView
-                                           forIndexPath:(NSIndexPath *)indexPath
-{
-    VLibraryAuthorizationCell *authorizationCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VLibraryAuthorizationCell suggestedReuseIdentifier]
-                                                                                             forIndexPath:indexPath];
-    authorizationCell.promptText = [self.dependencyManager stringForKey:kAccessUndeterminedPromptKey];
-    authorizationCell.promptFont = [self.dependencyManager fontForKey:kNotAuthorizedPromptFont];
-    authorizationCell.promptColor = [self.dependencyManager colorForKey:kNotAuthorizedTextColorKey];
-    authorizationCell.callToActionText = [self.dependencyManager stringForKey:kAccessUndeterminedCalltoActionKey];
-    authorizationCell.callToActionFont = [self.dependencyManager fontForKey:kNotAuthorizedCallToActionFont];
-    authorizationCell.callToActionColor = [self.dependencyManager colorForKey:kNotAuthorizedTextColorKey];
-    
-    return authorizationCell;
-}
-
-- (UICollectionViewCell *)systemDeniedCellWithCollectionView:(UICollectionView *)collectionView
-                                                forIndexPath:(NSIndexPath *)indexPath
-{
-    VLibraryAuthorizationCell *authorizationCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VLibraryAuthorizationCell suggestedReuseIdentifier]
-                                                                                             forIndexPath:indexPath];
-    authorizationCell.promptText = [self.dependencyManager stringForKey:kAccessDeniedPromptKey];
-    authorizationCell.promptFont = [self.dependencyManager fontForKey:kNotAuthorizedPromptFont];
-    authorizationCell.promptColor = [self.dependencyManager colorForKey:kNotAuthorizedTextColorKey];
-    authorizationCell.callToActionText = nil;
-    
-    return authorizationCell;
-}
-
-#pragma mark - UICollectionViewDelegate
-
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    switch ([self.libraryPermission permissionState])
-    {
-        case VPermissionStatePromptDenied:
-        case VPermissionStateUnknown:
-        {
-            // Show the permission request
-            [self.libraryPermission requestSystemPermissionWithCompletion:^(BOOL granted, VPermissionState state, NSError *error)
-            {
-                if (state == VPermissionStateAuthorized)
-                {
-#warning Should setup data source here?
-//                    [self prepareImageManagerAndRegisterAsObserver];
-                }
-                [self.delegate gridViewController:self
-                              authorizationStatus:granted];
-                [self.collectionView reloadData];
-            }];
-            break;
-            break;
-        }
-        case VPermissionStateAuthorized:
-        case VPermissionStateSystemDenied:
-        case VPermissionUnsupported:
-            // Nothing to do here
-            break;
+        [self setupAssetDataSource];
+        [self setCollectionViewDataSourceTo:self.assetDataSource];
+        [self.activityIndicator startAnimating];
     }
 }
 
-#pragma mark - UICollectionViewDelegateFlowLayout
+#pragma mark - VAssetCollectionGridDataSourceDelegate
 
-- (CGSize)collectionView:(UICollectionView *)collectionView
-                  layout:(UICollectionViewFlowLayout *)collectionViewLayout
-  sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+- (void)assetCollectionDataSource:(VAssetCollectionGridDataSource *)dataSource
+                    selectedAsset:(PHAsset *)asset
 {
-    switch ([self.libraryPermission permissionState])
-    {
-        case VPermissionStatePromptDenied:
-        case VPermissionStateSystemDenied:
-        case VPermissionStateUnknown:
-        {
-            CGFloat insetSize = CGRectGetWidth(collectionView.bounds) - collectionViewLayout.sectionInset.left - collectionViewLayout.sectionInset.right;
-            return CGSizeMake(insetSize, insetSize);
-        }
-            break;
-        case VPermissionStateAuthorized:
-        case VPermissionUnsupported:
-            return CGSizeZero;
-            break;
-    }
+    [self.delegate gridViewController:self selectedAsset:asset];
 }
 
 #pragma mark - Private Methods
 
+- (void)setCollectionViewDataSourceTo:(id <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>)dataSource
+{
+    self.collectionView.dataSource = dataSource;
+    self.collectionView.delegate = dataSource;
+    [self.collectionView reloadData];
+}
+
+- (void)setupAssetDataSource
+{
+    self.assetDataSource = [[VAssetCollectionGridDataSource alloc] initWithMediaType:self.mediaType];
+    self.assetDataSource.collectionView = self.collectionView;
+    self.assetDataSource.delegate = self;
+}
 
 - (UIView *)createContainerViewForAlternateCollectionSelection
 {

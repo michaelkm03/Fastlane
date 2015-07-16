@@ -10,8 +10,31 @@
 
 @class VDependencyManager;
 
+@class VAssetCollectionUnauthorizedDataSource;
+
+/**
+ *  A delegate for the data source.
+ */
+@protocol VAssetCollectionUnauthorizedDataSourceDelegate <NSObject>
+
+/**
+ *  Informs the delegate that the authorization has changed.
+ */
+- (void)unauthorizedDataSource:(VAssetCollectionUnauthorizedDataSource *)dataSource
+        authorizationChangedTo:(BOOL)authorizationStatus;
+
+@end
+
 @interface VAssetCollectionUnauthorizedDataSource : NSObject <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
+/**
+ *  The designated initializer for this data source.
+ */
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
+
+/**
+ *  The delegate for this data source.
+ */
+@property (nonatomic, weak) id <VAssetCollectionUnauthorizedDataSourceDelegate> delegate;
 
 @end
