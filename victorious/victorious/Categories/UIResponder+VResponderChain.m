@@ -23,8 +23,26 @@
         {
             return;
         }
+        responder = [responder nextResponder];
     }
-    while (( responder = [responder nextResponder] ));
+    while ( responder != nil );
+}
+
+- (id)v_targetConformingToProtocol:(Protocol *)protocol
+{
+    NSParameterAssert( protocol != nil );
+    
+    UIResponder *responder = self;
+    do
+    {
+        if ( [responder conformsToProtocol:protocol] )
+        {
+            return responder;
+        }
+        responder = [responder nextResponder];
+    }
+    while ( responder != nil );
+    return nil;
 }
 
 - (void)v_logResponderChain

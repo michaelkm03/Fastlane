@@ -13,11 +13,10 @@
 #import "VObjectManager+Login.h"
 #import "VPurchaseManager.h"
 #import "VVoteType.h"
+#import "VExperienceEnhancerResponder.h"
+#import "UIResponder+VResponderChain.h"
 
 #import <KVOController/FBKVOController.h>
-
-NSString * const VExperienceEnhancerBarDidRequireLoginNotification = @"VExperienceEnhancerBarDidRequiredLoginNotification";
-NSString * const VExperienceEnhancerBarDidRequirePurchasePrompt = @"VExperienceEnhancerBarDidRequirePurchasePrompt";
 
 const CGFloat VExperienceEnhancerDesiredMinimumHeight = 60.0f;
 
@@ -175,46 +174,51 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     {
         return;
     }
-    
-    VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
-    
-    // Check if the user must buy this experience enhancer first
-    if ( enhancerForIndexPath.isLocked  )
+   
+    if ( ![VObjectManager sharedManager].authorized )  // Check if the user is logged in first
     {
-        NSDictionary *userInfo = @{ @"experienceEnhancer" : enhancerForIndexPath };
-        [[NSNotificationCenter defaultCenter] postNotificationName:VExperienceEnhancerBarDidRequirePurchasePrompt object:nil userInfo:userInfo];
-        return;
+        id<VExperienceEnhancerResponder>responder = [self v_targetConformingToProtocol:@protocol(VExperienceEnhancerResponder)];
+        NSAssert( responder != nil, @"Could not find adopter of `VExperienceEnhancerResponder` in responder chain." );
+        [responder authorizeWithCompletion:^(BOOL authorized)
+        {
+            if ( authorized )
+            {
+                [self selectExperienceEnhancerAtIndexPath:indexPath];
+            }
+        }];
     }
-    
-    // Check if the user is logged in first
-    if ( ![VObjectManager sharedManager].authorized )
+    else
     {
-        NSDictionary *userInfo = @{ @"experienceEnhancerIndexPath" : indexPath };
-        [[NSNotificationCenter defaultCenter] postNotificationName:VExperienceEnhancerBarDidRequireLoginNotification object:nil userInfo:userInfo];
-        return;
+        [self selectExperienceEnhancerAtIndexPath:indexPath];
     }
-    
-    [self selectExperienceEnhancerAtIndex:indexPath];
 }
 
-- (void)selectExperienceEnhancerAtIndex:(NSIndexPath *)indexPath
+- (void)selectExperienceEnhancerAtIndexPath:(NSIndexPath *)indexPath
 {
     VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
-    
-    // Incrememnt the vote count
-    [enhancerForIndexPath vote];
-    
-    // Call the selection block (configured in VNewContentViewController) to play the animations
-    if (self.selectionBlock)
+    if ( enhancerForIndexPath.isLocked  ) // Check if the user must buy this experience enhancer first
     {
-        UICollectionViewCell *selectedCell = [self.collectionView cellForItemAtIndexPath:indexPath];
-        CGPoint convertedCenter = [selectedCell.superview convertPoint:selectedCell.center toView:self];
-        self.selectionBlock(enhancerForIndexPath, convertedCenter);
+        id<VExperienceEnhancerResponder>responder = [self v_targetConformingToProtocol:@protocol(VExperienceEnhancerResponder)];
+        NSAssert( responder != nil, @"Could not find adopter of `VExperienceEnhancerResponder` in responder chain." );
+        [responder showPurchaseViewController:enhancerForIndexPath.voteType];
     }
-    
-    if ( [self.delegate respondsToSelector:@selector(experienceEnhancerSelected:)] )
+    else
     {
-        [self.delegate experienceEnhancerSelected:enhancerForIndexPath];
+        // Increment the vote count
+        [enhancerForIndexPath vote];
+        
+        // Call the selection block (configured in VNewContentViewController) to play the animations
+        if ( self.selectionBlock != nil )
+        {
+            UICollectionViewCell *selectedCell = [self.collectionView cellForItemAtIndexPath:indexPath];
+            CGPoint convertedCenter = [selectedCell.superview convertPoint:selectedCell.center toView:self];
+            self.selectionBlock(enhancerForIndexPath, convertedCenter);
+        }
+        
+        if ( [self.delegate respondsToSelector:@selector(experienceEnhancerSelected:)] )
+        {
+            [self.delegate experienceEnhancerSelected:enhancerForIndexPath];
+        }
     }
 }
 

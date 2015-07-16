@@ -217,7 +217,7 @@ return;
     [request start];
 }
 
-#ifndef V_NO_RESET_PURCHASES
+#ifdef V_RESET_PURCHASES
 
 - (void)resetPurchases
 {

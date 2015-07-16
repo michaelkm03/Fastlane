@@ -16,8 +16,6 @@
 #import "VFullscreenMarqueeCollectionCell.h"
 #import "VFullscreenMarqueeSelectionDelegate.h"
 
-#import "VFullscreenMarqueeTabIndicatorView.h"
-
 #import "VTimerManager.h"
 
 #import "VDependencyManager+VBackgroundContainer.h"
@@ -38,12 +36,6 @@
 - (NSTimeInterval)timerFireInterval
 {
     return kVDetailVisibilityDuration + kVDetailHideDuration;
-}
-
-- (void)scrolledToPage:(NSInteger)currentPage
-{
-    [super scrolledToPage:currentPage];
-    self.tabView.currentlySelectedTab = currentPage;
 }
 
 #pragma mark - CollectionViewDelegate
@@ -71,6 +63,7 @@
     VFullscreenMarqueeStreamItemCell *streamItemCell = (VFullscreenMarqueeStreamItemCell *)[super collectionView:collectionView cellForItemAtIndexPath:indexPath];
     
     [self.dependencyManager addLoadingBackgroundToBackgroundHost:streamItemCell];
+    [self.dependencyManager addBackgroundToBackgroundHost:streamItemCell];
     
     return streamItemCell;
 }
@@ -87,19 +80,9 @@
     VFullscreenMarqueeCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VFullscreenMarqueeCollectionCell suggestedReuseIdentifier]
                                                                                        forIndexPath:indexPath];
     cell.dependencyManager = self.dependencyManager;
-    cell.marquee = self;
-    self.tabView.currentlySelectedTab = self.currentPage;
-    CGSize desiredSize = [VFullscreenMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:collectionView.bounds];
-    cell.bounds = CGRectMake(0, 0, desiredSize.width, desiredSize.height);
-    
+    cell.marquee = self;    
     [self enableTimer];
     return cell;
-}
-
-- (void)setupStreamItemCell:(VAbstractMarqueeStreamItemCell *)streamItemCell withDependencyManager:(VDependencyManager *)dependencyManager andStreamItem:(VStreamItem *)streamItem
-{
-    streamItemCell.dependencyManager = dependencyManager;
-    streamItemCell.streamItem = streamItem;
 }
 
 + (Class)marqueeStreamItemCellClass
