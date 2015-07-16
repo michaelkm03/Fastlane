@@ -76,7 +76,7 @@ def authenticateUser(host):
         return False
 
     # Return the authentication JSON object
-    setAuthenticationToken(response.json)
+    setAuthenticationToken(response.json())
 
     return True
 
