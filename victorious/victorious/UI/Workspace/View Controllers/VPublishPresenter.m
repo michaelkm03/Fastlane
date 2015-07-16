@@ -61,10 +61,12 @@
     __weak typeof(self) welf = self;
     self.publishViewController.completion = ^void(BOOL success)
     {
+        __strong typeof(welf) strongSelf = welf;
         if (!success)
         {
-            [welf.viewControllerToPresentOn dismissViewControllerAnimated:YES completion:nil];
+            [strongSelf.viewControllerToPresentOn dismissViewControllerAnimated:YES completion:nil];
         }
+        strongSelf.publishViewController.completion = nil;
         completion(success);
     };
 }
