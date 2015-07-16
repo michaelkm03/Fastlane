@@ -75,7 +75,6 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
     publishParameters.isVideo = YES;
 }
 
-
 - (VAssetDownloader *)downloaderWithAsset:(PHAsset *)asset
 {
     return [[VVideoAssetDownloader alloc] initWithAsset:asset];

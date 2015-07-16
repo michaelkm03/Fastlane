@@ -85,16 +85,13 @@ static NSString * const kBarTintColorKey = @"barTintColor";
     viewController.navigationItem.leftBarButtonItem = closeButton;
 }
 
-
-- (NSString *)localizedEditingFinishedText
+- (BOOL)shouldShowPublishText
 {
-    NSString *editingFinishedText = NSLocalizedString(@"Publish", @"");
-    if (![self.creationFlowDelegate respondsToSelector:@selector(shouldShowPublishScreenForFlowController)])
+    if ([self.creationFlowDelegate respondsToSelector:@selector(shouldShowPublishScreenForFlowController)])
     {
-        return editingFinishedText;
+        return [self.creationFlowDelegate shouldShowPublishScreenForFlowController];
     }
-    editingFinishedText = [self.creationFlowDelegate shouldShowPublishScreenForFlowController] ? editingFinishedText : NSLocalizedString(@"Next", @"");
-    return editingFinishedText;
+    return YES;
 }
 
 - (void)selectedCancel:(UIBarButtonItem *)cancelButton

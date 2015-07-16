@@ -127,7 +127,7 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 {
     _workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:kGifWorkspaceKey];
     _workspaceViewController.adjustsCanvasViewFrameOnKeyboardAppearance = YES;
-    _workspaceViewController.continueText = [self localizedEditingFinishedText];
+    _workspaceViewController.continueText = [self shouldShowPublishText] ? NSLocalizedString(@"Publish", @"") : NSLocalizedString(@"Next", @"");
     _workspaceViewController.continueButtonEnabled = YES;
     _workspaceViewController.previewImage = self.previewImage;
     _workspaceViewController.mediaURL = self.renderedMediaURL;

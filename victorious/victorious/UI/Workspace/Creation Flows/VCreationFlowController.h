@@ -64,6 +64,9 @@ extern NSString * const VCreationFLowCaptureScreenKey;
  */
 - (void)addCloseButtonToViewController:(UIViewController *)viewController;
 
-- (NSString *)localizedEditingFinishedText;
+/**
+ *  Use this to determine the next text of the workspace.
+ */
+- (BOOL)shouldShowPublishText;
 
 @end

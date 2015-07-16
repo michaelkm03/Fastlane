@@ -139,9 +139,10 @@
     __weak typeof(self) welf = self;
     self.attachmentPresenter.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
     {
-        [welf dismissViewControllerAnimated:YES
-                                 completion:nil];
-        [welf didCaptureMediaWithURL:mediaURL previewImage:previewImage];
+        __strong typeof(welf) strongSelf = welf;
+        [strongSelf dismissViewControllerAnimated:YES
+                                       completion:nil];
+        [strongSelf didCaptureMediaWithURL:mediaURL previewImage:previewImage];
     };
     [self.attachmentPresenter presentOnViewController:self];
 }
