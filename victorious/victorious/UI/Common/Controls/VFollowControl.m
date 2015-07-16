@@ -14,7 +14,8 @@ static const CGFloat kHighlightedTiltRotationAngle = M_PI / 4;
 static const NSTimeInterval kHighlightAnimationDuration = 0.3f;
 static const CGFloat kHighlightTransformPerspective = -1.0 / 200.0f;
 static const CGFloat kForcedAntiAliasingConstant = 0.01f;
-static const CGFloat kActivityIndicatorShowDuration = 0.5f;
+static const CGFloat kHighlightedAlpha = 0.6f;
+static const CGFloat kHighlightedScale = 0.5f;
 
 static NSString * const kFollowIconKey = @"follow_user_icon";
 static NSString * const kFollowedCheckmarkIconKey = @"followed_user_icon";
@@ -25,12 +26,11 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 @property (nonatomic, strong) UIImageView *imageView;
 
-@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
-@property (nonatomic, strong) UIColor *activityIndicatorTintColor;
-
 @property (nonatomic, strong) UIImage *onImage;
 @property (nonatomic, strong) UIImage *offImage;
 @property (nonatomic, strong) UIImage *selectedBackgroundImage;
+
+@property (nonatomic, strong) UIColor *selectedTintColor;
 
 @end
 
@@ -86,53 +86,6 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
      }];
 }
 
-#pragma mark - Activity indicator management
-
-- (void)createActivityIndicator
-{
-    if ( self.activityIndicator == nil )
-    {
-        self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-        if ( self.activityIndicatorTintColor != nil )
-        {
-            self.activityIndicator.color = self.activityIndicatorTintColor;
-        }
-        [self addSubview:_activityIndicator];
-        [self v_addCenterToParentContraintsToSubview:_activityIndicator];
-        self.activityIndicator.alpha = 0.0f;
-    }
-    [self.activityIndicator startAnimating];
-}
-
-- (void)setActivityIndicatorTintColor:(UIColor *)activityIndicatorTintColor
-{
-    _activityIndicatorTintColor = activityIndicatorTintColor;
-    self.activityIndicator.color = activityIndicatorTintColor;
-}
-
-- (void)setShowActivityIndicator:(BOOL)showActivityIndicator
-{
-    _showActivityIndicator = showActivityIndicator;
-    if ( showActivityIndicator )
-    {
-        [self createActivityIndicator];
-        
-        self.imageView.alpha = 0.0f;
-        self.backgroundImageView.alpha = 0.0f;
-        [UIView animateWithDuration:kActivityIndicatorShowDuration animations:^
-         {
-             self.activityIndicator.alpha = 1.0f;
-         }
-                         completion:nil];
-    }
-    else
-    {
-        self.activityIndicator.alpha = 0.0f;
-        self.imageView.alpha = 1.0f;
-        self.backgroundImageView.alpha = 1.0f;
-    }
-}
-
 #pragma mark - Animations
 
 - (void)performHighlightAnimations:(void (^)(void))animations
@@ -156,11 +109,13 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
     return highLightTranform;
 }
 
-- (void)setFollowing:(BOOL)following animated:(BOOL)animated
+- (void)setControlState:(VFollowControlState)controlState animated:(BOOL)animated
 {
+    BOOL shouldFlip = ( controlState == VFollowControlStateLoading && self.controlState == VFollowControlStateUnfollowed ) || ( controlState == VFollowControlStateUnfollowed && self.controlState == VFollowControlStateLoading );
     void (^animationBlock)(void) = ^
     {
-        self.following = following;
+        self.controlState = controlState;
+        self.layer.affineTransform = controlState == VFollowControlStateLoading ? CGAffineTransformMakeScale(kHighlightedScale, kHighlightedScale) : CGAffineTransformIdentity;
     };
     
     if ( !animated )
@@ -169,11 +124,18 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
         return;
     }
     
-    [UIView transitionWithView:self
-                      duration:kHighlightAnimationDuration
-                       options:UIViewAnimationOptionTransitionFlipFromTop | UIViewAnimationOptionBeginFromCurrentState
-                    animations:animationBlock
-                    completion:nil];
+    if ( shouldFlip )
+    {
+        [UIView transitionWithView:self
+                          duration:kHighlightAnimationDuration
+                           options:UIViewAnimationOptionTransitionFlipFromTop | UIViewAnimationOptionBeginFromCurrentState
+                        animations:animationBlock
+                        completion:nil];
+    }
+    else
+    {
+        [self performHighlightAnimations:animationBlock];
+    }
 }
 
 #pragma mark - Appearance styling
@@ -182,13 +144,23 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
 {
     UIImage *backgroundImage = nil;
     UIImage *foregroundImage = self.offImage;
-    if ( self.following )
+    UIColor *tintColor = self.selectedTintColor;
+    switch ( self.controlState )
     {
-        backgroundImage = self.selectedBackgroundImage;
-        foregroundImage = self.onImage;
+        case VFollowControlStateLoading:
+            tintColor = [tintColor colorWithAlphaComponent:kHighlightedAlpha];
+        case VFollowControlStateFollowed: //Deliberate fallthrough!
+            foregroundImage = self.onImage;
+            backgroundImage = self.selectedBackgroundImage;
+            break;
+            
+        case VFollowControlStateUnfollowed:
+        default:
+            break;
     }
     self.backgroundImageView.image = backgroundImage;
     self.imageView.image = foregroundImage;
+    self.tintColor = tintColor;
 }
 
 #pragma mark - Setters
@@ -199,9 +171,9 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
     self.backgroundImageView.tintColor = tintColor;
 }
 
-- (void)setFollowing:(BOOL)following
+- (void)setControlState:(VFollowControlState)controlState
 {
-    _following = following;
+    _controlState = controlState;
     
     [self sendActionsForControlEvents:UIControlEventValueChanged];
     
@@ -217,11 +189,14 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
         self.offImage = [[dependencyManager imageForKey:kFollowIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         self.selectedBackgroundImage = [[dependencyManager imageForKey:kFollowedBackgroundIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         
-        UIColor *tintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-        self.tintColor = tintColor;
-        self.activityIndicatorTintColor = tintColor;
+        self.selectedTintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         [self updateFollowImageView];
     }
+}
+
++ (VFollowControlState)controlStateForFollowing:(BOOL)following
+{
+    return following ? VFollowControlStateFollowed : VFollowControlStateUnfollowed;
 }
 
 #pragma mark - Interface Builder

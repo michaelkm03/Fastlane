@@ -88,7 +88,7 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
         [self.userProfileImage setProfileImageURL:[NSURL URLWithString:_user.pictureUrl]];
     }
     
-    self.followButton.following = self.user.isFollowedByMainUser.boolValue;
+    self.followButton.controlState = [VFollowControl controlStateForFollowing:self.user.isFollowedByMainUser.boolValue];
 }
 
 - (void)applyStyle
@@ -108,25 +108,20 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
                                                                       withSender:nil];
     
     NSAssert(followResponder != nil, @"Need a VFollowingResponder higher up the chain to communicate following commands.");
-    sender.enabled = NO;
-    sender.showActivityIndicator = YES;
+    [sender setControlState:VFollowControlStateLoading];
 
     if ( self.user.isFollowedByMainUser.boolValue )
     {
         [followResponder unfollowUser:self.user withCompletion:^(VUser *userActedOn)
          {
-             [sender setFollowing:self.user.isFollowedByMainUser.boolValue animated:YES];
-             sender.showActivityIndicator = NO;
-             sender.enabled = YES;
+             [sender setControlState:[VFollowControl controlStateForFollowing:self.user.isFollowedByMainUser.boolValue] animated:YES];
          }];
     }
     else
     {
         [followResponder followUser:self.user withCompletion:^(VUser *userActedOn)
          {
-             [sender setFollowing:self.user.isFollowedByMainUser.boolValue animated:YES];
-             sender.showActivityIndicator = NO;
-             sender.enabled = YES;
+             [sender setControlState:[VFollowControl controlStateForFollowing:self.user.isFollowedByMainUser.boolValue] animated:YES];
          }];
     }
 }

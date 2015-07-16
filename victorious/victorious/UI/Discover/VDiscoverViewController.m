@@ -35,6 +35,7 @@
 #import "UIViewController+VLayoutInsets.h"
 #import "VHashtagResponder.h"
 #import "VDependencyManager+VTracking.h"
+#import "VFollowControl.h"
 
 static NSString * const kVSuggestedPeopleIdentifier = @"VSuggestedPeopleCell";
 static NSString * const kVTrendingTagIdentifier = @"VTrendingTagCell";
@@ -118,6 +119,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
             [self.suggestedPeopleViewController refresh:YES];
             self.followingStatusHasChanged = NO;
         }
+        [self reloadSection:VDiscoverViewControllerSectionTrendingTags];
     }
 }
 
@@ -240,8 +242,11 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 - (void)updatedFollowedTags
 {
+    if ( !self.loadedUserFollowing )
+    {
+        [self reloadSection:VDiscoverViewControllerSectionTrendingTags];
+    }
     self.loadedUserFollowing = YES;
-    [self reloadSection:VDiscoverViewControllerSectionTrendingTags];
 }
 
 - (void)updatedFollowedUsers
@@ -370,16 +375,23 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
             
             VHashtag *hashtag = self.trendingTags[ indexPath.row ];
             [customCell setHashtag:hashtag];
-            customCell.shouldCellRespond = YES;
             
-            __weak typeof(customCell) weakCell = customCell;
+            __weak VTrendingTagCell *weakCell = customCell;
             customCell.subscribeToTagAction = ^(void)
             {
-                // Disable follow / unfollow button
-                if (!weakCell.shouldCellRespond)
+                __strong VTrendingTagCell *strongCell = weakCell;
+                
+                if ( strongCell == nil )
                 {
                     return;
                 }
+                
+                // Disable follow / unfollow button
+                if (strongCell.followHashtagControl.controlState == VFollowControlStateLoading)
+                {
+                    return;
+                }
+                [strongCell.followHashtagControl setControlState:VFollowControlStateLoading animated:YES];
                 
                 // Check for authorization first
                 VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
@@ -388,9 +400,9 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                  {
                      if (!authorized)
                      {
+                         [strongCell.followHashtagControl setControlState:VFollowControlStateUnfollowed animated:NO];
                          return;
                      }
-                     weakCell.shouldCellRespond = NO;
                      
                      // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
                      if ([self isUserSubscribedToHashtag:hashtag.tag])
@@ -492,6 +504,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
      }
                   failureBlock:^(NSError *error)
      {
+         [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
          self.failureHud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
          self.failureHud.mode = MBProgressHUDModeText;
          self.failureHud.detailsLabelText = NSLocalizedString(@"HashtagSubscribeError", @"");
@@ -511,6 +524,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
      }
             failureBlock:^(NSError *error)
      {
+         [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
          self.failureHud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
          self.failureHud.mode = MBProgressHUDModeText;
          self.failureHud.detailsLabelText = NSLocalizedString(@"HashtagUnsubscribeError", @"");
@@ -529,8 +543,12 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
             VTrendingTagCell *trendingCell = (VTrendingTagCell *)cell;
             if ( [trendingCell.hashtag.tag isEqualToString:hashtag.tag] )
             {
-                trendingCell.shouldCellRespond = respond;
-                [trendingCell updateSubscribeStatusAnimated:YES];
+                VFollowControlState controlState = VFollowControlStateLoading;
+                if ( respond )
+                {
+                    controlState = [VFollowControl controlStateForFollowing:trendingCell.isSubscribedToTag];
+                }
+                [trendingCell.followHashtagControl setControlState:controlState animated:YES];
                 return;
             }
         }

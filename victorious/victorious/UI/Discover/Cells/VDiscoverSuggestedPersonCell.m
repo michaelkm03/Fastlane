@@ -114,26 +114,29 @@
     // If this is the currently logged in user, then hide the follow button
     VUser *me = [[VObjectManager sharedManager] mainUser];
     self.followButton.hidden = (self.user == me);
-    [self.followButton setFollowing:self.user.isFollowedByMainUser.boolValue animated:animated];
+    [self.followButton setControlState:[VFollowControl controlStateForFollowing:self.user.isFollowedByMainUser.boolValue] animated:animated];
 }
 
 - (IBAction)onFollow:(VFollowControl *)sender
 {
     void (^followAction)() = ^void()
     {
+        if ( sender.controlState == VFollowControlStateLoading )
+        {
+            return;
+        }
+        
         id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
                                                                           withSender:nil];
         NSAssert(followResponder != nil, @"VDiscoverSuggestedPersonCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
-        sender.enabled = NO;
-        sender.showActivityIndicator = YES;
-        if (sender.following)
+        BOOL isFollowing = sender.controlState == VFollowControlStateFollowed;
+        [sender setControlState:VFollowControlStateLoading animated:YES];
+        if (isFollowing)
         {
             [followResponder unfollowUser:self.user
                            withCompletion:^(VUser *userActedOn)
              {
-                 sender.enabled = YES;
-                 sender.showActivityIndicator = NO;
-                 [self populateData];
+                 [self updateFollowingAnimated:YES];
              }];
         }
         else
@@ -141,9 +144,7 @@
             [followResponder followUser:self.user
                          withCompletion:^(VUser *userActedOn)
              {
-                 sender.enabled = YES;
-                 sender.showActivityIndicator = NO;
-                 [self populateData];
+                 [self updateFollowingAnimated:YES];
              }];
         }
     };
@@ -158,10 +159,6 @@
         if (authorized)
         {
             followAction();
-        }
-        else
-        {
-            sender.enabled = YES;
         }
     }];
 }

@@ -26,32 +26,43 @@
     self.followControl = [[VFollowControl alloc] initWithFrame:CGRectZero];
 }
 
-- (void)testSettingFollowState
+- (void)testSettingControlState
 {
-    self.followControl.following = YES;
-    XCTAssert(self.followControl.following == YES);
+    self.followControl.controlState = VFollowControlStateFollowed;
+    XCTAssert(self.followControl.controlState == VFollowControlStateFollowed);
     
-    self.followControl.following = NO;
-    XCTAssert(self.followControl.following == NO);
+    self.followControl.controlState = VFollowControlStateUnfollowed;
+    XCTAssert(self.followControl.controlState == VFollowControlStateUnfollowed);
+    
+    self.followControl.controlState = VFollowControlStateLoading;
+    XCTAssert(self.followControl.controlState == VFollowControlStateLoading);
 }
 
 - (void)testSettingFollowStateAnimated
 {
-    [self.followControl setFollowing:YES
-                            animated:YES];
-    XCTAssert(self.followControl.following == YES);
+    [self.followControl setControlState:VFollowControlStateFollowed
+                               animated:YES];
+    XCTAssert(self.followControl.controlState == VFollowControlStateFollowed);
     
-    [self.followControl setFollowing:NO
-                            animated:YES];
-    XCTAssert(self.followControl.following == NO);
+    [self.followControl setControlState:VFollowControlStateFollowed
+                               animated:NO];
+    XCTAssert(self.followControl.controlState == VFollowControlStateFollowed);
     
-    [self.followControl setFollowing:YES
-                            animated:NO];
-    XCTAssert(self.followControl.following == YES);
+    [self.followControl setControlState:VFollowControlStateUnfollowed
+                               animated:YES];
+    XCTAssert(self.followControl.controlState == VFollowControlStateUnfollowed);
     
-    [self.followControl setFollowing:NO
-                            animated:NO];
-    XCTAssert(self.followControl.following == NO);
+    [self.followControl setControlState:VFollowControlStateUnfollowed
+                               animated:NO];
+    XCTAssert(self.followControl.controlState == VFollowControlStateUnfollowed);
+    
+    [self.followControl setControlState:VFollowControlStateLoading
+                               animated:YES];
+    XCTAssert(self.followControl.controlState == VFollowControlStateLoading);
+    
+    [self.followControl setControlState:VFollowControlStateLoading
+                               animated:NO];
+    XCTAssert(self.followControl.controlState == VFollowControlStateLoading);
 }
 
 @end

@@ -14,6 +14,8 @@
 #import "VFollowControl.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
+static const CGFloat kInviteCellHeight = 50.0f;
+
 @interface VInviteFriendTableViewCell ()
 
 @property (nonatomic, weak) IBOutlet UIImageView *profileImage;
@@ -37,14 +39,21 @@
     self.contentView.backgroundColor = [UIColor clearColor];
 }
 
+#pragma mark - VSharedCollectionReusableViewMethods
+
 + (UINib *)nibForCell
 {
-    return [UINib nibWithNibName:NSStringFromClass([self class]) bundle:nil];
+    return [UINib nibWithNibName:NSStringFromClass(self) bundle:nil];
 }
 
 + (NSString *)suggestedReuseIdentifier
 {
-    return NSStringFromClass([self class]);
+    return NSStringFromClass(self);
+}
+
++ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
+{
+    return CGSizeMake(CGRectGetWidth(bounds), kInviteCellHeight);
 }
 
 - (void)prepareForReuse
@@ -78,18 +87,19 @@
 - (void)updateFollowStatus
 {
     //If we get into a weird state and the relaionships are the same don't do anything
-    if (self.followUserControl.following == self.haveRelationship)
+    
+    if (self.followUserControl.controlState == [VFollowControl controlStateForFollowing:self.haveRelationship])
     {
         return;
     }
     if (!self.shouldAnimateFollowing)
     {
-        self.followUserControl.following = self.haveRelationship;
+        self.followUserControl.controlState = [VFollowControl controlStateForFollowing:self.haveRelationship];
         return;
     }
     
-    [self.followUserControl setFollowing:self.haveRelationship
-                                animated:YES];
+    [self.followUserControl setControlState:[VFollowControl controlStateForFollowing:self.haveRelationship]
+                                   animated:YES];
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -103,7 +113,8 @@
 - (IBAction)followUnfollowUser:(id)sender
 {
     self.shouldAnimateFollowing = YES;
-    if (self.followAction)
+    
+    if (self.followAction != nil)
     {
         self.followAction();
     }

@@ -10,6 +10,13 @@
 
 @class VDependencyManager;
 
+typedef NS_ENUM(NSUInteger, VFollowControlState)
+{
+    VFollowControlStateUnfollowed,
+    VFollowControlStateLoading,
+    VFollowControlStateFollowed
+};
+
 /**
     A control for representing the following state of the logged in user in relation to
         a followable object (currently a hashtag or user).
@@ -23,7 +30,14 @@
     @param following The following state this control should take on.
     @param animated Whether or not the control should animate to the new following state.
  */
-- (void)setFollowing:(BOOL)following animated:(BOOL)animated;
+- (void)setControlState:(VFollowControlState)controlState animated:(BOOL)animated;
+
+/**
+    Returns the appropriate enum value for the provided bool representing whether
+        or not the object represented by this control is followed. This will never
+        return the loading state.
+ */
++ (VFollowControlState)controlStateForFollowing:(BOOL)following;
 
 /**
     The dependency manager used to style and supply the follow icons for this control.
@@ -31,11 +45,9 @@
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 /**
-    The following state displayed by this control. Setting this using setFollowing:
-        is equivalent to calling setFollowing:animated: with animated set to NO.
+    The control state displayed by this control. Setting this using setControlState:
+        is equivalent to calling setControlState:animated: with animated set to NO.
  */
-@property (nonatomic, assign, getter = isFollowing) BOOL following;
-
-@property (nonatomic, assign) BOOL showActivityIndicator;
+@property (nonatomic, assign) VFollowControlState controlState;
 
 @end

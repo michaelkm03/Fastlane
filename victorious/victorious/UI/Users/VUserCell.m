@@ -96,26 +96,30 @@ static const CGFloat kUserCellHeight = 51.0f;
 
 - (IBAction)tappedFollowControl:(VFollowControl *)sender
 {
+    if ( sender.controlState == VFollowControlStateLoading )
+    {
+        return;
+    }
+    
     id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
                                                                       withSender:nil];
     NSAssert(followResponder != nil, @"VUserCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
-    sender.enabled = NO;
-    sender.showActivityIndicator = YES;
+    
+    BOOL isFollowing = sender.controlState == VFollowControlStateFollowed;
+    [sender setControlState:VFollowControlStateLoading animated:YES];
 
-    if (sender.following)
+    if (isFollowing)
     {
         [followResponder unfollowUser:self.user withCompletion:^(VUser *userActedOn)
          {
-             sender.enabled = YES;
-             sender.showActivityIndicator = NO;
+             [self updateFollowingAnimated:YES];
          }];
     }
     else
     {
         [followResponder followUser:self.user withCompletion:^(VUser *userActedOn)
          {
-             sender.enabled = YES;
-             sender.showActivityIndicator = NO;
+             [self updateFollowingAnimated:YES];
          }];
     }
 }
@@ -127,8 +131,12 @@ static const CGFloat kUserCellHeight = 51.0f;
     // If this is the currently logged in user, then hide the follow button
     VUser *me = [[VObjectManager sharedManager] mainUser];
     self.followControl.hidden = [self.user isEqual:me];
-    [self.followControl setFollowing:[me.following containsObject:self.user]
-                            animated:animated];
+    VFollowControlState desiredControlState = [VFollowControl controlStateForFollowing:[me.following containsObject:self.user]];
+    if ( self.followControl.controlState != desiredControlState )
+    {
+        [self.followControl setControlState:desiredControlState
+                                   animated:animated];
+    }
 }
 
 @end

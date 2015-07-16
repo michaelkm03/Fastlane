@@ -33,11 +33,6 @@
 @property (nonatomic, strong) VHashtag *hashtag;
 
 /**
- Set to NO to disable any action
- */
-@property (nonatomic, assign) BOOL shouldCellRespond;
-
-/**
  Set this to adjust font, font color, and background color
  */
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -54,6 +49,6 @@
  
  @param animate BOOL to tell the control to animate it's changing state
  */
-- (void)updateSubscribeStatusAnimated:(BOOL)animated;
+- (void)updateSubscribeStatusAnimated:(BOOL)animated showLoading:(BOOL)loading;
 
 @end
