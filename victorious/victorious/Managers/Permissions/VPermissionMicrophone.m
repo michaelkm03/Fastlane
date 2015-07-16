@@ -31,7 +31,7 @@
     }
 }
 
-- (void)trackingPermission:(NSString *)trackingStatus
+- (void)trackPermission:(NSString *)trackingStatus
 {
     [self.permissionsTrackingHelper permissionsDidChange:VTrackingValueMicrophoneDidAllow permissionState:trackingStatus];
 }

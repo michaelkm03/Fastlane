@@ -27,7 +27,7 @@
     }
 }
 
-- (void)trackingPermission:(NSString *)trackingStatus
+- (void)trackPermission:(NSString *)trackingStatus
 {
     [self.permissionsTrackingHelper permissionsDidChange:VTrackingValuePhotolibraryDidAllow permissionState:trackingStatus];
 }
