@@ -28,7 +28,7 @@
 
 /**
  *  VTrimLoopingPlayerViewController loops a video at a specified mediaURL. 
- *  With an optional trim range within the uration of the video to loop over.
+ *  With an optional trim range within the duration of the video to loop over.
  */
 @interface VTrimLoopingPlayerViewController : UIViewController
 
