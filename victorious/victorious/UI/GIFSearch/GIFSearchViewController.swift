@@ -13,7 +13,7 @@ import UIKit
     
     /// The user selected a GIF image and wants to proceed with it in a creation flow.
     ///
-    /// :param: `previewImage` A small, stille image that is loaded into memory and ready to display
+    /// :param: `previewImage` A small, still image that is loaded into memory and ready to display
     /// :param: `capturedMediaURL` The file URL of the GIF's mp4 video asset downloaded to a file temporary location on the device
     func GIFSelectedWithPreviewImage( previewImage: UIImage, capturedMediaURL: NSURL )
 }
@@ -37,7 +37,7 @@ class GIFSearchViewController: UIViewController {
     
     let scrollPaginator = VScrollPaginator()
     let searchDataSource = GIFSearchDataSource()
-    private lazy var mediaHelper = GIFSearchMediaHelper()
+    private lazy var mediaExporter = GIFSearchMediaExporter()
     
     var delegate: GIFSearchViewControllerDelegate?
     
@@ -87,7 +87,7 @@ class GIFSearchViewController: UIViewController {
             progressHUD.dimBackground = true
             progressHUD.show(true)
             
-            self.mediaHelper.loadMedia( selectedGIF ) { (previewImage, mediaURL, error) in
+            self.mediaExporter.loadMedia( selectedGIF ) { (previewImage, mediaURL, error) in
                 
                 if let previewImage = previewImage, let mediaURL = mediaURL {
                     self.delegate?.GIFSelectedWithPreviewImage( previewImage, capturedMediaURL: mediaURL )

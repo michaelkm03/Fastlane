@@ -1,5 +1,5 @@
 //
-//  GIFSearchMediaHelper.swift
+//  GIFSearchMediaExporter.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 7/13/15.
@@ -10,7 +10,7 @@ import Foundation
 
 /// Helper that handles loading preview image and streaming GIF asset
 /// to a file using asynchronous operations.
-struct GIFSearchMediaHelper {
+struct GIFSearchMediaExporter {
     
     private let operationQueue = NSOperationQueue()
     
@@ -19,14 +19,14 @@ struct GIFSearchMediaHelper {
     /// :param: `previewImage`: A UIImage loaded with a still thumbnail asset
     /// :param: `mediaUrl`: The URL on disk of the downloaded media file
     /// :param: `error`: An NSError instance defined if there was en error, otherwise `nil`
-    typealias GIFSearchMediaHelperCompletion = (previewImage: UIImage?, mediaUrl: NSURL?, error: NSError?)->()
+    typealias GIFSearchMediaExporterCompletion = (previewImage: UIImage?, mediaUrl: NSURL?, error: NSError?)->()
     
     /// For the provided GIFSearchResult, downlods its video asset to disk and loads a preview image
     /// needed for subsequent steps in the publish flow.
     ///
     /// :param: `gifSearchResult`: The GIFSearchResult whose assets will be loaded/downloaded
     /// :param: `completion`: A completion closure called wehn all opeartions are complete
-    func loadMedia( gifSearchResult: GIFSearchResult, completion: GIFSearchMediaHelperCompletion ) {
+    func loadMedia( gifSearchResult: GIFSearchResult, completion: GIFSearchMediaExporterCompletion ) {
         
         let downloadPath = self.downloadPathForRemotePath( gifSearchResult.mp4Url )
         if let previewImageURL = NSURL(string: gifSearchResult.thumbnailStillUrl),

@@ -118,6 +118,8 @@ class GIFSearchDataSource: NSObject {
         }
         
         self.state = .Loading
+        // WARNING: Remove this hardcodded empty string replcement:
+        // TODO: Figure out if comma-separated or spaced keywords is best
         VObjectManager.sharedManager().searchForGIF( [ searchText == "" ? "sponge" : searchText ],
             pageType: pageType,
             success: { (results) in
