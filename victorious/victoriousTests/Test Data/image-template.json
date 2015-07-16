@@ -8,8 +8,8 @@
             "scale": 1
         }
     },
-    "myImages": {
-        "imageCount": 5,
+    "macroImages": {
+        "imageCount": 2,
         "imageMacro": "http:\/\/media-dev-public.s3-website-us-west-1.amazonaws.com\/_static\/ballistics\/6\/images\/tomato_XXXXX.png",
         "scale": 2
     },

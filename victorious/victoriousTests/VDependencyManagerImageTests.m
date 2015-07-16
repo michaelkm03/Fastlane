@@ -116,15 +116,34 @@
     XCTAssertEqualObjects(image2, images[1]);
 }
 
-- (void)testArrayOfImageURLs
+- (void)testImageMacro
 {
-    NSArray *images = [self.dependencyManager arrayOfImageURLsForKey:@"myImages"];
-    XCTAssertEqual(images.count, 5u);
-    XCTAssertEqualObjects(images[0], @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00000.png");
-    XCTAssertEqualObjects(images[1], @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00001.png");
-    XCTAssertEqualObjects(images[2], @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00002.png");
-    XCTAssertEqualObjects(images[3], @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00003.png");
-    XCTAssertEqualObjects(images[4], @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00004.png");
+    NSURL *imageBundleURL1 = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleImage" withExtension:@"png"];
+    NSData *imageData1 = [NSData dataWithContentsOfURL:imageBundleURL1];
+    UIImage *image1 = [[UIImage alloc] initWithData:imageData1 scale:2.0f];
+    
+    NSURL *imageBundleURL2 = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleImage2" withExtension:@"png"];
+    NSData *imageData2 = [NSData dataWithContentsOfURL:imageBundleURL2];
+    UIImage *image2 = [[UIImage alloc] initWithData:imageData2 scale:2.0f];
+    
+    VDataCache *dataCache = [[VDataCache alloc] init];
+    NSError *error = nil;
+    [dataCache cacheDataAtURL:imageBundleURL1 forID:[NSURL URLWithString:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00000.png"] error:&error];
+    XCTAssertNil(error);
+    
+    error = nil;
+    [dataCache cacheDataAtURL:imageBundleURL2 forID:[NSURL URLWithString:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00001.png"] error:&error];
+    XCTAssertNil(error);
+    
+    NSArray *images = [self.dependencyManager arrayOfImagesForKey:@"macroImages"];
+    
+    XCTAssertEqual(images.count, 2u);
+    XCTAssert( [images[0] isKindOfClass:[UIImage class]] );
+    XCTAssert( [images[1] isKindOfClass:[UIImage class]] );
+    XCTAssert( CGSizeEqualToSize([images[0] size], image1.size) );
+    XCTAssert( CGSizeEqualToSize([images[1] size], image2.size) );
+    XCTAssertEqual( [(UIImage *)images[0] scale], 2.0f );
+    XCTAssertEqual( [(UIImage *)images[1] scale], 2.0f );
 }
 
 @end

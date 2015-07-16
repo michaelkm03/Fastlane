@@ -364,19 +364,20 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
         {
             dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)templateObject objectForKey:VDependencyManagerIDKey]];
         }
-        else if ( !typeTest([NSDictionary class]) && [templateObject isKindOfClass:[NSDictionary class]] && [VTemplateImage isImageJSON:templateObject] )
+        else if ( typeTest([templateObject class]) )
+        {
+            [returnValue addObject:templateObject];
+            continue;
+        }
+        else if ( typeTest([UIImage class]) && [templateObject isKindOfClass:[NSDictionary class]] && [VTemplateImage isImageJSON:templateObject] )
         {
             VTemplateImage *templateImage = [[VTemplateImage alloc] initWithJSON:templateObject];
             UIImage *image = [self imageWithTemplateImage:templateImage];
             if ( image != nil )
             {
                 [returnValue addObject:image];
+                continue;
             }
-        }
-        else if ( typeTest([templateObject class]) )
-        {
-            [returnValue addObject:templateObject];
-            continue;
         }
         
         if ( dependencyManager != nil )
@@ -389,6 +390,25 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
         }
     }
     return [returnValue copy];
+}
+
+- (NSArray *)arrayOfImagesForKey:(NSString *)key
+{
+    NSDictionary *macroDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
+    VTemplateImageMacro *imageMacro = [[VTemplateImageMacro alloc] initWithJSON:macroDictionary];
+    
+    NSArray *templateImages = [imageMacro images];
+    NSMutableArray *returnValue = [[NSMutableArray alloc] initWithCapacity:templateImages.count];
+    for (VTemplateImage *templateImage in templateImages)
+    {
+        UIImage *image = [self imageWithTemplateImage:templateImage];
+        if ( image == nil )
+        {
+            return @[];
+        }
+        [returnValue addObject:image];
+    }
+    return returnValue;
 }
 
 - (NSArray *)arrayOfImageURLsForKey:(NSString *)key

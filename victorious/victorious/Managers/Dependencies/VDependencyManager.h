@@ -155,6 +155,12 @@ extern NSString * const VDependencyManagerEditTextWorkspaceKey;
 - (NSArray *)arrayOfSingletonValuesConformingToProtocol:(Protocol *)protocol forKey:(NSString *)key;
 
 /**
+ Returns an NSArray of UIImage objects specified in a macro format.
+ (See "Image Macros" in the template spec for details)
+ */
+- (NSArray *)arrayOfImagesForKey:(NSString *)key;
+
+/**
  Returns an NSArray of NSString objects for the specified key. These 
  NSString objects will contain URLs pointing to images.
  */
