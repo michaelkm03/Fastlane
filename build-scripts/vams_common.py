@@ -44,8 +44,8 @@ def init():
 
 
     _DEFAULT_PLATFORM = 'android'
-    _PRODUCTION_HOST = 'https://api.getvictorious.com'
-    _STAGING_HOST = 'https://staging.getvictorious.com'
+    _PRODUCTION_HOST = 'http://api.getvictorious.com'
+    _STAGING_HOST = 'http://staging.getvictorious.com'
     _QA_HOST = 'http://qa.getvictorious.com'
     _DEV_HOST = 'http://dev.getvictorious.com'
     _LOCAL_HOST = 'http://localhost:8887'
