@@ -154,6 +154,7 @@ NSString * const VAssetCollectionGridViewControllerMediaType = @"assetGridViewCo
 - (void)unauthorizedDataSource:(VAssetCollectionUnauthorizedDataSource *)dataSource
         authorizationChangedTo:(BOOL)authorizationStatus
 {
+    [self.delegate gridViewController:self authorizationStatus:authorizationStatus];
     if (authorizationStatus)
     {
         [self setupAssetDataSource];
