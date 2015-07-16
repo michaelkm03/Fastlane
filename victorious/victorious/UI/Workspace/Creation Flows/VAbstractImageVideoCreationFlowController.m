@@ -37,7 +37,7 @@
 // Keys
 NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 
-@interface VAbstractImageVideoCreationFlowController () <UINavigationControllerDelegate, UIViewControllerTransitioningDelegate>
+@interface VAbstractImageVideoCreationFlowController () <UINavigationControllerDelegate, UIViewControllerTransitioningDelegate, VAssetCollectionGridViewControllerDelegate>
 
 @property (nonatomic, strong) NSArray *cachedAssetCollections;
 
@@ -75,6 +75,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
         
         _listViewController = [self collectionListViewController];
         _gridViewController = [self gridViewControllerWithDependencyManager:dependencyManager];
+        _gridViewController.delegate = self;
         [self.captureContainerViewController setContainedViewController:_gridViewController];
     }
     return self;
@@ -100,52 +101,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     // We need to be the delegate for the publish animation, and the gesture delegate for the pop to work
     self.delegate = self;
     self.interactivePopGestureRecognizer.delegate = (id<UIGestureRecognizerDelegate>)self;
-    
-    // Present the collections list when the user selects the folder button
-    __weak typeof(self) welf = self;
-    self.gridViewController.alternateFolderSelectionHandler = ^()
-    {
-        [welf presentAssetFoldersList];
-    };
-    self.gridViewController.assetSelectionHandler = ^(PHAsset *selectedAsset)
-    {
-        MBProgressHUD *hudForView = [MBProgressHUD showHUDAddedTo:welf.view animated:YES];
-        hudForView.mode = MBProgressHUDModeAnnularDeterminate;
-        welf.downloader = [welf downloaderWithAsset:selectedAsset];
-        [welf.downloader downloadWithProgress:^(double progress, NSString *progressText)
-         {
-             hudForView.progress = progress;
-         }
-                                   completion:^(NSError *error, NSURL *downloadedFileURL, UIImage *previewImage)
-         {
-             [hudForView hide:YES];
-             if (error == nil)
-             {
-                 [welf prepareWorkspaceWithMediaURL:downloadedFileURL
-                                    andPreviewImage:previewImage];
-                 [welf pushViewController:welf.workspaceViewController
-                                 animated:YES];
-             }
-             else
-             {
-                 UIAlertController *alert = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"LibraryCaptureFailed", nil)
-                                                                                      message:error.localizedDescription
-                                                                         andCancelButtonTitle:NSLocalizedString(@"OK", nil)];
-                 [welf presentViewController:alert animated:YES completion:nil];
-             }
-         }];
-    };
-    
-    // On authorization is called immediately if we have already determined authorization status
-    __weak VAssetCollectionListViewController *weakListViewController = _listViewController;
-    __weak VAssetCollectionGridViewController *weakGridViewController = _gridViewController;
-    _gridViewController.onAuthorizationHandler = ^void(BOOL authorized)
-    {
-        [weakListViewController fetchDefaultCollectionWithCompletion:^(PHAssetCollection *collection)
-         {
-             weakGridViewController.collectionToDisplay = collection;
-         }];
-    };
 }
 
 #pragma mark - Private Methods
@@ -363,6 +318,53 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 {
     return [[VCollectionListPresentationController alloc] initWithPresentedViewController:self.listViewController
                                                                  presentingViewController:self];
+}
+
+#pragma mark - VAssetCollectionGridViewControllerDelegate
+
+- (void)gridViewControllerWantsToViewAlternateCollections:(VAssetCollectionGridViewController *)gridViewController
+{
+    [self presentAssetFoldersList];
+}
+
+- (void)gridViewController:(VAssetCollectionGridViewController *)gridViewController
+             selectedAsset:(PHAsset *)asset
+{
+    MBProgressHUD *hudForView = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hudForView.mode = MBProgressHUDModeAnnularDeterminate;
+    self.downloader = [self downloaderWithAsset:asset];
+    __weak typeof(self) welf = self;
+    [self.downloader downloadWithProgress:^(double progress, NSString *progressText)
+     {
+         hudForView.progress = progress;
+     }
+                               completion:^(NSError *error, NSURL *downloadedFileURL, UIImage *previewImage)
+     {
+         [hudForView hide:YES];
+         if (error == nil)
+         {
+             [welf prepareWorkspaceWithMediaURL:downloadedFileURL
+                                andPreviewImage:previewImage];
+             [welf pushViewController:welf.workspaceViewController
+                             animated:YES];
+         }
+         else
+         {
+             UIAlertController *alert = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"LibraryCaptureFailed", nil)
+                                                                                  message:error.localizedDescription
+                                                                     andCancelButtonTitle:NSLocalizedString(@"OK", nil)];
+             [welf presentViewController:alert animated:YES completion:nil];
+         }
+     }];
+}
+
+- (void)gridViewController:(VAssetCollectionGridViewController *)gridViewController
+       authorizationStatus:(BOOL)authorizedStatus
+{
+    [self.listViewController fetchDefaultCollectionWithCompletion:^(PHAssetCollection *collection)
+     {
+         self.gridViewController.collectionToDisplay = collection;
+     }];
 }
 
 @end

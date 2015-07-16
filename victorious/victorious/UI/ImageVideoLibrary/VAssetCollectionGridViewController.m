@@ -144,15 +144,9 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
     }
 }
 
-- (void)setOnAuthorizationHandler:(void (^)(BOOL))onAuthorizationHandler
+- (void)setDelegate:(id<VAssetCollectionGridViewControllerDelegate>)delegate
 {
-    _onAuthorizationHandler = onAuthorizationHandler;
-    
-    // If authorization handler is being cleared bail
-    if (_onAuthorizationHandler == nil)
-    {
-        return;
-    }
+    _delegate = delegate;
     
     switch ([self.libraryPermission permissionState])
     {
@@ -160,10 +154,12 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
         case VPermissionStateUnknown:
             break;
         case VPermissionStateSystemDenied:
-            onAuthorizationHandler(NO);
+            [self.delegate gridViewController:self
+                          authorizationStatus:NO];
             break;
         case VPermissionStateAuthorized:
-            onAuthorizationHandler(YES);
+            [self.delegate gridViewController:self
+                          authorizationStatus:NO];
             break;
         case VPermissionUnsupported:
             // We should never get here
@@ -175,10 +171,7 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
 
 - (void)selectedFolderPicker:(UIButton *)button
 {
-    if (self.alternateFolderSelectionHandler != nil)
-    {
-        self.alternateFolderSelectionHandler();
-    }
+    [self.delegate gridViewControllerWantsToViewAlternateCollections:self];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -294,10 +287,8 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
                 {
                     [self prepareImageManagerAndRegisterAsObserver];
                 }
-                if (self.onAuthorizationHandler != nil)
-                {
-                    self.onAuthorizationHandler(granted);
-                }
+                [self.delegate gridViewController:self
+                              authorizationStatus:granted];
                 [self.collectionView reloadData];
             }];
             break;
@@ -305,11 +296,9 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
         }
         case VPermissionStateAuthorized:
         {
-            // We're all good call the asset selection handler
-            if (self.assetSelectionHandler)
-            {
-                self.assetSelectionHandler([self assetForIndexPath:indexPath]);
-            }
+            // We're all good call the delegate method
+            [self.delegate gridViewController:self
+                                selectedAsset:[self assetForIndexPath:indexPath]];
             break;
         }
         case VPermissionStateSystemDenied:
