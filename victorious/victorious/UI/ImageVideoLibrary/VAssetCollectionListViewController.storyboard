@@ -102,6 +102,7 @@
                 <tapGestureRecognizer id="cgq-pE-DfB">
                     <connections>
                         <action selector="tappedAway:" destination="n0Z-zs-EJX" id="apb-zW-Oeg"/>
+                        <outlet property="delegate" destination="n0Z-zs-EJX" id="7eE-2y-cgP"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>

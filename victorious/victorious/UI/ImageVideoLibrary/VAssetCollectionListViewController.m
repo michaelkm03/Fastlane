@@ -16,7 +16,7 @@
 // Cell is registered with this key in the storyboard
 static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 
-@interface VAssetCollectionListViewController () <UITableViewDataSource, UITableViewDelegate, PHPhotoLibraryChangeObserver, UIViewControllerTransitioningDelegate>
+@interface VAssetCollectionListViewController () <UITableViewDataSource, UITableViewDelegate, PHPhotoLibraryChangeObserver, UIViewControllerTransitioningDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 
@@ -102,6 +102,11 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
          }];
         [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
     }
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
 }
 
 #pragma mark - Target/Action
@@ -292,6 +297,18 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 {
     return [[VCollectionListPresentationController alloc] initWithPresentedViewController:presented
                                                                  presentingViewController:source];
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
+       shouldReceiveTouch:(UITouch *)touch
+{
+    if (CGRectContainsPoint(self.tableView.bounds, [touch locationInView:self.tableView]))
+    {
+        return NO;
+    }
+    return YES;
 }
 
 @end
