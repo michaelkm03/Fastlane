@@ -63,8 +63,11 @@ extension GIFSearchViewController : UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        let isLastSection = section == collectionView.numberOfSections() - 1
-        return CGSize(width: collectionView.bounds.width, height: isLastSection ? GIFSearchLayout.FooterViewHeight : 0.0 )
+        let numSections = collectionView.numberOfSections()
+        let isLastSection = numSections > 1 && section == numSections - 1
+        let isLastPage = self.searchDataSource.state == .ContentEnd
+        let footerHeight = isLastSection && !isLastPage ? GIFSearchLayout.FooterViewHeight : 0.0
+        return CGSize(width: collectionView.bounds.width, height: footerHeight )
     }
 }
 

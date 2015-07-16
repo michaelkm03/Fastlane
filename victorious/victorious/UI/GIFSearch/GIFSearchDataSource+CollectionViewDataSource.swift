@@ -43,13 +43,16 @@ extension GIFSearchDataSource : UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-        if let attributionView = collectionView.dequeueReusableSupplementaryViewOfKind( UICollectionElementKindSectionHeader, withReuseIdentifier: GIFSearchDataSource.kHeaderReuseIdentifier, forIndexPath: indexPath ) as? UICollectionReusableView where indexPath.section == 0 {
+        
+        if let attributionView = collectionView.dequeueReusableSupplementaryViewOfKind( UICollectionElementKindSectionHeader, withReuseIdentifier: GIFSearchDataSource.ReuseIdentifier.AttributionHeader, forIndexPath: indexPath ) as? UICollectionReusableView where indexPath.section == 0 {
             return attributionView
         }
-        else if let activityFooterView = collectionView.dequeueReusableSupplementaryViewOfKind( UICollectionElementKindSectionFooter, withReuseIdentifier: GIFSearchDataSource.kFooterReuseIdentifier, forIndexPath: indexPath ) as? UICollectionReusableView where indexPath.section == collectionView.numberOfSections() - 1 {
+        
+        if let activityFooterView = collectionView.dequeueReusableSupplementaryViewOfKind( UICollectionElementKindSectionFooter, withReuseIdentifier: GIFSearchDataSource.ReuseIdentifier.ActivityFooter, forIndexPath: indexPath ) as? UICollectionReusableView {
             return activityFooterView
         }
-        fatalError( "Could not find reuseable view." )
+        
+        fatalError( "Could not find cell." )
     }
     
     // MARK: - Helpers

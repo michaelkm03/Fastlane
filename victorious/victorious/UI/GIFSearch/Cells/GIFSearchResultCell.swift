@@ -25,11 +25,10 @@ class GIFSearchResultCell: UICollectionViewCell {
     }
     
     private func loadImage( url: NSURL ) {
+        self.imageView.alpha = 0.0
         self.imageView.sd_setImageWithURL( url, completed: { (image, error, cacheType, url) in
-            
             if cacheType == .None {
-                self.imageView.alpha = 0.0
-                UIView.animateWithDuration(0.5) {
+                UIView.animateWithDuration(0.2) {
                     self.imageView.alpha = 1.0
                 }
             }

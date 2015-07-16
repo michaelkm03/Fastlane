@@ -8,12 +8,25 @@
 
 import Foundation
 
-// Provides methods for searching for GIFs through the backend
+private extension VAbstractFilter {
+    var isLastPage: Bool {
+        return self.currentPageNumber.integerValue == self.maxPageNumber.integerValue
+    }
+}
+
+/// Provides methods for searching for GIFs through the backend
 extension VObjectManager {
     
-    typealias GIFSearchSuccess = (results: [GIFSearchResult]) -> ()
+    /// Closure called when GIF search request succeeds
+    ///
+    /// :param: results An array of GIFSearchResult models found
+    /// :param: isLastPage A bool indicating if there are are more results that can be loaded
+    typealias GIFSearchSuccess = (results: [GIFSearchResult], isLastPage: Bool) -> ()
     
-    typealias GIFSearchFailure = (error: NSError?, cancelled: Bool) -> ()
+    /// Closure called when GIF search request fails
+    ///
+    /// :param: error An array of GIFSearchResult models found
+    typealias GIFSearchFailure = (error: NSError?) -> ()
     
     func searchForGIF( keywords: [String], pageType:VPageType, success:GIFSearchSuccess?, failure:GIFSearchFailure? ) -> RKManagedObjectRequestOperation? {
         
@@ -27,17 +40,16 @@ extension VObjectManager {
         }
         
         let fullSuccess: VSuccessBlock =  { (operaiton: NSOperation?, result: AnyObject?, resultObjects: [AnyObject]) -> Void in
-            success?( results: resultObjects as? [GIFSearchResult] ?? [] )
+            success?( results: resultObjects as? [GIFSearchResult] ?? [], isLastPage: filter.isLastPage )
         }
         let fullFail: VFailBlock =  { (operation: NSOperation?, error: NSError? ) -> Void in
-            failure?( error: error, cancelled: operation?.cancelled ?? false )
+            failure?( error: error )
         }
         
         return self.paginationManager.loadFilter( filter, withPageType: pageType, successBlock: fullSuccess, failBlock: fullFail )
     }
     
-    func filterForKeywords( keywordList: String ) -> VAbstractFilter {
-        
+    private func filterForKeywords( keywordList: String ) -> VAbstractFilter {
         let page = VPaginationManagerPageNumberMacro
         let perPage = VPaginationManagerItemsPerPageMacro
         let path = "/api/image/gif_search/\(keywordList)/\(page)/\(perPage)"

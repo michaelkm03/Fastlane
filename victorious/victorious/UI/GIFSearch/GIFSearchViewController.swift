@@ -32,7 +32,7 @@ class GIFSearchViewController: UIViewController {
     
     var selectedIndexPath: NSIndexPath?
     var previewSection: Int?
-    private var isScrollViewDecelerating = false
+    var isScrollViewDecelerating = false
     private(set) var dependencyManager: VDependencyManager?
     
     let scrollPaginator = VScrollPaginator()
@@ -101,15 +101,26 @@ class GIFSearchViewController: UIViewController {
         }
     }
     
-    private func performSearch( _ searchText: String = "", pageType: VPageType = .First ) {
-        self.searchDataSource.performSearch( searchText, pageType: pageType ) {
+    func performSearch( _ searchText: String = "", pageType: VPageType = .First ) {
+        self.searchDataSource.performSearch( searchText, pageType: pageType ) { (result) in
+            self.collectionView.performBatchUpdates({
+                if let result = result {
+                    self.collectionView.applyDataSourceChanges( result )
+                }
+            }, completion: nil)
+        }
+        
+        // This updates the state of the no content cell
+        if self.searchDataSource.sections.count == 0 {
             self.collectionView.reloadData()
         }
     }
     
-    private func clearSearch() {
-        self.searchDataSource.clear()
-        self.collectionView.reloadData()
+    func clearSearch() {
+        self.collectionView.performBatchUpdates({
+            let result = self.searchDataSource.clear()
+            self.collectionView.applyDataSourceChanges( result )
+        }, completion: nil)
         self.collectionView.setContentOffset( CGPoint.zeroPoint, animated: false )
     }
     
@@ -120,48 +131,71 @@ class GIFSearchViewController: UIViewController {
         label.sizeToFit()
         return label
     }
-}
-
-extension GIFSearchViewController : UISearchBarDelegate {
     
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        self.clearSearch()
-        self.performSearch( searchBar.text )
-        searchBar.resignFirstResponder()
-    }
-}
-
-extension GIFSearchViewController : UIScrollViewDelegate {
-    
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    /// Inserts a new section into the collection view that shows a fullsize preview video for the GIF search result
+    ///
+    /// :param: indexPath The index path of the GIF search result for which to show the preview video
+    func showPreviewForResult( indexPath: NSIndexPath ) {
+        var sectionInserted: Int?
         
-        self.scrollPaginator.scrollViewDidScroll( scrollView )
+        self.collectionView.performBatchUpdates({
+            let result = self.searchDataSource.addHighlightSection(forIndexPath: indexPath)
+            sectionInserted = result.insertedSections?.indexGreaterThanIndex(0)
+            self.collectionView.applyDataSourceChanges( result )
+        }, completion: nil)
         
-        if !self.isScrollViewDecelerating && self.searchBar.isFirstResponder() {
-            self.searchBar.resignFirstResponder()
-        }
-        
-        self.isScrollViewDecelerating = true
-    }
-    
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        self.isScrollViewDecelerating = false
-    }
-    
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        self.isScrollViewDecelerating = false
-    }
-}
-
-extension GIFSearchViewController : VScrollPaginatorDelegate {
-    
-    func shouldLoadNextPage() {
-        if let searchText = self.searchBar.text {
-            self.performSearch(searchText, pageType: .Next)
+        if let sectionInserted = sectionInserted {
+            let previewCellIndexPath = NSIndexPath(forRow: 0, inSection: sectionInserted)
+            if let cell = self.collectionView.cellForItemAtIndexPath( previewCellIndexPath ) {
+                self.collectionView.sendSubviewToBack( cell )
+            }
+            self.collectionView.scrollToItemAtIndexPath( previewCellIndexPath,
+                atScrollPosition: .CenteredVertically,
+                animated: true )
+            
+            self.selectedIndexPath = NSIndexPath(forRow: indexPath.row, inSection: sectionInserted - 1)
+            self.previewSection = sectionInserted
+            
+            self.collectionView.performBatchUpdates({
+                self.collectionView.collectionViewLayout.invalidateLayout()
+            }, completion:nil )
         }
     }
+    
+    /// Removes the section showing a GIF search result preview at the specified index path
+    ///
+    /// :param: indexPath The index path of the GIF search result for which to hide the preview
+    func hidePreviewForResult( indexPath: NSIndexPath ) {
+        self.collectionView.performBatchUpdates({
+            let result = self.searchDataSource.removeHighlightSection()
+            self.collectionView.applyDataSourceChanges( result )
+        }, completion: nil )
+        
+        self.selectedIndexPath = nil
+        self.previewSection = nil
+        
+        self.collectionView.performBatchUpdates({
+            self.collectionView.collectionViewLayout.invalidateLayout()
+        }, completion:nil )
+    }
 }
 
+/// Conveninece method to insert/delete sections during a batch update
+private extension UICollectionView {
+    
+    /// Inserts or deletes sections according to the inserted and deleted sections indicated in the result
+    ///
+    /// :param: result A `GIFSearchDataSource.ChangeResult` that contains info about which sections to insert or delete
+    func applyDataSourceChanges( result: GIFSearchDataSource.ChangeResult ) {
+        
+        if let insertedSections = result.insertedSections {
+            self.insertSections( insertedSections )
+        }
+        if let deletedSections = result.deletedSections {
+            self.deleteSections( deletedSections )
+        }
+    }
+}
 private extension UISearchBar {
     
     /// Finds the `UITextField` subview into which users type their search string
