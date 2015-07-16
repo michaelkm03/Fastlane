@@ -134,8 +134,7 @@
 
 - (void)presentCameraViewController
 {
-    self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithViewControllerToPresentOn:self
-                                                                                  dependencymanager:self.dependencyManager];
+    self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager];
     self.attachmentPresenter.attachmentTypes = VMediaAttachmentTypeImage;
     __weak typeof(self) welf = self;
     self.attachmentPresenter.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
@@ -144,7 +143,7 @@
                                  completion:nil];
         [welf didCaptureMediaWithURL:mediaURL previewImage:previewImage];
     };
-    [self.attachmentPresenter present];
+    [self.attachmentPresenter presentOnViewController:self];
 }
 
 - (UIViewController *)createImageSearchViewController

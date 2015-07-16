@@ -13,6 +13,7 @@
 
 @interface VPublishPresenter () <UIViewControllerTransitioningDelegate>
 
+@property (nonatomic, weak) UIViewController *viewControllerPresentedOn;
 @property (nonatomic, strong) VPublishBlurOverAnimator *animator;
 @property (nonatomic, strong, readwrite) VPublishViewController *publishViewController;
 
@@ -20,10 +21,9 @@
 
 @implementation VPublishPresenter
 
-- (instancetype)initWithViewControllerToPresentOn:(UIViewController *)viewControllerToPresentOn dependencymanager:(VDependencyManager *)dependencyManager
+- (instancetype)initWithViewDependencymanager:(VDependencyManager *)dependencyManager
 {
-    self = [super initWithViewControllerToPresentOn:viewControllerToPresentOn
-                                  dependencymanager:dependencyManager];
+    self = [super initWithDependencymanager:dependencyManager];
     if (self != nil)
     {
         _animator = [[VPublishBlurOverAnimator alloc] init];
@@ -36,11 +36,11 @@
 
 #pragma mark - VAbstractPresenter
 
-- (void)present
+- (void)presentOnViewController:(UIViewController *)viewControllerToPresentOn
 {
-    [self.viewControllerToPresentOn presentViewController:self.publishViewController
-                                                 animated:YES
-                                               completion:nil];
+    [viewControllerToPresentOn presentViewController:self.publishViewController
+                                            animated:YES
+                                          completion:nil];
 }
 
 #pragma mark - PropertyAccessors
@@ -64,7 +64,7 @@
         __strong typeof(welf) strongSelf = welf;
         if (!success)
         {
-            [strongSelf.viewControllerToPresentOn dismissViewControllerAnimated:YES completion:nil];
+            [strongSelf.viewControllerPresentedOn dismissViewControllerAnimated:YES completion:nil];
         }
         strongSelf.publishViewController.completion = nil;
         completion(success);

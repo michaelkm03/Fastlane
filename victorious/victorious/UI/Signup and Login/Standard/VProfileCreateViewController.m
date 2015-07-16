@@ -378,8 +378,7 @@
 
 - (IBAction)takePicture:(id)sender
 {
-    self.presenter = [[VEditProfilePicturePresenter alloc] initWithViewControllerToPresentOn:self
-                                                                           dependencymanager:self.dependencyManager];
+    self.presenter = [[VEditProfilePicturePresenter alloc] initWithDependencymanager:self.dependencyManager];
     self.presenter.isRegistration = YES;
     __weak typeof(self) welf = self;
     self.presenter.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
@@ -391,7 +390,7 @@
         [strongSelf dismissViewControllerAnimated:YES
                                        completion:nil];
     };
-    [self.presenter present];
+    [self.presenter presentOnViewController:self];
 }
 
 - (IBAction)exit:(id)sender

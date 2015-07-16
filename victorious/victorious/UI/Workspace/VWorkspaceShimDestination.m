@@ -34,9 +34,8 @@
 
 - (BOOL)shouldNavigateWithAlternateDestination:(id __autoreleasing *)alternateViewController
 {
-    self.creationFlowPresenter = [[VCreationFlowPresenter alloc] initWithViewControllerToPresentOn:[VRootViewController rootViewController]
-                                                                                 dependencymanager:self.dependencyManager];
-    [self.creationFlowPresenter present];
+    self.creationFlowPresenter = [[VCreationFlowPresenter alloc] initWithDependencymanager:self.dependencyManager];
+    [self.creationFlowPresenter presentOnViewController:[VRootViewController rootViewController]];
     return NO;
 }
 

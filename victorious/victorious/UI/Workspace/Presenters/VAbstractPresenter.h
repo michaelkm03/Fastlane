@@ -20,18 +20,12 @@
 /**
  *  The designated initializer for VAbstractPresenter. All parameters are required.
  */
-- (instancetype)initWithViewControllerToPresentOn:(UIViewController *)viewControllerToPresentOn
-                                dependencymanager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithDependencymanager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 
 /**
  *  Subclasses will override this method to perform the appropriate presentation.
  */
-- (void)present;
-
-/**
- *  The UIViewController to present on. Passed into the designated initializer.
- */
-@property (nonatomic, readonly) UIViewController *viewControllerToPresentOn;
+- (void)presentOnViewController:(UIViewController *)viewControllerToPresentOn;
 
 /**
  *  A dependency manager to use. Passed into the designated initializer.

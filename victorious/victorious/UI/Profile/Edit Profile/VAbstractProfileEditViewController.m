@@ -184,8 +184,7 @@ static const CGFloat kBlurredWhiteAlpha = 0.3f;
 
 - (IBAction)takePicture:(id)sender
 {
-    self.editProfilePicturePresenter = [[VEditProfilePicturePresenter alloc] initWithViewControllerToPresentOn:self
-                                                                                                    dependencymanager:self.dependencyManager];
+    self.editProfilePicturePresenter = [[VEditProfilePicturePresenter alloc] initWithDependencymanager:self.dependencyManager];
     __weak typeof(self) welf = self;
     self.editProfilePicturePresenter.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
     {
@@ -205,7 +204,7 @@ static const CGFloat kBlurredWhiteAlpha = 0.3f;
         
         [welf dismissViewControllerAnimated:YES completion:nil];
     };
-    [self.editProfilePicturePresenter present];
+    [self.editProfilePicturePresenter presentOnViewController:self];
 }
 
 #pragma mark - UITextFieldDelegate

@@ -221,8 +221,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 
 - (void)setupPublishPresenter
 {
-    self.publishPresenter = [[VPublishPresenter alloc] initWithViewControllerToPresentOn:self
-                                                                       dependencymanager:self.dependencyManager];
+    self.publishPresenter = [[VPublishPresenter alloc] initWithDependencymanager:self.dependencyManager];
 
     __weak typeof(self) welf = self;
     self.publishPresenter.completion = ^void(BOOL published)
@@ -284,7 +283,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
                        withWorkspace:workspace];
     self.publishPresenter.publishParameters = publishParameters;
 
-    [self.publishPresenter present];
+    [self.publishPresenter presentOnViewController:self];
 }
 
 - (void)cleanupCapturedFile

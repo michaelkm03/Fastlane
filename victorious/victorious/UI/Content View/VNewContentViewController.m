@@ -1571,8 +1571,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)showMediaAttachmentUI
 {
-    self.mediaAttachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithViewControllerToPresentOn:self
-                                                                                       dependencymanager:self.dependencyManager];
+    self.mediaAttachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager];
     __weak typeof(self) welf = self;
     self.mediaAttachmentPresenter.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
     {
@@ -1580,7 +1579,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
         [strongSelf onMediaAttachedWithPreviewImage:previewImage
                                            mediaURL:mediaURL];
     };
-    [self.mediaAttachmentPresenter present];
+    [self.mediaAttachmentPresenter presentOnViewController:self];
 }
 
 - (void)onMediaAttachedWithPreviewImage:(UIImage *)previewImage

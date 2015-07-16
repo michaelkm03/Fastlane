@@ -303,7 +303,7 @@ static char KVOContext;
 
 - (IBAction)mediaButtonAction:(id)sender
 {
-    self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithViewControllerToPresentOn:self dependencymanager:self.dependencyManager];
+    self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager];
     __weak typeof(self) welf = self;
     self.attachmentPresenter.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
     {
@@ -312,7 +312,7 @@ static char KVOContext;
         [welf dismissViewControllerAnimated:YES
                                  completion:nil];
     };
-    [self.attachmentPresenter present];
+    [self.attachmentPresenter presentOnViewController:self];
 }
 
 - (IBAction)clearLeftMedia:(id)sender
