@@ -6,6 +6,8 @@
 	<string>${ProductPrefix}Chris Collins</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.getvictorious.${ProductPrefix}Chris-Collins</string>
+	<key>CFBundleName</key>
+	<string>${ProductPrefix}ChrisCollins</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -23,6 +25,8 @@
 	<integer>79</integer>
 	<key>QAAppID</key>
 	<integer>68</integer>
+	<key>CreatorSalutation</key>
+	<string>Chris Collins</string>
 	<key>FlurryAPIKey</key>
 	<string>9GQ6XZRZ3P3TR7DHQJB3</string>
 </dict>
