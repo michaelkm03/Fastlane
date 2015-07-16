@@ -11,7 +11,7 @@
 
 @class VSequence;
 
-/**
+/*
  *  A Stream header view for displaying information about a sequence.
  *  It displays the listicle banner.
  */
@@ -19,5 +19,11 @@
 
 @property (nonatomic, strong) VSequence *sequence;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+
+
+/*
+ *  Draws the banner for the listicle with the given text
+ */
+- (void)drawBannerWithText:(NSString *)text;
 
 @end

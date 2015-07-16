@@ -65,6 +65,11 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath
 {
+    return [self collectionView:collectionView cellForStreamItem:streamItem atIndexPath:indexPath inStream:nil];
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath inStream:(VStream *)stream
+{
     if ( [self.noContentCollectionViewCellFactory shouldDisplayNoContentCellForContentClass:[streamItem class]] )
     {
         return [self.noContentCollectionViewCellFactory noContentCellForCollectionView:collectionView atIndexPath:indexPath];
@@ -86,6 +91,8 @@
                                                                                  forIndexPath:indexPath];
     cell.dependencyManager = self.dependencyManager;
     cell.sequence = sequence;
+    cell.stream = stream;
+    NSLog(@"should be setting stream");
     [self.dependencyManager addLoadingBackgroundToBackgroundHost:cell];
     [self.dependencyManager addBackgroundToBackgroundHost:cell];
     [self.dependencyManager addHighlightViewToHost:cell];

@@ -29,6 +29,7 @@ static const CGFloat kMaxPercentBannerWidth = 0.58f;
 
 @implementation VListicleView
 
+/// Boiler plate code
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -55,14 +56,10 @@ static const CGFloat kMaxPercentBannerWidth = 0.58f;
     [self addLabel];
 }
 
-- (void)setSequence:(VSequence *)sequence
+- (void)drawBannerWithText:(NSString *)text
 {
-    _sequence = sequence;
-#warning - uncomment this once Sharif Merges' his editorialized changes:
-    /*
-     self.listicleLabel.text = sequence.headerName;
-     */
-    self.listicleLabel.text = sequence.remoteId;
+    self.listicleLabel.text = text;
+    
     CGSize textSize = [self.listicleLabel.text sizeWithAttributes:@{NSFontAttributeName:[self.listicleLabel font]}];
     CGFloat textWidth = MIN(textSize.width + (3 * kLabelInset), kMaxPercentBannerWidth*self.frame.size.width);
     CGFloat labelWidth =  MIN(textSize.width, kMaxPercentBannerWidth*self.frame.size.width - (3*kLabelInset) )  ;
@@ -71,12 +68,6 @@ static const CGFloat kMaxPercentBannerWidth = 0.58f;
     self.listicleLabel.frame = updatedLabelFrame;
     [self drawBannerWithWidth:textWidth];
 }
-
-- (void)setDependencyManager:(VDependencyManager *)dependencyManager
-{
-    _dependencyManager = dependencyManager;
-}
-
 
 - (void)drawBannerWithWidth:(CGFloat)width
 {
