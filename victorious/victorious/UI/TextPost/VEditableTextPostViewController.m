@@ -226,7 +226,8 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
         }
         
         // Set proper cursor position
-        dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
             self.textView.selectedRange = cursorPosition;
         });
     }

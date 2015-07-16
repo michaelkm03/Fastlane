@@ -111,7 +111,6 @@
         {
             [welf.flowNavigationController dismissViewControllerAnimated:YES completion:nil];
         };
-        
     }
     workspace.completionBlock = completion;
     workspace.showCloseButton = YES;

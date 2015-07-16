@@ -12,6 +12,10 @@
 
 extern NSString * const kHashtagKey;
 
+/**
+ A container view controller for the text post workspace that displays it's own top bar view which
+ forces a user to post a piece of content.
+ */
 @interface VForcedWorkspaceContainerViewController : UIViewController <VHasManagedDependencies, VLoginFlowScreen>
 
 @end
