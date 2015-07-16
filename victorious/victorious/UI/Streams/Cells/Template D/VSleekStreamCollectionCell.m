@@ -198,7 +198,6 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
     
     [self updatePreviewViewForSequence:sequence];
     self.headerView.sequence = sequence;
-    self.listicleView.sequence = sequence;
     self.sleekActionView.sequence = sequence;
     [self updateCaptionViewForSequence:sequence];
     [self.previewContainer removeConstraint:self.previewContainerHeightConstraint];
@@ -304,7 +303,7 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
     if (hasHeadline)
     {
         self.listicleView.hidden = NO;
-        [self.listicleView drawBannerWithText:self.editorialization.headline];
+        self.listicleView.headlineText = self.editorialization.headline;
     }
 }
 

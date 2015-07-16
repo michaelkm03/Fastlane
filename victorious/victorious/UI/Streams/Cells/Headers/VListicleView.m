@@ -8,11 +8,6 @@
 
 #import "VListicleView.h"
 #import "VdependencyManager.h"
-#import "VSequence.h"
-
-#define   DEGREES_TO_RADIANS(degrees)  ((3.14159 * degrees)/ 180)
-
-NSString *testString = @"BEST TACOS IN TOWN!";
 
 static const CGFloat kRadiusOfBanner = 6.0f;
 static const CGFloat kInsetForTriangle = 12.0f;
@@ -56,16 +51,34 @@ static const CGFloat kMaxPercentBannerWidth = 0.58f;
     [self addLabel];
 }
 
-- (void)drawBannerWithText:(NSString *)text
+- (void)addLabel
+{
+    CGRect frameLabel = CGRectMake(kLabelInset, 0, CGRectGetWidth(self.bounds) - kInsetForTriangle - (2 * kLabelInset), kLabelHeight);
+    self.listicleLabel = [[UILabel alloc] initWithFrame:frameLabel];
+    self.listicleLabel.center = CGPointMake(self.listicleLabel.center.x, kHeightOfBanner/2);
+    self.listicleLabel.textColor = [UIColor whiteColor];
+    self.listicleLabel.font = [self.dependencyManager fontForKey: VDependencyManagerLabel3FontKey];
+    self.listicleLabel.layer.zPosition = 200.0f;
+    [self addSubview:self.listicleLabel];
+}
+
+- (void)setHeadlineText:(NSString *)headlineText
+{
+    _headlineText = headlineText;
+    [self updateLabelWithText:headlineText];
+}
+
+- (void)updateLabelWithText:(NSString *)text
 {
     self.listicleLabel.text = text;
     
     CGSize textSize = [self.listicleLabel.text sizeWithAttributes:@{NSFontAttributeName:[self.listicleLabel font]}];
-    CGFloat textWidth = MIN(textSize.width + (3 * kLabelInset), kMaxPercentBannerWidth*self.frame.size.width);
-    CGFloat labelWidth =  MIN(textSize.width, kMaxPercentBannerWidth*self.frame.size.width - (3*kLabelInset) )  ;
+    CGFloat textWidth = MIN(textSize.width + (3 * kLabelInset), kMaxPercentBannerWidth * CGRectGetWidth(self.frame));
+    CGFloat labelWidth =  MIN(textSize.width, (kMaxPercentBannerWidth * CGRectGetWidth(self.bounds)) - (3 * kLabelInset) );
     CGRect updatedLabelFrame = self.listicleLabel.frame;
-    updatedLabelFrame.size = CGSizeMake(labelWidth, updatedLabelFrame.size.height);
+    updatedLabelFrame.size = CGSizeMake(labelWidth, CGRectGetHeight(updatedLabelFrame));
     self.listicleLabel.frame = updatedLabelFrame;
+    [self.listicleLabel setNeedsDisplay];
     [self drawBannerWithWidth:textWidth];
 }
 
@@ -85,9 +98,9 @@ static const CGFloat kMaxPercentBannerWidth = 0.58f;
     [path addLineToPoint:middleRight];
     [path addLineToPoint:bottomRight];
     [path addLineToPoint:bottomLeft];
-    [path addArcWithCenter:CGPointMake(kRadiusOfBanner, self.bounds.size.height) radius:kRadiusOfBanner startAngle:DEGREES_TO_RADIANS(270) endAngle:DEGREES_TO_RADIANS(180)  clockwise:NO];
+    [path addArcWithCenter:CGPointMake(kRadiusOfBanner, CGRectGetHeight(self.bounds)) radius:kRadiusOfBanner startAngle:[self degreesToRadians:270] endAngle:[self degreesToRadians:180]  clockwise:NO];
     [path addLineToPoint:CGPointMake(0, kRadiusOfBanner)];
-    [path addArcWithCenter:topLeft radius:kRadiusOfBanner startAngle:DEGREES_TO_RADIANS(180) endAngle:DEGREES_TO_RADIANS(270) clockwise:YES];
+    [path addArcWithCenter:topLeft radius:kRadiusOfBanner startAngle:[self degreesToRadians:180] endAngle:[self degreesToRadians:270] clockwise:YES];
     
     [path closePath];
     
@@ -119,15 +132,10 @@ static const CGFloat kMaxPercentBannerWidth = 0.58f;
     self.layer.sublayers = mutablelayers.copy;
 }
 
-- (void)addLabel
+- (CGFloat)degreesToRadians:(CGFloat)degrees
 {
-    CGRect frameLabel = CGRectMake(kLabelInset, 0, self.bounds.size.width - kInsetForTriangle - (2 * kLabelInset), kLabelHeight);
-    self.listicleLabel = [[UILabel alloc] initWithFrame:frameLabel];
-    self.listicleLabel.center = CGPointMake(self.listicleLabel.center.x, kHeightOfBanner/2);
-    self.listicleLabel.textColor = [UIColor whiteColor];
-    self.listicleLabel.font = [self.dependencyManager fontForKey: VDependencyManagerLabel3FontKey];
-    self.listicleLabel.layer.zPosition = 200.0f;
-    [self addSubview:self.listicleLabel];
+    CGFloat radians = (M_PI * degrees) / 180.0f;
+    return radians;
 }
 
 @end
