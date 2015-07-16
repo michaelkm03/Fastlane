@@ -13,7 +13,7 @@ static const CGFloat kRadiusOfBanner = 6.0f;
 static const CGFloat kInsetForTriangle = 12.0f;
 static const CGFloat kHeightOfBanner = 33.0f;
 static const CGFloat kLabelInset = 10.0f;
-static const CGFloat kLabelHeight = 17.0f;
+static const CGFloat kLabelHeight = 20.0f;
 static const CGFloat kMaxPercentBannerWidth = 0.58f;
 
 @interface VListicleView ()

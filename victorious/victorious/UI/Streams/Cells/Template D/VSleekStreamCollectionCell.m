@@ -300,7 +300,7 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
     NSString *apiPath = stream.apiPath;
     self.editorialization = [sequence editorializationForStreamWithApiPath:apiPath];
     BOOL hasHeadline = self.editorialization.headline.length > 0;
-    if (hasHeadline)
+    if (hasHeadline && (self.editorialization.headline != nil))
     {
         self.listicleView.hidden = NO;
         self.listicleView.headlineText = self.editorialization.headline;
