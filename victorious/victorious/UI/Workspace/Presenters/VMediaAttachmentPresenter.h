@@ -32,7 +32,7 @@ typedef void(^VMediaAttachmentResultHandler)(BOOL success, UIImage *previewImage
 @property (nonatomic, copy) VMediaAttachmentResultHandler resultHandler;
 
 /**
- *  A bitmask determining which types of attachments are available. Defaults to Image | Video | GIF.
+ *  A bitmask determining which types of attachments are available. Defaults to Image | Video.
  */
 @property (nonatomic, assign) VMediaAttachmentType attachmentTypes;
 

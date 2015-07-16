@@ -29,7 +29,7 @@ static NSString * const kVideoCreateFlow = @"videoCreateFlow";
                                   dependencymanager:dependencyManager];
     if (self != nil)
     {
-        _attachmentTypes = VMediaAttachmentTypeImage | VMediaAttachmentTypeVideo ;
+        _attachmentTypes = VMediaAttachmentTypeImage | VMediaAttachmentTypeVideo;
     }
     return self;
 }
