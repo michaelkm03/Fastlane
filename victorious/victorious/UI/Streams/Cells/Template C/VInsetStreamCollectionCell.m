@@ -308,11 +308,12 @@ static const UIEdgeInsets kCaptionInsets            = { 4.0, 0.0, 4.0, 0.0  };
     self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
     [self.expressionsObserver startObservingWithSequence:sequence onUpdate:^
      {
-         [welf updateCountsTextViewForSequence:sequence];
-         [welf.actionButtonAnimationController setButton:welf.actionView.likeButton
-                                                selected:sequence.isLikedByMainUser.boolValue];
-         [welf.actionButtonAnimationController setButton:welf.actionView.repostButton
-                                                selected:sequence.hasReposted.boolValue];
+         typeof(self) strongSelf = welf;
+         [strongSelf updateCountsTextViewForSequence:sequence];
+         [strongSelf.actionButtonAnimationController setButton:strongSelf.actionView.likeButton
+                                                      selected:sequence.isLikedByMainUser.boolValue];
+         [strongSelf.actionButtonAnimationController setButton:strongSelf.actionView.repostButton
+                                                      selected:sequence.hasReposted.boolValue];
      }];
 }
 
