@@ -60,7 +60,7 @@
                         withStreamItems:(NSArray *)streamItems;
 
 /**
- Returns a cell configured to display a stream item
+ Returns a cell configured to display a stream item with stream parameter. Useful for listicle creation (since they require both sequence and stream information)
  */
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath inStream:(VStream *)stream;
 

@@ -19,6 +19,7 @@ static const CGFloat kMaxPercentBannerWidth = 0.58f;
 @interface VListicleView ()
 
 @property (nonatomic, strong) UILabel *listicleLabel;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 

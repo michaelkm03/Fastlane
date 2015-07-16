@@ -16,8 +16,6 @@
  */
 @interface VListicleView : UIView <VHasManagedDependencies>
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
-
 @property (nonatomic, strong) NSString *headlineText; //< the text to be displayed
 
 @end
