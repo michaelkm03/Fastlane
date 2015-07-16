@@ -382,13 +382,14 @@
                                                                            dependencymanager:self.dependencyManager];
     self.presenter.isRegistration = YES;
     __weak typeof(self) welf = self;
-    self.presenter.completion = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
+    self.presenter.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
     {
-        welf.profileImageView.image = previewImage;
-        welf.registrationModel.selectedImage = previewImage;
-        welf.registrationModel.profileImageURL = mediaURL;
-        [welf dismissViewControllerAnimated:YES
-                                 completion:nil];
+        __strong typeof(welf) strongSelf = welf;
+        strongSelf.profileImageView.image = previewImage;
+        strongSelf.registrationModel.selectedImage = previewImage;
+        strongSelf.registrationModel.profileImageURL = mediaURL;
+        [strongSelf dismissViewControllerAnimated:YES
+                                       completion:nil];
     };
     [self.presenter present];
 }

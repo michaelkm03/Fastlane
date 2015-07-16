@@ -192,7 +192,7 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
         self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithViewControllerToPresentOn:self
                                                                                       dependencymanager:self.dependencyManager];
         __weak typeof(self) welf = self;
-        self.attachmentPresenter.completion = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
+        self.attachmentPresenter.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
         {
             if (success)
             {

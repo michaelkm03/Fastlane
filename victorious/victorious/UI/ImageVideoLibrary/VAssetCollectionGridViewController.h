@@ -13,31 +13,45 @@
 
 extern NSString * const VAssetCollectionGridViewControllerMediaType;
 
+@class VAssetCollectionGridViewController;
+
+@protocol VAssetCollectionGridViewControllerDelegate <NSObject>
+
+/**
+ *  Notifies delegate the user wants to pick a different asset collection.
+ */
+- (void)gridViewControllerWantsToViewAlternateCollections:(VAssetCollectionGridViewController *)gridViewController;
+
+/**
+ *  User has selected a particular asset.
+ */
+- (void)gridViewController:(VAssetCollectionGridViewController *)gridViewController
+             selectedAsset:(PHAsset *)asset;
+
+/**
+ *  User has taken an action that has updated the authorization status for their asset gallery.
+ */
+- (void)gridViewController:(VAssetCollectionGridViewController *)gridViewController
+       authorizationStatus:(BOOL)authorizedStatus;
+
+@end
+
 /**
  *  Must inject a PHAssetMediaType using the key: 
  */
 @interface VAssetCollectionGridViewController : UICollectionViewController <VHasManagedDependencies>
 
 /**
+ *  A delegate to be informed of events related to this gridViewController.
+ *
+ *  NOTE: the "gridViewController:authorizationStatus:" method is called immediately if the user has already answered 
+ *  the system prompt after setting this delegate method.
+ */
+@property (nonatomic, weak) id <VAssetCollectionGridViewControllerDelegate> delegate;
+
+/**
  *  Set this to the collection you want to display in the grid.
  */
 @property (nonatomic, strong) PHAssetCollection *collectionToDisplay;
-
-/**
- *  Provide the gridViewController a selection handler to be notified when the user requests the other folders in their library.
- *  Called on the main thread.
- */
-@property (nonatomic, copy) void (^alternateFolderSelectionHandler)();
-
-/**
- *  Provide the gridViewController a selection handler to be notified when the user selects an item in the grid.
- */
-@property (nonatomic, copy) void (^assetSelectionHandler)(PHAsset *selectedAsset);
-
-/**
- *  Assign a handler to be notified when the user has granted or denied permission to the user's library. 
- *  Called immediately if the user has already responded to the system authorization prompt.
- */
-@property (nonatomic, copy) void (^onAuthorizationHandler)(BOOL authorized);
 
 @end

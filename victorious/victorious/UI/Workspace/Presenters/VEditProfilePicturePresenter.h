@@ -11,7 +11,7 @@
 /**
  *  A completion block for the edit profile picture presenter.
  */
-typedef void(^VEditProfilePictureCompletion)(BOOL success, UIImage *previewImage, NSURL *mediaURL);
+typedef void(^VEditProfilePictureResultHandler)(BOOL success, UIImage *previewImage, NSURL *mediaURL);
 
 /**
  *  Presents the edit profile picture interface.
@@ -26,6 +26,6 @@ typedef void(^VEditProfilePictureCompletion)(BOOL success, UIImage *previewImage
 /**
  *  A completion block for the presenter. Be sure to retain this presenter if providing a completion block.
  */
-@property (nonatomic, copy) VEditProfilePictureCompletion completion;
+@property (nonatomic, copy) VEditProfilePictureResultHandler resultHandler;
 
 @end

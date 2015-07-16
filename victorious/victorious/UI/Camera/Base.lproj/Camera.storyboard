@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
@@ -91,19 +91,6 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="abs-NM-eiT" userLabel="Bottom Button Superview">
                                 <rect key="frame" x="0.0" y="427" width="320" height="141"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W9w-XF-uIU" userLabel="Open Album Button">
-                                        <rect key="frame" x="20" y="42" width="55" height="55"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="55" id="232-Lo-pe8"/>
-                                            <constraint firstAttribute="height" constant="55" id="rxR-jU-aGO"/>
-                                        </constraints>
-                                        <state key="normal" image="cameraButtonSwitchToPhoto">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="openAlbumAction:" destination="N4E-ak-ozN" eventType="touchUpInside" id="fh7-Dn-eyU"/>
-                                        </connections>
-                                    </button>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oAC-V4-Jg0" userLabel="Delete Button">
                                         <rect key="frame" x="20" y="46" width="55" height="55"/>
                                         <constraints>
@@ -118,29 +105,12 @@
                                             <action selector="trashAction:" destination="N4E-ak-ozN" eventType="touchUpInside" id="HOO-SS-wMO"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Psc-Kh-PXS" userLabel="Search Button">
-                                        <rect key="frame" x="240" y="41" width="60" height="60"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="60" id="9oQ-SU-gpE"/>
-                                            <constraint firstAttribute="height" constant="60" id="s1m-N7-JnY"/>
-                                        </constraints>
-                                        <state key="normal" image="search-btn">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="searchAction:" destination="N4E-ak-ozN" eventType="touchUpInside" id="TTf-j6-2IX"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="W9w-XF-uIU" firstAttribute="centerY" secondItem="Psc-Kh-PXS" secondAttribute="centerY" constant="-1" id="2C2-lL-FQm"/>
-                                    <constraint firstItem="W9w-XF-uIU" firstAttribute="left" secondItem="abs-NM-eiT" secondAttribute="left" constant="20" id="A5R-gK-mQR"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="110" id="RNJ-fi-meW"/>
                                     <constraint firstAttribute="height" priority="250" constant="141" id="Ssz-30-ICj"/>
-                                    <constraint firstAttribute="trailing" secondItem="Psc-Kh-PXS" secondAttribute="trailing" constant="20" id="aKo-14-OdV"/>
                                     <constraint firstAttribute="bottom" secondItem="oAC-V4-Jg0" secondAttribute="bottom" constant="40" id="fcC-37-85H"/>
-                                    <constraint firstAttribute="bottom" secondItem="Psc-Kh-PXS" secondAttribute="bottom" constant="40" id="ucW-e8-sPL"/>
                                     <constraint firstItem="oAC-V4-Jg0" firstAttribute="leading" secondItem="abs-NM-eiT" secondAttribute="leading" constant="20" id="w3t-cX-a5S"/>
                                 </constraints>
                             </view>
@@ -183,11 +153,11 @@
                             <constraint firstAttribute="trailing" secondItem="Cdq-4w-Bu5" secondAttribute="trailing" id="VJG-ZH-kHE"/>
                             <constraint firstAttribute="centerX" secondItem="r8c-9h-K1E" secondAttribute="centerX" id="auc-1b-h6Z"/>
                             <constraint firstAttribute="right" secondItem="abs-NM-eiT" secondAttribute="right" id="de4-Ce-ltb"/>
-                            <constraint firstItem="Psc-Kh-PXS" firstAttribute="centerY" secondItem="r8c-9h-K1E" secondAttribute="centerY" id="gad-uU-TNk"/>
                             <constraint firstItem="C7b-Ce-oub" firstAttribute="leading" secondItem="Cdq-4w-Bu5" secondAttribute="leading" id="iBi-xg-E6f"/>
                             <constraint firstAttribute="right" secondItem="umg-5s-weJ" secondAttribute="right" id="rOd-2e-gP1"/>
                             <constraint firstItem="e2F-3b-vgF" firstAttribute="top" secondItem="abs-NM-eiT" secondAttribute="bottom" id="ua3-eR-hij"/>
                             <constraint firstItem="abs-NM-eiT" firstAttribute="left" secondItem="AMw-cC-uUG" secondAttribute="left" id="wvD-uc-4A8"/>
+                            <constraint firstItem="abs-NM-eiT" firstAttribute="centerY" secondItem="r8c-9h-K1E" secondAttribute="centerY" constant="-0.5" id="z4e-5w-OHF"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
@@ -201,9 +171,7 @@
                         <outlet property="deleteButton" destination="oAC-V4-Jg0" id="62s-tg-lPW"/>
                         <outlet property="flashButton" destination="foI-4D-IyS" id="Yuh-uU-u2a"/>
                         <outlet property="nextButton" destination="P0d-F9-FuH" id="Wir-PA-wnL"/>
-                        <outlet property="openAlbumButton" destination="W9w-XF-uIU" id="0Cs-b0-bYq"/>
                         <outlet property="previewView" destination="Cdq-4w-Bu5" id="uB4-J9-nz8"/>
-                        <outlet property="searchButton" destination="Psc-Kh-PXS" id="waU-Sd-g7j"/>
                         <outlet property="switchCameraButton" destination="fQI-xE-BeV" id="Vk3-qf-zWV"/>
                         <outlet property="topSpaceTopToolsToContainerConstraint" destination="4nb-z1-EII" id="oYd-rq-Z15"/>
                         <outlet property="topToolsContainer" destination="umg-5s-weJ" id="rGM-cZ-hiG"/>
@@ -220,8 +188,6 @@
         <image name="cameraButtonFlashOn" width="24" height="32"/>
         <image name="cameraButtonFlip" width="36" height="36"/>
         <image name="cameraButtonNext" width="24" height="24"/>
-        <image name="cameraButtonSwitchToPhoto" width="34" height="34"/>
-        <image name="search-btn" width="47" height="47"/>
         <image name="trash_btn" width="47" height="47"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

@@ -78,11 +78,6 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
 
 #pragma mark - UIViewController
 
-- (BOOL)prefersStatusBarHidden
-{
-    return YES;
-}
-
 - (BOOL)shouldAutorotate
 {
     return NO;

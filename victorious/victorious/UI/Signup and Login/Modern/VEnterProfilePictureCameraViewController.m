@@ -203,46 +203,9 @@
 {
     BOOL shouldRequestPermissions = [self.dependencyManager numberForKey:VShouldRequestCameraPermissionsKey].boolValue;
 
-    __weak typeof(self) welf = self;
-    void (^showCamera)(void) = ^void(void)
-    {
-        welf.profilePicturePresetner = [[VEditProfilePicturePresenter alloc] initWithViewControllerToPresentOn:self
-                                                                                             dependencymanager:self.dependencyManager];
-        welf.profilePicturePresetner.isRegistration = YES;
-        welf.profilePicturePresetner.completion = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
-        {
-            if (success)
-            {
-                id <VLoginFlowControllerDelegate> flowController = [self targetForAction:@selector(setProfilePictureFilePath:)
-                                                                              withSender:self];
-                if (flowController == nil)
-                {
-                    NSAssert(false, @"We need a flow controller for setting the profile picture!");
-                }
-                [flowController setProfilePictureFilePath:mediaURL];
-                [welf.avatarButton setImage:previewImage forState:UIControlStateNormal];
-                
-                NSString *screenSuccessMessage = [self.dependencyManager stringForKey:VScreenSuccessMessageKey];
-                if (screenSuccessMessage != nil)
-                {
-                    [welf setScreenPrompt:screenSuccessMessage];
-                }
-                
-                NSString *buttonSuccessMessage = [self.dependencyManager stringForKey:VButtonSuccessMessageKey];
-                if (buttonSuccessMessage != nil)
-                {
-                    [welf setButtonPrompt:buttonSuccessMessage];
-                }
-            }
-            
-            [welf dismissViewControllerAnimated:YES completion:nil];
-        };
-        [welf.profilePicturePresetner present];
-    };
-    
     if (!shouldRequestPermissions)
     {
-        showCamera();
+        [self authorizedShowCamera];
     }
     else
     {
@@ -252,7 +215,7 @@
         {
             if (granted)
             {
-                showCamera();
+                [self authorizedShowCamera];
             }
             else
             {
@@ -260,6 +223,53 @@
                 [self onContinue:nil];
             }
         }];
+    }
+}
+
+- (void)authorizedShowCamera
+{
+    self.profilePicturePresetner = [[VEditProfilePicturePresenter alloc] initWithViewControllerToPresentOn:self
+                                                                                         dependencymanager:self.dependencyManager];
+    self.profilePicturePresetner.isRegistration = YES;
+    __weak typeof(self) welf = self;
+    self.profilePicturePresetner.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
+    {
+        __strong typeof(welf) strongSelf = welf;
+        [strongSelf onProfilePictureSelectedWithSuccess:success previewImage:previewImage mediaURL:mediaURL];
+    };
+    [self.profilePicturePresetner present];
+}
+
+- (void)onProfilePictureSelectedWithSuccess:(BOOL)success previewImage:(UIImage *)previewImage mediaURL:(NSURL *)mediaURL
+{
+    if (success)
+    {
+        id <VLoginFlowControllerDelegate> flowController = [self targetForAction:@selector(setProfilePictureFilePath:)
+                                                                      withSender:self];
+        if (flowController == nil)
+        {
+            NSAssert(false, @"We need a flow controller for setting the profile picture!");
+        }
+        [flowController setProfilePictureFilePath:mediaURL];
+        [self.avatarButton setImage:previewImage forState:UIControlStateNormal];
+        [self updateUIForSuccessfulProfilePictureCapture];
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)updateUIForSuccessfulProfilePictureCapture
+{
+    NSString *screenSuccessMessage = [self.dependencyManager stringForKey:VScreenSuccessMessageKey];
+    if (screenSuccessMessage != nil)
+    {
+        [self setScreenPrompt:screenSuccessMessage];
+    }
+    
+    NSString *buttonSuccessMessage = [self.dependencyManager stringForKey:VButtonSuccessMessageKey];
+    if (buttonSuccessMessage != nil)
+    {
+        [self setButtonPrompt:buttonSuccessMessage];
     }
 }
 

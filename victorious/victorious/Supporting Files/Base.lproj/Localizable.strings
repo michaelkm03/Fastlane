@@ -204,8 +204,8 @@
 "CameraRollDenied"      =   "Please grant access to your photos in Settings -> Privacy.";
 "CameraFailed"          =   "Unable to start camera";
 "CameraSwitchFailed"    =   "Unable to switch camera mode";
-"Camera"                =   "Camera";   // Insteady of image library use the camera
-"Search"                =   "Search";   // Insteady of image library use web search
+"Camera"                =   "Camera";   // Button that opens the camera
+"Search"                =   "Search";   // Button that opens web search for images
 "StillCaptureFailed"    =   "Unable to take picture";
 "VideoCaptureFailed"    =   "Unable to record video";
 "VideoSaveFailed"       =   "Unable to save video";
@@ -648,5 +648,5 @@
 "IMAGE" = "IMAGE";
 "Nevermind" = "Nevermind";
 
-"NOTHING LIKED YET" = "NOTHING LIKED YET";
-"Posts you like will appear here." = "Posts you like will appear here.";
+"NOTHING LIKED YET" = "NOTHING LIKED YET"; // Liked content no content view
+"Posts you like will appear here." = "Posts you like will appear here."; // Liked content no content view

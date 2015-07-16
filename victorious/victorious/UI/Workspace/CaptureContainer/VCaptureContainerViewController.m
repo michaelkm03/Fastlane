@@ -21,8 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) IBOutlet UIView *containerView;
 @property (nonatomic, strong) IBOutlet OAStackView *stackView;
-
 @property (nonatomic, strong) UIViewController *viewControllerToContain;
+@property (nonatomic, strong) NSArray *buttonsForCaptureOptions;
 
 @end
 
@@ -42,6 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     [super viewDidLoad];
 
+    NSMutableArray *buttonsForOptions = [[NSMutableArray alloc] init];
     // Create alternateOption buttons
     for (VAlternateCaptureOption *alternateOption in self.alternateCaptureOptions)
     {
@@ -56,25 +57,24 @@ NS_ASSUME_NONNULL_BEGIN
         // Move the image a bit to the left
         button.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
         [self.stackView addArrangedSubview:button];
+        [buttonsForOptions addObject:button];
     }
+    self.buttonsForCaptureOptions = [NSArray arrayWithArray:buttonsForOptions];
     self.stackView.distribution = OAStackViewDistributionFillEqually;
     
     NSAssert( self.viewControllerToContain != nil, @"The contained view controller must be set before this view is loaded using `setContainedViewController:`" );
     
     // Setup contained VC
-    [self addChildViewController:self.viewControllerToContain];
-    [self.containerView addSubview:self.viewControllerToContain.view];
-    [self.containerView v_addFitToParentConstraintsToSubview:self.viewControllerToContain.view];
-    [self.viewControllerToContain didMoveToParentViewController:self];
-    
-    // Forward navigationItem
-    self.navigationItem.titleView = self.viewControllerToContain.navigationItem.titleView;
-    self.navigationItem.rightBarButtonItems = self.viewControllerToContain.navigationItem.rightBarButtonItems;
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return YES;
+    if (self.viewControllerToContain)
+    {
+        [self addChildViewController:self.viewControllerToContain];
+        [self.containerView addSubview:self.viewControllerToContain.view];
+        [self.containerView v_addFitToParentConstraintsToSubview:self.viewControllerToContain.view];
+        [self.viewControllerToContain didMoveToParentViewController:self];
+        
+        // Forward navigationItem
+        self.navigationItem.titleView = self.viewControllerToContain.navigationItem.titleView;
+    }
 }
 
 #pragma mark - Public Methods
@@ -88,18 +88,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)selectedAlternateOption:(UIButton *)button
 {
-    // Kind of hacky check on title
-    __block VAlternateCaptureOption *alternateCaptureOption;
-    [self.alternateCaptureOptions enumerateObjectsUsingBlock:^(VAlternateCaptureOption *option, NSUInteger idx, BOOL *stop)
-    {
-        if ([option.title isEqualToString:[button titleForState:UIControlStateNormal]])
-        {
-            alternateCaptureOption = option;
-            *stop = YES;
-        }
-    }];
-
-    alternateCaptureOption.selectionBlock();
+    NSUInteger indexOfButton = [self.buttonsForCaptureOptions indexOfObject:button];
+    VAlternateCaptureOption *optionForButtonIndex = self.alternateCaptureOptions[indexOfButton];
+    optionForButtonIndex.selectionBlock();
 }
 
 @end

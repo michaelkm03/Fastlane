@@ -426,10 +426,11 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
          {
              return;
          }
-         weakSelf.creationFlowPresenter = [[VCreationFlowPresenter alloc] initWithViewControllerToPresentOn:self
-                                                                                          dependencymanager:self.dependencyManager];
-         weakSelf.creationFlowPresenter.showsCreationSheetFromTop = YES;
-         [weakSelf.creationFlowPresenter present];
+         __strong typeof(weakSelf) strongSelf = weakSelf;
+         strongSelf.creationFlowPresenter = [[VCreationFlowPresenter alloc] initWithViewControllerToPresentOn:strongSelf
+                                                                                            dependencymanager:strongSelf.dependencyManager];
+         strongSelf.creationFlowPresenter.showsCreationSheetFromTop = YES;
+         [strongSelf.creationFlowPresenter present];
      }];
 }
 

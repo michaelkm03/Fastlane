@@ -117,9 +117,9 @@ static NSString * const kVideoCreateFlow = @"videoCreateFlow";
       finishedWithPreviewImage:(UIImage *)previewImage
               capturedMediaURL:(NSURL *)capturedMediaURL
 {
-    if (self.completion != nil)
+    if (self.resultHandler != nil)
     {
-        self.completion(YES, previewImage, capturedMediaURL);
+        self.resultHandler(YES, previewImage, capturedMediaURL);
     }
     else
     {
@@ -130,9 +130,9 @@ static NSString * const kVideoCreateFlow = @"videoCreateFlow";
 
 - (void)creationFlowControllerDidCancel:(VCreationFlowController *)creationFlowController
 {
-    if (self.completion != nil)
+    if (self.resultHandler != nil)
     {
-        self.completion(NO, nil, nil);
+        self.resultHandler(NO, nil, nil);
     }
 }
 

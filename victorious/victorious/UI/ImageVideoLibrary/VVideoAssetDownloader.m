@@ -40,14 +40,17 @@ NSString * const VVideoAssetDownloaderErrorDomain = @"com.victorious.VVideoAsset
     NSString *localizedDownloadString = NSLocalizedString(@"Exporting...", nil);
     videoRequestOptions.progressHandler = ^void(double progress, NSError *error, BOOL *stop, NSDictionary *info)
     {
-        // We are downloading from iCloud
-        if (progressHandler != nil)
+        dispatch_async(dispatch_get_main_queue(), ^
         {
-            dispatch_async(dispatch_get_main_queue(), ^
-                           {
-                               progressHandler(progress, localizedDownloadString);
-                           });
-        }
+            // We are downloading from iCloud
+            if (progressHandler != nil)
+            {
+                dispatch_async(dispatch_get_main_queue(), ^
+                               {
+                                   progressHandler(progress, localizedDownloadString);
+                               });
+            }
+        });
     };
     
     [[PHImageManager defaultManager] requestExportSessionForVideo:self.asset
@@ -55,19 +58,21 @@ NSString * const VVideoAssetDownloaderErrorDomain = @"com.victorious.VVideoAsset
                                                      exportPreset:AVAssetExportPresetHighestQuality
                                                     resultHandler:^(AVAssetExportSession *exportSession, NSDictionary *info)
      {
-         if (exportSession != nil)
-         {
-             [self exportWithExportSession:exportSession
-                                completion:completion];
-         }
-         else
-         {
-             dispatch_async(dispatch_get_main_queue(), ^
+         dispatch_async(dispatch_get_main_queue(), ^
+                        {
+                            if (exportSession != nil)
                             {
+                                [self exportWithExportSession:exportSession
+                                                   completion:completion];
+                            }
+                            else
+                            {
+                                
                                 NSError *error = [NSError errorWithDomain:VVideoAssetDownloaderErrorDomain code:0 userInfo:nil];
                                 completion(error, nil, nil);
-                            });
-         }
+                                
+                            }
+                        });
      }];
 }
 

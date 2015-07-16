@@ -9,7 +9,7 @@
 #import "VBlurredMarqueeController.h"
 #import "VBlurredMarqueeCollectionViewCell.h"
 #import "VBlurredMarqueeStreamItemCell.h"
-#import "VCrossFadingLabel.h"
+#import "VCrossFadingMarqueeLabel.h"
 #import "VCrossFadingImageView.h"
 #import "VTimerManager.h"
 #import "VStream+Fetcher.h"
@@ -59,6 +59,13 @@ static const CGFloat kOffsetOvershoot = 20.0f;
 
 - (void)selectNextTab
 {
+    if ( !self.collectionView.isScrollEnabled && CGPointEqualToPoint(CGPointZero, self.collectionView.contentOffset) )
+    {
+        //We've locked the scrolling and are already scrolled to
+        //an appropriate spot, don't animate more.
+        return;
+    }
+    
     CGFloat pageWidth = CGRectGetWidth(self.collectionView.bounds);
     NSUInteger currentPage = ( self.collectionView.contentOffset.x / pageWidth ) + 1;
     CGFloat overshootAmount = kOffsetOvershoot;
@@ -94,9 +101,8 @@ static const CGFloat kOffsetOvershoot = 20.0f;
         self.loadingPreviewViews = [[NSMutableArray alloc] init];
     }
     
-    NSMutableArray *contentNames = [[NSMutableArray alloc] init];
-    
-    NSInteger marqueeItemsCount = self.stream.marqueeItems.count;
+    NSArray *marqueeItems = [self.stream.marqueeItems array];
+    NSInteger marqueeItemsCount = marqueeItems.count;
     if ( self.crossfadingBlurredImageView.imageViewCount != marqueeItemsCount )
     {
         [self.crossfadingBlurredImageView setupWithNumberOfImageViews:marqueeItemsCount];
@@ -104,14 +110,12 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     
     self.firstImageLoaded = NO;
     
-    for ( VStreamItem *streamItem in self.stream.marqueeItems )
+    for ( VStreamItem *streamItem in marqueeItems )
     {
         [self loadContentForStreamItem:streamItem andUpdateSubviewsAtIndex:[self.stream.marqueeItems indexOfObject:streamItem]];
-        NSString *streamName = streamItem.name ?: @"";
-        [contentNames addObject:streamName];
     }
     
-    [self.crossfadingLabel setupWithStrings:contentNames andTextAttributes:[self labelTextAttributes]];
+    [self.crossfadingLabel setupWithMarqueeItems:marqueeItems fromStreamWithApiPath:self.stream.apiPath];
     self.crossfadingLabel.hidden = !self.showedInitialDisplayAnimation;
     
     //Set the content offset to a safe value
@@ -169,11 +173,9 @@ static const CGFloat kOffsetOvershoot = 20.0f;
 {
     if ( !self.showedInitialDisplayAnimation && self.firstImageLoaded && self.backgroundCellIsVisible )
     {
+        self.crossfadingLabel.clampsOffset = NO;
         self.showedInitialDisplayAnimation = YES;
-        
-        //The first image has loaded and we haven't yet performed the
-        self.crossfadingLabel.alpha = 0.0f;
-        
+                
         dispatch_async(dispatch_get_main_queue(), ^
         {
             if ( self.collectionView.hidden )
@@ -195,26 +197,6 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     return stringForURL != nil && ![stringForURL isEqualToString:@""];
 }
 
-- (NSDictionary *)labelTextAttributes
-{
-    if ( self.dependencyManager == nil )
-    {
-        return nil;
-    }
-    
-    return @{
-             NSFontAttributeName : [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey],
-             NSForegroundColorAttributeName : [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey]
-             };
-}
-
-
-- (void)setDependencyManager:(VDependencyManager *)dependencyManager
-{
-    [super setDependencyManager:dependencyManager];
-    self.crossfadingLabel.textAttributes = [self labelTextAttributes];
-}
-
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [super scrollViewDidScroll:scrollView];
@@ -224,7 +206,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
         {
             [self.collectionView setContentOffset:self.offsetTarget animated:YES];
             self.shouldAnimateToTarget = NO;
-            self.crossfadingLabel.opaqueOutsideArrayRange = YES;
+            self.crossfadingLabel.clampsOffset = YES;
         }
     }
     
@@ -270,6 +252,12 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     return cell;
 }
 
+- (void)setCrossfadingLabel:(VCrossFadingMarqueeLabel *)crossfadingLabel
+{
+    _crossfadingLabel = crossfadingLabel;
+    crossfadingLabel.dependencyManager = self.dependencyManager;
+}
+
 - (UIColor *)tintColorForCrossFadingBlurredImageView
 {
     return [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
@@ -291,15 +279,6 @@ static const CGFloat kOffsetOvershoot = 20.0f;
         }
         [self.crossfadingBlurredImageView updateBlurredImageViewForImage:image fromPreviewView:previewView withTintColor:[self tintColorForCrossFadingBlurredImageView] atIndex:index animated:animated withConcurrentAnimations:animations];
     }];
-}
-
-- (void)setupStreamItemCell:(VAbstractMarqueeStreamItemCell *)streamItemCell withDependencyManager:(VDependencyManager *)dependencyManager andStreamItem:(VStreamItem *)streamItem
-{
-    streamItemCell.dependencyManager = dependencyManager;
-    if ( self.showedInitialDisplayAnimation )
-    {
-        streamItemCell.streamItem = streamItem;
-    }
 }
 
 + (Class)marqueeStreamItemCellClass

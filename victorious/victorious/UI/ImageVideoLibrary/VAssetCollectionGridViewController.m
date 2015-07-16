@@ -24,6 +24,8 @@
 #import <MBProgressHUD/MBProgressHUD.h>
 @import Photos;
 
+static NSInteger const kScreenSizeCacheTrigger = 1 / 3.0f;
+
 NSString * const VAssetCollectionGridViewControllerMediaType = @"assetGridViewControllerMediaType";
 static NSString * const kAccessUndeterminedPromptKey = @"accessUndeterminedPrompt";
 static NSString * const kAccessUndeterminedCalltoActionKey = @"accessUndeterminedCalltoAction";
@@ -39,7 +41,7 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
 @property (nonatomic, strong) VPermissionPhotoLibrary *libraryPermission;
 @property (nonatomic, assign) PHAssetMediaType mediaType;
 @property (nonatomic, strong) PHCachingImageManager *imageManager;
-@property (nonatomic, strong) PHFetchResult *assetsToDisplay;
+@property (nonatomic, strong) PHFetchResult *fetchResultForAssetsToDisplay;
 
 @property (nonatomic, assign) CGRect previousPrefetchRect;
 
@@ -65,16 +67,19 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
     return gridViewController;
 }
 
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self != nil)
+    {
+        _libraryPermission = [[VPermissionPhotoLibrary alloc] initWithDependencyManager:self.dependencyManager];
+    }
+    return self;
+}
+
 - (void)dealloc
 {
     [[PHPhotoLibrary sharedPhotoLibrary] unregisterChangeObserver:self];
-}
-
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    
-    self.libraryPermission = [[VPermissionPhotoLibrary alloc] initWithDependencyManager:self.dependencyManager];
 }
 
 #pragma mark - View Lifecycle
@@ -126,28 +131,20 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
     PHFetchOptions *fetchOptions = [[PHFetchOptions alloc] init];
     fetchOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d", self.mediaType];
     fetchOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
-    self.assetsToDisplay = [PHAsset fetchAssetsInAssetCollection:collectionToDisplay
+    self.fetchResultForAssetsToDisplay = [PHAsset fetchAssetsInAssetCollection:collectionToDisplay
                                                          options:fetchOptions];
 
     // Reload and scroll to top
     [self.collectionView reloadData];
     if ([self.collectionView numberOfItemsInSection:0] > 0)
     {
-        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]
-                                    atScrollPosition:UICollectionViewScrollPositionTop
-                                            animated:NO];
+        self.collectionView.contentOffset = CGPointZero;
     }
 }
 
-- (void)setOnAuthorizationHandler:(void (^)(BOOL))onAuthorizationHandler
+- (void)setDelegate:(id<VAssetCollectionGridViewControllerDelegate>)delegate
 {
-    _onAuthorizationHandler = onAuthorizationHandler;
-    
-    // If authorization handler is being cleared bail
-    if (_onAuthorizationHandler == nil)
-    {
-        return;
-    }
+    _delegate = delegate;
     
     switch ([self.libraryPermission permissionState])
     {
@@ -155,10 +152,12 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
         case VPermissionStateUnknown:
             break;
         case VPermissionStateSystemDenied:
-            onAuthorizationHandler(NO);
+            [self.delegate gridViewController:self
+                          authorizationStatus:NO];
             break;
         case VPermissionStateAuthorized:
-            onAuthorizationHandler(YES);
+            [self.delegate gridViewController:self
+                          authorizationStatus:NO];
             break;
         case VPermissionUnsupported:
             // We should never get here
@@ -170,10 +169,7 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
 
 - (void)selectedFolderPicker:(UIButton *)button
 {
-    if (self.alternateFolderSelectionHandler != nil)
-    {
-        self.alternateFolderSelectionHandler();
-    }
+    [self.delegate gridViewControllerWantsToViewAlternateCollections:self];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -190,7 +186,7 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
             numberOfItems = 1;
             break;
         case VPermissionStateAuthorized:
-            numberOfItems = self.assetsToDisplay.count;
+            numberOfItems = self.fetchResultForAssetsToDisplay.count;
             break;
         case VPermissionUnsupported:
             // We should never get here
@@ -289,10 +285,8 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
                 {
                     [self prepareImageManagerAndRegisterAsObserver];
                 }
-                if (self.onAuthorizationHandler != nil)
-                {
-                    self.onAuthorizationHandler(granted);
-                }
+                [self.delegate gridViewController:self
+                              authorizationStatus:granted];
                 [self.collectionView reloadData];
             }];
             break;
@@ -300,11 +294,9 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
         }
         case VPermissionStateAuthorized:
         {
-            // We're all good call the asset selection handler
-            if (self.assetSelectionHandler)
-            {
-                self.assetSelectionHandler([self assetForIndexPath:indexPath]);
-            }
+            // We're all good call the delegate method
+            [self.delegate gridViewController:self
+                                selectedAsset:[self assetForIndexPath:indexPath]];
             break;
         }
         case VPermissionStateSystemDenied:
@@ -350,49 +342,7 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
     // Call might come on any background queue. Re-dispatch to the main queue to handle it.
     dispatch_async(dispatch_get_main_queue(), ^
     {
-        // check if there are changes to the assets (insertions, deletions, updates)
-        PHFetchResultChangeDetails *collectionChanges = [changeInstance changeDetailsForFetchResult:self.assetsToDisplay];
-        if (collectionChanges)
-        {
-            // get the new fetch result
-            self.assetsToDisplay = [collectionChanges fetchResultAfterChanges];
-            
-            UICollectionView *collectionView = self.collectionView;
-            
-            if (![collectionChanges hasIncrementalChanges] || [collectionChanges hasMoves])
-            {
-                // we need to reload all if the incremental diffs are not available
-                [collectionView reloadData];
-            }
-            else
-            {
-                // if we have incremental diffs, tell the collection view to animate insertions and deletions
-                [collectionView performBatchUpdates:^
-                {
-                    NSIndexSet *removedIndexes = [collectionChanges removedIndexes];
-                    if ([removedIndexes count])
-                    {
-                        [collectionView deleteItemsAtIndexPaths:[removedIndexes indexPathsFromIndexesWithSecion:0]];
-                    }
-                    NSIndexSet *insertedIndexes = [collectionChanges insertedIndexes];
-                    if ([insertedIndexes count])
-                    {
-                        [collectionView insertItemsAtIndexPaths:[insertedIndexes indexPathsFromIndexesWithSecion:0]];
-                    }
-                    NSIndexSet *changedIndexes = [collectionChanges changedIndexes];
-                    if ([changedIndexes count])
-                    {
-                        [collectionView reloadItemsAtIndexPaths:[changedIndexes indexPathsFromIndexesWithSecion:0]];
-                    }
-                    [collectionChanges enumerateMovesWithBlock:^(NSUInteger fromIndex, NSUInteger toIndex)
-                    {
-                        [collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:toIndex inSection:0]]];
-                    }];
-                } completion:NULL];
-            }
-            
-            [self resetCachedAssets];
-        }
+        [self handleChange:changeInstance];
     });
 }
 
@@ -404,6 +354,59 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
 }
 
 #pragma mark - Private Methods
+
+- (void)handleChange:(PHChange *)change
+{
+    // check if there are changes to the assets (insertions, deletions, updates)
+    PHFetchResultChangeDetails *collectionChanges = [change changeDetailsForFetchResult:self.fetchResultForAssetsToDisplay];
+    if (collectionChanges == nil)
+    {
+        return;
+    }
+    
+    // get the new fetch result
+    self.fetchResultForAssetsToDisplay = [collectionChanges fetchResultAfterChanges];
+    
+    UICollectionView *collectionView = self.collectionView;
+    if (![collectionChanges hasIncrementalChanges] || [collectionChanges hasMoves])
+    {
+        // we need to reload all if the incremental diffs are not available
+        [collectionView reloadData];
+    }
+    else
+    {
+        [self handleAdvancedpdatesWithChangeDetails:collectionChanges];
+    }
+    
+    [self resetCachedAssets];
+}
+
+- (void)handleAdvancedpdatesWithChangeDetails:(PHFetchResultChangeDetails *)changeDetails
+{
+    // if we have incremental diffs, tell the collection view to animate insertions and deletions
+    [self.collectionView performBatchUpdates:^
+     {
+         NSIndexSet *removedIndexes = [changeDetails removedIndexes];
+         if ([removedIndexes count])
+         {
+             [self.collectionView deleteItemsAtIndexPaths:[removedIndexes indexPathsFromIndexesWithSecion:0]];
+         }
+         NSIndexSet *insertedIndexes = [changeDetails insertedIndexes];
+         if ([insertedIndexes count])
+         {
+             [self.collectionView insertItemsAtIndexPaths:[insertedIndexes indexPathsFromIndexesWithSecion:0]];
+         }
+         NSIndexSet *changedIndexes = [changeDetails changedIndexes];
+         if ([changedIndexes count])
+         {
+             [self.collectionView reloadItemsAtIndexPaths:[changedIndexes indexPathsFromIndexesWithSecion:0]];
+         }
+         [changeDetails enumerateMovesWithBlock:^(NSUInteger fromIndex, NSUInteger toIndex)
+          {
+              [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:toIndex inSection:0]]];
+          }];
+     } completion:NULL];
+}
 
 - (UIView *)createContainerViewForAlternateCollectionSelection
 {
@@ -462,9 +465,8 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
     
     // If scrolled by a "reasonable" amount...
     CGFloat delta = ABS(CGRectGetMidY(preheatRect) - CGRectGetMidY(self.previousPrefetchRect));
-    if (delta > CGRectGetHeight(self.collectionView.bounds) / 3.0f)
+    if (delta > CGRectGetHeight(self.collectionView.bounds) * kScreenSizeCacheTrigger)
     {
-        
         // Compute the assets to start caching and to stop caching.
         NSMutableArray *addedIndexPaths = [NSMutableArray array];
         NSMutableArray *removedIndexPaths = [NSMutableArray array];
@@ -545,7 +547,7 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
 
 - (PHAsset *)assetForIndexPath:(NSIndexPath *)indexPath
 {
-    return [self.assetsToDisplay objectAtIndex:indexPath.row];
+    return [self.fetchResultForAssetsToDisplay objectAtIndex:indexPath.row];
 }
 
 - (void)prepareImageManagerAndRegisterAsObserver
@@ -558,13 +560,13 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
 {
     if (indexPaths.count == 0)
     {
-        return nil;
+        return @[];
     }
     
     NSMutableArray *assets = [NSMutableArray arrayWithCapacity:indexPaths.count];
     for (NSIndexPath *indexPath in indexPaths)
     {
-        PHAsset *asset = self.assetsToDisplay[indexPath.item];
+        PHAsset *asset = self.fetchResultForAssetsToDisplay[indexPath.item];
         [assets addObject:asset];
     }
     return assets;

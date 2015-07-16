@@ -17,7 +17,7 @@ typedef NS_OPTIONS(NSUInteger, VMediaAttachmentType)
 /**
  *  A completion block for the media attachment presenter.
  */
-typedef void(^VMediaAttachmentCompletion)(BOOL success, UIImage *previewImage, NSURL *mediaURL);
+typedef void(^VMediaAttachmentResultHandler)(BOOL success, UIImage *previewImage, NSURL *mediaURL);
 
 /**
  *  A presenter for attaching media to various parts of the app. NOTE: When there are two ore more attachment types this 
@@ -29,7 +29,7 @@ typedef void(^VMediaAttachmentCompletion)(BOOL success, UIImage *previewImage, N
 /**
  *  A completion block for the presenter. Be sure to retain this presenter if providing a completion block.
  */
-@property (nonatomic, copy) VMediaAttachmentCompletion completion;
+@property (nonatomic, copy) VMediaAttachmentResultHandler resultHandler;
 
 /**
  *  A bitmask determining which types of attachments are available. Defaults to Image | Video | GIF.

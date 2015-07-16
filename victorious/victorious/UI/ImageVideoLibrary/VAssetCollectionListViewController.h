@@ -10,7 +10,7 @@
 
 @import Photos;
 
-@interface VAssetCollectionListViewController : UITableViewController
+@interface VAssetCollectionListViewController : UIViewController
 
 /**
  *  Factory method for this ViewController. Use this to get an instance of VAssetCollectionListViewController.

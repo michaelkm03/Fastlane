@@ -16,7 +16,6 @@
 #import "NSDictionary+VJSONLogging.h"
 #import "VEditableTextPostViewController.h"
 #import "VTextListener.h"
-#import "VCameraViewController.h"
 #import "VImageSearchViewController.h"
 #import "VMediaAttachmentPresenter.h"
 
@@ -139,7 +138,7 @@
                                                                                   dependencymanager:self.dependencyManager];
     self.attachmentPresenter.attachmentTypes = VMediaAttachmentTypeImage;
     __weak typeof(self) welf = self;
-    self.attachmentPresenter.completion = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
+    self.attachmentPresenter.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
     {
         [welf dismissViewControllerAnimated:YES
                                  completion:nil];

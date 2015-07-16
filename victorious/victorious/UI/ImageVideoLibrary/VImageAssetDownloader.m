@@ -41,10 +41,13 @@ NSString * const VImageAssetDownloaderErrorDomain = @"com.victorious.VImageAsset
     fullSizeRequestOptions.networkAccessAllowed = YES;
     fullSizeRequestOptions.progressHandler = ^void(double progress, NSError *error, BOOL *stop, NSDictionary *info)
     {
-        if (progressHandler != nil)
+        dispatch_async(dispatch_get_main_queue(), ^
         {
-            progressHandler(progress, NSLocalizedString(@"Exporting...", nil));
-        }
+            if (progressHandler != nil)
+            {
+                progressHandler(progress, NSLocalizedString(@"Exporting...", nil));
+            }
+        });
     };
     
     if (self.asset.representsBurst)
@@ -52,6 +55,7 @@ NSString * const VImageAssetDownloaderErrorDomain = @"com.victorious.VImageAsset
         self.asset = [self assetForBurstAsset:self.asset];
     }
 
+    NSURL *urlForAsset = [self temporaryURLForAsset:self.asset];
     [[PHImageManager defaultManager] requestImageDataForAsset:self.asset
                                                       options:fullSizeRequestOptions
                                                 resultHandler:^(NSData *imageData, NSString *dataUTI, UIImageOrientation orientation, NSDictionary *info)
@@ -61,7 +65,10 @@ NSString * const VImageAssetDownloaderErrorDomain = @"com.victorious.VImageAsset
              NSError *downloadFailure = [NSError errorWithDomain:VImageAssetDownloaderErrorDomain
                                                             code:0
                                                         userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"ImageDownloadFailed", nil)}];
-             completion(downloadFailure, nil, nil);
+             dispatch_async(dispatch_get_main_queue(), ^
+             {
+                 completion(downloadFailure, nil, nil);
+             });
              return;
          }
          // This handler is always called on main thread per header
@@ -69,7 +76,6 @@ NSString * const VImageAssetDownloaderErrorDomain = @"com.victorious.VImageAsset
                         {
                             UIImage *imageFromData = [UIImage imageWithData:imageData];
                             UIImage *imageWithProperOrientation = [[UIImage imageWithCGImage:imageFromData.CGImage scale:1.0f orientation:orientation] fixOrientation];
-                            NSURL *urlForAsset = [self temporaryURLForAsset:self.asset];
                             NSError *error;
                             NSData *imageData = UIImageJPEGRepresentation(imageWithProperOrientation, 1.0f);
                             BOOL success = [imageData writeToURL:urlForAsset options:NSDataWritingAtomic error:&error];

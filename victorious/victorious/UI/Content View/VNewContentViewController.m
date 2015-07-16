@@ -1545,28 +1545,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     void (^showCamera)(void) = ^void(void)
     {
-        self.mediaAttachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithViewControllerToPresentOn:self
-                                                                                           dependencymanager:self.dependencyManager];
-        __weak typeof(self) welf = self;
-        self.mediaAttachmentPresenter.completion = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
-        {
-            welf.mediaURL = mediaURL;
-            [welf.textEntryView setSelectedThumbnail:previewImage];
-            
-            [welf dismissViewControllerAnimated:YES completion:^
-             {
-                 welf.mediaAttachmentPresenter = nil;
-                 [welf.textEntryView startEditing];
-                 
-                 [UIView animateWithDuration:0.0f
-                                  animations:^
-                  {
-                      [welf.contentCollectionView reloadData];
-                      [welf.contentCollectionView.collectionViewLayout invalidateLayout];
-                  }];
-             }];
-        };
-        [self.mediaAttachmentPresenter present];
+        [self showMediaAttachmentUI];
     };
     
     if (self.mediaURL == nil)
@@ -1588,6 +1567,33 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                           }
                                                                                           cancel:nil];
     [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)showMediaAttachmentUI
+{
+    self.mediaAttachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithViewControllerToPresentOn:self
+                                                                                       dependencymanager:self.dependencyManager];
+    __weak typeof(self) welf = self;
+    self.mediaAttachmentPresenter.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
+    {
+        __strong typeof(self) strongSelf = welf;
+        [strongSelf onMediaAttachedWithPreviewImage:previewImage
+                                           mediaURL:mediaURL];
+    };
+    [self.mediaAttachmentPresenter present];
+}
+
+- (void)onMediaAttachedWithPreviewImage:(UIImage *)previewImage
+                               mediaURL:(NSURL *)mediaURL
+{
+    self.mediaURL = mediaURL;
+    [self.textEntryView setSelectedThumbnail:previewImage];
+    
+    [self dismissViewControllerAnimated:YES completion:^
+     {
+         self.mediaAttachmentPresenter = nil;
+         [self.textEntryView startEditing];
+     }];
 }
 
 - (void)configureLikeButtonWithContentCell:(VContentCell *)contentCell forSequence:(VSequence *)sequence

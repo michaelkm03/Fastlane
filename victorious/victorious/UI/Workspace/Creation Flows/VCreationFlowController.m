@@ -52,9 +52,9 @@ static NSString * const kBarTintColorKey = @"barTintColor";
     self.navigationBar.tintColor = [self.dependencyManager colorForKey:kBarTintColorKey];
 }
 
-- (BOOL)prefersStatusBarHidden
+- (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return YES;
+    return UIStatusBarStyleLightContent;
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -100,6 +100,7 @@ static NSString * const kBarTintColorKey = @"barTintColor";
 - (void)selectedCancel:(UIBarButtonItem *)cancelButton
 {
     self.delegate = nil;
+    self.interactivePopGestureRecognizer.delegate = nil;
     if ([self.creationFlowDelegate respondsToSelector:@selector(creationFlowControllerDidCancel:)])
     {
         [self.creationFlowDelegate creationFlowControllerDidCancel:self];
