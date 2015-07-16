@@ -117,6 +117,14 @@ NSString * const VAssetCollectionGridViewControllerMediaType = @"assetGridViewCo
     self.dropdownImageView.hidden = NO;
     
     self.assetDataSource.assetCollection = collectionToDisplay;
+    [UIView animateWithDuration:0.35f
+                          delay:0.0f
+                        options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionCurveEaseInOut
+                     animations:^
+     {
+         self.collectionView.alpha = 1.0f;
+     }
+                     completion:nil];
 }
 
 - (void)setDelegate:(id<VAssetCollectionGridViewControllerDelegate>)delegate

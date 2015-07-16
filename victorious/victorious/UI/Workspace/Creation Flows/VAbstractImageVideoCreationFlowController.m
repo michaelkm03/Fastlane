@@ -18,6 +18,7 @@
 #import "VAssetDownloader.h"
 #import "UIAlertController+VSimpleAlert.h"
 #import "VCollectionListPresentationController.h"
+#import "VFromTopViewControllerAnimator.h"
 
 // Workspace
 #import "VWorkspaceViewController.h"
@@ -37,7 +38,7 @@
 // Keys
 NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 
-@interface VAbstractImageVideoCreationFlowController () <UINavigationControllerDelegate, UIViewControllerTransitioningDelegate, VAssetCollectionGridViewControllerDelegate>
+@interface VAbstractImageVideoCreationFlowController () <UINavigationControllerDelegate, VAssetCollectionGridViewControllerDelegate>
 
 @property (nonatomic, strong) NSArray *cachedAssetCollections;
 
@@ -46,6 +47,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 @property (nonatomic, strong) VCaptureContainerViewController *captureContainerViewController;
 @property (nonatomic, strong) VAssetCollectionListViewController *listViewController;
 @property (nonatomic, strong) VAssetCollectionGridViewController *gridViewController;
+//@property (nonatomic, strong) VFromTopViewControllerAnimator *listAnimator;
 @property (nonatomic, strong) VAssetDownloader *downloader;
 @property (nonatomic, strong) VWorkspaceViewController *workspaceViewController;
 
@@ -113,7 +115,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     {
         welf.gridViewController.collectionToDisplay = assetCollection;
     };
-    self.listViewController.modalPresentationStyle = UIModalPresentationCustom;
     [self presentViewController:self.listViewController animated:YES completion:nil];
 }
 
@@ -311,14 +312,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     {
         [self cleanupRenderedFile];
     }
-}
-
-#pragma mark - UIViewControllerTransitioningDelegate
-
-- (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented presentingViewController:(UIViewController *)presenting sourceViewController:(UIViewController *)source
-{
-    return [[VCollectionListPresentationController alloc] initWithPresentedViewController:self.listViewController
-                                                                 presentingViewController:self];
 }
 
 #pragma mark - VAssetCollectionGridViewControllerDelegate

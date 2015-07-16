@@ -48,6 +48,10 @@ static NSInteger const kScreenSizeCacheTrigger = 1 / 3.0f;
 
 - (void)setAssetCollection:(PHAssetCollection *)assetCollection
 {
+    if ([_assetCollection.localIdentifier isEqualToString:assetCollection.localIdentifier])
+    {
+        return;
+    }
     _assetCollection = assetCollection;
     
     PHFetchOptions *fetchOptions = [[PHFetchOptions alloc] init];
@@ -144,7 +148,6 @@ static NSInteger const kScreenSizeCacheTrigger = 1 / 3.0f;
 }
 
 #pragma mark - Caching
-
 
 - (void)handleChange:(PHChange *)change
 {
