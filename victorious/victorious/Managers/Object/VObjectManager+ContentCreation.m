@@ -372,11 +372,15 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                                   successBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail
 {
-    NSString *gifParameterValue = publishParameters.isGIF ? @"true" : @"false";
     NSMutableDictionary *parameters = [@{@"sequence_id" : sequence.remoteId ?: [NSNull null],
                                          @"parent_id" : parent.remoteId.stringValue ?: [NSNull null],
-                                         @"text" : text ?: [NSNull null],
-                                         @"is_gif_style": gifParameterValue} mutableCopy];
+                                         @"text" : text ?: [NSNull null]} mutableCopy];
+    
+    if (publishParameters.mediaToUploadURL != nil)
+    {
+        NSString *gifParameterValue = publishParameters.isGIF ? @"true" : @"false";
+        parameters[@"is_gif_style"] = gifParameterValue;
+    }
     
     NSURL *mediaURL = publishParameters.mediaToUploadURL;
     
