@@ -82,7 +82,12 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
     }
 }
 
-#pragma mark - View Lifecycle
+#pragma mark - UIViewController
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -102,11 +107,6 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
          }];
         [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
     }
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return YES;
 }
 
 #pragma mark - Target/Action
@@ -226,6 +226,7 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
     VLog(@"Fetching collections");
     
     NSMutableSet *newFetchResults = [[NSMutableSet alloc] init];
+    PHAssetMediaType mediaType = self.mediaType;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^
     {
         // Fetch all albums
@@ -240,7 +241,7 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
         
         // Configure fetch options for media type and creation date
         PHFetchOptions *assetFetchOptions = [[PHFetchOptions alloc] init];
-        assetFetchOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d", self.mediaType];
+        assetFetchOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d", mediaType];
         assetFetchOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
         
         // We're going to add apropirate collecitons and fetch requests to these arrays
@@ -277,7 +278,7 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
             self.fetchResults = newFetchResults;
             self.collections = assetCollections;
             self.assetFetchResultForCollections = assetCollectionsFetchResutls;
-            dispatch_async(dispatch_get_main_queue(), success);
+            success();
         });
     });
 }

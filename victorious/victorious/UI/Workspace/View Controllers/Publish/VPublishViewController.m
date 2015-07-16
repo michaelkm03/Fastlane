@@ -103,9 +103,9 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
     return NO;
 }
 
-- (BOOL)prefersStatusBarHidden
+- (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return YES;
+    return UIStatusBarStyleLightContent;
 }
 
 - (NSUInteger)supportedInterfaceOrientations

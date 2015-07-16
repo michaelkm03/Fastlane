@@ -17,7 +17,7 @@
                             <size key="itemSize" width="95" height="95"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="12" minY="12" maxX="12" maxY="12"/>
+                            <inset key="sectionInset" minX="12" minY="15" maxX="12" maxY="12"/>
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="VAssetCollectionViewCell" id="9lA-yL-MWa" customClass="VAssetCollectionViewCell">
@@ -109,6 +109,7 @@
                             <outlet property="delegate" destination="AjX-fm-XMv" id="2H9-eJ-qc8"/>
                         </connections>
                     </collectionView>
+                    <nil key="simulatedStatusBarMetrics"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G8u-Kc-3jx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

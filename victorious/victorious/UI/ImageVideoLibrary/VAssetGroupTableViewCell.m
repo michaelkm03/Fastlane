@@ -30,10 +30,13 @@
                                                   options:requestOptions
                                             resultHandler:^(UIImage *result, NSDictionary *info)
      {
-         if (self.asset == asset)
+         dispatch_async(dispatch_get_main_queue(), ^
          {
-             self.groupImageView.image = result;
-         }
+             if (self.asset == asset)
+             {
+                 self.groupImageView.image = result;
+             }
+         });
      }];
 }
 

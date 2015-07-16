@@ -60,11 +60,14 @@
                                         options:requestOptions
                                   resultHandler:^(UIImage *result, NSDictionary *info)
          {
-             __strong typeof(welf) strongSelf = welf;
-             if ([strongSelf.asset.localIdentifier isEqualToString:asset.localIdentifier])
+             dispatch_async(dispatch_get_main_queue(), ^
              {
-                 strongSelf.imageView.image = result;
-             }
+                 __strong typeof(welf) strongSelf = welf;
+                 if ([strongSelf.asset.localIdentifier isEqualToString:asset.localIdentifier])
+                 {
+                     strongSelf.imageView.image = result;
+                 }
+             });
          }];
     });
 }

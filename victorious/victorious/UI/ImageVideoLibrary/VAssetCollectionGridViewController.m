@@ -138,9 +138,7 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
     [self.collectionView reloadData];
     if ([self.collectionView numberOfItemsInSection:0] > 0)
     {
-        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]
-                                    atScrollPosition:UICollectionViewScrollPositionTop
-                                            animated:NO];
+        self.collectionView.contentOffset = CGPointZero;
     }
 }
 

@@ -289,30 +289,14 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 
 - (void)cleanupCapturedFile
 {
-    BOOL removed = [[NSFileManager defaultManager] removeItemAtURL:self.workspaceViewController.mediaURL
-                                                             error:nil];
-    if (removed)
-    {
-        VLog(@"Removed captured file");
-    }
-    else
-    {
-        VLog(@"Failed to remove captured file!");
-    }
+    [[NSFileManager defaultManager] removeItemAtURL:self.workspaceViewController.mediaURL
+                                              error:nil];
 }
 
 - (void)cleanupRenderedFile
 {
-    BOOL removed = [[NSFileManager defaultManager] removeItemAtURL:self.renderedMediaURL
-                                                             error:nil];
-    if (removed)
-    {
-        VLog(@"Removed rendered file");
-    }
-    else
-    {
-        VLog(@"Failed to remove rendered file!");
-    }
+    [[NSFileManager defaultManager] removeItemAtURL:self.renderedMediaURL
+                                              error:nil];
 }
 
 #pragma mark - UINavigationControllerDelegate
@@ -354,7 +338,10 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     __weak typeof(self) welf = self;
     [self.downloader downloadWithProgress:^(double progress, NSString *progressText)
      {
-         hudForView.progress = progress;
+         dispatch_async(dispatch_get_main_queue(), ^
+         {
+             hudForView.progress = progress;
+         });
      }
                                completion:^(NSError *error, NSURL *downloadedFileURL, UIImage *previewImage)
      {

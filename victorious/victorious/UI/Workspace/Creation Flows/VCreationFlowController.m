@@ -52,9 +52,9 @@ static NSString * const kBarTintColorKey = @"barTintColor";
     self.navigationBar.tintColor = [self.dependencyManager colorForKey:kBarTintColorKey];
 }
 
-- (BOOL)prefersStatusBarHidden
+- (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return YES;
+    return UIStatusBarStyleLightContent;
 }
 
 - (NSUInteger)supportedInterfaceOrientations
