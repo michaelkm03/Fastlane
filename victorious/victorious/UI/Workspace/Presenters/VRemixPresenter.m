@@ -81,7 +81,7 @@ static NSString * const kImageCreationFlowKey = @"imageCreateFlow";
 
 #pragma mark - VCreationFlowControllerDelegate
                                                              
-- (void)creationFLowController:(VCreationFlowController *)creationFlowController
+- (void)creationFlowController:(VCreationFlowController *)creationFlowController
       finishedWithPreviewImage:(UIImage *)previewImage
               capturedMediaURL:(NSURL *)capturedMediaURL
 {

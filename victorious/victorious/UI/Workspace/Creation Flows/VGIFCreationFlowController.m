@@ -111,7 +111,7 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
         {
             welf.delegate = nil;
             // We're done!
-            [welf.creationFlowDelegate creationFLowController:welf
+            [welf.creationFlowDelegate creationFlowController:welf
                                      finishedWithPreviewImage:welf.previewImage
                                              capturedMediaURL:welf.renderedMediaURL];
         }
@@ -161,7 +161,7 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
         }
         else
         {
-            [self.creationFlowDelegate creationFLowController:self
+            [self.creationFlowDelegate creationFlowController:self
                                      finishedWithPreviewImage:self.previewImage
                                              capturedMediaURL:self.renderedMediaURL];
         }

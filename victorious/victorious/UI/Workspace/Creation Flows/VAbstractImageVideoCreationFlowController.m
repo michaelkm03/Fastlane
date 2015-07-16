@@ -236,7 +236,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
             [strongSelf cleanupRenderedFile];
 
             // We're done!
-            [strongSelf.creationFlowDelegate creationFLowController:strongSelf
+            [strongSelf.creationFlowDelegate creationFlowController:strongSelf
                                            finishedWithPreviewImage:strongSelf.previewImage
                                                    capturedMediaURL:strongSelf.renderedMediaURL];
         }
@@ -255,7 +255,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
         }
         else
         {
-            [self.creationFlowDelegate creationFLowController:self
+            [self.creationFlowDelegate creationFlowController:self
                                      finishedWithPreviewImage:self.previewImage
                                              capturedMediaURL:self.renderedMediaURL];
         }
@@ -302,7 +302,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    // Cleanup as we enter exist different states
+    // Cleanup as we enter or exit different states
     if (viewController == self.captureContainerViewController)
     {
         [self cleanupCapturedFile];

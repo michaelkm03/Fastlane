@@ -115,7 +115,7 @@ static NSString * const kVideoCreateFlow = @"videoCreateFlow";
 
 #pragma mark - VCreationFlowControllerDelegate
 
-- (void)creationFLowController:(VCreationFlowController *)creationFlowController
+- (void)creationFlowController:(VCreationFlowController *)creationFlowController
       finishedWithPreviewImage:(UIImage *)previewImage
               capturedMediaURL:(NSURL *)capturedMediaURL
 {

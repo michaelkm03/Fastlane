@@ -134,7 +134,7 @@ static NSString * const kTextCreateFlow = @"textCreateFlow";
 
 #pragma mark - VCreationFlowController
 
-- (void)creationFLowController:(VCreationFlowController *)creationFlowController
+- (void)creationFlowController:(VCreationFlowController *)creationFlowController
       finishedWithPreviewImage:(UIImage *)previewImage
               capturedMediaURL:(NSURL *)capturedMediaURL
 {

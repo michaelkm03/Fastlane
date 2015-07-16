@@ -92,7 +92,7 @@
     VWorkspaceViewController *workspace = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerEditTextWorkspaceKey];
     workspace.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
     {
-        [self.creationFlowDelegate creationFLowController:self
+        [self.creationFlowDelegate creationFlowController:self
                                  finishedWithPreviewImage:previewImage
                                          capturedMediaURL:renderedMediaURL];
     };

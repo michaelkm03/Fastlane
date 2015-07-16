@@ -29,7 +29,7 @@ extern NSString * const VCreationFLowCaptureScreenKey;
  *  @param previewImage            A preview image representing the just created content.
  *  @param capturedMediaURL        An NSURL of the location of the rendered content.
  */
-- (void)creationFLowController:(VCreationFlowController *)creationFlowController
+- (void)creationFlowController:(VCreationFlowController *)creationFlowController
       finishedWithPreviewImage:(UIImage *)previewImage
               capturedMediaURL:(NSURL *)capturedMediaURL;
 
