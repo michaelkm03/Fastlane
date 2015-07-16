@@ -92,7 +92,6 @@
     cell.dependencyManager = self.dependencyManager;
     cell.sequence = sequence;
     cell.stream = stream;
-    NSLog(@"should be setting stream");
     [self.dependencyManager addLoadingBackgroundToBackgroundHost:cell];
     [self.dependencyManager addBackgroundToBackgroundHost:cell];
     [self.dependencyManager addHighlightViewToHost:cell];
