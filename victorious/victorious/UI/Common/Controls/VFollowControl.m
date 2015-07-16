@@ -14,8 +14,7 @@ static const CGFloat kHighlightedTiltRotationAngle = M_PI / 4;
 static const NSTimeInterval kHighlightAnimationDuration = 0.3f;
 static const CGFloat kHighlightTransformPerspective = -1.0 / 200.0f;
 static const CGFloat kForcedAntiAliasingConstant = 0.01f;
-static const CGFloat kHighlightedAlpha = 0.6f;
-static const CGFloat kHighlightedScale = 0.5f;
+static const CGFloat kLoadingColorAlpha = 0.6f;
 
 static NSString * const kFollowIconKey = @"follow_user_icon";
 static NSString * const kFollowedCheckmarkIconKey = @"followed_user_icon";
@@ -115,7 +114,6 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
     void (^animationBlock)(void) = ^
     {
         self.controlState = controlState;
-        self.layer.affineTransform = controlState == VFollowControlStateLoading ? CGAffineTransformMakeScale(kHighlightedScale, kHighlightedScale) : CGAffineTransformIdentity;
     };
     
     if ( !animated )
@@ -148,7 +146,7 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
     switch ( self.controlState )
     {
         case VFollowControlStateLoading:
-            tintColor = [tintColor colorWithAlphaComponent:kHighlightedAlpha];
+            tintColor = [tintColor colorWithAlphaComponent:kLoadingColorAlpha];
         case VFollowControlStateFollowed: //Deliberate fallthrough!
             foregroundImage = self.onImage;
             backgroundImage = self.selectedBackgroundImage;
