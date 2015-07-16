@@ -114,53 +114,22 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
         welf.gridViewController.collectionToDisplay = assetCollection;
     };
     self.listViewController.modalPresentationStyle = UIModalPresentationCustom;
-//    self.listViewController.transitioningDelegate = self;
     [self presentViewController:self.listViewController animated:YES completion:nil];
 }
 
 - (NSArray *)alternateCaptureOptions
 {
+    __weak typeof(self) welf = self;
     void (^cameraSelectionBlock)() = ^void()
     {
-        // Camera
-        VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerWithContext:self.context
-                                                                                           dependencyManager:self.dependencyManager
-                                                                                               resultHanlder:^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-                                                       {
-                                                           if (finished)
-                                                           {
-                                                               [self prepareWorkspaceWithMediaURL:capturedMediaURL
-                                                                                  andPreviewImage:previewImage];
-                                                               [self pushViewController:self.workspaceViewController animated:YES];
-                                                           }
-                                                           
-                                                           [self dismissViewControllerAnimated:YES completion:nil];
-                                                       }];
-        // Wrapped in nav
-        UINavigationController *cameraNavController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
-        [self presentViewController:cameraNavController animated:YES completion:nil];
+        __strong typeof(welf) strongSelf = welf;
+        [strongSelf showCamera];
     };
     
     void (^searchSelectionBlock)() = ^void()
     {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSelectImageSearch];
-        
-        // Image search
-        VImageSearchViewController *imageSearchViewController = [VImageSearchViewController newImageSearchViewController];
-        imageSearchViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-        {
-            if (finished)
-            {
-                [self prepareWorkspaceWithMediaURL:capturedMediaURL andPreviewImage:previewImage];
-                [self pushViewController:self.workspaceViewController animated:YES];
-            }
-            
-            [self dismissViewControllerAnimated:YES
-                                     completion:nil];
-        };
-        [self presentViewController:imageSearchViewController
-                           animated:YES
-                         completion:nil];
+        __strong typeof(welf) strongSelf = welf;
+        [strongSelf showSearch];
     };
     VAlternateCaptureOption *cameraOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Camera", nil)
                                                                                       icon:[UIImage imageNamed:@"contententry_cameraicon"]
@@ -169,6 +138,50 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
                                                                                       icon:[UIImage imageNamed:@"contententry_searchbaricon"]
                                                                          andSelectionBlock:searchSelectionBlock];
     return @[cameraOption, searchOption];
+}
+
+- (void)showCamera
+{
+    // Camera
+    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerWithContext:self.context
+                                                                                       dependencyManager:self.dependencyManager
+                                                                                           resultHanlder:^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+                                                   {
+                                                       if (finished)
+                                                       {
+                                                           [self prepareWorkspaceWithMediaURL:capturedMediaURL
+                                                                              andPreviewImage:previewImage];
+                                                           [self pushViewController:self.workspaceViewController animated:YES];
+                                                       }
+                                                       
+                                                       [self dismissViewControllerAnimated:YES completion:nil];
+                                                   }];
+    // Wrapped in nav
+    UINavigationController *cameraNavController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
+    [self presentViewController:cameraNavController animated:YES completion:nil];
+
+}
+
+- (void)showSearch
+{
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSelectImageSearch];
+    
+    // Image search
+    VImageSearchViewController *imageSearchViewController = [VImageSearchViewController newImageSearchViewController];
+    imageSearchViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+    {
+        if (finished)
+        {
+            [self prepareWorkspaceWithMediaURL:capturedMediaURL andPreviewImage:previewImage];
+            [self pushViewController:self.workspaceViewController animated:YES];
+        }
+        
+        [self dismissViewControllerAnimated:YES
+                                 completion:nil];
+    };
+    [self presentViewController:imageSearchViewController
+                       animated:YES
+                     completion:nil];
 }
 
 - (void)prepareWorkspaceWithMediaURL:(NSURL *)mediaURL
@@ -192,15 +205,16 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     __weak typeof(self) welf = self;
     _workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
     {
+        __strong typeof(welf) strongSelf = welf;
         if (finished)
         {
-            welf.renderedMediaURL = renderedMediaURL;
-            welf.previewImage = previewImage;
-            [welf afterEditingFinished];
+            strongSelf.renderedMediaURL = renderedMediaURL;
+            strongSelf.previewImage = previewImage;
+            [strongSelf afterEditingFinished];
         }
         else
         {
-            [welf popViewControllerAnimated:YES];
+            [strongSelf popViewControllerAnimated:YES];
         }
     };
 }
@@ -213,15 +227,19 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     __weak typeof(self) welf = self;
     self.publishPresenter.completion = ^void(BOOL published)
     {
+        __strong typeof(welf) strongSelf = welf;
         if (published)
         {
-            welf.delegate = nil;
-            [welf cleanupCapturedFile];
-            [welf cleanupRenderedFile];
+            strongSelf.delegate = nil;
+            strongSelf.interactivePopGestureRecognizer.delegate = nil;
+            strongSelf.publishPresenter = nil;
+            [strongSelf cleanupCapturedFile];
+            [strongSelf cleanupRenderedFile];
+
             // We're done!
-            [welf.creationFlowDelegate creationFLowController:welf
-                                     finishedWithPreviewImage:welf.previewImage
-                                             capturedMediaURL:welf.renderedMediaURL];
+            [strongSelf.creationFlowDelegate creationFLowController:strongSelf
+                                           finishedWithPreviewImage:strongSelf.previewImage
+                                                   capturedMediaURL:strongSelf.renderedMediaURL];
         }
     };
 }
@@ -340,20 +358,21 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
      }
                                completion:^(NSError *error, NSURL *downloadedFileURL, UIImage *previewImage)
      {
+         __strong typeof(welf) strongSelf = welf;
          [hudForView hide:YES];
          if (error == nil)
          {
-             [welf prepareWorkspaceWithMediaURL:downloadedFileURL
-                                andPreviewImage:previewImage];
-             [welf pushViewController:welf.workspaceViewController
-                             animated:YES];
+             [strongSelf prepareWorkspaceWithMediaURL:downloadedFileURL
+                                      andPreviewImage:previewImage];
+             [strongSelf pushViewController:strongSelf.workspaceViewController
+                                   animated:YES];
          }
          else
          {
              UIAlertController *alert = [UIAlertController simpleAlertControllerWithTitle:NSLocalizedString(@"LibraryCaptureFailed", nil)
                                                                                   message:error.localizedDescription
                                                                      andCancelButtonTitle:NSLocalizedString(@"OK", nil)];
-             [welf presentViewController:alert animated:YES completion:nil];
+             [strongSelf presentViewController:alert animated:YES completion:nil];
          }
      }];
 }
@@ -361,9 +380,11 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 - (void)gridViewController:(VAssetCollectionGridViewController *)gridViewController
        authorizationStatus:(BOOL)authorizedStatus
 {
+    __weak typeof(self) welf = self;
     [self.listViewController fetchDefaultCollectionWithCompletion:^(PHAssetCollection *collection)
      {
-         self.gridViewController.collectionToDisplay = collection;
+         __strong typeof(welf) strongSelf = welf;
+         strongSelf.gridViewController.collectionToDisplay = collection;
      }];
 }
 

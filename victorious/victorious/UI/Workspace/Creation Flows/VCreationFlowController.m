@@ -100,6 +100,7 @@ static NSString * const kBarTintColorKey = @"barTintColor";
 - (void)selectedCancel:(UIBarButtonItem *)cancelButton
 {
     self.delegate = nil;
+    self.interactivePopGestureRecognizer.delegate = nil;
     if ([self.creationFlowDelegate respondsToSelector:@selector(creationFlowControllerDidCancel:)])
     {
         [self.creationFlowDelegate creationFlowControllerDidCancel:self];

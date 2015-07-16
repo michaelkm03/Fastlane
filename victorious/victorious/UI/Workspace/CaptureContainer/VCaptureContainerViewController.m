@@ -58,13 +58,16 @@
     self.stackView.distribution = OAStackViewDistributionFillEqually;
     
     // Setup contained VC
-    [self addChildViewController:self.viewControllerToContain];
-    [self.containerView addSubview:self.viewControllerToContain.view];
-    [self.containerView v_addFitToParentConstraintsToSubview:self.viewControllerToContain.view];
-    [self.viewControllerToContain didMoveToParentViewController:self];
-    
-    // Forward navigationItem
-    self.navigationItem.titleView = self.viewControllerToContain.navigationItem.titleView;
+    if (self.viewControllerToContain)
+    {
+        [self addChildViewController:self.viewControllerToContain];
+        [self.containerView addSubview:self.viewControllerToContain.view];
+        [self.containerView v_addFitToParentConstraintsToSubview:self.viewControllerToContain.view];
+        [self.viewControllerToContain didMoveToParentViewController:self];
+        
+        // Forward navigationItem
+        self.navigationItem.titleView = self.viewControllerToContain.navigationItem.titleView;
+    }
 }
 
 - (BOOL)prefersStatusBarHidden

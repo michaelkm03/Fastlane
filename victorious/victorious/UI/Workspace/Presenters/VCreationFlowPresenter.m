@@ -45,13 +45,14 @@ static NSString * const kTextCreateFlow = @"textCreateFlow";
 {
     VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                          dependencyManager:self.dependencyManager];
+    __weak typeof(self) welf = self;
     [authorizedAction performFromViewController:self.viewControllerToPresentOn
                                         context:VAuthorizationContextCreatePost
                                      completion:^(BOOL authorized)
      {
          if (authorized)
          {
-             [self authorizedPresent];
+             [welf authorizedPresent];
          }
      }];
 }
@@ -64,11 +65,12 @@ static NSString * const kTextCreateFlow = @"textCreateFlow";
     
     if (createSheet != nil)
     {
+        __weak typeof(self) welf = self;
         [createSheet setCompletionHandler:^(VCreateSheetViewController *createSheetViewController, VCreationType chosenItemIdentifier)
          {
              [createSheetViewController dismissViewControllerAnimated:YES completion:^
               {
-                  [self openWorkspaceWithItemIdentifier:chosenItemIdentifier];
+                  [welf openWorkspaceWithItemIdentifier:chosenItemIdentifier];
               }];
              
          }];

@@ -206,9 +206,11 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 - (void)fetchDefaultCollectionWithCompletion:(void (^)(PHAssetCollection *collection))completion
 {
     NSParameterAssert(completion != nil);
+    __weak typeof(self) welf = self;
     [self fetchCollectionsWithCompletion:^
     {
-        completion([self.collections firstObject]);
+        __strong typeof(welf) strongSelf = welf;
+        completion([strongSelf.collections firstObject]);
     }];
 }
 
