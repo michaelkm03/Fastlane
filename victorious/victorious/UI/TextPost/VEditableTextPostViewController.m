@@ -290,7 +290,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     
     [self hidePlaceholderText];
     
-    return textAfter.length < self.characterCountMax;
+    return textAfter.length <= self.characterCountMax;
 }
 
 #pragma mark - Setting background image and color
