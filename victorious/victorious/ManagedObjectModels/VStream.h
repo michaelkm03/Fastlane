@@ -1,9 +1,9 @@
 //
 //  VStream.h
-//  
+//  victorious
 //
-//  Created by Sharif Ahmed on 5/26/15.
-//
+//  Created by Sharif Ahmed on 7/13/15.
+//  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -20,7 +20,6 @@
 @property (nonatomic, retain) NSString * hashtag;
 @property (nonatomic, retain) NSNumber * isUserPostAllowed;
 @property (nonatomic, retain) NSString * trackingIdentifier;
-@property (nonatomic, retain) NSString * streamId;
 @property (nonatomic, retain) NSOrderedSet *marqueeItems;
 @property (nonatomic, retain) NSOrderedSet *streamItems;
 @end

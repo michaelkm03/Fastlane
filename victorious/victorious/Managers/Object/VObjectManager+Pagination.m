@@ -27,6 +27,7 @@
 #import "NSString+VParseHelp.h"
 #import "VStream+Fetcher.h"
 #import "VStreamItem+Fetcher.h"
+#import "VEditorializationItem.h"
 
 const NSInteger kTooManyNewMessagesErrorCode = 999;
 
@@ -446,20 +447,39 @@ static const NSInteger kDefaultPageSize = 40;
         
         VStream *fullStream = [resultObjects lastObject];
 
+        NSString *apiPath = stream.apiPath;
+        
         //Strip the marqueeItems and streamItems from the newly returned stream
+        BOOL marqueeNeedsUpdate = NO;
         for (VStreamItem *marqueeItem in fullStream.marqueeItems )
         {
             VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:marqueeItem.objectID];
+            if ( !marqueeNeedsUpdate )
+            {
+                //Check marquees to see if we do after all
+                VEditorializationItem *oldItem = [streamItemInContext editorializationForStreamWithApiPath:apiPath];
+                BOOL bothNil = oldItem.marqueeHeadline == nil && marqueeItem.headline == nil;
+                BOOL headlineIsSame = [oldItem.marqueeHeadline isEqualToString:marqueeItem.headline];
+                if ( !( bothNil || headlineIsSame ) )
+                {
+                    //The editorialization item has changed or been created anew, we need to update the marquee
+                    marqueeNeedsUpdate = YES;
+                }
+            }
+            [self addEditorializationToStreamItem:streamItemInContext inStreamWithApiPath:apiPath usingHeadline:marqueeItem.headline inMarquee:YES];
+            marqueeItem.headline = nil;
             [marqueeItems addObject:streamItemInContext];
         }
         
         for (VStreamItem *streamItem in fullStream.streamItems)
         {
             VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:streamItem.objectID];
+            [self addEditorializationToStreamItem:streamItemInContext inStreamWithApiPath:apiPath usingHeadline:streamItem.headline inMarquee:NO];
+            streamItem.headline = nil;
             [streamItems addObject:streamItemInContext];
         }
         stream.streamItems = streamItems;
-        if ( ![marqueeItems isEqualToOrderedSet:stream.marqueeItems] )
+        if ( ![marqueeItems isEqualToOrderedSet:stream.marqueeItems] || marqueeNeedsUpdate )
         {
             stream.marqueeItems = marqueeItems;
         }
@@ -477,6 +497,19 @@ static const NSInteger kDefaultPageSize = 40;
     };
     
     return [self.paginationManager loadFilter:filter withPageType:pageType successBlock:fullSuccessBlock failBlock:fail];
+}
+
+- (void)addEditorializationToStreamItem:(VStreamItem *)streamItem inStreamWithApiPath:(NSString *)apiPath usingHeadline:(NSString *)headline inMarquee:(BOOL)inMarquee
+{
+    VEditorializationItem *editorializationItem = [streamItem editorializationForStreamWithApiPath:apiPath];
+    if ( inMarquee )
+    {
+        editorializationItem.marqueeHeadline = headline;
+    }
+    else
+    {
+        editorializationItem.headline = headline;
+    }
 }
 
 #pragma mark - Likers

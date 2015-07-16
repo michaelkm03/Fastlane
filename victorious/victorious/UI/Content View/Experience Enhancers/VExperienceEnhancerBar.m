@@ -204,11 +204,11 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     }
     else
     {
-        // Incrememnt the vote count
+        // Increment the vote count
         [enhancerForIndexPath vote];
         
         // Call the selection block (configured in VNewContentViewController) to play the animations
-        if (self.selectionBlock)
+        if ( self.selectionBlock != nil )
         {
             UICollectionViewCell *selectedCell = [self.collectionView cellForItemAtIndexPath:indexPath];
             CGPoint convertedCenter = [selectedCell.superview convertPoint:selectedCell.center toView:self];
