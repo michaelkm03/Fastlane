@@ -19,7 +19,6 @@
 
 #pragma mark - Property Accessors
 
-// Text
 - (void)setPromptText:(NSString *)promptText
 {
     _promptText = [promptText copy];
@@ -39,7 +38,6 @@
     }
 }
 
-// Font
 - (void)setPromptFont:(UIFont *)promptFont
 {
     _promptFont = promptFont;
@@ -51,7 +49,6 @@
     [self updateAttributedCallToActionLabel];
 }
 
-// Color
 - (void)setPromptColor:(UIColor *)promptColor
 {
     _promptColor = promptColor;
@@ -64,7 +61,6 @@
     [self updateAttributedCallToActionLabel];
 }
 
-// Attributed String
 - (void)updateAttributedCallToActionLabel
 {
     NSMutableDictionary *callToActionAttributes = [[NSMutableDictionary alloc] init];

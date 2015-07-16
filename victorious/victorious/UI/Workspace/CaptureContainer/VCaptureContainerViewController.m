@@ -19,8 +19,8 @@
 
 @property (nonatomic, strong) IBOutlet UIView *containerView;
 @property (nonatomic, strong) IBOutlet OAStackView *stackView;
-
 @property (nonatomic, strong) UIViewController *viewControllerToContain;
+@property (nonatomic, strong) NSArray *buttonsForCaptureOptions;
 
 @end
 
@@ -40,6 +40,7 @@
 {
     [super viewDidLoad];
 
+    NSMutableArray *buttonsForOptions = [[NSMutableArray alloc] init];
     // Create alternateOption buttons
     for (VAlternateCaptureOption *alternateOption in self.alternateCaptureOptions)
     {
@@ -54,7 +55,9 @@
         // Move the image a bit to the left
         button.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
         [self.stackView addArrangedSubview:button];
+        [buttonsForOptions addObject:button];
     }
+    self.buttonsForCaptureOptions = [NSArray arrayWithArray:buttonsForOptions];
     self.stackView.distribution = OAStackViewDistributionFillEqually;
     
     // Setup contained VC
@@ -86,18 +89,9 @@
 
 - (void)selectedAlternateOption:(UIButton *)button
 {
-    // Kind of hacky check on title
-    __block VAlternateCaptureOption *alternateCaptureOption;
-    [self.alternateCaptureOptions enumerateObjectsUsingBlock:^(VAlternateCaptureOption *option, NSUInteger idx, BOOL *stop)
-    {
-        if ([option.title isEqualToString:[button titleForState:UIControlStateNormal]])
-        {
-            alternateCaptureOption = option;
-            *stop = YES;
-        }
-    }];
-
-    alternateCaptureOption.selectionBlock();
+    NSUInteger indexOfButton = [self.buttonsForCaptureOptions indexOfObject:button];
+    VAlternateCaptureOption *optionForButtonIndex = self.alternateCaptureOptions[indexOfButton];
+    optionForButtonIndex.selectionBlock();
 }
 
 @end
