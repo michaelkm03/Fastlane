@@ -37,15 +37,15 @@
 
 - (void)trimmerViewController:(VTrimmerViewController *)trimmer
              thumbnailForTime:(CMTime)requestedTime
-               withCompletion:(void (^)(UIImage *thumbnail, CMTime timeForImage, id generatingDataSource))completion
+              withSuccess:(void (^)(UIImage *, CMTime, id))success withFailure:(void (^)(NSError *))errorBlock
 {
-    NSParameterAssert(completion != nil);
+    NSParameterAssert(success != nil);
     
     NSString *keyForThumbnail = [NSString stringWithFormat:@"%@", [NSValue valueWithCMTime:requestedTime]];
     UIImage *cachedImage = [self.thumbnailCache objectForKey:keyForThumbnail];
     if (cachedImage != nil)
     {
-        completion(cachedImage, requestedTime, self);
+        success(cachedImage, requestedTime, self);
         return;
     }
     
@@ -60,7 +60,11 @@
                                                      orientation:UIImageOrientationUp];
              [welf.thumbnailCache setObject:generatedImage
                                      forKey:keyForThumbnail];
-             completion(generatedImage, requestedTime, welf);
+             success(generatedImage, requestedTime, welf);
+         }
+         else
+         {
+             errorBlock(error);
          }
      }];
 }

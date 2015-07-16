@@ -11,6 +11,9 @@
 #import <CoreMedia/CMTime.h>
 #import <CoreMedia/CMTimeRange.h>
 
+// maximum height of the trim control
+extern CGFloat const VTrimControlMaximumHeight;
+
 // Sends UIControlEventValueChanged on new selection
 
 /**
@@ -37,5 +40,10 @@
  *  The height of the trimmer body plus the vertical inset of the body
  */
 + (CGFloat)topPadding;
+
+/**
+ *  The view for the handle of the trimmer control
+ */
+@property (nonatomic, strong) UIView *trimThumbBody;
 
 @end
