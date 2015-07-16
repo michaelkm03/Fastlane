@@ -344,49 +344,7 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
     // Call might come on any background queue. Re-dispatch to the main queue to handle it.
     dispatch_async(dispatch_get_main_queue(), ^
     {
-        // check if there are changes to the assets (insertions, deletions, updates)
-        PHFetchResultChangeDetails *collectionChanges = [changeInstance changeDetailsForFetchResult:self.fetchResultForAssetsToDisplay];
-        if (collectionChanges)
-        {
-            // get the new fetch result
-            self.fetchResultForAssetsToDisplay = [collectionChanges fetchResultAfterChanges];
-            
-            UICollectionView *collectionView = self.collectionView;
-            
-            if (![collectionChanges hasIncrementalChanges] || [collectionChanges hasMoves])
-            {
-                // we need to reload all if the incremental diffs are not available
-                [collectionView reloadData];
-            }
-            else
-            {
-                // if we have incremental diffs, tell the collection view to animate insertions and deletions
-                [collectionView performBatchUpdates:^
-                {
-                    NSIndexSet *removedIndexes = [collectionChanges removedIndexes];
-                    if ([removedIndexes count])
-                    {
-                        [collectionView deleteItemsAtIndexPaths:[removedIndexes indexPathsFromIndexesWithSecion:0]];
-                    }
-                    NSIndexSet *insertedIndexes = [collectionChanges insertedIndexes];
-                    if ([insertedIndexes count])
-                    {
-                        [collectionView insertItemsAtIndexPaths:[insertedIndexes indexPathsFromIndexesWithSecion:0]];
-                    }
-                    NSIndexSet *changedIndexes = [collectionChanges changedIndexes];
-                    if ([changedIndexes count])
-                    {
-                        [collectionView reloadItemsAtIndexPaths:[changedIndexes indexPathsFromIndexesWithSecion:0]];
-                    }
-                    [collectionChanges enumerateMovesWithBlock:^(NSUInteger fromIndex, NSUInteger toIndex)
-                    {
-                        [collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:toIndex inSection:0]]];
-                    }];
-                } completion:NULL];
-            }
-            
-            [self resetCachedAssets];
-        }
+        [self handleChange:changeInstance];
     });
 }
 
@@ -398,6 +356,59 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
 }
 
 #pragma mark - Private Methods
+
+- (void)handleChange:(PHChange *)change
+{
+    // check if there are changes to the assets (insertions, deletions, updates)
+    PHFetchResultChangeDetails *collectionChanges = [change changeDetailsForFetchResult:self.fetchResultForAssetsToDisplay];
+    if (collectionChanges == nil)
+    {
+        return;
+    }
+    
+    // get the new fetch result
+    self.fetchResultForAssetsToDisplay = [collectionChanges fetchResultAfterChanges];
+    
+    UICollectionView *collectionView = self.collectionView;
+    if (![collectionChanges hasIncrementalChanges] || [collectionChanges hasMoves])
+    {
+        // we need to reload all if the incremental diffs are not available
+        [collectionView reloadData];
+    }
+    else
+    {
+        [self handleAdvancedpdatesWithChangeDetails:collectionChanges];
+    }
+    
+    [self resetCachedAssets];
+}
+
+- (void)handleAdvancedpdatesWithChangeDetails:(PHFetchResultChangeDetails *)changeDetails
+{
+    // if we have incremental diffs, tell the collection view to animate insertions and deletions
+    [self.collectionView performBatchUpdates:^
+     {
+         NSIndexSet *removedIndexes = [changeDetails removedIndexes];
+         if ([removedIndexes count])
+         {
+             [self.collectionView deleteItemsAtIndexPaths:[removedIndexes indexPathsFromIndexesWithSecion:0]];
+         }
+         NSIndexSet *insertedIndexes = [changeDetails insertedIndexes];
+         if ([insertedIndexes count])
+         {
+             [self.collectionView insertItemsAtIndexPaths:[insertedIndexes indexPathsFromIndexesWithSecion:0]];
+         }
+         NSIndexSet *changedIndexes = [changeDetails changedIndexes];
+         if ([changedIndexes count])
+         {
+             [self.collectionView reloadItemsAtIndexPaths:[changedIndexes indexPathsFromIndexesWithSecion:0]];
+         }
+         [changeDetails enumerateMovesWithBlock:^(NSUInteger fromIndex, NSUInteger toIndex)
+          {
+              [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:toIndex inSection:0]]];
+          }];
+     } completion:NULL];
+}
 
 - (UIView *)createContainerViewForAlternateCollectionSelection
 {
