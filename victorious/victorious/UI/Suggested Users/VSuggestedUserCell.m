@@ -88,7 +88,7 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
         [self.userProfileImage setProfileImageURL:[NSURL URLWithString:_user.pictureUrl]];
     }
     
-    self.followButton.controlState = [VFollowControl controlStateForFollowing:self.user.isFollowedByMainUser.boolValue];
+    [self updateFollowingStateAnimated:NO];
 }
 
 - (void)applyStyle
@@ -102,26 +102,37 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
     [self.dependencyManager addBackgroundToBackgroundHost:self forKey:@"background.detail"];
 }
 
+- (void)updateFollowingStateAnimated:(BOOL)animated
+{
+    [self.followButton setControlState:[VFollowControl controlStateForFollowing:self.user.isFollowedByMainUser.boolValue] animated:animated];
+}
+
 - (IBAction)followButtonPressed:(VFollowControl *)sender
 {
+    if ( sender.controlState == VFollowControlStateLoading )
+    {
+        return;
+    }
+    
+    BOOL isFollowing = sender.controlState == VFollowControlStateFollowed;
+    [sender setControlState:VFollowControlStateLoading animated:YES];
     id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
                                                                       withSender:nil];
     
     NSAssert(followResponder != nil, @"Need a VFollowingResponder higher up the chain to communicate following commands.");
-    [sender setControlState:VFollowControlStateLoading];
 
-    if ( self.user.isFollowedByMainUser.boolValue )
+    if ( isFollowing )
     {
         [followResponder unfollowUser:self.user withCompletion:^(VUser *userActedOn)
          {
-             [sender setControlState:[VFollowControl controlStateForFollowing:self.user.isFollowedByMainUser.boolValue] animated:YES];
+             [self updateFollowingStateAnimated:YES];
          }];
     }
     else
     {
         [followResponder followUser:self.user withCompletion:^(VUser *userActedOn)
          {
-             [sender setControlState:[VFollowControl controlStateForFollowing:self.user.isFollowedByMainUser.boolValue] animated:YES];
+             [self updateFollowingStateAnimated:YES];
          }];
     }
 }
