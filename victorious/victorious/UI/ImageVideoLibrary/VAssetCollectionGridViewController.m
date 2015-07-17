@@ -8,10 +8,12 @@
 
 #import "VAssetCollectionGridViewController.h"
 
+
 // Permissions
 #import "VPermissionPhotoLibrary.h"
 
 // Views + Helpers
+#import "VAssetCollectionListViewController.h"
 #import "VAssetCollectionGridDataSource.h"
 #import "VAssetCollectionUnauthorizedDataSource.h"
 #import "UIView+AutoLayout.h"
@@ -27,6 +29,8 @@ NSString * const VAssetCollectionGridViewControllerMediaType = @"assetGridViewCo
 @interface VAssetCollectionGridViewController () <VAssetCollectionUnauthorizedDataSourceDelegate, VAssetCollectionGridDataSourceDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+
+@property (nonatomic, strong) VAssetCollectionListViewController *listViewController;
 
 @property (nonatomic, strong) VPermissionPhotoLibrary *libraryPermission;
 @property (nonatomic, strong) VAssetCollectionGridDataSource *assetDataSource;
@@ -54,6 +58,7 @@ NSString * const VAssetCollectionGridViewControllerMediaType = @"assetGridViewCo
     gridViewController.dependencyManager = dependencyManager;
     gridViewController.mediaType = [[dependencyManager numberForKey:VAssetCollectionGridViewControllerMediaType] integerValue];
     gridViewController.libraryPermission = [[VPermissionPhotoLibrary alloc] initWithDependencyManager:dependencyManager];
+    gridViewController.listViewController = [VAssetCollectionListViewController assetCollectionListViewControllerWithMediaType:gridViewController.mediaType];
     return gridViewController;
 }
 
@@ -91,6 +96,13 @@ NSString * const VAssetCollectionGridViewControllerMediaType = @"assetGridViewCo
     {
         [self.collectionView deselectItemAtIndexPath:selectedIndexPaths animated:NO];
     }
+    
+    __weak typeof(self) welf = self;
+    [self.listViewController fetchDefaultCollectionWithCompletion:^(PHAssetCollection *collection)
+    {
+        __strong typeof(welf) strongSelf = welf;
+        strongSelf.collectionToDisplay = collection;
+    }];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -127,34 +139,11 @@ NSString * const VAssetCollectionGridViewControllerMediaType = @"assetGridViewCo
                      completion:nil];
 }
 
-- (void)setDelegate:(id<VAssetCollectionGridViewControllerDelegate>)delegate
-{
-    _delegate = delegate;
-    
-    switch ([self.libraryPermission permissionState])
-    {
-        case VPermissionStatePromptDenied:
-        case VPermissionStateUnknown:
-            break;
-        case VPermissionStateSystemDenied:
-            [self.delegate gridViewController:self
-                          authorizationStatus:NO];
-            break;
-        case VPermissionStateAuthorized:
-            [self.delegate gridViewController:self
-                          authorizationStatus:NO];
-            break;
-        case VPermissionUnsupported:
-            // We should never get here
-            break;
-    }
-}
-
 #pragma mark - Target / Action
 
 - (void)selectedFolderPicker:(UIButton *)button
 {
-    [self.delegate gridViewControllerWantsToViewAlternateCollections:self];
+    [self presentAssetFoldersList];
 }
 
 #pragma mark - VAssetCollectionUnauthorizedDataSourceDelegate
@@ -162,7 +151,12 @@ NSString * const VAssetCollectionGridViewControllerMediaType = @"assetGridViewCo
 - (void)unauthorizedDataSource:(VAssetCollectionUnauthorizedDataSource *)dataSource
         authorizationChangedTo:(BOOL)authorizationStatus
 {
-    [self.delegate gridViewController:self authorizationStatus:authorizationStatus];
+    __weak typeof(self) welf = self;
+    [self.listViewController fetchDefaultCollectionWithCompletion:^(PHAssetCollection *collection)
+     {
+         __strong typeof(welf) strongSelf = welf;
+         strongSelf.collectionToDisplay = collection;
+     }];
     if (authorizationStatus)
     {
         [self setupAssetDataSource];
@@ -180,6 +174,18 @@ NSString * const VAssetCollectionGridViewControllerMediaType = @"assetGridViewCo
 }
 
 #pragma mark - Private Methods
+
+- (void)presentAssetFoldersList
+{
+    // Present alternate folder
+    __weak typeof(self) welf = self;
+    self.listViewController.collectionSelectionHandler = ^void(PHAssetCollection *assetCollection)
+    {
+        __strong typeof(welf) strongSelf = welf;
+        strongSelf.collectionToDisplay = assetCollection;
+    };
+    [self presentViewController:self.listViewController animated:YES completion:nil];
+}
 
 - (void)setCollectionViewDataSourceTo:(id <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>)dataSource
 {

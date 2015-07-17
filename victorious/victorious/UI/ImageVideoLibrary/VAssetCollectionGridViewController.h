@@ -18,21 +18,10 @@ extern NSString * const VAssetCollectionGridViewControllerMediaType;
 @protocol VAssetCollectionGridViewControllerDelegate <NSObject>
 
 /**
- *  Notifies delegate the user wants to pick a different asset collection.
- */
-- (void)gridViewControllerWantsToViewAlternateCollections:(VAssetCollectionGridViewController *)gridViewController;
-
-/**
  *  User has selected a particular asset.
  */
 - (void)gridViewController:(VAssetCollectionGridViewController *)gridViewController
              selectedAsset:(PHAsset *)asset;
-
-/**
- *  User has taken an action that has updated the authorization status for their asset gallery.
- */
-- (void)gridViewController:(VAssetCollectionGridViewController *)gridViewController
-       authorizationStatus:(BOOL)authorizedStatus;
 
 @end
 
@@ -43,9 +32,6 @@ extern NSString * const VAssetCollectionGridViewControllerMediaType;
 
 /**
  *  A delegate to be informed of events related to this gridViewController.
- *
- *  NOTE: the "gridViewController:authorizationStatus:" method is called immediately if the user has already answered 
- *  the system prompt after setting this delegate method.
  */
 @property (nonatomic, weak) id <VAssetCollectionGridViewControllerDelegate> delegate;
 

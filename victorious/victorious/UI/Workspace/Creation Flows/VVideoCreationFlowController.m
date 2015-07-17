@@ -49,11 +49,6 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
     return self;
 }
 
-- (VAssetCollectionListViewController *)collectionListViewController
-{
-    return [VAssetCollectionListViewController assetCollectionListViewControllerWithMediaType:PHAssetMediaTypeVideo];
-}
-
 - (VAssetCollectionGridViewController *)gridViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     return [dependencyManager templateValueOfType:[VAssetCollectionGridViewController class]

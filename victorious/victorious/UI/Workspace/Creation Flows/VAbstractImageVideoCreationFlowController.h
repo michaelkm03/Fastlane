@@ -46,11 +46,6 @@ extern NSString * const VImageCreationFlowControllerKey;
 @interface VAbstractImageVideoCreationFlowController (Subclassing)
 
 /**
- *  Provide a listViewController for the superclass to use when showing alternate folders.
- */
-- (VAssetCollectionListViewController *)collectionListViewController;
-
-/**
  *  Provide a gridViewController to display the currently selected asset collection with.
  */
 - (VAssetCollectionGridViewController *)gridViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager;
