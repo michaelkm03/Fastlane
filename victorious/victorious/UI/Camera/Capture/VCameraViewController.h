@@ -25,17 +25,6 @@ typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NS
                                              resultHanlder:(VMediaCaptureCompletion)resultHandler;
 
 /**
- If YES, the most recently captured media was
- selected from the user's asset library.
- */
-@property (nonatomic, readonly) BOOL didSelectAssetFromLibrary;
-
-/**
- YES if the user selected media from a web search.
- */
-@property (nonatomic, readonly) BOOL didSelectFromWebSearch;
-
-/**
  *  If YES, the camera will call it's completion block immediately after taking the picture/video.
  */
 @property (nonatomic, assign) BOOL shouldSkipPreview;
