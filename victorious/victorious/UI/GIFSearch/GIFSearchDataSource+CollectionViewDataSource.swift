@@ -30,6 +30,7 @@ extension GIFSearchDataSource : UICollectionViewDataSource {
         let result = section.results[ indexPath.row ]
         if section.isFullSize {
             if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( GIFSearchPreviewCell.suggestedReuseIdentifier, forIndexPath: indexPath ) as? GIFSearchPreviewCell {
+                cell.previewAssetUrl = NSURL(string: result.thumbnailStillUrl)
                 cell.assetUrl = NSURL(string: result.mp4Url)
                 return cell
             }

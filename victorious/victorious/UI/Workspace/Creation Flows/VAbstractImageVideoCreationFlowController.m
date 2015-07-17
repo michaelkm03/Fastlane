@@ -35,14 +35,14 @@
 // Keys
 NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 
-@interface VAbstractImageVideoCreationFlowController () <UINavigationControllerDelegate, VAssetCollectionGridViewControllerDelegate>
+@interface VAbstractImageVideoCreationFlowController () <UINavigationControllerDelegate>
 
 @property (nonatomic, strong) NSArray *cachedAssetCollections;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, strong) VCaptureContainerViewController *captureContainerViewController;
-@property (nonatomic, strong) VAssetCollectionGridViewController *gridViewController;
+@property (nonatomic, strong, readwrite) VAssetCollectionGridViewController *gridViewController;
 @property (nonatomic, strong) VAssetDownloader *downloader;
 @property (nonatomic, strong) VWorkspaceViewController *workspaceViewController;
 
@@ -72,9 +72,14 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
         
         _gridViewController = [self gridViewControllerWithDependencyManager:dependencyManager];
         _gridViewController.delegate = self;
-        [self.captureContainerViewController setContainedViewController:_gridViewController];
+        [self.captureContainerViewController setContainedViewController:[self initialViewController]];
     }
     return self;
+}
+
+- (UIViewController *)initialViewController
+{
+    return self.gridViewController;
 }
 
 #pragma mark -  Public Methods

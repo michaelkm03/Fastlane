@@ -8,10 +8,11 @@
 
 #import "VCreationFlowController.h"
 #import "VCreationTypes.h"
+#import "VAssetCollectionGridViewController.h"
 
 extern NSString * const VImageCreationFlowControllerKey;
 
-@interface VAbstractImageVideoCreationFlowController : VCreationFlowController
+@interface VAbstractImageVideoCreationFlowController : VCreationFlowController <VAssetCollectionGridViewControllerDelegate>
 
 /**
  *  To force this image creation flow controller into remixing mode provide it with a previewImage 
@@ -75,5 +76,15 @@ extern NSString * const VImageCreationFlowControllerKey;
  *  Must return an array (or empty array) of VAlternateCaptureOptions.
  */
 - (NSArray *)alternateCaptureOptions;
+
+- (UIViewController *)initialViewController;
+
+@property (nonatomic, strong, readonly) VAssetCollectionGridViewController *gridViewController;
+
+- (void)toPublishScreenWithRenderedMediaURL:(NSURL *)renderedMediaURL
+                               previewImage:(UIImage *)previewImage
+                              fromWorkspace:(VWorkspaceViewController *)workspace;
+
+- (void)setupPublishPresenter;
 
 @end

@@ -15,6 +15,7 @@
 #import "VVideoAssetDownloader.h"
 #import "VAlternateCaptureOption.h"
 #import "VCameraViewController.h"
+#import "victorious-Swift.h"
 
 // Edit
 #import "VWorkspaceViewController.h"
@@ -31,9 +32,11 @@
 static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 
-@interface VGIFCreationFlowController ()
+@interface VGIFCreationFlowController () <GIFSearchViewControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) GIFSearchViewController *gifSearchViewController;
+@property (nonatomic, strong) VAssetCollectionGridViewController *gridViewController;
 
 @end
 
@@ -45,11 +48,26 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
     if (self != nil)
     {
         _dependencyManager = dependencyManager;
-        [self setContext:VCameraContextVideoContentCreation];
+        _gridViewController = [self gridViewControllerWithDependencyManager:dependencyManager];
+        _gridViewController.delegate = self;
     }
     return self;
 }
 
+- (UIViewController *)initialViewController
+{
+    if ( self.gifSearchViewController == nil )
+    {
+        self.gifSearchViewController = [GIFSearchViewController gifSearchWithDependencyManager:self.dependencyManager];
+        self.gifSearchViewController.delegate = self;
+    }
+    return self.gifSearchViewController;
+}
+
+- (GIFSearchViewController *)gifSearchViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    return [GIFSearchViewController gifSearchWithDependencyManager:dependencyManager];
+}
 - (VAssetCollectionGridViewController *)gridViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     return [dependencyManager templateValueOfType:[VAssetCollectionGridViewController class]
@@ -59,11 +77,9 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 
 - (VWorkspaceViewController *)workspaceViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    VWorkspaceViewController *gifWorkspace = [dependencyManager templateValueOfType:[VWorkspaceViewController class]
-                                                                             forKey:kGifWorkspaceKey
-                                                              withAddedDependencies:@{VVideoToolControllerInitalVideoEditStateKey:@(VVideoToolControllerInitialVideoEditStateGIF)}];
-
-    return gifWorkspace;
+    return [dependencyManager templateValueOfType:[VWorkspaceViewController class]
+                                           forKey:kGifWorkspaceKey
+                            withAddedDependencies:@{VVideoToolControllerInitalVideoEditStateKey:@(VVideoToolControllerInitialVideoEditStateGIF)}];;
 }
 
 - (void)prepareInitialEditStateWithWorkspace:(VWorkspaceViewController *)workspace
@@ -88,16 +104,23 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 - (NSArray *)alternateCaptureOptions
 {
     __weak typeof(self) welf = self;
-    void (^cameraSelectionBlock)() = ^void()
-    {
-        __strong typeof(welf) strongSelf = welf;
-        [strongSelf showCamera];
-    };
     VAlternateCaptureOption *cameraOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Camera", nil)
                                                                                       icon:[UIImage imageNamed:@"contententry_cameraicon"]
-                                                                         andSelectionBlock:cameraSelectionBlock];
+                                                                         andSelectionBlock:^void()
+                                             {
+                                                 __strong typeof(welf) strongSelf = welf;
+                                                 [strongSelf showCamera];
+                                             }];
+    VAlternateCaptureOption *galleryOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Gallery", nil)
+#warning Add gallery icon here
+                                                                                       icon:[UIImage imageNamed:@"contententry_galleryicon"]
+                                                                          andSelectionBlock:^void()
+                                              {
+                                                  __strong typeof(welf) strongSelf = welf;
+                                                  [strongSelf showGallery];
+                                              }];
     
-    return @[cameraOption];
+    return @[ cameraOption, galleryOption ];
 }
 
 - (void)showCamera
@@ -120,6 +143,19 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
     // Wrapped in nav
     UINavigationController *cameraNavController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
     [self presentViewController:cameraNavController animated:YES completion:nil];
+}
+
+- (void)showGallery
+{
+    [self pushViewController:self.gridViewController animated:YES];
+}
+
+#pragma mark - GIFSearchViewControllerDelegate
+
+- (void)GIFSelectedWithPreviewImage:(UIImage *)previewImage capturedMediaURL:(NSURL *)capturedMediaURL
+{
+    [self setupPublishPresenter];
+    [self toPublishScreenWithRenderedMediaURL:capturedMediaURL previewImage:previewImage fromWorkspace:nil];
 }
 
 @end

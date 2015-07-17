@@ -14,6 +14,13 @@ class GIFSearchPreviewCell: UICollectionViewCell {
     
     @IBOutlet private weak var videoView: VVideoView!
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private weak var imageView: UIImageView!
+    
+    var previewAssetUrl: NSURL? {
+        didSet {
+            self.imageView.sd_setImageWithURL( self.previewAssetUrl )
+        }
+    }
     
     /// Sets the video asset URL to play in this cell and automatically beings playing it.
     var assetUrl: NSURL? {
@@ -21,6 +28,7 @@ class GIFSearchPreviewCell: UICollectionViewCell {
             if let url = self.assetUrl {
                 if self.assetUrl != oldValue {
                     self.videoView.reset()
+                    self.videoView.useAspectFit = true
                     self.videoView.setItemURL(url, loop: true, audioMuted: true)
                     self.resetTransitionIn()
                 }
@@ -33,13 +41,12 @@ class GIFSearchPreviewCell: UICollectionViewCell {
         }
     }
     
-    
     /// Resets the animation state to prepare for another transition
     /// animation with `resetTransitionIn`
     func resetTransitionIn() {
         self.videoView.hidden = true
         
-        UIView.animateWithDuration(0.3, delay: 0.5, options: nil, animations: {
+        UIView.animateWithDuration( 0.3, delay: 0.5, options: nil, animations: {
             self.activityIndicator.hidden = false
         }, completion: nil)
     }

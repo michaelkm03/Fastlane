@@ -24,7 +24,7 @@ class GIFSearchViewController: UIViewController {
     
     /// Enum of selector strings used in this class
     private enum Action: Selector {
-        case Next = "onNextSelected:"
+        case ExportSelectedItem = "exportSelectedItem:"
     }
 
     @IBOutlet weak var collectionView: UICollectionView!
@@ -72,12 +72,12 @@ class GIFSearchViewController: UIViewController {
             title: NSLocalizedString("Next", comment: ""),
             style: .Plain,
             target: self,
-            action: Action.Next.rawValue )
+            action: Action.ExportSelectedItem.rawValue )
         
         self.performSearch()
     }
     
-    func onNextSelected( sender: AnyObject? ) {
+    func exportSelectedItem( sender: AnyObject? ) {
         if let indexPath = self.selectedIndexPath {
             
             let selectedGIF = self.searchDataSource.sections[ indexPath.section ][ indexPath.row ]

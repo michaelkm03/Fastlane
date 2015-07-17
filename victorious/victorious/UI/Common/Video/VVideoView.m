@@ -45,6 +45,12 @@ NS_ASSUME_NONNULL_BEGIN
     [self setItemURL:itemURL loop:NO audioMuted:NO];
 }
 
+- (void)setUseAspectFit:(BOOL)useAspectFit
+{
+    _useAspectFit = useAspectFit;
+    self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+}
+
 - (void)setItemURL:(NSURL *)itemURL loop:(BOOL)loop audioMuted:(BOOL)audioMuted
 {
     if ( [_itemURL isEqual:itemURL] )

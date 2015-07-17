@@ -74,6 +74,7 @@ NS_ASSUME_NONNULL_BEGIN
         
         // Forward navigationItem
         self.navigationItem.titleView = self.viewControllerToContain.navigationItem.titleView;
+        self.navigationItem.rightBarButtonItem = self.viewControllerToContain.navigationItem.rightBarButtonItem;
     }
 }
 

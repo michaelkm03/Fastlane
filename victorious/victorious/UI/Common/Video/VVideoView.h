@@ -33,9 +33,11 @@ NS_ASSUME_NONNULL_BEGIN
  and complete method `setItemURL:loop:audioMuted` that will use default values
  for `loop:` and `audioMuted:` parameters (both NO).
  */
-@property (nonatomic, strong) NSURL *__nullable itemURL;
+@property (nonatomic, strong, nullable) NSURL *itemURL;
 
 @property (nonatomic, weak) IBOutlet id<VVideoViewDelegtae> delegate;
+
+@property (nonatomic, assign) BOOL useAspectFit;
 
 /**
  Set the URL of the asset to play.
