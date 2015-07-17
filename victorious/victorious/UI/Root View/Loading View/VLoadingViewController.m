@@ -40,6 +40,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
 @property (nonatomic, strong) VTemplateDownloadOperation *templateDownloadManager;
 @property (nonatomic, strong) VLoginOperation *loginOperation;
 @property (nonatomic, strong) NSBlockOperation *finishLoadingOperation;
+@property (nonatomic, strong) MBProgressHUD *progressHUD;
 
 @end
 
@@ -175,6 +176,8 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         {
             dispatch_async(dispatch_get_main_queue(), ^(void)
             {
+                self.progressHUD.taskInProgress = NO;
+                [self.progressHUD hide:YES];
                 [strongSelf onDoneLoadingWithTemplateConfiguration:strongSelf.templateDownloadManager.templateConfiguration];
             });
         }
@@ -182,6 +185,10 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
     [self.finishLoadingOperation addDependency:self.templateDownloadManager];
     [self.finishLoadingOperation addDependency:self.loginOperation];
     [self.operationQueue addOperation:self.finishLoadingOperation];
+    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    self.progressHUD.mode = MBProgressHUDModeIndeterminate;
+    self.progressHUD.graceTime = 2.0f;
+    self.progressHUD.taskInProgress = YES;
 }
 
 - (void)onDoneLoadingWithTemplateConfiguration:(NSDictionary *)templateConfiguration
