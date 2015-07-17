@@ -9,7 +9,6 @@
 #import "VVideoCreationFlowController.h"
 
 // Capture
-#import "VAssetCollectionListViewController.h"
 #import "VAssetCollectionGridViewController.h"
 #import "VVideoAssetDownloader.h"
 #import "VAlternateCaptureOption.h"
