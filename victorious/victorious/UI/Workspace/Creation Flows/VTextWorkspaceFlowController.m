@@ -153,7 +153,8 @@
     __weak typeof(self) welf = self;
     imageSearchViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
-        [welf didCaptureMediaWithURL:capturedMediaURL previewImage:previewImage];
+        __strong typeof(welf) strongSelf = welf;
+        [strongSelf didCaptureMediaWithURL:capturedMediaURL previewImage:previewImage];
     };
     return imageSearchViewController;
 }
