@@ -189,8 +189,7 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
     
     void (^showCamera)(void) = ^void(void)
     {
-        self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithViewControllerToPresentOn:self
-                                                                                      dependencymanager:self.dependencyManager];
+        self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager];
         __weak typeof(self) welf = self;
         self.attachmentPresenter.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
         {
@@ -205,7 +204,7 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
                  [welf enableOrDisableSendButtonAsAppropriate];
              }];
         };
-        [self.attachmentPresenter present];
+        [self.attachmentPresenter presentOnViewController:self];
     };
     
     if (self.mediaURL == nil)

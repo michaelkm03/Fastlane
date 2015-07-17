@@ -10,21 +10,19 @@
 
 @implementation VAbstractPresenter
 
-- (instancetype)initWithViewControllerToPresentOn:(UIViewController *)viewControllerToPresentOn
-                                dependencymanager:(VDependencyManager *)dependencyManager
+- (instancetype)initWithDependencymanager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
     if (self != nil)
     {
-        _viewControllerToPresentOn = viewControllerToPresentOn;
         _dependencyManager = dependencyManager;
     }
     return self;
 }
 
-- (void)present
+- (void)presentOnViewController:(UIViewController *)viewControllerToPresentOn
 {
-    NSAssert(false, @"Implement 'present' in subclasses.");
+    NSAssert(false, @"Implement %@ in subclasses.", NSStringFromSelector(@selector(presentOnViewController:)));
 }
 
 @end

@@ -92,7 +92,7 @@
     VWorkspaceViewController *workspace = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerEditTextWorkspaceKey];
     workspace.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
     {
-        [self.creationFlowDelegate creationFLowController:self
+        [self.creationFlowDelegate creationFlowController:self
                                  finishedWithPreviewImage:previewImage
                                          capturedMediaURL:renderedMediaURL];
     };
@@ -134,17 +134,17 @@
 
 - (void)presentCameraViewController
 {
-    self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithViewControllerToPresentOn:self
-                                                                                  dependencymanager:self.dependencyManager];
+    self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager];
     self.attachmentPresenter.attachmentTypes = VMediaAttachmentTypeImage;
     __weak typeof(self) welf = self;
     self.attachmentPresenter.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
     {
-        [welf dismissViewControllerAnimated:YES
-                                 completion:nil];
-        [welf didCaptureMediaWithURL:mediaURL previewImage:previewImage];
+        __strong typeof(welf) strongSelf = welf;
+        [strongSelf dismissViewControllerAnimated:YES
+                                       completion:nil];
+        [strongSelf didCaptureMediaWithURL:mediaURL previewImage:previewImage];
     };
-    [self.attachmentPresenter present];
+    [self.attachmentPresenter presentOnViewController:self];
 }
 
 - (UIViewController *)createImageSearchViewController

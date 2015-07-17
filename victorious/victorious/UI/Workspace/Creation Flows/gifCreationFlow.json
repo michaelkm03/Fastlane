@@ -18,35 +18,47 @@
         "blue": 255,
         "green": 255
     },
+    "imageVideoLibrary": {
+        "name": "imageVideoGallery.screen",
+        "accessUndeterminedPrompt":"We need some access yo!",
+        "accessUndeterminedCalltoAction": "Grant access",
+        "accessDeniedPrompt": "Go to settings and give us access brah",
+        "notAuthorizedTextColor": {
+            "red": 255,
+            "alpha": 255,
+            "blue": 255,
+            "green": 255
+        },
+        "notAuthorizedPromptFont": {
+            "fontName": "Helvetica",
+            "fontSize": 25
+        },
+        "notAuthorizedCallToActionFont": {
+            "fontName": "Helvetica",
+            "fontSize": 25
+        }
+    },
     "gifWorkspace": {
         "videoMaxDuration": 15,
         "name": "workspace.screen",
         "tools": [
                   {
-                  "selectedIcon": {
-                  "imageURL": "GIFSelected"
-                  },
-                  "isGIF": true,
-                  "videoMuted": true,
-                  "frameDurationValue": 1,
-                  "title": "GIF MODE",
-                  "frameDurationTimescale": 8,
-                  "name": "trim.video.tool",
-                  "icon": {
-                  "imageURL": "GIF"
+                      "isGIF": true,
+                      "videoMuted": true,
+                      "frameDurationValue": 1,
+                      "title": "GIF MODE",
+                      "frameDurationTimescale": 8,
+                      "name": "trim.video.tool",
+                      "icon":
+                        {
+                          "imageURL": "GIF"
+                        },
+                      "selectedIcon":
+                        {
+                          "imageURL": "GIFSelected"
+                        },
                   }
-                  },
-                  {
-                  "title": "meme",
-                  "icon": {
-                  "imageURL": "meme"
-                  },
-                  "name": "snapshot.video.tool",
-                  "selectedIcon": {
-                  "imageURL": "memeSelected"
-                  }
-                  }
-                  ],
+                ],
         "videoMinDuration": 3
     }
 }

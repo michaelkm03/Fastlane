@@ -36,11 +36,6 @@ typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL
 
 @property (nonatomic, weak, readonly) VCanvasView *canvasView;
 
-/**
- *  The initial edit state. (since dependency injection doesn't inherit from parent to child).
- */
-@property (nonatomic, strong) NSNumber *initalEditState;
-
 @property (nonatomic, assign) BOOL continueButtonEnabled;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *continueButton;
 

@@ -15,8 +15,7 @@
 /**
  *  Designate initializer for VRemixPresenter. Must pass in a valid sequenceToRemix.
  */
-- (instancetype)initWithViewControllerToPresentOn:(UIViewController *)viewControllerToPresentOn
-                                dependencymanager:(VDependencyManager *)dependencyManager
-                                  sequenceToRemix:(VSequence *)sequenceToRemix NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithDependencymanager:(VDependencyManager *)dependencyManager
+                          sequenceToRemix:(VSequence *)sequenceToRemix NS_DESIGNATED_INITIALIZER;
 
 @end

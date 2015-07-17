@@ -18,6 +18,7 @@
 #import "VAssetDownloader.h"
 #import "UIAlertController+VSimpleAlert.h"
 #import "VCollectionListPresentationController.h"
+#import "VFromTopViewControllerAnimator.h"
 
 // Workspace
 #import "VWorkspaceViewController.h"
@@ -37,7 +38,7 @@
 // Keys
 NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 
-@interface VAbstractImageVideoCreationFlowController () <UINavigationControllerDelegate, UIViewControllerTransitioningDelegate, VAssetCollectionGridViewControllerDelegate>
+@interface VAbstractImageVideoCreationFlowController () <UINavigationControllerDelegate, VAssetCollectionGridViewControllerDelegate>
 
 @property (nonatomic, strong) NSArray *cachedAssetCollections;
 
@@ -46,6 +47,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 @property (nonatomic, strong) VCaptureContainerViewController *captureContainerViewController;
 @property (nonatomic, strong) VAssetCollectionListViewController *listViewController;
 @property (nonatomic, strong) VAssetCollectionGridViewController *gridViewController;
+//@property (nonatomic, strong) VFromTopViewControllerAnimator *listAnimator;
 @property (nonatomic, strong) VAssetDownloader *downloader;
 @property (nonatomic, strong) VWorkspaceViewController *workspaceViewController;
 
@@ -113,75 +115,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     {
         welf.gridViewController.collectionToDisplay = assetCollection;
     };
-    self.listViewController.modalPresentationStyle = UIModalPresentationCustom;
     [self presentViewController:self.listViewController animated:YES completion:nil];
-}
-
-- (NSArray *)alternateCaptureOptions
-{
-    __weak typeof(self) welf = self;
-    void (^cameraSelectionBlock)() = ^void()
-    {
-        __strong typeof(welf) strongSelf = welf;
-        [strongSelf showCamera];
-    };
-    
-    void (^searchSelectionBlock)() = ^void()
-    {
-        __strong typeof(welf) strongSelf = welf;
-        [strongSelf showSearch];
-    };
-    VAlternateCaptureOption *cameraOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Camera", nil)
-                                                                                      icon:[UIImage imageNamed:@"contententry_cameraicon"]
-                                                                         andSelectionBlock:cameraSelectionBlock];
-    VAlternateCaptureOption *searchOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Search", nil)
-                                                                                      icon:[UIImage imageNamed:@"contententry_searchbaricon"]
-                                                                         andSelectionBlock:searchSelectionBlock];
-    return @[cameraOption, searchOption];
-}
-
-- (void)showCamera
-{
-    // Camera
-    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerWithContext:self.context
-                                                                                       dependencyManager:self.dependencyManager
-                                                                                           resultHanlder:^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-                                                   {
-                                                       if (finished)
-                                                       {
-                                                           [self prepareWorkspaceWithMediaURL:capturedMediaURL
-                                                                              andPreviewImage:previewImage];
-                                                           [self pushViewController:self.workspaceViewController animated:YES];
-                                                       }
-                                                       
-                                                       [self dismissViewControllerAnimated:YES completion:nil];
-                                                   }];
-    // Wrapped in nav
-    UINavigationController *cameraNavController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
-    [self presentViewController:cameraNavController animated:YES completion:nil];
-
-}
-
-- (void)showSearch
-{
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSelectImageSearch];
-    
-    // Image search
-    VImageSearchViewController *imageSearchViewController = [VImageSearchViewController newImageSearchViewController];
-    imageSearchViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-    {
-        if (finished)
-        {
-            [self prepareWorkspaceWithMediaURL:capturedMediaURL andPreviewImage:previewImage];
-            [self pushViewController:self.workspaceViewController animated:YES];
-        }
-        
-        [self dismissViewControllerAnimated:YES
-                                 completion:nil];
-    };
-    [self presentViewController:imageSearchViewController
-                       animated:YES
-                     completion:nil];
 }
 
 - (void)prepareWorkspaceWithMediaURL:(NSURL *)mediaURL
@@ -197,10 +131,8 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 {
     _workspaceViewController = [self workspaceViewControllerWithDependencyManager:self.dependencyManager];
     _workspaceViewController.adjustsCanvasViewFrameOnKeyboardAppearance = YES;
-    _workspaceViewController.continueText = [self localizedEditingFinishedText];
+    _workspaceViewController.continueText = [self shouldShowPublishText] ? NSLocalizedString(@"Publish", @"") : NSLocalizedString(@"Next", @"");
     _workspaceViewController.continueButtonEnabled = YES;
-    _workspaceViewController.previewImage = self.previewImage;
-    _workspaceViewController.mediaURL = self.renderedMediaURL;
     
     __weak typeof(self) welf = self;
     _workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
@@ -221,8 +153,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 
 - (void)setupPublishPresenter
 {
-    self.publishPresenter = [[VPublishPresenter alloc] initWithViewControllerToPresentOn:self
-                                                                       dependencymanager:self.dependencyManager];
+    self.publishPresenter = [[VPublishPresenter alloc] initWithDependencymanager:self.dependencyManager];
 
     __weak typeof(self) welf = self;
     self.publishPresenter.completion = ^void(BOOL published)
@@ -237,7 +168,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
             [strongSelf cleanupRenderedFile];
 
             // We're done!
-            [strongSelf.creationFlowDelegate creationFLowController:strongSelf
+            [strongSelf.creationFlowDelegate creationFlowController:strongSelf
                                            finishedWithPreviewImage:strongSelf.previewImage
                                                    capturedMediaURL:strongSelf.renderedMediaURL];
         }
@@ -256,7 +187,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
         }
         else
         {
-            [self.creationFlowDelegate creationFLowController:self
+            [self.creationFlowDelegate creationFlowController:self
                                      finishedWithPreviewImage:self.previewImage
                                              capturedMediaURL:self.renderedMediaURL];
         }
@@ -284,7 +215,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
                        withWorkspace:workspace];
     self.publishPresenter.publishParameters = publishParameters;
 
-    [self.publishPresenter present];
+    [self.publishPresenter presentOnViewController:self];
 }
 
 - (void)cleanupCapturedFile
@@ -299,11 +230,19 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
                                               error:nil];
 }
 
+- (void)captureFinishedWithMediaURL:(NSURL *)mediaURL
+                       previewImage:(UIImage *)previewImage
+{
+    [self prepareWorkspaceWithMediaURL:mediaURL
+                       andPreviewImage:previewImage];
+    [self pushViewController:self.workspaceViewController animated:YES];
+}
+
 #pragma mark - UINavigationControllerDelegate
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    // Cleanup as we enter exist different states
+    // Cleanup as we enter or exit different states
     if (viewController == self.captureContainerViewController)
     {
         [self cleanupCapturedFile];
@@ -312,14 +251,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     {
         [self cleanupRenderedFile];
     }
-}
-
-#pragma mark - UIViewControllerTransitioningDelegate
-
-- (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented presentingViewController:(UIViewController *)presenting sourceViewController:(UIViewController *)source
-{
-    return [[VCollectionListPresentationController alloc] initWithPresentedViewController:self.listViewController
-                                                                 presentingViewController:self];
 }
 
 #pragma mark - VAssetCollectionGridViewControllerDelegate

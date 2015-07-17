@@ -11,208 +11,121 @@
 #import "VGIFCreationFlowController.h"
 
 // Capture
-#import "VCaptureContainerViewController.h"
-#import "VAlternateCaptureOption.h"
+#import "VAssetCollectionListViewController.h"
 #import "VAssetCollectionGridViewController.h"
+#import "VVideoAssetDownloader.h"
+#import "VAlternateCaptureOption.h"
+#import "VCameraViewController.h"
 
-// Workspace
+// Edit
 #import "VWorkspaceViewController.h"
 #import "VVideoToolController.h"
-#import "VPublishViewController.h"
 
-// Publishing
+// Publish
 #import "VPublishParameters.h"
-
-// Animators
-#import "VPublishBlurOverAnimator.h"
 
 // Dependencies
 #import "VDependencyManager.h"
 
+@import Photos;
+
+static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 
-@interface VGIFCreationFlowController () <UINavigationControllerDelegate, GIFSearchViewControllerDelegate>
+@interface VGIFCreationFlowController ()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-
-@property (nonatomic, strong) VWorkspaceViewController *workspaceViewController;
-
-@property (nonatomic, strong) VPublishViewController *publishViewContorller;
-@property (nonatomic, strong) VPublishBlurOverAnimator *publishAnimator;
-
-@property (nonatomic, strong) NSURL *renderedMediaURL;
-@property (nonatomic, strong) UIImage *previewImage;
 
 @end
 
 @implementation VGIFCreationFlowController
-
-#pragma mark - VHasManagedDependencies
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super initWithDependencyManager:dependencyManager];
     if (self != nil)
     {
-        self.dependencyManager = dependencyManager;
-        
-        VCaptureContainerViewController *captureContainer = [VCaptureContainerViewController captureContainerWithDependencyManager:dependencyManager];
-        [captureContainer setAlternateCaptureOptions:[self alternateCaptureOptions]];
-        [self addCloseButtonToViewController:captureContainer];
-        [self setViewControllers:@[captureContainer]];
-        
-        GIFSearchViewController *gifSearchViewController = [GIFSearchViewController gifSearchWithDependencyManager:dependencyManager];
-        gifSearchViewController.delegate = self;
-        [captureContainer setContainedViewController:gifSearchViewController];
-        
-        [self setupPublishScreen];
+        _dependencyManager = dependencyManager;
+        [self setContext:VCameraContextVideoContentCreation];
     }
     return self;
 }
 
-#pragma mark - UIViewController
-
-- (void)viewDidLoad
+- (VAssetCollectionListViewController *)collectionListViewController
 {
-    [super viewDidLoad];
-    self.delegate = self;
+    return [VAssetCollectionListViewController assetCollectionListViewControllerWithMediaType:PHAssetMediaTypeVideo];
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle
+- (VAssetCollectionGridViewController *)gridViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    return UIStatusBarStyleLightContent;
+    return [dependencyManager templateValueOfType:[VAssetCollectionGridViewController class]
+                                           forKey:kImageVideoLibrary
+                            withAddedDependencies:@{VAssetCollectionGridViewControllerMediaType:@(PHAssetMediaTypeVideo)}];
 }
 
-#pragma mark - Private Methods
+- (VWorkspaceViewController *)workspaceViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    VWorkspaceViewController *gifWorkspace = [dependencyManager templateValueOfType:[VWorkspaceViewController class]
+                                                                             forKey:kGifWorkspaceKey
+                                                              withAddedDependencies:@{VVideoToolControllerInitalVideoEditStateKey:@(VVideoToolControllerInitialVideoEditStateGIF)}];
+
+    return gifWorkspace;
+}
+
+- (void)prepareInitialEditStateWithWorkspace:(VWorkspaceViewController *)workspace
+{
+    // do nothing for videos
+}
+
+- (void)configurePublishParameters:(VPublishParameters *)publishParameters
+                     withWorkspace:(VWorkspaceViewController *)workspace
+{
+    VVideoToolController *videoToolController = (VVideoToolController *)workspace.toolController;
+    publishParameters.didTrim = videoToolController.didTrim;
+    publishParameters.isGIF = YES;
+}
+
+- (VAssetDownloader *)downloaderWithAsset:(PHAsset *)asset
+{
+    return [[VVideoAssetDownloader alloc] initWithAsset:asset];
+}
+
 
 - (NSArray *)alternateCaptureOptions
 {
+    __weak typeof(self) welf = self;
+    void (^cameraSelectionBlock)() = ^void()
+    {
+        __strong typeof(welf) strongSelf = welf;
+        [strongSelf showCamera];
+    };
     VAlternateCaptureOption *cameraOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Camera", nil)
-                                                                                      icon:[UIImage imageNamed:@""]
-                                                                         andSelectionBlock:^
-                                             {
-                                                 // Camera
-                                             }];
-    VAlternateCaptureOption *searchOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Search", nil)
-                                                                                      icon:[UIImage imageNamed:@""]
-                                                                         andSelectionBlock:^
-                                             {
-                                                 // Search
-                                             }];
-    return @[cameraOption, searchOption];
+                                                                                      icon:[UIImage imageNamed:@"contententry_cameraicon"]
+                                                                         andSelectionBlock:cameraSelectionBlock];
+    
+    return @[cameraOption];
 }
 
-- (void)setupPublishScreen
+- (void)showCamera
 {
-    self.publishAnimator = [[VPublishBlurOverAnimator alloc] init];
-    self.publishViewContorller = [self.dependencyManager newPublishViewController];
-    
+    // Camera
     __weak typeof(self) welf = self;
-    self.publishViewContorller.completion = ^void(BOOL published)
-    {
-        if (published)
-        {
-            welf.delegate = nil;
-            // We're done!
-            [welf.creationFlowDelegate creationFLowController:welf
-                                     finishedWithPreviewImage:welf.previewImage
-                                             capturedMediaURL:welf.renderedMediaURL];
-        }
-        else
-        {
-            // Cancelled
-            [welf popViewControllerAnimated:YES];
-        }
-    };
-}
-
-- (void)setupWorkspace
-{
-    self.workspaceViewController = (VWorkspaceViewController *)[self.dependencyManager viewControllerForKey:VDependencyManagerImageWorkspaceKey];
-    self.workspaceViewController.adjustsCanvasViewFrameOnKeyboardAppearance = YES;
-    self.workspaceViewController.continueText = [self localizedEditingFinishedText];
-    self.workspaceViewController.continueButtonEnabled = YES;
-    
-    __weak typeof(self) welf = self;
-    self.workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
-    {
-        if (finished)
-        {
-            welf.renderedMediaURL = renderedMediaURL;
-            welf.previewImage = previewImage;
-            [welf afterEditingFinished];
-        }
-        else
-        {
-            [welf popViewControllerAnimated:YES];
-        }
-    };
-}
-
-
-- (void)afterEditingFinished
-{
-    if ([self.creationFlowDelegate respondsToSelector:@selector(shouldShowPublishScreenForFlowController)])
-    {
-        if ( [self.creationFlowDelegate shouldShowPublishScreenForFlowController])
-        {
-            [self pushPublishScreenWithRenderedMediaURL:self.renderedMediaURL
-                                           previewImage:self.previewImage
-                                          fromWorkspace:self.workspaceViewController];
-        }
-        else
-        {
-            [self.creationFlowDelegate creationFLowController:self
-                                     finishedWithPreviewImage:self.previewImage
-                                             capturedMediaURL:self.renderedMediaURL];
-        }
-    }
-    else
-    {
-        [self pushPublishScreenWithRenderedMediaURL:self.renderedMediaURL
-                                       previewImage:self.previewImage
-                                      fromWorkspace:self.workspaceViewController];
-    }
-}
-
-- (void)pushPublishScreenWithRenderedMediaURL:(NSURL *)renderedMediaURL
-                                 previewImage:(UIImage *)previewImage
-                                fromWorkspace:(VWorkspaceViewController *)workspace
-{
-    VPublishParameters *publishParameters = [[VPublishParameters alloc] init];
-    publishParameters.mediaToUploadURL = renderedMediaURL;
-    publishParameters.previewImage = previewImage;
-    
-    publishParameters.isGIF = YES;
-    
-    self.publishViewContorller.publishParameters = publishParameters;
-    [self pushViewController:self.publishViewContorller animated:YES];
-}
-
-#pragma mark - GIFSearchViewControllerDelegate
-
-- (void)GIFSelectedWithPreviewImage:(UIImage *)previewImage capturedMediaURL:(NSURL *)capturedMediaURL
-{
-    [self pushPublishScreenWithRenderedMediaURL:capturedMediaURL
-                                   previewImage:previewImage
-                                  fromWorkspace:self.workspaceViewController];
-}
-
-#pragma mark - UINavigationControllerDelegate
-
-- (id <UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
-                                   animationControllerForOperation:(UINavigationControllerOperation)operation
-                                                fromViewController:(UIViewController *)fromVC
-                                                  toViewController:(UIViewController *)toVC
-{
-    if ([toVC isKindOfClass:[VPublishViewController class]] || [fromVC isKindOfClass:[VPublishViewController class]])
-    {
-        BOOL pushing = (operation == UINavigationControllerOperationPush);
-        self.publishAnimator.presenting = pushing;
-        
-        return self.publishAnimator;
-    }
-    return nil;
+    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerWithContext:self.context
+                                                                                       dependencyManager:self.dependencyManager
+                                                                                           resultHanlder:^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+                                                   {
+                                                       __strong typeof(welf) strongSelf = welf;
+                                                       if (finished)
+                                                       {
+                                                           [strongSelf captureFinishedWithMediaURL:capturedMediaURL
+                                                                                      previewImage:previewImage];
+                                                       }
+                                                       
+                                                       [strongSelf dismissViewControllerAnimated:YES completion:nil];
+                                                   }];
+    // Wrapped in nav
+    UINavigationController *cameraNavController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
+    [self presentViewController:cameraNavController animated:YES completion:nil];
 }
 
 @end

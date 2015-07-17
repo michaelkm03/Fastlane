@@ -39,7 +39,7 @@ extern NSString * const VAssetCollectionGridViewControllerMediaType;
 /**
  *  Must inject a PHAssetMediaType using the key: 
  */
-@interface VAssetCollectionGridViewController : UICollectionViewController <VHasManagedDependencies>
+@interface VAssetCollectionGridViewController : UIViewController <VHasManagedDependencies>
 
 /**
  *  A delegate to be informed of events related to this gridViewController.

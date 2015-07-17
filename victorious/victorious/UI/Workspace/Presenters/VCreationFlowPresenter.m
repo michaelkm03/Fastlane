@@ -37,16 +37,19 @@ static NSString * const kTextCreateFlow = @"textCreateFlow";
 
 @interface VCreationFlowPresenter () <VCreationFlowControllerDelegate>
 
+@property (nonatomic, weak) UIViewController *viewControllerPresentedOn;
+
 @end
 
 @implementation VCreationFlowPresenter
 
-- (void)present
+- (void)presentOnViewController:(UIViewController *)viewControllerToPresentOn
 {
+    self.viewControllerPresentedOn = viewControllerToPresentOn;
     VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                          dependencyManager:self.dependencyManager];
     __weak typeof(self) welf = self;
-    [authorizedAction performFromViewController:self.viewControllerToPresentOn
+    [authorizedAction performFromViewController:viewControllerToPresentOn
                                         context:VAuthorizationContextCreatePost
                                      completion:^(BOOL authorized)
      {
@@ -74,7 +77,7 @@ static NSString * const kTextCreateFlow = @"textCreateFlow";
               }];
              
          }];
-        [self.viewControllerToPresentOn presentViewController:createSheet animated:YES completion:nil];
+        [self.viewControllerPresentedOn presentViewController:createSheet animated:YES completion:nil];
     }
     else
     {
@@ -84,7 +87,7 @@ static NSString * const kTextCreateFlow = @"textCreateFlow";
         [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
                                                   style:UIAlertActionStyleCancel
                                                 handler:nil]];
-        [self.viewControllerToPresentOn presentViewController:alert animated:YES completion:nil];
+        [self.viewControllerPresentedOn presentViewController:alert animated:YES completion:nil];
     }
 }
 
@@ -124,18 +127,18 @@ static NSString * const kTextCreateFlow = @"textCreateFlow";
     VCreationFlowController *flowController = [self.dependencyManager templateValueOfType:[VCreationFlowController class]
                                                                                    forKey:key];
     flowController.creationFlowDelegate = self;
-    [self.viewControllerToPresentOn presentViewController:flowController
+    [self.viewControllerPresentedOn presentViewController:flowController
                                                  animated:YES
                                                completion:nil];
 }
 
 #pragma mark - VCreationFlowController
 
-- (void)creationFLowController:(VCreationFlowController *)creationFlowController
+- (void)creationFlowController:(VCreationFlowController *)creationFlowController
       finishedWithPreviewImage:(UIImage *)previewImage
               capturedMediaURL:(NSURL *)capturedMediaURL
 {
-    [self.viewControllerToPresentOn dismissViewControllerAnimated:YES completion:nil];
+    [self.viewControllerPresentedOn dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

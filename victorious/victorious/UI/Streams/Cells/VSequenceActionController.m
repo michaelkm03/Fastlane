@@ -135,10 +135,9 @@
          {
              return;
          }
-         self.remixPresenter = [[VRemixPresenter alloc] initWithViewControllerToPresentOn:viewController
-                                                                                    dependencymanager:self.dependencyManager
-                                                                                      sequenceToRemix:sequence];
-         [self.remixPresenter present];
+         self.remixPresenter = [[VRemixPresenter alloc] initWithDependencymanager:self.dependencyManager
+                                                                  sequenceToRemix:sequence];
+         [self.remixPresenter presentOnViewController:viewController];
          self.viewControllerPresentingWorkspace = viewController;
      }];
 }

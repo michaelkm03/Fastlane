@@ -12,7 +12,7 @@
 
 /**
  *  Presents content creation on VRootViewController when VNavigationDestination's
- *  "-(BOOL)shouldNavigateWithAlternateDestination:" is called.
+ *  `-(BOOL)shouldNavigateWithAlternateDestination:` is called.
  */
 @interface VWorkspaceShimDestination : NSObject <VHasManagedDependencies, VNavigationDestination>
 

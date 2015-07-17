@@ -43,7 +43,7 @@ static const NSTimeInterval kBlurOverDismissTransitionDuration = 0.5f;
         self.blurredImageView = [[UIImageView alloc] initWithFrame:[transitionContext containerView].bounds];
         [toViewController.view addSubview:self.blurredImageView];
         [toViewController.view sendSubviewToBack:self.blurredImageView];
-        
+        toViewController.view.frame = [transitionContext containerView].bounds;
         [[transitionContext containerView] addSubview:toViewController.view];
         toViewController.view.alpha = 0.0f;
         

@@ -19,23 +19,25 @@ static NSString * const kVideoCreateFlow = @"videoCreateFlow";
 
 @interface VMediaAttachmentPresenter () <VCreationFlowControllerDelegate>
 
+@property (nonatomic, weak) UIViewController *viewControllerPresentedOn;
+
 @end
 
 @implementation VMediaAttachmentPresenter
 
 - (instancetype)initWithViewControllerToPresentOn:(UIViewController *)viewControllerToPresentOn dependencymanager:(VDependencyManager *)dependencyManager
 {
-    self = [super initWithViewControllerToPresentOn:viewControllerToPresentOn
-                                  dependencymanager:dependencyManager];
+    self = [super initWithDependencymanager:dependencyManager];
     if (self != nil)
     {
-        _attachmentTypes = VMediaAttachmentTypeImage | VMediaAttachmentTypeVideo ;
+        _attachmentTypes = VMediaAttachmentTypeImage | VMediaAttachmentTypeVideo;
     }
     return self;
 }
 
-- (void)present
+- (void)presentOnViewController:(UIViewController *)viewControllerToPresentOn
 {
+    self.viewControllerPresentedOn = viewControllerToPresentOn;
     UIAlertController *attachmentActionSheet = [UIAlertController alertControllerWithTitle:nil
                                                                                    message:NSLocalizedString(@"Pick an attachment style", nil)
                                                                             preferredStyle:UIAlertControllerStyleActionSheet];
@@ -46,7 +48,7 @@ static NSString * const kVideoCreateFlow = @"videoCreateFlow";
         VAbstractImageVideoCreationFlowController *imageCreationFlowController = [self.dependencyManager templateValueOfType:[VAbstractImageVideoCreationFlowController class]
                                                                                                                       forKey:VImageCreationFlowControllerKey];
         imageCreationFlowController.creationFlowDelegate = self;
-        [self.viewControllerToPresentOn presentViewController:imageCreationFlowController
+        [viewControllerToPresentOn presentViewController:imageCreationFlowController
                                                      animated:YES
                                                    completion:nil];
     };
@@ -55,7 +57,7 @@ static NSString * const kVideoCreateFlow = @"videoCreateFlow";
         VVideoCreationFlowController *videoCreationFlowController = [self.dependencyManager templateValueOfType:[VVideoCreationFlowController class]
                                                                                                          forKey:kVideoCreateFlow];
         videoCreationFlowController.creationFlowDelegate = self;
-        [self.viewControllerToPresentOn presentViewController:videoCreationFlowController
+        [viewControllerToPresentOn presentViewController:videoCreationFlowController
                                                      animated:YES
                                                    completion:nil];
     };
@@ -103,7 +105,7 @@ static NSString * const kVideoCreateFlow = @"videoCreateFlow";
                                                                style:UIAlertActionStyleCancel
                                                              handler:nil];
         [attachmentActionSheet addAction:cancelAction];
-        [self.viewControllerToPresentOn presentViewController:attachmentActionSheet animated:YES completion:nil];
+        [viewControllerToPresentOn presentViewController:attachmentActionSheet animated:YES completion:nil];
     }
     else // Invalid state
     {
@@ -113,7 +115,7 @@ static NSString * const kVideoCreateFlow = @"videoCreateFlow";
 
 #pragma mark - VCreationFlowControllerDelegate
 
-- (void)creationFLowController:(VCreationFlowController *)creationFlowController
+- (void)creationFlowController:(VCreationFlowController *)creationFlowController
       finishedWithPreviewImage:(UIImage *)previewImage
               capturedMediaURL:(NSURL *)capturedMediaURL
 {
@@ -123,7 +125,7 @@ static NSString * const kVideoCreateFlow = @"videoCreateFlow";
     }
     else
     {
-        [self.viewControllerToPresentOn dismissViewControllerAnimated:YES
+        [self.viewControllerPresentedOn dismissViewControllerAnimated:YES
                                                            completion:nil];
     }
 }

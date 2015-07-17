@@ -228,8 +228,7 @@
 
 - (void)authorizedShowCamera
 {
-    self.profilePicturePresetner = [[VEditProfilePicturePresenter alloc] initWithViewControllerToPresentOn:self
-                                                                                         dependencymanager:self.dependencyManager];
+    self.profilePicturePresetner = [[VEditProfilePicturePresenter alloc] initWithDependencymanager:self.dependencyManager];
     self.profilePicturePresetner.isRegistration = YES;
     __weak typeof(self) welf = self;
     self.profilePicturePresetner.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
@@ -237,7 +236,7 @@
         __strong typeof(welf) strongSelf = welf;
         [strongSelf onProfilePictureSelectedWithSuccess:success previewImage:previewImage mediaURL:mediaURL];
     };
-    [self.profilePicturePresetner present];
+    [self.profilePicturePresetner presentOnViewController:self];
 }
 
 - (void)onProfilePictureSelectedWithSuccess:(BOOL)success previewImage:(UIImage *)previewImage mediaURL:(NSURL *)mediaURL

@@ -13,6 +13,7 @@
 
 @interface VPublishPresenter () <UIViewControllerTransitioningDelegate>
 
+@property (nonatomic, weak) UIViewController *viewControllerPresentedOn;
 @property (nonatomic, strong) VPublishBlurOverAnimator *animator;
 @property (nonatomic, strong, readwrite) VPublishViewController *publishViewController;
 
@@ -20,10 +21,9 @@
 
 @implementation VPublishPresenter
 
-- (instancetype)initWithViewControllerToPresentOn:(UIViewController *)viewControllerToPresentOn dependencymanager:(VDependencyManager *)dependencyManager
+- (instancetype)initWithDependencymanager:(VDependencyManager *)dependencyManager
 {
-    self = [super initWithViewControllerToPresentOn:viewControllerToPresentOn
-                                  dependencymanager:dependencyManager];
+    self = [super initWithDependencymanager:dependencyManager];
     if (self != nil)
     {
         _animator = [[VPublishBlurOverAnimator alloc] init];
@@ -36,11 +36,12 @@
 
 #pragma mark - VAbstractPresenter
 
-- (void)present
+- (void)presentOnViewController:(UIViewController *)viewControllerToPresentOn
 {
-    [self.viewControllerToPresentOn presentViewController:self.publishViewController
-                                                 animated:YES
-                                               completion:nil];
+    self.viewControllerPresentedOn = viewControllerToPresentOn;
+    [viewControllerToPresentOn presentViewController:self.publishViewController
+                                            animated:YES
+                                          completion:nil];
 }
 
 #pragma mark - PropertyAccessors
@@ -61,10 +62,12 @@
     __weak typeof(self) welf = self;
     self.publishViewController.completion = ^void(BOOL success)
     {
+        __strong typeof(welf) strongSelf = welf;
         if (!success)
         {
-            [welf.viewControllerToPresentOn dismissViewControllerAnimated:YES completion:nil];
+            [strongSelf.viewControllerPresentedOn dismissViewControllerAnimated:YES completion:nil];
         }
+        strongSelf.publishViewController.completion = nil;
         completion(success);
     };
 }

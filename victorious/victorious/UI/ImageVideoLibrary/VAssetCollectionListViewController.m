@@ -10,6 +10,7 @@
 #import "VPermissionPhotoLibrary.h"
 #import "VAssetGroupTableViewCell.h"
 #import "VCollectionListPresentationController.h"
+#import "VFromTopViewControllerAnimator.h"
 
 @import Photos;
 
@@ -19,6 +20,7 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 @interface VAssetCollectionListViewController () <UITableViewDataSource, UITableViewDelegate, PHPhotoLibraryChangeObserver, UIViewControllerTransitioningDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) IBOutlet UIView *contentContainer;
 
 @property (nonatomic, assign) PHAssetMediaType mediaType;
 
@@ -47,6 +49,7 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
                                                                  bundle:bundleForClass];
     VAssetCollectionListViewController *listViewController = [storyboardForClass instantiateInitialViewController];
     listViewController.transitioningDelegate = listViewController;
+    listViewController.modalPresentationStyle = UIModalPresentationCustom;
     if (mediaType == PHAssetMediaTypeImage || mediaType == PHAssetMediaTypeVideo)
     {
         listViewController.mediaType = mediaType;
@@ -93,6 +96,9 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 {
     [super viewWillAppear:animated];
     
+    self.contentContainer.layer.cornerRadius = 5.0f;
+    self.contentContainer.layer.masksToBounds = YES;
+    
     for (NSIndexPath *selectedIndexPath in self.tableView.indexPathsForSelectedRows)
     {
         [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:NO];
@@ -107,6 +113,13 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
          }];
         [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
     }
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self.tableView flashScrollIndicators];
 }
 
 #pragma mark - Target/Action
@@ -302,12 +315,26 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
                                                                  presentingViewController:source];
 }
 
+- (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
+{
+    VFromTopViewControllerAnimator *animator = [[VFromTopViewControllerAnimator alloc] init];
+    animator.presenting = NO;
+    return animator;
+}
+
+- (id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
+{
+    VFromTopViewControllerAnimator *animator = [[VFromTopViewControllerAnimator alloc] init];
+    animator.presenting = YES;
+    return animator;
+}
+
 #pragma mark - UIGestureRecognizerDelegate
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
        shouldReceiveTouch:(UITouch *)touch
 {
-    if (CGRectContainsPoint(self.tableView.bounds, [touch locationInView:self.tableView]))
+    if (CGRectContainsPoint(self.contentContainer.bounds, [touch locationInView:self.contentContainer]))
     {
         return NO;
     }

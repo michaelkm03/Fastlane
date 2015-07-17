@@ -24,27 +24,26 @@ static NSString * const kImageCreationFlowKey = @"imageCreateFlow";
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VSequence *sequenceToRemix;
 
+@property (nonatomic, weak) UIViewController *viewControllerPresentedOn;
+
 @end
 
 @implementation VRemixPresenter
 
 @synthesize dependencyManager = _dependencyManager;
 
-- (instancetype)initWithViewControllerToPresentOn:(UIViewController *)viewControllerToPresentOn dependencymanager:(VDependencyManager *)dependencyManager
+- (instancetype)initWithDependencymanager:(VDependencyManager *)dependencyManager
 {
     NSAssert(NO, @"Use initWithViewControllerToPresentOn:dependencymanager:sequenceToRemix:");
-    return [self initWithViewControllerToPresentOn:viewControllerToPresentOn
-                                 dependencymanager:dependencyManager
-                                   sequenceToRemix:nil];
+    return [self initWithDependencymanager:dependencyManager
+                           sequenceToRemix:nil];
 }
 
-- (instancetype)initWithViewControllerToPresentOn:(UIViewController *)viewControllerToPresentOn
-                                dependencymanager:(VDependencyManager *)dependencyManager
-                                  sequenceToRemix:(VSequence *)sequenceToRemix
+- (instancetype)initWithDependencymanager:(VDependencyManager *)dependencyManager
+                          sequenceToRemix:(VSequence *)sequenceToRemix
 {
     NSParameterAssert(sequenceToRemix != nil);
-    self = [super initWithViewControllerToPresentOn:viewControllerToPresentOn
-                                 dependencymanager:dependencyManager];
+    self = [super initWithDependencymanager:dependencyManager];
     if (self != nil)
     {
         _dependencyManager = dependencyManager;
@@ -55,8 +54,10 @@ static NSString * const kImageCreationFlowKey = @"imageCreateFlow";
 
 #pragma mark - Overrides
 
-- (void)present
+- (void)presentOnViewController:(UIViewController *)viewControllerToPresentOn
 {
+    self.viewControllerPresentedOn = viewControllerToPresentOn;
+    
     NSURL *remixURL;
     if (self.sequenceToRemix.isImage)
     {
@@ -72,24 +73,24 @@ static NSString * const kImageCreationFlowKey = @"imageCreateFlow";
                                                                                             forKey:kImageCreationFlowKey];
         flowController.creationFlowDelegate = self;
         [flowController remixWithPreviewImage:nil mediaURL:remixURL];
-        [self.viewControllerToPresentOn presentViewController:flowController
-                                                     animated:YES
-                                                   completion:nil];
+        [viewControllerToPresentOn presentViewController:flowController
+                                                animated:YES
+                                              completion:nil];
     }
 }
 
 #pragma mark - VCreationFlowControllerDelegate
                                                              
-- (void)creationFLowController:(VCreationFlowController *)creationFlowController
+- (void)creationFlowController:(VCreationFlowController *)creationFlowController
       finishedWithPreviewImage:(UIImage *)previewImage
               capturedMediaURL:(NSURL *)capturedMediaURL
 {
-    [self.viewControllerToPresentOn dismissViewControllerAnimated:YES completion:nil];
+    [self.viewControllerPresentedOn dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)creationFlowControllerDidCancel:(VCreationFlowController *)creationFlowController
 {
-    [self.viewControllerToPresentOn dismissViewControllerAnimated:YES completion:nil];
+    [self.viewControllerPresentedOn dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (BOOL)shouldShowPublishScreenForFlowController

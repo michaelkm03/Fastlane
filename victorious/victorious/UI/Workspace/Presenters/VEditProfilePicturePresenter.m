@@ -20,21 +20,21 @@
 
 @implementation VEditProfilePicturePresenter
 
-- (void)present
+- (void)presentOnViewController:(UIViewController *)viewControllerToPresentOn
 {
     VAbstractImageVideoCreationFlowController *imageCreationFlowController = [self.dependencyManager templateValueOfType:[VAbstractImageVideoCreationFlowController class]
                                                                                                      forKey:VImageCreationFlowControllerKey];
     imageCreationFlowController.creationFlowDelegate = self;
     imageCreationFlowController.context = self.isRegistration ? VCameraContextProfileImageRegistration : VCameraContextProfileImage;
     
-    [self.viewControllerToPresentOn presentViewController:imageCreationFlowController
-                                                 animated:YES
-                                               completion:nil];
+    [viewControllerToPresentOn presentViewController:imageCreationFlowController
+                                            animated:YES
+                                          completion:nil];
 }
 
 #pragma mark - VCreationFlowControllerDelegate
 
-- (void)creationFLowController:(VCreationFlowController *)creationFlowController
+- (void)creationFlowController:(VCreationFlowController *)creationFlowController
       finishedWithPreviewImage:(UIImage *)previewImage
               capturedMediaURL:(NSURL *)capturedMediaURL
 {
