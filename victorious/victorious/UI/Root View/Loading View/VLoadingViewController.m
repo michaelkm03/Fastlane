@@ -37,7 +37,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *reachabilityLabelPositionConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *reachabilityLabelHeightConstraint;
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
-@property (nonatomic, strong) VTemplateDownloadOperation *templateDownloadManager;
+@property (nonatomic, strong) VTemplateDownloadOperation *templateDownloadOperation;
 @property (nonatomic, strong) VLoginOperation *loginOperation;
 @property (nonatomic, strong) NSBlockOperation *finishLoadingOperation;
 @property (nonatomic, strong) MBProgressHUD *progressHUD;
@@ -163,10 +163,10 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
     self.loginOperation = [[VLoginOperation alloc] init];
     [self.operationQueue addOperation:self.loginOperation];
     
-    self.templateDownloadManager = [[VTemplateDownloadOperation alloc] initWithDownloader:[VObjectManager sharedManager] andDelegate:self];
-    self.templateDownloadManager.templateConfigurationCacheID = environmentManager.currentEnvironment.templateCacheIdentifier;
-    [self.templateDownloadManager addDependency:self.loginOperation];
-    [self.operationQueue addOperation:self.templateDownloadManager];
+    self.templateDownloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:[VObjectManager sharedManager] andDelegate:self];
+    self.templateDownloadOperation.templateConfigurationCacheID = environmentManager.currentEnvironment.templateCacheIdentifier;
+    [self.templateDownloadOperation addDependency:self.loginOperation];
+    [self.operationQueue addOperation:self.templateDownloadOperation];
     
     __weak typeof(self) weakSelf = self;
     self.finishLoadingOperation = [NSBlockOperation blockOperationWithBlock:^(void)
@@ -178,11 +178,11 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
             {
                 self.progressHUD.taskInProgress = NO;
                 [self.progressHUD hide:YES];
-                [strongSelf onDoneLoadingWithTemplateConfiguration:strongSelf.templateDownloadManager.templateConfiguration];
+                [strongSelf onDoneLoadingWithTemplateConfiguration:strongSelf.templateDownloadOperation.templateConfiguration];
             });
         }
     }];
-    [self.finishLoadingOperation addDependency:self.templateDownloadManager];
+    [self.finishLoadingOperation addDependency:self.templateDownloadOperation];
     [self.finishLoadingOperation addDependency:self.loginOperation];
     [self.operationQueue addOperation:self.finishLoadingOperation];
     self.progressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -209,7 +209,7 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
 
 - (void)templateDownloadOperationDidFallbackOnCache:(VTemplateDownloadOperation *)downloadOperation
 {
-    if ( downloadOperation != self.templateDownloadManager )
+    if ( downloadOperation != self.templateDownloadOperation )
     {
         return;
     }
