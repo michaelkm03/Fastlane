@@ -309,8 +309,7 @@
         for ( VInviteFriendTableViewCell *inviteFriendCell in self.tableView.tableView.visibleCells )
         {
             // Update follow/unfollow icon
-            inviteFriendCell.shouldAnimateFollowing = YES;
-            [inviteFriendCell updateFollowStatus];
+            [inviteFriendCell updateFollowStatusAnimated:YES];
         }
     };
     [[VObjectManager sharedManager] followUsers:self.usersNotFollowing withSuccessBlock:successBlock failBlock:nil];
@@ -332,116 +331,6 @@
     {
         sender.backgroundColor = [UIColor clearColor];
     }];
-}
-
-#pragma mark - Friend Actions
-
-- (void)followFriendAction:(VUser *)user
-{
-    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        // Add user relationship to local persistent store
-        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-        NSManagedObjectContext *moc = mainUser.managedObjectContext;
-        
-        [mainUser addFollowingObject:user];
-        [moc saveToPersistentStore:nil];
-        
-        NSArray *indexPaths = [self.tableView.tableView indexPathsForVisibleRows];
-        for (NSIndexPath *indexPath in indexPaths)
-        {
-            VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[self.tableView.tableView cellForRowAtIndexPath:indexPath];
-            if (cell.profile == user)
-            {
-                [cell updateFollowStatus];
-                return;
-            }
-        }
-    };
-    
-    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
-    {
-        if (error.code == kVFollowsRelationshipAlreadyExistsError)
-        {
-            NSArray *indexPaths = [self.tableView.tableView indexPathsForVisibleRows];
-            for (NSIndexPath *indexPath in indexPaths)
-            {
-                VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[self.tableView.tableView cellForRowAtIndexPath:indexPath];
-                if (cell.profile == user)
-                {
-                    [cell updateFollowStatus];
-                    return;
-                }
-            }
-        }
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FollowError", @"")
-                                                               message:error.localizedDescription
-                                                              delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                     otherButtonTitles:nil];
-        [alert show];
-    };
-    
-    // Add user at backend
-    [[VObjectManager sharedManager] followUser:user successBlock:successBlock failBlock:failureBlock];
-}
-
-- (void)unfollowFriendAction:(VUser *)user
-{
-    VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-        NSManagedObjectContext *moc = mainUser.managedObjectContext;
-        
-        [mainUser removeFollowingObject:user];
-        [moc saveToPersistentStore:nil];
-        
-        NSArray *indexPaths = [self.tableView.tableView indexPathsForVisibleRows];
-        for (NSIndexPath *indexPath in indexPaths)
-        {
-            VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[self.tableView.tableView cellForRowAtIndexPath:indexPath];
-            if (cell.profile == user)
-            {
-                [cell updateFollowStatus];
-                return;
-            }
-        }
-        
-    };
-    
-    VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
-    {
-        NSInteger errorCode = error.code;
-        if (errorCode == kVFollowsRelationshipDoesNotExistError)
-        {
-            VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-            NSManagedObjectContext *moc = mainUser.managedObjectContext;
-            
-            [mainUser removeFollowingObject:user];
-            [moc saveToPersistentStore:nil];
-            NSArray *indexPaths = [self.tableView.tableView indexPathsForVisibleRows];
-            for (NSIndexPath *indexPath in indexPaths)
-            {
-                VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[self.tableView.tableView cellForRowAtIndexPath:indexPath];
-                if (cell.profile == user)
-                {
-                    [cell updateFollowStatus];
-                    return;
-                }
-            }
-        }
-        
-        UIAlertView    *alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UnfollowError", @"")
-                                                               message:error.localizedDescription
-                                                              delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                     otherButtonTitles:nil];
-        [alert show];
-    };
-    
-    // Send unfollow to the backend
-    [[VObjectManager sharedManager] unfollowUser:user successBlock:successBlock failBlock:failureBlock];
 }
 
 #pragma mark - UITableView Section Header
@@ -546,31 +435,6 @@
     }
     
     cell.profile = profile;
-    
-    // Tell the button what to do when it's tapped
-    cell.followAction = ^(void)
-    {
-        // Check for authorization first
-        VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                    dependencyManager:self.dependencyManager];
-        [authorization performFromViewController:self context:VAuthorizationContextFollowUser completion:^(BOOL authorized)
-         {
-             if (!authorized)
-             {
-                 return;
-             }
-             
-             if ( profile.isFollowedByMainUser.boolValue )
-             {
-                 [self unfollowFriendAction:profile];
-             }
-             else
-             {
-                 [self followFriendAction:profile];
-             }
-         }];
-    };
-    
     cell.dependencyManager = self.dependencyManager;
 
     return cell;

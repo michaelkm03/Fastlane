@@ -119,48 +119,32 @@
 
 - (IBAction)onFollow:(VFollowControl *)sender
 {
-    void (^followAction)() = ^void()
+    if ( sender.controlState == VFollowControlStateLoading )
     {
-        if ( sender.controlState == VFollowControlStateLoading )
-        {
-            return;
-        }
-        
-        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
-                                                                          withSender:nil];
-        NSAssert(followResponder != nil, @"VDiscoverSuggestedPersonCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
-        BOOL isFollowing = sender.controlState == VFollowControlStateFollowed;
-        [sender setControlState:VFollowControlStateLoading animated:YES];
-        if (isFollowing)
-        {
-            [followResponder unfollowUser:self.user
-                           withCompletion:^(VUser *userActedOn)
-             {
-                 [self updateFollowingAnimated:YES];
-             }];
-        }
-        else
-        {
-            [followResponder followUser:self.user
-                         withCompletion:^(VUser *userActedOn)
-             {
-                 [self updateFollowingAnimated:YES];
-             }];
-        }
-    };
+        return;
+    }
+    BOOL isFollowing = sender.controlState == VFollowControlStateFollowed;
+    [sender setControlState:VFollowControlStateLoading animated:YES];
     
-    VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                         dependencyManager:self.dependencyManager];
-    UIViewController *nearestViewController = [self targetForAction:@selector(presentViewController:animated:completion:) withSender:self];
-    [authorizedAction performFromViewController:nearestViewController
-                                         context:VAuthorizationContextFollowUser
-                                      completion:^(BOOL authorized)
+    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
+                                                                      withSender:nil];
+    NSAssert(followResponder != nil, @"VDiscoverSuggestedPersonCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
+    if ( isFollowing )
     {
-        if (authorized)
-        {
-            followAction();
-        }
-    }];
+        [followResponder unfollowUser:self.user
+                       withCompletion:^(VUser *userActedOn)
+         {
+             [self updateFollowingAnimated:YES];
+         }];
+    }
+    else
+    {
+        [followResponder followUser:self.user
+                     withCompletion:^(VUser *userActedOn)
+         {
+             [self updateFollowingAnimated:YES];
+         }];
+    }
 }
 
 @end

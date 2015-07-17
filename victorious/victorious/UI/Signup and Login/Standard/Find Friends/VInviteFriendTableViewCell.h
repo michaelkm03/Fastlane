@@ -13,12 +13,10 @@
 @interface VInviteFriendTableViewCell : UITableViewCell <VSharedCollectionReusableViewMethods>
 
 @property (nonatomic, strong) VUser *profile;
-@property (nonatomic, copy) void (^followAction)(void);
 @property (nonatomic, readonly) BOOL haveRelationship;
 @property (nonatomic, weak) IBOutlet VFollowControl *followUserControl;
-@property (nonatomic, assign) BOOL shouldAnimateFollowing;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
-- (void)updateFollowStatus;
+- (void)updateFollowStatusAnimated:(BOOL)animated;
 
 @end

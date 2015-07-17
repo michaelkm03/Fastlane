@@ -13,6 +13,7 @@
 #import "VObjectManager+Login.h"
 #import "VFollowControl.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "VFollowResponder.h"
 
 static const CGFloat kInviteCellHeight = 50.0f;
 
@@ -56,13 +57,6 @@ static const CGFloat kInviteCellHeight = 50.0f;
     return CGSizeMake(CGRectGetWidth(bounds), kInviteCellHeight);
 }
 
-- (void)prepareForReuse
-{
-    [super prepareForReuse];
-    
-    self.shouldAnimateFollowing = NO;
-}
-
 - (void)setProfile:(VUser *)profile
 {
     _profile = profile;
@@ -75,7 +69,7 @@ static const CGFloat kInviteCellHeight = 50.0f;
     NSInteger mainUserID = [VObjectManager sharedManager].mainUser.remoteId.integerValue;
     self.followUserControl.hidden = (profileID == mainUserID);
     
-    [self updateFollowStatus];
+    [self updateFollowStatusAnimated:NO];
 }
 
 - (BOOL)haveRelationship
@@ -84,7 +78,7 @@ static const CGFloat kInviteCellHeight = 50.0f;
     return relationship;
 }
 
-- (void)updateFollowStatus
+- (void)updateFollowStatusAnimated:(BOOL)animated
 {
     //If we get into a weird state and the relaionships are the same don't do anything
     
@@ -92,14 +86,9 @@ static const CGFloat kInviteCellHeight = 50.0f;
     {
         return;
     }
-    if (!self.shouldAnimateFollowing)
-    {
-        self.followUserControl.controlState = [VFollowControl controlStateForFollowing:self.haveRelationship];
-        return;
-    }
     
     [self.followUserControl setControlState:[VFollowControl controlStateForFollowing:self.haveRelationship]
-                                   animated:YES];
+                                   animated:animated];
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -110,13 +99,34 @@ static const CGFloat kInviteCellHeight = 50.0f;
 
 #pragma mark - Button Actions
 
-- (IBAction)followUnfollowUser:(id)sender
+- (IBAction)followUnfollowUser:(VFollowControl *)sender
 {
-    self.shouldAnimateFollowing = YES;
-    
-    if (self.followAction != nil)
+    if ( sender.controlState == VFollowControlStateLoading )
     {
-        self.followAction();
+        return;
+    }
+    
+    BOOL isFollowing = sender.controlState == VFollowControlStateFollowed;
+    [self.followUserControl setControlState:VFollowControlStateLoading
+                                   animated:YES];
+    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
+                                                                      withSender:nil];
+    NSAssert(followResponder != nil, @"VFollowerTableViewCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
+    if ( isFollowing )
+    {
+        [followResponder unfollowUser:self.profile
+                       withCompletion:^(VUser *userActedOn)
+         {
+             [self updateFollowStatusAnimated:YES];
+         }];
+    }
+    else
+    {
+        [followResponder followUser:self.profile
+                     withCompletion:^(VUser *userActedOn)
+         {
+             [self updateFollowStatusAnimated:YES];
+         }];
     }
 }
 

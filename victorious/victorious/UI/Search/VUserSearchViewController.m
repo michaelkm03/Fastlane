@@ -296,32 +296,6 @@ static const NSInteger kSearchResultLimit = 100;
                                                                        forIndexPath:indexPath];
     cell.profile = profile;
     cell.dependencyManager = self.dependencyManager;
-    __weak VInviteFriendTableViewCell *weakCell = cell;
-    cell.followAction = ^
-    {
-        __strong VInviteFriendTableViewCell *strongCell = weakCell;
-        if ( strongCell.followUserControl.controlState == VFollowControlStateLoading )
-        {
-            return;
-        }
-        BOOL isFollowing = strongCell.followUserControl.controlState == VFollowControlStateFollowed;
-        [strongCell.followUserControl setControlState:VFollowControlStateLoading animated:YES];
-        
-        if ( !isFollowing )
-        {
-            [self followUser:profile withCompletion:^(VUser *userActedOn)
-            {
-                [strongCell updateFollowStatus];
-            }];
-        }
-        else
-        {
-            [self unfollowUser:profile withCompletion:^(VUser *userActedOn)
-            {
-                [strongCell updateFollowStatus];
-            }];
-        }
-    };
 
     return cell;
 }
