@@ -393,8 +393,6 @@
 		A73EAEC01A4134C10021BB31 /* NSString+Unicode_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A73EAEBF1A4134C10021BB31 /* NSString+Unicode_Tests.m */; };
 		A73EAEC31A41453C0021BB31 /* NSString+Unicode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73EAEC21A41453C0021BB31 /* NSString+Unicode.swift */; };
 		A73EAEC51A41F7BD0021BB31 /* NSString+Unicode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73EAEC21A41453C0021BB31 /* NSString+Unicode.swift */; };
-		A743E7DF1A08160300339CB3 /* VFileCache+VVoteType.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7DC1A08160300339CB3 /* VFileCache+VVoteType.m */; };
-		A743E7E01A08160300339CB3 /* VFileCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7DE1A08160300339CB3 /* VFileCache.m */; };
 		A743E7E41A0816D500339CB3 /* VPasswordValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7E31A0816D500339CB3 /* VPasswordValidator.m */; };
 		A743E7E71A08173B00339CB3 /* VEmailValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7E61A08173B00339CB3 /* VEmailValidator.m */; };
 		A743E7EA1A081FFF00339CB3 /* VStringValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7E91A081FFF00339CB3 /* VStringValidator.m */; };
@@ -1744,10 +1742,6 @@
 		A73EAEBF1A4134C10021BB31 /* NSString+Unicode_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Unicode_Tests.m"; sourceTree = "<group>"; };
 		A73EAEC21A41453C0021BB31 /* NSString+Unicode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+Unicode.swift"; sourceTree = "<group>"; };
 		A74293991AAFE4A400532948 /* VAuthorizationContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAuthorizationContext.h; sourceTree = "<group>"; };
-		A743E7DB1A08160300339CB3 /* VFileCache+VVoteType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VFileCache+VVoteType.h"; sourceTree = "<group>"; };
-		A743E7DC1A08160300339CB3 /* VFileCache+VVoteType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VFileCache+VVoteType.m"; sourceTree = "<group>"; };
-		A743E7DD1A08160300339CB3 /* VFileCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFileCache.h; sourceTree = "<group>"; };
-		A743E7DE1A08160300339CB3 /* VFileCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFileCache.m; sourceTree = "<group>"; };
 		A743E7E21A0816D500339CB3 /* VPasswordValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPasswordValidator.h; sourceTree = "<group>"; };
 		A743E7E31A0816D500339CB3 /* VPasswordValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPasswordValidator.m; sourceTree = "<group>"; };
 		A743E7E51A08173B00339CB3 /* VEmailValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEmailValidator.h; sourceTree = "<group>"; };
@@ -4490,17 +4484,6 @@
 			name = Authorization;
 			sourceTree = "<group>";
 		};
-		A743E7DA1A08160300339CB3 /* FileCache */ = {
-			isa = PBXGroup;
-			children = (
-				A743E7DD1A08160300339CB3 /* VFileCache.h */,
-				A743E7DE1A08160300339CB3 /* VFileCache.m */,
-				A743E7DB1A08160300339CB3 /* VFileCache+VVoteType.h */,
-				A743E7DC1A08160300339CB3 /* VFileCache+VVoteType.m */,
-			);
-			path = FileCache;
-			sourceTree = "<group>";
-		};
 		A743E7E11A0816D500339CB3 /* Validation */ = {
 			isa = PBXGroup;
 			children = (
@@ -5612,7 +5595,6 @@
 				A77951141B28AB6700D9DB0A /* Environment */,
 				A76D93741B31E8C0007A150D /* Expression */,
 				03CE66F019B47B590011BB9E /* Facebook */,
-				A743E7DA1A08160300339CB3 /* FileCache */,
 				A7672B921A1BF6B40063AF46 /* First Install */,
 				A7AEF9C11A83F27600A3D3A0 /* Formatters */,
 				DB8D3A10198039BD005DD36D /* HashTags */,
@@ -7571,7 +7553,6 @@
 				DB8D3A1319803A03005DD36D /* VHashTags.m in Sources */,
 				BE80780519D778E500EECDEB /* VFullscreenMarqueeController.m in Sources */,
 				D8D3B7181AB20E6600CF966C /* VTrimLoopingPlayerViewController.m in Sources */,
-				A743E7DF1A08160300339CB3 /* VFileCache+VVoteType.m in Sources */,
 				A75FAF1919E8AC1E00EB87C1 /* VDiscoverSuggestedPersonCell.m in Sources */,
 				0314D0AD19B4698800FA363C /* VObjectManager+Analytics.m in Sources */,
 				A7AEF9B61A83F1C300A3D3A0 /* VAbstractStreamCollectionViewController.m in Sources */,
@@ -7628,7 +7609,6 @@
 				DBDDB8891A3F5A3900696071 /* VFollowHashtagControl.m in Sources */,
 				0310DC4B1989A6AB0092DF50 /* NSString+VStringWithData.m in Sources */,
 				A75ED0B11AB78C7400C35063 /* VTextColorTool.m in Sources */,
-				A743E7E01A08160300339CB3 /* VFileCache.m in Sources */,
 				035FA7881AE6C4D50002EE63 /* VNotificationsViewController.m in Sources */,
 				D85B70721B0EAF3F0038CA5B /* VFindFacebookFriendsTableViewController.m in Sources */,
 				A7ECC1D91AD6178F0003E00A /* VWorkspaceViewController.m in Sources */,
