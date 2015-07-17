@@ -29,4 +29,6 @@
  */
 - (NSUInteger)pageNumberForPageType:(VPageType)pageType;
 
+@property(nonatomic, readonly) BOOL isLastPage;
+
 @end

@@ -28,8 +28,14 @@ private extension NSIndexPath {
 /// and populated data on cells to show in results collection view.
 class GIFSearchDataSource: NSObject {
     
+    private(set) var isLastPage: Bool = false
     enum State: Int {
-        case Loading, Content, Error, ContentEnd
+        case None, Loading, Content, Error, NoResults
+    }
+    private(set) var state = State.None {
+        didSet {
+            
+        }
     }
     
     /// A type for organizing search results into grouped sections
@@ -65,7 +71,6 @@ class GIFSearchDataSource: NSObject {
         static let ActivityFooter = "GIFSearchActivityFooter" ///< Set in storyboard
     }
     
-    private(set) var state: State = .Content
     private(set) var sections = [Section]()
     private(set) var mostRecentSearchText: String?
     private var highlightedSection: (section: Section, indexPath: NSIndexPath)?
@@ -121,25 +126,50 @@ class GIFSearchDataSource: NSObject {
         }
         
         self.state = .Loading
+        self.mostRecentSearchText = searchText
         // WARNING: Remove this hardcodded empty string replcement:
         // TODO: Figure out if comma-separated or spaced keywords is best
-        var set = NSIndexSet()
         VObjectManager.sharedManager().searchForGIF( [ searchText == "" ? "Hfg" : searchText ],
             pageType: pageType,
             success: { (results, isLastPage) in
-                self.state = isLastPage ? .ContentEnd : .Content
-                self.mostRecentSearchText = searchText
-                completion?( self.updateDataSource( results, pageType: pageType ) )
+                self.state = .Content
+                self.isLastPage = isLastPage
+                let result = self.updateDataSource( results, pageType: pageType )
+                completion?( result )
             },
-            failure: { (error) in
-                if pageType == .First {
-                    self.clear()
+            failure: { (error, isLastPage) in
+                if isLastPage {
+                    self.isLastPage = isLastPage
+                    self.state = .Content
                 }
-                self.state = .Error
-                completion?( nil )
+                else {
+                    self.clear()
+                    self.state = .Error
+                    completion?( nil )
+                }
             }
         )
     }
+    
+    /// Clears the backing model, highlighted section and cancels any in-progress search operation
+    func clear() -> ChangeResult {
+        var result = ChangeResult()
+        self.mostRecentSearchText = nil
+        self.highlightedSection = nil
+        if self.sections.count > 0 {
+            let range = NSRange( location: 0, length: self.sections.count )
+            result.deletedSections = NSIndexSet(indexesInRange: range)
+            result.insertedSections = NSIndexSet(index:0)
+        }
+        else {
+            result.deletedSections = NSIndexSet(index:0)
+            result.insertedSections = NSIndexSet(index:0)
+        }
+        self.sections = []
+        return result
+    }
+    
+    // MARK: - Private
     
     private func updateDataSource( results: [GIFSearchResult], pageType: VPageType ) -> ChangeResult {
         var result = ChangeResult()
@@ -161,24 +191,6 @@ class GIFSearchDataSource: NSObject {
         }
         let range = NSRange( location: prevSectionCount, length: self.sections.count - prevSectionCount )
         result.insertedSections = NSIndexSet(indexesInRange: range)
-        return result
-    }
-    
-    /// Clears the backing model, highlighted section and cancels any in-progress search operation
-    func clear() -> ChangeResult {
-        var result = ChangeResult()
-        self.mostRecentSearchText = nil
-        self.highlightedSection = nil
-        if self.sections.count > 0 {
-            let range = NSRange( location: 0, length: self.sections.count )
-            result.deletedSections = NSIndexSet(indexesInRange: range)
-            result.insertedSections = NSIndexSet(index:0)
-        }
-        else {
-            result.deletedSections = NSIndexSet(index:0)
-            result.insertedSections = NSIndexSet(index:0)
-        }
-        self.sections = []
         return result
     }
 }

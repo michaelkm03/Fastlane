@@ -45,16 +45,24 @@ extension GIFSearchViewController : UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        let isFirstSection = section == 0
-        return CGSize(width: collectionView.bounds.width, height: isFirstSection ? GIFSearchLayout.HeaderViewHeight : 0.0 )
+        let headerHeight = self.shouldShowHeader(section) ? GIFSearchLayout.HeaderViewHeight : 0.0
+        return CGSize(width: collectionView.bounds.width, height: headerHeight )
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         if let previewSection = self.previewSection where previewSection == section {
-            return UIEdgeInsets(top: GIFSearchLayout.DefaultSectionMargin, left: GIFSearchLayout.DefaultSectionMargin, bottom: GIFSearchLayout.DefaultSectionMargin, right: GIFSearchLayout.DefaultSectionMargin)
+            return UIEdgeInsets(
+                top: GIFSearchLayout.DefaultSectionMargin,
+                left: GIFSearchLayout.DefaultSectionMargin,
+                bottom: GIFSearchLayout.DefaultSectionMargin,
+                right: GIFSearchLayout.DefaultSectionMargin)
         }
         else {
-            return UIEdgeInsets(top: GIFSearchLayout.ItemSpacing, left: GIFSearchLayout.DefaultSectionMargin, bottom: 0, right: GIFSearchLayout.DefaultSectionMargin)
+            return UIEdgeInsets(
+                top: GIFSearchLayout.ItemSpacing,
+                left: GIFSearchLayout.DefaultSectionMargin,
+                bottom: self.shouldShowFooter(section) ? 0.0 : self.isLastSection(section) ? GIFSearchLayout.DefaultSectionMargin : 0.0,
+                right: GIFSearchLayout.DefaultSectionMargin)
         }
     }
     
@@ -63,11 +71,24 @@ extension GIFSearchViewController : UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        let numSections = collectionView.numberOfSections()
-        let isLastSection = numSections > 1 && section == numSections - 1
-        let isLastPage = self.searchDataSource.state == .ContentEnd
-        let footerHeight = isLastSection && !isLastPage ? GIFSearchLayout.FooterViewHeight : 0.0
+        let footerHeight = self.shouldShowFooter(section) ? GIFSearchLayout.FooterViewHeight : 0.0
         return CGSize(width: collectionView.bounds.width, height: footerHeight )
+    }
+    
+    // MARK: - Private
+    
+    private func isLastSection( section:Int ) -> Bool {
+        let numSections = collectionView.numberOfSections()
+        return section == numSections - 1
+    }
+    
+    private func shouldShowFooter( section: Int ) -> Bool {
+        let numSections = collectionView.numberOfSections()
+        return numSections > 1 && self.isLastSection(section) && !self.searchDataSource.isLastPage
+    }
+    
+    private func shouldShowHeader( section: Int ) -> Bool {
+        return section == 0
     }
 }
 

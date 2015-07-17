@@ -102,17 +102,20 @@ class GIFSearchViewController: UIViewController {
     }
     
     func performSearch( _ searchText: String = "", pageType: VPageType = .First ) {
-        self.searchDataSource.performSearch( searchText, pageType: pageType ) { (result) in
-            self.collectionView.performBatchUpdates({
-                if let result = result {
-                    self.collectionView.applyDataSourceChanges( result )
-                }
-            }, completion: nil)
-        }
         
-        // This updates the state of the no content cell
-        if self.searchDataSource.sections.count == 0 {
-            self.collectionView.reloadData()
+        if self.searchDataSource.state != .Loading {
+            self.searchDataSource.performSearch( searchText, pageType: pageType ) { (result) in
+                self.collectionView.performBatchUpdates({
+                    if let result = result {
+                        self.collectionView.applyDataSourceChanges( result )
+                    }
+                }, completion: nil)
+            }
+            
+            // This updates the state of the no content cell
+            if self.searchDataSource.sections.count == 0 {
+                self.collectionView.reloadSections( NSIndexSet(index: 0) )
+            }
         }
     }
     
@@ -121,7 +124,11 @@ class GIFSearchViewController: UIViewController {
             let result = self.searchDataSource.clear()
             self.collectionView.applyDataSourceChanges( result )
         }, completion: nil)
+        
+        self.selectedIndexPath = nil
+        self.previewSection = nil
         self.collectionView.setContentOffset( CGPoint.zeroPoint, animated: false )
+        self.updateLayout()
     }
     
     private func titleViewWithTitle( text: String ) -> UIView {
@@ -149,17 +156,22 @@ class GIFSearchViewController: UIViewController {
             if let cell = self.collectionView.cellForItemAtIndexPath( previewCellIndexPath ) {
                 self.collectionView.sendSubviewToBack( cell )
             }
+            self.selectedIndexPath = NSIndexPath(forRow: indexPath.row, inSection: sectionInserted - 1)
+            self.previewSection = sectionInserted
+            
             self.collectionView.scrollToItemAtIndexPath( previewCellIndexPath,
                 atScrollPosition: .CenteredVertically,
                 animated: true )
             
-            self.selectedIndexPath = NSIndexPath(forRow: indexPath.row, inSection: sectionInserted - 1)
-            self.previewSection = sectionInserted
-            
-            self.collectionView.performBatchUpdates({
-                self.collectionView.collectionViewLayout.invalidateLayout()
-            }, completion:nil )
+            self.updateLayout()
         }
+    }
+    
+    /// Invalidates the layout through a batch update so layout changes are animated
+    private func updateLayout() {
+        self.collectionView.performBatchUpdates({
+            self.collectionView.collectionViewLayout.invalidateLayout()
+        }, completion:nil )
     }
     
     /// Removes the section showing a GIF search result preview at the specified index path

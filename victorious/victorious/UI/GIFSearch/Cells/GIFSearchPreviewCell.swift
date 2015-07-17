@@ -41,7 +41,7 @@ class GIFSearchPreviewCell: UICollectionViewCell {
         
         UIView.animateWithDuration(0.3, delay: 0.5, options: nil, animations: {
             self.activityIndicator.hidden = false
-            }, completion: nil)
+        }, completion: nil)
     }
     
     /// Animates in the asset and removes activity indicator

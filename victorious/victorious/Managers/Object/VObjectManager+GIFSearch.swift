@@ -8,12 +8,6 @@
 
 import Foundation
 
-private extension VAbstractFilter {
-    var isLastPage: Bool {
-        return self.currentPageNumber.integerValue == self.maxPageNumber.integerValue
-    }
-}
-
 /// Provides methods for searching for GIFs through the backend
 extension VObjectManager {
     
@@ -26,7 +20,7 @@ extension VObjectManager {
     /// Closure called when GIF search request fails
     ///
     /// :param: error An array of GIFSearchResult models found
-    typealias GIFSearchFailure = (error: NSError?) -> ()
+    typealias GIFSearchFailure = (error: NSError?, isLastPage: Bool) -> ()
     
     func searchForGIF( keywords: [String], pageType:VPageType, success:GIFSearchSuccess?, failure:GIFSearchFailure? ) -> RKManagedObjectRequestOperation? {
         
@@ -35,7 +29,8 @@ extension VObjectManager {
         let escapedKeywordList = keywordList.stringByAddingPercentEncodingWithAllowedCharacters( charSet )!
         
         var filter = self.filterForKeywords( escapedKeywordList )
-        if !filter.canLoadPageType( pageType ) || self.paginationManager.isLoadingFilter( filter ) {
+        if !filter.canLoadPageType( pageType ) {
+            failure?( error: nil, isLastPage: true )
             return nil
         }
         
@@ -43,7 +38,7 @@ extension VObjectManager {
             success?( results: resultObjects as? [GIFSearchResult] ?? [], isLastPage: filter.isLastPage )
         }
         let fullFail: VFailBlock =  { (operation: NSOperation?, error: NSError? ) -> Void in
-            failure?( error: error )
+            failure?( error: error, isLastPage: false )
         }
         
         return self.paginationManager.loadFilter( filter, withPageType: pageType, successBlock: fullSuccess, failBlock: fullFail )
