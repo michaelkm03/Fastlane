@@ -68,11 +68,30 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 {
     return [GIFSearchViewController gifSearchWithDependencyManager:dependencyManager];
 }
+
 - (VAssetCollectionGridViewController *)gridViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     return [dependencyManager templateValueOfType:[VAssetCollectionGridViewController class]
                                            forKey:kImageVideoLibrary
-                            withAddedDependencies:@{VAssetCollectionGridViewControllerMediaType:@(PHAssetMediaTypeVideo)}];
+                            withAddedDependencies:@{VAssetCollectionGridViewControllerMediaType:@(PHAssetMediaTypeImage)}];
+}
+
+- (VCameraViewController *)cameraViewController
+{
+    __weak typeof(self) welf = self;
+    return [VCameraViewController cameraViewControllerWithContext:self.context
+                                                dependencyManager:self.dependencyManager
+                                                    resultHanlder:^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+            {
+                __strong typeof(welf) strongSelf = welf;
+                if (finished)
+                {
+                    [strongSelf captureFinishedWithMediaURL:capturedMediaURL
+                                               previewImage:previewImage];
+                }
+                
+                [strongSelf dismissViewControllerAnimated:YES completion:nil];
+            }];
 }
 
 - (VWorkspaceViewController *)workspaceViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -109,45 +128,17 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
                                                                          andSelectionBlock:^void()
                                              {
                                                  __strong typeof(welf) strongSelf = welf;
-                                                 [strongSelf showCamera];
+                                                 [strongSelf pushViewController:[strongSelf cameraViewController] animated:YES];
                                              }];
     VAlternateCaptureOption *galleryOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Gallery", nil)
-#warning Add gallery icon here
                                                                                        icon:[UIImage imageNamed:@"contententry_galleryicon"]
                                                                           andSelectionBlock:^void()
                                               {
                                                   __strong typeof(welf) strongSelf = welf;
-                                                  [strongSelf showGallery];
+                                                  [strongSelf pushViewController:strongSelf.gridViewController animated:YES];
                                               }];
     
     return @[ cameraOption, galleryOption ];
-}
-
-- (void)showCamera
-{
-    // Camera
-    __weak typeof(self) welf = self;
-    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerWithContext:self.context
-                                                                                       dependencyManager:self.dependencyManager
-                                                                                           resultHanlder:^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-                                                   {
-                                                       __strong typeof(welf) strongSelf = welf;
-                                                       if (finished)
-                                                       {
-                                                           [strongSelf captureFinishedWithMediaURL:capturedMediaURL
-                                                                                      previewImage:previewImage];
-                                                       }
-                                                       
-                                                       [strongSelf dismissViewControllerAnimated:YES completion:nil];
-                                                   }];
-    // Wrapped in nav
-    UINavigationController *cameraNavController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
-    [self presentViewController:cameraNavController animated:YES completion:nil];
-}
-
-- (void)showGallery
-{
-    [self pushViewController:self.gridViewController animated:YES];
 }
 
 #pragma mark - GIFSearchViewControllerDelegate
