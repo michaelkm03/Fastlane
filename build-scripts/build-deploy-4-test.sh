@@ -51,7 +51,7 @@ fi
 
 
 ### Clean
-# xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination  "$dest" clean 
+xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination  "$dest" clean 
 
 ### Build 
 xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination "$dest"
@@ -68,8 +68,6 @@ if [ $BUILDRESULT == 0 ]; then
         if [ -d "$Deploy/victorious.app" ]; then
             dt=`ls -lrt $Deploy | grep victorious.app | awk '{print $6$7"_"$8}'`
             mv  $Deploy/victorious.app $Deploy/victorious_$dt.app
-        else
-            mkdir -p $Deploy
         fi
         mv $BuildHome/$vdir/Build/Products/$CONFIGURATION-iphonesimulator/victorious.app $Deploy/victorious.app
         echo $Deploy/victorious.app
