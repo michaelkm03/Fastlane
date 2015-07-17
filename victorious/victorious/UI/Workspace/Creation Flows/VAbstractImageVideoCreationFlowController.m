@@ -144,12 +144,17 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
         __strong typeof(welf) strongSelf = welf;
         if (published)
         {
+            // Because of a bug in how presentations work we ened to grab a screenshot of the publish screen
+            // before we ened up being dismissed. The bug has to do with multi-level presentations if you
+            // present A -> B -> C then dismiss from A, C is cleared and you only see B animate away.
+            [strongSelf.view addSubview:[strongSelf.presentedViewController.view snapshotViewAfterScreenUpdates:YES]];
+            
             strongSelf.delegate = nil;
             strongSelf.interactivePopGestureRecognizer.delegate = nil;
             strongSelf.publishPresenter = nil;
             [strongSelf cleanupCapturedFile];
             [strongSelf cleanupRenderedFile];
-
+            
             // We're done!
             [strongSelf.creationFlowDelegate creationFlowController:strongSelf
                                            finishedWithPreviewImage:strongSelf.previewImage

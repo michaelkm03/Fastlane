@@ -8,6 +8,9 @@
 
 #import "VCreationFlowController.h"
 
+// Animator
+#import "VCreationFlowAnimator.h"
+
 // Dependencies
 #import "VDependencyManager.h"
 #import "VSolidColorBackground.h"
@@ -19,9 +22,11 @@ static NSString * const kCloseButtonIconKey = @"closeIcon";
 static NSString * const kBarBackgroundKey = @"navBarBackground";
 static NSString * const kBarTintColorKey = @"barTintColor";
 
-@interface VCreationFlowController ()
+@interface VCreationFlowController () <UIViewControllerTransitioningDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+
+@property (nonatomic, strong) VCreationFlowAnimator *animator;
 
 @end
 
@@ -35,6 +40,8 @@ static NSString * const kBarTintColorKey = @"barTintColor";
     if (self != nil)
     {
         _dependencyManager = dependencyManager;
+        _animator = [[VCreationFlowAnimator alloc] init];
+        self.transitioningDelegate = self;
     }
     return self;
 }
@@ -106,6 +113,22 @@ static NSString * const kBarTintColorKey = @"barTintColor";
     {
         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     }
+}
+
+#pragma mark - UIViewControllerTransitioningDelegate
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented
+                                                                  presentingController:(UIViewController *)presenting
+                                                                      sourceController:(UIViewController *)source
+{
+    self.animator.presenting = YES;
+    return self.animator;
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
+{
+    self.animator.presenting = NO;
+    return self.animator;
 }
 
 @end

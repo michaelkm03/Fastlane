@@ -291,24 +291,29 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
     [[VObjectManager sharedManager] uploadMediaWithPublishParameters:self.publishParameters
                                                           completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
     {
-         welf.publishing = NO;
-         [hud hide:YES];
-         if (error != nil)
-         {
-             UIAlertView *publishFailure = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Upload failure", @"")
-                                                                      message:error.localizedDescription
-                                                            cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                               onCancelButton:^
-                                            {
-                                                [welf closeOnComplete:NO];
-                                            }
-                                                   otherButtonTitlesAndBlocks:nil, nil];
-             [publishFailure show];
-         }
-         else
-         {
-             [welf closeOnComplete:YES];
-         }
+        welf.publishing = NO;
+        [hud hide:YES];
+        
+        if (error != nil)
+        {
+            UIAlertView *publishFailure = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Upload failure", @"")
+                                                                     message:error.localizedDescription
+                                                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                                              onCancelButton:^
+                                           {
+                                               [welf closeOnComplete:NO];
+                                           }
+                                                  otherButtonTitlesAndBlocks:nil, nil];
+            [publishFailure show];
+        }
+        else
+        {
+            // We need to wait for HUD to hide
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+            {
+                [welf closeOnComplete:YES];
+            });
+        }
      }];
 }
 
