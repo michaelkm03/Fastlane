@@ -61,4 +61,12 @@
  */
 - (BOOL)menuItem:(VNavigationMenuItem *)menuItem requiresAuthorizationWithContext:(VAuthorizationContext *)context;
 
+/**
+ Allows the bar button item for this accessory item to get created with a custom
+ control. If you implement this method you are responsible for configuring everything
+ about the control other than the target and action. This control will also NOT receive
+ badging support.
+ */
+- (UIControl *)customControlForAccessoryMenuItem:(VNavigationMenuItem *)menuItem;
+
 @end
