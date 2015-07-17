@@ -8,12 +8,12 @@
 
 #import "VInviteFriendTableViewCell.h"
 #import "VUser.h"
-#import "VThemeManager.h"
 #import "VObjectManager.h"
 #import "VObjectManager+Login.h"
 #import "VFollowControl.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "VFollowResponder.h"
+#import "VDependencyManager.h"
 
 static const CGFloat kInviteCellHeight = 50.0f;
 
@@ -31,12 +31,10 @@ static const CGFloat kInviteCellHeight = 50.0f;
 
 - (void)awakeFromNib
 {
-    self.profileImage.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.profileImage.layer.cornerRadius = CGRectGetHeight(self.profileImage.bounds)/2;
     self.profileImage.layer.borderWidth = 1.0;
     self.profileImage.layer.borderColor = [UIColor whiteColor].CGColor;
     self.profileImage.clipsToBounds = YES;
-    self.profileName.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
     self.contentView.backgroundColor = [UIColor clearColor];
 }
 
@@ -94,7 +92,12 @@ static const CGFloat kInviteCellHeight = 50.0f;
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
-    self.followUserControl.dependencyManager = dependencyManager;
+    if ( dependencyManager != nil )
+    {
+        self.followUserControl.dependencyManager = dependencyManager;
+        self.profileImage.backgroundColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+        self.profileName.font = [dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
+    }
 }
 
 #pragma mark - Button Actions
