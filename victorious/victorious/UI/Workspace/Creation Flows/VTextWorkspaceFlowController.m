@@ -42,7 +42,7 @@
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    self = [super init];
+    self = [super initWithDependencyManager:dependencyManager];
     if ( self )
     {
         // Create the text workspace
