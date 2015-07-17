@@ -33,14 +33,20 @@ typedef void (^VUserManagerLoginErrorBlock)(NSError *error, BOOL thirdPartyAPIFa
 /**
  Make sure we have access to the user's Twitter accounts before calling this
  */
-- (void)loginViaTwitterOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock;
+- (void)loginViaTwitterModern:(BOOL)isModern
+                 onCompletion:(VUserManagerLoginCompletionBlock)completion
+                      onError:(VUserManagerLoginErrorBlock)errorBlock;
 
 - (void)loginViaTwitterWithTwitterID:(NSString *)twitterID
+                            isModern:(BOOL)isModern
                         OnCompletion:(VUserManagerLoginCompletionBlock)completion
                              onError:(VUserManagerLoginErrorBlock)errorBlock;
 
-- (void)createEmailAccount:(NSString *)email password:(NSString *)password userName:(NSString *)userName onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock;
-
+- (void)createEmailAccount:(NSString *)email
+                  password:(NSString *)password
+                  userName:(NSString *)userName
+              onCompletion:(VUserManagerLoginCompletionBlock)completion
+                   onError:(VUserManagerLoginErrorBlock)errorBlock;
 
 - (void)loginViaEmail:(NSString *)email
              password:(NSString *)password
