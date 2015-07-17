@@ -48,7 +48,6 @@ typedef void (^VUserManagerLoginErrorBlock)(NSError *error, BOOL thirdPartyAPIFa
               onCompletion:(VUserManagerLoginCompletionBlock)completion
                    onError:(VUserManagerLoginErrorBlock)errorBlock;
 
-
 - (void)loginViaEmail:(NSString *)email
              password:(NSString *)password
          onCompletion:(VUserManagerLoginCompletionBlock)completion
