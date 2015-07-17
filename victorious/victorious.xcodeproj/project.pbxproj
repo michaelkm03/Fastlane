@@ -635,6 +635,11 @@
 		A7F8DD651A0BF55900F82256 /* VSequenceActionControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F8DD641A0BF55900F82256 /* VSequenceActionControllerTests.m */; };
 		A7FE8C3E19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A7FE8C3D19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf */; };
 		B066EC871B1F97CF006E1D40 /* VBarButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 037FCF131A8DAF0E00E8ABFC /* VBarButton.xib */; };
+		B074C5B41B39D41F00EA3FFC /* VHashmarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = B074C5B21B39D41F00EA3FFC /* VHashmarkView.m */; };
+		B074C5B51B39D41F00EA3FFC /* VHashmarkView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B074C5B31B39D41F00EA3FFC /* VHashmarkView.xib */; };
+		B074C5B81B39ED6B00EA3FFC /* VTrimmerFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = B074C5B71B39ED6B00EA3FFC /* VTrimmerFlowLayout.m */; };
+		B074C5BC1B3B2CA800EA3FFC /* VTimeMarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = B074C5BA1B3B2CA800EA3FFC /* VTimeMarkView.m */; };
+		B074C5BD1B3B2CA800EA3FFC /* VTimeMarkView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B074C5BB1B3B2CA800EA3FFC /* VTimeMarkView.xib */; };
 		B07BFD611B26761D00784FC8 /* VHashtagHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = B07BFD601B26761D00784FC8 /* VHashtagHelper.m */; };
 		BE11447919D49AA4006A6D65 /* VFullscreenMarqueeStreamItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11447819D49AA4006A6D65 /* VFullscreenMarqueeStreamItemCell.m */; };
 		BE11447E19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11447D19D4ADCC006A6D65 /* UIImageView+VLoadingAnimations.m */; };
@@ -2196,6 +2201,14 @@
 		A7FE8C3D19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = HelveticaNeueLightItalic.ttf; sourceTree = "<group>"; };
 		A7FE8C3F19EDF14700B91EF2 /* VFileCacheTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFileCacheTests.m; sourceTree = "<group>"; };
 		AF22E63145F29BF59A08F94E /* Pods-victorious.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.debug.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.debug.xcconfig"; sourceTree = "<group>"; };
+		B074C5B11B39D41F00EA3FFC /* VHashmarkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashmarkView.h; sourceTree = "<group>"; };
+		B074C5B21B39D41F00EA3FFC /* VHashmarkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashmarkView.m; sourceTree = "<group>"; };
+		B074C5B31B39D41F00EA3FFC /* VHashmarkView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VHashmarkView.xib; sourceTree = "<group>"; };
+		B074C5B61B39ED6B00EA3FFC /* VTrimmerFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrimmerFlowLayout.h; sourceTree = "<group>"; };
+		B074C5B71B39ED6B00EA3FFC /* VTrimmerFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrimmerFlowLayout.m; sourceTree = "<group>"; };
+		B074C5B91B3B2CA800EA3FFC /* VTimeMarkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTimeMarkView.h; sourceTree = "<group>"; };
+		B074C5BA1B3B2CA800EA3FFC /* VTimeMarkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTimeMarkView.m; sourceTree = "<group>"; };
+		B074C5BB1B3B2CA800EA3FFC /* VTimeMarkView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VTimeMarkView.xib; sourceTree = "<group>"; };
 		B041DB9D1B41E49A00E1F36D /* VWorkspaceContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VWorkspaceContext.h; sourceTree = "<group>"; };
 		B07BFD5F1B26761D00784FC8 /* VHashtagHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagHelper.h; sourceTree = "<group>"; };
 		B07BFD601B26761D00784FC8 /* VHashtagHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashtagHelper.m; sourceTree = "<group>"; };
@@ -5202,6 +5215,19 @@
 			path = "Not Authorized";
 			sourceTree = "<group>";
 		};
+		B074C5BE1B3B2CBA00EA3FFC /* SupplementaryViews */ = {
+			isa = PBXGroup;
+			children = (
+				B074C5B11B39D41F00EA3FFC /* VHashmarkView.h */,
+				B074C5B21B39D41F00EA3FFC /* VHashmarkView.m */,
+				B074C5B31B39D41F00EA3FFC /* VHashmarkView.xib */,
+				B074C5B91B3B2CA800EA3FFC /* VTimeMarkView.h */,
+				B074C5BA1B3B2CA800EA3FFC /* VTimeMarkView.m */,
+				B074C5BB1B3B2CA800EA3FFC /* VTimeMarkView.xib */,
+			);
+			name = SupplementaryViews;
+			sourceTree = "<group>";
+		};
 		BE171D6D1868BE64004E5202 = {
 			isa = PBXGroup;
 			children = (
@@ -5874,6 +5900,9 @@
 				D8D3B7171AB20E6600CF966C /* VTrimLoopingPlayerViewController.m */,
 				D80A94D91A536C8C0035D788 /* VTrimmerViewController.h */,
 				D80A94DA1A536C8C0035D788 /* VTrimmerViewController.m */,
+				B074C5B61B39ED6B00EA3FFC /* VTrimmerFlowLayout.h */,
+				B074C5B71B39ED6B00EA3FFC /* VTrimmerFlowLayout.m */,
+				B074C5BE1B3B2CBA00EA3FFC /* SupplementaryViews */,
 				D80A94EC1A5472FB0035D788 /* VTrimVideoTool.h */,
 				D80A94ED1A5472FB0035D788 /* VTrimVideoTool.m */,
 				D82EA50C1A577FF70008FD3E /* VVideoFrameRateComposition.h */,
@@ -6869,6 +6898,7 @@
 				DB7460381A93A5BE006C2245 /* VInlineUserTableViewCell.xib in Resources */,
 				D8758D1C1B0FCBF4008C6C0D /* VModernRegisterViewController.storyboard in Resources */,
 				DB2A48FF19DF429700CB687B /* Main.storyboard in Resources */,
+				B074C5BD1B3B2CA800EA3FFC /* VTimeMarkView.xib in Resources */,
 				036F38901A0C4DEA0014DF66 /* Rosario-Regular.ttf in Resources */,
 				036F38861A0C4DEA0014DF66 /* PT_Sans-Web-Bold.ttf in Resources */,
 				D85B70701B0EAF3F0038CA5B /* FindFriendsTableView.strings in Resources */,
@@ -6938,6 +6968,7 @@
 				036F388B1A0C4DEA0014DF66 /* Raleway-Medium.ttf in Resources */,
 				D85B707A1B0EAF3F0038CA5B /* VInviteFriendTableViewCell.xib in Resources */,
 				036F387A1A0C4DEA0014DF66 /* MavenPro-Bold.ttf in Resources */,
+				B074C5B51B39D41F00EA3FFC /* VHashmarkView.xib in Resources */,
 				C30AA4D71B043E890010CEFE /* PermissionAlert.storyboard in Resources */,
 				036F38951A0C4DEA0014DF66 /* Ubuntu-Medium.ttf in Resources */,
 				036F38841A0C4DEA0014DF66 /* PlayfairDisplay-Bold.ttf in Resources */,
@@ -7399,9 +7430,11 @@
 				A79869EB1AD7124D00F2564A /* VContentDeepLinkHandler.m in Sources */,
 				0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */,
 				A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */,
+				B074C5B41B39D41F00EA3FFC /* VHashmarkView.m in Sources */,
 				C30AA4F61B06B82A0010CEFE /* VPermissionPhotoLibrary.m in Sources */,
 				03C82F201A81DDFE00190C7D /* VUserTaggingTextStorage.m in Sources */,
 				0314D0AE19B4698800FA363C /* VObjectManager+Comment.m in Sources */,
+				B074C5B81B39ED6B00EA3FFC /* VTrimmerFlowLayout.m in Sources */,
 				A7F712031AE1D5A00086F729 /* VNotAuthorizedProfileCollectionViewCell.m in Sources */,
 				039ED27E19C563B700305987 /* VCameraVideoEncoder.m in Sources */,
 				A7D7079A1A7C144C00D9993F /* VEndCardActionCell.m in Sources */,
@@ -7793,6 +7826,7 @@
 				D839D6921B16A64000FAFBD0 /* VEnterProfilePictureCameraViewController.m in Sources */,
 				DB531B561A425A7200B4ADC8 /* VHashtag.m in Sources */,
 				A7ECC1CC1AD617480003E00A /* VImageToolController.m in Sources */,
+				B074C5BC1B3B2CA800EA3FFC /* VTimeMarkView.m in Sources */,
 				03C92D171ABB96030057D30E /* VLightweightContentViewController.m in Sources */,
 				03A058C91AF05D8300CF39D1 /* VObjectManager+VTemplateDownloaderConformance.m in Sources */,
 				C30AA4E31B057D290010CEFE /* VButtonWithCircularEmphasis.m in Sources */,

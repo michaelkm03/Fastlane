@@ -23,4 +23,9 @@
                           bundle:nil];
 }
 
++ (NSString *)nibName
+{
+    return [self suggestedReuseIdentifier];
+}
+
 @end
