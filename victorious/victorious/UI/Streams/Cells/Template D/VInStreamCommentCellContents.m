@@ -66,7 +66,8 @@
             mediaLink = [VInStreamMediaLink newWithTintColor:linkColor
                                                         font:mediaLinkFont
                                                    mediaType:comment.mediaType
-                                                   urlString:mediaUrl];
+                                                   urlString:mediaUrl
+                                        andDependencyManager:dependencyManager];
         }
         
         VInStreamCommentCellContents *content = [[VInStreamCommentCellContents alloc]

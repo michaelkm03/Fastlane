@@ -8,12 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+@class VDependencyManager;
+
 @interface VInStreamMediaLink : NSObject
 
 + (instancetype)newWithTintColor:(UIColor *)tintColor
                             font:(UIFont *)font
                        mediaType:(NSString *)mediaType
-                       urlString:(NSString *)urlString;
+                       urlString:(NSString *)urlString
+            andDependencyManager:(VDependencyManager *)dependencyManager;
 
 - (instancetype)initWithTintColor:(UIColor *)tintColor
                              font:(UIFont *)font

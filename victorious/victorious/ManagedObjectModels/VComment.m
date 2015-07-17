@@ -2,13 +2,12 @@
 //  VComment.m
 //  victorious
 //
-//  Created by Will Long on 9/24/14.
-//  Copyright (c) 2014 Victorious. All rights reserved.
+//  Created by Sharif Ahmed on 7/16/15.
+//  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
 #import "VComment.h"
 #import "VAsset.h"
-#import "VNotification.h"
 #import "VSequence.h"
 #import "VUser.h"
 
@@ -16,6 +15,7 @@
 @implementation VComment
 
 @dynamic assetId;
+@dynamic assetOrientation;
 @dynamic dislikes;
 @dynamic flags;
 @dynamic likes;
@@ -30,9 +30,8 @@
 @dynamic thumbnailUrl;
 @dynamic userId;
 @dynamic asset;
-@dynamic notification;
 @dynamic sequence;
 @dynamic user;
-@dynamic assetOrientation;
+@dynamic inStreamSequence;
 
 @end

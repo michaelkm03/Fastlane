@@ -60,7 +60,7 @@ static CGFloat const kInterLabelSpace = 11.0f;
         [self.mediaLinkButton setImage:[mediaLink.icon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
         self.mediaLinkButton.titleLabel.font = mediaLink.font;
         [self.mediaLinkButton setTitle:mediaLink.text forState:UIControlStateNormal];
-        self.mediaLinkButtonHeightConstraint.constant = CGFLOAT_MAX;
+        self.mediaLinkButtonHeightConstraint.constant = 50.0f;
         
         if ( !forSizing )
         {
@@ -173,6 +173,22 @@ static CGFloat const kInterLabelSpace = 11.0f;
                       }
                   });
     return cell;
+}
+
++ (NSString *)reuseIdentifierForContents:(VInStreamCommentCellContents *)contents
+{
+    NSString *identifier = [self suggestedReuseIdentifier];
+    if ( contents.inStreamMediaLink != nil )
+    {
+        identifier = [identifier stringByAppendingString:@"withMedia"];
+    }
+    return identifier;
+}
+
++ (NSArray *)possibleReuseIdentifiers
+{
+    NSString *identifier = [self suggestedReuseIdentifier];
+    return @[ identifier, [identifier stringByAppendingString:@"withMedia"]];
 }
 
 @end

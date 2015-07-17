@@ -37,7 +37,10 @@ static UIEdgeInsets const kSectionEdgeInsets = { 6.0f, 0.0f, 12.0f, 0.0f };
     ((UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout).scrollDirection = UICollectionViewScrollDirectionVertical;
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
-    [self.collectionView registerNib:[VInStreamCommentsCell nibForCell] forCellWithReuseIdentifier:[VInStreamCommentsCell suggestedReuseIdentifier]];
+    for ( NSString *identifier in [VInStreamCommentsCell possibleReuseIdentifiers] )
+    {
+        [self.collectionView registerNib:[VInStreamCommentsCell nibForCell] forCellWithReuseIdentifier:identifier];
+    }
 }
 
 + (CGFloat)desiredHeightForCommentCellContents:(NSArray *)commentCellContents withCollectionViewWidth:(CGFloat)width withShowPreviousCommentsCellEnabled:(BOOL)enabled
@@ -68,7 +71,7 @@ static UIEdgeInsets const kSectionEdgeInsets = { 6.0f, 0.0f, 12.0f, 0.0f };
     }
     
     _commentCellContents = commentCellContents;
-    [self.collectionView reloadData];
+    //[self.collectionView reloadData];
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -83,8 +86,10 @@ static UIEdgeInsets const kSectionEdgeInsets = { 6.0f, 0.0f, 12.0f, 0.0f };
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    VInStreamCommentsCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VInStreamCommentsCell suggestedReuseIdentifier] forIndexPath:indexPath];
-    [cell setupWithInStreamCommentCellContents:self.commentCellContents[indexPath.row]];
+    VInStreamCommentCellContents *contents = self.commentCellContents[indexPath.row];
+    NSString *identifier = [VInStreamCommentsCell reuseIdentifierForContents:contents];
+    VInStreamCommentsCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+    [cell setupWithInStreamCommentCellContents:contents];
     return cell;
 }
 

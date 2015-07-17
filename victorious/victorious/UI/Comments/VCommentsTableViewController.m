@@ -165,16 +165,7 @@
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         self.tableView.backgroundView = nil;
     }
-    self.comments = [self.sequence.comments array];
-}
-
-- (void)setComments:(NSArray *)comments
-{
-    NSArray *sortedComments = [comments sortedArrayUsingComparator:^NSComparisonResult(VComment *comment1, VComment *comment2)
-                               {
-                                   return [comment2.postedAt compare:comment1.postedAt];
-                               }];
-    _comments = sortedComments;
+    self.comments = [self.sequence dateSortedComments];
 }
 
 #pragma mark - Public Mehtods
@@ -196,7 +187,7 @@
                                                                                                pageType:VPageTypeFirst
                                                                                            successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
                                                   {
-                                                      self.comments = [self.sequence.comments array];
+                                                      self.comments = [self.sequence dateSortedComments];
                                                       self.needsRefresh = NO;
                                                       [self.tableView reloadData];
                                                       [self.refreshControl endRefreshing];
@@ -219,7 +210,7 @@
                                                   pageType:VPageTypeNext
                                               successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
-         self.comments = [self.sequence.comments array];
+         self.comments = [self.sequence dateSortedComments];
          [self.tableView reloadData];
      }
                                                  failBlock:nil];
@@ -328,7 +319,13 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (scrollView.contentOffset.y > scrollView.contentSize.height * .75)
+    CGFloat contentHeight = scrollView.contentSize.height;
+    if ( contentHeight == 0 )
+    {
+        return;
+    }
+    
+    if (scrollView.contentOffset.y > ( contentHeight - CGRectGetHeight(scrollView.bounds) ) * .75)
     {
         [self loadNextPageAction];
     }

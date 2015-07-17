@@ -14,12 +14,14 @@
                             font:(UIFont *)font
                        mediaType:(NSString *)mediaType
                        urlString:(NSString *)urlString
+            andDependencyManager:(VDependencyManager *)dependencyManager
 {
     __block NSString *linkLabelText;
     __block UIImage *linkIcon;
     
     [VInStreamMediaLink imageAndTextForMediaCategoryString:mediaType
-                                             callbackBlock:^(UIImage *icon, NSString *text)
+                                         dependencyManager:dependencyManager
+                                          andCallbackBlock:^(UIImage *icon, NSString *text)
      {
          linkIcon = icon;
          linkLabelText = text;
@@ -50,11 +52,11 @@
     return self;
 }
 
-+ (void)imageAndTextForMediaCategoryString:(NSString *)category callbackBlock:(void (^)(UIImage *, NSString *))callbackBlock
++ (void)imageAndTextForMediaCategoryString:(NSString *)category dependencyManager:(VDependencyManager *)dependencyManager andCallbackBlock:(void (^)(UIImage *, NSString *))callbackBlock
 {
     if ( category.length > 0 )
     {
-        callbackBlock([UIImage imageNamed:@"follow_user_icon"], @"whooooopie");
+        callbackBlock([UIImage imageNamed:@"open_image_icon"], @"Open image");
     }
     else
     {

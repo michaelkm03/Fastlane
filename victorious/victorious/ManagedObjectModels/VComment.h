@@ -2,18 +2,19 @@
 //  VComment.h
 //  victorious
 //
-//  Created by Will Long on 9/24/14.
-//  Copyright (c) 2014 Victorious. All rights reserved.
+//  Created by Sharif Ahmed on 7/16/15.
+//  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class VAsset, VNotification, VSequence, VUser;
+@class VAsset, VSequence, VUser;
 
 @interface VComment : NSManagedObject
 
 @property (nonatomic, retain) NSNumber * assetId;
+@property (nonatomic, retain) NSNumber * assetOrientation;
 @property (nonatomic, retain) NSNumber * dislikes;
 @property (nonatomic, retain) NSNumber * flags;
 @property (nonatomic, retain) NSNumber * likes;
@@ -27,10 +28,9 @@
 @property (nonatomic, retain) NSString * text;
 @property (nonatomic, retain) NSString * thumbnailUrl;
 @property (nonatomic, retain) NSNumber * userId;
-@property (nonatomic, retain) NSNumber * assetOrientation;
 @property (nonatomic, retain) VAsset *asset;
-@property (nonatomic, retain) VNotification *notification;
 @property (nonatomic, retain) VSequence *sequence;
 @property (nonatomic, retain) VUser *user;
+@property (nonatomic, retain) VSequence *inStreamSequence;
 
 @end

@@ -36,6 +36,7 @@ static const CGFloat kCountsTextViewMinHeight = 29.0f;
 static const UIEdgeInsets kCaptionMargins = { 0.0f, 28.0f, 5.0f, 28.0f };
 static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
 static const NSUInteger kMaxNumberOfInStreamComments = 3;
+static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
 @interface VSleekStreamCollectionCell () <VBackgroundContainer, CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate>
 
@@ -71,8 +72,6 @@ static const NSUInteger kMaxNumberOfInStreamComments = 3;
     [self setupDimmingContainer];
     
     self.countsTextView.textSelectionDelegate = self;
-    
-    self.inStreamCommentsController = [[VInStreamCommentsController alloc] initWithCollectionView:self.inStreamCommentsCollectionView];
 }
 
 + (VCellSizeCollection *)cellLayoutCollection
@@ -120,14 +119,19 @@ static const NSUInteger kMaxNumberOfInStreamComments = 3;
          }];
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
         {
-            VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
-#warning LOGIC NEEDS REVISION
-            if ( sequence.commentCount.integerValue == 0 || sequence.comments.count == 0 )
+            VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
+            if ( ![[dependencyManager numberForKey:kShouldShowCommentsKey] boolValue] )
             {
                 return CGSizeMake( 0.0f, kCaptionMargins.bottom);
             }
             
-            VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
+            VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
+            NSArray *comments = [self inStreamCommentsArrayForSequence:sequence];
+            if ( comments.count == 0 )
+            {
+                return CGSizeMake( 0.0f, kCaptionMargins.bottom);
+            }
+            
             BOOL showPreviousCommentsCellEnabled = sequence.commentCount.unsignedIntegerValue > kMaxNumberOfInStreamComments;
             NSArray *commentCellContents = [VInStreamCommentCellContents inStreamCommentsForComments:[self inStreamCommentsArrayForSequence:sequence] andDependencyManager:dependencyManager];
             CGFloat height = [VInStreamCommentsController desiredHeightForCommentCellContents:commentCellContents withCollectionViewWidth:size.width withShowPreviousCommentsCellEnabled:showPreviousCommentsCellEnabled];
@@ -437,8 +441,27 @@ static const NSUInteger kMaxNumberOfInStreamComments = 3;
 
 + (NSArray *)inStreamCommentsArrayForSequence:(VSequence *)sequence
 {
-    NSArray *comments = [sequence.comments array];
-    return [comments subarrayWithRange:NSMakeRange(0, MIN(comments.count, kMaxNumberOfInStreamComments))];
+    NSArray *recentComments = [[sequence recentComments] array];
+    NSArray *comments = [sequence dateSortedComments];
+    if ( comments.count > 0 && recentComments.count != kMaxNumberOfInStreamComments)
+    {
+        return [comments subarrayWithRange:NSMakeRange(0, MIN(comments.count, kMaxNumberOfInStreamComments))];
+    }
+    return recentComments;
+}
+
+- (VInStreamCommentsController *)inStreamCommentsController
+{
+    if ( _inStreamCommentsController != nil )
+    {
+        return _inStreamCommentsController;
+    }
+    
+    if ( [[self.dependencyManager numberForKey:kShouldShowCommentsKey] boolValue] )
+    {
+        _inStreamCommentsController = [[VInStreamCommentsController alloc] initWithCollectionView:self.inStreamCommentsCollectionView];
+    }
+    return _inStreamCommentsController;
 }
 
 @end

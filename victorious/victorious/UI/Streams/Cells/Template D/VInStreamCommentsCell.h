@@ -18,4 +18,8 @@
 
 + (CGFloat)desiredHeightForCommentCellContents:(VInStreamCommentCellContents *)contents withMaxWidth:(CGFloat)width;
 
++ (NSString *)reuseIdentifierForContents:(VInStreamCommentCellContents *)contents;
+
++ (NSArray *)possibleReuseIdentifiers;
+
 @end

@@ -19,6 +19,7 @@
 #import "NSURL+MediaType.h"
 #import "VImageAsset+Fetcher.h"
 #import "VImageAssetFinder.h"
+#import "VComment.h"
 
 static const CGFloat kMinimumAspectRatio = 0.5f;
 static const CGFloat kMaximumAspectRatio = 2.0f;
@@ -323,6 +324,14 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
         imageUrl = [self previewImageUrl];
     }
     return imageUrl;
+}
+
+- (NSArray *)dateSortedComments
+{
+    return [self.comments sortedArrayUsingComparator:^NSComparisonResult(VComment *comment1, VComment *comment2)
+            {
+                return [comment2.postedAt compare:comment1.postedAt];
+            }];
 }
 
 @end

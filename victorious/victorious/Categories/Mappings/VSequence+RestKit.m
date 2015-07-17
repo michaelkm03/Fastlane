@@ -81,6 +81,12 @@
     
     [mapping addPropertyMapping:previewAssetsMapping];
     
+    RKRelationshipMapping *recentCommentsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"recent_comments"
+                                                                                              toKeyPath:VSelectorName(recentComments)
+                                                                                            withMapping:[VComment entityMapping]];
+    
+    [mapping addPropertyMapping:recentCommentsMapping];
+    
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(nodes) mapping:[VNode entityMapping]];
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(comments) mapping:[VComment entityMapping]];
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(user) mapping:[VUser simpleMapping]];
@@ -99,6 +105,12 @@
                                                                                             withMapping:[VImageAsset entityMapping]];
     
     [mapping addPropertyMapping:previewAssetsMapping];
+    
+    RKRelationshipMapping *recentCommentsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"recent_comments"
+                                                                                               toKeyPath:VSelectorName(recentComments)
+                                                                                             withMapping:[VComment entityMapping]];
+    
+    [mapping addPropertyMapping:recentCommentsMapping];
     
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(nodes) mapping:[VNode entityMapping]];
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(comments) mapping:[VComment entityMapping]];

@@ -121,10 +121,13 @@
     NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
     for ( VSleekStreamCollectionCell *cell in collectionView.visibleCells )
     {
-        if ( cell.needsRefresh )
+        if ( [cell respondsToSelector:@selector(needsRefresh)] )
         {
-            [indexPaths addObject:[collectionView indexPathForCell:cell]];
-            [cell purgeSizeCacheValue];
+            if ( cell.needsRefresh )
+            {
+                [indexPaths addObject:[collectionView indexPathForCell:cell]];
+                [cell purgeSizeCacheValue];
+            }
         }
     }
     
