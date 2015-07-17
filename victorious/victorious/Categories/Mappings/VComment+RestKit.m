@@ -32,7 +32,7 @@
                                   @"thumbnail_url" : VSelectorName(thumbnailUrl),
                                   @"realtime" : VSelectorName(realtime),
                                   @"asset_id" : VSelectorName(assetId),
-                                  @"is_gif_style" : VSelectorName(shouldAutoplay)
+                                  @"should_autoplay" : VSelectorName(shouldAutoplay)
                                   };
 
     RKEntityMapping *mapping = [RKEntityMapping
