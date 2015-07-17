@@ -272,6 +272,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
          dispatch_async(dispatch_get_main_queue(), ^
          {
              hudForView.progress = progress;
+             hudForView.labelText = progressText;
          });
      }
                                completion:^(NSError *error, NSURL *downloadedFileURL, UIImage *previewImage)
