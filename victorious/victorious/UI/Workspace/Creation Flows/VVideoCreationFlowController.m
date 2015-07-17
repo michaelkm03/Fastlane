@@ -92,7 +92,6 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
     VAlternateCaptureOption *cameraOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Camera", nil)
                                                                                       icon:[UIImage imageNamed:@"contententry_cameraicon"]
                                                                          andSelectionBlock:cameraSelectionBlock];
-    
     return @[cameraOption];
 }
 
