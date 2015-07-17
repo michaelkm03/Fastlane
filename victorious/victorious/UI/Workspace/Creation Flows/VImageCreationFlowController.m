@@ -12,6 +12,9 @@
 #import "VAssetCollectionListViewController.h"
 #import "VAssetCollectionGridViewController.h"
 #import "VImageAssetDownloader.h"
+#import "VAlternateCaptureOption.h"
+#import "VCameraViewController.h"
+#import "VImageSearchViewController.h"
 
 // Edit
 #import "VWorkspaceViewController.h"
@@ -25,6 +28,12 @@
 
 static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 
+@interface VImageCreationFlowController ()
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
+@end
+
 @implementation VImageCreationFlowController
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -33,6 +42,7 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
     if (self != nil)
     {
         [self setContext:VCameraContextImageContentCreation];
+        _dependencyManager = dependencyManager;
     }
     return self;
 }
@@ -74,6 +84,77 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 - (VAssetDownloader *)downloaderWithAsset:(PHAsset *)asset
 {
     return [[VImageAssetDownloader alloc] initWithAsset:asset];
+}
+
+- (NSArray *)alternateCaptureOptions
+{
+    __weak typeof(self) welf = self;
+    void (^cameraSelectionBlock)() = ^void()
+    {
+        __strong typeof(welf) strongSelf = welf;
+        [strongSelf showCamera];
+    };
+    
+    void (^searchSelectionBlock)() = ^void()
+    {
+        __strong typeof(welf) strongSelf = welf;
+        [strongSelf showSearch];
+    };
+    VAlternateCaptureOption *cameraOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Camera", nil)
+                                                                                      icon:[UIImage imageNamed:@"contententry_cameraicon"]
+                                                                         andSelectionBlock:cameraSelectionBlock];
+    VAlternateCaptureOption *searchOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Search", nil)
+                                                                                      icon:[UIImage imageNamed:@"contententry_searchbaricon"]
+                                                                         andSelectionBlock:searchSelectionBlock];
+    return @[cameraOption, searchOption];
+}
+
+
+- (void)showCamera
+{
+    // Camera
+    __weak typeof(self) welf = self;
+    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerWithContext:self.context
+                                                                                       dependencyManager:self.dependencyManager
+                                                                                           resultHanlder:^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+                                                   {
+                                                       __strong typeof(welf) strongSelf = welf;
+                                                       if (finished)
+                                                       {
+                                                           [strongSelf captureFinishedWithMediaURL:capturedMediaURL
+                                                                                previewImage:previewImage];
+                                                       }
+                                                       
+                                                       [strongSelf dismissViewControllerAnimated:YES completion:nil];
+                                                   }];
+    // Wrapped in nav
+    UINavigationController *cameraNavController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
+    [self presentViewController:cameraNavController animated:YES completion:nil];
+    
+}
+
+- (void)showSearch
+{
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSelectImageSearch];
+    
+    // Image search
+    VImageSearchViewController *imageSearchViewController = [VImageSearchViewController newImageSearchViewController];
+    __weak typeof(self) welf = self;
+    imageSearchViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+    {
+        __strong typeof(welf) strongSelf = welf;
+        if (finished)
+        {
+            [strongSelf captureFinishedWithMediaURL:capturedMediaURL
+                                       previewImage:previewImage];
+        }
+        
+        [strongSelf dismissViewControllerAnimated:YES
+                                 completion:nil];
+    };
+    [self presentViewController:imageSearchViewController
+                       animated:YES
+                     completion:nil];
 }
 
 @end

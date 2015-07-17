@@ -12,6 +12,8 @@
 #import "VAssetCollectionListViewController.h"
 #import "VAssetCollectionGridViewController.h"
 #import "VVideoAssetDownloader.h"
+#import "VAlternateCaptureOption.h"
+#import "VCameraViewController.h"
 
 // Edit
 #import "VWorkspaceViewController.h"
@@ -28,6 +30,12 @@
 static NSString * const kVideoWorkspaceKey = @"videoWorkspace";
 static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 
+@interface VVideoCreationFlowController ()
+
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
+@end
+
 @implementation VVideoCreationFlowController
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -35,6 +43,7 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
     self = [super initWithDependencyManager:dependencyManager];
     if (self != nil)
     {
+        _dependencyManager = dependencyManager;
         [self setContext:VCameraContextVideoContentCreation];
     }
     return self;
@@ -76,6 +85,43 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 - (VAssetDownloader *)downloaderWithAsset:(PHAsset *)asset
 {
     return [[VVideoAssetDownloader alloc] initWithAsset:asset];
+}
+
+- (NSArray *)alternateCaptureOptions
+{
+    __weak typeof(self) welf = self;
+    void (^cameraSelectionBlock)() = ^void()
+    {
+        __strong typeof(welf) strongSelf = welf;
+        [strongSelf showCamera];
+    };
+    VAlternateCaptureOption *cameraOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Camera", nil)
+                                                                                      icon:[UIImage imageNamed:@"contententry_cameraicon"]
+                                                                         andSelectionBlock:cameraSelectionBlock];
+    
+    return @[cameraOption];
+}
+
+- (void)showCamera
+{
+    // Camera
+    __weak typeof(self) welf = self;
+    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerWithContext:self.context
+                                                                                       dependencyManager:self.dependencyManager
+                                                                                           resultHanlder:^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+                                                   {
+                                                       __strong typeof(welf) strongSelf = welf;
+                                                       if (finished)
+                                                       {
+                                                           [strongSelf captureFinishedWithMediaURL:capturedMediaURL
+                                                                                      previewImage:previewImage];
+                                                       }
+                                                       
+                                                       [strongSelf dismissViewControllerAnimated:YES completion:nil];
+                                                   }];
+    // Wrapped in nav
+    UINavigationController *cameraNavController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
+    [self presentViewController:cameraNavController animated:YES completion:nil];
 }
 
 @end

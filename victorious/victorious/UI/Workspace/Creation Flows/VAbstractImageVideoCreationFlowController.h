@@ -25,6 +25,12 @@ extern NSString * const VImageCreationFlowControllerKey;
  */
 @property (nonatomic, assign) VCameraContext context;
 
+/**
+ *  To prgoress from capturing to editing call this method. Useful for subclasses to call for alternate capture options.
+ */
+- (void)captureFinishedWithMediaURL:(NSURL *)mediaURL
+                       previewImage:(UIImage *)previewImage;
+
 @end
 
 @class VAssetCollectionListViewController;
@@ -69,5 +75,10 @@ extern NSString * const VImageCreationFlowControllerKey;
  *  Provide the superclass with a downloader to grab the asset from the photos framework.
  */
 - (VAssetDownloader *)downloaderWithAsset:(PHAsset *)asset;
+
+/**
+ *  Must return an array (or empty array) of VAlternateCaptureOptions.
+ */
+- (NSArray *)alternateCaptureOptions;
 
 @end

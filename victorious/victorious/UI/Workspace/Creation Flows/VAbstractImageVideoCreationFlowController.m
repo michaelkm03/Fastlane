@@ -118,73 +118,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     [self presentViewController:self.listViewController animated:YES completion:nil];
 }
 
-- (NSArray *)alternateCaptureOptions
-{
-    __weak typeof(self) welf = self;
-    void (^cameraSelectionBlock)() = ^void()
-    {
-        __strong typeof(welf) strongSelf = welf;
-        [strongSelf showCamera];
-    };
-    
-    void (^searchSelectionBlock)() = ^void()
-    {
-        __strong typeof(welf) strongSelf = welf;
-        [strongSelf showSearch];
-    };
-    VAlternateCaptureOption *cameraOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Camera", nil)
-                                                                                      icon:[UIImage imageNamed:@"contententry_cameraicon"]
-                                                                         andSelectionBlock:cameraSelectionBlock];
-    VAlternateCaptureOption *searchOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Search", nil)
-                                                                                      icon:[UIImage imageNamed:@"contententry_searchbaricon"]
-                                                                         andSelectionBlock:searchSelectionBlock];
-    return @[cameraOption, searchOption];
-}
-
-- (void)showCamera
-{
-    // Camera
-    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerWithContext:self.context
-                                                                                       dependencyManager:self.dependencyManager
-                                                                                           resultHanlder:^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-                                                   {
-                                                       if (finished)
-                                                       {
-                                                           [self prepareWorkspaceWithMediaURL:capturedMediaURL
-                                                                              andPreviewImage:previewImage];
-                                                           [self pushViewController:self.workspaceViewController animated:YES];
-                                                       }
-                                                       
-                                                       [self dismissViewControllerAnimated:YES completion:nil];
-                                                   }];
-    // Wrapped in nav
-    UINavigationController *cameraNavController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
-    [self presentViewController:cameraNavController animated:YES completion:nil];
-
-}
-
-- (void)showSearch
-{
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSelectImageSearch];
-    
-    // Image search
-    VImageSearchViewController *imageSearchViewController = [VImageSearchViewController newImageSearchViewController];
-    imageSearchViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-    {
-        if (finished)
-        {
-            [self prepareWorkspaceWithMediaURL:capturedMediaURL andPreviewImage:previewImage];
-            [self pushViewController:self.workspaceViewController animated:YES];
-        }
-        
-        [self dismissViewControllerAnimated:YES
-                                 completion:nil];
-    };
-    [self presentViewController:imageSearchViewController
-                       animated:YES
-                     completion:nil];
-}
-
 - (void)prepareWorkspaceWithMediaURL:(NSURL *)mediaURL
                      andPreviewImage:(UIImage *)previewImage
 {
@@ -295,6 +228,14 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 {
     [[NSFileManager defaultManager] removeItemAtURL:self.renderedMediaURL
                                               error:nil];
+}
+
+- (void)captureFinishedWithMediaURL:(NSURL *)mediaURL
+                       previewImage:(UIImage *)previewImage
+{
+    [self prepareWorkspaceWithMediaURL:mediaURL
+                       andPreviewImage:previewImage];
+    [self pushViewController:self.workspaceViewController animated:YES];
 }
 
 #pragma mark - UINavigationControllerDelegate
