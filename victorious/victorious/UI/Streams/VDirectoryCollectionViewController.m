@@ -28,6 +28,7 @@
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VTracking.h"
+#import "VTracking.h"
 
 static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kMarqueeKey = @"marqueeCell";
@@ -295,7 +296,13 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     else if ( streamItem.isContent )
     {
         NSString *streamId = self.marqueeController.stream.streamId;
+        VSequence *sequence = (VSequence *)streamItem;
+        NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId ?: @"",
+                                  VTrackingKeyTimeStamp : [NSDate date],
+                                  VTrackingKeyUrls : sequence.tracking.cellClick,
+                                  VTrackingKeyStreamId : streamId ?: @"" };
         
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromStream parameters:params];
         [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:(VSequence *)streamItem streamID:streamId commentId:nil placeHolderImage:nil];
     }
     else if ( [streamItem isKindOfClass:[VStream class]] )
