@@ -56,19 +56,17 @@
     return self.publishViewController.publishParameters;
 }
 
-- (void)setCompletion:(void (^)(BOOL))completion
+- (void)setPublishActionHandler:(void (^)(BOOL))publishActionHandler
 {
-    _completion = completion;
+    NSParameterAssert(publishActionHandler != nil);
+    _publishActionHandler = [publishActionHandler copy];
+    
     __weak typeof(self) welf = self;
     self.publishViewController.completion = ^void(BOOL success)
     {
         __strong typeof(welf) strongSelf = welf;
-        if (!success)
-        {
-            [strongSelf.viewControllerPresentedOn dismissViewControllerAnimated:YES completion:nil];
-        }
         strongSelf.publishViewController.completion = nil;
-        completion(success);
+        strongSelf.publishActionHandler(success);
     };
 }
 

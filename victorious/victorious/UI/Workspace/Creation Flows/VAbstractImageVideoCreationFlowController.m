@@ -139,7 +139,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     self.publishPresenter = [[VPublishPresenter alloc] initWithDependencymanager:self.dependencyManager];
 
     __weak typeof(self) welf = self;
-    self.publishPresenter.completion = ^void(BOOL published)
+    self.publishPresenter.publishActionHandler = ^void(BOOL published)
     {
         __strong typeof(welf) strongSelf = welf;
         if (published)
@@ -154,6 +154,11 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
             [strongSelf.creationFlowDelegate creationFlowController:strongSelf
                                            finishedWithPreviewImage:strongSelf.previewImage
                                                    capturedMediaURL:strongSelf.renderedMediaURL];
+        }
+        else
+        {
+            [strongSelf dismissViewControllerAnimated:YES
+                                           completion:nil];
         }
     };
 }
