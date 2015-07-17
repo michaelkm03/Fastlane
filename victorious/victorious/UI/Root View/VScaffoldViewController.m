@@ -188,13 +188,6 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
             [self dismissViewControllerAnimated:NO completion:nil];
         }
         
-        NSString *safeStreamId = streamId ?: @"";
-        NSDictionary *params = @{ VTrackingKeySequenceId : [(VSequence *)sequence remoteId],
-                                  VTrackingKeyTimeStamp : [NSDate date],
-                                  VTrackingKeyUrls : [(VSequence *)sequence tracking].cellClick,
-                                  VTrackingKeyStreamId : safeStreamId };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromStream parameters:params];
-        
         [self presentViewController:contentView animated:YES completion:nil];
     }
 }
