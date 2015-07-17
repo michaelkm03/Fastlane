@@ -118,7 +118,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 {
     [self.dependencyManager configureNavigationItem:self.navigationItem];
     [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
-    [self updateFollowingStatus];
+    [self updateFollowStatusAnimated:NO];
 }
 
 #pragma mark - Fetch Users Tags
@@ -159,7 +159,12 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"tag == %@", self.selectedHashtag.lowercaseString];
     VHashtag *hashtag = [mainUser.hashtags filteredOrderedSetUsingPredicate:predicate].firstObject;
-    self.followingSelectedHashtag = hashtag != nil;
+    
+    if (hashtag != nil != self.followingSelectedHashtag)
+    {
+        self.followingSelectedHashtag = hashtag != nil;
+        [self updateFollowStatusAnimated:YES];
+    }
 }
 
 - (void)dataSourceDidRefresh
@@ -212,7 +217,14 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
 - (void)followHashtag
 {
-//    [self updateSubscribeStatusAnimated:YES showLoading:YES];
+    if ( self.followControl.controlState == VFollowControlStateLoading )
+    {
+        return;
+    }
+    
+    [self.followControl setControlState:VFollowControlStateLoading
+                               animated:YES];
+    
     self.followingEnabled = NO;
     
     id <VHashtagResponder> responder = [self.nextResponder targetForAction:@selector(followHashtag:successBlock:failureBlock:) withSender:self];
@@ -221,7 +233,9 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     {
         self.followingSelectedHashtag = YES;
         self.followingEnabled = YES;
-    } 
+        
+//        [self updateFollowStatusAnimated:YES];
+    }
     failureBlock:^(NSError *error)
     {
         self.failureHUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
@@ -235,7 +249,14 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
 - (void)unfollowHashtag
 {
-//    [self updateSubscribeStatusAnimated:YES showLoading:YES];
+    if ( self.followControl.controlState == VFollowControlStateLoading )
+    {
+        return;
+    }
+    
+    [self.followControl setControlState:VFollowControlStateLoading
+                                   animated:YES];
+    
     self.followingEnabled = NO;
     
     id <VHashtagResponder> responder = [self.nextResponder targetForAction:@selector(unfollowHashtag:successBlock:failureBlock:) withSender:self];
@@ -244,7 +265,9 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     {
         self.followingSelectedHashtag = NO;
         self.followingEnabled = YES;
-    } 
+        
+//        [self updateFollowStatusAnimated:YES];
+    }
     failureBlock:^(NSError *error)
     {
         self.failureHUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
@@ -260,24 +283,6 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 - (void)setFollowingSelectedHashtag:(BOOL)followingSelectedHashtag
 {
     _followingSelectedHashtag = followingSelectedHashtag;
-    
-    [self updateFollowingStatus];
-}
-
-- (void)updateFollowingStatus
-{
-    VNavigationMenuItem *menuItem = [self.dependencyManager menuItemWithIdentifier:VDependencyManagerAccessoryItemFollowHashtag];
-    
-    if ( self.streamDataSource.count == 0 || menuItem == nil )
-    {
-        self.followingEnabled = NO;
-    }
-    else
-    {
-        self.followingEnabled = YES;
-        VFollowControlState state = [VFollowControl controlStateForFollowing:self.isFollowingSelectedHashtag];
-        [self.followControl setControlState:state animated:YES];
-    }
 }
 
 - (void)setFollowingEnabled:(BOOL)followingEnabled
@@ -286,15 +291,22 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     self.followControl.enabled = followingEnabled;
 }
 
-- (void)updateSubscribeStatusAnimated:(BOOL)animated showLoading:(BOOL)loading
+- (void)updateFollowStatusAnimated:(BOOL)animated
 {
-    VFollowControlState controlState = VFollowControlStateLoading;
-    if ( !loading )
+    if ( self.streamDataSource.count == 0 )
     {
-        controlState = [VFollowControl controlStateForFollowing:self.isFollowingSelectedHashtag];
+        self.followingEnabled = NO;
     }
-    [self.followControl setControlState:controlState
-                                      animated:animated];
+    
+    //If we get into a weird state and the relaionships are the same don't do anything
+    
+    if (self.followControl.controlState == [VFollowControl controlStateForFollowing:self.isFollowingSelectedHashtag])
+    {
+        return;
+    }
+
+    [self.followControl setControlState:[VFollowControl controlStateForFollowing:self.isFollowingSelectedHashtag]
+                                   animated:animated];
 }
 
 #pragma mark - VAccessoryNavigationSource
@@ -323,8 +335,6 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     VFollowControl *followControl = [[VFollowControl alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
     [followControl setDependencyManager:self.dependencyManager];
     self.followControl = followControl;
-    
-    [self updateFollowingStatus];
     
     return followControl;
 }
