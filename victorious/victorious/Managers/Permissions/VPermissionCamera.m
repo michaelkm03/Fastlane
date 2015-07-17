@@ -43,6 +43,16 @@
      {
          dispatch_async(dispatch_get_main_queue(), ^
                         {
+                            NSString *trackingState;
+                            if (granted)
+                            {
+                                trackingState = VTrackingValueAuthorized;
+                            }
+                            else
+                            {
+                                trackingState = VTrackingValueDenied;
+                            }
+                            [self trackPermission:trackingState];
                             completion(granted, granted ? VPermissionStateAuthorized : VPermissionStateSystemDenied, nil);
                         });
      }];

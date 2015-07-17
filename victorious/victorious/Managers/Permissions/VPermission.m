@@ -48,23 +48,25 @@
     
     if (!self.shouldShowInitialPrompt)
     {
+        // system permission alert
         [self requestSystemPermissionWithCompletion:completion];
     }
     else
     {
-        // need to request permission for the first time, so we must track it
+        // custom permission alert
         VPermissionAlertViewController *permissionAlert = [self.dependencyManager templateValueOfType:[VPermissionAlertViewController class]
                                                                                                forKey:VPermissionAlertViewControllerKey];
         permissionAlert.messageText = [self messageWithDependencyManager:permissionAlert.dependencyManager];
                 
         [permissionAlert setConfirmationHandler:^(VPermissionAlertViewController *alert)
          {
+             [self trackPermission:VTrackingValueAuthorized];
              [alert dismissViewControllerAnimated:YES completion:nil];
              [self requestSystemPermissionWithCompletion:completion];
-             [self trackPermission:VTrackingValueAuthorized];
          }];
         [permissionAlert setDenyHandler:^(VPermissionAlertViewController *alert)
          {
+             [self trackPermission:VTrackingValueDenied];
              [alert dismissViewControllerAnimated:YES completion:^
               {
                   if (completion != nil)
@@ -72,7 +74,6 @@
                       completion(NO, VPermissionStatePromptDenied, nil);
                   }
               }];
-             [self trackPermission:VTrackingValueDenied];
          }];
         [viewController presentViewController:permissionAlert animated:YES completion:nil];
     }
