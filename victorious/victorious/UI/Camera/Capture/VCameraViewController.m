@@ -245,8 +245,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     self.cameraControl.defaultTintColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     [self.cameraControl restoreCameraControlToDefault];
     
-    self.navigationController.navigationBarHidden = YES;
-    
     self.captureController.videoEncoder = nil;
     
     // Only add activity indicator if needed
@@ -299,11 +297,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return YES;
 }
 
 - (void)orientationDidChange:(NSNotification *)notification

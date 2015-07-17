@@ -197,6 +197,10 @@ static NSInteger const kScreenSizeCacheTrigger = 1 / 3.0f;
          }
          [changeDetails enumerateMovesWithBlock:^(NSUInteger fromIndex, NSUInteger toIndex)
           {
+              if ([removedIndexes containsIndex:toIndex])
+              {
+                  return;
+              }
               [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:toIndex inSection:0]]];
           }];
      } completion:NULL];

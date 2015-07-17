@@ -14,82 +14,11 @@
                         <viewControllerLayoutGuide type="bottom" id="e2F-3b-vgF"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" placeholderIntrinsicWidth="320" placeholderIntrinsicHeight="568" id="AMw-cC-uUG">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="umg-5s-weJ" userLabel="Top Button Superview">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rt0-I5-ldA" userLabel="Close Button">
-                                        <rect key="frame" x="0.0" y="0.0" width="64" height="44"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="64" id="qeP-4H-dOh"/>
-                                        </constraints>
-                                        <state key="normal" image="cameraButtonClose">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="closeAction:" destination="N4E-ak-ozN" eventType="touchUpInside" id="Qo7-9i-2vw"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fQI-xE-BeV" userLabel="Switch Camera Button">
-                                        <rect key="frame" x="128" y="0.0" width="64" height="44"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="64" id="BsA-Rn-bcd"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                        <state key="normal" image="cameraButtonFlip">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="reverseCameraAction:" destination="N4E-ak-ozN" eventType="touchUpInside" id="l1E-gY-rYr"/>
-                                        </connections>
-                                    </button>
-                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P0d-F9-FuH" userLabel="Next Button">
-                                        <rect key="frame" x="256" y="0.0" width="64" height="44"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="64" id="K5l-3C-dZ2"/>
-                                        </constraints>
-                                        <state key="normal" image="cameraButtonNext">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="nextAction:" destination="N4E-ak-ozN" eventType="touchUpInside" id="Frq-yF-r61"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="foI-4D-IyS" userLabel="Flash Button">
-                                        <rect key="frame" x="256" y="0.0" width="64" height="44"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="64" id="W07-Jg-KII"/>
-                                        </constraints>
-                                        <state key="normal" image="cameraButtonFlashOff">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <state key="selected" image="cameraButtonFlashOn"/>
-                                        <connections>
-                                            <action selector="switchFlashAction:" destination="N4E-ak-ozN" eventType="touchUpInside" id="2lr-GW-9dC"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="centerX" secondItem="fQI-xE-BeV" secondAttribute="centerX" constant="0.5" id="0vF-3I-Ajg"/>
-                                    <constraint firstAttribute="height" constant="44" id="7MQ-Lg-NrQ"/>
-                                    <constraint firstItem="rt0-I5-ldA" firstAttribute="left" secondItem="umg-5s-weJ" secondAttribute="left" id="7Zc-LL-MbP"/>
-                                    <constraint firstAttribute="bottom" secondItem="foI-4D-IyS" secondAttribute="bottom" id="PQ2-pi-cWN"/>
-                                    <constraint firstItem="fQI-xE-BeV" firstAttribute="top" secondItem="umg-5s-weJ" secondAttribute="top" id="Rqg-UT-vJH"/>
-                                    <constraint firstAttribute="bottom" secondItem="fQI-xE-BeV" secondAttribute="bottom" id="SSW-Y5-Nps"/>
-                                    <constraint firstItem="foI-4D-IyS" firstAttribute="top" secondItem="umg-5s-weJ" secondAttribute="top" id="dg2-vu-t3B"/>
-                                    <constraint firstItem="P0d-F9-FuH" firstAttribute="top" secondItem="umg-5s-weJ" secondAttribute="top" id="mDO-pC-y13"/>
-                                    <constraint firstAttribute="bottom" secondItem="rt0-I5-ldA" secondAttribute="bottom" id="ntA-EW-dFf"/>
-                                    <constraint firstAttribute="right" secondItem="foI-4D-IyS" secondAttribute="right" id="p1a-cI-BbG"/>
-                                    <constraint firstItem="rt0-I5-ldA" firstAttribute="top" secondItem="umg-5s-weJ" secondAttribute="top" id="tdv-k1-8Cq"/>
-                                    <constraint firstAttribute="right" secondItem="P0d-F9-FuH" secondAttribute="right" id="uOz-ue-5tr"/>
-                                    <constraint firstAttribute="bottom" secondItem="P0d-F9-FuH" secondAttribute="bottom" id="xea-u1-peE"/>
-                                </constraints>
-                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="abs-NM-eiT" userLabel="Bottom Button Superview">
-                                <rect key="frame" x="0.0" y="427" width="320" height="141"/>
+                                <rect key="frame" x="0.0" y="383" width="320" height="141"/>
                                 <subviews>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oAC-V4-Jg0" userLabel="Delete Button">
                                         <rect key="frame" x="20" y="46" width="55" height="55"/>
@@ -115,7 +44,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="Cdq-4w-Bu5" userLabel="Preview View">
-                                <rect key="frame" x="0.0" y="44" width="320" height="320"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="320" id="3Nf-Mq-dkk"/>
@@ -123,7 +52,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PRESS &amp; HOLD FOR VIDEO" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C7b-Ce-oub">
-                                <rect key="frame" x="0.0" y="403" width="320" height="45"/>
+                                <rect key="frame" x="0.0" y="359" width="320" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="45" id="54q-3n-tVY"/>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="100" id="nAo-Wq-J1b"/>
@@ -133,7 +62,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r8c-9h-K1E" userLabel="Camera Control Container">
-                                <rect key="frame" x="120" y="458" width="80" height="80"/>
+                                <rect key="frame" x="120" y="414" width="80" height="80"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="8U8-te-6af"/>
@@ -144,50 +73,36 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="r8c-9h-K1E" firstAttribute="top" secondItem="C7b-Ce-oub" secondAttribute="bottom" constant="10" id="2KA-dT-9hc"/>
-                            <constraint firstItem="Cdq-4w-Bu5" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" constant="44" id="3d6-rQ-KOT"/>
-                            <constraint firstItem="umg-5s-weJ" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" id="4nb-z1-EII"/>
+                            <constraint firstItem="Cdq-4w-Bu5" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" id="3d6-rQ-KOT"/>
                             <constraint firstItem="C7b-Ce-oub" firstAttribute="trailing" secondItem="Cdq-4w-Bu5" secondAttribute="trailing" id="GAy-fp-3vu"/>
                             <constraint firstItem="Cdq-4w-Bu5" firstAttribute="leading" secondItem="AMw-cC-uUG" secondAttribute="leading" id="IVM-P9-6x5"/>
-                            <constraint firstItem="umg-5s-weJ" firstAttribute="left" secondItem="AMw-cC-uUG" secondAttribute="left" id="PSn-o0-D9f"/>
                             <constraint firstItem="abs-NM-eiT" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Cdq-4w-Bu5" secondAttribute="bottom" id="Ujb-rf-uOh"/>
                             <constraint firstAttribute="trailing" secondItem="Cdq-4w-Bu5" secondAttribute="trailing" id="VJG-ZH-kHE"/>
                             <constraint firstAttribute="centerX" secondItem="r8c-9h-K1E" secondAttribute="centerX" id="auc-1b-h6Z"/>
                             <constraint firstAttribute="right" secondItem="abs-NM-eiT" secondAttribute="right" id="de4-Ce-ltb"/>
                             <constraint firstItem="C7b-Ce-oub" firstAttribute="leading" secondItem="Cdq-4w-Bu5" secondAttribute="leading" id="iBi-xg-E6f"/>
-                            <constraint firstAttribute="right" secondItem="umg-5s-weJ" secondAttribute="right" id="rOd-2e-gP1"/>
                             <constraint firstItem="e2F-3b-vgF" firstAttribute="top" secondItem="abs-NM-eiT" secondAttribute="bottom" id="ua3-eR-hij"/>
                             <constraint firstItem="abs-NM-eiT" firstAttribute="left" secondItem="AMw-cC-uUG" secondAttribute="left" id="wvD-uc-4A8"/>
                             <constraint firstItem="abs-NM-eiT" firstAttribute="centerY" secondItem="r8c-9h-K1E" secondAttribute="centerY" constant="-0.5" id="z4e-5w-OHF"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
-                    <nil key="simulatedTopBarMetrics"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <connections>
                         <outlet property="bottomSpaceBottomToolsToContainerConstraint" destination="ua3-eR-hij" id="Xhy-U1-o4y"/>
                         <outlet property="bottomToolsContainer" destination="abs-NM-eiT" id="meL-EP-aGk"/>
                         <outlet property="cameraControlContainer" destination="r8c-9h-K1E" id="gWM-fw-qDQ"/>
-                        <outlet property="closeButton" destination="rt0-I5-ldA" id="kD2-bL-9BD"/>
                         <outlet property="coachView" destination="C7b-Ce-oub" id="hkU-QY-Mg0"/>
                         <outlet property="deleteButton" destination="oAC-V4-Jg0" id="62s-tg-lPW"/>
-                        <outlet property="flashButton" destination="foI-4D-IyS" id="Yuh-uU-u2a"/>
-                        <outlet property="nextButton" destination="P0d-F9-FuH" id="Wir-PA-wnL"/>
                         <outlet property="previewView" destination="Cdq-4w-Bu5" id="uB4-J9-nz8"/>
-                        <outlet property="switchCameraButton" destination="fQI-xE-BeV" id="Vk3-qf-zWV"/>
-                        <outlet property="topSpaceTopToolsToContainerConstraint" destination="4nb-z1-EII" id="oYd-rq-Z15"/>
-                        <outlet property="topToolsContainer" destination="umg-5s-weJ" id="rGM-cZ-hiG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4dS-Xp-8dd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-645" y="24"/>
+            <point key="canvasLocation" x="-1016" y="80"/>
         </scene>
     </scenes>
     <resources>
-        <image name="cameraButtonClose" width="24" height="24"/>
-        <image name="cameraButtonFlashOff" width="24" height="32"/>
-        <image name="cameraButtonFlashOn" width="24" height="32"/>
-        <image name="cameraButtonFlip" width="36" height="36"/>
-        <image name="cameraButtonNext" width="24" height="24"/>
         <image name="trash_btn" width="47" height="47"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
