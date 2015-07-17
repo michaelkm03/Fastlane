@@ -128,13 +128,14 @@
     
     VDataCache *dataCache = [[VDataCache alloc] init];
     NSError *error = nil;
-    [dataCache cacheDataAtURL:imageBundleURL1 forID:[NSURL URLWithString:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00000.png"] error:&error];
+    [dataCache cacheDataAtURL:imageBundleURL1 forID:[NSURL URLWithString:@"http://www.example.com/e35b3a0f-9993-47c1-845a-1429c7e4c692/tomato_00000.png"] error:&error];
     XCTAssertNil(error);
     
     error = nil;
-    [dataCache cacheDataAtURL:imageBundleURL2 forID:[NSURL URLWithString:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00001.png"] error:&error];
+    [dataCache cacheDataAtURL:imageBundleURL2 forID:[NSURL URLWithString:@"http://www.example.com/e35b3a0f-9993-47c1-845a-1429c7e4c692/tomato_00001.png"] error:&error];
     XCTAssertNil(error);
     
+    XCTAssert([self.dependencyManager hasArrayOfImagesForKey:@"macroImages"]);
     NSArray *images = [self.dependencyManager arrayOfImagesForKey:@"macroImages"];
     
     XCTAssertEqual(images.count, 2u);
@@ -144,6 +145,28 @@
     XCTAssert( CGSizeEqualToSize([images[1] size], image2.size) );
     XCTAssertEqual( [(UIImage *)images[0] scale], 2.0f );
     XCTAssertEqual( [(UIImage *)images[1] scale], 2.0f );
+}
+
+- (void)testMissingArray
+{
+    XCTAssertFalse( [self.dependencyManager hasArrayOfImagesForKey:@"missingMacroImages"] );
+}
+
+- (void)testPartiallyMissingArray
+{
+    NSURL *imageBundleURL1 = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleImage" withExtension:@"png"];
+    NSURL *imageBundleURL2 = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleImage2" withExtension:@"png"];
+    
+    VDataCache *dataCache = [[VDataCache alloc] init];
+    NSError *error = nil;
+    [dataCache cacheDataAtURL:imageBundleURL1 forID:[NSURL URLWithString:@"http://www.example.com/c2baabc6-3648-4684-96bd-3637201c0ba3/sup_00000.png"] error:&error];
+    XCTAssertNil(error);
+    
+    error = nil;
+    [dataCache cacheDataAtURL:imageBundleURL2 forID:[NSURL URLWithString:@"http://www.example.com/c2baabc6-3648-4684-96bd-3637201c0ba3/sup_00001.png"] error:&error];
+    XCTAssertNil(error);
+    
+    XCTAssertFalse( [self.dependencyManager hasArrayOfImagesForKey:@"partiallyMissing"] );
 }
 
 @end

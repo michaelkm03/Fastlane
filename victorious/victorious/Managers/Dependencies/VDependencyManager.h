@@ -161,6 +161,14 @@ extern NSString * const VDependencyManagerEditTextWorkspaceKey;
 - (NSArray *)arrayOfImagesForKey:(NSString *)key;
 
 /**
+ Returns YES if a call to -arrayOfImagesForKey: with a given key is
+ likely to sucessfully return an array of images. If such a call
+ is likely (or guaranteed) to result in an empty array, this
+ method will return NO.
+ */
+- (BOOL)hasArrayOfImagesForKey:(NSString *)key;
+
+/**
  Returns an NSArray of NSString objects for the specified key. These 
  NSString objects will contain URLs pointing to images.
  */

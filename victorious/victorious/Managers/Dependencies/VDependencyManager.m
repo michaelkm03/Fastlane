@@ -411,6 +411,28 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
     return returnValue;
 }
 
+- (BOOL)hasArrayOfImagesForKey:(NSString *)key
+{
+    VDataCache *dataCache = [[VDataCache alloc] init];
+    NSDictionary *macroDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
+    VTemplateImageMacro *imageMacro = [[VTemplateImageMacro alloc] initWithJSON:macroDictionary];
+    NSArray *templateImages = [imageMacro images];
+    
+    BOOL returnValue = NO;
+    for (VTemplateImage *templateImage in templateImages)
+    {
+        if ( [dataCache hasCachedDataForID:templateImage.imageURL] )
+        {
+            returnValue = YES;
+        }
+        else
+        {
+            return NO;
+        }
+    }
+    return returnValue;
+}
+
 - (NSArray *)arrayOfImageURLsForKey:(NSString *)key
 {
     NSDictionary *imageDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
