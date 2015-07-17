@@ -52,12 +52,10 @@
 - (void)connectToSocialNetworkWithPossibleUserInteraction:(BOOL)userInteraction completion:(void (^)(BOOL, NSError *))completionBlock
 {
     ABAuthorizationStatus authStatus = ABAddressBookGetAuthorizationStatus();
-    NSString *trackingState;
     switch (authStatus)
     {
         case kABAuthorizationStatusAuthorized:
         {
-            trackingState = VTrackingValueAuthorized;
             ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
             if (addressBook)
             {
@@ -86,7 +84,6 @@
             
         case kABAuthorizationStatusDenied:
         {
-            trackingState = VTrackingValueDenied;
             if (completionBlock)
             {
                 completionBlock(NO, nil);
@@ -104,7 +101,6 @@
         }
         case kABAuthorizationStatusRestricted:
         {
-            trackingState = VTrackingValueDenied;
             if (completionBlock)
             {
                 completionBlock(NO, nil);
@@ -123,7 +119,6 @@
             
         case kABAuthorizationStatusNotDetermined:
         {
-            trackingState = VTrackingValueUnknown;
             if (userInteraction)
             {
                 ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
@@ -131,15 +126,28 @@
                 {
                     dispatch_async(dispatch_get_main_queue(), ^(void)
                     {
-                        if (granted && addressBook)
+                        
+                        NSString *trackingState;
+
+                        if (granted)
                         {
-                            self.addressBook = addressBook;
-                            if (completionBlock)
+                            if (addressBook)
                             {
-                                completionBlock(YES, nil);
+                                trackingState = VTrackingValueAuthorized;
+                                self.addressBook = addressBook;
+                                if (completionBlock)
+                                {
+                                    completionBlock(YES, nil);
+                                }
                             }
                         }
-                        else if (completionBlock)
+                        else
+                        {
+                            trackingState = VTrackingValueDenied;
+                        }
+                        [self.permissionTrackingHelper permissionsDidChange:VTrackingValueContactsDidAllow permissionState:trackingState];
+
+                        if (completionBlock)
                         {
                             completionBlock(NO, nil);
                         }
@@ -158,7 +166,6 @@
             break;
         }
     }
-    [self.permissionTrackingHelper permissionsDidChange:VTrackingValueContactsDidAllow permissionState:trackingState];
 }
 
 - (void)loadFriendsFromSocialNetworkWithCompletion:(void (^)(NSArray *, NSError *))completionBlock
