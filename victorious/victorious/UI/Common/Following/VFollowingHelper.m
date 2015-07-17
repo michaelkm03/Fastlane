@@ -42,6 +42,7 @@
      {
          if (!authorized)
          {
+             completion(user);
              return;
          }
          
@@ -78,6 +79,7 @@
      {
          if (!authorized)
          {
+             completion(user);
              return;
          }
          

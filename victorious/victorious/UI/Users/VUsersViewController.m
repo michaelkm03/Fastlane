@@ -16,14 +16,17 @@
 #import "VNoContentView.h"
 #import "VNavigationController.h"
 #import "VDependencyManager+VTracking.h"
+#import "VFollowResponder.h"
+#import "VFollowingHelper.h"
 
-@interface VUsersViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, VScrollPaginatorDelegate>
+@interface VUsersViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, VScrollPaginatorDelegate, VFollowResponder>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 @property (nonatomic, strong) VNoContentView *noContentView;
 @property (nonatomic, assign) BOOL canLoadNextPage;
+@property (nonatomic, strong) VFollowingHelper *followingHelper;
 
 @end
 
@@ -35,6 +38,7 @@
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
+        _followingHelper = [[VFollowingHelper alloc] initWithDependencyManager:dependencyManager viewControllerToPresentOn:self];
     }
     return self;
 }
@@ -44,6 +48,12 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    NSArray *visibleCells = self.collectionView.visibleCells;
+    for ( VUserCell *cell in visibleCells )
+    {
+        [cell updateFollowingAnimated:NO];
+    }
     
     [self.dependencyManager trackViewWillAppear:self];
 }
@@ -192,6 +202,18 @@
              [self.collectionView reloadData];
          }
      }];
+}
+
+#pragma mark - VFollowResponder
+
+- (void)followUser:(VUser *)user withCompletion:(VFollowEventCompletion)completion
+{
+    [self.followingHelper followUser:user withCompletion:completion];
+}
+
+- (void)unfollowUser:(VUser *)user withCompletion:(VFollowEventCompletion)completion
+{
+    [self.followingHelper unfollowUser:user withCompletion:completion];
 }
 
 @end
