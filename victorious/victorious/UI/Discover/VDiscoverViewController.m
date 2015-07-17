@@ -36,12 +36,14 @@
 #import "VHashtagResponder.h"
 #import "VDependencyManager+VTracking.h"
 #import "VFollowControl.h"
+#import "VFollowingHelper.h"
+#import "VFollowResponder.h"
 
 static NSString * const kVSuggestedPeopleIdentifier = @"VSuggestedPeopleCell";
 static NSString * const kVTrendingTagIdentifier = @"VTrendingTagCell";
 static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
-@interface VDiscoverViewController () <VDiscoverViewControllerProtocol, VSuggestedPeopleCollectionViewControllerDelegate, VCoachmarkDisplayer>
+@interface VDiscoverViewController () <VDiscoverViewControllerProtocol, VSuggestedPeopleCollectionViewControllerDelegate, VCoachmarkDisplayer, VFollowResponder>
 
 @property (nonatomic, strong) VDiscoverSuggestedPeopleViewController *suggestedPeopleViewController;
 
@@ -54,6 +56,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 @property (nonatomic, assign) BOOL wasHiddenByAnotherViewController;
 
 @property (nonatomic, weak) MBProgressHUD *failureHud;
+@property (nonatomic, strong) VFollowingHelper *followingHelper;
 
 @end
 
@@ -70,6 +73,8 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     self.suggestedPeopleViewController = [VDiscoverSuggestedPeopleViewController instantiateFromStoryboard:@"Discover"];
     self.suggestedPeopleViewController.dependencyManager = self.dependencyManager;
     self.suggestedPeopleViewController.delegate = self;
+    
+    self.followingHelper = [[VFollowingHelper alloc] initWithDependencyManager:self.dependencyManager viewControllerToPresentOn:self];
     
     [self addChildViewController:self.suggestedPeopleViewController];
     [self.suggestedPeopleViewController didMoveToParentViewController:self];
@@ -570,6 +575,18 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 - (UIEdgeInsets)v_layoutInsets
 {
     return [self.parentViewController v_layoutInsets];
+}
+
+#pragma mark - VFollowResponder
+
+- (void)followUser:(VUser *)user withCompletion:(VFollowEventCompletion)completion
+{
+    [self.followingHelper followUser:user withCompletion:completion];
+}
+
+- (void)unfollowUser:(VUser *)user withCompletion:(VFollowEventCompletion)completion
+{
+    [self.followingHelper unfollowUser:user withCompletion:completion];
 }
 
 @end
