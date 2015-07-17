@@ -242,13 +242,13 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
              selectedAsset:(PHAsset *)asset
 {
     MBProgressHUD *hudForView = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hudForView.mode = MBProgressHUDModeAnnularDeterminate;
     self.downloader = [self downloaderWithAsset:asset];
     __weak typeof(self) welf = self;
-    [self.downloader downloadWithProgress:^(double progress, NSString *progressText)
+    [self.downloader downloadWithProgress:^(BOOL accurateProgress, double progress, NSString *progressText)
      {
          dispatch_async(dispatch_get_main_queue(), ^
          {
+             hudForView.mode =  accurateProgress ? MBProgressHUDModeAnnularDeterminate : MBProgressHUDModeIndeterminate;
              hudForView.progress = progress;
              hudForView.labelText = progressText;
          });

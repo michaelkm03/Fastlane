@@ -31,7 +31,12 @@ NSString * const VImageAssetDownloaderErrorDomain = @"com.victorious.VImageAsset
     return self;
 }
 
-- (void)downloadWithProgress:(void (^)(double progress, NSString *localizedProgress))progressHandler
+- (BOOL)willReturnAccurateProgress
+{
+    return NO;
+}
+
+- (void)downloadWithProgress:(void (^)(BOOL accurateProgress, double progress, NSString *localizedProgress))progressHandler
                   completion:(void (^)(NSError *error, NSURL *downloadedFileURL, UIImage *previewImage))completion
 
 {
@@ -45,7 +50,7 @@ NSString * const VImageAssetDownloaderErrorDomain = @"com.victorious.VImageAsset
         {
             if (progressHandler != nil)
             {
-                progressHandler(progress, NSLocalizedString(@"Exporting...", nil));
+                progressHandler(YES, progress, NSLocalizedString(@"Downloading...", nil));
             }
         });
     };
@@ -74,6 +79,10 @@ NSString * const VImageAssetDownloaderErrorDomain = @"com.victorious.VImageAsset
          // This handler is always called on main thread per header
          dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
                         {
+                            dispatch_async(dispatch_get_main_queue(), ^
+                            {
+                                progressHandler(NO, 1.0f, NSLocalizedString(@"Exporting...", nil));
+                            });
                             UIImage *imageFromData = [UIImage imageWithData:imageData];
                             UIImage *imageWithProperOrientation = [[UIImage imageWithCGImage:imageFromData.CGImage scale:1.0f orientation:orientation] fixOrientation];
                             NSError *error;
