@@ -84,7 +84,7 @@ static int const kNotificationFetchBatchSize = 50;
 
 - (void)multipleContainerDidSetSelected:(BOOL)isDefault
 {
-    
+    // Empty
 }
 
 #pragma mark - View Lifecycle
