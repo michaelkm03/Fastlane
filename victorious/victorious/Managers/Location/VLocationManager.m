@@ -141,10 +141,6 @@
     {
         [self.permissionsTrackingHelper permissionsDidChange:VTrackingValueLocationDidAllow permissionState:VTrackingValueDenied];
     }
-    else if (status == kCLAuthorizationStatusNotDetermined)
-    {
-        [self.permissionsTrackingHelper permissionsDidChange:VTrackingValueLocationDidAllow permissionState:VTrackingValueUnknown];
-    }
 }
 
 @end

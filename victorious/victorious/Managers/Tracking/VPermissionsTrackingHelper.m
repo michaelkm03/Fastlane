@@ -22,6 +22,8 @@
 {
     NSDictionary *params = @{ VTrackingKeyPermissionState : permissionState,
                                VTrackingKeyPermissionName : permissionName};
+    NSLog(@"params: %@", params);
+
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserPermissionDidChange parameters:params];
 }
 
