@@ -7,13 +7,19 @@
 //
 
 #import "VVideoAssetDownloader.h"
-
+#import "VTimerManager.h"
 
 NSString * const VVideoAssetDownloaderErrorDomain = @"com.victorious.VVideoAssetDownlaoderErrorDomain";
+
+// Downloads go from 0 -> 0.5
+static double kProgressSplit = 0.5f;
+// Exports go from 0.5 -> 1
 
 @interface VVideoAssetDownloader ()
 
 @property (nonatomic, strong) PHAsset *asset;
+@property (nonatomic, copy) void (^progressBlock)(double progress, NSString *localizedProgress);
+@property (nonatomic, weak) AVAssetExportSession *exportSession;
 
 @end
 
@@ -37,7 +43,8 @@ NSString * const VVideoAssetDownloaderErrorDomain = @"com.victorious.VVideoAsset
     videoRequestOptions.networkAccessAllowed = YES;
     videoRequestOptions.version = PHVideoRequestOptionsVersionCurrent;
     videoRequestOptions.deliveryMode = PHVideoRequestOptionsDeliveryModeAutomatic;
-    NSString *localizedDownloadString = NSLocalizedString(@"Exporting...", nil);
+    NSString *localizedDownloadString = NSLocalizedString(@"Downloading...", nil);
+    self.progressBlock = progressHandler;
     videoRequestOptions.progressHandler = ^void(double progress, NSError *error, BOOL *stop, NSDictionary *info)
     {
         dispatch_async(dispatch_get_main_queue(), ^
@@ -47,7 +54,8 @@ NSString * const VVideoAssetDownloaderErrorDomain = @"com.victorious.VVideoAsset
             {
                 dispatch_async(dispatch_get_main_queue(), ^
                                {
-                                   progressHandler(progress, localizedDownloadString);
+                                   double adjustedProgress = progress * kProgressSplit;
+                                   progressHandler(adjustedProgress, localizedDownloadString);
                                });
             }
         });
@@ -79,6 +87,12 @@ NSString * const VVideoAssetDownloaderErrorDomain = @"com.victorious.VVideoAsset
 - (void)exportWithExportSession:(AVAssetExportSession *)exportSession
                      completion:(void (^)(NSError *error, NSURL *downloadedFileURL, UIImage *previewImage))completion
 {
+    [VTimerManager scheduledTimerManagerWithTimeInterval:0.1f
+                                                  target:self
+                                                selector:@selector(exportTimerTick:)
+                                                userInfo:nil
+                                                 repeats:YES];
+    self.exportSession = exportSession;
     [exportSession determineCompatibleFileTypesWithCompletionHandler:^(NSArray *compatibleFileTypes)
      {
          VLog(@"file types: %@", compatibleFileTypes);
@@ -94,6 +108,25 @@ NSString * const VVideoAssetDownloaderErrorDomain = @"com.victorious.VVideoAsset
                              });
           }];
      }];
+}
+
+- (void)exportTimerTick:(NSTimer *)timer
+{
+    if (self.progressBlock == nil)
+    {
+        [timer invalidate];
+        return;
+    }
+    
+    if (self.exportSession.progress > 0.99)
+    {
+        [timer invalidate];
+        self.progressBlock(1.0, NSLocalizedString(@"Exporting...", nil));
+        return;
+    }
+    
+    double adjustedProgress = (self.exportSession.progress * kProgressSplit) + kProgressSplit;
+    self.progressBlock(adjustedProgress, NSLocalizedString(@"Exporting...", nil));
 }
 
 - (NSURL *)temporaryURLForAsset:(PHAsset *)asset

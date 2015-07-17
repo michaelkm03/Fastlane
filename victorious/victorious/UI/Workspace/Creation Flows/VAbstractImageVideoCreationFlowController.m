@@ -14,11 +14,8 @@
 #import "VAssetCollectionGridViewController.h"
 #import "VCameraViewController.h"
 #import "VImageSearchViewController.h"
-#import "VAssetCollectionListViewController.h"
 #import "VAssetDownloader.h"
 #import "UIAlertController+VSimpleAlert.h"
-#import "VCollectionListPresentationController.h"
-#import "VFromTopViewControllerAnimator.h"
 
 // Workspace
 #import "VWorkspaceViewController.h"
@@ -45,9 +42,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, strong) VCaptureContainerViewController *captureContainerViewController;
-@property (nonatomic, strong) VAssetCollectionListViewController *listViewController;
 @property (nonatomic, strong) VAssetCollectionGridViewController *gridViewController;
-//@property (nonatomic, strong) VFromTopViewControllerAnimator *listAnimator;
 @property (nonatomic, strong) VAssetDownloader *downloader;
 @property (nonatomic, strong) VWorkspaceViewController *workspaceViewController;
 
@@ -75,7 +70,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
         [self addCloseButtonToViewController:self.captureContainerViewController];
         [self setViewControllers:@[self.captureContainerViewController]];
         
-        _listViewController = [self collectionListViewController];
         _gridViewController = [self gridViewControllerWithDependencyManager:dependencyManager];
         _gridViewController.delegate = self;
         [self.captureContainerViewController setContainedViewController:_gridViewController];
@@ -106,17 +100,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 }
 
 #pragma mark - Private Methods
-
-- (void)presentAssetFoldersList
-{
-    // Present alternate folder
-    __weak typeof(self) welf = self;
-    self.listViewController.collectionSelectionHandler = ^void(PHAssetCollection *assetCollection)
-    {
-        welf.gridViewController.collectionToDisplay = assetCollection;
-    };
-    [self presentViewController:self.listViewController animated:YES completion:nil];
-}
 
 - (void)prepareWorkspaceWithMediaURL:(NSURL *)mediaURL
                      andPreviewImage:(UIImage *)previewImage
@@ -255,11 +238,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 
 #pragma mark - VAssetCollectionGridViewControllerDelegate
 
-- (void)gridViewControllerWantsToViewAlternateCollections:(VAssetCollectionGridViewController *)gridViewController
-{
-    [self presentAssetFoldersList];
-}
-
 - (void)gridViewController:(VAssetCollectionGridViewController *)gridViewController
              selectedAsset:(PHAsset *)asset
 {
@@ -272,6 +250,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
          dispatch_async(dispatch_get_main_queue(), ^
          {
              hudForView.progress = progress;
+             hudForView.labelText = progressText;
          });
      }
                                completion:^(NSError *error, NSURL *downloadedFileURL, UIImage *previewImage)
@@ -292,17 +271,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
                                                                      andCancelButtonTitle:NSLocalizedString(@"OK", nil)];
              [strongSelf presentViewController:alert animated:YES completion:nil];
          }
-     }];
-}
-
-- (void)gridViewController:(VAssetCollectionGridViewController *)gridViewController
-       authorizationStatus:(BOOL)authorizedStatus
-{
-    __weak typeof(self) welf = self;
-    [self.listViewController fetchDefaultCollectionWithCompletion:^(PHAssetCollection *collection)
-     {
-         __strong typeof(welf) strongSelf = welf;
-         strongSelf.gridViewController.collectionToDisplay = collection;
      }];
 }
 

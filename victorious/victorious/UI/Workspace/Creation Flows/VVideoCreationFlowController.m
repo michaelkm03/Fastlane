@@ -9,7 +9,6 @@
 #import "VVideoCreationFlowController.h"
 
 // Capture
-#import "VAssetCollectionListViewController.h"
 #import "VAssetCollectionGridViewController.h"
 #import "VVideoAssetDownloader.h"
 #import "VAlternateCaptureOption.h"
@@ -47,11 +46,6 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
         [self setContext:VCameraContextVideoContentCreation];
     }
     return self;
-}
-
-- (VAssetCollectionListViewController *)collectionListViewController
-{
-    return [VAssetCollectionListViewController assetCollectionListViewControllerWithMediaType:PHAssetMediaTypeVideo];
 }
 
 - (VAssetCollectionGridViewController *)gridViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager

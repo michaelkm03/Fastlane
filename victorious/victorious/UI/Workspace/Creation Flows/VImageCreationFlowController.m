@@ -9,7 +9,6 @@
 #import "VImageCreationFlowController.h"
 
 // Capture
-#import "VAssetCollectionListViewController.h"
 #import "VAssetCollectionGridViewController.h"
 #import "VImageAssetDownloader.h"
 #import "VAlternateCaptureOption.h"
@@ -45,11 +44,6 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
         _dependencyManager = dependencyManager;
     }
     return self;
-}
-
-- (VAssetCollectionListViewController *)collectionListViewController
-{
-    return [VAssetCollectionListViewController assetCollectionListViewControllerWithMediaType:PHAssetMediaTypeImage];
 }
 
 - (VAssetCollectionGridViewController *)gridViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager
