@@ -124,8 +124,6 @@ static const CGFloat kUserCellHeight = 51.0f;
     }
 }
 
-#pragma mark - Private Methods
-
 - (void)updateFollowingAnimated:(BOOL)animated
 {
     // If this is the currently logged in user, then hide the follow button

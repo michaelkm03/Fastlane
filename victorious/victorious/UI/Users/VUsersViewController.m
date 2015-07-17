@@ -49,6 +49,12 @@
 {
     [super viewWillAppear:animated];
     
+    NSArray *visibleCells = self.collectionView.visibleCells;
+    for ( VUserCell *cell in visibleCells )
+    {
+        [cell updateFollowingAnimated:NO];
+    }
+    
     [self.dependencyManager trackViewWillAppear:self];
 }
 

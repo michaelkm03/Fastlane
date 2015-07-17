@@ -126,7 +126,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
         }
         else
         {
-            [self.suggestedPeopleViewController.collectionView reloadData];
+            [self.suggestedPeopleViewController refresh:NO];
         }
         [self reloadSection:VDiscoverViewControllerSectionTrendingTags];
     }

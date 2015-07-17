@@ -19,13 +19,17 @@
 #import "VConstants.h"
 #import "VAuthorizedAction.h"
 #import "VDependencyManager.h"
+#import "VFollowResponder.h"
+#import "VFollowingHelper.h"
 
-@interface VFindFriendsTableViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface VFindFriendsTableViewController () <UITableViewDataSource, UITableViewDelegate, VFollowResponder>
 
 @property (nonatomic, readwrite) VFindFriendsTableViewState  state;
 @property (nonatomic, strong) NSArray *users;
 @property (nonatomic, strong) NSMutableArray *usersFollowing;
 @property (nonatomic, strong) NSMutableArray *usersNotFollowing;
+@property (nonatomic, strong) VFollowingHelper *followingHelper;
+@property (nonatomic, assign) BOOL appearedOnce;
 
 @end
 
@@ -63,6 +67,11 @@
     if (self.state == VFindFriendsTableViewStatePreConnect)
     {
         [self _connectToSocialNetworkWithPossibleUserInteraction:NO];
+    }
+    NSArray *visibleCells = self.tableView.tableView.visibleCells;
+    for ( VInviteFriendTableViewCell *cell in visibleCells )
+    {
+        [cell updateFollowStatusAnimated:NO];
     }
 }
 
@@ -438,6 +447,29 @@
     cell.dependencyManager = self.dependencyManager;
 
     return cell;
+}
+
+#pragma mark - VFollowResponder
+
+- (VFollowingHelper *)followingHelper
+{
+    if ( _followingHelper != nil )
+    {
+        return _followingHelper;
+    }
+    
+    _followingHelper = [[VFollowingHelper alloc] initWithDependencyManager:self.dependencyManager viewControllerToPresentOn:self];
+    return _followingHelper;
+}
+
+- (void)followUser:(VUser *)user withCompletion:(VFollowEventCompletion)completion
+{
+    [self.followingHelper followUser:user withCompletion:completion];
+}
+
+- (void)unfollowUser:(VUser *)user withCompletion:(VFollowEventCompletion)completion
+{
+    [self.followingHelper unfollowUser:user withCompletion:completion];
 }
 
 @end
