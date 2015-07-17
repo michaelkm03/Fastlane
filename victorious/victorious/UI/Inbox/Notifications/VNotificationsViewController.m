@@ -27,6 +27,8 @@
 #import "VDependencyManager+VObjectManager.h"
 #import "VAppDelegate.h"
 #import "VRootViewController.h"
+#import "VDependencyManager+VAccessoryScreens.h"
+#import "VDependencyManager+VNavigationMenuItem.h"
 
 static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
 static CGFloat const kVNotificationCellHeight = 64.0f;
@@ -82,7 +84,7 @@ static int const kNotificationFetchBatchSize = 50;
 
 - (void)multipleContainerDidSetSelected:(BOOL)isDefault
 {
-    
+    // Empty
 }
 
 #pragma mark - View Lifecycle
@@ -111,6 +113,8 @@ static int const kNotificationFetchBatchSize = 50;
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:@"Notifications"];
     self.badgeNumber = 0;
+    
+    [self updateNavigationItem];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -333,6 +337,16 @@ static int const kNotificationFetchBatchSize = 50;
     }
 }
 
+- (void)updateNavigationItem
+{
+    UINavigationItem *navigationItem = self.navigationItem;
+    if ( self.multipleContainerChildDelegate != nil )
+    {
+        navigationItem = [self.multipleContainerChildDelegate parentNavigationItem];
+    }
+    [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
+}
+
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -344,6 +358,22 @@ static int const kNotificationFetchBatchSize = 50;
     {
         [self loadNextPageAction];
     }
+}
+
+#pragma mark - Navigation Destination
+
+- (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
+{
+    return YES;
+}
+
+- (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
+{
+    if ([menuItem.identifier isEqualToString:VDependencyManagerAccessoryNewMessage])
+    {
+        return NO;
+    }
+    return YES;
 }
 
 @end
