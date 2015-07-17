@@ -2,7 +2,7 @@
 //  VSequence.h
 //  victorious
 //
-//  Created by Sharif Ahmed on 6/2/15.
+//  Created by Sharif Ahmed on 7/13/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
@@ -22,8 +22,10 @@
 @property (nonatomic, retain) NSNumber * gifCount;
 @property (nonatomic, retain) NSNumber * hasReposted;
 @property (nonatomic, retain) NSNumber * isComplete;
+@property (nonatomic, retain) NSNumber * isLikedByMainUser;
 @property (nonatomic, retain) NSNumber * isRemix;
 @property (nonatomic, retain) NSNumber * isRepost;
+@property (nonatomic, retain) NSNumber * likeCount;
 @property (nonatomic, retain) NSNumber * memeCount;
 @property (nonatomic, retain) NSNumber * nameEmbeddedInContent;
 @property (nonatomic, retain) NSNumber * parentUserId;
@@ -37,19 +39,17 @@
 @property (nonatomic, retain) NSOrderedSet *adBreaks;
 @property (nonatomic, retain) NSOrderedSet *comments;
 @property (nonatomic, retain) VEndCard *endCard;
+@property (nonatomic, retain) NSSet *likers;
 @property (nonatomic, retain) NSOrderedSet *nodes;
 @property (nonatomic, retain) VEndCard *parentEndCard;
 @property (nonatomic, retain) VUser *parentUser;
 @property (nonatomic, retain) NSSet *pollResults;
 @property (nonatomic, retain) NSSet *previewAssets;
+@property (nonatomic, retain) VUser *recentUser;
 @property (nonatomic, retain) NSSet *reposters;
 @property (nonatomic, retain) VTracking *tracking;
 @property (nonatomic, retain) VUser *user;
 @property (nonatomic, retain) NSSet *voteResults;
-@property (nonatomic, retain) NSNumber * likeCount;
-@property (nonatomic, retain) NSNumber * isLikedByMainUser;
-@property (nonatomic, retain) NSSet *likers;
-
 @end
 
 @interface VSequence (CoreDataGeneratedAccessors)
@@ -74,6 +74,11 @@
 - (void)removeCommentsObject:(VComment *)value;
 - (void)addComments:(NSOrderedSet *)values;
 - (void)removeComments:(NSOrderedSet *)values;
+- (void)addLikersObject:(VUser *)value;
+- (void)removeLikersObject:(VUser *)value;
+- (void)addLikers:(NSSet *)values;
+- (void)removeLikers:(NSSet *)values;
+
 - (void)insertObject:(VNode *)value inNodesAtIndex:(NSUInteger)idx;
 - (void)removeObjectFromNodesAtIndex:(NSUInteger)idx;
 - (void)insertNodes:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
@@ -103,10 +108,5 @@
 - (void)removeVoteResultsObject:(VVoteResult *)value;
 - (void)addVoteResults:(NSSet *)values;
 - (void)removeVoteResults:(NSSet *)values;
-
-- (void)addLikersObject:(VUser *)value;
-- (void)removeLikersObject:(VUser *)value;
-- (void)addLikers:(NSSet *)values;
-- (void)removeLikers:(NSSet *)values;
 
 @end

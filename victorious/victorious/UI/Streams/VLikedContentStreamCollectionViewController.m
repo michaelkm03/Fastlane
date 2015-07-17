@@ -11,6 +11,10 @@
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VObjectManager+Login.h"
 
+static NSString * const kNoLikedContentTitleKey = @"noContentTitle";
+static NSString * const kNoLikedContentSubtitleKey = @"noContentSubtitle";
+static NSString * const kNoLikedContentIconKey = @"noContentIcon";
+
 @interface VLikedContentStreamCollectionViewController ()
 
 @property (nonatomic, assign) BOOL shouldRefreshOnView;
@@ -106,10 +110,11 @@
             if ( [noContentView respondsToSelector:@selector(setDependencyManager:)] )
             {
                 noContentView.dependencyManager = self.dependencyManager;
+                noContentView.title = NSLocalizedString([self.dependencyManager stringForKey:kNoLikedContentTitleKey], @"");
+                noContentView.message = NSLocalizedString([self.dependencyManager stringForKey:kNoLikedContentSubtitleKey], @"");
+                noContentView.icon = [self.dependencyManager imageForKey:kNoLikedContentIconKey];
             }
-            noContentView.title = NSLocalizedString( @"NOTHING LIKED YET", @"" );
-            noContentView.message = NSLocalizedString( @"Posts you like will appear here.", @"" );
-            noContentView.icon = [UIImage imageNamed:@"liked_stream_empty"];
+            
             self.noContentView = noContentView;
             [(VNoContentView *)self.noContentView resetInitialAnimationState];
         }

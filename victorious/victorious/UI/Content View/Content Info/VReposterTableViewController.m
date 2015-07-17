@@ -17,12 +17,15 @@
 #import "VSequence.h"
 #import "VUser.h"
 
-#import "VAuthorizedAction.h"
+#import "VFollowResponder.h"
 
-@interface VReposterTableViewController ()
+#import "VFollowingHelper.h"
+
+@interface VReposterTableViewController () <VFollowResponder>
 
 @property (nonatomic, strong) NSArray *reposters;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) VFollowingHelper *followingHelper;
 
 @end
 
@@ -34,6 +37,7 @@
     if (self)
     {
         _dependencyManager = dependencyManager;
+        _followingHelper = [[VFollowingHelper alloc] initWithDependencyManager:dependencyManager viewControllerToPresentOn:self];
     }
     return self;
 }
@@ -52,7 +56,7 @@
     
     self.reposters = [[NSArray alloc] init];
     
-    [self.tableView registerNib:[UINib nibWithNibName:VInviteFriendTableViewCellNibName bundle:nil] forCellReuseIdentifier:VInviteFriendTableViewCellNibName];
+    [self.tableView registerNib:[VInviteFriendTableViewCell nibForCell] forCellReuseIdentifier:[VInviteFriendTableViewCell suggestedReuseIdentifier]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -85,59 +89,11 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[tableView dequeueReusableCellWithIdentifier:VInviteFriendTableViewCellNibName];
+    VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[tableView dequeueReusableCellWithIdentifier:[VInviteFriendTableViewCell suggestedReuseIdentifier]];
     cell.profile = self.reposters[indexPath.row];
-    
-    __weak VInviteFriendTableViewCell *weakCell = cell;
-    cell.followAction = ^(void)
-    {
-        [self followActionForCell:weakCell];
-    };
-    
     cell.dependencyManager = self.dependencyManager;
     
     return cell;
-}
-
-- (void)followActionForCell:(VInviteFriendTableViewCell *)cell
-{
-    VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                dependencyManager:self.dependencyManager];
-    [authorization performFromViewController:self context:VAuthorizationContextFollowUser completion:^(BOOL authorized)
-     {
-         if (!authorized)
-         {
-             return;
-         }
-         
-         if ( cell.profile.isFollowedByMainUser.boolValue )
-         {
-             NSDictionary *params = @{ VTrackingKeyContext : VTrackingValueReposters };
-             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidUnfollowUser parameters:params];
-             
-             [[VObjectManager sharedManager] unfollowUser:cell.profile
-                                             successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-              {
-                  [cell updateFollowStatus];
-              }
-                                                failBlock:^(NSOperation *operation, NSError *error)
-              {
-                  [cell updateFollowStatus];
-              }];
-         }
-         else
-         {
-             [[VObjectManager sharedManager] followUser:cell.profile
-                                           successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-              {
-                  [cell updateFollowStatus];
-              }
-                                              failBlock:^(NSOperation *operation, NSError *error)
-              {
-                  [cell updateFollowStatus];
-              }];
-         }
-     }];
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -230,6 +186,20 @@
              self.tableView.backgroundView = nil;
          }];
     }
+}
+
+- (void)followUser:(VUser *)user withCompletion:(VFollowEventCompletion)completion
+{
+    NSDictionary *params = @{ VTrackingKeyContext : VTrackingValueReposters };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFollowUser parameters:params];
+    [self.followingHelper followUser:user withCompletion:completion];
+}
+
+- (void)unfollowUser:(VUser *)user withCompletion:(VFollowEventCompletion)completion
+{
+    NSDictionary *params = @{ VTrackingKeyContext : VTrackingValueReposters };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidUnfollowUser parameters:params];
+    [self.followingHelper unfollowUser:user withCompletion:completion];
 }
 
 @end

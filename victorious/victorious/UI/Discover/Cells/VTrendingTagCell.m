@@ -12,7 +12,7 @@
 #import "VHashTags.h"
 #import "VConstants.h"
 #import "VHashtag.h"
-#import "VFollowHashtagControl.h"
+#import "VFollowControl.h"
 #import "VDependencyManager.h"
 
 static const UIEdgeInsets kHashtagLabelEdgeInsets = { 0, 6, 0, 7 };
@@ -52,16 +52,6 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 
 @implementation VTrendingTagCell
 
-- (void)setShouldCellRespond:(BOOL)shouldCellRespond
-{
-    if (_shouldCellRespond == shouldCellRespond)
-    {
-        return;
-    }
-
-    _shouldCellRespond = shouldCellRespond;
-}
-
 + (NSInteger)cellHeight
 {
     return kTrendingTagCellRowHeight;
@@ -77,7 +67,7 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
 
     [self.hashTagLabel setText:text];
 
-    [self updateSubscribeStatusAnimated:NO];
+    [self updateSubscribeStatusAnimated:NO showLoading:NO];
 }
 
 - (BOOL)isSubscribedToTag
@@ -98,30 +88,27 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     return subscribed;
 }
 
-- (void)updateSubscribeStatusAnimated:(BOOL)animated
+- (void)updateSubscribeStatusAnimated:(BOOL)animated showLoading:(BOOL)loading
 {
-    [self.followHashtagControl setSubscribed:self.isSubscribedToTag
-                                    animated:animated];
+    VFollowControlState controlState = VFollowControlStateLoading;
+    if ( !loading )
+    {
+        controlState = [VFollowControl controlStateForFollowing:self.isSubscribedToTag];
+    }
+    [self.followHashtagControl setControlState:controlState
+                                      animated:animated];
 }
 
 - (IBAction)followUnfollowHashtag:(id)sender
 {
-    if (!self.shouldCellRespond)
+    if (self.subscribeToTagAction != nil)
     {
-        return;
-    }
-    else
-    {
-        if (self.subscribeToTagAction != nil)
-        {
-            self.subscribeToTagAction();
-        }
+        self.subscribeToTagAction();
     }
 }
 
 - (void)prepareForReuse
 {
-    self.shouldCellRespond = YES;
     self.isSubscribedToTag = NO;
     self.followHashtagControl.userInteractionEnabled = YES;
     self.followHashtagControl.alpha = 1.0f;

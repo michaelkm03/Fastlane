@@ -20,7 +20,7 @@
 #import "VTrendingTagCell.h"
 #import "VNoContentView.h"
 #import <MBProgressHUD.h>
-
+#import "VFollowControl.h"
 
 static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
 
@@ -168,18 +168,24 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
     VTrendingTagCell *customCell = (VTrendingTagCell *)[tableView dequeueReusableCellWithIdentifier:kVTagResultIdentifier forIndexPath:indexPath];
     VHashtag *hashtag = self.searchResults[ indexPath.row ];
     [customCell setHashtag:hashtag];
-    customCell.shouldCellRespond = YES;
     customCell.dependencyManager = self.dependencyManager;
     
-    __weak typeof(customCell) weakCell = customCell;
+    __weak VTrendingTagCell *weakCell = customCell;
     customCell.subscribeToTagAction = ^(void)
     {
-        // Disable follow / unfollow button
-        if (!weakCell.shouldCellRespond)
+        __strong VTrendingTagCell *strongCell = weakCell;
+        
+        if ( strongCell == nil )
         {
             return;
         }
-        weakCell.shouldCellRespond = NO;
+        
+        // Disable follow / unfollow button
+        if (strongCell.followHashtagControl.controlState == VFollowControlStateLoading)
+        {
+            return;
+        }
+        [strongCell.followHashtagControl setControlState:VFollowControlStateLoading animated:YES];
         
         VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                     dependencyManager:self.dependencyManager];
@@ -187,6 +193,7 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
          {
              if (!authorized)
              {
+                 [strongCell.followHashtagControl setControlState:VFollowControlStateUnfollowed animated:NO];
                  return;
              }
              
@@ -260,12 +267,8 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
         VTrendingTagCell *cell = (VTrendingTagCell *)[self.tableView cellForRowAtIndexPath:idxPath];
         if ([cell.hashtag isEqual:hashtag])
         {
-            cell.shouldCellRespond = respond;
-            if (!failed)
-            {
-                [cell setNeedsDisplay];
-                [cell updateSubscribeStatusAnimated:YES];
-            }
+            [cell setNeedsDisplay];
+            [cell updateSubscribeStatusAnimated:YES showLoading:!respond];
             return;
         }
     }

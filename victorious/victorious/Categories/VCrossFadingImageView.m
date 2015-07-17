@@ -16,6 +16,7 @@
 #import "VStreamItem+Fetcher.h"
 
 static const NSTimeInterval kFadeAnimationDuration = 0.3f;
+static const CGFloat kVisibilitySpan = 1.9f;
 
 @interface VCrossFadingImageView ()
 
@@ -25,6 +26,8 @@ static const NSTimeInterval kFadeAnimationDuration = 0.3f;
 @end
 
 @implementation VCrossFadingImageView
+
+#pragma mark - Initialization
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
@@ -50,8 +53,11 @@ static const NSTimeInterval kFadeAnimationDuration = 0.3f;
 {
     self.imageViewContainers = [[NSMutableArray alloc] init];
     self.loadedStreamItems = [[NSMutableDictionary alloc] init];
-    self.offset = 0.0f;
+    self.visibilitySpan = kVisibilitySpan;
+    self.clampsOffset = YES;
 }
+
+#pragma mark - View setup
 
 - (void)setupWithNumberOfImageViews:(NSInteger)numberOfImageViews
 {
@@ -66,12 +72,7 @@ static const NSTimeInterval kFadeAnimationDuration = 0.3f;
         [self.imageViewContainers addObject:imageViewContainer];
     }
     
-    [self updateVisibleImageViewsForOffset:self.offset];
-}
-
-- (NSInteger)imageViewCount
-{
-    return self.imageViewContainers.count;
+    [self refresh];
 }
 
 - (void)reset
@@ -81,88 +82,6 @@ static const NSTimeInterval kFadeAnimationDuration = 0.3f;
         [imageViewContainer removeFromSuperview];
     }
     [self.imageViewContainers removeAllObjects];
-}
-
-- (void)updateVisibleImageViewsForOffset:(CGFloat)offset
-{
-    NSArray *currentlyVisibleImageViewContainers = [self visibleImageViewsForOffset:offset];
-    if ( currentlyVisibleImageViewContainers == nil )
-    {
-        //There are no imageViews to update, just get out
-        return;
-    }
-    
-    for ( VImageViewContainer *imageViewContainer in self.imageViewContainers )
-    {
-        CGFloat targetAlpha = ABS(offset - (CGFloat)[self.imageViewContainers indexOfObject:imageViewContainer]);
-        //Check to see if the imageView we're inspecting is completely hidden given the current offset amount
-        if ( targetAlpha > 1.0 )
-        {
-            targetAlpha = 0.0f;
-        }
-        else
-        {
-            targetAlpha = 1.0 - targetAlpha;
-        }
-        imageViewContainer.alpha = targetAlpha;
-    }
-
-}
-
-- (void)setOffset:(CGFloat)offset
-{
-    NSArray *currentlyVisibleImageViewContainers = [self visibleImageViewsForOffset:offset];
-    if ( currentlyVisibleImageViewContainers == nil )
-    {
-        //There are no imageViews to update, just get out
-        return;
-    }
-    
-    CGFloat maxOffset = (CGFloat)( self.imageViewContainers.count - 1 );
-    if ( offset < 0.0f )
-    {
-        offset = 0.0f;
-    }
-    else if ( offset >= maxOffset )
-    {
-        offset = maxOffset;
-    }
-    
-    _offset = offset;
-    
-    [self updateVisibleImageViewsForOffset:offset];
-}
-
-- (NSArray *)visibleImageViewsForOffset:(CGFloat)offset
-{
-    if ( self.imageViewContainers.count == 0 )
-    {
-        return nil;
-    }
-    
-    NSInteger lowIndex = floorf(offset);
-    NSInteger highIndex = ceilf(offset);
-    NSMutableArray *visibleImageViewContainers = [[NSMutableArray alloc] init];
-    
-    if ( lowIndex >= 0 && lowIndex < (NSInteger)self.imageViewContainers.count )
-    {
-        [visibleImageViewContainers addObject:self.imageViewContainers[lowIndex]];
-    }
-    else if ( lowIndex < 0 )
-    {
-        return @[[self.imageViewContainers firstObject]];
-    }
-    else if ( lowIndex >= (NSInteger)self.imageViewContainers.count )
-    {
-        return @[[self.imageViewContainers lastObject]];
-    }
-    
-    if ( lowIndex != highIndex && highIndex > 0 && highIndex < (NSInteger)self.imageViewContainers.count )
-    {
-        [visibleImageViewContainers addObject:self.imageViewContainers[highIndex]];
-    }
-    
-    return [NSArray arrayWithArray:visibleImageViewContainers];
 }
 
 - (void)updateBlurredImageViewForImage:(UIImage *)image fromPreviewView:(VStreamItemPreviewView *)previewView withTintColor:(UIColor *)tintColor atIndex:(NSInteger)index animated:(BOOL)animated withConcurrentAnimations:(void (^)(void))concurrentAnimations
@@ -185,6 +104,20 @@ static const NSTimeInterval kFadeAnimationDuration = 0.3f;
         NSURL *blurredViewURL = [[previewStreamItem previewImageUrl] URLByAppendingPathComponent:@"marqueeView"];
         [imageViewContainer.imageView blurAndAnimateImageToVisible:image cacheURL:blurredViewURL withTintColor:tintColor andDuration:duration withConcurrentAnimations:concurrentAnimations];
     }
+}
+
+#pragma mark - Accessors
+
+- (NSInteger)imageViewCount
+{
+    return self.imageViewContainers.count;
+}
+
+#pragma mark - Superclass overrides
+
+- (NSArray *)crossFadingViews
+{
+    return self.imageViewContainers;
 }
 
 @end

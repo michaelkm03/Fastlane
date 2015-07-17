@@ -12,7 +12,7 @@
 #import "VUserProfileViewController.h"
 
 //Cells
-#import "VFollowerTableViewCell.h"
+#import "VInviteFriendTableViewCell.h"
 
 #import "VUser.h"
 #import "VConstants.h"
@@ -43,6 +43,7 @@
 
 #import "VFollowingHelper.h"
 #import "VFollowResponder.h"
+#import "VFollowControl.h"
 
 @interface VUserSearchViewController () <UITextFieldDelegate, VFollowResponder>
 
@@ -137,8 +138,8 @@ static const NSInteger kSearchResultLimit = 100;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
-    [self.tableView registerNib:[VFollowerTableViewCell nibForCell]
-         forCellReuseIdentifier:[VFollowerTableViewCell suggestedReuseIdentifier]];
+    [self.tableView registerNib:[VInviteFriendTableViewCell nibForCell]
+         forCellReuseIdentifier:[VInviteFriendTableViewCell suggestedReuseIdentifier]];
     self.tableView.hidden = YES;
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
 
@@ -291,8 +292,8 @@ static const NSInteger kSearchResultLimit = 100;
 {
     VUser *profile = self.foundUsers[indexPath.row];
     
-    VFollowerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[VFollowerTableViewCell suggestedReuseIdentifier]
-                                                                   forIndexPath:indexPath];
+    VInviteFriendTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[VInviteFriendTableViewCell suggestedReuseIdentifier]
+                                                                       forIndexPath:indexPath];
     cell.profile = profile;
     cell.dependencyManager = self.dependencyManager;
 
@@ -307,7 +308,7 @@ static const NSInteger kSearchResultLimit = 100;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [VFollowerTableViewCell desiredSizeWithCollectionViewBounds:tableView.bounds].height;
+    return [VInviteFriendTableViewCell desiredSizeWithCollectionViewBounds:tableView.bounds].height;
 }
 
 #pragma mark - UITextFieldDelegate

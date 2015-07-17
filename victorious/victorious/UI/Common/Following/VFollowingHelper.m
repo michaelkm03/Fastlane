@@ -52,12 +52,15 @@
          
          VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
          {
-             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FollowError", @"")
-                                                             message:error.localizedDescription
-                                                            delegate:nil
-                                                   cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                   otherButtonTitles:nil];
-             [alert show];
+             if (error.code != kVFollowsRelationshipAlreadyExistsError)
+             {
+                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FollowError", @"")
+                                                                 message:error.localizedDescription
+                                                                delegate:nil
+                                                       cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                                       otherButtonTitles:nil];
+                 [alert show];
+             }
              completion(user);
          };
          

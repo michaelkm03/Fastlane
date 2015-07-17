@@ -13,7 +13,7 @@
 #import "VUser.h"
 #import "VDependencyManager.h"
 #import "VDefaultProfileButton.h"
-#import "VFollowUserControl.h"
+#import "VFollowControl.h"
 #import "VDefaultProfileImageView.h"
 #import "UIImageView+VLoadingAnimations.h"
 #import <KVOController/FBKVOController.h>
@@ -24,7 +24,7 @@ static const CGFloat kUserCellHeight = 51.0f;
 
 @property (weak, nonatomic) IBOutlet VDefaultProfileImageView *userImageView;
 @property (nonatomic, weak) IBOutlet UILabel *userName;
-@property (nonatomic, weak) IBOutlet VFollowUserControl *followControl;
+@property (nonatomic, weak) IBOutlet VFollowControl *followControl;
 @property (nonatomic, strong) VUser *user;
 
 @end
@@ -94,24 +94,32 @@ static const CGFloat kUserCellHeight = 51.0f;
 
 #pragma mark - Target/Action
 
-- (IBAction)tappedFollowControl:(VFollowUserControl *)sender
+- (IBAction)tappedFollowControl:(VFollowControl *)sender
 {
+    if ( sender.controlState == VFollowControlStateLoading )
+    {
+        return;
+    }
+    
     id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
                                                                       withSender:nil];
     NSAssert(followResponder != nil, @"VUserCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
-    sender.enabled = NO;
-    if (sender.following)
+    
+    BOOL isFollowing = sender.controlState == VFollowControlStateFollowed;
+    [sender setControlState:VFollowControlStateLoading animated:YES];
+
+    if (isFollowing)
     {
         [followResponder unfollowUser:self.user withCompletion:^(VUser *userActedOn)
          {
-             sender.enabled = YES;
+             [self updateFollowingAnimated:YES];
          }];
     }
     else
     {
         [followResponder followUser:self.user withCompletion:^(VUser *userActedOn)
          {
-             sender.enabled = YES;
+             [self updateFollowingAnimated:YES];
          }];
     }
 }
@@ -123,8 +131,12 @@ static const CGFloat kUserCellHeight = 51.0f;
     // If this is the currently logged in user, then hide the follow button
     VUser *me = [[VObjectManager sharedManager] mainUser];
     self.followControl.hidden = [self.user isEqual:me];
-    [self.followControl setFollowing:[me.following containsObject:self.user]
-                            animated:animated];
+    VFollowControlState desiredControlState = [VFollowControl controlStateForFollowing:[me.following containsObject:self.user]];
+    if ( self.followControl.controlState != desiredControlState )
+    {
+        [self.followControl setControlState:desiredControlState
+                                   animated:animated];
+    }
 }
 
 @end

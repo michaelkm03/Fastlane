@@ -8,7 +8,7 @@
 
 #import "VDiscoverSuggestedPersonCell.h"
 #import "VDefaultProfileImageView.h"
-#import "VFollowUserControl.h"
+#import "VFollowControl.h"
 #import "VFollowersTextFormatter.h"
 #import "VObjectManager+Users.h"
 #import "VDependencyManager.h"
@@ -18,7 +18,7 @@
 
 @interface VDiscoverSuggestedPersonCell()
 
-@property (nonatomic, weak) IBOutlet VFollowUserControl *followButton;
+@property (nonatomic, weak) IBOutlet VFollowControl *followButton;
 @property (nonatomic, weak) IBOutlet VDefaultProfileImageView *profileImageView;
 @property (nonatomic, weak) IBOutlet UILabel *usernameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *descriptionLabel;
@@ -114,53 +114,37 @@
     // If this is the currently logged in user, then hide the follow button
     VUser *me = [[VObjectManager sharedManager] mainUser];
     self.followButton.hidden = (self.user == me);
-    [self.followButton setFollowing:self.user.isFollowedByMainUser.boolValue animated:animated];
+    [self.followButton setControlState:[VFollowControl controlStateForFollowing:self.user.isFollowedByMainUser.boolValue] animated:animated];
 }
 
-- (IBAction)onFollow:(VFollowUserControl *)sender
+- (IBAction)onFollow:(VFollowControl *)sender
 {
-    void (^followAction)() = ^void()
+    if ( sender.controlState == VFollowControlStateLoading )
     {
-        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
-                                                                          withSender:nil];
-        NSAssert(followResponder != nil, @"VFollowerTableViewCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
-        sender.enabled = NO;
-        if (sender.following)
-        {
-            [followResponder unfollowUser:self.user
-                           withCompletion:^(VUser *userActedOn)
-             {
-                 sender.enabled = YES;
-                 [self populateData];
-             }];
-        }
-        else
-        {
-            [followResponder followUser:self.user
-                         withCompletion:^(VUser *userActedOn)
-             {
-                 sender.enabled = YES;
-                 [self populateData];
-             }];
-        }
-    };
+        return;
+    }
+    BOOL isFollowing = sender.controlState == VFollowControlStateFollowed;
+    [sender setControlState:VFollowControlStateLoading animated:YES];
     
-    VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                         dependencyManager:self.dependencyManager];
-    UIViewController *nearestViewController = [self targetForAction:@selector(presentViewController:animated:completion:) withSender:self];
-    [authorizedAction performFromViewController:nearestViewController
-                                         context:VAuthorizationContextFollowUser
-                                      completion:^(BOOL authorized)
+    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
+                                                                      withSender:nil];
+    NSAssert(followResponder != nil, @"VDiscoverSuggestedPersonCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
+    if ( isFollowing )
     {
-        if (authorized)
-        {
-            followAction();
-        }
-        else
-        {
-            sender.enabled = YES;
-        }
-    }];
+        [followResponder unfollowUser:self.user
+                       withCompletion:^(VUser *userActedOn)
+         {
+             [self updateFollowingAnimated:YES];
+         }];
+    }
+    else
+    {
+        [followResponder followUser:self.user
+                     withCompletion:^(VUser *userActedOn)
+         {
+             [self updateFollowingAnimated:YES];
+         }];
+    }
 }
 
 @end
