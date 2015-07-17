@@ -20,6 +20,7 @@ static const CGFloat kMaxPercentBannerWidth = 0.58f;
 
 @property (nonatomic, strong) UILabel *listicleLabel;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, assign) CGFloat widthOfLabel;
 
 @end
 
@@ -52,19 +53,6 @@ static const CGFloat kMaxPercentBannerWidth = 0.58f;
     [self addLabel];
 }
 
-- (void)drawRect:(CGRect)rect
-{
-    self.listicleLabel.text = self.headlineText;
-    CGSize textSize = [self.listicleLabel.text sizeWithAttributes:@{NSFontAttributeName:[self.listicleLabel font]}];
-    CGFloat textWidth = MIN(textSize.width + (3 * kLabelInset), kMaxPercentBannerWidth * CGRectGetWidth(self.frame));
-    CGFloat labelWidth =  MIN(textSize.width, (kMaxPercentBannerWidth * CGRectGetWidth(self.bounds)) - (3 * kLabelInset) );
-    CGRect updatedLabelFrame = self.listicleLabel.frame;
-    updatedLabelFrame.size = CGSizeMake(labelWidth, CGRectGetHeight(updatedLabelFrame));
-    self.listicleLabel.frame = updatedLabelFrame;
-    [self.listicleLabel setNeedsDisplay];
-    [self drawBannerWithWidth:textWidth];
-}
-
 - (void)addLabel
 {
     CGRect frameLabel = CGRectMake(kLabelInset, 0, CGRectGetWidth(self.bounds) - kInsetForTriangle - (2 * kLabelInset), kLabelHeight);
@@ -79,11 +67,27 @@ static const CGFloat kMaxPercentBannerWidth = 0.58f;
 - (void)setHeadlineText:(NSString *)headlineText
 {
     _headlineText = headlineText;
+    [self updateLabel];
     [self setNeedsDisplay];
 }
 
-- (void)drawBannerWithWidth:(CGFloat)width
+- (void)updateLabel
 {
+    self.listicleLabel.text = self.headlineText;
+    CGSize textSize = [self.listicleLabel.text sizeWithAttributes:@{NSFontAttributeName:[self.listicleLabel font]}];
+    CGFloat textWidth = MIN(textSize.width + (3 * kLabelInset), kMaxPercentBannerWidth * CGRectGetWidth(self.frame));
+    CGFloat labelWidth =  MIN(textSize.width, (kMaxPercentBannerWidth * CGRectGetWidth(self.bounds)) - (3 * kLabelInset) );
+    CGRect updatedLabelFrame = self.listicleLabel.frame;
+    updatedLabelFrame.size = CGSizeMake(labelWidth, CGRectGetHeight(updatedLabelFrame));
+    self.listicleLabel.frame = updatedLabelFrame;
+    self.widthOfLabel = textWidth;
+    [self.listicleLabel setNeedsDisplay];
+}
+
+- (void)drawRect:(CGRect)rect
+{
+    CGFloat width = self.widthOfLabel;
+    
     CGPoint topRight = CGPointMake(width, 0);
     CGPoint middleRight = CGPointMake(width - kInsetForTriangle, kHeightOfBanner/2);
     CGPoint bottomRight = CGPointMake(width, kHeightOfBanner);
@@ -106,30 +110,8 @@ static const CGFloat kMaxPercentBannerWidth = 0.58f;
     
     CAShapeLayer *layer = [[CAShapeLayer alloc] init];
     [layer setPath: path.CGPath];
-    [layer setFillColor:[self.dependencyManager colorForKey:VDependencyManagerAccentColorKey].CGColor];
-    layer.name = @"banner";
-    
-    [self setSublayer:layer];
-}
-
-- (void)setSublayer:(CALayer *)sublayer
-{
-    NSMutableArray *mutablelayers = self.layer.sublayers.mutableCopy;
-    for (CAShapeLayer *layer in [self.layer sublayers])
-    {
-        if ([[layer name] isEqualToString:sublayer.name])
-        {
-            [mutablelayers removeObject:layer];
-            [mutablelayers addObject:sublayer];
-        }
-    }
-    
-    if (![mutablelayers containsObject:sublayer])
-    {
-        [mutablelayers addObject:sublayer];
-    }
-
-    self.layer.sublayers = mutablelayers.copy;
+    [[self.dependencyManager colorForKey:VDependencyManagerAccentColorKey] setFill];
+    [path fill];
 }
 
 - (CGFloat)degreesToRadians:(CGFloat)degrees
