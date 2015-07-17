@@ -80,9 +80,8 @@
 
 - (VTextToolController *)createToolControllerWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    NSDictionary *textWorkspace = [dependencyManager templateValueOfType:[NSDictionary class] forKey:@"editTextWorkspace"];
-    VDependencyManager *workspaceDependency = [dependencyManager childDependencyManagerWithAddedConfiguration:textWorkspace];
-    NSArray *workspaceTools = [workspaceDependency workspaceTools];
+    VWorkspaceViewController *workspace = [dependencyManager templateValueOfType:[VWorkspaceViewController class] forKey:VDependencyManagerEditTextWorkspaceKey];
+    NSArray *workspaceTools = [workspace.dependencyManager workspaceTools];
     VTextToolController *toolController = [[VTextToolController alloc] initWithTools:workspaceTools];
     return toolController;
 }

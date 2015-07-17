@@ -18,7 +18,8 @@ static double kProgressSplit = 0.5f;
 @interface VVideoAssetDownloader ()
 
 @property (nonatomic, strong) PHAsset *asset;
-@property (nonatomic, copy) void (^progressBlock)(double progress, NSString *localizedProgress);
+@property (nonatomic, assign) BOOL isInIcloud;
+@property (nonatomic, copy) void (^progressBlock)(BOOL accurateProgress, double progress, NSString *localizedProgress);
 @property (nonatomic, weak) AVAssetExportSession *exportSession;
 
 @end
@@ -36,8 +37,58 @@ static double kProgressSplit = 0.5f;
     return self;
 }
 
-- (void)downloadWithProgress:(void (^)(double progress, NSString *localizedProgress))progressHandler
+- (BOOL)willReturnAccurateProgress
+{
+    return YES;
+}
+
+- (void)downloadWithProgress:(void (^)(BOOL accurateProgress, double progress, NSString *localizedProgress))progressHandler
                   completion:(void (^)(NSError *error, NSURL *downloadedFileURL, UIImage *previewImage))completion
+{
+    [self atttempOfflineExportWithProgress:progressHandler
+                                completion:completion];
+}
+
+
+
+- (void)atttempOfflineExportWithProgress:(void (^)(BOOL accurateProgress, double progress, NSString *localizedProgress))progressHandler
+                              completion:(void (^)(NSError *error, NSURL *downloadedFileURL, UIImage *previewImage))completion
+{
+    PHVideoRequestOptions *videoRequestOptions = [[PHVideoRequestOptions alloc] init];
+    videoRequestOptions.networkAccessAllowed = NO;
+    videoRequestOptions.version = PHVideoRequestOptionsVersionCurrent;
+    videoRequestOptions.deliveryMode = PHVideoRequestOptionsDeliveryModeAutomatic;
+    self.progressBlock = progressHandler;
+    
+    [[PHImageManager defaultManager] requestExportSessionForVideo:self.asset
+                                                          options:videoRequestOptions
+                                                     exportPreset:AVAssetExportPresetHighestQuality
+                                                    resultHandler:^(AVAssetExportSession *exportSession, NSDictionary *info)
+     {
+         dispatch_async(dispatch_get_main_queue(), ^
+                        {
+                            if (exportSession != nil)
+                            {
+                                self.isInIcloud = NO;
+                                [self exportWithExportSession:exportSession
+                                                   completion:completion];
+                            }
+                            else if ([info[PHImageResultIsInCloudKey] boolValue])
+                            {
+                                [self attemptOnlineDownloadWithProgress:progressHandler
+                                                             completion:completion];
+                            }
+                            else
+                            {
+                                NSError *error = [NSError errorWithDomain:VVideoAssetDownloaderErrorDomain code:0 userInfo:nil];
+                                completion(error, nil, nil);
+                            }
+                        });
+     }];
+}
+
+- (void)attemptOnlineDownloadWithProgress:(void (^)(BOOL accurateProgress, double progress, NSString *localizedProgress))progressHandler
+                               completion:(void (^)(NSError *error, NSURL *downloadedFileURL, UIImage *previewImage))completion
 {
     PHVideoRequestOptions *videoRequestOptions = [[PHVideoRequestOptions alloc] init];
     videoRequestOptions.networkAccessAllowed = YES;
@@ -48,17 +99,17 @@ static double kProgressSplit = 0.5f;
     videoRequestOptions.progressHandler = ^void(double progress, NSError *error, BOOL *stop, NSDictionary *info)
     {
         dispatch_async(dispatch_get_main_queue(), ^
-        {
-            // We are downloading from iCloud
-            if (progressHandler != nil)
-            {
-                dispatch_async(dispatch_get_main_queue(), ^
-                               {
-                                   double adjustedProgress = progress * kProgressSplit;
-                                   progressHandler(adjustedProgress, localizedDownloadString);
-                               });
-            }
-        });
+                       {
+                           // We are downloading from iCloud
+                           if (progressHandler != nil)
+                           {
+                               dispatch_async(dispatch_get_main_queue(), ^
+                                              {
+                                                  double adjustedProgress = progress * kProgressSplit;
+                                                  progressHandler(YES, adjustedProgress, localizedDownloadString);
+                                              });
+                           }
+                       });
     };
     
     [[PHImageManager defaultManager] requestExportSessionForVideo:self.asset
@@ -75,10 +126,8 @@ static double kProgressSplit = 0.5f;
                             }
                             else
                             {
-                                
                                 NSError *error = [NSError errorWithDomain:VVideoAssetDownloaderErrorDomain code:0 userInfo:nil];
                                 completion(error, nil, nil);
-                                
                             }
                         });
      }];
@@ -121,12 +170,22 @@ static double kProgressSplit = 0.5f;
     if (self.exportSession.progress > 0.99)
     {
         [timer invalidate];
-        self.progressBlock(1.0, NSLocalizedString(@"Exporting...", nil));
+        self.progressBlock(YES, 1.0, NSLocalizedString(@"Exporting...", nil));
         return;
     }
     
-    double adjustedProgress = (self.exportSession.progress * kProgressSplit) + kProgressSplit;
-    self.progressBlock(adjustedProgress, NSLocalizedString(@"Exporting...", nil));
+    double adjustedProgress;
+    
+    if (self.isInIcloud)
+    {
+        adjustedProgress = (self.exportSession.progress * kProgressSplit) + kProgressSplit;
+    }
+    else
+    {
+        adjustedProgress = self.exportSession.progress;
+    }
+    
+    self.progressBlock(YES, adjustedProgress, NSLocalizedString(@"Exporting...", nil));
 }
 
 - (NSURL *)temporaryURLForAsset:(PHAsset *)asset

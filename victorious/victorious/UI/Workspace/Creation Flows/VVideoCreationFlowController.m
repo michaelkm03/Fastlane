@@ -92,7 +92,6 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
     VAlternateCaptureOption *cameraOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Camera", nil)
                                                                                       icon:[UIImage imageNamed:@"contententry_cameraicon"]
                                                                          andSelectionBlock:cameraSelectionBlock];
-    
     return @[cameraOption];
 }
 
@@ -110,12 +109,9 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
                                                            [strongSelf captureFinishedWithMediaURL:capturedMediaURL
                                                                                       previewImage:previewImage];
                                                        }
-                                                       
-                                                       [strongSelf dismissViewControllerAnimated:YES completion:nil];
                                                    }];
-    // Wrapped in nav
-    UINavigationController *cameraNavController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
-    [self presentViewController:cameraNavController animated:YES completion:nil];
+    [self pushViewController:cameraViewController
+                    animated:YES];
 }
 
 @end

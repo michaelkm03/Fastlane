@@ -13,10 +13,17 @@
 
 @interface VPublishPresenter : VAbstractPresenter
 
-/** These properties are wrappers for the presenter and forwarded to the publishViewController internally.
+/**
+ *  These properties are wrappers for the presenter and forwarded to the publishViewController internally.
  *  See "VPublishViewController.h" for their documentation.
+ *  
+ *  Publish Presenter does not dismiss the publish screen.
  */
-@property (nonatomic, copy) void (^completion)(BOOL published); // The presenter will handle dismissal
+@property (nonatomic, copy) void (^publishActionHandler)(BOOL published);
+
+/**
+ *  Provide publishing with some publish parameters.
+ */
 @property (nonatomic, strong) VPublishParameters *publishParameters;
 
 @end

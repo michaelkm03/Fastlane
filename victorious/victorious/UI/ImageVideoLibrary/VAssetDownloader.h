@@ -26,7 +26,7 @@
  *  @param progressHandler Called to inform the user about the progress of the download.
  *  @param completion Called to inform bout compleiton of the download. Always called on the main thread.
  */
-- (void)downloadWithProgress:(void (^)(double progress, NSString *localizedProgress))progressHandler
+- (void)downloadWithProgress:(void (^)(BOOL accurateProgress, double progress, NSString *localizedProgress))progressHandler
                   completion:(void (^)(NSError *error, NSURL *downloadedFileURL, UIImage *previewImage))completion;
 
 @end

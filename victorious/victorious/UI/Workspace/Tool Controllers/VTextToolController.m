@@ -36,16 +36,6 @@
 
 @synthesize mediaURL;  ///< VToolController
 
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
-{
-    self = [super init];
-    if (self)
-    {
-        _dependencyManager = dependencyManager;
-    }
-    return self;
-}
-
 - (void)setupDefaultTool
 {
     if ( self.tools == nil || self.tools.count == 0 )

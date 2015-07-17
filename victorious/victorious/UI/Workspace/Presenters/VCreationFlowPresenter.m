@@ -53,9 +53,10 @@ static NSString * const kTextCreateFlow = @"textCreateFlow";
                                         context:VAuthorizationContextCreatePost
                                      completion:^(BOOL authorized)
      {
+         __strong typeof(welf) strongSelf = welf;
          if (authorized)
          {
-             [welf authorizedPresent];
+             [strongSelf authorizedPresent];
          }
      }];
 }
@@ -71,9 +72,10 @@ static NSString * const kTextCreateFlow = @"textCreateFlow";
         __weak typeof(self) welf = self;
         [createSheet setCompletionHandler:^(VCreateSheetViewController *createSheetViewController, VCreationType chosenItemIdentifier)
          {
+             __strong typeof(welf) strongSelf = welf;
              [createSheetViewController dismissViewControllerAnimated:YES completion:^
               {
-                  [welf openWorkspaceWithItemIdentifier:chosenItemIdentifier];
+                  [strongSelf openWorkspaceWithItemIdentifier:chosenItemIdentifier];
               }];
              
          }];

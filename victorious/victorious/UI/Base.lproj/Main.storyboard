@@ -479,20 +479,8 @@
                                 <rect key="frame" x="13" y="18" width="20" height="20"/>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e4B-nQ-DnV" userLabel="Cancel Button">
-                                <rect key="frame" x="269" y="4" width="50" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="50" id="YYV-Cj-KPj"/>
-                                </constraints>
-                                <state key="normal" image="Close">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="closeButtonTapped:" destination="uEE-zB-DbK" eventType="touchUpInside" id="g1d-bQ-wNw"/>
-                                </connections>
-                            </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search for an image" minimumFontSize="10" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="GSS-PO-98I" userLabel="Search Field">
-                                <rect key="frame" x="42" y="19" width="227" height="19"/>
+                                <rect key="frame" x="42" y="19" width="262" height="19"/>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="textColor" red="0.13725490196078433" green="0.13725490196078433" blue="0.13725490196078433" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -575,19 +563,10 @@
                                     <constraint firstAttribute="height" constant="1" id="PLd-04-GcF"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="31C-iA-Qyj" userLabel="Vertical Rule">
-                                <rect key="frame" x="269" y="0.0" width="1" height="54"/>
-                                <color key="backgroundColor" red="0.81568627449999997" green="0.81960784310000001" blue="0.83921568629999999" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="1" id="8Rn-7l-BPj"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="e4B-nQ-DnV" firstAttribute="right" secondItem="d98-ui-mTQ" secondAttribute="right" constant="-1" id="5DF-zD-5Yn"/>
                             <constraint firstAttribute="centerX" secondItem="5uI-FR-NGs" secondAttribute="centerX" id="5i2-zo-UWN"/>
-                            <constraint firstItem="e4B-nQ-DnV" firstAttribute="left" secondItem="GSS-PO-98I" secondAttribute="right" id="FVg-cU-zso"/>
                             <constraint firstItem="Xqc-I1-Nm3" firstAttribute="top" secondItem="d98-ui-mTQ" secondAttribute="bottom" id="Gk2-o2-B1u"/>
                             <constraint firstItem="Xqc-I1-Nm3" firstAttribute="leading" secondItem="Fu1-bK-nJD" secondAttribute="leading" id="Ibf-Om-DDB"/>
                             <constraint firstAttribute="trailing" secondItem="E4Z-JL-IBz" secondAttribute="trailing" id="Idp-Nf-sfy"/>
@@ -595,21 +574,17 @@
                             <constraint firstItem="d98-ui-mTQ" firstAttribute="leading" secondItem="Fu1-bK-nJD" secondAttribute="leading" id="Iym-vj-nRB"/>
                             <constraint firstAttribute="trailing" secondItem="Xqc-I1-Nm3" secondAttribute="trailing" id="K4z-ws-tWR"/>
                             <constraint firstItem="xTc-ax-2nu" firstAttribute="left" secondItem="d98-ui-mTQ" secondAttribute="left" constant="13" id="KhB-iy-mNv"/>
-                            <constraint firstItem="e4B-nQ-DnV" firstAttribute="bottom" secondItem="d98-ui-mTQ" secondAttribute="bottom" id="OzK-CG-x7T"/>
                             <constraint firstItem="E4Z-JL-IBz" firstAttribute="leading" secondItem="Fu1-bK-nJD" secondAttribute="leading" id="R5K-Ni-kg5"/>
                             <constraint firstItem="GSS-PO-98I" firstAttribute="top" secondItem="d98-ui-mTQ" secondAttribute="top" constant="19" id="Rrt-4w-73N"/>
-                            <constraint firstItem="31C-iA-Qyj" firstAttribute="left" secondItem="GSS-PO-98I" secondAttribute="right" id="UK4-zh-S4x"/>
                             <constraint firstAttribute="trailing" secondItem="d98-ui-mTQ" secondAttribute="trailing" id="UPy-xR-80Q"/>
                             <constraint firstAttribute="centerY" secondItem="5uI-FR-NGs" secondAttribute="centerY" multiplier="1.618" id="WOa-ly-4rS"/>
                             <constraint firstAttribute="bottom" secondItem="E4Z-JL-IBz" secondAttribute="bottom" id="XYA-K5-4Vo"/>
                             <constraint firstAttribute="centerX" secondItem="pJl-i9-bwE" secondAttribute="centerX" id="b7c-vC-J3K"/>
                             <constraint firstItem="d98-ui-mTQ" firstAttribute="top" secondItem="2bS-32-Hgr" secondAttribute="bottom" id="c1F-20-TNh"/>
-                            <constraint firstItem="31C-iA-Qyj" firstAttribute="height" secondItem="d98-ui-mTQ" secondAttribute="height" id="cqm-Hr-L1L"/>
                             <constraint firstAttribute="centerY" secondItem="pJl-i9-bwE" secondAttribute="centerY" multiplier="1.618" id="eMP-gD-gTK"/>
                             <constraint firstItem="E4Z-JL-IBz" firstAttribute="top" secondItem="d98-ui-mTQ" secondAttribute="bottom" id="fpm-r8-EBm"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="GSS-PO-98I" secondAttribute="trailing" id="gtj-JQ-4kb"/>
                             <constraint firstItem="GSS-PO-98I" firstAttribute="left" secondItem="xTc-ax-2nu" secondAttribute="right" constant="9" id="n0T-yb-H3o"/>
-                            <constraint firstItem="31C-iA-Qyj" firstAttribute="top" secondItem="d98-ui-mTQ" secondAttribute="top" id="qYv-PY-riJ"/>
-                            <constraint firstItem="e4B-nQ-DnV" firstAttribute="top" secondItem="d98-ui-mTQ" secondAttribute="top" constant="4" id="wQm-5l-qSk"/>
                             <constraint firstItem="GSS-PO-98I" firstAttribute="bottom" secondItem="d98-ui-mTQ" secondAttribute="bottom" constant="-16" id="y7S-70-gfc"/>
                         </constraints>
                     </view>
@@ -622,7 +597,6 @@
                         <outlet property="noResultsLabel" destination="5uI-FR-NGs" id="jKe-NO-NvN"/>
                         <outlet property="searchField" destination="GSS-PO-98I" id="Q5z-4l-LXX"/>
                         <outlet property="searchIconImageView" destination="xTc-ax-2nu" id="qof-g9-H3Q"/>
-                        <outlet property="vrWidthConstraint" destination="8Rn-7l-BPj" id="KwY-0E-lwt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Lk-Ol-pVX" userLabel="First Responder" sceneMemberID="firstResponder"/>

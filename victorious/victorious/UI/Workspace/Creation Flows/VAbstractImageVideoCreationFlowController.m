@@ -144,7 +144,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     self.publishPresenter = [[VPublishPresenter alloc] initWithDependencymanager:self.dependencyManager];
 
     __weak typeof(self) welf = self;
-    self.publishPresenter.completion = ^void(BOOL published)
+    self.publishPresenter.publishActionHandler = ^void(BOOL published)
     {
         __strong typeof(welf) strongSelf = welf;
         if (published)
@@ -159,6 +159,11 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
             [strongSelf.creationFlowDelegate creationFlowController:strongSelf
                                            finishedWithPreviewImage:strongSelf.previewImage
                                                    capturedMediaURL:strongSelf.renderedMediaURL];
+        }
+        else
+        {
+            [strongSelf dismissViewControllerAnimated:YES
+                                           completion:nil];
         }
     };
 }
@@ -247,13 +252,13 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
              selectedAsset:(PHAsset *)asset
 {
     MBProgressHUD *hudForView = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hudForView.mode = MBProgressHUDModeAnnularDeterminate;
     self.downloader = [self downloaderWithAsset:asset];
     __weak typeof(self) welf = self;
-    [self.downloader downloadWithProgress:^(double progress, NSString *progressText)
+    [self.downloader downloadWithProgress:^(BOOL accurateProgress, double progress, NSString *progressText)
      {
          dispatch_async(dispatch_get_main_queue(), ^
          {
+             hudForView.mode =  accurateProgress ? MBProgressHUDModeAnnularDeterminate : MBProgressHUDModeIndeterminate;
              hudForView.progress = progress;
              hudForView.labelText = progressText;
          });

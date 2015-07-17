@@ -23,7 +23,7 @@ typedef NS_ENUM(NSInteger, VCreationType)
 };
 
 /**
- * Shared enum type because a few different classes use it
+ * The various contexts that camera, library, and microphone permissions may be requested under.
  */
 typedef NS_ENUM(NSInteger, VCameraContext)
 {
