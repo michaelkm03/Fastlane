@@ -52,6 +52,19 @@ static const CGFloat kMaxPercentBannerWidth = 0.58f;
     [self addLabel];
 }
 
+- (void)drawRect:(CGRect)rect
+{
+    self.listicleLabel.text = self.headlineText;
+    CGSize textSize = [self.listicleLabel.text sizeWithAttributes:@{NSFontAttributeName:[self.listicleLabel font]}];
+    CGFloat textWidth = MIN(textSize.width + (3 * kLabelInset), kMaxPercentBannerWidth * CGRectGetWidth(self.frame));
+    CGFloat labelWidth =  MIN(textSize.width, (kMaxPercentBannerWidth * CGRectGetWidth(self.bounds)) - (3 * kLabelInset) );
+    CGRect updatedLabelFrame = self.listicleLabel.frame;
+    updatedLabelFrame.size = CGSizeMake(labelWidth, CGRectGetHeight(updatedLabelFrame));
+    self.listicleLabel.frame = updatedLabelFrame;
+    [self.listicleLabel setNeedsDisplay];
+    [self drawBannerWithWidth:textWidth];
+}
+
 - (void)addLabel
 {
     CGRect frameLabel = CGRectMake(kLabelInset, 0, CGRectGetWidth(self.bounds) - kInsetForTriangle - (2 * kLabelInset), kLabelHeight);
@@ -66,21 +79,7 @@ static const CGFloat kMaxPercentBannerWidth = 0.58f;
 - (void)setHeadlineText:(NSString *)headlineText
 {
     _headlineText = headlineText;
-    [self updateLabelWithText:headlineText];
-}
-
-- (void)updateLabelWithText:(NSString *)text
-{
-    self.listicleLabel.text = text;
-    
-    CGSize textSize = [self.listicleLabel.text sizeWithAttributes:@{NSFontAttributeName:[self.listicleLabel font]}];
-    CGFloat textWidth = MIN(textSize.width + (3 * kLabelInset), kMaxPercentBannerWidth * CGRectGetWidth(self.frame));
-    CGFloat labelWidth =  MIN(textSize.width, (kMaxPercentBannerWidth * CGRectGetWidth(self.bounds)) - (3 * kLabelInset) );
-    CGRect updatedLabelFrame = self.listicleLabel.frame;
-    updatedLabelFrame.size = CGSizeMake(labelWidth, CGRectGetHeight(updatedLabelFrame));
-    self.listicleLabel.frame = updatedLabelFrame;
-    [self.listicleLabel setNeedsDisplay];
-    [self drawBannerWithWidth:textWidth];
+    [self setNeedsDisplay];
 }
 
 - (void)drawBannerWithWidth:(CGFloat)width
