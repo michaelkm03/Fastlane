@@ -127,6 +127,56 @@
 
 - (void)didTouchDownAtLocation:(CGPoint)location
 {
+    [self tagAtLocation:location withCallbackBlock:^(VTag *tag, NSRange range)
+    {
+        if ( tag != nil )
+        {
+            self.highlightRange = range;
+            self.selectedTag = tag;
+            UIColor *highlightColor = [[tag.tagStringAttributes objectForKey:NSForegroundColorAttributeName] colorWithAlphaComponent:0.5f];
+            [self.textStorage addAttribute:NSForegroundColorAttributeName value:highlightColor range:self.highlightRange];
+        }
+    }];
+}
+
+- (void)didTapAtLocation:(CGPoint)location
+{
+    if ( self.selectedTag != nil && self.tagTapDelegate != nil )
+    {
+        [self.tagTapDelegate tagSensitiveTextView:self tappedTag:self.selectedTag];
+    }
+}
+
+- (void)didCancelTouchDownAtLocation:(CGPoint)location
+{
+    if ( self.selectedTag != nil )
+    {
+        [self.textStorage setAttributes:self.selectedTag.tagStringAttributes range:self.highlightRange];
+        self.selectedTag = nil;
+    }
+}
+
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
+{
+    BOOL pointInside = [super pointInside:point withEvent:event];
+
+    if ( !pointInside )
+    {
+        return NO;
+    }
+    
+    __block VTag *foundTag = nil;
+    [self tagAtLocation:point withCallbackBlock:^(VTag *tag, NSRange range)
+    {
+        foundTag = tag;
+    }];
+    return foundTag != nil;
+}
+
+- (void)tagAtLocation:(CGPoint)location withCallbackBlock:(void (^)(VTag *tag, NSRange range))callbackBlock
+{
+    NSParameterAssert(callbackBlock != nil);
+    
     //Highlight region here
     location.x -= self.textContainerInset.left;
     location.y -= self.textContainerInset.top;
@@ -145,34 +195,12 @@
         
         if ( containsAttributes )
         {
-            VTag *tag = [self.tagDictionary tagForKey:[self.textStorage.string substringWithRange:range]];
-            if ( tag != nil )
-            {
-                self.highlightRange = range;
-                self.selectedTag = tag;
-                UIColor *highlightColor = [[tag.tagStringAttributes objectForKey:NSForegroundColorAttributeName] colorWithAlphaComponent:0.5f];
-                [self.textStorage addAttribute:NSForegroundColorAttributeName value:highlightColor range:self.highlightRange];
-            }
+            VTag *tag =  [self.tagDictionary tagForKey:[self.textStorage.string substringWithRange:range]];
+            callbackBlock(tag, range);
+            return;
         }
     }
-}
-
-- (void)didTapAtLocation:(CGPoint)location
-{
-    if ( self.selectedTag != nil && self.tagTapDelegate != nil )
-    {
-        [self.tagTapDelegate tagSensitiveTextView:self tappedTag:self.selectedTag];
-    }
-}
-
-- (void)didCancelTouchDownAtLocation:(CGPoint)location
-{
-    if ( self.selectedTag != nil )
-    {
-        [self.textStorage setAttributes:self.selectedTag.tagStringAttributes range:self.highlightRange];
-        self.selectedTag = nil;
-    }
-    
+    callbackBlock(nil, NSMakeRange(NSNotFound, 0));
 }
 
 @end

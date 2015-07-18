@@ -55,6 +55,7 @@ static NSString * const kDividerDelimeter = @"•";
     self.backgroundColor = [UIColor clearColor];
     self.scrollEnabled = NO;
     self.editable = NO;
+    self.textContainer.lineFragmentPadding = 0.0f;
     self.linkDelegate = self;
 }
 
