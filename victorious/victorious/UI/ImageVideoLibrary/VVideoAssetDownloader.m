@@ -103,11 +103,9 @@ static double kProgressSplit = 0.5f;
                            // We are downloading from iCloud
                            if (progressHandler != nil)
                            {
-                               dispatch_async(dispatch_get_main_queue(), ^
-                                              {
-                                                  double adjustedProgress = progress * kProgressSplit;
-                                                  progressHandler(YES, adjustedProgress, localizedDownloadString);
-                                              });
+                               self.isInIcloud = YES;
+                               double adjustedProgress = progress * kProgressSplit;
+                               progressHandler(YES, adjustedProgress, localizedDownloadString);
                            }
                        });
     };

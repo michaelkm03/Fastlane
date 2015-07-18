@@ -272,26 +272,18 @@
                             <constraint firstItem="uTr-J9-jgD" firstAttribute="left" secondItem="akW-Po-dqH" secondAttribute="left" constant="15" id="o3E-gc-13P"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="New Poll" id="vcX-pq-4nF">
-                        <barButtonItem key="leftBarButtonItem" image="Close" id="lAy-GA-Ihp">
-                            <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            <connections>
-                                <action selector="cancel:" destination="7OL-yJ-fiR" id="WL1-zs-0hc"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="New Poll" id="vcX-pq-4nF"/>
                     <nil key="simulatedStatusBarMetrics"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="addMediaView" destination="E27-Nk-x7c" id="DQ7-Rb-mY4"/>
                         <outlet property="answersSuperview" destination="Vb3-5e-iYL" id="bff-lu-Wbd"/>
-                        <outlet property="closeButton" destination="lAy-GA-Ihp" id="0ZM-Zm-oPq"/>
+                        <outlet property="imageButton" destination="wYb-zn-tre" id="t9m-Ts-LSN"/>
                         <outlet property="leftAnswerPrompt" destination="kIg-QZ-oeo" id="Oin-tP-y4p"/>
                         <outlet property="leftAnswerTextView" destination="fls-IP-s1P" id="CFG-rN-Pq4"/>
                         <outlet property="leftAnswerTextViewHeightConstraint" destination="RtQ-wW-No6" id="WsC-3r-rsf"/>
                         <outlet property="leftPreviewImageView" destination="F47-TG-plU" id="ube-z4-F6L"/>
                         <outlet property="leftRemoveButton" destination="JgF-wI-Jcl" id="hD0-R8-UiU"/>
-                        <outlet property="mediaButton" destination="wYb-zn-tre" id="kuw-ce-DY9"/>
                         <outlet property="mediaButtonLeftSpacingConstraint" destination="IfJ-IV-Nw8" id="QCE-WV-qsq"/>
                         <outlet property="postButton" destination="5P2-t5-UdW" id="wRX-7s-7KE"/>
                         <outlet property="questionPrompt" destination="YXm-O2-nI2" id="igR-WJ-gRh"/>
@@ -301,7 +293,7 @@
                         <outlet property="rightAnswerTextViewHeightConstraint" destination="DiH-jK-mhg" id="fiX-nr-beX"/>
                         <outlet property="rightPreviewImageView" destination="vM7-PD-RY2" id="v4s-Yu-1Jk"/>
                         <outlet property="rightRemoveButton" destination="A5h-U5-fHu" id="FYx-Q0-K4x"/>
-                        <outlet property="searchImageButton" destination="PsR-i9-0fl" id="p6P-HX-VHy"/>
+                        <outlet property="videoButton" destination="PsR-i9-0fl" id="gRg-vW-QLl"/>
                         <outletCollection property="constraintsThatNeedHalfPointConstant" destination="AAP-kx-xaw" id="UUH-Ab-UFF"/>
                         <outletCollection property="constraintsThatNeedHalfPointConstant" destination="bDM-7u-gWl" id="zef-I3-iqv"/>
                         <outletCollection property="constraintsThatNeedHalfPointConstant" destination="YnC-kP-xBz" id="QDL-k3-Fej"/>
@@ -313,7 +305,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Close" width="17" height="17"/>
         <image name="PollCreateOr" width="48" height="52"/>
         <image name="PostDelete" width="30" height="30"/>
         <image name="createImageIcon" width="22" height="22"/>

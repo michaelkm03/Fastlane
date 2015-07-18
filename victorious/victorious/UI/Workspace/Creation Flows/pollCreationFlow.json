@@ -1,6 +1,21 @@
 {
     "name":"poll.creationFlow",
     "statusBarStyle": "dark",
+    "navBarBackground": {
+        "name": "solidColor.background",
+        "color": {
+            "red": 255,
+            "alpha": 255,
+            "blue": 255,
+            "green": 255
+        }
+    },
+    "barTintColor": {
+        "red": 0,
+        "alpha": 255,
+        "blue": 0,
+        "green": 0
+    },
     "pollCreationScreen": {
         "name":"pollCreation.screen",
 
