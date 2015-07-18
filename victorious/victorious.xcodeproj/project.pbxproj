@@ -687,6 +687,7 @@
 		A7D7079F1A7C144C00D9993F /* VEndCardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D707951A7C144C00D9993F /* VEndCardModel.m */; };
 		A7D707A01A7C144C00D9993F /* VEndCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D707971A7C144C00D9993F /* VEndCardViewController.m */; };
 		A7D707A21A7C145E00D9993F /* EndCard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7D707A11A7C145E00D9993F /* EndCard.storyboard */; };
+		A7D7ED511B59BEB900FA346A /* UISearchBar+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D7ED501B59BEB900FA346A /* UISearchBar+Extensions.swift */; };
 		A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D8532319F6F3B100EDBFF8 /* VTracking.m */; };
 		A7DAFCA71B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCA61B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift */; };
 		A7DAFCA91B4EDACE00B51C92 /* GIFSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCA81B4EDACE00B51C92 /* GIFSearchResult.swift */; };
@@ -2324,6 +2325,7 @@
 		A7D707961A7C144C00D9993F /* VEndCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VEndCardViewController.h; path = EndCard/VEndCardViewController.h; sourceTree = "<group>"; };
 		A7D707971A7C144C00D9993F /* VEndCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VEndCardViewController.m; path = EndCard/VEndCardViewController.m; sourceTree = "<group>"; };
 		A7D707A11A7C145E00D9993F /* EndCard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = EndCard.storyboard; path = EndCard/EndCard.storyboard; sourceTree = "<group>"; };
+		A7D7ED501B59BEB900FA346A /* UISearchBar+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UISearchBar+Extensions.swift"; sourceTree = "<group>"; };
 		A7D8532219F6F3B100EDBFF8 /* VTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTracking.h; sourceTree = "<group>"; };
 		A7D8532319F6F3B100EDBFF8 /* VTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTracking.m; sourceTree = "<group>"; };
 		A7DAFCA61B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VObjectManager+GIFSearch.swift"; sourceTree = "<group>"; };
@@ -4719,6 +4721,7 @@
 				A721E8F91B572454000B7901 /* UIView+MotionEffects.h */,
 				A721E8FA1B572454000B7901 /* UIView+MotionEffects.m */,
 				A721E8FB1B572454000B7901 /* UIView+RecursiveSearch.swift */,
+				A7D7ED501B59BEB900FA346A /* UISearchBar+Extensions.swift */,
 				A721E8FC1B572454000B7901 /* UIView+VDynamicsHelpers.h */,
 				A721E8FD1B572454000B7901 /* UIView+VDynamicsHelpers.m */,
 				A721E8FE1B572454000B7901 /* UIView+VShadows.h */,
@@ -8128,6 +8131,7 @@
 				A74679611AFBE3AE005EB1D9 /* VWebBrowserHeaderLayoutManager.m in Sources */,
 				D80C615B19D0F692006AE41A /* VProgressBarView.m in Sources */,
 				A7D707981A7C144C00D9993F /* VCountdownView.m in Sources */,
+				A7D7ED511B59BEB900FA346A /* UISearchBar+Extensions.swift in Sources */,
 				F089E3591AC486170076DC4D /* VBlurredMarqueeCollectionViewCell.m in Sources */,
 				D85B70801B0EAF3F0038CA5B /* VEnterResetTokenViewController.m in Sources */,
 				D84FD73D19D5E5F200E7F9F2 /* VActionItem.m in Sources */,

@@ -127,9 +127,10 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSelectImageSearch];
     
     // Image search
-    VImageSearchViewController *imageSearchViewController = [VImageSearchViewController newImageSearchViewController];
+#warning Create component and spec here
+    VImageSearchViewController *imageSearchViewController = [VImageSearchViewController newImageSearchViewControllerWithDependencyManager:self.dependencyManager];
     __weak typeof(self) welf = self;
-    imageSearchViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+    imageSearchViewController.imageSelectionHandler = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
         __strong typeof(welf) strongSelf = welf;
         if (finished)

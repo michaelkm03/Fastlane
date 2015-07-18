@@ -388,7 +388,7 @@
 "CannotVerify"          =   "Cannot Verify Account";
 "IncorrectCode"         =   "The code used for account verification is incorrect.";
 
-"Search for an image"   =   "Search for an image";
+"Image Search"          =   "Image Search";
 "Pull up for more..."   =   "Pull up for more...";
 "search for users"      =   "search for users";
 "searching"             =   "searching";

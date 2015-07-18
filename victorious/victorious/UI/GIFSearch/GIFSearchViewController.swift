@@ -57,7 +57,8 @@ class GIFSearchViewController: UIViewController {
         
         self.searchBar.delegate = self
         if let searchTextField = self.searchBar.v_textField {
-            searchTextField.font = self.dependencyManager?.fontForKey(VDependencyManagerHeading3FontKey)
+            searchTextField.tintColor = self.dependencyManager?.colorForKey(VDependencyManagerLinkColorKey)
+            searchTextField.font = self.dependencyManager?.fontForKey(VDependencyManagerHeading4FontKey)
             searchTextField.textColor = UIColor.whiteColor()
             searchTextField.backgroundColor = UIColor(white: 0.2, alpha: 1.0)
         }
@@ -206,12 +207,5 @@ private extension UICollectionView {
         if let deletedSections = result.deletedSections {
             self.deleteSections( deletedSections )
         }
-    }
-}
-private extension UISearchBar {
-    
-    /// Finds the `UITextField` subview into which users type their search string
-    var v_textField: UITextField? {
-        return self.v_findSubview({ $0 is UITextField }) as? UITextField
     }
 }

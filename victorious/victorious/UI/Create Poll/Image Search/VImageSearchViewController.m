@@ -12,9 +12,9 @@
 #import "VImageSearchResultCell.h"
 #import "VImageSearchResultsFooterView.h"
 #import "VImageSearchViewController.h"
-#import "VThemeManager.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "victorious-Swift.h"
 
 static NSString * const kSearchResultCellReuseIdentifier          = @"kSearchResultCellReuseIdentifier";
 static NSString * const kSearchResultSectionFooterReuseIdentifier = @"kSearchResultSectionFooterReuseIdentifier";
@@ -22,21 +22,18 @@ static const CGFloat    kVerySmallScale                           =  0.001f;
 static const CGFloat    kSearchResultSectionFooterHeight          = 45.0f;
 static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
 
-@interface VImageSearchViewController () <UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VImageSearchDataDelegate>
+@interface VImageSearchViewController () <UICollectionViewDelegateFlowLayout, UISearchBarDelegate, VImageSearchDataDelegate>
 
-@property (nonatomic, weak) IBOutlet UIView                  *headerView;
-@property (nonatomic, weak) IBOutlet UITextField             *searchField;
-@property (nonatomic, weak) IBOutlet UIImageView             *searchIconImageView;
-@property (nonatomic, weak) IBOutlet UICollectionView        *collectionView;
-@property (nonatomic, weak) IBOutlet UILabel                 *noResultsLabel;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint      *hrHeightConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint      *vrWidthConstraint;
+@property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, weak) IBOutlet UILabel *noResultsLabel;
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicatorView;
+@property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
 
 @property (nonatomic, weak) VImageSearchResultsFooterView *refreshFooter;
 
 @property (nonatomic, strong) VImageSearchDataSource  *dataSource;
 @property (nonatomic, strong) AFImageRequestOperation *imageRequestOperation;
+@property (nonatomic, strong) VDependencyManager *dependencyMananger;
 
 @property (nonatomic) BOOL refreshing;
 
@@ -47,9 +44,10 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
     NSString *_searchTerm;
 }
 
-+ (instancetype)newImageSearchViewController
++ (instancetype)newImageSearchViewControllerWithDependencyManager:(VDependencyManager *)dependencyMananger
 {
     VImageSearchViewController *imageSearchViewController = (VImageSearchViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:NSStringFromClass([VImageSearchViewController class])];
+    imageSearchViewController.dependencyMananger = dependencyMananger;
     return imageSearchViewController;
 }
 
@@ -65,38 +63,52 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
     self.collectionView.contentInset = UIEdgeInsetsMake(13.0f, 5.0f, 5.0f, 5.0f);
     [self.collectionView registerClass:[VImageSearchResultCell class] forCellWithReuseIdentifier:kSearchResultCellReuseIdentifier];
     
-    self.searchField.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.title = NSLocalizedString(@"Image Search", @"");
+    NSDictionary *titleAttributes = @{ NSForegroundColorAttributeName : [UIColor whiteColor] };
+    self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
+    
+    self.searchBar.placeholder = NSLocalizedString(@"Search", @"");
+    UITextField *searchTextField = (UITextField *)[self.searchBar v_findSubview:^BOOL(UIView *__nonnull view) {
+        return [view isKindOfClass:[UITextField class]];
+    }];
+    searchTextField.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0f];
+    searchTextField.tintColor = [self.dependencyMananger colorForKey:VDependencyManagerLinkColorKey];
+    searchTextField.font = [self.dependencyMananger fontForKey:VDependencyManagerHeading4FontKey];
+    if (_searchTerm)
+    {
+        self.searchBar.text = _searchTerm;
+    }
     
     UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
     flowLayout.itemSize = CGSizeMake(71.0f, 71.0f);
     flowLayout.minimumInteritemSpacing = 5.0f;
     
-    self.hrHeightConstraint.constant = 0.5f;
-    self.vrWidthConstraint.constant = 0.5f;
-    
-    self.searchField.placeholder = NSLocalizedString(@"Search for an image", @"");
-    self.searchField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
-    if (_searchTerm)
-    {
-        self.searchField.text = _searchTerm;
-    }
-    self.searchIconImageView.image = [self.searchIconImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    
-    self.noResultsLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    self.noResultsLabel.font = [self.dependencyMananger fontForKey:VDependencyManagerHeading4FontKey];
     self.noResultsLabel.text = NSLocalizedString(@"No results", @"");
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    if (self.searchTerm && ![self.searchTerm isEqualToString:@""] && ![self.searchTerm isEqualToString:self.dataSource.searchTerm])
+    if ( [self isReadyToSearch] )
     {
         [self performSearch];
     }
-    else
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if ( ![self isReadyToSearch] )
     {
-        [self.searchField becomeFirstResponder];
+        [self.searchBar becomeFirstResponder];
     }
+}
+
+- (BOOL)isReadyToSearch
+{
+    return self.searchTerm.length > 0 && ![self.searchTerm isEqualToString:self.dataSource.searchTerm];
 }
 
 - (BOOL)shouldAutorotate
@@ -113,7 +125,7 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
 
 - (IBAction)closeButtonTapped:(id)sender
 {
-    [self.searchField resignFirstResponder];
+    [self.searchBar resignFirstResponder];
     
     [self didFinishWithImageSelected:NO previewImage:nil capturedMediaURL:nil];
 }
@@ -122,10 +134,10 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
 
 - (void)performSearch
 {
-    [self.searchField resignFirstResponder];
+    [self.searchBar resignFirstResponder];
     self.noResultsLabel.hidden = YES;
     [self.activityIndicatorView startAnimating];
-    [self.dataSource searchWithSearchTerm:self.searchField.text
+    [self.dataSource searchWithSearchTerm:self.searchBar.text
                              onCompletion:^(void)
     {
         [self.activityIndicatorView stopAnimating];
@@ -143,7 +155,7 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
         [alert show];
     }];
     
-    NSDictionary *params = @{ VTrackingKeySearchTerm : self.searchField.text ?: @"" };
+    NSDictionary *params = @{ VTrackingKeySearchTerm : self.searchBar.text ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSearchForImage parameters:params];
 }
 
@@ -151,7 +163,7 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
 {
     if ([self isViewLoaded])
     {
-        return self.searchField.text;
+        return self.searchBar.text;
     }
     else
     {
@@ -163,7 +175,7 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
 {
     if ([self isViewLoaded])
     {
-        self.searchField.text = searchTerm;
+        self.searchBar.text = searchTerm;
         if (self.view.superview)
         {
             [self performSearch];
@@ -187,19 +199,18 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
     }
     [[VTrackingManager sharedInstance] trackEvent:eventName parameters:params];
     
-    if ( self.completionBlock != nil )
+    if ( self.imageSelectionHandler != nil )
     {
-        self.completionBlock( wasImageSelected, previewImage, capturedMediaURL );
+        self.imageSelectionHandler( wasImageSelected, previewImage, capturedMediaURL );
     }
 }
 
-#pragma mark - UITextFieldDelegate methods
+#pragma mark - UISearchBarDelegate
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [self performSearch];
-    [self.searchField resignFirstResponder];
-    return YES;
+    [self.searchBar resignFirstResponder];
 }
 
 #pragma mark - VImageSearchDataDelegate methods

@@ -415,7 +415,7 @@ static char KVOContext;
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSelectImageSearch];
     
-    VImageSearchViewController *imageSearch = [VImageSearchViewController newImageSearchViewController];
+    VImageSearchViewController *imageSearch = [VImageSearchViewController newImageSearchViewControllerWithDependencyManager:self.dependencyManager];
     
     if (self.firstMediaURL)
     {
@@ -426,8 +426,9 @@ static char KVOContext;
         imageSearch.searchTerm = self.leftAnswerTextView.text;
     }
     
+#warning Create component and spec here
     VImageSearchViewController __weak *weakImageSearch = imageSearch;
-    imageSearch.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+    imageSearch.imageSelectionHandler = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
         if (finished)
         {

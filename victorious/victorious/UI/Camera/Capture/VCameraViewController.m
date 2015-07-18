@@ -670,9 +670,10 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSelectImageSearch];
     
-    VImageSearchViewController *imageSearchViewController = [VImageSearchViewController newImageSearchViewController];
+#warning Create component and spec here
+    VImageSearchViewController *imageSearchViewController = [VImageSearchViewController newImageSearchViewControllerWithDependencyManager:self.dependencyManager];
     __weak typeof(self) welf = self;
-    imageSearchViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+    imageSearchViewController.imageSelectionHandler = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
         if (finished)
         {
