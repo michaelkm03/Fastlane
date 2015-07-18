@@ -13,8 +13,8 @@
 #import "NSDate+timeSince.h"
 #import "VInStreamMediaLink.h"
 
-//Warning
-static UIEdgeInsets const kLabelInsets = { 6.0f, 8.0f, 6.0f, 56.0f };
+//Warning, must match up EXACTLY with values in this class' xib
+static UIEdgeInsets const kTextInsets = { 6.0f, 28.0f, 6.0f, 0.0f };
 static CGFloat const kInterLabelSpace = 11.0f;
 
 @interface VInStreamCommentsCell ()
@@ -81,20 +81,21 @@ static CGFloat const kInterLabelSpace = 11.0f;
 
 + (NSAttributedString *)commentAttributedStringForContents:(VInStreamCommentCellContents *)contents
 {
-    __block NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:contents.username attributes:contents.usernameTextAttributes];
+    NSString *commentString = contents.username;
     if ( contents.comment.length > 0 )
     {
-        [mutableAttributedString appendAttributedString:[[NSAttributedString alloc] initWithString:@"  "]];
-        [VTagSensitiveTextView displayFormattedStringFromDatabaseFormattedText:contents.comment
-                                                                 tagAttributes:contents.highlightedTextAttributes
-                                                          andDefaultAttributes:contents.commentTextAttributes
-                                                               toCallbackBlock:^(VTagDictionary *foundTags, NSAttributedString *displayFormattedString)
-         {
-             [mutableAttributedString appendAttributedString:displayFormattedString];
-         }];
+        commentString = [commentString stringByAppendingString:@"  "];
+        commentString = [commentString stringByAppendingString:contents.comment];
     }
-    [mutableAttributedString setAttributes:contents.usernameTextAttributes range:NSMakeRange(0, contents.username.length)];
-    return [mutableAttributedString copy];
+    __block NSAttributedString *attributedString = nil;
+    [VTagSensitiveTextView displayFormattedStringFromDatabaseFormattedText:commentString
+                                                             tagAttributes:contents.highlightedTextAttributes
+                                                      andDefaultAttributes:contents.commentTextAttributes
+                                                           toCallbackBlock:^(VTagDictionary *foundTags, NSAttributedString *displayFormattedString)
+     {
+         attributedString = displayFormattedString;
+     }];
+    return attributedString;
 }
 
 + (NSAttributedString *)timestampAttributedStringForContents:(VInStreamCommentCellContents *)contents
@@ -127,7 +128,7 @@ static CGFloat const kInterLabelSpace = 11.0f;
 
 + (CGFloat)desiredHeightForCommentCellContents:(VInStreamCommentCellContents *)contents withMaxWidth:(CGFloat)width
 {
-    CGFloat maxWidth = width - kLabelInsets.right - kLabelInsets.left;
+    CGFloat maxWidth = width - kTextInsets.right - kTextInsets.left;
     NSAttributedString *commentAttributedString = [self commentAttributedStringForContents:contents];
     NSAttributedString *timestampAttributedString = [self timestampAttributedStringForContents:contents];
     CGFloat mediaLinkButtonHeight = [self mediaLinkButtonHeightForContents:contents withMaxWidth:maxWidth];
@@ -142,7 +143,7 @@ static CGFloat const kInterLabelSpace = 11.0f;
     }
     
     height += commentHeight + timestampHeight + mediaLinkButtonHeight;
-    height += kLabelInsets.top + kLabelInsets.bottom;
+    height += kTextInsets.top + kTextInsets.bottom;
     return height;
 }
 

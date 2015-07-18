@@ -26,6 +26,7 @@
 #import "VInStreamCommentCellContents.h"
 #import "VInStreamCommentsController.h"
 #import <FBKVOController.h>
+#import "VInStreamCommentsShowMoreAttributes.h"
 
 // These values must match the constraint values in interface builder
 static const CGFloat kSleekCellHeaderHeight = 50.0f;
@@ -134,7 +135,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
             
             BOOL showPreviousCommentsCellEnabled = sequence.commentCount.unsignedIntegerValue > kMaxNumberOfInStreamComments;
             NSArray *commentCellContents = [VInStreamCommentCellContents inStreamCommentsForComments:[self inStreamCommentsArrayForSequence:sequence] andDependencyManager:dependencyManager];
-            CGFloat height = [VInStreamCommentsController desiredHeightForCommentCellContents:commentCellContents withCollectionViewWidth:size.width withShowPreviousCommentsCellEnabled:showPreviousCommentsCellEnabled];
+            CGFloat height = [VInStreamCommentsController desiredHeightForCommentCellContents:commentCellContents withCollectionViewWidth:size.width showMoreAttributes:[VInStreamCommentsShowMoreAttributes newWithDependencyManager:dependencyManager] andShowPreviousCommentsCellEnabled:showPreviousCommentsCellEnabled];
             return CGSizeMake( 0.0f, height );
         }];
     }
@@ -186,6 +187,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     
     [self.countsTextView setTextHighlightAttributes:[[self class] sequenceCountsActiveAttributesWithDependencyManager:dependencyManager]];
     [self.countsTextView setTextAttributes:[[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager]];
+    self.inStreamCommentsController.showMoreAttributes = [VInStreamCommentsShowMoreAttributes newWithDependencyManager:dependencyManager];
 }
 
 + (NSDictionary *)sequenceCountsActiveAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -226,12 +228,19 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
     [self.expressionsObserver startObservingWithSequence:sequence onUpdate:^
      {
-         welf.sleekActionView.likeButton.selected = sequence.isLikedByMainUser.boolValue;
-         [welf updateCountsTextViewForSequence:sequence];
+         __strong VSleekStreamCollectionCell *strongSelf = welf;
+         if ( strongSelf == nil )
+         {
+             return;
+         }
+         
+         strongSelf.sleekActionView.likeButton.selected = sequence.isLikedByMainUser.boolValue;
+         [strongSelf updateCountsTextViewForSequence:sequence];
      }];
     
-    self.inStreamCommentsCollectionViewBottomConstraint.active = sequence.comments.count > 0;
-    self.inStreamCommentsController.commentCellContents = [VInStreamCommentCellContents inStreamCommentsForComments:[[self class] inStreamCommentsArrayForSequence:self.sequence] andDependencyManager:self.dependencyManager];
+    NSArray *inStreamComments = [[self class] inStreamCommentsArrayForSequence:sequence];
+    self.inStreamCommentsCollectionViewBottomConstraint.active = inStreamComments.count > 0;
+    [self.inStreamCommentsController setupWithCommentCellContents:[VInStreamCommentCellContents inStreamCommentsForComments:inStreamComments andDependencyManager:self.dependencyManager] withShowMoreCellVisible:sequence.commentCount.unsignedIntegerValue > kMaxNumberOfInStreamComments];
 }
 
 - (void)updateCountsTextViewForSequence:(VSequence *)sequence
@@ -276,6 +285,23 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     [self.previewContainer addConstraint:heightToWidth];
     self.previewContainerHeightConstraint = heightToWidth;
     
+    if ( [self shouldShowCaptionForSequence:self.sequence] )
+    {
+        if ( self.captionHeight.constant != kMaxCaptionTextViewHeight || self.captiontoPreviewVerticalSpacing.constant != kCaptionToPreviewVerticalSpacing )
+        {
+            self.captiontoPreviewVerticalSpacing.constant = kCaptionToPreviewVerticalSpacing;
+            self.captionHeight.constant = kMaxCaptionTextViewHeight;
+        }
+    }
+    else
+    {
+        if ( self.captionHeight.constant != 0.0f || self.captiontoPreviewVerticalSpacing.constant != 0.0f )
+        {
+            self.captiontoPreviewVerticalSpacing.constant = 0.0f;
+            self.captionHeight.constant = 0.0f;
+        }
+    }
+    
     [super updateConstraints];
 }
 
@@ -300,20 +326,18 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
 - (void)updateCaptionViewForSequence:(VSequence *)sequence
 {
-    if ( sequence.name == nil || sequence.name.length == 0|| self.dependencyManager == nil)
+    NSAttributedString *captionAttributedString = nil;
+    if ( [self shouldShowCaptionForSequence:sequence] )
     {
-        self.captionTextView.attributedText = nil;
-        self.captionHeight.constant = 0.0f;
-        self.captiontoPreviewVerticalSpacing.constant = 0.0f;
+        captionAttributedString = [[NSAttributedString alloc] initWithString:sequence.name
+                                                                  attributes:[VSleekStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
     }
-    else
-    {
-        self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
-                                                                              attributes:[VSleekStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
-        self.captiontoPreviewVerticalSpacing.constant = kCaptionToPreviewVerticalSpacing;
-        self.captionHeight.constant = kMaxCaptionTextViewHeight;
-    }
-    [self layoutIfNeeded];
+    self.captionTextView.attributedText = captionAttributedString;
+}
+
+- (BOOL)shouldShowCaptionForSequence:(VSequence *)sequence
+{
+    return sequence.name.length > 0 && self.dependencyManager != nil;
 }
 
 #pragma mark - VBackgroundContainer

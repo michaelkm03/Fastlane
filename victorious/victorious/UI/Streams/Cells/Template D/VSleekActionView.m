@@ -191,6 +191,10 @@ static NSUInteger const kMaxNumberOfActionButtons = 4;
     {
         return;
     }
+    else
+    {
+        [self layoutIfNeeded];
+    }
     
     CGFloat actionBarWidth = CGRectGetWidth(actionBar.bounds);
     if ( actionBarWidth == 0.0f )

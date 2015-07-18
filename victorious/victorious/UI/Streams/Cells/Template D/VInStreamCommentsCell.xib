@@ -14,33 +14,33 @@
                 <rect key="frame" x="0.0" y="0.0" width="362" height="130"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="760" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" bounces="NO" scrollEnabled="NO" text="testing with a way longer string" translatesAutoresizingMaskIntoConstraints="NO" id="FhT-n3-Uet" customClass="VTagSensitiveTextView">
-                        <rect key="frame" x="58" y="6" width="296" height="33"/>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="760" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" bounces="NO" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FhT-n3-Uet" customClass="VTagSensitiveTextView">
+                        <rect key="frame" x="28" y="6" width="334" height="33"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     </textView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="760" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yEn-Ka-Giy">
-                        <rect key="frame" x="58" y="76" width="42" height="21"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="760" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yEn-Ka-Giy" userLabel="Time Stamp Label">
+                        <rect key="frame" x="28" y="76" width="0.0" height="0.0"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="760" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kjj-iN-Gwp">
-                        <rect key="frame" x="58" y="50" width="41" height="15"/>
+                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="760" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kjj-iN-Gwp" userLabel="Media Link Button">
+                        <rect key="frame" x="28" y="50" width="3" height="15"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="lessThanOrEqual" constant="50" id="Mgb-7K-amd"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="3" maxY="0.0"/>
                         <inset key="titleEdgeInsets" minX="3" minY="0.0" maxX="-3" maxY="0.0"/>
-                        <state key="normal" title="Button">
+                        <state key="normal">
                             <color key="titleColor" red="0.23921568630000001" green="0.35294117650000001" blue="0.58823529409999997" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oEM-ln-Jno" customClass="VDefaultProfileButton">
-                        <rect key="frame" x="30" y="6" width="20" height="20"/>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oEM-ln-Jno" userLabel="Profile Icon Button" customClass="VDefaultProfileButton">
+                        <rect key="frame" x="0.0" y="6" width="20" height="20"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="oEM-ln-Jno" secondAttribute="height" multiplier="1:1" id="EnX-yu-auj"/>
@@ -55,12 +55,12 @@
             </view>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="oEM-ln-Jno" firstAttribute="leading" secondItem="tlu-ZV-fzz" secondAttribute="leading" constant="30" id="0xz-Wg-jF9"/>
+                <constraint firstItem="oEM-ln-Jno" firstAttribute="leading" secondItem="tlu-ZV-fzz" secondAttribute="leading" id="0xz-Wg-jF9"/>
                 <constraint firstItem="Kjj-iN-Gwp" firstAttribute="top" secondItem="FhT-n3-Uet" secondAttribute="bottom" constant="11" id="Ghj-hV-wZH"/>
                 <constraint firstItem="Kjj-iN-Gwp" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="FhT-n3-Uet" secondAttribute="trailing" id="JyY-Af-DDy"/>
                 <constraint firstItem="FhT-n3-Uet" firstAttribute="top" secondItem="tlu-ZV-fzz" secondAttribute="top" constant="6" id="OxB-Eg-ZJK"/>
                 <constraint firstItem="FhT-n3-Uet" firstAttribute="leading" secondItem="oEM-ln-Jno" secondAttribute="trailing" constant="8" id="QoC-wK-LaM"/>
-                <constraint firstAttribute="trailing" secondItem="FhT-n3-Uet" secondAttribute="trailing" constant="8" id="aYA-eO-OWt"/>
+                <constraint firstAttribute="trailing" secondItem="FhT-n3-Uet" secondAttribute="trailing" id="aYA-eO-OWt"/>
                 <constraint firstItem="FhT-n3-Uet" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="yEn-Ka-Giy" secondAttribute="trailing" id="gF6-V4-b3O"/>
                 <constraint firstItem="yEn-Ka-Giy" firstAttribute="leading" secondItem="Kjj-iN-Gwp" secondAttribute="leading" id="k4t-Be-Dbe"/>
                 <constraint firstItem="oEM-ln-Jno" firstAttribute="top" secondItem="tlu-ZV-fzz" secondAttribute="top" constant="6" id="lXa-id-T53"/>

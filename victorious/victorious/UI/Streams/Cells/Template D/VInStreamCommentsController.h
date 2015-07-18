@@ -7,14 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
-@class VInStreamCommentCellContents;
+@class VInStreamCommentCellContents, VInStreamCommentsShowMoreAttributes;
 
 @interface VInStreamCommentsController : NSObject <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView;
-+ (CGFloat)desiredHeightForCommentCellContents:(NSArray *)commentCellContents withCollectionViewWidth:(CGFloat)width withShowPreviousCommentsCellEnabled:(BOOL)enabled;
 
-@property (nonatomic, strong) NSArray *commentCellContents;
++ (CGFloat)desiredHeightForCommentCellContents:(NSArray *)commentCellContents
+                       withCollectionViewWidth:(CGFloat)width
+                            showMoreAttributes:(VInStreamCommentsShowMoreAttributes *)attributes
+            andShowPreviousCommentsCellEnabled:(BOOL)enabled;
+
+- (void)setupWithCommentCellContents:(NSArray *)commentCellContents withShowMoreCellVisible:(BOOL)visible;
+
+@property (nonatomic, strong) VInStreamCommentsShowMoreAttributes *showMoreAttributes;
 @property (nonatomic, strong) UICollectionView *collectionView;
 
 @end

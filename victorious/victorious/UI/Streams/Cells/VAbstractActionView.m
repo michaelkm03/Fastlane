@@ -60,7 +60,6 @@
     
     _sequence = sequence;
     
-    [self layoutIfNeeded];
     [self updateActionItemsOnBar:self.actionBar forSequence:_sequence];
     __weak typeof(self) welf = self;
     [self updateRepostButtonForSequence:_sequence];

@@ -8,10 +8,20 @@
 
 #import "VInStreamCommentsController.h"
 #import "VInStreamCommentsCell.h"
+#import "VInStreamCommentsShowMoreCell.h"
+#import "VInStreamCommentsShowMoreAttributes.h"
 #import "VTagSensitiveTextView.h"
+#import <CCHLinkTextView/CCHLinkTextViewDelegate.h>
 
 static CGFloat const kMinimumInterItemSpace = 4.0f;
-static UIEdgeInsets const kSectionEdgeInsets = { 6.0f, 0.0f, 12.0f, 0.0f };
+static UIEdgeInsets const kSectionEdgeInsets = { 0.0f, 27.0f, 6.0f, 2.0f };
+
+@interface VInStreamCommentsController () <CCHLinkTextViewDelegate>
+
+@property (nonatomic, strong) NSArray *commentCellContents;
+@property (nonatomic, assign) BOOL showMoreCellVisible;
+
+@end
 
 @implementation VInStreamCommentsController
 
@@ -37,15 +47,30 @@ static UIEdgeInsets const kSectionEdgeInsets = { 6.0f, 0.0f, 12.0f, 0.0f };
     ((UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout).scrollDirection = UICollectionViewScrollDirectionVertical;
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
+    self.collectionView.contentInset = kSectionEdgeInsets;
     for ( NSString *identifier in [VInStreamCommentsCell possibleReuseIdentifiers] )
     {
         [self.collectionView registerNib:[VInStreamCommentsCell nibForCell] forCellWithReuseIdentifier:identifier];
     }
+    [self.collectionView registerNib:[VInStreamCommentsShowMoreCell nibForCell] forCellWithReuseIdentifier:[VInStreamCommentsShowMoreCell suggestedReuseIdentifier]];
 }
 
-+ (CGFloat)desiredHeightForCommentCellContents:(NSArray *)commentCellContents withCollectionViewWidth:(CGFloat)width withShowPreviousCommentsCellEnabled:(BOOL)enabled
+- (void)setupWithCommentCellContents:(NSArray *)commentCellContents withShowMoreCellVisible:(BOOL)visible
+{
+    BOOL contentsNeedUpdate = ![self.commentCellContents isEqualToArray:commentCellContents];
+    BOOL showMoreCellNeedsUpdate = self.showMoreCellVisible != visible;
+    if ( contentsNeedUpdate || showMoreCellNeedsUpdate )
+    {
+        self.commentCellContents = commentCellContents;
+        self.showMoreCellVisible = visible;
+        [self.collectionView reloadData];
+    }
+}
+
++ (CGFloat)desiredHeightForCommentCellContents:(NSArray *)commentCellContents withCollectionViewWidth:(CGFloat)width showMoreAttributes:(VInStreamCommentsShowMoreAttributes *)attributes andShowPreviousCommentsCellEnabled:(BOOL)enabled
 {
     CGFloat height = 0.0f;
+    width -= kSectionEdgeInsets.right + kSectionEdgeInsets.left;
     BOOL loopedOnce = NO;
     for ( VInStreamCommentCellContents *content in commentCellContents )
     {
@@ -56,27 +81,34 @@ static UIEdgeInsets const kSectionEdgeInsets = { 6.0f, 0.0f, 12.0f, 0.0f };
         }
         loopedOnce = YES;
     }
+    
+    if ( enabled )
+    {
+        height += kMinimumInterItemSpace;
+        height += [VInStreamCommentsShowMoreCell desiredHeightForAttributes:attributes
+                                                               withMaxWidth:width];
+    }
     if ( loopedOnce )
     {
         height += kSectionEdgeInsets.top + kSectionEdgeInsets.bottom;
     }
-    return height;
-}
-
-- (void)setCommentCellContents:(NSArray *)commentCellContents
-{
-    if ( [_commentCellContents isEqualToArray:commentCellContents] )
-    {
-        return;
-    }
     
-    _commentCellContents = commentCellContents;
-    //[self.collectionView reloadData];
+    return height;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.commentCellContents.count;
+    NSUInteger count = self.commentCellContents.count;
+    if ( count == 0 )
+    {
+        return 0;
+    }
+    
+    if ( self.showMoreCellVisible )
+    {
+        count++;
+    }
+    return count;
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
@@ -86,6 +118,13 @@ static UIEdgeInsets const kSectionEdgeInsets = { 6.0f, 0.0f, 12.0f, 0.0f };
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ( [self isShowMoreCellIndexPath:indexPath] )
+    {
+        //Return the "see more" cell
+        VInStreamCommentsShowMoreCell *seeMoreCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VInStreamCommentsShowMoreCell suggestedReuseIdentifier] forIndexPath:indexPath];
+        [seeMoreCell setupWithAttributes:self.showMoreAttributes andLinkDelegate:self];
+        return seeMoreCell;
+    }
     VInStreamCommentCellContents *contents = self.commentCellContents[indexPath.row];
     NSString *identifier = [VInStreamCommentsCell reuseIdentifierForContents:contents];
     VInStreamCommentsCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
@@ -96,17 +135,29 @@ static UIEdgeInsets const kSectionEdgeInsets = { 6.0f, 0.0f, 12.0f, 0.0f };
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat width = CGRectGetWidth(collectionView.bounds);
-    return CGSizeMake(width, [[self class] cellHeightForContent:self.commentCellContents[indexPath.row] withCellWidth:width]);
+    UIEdgeInsets insets = collectionView.contentInset;
+    width -= insets.left + insets.right;
+    
+    CGFloat height = 0;
+    if ( [self isShowMoreCellIndexPath:indexPath] )
+    {
+        height = [VInStreamCommentsShowMoreCell desiredHeightForAttributes:self.showMoreAttributes withMaxWidth:width];
+    }
+    else
+    {
+        height = [[self class] cellHeightForContent:self.commentCellContents[indexPath.row] withCellWidth:width];
+    }
+    return CGSizeMake(width, height);
+}
+
+- (BOOL)isShowMoreCellIndexPath:(NSIndexPath *)indexPath
+{
+    return indexPath.row == (NSInteger)self.commentCellContents.count;
 }
 
 + (CGFloat)cellHeightForContent:(VInStreamCommentCellContents *)content withCellWidth:(CGFloat)width
 {
     return [VInStreamCommentsCell desiredHeightForCommentCellContents:content withMaxWidth:width];
-}
-
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
-{
-    return kMinimumInterItemSpace;
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
@@ -116,7 +167,7 @@ static UIEdgeInsets const kSectionEdgeInsets = { 6.0f, 0.0f, 12.0f, 0.0f };
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
-    return kSectionEdgeInsets;
+    return UIEdgeInsetsZero;
 }
 
 @end

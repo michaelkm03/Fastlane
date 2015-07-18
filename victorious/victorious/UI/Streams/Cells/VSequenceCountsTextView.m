@@ -21,7 +21,6 @@ static NSString * const kDividerDelimeter = @"•";
 
 @interface VSequenceCountsTextView () <CCHLinkTextViewDelegate>
 
-@property (nonatomic, strong) CCHLinkTextView *countsTextView;
 @property (nonatomic, strong) VLargeNumberFormatter *numberFormatter;
 
 @property (nonatomic, assign) NSInteger likesCount;

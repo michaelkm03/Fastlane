@@ -11,6 +11,7 @@
 #import "VUser.h"
 #import "VDependencyManager.h"
 #import "VInStreamMediaLink.h"
+#import "VTagStringFormatter.h"
 
 @implementation VInStreamCommentCellContents
 
@@ -70,8 +71,9 @@
                                         andDependencyManager:dependencyManager];
         }
         
+        NSString *tappableUserName = [VTagStringFormatter databaseFormattedStringFromUser:comment.user];
         VInStreamCommentCellContents *content = [[VInStreamCommentCellContents alloc]
-                                                 initWithUsername:comment.user.name
+                                                 initWithUsername:tappableUserName
                                                  usernameTextAttributes:@{ NSForegroundColorAttributeName : linkColor, NSFontAttributeName : usernameFont }
                                                  comment:comment.text
                                                  commentTextAttributes:@{ NSForegroundColorAttributeName : mainTextColor, NSFontAttributeName : commentFont }
