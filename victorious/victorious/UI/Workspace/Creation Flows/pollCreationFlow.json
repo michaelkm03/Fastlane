@@ -1,10 +1,9 @@
 {
     "name":"poll.creationFlow",
-    "closeIcon": {
-        "imageURL":"cameraButtonClose"
-    },
+    "statusBarStyle": "dark",
     "pollCreationScreen": {
         "name":"pollCreation.screen",
+
         "closeIcon": {
             "imageURL": "Close"
         },
@@ -20,6 +19,7 @@
         },
         "prompt": "Ask a question...",
         "optionAPrompt": "Vote this",
+
         "optionBPrompt": "Vote that",
         "font.heading4": {
             "fontName": "Roboto-Medium",

@@ -1,8 +1,5 @@
 {
     "name":"text.creationFlow",
-    "closeIcon": {
-        "imageURL":"cameraButtonClose"
-    },
     "navBarBackground": {
         "name": "solidColor.background",
         "color": {

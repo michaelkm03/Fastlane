@@ -14,6 +14,7 @@
 // Dependencies
 #import "VDependencyManager.h"
 #import "VSolidColorBackground.h"
+#import "VDependencyManager+VStatusBarStyle.h"
 
 // Subclasses
 #import "VAbstractImageVideoCreationFlowController.h"
@@ -21,6 +22,7 @@
 static NSString * const kCloseButtonTextKey = @"closeText";
 static NSString * const kBarBackgroundKey = @"navBarBackground";
 static NSString * const kBarTintColorKey = @"barTintColor";
+static NSString * const kStatusBaryStleKey = @"statusBarStyle";
 
 @interface VCreationFlowController () <UIViewControllerTransitioningDelegate>
 
@@ -59,9 +61,14 @@ static NSString * const kBarTintColorKey = @"barTintColor";
     self.navigationBar.tintColor = [self.dependencyManager colorForKey:kBarTintColorKey];
 }
 
+- (UIViewController *)childViewControllerForStatusBarStyle
+{
+    return nil;
+}
+
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return UIStatusBarStyleLightContent;
+    return [self.dependencyManager statusBarStyleForKey:kStatusBaryStleKey];
 }
 
 - (NSUInteger)supportedInterfaceOrientations
