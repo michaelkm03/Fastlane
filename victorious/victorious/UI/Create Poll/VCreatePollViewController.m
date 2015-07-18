@@ -72,7 +72,9 @@ static char KVOContext;
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    VCreatePollViewController *createView = (VCreatePollViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier: NSStringFromClass([VCreatePollViewController class])];
+    NSBundle *bundleForClass = [NSBundle bundleForClass:self];
+    UIStoryboard *storyboardForClass = [UIStoryboard storyboardWithName:NSStringFromClass(self) bundle:bundleForClass];
+    VCreatePollViewController *createView = (VCreatePollViewController *)[storyboardForClass instantiateViewControllerWithIdentifier: NSStringFromClass([VCreatePollViewController class])];
     createView.dependencyManager = dependencyManager;
     return createView;
 }
@@ -301,10 +303,21 @@ static char KVOContext;
 
 #pragma mark - Actions
 
-- (IBAction)mediaButtonAction:(id)sender
+- (IBAction)imageAction:(id)sender
+{
+    [self showAttachmentWithAttachmentType:VMediaAttachmentTypeImage];
+}
+
+- (IBAction)videoAction:(id)sender
+{
+    [self showAttachmentWithAttachmentType:VMediaAttachmentTypeVideo];
+}
+
+- (void)showAttachmentWithAttachmentType:(VMediaAttachmentType)attachmentType
 {
     self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager];
     __weak typeof(self) welf = self;
+    self.attachmentPresenter.attachmentTypes = VMediaAttachmentTypeImage;
     self.attachmentPresenter.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
     {
         [welf imagePickerFinishedWithURL:mediaURL

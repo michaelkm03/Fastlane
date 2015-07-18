@@ -34,11 +34,11 @@
         "orIcon": {
             "imageURL": "A_pollOr"
         },
-        "cameraIcon": {
-            "imageURL": "PostCamera"
+        "imageIcon": {
+            "imageURL": "createImageIcon"
         },
-        "searchIcon": {
-            "imageURL": "SearchIcon"
+        "videoIcon": {
+            "imageURL": "createVideoIcon"
         },
         "color.text": {
             "red": 255,
