@@ -18,7 +18,7 @@
 // Subclasses
 #import "VAbstractImageVideoCreationFlowController.h"
 
-static NSString * const kCloseButtonIconKey = @"closeIcon";
+static NSString * const kCloseButtonTextKey = @"closeText";
 static NSString * const kBarBackgroundKey = @"navBarBackground";
 static NSString * const kBarTintColorKey = @"barTintColor";
 
@@ -73,22 +73,12 @@ static NSString * const kBarTintColorKey = @"barTintColor";
 
 - (void)addCloseButtonToViewController:(UIViewController *)viewController
 {
-    UIImage *closeImage = [self.dependencyManager imageForKey:kCloseButtonIconKey];
-    UIBarButtonItem *closeButton;
-    
-    if (closeImage != nil)
-    {
-        closeButton = [[UIBarButtonItem alloc] initWithImage:closeImage
-                                                       style:UIBarButtonItemStyleDone
-                                                      target:self
-                                                      action:@selector(selectedCancel:)];
-    }
-    else
-    {
-        closeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                      target:self
-                                                                      action:@selector(selectedCancel:)];
-    }
+    NSString *closeText = [self.dependencyManager stringForKey:kCloseButtonTextKey];
+    closeText = closeText ? NSLocalizedString(closeText, nil) : NSLocalizedString(@"Cancel", nil);
+    UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithTitle:closeText
+                                                                    style:UIBarButtonItemStylePlain
+                                                                   target:self
+                                                                   action:@selector(selectedCancel:)];;
     viewController.navigationItem.leftBarButtonItem = closeButton;
 }
 
