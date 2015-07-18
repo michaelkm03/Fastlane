@@ -272,7 +272,6 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view
                                               animated:YES];
-    hud.dimBackground = YES;
     hud.labelText = NSLocalizedString(@"Publishing...", @"Publishing progress text.");
     self.publishing = YES;
     
