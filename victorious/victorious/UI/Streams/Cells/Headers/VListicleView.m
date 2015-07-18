@@ -60,7 +60,6 @@ static const CGFloat kMaxPercentBannerWidth = 0.58f;
     self.listicleLabel.center = CGPointMake(self.listicleLabel.center.x, kHeightOfBanner/2);
     self.listicleLabel.textColor = [UIColor whiteColor];
     self.listicleLabel.font = [self.dependencyManager fontForKey: VDependencyManagerLabel3FontKey];
-    self.listicleLabel.layer.zPosition = 200.0f;
     [self addSubview:self.listicleLabel];
 }
 
@@ -68,7 +67,6 @@ static const CGFloat kMaxPercentBannerWidth = 0.58f;
 {
     _headlineText = headlineText;
     [self updateLabel];
-    [self setNeedsDisplay];
 }
 
 - (void)updateLabel
@@ -81,7 +79,7 @@ static const CGFloat kMaxPercentBannerWidth = 0.58f;
     updatedLabelFrame.size = CGSizeMake(labelWidth, CGRectGetHeight(updatedLabelFrame));
     self.listicleLabel.frame = updatedLabelFrame;
     self.widthOfLabel = textWidth;
-    [self.listicleLabel setNeedsDisplay];
+    [self setNeedsDisplay];
 }
 
 - (void)drawRect:(CGRect)rect
@@ -97,7 +95,6 @@ static const CGFloat kMaxPercentBannerWidth = 0.58f;
     UIBezierPath *path = [[UIBezierPath alloc] init];
     
     [path moveToPoint:CGPointMake(0, 0)];
-    
     [path addLineToPoint:topRight];
     [path addLineToPoint:middleRight];
     [path addLineToPoint:bottomRight];
@@ -105,11 +102,8 @@ static const CGFloat kMaxPercentBannerWidth = 0.58f;
     [path addArcWithCenter:CGPointMake(kRadiusOfBanner, CGRectGetHeight(self.bounds)) radius:kRadiusOfBanner startAngle:[self degreesToRadians:270] endAngle:[self degreesToRadians:180]  clockwise:NO];
     [path addLineToPoint:CGPointMake(0, kRadiusOfBanner)];
     [path addArcWithCenter:topLeft radius:kRadiusOfBanner startAngle:[self degreesToRadians:180] endAngle:[self degreesToRadians:270] clockwise:YES];
-    
     [path closePath];
-    
-    CAShapeLayer *layer = [[CAShapeLayer alloc] init];
-    [layer setPath: path.CGPath];
+
     [[self.dependencyManager colorForKey:VDependencyManagerAccentColorKey] setFill];
     [path fill];
 }
