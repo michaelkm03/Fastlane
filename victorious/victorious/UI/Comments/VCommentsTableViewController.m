@@ -41,6 +41,7 @@
 #import "UIView+AutoLayout.h"
 #import "VNoContentView.h"
 #import "VDependencyManager+VTracking.h"
+#import "VTableViewCommentHighlighter.h"
 
 @import Social;
 
@@ -53,6 +54,7 @@
 @property (nonatomic, strong) NSArray *comments;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VNoContentView *noContentView;
+@property (nonatomic, strong) VTableViewCommentHighlighter *commentHighlighter;
 
 @end
 
@@ -75,6 +77,8 @@
     
     VSimpleModalTransition *modalTransition = [[VSimpleModalTransition alloc] init];
     self.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
+    
+    self.commentHighlighter = [[VTableViewCommentHighlighter alloc] initWithTableView:self.tableView];
     
     [self.tableView registerNib:[UINib nibWithNibName:kVCommentCellNibName bundle:nil]
          forCellReuseIdentifier:kVCommentCellNibName];
@@ -102,6 +106,20 @@
     if (self.needsRefresh)
     {
         [self.refreshControl beginRefreshing];
+    }
+    
+    if ( self.selectedComment != nil )
+    {
+        for ( NSUInteger i = 0; i < self.comments.count; i++ )
+        {
+            VComment *comment = self.comments[i];
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+            if ( [comment.remoteId isEqualToNumber:self.selectedComment.remoteId] )
+            {
+                [self.commentHighlighter scrollToAndHighlightIndexPath:indexPath delay:0.3f completion:nil];
+                break;
+            }
+        }
     }
     
     [[VTrackingManager sharedInstance] setValue:VTrackingValueCommentsView forSessionParameterWithKey:VTrackingKeyContext];

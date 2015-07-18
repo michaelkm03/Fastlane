@@ -14,7 +14,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="362" height="130"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="760" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" bounces="NO" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FhT-n3-Uet" customClass="VTagSensitiveTextView">
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="760" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" bounces="NO" scrollEnabled="NO" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FhT-n3-Uet" customClass="VTagSensitiveTextView">
                         <rect key="frame" x="28" y="6" width="334" height="33"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>

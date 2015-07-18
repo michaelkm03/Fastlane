@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class VSequence, VAsset, VNode, VDependencyManager, VUser;
+@class VSequence, VAsset, VNode, VDependencyManager, VUser, VComment;
 
 typedef NS_ENUM(NSInteger, VDefaultVideoEdit)
 {
@@ -21,9 +21,11 @@ typedef NS_ENUM(NSInteger, VDefaultVideoEdit)
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
-- (void)showCommentsFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence;
+- (void)showCommentsFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence withSelectedComment:(VComment *)selectedComment;
 
 - (BOOL)showPosterProfileFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence;
+
+- (BOOL)showProfileWithRemoteId:(NSNumber *)remoteId fromViewController:(UIViewController *)viewController;
 
 - (BOOL)showProfile:(VUser *)user fromViewController:(UIViewController *)viewController;
 

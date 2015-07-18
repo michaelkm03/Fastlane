@@ -17,28 +17,30 @@
 
 - (instancetype)initWithUsername:(NSString *)username
           usernameTextAttributes:(NSDictionary *)usernameTextAttributes
-                         comment:(NSString *)comment
+                     commentText:(NSString *)commentText
            commentTextAttributes:(NSDictionary *)commentTextAttributes
        highlightedTextAttributes:(NSDictionary *)highlightedTextAttributes
                     creationDate:(NSDate *)creationDate
          timestampTextAttributes:(NSDictionary *)timestampTextAttributes
                inStreamMediaLink:(VInStreamMediaLink *)inStreamMediaLink
            profileImageUrlString:(NSString *)profileImageUrlString
-                       commentId:(NSNumber *)commentId
+                         comment:(VComment *)comment
 {
+    NSParameterAssert(comment != nil);
+    
     self = [super init];
     if ( self != nil )
     {
         _username = username ?: @"";
         _usernameTextAttributes = usernameTextAttributes;
-        _comment = comment ?: @"";
+        _commentText = commentText ?: @"";
         _commentTextAttributes = commentTextAttributes;
         _highlightedTextAttributes = highlightedTextAttributes;
         _creationDate = creationDate;
         _timestampTextAttributes = timestampTextAttributes;
         _inStreamMediaLink = inStreamMediaLink;
         _profileImageUrlString = profileImageUrlString;
-        _commentId = commentId;
+        _comment = comment;
     }
     return self;
 }
@@ -75,14 +77,14 @@
         VInStreamCommentCellContents *content = [[VInStreamCommentCellContents alloc]
                                                  initWithUsername:tappableUserName
                                                  usernameTextAttributes:@{ NSForegroundColorAttributeName : linkColor, NSFontAttributeName : usernameFont }
-                                                 comment:comment.text
+                                                 commentText:comment.text
                                                  commentTextAttributes:@{ NSForegroundColorAttributeName : mainTextColor, NSFontAttributeName : commentFont }
                                                  highlightedTextAttributes:@{ NSForegroundColorAttributeName : linkColor, NSFontAttributeName : commentFont }
                                                  creationDate:comment.postedAt
                                                  timestampTextAttributes:@{ NSForegroundColorAttributeName : timestampTextColor, NSFontAttributeName : timestampFont }
                                                  inStreamMediaLink:mediaLink
                                                  profileImageUrlString:comment.user.pictureUrl
-                                                 commentId:comment.remoteId];
+                                                 comment:comment];
         [contents addObject:content];
     }
     return contents;
@@ -106,9 +108,9 @@
 - (BOOL)isEqualToInStreamCommentCellContents:(VInStreamCommentCellContents *)inStreamCommentCellContents
 {
     //is equal based on commentId, username, comment, creation date, media link text, and profile image url string
-    BOOL equalCommentIds = [self.commentId isEqualToNumber:inStreamCommentCellContents.commentId];
+    BOOL equalCommentIds = [self.comment.remoteId isEqualToNumber:inStreamCommentCellContents.comment.remoteId];
     BOOL equalUsernames = [self.username isEqualToString:inStreamCommentCellContents.username] || ( self.username == nil && inStreamCommentCellContents.username == nil );
-    BOOL equalComments = [self.comment isEqualToString:inStreamCommentCellContents.comment] || ( self.comment == nil && inStreamCommentCellContents.comment == nil );
+    BOOL equalComments = [self.commentText isEqualToString:inStreamCommentCellContents.commentText] || ( self.commentText == nil && inStreamCommentCellContents.commentText == nil );
     BOOL equalCreationDates = [self.creationDate isEqualToDate:inStreamCommentCellContents.creationDate] || ( self.creationDate == nil && inStreamCommentCellContents.creationDate == nil );
     BOOL equalMediaLinkTexts = [self.inStreamMediaLink isEqual:inStreamCommentCellContents.inStreamMediaLink] || ( self.inStreamMediaLink == nil && inStreamCommentCellContents.inStreamMediaLink == nil );
     BOOL equalProfileImageUrlStrings = [self.profileImageUrlString isEqualToString:inStreamCommentCellContents.profileImageUrlString] || ( self.profileImageUrlString == nil && inStreamCommentCellContents.profileImageUrlString == nil );
@@ -118,7 +120,7 @@
 - (NSUInteger)hash
 {
     //Hash based on commentId, username, comment, creation date, media link text, and profile image url string
-    NSString *hashString = [NSString stringWithFormat:@"i%@", self.commentId];
+    NSString *hashString = [NSString stringWithFormat:@"i%@", self.comment.remoteId];
     
     if ( self.username != nil )
     {

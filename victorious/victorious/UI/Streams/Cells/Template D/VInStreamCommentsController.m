@@ -12,6 +12,9 @@
 #import "VInStreamCommentsShowMoreAttributes.h"
 #import "VTagSensitiveTextView.h"
 #import <CCHLinkTextView/CCHLinkTextViewDelegate.h>
+#import "VComment.h"
+#import "VInStreamCommentCellContents.h"
+#import "VInStreamCommentsResponder.h"
 
 static CGFloat const kMinimumInterItemSpace = 4.0f;
 static UIEdgeInsets const kSectionEdgeInsets = { 0.0f, 27.0f, 6.0f, 2.0f };
@@ -168,6 +171,51 @@ static UIEdgeInsets const kSectionEdgeInsets = { 0.0f, 27.0f, 6.0f, 2.0f };
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
     return UIEdgeInsetsZero;
+}
+
+#pragma mark - Interaction response
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    [collectionView deselectItemAtIndexPath:indexPath animated:NO];
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    VComment *comment = nil;
+    if ( [cell isKindOfClass:[VInStreamCommentsCell class]] )
+    {
+        comment = ((VInStreamCommentsCell *)cell).commentCellContents.comment;
+    }
+    
+    [self performActionForSelectedComment:comment fromSequence:[self sequence]];
+}
+
+- (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
+{
+    //Triggered from the "show more" cell, ask responder chain to show the comments screen.
+    [self performActionForSelectedComment:nil fromSequence:[self sequence]];
+}
+
+- (VSequence *)sequence
+{
+    if ( self.commentCellContents.count > 0 )
+    {
+        return ((VInStreamCommentCellContents *)self.commentCellContents.firstObject).comment.sequence;
+    }
+    return nil;
+}
+
+#pragma mark - Responder chain helpers
+
+- (void)performActionForSelectedComment:(VComment *)comment fromSequence:(VSequence *)sequence
+{
+    if ( sequence == nil )
+    {
+        return;
+    }
+    
+    id<VInStreamCommentsResponder> commentsResponder = [[self.collectionView nextResponder] targetForAction:@selector(actionForInStreamCommentSelection:fromSequence:)
+                                                                                                 withSender:nil];
+    NSAssert(commentsResponder != nil, @"VInStreamCommentsController needs a VInStreamCommentsResponder higher up the chain to communicate following commands with.");
+    [commentsResponder actionForInStreamCommentSelection:comment fromSequence:sequence];
 }
 
 @end

@@ -12,12 +12,18 @@
 #import "VDefaultProfileButton.h"
 #import "NSDate+timeSince.h"
 #import "VInStreamMediaLink.h"
+#import "VTagSensitiveTextViewDelegate.h"
+#import "VUserTag.h"
+#import "VInStreamCommentsResponder.h"
+#import "VComment.h"
+#import "VUser.h"
 
 //Warning, must match up EXACTLY with values in this class' xib
 static UIEdgeInsets const kTextInsets = { 6.0f, 28.0f, 6.0f, 0.0f };
 static CGFloat const kInterLabelSpace = 11.0f;
+static CGFloat const kMediaButtonMaxHeight = 50.0f;
 
-@interface VInStreamCommentsCell ()
+@interface VInStreamCommentsCell () <VTagSensitiveTextViewDelegate>
 
 @property (nonatomic, weak) IBOutlet VTagSensitiveTextView *commentTextView;
 @property (nonatomic, weak) IBOutlet UIButton *mediaLinkButton;
@@ -26,7 +32,7 @@ static CGFloat const kInterLabelSpace = 11.0f;
 @property (nonatomic, weak) IBOutlet UILabel *timestampLabel;
 @property (nonatomic, weak) IBOutlet VDefaultProfileButton *profileButton;
 
-@property (nonatomic, weak) IBOutletCollection(NSLayoutConstraint) NSArray *interLabelConstraints;
+@property (nonatomic, readwrite) VInStreamCommentCellContents *commentCellContents;
 
 @end
 
@@ -38,11 +44,17 @@ static CGFloat const kInterLabelSpace = 11.0f;
     self.commentTextView.textContainerInset = UIEdgeInsetsZero;
     self.commentTextView.textContainer.lineFragmentPadding = 0.0f;
     self.commentTextView.contentInset = UIEdgeInsetsZero;
+    [self.mediaLinkButton addTarget:self action:@selector(mediaButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [self.profileButton addTarget:self action:@selector(profileButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)setupWithInStreamCommentCellContents:(VInStreamCommentCellContents *)contents
 {
-    self.commentTextView.attributedText = [[self class] commentAttributedStringForContents:contents];
+    self.commentCellContents = contents;
+    [self.commentTextView setupWithDatabaseFormattedText:[[self class] databaseFormattedTextForContents:contents]
+                                           tagAttributes:contents.highlightedTextAttributes
+                                       defaultAttributes:contents.commentTextAttributes
+                                       andTagTapDelegate:self];
     
     VInStreamMediaLink *mediaLink = contents.inStreamMediaLink;
     self.mediaLinkTopConstraint.constant = contents.inStreamMediaLink == nil ? 0.0f : kInterLabelSpace;
@@ -55,12 +67,17 @@ static CGFloat const kInterLabelSpace = 11.0f;
 
 - (void)setupMediaLinkButtonWithInStreamMediaLink:(VInStreamMediaLink *)mediaLink forSizing:(BOOL)forSizing
 {
+    BOOL needsUpdate = NO;
     if ( mediaLink != nil )
     {
         [self.mediaLinkButton setImage:[mediaLink.icon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
         self.mediaLinkButton.titleLabel.font = mediaLink.font;
         [self.mediaLinkButton setTitle:mediaLink.text forState:UIControlStateNormal];
-        self.mediaLinkButtonHeightConstraint.constant = 50.0f;
+        needsUpdate = self.mediaLinkButtonHeightConstraint.constant = kMediaButtonMaxHeight;
+        if ( needsUpdate )
+        {
+            self.mediaLinkButtonHeightConstraint.constant = kMediaButtonMaxHeight;
+        }
         
         if ( !forSizing )
         {
@@ -72,30 +89,29 @@ static CGFloat const kInterLabelSpace = 11.0f;
     else
     {
         [self.mediaLinkButton setTitle:nil forState:UIControlStateNormal];
-        self.mediaLinkButtonHeightConstraint.constant = 0.0f;
+        needsUpdate = self.mediaLinkButtonHeightConstraint.constant = 0.0f;
+        if ( needsUpdate )
+        {
+            self.mediaLinkButtonHeightConstraint.constant = 0.0f;
+        }
     }
     
-    [self.mediaLinkButton setNeedsLayout];
-    [self.mediaLinkButton layoutIfNeeded];
+    if ( needsUpdate )
+    {
+        [self.mediaLinkButton setNeedsLayout];
+        [self.mediaLinkButton layoutIfNeeded];
+    }
 }
 
-+ (NSAttributedString *)commentAttributedStringForContents:(VInStreamCommentCellContents *)contents
++ (void)commentAttributedStringForContents:(VInStreamCommentCellContents *)contents withCallbackBlock:(void (^)(VTagDictionary *, NSAttributedString *))callbackBlock
 {
-    NSString *commentString = contents.username;
-    if ( contents.comment.length > 0 )
-    {
-        commentString = [commentString stringByAppendingString:@"  "];
-        commentString = [commentString stringByAppendingString:contents.comment];
-    }
-    __block NSAttributedString *attributedString = nil;
+    NSParameterAssert(callbackBlock != nil);
+    
+    NSString *commentString = [self databaseFormattedTextForContents:contents];
     [VTagSensitiveTextView displayFormattedStringFromDatabaseFormattedText:commentString
                                                              tagAttributes:contents.highlightedTextAttributes
                                                       andDefaultAttributes:contents.commentTextAttributes
-                                                           toCallbackBlock:^(VTagDictionary *foundTags, NSAttributedString *displayFormattedString)
-     {
-         attributedString = displayFormattedString;
-     }];
-    return attributedString;
+                                                           toCallbackBlock:callbackBlock];
 }
 
 + (NSAttributedString *)timestampAttributedStringForContents:(VInStreamCommentCellContents *)contents
@@ -129,7 +145,11 @@ static CGFloat const kInterLabelSpace = 11.0f;
 + (CGFloat)desiredHeightForCommentCellContents:(VInStreamCommentCellContents *)contents withMaxWidth:(CGFloat)width
 {
     CGFloat maxWidth = width - kTextInsets.right - kTextInsets.left;
-    NSAttributedString *commentAttributedString = [self commentAttributedStringForContents:contents];
+    __block NSAttributedString *commentAttributedString = nil;
+    [self commentAttributedStringForContents:contents withCallbackBlock:^(VTagDictionary *tagDictionary, NSAttributedString *attributedString)
+    {
+        commentAttributedString = attributedString;
+    }];
     NSAttributedString *timestampAttributedString = [self timestampAttributedStringForContents:contents];
     CGFloat mediaLinkButtonHeight = [self mediaLinkButtonHeightForContents:contents withMaxWidth:maxWidth];
     CGFloat commentHeight = CGRectGetHeight([commentAttributedString boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
@@ -145,6 +165,17 @@ static CGFloat const kInterLabelSpace = 11.0f;
     height += commentHeight + timestampHeight + mediaLinkButtonHeight;
     height += kTextInsets.top + kTextInsets.bottom;
     return height;
+}
+
++ (NSString *)databaseFormattedTextForContents:(VInStreamCommentCellContents *)contents
+{
+    NSString *commentString = contents.username;
+    if ( contents.commentText.length > 0 )
+    {
+        commentString = [commentString stringByAppendingString:@"  "];
+        commentString = [commentString stringByAppendingString:contents.commentText];
+    }
+    return commentString;
 }
 
 - (void)prepareForReuse
@@ -190,6 +221,59 @@ static CGFloat const kInterLabelSpace = 11.0f;
 {
     NSString *identifier = [self suggestedReuseIdentifier];
     return @[ identifier, [identifier stringByAppendingString:@"withMedia"]];
+}
+
+#pragma mark - Button response
+
+- (void)mediaButtonPressed
+{
+    [self performActionForSelectedMediaUrlString:self.commentCellContents.inStreamMediaLink.urlString];
+}
+
+- (void)profileButtonPressed
+{
+    [self performActionForSelectedUserWithRemoteId:self.commentCellContents.comment.user.remoteId];
+}
+
+#pragma mark - VTagSensitiveTextViewDelegate
+
+- (void)tagSensitiveTextView:(VTagSensitiveTextView *)tagSensitiveTextView tappedTag:(VTag *)tag
+{
+    if ( [tag isKindOfClass:[VUserTag class]] )
+    {
+        [self performActionForSelectedUserWithRemoteId:((VUserTag *)tag).remoteId];
+    }
+    else
+    {
+        //Tapped a hashtag, show a hashtag view controller
+        [self performActionForSelectedHashtag:[tag.displayString.string substringFromIndex:1]];
+    }
+}
+
+#pragma mark - Responder chain
+
+- (void)performActionForSelectedUserWithRemoteId:(NSNumber *)remoteId
+{
+    id<VInStreamCommentsResponder> commentsResponder = [[self nextResponder] targetForAction:@selector(actionForInStreamUserSelection:)
+                                                                                                 withSender:nil];
+    NSAssert(commentsResponder != nil, @"VInStreamCommentsCell needs a VInStreamCommentsResponder higher up the chain to communicate comment selection commands with.");
+    [commentsResponder actionForInStreamUserSelection:remoteId];
+}
+
+- (void)performActionForSelectedHashtag:(NSString *)hashtagString
+{
+    id<VInStreamCommentsResponder> commentsResponder = [[self nextResponder] targetForAction:@selector(actionForInStreamHashtagSelection:)
+                                                                                  withSender:nil];
+    NSAssert(commentsResponder != nil, @"VInStreamCommentsCell needs a VInStreamCommentsResponder higher up the chain to communicate comment selection commands with.");
+    [commentsResponder actionForInStreamHashtagSelection:hashtagString];
+}
+
+- (void)performActionForSelectedMediaUrlString:(NSString *)mediaUrlString
+{
+    id<VInStreamCommentsResponder> commentsResponder = [[self nextResponder] targetForAction:@selector(actionforInStreamMediaSelection:)
+                                                                                  withSender:nil];
+    NSAssert(commentsResponder != nil, @"VInStreamCommentsCell needs a VInStreamCommentsResponder higher up the chain to communicate comment selection commands with.");
+    [commentsResponder actionforInStreamMediaSelection:mediaUrlString];
 }
 
 @end

@@ -28,10 +28,12 @@
 #import "VDependencyManager+VBackground.h"
 #import "VBackground.h"
 #import "UIView+AutoLayout.h"
+#import "VComment.h"
 
 static const CGFloat kNoPreviewBackgroundTransparency = 0.75f;
 static NSString * const kCommentsViewControllerKey = @"commentsScreen";
 static NSString * const kSequenceKey = @"sequence";
+static NSString * const kSelectedCommentKey = @"selectedComment";
 
 @interface VCommentsContainerViewController() <VCommentsTableViewControllerDelegate>
 
@@ -123,6 +125,7 @@ static NSString * const kSequenceKey = @"sequence";
         VCommentsTableViewController *streamsCommentsController = [VCommentsTableViewController newWithDependencyManager:self.dependencyManager];
         streamsCommentsController.delegate = self;
         streamsCommentsController.sequence = self.sequence;
+        streamsCommentsController.selectedComment = [self.dependencyManager templateValueOfType:[VComment class] forKey:kSelectedCommentKey];
         _conversationTableViewController = streamsCommentsController;
     }
 
@@ -292,6 +295,13 @@ static NSString * const kSequenceKey = @"sequence";
 {
     NSParameterAssert(sequence != nil );
     return [self templateValueOfType:[VCommentsContainerViewController class] forKey:kCommentsViewControllerKey withAddedDependencies:@{ kSequenceKey: sequence }];
+}
+
+- (VCommentsContainerViewController *)commentsContainerWithSequence:(VSequence *)sequence andSelectedComment:(VComment *)selectedComment
+{
+    NSParameterAssert(sequence != nil );
+    NSParameterAssert(selectedComment != nil);
+    return [self templateValueOfType:[VCommentsContainerViewController class] forKey:kCommentsViewControllerKey withAddedDependencies:@{ kSequenceKey: sequence, kSelectedCommentKey : selectedComment }];
 }
 
 @end

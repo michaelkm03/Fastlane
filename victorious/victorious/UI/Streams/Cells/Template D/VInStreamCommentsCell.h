@@ -8,7 +8,7 @@
 
 #import "VBaseCollectionViewCell.h"
 
-@class VInStreamCommentCellContents, VTagSensitiveTextView, VDefaultProfileButton;
+@class VInStreamCommentCellContents, VTagSensitiveTextView, VDefaultProfileButton, VTagDictionary;
 
 @interface VInStreamCommentsCell : VBaseCollectionViewCell
 
@@ -21,5 +21,7 @@
 + (NSString *)reuseIdentifierForContents:(VInStreamCommentCellContents *)contents;
 
 + (NSArray *)possibleReuseIdentifiers;
+
+@property (nonatomic, readonly) VInStreamCommentCellContents *commentCellContents;
 
 @end

@@ -12,7 +12,7 @@
  A helper class that primary animates the contentOffset (scroll position) of a collection view
  and highlights a specific cell to call the attention of the user.
  */
-@interface VCommentHighlighter : NSObject
+@interface VAbstractCommentHighlighter : NSObject
 
 /**
  Returns YES if the animations triggered by `scrollToAndHighlightIndexPath:delay:completion` are
@@ -21,12 +21,6 @@
  be animating.
  */
 @property (nonatomic, assign, readonly) BOOL isAnimatingCellHighlight;
-
-/**
- The desginated initializer requiring a collectionView to work with so it can control
- animation of the contentOffset and cells within.
- */
-- (instancetype)initWithCollectionView:(UICollectionView *)collectionView NS_DESIGNATED_INITIALIZER;
 
 /**
  Trigger an animation that scrolls to and highlights the cell at the specified index
@@ -42,5 +36,13 @@
  not be called if this method is called before the end of any currently active animations.
  */
 - (void)stopAnimations;
+
+#pragma mark - Required overrides
+
+- (NSInteger)numberOfSections;
+
+- (void)scrollToIndexPath:(NSIndexPath *)indexPath;
+
+- (UIView *)viewToAnimateForIndexPath:(NSIndexPath *)indexPath;
 
 @end

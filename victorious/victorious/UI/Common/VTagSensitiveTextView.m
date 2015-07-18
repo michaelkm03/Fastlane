@@ -78,9 +78,9 @@
 }
 
 + (void)displayFormattedStringFromDatabaseFormattedText:(NSString *)databaseFormattedText
-                                                          tagAttributes:(NSDictionary *)tagAttributes
-                                                   andDefaultAttributes:(NSDictionary *)defaultAttributes
-                                                        toCallbackBlock:(void (^)(VTagDictionary *foundTags, NSAttributedString *displayFormattedString))completionBlock
+                                          tagAttributes:(NSDictionary *)tagAttributes
+                                   andDefaultAttributes:(NSDictionary *)defaultAttributes
+                                        toCallbackBlock:(void (^)(VTagDictionary *foundTags, NSAttributedString *displayFormattedString))completionBlock
 {
     NSAssert(tagAttributes != nil, @"tagAttributes must be non-nil");
     NSAssert(defaultAttributes != nil, @"defaultAttributes must be non-nil");
@@ -88,8 +88,8 @@
     
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:databaseFormattedText != nil ? databaseFormattedText : @"" attributes:defaultAttributes];
     VTagDictionary *foundTags = [VTagStringFormatter tagDictionaryFromFormattingAttributedString:attributedString
-                                             withTagStringAttributes:tagAttributes
-                                          andDefaultStringAttributes:defaultAttributes];
+                                                                         withTagStringAttributes:tagAttributes
+                                                                      andDefaultStringAttributes:defaultAttributes];
     completionBlock(foundTags, attributedString);
 }
 
@@ -140,13 +140,13 @@
     if (characterIndex < self.textStorage.length)
     {
         NSRange range;
-        UIColor *foregroundColor = [self.attributedText attribute:NSForegroundColorAttributeName atIndex:characterIndex longestEffectiveRange:&range inRange:NSMakeRange(0, self.attributedText.length)];
+        UIColor *foregroundColor = [self.textStorage attribute:NSForegroundColorAttributeName atIndex:characterIndex longestEffectiveRange:&range inRange:NSMakeRange(0, self.textStorage.length)];
         BOOL containsAttributes = [self.tagStringAttributes[NSForegroundColorAttributeName] isEqual:foregroundColor];
         
         if ( containsAttributes )
         {
-            VTag *tag = [self.tagDictionary tagForKey:[self.attributedText.string substringWithRange:range]];
-            if ( tag )
+            VTag *tag = [self.tagDictionary tagForKey:[self.textStorage.string substringWithRange:range]];
+            if ( tag != nil )
             {
                 self.highlightRange = range;
                 self.selectedTag = tag;
@@ -159,7 +159,7 @@
 
 - (void)didTapAtLocation:(CGPoint)location
 {
-    if ( self.selectedTag != nil )
+    if ( self.selectedTag != nil && self.tagTapDelegate != nil )
     {
         [self.tagTapDelegate tagSensitiveTextView:self tappedTag:self.selectedTag];
     }
@@ -172,7 +172,7 @@
         [self.textStorage setAttributes:self.selectedTag.tagStringAttributes range:self.highlightRange];
         self.selectedTag = nil;
     }
-
+    
 }
 
 @end
