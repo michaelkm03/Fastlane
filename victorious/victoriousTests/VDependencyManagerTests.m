@@ -522,6 +522,14 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     XCTAssert([viewController calledNewMethod]);
 }
 
+- (void)testReferencedObjectWithAddedDependencies
+{
+    NSDictionary *added = @{ @"new": @"value" };
+    VTestViewControllerWithNewMethod *value = (VTestViewControllerWithNewMethod *)[self.dependencyManager templateValueOfType:[UIViewController class] forKey:@"otherNVC" withAddedDependencies:added];
+    XCTAssert([value isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssertEqualObjects([value.dependencyManager stringForKey:@"new"], @"value");
+}
+
 - (void)testDeepReference
 {
     VTestViewControllerWithNewMethod *viewController = (VTestViewControllerWithNewMethod *)[self.dependencyManager viewControllerForKey:@"deeplyReferencedNVC"];

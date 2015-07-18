@@ -83,6 +83,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
          }
          
          [[VUserManager sharedInstance] loginViaTwitterWithTwitterID:twitterAccount.identifier
+                                                            isModern:YES
                                                         OnCompletion:^(VUser *user, BOOL created)
           {
               dispatch_async(dispatch_get_main_queue(), ^
