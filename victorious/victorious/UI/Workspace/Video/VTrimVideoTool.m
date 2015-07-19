@@ -142,6 +142,7 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
     _playerItem = playerItem;
     
     self.videoPlayerController.playerItem = playerItem;
+    self.videoPlayerController.videoPlayerLayerVideoGravity = AVLayerVideoGravityResizeAspect;
 }
 
 - (void)setSelected:(BOOL)selected
