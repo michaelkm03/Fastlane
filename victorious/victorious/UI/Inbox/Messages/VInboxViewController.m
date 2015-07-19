@@ -93,7 +93,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
 - (void)multipleContainerDidSetSelected:(BOOL)isDefault
 {
-    [self updateNavigationItem];
+    // Empty
 }
 
 #pragma mark - View Lifecycle
