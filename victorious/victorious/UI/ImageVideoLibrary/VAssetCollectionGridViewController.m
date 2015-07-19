@@ -26,6 +26,9 @@
 
 NSString * const VAssetCollectionGridViewControllerMediaType = @"assetGridViewControllerMediaType";
 
+static NSString * const kImageTitleKey = @"imageTitle";
+static NSString * const kVideoTitleKey = @"videoTitle";
+
 @interface VAssetCollectionGridViewController () <VAssetCollectionUnauthorizedDataSourceDelegate, VAssetCollectionGridDataSourceDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -218,6 +221,9 @@ NSString * const VAssetCollectionGridViewControllerMediaType = @"assetGridViewCo
 - (UIView *)createContainerViewForAlternateCollectionSelection
 {   
     self.folderButton = [VLibraryFolderControl newFolderControl];
+    NSString *titleText = (self.mediaType == PHAssetMediaTypeImage) ? NSLocalizedString([self.dependencyManager stringForKey:kImageTitleKey], nil) : NSLocalizedString([self.dependencyManager stringForKey:kVideoTitleKey], nil);
+    self.folderButton.attributedTitle = [[NSAttributedString alloc] initWithString:titleText attributes:nil];
+    self.folderButton.attributedSubtitle = nil;
     [self.folderButton addTarget:self action:@selector(selectedFolderPicker:) forControlEvents:UIControlEventTouchUpInside];
     return self.folderButton;
 }

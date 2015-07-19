@@ -15,7 +15,7 @@
     return [super init];
 }
 
-- (void)downloadWithProgress:(void (^)(double progress, NSString *localizedProgress))progressHandler
+- (void)downloadWithProgress:(void (^)(BOOL accurateProgress, double progress, NSString *localizedProgress))progressHandler
                   completion:(void (^)(NSError *error, NSURL *downloadedFileURL, UIImage *previewImage))completion
 {
     NSAssert(false, @"Implement in subclasses!");
