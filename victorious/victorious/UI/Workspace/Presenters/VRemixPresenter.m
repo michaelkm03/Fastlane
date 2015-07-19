@@ -18,6 +18,7 @@
 #import "VAbstractImageVideoCreationFlowController.h"
 
 static NSString * const kImageCreationFlowKey = @"imageCreateFlow";
+static NSString * const kGifCreationFlowKey = @"gifCreateFlow";
 
 @interface VRemixPresenter () <VCreationFlowControllerDelegate>
 
@@ -70,7 +71,17 @@ static NSString * const kImageCreationFlowKey = @"imageCreateFlow";
     if ([self.sequenceToRemix isImage])
     {
         VAbstractImageVideoCreationFlowController *flowController = [self.dependencyManager templateValueOfType:[VAbstractImageVideoCreationFlowController class]
-                                                                                            forKey:kImageCreationFlowKey];
+                                                                                                         forKey:kImageCreationFlowKey];
+        flowController.creationFlowDelegate = self;
+        [flowController remixWithPreviewImage:nil mediaURL:remixURL];
+        [viewControllerToPresentOn presentViewController:flowController
+                                                animated:YES
+                                              completion:nil];
+    }
+    else if ([self.sequenceToRemix isVideo])
+    {
+        VAbstractImageVideoCreationFlowController *flowController = [self.dependencyManager templateValueOfType:[VAbstractImageVideoCreationFlowController class]
+                                                                                                         forKey:kGifCreationFlowKey];
         flowController.creationFlowDelegate = self;
         [flowController remixWithPreviewImage:nil mediaURL:remixURL];
         [viewControllerToPresentOn presentViewController:flowController
