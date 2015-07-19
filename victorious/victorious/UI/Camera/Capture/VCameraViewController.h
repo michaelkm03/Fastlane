@@ -50,10 +50,4 @@ typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NS
  */
 @property (nonatomic, assign, readonly) VCameraContext context;
 
-/**
- *  An animated version of the toolsHidden setter.
- */
-- (void)setToolbarHidden:(BOOL)toolbarHidden
-                animated:(BOOL)animated;
-
 @end
