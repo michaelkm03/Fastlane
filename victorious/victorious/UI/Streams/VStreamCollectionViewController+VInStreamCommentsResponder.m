@@ -7,7 +7,6 @@
 //
 
 #import "VStreamCollectionViewController+VInStreamCommentsResponder.h"
-#import "VComment.h"
 
 @implementation VStreamCollectionViewController (VInStreamCommentsResponder)
 
@@ -26,9 +25,9 @@
     [self.sequenceActionController showProfileWithRemoteId:userId fromViewController:self];
 }
 
-- (void)actionforInStreamMediaSelection:(NSString *)mediaUrlString
+- (void)actionForInStreamMediaSelection:(NSString *)mediaUrlString withMediaLinkType:(VInStreamMediaLinkType)linkType
 {
-#warning SHOW LIGHTBOX
+    [self.sequenceActionController showMediaContentViewForUrlString:mediaUrlString withMediaLinkType:linkType fromViewController:self];
 }
 
 @end

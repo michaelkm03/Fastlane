@@ -19,9 +19,10 @@
     __block NSString *linkLabelText;
     __block UIImage *linkIcon;
     
-    [VInStreamMediaLink imageAndTextForMediaCategoryString:mediaType
-                                         dependencyManager:dependencyManager
-                                          andCallbackBlock:^(UIImage *icon, NSString *text)
+    VInStreamMediaLinkType linkType = [self linkTypeForCategoryString:mediaType];
+    [VInStreamMediaLink imageAndTextForMediaLinkType:linkType
+                                   dependencyManager:dependencyManager
+                                    andCallbackBlock:^(UIImage *icon, NSString *text)
      {
          linkIcon = icon;
          linkLabelText = text;
@@ -31,6 +32,7 @@
                                                     font:font
                                                     text:linkLabelText
                                                     icon:linkIcon
+                                                linkType:linkType
                                                urlString:urlString];
 }
 
@@ -38,6 +40,7 @@
                              font:(UIFont *)font
                              text:(NSString *)text
                              icon:(UIImage *)icon
+                         linkType:(VInStreamMediaLinkType)linkType
                         urlString:(NSString *)urlString
 {
     self = [super init];
@@ -47,21 +50,57 @@
         _font = font;
         _text = text;
         _icon = icon;
+        _mediaLinkType = linkType;
         _urlString = urlString;
     }
     return self;
 }
 
-+ (void)imageAndTextForMediaCategoryString:(NSString *)category dependencyManager:(VDependencyManager *)dependencyManager andCallbackBlock:(void (^)(UIImage *, NSString *))callbackBlock
++ (VInStreamMediaLinkType)linkTypeForCategoryString:(NSString *)category
 {
-    if ( category.length > 0 )
+    if ( [category isEqualToString:@"image"] )
     {
-        callbackBlock([UIImage imageNamed:@"open_image_icon"], @"Open image");
+        return VInStreamMediaLinkTypeImage;
     }
-    else
+#warning THIS WON'T WORK :(
+    else if ( [category isEqualToString:@"gif"] )
     {
-        callbackBlock(nil, nil);
+        return VInStreamMediaLinkTypeGif;
     }
+    else if ( [category isEqualToString:@"video"] )
+    {
+        return VInStreamMediaLinkTypeVideo;
+    }
+    return VInStreamMediaLinkTypeUnknown;
+}
+
++ (void)imageAndTextForMediaLinkType:(VInStreamMediaLinkType)linkType dependencyManager:(VDependencyManager *)dependencyManager andCallbackBlock:(void (^)(UIImage *icon, NSString *linkPrompt))callbackBlock
+{
+#warning NEED TO GET ICONS FROM DEPENDENCY MANAGER
+    UIImage *icon = nil;
+    NSString *linkPrompt = nil;
+    switch (linkType)
+    {
+        case VInStreamMediaLinkTypeImage:
+            icon = [UIImage imageNamed:@"open_image_icon"];
+            linkPrompt = @"Open Image";
+            break;
+
+        case VInStreamMediaLinkTypeGif:
+            icon = [UIImage imageNamed:@"watch_gif_icon"];
+            linkPrompt = @"Watch Gif";
+            break;
+            
+        case VInStreamMediaLinkTypeVideo:
+            icon = [UIImage imageNamed:@"watch_video_icon"];
+            linkPrompt = @"Watch Video";
+            break;
+            
+        default:
+            break;
+    }
+    
+    callbackBlock( icon, linkPrompt );
 }
 
 - (BOOL)isEqual:(id)object

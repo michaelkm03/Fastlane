@@ -22,6 +22,7 @@
 static UIEdgeInsets const kTextInsets = { 6.0f, 28.0f, 6.0f, 0.0f };
 static CGFloat const kInterLabelSpace = 11.0f;
 static CGFloat const kMediaButtonMaxHeight = 50.0f;
+static NSString * const kMediaIdentifierSuffix = @"withMedia";
 
 @interface VInStreamCommentsCell () <VTagSensitiveTextViewDelegate>
 
@@ -212,7 +213,7 @@ static CGFloat const kMediaButtonMaxHeight = 50.0f;
     NSString *identifier = [self suggestedReuseIdentifier];
     if ( contents.inStreamMediaLink != nil )
     {
-        identifier = [identifier stringByAppendingString:@"withMedia"];
+        identifier = [identifier stringByAppendingString:kMediaIdentifierSuffix];
     }
     return identifier;
 }
@@ -220,14 +221,15 @@ static CGFloat const kMediaButtonMaxHeight = 50.0f;
 + (NSArray *)possibleReuseIdentifiers
 {
     NSString *identifier = [self suggestedReuseIdentifier];
-    return @[ identifier, [identifier stringByAppendingString:@"withMedia"]];
+    return @[ identifier, [identifier stringByAppendingString:kMediaIdentifierSuffix]];
 }
 
 #pragma mark - Button response
 
 - (void)mediaButtonPressed
 {
-    [self performActionForSelectedMediaUrlString:self.commentCellContents.inStreamMediaLink.urlString];
+    VInStreamMediaLink *inStreamMediaLink = self.commentCellContents.inStreamMediaLink;
+    [self performActionForSelectedMediaUrlString:inStreamMediaLink.urlString andMediaLinkType:inStreamMediaLink.mediaLinkType];
 }
 
 - (void)profileButtonPressed
@@ -268,12 +270,12 @@ static CGFloat const kMediaButtonMaxHeight = 50.0f;
     [commentsResponder actionForInStreamHashtagSelection:hashtagString];
 }
 
-- (void)performActionForSelectedMediaUrlString:(NSString *)mediaUrlString
+- (void)performActionForSelectedMediaUrlString:(NSString *)mediaUrlString andMediaLinkType:(VInStreamMediaLinkType)linkType
 {
-    id<VInStreamCommentsResponder> commentsResponder = [[self nextResponder] targetForAction:@selector(actionforInStreamMediaSelection:)
+    id<VInStreamCommentsResponder> commentsResponder = [[self nextResponder] targetForAction:@selector(actionForInStreamMediaSelection:withMediaLinkType:)
                                                                                   withSender:nil];
     NSAssert(commentsResponder != nil, @"VInStreamCommentsCell needs a VInStreamCommentsResponder higher up the chain to communicate comment selection commands with.");
-    [commentsResponder actionforInStreamMediaSelection:mediaUrlString];
+    [commentsResponder actionForInStreamMediaSelection:mediaUrlString withMediaLinkType:linkType];
 }
 
 @end

@@ -18,13 +18,9 @@
 
 @implementation VLightboxViewController
 
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (instancetype)init
 {
-    self = [super initWithNibName:NSStringFromClass([VLightboxViewController class]) bundle:nil];
-    if (self)
-    {
-    }
-    return self;
+    return [super initWithNibName:NSStringFromClass([VLightboxViewController class]) bundle:nil];
 }
 
 #pragma mark - View lifecycle

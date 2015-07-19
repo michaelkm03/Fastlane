@@ -23,6 +23,7 @@
 #import "VUserProfileViewController.h"
 #import "VCommentsContainerViewController.h"
 #import "VWorkspaceViewController.h"
+#import "VMediaLinkViewController.h"
 
 #pragma mark-  Views
 #import "VNoContentView.h"
@@ -123,6 +124,13 @@
     VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:user];
     [viewController.navigationController pushViewController:profileViewController animated:YES];
     
+    return YES;
+}
+
+- (BOOL)showMediaContentViewForUrlString:(NSString *)urlString withMediaLinkType:(VInStreamMediaLinkType)linkType fromViewController:(UIViewController *)viewController
+{
+    VMediaLinkViewController *mediaLinkViewController = [VMediaLinkViewController newWithMediaUrlString:urlString andMediaLinkType:linkType];
+    [viewController presentViewController:mediaLinkViewController animated:YES completion:nil];
     return YES;
 }
 

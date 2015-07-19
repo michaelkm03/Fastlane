@@ -1035,6 +1035,11 @@
 		F0FC97D21B5AE9130098AFCB /* VStreamCollectionViewController+VInStreamCommentsResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97D11B5AE9130098AFCB /* VStreamCollectionViewController+VInStreamCommentsResponder.m */; };
 		F0FC97D51B5AF0EE0098AFCB /* VCollectionViewCommentHighlighter.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97D41B5AF0EE0098AFCB /* VCollectionViewCommentHighlighter.m */; };
 		F0FC97D81B5AF0FD0098AFCB /* VTableViewCommentHighlighter.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97D71B5AF0FD0098AFCB /* VTableViewCommentHighlighter.m */; };
+		F0FC97DC1B5C0B9B0098AFCB /* VMediaLinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97DA1B5C0B9B0098AFCB /* VMediaLinkViewController.m */; };
+		F0FC97DD1B5C0B9B0098AFCB /* VMediaLinkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0FC97DB1B5C0B9B0098AFCB /* VMediaLinkViewController.xib */; };
+		F0FC97E41B5C1CAD0098AFCB /* VImageLinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97E31B5C1CAD0098AFCB /* VImageLinkViewController.m */; };
+		F0FC97E71B5C1CB90098AFCB /* VVideoLinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97E61B5C1CB90098AFCB /* VVideoLinkViewController.m */; };
+		F0FC97ED1B5C41280098AFCB /* VGifLinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97EC1B5C41280098AFCB /* VGifLinkViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2991,6 +2996,16 @@
 		F0FC97D41B5AF0EE0098AFCB /* VCollectionViewCommentHighlighter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCollectionViewCommentHighlighter.m; sourceTree = "<group>"; };
 		F0FC97D61B5AF0FC0098AFCB /* VTableViewCommentHighlighter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTableViewCommentHighlighter.h; sourceTree = "<group>"; };
 		F0FC97D71B5AF0FD0098AFCB /* VTableViewCommentHighlighter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTableViewCommentHighlighter.m; sourceTree = "<group>"; };
+		F0FC97D91B5C0B9B0098AFCB /* VMediaLinkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMediaLinkViewController.h; sourceTree = "<group>"; };
+		F0FC97DA1B5C0B9B0098AFCB /* VMediaLinkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMediaLinkViewController.m; sourceTree = "<group>"; };
+		F0FC97DB1B5C0B9B0098AFCB /* VMediaLinkViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VMediaLinkViewController.xib; sourceTree = "<group>"; };
+		F0FC97E21B5C1CAD0098AFCB /* VImageLinkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageLinkViewController.h; sourceTree = "<group>"; };
+		F0FC97E31B5C1CAD0098AFCB /* VImageLinkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageLinkViewController.m; sourceTree = "<group>"; };
+		F0FC97E51B5C1CB90098AFCB /* VVideoLinkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoLinkViewController.h; sourceTree = "<group>"; };
+		F0FC97E61B5C1CB90098AFCB /* VVideoLinkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoLinkViewController.m; sourceTree = "<group>"; };
+		F0FC97EB1B5C41280098AFCB /* VGifLinkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGifLinkViewController.h; sourceTree = "<group>"; };
+		F0FC97EC1B5C41280098AFCB /* VGifLinkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VGifLinkViewController.m; sourceTree = "<group>"; };
+		F0FC97EF1B5C421D0098AFCB /* VInStreamMediaLinkType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VInStreamMediaLinkType.h; sourceTree = "<group>"; };
 		F0FFBA351AD5B1DC00283936 /* VMarqueeDataDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeDataDelegate.h; sourceTree = "<group>"; };
 		F0FFBA361AD5B1EE00283936 /* VMarqueeSelectionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeSelectionDelegate.h; sourceTree = "<group>"; };
 		FA9A96A39C05C50C7D098A8E /* Pods-test.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.qa.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.qa.xcconfig"; sourceTree = "<group>"; };
@@ -3351,6 +3366,7 @@
 				D8E39BB719CB7C3C007FD86A /* VNewContentViewController.m */,
 				D8360CE819E3640000D7E260 /* VNewContentViewController+Actions.h */,
 				D8360CE919E3640000D7E260 /* VNewContentViewController+Actions.m */,
+				F0FC97E11B5C1C7E0098AFCB /* Media Link View Controllers */,
 				D8917EA019F8498F0070BDBB /* VVideoCellViewModel.h */,
 				D8917EA119F8498F0070BDBB /* VVideoCellViewModel.m */,
 				0394204B1AB9026C0087ADFA /* VVoteType.h */,
@@ -6733,6 +6749,7 @@
 				F0FC97341B509C3D0098AFCB /* VInStreamCommentsController.h */,
 				F0FC97351B509C3D0098AFCB /* VInStreamCommentsController.m */,
 				F0FC97CF1B5AD6E40098AFCB /* VInStreamCommentsResponder.h */,
+				F0FC97EF1B5C421D0098AFCB /* VInStreamMediaLinkType.h */,
 				F0FC97AB1B56B3910098AFCB /* VInStreamMediaLink.h */,
 				F0FC97AC1B56B3910098AFCB /* VInStreamMediaLink.m */,
 				F0FC97BD1B59C9940098AFCB /* VInStreamCommentsShowMoreCell.h */,
@@ -6743,6 +6760,22 @@
 				F0FC97A91B5563A40098AFCB /* VInStreamCommentsCell.xib */,
 			);
 			name = "In Stream Comments";
+			sourceTree = "<group>";
+		};
+		F0FC97E11B5C1C7E0098AFCB /* Media Link View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				F0FC97D91B5C0B9B0098AFCB /* VMediaLinkViewController.h */,
+				F0FC97DA1B5C0B9B0098AFCB /* VMediaLinkViewController.m */,
+				F0FC97DB1B5C0B9B0098AFCB /* VMediaLinkViewController.xib */,
+				F0FC97E21B5C1CAD0098AFCB /* VImageLinkViewController.h */,
+				F0FC97E31B5C1CAD0098AFCB /* VImageLinkViewController.m */,
+				F0FC97E51B5C1CB90098AFCB /* VVideoLinkViewController.h */,
+				F0FC97E61B5C1CB90098AFCB /* VVideoLinkViewController.m */,
+				F0FC97EB1B5C41280098AFCB /* VGifLinkViewController.h */,
+				F0FC97EC1B5C41280098AFCB /* VGifLinkViewController.m */,
+			);
+			name = "Media Link View Controllers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -6861,6 +6894,7 @@
 				036F38941A0C4DEA0014DF66 /* SourceSansPro-Semibold.ttf in Resources */,
 				036F388E1A0C4DEA0014DF66 /* RobotoSlab-Regular.ttf in Resources */,
 				036F38911A0C4DEA0014DF66 /* Signika-Light.ttf in Resources */,
+				F0FC97DD1B5C0B9B0098AFCB /* VMediaLinkViewController.xib in Resources */,
 				03FD87D119F96EEB00D93BAA /* VHistogramCell.xib in Resources */,
 				036F388D1A0C4DEA0014DF66 /* RobotoSlab-Bold.ttf in Resources */,
 				F0F04AF11B29E6AC00F6F401 /* VShareItemCollectionViewCell.xib in Resources */,
@@ -7508,6 +7542,7 @@
 				F0AD21791AF43E24001BDCC6 /* VDirectoryCollectionViewController+VShowcaseDirectorySelection.m in Sources */,
 				A7D378451AEF4ED5007FF197 /* VAbstractUserProfileHeaderViewController.m in Sources */,
 				0314D48519B46B5E00FA363C /* VKeyboardBarContainerViewController.m in Sources */,
+				F0FC97E41B5C1CAD0098AFCB /* VImageLinkViewController.m in Sources */,
 				D85B70851B0EAF3F0038CA5B /* VSignupWithEmailViewController.m in Sources */,
 				F06F10D11AC3B3AB0062E1D1 /* VAbstractMarqueeCollectionViewCell.m in Sources */,
 				A708C9581A7FFF67000EE1EE /* VContentViewRotationHelper.m in Sources */,
@@ -7777,6 +7812,7 @@
 				0314D48819B46B5E00FA363C /* VCommentTextAndMediaView.m in Sources */,
 				D888B52B1A86FC7800B34149 /* VRadialGradientView.m in Sources */,
 				D8D3B7241AB264D400CF966C /* AVAsset+VVideoCompositionWithFrameDuration.m in Sources */,
+				F0FC97ED1B5C41280098AFCB /* VGifLinkViewController.m in Sources */,
 				D8D812AB1B14EA0200E93B37 /* VModernResetPasswordViewController.m in Sources */,
 				C35AB0A61AF9843700B2AE1B /* VCVideoPlayerView.m in Sources */,
 				A682F4FC1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.m in Sources */,
@@ -7826,6 +7862,7 @@
 				A75ED0BE1AB7927A00C35063 /* VTextTypePickerDataSource.m in Sources */,
 				0386E1F71A8DDA7F00FC9BDF /* VFollowingStreamCollectionViewController.m in Sources */,
 				D8332DC01A7C72EB00C3FEE0 /* VVCameraShutterOverAnimator.m in Sources */,
+				F0FC97DC1B5C0B9B0098AFCB /* VMediaLinkViewController.m in Sources */,
 				A7792FD71AE8209200E2ECC1 /* VTemplateDecorator.m in Sources */,
 				D8D812A11B13CB9300E93B37 /* VModernEnterNameViewController.m in Sources */,
 				DB9497701AAE66C600CCEFD0 /* VFirstTimeInstallHelper.m in Sources */,
@@ -7919,6 +7956,7 @@
 				D85B70831B0EAF3F0038CA5B /* VProfileCreateViewController.m in Sources */,
 				F04DC6CA1AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m in Sources */,
 				C3E772141B44B3FD005809A5 /* VLikedContentStreamCollectionViewController.m in Sources */,
+				F0FC97E71B5C1CB90098AFCB /* VVideoLinkViewController.m in Sources */,
 				A7A343DB1A8A8452000F0BCF /* VContentViewAlertHelper.m in Sources */,
 				0314D07619B467A100FA363C /* VSequence+Fetcher.m in Sources */,
 			);
