@@ -221,7 +221,6 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     self.headerView.sequence = sequence;
     self.sleekActionView.sequence = sequence;
     [self updateCaptionViewForSequence:sequence];
-    [self.previewContainer removeConstraint:self.previewContainerHeightConstraint];
     [self setNeedsUpdateConstraints];
     
     __weak typeof(self) welf = self;
@@ -273,17 +272,21 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
 - (void)updateConstraints
 {
-    // Add new height constraint for preview container to account for aspect ratio of preview asset
-    CGFloat aspectRatio = [self.sequence previewAssetAspectRatio];
-    NSLayoutConstraint *heightToWidth = [NSLayoutConstraint constraintWithItem:self.previewContainer
-                                                                     attribute:NSLayoutAttributeHeight
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:self.previewContainer
-                                                                     attribute:NSLayoutAttributeWidth
-                                                                    multiplier:(1 / aspectRatio)
-                                                                      constant:0.0f];
-    [self.previewContainer addConstraint:heightToWidth];
-    self.previewContainerHeightConstraint = heightToWidth;
+    CGFloat multipier = 1 / [self.sequence previewAssetAspectRatio];
+    if ( self.previewContainerHeightConstraint.multiplier != multipier )
+    {
+        // Add new height constraint for preview container to account for aspect ratio of preview asset
+        [self.previewContainer removeConstraint:self.previewContainerHeightConstraint];
+        NSLayoutConstraint *heightToWidth = [NSLayoutConstraint constraintWithItem:self.previewContainer
+                                                                         attribute:NSLayoutAttributeHeight
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:self.previewContainer
+                                                                         attribute:NSLayoutAttributeWidth
+                                                                        multiplier:multipier
+                                                                          constant:0.0f];
+        [self.previewContainer addConstraint:heightToWidth];
+        self.previewContainerHeightConstraint = heightToWidth;
+    }
     
     if ( [self shouldShowCaptionForSequence:self.sequence] )
     {

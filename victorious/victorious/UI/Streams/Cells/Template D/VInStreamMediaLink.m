@@ -12,14 +12,13 @@
 
 + (instancetype)newWithTintColor:(UIColor *)tintColor
                             font:(UIFont *)font
-                       mediaType:(NSString *)mediaType
+                        linkType:(VInStreamMediaLinkType)linkType
                        urlString:(NSString *)urlString
             andDependencyManager:(VDependencyManager *)dependencyManager
 {
     __block NSString *linkLabelText;
     __block UIImage *linkIcon;
     
-    VInStreamMediaLinkType linkType = [self linkTypeForCategoryString:mediaType];
     [VInStreamMediaLink imageAndTextForMediaLinkType:linkType
                                    dependencyManager:dependencyManager
                                     andCallbackBlock:^(UIImage *icon, NSString *text)
@@ -54,24 +53,6 @@
         _urlString = urlString;
     }
     return self;
-}
-
-+ (VInStreamMediaLinkType)linkTypeForCategoryString:(NSString *)category
-{
-    if ( [category isEqualToString:@"image"] )
-    {
-        return VInStreamMediaLinkTypeImage;
-    }
-#warning THIS WON'T WORK :(
-    else if ( [category isEqualToString:@"gif"] )
-    {
-        return VInStreamMediaLinkTypeGif;
-    }
-    else if ( [category isEqualToString:@"video"] )
-    {
-        return VInStreamMediaLinkTypeVideo;
-    }
-    return VInStreamMediaLinkTypeUnknown;
 }
 
 + (void)imageAndTextForMediaLinkType:(VInStreamMediaLinkType)linkType dependencyManager:(VDependencyManager *)dependencyManager andCallbackBlock:(void (^)(UIImage *icon, NSString *linkPrompt))callbackBlock

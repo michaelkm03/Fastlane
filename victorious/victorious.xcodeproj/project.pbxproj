@@ -1040,6 +1040,7 @@
 		F0FC97E41B5C1CAD0098AFCB /* VImageLinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97E31B5C1CAD0098AFCB /* VImageLinkViewController.m */; };
 		F0FC97E71B5C1CB90098AFCB /* VVideoLinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97E61B5C1CB90098AFCB /* VVideoLinkViewController.m */; };
 		F0FC97ED1B5C41280098AFCB /* VGifLinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97EC1B5C41280098AFCB /* VGifLinkViewController.m */; };
+		F0FC97F21B5C4F6F0098AFCB /* VInStreamMediaLinkTypeHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97F11B5C4F6F0098AFCB /* VInStreamMediaLinkTypeHelper.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -3005,7 +3006,9 @@
 		F0FC97E61B5C1CB90098AFCB /* VVideoLinkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoLinkViewController.m; sourceTree = "<group>"; };
 		F0FC97EB1B5C41280098AFCB /* VGifLinkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGifLinkViewController.h; sourceTree = "<group>"; };
 		F0FC97EC1B5C41280098AFCB /* VGifLinkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VGifLinkViewController.m; sourceTree = "<group>"; };
-		F0FC97EF1B5C421D0098AFCB /* VInStreamMediaLinkType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VInStreamMediaLinkType.h; sourceTree = "<group>"; };
+		F0FC97F01B5C4F6F0098AFCB /* VInStreamMediaLinkTypeHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInStreamMediaLinkTypeHelper.h; sourceTree = "<group>"; };
+		F0FC97F11B5C4F6F0098AFCB /* VInStreamMediaLinkTypeHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInStreamMediaLinkTypeHelper.m; sourceTree = "<group>"; };
+		F0FC97F31B5C52330098AFCB /* VInStreamMediaLinkType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VInStreamMediaLinkType.h; sourceTree = "<group>"; };
 		F0FFBA351AD5B1DC00283936 /* VMarqueeDataDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeDataDelegate.h; sourceTree = "<group>"; };
 		F0FFBA361AD5B1EE00283936 /* VMarqueeSelectionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeSelectionDelegate.h; sourceTree = "<group>"; };
 		FA9A96A39C05C50C7D098A8E /* Pods-test.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.qa.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.qa.xcconfig"; sourceTree = "<group>"; };
@@ -6749,7 +6752,9 @@
 				F0FC97341B509C3D0098AFCB /* VInStreamCommentsController.h */,
 				F0FC97351B509C3D0098AFCB /* VInStreamCommentsController.m */,
 				F0FC97CF1B5AD6E40098AFCB /* VInStreamCommentsResponder.h */,
-				F0FC97EF1B5C421D0098AFCB /* VInStreamMediaLinkType.h */,
+				F0FC97F01B5C4F6F0098AFCB /* VInStreamMediaLinkTypeHelper.h */,
+				F0FC97F11B5C4F6F0098AFCB /* VInStreamMediaLinkTypeHelper.m */,
+				F0FC97F31B5C52330098AFCB /* VInStreamMediaLinkType.h */,
 				F0FC97AB1B56B3910098AFCB /* VInStreamMediaLink.h */,
 				F0FC97AC1B56B3910098AFCB /* VInStreamMediaLink.m */,
 				F0FC97BD1B59C9940098AFCB /* VInStreamCommentsShowMoreCell.h */,
@@ -7956,6 +7961,7 @@
 				D85B70831B0EAF3F0038CA5B /* VProfileCreateViewController.m in Sources */,
 				F04DC6CA1AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m in Sources */,
 				C3E772141B44B3FD005809A5 /* VLikedContentStreamCollectionViewController.m in Sources */,
+				F0FC97F21B5C4F6F0098AFCB /* VInStreamMediaLinkTypeHelper.m in Sources */,
 				F0FC97E71B5C1CB90098AFCB /* VVideoLinkViewController.m in Sources */,
 				A7A343DB1A8A8452000F0BCF /* VContentViewAlertHelper.m in Sources */,
 				0314D07619B467A100FA363C /* VSequence+Fetcher.m in Sources */,

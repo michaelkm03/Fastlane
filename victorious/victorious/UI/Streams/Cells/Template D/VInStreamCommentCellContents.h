@@ -13,7 +13,7 @@
 @interface VInStreamCommentCellContents : NSObject
 
 - (instancetype)initWithUsername:(NSString *)username
-          usernameTextAttributes:(NSDictionary *)usernameTextAttributes
+                    usernameFont:(UIFont *)usernameFont
                      commentText:(NSString *)commentText
            commentTextAttributes:(NSDictionary *)commentTextAttributes
        highlightedTextAttributes:(NSDictionary *)highlightedTextAttributes
@@ -26,7 +26,7 @@
 + (NSArray *)inStreamCommentsForComments:(NSArray *)comments andDependencyManager:(VDependencyManager *)dependencyManager;
 
 @property (nonatomic, strong) NSString *username;
-@property (nonatomic, strong) NSDictionary *usernameTextAttributes;
+@property (nonatomic, strong) UIFont *usernameFont;
 @property (nonatomic, strong) NSString *commentText;
 @property (nonatomic, strong) NSDictionary *commentTextAttributes;
 @property (nonatomic, strong) NSDictionary *highlightedTextAttributes;

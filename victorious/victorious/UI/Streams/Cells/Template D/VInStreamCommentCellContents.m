@@ -12,11 +12,12 @@
 #import "VDependencyManager.h"
 #import "VInStreamMediaLink.h"
 #import "VTagStringFormatter.h"
+#import "VInStreamMediaLinkTypeHelper.h"
 
 @implementation VInStreamCommentCellContents
 
 - (instancetype)initWithUsername:(NSString *)username
-          usernameTextAttributes:(NSDictionary *)usernameTextAttributes
+                    usernameFont:(UIFont *)usernameFont
                      commentText:(NSString *)commentText
            commentTextAttributes:(NSDictionary *)commentTextAttributes
        highlightedTextAttributes:(NSDictionary *)highlightedTextAttributes
@@ -32,7 +33,7 @@
     if ( self != nil )
     {
         _username = username ?: @"";
-        _usernameTextAttributes = usernameTextAttributes;
+        _usernameFont = usernameFont;
         _commentText = commentText ?: @"";
         _commentTextAttributes = commentTextAttributes;
         _highlightedTextAttributes = highlightedTextAttributes;
@@ -66,25 +67,25 @@
         NSString *mediaUrl = comment.mediaUrl;
         if ( mediaUrl.length > 0 )
         {
+            VInStreamMediaLinkType linkType = [VInStreamMediaLinkTypeHelper linkTypeForAsset:comment.asset andMediaCategory:comment.mediaType];
             mediaLink = [VInStreamMediaLink newWithTintColor:linkColor
                                                         font:mediaLinkFont
-                                                   mediaType:comment.mediaType
+                                                    linkType:linkType
                                                    urlString:mediaUrl
                                         andDependencyManager:dependencyManager];
         }
         
         NSString *tappableUserName = [VTagStringFormatter databaseFormattedStringFromUser:comment.user];
-        VInStreamCommentCellContents *content = [[VInStreamCommentCellContents alloc]
-                                                 initWithUsername:tappableUserName
-                                                 usernameTextAttributes:@{ NSForegroundColorAttributeName : linkColor, NSFontAttributeName : usernameFont }
-                                                 commentText:comment.text
-                                                 commentTextAttributes:@{ NSForegroundColorAttributeName : mainTextColor, NSFontAttributeName : commentFont }
-                                                 highlightedTextAttributes:@{ NSForegroundColorAttributeName : linkColor, NSFontAttributeName : commentFont }
-                                                 creationDate:comment.postedAt
-                                                 timestampTextAttributes:@{ NSForegroundColorAttributeName : timestampTextColor, NSFontAttributeName : timestampFont }
-                                                 inStreamMediaLink:mediaLink
-                                                 profileImageUrlString:comment.user.pictureUrl
-                                                 comment:comment];
+        VInStreamCommentCellContents *content = [[VInStreamCommentCellContents alloc] initWithUsername:tappableUserName
+                                                                                          usernameFont:usernameFont
+                                                                                           commentText:comment.text
+                                                                                 commentTextAttributes:@{ NSForegroundColorAttributeName : mainTextColor, NSFontAttributeName : commentFont }
+                                                                             highlightedTextAttributes:@{ NSForegroundColorAttributeName : linkColor, NSFontAttributeName : commentFont }
+                                                                                          creationDate:comment.postedAt
+                                                                               timestampTextAttributes:@{ NSForegroundColorAttributeName : timestampTextColor, NSFontAttributeName : timestampFont }
+                                                                                     inStreamMediaLink:mediaLink
+                                                                                 profileImageUrlString:comment.user.pictureUrl
+                                                                                               comment:comment];
         [contents addObject:content];
     }
     return contents;

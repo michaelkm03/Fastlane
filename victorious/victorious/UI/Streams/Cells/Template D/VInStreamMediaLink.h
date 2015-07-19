@@ -15,7 +15,7 @@
 
 + (instancetype)newWithTintColor:(UIColor *)tintColor
                             font:(UIFont *)font
-                       mediaType:(NSString *)mediaType
+                        linkType:(VInStreamMediaLinkType)linkType
                        urlString:(NSString *)urlString
             andDependencyManager:(VDependencyManager *)dependencyManager;
 

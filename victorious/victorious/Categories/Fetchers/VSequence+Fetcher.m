@@ -20,6 +20,7 @@
 #import "VImageAsset+Fetcher.h"
 #import "VImageAssetFinder.h"
 #import "VComment.h"
+#import "VInStreamMediaLinkTypeHelper.h"
 
 static const CGFloat kMinimumAspectRatio = 0.5f;
 static const CGFloat kMaximumAspectRatio = 2.0f;
@@ -46,38 +47,18 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
 
 - (BOOL)isImage
 {
-    for (NSString *category in VImageCategories())
-    {
-        if ([self.category isEqualToString:category])
-        {
-            return true;
-        }
-    }
-    
-    return false;
+    return [VInStreamMediaLinkTypeHelper isImageCategory:self.category];
 }
 
 - (BOOL)isVideo
 {
-    for (NSString *category in VVideoCategories())
-    {
-        if ([self.category isEqualToString:category])
-        {
-            return true;
-        }
-    }
-    
-    return false;
+    return [VInStreamMediaLinkTypeHelper isVideoCategory:self.category];
 }
 
 - (BOOL)isGIFVideo
 {
     VAsset *asset = [[self firstNode] mp4Asset];
-    return asset != nil &&
-            asset.playerControlsDisabled.boolValue == YES &&
-            asset.loop.boolValue == YES &&
-            asset.audioMuted.boolValue == YES &&
-            asset.streamAutoplay.boolValue == YES;
+    return [VInStreamMediaLinkTypeHelper isGifVideoAsset:asset];
 }
 
 - (BOOL)isText

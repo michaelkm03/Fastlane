@@ -80,6 +80,7 @@
 {
     if ( self.contentAspectRatio != self.contentAspectRatioConstraint.constant )
     {
+        [self.contentContainerView removeConstraint:self.contentAspectRatioConstraint];
         NSLayoutConstraint *newRatioConstraint = [NSLayoutConstraint constraintWithItem:self.contentContainerView
                                                                               attribute:NSLayoutAttributeWidth
                                                                               relatedBy:NSLayoutRelationEqual
@@ -87,7 +88,6 @@
                                                                               attribute:NSLayoutAttributeHeight
                                                                              multiplier:self.contentAspectRatio
                                                                                constant:0.0f];
-        [self.contentContainerView removeConstraint:self.contentAspectRatioConstraint];
         self.contentAspectRatioConstraint = newRatioConstraint;
         [self.contentContainerView addConstraint:self.contentAspectRatioConstraint];
     }
@@ -98,7 +98,7 @@
 - (void)setContentAspectRatio:(CGFloat)contentAspectRatio
 {
     _contentAspectRatio = contentAspectRatio;
-    [self updateViewConstraints];
+    [self.view setNeedsUpdateConstraints];
 }
 
 - (IBAction)closeButtonPressed:(id)sender
