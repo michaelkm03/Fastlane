@@ -26,6 +26,7 @@
 
 @import Photos;
 
+NSString * const VGIFCreationFlowControllerKey = @"gifCreateFlow";
 static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 

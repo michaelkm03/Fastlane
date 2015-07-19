@@ -12,7 +12,7 @@
 #import "VDependencyManager.h"
 
 // Creation
-#import "VAbstractImageVideoCreationFlowController.h"
+#import "VImageCreationFlowController.h"
 
 @interface VEditProfilePicturePresenter () <VCreationFlowControllerDelegate>
 

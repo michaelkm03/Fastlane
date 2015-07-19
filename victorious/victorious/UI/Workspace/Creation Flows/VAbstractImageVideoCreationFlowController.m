@@ -17,6 +17,9 @@
 #import "VAssetDownloader.h"
 #import "UIAlertController+VSimpleAlert.h"
 
+// Animator Support
+#import "VScaleAnimator.h"
+
 // Workspace
 #import "VWorkspaceViewController.h"
 #import "VImageToolController.h"
@@ -32,10 +35,8 @@
 @import Photos;
 #import <MBProgressHUD/MBProgressHUD.h>
 
-// Keys
-NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 
-@interface VAbstractImageVideoCreationFlowController () <UINavigationControllerDelegate, VAssetCollectionGridViewControllerDelegate>
+@interface VAbstractImageVideoCreationFlowController () <UINavigationControllerDelegate, VAssetCollectionGridViewControllerDelegate, VScaleAnimatorSource>
 
 @property (nonatomic, strong) NSArray *cachedAssetCollections;
 
@@ -282,6 +283,23 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
              [strongSelf presentViewController:alert animated:YES completion:nil];
          }
      }];
+}
+
+#pragma mark - VScaleAnimatorSource
+
+- (CGFloat)startingScaleForAnimator:(VScaleAnimator *)animator
+                             inView:(UIView *)animationContainerView
+{
+    UIViewController *topViewController = [self.viewControllers lastObject];
+    return CGRectGetHeight(topViewController.navigationItem.titleView.bounds) / CGRectGetHeight(animationContainerView.bounds);
+}
+
+- (CGPoint)startingCenterForAnimator:(VScaleAnimator *)animator
+                              inView:(UIView *)animationContainerView
+{
+    UIViewController *topViewController = [self.viewControllers lastObject];
+    return [animationContainerView convertPoint:topViewController.navigationItem.titleView.center
+                                       fromView:topViewController.navigationItem.titleView.superview];
 }
 
 @end

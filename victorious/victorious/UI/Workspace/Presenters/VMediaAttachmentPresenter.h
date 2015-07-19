@@ -8,10 +8,11 @@
 
 #import "VAbstractPresenter.h"
 
-typedef NS_OPTIONS(NSUInteger, VMediaAttachmentType)
+typedef NS_OPTIONS(NSUInteger, VMediaAttachmentOptions)
 {
-    VMediaAttachmentTypeImage   = 1 << 0,
-    VMediaAttachmentTypeVideo   = 1 << 1,
+    VMediaAttachmentOptionsImage   = 1 << 0,
+    VMediaAttachmentOptionsVideo   = 1 << 1,
+    VMediaAttachmentOptionsGIF     = 1 << 2,
 };
 
 /**
@@ -34,6 +35,6 @@ typedef void(^VMediaAttachmentResultHandler)(BOOL success, UIImage *previewImage
 /**
  *  A bitmask determining which types of attachments are available. Defaults to Image | Video.
  */
-@property (nonatomic, assign) VMediaAttachmentType attachmentTypes;
+@property (nonatomic, assign) VMediaAttachmentOptions attachmentTypes;
 
 @end

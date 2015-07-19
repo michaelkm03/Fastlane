@@ -9,8 +9,6 @@
 #import "VCreationFlowController.h"
 #import "VCreationTypes.h"
 
-extern NSString * const VImageCreationFlowControllerKey;
-
 @interface VAbstractImageVideoCreationFlowController : VCreationFlowController
 
 /**

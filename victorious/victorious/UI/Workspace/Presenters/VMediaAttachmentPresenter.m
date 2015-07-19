@@ -11,11 +11,11 @@
 // Creation
 #import "VAbstractImageVideoCreationFlowController.h"
 #import "VVideoCreationFlowController.h"
+#import "VImageCreationFlowController.h"
+#import "VGIFCreationFlowController.h"
 
 // Dependencies
 #import "VDependencyManager.h"
-
-static NSString * const kVideoCreateFlow = @"videoCreateFlow";
 
 @interface VMediaAttachmentPresenter () <VCreationFlowControllerDelegate>
 
@@ -30,7 +30,7 @@ static NSString * const kVideoCreateFlow = @"videoCreateFlow";
     self = [super initWithDependencymanager:dependencyManager];
     if (self != nil)
     {
-        _attachmentTypes = VMediaAttachmentTypeImage | VMediaAttachmentTypeVideo;
+        _attachmentTypes = VMediaAttachmentOptionsImage | VMediaAttachmentOptionsVideo;
     }
     return self;
 }
@@ -55,14 +55,23 @@ static NSString * const kVideoCreateFlow = @"videoCreateFlow";
     void (^videoActionHandler)(void) = ^void(void)
     {
         VVideoCreationFlowController *videoCreationFlowController = [self.dependencyManager templateValueOfType:[VVideoCreationFlowController class]
-                                                                                                         forKey:kVideoCreateFlow];
+                                                                                                         forKey:VVideoCreationFlowControllerKey];
         videoCreationFlowController.creationFlowDelegate = self;
         [viewControllerToPresentOn presentViewController:videoCreationFlowController
                                                      animated:YES
                                                    completion:nil];
     };
+    void (^gifActionHandler)(void) = ^void(void)
+    {
+        VGIFCreationFlowController *gifCreationFlowController = [self.dependencyManager templateValueOfType:[VGIFCreationFlowController class]
+                                                                                                     forKey:VGIFCreationFlowControllerKey];
+        gifCreationFlowController.creationFlowDelegate = self;
+        [viewControllerToPresentOn presentViewController:gifCreationFlowController
+                                                animated:YES
+                                              completion:nil];
+    };
     
-    if (self.attachmentTypes & VMediaAttachmentTypeImage)
+    if (self.attachmentTypes & VMediaAttachmentOptionsImage)
     {
         // Image
         UIAlertAction *imageAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Image", nil)
@@ -74,7 +83,7 @@ static NSString * const kVideoCreateFlow = @"videoCreateFlow";
         [attachmentActionSheet addAction:imageAction];
     }
     
-    if (self.attachmentTypes & VMediaAttachmentTypeVideo)
+    if (self.attachmentTypes & VMediaAttachmentOptionsVideo)
     {
         // Video
         UIAlertAction *videoAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Video", nil)
@@ -86,14 +95,30 @@ static NSString * const kVideoCreateFlow = @"videoCreateFlow";
         [attachmentActionSheet addAction:videoAction];
     }
     
+    if (self.attachmentTypes & VMediaAttachmentOptionsGIF)
+    {
+        // GIF
+        UIAlertAction *gifAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"GIF", nil)
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *action)
+                                    {
+                                        gifActionHandler();
+                                    }];
+        [attachmentActionSheet addAction:gifAction];
+    }
+    
     // If we only have one option then just show it.
     if (attachmentActionSheet.actions.count == 1)
     {
-        if (self.attachmentTypes & VMediaAttachmentTypeImage)
+        if (self.attachmentTypes & VMediaAttachmentOptionsImage)
         {
             imageActionHandler();
         }
-        else
+        else if (self.attachmentTypes & VMediaAttachmentOptionsVideo)
+        {
+            videoActionHandler();
+        }
+        else if (self.attachmentTypes & VMediaAttachmentOptionsGIF)
         {
             videoActionHandler();
         }

@@ -302,19 +302,19 @@ static char KVOContext;
 
 - (IBAction)imageAction:(id)sender
 {
-    [self showAttachmentWithAttachmentType:VMediaAttachmentTypeImage];
+    [self showAttachmentWithAttachmentOptions:VMediaAttachmentOptionsImage];
 }
 
 - (IBAction)videoAction:(id)sender
 {
-    [self showAttachmentWithAttachmentType:VMediaAttachmentTypeVideo];
+    [self showAttachmentWithAttachmentOptions:VMediaAttachmentOptionsVideo];
 }
 
-- (void)showAttachmentWithAttachmentType:(VMediaAttachmentType)attachmentType
+- (void)showAttachmentWithAttachmentOptions:(VMediaAttachmentOptions)attachmentOptions
 {
     self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager];
     __weak typeof(self) welf = self;
-    self.attachmentPresenter.attachmentTypes = attachmentType;
+    self.attachmentPresenter.attachmentTypes = attachmentOptions;
     self.attachmentPresenter.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
     {
         [welf imagePickerFinishedWithURL:mediaURL

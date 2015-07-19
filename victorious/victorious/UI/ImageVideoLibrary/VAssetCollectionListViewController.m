@@ -198,7 +198,6 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 {
     dispatch_async(dispatch_get_main_queue(), ^
     {
-        VLog(@"Library changed!!!");
         BOOL dirty = NO;
         for (PHFetchResult *fetchResult in self.fetchResults)
         {
@@ -247,7 +246,6 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
     PHAssetMediaType mediaType = self.mediaType;
     dispatch_async(self.serialFetchQueue, ^
     {
-        VLog(@"\n\nFetching");
         // Fetch all albums
         PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
                                                                               subtype:PHAssetCollectionSubtypeAny
@@ -275,13 +273,8 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
             [newFetchResults addObject:albumMediaTypeResults];
             if (albumMediaTypeResults.count > 0)
             {
-                VLog(@"adding collection: %@", collection.localizedTitle);
                 [assetCollections addObject:collection];
                 [assetCollectionsFetchResutls addObject:albumMediaTypeResults];
-            }
-            else
-            {
-                VLog(@"counting: %@, for album: %@", @(albumMediaTypeResults.count), collection.localizedTitle);
             }
         }
         for (PHAssetCollection *collection in userAlbums)
@@ -291,16 +284,10 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
             [newFetchResults addObject:albumMediaTypeResults];
             if (albumMediaTypeResults.count > 0)
             {
-                VLog(@"adding collection: %@", collection.localizedTitle);
                 [assetCollections addObject:collection];
                 [assetCollectionsFetchResutls addObject:albumMediaTypeResults];
             }
-            else
-            {
-                VLog(@"counting: %@, for album: %@", @(albumMediaTypeResults.count), collection.localizedTitle);
-            }
         }
-        VLog(@"Fetching finished with collection count: %@ \n\n", @(assetCollections.count));
         dispatch_async(dispatch_get_main_queue(), ^
         {
             self.lastFetch = [NSDate date];
