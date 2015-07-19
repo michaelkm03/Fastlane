@@ -4531,8 +4531,6 @@
 				A6CC23C61B4B2A0600141DD6 /* VAssetGroupTableViewCell.m */,
 				A60658231B56FF7200414DB7 /* VCollectionListPresentationController.h */,
 				A60658241B56FF7200414DB7 /* VCollectionListPresentationController.m */,
-				A6BB61241B58657C002C3B7C /* VScaleAnimator.h */,
-				A6BB61251B58657C002C3B7C /* VScaleAnimator.m */,
 				A6E2E7691B544D79008A1CA9 /* VImageAssetDownloader.h */,
 				A6E2E76A1B544D79008A1CA9 /* VImageAssetDownloader.m */,
 				A6D51BE51B4F33D700703AB0 /* VLibraryAuthorizationCell.h */,
@@ -4540,6 +4538,8 @@
 				A66D76821B5B2E23004765EA /* VLibraryFolderControl.h */,
 				A66D76831B5B2E23004765EA /* VLibraryFolderControl.m */,
 				A66D76851B5B2E31004765EA /* VLibraryFolderControl.xib */,
+				A6BB61241B58657C002C3B7C /* VScaleAnimator.h */,
+				A6BB61251B58657C002C3B7C /* VScaleAnimator.m */,
 				A6E2E76C1B545328008A1CA9 /* VVideoAssetDownloader.h */,
 				A6E2E76D1B545328008A1CA9 /* VVideoAssetDownloader.m */,
 			);
