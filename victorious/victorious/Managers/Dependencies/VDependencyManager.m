@@ -15,6 +15,7 @@
 #import "VSolidColorBackground.h"
 #import "VTemplateImage.h"
 #import "VTemplateImageMacro.h"
+#import "VTemplateImageSet.h"
 #import "VTemplatePackageManager.h"
 #import "VURLMacroReplacement.h"
 
@@ -249,23 +250,18 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
     
     if ( imageDictionary != nil )
     {
-        NSString *imageURLString = imageDictionary[VTemplateImageURLKey];
-        
-        if (![imageURLString isKindOfClass:[NSString class]])
+        if ( [VTemplateImage isImageJSON:imageDictionary] )
         {
-            return nil;
+            VTemplateImage *templateImage = [[VTemplateImage alloc] initWithJSON:imageDictionary];
+            return [self imageWithTemplateImage:templateImage];
         }
-        
-        NSURL *imageURL = [NSURL URLWithString:imageURLString];
-        if ( imageURL != nil &&
-             imageURL.scheme.length > 0 &&
-             [[VTemplatePackageManager validSchemes] containsObject:imageURL.scheme] )
+        else if ( [VTemplateImageSet isImageSetJSON:imageDictionary] )
         {
-            NSData *imageData = [[[VDataCache alloc] init] cachedDataForID:imageURL];
-            return [UIImage imageWithData:imageData];
+            VTemplateImageSet *imageSet = [[VTemplateImageSet alloc] initWithJSON:imageDictionary];
+            CGFloat scale = [[UIScreen mainScreen] scale];
+            return [self imageWithTemplateImage:[imageSet imageForScreenScale:scale]];
         }
-        
-        return [UIImage imageNamed:imageURLString];
+        return nil;
     }
     else
     {
@@ -855,21 +851,27 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 
 - (UIImage *)imageWithTemplateImage:(VTemplateImage *)templateImage
 {
-    NSData *imageData = [[[VDataCache alloc] init] cachedDataForID:templateImage.imageURL];
-    
-    if ( imageData == nil )
+    if ( templateImage.imageURL != nil &&
+        templateImage.imageURL.scheme.length > 0 &&
+        [[VTemplatePackageManager validSchemes] containsObject:templateImage.imageURL.scheme] )
     {
-        return nil;
+        NSData *imageData = [[[VDataCache alloc] init] cachedDataForID:templateImage.imageURL];
+        
+        if ( imageData == nil )
+        {
+            return nil;
+        }
+        
+        if ( templateImage.scale == nil )
+        {
+            return [UIImage imageWithData:imageData];
+        }
+        else
+        {
+            return [[UIImage alloc] initWithData:imageData scale:[templateImage.scale VCGFLOAT_VALUE]];
+        }
     }
-    
-    if ( templateImage.scale == nil )
-    {
-        return [UIImage imageWithData:imageData];
-    }
-    else
-    {
-        return [[UIImage alloc] initWithData:imageData scale:[templateImage.scale VCGFLOAT_VALUE]];
-    }
+    return [UIImage imageNamed:templateImage.imageURL.absoluteString];
 }
 
 - (BOOL)isDictionaryAComponent:(NSDictionary *)possibleComponent

@@ -28,5 +28,17 @@
     },
     "myRemoteImage": {
         "imageURL": "http://www.example.com/testRemoteImage"
+    },
+    "myDifferentImages": {
+        "imageSet": [
+            {
+                "imageURL": "http://www.example.com/set1.png",
+                "scale": 1
+            },
+            {
+                "imageURL": "http://www.example.com/set2.png",
+                "scale": 2
+            }
+        ]
     }
 }

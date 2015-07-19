@@ -9,6 +9,8 @@
 #import "NSURL+VDataCacheID.h"
 #import "VDataCache.h"
 #import "VDependencyManager.h"
+#import "VTemplateImage.h"
+#import "VTemplateImageSet.h"
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
@@ -50,6 +52,51 @@
                                                             dictionaryOfClassesByTemplateName:nil];
     UIImage *actual = [dependencyManager imageForKey:@"myImage"];
     XCTAssertEqualObjects(actual, sampleImage);
+}
+
+- (void)testImageSet
+{
+    NSURL *imageBundleURL1 = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleImage" withExtension:@"png"];
+    NSData *imageData1 = [NSData dataWithContentsOfURL:imageBundleURL1];
+    UIImage *expected1 = [[UIImage alloc] initWithData:imageData1 scale:1.0f];
+    
+    NSURL *imageBundleURL2 = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleImage2" withExtension:@"png"];
+    NSData *imageData2 = [NSData dataWithContentsOfURL:imageBundleURL2];
+    UIImage *expected2 = [[UIImage alloc] initWithData:imageData2 scale:2.0f];
+    
+    NSURL *url1 = [NSURL URLWithString:@"http://www.example.com/set1.png"];
+    NSURL *url2 = [NSURL URLWithString:@"http://www.example.com/set2.png"];
+    
+    VDataCache *dataCache = [[VDataCache alloc] init];
+    NSError *error = nil;
+    [dataCache cacheDataAtURL:imageBundleURL1 forID:url1 error:&error];
+    XCTAssertNil(error);
+    
+    error = nil;
+    [dataCache cacheDataAtURL:imageBundleURL2 forID:url2 error:&error];
+    XCTAssertNil(error);
+    
+    NSDictionary *imageSetDictionary = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:@"myDifferentImages"];
+    VTemplateImageSet *imageSet = [[VTemplateImageSet alloc] initWithJSON:imageSetDictionary];
+    VTemplateImage *expectedImage = [imageSet imageForScreenScale:[[UIScreen mainScreen] scale]];
+    
+    UIImage *actualImage = [self.dependencyManager imageForKey:@"myDifferentImages"];
+    XCTAssert( [actualImage isKindOfClass:[UIImage class]] );
+
+    if ( [expectedImage.imageURL isEqual:url1] )
+    {
+        XCTAssert( CGSizeEqualToSize([actualImage size], expected1.size) );
+        XCTAssertEqual( [actualImage scale], 1.0f );
+    }
+    else if ( [expectedImage.imageURL isEqual:url2] )
+    {
+        XCTAssert( CGSizeEqualToSize([actualImage size], expected2.size) );
+        XCTAssertEqual( [actualImage scale], 2.0f );
+    }
+    else
+    {
+        XCTFail(@"Something weird happened. Check the VTemplateImageSet class for bugs. (Are all of its unit tests passing?)");
+    }
 }
 
 - (void)testRemoteImage
