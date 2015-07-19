@@ -133,13 +133,18 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
                 return CGSizeMake( 0.0f, kCaptionMargins.bottom);
             }
             
-            BOOL showPreviousCommentsCellEnabled = sequence.commentCount.unsignedIntegerValue > kMaxNumberOfInStreamComments;
+            BOOL showPreviousCommentsCellEnabled = [self inStreamCommentsShouldDisplayShowMoreCellForSequence:sequence];
             NSArray *commentCellContents = [VInStreamCommentCellContents inStreamCommentsForComments:[self inStreamCommentsArrayForSequence:sequence] andDependencyManager:dependencyManager];
             CGFloat height = [VInStreamCommentsController desiredHeightForCommentCellContents:commentCellContents withCollectionViewWidth:size.width showMoreAttributes:[VInStreamCommentsShowMoreAttributes newWithDependencyManager:dependencyManager] andShowPreviousCommentsCellEnabled:showPreviousCommentsCellEnabled];
             return CGSizeMake( 0.0f, height );
         }];
     }
     return collection;
+}
+
++ (BOOL)inStreamCommentsShouldDisplayShowMoreCellForSequence:(VSequence *)sequence
+{
+    return sequence.commentCount.unsignedIntegerValue > kMaxNumberOfInStreamComments && [self inStreamCommentsArrayForSequence:sequence].count == kMaxNumberOfInStreamComments;
 }
 
 #pragma mark - VSequenceCountsTextViewDelegate
@@ -239,7 +244,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     
     NSArray *inStreamComments = [[self class] inStreamCommentsArrayForSequence:sequence];
     self.inStreamCommentsCollectionViewBottomConstraint.active = inStreamComments.count > 0;
-    [self.inStreamCommentsController setupWithCommentCellContents:[VInStreamCommentCellContents inStreamCommentsForComments:inStreamComments andDependencyManager:self.dependencyManager] withShowMoreCellVisible:sequence.commentCount.unsignedIntegerValue > kMaxNumberOfInStreamComments];
+    [self.inStreamCommentsController setupWithCommentCellContents:[VInStreamCommentCellContents inStreamCommentsForComments:inStreamComments andDependencyManager:self.dependencyManager] withShowMoreCellVisible:[[self class] inStreamCommentsShouldDisplayShowMoreCellForSequence:sequence]];
 }
 
 - (void)updateCountsTextViewForSequence:(VSequence *)sequence
