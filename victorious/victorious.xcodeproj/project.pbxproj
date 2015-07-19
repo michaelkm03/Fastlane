@@ -315,6 +315,8 @@
 		A650EFE01B42297A005529E5 /* VAssetCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A650EFDF1B42297A005529E5 /* VAssetCollectionViewCell.m */; };
 		A65318A21B59B35900389EA9 /* VCreationFlowAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = A65318A11B59B35900389EA9 /* VCreationFlowAnimator.m */; };
 		A65318A41B59DE0400389EA9 /* VCreatePollViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A65318A31B59DE0400389EA9 /* VCreatePollViewController.storyboard */; };
+		A66D76841B5B2E23004765EA /* VLibraryFolderControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A66D76831B5B2E23004765EA /* VLibraryFolderControl.m */; };
+		A66D76861B5B2E31004765EA /* VLibraryFolderControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66D76851B5B2E31004765EA /* VLibraryFolderControl.xib */; };
 		A673A3301B34E602004D4D8C /* newWorkspaceTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = A673A32F1B34E602004D4D8C /* newWorkspaceTemplate.json */; };
 		A682F4FC1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = A682F4FB1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.m */; };
 		A682F4FE1B3C829E009B6DBE /* imageCreationFlow.json in Resources */ = {isa = PBXBuildFile; fileRef = A682F4FD1B3C829E009B6DBE /* imageCreationFlow.json */; };
@@ -324,7 +326,7 @@
 		A692AE151B54881E003A874B /* UICollectionView+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = A692AE141B54881E003A874B /* UICollectionView+Convenience.m */; };
 		A6BB61201B582815002C3B7C /* VAssetCollectionGridDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A6BB611F1B582815002C3B7C /* VAssetCollectionGridDataSource.m */; };
 		A6BB61231B583256002C3B7C /* VAssetCollectionUnauthorizedDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A6BB61221B583256002C3B7C /* VAssetCollectionUnauthorizedDataSource.m */; };
-		A6BB61261B58657C002C3B7C /* VFromTopViewControllerAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = A6BB61251B58657C002C3B7C /* VFromTopViewControllerAnimator.m */; };
+		A6BB61261B58657C002C3B7C /* VScaleAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = A6BB61251B58657C002C3B7C /* VScaleAnimator.m */; };
 		A6CC23C71B4B2A0600141DD6 /* VAssetGroupTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A6CC23C61B4B2A0600141DD6 /* VAssetGroupTableViewCell.m */; };
 		A6CC23CB1B4B57A500141DD6 /* textCreationFlow.json in Resources */ = {isa = PBXBuildFile; fileRef = A6CC23CA1B4B57A500141DD6 /* textCreationFlow.json */; };
 		A6D51BE71B4F33D700703AB0 /* VLibraryAuthorizationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A6D51BE61B4F33D700703AB0 /* VLibraryAuthorizationCell.m */; };
@@ -1677,6 +1679,9 @@
 		A65318A01B59B35900389EA9 /* VCreationFlowAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreationFlowAnimator.h; sourceTree = "<group>"; };
 		A65318A11B59B35900389EA9 /* VCreationFlowAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCreationFlowAnimator.m; sourceTree = "<group>"; };
 		A65318A31B59DE0400389EA9 /* VCreatePollViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VCreatePollViewController.storyboard; sourceTree = "<group>"; };
+		A66D76821B5B2E23004765EA /* VLibraryFolderControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLibraryFolderControl.h; sourceTree = "<group>"; };
+		A66D76831B5B2E23004765EA /* VLibraryFolderControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLibraryFolderControl.m; sourceTree = "<group>"; };
+		A66D76851B5B2E31004765EA /* VLibraryFolderControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VLibraryFolderControl.xib; sourceTree = "<group>"; };
 		A673A32F1B34E602004D4D8C /* newWorkspaceTemplate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = newWorkspaceTemplate.json; sourceTree = "<group>"; };
 		A682F4FA1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+VSimpleAlert.h"; sourceTree = "<group>"; };
 		A682F4FB1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertController+VSimpleAlert.m"; sourceTree = "<group>"; };
@@ -1694,8 +1699,8 @@
 		A6BB611F1B582815002C3B7C /* VAssetCollectionGridDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAssetCollectionGridDataSource.m; sourceTree = "<group>"; };
 		A6BB61211B583256002C3B7C /* VAssetCollectionUnauthorizedDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAssetCollectionUnauthorizedDataSource.h; sourceTree = "<group>"; };
 		A6BB61221B583256002C3B7C /* VAssetCollectionUnauthorizedDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAssetCollectionUnauthorizedDataSource.m; sourceTree = "<group>"; };
-		A6BB61241B58657C002C3B7C /* VFromTopViewControllerAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFromTopViewControllerAnimator.h; sourceTree = "<group>"; };
-		A6BB61251B58657C002C3B7C /* VFromTopViewControllerAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFromTopViewControllerAnimator.m; sourceTree = "<group>"; };
+		A6BB61241B58657C002C3B7C /* VScaleAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VScaleAnimator.h; sourceTree = "<group>"; };
+		A6BB61251B58657C002C3B7C /* VScaleAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VScaleAnimator.m; sourceTree = "<group>"; };
 		A6CC23C51B4B2A0600141DD6 /* VAssetGroupTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAssetGroupTableViewCell.h; sourceTree = "<group>"; };
 		A6CC23C61B4B2A0600141DD6 /* VAssetGroupTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAssetGroupTableViewCell.m; sourceTree = "<group>"; };
 		A6CC23CA1B4B57A500141DD6 /* textCreationFlow.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = textCreationFlow.json; sourceTree = "<group>"; };
@@ -4526,14 +4531,17 @@
 				A6CC23C61B4B2A0600141DD6 /* VAssetGroupTableViewCell.m */,
 				A60658231B56FF7200414DB7 /* VCollectionListPresentationController.h */,
 				A60658241B56FF7200414DB7 /* VCollectionListPresentationController.m */,
+				A6BB61241B58657C002C3B7C /* VScaleAnimator.h */,
+				A6BB61251B58657C002C3B7C /* VScaleAnimator.m */,
 				A6E2E7691B544D79008A1CA9 /* VImageAssetDownloader.h */,
 				A6E2E76A1B544D79008A1CA9 /* VImageAssetDownloader.m */,
 				A6D51BE51B4F33D700703AB0 /* VLibraryAuthorizationCell.h */,
 				A6D51BE61B4F33D700703AB0 /* VLibraryAuthorizationCell.m */,
+				A66D76821B5B2E23004765EA /* VLibraryFolderControl.h */,
+				A66D76831B5B2E23004765EA /* VLibraryFolderControl.m */,
+				A66D76851B5B2E31004765EA /* VLibraryFolderControl.xib */,
 				A6E2E76C1B545328008A1CA9 /* VVideoAssetDownloader.h */,
 				A6E2E76D1B545328008A1CA9 /* VVideoAssetDownloader.m */,
-				A6BB61241B58657C002C3B7C /* VFromTopViewControllerAnimator.h */,
-				A6BB61251B58657C002C3B7C /* VFromTopViewControllerAnimator.m */,
 			);
 			path = ImageVideoLibrary;
 			sourceTree = "<group>";
@@ -7044,6 +7052,7 @@
 				036F38861A0C4DEA0014DF66 /* PT_Sans-Web-Bold.ttf in Resources */,
 				A6EC327B1B3B50C400824022 /* publishScreen.json in Resources */,
 				D85B70701B0EAF3F0038CA5B /* FindFriendsTableView.strings in Resources */,
+				A66D76861B5B2E31004765EA /* VLibraryFolderControl.xib in Resources */,
 				036F38831A0C4DEA0014DF66 /* Oswald-Regular.ttf in Resources */,
 				036F388C1A0C4DEA0014DF66 /* Raleway-SemiBold.ttf in Resources */,
 				A65318A41B59DE0400389EA9 /* VCreatePollViewController.storyboard in Resources */,
@@ -7486,7 +7495,7 @@
 				A75ED0901AB77E3300C35063 /* VFilterPickerDataSource.m in Sources */,
 				A631F09B1B4DB52700CC6C80 /* VAlternateCaptureOption.m in Sources */,
 				A776EF661AD45A760093992F /* VEndCardModelBuilder.m in Sources */,
-				A6BB61261B58657C002C3B7C /* VFromTopViewControllerAnimator.m in Sources */,
+				A6BB61261B58657C002C3B7C /* VScaleAnimator.m in Sources */,
 				03AC453A19BA1F1000CE4351 /* NSString+VCrypto.m in Sources */,
 				03A2AD971926B9460034EB80 /* UIViewController+ForceOrientationChange.m in Sources */,
 				A6E104D71B56C88D0062392A /* VPublishViewController.m in Sources */,
@@ -7641,6 +7650,7 @@
 				A7A2DFFF1A37813D00F8C705 /* VPurchaseActionCell.m in Sources */,
 				D8B70FEA1A805CC800090C5E /* VInlineValidationView.m in Sources */,
 				D89AC2BC19F1FD6B00921131 /* VHistogramDataSource.m in Sources */,
+				A66D76841B5B2E23004765EA /* VLibraryFolderControl.m in Sources */,
 				A75FAF1B19E8AC1E00EB87C1 /* VTrendingTagCell.m in Sources */,
 				D87AD2B11AD48AC500C481D0 /* VAsset+VCachedData.m in Sources */,
 				F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */,
