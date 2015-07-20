@@ -38,6 +38,7 @@ static NSString * const kPollCreationScreenKey = @"pollCreationScreen";
     
     VCreatePollViewController *pollViewController = [self.dependencyManager templateValueOfType:[VCreatePollViewController class]
                                                                                          forKey:kPollCreationScreenKey];
+    [self addCloseButtonToViewController:pollViewController];
     [self pushViewController:pollViewController animated:YES];
 }
 

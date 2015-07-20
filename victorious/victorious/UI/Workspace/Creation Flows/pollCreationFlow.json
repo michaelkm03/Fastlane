@@ -1,10 +1,24 @@
 {
     "name":"poll.creationFlow",
-    "closeIcon": {
-        "imageURL":"cameraButtonClose"
+    "statusBarStyle": "dark",
+    "navBarBackground": {
+        "name": "solidColor.background",
+        "color": {
+            "red": 255,
+            "alpha": 255,
+            "blue": 255,
+            "green": 255
+        }
+    },
+    "barTintColor": {
+        "red": 0,
+        "alpha": 255,
+        "blue": 0,
+        "green": 0
     },
     "pollCreationScreen": {
         "name":"pollCreation.screen",
+
         "closeIcon": {
             "imageURL": "Close"
         },
@@ -20,6 +34,7 @@
         },
         "prompt": "Ask a question...",
         "optionAPrompt": "Vote this",
+
         "optionBPrompt": "Vote that",
         "font.heading4": {
             "fontName": "Roboto-Medium",
@@ -34,11 +49,11 @@
         "orIcon": {
             "imageURL": "A_pollOr"
         },
-        "cameraIcon": {
-            "imageURL": "PostCamera"
+        "imageIcon": {
+            "imageURL": "createImageIcon"
         },
-        "searchIcon": {
-            "imageURL": "SearchIcon"
+        "videoIcon": {
+            "imageURL": "createVideoIcon"
         },
         "color.text": {
             "red": 255,

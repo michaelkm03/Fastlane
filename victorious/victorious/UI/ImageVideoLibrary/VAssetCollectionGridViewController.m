@@ -8,7 +8,6 @@
 
 #import "VAssetCollectionGridViewController.h"
 
-
 // Permissions
 #import "VPermissionPhotoLibrary.h"
 
@@ -17,6 +16,7 @@
 #import "VAssetCollectionGridDataSource.h"
 #import "VAssetCollectionUnauthorizedDataSource.h"
 #import "UIView+AutoLayout.h"
+#import "VLibraryFolderControl.h"
 
 // Image Resizing
 #import "UIImage+Resize.h"
@@ -25,6 +25,9 @@
 @import Photos;
 
 NSString * const VAssetCollectionGridViewControllerMediaType = @"assetGridViewControllerMediaType";
+
+static NSString * const kImageTitleKey = @"imageTitle";
+static NSString * const kVideoTitleKey = @"videoTitle";
 
 @interface VAssetCollectionGridViewController () <VAssetCollectionUnauthorizedDataSourceDelegate, VAssetCollectionGridDataSourceDelegate>
 
@@ -37,8 +40,7 @@ NSString * const VAssetCollectionGridViewControllerMediaType = @"assetGridViewCo
 @property (nonatomic, strong) VAssetCollectionUnauthorizedDataSource *unauthorizedDataSource;
 @property (nonatomic, assign) PHAssetMediaType mediaType;
 
-@property (nonatomic, strong) UIButton *alternateFolderButton;
-@property (nonatomic, strong) UIImageView *dropdownImageView;
+@property (nonatomic, strong) VLibraryFolderControl *folderButton;
 
 @property (nonatomic, strong) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *activityIndicator;
@@ -67,7 +69,7 @@ NSString * const VAssetCollectionGridViewControllerMediaType = @"assetGridViewCo
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    self.definesPresentationContext = YES;
     switch ([self.libraryPermission permissionState])
     {
         case VPermissionStatePromptDenied:
@@ -97,12 +99,7 @@ NSString * const VAssetCollectionGridViewControllerMediaType = @"assetGridViewCo
         [self.collectionView deselectItemAtIndexPath:selectedIndexPaths animated:NO];
     }
     
-    __weak typeof(self) welf = self;
-    [self.listViewController fetchDefaultCollectionWithCompletion:^(PHAssetCollection *collection)
-    {
-        __strong typeof(welf) strongSelf = welf;
-        strongSelf.collectionToDisplay = collection;
-    }];
+    [self fetchDefaultCollection];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -110,6 +107,9 @@ NSString * const VAssetCollectionGridViewControllerMediaType = @"assetGridViewCo
     [super viewDidAppear:animated];
     
     [self.assetDataSource updateCachedAssets];
+    
+    // Clear selection of folder after dismissal of listVC
+    self.folderButton.selected = NO;
 }
 
 #pragma mark - Property Accessors
@@ -123,10 +123,10 @@ NSString * const VAssetCollectionGridViewControllerMediaType = @"assetGridViewCo
         return;
     }
     
+    
     [self.activityIndicator stopAnimating];
-    [self.alternateFolderButton setTitle:collectionToDisplay.localizedTitle
-                                forState:UIControlStateNormal];
-    self.dropdownImageView.hidden = NO;
+    self.folderButton.attributedSubtitle = [[NSAttributedString alloc] initWithString:collectionToDisplay.localizedTitle attributes:nil];
+    self.folderButton.selected = NO;
     
     self.assetDataSource.assetCollection = collectionToDisplay;
     [UIView animateWithDuration:0.35f
@@ -141,9 +141,10 @@ NSString * const VAssetCollectionGridViewControllerMediaType = @"assetGridViewCo
 
 #pragma mark - Target / Action
 
-- (void)selectedFolderPicker:(UIButton *)button
+- (void)selectedFolderPicker:(VLibraryFolderControl *)folderControl
 {
     [self presentAssetFoldersList];
+    folderControl.selected = YES;
 }
 
 #pragma mark - VAssetCollectionUnauthorizedDataSourceDelegate
@@ -175,6 +176,22 @@ NSString * const VAssetCollectionGridViewControllerMediaType = @"assetGridViewCo
 
 #pragma mark - Private Methods
 
+- (void)fetchDefaultCollection
+{
+    // Bail early if we already have a collection
+    if (self.collectionToDisplay != nil)
+    {
+        return;
+    }
+    
+    __weak typeof(self) welf = self;
+    [self.listViewController fetchDefaultCollectionWithCompletion:^(PHAssetCollection *collection)
+     {
+         __strong typeof(welf) strongSelf = welf;
+         strongSelf.collectionToDisplay = collection;
+     }];
+}
+
 - (void)presentAssetFoldersList
 {
     // Present alternate folder
@@ -202,40 +219,13 @@ NSString * const VAssetCollectionGridViewControllerMediaType = @"assetGridViewCo
 }
 
 - (UIView *)createContainerViewForAlternateCollectionSelection
-{
-    // NavigationItem titleView doesn't resize properly. Give it a "big enough" starting size
-    UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
-    
-    self.alternateFolderButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.alternateFolderButton setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-    [self.alternateFolderButton addTarget:self
-                                   action:@selector(selectedFolderPicker:)
-                         forControlEvents:UIControlEventTouchUpInside];
-    self.alternateFolderButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [containerView addSubview:self.alternateFolderButton];
-    
-    self.dropdownImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gallery_dropdown_arrow"]];
-    self.dropdownImageView.contentMode = UIViewContentModeScaleAspectFit;
-    self.dropdownImageView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.dropdownImageView.hidden = YES;
-    [containerView addSubview:self.dropdownImageView];
-    [containerView v_addPinToTopBottomToSubview:self.alternateFolderButton];
-    [containerView v_addPinToTopBottomToSubview:self.dropdownImageView];
-    [containerView addConstraint:[NSLayoutConstraint constraintWithItem:self.alternateFolderButton
-                                                              attribute:NSLayoutAttributeCenterX
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:containerView
-                                                              attribute:NSLayoutAttributeCenterX
-                                                             multiplier:1.0f
-                                                               constant:0.0f]];
-    [containerView addConstraint:[NSLayoutConstraint constraintWithItem:self.dropdownImageView
-                                                              attribute:NSLayoutAttributeLeading
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:self.alternateFolderButton
-                                                              attribute:NSLayoutAttributeTrailing
-                                                             multiplier:1.0f
-                                                               constant:0.0f]];
-    return containerView;
+{   
+    self.folderButton = [VLibraryFolderControl newFolderControl];
+    NSString *titleText = (self.mediaType == PHAssetMediaTypeImage) ? NSLocalizedString([self.dependencyManager stringForKey:kImageTitleKey], nil) : NSLocalizedString([self.dependencyManager stringForKey:kVideoTitleKey], nil);
+    self.folderButton.attributedTitle = [[NSAttributedString alloc] initWithString:titleText attributes:nil];
+    self.folderButton.attributedSubtitle = nil;
+    [self.folderButton addTarget:self action:@selector(selectedFolderPicker:) forControlEvents:UIControlEventTouchUpInside];
+    return self.folderButton;
 }
 
 @end

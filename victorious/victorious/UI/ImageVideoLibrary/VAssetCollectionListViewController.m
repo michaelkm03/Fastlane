@@ -10,7 +10,7 @@
 #import "VPermissionPhotoLibrary.h"
 #import "VAssetGroupTableViewCell.h"
 #import "VCollectionListPresentationController.h"
-#import "VFromTopViewControllerAnimator.h"
+#import "VScaleAnimator.h"
 
 @import Photos;
 
@@ -35,6 +35,9 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 
 // Only fetch every 30 seconds.
 @property (nonatomic, strong) NSDate *lastFetch;
+@property (nonatomic, strong) dispatch_queue_t serialFetchQueue;
+
+@property (nonatomic, strong) VScaleAnimator *animator;
 
 @end
 
@@ -61,6 +64,16 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
     return listViewController;
 }
 
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self != nil)
+    {
+        _serialFetchQueue = dispatch_queue_create("com.victorious.photosCollectionsFetchQueue", DISPATCH_QUEUE_SERIAL);
+    }
+    return self;
+}
+
 - (void)dealloc
 {
     [[PHPhotoLibrary sharedPhotoLibrary] unregisterChangeObserver:self];
@@ -73,14 +86,12 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 
     self.libraryPermissions = [[VPermissionPhotoLibrary alloc] init];
     
+    self.animator = [[VScaleAnimator alloc] init];
+    
     // Fetch once on awakeFromNib
     if ([self.libraryPermissions permissionState] == VPermissionStateAuthorized)
     {
         self.needsFetch = NO;
-        [self fetchCollectionsWithCompletion:^
-         {
-             [self.tableView reloadData];
-         }];
         [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
     }
 }
@@ -107,10 +118,6 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
     if (([self.libraryPermissions permissionState] == VPermissionStateAuthorized) && self.needsFetch)
     {
         self.needsFetch = NO;
-        [self fetchCollectionsWithCompletion:^
-         {
-             [self.tableView reloadData];
-         }];
         [[PHPhotoLibrary sharedPhotoLibrary] registerChangeObserver:self];
     }
 }
@@ -191,7 +198,6 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 {
     dispatch_async(dispatch_get_main_queue(), ^
     {
-        VLog(@"Library changed!!!");
         BOOL dirty = NO;
         for (PHFetchResult *fetchResult in self.fetchResults)
         {
@@ -207,7 +213,6 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
         {
             [self fetchCollectionsWithCompletion:^
              {
-                 //TODO: Animate change result
                  [self.tableView reloadData];
              }];
         }
@@ -224,6 +229,7 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
     {
         __strong typeof(welf) strongSelf = welf;
         completion([strongSelf.collections firstObject]);
+        [self.tableView reloadData];
     }];
 }
 
@@ -236,11 +242,9 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
         return;
     }
     
-    VLog(@"Fetching collections");
-    
     NSMutableSet *newFetchResults = [[NSMutableSet alloc] init];
     PHAssetMediaType mediaType = self.mediaType;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^
+    dispatch_async(self.serialFetchQueue, ^
     {
         // Fetch all albums
         PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum
@@ -284,7 +288,6 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
                 [assetCollectionsFetchResutls addObject:albumMediaTypeResults];
             }
         }
-        
         dispatch_async(dispatch_get_main_queue(), ^
         {
             self.lastFetch = [NSDate date];
@@ -317,16 +320,14 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 
 - (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
 {
-    VFromTopViewControllerAnimator *animator = [[VFromTopViewControllerAnimator alloc] init];
-    animator.presenting = NO;
-    return animator;
+    self.animator.presenting = NO;
+    return self.animator;;
 }
 
 - (id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
 {
-    VFromTopViewControllerAnimator *animator = [[VFromTopViewControllerAnimator alloc] init];
-    animator.presenting = YES;
-    return animator;
+    self.animator.presenting = YES;
+    return self.animator;
 }
 
 #pragma mark - UIGestureRecognizerDelegate

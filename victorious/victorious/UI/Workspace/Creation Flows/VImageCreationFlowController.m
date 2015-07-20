@@ -25,6 +25,8 @@
 // Dependencies
 #import "VDependencyManager.h"
 
+// Keys
+NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 
 @interface VImageCreationFlowController ()

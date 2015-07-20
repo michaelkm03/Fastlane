@@ -33,6 +33,7 @@
               @"status" : VSelectorName(status),
               @"am_following" : VSelectorName(isFollowedByMainUser),
               @"number_of_followers" : VSelectorName(numberOfFollowers),
+              @"max_video_duration" : VSelectorName(maxVideoDuration),
     };
 }
 

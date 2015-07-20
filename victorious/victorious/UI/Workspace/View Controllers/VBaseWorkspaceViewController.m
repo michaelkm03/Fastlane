@@ -93,6 +93,13 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
 {
     [super viewDidLoad];
     
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 120, 44)];
+    titleLabel.text = NSLocalizedString(@"Edit", nil);
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+    self.navigationItem.titleView = titleLabel;
+    
     [self.continueButton setTitle:self.continueText];
     
     self.view.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];

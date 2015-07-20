@@ -1,8 +1,5 @@
 {
     "name":"image.creationFlow",
-    "closeIcon": {
-        "imageURL":"cameraButtonClose"
-    },
     "navBarBackground": {
         "name": "solidColor.background",
         "color": {
@@ -20,6 +17,7 @@
     },
     "imageVideoLibrary": {
         "name": "imageVideoGallery.screen",
+        "imageTitle": "Photos",
         "accessUndeterminedPrompt":"We need some access yo!",
         "accessUndeterminedCalltoAction": "Grant access",
         "accessDeniedPrompt": "Go to settings and give us access brah",

@@ -8,6 +8,8 @@
 
 #import "VAbstractImageVideoCreationFlowController.h"
 
+extern NSString * const VImageCreationFlowControllerKey;
+
 @interface VImageCreationFlowController : VAbstractImageVideoCreationFlowController
 
 @end

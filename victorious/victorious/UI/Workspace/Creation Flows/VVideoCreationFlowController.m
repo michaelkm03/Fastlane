@@ -26,6 +26,8 @@
 
 @import Photos;
 
+// Keys
+NSString * const VVideoCreationFlowControllerKey = @"videoCreateFlow";
 static NSString * const kVideoWorkspaceKey = @"videoWorkspace";
 static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 

@@ -1,5 +1,5 @@
 //
-//  VImageCreationFlowController.m
+//  VAbstractImageVideoCreationFlowController.m
 //  victorious
 //
 //  Created by Michael Sena on 6/30/15.
@@ -7,6 +7,9 @@
 //
 
 #import "VAbstractImageVideoCreationFlowController.h"
+
+// Subclass
+#import "VVideoCreationFlowController.h"
 
 // Capture
 #import "VCaptureContainerViewController.h"
@@ -17,6 +20,9 @@
 #import "VAssetDownloader.h"
 #import "UIAlertController+VSimpleAlert.h"
 
+// Animator Support
+#import "VScaleAnimator.h"
+
 // Workspace
 #import "VWorkspaceViewController.h"
 #import "VImageToolController.h"
@@ -26,16 +32,17 @@
 #import "VPublishViewController.h"
 #import "VPublishParameters.h"
 
+// API driven behavior
+#import "VUser+Fetcher.h"
+#import "VObjectManager.h"
+
 // Dependencies
 #import "VDependencyManager.h"
 
 @import Photos;
 #import <MBProgressHUD/MBProgressHUD.h>
 
-// Keys
-NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
-
-@interface VAbstractImageVideoCreationFlowController () <UINavigationControllerDelegate>
+@interface VAbstractImageVideoCreationFlowController () <UINavigationControllerDelegate, VAssetCollectionGridViewControllerDelegate, VScaleAnimatorSource>
 
 @property (nonatomic, strong) NSArray *cachedAssetCollections;
 
@@ -149,12 +156,17 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
         __strong typeof(welf) strongSelf = welf;
         if (published)
         {
+            // Because of a bug in how presentations work we ened to grab a screenshot of the publish screen
+            // before we ened up being dismissed. The bug has to do with multi-level presentations if you
+            // present A -> B -> C then dismiss from A, C is cleared and you only see B animate away.
+            [strongSelf.view addSubview:[strongSelf.presentedViewController.view snapshotViewAfterScreenUpdates:YES]];
+            
             strongSelf.delegate = nil;
             strongSelf.interactivePopGestureRecognizer.delegate = nil;
             strongSelf.publishPresenter = nil;
             [strongSelf cleanupCapturedFile];
             [strongSelf cleanupRenderedFile];
-
+            
             // We're done!
             [strongSelf.creationFlowDelegate creationFlowController:strongSelf
                                            finishedWithPreviewImage:strongSelf.previewImage
@@ -217,6 +229,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
                                               error:nil];
 }
 
+// Only call me when you know rendered mediaURL is no longer valid and any calling classes havne't been provided this URL
 - (void)cleanupRenderedFile
 {
     [[NSFileManager defaultManager] removeItemAtURL:self.renderedMediaURL
@@ -226,9 +239,20 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 - (void)captureFinishedWithMediaURL:(NSURL *)mediaURL
                        previewImage:(UIImage *)previewImage
 {
-    [self prepareWorkspaceWithMediaURL:mediaURL
-                       andPreviewImage:previewImage];
-    [self pushViewController:self.workspaceViewController animated:YES];
+    // If the user has permission to skip the trimmmer (API Driven)
+    // Go straight to publish do not pass go, do not collect $200
+    if ([[[VObjectManager sharedManager] mainUser] shouldSkipTrimmer] && [self isKindOfClass:[VVideoCreationFlowController class]])
+    {
+        self.renderedMediaURL = mediaURL;
+        self.previewImage = previewImage;
+        [self afterEditingFinished];
+    }
+    else
+    {
+        [self prepareWorkspaceWithMediaURL:mediaURL
+                           andPreviewImage:previewImage];
+        [self pushViewController:self.workspaceViewController animated:YES];
+    }
 }
 
 #pragma mark - UINavigationControllerDelegate
@@ -239,10 +263,6 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
     if (viewController == self.captureContainerViewController)
     {
         [self cleanupCapturedFile];
-    }
-    if ([viewController isKindOfClass:[VWorkspaceViewController class]])
-    {
-        [self cleanupRenderedFile];
     }
 }
 
@@ -269,10 +289,8 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
          [hudForView hide:YES];
          if (error == nil)
          {
-             [strongSelf prepareWorkspaceWithMediaURL:downloadedFileURL
-                                      andPreviewImage:previewImage];
-             [strongSelf pushViewController:strongSelf.workspaceViewController
-                                   animated:YES];
+             [strongSelf captureFinishedWithMediaURL:downloadedFileURL
+                                        previewImage:previewImage];
          }
          else
          {
@@ -282,6 +300,23 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
              [strongSelf presentViewController:alert animated:YES completion:nil];
          }
      }];
+}
+
+#pragma mark - VScaleAnimatorSource
+
+- (CGFloat)startingScaleForAnimator:(VScaleAnimator *)animator
+                             inView:(UIView *)animationContainerView
+{
+    UIViewController *topViewController = [self.viewControllers lastObject];
+    return CGRectGetHeight(topViewController.navigationItem.titleView.bounds) / CGRectGetHeight(animationContainerView.bounds);
+}
+
+- (CGPoint)startingCenterForAnimator:(VScaleAnimator *)animator
+                              inView:(UIView *)animationContainerView
+{
+    UIViewController *topViewController = [self.viewControllers lastObject];
+    return [animationContainerView convertPoint:topViewController.navigationItem.titleView.center
+                                       fromView:topViewController.navigationItem.titleView.superview];
 }
 
 @end

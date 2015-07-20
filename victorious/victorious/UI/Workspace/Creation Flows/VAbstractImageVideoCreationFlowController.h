@@ -1,5 +1,5 @@
 //
-//  VImageCreationFlowController.h
+//  VAbstractImageVideoCreationFlowController.h
 //  victorious
 //
 //  Created by Michael Sena on 6/30/15.
@@ -9,8 +9,6 @@
 #import "VCreationFlowController.h"
 #import "VCreationTypes.h"
 #import "VAssetCollectionGridViewController.h"
-
-extern NSString * const VImageCreationFlowControllerKey;
 
 @interface VAbstractImageVideoCreationFlowController : VCreationFlowController <VAssetCollectionGridViewControllerDelegate>
 

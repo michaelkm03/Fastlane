@@ -1571,8 +1571,10 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)showMediaAttachmentUI
 {
+    [self.view endEditing:YES];
     self.mediaAttachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager];
     __weak typeof(self) welf = self;
+    self.mediaAttachmentPresenter.attachmentTypes = VMediaAttachmentOptionsImage | VMediaAttachmentOptionsVideo | VMediaAttachmentOptionsGIF;
     self.mediaAttachmentPresenter.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
     {
         __strong typeof(self) strongSelf = welf;

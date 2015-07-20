@@ -42,7 +42,7 @@
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    self = [super init];
+    self = [super initWithDependencyManager:dependencyManager];
     if ( self )
     {
         // Create the text workspace
@@ -134,7 +134,7 @@
 - (void)presentCameraViewController
 {
     self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager];
-    self.attachmentPresenter.attachmentTypes = VMediaAttachmentTypeImage;
+    self.attachmentPresenter.attachmentTypes = VMediaAttachmentOptionsImage;
     __weak typeof(self) welf = self;
     self.attachmentPresenter.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
     {
