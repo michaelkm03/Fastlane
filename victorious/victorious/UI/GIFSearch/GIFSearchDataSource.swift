@@ -32,11 +32,7 @@ class GIFSearchDataSource: NSObject {
     enum State: Int {
         case None, Loading, Content, Error, NoResults
     }
-    private(set) var state = State.None {
-        didSet {
-            
-        }
-    }
+    private(set) var state = State.None
     
     /// A type for organizing search results into grouped sections
     struct Section {
@@ -63,6 +59,10 @@ class GIFSearchDataSource: NSObject {
     struct ChangeResult {
         var deletedSections: NSIndexSet?
         var insertedSections: NSIndexSet?
+        
+        var hasChanges: Bool {
+            return self.deletedSections?.count > 0 || self.insertedSections?.count > 0
+        }
     }
     
     struct ReuseIdentifier {
@@ -126,8 +126,7 @@ class GIFSearchDataSource: NSObject {
         
         self.state = .Loading
         self.mostRecentSearchText = searchText
-        // WARNING: Remove this hardcodded empty string replcement:
-        VObjectManager.sharedManager().searchForGIF( [ searchText == "" ? "Spongebob" : searchText ],
+        VObjectManager.sharedManager().searchForGIF( [searchText],
             pageType: pageType,
             success: { (results, isLastPage) in
                 self.state = .Content

@@ -49,25 +49,19 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
     if (self != nil)
     {
         _dependencyManager = dependencyManager;
+        
         _gridViewController = [self gridViewControllerWithDependencyManager:dependencyManager];
         _gridViewController.delegate = self;
+        
+        _gifSearchViewController = [GIFSearchViewController gifSearchWithDependencyManager:dependencyManager];
+        _gifSearchViewController.delegate = self;
     }
     return self;
 }
 
 - (UIViewController *)initialViewController
 {
-    if ( self.gifSearchViewController == nil )
-    {
-        self.gifSearchViewController = [GIFSearchViewController gifSearchWithDependencyManager:self.dependencyManager];
-        self.gifSearchViewController.delegate = self;
-    }
     return self.gifSearchViewController;
-}
-
-- (GIFSearchViewController *)gifSearchViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager
-{
-    return [GIFSearchViewController gifSearchWithDependencyManager:dependencyManager];
 }
 
 - (VAssetCollectionGridViewController *)gridViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager

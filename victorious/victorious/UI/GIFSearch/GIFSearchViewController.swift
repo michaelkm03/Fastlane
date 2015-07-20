@@ -67,7 +67,7 @@ class GIFSearchViewController: UIViewController {
         self.collectionView.delegate = self
         self.searchBar.placeholder = NSLocalizedString( "Search", comment:"" )
         
-        self.navigationItem.titleView = self.titleViewWithTitle( NSLocalizedString( "GIF", comment:"" ) )
+        self.navigationItem.titleView = self.titleViewWithTitle( NSLocalizedString( "GIF Search", comment:"" ) )
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: NSLocalizedString("Next", comment: ""),
@@ -105,11 +105,14 @@ class GIFSearchViewController: UIViewController {
     func performSearch( _ searchText: String = "", pageType: VPageType = .First ) {
         if self.searchDataSource.state != .Loading {
             self.searchDataSource.performSearch( searchText, pageType: pageType ) { (result) in
-                self.collectionView.performBatchUpdates({
-                    if let result = result {
+                if let result = result where result.hasChanges {
+                    self.collectionView.performBatchUpdates({
                         self.collectionView.applyDataSourceChanges( result )
-                    }
-                }, completion: nil)
+                    }, completion: nil)
+                }
+                else if self.searchDataSource.sections.count == 0 {
+                    self.collectionView.reloadData()
+                }
             }
             
             // This updates the state of the no content cell
@@ -134,6 +137,7 @@ class GIFSearchViewController: UIViewController {
     private func titleViewWithTitle( text: String ) -> UIView {
         var label = UILabel()
         label.text = text
+        label.font = UIFont.preferredFontForTextStyle( UIFontTextStyleHeadline )
         label.textColor = UIColor.whiteColor()
         label.sizeToFit()
         return label

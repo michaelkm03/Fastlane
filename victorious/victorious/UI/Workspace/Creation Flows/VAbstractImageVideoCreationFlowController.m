@@ -79,7 +79,6 @@
         
         _gridViewController = [self gridViewControllerWithDependencyManager:dependencyManager];
         _gridViewController.delegate = self;
-        [self.captureContainerViewController setContainedViewController:[self initialViewController]];
     }
     return self;
 }
@@ -105,6 +104,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self.captureContainerViewController setContainedViewController:[self initialViewController]];
     
     // We need to be the delegate for the publish animation, and the gesture delegate for the pop to work
     self.delegate = self;
