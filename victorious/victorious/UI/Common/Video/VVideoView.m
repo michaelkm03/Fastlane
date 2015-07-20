@@ -16,9 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface VVideoView()
 
-@property (nonatomic, strong) AVPlayer *__nullable player;
-@property (nonatomic, strong) AVPlayerLayer *__nullable playerLayer;
-@property (nonatomic, strong) AVPlayerItem *__nullable newestPlayerItem;
+@property (nonatomic, strong, nullable) AVPlayer *player;
+@property (nonatomic, strong, nullable) AVPlayerLayer *playerLayer;
+@property (nonatomic, strong, nullable) AVPlayerItem *newestPlayerItem;
 @property (nonatomic, readonly) BOOL isPlayingVideo;
 @property (nonatomic, strong) VVideoUtils *videoUtils;
 
