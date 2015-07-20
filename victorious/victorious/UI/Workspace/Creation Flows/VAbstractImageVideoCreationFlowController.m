@@ -29,6 +29,10 @@
 #import "VPublishViewController.h"
 #import "VPublishParameters.h"
 
+// API driven behavior
+#import "VUser+Fetcher.h"
+#import "VObjectManager.h"
+
 // Dependencies
 #import "VDependencyManager.h"
 
@@ -227,9 +231,18 @@
 - (void)captureFinishedWithMediaURL:(NSURL *)mediaURL
                        previewImage:(UIImage *)previewImage
 {
-    [self prepareWorkspaceWithMediaURL:mediaURL
-                       andPreviewImage:previewImage];
-    [self pushViewController:self.workspaceViewController animated:YES];
+    // If the user has permission to skip the trimmmer (API Driven)
+    // Go straight to publish do not pass go, do not collect $200
+    if ([[[VObjectManager sharedManager] mainUser] shouldSkipTrimmer])
+    {
+        [self toPublishScreenWithRenderedMediaURL:mediaURL previewImage:previewImage fromWorkspace:nil];
+    }
+    else
+    {
+        [self prepareWorkspaceWithMediaURL:mediaURL
+                           andPreviewImage:previewImage];
+        [self pushViewController:self.workspaceViewController animated:YES];
+    }
 }
 
 #pragma mark - UINavigationControllerDelegate
@@ -270,10 +283,8 @@
          [hudForView hide:YES];
          if (error == nil)
          {
-             [strongSelf prepareWorkspaceWithMediaURL:downloadedFileURL
-                                      andPreviewImage:previewImage];
-             [strongSelf pushViewController:strongSelf.workspaceViewController
-                                   animated:YES];
+             [strongSelf captureFinishedWithMediaURL:downloadedFileURL
+                                        previewImage:previewImage];
          }
          else
          {

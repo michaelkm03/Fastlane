@@ -21,6 +21,7 @@ static double kProgressSplit = 0.5f;
 @property (nonatomic, assign) BOOL isInIcloud;
 @property (nonatomic, copy) void (^progressBlock)(BOOL accurateProgress, double progress, NSString *localizedProgress);
 @property (nonatomic, weak) AVAssetExportSession *exportSession;
+@property (nonatomic, strong) UIImage *previewImage;
 
 @end
 
@@ -47,9 +48,9 @@ static double kProgressSplit = 0.5f;
 {
     [self atttempOfflineExportWithProgress:progressHandler
                                 completion:completion];
+    // Also grab a previewImage
+    [self downloadPreviewImage];
 }
-
-
 
 - (void)atttempOfflineExportWithProgress:(void (^)(BOOL accurateProgress, double progress, NSString *localizedProgress))progressHandler
                               completion:(void (^)(NSError *error, NSURL *downloadedFileURL, UIImage *previewImage))completion
@@ -140,6 +141,7 @@ static double kProgressSplit = 0.5f;
                                                 userInfo:nil
                                                  repeats:YES];
     self.exportSession = exportSession;
+    __weak typeof(self) welf = self;
     [exportSession determineCompatibleFileTypesWithCompletionHandler:^(NSArray *compatibleFileTypes)
      {
          VLog(@"file types: %@", compatibleFileTypes);
@@ -151,7 +153,8 @@ static double kProgressSplit = 0.5f;
               // Export completed
               dispatch_async(dispatch_get_main_queue(), ^
                              {
-                                 completion(nil, exportSession.outputURL, nil);
+                                 __strong typeof(welf) strongSelf = welf;
+                                 completion(nil, exportSession.outputURL, strongSelf.previewImage);
                              });
           }];
      }];
@@ -200,6 +203,22 @@ static double kProgressSplit = 0.5f;
 - (NSURL *)cacheDirectoryURL
 {
     return [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+}
+
+- (void)downloadPreviewImage
+{
+    PHImageRequestOptions *requestOptions = [[PHImageRequestOptions alloc] init];
+    requestOptions.networkAccessAllowed = YES;
+    __weak typeof(self) welf = self;
+    [[PHImageManager defaultManager] requestImageForAsset:self.asset
+                                               targetSize:CGSizeMake(100.0f, 100.0f)
+                                              contentMode:PHImageContentModeAspectFit
+                                                  options:requestOptions
+                                            resultHandler:^(UIImage *result, NSDictionary *info)
+     {
+         __strong typeof(welf) strongSelf = welf;
+         strongSelf.previewImage = result;
+     }];
 }
 
 @end
