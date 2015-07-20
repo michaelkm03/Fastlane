@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>${ProductPrefix}Chris Collins</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.getvictorious.${ProductPrefix}chriscollins</string>
+	<key>CFBundleName</key>
+	<string>${ProductPrefix}ChrisCollins</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb435879199950678</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>435879199950678</string>
+	<key>VictoriousAppID</key>
+	<integer>66</integer>
+	<key>StagingAppID</key>
+	<integer>79</integer>
+	<key>QAAppID</key>
+	<integer>68</integer>
+	<key>CreatorSalutation</key>
+	<string>Chris Collins</string>
+	<key>FlurryAPIKey</key>
+	<string>9GQ6XZRZ3P3TR7DHQJB3</string>
+</dict>
+</plist>

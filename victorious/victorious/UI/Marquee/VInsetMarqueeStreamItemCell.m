@@ -14,6 +14,7 @@
 #import <objc/runtime.h>
 #import "VStreamItemPreviewView.h"
 #import "UIView+AutoLayout.h"
+#import "VMarqueeCaptionView.h"
 
 static const CGFloat kOverlayOpacity = 0.2f;
 static const CGFloat kOverlayWhiteAmount = 0.0f;
@@ -24,11 +25,12 @@ static const CGSize kShadowOffset = { 0.0f, 2.0f };
 
 @interface VInsetMarqueeStreamItemCell ()
 
-@property (nonatomic, weak) IBOutlet UILabel *titleLabel; //The label displaying the title of the content
+@property (nonatomic, weak) IBOutlet VMarqueeCaptionView *marqueeCaptionView; //The label displaying the title of the content
 @property (nonatomic, weak) IBOutlet UIView *gradientContainer; //The view containing the black gradient behind the titleLabel
 @property (nonatomic, strong) CAGradientLayer *gradientLayer; //The gradient displayed in the gradient container
 @property (nonatomic, weak) IBOutlet UIView *overlayContainer; //An overlay to apply to the imageView
 @property (nonatomic, weak) IBOutlet UIView *contentContainer; //The container for all variable cell content, will have shadow applied to it
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *centerLabelConstraint; //Must be strong so that we can turn it on and off as needed
 
 @end
 
@@ -52,17 +54,17 @@ static const CGSize kShadowOffset = { 0.0f, 2.0f };
     return CGSizeMake(side, side);
 }
 
-- (void)setStreamItem:(VStreamItem *)streamItem
+- (void)setupWithStreamItem:(VStreamItem *)streamItem fromStreamWithApiPath:(NSString *)apiPath
 {
-    [super setStreamItem:streamItem];
-    
-    if ( [self.titleLabel.text isEqualToString:streamItem.name] )
+    [super setupWithStreamItem:streamItem fromStreamWithApiPath:apiPath];
+    if ( streamItem != nil )
     {
-        return;
+        [self.marqueeCaptionView setupWithMarqueeItem:streamItem fromStreamWithApiPath:apiPath];
+        BOOL hasHeadline = self.marqueeCaptionView.hasHeadline;
+        self.centerLabelConstraint.active = hasHeadline;
+        self.marqueeCaptionView.captionLabel.textAlignment = hasHeadline ? NSTextAlignmentCenter : NSTextAlignmentLeft;
+        [self updateGradientLayer];
     }
-    
-    self.titleLabel.text = streamItem.name;
-    [self updateGradientLayer];
 }
 
 - (void)updateGradientLayer
@@ -70,7 +72,8 @@ static const CGSize kShadowOffset = { 0.0f, 2.0f };
     [self layoutIfNeeded];
     
     CGRect gradientBounds = self.gradientContainer.bounds;
-    if ( self.streamItem.name == nil || [self.streamItem.name isEqualToString:@""] )
+    NSString *captionViewText = self.marqueeCaptionView.captionLabel.text;
+    if ( captionViewText == nil || [captionViewText isEqualToString:@""] )
     {
         [self.gradientLayer removeFromSuperlayer];
         self.gradientLayer = nil;
@@ -98,7 +101,7 @@ static const CGSize kShadowOffset = { 0.0f, 2.0f };
     [super setDependencyManager:dependencyManager];
     if ( dependencyManager != nil )
     {
-        [self.titleLabel setFont:[dependencyManager fontForKey:VDependencyManagerHeaderFontKey]];
+        self.marqueeCaptionView.dependencyManager = self.dependencyManager;
         [self.contentContainer setBackgroundColor:[dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey]];
         [self updateGradientLayer];
     }

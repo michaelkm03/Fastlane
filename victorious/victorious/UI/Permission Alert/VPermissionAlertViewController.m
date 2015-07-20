@@ -182,7 +182,7 @@ static NSString * const kDenyButtonTitleKey = @"title.button2";
 {
     if (_confirmButtonText == nil || _confirmButtonText.length == 0)
     {
-        return NSLocalizedString(@"Okay!", nil);
+        return NSLocalizedString(@"OK", nil);
     }
     
     return _confirmButtonText;

@@ -437,7 +437,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         return;
     }
     
-#if !V_NO_SWITCH_ENVIRONMENTS
+#ifdef V_SWITCH_ENVIRONMENTS
     NSError *environmentError = notification.userInfo[ VEnvironmentErrorKey ];
     if ( environmentError != nil )
     {

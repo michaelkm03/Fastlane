@@ -57,7 +57,7 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
             
         case kVLastLoginTypeTwitter:
         {
-            [self loginViaTwitterAccountWithIdentifier:identifier onCompletion:completion onError:errorBlock];
+            [self loginViaTwitterAccountWithIdentifier:identifier isModern:NO onCompletion:completion onError:errorBlock];
             break;
         }
         
@@ -187,20 +187,29 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
 }
 
 - (void)loginViaTwitterWithTwitterID:(NSString *)twitterID
+                            isModern:(BOOL)isModern
                         OnCompletion:(VUserManagerLoginCompletionBlock)completion
                              onError:(VUserManagerLoginErrorBlock)errorBlock
 {
     [self loginViaTwitterAccountWithIdentifier:twitterID
+                                      isModern:isModern
                                   onCompletion:completion
                                        onError:errorBlock];
 }
 
-- (void)loginViaTwitterOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
+- (void)loginViaTwitterModern:(BOOL)isModern
+                 onCompletion:(VUserManagerLoginCompletionBlock)completion
+                      onError:(VUserManagerLoginErrorBlock)errorBlock
 {
-    [self loginViaTwitterAccountWithIdentifier:nil onCompletion:completion onError:errorBlock];
+    [self loginViaTwitterAccountWithIdentifier:nil
+                                      isModern:isModern
+                                  onCompletion:completion
+                                       onError:errorBlock];
 }
 
-- (void)loginViaTwitterAccountWithIdentifier:(NSString *)identifier onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
+- (void)loginViaTwitterAccountWithIdentifier:(NSString *)identifier
+                                    isModern:(BOOL)isModern
+                                onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
     //TODO: this should use VTwitterManager's fetchTwitterInfoWithSuccessBlock:FailBlock method
     ACAccountStore *account = [[ACAccountStore alloc] init];
@@ -297,11 +306,22 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
             }
         };
         
-        [[VObjectManager sharedManager] createTwitterWithToken:oauthToken
-                                                  accessSecret:tokenSecret
-                                                     twitterId:twitterId
-                                                  SuccessBlock:success
-                                                     failBlock:failed];
+        if (isModern)
+        {
+            [[VObjectManager sharedManager] modernCreateTwitterWithToken:oauthToken
+                                                            accessSecret:tokenSecret
+                                                               twitterId:twitterId
+                                                            SuccessBlock:success
+                                                               failBlock:failed];
+        }
+        else
+        {
+            [[VObjectManager sharedManager] createTwitterWithToken:oauthToken
+                                                      accessSecret:tokenSecret
+                                                         twitterId:twitterId
+                                                      SuccessBlock:success
+                                                         failBlock:failed];
+        }
     }];
 }
 

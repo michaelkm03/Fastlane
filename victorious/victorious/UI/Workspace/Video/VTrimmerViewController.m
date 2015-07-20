@@ -14,14 +14,17 @@
 // Views
 #import "VThumbnailCell.h"
 #import "VTrimControl.h"
+#import "VHashmarkView.h"
+#import "VTimeMarkView.h"
+#import "VTrimmerFlowLayout.h"
 
 // Dependencies
 #import "VDependencyManager.h"
 
 static NSString *const emptyCellIdentifier = @"emptyCell";
 
-static const CGFloat kTimelineDarkeningAlpha = 0.5f;
 static const CGFloat kMinimumThumbnailHeight = 70.0f; //The minimum height for the thumbnail preview collection view
+static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of the thumbnail collectionview
 
 @interface VTrimmerViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
 
@@ -31,12 +34,14 @@ static const CGFloat kMinimumThumbnailHeight = 70.0f; //The minimum height for t
 
 @property (nonatomic, strong) UILabel *titleLabel;
 
-@property (nonatomic, strong) UIView *trimDimmingView;
 @property (nonatomic, strong) NSLayoutConstraint *dimmingViewWidthConstraint;
 
 @property (nonatomic, strong) UIView *currentPlayBackOverlayView;
 @property (nonatomic, strong) NSLayoutConstraint *currentPlayBackWidthConstraint;
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) VTrimmerFlowLayout *trimmerFlowLayout;
+
+@property (nonatomic, assign) NSInteger numberOfFrames;
 
 @end
 
@@ -61,7 +66,6 @@ static const CGFloat kMinimumThumbnailHeight = 70.0f; //The minimum height for t
     [super viewDidLoad];
 
     [self prepareThumbnailCollectionViewAndTitleLabel];
-    [self prepareDimmingView];
     [self preparePlaybackOverlay];
     [self prepareTrimControl];
 }
@@ -69,6 +73,7 @@ static const CGFloat kMinimumThumbnailHeight = 70.0f; //The minimum height for t
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self registerSupplementaryViews];
     self.titleLabel.alpha = 1.0f;
 }
 
@@ -126,8 +131,8 @@ static const CGFloat kMinimumThumbnailHeight = 70.0f; //The minimum height for t
     if (CMTIME_COMPARE_INLINE(currentPlayTime, >, kCMTimeZero))
     {
         Float64 progress = (CMTimeGetSeconds(currentPlayTime) - CMTimeGetSeconds([self currentTimeOffset])) / CMTimeGetSeconds(self.maximumTrimDuration);
-        CGFloat playbackOverlayWidth = CGRectGetWidth(self.view.bounds) * progress;
-        self.currentPlayBackWidthConstraint.constant = (playbackOverlayWidth >= 0) ? playbackOverlayWidth : 0.0f;
+        CGFloat playbackOverlayWidth = (CGRectGetWidth(self.view.bounds) * progress) - (CGRectGetWidth(self.trimControl.trimThumbBody.frame)/2);
+        self.currentPlayBackWidthConstraint.constant = ((playbackOverlayWidth >= 0) && (playbackOverlayWidth <= CGRectGetMaxX(self.trimControl.trimThumbBody.frame))) ? playbackOverlayWidth  : 0.0f;
         [self.view layoutIfNeeded];
     }
 }
@@ -178,22 +183,13 @@ static const CGFloat kMinimumThumbnailHeight = 70.0f; //The minimum height for t
         numberOfFrames++;
         neededTimeLineWidth = neededTimeLineWidth - frameWidth;
     }
-    
-    return numberOfFrames + 1; // 1 extra for a spacer cell
+    self.numberOfFrames = numberOfFrames - 1;
+    return numberOfFrames; // 1 extra for a spacer cell
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == [self collectionView:collectionView
-                       numberOfItemsInSection:indexPath.section] - 1)
-    {
-        UICollectionViewCell *emptyCell = [collectionView dequeueReusableCellWithReuseIdentifier:emptyCellIdentifier
-                                                                                    forIndexPath:indexPath];
-        emptyCell.backgroundColor = [UIColor clearColor];
-        emptyCell.contentView.backgroundColor = [UIColor clearColor];
-        return emptyCell;
-    }
     
     VThumbnailCell *thumnailCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VThumbnailCell suggestedReuseIdentifier]
                                                                              forIndexPath:indexPath];
@@ -204,7 +200,7 @@ static const CGFloat kMinimumThumbnailHeight = 70.0f; //The minimum height for t
     __weak VThumbnailCell *weakCell = thumnailCell;
     [self.thumbnailDataSource trimmerViewController:self
                                    thumbnailForTime:timeForCell
-                                     withCompletion:^(UIImage *thumbnail, CMTime timeForImage, id generatingDataSource)
+                                        withSuccess:^(UIImage *thumbnail, CMTime timeForImage, id generatingDataSource)
      {
          CMTime timeValue = [weakCell.valueForThumbnail CMTimeValue];
          if (CMTIME_COMPARE_INLINE(timeValue, ==, timeForImage))
@@ -212,10 +208,41 @@ static const CGFloat kMinimumThumbnailHeight = 70.0f; //The minimum height for t
              dispatch_async(dispatch_get_main_queue(), ^
                             {
                                 weakCell.thumbnail = thumbnail;
+                                [weakCell.activityIndicator stopAnimating];
                             });
          }
+     }
+     withFailure:^(NSError *error)
+     {
+         [weakCell.activityIndicator stopAnimating];
+         weakCell.frame = CGRectZero;
      }];
+    thumnailCell.clipsToBounds = YES;
     return thumnailCell;
+}
+
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionReusableView *reusableview = nil;
+    
+    if (kind == HashmarkViewKind)
+    {
+        reusableview = [VHashmarkView collectionReusableViewForCollectionView:collectionView forIndexPath:indexPath withKind:kind];
+    }
+    if (kind == TimemarkViewKind)
+    {
+        CGPoint center = [self.thumbnailCollectionView.collectionViewLayout layoutAttributesForSupplementaryViewOfKind:TimemarkViewKind atIndexPath:indexPath].center;
+        CGFloat percentThrough = center.x / [self timelineWidthForFullTrack];
+        CMTime timeForCell = CMTimeMake(self.maximumEndTime.value * percentThrough, self.maximumEndTime.timescale);
+        Float64 time = CMTimeGetSeconds(timeForCell);
+        
+        VTimeMarkView *timeMarkView = [VTimeMarkView collectionReusableViewForCollectionView:collectionView forIndexPath:indexPath withKind:kind];
+        timeMarkView.timeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)time/60, (int)time%60];
+        timeMarkView.timeLabel.font = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
+        reusableview = timeMarkView;
+    }
+    
+    return reusableview;
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -224,23 +251,21 @@ static const CGFloat kMinimumThumbnailHeight = 70.0f; //The minimum height for t
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    CGSize size;
     NSInteger numberOfItems = [self collectionView:collectionView
                             numberOfItemsInSection:indexPath.section];
+    
     // Empty Cell
     if (indexPath.row == numberOfItems - 1)
     {
-        return CGSizeMake(CGRectGetWidth(collectionView.frame) - [self timelineWidthPerSecond], CGRectGetHeight(collectionView.bounds));
+        return CGSizeMake(0, 0);
     }
-    else if (indexPath.row == numberOfItems - 2)
-    {
-        CGFloat width = [self timelineWidthForFullTrack];
-        if (!isnan(width))
-        {
-            width = width - ((numberOfItems - 2) * CGRectGetHeight(collectionView.bounds));
-            return CGSizeMake(width, CGRectGetHeight(collectionView.frame));
-        }
-    }
-    return CGSizeMake(CGRectGetHeight(collectionView.frame), CGRectGetHeight(collectionView.frame));
+    
+    [self.currentPlayBackOverlayView updateConstraintsIfNeeded];
+
+    CGFloat width = MIN(VTrimControlMaximumHeight, CGRectGetHeight(self.currentPlayBackOverlayView.frame));
+    size = CGSizeMake(width, width);
+    return size;
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
@@ -325,9 +350,34 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
         [self.delegate trimmerViewController:self
                   didUpdateSelectedTimeRange:[self selectedTimeRange]];
     }
-    Float64 progress = CMTimeGetSeconds(self.trimControl.selectedDuration) / CMTimeGetSeconds(self.trimControl.maxDuration);
+    Float64 progress = CMTimeGetSeconds(self.trimControl.selectedDuration) / CMTimeGetSeconds(self.maxDuration);
     self.dimmingViewWidthConstraint.constant = CGRectGetWidth(self.view.bounds) - (CGRectGetWidth(self.view.bounds) * progress);
-    [self.view layoutIfNeeded];
+   [self.view layoutIfNeeded];
+    
+    CGFloat progressOfThumbs = 1.0f - (self.thumbnailCollectionView.contentOffset.x / (CGRectGetWidth(self.thumbnailCollectionView.bounds)));
+    
+    if (progress > progressOfThumbs)
+    {
+        self.trimControl.trimThumbBody.center = CGPointMake(progressOfThumbs*CGRectGetWidth(self.thumbnailCollectionView.bounds), self.trimControl.trimThumbBody.center.y);
+    }
+    
+    for (UICollectionViewCell *cell in [self.thumbnailCollectionView visibleCells])
+    {
+        NSIndexPath *indexPath = [self.thumbnailCollectionView indexPathForCell:cell];
+        NSInteger lastIndex = [indexPath indexAtPosition:[indexPath length] - 1];
+        lastIndex = lastIndex + 1;
+        if (lastIndex == self.numberOfFrames)
+        {
+            CGRect frame;
+            frame.size = cell.frame.size;
+            frame.origin = CGPointMake(cell.frame.origin.x - self.thumbnailCollectionView.contentOffset.x, cell.frame.origin.y + self.thumbnailCollectionView.contentOffset.y);
+            
+            if (CGRectGetMaxX(frame) < CGRectGetMaxX(self.trimControl.trimThumbBody.frame))
+            {
+                self.trimControl.trimThumbBody.center = CGPointMake(CGRectGetMaxX(frame) - (CGRectGetWidth(self.trimControl.trimThumbBody.frame)/2), self.trimControl.trimThumbBody.center.y);
+            }
+        }
+    }
 }
 
 - (void)updateTrimControlTitleWithTime:(CMTime)time
@@ -356,12 +406,11 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 
 - (void)prepareThumbnailCollectionViewAndTitleLabel
 {
-    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    self.trimmerFlowLayout = [[VTrimmerFlowLayout alloc] init];
     CGRect bounds = self.view.bounds;
-    layout.itemSize = CGSizeMake(CGRectGetHeight(bounds), CGRectGetHeight(bounds));
-    layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    self.trimmerFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     self.thumbnailCollectionView = [[UICollectionView alloc] initWithFrame:bounds
-                                                      collectionViewLayout:layout];
+                                                      collectionViewLayout:self.trimmerFlowLayout];
     [self.thumbnailCollectionView registerNib:[VThumbnailCell nibForCell]
                    forCellWithReuseIdentifier:[VThumbnailCell suggestedReuseIdentifier]];
     [self.thumbnailCollectionView registerClass:[UICollectionViewCell class]
@@ -372,6 +421,9 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     self.thumbnailCollectionView.bounces = NO;
     self.thumbnailCollectionView.backgroundColor = [UIColor clearColor];
     self.thumbnailCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.thumbnailCollectionView.clipsToBounds = NO;
+    self.thumbnailCollectionView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, kCollectionViewRightInset);
+    
     [self.view addSubview:self.thumbnailCollectionView];
 
     self.titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -405,44 +457,6 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
                                                                         views:viewMap]];
 }
 
-- (void)prepareDimmingView
-{
-    self.trimDimmingView = [[UIView alloc] initWithFrame:self.view.bounds];
-    self.trimDimmingView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
-    self.trimDimmingView.userInteractionEnabled = NO;
-    [self.view addSubview:self.trimDimmingView];
-    self.trimDimmingView.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    NSDictionary *viewMap = @{@"trimDimmingView":self.trimDimmingView};
-    
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[trimDimmingView]|"
-                                                                      options:kNilOptions
-                                                                      metrics:nil
-                                                                        views:viewMap]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.trimDimmingView
-                                                          attribute:NSLayoutAttributeTop
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.thumbnailCollectionView
-                                                          attribute:NSLayoutAttributeTop
-                                                         multiplier:1.0
-                                                           constant:0.0f]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.trimDimmingView
-                                                          attribute:NSLayoutAttributeBottom
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.thumbnailCollectionView
-                                                          attribute:NSLayoutAttributeBottom
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
-    self.dimmingViewWidthConstraint = [NSLayoutConstraint constraintWithItem:self.trimDimmingView
-                                                                   attribute:NSLayoutAttributeWidth
-                                                                   relatedBy:NSLayoutRelationEqual
-                                                                      toItem:nil
-                                                                   attribute:NSLayoutAttributeNotAnAttribute
-                                                                  multiplier:1.0f
-                                                                    constant:0.0f];
-    [self.view addConstraint:self.dimmingViewWidthConstraint];
-}
-
 - (void)prepareTrimControl
 {
     self.trimControl = [[VTrimControl alloc] initWithFrame:CGRectZero];
@@ -450,6 +464,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     [self.trimControl addTarget:self
                          action:@selector(trimSelectionChanged:)
                forControlEvents:UIControlEventValueChanged];
+    
     [self.view addSubview:self.trimControl];
     
     NSDictionary *viewMap = @{@"trimControl": self.trimControl};
@@ -476,11 +491,14 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 
 - (void)preparePlaybackOverlay
 {
-    self.currentPlayBackOverlayView = [[UIView alloc] initWithFrame:self.view.bounds];
+    CGRect frame = CGRectMake(0, 0, 123.6f, 55.0f);
+    self.currentPlayBackOverlayView = [[UIView alloc] initWithFrame:frame];
     self.currentPlayBackOverlayView.userInteractionEnabled = NO;
-    self.currentPlayBackOverlayView.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:kTimelineDarkeningAlpha];
+    
+    self.currentPlayBackOverlayView.backgroundColor = [UIColor colorWithRed:237.0f/255.0f green:28.0f/255.0f blue:36.0f/255.0f alpha:0.3f];
     [self.view addSubview:self.currentPlayBackOverlayView];
     self.currentPlayBackOverlayView.translatesAutoresizingMaskIntoConstraints = NO;
+    
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[overlayView]"
                                                                       options:kNilOptions
                                                                       metrics:nil
@@ -507,6 +525,12 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
                                                                       multiplier:1.0f
                                                                         constant:0.0f];
     [self.view addConstraint:self.currentPlayBackWidthConstraint];
+}
+
+- (void)registerSupplementaryViews
+{
+    [self.thumbnailCollectionView registerNib:[VTimeMarkView nibForCell] forSupplementaryViewOfKind:TimemarkViewKind withReuseIdentifier:[VTimeMarkView suggestedReuseIdentifier]];
+    [self.thumbnailCollectionView registerNib:[VHashmarkView nibForCell] forSupplementaryViewOfKind:HashmarkViewKind withReuseIdentifier:[VHashmarkView suggestedReuseIdentifier]];
 }
 
 @end
