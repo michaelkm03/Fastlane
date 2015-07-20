@@ -20,17 +20,19 @@
 @interface VMediaAttachmentPresenter () <VCreationFlowControllerDelegate>
 
 @property (nonatomic, weak) UIViewController *viewControllerPresentedOn;
+@property (nonatomic, strong) NSDictionary *addedDepencies;
 
 @end
 
 @implementation VMediaAttachmentPresenter
 
-- (instancetype)initWithViewControllerToPresentOn:(UIViewController *)viewControllerToPresentOn dependencymanager:(VDependencyManager *)dependencyManager
+- (instancetype)initWithDependencymanager:(VDependencyManager *)dependencyManager
+                        addedDependencies:(NSDictionary *)addedDependencies
 {
     self = [super initWithDependencymanager:dependencyManager];
     if (self != nil)
     {
-        _attachmentTypes = VMediaAttachmentOptionsImage | VMediaAttachmentOptionsVideo;
+        _addedDepencies = addedDependencies;
     }
     return self;
 }
@@ -46,7 +48,8 @@
     void (^imageActionHandler)(void) = ^void(void)
     {
         VAbstractImageVideoCreationFlowController *imageCreationFlowController = [self.dependencyManager templateValueOfType:[VAbstractImageVideoCreationFlowController class]
-                                                                                                                      forKey:VImageCreationFlowControllerKey];
+                                                                                                                      forKey:VImageCreationFlowControllerKey
+                                                                                                       withAddedDependencies:self.addedDepencies];
         imageCreationFlowController.creationFlowDelegate = self;
         [viewControllerToPresentOn presentViewController:imageCreationFlowController
                                                      animated:YES
@@ -55,7 +58,8 @@
     void (^videoActionHandler)(void) = ^void(void)
     {
         VVideoCreationFlowController *videoCreationFlowController = [self.dependencyManager templateValueOfType:[VVideoCreationFlowController class]
-                                                                                                         forKey:VVideoCreationFlowControllerKey];
+                                                                                                         forKey:VVideoCreationFlowControllerKey
+                                                                                          withAddedDependencies:self.addedDepencies];
         videoCreationFlowController.creationFlowDelegate = self;
         [viewControllerToPresentOn presentViewController:videoCreationFlowController
                                                      animated:YES
@@ -64,7 +68,8 @@
     void (^gifActionHandler)(void) = ^void(void)
     {
         VGIFCreationFlowController *gifCreationFlowController = [self.dependencyManager templateValueOfType:[VGIFCreationFlowController class]
-                                                                                                     forKey:VGIFCreationFlowControllerKey];
+                                                                                                     forKey:VGIFCreationFlowControllerKey
+                                                                                      withAddedDependencies:self.addedDepencies];
         gifCreationFlowController.creationFlowDelegate = self;
         [viewControllerToPresentOn presentViewController:gifCreationFlowController
                                                 animated:YES

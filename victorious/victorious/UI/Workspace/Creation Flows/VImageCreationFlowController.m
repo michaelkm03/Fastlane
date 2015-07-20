@@ -63,7 +63,28 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 - (void)prepareInitialEditStateWithWorkspace:(VWorkspaceViewController *)workspace
 {
     VImageToolController *toolController = (VImageToolController *)workspace.toolController;
-    [toolController setDefaultImageTool:VImageToolControllerInitialImageEditStateText];
+    NSNumber *shouldDisableText = [self.dependencyManager numberForKey:VImageToolControllerShouldDisableTextOverlayKey];
+    NSNumber *defaultTool = [self.dependencyManager numberForKey:VImageToolControllerInitialImageEditStateKey];
+    
+    // Disable text
+    if ([shouldDisableText boolValue])
+    {
+        toolController.disableTextOverlay = YES;
+    }
+    
+    // Configure default tool
+    if (defaultTool == nil && [shouldDisableText boolValue])
+    {
+        [toolController setDefaultImageTool:VImageToolControllerInitialImageEditStateFilter];
+    }
+    else if (defaultTool == nil)
+    {
+        [toolController setDefaultImageTool:VImageToolControllerInitialImageEditStateText];
+    }
+    else
+    {
+        [toolController setDefaultImageTool:[defaultTool integerValue]];
+    }
 }
 
 - (void)configurePublishParameters:(VPublishParameters *)publishParameters

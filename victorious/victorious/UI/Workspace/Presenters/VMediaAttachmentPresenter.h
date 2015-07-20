@@ -28,6 +28,12 @@ typedef void(^VMediaAttachmentResultHandler)(BOOL success, UIImage *previewImage
 @interface VMediaAttachmentPresenter : VAbstractPresenter
 
 /**
+ *  An extra initializer to injext extra dependencies into the dependency tree.
+ */
+- (instancetype)initWithDependencymanager:(VDependencyManager *)dependencyManager
+                        addedDependencies:(NSDictionary *)addedDependencies;
+
+/**
  *  A completion block for the presenter. Be sure to retain this presenter if providing a completion block.
  */
 @property (nonatomic, copy) VMediaAttachmentResultHandler resultHandler;
