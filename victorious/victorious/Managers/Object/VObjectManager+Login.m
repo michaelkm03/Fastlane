@@ -166,8 +166,37 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
 }
 
 - (RKManagedObjectRequestOperation *)createTwitterWithToken:(NSString *)accessToken
+                                                     accessSecret:(NSString *)accessSecret
+                                                        twitterId:(NSString *)twitterId
+                                                     SuccessBlock:(VSuccessBlock)success
+                                                        failBlock:(VFailBlock)failed
+{
+    return [self createTwitterWithToken:accessToken
+                           accessSecret:accessSecret
+                              twitterId:twitterId
+                               isModern:NO
+                           SuccessBlock:success
+                              failBlock:failed];
+}
+
+- (RKManagedObjectRequestOperation *)modernCreateTwitterWithToken:(NSString *)accessToken
                                                accessSecret:(NSString *)accessSecret
                                                   twitterId:(NSString *)twitterId
+                                               SuccessBlock:(VSuccessBlock)success
+                                                  failBlock:(VFailBlock)failed
+{
+    return [self createTwitterWithToken:accessToken
+                           accessSecret:accessSecret
+                              twitterId:twitterId
+                               isModern:YES
+                           SuccessBlock:success
+                              failBlock:failed];
+}
+
+- (RKManagedObjectRequestOperation *)createTwitterWithToken:(NSString *)accessToken
+                                               accessSecret:(NSString *)accessSecret
+                                                  twitterId:(NSString *)twitterId
+                                                   isModern:(BOOL)isModern
                                                SuccessBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)failed
 {
@@ -184,7 +213,9 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
         }
     };
     
-    return [self POST:@"/api/account/create/via_twitter"
+    NSString *url = isModern ? @"/api/account/create/via_twitter_modern" : @"/api/account/create/via_twitter";
+    
+    return [self POST:url
                object:nil
            parameters:parameters
          successBlock:fullSuccess
