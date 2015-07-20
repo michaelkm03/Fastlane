@@ -210,7 +210,6 @@
 		0392694F1B5C720400FCD0AA /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0392694E1B5C720400FCD0AA /* main.swift */; };
 		0392695D1B5C774500FCD0AA /* TemplateLoader.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0392695C1B5C774500FCD0AA /* TemplateLoader.h */; };
 		0392695F1B5C774500FCD0AA /* TemplateLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0392695E1B5C774500FCD0AA /* TemplateLoader.m */; };
-		039269651B5C774500FCD0AA /* libTemplateLoader.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0392695A1B5C774400FCD0AA /* libTemplateLoader.a */; };
 		039269781B5C871700FCD0AA /* VBulkDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F8861B38F76700E8D459 /* VBulkDownloadOperation.m */; };
 		039269791B5C871700FCD0AA /* VDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F88B1B390ADE00E8D459 /* VDownloadOperation.m */; };
 		0392697A1B5C871700FCD0AA /* VTemplateDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058BE1AEF44D600CF39D1 /* VTemplateDownloadOperation.m */; };
@@ -1109,13 +1108,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		039269661B5C774500FCD0AA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 039269591B5C774400FCD0AA;
-			remoteInfo = TemplateLoader;
-		};
 		039269801B5C87EE00FCD0AA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
@@ -1531,8 +1523,6 @@
 		0392695A1B5C774400FCD0AA /* libTemplateLoader.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTemplateLoader.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		0392695C1B5C774500FCD0AA /* TemplateLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TemplateLoader.h; sourceTree = "<group>"; };
 		0392695E1B5C774500FCD0AA /* TemplateLoader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TemplateLoader.m; sourceTree = "<group>"; };
-		039269641B5C774500FCD0AA /* TemplateLoaderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TemplateLoaderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		0392696A1B5C774500FCD0AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		039269821B5C9DD600FCD0AA /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		0394203A1AB7A4F20087ADFA /* VInsetStreamCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInsetStreamCellFactory.h; sourceTree = "<group>"; };
 		0394203B1AB7A4F20087ADFA /* VInsetStreamCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInsetStreamCellFactory.m; sourceTree = "<group>"; };
@@ -3220,14 +3210,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		039269611B5C774500FCD0AA /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				039269651B5C774500FCD0AA /* libTemplateLoader.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		BE171D731868BE64004E5202 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -4206,22 +4188,6 @@
 				03A058B91AED7FB600CF39D1 /* VTemplateSerialization.m */,
 			);
 			path = TemplateLoader;
-			sourceTree = "<group>";
-		};
-		039269681B5C774500FCD0AA /* TemplateLoaderTests */ = {
-			isa = PBXGroup;
-			children = (
-				039269691B5C774500FCD0AA /* Supporting Files */,
-			);
-			path = TemplateLoaderTests;
-			sourceTree = "<group>";
-		};
-		039269691B5C774500FCD0AA /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				0392696A1B5C774500FCD0AA /* Info.plist */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		0395575719C142C2005E32FB /* Capture */ = {
@@ -5817,7 +5783,6 @@
 				3B85CC77EBE2E15F24627208 /* Pods */,
 				BE171D771868BE64004E5202 /* Products */,
 				0392695B1B5C774400FCD0AA /* TemplateLoader */,
-				039269681B5C774500FCD0AA /* TemplateLoaderTests */,
 				BE171D811868BE64004E5202 /* victorious */,
 				BE171D9E1868BE64004E5202 /* victoriousTests */,
 			);
@@ -5830,7 +5795,6 @@
 				BE171D961868BE64004E5202 /* victoriousTests.xctest */,
 				0392694C1B5C720400FCD0AA /* downloadtemplate */,
 				0392695A1B5C774400FCD0AA /* libTemplateLoader.a */,
-				039269641B5C774500FCD0AA /* TemplateLoaderTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -7186,24 +7150,6 @@
 			productReference = 0392695A1B5C774400FCD0AA /* libTemplateLoader.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		039269631B5C774500FCD0AA /* TemplateLoaderTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 039269711B5C774500FCD0AA /* Build configuration list for PBXNativeTarget "TemplateLoaderTests" */;
-			buildPhases = (
-				039269601B5C774500FCD0AA /* Sources */,
-				039269611B5C774500FCD0AA /* Frameworks */,
-				039269621B5C774500FCD0AA /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				039269671B5C774500FCD0AA /* PBXTargetDependency */,
-			);
-			name = TemplateLoaderTests;
-			productName = TemplateLoaderTests;
-			productReference = 039269641B5C774500FCD0AA /* TemplateLoaderTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		BE171D751868BE64004E5202 /* victorious */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BE171DA81868BE64004E5202 /* Build configuration list for PBXNativeTarget "victorious" */;
@@ -7268,9 +7214,6 @@
 					039269591B5C774400FCD0AA = {
 						CreatedOnToolsVersion = 6.4;
 					};
-					039269631B5C774500FCD0AA = {
-						CreatedOnToolsVersion = 6.4;
-					};
 					BE171D751868BE64004E5202 = {
 						DevelopmentTeam = ABHRJGEGKA;
 						SystemCapabilities = {
@@ -7306,19 +7249,11 @@
 				BE171D951868BE64004E5202 /* victoriousTests */,
 				0392694B1B5C720400FCD0AA /* downloadtemplate */,
 				039269591B5C774400FCD0AA /* TemplateLoader */,
-				039269631B5C774500FCD0AA /* TemplateLoaderTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		039269621B5C774500FCD0AA /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		BE171D741868BE64004E5202 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -7735,13 +7670,6 @@
 				0392697C1B5C871700FCD0AA /* VTemplateSerialization.m in Sources */,
 				0392697B1B5C871700FCD0AA /* VTemplatePackageManager.m in Sources */,
 				0392695F1B5C774500FCD0AA /* TemplateLoader.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		039269601B5C774500FCD0AA /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8601,11 +8529,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		039269671B5C774500FCD0AA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 039269591B5C774400FCD0AA /* TemplateLoader */;
-			targetProxy = 039269661B5C774500FCD0AA /* PBXContainerItemProxy */;
-		};
 		039269811B5C87EE00FCD0AA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 039269591B5C774400FCD0AA /* TemplateLoader */;
@@ -9170,119 +9093,6 @@
 			};
 			name = Release;
 		};
-		039269721B5C774500FCD0AA /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = TemplateLoaderTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		039269731B5C774500FCD0AA /* QA */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = TemplateLoaderTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = QA;
-		};
-		039269741B5C774500FCD0AA /* Staging */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = TemplateLoaderTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Staging;
-		};
-		039269751B5C774500FCD0AA /* Stable */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = TemplateLoaderTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Stable;
-		};
-		039269761B5C774500FCD0AA /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = TemplateLoaderTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
 		03D63828191874590084FFC8 /* Staging */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -9790,6 +9600,7 @@
 				039269551B5C720400FCD0AA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0392696B1B5C774500FCD0AA /* Build configuration list for PBXNativeTarget "TemplateLoader" */ = {
 			isa = XCConfigurationList;
@@ -9801,17 +9612,7 @@
 				039269701B5C774500FCD0AA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-		};
-		039269711B5C774500FCD0AA /* Build configuration list for PBXNativeTarget "TemplateLoaderTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				039269721B5C774500FCD0AA /* Debug */,
-				039269731B5C774500FCD0AA /* QA */,
-				039269741B5C774500FCD0AA /* Staging */,
-				039269751B5C774500FCD0AA /* Stable */,
-				039269761B5C774500FCD0AA /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		BE171D711868BE64004E5202 /* Build configuration list for PBXProject "victorious" */ = {
 			isa = XCConfigurationList;
