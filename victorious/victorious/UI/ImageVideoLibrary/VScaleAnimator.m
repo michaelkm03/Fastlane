@@ -36,26 +36,26 @@
     CGPoint finalCenter = [transitionContext containerView].center;
     CGFloat verticalDelta = finalCenter.y - self.startingCenter.y;;
     
-    void (^presentingAnimationBlock)(void);
-    void (^dismissingAnimationBlock)(void);
     void (^completionBlock)(BOOL finished) = ^void(BOOL finished)
     {
         fromView.alpha = 1.0f;
         fromView.transform = CGAffineTransformIdentity;
         [transitionContext completeTransition:YES];
     };
+    
+    void (^animations)(void);
     if (self.presenting)
     {
         [[transitionContext containerView] addSubview:toView];
         toView.transform = CGAffineTransformConcat(scaleTransform, CGAffineTransformMakeTranslation(0, -verticalDelta));
-        presentingAnimationBlock = ^void(void)
+        animations = ^void(void)
         {
             toView.transform = CGAffineTransformIdentity;
         };
     }
     else
     {
-        dismissingAnimationBlock = ^void(void)
+        animations = ^void(void)
         {
             fromView.transform = CGAffineTransformConcat(scaleTransform, CGAffineTransformMakeTranslation(0, -verticalDelta));
             fromView.alpha = 0.0f;
@@ -67,19 +67,7 @@
          usingSpringWithDamping:0.8f
           initialSpringVelocity:0.0f
                         options:kNilOptions
-                     animations:^
-     {
-         if (self.presenting)
-         {
-             presentingAnimationBlock();
-
-         }
-         else
-         {
-             dismissingAnimationBlock();
-         }
-         
-     }
+                     animations:animations
                      completion:completionBlock];
 }
 
