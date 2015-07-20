@@ -51,7 +51,7 @@
     if ( self != nil )
     {
         _mediaUrlString = urlString;
-        _contentAspectRatio = 1;
+        _contentAspectRatio = 1.0f;
     }
     return self;
 }

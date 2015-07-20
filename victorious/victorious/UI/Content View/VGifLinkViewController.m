@@ -8,10 +8,6 @@
 
 #import "VGifLinkViewController.h"
 
-@interface VGifLinkViewController ()
-
-@end
-
 @implementation VGifLinkViewController
 
 - (BOOL)loop

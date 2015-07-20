@@ -18,11 +18,14 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GWt-1G-WZg" userLabel="Preview Container View">
-                    <rect key="frame" x="60" y="140" width="200" height="200"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GWt-1G-WZg" userLabel="Content Container View">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <subviews>
-                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="e5w-de-VZM">
-                            <rect key="frame" x="90" y="90" width="37" height="37"/>
+                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="e5w-de-VZM">
+                            <rect key="frame" x="282" y="282" width="37" height="37"/>
+                            <variation key="heightClass=regular" misplaced="YES">
+                                <rect key="frame" x="282" y="282" width="37" height="37"/>
+                            </variation>
                         </activityIndicatorView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -31,6 +34,9 @@
                         <constraint firstAttribute="centerY" secondItem="e5w-de-VZM" secondAttribute="centerY" id="fjT-zf-Xjh"/>
                         <constraint firstAttribute="width" secondItem="GWt-1G-WZg" secondAttribute="height" multiplier="1:1" id="yQd-3k-IfY"/>
                     </constraints>
+                    <variation key="heightClass=regular" ambiguous="YES" misplaced="YES">
+                        <rect key="frame" x="0.0" y="100" width="600" height="600"/>
+                    </variation>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uBm-7J-Hyp">
                     <rect key="frame" x="0.0" y="0.0" width="49" height="49"/>
@@ -48,41 +54,19 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="GWt-1G-WZg" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" priority="990" id="7rk-I4-Czc"/>
+                <constraint firstItem="GWt-1G-WZg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" priority="990" id="7Pa-aU-I9F"/>
                 <constraint firstItem="uBm-7J-Hyp" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="CNd-CU-fPG"/>
-                <constraint firstItem="GWt-1G-WZg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" priority="990" id="E2f-Z4-1ma"/>
                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="GWt-1G-WZg" secondAttribute="bottom" id="H0A-jP-isY"/>
                 <constraint firstAttribute="centerY" secondItem="GWt-1G-WZg" secondAttribute="centerY" id="HWL-dP-THi"/>
+                <constraint firstAttribute="trailing" secondItem="GWt-1G-WZg" secondAttribute="trailing" priority="990" id="KRb-Io-vWs"/>
                 <constraint firstAttribute="centerX" secondItem="GWt-1G-WZg" secondAttribute="centerX" id="LgD-d2-Yga"/>
                 <constraint firstItem="GWt-1G-WZg" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Rgu-IR-0oC"/>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="GWt-1G-WZg" secondAttribute="trailing" id="ZK8-E1-QM7"/>
-                <constraint firstAttribute="bottom" secondItem="GWt-1G-WZg" secondAttribute="bottom" priority="990" id="ZZo-P9-Vtt"/>
                 <constraint firstItem="GWt-1G-WZg" firstAttribute="top" relation="greaterThanOrEqual" secondItem="i5M-Pr-FkT" secondAttribute="top" id="hV9-CM-3gb"/>
                 <constraint firstItem="uBm-7J-Hyp" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="lmc-9V-XfG"/>
-                <constraint firstAttribute="trailing" secondItem="GWt-1G-WZg" secondAttribute="trailing" priority="990" id="tx1-wT-fla"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
-            <variation key="default">
-                <mask key="constraints">
-                    <exclude reference="7rk-I4-Czc"/>
-                    <exclude reference="E2f-Z4-1ma"/>
-                    <exclude reference="ZZo-P9-Vtt"/>
-                    <exclude reference="tx1-wT-fla"/>
-                </mask>
-            </variation>
-            <variation key="heightClass=compact">
-                <mask key="constraints">
-                    <include reference="7rk-I4-Czc"/>
-                    <include reference="ZZo-P9-Vtt"/>
-                </mask>
-            </variation>
-            <variation key="heightClass=regular">
-                <mask key="constraints">
-                    <include reference="E2f-Z4-1ma"/>
-                    <include reference="tx1-wT-fla"/>
-                </mask>
-            </variation>
             <point key="canvasLocation" x="415" y="450"/>
         </view>
     </objects>
