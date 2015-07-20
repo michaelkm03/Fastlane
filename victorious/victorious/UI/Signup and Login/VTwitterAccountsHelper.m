@@ -62,8 +62,8 @@
                        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterDidFailDenied parameters:params];
                        
                        UIAlertController *accessNotGrantedAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"TwitterDeniedTitle", @"")
-                                                                                                 message:NSLocalizedString(@"TwitterDenied", @"")
-                                                                                          preferredStyle:UIAlertControllerStyleAlert];
+                                                                                                      message:NSLocalizedString(@"TwitterDenied", @"")
+                                                                                               preferredStyle:UIAlertControllerStyleAlert];
                        [accessNotGrantedAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"")
                                                                                  style:UIAlertActionStyleCancel
                                                                                handler:^(UIAlertAction *action)
