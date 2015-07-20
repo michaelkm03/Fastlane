@@ -17,7 +17,7 @@ NSString * const kHashtagKey = @"hashtagText";
 
 static NSString * const kPromptKey = @"prompt";
 static NSString * const kPlaceholderTextKey = @"placeholderText";
-static NSString * const kShowsSkipButtonKey = @"showsSkipButton";
+static NSString * const kShowsSkipButtonKey = @"showSkipButton";
 static NSString * const kSkipButtonTextKey = @"skipButtonText";
 static NSString * const kDoneButtonTextKey = @"doneButtonText";
 static NSString * const kStatusBarStyleKey = @"statusBarStyle";
