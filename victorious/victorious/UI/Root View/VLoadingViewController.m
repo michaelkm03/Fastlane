@@ -217,33 +217,6 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
-#warning Testing code
-        NSString *keyPath = [[templateDecorator keyPathsForKey:@"loginAndRegistrationView"] firstObject];
-        
-        NSMutableDictionary *dict = [[templateDecorator templateValueForKeyPath:keyPath] mutableCopy];
-        
-        NSDictionary *textPostScreen = @{@"name" : @"forcedContentCreation.screen",
-                                         @"color.text" : @{ @"red" : @255, @"blue" : @255, @"green" : @255, @"alpha" : @255 },
-                                         @"font.heading4" : @{ @"fontName" : @"Lato", @"fontSize" : @16 },
-                                         @"font.button1" : @{ @"fontName" : @"Lato", @"fontSize" : @14 },
-                                         @"prompt" : @"What is your favorite NigaHiga or HigaTV Video?",
-                                         @"placeholderText": @"Type your text here!",
-                                         @"doneButtonText" : @"Publish",
-                                         @"skipButtonText" : @"Skip",
-                                         @"showsSkipButton" : @NO,
-                                         @"statusBarStyle" : @"light",
-                                         @"hashtagText" : @"#firstpost"
-                                         };
-        
-        NSMutableArray *screens = [dict[@"registrationScreens"] mutableCopy];
-        // Uncomment this to skip all registration screens
-//        NSMutableArray *screens = [@[[dict[@"registrationScreens"] lastObject]] mutableCopy];
-        [screens addObject:textPostScreen];
-        
-        dict[@"registrationScreens"] = screens;
-        
-        [templateDecorator setTemplateValue:dict forKeyPath:keyPath];
-                
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];
