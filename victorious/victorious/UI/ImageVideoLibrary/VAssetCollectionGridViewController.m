@@ -79,6 +79,7 @@ static NSString * const kVideoTitleKey = @"videoTitle";
             self.unauthorizedDataSource = [[VAssetCollectionUnauthorizedDataSource alloc] initWithDependencyManager:self.dependencyManager];
             self.unauthorizedDataSource.delegate = self;
             [self setCollectionViewDataSourceTo:self.unauthorizedDataSource];
+            self.collectionView.alpha = 1.0f;
             break;
         case VPermissionStateAuthorized:
             [self.activityIndicator startAnimating];

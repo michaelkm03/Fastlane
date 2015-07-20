@@ -215,18 +215,6 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     if ([self.delegate respondsToSelector:@selector(loadingViewController:didFinishLoadingWithDependencyManager:)])
     {
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
-        [templateDecorator removeTemplateValueForKeyPath:@"createSheet"];
-        [templateDecorator setComponentWithFilename:@"staticCreateSheet" forKeyPath:@"scaffold/createSheet"];
-        [templateDecorator setComponentWithFilename:@"cameraScreen" forKeyPath:@"scaffold/cameraScreen"];
-        [templateDecorator setComponentWithFilename:@"imageWorkspace" forKeyPath:@"scaffold/imageWorkspace"];
-        [templateDecorator setComponentWithFilename:@"videoWorkspace" forKeyPath:@"scaffold/videoWorkspace"];
-        [templateDecorator setComponentWithFilename:@"pollCreationFlow" forKeyPath:@"scaffold/pollCreateFlow"];
-        [templateDecorator setComponentWithFilename:@"publishScreen" forKeyPath:@"scaffold/publishScreen"];
-        [templateDecorator setComponentWithFilename:@"imageCreationFlow" forKeyPath:@"scaffold/imageCreateFlow"];
-        [templateDecorator setComponentWithFilename:@"textCreationFlow" forKeyPath:@"scaffold/textCreateFlow"];
-        [templateDecorator setComponentWithFilename:@"gifCreationFlow" forKeyPath:@"scaffold/gifCreateFlow"];
-        [templateDecorator setComponentWithFilename:@"videoCreationFlow" forKeyPath:@"scaffold/videoCreateFlow"];
-        
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];
