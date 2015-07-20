@@ -16,7 +16,6 @@
 #import "NSDictionary+VJSONLogging.h"
 #import "VEditableTextPostViewController.h"
 #import "VTextListener.h"
-#import "VImageSearchViewController.h"
 #import "VMediaAttachmentPresenter.h"
 
 @interface VTextWorkspaceFlowController() <UINavigationControllerDelegate, VTextListener, VTextCanvasToolDelegate>
@@ -117,12 +116,6 @@
     [self presentCameraViewController];
 }
 
-- (void)textCanvasToolDidSelectImageSearch:(VTextCanvasToolViewController *)textCanvasToolViewController
-{
-    self.mediaCaptureViewController = [self createImageSearchViewController];
-    [self presentViewController:self.mediaCaptureViewController animated:YES completion:nil];
-}
-
 - (void)textCanvasToolDidSelectClearImage:(VTextCanvasToolViewController *)textCanvasToolViewController
 {
     textCanvasToolViewController.shouldProvideClearOption = NO;
@@ -144,19 +137,6 @@
         [strongSelf didCaptureMediaWithURL:mediaURL previewImage:previewImage];
     };
     [self.attachmentPresenter presentOnViewController:self];
-}
-
-- (UIViewController *)createImageSearchViewController
-{
-#warning Create component and spec here
-    VImageSearchViewController *imageSearchViewController = [VImageSearchViewController newImageSearchViewControllerWithDependencyManager:self.dependencyManager];
-    __weak typeof(self) welf = self;
-    imageSearchViewController.imageSelectionHandler = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-    {
-        __strong typeof(welf) strongSelf = welf;
-        [strongSelf didCaptureMediaWithURL:capturedMediaURL previewImage:previewImage];
-    };
-    return imageSearchViewController;
 }
 
 - (void)didCaptureMediaWithURL:(NSURL *)capturedMediaURL previewImage:(UIImage *)previewImage

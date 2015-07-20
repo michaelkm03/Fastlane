@@ -12,7 +12,7 @@
 
 - (BOOL)shouldSkipTrimmer
 {
-    NSInteger trimmerDuration = [self.maxVideoDuration integerValue];
+    NSInteger trimmerDuration = [self.maxUploadDuration integerValue];
     return (trimmerDuration > 15);
 }
 

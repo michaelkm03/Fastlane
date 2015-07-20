@@ -45,6 +45,6 @@
 @dynamic recentSequences;
 @dynamic previewAssets;
 @dynamic repostedSequences;
-@dynamic maxVideoDuration;
+@dynamic maxUploadDuration;
 
 @end

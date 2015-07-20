@@ -88,7 +88,7 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
         _videoPlayerController.shouldShowToolbar = NO;
         _videoPlayerController.delegate = self;
         _videoPlayerController.shouldChangeVideoGravityOnDoubleTap = YES;
-        _videoPlayerController.videoPlayerLayerVideoGravity = AVLayerVideoGravityResizeAspectFill;
+        _videoPlayerController.videoPlayerLayerVideoGravity = AVLayerVideoGravityResizeAspect;
     }
     return self;
 }
@@ -142,7 +142,6 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
     _playerItem = playerItem;
     
     self.videoPlayerController.playerItem = playerItem;
-    self.videoPlayerController.videoPlayerLayerVideoGravity = AVLayerVideoGravityResizeAspect;
 }
 
 - (void)setSelected:(BOOL)selected

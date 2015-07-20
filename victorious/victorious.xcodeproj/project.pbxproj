@@ -860,6 +860,8 @@
 		D86448A11A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D86448A01A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m */; };
 		D86528F31AE82ABF003832AC /* VPollView.m in Sources */ = {isa = PBXBuildFile; fileRef = D86528F21AE82ABF003832AC /* VPollView.m */; };
 		D86BF35C1A42683E00C9F420 /* VPublishBlurOverAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D86BF35B1A42683E00C9F420 /* VPublishBlurOverAnimator.m */; };
+		D86528F61AE838F1003832AC /* VAnswer+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = D86528F51AE838F1003832AC /* VAnswer+Fetcher.m */; };
+		D86BF34F1A42364B00C9F420 /* UIView+VDynamicsHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = D86BF34E1A42364B00C9F420 /* UIView+VDynamicsHelpers.m */; };
 		D871A4021A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */; };
 		D87351881A3120F5006D97B2 /* VCanvasView.m in Sources */ = {isa = PBXBuildFile; fileRef = D87351871A3120F5006D97B2 /* VCanvasView.m */; };
 		D8758D1C1B0FCBF4008C6C0D /* VModernRegisterViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8758D1B1B0FCBF4008C6C0D /* VModernRegisterViewController.storyboard */; };
@@ -2688,6 +2690,10 @@
 		D86528F21AE82ABF003832AC /* VPollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollView.m; sourceTree = "<group>"; };
 		D86BF35A1A42683E00C9F420 /* VPublishBlurOverAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPublishBlurOverAnimator.h; sourceTree = "<group>"; };
 		D86BF35B1A42683E00C9F420 /* VPublishBlurOverAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPublishBlurOverAnimator.m; sourceTree = "<group>"; };
+		D86528F41AE838F1003832AC /* VAnswer+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VAnswer+Fetcher.h"; sourceTree = "<group>"; };
+		D86528F51AE838F1003832AC /* VAnswer+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VAnswer+Fetcher.m"; sourceTree = "<group>"; };
+		D86BF34D1A42364B00C9F420 /* UIView+VDynamicsHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+VDynamicsHelpers.h"; sourceTree = "<group>"; };
+		D86BF34E1A42364B00C9F420 /* UIView+VDynamicsHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+VDynamicsHelpers.m"; sourceTree = "<group>"; };
 		D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVRTCUserPostedAtFormatterTests.m; sourceTree = "<group>"; };
 		D87351861A3120F5006D97B2 /* VCanvasView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCanvasView.h; sourceTree = "<group>"; };
 		D87351871A3120F5006D97B2 /* VCanvasView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCanvasView.m; sourceTree = "<group>"; };
@@ -6315,8 +6321,6 @@
 			children = (
 				A65318A01B59B35900389EA9 /* VCreationFlowAnimator.h */,
 				A65318A11B59B35900389EA9 /* VCreationFlowAnimator.m */,
-				D86BF35A1A42683E00C9F420 /* VPublishBlurOverAnimator.h */,
-				D86BF35B1A42683E00C9F420 /* VPublishBlurOverAnimator.m */,
 				D8332DBE1A7C72EB00C3FEE0 /* VVCameraShutterOverAnimator.h */,
 				D8332DBF1A7C72EB00C3FEE0 /* VVCameraShutterOverAnimator.m */,
 				D864489F1A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.h */,

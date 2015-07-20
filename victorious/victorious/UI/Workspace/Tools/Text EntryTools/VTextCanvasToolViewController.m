@@ -16,7 +16,6 @@
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
-@property (nonatomic, weak) IBOutlet VRoundedBackgroundButton *buttonImageSearch;
 @property (nonatomic, weak) IBOutlet VRoundedBackgroundButton *buttonCamera;
 @property (nonatomic, weak) IBOutlet VRoundedBackgroundButton *buttonClear;
 
@@ -39,7 +38,7 @@
 {
     [super viewDidLoad];
 
-    for ( VRoundedBackgroundButton *button in @[ self.buttonCamera, self.buttonClear, self.buttonImageSearch ] )
+    for ( VRoundedBackgroundButton *button in @[ self.buttonCamera, self.buttonClear ] )
     {
         button.unselectedColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     }
@@ -111,11 +110,6 @@
 - (IBAction)backgroundImageCameraSelected:(id)sender
 {
     [self.delegate textCanvasToolDidSelectCamera:self];
-}
-
-- (IBAction)backgroundImageSearchSelected:(id)sender
-{
-    [self.delegate textCanvasToolDidSelectImageSearch:self];
 }
 
 - (IBAction)backgroundImageClearSelected:(id)sender
