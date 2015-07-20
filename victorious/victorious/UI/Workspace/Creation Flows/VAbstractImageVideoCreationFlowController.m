@@ -1,5 +1,5 @@
 //
-//  VImageCreationFlowController.m
+//  VAbstractImageVideoCreationFlowController.m
 //  victorious
 //
 //  Created by Michael Sena on 6/30/15.
@@ -7,6 +7,9 @@
 //
 
 #import "VAbstractImageVideoCreationFlowController.h"
+
+// Subclass
+#import "VVideoCreationFlowController.h"
 
 // Capture
 #import "VCaptureContainerViewController.h"
@@ -38,7 +41,6 @@
 
 @import Photos;
 #import <MBProgressHUD/MBProgressHUD.h>
-
 
 @interface VAbstractImageVideoCreationFlowController () <UINavigationControllerDelegate, VAssetCollectionGridViewControllerDelegate, VScaleAnimatorSource>
 
@@ -222,6 +224,7 @@
                                               error:nil];
 }
 
+// Only call me when you know rendered mediaURL is no longer valid and any calling classes havne't been provided this URL
 - (void)cleanupRenderedFile
 {
     [[NSFileManager defaultManager] removeItemAtURL:self.renderedMediaURL
@@ -233,9 +236,11 @@
 {
     // If the user has permission to skip the trimmmer (API Driven)
     // Go straight to publish do not pass go, do not collect $200
-    if ([[[VObjectManager sharedManager] mainUser] shouldSkipTrimmer])
+    if ([[[VObjectManager sharedManager] mainUser] shouldSkipTrimmer] && [self isKindOfClass:[VVideoCreationFlowController class]])
     {
-        [self toPublishScreenWithRenderedMediaURL:mediaURL previewImage:previewImage fromWorkspace:nil];
+        self.renderedMediaURL = mediaURL;
+        self.previewImage = previewImage;
+        [self afterEditingFinished];
     }
     else
     {
@@ -253,10 +258,6 @@
     if (viewController == self.captureContainerViewController)
     {
         [self cleanupCapturedFile];
-    }
-    if ([viewController isKindOfClass:[VWorkspaceViewController class]])
-    {
-        [self cleanupRenderedFile];
     }
 }
 

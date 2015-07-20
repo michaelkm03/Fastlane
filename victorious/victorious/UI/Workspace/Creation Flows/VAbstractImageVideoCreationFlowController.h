@@ -1,5 +1,5 @@
 //
-//  VImageCreationFlowController.h
+//  VAbstractImageVideoCreationFlowController.h
 //  victorious
 //
 //  Created by Michael Sena on 6/30/15.
