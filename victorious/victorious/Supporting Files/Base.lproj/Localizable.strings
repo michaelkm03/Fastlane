@@ -36,6 +36,8 @@
 "Publishing..."         =   "Publishing...";
 "Rendering..."          =   "Rendering...";
 "Next"                  =   "Next";
+"Done"                  =   "Done";
+"More"                  =   "More";
 "Quote"                 =   "Quote";
 "Meme"                  =   "Meme";
 "Share"                 =   "Share";
@@ -446,6 +448,8 @@
 "ToSText"               =   "Terms of Service";
 "ToSAgreement"          =   "I'm at least 13 years old and agree to Terms of Service";
 
+"Privacy Policy"        =   "Privacy Policy";
+
 "NoFriends"             =   "No Matches";
 "NoFriendsDetail"       =   "We could not find any of your friends who use our app. Go ahead and invite them!";
 
@@ -536,6 +540,10 @@
 "ErrorPushNotificationsNotSaved"        = "Error Saving Preferences";
 "ErrorPushNotificationsNotSavedMessage" = "Please try again later.";
 
+"We need permission to access your photo library." = "We need permission to access your photo library.";
+"We need access to this permission."               = "We need access to this permission.";
+"Maybe Later"                                      = "Maybe Later";
+
 "RestorePurchaseDescription"            = "Already purchased on another device?\nTap below to restore all of your purchases.";
 "PurchaseErrorTitle"                    = "Error Making Purchase";
 "PurchaseErrorProductNotAvailable"      = "Sorry, this product is not currently available. Please try again later.";
@@ -616,6 +624,8 @@
 "Share creations with the community." = "Share creations with the community.";
 "Join in on the conversation." = "Join in on the conversation.";
 "By signing up you are agreeing to our \nterms of service and privacy policy." = "By signing up you are agreeing to our \nterms of service and privacy policy.";
+"terms of service" = "terms of service";
+"privacy policy" = "privacy policy";
 "Sign up with Email" = "Sign up with Email";
 "Sign up with Facebook" = "Sign up with Facebook";
 "Create an account and join the community." = "Create an account and join the community.";
@@ -624,6 +634,7 @@
 "Add your profile picture." = "Add your profile picture.";
 "Enter Email" = "Enter Email";
 "Enter name" = "Enter name";
+"You must enter a name." = "You must enter a name.";
 "Enter Password" = "Enter Password";
 "Tap Here" = "Tap Here";
 "Forgot your password?" = "Forgot your password?";
