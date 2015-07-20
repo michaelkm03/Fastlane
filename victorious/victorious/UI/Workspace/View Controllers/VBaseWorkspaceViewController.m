@@ -93,6 +93,8 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
 {
     [super viewDidLoad];
     
+    self.navigationItem.title = NSLocalizedString(@"Edit", nil);
+    
     [self.continueButton setTitle:self.continueText];
     
     self.view.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];

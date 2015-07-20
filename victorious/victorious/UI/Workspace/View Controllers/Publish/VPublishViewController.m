@@ -33,6 +33,7 @@
 #import "VDependencyManager+VKeyboardStyle.h"
 #import "VPermissionPhotoLibrary.h"
 #import "VDependencyManager+VTracking.h"
+#import "VBlurOverTransitioner.h"
 
 @import AssetsLibrary;
 
@@ -50,7 +51,7 @@ static NSString * const kCaptionContainerBackgroundColor = @"color.captionContai
 static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
 
-@interface VPublishViewController () <UICollisionBehaviorDelegate, UITextViewDelegate, UIGestureRecognizerDelegate, VContentInputAccessoryViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, VPublishShareCollectionViewCellDelegate, VBackgroundContainer>
+@interface VPublishViewController () <UICollisionBehaviorDelegate, UITextViewDelegate, UIGestureRecognizerDelegate, VContentInputAccessoryViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, VPublishShareCollectionViewCellDelegate, VBackgroundContainer, VBlurOverAnimationTransitioningDestination>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -60,7 +61,7 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
 @property (weak, nonatomic) IBOutlet UIImageView *previewImageView;
 @property (weak, nonatomic) IBOutlet VPlaceholderTextView *captionTextView;
 @property (weak, nonatomic) IBOutlet UIButton *publishButton;
-@property (weak, nonatomic) IBOutlet UIButton *cancelButton;
+@property (weak, nonatomic) IBOutlet UIButton *cancelButton; // hidden in the nib
 @property (strong, nonatomic) IBOutlet UIPanGestureRecognizer *panGestureRecognizer;
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *tapGestureRecognizer;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
@@ -78,7 +79,6 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
 @property (nonatomic, strong) UIAttachmentBehavior *attachmentBehavior;
 @property (nonatomic, strong) UIPushBehavior *pushBehavior;
 @property (nonatomic, strong) UISnapBehavior *snapBehavior;
-@property (nonatomic, copy, readwrite) void (^animateInBlock)(void);
 
 @property (nonatomic, assign) BOOL publishing;
 
@@ -143,17 +143,11 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
                              forState:UIControlStateNormal];
     [self.publishButton.titleLabel setFont:[self.dependencyManager fontForKey:VDependencyManagerButton1FontKey]];
     
-    __weak typeof(self) welf = self;
-    
     NSUInteger random = arc4random_uniform(100);
     CGFloat randomFloat = random / 100.0f;
     CGAffineTransform initialTransformTranslation = CGAffineTransformMakeTranslation(0, -CGRectGetMidY(self.view.frame));
     CGAffineTransform initialTransformRotation = CGAffineTransformMakeRotation(M_PI * (1-randomFloat));
     self.publishPrompt.transform = CGAffineTransformConcat(initialTransformTranslation, initialTransformRotation);
-    self.animateInBlock = ^void(void)
-    {
-        welf.publishPrompt.transform = CGAffineTransformIdentity;
-    };
     
     [self setupCaptionTextView];
     
@@ -171,7 +165,7 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
     UIColor *textColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey];
     [self.cancelButton setTitleColor:textColor ?: [UIColor whiteColor]
                             forState:UIControlStateNormal];
-    
+    self.cancelButton.hidden = NO;
     self.previewImageView.image = self.publishParameters.previewImage;
     
     [self setupShareCard];
@@ -796,6 +790,13 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 - (UIView *)backgroundContainerView
 {
     return self.view;
+}
+
+#pragma mark - VBlurOverAnimationTransitioningDestination
+
+- (void)animateInAnimations
+{
+    self.publishPrompt.transform = CGAffineTransformIdentity;
 }
 
 @end

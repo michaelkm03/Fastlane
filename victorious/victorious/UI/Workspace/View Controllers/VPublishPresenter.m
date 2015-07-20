@@ -11,10 +11,12 @@
 #import "VPublishViewController.h"
 #import "VPublishBlurOverAnimator.h"
 
+#import "VBlurOverTransitioner.h"
+
 @interface VPublishPresenter () <UIViewControllerTransitioningDelegate>
 
 @property (nonatomic, weak) UIViewController *viewControllerPresentedOn;
-@property (nonatomic, strong) VPublishBlurOverAnimator *animator;
+@property (nonatomic, strong) VBlurOverTransitioningDelegate *animator;
 @property (nonatomic, strong, readwrite) VPublishViewController *publishViewController;
 
 @end
@@ -26,9 +28,9 @@
     self = [super initWithDependencymanager:dependencyManager];
     if (self != nil)
     {
-        _animator = [[VPublishBlurOverAnimator alloc] init];
+        _animator = [[VBlurOverTransitioningDelegate alloc] init];
         _publishViewController = [dependencyManager newPublishViewController];
-        _publishViewController.transitioningDelegate = self;
+        _publishViewController.transitioningDelegate = _animator;
         _publishViewController.modalPresentationStyle = UIModalPresentationCustom;
     }
     return self;
@@ -72,18 +74,18 @@
 
 #pragma mark - UIViewControllerTransitioningDelegate
 
-- (id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented
-                                                                   presentingController:(UIViewController *)presenting
-                                                                       sourceController:(UIViewController *)source
-{
-    self.animator.presenting = YES;
-    return self.animator;
-}
-
-- (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
-{
-    self.animator.presenting = NO;
-    return self.animator;
-}
+//- (id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented
+//                                                                   presentingController:(UIViewController *)presenting
+//                                                                       sourceController:(UIViewController *)source
+//{
+//    self.animator.presenting = YES;
+//    return self.animator;
+//}
+//
+//- (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
+//{
+//    self.animator.presenting = NO;
+//    return self.animator;
+//}
 
 @end

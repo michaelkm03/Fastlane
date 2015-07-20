@@ -72,11 +72,11 @@ static const NSTimeInterval kBlurOverDismissTransitionDuration = 0.5f;
      {
          if (self.presenting)
          {
-             if ([toViewController isKindOfClass:[VPublishViewController class]])
-             {
-                 VPublishViewController *publishVC = (VPublishViewController *)toViewController;
-                 publishVC.animateInBlock();
-             }
+//             if ([toViewController isKindOfClass:[VPublishViewController class]])
+//             {
+//                 VPublishViewController *publishVC = (VPublishViewController *)toViewController;
+//                 publishVC.animateInBlock();
+//             }
              toViewController.view.alpha = 1.0f;
          }
          else
