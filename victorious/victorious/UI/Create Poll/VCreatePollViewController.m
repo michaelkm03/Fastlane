@@ -101,11 +101,11 @@ static char KVOContext;
     UIImage *imageIcon = [self.dependencyManager imageForKey:kImageIconKey];
     UIImage *videoIcon = [self.dependencyManager imageForKey:kVideoIconKey];
     // If we have icons use them, if not stick with defaults.
-    if (imageIcon)
+    if (imageIcon != nil)
     {
         [self.imageButton setImage:imageIcon forState:UIControlStateNormal];
     }
-    if (videoIcon)
+    if (videoIcon != nil)
     {
         [self.videoButton setImage:videoIcon forState:UIControlStateNormal];
     }
