@@ -71,7 +71,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IJZ-wL-dX7" userLabel="Centering View">
-                                                    <rect key="frame" x="8" y="140" width="304" height="41"/>
+                                                    <rect key="frame" x="8" y="140" width="304" height="42"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6aK-Cf-slA">
                                                             <rect key="frame" x="0.0" y="0.0" width="304" height="21"/>
@@ -80,8 +80,8 @@
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QRP-aT-mv2">
-                                                            <rect key="frame" x="0.0" y="20" width="304" height="21"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QRP-aT-mv2">
+                                                            <rect key="frame" x="0.0" y="21" width="304" height="21"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -111,6 +111,32 @@
                                         <connections>
                                             <outlet property="callToActionLabel" destination="QRP-aT-mv2" id="3vy-Vr-41j"/>
                                             <outlet property="promptLabel" destination="6aK-Cf-slA" id="Ehp-Ie-nOg"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="VNoAssetsCell" id="n2X-LH-yeD" customClass="VNoAssetsCell">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="95" height="95"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Photos" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gQ0-Zh-6Z8">
+                                                    <rect key="frame" x="8" y="8" width="79" height="79"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstAttribute="bottomMargin" secondItem="gQ0-Zh-6Z8" secondAttribute="bottom" id="FTl-Yf-IID"/>
+                                            <constraint firstItem="gQ0-Zh-6Z8" firstAttribute="leading" secondItem="n2X-LH-yeD" secondAttribute="leadingMargin" id="HIw-zR-SKg"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="gQ0-Zh-6Z8" secondAttribute="trailing" id="Vxe-3B-T0l"/>
+                                            <constraint firstItem="gQ0-Zh-6Z8" firstAttribute="top" secondItem="n2X-LH-yeD" secondAttribute="topMargin" id="f9a-am-unr"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="titleLabel" destination="gQ0-Zh-6Z8" id="txx-Zf-yNb"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>

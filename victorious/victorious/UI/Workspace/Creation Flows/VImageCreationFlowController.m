@@ -105,7 +105,6 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
     return @[cameraOption, searchOption];
 }
 
-
 - (void)showCamera
 {
     // Camera

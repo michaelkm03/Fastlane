@@ -14,6 +14,7 @@
 // Views + Helpers
 #import "VAssetCollectionListViewController.h"
 #import "VAssetCollectionGridDataSource.h"
+#import "VNoAssetsDataSource.h"
 #import "VAssetCollectionUnauthorizedDataSource.h"
 #import "UIView+AutoLayout.h"
 #import "VLibraryFolderControl.h"
@@ -38,6 +39,7 @@ static NSString * const kVideoTitleKey = @"videoTitle";
 @property (nonatomic, strong) VPermissionPhotoLibrary *libraryPermission;
 @property (nonatomic, strong) VAssetCollectionGridDataSource *assetDataSource;
 @property (nonatomic, strong) VAssetCollectionUnauthorizedDataSource *unauthorizedDataSource;
+@property (nonatomic, strong) VNoAssetsDataSource *noAssetsDatSource;
 @property (nonatomic, assign) PHAssetMediaType mediaType;
 
 @property (nonatomic, strong) VLibraryFolderControl *folderButton;
@@ -61,6 +63,7 @@ static NSString * const kVideoTitleKey = @"videoTitle";
     gridViewController.mediaType = [[dependencyManager numberForKey:VAssetCollectionGridViewControllerMediaType] integerValue];
     gridViewController.libraryPermission = [[VPermissionPhotoLibrary alloc] initWithDependencyManager:dependencyManager];
     gridViewController.listViewController = [VAssetCollectionListViewController assetCollectionListViewControllerWithMediaType:gridViewController.mediaType];
+    gridViewController.noAssetsDatSource = [[VNoAssetsDataSource alloc] initWithMediaType:gridViewController.mediaType];
     return gridViewController;
 }
 
@@ -108,9 +111,6 @@ static NSString * const kVideoTitleKey = @"videoTitle";
     [super viewDidAppear:animated];
     
     [self.assetDataSource updateCachedAssets];
-    
-    // Clear selection of folder after dismissal of listVC
-    self.folderButton.selected = NO;
 }
 
 #pragma mark - Property Accessors
@@ -119,15 +119,17 @@ static NSString * const kVideoTitleKey = @"videoTitle";
 {
     _collectionToDisplay = collectionToDisplay;
 
+    [self.activityIndicator stopAnimating];
+    
     if (_collectionToDisplay == nil)
     {
+        [self.activityIndicator stopAnimating];
+        self.collectionView.alpha = 1.0f;
+        [self setCollectionViewDataSourceTo:self.noAssetsDatSource];
         return;
     }
     
-    
-    [self.activityIndicator stopAnimating];
     self.folderButton.attributedSubtitle = [[NSAttributedString alloc] initWithString:collectionToDisplay.localizedTitle attributes:nil];
-    self.folderButton.selected = NO;
     
     self.assetDataSource.assetCollection = collectionToDisplay;
     [UIView animateWithDuration:0.35f
@@ -145,7 +147,6 @@ static NSString * const kVideoTitleKey = @"videoTitle";
 - (void)selectedFolderPicker:(VLibraryFolderControl *)folderControl
 {
     [self presentAssetFoldersList];
-    folderControl.selected = YES;
 }
 
 #pragma mark - VAssetCollectionUnauthorizedDataSourceDelegate

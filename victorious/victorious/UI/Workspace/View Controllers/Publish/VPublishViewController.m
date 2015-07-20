@@ -779,13 +779,6 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     return size;
 }
 
-#pragma mark - VBackgroundContainer
-
-- (UIView *)backgroundContainerView
-{
-    return self.view;
-}
-
 #pragma mark - VBlurOverAnimationTransitioningDestination
 
 - (void)animateInAnimations

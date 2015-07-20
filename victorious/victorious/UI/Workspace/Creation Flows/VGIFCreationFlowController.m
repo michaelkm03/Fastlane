@@ -113,12 +113,8 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
                                                            [strongSelf captureFinishedWithMediaURL:capturedMediaURL
                                                                                       previewImage:previewImage];
                                                        }
-                                                       
-                                                       [strongSelf dismissViewControllerAnimated:YES completion:nil];
                                                    }];
-    // Wrapped in nav
-    UINavigationController *cameraNavController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
-    [self presentViewController:cameraNavController animated:YES completion:nil];
+    [self pushViewController:cameraViewController animated:YES];
 }
 
 @end
