@@ -22,6 +22,13 @@ class GIFSearchActivityFooter: UICollectionReusableView {
         }
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        // This fixes layout artificats visible when insertions/deletions are being animated
+        self.hidden = self.bounds.width == 0.0
+    }
+    
     /// The text of a label to display message to the user
     var title: String = "" {
         didSet {
