@@ -249,6 +249,7 @@ static const NSInteger kSearchResultLimit = 100;
     {
         [self.activityIndicatorView startAnimating];
         [[VObjectManager sharedManager] findUsersBySearchString:self.searchField.text
+                                                     sequenceID:nil 
                                                           limit:kSearchResultLimit
                                                         context:self.searchContext
                                                withSuccessBlock:searchSuccess
