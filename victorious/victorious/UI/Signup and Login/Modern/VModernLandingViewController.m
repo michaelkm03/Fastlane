@@ -96,7 +96,7 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
     // Legal Text
     NSString *fullLegalText = NSLocalizedString(@"By signing up you are agreeing to our \nterms of service and privacy policy.", nil);
     NSString *termsOfServiceLinkText = NSLocalizedString(@"terms of service", nil);
-    NSString *privacyPolicyLinkText = NSLocalizedString(@"privacy policy.", nil);
+    NSString *privacyPolicyLinkText = NSLocalizedString(@"privacy policy", nil);
     NSDictionary *legalTextAttributes = @{
                                           NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey],
                                           NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey],

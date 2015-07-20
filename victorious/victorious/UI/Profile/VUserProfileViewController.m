@@ -608,7 +608,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (void)followerHandler
 {
     VUsersViewController *usersViewController = [[VUsersViewController alloc] initWithDependencyManager:self.dependencyManager];
-    usersViewController.title = NSLocalizedString( @"Followers", nil );
+    usersViewController.title = NSLocalizedString( @"followers", nil );
     usersViewController.usersDataSource = [[VFollowersDataSource alloc] initWithUser:self.user];
     
     [self.navigationController pushViewController:usersViewController animated:YES];

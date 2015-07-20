@@ -599,25 +599,28 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
         return [self.parentManager templateValueWhereTypePassesTest:typeTest forKey:key withAddedDependencies:dependencies];
     }
     
+    VDependencyManager *dependencyManagerForReturnedObject = nil;
     if ( [value isKindOfClass:[NSDictionary class]] && [(NSDictionary *)value objectForKey:kReferenceIDKey] != nil )
     {
-        VDependencyManager *dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)value objectForKey:kReferenceIDKey]];
-        return [self objectWhereTypePassesTest:typeTest withDependencyManager:dependencyManager];
+        dependencyManagerForReturnedObject = [self childDependencyManagerForID:[(NSDictionary *)value objectForKey:kReferenceIDKey]];
     }
     else if ( [value isKindOfClass:[NSDictionary class]] && !typeTest([NSDictionary class]) )
     {
-        VDependencyManager *dependencyManager = [self childDependencyManagerForID:[value valueForKey:VDependencyManagerIDKey]];
-        if ( dependencies != nil )
-        {
-            dependencyManager = [dependencyManager childDependencyManagerWithAddedConfiguration:dependencies];
-        }
-        return [self objectWhereTypePassesTest:typeTest withDependencyManager:dependencyManager];
+        dependencyManagerForReturnedObject = [self childDependencyManagerForID:[value valueForKey:VDependencyManagerIDKey]];
     }
     else if ( typeTest([value class]) )
     {
         return value;
     }
     
+    if ( dependencyManagerForReturnedObject != nil )
+    {
+        if ( dependencies != nil )
+        {
+            dependencyManagerForReturnedObject = [dependencyManagerForReturnedObject childDependencyManagerWithAddedConfiguration:dependencies];
+        }
+        return [self objectWhereTypePassesTest:typeTest withDependencyManager:dependencyManagerForReturnedObject];
+    }
     return nil;
 }
 
