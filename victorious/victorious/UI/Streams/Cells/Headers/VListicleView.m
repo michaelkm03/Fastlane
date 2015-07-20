@@ -11,9 +11,7 @@
 
 static const CGFloat kRadiusOfBanner = 6.0f;
 static const CGFloat kInsetForTriangle = 12.0f;
-static const CGFloat kHeightOfBanner = 33.0f;
 static const CGFloat kLabelInset = 10.0f;
-static const CGFloat kLabelHeight = 20.0f;
 static const CGFloat kMaxPercentBannerWidth = 0.58f;
 
 @interface VListicleView ()
@@ -21,6 +19,7 @@ static const CGFloat kMaxPercentBannerWidth = 0.58f;
 @property (nonatomic, strong) UILabel *listicleLabel;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, assign) CGFloat widthOfLabel;
+@property (nonatomic, assign) CGFloat heightOfBanner;
 
 @end
 
@@ -55,9 +54,9 @@ static const CGFloat kMaxPercentBannerWidth = 0.58f;
 
 - (void)addLabel
 {
-    CGRect frameLabel = CGRectMake(kLabelInset, 0, CGRectGetWidth(self.bounds) - kInsetForTriangle - (2 * kLabelInset), kLabelHeight);
+    CGRect frameLabel = CGRectMake(kLabelInset, 0, CGRectGetWidth(self.bounds) - kInsetForTriangle - (2 * kLabelInset), CGRectGetHeight(self.bounds));
     self.listicleLabel = [[UILabel alloc] initWithFrame:frameLabel];
-    self.listicleLabel.center = CGPointMake(self.listicleLabel.center.x, kHeightOfBanner/2);
+    self.listicleLabel.center = CGPointMake(self.listicleLabel.center.x, self.heightOfBanner/2);
     self.listicleLabel.textColor = [UIColor whiteColor];
     self.listicleLabel.font = [self.dependencyManager fontForKey: VDependencyManagerLabel3FontKey];
     [self addSubview:self.listicleLabel];
@@ -71,6 +70,8 @@ static const CGFloat kMaxPercentBannerWidth = 0.58f;
 
 - (void)updateLabel
 {
+    self.heightOfBanner = self.bannerHeightConstraint.constant - kRadiusOfBanner;
+    self.listicleLabel.center = CGPointMake(self.listicleLabel.center.x, self.heightOfBanner/2);
     self.listicleLabel.text = self.headlineText;
     CGSize textSize = [self.listicleLabel.text sizeWithAttributes:@{NSFontAttributeName:[self.listicleLabel font]}];
     CGFloat textWidth = MIN(textSize.width + (3 * kLabelInset), kMaxPercentBannerWidth * CGRectGetWidth(self.frame));
@@ -87,9 +88,9 @@ static const CGFloat kMaxPercentBannerWidth = 0.58f;
     CGFloat width = self.widthOfLabel;
     
     CGPoint topRight = CGPointMake(width, 0);
-    CGPoint middleRight = CGPointMake(width - kInsetForTriangle, kHeightOfBanner/2);
-    CGPoint bottomRight = CGPointMake(width, kHeightOfBanner);
-    CGPoint bottomLeft = CGPointMake(kRadiusOfBanner, kHeightOfBanner);
+    CGPoint middleRight = CGPointMake(width - kInsetForTriangle, self.heightOfBanner/2);
+    CGPoint bottomRight = CGPointMake(width, self.heightOfBanner);
+    CGPoint bottomLeft = CGPointMake(kRadiusOfBanner, self.heightOfBanner);
     CGPoint topLeft = CGPointMake(kRadiusOfBanner, kRadiusOfBanner);
     
     UIBezierPath *path = [[UIBezierPath alloc] init];

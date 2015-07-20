@@ -18,4 +18,6 @@
 
 @property (nonatomic, strong) NSString *headlineText; //< the text to be displayed
 
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *bannerHeightConstraint;
+
 @end

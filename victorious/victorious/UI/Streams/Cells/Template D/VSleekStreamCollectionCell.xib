@@ -67,6 +67,9 @@
                         <constraints>
                             <constraint firstAttribute="height" constant="39" id="bK9-ma-8mL"/>
                         </constraints>
+                        <connections>
+                            <outlet property="bannerHeightConstraint" destination="bK9-ma-8mL" id="xha-av-pS0"/>
+                        </connections>
                     </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
