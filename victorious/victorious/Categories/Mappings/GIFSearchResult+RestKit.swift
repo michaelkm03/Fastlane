@@ -24,7 +24,7 @@ extension GIFSearchResult {
             "thumbnail_still"   : "thumbnailStillUrl" ]
         
         var store = RKObjectManager.sharedManager().managedObjectStore
-        var mapping = RKEntityMapping(forEntityForName: self.defaultEntityName, inManagedObjectStore: store )
+        var mapping = RKEntityMapping(forEntityForName: self.v_git addefaultEntityName, inManagedObjectStore: store )
         mapping.addAttributeMappingsFromDictionary( propertyMap )
         mapping.identificationAttributes = [ "gifUrl", "mp4Url" ]
         return mapping

@@ -11,8 +11,8 @@ import CoreData
 
 extension NSManagedObject {
     
-    // Swift class names include the module ("MyModule.MyClass"), which we'll remove using `pathExtension`
-    static var defaultEntityName: String {
+    /// Returns the class name as a string, intended to match that which is configured in the MOM file.
+    static var v_defaultEntityName: String {
         return NSStringFromClass(self).pathExtension
     }
 }
