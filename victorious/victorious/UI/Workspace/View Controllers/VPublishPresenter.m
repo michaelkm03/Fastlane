@@ -9,8 +9,6 @@
 #import "VPublishPresenter.h"
 
 #import "VPublishViewController.h"
-#import "VPublishBlurOverAnimator.h"
-
 #import "VBlurOverTransitioner.h"
 
 @interface VPublishPresenter () <UIViewControllerTransitioningDelegate>
@@ -71,21 +69,5 @@
         strongSelf.publishActionHandler(success);
     };
 }
-
-#pragma mark - UIViewControllerTransitioningDelegate
-
-//- (id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented
-//                                                                   presentingController:(UIViewController *)presenting
-//                                                                       sourceController:(UIViewController *)source
-//{
-//    self.animator.presenting = YES;
-//    return self.animator;
-//}
-//
-//- (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
-//{
-//    self.animator.presenting = NO;
-//    return self.animator;
-//}
 
 @end
