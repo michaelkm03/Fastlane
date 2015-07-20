@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface VScrollPaginator : NSObject
 
-@property (nonatomic, weak) IBOutlet id<VScrollPaginatorDelegate> __nullable delegate;
+@property (nonatomic, weak, nullable) IBOutlet id<VScrollPaginatorDelegate> delegate;
 
 /*
  Drives the calculations of when next and previous pages should be loaded,

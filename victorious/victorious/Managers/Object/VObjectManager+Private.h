@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface VObjectManager ()
 
 @property (nonatomic, strong) NSCache *objectCache;
-@property (nonatomic, strong) VUser *__nullable mainUser;
+@property (nonatomic, strong, nullable) VUser *mainUser;
 @property (nonatomic, assign) VLoginType loginType;
 
 @end
