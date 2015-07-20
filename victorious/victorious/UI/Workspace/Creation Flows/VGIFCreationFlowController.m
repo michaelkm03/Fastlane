@@ -74,7 +74,7 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 {
     return [dependencyManager templateValueOfType:[VAssetCollectionGridViewController class]
                                            forKey:kImageVideoLibrary
-                            withAddedDependencies:@{VAssetCollectionGridViewControllerMediaType:@(PHAssetMediaTypeImage)}];
+                            withAddedDependencies:@{VAssetCollectionGridViewControllerMediaType:@(PHAssetMediaTypeVideo)}];
 }
 
 - (VCameraViewController *)cameraViewController
