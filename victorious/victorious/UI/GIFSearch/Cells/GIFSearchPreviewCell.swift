@@ -12,6 +12,8 @@ import UIKit
 /// from the list of GIF search results
 class GIFSearchPreviewCell: UICollectionViewCell {
     
+    static let ReuseIdentifier = "GIFSearchPreviewCell"
+    
     @IBOutlet private weak var videoView: VVideoView!
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet private weak var imageView: UIImageView!

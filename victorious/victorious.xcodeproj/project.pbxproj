@@ -291,9 +291,6 @@
 		A65318A41B59DE0400389EA9 /* VCreatePollViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A65318A31B59DE0400389EA9 /* VCreatePollViewController.storyboard */; };
 		A66D76841B5B2E23004765EA /* VLibraryFolderControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A66D76831B5B2E23004765EA /* VLibraryFolderControl.m */; };
 		A66D76861B5B2E31004765EA /* VLibraryFolderControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66D76851B5B2E31004765EA /* VLibraryFolderControl.xib */; };
-		A673A3301B34E602004D4D8C /* newWorkspaceTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = A673A32F1B34E602004D4D8C /* newWorkspaceTemplate.json */; };
-		A682F4FE1B3C829E009B6DBE /* imageCreationFlow.json in Resources */ = {isa = PBXBuildFile; fileRef = A682F4FD1B3C829E009B6DBE /* imageCreationFlow.json */; };
-		A682F4FC1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = A682F4FB1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.m */; };
 		A6886CF91B55EC4F00D4F6F8 /* VImageCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6886CF81B55EC4F00D4F6F8 /* VImageCreationFlowController.m */; };
 		A6886CFC1B5612F300D4F6F8 /* VAssetDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = A6886CFB1B5612F300D4F6F8 /* VAssetDownloader.m */; };
 		A6BB61201B582815002C3B7C /* VAssetCollectionGridDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A6BB611F1B582815002C3B7C /* VAssetCollectionGridDataSource.m */; };
@@ -436,7 +433,6 @@
 		A721E9481B572454000B7901 /* UIActivityViewController+VStatusBarHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8D11B572453000B7901 /* UIActivityViewController+VStatusBarHandling.m */; };
 		A721E9491B572454000B7901 /* UIAlertController+VSimpleAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8D31B572453000B7901 /* UIAlertController+VSimpleAlert.m */; };
 		A721E94A1B572454000B7901 /* UICollectionView+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8D51B572453000B7901 /* UICollectionView+Convenience.m */; };
-		A721E94B1B572454000B7901 /* UICollectionViewCell+Reuse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721E8D61B572453000B7901 /* UICollectionViewCell+Reuse.swift */; };
 		A721E94C1B572454000B7901 /* UIColor+VBrightness.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8D81B572453000B7901 /* UIColor+VBrightness.m */; };
 		A721E94D1B572454000B7901 /* UIColor+VHex.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8DA1B572453000B7901 /* UIColor+VHex.m */; };
 		A721E94E1B572454000B7901 /* UIImage+Cropping.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8DC1B572453000B7901 /* UIImage+Cropping.m */; };
@@ -1641,10 +1637,6 @@
 		A66D76821B5B2E23004765EA /* VLibraryFolderControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLibraryFolderControl.h; sourceTree = "<group>"; };
 		A66D76831B5B2E23004765EA /* VLibraryFolderControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLibraryFolderControl.m; sourceTree = "<group>"; };
 		A66D76851B5B2E31004765EA /* VLibraryFolderControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VLibraryFolderControl.xib; sourceTree = "<group>"; };
-		A673A32F1B34E602004D4D8C /* newWorkspaceTemplate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = newWorkspaceTemplate.json; sourceTree = "<group>"; };
-		A682F4FD1B3C829E009B6DBE /* imageCreationFlow.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = imageCreationFlow.json; path = ../imageCreationFlow.json; sourceTree = "<group>"; };
-		A682F4FA1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+VSimpleAlert.h"; sourceTree = "<group>"; };
-		A682F4FB1B3C7690009B6DBE /* UIAlertController+VSimpleAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertController+VSimpleAlert.m"; sourceTree = "<group>"; };
 		A6886CF71B55EC4F00D4F6F8 /* VImageCreationFlowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageCreationFlowController.h; sourceTree = "<group>"; };
 		A6886CF81B55EC4F00D4F6F8 /* VImageCreationFlowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageCreationFlowController.m; sourceTree = "<group>"; };
 		A6886CFA1B5612F300D4F6F8 /* VAssetDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAssetDownloader.h; sourceTree = "<group>"; };
@@ -1863,7 +1855,6 @@
 		A721E8D31B572453000B7901 /* UIAlertController+VSimpleAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertController+VSimpleAlert.m"; sourceTree = "<group>"; };
 		A721E8D41B572453000B7901 /* UICollectionView+Convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UICollectionView+Convenience.h"; sourceTree = "<group>"; };
 		A721E8D51B572453000B7901 /* UICollectionView+Convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UICollectionView+Convenience.m"; sourceTree = "<group>"; };
-		A721E8D61B572453000B7901 /* UICollectionViewCell+Reuse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+Reuse.swift"; sourceTree = "<group>"; };
 		A721E8D71B572453000B7901 /* UIColor+VBrightness.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+VBrightness.h"; sourceTree = "<group>"; };
 		A721E8D81B572453000B7901 /* UIColor+VBrightness.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+VBrightness.m"; sourceTree = "<group>"; };
 		A721E8D91B572453000B7901 /* UIColor+VHex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+VHex.h"; sourceTree = "<group>"; };
@@ -4664,7 +4655,6 @@
 				A721E8D31B572453000B7901 /* UIAlertController+VSimpleAlert.m */,
 				A721E8D41B572453000B7901 /* UICollectionView+Convenience.h */,
 				A721E8D51B572453000B7901 /* UICollectionView+Convenience.m */,
-				A721E8D61B572453000B7901 /* UICollectionViewCell+Reuse.swift */,
 				A721E8D71B572453000B7901 /* UIColor+VBrightness.h */,
 				A721E8D81B572453000B7901 /* UIColor+VBrightness.m */,
 				A721E8D91B572453000B7901 /* UIColor+VHex.h */,
@@ -8134,7 +8124,6 @@
 				D8C8F5731A0400DF006BE3E8 /* VExtendedView.m in Sources */,
 				A721E9351B572454000B7901 /* VUser+RestKit.m in Sources */,
 				A721E9451B572454000B7901 /* NSURL+MediaType.m in Sources */,
-				A721E94B1B572454000B7901 /* UICollectionViewCell+Reuse.swift in Sources */,
 				0372587519D61B0800836B3F /* VUploadTaskCreator.m in Sources */,
 				0314D0B019B4698800FA363C /* VObjectManager+DeviceRegistration.m in Sources */,
 				0314D09019B4694600FA363C /* VInteractionManager.m in Sources */,

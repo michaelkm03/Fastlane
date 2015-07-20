@@ -61,7 +61,6 @@ class GIFSearchDataSource: NSObject {
     /// A type used to record data source chanages that can then be applied to the collection
     /// view in a `performBatchUpdates(_:completion)` call.
     struct ChangeResult {
-        // TODO: Change to let somehow?
         var deletedSections: NSIndexSet?
         var insertedSections: NSIndexSet?
     }
@@ -128,7 +127,6 @@ class GIFSearchDataSource: NSObject {
         self.state = .Loading
         self.mostRecentSearchText = searchText
         // WARNING: Remove this hardcodded empty string replcement:
-        // TODO: Figure out if comma-separated or spaced keywords is best
         VObjectManager.sharedManager().searchForGIF( [ searchText == "" ? "Spongebob" : searchText ],
             pageType: pageType,
             success: { (results, isLastPage) in

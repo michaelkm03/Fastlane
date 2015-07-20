@@ -11,6 +11,8 @@ import UIKit
 /// A cell used to show a loading, error or no results state in GIF search
 class GIFSearchNoContentCell: UICollectionViewCell {
     
+    static let ReuseIdentifier = "GIFSearchNoContentCell"
+    
     @IBOutlet private weak var label: UILabel!
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     

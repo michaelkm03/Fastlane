@@ -11,6 +11,8 @@ import UIKit
 /// Cell to represent GIF search result in a collectin of search results
 class GIFSearchResultCell: UICollectionViewCell {
     
+    static let ReuseIdentifier = "GIFSearchResultCell"
+    
     @IBOutlet private weak var emptyView: UIView!
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var overlayView: UIView!

@@ -20,7 +20,7 @@ extension GIFSearchDataSource : UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if self.sections.count == 0 {
-            if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( GIFSearchNoContentCell.suggestedReuseIdentifier, forIndexPath: indexPath ) as? GIFSearchNoContentCell {
+            if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( GIFSearchNoContentCell.ReuseIdentifier, forIndexPath: indexPath ) as? GIFSearchNoContentCell {
                 self.configureNoContentCell( cell, forState: self.state )
                 return cell
             }
@@ -29,13 +29,13 @@ extension GIFSearchDataSource : UICollectionViewDataSource {
         let section = self.sections[ indexPath.section ]
         let result = section.results[ indexPath.row ]
         if section.isFullSize {
-            if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( GIFSearchPreviewCell.suggestedReuseIdentifier, forIndexPath: indexPath ) as? GIFSearchPreviewCell {
+            if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( GIFSearchPreviewCell.ReuseIdentifier, forIndexPath: indexPath ) as? GIFSearchPreviewCell {
                 cell.previewAssetUrl = NSURL(string: result.thumbnailStillUrl)
                 cell.assetUrl = NSURL(string: result.mp4Url)
                 return cell
             }
         }
-        else if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( GIFSearchResultCell.suggestedReuseIdentifier, forIndexPath: indexPath ) as? GIFSearchResultCell {
+        else if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( GIFSearchResultCell.ReuseIdentifier, forIndexPath: indexPath ) as? GIFSearchResultCell {
             cell.assetUrl = NSURL(string: result.thumbnailStillUrl)
             cell.selected = NSSet(array: collectionView.indexPathsForSelectedItems() ).containsObject( indexPath )
             return cell
