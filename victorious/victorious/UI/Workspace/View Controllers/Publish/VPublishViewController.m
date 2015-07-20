@@ -153,15 +153,9 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
     
     self.captionSeparator.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
     
-    NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
-    UIFont *cancelButtonFont = [self.dependencyManager fontForKey:VDependencyManagerButton2FontKey];
-    if (cancelButtonFont != nil)
-    {
-        attributes[NSFontAttributeName] = cancelButtonFont;
-    }
-    NSString *cancelButtonText = [self.dependencyManager stringForKey:kBackButtonTitleKey];
-    self.cancelButton.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(cancelButtonText, @"")
-                                                                                  attributes:attributes];
+    [self.cancelButton setTitle:[self.dependencyManager stringForKey:kBackButtonTitleKey]
+                       forState:UIControlStateNormal];
+    self.cancelButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerButton2FontKey];
     UIColor *textColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey];
     [self.cancelButton setTitleColor:textColor ?: [UIColor whiteColor]
                             forState:UIControlStateNormal];

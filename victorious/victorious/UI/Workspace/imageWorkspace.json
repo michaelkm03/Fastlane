@@ -64,7 +64,7 @@
                         ],
               "name": "textOverlay.tool",
               "icon": {
-              "imageURL": "text"
+              "imageURL": "textIcon"
               }
               },
               {
