@@ -13,7 +13,7 @@
 
 /**
  Returns an ID that can be used to store and retrieve
- template data fro this environment in an instance of
+ template data for this environment in an instance of
  VDataCache.
  */
 - (id<VDataCacheID>)templateCacheIdentifier;
