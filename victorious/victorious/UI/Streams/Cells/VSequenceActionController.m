@@ -127,7 +127,7 @@
     return YES;
 }
 
-- (BOOL)showMediaContentViewForUrlString:(NSString *)urlString withMediaLinkType:(VInStreamMediaLinkType)linkType fromViewController:(UIViewController *)viewController
+- (BOOL)showMediaContentViewForUrlString:(NSString *)urlString withMediaLinkType:(VMediaType)linkType fromViewController:(UIViewController *)viewController
 {
     VAbstractMediaLinkViewController *mediaLinkViewController = [VAbstractMediaLinkViewController newWithMediaUrlString:urlString andMediaLinkType:linkType];
     [viewController presentViewController:mediaLinkViewController animated:YES completion:nil];

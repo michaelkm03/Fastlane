@@ -7,12 +7,17 @@
 //
 
 #import "VInStreamMediaLink.h"
+#import "VDependencyManager.h"
+
+static NSString * const kImageIconKey = @"open_image_icon";
+static NSString * const kVideoIconKey = @"watch_video_icon";
+static NSString * const kGifIconKey = @"watch_gif_icon";
 
 @implementation VInStreamMediaLink
 
 + (instancetype)newWithTintColor:(UIColor *)tintColor
                             font:(UIFont *)font
-                        linkType:(VInStreamMediaLinkType)linkType
+                        linkType:(VMediaType)linkType
                        urlString:(NSString *)urlString
             andDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -39,7 +44,7 @@
                              font:(UIFont *)font
                              text:(NSString *)text
                              icon:(UIImage *)icon
-                         linkType:(VInStreamMediaLinkType)linkType
+                         linkType:(VMediaType)linkType
                         urlString:(NSString *)urlString
 {
     self = [super init];
@@ -55,25 +60,24 @@
     return self;
 }
 
-+ (void)imageAndTextForMediaLinkType:(VInStreamMediaLinkType)linkType dependencyManager:(VDependencyManager *)dependencyManager andCallbackBlock:(void (^)(UIImage *icon, NSString *linkPrompt))callbackBlock
++ (void)imageAndTextForMediaLinkType:(VMediaType)linkType dependencyManager:(VDependencyManager *)dependencyManager andCallbackBlock:(void (^)(UIImage *icon, NSString *linkPrompt))callbackBlock
 {
-#warning NEED TO GET ICONS FROM DEPENDENCY MANAGER
-    UIImage *icon = nil;
+    NSString *iconKey = nil;
     NSString *linkPrompt = nil;
     switch (linkType)
     {
-        case VInStreamMediaLinkTypeImage:
-            icon = [UIImage imageNamed:@"open_image_icon"];
+        case VMediaTypeImage:
+            iconKey = kImageIconKey;
             linkPrompt = @"Open Image";
             break;
 
-        case VInStreamMediaLinkTypeGif:
-            icon = [UIImage imageNamed:@"watch_gif_icon"];
+        case VMediaTypeGif:
+            iconKey = kGifIconKey;
             linkPrompt = @"Watch Gif";
             break;
             
-        case VInStreamMediaLinkTypeVideo:
-            icon = [UIImage imageNamed:@"watch_video_icon"];
+        case VMediaTypeVideo:
+            iconKey = kVideoIconKey;
             linkPrompt = @"Watch Video";
             break;
             
@@ -81,7 +85,7 @@
             break;
     }
     
-    callbackBlock( icon, linkPrompt );
+    callbackBlock( [dependencyManager imageForKey:iconKey], NSLocalizedString(linkPrompt,nil) );
 }
 
 - (BOOL)isEqual:(id)object

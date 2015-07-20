@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VInStreamMediaLinkType.h"
+#import "VMediaType.h"
 
 @class VSequence, VAsset, VNode, VDependencyManager, VUser, VComment;
 
@@ -30,7 +30,7 @@ typedef NS_ENUM(NSInteger, VDefaultVideoEdit)
 
 - (BOOL)showProfile:(VUser *)user fromViewController:(UIViewController *)viewController;
 
-- (BOOL)showMediaContentViewForUrlString:(NSString *)urlString withMediaLinkType:(VInStreamMediaLinkType)linkType fromViewController:(UIViewController *)viewController;
+- (BOOL)showMediaContentViewForUrlString:(NSString *)urlString withMediaLinkType:(VMediaType)linkType fromViewController:(UIViewController *)viewController;
 
 /**
  *  Presents remix UI on a viewcontroller with a given sequence to remix.

@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VInStreamMediaLinkType.h"
+#import "VMediaType.h"
 
 @class VDependencyManager;
 
@@ -15,7 +15,7 @@
 
 + (instancetype)newWithTintColor:(UIColor *)tintColor
                             font:(UIFont *)font
-                        linkType:(VInStreamMediaLinkType)linkType
+                        linkType:(VMediaType)linkType
                        urlString:(NSString *)urlString
             andDependencyManager:(VDependencyManager *)dependencyManager;
 
@@ -23,14 +23,14 @@
                              font:(UIFont *)font
                              text:(NSString *)text
                              icon:(UIImage *)icon
-                         linkType:(VInStreamMediaLinkType)linkType
+                         linkType:(VMediaType)linkType
                         urlString:(NSString *)urlString;
 
 @property (nonatomic, readonly) UIColor *tintColor;
 @property (nonatomic, readonly) UIFont *font;
 @property (nonatomic, readonly) NSString *text;
 @property (nonatomic, readonly) UIImage *icon;
-@property (nonatomic, readonly) VInStreamMediaLinkType mediaLinkType;
+@property (nonatomic, readonly) VMediaType mediaLinkType;
 @property (nonatomic, readonly) NSString *urlString;
 
 @end

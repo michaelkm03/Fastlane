@@ -12,7 +12,7 @@
 #import "VDependencyManager.h"
 #import "VInStreamMediaLink.h"
 #import "VTagStringFormatter.h"
-#import "VInStreamMediaLinkTypeHelper.h"
+#import "VMediaTypeHelper.h"
 
 @implementation VInStreamCommentCellContents
 
@@ -67,7 +67,7 @@
         NSString *mediaUrl = comment.mediaUrl;
         if ( mediaUrl.length > 0 )
         {
-            VInStreamMediaLinkType linkType = [VInStreamMediaLinkTypeHelper linkTypeForAsset:comment.asset andMediaCategory:comment.mediaType];
+            VMediaType linkType = [VMediaTypeHelper linkTypeForAsset:comment.asset andMediaCategory:comment.mediaType];
             mediaLink = [VInStreamMediaLink newWithTintColor:linkColor
                                                         font:mediaLinkFont
                                                     linkType:linkType

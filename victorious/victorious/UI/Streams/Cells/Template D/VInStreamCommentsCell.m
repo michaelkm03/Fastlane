@@ -270,7 +270,7 @@ static NSString * const kMediaIdentifierSuffix = @"withMedia";
     [commentsResponder actionForInStreamHashtagSelection:hashtagString];
 }
 
-- (void)performActionForSelectedMediaUrlString:(NSString *)mediaUrlString andMediaLinkType:(VInStreamMediaLinkType)linkType
+- (void)performActionForSelectedMediaUrlString:(NSString *)mediaUrlString andMediaLinkType:(VMediaType)linkType
 {
     id<VInStreamCommentsResponder> commentsResponder = [[self nextResponder] targetForAction:@selector(actionForInStreamMediaSelection:withMediaLinkType:)
                                                                                   withSender:nil];

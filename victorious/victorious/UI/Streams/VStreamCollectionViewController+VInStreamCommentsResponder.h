@@ -9,6 +9,9 @@
 #import "VStreamCollectionViewController.h"
 #import "VInStreamCommentsResponder.h"
 
+/**
+    A category of VStreamCollectionViewController that conforms to VInStreamCommentsResponder.
+ */
 @interface VStreamCollectionViewController (VInStreamCommentsResponder) <VInStreamCommentsResponder>
 
 @end

@@ -1,32 +1,32 @@
 //
-//  VInStreamMediaLinkType.m
+//  VMediaTypeHelper.m
 //  victorious
 //
 //  Created by Sharif Ahmed on 7/19/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VInStreamMediaLinkTypeHelper.h"
+#import "VMediaTypeHelper.h"
 #import "VConstants.h"
 #import "VAsset+Fetcher.h"
 
-@implementation VInStreamMediaLinkTypeHelper
+@implementation VMediaTypeHelper
 
-+ (VInStreamMediaLinkType)linkTypeForAsset:(VAsset *)asset andMediaCategory:(NSString *)mediaCategory
++ (VMediaType)linkTypeForAsset:(VAsset *)asset andMediaCategory:(NSString *)mediaCategory
 {
     if ( [self isImageCategory:mediaCategory] )
     {
-        return VInStreamMediaLinkTypeImage;
+        return VMediaTypeImage;
     }
     else if ( [self isVideoCategory:mediaCategory] )
     {
         if ( [self isGifVideoAsset:asset] )
         {
-            return VInStreamMediaLinkTypeGif;
+            return VMediaTypeGif;
         }
-        return VInStreamMediaLinkTypeVideo;
+        return VMediaTypeVideo;
     }
-    return VInStreamMediaLinkTypeUnknown;
+    return VMediaTypeUnknown;
 }
 
 + (BOOL)isImageCategory:(NSString *)category

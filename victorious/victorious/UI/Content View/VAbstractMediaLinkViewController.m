@@ -21,23 +21,23 @@
 
 @implementation VAbstractMediaLinkViewController
 
-+ (instancetype)newWithMediaUrlString:(NSString *)urlString andMediaLinkType:(VInStreamMediaLinkType)linkType
++ (instancetype)newWithMediaUrlString:(NSString *)urlString andMediaLinkType:(VMediaType)linkType
 {
     NSParameterAssert(urlString != nil);
     
     VAbstractMediaLinkViewController *linkViewController;
     switch (linkType)
     {
-        case VInStreamMediaLinkTypeVideo:
+        case VMediaTypeVideo:
             linkViewController = [[VVideoLinkViewController alloc] initWithUrlString:urlString];
             break;
             
-        case VInStreamMediaLinkTypeGif:
+        case VMediaTypeGif:
             linkViewController = [[VGifLinkViewController alloc] initWithUrlString:urlString];
             break;
             
             
-        case VInStreamMediaLinkTypeImage:
+        case VMediaTypeImage:
         default:
             linkViewController = [[VImageLinkViewController alloc] initWithUrlString:urlString];
             break;

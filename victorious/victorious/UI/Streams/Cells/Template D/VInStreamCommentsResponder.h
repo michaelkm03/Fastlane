@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VInStreamMediaLinkType.h"
+#import "VMediaType.h"
 
 @class VComment, VUser, VSequence;
 
@@ -19,6 +19,6 @@
 
 - (void)actionForInStreamUserSelection:(NSNumber *)userId;
 
-- (void)actionForInStreamMediaSelection:(NSString *)mediaUrlString withMediaLinkType:(VInStreamMediaLinkType)linkType;
+- (void)actionForInStreamMediaSelection:(NSString *)mediaUrlString withMediaLinkType:(VMediaType)linkType;
 
 @end

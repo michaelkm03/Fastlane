@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VInStreamMediaLinkType.h"
+#import "VMediaType.h"
 
 #warning NEEDS TESTS
 
@@ -31,7 +31,7 @@ typedef void (^MediaLoadingCompletionBlock) (CGFloat contentAspectRatio);
     @return A VAbstractMediaLinkViewController subclass that will be able to display the loaded media appropriately or
                 a VImageMediaLinkViewController if an unrecognized linkType is provided.
  */
-+ (instancetype)newWithMediaUrlString:(NSString *)urlString andMediaLinkType:(VInStreamMediaLinkType)linkType;
++ (instancetype)newWithMediaUrlString:(NSString *)urlString andMediaLinkType:(VMediaType)linkType;
 
 /**
     Sets the mediaUrlString property and default value of the contentAspectRatio. Expected to
