@@ -2171,15 +2171,12 @@
 		B07BFD5F1B26761D00784FC8 /* VHashtagHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagHelper.h; sourceTree = "<group>"; };
 		B07BFD601B26761D00784FC8 /* VHashtagHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashtagHelper.m; sourceTree = "<group>"; };
 		B07BFD621B26780900784FC8 /* VHashtagResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagResponder.h; sourceTree = "<group>"; };
-<<<<<<< HEAD
 		B0DDD5551B4DF7F80065E540 /* VPermissionsTrackingHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPermissionsTrackingHelper.h; sourceTree = "<group>"; };
 		B0DDD5561B4DF7F80065E540 /* VPermissionsTrackingHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPermissionsTrackingHelper.m; sourceTree = "<group>"; };
 		B0DDD55B1B4F0C230065E540 /* NSDictionary+VMerge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+VMerge.h"; sourceTree = "<group>"; };
 		B0DDD55C1B4F0C230065E540 /* NSDictionary+VMerge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+VMerge.m"; sourceTree = "<group>"; };
-=======
 		B0D8BAAB1B545A3600087057 /* VListicleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VListicleView.h; sourceTree = "<group>"; };
 		B0D8BAAC1B545A3600087057 /* VListicleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VListicleView.m; sourceTree = "<group>"; };
->>>>>>> dev
 		B528D1A8913A051BDDC4FE37 /* libPods-test.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-test.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE11447719D49AA4006A6D65 /* VFullscreenMarqueeStreamItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFullscreenMarqueeStreamItemCell.h; sourceTree = "<group>"; };
 		BE11447819D49AA4006A6D65 /* VFullscreenMarqueeStreamItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFullscreenMarqueeStreamItemCell.m; sourceTree = "<group>"; };
