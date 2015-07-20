@@ -85,28 +85,31 @@ static const CGFloat kMaxPercentBannerWidth = 0.58f;
 
 - (void)drawRect:(CGRect)rect
 {
-    CGFloat width = self.widthOfLabel;
-    
-    CGPoint topRight = CGPointMake(width, 0);
-    CGPoint middleRight = CGPointMake(width - kInsetForTriangle, self.heightOfBanner/2);
-    CGPoint bottomRight = CGPointMake(width, self.heightOfBanner);
-    CGPoint bottomLeft = CGPointMake(kRadiusOfBanner, self.heightOfBanner);
-    CGPoint topLeft = CGPointMake(kRadiusOfBanner, kRadiusOfBanner);
-    
-    UIBezierPath *path = [[UIBezierPath alloc] init];
-    
-    [path moveToPoint:CGPointMake(0, 0)];
-    [path addLineToPoint:topRight];
-    [path addLineToPoint:middleRight];
-    [path addLineToPoint:bottomRight];
-    [path addLineToPoint:bottomLeft];
-    [path addArcWithCenter:CGPointMake(kRadiusOfBanner, CGRectGetHeight(self.bounds)) radius:kRadiusOfBanner startAngle:[self degreesToRadians:270] endAngle:[self degreesToRadians:180]  clockwise:NO];
-    [path addLineToPoint:CGPointMake(0, kRadiusOfBanner)];
-    [path addArcWithCenter:topLeft radius:kRadiusOfBanner startAngle:[self degreesToRadians:180] endAngle:[self degreesToRadians:270] clockwise:YES];
-    [path closePath];
-
-    [[self.dependencyManager colorForKey:VDependencyManagerAccentColorKey] setFill];
-    [path fill];
+    if (self.headlineText != nil)
+    {
+        CGFloat width = self.widthOfLabel;
+        
+        CGPoint topRight = CGPointMake(width, 0);
+        CGPoint middleRight = CGPointMake(width - kInsetForTriangle, self.heightOfBanner/2);
+        CGPoint bottomRight = CGPointMake(width, self.heightOfBanner);
+        CGPoint bottomLeft = CGPointMake(kRadiusOfBanner, self.heightOfBanner);
+        CGPoint topLeft = CGPointMake(kRadiusOfBanner, kRadiusOfBanner);
+        
+        UIBezierPath *path = [[UIBezierPath alloc] init];
+        
+        [path moveToPoint:CGPointMake(0, 0)];
+        [path addLineToPoint:topRight];
+        [path addLineToPoint:middleRight];
+        [path addLineToPoint:bottomRight];
+        [path addLineToPoint:bottomLeft];
+        [path addArcWithCenter:CGPointMake(kRadiusOfBanner, CGRectGetHeight(self.bounds)) radius:kRadiusOfBanner startAngle:[self degreesToRadians:270] endAngle:[self degreesToRadians:180]  clockwise:NO];
+        [path addLineToPoint:CGPointMake(0, kRadiusOfBanner)];
+        [path addArcWithCenter:topLeft radius:kRadiusOfBanner startAngle:[self degreesToRadians:180] endAngle:[self degreesToRadians:270] clockwise:YES];
+        [path closePath];
+        
+        [[self.dependencyManager colorForKey:VDependencyManagerAccentColorKey] setFill];
+        [path fill];
+    }
 }
 
 - (CGFloat)degreesToRadians:(CGFloat)degrees
