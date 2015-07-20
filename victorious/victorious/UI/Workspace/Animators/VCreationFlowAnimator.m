@@ -26,15 +26,16 @@ static const CGFloat kDimmedAlpha = 0.5f;
     UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
     
     [[transitionContext containerView] addSubview:toView];
+    [[transitionContext containerView] addSubview:fromView];
     if (self.presenting)
-    {
-        toView.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight([transitionContext containerView].bounds));
-    }
-    else
     {
         toView.transform = CGAffineTransformMakeScale(kScaleFactor, kScaleFactor);
         toView.alpha = kDimmedAlpha;
-        [[transitionContext containerView] addSubview:fromView];
+    }
+    else
+    {
+        toView.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight([transitionContext containerView].bounds));
+        [[transitionContext containerView] addSubview:toView];
     }
     
     [UIView animateWithDuration:[self transitionDuration:transitionContext]
@@ -47,18 +48,22 @@ static const CGFloat kDimmedAlpha = 0.5f;
          if (self.presenting)
          {
              toView.transform = CGAffineTransformIdentity;
-             fromView.transform = CGAffineTransformMakeScale(kScaleFactor, kScaleFactor);
-             fromView.alpha = kDimmedAlpha;
+             toView.alpha = 1.0f;
+             fromView.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight([transitionContext containerView].bounds));
          }
          else
          {
-             fromView.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight([transitionContext containerView].bounds));
+             fromView.transform = CGAffineTransformMakeScale(kScaleFactor, kScaleFactor);
+             fromView.alpha = kDimmedAlpha;
              toView.transform = CGAffineTransformIdentity;
-             toView.alpha = 1.0f;
          }
      }
                      completion:^(BOOL finished)
      {
+         toView.transform = CGAffineTransformIdentity;
+         fromView.transform = CGAffineTransformIdentity;
+         toView.alpha = 1.0f;
+         fromView.alpha = 1.0f;
          [transitionContext completeTransition:YES];
      }];
 }
