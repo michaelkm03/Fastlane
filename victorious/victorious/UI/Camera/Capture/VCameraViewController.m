@@ -781,7 +781,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     self.switchCameraButton.frame = CGRectMake(0, 0, 50.0f, 50.0f);
     [self.switchCameraButton setImage:[self.dependencyManager imageForKey:kReverseCameraIconKey] forState:UIControlStateNormal];
     self.navigationItem.titleView = self.switchCameraButton;
-
 }
 
 - (void)setupFlashButton
