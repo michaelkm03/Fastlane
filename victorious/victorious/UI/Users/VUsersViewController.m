@@ -206,14 +206,20 @@
 
 #pragma mark - VFollowResponder
 
-- (void)followUser:(VUser *)user withCompletion:(VFollowEventCompletion)completion
+- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion
 {
-    [self.followingHelper followUser:user withCompletion:completion];
+    [self.followingHelper followUser:user
+                 withAuthorizedBlock:authorizedBlock
+                       andCompletion:completion];
 }
 
-- (void)unfollowUser:(VUser *)user withCompletion:(VFollowEventCompletion)completion
+- (void)unfollowUser:(VUser *)user
+ withAuthorizedBlock:(void (^)(void))authorizedBlock
+       andCompletion:(VFollowHelperCompletion)completion
 {
-    [self.followingHelper unfollowUser:user withCompletion:completion];
+    [self.followingHelper unfollowUser:user
+                   withAuthorizedBlock:authorizedBlock
+                         andCompletion:completion];
 }
 
 @end

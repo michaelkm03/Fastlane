@@ -109,27 +109,35 @@ static const CGFloat kInviteCellHeight = 50.0f;
         return;
     }
     
-    BOOL isFollowing = sender.controlState == VFollowControlStateFollowed;
-    [self.followUserControl setControlState:VFollowControlStateLoading
-                                   animated:YES];
-    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
-                                                                      withSender:nil];
-    NSAssert(followResponder != nil, @"VFollowerTableViewCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
-    if ( isFollowing )
+    void (^authorizedBlock)() = ^
     {
+        [sender setControlState:VFollowControlStateLoading
+                       animated:YES];
+    };
+    
+    void (^completionBlock)(VUser *) = ^(VUser *userActedOn)
+    {
+        [self updateFollowStatusAnimated:YES];
+    };
+    
+    if ( sender.controlState == VFollowControlStateFollowed )
+    {
+        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:)
+                                                                          withSender:nil];
+        NSAssert(followResponder != nil, @"VFollowerTableViewCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
+        
         [followResponder unfollowUser:self.profile
-                       withCompletion:^(VUser *userActedOn)
-         {
-             [self updateFollowStatusAnimated:YES];
-         }];
+                  withAuthorizedBlock:authorizedBlock
+                        andCompletion:completionBlock];
     }
     else
     {
+        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:)
+                                                                          withSender:nil];
+        NSAssert(followResponder != nil, @"VFollowerTableViewCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
         [followResponder followUser:self.profile
-                     withCompletion:^(VUser *userActedOn)
-         {
-             [self updateFollowStatusAnimated:YES];
-         }];
+                  withAuthorizedBlock:authorizedBlock
+                        andCompletion:completionBlock];
     }
 }
 

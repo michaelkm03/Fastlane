@@ -320,20 +320,22 @@ static const NSInteger kSearchResultLimit = 100;
     return YES;
 }
 
-#pragma mark - VFollowing
+#pragma mark - VFollowResponder
 
-- (void)followUser:(VUser *)user
-    withCompletion:(VFollowEventCompletion)completion
+- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion
 {
     [self.followHelper followUser:user
-                   withCompletion:completion];
+              withAuthorizedBlock:authorizedBlock
+                    andCompletion:completion];
 }
 
 - (void)unfollowUser:(VUser *)user
-      withCompletion:(VFollowEventCompletion)completion
+ withAuthorizedBlock:(void (^)(void))authorizedBlock
+       andCompletion:(VFollowHelperCompletion)completion
 {
     [self.followHelper unfollowUser:user
-                     withCompletion:completion];
+                withAuthorizedBlock:authorizedBlock
+                      andCompletion:completion];
 }
 
 @end
