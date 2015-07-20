@@ -1035,8 +1035,8 @@
 		F0FC97D21B5AE9130098AFCB /* VStreamCollectionViewController+VInStreamCommentsResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97D11B5AE9130098AFCB /* VStreamCollectionViewController+VInStreamCommentsResponder.m */; };
 		F0FC97D51B5AF0EE0098AFCB /* VCollectionViewCommentHighlighter.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97D41B5AF0EE0098AFCB /* VCollectionViewCommentHighlighter.m */; };
 		F0FC97D81B5AF0FD0098AFCB /* VTableViewCommentHighlighter.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97D71B5AF0FD0098AFCB /* VTableViewCommentHighlighter.m */; };
-		F0FC97DC1B5C0B9B0098AFCB /* VMediaLinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97DA1B5C0B9B0098AFCB /* VMediaLinkViewController.m */; };
-		F0FC97DD1B5C0B9B0098AFCB /* VMediaLinkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0FC97DB1B5C0B9B0098AFCB /* VMediaLinkViewController.xib */; };
+		F0FC97DC1B5C0B9B0098AFCB /* VAbstractMediaLinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97DA1B5C0B9B0098AFCB /* VAbstractMediaLinkViewController.m */; };
+		F0FC97DD1B5C0B9B0098AFCB /* VAbstractMediaLinkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0FC97DB1B5C0B9B0098AFCB /* VAbstractMediaLinkViewController.xib */; };
 		F0FC97E41B5C1CAD0098AFCB /* VImageLinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97E31B5C1CAD0098AFCB /* VImageLinkViewController.m */; };
 		F0FC97E71B5C1CB90098AFCB /* VVideoLinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97E61B5C1CB90098AFCB /* VVideoLinkViewController.m */; };
 		F0FC97ED1B5C41280098AFCB /* VGifLinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97EC1B5C41280098AFCB /* VGifLinkViewController.m */; };
@@ -2997,9 +2997,9 @@
 		F0FC97D41B5AF0EE0098AFCB /* VCollectionViewCommentHighlighter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCollectionViewCommentHighlighter.m; sourceTree = "<group>"; };
 		F0FC97D61B5AF0FC0098AFCB /* VTableViewCommentHighlighter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTableViewCommentHighlighter.h; sourceTree = "<group>"; };
 		F0FC97D71B5AF0FD0098AFCB /* VTableViewCommentHighlighter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTableViewCommentHighlighter.m; sourceTree = "<group>"; };
-		F0FC97D91B5C0B9B0098AFCB /* VMediaLinkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMediaLinkViewController.h; sourceTree = "<group>"; };
-		F0FC97DA1B5C0B9B0098AFCB /* VMediaLinkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMediaLinkViewController.m; sourceTree = "<group>"; };
-		F0FC97DB1B5C0B9B0098AFCB /* VMediaLinkViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VMediaLinkViewController.xib; sourceTree = "<group>"; };
+		F0FC97D91B5C0B9B0098AFCB /* VAbstractMediaLinkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractMediaLinkViewController.h; sourceTree = "<group>"; };
+		F0FC97DA1B5C0B9B0098AFCB /* VAbstractMediaLinkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractMediaLinkViewController.m; sourceTree = "<group>"; };
+		F0FC97DB1B5C0B9B0098AFCB /* VAbstractMediaLinkViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VAbstractMediaLinkViewController.xib; sourceTree = "<group>"; };
 		F0FC97E21B5C1CAD0098AFCB /* VImageLinkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageLinkViewController.h; sourceTree = "<group>"; };
 		F0FC97E31B5C1CAD0098AFCB /* VImageLinkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageLinkViewController.m; sourceTree = "<group>"; };
 		F0FC97E51B5C1CB90098AFCB /* VVideoLinkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoLinkViewController.h; sourceTree = "<group>"; };
@@ -6770,9 +6770,9 @@
 		F0FC97E11B5C1C7E0098AFCB /* Media Link View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				F0FC97D91B5C0B9B0098AFCB /* VMediaLinkViewController.h */,
-				F0FC97DA1B5C0B9B0098AFCB /* VMediaLinkViewController.m */,
-				F0FC97DB1B5C0B9B0098AFCB /* VMediaLinkViewController.xib */,
+				F0FC97D91B5C0B9B0098AFCB /* VAbstractMediaLinkViewController.h */,
+				F0FC97DA1B5C0B9B0098AFCB /* VAbstractMediaLinkViewController.m */,
+				F0FC97DB1B5C0B9B0098AFCB /* VAbstractMediaLinkViewController.xib */,
 				F0FC97E21B5C1CAD0098AFCB /* VImageLinkViewController.h */,
 				F0FC97E31B5C1CAD0098AFCB /* VImageLinkViewController.m */,
 				F0FC97E51B5C1CB90098AFCB /* VVideoLinkViewController.h */,
@@ -6899,7 +6899,7 @@
 				036F38941A0C4DEA0014DF66 /* SourceSansPro-Semibold.ttf in Resources */,
 				036F388E1A0C4DEA0014DF66 /* RobotoSlab-Regular.ttf in Resources */,
 				036F38911A0C4DEA0014DF66 /* Signika-Light.ttf in Resources */,
-				F0FC97DD1B5C0B9B0098AFCB /* VMediaLinkViewController.xib in Resources */,
+				F0FC97DD1B5C0B9B0098AFCB /* VAbstractMediaLinkViewController.xib in Resources */,
 				03FD87D119F96EEB00D93BAA /* VHistogramCell.xib in Resources */,
 				036F388D1A0C4DEA0014DF66 /* RobotoSlab-Bold.ttf in Resources */,
 				F0F04AF11B29E6AC00F6F401 /* VShareItemCollectionViewCell.xib in Resources */,
@@ -7867,7 +7867,7 @@
 				A75ED0BE1AB7927A00C35063 /* VTextTypePickerDataSource.m in Sources */,
 				0386E1F71A8DDA7F00FC9BDF /* VFollowingStreamCollectionViewController.m in Sources */,
 				D8332DC01A7C72EB00C3FEE0 /* VVCameraShutterOverAnimator.m in Sources */,
-				F0FC97DC1B5C0B9B0098AFCB /* VMediaLinkViewController.m in Sources */,
+				F0FC97DC1B5C0B9B0098AFCB /* VAbstractMediaLinkViewController.m in Sources */,
 				A7792FD71AE8209200E2ECC1 /* VTemplateDecorator.m in Sources */,
 				D8D812A11B13CB9300E93B37 /* VModernEnterNameViewController.m in Sources */,
 				DB9497701AAE66C600CCEFD0 /* VFirstTimeInstallHelper.m in Sources */,

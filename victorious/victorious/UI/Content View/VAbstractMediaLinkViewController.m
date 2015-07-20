@@ -1,17 +1,17 @@
 //
-//  VMediaLinkViewController.m
+//  VAbstractMediaLinkViewController.m
 //  victorious
 //
 //  Created by Sharif Ahmed on 7/19/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VMediaLinkViewController.h"
+#import "VAbstractMediaLinkViewController.h"
 #import "VVideoLinkViewController.h"
 #import "VImageLinkViewController.h"
 #import "VGifLinkViewController.h"
 
-@interface VMediaLinkViewController ()
+@interface VAbstractMediaLinkViewController ()
 
 @property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, weak, readwrite) IBOutlet UIView *contentContainerView;
@@ -19,27 +19,27 @@
 
 @end
 
-@implementation VMediaLinkViewController
+@implementation VAbstractMediaLinkViewController
 
 + (instancetype)newWithMediaUrlString:(NSString *)urlString andMediaLinkType:(VInStreamMediaLinkType)linkType
 {
     NSParameterAssert(urlString != nil);
     
-    VMediaLinkViewController *linkViewController;
+    VAbstractMediaLinkViewController *linkViewController;
     switch (linkType)
     {
         case VInStreamMediaLinkTypeVideo:
-            return [[VVideoLinkViewController alloc] initWithUrlString:urlString];
+            linkViewController = [[VVideoLinkViewController alloc] initWithUrlString:urlString];
             break;
             
         case VInStreamMediaLinkTypeGif:
-            return [[VGifLinkViewController alloc] initWithUrlString:urlString];
+            linkViewController = [[VGifLinkViewController alloc] initWithUrlString:urlString];
             break;
             
             
         case VInStreamMediaLinkTypeImage:
         default:
-            return [[VImageLinkViewController alloc] initWithUrlString:urlString];
+            linkViewController = [[VImageLinkViewController alloc] initWithUrlString:urlString];
             break;
     }
     return linkViewController;
@@ -47,7 +47,7 @@
 
 - (instancetype)initWithUrlString:(NSString *)urlString
 {
-    self = [super initWithNibName:NSStringFromClass([VMediaLinkViewController class]) bundle:nil];
+    self = [super initWithNibName:NSStringFromClass([VAbstractMediaLinkViewController class]) bundle:nil];
     if ( self != nil )
     {
         _mediaUrlString = urlString;
@@ -62,10 +62,10 @@
     
     [self.activityIndicator startAnimating];
     
-    __weak VMediaLinkViewController *weakSelf = self;
+    __weak VAbstractMediaLinkViewController *weakSelf = self;
     [self loadMediaWithCompletionBlock:^ (CGFloat contentAspectRatio)
     {
-        __strong VMediaLinkViewController *strongSelf = weakSelf;
+        __strong VAbstractMediaLinkViewController *strongSelf = weakSelf;
         if ( strongSelf == nil )
         {
             return;
@@ -123,7 +123,7 @@
 
 @end
 
-@implementation VMediaLinkViewController (SubclassOverrides)
+@implementation VAbstractMediaLinkViewController (SubclassOverrides)
 
 - (void)loadMediaWithCompletionBlock:(MediaLoadingCompletionBlock)completionBlock
 {

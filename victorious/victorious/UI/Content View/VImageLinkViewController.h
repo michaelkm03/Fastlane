@@ -6,8 +6,11 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VMediaLinkViewController.h"
+#import "VAbstractMediaLinkViewController.h"
 
-@interface VImageLinkViewController : VMediaLinkViewController
+/**
+    A media link view controller for displaying an image.
+ */
+@interface VImageLinkViewController : VAbstractMediaLinkViewController
 
 @end

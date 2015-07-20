@@ -8,6 +8,9 @@
 
 #import "VVideoLinkViewController.h"
 
+/**
+    A media link view controller for displaying a gif.
+ */
 @interface VGifLinkViewController : VVideoLinkViewController
 
 @end

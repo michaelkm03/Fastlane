@@ -23,7 +23,7 @@
 #import "VUserProfileViewController.h"
 #import "VCommentsContainerViewController.h"
 #import "VWorkspaceViewController.h"
-#import "VMediaLinkViewController.h"
+#import "VAbstractMediaLinkViewController.h"
 
 #pragma mark-  Views
 #import "VNoContentView.h"
@@ -129,7 +129,7 @@
 
 - (BOOL)showMediaContentViewForUrlString:(NSString *)urlString withMediaLinkType:(VInStreamMediaLinkType)linkType fromViewController:(UIViewController *)viewController
 {
-    VMediaLinkViewController *mediaLinkViewController = [VMediaLinkViewController newWithMediaUrlString:urlString andMediaLinkType:linkType];
+    VAbstractMediaLinkViewController *mediaLinkViewController = [VAbstractMediaLinkViewController newWithMediaUrlString:urlString andMediaLinkType:linkType];
     [viewController presentViewController:mediaLinkViewController animated:YES completion:nil];
     return YES;
 }
