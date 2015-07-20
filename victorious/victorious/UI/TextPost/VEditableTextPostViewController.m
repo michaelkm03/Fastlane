@@ -215,7 +215,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     if ( self.text.length == 0 && self.hashtagHelper.embeddedHashtags.count == 0 )
     {
         self.isShowingPlaceholderText = YES;
-        NSString *attachment = self.defaultHashtag?: @"";
+        NSString *attachment = self.defaultHashtag? [VHashTags stringWithPrependedHashmarkFromString:self.defaultHashtag] : @"";
         self.text = [NSLocalizedString(self.placeholderText, @"") stringByAppendingString:attachment];
         self.textView.alpha = 0.5f;
         
