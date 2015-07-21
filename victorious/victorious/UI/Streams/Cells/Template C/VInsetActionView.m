@@ -26,33 +26,22 @@
 // Views + Helpers
 #import "UIView+Autolayout.h"
 #import "VLargeNumberFormatter.h"
-#import "VRepostButtonController.h"
 
 static const CGFloat kActionButtonWidth = 44.0f;
 
 @interface VInsetActionView ()
 
-@property (nonatomic, strong) VActionButton *gifButton;
-@property (nonatomic, strong) VActionButton *memeButton;
-@property (nonatomic, strong) VActionButton *repostButton;
-@property (nonatomic, strong) VActionButton *commentButton;
+@property (nonatomic, strong, readwrite) VActionButton *gifButton;
+@property (nonatomic, strong, readwrite) VActionButton *memeButton;
+@property (nonatomic, strong, readwrite) VActionButton *repostButton;
+@property (nonatomic, strong, readwrite) VActionButton *commentButton;
 @property (nonatomic, strong, readwrite) VActionButton *likeButton;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) VRepostButtonController *repostButtonController;
 
 @end
 
 @implementation VInsetActionView
-
-#pragma mark - VAbstractActionView
-
-- (void)setReposting:(BOOL)reposting
-{
-    [super setReposting:reposting];
-    
-    self.repostButtonController.reposting = reposting;
-}
 
 #pragma mark - Property Accessors
 
@@ -83,8 +72,9 @@ static const CGFloat kActionButtonWidth = 44.0f;
     if (_repostButton == nil)
     {
         UIImage *image = [UIImage imageNamed:@"C_repost"];
+        UIImage *selectedImage = [UIImage imageNamed:@"C_repostIcon-success"];
         UIImage *background = [UIImage imageNamed:@"C_background"];
-        _repostButton = [self actionButtonWithImage:image selectedImage:nil backgroundImage:background action:@selector(repost:)];
+        _repostButton = [self actionButtonWithImage:image selectedImage:selectedImage backgroundImage:background action:@selector(repost:)];
     }
     return _repostButton;
 }
@@ -94,9 +84,9 @@ static const CGFloat kActionButtonWidth = 44.0f;
     if (_likeButton == nil)
     {
         UIImage *image = [UIImage imageNamed:@"C_like"];
-        UIImage *active = [UIImage imageNamed:@"C_liked"];
+        UIImage *selectedImage = [UIImage imageNamed:@"C_liked"];
         UIImage *background = [UIImage imageNamed:@"C_background"];
-        _likeButton = [self actionButtonWithImage:image selectedImage:active backgroundImage:background action:@selector(like:)];
+        _likeButton = [self actionButtonWithImage:image selectedImage:selectedImage backgroundImage:background action:@selector(like:)];
     }
     return _likeButton;
 }
@@ -208,15 +198,6 @@ static const CGFloat kActionButtonWidth = 44.0f;
     {
         [actionBar v_addPinToTopBottomToSubview:actionView];
     }
-}
-
-- (void)updateRepostButtonForSequence:(VSequence *)sequence
-{
-    [self.repostButtonController invalidate];
-    self.repostButtonController = [[VRepostButtonController alloc] initWithSequence:sequence
-                                                                       repostButton:self.repostButton
-                                                                      repostedImage:[UIImage imageNamed:@"C_reposted"]
-                                                                    unRepostedImage:[UIImage imageNamed:@"C_repost"]];
 }
 
 #pragma mark - VHasManagedDependencies

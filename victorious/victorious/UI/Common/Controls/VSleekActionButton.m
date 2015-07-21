@@ -83,4 +83,13 @@ static const CGFloat kHighlightedScale = 0.8f;
     [self updateColors];
 }
 
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+{
+    if ( !self.enabled && [self pointInside:[self convertPoint:point toView:self] withEvent:event] )
+    {
+        return self;
+    }
+    return [super hitTest:point withEvent:event];
+}
+
 @end

@@ -78,22 +78,6 @@
     }
 }
 
-+ (NSString *)stringFromPermissionState:(VPermissionState)permissionState
-{
-    switch (permissionState)
-    {
-        case VPermissionStateAuthorized:
-            return VTrackingValueAuthorized;
-            break;
-        case VPermissionStateSystemDenied:
-            return VTrackingValueDenied;
-            break;
-        default:
-            return VTrackingValueUnknown;
-            break;
-    }
-}
-
 #pragma mark - Overrides
 
 - (VPermissionState)permissionState
