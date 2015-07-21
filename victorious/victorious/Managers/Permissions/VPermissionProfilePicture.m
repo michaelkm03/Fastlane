@@ -27,7 +27,7 @@
 
 - (void)trackPermission:(NSString *)trackingStatus
 {
-    // subclasses must override
+    [self.permissionsTrackingHelper permissionsDidChange:VTrackingValueCameraDidAllow permissionState:trackingStatus];
 }
 
 @end

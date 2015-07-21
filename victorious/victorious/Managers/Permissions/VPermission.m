@@ -60,7 +60,6 @@
                 
         [permissionAlert setConfirmationHandler:^(VPermissionAlertViewController *alert)
          {
-             [self trackPermission:VTrackingValueAuthorized];
              [alert dismissViewControllerAnimated:YES completion:nil];
              [self requestSystemPermissionWithCompletion:completion];
          }];
