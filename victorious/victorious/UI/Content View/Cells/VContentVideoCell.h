@@ -102,6 +102,8 @@
 
 @property (nonatomic, readonly) CMTime currentTime;
 
+@property (nonatomic, readonly) NSInteger currentTimeMilliseconds;
+
 @property (nonatomic, readonly) BOOL didFinishPlayingOnce;
 
 /// Use this to animate with the same curve that animates the play controls.

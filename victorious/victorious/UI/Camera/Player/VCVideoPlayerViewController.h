@@ -46,6 +46,7 @@
 @property (nonatomic, copy) NSString *titleForAnalytics;                ///< If set, analytics events will use this property for the "label" parameter
 @property (nonatomic) BOOL shouldFireAnalytics;                         ///< Set to NO to disable analytics. YES by default.
 @property (nonatomic, readonly) CMTime currentTime;
+@property (nonatomic, readonly) NSInteger currentTimeMilliseconds;
 @property (nonatomic, assign) BOOL shouldContinuePlayingAfterDismissal;
 @property (nonatomic, copy) NSString *videoPlayerLayerVideoGravity;   ///< Forwards to the player layer
 @property (nonatomic, assign) BOOL shouldChangeVideoGravityOnDoubleTap;

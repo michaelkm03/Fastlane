@@ -529,7 +529,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         }
         if ( self.isTrackingEnabled )
         {
-            NSDictionary *params = @{ VTrackingKeyUrls : self.trackingItem.videoComplete25,
+            NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( self.currentTimeMilliseconds ),
+                                      VTrackingKeyUrls : self.trackingItem.videoComplete25,
                                       VTrackingKeyStreamId : self.streamID };
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidComplete25 parameters:params];
         }
@@ -543,7 +544,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         }
         if ( self.isTrackingEnabled )
         {
-            NSDictionary *params = @{ VTrackingKeyUrls : self.trackingItem.videoComplete50,
+            NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( self.currentTimeMilliseconds ),
+                                      VTrackingKeyUrls : self.trackingItem.videoComplete50,
                                       VTrackingKeyStreamId : self.streamID };
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidComplete50 parameters:params];
         }
@@ -557,7 +559,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         }
         if ( self.isTrackingEnabled )
         {
-            NSDictionary *params = @{ VTrackingKeyUrls : self.trackingItem.videoComplete75,
+            NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( self.currentTimeMilliseconds ),
+                                      VTrackingKeyUrls : self.trackingItem.videoComplete75,
                                       VTrackingKeyStreamId : self.streamID };
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidComplete75 parameters:params];
         }
@@ -570,7 +573,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     {
         if ( self.isTrackingEnabled )
         {
-            NSDictionary *params = @{ VTrackingKeyUrls : self.trackingItem.videoComplete100,
+            NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( self.currentTimeMilliseconds ),
+                                      VTrackingKeyUrls : self.trackingItem.videoComplete100,
                                       VTrackingKeyStreamId : self.streamID };
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidComplete100 parameters:params];
         }
@@ -678,6 +682,11 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                             }
                         });
      }];
+}
+
+-(NSInteger)currentTimeMilliseconds
+{
+    return (NSUInteger)(CMTimeGetSeconds( self.currentTime ) * 1000.0);
 }
 
 #pragma mark - Actions
@@ -789,7 +798,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     
     if ( self.isTrackingEnabled && self.shouldShowToolbar )
     {
-        NSDictionary *params = @{ VTrackingKeyFromTime : @( CMTimeGetSeconds( self.sliderTouchInteractionStartTime ) ),
+        NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( self.currentTimeMilliseconds ),
+                                  VTrackingKeyFromTime : @( CMTimeGetSeconds( self.sliderTouchInteractionStartTime ) ),
                                   VTrackingKeyToTime : @( CMTimeGetSeconds( currentTime) ),
                                   VTrackingKeyUrls : self.trackingItem.videoSkip,
                                   VTrackingKeyStreamId : self.streamID };
@@ -831,7 +841,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     {
         if ( self.isTrackingEnabled )
         {
-            NSDictionary *params = @{ VTrackingKeyUrls : self.trackingItem.videoComplete100,
+            NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( self.currentTimeMilliseconds ),
+                                      VTrackingKeyUrls : self.trackingItem.videoComplete100,
                                       VTrackingKeyStreamId : self.streamID };
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidComplete100 parameters:params];
         }
@@ -842,7 +853,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (void)playerItemFailedToPlayToEndTime:(NSNotification *)notification
 {
-    NSDictionary *params = @{ VTrackingKeyErrorMessage : @"AVPlayerItemFailedToPlayToEndTimeNotification" };
+    NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( self.currentTimeMilliseconds ),
+                              VTrackingKeyErrorMessage : @"AVPlayerItemFailedToPlayToEndTimeNotification" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidFail parameters:params];
     
     if (notification.object == self.player.currentItem)
@@ -944,7 +956,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                 {
                     if ([self.delegate respondsToSelector:@selector(videoPlayerFailed:)])
                     {
-                        NSDictionary *params = @{ VTrackingKeyErrorMessage : @"AVPlayerItemStatusFailed" };
+                        NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( self.currentTimeMilliseconds ),
+                                                  VTrackingKeyErrorMessage : @"AVPlayerItemStatusFailed" };
                         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidFail parameters:params];
                         
                         [self.delegate videoPlayerFailed:self];
@@ -994,7 +1007,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             {
                 if ( self.isTrackingEnabled )
                 {
-                    NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( CMTimeGetSeconds( self.currentTime ) ),
+                    NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( self.currentTimeMilliseconds ),
                                               VTrackingKeyUrls : self.trackingItem.videoStall,
                                               VTrackingKeyStreamId : self.streamID };
                     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidStall parameters:params];
