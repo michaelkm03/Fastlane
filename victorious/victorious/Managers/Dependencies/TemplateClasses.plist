@@ -160,6 +160,8 @@
 	<string>VCreationFlowShim</string>
 	<key>standard.createSheet</key>
 	<string>VCreateSheetViewController</string>
+	<key>forcedContentCreation.screen</key>
+	<string>VForcedWorkspaceContainerViewController</string>
 	<key>publish.screen</key>
 	<string>VPublishViewController</string>
 </dict>

@@ -78,6 +78,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                backgroundColor:(UIColor *)backgroundColor
                       mediaURL:(NSURL *)mediaToUploadURL
                   previewImage:(UIImage *)previewImage
+                        forced:(BOOL)forced
                     completion:(VUploadManagerTaskCompleteBlock)completionBlock
 {
     NSParameterAssert( backgroundColor != nil || mediaToUploadURL != nil ); // One or the other must be non-nil
@@ -85,11 +86,21 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     NSDictionary *parameters = @{ @"content" : textContent,
                                   @"background_image": mediaToUploadURL ?: @"",
                                   @"background_color" : [backgroundColor v_hexString] ?: @"" };
-    
+
     VLog( @"Uploading text post with parameters: %@", parameters );
     
-    NSURL *endpoint = [NSURL URLWithString:@"/api/text/create" relativeToURL:self.baseURL];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:endpoint];
+    NSURLComponents *components = [[NSURLComponents alloc] init];
+    components.path = @"/api/text/create";
+    
+    if (forced)
+    {
+        // Add a parameter indicating that the user was forced to post this
+        NSURLQueryItem *forcedParam = [NSURLQueryItem queryItemWithName:@"forced" value:@"true"];
+        components.queryItems = @[forcedParam];
+    }
+    
+    NSURL *endpoint = [NSURL URLWithString:components.URL.absoluteString relativeToURL:self.baseURL];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:endpoint ];
     request.HTTPMethod = RKStringFromRequestMethod(RKRequestMethodPOST);
     
     VUploadTaskCreator *uploadTaskCreator = [[VUploadTaskCreator alloc] initWithUploadManager:self.uploadManager];
