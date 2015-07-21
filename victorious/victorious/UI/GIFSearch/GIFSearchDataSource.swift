@@ -74,42 +74,35 @@ class GIFSearchDataSource: NSObject {
     private(set) var mostRecentSearchText: String?
     private var highlightedSection: (section: Section, indexPath: NSIndexPath)?
     
-    /// Removes the current full size asset section, wherever it may be.
-    ///
-    /// :returns: `ChangeResult` indicating whether or not the total section count was changed
-    func removeHighlightSection() -> ChangeResult {
-        var result = ChangeResult()
-        if let highlightedSection = self.highlightedSection {
-            let sectionIndex = highlightedSection.indexPath.section
-            self.sections.removeAtIndex( sectionIndex )
-            self.highlightedSection = nil
-            result.deletedSections = NSIndexSet(index: sectionIndex)
-            
+    func loadDefaultContent( pageType: VPageType, completion: ((ChangeResult?)->())? ) {
+        
+        // Only allow one next page load at a time
+        if self.state == .Loading {
+            completion?( nil )
+            return
         }
-        return result
-    }
-    
-    /// For the provided index path, adds a section beneath that shows the fullsize
-    /// asset for the item at the index path.
-    ///
-    /// :returns: whether or not the total section count was changed
-    func addHighlightSection( forIndexPath indexPath: NSIndexPath ) -> ChangeResult {
-        var result = self.removeHighlightSection()
         
-        let targetIndexPath: NSIndexPath = {
-            if let deletedSection = result.deletedSections?.indexGreaterThanIndex(0) where deletedSection < indexPath.nextSection() {
-                return indexPath.previousSectionIndexPath()
+        self.state = .Loading
+        VObjectManager.sharedManager().loadTrendingGIFs( pageType,
+            success: { (results, isLastPage) in
+                self.state = .Content
+                self.isLastPage = isLastPage
+                let result = self.updateDataSource( results, pageType: pageType )
+                completion?( result )
+            },
+            failure: { (error, isLastPage) in
+                if isLastPage {
+                    self.isLastPage = isLastPage
+                    self.state = .Content
+                }
+                else {
+                    self.clear()
+                    self.state = .Error
+                    completion?( nil )
+                }
             }
-            return indexPath
-        }()
+        )
         
-        let resultToHighlight = self.sections[ targetIndexPath.section ][ targetIndexPath.row ]
-        let section = Section(results: [ resultToHighlight ], isFullSize: true )
-        self.sections.insert( section, atIndex: targetIndexPath.nextSection() )
-        self.highlightedSection = (section, targetIndexPath.nextSectionIndexPath())
-        
-        result.insertedSections = NSIndexSet(index: targetIndexPath.nextSection())
-        return result
     }
     
     /// Fetches data from the server and repopulates its backing model collection
@@ -163,6 +156,44 @@ class GIFSearchDataSource: NSObject {
             result.insertedSections = NSIndexSet(index:0)
         }
         self.sections = []
+        return result
+    }
+    
+    /// Removes the current full size asset section, wherever it may be.
+    ///
+    /// :returns: `ChangeResult` indicating whether or not the total section count was changed
+    func removeHighlightSection() -> ChangeResult {
+        var result = ChangeResult()
+        if let highlightedSection = self.highlightedSection {
+            let sectionIndex = highlightedSection.indexPath.section
+            self.sections.removeAtIndex( sectionIndex )
+            self.highlightedSection = nil
+            result.deletedSections = NSIndexSet(index: sectionIndex)
+            
+        }
+        return result
+    }
+    
+    /// For the provided index path, adds a section beneath that shows the fullsize
+    /// asset for the item at the index path.
+    ///
+    /// :returns: whether or not the total section count was changed
+    func addHighlightSection( forIndexPath indexPath: NSIndexPath ) -> ChangeResult {
+        var result = self.removeHighlightSection()
+        
+        let targetIndexPath: NSIndexPath = {
+            if let deletedSection = result.deletedSections?.indexGreaterThanIndex(0) where deletedSection < indexPath.nextSection() {
+                return indexPath.previousSectionIndexPath()
+            }
+            return indexPath
+            }()
+        
+        let resultToHighlight = self.sections[ targetIndexPath.section ][ targetIndexPath.row ]
+        let section = Section(results: [ resultToHighlight ], isFullSize: true )
+        self.sections.insert( section, atIndex: targetIndexPath.nextSection() )
+        self.highlightedSection = (section, targetIndexPath.nextSectionIndexPath())
+        
+        result.insertedSections = NSIndexSet(index: targetIndexPath.nextSection())
         return result
     }
     

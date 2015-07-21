@@ -42,8 +42,11 @@ extension GIFSearchViewController : UIScrollViewDelegate {
 extension GIFSearchViewController : VScrollPaginatorDelegate {
     
     func shouldLoadNextPage() {
-        if let searchText = self.searchBar.text {
+        if let searchText = self.searchDataSource.mostRecentSearchText {
             self.performSearch(searchText, pageType: .Next)
+        }
+        else {
+            self.loadDefaultContent(pageType: .Next)
         }
     }
 }

@@ -38,6 +38,14 @@ extension GIFSearchResult {
                 pathPattern: "/api/image/gif_search/:search_term/:page/:perpage",
                 keyPath: "payload",
                 statusCodes: RKStatusCodeIndexSetForClass(UInt(RKStatusCodeClassSuccessful))
+            ),
+            
+            RKResponseDescriptor(
+                mapping: self.entityMapping,
+                method: RKRequestMethod.GET,
+                pathPattern: "/api/image/trending_gifs/:page/:perpage",
+                keyPath: "payload",
+                statusCodes: RKStatusCodeIndexSetForClass(UInt(RKStatusCodeClassSuccessful))
             )
         ]
     }

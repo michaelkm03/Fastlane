@@ -75,7 +75,7 @@ class GIFSearchViewController: UIViewController {
             target: self,
             action: Action.ExportSelectedItem.rawValue )
         
-        self.performSearch()
+        self.loadDefaultContent()
     }
     
     func exportSelectedItem( sender: AnyObject? ) {
@@ -102,23 +102,30 @@ class GIFSearchViewController: UIViewController {
         }
     }
     
+    func loadDefaultContent( pageType: VPageType = .First ) {
+        if self.searchDataSource.state != .Loading {
+            self.searchDataSource.loadDefaultContent( pageType ) { (result) in
+                self.updateViewWithResult( result )
+            }
+        }
+    }
+    
     func performSearch( _ searchText: String = "", pageType: VPageType = .First ) {
         if self.searchDataSource.state != .Loading {
             self.searchDataSource.performSearch( searchText, pageType: pageType ) { (result) in
-                if let result = result where result.hasChanges {
-                    self.collectionView.performBatchUpdates({
-                        self.collectionView.applyDataSourceChanges( result )
-                    }, completion: nil)
-                }
-                else if self.searchDataSource.sections.count == 0 {
-                    self.collectionView.reloadData()
-                }
+                self.updateViewWithResult( result )
             }
-            
-            // This updates the state of the no content cell
-            if self.searchDataSource.sections.count == 0 {
-                self.collectionView.reloadSections( NSIndexSet(index: 0) )
-            }
+        }
+    }
+    
+    func updateViewWithResult( result: GIFSearchDataSource.ChangeResult? ) {
+        if let result = result where result.hasChanges {
+            self.collectionView.performBatchUpdates({
+                self.collectionView.applyDataSourceChanges( result )
+            }, completion: nil)
+        }
+        if result?.hasChanges == false && self.searchDataSource.sections.count == 0 {
+            self.collectionView.reloadData()
         }
     }
     
