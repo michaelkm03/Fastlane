@@ -18,7 +18,7 @@
 #import "VConstants.h"
 #import "VDependencyManager.h"
 #import "VAppInfo.h"
-
+#import "VPermissionsTrackingHelper.h"
 @interface VNotificationSettingsViewController() <VNotificationSettingCellDelegate, VNotificiationSettingsStateManagerDelegate>
 
 @property (nonatomic, strong) VNotificationSettings *settings;
@@ -28,6 +28,7 @@
 @property (nonatomic, assign) BOOL didSettingsChange;
 @property (nonatomic, strong) VNotificationSettingsStateManager *stateManager;
 @property (nonatomic, assign) CGFloat lastKnownTableWidth;
+@property (nonatomic, strong) VPermissionsTrackingHelper *permissionsTrackingHelper;
 
 @end
 
@@ -44,6 +45,7 @@
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
     
     [VNoContentTableViewCell registerNibWithTableView:self.tableView];
+    self.permissionsTrackingHelper = [[VPermissionsTrackingHelper alloc] init];
 }
 
 - (void)viewDidLayoutSubviews
@@ -237,7 +239,55 @@
         
         // Update our underlying rows model with section and row rows
         [self updateSettings];
+        
+        [self trackPermissionsForIndexPath:indexPath row:row];
     }
+}
+
+- (void)trackPermissionsForIndexPath:(NSIndexPath *)indexPath row:(VNotificationSettingsTableRow *)row
+{
+    NSString *permissionChanged;
+    NSString *trackingValueState;
+    trackingValueState = row.isEnabled ? VTrackingValueAuthorized : VTrackingValueDenied;
+
+    if (indexPath.section == 0)
+    {
+        switch (indexPath.row)
+        {
+            case 0:
+                permissionChanged = VTrackingValuePostFromCreator;
+                break;
+            case 1:
+                permissionChanged = VTrackingValuePostFromFollowed;
+                break;
+            case 2:
+                permissionChanged = VTrackingValueNewCommentOnMyPost;
+                break;
+            case 3:
+                permissionChanged = VTrackingValuePostOnFollowedHashtag;
+                break;
+            default:
+                break;
+        }
+    }
+    else if (indexPath.section == 1)
+    {
+        switch (indexPath.row)
+        {
+            case 0:
+                permissionChanged = VTrackingValueNewPrivateMessage;
+                break;
+            case 1:
+                permissionChanged = VTrackingValueNewFollower;
+                break;
+            case 2:
+                permissionChanged = VTrackingValueUsertagInComment;
+                break;
+            default:
+                break;
+        }
+    }
+    [self.permissionsTrackingHelper permissionsDidChange:permissionChanged permissionState:trackingValueState];
 }
 
 #pragma mark - VNotificationSettingCellDelegate
