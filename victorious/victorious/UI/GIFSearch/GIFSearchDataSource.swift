@@ -98,8 +98,8 @@ class GIFSearchDataSource: NSObject {
                 else {
                     self.clear()
                     self.state = .Error
-                    completion?( nil )
                 }
+                completion?( nil )
             }
         )
         
@@ -135,8 +135,8 @@ class GIFSearchDataSource: NSObject {
                 else {
                     self.clear()
                     self.state = .Error
-                    completion?( nil )
                 }
+                completion?( nil )
             }
         )
     }

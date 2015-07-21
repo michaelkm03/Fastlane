@@ -13,7 +13,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol VVideoViewDelegtae <NSObject>
+@protocol VVideoViewDelegate <NSObject>
 
 /**
  All pre-processing of video is complete and it can now be played
@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong, nullable) NSURL *itemURL;
 
-@property (nonatomic, weak) IBOutlet id<VVideoViewDelegtae> delegate;
+@property (nonatomic, weak) IBOutlet id<VVideoViewDelegate> delegate;
 
 @property (nonatomic, assign) BOOL useAspectFit;
 
