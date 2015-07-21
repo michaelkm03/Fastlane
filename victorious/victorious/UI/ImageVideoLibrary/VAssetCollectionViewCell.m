@@ -35,6 +35,13 @@
     return self;
 }
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    self.durationContainer.layer.cornerRadius = CGRectGetHeight(self.durationContainer.bounds) * 0.5f;
+    self.durationContainer.layer.masksToBounds = YES;
+}
+
 - (void)prepareForReuse
 {
     [super prepareForReuse];
@@ -100,8 +107,6 @@
     {
         self.durationContainer.hidden = NO;
         self.durationLabel.text = [self.dateFormatter stringFromTimeInterval:asset.duration];
-        self.durationContainer.layer.cornerRadius = CGRectGetHeight(self.durationContainer.bounds) * 0.5f;
-        self.durationContainer.layer.masksToBounds = YES;
     }
     else
     {
