@@ -634,11 +634,12 @@
 		A7B514581A464E770074282F /* VUtilityButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7B514571A464E770074282F /* VUtilityButtonCell.xib */; };
 		A7B89EF01AA7B26A00475CC2 /* VPresentWithBlurTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B89EEF1AA7B26A00475CC2 /* VPresentWithBlurTransition.m */; };
 		A7B98A331A251D7D00C58335 /* VTestHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A321A251D7D00C58335 /* VTestHelpers.m */; };
-		A7B98A3D1A264D0900C58335 /* VNotificationSettingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A381A264D0900C58335 /* VNotificationSettingCell.m */; };
 		A7B98A3E1A264D0900C58335 /* VNotificationSettingsTableSection.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A3A1A264D0900C58335 /* VNotificationSettingsTableSection.m */; };
 		A7B98A3F1A264D0900C58335 /* VNotificationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A3C1A264D0900C58335 /* VNotificationSettingsViewController.m */; };
 		A7B98A421A264D1D00C58335 /* VNotificationSettingsStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A411A264D1D00C58335 /* VNotificationSettingsStateManager.m */; };
 		A7B98A441A267AAA00C58335 /* VNotificationSettingsStateManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A431A267AAA00C58335 /* VNotificationSettingsStateManagerTests.m */; };
+		A7BF9D101B5EC732002C0A98 /* ExperimentSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BF9D0F1B5EC732002C0A98 /* ExperimentSettingsViewController.swift */; };
+		A7BF9D141B5ECB1E002C0A98 /* VSettingsSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7BF9D131B5ECB1E002C0A98 /* VSettingsSwitchCell.m */; };
 		A7CD87521B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CD87511B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.m */; };
 		A7CD87591B1E74AE002532A9 /* VImageAssetFinder.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CD87581B1E74AE002532A9 /* VImageAssetFinder.m */; };
 		A7CFC1BA19FAF6BF00726772 /* landscape_left.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1B619FAF64700726772 /* landscape_left.m4v */; };
@@ -722,9 +723,9 @@
 		B074C5BC1B3B2CA800EA3FFC /* VTimeMarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = B074C5BA1B3B2CA800EA3FFC /* VTimeMarkView.m */; };
 		B074C5BD1B3B2CA800EA3FFC /* VTimeMarkView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B074C5BB1B3B2CA800EA3FFC /* VTimeMarkView.xib */; };
 		B07BFD611B26761D00784FC8 /* VHashtagHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = B07BFD601B26761D00784FC8 /* VHashtagHelper.m */; };
+		B0D8BAAD1B545A3600087057 /* VListicleView.m in Sources */ = {isa = PBXBuildFile; fileRef = B0D8BAAC1B545A3600087057 /* VListicleView.m */; };
 		B0DDD5571B4DF7F80065E540 /* VPermissionsTrackingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = B0DDD5561B4DF7F80065E540 /* VPermissionsTrackingHelper.m */; };
 		B0DDD55D1B4F0C230065E540 /* NSDictionary+VMerge.m in Sources */ = {isa = PBXBuildFile; fileRef = B0DDD55C1B4F0C230065E540 /* NSDictionary+VMerge.m */; };
-		B0D8BAAD1B545A3600087057 /* VListicleView.m in Sources */ = {isa = PBXBuildFile; fileRef = B0D8BAAC1B545A3600087057 /* VListicleView.m */; };
 		BE11447919D49AA4006A6D65 /* VFullscreenMarqueeStreamItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE11447819D49AA4006A6D65 /* VFullscreenMarqueeStreamItemCell.m */; };
 		BE171D7A1868BE64004E5202 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D791868BE64004E5202 /* Foundation.framework */; };
 		BE171D7C1868BE64004E5202 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D7B1868BE64004E5202 /* CoreGraphics.framework */; };
@@ -2242,8 +2243,6 @@
 		A7B89EEF1AA7B26A00475CC2 /* VPresentWithBlurTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPresentWithBlurTransition.m; sourceTree = "<group>"; };
 		A7B98A311A251D7D00C58335 /* VTestHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTestHelpers.h; path = "Test Helpers/VTestHelpers.h"; sourceTree = "<group>"; };
 		A7B98A321A251D7D00C58335 /* VTestHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTestHelpers.m; path = "Test Helpers/VTestHelpers.m"; sourceTree = "<group>"; };
-		A7B98A371A264D0900C58335 /* VNotificationSettingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingCell.h; sourceTree = "<group>"; };
-		A7B98A381A264D0900C58335 /* VNotificationSettingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingCell.m; sourceTree = "<group>"; };
 		A7B98A391A264D0900C58335 /* VNotificationSettingsTableSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingsTableSection.h; sourceTree = "<group>"; };
 		A7B98A3A1A264D0900C58335 /* VNotificationSettingsTableSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsTableSection.m; sourceTree = "<group>"; };
 		A7B98A3B1A264D0900C58335 /* VNotificationSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingsViewController.h; sourceTree = "<group>"; };
@@ -2251,6 +2250,9 @@
 		A7B98A401A264D1D00C58335 /* VNotificationSettingsStateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingsStateManager.h; sourceTree = "<group>"; };
 		A7B98A411A264D1D00C58335 /* VNotificationSettingsStateManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsStateManager.m; sourceTree = "<group>"; };
 		A7B98A431A267AAA00C58335 /* VNotificationSettingsStateManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsStateManagerTests.m; sourceTree = "<group>"; };
+		A7BF9D0F1B5EC732002C0A98 /* ExperimentSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperimentSettingsViewController.swift; sourceTree = "<group>"; };
+		A7BF9D121B5ECB1E002C0A98 /* VSettingsSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSettingsSwitchCell.h; sourceTree = "<group>"; };
+		A7BF9D131B5ECB1E002C0A98 /* VSettingsSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSettingsSwitchCell.m; sourceTree = "<group>"; };
 		A7CD87501B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VAccessoryScreens.h"; sourceTree = "<group>"; };
 		A7CD87511B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VAccessoryScreens.m"; sourceTree = "<group>"; };
 		A7CD87571B1E74AE002532A9 /* VImageAssetFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VImageAssetFinder.h; path = ImageAssetFinder/VImageAssetFinder.h; sourceTree = "<group>"; };
@@ -2391,12 +2393,12 @@
 		B07BFD5F1B26761D00784FC8 /* VHashtagHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagHelper.h; sourceTree = "<group>"; };
 		B07BFD601B26761D00784FC8 /* VHashtagHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashtagHelper.m; sourceTree = "<group>"; };
 		B07BFD621B26780900784FC8 /* VHashtagResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagResponder.h; sourceTree = "<group>"; };
+		B0D8BAAB1B545A3600087057 /* VListicleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VListicleView.h; sourceTree = "<group>"; };
+		B0D8BAAC1B545A3600087057 /* VListicleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VListicleView.m; sourceTree = "<group>"; };
 		B0DDD5551B4DF7F80065E540 /* VPermissionsTrackingHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPermissionsTrackingHelper.h; sourceTree = "<group>"; };
 		B0DDD5561B4DF7F80065E540 /* VPermissionsTrackingHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPermissionsTrackingHelper.m; sourceTree = "<group>"; };
 		B0DDD55B1B4F0C230065E540 /* NSDictionary+VMerge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+VMerge.h"; sourceTree = "<group>"; };
 		B0DDD55C1B4F0C230065E540 /* NSDictionary+VMerge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+VMerge.m"; sourceTree = "<group>"; };
-		B0D8BAAB1B545A3600087057 /* VListicleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VListicleView.h; sourceTree = "<group>"; };
-		B0D8BAAC1B545A3600087057 /* VListicleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VListicleView.m; sourceTree = "<group>"; };
 		B528D1A8913A051BDDC4FE37 /* libPods-test.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-test.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE11447719D49AA4006A6D65 /* VFullscreenMarqueeStreamItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFullscreenMarqueeStreamItemCell.h; sourceTree = "<group>"; };
 		BE11447819D49AA4006A6D65 /* VFullscreenMarqueeStreamItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFullscreenMarqueeStreamItemCell.m; sourceTree = "<group>"; };
@@ -3657,6 +3659,7 @@
 		0314D3F219B46B5E00FA363C /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				A7BF9D111B5ECB1E002C0A98 /* Cells */,
 				A7EECAD21A377FA000A8BAE1 /* Purchase Settings */,
 				A7B98A351A264D0900C58335 /* Push Notification Settings */,
 				DB2A494519DF44CF00CB687B /* settings.storyboard */,
@@ -3679,6 +3682,7 @@
 				0314D3FF19B46B5E00FA363C /* VTOSViewController.m */,
 				A7D707711A797B8A00D9993F /* VVideoSettings.h */,
 				A7D707721A797B8A00D9993F /* VVideoSettings.m */,
+				A7BF9D0F1B5EC732002C0A98 /* ExperimentSettingsViewController.swift */,
 			);
 			name = Settings;
 			path = ../Settings;
@@ -4547,8 +4551,6 @@
 				A65F4D541B5D9E4900C96F1F /* VNoAssetsCell.m */,
 				A65F4D561B5DA69B00C96F1F /* VNoAssetsDataSource.h */,
 				A65F4D571B5DA69B00C96F1F /* VNoAssetsDataSource.m */,
-				A6BB61241B58657C002C3B7C /* VScaleAnimator.h */,
-				A6BB61251B58657C002C3B7C /* VScaleAnimator.m */,
 				A6E2E76C1B545328008A1CA9 /* VVideoAssetDownloader.h */,
 				A6E2E76D1B545328008A1CA9 /* VVideoAssetDownloader.m */,
 			);
@@ -5423,7 +5425,6 @@
 		A7B98A351A264D0900C58335 /* Push Notification Settings */ = {
 			isa = PBXGroup;
 			children = (
-				A7B98A361A264D0900C58335 /* Cells */,
 				A7B98A401A264D1D00C58335 /* VNotificationSettingsStateManager.h */,
 				A7B98A411A264D1D00C58335 /* VNotificationSettingsStateManager.m */,
 				A70FC0F51A2D012E00F5BBDE /* VNotificationSettingsTableRow.h */,
@@ -5436,11 +5437,11 @@
 			path = "Push Notification Settings";
 			sourceTree = "<group>";
 		};
-		A7B98A361A264D0900C58335 /* Cells */ = {
+		A7BF9D111B5ECB1E002C0A98 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				A7B98A371A264D0900C58335 /* VNotificationSettingCell.h */,
-				A7B98A381A264D0900C58335 /* VNotificationSettingCell.m */,
+				A7BF9D121B5ECB1E002C0A98 /* VSettingsSwitchCell.h */,
+				A7BF9D131B5ECB1E002C0A98 /* VSettingsSwitchCell.m */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -7513,7 +7514,6 @@
 				F089E3601AC486620076DC4D /* VBlurredMarqueeStreamItemCell.m in Sources */,
 				A721E95D1B572454000B7901 /* UIView+MotionEffects.m in Sources */,
 				A6DAEB6E1B4CBDCB00935EA0 /* VCaptureContainerViewController.m in Sources */,
-				A7B98A3D1A264D0900C58335 /* VNotificationSettingCell.m in Sources */,
 				A601FB531B4363240050536C /* VCreationFlowPresenter.m in Sources */,
 				A79869EE1AD7124D00F2564A /* VInboxDeepLinkHandler.m in Sources */,
 				C39413B81B17B38300579A8E /* VStreamCollectionViewParallaxFlowLayout.m in Sources */,
@@ -7687,6 +7687,7 @@
 				D8B70FEA1A805CC800090C5E /* VInlineValidationView.m in Sources */,
 				D89AC2BC19F1FD6B00921131 /* VHistogramDataSource.m in Sources */,
 				A66D76841B5B2E23004765EA /* VLibraryFolderControl.m in Sources */,
+				A7BF9D101B5EC732002C0A98 /* ExperimentSettingsViewController.swift in Sources */,
 				A75FAF1B19E8AC1E00EB87C1 /* VTrendingTagCell.m in Sources */,
 				D87AD2B11AD48AC500C481D0 /* VAsset+VCachedData.m in Sources */,
 				F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */,
@@ -7848,8 +7849,6 @@
 				0314D4D219B46B5E00FA363C /* VRootViewController.m in Sources */,
 				A7CD87521B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.m in Sources */,
 				D8F8B1F31AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundContainer.m in Sources */,
-				DBDDB8891A3F5A3900696071 /* VFollowHashtagControl.m in Sources */,
-				0310DC4B1989A6AB0092DF50 /* NSString+VStringWithData.m in Sources */,
 				A75ED0B11AB78C7400C35063 /* VTextColorTool.m in Sources */,
 				A743E7E01A08160300339CB3 /* VFileCache.m in Sources */,
 				035FA7881AE6C4D50002EE63 /* VNotificationsViewController.m in Sources */,
@@ -7858,6 +7857,7 @@
 				A7ECC1D91AD6178F0003E00A /* VWorkspaceViewController.m in Sources */,
 				D8D812B81B15819600E93B37 /* VModernFlowControllerAnimationController.m in Sources */,
 				D85B70741B0EAF3F0038CA5B /* VFindFriendsTableViewController.m in Sources */,
+				A7BF9D141B5ECB1E002C0A98 /* VSettingsSwitchCell.m in Sources */,
 				A779512E1B28F61C00D9DB0A /* VContentThumbnailsViewController.m in Sources */,
 				A705F4571B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m in Sources */,
 				D8758D251B100571008C6C0D /* VTwitterAccountsHelper.m in Sources */,
@@ -7866,7 +7866,6 @@
 				A77951121B27DDB800D9DB0A /* VSuggestedUserCell.m in Sources */,
 				D8E39BDF19CB7C80007FD86A /* VContentBackgroundSupplementaryView.m in Sources */,
 				A65F4D551B5D9E4900C96F1F /* VNoAssetsCell.m in Sources */,
-				D8E39BF119CB9D58007FD86A /* UIView+VShadows.m in Sources */,
 				BE799B9519C8A91C0023CE88 /* VAnswer.m in Sources */,
 				D87AD2AE1AD4866B00C481D0 /* VAsset+VAssetCache.m in Sources */,
 				D80536241B17B4310049B77A /* VPromptCarouselViewController.m in Sources */,
@@ -8127,7 +8126,6 @@
 				0314D2E319B46AF300FA363C /* VUserManager.m in Sources */,
 				D8360CF319E379C200D7E260 /* VExperienceEnhancer.m in Sources */,
 				D8B70FE71A8015E500090C5E /* VInlineValidationTextField.m in Sources */,
-				037FCF0A1A8B0CE500E8ABFC /* VFollowUserControl.m in Sources */,
 				0314D4DA19B46B5E00FA363C /* VSettingsViewController.m in Sources */,
 				A721E9491B572454000B7901 /* UIAlertController+VSimpleAlert.m in Sources */,
 				A721E9221B572454000B7901 /* VAnswerAction+RestKit.m in Sources */,

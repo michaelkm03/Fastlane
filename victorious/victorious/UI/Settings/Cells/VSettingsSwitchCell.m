@@ -1,5 +1,5 @@
 //
-//  VNotificationSettingCell.m
+//  VSettingsSwitchCell.m
 //  victorious
 //
 //  Created by Patrick Lynch on 11/24/14.
@@ -7,9 +7,11 @@
 //
 
 #import "VDependencyManager.h"
-#import "VNotificationSettingCell.h"
+#import "VSettingsSwitchCell.h"
 
-@interface VNotificationSettingCell()
+NS_ASSUME_NONNULL_BEGIN
+
+@interface VSettingsSwitchCell()
 
 @property (nonatomic, strong) IBOutlet UISwitch *settingSwitch;
 @property (nonatomic, strong) IBOutlet UILabel *settingLabel;
@@ -17,7 +19,7 @@
 
 @end
 
-@implementation VNotificationSettingCell
+@implementation VSettingsSwitchCell
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -49,3 +51,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

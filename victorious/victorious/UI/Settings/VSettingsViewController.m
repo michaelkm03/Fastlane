@@ -48,6 +48,7 @@ typedef NS_ENUM(NSInteger, VSettingsAction)
     VSettingsActionResetPurchases,
     VSettingsActionServerEnvironment,
     VSettingsActionTracking,
+    VSettingsActionExperiments,
     VSettingsActionResetCoachmarks
 };
 

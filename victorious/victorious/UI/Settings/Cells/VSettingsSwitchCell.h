@@ -1,5 +1,5 @@
 //
-//  VNotificationSettingCell.h
+//  VSettingsSwitchCell.h
 //  victorious
 //
 //  Created by Patrick Lynch on 11/24/14.
@@ -7,21 +7,22 @@
 //
 
 #import "VHasManagedDependencies.h"
-
 #import <UIKit/UIKit.h>
 
-@class VNotificationSettingCell;
+NS_ASSUME_NONNULL_BEGIN
 
-@protocol VNotificationSettingCellDelegate <NSObject>
+@class VSettingsSwitchCell;
 
-- (void)settingsDidUpdateFromCell:(VNotificationSettingCell *)cell;
+@protocol VSettingsSwitchCellDelegate <NSObject>
+
+- (void)settingsDidUpdateFromCell:(VSettingsSwitchCell *)cell;
 
 @end
 
-@interface VNotificationSettingCell : UITableViewCell <VHasManagedDependencies>
+@interface VSettingsSwitchCell : UITableViewCell <VHasManagedDependencies>
 
 @property (nonatomic, readonly) BOOL value;
-@property (nonatomic, weak) id<VNotificationSettingCellDelegate> delegate;
+@property (nonatomic, weak, nullable) id<VSettingsSwitchCellDelegate> delegate;
 
 - (void)setTitle:(NSString *)title value:(BOOL)value;
 
@@ -31,3 +32,5 @@
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager;
 
 @end
+
+NS_ASSUME_NONNULL_END
