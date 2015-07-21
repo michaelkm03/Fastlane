@@ -69,7 +69,7 @@ extension GIFSearchDataSource : UICollectionViewDataSource {
         case .Content where self.sections.count == 0:
             cell.loading = false
             cell.text = {
-                return NSLocalizedString( "No results", comment:"" )
+                return NSLocalizedString( "No results.", comment:"" )
             }()
         default:
             cell.text = ""

@@ -94,7 +94,10 @@ class GIFSearchViewController: UIViewController {
                     self.delegate?.GIFSelectedWithPreviewImage( previewImage, capturedMediaURL: mediaURL )
                 }
                 else {
-                    println( "Error: \(error)" )
+                    var progressHUD = MBProgressHUD.showHUDAddedTo( self.view, animated: true )
+                    progressHUD.mode = .Text
+                    progressHUD.labelText = NSLocalizedString( "Error rendering GIF.", comment:"" )
+                    progressHUD.hide(true, afterDelay: 3.0)
                 }
                 
                 progressHUD.hide(true)
@@ -124,7 +127,7 @@ class GIFSearchViewController: UIViewController {
                 self.collectionView.applyDataSourceChanges( result )
             }, completion: nil)
         }
-        if result?.hasChanges == false && self.searchDataSource.sections.count == 0 {
+        if result?.error != nil || (result?.hasChanges == false && self.searchDataSource.sections.count == 0) {
             self.collectionView.reloadData()
         }
     }

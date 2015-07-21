@@ -59,6 +59,7 @@ class GIFSearchDataSource: NSObject {
     struct ChangeResult {
         var deletedSections: NSIndexSet?
         var insertedSections: NSIndexSet?
+        var error: NSError?
         
         var hasChanges: Bool {
             return self.deletedSections?.count > 0 || self.insertedSections?.count > 0
@@ -91,6 +92,7 @@ class GIFSearchDataSource: NSObject {
                 completion?( result )
             },
             failure: { (error, isLastPage) in
+                var result = ChangeResult()
                 if isLastPage {
                     self.isLastPage = isLastPage
                     self.state = .Content
@@ -98,8 +100,9 @@ class GIFSearchDataSource: NSObject {
                 else {
                     self.clear()
                     self.state = .Error
-                    completion?( nil )
+                    result.error = error
                 }
+                completion?( result )
             }
         )
         
@@ -128,6 +131,7 @@ class GIFSearchDataSource: NSObject {
                 completion?( result )
             },
             failure: { (error, isLastPage) in
+                var result = ChangeResult()
                 if isLastPage {
                     self.isLastPage = isLastPage
                     self.state = .Content
@@ -135,8 +139,9 @@ class GIFSearchDataSource: NSObject {
                 else {
                     self.clear()
                     self.state = .Error
-                    completion?( nil )
+                    result.error = error
                 }
+                completion?( result )
             }
         )
     }
@@ -186,7 +191,7 @@ class GIFSearchDataSource: NSObject {
                 return indexPath.previousSectionIndexPath()
             }
             return indexPath
-            }()
+        }()
         
         let resultToHighlight = self.sections[ targetIndexPath.section ][ targetIndexPath.row ]
         let section = Section(results: [ resultToHighlight ], isFullSize: true )

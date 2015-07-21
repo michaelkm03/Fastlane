@@ -20,22 +20,13 @@ class GIFSearchNoContentCell: UICollectionViewCell {
     var text: String = "" {
         didSet {
             self.label.text = text
-            if text != "" {
-                self.activityIndicator.hidden = true
-            }
         }
-    }
-    
-    /// Removes any displaying text
-    func clear() {
-        self.text = ""
     }
     
     /// Puts the cell in or out of a loading state that shows an activity indicator
     var loading: Bool = true {
         didSet {
-            self.clear()
-            self.activityIndicator.hidden = false
+            self.activityIndicator.hidden = !self.loading
         }
     }
 }
