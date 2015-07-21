@@ -11,9 +11,11 @@ import UIKit
 extension GIFSearchViewController : UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        self.performSearch( searchBar.text )
-        self.clearSearch()
-        searchBar.resignFirstResponder()
+        if let searchBarText = searchBar.text where count(searchBarText) > 0 {
+            self.performSearchWithText( searchBar.text )
+            self.clearSearch()
+            searchBar.resignFirstResponder()
+        }
     }
 }
 
@@ -43,7 +45,7 @@ extension GIFSearchViewController : VScrollPaginatorDelegate {
     
     func shouldLoadNextPage() {
         if let searchText = self.searchDataSource.mostRecentSearchText {
-            self.performSearch(searchText, pageType: .Next)
+            self.performSearchWithText( searchText, pageType: .Next)
         }
         else {
             self.loadDefaultContent(pageType: .Next)

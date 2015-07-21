@@ -110,7 +110,7 @@ class GIFSearchViewController: UIViewController {
         }
     }
     
-    func performSearch( _ searchText: String = "", pageType: VPageType = .First ) {
+    func performSearchWithText( searchText: String, pageType: VPageType = .First ) {
         if self.searchDataSource.state != .Loading {
             self.searchDataSource.performSearch( searchText, pageType: pageType ) { (result) in
                 self.updateViewWithResult( result )
