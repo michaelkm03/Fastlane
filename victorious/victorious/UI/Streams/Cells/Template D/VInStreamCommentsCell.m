@@ -47,6 +47,7 @@ static NSString * const kMediaIdentifierSuffix = @"withMedia";
     self.commentTextView.textContainerInset = UIEdgeInsetsZero;
     self.commentTextView.textContainer.lineFragmentPadding = 0.0f;
     self.commentTextView.contentInset = UIEdgeInsetsZero;
+    self.commentTextView.tagTapDelegate = self;
     [self.mediaLinkButton addTarget:self action:@selector(mediaButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [self.profileButton addTarget:self action:@selector(profileButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 }
@@ -54,6 +55,7 @@ static NSString * const kMediaIdentifierSuffix = @"withMedia";
 - (void)setupWithInStreamCommentCellContents:(VInStreamCommentCellContents *)contents
 {
     self.commentCellContents = contents;
+
     [self.commentTextView setupWithDatabaseFormattedText:[[self class] databaseFormattedTextForContents:contents]
                                            tagAttributes:contents.highlightedTextAttributes
                                        defaultAttributes:contents.commentTextAttributes
@@ -134,7 +136,30 @@ static NSString * const kMediaIdentifierSuffix = @"withMedia";
     [VTagSensitiveTextView displayFormattedStringFromDatabaseFormattedText:commentString
                                                              tagAttributes:contents.highlightedTextAttributes
                                                       andDefaultAttributes:contents.commentTextAttributes
-                                                           toCallbackBlock:callbackBlock];
+                                                           toCallbackBlock:^(VTagDictionary *foundTags, NSAttributedString *displayFormattedString)
+     {
+         
+         NSMutableAttributedString *attributedString = [displayFormattedString mutableCopy];
+         if ( contents.username.length > 0 )
+         {
+             NSUInteger length = [VTagStringFormatter delimiterString].length + 1;
+             if ( foundTags.count > 0 && displayFormattedString.length >= length)
+             {
+                 //Apply special font to username
+                 NSIndexSet *indexSet = [VTagStringFormatter tagRangesInRange:NSMakeRange(0, length) ofAttributedString:displayFormattedString withTagDictionary:foundTags];
+                 if ( indexSet != nil )
+                 {
+                     //A username was present and formatted
+                     [indexSet enumerateRangesUsingBlock:^(NSRange range, BOOL *stop)
+                      {
+                          [attributedString addAttribute:NSFontAttributeName value:contents.usernameFont range:range];
+                          *stop = YES; //Just in case something has gone wrong and we find more than 1
+                      }];
+                 }
+             }
+         }
+         callbackBlock(foundTags, [attributedString copy]);
+     }];
 }
 
 + (NSAttributedString *)timestampAttributedStringForContents:(VInStreamCommentCellContents *)contents
