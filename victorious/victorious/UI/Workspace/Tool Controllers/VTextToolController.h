@@ -16,8 +16,6 @@
  */
 @interface VTextToolController : VToolController
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
-
 /**
  *  The default text tool.
  */

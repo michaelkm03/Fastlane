@@ -14,8 +14,11 @@
 
 #import "VAssetThumbnailDataSource.h"
 #import "VCVideoPlayerViewController.h"
+#import "VUser.h"
+#import "VObjectManager+Users.h"
 
 static const int32_t kDefaultTimeScale = 600;
+static const NSInteger kDefaultMaxTrimDuration = 15;
 
 // Dependency Manager Keys
 static NSString * const kTitleKey = @"title";
@@ -69,8 +72,9 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
         _icon = [dependencyManager imageForKey:kIconKey];
         _selectedIcon = [dependencyManager imageForKey:kSelectedIconKey];
         
-        _minDuration = [dependencyManager numberForKey:kVideoMinDuration];
-        _maxDuration = [dependencyManager numberForKey:kVideoMaxDuration];
+        _minDuration = @(1);
+        
+        [self setupMaxDuration];
         
         _muteAudio = [[dependencyManager numberForKey:kVideoMuted] boolValue];
         
@@ -88,7 +92,7 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
         _videoPlayerController.shouldShowToolbar = NO;
         _videoPlayerController.delegate = self;
         _videoPlayerController.shouldChangeVideoGravityOnDoubleTap = YES;
-        _videoPlayerController.videoPlayerLayerVideoGravity = AVLayerVideoGravityResizeAspectFill;
+        _videoPlayerController.videoPlayerLayerVideoGravity = AVLayerVideoGravityResizeAspect;
     }
     return self;
 }
@@ -221,6 +225,21 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
             completion(YES, thumbnailImage, exportSession.error);
         }
     }];
+}
+
+#pragma mark - Private Methods
+
+- (void)setupMaxDuration
+{
+    NSNumber *userUploadDuration = [[VObjectManager sharedManager] mainUser].maxUploadDuration;
+    if (userUploadDuration != nil)
+    {
+        _maxDuration = userUploadDuration;
+    }
+    else
+    {
+        _maxDuration = @(kDefaultMaxTrimDuration);
+    }
 }
 
 #pragma mark - VWorkspaceTool

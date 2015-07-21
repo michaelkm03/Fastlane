@@ -10,6 +10,10 @@
 #import "VNavigationDestination.h"
 #import "VHasManagedDependencies.h"
 
+/**
+ *  Presents content creation on VRootViewController when VNavigationDestination's
+ *  `-(BOOL)shouldNavigateWithAlternateDestination:` is called.
+ */
 @interface VWorkspaceShimDestination : NSObject <VHasManagedDependencies, VNavigationDestination>
 
 @end

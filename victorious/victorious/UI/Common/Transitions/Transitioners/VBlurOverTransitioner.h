@@ -8,6 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol VBlurOverAnimationTransitioningDestination <NSObject>
+
+- (void)animateInAnimations;
+
+@end
+
 @interface VBlurOverAnimatedTransitioning : NSObject <UIViewControllerAnimatedTransitioning>
 
 @property (nonatomic, assign, getter=isPresentation) BOOL presentation;
