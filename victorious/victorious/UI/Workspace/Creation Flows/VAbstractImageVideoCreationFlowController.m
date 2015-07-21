@@ -42,6 +42,11 @@
 @import Photos;
 #import <MBProgressHUD/MBProgressHUD.h>
 
+// Sources
+static NSString * const kCreationFlowSourceLibrary = @"library";
+static NSString * const kCreationFlowSourceCamera = @"camera";
+static NSString * const kCreationFlowSourceSearch = @"search";
+
 @interface VAbstractImageVideoCreationFlowController () <UINavigationControllerDelegate, VAssetCollectionGridViewControllerDelegate, VScaleAnimatorSource>
 
 @property (nonatomic, strong) NSArray *cachedAssetCollections;
@@ -49,7 +54,7 @@
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, strong) VCaptureContainerViewController *captureContainerViewController;
-@property (nonatomic, strong) VAssetCollectionGridViewController *gridViewController;
+@property (nonatomic, strong, readwrite) VAssetCollectionGridViewController *gridViewController;
 @property (nonatomic, strong) VAssetDownloader *downloader;
 @property (nonatomic, strong) VWorkspaceViewController *workspaceViewController;
 
@@ -79,9 +84,13 @@
         
         _gridViewController = [self gridViewControllerWithDependencyManager:dependencyManager];
         _gridViewController.delegate = self;
-        [self.captureContainerViewController setContainedViewController:_gridViewController];
     }
     return self;
+}
+
+- (UIViewController *)initialViewController
+{
+    return self.gridViewController;
 }
 
 #pragma mark -  Public Methods
@@ -101,12 +110,27 @@
 {
     [super viewDidLoad];
     
+    [self.captureContainerViewController setContainedViewController:[self initialViewController]];
+    
     // We need to be the delegate for the publish animation, and the gesture delegate for the pop to work
     self.delegate = self;
     self.interactivePopGestureRecognizer.delegate = (id<UIGestureRecognizerDelegate>)self;
 }
 
 #pragma mark - Private Methods
+
+- (NSString *)sourceStringForSourceType:(VCreationFlowSource)source
+{
+    switch (self.source)
+    {
+        case VCreationFlowSourceCamera:
+            return kCreationFlowSourceCamera;
+        case VCreationFlowSourceLibrary:
+            return kCreationFlowSourceLibrary;
+        case VCreationFlowSourceSearch:
+            return kCreationFlowSourceSearch;
+    }
+}
 
 - (void)prepareWorkspaceWithMediaURL:(NSURL *)mediaURL
                      andPreviewImage:(UIImage *)previewImage
@@ -208,6 +232,7 @@
     [self setupPublishPresenter];
     
     // Configure parameters
+    self.publishParameters.source = [self sourceStringForSourceType:self.source];
     self.publishParameters.mediaToUploadURL = renderedMediaURL;
     self.publishParameters.previewImage = previewImage;
     [self configurePublishParameters:self.publishParameters
@@ -233,9 +258,17 @@
 - (void)captureFinishedWithMediaURL:(NSURL *)mediaURL
                        previewImage:(UIImage *)previewImage
 {
+    [self captureFinishedWithMediaURL:mediaURL previewImage:previewImage shouldSkipTrimmer:NO];
+}
+
+- (void)captureFinishedWithMediaURL:(NSURL *)mediaURL
+                       previewImage:(UIImage *)previewImage
+                  shouldSkipTrimmer:(BOOL)shouldSkipTrimmerForContext
+{
     // If the user has permission to skip the trimmmer (API Driven)
     // Go straight to publish do not pass go, do not collect $200
-    if ([[[VObjectManager sharedManager] mainUser] shouldSkipTrimmer] && [self isKindOfClass:[VVideoCreationFlowController class]])
+    BOOL shouldSkipTrimmerForUser = [[[VObjectManager sharedManager] mainUser] shouldSkipTrimmer] && [self isKindOfClass:[VVideoCreationFlowController class]];
+    if ( shouldSkipTrimmerForContext || shouldSkipTrimmerForUser )
     {
         self.renderedMediaURL = mediaURL;
         self.previewImage = previewImage;
@@ -283,6 +316,7 @@
          [hudForView hide:YES];
          if (error == nil)
          {
+             strongSelf.source = VCreationFlowSourceLibrary;
              [strongSelf captureFinishedWithMediaURL:downloadedFileURL
                                         previewImage:previewImage];
          }

@@ -8,6 +8,8 @@
 
 #import "VScrollPaginator.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 #define LOG_PAGINATION_EVENTS 0
 #if LOG_PAGINATION_EVENTS
 #warning VScrollPaginator is logging pagination events.  Please turn this off before merging.
@@ -17,13 +19,14 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if ( self.delegate == nil )
+    CGFloat contentHeight = scrollView.contentSize.height;
+    if ( contentHeight == 0 || self.delegate == nil )
     {
         return;
     }
     
     const CGFloat visibleHeight = CGRectGetHeight(scrollView.frame) - scrollView.contentInset.bottom;
-    const CGFloat maxContentOffset = scrollView.contentSize.height - visibleHeight - visibleHeight;
+    const CGFloat maxContentOffset = contentHeight - (visibleHeight * 2);
     const CGFloat minContentOffset = visibleHeight;
     const CGFloat scrollPositionY = scrollView.contentOffset.y;
     
@@ -50,3 +53,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

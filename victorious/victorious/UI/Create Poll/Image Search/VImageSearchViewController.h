@@ -6,20 +6,29 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
+
 #import "VImageSearchDataSource.h"
 
-typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL);
+@class VDependencyManager;
 
-#import <UIKit/UIKit.h>
+typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL);
 
 /**
  Displays an interface for searching and downloading images online.
  */
 @interface VImageSearchViewController : UIViewController
 
-@property (nonatomic, copy) VMediaCaptureCompletion  completionBlock; ///< Will be called when the user has either selected an image or asked to cancel
-@property (nonatomic, copy) NSString                *searchTerm; ///< Setting this will trigger a search. If the user enters their own search term, it will be stored in this property.
+/**
+ Will be called when the user has either selected an image or asked to cancel
+ */
+@property (nonatomic, copy) VMediaCaptureCompletion imageSelectionHandler;
 
-+ (instancetype)newImageSearchViewController;
+/**
+ Setting this will trigger a search. If the user enters their own search term, it will be stored in this property.
+ */
+@property (nonatomic, copy) NSString *searchTerm;
+
++ (instancetype)newImageSearchViewControllerWithDependencyManager:(VDependencyManager *)dependencyMananger;
 
 @end

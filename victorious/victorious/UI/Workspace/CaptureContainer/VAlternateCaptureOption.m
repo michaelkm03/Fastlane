@@ -14,10 +14,6 @@
                          icon:(UIImage *)icon
             andSelectionBlock:(VImageVideoLibraryAlternateCaptureSelection)selectionBlock
 {
-    NSParameterAssert(title != nil);
-    NSParameterAssert(icon != nil);
-    NSParameterAssert(selectionBlock != nil);
-    
     self = [super init];
     if (self != nil)
     {

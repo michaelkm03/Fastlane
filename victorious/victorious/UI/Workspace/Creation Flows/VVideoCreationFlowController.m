@@ -106,6 +106,7 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
                                                                                            resultHanlder:^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
                                                    {
                                                        __strong typeof(welf) strongSelf = welf;
+                                                       strongSelf.source = VCreationFlowSourceCamera;
                                                        if (finished)
                                                        {
                                                            [strongSelf captureFinishedWithMediaURL:capturedMediaURL

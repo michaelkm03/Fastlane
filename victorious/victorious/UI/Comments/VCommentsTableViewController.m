@@ -41,10 +41,11 @@
 #import "UIView+AutoLayout.h"
 #import "VNoContentView.h"
 #import "VDependencyManager+VTracking.h"
+#import "VScrollPaginator.h"
 
 @import Social;
 
-@interface VCommentsTableViewController () <VEditCommentViewControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VTagSensitiveTextViewDelegate>
+@interface VCommentsTableViewController () <VEditCommentViewControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VTagSensitiveTextViewDelegate, VScrollPaginatorDelegate>
 
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 @property (nonatomic, assign) BOOL hasComments;
@@ -53,6 +54,7 @@
 @property (nonatomic, strong) NSArray *comments;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VNoContentView *noContentView;
+@property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 
 @end
 
@@ -91,6 +93,9 @@
     self.noContentView.message = NSLocalizedString(@"NoCommentsMessage", @"");
     self.noContentView.icon = [UIImage imageNamed:@"noCommentIcon"];
     self.tableView.backgroundView = nil;
+    
+    self.scrollPaginator = [[VScrollPaginator alloc] init];
+    self.scrollPaginator.delegate = self;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -213,7 +218,7 @@
 
 #pragma mark - Pagination
 
-- (void)loadNextPageAction
+- (void)shouldLoadNextPage
 {
     [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
                                                   pageType:VPageTypeNext
@@ -328,10 +333,7 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (scrollView.contentOffset.y > scrollView.contentSize.height * .75)
-    {
-        [self loadNextPageAction];
-    }
+    [self.scrollPaginator scrollViewDidScroll:scrollView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

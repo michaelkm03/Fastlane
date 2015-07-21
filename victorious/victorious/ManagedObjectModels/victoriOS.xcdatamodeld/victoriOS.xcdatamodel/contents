@@ -96,6 +96,17 @@
         <relationship name="nextSequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="parentEndCard" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="parentSequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="endCard" inverseEntity="Sequence" syncable="YES"/>
     </entity>
+    <entity name="GIFSearchResult" representedClassName="victorious.GIFSearchResult" syncable="YES">
+        <attribute name="frames" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="gifSize" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="gifUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="height" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="mp4Size" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="mp4Url" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="thumbnailStillUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="thumbnailUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="width" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+    </entity>
     <entity name="Hashtag" representedClassName="VHashtag" syncable="YES">
         <attribute name="count" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="tag" optional="YES" attributeType="String" syncable="YES"/>
@@ -304,6 +315,7 @@
         <element name="Conversation" positionX="1528" positionY="-468" width="128" height="148"/>
         <element name="EditorializationItem" positionX="657" positionY="-612" width="128" height="120"/>
         <element name="EndCard" positionX="693" positionY="-648" width="128" height="165"/>
+        <element name="GIFSearchResult" positionX="621" positionY="-648" width="128" height="180"/>
         <element name="Hashtag" positionX="1087" positionY="-630" width="128" height="90"/>
         <element name="ImageAsset" positionX="423" positionY="-594" width="128" height="135"/>
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
