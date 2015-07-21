@@ -9,12 +9,12 @@
 #import "VPublishPresenter.h"
 
 #import "VPublishViewController.h"
-#import "VBlurOverTransitioner.h"
+#import "VAlongsidePresentationAnimator.h"
 
 @interface VPublishPresenter () <UIViewControllerTransitioningDelegate>
 
 @property (nonatomic, weak) UIViewController *viewControllerPresentedOn;
-@property (nonatomic, strong) VBlurOverTransitioningDelegate *animator;
+@property (nonatomic, strong) VAlongsidePresentationAnimator *animator;
 @property (nonatomic, strong, readwrite) VPublishViewController *publishViewController;
 
 @end
@@ -26,9 +26,9 @@
     self = [super initWithDependencymanager:dependencyManager];
     if (self != nil)
     {
-        _animator = [[VBlurOverTransitioningDelegate alloc] init];
+        _animator = [[VAlongsidePresentationAnimator alloc] init];
         _publishViewController = [dependencyManager newPublishViewController];
-        _publishViewController.transitioningDelegate = _animator;
+        _publishViewController.transitioningDelegate = self;
         _publishViewController.modalPresentationStyle = UIModalPresentationCustom;
     }
     return self;
@@ -69,5 +69,22 @@
         strongSelf.publishActionHandler(success);
     };
 }
+
+#pragma mark - UIViewControllerTransitioningDelegate
+
+- (id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented
+                                                                   presentingController:(UIViewController *)presenting
+                                                                       sourceController:(UIViewController *)source
+{
+    self.animator.presenting = YES;
+    return self.animator;
+}
+
+- (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
+{
+    self.animator.presenting = NO;
+    return self.animator;
+}
+
 
 @end
