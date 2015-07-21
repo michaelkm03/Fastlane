@@ -17,13 +17,14 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if ( self.delegate == nil )
+    CGFloat contentHeight = scrollView.contentSize.height;
+    if ( contentHeight == 0 || self.delegate == nil )
     {
         return;
     }
     
     const CGFloat visibleHeight = CGRectGetHeight(scrollView.frame) - scrollView.contentInset.bottom;
-    const CGFloat maxContentOffset = scrollView.contentSize.height - visibleHeight - visibleHeight;
+    const CGFloat maxContentOffset = contentHeight - (visibleHeight * 2);
     const CGFloat minContentOffset = visibleHeight;
     const CGFloat scrollPositionY = scrollView.contentOffset.y;
     
