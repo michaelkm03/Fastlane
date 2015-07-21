@@ -27,6 +27,11 @@
     }
 }
 
+- (void)trackPermission:(NSString *)trackingStatus
+{
+    [self.permissionsTrackingHelper permissionsDidChange:VTrackingValuePhotolibraryDidAllow permissionState:trackingStatus];
+}
+
 - (void)requestSystemPermissionWithCompletion:(VPermissionRequestCompletionHandler)completion
 {
     // Completion handler is required
@@ -40,6 +45,7 @@
              dispatch_async(dispatch_get_main_queue(), ^
                             {
                                 completion(YES, [self permissionState], nil);
+                                [self trackPermission:VTrackingValueAuthorized];
                             });
          }
      } failureBlock:^(NSError *error)
@@ -47,6 +53,7 @@
          dispatch_async(dispatch_get_main_queue(), ^
                         {
                             completion(NO, [self permissionState], nil);
+                            [self trackPermission:VTrackingValueDenied];
                         });
      }];
 }

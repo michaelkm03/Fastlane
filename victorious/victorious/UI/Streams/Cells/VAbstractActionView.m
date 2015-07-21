@@ -62,15 +62,6 @@
     
     [self layoutIfNeeded];
     [self updateActionItemsOnBar:self.actionBar forSequence:_sequence];
-    __weak typeof(self) welf = self;
-    [self updateRepostButtonForSequence:_sequence];
-    [self.KVOController observe:sequence
-                        keyPath:NSStringFromSelector(@selector(repostCount))
-                        options:NSKeyValueObservingOptionNew
-                          block:^(id observer, VSequence *observedSequence, NSDictionary *change)
-     {
-         [welf updateRepostButtonForSequence:_sequence];
-     }];
 }
 
 #pragma mark - VStreamCellSpecialization
@@ -110,13 +101,13 @@
     UIResponder<VSequenceActionsDelegate> *targetForRepost = [self targetForAction:@selector(willRepostSequence:fromView:completion:)
                                                                         withSender:self];
     NSAssert( targetForRepost != nil, @"We need an object in the responder chain for resposting.");
-    self.reposting = YES;
-    __weak typeof(self) welf = self;
+    UIButton *button = sender;
+    button.enabled = NO;
     [targetForRepost willRepostSequence:self.sequence
                                fromView:self
                              completion:^(BOOL success)
      {
-         welf.reposting = NO;
+         button.enabled = YES;
      }];
 }
 
@@ -147,18 +138,11 @@
     
     NSAssert( responder != nil , @"We need an object in the responder chain for liking.");
     
-    UIButton *button = nil;
-    if ( [sender isKindOfClass:[UIButton class]] )
-    {
-        button = sender;
-        button.enabled = NO;
-    }
+    UIButton *button = sender;
+    button.enabled = NO;
     [responder willLikeSequence:self.sequence withView:sender completion:^(BOOL success)
-    {
-        if ( button != nil )
-        {
-            button.enabled = YES;
-        }
+     {
+         button.enabled = YES;
     }];
 }
 
@@ -168,16 +152,6 @@
 
 - (void)updateActionItemsOnBar:(VFlexBar *)actionBar
                    forSequence:(VSequence *)sequence
-{
-    // Implement in subclasses
-}
-
-- (void)updateCommentCountForSequence:(VSequence *)sequence
-{
-    // Implement in subclasses
-}
-
-- (void)updateRepostButtonForSequence:(VSequence *)sequence
 {
     // Implement in subclasses
 }
