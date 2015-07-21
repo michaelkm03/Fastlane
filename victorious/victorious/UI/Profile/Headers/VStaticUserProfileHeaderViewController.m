@@ -95,11 +95,11 @@ static const CGFloat kMinimumBlurredImageSize = 50.0;
             [self.primaryActionButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
             break;
         case VUserProfileHeaderStateFollowingUser:
-            [self.primaryActionButton setStyle:VButtonStyleSecondary];
+            [self.primaryActionButton setStyle:VButtonStylePrimary];
             [self.primaryActionButton setTitle:NSLocalizedString(@"following", @"") forState:UIControlStateNormal];
             break;
         case VUserProfileHeaderStateNotFollowingUser:
-            [self.primaryActionButton setStyle:VButtonStylePrimary];
+            [self.primaryActionButton setStyle:VButtonStyleSecondary];
             [self.primaryActionButton setTitle:NSLocalizedString(@"follow", @"") forState:UIControlStateNormal];
             break;
         default:
