@@ -10,6 +10,7 @@ PODS:
   - KVOController (1.0.3)
   - MBProgressHUD (0.9.1)
   - Nocilla (0.8.1)
+  - OAStackView (0.1.0)
   - RestKit (0.22.0):
     - RestKit/Core (= 0.22.0)
   - RestKit/Core (0.22.0):
@@ -43,6 +44,7 @@ DEPENDENCIES:
   - KVOController
   - MBProgressHUD (~> 0.8)
   - Nocilla (from `https://github.com/TouchFrame/Nocilla.git`, branch `block-response`)
+  - OAStackView
   - RestKit (~> 0.22.0)
   - SDWebImage
   - TTTAttributedLabel (~> 1.8.1)
@@ -66,6 +68,7 @@ SPEC CHECKSUMS:
   KVOController: 9fd8f0343670994e4b6f9f0b31f5a45663f3e1cf
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   Nocilla: 76a45b3103ac986bedd189eb8773f23995d9851d
+  OAStackView: 76e64242351e2746374b9161a03021cbc19341ff
   RestKit: 148fe32e4b1474cbfcf9074c793977d5e9fdc8fa
   RKValueTransformers: 127d6267755844f48eaf4fc560208ca19d336641
   SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29

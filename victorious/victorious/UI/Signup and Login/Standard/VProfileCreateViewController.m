@@ -7,34 +7,29 @@
 //
 
 #import "VProfileCreateViewController.h"
-#import "VWorkspaceFlowController.h"
+#import "VEditProfilePicturePresenter.h"
 #import "VImageToolController.h"
-
+#import "VDependencyManager.h"
 #import "VUser.h"
 #import "TTTAttributedLabel.h"
-#import "VDependencyManager+VWorkspace.h"
 #import "VUserManager.h"
-#import <MBProgressHUD/MBProgressHUD.h>
-
 #import "VContentInputAccessoryView.h"
-
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Websites.h"
-
 #import "VConstants.h"
 #import "UIImageView+WebCache.h"
-
 #import "UIAlertView+VBlocks.h"
 #import "VAutomation.h"
 #import "VButton.h"
 #import "VDefaultProfileImageView.h"
-
 #import "VLocationManager.h"
+
+#import <MBProgressHUD/MBProgressHUD.h>
 
 @import CoreLocation;
 @import AddressBookUI;
 
-@interface VProfileCreateViewController () <UITextFieldDelegate, TTTAttributedLabelDelegate, VWorkspaceFlowControllerDelegate, VLocationManagerDelegate>
+@interface VProfileCreateViewController () <UITextFieldDelegate, TTTAttributedLabelDelegate, VLocationManagerDelegate>
 
 @property (nonatomic, weak) IBOutlet UITextField *usernameTextField;
 @property (nonatomic, weak) IBOutlet UITextField *locationTextField;
@@ -51,6 +46,8 @@
 @property (nonatomic, assign) CGFloat previousKeyboardHeight;
 
 @property (nonatomic, assign) BOOL hasLocationAlreadyBeenAutoFilled;
+
+@property (nonatomic, strong) VEditProfilePicturePresenter *presenter;
 
 @end
 
@@ -381,14 +378,19 @@
 
 - (IBAction)takePicture:(id)sender
 {
-    NSDictionary *addedDependencies = @{ VImageToolControllerInitialImageEditStateKey : @(VImageToolControllerInitialImageEditStateFilter),
-                                         VWorkspaceFlowControllerContextKey : @(VWorkspaceFlowControllerContextProfileImage) };
-    VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager workspaceFlowControllerWithAddedDependencies:addedDependencies];
-    workspaceFlowController.delegate = self;
-    workspaceFlowController.videoEnabled = NO;
-    [self presentViewController:workspaceFlowController.flowRootViewController
-                       animated:YES
-                     completion:nil];
+    self.presenter = [[VEditProfilePicturePresenter alloc] initWithDependencymanager:self.dependencyManager];
+    self.presenter.isRegistration = YES;
+    __weak typeof(self) welf = self;
+    self.presenter.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
+    {
+        __strong typeof(welf) strongSelf = welf;
+        strongSelf.profileImageView.image = previewImage;
+        strongSelf.registrationModel.selectedImage = previewImage;
+        strongSelf.registrationModel.profileImageURL = mediaURL;
+        [strongSelf dismissViewControllerAnimated:YES
+                                       completion:nil];
+    };
+    [self.presenter presentOnViewController:self];
 }
 
 - (IBAction)exit:(id)sender
@@ -483,30 +485,6 @@
     {
         self.registrationModel.locationText = self.locationTextField.text;
     }
-}
-
-#pragma mark - VWorkspaceFlowControllerDelegate
-
-- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
-{
-    [self dismissViewControllerAnimated:YES
-                             completion:nil];
-}
-
-- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-       finishedWithPreviewImage:(UIImage *)previewImage
-               capturedMediaURL:(NSURL *)capturedMediaURL
-{
-    self.profileImageView.image = previewImage;
-    self.registrationModel.selectedImage = previewImage;
-    self.registrationModel.profileImageURL = capturedMediaURL;
-    [self dismissViewControllerAnimated:YES
-                             completion:nil];
-}
-
-- (BOOL)shouldShowPublishForWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-{
-    return NO;
 }
 
 @end
