@@ -203,7 +203,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     if (self.playerControlsDisabled)
     {
         self.videoPlayerViewController.shouldShowToolbar = NO;
-        self.videoPlayerViewController.videoPlayerLayerVideoGravity = AVLayerVideoGravityResizeAspectFill;
+        self.videoPlayerViewController.videoPlayerLayerVideoGravity = AVLayerVideoGravityResizeAspect;
     }
 }
 
