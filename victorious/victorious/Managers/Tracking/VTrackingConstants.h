@@ -331,4 +331,3 @@ extern NSString * const VTrackingValueNewPrivateMessage;
 extern NSString * const VTrackingValueNewFollower; 
 extern NSString * const VTrackingValueAuthorized; 
 extern NSString * const VTrackingValueDenied; 
-extern NSString * const VTrackingValueUnknown; 

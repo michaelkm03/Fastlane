@@ -331,4 +331,3 @@ NSString * const VTrackingValueNewPrivateMessage = @"NewPrivateMessage";
 NSString * const VTrackingValueNewFollower = @"NewFollower";
 NSString * const VTrackingValueAuthorized = @"Authorized";
 NSString * const VTrackingValueDenied = @"Denied";
-NSString * const VTrackingValueUnknown = @"Unknown";
