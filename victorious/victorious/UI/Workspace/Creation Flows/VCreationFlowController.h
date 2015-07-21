@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "VCreationTypes.h"
 #import "VHasManagedDependencies.h"
+#import "VPublishParameters.h"
 
 @class VCreationFlowController;
 @class VDependencyManager;
@@ -58,6 +59,12 @@ extern NSString * const VCreationFLowCaptureScreenKey;
  *  The VCreationFlowControllerDelegate for this flow controller.
  */
 @property (nonatomic, weak) id <VCreationFlowControllerDelegate> creationFlowDelegate;
+
+/**
+ *  Publish parameters for the creationFlowController. Note this may not be actually used to publish,
+ *  but consumers can leverage this to be informed of what happed in the creation flow.
+ */
+@property (nonatomic, readonly) VPublishParameters *publishParameters;
 
 /**
  *  Convenience for subclasses to add a templated close button to their viewControllers.

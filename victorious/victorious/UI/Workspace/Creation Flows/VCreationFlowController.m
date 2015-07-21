@@ -43,6 +43,7 @@ static NSString * const kStatusBaryStleKey = @"statusBarStyle";
     {
         _dependencyManager = dependencyManager;
         _animator = [[VCreationFlowAnimator alloc] init];
+        _publishParameters = [[VPublishParameters alloc] init];
         self.transitioningDelegate = self;
     }
     return self;

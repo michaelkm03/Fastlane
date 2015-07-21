@@ -208,12 +208,11 @@
     [self setupPublishPresenter];
     
     // Configure parameters
-    VPublishParameters *publishParameters = [[VPublishParameters alloc] init];
-    publishParameters.mediaToUploadURL = renderedMediaURL;
-    publishParameters.previewImage = previewImage;
-    [self configurePublishParameters:publishParameters
+    self.publishParameters.mediaToUploadURL = renderedMediaURL;
+    self.publishParameters.previewImage = previewImage;
+    [self configurePublishParameters:self.publishParameters
                        withWorkspace:workspace];
-    self.publishPresenter.publishParameters = publishParameters;
+    self.publishPresenter.publishParameters = self.publishParameters;
 
     [self.publishPresenter presentOnViewController:self];
 }
