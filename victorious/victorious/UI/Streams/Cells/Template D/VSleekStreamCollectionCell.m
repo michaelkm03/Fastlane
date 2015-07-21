@@ -203,7 +203,6 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
     self.headerView.sequence = sequence;
     self.sleekActionView.sequence = sequence;
     [self updateCaptionViewForSequence:sequence];
-    [self.previewContainer removeConstraint:self.previewContainerHeightConstraint];
     [self setNeedsUpdateConstraints];
     
     __weak typeof(self) welf = self;
@@ -217,6 +216,11 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
          [strongSelf.actionButtonAnimationController setButton:strongSelf.sleekActionView.repostButton
                                                       selected:sequence.hasReposted.boolValue];
      }];
+}
+
+- (BOOL)needsAspectRatioUpdateForSequence:(VSequence *)sequence
+{
+    return self.previewContainerHeightConstraint.multiplier != 1 / [sequence previewAssetAspectRatio];
 }
 
 - (void)updateCountsTextViewForSequence:(VSequence *)sequence
@@ -250,16 +254,20 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
 - (void)updateConstraints
 {
     // Add new height constraint for preview container to account for aspect ratio of preview asset
-    CGFloat aspectRatio = [self.sequence previewAssetAspectRatio];
-    NSLayoutConstraint *heightToWidth = [NSLayoutConstraint constraintWithItem:self.previewContainer
-                                                                     attribute:NSLayoutAttributeHeight
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:self.previewContainer
-                                                                     attribute:NSLayoutAttributeWidth
-                                                                    multiplier:(1 / aspectRatio)
-                                                                      constant:0.0f];
-    [self.previewContainer addConstraint:heightToWidth];
-    self.previewContainerHeightConstraint = heightToWidth;
+    if ( [self needsAspectRatioUpdateForSequence:self.sequence] )
+    {
+        CGFloat aspectRatio = [self.sequence previewAssetAspectRatio];
+        [self.previewContainer removeConstraint:self.previewContainerHeightConstraint];
+        NSLayoutConstraint *heightToWidth = [NSLayoutConstraint constraintWithItem:self.previewContainer
+                                                                         attribute:NSLayoutAttributeHeight
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:self.previewContainer
+                                                                         attribute:NSLayoutAttributeWidth
+                                                                        multiplier:(1.0f / aspectRatio)
+                                                                          constant:0.0f];
+        [self.previewContainer addConstraint:heightToWidth];
+        self.previewContainerHeightConstraint = heightToWidth;
+    }
     
     [super updateConstraints];
 }
