@@ -240,9 +240,17 @@
 - (void)captureFinishedWithMediaURL:(NSURL *)mediaURL
                        previewImage:(UIImage *)previewImage
 {
+    [self captureFinishedWithMediaURL:mediaURL previewImage:previewImage shouldSkipTrimmer:NO];
+}
+
+- (void)captureFinishedWithMediaURL:(NSURL *)mediaURL
+                       previewImage:(UIImage *)previewImage
+                  shouldSkipTrimmer:(BOOL)shouldSkipTrimmerForContext
+{
     // If the user has permission to skip the trimmmer (API Driven)
     // Go straight to publish do not pass go, do not collect $200
-    if ([[[VObjectManager sharedManager] mainUser] shouldSkipTrimmer] && [self isKindOfClass:[VVideoCreationFlowController class]])
+    BOOL shouldSkipTrimmerForUser = [[[VObjectManager sharedManager] mainUser] shouldSkipTrimmer] && [self isKindOfClass:[VVideoCreationFlowController class]];
+    if ( shouldSkipTrimmerForContext || shouldSkipTrimmerForUser )
     {
         self.renderedMediaURL = mediaURL;
         self.previewImage = previewImage;
