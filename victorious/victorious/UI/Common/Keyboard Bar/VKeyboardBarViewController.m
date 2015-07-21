@@ -198,6 +198,7 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
         {
             if (success)
             {
+                welf.publishParameters = publishParameters;
                 welf.mediaURL = publishParameters.mediaToUploadURL;
                 [welf.mediaButton setImage:publishParameters.previewImage forState:UIControlStateNormal];
             }
