@@ -15,6 +15,13 @@
 
 extern NSString * const VCreationFLowCaptureScreenKey;
 
+typedef NS_ENUM(NSInteger, VCreationFlowSource)
+{
+    VCreationFlowSourceLibrary,
+    VCreationFlowSourceCamera,
+    VCreationFlowSourceSearch,
+};
+
 /**
  *  A delegate for responding to events of the creation flow controller.
  */
@@ -68,5 +75,8 @@ extern NSString * const VCreationFLowCaptureScreenKey;
  *  Use this to determine the next text of the workspace.
  */
 - (BOOL)shouldShowPublishText;
+
+// Tracking Properties
+@property (nonatomic, assign) VCreationFlowSource source;
 
 @end

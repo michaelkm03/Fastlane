@@ -42,6 +42,11 @@
 @import Photos;
 #import <MBProgressHUD/MBProgressHUD.h>
 
+// Sources
+static NSString * const kCreationFlowSourceLibrary = @"library";
+static NSString * const kCreationFlowSourceCamera = @"camera";
+static NSString * const kCreationFlowSourceSearch = @"search";
+
 @interface VAbstractImageVideoCreationFlowController () <UINavigationControllerDelegate, VAssetCollectionGridViewControllerDelegate, VScaleAnimatorSource>
 
 @property (nonatomic, strong) NSArray *cachedAssetCollections;
@@ -211,6 +216,20 @@
     VPublishParameters *publishParameters = [[VPublishParameters alloc] init];
     publishParameters.mediaToUploadURL = renderedMediaURL;
     publishParameters.previewImage = previewImage;
+    
+    switch (self.source)
+    {
+        case VCreationFlowSourceCamera:
+            publishParameters.source = kCreationFlowSourceCamera;
+            break;
+        case VCreationFlowSourceLibrary:
+            publishParameters.source = kCreationFlowSourceLibrary;
+            break;
+        case VCreationFlowSourceSearch:
+            publishParameters.source = kCreationFlowSourceSearch;
+            break;
+    }
+    
     [self configurePublishParameters:publishParameters
                        withWorkspace:workspace];
     self.publishPresenter.publishParameters = publishParameters;
@@ -284,6 +303,7 @@
          [hudForView hide:YES];
          if (error == nil)
          {
+             strongSelf.source = VCreationFlowSourceLibrary;
              [strongSelf captureFinishedWithMediaURL:downloadedFileURL
                                         previewImage:previewImage];
          }

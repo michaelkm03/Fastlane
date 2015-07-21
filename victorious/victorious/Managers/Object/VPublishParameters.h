@@ -100,4 +100,9 @@
  */
 @property (nonatomic, assign) BOOL shareToTwitter;
 
+/**
+ *  The source of the asset.
+ */
+@property (nonatomic, copy) NSString *source;
+
 @end
