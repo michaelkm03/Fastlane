@@ -11,7 +11,6 @@
 @interface VThumbnailCell ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *thumbnailImageView;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -20,17 +19,14 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
+    self.activityIndicator.hidesWhenStopped = YES;
     [self.activityIndicator startAnimating];
 }
 
 - (void)setThumbnail:(UIImage *)thumbnail
 {
     self.thumbnailImageView.image = thumbnail;
-    if (thumbnail)
-    {
-        [self.activityIndicator stopAnimating];
-    }
+    [self.activityIndicator stopAnimating];
 }
 
 - (UIImage *)thumbnail
@@ -41,9 +37,8 @@
 - (void)prepareForReuse
 {
     [super prepareForReuse];
-    
-    self.thumbnailImageView.image = nil;
     [self.activityIndicator startAnimating];
+    self.thumbnailImageView.image = nil;
 }
 
 @end

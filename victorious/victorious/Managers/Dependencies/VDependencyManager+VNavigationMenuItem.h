@@ -44,7 +44,7 @@ extern NSString * const VDependencyManagerAccessoryScreensKey; // An arry of acc
  Returns an array of accessory menu items. These should
  be used for left/right navigation items for various screens.
  
- @param withInheritance When set to YES, only acccessory menu items added to *this*
+ @param withInheritance When set to NO, only acccessory menu items added to *this*
  dependency manager will be returned and not those belonging to the parent manager.
  
  @return NSArray of VNavigationMenuItem.

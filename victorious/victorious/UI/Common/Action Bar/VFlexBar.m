@@ -251,8 +251,6 @@ static NSString *kConstraintIdentifier = @"VActionBarConstraints";
                                                                                attribute:NSLayoutAttributeNotAnAttribute
                                                                               multiplier:1.0f
                                                                                 constant:flexibleItemWidth];
-//            NSLayoutConstraint *widthConstraint = [actionItem v_addWidthConstraint:flexibleItemWidth];
-
             widthConstraint.identifier = kConstraintIdentifier;
             widthConstraint.priority = UILayoutPriorityDefaultHigh;
             [actionItem addConstraint:widthConstraint];

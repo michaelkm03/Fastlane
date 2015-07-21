@@ -8,7 +8,7 @@
 
 #import "VSuggestedUserCell.h"
 #import "VDependencyManager+VBackgroundContainer.h"
-#import "VFollowUserControl.h"
+#import "VFollowControl.h"
 #import "VFollowResponder.h"
 #import "VUser.h"
 #import "UIView+AutoLayout.h"
@@ -22,14 +22,13 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
 
 @interface VSuggestedUserCell ()
 
-@property (nonatomic, strong) VFollowUserControl *followButton;
+@property (nonatomic, strong) VFollowControl *followButton;
+@property (nonatomic, strong) VContentThumbnailsDataSource *thumbnailsDataSource;
 @property (nonatomic, strong) VContentThumbnailsViewController *thumbnailsViewController;
 @property (nonatomic, weak) IBOutlet VDefaultProfileImageView *userProfileImage;
 @property (nonatomic, weak) IBOutlet UITextView *usernameTextView;
 @property (nonatomic, weak) IBOutlet UIView *followButtonContainerView;
 @property (nonatomic, weak) IBOutlet UIView *userStreamContainerView;
-
-@property (nonatomic, strong) VUser *user;
 
 @end
 
@@ -47,7 +46,7 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
 
 - (void)awakeFromNib
 {
-    self.followButton = [[VFollowUserControl alloc] initWithFrame:self.followButtonContainerView.bounds];
+    self.followButton = [[VFollowControl alloc] initWithFrame:self.followButtonContainerView.bounds];
     [self.followButtonContainerView addSubview:self.followButton];
     [self.followButtonContainerView v_addFitToParentConstraintsToSubview:self.followButton];
     [self.followButton addTarget:self action:@selector(followButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -56,6 +55,16 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
     [self.userStreamContainerView addSubview:self.thumbnailsViewController.view];
     [self.userStreamContainerView v_addFitToParentConstraintsToSubview:self.thumbnailsViewController.view];
     self.userStreamContainerView.backgroundColor = [UIColor clearColor];
+    
+    self.thumbnailsDataSource = [[VContentThumbnailsDataSource alloc] init];
+    self.thumbnailsViewController.collectionView.dataSource = self.thumbnailsDataSource;
+    [self.thumbnailsDataSource registerCellsWithCollectionView:self.thumbnailsViewController.collectionView];
+}
+
+- (void)prepareForReuse
+{
+    self.thumbnailsDataSource.sequences = @[];
+    [self.thumbnailsViewController.collectionView reloadData];
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
@@ -71,22 +80,15 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
     
     self.usernameTextView.text = _user.name;
     
-    VContentThumbnailsDataSource *thumbnailsDataSource = [[[self class] dataSources] objectForKey:user.remoteId];
-    if ( thumbnailsDataSource == nil )
-    {
-        thumbnailsDataSource = [[VContentThumbnailsDataSource alloc] initWithSequences:user.recentSequences.array];
-        [thumbnailsDataSource registerCellsWithCollectionView:self.thumbnailsViewController.collectionView];
-        
-        [[[self class] dataSources] setObject:thumbnailsDataSource forKey:user.remoteId];
-    }
-    self.thumbnailsViewController.collectionView.dataSource = thumbnailsDataSource;
+    self.thumbnailsDataSource.sequences = user.recentSequences.array;
+    [self.thumbnailsViewController.collectionView reloadData];
     
     if ( _user.pictureUrl != nil )
     {
         [self.userProfileImage setProfileImageURL:[NSURL URLWithString:_user.pictureUrl]];
     }
     
-    self.followButton.following = self.user.isFollowedByMainUser.boolValue;
+    [self updateFollowingStateAnimated:NO];
 }
 
 - (void)applyStyle
@@ -100,29 +102,48 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
     [self.dependencyManager addBackgroundToBackgroundHost:self forKey:@"background.detail"];
 }
 
-- (IBAction)followButtonPressed:(VFollowUserControl *)sender
+- (void)updateFollowingStateAnimated:(BOOL)animated
 {
-    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
-                                                                      withSender:nil];
-    
-    NSAssert(followResponder != nil, @"Need a VFollowingResponder higher up the chain to communicate following commands.");
-    sender.enabled = NO;
-    
-    if ( self.user.isFollowedByMainUser.boolValue )
+    [self.followButton setControlState:[VFollowControl controlStateForFollowing:self.user.isFollowedByMainUser.boolValue] animated:animated];
+}
+
+- (IBAction)followButtonPressed:(VFollowControl *)sender
+{
+    if ( sender.controlState == VFollowControlStateLoading )
     {
-        [followResponder unfollowUser:self.user withCompletion:^(VUser *userActedOn)
-         {
-             [sender setFollowing:self.user.isFollowedByMainUser.boolValue animated:YES];
-             sender.enabled = YES;
-         }];
+        return;
+    }
+    
+    void (^authorizedBlock)() = ^
+    {
+        [sender setControlState:VFollowControlStateLoading
+                       animated:YES];
+    };
+    
+    void (^completionBlock)(VUser *) = ^(VUser *userActedOn)
+    {
+        [self updateFollowingStateAnimated:YES];
+    };
+
+    if ( sender.controlState == VFollowControlStateFollowed )
+    {
+        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:)
+                                                                          withSender:nil];
+        
+        NSAssert(followResponder != nil, @"Need a VFollowingResponder higher up the chain to communicate following commands.");
+        [followResponder unfollowUser:self.user
+                  withAuthorizedBlock:authorizedBlock
+                        andCompletion:completionBlock];
     }
     else
     {
-        [followResponder followUser:self.user withCompletion:^(VUser *userActedOn)
-         {
-             [sender setFollowing:self.user.isFollowedByMainUser.boolValue animated:YES];
-             sender.enabled = YES;
-         }];
+        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:)
+                                                                          withSender:nil];
+        
+        NSAssert(followResponder != nil, @"Need a VFollowingResponder higher up the chain to communicate following commands.");
+        [followResponder followUser:self.user
+                withAuthorizedBlock:authorizedBlock
+                      andCompletion:completionBlock];
     }
 }
 

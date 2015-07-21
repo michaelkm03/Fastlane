@@ -14,20 +14,18 @@
 #import "VObjectManager+ContentCreation.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "victorious-Swift.h"  // for NSString+Unicode (imports all Swift files)
-
-#import "VWorkspaceFlowController.h"
-#import "VImageToolController.h"
-#import "VVideoToolController.h"
-
-#import "VDependencyManager+VWorkspace.h"
+#import "VDependencyManager.h"
+// Media Creation
+#import "VMediaAttachmentPresenter.h"
 
 static const NSInteger kMinLength = 2;
 
+static NSString * const kImageIconKey = @"imageIcon";
+static NSString * const kVideoIconKey = @"videoIcon";
+
 static char KVOContext;
 
-@interface VCreatePollViewController() <UITextViewDelegate, VWorkspaceFlowControllerDelegate>
-
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@interface VCreatePollViewController() <UITextViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *leftPreviewImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *rightPreviewImageView;
@@ -36,8 +34,8 @@ static char KVOContext;
 @property (weak, nonatomic) IBOutlet UIButton *rightRemoveButton;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mediaButtonLeftSpacingConstraint;
-@property (weak, nonatomic) IBOutlet UIButton *searchImageButton;
-@property (weak, nonatomic) IBOutlet UIButton *mediaButton;
+@property (weak, nonatomic) IBOutlet UIButton *imageButton;
+@property (weak, nonatomic) IBOutlet UIButton *videoButton;
 @property (weak, nonatomic) IBOutlet UIButton *postButton;
 
 @property (weak, nonatomic) IBOutlet UILabel *questionPrompt;
@@ -57,6 +55,7 @@ static char KVOContext;
 
 @property (strong, nonatomic) NSURL *firstMediaURL;
 @property (strong, nonatomic) NSURL *secondMediaURL;
+@property (strong, nonatomic) VMediaAttachmentPresenter *attachmentPresenter;
 
 @property (nonatomic, assign) BOOL didPublish;
 
@@ -71,7 +70,9 @@ static char KVOContext;
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    VCreatePollViewController *createView = (VCreatePollViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier: NSStringFromClass([VCreatePollViewController class])];
+    NSBundle *bundleForClass = [NSBundle bundleForClass:self];
+    UIStoryboard *storyboardForClass = [UIStoryboard storyboardWithName:NSStringFromClass(self) bundle:bundleForClass];
+    VCreatePollViewController *createView = (VCreatePollViewController *)[storyboardForClass instantiateViewControllerWithIdentifier: NSStringFromClass([VCreatePollViewController class])];
     createView.dependencyManager = dependencyManager;
     return createView;
 }
@@ -92,23 +93,24 @@ static char KVOContext;
 {
     [super viewDidLoad];
     
-    self.titleLabel.text = NSLocalizedString(@"NEW POLL", @"");
-    self.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
-    
     [self.constraintsThatNeedHalfPointConstant enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
     {
         [obj setConstant:0.5f];
     }];
 
-    UIImage *newImage = [self.mediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [self.mediaButton setImage:newImage forState:UIControlStateNormal];
-    self.mediaButton.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-
-    newImage = [self.searchImageButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [self.searchImageButton setImage:newImage forState:UIControlStateNormal];
-    self.searchImageButton.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    UIImage *imageIcon = [self.dependencyManager imageForKey:kImageIconKey];
+    UIImage *videoIcon = [self.dependencyManager imageForKey:kVideoIconKey];
+    // If we have icons use them, if not stick with defaults.
+    if (imageIcon != nil)
+    {
+        [self.imageButton setImage:imageIcon forState:UIControlStateNormal];
+    }
+    if (videoIcon != nil)
+    {
+        [self.videoButton setImage:videoIcon forState:UIControlStateNormal];
+    }
     
-    newImage = [self.leftRemoveButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIImage *newImage = [self.leftRemoveButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     [self.rightRemoveButton setImage:newImage forState:UIControlStateNormal];
     
     newImage = [self.leftRemoveButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
@@ -298,17 +300,29 @@ static char KVOContext;
 
 #pragma mark - Actions
 
-- (IBAction)mediaButtonAction:(id)sender
+- (IBAction)imageAction:(id)sender
 {
-    VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager workspaceFlowControllerWithAddedDependencies:@{
-        VImageToolControllerInitialImageEditStateKey: @(VImageToolControllerInitialImageEditStateFilter),
-        VVideoToolControllerInitalVideoEditStateKey: @(VVideoToolControllerInitialVideoEditStateVideo),
-    }];
-    workspaceFlowController.delegate = self;
-    workspaceFlowController.videoEnabled = YES;
-    [self presentViewController:workspaceFlowController.flowRootViewController
-                       animated:YES
-                     completion:nil];
+    [self showAttachmentWithAttachmentOptions:VMediaAttachmentOptionsImage];
+}
+
+- (IBAction)videoAction:(id)sender
+{
+    [self showAttachmentWithAttachmentOptions:VMediaAttachmentOptionsVideo];
+}
+
+- (void)showAttachmentWithAttachmentOptions:(VMediaAttachmentOptions)attachmentOptions
+{
+    self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager];
+    __weak typeof(self) welf = self;
+    self.attachmentPresenter.attachmentTypes = attachmentOptions;
+    self.attachmentPresenter.resultHandler = ^void(BOOL success, VPublishParameters *publishParameters)
+    {
+        [welf imagePickerFinishedWithURL:publishParameters.mediaToUploadURL
+                            previewImage:publishParameters.previewImage];
+        [welf dismissViewControllerAnimated:YES
+                                 completion:nil];
+    };
+    [self.attachmentPresenter presentOnViewController:self];
 }
 
 - (IBAction)clearLeftMedia:(id)sender
@@ -594,27 +608,6 @@ static char KVOContext;
             }
         }
     }
-}
-
-#pragma mark - VWorkspaceFlowControllerDelegate
-
-- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-  finishedWithPublishParameters:(VPublishParameters *)publishParameters
-{
-    [self imagePickerFinishedWithURL:publishParameters.mediaToUploadURL
-                        previewImage:publishParameters.previewImage];
-
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (BOOL)shouldShowPublishForWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-{
-    return NO;
 }
 
 @end

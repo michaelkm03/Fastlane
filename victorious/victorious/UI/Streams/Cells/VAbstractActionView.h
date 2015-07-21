@@ -29,12 +29,6 @@
  */
 @property (nonatomic, weak) id <VSequenceActionsDelegate> sequenceActionsDelegate;
 
-/**
- *  While this is true we are waiting on the network to repost this sequence.
- *  Override this setter to enable/disable controls where appropriate.
- */
-@property (nonatomic, assign) BOOL reposting;
-
 @end
 
 /**
@@ -86,10 +80,5 @@
  */
 - (void)updateActionItemsOnBar:(VFlexBar *)actionBar
                    forSequence:(VSequence *)sequence;
-
-/**
- *  Subclasses should update any repost buttons for the passed in sequence.
- */
-- (void)updateRepostButtonForSequence:(VSequence *)sequence;
 
 @end

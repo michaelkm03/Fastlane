@@ -116,12 +116,11 @@ static const NSTimeInterval kButtonUpDelay = 0.3;
         
         [UIView animateWithDuration:[self transitionDuration:transitionContext]
                               delay:0.0f
-             usingSpringWithDamping:0.75f
+             usingSpringWithDamping:1.0f
               initialSpringVelocity:0.0f
                             options:0
                          animations:^
          {
-             animatingView.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight(animatingViewController.view.bounds));
              animatingView.alpha = 0.0f;
          } completion:^(BOOL finished)
          {

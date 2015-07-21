@@ -437,7 +437,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         return;
     }
     
-#if !V_NO_SWITCH_ENVIRONMENTS
+#ifdef V_SWITCH_ENVIRONMENTS
     NSError *environmentError = notification.userInfo[ VEnvironmentErrorKey ];
     if ( environmentError != nil )
     {
@@ -505,16 +505,22 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     }
 }
 
-#pragma mark - VFollowing
+#pragma mark - VFollowResponder
 
-- (void)followUser:(VUser *)user withCompletion:(VFollowEventCompletion)completion
+- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion
 {
-    [self.followHelper followUser:user withCompletion:completion];
+    [self.followHelper followUser:user
+              withAuthorizedBlock:authorizedBlock
+                    andCompletion:completion];
 }
 
-- (void)unfollowUser:(VUser *)user withCompletion:(VFollowEventCompletion)completion
+- (void)unfollowUser:(VUser *)user
+ withAuthorizedBlock:(void (^)(void))authorizedBlock
+       andCompletion:(VFollowHelperCompletion)completion
 {
-    [self.followHelper unfollowUser:user withCompletion:completion];
+    [self.followHelper unfollowUser:user
+                withAuthorizedBlock:authorizedBlock
+                      andCompletion:completion];
 }
 
 #pragma mark - VHashtag

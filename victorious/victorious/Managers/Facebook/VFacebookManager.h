@@ -8,6 +8,7 @@
 
 #import <FacebookSDK/FBSession.h>
 #import <Foundation/Foundation.h>
+#import "VPermission.h"
 
 /**
  Error domain for publish permissions errors

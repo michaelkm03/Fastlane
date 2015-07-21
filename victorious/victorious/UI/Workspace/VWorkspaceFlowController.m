@@ -420,12 +420,8 @@ typedef NS_ENUM(NSInteger, VWorkspaceFlowControllerState)
         }
     };
     BOOL selectedFromAssetsLibraryOrSearch = self.cameraViewController.didSelectFromWebSearch || self.cameraViewController.didSelectAssetFromLibrary;
-    BOOL shouldShowPublish = YES;
-    if ([self.delegate respondsToSelector:@selector(shouldShowPublishForWorkspaceFlowController:)])
-    {
-        shouldShowPublish = [self.delegate shouldShowPublishForWorkspaceFlowController:self];
-    }
-    workspaceViewController.continueText = shouldShowPublish ? NSLocalizedString(@"Publish", @"") : NSLocalizedString(@"Next", @"");
+
+    workspaceViewController.continueText = NSLocalizedString(@"Next", @"");
     
     [self.flowNavigationController pushViewController:workspaceViewController
                                              animated:!selectedFromAssetsLibraryOrSearch];

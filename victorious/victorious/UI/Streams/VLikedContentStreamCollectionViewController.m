@@ -10,6 +10,11 @@
 #import "VNoContentView.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VObjectManager+Login.h"
+#import "VDependencyManager+VNavigationMenuItem.h"
+
+static NSString * const kNoLikedContentTitleKey = @"noContentTitle";
+static NSString * const kNoLikedContentSubtitleKey = @"noContentSubtitle";
+static NSString * const kNoLikedContentIconKey = @"noContentIcon";
 
 @interface VLikedContentStreamCollectionViewController ()
 
@@ -106,10 +111,11 @@
             if ( [noContentView respondsToSelector:@selector(setDependencyManager:)] )
             {
                 noContentView.dependencyManager = self.dependencyManager;
+                noContentView.title = NSLocalizedString([self.dependencyManager stringForKey:kNoLikedContentTitleKey], @"");
+                noContentView.message = NSLocalizedString([self.dependencyManager stringForKey:kNoLikedContentSubtitleKey], @"");
+                noContentView.icon = [self.dependencyManager imageForKey:kNoLikedContentIconKey];
             }
-            noContentView.title = NSLocalizedString( @"NOTHING LIKED YET", @"" );
-            noContentView.message = NSLocalizedString( @"Posts you like will appear here.", @"" );
-            noContentView.icon = [UIImage imageNamed:@"liked_stream_empty"];
+            
             self.noContentView = noContentView;
             [(VNoContentView *)self.noContentView resetInitialAnimationState];
         }
@@ -149,6 +155,20 @@
             completion(success);
         }
     }];
+}
+
+#pragma mark - Accessory items
+
+- (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
+{
+    // Make sure only accessory screen items for THIS view controller are shown
+    NSArray *localAccessoryItems = [self.dependencyManager accessoryMenuItemsWithInheritance:NO];
+    if (![localAccessoryItems containsObject:menuItem])
+    {
+        return NO;
+    }
+    
+    return YES;
 }
 
 @end

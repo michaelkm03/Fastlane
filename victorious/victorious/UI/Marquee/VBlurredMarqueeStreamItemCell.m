@@ -38,6 +38,7 @@ static const CGFloat kShadowOpacity = 0.4f;
     self.previewContainer.layer.shadowColor = [UIColor blackColor].CGColor;
     self.previewContainer.layer.shadowOffset = CGSizeMake(0.0f, kShadowOffsetY);
     self.previewContainer.layer.shadowOpacity = kShadowOpacity;
+    self.previewContainer.layer.shouldRasterize = YES;
     
     self.previewContainerTopConstraint.constant = kPreviewTopConstraintHeight;
     self.previewContainerLeftConstraint.constant = kPreviewHorizontalInset;

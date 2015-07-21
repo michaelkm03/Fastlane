@@ -8,6 +8,8 @@
 
 #import "VToolController.h"
 
+#import "NSArray+VMap.h"
+
 // Image Blurring
 #import "NSURL+MediaType.h"
 #import "UIImage+ImageEffects.h"
@@ -147,6 +149,19 @@
                withCompletion:(void (^)(BOOL finished, NSURL *renderedMediaURL, UIImage *previewImage, NSError *error))completion
 {
     NSAssert(false, @"Subclasses must implement me!");
+}
+
+- (void)disableTool:(id)tool
+{
+    NSMutableArray *newTools = [[NSMutableArray alloc] init];
+    for (id existingTool in self.tools)
+    {
+        if (existingTool != tool)
+        {
+            [newTools addObject:existingTool];
+        }
+    }
+    _tools = newTools;
 }
 
 @end

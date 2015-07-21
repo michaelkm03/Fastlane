@@ -39,9 +39,7 @@ static const CGFloat kGradientMagnitude = 20.0f;
     {
         VWorkspaceViewController *workvc = (VWorkspaceViewController *)toViewController;
         workvc.disablesInpectorOnKeyboardAppearance = YES;
-        workvc.disablesNavigationItemsOnKeyboardAppearance = YES;
         workvc.adjustsCanvasViewFrameOnKeyboardAppearance = YES;
-        [workvc bringTopChromeOutOfView];
         [workvc bringBottomChromeOutOfView];
         
         radialGradientMaskView = [[VRadialGradientView alloc] initWithFrame:workvc.canvasView.bounds];

@@ -121,12 +121,6 @@ static CGFloat const kAnimationBounceCoefficient = 0.008;
     return [VInsetMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:bounds];
 }
 
-- (void)setupStreamItemCell:(VAbstractMarqueeStreamItemCell *)streamItemCell withDependencyManager:(VDependencyManager *)dependencyManager andStreamItem:(VStreamItem *)streamItem
-{
-    streamItemCell.dependencyManager = dependencyManager;
-    streamItemCell.streamItem = streamItem;
-}
-
 + (Class)marqueeStreamItemCellClass
 {
     return [VInsetMarqueeStreamItemCell class];

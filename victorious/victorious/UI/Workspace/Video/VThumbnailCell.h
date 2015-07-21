@@ -20,4 +20,9 @@
  */
 @property (nonatomic, strong) UIImage *thumbnail;
 
+/**
+ *  The activity indicator for the thumbnail cell
+ */
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
 @end

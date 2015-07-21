@@ -47,10 +47,8 @@
 #import "VUserProfileViewController.h"
 #import "VPurchaseViewController.h"
 
-// Workspace
-#import "VWorkspaceFlowController.h"
-#import "VImageToolController.h"
-#import "VVideoToolController.h"
+// Media Attachments
+#import "VMediaAttachmentPresenter.h"
 
 // Transitioning
 #import "VLightboxTransitioningDelegate.h"
@@ -106,6 +104,7 @@
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VCoachmarkManager.h"
 #import "VSequenceExpressionsObserver.h"
+#import "VExperienceEnhancerResponder.h"
 #import "VDependencyManager+VTracking.h"
 
 // Cell focus
@@ -116,7 +115,7 @@ static const CGFloat kMaxInputBarHeight = 200.0f;
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VWorkspaceFlowControllerDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder>
 
 @property (nonatomic, strong) NSUserActivity *handoffObject;
 
@@ -142,6 +141,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 // Text input
 @property (nonatomic, weak) VKeyboardInputAccessoryView *textEntryView;
 @property (nonatomic, strong) VElapsedTimeFormatter *elapsedTimeFormatter;
+@property (nonatomic, strong) VMediaAttachmentPresenter *mediaAttachmentPresenter;
 
 // Constraints
 @property (nonatomic, weak) NSLayoutConstraint *bottomKeyboardToContainerBottomConstraint;
@@ -176,6 +176,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, strong) VContentLikeButton *likeButton;
 
 @property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
+
+@property (nonatomic, strong) NSURL *mediaURL;
 
 @end
 
@@ -511,14 +513,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                              selector:@selector(keyboardDidChangeFrame:)
                                                  name:VInputAccessoryViewKeyboardFrameDidChangeNotification
                                                object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(experienceEnhancerDidRequireLogin:)
-                                                 name:VExperienceEnhancerBarDidRequireLoginNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(showPurchaseViewController:)
-                                                 name:VExperienceEnhancerBarDidRequirePurchasePrompt
-                                               object:nil];
     
     [self.navigationController setNavigationBarHidden:YES
                                              animated:YES];
@@ -642,9 +636,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:VInputAccessoryViewKeyboardFrameDidChangeNotification
                                                   object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:VExperienceEnhancerBarDidRequirePurchasePrompt
-                                                  object:nil];
     
     self.contentCollectionView.delegate = nil;
     self.videoCell.delegate = nil;
@@ -709,48 +700,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 }
 
 #pragma mark - Notification Handlers
-
-- (void)showPurchaseViewController:(NSNotification *)notification
-{
-    if ( notification.userInfo == nil )
-    {
-        return;
-    }
-    
-    VExperienceEnhancer *experienceEnhander = (VExperienceEnhancer *)notification.userInfo[ @"experienceEnhancer" ];
-    if ( experienceEnhander == nil )
-    {
-        return;
-    }
-    
-    NSDictionary *params = @{ VTrackingKeyProductIdentifier : experienceEnhander.voteType.productIdentifier ?: @"" };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLockedVoteType parameters:params];
-    
-    VPurchaseViewController *viewController = [VPurchaseViewController newWithDependencyManager:self.dependencyManager];
-    viewController.voteType = experienceEnhander.voteType;
-    viewController.transitioningDelegate = self.modalTransitionDelegate;
-    viewController.delegate = self;
-    [self presentViewController:viewController animated:YES completion:nil];
-}
-
-- (void)experienceEnhancerDidRequireLogin:(NSNotification *)notification
-{
-    __weak typeof(self) welf = self;
-    [welf.authorizedAction performFromViewController:self context:VAuthorizationContextVoteBallistic completion:^(BOOL authorized)
-     {
-         if (!authorized)
-         {
-             return;
-         }
-         // Use the provided index path of the selected emotive ballistic that trigger the notificiation
-         // to perform the authorized action once authorization is successful
-         NSIndexPath *experienceEnhancerIndexPath = notification.userInfo[ @"experienceEnhancerIndexPath" ];
-         if ( experienceEnhancerIndexPath != nil )
-         {
-             [welf.experienceEnhancerCell.experienceEnhancerBar selectExperienceEnhancerAtIndex:experienceEnhancerIndexPath];
-         }
-     }];
-}
 
 - (void)keyboardDidChangeFrame:(NSNotification *)notification
 {
@@ -1625,14 +1574,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     void (^showCamera)(void) = ^void(void)
     {
-        VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager templateValueOfType:[VWorkspaceFlowController class]
-                                                                                                 forKey:VDependencyManagerWorkspaceFlowKey
-                                                                                  withAddedDependencies:@{VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateFilter),
-                                                                                                          VVideoToolControllerInitalVideoEditStateKey:@(VVideoToolControllerInitialVideoEditStateVideo)}];
-        
-        workspaceFlowController.delegate = self;
-        workspaceFlowController.videoEnabled = YES;
-        [self presentViewController:workspaceFlowController.flowRootViewController animated:YES completion:nil];
+        [self showMediaAttachmentUI];
     };
     
     if (self.publishParameters.mediaToUploadURL == nil)
@@ -1654,6 +1596,34 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                           }
                                                                                           cancel:nil];
     [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)showMediaAttachmentUI
+{
+    [self.view endEditing:YES];
+    self.mediaAttachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager];
+    __weak typeof(self) welf = self;
+    self.mediaAttachmentPresenter.attachmentTypes = VMediaAttachmentOptionsImage | VMediaAttachmentOptionsVideo | VMediaAttachmentOptionsGIF;
+    self.mediaAttachmentPresenter.resultHandler = ^void(BOOL success, VPublishParameters *publishParameters)
+    {
+        __strong typeof(self) strongSelf = welf;
+        [strongSelf onMediaAttachedWithPreviewImage:publishParameters.previewImage
+                                           mediaURL:publishParameters.mediaToUploadURL];
+    };
+    [self.mediaAttachmentPresenter presentOnViewController:self];
+}
+
+- (void)onMediaAttachedWithPreviewImage:(UIImage *)previewImage
+                               mediaURL:(NSURL *)mediaURL
+{
+    self.mediaURL = mediaURL;
+    [self.textEntryView setSelectedThumbnail:previewImage];
+    
+    [self dismissViewControllerAnimated:YES completion:^
+     {
+         self.mediaAttachmentPresenter = nil;
+         [self.textEntryView startEditing];
+     }];
 }
 
 - (void)configureLikeButtonWithContentCell:(VContentCell *)contentCell forSequence:(VSequence *)sequence
@@ -1952,34 +1922,34 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 #pragma mark - VWorkspaceFlowControllerDelegate
 
-- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-  finishedWithPublishParameters:(VPublishParameters *)publishParameters
-{
-    self.publishParameters = publishParameters;
-    [self.textEntryView setSelectedThumbnail:publishParameters.previewImage];
-
-    [self dismissViewControllerAnimated:YES completion:^
-     {
-         [self.textEntryView startEditing];
-         
-         [UIView animateWithDuration:0.0f
-                          animations:^
-          {
-              [self.contentCollectionView reloadData];
-              [self.contentCollectionView.collectionViewLayout invalidateLayout];
-          }];
-     }];
-}
-
-- (BOOL)shouldShowPublishForWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-{
-    return NO;
-}
+//- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
+//{
+//    [self dismissViewControllerAnimated:YES completion:nil];
+//}
+//
+//- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
+//  finishedWithPublishParameters:(VPublishParameters *)publishParameters
+//{
+//    self.publishParameters = publishParameters;
+//    [self.textEntryView setSelectedThumbnail:publishParameters.previewImage];
+//
+//    [self dismissViewControllerAnimated:YES completion:^
+//     {
+//         [self.textEntryView startEditing];
+//         
+//         [UIView animateWithDuration:0.0f
+//                          animations:^
+//          {
+//              [self.contentCollectionView reloadData];
+//              [self.contentCollectionView.collectionViewLayout invalidateLayout];
+//          }];
+//     }];
+//}
+//
+//- (BOOL)shouldShowPublishForWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
+//{
+//    return NO;
+//}
 
 #pragma mark - VHashtagSelectionResponder
 
@@ -2007,6 +1977,31 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (NSString *)screenIdentifier
 {
     return [self.dependencyManager stringForKey:VDependencyManagerIDKey];
+}
+
+#pragma mark - VExperienceEnhancerResponder
+
+- (void)showPurchaseViewController:(VVoteType *)voteType
+{
+    NSDictionary *params = @{ VTrackingKeyProductIdentifier : voteType.productIdentifier ?: @"" };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLockedVoteType parameters:params];
+    
+    VPurchaseViewController *viewController = [VPurchaseViewController newWithDependencyManager:self.dependencyManager];
+    viewController.voteType = voteType;
+    viewController.transitioningDelegate = self.modalTransitionDelegate;
+    viewController.delegate = self;
+    [self presentViewController:viewController animated:YES completion:nil];
+}
+
+- (void)authorizeWithCompletion:(void(^)(BOOL))completion
+{
+    [self.authorizedAction performFromViewController:self context:VAuthorizationContextVoteBallistic completion:^(BOOL authorized)
+     {
+         if ( completion != nil )
+         {
+             completion( authorized );
+         }
+     }];
 }
 
 @end

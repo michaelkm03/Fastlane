@@ -190,4 +190,13 @@ static NSString * const kFollowedHashtagIconKey = @"followed_hashtag_icon";
     }
 }
 
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+{
+    if ( !self.enabled && [self pointInside:[self convertPoint:point toView:self] withEvent:event] )
+    {
+        return self;
+    }
+    return [super hitTest:point withEvent:event];
+}
+
 @end

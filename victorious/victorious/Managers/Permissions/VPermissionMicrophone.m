@@ -31,6 +31,11 @@
     }
 }
 
+- (void)trackPermission:(NSString *)trackingStatus
+{
+    [self.permissionsTrackingHelper permissionsDidChange:VTrackingValueMicrophoneDidAllow permissionState:trackingStatus];
+}
+
 - (void)requestSystemPermissionWithCompletion:(VPermissionRequestCompletionHandler)completion
 {
     // Completion handler is required
@@ -41,6 +46,16 @@
      {
          dispatch_async(dispatch_get_main_queue(), ^
                         {
+                            NSString *trackingState;
+                            if (granted)
+                            {
+                                trackingState = VTrackingValueAuthorized;
+                            }
+                            else
+                            {
+                                trackingState = VTrackingValueDenied;
+                            }
+                            [self trackPermission:trackingState];
                             completion(granted, granted ? VPermissionStateAuthorized : VPermissionStateSystemDenied, nil);
                         });
      }];
