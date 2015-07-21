@@ -113,6 +113,19 @@ static NSString * const kCreationFlowSourceSearch = @"search";
 
 #pragma mark - Private Methods
 
+- (NSString *)sourceStringForSourceType:(VCreationFlowSource)source
+{
+    switch (self.source)
+    {
+        case VCreationFlowSourceCamera:
+            return kCreationFlowSourceCamera;
+        case VCreationFlowSourceLibrary:
+            return kCreationFlowSourceLibrary;
+        case VCreationFlowSourceSearch:
+            return kCreationFlowSourceSearch;
+    }
+}
+
 - (void)prepareWorkspaceWithMediaURL:(NSURL *)mediaURL
                      andPreviewImage:(UIImage *)previewImage
 {
@@ -216,19 +229,7 @@ static NSString * const kCreationFlowSourceSearch = @"search";
     VPublishParameters *publishParameters = [[VPublishParameters alloc] init];
     publishParameters.mediaToUploadURL = renderedMediaURL;
     publishParameters.previewImage = previewImage;
-    
-    switch (self.source)
-    {
-        case VCreationFlowSourceCamera:
-            publishParameters.source = kCreationFlowSourceCamera;
-            break;
-        case VCreationFlowSourceLibrary:
-            publishParameters.source = kCreationFlowSourceLibrary;
-            break;
-        case VCreationFlowSourceSearch:
-            publishParameters.source = kCreationFlowSourceSearch;
-            break;
-    }
+    publishParameters.source = [self sourceStringForSourceType:self.source];
     
     [self configurePublishParameters:publishParameters
                        withWorkspace:workspace];
