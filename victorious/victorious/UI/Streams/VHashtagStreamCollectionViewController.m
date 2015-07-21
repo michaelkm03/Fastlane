@@ -45,7 +45,6 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    
     NSAssert([NSThread isMainThread], @"This method needs to be called on the main thread");
     NSString *hashtag = [dependencyManager stringForKey:kHashtagKey];
     NSString *streamURL = [dependencyManager stringForKey:VStreamCollectionViewControllerStreamURLKey];

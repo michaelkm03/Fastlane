@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@class VStreamItem;
+@class VStreamItem, VStream;
 
 /**
  Objects conforming to this protocol create and
@@ -58,5 +58,10 @@
  */
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView
                         withStreamItems:(NSArray *)streamItems;
+
+/**
+ Returns a cell configured to display a stream item with stream parameter. Useful for listicle creation (since they require both sequence and stream information)
+ */
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath inStream:(VStream *)stream;
 
 @end

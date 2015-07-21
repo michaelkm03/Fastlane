@@ -557,8 +557,21 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     }
     
     VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
-    UICollectionViewCell *cell = [self.streamCellFactory collectionView:self.collectionView
-                                                      cellForStreamItem:sequence atIndexPath:indexPath];
+    UICollectionViewCell *cell;
+    if ([self.streamCellFactory respondsToSelector:@selector(collectionView:cellForStreamItem:atIndexPath:inStream:)])
+    {
+        cell = [self.streamCellFactory collectionView:self.collectionView
+                                    cellForStreamItem:sequence
+                                          atIndexPath:indexPath
+                                             inStream:self.currentStream];
+    }
+    else
+    {
+        cell = [self.streamCellFactory collectionView:self.collectionView
+                                    cellForStreamItem:sequence
+                                          atIndexPath:indexPath];
+    }
+
     
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
     

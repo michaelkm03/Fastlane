@@ -12,10 +12,35 @@
 
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
 @property (strong, nonatomic) IBOutlet UIView *selectionView;
+@property (strong, nonatomic) IBOutlet UIView *durationContainer;
+@property (strong, nonatomic) IBOutlet UILabel *durationLabel;
+
+@property (strong, nonatomic) NSDateComponentsFormatter *dateFormatter;
 
 @end
 
 @implementation VAssetCollectionViewCell
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self != nil)
+    {
+        _dateFormatter = [[NSDateComponentsFormatter alloc] init];
+        _dateFormatter.zeroFormattingBehavior = NSDateComponentsFormatterZeroFormattingBehaviorNone;
+        _dateFormatter.allowedUnits = (NSCalendarUnitMinute | NSCalendarUnitSecond);
+        _dateFormatter.formattingContext = NSFormattingContextListItem;
+        _dateFormatter.unitsStyle = NSDateComponentsFormatterUnitsStylePositional;
+    }
+    return self;
+}
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    self.durationContainer.layer.cornerRadius = CGRectGetHeight(self.durationContainer.bounds) * 0.5f;
+    self.durationContainer.layer.masksToBounds = YES;
+}
 
 - (void)prepareForReuse
 {
@@ -41,6 +66,8 @@
         self.imageView.image = nil;
     }
     _asset = asset;
+    
+    [self configureForMediaTypeWithAsset:asset];
 
     CGFloat scale = [UIScreen mainScreen].scale;
     CGSize cellSize = self.imageView.bounds.size;
@@ -70,6 +97,21 @@
              });
          }];
     });
+}
+
+#pragma mark - Private Methods
+
+- (void)configureForMediaTypeWithAsset:(PHAsset *)asset
+{
+    if (asset.mediaType == PHAssetMediaTypeVideo)
+    {
+        self.durationContainer.hidden = NO;
+        self.durationLabel.text = [self.dateFormatter stringFromTimeInterval:asset.duration];
+    }
+    else
+    {
+        self.durationContainer.hidden = YES;
+    }
 }
 
 @end

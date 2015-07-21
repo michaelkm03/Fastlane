@@ -786,6 +786,13 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     self.publishPrompt.transform = CGAffineTransformIdentity;
 }
 
+#pragma mark - VBackgroundContainer
+
+- (UIView *)backgroundContainerView
+{
+    return self.view;
+}
+
 @end
 
 static NSString * const kPublishScreenKey = @"publishScreen";

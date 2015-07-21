@@ -23,6 +23,7 @@
 #import "VDependencyManager.h"
 #import <KVOController/FBKVOController.h>
 #import "VHashtagResponder.h"
+#import "VFollowControl.h"
 
 static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 
@@ -186,19 +187,25 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
     VTrendingTagCell *customCell = (VTrendingTagCell *)[tableView dequeueReusableCellWithIdentifier:kVFollowingTagIdentifier forIndexPath:indexPath];
     VHashtag *hashtag = self.userTags[ indexPath.row ];
     [customCell setHashtag:hashtag];
-    customCell.shouldCellRespond = YES;
     customCell.dependencyManager = self.dependencyManager;
     
     __weak typeof(customCell) weakCell = customCell;
     customCell.subscribeToTagAction = ^(void)
     {
-        // Disable follow / unfollow button
-        if (!weakCell.shouldCellRespond)
+        __strong VTrendingTagCell *strongCell = weakCell;
+        
+        if ( strongCell == nil )
         {
             return;
         }
-        weakCell.shouldCellRespond = NO;
         
+        // Disable follow / unfollow button
+        if (strongCell.followHashtagControl.controlState == VFollowControlStateLoading)
+        {
+            return;
+        }
+        [strongCell.followHashtagControl setControlState:VFollowControlStateLoading animated:YES];
+
         // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
         if ([self isUserSubscribedToHashtag:hashtag.tag])
         {
@@ -253,6 +260,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
      }
                 failureBlock:^(NSError *error)
      {
+         [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
          [self showFailureHUD];
      }];
 }
@@ -267,6 +275,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
      }
                   failureBlock:^(NSError *error)
      {
+         [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
          [self showFailureHUD];
      }];
 }
@@ -288,8 +297,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
             VTrendingTagCell *trendingCell = (VTrendingTagCell *)cell;
             if ( [trendingCell.hashtag.tag isEqualToString:hashtag.tag] )
             {
-                trendingCell.shouldCellRespond = respond;
-                [trendingCell updateSubscribeStatusAnimated:YES];
+                [trendingCell updateSubscribeStatusAnimated:YES showLoading:!respond];
                 return;
             }
         }
