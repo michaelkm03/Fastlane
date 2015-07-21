@@ -104,6 +104,9 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
     {
         [self.searchBar becomeFirstResponder];
     }
+    
+    // Start searching immediately with empty string
+    [self performSearch];
 }
 
 - (BOOL)isReadyToSearch
@@ -147,12 +150,6 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
                                   onError:^(NSError *error)
     {
         [self.activityIndicatorView stopAnimating];
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SearchFailed", @"")
-                                                        message:@""
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                              otherButtonTitles:nil];
-        [alert show];
     }];
     
     NSDictionary *params = @{ VTrackingKeySearchTerm : self.searchBar.text ?: @"" };
