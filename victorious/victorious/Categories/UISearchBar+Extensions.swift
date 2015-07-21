@@ -10,8 +10,8 @@ import UIKit
 
 extension UISearchBar {
     
-    /// Finds the `UITextField` subview into which users type their search string
+    /// Finds the first `UITextField` subview into which users type their search string
     var v_textField: UITextField? {
-        return self.v_findSubview({ $0 is UITextField }) as? UITextField
+        return self.v_findSubviews({ $0 is UITextField }).first as? UITextField
     }
 }

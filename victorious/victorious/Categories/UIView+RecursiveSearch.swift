@@ -10,19 +10,20 @@ import UIKit
 
 extension UIView {
     
-    /// Recursively finds a view that when provided the the `pattern` closure, returns true
+    /// Recursively finds the any subviews that return true when used as the parameter to the `pattern` closure
     ///
     /// :parameter: `pattern`: Closure to call to determine if view is the one sought
     /// :returns: A view that passes the test or nil
-    func v_findSubview( pattern: (UIView)->(Bool) ) -> UIView? {
+    func v_findSubviews( pattern: (UIView)->(Bool) ) -> [UIView] {
+        var output = [UIView]()
         for subview in self.subviews as! [UIView] {
             if pattern( subview ) {
-                return subview
+                output.append( subview )
             }
-            else if let result = subview.v_findSubview( pattern ) {
-                return result
+            else {
+                output += subview.v_findSubviews( pattern )
             }
         }
-        return nil
+        return output
     }
 }

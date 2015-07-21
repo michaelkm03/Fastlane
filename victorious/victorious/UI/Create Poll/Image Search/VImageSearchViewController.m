@@ -68,9 +68,9 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
     
     self.searchBar.placeholder = NSLocalizedString(@"Search", @"");
-    UITextField *searchTextField = (UITextField *)[self.searchBar v_findSubview:^BOOL(UIView *__nonnull view) {
+    UITextField *searchTextField = (UITextField *)[self.searchBar v_findSubviews:^BOOL(UIView *__nonnull view) {
         return [view isKindOfClass:[UITextField class]];
-    }];
+    }].firstObject;
     searchTextField.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0f];
     searchTextField.tintColor = [self.dependencyMananger colorForKey:VDependencyManagerLinkColorKey];
     searchTextField.font = [self.dependencyMananger fontForKey:VDependencyManagerHeading4FontKey];
