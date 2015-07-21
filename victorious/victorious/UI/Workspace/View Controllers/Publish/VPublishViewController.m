@@ -813,7 +813,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 
 - (void)alongsideDismissal
 {
-    self.blurView.alpha = 0.0f;
+    self.view.alpha = 0.0f;
 }
 
 @end
