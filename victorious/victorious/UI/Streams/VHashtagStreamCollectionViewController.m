@@ -64,6 +64,10 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     VHashtagStreamCollectionViewController *streamCollection = [[self class] streamViewControllerForStream:stream];
     streamCollection.selectedHashtag = hashtag;
     streamCollection.dependencyManager = dependencyManager;
+    
+    streamCollection.followControl = [[VFollowControl alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
+    streamCollection.followControl.dependencyManager = dependencyManager;
+    
     return streamCollection;
 }
 
@@ -326,18 +330,6 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 - (UIControl *)customControlForAccessoryMenuItem:(VNavigationMenuItem *)menuItem
 {
     return self.followControl;
-}
-
-- (VFollowControl *)followControl
-{
-    if ( _followControl != nil )
-    {
-        return _followControl;
-    }
-    
-    _followControl = [[VFollowControl alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
-    [_followControl setDependencyManager:self.dependencyManager];
-    return _followControl;
 }
 
 - (BOOL)menuItem:(VNavigationMenuItem *)menuItem requiresAuthorizationWithContext:(VAuthorizationContext *)context
