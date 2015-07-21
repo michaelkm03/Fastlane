@@ -30,11 +30,7 @@ extension VObjectManager {
     /// :param: failure Closure to be called when request receives an error response
     func searchForGIF( keywords: [String], pageType:VPageType, success:GIFSearchSuccess?, failure:GIFSearchFailure? ) -> RKManagedObjectRequestOperation? {
         
-        let keywordList: String = join( ",", keywords )
-        let charSet = NSCharacterSet.alphanumericCharacterSet()
-        let escapedKeywordList = keywordList.stringByAddingPercentEncodingWithAllowedCharacters( charSet )!
-        
-        var filter = self.filterForKeywords( escapedKeywordList )
+        var filter = self.filterForKeywords( join( ",", keywords ))
         if !filter.canLoadPageType( pageType ) {
             failure?( error: nil, isLastPage: true )
             return nil
@@ -76,17 +72,15 @@ extension VObjectManager {
     // MARK: - Private helpers
     
     private func filterForTrending() -> VAbstractFilter {
-        let page = VPaginationManagerPageNumberMacro
-        let perPage = VPaginationManagerItemsPerPageMacro
-        let path = "/api/image/trending_gifs/\(page)/\(perPage)"
+        let path = "/api/image/trending_gifs/\(VPaginationManagerPageNumberMacro)/\(VPaginationManagerItemsPerPageMacro)"
         let context = self.managedObjectStore.persistentStoreManagedObjectContext
         return self.paginationManager.filterForPath( path, entityName: VAbstractFilter.entityName(), managedObjectContext: context )
     }
     
     private func filterForKeywords( keywordList: String ) -> VAbstractFilter {
-        let page = VPaginationManagerPageNumberMacro
-        let perPage = VPaginationManagerItemsPerPageMacro
-        let path = "/api/image/gif_search/\(keywordList)/\(page)/\(perPage)"
+        let charSet = NSCharacterSet.v_pathPartCharacterSet()
+        let escapedKeywordList = keywordList.stringByAddingPercentEncodingWithAllowedCharacters( charSet )!
+        let path = "/api/image/gif_search/\(escapedKeywordList)/\(VPaginationManagerPageNumberMacro)/\(VPaginationManagerItemsPerPageMacro)"
         let context = self.managedObjectStore.persistentStoreManagedObjectContext
         return self.paginationManager.filterForPath( path, entityName: VAbstractFilter.entityName(), managedObjectContext: context )
     }

@@ -47,3 +47,4 @@
 #import "UIImage+VTint.h"
 #import "VDependencyManager.h"
 #import "VScrollPaginator.h"
+#import "NSCharacterSet+VURLParts.h"
