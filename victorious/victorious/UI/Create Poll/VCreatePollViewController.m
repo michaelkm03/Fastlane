@@ -436,7 +436,6 @@ static char KVOContext;
         imageSearch.searchTerm = self.leftAnswerTextView.text;
     }
     
-#warning Create component and spec here
     VImageSearchViewController __weak *weakImageSearch = imageSearch;
     imageSearch.imageSelectionHandler = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {

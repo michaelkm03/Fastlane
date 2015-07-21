@@ -592,7 +592,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
         self.completionBlock(NO, nil, nil);
     }
     
-#warning Create component and spec here
     VImageSearchViewController *imageSearchViewController = [VImageSearchViewController newImageSearchViewControllerWithDependencyManager:self.dependencyManager];
     __weak typeof(self) welf = self;
     imageSearchViewController.imageSelectionHandler = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
