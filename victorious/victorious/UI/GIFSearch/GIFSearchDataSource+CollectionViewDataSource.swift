@@ -64,16 +64,12 @@ extension GIFSearchDataSource : UICollectionViewDataSource {
             cell.text = ""
             cell.loading = true
         case .Error:
-            cell.text = "Error loading results. :("
+            cell.text = NSLocalizedString( "Error loading results.", comment:"" )
             cell.loading = false
         case .Content where self.sections.count == 0:
             cell.loading = false
             cell.text = {
-                if let searchText = self.mostRecentSearchText {
-                    return "No results for \"\(searchText)\" :("
-                } else  {
-                    return "No results :("
-                }
+                return NSLocalizedString( "No results", comment:"" )
             }()
         default:
             cell.text = ""
