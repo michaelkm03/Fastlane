@@ -220,7 +220,7 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
 
 - (BOOL)needsAspectRatioUpdateForSequence:(VSequence *)sequence
 {
-    return self.previewContainerHeightConstraint.multiplier != 1 / [sequence previewAssetAspectRatio];
+    return self.previewContainerHeightConstraint.multiplier != 1.0f / [sequence previewAssetAspectRatio];
 }
 
 - (void)updateCountsTextViewForSequence:(VSequence *)sequence
