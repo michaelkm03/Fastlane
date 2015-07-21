@@ -49,6 +49,11 @@
 @property (nonatomic, weak) id<VTextWorkspaceFlowControllerDelegate> textFlowDelegate;
 
 /**
+ Optional completion handler that will get called after publishing finishes.
+ */
+@property (nonatomic, copy) VWorkspaceCompletion publishCompletionBlock;
+
+/**
  Publishes the current content in the workspace.
  */
 - (void)publishContent;

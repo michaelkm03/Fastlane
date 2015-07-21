@@ -22,7 +22,7 @@ static NSString * const kSkipButtonTextKey = @"skipButtonText";
 static NSString * const kDoneButtonTextKey = @"doneButtonText";
 static NSString * const kStatusBarStyleKey = @"statusBarStyle";
 
-@interface VForcedWorkspaceContainerViewController () <VTextWorkspaceFlowControllerDelegate, VCreationFlowControllerDelegate>
+@interface VForcedWorkspaceContainerViewController () <VTextWorkspaceFlowControllerDelegate>
 
 @property (strong, nonatomic) VTextWorkspaceFlowController *flowController;
 @property (assign, nonatomic) BOOL ableToPublish;
@@ -106,7 +106,13 @@ static NSString * const kStatusBarStyleKey = @"statusBarStyle";
     self.flowController = [VTextWorkspaceFlowController textWorkspaceFlowControllerWithDependencyManager:self.dependencyManager
                                                                                        addedDependencies:dependencies];
     self.flowController.textFlowDelegate = self;
-    self.flowController.creationFlowDelegate = self;
+    
+    // Continue registration flow after we're done publishing
+    __weak typeof(self) welf = self;
+    self.flowController.publishCompletionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
+    {
+        [welf.delegate continueRegistrationFlow];
+    };
     
     // Add workspace as child view controller
     [self addChildViewController:self.flowController];
@@ -170,14 +176,5 @@ static NSString * const kStatusBarStyleKey = @"statusBarStyle";
 #pragma mark - VLoginFlowScreen
 
 @synthesize delegate = _delegate;
-
-#pragma mark - VCreationFlowControllerDelegate
-
-- (void)creationFlowController:(VCreationFlowController *)creationFlowController
-      finishedWithPreviewImage:(UIImage *)previewImage
-              capturedMediaURL:(NSURL *)capturedMediaURL
-{
-    [self.delegate continueRegistrationFlow];
-}
 
 @end

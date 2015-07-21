@@ -111,10 +111,14 @@
 
 - (void)publishContent
 {
+    // Check with delegate to see if publishing is forced
     if ([self.delegate respondsToSelector:@selector(isCreationForced)])
     {
         self.textToolController.publishIsForced = [self.textFlowDelegate isCreationForced];
     }
+    
+    // Set completion block for publishing
+    self.textWorkspaceViewController.completionBlock = self.publishCompletionBlock;
     
     // Publish text post
     [self.textWorkspaceViewController publishContent];
@@ -157,6 +161,7 @@
     self.attachmentPresenter.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
     {
         __strong typeof(welf) strongSelf = welf;
+        
         [strongSelf dismissViewControllerAnimated:YES
                                        completion:nil];
         [strongSelf didCaptureMediaWithURL:mediaURL previewImage:previewImage];
