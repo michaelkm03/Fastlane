@@ -31,7 +31,6 @@
         _dateFormatter.allowedUnits = (NSCalendarUnitMinute | NSCalendarUnitSecond);
         _dateFormatter.formattingContext = NSFormattingContextListItem;
         _dateFormatter.unitsStyle = NSDateComponentsFormatterUnitsStylePositional;
-//        _dateFormatter.unitsStyle = NSDateComponentsFormatterUnitsStyleAbbreviated;
     }
     return self;
 }
@@ -62,7 +61,6 @@
     _asset = asset;
     
     [self configureForMediaTypeWithAsset:asset];
-
 
     CGFloat scale = [UIScreen mainScreen].scale;
     CGSize cellSize = self.imageView.bounds.size;
