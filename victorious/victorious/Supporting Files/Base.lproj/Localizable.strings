@@ -208,6 +208,7 @@
 "CameraSwitchFailed"    =   "Unable to switch camera mode";
 "Camera"                =   "Camera";   // Button that opens the camera
 "Search"                =   "Search";   // Button that opens web search for images
+"Gallery"               =   "Gallery";  // Button that opens gallery to photo library for images and videos
 "StillCaptureFailed"    =   "Unable to take picture";
 "VideoCaptureFailed"    =   "Unable to record video";
 "VideoSaveFailed"       =   "Unable to save video";
