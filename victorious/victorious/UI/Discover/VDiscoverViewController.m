@@ -400,7 +400,6 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                 {
                     return;
                 }
-                [strongCell.followHashtagControl setControlState:VFollowControlStateLoading animated:YES];
                 
                 // Check for authorization first
                 VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
@@ -412,6 +411,8 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                          [strongCell.followHashtagControl setControlState:VFollowControlStateUnfollowed animated:NO];
                          return;
                      }
+                     
+                     [strongCell.followHashtagControl setControlState:VFollowControlStateLoading animated:YES];
                      
                      // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
                      if ([self isUserSubscribedToHashtag:hashtag.tag])
@@ -583,14 +584,14 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 #pragma mark - VFollowResponder
 
-- (void)followUser:(VUser *)user withCompletion:(VFollowEventCompletion)completion
+- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion
 {
-    [self.followingHelper followUser:user withCompletion:completion];
+    [self.followingHelper followUser:user withAuthorizedBlock:authorizedBlock andCompletion:completion];
 }
 
-- (void)unfollowUser:(VUser *)user withCompletion:(VFollowEventCompletion)completion
+- (void)unfollowUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion
 {
-    [self.followingHelper unfollowUser:user withCompletion:completion];
+    [self.followingHelper unfollowUser:user withAuthorizedBlock:authorizedBlock andCompletion:completion];
 }
 
 @end

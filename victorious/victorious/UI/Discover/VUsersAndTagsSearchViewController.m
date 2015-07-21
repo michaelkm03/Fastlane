@@ -312,6 +312,7 @@ static NSInteger const kVMaxSearchResults = 1000;
     if ( [self.searchField.text length] > 0 )
     {
         [[VObjectManager sharedManager] findUsersBySearchString:self.searchField.text
+                                                     sequenceID:nil
                                                           limit:kVMaxSearchResults
                                                         context:VObjectManagerSearchContextDiscover
                                                withSuccessBlock:searchSuccess

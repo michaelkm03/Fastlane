@@ -92,6 +92,7 @@ typedef NS_ENUM(NSUInteger, VSocialSelector)
  @param context One of the VObjectManagerSearchContext string constants.
  */
 - (RKManagedObjectRequestOperation *)findUsersBySearchString:(NSString *)search_string
+                                                  sequenceID:(NSString *)sequenceID
                                                        limit:(NSInteger)pageLimit
                                                      context:(NSString *)context
                                             withSuccessBlock:(VSuccessBlock)success

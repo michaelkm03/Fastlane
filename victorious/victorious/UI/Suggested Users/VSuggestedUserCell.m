@@ -114,26 +114,36 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
         return;
     }
     
-    BOOL isFollowing = sender.controlState == VFollowControlStateFollowed;
-    [sender setControlState:VFollowControlStateLoading animated:YES];
-    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
-                                                                      withSender:nil];
-    
-    NSAssert(followResponder != nil, @"Need a VFollowingResponder higher up the chain to communicate following commands.");
-
-    if ( isFollowing )
+    void (^authorizedBlock)() = ^
     {
-        [followResponder unfollowUser:self.user withCompletion:^(VUser *userActedOn)
-         {
-             [self updateFollowingStateAnimated:YES];
-         }];
+        [sender setControlState:VFollowControlStateLoading
+                       animated:YES];
+    };
+    
+    void (^completionBlock)(VUser *) = ^(VUser *userActedOn)
+    {
+        [self updateFollowingStateAnimated:YES];
+    };
+
+    if ( sender.controlState == VFollowControlStateFollowed )
+    {
+        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:)
+                                                                          withSender:nil];
+        
+        NSAssert(followResponder != nil, @"Need a VFollowingResponder higher up the chain to communicate following commands.");
+        [followResponder unfollowUser:self.user
+                  withAuthorizedBlock:authorizedBlock
+                        andCompletion:completionBlock];
     }
     else
     {
-        [followResponder followUser:self.user withCompletion:^(VUser *userActedOn)
-         {
-             [self updateFollowingStateAnimated:YES];
-         }];
+        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:)
+                                                                          withSender:nil];
+        
+        NSAssert(followResponder != nil, @"Need a VFollowingResponder higher up the chain to communicate following commands.");
+        [followResponder followUser:self.user
+                withAuthorizedBlock:authorizedBlock
+                      andCompletion:completionBlock];
     }
 }
 

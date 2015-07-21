@@ -101,26 +101,36 @@ static const CGFloat kUserCellHeight = 51.0f;
         return;
     }
     
-    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
-                                                                      withSender:nil];
-    NSAssert(followResponder != nil, @"VUserCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
-    
-    BOOL isFollowing = sender.controlState == VFollowControlStateFollowed;
-    [sender setControlState:VFollowControlStateLoading animated:YES];
-
-    if (isFollowing)
+    void (^authorizedBlock)() = ^
     {
-        [followResponder unfollowUser:self.user withCompletion:^(VUser *userActedOn)
-         {
-             [self updateFollowingAnimated:YES];
-         }];
+        [sender setControlState:VFollowControlStateLoading
+                       animated:YES];
+    };
+    
+    void (^completionBlock)(VUser *) = ^(VUser *userActedOn)
+    {
+        [self updateFollowingAnimated:YES];
+    };
+    
+    if (sender.controlState == VFollowControlStateFollowed)
+    {
+        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:)
+                                                                          withSender:nil];
+        NSAssert(followResponder != nil, @"VUserCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
+        
+        [followResponder unfollowUser:self.user
+                  withAuthorizedBlock:authorizedBlock
+                        andCompletion:completionBlock];
     }
     else
     {
-        [followResponder followUser:self.user withCompletion:^(VUser *userActedOn)
-         {
-             [self updateFollowingAnimated:YES];
-         }];
+        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:)
+                                                                          withSender:nil];
+        NSAssert(followResponder != nil, @"VUserCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
+        
+        [followResponder followUser:self.user
+                  withAuthorizedBlock:authorizedBlock
+                        andCompletion:completionBlock];
     }
 }
 

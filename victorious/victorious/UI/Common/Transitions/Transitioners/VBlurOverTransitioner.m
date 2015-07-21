@@ -7,16 +7,13 @@
 //
 
 #import "VBlurOverTransitioner.h"
-
 #import "VBlurOverPresentationController.h"
-
-static const CGFloat kTransitionScaleFactor = 1.2f;
 
 @implementation VBlurOverAnimatedTransitioning
 
 - (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext
 {
-    return 0.5f;
+    return self.presentation ? 0.75f : 0.5f;
 }
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
@@ -39,11 +36,7 @@ static const CGFloat kTransitionScaleFactor = 1.2f;
     UIView *animatingView = [animatingVC view];
     
     [animatingView setFrame:[transitionContext finalFrameForViewController:animatingVC]];
-    
-    animatingView.transform = isPresentation ? CGAffineTransformMakeScale(kTransitionScaleFactor, kTransitionScaleFactor) : CGAffineTransformMakeScale(1, 1);
-    CGAffineTransform finalTransform = isPresentation ? CGAffineTransformIdentity : CGAffineTransformMakeScale(kTransitionScaleFactor, kTransitionScaleFactor);
-    animatingView.alpha = isPresentation ? 0.0f : 1.0f;
-    
+
     [UIView animateWithDuration:[self transitionDuration:transitionContext]
                           delay:0
          usingSpringWithDamping:0.9f
@@ -51,8 +44,15 @@ static const CGFloat kTransitionScaleFactor = 1.2f;
                         options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState
                      animations:^
      {
-         animatingView.transform = finalTransform;
-         animatingView.alpha = isPresentation ? 1.0f : 0.0f;
+         if ([toVC conformsToProtocol:@protocol(VBlurOverAnimationTransitioningDestination)])
+         {
+             id <VBlurOverAnimationTransitioningDestination> destination = (id<VBlurOverAnimationTransitioningDestination>)toVC;
+             [destination animateInAnimations];
+         }
+         if (!self.presentation)
+         {
+             fromView.alpha = 0.0f;
+         }
      }
                      completion:^(BOOL finished)
      {
@@ -62,7 +62,6 @@ static const CGFloat kTransitionScaleFactor = 1.2f;
          }
          [transitionContext completeTransition:YES];
      }];
-
 }
 
 @end

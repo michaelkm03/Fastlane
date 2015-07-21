@@ -7,7 +7,6 @@
 //
 
 @import AVFoundation;
-@import AssetsLibrary;
 
 #import "AVCaptureVideoPreviewLayer+VConvertPoint.h"
 #import "MBProgressHUD.h"
@@ -15,7 +14,6 @@
 #import "VCameraVideoEncoder.h"
 #import "VCameraViewController.h"
 #import "VConstants.h"
-#import "VImageSearchViewController.h"
 #import "UIImage+Cropping.h"
 #import "UIImage+Resize.h"
 #import "VCameraControl.h"
@@ -29,7 +27,6 @@
 #import "VPermissionPhotoLibrary.h"
 #import "VPermissionMicrophone.h"
 #import "VPermissionProfilePicture.h"
-#import "VWorkspaceFlowController.h"
 
 static const NSTimeInterval kAnimationDuration = 0.4;
 static const NSTimeInterval kErrorMessageDisplayDuration = 3.0;
@@ -37,6 +34,16 @@ static const NSTimeInterval kErrorMessageDisplayDurationLong = 10.0; ///< For ex
 static const NSTimeInterval kCameraShutterShrinkDuration = 0.15;
 static const CGFloat kGradientMagnitude = 20.0f;
 static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
+
+static NSString * const kCameraScreenKey = @"cameraScreen";
+static NSString * const kCloseIconKey = @"closeIcon";
+static NSString * const kReverseCameraIconKey = @"reverseCameraIcon";
+static NSString * const kFlashIconKey = @"flashIcon";
+static NSString * const kDisableFlashIconKey = @"disableFlashIcon";
+static NSString * const kGalleryIconKey = @"galleryIcon";
+static NSString * const kSearchIconKey = @"searchIcon";
+static NSString * const kTrashIconKey = @"trashIcon";
+static NSString * const kContinueIconKey = @"continueIcon";
 
 typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 {
@@ -49,31 +56,27 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     VCameraViewControllerStateCapturedMedia,
 };
 
-@interface VCameraViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, VCameraVideoEncoderDelegate>
+@interface VCameraViewController () <VCameraVideoEncoderDelegate>
 
+@property (nonatomic, copy) VMediaCaptureCompletion completionBlock;
+@property (nonatomic, assign) VCameraContext context;
 @property (nonatomic, assign) VCameraViewControllerState state;
 @property (nonatomic, readwrite) NSURL *capturedMediaURL;
 @property (nonatomic, strong, readwrite) UIImage *previewImage;
 @property (nonatomic, assign, getter=isTrashOpen) BOOL trashOpen;
 
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *topSpaceTopToolsToContainerConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *bottomSpaceBottomToolsToContainerConstraint;
 
-@property (nonatomic, weak) IBOutlet UIView *topToolsContainer;
 @property (nonatomic, weak) IBOutlet UIView *bottomToolsContainer;
-@property (nonatomic, weak) IBOutlet UIButton *closeButton;
-@property (nonatomic, weak) IBOutlet UIButton *switchCameraButton;
-@property (nonatomic, weak) IBOutlet UIButton *nextButton;
-@property (nonatomic, weak) IBOutlet UIButton *flashButton;
-@property (nonatomic, weak) IBOutlet UIButton *searchButton;
 @property (nonatomic, weak) IBOutlet UIView *previewView;
-
-@property (nonatomic, weak) IBOutlet UIButton *openAlbumButton;
 @property (nonatomic, weak) IBOutlet UIButton *deleteButton;
 @property (nonatomic, weak) IBOutlet UIView *cameraControlContainer;
-@property (weak, nonatomic) IBOutlet UILabel *coachView;
+@property (nonatomic, weak) IBOutlet UILabel *coachView;
 
-@property (nonatomic, weak) VRadialGradientView *radialGradientView;
+@property (nonatomic, strong) VRadialGradientView *radialGradientView;
+@property (nonatomic, strong) UIButton *switchCameraButton;
+@property (nonatomic, strong) UIBarButtonItem *nextButton;
+@property (nonatomic, strong) UIButton *flashButton;
 
 @property (nonatomic, strong) VCameraControl *cameraControl;
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
@@ -85,8 +88,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 @property (nonatomic) BOOL videoEnabled; ///< THIS property specifies whether we CAN allow video (according to device restrictions)
 @property (nonatomic) BOOL allowPhotos;
 
-@property (nonatomic, readwrite) BOOL didSelectAssetFromLibrary;
-@property (nonatomic, readwrite) BOOL didSelectFromWebSearch;
 @property (nonatomic, copy) NSString *initialCaptureMode;
 @property (nonatomic, copy) NSString *videoQuality;
 
@@ -105,34 +106,32 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 
 @implementation VCameraViewController
 
-+ (VCameraViewController *)cameraViewController
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    return [[UIStoryboard storyboardWithName:@"Camera" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
-}
-
-+ (VCameraViewController *)cameraViewControllerStartingWithStillCapture
-{
-    VCameraViewController *cameraViewController = [self cameraViewController];
+    VCameraViewController *cameraViewController = [[UIStoryboard storyboardWithName:@"Camera" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
+    cameraViewController.dependencyManager = dependencyManager;
     return cameraViewController;
 }
 
-+ (VCameraViewController *)cameraViewControllerStartingWithVideoCapture
++ (VCameraViewController *)cameraViewControllerWithContext:(VCameraContext)cameraContext
+                                         dependencyManager:(VDependencyManager *)dependencyManager
+                                             resultHanlder:(VMediaCaptureCompletion)handler
 {
-    VCameraViewController *cameraViewController = [self cameraViewController];
-    return cameraViewController;
-}
-
-+ (VCameraViewController *)cameraViewControllerLimitedToPhotos
-{
-    VCameraViewController *cameraViewController = [self cameraViewController];
-    cameraViewController.allowVideo = NO;
-    return cameraViewController;
-}
-
-+ (VCameraViewController *)cameraViewControllerLimitedToVideo
-{
-    VCameraViewController *cameraViewController = [self cameraViewController];
-    cameraViewController.allowPhotos = NO;
+    VCameraViewController *cameraViewController = [dependencyManager templateValueOfType:[VCameraViewController class] forKey:kCameraScreenKey];
+    switch (cameraContext)
+    {
+        case VCameraContextImageContentCreation:
+        case VCameraContextProfileImage:
+        case VCameraContextProfileImageRegistration:
+            cameraViewController.allowPhotos = YES;
+            cameraViewController.allowVideo = NO;
+            break;
+        case VCameraContextVideoContentCreation:
+            cameraViewController.allowPhotos = NO;
+            break;
+    }
+    cameraViewController.context = cameraContext;
+    cameraViewController.completionBlock = handler;
     return cameraViewController;
 }
 
@@ -176,41 +175,18 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 {
     [super viewDidLoad];
     
-    self.cameraControl = [[VCameraControl alloc] initWithFrame:self.cameraControlContainer.bounds];
-    self.cameraControl.translatesAutoresizingMaskIntoConstraints = NO;
-    self.cameraControl.autoresizingMask = UIViewAutoresizingNone;
-    self.cameraControl.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    [self.cameraControlContainer addSubview:self.cameraControl];
-    
-    self.searchButton.hidden = !self.allowPhotos;
-    
-    [self configureCaptureMode];
-    
-    self.captureController = [[VCameraCaptureController alloc] init];
-    [self.captureController setSessionPreset:self.initialCaptureMode completion:nil];
-    
-    self.previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.captureController.captureSession];
-    self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    [self.previewView.layer addSublayer:self.previewLayer];
-
-    UITapGestureRecognizer *focusTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(focus:)];
-    [self.previewView addGestureRecognizer:focusTap];
-    
-    UIImage *flashOnImage = [self.flashButton imageForState:UIControlStateSelected];
-    [self.flashButton setImage:flashOnImage forState:(UIControlStateSelected | UIControlStateHighlighted)];
-    [self.flashButton setImage:flashOnImage forState:(UIControlStateSelected | UIControlStateDisabled)];
-    
-    [self.cameraControl addTarget:self
-                           action:@selector(capturePhoto:)
-                 forControlEvents:VCameraControlEventWantsStillImage];
-    [self.cameraControl addTarget:self
-                           action:@selector(startRecording)
-                 forControlEvents:VCameraControlEventStartRecordingVideo];
-    [self.cameraControl addTarget:self action:@selector(stopRecording)
-                 forControlEvents:VCameraControlEventEndRecordingVideo];
-    [self.cameraControl addTarget:self
-                           action:@selector(failedRecording)
-                 forControlEvents:VCameraControlEventFailedRecordingVideo];
+    [self setupReverseCameraButton];
+    if (self.context == VCameraContextVideoContentCreation)
+    {
+        [self setupNextButton];
+    }
+    else
+    {
+        [self setupFlashButton];
+    }
+    [self setupCameraControl];
+    [self setupCameraController];
+    [self setupPreviewLayer];
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidEnter];
     
@@ -230,22 +206,14 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     [super viewDidLayoutSubviews];
     self.previewLayer.frame = self.previewView.layer.bounds;
     self.deleteButton.layer.cornerRadius = CGRectGetHeight(self.deleteButton.bounds) / 2;
-    self.openAlbumButton.layer.cornerRadius = 5.0f;
-    self.openAlbumButton.layer.masksToBounds = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
+    self.cameraControl.defaultTintColor = [self.dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     [self.cameraControl restoreCameraControlToDefault];
-    
-    self.navigationController.navigationBarHidden = YES;
-
-    if (!self.didSelectAssetFromLibrary)
-    {
-        self.state = VCameraViewControllerStateInitializingHardware;
-    }
     
     self.captureController.videoEncoder = nil;
     
@@ -276,15 +244,11 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     [self checkPermissionsAndStartCaptureSession];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [[VTrackingManager sharedInstance] endEvent:VTrackingEventCameraDidAppear];
-}
-
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidExit];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
     [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
@@ -299,11 +263,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return YES;
 }
 
 - (void)orientationDidChange:(NSNotification *)notification
@@ -345,13 +304,10 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
         return;
     }
     
-    VWorkspaceFlowControllerContext initialContext = VWorkspaceFlowControllerContextContentCreation;
-    NSNumber *injectedContext = [self.dependencyManager numberForKey:VWorkspaceFlowControllerContextKey];
-    initialContext = (injectedContext != nil) ? [injectedContext integerValue] : initialContext;
-    self.captureController.context = initialContext;
+    self.captureController.context = self.context;
     
     VPermission *cameraPermission;
-    if (initialContext == VWorkspaceFlowControllerContextContentCreation)
+    if (self.context == VCameraContextProfileImage || self.context == VCameraContextProfileImageRegistration)
     {
         cameraPermission = [[VPermissionCamera alloc] initWithDependencyManager:self.dependencyManager];
     }
@@ -369,7 +325,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
              void (^startCapture)(BOOL videoEnabled) = [self startCaptureBlock];
              
              // If we don't need mic permission, call the capture start block right away
-             if (initialContext == VWorkspaceFlowControllerContextProfileImage || !self.allowVideo)
+             if (self.context == VCameraContextProfileImage || !self.allowVideo)
              {
                  self.userDeniedPermissionsPrePrompt = NO;
                  startCapture(NO);
@@ -404,7 +360,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
          {
              self.userDeniedPermissionsPrePrompt = YES;
              self.state = VCameraViewControllerStatePermissionDenied;
-             if (state == VPermissionStatePromptDenied && (initialContext == VWorkspaceFlowControllerContextProfileImageRegistration))
+             if (state == VPermissionStatePromptDenied && (self.context == VCameraContextProfileImageRegistration))
              {
                  if (self.completionBlock)
                  {
@@ -437,7 +393,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
                                     hud.mode = MBProgressHUDModeText;
                                     hud.labelText = NSLocalizedString(@"CameraFailed", @"");
                                     [hud hide:YES afterDelay:kErrorMessageDisplayDurationLong];
-                                    self.openAlbumButton.enabled = YES;
                                 }
                                 else
                                 {
@@ -453,38 +408,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 
 #pragma mark - Property Accessors
 
-- (void)setToolbarHidden:(BOOL)toolsHidden
-{
-    [self setToolbarHidden:toolsHidden
-                animated:NO];
-}
-
-- (void)setToolbarHidden:(BOOL)toolsHidden
-              animated:(BOOL)animated
-{
-    _toolbarHidden = toolsHidden;
-    
-    void (^hideToolsBlock)(void) = ^void()
-    {
-        self.topSpaceTopToolsToContainerConstraint.constant = toolsHidden ? -CGRectGetHeight(self.topToolsContainer.frame) : 0.0f;
-        self.bottomSpaceBottomToolsToContainerConstraint.constant = toolsHidden ? -CGRectGetHeight(self.bottomToolsContainer.frame) : 0.0f;
-        [self.view layoutIfNeeded];
-    };
-    
-    if (!animated)
-    {
-        hideToolsBlock();
-    }
-    else
-    {
-        [UIView animateWithDuration:0.5f
-                              delay:0.0f
-                            options:kNilOptions
-                         animations:hideToolsBlock
-                         completion:nil];
-    }
-}
-
 - (void)setState:(VCameraViewControllerState)state
 {
     if (_state == state)
@@ -499,27 +422,11 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
             self.capturedMediaURL = nil;
             self.previewImage = nil;
             
-            self.didSelectAssetFromLibrary = NO;
-            self.didSelectAssetFromLibrary = NO;
-            
-            self.closeButton.enabled = YES;
-            
-            self.searchButton.enabled = YES;
-            self.searchButton.hidden = !self.allowPhotos;
-           
-            [self setOpenAlbumButtonImageWithLatestPhoto:self.allowPhotos
-                                                    animated:NO];
-            
             self.flashButton.enabled = self.captureController.currentDevice.flashAvailable;
             self.flashButton.hidden = NO;
             [self configureFlashButton];
             
-            self.nextButton.hidden = YES;
-            self.nextButton.hidden = YES;
             self.nextButton.enabled = NO;
-            
-            self.openAlbumButton.hidden = NO;
-            self.openAlbumButton.enabled = YES;
             
             self.deleteButton.hidden = YES;
             
@@ -541,16 +448,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
         case VCameraViewControllerStatePermissionDenied:
         {
             [MBProgressHUD hideAllHUDsForView:self.previewView animated:YES];
-
-            [self setOpenAlbumButtonImageWithLatestPhoto:self.allowPhotos
-                                                animated:NO];
-            
-            self.closeButton.enabled = YES;
-            
-            self.searchButton.enabled = YES;
-            
-            self.openAlbumButton.hidden = NO;
-            self.openAlbumButton.enabled = YES;
             
             self.cameraControl.enabled = YES;
             self.cameraControl.alpha = 1.0f;
@@ -576,7 +473,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
         {
             self.flashButton.enabled = NO;
             self.switchCameraButton.enabled = NO;
-            self.openAlbumButton.enabled = NO;
             self.nextButton.enabled = NO;
             
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidCapturePhoto];
@@ -586,26 +482,20 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
         {
             [self.deleteButton setBackgroundColor:[UIColor clearColor]];
             self.deleteButton.hidden = NO;
-            self.searchButton.hidden = YES;
             self.deleteButton.enabled = YES;
 
-            self.nextButton.hidden = NO;
             self.nextButton.enabled = YES;
             
             self.flashButton.hidden = YES;
-            
-            self.openAlbumButton.hidden = YES;
-            
+
             self.switchCameraButton.enabled = NO;
         }
             break;
         case VCameraViewControllerStateRenderingVideo:
         {
             self.cameraControl.enabled = NO;
-            self.searchButton.enabled = NO;
             self.deleteButton.enabled = NO;
             self.switchCameraButton.enabled = NO;
-            self.closeButton.enabled = NO;
         }
             break;
         case VCameraViewControllerStateCapturedMedia:
@@ -621,8 +511,10 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
                 {
                     self.previewImage = [UIImage imageWithContentsOfFile:[self.capturedMediaURL path]];
                 }
-                
-                self.completionBlock(YES, self.previewImage, self.capturedMediaURL);
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                {
+                    self.completionBlock(YES, self.previewImage, self.capturedMediaURL);
+                });
             }
         }
             break;
@@ -699,34 +591,10 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
         self.completionBlock(NO, nil, nil);
     }
     
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidExit];
-}
-
-- (IBAction)searchAction:(id)sender
-{
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidSelectImageSearch];
     
-    VImageSearchViewController *imageSearchViewController = [VImageSearchViewController newImageSearchViewController];
-    __weak typeof(self) welf = self;
-    imageSearchViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-    {
-        if (finished)
-        {
-            welf.capturedMediaURL = capturedMediaURL;
-            welf.previewImage = previewImage;
-            welf.didSelectFromWebSearch = YES;
-            welf.state = VCameraViewControllerStateCapturedMedia;
-        }
-        
-        [welf dismissViewControllerAnimated:YES
-                                 completion:nil];
-    };
-    [self presentViewController:imageSearchViewController
-                       animated:YES
-                     completion:nil];
 }
 
-- (IBAction)reverseCameraAction:(id)sender
+- (void)reverseCameraAction:(id)sender
 {
     if (self.captureController.devices.count > 1)
     {
@@ -772,7 +640,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     }
 }
 
-- (IBAction)nextAction:(id)sender
+- (void)nextAction:(id)sender
 {
     self.state = VCameraViewControllerStateRenderingVideo;
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidCaptureVideo];
@@ -799,50 +667,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     }
 }
 
-- (IBAction)openAlbumAction:(id)sender
-{
-    VPermissionPhotoLibrary *libraryPermission = [[VPermissionPhotoLibrary alloc] initWithDependencyManager:self.dependencyManager];
-    libraryPermission.shouldShowInitialPrompt = NO;
-    [libraryPermission requestPermissionInViewController:self
-                                   withCompletionHandler:^(BOOL granted, VPermissionState state, NSError *error)
-     {
-         if (granted)
-         {
-             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
-             {
-                 UIImagePickerController *controller = [[UIImagePickerController alloc] init];
-                 
-                 controller.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-                 controller.allowsEditing = NO;
-                 controller.delegate = self;
-                 
-                 NSMutableArray *mediaTypes  = [[NSMutableArray alloc] init];
-                 if (self.allowPhotos)
-                 {
-                     [mediaTypes addObject:(NSString *)kUTTypeImage];
-                 }
-                 if (self.allowVideo)
-                 {
-                     [mediaTypes addObject:(NSString *)kUTTypeMovie];
-                 }
-                 controller.mediaTypes = mediaTypes;
-                 
-                 dispatch_async(dispatch_get_main_queue(), ^
-                 {
-                     // Update thumbnail after we present photo library
-                     [self presentViewController:controller animated:YES completion:^{
-                         [self setOpenAlbumButtonImageWithLatestPhoto:self.allowPhotos animated:YES];
-                     }];
-                 });
-             });
-         }
-         else
-         {
-             [self notifyUserOfFailedLibraryPermission];
-         }
-     }];
-}
-
 - (void)capturePhoto:(id)sender
 {
     // If user has denied the pre-prompt, reshow it
@@ -854,6 +678,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     }
     
     self.animationCompleted = NO;
+
     __weak typeof(self) welf = self;
     [self.KVOController unobserve:self.captureController.imageOutput
                           keyPath:@"capturingStillImage"];
@@ -945,6 +770,86 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 
 #pragma mark - Support
 
+- (void)setupReverseCameraButton
+{
+    // Switch Camera
+    self.switchCameraButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [self.switchCameraButton addTarget:self action:@selector(reverseCameraAction:) forControlEvents:UIControlEventTouchUpInside];
+    // disabled and hidden by default
+    self.switchCameraButton.hidden = YES;
+    self.switchCameraButton.enabled = NO;
+    self.switchCameraButton.frame = CGRectMake(0, 0, 50.0f, 50.0f);
+    [self.switchCameraButton setImage:[self.dependencyManager imageForKey:kReverseCameraIconKey] forState:UIControlStateNormal];
+    self.navigationItem.titleView = self.switchCameraButton;
+}
+
+- (void)setupFlashButton
+{
+    // Flash
+    self.flashButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.flashButton addTarget:self action:@selector(switchFlashAction:) forControlEvents:UIControlEventTouchUpInside];
+    self.flashButton.hidden = YES;
+    self.flashButton.enabled = NO;
+    self.flashButton.frame = CGRectMake(0, 0, 50.0f, 50.0f);
+    [self.flashButton setImage:[self.dependencyManager imageForKey:kFlashIconKey] forState:UIControlStateNormal];
+    [self.flashButton setImage:[self.dependencyManager imageForKey:kDisableFlashIconKey] forState:UIControlStateSelected];
+    [self.flashButton setBackgroundImage:nil forState:UIControlStateSelected];
+    self.flashButton.imageView.contentMode = UIViewContentModeCenter;
+    UIBarButtonItem *flashBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.flashButton];
+    [flashBarButtonItem setBackButtonBackgroundImage:nil forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    self.navigationItem.rightBarButtonItem = flashBarButtonItem;
+}
+
+- (void)setupNextButton
+{
+    self.nextButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", nil)
+                                                                   style:UIBarButtonItemStylePlain
+                                                                  target:self
+                                                                  action:@selector(nextAction:)];
+    self.nextButton.enabled = NO;
+    self.navigationItem.rightBarButtonItem = self.nextButton;
+}
+
+- (void)setupCameraControl
+{
+    // Capture Control
+    self.cameraControl = [[VCameraControl alloc] initWithFrame:self.cameraControlContainer.bounds];
+    self.cameraControl.translatesAutoresizingMaskIntoConstraints = NO;
+    self.cameraControl.autoresizingMask = UIViewAutoresizingNone;
+    self.cameraControl.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    [self.cameraControlContainer addSubview:self.cameraControl];
+    
+    [self configureCaptureMode];
+    
+    [self.cameraControl addTarget:self
+                           action:@selector(capturePhoto:)
+                 forControlEvents:VCameraControlEventWantsStillImage];
+    [self.cameraControl addTarget:self
+                           action:@selector(startRecording)
+                 forControlEvents:VCameraControlEventStartRecordingVideo];
+    [self.cameraControl addTarget:self action:@selector(stopRecording)
+                 forControlEvents:VCameraControlEventEndRecordingVideo];
+    [self.cameraControl addTarget:self
+                           action:@selector(failedRecording)
+                 forControlEvents:VCameraControlEventFailedRecordingVideo];
+}
+
+- (void)setupCameraController
+{
+    self.captureController = [[VCameraCaptureController alloc] init];
+    [self.captureController setSessionPreset:self.initialCaptureMode completion:nil];
+}
+
+- (void)setupPreviewLayer
+{
+    self.previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.captureController.captureSession];
+    self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    [self.previewView.layer addSublayer:self.previewLayer];
+    
+    UITapGestureRecognizer *focusTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(focus:)];
+    [self.previewView addGestureRecognizer:focusTap];
+}
+
 - (void)failedRecording
 {
     [self.coachMarkAnimator flash];
@@ -1005,132 +910,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     }
 }
 
-- (BOOL)cameraSupportsMedia:(NSString *)mediaType sourceType:(UIImagePickerControllerSourceType)sourceType
-{
-    __block BOOL    results = NO;
-    
-    if (mediaType.length == 0)
-    {
-        return NO;
-    }
-    
-    NSArray *availableMediaTypes = [UIImagePickerController availableMediaTypesForSourceType:sourceType];
-    
-    [availableMediaTypes enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
-     {
-         NSString *type = (NSString *)obj;
-         if ([type isEqualToString:mediaType])
-         {
-             results = YES;
-             *stop = YES;
-         }
-     }];
-    
-    return results;
-}
-
-- (BOOL)canPickVideosFromPhotoLibrary
-{
-    return [self cameraSupportsMedia:(__bridge NSString *)kUTTypeMovie sourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-}
-
-- (BOOL)canPickPhotosFromPhotoLibrary
-{
-    return [self cameraSupportsMedia:(__bridge NSString *)kUTTypeImage sourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-}
-
-/**
- @param photo if YES, use photo thumbnail. If NO, use video thumbnail
- */
-- (void)setOpenAlbumButtonImageWithLatestPhoto:(BOOL)photo animated:(BOOL)animated
-{
-    VPermissionPhotoLibrary *libraryPermission = [[VPermissionPhotoLibrary alloc] initWithDependencyManager:self.dependencyManager];
-    if ([libraryPermission permissionState] != VPermissionStateAuthorized)
-    {
-        return;
-    }
-    
-    void (^animations)(void) = ^(void)
-    {
-        self.deleteButton.hidden = YES;
-        self.openAlbumButton.hidden = YES;
-    };
-    if (animated)
-    {
-        [UIView animateWithDuration:kAnimationDuration animations:animations];
-    }
-    else
-    {
-        animations();
-    }
-    
-    if (photo && ![self canPickPhotosFromPhotoLibrary])
-    {
-        return;
-    }
-    
-    if (!photo && ![self canPickVideosFromPhotoLibrary])
-    {
-        return;
-    }
-
-    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-    
-    // Enumerate just the photos and videos group by using ALAssetsGroupSavedPhotos.
-    [library enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop)
-     {
-        // Within the group enumeration block, filter to enumerate just photos.
-         if (photo)
-         {
-             [group setAssetsFilter:[ALAssetsFilter allPhotos]];
-         }
-         else
-         {
-             [group setAssetsFilter:[ALAssetsFilter allVideos]];
-         }
-         
-         if ([group numberOfAssets] > 0)
-         {
-            // Chooses the photo at the last index
-            [group enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:[group numberOfAssets] - 1]
-                                    options:0
-                                 usingBlock:^(ALAsset *alAsset, NSUInteger index, BOOL *innerStop)
-             {
-                 // The end of the enumeration is signaled by asset == nil.
-                 if (alAsset)
-                 {
-                     UIImage *latestPhoto = [UIImage imageWithCGImage:[alAsset thumbnail]];
-                     
-                     // Stop the enumerations
-                     *stop = YES;
-                     *innerStop = YES;
-                     
-                     [self.openAlbumButton setImage:latestPhoto forState:UIControlStateNormal];
-                     
-                     void (^animations)(void) = ^(void)
-                     {
-                         self.openAlbumButton.hidden = NO;
-                     };
-                     if (animated)
-                     {
-                         [UIView animateWithDuration:kAnimationDuration animations:animations];
-                     }
-                     else
-                     {
-                         animations();
-                     }
-                 }
-             }];
-        }
-        else
-        {
-        }
-    } failureBlock: ^(NSError *error)
-    {
-
-    }];
-}
-
 - (void)updateProgressForSecond:(Float64)totalRecorded
 {
     CGFloat progress = ABS( totalRecorded / VConstantsMaximumVideoDuration);
@@ -1143,7 +922,6 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     [self updateProgressForSecond:0];
     
     self.state = VCameraViewControllerStateDefault;
-    self.didSelectAssetFromLibrary = NO;
 
     void (^animations)() = ^(void)
     {
@@ -1313,63 +1091,19 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     });
 }
 
-#pragma mark - UIImagePickerControllerDelegate
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
-{
-    self.didSelectAssetFromLibrary = YES;
-    NSString *mediaType = info[UIImagePickerControllerMediaType];
-    
-    if ([mediaType isEqualToString:(__bridge NSString *)kUTTypeImage])
-    {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidPickImageFromLibrary];
-        
-        UIImage *originalImage = (UIImage *)info[UIImagePickerControllerOriginalImage];
-        [self persistToCapturedMediaURLWithImage:originalImage];
-    }
-    else if ([mediaType isEqualToString:(__bridge NSString *)kUTTypeMovie])
-    {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidPickVideoFromLibrary];
-        
-        NSURL *movieURL = info[UIImagePickerControllerMediaURL];
-        
-        if (movieURL)
-        {
-            self.capturedMediaURL = movieURL;
-            self.state = VCameraViewControllerStateCapturedMedia;
-        }
-        else
-        {
-            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
-            hud.mode = MBProgressHUDModeText;
-            hud.labelText = NSLocalizedString(@"UnableSelectVideo", @"");
-            [hud hide:YES afterDelay:5.0];
-        }
-    }
-    
-    [self dismissViewControllerAnimated:YES
-                             completion:nil];
-}
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
-{
-    self.didSelectAssetFromLibrary = NO;
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
 #pragma mark - Private Methods
 
 - (void)persistToCapturedMediaURLWithImage:(UIImage *)image
 {
     NSURL *fileURL = [self temporaryFileURLWithExtension:VConstantMediaExtensionJPG];
-    NSData *jpegData = UIImageJPEGRepresentation(self.didSelectAssetFromLibrary ? image : [self squareImageByCroppingImage:image], VConstantJPEGCompressionQuality);
+    NSData *jpegData = UIImageJPEGRepresentation([self squareImageByCroppingImage:image], VConstantJPEGCompressionQuality);
     [jpegData writeToURL:fileURL atomically:YES]; // TODO: the preview view should take a UIImage
     self.capturedMediaURL = fileURL;
     dispatch_async(self.captureAnimationQueue, ^
                    {
                        dispatch_async(dispatch_get_main_queue(), ^
                                       {
-                                          if (self.didSelectAssetFromLibrary || ((self.capturedMediaURL != nil) && self.animationCompleted))
+                                          if (((self.capturedMediaURL != nil) && self.animationCompleted))
                                           {
                                               self.state = VCameraViewControllerStateCapturedMedia;
                                           }

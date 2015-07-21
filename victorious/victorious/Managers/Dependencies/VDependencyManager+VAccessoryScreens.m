@@ -40,6 +40,7 @@ NSString * const VDependencyManagerAccessoryItemInvite          = @"Accessory In
 NSString * const VDependencyManagerAccessoryItemCreatePost      = @"Accessory Create Post";
 NSString * const VDependencyManagerAccessoryItemFollowHashtag   = @"Accessory Follow Hashtag";
 NSString * const VDependencyManagerAccessoryItemMore            = @"Accessory More";
+NSString * const VDependencyManagerAccessoryNewMessage          = @"Accessory New Message";
 
 static const char kAssociatedObjectSourceViewControllerKey;
 

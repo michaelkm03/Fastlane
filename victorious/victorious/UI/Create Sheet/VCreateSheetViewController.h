@@ -7,27 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-
 #import "VHasManagedDependencies.h"
+#import "VCreationTypes.h"
 
 static NSString * const kCreationSheetWillShow = @"v_creationSheetWillShow";
 static NSString * const kCreationSheetWillHide = @"v_creationSheetWillHide";
 
 static NSString * const kAnimateFromTopKey = @"animateFromTop";
 
-/**
- Enum to be used when clarifying which type of workspace to open
- as a result of the user choosing one of the content creation modes.
- */
-typedef NS_ENUM(NSInteger, VCreateSheetItemIdentifier)
-{
-    VCreateSheetItemIdentifierImage,
-    VCreateSheetItemIdentifierVideo,
-    VCreateSheetItemIdentifierPoll,
-    VCreateSheetItemIdentifierText,
-    VCreateSheetItemIdentifierGIF,
-    VCreateSheetItemIdentifierUnknown
-};
 
 @interface VCreateSheetViewController : UIViewController <VHasManagedDependencies>
 
@@ -39,7 +26,7 @@ typedef NS_ENUM(NSInteger, VCreateSheetItemIdentifier)
 /**
  Block to call when user chooses an item.
  */
-@property (nonatomic, copy) void (^completionHandler)(VCreateSheetViewController *createSheetViewController, VCreateSheetItemIdentifier chosenItemIdentifier);
+@property (nonatomic, copy) void (^completionHandler)(VCreateSheetViewController *createSheetViewController, VCreationType chosenItemIdentifier);
 
 /**
  Collection view that displays the menu items.

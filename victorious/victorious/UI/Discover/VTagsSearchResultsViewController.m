@@ -185,7 +185,6 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
         {
             return;
         }
-        [strongCell.followHashtagControl setControlState:VFollowControlStateLoading animated:YES];
         
         VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                     dependencyManager:self.dependencyManager];
@@ -196,6 +195,8 @@ static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
                  [strongCell.followHashtagControl setControlState:VFollowControlStateUnfollowed animated:NO];
                  return;
              }
+             
+             [strongCell.followHashtagControl setControlState:VFollowControlStateLoading animated:YES];
              
              // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
              if (weakCell.isSubscribedToTag)

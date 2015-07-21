@@ -188,18 +188,18 @@
     }
 }
 
-- (void)followUser:(VUser *)user withCompletion:(VFollowEventCompletion)completion
+- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowEventCompletion)completion
 {
     NSDictionary *params = @{ VTrackingKeyContext : VTrackingValueReposters };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFollowUser parameters:params];
-    [self.followingHelper followUser:user withCompletion:completion];
+    [self.followingHelper followUser:user withAuthorizedBlock:authorizedBlock andCompletion:completion];
 }
 
-- (void)unfollowUser:(VUser *)user withCompletion:(VFollowEventCompletion)completion
+- (void)unfollowUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowEventCompletion)completion
 {
     NSDictionary *params = @{ VTrackingKeyContext : VTrackingValueReposters };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidUnfollowUser parameters:params];
-    [self.followingHelper unfollowUser:user withCompletion:completion];
+    [self.followingHelper unfollowUser:user withAuthorizedBlock:authorizedBlock andCompletion:completion];
 }
 
 @end
