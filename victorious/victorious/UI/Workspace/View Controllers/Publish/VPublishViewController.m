@@ -34,7 +34,7 @@
 #import "VPermissionPhotoLibrary.h"
 #import "VDependencyManager+VTracking.h"
 #import "VPermissionsTrackingHelper.h"
-#import "VBlurOverTransitioner.h"
+#import "VAlongsidePresentationAnimator.h"
 
 @import AssetsLibrary;
 
@@ -52,10 +52,11 @@ static NSString * const kCaptionContainerBackgroundColor = @"color.captionContai
 static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
 
-@interface VPublishViewController () <UICollisionBehaviorDelegate, UITextViewDelegate, UIGestureRecognizerDelegate, VContentInputAccessoryViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, VPublishShareCollectionViewCellDelegate, VBackgroundContainer, VBlurOverAnimationTransitioningDestination>
+@interface VPublishViewController () <UICollisionBehaviorDelegate, UITextViewDelegate, UIGestureRecognizerDelegate, VContentInputAccessoryViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, VPublishShareCollectionViewCellDelegate, VBackgroundContainer, VAlongsidePresentation>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
+@property (nonatomic, strong) IBOutlet UIVisualEffectView *blurView;
 @property (nonatomic, weak) IBOutlet UIView *publishPrompt;
 @property (nonatomic, weak) IBOutlet UIView *captionContainer;
 @property (nonatomic, weak) IBOutlet UIImageView *captionSeparator;
@@ -283,7 +284,8 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
     [[VObjectManager sharedManager] uploadMediaWithPublishParameters:self.publishParameters
                                                           completion:^(NSURLResponse *response, NSData *responseData, NSDictionary *jsonResponse, NSError *error)
     {
-        welf.publishing = NO;
+        __strong typeof(welf) strongSelf = welf;
+        strongSelf.publishing = NO;
         [hud hide:YES];
         
         if (error != nil)
@@ -293,7 +295,7 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
                                                            cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                               onCancelButton:^
                                            {
-                                               [welf closeOnComplete:NO];
+                                               [strongSelf closeOnComplete:NO];
                                            }
                                                   otherButtonTitlesAndBlocks:nil, nil];
             [publishFailure show];
@@ -303,7 +305,7 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
             // We need to wait for HUD to hide
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
             {
-                [welf closeOnComplete:YES];
+                [strongSelf closeOnComplete:YES];
             });
         }
      }];
@@ -366,6 +368,13 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
     if ( !didPublish )
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCancelPublish];
+    }
+    else
+    {
+        // Snapshot the current state of the window to preserve blurring
+        // as it animates away with the rest of the creation flow
+        UIView *snapshot = [self.view.window snapshotViewAfterScreenUpdates:NO];
+        [self.view addSubview:snapshot];
     }
     
     if ( self.completion != nil )
@@ -787,18 +796,24 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     return size;
 }
 
-#pragma mark - VBlurOverAnimationTransitioningDestination
-
-- (void)animateInAnimations
-{
-    self.publishPrompt.transform = CGAffineTransformIdentity;
-}
-
 #pragma mark - VBackgroundContainer
 
 - (UIView *)backgroundContainerView
 {
-    return self.view;
+    return self.blurView.contentView;
+}
+
+#pragma mark - VAlongsidePresentation
+
+- (void)alongsidePresentation
+{
+    self.blurView.alpha = 1.0f;
+    self.publishPrompt.transform = CGAffineTransformIdentity;
+}
+
+- (void)alongsideDismissal
+{
+    self.view.alpha = 0.0f;
 }
 
 @end

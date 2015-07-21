@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VPublishViewController">
             <connections>
+                <outlet property="blurView" destination="00O-RT-5rB" id="tfL-XB-r7D"/>
                 <outlet property="cancelButton" destination="92r-ti-u3W" id="foA-Pb-kG4"/>
                 <outlet property="captionContainer" destination="fY0-oQ-HQH" id="XhI-B5-WCG"/>
                 <outlet property="captionSeparator" destination="6Ix-FV-hcC" id="vlF-FM-KXp"/>
@@ -27,6 +28,14 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <visualEffectView opaque="NO" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="00O-RT-5rB">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="bYn-Qn-fBA">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                    <blurEffect style="dark"/>
+                </visualEffectView>
                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="92r-ti-u3W">
                     <rect key="frame" x="15" y="506" width="290" height="54"/>
                     <constraints>
@@ -117,6 +126,10 @@
             </subviews>
             <gestureRecognizers/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="00O-RT-5rB" secondAttribute="trailing" id="3Zr-2T-KZa"/>
+                <constraint firstAttribute="bottom" secondItem="00O-RT-5rB" secondAttribute="bottom" id="6VR-te-bBE"/>
+                <constraint firstItem="00O-RT-5rB" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="EH2-IC-FZO"/>
+                <constraint firstItem="00O-RT-5rB" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="FAI-Ko-IwZ"/>
                 <constraint firstItem="92r-ti-u3W" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="J75-XT-9XC"/>
                 <constraint firstAttribute="bottom" secondItem="92r-ti-u3W" secondAttribute="bottom" constant="8" id="PVI-UY-bXN"/>
                 <constraint firstAttribute="centerX" secondItem="MUp-lJ-Tpj" secondAttribute="centerX" id="b7S-ra-woh"/>
