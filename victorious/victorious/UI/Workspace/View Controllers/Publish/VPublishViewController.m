@@ -56,7 +56,7 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
-@property (strong, nonatomic) IBOutlet UIVisualEffectView *blurView;
+@property (nonatomic, strong) IBOutlet UIVisualEffectView *blurView;
 @property (nonatomic, weak) IBOutlet UIView *publishPrompt;
 @property (nonatomic, weak) IBOutlet UIView *captionContainer;
 @property (nonatomic, weak) IBOutlet UIImageView *captionSeparator;
