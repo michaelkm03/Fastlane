@@ -87,4 +87,9 @@
  */
 @property (nonatomic, assign) BOOL shouldBottomBarBeHidden;
 
+/**
+ *  Pass in an object in the tools array to disable that tool.
+ */
+- (void)disableTool:(id)tool;
+
 @end

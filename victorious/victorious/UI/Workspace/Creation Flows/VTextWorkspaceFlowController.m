@@ -17,6 +17,7 @@
 #import "VEditableTextPostViewController.h"
 #import "VTextListener.h"
 #import "VMediaAttachmentPresenter.h"
+#import "VImageToolController.h"
 
 @interface VTextWorkspaceFlowController() <UINavigationControllerDelegate, VTextListener, VTextCanvasToolDelegate>
 
@@ -126,7 +127,9 @@
 
 - (void)presentCameraViewController
 {
-    self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager];
+    self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager
+                                                                          addedDependencies:@{VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateCrop),
+                                                                                              VImageToolControllerShouldDisableTextOverlayKey:@(YES)}];
     self.attachmentPresenter.attachmentTypes = VMediaAttachmentOptionsImage;
     __weak typeof(self) welf = self;
     self.attachmentPresenter.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)

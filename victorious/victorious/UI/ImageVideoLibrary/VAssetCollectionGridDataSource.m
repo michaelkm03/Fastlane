@@ -50,6 +50,7 @@ static NSInteger const kScreenSizeCacheTrigger = 1 / 3.0f;
 {
     if ([_assetCollection.localIdentifier isEqualToString:assetCollection.localIdentifier])
     {
+        [self.collectionView reloadData];
         return;
     }
     _assetCollection = assetCollection;
@@ -215,6 +216,11 @@ static NSInteger const kScreenSizeCacheTrigger = 1 / 3.0f;
 
 - (void)updateCachedAssets
 {
+    if (self.assetCollection == nil)
+    {
+        return;
+    }
+    
     // The preheat window is twice the height of the visible rect
     CGRect preheatRect = self.collectionView.bounds;
     preheatRect = CGRectInset(preheatRect, 0.0f, -0.5f * CGRectGetHeight(preheatRect));
