@@ -8,90 +8,44 @@
 
 import UIKit
 
-@objc class Experiment: NSManagedObject {
-    @NSManaged var name: String
-    @NSManaged var enabled: NSNumber
-    @NSManaged var id: NSNumber
-}
-
-extension Experiment {
-    
-    static var entityMapping: RKEntityMapping {
-        let propertyMap = [
-            "name"  : "name",
-            "id"    : "id" ]
-        
-        var store = RKObjectManager.sharedManager().managedObjectStore
-        var mapping = RKEntityMapping(forEntityForName: self.v_defaultEntityName, inManagedObjectStore: store )
-        mapping.addAttributeMappingsFromDictionary( propertyMap )
-        mapping.identificationAttributes = [ "id" ]
-        return mapping
-    }
-    
-    static var descriptors: NSArray {
-        return [
-            RKResponseDescriptor(
-                mapping: self.entityMapping,
-                method: RKRequestMethod.GET,
-                pathPattern: "/api/device/experiments",
-                keyPath: "payload",
-                statusCodes: RKStatusCodeIndexSetForClass(UInt(RKStatusCodeClassSuccessful))
-            )
-        ]
-    }
-}
-
-extension VObjectManager {
-    
-    func getDeviceExperiments( #success: VSuccessBlock, failure: VFailBlock ) -> RKManagedObjectRequestOperation? {
-        
-        let params = [ "" : "" ]
-        return self.GET( "/api/device/experiments", object: nil, parameters: params, successBlock: success, failBlock: failure )
-    }
-    
-    func setDeviceExperiments( #success: VSuccessBlock, failure: VFailBlock ) -> RKManagedObjectRequestOperation? {
-        
-        let params = [ "" : "" ]
-        return self.POST( "/api/device/experiments", object: nil, parameters: params, successBlock: success, failBlock: failure )
-    }
-}
-
-extension ExperimentSettingsViewController: UITableViewDataSource {
-    
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let experiment = self.experiments[ indexPath.row ]
-        let identifier = "VSettingsSwitchCell"
-        if let cell = tableView.dequeueReusableCellWithIdentifier( identifier, forIndexPath: indexPath ) as? VSettingsSwitchCell {
-            cell.setTitle( experiment.name, value: experiment.enabled.boolValue )
-            cell.delegate = self
-        }
-        fatalError( "Could not load cell" )
-    }
-    
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return experiments.count
-    }
-}
-
 class ExperimentSettingsViewController: UITableViewController {
     
-    let experiments = [Experiment]()
+    var experiments = [Experiment]()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear( animated )
         
         self.loadSettings() {
             self.tableView.reloadData()
         }
     }
     
-    func loadSettings( completion: ()->() ) {
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear( animated )
+        
+        self.saveSettings()
+    }
+    
+    private func saveSettings() {
+        VObjectManager.sharedManager().setDeviceExperiments(
+            success: { (operation, result, results) in
+            },
+            failure: { (operation, error) in
+            }
+        )
+    }
+    
+    private func loadSettings( completion: ()->() ) {
         VObjectManager.sharedManager().getDeviceExperiments(
             success: { (operation, result, results) -> Void in
-                println( result )
+                if let experiments = results as? [Experiment] {
+                    self.experiments = experiments
+                }
+                completion()
             },
             failure: { (operation, error) -> Void in
-                println( error )
+                self.experiments = []	
+                completion()
             }
         )
     }
@@ -104,5 +58,23 @@ extension ExperimentSettingsViewController: VSettingsSwitchCellDelegate {
             let experiment = self.experiments[ indexPath.row ]
             experiment.enabled = cell.value
         }
+    }
+}
+
+extension ExperimentSettingsViewController: UITableViewDataSource {
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let experiment = self.experiments[ indexPath.row ]
+        let identifier = "VSettingsSwitchCell"
+        if let cell = tableView.dequeueReusableCellWithIdentifier( identifier, forIndexPath: indexPath ) as? VSettingsSwitchCell {
+            cell.setTitle( experiment.name, value: experiment.enabled.boolValue )
+            cell.delegate = self
+            return cell
+        }
+        fatalError( "Could not load cell" )
+    }
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return experiments.count
     }
 }

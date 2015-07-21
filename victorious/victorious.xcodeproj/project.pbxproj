@@ -685,6 +685,9 @@
 		A7DAFCA71B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCA61B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift */; };
 		A7DAFCA91B4EDACE00B51C92 /* GIFSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCA81B4EDACE00B51C92 /* GIFSearchResult.swift */; };
 		A7DAFCAD1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCAC1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift */; };
+		A7DDA6AA1B5F0018005CE55E /* Experiment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6A91B5F0018005CE55E /* Experiment.swift */; };
+		A7DDA6AC1B5F003B005CE55E /* Experiment+RestKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6AB1B5F003B005CE55E /* Experiment+RestKit.swift */; };
+		A7DDA6AE1B5F006B005CE55E /* VObjectManager+Experiments.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6AD1B5F006B005CE55E /* VObjectManager+Experiments.swift */; };
 		A7E2EFCB1A49001000372547 /* VEditCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E2EFCA1A49001000372547 /* VEditCommentViewController.m */; };
 		A7E2EFD21A49066F00372547 /* EditComment.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7E2EFD11A49066F00372547 /* EditComment.storyboard */; };
 		A7E3985F1A34F6E1000E4CAC /* creator-avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = A7E3985D1A34F6E1000E4CAC /* creator-avatar.png */; };
@@ -2323,6 +2326,9 @@
 		A7DAFCA61B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VObjectManager+GIFSearch.swift"; sourceTree = "<group>"; };
 		A7DAFCA81B4EDACE00B51C92 /* GIFSearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchResult.swift; sourceTree = "<group>"; };
 		A7DAFCAC1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Extensions.swift"; sourceTree = "<group>"; };
+		A7DDA6A91B5F0018005CE55E /* Experiment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Experiment.swift; sourceTree = "<group>"; };
+		A7DDA6AB1B5F003B005CE55E /* Experiment+RestKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Experiment+RestKit.swift"; sourceTree = "<group>"; };
+		A7DDA6AD1B5F006B005CE55E /* VObjectManager+Experiments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VObjectManager+Experiments.swift"; sourceTree = "<group>"; };
 		A7E2EFC91A49001000372547 /* VEditCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEditCommentViewController.h; sourceTree = "<group>"; };
 		A7E2EFCA1A49001000372547 /* VEditCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEditCommentViewController.m; sourceTree = "<group>"; };
 		A7E2EFD11A49066F00372547 /* EditComment.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EditComment.storyboard; sourceTree = "<group>"; };
@@ -3236,6 +3242,7 @@
 				0314D2E519B46B0E00FA363C /* VPaginationManager.m */,
 				D8F12A6B1A6F093900E99B3D /* VPublishParameters.h */,
 				D8F12A6C1A6F093900E99B3D /* VPublishParameters.m */,
+				A7DDA6AD1B5F006B005CE55E /* VObjectManager+Experiments.swift */,
 				A7DAFCA61B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift */,
 			);
 			path = Object;
@@ -3300,6 +3307,7 @@
 				A7A2E0021A38E41800F8C705 /* Purchases */,
 				0314D3E219B46B5E00FA363C /* Root View */,
 				0314D3EF19B46B5E00FA363C /* Search */,
+				0314D3F219B46B5E00FA363C /* Settings */,
 				0314D40019B46B5E00FA363C /* Sharing */,
 				0314D40319B46B5E00FA363C /* Signup and Login */,
 				0314D43319B46B5E00FA363C /* Streams */,
@@ -3684,14 +3692,12 @@
 				A7D707721A797B8A00D9993F /* VVideoSettings.m */,
 				A7BF9D0F1B5EC732002C0A98 /* ExperimentSettingsViewController.swift */,
 			);
-			name = Settings;
-			path = ../Settings;
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		0314D40019B46B5E00FA363C /* Sharing */ = {
 			isa = PBXGroup;
 			children = (
-				0314D3F219B46B5E00FA363C /* Settings */,
 				0314D40119B46B5E00FA363C /* VFacebookActivity.h */,
 				0314D40219B46B5E00FA363C /* VFacebookActivity.m */,
 			);
@@ -4759,6 +4765,7 @@
 		A721E87B1B572452000B7901 /* Mappings */ = {
 			isa = PBXGroup;
 			children = (
+				A7DDA6AB1B5F003B005CE55E /* Experiment+RestKit.swift */,
 				A721E87C1B572452000B7901 /* GIFSearchResult+RestKit.swift */,
 				A721E87D1B572452000B7901 /* VAbstractFilter+RestKit.h */,
 				A721E87E1B572452000B7901 /* VAbstractFilter+RestKit.m */,
@@ -5840,6 +5847,7 @@
 		BE171DE91868C211004E5202 /* ManagedObjectModels */ = {
 			isa = PBXGroup;
 			children = (
+				A7DDA6A91B5F0018005CE55E /* Experiment.swift */,
 				A7DAFCA81B4EDACE00B51C92 /* GIFSearchResult.swift */,
 				A7DAFCAC1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift */,
 				BE89D98B1921531400D97E7F /* VAbstractFilter.h */,
@@ -7716,6 +7724,7 @@
 				A721E9331B572454000B7901 /* VStream+RestKit.m in Sources */,
 				0314D4DC19B46B5E00FA363C /* VFacebookActivity.m in Sources */,
 				A7D707991A7C144C00D9993F /* VCountdownViewController.m in Sources */,
+				A7DDA6AA1B5F0018005CE55E /* Experiment.swift in Sources */,
 				A601FB4F1B4355A30050536C /* VCreationFlowController.m in Sources */,
 				A721E9361B572454000B7901 /* VVoteResult+RestKit.m in Sources */,
 				A7D7079F1A7C144C00D9993F /* VEndCardModel.m in Sources */,
@@ -7769,6 +7778,7 @@
 				D87D70961A9804CD002D4FED /* VNavigationDestinationContainerViewController.m in Sources */,
 				F0AD21761AF43DFA001BDCC6 /* VCollectionsDirectoryCellFactory.m in Sources */,
 				03C185BC19B42E5D00E27D05 /* TWSignedRequest.m in Sources */,
+				A7DDA6AE1B5F006B005CE55E /* VObjectManager+Experiments.swift in Sources */,
 				A7AEF9D01A83F2F500A3D3A0 /* VVideoUtils.m in Sources */,
 				D84559001ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m in Sources */,
 				D80A94DB1A536C8C0035D788 /* VTrimmerViewController.m in Sources */,
@@ -7826,6 +7836,7 @@
 				D86448A11A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m in Sources */,
 				A77951191B28AB9A00D9DB0A /* VEnvironment.m in Sources */,
 				03CE670019B640CD0011BB9E /* VDeviceInfo.m in Sources */,
+				A7DDA6AC1B5F003B005CE55E /* Experiment+RestKit.swift in Sources */,
 				C30AA4DD1B055C000010CEFE /* VPermissionAlertPresentationController.m in Sources */,
 				A77AD5011A2011E000142F24 /* UIActionSheet+VBlocks.m in Sources */,
 				036E87B21ACB6B3F00E5AAAD /* VContentViewFactory.m in Sources */,
