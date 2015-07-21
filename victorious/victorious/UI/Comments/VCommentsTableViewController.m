@@ -42,6 +42,7 @@
 #import "VNoContentView.h"
 #import "VDependencyManager+VTracking.h"
 #import "VTableViewStreamFocusHelper.h"
+#import "VCommentMedia.h"
 
 @import Social;
 
@@ -302,10 +303,13 @@
             // Determine if this is a gif
             BOOL shouldAutoplay = [comment.shouldAutoplay boolValue];
             
-            cell.commentTextView.shouldAutoplay = shouldAutoplay;
-            if (shouldAutoplay)
+            // Make sure to grab the mp4 URL if its a gif
+            NSURL *mp4Url = [comment mp4MediaURL];
+            
+            if (shouldAutoplay && mp4Url != nil)
             {
-                cell.commentTextView.autoplayURL = [NSURL URLWithString:comment.mediaUrl];
+                cell.commentTextView.shouldAutoplay = shouldAutoplay;
+                cell.commentTextView.autoplayURL = mp4Url;
             }
         }
         else

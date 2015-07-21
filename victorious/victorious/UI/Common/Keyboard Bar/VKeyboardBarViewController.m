@@ -196,16 +196,17 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
         self.attachmentPresenter.attachmentTypes = VMediaAttachmentOptionsImage | VMediaAttachmentOptionsVideo | VMediaAttachmentOptionsGIF;
         self.attachmentPresenter.resultHandler = ^void(BOOL success, VPublishParameters *publishParameters)
         {
+            __strong typeof(self) strongSelf = welf;
             if (success)
             {
-                welf.publishParameters = publishParameters;
-                welf.mediaURL = publishParameters.mediaToUploadURL;
-                [welf.mediaButton setImage:publishParameters.previewImage forState:UIControlStateNormal];
+                strongSelf.publishParameters = publishParameters;
+                strongSelf.mediaURL = publishParameters.mediaToUploadURL;
+                [strongSelf.mediaButton setImage:publishParameters.previewImage forState:UIControlStateNormal];
             }
-            [welf dismissViewControllerAnimated:YES
+            [strongSelf dismissViewControllerAnimated:YES
                                      completion:^
              {
-                 [welf enableOrDisableSendButtonAsAppropriate];
+                 [strongSelf enableOrDisableSendButtonAsAppropriate];
              }];
         };
         [self.attachmentPresenter presentOnViewController:self];
@@ -345,30 +346,5 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
         }
     }
 }
-
-#pragma mark - VWorkspaceFlowControllerDelegate
-
-//- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
-//{
-//    [self dismissViewControllerAnimated:YES
-//                             completion:nil];
-//}
-//
-//- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-//  finishedWithPublishParameters:(VPublishParameters *)publishParameters
-//{
-//    self.publishParameters = publishParameters;
-//    [self.mediaButton setImage:publishParameters.previewImage forState:UIControlStateNormal];
-//    [self dismissViewControllerAnimated:YES
-//                             completion:^
-//     {
-//         [self enableOrDisableSendButtonAsAppropriate];
-//     }];
-//}
-//
-//- (BOOL)shouldShowPublishForWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-//{
-//    return NO;
-//}
 
 @end

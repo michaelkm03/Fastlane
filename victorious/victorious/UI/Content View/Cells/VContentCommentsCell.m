@@ -212,12 +212,16 @@ static NSCache *_sharedImageCache = nil;
         self.mediaIsVideo = [comment.mediaUrl v_hasVideoExtension];
         if (self.mediaIsVideo)
         {
+            // Determine if this is a gif
             BOOL shouldAutoplay = [comment.shouldAutoplay boolValue];
             
-            self.commentAndMediaView.shouldAutoplay = shouldAutoplay;
-            if (shouldAutoplay)
+            // Make sure to grab the mp4 URL if its a gif
+            NSURL *mp4Url = [comment mp4MediaURL];
+            
+            if (shouldAutoplay && mp4Url != nil)
             {
-                self.commentAndMediaView.autoplayURL = [NSURL URLWithString:comment.mediaUrl];
+                self.commentAndMediaView.shouldAutoplay = shouldAutoplay;
+                self.commentAndMediaView.autoplayURL = mp4Url;
             }
         }
         else

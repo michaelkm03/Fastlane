@@ -7,6 +7,7 @@
 //
 
 #import "VComment+RestKit.h"
+#import "VCommentMedia+RestKit.h"
 
 @implementation VComment (RestKit)
 
@@ -46,6 +47,13 @@
     [mapping addConnectionForRelationship:@"user" connectedBy:@{@"userId" : @"remoteId"}];
     [mapping addConnectionForRelationship:@"asset" connectedBy:@{@"assetId" : @"remoteId"}];
     [mapping addConnectionForRelationship:@"sequence" connectedBy:@{@"sequenceId" : @"remoteId"}];
+    
+    // Comment media
+    RKRelationshipMapping *previewAssetsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"media"
+                                                                                              toKeyPath:VSelectorName(commentMedia)
+                                                                                            withMapping:[VCommentMedia entityMapping]];
+    
+    [mapping addPropertyMapping:previewAssetsMapping];
 
     return mapping;
 }

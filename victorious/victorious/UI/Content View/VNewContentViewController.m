@@ -1607,6 +1607,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     self.mediaAttachmentPresenter.resultHandler = ^void(BOOL success, VPublishParameters *publishParameters)
     {
         __strong typeof(self) strongSelf = welf;
+        strongSelf.publishParameters = publishParameters;
         [strongSelf onMediaAttachedWithPreviewImage:publishParameters.previewImage
                                            mediaURL:publishParameters.mediaToUploadURL];
     };
@@ -1919,37 +1920,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     [self.videoCell pause];
 }
-
-#pragma mark - VWorkspaceFlowControllerDelegate
-
-//- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
-//{
-//    [self dismissViewControllerAnimated:YES completion:nil];
-//}
-//
-//- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-//  finishedWithPublishParameters:(VPublishParameters *)publishParameters
-//{
-//    self.publishParameters = publishParameters;
-//    [self.textEntryView setSelectedThumbnail:publishParameters.previewImage];
-//
-//    [self dismissViewControllerAnimated:YES completion:^
-//     {
-//         [self.textEntryView startEditing];
-//         
-//         [UIView animateWithDuration:0.0f
-//                          animations:^
-//          {
-//              [self.contentCollectionView reloadData];
-//              [self.contentCollectionView.collectionViewLayout invalidateLayout];
-//          }];
-//     }];
-//}
-//
-//- (BOOL)shouldShowPublishForWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-//{
-//    return NO;
-//}
 
 #pragma mark - VHashtagSelectionResponder
 
