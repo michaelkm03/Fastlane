@@ -96,7 +96,7 @@ class GIFSearchViewController: UIViewController {
                 else {
                     var progressHUD = MBProgressHUD.showHUDAddedTo( self.view, animated: true )
                     progressHUD.mode = .Text
-                    progressHUD.labelText = NSLocalizedString( "Error rendering GIF.", comment:"" )
+                    progressHUD.labelText = NSLocalizedString( "Error rendering GIF", comment:"" )
                     progressHUD.hide(true, afterDelay: 3.0)
                 }
                 

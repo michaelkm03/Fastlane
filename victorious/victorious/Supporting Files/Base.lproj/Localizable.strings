@@ -616,9 +616,8 @@
 "Render failure" = "Render failure";
 "Publishing..." = "Publishing...";
 "Upload failure" = "Upload failure";
-"Error loading results." = "Error loading results.";
-"No results." = "No results.";
-"Error rendering GIF." = "Error rendering GIF.  Please try again.";
+"Error loading results" = "Error loading results";
+"Error rendering GIF" = "Error rendering GIF.  Please try again.";
 
 "Before you can take and share photos with the community, we need access to your camera. Allow camera access now?" = "Before you can take and share photos with the community, we need access to your camera. Allow camera access now?";
 "Thank you for joining the community! To add a profile picture, we need access to your camera. Allow camera access now?" = "Thank you for joining the community! To add a profile picture, we need access to your camera. Allow camera access now?";

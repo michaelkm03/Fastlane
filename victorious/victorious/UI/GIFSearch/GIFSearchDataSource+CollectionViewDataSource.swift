@@ -64,12 +64,12 @@ extension GIFSearchDataSource : UICollectionViewDataSource {
             cell.text = ""
             cell.loading = true
         case .Error:
-            cell.text = NSLocalizedString( "Error loading results.", comment:"" )
+            cell.text = NSLocalizedString( "Error loading results", comment:"" )
             cell.loading = false
         case .Content where self.sections.count == 0:
             cell.loading = false
             cell.text = {
-                return NSLocalizedString( "No results.", comment:"" )
+                return NSLocalizedString( "No results", comment:"" )
             }()
         default:
             cell.text = ""
