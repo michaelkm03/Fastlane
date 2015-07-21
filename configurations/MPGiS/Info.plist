@@ -3,35 +3,35 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>${ProductPrefix}Chris Collins</string>
+	<string>${ProductPrefix}MPGiS</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}chriscollins</string>
+	<string>com.getvictorious.${ProductPrefix}mpgis</string>
 	<key>CFBundleName</key>
-	<string>${ProductPrefix}ChrisCollins</string>
+	<string>${ProductPrefix}MPGiS</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb435879199950678</string>
+				<string>fb1626323997640353</string>
 			</array>
 		</dict>
 	</array>
 	<key>FacebookAppID</key>
-	<string>435879199950678</string>
+	<string>1626323997640353</string>
 	<key>TWITTER_CONSUMER_KEY</key>
-	<string>gfhdA3SgwtDkxnE5IOr2SiLSs</string>
+	<string>DwQ7qZe9VYZV87P1CBzDmKjfn</string>
 	<key>TWITTER_CONSUMER_SECRET</key>
-	<string>gt1yfHH11uczZs6uNkyiL9wn3NOGEYj2RwSgD24cUyUBdwxjvT</string>
+	<string>RKKyMgbRTPrs6iJ3a88t44dECU7Vojk6Rig57zqZHGmMtiGu9k</string>
 	<key>VictoriousAppID</key>
-	<integer>66</integer>
+	<integer>64</integer>
 	<key>StagingAppID</key>
-	<integer>79</integer>
+	<integer>78</integer>
 	<key>QAAppID</key>
-	<integer>68</integer>
+	<integer>67</integer>
 	<key>CreatorSalutation</key>
-	<string>Chris Collins</string>
+	<string>MPGiS</string>
 	<key>FlurryAPIKey</key>
-	<string>9GQ6XZRZ3P3TR7DHQJB3</string>
+	<string>Y7YFVCCHGYHPSGQKK7SS</string>
 </dict>
 </plist>
