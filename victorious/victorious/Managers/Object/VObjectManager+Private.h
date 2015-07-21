@@ -11,41 +11,43 @@
 
 @import CoreData;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface VObjectManager ()
 
 @property (nonatomic, strong) NSCache *objectCache;
-@property (nonatomic, strong) VUser *mainUser;
+@property (nonatomic, strong, nullable) VUser *mainUser;
 @property (nonatomic, assign) VLoginType loginType;
 
 @end
 
 @interface VObjectManager (Private)
 
-- (NSManagedObject *)objectForID:(NSNumber *)objectID
-                          idKey:(NSString *)idKey
-                     entityName:(NSString *)entityName
-           managedObjectContext:(NSManagedObjectContext *)context;
+- (NSManagedObject *__nullable)objectForID:(NSNumber *)objectID
+                                     idKey:(NSString *)idKey
+                                entityName:(NSString *)entityName
+                      managedObjectContext:(NSManagedObjectContext *)context;
 
 - (id)objectWithEntityName:(NSString *)entityName
                   subclass:(Class)subclass;
 
-- (RKManagedObjectRequestOperation *)GET:(NSString *)path
-                                  object:(id)object
-                              parameters:(NSDictionary *)parameters
-                            successBlock:(VSuccessBlock)successBlock
-                               failBlock:(VFailBlock)failBlock;
+- (RKManagedObjectRequestOperation *__nullable)GET:(NSString *)path
+                                            object:(id __nullable)object
+                                        parameters:(NSDictionary *__nullable)parameters
+                                      successBlock:(VSuccessBlock __nullable)successBlock
+                                         failBlock:(VFailBlock __nullable)failBlock;
 
-- (RKManagedObjectRequestOperation *)POST:(NSString *)path
-                                   object:(id)object
-                               parameters:(NSDictionary *)parameters
-                             successBlock:(VSuccessBlock)successBlock
-                                failBlock:(VFailBlock)failBlock;
+- (RKManagedObjectRequestOperation *__nullable)POST:(NSString *)path
+                                             object:(id __nullable)object
+                                         parameters:(NSDictionary *__nullable)parameters
+                                       successBlock:(VSuccessBlock __nullable)successBlock
+                                          failBlock:(VFailBlock __nullable)failBlock;
 
-- (RKManagedObjectRequestOperation *)DELETE:(NSString *)path
-                                     object:(id)object
-                                 parameters:(NSDictionary *)parameters
-                               successBlock:(VSuccessBlock)successBlock
-                                  failBlock:(VFailBlock)failBlock;
+- (RKManagedObjectRequestOperation *__nullable)DELETE:(NSString *)path
+                                               object:(id __nullable)object
+                                           parameters:(NSDictionary *__nullable)parameters
+                                         successBlock:(VSuccessBlock __nullable)successBlock
+                                            failBlock:(VFailBlock __nullable)failBlock;
 
 /*! Uses multipartFormRestquest to upload media.
  * allURLs key:value must be NSString *parameterName:NSURL *localURL
@@ -83,5 +85,7 @@
  @return Configured NSDateFormatter instance.
  */
 + (NSDateFormatter *)dateFormatter;
+
+NS_ASSUME_NONNULL_END
 
 @end

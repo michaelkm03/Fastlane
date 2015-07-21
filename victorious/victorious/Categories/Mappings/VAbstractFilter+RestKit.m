@@ -15,6 +15,11 @@
     return @"AbstractFilter";
 }
 
+- (BOOL)isLastPage
+{
+    return self.currentPageNumber.integerValue == self.maxPageNumber.integerValue;
+}
+
 - (BOOL)canLoadPageType:(VPageType)pageType
 {
     if ( pageType == VPageTypeFirst )

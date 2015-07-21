@@ -8,8 +8,9 @@
 
 #import "VCreationFlowController.h"
 #import "VCreationTypes.h"
+#import "VAssetCollectionGridViewController.h"
 
-@interface VAbstractImageVideoCreationFlowController : VCreationFlowController
+@interface VAbstractImageVideoCreationFlowController : VCreationFlowController <VAssetCollectionGridViewControllerDelegate>
 
 /**
  *  To force this image creation flow controller into remixing mode provide it with a previewImage 
@@ -60,9 +61,17 @@
 
 /**
  *  Using the workspace, configure the publish paramaters based on the actions taken.
+ *  Does not skip the trimmer by default.
  */
 - (void)configurePublishParameters:(VPublishParameters *)publishParameters
                      withWorkspace:(VWorkspaceViewController *)workspace;
+
+/**
+ *  Using the workspace, configure the publish paramaters based on the actions taken.
+ */
+- (void)captureFinishedWithMediaURL:(NSURL *)mediaURL
+                       previewImage:(UIImage *)previewImage
+                  shouldSkipTrimmer:(BOOL)shouldSkipTrimmerForContext;
 
 /**
  *  Provide the superclass with a downloader to grab the asset from the photos framework.
@@ -73,5 +82,17 @@
  *  Must return an array (or empty array) of VAlternateCaptureOptions.
  */
 - (NSArray *)alternateCaptureOptions;
+
+- (UIViewController *)initialViewController;
+
+@property (nonatomic, strong, readonly) VAssetCollectionGridViewController *gridViewController;
+
+@property (nonatomic, assign) BOOL shouldShowPublishScreen;
+
+- (void)toPublishScreenWithRenderedMediaURL:(NSURL *)renderedMediaURL
+                               previewImage:(UIImage *)previewImage
+                              fromWorkspace:(VWorkspaceViewController *)workspace;
+
+- (void)setupPublishPresenter;
 
 @end

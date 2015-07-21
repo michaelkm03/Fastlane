@@ -22,6 +22,7 @@
 #import "VRadialGradientLayer.h"
 #import "VCameraCoachMarkAnimator.h"
 #import <FBKVOController.h>
+#import "VImageSearchViewController.h"
 
 #import "VPermissionCamera.h"
 #import "VPermissionPhotoLibrary.h"
@@ -591,7 +592,23 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
         self.completionBlock(NO, nil, nil);
     }
     
-    
+    VImageSearchViewController *imageSearchViewController = [VImageSearchViewController newImageSearchViewControllerWithDependencyManager:self.dependencyManager];
+    __weak typeof(self) welf = self;
+    imageSearchViewController.imageSelectionHandler = ^void(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+    {
+        if (finished)
+        {
+            welf.capturedMediaURL = capturedMediaURL;
+            welf.previewImage = previewImage;
+            welf.state = VCameraViewControllerStateCapturedMedia;
+        }
+        
+        [welf dismissViewControllerAnimated:YES
+                                 completion:nil];
+    };
+    [self presentViewController:imageSearchViewController
+                       animated:YES
+                     completion:nil];
 }
 
 - (void)reverseCameraAction:(id)sender

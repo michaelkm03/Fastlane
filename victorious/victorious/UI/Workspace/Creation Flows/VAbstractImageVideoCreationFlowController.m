@@ -54,7 +54,7 @@ static NSString * const kCreationFlowSourceSearch = @"search";
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, strong) VCaptureContainerViewController *captureContainerViewController;
-@property (nonatomic, strong) VAssetCollectionGridViewController *gridViewController;
+@property (nonatomic, strong, readwrite) VAssetCollectionGridViewController *gridViewController;
 @property (nonatomic, strong) VAssetDownloader *downloader;
 @property (nonatomic, strong) VWorkspaceViewController *workspaceViewController;
 
@@ -84,9 +84,13 @@ static NSString * const kCreationFlowSourceSearch = @"search";
         
         _gridViewController = [self gridViewControllerWithDependencyManager:dependencyManager];
         _gridViewController.delegate = self;
-        [self.captureContainerViewController setContainedViewController:_gridViewController];
     }
     return self;
+}
+
+- (UIViewController *)initialViewController
+{
+    return self.gridViewController;
 }
 
 #pragma mark -  Public Methods
@@ -105,6 +109,8 @@ static NSString * const kCreationFlowSourceSearch = @"search";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self.captureContainerViewController setContainedViewController:[self initialViewController]];
     
     // We need to be the delegate for the publish animation, and the gesture delegate for the pop to work
     self.delegate = self;
@@ -252,9 +258,17 @@ static NSString * const kCreationFlowSourceSearch = @"search";
 - (void)captureFinishedWithMediaURL:(NSURL *)mediaURL
                        previewImage:(UIImage *)previewImage
 {
+    [self captureFinishedWithMediaURL:mediaURL previewImage:previewImage shouldSkipTrimmer:NO];
+}
+
+- (void)captureFinishedWithMediaURL:(NSURL *)mediaURL
+                       previewImage:(UIImage *)previewImage
+                  shouldSkipTrimmer:(BOOL)shouldSkipTrimmerForContext
+{
     // If the user has permission to skip the trimmmer (API Driven)
     // Go straight to publish do not pass go, do not collect $200
-    if ([[[VObjectManager sharedManager] mainUser] shouldSkipTrimmer] && [self isKindOfClass:[VVideoCreationFlowController class]])
+    BOOL shouldSkipTrimmerForUser = [[[VObjectManager sharedManager] mainUser] shouldSkipTrimmer] && [self isKindOfClass:[VVideoCreationFlowController class]];
+    if ( shouldSkipTrimmerForContext || shouldSkipTrimmerForUser )
     {
         self.renderedMediaURL = mediaURL;
         self.previewImage = previewImage;

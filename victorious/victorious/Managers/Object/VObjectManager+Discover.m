@@ -148,7 +148,7 @@
     
     if ([self doesSet:mainUser.hashtags containString:hashtag])
     {
-        success(nil, nil, nil);
+        success(nil, nil, @[]);
         return nil;
     }
     
@@ -207,7 +207,7 @@
     
     if (![self doesSet:mainUser.hashtags containString:hashtag])
     {
-        success(nil, nil, nil);
+        success( nil, nil, @[] );
         return nil;
     }
     

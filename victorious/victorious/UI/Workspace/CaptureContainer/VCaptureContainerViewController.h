@@ -11,6 +11,8 @@
 @class VAlternateCaptureOption;
 @class VDependencyManager;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface VCaptureContainerViewController : UIViewController
 
 + (instancetype)captureContainerWithDependencyManager:(VDependencyManager *)dependencyManager;
@@ -26,3 +28,5 @@
 @property (nonatomic, strong) NSArray *alternateCaptureOptions;
 
 @end
+
+NS_ASSUME_NONNULL_END

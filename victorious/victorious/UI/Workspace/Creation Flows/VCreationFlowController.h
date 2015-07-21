@@ -13,6 +13,7 @@
 
 @class VCreationFlowController;
 @class VDependencyManager;
+@class VAlternateCaptureOption;
 
 extern NSString * const VCreationFLowCaptureScreenKey;
 
@@ -82,6 +83,10 @@ typedef NS_ENUM(NSInteger, VCreationFlowSource)
  *  Use this to determine the next text of the workspace.
  */
 - (BOOL)shouldShowPublishText;
+
+@property (nonatomic, strong, readonly) VAlternateCaptureOption *cameraCaptureOption;
+
+@property (nonatomic, strong, readonly) VAlternateCaptureOption *searchCaptureOption;
 
 // Tracking Properties
 @property (nonatomic, assign) VCreationFlowSource source;
