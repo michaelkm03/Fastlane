@@ -39,7 +39,7 @@ extern NSString * const kLoggedInChangedNotification;
                                                 SuccessBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)failed;
 
-// A create facebook endpoint variant for the new modern login flow.
+// A create Facebook endpoint variant for the new modern login flow.
 - (RKManagedObjectRequestOperation *)modernCreateFacebookWithToken:(NSString *)accessToken
                                                       SuccessBlock:(VSuccessBlock)success
                                                          failBlock:(VFailBlock)failed;
@@ -55,6 +55,13 @@ extern NSString * const kLoggedInChangedNotification;
                                                   twitterId:(NSString *)twitterId
                                                SuccessBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)failed;
+
+// A create Twitter endpoint variant for the new modern login flow.
+- (RKManagedObjectRequestOperation *)modernCreateTwitterWithToken:(NSString *)accessToken
+                                                     accessSecret:(NSString *)accessSecret
+                                                        twitterId:(NSString *)twitterId
+                                                     SuccessBlock:(VSuccessBlock)success
+                                                        failBlock:(VFailBlock)failed;
 
 - (RKManagedObjectRequestOperation *)loginToVictoriousWithEmail:(NSString *)email
                                                        password:(NSString *)password

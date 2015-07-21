@@ -109,11 +109,6 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
     return UIInterfaceOrientationMaskPortrait;
 }
 
-- (BOOL)prefersStatusBarHidden
-{
-    return YES;
-}
-
 #pragma mark - Button handlers
 
 - (IBAction)closeButtonTapped:(id)sender

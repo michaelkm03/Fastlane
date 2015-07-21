@@ -36,9 +36,17 @@ typedef NS_OPTIONS(NSInteger, VCameraControlCaptureMode)
 /**
  *  Converts from a picture to video control based on duration of presses. 
  *  Use: addTarget:action:forControlEvents: with VCameraControlEvents for the corresponding actions associated with this control.
+ *
+ *  Uses tintColor to show video recording progress and fades to the tintColor when the camera control needs to infer that the
+ *  hardware is initializing.
  */
 IB_DESIGNABLE
 @interface VCameraControl : UIControl
+
+/**
+ *  The default color of the camera control.
+ */
+@property (nonatomic, strong) UIColor *defaultTintColor;
 
 /**
  *  An enumeration of the available capture modes.

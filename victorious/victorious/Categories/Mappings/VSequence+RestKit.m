@@ -16,6 +16,7 @@
 #import "VEndCard+RestKit.h"
 #import "VStream+RestKit.h"
 #import "VImageAsset+RestKit.h"
+#import "VEditorializationItem.h"
 
 @implementation VSequence (RestKit)
 
@@ -29,11 +30,13 @@
     return @{ @"category"       :   VSelectorName(category),
               @"id"             :   VSelectorName(remoteId),
               @"created_by"     :   VSelectorName(createdBy),
+              @"entry_label"    :   VSelectorName(headline),
               @"name"           :   VSelectorName(name),
               @"preview_image"  :   VSelectorName(previewImagesObject),
               @"released_at"    :   VSelectorName(releasedAt),
               @"description"    :   VSelectorName(sequenceDescription),
               @"status"         :   VSelectorName(status),
+              @"stream_id"      :   VSelectorName(streamId),
               @"is_complete"    :   VSelectorName(isComplete),
               @"is_remix"       :   VSelectorName(isRemix),
               @"is_repost"      :   VSelectorName(isRepost),
@@ -53,17 +56,24 @@
     };
 }
 
-+ (RKEntityMapping *)simpleMapping
++ (RKEntityMapping *)mappingBase
 {
-    NSDictionary *propertyMap = [self attributePropertyMapping];
+    NSDictionary *propertyMap = [VSequence attributePropertyMapping];
     
     RKEntityMapping *mapping = [RKEntityMapping
-                                mappingForEntityForName:[self entityName]
+                                mappingForEntityForName:[VSequence entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
     mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
+    
+    return mapping;
+}
+
++ (RKEntityMapping *)simpleMapping
+{
+    RKEntityMapping *mapping = [VSequence mappingBase];
     
     RKRelationshipMapping *previewAssetsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview.assets"
                                                                                               toKeyPath:VSelectorName(previewAssets)
@@ -82,15 +92,7 @@
 
 + (RKEntityMapping *)entityMapping
 {
-    NSDictionary *propertyMap = [self attributePropertyMapping];
-
-    RKEntityMapping *mapping = [RKEntityMapping
-                                mappingForEntityForName:[self entityName]
-                                inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
-    
-    mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
-    
-    [mapping addAttributeMappingsFromDictionary:propertyMap];
+    RKEntityMapping *mapping = [VSequence mappingBase];
     
     RKRelationshipMapping *previewAssetsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"preview.assets"
                                                                                               toKeyPath:VSelectorName(previewAssets)

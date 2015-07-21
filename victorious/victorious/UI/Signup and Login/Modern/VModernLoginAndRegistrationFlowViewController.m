@@ -23,6 +23,7 @@
 #import "VPrivacyPoliciesViewController.h"
 #import "VEnterProfilePictureCameraViewController.h"
 #import "VLoginFlowControllerDelegate.h"
+#import "VPermissionsTrackingHelper.h"
 
 #import "VForcedWorkspaceContainerViewController.h"
 
@@ -46,6 +47,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
 @property (nonatomic, strong) UIViewController<VLoginFlowScreen> *landingScreen;
 @property (nonatomic, strong) NSArray *registrationScreens;
 @property (nonatomic, strong) NSArray *loginScreens;
+@property (nonatomic, strong) VPermissionsTrackingHelper *permissionsTrackingHelper;
 
 // Use this as a semaphore around asynchronous user interaction (navigation pushes, social logins, etc.)
 @property (nonatomic, assign) BOOL actionsDisabled;
@@ -92,6 +94,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
         
         _animator = [[VModernFlowControllerAnimationController alloc] init];
         _percentDrivenInteraction = [[UIPercentDrivenInteractiveTransition alloc] init];
+        _permissionsTrackingHelper = [[VPermissionsTrackingHelper alloc] init];
     }
     return self;
 }
@@ -285,6 +288,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
         if ( success )
         {
             [self continueRegistrationFlowAfterSocialRegistration];
+            [self.permissionsTrackingHelper permissionsDidChange:VTrackingValueFacebookDidAllow permissionState:VTrackingValueAuthorized];
         }
         else
         {

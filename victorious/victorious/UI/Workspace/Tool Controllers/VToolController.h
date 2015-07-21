@@ -82,4 +82,14 @@
  */
 @property (nonatomic, strong) NSURL *mediaURL;
 
+/**
+ *  If the bottom bar should be hidden
+ */
+@property (nonatomic, assign) BOOL shouldBottomBarBeHidden;
+
+/**
+ *  Pass in an object in the tools array to disable that tool.
+ */
+- (void)disableTool:(id)tool;
+
 @end

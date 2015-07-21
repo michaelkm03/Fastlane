@@ -16,10 +16,16 @@ typedef NS_ENUM(NSInteger, VImageToolControllerInitialImageEditState)
     VImageToolControllerInitialImageEditStateText,
 };
 
+/**
+ *  Inject an NSNumber(BOOL) value with this key to disable text overlay.
+ */
+extern NSString * const VImageToolControllerShouldDisableTextOverlayKey;
+
 @interface VImageToolController : VToolController
 
 @property (nonatomic, assign) VImageToolControllerInitialImageEditState defaultImageTool;
 
+@property (nonatomic, assign) BOOL disableTextOverlay;
 @property (nonatomic, readonly) NSString *filterName; ///< The currently selected filter name.
 @property (nonatomic, readonly) NSString *embeddedText; ///< The embedded text, if any.
 @property (nonatomic, readonly) NSString *textToolType; ///< The text tool type, if any.

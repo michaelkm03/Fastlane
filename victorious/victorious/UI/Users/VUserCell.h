@@ -20,6 +20,8 @@
 
 - (void)setUser:(VUser *)user;
 
+- (void)updateFollowingAnimated:(BOOL)animated;
+
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end

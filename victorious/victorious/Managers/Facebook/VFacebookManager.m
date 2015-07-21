@@ -141,6 +141,7 @@ static NSString * const kEmailPermissionKey = @"email";
         {
             successBlock();
         }
+        
         return;
     }
     
