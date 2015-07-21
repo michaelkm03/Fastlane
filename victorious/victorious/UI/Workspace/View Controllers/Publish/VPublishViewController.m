@@ -33,6 +33,7 @@
 #import "VDependencyManager+VKeyboardStyle.h"
 #import "VPermissionPhotoLibrary.h"
 #import "VDependencyManager+VTracking.h"
+#import "VPermissionsTrackingHelper.h"
 #import "VBlurOverTransitioner.h"
 
 @import AssetsLibrary;
@@ -81,6 +82,8 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
 @property (nonatomic, strong) UISnapBehavior *snapBehavior;
 
 @property (nonatomic, assign) BOOL publishing;
+
+@property (nonatomic, strong) VPermissionsTrackingHelper *permissionsTrackingHelper;
 
 @end
 
@@ -163,6 +166,8 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
     self.previewImageView.image = self.publishParameters.previewImage;
     
     [self setupShareCard];
+    
+    self.permissionsTrackingHelper = [[VPermissionsTrackingHelper alloc] init];
 }
 
 - (void)setupCaptionTextView
@@ -558,11 +563,13 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
          if ( granted )
          {
              [saveSwitch removeTarget:strongSelf action:@selector(toggledSaveSwitch:) forControlEvents:UIControlEventValueChanged];
+             [self.permissionsTrackingHelper permissionsDidChange:VTrackingValuePhotolibraryDidAllow permissionState:VTrackingValueAuthorized];
          }
          if ( state == VPermissionStatePromptDenied )
          {
              //Already shown the first prompt once, no reason to show it again
              strongSelf.photoLibraryPermission.shouldShowInitialPrompt = NO;
+             [self.permissionsTrackingHelper permissionsDidChange:VTrackingValuePhotolibraryDidAllow permissionState:VTrackingValueDenied];
          }
      }];
 }
@@ -650,6 +657,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
                  shareItemCell.state = success ? VShareItemCellStateSelected : VShareItemCellStateUnselected;
                  if ( !success )
                  {
+                     [self.permissionsTrackingHelper permissionsDidChange:VTrackingValueTwitterDidAllow permissionState:VTrackingValueDenied];
                      [weakSelf showAlertForError:error fromShareItemCell:shareItemCell];
                  }
              }];

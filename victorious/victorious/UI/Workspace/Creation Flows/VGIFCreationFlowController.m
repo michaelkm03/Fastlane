@@ -81,6 +81,7 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
                 __strong typeof(welf) strongSelf = welf;
                 if (finished)
                 {
+                    strongSelf.source = VCreationFlowSourceCamera;
                     [strongSelf captureFinishedWithMediaURL:capturedMediaURL
                                                previewImage:previewImage];
                 }
@@ -114,7 +115,6 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
     return [[VVideoAssetDownloader alloc] initWithAsset:asset];
 }
 
-
 - (NSArray *)alternateCaptureOptions
 {
     __weak typeof(self) welf = self;
@@ -140,6 +140,7 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 
 - (void)GIFSelectedWithPreviewImage:(UIImage *)previewImage capturedMediaURL:(NSURL *)capturedMediaURL
 {
+    self.source = VCreationFlowSourceSearch;
     BOOL responds = [self.creationFlowDelegate respondsToSelector:@selector(shouldShowPublishScreenForFlowController)];
     if ( !responds || (responds && [self.creationFlowDelegate shouldShowPublishScreenForFlowController]) )
     {

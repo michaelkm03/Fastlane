@@ -604,6 +604,9 @@
 "Create a meme" = "Create a meme";
 "Create a quote" = "Create a quote";
 "Create a GIF" = "Create a GIF";
+"Pick an attachment style" = "Pick an attachment style";
+"Image" = "Image";
+"Video" = "Video";
 "Type your text here!" = "Type your text here!";
 "GIF" = "GIF";
 "GIF Search" = "GIF Search";
@@ -612,6 +615,7 @@
 "VIDEO MODE" = "VIDEO MODE";
 "Write a caption (optional)" = "Write a caption (optional)";
 "Rendering..." = "Rendering...";
+"Downloading..." = "Downloading...";
 "Exporting..." = "Exporting...";
 "Render failure" = "Render failure";
 "Publishing..." = "Publishing...";

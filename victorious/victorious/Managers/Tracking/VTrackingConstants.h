@@ -2,7 +2,7 @@
 // victorious/victorious/Managers/Tracking/VTrackingConstants.h 
 // victorious 
 // 
-// Generated from CSV using script "tracking_generate_constants.sh" on 06/30/15. 
+// Generated from CSV using script "tracking_generate_constants.sh" on 07/09/15. 
 // Copyright (c) 2015 Victorious. All rights reserved. 
 // 
 
@@ -236,7 +236,10 @@ extern NSString * const VTrackingEventWelcomeDidStart; //< Backend mapping: welc
 extern NSString * const VTrackingEventUserDidSelectRegistrationOption; //< Backend mapping: register_button_tap
 extern NSString * const VTrackingEventUserDidSelectSignUpSubmit; //< Backend mapping: sign_up_button_tap
 
-extern NSString * const VTrackingEventComponentDidBecomeVisible; //< Backend mapping: viewability
+extern NSString * const VTrackingEventComponentDidBecomeVisible; //< Backend mapping: view
+
+// Permissions
+extern NSString * const VTrackingEventUserPermissionDidChange; //< Backend mapping: permission_change
 
 // Tracking Event Parameters
 extern NSString * const VTrackingKeyCurrentSection; //< "Which major section is selected, such as ""Home"", ""Indbox"", ""Profile"", etc.",
@@ -253,7 +256,7 @@ extern NSString * const VTrackingKeyStreamId; //< A string containing the stream
 extern NSString * const VTrackingKeyTimeStamp; //< A string containing a timestamp with the following format: yyyy-MM-dd HH:mm:ss; Backend mapping %%TIME_STAMP%%
 extern NSString * const VTrackingKeySequenceId; //< Backend mapping: %%SEQUENCE_ID%%
 extern NSString * const VTrackingKeyVoteCount; //< The number of votes (emotive ballistic/experience enhancer throws) that occurred; Backend mapping: %%COUNT%%
-extern NSString * const VTrackingKeyUrls; //< An array of 1 or more URLs with replaceable macros receied from the server
+extern NSString * const VTrackingKeyUrls; //< An array of 1 or more URLs with replaceable macros received from the server
 extern NSString * const VTrackingKeyShareDestination; //< "An identifier for a share action, usually provided by the system (Facebook, Twitter, Email, SMS, etc.); Backend mapping: %%SHARE_DEST%%",
 extern NSString * const VTrackingKeySharedToFacebook; //< An identifier for a share to Facebook not through the action sheet. Backend mapping: %%FACEBOOK_SHARE%%
 extern NSString * const VTrackingKeySharedToTwitter; //< An identifier for a share to Twitter not through the action sheet. Backend mapping: %%TWITTER_SHARE%%
@@ -277,6 +280,8 @@ extern NSString * const VTrackingKeyRemoteId; //< "Generic, to indicate backend 
 extern NSString * const VTrackingKeyIndex; //< "Generic, to indicate selected item in a list or group.",
 extern NSString * const VTrackingKeyUserLoggedIn; //< "0 if user is logged out, 1 if user is logged in",
 extern NSString * const VTrackingKeyLoadTime; //< The amount of time between requesting something from the backend and receiving the first byte of the response.
+extern NSString * const VTrackingKeyPermissionName; 
+extern NSString * const VTrackingKeyPermissionState; 
 
 // Tracking Event Values
 // ContentType values
@@ -308,3 +313,21 @@ extern NSString * const VTrackingValueMessage;
 // Menu types
 extern NSString * const VTrackingValueHamburgerMenu; 
 extern NSString * const VTrackingValueTabBar; 
+
+// Permission State
+extern NSString * const VTrackingValueContactsDidAllow; 
+extern NSString * const VTrackingValueCameraDidAllow; 
+extern NSString * const VTrackingValueMicrophoneDidAllow; 
+extern NSString * const VTrackingValuePhotolibraryDidAllow; 
+extern NSString * const VTrackingValueFacebookDidAllow; 
+extern NSString * const VTrackingValueTwitterDidAllow; 
+extern NSString * const VTrackingValueLocationDidAllow; 
+extern NSString * const VTrackingValueUsertagInComment; 
+extern NSString * const VTrackingValuePostFromFollowed; 
+extern NSString * const VTrackingValuePostFromCreator; 
+extern NSString * const VTrackingValueNewCommentOnMyPost; 
+extern NSString * const VTrackingValuePostOnFollowedHashtag; 
+extern NSString * const VTrackingValueNewPrivateMessage; 
+extern NSString * const VTrackingValueNewFollower; 
+extern NSString * const VTrackingValueAuthorized; 
+extern NSString * const VTrackingValueDenied; 

@@ -9,12 +9,20 @@
 #import <UIKit/UIKit.h>
 #import "VCreationTypes.h"
 #import "VHasManagedDependencies.h"
+#import "VPublishParameters.h"
 
 @class VCreationFlowController;
 @class VDependencyManager;
 @class VAlternateCaptureOption;
 
 extern NSString * const VCreationFLowCaptureScreenKey;
+
+typedef NS_ENUM(NSInteger, VCreationFlowSource)
+{
+    VCreationFlowSourceLibrary,
+    VCreationFlowSourceCamera,
+    VCreationFlowSourceSearch,
+};
 
 /**
  *  A delegate for responding to events of the creation flow controller.
@@ -61,6 +69,12 @@ extern NSString * const VCreationFLowCaptureScreenKey;
 @property (nonatomic, weak) id <VCreationFlowControllerDelegate> creationFlowDelegate;
 
 /**
+ *  Publish parameters for the creationFlowController. Note this may not be actually used to publish,
+ *  but consumers can leverage this to be informed of what happed in the creation flow.
+ */
+@property (nonatomic, readonly) VPublishParameters *publishParameters;
+
+/**
  *  Convenience for subclasses to add a templated close button to their viewControllers.
  */
 - (void)addCloseButtonToViewController:(UIViewController *)viewController;
@@ -73,5 +87,8 @@ extern NSString * const VCreationFLowCaptureScreenKey;
 @property (nonatomic, strong, readonly) VAlternateCaptureOption *cameraCaptureOption;
 
 @property (nonatomic, strong, readonly) VAlternateCaptureOption *searchCaptureOption;
+
+// Tracking Properties
+@property (nonatomic, assign) VCreationFlowSource source;
 
 @end

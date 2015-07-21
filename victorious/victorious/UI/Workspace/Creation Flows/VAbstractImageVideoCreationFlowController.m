@@ -42,6 +42,11 @@
 @import Photos;
 #import <MBProgressHUD/MBProgressHUD.h>
 
+// Sources
+static NSString * const kCreationFlowSourceLibrary = @"library";
+static NSString * const kCreationFlowSourceCamera = @"camera";
+static NSString * const kCreationFlowSourceSearch = @"search";
+
 @interface VAbstractImageVideoCreationFlowController () <UINavigationControllerDelegate, VAssetCollectionGridViewControllerDelegate, VScaleAnimatorSource>
 
 @property (nonatomic, strong) NSArray *cachedAssetCollections;
@@ -113,6 +118,19 @@
 }
 
 #pragma mark - Private Methods
+
+- (NSString *)sourceStringForSourceType:(VCreationFlowSource)source
+{
+    switch (self.source)
+    {
+        case VCreationFlowSourceCamera:
+            return kCreationFlowSourceCamera;
+        case VCreationFlowSourceLibrary:
+            return kCreationFlowSourceLibrary;
+        case VCreationFlowSourceSearch:
+            return kCreationFlowSourceSearch;
+    }
+}
 
 - (void)prepareWorkspaceWithMediaURL:(NSURL *)mediaURL
                      andPreviewImage:(UIImage *)previewImage
@@ -214,12 +232,12 @@
     [self setupPublishPresenter];
     
     // Configure parameters
-    VPublishParameters *publishParameters = [[VPublishParameters alloc] init];
-    publishParameters.mediaToUploadURL = renderedMediaURL;
-    publishParameters.previewImage = previewImage;
-    [self configurePublishParameters:publishParameters
+    self.publishParameters.source = [self sourceStringForSourceType:self.source];
+    self.publishParameters.mediaToUploadURL = renderedMediaURL;
+    self.publishParameters.previewImage = previewImage;
+    [self configurePublishParameters:self.publishParameters
                        withWorkspace:workspace];
-    self.publishPresenter.publishParameters = publishParameters;
+    self.publishPresenter.publishParameters = self.publishParameters;
 
     [self.publishPresenter presentOnViewController:self];
 }
@@ -298,6 +316,7 @@
          [hudForView hide:YES];
          if (error == nil)
          {
+             strongSelf.source = VCreationFlowSourceLibrary;
              [strongSelf captureFinishedWithMediaURL:downloadedFileURL
                                         previewImage:previewImage];
          }

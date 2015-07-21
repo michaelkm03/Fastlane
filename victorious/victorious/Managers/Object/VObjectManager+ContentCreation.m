@@ -242,6 +242,11 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         parameters[@"playback"] = loopParam;
     }
     
+    if (publishParameters.source != nil)
+    {
+        parameters[@"source"] = publishParameters.source;
+    }
+    
     NSURL *endpoint = [NSURL URLWithString:@"/api/mediaupload/create" relativeToURL:self.baseURL];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:endpoint];
     request.HTTPMethod = RKStringFromRequestMethod(RKRequestMethodPOST);

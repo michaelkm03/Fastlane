@@ -137,6 +137,7 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
                                                        __strong typeof(welf) strongSelf = welf;
                                                        if (finished)
                                                        {
+                                                           strongSelf.source = VCreationFlowSourceCamera;
                                                            [strongSelf captureFinishedWithMediaURL:capturedMediaURL
                                                                                 previewImage:previewImage];
                                                        }
@@ -156,6 +157,7 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
         __strong typeof(welf) strongSelf = welf;
         if (finished)
         {
+            strongSelf.source = VCreationFlowSourceSearch;
             [strongSelf captureFinishedWithMediaURL:capturedMediaURL
                                        previewImage:previewImage];
         }
