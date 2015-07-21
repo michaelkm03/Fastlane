@@ -29,7 +29,8 @@
  */
 - (instancetype)initWithTextView:(UITextView *)textView
                      defaultFont:(UIFont *)defaultFont
-                 taggingDelegate:(id<VUserTaggingTextStorageDelegate>)taggingDelegate;
+                 taggingDelegate:(id<VUserTaggingTextStorageDelegate>)taggingDelegate
+               dependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
  Create a database-formatted version of the current attributed string
@@ -38,7 +39,7 @@
 - (NSString *)databaseFormattedString;
 
 @property (nonatomic, weak) id <VUserTaggingTextStorageDelegate> taggingDelegate;
-@property (nonatomic, weak) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) UITextView *textView;
 @property (nonatomic, assign) BOOL disableSearching;
 @property (nonatomic, strong) UIFont *defaultFont;

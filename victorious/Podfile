@@ -13,6 +13,7 @@ target :victorious do
     pod 'KVOController'
     pod 'SDWebImage'
     pod 'CCHLinkTextView'
+    pod 'OAStackView'
     link_with 'victorious'
 
     target :test do

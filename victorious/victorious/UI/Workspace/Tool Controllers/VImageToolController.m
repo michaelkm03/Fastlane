@@ -11,8 +11,6 @@
 #import "CIImage+VImage.h"
 #import "VConstants.h"
 #import "UIImage+Resize.h"
-
-//TODO: Should factor these out of here
 #import "VCropTool.h"
 #import "VFilterTool.h"
 #import "VTextTool.h"
@@ -20,6 +18,7 @@
 static const CGFloat kJPEGCompressionQuality    = 0.8f;
 
 NSString * const VImageToolControllerInitialImageEditStateKey = @"VImageToolControllerInitialImageEditStateKey";
+NSString * const VImageToolControllerShouldDisableTextOverlayKey = @"VImageToolControllerShouldDisableTextOverlayKey";
 
 @interface VImageToolController ()
 
@@ -28,6 +27,23 @@ NSString * const VImageToolControllerInitialImageEditStateKey = @"VImageToolCont
 @end
 
 @implementation VImageToolController
+
+#pragma mark - Property Accessors
+
+- (void)setDisableTextOverlay:(BOOL)disableTextOverlay
+{
+    _disableTextOverlay = disableTextOverlay;
+    
+    for (id tool in self.tools)
+    {
+        if ([tool isKindOfClass:[VTextTool class]])
+        {
+            [self disableTool:tool];
+        }
+    }
+}
+
+#pragma mark - VToolController
 
 - (void)exportWithSourceAsset:(NSURL *)source
                withCompletion:(void (^)(BOOL finished, NSURL *renderedMediaURL, UIImage *previewImage, NSError *error))completion

@@ -398,6 +398,7 @@ static NSString * const kVAPIParamContext = @"context";
 }
 
 - (RKManagedObjectRequestOperation *)findUsersBySearchString:(NSString *)search_string
+                                                  sequenceID:(NSString *)sequenceID
                                                        limit:(NSInteger)pageLimit
                                                      context:(NSString *)context
                                             withSuccessBlock:(VSuccessBlock)success
@@ -410,13 +411,24 @@ static NSString * const kVAPIParamContext = @"context";
             success(operation, fullResponse, resultObjects);
         }
     };
+    NSURLComponents *components = [[NSURLComponents alloc] init];
     NSString *escapedSearchString = [search_string stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet v_pathPartCharacterSet]];
-    NSString *userSearchURL = [NSString stringWithFormat:@"/api/userinfo/search/%@/%ld", escapedSearchString, (long)pageLimit];
-    if (context != nil)
+    NSString *path = [NSString stringWithFormat:@"/api/userinfo/search/%@/%ld", escapedSearchString, (long)pageLimit];
+    NSString *url;
+    if ( context != nil )
     {
-        userSearchURL = [NSString stringWithFormat:@"%@/%@", userSearchURL, context];
+        path = [path stringByAppendingPathComponent:context];
     }
-    return [self GET:userSearchURL
+    if (sequenceID != nil)
+    {
+        NSURLQueryItem *sequenceQuery = [NSURLQueryItem queryItemWithName:@"sequence_id" value:sequenceID];
+        components.queryItems = @[sequenceQuery];
+    }
+
+    components.path = path;
+    url = components.URL.absoluteString;
+    
+    return [self GET:url
               object:nil
           parameters:nil
         successBlock:fullSuccess
