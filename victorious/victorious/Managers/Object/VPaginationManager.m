@@ -43,10 +43,10 @@ NS_ASSUME_NONNULL_BEGIN
     return self;
 }
 
-- (RKManagedObjectRequestOperation *)loadFilter:(VAbstractFilter *)filter
-                                   withPageType:(VPageType)pageType
-                                   successBlock:(VSuccessBlock)success
-                                      failBlock:(VFailBlock)fail
+- (RKManagedObjectRequestOperation *__nullable)loadFilter:(VAbstractFilter *)filter
+                                             withPageType:(VPageType)pageType
+                                             successBlock:(VSuccessBlock)success
+                                                failBlock:(VFailBlock)fail
 {
     if ( ![filter canLoadPageType:pageType] || [self isLoadingFilter:filter] )
     {

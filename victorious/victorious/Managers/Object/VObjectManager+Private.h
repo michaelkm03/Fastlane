@@ -31,23 +31,23 @@ NS_ASSUME_NONNULL_BEGIN
 - (id)objectWithEntityName:(NSString *)entityName
                   subclass:(Class)subclass;
 
-- (RKManagedObjectRequestOperation *)GET:(NSString *)path
-                                  object:(id __nullable)object
-                              parameters:(NSDictionary *__nullable)parameters
-                            successBlock:(VSuccessBlock __nullable)successBlock
-                               failBlock:(VFailBlock __nullable)failBlock;
+- (RKManagedObjectRequestOperation *__nullable)GET:(NSString *)path
+                                            object:(id __nullable)object
+                                        parameters:(NSDictionary *__nullable)parameters
+                                      successBlock:(VSuccessBlock __nullable)successBlock
+                                         failBlock:(VFailBlock __nullable)failBlock;
 
-- (RKManagedObjectRequestOperation *)POST:(NSString *)path
-                                   object:(id __nullable)object
-                               parameters:(NSDictionary *__nullable)parameters
-                             successBlock:(VSuccessBlock __nullable)successBlock
-                                failBlock:(VFailBlock __nullable)failBlock;
+- (RKManagedObjectRequestOperation *__nullable)POST:(NSString *)path
+                                             object:(id __nullable)object
+                                         parameters:(NSDictionary *__nullable)parameters
+                                       successBlock:(VSuccessBlock __nullable)successBlock
+                                          failBlock:(VFailBlock __nullable)failBlock;
 
-- (RKManagedObjectRequestOperation *)DELETE:(NSString *)path
-                                     object:(id __nullable)object
-                                 parameters:(NSDictionary *__nullable)parameters
-                               successBlock:(VSuccessBlock __nullable)successBlock
-                                  failBlock:(VFailBlock __nullable)failBlock;
+- (RKManagedObjectRequestOperation *__nullable)DELETE:(NSString *)path
+                                               object:(id __nullable)object
+                                           parameters:(NSDictionary *__nullable)parameters
+                                         successBlock:(VSuccessBlock __nullable)successBlock
+                                            failBlock:(VFailBlock __nullable)failBlock;
 
 /*! Uses multipartFormRestquest to upload media.
  * allURLs key:value must be NSString *parameterName:NSURL *localURL

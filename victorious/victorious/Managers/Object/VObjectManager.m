@@ -171,7 +171,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     RKManagedObjectRequestOperation *requestOperation =
     [self  appropriateObjectRequestOperationWithObject:object method:method path:path parameters:parameters];
-
+    
     void (^rkSuccessBlock) (RKObjectRequestOperation *, RKMappingResult *) = ^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)
     {
         NSMutableArray *mappedObjects = [mappingResult.array mutableCopy];
@@ -217,7 +217,7 @@ NS_ASSUME_NONNULL_BEGIN
         else if (error.errorCode)
         {
             NSError *nsError = [NSError errorWithDomain:kVictoriousErrorDomain code:error.errorCode
-                                             userInfo:@{NSLocalizedDescriptionKey:[localizedErrorMessages componentsJoinedByString:@","]}];
+                                               userInfo:@{NSLocalizedDescriptionKey:[localizedErrorMessages componentsJoinedByString:@","]}];
             [self defaultErrorHandlingForCode:nsError.code];
             
             if ( failBlock != nil )
@@ -268,11 +268,11 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
-- (RKManagedObjectRequestOperation *)GET:(NSString *)path
-                                  object:(id __nullable)object
-                              parameters:(NSDictionary *__nullable)parameters
-                            successBlock:(VSuccessBlock __nullable)successBlock
-                               failBlock:(VFailBlock __nullable)failBlock
+- (RKManagedObjectRequestOperation *__nullable)GET:(NSString *)path
+                                            object:(id __nullable)object
+                                        parameters:(NSDictionary *__nullable)parameters
+                                      successBlock:(VSuccessBlock __nullable)successBlock
+                                         failBlock:(VFailBlock __nullable)failBlock
 {
     return [self requestMethod:RKRequestMethodGET
                         object:object
@@ -282,11 +282,11 @@ NS_ASSUME_NONNULL_BEGIN
                      failBlock:failBlock];
 }
 
-- (RKManagedObjectRequestOperation *)POST:(NSString *)path
-                                   object:(id __nullable)object
-                               parameters:(NSDictionary *__nullable)parameters
-                             successBlock:(VSuccessBlock __nullable)successBlock
-                                failBlock:(VFailBlock __nullable)failBlock
+- (RKManagedObjectRequestOperation *__nullable)POST:(NSString *)path
+                                             object:(id __nullable)object
+                                         parameters:(NSDictionary *__nullable)parameters
+                                       successBlock:(VSuccessBlock __nullable)successBlock
+                                          failBlock:(VFailBlock __nullable)failBlock
 {
     return [self requestMethod:RKRequestMethodPOST
                         object:object
@@ -296,11 +296,11 @@ NS_ASSUME_NONNULL_BEGIN
                      failBlock:failBlock];
 }
 
-- (RKManagedObjectRequestOperation *)DELETE:(NSString *)path
-                                     object:(id __nullable)object
-                                 parameters:(NSDictionary *__nullable)parameters
-                               successBlock:(VSuccessBlock __nullable)successBlock
-                                  failBlock:(VFailBlock __nullable)failBlock
+- (RKManagedObjectRequestOperation *__nullable)DELETE:(NSString *)path
+                                               object:(id __nullable)object
+                                           parameters:(NSDictionary *__nullable)parameters
+                                         successBlock:(VSuccessBlock __nullable)successBlock
+                                            failBlock:(VFailBlock __nullable)failBlock
 {
     return [self requestMethod:RKRequestMethodDELETE
                         object:object
@@ -338,7 +338,7 @@ NS_ASSUME_NONNULL_BEGIN
               if (extension)
               {
                   NSString *mimeType = [extension isEqualToString:VConstantMediaExtensionMOV] || [extension isEqualToString:VConstantMediaExtensionMP4]
-                    ? @"video/quicktime" : @"image/png";
+                  ? @"video/quicktime" : @"image/png";
                   
                   [formData appendPartWithFileURL:obj
                                              name:key
@@ -362,7 +362,7 @@ NS_ASSUME_NONNULL_BEGIN
         {
             mutableResponseObject[kVPayloadKey] = @{@"objects":payload};
         }
-
+        
         if (!error && successBlock)
         {
             successBlock(operation, mutableResponseObject, @[]);
@@ -402,9 +402,9 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSManagedObject *__nullable)objectForID:(NSNumber *)objectID
-                                      idKey:(NSString *)idKey
-                                 entityName:(NSString *)entityName
-                       managedObjectContext:(NSManagedObjectContext *)context
+                                     idKey:(NSString *)idKey
+                                entityName:(NSString *)entityName
+                      managedObjectContext:(NSManagedObjectContext *)context
 {
     NSManagedObject *object = [self.objectCache objectForKey:[entityName stringByAppendingString:objectID.stringValue]];
     if (object)
@@ -466,10 +466,10 @@ NS_ASSUME_NONNULL_BEGIN
     // this may cause a deadlock if the main thread synchronously calls a background thread which then tries to initiate a networking call.
     // Can't think of a good reason why you'd ever do that, but still, beware.
     [self.managedObjectStore.mainQueueManagedObjectContext performBlockAndWait:^(void)
-    {
-        userID = self.mainUser.remoteId;
-        token = self.mainUser.token ?: @"";
-    }];
+     {
+         userID = self.mainUser.remoteId;
+         token = self.mainUser.token ?: @"";
+     }];
     
     // Build string to be hashed.
     NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:request.URL resolvingAgainstBaseURL:YES];
@@ -491,7 +491,7 @@ NS_ASSUME_NONNULL_BEGIN
     {
         [request addValue:self.sessionID forHTTPHeaderField:@"X-Client-Session-ID"];
     }
-   
+    
     if (self.experimentIDs != nil)
     {
         [request addValue:self.experimentIDs forHTTPHeaderField:@"X-Client-Experiment-IDs"];

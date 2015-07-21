@@ -50,10 +50,10 @@ extern NSString * const VPaginationManagerItemsPerPageMacro; ///< A macro that, 
 /**
  Use a filter and page type to load a paginated request.
  */
-- (RKManagedObjectRequestOperation *)loadFilter:(VAbstractFilter *)filter
-                                   withPageType:(VPageType)pageType
-                                   successBlock:(VSuccessBlock)success
-                                      failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *__nullable)loadFilter:(VAbstractFilter *)filter
+                                             withPageType:(VPageType)pageType
+                                             successBlock:(VSuccessBlock)success
+                                                failBlock:(VFailBlock)fail;
 
 NS_ASSUME_NONNULL_END
 
