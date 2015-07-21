@@ -110,6 +110,11 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
 
 - (void)setControlState:(VFollowControlState)controlState animated:(BOOL)animated
 {
+    if ( controlState == _controlState )
+    {
+        return;
+    }
+    
     BOOL shouldFlip = ( controlState == VFollowControlStateLoading && self.controlState == VFollowControlStateUnfollowed ) || ( controlState == VFollowControlStateUnfollowed && self.controlState == VFollowControlStateLoading );
     void (^animationBlock)(void) = ^
     {

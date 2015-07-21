@@ -116,9 +116,12 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
 - (void)updateNavigationItems
 {
-    [self.dependencyManager configureNavigationItem:self.navigationItem];
-    [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
-    [self updateFollowStatusAnimated:NO];
+    if ( self.navigationItem.rightBarButtonItem == nil )
+    {
+        [self.dependencyManager configureNavigationItem:self.navigationItem];
+        [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
+        [self updateFollowStatusAnimated:NO];
+    }
 }
 
 #pragma mark - Fetch Users Tags
@@ -159,10 +162,10 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"tag == %@", self.selectedHashtag.lowercaseString];
     VHashtag *hashtag = [mainUser.hashtags filteredOrderedSetUsingPredicate:predicate].firstObject;
-    
-    if (hashtag != nil != self.followingSelectedHashtag)
+    BOOL followingHashtag = hashtag != nil;
+    if ( followingHashtag != self.followingSelectedHashtag)
     {
-        self.followingSelectedHashtag = hashtag != nil;
+        self.followingSelectedHashtag = followingHashtag;
         [self updateFollowStatusAnimated:YES];
     }
 }
@@ -204,6 +207,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
          {
              return;
          }
+         
          if ( self.isFollowingSelectedHashtag )
          {
              [self unfollowHashtag];
@@ -233,8 +237,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     {
         self.followingSelectedHashtag = YES;
         self.followingEnabled = YES;
-        
-//        [self updateFollowStatusAnimated:YES];
+        [self updateFollowStatusAnimated:YES];
     }
     failureBlock:^(NSError *error)
     {
@@ -244,6 +247,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
         [self.failureHUD hide:YES afterDelay:3.0f];
         
         self.followingEnabled = YES;
+        [self updateFollowStatusAnimated:YES];
     }];
 }
 
@@ -255,7 +259,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     }
     
     [self.followControl setControlState:VFollowControlStateLoading
-                                   animated:YES];
+                               animated:YES];
     
     self.followingEnabled = NO;
     
@@ -265,8 +269,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     {
         self.followingSelectedHashtag = NO;
         self.followingEnabled = YES;
-        
-//        [self updateFollowStatusAnimated:YES];
+        [self updateFollowStatusAnimated:YES];
     }
     failureBlock:^(NSError *error)
     {
@@ -275,21 +278,11 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
         self.failureHUD.detailsLabelText = NSLocalizedString(@"HashtagUnsubscribeError", @"");
         [self.failureHUD hide:YES afterDelay:3.0f];
         self.followingEnabled = YES;
+        [self updateFollowStatusAnimated:YES];
     }];
 }
 
 #pragma mark - UIBarButtonItem state management
-
-- (void)setFollowingSelectedHashtag:(BOOL)followingSelectedHashtag
-{
-    _followingSelectedHashtag = followingSelectedHashtag;
-}
-
-- (void)setFollowingEnabled:(BOOL)followingEnabled
-{
-    _followingEnabled = followingEnabled;
-    self.followControl.enabled = followingEnabled;
-}
 
 - (void)updateFollowStatusAnimated:(BOOL)animated
 {
@@ -306,7 +299,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     }
 
     [self.followControl setControlState:[VFollowControl controlStateForFollowing:self.isFollowingSelectedHashtag]
-                                   animated:animated];
+                               animated:animated];
 }
 
 #pragma mark - VAccessoryNavigationSource
@@ -332,11 +325,19 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 
 - (UIControl *)customControlForAccessoryMenuItem:(VNavigationMenuItem *)menuItem
 {
-    VFollowControl *followControl = [[VFollowControl alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
-    [followControl setDependencyManager:self.dependencyManager];
-    self.followControl = followControl;
+    return self.followControl;
+}
+
+- (VFollowControl *)followControl
+{
+    if ( _followControl != nil )
+    {
+        return _followControl;
+    }
     
-    return followControl;
+    _followControl = [[VFollowControl alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
+    [_followControl setDependencyManager:self.dependencyManager];
+    return _followControl;
 }
 
 - (BOOL)menuItem:(VNavigationMenuItem *)menuItem requiresAuthorizationWithContext:(VAuthorizationContext *)context
