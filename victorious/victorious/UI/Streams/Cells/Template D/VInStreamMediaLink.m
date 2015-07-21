@@ -21,6 +21,9 @@ static NSString * const kGifIconKey = @"watch_gif_icon";
                        urlString:(NSString *)urlString
             andDependencyManager:(VDependencyManager *)dependencyManager
 {
+    NSParameterAssert(urlString != nil);
+    NSParameterAssert(dependencyManager != nil);
+    
     __block NSString *linkLabelText;
     __block UIImage *linkIcon;
     
@@ -47,6 +50,8 @@ static NSString * const kGifIconKey = @"watch_gif_icon";
                          linkType:(VMediaType)linkType
                         urlString:(NSString *)urlString
 {
+    NSParameterAssert(urlString != nil);
+    
     self = [super init];
     if ( self != nil )
     {

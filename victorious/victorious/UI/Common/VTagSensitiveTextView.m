@@ -15,7 +15,7 @@
 
 @interface VTagSensitiveTextView () <UIGestureRecognizerDelegate>
 
-@property (nonatomic, strong) VTagDictionary *tagDictionary;
+@property (nonatomic, readwrite) VTagDictionary *tagDictionary;
 @property (nonatomic, assign) CGPoint touchDownLocation;
 @property (nonatomic, assign) NSRange highlightRange;
 @property (nonatomic, strong) VTag *selectedTag;
@@ -73,7 +73,6 @@
          {
              self.tagTapDelegate = tagTapDelegate;
          }
-         
      }];
 }
 

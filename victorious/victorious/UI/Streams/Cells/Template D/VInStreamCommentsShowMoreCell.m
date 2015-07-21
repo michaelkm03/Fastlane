@@ -43,7 +43,7 @@ static UIEdgeInsets const kPromptInsets = { 6.0f, 0.0f, 6.0f, 0.0f };
     if ( attributesChanged )
     {
         NSMutableDictionary *linkAttributes = [attributes.unselectedTextAttributes mutableCopy];
-        [linkAttributes addEntriesFromDictionary:@{ CCHLinkAttributeName : @"test" }];
+        [linkAttributes addEntriesFromDictionary:@{ CCHLinkAttributeName : @"" }];
         self.promptTextView.linkTextAttributes = linkAttributes;
         self.promptTextView.linkTextTouchAttributes = attributes.selectedTextAttributes;
         self.promptTextView.attributedText = [[NSAttributedString alloc] initWithString:self.promptTextView.text attributes:linkAttributes];

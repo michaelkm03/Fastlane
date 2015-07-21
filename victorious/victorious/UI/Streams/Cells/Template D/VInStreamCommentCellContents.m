@@ -76,13 +76,37 @@
         }
         
         NSString *tappableUserName = [VTagStringFormatter databaseFormattedStringFromUser:comment.user];
+        
+        NSDictionary *commentTextAttributes;
+        NSDictionary *highlightTextAttributes;
+        if ( commentFont != nil )
+        {
+            if ( mainTextColor != nil )
+            {
+                if ( mainTextColor != nil )
+                {
+                    commentTextAttributes = @{ NSForegroundColorAttributeName : mainTextColor, NSFontAttributeName : commentFont };
+                }
+                if ( linkColor != nil )
+                {
+                    highlightTextAttributes = @{ NSForegroundColorAttributeName : linkColor, NSFontAttributeName : commentFont };
+                }
+            }
+        }
+        
+        NSDictionary *timestampTextAttributes;
+        if ( timestampFont != nil && timestampTextColor != nil )
+        {
+            timestampTextAttributes = @{ NSForegroundColorAttributeName : timestampTextColor, NSFontAttributeName : timestampFont };
+        }
+        
         VInStreamCommentCellContents *content = [[VInStreamCommentCellContents alloc] initWithUsername:tappableUserName
                                                                                           usernameFont:usernameFont
                                                                                            commentText:comment.text
-                                                                                 commentTextAttributes:@{ NSForegroundColorAttributeName : mainTextColor, NSFontAttributeName : commentFont }
-                                                                             highlightedTextAttributes:@{ NSForegroundColorAttributeName : linkColor, NSFontAttributeName : commentFont }
+                                                                                 commentTextAttributes:commentTextAttributes
+                                                                             highlightedTextAttributes:highlightTextAttributes
                                                                                           creationDate:comment.postedAt
-                                                                               timestampTextAttributes:@{ NSForegroundColorAttributeName : timestampTextColor, NSFontAttributeName : timestampFont }
+                                                                               timestampTextAttributes:timestampTextAttributes
                                                                                      inStreamMediaLink:mediaLink
                                                                                  profileImageUrlString:comment.user.pictureUrl
                                                                                                comment:comment];

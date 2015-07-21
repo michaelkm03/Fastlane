@@ -30,6 +30,8 @@ static UIEdgeInsets const kSectionEdgeInsets = { 0.0f, 27.0f, 6.0f, 2.0f };
 
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView
 {
+    NSParameterAssert(collectionView != nil);
+    
     self = [super init];
     if ( self != nil )
     {
@@ -37,12 +39,6 @@ static UIEdgeInsets const kSectionEdgeInsets = { 0.0f, 27.0f, 6.0f, 2.0f };
         [self setupCollectionView];
     }
     return self;
-}
-
-- (void)setCollectionView:(UICollectionView *)collectionView
-{
-    _collectionView = collectionView;
-    [self setupCollectionView];
 }
 
 - (void)setupCollectionView
@@ -70,7 +66,7 @@ static UIEdgeInsets const kSectionEdgeInsets = { 0.0f, 27.0f, 6.0f, 2.0f };
     }
 }
 
-+ (CGFloat)desiredHeightForCommentCellContents:(NSArray *)commentCellContents withCollectionViewWidth:(CGFloat)width showMoreAttributes:(VInStreamCommentsShowMoreAttributes *)attributes andShowPreviousCommentsCellEnabled:(BOOL)enabled
++ (CGFloat)desiredHeightForCommentCellContents:(NSArray *)commentCellContents withMaxWidth:(CGFloat)width showMoreAttributes:(VInStreamCommentsShowMoreAttributes *)attributes andShowMoreCommentsCellEnabled:(BOOL)enabled
 {
     CGFloat height = 0.0f;
     width -= kSectionEdgeInsets.right + kSectionEdgeInsets.left;

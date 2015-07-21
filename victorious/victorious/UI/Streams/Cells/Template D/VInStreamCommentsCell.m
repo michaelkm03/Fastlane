@@ -17,6 +17,8 @@
 #import "VInStreamCommentsResponder.h"
 #import "VComment.h"
 #import "VUser.h"
+#import "VTagDictionary.h"
+#import "VTagStringFormatter.h"
 
 //Warning, must match up EXACTLY with values in this class' xib
 static UIEdgeInsets const kTextInsets = { 6.0f, 28.0f, 6.0f, 0.0f };
@@ -56,6 +58,26 @@ static NSString * const kMediaIdentifierSuffix = @"withMedia";
                                            tagAttributes:contents.highlightedTextAttributes
                                        defaultAttributes:contents.commentTextAttributes
                                        andTagTapDelegate:self];
+
+    if ( contents.username.length > 0 )
+    {
+        NSTextStorage *attributedString = self.commentTextView.textStorage;
+        NSUInteger length = [VTagStringFormatter delimiterString].length + 1;
+        if ( self.commentTextView.tagDictionary.count > 0 && attributedString.length >= length)
+        {
+            //Apply special font to username
+            NSIndexSet *indexSet = [VTagStringFormatter tagRangesInRange:NSMakeRange(0, length) ofAttributedString:attributedString withTagDictionary:self.commentTextView.tagDictionary];
+            if ( indexSet != nil )
+            {
+                //A username was present and formatted
+                [indexSet enumerateRangesUsingBlock:^(NSRange range, BOOL *stop)
+                {
+                    [attributedString addAttribute:NSFontAttributeName value:contents.usernameFont range:range];
+                    *stop = YES; //Just in case something has gone wrong and we find more than 1
+                }];
+            }
+        }
+    }
     
     VInStreamMediaLink *mediaLink = contents.inStreamMediaLink;
     self.mediaLinkTopConstraint.constant = contents.inStreamMediaLink == nil ? 0.0f : kInterLabelSpace;
