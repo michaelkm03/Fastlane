@@ -24,9 +24,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface VObjectManager (Private)
 
 - (NSManagedObject *__nullable)objectForID:(NSNumber *)objectID
-                                      idKey:(NSString *)idKey
-                                 entityName:(NSString *)entityName
-                       managedObjectContext:(NSManagedObjectContext *)context;
+                                     idKey:(NSString *)idKey
+                                entityName:(NSString *)entityName
+                      managedObjectContext:(NSManagedObjectContext *)context;
 
 - (id)objectWithEntityName:(NSString *)entityName
                   subclass:(Class)subclass;
