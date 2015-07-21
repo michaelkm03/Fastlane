@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class VHashtag, VFollowHashtagControl, VDependencyManager;
+@class VHashtag, VFollowControl, VDependencyManager;
 
 @interface VTrendingTagCell : UITableViewCell
 
@@ -25,17 +25,12 @@
 /**
  The control for the subscribe / unsubscribe button
  */
-@property (nonatomic, weak) IBOutlet VFollowHashtagControl *followHashtagControl;
+@property (nonatomic, weak) IBOutlet VFollowControl *followHashtagControl;
 
 /**
  Hashtag property to format
  */
 @property (nonatomic, strong) VHashtag *hashtag;
-
-/**
- Set to NO to disable any action
- */
-@property (nonatomic, assign) BOOL shouldCellRespond;
 
 /**
  Set this to adjust font, font color, and background color
@@ -54,6 +49,6 @@
  
  @param animate BOOL to tell the control to animate it's changing state
  */
-- (void)updateSubscribeStatusAnimated:(BOOL)animated;
+- (void)updateSubscribeStatusAnimated:(BOOL)animated showLoading:(BOOL)loading;
 
 @end

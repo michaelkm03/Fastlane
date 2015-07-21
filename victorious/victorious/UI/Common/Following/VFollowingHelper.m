@@ -34,15 +34,24 @@
 }
 
 - (void)followUser:(VUser *)user
-    withCompletion:(VFollowHelperCompletion)completion
+withAuthorizedBlock:(void (^)(void))authorizedBlock
+     andCompletion:(VFollowHelperCompletion)completion
 {
     NSParameterAssert(completion != nil);
     
     [self withAuthorizationDo:^(BOOL authorized)
      {
-         if (!authorized)
+         BOOL tryingToFollowSelf = [user.remoteId isEqual:[[VObjectManager sharedManager] mainUser].remoteId];
+         
+         if ( !authorized || tryingToFollowSelf )
          {
+             completion(user);
              return;
+         }
+         
+         if ( authorizedBlock != nil )
+         {
+             authorizedBlock();
          }
          
          VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
@@ -52,12 +61,15 @@
          
          VFailBlock failureBlock = ^(NSOperation *operation, NSError *error)
          {
-             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FollowError", @"")
-                                                             message:error.localizedDescription
-                                                            delegate:nil
-                                                   cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                   otherButtonTitles:nil];
-             [alert show];
+             if (error.code != kVFollowsRelationshipAlreadyExistsError)
+             {
+                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FollowError", @"")
+                                                                 message:error.localizedDescription
+                                                                delegate:nil
+                                                       cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                                       otherButtonTitles:nil];
+                 [alert show];
+             }
              completion(user);
          };
          
@@ -67,15 +79,24 @@
 }
 
 - (void)unfollowUser:(VUser *)user
-      withCompletion:(VFollowHelperCompletion)completion
+ withAuthorizedBlock:(void (^)(void))authorizedBlock
+       andCompletion:(VFollowHelperCompletion)completion
 {
     NSParameterAssert(completion != nil);
     
     [self withAuthorizationDo:^(BOOL authorized)
      {
-         if (!authorized)
+         BOOL tryingToFollowSelf = [user.remoteId isEqual:[[VObjectManager sharedManager] mainUser].remoteId];
+         
+         if ( !authorized || tryingToFollowSelf )
          {
+             completion(user);
              return;
+         }
+         
+         if ( authorizedBlock != nil )
+         {
+             authorizedBlock();
          }
          
          VSuccessBlock successBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
