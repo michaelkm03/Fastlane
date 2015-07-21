@@ -328,7 +328,13 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (scrollView.contentOffset.y > scrollView.contentSize.height * .75)
+    CGFloat contentHeight = scrollView.contentSize.height;
+    if ( contentHeight == 0 )
+    {
+        return;
+    }
+    
+    if (scrollView.contentOffset.y > ( contentHeight - CGRectGetHeight(scrollView.bounds) ) * .75)
     {
         [self loadNextPageAction];
     }
