@@ -8,13 +8,14 @@
 
 #import "VInviteFriendTableViewCell.h"
 #import "VUser.h"
-#import "VThemeManager.h"
 #import "VObjectManager.h"
 #import "VObjectManager+Login.h"
-#import "VFollowUserControl.h"
+#import "VFollowControl.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "VFollowResponder.h"
+#import "VDependencyManager.h"
 
-NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCell";
+static const CGFloat kInviteCellHeight = 50.0f;
 
 @interface VInviteFriendTableViewCell ()
 
@@ -30,20 +31,28 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
 
 - (void)awakeFromNib
 {
-    self.profileImage.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.profileImage.layer.cornerRadius = CGRectGetHeight(self.profileImage.bounds)/2;
     self.profileImage.layer.borderWidth = 1.0;
     self.profileImage.layer.borderColor = [UIColor whiteColor].CGColor;
     self.profileImage.clipsToBounds = YES;
-    self.profileName.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
     self.contentView.backgroundColor = [UIColor clearColor];
 }
 
-- (void)prepareForReuse
+#pragma mark - VSharedCollectionReusableViewMethods
+
++ (UINib *)nibForCell
 {
-    [super prepareForReuse];
-    
-    self.shouldAnimateFollowing = NO;
+    return [UINib nibWithNibName:NSStringFromClass(self) bundle:nil];
+}
+
++ (NSString *)suggestedReuseIdentifier
+{
+    return NSStringFromClass(self);
+}
+
++ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
+{
+    return CGSizeMake(CGRectGetWidth(bounds), kInviteCellHeight);
 }
 
 - (void)setProfile:(VUser *)profile
@@ -58,7 +67,7 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
     NSInteger mainUserID = [VObjectManager sharedManager].mainUser.remoteId.integerValue;
     self.followUserControl.hidden = (profileID == mainUserID);
     
-    [self updateFollowStatus];
+    [self updateFollowStatusAnimated:NO];
 }
 
 - (BOOL)haveRelationship
@@ -67,37 +76,68 @@ NSString * const VInviteFriendTableViewCellNibName = @"VInviteFriendTableViewCel
     return relationship;
 }
 
-- (void)updateFollowStatus
+- (void)updateFollowStatusAnimated:(BOOL)animated
 {
     //If we get into a weird state and the relaionships are the same don't do anything
-    if (self.followUserControl.following == self.haveRelationship)
+    
+    if (self.followUserControl.controlState == [VFollowControl controlStateForFollowing:self.haveRelationship])
     {
-        return;
-    }
-    if (!self.shouldAnimateFollowing)
-    {
-        self.followUserControl.following = self.haveRelationship;
         return;
     }
     
-    [self.followUserControl setFollowing:self.haveRelationship
-                                animated:YES];
+    [self.followUserControl setControlState:[VFollowControl controlStateForFollowing:self.haveRelationship]
+                                   animated:animated];
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;
-    self.followUserControl.dependencyManager = dependencyManager;
+    if ( dependencyManager != nil )
+    {
+        self.followUserControl.dependencyManager = dependencyManager;
+        self.profileImage.backgroundColor = [dependencyManager colorForKey:VDependencyManagerAccentColorKey];
+        self.profileName.font = [dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
+    }
 }
 
 #pragma mark - Button Actions
 
-- (IBAction)followUnfollowUser:(id)sender
+- (IBAction)followUnfollowUser:(VFollowControl *)sender
 {
-    self.shouldAnimateFollowing = YES;
-    if (self.followAction)
+    if ( sender.controlState == VFollowControlStateLoading )
     {
-        self.followAction();
+        return;
+    }
+    
+    void (^authorizedBlock)() = ^
+    {
+        [sender setControlState:VFollowControlStateLoading
+                       animated:YES];
+    };
+    
+    void (^completionBlock)(VUser *) = ^(VUser *userActedOn)
+    {
+        [self updateFollowStatusAnimated:YES];
+    };
+    
+    if ( sender.controlState == VFollowControlStateFollowed )
+    {
+        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:)
+                                                                          withSender:nil];
+        NSAssert(followResponder != nil, @"VFollowerTableViewCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
+        
+        [followResponder unfollowUser:self.profile
+                  withAuthorizedBlock:authorizedBlock
+                        andCompletion:completionBlock];
+    }
+    else
+    {
+        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:)
+                                                                          withSender:nil];
+        NSAssert(followResponder != nil, @"VFollowerTableViewCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
+        [followResponder followUser:self.profile
+                  withAuthorizedBlock:authorizedBlock
+                        andCompletion:completionBlock];
     }
 }
 

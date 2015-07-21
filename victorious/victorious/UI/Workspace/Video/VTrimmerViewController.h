@@ -21,7 +21,8 @@
  */
 - (void)trimmerViewController:(VTrimmerViewController *)trimmer
              thumbnailForTime:(CMTime)time
-               withCompletion:(void (^)(UIImage *thumbnail, CMTime timeForImage, id generatingDataSource))completion;
+                  withSuccess:(void (^)(UIImage *thumbnail, CMTime timeForImage, id generatingDataSource))success
+                  withFailure:(void (^)(NSError *error))errorBlock;
 
 @end
 
@@ -96,6 +97,11 @@
  *  A thumbnail data source.
  */
 @property (nonatomic, weak) id <VTrimmerThumbnailDataSource> thumbnailDataSource;
+
+/**
+ *  The max duration of the video
+ */
+@property (nonatomic, assign) CMTime maxDuration;
 
 /**
  Initializes a new instance of VTrimmerViewController with an instance of VDependencyManager

@@ -89,6 +89,7 @@ NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolContr
 
 - (void)setupDefaultTool
 {
+    self.shouldBottomBarBeHidden = YES;
     if (self.hasSetupDefaultTool)
     {
         return;

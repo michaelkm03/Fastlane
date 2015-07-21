@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
@@ -8,7 +8,6 @@
             <connections>
                 <outlet property="buttonCamera" destination="S56-qz-eG1" id="cjl-sC-24c"/>
                 <outlet property="buttonClear" destination="DrA-HT-Byt" id="KVA-Rq-zVD"/>
-                <outlet property="buttonImageSearch" destination="SbT-qW-4bj" id="n1z-RJ-RpN"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="oxH-em-0tZ"/>
             </connections>
         </placeholder>
@@ -18,29 +17,16 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S56-qz-eG1" userLabel="Button Camera" customClass="VRoundedBackgroundButton">
-                    <rect key="frame" x="552" y="552" width="36" height="36"/>
+                    <rect key="frame" x="538" y="538" width="50" height="50"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="36" id="Djo-As-n6h"/>
-                        <constraint firstAttribute="width" constant="36" id="NEp-QT-kpa"/>
+                        <constraint firstAttribute="height" constant="50" id="Djo-As-n6h"/>
+                        <constraint firstAttribute="width" constant="50" id="NEp-QT-kpa"/>
                     </constraints>
-                    <state key="normal" image="textCamera">
+                    <state key="normal" image="createImageIcon">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
                         <action selector="backgroundImageCameraSelected:" destination="-1" eventType="touchUpInside" id="Fmf-sv-obu"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SbT-qW-4bj" userLabel="Button Image Search" customClass="VRoundedBackgroundButton">
-                    <rect key="frame" x="504" y="552" width="36" height="36"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="36" id="sUe-Ob-gfw"/>
-                        <constraint firstAttribute="height" constant="36" id="uwg-gn-PZt"/>
-                    </constraints>
-                    <state key="normal" image="textImageSearch">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="backgroundImageSearchSelected:" destination="-1" eventType="touchUpInside" id="eNp-Xw-vty"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DrA-HT-Byt" userLabel="Button Clear Image" customClass="VRoundedBackgroundButton">
@@ -59,19 +45,16 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="SbT-qW-4bj" firstAttribute="top" secondItem="S56-qz-eG1" secondAttribute="bottom" constant="-36" id="AxH-2a-Guc"/>
-                <constraint firstItem="S56-qz-eG1" firstAttribute="leading" secondItem="SbT-qW-4bj" secondAttribute="trailing" constant="12" id="gVp-NO-aRX"/>
                 <constraint firstAttribute="bottom" secondItem="DrA-HT-Byt" secondAttribute="bottom" constant="12" id="gdl-m5-Rcq"/>
                 <constraint firstItem="DrA-HT-Byt" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="12" id="iLI-8e-GMT"/>
                 <constraint firstAttribute="bottom" secondItem="S56-qz-eG1" secondAttribute="bottom" constant="12" id="tGF-1b-Bgv"/>
                 <constraint firstAttribute="trailing" secondItem="S56-qz-eG1" secondAttribute="trailing" constant="12" id="xQU-mN-4lS"/>
             </constraints>
-            <point key="canvasLocation" x="774" y="689"/>
+            <point key="canvasLocation" x="95" y="496"/>
         </view>
     </objects>
     <resources>
-        <image name="textCamera" width="21" height="17"/>
+        <image name="createImageIcon" width="22" height="22"/>
         <image name="textClear" width="21" height="21"/>
-        <image name="textImageSearch" width="19" height="20"/>
     </resources>
 </document>

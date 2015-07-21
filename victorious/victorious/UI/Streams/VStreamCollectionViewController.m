@@ -25,12 +25,6 @@
 #import "VNavigationController.h"
 #import "VNewContentViewController.h"
 
-// Workspace
-#import "VWorkspaceFlowController.h"
-#import "VImageToolController.h"
-#import "VVideoToolController.h"
-#import "VTextWorkspaceFlowController.h"
-
 //Views
 #import "VNoContentView.h"
 #import "VStreamCellFocus.h"
@@ -59,7 +53,7 @@
 #import "UIViewController+VLayoutInsets.h"
 
 #import "VURLMacroReplacement.h"
-#import "VWorkspacePresenter.h"
+#import "VCreationFlowPresenter.h"
 #import "VConstants.h"
 #import "VTracking.h"
 #import "VHashtagStreamCollectionViewController.h"
@@ -114,7 +108,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 @property (nonatomic, assign) BOOL hasRefreshed;
 
-@property (nonatomic, strong) VWorkspacePresenter *workspacePresenter;
+@property (nonatomic, strong) VCreationFlowPresenter *creationFlowPresenter;
 
 @end
 
@@ -432,9 +426,10 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
          {
              return;
          }
-         weakSelf.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:self dependencyManager:self.dependencyManager];
-         weakSelf.workspacePresenter.showsCreationSheetFromTop = YES;
-         [weakSelf.workspacePresenter present];
+         __strong typeof(weakSelf) strongSelf = weakSelf;
+         strongSelf.creationFlowPresenter = [[VCreationFlowPresenter alloc] initWithDependencymanager:strongSelf.dependencyManager];
+         strongSelf.creationFlowPresenter.showsCreationSheetFromTop = YES;
+         [strongSelf.creationFlowPresenter presentOnViewController:strongSelf];
      }];
 }
 
@@ -562,8 +557,21 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     }
     
     VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
-    UICollectionViewCell *cell = [self.streamCellFactory collectionView:self.collectionView
-                                                      cellForStreamItem:sequence atIndexPath:indexPath];
+    UICollectionViewCell *cell;
+    if ([self.streamCellFactory respondsToSelector:@selector(collectionView:cellForStreamItem:atIndexPath:inStream:)])
+    {
+        cell = [self.streamCellFactory collectionView:self.collectionView
+                                    cellForStreamItem:sequence
+                                          atIndexPath:indexPath
+                                             inStream:self.currentStream];
+    }
+    else
+    {
+        cell = [self.streamCellFactory collectionView:self.collectionView
+                                    cellForStreamItem:sequence
+                                          atIndexPath:indexPath];
+    }
+
     
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
     

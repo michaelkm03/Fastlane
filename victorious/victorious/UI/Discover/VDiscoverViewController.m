@@ -35,12 +35,15 @@
 #import "UIViewController+VLayoutInsets.h"
 #import "VHashtagResponder.h"
 #import "VDependencyManager+VTracking.h"
+#import "VFollowControl.h"
+#import "VFollowingHelper.h"
+#import "VFollowResponder.h"
 
 static NSString * const kVSuggestedPeopleIdentifier = @"VSuggestedPeopleCell";
 static NSString * const kVTrendingTagIdentifier = @"VTrendingTagCell";
 static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
-@interface VDiscoverViewController () <VDiscoverViewControllerProtocol, VSuggestedPeopleCollectionViewControllerDelegate, VCoachmarkDisplayer>
+@interface VDiscoverViewController () <VDiscoverViewControllerProtocol, VSuggestedPeopleCollectionViewControllerDelegate, VCoachmarkDisplayer, VFollowResponder>
 
 @property (nonatomic, strong) VDiscoverSuggestedPeopleViewController *suggestedPeopleViewController;
 
@@ -53,6 +56,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 @property (nonatomic, assign) BOOL wasHiddenByAnotherViewController;
 
 @property (nonatomic, weak) MBProgressHUD *failureHud;
+@property (nonatomic, strong) VFollowingHelper *followingHelper;
 
 @end
 
@@ -69,6 +73,8 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     self.suggestedPeopleViewController = [VDiscoverSuggestedPeopleViewController instantiateFromStoryboard:@"Discover"];
     self.suggestedPeopleViewController.dependencyManager = self.dependencyManager;
     self.suggestedPeopleViewController.delegate = self;
+    
+    self.followingHelper = [[VFollowingHelper alloc] initWithDependencyManager:self.dependencyManager viewControllerToPresentOn:self];
     
     [self addChildViewController:self.suggestedPeopleViewController];
     [self.suggestedPeopleViewController didMoveToParentViewController:self];
@@ -118,6 +124,11 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
             [self.suggestedPeopleViewController refresh:YES];
             self.followingStatusHasChanged = NO;
         }
+        else
+        {
+            [self.suggestedPeopleViewController refresh:NO];
+        }
+        [self reloadSection:VDiscoverViewControllerSectionTrendingTags];
     }
 }
 
@@ -240,8 +251,11 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 - (void)updatedFollowedTags
 {
+    if ( !self.loadedUserFollowing )
+    {
+        [self reloadSection:VDiscoverViewControllerSectionTrendingTags];
+    }
     self.loadedUserFollowing = YES;
-    [self reloadSection:VDiscoverViewControllerSectionTrendingTags];
 }
 
 - (void)updatedFollowedUsers
@@ -370,13 +384,19 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
             
             VHashtag *hashtag = self.trendingTags[ indexPath.row ];
             [customCell setHashtag:hashtag];
-            customCell.shouldCellRespond = YES;
             
-            __weak typeof(customCell) weakCell = customCell;
+            __weak VTrendingTagCell *weakCell = customCell;
             customCell.subscribeToTagAction = ^(void)
             {
+                __strong VTrendingTagCell *strongCell = weakCell;
+                
+                if ( strongCell == nil )
+                {
+                    return;
+                }
+                
                 // Disable follow / unfollow button
-                if (!weakCell.shouldCellRespond)
+                if (strongCell.followHashtagControl.controlState == VFollowControlStateLoading)
                 {
                     return;
                 }
@@ -388,9 +408,11 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                  {
                      if (!authorized)
                      {
+                         [strongCell.followHashtagControl setControlState:VFollowControlStateUnfollowed animated:NO];
                          return;
                      }
-                     weakCell.shouldCellRespond = NO;
+                     
+                     [strongCell.followHashtagControl setControlState:VFollowControlStateLoading animated:YES];
                      
                      // Check if already subscribed to hashtag then subscribe or unsubscribe accordingly
                      if ([self isUserSubscribedToHashtag:hashtag.tag])
@@ -492,6 +514,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
      }
                   failureBlock:^(NSError *error)
      {
+         [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
          self.failureHud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
          self.failureHud.mode = MBProgressHUDModeText;
          self.failureHud.detailsLabelText = NSLocalizedString(@"HashtagSubscribeError", @"");
@@ -511,6 +534,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
      }
             failureBlock:^(NSError *error)
      {
+         [self resetCellStateForHashtag:hashtag cellShouldRespond:YES];
          self.failureHud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
          self.failureHud.mode = MBProgressHUDModeText;
          self.failureHud.detailsLabelText = NSLocalizedString(@"HashtagUnsubscribeError", @"");
@@ -529,8 +553,12 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
             VTrendingTagCell *trendingCell = (VTrendingTagCell *)cell;
             if ( [trendingCell.hashtag.tag isEqualToString:hashtag.tag] )
             {
-                trendingCell.shouldCellRespond = respond;
-                [trendingCell updateSubscribeStatusAnimated:YES];
+                VFollowControlState controlState = VFollowControlStateLoading;
+                if ( respond )
+                {
+                    controlState = [VFollowControl controlStateForFollowing:trendingCell.isSubscribedToTag];
+                }
+                [trendingCell.followHashtagControl setControlState:controlState animated:YES];
                 return;
             }
         }
@@ -552,6 +580,18 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 - (UIEdgeInsets)v_layoutInsets
 {
     return [self.parentViewController v_layoutInsets];
+}
+
+#pragma mark - VFollowResponder
+
+- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion
+{
+    [self.followingHelper followUser:user withAuthorizedBlock:authorizedBlock andCompletion:completion];
+}
+
+- (void)unfollowUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion
+{
+    [self.followingHelper unfollowUser:user withAuthorizedBlock:authorizedBlock andCompletion:completion];
 }
 
 @end

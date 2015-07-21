@@ -24,6 +24,9 @@
 #import "VCellSizeCollection.h"
 #import "VCellSizingUserInfoKeys.h"
 #import "VActionButtonAnimationController.h"
+#import "VListicleView.h"
+#import "VEditorializationItem.h"
+#import "VStream.h"
 
 // These values must match the constraint values in interface builder
 static const CGFloat kSleekCellHeaderHeight = 50.0f;
@@ -50,6 +53,9 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
 @property (nonatomic, strong) VActionButtonAnimationController *actionButtonAnimationController;
 @property (nonatomic, weak) IBOutlet VSequenceCountsTextView *countsTextView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *captiontoPreviewVerticalSpacing;
+@property (nonatomic, strong) IBOutlet VListicleView *listicleView;
+@property (nonatomic, readwrite) VStreamItem *streamItem;
+@property (nonatomic, strong) VEditorializationItem *editorialization;
 
 @end
 
@@ -134,6 +140,12 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
 
 #pragma mark - VHasManagedDependencies
 
+- (void)setStream:(VStream *)stream
+{
+    _stream = stream;
+    [self updateListicleForSequence:self.sequence andStream:self.stream];
+}
+
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     if (_dependencyManager == dependencyManager)
@@ -157,6 +169,10 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
     if ([self.captionTextView respondsToSelector:@selector(setDependencyManager:)])
     {
         [self.captionTextView setDependencyManager:dependencyManager];
+    }
+    if ([self.listicleView respondsToSelector:@selector(setDependencyManager:)])
+    {
+        [self.listicleView setDependencyManager:dependencyManager];
     }
     
     [self.countsTextView setTextHighlightAttributes:[[self class] sequenceCountsActiveAttributesWithDependencyManager:dependencyManager]];
@@ -283,6 +299,24 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
         self.captionHeight.constant = kMaxCaptionTextViewHeight;
     }
     [self layoutIfNeeded];
+}
+
+- (void)updateListicleForSequence:(VSequence *)sequence andStream:(VStream *)stream
+{
+    // Headline depends on both the sequence AND the stream
+    NSString *apiPath = stream.apiPath;
+    self.editorialization = [sequence editorializationForStreamWithApiPath:apiPath];
+    BOOL hasHeadline = self.editorialization.headline.length > 0;
+    if (hasHeadline && (self.editorialization.headline != nil))
+    {
+        self.listicleView.hidden = NO;
+        self.listicleView.headlineText = self.editorialization.headline;
+    }
+}
+
+- (void)prepareForReuse
+{
+    self.listicleView.hidden = YES;
 }
 
 #pragma mark - VBackgroundContainer

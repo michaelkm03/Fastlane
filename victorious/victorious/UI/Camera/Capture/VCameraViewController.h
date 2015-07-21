@@ -7,58 +7,27 @@
 //
 
 #import "VHasManagedDependencies.h"
+#import "VCreationTypes.h"
 
 typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL);
 
 @interface VCameraViewController : UIViewController <VHasManagedDependencies>
 
 /**
- This completion block will be called when the user finishes capturing media
- 
- @param finished YES if the user chose media, NO if the user cancelled.
+ *  Factory method for the camera. All parameters are required.
+ *
+ *  @param cameraContext A context for use in configuring permission text.
+ *  @param dependencyManager A dependency manager to use for configuring templated values.
+ *  @param resultHandler A handler for dealing with the results of the camera.
  */
-@property (nonatomic, copy) VMediaCaptureCompletion completionBlock;
-
-/**
- If YES, the most recently captured media was
- selected from the user's asset library.
- */
-@property (nonatomic, readonly) BOOL didSelectAssetFromLibrary;
-
-/**
- YES if the user selected media from a web search.
- */
-@property (nonatomic, readonly) BOOL didSelectFromWebSearch;
++ (VCameraViewController *)cameraViewControllerWithContext:(VCameraContext)cameraContext
+                                         dependencyManager:(VDependencyManager *)dependencyManager
+                                             resultHanlder:(VMediaCaptureCompletion)resultHandler;
 
 /**
  *  If YES, the camera will call it's completion block immediately after taking the picture/video.
  */
 @property (nonatomic, assign) BOOL shouldSkipPreview;
-
-/**
- Returns an instance of this class that will initially show a video capture screen.
- */
-+ (VCameraViewController *)cameraViewController;
-
-/**
- Returns an instance of this class that will initially show a still image capture screen.
- */
-+ (VCameraViewController *)cameraViewControllerStartingWithStillCapture;
-
-/**
- Returns an instance of this class that will initially show a still video capture screen.
- */
-+ (VCameraViewController *)cameraViewControllerStartingWithVideoCapture;
-
-/**
- Returns an instance of this class that will only take photos, no video.
- */
-+ (VCameraViewController *)cameraViewControllerLimitedToPhotos;
-
-/**
- Returns an instance of this class that will only take video, no photos.
- */
-+ (VCameraViewController *)cameraViewControllerLimitedToVideo;
 
 /**
  The URL of the media captured by the camera. (May be remote).
@@ -76,9 +45,9 @@ typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NS
 @property (nonatomic, assign, getter=isToolBarHidden) BOOL toolbarHidden;
 
 /**
- *  An animated version of the toolsHidden setter.
+ *  A context for this cameraViewController to configure it's permission dialogs with. Defaults to
+ *  VWorkspaceFlowControllerContextContentCreation.
  */
-- (void)setToolbarHidden:(BOOL)toolbarHidden
-                animated:(BOOL)animated;
+@property (nonatomic, assign, readonly) VCameraContext context;
 
 @end

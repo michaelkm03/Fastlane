@@ -60,6 +60,12 @@
 #define COCOAPODS_VERSION_MINOR_Nocilla 8
 #define COCOAPODS_VERSION_PATCH_Nocilla 1
 
+// OAStackView
+#define COCOAPODS_POD_AVAILABLE_OAStackView
+#define COCOAPODS_VERSION_MAJOR_OAStackView 0
+#define COCOAPODS_VERSION_MINOR_OAStackView 1
+#define COCOAPODS_VERSION_PATCH_OAStackView 0
+
 // RKValueTransformers
 #define COCOAPODS_POD_AVAILABLE_RKValueTransformers
 #define COCOAPODS_VERSION_MAJOR_RKValueTransformers 1

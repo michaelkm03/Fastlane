@@ -26,7 +26,8 @@ typedef void (^VFollowEventCompletion)(VUser *userActedOn);
  *  @param completion Required completion block.
  */
 - (void)followUser:(VUser *)user
-    withCompletion:(VFollowEventCompletion)completion;
+withAuthorizedBlock:(void (^)(void))authorizedBlock
+     andCompletion:(VFollowEventCompletion)completion;
 
 /**
  *  A command for the current user to unfollow a specific user.
@@ -35,6 +36,7 @@ typedef void (^VFollowEventCompletion)(VUser *userActedOn);
  *  @param completion Required completion block.
  */
 - (void)unfollowUser:(VUser *)user
-      withCompletion:(VFollowEventCompletion)completion;
+ withAuthorizedBlock:(void (^)(void))authorizedBlock
+       andCompletion:(VFollowEventCompletion)completion;
 
 @end
