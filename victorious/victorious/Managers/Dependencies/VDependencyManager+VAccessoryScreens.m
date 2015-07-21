@@ -16,6 +16,7 @@
 #import "VObjectManager.h"
 #import "UIResponder+VResponderChain.h"
 #import "VProvidesNavigationMenuItemBadge.h"
+#import "VMenuItemControl.h"
 
 /**
  A UIBarButtonItem subclass used primarily to attach the `menuItemIdentifier` property
@@ -68,7 +69,21 @@ static const char kAssociatedObjectSourceViewControllerKey;
         }
         
         VBarButtonItem *accessoryBarItem = nil;
-        if ( menuItem.icon != nil )
+        
+        // See if we have a custom control
+        UIControl *customControl = [self customControlForMenuItem:menuItem fromSourceViewController:sourceViewController];
+        
+        if ( customControl != nil )
+        {
+            [customControl addTarget:self action:@selector(accessoryMenuItemSelected:) forControlEvents:UIControlEventTouchUpInside];
+            
+            VMenuItemControl *menuItemControl = [[VMenuItemControl alloc] initWithFrame:customControl.bounds];
+            menuItemControl.menuItem = menuItem;
+            [menuItemControl addSubview:customControl];
+            
+            accessoryBarItem = [[VBarButtonItem alloc] initWithCustomView:menuItemControl];
+        }
+        else if ( menuItem.icon != nil )
         {
             // If an icon is provided, a badge
             VBarButton *barButton = [VBarButton newWithDependencyManager:self];
@@ -176,6 +191,22 @@ static const char kAssociatedObjectSourceViewControllerKey;
     return shouldDisplay;
 }
 
+- (UIControl *)customControlForMenuItem:(VNavigationMenuItem *)menuItem fromSourceViewController:(UIViewController *)sourceViewController
+{
+    // If anyone in the responder chain has a custom control, return the control
+    __block UIControl *customControl = nil;
+    [sourceViewController v_walkWithBlock:^(UIResponder *responder, BOOL *stop)
+     {
+         if ( [responder respondsToSelector:@selector(customControlForAccessoryMenuItem:)] )
+         {
+             id<VAccessoryNavigationSource> source = (id<VAccessoryNavigationSource>)responder;
+             customControl = [source customControlForAccessoryMenuItem:menuItem];
+             *stop = YES;
+         }
+     }];
+    return customControl;
+}
+
 - (NSOrderedSet *)accessoriesForSource:(UIResponder *)source
 {
     __block NSMutableOrderedSet *accessoryMenuItems = [[NSMutableOrderedSet alloc] init];
@@ -208,14 +239,20 @@ static const char kAssociatedObjectSourceViewControllerKey;
             VBarButtonItem *barButtonItem = (VBarButtonItem *)responder;
             return barButtonItem.menuItem.identifier;
         }
+        else if ( [responder isKindOfClass:[VMenuItemControl class]] )
+        {
+            VMenuItemControl *customControl = (VMenuItemControl *)responder;
+            return customControl.menuItem.identifier;
+        }
+
     }
     while (( responder = [responder nextResponder] ));
     return nil;
 }
 
-- (VBarButton *)barButtonFromNavigationItem:(UINavigationItem *)navigationItme forIdentifier:(NSString *)identifier
+- (VBarButton *)barButtonFromNavigationItem:(UINavigationItem *)navigationItem forIdentifier:(NSString *)identifier
 {
-    UIBarButtonItem *barButtonItem = [self barButtonItemFromNavigationItem:navigationItme forIdentifier:identifier];
+    UIBarButtonItem *barButtonItem = [self barButtonItemFromNavigationItem:navigationItem forIdentifier:identifier];
     VBarButton *barButton = (VBarButton *)barButtonItem.customView;
     if ( barButton != nil && [barButton isKindOfClass:[VBarButton class]] )
     {
@@ -224,7 +261,7 @@ static const char kAssociatedObjectSourceViewControllerKey;
     return nil;
 }
 
-- (UIBarButtonItem *)barButtonItemFromNavigationItem:(UINavigationItem *)navigationItme forIdentifier:(NSString *)identifier
+- (UIBarButtonItem *)barButtonItemFromNavigationItem:(UINavigationItem *)navigationItem forIdentifier:(NSString *)identifier
 {
     __block VBarButtonItem *foundItem = nil;
     NSPredicate *searchPredicate = [NSPredicate predicateWithBlock:^BOOL(VBarButtonItem *item, NSDictionary *bindings)
@@ -232,13 +269,13 @@ static const char kAssociatedObjectSourceViewControllerKey;
         return [item isKindOfClass:[VBarButtonItem class]] && [item.menuItem.identifier isEqualToString:identifier];
     }];
     
-    foundItem = [navigationItme.leftBarButtonItems filteredArrayUsingPredicate:searchPredicate].firstObject;
+    foundItem = [navigationItem.leftBarButtonItems filteredArrayUsingPredicate:searchPredicate].firstObject;
     if ( foundItem != nil )
     {
         return foundItem;
     }
     
-    foundItem = [navigationItme.rightBarButtonItems filteredArrayUsingPredicate:searchPredicate].firstObject;
+    foundItem = [navigationItem.rightBarButtonItems filteredArrayUsingPredicate:searchPredicate].firstObject;
     if ( foundItem != nil )
     {
         return foundItem;

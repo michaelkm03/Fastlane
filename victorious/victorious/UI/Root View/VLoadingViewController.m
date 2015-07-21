@@ -26,7 +26,7 @@
 #import "VEnvironmentManager.h"
 #import "MBProgressHUD.h"
 
-static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
+static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
 
 @interface VLoadingViewController()
 
@@ -215,11 +215,10 @@ static NSString * const kWorkspaceTemplateName = @"workspaceTemplate";
     if ([self.delegate respondsToSelector:@selector(loadingViewController:didFinishLoadingWithDependencyManager:)])
     {
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
-        [templateDecorator concatenateTemplateWithFilename:kWorkspaceTemplateName];
         
 #warning TESTING CODE, REMOVE BEFORE MERGING
         [templateDecorator setValue:@YES forAllOccurencesOfKey:@"shouldShowComments"];
-        
+
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];

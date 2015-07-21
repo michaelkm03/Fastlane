@@ -51,6 +51,12 @@
      {
          update();
      }];
+    [self.KVOController observe:self.sequence keyPath:NSStringFromSelector(@selector(hasReposted))
+                        options:NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         update();
+     }];
     
     update();
 }

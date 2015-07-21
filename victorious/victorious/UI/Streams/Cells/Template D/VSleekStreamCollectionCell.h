@@ -14,7 +14,7 @@
 #import "VStreamCellTracking.h"
 #import "VHighlightContainer.h"
 
-@class VSequence;
+@class VSequence, VStream;
 
 /**
  * VSleekStreamCollectionCell is a stream cell component more commonly known as 
@@ -40,5 +40,10 @@
  *
  */
 @property (nonatomic, readonly) BOOL needsRefresh;
+
+/*
+ *  The stream that this VSleekStreamCollectionCell is in.
+ */
+@property (nonatomic, strong) VStream *stream;
 
 @end

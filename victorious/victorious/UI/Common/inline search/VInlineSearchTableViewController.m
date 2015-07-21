@@ -22,6 +22,8 @@
 // Theme Manager
 #import "VThemeManager.h"
 
+#import "VDependencyManager.h"
+
 const NSInteger kSearchTableDesiredMinimumHeight = 100;
 
 static NSString * const kVInlineUserCellIdentifier = @"VInlineUserTableViewCell";
@@ -77,7 +79,9 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
 
     if ([searchText length] > 0)
     {
+       NSString *sequenceId = [self.dependencyManager stringForKey:@"sequenceId"];
         [[VObjectManager sharedManager] findUsersBySearchString:searchText
+                                                     sequenceID:sequenceId
                                                           limit:kSearchResultLimit
                                                         context:VObjectManagerSearchContextUserTag
                                                withSuccessBlock:searchSuccess

@@ -46,12 +46,14 @@ typedef void (^VFollowHelperCompletion)(VUser *userActedOn);
  * Follows the user passed in after any authorization.
  */
 - (void)followUser:(VUser *)user
-    withCompletion:(VFollowHelperCompletion)completion;
+withAuthorizedBlock:(void (^)(void))authorizedBlock
+    andCompletion:(VFollowHelperCompletion)completion;
 
 /**
  * Follows the user passed in after any authorization.
  */
 - (void)unfollowUser:(VUser *)user
-      withCompletion:(VFollowHelperCompletion)completion;
+ withAuthorizedBlock:(void (^)(void))authorizedBlock
+      andCompletion:(VFollowHelperCompletion)completion;
 
 @end

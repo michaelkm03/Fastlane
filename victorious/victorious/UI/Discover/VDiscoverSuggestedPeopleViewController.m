@@ -71,6 +71,14 @@ static const UIEdgeInsets kCollectionViewEdgeInsets = {0, 0, 0, 0};
         self.suggestedUsers = @[];
         [self.collectionView reloadData];
     }
+    else
+    {
+        NSArray *visibleCells = self.collectionView.visibleCells;
+        for ( VDiscoverSuggestedPersonCell *cell in visibleCells )
+        {
+            [cell updateFollowingAnimated:NO];
+        }
+    }
     
     [self reload];
 }

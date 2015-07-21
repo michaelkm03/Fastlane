@@ -16,6 +16,10 @@
  */
 @interface VSleekActionView : VAbstractActionView <VHasManagedDependencies>
 
+@property (nonatomic, strong, readonly) VSleekActionButton *commentButton;
+@property (nonatomic, strong, readonly) VSleekActionButton *repostButton;
+@property (nonatomic, strong, readonly) VSleekActionButton *memeButton;
+@property (nonatomic, strong, readonly) VSleekActionButton *gifButton;
 @property (nonatomic, strong, readonly) VSleekActionButton *likeButton;
 
 @end

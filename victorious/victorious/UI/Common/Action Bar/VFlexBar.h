@@ -14,7 +14,7 @@
  *
  *  Ignores margins.
  *
- *  VActionBar determines the width of item as follows:
+ *  VFlexBar determines the width of item as follows:
  *      1. Check if the item is flexible (either by conforming to VActionBarFlexibleWidth
  *          or being of type VActionBarFlexibleSpaceItem.)
  *      2. If any width constraints are installed on the view that don't reference

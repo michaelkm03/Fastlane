@@ -25,6 +25,7 @@
 #import "VSequenceExpressionsObserver.h"
 #import "VCellSizeCollection.h"
 #import "VCellSizingUserInfoKeys.h"
+#import "VActionButtonAnimationController.h"
 
 static const CGFloat kInsetCellHeaderHeight         = 50.0f;
 static const CGFloat kInsetCellActionViewHeight     = 41.0f;
@@ -46,6 +47,7 @@ static const UIEdgeInsets kCaptionInsets            = { 4.0, 0.0, 4.0, 0.0  };
 @property (nonatomic, strong) NSLayoutConstraint *previewViewHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *countsVerticalSpacing;
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
+@property (nonatomic, strong) VActionButtonAnimationController *actionButtonAnimationController;
 @property (nonatomic, strong) UIView *separatorView;
 
 @end
@@ -74,6 +76,8 @@ static const UIEdgeInsets kCaptionInsets            = { 4.0, 0.0, 4.0, 0.0  };
 
 - (void)sharedInit
 {
+    _actionButtonAnimationController = [[VActionButtonAnimationController alloc] init];
+    
     // Header at the top, left to right and kInsetCellHeaderHeight
     _header = [[VStreamHeaderTimeSince alloc] initWithFrame:CGRectZero];
     [self.contentView addSubview:_header];
@@ -304,8 +308,12 @@ static const UIEdgeInsets kCaptionInsets            = { 4.0, 0.0, 4.0, 0.0  };
     self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
     [self.expressionsObserver startObservingWithSequence:sequence onUpdate:^
      {
-         welf.actionView.likeButton.selected = sequence.isLikedByMainUser.boolValue;
-         [welf updateCountsTextViewForSequence:sequence];
+         typeof(self) strongSelf = welf;
+         [strongSelf updateCountsTextViewForSequence:sequence];
+         [strongSelf.actionButtonAnimationController setButton:strongSelf.actionView.likeButton
+                                                      selected:sequence.isLikedByMainUser.boolValue];
+         [strongSelf.actionButtonAnimationController setButton:strongSelf.actionView.repostButton
+                                                      selected:sequence.hasReposted.boolValue];
      }];
 }
 

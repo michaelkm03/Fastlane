@@ -27,6 +27,10 @@
 #import "VInStreamCommentsController.h"
 #import <FBKVOController.h>
 #import "VInStreamCommentsShowMoreAttributes.h"
+#import "VActionButtonAnimationController.h"
+#import "VListicleView.h"
+#import "VEditorializationItem.h"
+#import "VStream.h"
 
 // These values must match the constraint values in interface builder
 static const CGFloat kSleekCellHeaderHeight = 50.0f;
@@ -52,12 +56,16 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 @property (nonatomic, weak ) IBOutlet NSLayoutConstraint *captionHeight;
 @property (nonatomic, strong) UIView *dimmingContainer;
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
+@property (nonatomic, strong) VActionButtonAnimationController *actionButtonAnimationController;
 @property (nonatomic, weak) IBOutlet VSequenceCountsTextView *countsTextView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *captiontoPreviewVerticalSpacing;
 @property (nonatomic, strong) VInStreamCommentsController *inStreamCommentsController;
 @property (nonatomic, weak) IBOutlet UICollectionView *inStreamCommentsCollectionView;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *inStreamCommentsCollectionViewBottomConstraint;
 @property (nonatomic, readwrite) BOOL needsRefresh;
+@property (nonatomic, strong) IBOutlet VListicleView *listicleView;
+@property (nonatomic, readwrite) VStreamItem *streamItem;
+@property (nonatomic, strong) VEditorializationItem *editorialization;
 
 @end
 
@@ -73,6 +81,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     [self setupDimmingContainer];
     
     self.countsTextView.textSelectionDelegate = self;
+    self.actionButtonAnimationController = [[VActionButtonAnimationController alloc] init];
 }
 
 + (VCellSizeCollection *)cellLayoutCollection
@@ -166,6 +175,12 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
 #pragma mark - VHasManagedDependencies
 
+- (void)setStream:(VStream *)stream
+{
+    _stream = stream;
+    [self updateListicleForSequence:self.sequence andStream:self.stream];
+}
+
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     if (_dependencyManager == dependencyManager)
@@ -189,6 +204,10 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     if ([self.captionTextView respondsToSelector:@selector(setDependencyManager:)])
     {
         [self.captionTextView setDependencyManager:dependencyManager];
+    }
+    if ([self.listicleView respondsToSelector:@selector(setDependencyManager:)])
+    {
+        [self.listicleView setDependencyManager:dependencyManager];
     }
     
     [self.countsTextView setTextHighlightAttributes:[[self class] sequenceCountsActiveAttributesWithDependencyManager:dependencyManager]];
@@ -239,13 +258,21 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
              return;
          }
          
-         strongSelf.sleekActionView.likeButton.selected = sequence.isLikedByMainUser.boolValue;
          [strongSelf updateCountsTextViewForSequence:sequence];
+         [strongSelf.actionButtonAnimationController setButton:strongSelf.sleekActionView.likeButton
+                                                      selected:sequence.isLikedByMainUser.boolValue];
+         [strongSelf.actionButtonAnimationController setButton:strongSelf.sleekActionView.repostButton
+                                                      selected:sequence.hasReposted.boolValue];
      }];
     
     NSArray *inStreamComments = [[self class] inStreamCommentsArrayForSequence:sequence];
     self.inStreamCommentsCollectionViewBottomConstraint.active = inStreamComments.count > 0;
     [self.inStreamCommentsController setupWithCommentCellContents:[VInStreamCommentCellContents inStreamCommentsForComments:inStreamComments andDependencyManager:self.dependencyManager] withShowMoreCellVisible:[[self class] inStreamCommentsShouldDisplayShowMoreCellForSequence:sequence]];
+}
+
+- (BOOL)needsAspectRatioUpdateForSequence:(VSequence *)sequence
+{
+    return self.previewContainerHeightConstraint.multiplier != 1.0f / [sequence previewAssetAspectRatio];
 }
 
 - (void)updateCountsTextViewForSequence:(VSequence *)sequence
@@ -278,17 +305,17 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
 - (void)updateConstraints
 {
-    CGFloat multipier = 1 / [self.sequence previewAssetAspectRatio];
-    if ( self.previewContainerHeightConstraint.multiplier != multipier )
+    // Add new height constraint for preview container to account for aspect ratio of preview asset
+    if ( [self needsAspectRatioUpdateForSequence:self.sequence] )
     {
-        // Add new height constraint for preview container to account for aspect ratio of preview asset
+        CGFloat aspectRatio = [self.sequence previewAssetAspectRatio];
         [self.previewContainer removeConstraint:self.previewContainerHeightConstraint];
         NSLayoutConstraint *heightToWidth = [NSLayoutConstraint constraintWithItem:self.previewContainer
                                                                          attribute:NSLayoutAttributeHeight
                                                                          relatedBy:NSLayoutRelationEqual
                                                                             toItem:self.previewContainer
                                                                          attribute:NSLayoutAttributeWidth
-                                                                        multiplier:multipier
+                                                                        multiplier:(1.0f / aspectRatio)
                                                                           constant:0.0f];
         [self.previewContainer addConstraint:heightToWidth];
         self.previewContainerHeightConstraint = heightToWidth;
@@ -347,6 +374,24 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 - (BOOL)shouldShowCaptionForSequence:(VSequence *)sequence
 {
     return sequence.name.length > 0 && self.dependencyManager != nil;
+}
+
+- (void)updateListicleForSequence:(VSequence *)sequence andStream:(VStream *)stream
+{
+    // Headline depends on both the sequence AND the stream
+    NSString *apiPath = stream.apiPath;
+    self.editorialization = [sequence editorializationForStreamWithApiPath:apiPath];
+    BOOL hasHeadline = self.editorialization.headline.length > 0;
+    if (hasHeadline && (self.editorialization.headline != nil))
+    {
+        self.listicleView.hidden = NO;
+        self.listicleView.headlineText = self.editorialization.headline;
+    }
+}
+
+- (void)prepareForReuse
+{
+    self.listicleView.hidden = YES;
 }
 
 #pragma mark - VBackgroundContainer

@@ -42,10 +42,11 @@
 #import "VNoContentView.h"
 #import "VDependencyManager+VTracking.h"
 #import "VTableViewCommentHighlighter.h"
+#import "VScrollPaginator.h"
 
 @import Social;
 
-@interface VCommentsTableViewController () <VEditCommentViewControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VTagSensitiveTextViewDelegate>
+@interface VCommentsTableViewController () <VEditCommentViewControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VTagSensitiveTextViewDelegate, VScrollPaginatorDelegate>
 
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 @property (nonatomic, assign) BOOL hasComments;
@@ -55,6 +56,7 @@
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VNoContentView *noContentView;
 @property (nonatomic, strong) VTableViewCommentHighlighter *commentHighlighter;
+@property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 
 @end
 
@@ -95,6 +97,9 @@
     self.noContentView.message = NSLocalizedString(@"NoCommentsMessage", @"");
     self.noContentView.icon = [UIImage imageNamed:@"noCommentIcon"];
     self.tableView.backgroundView = nil;
+    
+    self.scrollPaginator = [[VScrollPaginator alloc] init];
+    self.scrollPaginator.delegate = self;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -222,7 +227,7 @@
 
 #pragma mark - Pagination
 
-- (void)loadNextPageAction
+- (void)shouldLoadNextPage
 {
     [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
                                                   pageType:VPageTypeNext
@@ -337,16 +342,7 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    CGFloat contentHeight = scrollView.contentSize.height;
-    if ( contentHeight == 0 )
-    {
-        return;
-    }
-    
-    if (scrollView.contentOffset.y > ( contentHeight - CGRectGetHeight(scrollView.bounds) ) * .75)
-    {
-        [self loadNextPageAction];
-    }
+    [self.scrollPaginator scrollViewDidScroll:scrollView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

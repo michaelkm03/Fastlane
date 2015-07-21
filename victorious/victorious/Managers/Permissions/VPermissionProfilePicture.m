@@ -17,4 +17,17 @@
     return NSLocalizedString(message, @"");
 }
 
+
+- (VPermissionState)permissionState
+{
+    // subclasses must override
+    return VPermissionStateUnknown;
+}
+
+
+- (void)trackPermission:(NSString *)trackingStatus
+{
+    [self.permissionsTrackingHelper permissionsDidChange:VTrackingValueCameraDidAllow permissionState:trackingStatus];
+}
+
 @end
