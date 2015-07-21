@@ -15,8 +15,6 @@ struct GIFSearchLayout {
     static let DefaultSectionMargin: CGFloat  = 10.0
     static let NoContentCellHeight: CGFloat   = 80.0
     static let ItemSpacing: CGFloat           = 2.0
-    
-    init() { fatalError( "This type should never be instantiated" ) }
 }
 
 extension GIFSearchViewController : UICollectionViewDelegateFlowLayout {
