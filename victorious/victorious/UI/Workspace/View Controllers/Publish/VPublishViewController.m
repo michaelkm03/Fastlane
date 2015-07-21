@@ -371,8 +371,8 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
     }
     else
     {
-        // Snapshot the current state of the publish VC to preserve blurring as it animates away with the rest of the creation flow
-        UIView *snapshot = [self.view snapshotViewAfterScreenUpdates:NO];
+        // Snapshot the current state of the window to preserve blurring as it animates away with the rest of the creation flow
+        UIView *snapshot = [self.view.window snapshotViewAfterScreenUpdates:NO];
         [self.view addSubview:snapshot];
     }
     
