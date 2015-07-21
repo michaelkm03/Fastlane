@@ -310,11 +310,11 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
     VPermission *cameraPermission;
     if (self.context == VCameraContextProfileImage || self.context == VCameraContextProfileImageRegistration)
     {
-        cameraPermission = [[VPermissionCamera alloc] initWithDependencyManager:self.dependencyManager];
+        cameraPermission = [[VPermissionProfilePicture alloc] initWithDependencyManager:self.dependencyManager];
     }
     else
     {
-        cameraPermission = [[VPermissionProfilePicture alloc] initWithDependencyManager:self.dependencyManager];
+        cameraPermission = [[VPermissionCamera alloc] initWithDependencyManager:self.dependencyManager];
     }
     
     // Request camera permission

@@ -9,6 +9,8 @@
 #import "VPermissionProfilePicture.h"
 #import "VAppInfo.h"
 
+@import AVFoundation;
+
 @implementation VPermissionProfilePicture
 
 - (NSString *)messageWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -20,8 +22,19 @@
 
 - (VPermissionState)permissionState
 {
-    // subclasses must override
-    return VPermissionStateUnknown;
+    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    switch (authStatus)
+    {
+        case AVAuthorizationStatusAuthorized:
+            return VPermissionStateAuthorized;
+            
+        case AVAuthorizationStatusDenied:
+        case AVAuthorizationStatusRestricted:
+            return VPermissionStateSystemDenied;
+            
+        case AVAuthorizationStatusNotDetermined:
+            return VPermissionStateUnknown;
+    }
 }
 
 
