@@ -17,3 +17,6 @@ DerivedData
 *.xccheckout
 products
 *.swp
+
+# Python modules
+*.pyc
