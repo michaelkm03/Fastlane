@@ -9,6 +9,8 @@
 #import "VExperienceEnhancerBarCell.h"
 
 #import "VExperienceEnhancerBar.h"
+#import "VExperienceEnhancerCell.h" // for VExperienceEnhancerCellShouldShowCountKey
+#import "VDependencyManager.h"
 
 @interface VExperienceEnhancerBarCell ()
 
@@ -20,23 +22,14 @@
 
 #pragma mark - VSharedCollectionReusableViewMethods
 
-static const CGFloat kThreePointFiveInchIphoneHeight = 480.0f;
-static const CGFloat kIphone4AndLessHeight = 73.0f;
 static const CGFloat kIphone5AndGreaterHeight = 93.0f;
+static const CGFloat kNoLabelSize = 74.0f;
 
 + (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
+                            dependencyManager:(VDependencyManager *)dependencyManager
 {
-    // Get the width (minBound), taking rotation into account
-    const CGFloat minBound = MIN( CGRectGetWidth(bounds), CGRectGetHeight(bounds) );
-    
-    // Get the height (maxScreenBound), taking rotation in account
-    const CGRect screenBounds = [UIScreen mainScreen].bounds;
-    const CGFloat maxScreenBound = MAX( CGRectGetWidth(screenBounds), CGRectGetHeight(screenBounds) );
-    
-    // Check if we are on the 3.5-inch screen or not
-    BOOL isUltraCompact = maxScreenBound <= kThreePointFiveInchIphoneHeight;
-    
-    return CGSizeMake( minBound, isUltraCompact ? kIphone4AndLessHeight : kIphone5AndGreaterHeight);
+    BOOL shouldShowCount = [[dependencyManager numberForKey:VExperienceEnhancerCellShouldShowCountKey] boolValue];
+    return CGSizeMake(bounds.size.width, shouldShowCount ? kIphone5AndGreaterHeight : kNoLabelSize);
 }
 
 - (void)awakeFromNib
