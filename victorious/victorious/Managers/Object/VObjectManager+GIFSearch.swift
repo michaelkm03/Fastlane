@@ -28,9 +28,9 @@ extension VObjectManager {
     /// :param: pageType An enum value indicating which page to load in a series of paginated requests
     /// :param: success Closure to be called when request receives a non-error response
     /// :param: failure Closure to be called when request receives an error response
-    func searchForGIF( keywords: [String], pageType:VPageType, success:GIFSearchSuccess?, failure:GIFSearchFailure? ) -> RKManagedObjectRequestOperation? {
+    func searchForGIF( searchText: String, pageType:VPageType, success:GIFSearchSuccess?, failure:GIFSearchFailure? ) -> RKManagedObjectRequestOperation? {
         
-        var filter = self.filterForKeywords( join( ",", keywords ))
+        var filter = self.filterForKeywords( searchText )
         if !filter.canLoadPageType( pageType ) {
             failure?( error: nil, isLastPage: true )
             return nil
@@ -77,10 +77,10 @@ extension VObjectManager {
         return self.paginationManager.filterForPath( path, entityName: VAbstractFilter.entityName(), managedObjectContext: context )
     }
     
-    private func filterForKeywords( keywordList: String ) -> VAbstractFilter {
+    private func filterForKeywords( searchText: String ) -> VAbstractFilter {
         let charSet = NSCharacterSet.v_pathPartCharacterSet()
-        let escapedKeywordList = keywordList.stringByAddingPercentEncodingWithAllowedCharacters( charSet )!
-        let path = "/api/image/gif_search/\(escapedKeywordList)/\(VPaginationManagerPageNumberMacro)/\(VPaginationManagerItemsPerPageMacro)"
+        let escapedSearchText = searchText.stringByAddingPercentEncodingWithAllowedCharacters( charSet )!
+        let path = "/api/image/gif_search/\(escapedSearchText)/\(VPaginationManagerPageNumberMacro)/\(VPaginationManagerItemsPerPageMacro)"
         let context = self.managedObjectStore.persistentStoreManagedObjectContext
         return self.paginationManager.filterForPath( path, entityName: VAbstractFilter.entityName(), managedObjectContext: context )
     }
