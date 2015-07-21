@@ -400,8 +400,9 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         VComment *newComment;
         NSDictionary *payload = fullResponse[kVPayloadKey];
         NSNumber *commentID = @([payload[@"id"] integerValue]);
+        BOOL shouldAutoplay = [payload[@"should_autoplay"] boolValue];
         //Use payload to populate the text to avoid empty text if textcontainer containing text adjusts it before this block is called
-        newComment = [self newCommentWithID:commentID onSequence:sequence text:payload[@"text"] mediaURLPath:[mediaURL absoluteString]];
+        newComment = [self newCommentWithID:commentID onSequence:sequence text:payload[@"text"] shouldAutoplay:shouldAutoplay mediaURLPath:[mediaURL absoluteString]];
         newComment.realtime = time;
         [self fetchCommentByID:[payload[@"id"] integerValue] successBlock:nil failBlock:nil];
         if (asset)
@@ -440,7 +441,8 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 
 - (VComment *)newCommentWithID:(NSNumber *)remoteID
                    onSequence:(VSequence *)sequence
-                         text:(NSString *)text
+                          text:(NSString *)text
+                shouldAutoplay:(BOOL)shouldAutoplay
                  mediaURLPath:(NSString *)mediaURLPath
 {
     VComment *tempComment = [sequence.managedObjectContext insertNewObjectForEntityForName:[VComment entityName]];
@@ -453,6 +455,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     tempComment.thumbnailUrl = [self localImageURLForVideo:mediaURLPath];
     tempComment.mediaUrl = mediaURLPath;
     tempComment.userId = self.mainUser.remoteId;
+    tempComment.shouldAutoplay = [NSNumber numberWithBool:shouldAutoplay];
     
     if ( tempComment.mediaUrl )
     {
@@ -460,8 +463,6 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         // onto the video asset orientation to adjust our preview image accordingly
         AVAsset *asset = [AVAsset assetWithURL:[NSURL URLWithString:tempComment.mediaUrl]];
         tempComment.assetOrientation = @( asset.videoOrientation );
-#warning Take this out once server adds support
-        tempComment.shouldAutoplay = [NSNumber numberWithBool:YES];
     }
     
     [sequence addCommentsObject:tempComment];
