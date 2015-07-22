@@ -32,7 +32,7 @@
 
 - (void)updateBadging
 {
-    
+    // To be implemented by subclasses (if needed)
 }
 
 #pragma mark - Properties
