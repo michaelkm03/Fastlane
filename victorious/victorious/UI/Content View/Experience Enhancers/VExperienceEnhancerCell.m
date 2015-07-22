@@ -8,6 +8,7 @@
 
 #import "VExperienceEnhancerCell.h"
 #import "VDependencyManager.h"
+#import "victorious-Swift.h"  // for experience enhancer view
 
 static const CGFloat kVExperienceEnhancerCellWidth = 50.0f;
 static const CGFloat kThreePointFiveInchScreenHeight = 480.0f;
@@ -18,8 +19,8 @@ static NSString * const kLockedBallisticBackgroundIconKey = @"locked_ballistic_b
 
 @interface VExperienceEnhancerCell ()
 
-@property (weak, nonatomic) IBOutlet UIImageView *experienceEnhancerOverlayImageView;
-@property (weak, nonatomic) IBOutlet UIImageView *experienceEnhancerIconImageView;
+@property (weak, nonatomic) IBOutlet ExperienceEnhancerIconView *experienceEnhancerIconView;
+@property (weak, nonatomic) IBOutlet ExperienceEnhancerIconView *backgroundEnhancerIconView;
 @property (weak, nonatomic) IBOutlet UILabel *experienceEnhancerLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSpaceIconImageViewToContianerConstraint;
 @property (nonatomic, assign) BOOL isUnhighlighting;
@@ -69,7 +70,7 @@ static NSString * const kLockedBallisticBackgroundIconKey = @"locked_ballistic_b
                         options:UIViewAnimationOptionBeginFromCurrentState
                      animations:^
      {
-         self.experienceEnhancerIconImageView.alpha = highlighted ? 0.5f : 1.0f;
+         self.experienceEnhancerIconView.alpha = highlighted ? 0.5f : 1.0f;
      }
                      completion:nil];
 }
@@ -85,7 +86,8 @@ static NSString * const kLockedBallisticBackgroundIconKey = @"locked_ballistic_b
 - (void)setExperienceEnhancerIcon:(UIImage *)experienceEnhancerIcon
 {
     _experienceEnhancerIcon = experienceEnhancerIcon;
-    self.experienceEnhancerIconImageView.image = experienceEnhancerIcon;
+    self.experienceEnhancerIconView.iconImage = experienceEnhancerIcon;
+    self.backgroundEnhancerIconView.iconImage = experienceEnhancerIcon;
 }
 
 - (void)setEnabled:(BOOL)enabled
@@ -107,7 +109,8 @@ static NSString * const kLockedBallisticBackgroundIconKey = @"locked_ballistic_b
     UIImage *image = self.isLocked ? [self.dependencyManager imageForKey:kLockedBallisticBackgroundIconKey] : [self.dependencyManager imageForKey:kUnlockedBallisticBackgroundIconKey];
     if ( image != nil )
     {
-        self.experienceEnhancerOverlayImageView.image = image;
+        self.experienceEnhancerIconView.overlayImage = image;
+        self.backgroundEnhancerIconView.overlayImage = image;
     }
 }
 
