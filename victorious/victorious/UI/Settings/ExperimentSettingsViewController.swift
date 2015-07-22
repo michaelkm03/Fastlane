@@ -13,8 +13,10 @@ import UIKit
 /// of the experiment.
 class ExperimentSettingsViewController: UITableViewController {
     
-    private var allExperiments = [Experiment]()
-    private var enabledExperimentIds = [String]()
+    private var allAvailableExperiments = [Experiment]()
+    
+    private var defaultEnabledExperimentIds = [String]()
+    private var userEnabledExperimentIds = [String]()
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear( animated )
@@ -31,31 +33,36 @@ class ExperimentSettingsViewController: UITableViewController {
     }
     
     private func saveSettings() {
-        VObjectManager.sharedManager().experimentIDs = self.enabledExperimentIds
+        VObjectManager.sharedManager().experimentIDs = self.userEnabledExperimentIds
     }
     
     private func loadSettings( completion: ()->() ) {
         VObjectManager.sharedManager().getDeviceExperiments(
             success: { (operation, result, results) -> Void in
                 if let result = result as? [String: AnyObject] {
-                    self.enabledExperimentIds = {
-                        if let manuallyConfiguredExperimentIds = VObjectManager.sharedManager().experimentIDs as? [String] {
-                            return manuallyConfiguredExperimentIds
-                        }
-                        else if let serverConfiguredExperimentIds = result[ "experiment_ids" ] as? [String] {
-                            return serverConfiguredExperimentIds
-                        }
-                        return []
-                    }()
+                    
+                    // Get the enabled experiments as determined by the server without overriding
+                    if let serverConfiguredExperimentIds = result[ "experiment_ids" ] as? [String] {
+                        self.defaultEnabledExperimentIds = serverConfiguredExperimentIds
+                    }
+                    
+                    // Get any overrides previosuly selected from this settings view
+                    if let manuallyConfiguredExperimentIds = VObjectManager.sharedManager().experimentIDs as? [String] {
+                        self.userEnabledExperimentIds = manuallyConfiguredExperimentIds
+                    }
+                    // But if there are none, use the defaults provided by the server
+                    else {
+                        self.userEnabledExperimentIds = self.defaultEnabledExperimentIds
+                    }
                 }
                 
-                if let allExperiments = results as? [Experiment] {
-                    self.allExperiments = allExperiments
+                if let allAvailableExperiments = results as? [Experiment] {
+                    self.allAvailableExperiments = allAvailableExperiments
                 }
                 completion()
             },
             failure: { (operation, error) -> Void in
-                self.allExperiments = []
+                self.allAvailableExperiments = []
                 completion()
             }
         )
@@ -66,12 +73,12 @@ extension ExperimentSettingsViewController: VSettingsSwitchCellDelegate {
     
     func settingsDidUpdateFromCell( cell: VSettingsSwitchCell ) {
         if let indexPath = self.tableView.indexPathForCell( cell ) {
-            let experiment = self.allExperiments[ indexPath.row ]
+            let experiment = self.allAvailableExperiments[ indexPath.row ]
             if cell.value {
-                self.enabledExperimentIds.append( experiment.id )
+                self.userEnabledExperimentIds.append( experiment.id )
             }
             else {
-                self.enabledExperimentIds = self.enabledExperimentIds.filter { $0 != experiment.id }
+                self.userEnabledExperimentIds = self.userEnabledExperimentIds.filter { $0 != experiment.id }
             }
         }
     }
@@ -83,8 +90,8 @@ extension ExperimentSettingsViewController: UITableViewDataSource {
         let identifier = "VSettingsSwitchCell"
         if let cell = tableView.dequeueReusableCellWithIdentifier( identifier, forIndexPath: indexPath ) as? VSettingsSwitchCell {
             
-            let experiment = self.allExperiments[ indexPath.row ]
-            let enabled = contains( self.enabledExperimentIds, experiment.id )
+            let experiment = self.allAvailableExperiments[ indexPath.row ]
+            let enabled = contains( self.userEnabledExperimentIds, experiment.id )
             cell.setTitle( experiment.name, value: enabled )
             cell.delegate = self
             return cell
@@ -93,6 +100,6 @@ extension ExperimentSettingsViewController: UITableViewDataSource {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return allExperiments.count
+        return allAvailableExperiments.count
     }
 }
