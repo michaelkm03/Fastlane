@@ -169,12 +169,6 @@ extern NSString * const VDependencyManagerEditTextWorkspaceKey;
 - (BOOL)hasArrayOfImagesForKey:(NSString *)key;
 
 /**
- Returns an NSArray of NSString objects for the specified key. These 
- NSString objects will contain URLs pointing to images.
- */
-- (NSArray *)arrayOfImageURLsForKey:(NSString *)key;
-
-/**
  Returns the value stored for the specified key in the configuration
  dictionary of this instance, if present, or the closest ancestor.
  

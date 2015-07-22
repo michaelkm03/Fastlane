@@ -429,16 +429,6 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
     return returnValue;
 }
 
-- (NSArray *)arrayOfImageURLsForKey:(NSString *)key
-{
-    NSDictionary *imageDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
-    if ( imageDictionary == nil )
-    {
-        return nil;
-    }
-    return [self arrayOfImageURLsWithDictionary:imageDictionary];
-}
-
 - (NSArray *)arrayOfImageURLsWithDictionary:(NSDictionary *)imageDictionary
 {
     VTemplateImageMacro *macro = [[VTemplateImageMacro alloc] initWithJSON:imageDictionary];
