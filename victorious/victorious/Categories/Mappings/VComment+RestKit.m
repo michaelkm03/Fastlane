@@ -49,11 +49,11 @@
     [mapping addConnectionForRelationship:@"sequence" connectedBy:@{@"sequenceId" : @"remoteId"}];
     
     // Comment media
-    RKRelationshipMapping *previewAssetsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"media"
-                                                                                              toKeyPath:VSelectorName(commentMedia)
-                                                                                            withMapping:[VCommentMedia entityMapping]];
+    RKRelationshipMapping *commentMediaMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"media"
+                                                                                             toKeyPath:VSelectorName(commentMedia)
+                                                                                           withMapping:[VCommentMedia entityMapping]];
     
-    [mapping addPropertyMapping:previewAssetsMapping];
+    [mapping addPropertyMapping:commentMediaMapping];
 
     return mapping;
 }
