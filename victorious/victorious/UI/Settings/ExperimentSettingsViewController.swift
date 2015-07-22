@@ -65,16 +65,18 @@ class ExperimentSettingsViewController: UITableViewController {
         self.saveSettings()
     }
     
-    private func saveSettings() {
-        // If the user selected experiments matches the default as defined on the server,
-        // we don't want to supply any experimentIds to VObjectManager.  If we provide any experiment IDs,
-        // even if they are the same as what the server has selected for the user, allowing experiment
-        // participation to remain dynamic.
-        if self.defaultEnabledExperimentIds == self.userEnabledExperimentIds {
-            VObjectManager.sharedManager().experimentIDs = nil
+    private func saveSettings() {        
+        // If the user changed any settings from the default (the backend settings)...
+        if self.defaultEnabledExperimentIds != self.userEnabledExperimentIds {
+            
+            // ...we should update the `experimentIDs` in `VObjectManager` to add the header
+            // which actually changes experiment membership
+            VObjectManager.sharedManager().experimentIDs = self.userEnabledExperimentIds
         }
         else {
-            VObjectManager.sharedManager().experimentIDs = self.userEnabledExperimentIds
+            // Otherwise, set the `experimentIDs` back to nil so that the header is not added
+            // and the backend's experiment membership settings are applied as normal
+            VObjectManager.sharedManager().experimentIDs = nil
         }
     }
     
