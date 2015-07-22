@@ -370,7 +370,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         [affectedViews addObject:self.moreButton];
     }
     
-    const CGSize experienceEnhancerCellSize = [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+    const CGSize experienceEnhancerCellSize = [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds
+                                                                                            dependencyManager:self.dependencyManager];
     const CGPoint fixedLandscapeOffset = CGPointMake( 0.0f, experienceEnhancerCellSize.height );
     
     [self.rotationHelper handleRotationToInterfaceOrientation:toInterfaceOrientation
@@ -1157,7 +1158,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                                                        maximumSize:CGSizeMake(CGRectGetWidth(collectionView.bounds), 100.0)];
                 return sizedBallot;
             }
-            return [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+            return [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds
+                                                                 dependencyManager:self.dependencyManager];
         }
         case VContentViewSectionAllComments:
         {

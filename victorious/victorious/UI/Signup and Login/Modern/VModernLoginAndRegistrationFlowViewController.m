@@ -25,6 +25,8 @@
 #import "VLoginFlowControllerDelegate.h"
 #import "VPermissionsTrackingHelper.h"
 
+#import "VForcedWorkspaceContainerViewController.h"
+
 static NSString * const kRegistrationScreens = @"registrationScreens";
 static NSString * const kLoginScreens = @"loginScreens";
 static NSString * const kLandingScreen = @"landingScreen";
