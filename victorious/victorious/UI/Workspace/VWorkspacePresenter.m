@@ -31,6 +31,7 @@ static NSString * const kCreateSheetKey = @"createSheet";
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) UIViewController *viewControllerToPresentOn;
+@property (nonatomic, strong) VTextWorkspaceFlowController *textWorkspaceFlowController;
 
 @end
 
@@ -141,8 +142,8 @@ static NSString * const kCreateSheetKey = @"createSheet";
 
 - (void)presentTextOnlyWorkspace
 {
-    VTextWorkspaceFlowController *textWorkspaceController = [VTextWorkspaceFlowController textWorkspaceFlowControllerWithDependencyManager:self.dependencyManager];
-    [self.viewControllerToPresentOn presentViewController:textWorkspaceController.flowRootViewController animated:YES completion:nil];
+    _textWorkspaceFlowController = [VTextWorkspaceFlowController textWorkspaceFlowControllerWithDependencyManager:self.dependencyManager];
+    [self.viewControllerToPresentOn presentViewController:_textWorkspaceFlowController.flowRootViewController animated:YES completion:nil];
 }
 
 #pragma mark - VWorkspaceFlowControllerDelegate

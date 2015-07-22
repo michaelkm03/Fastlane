@@ -18,7 +18,7 @@
 #import "UIView+AutoLayout.h"
 #import "VVideoView.h"
 
-@interface VVideoSequencePreviewView () <VVideoViewDelegtae>
+@interface VVideoSequencePreviewView () <VVideoViewDelegate>
 
 @property (nonatomic, strong) UIImageView *previewImageView;
 @property (nonatomic, strong) UIView *playIconContainerView;
@@ -100,7 +100,7 @@
     }
 }
 
-#pragma mark - VVideoViewDelegtae
+#pragma mark - VVideoViewDelegate
 
 - (void)videoViewPlayerDidBecomeReady:(VVideoView *)videoView
 {

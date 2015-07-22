@@ -22,8 +22,8 @@
 	<string>VModernLoginAndRegistrationFlowViewController</string>
 	<key>standard.loginAndRegistrationView</key>
 	<string>VStandardLoginFlowViewController</string>
-	<key>hiddenWorkspace</key>
-	<string>VWorkspaceFlowController</string>
+	<key>image.creationFlow</key>
+	<string>VImageCreationFlowController</string>
 	<key>translucent.background</key>
 	<string>VTranslucentBackground</string>
 	<key>blurredImage.background</key>
@@ -42,7 +42,7 @@
 	<string>VCropToolViewController</string>
 	<key>vertical.picker</key>
 	<string>VTickerPickerViewController</string>
-	<key>vertical.multiplePicker</key>
+	<key>multipleVertical.picker</key>
 	<string>VMultiplePickerViewController</string>
 	<key>filter.tool</key>
 	<string>VFilterTool</string>
@@ -52,7 +52,7 @@
 	<string>VMemeTool</string>
 	<key>crop.tool</key>
 	<string>VCropTool</string>
-	<key>text.tool</key>
+	<key>textOverlay.tool</key>
 	<string>VTextTool</string>
 	<key>textType.tool</key>
 	<string>VTextTypeTool</string>
@@ -60,12 +60,24 @@
 	<string>VHashtagTool</string>
 	<key>textColor.tool</key>
 	<string>VTextColorTool</string>
+	<key>camera.screen</key>
+	<string>VCameraViewController</string>
 	<key>workspace.screen</key>
 	<string>VWorkspaceViewController</string>
+	<key>imageVideoGallery.screen</key>
+	<string>VAssetCollectionGridViewController</string>
 	<key>workspace</key>
 	<string>VWorkspaceShimDestination</string>
-	<key>workspaceText</key>
+	<key>text.creationFlow</key>
 	<string>VTextWorkspaceFlowController</string>
+	<key>poll.creationFlow</key>
+	<string>VPollCreationFlowController</string>
+	<key>video.creationFlow</key>
+	<string>VVideoCreationFlowController</string>
+	<key>gif.creationFlow</key>
+	<string>VGIFCreationFlowController</string>
+	<key>pollCreation.screen</key>
+	<string>VCreatePollViewController</string>
 	<key>sideMenu.scaffold</key>
 	<string>VSideMenuViewController</string>
 	<key>tabMenu.scaffold</key>
@@ -144,9 +156,13 @@
 	<string>VCoachmark</string>
 	<key>standard.permissionsAlert</key>
 	<string>VPermissionAlertViewController</string>
-	<key>publish.screen</key>
-	<string>VPublishViewController</string>
+	<key>standard.creationFlow</key>
+	<string>VCreationFlowShim</string>
 	<key>standard.createSheet</key>
 	<string>VCreateSheetViewController</string>
+	<key>forcedContentCreation.screen</key>
+	<string>VForcedWorkspaceContainerViewController</string>
+	<key>publish.screen</key>
+	<string>VPublishViewController</string>
 </dict>
 </plist>

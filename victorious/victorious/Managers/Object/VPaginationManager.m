@@ -14,6 +14,8 @@
 NSString * const VPaginationManagerPageNumberMacro = @"%%PAGE_NUM%%";
 NSString * const VPaginationManagerItemsPerPageMacro = @"%%ITEMS_PER_PAGE%%";
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface VPaginationManager ()
 
 @property (nonatomic, strong) NSMutableDictionary /* NSManagedObjectID */ *filterIDs; ///< A dictionary of known filter IDs
@@ -41,10 +43,10 @@ NSString * const VPaginationManagerItemsPerPageMacro = @"%%ITEMS_PER_PAGE%%";
     return self;
 }
 
-- (RKManagedObjectRequestOperation *)loadFilter:(VAbstractFilter *)filter
-                                   withPageType:(VPageType)pageType
-                                   successBlock:(VSuccessBlock)success
-                                      failBlock:(VFailBlock)fail
+- (RKManagedObjectRequestOperation *__nullable)loadFilter:(VAbstractFilter *)filter
+                                             withPageType:(VPageType)pageType
+                                             successBlock:(VSuccessBlock)success
+                                                failBlock:(VFailBlock)fail
 {
     if ( ![filter canLoadPageType:pageType] || [self isLoadingFilter:filter] )
     {
@@ -184,5 +186,7 @@ NSString * const VPaginationManagerItemsPerPageMacro = @"%%ITEMS_PER_PAGE%%";
     
     return filter;
 }
+
+NS_ASSUME_NONNULL_END
 
 @end

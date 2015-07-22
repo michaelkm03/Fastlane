@@ -32,6 +32,7 @@
 static const CGFloat kNoPreviewBackgroundTransparency = 0.75f;
 static NSString * const kCommentsViewControllerKey = @"commentsScreen";
 static NSString * const kSequenceKey = @"sequence";
+static NSString * const kSequenceIdKey = @"sequenceId";
 
 @interface VCommentsContainerViewController() <VCommentsTableViewControllerDelegate>
 
@@ -50,8 +51,10 @@ static NSString * const kSequenceKey = @"sequence";
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     VCommentsContainerViewController *viewController = (VCommentsContainerViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:kCommentsContainerStoryboardID];
-    viewController.dependencyManager = dependencyManager;
-    viewController.sequence = [dependencyManager templateValueOfType:[VSequence class] forKey:kSequenceKey];
+    VSequence *sequence = [dependencyManager templateValueOfType:[VSequence class] forKey:kSequenceKey];
+    NSDictionary *configuration = @{ kSequenceIdKey : sequence.remoteId };
+    viewController.dependencyManager = [dependencyManager childDependencyManagerWithAddedConfiguration:configuration];
+    viewController.sequence = sequence;
     return viewController;
 }
 

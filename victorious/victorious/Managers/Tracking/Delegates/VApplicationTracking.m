@@ -28,6 +28,8 @@ static NSString * const kMacroSharedToTwitter        = @"%%TWITTER_SHARE%%";
 static NSString * const kMacroNotificationID         = @"%%NOTIF_ID%%";
 static NSString * const kMacroSessionTime            = @"%%SESSION_TIME%%";
 static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
+static NSString * const kMacroPermissionState        = @"%%PERMISSION_STATE%%";
+static NSString * const kMacroPermissionName         = @"%%PERMISSION_NAME%%";
 
 #define APPLICATION_TRACKING_LOGGING_ENABLED 0
 #define APPLICATION_TEMPLATE_MAPPING_LOGGING_ENABLED 0
@@ -66,14 +68,17 @@ static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
                                     VTrackingKeySharedToTwitter    : kMacroSharedToTwitter,
                                     VTrackingKeyNotificationId     : kMacroNotificationID,
                                     VTrackingKeySessionTime        : kMacroSessionTime,
-                                    VTrackingKeyLoadTime           : kMacroLoadTime };
+                                    VTrackingKeyLoadTime           : kMacroLoadTime,
+                                    VTrackingKeyPermissionName     : kMacroPermissionName,
+                                    VTrackingKeyPermissionState    : kMacroPermissionState};
         
         _keyForEventMapping = @{ VTrackingEventUserDidStartCreateProfile           : VTrackingCreateProfileStartKey,
                                  VTrackingEventUserDidStartRegistration            : VTrackingRegistrationStartKey,
                                  VTrackingEventUserDidFinishRegistration           : VTrackingRegistrationEndKey,
                                  VTrackingEventUserDidSelectRegistrationDone       : VTrackingCreateProfileDoneButtonTapKey,
                                  VTrackingEventUserDidSelectRegistrationOption     : VTrackingRegisteButtonTapKey,
-                                 VTrackingEventUserDidSelectSignUpSubmit           : VTrackingSignUpButtonTapKey };
+                                 VTrackingEventUserDidSelectSignUpSubmit           : VTrackingSignUpButtonTapKey,
+                                 VTrackingEventUserPermissionDidChange             : VTrackingPermissionChangeKey };
         
         _macroReplacement = [[VURLMacroReplacement alloc] init];
         _requestQueue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0 );

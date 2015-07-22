@@ -206,10 +206,14 @@
 "CameraRollDenied"      =   "Please grant access to your photos in Settings -> Privacy.";
 "CameraFailed"          =   "Unable to start camera";
 "CameraSwitchFailed"    =   "Unable to switch camera mode";
+"Camera"                =   "Camera";   // Button that opens the camera
+"Search"                =   "Search";   // Button that opens web search for images
+"Gallery"               =   "Gallery";  // Button that opens gallery to photo library for images and videos
 "StillCaptureFailed"    =   "Unable to take picture";
 "VideoCaptureFailed"    =   "Unable to record video";
 "VideoSaveFailed"       =   "Unable to save video";
 "VideoCoachMessage"     =   "Press and hold to record";
+"LibraryCaptureFailed"  =   "Unable to access item in library";
 
 "NoTwitterTitle"        =   "Can't find a Twitter account!";
 "NoTwitterMessage"      =   "Please open your device settings and add a new Twitter account";
@@ -345,6 +349,7 @@
 
 "me"                    =   "Me";
 
+"Edit"                  =   "Edit";
 "editProfileButton"     =   "Edit Profile";
 "followers"             =   "Followers";
 "following"             =   "Following";
@@ -387,7 +392,7 @@
 "CannotVerify"          =   "Cannot Verify Account";
 "IncorrectCode"         =   "The code used for account verification is incorrect.";
 
-"Search for an image"   =   "Search for an image";
+"Image Search"          =   "Image Search";
 "Pull up for more..."   =   "Pull up for more...";
 "search for users"      =   "search for users";
 "searching"             =   "searching";
@@ -599,16 +604,24 @@
 "Create a meme" = "Create a meme";
 "Create a quote" = "Create a quote";
 "Create a GIF" = "Create a GIF";
+"Pick an attachment style" = "Pick an attachment style";
+"Image" = "Image";
+"Video" = "Video";
 "Type your text here!" = "Type your text here!";
 "GIF" = "GIF";
+"GIF Search" = "GIF Search";
 "Quote" = "Quote";
 "GIF MODE" = "GIF MODE";
 "VIDEO MODE" = "VIDEO MODE";
 "Write a caption (optional)" = "Write a caption (optional)";
 "Rendering..." = "Rendering...";
+"Downloading..." = "Downloading...";
+"Exporting..." = "Exporting...";
 "Render failure" = "Render failure";
 "Publishing..." = "Publishing...";
 "Upload failure" = "Upload failure";
+"Error loading results" = "Error loading results";
+"Error rendering GIF" = "Error rendering GIF.  Please try again.";
 
 "Before you can take and share photos with the community, we need access to your camera. Allow camera access now?" = "Before you can take and share photos with the community, we need access to your camera. Allow camera access now?";
 "Thank you for joining the community! To add a profile picture, we need access to your camera. Allow camera access now?" = "Thank you for joining the community! To add a profile picture, we need access to your camera. Allow camera access now?";

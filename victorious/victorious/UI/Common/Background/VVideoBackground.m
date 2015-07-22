@@ -19,7 +19,7 @@
 
 static NSString * const kSequenceURLKey = @"sequenceURL";
 
-@interface VVideoBackground () <VVideoViewDelegtae>
+@interface VVideoBackground () <VVideoViewDelegate>
 
 @property (nonatomic, strong) VVideoView *videoView;
 
@@ -65,7 +65,7 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
     return self.videoView;
 }
 
-#pragma mark - VVideoViewDelegtae
+#pragma mark - VVideoViewDelegate
 
 - (void)videoViewPlayerDidBecomeReady:(VVideoView *)videoView
 {
