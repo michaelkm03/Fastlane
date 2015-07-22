@@ -38,9 +38,9 @@ class ExperimentSettingsViewController: UITableViewController {
             case .Error:
                 return "An error occured while loading the list of available experiments."
             case .NoContent:
-                return "There are no available experiments right now."
+                return "There are no experiments running right now."
             case .Loading:
-                return "  Loading available experiments..."
+                return "  Loading experiments..."
             default:
                 return ""
             }
