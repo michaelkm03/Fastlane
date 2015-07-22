@@ -71,6 +71,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 @property (nonatomic, assign) BOOL showPushNotificationSettings;
 @property (nonatomic, assign) BOOL showPurchaseSettings;
 @property (nonatomic, assign) BOOL showResetCoachmarks;
+@property (nonatomic, assign) BOOL showExperimentSettings;
 
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *rightLabels;
@@ -157,9 +158,9 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 #endif
     
 #ifdef V_SHOW_EXPERIMENT_SETTINGS
-    
+    self.showExperimentSettings = YES;
 #else
-    
+    self.showExperimentSettings = NO;
 #endif
     
     self.showPurchaseSettings = [VPurchaseManager sharedInstance].isPurchasingEnabled;
@@ -341,91 +342,40 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 {
     if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionChromecast)
     {
-        if (self.showChromeCastButton)
-        {
-            return self.tableView.rowHeight;
-        }
-        else
-        {
-            return 0;
-        }
+        return self.showChromeCastButton ? self.tableView.rowHeight : 0.0;
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionServerEnvironment)
     {
-        if (self.showEnvironmentSetting)
-        {
-            return self.tableView.rowHeight;
-        }
-        else
-        {
-            return 0;
-        }
+        return self.showEnvironmentSetting ? self.tableView.rowHeight : 0.0;
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionResetCoachmarks)
     {
-        if ( self.showResetCoachmarks )
-        {
-            return self.tableView.rowHeight;
-        }
-        else
-        {
-            return 0;
-        }
+        return self.showResetCoachmarks ? self.tableView.rowHeight : 0.0;
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionChangePassword)
     {
-        if ( [self showChangePassword] )
-        {
-            return self.tableView.rowHeight;
-        }
-        else
-        {
-            return 0;
-        }
+        return [self showChangePassword] ? self.tableView.rowHeight : 0.0;
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionNotifications)
     {
-        if (self.showPushNotificationSettings && [VObjectManager sharedManager].mainUserLoggedIn)
-        {
-            return self.tableView.rowHeight;
-        }
-        else
-        {
-            return 0;
-        }
+        BOOL shouldShow = self.showPushNotificationSettings && [VObjectManager sharedManager].mainUserLoggedIn;
+        return shouldShow ? self.tableView.rowHeight : 0.0;
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionResetPurchases)
     {
-        if (self.showPurchaseSettings)
-        {
-            return self.tableView.rowHeight;
-        }
-        else
-        {
-            return 0;
-        }
+        return self.showPurchaseSettings ? self.tableView.rowHeight : 0.0;
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionTracking)
     {
-        if (self.showTrackingAlertSetting)
-        {
-            return self.tableView.rowHeight;
-        }
-        else
-        {
-            return 0;
-        }
+        return self.showTrackingAlertSetting ? self.tableView.rowHeight : 0.0;
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionLikedContent)
     {
-        if ([self showLikedContent])
-        {
-            return self.tableView.rowHeight;
-        }
-        else
-        {
-            return 0;
-        }
+        return [self showLikedContent] ? self.tableView.rowHeight : 0.0;
+    }
+    else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionExperiments)
+    {
+        return self.showExperimentSettings ? self.tableView.rowHeight : 0.0;
     }
     
     return self.tableView.rowHeight;
