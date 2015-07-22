@@ -28,9 +28,25 @@ class ExperimentSettingsViewController: UITableViewController {
     private var defaultEnabledExperimentIds = [String]()
     private var userEnabledExperimentIds = [String]()
     
-    enum State: Int {
+    private enum State: Int {
         case Loading, Content, NoContent, Error
+        
+        /// Returns a message to display to the user for this state
+        /// Non-localized, as this is for testing purposes only
+        var message: String {
+            switch self {
+            case .Error:
+                return "An error occured while loading the list of available experiments."
+            case .NoContent:
+                return "There are no available experiments right now."
+            case .Loading:
+                return "  Loading available experiments..."
+            default:
+                return ""
+            }
+        }
     }
+    
     private var state: State = .Loading {
         didSet {
             self.tableView.reloadData()
@@ -128,16 +144,7 @@ extension ExperimentSettingsViewController: UITableViewDataSource {
         
         let noContentIdentifier = SettingsEmptyCell.defaultSwiftReuseIdentifier
         if let cell = tableView.dequeueReusableCellWithIdentifier( noContentIdentifier, forIndexPath: indexPath ) as? SettingsEmptyCell {
-            switch self.state {
-            case .Error:
-                cell.message = "An error occured while loading the list of available experiments."
-            case .NoContent:
-                cell.message = "Unforunately, there are no available experiments right now."
-            case .Loading:
-                cell.message = "  Loading available experiments..."
-            case .Content:
-                fatalError( "This cell should not show when there is content." )
-            }
+            cell.message = self.state.message
             return cell
         }
             

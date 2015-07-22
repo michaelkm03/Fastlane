@@ -36,11 +36,4 @@ extension Experiment {
             )
         ]
     }
-    
-    var dictionary: [String : AnyObject] {
-        return [
-            "name" : self.name,
-            "id" : self.id
-        ]
-    }
 }
