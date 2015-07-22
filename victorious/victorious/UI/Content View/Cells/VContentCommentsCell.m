@@ -210,9 +210,11 @@ static NSCache *_sharedImageCache = nil;
     if (comment.hasMedia)
     {
         self.mediaPreviewURL = comment.previewImageURL;
+        self.mediaIsVideo = [comment.mediaUrl v_hasVideoExtension];
         
-        if ([comment.mediaUrl isKindOfClass:[NSString class]] && [comment.mediaUrl v_hasVideoExtension])
+        if (self.mediaIsVideo)
         {
+            
             if ([comment.shouldAutoplay boolValue])
             {
                 [self.commentAndMediaView setMediaType:VCommentMediaViewTypeGIF];

@@ -308,9 +308,9 @@
         
         if ([comment.mediaUrl isKindOfClass:[NSString class]] && [comment.mediaUrl v_hasVideoExtension])
         {
-            // Set this up regardless just in case our GIF doesnt have an mp4 link and we can just stream the video instead
+            // Setup tap tap handler
             cell.commentTextView.onMediaTapped = [cell.commentTextView standardMediaTapHandlerWithMediaURL:[NSURL URLWithString:comment.mediaUrl] presentingViewController:self];
-
+            
             if ([comment.shouldAutoplay boolValue])
             {
                 [cell.commentTextView setMediaType:VCommentMediaViewTypeGIF];
