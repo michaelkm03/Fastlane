@@ -76,6 +76,7 @@ class GIFSearchViewController: UIViewController {
             action: Action.ExportSelectedItem.rawValue )
         
         self.loadDefaultContent()
+        self.updateNavigationItemState()
     }
     
     func exportSelectedItem( sender: AnyObject? ) {
@@ -153,6 +154,10 @@ class GIFSearchViewController: UIViewController {
         return label
     }
     
+    private func updateNavigationItemState() {
+        self.navigationItem.rightBarButtonItem?.enabled = selectedIndexPath != nil
+    }
+    
     /// Inserts a new section into the collection view that shows a fullsize preview video for the GIF search result
     ///
     /// :param: indexPath The index path of the GIF search result for which to show the preview video
@@ -179,6 +184,8 @@ class GIFSearchViewController: UIViewController {
             
             self.updateLayout()
         }
+        
+        self.updateNavigationItemState()
     }
     
     /// Invalidates the layout through a batch update so layout changes are animated
@@ -203,6 +210,8 @@ class GIFSearchViewController: UIViewController {
         self.collectionView.performBatchUpdates({
             self.collectionView.collectionViewLayout.invalidateLayout()
         }, completion:nil )
+        
+        self.updateNavigationItemState()
     }
 }
 
