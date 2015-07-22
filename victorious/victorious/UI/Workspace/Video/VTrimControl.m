@@ -20,6 +20,8 @@ static const CGFloat scaleFactorY = 0.50f; //y-ratio for handle subview on trim 
 static const CGFloat kLineLength = 1000.0f; //Length of underbar on trim control
 static const CGFloat kLineThickness = 1.0f; //Thickness of underbar on trim control
 
+const CGFloat VTrimmerTopPadding = 42.0f;
+
 @interface VTrimControl () <UICollisionBehaviorDelegate, UIDynamicAnimatorDelegate>
 
 @property (nonatomic, readwrite) CMTime selectedDuration;
@@ -105,7 +107,7 @@ static const CGFloat kLineThickness = 1.0f; //Thickness of underbar on trim cont
 {
     if (!self.hasPerformedInitialLayout)
     {
-        CGFloat yOrigin = [[self class] topPadding];
+        CGFloat yOrigin = VTrimmerTopPadding;
         CGFloat previewHeight = CGRectGetHeight(self.bounds) - yOrigin;
         
         CGRect thumbBodyFrame = CGRectZero;
@@ -248,13 +250,6 @@ static const CGFloat kLineThickness = 1.0f; //Thickness of underbar on trim cont
     {
         [welf updateThumbAndDimmingViewWithThumbHorizontalCenter:CGRectGetMidX(welf.trimThumbBody.frame)];
     };
-}
-
-#pragma mark - Convenience accessor
-
-+ (CGFloat)topPadding
-{
-    return 42;
 }
 
 #pragma mark - UIDynamicAnimatorDelegate

@@ -11,6 +11,8 @@
 #import <CoreMedia/CMTime.h>
 #import <CoreMedia/CMTimeRange.h>
 
+extern const CGFloat VTrimmerTopPadding;
+
 // Sends UIControlEventValueChanged on new selection
 
 /**
@@ -22,11 +24,6 @@
  *  The text to display in the thumb head.
  */
 @property (nonatomic, copy) NSAttributedString *attributedTitle;
-
-/**
- *  The height of the trimmer body plus the vertical inset of the body
- */
-+ (CGFloat)topPadding;
 
 /**
  *  The view for the handle of the trimmer control
