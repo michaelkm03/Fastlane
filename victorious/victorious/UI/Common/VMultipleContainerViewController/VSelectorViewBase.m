@@ -30,6 +30,11 @@
     return CGRectZero;
 }
 
+- (void)updateBadging
+{
+    
+}
+
 #pragma mark - Properties
 
 - (NSUInteger)activeViewControllerIndex

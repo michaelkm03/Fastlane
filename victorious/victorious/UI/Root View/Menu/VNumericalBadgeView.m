@@ -151,6 +151,15 @@ static UIEdgeInsets const kMargin = { 2.0f, 4.0f, 2.0f, 4.0f };
 
 - (void)setBadgeNumber:(NSInteger)badgeNumber
 {
+    if (badgeNumber == 0)
+    {
+        self.hidden = YES;
+    }
+    else
+    {
+        self.hidden = NO;
+    }
+    
     if (badgeNumber == _badgeNumber)
     {
         return;
@@ -158,6 +167,7 @@ static UIEdgeInsets const kMargin = { 2.0f, 4.0f, 2.0f, 4.0f };
     _badgeNumber = badgeNumber;
     
     self.label.text = badgeNumber == 0 ? @"" : [VBadgeStringFormatter formattedBadgeStringForBadgeNumber:badgeNumber];
+   
     [self invalidateIntrinsicContentSize];
 }
 

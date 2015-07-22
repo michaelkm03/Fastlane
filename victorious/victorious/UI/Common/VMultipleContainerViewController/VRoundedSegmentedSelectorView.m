@@ -12,6 +12,8 @@
 #import "UIImage+ImageCreation.h"
 #import "UIView+AutoLayout.h"
 #import "VNumericalBadgeView.h"
+#import "VProvidesNavigationMenuItemBadge.h"
+#import "VBadgeResponder.h"
 
 static CGFloat const kVBarHeight = 40.0f;
 static CGFloat const kVPillHeight = 29.0f;
@@ -135,17 +137,16 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
          
          [sSelf.buttons addObject:button];
          
-         if (self.arrayOfBadgeNumbers.count > idx)
+         CGFloat xPos = ((idx + 1) * (320.0f / self.viewControllers.count )) - 20.0f;
+         VNumericalBadgeView *badgeView = [[VNumericalBadgeView alloc] initWithFrame:CGRectMake(xPos, 0, 20, 20)];
+         badgeView.font = [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
+        
+         if ([viewController conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)])
          {
-             NSNumber *object = [self.arrayOfBadgeNumbers objectAtIndex:idx];
-             NSInteger badgeNumber = object.integerValue;
-             NSLog(@"badges count: %d", self.arrayOfBadgeNumbers.count);
-             VNumericalBadgeView *badgeView = [[VNumericalBadgeView alloc] initWithFrame:CGRectMake((320/self.viewControllers.count) - 20, 0, 20, 20)];
-             badgeView.font = [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
-             
-             [button addSubview:badgeView];
-
+             id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)viewController;
+             NSInteger badgeNumber = [badgeProvider badgeNumber];
              [badgeView setBadgeNumber:badgeNumber];
+             [self addSubview:badgeView];
          }
      }];
     
@@ -174,6 +175,43 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
         _realActiveViewControllerIndex = 0;
     }
     [self updateSelectionViewConstraintAnimated:NO];
+}
+
+- (void)layoutIfNeeded
+{
+    [self updateBadging];
+}
+
+- (void)updateBadging
+{
+    NSUInteger idx = 0;
+    self.arrayOfBadgeNumbers = [self arrayOfBadgeNumbers];
+    for (UIView *subview in self.subviews)
+    {
+        if ([subview isKindOfClass:[VNumericalBadgeView class]])
+        {
+            // we've found a badge view!
+            NSUInteger badgeNumber = [[self.arrayOfBadgeNumbers objectAtIndex:idx] integerValue];
+            [((VNumericalBadgeView *) subview) setBadgeNumber: badgeNumber];
+            idx++;
+        }
+    }
+}
+
+- (NSArray *)arrayOfBadgeNumbers
+{
+    NSMutableArray *mutableResult = [[NSMutableArray alloc] init];
+    for (UIViewController *viewController in self.viewControllers)
+    {
+        if ([viewController conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)])
+        {
+            id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)viewController;
+            NSInteger badgeNumber = [badgeProvider badgeNumber];
+            NSNumber *badgeNumberObject = [NSNumber numberWithInteger:badgeNumber];
+            [mutableResult addObject:badgeNumberObject];
+        }
+    }
+    return [mutableResult copy];
 }
 
 - (BOOL)hasValidLayout

@@ -62,8 +62,6 @@ static NSString * const kInitialKey = @"initial";
         self.viewControllers = [dependencyManager arrayOfSingletonValuesOfType:[UIViewController class] forKey:kScreensKey];
         _selector = [dependencyManager templateValueOfType:[VSelectorViewBase class] forKey:kSelectorKey];
         _selector.viewControllers = _viewControllers;
-        _selector.arrayOfBadgeNumbers = [self arrayOfBadgeNumbers];
-        NSLog(@"array: %@", _selector.arrayOfBadgeNumbers);
         _selector.delegate = self;
         self.navigationItem.v_supplementaryHeaderView = _selector;
         self.title = NSLocalizedString([dependencyManager stringForKey:VDependencyManagerTitleKey], @"");
@@ -77,7 +75,6 @@ static NSString * const kInitialKey = @"initial";
 {
     self.view = [[UIView alloc] init];
     self.selector.arrayOfBadgeNumbers = [self arrayOfBadgeNumbers];
-    NSLog(@"array: %@", _selector.arrayOfBadgeNumbers);
     self.flowLayout = [[UICollectionViewFlowLayout alloc] init];
     self.flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     self.flowLayout.sectionInset = UIEdgeInsetsZero;
@@ -160,6 +157,7 @@ static NSString * const kInitialKey = @"initial";
     
     id<VMultipleContainerChild> child = self.viewControllers[ self.selector.activeViewControllerIndex ];
     [child multipleContainerDidSetSelected:YES];
+    [self.selector updateBadging];
 }
 
 - (NSArray *)arrayOfBadgeNumbers
@@ -353,6 +351,12 @@ static NSString * const kInitialKey = @"initial";
 - (void)viewSelector:(VSelectorViewBase *)viewSelector didSelectViewControllerAtIndex:(NSUInteger)index
 {
     [self displayViewControllerAtIndex:index animated:NO isDefaultSelection:NO];
+}
+
+- (void)updateBadge:(UIViewController *)viewController
+{
+    [self.selector updateBadging];
+    [self setBadgeNumberUpdateBlock:self.badgeNumberUpdateBlock];
 }
 
 #pragma mark - VProvidesNavigationMenuItemBadge

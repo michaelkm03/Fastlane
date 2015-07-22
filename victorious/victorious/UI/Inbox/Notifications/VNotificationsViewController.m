@@ -29,6 +29,7 @@
 #import "VRootViewController.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
+#import "VBadgeResponder.h"
 
 static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
 static CGFloat const kVNotificationCellHeight = 64.0f;
@@ -271,6 +272,8 @@ static int const kNotificationFetchBatchSize = 50;
         self.refreshRequest = nil;
         [self setHasNotifications:(self.fetchedResultsController.fetchedObjects.count > 0)];
         [self markAllNotificationsRead];
+        [self fetchNotificationCount];
+
     };
     
     self.refreshRequest = [[VObjectManager sharedManager] loadNotificationsListWithPageType:VPageTypeFirst
@@ -295,6 +298,13 @@ static int const kNotificationFetchBatchSize = 50;
     }
     _badgeNumber = badgeNumber;
     
+    id<VBadgeResponder> badgeResponder = [[self nextResponder] targetForAction:@selector(updateBadge:)
+                                                                    withSender:nil];
+    if ([badgeResponder respondsToSelector:@selector(updateBadge:)])
+    {
+        [badgeResponder updateBadge:self];
+    }
+
     if ( self.badgeNumberUpdateBlock != nil )
     {
         self.badgeNumberUpdateBlock(self.badgeNumber);

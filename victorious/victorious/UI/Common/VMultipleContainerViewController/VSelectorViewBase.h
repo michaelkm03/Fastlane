@@ -54,4 +54,6 @@
  */
 - (CGRect)frameOfButtonAtIndex:(NSUInteger)index;
 
+- (void)updateBadging;
+
 @end
