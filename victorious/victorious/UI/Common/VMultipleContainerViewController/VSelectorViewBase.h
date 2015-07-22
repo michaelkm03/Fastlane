@@ -35,6 +35,7 @@
  */
 @interface VSelectorViewBase : UIView <VHasManagedDependencies>
 
+@property (nonatomic, strong) NSArray *arrayOfBadgeNumbers; ///< Array containing all the badge numbers corresponding to the selectors
 @property (nonatomic, readonly) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) id<VSelectorViewDelegate> delegate; ///< A delegate object to be notified when the selection changes
 @property (nonatomic, copy) NSArray /* UIViewController */ *viewControllers; ///< The views from which we are selecting

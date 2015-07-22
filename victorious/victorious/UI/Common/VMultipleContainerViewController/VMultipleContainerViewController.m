@@ -29,6 +29,7 @@
 @property (nonatomic, strong) VSelectorViewBase *selector;
 @property (nonatomic) BOOL didShowInitial;
 @property (nonatomic) NSUInteger selectedIndex;
+@property (nonatomic, strong) NSArray *arrayOfBadgeNumbers;
 
 @end
 
@@ -61,6 +62,8 @@ static NSString * const kInitialKey = @"initial";
         self.viewControllers = [dependencyManager arrayOfSingletonValuesOfType:[UIViewController class] forKey:kScreensKey];
         _selector = [dependencyManager templateValueOfType:[VSelectorViewBase class] forKey:kSelectorKey];
         _selector.viewControllers = _viewControllers;
+        _selector.arrayOfBadgeNumbers = [self arrayOfBadgeNumbers];
+        NSLog(@"array: %@", _selector.arrayOfBadgeNumbers);
         _selector.delegate = self;
         self.navigationItem.v_supplementaryHeaderView = _selector;
         self.title = NSLocalizedString([dependencyManager stringForKey:VDependencyManagerTitleKey], @"");
@@ -73,7 +76,8 @@ static NSString * const kInitialKey = @"initial";
 - (void)loadView
 {
     self.view = [[UIView alloc] init];
-    
+    self.selector.arrayOfBadgeNumbers = [self arrayOfBadgeNumbers];
+    NSLog(@"array: %@", _selector.arrayOfBadgeNumbers);
     self.flowLayout = [[UICollectionViewFlowLayout alloc] init];
     self.flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     self.flowLayout.sectionInset = UIEdgeInsetsZero;
@@ -156,6 +160,23 @@ static NSString * const kInitialKey = @"initial";
     
     id<VMultipleContainerChild> child = self.viewControllers[ self.selector.activeViewControllerIndex ];
     [child multipleContainerDidSetSelected:YES];
+}
+
+- (NSArray *)arrayOfBadgeNumbers
+{
+    _badgeNumberUpdateBlock = nil;
+    NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
+    for (UIViewController *vc in _viewControllers)
+    {
+        if ([vc conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)])
+        {
+            id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)vc;
+            NSInteger badgeNumber =    [badgeProvider badgeNumber];
+            [mutableArray addObject:[NSNumber numberWithInteger:badgeNumber]];
+        }
+    }
+    _arrayOfBadgeNumbers = [mutableArray copy];
+    return _arrayOfBadgeNumbers;
 }
 
 #pragma mark - Rotation
@@ -308,7 +329,6 @@ static NSString * const kInitialKey = @"initial";
     viewControllerView.translatesAutoresizingMaskIntoConstraints = NO;
     [cell.contentView addSubview:viewControllerView];
     [viewController didMoveToParentViewController:self];
-    
     // TODO: Remove me once we no longer use UITVC sÜper hacky
     if ([viewController isKindOfClass:[UITableViewController class]])
     {

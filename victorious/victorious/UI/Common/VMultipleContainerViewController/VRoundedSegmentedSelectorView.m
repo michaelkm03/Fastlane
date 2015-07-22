@@ -11,6 +11,7 @@
 #import "VExtendedView.h"
 #import "UIImage+ImageCreation.h"
 #import "UIView+AutoLayout.h"
+#import "VNumericalBadgeView.h"
 
 static CGFloat const kVBarHeight = 40.0f;
 static CGFloat const kVPillHeight = 29.0f;
@@ -133,6 +134,19 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
          priorButton = button;
          
          [sSelf.buttons addObject:button];
+         
+         if (self.arrayOfBadgeNumbers.count > idx)
+         {
+             NSNumber *object = [self.arrayOfBadgeNumbers objectAtIndex:idx];
+             NSInteger badgeNumber = object.integerValue;
+             NSLog(@"badges count: %d", self.arrayOfBadgeNumbers.count);
+             VNumericalBadgeView *badgeView = [[VNumericalBadgeView alloc] initWithFrame:CGRectMake((320/self.viewControllers.count) - 20, 0, 20, 20)];
+             badgeView.font = [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
+             
+             [button addSubview:badgeView];
+
+             [badgeView setBadgeNumber:badgeNumber];
+         }
      }];
     
     [self.pillView layoutIfNeeded];
