@@ -7,7 +7,7 @@
 //
 
 #import "VSequencePreviewView.h"
-#import "VStreamCellFocus.h"
+#import "VCellFocus.h"
 
 /**
  *  A Sequence preview view for video sequences.

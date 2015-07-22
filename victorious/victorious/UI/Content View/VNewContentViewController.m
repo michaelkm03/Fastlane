@@ -419,6 +419,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         self.trailingCollectionViewToContainer.constant = 0.0f;
     }
     
+    self.focusHelper = [[VCollectionViewStreamFocusHelper alloc] initWithCollectionView:self.contentCollectionView];
+    
     self.contentCollectionView.collectionViewLayout = [[VShrinkingContentLayout alloc] init];
     self.contentCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
     self.contentCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -462,6 +464,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         self.bottomKeyboardToContainerBottomConstraint.priority = UILayoutPriorityDefaultLow;
         [self.view addSubview:inputAccessoryView];
         [self.view addConstraints:@[self.keyboardInputBarHeightConstraint, inputViewLeadingConstraint, inputViewTrailingconstraint, self.bottomKeyboardToContainerBottomConstraint]];
+        
+        // Adjust focus area for keyboard bar
+        [self.focusHelper setFocusAreaInsets:UIEdgeInsetsMake(0, 0, self.keyboardInputBarHeightConstraint.constant, 0)];
     }
     
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
@@ -494,8 +499,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                          forDecorationViewOfKind:VShrinkingContentLayoutContentBackgroundView];
     
     self.viewModel.experienceEnhancerController.delegate = self;
-
-    self.focusHelper = [[VCollectionViewStreamFocusHelper alloc] initWithCollectionView:self.contentCollectionView];
     
     [self.viewModel reloadData];
 }

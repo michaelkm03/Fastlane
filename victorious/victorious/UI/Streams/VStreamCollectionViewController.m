@@ -27,7 +27,7 @@
 
 //Views
 #import "VNoContentView.h"
-#import "VStreamCellFocus.h"
+#import "VCellFocus.h"
 
 //Data models
 #import "VStream+Fetcher.h"

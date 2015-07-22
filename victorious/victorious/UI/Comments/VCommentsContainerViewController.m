@@ -87,6 +87,15 @@ static NSString * const kSequenceIdKey = @"sequenceId";
     [self.view insertSubview:self.backgroundImage aboveSubview:self.fallbackBackground];
 }
 
+- (void)setKeyboardBarHeight:(CGFloat)keyboardBarHeight
+{
+    [super setKeyboardBarHeight:keyboardBarHeight];
+    
+    // Inset our focus area because of the keyboard bar
+    UIEdgeInsets focusAreaInsets = UIEdgeInsetsMake(0, 0, keyboardBarHeight, 0);
+    [(VCommentsTableViewController *)self.conversationTableViewController setFocusAreaInset:focusAreaInsets];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

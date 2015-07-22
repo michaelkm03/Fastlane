@@ -7,7 +7,7 @@
 //
 
 #import "VStreamFocusHelper.h"
-#import "VStreamCellFocus.h"
+#import "VCellFocus.h"
 
 static const CGFloat VDefaultFocusVisibilityRatio = 0.8f;
 
@@ -19,6 +19,7 @@ static const CGFloat VDefaultFocusVisibilityRatio = 0.8f;
     if (self != nil)
     {
         _visibilityRatio = VDefaultFocusVisibilityRatio;
+        _focusAreaInsets = UIEdgeInsetsZero;
     }
     return self;
 }
@@ -46,25 +47,22 @@ static const CGFloat VDefaultFocusVisibilityRatio = 0.8f;
              // Convert media view's frame to parent view of scroll view
              CGRect mediaVisibility = [(UIView *)focusCell convertRect:[focusCell contentArea] toView:self.scrollView.superview];
              
+             // Inset the focus area if need be
+             CGRect focusFrame = self.scrollView.frame;
+             focusFrame.origin = CGPointMake(CGRectGetMinX(focusFrame) + self.focusAreaInsets.left,
+                                             CGRectGetMinY(focusFrame) + self.focusAreaInsets.top);
+             focusFrame.size = CGSizeMake(CGRectGetWidth(focusFrame) - self.focusAreaInsets.right,
+                                          CGRectGetHeight(focusFrame) - self.focusAreaInsets.bottom);
+                          
              // Determine intersect with the scroll view's frame
-             CGRect intersectWithScrollview = CGRectIntersection(self.scrollView.frame, mediaVisibility);
+             CGRect intersectWithScrollview = CGRectIntersection(focusFrame, mediaVisibility);
              
              // Determine if we see enough of the content to put it in focus
              const float mediaContentVisibleRatio = CGRectGetHeight(intersectWithScrollview) / CGRectGetHeight([focusCell contentArea]);
              
-             if ( mediaContentVisibleRatio >= self.visibilityRatio )
+             if ( [cell conformsToProtocol:@protocol(VCellFocus)] )
              {
-                 if ( [cell conformsToProtocol:@protocol(VCellFocus)] )
-                 {
-                     [(id <VCellFocus>)cell setHasFocus:YES];
-                 }
-             }
-             else
-             {
-                 if ( [cell conformsToProtocol:@protocol(VCellFocus)] )
-                 {
-                     [(id <VCellFocus>)cell setHasFocus:NO];
-                 }
+                 [(id <VCellFocus>)cell setHasFocus:mediaContentVisibleRatio >= self.visibilityRatio];
              }
          }
      }];

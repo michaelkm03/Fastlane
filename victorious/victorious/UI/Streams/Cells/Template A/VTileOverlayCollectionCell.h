@@ -10,7 +10,7 @@
 #import "VHasManagedDependencies.h"
 #import "VBackgroundContainer.h"
 #import "VStreamCellSpecialization.h"
-#import "VStreamCellFocus.h"
+#import "VCellFocus.h"
 #import "VStreamCellTracking.h"
 #import "VHighlightContainer.h"
 

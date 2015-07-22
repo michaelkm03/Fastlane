@@ -147,6 +147,12 @@
 
 #pragma mark - Property Accessors
 
+- (void)setFocusAreaInset:(UIEdgeInsets)focusAreaInset
+{
+    _focusAreaInset = focusAreaInset;
+    self.focusHelper.focusAreaInsets = focusAreaInset;
+}
+
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;

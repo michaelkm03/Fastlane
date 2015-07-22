@@ -481,7 +481,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     [responder hashTag:value tappedFromSequence:self.sequence fromView:self];
 }
 
-#pragma mark - VStreamCellFocus
+#pragma mark - VCellFocus
 
 - (void)setHasFocus:(BOOL)hasFocus
 {

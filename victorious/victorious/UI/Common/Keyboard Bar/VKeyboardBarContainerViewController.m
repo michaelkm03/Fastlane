@@ -187,6 +187,7 @@ static const CGFloat kConversationTableViewInitialHeight = 44.0f;
 
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar wouldLikeToBeResizedToHeight:(CGFloat)height
 {
+    self.keyboardBarHeight = height;
     [UIView animateWithDuration:0.2
                           delay:0
                         options:UIViewAnimationOptionCurveLinear

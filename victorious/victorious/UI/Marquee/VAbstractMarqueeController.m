@@ -20,7 +20,7 @@
 #import "VURLMacroReplacement.h"
 #import "VDependencyManager+VHighlightContainer.h"
 #import "VStreamTrackingHelper.h"
-#import "VStreamCellFocus.h"
+#import "VCellFocus.h"
 #import "VStreamItemPreviewView.h"
 
 static NSString * const kStreamURLKey = @"streamURL";
@@ -123,7 +123,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 
 - (void)updateFocus
 {
-    //Update the focus of preview views that conform to VStreamCellFocus
+    //Update the focus of preview views that conform to VCellFocus
     CGFloat pageWidth = self.collectionView.frame.size.width;
     NSInteger currentFocusPage = ( self.collectionView.contentOffset.x + pageWidth / 2 ) / pageWidth;
     currentFocusPage = MIN( currentFocusPage, (NSInteger)self.stream.marqueeItems.count - 1 );

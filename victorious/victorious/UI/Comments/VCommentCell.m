@@ -71,7 +71,12 @@ static const UIEdgeInsets kTextInsets        = { 39.0f, 66.0f, 11.0f, 55.0f };
 
 - (CGRect)contentArea
 {
-    return [self convertRect:self.commentTextView.frame toView:self];
+    CGRect mediaThumbnailFrame = self.commentTextView.mediaThumbnailView.frame;
+    CGRect mediaFrame = CGRectMake(CGRectGetMinX(mediaThumbnailFrame),
+                                   CGRectGetMinY(self.commentTextView.frame) + CGRectGetMinY(mediaThumbnailFrame),
+                                   CGRectGetWidth(mediaThumbnailFrame),
+                                   CGRectGetHeight(mediaThumbnailFrame));
+    return mediaFrame;
 }
 
 @end

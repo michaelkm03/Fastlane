@@ -8,7 +8,7 @@
 
 #import "VSwipeTableViewCell.h"
 
-#import "VStreamCellFocus.h"
+#import "VCellFocus.h"
 
 @class VCommentTextAndMediaView, VDefaultProfileImageView;
 

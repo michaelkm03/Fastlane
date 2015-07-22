@@ -8,7 +8,7 @@
 
 #import "VSwipeCollectionViewCell.h"
 
-#import "VStreamCellFocus.h"
+#import "VCellFocus.h"
 
 @class VComment, VCommentTextAndMediaView, VDependencyManager, VSequencePermissions;
 
