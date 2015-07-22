@@ -40,8 +40,7 @@ extension Experiment {
     var dictionary: [String : AnyObject] {
         return [
             "name" : self.name,
-            "id" : self.id,
-            "enabled" : self.enabled
+            "id" : self.id
         ]
     }
 }

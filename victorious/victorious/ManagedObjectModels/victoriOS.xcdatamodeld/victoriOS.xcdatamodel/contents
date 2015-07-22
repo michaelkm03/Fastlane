@@ -97,8 +97,7 @@
         <relationship name="parentSequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="endCard" inverseEntity="Sequence" syncable="YES"/>
     </entity>
     <entity name="Experiment" representedClassName="victorious.Experiment" syncable="YES">
-        <attribute name="enabled" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
-        <attribute name="id" attributeType="Boolean" syncable="YES"/>
+        <attribute name="id" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="GIFSearchResult" representedClassName="victorious.GIFSearchResult" syncable="YES">
@@ -320,7 +319,7 @@
         <element name="Conversation" positionX="1528" positionY="-468" width="128" height="148"/>
         <element name="EditorializationItem" positionX="657" positionY="-612" width="128" height="120"/>
         <element name="EndCard" positionX="693" positionY="-648" width="128" height="165"/>
-        <element name="Experiment" positionX="621" positionY="-648" width="128" height="90"/>
+        <element name="Experiment" positionX="621" positionY="-648" width="128" height="75"/>
         <element name="GIFSearchResult" positionX="621" positionY="-648" width="128" height="180"/>
         <element name="Hashtag" positionX="1087" positionY="-630" width="128" height="90"/>
         <element name="ImageAsset" positionX="423" positionY="-594" width="128" height="135"/>

@@ -35,6 +35,7 @@
 #import "VStream+RestKit.h"
 #import "VNotificationSettings+RestKit.h"
 #import "VEnvironmentManager.h"
+#import "NSArray+VJoin.h"
 
 #define EnableRestKitLogs 0 // Set to "1" to see RestKit logging, but please remember to set it back to "0" before committing your changes.
 
@@ -440,6 +441,16 @@ NS_ASSUME_NONNULL_BEGIN
     return nil;
 }
 
+- (void)setExperimentIDsFromCommandSeparatedString:(NSString *__nonnull)commaSeparatedExperimentIDs
+{
+    if ( commaSeparatedExperimentIDs.length == 0 )
+    {
+        return;
+    }
+    
+    self.experimentIDs = [commaSeparatedExperimentIDs componentsSeparatedByString:@","];
+}
+
 #pragma mark - Subclass
 
 - (NSMutableURLRequest *)requestWithObject:(id)object
@@ -493,9 +504,10 @@ NS_ASSUME_NONNULL_BEGIN
         [request addValue:self.sessionID forHTTPHeaderField:@"X-Client-Session-ID"];
     }
     
-    if (self.experimentIDs != nil)
+    if ( self.experimentIDs != nil && self.experimentIDs.count > 0 )
     {
-        [request addValue:self.experimentIDs forHTTPHeaderField:@"X-Client-Experiment-IDs"];
+        NSString *commaSeparatedIDs = [self.experimentIDs v_joinWithSeparator:@","];
+        [request addValue:commaSeparatedIDs forHTTPHeaderField:@"X-Client-Experiment-IDs"];
     }
     
     NSString *locale = [[[NSBundle mainBundle] preferredLocalizations] firstObject];

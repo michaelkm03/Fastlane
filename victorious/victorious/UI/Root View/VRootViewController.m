@@ -269,7 +269,12 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         // VDeeplinkReceiver depends on scaffold being visible already, so make sure this is in this completion block
         [self.deepLinkReceiver receiveQueuedDeeplink];
     }];
-    [[VObjectManager sharedManager] setExperimentIDs:[self.dependencyManager stringForKey:VDependencyManagerExperimentKeyIDs]];
+    
+    NSString *experimentIDs = [self.dependencyManager stringForKey:VDependencyManagerExperimentKeyIDs] ?: @"";
+    if ( experimentIDs != nil )
+    {
+        [[VObjectManager sharedManager] setExperimentIDsFromCommandSeparatedString:experimentIDs];
+    }
 }
 
 - (void)showViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void(^)(void))completion

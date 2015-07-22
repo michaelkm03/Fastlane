@@ -688,6 +688,7 @@
 		A7DDA6AA1B5F0018005CE55E /* Experiment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6A91B5F0018005CE55E /* Experiment.swift */; };
 		A7DDA6AC1B5F003B005CE55E /* Experiment+RestKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6AB1B5F003B005CE55E /* Experiment+RestKit.swift */; };
 		A7DDA6AE1B5F006B005CE55E /* VObjectManager+Experiments.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6AD1B5F006B005CE55E /* VObjectManager+Experiments.swift */; };
+		A7DDA6B11B5F128F005CE55E /* NSArray+VJoin.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6B01B5F128F005CE55E /* NSArray+VJoin.m */; };
 		A7E2EFCB1A49001000372547 /* VEditCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E2EFCA1A49001000372547 /* VEditCommentViewController.m */; };
 		A7E2EFD21A49066F00372547 /* EditComment.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7E2EFD11A49066F00372547 /* EditComment.storyboard */; };
 		A7E3985F1A34F6E1000E4CAC /* creator-avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = A7E3985D1A34F6E1000E4CAC /* creator-avatar.png */; };
@@ -2329,6 +2330,8 @@
 		A7DDA6A91B5F0018005CE55E /* Experiment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Experiment.swift; sourceTree = "<group>"; };
 		A7DDA6AB1B5F003B005CE55E /* Experiment+RestKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Experiment+RestKit.swift"; sourceTree = "<group>"; };
 		A7DDA6AD1B5F006B005CE55E /* VObjectManager+Experiments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VObjectManager+Experiments.swift"; sourceTree = "<group>"; };
+		A7DDA6AF1B5F128F005CE55E /* NSArray+VJoin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+VJoin.h"; sourceTree = "<group>"; };
+		A7DDA6B01B5F128F005CE55E /* NSArray+VJoin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+VJoin.m"; sourceTree = "<group>"; };
 		A7E2EFC91A49001000372547 /* VEditCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEditCommentViewController.h; sourceTree = "<group>"; };
 		A7E2EFCA1A49001000372547 /* VEditCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEditCommentViewController.m; sourceTree = "<group>"; };
 		A7E2EFD11A49066F00372547 /* EditComment.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EditComment.storyboard; sourceTree = "<group>"; };
@@ -4660,6 +4663,8 @@
 				A721E8C71B572453000B7901 /* NSString+VParseHelp.m */,
 				A721E8C81B572453000B7901 /* NSString+VStringWithData.h */,
 				A721E8C91B572453000B7901 /* NSString+VStringWithData.m */,
+				A7DDA6AF1B5F128F005CE55E /* NSArray+VJoin.h */,
+				A7DDA6B01B5F128F005CE55E /* NSArray+VJoin.m */,
 				A721E8CA1B572453000B7901 /* NSURL+MediaType.h */,
 				A721E8CB1B572453000B7901 /* NSURL+MediaType.m */,
 				A721E8CC1B572453000B7901 /* NSURL+VCustomScheme.h */,
@@ -7997,6 +8002,7 @@
 				F0C83A5C1B16214C00A6EC1A /* VStreamPreviewView.m in Sources */,
 				A721E9471B572454000B7901 /* NSURL+VPathHelper.m in Sources */,
 				C30AA4E91B0595AA0010CEFE /* VRoundedImageView.m in Sources */,
+				A7DDA6B11B5F128F005CE55E /* NSArray+VJoin.m in Sources */,
 				D876E2051A9DA6EB002CAA29 /* VTranslucentBackground.m in Sources */,
 				0326BBBA19A8183800D995DA /* VPushNotificationManager.m in Sources */,
 				B0D8BAAD1B545A3600087057 /* VListicleView.m in Sources */,

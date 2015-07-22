@@ -10,6 +10,5 @@ import Foundation
 
 @objc class Experiment: NSManagedObject {
     @NSManaged var name: String
-    @NSManaged var enabled: NSNumber
-    @NSManaged var id: NSNumber
+    @NSManaged var id: String
 }

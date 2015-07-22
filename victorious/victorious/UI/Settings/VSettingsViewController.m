@@ -156,6 +156,12 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     self.showResetCoachmarks = NO;
 #endif
     
+#ifdef V_SHOW_EXPERIMENT_SETTINGS
+    
+#else
+    
+#endif
+    
     self.showPurchaseSettings = [VPurchaseManager sharedInstance].isPurchasingEnabled;
     self.showPushNotificationSettings = YES;
     
