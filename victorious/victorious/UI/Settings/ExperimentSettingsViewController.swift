@@ -8,7 +8,7 @@
 
 import UIKit
 
-/// This equality operator comapres to arrays of strings that are expected to contain integer text
+/// This equality operator comapres two arrays of strings that are expected to contain integer text
 /// such as "1" or "2".  It converts the strings to integers, sorts, then compares with the `Array`
 /// type's default equality operator.
 private func ==( lhs: [String], rhs: [String] ) -> Bool {
@@ -33,7 +33,6 @@ class ExperimentSettingsViewController: UITableViewController {
     }
     private var state: State = .Loading {
         didSet {
-            println( "STATE = \(self.state)" )
             self.tableView.reloadData()
         }
     }
