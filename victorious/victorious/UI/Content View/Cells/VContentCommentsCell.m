@@ -206,28 +206,33 @@ static NSCache *_sharedImageCache = nil;
         self.realTimeCommentText = @"";
     }
     self.hasMedia = comment.hasMedia;
+    
     if (comment.hasMedia)
     {
         self.mediaPreviewURL = comment.previewImageURL;
-        self.mediaIsVideo = [comment.mediaUrl v_hasVideoExtension];
-        if (self.mediaIsVideo)
+        
+        if ([comment.mediaUrl isKindOfClass:[NSString class]] && [comment.mediaUrl v_hasVideoExtension])
         {
-            // Determine if this is a gif
-            BOOL shouldAutoplay = [comment.shouldAutoplay boolValue];
-            
-            // Make sure to grab the mp4 URL if its a gif
-            NSURL *mp4Url = [comment mp4MediaURL];
-            
-            if (shouldAutoplay && mp4Url != nil)
+            if ([comment.shouldAutoplay boolValue])
             {
-                self.commentAndMediaView.shouldAutoplay = shouldAutoplay;
-                self.commentAndMediaView.autoplayURL = mp4Url;
+                [self.commentAndMediaView setMediaType:VCommentMediaViewTypeGIF];
+                // Make sure to grab the mp4 URL if its a gif
+                self.commentAndMediaView.autoplayURL = [comment mp4MediaURL];
+            }
+            else
+            {
+                [self.commentAndMediaView setMediaType:VCommentMediaViewTypeVideo];
             }
         }
         else
         {
-            self.commentAndMediaView.shouldAutoplay = NO;
+            [self.commentAndMediaView setMediaType:VCommentMediaViewTypeImage];
         }
+    }
+    else
+    {
+        self.commentAndMediaView.mediaThumbnailView.hidden = YES;
+        self.commentAndMediaView.hasMedia = NO;
     }
 
     self.commentCellUtilitiesController = [[VCommentCellUtilitesController alloc] initWithComment:self.comment

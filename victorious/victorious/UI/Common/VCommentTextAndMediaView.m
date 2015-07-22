@@ -260,42 +260,55 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
     [self invalidateIntrinsicContentSize];
 }
 
-- (void)setShouldAutoplay:(BOOL)shouldAutoplay
+- (void)setMediaType:(VCommentMediaViewType)mediaType
 {
-    _shouldAutoplay = shouldAutoplay;
-    
-    if (shouldAutoplay)
+    _mediaType = mediaType;
+    switch (mediaType)
     {
-        if (self.videoView == nil)
+        case VCommentMediaViewTypeImage:
         {
-            self.videoView = [[VVideoView alloc] init];
+            self.playIcon.hidden = YES;
+            break;
         }
-        
-        self.playIcon.hidden = YES;
-        
-        [self.mediaButton addSubview:self.videoView];
-        [self.mediaButton v_addFitToParentConstraintsToSubview:self.videoView];
+            
+        case VCommentMediaViewTypeVideo:
+        {
+            self.playIcon.hidden = NO;
+            break;
+        }
+            
+        case VCommentMediaViewTypeGIF:
+        {
+            if (self.videoView == nil)
+            {
+                self.videoView = [[VVideoView alloc] init];
+                [self.mediaButton addSubview:self.videoView];
+                [self.mediaButton v_addFitToParentConstraintsToSubview:self.videoView];
+            }
+            
+            self.playIcon.hidden = YES;
+            break;
+        }
     }
-    
-    [self invalidateIntrinsicContentSize];
 }
 
 - (void)setAutoplayURL:(NSURL *)autoplayURL
 {
-    if (_autoplayURL == autoplayURL)
+    if (_autoplayURL == autoplayURL || self.mediaType != VCommentMediaViewTypeGIF)
     {
         return;
     }
     
     _autoplayURL = autoplayURL;
     [self.videoView setItemURL:_autoplayURL loop:YES audioMuted:YES];
+    self.videoView.hidden = NO;
     [self.videoView play];
 }
 
 - (void)setInFocus:(BOOL)inFocus
 {
     _inFocus = inFocus;
-    if (self.shouldAutoplay)
+    if (self.mediaType == VCommentMediaViewTypeGIF)
     {
         inFocus ? [self.videoView play] : [self.videoView pause];
     }
@@ -399,8 +412,8 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
     self.hasMedia = NO;
     self.onMediaTapped = nil;
     self.playIcon.hidden = YES;
-    [self.videoView removeFromSuperview];
-    self.videoView = nil;
+    self.videoView.hidden = YES;
+    self.videoView.itemURL = nil;
 }
 
 @end

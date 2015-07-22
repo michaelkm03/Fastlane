@@ -308,24 +308,23 @@
         
         if ([comment.mediaUrl isKindOfClass:[NSString class]] && [comment.mediaUrl v_hasVideoExtension])
         {
+            // Set this up regardless just in case our GIF doesnt have an mp4 link and we can just stream the video instead
             cell.commentTextView.onMediaTapped = [cell.commentTextView standardMediaTapHandlerWithMediaURL:[NSURL URLWithString:comment.mediaUrl] presentingViewController:self];
-            cell.commentTextView.playIcon.hidden = NO;
-            
-            // Determine if this is a gif
-            BOOL shouldAutoplay = [comment.shouldAutoplay boolValue];
-            
-            // Make sure to grab the mp4 URL if its a gif
-            NSURL *mp4Url = [comment mp4MediaURL];
-            
-            if (shouldAutoplay && mp4Url != nil)
+
+            if ([comment.shouldAutoplay boolValue])
             {
-                cell.commentTextView.shouldAutoplay = shouldAutoplay;
-                cell.commentTextView.autoplayURL = mp4Url;
+                [cell.commentTextView setMediaType:VCommentMediaViewTypeGIF];
+                // Make sure to grab the mp4 URL if its a gif
+                cell.commentTextView.autoplayURL = [comment mp4MediaURL];
+            }
+            else
+            {
+                [cell.commentTextView setMediaType:VCommentMediaViewTypeVideo];
             }
         }
         else
         {
-            cell.commentTextView.shouldAutoplay = NO;
+            [cell.commentTextView setMediaType:VCommentMediaViewTypeImage];
         }
     }
     else

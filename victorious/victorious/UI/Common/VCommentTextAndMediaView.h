@@ -11,6 +11,17 @@
 #import "VVideoView.h"
 
 @class VTagSensitiveTextView;
+
+/**
+ A type of comment media
+ */
+typedef NS_ENUM(NSInteger, VCommentMediaViewType)
+{
+    VCommentMediaViewTypeImage,
+    VCommentMediaViewTypeVideo,
+    VCommentMediaViewTypeGIF,
+};
+
 /**
  This view is used inside the comment and messaging views
  to display comment text and any media that might
@@ -18,6 +29,7 @@
  */
 @interface VCommentTextAndMediaView : UIView
 
+@property (nonatomic, assign) VCommentMediaViewType mediaType;
 @property (nonatomic, copy)           NSString           *text;
 @property (nonatomic, copy)           NSAttributedString *attributedText;
 @property (nonatomic, weak, readonly) UIImageView        *mediaThumbnailView;
@@ -28,7 +40,6 @@
 
 @property (nonatomic) UIFont *textFont;
 @property (nonatomic, strong) VTagSensitiveTextView *textView;
-@property (nonatomic, assign) BOOL shouldAutoplay;
 @property (nonatomic, strong) NSURL *autoplayURL;
 
 @property (nonatomic, strong, readonly) VVideoView *videoView;
