@@ -8,33 +8,30 @@
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
+#import "VAbstractMediaLinkViewController.h"
 
 @interface VAbstractMediaLinkViewControllerTests : XCTestCase
+
+@property (nonatomic, strong) NSString *urlString;
 
 @end
 
 @implementation VAbstractMediaLinkViewControllerTests
 
-- (void)setUp {
+- (void)setUp
+{
     [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
+    self.urlString = @"";
 }
 
-- (void)tearDown {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
-}
-
-- (void)testExample {
-    // This is an example of a functional test case.
-    XCTAssert(YES, @"Pass");
-}
-
-- (void)testPerformanceExample {
-    // This is an example of a performance test case.
-    [self measureBlock:^{
-        // Put the code you want to measure the time of here.
-    }];
+- (void)testClassMethodInit
+{
+    XCTAssertThrows([VAbstractMediaLinkViewController newWithMediaUrlString:nil andMediaLinkType:VMediaTypeImage]);
+    
+    XCTAssertNotNil([VAbstractMediaLinkViewController newWithMediaUrlString:self.urlString andMediaLinkType:VMediaTypeImage]);
+    XCTAssertNotNil([VAbstractMediaLinkViewController newWithMediaUrlString:self.urlString andMediaLinkType:VMediaTypeGif]);
+    XCTAssertNotNil([VAbstractMediaLinkViewController newWithMediaUrlString:self.urlString andMediaLinkType:VMediaTypeVideo]);
+    XCTAssertNotNil([VAbstractMediaLinkViewController newWithMediaUrlString:self.urlString andMediaLinkType:VMediaTypeUnknown]);
 }
 
 @end

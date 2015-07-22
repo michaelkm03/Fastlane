@@ -77,27 +77,31 @@
         
         NSString *tappableUserName = [VTagStringFormatter databaseFormattedStringFromUser:comment.user];
         
-        NSDictionary *commentTextAttributes;
-        NSDictionary *highlightTextAttributes;
+        NSMutableDictionary *commentTextAttributes = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary *highlightTextAttributes = [[NSMutableDictionary alloc] init];
+        
         if ( commentFont != nil )
         {
-            if ( mainTextColor != nil )
-            {
-                if ( mainTextColor != nil )
-                {
-                    commentTextAttributes = @{ NSForegroundColorAttributeName : mainTextColor, NSFontAttributeName : commentFont };
-                }
-                if ( linkColor != nil )
-                {
-                    highlightTextAttributes = @{ NSForegroundColorAttributeName : linkColor, NSFontAttributeName : commentFont };
-                }
-            }
+            [commentTextAttributes setObject:commentFont forKey:NSFontAttributeName];
+            [highlightTextAttributes setObject:commentFont forKey:NSFontAttributeName];
+        }
+        if ( mainTextColor != nil )
+        {
+            [commentTextAttributes setObject:mainTextColor forKey:NSForegroundColorAttributeName];
+        }
+        if ( linkColor != nil )
+        {
+            [highlightTextAttributes setObject:linkColor forKey:NSForegroundColorAttributeName];
         }
         
-        NSDictionary *timestampTextAttributes;
-        if ( timestampFont != nil && timestampTextColor != nil )
+        NSMutableDictionary *timestampTextAttributes = [[NSMutableDictionary alloc] init];
+        if ( timestampTextColor != nil )
         {
-            timestampTextAttributes = @{ NSForegroundColorAttributeName : timestampTextColor, NSFontAttributeName : timestampFont };
+            [timestampTextAttributes setObject:timestampTextColor forKey:NSForegroundColorAttributeName];
+        }
+        if ( timestampFont != nil )
+        {
+            [timestampTextAttributes setObject:timestampFont forKey:NSFontAttributeName];
         }
         
         VInStreamCommentCellContents *content = [[VInStreamCommentCellContents alloc] initWithUsername:tappableUserName

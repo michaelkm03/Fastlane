@@ -14,6 +14,9 @@
 - (instancetype)initWithUnselectedTextAttributes:(NSDictionary *)unselectedAttributes
                           selectedTextAttributes:(NSDictionary *)selectedAttributes
 {
+    NSParameterAssert(unselectedAttributes != nil);
+    NSParameterAssert(selectedAttributes != nil);
+    
     self = [super init];
     if ( self != nil )
     {
@@ -32,11 +35,26 @@
     
     UIFont *font = [dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
     
-    NSDictionary *unselectedAttributes = @{ NSForegroundColorAttributeName : unselectedColor, NSFontAttributeName : font };
-    NSDictionary *selectedAttributes = @{ NSForegroundColorAttributeName : selectedColor, NSFontAttributeName : font };
+    NSMutableDictionary *unselectedAttributes = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *selectedAttributes = [[NSMutableDictionary alloc] init];
+    if ( font != nil )
+    {
+        [unselectedAttributes setObject:font forKey:NSFontAttributeName];
+        [selectedAttributes setObject:font forKey:NSFontAttributeName];
+    }
     
-    return [[VInStreamCommentsShowMoreAttributes alloc] initWithUnselectedTextAttributes:unselectedAttributes
-                                                              selectedTextAttributes:selectedAttributes];
+    if ( unselectedColor != nil )
+    {
+        [unselectedAttributes setObject:unselectedColor forKey:NSForegroundColorAttributeName];
+    }
+    
+    if ( selectedColor != nil )
+    {
+        [selectedAttributes setObject:selectedColor forKey:NSForegroundColorAttributeName];
+    }
+    
+    return [[VInStreamCommentsShowMoreAttributes alloc] initWithUnselectedTextAttributes:[unselectedAttributes copy]
+                                                              selectedTextAttributes:[selectedAttributes copy]];
 }
 
 @end

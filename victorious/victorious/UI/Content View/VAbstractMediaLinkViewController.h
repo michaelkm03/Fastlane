@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "VMediaType.h"
 
-#warning NEEDS TESTS
-
 /**
     A block that should be provided the aspect ratio of content loaded from the mediaUrlString.
  */

@@ -81,9 +81,8 @@ static NSString * const kMediaIdentifierSuffix = @"withMedia";
         }
     }
     
-    VInStreamMediaLink *mediaLink = contents.inStreamMediaLink;
-    self.mediaLinkTopConstraint.constant = contents.inStreamMediaLink == nil ? 0.0f : kInterLabelSpace;
-    [self setupMediaLinkButtonWithInStreamMediaLink:mediaLink forSizing:NO];
+    self.mediaLinkTopConstraint.constant = [[self class] contentsHasValidMediaLink:contents] ? kInterLabelSpace : 0.0f;
+    [self setupMediaLinkButtonWithInStreamMediaLink:contents.inStreamMediaLink forSizing:NO];
     
     self.timestampLabel.attributedText = [[self class] timestampAttributedStringForContents:contents];
     
@@ -258,11 +257,16 @@ static NSString * const kMediaIdentifierSuffix = @"withMedia";
 + (NSString *)reuseIdentifierForContents:(VInStreamCommentCellContents *)contents
 {
     NSString *identifier = [self suggestedReuseIdentifier];
-    if ( contents.inStreamMediaLink != nil )
+    if ( [self contentsHasValidMediaLink:contents] )
     {
         identifier = [identifier stringByAppendingString:kMediaIdentifierSuffix];
     }
     return identifier;
+}
+
++ (BOOL)contentsHasValidMediaLink:(VInStreamCommentCellContents *)contents
+{
+    return contents.inStreamMediaLink != nil && contents.inStreamMediaLink.mediaLinkType != VMediaTypeUnknown;
 }
 
 + (NSArray *)possibleReuseIdentifiers

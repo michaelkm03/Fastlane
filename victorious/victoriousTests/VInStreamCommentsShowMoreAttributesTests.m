@@ -8,33 +8,55 @@
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
+#import "VInStreamCommentsShowMoreAttributes.h"
+#import "VDependencyManager.h"
 
 @interface VInStreamCommentsShowMoreAttributesTests : XCTestCase
+
+@property (nonatomic, strong) NSDictionary *unselectedTextAttributes;
+@property (nonatomic, strong) NSDictionary *selectedTextAttributes;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
 @implementation VInStreamCommentsShowMoreAttributesTests
 
-- (void)setUp {
+- (void)setUp
+{
     [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
+    self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil configuration:nil dictionaryOfClassesByTemplateName:nil];
+    self.unselectedTextAttributes = @{};
+    self.selectedTextAttributes = @{};
 }
 
-- (void)tearDown {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
+- (void)testClassMethodInit
+{
+    XCTAssertNoThrow([VInStreamCommentsShowMoreAttributes newWithDependencyManager:self.dependencyManager]);
+    
+    XCTAssertThrows([VInStreamCommentsShowMoreAttributes newWithDependencyManager:nil]);
 }
 
-- (void)testExample {
-    // This is an example of a functional test case.
-    XCTAssert(YES, @"Pass");
+- (void)testClassMethodInitFields
+{
+    VInStreamCommentsShowMoreAttributes *attributes = [VInStreamCommentsShowMoreAttributes newWithDependencyManager:self.dependencyManager];
+    XCTAssertNotNil(attributes.unselectedTextAttributes);
+    XCTAssertNotNil(attributes.selectedTextAttributes);
 }
 
-- (void)testPerformanceExample {
-    // This is an example of a performance test case.
-    [self measureBlock:^{
-        // Put the code you want to measure the time of here.
-    }];
+- (void)testInstanceMethodInit
+{
+    XCTAssertNoThrow([[VInStreamCommentsShowMoreAttributes alloc] initWithUnselectedTextAttributes:self.unselectedTextAttributes selectedTextAttributes:self.selectedTextAttributes]);
+    
+    XCTAssertThrows([[VInStreamCommentsShowMoreAttributes alloc] initWithUnselectedTextAttributes:nil selectedTextAttributes:self.selectedTextAttributes]);
+    XCTAssertThrows([[VInStreamCommentsShowMoreAttributes alloc] initWithUnselectedTextAttributes:self.unselectedTextAttributes selectedTextAttributes:nil]);
+}
+
+- (void)testInstanceMethodInitFields
+{
+    VInStreamCommentsShowMoreAttributes *attributes = [[VInStreamCommentsShowMoreAttributes alloc] initWithUnselectedTextAttributes:self.unselectedTextAttributes selectedTextAttributes:self.selectedTextAttributes];
+    
+    XCTAssertEqual(attributes.unselectedTextAttributes, self.unselectedTextAttributes);
+    XCTAssertEqual(attributes.selectedTextAttributes, self.selectedTextAttributes);
 }
 
 @end
