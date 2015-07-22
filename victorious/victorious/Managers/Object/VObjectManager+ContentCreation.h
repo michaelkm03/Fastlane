@@ -122,6 +122,7 @@ Creates a new realtime comment
                backgroundColor:(UIColor *)backgroundColor
                       mediaURL:(NSURL *)mediaToUploadURL
                   previewImage:(UIImage *)previewImage
+                        forced:(BOOL)forced
                     completion:(VUploadManagerTaskCompleteBlock)completionBlock;
 
 @end

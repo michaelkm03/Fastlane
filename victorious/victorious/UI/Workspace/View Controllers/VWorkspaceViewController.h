@@ -16,4 +16,10 @@
 @property (nonatomic, strong) NSString *activityText;
 @property (nonatomic, strong) NSString *confirmCancelMessage;
 
+
+/**
+ Publishes the current content in the workspace.
+ */
+- (void)publishContent;
+
 @end
