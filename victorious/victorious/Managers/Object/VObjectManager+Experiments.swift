@@ -18,7 +18,7 @@ extension VObjectManager {
         
         return self.GET( "/api/device/experiments",
             object: nil,
-            parameters: GET,
+            parameters: nil,
             successBlock: success,
             failBlock: failure )
     }
