@@ -21,6 +21,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation VSettingsSwitchCell
 
++ (NSString *)suggestedReuseIdentifier
+{
+    return NSStringFromClass([self class]);
+}
+
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     _dependencyManager = dependencyManager;

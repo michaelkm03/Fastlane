@@ -26,6 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setTitle:(NSString *)title value:(BOOL)value;
 
++ (NSString *)suggestedReuseIdentifier;
+
 /**
  Provides the cell with an instance of VDependencyManager
  */

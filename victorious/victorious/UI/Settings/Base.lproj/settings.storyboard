@@ -987,7 +987,7 @@
                         <color key="separatorColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.96470588239999999" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="VSettingsSwitchCell" id="lgi-RB-Zq9" userLabel="ExperimentSettingsCell" customClass="VSettingsSwitchCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="VSettingsSwitchCell" id="lgi-RB-Zq9" customClass="VSettingsSwitchCell">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lgi-RB-Zq9" id="twq-QB-Rek">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -1021,6 +1021,30 @@
                                 <connections>
                                     <outlet property="settingLabel" destination="Uxb-Bx-b8P" id="l2Y-uP-gAP"/>
                                     <outlet property="settingSwitch" destination="jXd-LM-0Im" id="kJQ-BD-NjB"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SettingsEmptyCell" rowHeight="57" id="FhZ-HT-2Ch" customClass="SettingsEmptyCell" customModule="victorious" customModuleProvider="target">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FhZ-HT-2Ch" id="52Z-Ti-gB3">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="MESSAGE" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="zvz-SG-J7d">
+                                            <rect key="frame" x="30" y="0.0" width="260" height="57"/>
+                                            <fontDescription key="fontDescription" type="italicSystem" pointSize="14"/>
+                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="zvz-SG-J7d" secondAttribute="trailing" constant="30" id="6ll-wf-gOm"/>
+                                        <constraint firstItem="zvz-SG-J7d" firstAttribute="leading" secondItem="52Z-Ti-gB3" secondAttribute="leading" constant="30" id="F7h-lD-K9p"/>
+                                        <constraint firstItem="zvz-SG-J7d" firstAttribute="top" secondItem="52Z-Ti-gB3" secondAttribute="top" id="FWZ-en-vIO"/>
+                                        <constraint firstAttribute="bottom" secondItem="zvz-SG-J7d" secondAttribute="bottom" constant="-1" id="TIh-Lg-I1o"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="label" destination="zvz-SG-J7d" id="KuP-BP-Usl"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

@@ -689,6 +689,9 @@
 		A7DDA6AC1B5F003B005CE55E /* Experiment+RestKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6AB1B5F003B005CE55E /* Experiment+RestKit.swift */; };
 		A7DDA6AE1B5F006B005CE55E /* VObjectManager+Experiments.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6AD1B5F006B005CE55E /* VObjectManager+Experiments.swift */; };
 		A7DDA6B11B5F128F005CE55E /* NSArray+VJoin.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6B01B5F128F005CE55E /* NSArray+VJoin.m */; };
+		A7DDA6E31B601C95005CE55E /* SettingsEmptyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6E21B601C95005CE55E /* SettingsEmptyCell.swift */; };
+		A7DDA6E51B601D0D005CE55E /* UITableViewCell+SwiftReuse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6E41B601D0D005CE55E /* UITableViewCell+SwiftReuse.swift */; };
+		A7DDA6E71B601D20005CE55E /* UICollectionViewCell+SwiftReuse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6E61B601D20005CE55E /* UICollectionViewCell+SwiftReuse.swift */; };
 		A7E2EFCB1A49001000372547 /* VEditCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E2EFCA1A49001000372547 /* VEditCommentViewController.m */; };
 		A7E2EFD21A49066F00372547 /* EditComment.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7E2EFD11A49066F00372547 /* EditComment.storyboard */; };
 		A7E3985F1A34F6E1000E4CAC /* creator-avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = A7E3985D1A34F6E1000E4CAC /* creator-avatar.png */; };
@@ -2332,6 +2335,9 @@
 		A7DDA6AD1B5F006B005CE55E /* VObjectManager+Experiments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VObjectManager+Experiments.swift"; sourceTree = "<group>"; };
 		A7DDA6AF1B5F128F005CE55E /* NSArray+VJoin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+VJoin.h"; sourceTree = "<group>"; };
 		A7DDA6B01B5F128F005CE55E /* NSArray+VJoin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+VJoin.m"; sourceTree = "<group>"; };
+		A7DDA6E21B601C95005CE55E /* SettingsEmptyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsEmptyCell.swift; sourceTree = "<group>"; };
+		A7DDA6E41B601D0D005CE55E /* UITableViewCell+SwiftReuse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+SwiftReuse.swift"; sourceTree = "<group>"; };
+		A7DDA6E61B601D20005CE55E /* UICollectionViewCell+SwiftReuse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+SwiftReuse.swift"; sourceTree = "<group>"; };
 		A7E2EFC91A49001000372547 /* VEditCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEditCommentViewController.h; sourceTree = "<group>"; };
 		A7E2EFCA1A49001000372547 /* VEditCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEditCommentViewController.m; sourceTree = "<group>"; };
 		A7E2EFD11A49066F00372547 /* EditComment.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EditComment.storyboard; sourceTree = "<group>"; };
@@ -4733,6 +4739,8 @@
 				A721E90B1B572454000B7901 /* VConversation+UnreadMessageCount.m */,
 				A721E90E1B572454000B7901 /* VSequence+OrderedSet.h */,
 				A721E90F1B572454000B7901 /* VSequence+OrderedSet.m */,
+				A7DDA6E41B601D0D005CE55E /* UITableViewCell+SwiftReuse.swift */,
+				A7DDA6E61B601D20005CE55E /* UICollectionViewCell+SwiftReuse.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -5454,6 +5462,7 @@
 			children = (
 				A7BF9D121B5ECB1E002C0A98 /* VSettingsSwitchCell.h */,
 				A7BF9D131B5ECB1E002C0A98 /* VSettingsSwitchCell.m */,
+				A7DDA6E21B601C95005CE55E /* SettingsEmptyCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -7477,6 +7486,7 @@
 				A7ECC1CD1AD617480003E00A /* VTextToolController.m in Sources */,
 				D85E428D1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.m in Sources */,
 				F089E3561AC3BB740076DC4D /* VAbstractMarqueeStreamItemCell.m in Sources */,
+				A7DDA6E51B601D0D005CE55E /* UITableViewCell+SwiftReuse.swift in Sources */,
 				A7299EA31AA69C1600B6BC1F /* VAuthorizedAction.m in Sources */,
 				A79869EF1AD7124D00F2564A /* VProfileDeepLinkHandler.m in Sources */,
 				A721E94E1B572454000B7901 /* UIImage+Cropping.m in Sources */,
@@ -7651,6 +7661,7 @@
 				A79869EB1AD7124D00F2564A /* VContentDeepLinkHandler.m in Sources */,
 				A721E95B1B572454000B7901 /* UIView+AutoLayout.m in Sources */,
 				0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */,
+				A7DDA6E71B601D20005CE55E /* UICollectionViewCell+SwiftReuse.swift in Sources */,
 				A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */,
 				A601FB591B43657F0050536C /* VMediaAttachmentPresenter.m in Sources */,
 				A721E9621B572454000B7901 /* UIViewController+ForceOrientationChange.m in Sources */,
@@ -8029,6 +8040,7 @@
 				037FCF271A8DAF5400E8ABFC /* VMultipleContainerViewController.m in Sources */,
 				A721E9251B572454000B7901 /* VConversation+RestKit.m in Sources */,
 				0314D4B019B46B5E00FA363C /* VFetchedResultsTableViewController.m in Sources */,
+				A7DDA6E31B601C95005CE55E /* SettingsEmptyCell.swift in Sources */,
 				C30AA4F01B0678BB0010CEFE /* VPermission.m in Sources */,
 				A7738B081A4A36C9008EA973 /* VTransitionModel.m in Sources */,
 				BE5C736A187E36E800A3340D /* VRule.m in Sources */,
