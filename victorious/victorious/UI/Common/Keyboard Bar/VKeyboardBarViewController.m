@@ -27,7 +27,6 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
 @property (weak, nonatomic) IBOutlet UIButton *mediaButton;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 @property (nonatomic, strong) VPublishParameters *publishParameters;
-@property (nonatomic, strong) NSURL *mediaURL;
 @property (nonatomic, strong) VMediaAttachmentPresenter *attachmentPresenter;
 
 @property (nonatomic, assign, readonly) CGFloat maxTextFieldHeight;
@@ -200,7 +199,6 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
             if (success)
             {
                 strongSelf.publishParameters = publishParameters;
-                strongSelf.mediaURL = publishParameters.mediaToUploadURL;
                 [strongSelf.mediaButton setImage:publishParameters.previewImage forState:UIControlStateNormal];
             }
             [strongSelf dismissViewControllerAnimated:YES
