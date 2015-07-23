@@ -3853,6 +3853,23 @@
 			path = "Session Timer";
 			sourceTree = "<group>";
 		};
+		034527A51B604A9100E990BB /* Template Loader */ = {
+			isa = PBXGroup;
+			children = (
+				0386F8851B38F76700E8D459 /* VBulkDownloadOperation.h */,
+				0386F8861B38F76700E8D459 /* VBulkDownloadOperation.m */,
+				0386F88A1B390ADE00E8D459 /* VDownloadOperation.h */,
+				0386F88B1B390ADE00E8D459 /* VDownloadOperation.m */,
+				03A058BD1AEF44D600CF39D1 /* VTemplateDownloadOperation.h */,
+				03A058BE1AEF44D600CF39D1 /* VTemplateDownloadOperation.m */,
+				0386F8761B37E52500E8D459 /* VTemplatePackageManager.h */,
+				0386F8771B37E52500E8D459 /* VTemplatePackageManager.m */,
+				03A058B81AED7FB600CF39D1 /* VTemplateSerialization.h */,
+				03A058B91AED7FB600CF39D1 /* VTemplateSerialization.m */,
+			);
+			path = "Template Loader";
+			sourceTree = "<group>";
+		};
 		035926CE1B1EA33400E910A7 /* Quicksand */ = {
 			isa = PBXGroup;
 			children = (
@@ -4167,16 +4184,7 @@
 			isa = PBXGroup;
 			children = (
 				039269821B5C9DD600FCD0AA /* PrefixHeader.pch */,
-				0386F8851B38F76700E8D459 /* VBulkDownloadOperation.h */,
-				0386F8861B38F76700E8D459 /* VBulkDownloadOperation.m */,
-				0386F88A1B390ADE00E8D459 /* VDownloadOperation.h */,
-				0386F88B1B390ADE00E8D459 /* VDownloadOperation.m */,
-				03A058BD1AEF44D600CF39D1 /* VTemplateDownloadOperation.h */,
-				03A058BE1AEF44D600CF39D1 /* VTemplateDownloadOperation.m */,
-				0386F8761B37E52500E8D459 /* VTemplatePackageManager.h */,
-				0386F8771B37E52500E8D459 /* VTemplatePackageManager.m */,
-				03A058B81AED7FB600CF39D1 /* VTemplateSerialization.h */,
-				03A058B91AED7FB600CF39D1 /* VTemplateSerialization.m */,
+				034527A51B604A9100E990BB /* Template Loader */,
 			);
 			path = VictoriousCommon;
 			sourceTree = "<group>";
