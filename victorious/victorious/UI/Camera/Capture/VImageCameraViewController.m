@@ -28,6 +28,7 @@
 #import "VPermissionMicrophone.h"
 #import "VPermissionProfilePicture.h"
 
+static const NSTimeInterval kErrorMessageDisplayDuration = 2.0;
 static NSString * const kReverseCameraIconKey = @"reverseCameraIcon";
 static NSString * const kFlashIconKey = @"flashIcon";
 static NSString * const kDisableFlashIconKey = @"disableFlashIcon";
