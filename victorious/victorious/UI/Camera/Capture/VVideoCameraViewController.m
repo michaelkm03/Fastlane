@@ -69,7 +69,6 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 
 - (void)dealloc
 {
-    VLog(@"");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -291,11 +290,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
                             // Handle Error or show previewView
                             if (error != nil)
                             {
-                                VLog(@"Camera Start Failure! %@", error);
-                            }
-                            else
-                            {
-                                VLog(@"Camera Running, better go catch it!");
+                                [self displayShortError:NSLocalizedString(@"CameraFailed", nil)]
                             }
                         });
      }];
@@ -423,7 +418,6 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 {
     dispatch_async(dispatch_get_main_queue(), ^(void)
                    {
-                       VLog(@"encoded time: %@", [NSValue valueWithCMTime:time]);
                        [self updateProgressForSecond:CMTimeGetSeconds(time)];
                        
                        if (CMTimeGetSeconds(time) >= VConstantsMaximumVideoDuration)
@@ -443,7 +437,6 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 {
     dispatch_async(dispatch_get_main_queue(), ^(void)
                    {
-                       VLog(@"Encoder encountered error: %@", error);
                        videoEncoder.recording = NO;
                        [self displayShortError:NSLocalizedString(@"VideoCaptureFailed", @"")];
                    });
@@ -453,7 +446,6 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 {
     dispatch_async(dispatch_get_main_queue(), ^(void)
                    {
-                       VLog(@"Encoder finished. Error: %@", error);
                        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
                        if (error)
                        {
