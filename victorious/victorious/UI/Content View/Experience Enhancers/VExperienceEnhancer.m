@@ -105,14 +105,15 @@
 
 - (CGFloat)percentageOfCooldownComplete
 {
-    return [self secondsSinceLastVote] / self.cooldownDuration;
+    NSTimeInterval secondsSinceLastVote = [self secondsSinceLastVote];
+    NSTimeInterval cooldownTotal = self.cooldownDuration;
+    return secondsSinceLastVote / self.cooldownDuration;
 }
 
 - (NSTimeInterval)secondsSinceLastVote
 {
     NSDate *now = [NSDate date];
-    NSTimeInterval secondsSinceLastVote = ( [now timeIntervalSince1970] - [[self lastVoted] timeIntervalSince1970] ) / 1000.0f;
-    return secondsSinceLastVote;
+    return [now timeIntervalSince1970] - [[self lastVoted] timeIntervalSince1970];
 }
 
 @end

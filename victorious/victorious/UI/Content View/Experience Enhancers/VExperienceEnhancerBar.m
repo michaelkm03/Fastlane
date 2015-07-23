@@ -153,11 +153,9 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 
 - (void)updateCooldownValuesForEnhancerCell:(VExperienceEnhancerCell *)cell enhancer:(VExperienceEnhancer *)enhancer
 {
-    cell.cooldownStartValue = 0;
-    cell.cooldownEndValue = 1;
-    NSTimeInterval secondsUntilCooldownIsOver = [enhancer secondsUntilCooldownIsOver];
-    NSLog(@"%f", secondsUntilCooldownIsOver);
-    cell.cooldownDuration = secondsUntilCooldownIsOver;
+    cell.cooldownStartValue = [enhancer percentageOfCooldownComplete];
+    cell.cooldownEndValue = 1.0f;
+    cell.cooldownDuration = [enhancer secondsUntilCooldownIsOver];
 }
 
 #pragma mark - KVOConroller

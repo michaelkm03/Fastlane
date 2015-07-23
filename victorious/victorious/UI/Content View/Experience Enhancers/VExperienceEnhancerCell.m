@@ -77,6 +77,16 @@ static NSString * const kLockedBallisticBackgroundIconKey = @"locked_ballistic_b
 
 #pragma mark - Property Accessors
 
+- (void)setCooldownStartValue:(CGFloat)cooldownStartValue
+{
+    _cooldownStartValue = MAX(MIN(cooldownStartValue, 1), 0);
+}
+
+- (void)setCooldownEndValue:(CGFloat)cooldownEndValue
+{
+    _cooldownEndValue = MAX(MIN(cooldownEndValue, 1), 0);
+}
+
 - (void)setExperienceEnhancerTitle:(NSString *)experienceEnhancerTitle
 {
     _experienceEnhancerTitle = [experienceEnhancerTitle copy];
@@ -115,8 +125,8 @@ static NSString * const kLockedBallisticBackgroundIconKey = @"locked_ballistic_b
 
 - (BOOL)readyToCooldown
 {
-    BOOL cooldownTimesValid = self.cooldownStartValue >= 0 && self.cooldownEndValue >= 0 && self.cooldownEndValue > self.cooldownStartValue;
-    BOOL timeIntervalValid = self.cooldownDuration >= 0;
+    BOOL cooldownTimesValid = self.cooldownEndValue > self.cooldownStartValue && self.cooldownStartValue != 1;
+    BOOL timeIntervalValid = self.cooldownDuration > 0;
     return cooldownTimesValid && timeIntervalValid;
 }
 
