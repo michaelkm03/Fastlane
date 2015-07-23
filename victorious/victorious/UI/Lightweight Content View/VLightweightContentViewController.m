@@ -19,6 +19,7 @@
 #import "VTrackingConstants.h"
 #import "VTracking.h"
 #import "UIView+AutoLayout.h"
+#import "VAutomation.h"
 
 static NSString * const kSequenceURLKey = @"sequenceURL";
 
@@ -85,6 +86,8 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
     self.containerView.hidden = YES;
     
     [self setupVideoUI];
+    
+    self.getStartedButton.accessibilityIdentifier = VAutomationIdentifierWelcomeDismiss;
 }
 
 - (void)viewWillAppear:(BOOL)animated

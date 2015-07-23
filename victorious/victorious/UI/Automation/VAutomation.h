@@ -43,3 +43,5 @@ static NSString * const VAutomationIdentifierProfileLocationField       = @"Prof
 static NSString * const VAutomationIdentifierProfileDone                = @"Profile Done";
 static NSString * const VAutomationIdentifierProfileAgeAgreeSwitch      = @"Profile Age Switch";
 static NSString * const VAutomationIdentifierProfilSelectImage          = @"Profile Select Image";
+
+static NSString * const VAutomationIdentifierWelcomeDismiss             = @"Welcome Dismiss";
