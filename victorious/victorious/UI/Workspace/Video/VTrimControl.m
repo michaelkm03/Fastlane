@@ -279,6 +279,10 @@ const CGFloat VTrimmerTopPadding = 42.0f;
 
 - (void)updateThumbAndDimmingViewWithThumbHorizontalCenter:(CGFloat)horizontalCenter
 {
+    // prevents trimmer from going outside the view
+    CGFloat trimWidth = CGRectGetWidth(self.trimThumbBody.frame)/2;
+    horizontalCenter = MIN(horizontalCenter, CGRectGetWidth(self.frame) - trimWidth);
+    horizontalCenter = MAX(trimWidth, horizontalCenter);
     self.trimThumbBody.center = CGPointMake(horizontalCenter, self.trimThumbBody.center.y);
     self.leftHandle.center = CGPointMake(self.leftHandle.center.x, self.trimThumbBody.center.y);
     [self sendActionsForControlEvents:UIControlEventValueChanged];
