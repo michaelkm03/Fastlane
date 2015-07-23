@@ -78,7 +78,8 @@
 
 - (void)addInnerViewControllersToTabController:(VTabBarViewController *)tabViewController
 {
-    self.userFollowingViewController = [[VUsersViewController alloc] initWithDependencyManager:self.dependencyManager];
+    VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{}];
+    self.userFollowingViewController = [[VUsersViewController alloc] initWithDependencyManager:childDependencyManager];
     VUser *user = [VObjectManager sharedManager].mainUser;
     self.userFollowingViewController.usersDataSource = [[VUserIsFollowingDataSource alloc] initWithUser:user];
     

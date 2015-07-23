@@ -22,13 +22,13 @@
 #import "VDependencyManager+VObjectManager.h"
 #import "VAuthorizationContext.h"
 #import "VNavigationDestination.h"
-
 #import "UIViewController+VLayoutInsets.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VAppDelegate.h"
 #import "VRootViewController.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
+#import "VDependencyManager+VTracking.h"
 
 static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
 static CGFloat const kVNotificationCellHeight = 64.0f;
@@ -103,6 +103,9 @@ static int const kNotificationFetchBatchSize = 50;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.dependencyManager trackViewWillAppear:self];
+    
     [self.refreshControl beginRefreshing];
     [self.tableView setContentOffset:CGPointZero];
     [self refresh:nil];
@@ -120,6 +123,9 @@ static int const kNotificationFetchBatchSize = 50;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [self.dependencyManager trackViewWillDisappear:self];
+    
     [[VTrackingManager sharedInstance] endEvent:@"Notifications"];
     if (self.refreshRequest.isExecuting)
     {

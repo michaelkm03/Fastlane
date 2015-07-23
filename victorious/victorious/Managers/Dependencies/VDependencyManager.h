@@ -81,6 +81,12 @@ extern NSString * const VDependencyManagerEditTextWorkspaceKey;
     dictionaryOfClassesByTemplateName:(NSDictionary *)classesByTemplateName NS_DESIGNATED_INITIALIZER;
 
 /**
+ Checks for an entry in internal configuration by provided key.
+ Does not look in parent dependency managers, only checks at the local level.
+ */
+- (BOOL)containsKey:(NSString *)key;
+
+/**
  Returns the color with the specified key
  */
 - (UIColor *)colorForKey:(NSString *)key;

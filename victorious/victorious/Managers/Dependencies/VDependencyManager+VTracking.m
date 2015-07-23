@@ -9,6 +9,7 @@
 #import <objc/runtime.h>
 #import "VDependencyManager+VTracking.h"
 #import "VTrackingManager.h"
+#import "VMultipleContainer.h"
 
 NSString * const VTrackingStartKey                      = @"start";
 NSString * const VTrackingStopKey                       = @"stop";
@@ -32,6 +33,12 @@ static const char kAssociatedObjectViewWasHiddenKey;
 
 - (NSArray *)trackingURLsForKey:(NSString *)eventURLKey
 {
+    // Prevent using inherited values
+    if ( ![self containsKey:kTrackingKey] )
+    {
+        return @[];
+    }
+    
     NSDictionary *tracking = [self templateValueOfType:[NSDictionary class] forKey:kTrackingKey];
     return tracking[ eventURLKey ] ?: @[];
 }
@@ -48,10 +55,8 @@ static const char kAssociatedObjectViewWasHiddenKey;
     if ( !wasHidden )
     {
         NSArray *urls = [self trackingURLsForKey:kTrackingViewKey];
-        
-        if ( urls  == nil )
+        if ( urls.count == 0 )
         {
-            VLog( @"A template component must have a tracking 'viewability' to be tracked with `trackViewWithParameters:`." );
             return;
         }
         
@@ -66,7 +71,26 @@ static const char kAssociatedObjectViewWasHiddenKey;
 
 - (void)trackViewWillDisappear:(UIViewController *)viewController
 {
-    BOOL wasHidden = viewController.navigationController.viewControllers.count > 1 || viewController.presentedViewController != nil;
+    UIViewController *viewControllerInNavController = viewController;
+    if ( [viewController conformsToProtocol:@protocol(VMultipleContainerChild)] )
+    {
+        id<VMultipleContainerChildDelegate> delegate = ((id<VMultipleContainerChild>)viewController).multipleContainerChildDelegate;
+        if ( [delegate isKindOfClass:[UIViewController class]] )
+        {
+            viewControllerInNavController = (UIViewController *)delegate;
+        }
+    }
+    
+    NSArray *navStackAfterViewController = @[];
+    NSArray *navStack = viewController.navigationController.viewControllers;
+    NSInteger start = [navStack indexOfObject:viewControllerInNavController];
+    if ( start != NSNotFound )
+    {
+        NSRange range = NSMakeRange(start, navStack.count - start);
+        navStackAfterViewController = [navStack subarrayWithRange:range];
+    }
+    
+    BOOL wasHidden = navStackAfterViewController.count > 1 ||  viewController.presentedViewController != nil;
     objc_setAssociatedObject( viewController, &kAssociatedObjectViewWasHiddenKey, @(wasHidden), OBJC_ASSOCIATION_RETAIN_NONATOMIC );
 }
 
