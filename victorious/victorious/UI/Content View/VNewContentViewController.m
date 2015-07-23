@@ -1456,22 +1456,23 @@ referenceSizeForHeaderInSection:(NSInteger)section
     __weak typeof(self) welf = self;
     [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^(BOOL authorized)
      {
+         __strong typeof(self) strongSelf = welf;
          if (!authorized)
          {
              return;
          }
          
-         [welf submitCommentWithText:inputAccessoryView.composedText];
+         [strongSelf submitCommentWithText:inputAccessoryView.composedText];
          
          [inputAccessoryView clearTextAndResign];
-         welf.publishParameters.mediaToUploadURL = nil;
+         strongSelf.publishParameters.mediaToUploadURL = nil;
          
-         NSNumber *experimentValue = [welf.dependencyManager numberForKey:VDependencyManagerPauseVideoWhenCommentingKey];
+         NSNumber *experimentValue = [strongSelf.dependencyManager numberForKey:VDependencyManagerPauseVideoWhenCommentingKey];
          if (experimentValue != nil)
          {
              if ([experimentValue boolValue])
              {
-                 [welf.videoCell play];
+                 [strongSelf.videoCell play];
              }
          }
      }];
