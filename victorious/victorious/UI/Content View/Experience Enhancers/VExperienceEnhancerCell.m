@@ -63,6 +63,13 @@ static NSString * const kLockedBallisticBackgroundIconKey = @"locked_ballistic_b
 - (void)setHighlighted:(BOOL)highlighted
 {
     [super setHighlighted:highlighted];
+    
+    // Return if we're cooling down
+    if (highlighted && [self.ballisticIconView isAnimating])
+    {
+        return;
+    }
+    
     [UIView animateWithDuration:0.2f
                           delay:0.0f
          usingSpringWithDamping:1.0f
