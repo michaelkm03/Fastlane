@@ -34,7 +34,7 @@ class RadialAnimatingView : UIView {
         super.layoutSubviews()
         
         // Setup circle
-        circleLayer.path = UIBezierPath(roundedRect: self.bounds, cornerRadius: CGRectGetWidth(self.bounds) / 2).bezierPathByReversingPath().CGPath
+        circleLayer.path = UIBezierPath(roundedRect: self.bounds, cornerRadius: CGRectGetWidth(self.bounds) / 2).CGPath
         self.circleLayer.frame = self.bounds
         self.circleLayer.lineWidth = CGRectGetWidth(self.bounds)
         self.layer.mask = self.circleLayer
@@ -50,7 +50,7 @@ class RadialAnimatingView : UIView {
         
         if let circle = self.circleLayer {
             // Set the circleLayer's strokeEnd property to the end value so it remains
-//            circle.strokeEnd = endValue
+            circle.strokeEnd = endValue
             circle.addAnimation(animation, forKey: "animateCircle")
         }
     }
