@@ -123,6 +123,7 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
     // Camera
     VVideoCameraViewController *videoCamera = [VVideoCameraViewController videoCameraWithDependencyManager:self.dependencyManager
                                                                                              cameraContext:self.context];
+    videoCamera.delegate = self;
     [self pushViewController:videoCamera animated:YES];
 }
 
