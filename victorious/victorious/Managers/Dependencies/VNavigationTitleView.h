@@ -12,7 +12,4 @@
 
 - (instancetype)initWithTitleView:(UIView *)titleView withPreferredSize:(CGSize)preferredSize;
 
-@property (nonatomic, readonly) UIView *titleView;
-@property (nonatomic, readonly) CGSize preferredSize;
-
 @end

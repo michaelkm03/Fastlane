@@ -9,6 +9,14 @@
 #import "VNavigationTitleView.h"
 #import "UIView+AutoLayout.h"
 
+@interface VNavigationTitleView ()
+
+@property (nonatomic, strong) UIView *titleView;
+@property (nonatomic, assign) CGSize preferredSize;
+@property (nonatomic, strong) NSLayoutConstraint *titleCenterConstraint;
+
+@end
+
 @implementation VNavigationTitleView
 
 - (instancetype)initWithTitleView:(UIView *)titleView withPreferredSize:(CGSize)preferredSize
@@ -46,15 +54,45 @@
                                                                                options:kNilOptions
                                                                                metrics:nil
                                                                                  views:@{ @"titleView" : self.titleView }]];
-        
+        self.titleCenterConstraint = [NSLayoutConstraint constraintWithItem:self.titleView
+                                                                  attribute:NSLayoutAttributeCenterX
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:nil
+                                                                  attribute:NSLayoutAttributeNotAnAttribute
+                                                                 multiplier:1.0
+                                                                   constant:0.0f];
+        [self.titleView addConstraint:self.titleCenterConstraint];
     }
 }
 
-- (void)setBounds:(CGRect)bounds
+- (void)updateConstraints
 {
-    [super setBounds:bounds];
-    CGPoint titleCenter = [self.superview convertPoint:self.superview.center toView:self];
+    UIView *navigationBar = self.superview;
+    while ( ![navigationBar isKindOfClass:[UINavigationBar class]] )
+    {
+        if ( navigationBar == nil )
+        {
+            NSAssert(false, @"The VNavigationTitleView was added to a view that is not a subview of a UINavigationBar");
+            return;
+        }
+        navigationBar = navigationBar.superview;
+    }
+    CGPoint titleCenter = [navigationBar convertPoint:navigationBar.center toView:self];
+    if ( CGRectContainsPoint(self.frame, titleCenter) )
+    {
+        //We can't get the proper center, use our own instead
+        titleCenter = self.center;
+    }
+    
     self.titleView.center = titleCenter;
+    
+    [super updateConstraints];
+}
+
+- (void)setFrame:(CGRect)frame
+{
+    [super setFrame:frame];
+    [self setNeedsUpdateConstraints];
 }
 
 @end
