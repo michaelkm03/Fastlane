@@ -28,13 +28,12 @@
 static NSString * const kReverseCameraIconKey = @"reverseCameraIcon";
 static NSString * const kFlashIconKey = @"flashIcon";
 static NSString * const kDisableFlashIconKey = @"disableFlashIcon";
-static NSString * const kCameraScreenKey = @"cameraScreen";
+static NSString * const kCameraScreenKey = @"imageCameraScreen";
 
 @interface VImageCameraViewController () <VCaptureVideoPreviewViewDelegate>
 
 // Dependencies
-#warning Uncomment me when template driven
-//@property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, assign) VCameraContext cameraContext;
 
 // Views
@@ -64,12 +63,21 @@ static NSString * const kCameraScreenKey = @"cameraScreen";
 
 #pragma mark - Init/Factory
 
-+ (instancetype)imageCameraWithCameraContext:(VCameraContext)context
++ (instancetype)imageCameraWithDependencyManager:(VDependencyManager *)dependencyManager
+                                   cameraContext:(VCameraContext)context
+{
+    VImageCameraViewController *imageCamera = [dependencyManager templateValueOfType:[VImageCameraViewController class]
+                                                                              forKey:kCameraScreenKey];
+    imageCamera.cameraContext = context;
+    return imageCamera;
+}
+
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSBundle *bundleForClass = [NSBundle bundleForClass:self];
     UIStoryboard *storyboardForClass = [UIStoryboard storyboardWithName:NSStringFromClass(self) bundle:bundleForClass];
     VImageCameraViewController *imageCamera = [storyboardForClass instantiateInitialViewController];
-    imageCamera.cameraContext = context;
+    imageCamera.dependencyManager = dependencyManager;
     return imageCamera;
 }
 
@@ -118,9 +126,9 @@ static NSString * const kCameraScreenKey = @"cameraScreen";
     self.switchCameraButton.hidden = YES;
     self.switchCameraButton.enabled = NO;
     self.switchCameraButton.frame = CGRectMake(0, 0, 50.0f, 50.0f);
-#warning Make me template driven
-    [self.switchCameraButton setImage:[UIImage imageNamed:@"cameraButtonFlip"]
+    [self.switchCameraButton setImage:[self.dependencyManager imageForKey:kReverseCameraIconKey]
                              forState:UIControlStateNormal];
+    
     self.navigationItem.titleView = self.switchCameraButton;
     
     // Flash
@@ -129,10 +137,9 @@ static NSString * const kCameraScreenKey = @"cameraScreen";
     self.flashButton.hidden = YES;
     self.flashButton.enabled = NO;
     self.flashButton.frame = CGRectMake(0, 0, 50.0f, 50.0f);
-#warning Make me template driven
-    [self.flashButton setImage:[UIImage imageNamed:@"cameraButtonFlashOff"]
+    [self.flashButton setImage:[self.dependencyManager imageForKey:kDisableFlashIconKey]
                       forState:UIControlStateNormal];
-    [self.flashButton setImage:[UIImage imageNamed:@"cameraButtonFlashOn"]
+    [self.flashButton setImage:[self.dependencyManager imageForKey:kFlashIconKey]
                       forState:UIControlStateSelected];
     [self.flashButton setBackgroundImage:nil forState:UIControlStateSelected];
     self.flashButton.imageView.contentMode = UIViewContentModeCenter;

@@ -30,15 +30,13 @@
 /**
  *  VImageCameraViewController provides UI for capturing an image.
  */
-@interface VImageCameraViewController : UIViewController
-
-#warning Should remove me and make me installed via hasmanagddep
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
+@interface VImageCameraViewController : UIViewController <VHasManagedDependencies>
 
 /**
  *  You MUST use this factory method to grab an imageViewController.
  */
-+ (instancetype)imageCameraWithCameraContext:(VCameraContext)context;
++ (instancetype)imageCameraWithDependencyManager:(VDependencyManager *)dependencyManager
+                                   cameraContext:(VCameraContext)context;
 
 /**
  *  A delegate to be infromed of events during the lifetime of the cameraViewController.

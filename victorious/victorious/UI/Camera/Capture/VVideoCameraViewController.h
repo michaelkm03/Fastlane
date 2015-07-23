@@ -17,31 +17,19 @@
  */
 @protocol VVideoCameraViewControllerDelegate <NSObject>
 
-/**
- *  Informs the delegate that the video camera has successfully captured an\ video
- *  and saved it to a file URL.
- */
-- (void)imageCameraViewController:(VVideoCameraViewController *)imageCamera
-        capturedImageWithMediaURL:(NSURL *)mediaURL
-                     previewImage:(UIImage *)previewImage;
-
 @end
 
-@interface VVideoCameraViewController : UIViewController
-
-
-#warning Should remove me and make me installed via hasmanagddep
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
+@interface VVideoCameraViewController : UIViewController <VHasManagedDependencies>
 
 /**
  *  You MUST use this factory method to grab a videoViewController.
  */
-+ (instancetype)videoCameraWithCameraContext:(VCameraContext)context;
++ (instancetype)videoCameraWithDependencyManager:(VDependencyManager *)dependencyManager
+                                   cameraContext:(VCameraContext)context;
 
 /**
  *  A delegate to be infromed of events during the lifetime of the cameraViewController.
  */
 @property (nonatomic, weak) id <VVideoCameraViewControllerDelegate> delegate;
-
 
 @end

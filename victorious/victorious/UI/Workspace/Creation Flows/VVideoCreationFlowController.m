@@ -12,7 +12,7 @@
 #import "VAssetCollectionGridViewController.h"
 #import "VVideoAssetDownloader.h"
 #import "VAlternateCaptureOption.h"
-#import "VCameraViewController.h"
+#import "VVideoCameraViewController.h"
 
 // Edit
 #import "VWorkspaceViewController.h"
@@ -31,7 +31,7 @@ NSString * const VVideoCreationFlowControllerKey = @"videoCreateFlow";
 static NSString * const kVideoWorkspaceKey = @"videoWorkspace";
 static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 
-@interface VVideoCreationFlowController ()
+@interface VVideoCreationFlowController () <VVideoCameraViewControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -100,21 +100,15 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 - (void)showCamera
 {
     // Camera
-    __weak typeof(self) welf = self;
-    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerWithContext:self.context
-                                                                                       dependencyManager:self.dependencyManager
-                                                                                           resultHanlder:^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-                                                   {
-                                                       __strong typeof(welf) strongSelf = welf;
-                                                       strongSelf.source = VCreationFlowSourceCamera;
-                                                       if (finished)
-                                                       {
-                                                           [strongSelf captureFinishedWithMediaURL:capturedMediaURL
-                                                                                      previewImage:previewImage];
-                                                       }
-                                                   }];
-    [self pushViewController:cameraViewController
+    VVideoCameraViewController *videoCamera = [VVideoCameraViewController videoCameraWithDependencyManager:self.dependencyManager
+                                                                                             cameraContext:self.context];
+    videoCamera.delegate = self;
+    [self pushViewController:videoCamera
                     animated:YES];
 }
+
+#pragma mark - VVideoCameraViewControllerDelegate
+
+#warning Implement video cam delegate here
 
 @end

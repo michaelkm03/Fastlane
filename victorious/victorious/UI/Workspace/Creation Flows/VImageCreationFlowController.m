@@ -12,7 +12,6 @@
 #import "VAssetCollectionGridViewController.h"
 #import "VImageAssetDownloader.h"
 #import "VAlternateCaptureOption.h"
-//#import "VCameraViewController.h"
 #import "VImageCameraViewController.h"
 #import "VImageSearchViewController.h"
 
@@ -130,9 +129,9 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 - (void)showCamera
 {
     // Camera
-    VImageCameraViewController *cameraViewController = [VImageCameraViewController imageCameraWithCameraContext:self.context];
+    VImageCameraViewController *cameraViewController = [VImageCameraViewController imageCameraWithDependencyManager:self.dependencyManager
+                                                                                                      cameraContext:self.context];
     cameraViewController.delegate = self;
-    cameraViewController.dependencyManager = self.dependencyManager;
     [self pushViewController:cameraViewController animated:YES];
 }
 

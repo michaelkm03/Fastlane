@@ -14,7 +14,7 @@
 #import "VAssetCollectionGridViewController.h"
 #import "VVideoAssetDownloader.h"
 #import "VAlternateCaptureOption.h"
-#import "VCameraViewController.h"
+#import "VVideoCameraViewController.h"
 #import "victorious-Swift.h"
 
 // Edit
@@ -33,7 +33,7 @@ NSString * const VGIFCreationFlowControllerKey = @"gifCreateFlow";
 static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 
-@interface VGIFCreationFlowController () <GIFSearchViewControllerDelegate>
+@interface VGIFCreationFlowController () <GIFSearchViewControllerDelegate, VVideoCameraViewControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) GIFSearchViewController *gifSearchViewController;
@@ -121,21 +121,9 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 - (void)showCamera
 {
     // Camera
-    __weak typeof(self) welf = self;
-    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerWithContext:self.context
-                                                                                       dependencyManager:self.dependencyManager
-                                                                                           resultHanlder:^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-                                                   {
-                                                       __strong typeof(welf) strongSelf = welf;
-                                                       if (finished)
-                                                       {
-                                                           strongSelf.source = VCreationFlowSourceCamera;
-                                                           [strongSelf captureFinishedWithMediaURL:capturedMediaURL
-                                                                                      previewImage:previewImage
-                                                                                 shouldSkipTrimmer:NO];
-                                                       }
-                                                   }];
-    [self pushViewController:cameraViewController animated:YES];
+    VVideoCameraViewController *videoCamera = [VVideoCameraViewController videoCameraWithDependencyManager:self.dependencyManager
+                                                                                             cameraContext:self.context];
+    [self pushViewController:videoCamera animated:YES];
 }
 
 #pragma mark - GIFSearchViewControllerDelegate
@@ -154,5 +142,9 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
         [self captureFinishedWithMediaURL:capturedMediaURL previewImage:previewImage shouldSkipTrimmer:YES];
     }
 }
+
+#pragma mark - VVideoCameraViewControllerDelegate
+
+#warning Implement video cam delegate
 
 @end

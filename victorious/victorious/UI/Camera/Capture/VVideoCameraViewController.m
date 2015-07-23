@@ -25,13 +25,13 @@
 #import "VPermissionProfilePicture.h"
 
 static NSString * const kReverseCameraIconKey = @"reverseCameraIcon";
-static NSString * const kCameraScreenKey = @"cameraScreen";
+static NSString * const kCameraScreenKey = @"videoCameraScreen";
+static NSString * const kNextTextKey = @"nextText";
 
 @interface VVideoCameraViewController () <VCaptureVideoPreviewViewDelegate>
 
 // Dependencies
-#warning Uncomment me when template driven
-//@property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, assign) VCameraContext cameraContext;
 
 // Views
@@ -42,7 +42,7 @@ static NSString * const kCameraScreenKey = @"cameraScreen";
 @property (nonatomic, strong) IBOutlet UILabel *coachMarkLabel;
 @property (nonatomic, strong) VCameraControl *cameraControl;
 @property (nonatomic, strong) UIButton *switchCameraButton;
-@property (nonatomic, strong) UIButton *flashButton;
+@property (nonatomic, strong) UIButton *nextButton;
 
 // Hardware
 @property (nonatomic, strong) VCameraCaptureController *captureController;
@@ -66,13 +66,22 @@ static NSString * const kCameraScreenKey = @"cameraScreen";
 
 #pragma mark - Init/Factory
 
-+ (instancetype)videoCameraWithCameraContext:(VCameraContext)context
++ (instancetype)videoCameraWithDependencyManager:(VDependencyManager *)dependencyManager
+                                   cameraContext:(VCameraContext)context
+{
+    VVideoCameraViewController *videoCamera = [dependencyManager templateValueOfType:[VVideoCameraViewController class]
+                                                                              forKey:kCameraScreenKey];
+    videoCamera.cameraContext = context;
+    return videoCamera;
+}
+
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSBundle *bundleForClass = [NSBundle bundleForClass:self];
     UIStoryboard *storyboardForClass = [UIStoryboard storyboardWithName:NSStringFromClass(self) bundle:bundleForClass];
-    VVideoCameraViewController *imageCamera = [storyboardForClass instantiateInitialViewController];
-    imageCamera.cameraContext = context;
-    return imageCamera;
+    VVideoCameraViewController *videoCamera = [storyboardForClass instantiateInitialViewController];
+    videoCamera.dependencyManager = dependencyManager;
+    return videoCamera;
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
@@ -94,7 +103,6 @@ static NSString * const kCameraScreenKey = @"cameraScreen";
     _cameraContext = cameraContext;
     self.captureController.context = _cameraContext;
 }
-
 
 #pragma mark - View Lifecycle
 
@@ -124,29 +132,17 @@ static NSString * const kCameraScreenKey = @"cameraScreen";
     self.switchCameraButton.hidden = YES;
     self.switchCameraButton.enabled = NO;
     self.switchCameraButton.frame = CGRectMake(0, 0, 50.0f, 50.0f);
-#warning Make me template driven
-    [self.switchCameraButton setImage:[UIImage imageNamed:@"cameraButtonFlip"]
+    [self.switchCameraButton setImage:[self.dependencyManager imageForKey:kReverseCameraIconKey]
                              forState:UIControlStateNormal];
     self.navigationItem.titleView = self.switchCameraButton;
 
-#warning NEXT BUTTON HERE
-//
-//    // Flash
-//    self.flashButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//    [self.flashButton addTarget:self action:@selector(switchFlashAction:) forControlEvents:UIControlEventTouchUpInside];
-//    self.flashButton.hidden = YES;
-//    self.flashButton.enabled = NO;
-//    self.flashButton.frame = CGRectMake(0, 0, 50.0f, 50.0f);
-//#warning Make me template driven
-//    [self.flashButton setImage:[UIImage imageNamed:@"cameraButtonFlashOff"]
-//                      forState:UIControlStateNormal];
-//    [self.flashButton setImage:[UIImage imageNamed:@"cameraButtonFlashOn"]
-//                      forState:UIControlStateSelected];
-//    [self.flashButton setBackgroundImage:nil forState:UIControlStateSelected];
-//    self.flashButton.imageView.contentMode = UIViewContentModeCenter;
-//    UIBarButtonItem *flashBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.flashButton];
-//    [flashBarButtonItem setBackButtonBackgroundImage:nil forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-//    self.navigationItem.rightBarButtonItem = flashBarButtonItem;
+    // Next
+    UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithTitle:[self.dependencyManager stringForKey:kNextTextKey]
+                                                                   style:UIBarButtonItemStylePlain
+                                                                  target:self
+                                                                  action:@selector(nextAction:)];
+    nextButton.enabled = NO;
+    self.navigationItem.rightBarButtonItem = nextButton;
 }
 
 
@@ -201,6 +197,16 @@ static NSString * const kCameraScreenKey = @"cameraScreen";
                               withCompletion:nil];
 }
 
+- (void)nextAction:(UIBarButtonItem *)nextButton
+{
+    
+}
+
+- (IBAction)trashAction:(id)sender
+{
+    
+}
+
 #pragma mark - Capture Session
 
 - (void)startCaptureSession
@@ -252,6 +258,7 @@ static NSString * const kCameraScreenKey = @"cameraScreen";
 
 - (void)checkPermissionsWithCompletion:(void (^)(void))completion
 {
+#warning Refactor for video and audio
     // If we try to start session after user has already denied prompt, dont recheck for permissions
     if (self.userDeniedPrePrompt)
     {
@@ -284,7 +291,6 @@ static NSString * const kCameraScreenKey = @"cameraScreen";
         {
             self.userDeniedPrePrompt = YES;
             self.switchCameraButton.enabled = NO;
-            self.flashButton.enabled = NO;
             self.cameraControl.enabled = NO;
             if (state == VPermissionStateSystemDenied)
             {
