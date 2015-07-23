@@ -211,7 +211,6 @@
 		039D2FD6197D93C600DFBE60 /* filters.xml in Resources */ = {isa = PBXBuildFile; fileRef = 039D2FD5197D93C600DFBE60 /* filters.xml */; };
 		039ED27E19C563B700305987 /* VCameraVideoEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ED27D19C563B700305987 /* VCameraVideoEncoder.m */; };
 		039ED28219C6AB0900305987 /* AVCaptureConnection+VOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ED28119C6AB0900305987 /* AVCaptureConnection+VOrientation.m */; };
-		039ED28C19C808BA00305987 /* AVCaptureVideoPreviewLayer+VConvertPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ED28B19C808BA00305987 /* AVCaptureVideoPreviewLayer+VConvertPoint.m */; };
 		039ED29919C908F400305987 /* VCVideoPlayerToolbarSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ED28F19C908F400305987 /* VCVideoPlayerToolbarSlider.m */; };
 		039ED29A19C908F400305987 /* VCVideoPlayerToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ED29119C908F400305987 /* VCVideoPlayerToolbarView.m */; };
 		039ED29C19C908F400305987 /* VCVideoPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ED29419C908F400305987 /* VCVideoPlayerViewController.m */; };
@@ -1471,8 +1470,6 @@
 		039ED27F19C6557700305987 /* VCameraCaptureVideoSize.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VCameraCaptureVideoSize.h; sourceTree = "<group>"; };
 		039ED28019C6AB0900305987 /* AVCaptureConnection+VOrientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVCaptureConnection+VOrientation.h"; sourceTree = "<group>"; };
 		039ED28119C6AB0900305987 /* AVCaptureConnection+VOrientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVCaptureConnection+VOrientation.m"; sourceTree = "<group>"; };
-		039ED28A19C808BA00305987 /* AVCaptureVideoPreviewLayer+VConvertPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVCaptureVideoPreviewLayer+VConvertPoint.h"; sourceTree = "<group>"; };
-		039ED28B19C808BA00305987 /* AVCaptureVideoPreviewLayer+VConvertPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVCaptureVideoPreviewLayer+VConvertPoint.m"; sourceTree = "<group>"; };
 		039ED28E19C908F400305987 /* VCVideoPlayerToolbarSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCVideoPlayerToolbarSlider.h; sourceTree = "<group>"; };
 		039ED28F19C908F400305987 /* VCVideoPlayerToolbarSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCVideoPlayerToolbarSlider.m; sourceTree = "<group>"; };
 		039ED29019C908F400305987 /* VCVideoPlayerToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCVideoPlayerToolbarView.h; sourceTree = "<group>"; };
@@ -4065,8 +4062,6 @@
 			children = (
 				039ED28019C6AB0900305987 /* AVCaptureConnection+VOrientation.h */,
 				039ED28119C6AB0900305987 /* AVCaptureConnection+VOrientation.m */,
-				039ED28A19C808BA00305987 /* AVCaptureVideoPreviewLayer+VConvertPoint.h */,
-				039ED28B19C808BA00305987 /* AVCaptureVideoPreviewLayer+VConvertPoint.m */,
 				0395575819C14439005E32FB /* VCameraCaptureController.h */,
 				0395575919C14439005E32FB /* VCameraCaptureController.m */,
 				039ED27F19C6557700305987 /* VCameraCaptureVideoSize.h */,
@@ -7563,7 +7558,6 @@
 				A631F09B1B4DB52700CC6C80 /* VAlternateCaptureOption.m in Sources */,
 				A776EF661AD45A760093992F /* VEndCardModelBuilder.m in Sources */,
 				A6E104D71B56C88D0062392A /* VPublishViewController.m in Sources */,
-				039ED28C19C808BA00305987 /* AVCaptureVideoPreviewLayer+VConvertPoint.m in Sources */,
 				A769C3ED1A13176700698D0C /* VWebContentViewController.m in Sources */,
 				DBB1A04A1A0025F600E16D62 /* VAdViewController.m in Sources */,
 				DBAD6C9F1A2FD7B700AB5A4B /* VTremorAdViewController.m in Sources */,

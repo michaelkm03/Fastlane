@@ -109,6 +109,11 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 
 #pragma mark - VVideoCameraViewControllerDelegate
 
-#warning Implement video cam delegate here
+- (void)videoCameraViewController:(VVideoCameraViewController *)videoCamera
+           capturedVideoAtFileURL:(NSURL *)url
+{
+    [self captureFinishedWithMediaURL:url
+                         previewImage:nil];
+}
 
 @end

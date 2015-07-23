@@ -7,17 +7,23 @@
 //
 
 #import "VVideoCameraViewController.h"
+
+// Frameworks
+#import <MBProgressHUD/MBProgressHUD.h>
+
 // Dependencies
 #import "VConstants.h"
 #import "NSURL+TemporaryFiles.h"
 
-// Views
+// Views + Helpers
 #import "VCaptureVideoPreviewView.h"
 #import "VCameraControl.h"
+#import "VCameraCoachMarkAnimator.h"
 
 // Capture
 #import "VCameraCaptureController.h"
 #import "UIImage+Resize.h"
+#import "VCameraVideoEncoder.h"
 
 // Permissions
 #import "VPermissionCamera.h"
@@ -27,8 +33,10 @@
 static NSString * const kReverseCameraIconKey = @"reverseCameraIcon";
 static NSString * const kCameraScreenKey = @"videoCameraScreen";
 static NSString * const kNextTextKey = @"nextText";
+static const NSTimeInterval kErrorMessageDisplayDuration = 2.0;
+static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 
-@interface VVideoCameraViewController () <VCaptureVideoPreviewViewDelegate>
+@interface VVideoCameraViewController () <VCaptureVideoPreviewViewDelegate, VCameraVideoEncoderDelegate>
 
 // Dependencies
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -42,7 +50,8 @@ static NSString * const kNextTextKey = @"nextText";
 @property (nonatomic, strong) IBOutlet UILabel *coachMarkLabel;
 @property (nonatomic, strong) VCameraControl *cameraControl;
 @property (nonatomic, strong) UIButton *switchCameraButton;
-@property (nonatomic, strong) UIButton *nextButton;
+@property (nonatomic, strong) UIBarButtonItem *nextButton;
+@property (nonatomic, strong) VCameraCoachMarkAnimator *coachMarkAnimator;
 
 // Hardware
 @property (nonatomic, strong) VCameraCaptureController *captureController;
@@ -61,6 +70,7 @@ static NSString * const kNextTextKey = @"nextText";
 
 - (void)dealloc
 {
+    VLog(@"");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -109,6 +119,11 @@ static NSString * const kNextTextKey = @"nextText";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidEnter];
+    
+    self.coachMarkAnimator = [[VCameraCoachMarkAnimator alloc] initWithCoachView:self.coachMarkLabel];
+    self.coachMarkLabel.text = NSLocalizedString(@"VideoCoachMessage", @"Video coach message");
     
     // Camera control
     self.cameraControl = [[VCameraControl alloc] initWithFrame:self.cameraControlContainer.bounds];
@@ -122,6 +137,9 @@ static NSString * const kNextTextKey = @"nextText";
     [self.cameraControl addTarget:self
                            action:@selector(endRecording:)
                  forControlEvents:VCameraControlEventEndRecordingVideo];
+    [self.cameraControl addTarget:self
+                           action:@selector(failedRecording:)
+                 forControlEvents:VCameraControlEventFailedRecordingVideo];
     
     [self.cameraControlContainer addSubview:self.cameraControl];
     
@@ -137,14 +155,13 @@ static NSString * const kNextTextKey = @"nextText";
     self.navigationItem.titleView = self.switchCameraButton;
 
     // Next
-    UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithTitle:[self.dependencyManager stringForKey:kNextTextKey]
+    self.nextButton = [[UIBarButtonItem alloc] initWithTitle:[self.dependencyManager stringForKey:kNextTextKey]
                                                                    style:UIBarButtonItemStylePlain
                                                                   target:self
                                                                   action:@selector(nextAction:)];
-    nextButton.enabled = NO;
-    self.navigationItem.rightBarButtonItem = nextButton;
+    self.nextButton.enabled = NO;
+    self.navigationItem.rightBarButtonItem = self.nextButton;
 }
-
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -156,12 +173,14 @@ static NSString * const kNextTextKey = @"nextText";
         // Start Session
         [self startCaptureSession];
     }];
+    [self clearRecordedVideoAndResetControl];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:VTrackingEventCameraDidAppear];
+    [self.coachMarkAnimator fadeIn:1.0f];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -177,17 +196,41 @@ static NSString * const kNextTextKey = @"nextText";
 
 - (void)startRecording:(VCameraControl *)cameraControl
 {
-    
+    if (!self.captureController.videoEncoder)
+    {
+        NSError *encoderError;
+        VCameraVideoEncoder *encoder = [VCameraVideoEncoder videoEncoderWithFileURL:[NSURL temporaryFileURLWithExtension:VConstantMediaExtensionMP4]
+                                                                          videoSize:kVideoSize
+                                                                              error:&encoderError];
+        if (!encoder)
+        {
+            [self displayShortError:NSLocalizedString(@"VideoCaptureFailed", @"")];
+            self.nextButton.enabled = NO;
+            return;
+        }
+        encoder.delegate = self;
+        self.captureController.videoEncoder = encoder;
+        self.captureController.videoEncoder.recording = YES;
+    }
+    else
+    {
+        [self.captureController setVideoOrientation:[UIDevice currentDevice].orientation];
+        self.captureController.videoEncoder.recording = YES;
+    }
+    self.switchCameraButton.enabled = NO;
+    [self.coachMarkAnimator fadeOut:1.0f];
 }
 
 - (void)endRecording:(VCameraControl *)cameraControl
 {
-    
+    self.captureController.videoEncoder.recording = NO;
+    self.switchCameraButton.enabled = YES;
+    [self updateOrientation];
 }
 
-- (void)failedRecorind:(VCameraControl *)cameraControl
+- (void)failedRecording:(VCameraControl *)cameraControl
 {
-    
+    [self.coachMarkAnimator flash];
 }
 
 - (void)reverseCameraAction:(UIButton *)reverseButton
@@ -199,21 +242,35 @@ static NSString * const kNextTextKey = @"nextText";
 
 - (void)nextAction:(UIBarButtonItem *)nextButton
 {
-    
+    [self.captureController.videoEncoder finishRecording];
 }
 
 - (IBAction)trashAction:(id)sender
 {
-    
+    if (!self.isTrashOpen)
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidSelectDelete];
+        [self.trashButton setBackgroundColor:[UIColor redColor]];
+        self.trashOpen = YES;
+    }
+    else
+    {
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidConfirmtDelete];
+        
+        self.captureController.videoEncoder = nil;
+        [self clearRecordedVideoAndResetControl];
+        self.trashOpen = NO;
+        self.nextButton.enabled = NO;
+    }
 }
 
-#pragma mark - Capture Session
+#pragma mark - Capture
 
 - (void)startCaptureSession
 {
     self.previewView.session = self.captureController.captureSession;
     __weak typeof(self) welf = self;
-    [self.captureController startRunningWithVideoEnabled:NO
+    [self.captureController startRunningWithVideoEnabled:YES
                                            andCompletion:^(NSError *error)
      {
          dispatch_async(dispatch_get_main_queue(), ^
@@ -237,6 +294,29 @@ static NSString * const kNextTextKey = @"nextText";
                             }
                         });
      }];
+}
+
+- (void)updateOrientation
+{
+    if ( !self.captureController.videoEncoder.recording )
+    {
+        [self.captureController setVideoOrientation:[[UIDevice currentDevice] orientation]];
+    }
+}
+
+- (void)updateProgressForSecond:(Float64)totalRecorded
+{
+    CGFloat progress = ABS( totalRecorded / VConstantsMaximumVideoDuration);
+    [self.cameraControl setRecordingProgress:progress
+                                    animated:YES];
+}
+
+
+- (void)clearRecordedVideoAndResetControl
+{
+    [self updateProgressForSecond:0];
+    [self.cameraControl restoreCameraControlToDefault];
+    [[NSFileManager defaultManager] removeItemAtURL:self.savedVideoURL error:nil];
 }
 
 #pragma mark - VCaptureVideoPreviewViewDelegate
@@ -311,7 +391,79 @@ static NSString * const kNextTextKey = @"nextText";
     }
 }
 
+#pragma mark - VCameraVideoEncoderDelegate
+
+- (void)videoEncoder:(VCameraVideoEncoder *)videoEncoder hasEncodedTotalTime:(CMTime)time
+{
+    dispatch_async(dispatch_get_main_queue(), ^(void)
+                   {
+                       VLog(@"encoded time: %@", [NSValue valueWithCMTime:time]);
+                       [self updateProgressForSecond:CMTimeGetSeconds(time)];
+                       
+                       if (CMTimeGetSeconds(time) >= VConstantsMaximumVideoDuration)
+                       {
+                           [self endRecording:nil];
+                           [self nextAction:nil];
+                       }
+                       if (CMTimeGetSeconds(time) >= 0.0f)
+                       {
+                           self.nextButton.enabled = YES;
+                       }
+                   });
+}
+
+- (void)videoEncoder:(VCameraVideoEncoder *)videoEncoder didEncounterError:(NSError *)error
+{
+    dispatch_async(dispatch_get_main_queue(), ^(void)
+                   {
+                       VLog(@"Encoder encountered error: %@", error);
+                       videoEncoder.recording = NO;
+                       [self displayShortError:NSLocalizedString(@"VideoCaptureFailed", @"")];
+//                       [self clearRecordedVideoAndResetControl];
+//                       self.captureController.videoEncoder = nil;
+                   });
+}
+
+- (void)videoEncoderDidFinish:(VCameraVideoEncoder *)videoEncoder withError:(NSError *)error
+{
+    dispatch_async(dispatch_get_main_queue(), ^(void)
+                   {
+                       VLog(@"Encoder finished. Error: %@", error);
+                       [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+                       if (error)
+                       {
+                           [self displayShortError:NSLocalizedString(@"VideoSaveFailed", @"")];
+                       }
+                       else
+                       {
+                           _savedVideoURL = videoEncoder.fileURL;
+                           self.captureController.videoEncoder = nil;
+                           if (self.captureController.captureSession.running)
+                           {
+                               __weak typeof(self) welf = self;
+                               [self.captureController stopRunningWithCompletion:^
+                                {
+                                    dispatch_async(dispatch_get_main_queue(), ^
+                                                   {
+                                                       __strong typeof(welf) strongSelf = welf;
+                                                       [strongSelf.delegate videoCameraViewController:strongSelf
+                                                                               capturedVideoAtFileURL:self.savedVideoURL];
+                                                   });
+                                }];
+                           }
+                       }
+                   });
+}
+
 #pragma mark - Duplicate code factor out?
+
+- (void)displayShortError:(NSString *)errorText
+{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
+    hud.mode = MBProgressHUDModeText;
+    hud.labelText = errorText;
+    [hud hide:YES afterDelay:kErrorMessageDisplayDuration];
+}
 
 - (void)notifyUserOfFailedCameraPermission
 {

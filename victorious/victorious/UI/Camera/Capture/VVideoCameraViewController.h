@@ -17,6 +17,9 @@
  */
 @protocol VVideoCameraViewControllerDelegate <NSObject>
 
+- (void)videoCameraViewController:(VVideoCameraViewController *)videoCamera
+           capturedVideoAtFileURL:(NSURL *)url;
+
 @end
 
 @interface VVideoCameraViewController : UIViewController <VHasManagedDependencies>
@@ -31,5 +34,7 @@
  *  A delegate to be infromed of events during the lifetime of the cameraViewController.
  */
 @property (nonatomic, weak) id <VVideoCameraViewControllerDelegate> delegate;
+
+@property (nonatomic, readonly) NSURL *savedVideoURL;
 
 @end

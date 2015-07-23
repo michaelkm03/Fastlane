@@ -8,7 +8,7 @@
 
 @import AVFoundation;
 
-#import "AVCaptureVideoPreviewLayer+VConvertPoint.h"
+//#import "AVCaptureVideoPreviewLayer+VConvertPoint.h"
 #import "MBProgressHUD.h"
 #import "VCameraCaptureController.h"
 #import "VCameraVideoEncoder.h"
@@ -772,7 +772,7 @@ typedef NS_ENUM(NSInteger, VCameraViewControllerState)
 - (void)focus:(UITapGestureRecognizer *)tapGesture
 {
     CGPoint tapPoint = [tapGesture locationInView:self.previewView];
-    CGPoint convertedFocusPoint = [self.previewLayer v_convertPoint:tapPoint];
+    CGPoint convertedFocusPoint;// = [self.previewLayer v_convertPoint:tapPoint];
     AVCaptureDevice *currentDevice = self.captureController.currentDevice;
     if ([currentDevice isFocusPointOfInterestSupported] && [currentDevice isFocusModeSupported:AVCaptureFocusModeAutoFocus])
     {
