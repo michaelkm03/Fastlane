@@ -302,7 +302,6 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
     _autoplayURL = autoplayURL;
     [self.videoView setItemURL:_autoplayURL loop:YES audioMuted:YES];
     self.videoView.hidden = NO;
-    [self.videoView play];
 }
 
 - (void)setInFocus:(BOOL)inFocus

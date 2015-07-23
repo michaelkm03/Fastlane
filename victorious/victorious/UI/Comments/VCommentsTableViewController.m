@@ -214,6 +214,11 @@
     [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
                           atScrollPosition:UITableViewScrollPositionTop
                                   animated:YES];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                   {
+                       [self.focusHelper updateFocus];
+                   });
 }
 
 #pragma mark - IBActions
@@ -228,6 +233,12 @@
                                                       self.needsRefresh = NO;
                                                       [self.tableView reloadData];
                                                       [self.refreshControl endRefreshing];
+                                                      
+                                                      // Give cells a moment to come on screen
+                                                      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                                                                     {
+                                                                         [self.focusHelper updateFocus];
+                                                                     });
                                                   } failBlock:^(NSOperation *operation, NSError *error)
                                                   {
                                                       self.needsRefresh = NO;
