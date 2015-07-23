@@ -129,7 +129,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
     self.cameraControl.autoresizingMask = UIViewAutoresizingNone;
     self.cameraControl.captureMode = VCameraControlCaptureModeVideo;
     self.cameraControl.defaultTintColor = [UIColor whiteColor];
-    self.cameraControl.tintColor = [UIColor whiteColor];
+    self.cameraControl.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     [self.cameraControl addTarget:self
                            action:@selector(startRecording:)
                  forControlEvents:VCameraControlEventStartRecordingVideo];

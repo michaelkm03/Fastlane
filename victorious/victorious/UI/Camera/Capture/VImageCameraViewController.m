@@ -117,7 +117,7 @@ static NSString * const kCameraScreenKey = @"imageCameraScreen";
     self.cameraControl.autoresizingMask = UIViewAutoresizingNone;
     self.cameraControl.captureMode = VCameraControlCaptureModeImage;
     self.cameraControl.defaultTintColor = [UIColor whiteColor];
-    self.cameraControl.tintColor = [UIColor whiteColor];
+    self.cameraControl.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     [self.cameraControl addTarget:self
                            action:@selector(photoAction:)
                  forControlEvents:VCameraControlEventWantsStillImage];
