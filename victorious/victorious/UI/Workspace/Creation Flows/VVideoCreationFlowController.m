@@ -112,8 +112,12 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 - (void)videoCameraViewController:(VVideoCameraViewController *)videoCamera
            capturedVideoAtFileURL:(NSURL *)url
 {
-    [self captureFinishedWithMediaURL:url
-                         previewImage:nil];
+    // We only care if it's the top of the stack.
+    if ([self.viewControllers lastObject] == videoCamera)
+    {
+        [self captureFinishedWithMediaURL:url
+                             previewImage:nil];
+    }
 }
 
 @end
