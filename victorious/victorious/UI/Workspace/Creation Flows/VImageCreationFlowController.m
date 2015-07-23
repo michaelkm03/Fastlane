@@ -12,7 +12,8 @@
 #import "VAssetCollectionGridViewController.h"
 #import "VImageAssetDownloader.h"
 #import "VAlternateCaptureOption.h"
-#import "VCameraViewController.h"
+//#import "VCameraViewController.h"
+#import "VImageCameraViewController.h"
 #import "VImageSearchViewController.h"
 
 // Edit
@@ -29,7 +30,7 @@
 NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 
-@interface VImageCreationFlowController ()
+@interface VImageCreationFlowController () <VImageCameraViewControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -129,19 +130,9 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 - (void)showCamera
 {
     // Camera
-    __weak typeof(self) welf = self;
-    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerWithContext:self.context
-                                                                                       dependencyManager:self.dependencyManager
-                                                                                           resultHanlder:^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-                                                   {
-                                                       __strong typeof(welf) strongSelf = welf;
-                                                       if (finished)
-                                                       {
-                                                           strongSelf.source = VCreationFlowSourceCamera;
-                                                           [strongSelf captureFinishedWithMediaURL:capturedMediaURL
-                                                                                previewImage:previewImage];
-                                                       }
-                                                   }];
+    VImageCameraViewController *cameraViewController = [VImageCameraViewController imageCameraWithCameraContext:self.context];
+    cameraViewController.delegate = self;
+    cameraViewController.dependencyManager = self.dependencyManager;
     [self pushViewController:cameraViewController animated:YES];
 }
 
@@ -164,6 +155,21 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
     };
     [self pushViewController:imageSearchViewController
                     animated:YES];
+}
+
+#pragma mark - VImageCameraViewControllerDelegate
+
+- (void)imageCameraViewController:(VImageCameraViewController *)imageCamera
+        capturedImageWithMediaURL:(NSURL *)mediaURL
+                     previewImage:(UIImage *)previewImage
+{
+    // We only care if image camera is still top of the stack
+    if ([self.viewControllers lastObject] == imageCamera)
+    {
+        self.source = VCreationFlowSourceCamera;
+        [self captureFinishedWithMediaURL:mediaURL
+                             previewImage:previewImage];
+    }
 }
 
 @end

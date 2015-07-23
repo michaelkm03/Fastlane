@@ -19,25 +19,6 @@
     return NSLocalizedString(message, @"");
 }
 
-
-- (VPermissionState)permissionState
-{
-    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
-    switch (authStatus)
-    {
-        case AVAuthorizationStatusAuthorized:
-            return VPermissionStateAuthorized;
-            
-        case AVAuthorizationStatusDenied:
-        case AVAuthorizationStatusRestricted:
-            return VPermissionStateSystemDenied;
-            
-        case AVAuthorizationStatusNotDetermined:
-            return VPermissionStateUnknown;
-    }
-}
-
-
 - (void)trackPermission:(NSString *)trackingStatus
 {
     [self.permissionsTrackingHelper permissionsDidChange:VTrackingValueCameraDidAllow permissionState:trackingStatus];

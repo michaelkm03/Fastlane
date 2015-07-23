@@ -104,7 +104,23 @@ extern const NSInteger VCameraCaptureControllerErrorCode;
 /*
  *  context of wherein the camera controller is being presented
  */
-
 @property (nonatomic, assign) VCameraContext context;
+
+/**
+ *  Returns the first device found for an alternate front/back position.
+ */
+- (AVCaptureDevice *)firstAlternatePositionDevice;
+
+- (void)toggleFlashWithCompletion:(void(^)(NSError *error))completion;
+
+/**
+ *  Will focus at the passes in interest point. Begins listenting for 
+ *  subjectArea change notifications and will restore continuous autofocus 
+ *  if a subjectArea change notification comes through.
+ */
+- (void)focusAtPointOfInterest:(CGPoint)locationInCaptureDeviceCoordinates
+                withCompletion:(void(^)(NSError *error))completion;
+
+- (void)restoreContinuousFocusWithCompletion:(void(^)(NSError *error))completion;
 
 @end
