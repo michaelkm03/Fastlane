@@ -214,7 +214,6 @@ static NSCache *_sharedImageCache = nil;
         
         if (self.mediaIsVideo)
         {
-            
             if ([comment.shouldAutoplay boolValue])
             {
                 [self.commentAndMediaView setMediaType:VCommentMediaViewTypeGIF];
