@@ -8,6 +8,9 @@
 
 #import "VImageCameraViewController.h"
 
+// Library
+#import <MBProgressHUD/MBProgressHUD.h>
+
 // Dependencies
 #import "VConstants.h"
 #import "NSURL+VTemporaryFiles.h"
@@ -301,11 +304,7 @@ static NSString * const kCameraScreenKey = @"imageCameraScreen";
                             // Handle Error or show previewView
                             if (error != nil)
                             {
-                                VLog(@"Camera Start Failure! %@", error);
-                            }
-                            else
-                            {
-                                VLog(@"Camera Running, better go catch it!");
+                                [self displayShortError:NSLocalizedString(@"CameraFailed", nil)];
                             }
                         });
      }];
@@ -428,6 +427,14 @@ static NSString * const kCameraScreenKey = @"imageCameraScreen";
                                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                           otherButtonTitles:nil];
     [alert show];
+}
+
+- (void)displayShortError:(NSString *)errorText
+{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.previewView animated:YES];
+    hud.mode = MBProgressHUDModeText;
+    hud.labelText = errorText;
+    [hud hide:YES afterDelay:kErrorMessageDisplayDuration];
 }
 
 @end
