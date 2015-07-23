@@ -153,7 +153,11 @@ static NSString * const kCameraScreenKey = @"imageCameraScreen";
     [super viewWillAppear:animated];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidEnter];
     
-    [self checkPermissionsAndStartCaptureSession];
+    [self checkPermissionsWithCompletion:^
+     {
+         // Start Session
+         [self startCaptureSession];
+     }];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -275,6 +279,38 @@ static NSString * const kCameraScreenKey = @"imageCameraScreen";
 
 #pragma mark - Private Methods
 
+- (void)startCaptureSession
+{
+    self.previewView.session = self.captureController.captureSession;
+    __weak typeof(self) welf = self;
+    [self.captureController startRunningWithVideoEnabled:NO
+                                           andCompletion:^(NSError *error)
+     {
+         dispatch_async(dispatch_get_main_queue(), ^
+                        {
+                            __strong typeof(welf) strongSelf = welf;
+                            if ([strongSelf.captureController firstAlternatePositionDevice] != nil)
+                            {
+                                // We can swap camera
+                                strongSelf.switchCameraButton.hidden = NO;
+                                strongSelf.switchCameraButton.enabled = YES;
+                            }
+                            
+                            [self updateFlashStateForCurrentDevice];
+                            
+                            // Handle Error or show previewView
+                            if (error != nil)
+                            {
+                                VLog(@"Camera Start Failure! %@", error);
+                            }
+                            else
+                            {
+                                VLog(@"Camera Running, better go catch it!");
+                            }
+                        });
+     }];
+}
+
 - (void)updateFlashStateForCurrentDevice
 {
     BOOL hasFlash = self.captureController.currentDevice.hasFlash;
@@ -312,47 +348,9 @@ static NSString * const kCameraScreenKey = @"imageCameraScreen";
     return fileURL;
 }
 
-- (void (^)(BOOL videoEnabled))startCaptureBlock
-{
-    // Block to be called to start the capture session
-    void (^startCapture)(BOOL videoEnabled) = ^(BOOL videoEnabled)
-    {
-        self.previewView.session = self.captureController.captureSession;
-        __weak typeof(self) welf = self;
-        [self.captureController startRunningWithVideoEnabled:NO
-                                               andCompletion:^(NSError *error)
-         {
-             dispatch_async(dispatch_get_main_queue(), ^
-                            {
-                                __strong typeof(welf) strongSelf = welf;
-                                if ([strongSelf.captureController firstAlternatePositionDevice] != nil)
-                                {
-                                    // We can swap camera
-                                    strongSelf.switchCameraButton.hidden = NO;
-                                    strongSelf.switchCameraButton.enabled = YES;
-                                }
-                                
-                                [self updateFlashStateForCurrentDevice];
-                                
-                                // Handle Error or show previewView
-                                if (error != nil)
-                                {
-                                    VLog(@"Camera Start Failure! %@", error);
-                                }
-                                else
-                                {
-                                    VLog(@"Camera Running, better go catch it!");
-                                }
-                            });
-         }];
-    };
-    
-    return startCapture;
-}
-
 #pragma mark Permission
 
-- (void)checkPermissionsAndStartCaptureSession
+- (void)checkPermissionsWithCompletion:(void (^)(void))completion
 {
     // If we try to start session after user has already denied prompt, dont recheck for permissions
     if (self.userDeniedPrePrompt)
@@ -360,31 +358,39 @@ static NSString * const kCameraScreenKey = @"imageCameraScreen";
         return;
     }
     
-    VPermission *cameraPermission;
-    if (self.cameraContext == VCameraContextProfileImage || self.cameraContext == VCameraContextProfileImageRegistration)
-    {
-        cameraPermission = [[VPermissionCamera alloc] initWithDependencyManager:self.dependencyManager];
-    }
-    else
-    {
-        cameraPermission = [[VPermissionProfilePicture alloc] initWithDependencyManager:self.dependencyManager];
-    }
-    
-    BOOL shouldShowPreSystemPermission = ([cameraPermission permissionState] != VPermissionStateSystemDenied);
+    VPermission *cameraPermission = [[VPermissionProfilePicture alloc] initWithDependencyManager:self.dependencyManager];
+    [self requestPermissionWithPermission:cameraPermission
+                               completion:^
+     {
+         if ([cameraPermission permissionState] == VPermissionStateAuthorized)
+         {
+             if (completion != nil)
+             {
+                 completion();
+             }
+         }
+     }];
+}
 
+- (void)requestPermissionWithPermission:(VPermission *)permission
+                             completion:(void (^)(void))completion
+{
+    BOOL shouldShowPreSystemPermission = ([permission permissionState] != VPermissionStateSystemDenied);
     void (^permissionHandler)(BOOL granted, VPermissionState state, NSError *error) = ^void(BOOL granted, VPermissionState state, NSError *error)
     {
         if (granted)
         {
-            void (^startCapture)(BOOL videoEnabled) = [self startCaptureBlock];
+            
             self.userDeniedPrePrompt = NO;
-            startCapture(granted);
+            if (completion)
+            {
+                completion();
+            }
         }
         else
         {
             self.userDeniedPrePrompt = YES;
             self.switchCameraButton.enabled = NO;
-            self.flashButton.enabled = NO;
             self.cameraControl.enabled = NO;
             if (state == VPermissionStateSystemDenied)
             {
@@ -396,12 +402,12 @@ static NSString * const kCameraScreenKey = @"imageCameraScreen";
     // Request camera permission
     if (shouldShowPreSystemPermission)
     {
-        [cameraPermission requestPermissionInViewController:self
-                                      withCompletionHandler:permissionHandler];
+        [permission requestPermissionInViewController:self
+                                withCompletionHandler:permissionHandler];
     }
     else
     {
-        [cameraPermission requestSystemPermissionWithCompletion:permissionHandler];
+        [permission requestSystemPermissionWithCompletion:permissionHandler];
     }
 }
 
