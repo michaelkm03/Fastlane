@@ -54,6 +54,7 @@ static NSString * const kLockedBallisticBackgroundIconKey = @"locked_ballistic_b
 
 - (void)prepareForReuse
 {
+    [self.ballisticIconView reset];
     self.contentView.alpha = 1.0f;
 }
 

@@ -63,4 +63,7 @@ class ExperienceEnhancerAnimatingIconView : UIView {
         self.radialAnimatingView.animate(duration, startValue: startValue, endValue: endValue)
     }
     
+    func reset() {
+        self.radialAnimatingView.reset()
+    }
 }

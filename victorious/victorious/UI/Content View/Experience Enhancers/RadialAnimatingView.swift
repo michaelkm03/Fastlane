@@ -55,4 +55,10 @@ class RadialAnimatingView : UIView {
             circle.addAnimation(animation, forKey: "animateCircle")
         }
     }
+    
+    func reset() {
+        if let circle = self.circleLayer {
+            circle.removeAllAnimations()
+        }
+    }
 }
