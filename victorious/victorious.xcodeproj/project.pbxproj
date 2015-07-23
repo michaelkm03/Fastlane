@@ -94,6 +94,12 @@
 		0343AF831A143F550025B9F8 /* AVAsset+OrientationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */; };
 		0343AF841A143FD20025B9F8 /* NSDate+timeSinceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE49323519E338CE00C0912E /* NSDate+timeSinceTests.m */; };
 		03449FE51A0C7EBB0070EC80 /* VSessionTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 03449FE41A0C7EBB0070EC80 /* VSessionTimer.m */; };
+		034527CD1B606F8200E990BB /* VBulkDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F8861B38F76700E8D459 /* VBulkDownloadOperation.m */; };
+		034527CE1B606F8200E990BB /* VDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F88B1B390ADE00E8D459 /* VDownloadOperation.m */; };
+		034527CF1B606F8200E990BB /* VTemplateDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058BE1AEF44D600CF39D1 /* VTemplateDownloadOperation.m */; };
+		034527D01B606F8200E990BB /* VTemplatePackageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F8771B37E52500E8D459 /* VTemplatePackageManager.m */; };
+		034527D11B606F8200E990BB /* VTemplateSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058B91AED7FB600CF39D1 /* VTemplateSerialization.m */; };
+		034527D41B606FCC00E990BB /* libVictoriousCommonOSX.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 034527B01B606F5D00E990BB /* libVictoriousCommonOSX.a */; };
 		034BCC3F19F5CF5D00114F6C /* MuseoSans-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1859019B42CEA00E27D05 /* MuseoSans-500.otf */; };
 		034D1A6A1AAF5A8B00EB7B2D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 034D1A6C1AAF5A8B00EB7B2D /* Localizable.strings */; };
 		0358FCEE1A65E785004DD7A1 /* VScaffoldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0358FCED1A65E785004DD7A1 /* VScaffoldViewController.m */; };
@@ -1104,6 +1110,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		034527D21B606FC600E990BB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 034527AF1B606F5D00E990BB;
+			remoteInfo = VictoriousCommonOSX;
+		};
 		039269801B5C87EE00FCD0AA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
@@ -1320,6 +1333,8 @@
 		0330D4281A6ED98D007EEEE4 /* VNavigationDestinationsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationDestinationsProvider.h; sourceTree = "<group>"; };
 		03449FE31A0C7EBB0070EC80 /* VSessionTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSessionTimer.h; sourceTree = "<group>"; };
 		03449FE41A0C7EBB0070EC80 /* VSessionTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSessionTimer.m; sourceTree = "<group>"; };
+		034527A81B606C1F00E990BB /* SwiftBridging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftBridging.h; sourceTree = "<group>"; };
+		034527B01B606F5D00E990BB /* libVictoriousCommonOSX.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libVictoriousCommonOSX.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		034D1A541AAF5A8500EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Profile.strings; sourceTree = "<group>"; };
 		034D1A551AAF5A8600EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VKeyboardInputAccessoryView.strings; sourceTree = "<group>"; };
 		034D1A561AAF5A8600EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ActionSheet.strings; sourceTree = "<group>"; };
@@ -3189,10 +3204,18 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		034527AD1B606F5D00E990BB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		039269491B5C720400FCD0AA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				034527D41B606FCC00E990BB /* libVictoriousCommonOSX.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4176,6 +4199,7 @@
 			isa = PBXGroup;
 			children = (
 				0392694E1B5C720400FCD0AA /* main.swift */,
+				034527A81B606C1F00E990BB /* SwiftBridging.h */,
 			);
 			path = downloadtemplate;
 			sourceTree = "<group>";
@@ -5794,6 +5818,7 @@
 				BE171D961868BE64004E5202 /* victoriousTests.xctest */,
 				0392694C1B5C720400FCD0AA /* downloadtemplate */,
 				0392695A1B5C774400FCD0AA /* libVictoriousCommon.a */,
+				034527B01B606F5D00E990BB /* libVictoriousCommonOSX.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -7114,7 +7139,34 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		034527AE1B606F5D00E990BB /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
+		034527AF1B606F5D00E990BB /* VictoriousCommonOSX */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 034527C11B606F5E00E990BB /* Build configuration list for PBXNativeTarget "VictoriousCommonOSX" */;
+			buildPhases = (
+				034527AC1B606F5D00E990BB /* Sources */,
+				034527AD1B606F5D00E990BB /* Frameworks */,
+				034527AE1B606F5D00E990BB /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VictoriousCommonOSX;
+			productName = VictoriousCommonOSX;
+			productReference = 034527B01B606F5D00E990BB /* libVictoriousCommonOSX.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		0392694B1B5C720400FCD0AA /* downloadtemplate */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 039269501B5C720400FCD0AA /* Build configuration list for PBXNativeTarget "downloadtemplate" */;
@@ -7126,6 +7178,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				034527D31B606FC600E990BB /* PBXTargetDependency */,
 			);
 			name = downloadtemplate;
 			productName = downloadtemplate;
@@ -7207,6 +7260,9 @@
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = Victorious;
 				TargetAttributes = {
+					034527AF1B606F5D00E990BB = {
+						CreatedOnToolsVersion = 6.4;
+					};
 					0392694B1B5C720400FCD0AA = {
 						CreatedOnToolsVersion = 6.4;
 					};
@@ -7248,6 +7304,7 @@
 				BE171D951868BE64004E5202 /* victoriousTests */,
 				0392694B1B5C720400FCD0AA /* downloadtemplate */,
 				039269591B5C774400FCD0AA /* VictoriousCommon */,
+				034527AF1B606F5D00E990BB /* VictoriousCommonOSX */,
 			);
 		};
 /* End PBXProject section */
@@ -7651,6 +7708,18 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		034527AC1B606F5D00E990BB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				034527CE1B606F8200E990BB /* VDownloadOperation.m in Sources */,
+				034527D01B606F8200E990BB /* VTemplatePackageManager.m in Sources */,
+				034527D11B606F8200E990BB /* VTemplateSerialization.m in Sources */,
+				034527CD1B606F8200E990BB /* VBulkDownloadOperation.m in Sources */,
+				034527CF1B606F8200E990BB /* VTemplateDownloadOperation.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		039269481B5C720400FCD0AA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -8525,6 +8594,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		034527D31B606FC600E990BB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 034527AF1B606F5D00E990BB /* VictoriousCommonOSX */;
+			targetProxy = 034527D21B606FC600E990BB /* PBXContainerItemProxy */;
+		};
 		039269811B5C87EE00FCD0AA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 039269591B5C774400FCD0AA /* VictoriousCommon */;
@@ -8913,6 +8987,99 @@
 			};
 			name = Release;
 		};
+		034527C21B606F5E00E990BB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = VictoriousCommon/PrefixHeader.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		034527C31B606F5E00E990BB /* QA */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = VictoriousCommon/PrefixHeader.pch;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = QA;
+		};
+		034527C41B606F5E00E990BB /* Staging */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = VictoriousCommon/PrefixHeader.pch;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Staging;
+		};
+		034527C51B606F5E00E990BB /* Stable */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = VictoriousCommon/PrefixHeader.pch;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Stable;
+		};
+		034527C61B606F5E00E990BB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = VictoriousCommon/PrefixHeader.pch;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 		039269511B5C720400FCD0AA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -8929,6 +9096,8 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = downloadtemplate/SwiftBridging.h;
+				USER_HEADER_SEARCH_PATHS = "VictoriousCommon/**";
 			};
 			name = Debug;
 		};
@@ -8945,6 +9114,8 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = downloadtemplate/SwiftBridging.h;
+				USER_HEADER_SEARCH_PATHS = "VictoriousCommon/**";
 			};
 			name = QA;
 		};
@@ -8961,6 +9132,8 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = downloadtemplate/SwiftBridging.h;
+				USER_HEADER_SEARCH_PATHS = "VictoriousCommon/**";
 			};
 			name = Staging;
 		};
@@ -8977,6 +9150,8 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = downloadtemplate/SwiftBridging.h;
+				USER_HEADER_SEARCH_PATHS = "VictoriousCommon/**";
 			};
 			name = Stable;
 		};
@@ -8993,6 +9168,8 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = downloadtemplate/SwiftBridging.h;
+				USER_HEADER_SEARCH_PATHS = "VictoriousCommon/**";
 			};
 			name = Release;
 		};
@@ -9586,6 +9763,17 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		034527C11B606F5E00E990BB /* Build configuration list for PBXNativeTarget "VictoriousCommonOSX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				034527C21B606F5E00E990BB /* Debug */,
+				034527C31B606F5E00E990BB /* QA */,
+				034527C41B606F5E00E990BB /* Staging */,
+				034527C51B606F5E00E990BB /* Stable */,
+				034527C61B606F5E00E990BB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		039269501B5C720400FCD0AA /* Build configuration list for PBXNativeTarget "downloadtemplate" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

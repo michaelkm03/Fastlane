@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VDependencyManager.h"
 #import "VTemplateImage.h"
 #import "VTemplateImageMacro.h"
 #import "VTemplateImageSet.h"
