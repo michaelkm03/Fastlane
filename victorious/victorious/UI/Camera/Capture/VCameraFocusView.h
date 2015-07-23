@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+/**
+ *  VCameraFocusView is used as a reticle denoting the focus point of the camera.
+ */
 @interface VCameraFocusView : UIView
 
 @end
