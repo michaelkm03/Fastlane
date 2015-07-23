@@ -18,6 +18,8 @@
 
 #import <KVOController/FBKVOController.h>
 
+@import AudioToolbox;
+
 const CGFloat VExperienceEnhancerDesiredMinimumHeight = 60.0f;
 
 static const CGFloat kExperienceEnhancerSelectionScale = 1.5f;
@@ -248,13 +250,14 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 
 - (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
+
     if ( !self.enabled )
     {
         return;
     }
     
-    VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
-    if ( enhancerForIndexPath.isLocked  )
+    if ( enhancerForIndexPath.isLocked || [enhancerForIndexPath isCoolingDown] )
     {
         return;
     }

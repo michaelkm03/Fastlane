@@ -48,6 +48,7 @@
 @property (nonatomic, readonly) VVoteType *voteType;
 @property (nonatomic, readonly) BOOL isBallistic;
 
+- (BOOL)isCoolingDown;
 - (CGFloat)percentageOfCooldownComplete;
 - (NSTimeInterval)secondsUntilCooldownIsOver;
 

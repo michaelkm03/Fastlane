@@ -72,7 +72,7 @@
 
 - (BOOL)vote
 {
-    if ([self canVote])
+    if ( ![self isCoolingDown] )
     {
         self.voteCount++;
         
@@ -85,10 +85,9 @@
     return NO;
 }
 
-- (BOOL)canVote
+- (BOOL)isCoolingDown
 {
-    // Determine if we've waited out the cooldown period
-    return [self secondsUntilCooldownIsOver] <= 0;
+    return [self secondsUntilCooldownIsOver] > 0;
 }
 
 - (NSDate *)lastVoted
@@ -105,9 +104,7 @@
 
 - (CGFloat)percentageOfCooldownComplete
 {
-    NSTimeInterval secondsSinceLastVote = [self secondsSinceLastVote];
-    NSTimeInterval cooldownTotal = self.cooldownDuration;
-    return secondsSinceLastVote / self.cooldownDuration;
+    return [self secondsSinceLastVote] / self.cooldownDuration;
 }
 
 - (NSTimeInterval)secondsSinceLastVote

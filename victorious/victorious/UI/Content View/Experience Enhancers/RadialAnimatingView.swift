@@ -10,6 +10,7 @@ import Foundation
 
 class RadialAnimatingView : UIView {
     
+    let circleAnimationKey = "animateCircle"
     private var circleLayer: CAShapeLayer!
     
     required init(coder aDecoder: NSCoder) {
@@ -49,16 +50,19 @@ class RadialAnimatingView : UIView {
         animation.toValue = endValue
         animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
         
-        if let circle = self.circleLayer {
-            // Set the circleLayer's strokeEnd property to the end value so it remains
-            circle.strokeEnd = endValue
-            circle.addAnimation(animation, forKey: "animateCircle")
-        }
+        // Set the circleLayer's strokeEnd property to the end value so it remains
+        self.circleLayer.strokeEnd = endValue
+        self.circleLayer.addAnimation(animation, forKey: self.circleAnimationKey)
     }
     
     func reset() {
-        if let circle = self.circleLayer {
-            circle.removeAllAnimations()
+        self.circleLayer.removeAllAnimations()
+    }
+    
+    func isAnimating() -> Bool {
+        if let animation = self.circleLayer.animationForKey(self.circleAnimationKey) {
+            return true
         }
+        return false
     }
 }
