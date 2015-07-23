@@ -47,12 +47,8 @@ static const CGFloat VDefaultFocusVisibilityRatio = 0.8f;
              // Convert media view's frame to parent view of scroll view
              CGRect mediaVisibility = [(UIView *)focusCell convertRect:[focusCell contentArea] toView:self.scrollView.superview];
              
-             // Inset the focus area if need be
-             CGRect focusFrame = self.scrollView.frame;
-             focusFrame.origin = CGPointMake(CGRectGetMinX(focusFrame) + self.focusAreaInsets.left,
-                                             CGRectGetMinY(focusFrame) + self.focusAreaInsets.top);
-             focusFrame.size = CGSizeMake(CGRectGetWidth(focusFrame) - self.focusAreaInsets.right,
-                                          CGRectGetHeight(focusFrame) - self.focusAreaInsets.bottom);
+             // Inset the focus area
+             CGRect focusFrame = UIEdgeInsetsInsetRect(self.scrollView.frame, self.focusAreaInsets);
                           
              // Determine intersect with the scroll view's frame
              CGRect intersectWithScrollview = CGRectIntersection(focusFrame, mediaVisibility);
