@@ -17,6 +17,7 @@
 #import "UIResponder+VResponderChain.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "VMenuItemControl.h"
+#import "VMultipleContainer.h"
 
 /**
  A UIBarButtonItem subclass used primarily to attach the `menuItemIdentifier` property
@@ -43,6 +44,7 @@ NSString * const VDependencyManagerAccessoryItemMore            = @"Accessory Mo
 NSString * const VDependencyManagerAccessoryNewMessage          = @"Accessory New Message";
 
 static const char kAssociatedObjectSourceViewControllerKey;
+static const char kAssociatedObjectBadgeableBarButtonsKey;
 
 @implementation VDependencyManager (VAccessoryScreens)
 
@@ -60,6 +62,8 @@ static const char kAssociatedObjectSourceViewControllerKey;
     
     NSMutableArray *newBarButtonItemsLeft = [[NSMutableArray alloc] init];
     NSMutableArray *newBarButtonItemsRight = [[NSMutableArray alloc] init];
+    
+    NSMutableArray *badgeableBarButtons = [[NSMutableArray alloc] init];
     
     for ( VNavigationMenuItem *menuItem in accessoryMenuItems )
     {
@@ -92,17 +96,8 @@ static const char kAssociatedObjectSourceViewControllerKey;
             [barButton addTarget:self action:@selector(accessoryMenuItemSelected:) forControlEvents:UIControlEventTouchUpInside];
             barButton.menuItem = menuItem;
             
-            id<VProvidesNavigationMenuItemBadge> badgeProvider = menuItem.destination;
-            id<VProvidesNavigationMenuItemBadge> customBadgeProvider = nil;
-            id customBadgeSource = [sourceViewController targetForAction:@selector(customBadgeProviderForMenuItem:) withSender:self];
-            {
-                customBadgeProvider = [customBadgeSource customBadgeProviderForMenuItem:menuItem];
-            }
-            [self registerBadgeUpdateBlockWithButton:barButton
-                                          fromSource:sourceViewController
-                                     withDestination:customBadgeProvider ?: badgeProvider
-                                            isCustom:customBadgeProvider != nil];
-            
+            [badgeableBarButtons addObject:barButton];
+
             accessoryBarItem = [[VBarButtonItem alloc] initWithCustomView:barButton];
             accessoryBarItem.menuItem = menuItem;
             accessoryBarItem.tintColor = menuItem.tintColor;
@@ -132,6 +127,8 @@ static const char kAssociatedObjectSourceViewControllerKey;
         }
     }
     
+    objc_setAssociatedObject( sourceViewController, &kAssociatedObjectBadgeableBarButtonsKey, [badgeableBarButtons copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC );
+    
     BOOL shouldAnimate;
     
     shouldAnimate = newBarButtonItemsLeft.count != navigationItem.leftBarButtonItems.count;
@@ -139,6 +136,24 @@ static const char kAssociatedObjectSourceViewControllerKey;
     
     shouldAnimate = newBarButtonItemsRight.count != navigationItem.rightBarButtonItems.count;
     [navigationItem setRightBarButtonItems:newBarButtonItemsRight animated:shouldAnimate];
+}
+
+- (void)addBadgingToAccessoryScreensInNavigationItem:(UINavigationItem *)navigationItem
+                                  fromViewController:(UIViewController *)sourceViewController
+{
+    NSArray *badgeableBarButtons = objc_getAssociatedObject(sourceViewController, &kAssociatedObjectBadgeableBarButtonsKey);
+    for ( VBarButton *barButton in badgeableBarButtons )
+    {
+        VNavigationMenuItem *menuItem = (VNavigationMenuItem *)barButton.menuItem;
+        id<VProvidesNavigationMenuItemBadge> badgeProvider = menuItem.destination;
+        id<VProvidesNavigationMenuItemBadge> customBadgeProvider = nil;
+        id customBadgeSource = [sourceViewController targetForAction:@selector(customBadgeProviderForMenuItem:) withSender:self];
+        customBadgeProvider = [customBadgeSource customBadgeProviderForMenuItem:menuItem];
+        [self registerBadgeUpdateBlockWithButton:barButton
+                                      fromSource:sourceViewController
+                                 withDestination:customBadgeProvider ?: badgeProvider
+                                        isCustom:customBadgeProvider != nil];
+    }
 }
 
 - (void)registerBadgeUpdateBlockWithButton:(VBarButton *)barButton fromSource:(id)source withDestination:(id)destination isCustom:(BOOL)isCustom
@@ -382,6 +397,20 @@ static const char kAssociatedObjectSourceViewControllerKey;
     {
         [sourceViewController.navigationController pushViewController:menuItem.destination animated:YES];
     }
+}
+
++ (UINavigationItem *)navigationItemForAccessoryItemsInViewController:(UIViewController *)viewController
+{
+    UINavigationItem *navigationItem = viewController.navigationItem;
+    if ( [viewController conformsToProtocol:@protocol(VMultipleContainerChild)] )
+    {
+        UIViewController <VMultipleContainerChild> *childViewController = (UIViewController <VMultipleContainerChild> *)viewController;
+        if ( childViewController.multipleContainerChildDelegate != nil )
+        {
+            navigationItem = [childViewController.multipleContainerChildDelegate parentNavigationItem];
+        }
+    }
+    return navigationItem;
 }
 
 @end

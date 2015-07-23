@@ -221,7 +221,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
         [self.streamCellFactory registerCellsWithCollectionView:self.collectionView];
     }
     
-    
     self.collectionView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     
     if ( self.streamDataSource == nil )
@@ -266,6 +265,8 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 {
     [super viewWillAppear:animated];
     
+    [self updateNavigationItems];
+    
     [self.dependencyManager trackViewWillAppear:self];
 
     if ( self.streamDataSource.count == 0 )
@@ -285,12 +286,12 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    [self addBadgingToNavigationItems];
+    
     [self.collectionView flashScrollIndicators];
     [self updateCellVisibilityTracking];
     [self updateCurrentlyPlayingMediaAsset];
-    
-    //Because a stream can be presented without refreshing, we need to refresh the user post icon here
-    [self updateNavigationItems];
 
     [[self.dependencyManager coachmarkManager] displayCoachmarkViewInViewController:self];
     
@@ -401,12 +402,14 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     [self addUploadProgressView];
     
-    UINavigationItem *navigationItem = self.navigationItem;
-    if ( self.multipleContainerChildDelegate != nil )
-    {
-        navigationItem = [self.multipleContainerChildDelegate parentNavigationItem];
-    }
+    UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
     [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
+}
+
+- (void)addBadgingToNavigationItems
+{
+    UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
+    [self.dependencyManager addBadgingToAccessoryScreensInNavigationItem:navigationItem fromViewController:self];
 }
 
 - (void)multipleContainerDidSetSelected:(BOOL)isDefault

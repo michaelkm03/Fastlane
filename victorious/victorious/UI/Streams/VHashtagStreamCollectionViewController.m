@@ -111,6 +111,9 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     
     // Must also call here since navigation items are set after viewDidAppear:
     [self updateUserFollowingStatus];
+    
+    UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
+    [self.dependencyManager addBadgingToAccessoryScreensInNavigationItem:navigationItem fromViewController:self];
 }
 
 - (void)hashtagsUpdated
@@ -123,7 +126,8 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     if ( self.navigationItem.rightBarButtonItem == nil )
     {
         [self.dependencyManager configureNavigationItem:self.navigationItem];
-        [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
+        UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
+        [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
         [self updateFollowStatusAnimated:NO];
     }
 }

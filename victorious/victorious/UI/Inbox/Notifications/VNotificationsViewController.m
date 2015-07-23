@@ -103,6 +103,7 @@ static int const kNotificationFetchBatchSize = 50;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self updateNavigationItem];
     [self.refreshControl beginRefreshing];
     [self.tableView setContentOffset:CGPointZero];
     [self refresh:nil];
@@ -114,7 +115,8 @@ static int const kNotificationFetchBatchSize = 50;
     [[VTrackingManager sharedInstance] startEvent:@"Notifications"];
     self.badgeNumber = 0;
     
-    [self updateNavigationItem];
+    UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
+    [self.dependencyManager addBadgingToAccessoryScreensInNavigationItem:navigationItem fromViewController:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -339,11 +341,7 @@ static int const kNotificationFetchBatchSize = 50;
 
 - (void)updateNavigationItem
 {
-    UINavigationItem *navigationItem = self.navigationItem;
-    if ( self.multipleContainerChildDelegate != nil )
-    {
-        navigationItem = [self.multipleContainerChildDelegate parentNavigationItem];
-    }
+    UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
     [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
 }
 

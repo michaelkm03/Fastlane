@@ -1082,7 +1082,8 @@
 		F0FC97871B545DB90098AFCB /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97861B545DB90098AFCB /* VSequence.m */; };
 		F0FC97961B546FBC0098AFCB /* VEditorializationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97951B546FBC0098AFCB /* VEditorializationItem.m */; };
 		F0FC97A51B547BA80098AFCB /* VStreamItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97A41B547BA80098AFCB /* VStreamItem.m */; };
-		F0FC980B1B60778E0098AFCB /* VNavigationTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC980A1B60778E0098AFCB /* VNavigationTitleView.m */; };
+		F0FC980F1B60981E0098AFCB /* directoryTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = F0FC980E1B60981E0098AFCB /* directoryTemplate.json */; };
+		F0FC98111B6149F10098AFCB /* followingTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = F0FC98101B6149F10098AFCB /* followingTemplate.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -3107,8 +3108,8 @@
 		F0FC97951B546FBC0098AFCB /* VEditorializationItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEditorializationItem.m; sourceTree = "<group>"; };
 		F0FC97A31B547BA80098AFCB /* VStreamItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamItem.h; sourceTree = "<group>"; };
 		F0FC97A41B547BA80098AFCB /* VStreamItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamItem.m; sourceTree = "<group>"; };
-		F0FC98091B60778E0098AFCB /* VNavigationTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationTitleView.h; sourceTree = "<group>"; };
-		F0FC980A1B60778E0098AFCB /* VNavigationTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNavigationTitleView.m; sourceTree = "<group>"; };
+		F0FC980E1B60981E0098AFCB /* directoryTemplate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = directoryTemplate.json; sourceTree = "<group>"; };
+		F0FC98101B6149F10098AFCB /* followingTemplate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = followingTemplate.json; sourceTree = "<group>"; };
 		F0FFBA351AD5B1DC00283936 /* VMarqueeDataDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeDataDelegate.h; sourceTree = "<group>"; };
 		F0FFBA361AD5B1EE00283936 /* VMarqueeSelectionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeSelectionDelegate.h; sourceTree = "<group>"; };
 		FA9A96A39C05C50C7D098A8E /* Pods-test.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.qa.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.qa.xcconfig"; sourceTree = "<group>"; };
@@ -3637,6 +3638,8 @@
 				D8DF72241AFEC360002EA7A5 /* Tab Menu */,
 				DB94976E1AAE66C600CCEFD0 /* VFirstTimeInstallHelper.h */,
 				DB94976F1AAE66C600CCEFD0 /* VFirstTimeInstallHelper.m */,
+				F0FC98101B6149F10098AFCB /* followingTemplate.json */,
+				F0FC980E1B60981E0098AFCB /* directoryTemplate.json */,
 				0314D3E719B46B5E00FA363C /* VLoadingViewController.h */,
 				0314D3E819B46B5E00FA363C /* VLoadingViewController.m */,
 				0314D3E919B46B5E00FA363C /* VMenuController.h */,
@@ -4098,8 +4101,6 @@
 				035ABE7B1AD7ABE400B6B1A5 /* VDependencyManager+VDefaultTemplate.m */,
 				0386E1FE1A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.h */,
 				0386E1FF1A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.m */,
-				F0FC98091B60778E0098AFCB /* VNavigationTitleView.h */,
-				F0FC980A1B60778E0098AFCB /* VNavigationTitleView.m */,
 				037D2D5D1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.h */,
 				037D2D5E1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.m */,
 				F0F04AF51B2A37CB00F6F401 /* VDependencyManager+VShareMenuItem.h */,
@@ -7099,6 +7100,7 @@
 				D8758D1C1B0FCBF4008C6C0D /* VModernRegisterViewController.storyboard in Resources */,
 				DB2A48FF19DF429700CB687B /* Main.storyboard in Resources */,
 				B074C5BD1B3B2CA800EA3FFC /* VTimeMarkView.xib in Resources */,
+				F0FC980F1B60981E0098AFCB /* directoryTemplate.json in Resources */,
 				036F38901A0C4DEA0014DF66 /* Rosario-Regular.ttf in Resources */,
 				036F38861A0C4DEA0014DF66 /* PT_Sans-Web-Bold.ttf in Resources */,
 				D85B70701B0EAF3F0038CA5B /* FindFriendsTableView.strings in Resources */,
@@ -7199,6 +7201,7 @@
 				A7B514581A464E770074282F /* VUtilityButtonCell.xib in Resources */,
 				036F38721A0C4DEA0014DF66 /* Junction-regular.otf in Resources */,
 				F089E3641AC486B40076DC4D /* VBlurredMarqueeStreamItemCell.xib in Resources */,
+				F0FC98111B6149F10098AFCB /* followingTemplate.json in Resources */,
 				D8E39BE219CB7C80007FD86A /* VTickerCell.xib in Resources */,
 				0390085D19F38D5C00FD7EDF /* VKeyboardInputAccessoryView.xib in Resources */,
 				03803DE11B0C270300B63F05 /* Purchases.storyboard in Resources */,
@@ -7469,7 +7472,6 @@
 				D85B706C1B0EAF3F0038CA5B /* VLoginButton.m in Sources */,
 				A721E9191B572454000B7901 /* VNotificationSettings+Fetcher.m in Sources */,
 				A7B514551A4517A80074282F /* VSwipeViewController.m in Sources */,
-				F0FC980B1B60778E0098AFCB /* VNavigationTitleView.m in Sources */,
 				A721E9401B572454000B7901 /* NSNotificationCenter+VNotificationDebugger.m in Sources */,
 				F0AD217D1AF43E3D001BDCC6 /* VShowcaseDirectoryCell.m in Sources */,
 				A721E9281B572454000B7901 /* VImageAsset+RestKit.m in Sources */,

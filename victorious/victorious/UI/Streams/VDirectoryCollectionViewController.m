@@ -151,14 +151,17 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     self.collectionView.delegate = self;
     
     [self refresh:self.refreshControl];
+    
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self.dependencyManager configureNavigationItem:self.navigationItem];
-    [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
     [[self.dependencyManager coachmarkManager] displayCoachmarkViewInViewController:self];
+    
+    UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
+    [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -168,6 +171,9 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     [self.dependencyManager trackViewWillDisappear:self];
     
     [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
+    
+    UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
+    [self.dependencyManager addBadgingToAccessoryScreensInNavigationItem:navigationItem fromViewController:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -178,9 +184,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     
     // Layout may have changed between awaking from nib and being added to the container of the SoS
     [self.collectionView.collectionViewLayout invalidateLayout];
-    
-    //Adds the create sequence button if possible. If not called here, the button 
-    [self updateNavigationItems];
 }
 
 - (BOOL)shouldAutorotate

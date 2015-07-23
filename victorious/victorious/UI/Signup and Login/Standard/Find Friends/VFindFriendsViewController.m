@@ -63,7 +63,8 @@
     [super viewDidAppear:animated];
     
     [self.dependencyManager configureNavigationItem:self.navigationItem ];
-    [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
+    UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
+    [self.dependencyManager addBadgingToAccessoryScreensInNavigationItem:navigationItem fromViewController:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -71,6 +72,9 @@
     [super viewWillAppear:animated];
     
     [self.dependencyManager trackViewWillAppear:self];
+    
+    UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
+    [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

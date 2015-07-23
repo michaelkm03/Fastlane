@@ -11,7 +11,6 @@
 #import "VNavigationMenuItem.h"
 #import "VAuthorizationContextProvider.h"
 #import "VAuthorizedAction.h"
-#import "VNavigationTitleView.h"
 
 NSString * const VDependencyManagerTitleImageKey = @"titleImage";
 
@@ -34,8 +33,7 @@ NSString * const VDependencyManagerTitleImageKey = @"titleImage";
     UIImage *titleImage = [self imageForKey:VDependencyManagerTitleImageKey];
     if ( titleImage != nil )
     {
-        VNavigationTitleView *titleView = [[VNavigationTitleView alloc] initWithTitleView:[[UIImageView alloc] initWithImage:titleImage] withPreferredSize:titleImage.size];
-        navigationItem.titleView = titleView;
+        navigationItem.titleView = [[UIImageView alloc] initWithImage:titleImage];
     }
 }
 

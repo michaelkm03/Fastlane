@@ -116,6 +116,8 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     [super viewWillAppear:animated];
     
+    [self updateNavigationItem];
+    
     [self.dependencyManager trackViewWillAppear:self];
     
     [self.refreshControl beginRefreshing];
@@ -127,7 +129,8 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:@"Inbox"];
     
-    [self updateNavigationItem];
+    UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
+    [self.dependencyManager addBadgingToAccessoryScreensInNavigationItem:navigationItem fromViewController:self];
     
     self.badgeNumber = [self.messageCountCoordinator unreadMessageCount];
     
@@ -160,11 +163,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
 - (void)updateNavigationItem
 {
-    UINavigationItem *navigationItem = self.navigationItem;
-    if ( self.multipleContainerChildDelegate != nil )
-    {
-        navigationItem = [self.multipleContainerChildDelegate parentNavigationItem];
-    }
+    UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
     [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
 }
 

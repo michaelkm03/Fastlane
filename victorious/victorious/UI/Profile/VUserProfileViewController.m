@@ -214,6 +214,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     self.didEndViewWillAppear = YES;
     [self attemptToRefreshProfileUI];
     
+    [self addAccessoryItems];
+    
     self.navigationViewfloatingController.animationEnabled = YES;
     
     self.navigationItem.title = self.title;
@@ -237,11 +239,11 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     [super viewDidAppear:animated];
     
+    [self addBadgingToAccessoryItems];
+    
     [[VTrackingManager sharedInstance] setValue:VTrackingValueUserProfile forSessionParameterWithKey:VTrackingKeyContext];
     
     [self setupFloatingView];
-    
-    [self updateAccessoryItems];
     
     // Hide title if necessary
     [self updateTitleVisibilityWithVerticalOffset:self.collectionView.contentOffset.y];
@@ -249,8 +251,21 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)updateAccessoryItems
 {
+    [self addAccessoryItems];
+    [self addBadgingToAccessoryItems];
+}
+
+- (void)addAccessoryItems
+{
     [self.dependencyManager configureNavigationItem:self.navigationItem];
-    [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
+    UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
+    [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
+}
+
+- (void)addBadgingToAccessoryItems
+{
+    UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
+    [self.dependencyManager addBadgingToAccessoryScreensInNavigationItem:navigationItem fromViewController:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

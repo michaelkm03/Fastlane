@@ -126,6 +126,9 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 {
     [super viewWillAppear:animated];
     
+    UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
+    [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
+    
     [self.dependencyManager trackViewWillAppear:self];
     
     [self updateLogoutButtonState];
@@ -167,7 +170,8 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:VTrackingEventSettingsDidAppear];
     
-    [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
+    UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
+    [self.dependencyManager addBadgingToAccessoryScreensInNavigationItem:navigationItem fromViewController:self];
 }
 
 - (void)updateResetCoachmarksCell

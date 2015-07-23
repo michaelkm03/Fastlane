@@ -147,7 +147,8 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
     }
     
-    [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
+    UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
+    [self.dependencyManager addBadgingToAccessoryScreensInNavigationItem:navigationItem fromViewController:self];
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -172,6 +173,9 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
+    [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
     
     [self.dependencyManager trackViewWillAppear:self];
 }
