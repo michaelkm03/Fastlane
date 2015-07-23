@@ -317,7 +317,11 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
 
 - (void)mediaTapped:(UIButton *)sender
 {
-    if ([self.mediaTapDelegate respondsToSelector:@selector(tappedMediaWithURL:previewImage:fromView:)])
+    if (self.onMediaTapped != nil)
+    {
+        self.onMediaTapped();
+    }
+    else if ([self.mediaTapDelegate respondsToSelector:@selector(tappedMediaWithURL:previewImage:fromView:)])
     {
         [self.mediaTapDelegate tappedMediaWithURL:self.mediaURL previewImage:self.mediaThumbnailView.image fromView:self.mediaThumbnailView];
     }
