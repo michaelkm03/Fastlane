@@ -28,7 +28,6 @@
 // Permissions
 #import "VPermissionCamera.h"
 #import "VPermissionMicrophone.h"
-#import "VPermissionProfilePicture.h"
 
 static NSString * const kReverseCameraIconKey = @"reverseCameraIcon";
 static NSString * const kCameraScreenKey = @"videoCameraScreen";
@@ -338,6 +337,11 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 
 - (BOOL)shouldShowTapsForVideoPreviewView:(VCaptureVideoPreviewView *)previewView
 {
+    if (self.captureController == nil)
+    {
+        return NO;
+    }
+    
     AVCaptureDevice *currentDevice = self.captureController.currentDevice;
     return [currentDevice isFocusPointOfInterestSupported];
 }
@@ -346,29 +350,43 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 
 - (void)checkPermissionsWithCompletion:(void (^)(void))completion
 {
-#warning Refactor for video and audio
     // If we try to start session after user has already denied prompt, dont recheck for permissions
     if (self.userDeniedPrePrompt)
     {
         return;
     }
     
-    VPermission *cameraPermission;
-    if (self.cameraContext == VCameraContextProfileImage || self.cameraContext == VCameraContextProfileImageRegistration)
+    VPermission *cameraPermission = [[VPermissionCamera alloc] initWithDependencyManager:self.dependencyManager];
+    [self requestPermissionWithPermission:cameraPermission
+                               completion:^
     {
-        cameraPermission = [[VPermissionCamera alloc] initWithDependencyManager:self.dependencyManager];
-    }
-    else
-    {
-        cameraPermission = [[VPermissionProfilePicture alloc] initWithDependencyManager:self.dependencyManager];
-    }
-    
-    BOOL shouldShowPreSystemPermission = ([cameraPermission permissionState] != VPermissionStateSystemDenied);
-    
+        if ([cameraPermission permissionState] == VPermissionStateAuthorized)
+        {
+            VPermission *microphonePermission = [[VPermissionMicrophone alloc] initWithDependencyManager:self.dependencyManager];
+            [self requestPermissionWithPermission:microphonePermission
+                                       completion:^
+            {
+                if ([microphonePermission permissionState] == VPermissionStateAuthorized)
+                {
+                    if (completion != nil)
+                    {
+                        completion();
+                    }
+                }
+            }];
+        }
+    }];
+}
+
+- (void)requestPermissionWithPermission:(VPermission *)permission
+                             completion:(void (^)(void))completion
+{
+    BOOL shouldShowPreSystemPermission = ([permission permissionState] != VPermissionStateSystemDenied);
     void (^permissionHandler)(BOOL granted, VPermissionState state, NSError *error) = ^void(BOOL granted, VPermissionState state, NSError *error)
     {
         if (granted)
         {
+            
             self.userDeniedPrePrompt = NO;
             if (completion)
             {
@@ -390,12 +408,12 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
     // Request camera permission
     if (shouldShowPreSystemPermission)
     {
-        [cameraPermission requestPermissionInViewController:self
+        [permission requestPermissionInViewController:self
                                       withCompletionHandler:permissionHandler];
     }
     else
     {
-        [cameraPermission requestSystemPermissionWithCompletion:permissionHandler];
+        [permission requestSystemPermissionWithCompletion:permissionHandler];
     }
 }
 
@@ -428,8 +446,6 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
                        VLog(@"Encoder encountered error: %@", error);
                        videoEncoder.recording = NO;
                        [self displayShortError:NSLocalizedString(@"VideoCaptureFailed", @"")];
-//                       [self clearRecordedVideoAndResetControl];
-//                       self.captureController.videoEncoder = nil;
                    });
 }
 
@@ -464,7 +480,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
                    });
 }
 
-#pragma mark - Duplicate code factor out?
+#pragma mark - Error notifications
 
 - (void)displayShortError:(NSString *)errorText
 {
