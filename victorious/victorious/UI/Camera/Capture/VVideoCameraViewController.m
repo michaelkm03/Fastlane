@@ -290,7 +290,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
                             // Handle Error or show previewView
                             if (error != nil)
                             {
-                                [self displayShortError:NSLocalizedString(@"CameraFailed", nil)]
+                                [self displayShortError:NSLocalizedString(@"CameraFailed", nil)];
                             }
                         });
      }];
