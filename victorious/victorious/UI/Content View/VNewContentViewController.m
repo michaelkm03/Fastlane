@@ -357,9 +357,11 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
+    __weak typeof(self) welf = self;
     void (^rotationUpdate)() = ^
     {
-        [self handleRotationToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation];
+        __strong typeof(welf) strongSelf = welf;
+        [strongSelf handleRotationToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation];
     };
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
      {
@@ -1464,7 +1466,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
          [inputAccessoryView clearTextAndResign];
          welf.publishParameters.mediaToUploadURL = nil;
          
-         NSNumber *experimentValue = [self.dependencyManager numberForKey:VDependencyManagerPauseVideoWhenCommentingKey];
+         NSNumber *experimentValue = [welf.dependencyManager numberForKey:VDependencyManagerPauseVideoWhenCommentingKey];
          if (experimentValue != nil)
          {
              if ([experimentValue boolValue])
@@ -1653,10 +1655,13 @@ referenceSizeForHeaderInSection:(NSInteger)section
         [self.likeButton addTarget:self action:@selector(selectedLikeButton:) forControlEvents:UIControlEventTouchUpInside];
         
         self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
+        
+        __weak typeof(self) welf = self;
         [self.expressionsObserver startObservingWithSequence:self.viewModel.sequence onUpdate:^
          {
-             [self.likeButton setActive:sequence.isLikedByMainUser.boolValue];
-             [self.likeButton setCount:sequence.likeCount.integerValue];
+             __strong typeof(self) strongSelf = welf;
+             [strongSelf.likeButton setActive:sequence.isLikedByMainUser.boolValue];
+             [strongSelf.likeButton setCount:sequence.likeCount.integerValue];
          }];
         if (self.viewModel.type == VContentViewTypeVideo)
         {
