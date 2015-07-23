@@ -19,8 +19,7 @@ static NSString * const kLockedBallisticBackgroundIconKey = @"locked_ballistic_b
 
 @interface VExperienceEnhancerCell ()
 
-@property (weak, nonatomic) IBOutlet ExperienceEnhancerIconView *experienceEnhancerIconView;
-@property (weak, nonatomic) IBOutlet ExperienceEnhancerIconView *backgroundEnhancerIconView;
+@property (weak, nonatomic) IBOutlet ExperienceEnhancerAnimatingIconView *ballisticIconView;
 @property (weak, nonatomic) IBOutlet UILabel *experienceEnhancerLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSpaceIconImageViewToContianerConstraint;
 @property (nonatomic, assign) BOOL isUnhighlighting;
@@ -70,9 +69,14 @@ static NSString * const kLockedBallisticBackgroundIconKey = @"locked_ballistic_b
                         options:UIViewAnimationOptionBeginFromCurrentState
                      animations:^
      {
-         self.experienceEnhancerIconView.alpha = highlighted ? 0.5f : 1.0f;
+         self.ballisticIconView.alpha = highlighted ? 0.5f : 1.0f;
      }
                      completion:nil];
+    
+    if (highlighted)
+    {
+        [self.ballisticIconView animate:10 startValue:0 endValue:1];
+    }
 }
 
 #pragma mark - Property Accessors
@@ -86,8 +90,7 @@ static NSString * const kLockedBallisticBackgroundIconKey = @"locked_ballistic_b
 - (void)setExperienceEnhancerIcon:(UIImage *)experienceEnhancerIcon
 {
     _experienceEnhancerIcon = experienceEnhancerIcon;
-    self.experienceEnhancerIconView.iconImage = experienceEnhancerIcon;
-    self.backgroundEnhancerIconView.iconImage = experienceEnhancerIcon;
+    self.ballisticIconView.iconImage = experienceEnhancerIcon;
 }
 
 - (void)setEnabled:(BOOL)enabled
@@ -109,8 +112,7 @@ static NSString * const kLockedBallisticBackgroundIconKey = @"locked_ballistic_b
     UIImage *image = self.isLocked ? [self.dependencyManager imageForKey:kLockedBallisticBackgroundIconKey] : [self.dependencyManager imageForKey:kUnlockedBallisticBackgroundIconKey];
     if ( image != nil )
     {
-        self.experienceEnhancerIconView.overlayImage = image;
-        self.backgroundEnhancerIconView.overlayImage = image;
+        self.ballisticIconView.overlayImage = image;
     }
 }
 

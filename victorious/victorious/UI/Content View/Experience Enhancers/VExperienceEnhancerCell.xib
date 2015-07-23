@@ -14,11 +14,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="50" height="73"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6oe-2g-och" customClass="ExperienceEnhancerIconView" customModule="victorious" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="5" width="50" height="57"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Fd-IN-3ez" customClass="ExperienceEnhancerIconView" customModule="victorious" customModuleProvider="target">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Fd-IN-3ez" customClass="ExperienceEnhancerAnimatingIconView" customModule="victorious" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="5" width="50" height="57"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -38,20 +34,15 @@
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <constraints>
-                <constraint firstItem="1Fd-IN-3ez" firstAttribute="centerY" secondItem="6oe-2g-och" secondAttribute="centerY" id="3C4-4a-6jJ"/>
-                <constraint firstItem="1Fd-IN-3ez" firstAttribute="centerX" secondItem="6oe-2g-och" secondAttribute="centerX" id="5py-gR-xJ0"/>
                 <constraint firstItem="1Fd-IN-3ez" firstAttribute="top" secondItem="Ljv-sO-Hft" secondAttribute="top" constant="5" id="6pM-0u-uIB"/>
                 <constraint firstItem="1Fd-IN-3ez" firstAttribute="top" secondItem="OTw-YD-uun" secondAttribute="top" constant="-62" id="FLl-Rh-2Hh"/>
                 <constraint firstItem="OTw-YD-uun" firstAttribute="leading" secondItem="Ljv-sO-Hft" secondAttribute="leading" id="IGV-3s-8bw"/>
-                <constraint firstItem="1Fd-IN-3ez" firstAttribute="width" secondItem="6oe-2g-och" secondAttribute="width" id="eeR-E9-mVK"/>
-                <constraint firstItem="1Fd-IN-3ez" firstAttribute="height" secondItem="6oe-2g-och" secondAttribute="height" id="f6W-Zf-K0j"/>
                 <constraint firstAttribute="trailing" secondItem="OTw-YD-uun" secondAttribute="trailing" id="hqX-k1-lqK"/>
                 <constraint firstAttribute="trailing" secondItem="1Fd-IN-3ez" secondAttribute="trailing" id="nKM-NP-fxl"/>
                 <constraint firstItem="1Fd-IN-3ez" firstAttribute="leading" secondItem="Ljv-sO-Hft" secondAttribute="leading" id="rIS-EG-LZw"/>
             </constraints>
             <connections>
-                <outlet property="backgroundEnhancerIconView" destination="6oe-2g-och" id="ydj-EY-6U3"/>
-                <outlet property="experienceEnhancerIconView" destination="1Fd-IN-3ez" id="61P-ug-foG"/>
+                <outlet property="ballisticIconView" destination="1Fd-IN-3ez" id="e0f-uj-TGj"/>
                 <outlet property="experienceEnhancerLabel" destination="OTw-YD-uun" id="dBC-ow-2b9"/>
             </connections>
         </collectionViewCell>

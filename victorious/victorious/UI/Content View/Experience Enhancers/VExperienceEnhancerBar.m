@@ -174,7 +174,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     {
         return;
     }
-   
+    
     if ( ![VObjectManager sharedManager].authorized )  // Check if the user is logged in first
     {
         id<VExperienceEnhancerResponder>responder = [self v_targetConformingToProtocol:@protocol(VExperienceEnhancerResponder)];
