@@ -356,7 +356,6 @@ static NSString * const kInitialKey = @"initial";
 - (void)updateBadge:(UIViewController *)viewController
 {
     [self.selector updateBadging];
-    [self setBadgeNumberUpdateBlock:self.badgeNumberUpdateBlock];
 }
 
 #pragma mark - VProvidesNavigationMenuItemBadge

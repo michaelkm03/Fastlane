@@ -39,6 +39,7 @@
 #import "UIResponder+VResponderChain.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VTracking.h"
+#import "VBadgeResponder.h"
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 
@@ -544,7 +545,29 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
                                                                   successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
          {
              [self.messageCountCoordinator updateUnreadMessageCount];
+             [self updateBadges];
          } failBlock:nil];
+        
+        [self.dependencyManager.objectManager loadNotificationsListWithPageType:VPageTypeFirst
+                                                                   successBlock:^(NSOperation * __nullable operation, id  __nullable result, NSArray * __nonnull resultObjects)
+         {
+             // sucess
+             [self updateBadges];
+         }
+                                                                      failBlock:^(NSOperation * __nullable operation, NSError * __nullable error)
+         {
+             // fail
+         }];
+    }
+}
+
+- (void)updateBadges
+{
+    id<VBadgeResponder> badgeResponder = [[self nextResponder] targetForAction:@selector(updateBadge:)
+                                                                    withSender:nil];
+    if ([badgeResponder respondsToSelector:@selector(updateBadge:)])
+    {
+        [badgeResponder updateBadge:self];
     }
 }
 

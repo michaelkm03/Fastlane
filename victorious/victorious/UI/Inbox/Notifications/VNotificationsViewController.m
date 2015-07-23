@@ -34,6 +34,7 @@
 static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
 static CGFloat const kVNotificationCellHeight = 64.0f;
 static int const kNotificationFetchBatchSize = 50;
+NSString * const VNotificationViewControllerPushReceivedNotification = @"VInboxContainerViewControllerInboxPushReceivedNotification";
 
 @interface VNotificationsViewController () <VNavigationDestination>
 
@@ -59,6 +60,8 @@ static int const kNotificationFetchBatchSize = 50;
         
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(applicationDidBecomeActive:) name:VApplicationDidBecomeActiveNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(inboxMessageNotification:) name:VNotificationViewControllerPushReceivedNotification object:nil];
+
         [viewController loggedInChanged:nil];
     }
     return viewController;
@@ -99,6 +102,7 @@ static int const kNotificationFetchBatchSize = 50;
     self.tableView.estimatedRowHeight = kVNotificationCellHeight;
     self.tableView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.automaticallyAdjustsScrollViewInsets = NO;
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -289,6 +293,11 @@ static int const kNotificationFetchBatchSize = 50;
 }
 
 #pragma mark - NSNotification handlers
+
+- (void)inboxMessageNotification:(NSNotification *)notification
+{
+    [self fetchNotificationCount];
+}
 
 - (void)setBadgeNumber:(NSInteger)badgeNumber
 {
