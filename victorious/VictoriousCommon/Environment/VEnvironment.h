@@ -30,4 +30,9 @@ extern NSString * const VEnvironmentErrorKey;
  */
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 
+/**
+ Returns an array of VEnvironment objects loaded from the plist file at the given file URL.
+ */
++ (NSArray *)environmentsFromPlist:(NSURL *)plistFile;
+
 @end

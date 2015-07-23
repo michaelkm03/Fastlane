@@ -119,6 +119,8 @@
 		0361058A194154F40069D49E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03610589194154F40069D49E /* SystemConfiguration.framework */; };
 		0362B42119F5F6950036B9C8 /* VUploadProgressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B83B5E19E0992400DC04E4 /* VUploadProgressView.xib */; };
 		036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AE5EC18FF0C0600A74BDA /* VReachability.m */; };
+		036DE7C01B607A600038A25E /* VEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951161B28AB9A00D9DB0A /* VEnvironment.m */; };
+		036DE7C11B607A610038A25E /* VEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951161B28AB9A00D9DB0A /* VEnvironment.m */; };
 		036E87B21ACB6B3F00E5AAAD /* VContentViewFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 036E87B11ACB6B3F00E5AAAD /* VContentViewFactory.m */; };
 		036F38631A0C4DEA0014DF66 /* Arimo-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38131A0C4DE90014DF66 /* Arimo-Bold.ttf */; };
 		036F38641A0C4DEA0014DF66 /* Arimo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38141A0C4DE90014DF66 /* Arimo-Regular.ttf */; };
@@ -597,7 +599,6 @@
 		A779510E1B27DBBD00D9DB0A /* VSuggestedUsersDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A779510D1B27DBBD00D9DB0A /* VSuggestedUsersDataSource.m */; };
 		A77951121B27DDB800D9DB0A /* VSuggestedUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951101B27DDB800D9DB0A /* VSuggestedUserCell.m */; };
 		A77951131B27DDB800D9DB0A /* VSuggestedUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A77951111B27DDB800D9DB0A /* VSuggestedUserCell.xib */; };
-		A77951191B28AB9A00D9DB0A /* VEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951161B28AB9A00D9DB0A /* VEnvironment.m */; };
 		A779511A1B28AB9A00D9DB0A /* VEnvironmentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951181B28AB9A00D9DB0A /* VEnvironmentManager.m */; };
 		A779512E1B28F61C00D9DB0A /* VContentThumbnailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A779512D1B28F61C00D9DB0A /* VContentThumbnailsViewController.m */; };
 		A77951311B28F7F400D9DB0A /* VContentThumbnailsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951301B28F7F400D9DB0A /* VContentThumbnailsDataSource.m */; };
@@ -2219,10 +2220,10 @@
 		A779510F1B27DDB800D9DB0A /* VSuggestedUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSuggestedUserCell.h; path = "victorious/UI/Suggested Users/VSuggestedUserCell.h"; sourceTree = SOURCE_ROOT; };
 		A77951101B27DDB800D9DB0A /* VSuggestedUserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSuggestedUserCell.m; path = "victorious/UI/Suggested Users/VSuggestedUserCell.m"; sourceTree = SOURCE_ROOT; };
 		A77951111B27DDB800D9DB0A /* VSuggestedUserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VSuggestedUserCell.xib; path = "victorious/UI/Suggested Users/VSuggestedUserCell.xib"; sourceTree = SOURCE_ROOT; };
-		A77951151B28AB9A00D9DB0A /* VEnvironment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VEnvironment.h; path = Environment/VEnvironment.h; sourceTree = "<group>"; };
-		A77951161B28AB9A00D9DB0A /* VEnvironment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VEnvironment.m; path = Environment/VEnvironment.m; sourceTree = "<group>"; };
-		A77951171B28AB9A00D9DB0A /* VEnvironmentManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VEnvironmentManager.h; path = Environment/VEnvironmentManager.h; sourceTree = "<group>"; };
-		A77951181B28AB9A00D9DB0A /* VEnvironmentManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VEnvironmentManager.m; path = Environment/VEnvironmentManager.m; sourceTree = "<group>"; };
+		A77951151B28AB9A00D9DB0A /* VEnvironment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEnvironment.h; sourceTree = "<group>"; };
+		A77951161B28AB9A00D9DB0A /* VEnvironment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEnvironment.m; sourceTree = "<group>"; };
+		A77951171B28AB9A00D9DB0A /* VEnvironmentManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEnvironmentManager.h; sourceTree = "<group>"; };
+		A77951181B28AB9A00D9DB0A /* VEnvironmentManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEnvironmentManager.m; sourceTree = "<group>"; };
 		A779512C1B28F61C00D9DB0A /* VContentThumbnailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContentThumbnailsViewController.h; path = "victorious/UI/Suggested Users/VContentThumbnailsViewController.h"; sourceTree = SOURCE_ROOT; };
 		A779512D1B28F61C00D9DB0A /* VContentThumbnailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentThumbnailsViewController.m; path = "victorious/UI/Suggested Users/VContentThumbnailsViewController.m"; sourceTree = SOURCE_ROOT; };
 		A779512F1B28F7F400D9DB0A /* VContentThumbnailsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContentThumbnailsDataSource.h; path = "victorious/UI/Suggested Users/VContentThumbnailsDataSource.h"; sourceTree = SOURCE_ROOT; };
@@ -3893,6 +3894,15 @@
 			path = "Template Loader";
 			sourceTree = "<group>";
 		};
+		034527D81B60788B00E990BB /* Environment */ = {
+			isa = PBXGroup;
+			children = (
+				A77951151B28AB9A00D9DB0A /* VEnvironment.h */,
+				A77951161B28AB9A00D9DB0A /* VEnvironment.m */,
+			);
+			path = Environment;
+			sourceTree = "<group>";
+		};
 		035926CE1B1EA33400E910A7 /* Quicksand */ = {
 			isa = PBXGroup;
 			children = (
@@ -4207,6 +4217,7 @@
 		0392695B1B5C774400FCD0AA /* VictoriousCommon */ = {
 			isa = PBXGroup;
 			children = (
+				034527D81B60788B00E990BB /* Environment */,
 				039269821B5C9DD600FCD0AA /* PrefixHeader.pch */,
 				034527A51B604A9100E990BB /* Template Loader */,
 			);
@@ -5382,12 +5393,10 @@
 		A77951141B28AB6700D9DB0A /* Environment */ = {
 			isa = PBXGroup;
 			children = (
-				A77951151B28AB9A00D9DB0A /* VEnvironment.h */,
-				A77951161B28AB9A00D9DB0A /* VEnvironment.m */,
 				A77951171B28AB9A00D9DB0A /* VEnvironmentManager.h */,
 				A77951181B28AB9A00D9DB0A /* VEnvironmentManager.m */,
 			);
-			name = Environment;
+			path = Environment;
 			sourceTree = "<group>";
 		};
 		A77AD4C41A1EFA3D00142F24 /* Automation */ = {
@@ -7714,6 +7723,7 @@
 			files = (
 				034527CE1B606F8200E990BB /* VDownloadOperation.m in Sources */,
 				034527D01B606F8200E990BB /* VTemplatePackageManager.m in Sources */,
+				036DE7C11B607A610038A25E /* VEnvironment.m in Sources */,
 				034527D11B606F8200E990BB /* VTemplateSerialization.m in Sources */,
 				034527CD1B606F8200E990BB /* VBulkDownloadOperation.m in Sources */,
 				034527CF1B606F8200E990BB /* VTemplateDownloadOperation.m in Sources */,
@@ -7734,6 +7744,7 @@
 			files = (
 				039269791B5C871700FCD0AA /* VDownloadOperation.m in Sources */,
 				039269781B5C871700FCD0AA /* VBulkDownloadOperation.m in Sources */,
+				036DE7C01B607A600038A25E /* VEnvironment.m in Sources */,
 				0392697A1B5C871700FCD0AA /* VTemplateDownloadOperation.m in Sources */,
 				0392697C1B5C871700FCD0AA /* VTemplateSerialization.m in Sources */,
 				0392697B1B5C871700FCD0AA /* VTemplatePackageManager.m in Sources */,
@@ -8137,7 +8148,6 @@
 				A7D7079C1A7C144C00D9993F /* VEndCardAnimator.m in Sources */,
 				D86448A11A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m in Sources */,
 				032F49451B45A424005325CA /* VEnvironment+VDataCacheID.m in Sources */,
-				A77951191B28AB9A00D9DB0A /* VEnvironment.m in Sources */,
 				03CE670019B640CD0011BB9E /* VDeviceInfo.m in Sources */,
 				C30AA4DD1B055C000010CEFE /* VPermissionAlertPresentationController.m in Sources */,
 				A77AD5011A2011E000142F24 /* UIActionSheet+VBlocks.m in Sources */,
@@ -9773,6 +9783,7 @@
 				034527C61B606F5E00E990BB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		039269501B5C720400FCD0AA /* Build configuration list for PBXNativeTarget "downloadtemplate" */ = {
 			isa = XCConfigurationList;

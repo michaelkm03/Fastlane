@@ -44,6 +44,28 @@ NSString * const VEnvironmentErrorKey = @"com.victorious.VEnvironment.ErrorKey";
     return [self initWithName:name baseURL:[NSURL URLWithString:baseURL] appID:appID];
 }
 
++ (NSArray *)environmentsFromPlist:(NSURL *)plistFile
+{
+    NSInputStream *fileStream = [[NSInputStream alloc] initWithURL:plistFile];
+    [fileStream open];
+    NSArray *environmentsPlist = [NSPropertyListSerialization propertyListWithStream:fileStream options:0 format:nil error:nil];
+    [fileStream close];
+    
+    NSMutableArray *environments = [[NSMutableArray alloc] initWithCapacity:environmentsPlist.count];
+    for ( NSDictionary *environmentDictionary in environmentsPlist )
+    {
+        if ( [environmentDictionary isKindOfClass:[NSDictionary class]] )
+        {
+            VEnvironment *environment = [[VEnvironment alloc] initWithDictionary:environmentDictionary];
+            if ( environment != nil )
+            {
+                [environments addObject:environment];
+            }
+        }
+    }
+    return environments;
+}
+
 #pragma mark - NSCoding
 
 - (instancetype)initWithCoder:(NSCoder *)coder
