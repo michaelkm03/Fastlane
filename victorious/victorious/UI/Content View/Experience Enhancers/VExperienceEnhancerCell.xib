@@ -15,10 +15,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Fd-IN-3ez" customClass="ExperienceEnhancerAnimatingIconView" customModule="victorious" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="5" width="50" height="57"/>
+                        <rect key="frame" x="0.0" y="5" width="50" height="50"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="width" secondItem="1Fd-IN-3ez" secondAttribute="height" multiplier="50:57" id="4xT-B5-suX"/>
+                            <constraint firstAttribute="width" secondItem="1Fd-IN-3ez" secondAttribute="height" multiplier="1:1" id="4xT-B5-suX"/>
                         </constraints>
                     </view>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OTw-YD-uun">
