@@ -28,8 +28,10 @@
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VDependencyManager+VUserProfile.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "VLightboxTransitioningDelegate.h"
+#import "VVideoLightboxViewController.h"
 
-@interface VMessageViewController () <VMessageTableDataDelegate>
+@interface VMessageViewController () <VMessageTableDataDelegate, VCommentMediaTapDelegate>
 
 @property (nonatomic, readwrite) VMessageTableDataSource *tableDataSource;
 @property (nonatomic, strong)    VDependencyManager      *dependencyManager;
@@ -181,7 +183,8 @@
         [cell.commentTextView.mediaThumbnailView sd_setImageWithURL:[NSURL URLWithString:message.thumbnailPath]];
         if ([message.mediaPath v_hasVideoExtension])
         {
-            cell.commentTextView.onMediaTapped = [cell.commentTextView standardMediaTapHandlerWithMediaURL:[NSURL URLWithString:message.mediaPath] presentingViewController:self];
+//            cell.commentTextView.onMediaTapped = [cell.commentTextView standardMediaTapHandlerWithMediaURL:[NSURL URLWithString:message.mediaPath] presentingViewController:self];
+            cell.commentTextView.mediaTapDelegate = self;
             cell.commentTextView.playIcon.hidden = NO;
         }
     }
@@ -242,6 +245,24 @@
     {
         [self loadNextPageAction];
     }
+}
+
+#pragma mark - Media Tap Delegate
+
+- (void)tappedMediaWithURL:(NSURL *)mediaURL previewImage:(UIImage *)image fromView:(UIView *)view
+{
+    VVideoLightboxViewController *lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:image videoURL:mediaURL];
+    [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox referenceView:view];
+    
+    __weak typeof(self) weakSelf = self;
+    lightbox.onCloseButtonTapped = ^(void)
+    {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        [strongSelf dismissViewControllerAnimated:YES completion:nil];
+    };
+    lightbox.onVideoFinished = lightbox.onCloseButtonTapped;
+    lightbox.titleForAnalytics = @"Video Comment";
+    [self presentViewController:lightbox animated:YES completion:nil];
 }
 
 @end

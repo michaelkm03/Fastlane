@@ -10,6 +10,12 @@
 
 #import "VVideoView.h"
 
+@protocol VCommentMediaTapDelegate <NSObject>
+
+- (void)tappedMediaWithURL:(NSURL *)mediaURL previewImage:(UIImage *)image fromView:(UIView *)view;
+
+@end
+
 @class VTagSensitiveTextView;
 
 /**
@@ -38,6 +44,9 @@ typedef NS_ENUM(NSInteger, VCommentMediaViewType)
 @property (nonatomic)                 BOOL               hasMedia;                ///< If YES, the size of the media thumbnail is included in the intrinsicContentSize
 @property (nonatomic, copy)           void               (^onMediaTapped)(); ///< Called when the user taps the media icon
 
+@property (nonatomic, strong) NSURL *mediaURL;
+@property (nonatomic, weak) id<VCommentMediaTapDelegate> mediaTapDelegate;
+
 @property (nonatomic) UIFont *textFont;
 @property (nonatomic, strong) VTagSensitiveTextView *textView;
 @property (nonatomic, strong) NSURL *autoplayURL;
@@ -55,14 +64,6 @@ typedef NS_ENUM(NSInteger, VCommentMediaViewType)
 /**
 Same as above but without a custom font.
  */+ (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text withMedia:(BOOL)hasMedia;
-
-/**
- Returns a block that, when invoked, presents the standard media player, 
- playing the given mediaURL, from the given view controller.
- 
- @return a block that can be assigned to the onMediaTapped property
- */
-- (void(^)(void))standardMediaTapHandlerWithMediaURL:(NSURL *)mediaURL presentingViewController:(UIViewController *)presentingViewController;
 
 /**
  Removes common customizations (text, images, etc) and returns this view to a pristine state.

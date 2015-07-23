@@ -317,9 +317,9 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
 
 - (void)mediaTapped:(UIButton *)sender
 {
-    if (self.onMediaTapped)
+    if ([self.mediaTapDelegate respondsToSelector:@selector(tappedMediaWithURL:previewImage:fromView:)])
     {
-        self.onMediaTapped();
+        [self.mediaTapDelegate tappedMediaWithURL:self.mediaURL previewImage:self.mediaThumbnailView.image fromView:self.mediaThumbnailView];
     }
 }
 
@@ -380,27 +380,6 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
     }
     CGFloat mediaSize = hasMedia ? width + mediaSpacing : 0.0f;
     return VCEIL(CGRectGetHeight(boundingRect)) + mediaSize;
-}
-
-- (void(^)(void))standardMediaTapHandlerWithMediaURL:(NSURL *)mediaURL presentingViewController:(UIViewController *)presentingViewController
-{
-    typeof(self) __weak weakSelf = self;
-    return ^(void)
-    {
-        typeof(weakSelf) __strong strongSelf = weakSelf;
-        if (strongSelf)
-        {
-            VVideoLightboxViewController *lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:strongSelf.mediaThumbnailView.image videoURL:mediaURL];
-            [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox referenceView:strongSelf.mediaThumbnailView];
-            lightbox.onCloseButtonTapped = ^(void)
-            {
-                [presentingViewController dismissViewControllerAnimated:YES completion:nil];
-            };
-            lightbox.onVideoFinished = lightbox.onCloseButtonTapped;
-            lightbox.titleForAnalytics = @"Video Comment";
-            [presentingViewController presentViewController:lightbox animated:YES completion:nil];
-        }
-    };
 }
 
 - (void)resetView
