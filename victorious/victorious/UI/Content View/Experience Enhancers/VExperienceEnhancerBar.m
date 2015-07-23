@@ -90,6 +90,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VExperienceEnhancerCell *cell, NSUInteger idx, BOOL *stop)
     {
         cell.enabled = _enabled;
+        [cell startCooldown];
     }];
 }
 
@@ -137,7 +138,26 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     experienceEnhancerCell.isLocked = enhancerForIndexPath.isLocked;
     experienceEnhancerCell.enabled = self.enabled;
     experienceEnhancerCell.dependencyManager = self.dependencyManager;
+    
+    // Update cooldown values
+    [self updateCooldownValuesForEnhancerCell:experienceEnhancerCell enhancer:enhancerForIndexPath];
+
+    if (self.enabled)
+    {
+        // Start cooldown animation if necessary
+        [experienceEnhancerCell startCooldown];
+    }
+    
     return experienceEnhancerCell;
+}
+
+- (void)updateCooldownValuesForEnhancerCell:(VExperienceEnhancerCell *)cell enhancer:(VExperienceEnhancer *)enhancer
+{
+    cell.cooldownStartValue = 0;
+    cell.cooldownEndValue = 1;
+    NSTimeInterval secondsUntilCooldownIsOver = [enhancer secondsUntilCooldownIsOver];
+    NSLog(@"%f", secondsUntilCooldownIsOver);
+    cell.cooldownDuration = secondsUntilCooldownIsOver;
 }
 
 #pragma mark - KVOConroller
@@ -196,6 +216,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 - (void)selectExperienceEnhancerAtIndexPath:(NSIndexPath *)indexPath
 {
     VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
+    VExperienceEnhancerCell *experienceEnhancerCell = (VExperienceEnhancerCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
     if ( enhancerForIndexPath.isLocked  ) // Check if the user must buy this experience enhancer first
     {
         id<VExperienceEnhancerResponder>responder = [self v_targetConformingToProtocol:@protocol(VExperienceEnhancerResponder)];
@@ -205,19 +226,24 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     else
     {
         // Increment the vote count
-        [enhancerForIndexPath vote];
-        
-        // Call the selection block (configured in VNewContentViewController) to play the animations
-        if ( self.selectionBlock != nil )
+        if ( [enhancerForIndexPath vote] )
         {
-            UICollectionViewCell *selectedCell = [self.collectionView cellForItemAtIndexPath:indexPath];
-            CGPoint convertedCenter = [selectedCell.superview convertPoint:selectedCell.center toView:self];
-            self.selectionBlock(enhancerForIndexPath, convertedCenter);
-        }
-        
-        if ( [self.delegate respondsToSelector:@selector(experienceEnhancerSelected:)] )
-        {
-            [self.delegate experienceEnhancerSelected:enhancerForIndexPath];
+            // Restart cooldown
+            [self updateCooldownValuesForEnhancerCell:experienceEnhancerCell enhancer:enhancerForIndexPath];
+            [experienceEnhancerCell startCooldown];
+            
+            // Call the selection block (configured in VNewContentViewController) to play the animations
+            if ( self.selectionBlock != nil )
+            {
+                UICollectionViewCell *selectedCell = [self.collectionView cellForItemAtIndexPath:indexPath];
+                CGPoint convertedCenter = [selectedCell.superview convertPoint:selectedCell.center toView:self];
+                self.selectionBlock(enhancerForIndexPath, convertedCenter);
+            }
+            
+            if ( [self.delegate respondsToSelector:@selector(experienceEnhancerSelected:)] )
+            {
+                [self.delegate experienceEnhancerSelected:enhancerForIndexPath];
+            }
         }
     }
 }

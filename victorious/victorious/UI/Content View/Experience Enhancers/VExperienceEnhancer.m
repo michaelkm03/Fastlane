@@ -48,6 +48,7 @@
         _contentMode = voteType.contentMode;
         _flightDuration = (float)voteType.flightDuration.unsignedIntegerValue / 1000.0f;
         _animationDuration = (float)voteType.animationDuration.unsignedIntegerValue / 1000.0f;
+        _cooldownDuration = (double)voteType.cooldownDuration.unsignedIntegerValue / 1000.0f;
     }
     return self;
 }
@@ -55,11 +56,6 @@
 - (BOOL)isBallistic
 {
     return self.flightDuration > 0.0;
-}
-
-- (void)vote
-{
-    self.voteCount++;
 }
 
 - (NSArray *)trackingUrls
@@ -70,6 +66,53 @@
 - (NSString *)debugDescription
 {
     return [NSString stringWithFormat:@"%@: %p: %@ (%ld)", NSStringFromClass([self class]), self, self.voteType.voteTypeName, (long)self.voteCount];
+}
+
+#pragma mark - Voting
+
+- (BOOL)vote
+{
+    if ([self canVote])
+    {
+        self.voteCount++;
+        
+        // Save date that we last voted
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setObject:[NSDate date] forKey:self.voteType.voteTypeID];
+        return YES;
+    }
+    
+    return NO;
+}
+
+- (BOOL)canVote
+{
+    // Determine if we've waited out the cooldown period
+    return [self secondsUntilCooldownIsOver] <= 0;
+}
+
+- (NSDate *)lastVoted
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSDate *lastVoted = [userDefaults objectForKey:self.voteType.voteTypeID];
+    return lastVoted;
+}
+
+- (NSTimeInterval)secondsUntilCooldownIsOver
+{
+    return self.cooldownDuration - [self secondsSinceLastVote];
+}
+
+- (CGFloat)percentageOfCooldownComplete
+{
+    return [self secondsSinceLastVote] / self.cooldownDuration;
+}
+
+- (NSTimeInterval)secondsSinceLastVote
+{
+    NSDate *now = [NSDate date];
+    NSTimeInterval secondsSinceLastVote = ( [now timeIntervalSince1970] - [[self lastVoted] timeIntervalSince1970] ) / 1000.0f;
+    return secondsSinceLastVote;
 }
 
 @end

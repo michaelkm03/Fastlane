@@ -18,4 +18,10 @@
 @property (nonatomic, assign) BOOL enabled;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
+@property (nonatomic, assign) CGFloat cooldownStartValue;
+@property (nonatomic, assign) CGFloat cooldownEndValue;
+@property (nonatomic, assign) NSTimeInterval cooldownDuration;
+
+- (void)startCooldown;
+
 @end

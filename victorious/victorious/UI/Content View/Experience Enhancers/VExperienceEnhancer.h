@@ -30,7 +30,7 @@
  Intended to be called when experience enhancer is interacted with by user.
  Increments the sessionVoteCount and totalVoteCount.
  */
-- (void)vote;
+- (BOOL)vote;
 
 @property (nonatomic, strong, readonly) NSArray *trackingUrls;
 
@@ -42,9 +42,13 @@
 @property (nonatomic, strong) NSArray *animationSequence;
 @property (nonatomic, assign) NSTimeInterval animationDuration;
 @property (nonatomic, assign) NSTimeInterval flightDuration;
+@property (nonatomic, assign) NSTimeInterval cooldownDuration; // <- in seconds
 @property (nonatomic, strong) UIImage *flightImage;
 @property (nonatomic, assign) UIViewContentMode contentMode;
 @property (nonatomic, readonly) VVoteType *voteType;
 @property (nonatomic, readonly) BOOL isBallistic;
+
+- (CGFloat)percentageOfCooldownComplete;
+- (NSTimeInterval)secondsUntilCooldownIsOver;
 
 @end

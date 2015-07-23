@@ -37,6 +37,7 @@ class RadialAnimatingView : UIView {
         circleLayer.path = UIBezierPath(roundedRect: self.bounds, cornerRadius: CGRectGetWidth(self.bounds) / 2).CGPath
         self.circleLayer.frame = self.bounds
         self.circleLayer.lineWidth = CGRectGetWidth(self.bounds)
+        self.circleLayer.masksToBounds = true
         self.layer.mask = self.circleLayer
     }
     

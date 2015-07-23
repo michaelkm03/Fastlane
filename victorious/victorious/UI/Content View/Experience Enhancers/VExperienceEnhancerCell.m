@@ -72,11 +72,6 @@ static NSString * const kLockedBallisticBackgroundIconKey = @"locked_ballistic_b
          self.ballisticIconView.alpha = highlighted ? 0.5f : 1.0f;
      }
                      completion:nil];
-    
-    if (highlighted)
-    {
-        [self.ballisticIconView animate:10 startValue:0 endValue:1];
-    }
 }
 
 #pragma mark - Property Accessors
@@ -106,6 +101,23 @@ static NSString * const kLockedBallisticBackgroundIconKey = @"locked_ballistic_b
 }
 
 #pragma mark - Appearance styling
+
+- (void)startCooldown
+{
+    if ([self readyToCooldown])
+    {
+        [self.ballisticIconView animate:self.cooldownDuration
+                             startValue:self.cooldownStartValue
+                               endValue:self.cooldownEndValue];
+    }
+}
+
+- (BOOL)readyToCooldown
+{
+    BOOL cooldownTimesValid = self.cooldownStartValue >= 0 && self.cooldownEndValue >= 0 && self.cooldownEndValue > self.cooldownStartValue;
+    BOOL timeIntervalValid = self.cooldownDuration >= 0;
+    return cooldownTimesValid && timeIntervalValid;
+}
 
 - (void)updateOverlayImageView
 {
