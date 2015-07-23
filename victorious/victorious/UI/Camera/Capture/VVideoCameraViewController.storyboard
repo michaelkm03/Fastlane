@@ -50,7 +50,7 @@
                                 </constraints>
                             </view>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Kz-xR-cX4" userLabel="Delete Button">
-                                <rect key="frame" x="20" y="441" width="55" height="55"/>
+                                <rect key="frame" x="20" y="418.5" width="55" height="55"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="55" id="LLz-Ji-Evs"/>
                                     <constraint firstAttribute="width" constant="55" id="uH8-2O-yC4"/>
@@ -71,6 +71,7 @@
                             <constraint firstItem="vOG-Nk-WAC" firstAttribute="top" secondItem="l3w-F7-DcY" secondAttribute="bottom" id="7XJ-lt-EZm"/>
                             <constraint firstItem="vOG-Nk-WAC" firstAttribute="trailing" secondItem="r0U-zu-por" secondAttribute="trailing" id="8i1-Oy-9tj"/>
                             <constraint firstItem="vOG-Nk-WAC" firstAttribute="top" secondItem="r0U-zu-por" secondAttribute="top" id="Ajr-vb-DS2"/>
+                            <constraint firstItem="8Kz-xR-cX4" firstAttribute="centerY" secondItem="GtF-tz-oWH" secondAttribute="centerY" id="CHU-3A-bdp"/>
                             <constraint firstItem="vOG-Nk-WAC" firstAttribute="leading" secondItem="r0U-zu-por" secondAttribute="leading" id="H8D-RC-7a2"/>
                             <constraint firstAttribute="trailing" secondItem="vOG-Nk-WAC" secondAttribute="trailing" id="HcN-my-Jn1"/>
                             <constraint firstItem="GtF-tz-oWH" firstAttribute="top" secondItem="XNX-aF-Xyv" secondAttribute="bottom" id="NYa-by-IrZ"/>
@@ -78,7 +79,6 @@
                             <constraint firstItem="vOG-Nk-WAC" firstAttribute="bottom" secondItem="r0U-zu-por" secondAttribute="bottom" id="SpK-qb-Yup"/>
                             <constraint firstAttribute="trailingMargin" secondItem="XNX-aF-Xyv" secondAttribute="trailing" constant="24" id="XFP-Ty-Med"/>
                             <constraint firstAttribute="centerX" secondItem="GtF-tz-oWH" secondAttribute="centerX" id="bpO-B7-56h"/>
-                            <constraint firstItem="nzv-Pd-mpS" firstAttribute="top" secondItem="8Kz-xR-cX4" secondAttribute="bottom" constant="40" id="nKn-r9-ArI"/>
                             <constraint firstItem="XNX-aF-Xyv" firstAttribute="leading" secondItem="o4L-Hg-TvD" secondAttribute="leadingMargin" constant="24" id="wJe-cd-lQ7"/>
                         </constraints>
                     </view>

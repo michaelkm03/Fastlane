@@ -161,6 +161,10 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
                                                                   action:@selector(nextAction:)];
     self.nextButton.enabled = NO;
     self.navigationItem.rightBarButtonItem = self.nextButton;
+    
+    // Trash
+    self.trashButton.layer.cornerRadius = CGRectGetWidth(self.trashButton.bounds) * 0.5f;
+    self.trashButton.layer.masksToBounds = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -260,6 +264,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
         self.captureController.videoEncoder = nil;
         [self clearRecordedVideoAndResetControl];
         self.trashOpen = NO;
+        self.trashButton.backgroundColor = [UIColor clearColor];
+        self.trashButton.hidden = YES;
         self.nextButton.enabled = NO;
     }
 }
@@ -316,6 +322,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 {
     [self updateProgressForSecond:0];
     [self.cameraControl restoreCameraControlToDefault];
+    self.trashButton.hidden = YES;
+    self.trashButton.backgroundColor = [UIColor clearColor];
     [[NSFileManager defaultManager] removeItemAtURL:self.savedVideoURL error:nil];
 }
 
@@ -408,6 +416,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
                        if (CMTimeGetSeconds(time) >= 0.0f)
                        {
                            self.nextButton.enabled = YES;
+                           self.trashButton.hidden = NO;
                        }
                    });
 }
