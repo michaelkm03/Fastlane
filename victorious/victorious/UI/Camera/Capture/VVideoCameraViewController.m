@@ -13,7 +13,7 @@
 
 // Dependencies
 #import "VConstants.h"
-#import "NSURL+TemporaryFiles.h"
+#import "NSURL+VTemporaryFiles.h"
 
 // Views + Helpers
 #import "VCaptureVideoPreviewView.h"
@@ -202,7 +202,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
     if (!self.captureController.videoEncoder)
     {
         NSError *encoderError;
-        VCameraVideoEncoder *encoder = [VCameraVideoEncoder videoEncoderWithFileURL:[NSURL temporaryFileURLWithExtension:VConstantMediaExtensionMP4]
+        VCameraVideoEncoder *encoder = [VCameraVideoEncoder videoEncoderWithFileURL:[NSURL v_temporaryFileURLWithExtension:VConstantMediaExtensionMP4]
                                                                           videoSize:kVideoSize
                                                                               error:&encoderError];
         if (!encoder)

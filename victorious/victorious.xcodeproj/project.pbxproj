@@ -296,7 +296,7 @@
 		A6B9FD071B603FC600166BE8 /* VImageCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6B9FD061B603FC600166BE8 /* VImageCameraViewController.m */; };
 		A6B9FD091B603FD300166BE8 /* VImageCameraViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A6B9FD081B603FD300166BE8 /* VImageCameraViewController.storyboard */; };
 		A6B9FD0C1B60413500166BE8 /* VCaptureVideoPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = A6B9FD0B1B60413500166BE8 /* VCaptureVideoPreviewView.m */; };
-		A6B9FD0F1B60630900166BE8 /* NSURL+TemporaryFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = A6B9FD0E1B60630900166BE8 /* NSURL+TemporaryFiles.m */; };
+		A6B9FD0F1B60630900166BE8 /* NSURL+VTemporaryFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = A6B9FD0E1B60630900166BE8 /* NSURL+VTemporaryFiles.m */; };
 		A6B9FD121B6070B100166BE8 /* VCameraFocusView.m in Sources */ = {isa = PBXBuildFile; fileRef = A6B9FD111B6070B100166BE8 /* VCameraFocusView.m */; };
 		A6BB61201B582815002C3B7C /* VAssetCollectionGridDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A6BB611F1B582815002C3B7C /* VAssetCollectionGridDataSource.m */; };
 		A6BB61231B583256002C3B7C /* VAssetCollectionUnauthorizedDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A6BB61221B583256002C3B7C /* VAssetCollectionUnauthorizedDataSource.m */; };
@@ -1648,8 +1648,8 @@
 		A6B9FD081B603FD300166BE8 /* VImageCameraViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VImageCameraViewController.storyboard; sourceTree = "<group>"; };
 		A6B9FD0A1B60413500166BE8 /* VCaptureVideoPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCaptureVideoPreviewView.h; sourceTree = "<group>"; };
 		A6B9FD0B1B60413500166BE8 /* VCaptureVideoPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCaptureVideoPreviewView.m; sourceTree = "<group>"; };
-		A6B9FD0D1B60630900166BE8 /* NSURL+TemporaryFiles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+TemporaryFiles.h"; sourceTree = "<group>"; };
-		A6B9FD0E1B60630900166BE8 /* NSURL+TemporaryFiles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+TemporaryFiles.m"; sourceTree = "<group>"; };
+		A6B9FD0D1B60630900166BE8 /* NSURL+VTemporaryFiles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+VTemporaryFiles.h"; sourceTree = "<group>"; };
+		A6B9FD0E1B60630900166BE8 /* NSURL+VTemporaryFiles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+VTemporaryFiles.m"; sourceTree = "<group>"; };
 		A6B9FD101B6070B100166BE8 /* VCameraFocusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCameraFocusView.h; sourceTree = "<group>"; };
 		A6B9FD111B6070B100166BE8 /* VCameraFocusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCameraFocusView.m; sourceTree = "<group>"; };
 		A6BB611E1B582815002C3B7C /* VAssetCollectionGridDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAssetCollectionGridDataSource.h; sourceTree = "<group>"; };
@@ -4726,8 +4726,8 @@
 				A721E90B1B572454000B7901 /* VConversation+UnreadMessageCount.m */,
 				A721E90E1B572454000B7901 /* VSequence+OrderedSet.h */,
 				A721E90F1B572454000B7901 /* VSequence+OrderedSet.m */,
-				A6B9FD0D1B60630900166BE8 /* NSURL+TemporaryFiles.h */,
-				A6B9FD0E1B60630900166BE8 /* NSURL+TemporaryFiles.m */,
+				A6B9FD0D1B60630900166BE8 /* NSURL+VTemporaryFiles.h */,
+				A6B9FD0E1B60630900166BE8 /* NSURL+VTemporaryFiles.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -7795,7 +7795,7 @@
 				D89367491ADDBAA1001D2426 /* VActionBarFixedWidthItem.m in Sources */,
 				A7A9226A1AC9DB5F00F4755E /* VMultiplePickerSelection.m in Sources */,
 				A7E4EDEF1A81A4B30035D6B1 /* VEndCardActionModel.m in Sources */,
-				A6B9FD0F1B60630900166BE8 /* NSURL+TemporaryFiles.m in Sources */,
+				A6B9FD0F1B60630900166BE8 /* NSURL+VTemporaryFiles.m in Sources */,
 				0314D4D819B46B5E00FA363C /* VPrivacyPoliciesViewController.m in Sources */,
 				039ED29D19C908F400305987 /* VElapsedTimeFormatter.m in Sources */,
 				D80536271B17B5CB0049B77A /* VPromptCollectionViewCell.m in Sources */,

@@ -1,5 +1,5 @@
 //
-//  NSURL+TemporaryFiles.h
+//  NSURL+VTemporaryFiles.h
 //  victorious
 //
 //  Created by Michael Sena on 7/22/15.
@@ -8,12 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSURL (TemporaryFiles)
+@interface NSURL (VTemporaryFiles)
 
 /**
  *  A convenience method for generating URLs in the
  *  temp directory for the application.
  */
-+ (NSURL *)temporaryFileURLWithExtension:(NSString *)extension;
++ (NSURL *)v_temporaryFileURLWithExtension:(NSString *)extension;
 
 @end

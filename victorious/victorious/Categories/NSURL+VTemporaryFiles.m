@@ -1,16 +1,16 @@
 //
-//  NSURL+TemporaryFiles.m
+//  NSURL+VTemporaryFiles.m
 //  victorious
 //
 //  Created by Michael Sena on 7/22/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "NSURL+TemporaryFiles.h"
+#import "NSURL+VTemporaryFiles.h"
 
-@implementation NSURL (TemporaryFiles)
+@implementation NSURL (VTemporaryFiles)
 
-+ (NSURL *)temporaryFileURLWithExtension:(NSString *)extension
++ (NSURL *)v_temporaryFileURLWithExtension:(NSString *)extension
 {
     NSUUID *uuid = [NSUUID UUID];
     NSString *tempFilename = [[uuid UUIDString] stringByAppendingPathExtension:extension];

@@ -10,7 +10,7 @@
 
 // Dependencies
 #import "VConstants.h"
-#import "NSURL+TemporaryFiles.h"
+#import "NSURL+VTemporaryFiles.h"
 
 // Views
 #import "VCaptureVideoPreviewView.h"
@@ -342,7 +342,7 @@ static NSString * const kCameraScreenKey = @"imageCameraScreen";
 
 - (NSURL *)persistToFileWithImage:(UIImage *)image
 {
-    NSURL *fileURL = [NSURL temporaryFileURLWithExtension:VConstantMediaExtensionJPG];
+    NSURL *fileURL = [NSURL v_temporaryFileURLWithExtension:VConstantMediaExtensionJPG];
     NSData *jpegData = UIImageJPEGRepresentation([image squareImageByCropping], VConstantJPEGCompressionQuality);
     [jpegData writeToURL:fileURL atomically:YES];
     return fileURL;
