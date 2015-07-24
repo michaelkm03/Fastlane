@@ -343,7 +343,7 @@
 
 "ExpiresOn" = "%@に期限が切れます";
 
-"me" = "あなた";
+"Me" = "あなた";
 
 "editProfileButton" = "プロフィール編集";
 "followers" = "フォロワー";

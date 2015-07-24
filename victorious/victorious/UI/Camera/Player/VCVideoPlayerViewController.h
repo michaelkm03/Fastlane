@@ -49,7 +49,7 @@
 @property (nonatomic, assign) BOOL shouldContinuePlayingAfterDismissal;
 @property (nonatomic, copy) NSString *videoPlayerLayerVideoGravity;   ///< Forwards to the player layer
 @property (nonatomic, assign) BOOL shouldChangeVideoGravityOnDoubleTap;
-@property (nonatomic, assign) BOOL isAudioEnabled;
+@property (nonatomic, assign) BOOL audioMuted;
 @property (nonatomic, assign) BOOL loopWithoutComposition;              ///< Loops by playing the asset again instead of making a composition that repeats
 @property (nonatomic, assign) BOOL toolbarHidden;
 @property (nonatomic, assign) CMTime sliderTouchInteractionStartTime; ///< The time at which a touch slider interaction (scrub) began

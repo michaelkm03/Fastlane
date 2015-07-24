@@ -41,6 +41,7 @@
 #import "VProfileDeeplinkHandler.h"
 #import "VInboxDeepLinkHandler.h"
 #import "VFloatingUserProfileHeaderViewController.h"
+#import "UIViewController+VAccessoryScreens.h"
 #import "VUsersViewController.h"
 #import "VFollowersDataSource.h"
 #import "VUserIsFollowingDataSource.h"
@@ -159,8 +160,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                         options:NSKeyValueObservingOptionNew
                         context:VUserProfileViewContext];
     [self updateCollectionViewDataSource];
-    
-    [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
 - (void)updateProfileHeader
@@ -216,6 +215,10 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     self.didEndViewWillAppear = YES;
     [self attemptToRefreshProfileUI];
     
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
+    
+    [self addAccessoryItems];
+    
     self.navigationViewfloatingController.animationEnabled = YES;
     
     self.navigationItem.title = self.title;
@@ -239,11 +242,11 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     [super viewDidAppear:animated];
     
+    [self addBadgingToAccessoryItems];
+    
     [[VTrackingManager sharedInstance] setValue:VTrackingValueUserProfile forSessionParameterWithKey:VTrackingKeyContext];
     
     [self setupFloatingView];
-    
-    [self updateAccessoryItems];
     
     // Hide title if necessary
     [self updateTitleVisibilityWithVerticalOffset:self.collectionView.contentOffset.y];
@@ -251,8 +254,18 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)updateAccessoryItems
 {
-    [self.dependencyManager configureNavigationItem:self.navigationItem];
-    [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
+    [self addAccessoryItems];
+    [self addBadgingToAccessoryItems];
+}
+
+- (void)addAccessoryItems
+{
+    [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
+}
+
+- (void)addBadgingToAccessoryItems
+{
+    [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

@@ -193,6 +193,7 @@ static NSString * const kCreationFlowSourceSearch = @"search";
         }
         else
         {
+            [strongSelf.workspaceViewController gainedFocus];
             [strongSelf dismissViewControllerAnimated:YES
                                            completion:nil];
         }
@@ -228,6 +229,8 @@ static NSString * const kCreationFlowSourceSearch = @"search";
                                previewImage:(UIImage *)previewImage
                               fromWorkspace:(VWorkspaceViewController *)workspace
 {
+    [workspace lostFocus];
+    
     // Setup presenter
     [self setupPublishPresenter];
     

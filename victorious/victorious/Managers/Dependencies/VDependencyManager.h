@@ -67,7 +67,11 @@ extern NSString * const VDependencyManagerEditTextWorkspaceKey;
  */
 @interface VDependencyManager : NSObject
 
-@property (nonatomic, copy) NSDictionary *defaultDictionaryOfClassesByTemplateName;
+/**
+ Provides a copy of the "templateClasses.plist" data used internally for instantiating
+ tempalte components.
+ */
+@property (nonatomic, copy, readonly) NSDictionary *defaultDictionaryOfClassesByTemplateName;
 
 /**
  Creates the root of the dependency manager.

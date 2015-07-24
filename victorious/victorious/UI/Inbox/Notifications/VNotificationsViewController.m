@@ -22,6 +22,7 @@
 #import "VDependencyManager+VObjectManager.h"
 #import "VAuthorizationContext.h"
 #import "VNavigationDestination.h"
+#import "UIViewController+VAccessoryScreens.h"
 #import "UIViewController+VLayoutInsets.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VAppDelegate.h"
@@ -105,7 +106,7 @@ static int const kNotificationFetchBatchSize = 50;
     [super viewWillAppear:animated];
     
     [self.dependencyManager trackViewWillAppear:self];
-    
+    [self updateNavigationItem];
     [self.refreshControl beginRefreshing];
     [self.tableView setContentOffset:CGPointZero];
     [self refresh:nil];
@@ -117,7 +118,7 @@ static int const kNotificationFetchBatchSize = 50;
     [[VTrackingManager sharedInstance] startEvent:@"Notifications"];
     self.badgeNumber = 0;
     
-    [self updateNavigationItem];
+    [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -345,12 +346,7 @@ static int const kNotificationFetchBatchSize = 50;
 
 - (void)updateNavigationItem
 {
-    UINavigationItem *navigationItem = self.navigationItem;
-    if ( self.multipleContainerChildDelegate != nil )
-    {
-        navigationItem = [self.multipleContainerChildDelegate parentNavigationItem];
-    }
-    [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
+    [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 #pragma mark - UIScrollViewDelegate
