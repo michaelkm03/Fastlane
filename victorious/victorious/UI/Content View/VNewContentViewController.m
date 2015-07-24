@@ -552,6 +552,13 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                                              tintColor:nil];
     }
     
+    if ([self.viewModel.sequence isPoll])
+    {
+        if (self.viewModel.favoredAnswer != VPollAnswerInvalid)
+        {
+            [self.ballotCell setVotingDisabledWithFavoredBallot:(self.viewModel.favoredAnswer == VPollAnswerA) ? VBallotA : VBallotB animated:YES];
+        }
+    }
 
     if (self.viewModel.type == VContentViewTypeVideo)
     {
@@ -572,14 +579,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     }
     
     [self updateOrientation];
-    
-    if ([self.viewModel.sequence isPoll])
-    {
-        if (self.viewModel.favoredAnswer != VPollAnswerInvalid)
-        {
-            [self.ballotCell setVotingDisabledWithFavoredBallot:(self.viewModel.favoredAnswer == VPollAnswerA) ? VBallotA : VBallotB animated:YES];
-        }
-    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
