@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// A emotive ballistic view which displays a radial cooldown animation
 class ExperienceEnhancerAnimatingIconView : UIView {
     
     private var radialAnimatingView: RadialAnimatingView!
@@ -59,14 +60,20 @@ class ExperienceEnhancerAnimatingIconView : UIView {
         self.v_addFitToParentConstraintsToSubview(self.radialAnimatingView)
     }
     
+    /// Starts the radial animation
+    ///
+    /// :param: `startValue` A value between 0 and 1 determining how far around the circumference the animation will begin
+    /// :param: `endValue` A value between 0 and 1 determining how far around the circumference the animation will end
     func animate(duration: NSTimeInterval, startValue: CGFloat, endValue: CGFloat) {
         self.radialAnimatingView.animate(duration, startValue: startValue, endValue: endValue)
     }
     
+    /// Removes cooldown animation
     func reset() {
         self.radialAnimatingView.reset()
     }
     
+    /// Determines if cooldown animation is in process
     func isAnimating() -> Bool {
         return self.radialAnimatingView.isAnimating()
     }

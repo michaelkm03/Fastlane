@@ -48,9 +48,27 @@
 @property (nonatomic, readonly) VVoteType *voteType;
 @property (nonatomic, readonly) BOOL isBallistic;
 
+/**
+ Determines if this experience enhancer is in the process
+ of cooling down
+ */
 - (BOOL)isCoolingDown;
+
+/**
+ A float between 0 and 1 representing how much of the cooldown
+ has been completed
+ */
 - (CGFloat)percentageOfCooldownComplete;
+
+/**
+ Number of seconds until cooldown is complete
+ */
 - (NSTimeInterval)secondsUntilCooldownIsOver;
+
+/**
+ Removes the cached last vote date for this experience enhancer
+ which will void the current cooldown period if there is one
+ */
 - (void)resetCooldownTimer;
 
 @end

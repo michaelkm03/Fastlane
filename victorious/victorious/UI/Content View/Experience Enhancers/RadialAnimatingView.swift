@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// A view which masks it's layer with a radial animation
 class RadialAnimatingView : UIView {
     
     let circleAnimationKey = "animateCircle"
@@ -42,6 +43,10 @@ class RadialAnimatingView : UIView {
         self.layer.mask = self.circleLayer
     }
     
+    /// Starts the radial animation
+    ///
+    /// :param: `startValue` A value between 0 and 1 determining how far around the circumference the animation will begin
+    /// :param: `endValue` A value between 0 and 1 determining how far around the circumference the animation will end
     func animate(duration: NSTimeInterval, startValue: CGFloat, endValue: CGFloat) {
         
         let animation = CABasicAnimation(keyPath: "strokeEnd")
@@ -55,10 +60,12 @@ class RadialAnimatingView : UIView {
         self.circleLayer.addAnimation(animation, forKey: self.circleAnimationKey)
     }
     
+    /// Removes all animations from this view's layer
     func reset() {
         self.circleLayer.removeAllAnimations()
     }
     
+    /// Determines if this view's layer is currently animating
     func isAnimating() -> Bool {
         if let animation = self.circleLayer.animationForKey(self.circleAnimationKey) {
             return true

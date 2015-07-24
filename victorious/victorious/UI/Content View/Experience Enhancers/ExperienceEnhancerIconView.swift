@@ -8,6 +8,8 @@
 
 import UIKit
 
+/// A emotive ballistic view responsible for showing
+/// a border image and an icon image
 class ExperienceEnhancerIconView : UIView {
     
     private var iconImageView: UIImageView!
