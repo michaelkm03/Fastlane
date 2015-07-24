@@ -34,6 +34,7 @@ static NSString * const kReverseCameraIconKey = @"reverseCameraIcon";
 static NSString * const kFlashIconKey = @"flashIcon";
 static NSString * const kDisableFlashIconKey = @"disableFlashIcon";
 static NSString * const kCameraScreenKey = @"imageCameraScreen";
+static const CGRect kDefaultBarItemFrame = {{0.0f, 0.0f}, {50.0f, 50.0f}};
 
 @interface VImageCameraViewController () <VCaptureVideoPreviewViewDelegate>
 
@@ -134,7 +135,7 @@ static NSString * const kCameraScreenKey = @"imageCameraScreen";
     // disabled and hidden by default
     self.switchCameraButton.hidden = YES;
     self.switchCameraButton.enabled = NO;
-    self.switchCameraButton.frame = CGRectMake(0, 0, 50.0f, 50.0f);
+    self.switchCameraButton.frame = kDefaultBarItemFrame;
     [self.switchCameraButton setImage:[self.dependencyManager imageForKey:kReverseCameraIconKey]
                              forState:UIControlStateNormal];
     
@@ -145,7 +146,7 @@ static NSString * const kCameraScreenKey = @"imageCameraScreen";
     [self.flashButton addTarget:self action:@selector(switchFlashAction:) forControlEvents:UIControlEventTouchUpInside];
     self.flashButton.hidden = YES;
     self.flashButton.enabled = NO;
-    self.flashButton.frame = CGRectMake(0, 0, 50.0f, 50.0f);
+    self.flashButton.frame = kDefaultBarItemFrame;
     [self.flashButton setImage:[self.dependencyManager imageForKey:kDisableFlashIconKey]
                       forState:UIControlStateNormal];
     [self.flashButton setImage:[self.dependencyManager imageForKey:kFlashIconKey]
