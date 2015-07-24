@@ -101,16 +101,11 @@ static NSString * const kInitialKey = @"initial";
     self.automaticallyAdjustsScrollViewInsets = NO;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    [self.dependencyManager configureNavigationItem:self.navigationItem];
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
     
     if ( !self.didShowInitial )
     {

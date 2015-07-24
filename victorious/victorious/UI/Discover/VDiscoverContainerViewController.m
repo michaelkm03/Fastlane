@@ -94,14 +94,14 @@
     }];
     self.searchIconImageView.image = [self.searchIconImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.searchIconImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
-    
-    [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
 
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
+    
     [self updateAccessoryScreens];
 
     [[NSNotificationCenter defaultCenter] addObserver:self

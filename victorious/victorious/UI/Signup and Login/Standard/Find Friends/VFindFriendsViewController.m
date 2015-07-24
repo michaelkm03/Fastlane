@@ -71,6 +71,9 @@
     [super viewWillAppear:animated];
     
     [self.dependencyManager trackViewWillAppear:self];
+    
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
+    
     [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
@@ -95,8 +98,6 @@
     [self.tabBarViewController didMoveToParentViewController:self];
     self.tabBarViewController.buttonBackgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     [self addInnerViewControllersToTabController:self.tabBarViewController];
-    
-    [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager

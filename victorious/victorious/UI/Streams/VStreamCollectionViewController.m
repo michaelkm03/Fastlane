@@ -266,6 +266,8 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 {
     [super viewWillAppear:animated];
     
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
+    
     [self updateNavigationItems];
     
     [self.dependencyManager trackViewWillAppear:self];

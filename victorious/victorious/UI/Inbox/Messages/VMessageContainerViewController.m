@@ -68,8 +68,6 @@ static const NSUInteger kCharacterLimit = 1024;
     [self hideKeyboardBarIfNeeded];
     
     [self.view bringSubviewToFront:self.busyView];
-    
-    [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -77,6 +75,7 @@ static const NSUInteger kCharacterLimit = 1024;
     [super viewWillAppear:animated];
     [self setEdgesForExtendedLayout:UIRectEdgeAll];
     [self updateTitle];
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
     [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 

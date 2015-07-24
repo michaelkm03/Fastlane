@@ -160,8 +160,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                         options:NSKeyValueObservingOptionNew
                         context:VUserProfileViewContext];
     [self updateCollectionViewDataSource];
-    
-    [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
 - (void)updateProfileHeader
@@ -215,6 +213,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     self.didEndViewWillAppear = YES;
     [self attemptToRefreshProfileUI];
     
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
+    
     [self addAccessoryItems];
     
     self.navigationViewfloatingController.animationEnabled = YES;
@@ -258,7 +258,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)addAccessoryItems
 {
-    [self.dependencyManager configureNavigationItem:self.navigationItem];
     [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 

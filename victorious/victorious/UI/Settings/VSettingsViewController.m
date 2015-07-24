@@ -119,13 +119,13 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     
     self.versionString.text = appVersionString;
     self.versionString.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
-    
-    [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
     
     [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
     

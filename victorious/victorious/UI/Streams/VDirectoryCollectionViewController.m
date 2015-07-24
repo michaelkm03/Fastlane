@@ -152,8 +152,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     self.collectionView.delegate = self;
     
     [self refresh:self.refreshControl];
-    
-    [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -177,6 +175,8 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
     
     [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
     

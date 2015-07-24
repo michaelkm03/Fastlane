@@ -98,13 +98,12 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
         //Only fetch hashtags for user to update the follow button status and visibility if they've never been loaded before
         [self fetchHashtagsForLoggedInUser];
     }
-    
-    [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
     [self updateUserFollowingStatus];
 }
 
