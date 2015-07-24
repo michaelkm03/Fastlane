@@ -90,7 +90,6 @@
 		032954A51A9FF4E000698119 /* VURLMacroReplacement.m in Sources */ = {isa = PBXBuildFile; fileRef = 032954A41A9FF4E000698119 /* VURLMacroReplacement.m */; };
 		032954A71A9FFD9100698119 /* VURLMacroReplacementTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 032954A61A9FFD9100698119 /* VURLMacroReplacementTests.m */; };
 		0329B9A01ACBAAFB003BBCC5 /* VContentViewFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0329B99F1ACBAAFB003BBCC5 /* VContentViewFactoryTests.m */; };
-		032F49451B45A424005325CA /* VEnvironment+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 032F49441B45A424005325CA /* VEnvironment+VDataCacheID.m */; };
 		0343AF831A143F550025B9F8 /* AVAsset+OrientationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */; };
 		0343AF841A143FD20025B9F8 /* NSDate+timeSinceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE49323519E338CE00C0912E /* NSDate+timeSinceTests.m */; };
 		03449FE51A0C7EBB0070EC80 /* VSessionTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 03449FE41A0C7EBB0070EC80 /* VSessionTimer.m */; };
@@ -122,6 +121,14 @@
 		036DE7C11B607A610038A25E /* VEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951161B28AB9A00D9DB0A /* VEnvironment.m */; };
 		036DE7C51B6141030038A25E /* VAPIRequestDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7C31B608C100038A25E /* VAPIRequestDecorator.m */; };
 		036DE7C61B6141040038A25E /* VAPIRequestDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7C31B608C100038A25E /* VAPIRequestDecorator.m */; };
+		036DE7D71B62E3430038A25E /* NSString+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A761511B324BFF0016B69D /* NSString+VDataCacheID.m */; };
+		036DE7D81B62E3430038A25E /* NSURL+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A7614C1B3232040016B69D /* NSURL+VDataCacheID.m */; };
+		036DE7D91B62E3430038A25E /* VDataCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A761491B322F830016B69D /* VDataCache.m */; };
+		036DE7DA1B62E3430038A25E /* VEnvironment+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 032F49441B45A424005325CA /* VEnvironment+VDataCacheID.m */; };
+		036DE7DB1B62E3430038A25E /* NSString+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A761511B324BFF0016B69D /* NSString+VDataCacheID.m */; };
+		036DE7DC1B62E3430038A25E /* NSURL+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A7614C1B3232040016B69D /* NSURL+VDataCacheID.m */; };
+		036DE7DD1B62E3430038A25E /* VDataCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A761491B322F830016B69D /* VDataCache.m */; };
+		036DE7DE1B62E3430038A25E /* VEnvironment+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 032F49441B45A424005325CA /* VEnvironment+VDataCacheID.m */; };
 		036E87B21ACB6B3F00E5AAAD /* VContentViewFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 036E87B11ACB6B3F00E5AAAD /* VContentViewFactory.m */; };
 		036F38631A0C4DEA0014DF66 /* Arimo-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38131A0C4DE90014DF66 /* Arimo-Bold.ttf */; };
 		036F38641A0C4DEA0014DF66 /* Arimo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38141A0C4DE90014DF66 /* Arimo-Regular.ttf */; };
@@ -247,10 +254,7 @@
 		03A058C11AEF44E200CF39D1 /* VTemplateDownloadOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058C01AEF44E200CF39D1 /* VTemplateDownloadOperationTests.m */; };
 		03A058C31AEF59E600CF39D1 /* templateCache.json in Resources */ = {isa = PBXBuildFile; fileRef = 03A058C21AEF59E600CF39D1 /* templateCache.json */; };
 		03A058C91AF05D8300CF39D1 /* VObjectManager+VTemplateDownloaderConformance.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058C81AF05D8300CF39D1 /* VObjectManager+VTemplateDownloaderConformance.m */; };
-		03A7614A1B322F830016B69D /* VDataCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A761491B322F830016B69D /* VDataCache.m */; };
-		03A7614D1B3232040016B69D /* NSURL+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A7614C1B3232040016B69D /* NSURL+VDataCacheID.m */; };
 		03A7614F1B3232970016B69D /* NSURL+VDataCacheIDTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A7614E1B3232970016B69D /* NSURL+VDataCacheIDTests.m */; };
-		03A761521B324BFF0016B69D /* NSString+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A761511B324BFF0016B69D /* NSString+VDataCacheID.m */; };
 		03A761541B3250410016B69D /* VDataCacheTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A761531B3250410016B69D /* VDataCacheTests.m */; };
 		03A9CBEE1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A9CBED1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.m */; };
 		03B3D3D01A3BBCE900F0634A /* VBadgeBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B3D3CF1A3BBCE900F0634A /* VBadgeBackgroundView.m */; };
@@ -3940,6 +3944,21 @@
 			path = Reachability;
 			sourceTree = "<group>";
 		};
+		036DE7CA1B62E30B0038A25E /* Data Cache */ = {
+			isa = PBXGroup;
+			children = (
+				03A761501B324BFF0016B69D /* NSString+VDataCacheID.h */,
+				03A761511B324BFF0016B69D /* NSString+VDataCacheID.m */,
+				03A7614B1B3232040016B69D /* NSURL+VDataCacheID.h */,
+				03A7614C1B3232040016B69D /* NSURL+VDataCacheID.m */,
+				03A761481B322F830016B69D /* VDataCache.h */,
+				03A761491B322F830016B69D /* VDataCache.m */,
+				032F49431B45A424005325CA /* VEnvironment+VDataCacheID.h */,
+				032F49441B45A424005325CA /* VEnvironment+VDataCacheID.m */,
+			);
+			path = "Data Cache";
+			sourceTree = "<group>";
+		};
 		036F38121A0C4DE90014DF66 /* Arimo */ = {
 			isa = PBXGroup;
 			children = (
@@ -4235,6 +4254,7 @@
 		0392695B1B5C774400FCD0AA /* VictoriousCommon */ = {
 			isa = PBXGroup;
 			children = (
+				036DE7CA1B62E30B0038A25E /* Data Cache */,
 				034527D81B60788B00E990BB /* Environment */,
 				039269821B5C9DD600FCD0AA /* PrefixHeader.pch */,
 				034527A51B604A9100E990BB /* Template Loader */,
@@ -4381,15 +4401,7 @@
 		03A761471B322F6A0016B69D /* Data Cache */ = {
 			isa = PBXGroup;
 			children = (
-				03A761501B324BFF0016B69D /* NSString+VDataCacheID.h */,
-				03A761511B324BFF0016B69D /* NSString+VDataCacheID.m */,
-				03A7614B1B3232040016B69D /* NSURL+VDataCacheID.h */,
-				03A7614C1B3232040016B69D /* NSURL+VDataCacheID.m */,
-				03A761481B322F830016B69D /* VDataCache.h */,
-				03A761491B322F830016B69D /* VDataCache.m */,
 				03DE266A1B336E5D00C9F680 /* VDataCacheTests.cachedData */,
-				032F49431B45A424005325CA /* VEnvironment+VDataCacheID.h */,
-				032F49441B45A424005325CA /* VEnvironment+VDataCacheID.m */,
 			);
 			path = "Data Cache";
 			sourceTree = "<group>";
@@ -7818,11 +7830,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				034527CE1B606F8200E990BB /* VDownloadOperation.m in Sources */,
+				036DE7DD1B62E3430038A25E /* VDataCache.m in Sources */,
+				036DE7DE1B62E3430038A25E /* VEnvironment+VDataCacheID.m in Sources */,
 				036DE7C61B6141040038A25E /* VAPIRequestDecorator.m in Sources */,
 				034527D01B606F8200E990BB /* VTemplatePackageManager.m in Sources */,
 				036DE7C11B607A610038A25E /* VEnvironment.m in Sources */,
 				034527D11B606F8200E990BB /* VTemplateSerialization.m in Sources */,
 				034527CD1B606F8200E990BB /* VBulkDownloadOperation.m in Sources */,
+				036DE7DB1B62E3430038A25E /* NSString+VDataCacheID.m in Sources */,
+				036DE7DC1B62E3430038A25E /* NSURL+VDataCacheID.m in Sources */,
 				034527CF1B606F8200E990BB /* VTemplateDownloadOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7840,11 +7856,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				039269791B5C871700FCD0AA /* VDownloadOperation.m in Sources */,
+				036DE7D91B62E3430038A25E /* VDataCache.m in Sources */,
+				036DE7DA1B62E3430038A25E /* VEnvironment+VDataCacheID.m in Sources */,
 				036DE7C51B6141030038A25E /* VAPIRequestDecorator.m in Sources */,
 				039269781B5C871700FCD0AA /* VBulkDownloadOperation.m in Sources */,
 				036DE7C01B607A600038A25E /* VEnvironment.m in Sources */,
 				0392697A1B5C871700FCD0AA /* VTemplateDownloadOperation.m in Sources */,
 				0392697C1B5C871700FCD0AA /* VTemplateSerialization.m in Sources */,
+				036DE7D71B62E3430038A25E /* NSString+VDataCacheID.m in Sources */,
+				036DE7D81B62E3430038A25E /* NSURL+VDataCacheID.m in Sources */,
 				0392697B1B5C871700FCD0AA /* VTemplatePackageManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -8129,7 +8149,6 @@
 				D80A94DE1A53941D0035D788 /* VTrimControl.m in Sources */,
 				D8F8B1EF1AC4C4CF00AA2DB7 /* VTilePatternBackground.m in Sources */,
 				C39B220B1B0A58EF00D3DFE7 /* VPermissionMicrophone.m in Sources */,
-				03A7614A1B322F830016B69D /* VDataCache.m in Sources */,
 				F0A82AFA1AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m in Sources */,
 				D82E76E319F5C06100FFB722 /* VContentPollBallotCell.m in Sources */,
 				A7299E941AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.m in Sources */,
@@ -8245,7 +8264,6 @@
 				D88CEAE81A92EEED00F5A837 /* VSnapshotViewController.m in Sources */,
 				A7D7079C1A7C144C00D9993F /* VEndCardAnimator.m in Sources */,
 				D86448A11A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m in Sources */,
-				032F49451B45A424005325CA /* VEnvironment+VDataCacheID.m in Sources */,
 				03CE670019B640CD0011BB9E /* VDeviceInfo.m in Sources */,
 				C30AA4DD1B055C000010CEFE /* VPermissionAlertPresentationController.m in Sources */,
 				A77AD5011A2011E000142F24 /* UIActionSheet+VBlocks.m in Sources */,
@@ -8284,7 +8302,6 @@
 				A77951061B27D22D00D9DB0A /* VSuggestedUsersViewController.m in Sources */,
 				A77951121B27DDB800D9DB0A /* VSuggestedUserCell.m in Sources */,
 				D8E39BDF19CB7C80007FD86A /* VContentBackgroundSupplementaryView.m in Sources */,
-				03A761521B324BFF0016B69D /* NSString+VDataCacheID.m in Sources */,
 				A65F4D551B5D9E4900C96F1F /* VNoAssetsCell.m in Sources */,
 				BE799B9519C8A91C0023CE88 /* VAnswer.m in Sources */,
 				D87AD2AE1AD4866B00C481D0 /* VAsset+VAssetCache.m in Sources */,
@@ -8296,7 +8313,6 @@
 				669EBBE41A30239100DE317D /* VBasicToolPickerCell.m in Sources */,
 				F0411E871B4AE6D800557176 /* VMarqueeCaptionView.m in Sources */,
 				DB82857A19F6DD3D006C6E2F /* VAdPlayerView.m in Sources */,
-				03A7614D1B3232040016B69D /* NSURL+VDataCacheID.m in Sources */,
 				0314D0B519B4698800FA363C /* VObjectManager+Pagination.m in Sources */,
 				0386E2001A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.m in Sources */,
 				A7D378691AF45B7C007FF197 /* VSequencePermissions.m in Sources */,
