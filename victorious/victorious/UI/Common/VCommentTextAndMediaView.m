@@ -396,6 +396,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
     self.playIcon.hidden = YES;
     self.videoView.hidden = YES;
     self.videoView.itemURL = nil;
+    self.mediaURL = nil;
 }
 
 @end
