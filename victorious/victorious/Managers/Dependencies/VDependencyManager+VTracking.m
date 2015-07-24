@@ -33,28 +33,40 @@ static const char kAssociatedObjectViewWasHiddenKey;
 
 - (NSArray *)trackingURLsForKey:(NSString *)eventURLKey
 {
-    // Prevent using inherited values
-    if ( ![self containsKey:kTrackingKey] )
-    {
-        return @[];
-    }
-    
     NSDictionary *tracking = [self templateValueOfType:[NSDictionary class] forKey:kTrackingKey];
     return tracking[ eventURLKey ] ?: @[];
 }
 
+- (BOOL)isComponentForTemplateClass:(Class)templateClass
+{
+    NSString *componentName = [self stringForKey:@"name"];
+    NSString *className = [self defaultDictionaryOfClassesByTemplateName][ componentName ];
+    return [className isEqualToString:NSStringFromClass(templateClass)];
+}
+
 - (void)trackViewWillAppear:(UIViewController *)viewController
 {
-    [self trackViewWillAppear:viewController withParameters:nil];
+    [self trackViewWillAppear:viewController withParameters:nil templateClass:nil];
 }
 
 - (void)trackViewWillAppear:(UIViewController *)viewController withParameters:(NSDictionary *)parameters
+{
+    [self trackViewWillAppear:viewController withParameters:parameters templateClass:nil];
+}
+
+- (void)trackViewWillAppear:(UIViewController *)viewController withParameters:(NSDictionary *)parameters templateClass:(Class)templateClass
 {
     NSNumber *number = objc_getAssociatedObject( viewController, &kAssociatedObjectViewWasHiddenKey );
     BOOL wasHidden = number.boolValue;
     if ( !wasHidden )
     {
+        if ( ![self isComponentForTemplateClass:templateClass ?: [viewController class]] )
+        {
+            return;
+        }
+        
         NSArray *urls = [self trackingURLsForKey:kTrackingViewKey];
+        NSLog( @"\n\n>>>> >>>> >>>> %@: %@\n\n", NSStringFromClass([viewController class]), urls );
         if ( urls.count == 0 )
         {
             return;
@@ -69,7 +81,7 @@ static const char kAssociatedObjectViewWasHiddenKey;
     objc_setAssociatedObject( viewController, &kAssociatedObjectViewWasHiddenKey, @NO, OBJC_ASSOCIATION_RETAIN_NONATOMIC );
 }
 
-- (void)trackViewWillDisappear:(UIViewController *)viewController
+- (UIViewController *)viewControllerInNavControllerFromViewController:(UIViewController *)viewController
 {
     UIViewController *viewControllerInNavController = viewController;
     if ( [viewController conformsToProtocol:@protocol(VMultipleContainerChild)] )
@@ -80,7 +92,12 @@ static const char kAssociatedObjectViewWasHiddenKey;
             viewControllerInNavController = (UIViewController *)delegate;
         }
     }
-    
+    return viewControllerInNavController;
+}
+
+- (void)trackViewWillDisappear:(UIViewController *)viewController
+{
+    UIViewController *viewControllerInNavController = [self viewControllerInNavControllerFromViewController:viewController];
     NSArray *navStackAfterViewController = @[];
     NSArray *navStack = viewController.navigationController.viewControllers;
     NSInteger start = [navStack indexOfObject:viewControllerInNavController];

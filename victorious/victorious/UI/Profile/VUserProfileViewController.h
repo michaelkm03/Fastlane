@@ -38,4 +38,11 @@
  */
 - (void)updateAccessoryItems;
 
+/**
+ Allows a context that instantiates a VUserProfileViewController to provide a class (possibly itself)
+ used to override behavior of template-driven view tracking. 
+ @see VDependencyManager+VTracking
+ */
+@property (nonatomic, assign) Class viewTrackingClassOverride;
+
 @end

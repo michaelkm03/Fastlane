@@ -41,10 +41,10 @@
 #import "VProfileDeeplinkHandler.h"
 #import "VInboxDeepLinkHandler.h"
 #import "VFloatingUserProfileHeaderViewController.h"
-
 #import "VUsersViewController.h"
 #import "VFollowersDataSource.h"
 #import "VUserIsFollowingDataSource.h"
+#import "VDependencyManager+VTracking.h"
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
@@ -197,6 +197,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.dependencyManager trackViewWillAppear:self withParameters:nil templateClass:self.viewTrackingClassOverride];
     
     if ( !self.isCurrentUser && self.user == nil && self.remoteId != nil )
     {

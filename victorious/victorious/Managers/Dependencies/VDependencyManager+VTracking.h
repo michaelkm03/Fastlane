@@ -52,6 +52,24 @@ extern NSString * const VTrackingBallisticCountKey;
 - (void)trackViewWillAppear:(UIViewController *)viewController withParameters:(NSDictionary *)parameters;
 
 /**
+ Uses VTrackingManager to track a view of the provided view controller if self contains the "view" tracking key.
+ 
+ @param viewController The view controller spawned by this instance of VDependencyManager that
+ contains tracking keys and other values relative to it.
+ @param parameters Dictionary of parameters to include with the event.
+ @param tempalteClass A `Class` type that allows the view controller to specify a template class as the source
+ of the view event.  Internally, this category prevents duplicate tracking events by checking that the class
+ of the view controller provided to this method is actually the class that corresponds to the template component
+ (such as a ".screen" component) as configured in templateClasses.plist.  If that's not the case, the event is
+ not tracked under the assumption that the event was trigger by a view controller that whose dependency manager
+ is inherited from another view controller that instantiated it, and therefore is not the view controller presentation
+ of the template component (because it's parent is).  Anyway, the `templateClass` parameter allows the context
+ to override that in situations where the template structure or some other functionality is breaking that normal usecase,
+ such as is the case with navigation destinationst that provide alternate destinations.
+ */
+- (void)trackViewWillAppear:(UIViewController *)viewController withParameters:(NSDictionary *)parameters templateClass:(Class)templateClass;
+
+/**
  Updates state management to prevent tracking views when returning to the viewc controller
  after popping or dismissing, i.e. going back or closing.
  
