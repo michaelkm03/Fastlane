@@ -15,13 +15,13 @@
 - (void)v_addAccessoryScreensWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     UINavigationItem *navigationItem = [self navigationItemForAccessoryItems];
-    [dependencyManager v_addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
+    [dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
 }
 
 - (void)v_addBadgingToAccessoryScreensWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     UINavigationItem *navigationItem = [self navigationItemForAccessoryItems];
-    [dependencyManager v_addBadgingToAccessoryScreensInNavigationItem:navigationItem fromViewController:self];
+    [dependencyManager addBadgingToAccessoryScreensInNavigationItem:navigationItem fromViewController:self];
 }
 
 - (UINavigationItem *)navigationItemForAccessoryItems
