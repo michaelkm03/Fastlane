@@ -90,7 +90,7 @@ typedef void (^VTemplateDownloaderCompletion)(NSData *__nullable templateData, N
 /**
  The delegate that was provided at initialization time
  */
-@property (nonatomic, weak, readonly) id<VTemplateDownloadOperationDelegate> delegate;
+@property (nonatomic, weak, readonly, nullable) id<VTemplateDownloadOperationDelegate> delegate;
 
 /**
  The manager will give the downloader this much time 
@@ -124,7 +124,7 @@ typedef void (^VTemplateDownloaderCompletion)(NSData *__nullable templateData, N
 /**
  Initializes a new template download manager with a downloader and a delegate
  */
-- (instancetype)initWithDownloader:(id<VTemplateDownloader>)downloader andDelegate:(id<VTemplateDownloadOperationDelegate>)delegate NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithDownloader:(id<VTemplateDownloader>)downloader andDelegate:(id<VTemplateDownloadOperationDelegate> __nullable)delegate NS_DESIGNATED_INITIALIZER;
 
 @end
 
