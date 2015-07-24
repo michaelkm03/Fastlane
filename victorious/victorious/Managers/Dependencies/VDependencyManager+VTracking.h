@@ -62,10 +62,11 @@ extern NSString * const VTrackingBallisticCountKey;
  of the view controller provided to this method is actually the class that corresponds to the template component
  (such as a ".screen" component) as configured in templateClasses.plist.  If that's not the case, the event is
  not tracked under the assumption that the event was trigger by a view controller that whose dependency manager
- is inherited from another view controller that instantiated it, and therefore is not the view controller presentation
- of the template component (because it's parent is).  Anyway, the `templateClass` parameter allows the context
- to override that in situations where the template structure or some other functionality is breaking that normal usecase,
- such as is the case with navigation destinationst that provide alternate destinations.
+ is inherited from another view controller that instantiated it, and therefore is not the view controller representation
+ of the template component (because it's parent is).  Anyway, the `templateClass` parameter allows the caller
+ to override that by forcing that comparison to use the provided class.  This is required in situations where the
+ template structure or some other functionality is breaking that normal usecase,  such as is the case with navigation
+ destinations that provide alternate destinations.
  */
 - (void)trackViewWillAppear:(UIViewController *)viewController withParameters:(NSDictionary *)parameters templateClass:(Class)templateClass;
 
