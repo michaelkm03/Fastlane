@@ -9,6 +9,8 @@
 #import "VCaptureVideoPreviewView.h"
 #import "VCameraFocusView.h"
 
+static const CGRect kDefaultFocusFrame = {{0.0f, 0.0f}, {50.0f, 50.0f}};
+
 @interface VCaptureVideoPreviewView ()
 
 @property (nonatomic, strong) VCameraFocusView *focusView;
@@ -41,7 +43,7 @@
 
 - (void)sharedInit
 {
-    _focusView = [[VCameraFocusView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
+    _focusView = [[VCameraFocusView alloc] initWithFrame:kDefaultFocusFrame];
     _focusView.alpha = 0.0f;
     _focusView.userInteractionEnabled = NO;
     [self addSubview:_focusView];

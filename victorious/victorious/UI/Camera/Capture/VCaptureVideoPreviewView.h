@@ -21,12 +21,18 @@
 - (void)captureVideoPreviewView:(VCaptureVideoPreviewView *)previewView
                  tappedLocation:(CGPoint)locationInCaptureDeviceCoordinates;
 
+/**
+ *  Queries the delegate about whether or not it should display the focus reticle
+ *  when the user taps on the previewView. Return YES to show, NO to prevent the
+ *  reticle from showing.
+ */
 - (BOOL)shouldShowTapsForVideoPreviewView:(VCaptureVideoPreviewView *)previewView;
 
 @end
 
 /**
- *  A View wrapper around AVCapturePreviewLayer.
+ *  A View wrapper around AVCapturePreviewLayer. Displays a reticle and informs 
+ *  its delegate about taps relative to the current capture device.
  */
 @interface VCaptureVideoPreviewView : UIView
 
