@@ -78,7 +78,7 @@
         
         // Save date that we last voted
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setObject:[NSDate date] forKey:self.voteType.voteTypeID];
+        [userDefaults setObject:[NSDate date] forKey:[self coolDownPersistenceKey]];
         return YES;
     }
     
@@ -88,13 +88,6 @@
 - (BOOL)isCoolingDown
 {
     return [self secondsUntilCooldownIsOver] > 0;
-}
-
-- (NSDate *)lastVoted
-{
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSDate *lastVoted = [userDefaults objectForKey:self.voteType.voteTypeID];
-    return lastVoted;
 }
 
 - (NSTimeInterval)secondsUntilCooldownIsOver
@@ -107,10 +100,22 @@
     return [self secondsSinceLastVote] / self.cooldownDuration;
 }
 
+- (NSDate *)lastVoted
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSDate *lastVoted = [userDefaults objectForKey:[self coolDownPersistenceKey]];
+    return lastVoted;
+}
+
 - (NSTimeInterval)secondsSinceLastVote
 {
     NSDate *now = [NSDate date];
     return [now timeIntervalSince1970] - [[self lastVoted] timeIntervalSince1970];
+}
+
+- (NSString *)coolDownPersistenceKey
+{
+    return [@"cooldown-" stringByAppendingString:self.voteType.voteTypeID];
 }
 
 @end
