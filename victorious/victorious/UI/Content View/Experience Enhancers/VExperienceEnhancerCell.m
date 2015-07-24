@@ -17,6 +17,8 @@ static const CGFloat kTopSpaceIconCompactVertical = 5.0f;
 static NSString * const kUnlockedBallisticBackgroundIconKey = @"ballistic_background_icon";
 static NSString * const kLockedBallisticBackgroundIconKey = @"locked_ballistic_background_icon";
 
+NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCount";
+
 @interface VExperienceEnhancerCell ()
 
 @property (weak, nonatomic) IBOutlet ExperienceEnhancerAnimatingIconView *ballisticIconView;
@@ -43,12 +45,10 @@ static NSString * const kLockedBallisticBackgroundIconKey = @"locked_ballistic_b
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
     if ([UIScreen mainScreen].bounds.size.height == kThreePointFiveInchScreenHeight)
     {
         self.topSpaceIconImageViewToContianerConstraint.constant = kTopSpaceIconCompactVertical;
     }
-    
     self.isLocked = NO;
     self.enabled = YES;
 }
@@ -158,6 +158,9 @@ static NSString * const kLockedBallisticBackgroundIconKey = @"locked_ballistic_b
         self.lockedBallisticBackground = [dependencyManager imageForKey:kLockedBallisticBackgroundIconKey];
         self.unlockedBallisticBackground = [dependencyManager imageForKey:kUnlockedBallisticBackgroundIconKey];
         [self updateOverlayImageView];
+        
+        BOOL shouldShowCount = [[dependencyManager numberForKey:VExperienceEnhancerCellShouldShowCountKey] boolValue];
+        self.experienceEnhancerLabel.hidden = !shouldShowCount;
     }
 }
 

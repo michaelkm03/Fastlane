@@ -141,16 +141,7 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 - (void)GIFSelectedWithPreviewImage:(UIImage *)previewImage capturedMediaURL:(NSURL *)capturedMediaURL
 {
     self.source = VCreationFlowSourceSearch;
-    BOOL responds = [self.creationFlowDelegate respondsToSelector:@selector(shouldShowPublishScreenForFlowController)];
-    if ( !responds || (responds && [self.creationFlowDelegate shouldShowPublishScreenForFlowController]) )
-    {
-        [self setupPublishPresenter];
-        [self toPublishScreenWithRenderedMediaURL:capturedMediaURL previewImage:previewImage fromWorkspace:nil];
-    }
-    else
-    {
-        [self captureFinishedWithMediaURL:capturedMediaURL previewImage:previewImage shouldSkipTrimmer:YES];
-    }
+    [self captureFinishedWithMediaURL:capturedMediaURL previewImage:previewImage shouldSkipTrimmer:YES];
 }
 
 @end

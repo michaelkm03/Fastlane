@@ -10,6 +10,11 @@
 
 @class VDependencyManager;
 
+/**
+ *  A key to use to determine whether or not to show EB counts.
+ */
+extern NSString * const VExperienceEnhancerCellShouldShowCountKey;
+
 @interface VExperienceEnhancerCell : VBaseCollectionViewCell
 
 @property (nonatomic, copy) NSString *experienceEnhancerTitle;

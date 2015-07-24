@@ -99,11 +99,6 @@
 @property (nonatomic, weak) id <VTrimmerThumbnailDataSource> thumbnailDataSource;
 
 /**
- *  The max duration of the video
- */
-@property (nonatomic, assign) CMTime maxDuration;
-
-/**
  Initializes a new instance of VTrimmerViewController with an instance of VDependencyManager
  */
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;

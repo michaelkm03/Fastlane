@@ -62,6 +62,7 @@ struct GIFSearchMediaExporter {
     private func downloadPathForRemotePath( remotePath: String ) -> String {
         
         let filename = remotePath.lastPathComponent
+        let uniqueID = remotePath.stringByDeletingLastPathComponent.lastPathComponent
         let paths = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true )
         if var path = paths.first as? String {
             path = path.stringByAppendingPathComponent( "com.getvictorious.gifSearch" )
@@ -71,7 +72,8 @@ struct GIFSearchMediaExporter {
                 NSFileManager.defaultManager().createDirectoryAtPath( path, withIntermediateDirectories: true, attributes: nil, error: nil)
             }
             
-            path = path.stringByAppendingPathComponent( filename )
+            // Create a unique URL for the gif
+            path = path.stringByAppendingPathComponent( uniqueID + "-" + filename )
             return path
         }
         fatalError( "Unable to find file path for temporary media download." )

@@ -12,6 +12,12 @@
 
 @interface VExperienceEnhancerBarCell : VBaseCollectionViewCell
 
+/**
+ *  Must use this method for sizing as this cell relies on dependencyManager for determining its size.
+ */
++ (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds
+                            dependencyManager:(VDependencyManager *)dependencyManager;
+
 @property (nonatomic, weak, readonly) VExperienceEnhancerBar *experienceEnhancerBar;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
