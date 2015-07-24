@@ -782,6 +782,7 @@
 		C3C734501B5F118F00D6795D /* ExperienceEnhancerIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C7344F1B5F118F00D6795D /* ExperienceEnhancerIconView.swift */; };
 		C3C734571B606BD500D6795D /* RadialAnimatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C734561B606BD500D6795D /* RadialAnimatingView.swift */; };
 		C3C734591B60714C00D6795D /* ExperienceEnhancerAnimatingIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C734581B60714C00D6795D /* ExperienceEnhancerAnimatingIconView.swift */; };
+		C3C7345B1B61CF3D00D6795D /* voteTypes.json in Resources */ = {isa = PBXBuildFile; fileRef = C3C7345A1B61CF3D00D6795D /* voteTypes.json */; };
 		C3E772141B44B3FD005809A5 /* VLikedContentStreamCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E772131B44B3FD005809A5 /* VLikedContentStreamCollectionViewController.m */; };
 		C3E7721A1B45EAF7005809A5 /* VActionSheetTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E772191B45EAF7005809A5 /* VActionSheetTextView.m */; };
 		D800A61A1AF01B6100F1A06A /* VCameraCoachMarkAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D800A6191AF01B6100F1A06A /* VCameraCoachMarkAnimator.m */; };
@@ -2528,6 +2529,7 @@
 		C3C7344F1B5F118F00D6795D /* ExperienceEnhancerIconView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperienceEnhancerIconView.swift; sourceTree = "<group>"; };
 		C3C734561B606BD500D6795D /* RadialAnimatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadialAnimatingView.swift; sourceTree = "<group>"; };
 		C3C734581B60714C00D6795D /* ExperienceEnhancerAnimatingIconView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperienceEnhancerAnimatingIconView.swift; sourceTree = "<group>"; };
+		C3C7345A1B61CF3D00D6795D /* voteTypes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = voteTypes.json; sourceTree = "<group>"; };
 		C3E772121B44B3FD005809A5 /* VLikedContentStreamCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLikedContentStreamCollectionViewController.h; sourceTree = "<group>"; };
 		C3E772131B44B3FD005809A5 /* VLikedContentStreamCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLikedContentStreamCollectionViewController.m; sourceTree = "<group>"; };
 		C3E772181B45EAF7005809A5 /* VActionSheetTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionSheetTextView.h; sourceTree = "<group>"; };
@@ -4154,6 +4156,7 @@
 				A72004FA1A02FEC000285A9C /* sampleImage.png */,
 				039D02B01A10443200DB9236 /* template.json */,
 				03A058C21AEF59E600CF39D1 /* templateCache.json */,
+				C3C7345A1B61CF3D00D6795D /* voteTypes.json */,
 			);
 			path = "Test Data";
 			sourceTree = "<group>";
@@ -7289,6 +7292,7 @@
 				A7CFC1BC19FAF6BF00726772 /* portrait_upsidedown.m4v in Resources */,
 				A7CFC1CC19FEE24300726772 /* front_portrait.m4v in Resources */,
 				039D2FD6197D93C600DFBE60 /* filters.xml in Resources */,
+				C3C7345B1B61CF3D00D6795D /* voteTypes.json in Resources */,
 				A7D378501AF0682B007FF197 /* component.json in Resources */,
 				A72004FB1A02FEC000285A9C /* sampleImage.png in Resources */,
 			);

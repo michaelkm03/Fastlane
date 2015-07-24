@@ -22,7 +22,6 @@
 #import "VApplicationTracking.h"
 
 // TODO
-#if 0
 
 static const NSUInteger kValidExperienceEnhancerCount = 10;
 static const NSUInteger kExperienceEnhancerCount = 20;
@@ -109,13 +108,15 @@ static const NSUInteger kExperienceEnhancerCount = 20;
     [self.viewController updateExperience:experienceEnhancers withSequence:self.sequence];
     
     __block NSUInteger matches = 0;
+    NSMutableArray *array = [NSMutableArray new];
     [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *exp, NSUInteger idx, BOOL *stop)
      {
          [self.sequence.voteResults.allObjects enumerateObjectsUsingBlock:^(VVoteResult *result, NSUInteger idx, BOOL *stop)
           {
-              if ( [result.remoteId isEqual:exp.voteType.voteTypeID] )
+              if ( [[result.remoteId stringValue] isEqualToString:exp.voteType.voteTypeID ] )
               {
-                  XCTAssertEqual( exp.startingVoteCount, result.count.unsignedIntegerValue );
+                  [array addObject:exp];
+                  XCTAssertEqual( exp.voteCount, result.count.integerValue );
                   matches++;
               }
           }];
@@ -129,7 +130,7 @@ static const NSUInteger kExperienceEnhancerCount = 20;
     NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
     [self.voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop) {
         VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] initWithVoteType:voteType voteCount:0];
-        enhancer.voteType.displayOrder = @( arc4random() % self.voteTypes.count );
+//        enhancer.voteType.displayOrder = @( arc4random() % self.voteTypes.count );
         if ( idx < kValidExperienceEnhancerCount )
         {
             enhancer.iconImage = [UIImage new];
@@ -141,27 +142,27 @@ static const NSUInteger kExperienceEnhancerCount = 20;
     return [NSArray arrayWithArray:mutableArray];
 }
 
-- (void)testFilter
-{
-    NSArray *experienceEnhancers = [self createExperienceEnhancers];
-    NSArray *filtered = nil;
-    
-    filtered = [VExperienceEnhancer experienceEnhancersFilteredByHasRequiredImages:experienceEnhancers];
-    XCTAssertEqual( filtered.count, kValidExperienceEnhancerCount );
-    
-    ((VExperienceEnhancer *)experienceEnhancers.firstObject).animationSequence = nil;
-    filtered = [VExperienceEnhancer experienceEnhancersFilteredByHasRequiredImages:experienceEnhancers];
-    XCTAssertEqual( filtered.count, kValidExperienceEnhancerCount );
-    
-    ((VExperienceEnhancer *)experienceEnhancers[0]).iconImage = nil;
-    filtered = [VExperienceEnhancer experienceEnhancersFilteredByHasRequiredImages:experienceEnhancers];
-    XCTAssertEqual( filtered.count, kValidExperienceEnhancerCount-1 );
-    
-    ((VExperienceEnhancer *)experienceEnhancers[0]).iconImage = nil;
-    ((VExperienceEnhancer *)experienceEnhancers[1]).iconImage = nil;
-    filtered = [VExperienceEnhancer experienceEnhancersFilteredByHasRequiredImages:experienceEnhancers];
-    XCTAssertEqual( filtered.count, kValidExperienceEnhancerCount-2 );
-}
+//- (void)testFilter
+//{
+//    NSArray *experienceEnhancers = [self createExperienceEnhancers];
+//    NSArray *filtered = nil;
+//    
+//    filtered = [VExperienceEnhancer experienceEnhancersFilteredByHasRequiredImages:experienceEnhancers];
+//    XCTAssertEqual( filtered.count, kValidExperienceEnhancerCount );
+//    
+//    ((VExperienceEnhancer *)experienceEnhancers.firstObject).animationSequence = nil;
+//    filtered = [VExperienceEnhancer experienceEnhancersFilteredByHasRequiredImages:experienceEnhancers];
+//    XCTAssertEqual( filtered.count, kValidExperienceEnhancerCount );
+//    
+//    ((VExperienceEnhancer *)experienceEnhancers[0]).iconImage = nil;
+//    filtered = [VExperienceEnhancer experienceEnhancersFilteredByHasRequiredImages:experienceEnhancers];
+//    XCTAssertEqual( filtered.count, kValidExperienceEnhancerCount-1 );
+//    
+//    ((VExperienceEnhancer *)experienceEnhancers[0]).iconImage = nil;
+//    ((VExperienceEnhancer *)experienceEnhancers[1]).iconImage = nil;
+//    filtered = [VExperienceEnhancer experienceEnhancersFilteredByHasRequiredImages:experienceEnhancers];
+//    XCTAssertEqual( filtered.count, kValidExperienceEnhancerCount-2 );
+//}
 
 - (void)testSortByDisplayOrder
 {
@@ -176,6 +177,7 @@ static const NSUInteger kExperienceEnhancerCount = 20;
     }
 }
 
+#if 0
 - (void)testVoteCounts
 {
     NSArray *experienceEnhancers = [self createExperienceEnhancers];
@@ -183,7 +185,6 @@ static const NSUInteger kExperienceEnhancerCount = 20;
     [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *exp, NSUInteger idx, BOOL *stop)
      {
          NSUInteger start = arc4random() % 200;
-         [exp resetStartingVoteCount:start];
          
          NSUInteger count = arc4random() % 200;
          for ( NSUInteger i = 0; i < count; i++ )
@@ -191,15 +192,11 @@ static const NSUInteger kExperienceEnhancerCount = 20;
              [exp vote];
          }
          
-         XCTAssertEqual( exp.totalVoteCount, start + count );
-         
-         [exp resetSessionVoteCount];
-         XCTAssertEqual( exp.totalVoteCount, start );
-         XCTAssertEqual( exp.sessionVoteCount, (NSUInteger)0 );
+         NSInteger totalCount = start + count;
+         XCTAssertEqual( exp.voteCount, totalCount );
          
      }];
 }
+#endif
 
 @end
-
-#endif
