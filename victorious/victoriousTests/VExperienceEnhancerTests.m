@@ -220,22 +220,43 @@ static const NSUInteger kExperienceEnhancerCount = 20;
          
      }];
     
-//    [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *exp, NSUInteger idx, BOOL *stop)
-//     {
-//         [exp resetCooldownTimer];
-//         
-//         exp.cooldownDuration = 5;
-//         
-//         NSUInteger count = arc4random() % 200;
-//         for ( NSUInteger i = 0; i < count; i++ )
-//         {
-//             [exp vote];
-//         }
-//         
-//         // Make sure vote count is one since cool down
-//         XCTAssertEqual( exp.voteCount, 1 );
-//         
-//     }];
+    [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *exp, NSUInteger idx, BOOL *stop)
+     {
+         [exp resetCooldownTimer];
+
+         NSInteger startingVotes = exp.voteCount;
+         NSUInteger cooldown = (arc4random() % 5) + 1;
+         NSUInteger timeUntilVote = cooldown + 1;
+         
+         // Set the cooldown time
+         exp.cooldownDuration = cooldown;
+         
+         // Vote multiple times, should only register one
+         NSUInteger count = 3;
+         for ( NSUInteger i = 0; i < count; i++ )
+         {
+             [exp vote];
+         }
+         
+         XCTestExpectation *expectation = [self expectationWithDescription:@"High Expectations"];
+         
+         // Wait out the cooldown time
+         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeUntilVote * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+         {
+             // Vote again, should register now that cooldown is over
+             [exp vote];
+             XCTAssertEqual( exp.voteCount, startingVotes + 2 );
+             [expectation fulfill];
+         });
+         
+         [self waitForExpectationsWithTimeout:timeUntilVote + 1 handler:^(NSError *error)
+         {
+             if (error != nil)
+             {
+                 XCTFail(@"Error");
+             }
+         }];
+     }];
 }
 
 @end
