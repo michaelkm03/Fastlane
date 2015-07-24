@@ -26,6 +26,7 @@
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VAccessoryNavigationSource.h"
 #import "VDependencyManager+VNavigationItem.h"
+#import "UIViewController+VAccessoryScreens.h"
 
 static const NSUInteger kCharacterLimit = 1024;
 
@@ -67,8 +68,6 @@ static const NSUInteger kCharacterLimit = 1024;
     [self hideKeyboardBarIfNeeded];
     
     [self.view bringSubviewToFront:self.busyView];
-    
-    [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -76,13 +75,14 @@ static const NSUInteger kCharacterLimit = 1024;
     [super viewWillAppear:animated];
     [self setEdgesForExtendedLayout:UIRectEdgeAll];
     [self updateTitle];
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
+    [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
+    [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
     [self updateTitle];
 }
 
