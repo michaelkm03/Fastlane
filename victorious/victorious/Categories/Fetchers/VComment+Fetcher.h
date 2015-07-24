@@ -8,9 +8,12 @@
 
 #import "VComment.h"
 
+@class VCommentMedia;
+
 @interface VComment (Fetcher)
 
 - (BOOL)hasMedia;
 - (NSURL *)previewImageURL;
+- (NSURL *)mp4MediaURL;
 
 @end

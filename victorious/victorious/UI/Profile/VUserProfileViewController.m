@@ -898,7 +898,12 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         }
         else
         {
-            ((VMessageContainerViewController *)menuItem.destination).otherUser = self.user;
+            // Make a new container with destination's dependencyManager, and push it to the navigation controller stack
+            VDependencyManager *destinationDependencyManager = ((VMessageContainerViewController *)menuItem.destination).dependencyManager;
+            VMessageContainerViewController *destinationMessageContainerVC = [VMessageContainerViewController messageViewControllerForUser:self.user dependencyManager: destinationDependencyManager];
+            [self.navigationController pushViewController:destinationMessageContainerVC animated:YES];
+            
+            return NO;
         }
     }
     else if ( [menuItem.destination isKindOfClass:[VFindFriendsViewController class]] )

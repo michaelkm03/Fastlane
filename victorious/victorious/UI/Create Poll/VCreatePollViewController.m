@@ -315,10 +315,10 @@ static char KVOContext;
     self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager];
     __weak typeof(self) welf = self;
     self.attachmentPresenter.attachmentTypes = attachmentOptions;
-    self.attachmentPresenter.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
+    self.attachmentPresenter.resultHandler = ^void(BOOL success, VPublishParameters *publishParameters)
     {
-        [welf imagePickerFinishedWithURL:mediaURL
-                            previewImage:previewImage];
+        [welf imagePickerFinishedWithURL:publishParameters.mediaToUploadURL
+                            previewImage:publishParameters.previewImage];
         [welf dismissViewControllerAnimated:YES
                                  completion:nil];
     };

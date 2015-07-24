@@ -7,6 +7,7 @@
 //
 
 #import "VAbstractPresenter.h"
+#import "VPublishParameters.h"
 
 typedef NS_OPTIONS(NSUInteger, VMediaAttachmentOptions)
 {
@@ -18,7 +19,7 @@ typedef NS_OPTIONS(NSUInteger, VMediaAttachmentOptions)
 /**
  *  A completion block for the media attachment presenter.
  */
-typedef void(^VMediaAttachmentResultHandler)(BOOL success, UIImage *previewImage, NSURL *mediaURL);
+typedef void(^VMediaAttachmentResultHandler)(BOOL success, VPublishParameters *publishParameters);
 
 /**
  *  A presenter for attaching media to various parts of the app. NOTE: When there are two ore more attachment types this 

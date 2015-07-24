@@ -392,13 +392,13 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
     return [name stringByAppendingString:aspectRatioString];
 }
 
-#pragma mark - VStreamCellFocus
+#pragma mark - VCellFocus
 
 - (void)setHasFocus:(BOOL)hasFocus
 {
-    if ([self.previewView conformsToProtocol:@protocol(VStreamCellFocus)])
+    if ([self.previewView conformsToProtocol:@protocol(VCellFocus)])
     {
-        [(id <VStreamCellFocus>)self.previewView setHasFocus:hasFocus];
+        [(id <VCellFocus>)self.previewView setHasFocus:hasFocus];
     }
 }
 

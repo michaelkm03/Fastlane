@@ -523,7 +523,7 @@
 }
 
 - (void)addCommentWithText:(NSString *)text
-                  mediaURL:(NSURL *)mediaURL
+         publishParameters:(VPublishParameters *)publishParameters
                   realTime:(CMTime)realTime
                 completion:(void (^)(BOOL succeeded))completion
 {
@@ -531,7 +531,7 @@
     if (isnan(currentTime))
     {
         [[VObjectManager sharedManager] addCommentWithText:text
-                                                  mediaURL:mediaURL
+                                         publishParameters:publishParameters
                                                 toSequence:self.sequence
                                                  andParent:nil
                                               successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
@@ -552,7 +552,7 @@
     else
     {
         [[VObjectManager sharedManager] addRealtimeCommentWithText:text
-                                                          mediaURL:mediaURL
+                                                 publishParameters:publishParameters
                                                            toAsset:self.currentAsset
                                                             atTime:@(CMTimeGetSeconds(realTime))
                                                       successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
