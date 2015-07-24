@@ -141,8 +141,6 @@ static UIEdgeInsets const kMargin = { 0.0f, 0.0f, 0.0f, 0.0f }; //<this determin
 
 - (void)setBadgeNumber:(NSInteger)badgeNumber
 {
-#warning - remove this once done testing
-    badgeNumber = 153; //< remember to remove this once your done!
     if (badgeNumber == _badgeNumber)
     {
         return;
