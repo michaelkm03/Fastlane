@@ -165,7 +165,7 @@ const CGFloat VTrimmerTopPadding = 42.0f;
         }
         return nil;
         
-        CGFloat buffer = 7.0f * kTrimBodyWidth;
+        CGFloat buffer = 5.0f * kTrimBodyWidth;
         if ( (point.x > (CGRectGetMinX(self.trimThumbBody.frame) - buffer)) && ( point.x < (CGRectGetMaxX(self.trimThumbBody.frame) + buffer)) )
         {
             return self.trimThumbBody;
