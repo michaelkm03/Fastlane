@@ -207,7 +207,7 @@ static const NSUInteger kExperienceEnhancerCount = 20;
      {
          [exp resetCooldownTimer];
          
-         exp.cooldownDuration = 5;
+         exp.cooldownDuration = 10;
          
          NSUInteger count = arc4random() % 200;
          for ( NSUInteger i = 0; i < count; i++ )
@@ -238,11 +238,17 @@ static const NSUInteger kExperienceEnhancerCount = 20;
              [exp vote];
          }
          
+         // Check if we're cooling down
+         XCTAssertTrue(exp.isCoolingDown);
+         
          XCTestExpectation *expectation = [self expectationWithDescription:@"High Expectations"];
          
          // Wait out the cooldown time
          dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeUntilVote * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
          {
+             XCTAssertTrue([exp percentageOfCooldownComplete] >= 1);
+             XCTAssertTrue([exp secondsUntilCooldownIsOver] <= 0);
+             
              // Vote again, should register now that cooldown is over
              [exp vote];
              XCTAssertEqual( exp.voteCount, startingVotes + 2 );
