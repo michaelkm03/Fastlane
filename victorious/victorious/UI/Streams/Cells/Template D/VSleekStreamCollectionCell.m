@@ -390,10 +390,6 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
 {
     NSString *name = sequence.name ?: @"";
     NSString *aspectRatioString = [NSString stringWithFormat:@"%.5f", [sequence previewAssetAspectRatio]];
-    if ( [name isEqualToString:@"Cant take a video in a poll, whats up with that? Probably related to the gif bug, cant take videos with camera for poll or gif whats up with"] )
-    {
-        
-    }
     return [name stringByAppendingString:aspectRatioString];
 }
 
