@@ -43,6 +43,7 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Discover.h"
 #import "VUploadManager.h"
+#import "VContentViewFactory.h"
 
 //Categories
 #import "NSArray+VMap.h"
@@ -716,7 +717,12 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     NSParameterAssert(self.currentStream != nil);
     [self.streamTrackingHelper onStreamCellSelectedWithStream:self.currentStream sequence:sequence];
     
-    [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:sequence streamID:streamId commentId:nil placeHolderImage:previewImage];
+    VContentViewFactory *contentViewFactory = [self.dependencyManager contentViewFactory];
+    UIViewController *contentView = [contentViewFactory contentViewForSequence:sequence inStreamWithID:streamId commentID:nil placeholderImage:previewImage];
+    if ( contentView != nil )
+    {
+        [self presentViewController:contentView animated:YES completion:nil];
+    }
 }
 
 #pragma mark - Upload Progress View
