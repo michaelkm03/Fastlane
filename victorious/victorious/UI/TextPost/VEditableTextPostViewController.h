@@ -11,6 +11,8 @@
 #import "VHasManagedDependencies.h"
 #import "VTextListener.h"
 
+extern NSString * const kDefaultTextKey;
+
 @class VEditableTextPostViewController;
 
 /**
@@ -56,7 +58,13 @@
 @property (nonatomic, assign) BOOL isEditing;
 
 /**
- Programmatically embed a hashtag in the text at the currently selelected range.
+ Adds a hashtag to the text view's placeholder text and also appends it to the
+ end of the text when the user starts typing.
+ */
+@property (nonatomic, strong) NSString *defaultHashtag;
+
+/**
+ Programmatically embed a hashtag in the text at the currently selected range.
  */
 - (BOOL)addHashtag:(NSString *)hashtagText;
 

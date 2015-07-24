@@ -9,13 +9,13 @@
 #import "VTextWorkspaceFlowController.h"
 #import "VDependencyManager+VWorkspace.h"
 #import "VWorkspaceViewController.h"
-#import "VTextToolController.h"
 #import "VRootViewController.h"
 #import "VTextCanvasToolViewController.h"
 #import "VWorkspaceTool.h"
 #import "NSDictionary+VJSONLogging.h"
 #import "VEditableTextPostViewController.h"
 #import "VTextListener.h"
+#import "VForcedWorkspaceContainerViewController.h"
 #import "VMediaAttachmentPresenter.h"
 #import "VImageToolController.h"
 
@@ -33,11 +33,23 @@
 
 @implementation VTextWorkspaceFlowController
 
-+ (VTextWorkspaceFlowController *)textWorkspaceFlowControllerWithDependencyManager:(VDependencyManager *)dependencyManager
++ (VTextWorkspaceFlowController *)textWorkspaceFlowControllerWithDependencyManager:(VDependencyManager *)dependencyManager addedDependencies:(NSDictionary *)addedDependencies
 {
     NSAssert(dependencyManager != nil, @"Workspace flow controller needs a dependency manager");
     VDependencyManager *dependencyManagerToUse = dependencyManager;
+    
+    // Add dependencies if necessary
+    if (addedDependencies != nil)
+    {
+        return [dependencyManagerToUse templateValueOfType:[VTextWorkspaceFlowController class] forKey:VDependencyManagerTextWorkspaceFlowKey withAddedDependencies:addedDependencies];
+    }
+    
     return [dependencyManagerToUse templateValueOfType:[VTextWorkspaceFlowController class] forKey:VDependencyManagerTextWorkspaceFlowKey];
+}
+
++ (VTextWorkspaceFlowController *)textWorkspaceFlowControllerWithDependencyManager:(VDependencyManager *)dependencyManager
+{
+    return [VTextWorkspaceFlowController textWorkspaceFlowControllerWithDependencyManager:dependencyManager addedDependencies:nil];
 }
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -89,17 +101,34 @@
 - (VWorkspaceViewController *)createTextWorkspaceWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     VWorkspaceViewController *workspace = (VWorkspaceViewController *)[dependencyManager viewControllerForKey:VDependencyManagerEditTextWorkspaceKey];
-    workspace.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
-    {
-        [self.creationFlowDelegate creationFlowController:self
-                                 finishedWithPreviewImage:previewImage
-                                         capturedMediaURL:renderedMediaURL];
-    };
+    
     workspace.continueText = NSLocalizedString( @"Publish", @"Label for button that will publish content." );
     workspace.activityText = NSLocalizedString( @"Publishing...", @"Label indicating that content is being published." );
     workspace.confirmCancelMessage = NSLocalizedString( @"This will discard any content added to your post", @"" );
     workspace.shouldConfirmCancels = YES;
+    // Set completion block for publishing
+    __weak typeof(self) welf = self;
+    workspace.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
+    {
+        __strong typeof(welf) strongSelf = welf;
+        [strongSelf.creationFlowDelegate creationFlowController:strongSelf
+                                       finishedWithPreviewImage:previewImage
+                                               capturedMediaURL:renderedMediaURL];
+    };
+    
     return workspace;
+}
+
+- (void)publishContent
+{
+    // Check with delegate to see if publishing is forced
+    if ([self.delegate respondsToSelector:@selector(isCreationForced)])
+    {
+        self.textToolController.publishIsForced = [self.textFlowDelegate isCreationForced];
+    }
+
+    // Publish text post
+    [self.textWorkspaceViewController publishContent];
 }
 
 #pragma mark - VTextListener
@@ -108,6 +137,10 @@
 {
     BOOL enabled = self.textCanvasToolViewController.textPostViewController.textOutput.length > 0;
     [self.textWorkspaceViewController.continueButton setEnabled:enabled];
+    if ([self.textFlowDelegate respondsToSelector:@selector(contentDidBecomePublishable:)])
+    {
+        [self.textFlowDelegate contentDidBecomePublishable:enabled];
+    }
 }
 
 #pragma mark - VTextCanvasToolDelegate
@@ -135,6 +168,7 @@
     self.attachmentPresenter.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
     {
         __strong typeof(welf) strongSelf = welf;
+        
         [strongSelf dismissViewControllerAnimated:YES
                                        completion:nil];
         [strongSelf didCaptureMediaWithURL:mediaURL previewImage:previewImage];

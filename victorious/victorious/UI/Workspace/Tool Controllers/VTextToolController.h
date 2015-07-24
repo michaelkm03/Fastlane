@@ -28,9 +28,15 @@
 @property (nonatomic, readonly) BOOL canPublish;
 
 /**
+ Set this to YES if this text post is to be published
+ via a forced content creation screen.
+ */
+@property (nonatomic, assign) BOOL publishIsForced;
+
+/**
  An object that can receive updates when the text post is edited.
  */
-@property (nonatomic, strong) id<VTextListener> textListener;
+@property (nonatomic, weak) id<VTextListener> textListener;
 
 - (void)setMediaURL:(NSURL *)newMediaURL previewImage:(UIImage *)previewImage;
 

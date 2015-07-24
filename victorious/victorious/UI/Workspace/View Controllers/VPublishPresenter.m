@@ -9,12 +9,12 @@
 #import "VPublishPresenter.h"
 
 #import "VPublishViewController.h"
-#import "VBlurOverTransitioner.h"
+#import "VAlongsideTransitioner.h"
 
-@interface VPublishPresenter () <UIViewControllerTransitioningDelegate>
+@interface VPublishPresenter ()
 
 @property (nonatomic, weak) UIViewController *viewControllerPresentedOn;
-@property (nonatomic, strong) VBlurOverTransitioningDelegate *animator;
+@property (nonatomic, strong) VAlongsideTransitioner *transitioner;
 @property (nonatomic, strong, readwrite) VPublishViewController *publishViewController;
 
 @end
@@ -26,9 +26,9 @@
     self = [super initWithDependencymanager:dependencyManager];
     if (self != nil)
     {
-        _animator = [[VBlurOverTransitioningDelegate alloc] init];
+        _transitioner = [[VAlongsideTransitioner alloc] init];
         _publishViewController = [dependencyManager newPublishViewController];
-        _publishViewController.transitioningDelegate = _animator;
+        _publishViewController.transitioningDelegate = _transitioner;
         _publishViewController.modalPresentationStyle = UIModalPresentationCustom;
     }
     return self;

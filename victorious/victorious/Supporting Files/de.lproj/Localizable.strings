@@ -343,7 +343,7 @@
 
 "ExpiresOn" = "Läuft ab am %@";
 
-"me" = "Ich";
+"Me" = "Ich";
 
 "editProfileButton" = "Profil bearbeiten";
 "followers" = "Follower";

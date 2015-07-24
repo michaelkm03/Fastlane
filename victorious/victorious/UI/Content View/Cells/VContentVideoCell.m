@@ -115,12 +115,6 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     }
 }
 
-- (void)setAudioDisabled:(BOOL)audioMuted
-{
-    _audioMuted = audioMuted;
-    self.videoPlayerViewController.isAudioEnabled = !_audioMuted;
-}
-
 #pragma mark - Playback Methods
 
 - (void)prepareUIForPlayback
@@ -185,6 +179,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     self.videoPlayerViewController.shouldContinuePlayingAfterDismissal = YES;
     self.videoPlayerViewController.shouldChangeVideoGravityOnDoubleTap = YES;
     self.videoPlayerViewController.animateWithPlayControls = self.animateAlongSideBlock;
+    self.videoPlayerViewController.audioMuted = self.audioMuted;
     if (self.tracking != nil)
     {
         [self.videoPlayerViewController enableTrackingWithTrackingItem:self.tracking streamID:self.viewModel.streamID];
@@ -203,7 +198,7 @@ static const NSTimeInterval kAdTimeoutTimeInterval = 3.0;
     if (self.playerControlsDisabled)
     {
         self.videoPlayerViewController.shouldShowToolbar = NO;
-        self.videoPlayerViewController.videoPlayerLayerVideoGravity = AVLayerVideoGravityResizeAspectFill;
+        self.videoPlayerViewController.videoPlayerLayerVideoGravity = AVLayerVideoGravityResizeAspect;
     }
 }
 
