@@ -291,6 +291,7 @@
 		A65F4D581B5DA69B00C96F1F /* VNoAssetsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A65F4D571B5DA69B00C96F1F /* VNoAssetsDataSource.m */; };
 		A66D76841B5B2E23004765EA /* VLibraryFolderControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A66D76831B5B2E23004765EA /* VLibraryFolderControl.m */; };
 		A66D76861B5B2E31004765EA /* VLibraryFolderControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = A66D76851B5B2E31004765EA /* VLibraryFolderControl.xib */; };
+		A680CE8F1B62ECA2005934FF /* VCameraToWorkspaceAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = A680CE8E1B62ECA2005934FF /* VCameraToWorkspaceAnimator.m */; };
 		A6886CF91B55EC4F00D4F6F8 /* VImageCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6886CF81B55EC4F00D4F6F8 /* VImageCreationFlowController.m */; };
 		A6886CFC1B5612F300D4F6F8 /* VAssetDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = A6886CFB1B5612F300D4F6F8 /* VAssetDownloader.m */; };
 		A6A74D8A1B61AFA900325A57 /* VCameraPermissionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6A74D891B61AFA900325A57 /* VCameraPermissionsController.m */; };
@@ -1639,6 +1640,8 @@
 		A66D76821B5B2E23004765EA /* VLibraryFolderControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLibraryFolderControl.h; sourceTree = "<group>"; };
 		A66D76831B5B2E23004765EA /* VLibraryFolderControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLibraryFolderControl.m; sourceTree = "<group>"; };
 		A66D76851B5B2E31004765EA /* VLibraryFolderControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VLibraryFolderControl.xib; sourceTree = "<group>"; };
+		A680CE8D1B62ECA2005934FF /* VCameraToWorkspaceAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCameraToWorkspaceAnimator.h; sourceTree = "<group>"; };
+		A680CE8E1B62ECA2005934FF /* VCameraToWorkspaceAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCameraToWorkspaceAnimator.m; sourceTree = "<group>"; };
 		A6886CF71B55EC4F00D4F6F8 /* VImageCreationFlowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageCreationFlowController.h; sourceTree = "<group>"; };
 		A6886CF81B55EC4F00D4F6F8 /* VImageCreationFlowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageCreationFlowController.m; sourceTree = "<group>"; };
 		A6886CFA1B5612F300D4F6F8 /* VAssetDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAssetDownloader.h; sourceTree = "<group>"; };
@@ -6294,6 +6297,8 @@
 				A65318A11B59B35900389EA9 /* VCreationFlowAnimator.m */,
 				D864489F1A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.h */,
 				D86448A01A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m */,
+				A680CE8D1B62ECA2005934FF /* VCameraToWorkspaceAnimator.h */,
+				A680CE8E1B62ECA2005934FF /* VCameraToWorkspaceAnimator.m */,
 			);
 			path = Animators;
 			sourceTree = "<group>";
@@ -7799,6 +7804,7 @@
 				A721E9411B572454000B7901 /* NSString+Unicode.swift in Sources */,
 				D89367491ADDBAA1001D2426 /* VActionBarFixedWidthItem.m in Sources */,
 				A7A9226A1AC9DB5F00F4755E /* VMultiplePickerSelection.m in Sources */,
+				A680CE8F1B62ECA2005934FF /* VCameraToWorkspaceAnimator.m in Sources */,
 				A7E4EDEF1A81A4B30035D6B1 /* VEndCardActionModel.m in Sources */,
 				A6B9FD0F1B60630900166BE8 /* NSURL+VTemporaryFiles.m in Sources */,
 				0314D4D819B46B5E00FA363C /* VPrivacyPoliciesViewController.m in Sources */,

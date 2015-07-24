@@ -15,6 +15,9 @@
 #import "VImageCameraViewController.h"
 #import "VImageSearchViewController.h"
 
+// Animator
+#import "VCameraToWorkspaceAnimator.h"
+
 // Edit
 #import "VWorkspaceViewController.h"
 #import "VImageToolController.h"
@@ -169,6 +172,29 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
         [self captureFinishedWithMediaURL:mediaURL
                              previewImage:previewImage];
     }
+}
+
+#pragma mark - UINavigationControllerDelegate
+
+- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+                                  animationControllerForOperation:(UINavigationControllerOperation)operation
+                                               fromViewController:(UIViewController *)fromVC
+                                                 toViewController:(UIViewController *)toVC
+{
+    if ([fromVC isKindOfClass:[VImageCameraViewController class]] && [toVC isKindOfClass:[VWorkspaceViewController class]])
+    {
+        return [[VCameraToWorkspaceAnimator alloc] init];
+    }
+    
+    if ([[self superclass] instancesRespondToSelector:@selector(navigationController:animationControllerForOperation:fromViewController:toViewController:)])
+    {
+        return [super navigationController:navigationController
+           animationControllerForOperation:operation
+                        fromViewController:fromVC
+                          toViewController:toVC];
+    }
+    
+    return nil;
 }
 
 @end

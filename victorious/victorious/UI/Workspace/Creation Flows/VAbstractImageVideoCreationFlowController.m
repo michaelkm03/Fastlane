@@ -46,7 +46,7 @@ static NSString * const kCreationFlowSourceLibrary = @"library";
 static NSString * const kCreationFlowSourceCamera = @"camera";
 static NSString * const kCreationFlowSourceSearch = @"search";
 
-@interface VAbstractImageVideoCreationFlowController () <UINavigationControllerDelegate, VAssetCollectionGridViewControllerDelegate, VScaleAnimatorSource>
+@interface VAbstractImageVideoCreationFlowController () <VAssetCollectionGridViewControllerDelegate, VScaleAnimatorSource>
 
 @property (nonatomic, strong) NSArray *cachedAssetCollections;
 
