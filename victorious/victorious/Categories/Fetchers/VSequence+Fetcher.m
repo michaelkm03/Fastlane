@@ -20,7 +20,6 @@
 #import "VImageAsset+Fetcher.h"
 #import "VImageAssetFinder.h"
 #import "VComment.h"
-#import "VMediaTypeHelper.h"
 
 static const CGFloat kMinimumAspectRatio = 0.5f;
 static const CGFloat kMaximumAspectRatio = 2.0f;
@@ -47,18 +46,38 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
 
 - (BOOL)isImage
 {
-    return [VMediaTypeHelper isImageCategory:self.category];
+    for (NSString *imageCategory in VImageCategories())
+    {
+        if ([self.category isEqualToString:imageCategory])
+        {
+            return YES;
+        }
+    }
+    
+    return NO;
 }
 
 - (BOOL)isVideo
 {
-    return [VMediaTypeHelper isVideoCategory:self.category];
+    for (NSString *videoCategory in VVideoCategories())
+    {
+        if ([self.category isEqualToString:videoCategory])
+        {
+            return true;
+        }
+    }
+    
+    return false;
 }
 
 - (BOOL)isGIFVideo
 {
     VAsset *asset = [[self firstNode] mp4Asset];
-    return [VMediaTypeHelper isGifVideoAsset:asset];
+    return asset != nil &&
+    asset.playerControlsDisabled.boolValue == YES &&
+    asset.loop.boolValue == YES &&
+    asset.audioMuted.boolValue == YES &&
+    asset.streamAutoplay.boolValue == YES;
 }
 
 - (BOOL)isText

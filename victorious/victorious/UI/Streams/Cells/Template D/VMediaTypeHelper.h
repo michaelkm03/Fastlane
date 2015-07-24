@@ -29,19 +29,4 @@
  */
 + (VMediaType)linkTypeForAsset:(VAsset *)asset andMediaCategory:(NSString *)mediaCategory;
 
-/**
-    Returns YES if the category or media type string corresponds to an image media type.
- */
-+ (BOOL)isImageCategory:(NSString *)category;
-
-/**
-    Returns YES if the category or media type string corresponds to an video media type.
- */
-+ (BOOL)isVideoCategory:(NSString *)category;
-
-/**
-    Returns YES if the asset corresponds to an gif media type.
- */
-+ (BOOL)isGifVideoAsset:(VAsset *)asset;
-
 @end

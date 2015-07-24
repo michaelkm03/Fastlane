@@ -111,14 +111,12 @@ static NSString * const   kVOwnerImageCategory         = @"owner_image";
 static NSString * const   kVOwnerImageRepostCategory   = @"owner_image_repost";
 static NSString * const   kVOwnerImageQuoteCategory    = @"owner_image_secret";
 static NSString * const   kVOwnerImageMemeCategory     = @"owner_image_meme";
-static NSString * const   kVCommentImageCategory       = @"image";
 static NSString * const   kVOwnerVideoCategory         = @"owner_video";
 static NSString * const   kVOwnerVideoRemixCategory    = @"owner_video_remix";
 static NSString * const   kVOwnerVideoRepostCategory   = @"owner_video_repost";
 static NSString * const   kVOwnerMemeRepostCategory    = @"owner_meme_repost";
 static NSString * const   kVOwnerQuoteRepostCategory   = @"owner_secret_repost";
 static NSString * const   kVOwnerAnnouncementCategory  = @"owner_announcement";
-static NSString * const   kVCommentVideoCategory       = @"video";
 
 static NSString * const   kVUGCPollCategory            = @"ugc_poll";
 static NSString * const   kVUGCTextCategory            = @"ugc_text";
