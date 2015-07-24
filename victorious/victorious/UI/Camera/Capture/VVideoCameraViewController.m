@@ -203,23 +203,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 
 - (void)startRecording:(VCameraControl *)cameraControl
 {
-    if (!self.captureController.videoEncoder)
-    {
-        NSError *encoderError;
-        VCameraVideoEncoder *encoder = [VCameraVideoEncoder videoEncoderWithFileURL:[NSURL v_temporaryFileURLWithExtension:VConstantMediaExtensionMP4]
-                                                                          videoSize:kVideoSize
-                                                                              error:&encoderError];
-        if (!encoder)
-        {
-            [self displayShortError:NSLocalizedString(@"VideoCaptureFailed", @"")];
-            self.nextButton.enabled = NO;
-            return;
-        }
-        encoder.delegate = self;
-        self.captureController.videoEncoder = encoder;
-        self.captureController.videoEncoder.recording = YES;
-    }
-    else
+    if ([self setupEncoderIfNeeded])
     {
         [self.captureController setVideoOrientation:[UIDevice currentDevice].orientation];
         self.captureController.videoEncoder.recording = YES;
@@ -274,6 +258,33 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 }
 
 #pragma mark - Capture
+
+// Returns YES if successfully created encoder or it already exists
+- (BOOL)setupEncoderIfNeeded
+{
+    if (self.captureController.videoEncoder != nil)
+    {
+        return YES;
+    }
+    
+    NSError *encoderError;
+    VCameraVideoEncoder *encoder = [VCameraVideoEncoder videoEncoderWithFileURL:[NSURL v_temporaryFileURLWithExtension:VConstantMediaExtensionMP4]
+                                                                      videoSize:kVideoSize
+                                                                          error:&encoderError];
+    if (encoder != nil)
+    {
+        self.captureController.videoEncoder = encoder;
+        self.captureController.videoEncoder.delegate = self;
+        self.captureController.videoEncoder.recording = YES;
+        return YES;
+    }
+    else
+    {
+        [self displayShortError:NSLocalizedString(@"VideoCaptureFailed", @"")];
+        self.nextButton.enabled = NO;
+        return NO;
+    }
+}
 
 - (void)startCaptureSession
 {
