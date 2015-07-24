@@ -364,7 +364,8 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 
 - (CGFloat)timelineWidthForFullTrack
 {
-    return [self timelineWidthPerSecond] * CMTimeGetSeconds(self.maximumTrimDuration);
+    CGFloat duration =  CMTimeGetSeconds(self.maximumEndTime) - CMTimeGetSeconds(self.minimumStartTime);
+    return [self timelineWidthPerSecond] * duration;
 }
 
 - (CMTime)currentTimeOffset
