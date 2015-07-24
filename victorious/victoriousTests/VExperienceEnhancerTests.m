@@ -130,7 +130,6 @@ static const NSUInteger kExperienceEnhancerCount = 20;
     NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
     [self.voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop) {
         VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] initWithVoteType:voteType voteCount:0];
-//        enhancer.voteType.displayOrder = @( arc4random() % self.voteTypes.count );
         if ( idx < kValidExperienceEnhancerCount )
         {
             enhancer.iconImage = [UIImage new];
@@ -177,14 +176,16 @@ static const NSUInteger kExperienceEnhancerCount = 20;
     }
 }
 
-#if 0
 - (void)testVoteCounts
 {
     NSArray *experienceEnhancers = [self createExperienceEnhancers];
     
     [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *exp, NSUInteger idx, BOOL *stop)
      {
-         NSUInteger start = arc4random() % 200;
+         NSUInteger start = exp.voteCount;
+         
+         // Set cooldown time to zero to test votes
+         [exp setCooldownDuration:0];
          
          NSUInteger count = arc4random() % 200;
          for ( NSUInteger i = 0; i < count; i++ )
@@ -197,6 +198,5 @@ static const NSUInteger kExperienceEnhancerCount = 20;
          
      }];
 }
-#endif
 
 @end
