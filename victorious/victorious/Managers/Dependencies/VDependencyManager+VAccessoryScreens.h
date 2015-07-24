@@ -36,14 +36,24 @@ extern NSString * const VDependencyManagerAccessoryNewMessage;
 - (void)addAccessoryScreensToNavigationItem:(UINavigationItem *)navigationItem;
 
 /**
- Adds properties to the given navigation item according to this VDependencyManager's configuration.
- Things like title and titleView.
+ Adds accessory screens to the given navigation item according to this VDependencyManager's configuration.
+ Should be called from viewWillAppear
  
  @param navigationItem The navigation item to configure
  @param sourceViewController The view controller currently being displayed that is requesting configuration
  */
 - (void)addAccessoryScreensToNavigationItem:(UINavigationItem *)navigationItem
-                         fromViewController:(UIViewController *)sourceViewController;
+                           fromViewController:(UIViewController *)sourceViewController;
+
+/**
+ Adds badging to the given navigation item according to this VDependencyManager's configuration.
+ Should be called from viewDidAppear
+ 
+ @param navigationItem The navigation item to configure
+ @param sourceViewController The view controller currently being displayed that is requesting configuration
+ */
+- (void)addBadgingToAccessoryScreensInNavigationItem:(UINavigationItem *)navigationItem
+                                    fromViewController:(UIViewController *)sourceViewController;
 
 /**
  Returns a UIBarButtonItem according that was created from the provided identifier, if it exists,

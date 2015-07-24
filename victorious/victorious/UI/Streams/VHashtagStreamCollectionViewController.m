@@ -25,6 +25,7 @@
 #import "VBarButton.h"
 #import "VHashtagResponder.h"
 #import "VFollowControl.h"
+#import "UIViewController+VAccessoryScreens.h"
 
 static NSString * const kHashtagStreamKey = @"hashtagStream";
 static NSString * const kHashtagKey = @"hashtag";
@@ -102,6 +103,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
     [self updateUserFollowingStatus];
 }
 
@@ -111,6 +113,8 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     
     // Must also call here since navigation items are set after viewDidAppear:
     [self updateUserFollowingStatus];
+    
+    [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 - (void)hashtagsUpdated
@@ -122,8 +126,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 {
     if ( self.navigationItem.rightBarButtonItem == nil )
     {
-        [self.dependencyManager configureNavigationItem:self.navigationItem];
-        [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
+        [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
         [self updateFollowStatusAnimated:NO];
     }
 }
