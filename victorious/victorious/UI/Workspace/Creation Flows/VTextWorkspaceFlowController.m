@@ -126,9 +126,7 @@
     {
         self.textToolController.publishIsForced = [self.textFlowDelegate isCreationForced];
     }
-    
 
-    
     // Publish text post
     [self.textWorkspaceViewController publishContent];
 }
