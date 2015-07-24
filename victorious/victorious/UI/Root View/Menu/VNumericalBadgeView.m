@@ -19,7 +19,7 @@
 @end
 
 static CGFloat kMaxFontPointSize = 12.0f;
-static UIEdgeInsets const kMargin = { 2.0f, 4.0f, 2.0f, 4.0f };
+static UIEdgeInsets const kMargin = { 0.0f, 0.0f, 0.0f, 0.0f }; //<this determines the padding around the badgeview
 
 @implementation VNumericalBadgeView
 
@@ -58,7 +58,7 @@ static UIEdgeInsets const kMargin = { 2.0f, 4.0f, 2.0f, 4.0f };
     [self addSubview:backgroundView];
     _backgroundView = backgroundView;
     
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 18, 18)];
+    UILabel *label = [[UILabel alloc] init];
     label.textAlignment = NSTextAlignmentCenter;
     label.textColor = [UIColor whiteColor];
     [self addSubview:label];
@@ -142,7 +142,7 @@ static UIEdgeInsets const kMargin = { 2.0f, 4.0f, 2.0f, 4.0f };
 - (void)setBadgeNumber:(NSInteger)badgeNumber
 {
 #warning - remove this once done testing
-    badgeNumber = 150; //< remove to remove this once your done!
+    badgeNumber = 153; //< remember to remove this once your done!
     if (badgeNumber == _badgeNumber)
     {
         return;
