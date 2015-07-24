@@ -120,6 +120,8 @@
 		036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AE5EC18FF0C0600A74BDA /* VReachability.m */; };
 		036DE7C01B607A600038A25E /* VEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951161B28AB9A00D9DB0A /* VEnvironment.m */; };
 		036DE7C11B607A610038A25E /* VEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951161B28AB9A00D9DB0A /* VEnvironment.m */; };
+		036DE7C51B6141030038A25E /* VAPIRequestDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7C31B608C100038A25E /* VAPIRequestDecorator.m */; };
+		036DE7C61B6141040038A25E /* VAPIRequestDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7C31B608C100038A25E /* VAPIRequestDecorator.m */; };
 		036E87B21ACB6B3F00E5AAAD /* VContentViewFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 036E87B11ACB6B3F00E5AAAD /* VContentViewFactory.m */; };
 		036F38631A0C4DEA0014DF66 /* Arimo-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38131A0C4DE90014DF66 /* Arimo-Bold.ttf */; };
 		036F38641A0C4DEA0014DF66 /* Arimo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38141A0C4DE90014DF66 /* Arimo-Regular.ttf */; };
@@ -1370,6 +1372,8 @@
 		03610589194154F40069D49E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		036AE5EB18FF0C0600A74BDA /* VReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VReachability.h; sourceTree = "<group>"; };
 		036AE5EC18FF0C0600A74BDA /* VReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VReachability.m; sourceTree = "<group>"; };
+		036DE7C21B608C100038A25E /* VAPIRequestDecorator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAPIRequestDecorator.h; sourceTree = "<group>"; };
+		036DE7C31B608C100038A25E /* VAPIRequestDecorator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAPIRequestDecorator.m; sourceTree = "<group>"; };
 		036E87B01ACB6B3F00E5AAAD /* VContentViewFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentViewFactory.h; sourceTree = "<group>"; };
 		036E87B11ACB6B3F00E5AAAD /* VContentViewFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewFactory.m; sourceTree = "<group>"; };
 		036F38131A0C4DE90014DF66 /* Arimo-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arimo-Bold.ttf"; sourceTree = "<group>"; };
@@ -4234,6 +4238,8 @@
 				034527D81B60788B00E990BB /* Environment */,
 				039269821B5C9DD600FCD0AA /* PrefixHeader.pch */,
 				034527A51B604A9100E990BB /* Template Loader */,
+				036DE7C21B608C100038A25E /* VAPIRequestDecorator.h */,
+				036DE7C31B608C100038A25E /* VAPIRequestDecorator.m */,
 			);
 			path = VictoriousCommon;
 			sourceTree = "<group>";
@@ -7812,6 +7818,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				034527CE1B606F8200E990BB /* VDownloadOperation.m in Sources */,
+				036DE7C61B6141040038A25E /* VAPIRequestDecorator.m in Sources */,
 				034527D01B606F8200E990BB /* VTemplatePackageManager.m in Sources */,
 				036DE7C11B607A610038A25E /* VEnvironment.m in Sources */,
 				034527D11B606F8200E990BB /* VTemplateSerialization.m in Sources */,
@@ -7833,6 +7840,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				039269791B5C871700FCD0AA /* VDownloadOperation.m in Sources */,
+				036DE7C51B6141030038A25E /* VAPIRequestDecorator.m in Sources */,
 				039269781B5C871700FCD0AA /* VBulkDownloadOperation.m in Sources */,
 				036DE7C01B607A600038A25E /* VEnvironment.m in Sources */,
 				0392697A1B5C871700FCD0AA /* VTemplateDownloadOperation.m in Sources */,
