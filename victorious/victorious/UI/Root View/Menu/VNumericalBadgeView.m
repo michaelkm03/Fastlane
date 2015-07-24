@@ -19,7 +19,7 @@
 @end
 
 static CGFloat kMaxFontPointSize = 12.0f;
-static UIEdgeInsets const kMargin = { 0.0f, 0.0f, 0.0f, 0.0f }; //<this determines the padding around the badgeview
+static UIEdgeInsets const kMargin = { 2.0f, 4.0f, 2.0f, 4.0f }; //<this determines the padding around the badgeview
 
 @implementation VNumericalBadgeView
 
