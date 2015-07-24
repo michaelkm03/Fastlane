@@ -17,7 +17,9 @@
  *  and mediaURL to use for remixing.
  */
 - (void)remixWithPreviewImage:(UIImage *)previewImage
-                     mediaURL:(NSURL *)mediaURL;
+                     mediaURL:(NSURL *)mediaURL
+                 parentNodeID:(NSNumber *)parentNodeID
+             parentSequenceID:(NSString *)parentSequenceID;
 
 /**
  *  The context for image creation. Defualts to contentCreation.
