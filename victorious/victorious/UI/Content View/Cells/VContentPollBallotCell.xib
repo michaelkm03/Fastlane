@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -57,37 +57,51 @@
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="C_pollOr" translatesAutoresizingMaskIntoConstraints="NO" id="cJJ-Gf-HxN">
-                        <rect key="frame" x="120" y="-12" width="80" height="72"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="D_pollOr" translatesAutoresizingMaskIntoConstraints="NO" id="cJJ-Gf-HxN">
+                        <rect key="frame" x="120" y="0.0" width="80" height="60"/>
                         <constraints>
+                            <constraint firstAttribute="width" constant="80" id="1At-dj-JjK"/>
                             <constraint firstAttribute="height" constant="72" id="58y-gN-AuV"/>
                             <constraint firstAttribute="width" constant="80" id="SEj-0B-xse"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="58y-gN-AuV"/>
+                                <exclude reference="SEj-0B-xse"/>
+                            </mask>
+                        </variation>
                     </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <color key="backgroundColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="cJJ-Gf-HxN" firstAttribute="leading" secondItem="bhK-IG-0t9" secondAttribute="trailing" id="12h-yK-7WV"/>
                 <constraint firstItem="88j-ED-vL9" firstAttribute="top" secondItem="0fh-FU-bx7" secondAttribute="top" id="1Yy-Ee-0Tj"/>
                 <constraint firstItem="3EP-fw-qmv" firstAttribute="leading" secondItem="RLX-ox-fAJ" secondAttribute="trailing" id="5na-uq-1Oz"/>
                 <constraint firstAttribute="trailing" secondItem="3EP-fw-qmv" secondAttribute="trailing" id="8Wv-sb-KuC"/>
                 <constraint firstItem="bhK-IG-0t9" firstAttribute="leading" secondItem="0fh-FU-bx7" secondAttribute="leading" id="DJR-8L-YT9"/>
+                <constraint firstItem="88j-ED-vL9" firstAttribute="leading" secondItem="cJJ-Gf-HxN" secondAttribute="trailing" id="EFA-e1-thj"/>
                 <constraint firstAttribute="bottom" secondItem="bhK-IG-0t9" secondAttribute="bottom" id="EZc-pS-Rz3"/>
                 <constraint firstAttribute="trailing" secondItem="88j-ED-vL9" secondAttribute="trailing" id="IOc-Nz-34i"/>
                 <constraint firstItem="3EP-fw-qmv" firstAttribute="top" secondItem="0fh-FU-bx7" secondAttribute="top" id="IXc-yY-GFM"/>
                 <constraint firstItem="RLX-ox-fAJ" firstAttribute="leading" secondItem="0fh-FU-bx7" secondAttribute="leading" id="MsI-A7-qVp"/>
                 <constraint firstAttribute="bottom" secondItem="RLX-ox-fAJ" secondAttribute="bottom" id="Px6-HJ-kXY"/>
+                <constraint firstItem="cJJ-Gf-HxN" firstAttribute="leading" secondItem="bhK-IG-0t9" secondAttribute="trailing" id="TCU-5X-3jS"/>
+                <constraint firstItem="cJJ-Gf-HxN" firstAttribute="centerX" secondItem="0fh-FU-bx7" secondAttribute="centerX" id="YQF-3U-dNP"/>
                 <constraint firstItem="RLX-ox-fAJ" firstAttribute="width" secondItem="3EP-fw-qmv" secondAttribute="width" id="bEu-jE-QK9"/>
                 <constraint firstItem="bhK-IG-0t9" firstAttribute="top" secondItem="0fh-FU-bx7" secondAttribute="top" id="cdX-Nk-EXd"/>
                 <constraint firstItem="RLX-ox-fAJ" firstAttribute="top" secondItem="0fh-FU-bx7" secondAttribute="top" id="d5Q-kt-JVr"/>
-                <constraint firstAttribute="centerX" secondItem="cJJ-Gf-HxN" secondAttribute="centerX" id="hIu-0V-2Wg"/>
+                <constraint firstItem="cJJ-Gf-HxN" firstAttribute="centerY" secondItem="bhK-IG-0t9" secondAttribute="centerY" id="iOo-wO-WUm"/>
+                <constraint firstItem="cJJ-Gf-HxN" firstAttribute="top" secondItem="0fh-FU-bx7" secondAttribute="top" id="k7J-LL-br3"/>
                 <constraint firstAttribute="bottom" secondItem="88j-ED-vL9" secondAttribute="bottom" id="kK7-W0-RVF"/>
                 <constraint firstAttribute="bottom" secondItem="cJJ-Gf-HxN" secondAttribute="bottom" id="nm8-T6-iJL"/>
-                <constraint firstItem="88j-ED-vL9" firstAttribute="leading" secondItem="cJJ-Gf-HxN" secondAttribute="trailing" id="q2I-n0-fgk"/>
                 <constraint firstAttribute="bottom" secondItem="3EP-fw-qmv" secondAttribute="bottom" id="rIm-zI-aqG"/>
             </constraints>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="nm8-T6-iJL"/>
+                </mask>
+            </variation>
             <connections>
                 <outlet property="aLabel" destination="bhK-IG-0t9" id="e6t-NL-m3U"/>
                 <outlet property="answerAButton" destination="RLX-ox-fAJ" id="rSj-bE-9CU"/>
@@ -99,6 +113,6 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="C_pollOr" width="65" height="72"/>
+        <image name="D_pollOr" width="83" height="83"/>
     </resources>
 </document>
