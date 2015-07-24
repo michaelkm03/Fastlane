@@ -12,7 +12,7 @@
 @import AVFoundation;
 
 static const CGFloat kTrimBodyWidth = 5.0f;
-static const CGFloat kStartThumbCenter = 200.0f;
+static const CGFloat kStartThumbCenter = 400.0f;
 static const CGFloat kTrimScrubberWidth = kTrimBodyWidth * 3;
 
 static const CGFloat scaleFactorX = 0.15f; //x-ratio for handle subview on trim control
@@ -164,6 +164,12 @@ const CGFloat VTrimmerTopPadding = 42.0f;
             return self.trimThumbBody;
         }
         return nil;
+        
+        CGFloat buffer = 7.0f * kTrimBodyWidth;
+        if ( (point.x > (CGRectGetMinX(self.trimThumbBody.frame) - buffer)) && ( point.x < (CGRectGetMaxX(self.trimThumbBody.frame) + buffer)) )
+        {
+            return self.trimThumbBody;
+        }
     }
 }
 
