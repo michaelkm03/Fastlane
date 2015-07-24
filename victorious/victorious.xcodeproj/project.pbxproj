@@ -8720,6 +8720,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
+					"$(TARGET_TEMP_DIR)/../$(PROJECT_NAME).build/DerivedSources",
 				);
 				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -8840,6 +8841,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
+					"$(TARGET_TEMP_DIR)/../$(PROJECT_NAME).build/DerivedSources",
 				);
 				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -9063,6 +9065,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
+					"$(TARGET_TEMP_DIR)/../$(PROJECT_NAME).build/DerivedSources",
 				);
 				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -9090,6 +9093,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
+					"$(TARGET_TEMP_DIR)/../$(PROJECT_NAME).build/DerivedSources",
 				);
 				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -9214,6 +9218,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
+					"$(TARGET_TEMP_DIR)/../$(PROJECT_NAME).build/DerivedSources",
 				);
 				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
