@@ -40,6 +40,7 @@
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VTracking.h"
 #import "VBadgeResponder.h"
+#import "UIViewController+VAccessoryScreens.h"
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 
@@ -109,13 +110,15 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = VConversationCellHeight;
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-    
-    [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
+    
+    [self updateNavigationItem];
     
     [self.dependencyManager trackViewWillAppear:self];
     
@@ -128,7 +131,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:@"Inbox"];
     
-    [self updateNavigationItem];
+    [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
     
     self.badgeNumber = [self.messageCountCoordinator unreadMessageCount];
     
@@ -161,12 +164,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
 - (void)updateNavigationItem
 {
-    UINavigationItem *navigationItem = self.navigationItem;
-    if ( self.multipleContainerChildDelegate != nil )
-    {
-        navigationItem = [self.multipleContainerChildDelegate parentNavigationItem];
-    }
-    [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
+    [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 - (void)setMessageCountCoordinator:(VUnreadMessageCountCoordinator *)messageCountCoordinator

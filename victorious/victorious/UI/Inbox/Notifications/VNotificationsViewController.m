@@ -22,6 +22,7 @@
 #import "VDependencyManager+VObjectManager.h"
 #import "VAuthorizationContext.h"
 #import "VNavigationDestination.h"
+#import "UIViewController+VAccessoryScreens.h"
 
 #import "UIViewController+VLayoutInsets.h"
 #import "VDependencyManager+VObjectManager.h"
@@ -108,6 +109,7 @@ NSString * const VNotificationViewControllerPushReceivedNotification = @"VInboxC
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self updateNavigationItem];
     [self.refreshControl beginRefreshing];
     [self.tableView setContentOffset:CGPointZero];
     [self markAllNotificationsRead];
@@ -120,7 +122,7 @@ NSString * const VNotificationViewControllerPushReceivedNotification = @"VInboxC
     [[VTrackingManager sharedInstance] startEvent:@"Notifications"];
     self.badgeNumber = 0;
     
-    [self updateNavigationItem];
+    [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -364,12 +366,7 @@ NSString * const VNotificationViewControllerPushReceivedNotification = @"VInboxC
 
 - (void)updateNavigationItem
 {
-    UINavigationItem *navigationItem = self.navigationItem;
-    if ( self.multipleContainerChildDelegate != nil )
-    {
-        navigationItem = [self.multipleContainerChildDelegate parentNavigationItem];
-    }
-    [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
+    [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 #pragma mark - UIScrollViewDelegate
