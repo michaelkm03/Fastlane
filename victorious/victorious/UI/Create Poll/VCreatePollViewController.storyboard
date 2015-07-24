@@ -80,7 +80,7 @@
                                             <outlet property="delegate" destination="7OL-yJ-fiR" id="veq-mQ-Q4h"/>
                                         </connections>
                                     </textView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="48" placeholderIntrinsicHeight="52" image="A_pollOr" translatesAutoresizingMaskIntoConstraints="NO" id="GMp-aG-O9F" userLabel="OR Image">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="48" placeholderIntrinsicHeight="52" image="D_pollOr" translatesAutoresizingMaskIntoConstraints="NO" id="GMp-aG-O9F" userLabel="OR Image">
                                         <rect key="frame" x="276" y="5" width="48" height="52"/>
                                     </imageView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="F47-TG-plU" userLabel="left preview image">
@@ -231,6 +231,7 @@
                                     <constraint firstItem="R7A-qB-tMh" firstAttribute="left" secondItem="Vb3-5e-iYL" secondAttribute="left" id="qe9-zd-eep"/>
                                     <constraint firstItem="vM7-PD-RY2" firstAttribute="top" secondItem="Vb3-5e-iYL" secondAttribute="top" constant="60" id="rea-SB-cDH"/>
                                     <constraint firstItem="3sC-v1-YKD" firstAttribute="leading" secondItem="F47-TG-plU" secondAttribute="trailing" constant="1" id="sRI-OJ-5vS"/>
+                                    <constraint firstItem="GMp-aG-O9F" firstAttribute="centerY" secondItem="fls-IP-s1P" secondAttribute="centerY" constant="1" id="stc-wU-xFV"/>
                                     <constraint firstItem="fls-IP-s1P" firstAttribute="height" relation="greaterThanOrEqual" secondItem="kIg-QZ-oeo" secondAttribute="height" id="tdE-4a-czR"/>
                                     <constraint firstAttribute="bottom" secondItem="JgF-wI-Jcl" secondAttribute="bottom" id="w2C-ki-dkG"/>
                                     <constraint firstAttribute="right" secondItem="3sC-v1-YKD" secondAttribute="right" id="wIR-HZ-Ujv"/>
@@ -306,7 +307,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="A_pollOr" width="65" height="72"/>
+        <image name="D_pollOr" width="83" height="83"/>
         <image name="PostDelete" width="30" height="30"/>
         <image name="createImageIcon" width="22" height="22"/>
         <image name="createVideoIcon" width="22" height="22"/>
