@@ -52,13 +52,13 @@
                         </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="88j-ED-vL9" userLabel="Answer B Label">
-                        <rect key="frame" x="201.5" y="0.0" width="118.5" height="60"/>
+                        <rect key="frame" x="201" y="0.0" width="118.5" height="60"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="252" verticalHuggingPriority="251" image="D_pollOr" translatesAutoresizingMaskIntoConstraints="NO" id="cJJ-Gf-HxN">
-                        <rect key="frame" x="118.5" y="0.0" width="83" height="60"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="752" image="D_pollOr" translatesAutoresizingMaskIntoConstraints="NO" id="cJJ-Gf-HxN">
+                        <rect key="frame" x="118" y="0.0" width="83" height="60"/>
                     </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
