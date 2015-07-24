@@ -155,7 +155,9 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 
 - (void)updateCooldownValuesForEnhancerCell:(VExperienceEnhancerCell *)cell enhancer:(VExperienceEnhancer *)enhancer
 {
+    // Start value should be how much we've already waited
     cell.cooldownStartValue = [enhancer percentageOfCooldownComplete];
+    // End value is always 1
     cell.cooldownEndValue = 1.0f;
     cell.cooldownDuration = [enhancer secondsUntilCooldownIsOver];
 }
