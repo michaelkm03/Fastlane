@@ -51,5 +51,6 @@
 - (BOOL)isCoolingDown;
 - (CGFloat)percentageOfCooldownComplete;
 - (NSTimeInterval)secondsUntilCooldownIsOver;
+- (void)resetCooldownTimer;
 
 @end

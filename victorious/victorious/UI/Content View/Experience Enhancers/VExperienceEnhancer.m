@@ -79,6 +79,7 @@
         // Save date that we last voted
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults setObject:[NSDate date] forKey:[self coolDownPersistenceKey]];
+        [userDefaults synchronize];
         return YES;
     }
     
@@ -116,6 +117,13 @@
 - (NSString *)coolDownPersistenceKey
 {
     return [@"cooldown-" stringByAppendingString:self.voteType.voteTypeID];
+}
+
+- (void)resetCooldownTimer
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults removeObjectForKey:[self coolDownPersistenceKey]];
+    [userDefaults synchronize];
 }
 
 @end
