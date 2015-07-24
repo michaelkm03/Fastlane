@@ -73,7 +73,7 @@ const static CGFloat kTimemarkOffsetY = -49.0f;
     
         CGRect visibleRect;
         visibleRect.origin = CGPointMake(0.0f, self.collectionView.contentOffset.y);
-        visibleRect.size = CGSizeMake(self.collectionViewContentSize.width - 5.0f, self.collectionViewContentSize.height);
+        visibleRect.size = CGSizeMake(self.collectionViewContentSize.width - 15.0f, self.collectionViewContentSize.height);
         
         if (!CGRectIntersectsRect(visibleRect, frame))
         {
