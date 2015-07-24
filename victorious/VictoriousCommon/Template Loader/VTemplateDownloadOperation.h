@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  A block that will be called when the
  template finishes downloading.
@@ -15,7 +17,7 @@
  @param templateData Raw data that can be deserialized into a template dictionary.
  @param error If the download fails, this parameter describes the error
  */
-typedef void (^VTemplateDownloaderCompletion)(NSData *templateData, NSError *error);
+typedef void (^VTemplateDownloaderCompletion)(NSData *__nullable templateData, NSError *__nullable error);
 
 /**
  Objects conforming to this protocol are capable 
@@ -78,7 +80,7 @@ typedef void (^VTemplateDownloaderCompletion)(NSData *templateData, NSError *err
  template configuration in the instance of VDataCache
  provided in the dataCache property.
  */
-@property (nonatomic, copy) id<VDataCacheID> templateConfigurationCacheID;
+@property (nonatomic, copy, nullable) id<VDataCacheID> templateConfigurationCacheID;
 
 /**
  The downloader that was provided at initialization time
@@ -106,8 +108,8 @@ typedef void (^VTemplateDownloaderCompletion)(NSData *templateData, NSError *err
 /**
  If YES, this operation will not stop until a template has 
  been either downloaded or loaded from cache. If NO, any
- failure will cause the completion block to be called with
- a nil dictionary. The default is YES.
+ failure will cause the operation to end with a nil value
+ in the templateConfiguration property. The default is YES.
  */
 @property (nonatomic) BOOL shouldRetry;
 
@@ -117,7 +119,7 @@ typedef void (^VTemplateDownloaderCompletion)(NSData *templateData, NSError *err
  VTemplateDownloadOperationDelegate), this property will 
  be populated with the template that was downloaded.
  */
-@property (nonatomic, readonly) NSDictionary *templateConfiguration;
+@property (nonatomic, readonly, nullable) NSDictionary *templateConfiguration;
 
 /**
  Initializes a new template download manager with a downloader and a delegate
@@ -125,3 +127,5 @@ typedef void (^VTemplateDownloaderCompletion)(NSData *templateData, NSError *err
 - (instancetype)initWithDownloader:(id<VTemplateDownloader>)downloader andDelegate:(id<VTemplateDownloadOperationDelegate>)delegate NS_DESIGNATED_INITIALIZER;
 
 @end
+
+NS_ASSUME_NONNULL_END

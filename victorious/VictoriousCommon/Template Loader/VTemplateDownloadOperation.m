@@ -60,7 +60,6 @@ static char kPrivateQueueSpecific;
 
 - (void)main
 {
-    NSParameterAssert(self.templateConfigurationCacheID != nil);
     self.retryInterval = self.templateDownloadTimeout;
     
     __weak typeof(self) weakSelf = self;
@@ -158,9 +157,10 @@ static char kPrivateQueueSpecific;
                 __strong typeof(weakSelf) strongSelf = weakSelf;
                 if ( strongSelf != nil )
                 {
-                    if ( !strongSelf.isCancelled )
+                    id<VDataCacheID> templateConfigurationCacheID = strongSelf.templateConfigurationCacheID;
+                    if ( templateConfigurationCacheID != nil && !strongSelf.isCancelled )
                     {
-                        [strongSelf.dataCache cacheData:data forID:strongSelf.templateConfigurationCacheID error:nil];
+                        [strongSelf.dataCache cacheData:data forID:templateConfigurationCacheID error:nil];
                     }
                 }
             };

@@ -8,6 +8,8 @@
 
 #import "VEnvironment.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 NSString * const kNameKey = @"name";
 NSString * const kAppIDKey = @"appID";
 NSString * const kBaseURLKey = @"baseURL";
@@ -44,12 +46,17 @@ NSString * const VEnvironmentErrorKey = @"com.victorious.VEnvironment.ErrorKey";
     return [self initWithName:name baseURL:[NSURL URLWithString:baseURL] appID:appID];
 }
 
-+ (NSArray *)environmentsFromPlist:(NSURL *)plistFile
++ (NSArray *__nullable)environmentsFromPlist:(NSURL *)plistFile
 {
     NSInputStream *fileStream = [[NSInputStream alloc] initWithURL:plistFile];
     [fileStream open];
     NSArray *environmentsPlist = [NSPropertyListSerialization propertyListWithStream:fileStream options:0 format:nil error:nil];
     [fileStream close];
+    
+    if ( environmentsPlist == nil )
+    {
+        return nil;
+    }
     
     NSMutableArray *environments = [[NSMutableArray alloc] initWithCapacity:environmentsPlist.count];
     for ( NSDictionary *environmentDictionary in environmentsPlist )
@@ -110,3 +117,5 @@ NSString * const VEnvironmentErrorKey = @"com.victorious.VEnvironment.ErrorKey";
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

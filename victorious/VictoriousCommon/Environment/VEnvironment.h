@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 extern NSString * const VEnvironmentErrorKey;
 
 /**
@@ -33,6 +35,8 @@ extern NSString * const VEnvironmentErrorKey;
 /**
  Returns an array of VEnvironment objects loaded from the plist file at the given file URL.
  */
-+ (NSArray *)environmentsFromPlist:(NSURL *)plistFile;
++ (NSArray  *__nullable)environmentsFromPlist:(NSURL *)plistFile;
 
 @end
+
+NS_ASSUME_NONNULL_END
