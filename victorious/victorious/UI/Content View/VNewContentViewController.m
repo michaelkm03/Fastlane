@@ -572,6 +572,14 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     }
     
     [self updateOrientation];
+    
+    if ([self.viewModel.sequence isPoll])
+    {
+        if (self.viewModel.favoredAnswer != VPollAnswerInvalid)
+        {
+            [self.ballotCell setVotingDisabledWithFavoredBallot:(self.viewModel.favoredAnswer == VPollAnswerA) ? VBallotA : VBallotB animated:YES];
+        }
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
