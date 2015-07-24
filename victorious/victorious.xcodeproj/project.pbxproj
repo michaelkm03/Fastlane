@@ -129,6 +129,10 @@
 		036DE7DC1B62E3430038A25E /* NSURL+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A7614C1B3232040016B69D /* NSURL+VDataCacheID.m */; };
 		036DE7DD1B62E3430038A25E /* VDataCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A761491B322F830016B69D /* VDataCache.m */; };
 		036DE7DE1B62E3430038A25E /* VEnvironment+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 032F49441B45A424005325CA /* VEnvironment+VDataCacheID.m */; };
+		036DE7E11B62E4A70038A25E /* VBundleWriterDataCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 036DE7DF1B62E4A70038A25E /* VBundleWriterDataCache.h */; };
+		036DE7E21B62E4A70038A25E /* VBundleWriterDataCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7E01B62E4A70038A25E /* VBundleWriterDataCache.m */; };
+		036DE7E31B62E4A70038A25E /* VBundleWriterDataCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7E01B62E4A70038A25E /* VBundleWriterDataCache.m */; };
+		036DE7E51B62E6C20038A25E /* VBundleWriterDataCacheTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7E41B62E6C20038A25E /* VBundleWriterDataCacheTests.m */; };
 		036E87B21ACB6B3F00E5AAAD /* VContentViewFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 036E87B11ACB6B3F00E5AAAD /* VContentViewFactory.m */; };
 		036F38631A0C4DEA0014DF66 /* Arimo-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38131A0C4DE90014DF66 /* Arimo-Bold.ttf */; };
 		036F38641A0C4DEA0014DF66 /* Arimo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38141A0C4DE90014DF66 /* Arimo-Regular.ttf */; };
@@ -1378,6 +1382,9 @@
 		036AE5EC18FF0C0600A74BDA /* VReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VReachability.m; sourceTree = "<group>"; };
 		036DE7C21B608C100038A25E /* VAPIRequestDecorator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAPIRequestDecorator.h; sourceTree = "<group>"; };
 		036DE7C31B608C100038A25E /* VAPIRequestDecorator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAPIRequestDecorator.m; sourceTree = "<group>"; };
+		036DE7DF1B62E4A70038A25E /* VBundleWriterDataCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBundleWriterDataCache.h; sourceTree = "<group>"; };
+		036DE7E01B62E4A70038A25E /* VBundleWriterDataCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBundleWriterDataCache.m; sourceTree = "<group>"; };
+		036DE7E41B62E6C20038A25E /* VBundleWriterDataCacheTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBundleWriterDataCacheTests.m; sourceTree = "<group>"; };
 		036E87B01ACB6B3F00E5AAAD /* VContentViewFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentViewFactory.h; sourceTree = "<group>"; };
 		036E87B11ACB6B3F00E5AAAD /* VContentViewFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewFactory.m; sourceTree = "<group>"; };
 		036F38131A0C4DE90014DF66 /* Arimo-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arimo-Bold.ttf"; sourceTree = "<group>"; };
@@ -3951,6 +3958,8 @@
 				03A761511B324BFF0016B69D /* NSString+VDataCacheID.m */,
 				03A7614B1B3232040016B69D /* NSURL+VDataCacheID.h */,
 				03A7614C1B3232040016B69D /* NSURL+VDataCacheID.m */,
+				036DE7DF1B62E4A70038A25E /* VBundleWriterDataCache.h */,
+				036DE7E01B62E4A70038A25E /* VBundleWriterDataCache.m */,
 				03A761481B322F830016B69D /* VDataCache.h */,
 				03A761491B322F830016B69D /* VDataCache.m */,
 				032F49431B45A424005325CA /* VEnvironment+VDataCacheID.h */,
@@ -6037,6 +6046,7 @@
 				A75FAEFA19E8A6D600EB87C1 /* VVoteSettingManagerTests.m */,
 				A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */,
 				D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */,
+				036DE7E41B62E6C20038A25E /* VBundleWriterDataCacheTests.m */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -7197,6 +7207,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				036DE7E11B62E4A70038A25E /* VBundleWriterDataCache.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7839,6 +7850,7 @@
 				034527CD1B606F8200E990BB /* VBulkDownloadOperation.m in Sources */,
 				036DE7DB1B62E3430038A25E /* NSString+VDataCacheID.m in Sources */,
 				036DE7DC1B62E3430038A25E /* NSURL+VDataCacheID.m in Sources */,
+				036DE7E31B62E4A70038A25E /* VBundleWriterDataCache.m in Sources */,
 				034527CF1B606F8200E990BB /* VTemplateDownloadOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7865,6 +7877,7 @@
 				0392697C1B5C871700FCD0AA /* VTemplateSerialization.m in Sources */,
 				036DE7D71B62E3430038A25E /* NSString+VDataCacheID.m in Sources */,
 				036DE7D81B62E3430038A25E /* NSURL+VDataCacheID.m in Sources */,
+				036DE7E21B62E4A70038A25E /* VBundleWriterDataCache.m in Sources */,
 				0392697B1B5C871700FCD0AA /* VTemplatePackageManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -8651,6 +8664,7 @@
 				A70FC0F41A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m in Sources */,
 				A7EB574F1AF841CC006AA1CF /* VURLDetectorTests.m in Sources */,
 				0386F87A1B37E7FB00E8D459 /* VTemplatePackageManagerTests.m in Sources */,
+				036DE7E51B62E6C20038A25E /* VBundleWriterDataCacheTests.m in Sources */,
 				0343AF831A143F550025B9F8 /* AVAsset+OrientationTests.m in Sources */,
 				0329B9A01ACBAAFB003BBCC5 /* VContentViewFactoryTests.m in Sources */,
 				A72005471A03074800285A9C /* VAsyncTestHelper.m in Sources */,
