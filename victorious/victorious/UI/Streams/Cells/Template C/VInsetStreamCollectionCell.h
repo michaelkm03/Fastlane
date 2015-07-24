@@ -10,7 +10,7 @@
 #import "VHasManagedDependencies.h"
 #import "VBackgroundContainer.h"
 #import "VStreamCellSpecialization.h"
-#import "VStreamCellFocus.h"
+#import "VCellFocus.h"
 #import "VStreamCellTracking.h"
 #import "VHighlightContainer.h"
 
@@ -19,7 +19,7 @@
 /**
  *  VInsetStreamCollectionCell a.k.a. Template C Cell.
  */
-@interface VInsetStreamCollectionCell : VBaseCollectionViewCell  <VHasManagedDependencies, VBackgroundContainer, VStreamCellComponentSpecialization, VStreamCellFocus, VStreamCellTracking, VHighlighting>
+@interface VInsetStreamCollectionCell : VBaseCollectionViewCell  <VHasManagedDependencies, VBackgroundContainer, VStreamCellComponentSpecialization, VCellFocus, VStreamCellTracking, VHighlighting>
 
 /**
  *  Sizing method. All parameters are required.

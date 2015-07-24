@@ -30,6 +30,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *buttonConfirm;
 @property (weak, nonatomic) IBOutlet UIButton *buttonCancel;
 
-@property (strong, nonatomic) id<VEditCommentViewControllerDelegate> delegate;
+@property (weak, nonatomic) id<VEditCommentViewControllerDelegate> delegate;
 
 @end
