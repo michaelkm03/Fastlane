@@ -30,7 +30,7 @@
                         </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bhK-IG-0t9" userLabel="Answer A Label">
-                        <rect key="frame" x="0.0" y="0.0" width="120" height="60"/>
+                        <rect key="frame" x="0.0" y="0.0" width="118.5" height="60"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
@@ -52,24 +52,13 @@
                         </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="88j-ED-vL9" userLabel="Answer B Label">
-                        <rect key="frame" x="200" y="0.0" width="120" height="60"/>
+                        <rect key="frame" x="201.5" y="0.0" width="118.5" height="60"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="D_pollOr" translatesAutoresizingMaskIntoConstraints="NO" id="cJJ-Gf-HxN">
-                        <rect key="frame" x="120" y="0.0" width="80" height="60"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="80" id="1At-dj-JjK"/>
-                            <constraint firstAttribute="height" constant="72" id="58y-gN-AuV"/>
-                            <constraint firstAttribute="width" constant="80" id="SEj-0B-xse"/>
-                        </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="58y-gN-AuV"/>
-                                <exclude reference="SEj-0B-xse"/>
-                            </mask>
-                        </variation>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="252" verticalHuggingPriority="251" image="D_pollOr" translatesAutoresizingMaskIntoConstraints="NO" id="cJJ-Gf-HxN">
+                        <rect key="frame" x="118.5" y="0.0" width="83" height="60"/>
                     </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
