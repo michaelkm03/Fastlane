@@ -300,7 +300,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     [self.collectionView flashScrollIndicators];
     [self updateCellVisibilityTracking];
-    [self updateCurrentlyPlayingMediaAsset];
     
     // Start any video cells that are on screen
     [self.focusHelper updateFocus];
