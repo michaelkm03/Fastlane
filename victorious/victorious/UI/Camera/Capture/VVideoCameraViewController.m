@@ -72,6 +72,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self.captureController stopRunningWithCompletion:nil];
 }
 
 #pragma mark - Init/Factory
@@ -180,7 +181,6 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
         // Start Session
         [self startCaptureSession];
     }];
-    [self clearRecordedVideoAndResetControl];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -195,6 +195,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
     [super viewDidDisappear:animated];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidExit];
     
+    self.captureController.videoEncoder = nil;
     [self.cameraControl restoreCameraControlToDefault];
     self.previewView.hidden = NO;
 }
@@ -289,12 +290,18 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 - (void)startCaptureSession
 {
     self.previewView.session = self.captureController.captureSession;
+    if (self.captureController.captureSession.isRunning)
+    {
+        return;
+    }
+    
     __weak typeof(self) welf = self;
     [self.captureController startRunningWithVideoEnabled:YES
                                            andCompletion:^(NSError *error)
      {
          dispatch_async(dispatch_get_main_queue(), ^
                         {
+                            [self clearRecordedVideoAndResetControl];
                             __strong typeof(welf) strongSelf = welf;
                             if ([strongSelf.captureController firstAlternatePositionDevice] != nil)
                             {
@@ -334,7 +341,6 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
     [self.cameraControl restoreCameraControlToDefault];
     self.trashButton.hidden = YES;
     self.trashButton.backgroundColor = [UIColor clearColor];
-    [[NSFileManager defaultManager] removeItemAtURL:self.savedVideoURL error:nil];
 }
 
 #pragma mark - VCaptureVideoPreviewViewDelegate
@@ -371,39 +377,46 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
     [self.permissionsController requestPermissionWithPermission:cameraPermission
                                                      completion:^(BOOL deniedPrePrompt, VPermissionState state)
      {
-         if (state == VPermissionStateAuthorized)
+         dispatch_async(dispatch_get_main_queue(), ^
          {
-             VPermission *microphonePermission = [[VPermissionMicrophone alloc] initWithDependencyManager:self.dependencyManager];
-             [self.permissionsController requestPermissionWithPermission:microphonePermission
-                                                              completion:^(BOOL deniedPrePrompt, VPermissionState state)
-              {
-                  if (state == VPermissionStateAuthorized)
-                  {
-                      if (completion != nil)
-                      {
-                          completion();
-                      }
-                  }
-                  else
-                  {
-                      self.userDeniedPrePrompt = deniedPrePrompt;
-                      if (deniedPrePrompt)
-                      {
-                          self.switchCameraButton.enabled = NO;
-                          self.cameraControl.enabled = NO;
-                      }
-                  }
-              }];
-         }
-         else
-         {
-             self.userDeniedPrePrompt = deniedPrePrompt;
-             if (deniedPrePrompt)
+             if (state == VPermissionStateAuthorized)
              {
-                 self.switchCameraButton.enabled = NO;
-                 self.cameraControl.enabled = NO;
+                 VPermission *microphonePermission = [[VPermissionMicrophone alloc] initWithDependencyManager:self.dependencyManager];
+                 [self.permissionsController requestPermissionWithPermission:microphonePermission
+                                                                  completion:^(BOOL deniedPrePrompt, VPermissionState state)
+                  {
+                      dispatch_async(dispatch_get_main_queue(), ^
+                      {
+                          if (state == VPermissionStateAuthorized)
+                          {
+                              if (completion != nil)
+                              {
+                                  completion();
+                              }
+                          }
+                          else
+                          {
+                              self.userDeniedPrePrompt = deniedPrePrompt;
+                              if (deniedPrePrompt)
+                              {
+                                  self.switchCameraButton.enabled = NO;
+                                  self.cameraControl.enabled = NO;
+                              }
+                          }
+                      });
+                  }];
              }
-         }
+             else
+             {
+                 self.userDeniedPrePrompt = deniedPrePrompt;
+                 if (deniedPrePrompt)
+                 {
+                     self.switchCameraButton.enabled = NO;
+                     self.cameraControl.enabled = NO;
+                 }
+             }
+         });
+         
      }];
 }
 

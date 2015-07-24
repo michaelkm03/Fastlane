@@ -283,7 +283,9 @@ static NSString * const kCreationFlowSourceSearch = @"search";
 
 #pragma mark - UINavigationControllerDelegate
 
-- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+- (void)navigationController:(UINavigationController *)navigationController
+       didShowViewController:(UIViewController *)viewController
+                    animated:(BOOL)animated
 {
     // Cleanup as we enter or exit different states
     if (viewController == self.captureContainerViewController)

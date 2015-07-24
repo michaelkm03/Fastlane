@@ -48,7 +48,10 @@ static inline AVCaptureDevice *defaultCaptureDevice()
         _sessionQueue = dispatch_queue_create("VCameraCaptureController setup", DISPATCH_QUEUE_SERIAL);
         _currentDevice = [self defaultDevice];
         _backgroundTaskID = UIBackgroundTaskInvalid;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(captureSessionWasInterrupted:) name:AVCaptureSessionWasInterruptedNotification object:_captureSession];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(captureSessionWasInterrupted:)
+                                                     name:AVCaptureSessionWasInterruptedNotification
+                                                   object:_captureSession];
     }
     return self;
 }
@@ -291,18 +294,21 @@ static inline AVCaptureDevice *defaultCaptureDevice()
                 });
             }
         }];
-        
-        [self.captureSession startRunning];
-        
-        if (completion)
+        // Dispatch to main thread to avoid nasty bug where app locks up for a bit
+        dispatch_async(dispatch_get_main_queue(), ^
         {
-            completion(nil);
-        }
+            [self.captureSession startRunning];
+            if (completion)
+            {
+                completion(nil);
+            }
+        });
     });
 }
 
 - (void)stopRunningWithCompletion:(void(^)(void))completion
 {
+    VLog(@"");
     dispatch_async(self.sessionQueue, ^(void)
     {
         [self _stopRunningWithCompletion:completion];
@@ -311,12 +317,16 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 
 - (void)_stopRunningWithCompletion:(void(^)(void))completion
 {
-    [self.captureSession stopRunning];
-    [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskID];
-    if (completion)
+    // dispatch to main thread to avoid nasty locking bug
+    dispatch_async(dispatch_get_main_queue(), ^
     {
-        completion();
-    }
+        [self.captureSession stopRunning];
+        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskID];
+        if (completion)
+        {
+            completion();
+        }
+    });
 }
 
 #pragma mark - Capture
