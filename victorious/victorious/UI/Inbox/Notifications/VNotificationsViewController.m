@@ -110,7 +110,8 @@ NSString * const VNotificationViewControllerPushReceivedNotification = @"VInboxC
     [super viewWillAppear:animated];
     [self.refreshControl beginRefreshing];
     [self.tableView setContentOffset:CGPointZero];
-    [self refresh:nil];
+    [self markAllNotificationsRead];
+    [self refreshTableView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -227,7 +228,7 @@ NSString * const VNotificationViewControllerPushReceivedNotification = @"VInboxC
     [[VObjectManager sharedManager] markAllNotificationsRead:nil failBlock:nil];
 }
 
-- (IBAction)refresh:(UIRefreshControl *)sender
+- (void)refreshTableView
 {
     if (self.refreshRequest != nil)
     {
@@ -283,6 +284,11 @@ NSString * const VNotificationViewControllerPushReceivedNotification = @"VInboxC
     self.refreshRequest = [[VObjectManager sharedManager] loadNotificationsListWithPageType:VPageTypeFirst
                                                                                successBlock:success
                                                                                   failBlock:fail];
+}
+
+- (IBAction)refresh:(UIRefreshControl *)sender
+{
+    [self refreshTableView];
 }
 
 - (void)loadNextPageAction
