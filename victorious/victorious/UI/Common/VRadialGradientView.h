@@ -16,8 +16,13 @@
 @interface VRadialGradientView : UIView
 
 /**
- *  A typed accessors so that consumers don't have to cast the layer of this view to the appropriate type.
+ *  These properties are wrappers for the corresponding VRadialGradientLayer properties. 
+ (  See VRadialGradientLayer for documentation on their use.
  */
-@property (nonatomic, readonly) VRadialGradientLayer *radialGradientLayer;
+@property (nonatomic, copy) NSArray *colors;
+@property (nonatomic) CGPoint innerCenter;
+@property (nonatomic) CGFloat innerRadius;
+@property (nonatomic) CGPoint outerCenter;
+@property (nonatomic) CGFloat outerRadius;
 
 @end

@@ -30,6 +30,10 @@
                                     <outlet property="delegate" destination="X5o-Se-YNs" id="il0-pU-zN3"/>
                                 </connections>
                             </view>
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Al4-Jf-ge3" userLabel="Shutter VIew" customClass="VRadialGradientView">
+                                <rect key="frame" x="0.0" y="0.0" width="400" height="400"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oQt-Vu-58D" userLabel="Camera Control Container">
                                 <rect key="frame" x="160" y="406" width="80" height="80"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -46,10 +50,14 @@
                             <constraint firstItem="wwx-1U-bZf" firstAttribute="leading" secondItem="uXp-bH-xYz" secondAttribute="leading" id="ALb-nL-ORL"/>
                             <constraint firstItem="wwx-1U-bZf" firstAttribute="bottom" secondItem="2jh-hN-06C" secondAttribute="bottom" id="JVD-ix-IxL"/>
                             <constraint firstItem="wwx-1U-bZf" firstAttribute="leading" secondItem="2jh-hN-06C" secondAttribute="leading" id="JXY-dC-zkM"/>
+                            <constraint firstItem="Al4-Jf-ge3" firstAttribute="trailing" secondItem="wwx-1U-bZf" secondAttribute="trailing" id="RPh-3f-Z4e"/>
+                            <constraint firstItem="Al4-Jf-ge3" firstAttribute="leading" secondItem="wwx-1U-bZf" secondAttribute="leading" id="TgG-rc-tqo"/>
                             <constraint firstAttribute="centerX" secondItem="oQt-Vu-58D" secondAttribute="centerX" id="YRs-dQ-mFo"/>
                             <constraint firstItem="wwx-1U-bZf" firstAttribute="trailing" secondItem="2jh-hN-06C" secondAttribute="trailing" id="bfC-Es-J0t"/>
                             <constraint firstAttribute="trailing" secondItem="wwx-1U-bZf" secondAttribute="trailing" id="lbq-2T-7iZ"/>
+                            <constraint firstItem="Al4-Jf-ge3" firstAttribute="bottom" secondItem="wwx-1U-bZf" secondAttribute="bottom" id="qsR-GM-Chr"/>
                             <constraint firstItem="wwx-1U-bZf" firstAttribute="top" secondItem="2jh-hN-06C" secondAttribute="top" id="yaN-aW-9V6"/>
+                            <constraint firstItem="Al4-Jf-ge3" firstAttribute="top" secondItem="wwx-1U-bZf" secondAttribute="top" id="yyq-Qk-16B"/>
                         </constraints>
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
@@ -59,6 +67,7 @@
                         <outlet property="cameraControlContainer" destination="oQt-Vu-58D" id="gge-d6-3vO"/>
                         <outlet property="capturedImageView" destination="2jh-hN-06C" id="gf6-Rp-EY9"/>
                         <outlet property="previewView" destination="wwx-1U-bZf" id="Uuh-gM-Clu"/>
+                        <outlet property="shutterView" destination="Al4-Jf-ge3" id="Zvs-kn-MKL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8eA-Nf-9wS" userLabel="First Responder" sceneMemberID="firstResponder"/>

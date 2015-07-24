@@ -10,6 +10,7 @@
 
 // Library
 #import <MBProgressHUD/MBProgressHUD.h>
+#import <KVOController/FBKVOController.h>
 
 // Dependencies
 #import "VConstants.h"
@@ -18,6 +19,8 @@
 // Views
 #import "VCaptureVideoPreviewView.h"
 #import "VCameraControl.h"
+#import "VRadialGradientView.h"
+#import "VCompatibility.h"
 
 // Capture
 #import "VCameraCaptureController.h"
@@ -35,6 +38,9 @@ static NSString * const kFlashIconKey = @"flashIcon";
 static NSString * const kDisableFlashIconKey = @"disableFlashIcon";
 static NSString * const kCameraScreenKey = @"imageCameraScreen";
 static const CGRect kDefaultBarItemFrame = {{0.0f, 0.0f}, {50.0f, 50.0f}};
+static const CGFloat kGradientDelta = 20.0f;
+static const CGFloat kVerySmallInnerRadius = 0.0f;
+static const CGFloat kVerySmallOuterRadius = 0.01f;
 
 @interface VImageCameraViewController () <VCaptureVideoPreviewViewDelegate>
 
@@ -46,6 +52,7 @@ static const CGRect kDefaultBarItemFrame = {{0.0f, 0.0f}, {50.0f, 50.0f}};
 @property (nonatomic, strong) IBOutlet VCaptureVideoPreviewView *previewView;
 @property (nonatomic, strong) IBOutlet UIView *cameraControlContainer;
 @property (nonatomic, strong) IBOutlet UIImageView *capturedImageView;
+@property (nonatomic, strong) IBOutlet VRadialGradientView *shutterView;
 @property (nonatomic, strong) VCameraControl *cameraControl;
 @property (nonatomic, strong) UIButton *switchCameraButton;
 @property (nonatomic, strong) UIButton *flashButton;
@@ -156,6 +163,14 @@ static const CGRect kDefaultBarItemFrame = {{0.0f, 0.0f}, {50.0f, 50.0f}};
     UIBarButtonItem *flashBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.flashButton];
     [flashBarButtonItem setBackButtonBackgroundImage:nil forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     self.navigationItem.rightBarButtonItem = flashBarButtonItem;
+    
+    // Shutter
+    CGPoint boundsCenter = CGPointMake(CGRectGetMidX(self.shutterView.bounds), CGRectGetMidY(self.shutterView.bounds));
+    self.shutterView.innerRadius = 0.0f;
+    self.shutterView.innerCenter = boundsCenter;
+    self.shutterView.colors = @[[UIColor clearColor], [UIColor blackColor]];
+    self.shutterView.outerRadius = 5.0f;
+    self.shutterView.outerCenter = boundsCenter;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -167,6 +182,15 @@ static const CGRect kDefaultBarItemFrame = {{0.0f, 0.0f}, {50.0f, 50.0f}};
      {
          [self startCaptureSession];
      }];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    
+    CGPoint boundsCenter = CGPointMake(CGRectGetMidX(self.shutterView.bounds), CGRectGetMidY(self.shutterView.bounds));
+    self.shutterView.innerCenter = boundsCenter;
+    self.shutterView.outerCenter = boundsCenter;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -228,20 +252,23 @@ static const CGRect kDefaultBarItemFrame = {{0.0f, 0.0f}, {50.0f, 50.0f}};
     }
     self.capturedImageView.image = image;
     self.previewView.hidden = YES;
-    [self animateShutterWithCompletion:nil];
 
-    __weak typeof(self) welf = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+    [self animateShutterOpenWithCompletion:^
     {
-        __strong typeof(welf) strongSelf = welf;
-        NSURL *savedFileURL = [strongSelf persistToFileWithImage:image];
-        dispatch_async(dispatch_get_main_queue(), ^
-        {
-            [strongSelf.delegate imageCameraViewController:strongSelf
-                                 capturedImageWithMediaURL:savedFileURL
-                                              previewImage:image];
-        });
-    });
+        __weak typeof(self) welf = self;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+                       {
+                           __strong typeof(welf) strongSelf = welf;
+                           NSURL *savedFileURL = [strongSelf persistToFileWithImage:image];
+                           dispatch_async(dispatch_get_main_queue(), ^
+                                          {
+                                              [strongSelf.delegate imageCameraViewController:strongSelf
+                                                                   capturedImageWithMediaURL:savedFileURL
+                                                                                previewImage:image];
+                                          });
+                       });
+
+    }];
 }
 
 - (void)reverseCameraAction:(UIButton *)reverseButton
@@ -299,6 +326,8 @@ static const CGRect kDefaultBarItemFrame = {{0.0f, 0.0f}, {50.0f, 50.0f}};
      {
          dispatch_async(dispatch_get_main_queue(), ^
                         {
+                            [self animateShutterOpenWithCompletion:nil];
+                            
                             __strong typeof(welf) strongSelf = welf;
                             if ([strongSelf.captureController firstAlternatePositionDevice] != nil)
                             {
@@ -312,8 +341,9 @@ static const CGRect kDefaultBarItemFrame = {{0.0f, 0.0f}, {50.0f, 50.0f}};
                             // Handle Error or show previewView
                             if (error != nil)
                             {
-                                [self displayShortError:NSLocalizedString(@"CameraFailed", nil)];
+                                [strongSelf displayShortError:NSLocalizedString(@"CameraFailed", nil)];
                             }
+                            [strongSelf setupCapturingKVO];
                         });
      }];
 }
@@ -327,16 +357,54 @@ static const CGRect kDefaultBarItemFrame = {{0.0f, 0.0f}, {50.0f, 50.0f}};
     self.flashButton.selected = flashEnabled;
 }
 
-- (void)animateShutterWithCompletion:(void (^)(void))completion
+- (void)setupCapturingKVO
 {
-    [UIView animateWithDuration:0.5f
+    __weak typeof(self) welf = self;
+    // Close "shutter" on KVO-ed capturing property
+    [self.KVOController observe:self.captureController.imageOutput
+                       keyPaths:@[@"capturingStillImage"]
+                        options:kNilOptions
+                          block:^(id observer, AVCaptureStillImageOutput *imageOutput, NSDictionary *change)
+     {
+         __strong typeof(welf) strongSelf = welf;
+         if ([imageOutput isCapturingStillImage])
+         {
+             [strongSelf animateShutterWithCompletion:nil];
+         }
+     }];
+}
+
+- (void)animateShutterOpenWithCompletion:(void (^)(void))completion
+{
+    [UIView animateWithDuration:0.25f
                           delay:0.0f
-         usingSpringWithDamping:0.8f
+         usingSpringWithDamping:1.0f
           initialSpringVelocity:0.0f
                         options:kNilOptions
                      animations:^
      {
+         self.shutterView.innerRadius = [self previewViewRadialHypotenuse];
+         self.shutterView.outerRadius = [self previewViewRadialHypotenuse] + kGradientDelta;
+     }
+                     completion:^(BOOL finished)
+     {
+         if (completion != nil)
+         {
+             completion();
+         }
+     }];
+}
+
+- (void)animateShutterWithCompletion:(void (^)(void))completion
+{
+    [UIView animateWithDuration:0.15f
+                          delay:0.0f
+                        options:UIViewAnimationOptionCurveEaseIn
+                     animations:^
+     {
          [self.cameraControl flashShutterAnimations];
+         self.shutterView.innerRadius = kVerySmallInnerRadius;
+         self.shutterView.outerRadius = kVerySmallOuterRadius;
      }
                      completion:^(BOOL finished)
      {
@@ -403,6 +471,15 @@ static const CGRect kDefaultBarItemFrame = {{0.0f, 0.0f}, {50.0f, 50.0f}};
     hud.mode = MBProgressHUDModeText;
     hud.labelText = errorText;
     [hud hide:YES afterDelay:kErrorMessageDisplayDuration];
+}
+
+- (CGFloat)previewViewRadialHypotenuse
+{
+    CGFloat horizontalDimension = CGRectGetWidth(self.previewView.bounds) / 2;
+    CGFloat verticalDimension = CGRectGetHeight(self.previewView.bounds) / 2;
+    CGFloat sumOfDimensionSquares = (horizontalDimension * horizontalDimension) + (verticalDimension * verticalDimension);
+    CGFloat hypotenuse = VCGFloatSQRT(sumOfDimensionSquares);
+    return hypotenuse;
 }
 
 @end
