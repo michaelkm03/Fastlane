@@ -298,7 +298,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
         dispatch_async(dispatch_get_main_queue(), ^
         {
             [self.captureSession startRunning];
-            if (completion)
+            if (completion != nil)
             {
                 completion(nil);
             }
@@ -322,7 +322,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
     {
         [self.captureSession stopRunning];
         [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskID];
-        if (completion)
+        if (completion != nil)
         {
             completion();
         }

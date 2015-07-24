@@ -40,16 +40,15 @@ static CGFloat const kLineWidth = 1.0f;
 
 - (void)drawRect:(CGRect)rect
 {
-    //// General Declarations
     CGContextRef context = UIGraphicsGetCurrentContext();
     {
-        //// Shadow Declarations
+        // Shadow Declaration
         NSShadow *shadow = [[NSShadow alloc] init];
         [shadow setShadowColor: UIColor.whiteColor];
         [shadow setShadowOffset: CGSizeMake(0.0f, 0.0f)];
         [shadow setShadowBlurRadius: kBlurRadius];
         
-        //// Oval Drawing
+        // Oval Drawing
         CGFloat insetAmount = (kLineWidth * 0.5f) + (kBlurRadius * 0.5f);
         CGRect insetRectForDrawing = CGRectInset(self.bounds, insetAmount, insetAmount);
         UIBezierPath *ovalPath = [UIBezierPath bezierPathWithOvalInRect:insetRectForDrawing];
