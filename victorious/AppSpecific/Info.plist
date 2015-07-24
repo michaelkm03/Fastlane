@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>${ProductPrefix}Ryan Higa</string>
+	<string>${ProductPrefix}TeeAndEss</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFiles</key>
@@ -15,7 +15,7 @@
 		<string>Icon-60</string>
 	</array>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}ryanhiga</string>
+	<string>com.getvictorious.${ProductPrefix}eleventhgorgeous</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -31,7 +31,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb817762231624736</string>
+				<string>fb1471657219790958</string>
 			</array>
 		</dict>
 		<dict>
@@ -39,20 +39,20 @@
 			<string>com.getvictorious.deeplinking.scheme</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>vapp35</string>
+				<string>vapp45</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>900</string>
 	<key>CreatorSalutation</key>
-	<string>Official Ryan Higa</string>
+	<string>TeeAndEss</string>
 	<key>FacebookAppID</key>
-	<string>817762231624736</string>
+	<string>1471657219790958</string>
 	<key>FacebookDisplayName</key>
 	<string>VictoriousApp Dev</string>
 	<key>FlurryAPIKey</key>
-	<string>TXC79979X6C8C877V862</string>
+	<string>Q39XQ747V8N4Y7BBRQSB</string>
 	<key>GAID</key>
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
@@ -62,9 +62,9 @@
 	<key>ProductPrefix</key>
 	<string>${ProductPrefix}</string>
 	<key>TWITTER_CONSUMER_KEY</key>
-	<string>TcNvErJDRhbneJyTgFLi42iCT</string>
+	<string>tjwbhUUF0NEx5748CySYc7vMC</string>
 	<key>TWITTER_CONSUMER_SECRET</key>
-	<string>a6z1Hi45DjSLj2ikWcXlh7jHViWXolcekAWxopMwGdtLn1G0jn</string>
+	<string>VVq46Gcx9tCWkh4JHBSxcRs7dyU9bRojyQgunPJnaxs1JB3r5R</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Roboto-Light.ttf</string>
