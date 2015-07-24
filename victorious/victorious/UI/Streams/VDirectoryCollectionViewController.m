@@ -29,6 +29,7 @@
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VTracking.h"
 #import "VTracking.h"
+#import "UIViewController+VAccessoryScreens.h"
 
 static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kMarqueeKey = @"marqueeCell";
@@ -158,10 +159,10 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[self.dependencyManager coachmarkManager] displayCoachmarkViewInViewController:self];
     
-    UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
-    [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
+    [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
+    
+    [[self.dependencyManager coachmarkManager] displayCoachmarkViewInViewController:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -171,14 +172,13 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     [self.dependencyManager trackViewWillDisappear:self];
     
     [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
-    
-    UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
-    [self.dependencyManager addBadgingToAccessoryScreensInNavigationItem:navigationItem fromViewController:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
     
     [self.dependencyManager trackViewWillAppear:self];
     

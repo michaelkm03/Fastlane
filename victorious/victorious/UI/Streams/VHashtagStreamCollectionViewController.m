@@ -25,6 +25,7 @@
 #import "VBarButton.h"
 #import "VHashtagResponder.h"
 #import "VFollowControl.h"
+#import "UIViewController+VAccessoryScreens.h"
 
 static NSString * const kHashtagStreamKey = @"hashtagStream";
 static NSString * const kHashtagKey = @"hashtag";
@@ -97,6 +98,8 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
         //Only fetch hashtags for user to update the follow button status and visibility if they've never been loaded before
         [self fetchHashtagsForLoggedInUser];
     }
+    
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -112,8 +115,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     // Must also call here since navigation items are set after viewDidAppear:
     [self updateUserFollowingStatus];
     
-    UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
-    [self.dependencyManager addBadgingToAccessoryScreensInNavigationItem:navigationItem fromViewController:self];
+    [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 - (void)hashtagsUpdated
@@ -125,9 +127,7 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
 {
     if ( self.navigationItem.rightBarButtonItem == nil )
     {
-        [self.dependencyManager configureNavigationItem:self.navigationItem];
-        UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
-        [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
+        [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
         [self updateFollowStatusAnimated:NO];
     }
 }

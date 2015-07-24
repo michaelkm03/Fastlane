@@ -22,6 +22,7 @@
 #import "VAppInfo.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VTracking.h"
+#import "UIViewController+VAccessoryScreens.h"
 
 @import MessageUI;
 
@@ -62,9 +63,7 @@
 {
     [super viewDidAppear:animated];
     
-    [self.dependencyManager configureNavigationItem:self.navigationItem ];
-    UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
-    [self.dependencyManager addBadgingToAccessoryScreensInNavigationItem:navigationItem fromViewController:self];
+    [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -72,9 +71,7 @@
     [super viewWillAppear:animated];
     
     [self.dependencyManager trackViewWillAppear:self];
-    
-    UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
-    [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
+    [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -98,6 +95,8 @@
     [self.tabBarViewController didMoveToParentViewController:self];
     self.tabBarViewController.buttonBackgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     [self addInnerViewControllersToTabController:self.tabBarViewController];
+    
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager

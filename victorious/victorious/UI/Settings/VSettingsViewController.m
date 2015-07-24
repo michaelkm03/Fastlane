@@ -35,6 +35,7 @@
 #import "VDependencyManager+VTracking.h"
 #import "VLikedContentStreamCollectionViewController.h"
 #import "UIAlertController+VSimpleAlert.h"
+#import "UIViewController+VAccessoryScreens.h"
 
 static const NSInteger kSettingsSectionIndex = 0;
 
@@ -126,8 +127,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 {
     [super viewWillAppear:animated];
     
-    UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
-    [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
+    [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
     
     [self.dependencyManager trackViewWillAppear:self];
     
@@ -170,8 +170,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:VTrackingEventSettingsDidAppear];
     
-    UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
-    [self.dependencyManager addBadgingToAccessoryScreensInNavigationItem:navigationItem fromViewController:self];
+    [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 - (void)updateResetCoachmarksCell

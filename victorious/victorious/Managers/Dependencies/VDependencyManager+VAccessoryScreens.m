@@ -17,7 +17,6 @@
 #import "UIResponder+VResponderChain.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "VMenuItemControl.h"
-#import "VMultipleContainer.h"
 
 /**
  A UIBarButtonItem subclass used primarily to attach the `menuItemIdentifier` property
@@ -48,13 +47,13 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
 
 @implementation VDependencyManager (VAccessoryScreens)
 
-- (void)addAccessoryScreensToNavigationItem:(UINavigationItem *)navigationItem
+- (void)v_addAccessoryScreensToNavigationItem:(UINavigationItem *)navigationItem
 {
-    [self addAccessoryScreensToNavigationItem:navigationItem fromViewController:nil];
+    [self v_addAccessoryScreensToNavigationItem:navigationItem fromViewController:nil];
 }
 
-- (void)addAccessoryScreensToNavigationItem:(UINavigationItem *)navigationItem
-                         fromViewController:(UIViewController *)sourceViewController
+- (void)v_addAccessoryScreensToNavigationItem:(UINavigationItem *)navigationItem
+                           fromViewController:(UIViewController *)sourceViewController
 {
     objc_setAssociatedObject( self, &kAssociatedObjectSourceViewControllerKey, sourceViewController, OBJC_ASSOCIATION_ASSIGN );
     
@@ -67,7 +66,7 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
     
     for ( VNavigationMenuItem *menuItem in accessoryMenuItems )
     {
-        if ( ![self shouldDisplayMenuItem:menuItem fromSourceViewController:sourceViewController] )
+        if ( ![self v_shouldDisplayMenuItem:menuItem fromSourceViewController:sourceViewController] )
         {
             continue;
         }
@@ -97,7 +96,7 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
             barButton.menuItem = menuItem;
             
             [badgeableBarButtons addObject:barButton];
-
+            
             accessoryBarItem = [[VBarButtonItem alloc] initWithCustomView:barButton];
             accessoryBarItem.menuItem = menuItem;
             accessoryBarItem.tintColor = menuItem.tintColor;
@@ -105,8 +104,8 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
         else if ( menuItem.title != nil )
         {
             accessoryBarItem = [[VBarButtonItem alloc] initWithTitle:NSLocalizedString( menuItem.title, @"" )
-                                                                style:UIBarButtonItemStylePlain
-                                                               target:self
+                                                               style:UIBarButtonItemStylePlain
+                                                              target:self
                                                               action:@selector(accessoryMenuItemSelected:)];
             accessoryBarItem.menuItem = menuItem;
             accessoryBarItem.tintColor = menuItem.tintColor;
@@ -138,8 +137,8 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
     [navigationItem setRightBarButtonItems:newBarButtonItemsRight animated:shouldAnimate];
 }
 
-- (void)addBadgingToAccessoryScreensInNavigationItem:(UINavigationItem *)navigationItem
-                                  fromViewController:(UIViewController *)sourceViewController
+- (void)v_addBadgingToAccessoryScreensInNavigationItem:(UINavigationItem *)navigationItem
+                                    fromViewController:(UIViewController *)sourceViewController
 {
     NSArray *badgeableBarButtons = objc_getAssociatedObject(sourceViewController, &kAssociatedObjectBadgeableBarButtonsKey);
     for ( VBarButton *barButton in badgeableBarButtons )
@@ -187,7 +186,7 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
     }
 }
 
-- (BOOL)shouldDisplayMenuItem:(VNavigationMenuItem *)menuItem fromSourceViewController:(UIViewController *)sourceViewController
+- (BOOL)v_shouldDisplayMenuItem:(VNavigationMenuItem *)menuItem fromSourceViewController:(UIViewController *)sourceViewController
 {
     // If anyone in the responder chain can and does say no, then we don't display
     __block BOOL shouldDisplay = YES;
@@ -202,7 +201,7 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
                  *stop = YES;
              }
          }
-    }];
+     }];
     return shouldDisplay;
 }
 
@@ -235,7 +234,7 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
              [accessoryMenuItems addObjectsFromArray:[destination dependencyManager].accessoryMenuItems];
          }
      }];
-
+    
     return [[NSOrderedSet alloc] initWithOrderedSet:accessoryMenuItems];
 }
 
@@ -259,15 +258,15 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
             VMenuItemControl *customControl = (VMenuItemControl *)responder;
             return customControl.menuItem.identifier;
         }
-
+        
     }
     while (( responder = [responder nextResponder] ));
     return nil;
 }
 
-- (VBarButton *)barButtonFromNavigationItem:(UINavigationItem *)navigationItem forIdentifier:(NSString *)identifier
+- (VBarButton *)v_barButtonFromNavigationItem:(UINavigationItem *)navigationItem forIdentifier:(NSString *)identifier
 {
-    UIBarButtonItem *barButtonItem = [self barButtonItemFromNavigationItem:navigationItem forIdentifier:identifier];
+    UIBarButtonItem *barButtonItem = [self v_barButtonItemFromNavigationItem:navigationItem forIdentifier:identifier];
     VBarButton *barButton = (VBarButton *)barButtonItem.customView;
     if ( barButton != nil && [barButton isKindOfClass:[VBarButton class]] )
     {
@@ -276,13 +275,13 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
     return nil;
 }
 
-- (UIBarButtonItem *)barButtonItemFromNavigationItem:(UINavigationItem *)navigationItem forIdentifier:(NSString *)identifier
+- (UIBarButtonItem *)v_barButtonItemFromNavigationItem:(UINavigationItem *)navigationItem forIdentifier:(NSString *)identifier
 {
     __block VBarButtonItem *foundItem = nil;
     NSPredicate *searchPredicate = [NSPredicate predicateWithBlock:^BOOL(VBarButtonItem *item, NSDictionary *bindings)
-    {
-        return [item isKindOfClass:[VBarButtonItem class]] && [item.menuItem.identifier isEqualToString:identifier];
-    }];
+                                    {
+                                        return [item isKindOfClass:[VBarButtonItem class]] && [item.menuItem.identifier isEqualToString:identifier];
+                                    }];
     
     foundItem = [navigationItem.leftBarButtonItems filteredArrayUsingPredicate:searchPredicate].firstObject;
     if ( foundItem != nil )
@@ -299,7 +298,7 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
     return nil;
 }
 
-- (VNavigationMenuItem *)menuItemWithIdentifier:(NSString *)identifier
+- (VNavigationMenuItem *)v_menuItemWithIdentifier:(NSString *)identifier
 {
     UINavigationController *sourceViewController = objc_getAssociatedObject( self, &kAssociatedObjectSourceViewControllerKey );
     NSOrderedSet *accessoryMenuItems = [self accessoriesForSource:sourceViewController];
@@ -318,12 +317,12 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
 {
     NSString *selectMenuItemIdentifier = [self identifierForAccessoryBarButton:sender];
     NSAssert( selectMenuItemIdentifier != nil, @"Cannot find navigation menu item from selected bar item." );
-    [self navigateToDestinationForMenuItemIdentifier:selectMenuItemIdentifier];
+    [self v_navigateToDestinationForMenuItemIdentifier:selectMenuItemIdentifier];
 }
 
-- (BOOL)navigateToDestinationForMenuItemIdentifier:(NSString *)menuItemIdentifier
+- (BOOL)v_navigateToDestinationForMenuItemIdentifier:(NSString *)menuItemIdentifier
 {
-    VNavigationMenuItem *menuItem = [self menuItemWithIdentifier:menuItemIdentifier];
+    VNavigationMenuItem *menuItem = [self v_menuItemWithIdentifier:menuItemIdentifier];
     if ( menuItem == nil )
     {
         return NO;
@@ -351,7 +350,7 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
     // Then check if the desination requires authorization
     id <VAuthorizationContextProvider> authorizedDestination = (id <VAuthorizationContextProvider>)destination;
     if ( !requiresAuthorization &&
-         [authorizedDestination conformsToProtocol:@protocol(VAuthorizationContextProvider)] )
+        [authorizedDestination conformsToProtocol:@protocol(VAuthorizationContextProvider)] )
     {
         requiresAuthorization = authorizedDestination.requiresAuthorization;
         context = [authorizedDestination authorizationContext];
@@ -397,20 +396,6 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
     {
         [sourceViewController.navigationController pushViewController:menuItem.destination animated:YES];
     }
-}
-
-+ (UINavigationItem *)navigationItemForAccessoryItemsInViewController:(UIViewController *)viewController
-{
-    UINavigationItem *navigationItem = viewController.navigationItem;
-    if ( [viewController conformsToProtocol:@protocol(VMultipleContainerChild)] )
-    {
-        UIViewController <VMultipleContainerChild> *childViewController = (UIViewController <VMultipleContainerChild> *)viewController;
-        if ( childViewController.multipleContainerChildDelegate != nil )
-        {
-            navigationItem = [childViewController.multipleContainerChildDelegate parentNavigationItem];
-        }
-    }
-    return navigationItem;
 }
 
 @end

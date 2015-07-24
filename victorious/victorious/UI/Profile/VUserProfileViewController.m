@@ -41,6 +41,7 @@
 #import "VProfileDeeplinkHandler.h"
 #import "VInboxDeepLinkHandler.h"
 #import "VFloatingUserProfileHeaderViewController.h"
+#import "UIViewController+VAccessoryScreens.h"
 
 #import "VUsersViewController.h"
 #import "VFollowersDataSource.h"
@@ -258,14 +259,12 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (void)addAccessoryItems
 {
     [self.dependencyManager configureNavigationItem:self.navigationItem];
-    UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
-    [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
+    [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 - (void)addBadgingToAccessoryItems
 {
-    UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
-    [self.dependencyManager addBadgingToAccessoryScreensInNavigationItem:navigationItem fromViewController:self];
+    [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

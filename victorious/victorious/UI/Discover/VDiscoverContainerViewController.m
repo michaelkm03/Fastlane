@@ -31,6 +31,7 @@
 #import "VTransitionDelegate.h"
 #import "VDiscoverDeepLinkHandler.h"
 #import "VCoachmarkDisplayer.h"
+#import "UIViewController+VAccessoryScreens.h"
 
 @interface VDiscoverContainerViewController () <UITextFieldDelegate, VMultipleContainerChild, VBackgroundContainer, VCoachmarkDisplayer>
 
@@ -93,6 +94,8 @@
     }];
     self.searchIconImageView.image = [self.searchIconImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.searchIconImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
+    
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -115,16 +118,13 @@
                                                                             constant:0];
     self.searchTopConstraint.constant = self.v_layoutInsets.top;
     [self.view addConstraint:self.searchTopConstraint];
-    
-    [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
-    [self.dependencyManager addBadgingToAccessoryScreensInNavigationItem:navigationItem fromViewController:self];
+    [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -234,8 +234,7 @@
 
 - (void)updateAccessoryScreens
 {
-    UINavigationItem *navigationItem = [VDependencyManager navigationItemForAccessoryItemsInViewController:self];
-    [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
+    [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 #pragma mark - VMultipleContainerChild
