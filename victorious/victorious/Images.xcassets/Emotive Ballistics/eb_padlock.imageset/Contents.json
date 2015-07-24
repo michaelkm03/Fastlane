@@ -3,17 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "eb_circle.png"
+      "filename" : "eb_padlock.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "eb_circle@2x.png"
+      "filename" : "eb_padlock@2x.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "eb_circle@3x.png"
+      "filename" : "eb_padlock@3x.png"
     }
   ],
   "info" : {

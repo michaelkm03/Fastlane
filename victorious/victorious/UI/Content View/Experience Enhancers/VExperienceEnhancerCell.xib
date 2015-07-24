@@ -14,15 +14,22 @@
                 <rect key="frame" x="0.0" y="0.0" width="50" height="73"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="eb_padlock" translatesAutoresizingMaskIntoConstraints="NO" id="Uc4-eq-Iwb">
+                        <rect key="frame" x="20" y="5" width="10" height="11"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="Uc4-eq-Iwb" secondAttribute="height" multiplier="10:11" id="PQV-sm-8xU"/>
+                            <constraint firstAttribute="width" constant="10" id="iPN-e9-dli"/>
+                        </constraints>
+                    </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Fd-IN-3ez" customClass="ExperienceEnhancerAnimatingIconView" customModule="victorious" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="5" width="50" height="57"/>
+                        <rect key="frame" x="0.0" y="12" width="50" height="50"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="width" secondItem="1Fd-IN-3ez" secondAttribute="height" multiplier="50:57" id="4xT-B5-suX"/>
+                            <constraint firstAttribute="width" secondItem="1Fd-IN-3ez" secondAttribute="height" multiplier="50:50" id="4xT-B5-suX"/>
                         </constraints>
                     </view>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OTw-YD-uun">
-                        <rect key="frame" x="0.0" y="67" width="50" height="14"/>
+                        <rect key="frame" x="0.0" y="74" width="50" height="14"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="14" id="HfE-VY-Cbw"/>
                         </constraints>
@@ -34,19 +41,25 @@
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <constraints>
-                <constraint firstItem="1Fd-IN-3ez" firstAttribute="top" secondItem="Ljv-sO-Hft" secondAttribute="top" constant="5" id="6pM-0u-uIB"/>
+                <constraint firstItem="1Fd-IN-3ez" firstAttribute="top" secondItem="Ljv-sO-Hft" secondAttribute="top" constant="12" id="6pM-0u-uIB"/>
                 <constraint firstItem="1Fd-IN-3ez" firstAttribute="top" secondItem="OTw-YD-uun" secondAttribute="top" constant="-62" id="FLl-Rh-2Hh"/>
                 <constraint firstItem="OTw-YD-uun" firstAttribute="leading" secondItem="Ljv-sO-Hft" secondAttribute="leading" id="IGV-3s-8bw"/>
+                <constraint firstItem="Uc4-eq-Iwb" firstAttribute="top" secondItem="OTw-YD-uun" secondAttribute="top" constant="-69" id="QXE-PN-10Q"/>
                 <constraint firstAttribute="trailing" secondItem="OTw-YD-uun" secondAttribute="trailing" id="hqX-k1-lqK"/>
                 <constraint firstAttribute="trailing" secondItem="1Fd-IN-3ez" secondAttribute="trailing" id="nKM-NP-fxl"/>
+                <constraint firstItem="1Fd-IN-3ez" firstAttribute="centerX" secondItem="Uc4-eq-Iwb" secondAttribute="centerX" id="qUh-bq-8tF"/>
                 <constraint firstItem="1Fd-IN-3ez" firstAttribute="leading" secondItem="Ljv-sO-Hft" secondAttribute="leading" id="rIS-EG-LZw"/>
             </constraints>
             <connections>
                 <outlet property="ballisticIconView" destination="1Fd-IN-3ez" id="e0f-uj-TGj"/>
                 <outlet property="experienceEnhancerLabel" destination="OTw-YD-uun" id="dBC-ow-2b9"/>
+                <outlet property="padlockImageView" destination="Uc4-eq-Iwb" id="9dw-iA-5KX"/>
             </connections>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="eb_padlock" width="10" height="11"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

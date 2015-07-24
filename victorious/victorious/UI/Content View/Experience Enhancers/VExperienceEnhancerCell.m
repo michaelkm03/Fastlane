@@ -21,6 +21,7 @@ static NSString * const kLockedBallisticBackgroundIconKey = @"locked_ballistic_b
 
 @property (weak, nonatomic) IBOutlet ExperienceEnhancerAnimatingIconView *ballisticIconView;
 @property (weak, nonatomic) IBOutlet UILabel *experienceEnhancerLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *padlockImageView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSpaceIconImageViewToContianerConstraint;
 @property (nonatomic, assign) BOOL isUnhighlighting;
 @property (nonatomic, strong) UIImage *unlockedBallisticBackground;
@@ -144,6 +145,8 @@ static NSString * const kLockedBallisticBackgroundIconKey = @"locked_ballistic_b
     {
         self.ballisticIconView.overlayImage = image;
     }
+    
+    self.padlockImageView.hidden = !self.isLocked;
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
