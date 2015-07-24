@@ -190,6 +190,12 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
     [self.coachMarkAnimator fadeIn:1.0f];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.captureController stopRunningWithCompletion:nil];
+}
+
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
