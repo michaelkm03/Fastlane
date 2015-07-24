@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import <CoreGraphics/CoreGraphics.h>
 #import <Foundation/Foundation.h>
 
 @class VTemplateImage;
