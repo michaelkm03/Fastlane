@@ -111,6 +111,9 @@ extern const NSInteger VCameraCaptureControllerErrorCode;
  */
 - (AVCaptureDevice *)firstAlternatePositionDevice;
 
+/**
+ *  Toggles the flash of the current capture device from on to off. NEVER goes to auto.
+ */
 - (void)toggleFlashWithCompletion:(void(^)(NSError *error))completion;
 
 /**
@@ -121,6 +124,11 @@ extern const NSInteger VCameraCaptureControllerErrorCode;
 - (void)focusAtPointOfInterest:(CGPoint)locationInCaptureDeviceCoordinates
                 withCompletion:(void(^)(NSError *error))completion;
 
+/**
+ *  Forces the camera to restore continuous focus if it was focusing at a specific focus 
+ *  point of interest. Internally this method is called after a subjectArea change 
+ *  notification comes through.
+ */
 - (void)restoreContinuousFocusWithCompletion:(void(^)(NSError *error))completion;
 
 @end
