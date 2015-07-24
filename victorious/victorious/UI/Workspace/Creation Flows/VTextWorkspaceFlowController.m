@@ -106,6 +106,16 @@
     workspace.activityText = NSLocalizedString( @"Publishing...", @"Label indicating that content is being published." );
     workspace.confirmCancelMessage = NSLocalizedString( @"This will discard any content added to your post", @"" );
     workspace.shouldConfirmCancels = YES;
+    // Set completion block for publishing
+    __weak typeof(self) welf = self;
+    workspace.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
+    {
+        __strong typeof(welf) strongSelf = welf;
+        [strongSelf.creationFlowDelegate creationFlowController:strongSelf
+                                       finishedWithPreviewImage:previewImage
+                                               capturedMediaURL:renderedMediaURL];
+    };
+    
     return workspace;
 }
 
@@ -117,8 +127,7 @@
         self.textToolController.publishIsForced = [self.textFlowDelegate isCreationForced];
     }
     
-    // Set completion block for publishing
-    self.textWorkspaceViewController.completionBlock = self.publishCompletionBlock;
+
     
     // Publish text post
     [self.textWorkspaceViewController publishContent];
