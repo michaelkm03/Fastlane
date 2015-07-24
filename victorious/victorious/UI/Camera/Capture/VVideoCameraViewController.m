@@ -377,46 +377,39 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
     [self.permissionsController requestPermissionWithPermission:cameraPermission
                                                      completion:^(BOOL deniedPrePrompt, VPermissionState state)
      {
-         dispatch_async(dispatch_get_main_queue(), ^
+         if (state == VPermissionStateAuthorized)
          {
-             if (state == VPermissionStateAuthorized)
-             {
-                 VPermission *microphonePermission = [[VPermissionMicrophone alloc] initWithDependencyManager:self.dependencyManager];
-                 [self.permissionsController requestPermissionWithPermission:microphonePermission
-                                                                  completion:^(BOOL deniedPrePrompt, VPermissionState state)
+             VPermission *microphonePermission = [[VPermissionMicrophone alloc] initWithDependencyManager:self.dependencyManager];
+             [self.permissionsController requestPermissionWithPermission:microphonePermission
+                                                              completion:^(BOOL deniedPrePrompt, VPermissionState state)
+              {
+                  if (state == VPermissionStateAuthorized)
                   {
-                      dispatch_async(dispatch_get_main_queue(), ^
+                      if (completion != nil)
                       {
-                          if (state == VPermissionStateAuthorized)
-                          {
-                              if (completion != nil)
-                              {
-                                  completion();
-                              }
-                          }
-                          else
-                          {
-                              self.userDeniedPrePrompt = deniedPrePrompt;
-                              if (deniedPrePrompt)
-                              {
-                                  self.switchCameraButton.enabled = NO;
-                                  self.cameraControl.enabled = NO;
-                              }
-                          }
-                      });
-                  }];
-             }
-             else
+                          completion();
+                      }
+                  }
+                  else
+                  {
+                      self.userDeniedPrePrompt = deniedPrePrompt;
+                      if (deniedPrePrompt)
+                      {
+                          self.switchCameraButton.enabled = NO;
+                          self.cameraControl.enabled = NO;
+                      }
+                  }
+              }];
+         }
+         else
+         {
+             self.userDeniedPrePrompt = deniedPrePrompt;
+             if (deniedPrePrompt)
              {
-                 self.userDeniedPrePrompt = deniedPrePrompt;
-                 if (deniedPrePrompt)
-                 {
-                     self.switchCameraButton.enabled = NO;
-                     self.cameraControl.enabled = NO;
-                 }
+                 self.switchCameraButton.enabled = NO;
+                 self.cameraControl.enabled = NO;
              }
-         });
-         
+         }
      }];
 }
 

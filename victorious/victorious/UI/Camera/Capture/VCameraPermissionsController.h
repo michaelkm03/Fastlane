@@ -23,7 +23,8 @@
 
 /**
  *  Requests permisssions for the passed in permission object.
- *  Completion called after user has responded to the prompts.
+ *  Completion called after user has responded to the prompts. 
+ *  Will be called on the main thread.
  */
 - (void)requestPermissionWithPermission:(VPermission *)permission
                              completion:(void (^)(BOOL deniedPrePrompt, VPermissionState state))completion;
