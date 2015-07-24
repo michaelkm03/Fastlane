@@ -215,21 +215,6 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     if ([self.delegate respondsToSelector:@selector(loadingViewController:didFinishLoadingWithDependencyManager:)])
     {
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
-        
-        NSString *keyPath = [[templateDecorator keyPathsForKey:@"voteTypes"] firstObject];
-        
-        NSMutableArray *voteTypes = [[templateDecorator templateValueForKeyPath:keyPath] mutableCopy];
-        NSMutableDictionary *firstVoteType = [[voteTypes firstObject] mutableCopy];
-        NSMutableDictionary *secondVoteType = [voteTypes[1] mutableCopy];
-        
-        firstVoteType[@"cooldownDuration"] = @(5000);
-        secondVoteType[@"cooldownDuration"] = @(1000);
-        
-        voteTypes[0] = firstVoteType;
-        voteTypes[1] = secondVoteType;
-        
-        [templateDecorator setTemplateValue:voteTypes forKeyPath:keyPath];
-        
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];
