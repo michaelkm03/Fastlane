@@ -12,7 +12,6 @@
 @import AVFoundation;
 
 static const CGFloat kTrimBodyWidth = 5.0f;
-static const CGFloat kStartThumbCenter = 400.0f;
 static const CGFloat kTrimScrubberWidth = kTrimBodyWidth * 3;
 
 static const CGFloat scaleFactorX = 0.15f; //x-ratio for handle subview on trim control
@@ -141,7 +140,7 @@ const CGFloat VTrimmerTopPadding = 42.0f;
         self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self];
         self.animator.delegate = self;
         [self layoutIfNeeded];
-        [self updateThumbAndDimmingViewWithThumbHorizontalCenter:kStartThumbCenter];
+        [self updateThumbAndDimmingViewWithThumbHorizontalCenter:CGRectGetMaxX(self.frame) - (CGRectGetWidth(self.trimThumbBody.frame)/2)];
     }
 }
 
