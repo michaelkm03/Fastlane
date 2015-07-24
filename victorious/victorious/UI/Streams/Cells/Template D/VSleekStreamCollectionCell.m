@@ -34,8 +34,7 @@ static const CGFloat kSleekCellActionViewHeight = 48.0f;
 static const CGFloat kCaptionToPreviewVerticalSpacing = 7.0f;
 static const CGFloat kMaxCaptionTextViewHeight = 200.0f;
 static const CGFloat kCountsTextViewMinHeight = 29.0f;
-static const UIEdgeInsets kCaptionMargins = { 0.0f, 28.0f, 5.0f, 28.0f };
-static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
+static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
 
 @interface VSleekStreamCollectionCell () <VBackgroundContainer, CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate>
 
@@ -66,7 +65,9 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
     [super awakeFromNib];
     
     self.previewContainer.clipsToBounds = YES;
-    self.captionTextView.textContainerInset = kCaptionInsets;
+    self.captionTextView.contentInset = UIEdgeInsetsZero;
+    self.captionTextView.textContainer.lineFragmentPadding = 0.0f;
+    self.captionTextView.textContainerInset = UIEdgeInsetsZero;
     self.captionTextView.linkDelegate = self;
     [self setupDimmingContainer];
     
@@ -91,7 +92,7 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
                  NSDictionary *attributes = [self sequenceDescriptionAttributesWithDependencyManager:dependencyManager];
                  CGFloat textWidth = size.width - kCaptionMargins.left - kCaptionMargins.right;
                  textHeight = VCEIL( [sequence.name frameSizeForWidth:textWidth andAttributes:attributes].height );
-                 textHeight += kCaptionInsets.top + kCaptionInsets.bottom;
+                 textHeight += kCaptionMargins.top + kCaptionMargins.bottom;
              }
              return CGSizeMake( 0.0f, textHeight );
          }];
@@ -389,6 +390,10 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
 {
     NSString *name = sequence.name ?: @"";
     NSString *aspectRatioString = [NSString stringWithFormat:@"%.5f", [sequence previewAssetAspectRatio]];
+    if ( [name isEqualToString:@"Cant take a video in a poll, whats up with that? Probably related to the gif bug, cant take videos with camera for poll or gif whats up with"] )
+    {
+        
+    }
     return [name stringByAppendingString:aspectRatioString];
 }
 
