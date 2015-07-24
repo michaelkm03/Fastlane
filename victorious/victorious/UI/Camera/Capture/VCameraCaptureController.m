@@ -480,7 +480,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
         {
             VLog(@"Lock failure: %@", lockError.localizedDescription);
         }
-        if (completion)
+        if (completion != nil)
         {
             completion(lockError);
         }
@@ -507,7 +507,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
             
             [currentDevice unlockForConfiguration];
         }
-        if (completion)
+        if (completion != nil)
         {
             completion(lockError);
         }
@@ -527,7 +527,7 @@ static inline AVCaptureDevice *defaultCaptureDevice()
             [currentDevice setSubjectAreaChangeMonitoringEnabled:NO];
             [currentDevice unlockForConfiguration];
         }
-        if (completion)
+        if (completion != nil)
         {
             completion(lockError);
         }
