@@ -80,7 +80,7 @@
                                             <outlet property="delegate" destination="7OL-yJ-fiR" id="veq-mQ-Q4h"/>
                                         </connections>
                                     </textView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="48" placeholderIntrinsicHeight="52" image="PollCreateOr" translatesAutoresizingMaskIntoConstraints="NO" id="GMp-aG-O9F" userLabel="OR Image">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="48" placeholderIntrinsicHeight="52" image="A_pollOr" translatesAutoresizingMaskIntoConstraints="NO" id="GMp-aG-O9F" userLabel="OR Image">
                                         <rect key="frame" x="276" y="5" width="48" height="52"/>
                                     </imageView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="F47-TG-plU" userLabel="left preview image">
@@ -285,6 +285,7 @@
                         <outlet property="leftPreviewImageView" destination="F47-TG-plU" id="ube-z4-F6L"/>
                         <outlet property="leftRemoveButton" destination="JgF-wI-Jcl" id="hD0-R8-UiU"/>
                         <outlet property="mediaButtonLeftSpacingConstraint" destination="IfJ-IV-Nw8" id="QCE-WV-qsq"/>
+                        <outlet property="middleOrIconImageView" destination="GMp-aG-O9F" id="2gv-1m-j5l"/>
                         <outlet property="postButton" destination="5P2-t5-UdW" id="wRX-7s-7KE"/>
                         <outlet property="questionPrompt" destination="YXm-O2-nI2" id="igR-WJ-gRh"/>
                         <outlet property="questionTextView" destination="uTr-J9-jgD" id="RaT-W9-wSq"/>
@@ -305,7 +306,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="PollCreateOr" width="48" height="52"/>
+        <image name="A_pollOr" width="65" height="72"/>
         <image name="PostDelete" width="30" height="30"/>
         <image name="createImageIcon" width="22" height="22"/>
         <image name="createVideoIcon" width="22" height="22"/>
