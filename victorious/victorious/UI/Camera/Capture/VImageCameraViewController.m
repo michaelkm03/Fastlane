@@ -164,7 +164,6 @@ static NSString * const kCameraScreenKey = @"imageCameraScreen";
     
     [self checkPermissionsWithCompletion:^
      {
-         // Start Session
          [self startCaptureSession];
      }];
 }
