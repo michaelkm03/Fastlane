@@ -26,6 +26,7 @@
 #import "VCameraVideoEncoder.h"
 
 // Permissions
+#import "VCameraPermissionsController.h"
 #import "VPermissionCamera.h"
 #import "VPermissionMicrophone.h"
 
@@ -57,6 +58,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 
 // Permissions
 @property (nonatomic, assign) BOOL userDeniedPrePrompt;
+@property (nonatomic, strong) VCameraPermissionsController *permissionsController;
 
 // State
 @property (nonatomic, assign, getter=isTrashOpen) BOOL trashOpen;
@@ -118,6 +120,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 {
     [super viewDidLoad];
 
+    self.permissionsController = [[VCameraPermissionsController alloc] initWithViewControllerToPresentOn:self];
+    
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraUserDidEnter];
     
     self.coachMarkAnimator = [[VCameraCoachMarkAnimator alloc] initWithCoachView:self.coachMarkLabel];
@@ -353,64 +357,43 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
     }
     
     VPermission *cameraPermission = [[VPermissionCamera alloc] initWithDependencyManager:self.dependencyManager];
-    [self requestPermissionWithPermission:cameraPermission
-                               completion:^
-    {
-        if ([cameraPermission permissionState] == VPermissionStateAuthorized)
-        {
-            VPermission *microphonePermission = [[VPermissionMicrophone alloc] initWithDependencyManager:self.dependencyManager];
-            [self requestPermissionWithPermission:microphonePermission
-                                       completion:^
-            {
-                if ([microphonePermission permissionState] == VPermissionStateAuthorized)
-                {
-                    if (completion != nil)
-                    {
-                        completion();
-                    }
-                }
-            }];
-        }
-    }];
-}
-
-- (void)requestPermissionWithPermission:(VPermission *)permission
-                             completion:(void (^)(void))completion
-{
-    BOOL shouldShowPreSystemPermission = ([permission permissionState] != VPermissionStateSystemDenied);
-    void (^permissionHandler)(BOOL granted, VPermissionState state, NSError *error) = ^void(BOOL granted, VPermissionState state, NSError *error)
-    {
-        if (granted)
-        {
-            
-            self.userDeniedPrePrompt = NO;
-            if (completion)
-            {
-                completion();
-            }
-        }
-        else
-        {
-            self.userDeniedPrePrompt = YES;
-            self.switchCameraButton.enabled = NO;
-            self.cameraControl.enabled = NO;
-            if (state == VPermissionStateSystemDenied)
-            {
-                [self notifyUserOfFailedCameraPermission];
-            }
-        }
-    };
-    
-    // Request camera permission
-    if (shouldShowPreSystemPermission)
-    {
-        [permission requestPermissionInViewController:self
-                                      withCompletionHandler:permissionHandler];
-    }
-    else
-    {
-        [permission requestSystemPermissionWithCompletion:permissionHandler];
-    }
+    [self.permissionsController requestPermissionWithPermission:cameraPermission
+                                                     completion:^(BOOL deniedPrePrompt, VPermissionState state)
+     {
+         if (state == VPermissionStateAuthorized)
+         {
+             VPermission *microphonePermission = [[VPermissionMicrophone alloc] initWithDependencyManager:self.dependencyManager];
+             [self.permissionsController requestPermissionWithPermission:microphonePermission
+                                                              completion:^(BOOL deniedPrePrompt, VPermissionState state)
+              {
+                  if (state == VPermissionStateAuthorized)
+                  {
+                      if (completion != nil)
+                      {
+                          completion();
+                      }
+                  }
+                  else
+                  {
+                      self.userDeniedPrePrompt = deniedPrePrompt;
+                      if (deniedPrePrompt)
+                      {
+                          self.switchCameraButton.enabled = NO;
+                          self.cameraControl.enabled = NO;
+                      }
+                  }
+              }];
+         }
+         else
+         {
+             self.userDeniedPrePrompt = deniedPrePrompt;
+             if (deniedPrePrompt)
+             {
+                 self.switchCameraButton.enabled = NO;
+                 self.cameraControl.enabled = NO;
+             }
+         }
+     }];
 }
 
 #pragma mark - VCameraVideoEncoderDelegate
@@ -481,25 +464,6 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
     hud.mode = MBProgressHUDModeText;
     hud.labelText = errorText;
     [hud hide:YES afterDelay:kErrorMessageDisplayDuration];
-}
-
-- (void)notifyUserOfFailedCameraPermission
-{
-    NSString *errorMessage;
-    if ([AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo] == AVAuthorizationStatusRestricted)
-    {
-        errorMessage = NSLocalizedString(@"AccessCameraRestricted", @"");
-    }
-    else
-    {
-        errorMessage = NSLocalizedString(@"AccessCameraDenied", @"");
-    }
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                    message:errorMessage
-                                                   delegate:nil
-                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                          otherButtonTitles:nil];
-    [alert show];
 }
 
 @end

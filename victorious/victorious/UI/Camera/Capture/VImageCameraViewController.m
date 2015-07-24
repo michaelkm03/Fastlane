@@ -24,6 +24,7 @@
 #import "UIImage+Resize.h"
 
 // Permissions
+#import "VCameraPermissionsController.h"
 #import "VPermissionCamera.h"
 #import "VPermissionMicrophone.h"
 #import "VPermissionProfilePicture.h"
@@ -53,6 +54,7 @@ static NSString * const kCameraScreenKey = @"imageCameraScreen";
 
 // Permissions
 @property (nonatomic, assign) BOOL userDeniedPrePrompt;
+@property (nonatomic, strong) VCameraPermissionsController *permissionController;
 
 @end
 
@@ -110,6 +112,8 @@ static NSString * const kCameraScreenKey = @"imageCameraScreen";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.permissionController = [[VCameraPermissionsController alloc] initWithViewControllerToPresentOn:self];
     
     // Camera control
     self.cameraControl = [[VCameraControl alloc] initWithFrame:self.cameraControlContainer.bounds];
@@ -359,9 +363,18 @@ static NSString * const kCameraScreenKey = @"imageCameraScreen";
         return;
     }
     
-    VPermission *cameraPermission = [[VPermissionProfilePicture alloc] initWithDependencyManager:self.dependencyManager];
-    [self requestPermissionWithPermission:cameraPermission
-                               completion:^
+    VPermission *cameraPermission;
+    if (self.cameraContext == VCameraContextProfileImage || self.cameraContext == VCameraContextProfileImageRegistration)
+    {
+        cameraPermission = [[VPermissionProfilePicture alloc] initWithDependencyManager:self.dependencyManager];
+    }
+    else
+    {
+        cameraPermission = [[VPermissionCamera alloc] initWithDependencyManager:self.dependencyManager];
+    }
+
+    [self.permissionController requestPermissionWithPermission:cameraPermission
+                                                    completion:^(BOOL deniedPrePrompt, VPermissionState state)
      {
          if ([cameraPermission permissionState] == VPermissionStateAuthorized)
          {
@@ -370,65 +383,16 @@ static NSString * const kCameraScreenKey = @"imageCameraScreen";
                  completion();
              }
          }
+         else
+         {
+             self.userDeniedPrePrompt = deniedPrePrompt;
+             if (deniedPrePrompt)
+             {
+                 self.switchCameraButton.enabled = NO;
+                 self.cameraControl.enabled = NO;
+             }
+         }
      }];
-}
-
-- (void)requestPermissionWithPermission:(VPermission *)permission
-                             completion:(void (^)(void))completion
-{
-    BOOL shouldShowPreSystemPermission = ([permission permissionState] != VPermissionStateSystemDenied);
-    void (^permissionHandler)(BOOL granted, VPermissionState state, NSError *error) = ^void(BOOL granted, VPermissionState state, NSError *error)
-    {
-        if (granted)
-        {
-            
-            self.userDeniedPrePrompt = NO;
-            if (completion)
-            {
-                completion();
-            }
-        }
-        else
-        {
-            self.userDeniedPrePrompt = YES;
-            self.switchCameraButton.enabled = NO;
-            self.cameraControl.enabled = NO;
-            if (state == VPermissionStateSystemDenied)
-            {
-                [self notifyUserOfFailedCameraPermission];
-            }
-        }
-    };
-    
-    // Request camera permission
-    if (shouldShowPreSystemPermission)
-    {
-        [permission requestPermissionInViewController:self
-                                withCompletionHandler:permissionHandler];
-    }
-    else
-    {
-        [permission requestSystemPermissionWithCompletion:permissionHandler];
-    }
-}
-
-- (void)notifyUserOfFailedCameraPermission
-{
-    NSString *errorMessage;
-    if ([AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo] == AVAuthorizationStatusRestricted)
-    {
-        errorMessage = NSLocalizedString(@"AccessCameraRestricted", @"");
-    }
-    else
-    {
-        errorMessage = NSLocalizedString(@"AccessCameraDenied", @"");
-    }
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                    message:errorMessage
-                                                   delegate:nil
-                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                          otherButtonTitles:nil];
-    [alert show];
 }
 
 - (void)displayShortError:(NSString *)errorText
