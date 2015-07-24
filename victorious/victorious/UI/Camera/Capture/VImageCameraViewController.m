@@ -189,11 +189,13 @@ static NSString * const kCameraScreenKey = @"imageCameraScreen";
 - (void)photoAction:(VCameraControl *)cameraControl
 {
     [cameraControl flashGrowAnimations];
-    __weak typeof(self) welf = self;
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidCapturePhoto];
     
     self.switchCameraButton.enabled = NO;
     self.flashButton.enabled = NO;
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCameraDidCapturePhoto];
+    
+    __weak typeof(self) welf = self;
     [self.captureController captureStillWithCompletion:^(UIImage *image, NSError *error)
     {
         dispatch_async(dispatch_get_main_queue(), ^

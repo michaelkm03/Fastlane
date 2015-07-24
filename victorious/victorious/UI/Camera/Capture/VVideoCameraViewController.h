@@ -31,7 +31,7 @@
                                    cameraContext:(VCameraContext)context;
 
 /**
- *  A delegate to be infromed of events during the lifetime of the cameraViewController.
+ *  A delegate to be informed of events during the lifetime of the cameraViewController.
  */
 @property (nonatomic, weak) id <VVideoCameraViewControllerDelegate> delegate;
 
