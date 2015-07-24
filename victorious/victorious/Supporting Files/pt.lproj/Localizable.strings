@@ -343,7 +343,7 @@
 
 "ExpiresOn" = "Vence em %@";
 
-"me" = "Eu";
+"Me" = "Eu";
 
 "editProfileButton" = "Editar Perfil";
 "followers" = "Seguidores";
