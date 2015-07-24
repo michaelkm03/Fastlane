@@ -49,4 +49,16 @@ typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL
 - (void)bringBottomChromeOutOfView;
 - (void)bringChromeIntoView;
 
+/**
+ *  Call this after a lostFocus to inform the workspace it can resume any playback
+ *  or expensive live rendering.
+ */
+- (void)gainedFocus;
+
+/**
+ *  Call these methods for the workspace to update it's tools selected state.
+ *  For example to pause any playing video or expensive tasks.
+ */
+- (void)lostFocus;
+
 @end
