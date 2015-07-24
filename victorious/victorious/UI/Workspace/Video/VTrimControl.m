@@ -162,7 +162,6 @@ const CGFloat VTrimmerTopPadding = 42.0f;
         {
             return self.trimThumbBody;
         }
-        return nil;
         
         CGFloat buffer = 5.0f * kTrimBodyWidth;
         if ( (point.x > (CGRectGetMinX(self.trimThumbBody.frame) - buffer)) && ( point.x < (CGRectGetMaxX(self.trimThumbBody.frame) + buffer)) )
@@ -170,6 +169,7 @@ const CGFloat VTrimmerTopPadding = 42.0f;
             return self.trimThumbBody;
         }
     }
+    return nil;
 }
 
 #pragma mark - Property Accessors
