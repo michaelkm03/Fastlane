@@ -260,11 +260,12 @@ static const CGFloat kVerySmallOuterRadius = 0.01f;
                        {
                            __strong typeof(welf) strongSelf = welf;
                            NSURL *savedFileURL = [strongSelf persistToFileWithImage:image];
+                           UIImage *previewImage = [image squareImageByCropping];
                            dispatch_async(dispatch_get_main_queue(), ^
                                           {
                                               [strongSelf.delegate imageCameraViewController:strongSelf
                                                                    capturedImageWithMediaURL:savedFileURL
-                                                                                previewImage:image];
+                                                                                previewImage:previewImage];
                                           });
                        });
 
