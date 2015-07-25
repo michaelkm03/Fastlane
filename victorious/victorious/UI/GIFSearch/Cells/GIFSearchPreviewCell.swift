@@ -14,7 +14,8 @@ class GIFSearchPreviewCell: UICollectionViewCell {
     
     static let ReuseIdentifier = "GIFSearchPreviewCell"
     
-    @IBOutlet private weak var videoView: VVideoView!
+    var videoView: VVideoView?
+    
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet private weak var imageView: UIImageView!
     
@@ -27,37 +28,25 @@ class GIFSearchPreviewCell: UICollectionViewCell {
     /// Sets the video asset URL to play in this cell and automatically beings playing it.
     var assetUrl: NSURL? {
         didSet {
+            self.videoView?.removeFromSuperview()
+            self.videoView = nil
             if let url = self.assetUrl {
-                if self.assetUrl != oldValue {
-                    self.videoView.reset()
-                    self.videoView.useAspectFit = true
-                    self.videoView.setItemURL(url, loop: true, audioMuted: true)
-                    self.resetTransitionIn()
-                }
-                else {
-                    self.activityIndicator.hidden = true
-                    self.videoView.hidden = false
-                }
-                self.videoView.playFromStart()
+                var videoView = VVideoView(frame: self.bounds)
+                self.videoView = videoView
+                self.addSubview( videoView )
+                self.v_addFitToParentConstraintsToSubview(videoView)
+                videoView.useAspectFit = true
+                videoView.setItemURL(url, loop: true, audioMuted: true)
+                videoView.playFromStart()
             }
         }
-    }
-    
-    /// Resets the animation state to prepare for another transition
-    /// animation with `resetTransitionIn`
-    func resetTransitionIn() {
-        self.videoView.hidden = true
-        
-        UIView.animateWithDuration( 0.3, delay: 0.5, options: nil, animations: {
-            self.activityIndicator.hidden = false
-        }, completion: nil)
     }
     
     /// Animates in the asset and removes activity indicator
     func transitionIn() {
         UIView.animateWithDuration( 0.3, animations: {
             self.activityIndicator.hidden = true
-            self.videoView.hidden = false
+            self.videoView?.hidden = false
         }, completion: nil );
     }
 }
