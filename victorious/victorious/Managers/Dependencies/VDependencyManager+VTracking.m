@@ -66,7 +66,6 @@ static const char kAssociatedObjectViewWasHiddenKey;
         }
         
         NSArray *urls = [self trackingURLsForKey:kTrackingViewKey];
-        NSLog( @"\n\n>>>> >>>> >>>> %@: %@\n\n", NSStringFromClass([viewController class]), urls );
         if ( urls.count == 0 )
         {
             return;
