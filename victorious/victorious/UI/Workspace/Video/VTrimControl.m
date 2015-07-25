@@ -140,7 +140,7 @@ const CGFloat VTrimmerTopPadding = 42.0f;
         self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self];
         self.animator.delegate = self;
         [self layoutIfNeeded];
-        [self updateThumbAndDimmingViewWithThumbHorizontalCenter:CGRectGetMaxX(self.frame) - (CGRectGetWidth(self.trimThumbBody.frame)/2)];
+        [self updateThumbAndDimmingViewWithThumbHorizontalCenter:CGRectGetWidth(self.frame) - (CGRectGetWidth(self.trimThumbBody.frame)/2)];
     }
 }
 
@@ -164,7 +164,7 @@ const CGFloat VTrimmerTopPadding = 42.0f;
         }
         
         CGFloat buffer = 5.0f * kTrimBodyWidth;
-        if ( (point.x > (CGRectGetMinX(self.trimThumbBody.frame) - buffer)) && ( point.x < (CGRectGetWidth(self.trimThumbBody.frame) + buffer)) )
+        if ( (point.x > (CGRectGetMinX(self.trimThumbBody.frame) - buffer)) && ( point.x < (CGRectGetMaxX(self.trimThumbBody.frame) + buffer)) )
         {
             return self.trimThumbBody;
         }
