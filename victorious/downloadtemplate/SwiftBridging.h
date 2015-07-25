@@ -6,4 +6,8 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import "VBundleWriterDataCache.h"
 #import "VTemplateDownloadOperation.h"
+#import "VEnvironment.h"
+#import "VEnvironment+VDataCacheID.h"
+#import "VAPIRequestDecorator.h"

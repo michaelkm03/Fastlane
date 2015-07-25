@@ -303,6 +303,7 @@ static char kPrivateQueueSpecific;
                 // `downloadDidFinishWithData` will fail with nil data, so don't worry about checking it here
                 [weakSelf downloadDidFinishWithData:templateData];
                 
+#if 0 // TODO
                 // If a retry failed and we're using a user environment, then we should switch back to the default
                 VEnvironment *currentEnvironment = [[VEnvironmentManager sharedInstance] currentEnvironment];
                 const BOOL shouldRevertToPreviousEnvironment = currentEnvironment.isUserEnvironment && templateData == nil;
@@ -314,6 +315,7 @@ static char kPrivateQueueSpecific;
                                                                         object:weakSelf
                                                                       userInfo:userInfo];
                 }
+#endif
             }];
         }
     });

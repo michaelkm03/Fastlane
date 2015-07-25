@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0306F7A61ADDF939009FE3AA /* VJSONHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0306F7A51ADDF939009FE3AA /* VJSONHelper.m */; };
 		0306F7A81ADDF990009FE3AA /* VJSONHelperTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0306F7A71ADDF990009FE3AA /* VJSONHelperTests.m */; };
 		0307F8411B4F3BA400342C13 /* VLoginOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0307F8401B4F3BA400342C13 /* VLoginOperation.m */; };
 		0308B1191AB2B00100144E53 /* VInsetStreamCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0308B1181AB2B00100144E53 /* VInsetStreamCollectionCell.m */; };
@@ -87,7 +86,6 @@
 		031E36ED1B3CF57600CB21B4 /* VBulkDownloadOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 031E36EC1B3CF57600CB21B4 /* VBulkDownloadOperationTests.m */; };
 		0326BBBA19A8183800D995DA /* VPushNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0326BBB919A8183800D995DA /* VPushNotificationManager.m */; };
 		0326C36019F8226200DBC341 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0326C35F19F8226200DBC341 /* Images.xcassets */; };
-		032954A51A9FF4E000698119 /* VURLMacroReplacement.m in Sources */ = {isa = PBXBuildFile; fileRef = 032954A41A9FF4E000698119 /* VURLMacroReplacement.m */; };
 		032954A71A9FFD9100698119 /* VURLMacroReplacementTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 032954A61A9FFD9100698119 /* VURLMacroReplacementTests.m */; };
 		0329B9A01ACBAAFB003BBCC5 /* VContentViewFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0329B99F1ACBAAFB003BBCC5 /* VContentViewFactoryTests.m */; };
 		0343AF831A143F550025B9F8 /* AVAsset+OrientationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */; };
@@ -98,6 +96,7 @@
 		034527CF1B606F8200E990BB /* VTemplateDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058BE1AEF44D600CF39D1 /* VTemplateDownloadOperation.m */; };
 		034527D01B606F8200E990BB /* VTemplatePackageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F8771B37E52500E8D459 /* VTemplatePackageManager.m */; };
 		034527D11B606F8200E990BB /* VTemplateSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058B91AED7FB600CF39D1 /* VTemplateSerialization.m */; };
+		034527D71B6074F500E990BB /* BasicTemplateDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034527D61B6074F500E990BB /* BasicTemplateDownloader.swift */; };
 		034BCC3F19F5CF5D00114F6C /* MuseoSans-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1859019B42CEA00E27D05 /* MuseoSans-500.otf */; };
 		034D1A6A1AAF5A8B00EB7B2D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 034D1A6C1AAF5A8B00EB7B2D /* Localizable.strings */; };
 		0358FCEE1A65E785004DD7A1 /* VScaffoldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0358FCED1A65E785004DD7A1 /* VScaffoldViewController.m */; };
@@ -133,6 +132,22 @@
 		036DE7E21B62E4A70038A25E /* VBundleWriterDataCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7E01B62E4A70038A25E /* VBundleWriterDataCache.m */; };
 		036DE7E31B62E4A70038A25E /* VBundleWriterDataCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7E01B62E4A70038A25E /* VBundleWriterDataCache.m */; };
 		036DE7E51B62E6C20038A25E /* VBundleWriterDataCacheTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7E41B62E6C20038A25E /* VBundleWriterDataCacheTests.m */; };
+		036DE7E81B62F4700038A25E /* libVictoriousCommonOSX.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 034527B01B606F5D00E990BB /* libVictoriousCommonOSX.a */; };
+		036DE7EA1B62F6000038A25E /* VTemplateImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 038C51181B37B3D700A903C2 /* VTemplateImage.m */; };
+		036DE7EB1B62F6000038A25E /* VTemplateImageMacro.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F87E1B37F01700E8D459 /* VTemplateImageMacro.m */; };
+		036DE7EC1B62F6000038A25E /* VTemplateImageSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 038C511B1B37C8F500A903C2 /* VTemplateImageSet.m */; };
+		036DE7ED1B62F6000038A25E /* VTemplateImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 038C51181B37B3D700A903C2 /* VTemplateImage.m */; };
+		036DE7EE1B62F6000038A25E /* VTemplateImageMacro.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F87E1B37F01700E8D459 /* VTemplateImageMacro.m */; };
+		036DE7EF1B62F6000038A25E /* VTemplateImageSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 038C511B1B37C8F500A903C2 /* VTemplateImageSet.m */; };
+		036DE7F11B62F6A10038A25E /* VJSONHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0306F7A51ADDF939009FE3AA /* VJSONHelper.m */; };
+		036DE7F21B62F6A20038A25E /* VJSONHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0306F7A51ADDF939009FE3AA /* VJSONHelper.m */; };
+		036DE7F41B62F7DA0038A25E /* NSCharacterSet+VURLParts.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8B21B572453000B7901 /* NSCharacterSet+VURLParts.m */; };
+		036DE7F51B62F7DA0038A25E /* NSCharacterSet+VURLParts.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8B21B572453000B7901 /* NSCharacterSet+VURLParts.m */; };
+		036DE7F61B62F7EA0038A25E /* VURLMacroReplacement.m in Sources */ = {isa = PBXBuildFile; fileRef = 032954A41A9FF4E000698119 /* VURLMacroReplacement.m */; };
+		036DE7F71B62F7EC0038A25E /* VURLMacroReplacement.m in Sources */ = {isa = PBXBuildFile; fileRef = 032954A41A9FF4E000698119 /* VURLMacroReplacement.m */; };
+		036DE7F91B6306880038A25E /* TemplateDownloadCLI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7F81B6306880038A25E /* TemplateDownloadCLI.swift */; };
+		036DE7FA1B6314800038A25E /* NSString+VCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8C51B572453000B7901 /* NSString+VCrypto.m */; };
+		036DE7FB1B6314810038A25E /* NSString+VCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8C51B572453000B7901 /* NSString+VCrypto.m */; };
 		036E87B21ACB6B3F00E5AAAD /* VContentViewFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 036E87B11ACB6B3F00E5AAAD /* VContentViewFactory.m */; };
 		036F38631A0C4DEA0014DF66 /* Arimo-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38131A0C4DE90014DF66 /* Arimo-Bold.ttf */; };
 		036F38641A0C4DEA0014DF66 /* Arimo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38141A0C4DE90014DF66 /* Arimo-Regular.ttf */; };
@@ -211,13 +226,10 @@
 		0386E2001A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386E1FF1A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.m */; };
 		0386F87A1B37E7FB00E8D459 /* VTemplatePackageManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F8791B37E7FB00E8D459 /* VTemplatePackageManagerTests.m */; };
 		0386F87C1B37EB8500E8D459 /* templateWithImageURLs.json in Resources */ = {isa = PBXBuildFile; fileRef = 0386F87B1B37EB8500E8D459 /* templateWithImageURLs.json */; };
-		0386F87F1B37F01700E8D459 /* VTemplateImageMacro.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F87E1B37F01700E8D459 /* VTemplateImageMacro.m */; };
 		0386F88E1B391C6400E8D459 /* VDownloadOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F88D1B391C6400E8D459 /* VDownloadOperationTests.m */; };
 		038B7F9519DB8D2500F739DF /* ADEUMInstrumentation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 038B7F9419DB8D2500F739DF /* ADEUMInstrumentation.framework */; };
 		038B7F9719DB8EB300F739DF /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 038B7F9619DB8EB300F739DF /* CoreTelephony.framework */; };
 		038B7F9919DB8EBC00F739DF /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 038B7F9819DB8EBC00F739DF /* libz.dylib */; };
-		038C51191B37B3D700A903C2 /* VTemplateImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 038C51181B37B3D700A903C2 /* VTemplateImage.m */; };
-		038C511C1B37C8F500A903C2 /* VTemplateImageSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 038C511B1B37C8F500A903C2 /* VTemplateImageSet.m */; };
 		038C511E1B37CEF800A903C2 /* VTemplateImageSetTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 038C511D1B37CEF800A903C2 /* VTemplateImageSetTests.m */; };
 		0390084619F37B1E00FD7EDF /* Camera.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0390084819F37B1E00FD7EDF /* Camera.storyboard */; };
 		0390085419F38BC600FD7EDF /* ActionSheet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0390085619F38BC600FD7EDF /* ActionSheet.storyboard */; };
@@ -456,7 +468,6 @@
 		A721E9351B572454000B7901 /* VUser+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8AC1B572453000B7901 /* VUser+RestKit.m */; };
 		A721E9361B572454000B7901 /* VVoteResult+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8AE1B572453000B7901 /* VVoteResult+RestKit.m */; };
 		A721E9371B572454000B7901 /* NSArray+VMap.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8B01B572453000B7901 /* NSArray+VMap.m */; };
-		A721E9381B572454000B7901 /* NSCharacterSet+VURLParts.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8B21B572453000B7901 /* NSCharacterSet+VURLParts.m */; };
 		A721E9391B572454000B7901 /* NSData+AES.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8B41B572453000B7901 /* NSData+AES.m */; };
 		A721E93A1B572454000B7901 /* NSDate+timeSince.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8B61B572453000B7901 /* NSDate+timeSince.m */; };
 		A721E93B1B572454000B7901 /* NSDictionary+VJSONLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8B81B572453000B7901 /* NSDictionary+VJSONLogging.m */; };
@@ -466,7 +477,6 @@
 		A721E93F1B572454000B7901 /* NSManagedObject+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8C01B572453000B7901 /* NSManagedObject+RestKit.m */; };
 		A721E9401B572454000B7901 /* NSNotificationCenter+VNotificationDebugger.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8C21B572453000B7901 /* NSNotificationCenter+VNotificationDebugger.m */; };
 		A721E9411B572454000B7901 /* NSString+Unicode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721E8C31B572453000B7901 /* NSString+Unicode.swift */; };
-		A721E9421B572454000B7901 /* NSString+VCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8C51B572453000B7901 /* NSString+VCrypto.m */; };
 		A721E9431B572454000B7901 /* NSString+VParseHelp.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8C71B572453000B7901 /* NSString+VParseHelp.m */; };
 		A721E9441B572454000B7901 /* NSString+VStringWithData.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8C91B572453000B7901 /* NSString+VStringWithData.m */; };
 		A721E9451B572454000B7901 /* NSURL+MediaType.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8CB1B572453000B7901 /* NSURL+MediaType.m */; };
@@ -1347,6 +1357,7 @@
 		03449FE41A0C7EBB0070EC80 /* VSessionTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSessionTimer.m; sourceTree = "<group>"; };
 		034527A81B606C1F00E990BB /* SwiftBridging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftBridging.h; sourceTree = "<group>"; };
 		034527B01B606F5D00E990BB /* libVictoriousCommonOSX.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libVictoriousCommonOSX.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		034527D61B6074F500E990BB /* BasicTemplateDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicTemplateDownloader.swift; sourceTree = "<group>"; };
 		034D1A541AAF5A8500EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Profile.strings; sourceTree = "<group>"; };
 		034D1A551AAF5A8600EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VKeyboardInputAccessoryView.strings; sourceTree = "<group>"; };
 		034D1A561AAF5A8600EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ActionSheet.strings; sourceTree = "<group>"; };
@@ -1385,6 +1396,7 @@
 		036DE7DF1B62E4A70038A25E /* VBundleWriterDataCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBundleWriterDataCache.h; sourceTree = "<group>"; };
 		036DE7E01B62E4A70038A25E /* VBundleWriterDataCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBundleWriterDataCache.m; sourceTree = "<group>"; };
 		036DE7E41B62E6C20038A25E /* VBundleWriterDataCacheTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBundleWriterDataCacheTests.m; sourceTree = "<group>"; };
+		036DE7F81B6306880038A25E /* TemplateDownloadCLI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateDownloadCLI.swift; sourceTree = "<group>"; };
 		036E87B01ACB6B3F00E5AAAD /* VContentViewFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentViewFactory.h; sourceTree = "<group>"; };
 		036E87B11ACB6B3F00E5AAAD /* VContentViewFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewFactory.m; sourceTree = "<group>"; };
 		036F38131A0C4DE90014DF66 /* Arimo-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arimo-Bold.ttf"; sourceTree = "<group>"; };
@@ -3245,6 +3257,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				036DE7E81B62F4700038A25E /* libVictoriousCommonOSX.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3355,8 +3368,6 @@
 		0314D09119B4698800FA363C /* Object */ = {
 			isa = PBXGroup;
 			children = (
-				0306F7A41ADDF939009FE3AA /* VJSONHelper.h */,
-				0306F7A51ADDF939009FE3AA /* VJSONHelper.m */,
 				0314D0AB19B4698800FA363C /* VObjectManager.h */,
 				0314D0AC19B4698800FA363C /* VObjectManager.m */,
 				0314D09219B4698800FA363C /* VObjectManager+Analytics.h */,
@@ -3968,6 +3979,41 @@
 			path = "Data Cache";
 			sourceTree = "<group>";
 		};
+		036DE7E91B62F5560038A25E /* Dependency Manager */ = {
+			isa = PBXGroup;
+			children = (
+				038C51171B37B3D700A903C2 /* VTemplateImage.h */,
+				038C51181B37B3D700A903C2 /* VTemplateImage.m */,
+				0386F87D1B37F01700E8D459 /* VTemplateImageMacro.h */,
+				0386F87E1B37F01700E8D459 /* VTemplateImageMacro.m */,
+				038C511A1B37C8F500A903C2 /* VTemplateImageSet.h */,
+				038C511B1B37C8F500A903C2 /* VTemplateImageSet.m */,
+				032954A31A9FF4E000698119 /* VURLMacroReplacement.h */,
+				032954A41A9FF4E000698119 /* VURLMacroReplacement.m */,
+			);
+			path = "Dependency Manager";
+			sourceTree = "<group>";
+		};
+		036DE7F01B62F66E0038A25E /* JSON Helper */ = {
+			isa = PBXGroup;
+			children = (
+				0306F7A41ADDF939009FE3AA /* VJSONHelper.h */,
+				0306F7A51ADDF939009FE3AA /* VJSONHelper.m */,
+			);
+			path = "JSON Helper";
+			sourceTree = "<group>";
+		};
+		036DE7F31B62F7940038A25E /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				A721E8B11B572453000B7901 /* NSCharacterSet+VURLParts.h */,
+				A721E8B21B572453000B7901 /* NSCharacterSet+VURLParts.m */,
+				A721E8C41B572453000B7901 /* NSString+VCrypto.h */,
+				A721E8C51B572453000B7901 /* NSString+VCrypto.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
 		036F38121A0C4DE90014DF66 /* Arimo */ = {
 			isa = PBXGroup;
 			children = (
@@ -4254,8 +4300,10 @@
 		0392694D1B5C720400FCD0AA /* downloadtemplate */ = {
 			isa = PBXGroup;
 			children = (
+				034527D61B6074F500E990BB /* BasicTemplateDownloader.swift */,
 				0392694E1B5C720400FCD0AA /* main.swift */,
 				034527A81B606C1F00E990BB /* SwiftBridging.h */,
+				036DE7F81B6306880038A25E /* TemplateDownloadCLI.swift */,
 			);
 			path = downloadtemplate;
 			sourceTree = "<group>";
@@ -4263,8 +4311,11 @@
 		0392695B1B5C774400FCD0AA /* VictoriousCommon */ = {
 			isa = PBXGroup;
 			children = (
+				036DE7F31B62F7940038A25E /* Categories */,
 				036DE7CA1B62E30B0038A25E /* Data Cache */,
+				036DE7E91B62F5560038A25E /* Dependency Manager */,
 				034527D81B60788B00E990BB /* Environment */,
+				036DE7F01B62F66E0038A25E /* JSON Helper */,
 				039269821B5C9DD600FCD0AA /* PrefixHeader.pch */,
 				034527A51B604A9100E990BB /* Template Loader */,
 				036DE7C21B608C100038A25E /* VAPIRequestDecorator.h */,
@@ -4340,12 +4391,6 @@
 				03A9CBEC1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.h */,
 				03A9CBED1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.m */,
 				039D02AB1A1043D300DB9236 /* VHasManagedDependencies.h */,
-				038C51171B37B3D700A903C2 /* VTemplateImage.h */,
-				038C51181B37B3D700A903C2 /* VTemplateImage.m */,
-				0386F87D1B37F01700E8D459 /* VTemplateImageMacro.h */,
-				0386F87E1B37F01700E8D459 /* VTemplateImageMacro.m */,
-				038C511A1B37C8F500A903C2 /* VTemplateImageSet.h */,
-				038C511B1B37C8F500A903C2 /* VTemplateImageSet.m */,
 				D8B88F981ABA93E400DBAEA0 /* workspaceTemplate.json */,
 			);
 			path = Dependencies;
@@ -4885,8 +4930,6 @@
 				A721E87B1B572452000B7901 /* Mappings */,
 				A721E8AF1B572453000B7901 /* NSArray+VMap.h */,
 				A721E8B01B572453000B7901 /* NSArray+VMap.m */,
-				A721E8B11B572453000B7901 /* NSCharacterSet+VURLParts.h */,
-				A721E8B21B572453000B7901 /* NSCharacterSet+VURLParts.m */,
 				A721E8B31B572453000B7901 /* NSData+AES.h */,
 				A721E8B41B572453000B7901 /* NSData+AES.m */,
 				A721E8B51B572453000B7901 /* NSDate+timeSince.h */,
@@ -4904,8 +4947,6 @@
 				A721E8C11B572453000B7901 /* NSNotificationCenter+VNotificationDebugger.h */,
 				A721E8C21B572453000B7901 /* NSNotificationCenter+VNotificationDebugger.m */,
 				A721E8C31B572453000B7901 /* NSString+Unicode.swift */,
-				A721E8C41B572453000B7901 /* NSString+VCrypto.h */,
-				A721E8C51B572453000B7901 /* NSString+VCrypto.m */,
 				A721E8C61B572453000B7901 /* NSString+VParseHelp.h */,
 				A721E8C71B572453000B7901 /* NSString+VParseHelp.m */,
 				A721E8C81B572453000B7901 /* NSString+VStringWithData.h */,
@@ -5526,8 +5567,6 @@
 				A790C8251A01980F00C4F208 /* VTrackingManager.m */,
 				A720056E1A03ECDC00285A9C /* VTrackingURLRequest.h */,
 				A720056F1A03ECDC00285A9C /* VTrackingURLRequest.m */,
-				032954A31A9FF4E000698119 /* VURLMacroReplacement.h */,
-				032954A41A9FF4E000698119 /* VURLMacroReplacement.m */,
 			);
 			path = Tracking;
 			sourceTree = "<group>";
@@ -7841,13 +7880,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				034527CE1B606F8200E990BB /* VDownloadOperation.m in Sources */,
+				036DE7ED1B62F6000038A25E /* VTemplateImage.m in Sources */,
+				036DE7EF1B62F6000038A25E /* VTemplateImageSet.m in Sources */,
 				036DE7DD1B62E3430038A25E /* VDataCache.m in Sources */,
 				036DE7DE1B62E3430038A25E /* VEnvironment+VDataCacheID.m in Sources */,
+				036DE7F51B62F7DA0038A25E /* NSCharacterSet+VURLParts.m in Sources */,
 				036DE7C61B6141040038A25E /* VAPIRequestDecorator.m in Sources */,
 				034527D01B606F8200E990BB /* VTemplatePackageManager.m in Sources */,
 				036DE7C11B607A610038A25E /* VEnvironment.m in Sources */,
+				036DE7F21B62F6A20038A25E /* VJSONHelper.m in Sources */,
 				034527D11B606F8200E990BB /* VTemplateSerialization.m in Sources */,
 				034527CD1B606F8200E990BB /* VBulkDownloadOperation.m in Sources */,
+				036DE7F71B62F7EC0038A25E /* VURLMacroReplacement.m in Sources */,
+				036DE7FB1B6314810038A25E /* NSString+VCrypto.m in Sources */,
+				036DE7EE1B62F6000038A25E /* VTemplateImageMacro.m in Sources */,
 				036DE7DB1B62E3430038A25E /* NSString+VDataCacheID.m in Sources */,
 				036DE7DC1B62E3430038A25E /* NSURL+VDataCacheID.m in Sources */,
 				036DE7E31B62E4A70038A25E /* VBundleWriterDataCache.m in Sources */,
@@ -7859,7 +7905,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				036DE7F91B6306880038A25E /* TemplateDownloadCLI.swift in Sources */,
 				0392694F1B5C720400FCD0AA /* main.swift in Sources */,
+				034527D71B6074F500E990BB /* BasicTemplateDownloader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7868,13 +7916,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				039269791B5C871700FCD0AA /* VDownloadOperation.m in Sources */,
+				036DE7EA1B62F6000038A25E /* VTemplateImage.m in Sources */,
+				036DE7EC1B62F6000038A25E /* VTemplateImageSet.m in Sources */,
 				036DE7D91B62E3430038A25E /* VDataCache.m in Sources */,
 				036DE7DA1B62E3430038A25E /* VEnvironment+VDataCacheID.m in Sources */,
+				036DE7F41B62F7DA0038A25E /* NSCharacterSet+VURLParts.m in Sources */,
 				036DE7C51B6141030038A25E /* VAPIRequestDecorator.m in Sources */,
 				039269781B5C871700FCD0AA /* VBulkDownloadOperation.m in Sources */,
 				036DE7C01B607A600038A25E /* VEnvironment.m in Sources */,
+				036DE7F11B62F6A10038A25E /* VJSONHelper.m in Sources */,
 				0392697A1B5C871700FCD0AA /* VTemplateDownloadOperation.m in Sources */,
 				0392697C1B5C871700FCD0AA /* VTemplateSerialization.m in Sources */,
+				036DE7F61B62F7EA0038A25E /* VURLMacroReplacement.m in Sources */,
+				036DE7FA1B6314800038A25E /* NSString+VCrypto.m in Sources */,
+				036DE7EB1B62F6000038A25E /* VTemplateImageMacro.m in Sources */,
 				036DE7D71B62E3430038A25E /* NSString+VDataCacheID.m in Sources */,
 				036DE7D81B62E3430038A25E /* NSURL+VDataCacheID.m in Sources */,
 				036DE7E21B62E4A70038A25E /* VBundleWriterDataCache.m in Sources */,
@@ -7942,7 +7997,6 @@
 				A6CC23C71B4B2A0600141DD6 /* VAssetGroupTableViewCell.m in Sources */,
 				A721E9211B572454000B7901 /* VAnswer+RestKit.m in Sources */,
 				A721E9701B581F78000B7901 /* GIFSearchNoContentCell.swift in Sources */,
-				A721E9381B572454000B7901 /* NSCharacterSet+VURLParts.m in Sources */,
 				A721E92B1B572454000B7901 /* VMessage+RestKit.m in Sources */,
 				037FCF281A8DAF5400E8ABFC /* VSelectorViewBase.m in Sources */,
 				A7724FF11B33746A00B1BBB3 /* VCreatorInfoHelper.m in Sources */,
@@ -8218,14 +8272,12 @@
 				F065A40A1B433C7B00F0281B /* VFollowControl.m in Sources */,
 				03C185BF19B42F0E00E27D05 /* VSequenceUserInteractions.m in Sources */,
 				F0140BC71AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m in Sources */,
-				0306F7A61ADDF939009FE3AA /* VJSONHelper.m in Sources */,
 				D87D70961A9804CD002D4FED /* VNavigationDestinationContainerViewController.m in Sources */,
 				F0AD21761AF43DFA001BDCC6 /* VCollectionsDirectoryCellFactory.m in Sources */,
 				03C185BC19B42E5D00E27D05 /* TWSignedRequest.m in Sources */,
 				C3475B6D1B507087007C3782 /* VForcedWorkspaceContainerViewController.m in Sources */,
 				A7AEF9D01A83F2F500A3D3A0 /* VVideoUtils.m in Sources */,
 				D84559001ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m in Sources */,
-				0386F87F1B37F01700E8D459 /* VTemplateImageMacro.m in Sources */,
 				D80A94DB1A536C8C0035D788 /* VTrimmerViewController.m in Sources */,
 				A721E93F1B572454000B7901 /* NSManagedObject+RestKit.m in Sources */,
 				0314D2E919B46B2200FA363C /* VErrorMessage.m in Sources */,
@@ -8393,7 +8445,6 @@
 				A769C3E91A13176700698D0C /* VWebBrowserActions.m in Sources */,
 				A7299E921AA5331000B6BC1F /* VCardDirectoryCell.m in Sources */,
 				A780ED5F1A933D9300A8CD5D /* VPhotoFilterSerialization.m in Sources */,
-				038C51191B37B3D700A903C2 /* VTemplateImage.m in Sources */,
 				A721E9261B572454000B7901 /* VEndCard+RestKit.m in Sources */,
 				0314D0B419B4698800FA363C /* VObjectManager+Login.m in Sources */,
 				F074097F1B059CA200C44623 /* VCoachmarkManager.m in Sources */,
@@ -8473,7 +8524,6 @@
 				A601FB5C1B4369550050536C /* VEditProfilePicturePresenter.m in Sources */,
 				D85E42811AFA9A0F00A13BD3 /* VImageSequencePreviewView.m in Sources */,
 				0314D0B319B4698800FA363C /* VObjectManager+ImageSearch.m in Sources */,
-				038C511C1B37C8F500A903C2 /* VTemplateImageSet.m in Sources */,
 				A743E7E41A0816D500339CB3 /* VPasswordValidator.m in Sources */,
 				0314D48C19B46B5E00FA363C /* VSelectorViewController.m in Sources */,
 				037FCF2B1A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.m in Sources */,
@@ -8524,7 +8574,6 @@
 				A7724FD31B3241D100B1BBB3 /* VFollowersDataSource.m in Sources */,
 				A7D378401AEF4ED5007FF197 /* VProfileHeaderCell.m in Sources */,
 				A721E9371B572454000B7901 /* NSArray+VMap.m in Sources */,
-				032954A51A9FF4E000698119 /* VURLMacroReplacement.m in Sources */,
 				D89AC2BD19F1FD6B00921131 /* VHistogramBarView.m in Sources */,
 				03449FE51A0C7EBB0070EC80 /* VSessionTimer.m in Sources */,
 				A721E9541B572454000B7901 /* UIImage+VTint.m in Sources */,
@@ -8612,7 +8661,6 @@
 				D82EA50E1A577FF70008FD3E /* VVideoFrameRateComposition.m in Sources */,
 				A70FC0FE1A2D412200F5BBDE /* VPurchaseManager.m in Sources */,
 				A75ED0001AB0B6B400C35063 /* VCropToolViewController.m in Sources */,
-				A721E9421B572454000B7901 /* NSString+VCrypto.m in Sources */,
 				039ED29C19C908F400305987 /* VCVideoPlayerViewController.m in Sources */,
 				BE42842C19DDD0D500AEDBA6 /* VDefaultProfileImageView.m in Sources */,
 				A6BB61201B582815002C3B7C /* VAssetCollectionGridDataSource.m in Sources */,
@@ -9143,6 +9191,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"Pods-VictoriousCommonOSX-IGDigest\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -9163,6 +9216,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"Pods-VictoriousCommonOSX-IGDigest\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -9183,6 +9241,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"Pods-VictoriousCommonOSX-IGDigest\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -9203,6 +9266,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"Pods-VictoriousCommonOSX-IGDigest\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -9223,6 +9291,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"Pods-VictoriousCommonOSX-IGDigest\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -9242,6 +9315,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = downloadtemplate/SwiftBridging.h;
@@ -9260,6 +9334,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = downloadtemplate/SwiftBridging.h;
@@ -9278,6 +9353,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = downloadtemplate/SwiftBridging.h;
@@ -9296,6 +9372,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = downloadtemplate/SwiftBridging.h;
@@ -9314,6 +9391,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = downloadtemplate/SwiftBridging.h;

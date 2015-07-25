@@ -7,7 +7,6 @@
 //
 
 #import "NSArray+VMap.h"
-#import "VDependencyManager.h"
 #import "VTemplateImageSet.h"
 #import "VTemplateImage.h"
 
