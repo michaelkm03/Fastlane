@@ -54,6 +54,12 @@ NS_ASSUME_NONNULL_BEGIN
     return [[NSFileManager defaultManager] copyItemAtURL:fileURL toURL:saveURL error:error];
 }
 
+- (BOOL)hasCachedDataForID:(id<VDataCacheID>)identifier
+{
+    NSURL *cacheURL = [self bundleURLForCachedDataWithID:identifier];
+    return [[NSFileManager defaultManager] fileExistsAtPath:cacheURL.path];
+}
+
 - (NSURL *)bundleURLForCachedDataWithID:(id<VDataCacheID>)identifier
 {
     return [[self.bundleURL URLByAppendingPathComponent:[identifier identifierForDataCache] isDirectory:NO] URLByAppendingPathExtension:VDataCacheBundleResourceExtension];

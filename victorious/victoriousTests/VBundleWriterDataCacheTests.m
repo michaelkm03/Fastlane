@@ -66,4 +66,21 @@
     XCTAssertEqualObjects(data, dataOut);
 }
 
+- (void)testHasCachedData
+{
+    uint8_t bytes[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    
+    NSString *identifier = [[NSUUID UUID] UUIDString];
+    NSData *data = [NSData dataWithBytes:bytes length:10];
+    
+    XCTAssert( [self.dataCache cacheData:data forID:identifier error:nil] );
+    XCTAssert( [self.dataCache hasCachedDataForID:identifier] );
+}
+
+- (void)testHasNoCachedData
+{
+    NSString *identifier = [[NSUUID UUID] UUIDString];
+    XCTAssertFalse( [self.dataCache hasCachedDataForID:identifier] );
+}
+
 @end
