@@ -270,7 +270,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     [self updateNavigationItems];
     
-    [self.dependencyManager trackViewWillAppear:self];
+    [self.dependencyManager trackViewWillAppear:self withParameters:nil templateClass:self.viewTrackingClassOverride];
 
     if ( self.streamDataSource.count == 0 )
     {
