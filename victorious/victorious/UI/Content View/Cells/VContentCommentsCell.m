@@ -345,9 +345,8 @@ static NSCache *_sharedImageCache = nil;
 - (void)setRealTimeCommentText:(NSString *)realTimeCommentText
 {
     _realTimeCommentText = [realTimeCommentText copy];
-    
     self.realtimeCommentLocationLabel.text  = realTimeCommentText;
-    self.clockIconImageView.hidden = (!realTimeCommentText || (realTimeCommentText.length < 1));
+    self.clockIconImageView.hidden = (realTimeCommentText.length > 0);
 }
 
 - (UIImage *)previewImage
