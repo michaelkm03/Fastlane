@@ -13,7 +13,11 @@ extension Experiment {
     static var propertyMap: [String:String] {
         return [
             "name" : "name",
-            "id" : "id"
+            "id" : "id",
+            "bucket_type" : "bucketType",
+            "num_buckets" : "bucketCount",
+            "layer_id" : "layerId",
+            "layer_name" : "layerName"
         ]
     }
     

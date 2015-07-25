@@ -21,14 +21,38 @@ private func ==( lhs: [String], rhs: [String] ) -> Bool {
 /// Simple table view controller that loads all available experiments from the server
 /// and displays each one in a cell with a switch to allow the user to opt in or out
 /// of the experiment.
-class ExperimentSettingsViewController: UITableViewController {
+class ExperimentSettingsViewController: UITableViewController, ExperimentSettingsDataSourceDelegate {
     
-    private var allAvailableExperiments = [Experiment]()
+    let dataSource = ExperimentSettingsDataSource()
     
-    private var defaultEnabledExperimentIds = [String]()
-    private var userEnabledExperimentIds = [String]()
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.dataSource.delegate = self
+    }
     
-    private enum State: Int {
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear( animated )
+        
+        self.dataSource.loadSettings()
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear( animated )
+        
+        self.dataSource.saveSettings()
+    }
+}
+
+protocol ExperimentSettingsDataSourceDelegate {
+    var tableView: UITableView! { get }
+}
+
+class ExperimentSettingsDataSource: NSObject {
+    
+    var delegate:ExperimentSettingsDataSourceDelegate?
+    
+    enum State: Int {
         case Loading, Content, NoContent, Error
         
         /// Returns a message to display to the user for this state
@@ -47,25 +71,18 @@ class ExperimentSettingsViewController: UITableViewController {
         }
     }
     
-    private var state: State = .Loading {
+    var userEnabledExperimentIds = [String]()
+    
+    private(set) var availableExperiments = [Experiment]()
+    private(set) var defaultEnabledExperimentIds = [String]()
+    
+    private(set) var state: State = .Loading {
         didSet {
-            self.tableView.reloadData()
+            self.delegate?.tableView.reloadData()
         }
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear( animated )
-        
-        self.loadSettings()
-    }
-    
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear( animated )
-        
-        self.saveSettings()
-    }
-    
-    private func saveSettings() {        
+    private func saveSettings() {
         // If the user changed any settings from the default (the backend settings)...
         if self.defaultEnabledExperimentIds != self.userEnabledExperimentIds {
             
@@ -80,7 +97,7 @@ class ExperimentSettingsViewController: UITableViewController {
         }
     }
     
-    private func loadSettings() {
+    func loadSettings() {
         self.state = .Loading
         
         VObjectManager.sharedManager().getDeviceExperiments(
@@ -96,48 +113,38 @@ class ExperimentSettingsViewController: UITableViewController {
                     if let manuallyConfiguredExperimentIds = VObjectManager.sharedManager().experimentIDs as? [String] {
                         self.userEnabledExperimentIds = manuallyConfiguredExperimentIds
                     }
-                    // But if there are none, use the defaults provided by the server
+                        // But if there are none, use the defaults provided by the server
                     else {
                         self.userEnabledExperimentIds = self.defaultEnabledExperimentIds
                     }
                 }
                 
-                if let allAvailableExperiments = results as? [Experiment] {
-                    self.allAvailableExperiments = allAvailableExperiments
+                if let experiments = results as? [Experiment] {
+                    
+                    let layers = Set<String>( map(experiments, { $0.layerName }) )
+                    
+                    println( layers )
+                    
+                    self.availableExperiments = experiments
                 }
                 
-                self.state = self.allAvailableExperiments.count > 0 ? .Content : .NoContent
+                self.state = self.availableExperiments.count > 0 ? .Content : .NoContent
             },
             failure: { (operation, error) -> Void in
-                self.allAvailableExperiments = []
+                self.availableExperiments = []
                 self.state = .Error
             }
         )
     }
 }
 
-extension ExperimentSettingsViewController: VSettingsSwitchCellDelegate {
-    
-    func settingsDidUpdateFromCell( cell: VSettingsSwitchCell ) {
-        if let indexPath = self.tableView.indexPathForCell( cell ) {
-            let experiment = self.allAvailableExperiments[ indexPath.row ]
-            if cell.value {
-                self.userEnabledExperimentIds.append( experiment.id )
-            }
-            else {
-                self.userEnabledExperimentIds = self.userEnabledExperimentIds.filter { $0 != experiment.id }
-            }
-        }
-    }
-}
+extension ExperimentSettingsDataSource: UITableViewDataSource {
 
-extension ExperimentSettingsViewController: UITableViewDataSource {
-    
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let identifier = VSettingsSwitchCell.suggestedReuseIdentifier()
         if self.state == .Content, let cell = tableView.dequeueReusableCellWithIdentifier( identifier, forIndexPath: indexPath ) as? VSettingsSwitchCell {
         
-            let experiment = self.allAvailableExperiments[ indexPath.row ]
+            let experiment = self.availableExperiments[ indexPath.row ]
             let enabled = contains( self.userEnabledExperimentIds, experiment.id )
             cell.setTitle( experiment.name, value: enabled )
             cell.delegate = self
@@ -153,7 +160,23 @@ extension ExperimentSettingsViewController: UITableViewDataSource {
         fatalError( "Could not load cell" )
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return max( allAvailableExperiments.count, 1 )
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        println( "self.availableExperiments = \(self.availableExperiments)" )
+        return max( self.availableExperiments.count, 1 )
+    }
+}
+
+extension ExperimentSettingsDataSource: VSettingsSwitchCellDelegate {
+    
+    func settingsDidUpdateFromCell( cell: VSettingsSwitchCell ) {
+        if let indexPath = self.delegate?.tableView.indexPathForCell( cell ) {
+            let experiment = self.availableExperiments[ indexPath.row ]
+            if cell.value {
+                self.userEnabledExperimentIds.append( experiment.id )
+            }
+            else {
+                self.userEnabledExperimentIds = self.userEnabledExperimentIds.filter { $0 != experiment.id }
+            }
+        }
     }
 }

@@ -11,4 +11,8 @@ import Foundation
 @objc class Experiment: NSManagedObject {
     @NSManaged var name: String
     @NSManaged var id: String
+    @NSManaged var bucketType: String?
+    @NSManaged var bucketCount: NSNumber?
+    @NSManaged var layerId: NSNumber
+    @NSManaged var layerName: String
 }
