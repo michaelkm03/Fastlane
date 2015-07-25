@@ -15,7 +15,6 @@
 #import "VCaptureContainerViewController.h"
 #import "VAlternateCaptureOption.h"
 #import "VAssetCollectionGridViewController.h"
-#import "VCameraViewController.h"
 #import "VImageSearchViewController.h"
 #import "VAssetDownloader.h"
 #import "UIAlertController+VSimpleAlert.h"
@@ -47,7 +46,7 @@ static NSString * const kCreationFlowSourceLibrary = @"library";
 static NSString * const kCreationFlowSourceCamera = @"camera";
 static NSString * const kCreationFlowSourceSearch = @"search";
 
-@interface VAbstractImageVideoCreationFlowController () <UINavigationControllerDelegate, VAssetCollectionGridViewControllerDelegate, VScaleAnimatorSource>
+@interface VAbstractImageVideoCreationFlowController () <VAssetCollectionGridViewControllerDelegate, VScaleAnimatorSource>
 
 @property (nonatomic, strong) NSArray *cachedAssetCollections;
 
@@ -297,7 +296,9 @@ static NSString * const kCreationFlowSourceSearch = @"search";
 
 #pragma mark - UINavigationControllerDelegate
 
-- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+- (void)navigationController:(UINavigationController *)navigationController
+       didShowViewController:(UIViewController *)viewController
+                    animated:(BOOL)animated
 {
     // Cleanup as we enter or exit different states
     if (viewController == self.captureContainerViewController)

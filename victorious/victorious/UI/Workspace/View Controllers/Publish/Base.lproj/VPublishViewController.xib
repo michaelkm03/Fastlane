@@ -6,7 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VPublishViewController">
             <connections>
-                <outlet property="blurView" destination="00O-RT-5rB" id="tfL-XB-r7D"/>
+                <outlet property="blurView" destination="00O-RT-5rB" id="BG4-me-VP5"/>
                 <outlet property="cancelButton" destination="92r-ti-u3W" id="foA-Pb-kG4"/>
                 <outlet property="captionContainer" destination="fY0-oQ-HQH" id="XhI-B5-WCG"/>
                 <outlet property="captionSeparator" destination="6Ix-FV-hcC" id="vlF-FM-KXp"/>

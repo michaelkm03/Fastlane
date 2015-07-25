@@ -34,16 +34,20 @@
 
 - (id<CAAction>)actionForKey:(NSString *)key
 {
-    for (NSString *animatableKey in [[self class] animatableKeys])
+    id <CAAction> action = [super actionForKey:key];
+    if (action == [NSNull null])
     {
-        if ([key isEqualToString:animatableKey])
+        for (NSString *animatableKey in [[self class] animatableKeys])
         {
-            CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:key];
-            animation.fromValue = [self.presentationLayer valueForKey:key];
-            return animation;
+            if ([key isEqualToString:animatableKey])
+            {
+                CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:key];
+                animation.fromValue = [self.presentationLayer valueForKey:key];
+                return animation;
+            }
         }
     }
-    return [super actionForKey:key];
+    return action;
 }
 
 - (void)drawInContext:(CGContextRef)ctx

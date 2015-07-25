@@ -303,12 +303,18 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
 
 - (void)gainedFocus
 {
-    [self.toolController.selectedTool setSelected:YES];
+    if ([self.toolController.selectedTool respondsToSelector:@selector(setSelected:)])
+    {
+        [self.toolController.selectedTool setSelected:YES];
+    }
 }
 
 - (void)lostFocus
 {
-    [self.toolController.selectedTool setSelected:NO];
+    if ([self.toolController.selectedTool respondsToSelector:@selector(setSelected:)])
+    {
+        [self.toolController.selectedTool setSelected:NO];
+    }
 }
 
 #pragma mark - Private Methods

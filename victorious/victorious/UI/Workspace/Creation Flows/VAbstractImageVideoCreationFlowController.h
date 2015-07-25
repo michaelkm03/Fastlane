@@ -10,7 +10,7 @@
 #import "VCreationTypes.h"
 #import "VAssetCollectionGridViewController.h"
 
-@interface VAbstractImageVideoCreationFlowController : VCreationFlowController <VAssetCollectionGridViewControllerDelegate>
+@interface VAbstractImageVideoCreationFlowController : VCreationFlowController <VAssetCollectionGridViewControllerDelegate, UINavigationControllerDelegate>
 
 /**
  *  To force this image creation flow controller into remixing mode provide it with a previewImage 

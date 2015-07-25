@@ -313,4 +313,25 @@
     return newImage;
 }
 
+- (UIImage *)squareImageByCropping
+{
+    CGFloat minDimension = fminf(self.size.width, self.size.height);
+    CGFloat x = (self.size.width - minDimension) / 2.0f;
+    CGFloat y = (self.size.height - minDimension) / 2.0f;
+    
+    CGRect cropRect;
+    if (self.imageOrientation == UIImageOrientationRight || self.imageOrientation == UIImageOrientationLeft)
+    {
+        cropRect = CGRectMake(y, x, minDimension, minDimension);
+    }
+    else
+    {
+        cropRect = CGRectMake(x, y, minDimension, minDimension);
+    }
+    
+    UIImage *croppedImage = [self croppedImage:cropRect];
+    croppedImage = [croppedImage fixOrientation];
+    return croppedImage;
+}
+
 @end

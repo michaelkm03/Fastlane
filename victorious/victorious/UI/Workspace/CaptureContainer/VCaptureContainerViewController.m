@@ -78,6 +78,15 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    for (UIButton *button in self.buttonsForCaptureOptions)
+    {
+        button.userInteractionEnabled = YES;
+    }
+}
+
 #pragma mark - Public Methods
 
 - (void)setContainedViewController:(UIViewController *)viewController
@@ -92,6 +101,12 @@ NS_ASSUME_NONNULL_BEGIN
     NSUInteger indexOfButton = [self.buttonsForCaptureOptions indexOfObject:button];
     VAlternateCaptureOption *optionForButtonIndex = self.alternateCaptureOptions[indexOfButton];
     optionForButtonIndex.selectionBlock();
+    
+    // disable buttons until we are top of the stack again
+    for (UIButton *button in self.buttonsForCaptureOptions)
+    {
+        button.userInteractionEnabled = NO;
+    }
 }
 
 @end

@@ -33,6 +33,12 @@
 #define VCGFLOAT_VALUE floatValue
 #endif
 
+#if CGFLOAT_IS_DOUBLE
+#define VCGFloatSQRT sqrt
+#else
+#define VCGFloatSQRT sqrtf
+#endif
+
 #if !defined(CLAMP)
 #define CLAMP(MinValue, Value, MaxValue) MAX(MIN(Value, MaxValue), MinValue)
 #endif
