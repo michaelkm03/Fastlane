@@ -197,8 +197,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     [super viewWillAppear:animated];
     
-    [self.dependencyManager trackViewWillAppear:self withParameters:nil templateClass:self.viewTrackingClassOverride];
-    
     if ( !self.isCurrentUser && self.user == nil && self.remoteId != nil )
     {
         [self loadUserWithRemoteId:self.remoteId];
