@@ -1302,6 +1302,27 @@
 		035FA78C1AE6C4E20002EE63 /* VUnreadMessageCountCoordinator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUnreadMessageCountCoordinator.m; sourceTree = "<group>"; };
 		03610583194140AA0069D49E /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		03610589194154F40069D49E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		03669B641B632D50003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/VModernEnterNameViewController.strings; sourceTree = "<group>"; };
+		03669B651B632D50003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Main.strings; sourceTree = "<group>"; };
+		03669B661B632D51003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/VNoContentView.strings; sourceTree = "<group>"; };
+		03669B681B632D51003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Workspace.strings; sourceTree = "<group>"; };
+		03669B691B632D52003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/VModernLandingViewController.strings; sourceTree = "<group>"; };
+		03669B6A1B632D52003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/VKeyboardInputAccessoryView.strings; sourceTree = "<group>"; };
+		03669B6B1B632D52003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/VModernResetTokenViewController.strings; sourceTree = "<group>"; };
+		03669B6C1B632D52003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Purchases.strings; sourceTree = "<group>"; };
+		03669B6D1B632D53003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/VForceUpgradeViewController.strings; sourceTree = "<group>"; };
+		03669B6E1B632D53003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/FindFriendsTableView.strings; sourceTree = "<group>"; };
+		03669B6F1B632D53003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/login.strings; sourceTree = "<group>"; };
+		03669B701B632D53003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/ActionSheet.strings; sourceTree = "<group>"; };
+		03669B711B632D54003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/settings.strings; sourceTree = "<group>"; };
+		03669B721B632D55003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		03669B731B632D55003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/VPublishShareCollectionViewCell.strings; sourceTree = "<group>"; };
+		03669B741B632D55003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/VCreatePollViewController.strings; sourceTree = "<group>"; };
+		03669B751B632D55003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/VPublishSaveCollectionViewCell.strings; sourceTree = "<group>"; };
+		03669B761B632D56003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Profile.strings; sourceTree = "<group>"; };
+		03669B771B632D56003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
+		03669B781B632D56003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/VPublishViewController.strings; sourceTree = "<group>"; };
+		03669B7E1B632D57003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Discover.strings; sourceTree = "<group>"; };
 		036AE5EB18FF0C0600A74BDA /* VReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VReachability.h; sourceTree = "<group>"; };
 		036AE5EC18FF0C0600A74BDA /* VReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VReachability.m; sourceTree = "<group>"; };
 		036E87B01ACB6B3F00E5AAAD /* VContentViewFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentViewFactory.h; sourceTree = "<group>"; };
@@ -8379,6 +8400,7 @@
 				03803DE91B0C272300B63F05 /* de */,
 				038A6B1A1B23C670004C8D03 /* pt */,
 				03F2F75A1B55828E00F2EF16 /* ja */,
+				03669B6C1B632D52003C2D8F /* ko */,
 			);
 			name = Purchases.storyboard;
 			path = Purchases;
@@ -8393,6 +8415,7 @@
 				03848F9A1B0A410D0092C660 /* de */,
 				038A6B231B23C671004C8D03 /* pt */,
 				03F2F7601B55829000F2EF16 /* ja */,
+				03669B721B632D55003C2D8F /* ko */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -8406,6 +8429,7 @@
 				0308B0FA1AB20B2F00144E53 /* de */,
 				038A6B131B23C670004C8D03 /* pt */,
 				03F2F75E1B55828F00F2EF16 /* ja */,
+				03669B701B632D53003C2D8F /* ko */,
 			);
 			name = ActionSheet.storyboard;
 			sourceTree = "<group>";
@@ -8419,6 +8443,7 @@
 				0308B0EE1AB20B2C00144E53 /* de */,
 				038A6B141B23C670004C8D03 /* pt */,
 				03F2F7581B55828D00F2EF16 /* ja */,
+				03669B6A1B632D52003C2D8F /* ko */,
 			);
 			name = VKeyboardInputAccessoryView.xib;
 			sourceTree = "<group>";
@@ -8432,6 +8457,7 @@
 				0308B0FC1AB20B3000144E53 /* de */,
 				038A6B161B23C670004C8D03 /* pt */,
 				03F2F7691B55829200F2EF16 /* ja */,
+				03669B7E1B632D57003C2D8F /* ko */,
 			);
 			name = Discover.storyboard;
 			sourceTree = "<group>";
@@ -8445,6 +8471,7 @@
 				039269B71B5F355100FCD0AA /* de */,
 				039269B91B5F355300FCD0AA /* pt */,
 				039269BB1B5F355500FCD0AA /* ja */,
+				03669B741B632D55003C2D8F /* ko */,
 			);
 			name = VCreatePollViewController.storyboard;
 			sourceTree = "<group>";
@@ -8458,6 +8485,7 @@
 				039269C41B5F370100FCD0AA /* de */,
 				039269C61B5F370300FCD0AA /* pt */,
 				039269C81B5F370400FCD0AA /* ja */,
+				03669B731B632D55003C2D8F /* ko */,
 			);
 			name = VPublishShareCollectionViewCell.xib;
 			path = Publish;
@@ -8472,6 +8500,7 @@
 				039269D11B5F371800FCD0AA /* de */,
 				039269D31B5F371900FCD0AA /* pt */,
 				039269D51B5F371B00FCD0AA /* ja */,
+				03669B781B632D56003C2D8F /* ko */,
 			);
 			name = VPublishViewController.xib;
 			path = Publish;
@@ -8486,6 +8515,7 @@
 				039269DE1B5F373900FCD0AA /* de */,
 				039269E01B5F373A00FCD0AA /* pt */,
 				039269E21B5F373B00FCD0AA /* ja */,
+				03669B751B632D55003C2D8F /* ko */,
 			);
 			name = VPublishSaveCollectionViewCell.xib;
 			path = Publish;
@@ -8500,6 +8530,7 @@
 				03F6E26C1AB79E150017826E /* de */,
 				038A6B221B23C671004C8D03 /* pt */,
 				03F2F75C1B55828E00F2EF16 /* ja */,
+				03669B681B632D51003C2D8F /* ko */,
 			);
 			name = Workspace.storyboard;
 			sourceTree = "<group>";
@@ -8513,6 +8544,7 @@
 				D825B88A1B20B9AE004179B4 /* de */,
 				038A6B1E1B23C670004C8D03 /* pt */,
 				03F2F7561B55828C00F2EF16 /* ja */,
+				03669B6B1B632D52003C2D8F /* ko */,
 			);
 			name = VModernResetTokenViewController.storyboard;
 			sourceTree = "<group>";
@@ -8526,6 +8558,7 @@
 				D858E0D21B1FAD6200437DDE /* de */,
 				038A6B1D1B23C670004C8D03 /* pt */,
 				03F2F7571B55828D00F2EF16 /* ja */,
+				03669B691B632D52003C2D8F /* ko */,
 			);
 			name = VModernLandingViewController.storyboard;
 			sourceTree = "<group>";
@@ -8540,6 +8573,7 @@
 				D858E0DD1B1FC32B00437DDE /* de */,
 				038A6B1C1B23C670004C8D03 /* pt */,
 				03F2F7511B55828B00F2EF16 /* ja */,
+				03669B641B632D50003C2D8F /* ko */,
 			);
 			name = VModernEnterNameViewController.storyboard;
 			sourceTree = "<group>";
@@ -8550,6 +8584,7 @@
 				D85B702E1B0EAF3F0038CA5B /* Base */,
 				038A6B201B23C671004C8D03 /* pt */,
 				03F2F75D1B55828F00F2EF16 /* ja */,
+				03669B6F1B632D53003C2D8F /* ko */,
 			);
 			name = login.storyboard;
 			sourceTree = "<group>";
@@ -8570,6 +8605,7 @@
 				D85B703A1B0EAF3F0038CA5B /* Base */,
 				038A6B1F1B23C670004C8D03 /* pt */,
 				03F2F7591B55828D00F2EF16 /* ja */,
+				03669B6E1B632D53003C2D8F /* ko */,
 			);
 			name = FindFriendsTableView.xib;
 			sourceTree = "<group>";
@@ -8593,6 +8629,7 @@
 				0308B0FB1AB20B2F00144E53 /* de */,
 				038A6B241B23C671004C8D03 /* pt */,
 				03F2F7631B55829100F2EF16 /* ja */,
+				03669B771B632D56003C2D8F /* ko */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -8606,6 +8643,7 @@
 				0308B1011AB20B3100144E53 /* de */,
 				038A6B181B23C670004C8D03 /* pt */,
 				03F2F7521B55828B00F2EF16 /* ja */,
+				03669B651B632D50003C2D8F /* ko */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -8619,6 +8657,7 @@
 				0308B1001AB20B3100144E53 /* de */,
 				038A6B151B23C670004C8D03 /* pt */,
 				03F2F7541B55828C00F2EF16 /* ja */,
+				03669B661B632D51003C2D8F /* ko */,
 			);
 			name = VNoContentView.xib;
 			sourceTree = "<group>";
@@ -8632,6 +8671,7 @@
 				0308B0F81AB20B2E00144E53 /* de */,
 				038A6B171B23C670004C8D03 /* pt */,
 				03F2F75B1B55828E00F2EF16 /* ja */,
+				03669B6D1B632D53003C2D8F /* ko */,
 			);
 			name = VForceUpgradeViewController.xib;
 			sourceTree = "<group>";
@@ -8645,6 +8685,7 @@
 				0308B0ED1AB20B2C00144E53 /* de */,
 				038A6B191B23C670004C8D03 /* pt */,
 				03F2F7621B55829100F2EF16 /* ja */,
+				03669B761B632D56003C2D8F /* ko */,
 			);
 			name = Profile.storyboard;
 			sourceTree = "<group>";
@@ -8658,6 +8699,7 @@
 				0308B0FD1AB20B3000144E53 /* de */,
 				038A6B1B1B23C670004C8D03 /* pt */,
 				03F2F75F1B55829000F2EF16 /* ja */,
+				03669B711B632D54003C2D8F /* ko */,
 			);
 			name = settings.storyboard;
 			sourceTree = "<group>";
