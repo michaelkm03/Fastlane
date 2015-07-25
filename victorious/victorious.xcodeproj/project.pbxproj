@@ -1323,6 +1323,27 @@
 		03669B771B632D56003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		03669B781B632D56003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/VPublishViewController.strings; sourceTree = "<group>"; };
 		03669B7E1B632D57003C2D8F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Discover.strings; sourceTree = "<group>"; };
+		03669B851B6332D5003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/VModernEnterNameViewController.strings; sourceTree = "<group>"; };
+		03669B861B6332D5003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Main.strings; sourceTree = "<group>"; };
+		03669B871B6332D6003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/VNoContentView.strings; sourceTree = "<group>"; };
+		03669B891B6332D6003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Workspace.strings; sourceTree = "<group>"; };
+		03669B8A1B6332D6003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/VModernResetTokenViewController.strings; sourceTree = "<group>"; };
+		03669B8B1B6332D7003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/VKeyboardInputAccessoryView.strings; sourceTree = "<group>"; };
+		03669B8C1B6332D7003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/VModernLandingViewController.strings; sourceTree = "<group>"; };
+		03669B8D1B6332D7003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/VForceUpgradeViewController.strings; sourceTree = "<group>"; };
+		03669B8E1B6332D8003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Purchases.strings; sourceTree = "<group>"; };
+		03669B8F1B6332D8003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/FindFriendsTableView.strings; sourceTree = "<group>"; };
+		03669B901B6332D8003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/login.strings; sourceTree = "<group>"; };
+		03669B911B6332D9003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/ActionSheet.strings; sourceTree = "<group>"; };
+		03669B921B6332D9003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/settings.strings; sourceTree = "<group>"; };
+		03669B931B6332D9003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		03669B941B6332DA003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/VPublishShareCollectionViewCell.strings; sourceTree = "<group>"; };
+		03669B951B6332DA003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/VCreatePollViewController.strings; sourceTree = "<group>"; };
+		03669B961B6332DA003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/VPublishSaveCollectionViewCell.strings; sourceTree = "<group>"; };
+		03669B971B6332DA003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Profile.strings; sourceTree = "<group>"; };
+		03669B981B6332DB003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Localizable.strings; sourceTree = "<group>"; };
+		03669B991B6332DB003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/VPublishViewController.strings; sourceTree = "<group>"; };
+		03669B9F1B6332DC003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Discover.strings; sourceTree = "<group>"; };
 		036AE5EB18FF0C0600A74BDA /* VReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VReachability.h; sourceTree = "<group>"; };
 		036AE5EC18FF0C0600A74BDA /* VReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VReachability.m; sourceTree = "<group>"; };
 		036E87B01ACB6B3F00E5AAAD /* VContentViewFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentViewFactory.h; sourceTree = "<group>"; };
@@ -8401,6 +8422,7 @@
 				038A6B1A1B23C670004C8D03 /* pt */,
 				03F2F75A1B55828E00F2EF16 /* ja */,
 				03669B6C1B632D52003C2D8F /* ko */,
+				03669B8E1B6332D8003C2D8F /* vi */,
 			);
 			name = Purchases.storyboard;
 			path = Purchases;
@@ -8416,6 +8438,7 @@
 				038A6B231B23C671004C8D03 /* pt */,
 				03F2F7601B55829000F2EF16 /* ja */,
 				03669B721B632D55003C2D8F /* ko */,
+				03669B931B6332D9003C2D8F /* vi */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -8430,6 +8453,7 @@
 				038A6B131B23C670004C8D03 /* pt */,
 				03F2F75E1B55828F00F2EF16 /* ja */,
 				03669B701B632D53003C2D8F /* ko */,
+				03669B911B6332D9003C2D8F /* vi */,
 			);
 			name = ActionSheet.storyboard;
 			sourceTree = "<group>";
@@ -8444,6 +8468,7 @@
 				038A6B141B23C670004C8D03 /* pt */,
 				03F2F7581B55828D00F2EF16 /* ja */,
 				03669B6A1B632D52003C2D8F /* ko */,
+				03669B8B1B6332D7003C2D8F /* vi */,
 			);
 			name = VKeyboardInputAccessoryView.xib;
 			sourceTree = "<group>";
@@ -8458,6 +8483,7 @@
 				038A6B161B23C670004C8D03 /* pt */,
 				03F2F7691B55829200F2EF16 /* ja */,
 				03669B7E1B632D57003C2D8F /* ko */,
+				03669B9F1B6332DC003C2D8F /* vi */,
 			);
 			name = Discover.storyboard;
 			sourceTree = "<group>";
@@ -8472,6 +8498,7 @@
 				039269B91B5F355300FCD0AA /* pt */,
 				039269BB1B5F355500FCD0AA /* ja */,
 				03669B741B632D55003C2D8F /* ko */,
+				03669B951B6332DA003C2D8F /* vi */,
 			);
 			name = VCreatePollViewController.storyboard;
 			sourceTree = "<group>";
@@ -8486,6 +8513,7 @@
 				039269C61B5F370300FCD0AA /* pt */,
 				039269C81B5F370400FCD0AA /* ja */,
 				03669B731B632D55003C2D8F /* ko */,
+				03669B941B6332DA003C2D8F /* vi */,
 			);
 			name = VPublishShareCollectionViewCell.xib;
 			path = Publish;
@@ -8501,6 +8529,7 @@
 				039269D31B5F371900FCD0AA /* pt */,
 				039269D51B5F371B00FCD0AA /* ja */,
 				03669B781B632D56003C2D8F /* ko */,
+				03669B991B6332DB003C2D8F /* vi */,
 			);
 			name = VPublishViewController.xib;
 			path = Publish;
@@ -8516,6 +8545,7 @@
 				039269E01B5F373A00FCD0AA /* pt */,
 				039269E21B5F373B00FCD0AA /* ja */,
 				03669B751B632D55003C2D8F /* ko */,
+				03669B961B6332DA003C2D8F /* vi */,
 			);
 			name = VPublishSaveCollectionViewCell.xib;
 			path = Publish;
@@ -8531,6 +8561,7 @@
 				038A6B221B23C671004C8D03 /* pt */,
 				03F2F75C1B55828E00F2EF16 /* ja */,
 				03669B681B632D51003C2D8F /* ko */,
+				03669B891B6332D6003C2D8F /* vi */,
 			);
 			name = Workspace.storyboard;
 			sourceTree = "<group>";
@@ -8545,6 +8576,7 @@
 				038A6B1E1B23C670004C8D03 /* pt */,
 				03F2F7561B55828C00F2EF16 /* ja */,
 				03669B6B1B632D52003C2D8F /* ko */,
+				03669B8A1B6332D6003C2D8F /* vi */,
 			);
 			name = VModernResetTokenViewController.storyboard;
 			sourceTree = "<group>";
@@ -8559,6 +8591,7 @@
 				038A6B1D1B23C670004C8D03 /* pt */,
 				03F2F7571B55828D00F2EF16 /* ja */,
 				03669B691B632D52003C2D8F /* ko */,
+				03669B8C1B6332D7003C2D8F /* vi */,
 			);
 			name = VModernLandingViewController.storyboard;
 			sourceTree = "<group>";
@@ -8574,6 +8607,7 @@
 				038A6B1C1B23C670004C8D03 /* pt */,
 				03F2F7511B55828B00F2EF16 /* ja */,
 				03669B641B632D50003C2D8F /* ko */,
+				03669B851B6332D5003C2D8F /* vi */,
 			);
 			name = VModernEnterNameViewController.storyboard;
 			sourceTree = "<group>";
@@ -8585,6 +8619,7 @@
 				038A6B201B23C671004C8D03 /* pt */,
 				03F2F75D1B55828F00F2EF16 /* ja */,
 				03669B6F1B632D53003C2D8F /* ko */,
+				03669B901B6332D8003C2D8F /* vi */,
 			);
 			name = login.storyboard;
 			sourceTree = "<group>";
@@ -8606,6 +8641,7 @@
 				038A6B1F1B23C670004C8D03 /* pt */,
 				03F2F7591B55828D00F2EF16 /* ja */,
 				03669B6E1B632D53003C2D8F /* ko */,
+				03669B8F1B6332D8003C2D8F /* vi */,
 			);
 			name = FindFriendsTableView.xib;
 			sourceTree = "<group>";
@@ -8630,6 +8666,7 @@
 				038A6B241B23C671004C8D03 /* pt */,
 				03F2F7631B55829100F2EF16 /* ja */,
 				03669B771B632D56003C2D8F /* ko */,
+				03669B981B6332DB003C2D8F /* vi */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -8644,6 +8681,7 @@
 				038A6B181B23C670004C8D03 /* pt */,
 				03F2F7521B55828B00F2EF16 /* ja */,
 				03669B651B632D50003C2D8F /* ko */,
+				03669B861B6332D5003C2D8F /* vi */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -8658,6 +8696,7 @@
 				038A6B151B23C670004C8D03 /* pt */,
 				03F2F7541B55828C00F2EF16 /* ja */,
 				03669B661B632D51003C2D8F /* ko */,
+				03669B871B6332D6003C2D8F /* vi */,
 			);
 			name = VNoContentView.xib;
 			sourceTree = "<group>";
@@ -8672,6 +8711,7 @@
 				038A6B171B23C670004C8D03 /* pt */,
 				03F2F75B1B55828E00F2EF16 /* ja */,
 				03669B6D1B632D53003C2D8F /* ko */,
+				03669B8D1B6332D7003C2D8F /* vi */,
 			);
 			name = VForceUpgradeViewController.xib;
 			sourceTree = "<group>";
@@ -8686,6 +8726,7 @@
 				038A6B191B23C670004C8D03 /* pt */,
 				03F2F7621B55829100F2EF16 /* ja */,
 				03669B761B632D56003C2D8F /* ko */,
+				03669B971B6332DA003C2D8F /* vi */,
 			);
 			name = Profile.storyboard;
 			sourceTree = "<group>";
@@ -8700,6 +8741,7 @@
 				038A6B1B1B23C670004C8D03 /* pt */,
 				03F2F75F1B55829000F2EF16 /* ja */,
 				03669B711B632D54003C2D8F /* ko */,
+				03669B921B6332D9003C2D8F /* vi */,
 			);
 			name = settings.storyboard;
 			sourceTree = "<group>";
