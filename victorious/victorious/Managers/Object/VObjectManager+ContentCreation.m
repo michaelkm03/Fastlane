@@ -221,9 +221,9 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     {
         parameters[@"parent_node_id"] = [publishParameters.parentNodeID stringValue];
     }
-    if (publishParameters.parentSequenceID && ![publishParameters.parentSequenceID isEqualToNumber:@(0)])
+    if (publishParameters.parentSequenceID && publishParameters.parentSequenceID.length > 0)
     {
-        parameters[@"parent_sequence_id"] = [publishParameters.parentSequenceID stringValue];
+        parameters[@"parent_sequence_id"] = publishParameters.parentSequenceID;
     }
     if (publishParameters.captionType == VCaptionTypeMeme)
     {

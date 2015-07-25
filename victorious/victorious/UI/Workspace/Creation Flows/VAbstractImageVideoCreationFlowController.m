@@ -64,6 +64,10 @@ static NSString * const kCreationFlowSourceSearch = @"search";
 @property (nonatomic, strong) NSURL *renderedMediaURL;
 @property (nonatomic, strong) UIImage *previewImage;
 
+// Remixing
+@property (nonatomic, strong) NSNumber *parentNodeID;
+@property (nonatomic, strong) NSString *parentSequenceID;
+
 @end
 
 @implementation VAbstractImageVideoCreationFlowController
@@ -97,7 +101,11 @@ static NSString * const kCreationFlowSourceSearch = @"search";
 
 - (void)remixWithPreviewImage:(UIImage *)previewImage
                      mediaURL:(NSURL *)mediaURL
+                 parentNodeID:(NSNumber *)parentNodeID
+             parentSequenceID:(NSString *)parentSequenceID
 {
+    self.parentNodeID = parentNodeID;
+    self.parentSequenceID = parentSequenceID;
     [self setupWorkspace];
     [self prepareWorkspaceWithMediaURL:mediaURL andPreviewImage:previewImage];
     [self addCloseButtonToViewController:self.workspaceViewController];
@@ -238,6 +246,8 @@ static NSString * const kCreationFlowSourceSearch = @"search";
     self.publishParameters.source = [self sourceStringForSourceType:self.source];
     self.publishParameters.mediaToUploadURL = renderedMediaURL;
     self.publishParameters.previewImage = previewImage;
+    self.publishParameters.parentNodeID = self.parentNodeID;
+    self.publishParameters.parentSequenceID = self.parentSequenceID;
     [self configurePublishParameters:self.publishParameters
                        withWorkspace:workspace];
     self.publishPresenter.publishParameters = self.publishParameters;
