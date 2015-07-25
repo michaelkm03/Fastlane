@@ -28,13 +28,16 @@ class ExperimentSettingsViewController: UITableViewController, ExperimentSetting
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.tableView.dataSource = self.dataSource
         self.dataSource.delegate = self
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear( animated )
         
-        self.dataSource.loadSettings()
+        self.dataSource.loadSettings() {
+            self.tableView.reloadData()
+        }
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -71,16 +74,15 @@ class ExperimentSettingsDataSource: NSObject {
         }
     }
     
-    var userEnabledExperimentIds = [String]()
-    
-    private(set) var availableExperiments = [Experiment]()
-    private(set) var defaultEnabledExperimentIds = [String]()
-    
-    private(set) var state: State = .Loading {
-        didSet {
-            self.delegate?.tableView.reloadData()
-        }
+    struct Section {
+        let title: String
+        let experiments: [Experiment]
     }
+    private var sections = [Section]()
+    
+    private var userEnabledExperimentIds = [String]()
+    private var defaultEnabledExperimentIds = [String]()
+    private var state: State = .Loading
     
     private func saveSettings() {
         // If the user changed any settings from the default (the backend settings)...
@@ -97,7 +99,7 @@ class ExperimentSettingsDataSource: NSObject {
         }
     }
     
-    func loadSettings() {
+    func loadSettings( completion:(()->())? ) {
         self.state = .Loading
         
         VObjectManager.sharedManager().getDeviceExperiments(
@@ -120,19 +122,20 @@ class ExperimentSettingsDataSource: NSObject {
                 }
                 
                 if let experiments = results as? [Experiment] {
-                    
                     let layers = Set<String>( map(experiments, { $0.layerName }) )
-                    
-                    println( layers )
-                    
-                    self.availableExperiments = experiments
+                    for layer in layers {
+                        let experiments = filter(experiments, { $0.layerName == layer })
+                        self.sections.append( Section(title: layer, experiments: experiments) )
+                    }
                 }
+                completion?()
                 
-                self.state = self.availableExperiments.count > 0 ? .Content : .NoContent
+                self.state = self.sections.count > 0 ? .Content : .NoContent
             },
             failure: { (operation, error) -> Void in
-                self.availableExperiments = []
+                self.sections = []
                 self.state = .Error
+                completion?()
             }
         )
     }
@@ -144,7 +147,7 @@ extension ExperimentSettingsDataSource: UITableViewDataSource {
         let identifier = VSettingsSwitchCell.suggestedReuseIdentifier()
         if self.state == .Content, let cell = tableView.dequeueReusableCellWithIdentifier( identifier, forIndexPath: indexPath ) as? VSettingsSwitchCell {
         
-            let experiment = self.availableExperiments[ indexPath.row ]
+            let experiment = self.sections[ indexPath.section ].experiments[ indexPath.row ]
             let enabled = contains( self.userEnabledExperimentIds, experiment.id )
             cell.setTitle( experiment.name, value: enabled )
             cell.delegate = self
@@ -161,8 +164,15 @@ extension ExperimentSettingsDataSource: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        println( "self.availableExperiments = \(self.availableExperiments)" )
-        return max( self.availableExperiments.count, 1 )
+        return max( self.sections[ section ].experiments.count, 1 )
+    }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return self.sections.count
+    }
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return self.sections[ section ].title
     }
 }
 
@@ -170,7 +180,8 @@ extension ExperimentSettingsDataSource: VSettingsSwitchCellDelegate {
     
     func settingsDidUpdateFromCell( cell: VSettingsSwitchCell ) {
         if let indexPath = self.delegate?.tableView.indexPathForCell( cell ) {
-            let experiment = self.availableExperiments[ indexPath.row ]
+            
+            let experiment = self.sections[ indexPath.section ].experiments[ indexPath.row ]
             if cell.value {
                 self.userEnabledExperimentIds.append( experiment.id )
             }
