@@ -169,6 +169,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
     // Trash
     self.trashButton.layer.cornerRadius = CGRectGetWidth(self.trashButton.bounds) * 0.5f;
     self.trashButton.layer.masksToBounds = YES;
+    
+    [self clearRecordedVideoAndResetControl];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -307,7 +309,6 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
      {
          dispatch_async(dispatch_get_main_queue(), ^
                         {
-                            [self clearRecordedVideoAndResetControl];
                             __strong typeof(welf) strongSelf = welf;
                             if ([strongSelf.captureController firstAlternatePositionDevice] != nil)
                             {
