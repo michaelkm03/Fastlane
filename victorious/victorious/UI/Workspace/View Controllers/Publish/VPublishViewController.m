@@ -273,6 +273,17 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
     self.publishParameters.captionType = VCaptionTypeNormal;
     
     self.publishParameters.shouldSaveToCameraRoll = self.saveContentCell.cameraRollSwitch.on;
+    if (self.publishParameters.shouldSaveToCameraRoll)
+    {
+        if (self.publishParameters.isVideo)
+        {
+            [self saveVideoToCameraRollFromURL:self.publishParameters.mediaToUploadURL];
+        }
+        else
+        {
+            UIImageWriteToSavedPhotosAlbum(self.previewImageView.image, nil, nil, nil);
+        }
+    }
     
     NSIndexSet *shareParams = self.shareContentCell.selectedShareTypes;
     self.publishParameters.shareToFacebook = [shareParams containsIndex:VShareTypeFacebook];
@@ -596,6 +607,27 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 }
 
 #pragma mark - Private Methods
+
+- (void)saveVideoToCameraRollFromURL:(NSURL *)sourceUrl
+{
+    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+    ALAssetsLibraryWriteVideoCompletionBlock videoWriteCompletionBlock = ^(NSURL *newURL, NSError *error)
+    {
+        if (error)
+        {
+            NSLog( @"Error writing image with metadata to Photo Library: %@", error );
+        }
+        else
+        {
+            NSLog( @"Wrote image with metadata to Photo Library %@", newURL.absoluteString);
+        }
+    };
+    
+    if ([library videoAtPathIsCompatibleWithSavedPhotosAlbum:sourceUrl])
+    {
+        [library writeVideoAtPathToSavedPhotosAlbum:sourceUrl completionBlock:videoWriteCompletionBlock];
+    }
+}
 
 - (void)setupBehaviors
 {
