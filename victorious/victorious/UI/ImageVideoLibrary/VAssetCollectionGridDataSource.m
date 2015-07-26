@@ -163,7 +163,7 @@ static NSInteger const kScreenSizeCacheTrigger = 1 / 3.0f;
     self.fetchResultForAssetsToDisplay = [collectionChanges fetchResultAfterChanges];
     
     UICollectionView *collectionView = self.collectionView;
-    if (![collectionChanges hasIncrementalChanges] || [collectionChanges hasMoves])
+    if (![collectionChanges hasIncrementalChanges])
     {
         // we need to reload all if the incremental diffs are not available
         [collectionView reloadData];
@@ -181,16 +181,18 @@ static NSInteger const kScreenSizeCacheTrigger = 1 / 3.0f;
     // if we have incremental diffs, tell the collection view to animate insertions and deletions
     [self.collectionView performBatchUpdates:^
      {
-         NSIndexSet *removedIndexes = [changeDetails removedIndexes];
-         if ([removedIndexes count])
-         {
-             [self.collectionView deleteItemsAtIndexPaths:[removedIndexes indexPathsFromIndexesWithSecion:0]];
-         }
          NSIndexSet *insertedIndexes = [changeDetails insertedIndexes];
          if ([insertedIndexes count])
          {
              [self.collectionView insertItemsAtIndexPaths:[insertedIndexes indexPathsFromIndexesWithSecion:0]];
          }
+         
+         NSIndexSet *removedIndexes = [changeDetails removedIndexes];
+         if ([removedIndexes count])
+         {
+             [self.collectionView deleteItemsAtIndexPaths:[removedIndexes indexPathsFromIndexesWithSecion:0]];
+         }
+
          NSIndexSet *changedIndexes = [changeDetails changedIndexes];
          if ([changedIndexes count])
          {
