@@ -31,7 +31,7 @@ static const UIEdgeInsets kTextInsets           = { 4.0f, 20.0f, 5.0f, 20.0f };
 static const CGFloat kHeaderHeight              = 74.0f;
 static const CGFloat kGradientAlpha             = 0.3f;
 static const CGFloat kShadowAlpha               = 0.5f;
-static const CGFloat kCountsTextViewMinHeight   = 80.0f;
+static const CGFloat kCountsTextViewMaxHeight   = 80.0f;
 static const CGFloat kButtonWidth               = 44.0f;
 static const CGFloat kButtonHeight              = 44.0f;
 static const CGFloat kCountsTextViewHeight      = 20.0f;
@@ -158,7 +158,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     _captionTextView.backgroundColor = [UIColor clearColor];
     [_overlayContainer addSubview:_captionTextView];
     [_overlayContainer v_addPinToLeadingTrailingToSubview:_captionTextView];
-    _captionHeight = [NSLayoutConstraint constraintWithItem:_captionTextView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:kCountsTextViewMinHeight];
+    _captionHeight = [NSLayoutConstraint constraintWithItem:_captionTextView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:kCountsTextViewMaxHeight];
     [_captionTextView addConstraint:_captionHeight];
     [_overlayContainer addConstraint:[NSLayoutConstraint constraintWithItem:_captionTextView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_countsTextView attribute:NSLayoutAttributeTop multiplier:1.0f constant:0.0f]];
     
@@ -225,7 +225,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
              
              // FIXME: The use of "V" is just to get a good size for *something* in this text field since
              // we can't know what the actual text for the label is in a static method
-             return CGSizeMake( 0.0f, MAX( kCountsTextViewMinHeight, [@"V" frameSizeForWidth:size.width andAttributes:attributes].height ) );
+             return CGSizeMake( 0.0f, MAX( kCountsTextViewMaxHeight, [@"V" frameSizeForWidth:size.width andAttributes:attributes].height ) );
          }];
     }
     return collection;
@@ -385,7 +385,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     }
     else
     {
-        self.captionHeight.constant = kCountsTextViewMinHeight;
+        self.captionHeight.constant = kCountsTextViewMaxHeight;
         self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
                                                                               attributes:[VTileOverlayCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
     }
@@ -429,7 +429,9 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
 
 + (NSString *)cacheKeyForSequence:(VSequence *)sequence
 {
-    return [NSString stringWithFormat:@"%.5f", [sequence previewAssetAspectRatio]];
+    NSString *name = sequence.name ?: @"";
+    NSString *aspectRatioString = [NSString stringWithFormat:@"%.5f", [sequence previewAssetAspectRatio]];
+    return [name stringByAppendingString:aspectRatioString];
 }
 
 #pragma mark - VBackgroundContainer
