@@ -10,7 +10,6 @@
 #import "VShareMenuItem.h"
 #import "VButton.h"
 #import "VDependencyManager.h"
-#import "UIColor+VBrightness.h"
 
 @interface VShareItemCollectionViewCell ()
 
@@ -37,15 +36,6 @@
     [self.button setImage:[menuItem.unselectedIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     [self.button setImage:[menuItem.selectedIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateSelected];
     self.button.activityIndicatorTintColor = menuItem.unselectedColor;
-}
-
-#pragma mark - UICollectionReusableView
-
-- (void)setHighlighted:(BOOL)highlighted
-{
-    [super setHighlighted:highlighted];
-    
-    self.button.backgroundColor = highlighted ? [self.backgroundColor v_highlightColorBy:VDefaultHighlightAmount] : self.backgroundColor;
 }
 
 #pragma mark - Setters
