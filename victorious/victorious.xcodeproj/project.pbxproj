@@ -484,7 +484,6 @@
 		A734A04D1A98278100C3E86F /* VSettingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A734A04C1A98278100C3E86F /* VSettingsTableViewCell.m */; };
 		A73A877D1A76BD71008C6355 /* VStreamWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A73A877C1A76BD71008C6355 /* VStreamWebViewController.m */; };
 		A73C7E2F1B2608C70093F792 /* VAddServerEnvironmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A73C7E2E1B2608C70093F792 /* VAddServerEnvironmentViewController.m */; };
-		A73EAEC01A4134C10021BB31 /* NSString+Unicode_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A73EAEBF1A4134C10021BB31 /* NSString+Unicode_Tests.m */; };
 		A7423D791B4DD7FC00745EF4 /* GIFSearchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7423D781B4DD7FC00745EF4 /* GIFSearchDataSource.swift */; };
 		A743E7DF1A08160300339CB3 /* VFileCache+VVoteType.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7DC1A08160300339CB3 /* VFileCache+VVoteType.m */; };
 		A743E7E01A08160300339CB3 /* VFileCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A743E7DE1A08160300339CB3 /* VFileCache.m */; };
@@ -543,6 +542,8 @@
 		A761C9D11A48A97C00F0D0F9 /* VUtilityButtonsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A761C9D01A48A97C00F0D0F9 /* VUtilityButtonsViewController.m */; };
 		A761C9D71A48CB9800F0D0F9 /* VSwipeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A761C9D61A48CB9800F0D0F9 /* VSwipeView.m */; };
 		A76567141B3B1DAA002721F3 /* VSleekActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A76567131B3B1DAA002721F3 /* VSleekActionButton.m */; };
+		A766CFE91B66CF3E00419688 /* NSString+UnicodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A766CFE81B66CF3E00419688 /* NSString+UnicodeTests.swift */; };
+		A766CFEA1B66CF5A00419688 /* NSString+Unicode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721E8C31B572453000B7901 /* NSString+Unicode.swift */; };
 		A769C3D71A12DD5000698D0C /* VUserManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3D61A12DD5000698D0C /* VUserManagerTests.m */; };
 		A769C3E91A13176700698D0C /* VWebBrowserActions.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3DA1A13176700698D0C /* VWebBrowserActions.m */; };
 		A769C3EA1A13176700698D0C /* VWebBrowserHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3DC1A13176700698D0C /* VWebBrowserHeaderViewController.m */; };
@@ -2027,7 +2028,6 @@
 		A73AFB7B19F573AB0005A9EA /* VVideoTrackingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoTrackingTests.m; sourceTree = "<group>"; };
 		A73C7E2D1B2608C70093F792 /* VAddServerEnvironmentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAddServerEnvironmentViewController.h; sourceTree = "<group>"; };
 		A73C7E2E1B2608C70093F792 /* VAddServerEnvironmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAddServerEnvironmentViewController.m; sourceTree = "<group>"; };
-		A73EAEBF1A4134C10021BB31 /* NSString+Unicode_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Unicode_Tests.m"; sourceTree = "<group>"; };
 		A7423D781B4DD7FC00745EF4 /* GIFSearchDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GIFSearchDataSource.swift; path = GIFSearch/GIFSearchDataSource.swift; sourceTree = "<group>"; };
 		A74293991AAFE4A400532948 /* VAuthorizationContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAuthorizationContext.h; sourceTree = "<group>"; };
 		A743E7DB1A08160300339CB3 /* VFileCache+VVoteType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VFileCache+VVoteType.h"; sourceTree = "<group>"; };
@@ -2139,6 +2139,7 @@
 		A761C9D61A48CB9800F0D0F9 /* VSwipeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSwipeView.m; sourceTree = "<group>"; };
 		A76567121B3B1DAA002721F3 /* VSleekActionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSleekActionButton.h; sourceTree = "<group>"; };
 		A76567131B3B1DAA002721F3 /* VSleekActionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSleekActionButton.m; sourceTree = "<group>"; };
+		A766CFE81B66CF3E00419688 /* NSString+UnicodeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+UnicodeTests.swift"; sourceTree = "<group>"; };
 		A7696A5219F7287F003017E6 /* VSuggestedPeopleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSuggestedPeopleTests.m; sourceTree = "<group>"; };
 		A769C3D61A12DD5000698D0C /* VUserManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserManagerTests.m; sourceTree = "<group>"; };
 		A769C3D91A13176700698D0C /* VWebBrowserActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWebBrowserActions.h; sourceTree = "<group>"; };
@@ -5833,7 +5834,7 @@
 				A7B98A2D1A251CEE00C58335 /* Helpers */,
 				A7A2E0001A38C7B700F8C705 /* NSData+AESTests.m */,
 				BE49323519E338CE00C0912E /* NSDate+timeSinceTests.m */,
-				A73EAEBF1A4134C10021BB31 /* NSString+Unicode_Tests.m */,
+				A766CFE81B66CF3E00419688 /* NSString+UnicodeTests.swift */,
 				03AC453B19BA1F7900CE4351 /* NSStringVCryptoTests.m */,
 				BE171D9F1868BE64004E5202 /* Supporting Files */,
 				03D94C2A19DE155400BFAA27 /* Swizzling Support */,
@@ -8348,8 +8349,8 @@
 				A720052C1A03073B00285A9C /* VMultipartFormDataWriterTests.m in Sources */,
 				A72005331A03073B00285A9C /* VUploadManagerURLSessionTests.m in Sources */,
 				03A058BC1AED802400CF39D1 /* VTemplateSerializationTests.m in Sources */,
-				A73EAEC01A4134C10021BB31 /* NSString+Unicode_Tests.m in Sources */,
 				032954A71A9FFD9100698119 /* VURLMacroReplacementTests.m in Sources */,
+				A766CFE91B66CF3E00419688 /* NSString+UnicodeTests.swift in Sources */,
 				A720052A1A03073B00285A9C /* VLargeNumberFormatterTests.m in Sources */,
 				A720052D1A03073B00285A9C /* VObjectManagerStringTest.m in Sources */,
 				D8DCE5921ADD85820004B782 /* VActionBarTests.m in Sources */,
@@ -8415,6 +8416,7 @@
 				F015BEF31A8A8392008A0D67 /* VUserTaggingTextStorageTests.m in Sources */,
 				0306F7A81ADDF990009FE3AA /* VJSONHelperTests.m in Sources */,
 				A720052B1A03073B00285A9C /* VAbstractMarqueeControllerTests.m in Sources */,
+				A766CFEA1B66CF5A00419688 /* NSString+Unicode.swift in Sources */,
 				A7B98A441A267AAA00C58335 /* VNotificationSettingsStateManagerTests.m in Sources */,
 				A716FC2A1AAE0EF50032AA40 /* VAuthorizedActionTests.m in Sources */,
 				A77AD4F71A1FDABA00142F24 /* VAlertControllerTests.m in Sources */,
@@ -8877,6 +8879,7 @@
 			baseConfigurationReference = E0F99C8D8C60943CBE645C0D /* Pods-victorious-test.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -8888,11 +8891,13 @@
 					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
 				);
 				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_TRACKING = NO;
 				WRAPPER_EXTENSION = xctest;
@@ -8997,6 +9002,7 @@
 			baseConfigurationReference = 910A7A7036C6609BF5F7723D /* Pods-victorious-test.staging.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -9008,11 +9014,13 @@
 					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
 				);
 				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_TRACKING = NO;
 				WRAPPER_EXTENSION = xctest;
@@ -9216,6 +9224,7 @@
 			baseConfigurationReference = 8E360EC509E852CE3E872948 /* Pods-victorious-test.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -9231,11 +9240,14 @@
 					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
 				);
 				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_TRACKING = NO;
 				WRAPPER_EXTENSION = xctest;
@@ -9247,6 +9259,7 @@
 			baseConfigurationReference = 62B9E8365153DC8C04105B08 /* Pods-victorious-test.stable.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -9258,11 +9271,13 @@
 					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
 				);
 				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_TRACKING = NO;
 				WRAPPER_EXTENSION = xctest;
@@ -9367,6 +9382,7 @@
 			baseConfigurationReference = E8193ED8CA9746EB7E3D7AD2 /* Pods-victorious-test.qa.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -9382,11 +9398,13 @@
 					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
 				);
 				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_TRACKING = NO;
 				WRAPPER_EXTENSION = xctest;
