@@ -214,9 +214,4 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     [self.finishLoadingOperation removeDependency:downloadOperation];
 }
 
-- (void)templateDownloadOperation:(VTemplateDownloadOperation *)downloadOperation needsAnOperationAddedToTheQueue:(NSOperation *)operation
-{
-    [self.operationQueue addOperation:operation];
-}
-
 @end

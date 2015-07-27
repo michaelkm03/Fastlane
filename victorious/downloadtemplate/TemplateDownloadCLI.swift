@@ -66,8 +66,4 @@ class TemplateDownloadCLI: NSObject, VTemplateDownloadOperationDelegate {
             exit(1)
         }
     }
-    
-    func templateDownloadOperation(downloadOperation: VTemplateDownloadOperation, needsAnOperationAddedToTheQueue operation: NSOperation) {
-        operationQueue.addOperation(operation)
-    }
 }

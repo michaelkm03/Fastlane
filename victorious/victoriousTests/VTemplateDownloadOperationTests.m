@@ -84,11 +84,6 @@
     }
 }
 
-- (void)templateDownloadOperation:(VTemplateDownloadOperation *)downloadOperation needsAnOperationAddedToTheQueue:(NSOperation *)operation
-{
-    [self.operationQueue addOperation:operation];
-}
-
 @end
 
 #pragma mark -

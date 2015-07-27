@@ -18,6 +18,7 @@
 
 @interface VTemplateDownloadOperation ()
 
+@property (nonatomic, strong) NSOperationQueue *currentQueue;
 @property (nonatomic, strong) dispatch_queue_t privateQueue;
 @property (nonatomic, strong) dispatch_semaphore_t semaphore;
 @property (nonatomic, strong) NSUUID *currentDownloadID;
@@ -61,6 +62,8 @@ static char kPrivateQueueSpecific;
 - (void)main
 {
     self.retryInterval = self.templateDownloadTimeout;
+    self.currentQueue = [NSOperationQueue currentQueue];
+    NSAssert(self.currentQueue != nil, @"Can't get a current queue. Are you trying to run this operation outside of an NSOperationQueue?");
     
     __weak typeof(self) weakSelf = self;
     NSUUID *downloadID = [[NSUUID alloc] init];
@@ -200,9 +203,9 @@ static char kPrivateQueueSpecific;
             NSOperation *signalOperation = [NSBlockOperation blockOperationWithBlock:signal];
             [signalOperation addDependency:self.bulkDownloadOperation];
             
-            [self.delegate templateDownloadOperation:self needsAnOperationAddedToTheQueue:self.bulkDownloadOperation];
-            [self.delegate templateDownloadOperation:self needsAnOperationAddedToTheQueue:self.saveTemplateOperation];
-            [self.delegate templateDownloadOperation:self needsAnOperationAddedToTheQueue:signalOperation];
+            [self.currentQueue addOperation:self.bulkDownloadOperation];
+            [self.currentQueue addOperation:self.saveTemplateOperation];
+            [self.currentQueue addOperation:signalOperation];
         }
     });
 }

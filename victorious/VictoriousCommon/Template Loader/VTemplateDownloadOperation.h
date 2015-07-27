@@ -39,12 +39,6 @@ typedef void (^VTemplateDownloaderCompletion)(NSData *__nullable templateData, N
 
 @protocol VTemplateDownloadOperationDelegate <NSObject>
 
-/**
- Notifies the delegate that a new operation needs to be added to an operation queue. (Any operation queue will do!)
- These operations may continue running after the template download operation finishes.
- */
-- (void)templateDownloadOperation:(VTemplateDownloadOperation *)downloadOperation needsAnOperationAddedToTheQueue:(NSOperation *)operation;
-
 @optional
 
 /**
