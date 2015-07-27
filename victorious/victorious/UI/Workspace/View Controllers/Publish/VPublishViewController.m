@@ -235,14 +235,14 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
     {
         shareSize.height += kCollectionViewVerticalSpace;
     }
-    CGFloat collectionViewHeight = kCollectionViewVerticalSpace * 2;
+    CGFloat collectionViewHeight = 0.0f;
     if ( self.hasShareCell )
     {
-        collectionViewHeight += shareSize.height;
+        collectionViewHeight += shareSize.height + kCollectionViewVerticalSpace;
     }
     if ( !self.publishParameters.isGIF )
     {
-        collectionViewHeight += [VPublishSaveCollectionViewCell desiredHeight];
+        collectionViewHeight += [VPublishSaveCollectionViewCell desiredHeight] + kCollectionViewVerticalSpace;
     }
     self.cardHeightConstraint.constant = staticHeights + collectionViewHeight;
 }
@@ -611,29 +611,36 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 
 - (void)saveMediaToCameraRollFromURL:(NSURL *)sourceUrl
 {
-    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-    ALAssetsLibraryWriteVideoCompletionBlock mediaWriteCompletionBlock = ^(NSURL *newURL, NSError *error)
-    {
-        if ( error )
-        {
-            NSLog( @"Error writing media with metadata to Photo Library: %@", error );
-        }
-        else
-        {
-            NSLog( @"Wrote media with metadata to Photo Library %@", newURL.absoluteString);
-        }
-    };
-    
     if ( self.publishParameters.isVideo )
     {
-        if ( [library videoAtPathIsCompatibleWithSavedPhotosAlbum:sourceUrl] )
-        {
-            [library writeVideoAtPathToSavedPhotosAlbum:sourceUrl completionBlock:mediaWriteCompletionBlock];
-        }
+        // Video compatibility check is skipped here
+        UISaveVideoAtPathToSavedPhotosAlbum([sourceUrl path], self, @selector(savingToCameraRollCompletionForImage:didFinishSavingWithError:contextInfo:), nil);
     }
     else
     {
-        [library writeImageToSavedPhotosAlbum:self.publishParameters.previewImage.CGImage orientation:ALAssetOrientationUp completionBlock:mediaWriteCompletionBlock];
+        UIImageWriteToSavedPhotosAlbum(self.publishParameters.previewImage, self, @selector(savingToCameraRollCompletionForVideo:didFinishSavingWithError:contextInfo:), nil);
+    }
+}
+
+- (void)savingToCameraRollCompletionForImage:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
+{
+    [self logMediaSavingProcess:error];
+}
+
+- (void)savingToCameraRollCompletionForVideo:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
+{
+    [self logMediaSavingProcess:error];
+}
+
+- (void)logMediaSavingProcess:(NSError *)error
+{
+    if ( error == nil )
+    {
+        NSLog(@"Saved media to camera roll successfully");
+    }
+    else
+    {
+        NSLog(@"Failed to save media to camera roll with error information: %@", error);
     }
 }
 
@@ -770,12 +777,9 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    if ( self.hasShareCell )
+    if ( self.hasShareCell && !self.publishParameters.isGIF )
     {
-        if ( !self.publishParameters.isGIF )
-        {
-            return 2;
-        }
+        return 2;
     }
     return 1;
 }
