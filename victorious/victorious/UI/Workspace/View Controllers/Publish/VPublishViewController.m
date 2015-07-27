@@ -667,7 +667,6 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
                  shareItemCell.state = success ? VShareItemCellStateSelected : VShareItemCellStateUnselected;
                  if ( !success )
                  {
-                     [self.permissionsTrackingHelper permissionsDidChange:VTrackingValueTwitterDidAllow permissionState:VTrackingValueDenied];
                      [weakSelf showAlertForError:error fromShareItemCell:shareItemCell];
                  }
              }];

@@ -12,8 +12,6 @@
 
 #import "VTwitterAccountsHelper.h"
 
-#import "VPermissionsTrackingHelper.h"
-
 @import Accounts;
 
 NSString * const VTwitterManagerErrorDomain = @"twitterManagerError";
@@ -26,7 +24,6 @@ CGFloat const VTwitterManagerErrorFailed = 2;
 @property (nonatomic, strong) NSString *secret;
 @property (nonatomic, strong) NSString *twitterId;
 @property (nonatomic, strong) VTwitterAccountsHelper *accountsHelper;
-@property (nonatomic, strong) VPermissionsTrackingHelper *permissionsTrackingHelper;
 
 @end
 
@@ -38,7 +35,6 @@ CGFloat const VTwitterManagerErrorFailed = 2;
     if ( self != nil )
     {
         _accountsHelper = [[VTwitterAccountsHelper alloc] init];
-        _permissionsTrackingHelper = [[VPermissionsTrackingHelper alloc] init];
     }
     return self;
 }
@@ -109,8 +105,6 @@ CGFloat const VTwitterManagerErrorFailed = 2;
               {
                   completionBlock(YES, error);
               }
-              
-              [self.permissionsTrackingHelper permissionsDidChange:VTrackingValueTwitterDidAllow permissionState:VTrackingValueTwitterDidAllow];
           }];
      }];
 }
