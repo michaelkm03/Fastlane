@@ -67,7 +67,7 @@
         NSString *mediaUrl = comment.mediaUrl;
         if ( mediaUrl.length > 0 )
         {
-            VCommentMediaType linkType = [VCommentMediaTypeHelper mediaTypeForUrl:[NSURL URLWithString:mediaUrl] andShouldAutoplay:comment.shouldAutoplay];
+            VCommentMediaType linkType = [VCommentMediaTypeHelper mediaTypeForUrl:[NSURL URLWithString:mediaUrl] andShouldAutoplay:[comment.shouldAutoplay boolValue]];
             mediaLink = [VInStreamMediaLink newWithTintColor:linkColor
                                                         font:mediaLinkFont
                                                     linkType:linkType

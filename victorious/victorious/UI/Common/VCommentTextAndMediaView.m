@@ -265,12 +265,6 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
     _mediaType = mediaType;
     switch (mediaType)
     {
-        case VCommentMediaTypeImage:
-        {
-            self.playIcon.hidden = YES;
-            break;
-        }
-            
         case VCommentMediaTypeVideo:
         {
             self.playIcon.hidden = NO;
@@ -286,6 +280,13 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
                 [self.mediaButton v_addFitToParentConstraintsToSubview:self.videoView];
             }
             
+            self.playIcon.hidden = YES;
+            break;
+        }
+        
+        case VCommentMediaTypeImage:
+        default:
+        {
             self.playIcon.hidden = YES;
             break;
         }
