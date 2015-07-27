@@ -17,7 +17,7 @@ static NSString * const kGifIconKey = @"watch_gif_icon";
 
 + (instancetype)newWithTintColor:(UIColor *)tintColor
                             font:(UIFont *)font
-                        linkType:(VMediaType)linkType
+                        linkType:(VCommentMediaType)linkType
                        urlString:(NSString *)urlString
             andDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -47,7 +47,7 @@ static NSString * const kGifIconKey = @"watch_gif_icon";
                              font:(UIFont *)font
                              text:(NSString *)text
                              icon:(UIImage *)icon
-                         linkType:(VMediaType)linkType
+                         linkType:(VCommentMediaType)linkType
                         urlString:(NSString *)urlString
 {
     NSParameterAssert(urlString != nil);
@@ -65,23 +65,23 @@ static NSString * const kGifIconKey = @"watch_gif_icon";
     return self;
 }
 
-+ (void)imageAndTextForMediaLinkType:(VMediaType)linkType dependencyManager:(VDependencyManager *)dependencyManager andCallbackBlock:(void (^)(UIImage *icon, NSString *linkPrompt))callbackBlock
++ (void)imageAndTextForMediaLinkType:(VCommentMediaType)linkType dependencyManager:(VDependencyManager *)dependencyManager andCallbackBlock:(void (^)(UIImage *icon, NSString *linkPrompt))callbackBlock
 {
     NSString *iconKey = nil;
     NSString *linkPrompt = nil;
     switch (linkType)
     {
-        case VMediaTypeImage:
+        case VCommentMediaTypeImage:
             iconKey = kImageIconKey;
             linkPrompt = @"Open Image";
             break;
 
-        case VMediaTypeGif:
+        case VCommentMediaTypeGIF:
             iconKey = kGifIconKey;
             linkPrompt = @"Watch Gif";
             break;
             
-        case VMediaTypeVideo:
+        case VCommentMediaTypeVideo:
             iconKey = kVideoIconKey;
             linkPrompt = @"Watch Video";
             break;

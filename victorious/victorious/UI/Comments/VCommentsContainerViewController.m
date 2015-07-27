@@ -89,6 +89,15 @@ static NSString * const kSequenceIdKey = @"sequenceId";
     [self.view insertSubview:self.backgroundImage aboveSubview:self.fallbackBackground];
 }
 
+- (void)setKeyboardBarHeight:(CGFloat)keyboardBarHeight
+{
+    [super setKeyboardBarHeight:keyboardBarHeight];
+    
+    // Inset our focus area because of the keyboard bar
+    UIEdgeInsets focusAreaInsets = UIEdgeInsetsMake(0, 0, keyboardBarHeight, 0);
+    [(VCommentsTableViewController *)self.conversationTableViewController setFocusAreaInset:focusAreaInsets];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -145,9 +154,9 @@ static NSString * const kSequenceIdKey = @"sequenceId";
 
 #pragma mark - VKeyboardBarDelegate
 
-- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL
+- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text publishParameters:(VPublishParameters *)publishParameters
 {
-    if ((!text || !text.length) && (!mediaURL || !mediaURL.absoluteString.length))
+    if ((text == nil || text.length == 0) && (publishParameters == nil || publishParameters.mediaToUploadURL.absoluteString.length == 0))
     {
         return;
     }
@@ -169,7 +178,7 @@ static NSString * const kSequenceIdKey = @"sequenceId";
     };
     
     [[VObjectManager sharedManager] addCommentWithText:text
-                                              mediaURL:mediaURL
+                                              publishParameters:publishParameters
                                             toSequence:_sequence
                                              andParent:nil
                                           successBlock:success

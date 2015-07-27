@@ -11,6 +11,8 @@
 #import "VThemeManager.h"
 #import "VVideoLightboxViewController.h"
 #import "VTagSensitiveTextView.h"
+#import "UIView+AutoLayout.h"
+#import "VComment+Fetcher.h"
 
 static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
 
@@ -21,6 +23,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
 @property (nonatomic, readwrite) UIImageView *mediaThumbnailView;
 @property (nonatomic, readwrite) UIImageView *playIcon;
 @property (nonatomic, strong) UIView *mediaBackground;
+@property (nonatomic, strong) VVideoView *videoView;
 
 @end
 
@@ -205,7 +208,6 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
                                                         multiplier:1.0f
                                                           constant:0.0f]];
         
-        
         self.addedConstraints = YES;
     }
     
@@ -258,13 +260,70 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
     [self invalidateIntrinsicContentSize];
 }
 
+- (void)setMediaType:(VCommentMediaType)mediaType
+{
+    _mediaType = mediaType;
+    switch (mediaType)
+    {
+        case VCommentMediaTypeImage:
+        {
+            self.playIcon.hidden = YES;
+            break;
+        }
+            
+        case VCommentMediaTypeVideo:
+        {
+            self.playIcon.hidden = NO;
+            break;
+        }
+            
+        case VCommentMediaTypeGIF:
+        {
+            if (self.videoView == nil)
+            {
+                self.videoView = [[VVideoView alloc] init];
+                [self.mediaButton addSubview:self.videoView];
+                [self.mediaButton v_addFitToParentConstraintsToSubview:self.videoView];
+            }
+            
+            self.playIcon.hidden = YES;
+            break;
+        }
+    }
+}
+
+- (void)setAutoplayURL:(NSURL *)autoplayURL
+{
+    if (_autoplayURL == autoplayURL || self.mediaType != VCommentMediaTypeGIF)
+    {
+        return;
+    }
+    
+    _autoplayURL = autoplayURL;
+    [self.videoView setItemURL:_autoplayURL loop:YES audioMuted:YES];
+    self.videoView.hidden = NO;
+}
+
+- (void)setInFocus:(BOOL)inFocus
+{
+    _inFocus = inFocus;
+    if (self.mediaType == VCommentMediaTypeGIF)
+    {
+        inFocus ? [self.videoView play] : [self.videoView pause];
+    }
+}
+
 #pragma mark - Actions
 
 - (void)mediaTapped:(UIButton *)sender
 {
-    if (self.onMediaTapped)
+    if (self.onMediaTapped != nil)
     {
         self.onMediaTapped();
+    }
+    else if ([self.mediaTapDelegate respondsToSelector:@selector(tappedMediaWithURL:previewImage:fromView:)])
+    {
+        [self.mediaTapDelegate tappedMediaWithURL:self.mediaURL previewImage:self.mediaThumbnailView.image fromView:self.mediaThumbnailView];
     }
 }
 
@@ -327,27 +386,6 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
     return VCEIL(CGRectGetHeight(boundingRect)) + mediaSize;
 }
 
-- (void(^)(void))standardMediaTapHandlerWithMediaURL:(NSURL *)mediaURL presentingViewController:(UIViewController *)presentingViewController
-{
-    typeof(self) __weak weakSelf = self;
-    return ^(void)
-    {
-        typeof(weakSelf) __strong strongSelf = weakSelf;
-        if (strongSelf)
-        {
-            VVideoLightboxViewController *lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:strongSelf.mediaThumbnailView.image videoURL:mediaURL];
-            [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox referenceView:strongSelf.mediaThumbnailView];
-            lightbox.onCloseButtonTapped = ^(void)
-            {
-                [presentingViewController dismissViewControllerAnimated:YES completion:nil];
-            };
-            lightbox.onVideoFinished = lightbox.onCloseButtonTapped;
-            lightbox.titleForAnalytics = @"Video Comment";
-            [presentingViewController presentViewController:lightbox animated:YES completion:nil];
-        }
-    };
-}
-
 - (void)resetView
 {
     self.text = @"";
@@ -356,6 +394,9 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
     self.hasMedia = NO;
     self.onMediaTapped = nil;
     self.playIcon.hidden = YES;
+    self.videoView.hidden = YES;
+    self.videoView.itemURL = nil;
+    self.mediaURL = nil;
 }
 
 @end

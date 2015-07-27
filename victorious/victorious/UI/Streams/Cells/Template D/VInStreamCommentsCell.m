@@ -266,7 +266,7 @@ static NSString * const kMediaIdentifierSuffix = @"withMedia";
 
 + (BOOL)contentsHasValidMediaLink:(VInStreamCommentCellContents *)contents
 {
-    return contents.inStreamMediaLink != nil && contents.inStreamMediaLink.mediaLinkType != VMediaTypeUnknown;
+    return contents.inStreamMediaLink != nil && contents.inStreamMediaLink.mediaLinkType != VCommentMediaTypeUnknown;
 }
 
 + (NSArray *)possibleReuseIdentifiers
@@ -321,7 +321,7 @@ static NSString * const kMediaIdentifierSuffix = @"withMedia";
     [commentsResponder actionForInStreamHashtagSelection:hashtagString];
 }
 
-- (void)performActionForSelectedMediaUrlString:(NSString *)mediaUrlString andMediaLinkType:(VMediaType)linkType
+- (void)performActionForSelectedMediaUrlString:(NSString *)mediaUrlString andMediaLinkType:(VCommentMediaType)linkType
 {
     id<VInStreamCommentsResponder> commentsResponder = [[self nextResponder] targetForAction:@selector(actionForInStreamMediaSelection:withMediaLinkType:)
                                                                                   withSender:nil];

@@ -206,10 +206,34 @@ static NSCache *_sharedImageCache = nil;
         self.realTimeCommentText = @"";
     }
     self.hasMedia = comment.hasMedia;
+    
     if (comment.hasMedia)
     {
         self.mediaPreviewURL = comment.previewImageURL;
         self.mediaIsVideo = [comment.mediaUrl v_hasVideoExtension];
+        
+        if (self.mediaIsVideo)
+        {
+            if ([comment.shouldAutoplay boolValue])
+            {
+                [self.commentAndMediaView setMediaType:VCommentMediaTypeGIF];
+                // Make sure to grab the mp4 URL if its a gif
+                self.commentAndMediaView.autoplayURL = [comment mp4MediaURL];
+            }
+            else
+            {
+                [self.commentAndMediaView setMediaType:VCommentMediaTypeVideo];
+            }
+        }
+        else
+        {
+            [self.commentAndMediaView setMediaType:VCommentMediaTypeImage];
+        }
+    }
+    else
+    {
+        self.commentAndMediaView.mediaThumbnailView.hidden = YES;
+        self.commentAndMediaView.hasMedia = NO;
     }
 
     self.commentCellUtilitiesController = [[VCommentCellUtilitesController alloc] initWithComment:self.comment
@@ -365,6 +389,18 @@ static NSCache *_sharedImageCache = nil;
     
     _defaultStringAttributes = [VCommentTextAndMediaView attributesForTextWithFont:self.commentAndMediaView.textFont];
     return _defaultStringAttributes;
+}
+
+#pragma mark - Focus
+
+- (void)setHasFocus:(BOOL)hasFocus
+{
+    self.commentAndMediaView.inFocus = hasFocus;
+}
+
+- (CGRect)contentArea
+{
+    return [self convertRect:self.commentAndMediaView.frame toView:self];
 }
 
 @end

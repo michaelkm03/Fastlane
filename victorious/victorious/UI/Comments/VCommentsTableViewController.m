@@ -42,11 +42,15 @@
 #import "VNoContentView.h"
 #import "VDependencyManager+VTracking.h"
 #import "VTableViewCommentHighlighter.h"
+#import "VTableViewStreamFocusHelper.h"
+#import "VCommentMedia.h"
 #import "VScrollPaginator.h"
+#import "VVideoLightboxViewController.h"
+#import "VLightboxTransitioningDelegate.h"
 
 @import Social;
 
-@interface VCommentsTableViewController () <VEditCommentViewControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VTagSensitiveTextViewDelegate, VScrollPaginatorDelegate>
+@interface VCommentsTableViewController () <VEditCommentViewControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VTagSensitiveTextViewDelegate, VScrollPaginatorDelegate, VCommentMediaTapDelegate>
 
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 @property (nonatomic, assign) BOOL hasComments;
@@ -56,6 +60,7 @@
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VNoContentView *noContentView;
 @property (nonatomic, strong) VTableViewCommentHighlighter *commentHighlighter;
+@property (nonatomic, strong) VTableViewStreamFocusHelper *focusHelper;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 
 @end
@@ -100,6 +105,9 @@
     
     self.scrollPaginator = [[VScrollPaginator alloc] init];
     self.scrollPaginator.delegate = self;
+    
+    // Initialize our focus helper
+    self.focusHelper = [[VTableViewStreamFocusHelper alloc] initWithTableView:self.tableView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -126,16 +134,20 @@
             }
         }
     }
+
+    // Update cell focus
+    [self.focusHelper updateFocus];
     
     [[VTrackingManager sharedInstance] setValue:VTrackingValueCommentsView forSessionParameterWithKey:VTrackingKeyContext];
 }
 
-- (void)viewWillDisppear:(BOOL)animated
+- (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
     [self.dependencyManager trackViewWillDisappear:self];
     
+    [[VTrackingManager sharedInstance] endEvent:VTrackingEventCommentsDidAppear];
     [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
 }
 
@@ -146,7 +158,20 @@
     [self.dependencyManager trackViewWillAppear:self];
 }
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    [self.focusHelper endFocusOnAllCells];
+}
+
 #pragma mark - Property Accessors
+
+- (void)setFocusAreaInset:(UIEdgeInsets)focusAreaInset
+{
+    _focusAreaInset = focusAreaInset;
+    self.focusHelper.focusAreaInsets = focusAreaInset;
+}
 
 - (void)setSequence:(VSequence *)sequence
 {
@@ -200,6 +225,11 @@
     [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
                           atScrollPosition:UITableViewScrollPositionTop
                                   animated:YES];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                   {
+                       [self.focusHelper updateFocus];
+                   });
 }
 
 #pragma mark - IBActions
@@ -214,6 +244,12 @@
                                                       self.needsRefresh = NO;
                                                       [self.tableView reloadData];
                                                       [self.refreshControl endRefreshing];
+                                                      
+                                                      // Give cells a moment to come on screen
+                                                      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                                                                     {
+                                                                         [self.focusHelper updateFocus];
+                                                                     });
                                                   } failBlock:^(NSOperation *operation, NSError *error)
                                                   {
                                                       self.needsRefresh = NO;
@@ -264,7 +300,6 @@
     VCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:kVCommentCellNibName forIndexPath:indexPath];
     VComment *comment = self.comments[indexPath.row];
     
-    
     cell.timeLabel.text = [comment.postedAt timeSince];
     if (comment.realtime.integerValue < 0)
     {
@@ -292,10 +327,26 @@
         cell.commentTextView.hasMedia = YES;
         cell.commentTextView.mediaThumbnailView.hidden = NO;
         [cell.commentTextView.mediaThumbnailView sd_setImageWithURL:comment.previewImageURL];
+        
         if ([comment.mediaUrl isKindOfClass:[NSString class]] && [comment.mediaUrl v_hasVideoExtension])
         {
-            cell.commentTextView.onMediaTapped = [cell.commentTextView standardMediaTapHandlerWithMediaURL:[NSURL URLWithString:comment.mediaUrl] presentingViewController:self];
-            cell.commentTextView.playIcon.hidden = NO;
+            cell.commentTextView.mediaURL = [NSURL URLWithString:comment.mediaUrl];
+            cell.commentTextView.mediaTapDelegate = self;
+            
+            if ([comment.shouldAutoplay boolValue])
+            {
+                [cell.commentTextView setMediaType:VCommentMediaTypeGIF];
+                // Make sure to grab the mp4 URL if its a gif
+                cell.commentTextView.autoplayURL = [comment mp4MediaURL];
+            }
+            else
+            {
+                [cell.commentTextView setMediaType:VCommentMediaTypeVideo];
+            }
+        }
+        else
+        {
+            [cell.commentTextView setMediaType:VCommentMediaTypeImage];
         }
     }
     else
@@ -338,17 +389,19 @@
     }
 }
 
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // End focus on this cell to stop video if there is one
+    [self.focusHelper endFocusOnCell:cell];
+}
+
 #pragma mark - UITableViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    // Update cell focus for videos
+    [self.focusHelper updateFocus];
     [self.scrollPaginator scrollViewDidScroll:scrollView];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [[VTrackingManager sharedInstance] endEvent:VTrackingEventCommentsDidAppear];
 }
 
 #pragma mark - VSwipeViewControllerDelegate
@@ -413,6 +466,24 @@
              *stop = YES;
          }
      }];
+}
+
+#pragma mark - Media Tap Delegate
+
+- (void)tappedMediaWithURL:(NSURL *)mediaURL previewImage:(UIImage *)image fromView:(UIView *)view
+{
+    VVideoLightboxViewController *lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:image videoURL:mediaURL];
+    [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox referenceView:view];
+    
+    __weak typeof(self) weakSelf = self;
+    lightbox.onCloseButtonTapped = ^(void)
+    {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        [strongSelf dismissViewControllerAnimated:YES completion:nil];
+    };
+    lightbox.onVideoFinished = lightbox.onCloseButtonTapped;
+    lightbox.titleForAnalytics = @"Video Comment";
+    [self presentViewController:lightbox animated:YES completion:nil];
 }
 
 @end

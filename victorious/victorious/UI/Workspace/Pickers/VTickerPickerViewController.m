@@ -51,6 +51,7 @@
     
     self.collectionView.allowsMultipleSelection = YES;
     self.collectionView.decelerationRate = UIScrollViewDecelerationRateFast;
+    self.collectionView.scrollsToTop = NO;
     
     NSAssert( self.dataSource != nil, @"A VTickerPickerViewController must have a VCollectionToolPickerDataSource property set." );
     

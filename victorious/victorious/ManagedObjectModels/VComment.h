@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class VAsset, VSequence, VUser;
+@class VAsset, VNotification, VSequence, VUser, VCommentMedia;
 
 @interface VComment : NSManagedObject
 
@@ -28,9 +28,20 @@
 @property (nonatomic, retain) NSString * text;
 @property (nonatomic, retain) NSString * thumbnailUrl;
 @property (nonatomic, retain) NSNumber * userId;
+@property (nonatomic, retain) NSNumber * shouldAutoplay;
 @property (nonatomic, retain) VAsset *asset;
 @property (nonatomic, retain) VSequence *sequence;
 @property (nonatomic, retain) VUser *user;
 @property (nonatomic, retain) VSequence *inStreamSequence;
+@property (nonatomic, retain) NSSet *commentMedia;
+
+@end
+
+@interface VComment (CoreDataGeneratedAccessors)
+
+- (void)addCommentMediaObject:(VCommentMedia *)value;
+- (void)removeCommentMediaObject:(VCommentMedia *)value;
+- (void)addCommentMedia:(NSSet *)values;
+- (void)removeCommentMedia:(NSSet *)values;
 
 @end

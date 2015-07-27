@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VMediaType.h"
+#import "VCommentMediaType.h"
 
 @class VComment, VUser, VSequence;
 
@@ -45,6 +45,6 @@
     @param mediaUrlString A string representing the url that the media should be loaded from.
     @param linkType The type of media represented by the media button in the in stream comment.
  */
-- (void)actionForInStreamMediaSelection:(NSString *)mediaUrlString withMediaLinkType:(VMediaType)linkType;
+- (void)actionForInStreamMediaSelection:(NSString *)mediaUrlString withMediaLinkType:(VCommentMediaType)linkType;
 
 @end

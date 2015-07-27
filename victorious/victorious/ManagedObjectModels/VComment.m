@@ -33,5 +33,7 @@
 @dynamic sequence;
 @dynamic user;
 @dynamic inStreamSequence;
+@dynamic shouldAutoplay;
+@dynamic commentMedia;
 
 @end

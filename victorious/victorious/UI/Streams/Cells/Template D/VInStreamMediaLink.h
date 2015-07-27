@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VMediaType.h"
+#import "VCommentMediaType.h"
 
 @class VDependencyManager;
 
@@ -23,7 +23,7 @@
                              font:(UIFont *)font
                              text:(NSString *)text
                              icon:(UIImage *)icon
-                         linkType:(VMediaType)linkType
+                         linkType:(VCommentMediaType)linkType
                         urlString:(NSString *)urlString;
 
 /**
@@ -32,7 +32,7 @@
  */
 + (instancetype)newWithTintColor:(UIColor *)tintColor
                             font:(UIFont *)font
-                        linkType:(VMediaType)linkType
+                        linkType:(VCommentMediaType)linkType
                        urlString:(NSString *)urlString
             andDependencyManager:(VDependencyManager *)dependencyManager;
 
@@ -40,7 +40,7 @@
 @property (nonatomic, readonly) UIFont *font; ///< The font of the label of the link button
 @property (nonatomic, readonly) NSString *text; ///< The text that should be displayed in the link button
 @property (nonatomic, readonly) UIImage *icon; ///< The icon that should be displayed in the link button
-@property (nonatomic, readonly) VMediaType mediaLinkType; ///< The type of media represented by the link button
+@property (nonatomic, readonly) VCommentMediaType mediaLinkType; ///< The type of media represented by the link button
 @property (nonatomic, readonly) NSString *urlString; ///< A string representing the url of the media represented by the link button
 
 @end

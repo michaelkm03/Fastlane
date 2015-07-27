@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
-#import "VMediaTypeHelper.h"
+#import "VCommentMediaTypeHelper.h"
 
 @interface VMediaTypeHelperTests : XCTestCase
 

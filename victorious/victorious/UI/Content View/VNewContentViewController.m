@@ -107,6 +107,9 @@
 #import "VExperienceEnhancerResponder.h"
 #import "VDependencyManager+VTracking.h"
 
+// Cell focus
+#import "VCollectionViewStreamFocusHelper.h"
+
 #define HANDOFFENABLED 0
 static const CGFloat kMaxInputBarHeight = 200.0f;
 
@@ -117,7 +120,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, strong) NSUserActivity *handoffObject;
 
 @property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
-@property (nonatomic, strong) NSURL *mediaURL;
+@property (nonatomic, strong) VPublishParameters *publishParameters;
 @property (nonatomic, assign) BOOL hasAutoPlayed;
 
 @property (nonatomic, weak) IBOutlet UICollectionView *contentCollectionView;
@@ -171,6 +174,10 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 
 @property (nonatomic, strong) VContentLikeButton *likeButton;
+
+@property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
+
+@property (nonatomic, strong) NSURL *mediaURL;
 
 @end
 
@@ -238,6 +245,12 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                     contentOffset.y += diff.y;
                     self.contentCollectionView.contentOffset = contentOffset;
                 }
+                
+                // Give cells a moment to come on screen before detecting focus
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                               {
+                                   [welf.focusHelper updateFocus];
+                               });
             }
         }
         else
@@ -344,9 +357,11 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
+    __weak typeof(self) welf = self;
     void (^rotationUpdate)() = ^
     {
-        [self handleRotationToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation];
+        __strong typeof(welf) strongSelf = welf;
+        [strongSelf handleRotationToInterfaceOrientation:[UIApplication sharedApplication].statusBarOrientation];
     };
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
      {
@@ -370,7 +385,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         [affectedViews addObject:self.moreButton];
     }
     
-    const CGSize experienceEnhancerCellSize = [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+    const CGSize experienceEnhancerCellSize = [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds
+                                                                                            dependencyManager:self.dependencyManager];
     const CGPoint fixedLandscapeOffset = CGPointMake( 0.0f, experienceEnhancerCellSize.height );
     
     [self.rotationHelper handleRotationToInterfaceOrientation:toInterfaceOrientation
@@ -410,6 +426,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         self.leadingCollectionViewToContainer.constant = 0.0f;
         self.trailingCollectionViewToContainer.constant = 0.0f;
     }
+    
+    self.focusHelper = [[VCollectionViewStreamFocusHelper alloc] initWithCollectionView:self.contentCollectionView];
     
     self.contentCollectionView.collectionViewLayout = [[VShrinkingContentLayout alloc] init];
     self.contentCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -454,6 +472,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         self.bottomKeyboardToContainerBottomConstraint.priority = UILayoutPriorityDefaultLow;
         [self.view addSubview:inputAccessoryView];
         [self.view addConstraints:@[self.keyboardInputBarHeightConstraint, inputViewLeadingConstraint, inputViewTrailingconstraint, self.bottomKeyboardToContainerBottomConstraint]];
+        
+        // Adjust focus area for keyboard bar
+        [self.focusHelper setFocusAreaInsets:UIEdgeInsetsMake(0, 0, self.keyboardInputBarHeightConstraint.constant, 0)];
     }
     
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
@@ -586,6 +607,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     }
     
     [self.contentCollectionView flashScrollIndicators];
+    
+    // Update cell focus
+    [self.focusHelper updateFocus];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -629,6 +653,14 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     self.videoCell.delegate = nil;
     
     [self.commentHighlighter stopAnimations];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    // Stop all video cells
+    [self.focusHelper endFocusOnAllCells];
 }
 
 - (void)presentViewController:(UIViewController *)viewControllerToPresent
@@ -1157,7 +1189,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                                                        maximumSize:CGSizeMake(CGRectGetWidth(collectionView.bounds), 100.0)];
                 return sizedBallot;
             }
-            return [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+            return [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds
+                                                                 dependencyManager:self.dependencyManager];
         }
         case VContentViewSectionAllComments:
         {
@@ -1312,6 +1345,12 @@ referenceSizeForHeaderInSection:(NSInteger)section
     }
 }
 
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    // End focus on this cell to stop video if there is one
+    [self.focusHelper endFocusOnCell:cell];
+}
+
 #pragma mark UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -1330,6 +1369,9 @@ referenceSizeForHeaderInSection:(NSInteger)section
         VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
         self.likeButton.alpha = 1.0f - layout.percentCloseToLockPointFromCatchPoint;
     }
+    
+    // Update focus on cells
+    [self.focusHelper updateFocus];
 }
 
 #pragma mark - VContentVideoCellDelegate
@@ -1414,22 +1456,23 @@ referenceSizeForHeaderInSection:(NSInteger)section
     __weak typeof(self) welf = self;
     [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^(BOOL authorized)
      {
+         __strong typeof(self) strongSelf = welf;
          if (!authorized)
          {
              return;
          }
          
-         [welf submitCommentWithText:inputAccessoryView.composedText];
+         [strongSelf submitCommentWithText:inputAccessoryView.composedText];
          
          [inputAccessoryView clearTextAndResign];
-         welf.mediaURL = nil;
+         strongSelf.publishParameters.mediaToUploadURL = nil;
          
-         NSNumber *experimentValue = [self.dependencyManager numberForKey:VDependencyManagerPauseVideoWhenCommentingKey];
+         NSNumber *experimentValue = [strongSelf.dependencyManager numberForKey:VDependencyManagerPauseVideoWhenCommentingKey];
          if (experimentValue != nil)
          {
              if ([experimentValue boolValue])
              {
-                 [welf.videoCell play];
+                 [strongSelf.videoCell play];
              }
          }
      }];
@@ -1528,7 +1571,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     __weak typeof(self) welf = self;
     [self.viewModel addCommentWithText:commentText
-                              mediaURL:welf.mediaURL
+                              publishParameters:welf.publishParameters
                               realTime:welf.realtimeCommentBeganTime
                             completion:^(BOOL succeeded)
      {
@@ -1548,7 +1591,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
         [self showMediaAttachmentUI];
     };
     
-    if (self.mediaURL == nil)
+    if (self.publishParameters.mediaToUploadURL == nil)
     {
         showCamera();
         return;
@@ -1556,7 +1599,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     
     void (^clearMediaSelection)(void) = ^void(void)
     {
-        self.mediaURL = nil;
+        self.publishParameters.mediaToUploadURL = nil;
         [self.textEntryView setSelectedThumbnail:nil];
     };
     
@@ -1575,11 +1618,12 @@ referenceSizeForHeaderInSection:(NSInteger)section
     self.mediaAttachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager];
     __weak typeof(self) welf = self;
     self.mediaAttachmentPresenter.attachmentTypes = VMediaAttachmentOptionsImage | VMediaAttachmentOptionsVideo | VMediaAttachmentOptionsGIF;
-    self.mediaAttachmentPresenter.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
+    self.mediaAttachmentPresenter.resultHandler = ^void(BOOL success, VPublishParameters *publishParameters)
     {
         __strong typeof(self) strongSelf = welf;
-        [strongSelf onMediaAttachedWithPreviewImage:previewImage
-                                           mediaURL:mediaURL];
+        strongSelf.publishParameters = publishParameters;
+        [strongSelf onMediaAttachedWithPreviewImage:publishParameters.previewImage
+                                           mediaURL:publishParameters.mediaToUploadURL];
     };
     [self.mediaAttachmentPresenter presentOnViewController:self];
 }
@@ -1612,10 +1656,13 @@ referenceSizeForHeaderInSection:(NSInteger)section
         [self.likeButton addTarget:self action:@selector(selectedLikeButton:) forControlEvents:UIControlEventTouchUpInside];
         
         self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
+        
+        __weak typeof(self) welf = self;
         [self.expressionsObserver startObservingWithSequence:self.viewModel.sequence onUpdate:^
          {
-             [self.likeButton setActive:sequence.isLikedByMainUser.boolValue];
-             [self.likeButton setCount:sequence.likeCount.integerValue];
+             __strong typeof(self) strongSelf = welf;
+             [strongSelf.likeButton setActive:sequence.isLikedByMainUser.boolValue];
+             [strongSelf.likeButton setCount:sequence.likeCount.integerValue];
          }];
         if (self.viewModel.type == VContentViewTypeVideo)
         {

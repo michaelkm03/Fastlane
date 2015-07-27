@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VMediaType.h"
+#import "VCommentMediaType.h"
 
 /**
     A block that should be provided the aspect ratio of content loaded from the mediaUrlString.
@@ -29,7 +29,7 @@ typedef void (^MediaLoadingCompletionBlock) (CGFloat contentAspectRatio);
     @return A VAbstractMediaLinkViewController subclass that will be able to display the loaded media appropriately or
                 a VImageMediaLinkViewController if an unrecognized linkType is provided.
  */
-+ (instancetype)newWithMediaUrlString:(NSString *)urlString andMediaLinkType:(VMediaType)linkType;
++ (instancetype)newWithMediaUrlString:(NSString *)urlString andMediaLinkType:(VCommentMediaType)linkType;
 
 /**
     Sets the mediaUrlString property and default value of the contentAspectRatio. Expected to
