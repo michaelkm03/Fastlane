@@ -124,6 +124,9 @@
 /* Class = "UITableViewSection"; headerTitle = "About"; ObjectID = "pML-Pk-7g5"; */
 "pML-Pk-7g5.headerTitle" = "Nosotros";
 
+/* Class = "UILabel"; text = "Posts I've Liked"; ObjectID = "r0B-CY-cMb"; */
+"r0B-CY-cMb.text" = "Publicaciones que me han gustado";
+
 /* Class = "UIButton"; normalTitle = "Save"; ObjectID = "sgT-oS-cdk"; */
 "sgT-oS-cdk.normalTitle" = "Guardar";
 

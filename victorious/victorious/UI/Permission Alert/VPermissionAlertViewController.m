@@ -105,7 +105,12 @@ static NSString * const kDenyButtonTitleKey = @"title.button2";
 
 - (BOOL)prefersStatusBarHidden
 {
-    return YES;
+    return NO;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
 }
 
 - (void)updateViewConstraints

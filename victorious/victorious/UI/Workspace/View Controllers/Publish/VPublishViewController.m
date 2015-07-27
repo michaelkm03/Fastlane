@@ -94,8 +94,9 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
+    NSBundle *bundleForClass = [NSBundle bundleForClass:self];
     VPublishViewController *publishViewController = [[VPublishViewController alloc] initWithNibName:NSStringFromClass([VPublishViewController class])
-                                                                                             bundle:nil];
+                                                                                             bundle:bundleForClass];
     publishViewController.dependencyManager = dependencyManager;
     return publishViewController;
 }
@@ -807,6 +808,9 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 
 - (void)alongsidePresentation
 {
+    // force view to load
+    self.view.alpha = 1.0f;
+    
     self.blurView.alpha = 1.0f;
     self.publishPrompt.transform = CGAffineTransformIdentity;
 }

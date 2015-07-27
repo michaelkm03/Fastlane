@@ -73,7 +73,10 @@ static NSString * const kGifCreationFlowKey = @"gifCreateFlow";
         VAbstractImageVideoCreationFlowController *flowController = [self.dependencyManager templateValueOfType:[VAbstractImageVideoCreationFlowController class]
                                                                                                          forKey:kImageCreationFlowKey];
         flowController.creationFlowDelegate = self;
-        [flowController remixWithPreviewImage:nil mediaURL:remixURL];
+        [flowController remixWithPreviewImage:nil
+                                     mediaURL:remixURL
+                                 parentNodeID:[self.sequenceToRemix firstNode].remoteId
+                             parentSequenceID:self.sequenceToRemix.remoteId];
         [viewControllerToPresentOn presentViewController:flowController
                                                 animated:YES
                                               completion:nil];
@@ -83,7 +86,10 @@ static NSString * const kGifCreationFlowKey = @"gifCreateFlow";
         VAbstractImageVideoCreationFlowController *flowController = [self.dependencyManager templateValueOfType:[VAbstractImageVideoCreationFlowController class]
                                                                                                          forKey:kGifCreationFlowKey];
         flowController.creationFlowDelegate = self;
-        [flowController remixWithPreviewImage:nil mediaURL:remixURL];
+        [flowController remixWithPreviewImage:nil
+                                     mediaURL:remixURL
+                                 parentNodeID:[self.sequenceToRemix firstNode].remoteId
+                             parentSequenceID:self.sequenceToRemix.remoteId];
         [viewControllerToPresentOn presentViewController:flowController
                                                 animated:YES
                                               completion:nil];

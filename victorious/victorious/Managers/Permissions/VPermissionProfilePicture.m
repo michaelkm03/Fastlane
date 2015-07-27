@@ -9,6 +9,8 @@
 #import "VPermissionProfilePicture.h"
 #import "VAppInfo.h"
 
+@import AVFoundation;
+
 @implementation VPermissionProfilePicture
 
 - (NSString *)messageWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -16,14 +18,6 @@
     NSString *message = [dependencyManager stringForKey:@"profileImagePermission.message"];
     return NSLocalizedString(message, @"");
 }
-
-
-- (VPermissionState)permissionState
-{
-    // subclasses must override
-    return VPermissionStateUnknown;
-}
-
 
 - (void)trackPermission:(NSString *)trackingStatus
 {

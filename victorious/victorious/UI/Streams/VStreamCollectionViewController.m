@@ -76,6 +76,7 @@
 #import "VCoachmarkDisplayer.h"
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VDependencyManager+VTracking.h"
+#import "UIViewController+VAccessoryScreens.h"
 
 #import "VCollectionViewStreamFocusHelper.h"
 
@@ -225,7 +226,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
         [self.streamCellFactory registerCellsWithCollectionView:self.collectionView];
     }
     
-    
     self.collectionView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     
     if ( self.streamDataSource == nil )
@@ -272,7 +272,11 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 {
     [super viewWillAppear:animated];
     
-    [self.dependencyManager trackViewWillAppear:self];
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
+    
+    [self updateNavigationItems];
+    
+    [self.dependencyManager trackViewWillAppear:self withParameters:nil templateClass:self.viewTrackingClassOverride];
 
     if ( self.streamDataSource.count == 0 )
     {
@@ -291,6 +295,9 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    [self addBadgingToNavigationItems];
+    
     [self.collectionView flashScrollIndicators];
     [self updateCellVisibilityTracking];
     
@@ -417,12 +424,12 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     [self addUploadProgressView];
     
-    UINavigationItem *navigationItem = self.navigationItem;
-    if ( self.multipleContainerChildDelegate != nil )
-    {
-        navigationItem = [self.multipleContainerChildDelegate parentNavigationItem];
-    }
-    [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
+    [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
+}
+
+- (void)addBadgingToNavigationItems
+{
+    [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 - (void)multipleContainerDidSetSelected:(BOOL)isDefault
