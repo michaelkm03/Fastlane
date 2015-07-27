@@ -182,21 +182,21 @@ static NSInteger const kScreenSizeCacheTrigger = 1 / 3.0f;
     [self.collectionView performBatchUpdates:^
      {
          NSIndexSet *insertedIndexes = [changeDetails insertedIndexes];
-         if ([insertedIndexes count])
+         if ([insertedIndexes count] > 0)
          {
-             [self.collectionView insertItemsAtIndexPaths:[insertedIndexes indexPathsFromIndexesWithSecion:0]];
+             [self.collectionView insertItemsAtIndexPaths:[insertedIndexes indexPathsFromIndexesWithSection:0]];
          }
          
          NSIndexSet *removedIndexes = [changeDetails removedIndexes];
-         if ([removedIndexes count])
+         if ([removedIndexes count] > 0)
          {
-             [self.collectionView deleteItemsAtIndexPaths:[removedIndexes indexPathsFromIndexesWithSecion:0]];
+             [self.collectionView deleteItemsAtIndexPaths:[removedIndexes indexPathsFromIndexesWithSection:0]];
          }
 
          NSIndexSet *changedIndexes = [changeDetails changedIndexes];
-         if ([changedIndexes count])
+         if ([changedIndexes count] > 0)
          {
-             [self.collectionView reloadItemsAtIndexPaths:[changedIndexes indexPathsFromIndexesWithSecion:0]];
+             [self.collectionView reloadItemsAtIndexPaths:[changedIndexes indexPathsFromIndexesWithSection:0]];
          }
      } completion:NULL];
 }
