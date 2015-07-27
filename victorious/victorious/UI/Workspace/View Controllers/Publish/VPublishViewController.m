@@ -235,7 +235,15 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
     {
         shareSize.height += kCollectionViewVerticalSpace;
     }
-    CGFloat collectionViewHeight = [VPublishSaveCollectionViewCell desiredHeight] + shareSize.height + kCollectionViewVerticalSpace * 2;
+    CGFloat collectionViewHeight = kCollectionViewVerticalSpace * 2;
+    if ( self.hasShareCell )
+    {
+        collectionViewHeight += shareSize.height;
+    }
+    if ( !self.publishParameters.isGIF )
+    {
+        collectionViewHeight += [VPublishSaveCollectionViewCell desiredHeight];
+    }
     self.cardHeightConstraint.constant = staticHeights + collectionViewHeight;
 }
 
@@ -660,7 +668,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 - (BOOL)isSaveCellAtIndexPath:(NSIndexPath *)indexPath
 {
     //The save cell should ALWAYS be the last cell in the table
-    return indexPath.row == [self.collectionView numberOfItemsInSection:indexPath.section] - 1;
+    return ( indexPath.row == [self.collectionView numberOfItemsInSection:indexPath.section] - 1 && !self.publishParameters.isGIF );
 }
 
 - (void)shareCollectionViewSelectedShareItemCell:(VShareItemCollectionViewCell *)shareItemCell
@@ -753,14 +761,21 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    return 1;
+    if ( self.hasShareCell || !self.publishParameters.isGIF )
+    {
+        return 1;
+    }
+    return 0;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     if ( self.hasShareCell )
     {
-        return 2;
+        if ( !self.publishParameters.isGIF )
+        {
+            return 2;
+        }
     }
     return 1;
 }
