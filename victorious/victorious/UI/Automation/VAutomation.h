@@ -8,7 +8,7 @@
 
 /**
  * View Identifiers.
- * Automated end-to-end testing depends on these, so be careful modifying them.
+ * UI Automation testing depends on these, so be careful modifying them.
  * Some parts of the app that are dynamically driven as part of the template system
  * wil not be listed here, but instead will have an non-localized 'identifier' property
  * configured at the JSON level that is designed for accessibility and automation purposes.
@@ -45,3 +45,6 @@ static NSString * const VAutomationIdentifierProfileAgeAgreeSwitch      = @"Prof
 static NSString * const VAutomationIdentifierProfilSelectImage          = @"Profile Select Image";
 
 static NSString * const VAutomationIdentifierWelcomeDismiss             = @"Welcome Dismiss";
+
+static NSString * const VAutomationIdentifierPublishCatpionPlaceholder  = @"Publish Caption Placeholder";
+static NSString * const VAutomationIdentifierPublishCatpionText         = @"Publish Caption Text";

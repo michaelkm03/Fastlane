@@ -13,7 +13,7 @@ static const CGFloat kPlaceholderAlphaEnteringText = 0.2f;
 
 @interface VPlaceholderTextView ()
 
-@property (nonatomic, strong) UITextView *placeholderTextView;
+@property (nonatomic, readwrite) UITextView *placeholderTextView;
 
 @end
 
