@@ -246,7 +246,7 @@ static const NSUInteger kExperienceEnhancerCount = 20;
          // Wait out the cooldown time
          dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeUntilVote * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
          {
-             XCTAssertTrue([exp percentageOfCooldownComplete] >= 1);
+             XCTAssertTrue([exp ratioOfCooldownComplete] >= 1);
              XCTAssertTrue([exp secondsUntilCooldownIsOver] <= 0);
              
              // Vote again, should register now that cooldown is over
