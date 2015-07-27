@@ -33,6 +33,8 @@
 "Publishing..." = "公開処理中…";
 "Rendering..." = "レンダリング中…";
 "Next" = "次へ";
+"Done" = "完了";
+"More" = "詳細";
 "Quote" = "引用";
 "Meme" = "ミーム";
 "Share" = "共有";
@@ -206,10 +208,17 @@
 "CameraRollDenied" = "[設定] > [プライバシー]から写真へのアクセスを許可してください";
 "CameraFailed" = "カメラを起動できませんでした";
 "CameraSwitchFailed" = "カメラモードを切り替えることができませんでした";
+/* Button that opens the camera */
+"Camera" = "カメラ";
+/* Button that opens web search for images */
+"Search" = "検索する";
+/* Button that opens gallery to photo library for images and videos */
+"Gallery" = "ギャラリー";
 "StillCaptureFailed" = "写真を撮影できませんでした";
 "VideoCaptureFailed" = "動画を撮影できませんでした";
 "VideoSaveFailed" = "動画を保存できませんでした";
 "VideoCoachMessage" = "長押しで録画開始";
+"LibraryCaptureFailed" = "ライブラリのアイテムにアクセスできません";
 
 "NoTwitterTitle" = "Twitterアカウントが見つかりません！";
 "NoTwitterMessage" = "デバイス設定を開いて、新しいTwitterアカウントを追加してください。";
@@ -345,6 +354,7 @@
 
 "Me" = "あなた";
 
+"Edit" = "編集する";
 "editProfileButton" = "プロフィール編集";
 "followers" = "フォロワー";
 "following" = "フォロー中";
@@ -387,7 +397,7 @@
 "CannotVerify" = "アカウントの認証できません";
 "IncorrectCode" = "アカウントの認証に使用されたコードが間違っています";
 
-"Search for an image" = "画像を検索する";
+"Image Search" = "画像検索";
 "Pull up for more..." = "上へ引っぱってさらに表示…";
 "search for users" = "ユーザーを探す";
 "searching" = "検索中";
@@ -444,6 +454,8 @@
 "ToSText" = "利用規約";
 "ToSAgreement" = "私の年齢は13歳以上であり、利用規約の内容に同意します";
 
+"Privacy Policy" = "プライバシーポリシー";
+
 "NoFriends" = "一致する結果なし";
 "NoFriendsDetail" = "このアプリをご利用中のお友達が見つかりませんでした。逆に彼らを招待しちゃいましょう！";
 
@@ -499,6 +511,7 @@
 
 "NoHashtagsTitle" = "こちらにハッシュタグがありません！";
 "NoHashtagsMessage" = "ハッシュタグ #%@ の付いた投稿はありませんでした。";
+
 "Type your feedback here..." = "あなたのフィードバックはこちらに入力…";
 "Device:" = "デバイス：";
 "OS Version:" = "OSバージョン：";
@@ -533,6 +546,10 @@
 "ErrorPushNotificationsUnknown" = "通知設定の読み込み中にエラーが発生しました。\n後ほど改めてお試しください。";
 "ErrorPushNotificationsNotSaved" = "個人設定の保存エラー";
 "ErrorPushNotificationsNotSavedMessage" = "後ほど改めてお試しください。";
+
+"We need permission to access your photo library." = "あなたの写真ライブラリにアクセスする必要があります。";
+"We need access to this permission." = "この権限にアクセスする必要があります。";
+"Maybe Later" = "また後で";
 
 "RestorePurchaseDescription" = "別のデバイスで購入済みですか？\n以下をタップすればすべての購入を復元することができます。";
 "PurchaseErrorTitle" = "購入中のエラー";
@@ -608,16 +625,24 @@
 "Create a meme" = "ミームを作成";
 "Create a quote" = "引用文を作成";
 "Create a GIF" = "GIFアニメを作成";
+"Pick an attachment style" = "添付の形式を選んでください";
+"Image" = "画像";
+"Video" = "動画";
 "Type your text here!" = "こちらにテキストを記入してください！";
 "GIF" = "GIF";
+"GIF Search" = "GIF検索";
 
 "GIF MODE" = "GIFモード";
 "VIDEO MODE" = "動画モード";
 "Write a caption (optional)" = "キャプションを書く (任意)";
 
+"Downloading..." = "ダウンロード中...";
+"Exporting..." = "エクスポート中...";
 "Render failure" = "レンダリングに失敗";
 
 "Upload failure" = "アップロードに失敗";
+"Error loading results" = "結果の読み込みエラー";
+"Error rendering GIF" = "GIFレンダリングエラー";
 
 "Before you can take and share photos with the community, we need access to your camera. Allow camera access now?" = "写真を撮影したりコミュニティで共有したりするには、あなたのカメラにアクセスする必要があります。今すぐカメラへのアクセスを許可しますか？";
 "Thank you for joining the community! To add a profile picture, we need access to your camera. Allow camera access now?" = "コミュニティに参加していただきありがとうございます！ プロフィール写真を追加するには、カメラにアクセスする必要があります。今すぐカメラへのアクセスを許可しますか？";
@@ -627,7 +652,9 @@
 "Follow content from other fans." = "他のファンのコンテンツをフォローしましょう。";
 "Share creations with the community." = "作品をコミュニティで共有しましょう。";
 "Join in on the conversation." = "議論に参加しましょう。";
-"By signing up you are agreeing to our \nterms of service and privacy policy." = "サインアップすることで、あなたは利用規約と\nプライバシーポリシーに同意したものとみなされます。";
+"By signing up you are agreeing to our" = "サインアップすることで、次に同意したものとみなされます: 当社の";
+"terms of service" = "利用規約";
+"privacy policy" = "プライバシーポリシー";
 "Sign up with Email" = "メールアドレスで登録する";
 "Sign up with Facebook" = "Facebookでサインアップ";
 "Create an account and join the community." = "アカウントを作成してコミュニティに参加しましょう。";
@@ -636,6 +663,7 @@
 "Add your profile picture." = "プロフィール写真を追加しましょう。";
 "Enter Email" = "メールアドレスを入力";
 "Enter name" = "名前を入力";
+"You must enter a name." = "名前を入力してください。";
 "Enter Password" = "パスワードを入力";
 "Tap Here" = "ここをタップ";
 "Forgot your password?" = "パスワードをお忘れですか？";
@@ -665,3 +693,8 @@
 "VIDEO" = "動画";
 "IMAGE" = "画像";
 "Nevermind" = "やめておく";
+
+/* Liked content no content view */
+"NOTHING LIKED YET" = "「いいね」したものはまだありません";
+/* Liked content no content view */
+"Posts you like will appear here." = "あなたが「いいね」した投稿がこちらに表示されます。";

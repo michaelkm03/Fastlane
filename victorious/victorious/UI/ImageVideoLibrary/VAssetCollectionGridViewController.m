@@ -88,6 +88,7 @@ static NSString * const kVideoTitleKey = @"videoTitle";
             [self.activityIndicator startAnimating];
             [self setupAssetDataSource];
             [self setCollectionViewDataSourceTo:self.assetDataSource];
+            [self fetchDefaultCollection];
             break;
     }
 
@@ -102,8 +103,6 @@ static NSString * const kVideoTitleKey = @"videoTitle";
     {
         [self.collectionView deselectItemAtIndexPath:selectedIndexPaths animated:NO];
     }
-    
-    [self fetchDefaultCollection];
 }
 
 - (void)viewDidAppear:(BOOL)animated

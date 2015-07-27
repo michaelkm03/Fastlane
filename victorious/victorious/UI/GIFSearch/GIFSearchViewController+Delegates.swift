@@ -60,14 +60,20 @@ extension GIFSearchViewController : UICollectionViewDelegate {
         if collectionView.cellForItemAtIndexPath( indexPath ) is GIFSearchResultCell {
             if self.selectedIndexPath == indexPath {
                 self.hidePreviewForResult( indexPath )
+                collectionView.deselectItemAtIndexPath(indexPath, animated: true)
             }
             else {
                 self.showPreviewForResult( indexPath )
             }
         }
-        else if collectionView.cellForItemAtIndexPath( indexPath ) is GIFSearchPreviewCell {
+    }
+    
+    func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+        if collectionView.cellForItemAtIndexPath( indexPath ) is GIFSearchPreviewCell {
             self.exportSelectedItem( nil )
+            return false
         }
+        return true
     }
     
     func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {

@@ -33,6 +33,8 @@
 "Publishing..." = "Publicando...";
 "Rendering..." = "Renderizando...";
 "Next" = "Próxima";
+"Done" = "Concluído";
+"More" = "Mais";
 "Quote" = "Citação";
 "Meme" = "Meme";
 "Share" = "Compartilhar";
@@ -206,10 +208,17 @@
 "CameraRollDenied" = "Conceda acesso às suas fotos em Configurações -Privacidade.";
 "CameraFailed" = "Não é possível iniciar a câmera";
 "CameraSwitchFailed" = "Não é possível mudar o modo da câmera";
+/* Button that opens the camera */
+"Camera" = "Câmera";
+/* Button that opens web search for images */
+"Search" = "Busca";
+/* Button that opens gallery to photo library for images and videos */
+"Gallery" = "Galeria";
 "StillCaptureFailed" = "Não é possível tirar foto";
 "VideoCaptureFailed" = "Não é possível gravar vídeo";
 "VideoSaveFailed" = "Não é possível salvar o vídeo";
 "VideoCoachMessage" = "Pressione e segure para gravar";
+"LibraryCaptureFailed" = "Não foi possível acessar o item na biblioteca";
 
 "NoTwitterTitle" = "Não é possível encontrar uma conta do Twitter!";
 "NoTwitterMessage" = "Abra as configurações do seu dispositivo e adicione uma nova conta do Twitter";
@@ -345,6 +354,7 @@
 
 "Me" = "Eu";
 
+"Edit" = "Editar";
 "editProfileButton" = "Editar Perfil";
 "followers" = "Seguidores";
 "following" = "Seguindo";
@@ -387,7 +397,7 @@
 "CannotVerify" = "Não é Possível Verificar a Conta";
 "IncorrectCode" = "O código usado para a verificação da conta está incorreto.";
 
-"Search for an image" = "Procurar imagem";
+"Image Search" = "Busca de imagem";
 "Pull up for more..." = "Arraste para cima para obter mais...";
 "search for users" = "procurar usuários";
 "searching" = "pesquisando";
@@ -444,6 +454,8 @@
 "ToSText" = "Termos do Serviço";
 "ToSAgreement" = "Tenho pelo menos 13 anos de idade e concordo com os Termos do Serviço";
 
+"Privacy Policy" = "Política de Privacidade";
+
 "NoFriends" = "Sem Correspondências";
 "NoFriendsDetail" = "Não encontramos nenhum dos seus amigos que usam o nosso aplicativo. Vá em frente e convide-os!";
 
@@ -499,6 +511,7 @@
 
 "NoHashtagsTitle" = "Não há hashtags aqui!";
 "NoHashtagsMessage" = "Nenhuma postagem foi encontrada com a hashtag #%@.";
+
 "Type your feedback here..." = "Digite seu feedback aqui...";
 "Device:" = "Dispositivo:";
 "OS Version:" = "Versão do SO:";
@@ -533,6 +546,10 @@
 "ErrorPushNotificationsUnknown" = "Erro ao carregar configurações de notificação.\nTente novamente mais tarde.";
 "ErrorPushNotificationsNotSaved" = "Erro ao Salvar Preferências";
 "ErrorPushNotificationsNotSavedMessage" = "Tente novamente mais tarde.";
+
+"We need permission to access your photo library." = "Precisamos de autorização para acessar sua biblioteca de fotos.";
+"We need access to this permission." = "Precisamos ter acesso a esta autorização.";
+"Maybe Later" = "Talvez Depois";
 
 "RestorePurchaseDescription" = "Já comprado em outro dispositivo?\nToque a seguir para restaurar todas as suas compras.";
 "PurchaseErrorTitle" = "Erro ao Fazer a Compra";
@@ -608,16 +625,24 @@
 "Create a meme" = "Criar um meme";
 "Create a quote" = "Crie uma citação";
 "Create a GIF" = "Criar um GIF";
+"Pick an attachment style" = "Escolha um estilo de anexo";
+"Image" = "Imagem";
+"Video" = "Vídeo";
 "Type your text here!" = "Digite seu texto aqui!";
 "GIF" = "GIF";
+"GIF Search" = "Busca de GIF";
 
 "GIF MODE" = "MODO GIF";
 "VIDEO MODE" = "MODO DE VÍDEO";
 "Write a caption (optional)" = "Escreva uma legenda (opcional)";
 
+"Downloading..." = "Baixando...";
+"Exporting..." = "Exportando...";
 "Render failure" = "Falha ao renderizar";
 
 "Upload failure" = "Falha ao carregar";
+"Error loading results" = "Erro ao carregar os resultados";
+"Error rendering GIF" = "Erro ao reproduzir o GIF. Por favor, tente novamente.";
 
 "Before you can take and share photos with the community, we need access to your camera. Allow camera access now?" = "Antes de você poder tirar e compartilhar fotos com a comunidade, precisamos de acesso à sua câmera. Permitir acesso à câmera agora?";
 "Thank you for joining the community! To add a profile picture, we need access to your camera. Allow camera access now?" = "Obrigado por fazer parte da comunidade! Para adicionar uma foto, precisamos acessar a sua câmera. Permitir acesso à câmera agora?";
@@ -627,7 +652,9 @@
 "Follow content from other fans." = "Siga o conteúdo de outros fãs.";
 "Share creations with the community." = "Compartilhe criações com a comunidade.";
 "Join in on the conversation." = "Participe da conversa.";
-"By signing up you are agreeing to our \nterms of service and privacy policy." = "Ao se cadastrar, você concorda com os os nossos \ntermos de serviço e a política de privacidade.";
+"By signing up you are agreeing to our" = "Ao inscrever-se você concorda com";
+"terms of service" = "termos de serviço";
+"privacy policy" = "política de privacidade";
 "Sign up with Email" = "Cadastre-se com E-mail";
 "Sign up with Facebook" = "Cadastre-se com o Facebook";
 "Create an account and join the community." = "Crie uma conta e faça parte da comunidade.";
@@ -636,6 +663,7 @@
 "Add your profile picture." = "Adicione sua imagem de perfil.";
 "Enter Email" = "Inserir E-mail";
 "Enter name" = "Inserir Nome";
+"You must enter a name." = "Você deve digitar um nome.";
 "Enter Password" = "Inserir Senha";
 "Tap Here" = "Clique Aqui";
 "Forgot your password?" = "Esqueceu sua senha?";
@@ -665,3 +693,8 @@
 "VIDEO" = "VÍDEO";
 "IMAGE" = "IMAGEM";
 "Nevermind" = "Deixe para lá";
+
+/* Liked content no content view */
+"NOTHING LIKED YET" = "NADA FOI CURTIDO AINDA";
+/* Liked content no content view */
+"Posts you like will appear here." = "As postagens que você curtir aparecerão aqui.";

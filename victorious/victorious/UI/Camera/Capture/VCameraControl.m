@@ -106,6 +106,7 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
 - (void)flashShutterAnimations
 {
     self.transform = CGAffineTransformMakeScale(0.01f, 0.01f);
+    self.alpha = 0.0f;
 }
 
 #pragma mark - Setters
@@ -172,6 +173,7 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
             {
                 [self sendActionsForControlEvents:VCameraControlEventEndRecordingVideo];
             }
+            self.alpha = 1.0f;
             animationDuration = kRecordingShrinkAnimationDuration;
             animations = ^
             {
