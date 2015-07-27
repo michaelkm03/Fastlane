@@ -206,6 +206,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
     self.captureController.videoEncoder = nil;
     [self.cameraControl restoreCameraControlToDefault];
     self.previewView.hidden = NO;
+    [self clearRecordedVideoAndResetControl];
 }
 
 #pragma mark - Target/Action
