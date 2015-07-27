@@ -549,13 +549,9 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
         [self.dependencyManager.objectManager loadNotificationsListWithPageType:VPageTypeFirst
                                                                    successBlock:^(NSOperation * __nullable operation, id  __nullable result, NSArray * __nonnull resultObjects)
          {
-             // sucess
              [self updateBadges];
          }
-                                                                      failBlock:^(NSOperation * __nullable operation, NSError * __nullable error)
-         {
-             // fail
-         }];
+                                                                      failBlock:nil];
     }
 }
 

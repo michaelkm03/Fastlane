@@ -211,7 +211,7 @@ static NSString * const kInitialKey = @"initial";
 - (void)v_setLayoutInsets:(UIEdgeInsets)layoutInsets
 {
     [super v_setLayoutInsets:layoutInsets];
-    [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *obj, NSUInteger idx, BOOL *stop)
+    [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *obj, NSUInteger index, BOOL *stop)
     {
         if ( [obj isKindOfClass:[UIViewController class]] )
         {
