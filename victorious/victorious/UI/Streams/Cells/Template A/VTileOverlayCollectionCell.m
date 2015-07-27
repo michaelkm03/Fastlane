@@ -215,6 +215,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
              if ( sequence.name.length > 0 )
              {
                  textHeight = VCEIL( [sequence.name frameSizeForWidth:size.width andAttributes:attributes].height );
+                 textHeight = MIN( textHeight, kCountsTextViewMaxHeight);
              };
              return CGSizeMake( 0.0f, textHeight );
          }];
