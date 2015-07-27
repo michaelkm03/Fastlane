@@ -283,14 +283,7 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
     self.publishParameters.shouldSaveToCameraRoll = self.saveContentCell.cameraRollSwitch.on;
     if (self.publishParameters.shouldSaveToCameraRoll)
     {
-        if (self.publishParameters.isVideo)
-        {
-            [self saveVideoToCameraRollFromURL:self.publishParameters.mediaToUploadURL];
-        }
-        else
-        {
-            UIImageWriteToSavedPhotosAlbum(self.previewImageView.image, nil, nil, nil);
-        }
+        [self saveMediaToCameraRollFromURL:self.publishParameters.mediaToUploadURL];
     }
     
     NSIndexSet *shareParams = self.shareContentCell.selectedShareTypes;
@@ -616,24 +609,31 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 
 #pragma mark - Private Methods
 
-- (void)saveVideoToCameraRollFromURL:(NSURL *)sourceUrl
+- (void)saveMediaToCameraRollFromURL:(NSURL *)sourceUrl
 {
     ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-    ALAssetsLibraryWriteVideoCompletionBlock videoWriteCompletionBlock = ^(NSURL *newURL, NSError *error)
+    ALAssetsLibraryWriteVideoCompletionBlock mediaWriteCompletionBlock = ^(NSURL *newURL, NSError *error)
     {
-        if (error)
+        if ( error )
         {
-            NSLog( @"Error writing image with metadata to Photo Library: %@", error );
+            NSLog( @"Error writing media with metadata to Photo Library: %@", error );
         }
         else
         {
-            NSLog( @"Wrote image with metadata to Photo Library %@", newURL.absoluteString);
+            NSLog( @"Wrote media with metadata to Photo Library %@", newURL.absoluteString);
         }
     };
     
-    if ([library videoAtPathIsCompatibleWithSavedPhotosAlbum:sourceUrl])
+    if ( self.publishParameters.isVideo )
     {
-        [library writeVideoAtPathToSavedPhotosAlbum:sourceUrl completionBlock:videoWriteCompletionBlock];
+        if ( [library videoAtPathIsCompatibleWithSavedPhotosAlbum:sourceUrl] )
+        {
+            [library writeVideoAtPathToSavedPhotosAlbum:sourceUrl completionBlock:mediaWriteCompletionBlock];
+        }
+    }
+    else
+    {
+        [library writeImageToSavedPhotosAlbum:self.publishParameters.previewImage.CGImage orientation:ALAssetOrientationUp completionBlock:mediaWriteCompletionBlock];
     }
 }
 
