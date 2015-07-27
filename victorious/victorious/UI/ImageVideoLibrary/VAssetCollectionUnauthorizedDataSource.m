@@ -17,7 +17,7 @@
 #import "VPermissionPhotoLibrary.h"
 
 static NSString * const kAccessUndeterminedPromptKey = @"accessUndeterminedPrompt";
-static NSString * const kAccessUndeterminedCalltoActionKey = @"accessUndeterminedCalltoAction";
+static NSString * const kAccessUndeterminedCalltoActionKey = @"accessUndeterminedCallToAction";
 static NSString * const kAccessDeniedPromptKey = @"accessDeniedPrompt";
 static NSString * const kNotAuthorizedTextColorKey = @"notAuthorizedTextColor";
 static NSString * const kNotAuthorizedPromptFont = @"notAuthorizedPromptFont";
@@ -62,7 +62,7 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
     authorizationCell.callToActionText = [self.dependencyManager stringForKey:isAllowAccess ? kAccessUndeterminedCalltoActionKey : nil];
     authorizationCell.callToActionFont = [self.dependencyManager fontForKey:kNotAuthorizedCallToActionFont];
     authorizationCell.callToActionColor = [self.dependencyManager colorForKey:kNotAuthorizedTextColorKey];
-    
+
     return authorizationCell;
 }
 

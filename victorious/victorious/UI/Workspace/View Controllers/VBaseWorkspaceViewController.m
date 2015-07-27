@@ -299,6 +299,24 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
     [self.view layoutIfNeeded];
 }
 
+#pragma mark - Focus
+
+- (void)gainedFocus
+{
+    if ([self.toolController.selectedTool respondsToSelector:@selector(setSelected:)])
+    {
+        [self.toolController.selectedTool setSelected:YES];
+    }
+}
+
+- (void)lostFocus
+{
+    if ([self.toolController.selectedTool respondsToSelector:@selector(setSelected:)])
+    {
+        [self.toolController.selectedTool setSelected:NO];
+    }
+}
+
 #pragma mark - Private Methods
 
 - (void)keyboardWillShowWithFrameBegin:(CGRect)beginFrame

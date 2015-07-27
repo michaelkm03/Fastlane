@@ -31,4 +31,9 @@
  */
 - (UIImage *)smoothResizedImageWithNewSize:(CGSize)newSize;
 
+/**
+ *  Crops an image to what it would looko like in a square imageView with aspectFill.
+ */
+- (UIImage *)squareImageByCropping;
+
 @end

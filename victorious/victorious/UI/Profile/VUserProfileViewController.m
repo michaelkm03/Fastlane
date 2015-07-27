@@ -42,10 +42,10 @@
 #import "VInboxDeepLinkHandler.h"
 #import "VFloatingUserProfileHeaderViewController.h"
 #import "UIViewController+VAccessoryScreens.h"
-
 #import "VUsersViewController.h"
 #import "VFollowersDataSource.h"
 #import "VUserIsFollowingDataSource.h"
+#import "VDependencyManager+VTracking.h"
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
@@ -620,7 +620,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)followerHandler
 {
-    VUsersViewController *usersViewController = [[VUsersViewController alloc] initWithDependencyManager:self.dependencyManager];
+    VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{}];
+    VUsersViewController *usersViewController = [[VUsersViewController alloc] initWithDependencyManager:childDependencyManager];
     usersViewController.title = NSLocalizedString( @"followers", nil );
     usersViewController.usersDataSource = [[VFollowersDataSource alloc] initWithUser:self.user];
     
@@ -635,7 +636,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
     else
     {
-        VUsersViewController *usersViewController = [[VUsersViewController alloc] initWithDependencyManager:self.dependencyManager];
+        VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{}];
+        VUsersViewController *usersViewController = [[VUsersViewController alloc] initWithDependencyManager:childDependencyManager];
         usersViewController.title = NSLocalizedString( @"Following", nil );
         usersViewController.usersDataSource = [[VUserIsFollowingDataSource alloc] initWithUser:self.user];
         

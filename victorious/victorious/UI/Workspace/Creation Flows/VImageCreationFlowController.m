@@ -12,8 +12,11 @@
 #import "VAssetCollectionGridViewController.h"
 #import "VImageAssetDownloader.h"
 #import "VAlternateCaptureOption.h"
-#import "VCameraViewController.h"
+#import "VImageCameraViewController.h"
 #import "VImageSearchViewController.h"
+
+// Animator
+#import "VCameraToWorkspaceAnimator.h"
 
 // Edit
 #import "VWorkspaceViewController.h"
@@ -29,7 +32,7 @@
 NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 
-@interface VImageCreationFlowController ()
+@interface VImageCreationFlowController () <VImageCameraViewControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -129,19 +132,9 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 - (void)showCamera
 {
     // Camera
-    __weak typeof(self) welf = self;
-    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerWithContext:self.context
-                                                                                       dependencyManager:self.dependencyManager
-                                                                                           resultHanlder:^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-                                                   {
-                                                       __strong typeof(welf) strongSelf = welf;
-                                                       if (finished)
-                                                       {
-                                                           strongSelf.source = VCreationFlowSourceCamera;
-                                                           [strongSelf captureFinishedWithMediaURL:capturedMediaURL
-                                                                                previewImage:previewImage];
-                                                       }
-                                                   }];
+    VImageCameraViewController *cameraViewController = [VImageCameraViewController imageCameraWithDependencyManager:self.dependencyManager
+                                                                                                      cameraContext:self.context];
+    cameraViewController.delegate = self;
     [self pushViewController:cameraViewController animated:YES];
 }
 
@@ -164,6 +157,44 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
     };
     [self pushViewController:imageSearchViewController
                     animated:YES];
+}
+
+#pragma mark - VImageCameraViewControllerDelegate
+
+- (void)imageCameraViewController:(VImageCameraViewController *)imageCamera
+        capturedImageWithMediaURL:(NSURL *)mediaURL
+                     previewImage:(UIImage *)previewImage
+{
+    // We only care if image camera is still top of the stack
+    if ([self.viewControllers lastObject] == imageCamera)
+    {
+        self.source = VCreationFlowSourceCamera;
+        [self captureFinishedWithMediaURL:mediaURL
+                             previewImage:previewImage];
+    }
+}
+
+#pragma mark - UINavigationControllerDelegate
+
+- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+                                  animationControllerForOperation:(UINavigationControllerOperation)operation
+                                               fromViewController:(UIViewController *)fromVC
+                                                 toViewController:(UIViewController *)toVC
+{
+    if ([fromVC isKindOfClass:[VImageCameraViewController class]] && [toVC isKindOfClass:[VWorkspaceViewController class]])
+    {
+        return [[VCameraToWorkspaceAnimator alloc] init];
+    }
+    
+    if ([[self superclass] instancesRespondToSelector:@selector(navigationController:animationControllerForOperation:fromViewController:toViewController:)])
+    {
+        return [super navigationController:navigationController
+           animationControllerForOperation:operation
+                        fromViewController:fromVC
+                          toViewController:toVC];
+    }
+    
+    return nil;
 }
 
 @end
