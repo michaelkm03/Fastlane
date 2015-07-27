@@ -600,6 +600,9 @@
 "Video failed to load" = "Video failed to load";
 "We encountered an error trying to edit this video." = "We encountered an error trying to edit this video.";
 
+"No Photos" = "No Photos";
+"No Videos" = "No Videos";
+
 "#nofilter" = "#nofilter";
 "Create a meme" = "Create a meme";
 "Create a quote" = "Create a quote";
