@@ -50,6 +50,7 @@ static char kPrivateQueueSpecific;
         _delegate = delegate;
         _cacheUsed = NO;
         _templateDownloaded = NO;
+        _completedSuccessfully = NO;
         _downloader = downloader;
         _dataCache = [[VDataCache alloc] init];
         _templateDownloadTimeout = kDefaultTemplateDownloadTimeout;
@@ -164,6 +165,7 @@ static char kPrivateQueueSpecific;
                     if ( templateConfigurationCacheID != nil && !strongSelf.isCancelled )
                     {
                         [strongSelf.dataCache cacheData:data forID:templateConfigurationCacheID error:nil];
+                        self.completedSuccessfully = YES;
                     }
                 }
             };
@@ -202,6 +204,7 @@ static char kPrivateQueueSpecific;
             
             NSOperation *signalOperation = [NSBlockOperation blockOperationWithBlock:signal];
             [signalOperation addDependency:self.bulkDownloadOperation];
+            [signalOperation addDependency:self.saveTemplateOperation];
             
             [self.currentQueue addOperation:self.bulkDownloadOperation];
             [self.currentQueue addOperation:self.saveTemplateOperation];
@@ -222,8 +225,7 @@ static char kPrivateQueueSpecific;
                 ![strongSelf.dataCache cacheDataAtURL:downloadedFile forID:originalURL error:nil] )
             {
                 [strongSelf.saveTemplateOperation cancel];
-                typeof(weakSelf) strongSelf = weakSelf;
-                if ( strongSelf != nil && !strongSelf.isCancelled )
+                if ( !strongSelf.isCancelled )
                 {
                     dispatch_async(strongSelf.privateQueue, ^(void)
                     {

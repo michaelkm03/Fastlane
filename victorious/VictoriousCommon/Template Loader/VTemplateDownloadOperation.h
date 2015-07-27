@@ -108,6 +108,11 @@ typedef void (^VTemplateDownloaderCompletion)(NSData *__nullable templateData, N
 @property (nonatomic) BOOL shouldRetry;
 
 /**
+ If YES, the template and all its images downloaded without failure.
+ */
+@property (nonatomic) BOOL completedSuccessfully;
+
+/**
  When this operation is done (or sometimes earlier--see the
  templateDownloadOperationDidFallbackOnCache: method on 
  VTemplateDownloadOperationDelegate), this property will 
