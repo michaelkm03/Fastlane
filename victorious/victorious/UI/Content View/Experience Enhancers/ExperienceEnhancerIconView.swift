@@ -12,8 +12,8 @@ import UIKit
 /// a border image and an icon image
 class ExperienceEnhancerIconView : UIView {
     
-    private var iconImageView: UIImageView!
-    private var overlayImageView: UIImageView!
+    private let iconImageView = UIImageView()
+    private let overlayImageView = UIImageView()
     
     var iconImage : UIImage? {
         didSet {
@@ -38,12 +38,10 @@ class ExperienceEnhancerIconView : UIView {
     }
     
     func sharedInit() {
-        self.overlayImageView = UIImageView()
         self.overlayImageView.contentMode = UIViewContentMode.ScaleAspectFit;
         self.addSubview(self.overlayImageView)
         self.v_addFitToParentConstraintsToSubview(self.overlayImageView)
         
-        self.iconImageView = UIImageView()
         self.iconImageView.contentMode = UIViewContentMode.ScaleAspectFit;
         self.addSubview(self.iconImageView)
         self.v_addFitToParentConstraintsToSubview(self.iconImageView)

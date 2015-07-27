@@ -11,9 +11,9 @@ import Foundation
 /// A emotive ballistic view which displays a radial cooldown animation
 class ExperienceEnhancerAnimatingIconView : UIView {
     
-    private var radialAnimatingView: RadialAnimatingView!
-    private var backgroundEBView: ExperienceEnhancerIconView!
-    private var foregroundEBView: ExperienceEnhancerIconView!
+    private let radialAnimatingView = RadialAnimatingView()
+    private let backgroundEBView = ExperienceEnhancerIconView()
+    private var foregroundEBView = ExperienceEnhancerIconView()
     
     var iconImage : UIImage? {
         didSet {
@@ -29,6 +29,11 @@ class ExperienceEnhancerAnimatingIconView : UIView {
         }
     }
     
+    /// Determines if cooldown animation is in process
+    var isAnimating: Bool {
+        return self.radialAnimatingView.isAnimating
+    }
+    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         sharedInit()
@@ -39,16 +44,12 @@ class ExperienceEnhancerAnimatingIconView : UIView {
         sharedInit()
     }
     
-    func sharedInit() {
+    private func sharedInit() {
         
         // Create background icon view
-        self.backgroundEBView = ExperienceEnhancerIconView()
         self.backgroundEBView.alpha = 0.3
         self.addSubview(self.backgroundEBView)
         self.v_addFitToParentConstraintsToSubview(self.backgroundEBView)
-        
-        // Create radial animation view
-        self.radialAnimatingView = RadialAnimatingView()
         
         // Create foreground icon view and add it to radial animation view
         self.foregroundEBView = ExperienceEnhancerIconView()
@@ -71,10 +72,5 @@ class ExperienceEnhancerAnimatingIconView : UIView {
     /// Removes cooldown animation
     func reset() {
         self.radialAnimatingView.reset()
-    }
-    
-    /// Determines if cooldown animation is in process
-    func isAnimating() -> Bool {
-        return self.radialAnimatingView.isAnimating()
     }
 }

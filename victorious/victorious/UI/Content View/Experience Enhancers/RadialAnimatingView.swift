@@ -12,7 +12,15 @@ import Foundation
 class RadialAnimatingView : UIView {
     
     let circleAnimationKey = "animateCircle"
-    private var circleLayer: CAShapeLayer!
+    private let circleLayer = CAShapeLayer()
+    
+    /// Determines if this view's layer is currently animating
+    var isAnimating: Bool {
+        if let animation = self.circleLayer.animationForKey(self.circleAnimationKey) {
+            return true
+        }
+        return false
+    }
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -24,12 +32,10 @@ class RadialAnimatingView : UIView {
         sharedInit()
     }
     
-    func sharedInit() {
-        let circleLayer = CAShapeLayer()
-        circleLayer.fillColor = UIColor.clearColor().CGColor
-        circleLayer.strokeColor = UIColor.whiteColor().CGColor
+    private func sharedInit() {
+        self.circleLayer.fillColor = UIColor.clearColor().CGColor
+        self.circleLayer.strokeColor = UIColor.whiteColor().CGColor
         self.layer.mask = circleLayer
-        self.circleLayer = circleLayer
     }
     
     override func layoutSubviews() {
@@ -63,13 +69,5 @@ class RadialAnimatingView : UIView {
     /// Removes all animations from this view's layer
     func reset() {
         self.circleLayer.removeAllAnimations()
-    }
-    
-    /// Determines if this view's layer is currently animating
-    func isAnimating() -> Bool {
-        if let animation = self.circleLayer.animationForKey(self.circleAnimationKey) {
-            return true
-        }
-        return false
     }
 }

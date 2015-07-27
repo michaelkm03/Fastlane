@@ -58,7 +58,7 @@
  A float between 0 and 1 representing how much of the cooldown
  has been completed
  */
-- (CGFloat)percentageOfCooldownComplete;
+- (CGFloat)ratioOfCooldownComplete;
 
 /**
  Number of seconds until cooldown is complete

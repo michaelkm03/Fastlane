@@ -96,7 +96,7 @@
     return self.cooldownDuration - [self secondsSinceLastVote];
 }
 
-- (CGFloat)percentageOfCooldownComplete
+- (CGFloat)ratioOfCooldownComplete
 {
     return [self secondsSinceLastVote] / self.cooldownDuration;
 }
