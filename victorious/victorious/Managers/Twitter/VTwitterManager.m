@@ -18,6 +18,7 @@
 
 NSString * const VTwitterManagerErrorDomain = @"twitterManagerError";
 CGFloat const VTwitterManagerErrorCanceled = 1;
+CGFloat const VTwitterManagerErrorFailed = 2;
 
 @interface VTwitterManager()
 
@@ -91,7 +92,7 @@ CGFloat const VTwitterManagerErrorCanceled = 1;
                   
                   if ( completionBlock != nil )
                   {
-                      completionBlock(NO, error);
+                      completionBlock(NO, [NSError errorWithDomain:VTwitterManagerErrorDomain code:VTwitterManagerErrorFailed userInfo:error.userInfo]);
                   }
                   
                   return;

@@ -681,17 +681,22 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 
 - (void)showAlertForError:(NSError *)error fromShareItemCell:(VShareItemCollectionViewCell *)shareItemCell
 {
-    if ( [error.domain isEqualToString:VTwitterManagerErrorDomain] )
-    {
-        return;
-    }
-    
     NSArray *actions;
     NSString *alertMessage;
     if ( shareItemCell.shareMenuItem.shareType == VShareTypeFacebook && [error.domain isEqualToString:VFacebookManagerErrorDomain] )
     {
         //This CAN signal that we don't have publish permissions for facebook, don't prompt the user to retry.
         alertMessage = NSLocalizedString(@"We failed to retrieve publish permissions.", nil);
+        actions = @[ [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"") style:UIAlertActionStyleDefault handler:nil] ];
+    }
+    else if ( [error.domain isEqualToString:VTwitterManagerErrorDomain] )
+    {
+        if ( error.code == VTwitterManagerErrorCanceled )
+        {
+            return;
+        }
+        
+        alertMessage = NSLocalizedString(@"TwitterTroubleshooting", nil);
         actions = @[ [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"") style:UIAlertActionStyleDefault handler:nil] ];
     }
     else
