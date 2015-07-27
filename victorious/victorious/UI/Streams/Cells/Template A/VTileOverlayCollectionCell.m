@@ -155,6 +155,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     _captionTextView.editable = NO;
     _captionTextView.linkDelegate = self;
     _captionTextView.textContainerInset = kTextInsets;
+    _captionTextView.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
     _captionTextView.backgroundColor = [UIColor clearColor];
     [_overlayContainer addSubview:_captionTextView];
     [_overlayContainer v_addPinToLeadingTrailingToSubview:_captionTextView];
