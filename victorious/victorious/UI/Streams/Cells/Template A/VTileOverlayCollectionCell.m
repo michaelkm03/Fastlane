@@ -56,6 +56,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
 @property (nonatomic, strong) NSLayoutConstraint *captionHeight;
 @property (nonatomic, strong) NSLayoutConstraint *commentToLikeButtonHorizontalSpacing;
 @property (nonatomic, strong) NSLayoutConstraint *likeButtonWidth;
+@property (nonatomic, strong) NSLayoutConstraint *contentContainerHeightConstraint;
 
 @end
 
@@ -336,27 +337,44 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
 {
     if ([self.previewView canHandleSequence:sequence])
     {
+        [self updateContentContainerHeightConstraint];
         [self.previewView setSequence:sequence];
         return;
     }
     
     [self.previewView removeFromSuperview];
+    self.contentContainerHeightConstraint = nil;
     self.previewView = [VSequencePreviewView sequencePreviewViewWithSequence:sequence];
     [self.contentContainer addSubview:self.previewView];
     [self.contentContainer v_addPinToTopToSubview:self.previewView];
     [self.contentContainer v_addPinToLeadingTrailingToSubview:self.previewView];
-    
-    NSDictionary *views = @{ @"previewView" : self.previewView };
-    CGFloat height = CGRectGetWidth(self.bounds) / [sequence previewAssetAspectRatio];
-    NSDictionary *metrics = @{ @"height" : @(height) };
-    NSArray *constraintsV = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[previewView(height)]" options:kNilOptions metrics:metrics views:views];
-    [self.contentContainer addConstraints:constraintsV];
+    [self updateContentContainerHeightConstraint];
     
     if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
     {
         [self.previewView setDependencyManager:self.dependencyManager];
     }
     [self.previewView setSequence:sequence];
+}
+
+- (void)updateContentContainerHeightConstraint
+{
+    if ( self.sequence == nil )
+    {
+        return;
+    }
+    
+    CGFloat height = CGRectGetWidth(self.bounds) / [self.sequence previewAssetAspectRatio];
+    if ( self.contentContainerHeightConstraint == nil )
+    {
+        CGFloat height = CGRectGetWidth(self.bounds) / [self.sequence previewAssetAspectRatio];
+        self.contentContainerHeightConstraint = [self.previewView v_addHeightConstraint:height];
+    }
+    else
+    {
+        self.contentContainerHeightConstraint.constant = height;
+    }
+    [self setNeedsLayout];
 }
 
 - (void)updateCaptionViewForSequence:(VSequence *)sequence
@@ -404,9 +422,14 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
 {
     CGSize base = CGSizeMake( CGRectGetWidth(bounds), 0.0 );
     NSDictionary *userInfo = @{ kCellSizingSequenceKey : sequence,
-                                VCellSizeCacheKey : sequence.name ?: @"",
+                                VCellSizeCacheKey : [self cacheKeyForSequence:sequence],
                                 kCellSizingDependencyManagerKey : dependencyManager };
     return [[[self class] cellLayoutCollection] totalSizeWithBaseSize:base userInfo:userInfo];
+}
+
++ (NSString *)cacheKeyForSequence:(VSequence *)sequence
+{
+    return [NSString stringWithFormat:@"%.5f", [sequence previewAssetAspectRatio]];
 }
 
 #pragma mark - VBackgroundContainer
