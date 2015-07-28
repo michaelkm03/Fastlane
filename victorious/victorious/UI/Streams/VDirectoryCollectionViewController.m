@@ -29,6 +29,7 @@
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VTracking.h"
 #import "VTracking.h"
+#import "UIViewController+VAccessoryScreens.h"
 
 static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kMarqueeKey = @"marqueeCell";
@@ -156,8 +157,9 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self.dependencyManager configureNavigationItem:self.navigationItem];
-    [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
+    
+    [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
+    
     [[self.dependencyManager coachmarkManager] displayCoachmarkViewInViewController:self];
 }
 
@@ -174,13 +176,14 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 {
     [super viewWillAppear:animated];
     
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
+    
+    [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
+    
     [self.dependencyManager trackViewWillAppear:self];
     
     // Layout may have changed between awaking from nib and being added to the container of the SoS
     [self.collectionView.collectionViewLayout invalidateLayout];
-    
-    //Adds the create sequence button if possible. If not called here, the button 
-    [self updateNavigationItems];
 }
 
 - (BOOL)shouldAutorotate

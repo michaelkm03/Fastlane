@@ -201,6 +201,12 @@ static NSString * const kCreationFlowSourceSearch = @"search";
 
 - (void)afterEditingFinished
 {
+    // Configure parameters
+    self.publishParameters.mediaToUploadURL = self.renderedMediaURL;
+    self.publishParameters.previewImage = self.previewImage;
+    [self configurePublishParameters:self.publishParameters
+                       withWorkspace:self.workspaceViewController];
+    
     if ([self.creationFlowDelegate respondsToSelector:@selector(shouldShowPublishScreenForFlowController)])
     {
         if ( [self.creationFlowDelegate shouldShowPublishScreenForFlowController])
@@ -230,15 +236,7 @@ static NSString * const kCreationFlowSourceSearch = @"search";
 {
     // Setup presenter
     [self setupPublishPresenter];
-    
-    // Configure parameters
-    self.publishParameters.source = [self sourceStringForSourceType:self.source];
-    self.publishParameters.mediaToUploadURL = renderedMediaURL;
-    self.publishParameters.previewImage = previewImage;
-    [self configurePublishParameters:self.publishParameters
-                       withWorkspace:workspace];
     self.publishPresenter.publishParameters = self.publishParameters;
-
     [self.publishPresenter presentOnViewController:self];
 }
 

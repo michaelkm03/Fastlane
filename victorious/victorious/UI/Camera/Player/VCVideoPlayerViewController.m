@@ -171,6 +171,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     
     self.wasPlayingBeforeDissappeared = (self.player.rate > 0.0f);
     [self.player pause];
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -181,6 +182,11 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     {
         self.wasPlayingBeforeDissappeared = NO;
         [self.player play];
+    }
+    
+    if (!self.audioMuted)
+    {
+        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
     }
 }
 
@@ -209,10 +215,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     }
 }
 
-- (void)setIsAudioEnabled:(BOOL)isAudioEnabled
+- (void)setAudioMuted:(BOOL)audioMuted
 {
-    _isAudioEnabled = isAudioEnabled;
-    self.player.muted = !_isAudioEnabled;
+    _audioMuted = audioMuted;
+    self.player.muted = _audioMuted;
 }
 
 - (void)setShouldChangeVideoGravityOnDoubleTap:(BOOL)shouldChangeVideoGravityOnDoubleTap

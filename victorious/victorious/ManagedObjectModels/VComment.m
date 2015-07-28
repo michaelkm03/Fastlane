@@ -34,5 +34,7 @@
 @dynamic sequence;
 @dynamic user;
 @dynamic assetOrientation;
+@dynamic shouldAutoplay;
+@dynamic commentMedia;
 
 @end

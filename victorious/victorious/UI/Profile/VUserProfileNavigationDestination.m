@@ -29,7 +29,7 @@
 - (instancetype)initWithObjectManager:(VObjectManager *)objectManager
 {
     self = [super init];
-    if (self)
+    if ( self != nil )
     {
         _objectManager = objectManager;
     }
