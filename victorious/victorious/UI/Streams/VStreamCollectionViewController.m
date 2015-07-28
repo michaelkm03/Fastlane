@@ -59,6 +59,7 @@
 #import "VTracking.h"
 #import "VHashtagStreamCollectionViewController.h"
 #import "VAuthorizedAction.h"
+#import "VContentViewPresenter.h"
 
 #import "VFullscreenMarqueeSelectionDelegate.h"
 #import "VAbstractMarqueeController.h"
@@ -717,12 +718,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     NSParameterAssert(self.currentStream != nil);
     [self.streamTrackingHelper onStreamCellSelectedWithStream:self.currentStream sequence:sequence];
     
-    VContentViewFactory *contentViewFactory = [self.dependencyManager contentViewFactory];
-    UIViewController *contentView = [contentViewFactory contentViewForSequence:sequence inStreamWithID:streamId commentID:nil placeholderImage:previewImage];
-    if ( contentView != nil )
-    {
-        [self presentViewController:contentView animated:YES completion:nil];
-    }
+    [VContentViewPresenter presentContentViewFromViewController:self withDependencyManager:self.dependencyManager ForSequence:sequence inStreamWithID:streamId commentID:nil withPreviewImage:previewImage];
 }
 
 #pragma mark - Upload Progress View
