@@ -432,10 +432,13 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 - (NSArray *)arrayOfImageURLsWithDictionary:(NSDictionary *)imageDictionary
 {
     VTemplateImageMacro *macro = [[VTemplateImageMacro alloc] initWithJSON:imageDictionary];
-    return [[macro.images filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"imageURL != nil"]] v_map:^id(VTemplateImage *image)
+
+    NSArray *imagesWithNonNilURL = [macro.images filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"imageURL != nil"]];
+    NSArray *imageURLStrings = [imagesWithNonNilURL v_map:^(VTemplateImage *image)
     {
         return image.imageURL.absoluteString;
     }];
+    return imageURLStrings;
 }
 
 #pragma mark - Singleton dependencies
