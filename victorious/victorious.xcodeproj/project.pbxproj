@@ -9411,6 +9411,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
@@ -9436,6 +9437,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 			};
 			name = QA;
 		};
@@ -9461,6 +9463,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 			};
 			name = Staging;
 		};
@@ -9486,6 +9489,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 			};
 			name = Stable;
 		};
@@ -9511,6 +9515,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
@@ -9531,6 +9536,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = downloadtemplate/SwiftBridging.h;
 				USER_HEADER_SEARCH_PATHS = "VictoriousCommon/**";
 			};
@@ -9550,6 +9556,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = downloadtemplate/SwiftBridging.h;
 				USER_HEADER_SEARCH_PATHS = "VictoriousCommon/**";
 			};
@@ -9569,6 +9576,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = downloadtemplate/SwiftBridging.h;
 				USER_HEADER_SEARCH_PATHS = "VictoriousCommon/**";
 			};
@@ -9588,6 +9596,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = downloadtemplate/SwiftBridging.h;
 				USER_HEADER_SEARCH_PATHS = "VictoriousCommon/**";
 			};
@@ -9607,6 +9616,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = downloadtemplate/SwiftBridging.h;
 				USER_HEADER_SEARCH_PATHS = "VictoriousCommon/**";
 			};
