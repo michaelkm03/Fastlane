@@ -9,6 +9,9 @@
 #import "VKeyboardInputAccessoryView.h"
 #import "VUserTaggingTextStorage.h"
 
+// Layout
+#import "UIView+AutoLayout.h"
+
 // Constants
 #import "VConstants.h"
 
@@ -16,13 +19,13 @@
 #import "VDependencyManager.h"
 
 static const NSInteger kCharacterLimit = 255;
-const CGFloat VInputAccessoryViewDesiredMinimumHeight = 51.0f;
 static const CGFloat VTextViewTopInsetAddition = 2.0f;
 
 @interface VKeyboardInputAccessoryView () <UITextViewDelegate>
 
 @property (nonatomic, assign) BOOL selectedMedia;
 @property (nonatomic, strong) VUserTaggingTextStorage *textStorage;
+@property (nonatomic, assign) CGSize lastContentSize;
 
 @property (weak, nonatomic) IBOutlet UIImageView *attachmentThumbnail;
 
@@ -31,9 +34,6 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
 @property (nonatomic, weak) UITextView *editingTextView;
 @property (nonatomic, weak) IBOutlet UIView *editingTextSuperview;
 @property (nonatomic, weak) IBOutlet UILabel *placeholderLabel;
-
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *verticalSpaceTextViewContainerToTopConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *verticalSpaceTextViewContainerToBottomConstraint;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, assign) BOOL addedTextView;
@@ -104,14 +104,7 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
     
     self.textStorage.textView = self.editingTextView;
     
-    [self.editingTextSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[editingTextView]|"
-                                                                                      options:0
-                                                                                      metrics:nil
-                                                                                        views:NSDictionaryOfVariableBindings(editingTextView)]];
-    [self.editingTextSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[editingTextView]|"
-                                                                                      options:0
-                                                                                      metrics:nil
-                                                                                        views:NSDictionaryOfVariableBindings(editingTextView)]];
+    [self.editingTextSuperview v_addFitToParentConstraintsToSubview:editingTextView];
 }
 
 #pragma mark - UIView
@@ -128,7 +121,8 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
 
 - (CGSize)intrinsicContentSize
 {
-    return CGSizeMake(320.0f, VInputAccessoryViewDesiredMinimumHeight);
+    CGSize intrinsicSize = CGSizeMake(CGRectGetWidth(self.bounds), self.editingTextView.contentSize.height + 60.0f);
+    return intrinsicSize;
 }
 
 #pragma mark - Property Accessors
@@ -207,19 +201,11 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
 {
     self.placeholderLabel.hidden = (textView.text.length == 0) ? NO : YES;
     
-    CGFloat width = CGRectGetWidth(self.editingTextView.bounds);
-    CGFloat textHeight = self.editingTextView.contentSize.height;
-
-    CGFloat desiredHeight = self.verticalSpaceTextViewContainerToTopConstraint.constant + self.verticalSpaceTextViewContainerToBottomConstraint.constant + textHeight + VTextViewTopInsetAddition;
-    if (CGRectGetHeight(self.frame) < desiredHeight)
+    if (!CGSizeEqualToSize(self.lastContentSize, textView.contentSize))
     {
-        [self.delegate keyboardInputAccessoryView:self
-                                        wantsSize:CGSizeMake(width, roundf(desiredHeight))];
-    }
-    else if (CGRectGetHeight(self.frame) > desiredHeight)
-    {
-        [self.delegate keyboardInputAccessoryView:self
-                                        wantsSize:CGSizeMake(width, fmaxf(desiredHeight, self.intrinsicContentSize.height))];
+        // New size
+        [self invalidateIntrinsicContentSize];
+        self.lastContentSize = textView.contentSize;
     }
     
     if (textView.text.length == 0)
@@ -297,43 +283,6 @@ shouldChangeTextInRange:(NSRange)range
     _delegate = delegate;
     self.textStorage.taggingDelegate = delegate;
     self.textStorage.textView = self.editingTextView;
-}
-
-@end
-
-#pragma mark - Input AccessoryView
-
-NSString * const VInputAccessoryViewKeyboardFrameDidChangeNotification = @"com.victorious.VInputAccessoryViewKeyboardFrameDidChangeNotification";
-
-@implementation VInputAccessoryView
-
-- (void)willMoveToSuperview:(UIView *)newSuperview
-{
-    if (self.superview)
-    {
-        [self.superview removeObserver:self forKeyPath:NSStringFromSelector(@selector(center))];
-    }
-    
-    [newSuperview addObserver:self forKeyPath:NSStringFromSelector(@selector(center)) options:0 context:NULL];
-    
-    [super willMoveToSuperview:newSuperview];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if ([object isEqual:self.superview] && [keyPath isEqualToString:NSStringFromSelector(@selector(center))])
-    {
-        NSDictionary *userInfo = @{UIKeyboardFrameEndUserInfoKey:[NSValue valueWithCGRect:[object frame]]};
-        [[NSNotificationCenter defaultCenter] postNotificationName:VInputAccessoryViewKeyboardFrameDidChangeNotification object:nil userInfo:userInfo];
-    }
-}
-
-- (void)dealloc
-{
-    if (self.superview)
-    {
-        [self.superview removeObserver:self forKeyPath:NSStringFromSelector(@selector(center))];
-    }
 }
 
 @end

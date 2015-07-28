@@ -11,21 +11,6 @@
 
 @class VKeyboardInputAccessoryView, VDependencyManager;
 
-extern NSString * const VInputAccessoryViewKeyboardFrameDidChangeNotification;
-
-extern const CGFloat VInputAccessoryViewDesiredMinimumHeight;
-
-/**
- *  !!!ATTENTION!!!
- *  !!!ATTENTION!!!
- *  Need to provide one of these on your UIViewController that controls the superview of the keyboardInputAccessoryView.
- *  !!!ATTENTION!!!
- *  !!!ATTENTION!!!
- */
-@interface VInputAccessoryView : UIView
-
-@end
-
 @protocol VKeyboardInputAccessoryViewDelegate <NSObject, VUserTaggingTextStorageDelegate>
 
 /**
@@ -41,15 +26,6 @@ extern const CGFloat VInputAccessoryViewDesiredMinimumHeight;
  *  @param inputAccessoryView The input accessory view that the attachment key belongs to.
  */
 - (void)pressedAttachmentOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView;
-
-/**
- *  Asks the delegate to resize the inputAccessoryView to a specific size. Note that input accessory view will never request a size larger than its maximumAllowedSize property.
- *
- *  @param inpoutAccessoryView The inputAccessoryView that would like to be resized.
- *  @param size                The desired size fo the inputAccessoryView.
- */
-- (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inpoutAccessoryView
-                         wantsSize:(CGSize)size;
 
 @optional
 
