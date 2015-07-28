@@ -16,10 +16,7 @@ class RadialAnimatingView : UIView {
     
     /// Determines if this view's layer is currently animating
     var isAnimating: Bool {
-        if let animation = self.circleLayer.animationForKey(self.circleAnimationKey) {
-            return true
-        }
-        return false
+        return self.circleLayer.animationForKey(self.circleAnimationKey) != nil
     }
     
     required init(coder aDecoder: NSCoder) {

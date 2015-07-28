@@ -13,7 +13,7 @@ class ExperienceEnhancerAnimatingIconView : UIView {
     
     private let radialAnimatingView = RadialAnimatingView()
     private let backgroundEBView = ExperienceEnhancerIconView()
-    private var foregroundEBView = ExperienceEnhancerIconView()
+    private let foregroundEBView = ExperienceEnhancerIconView()
     
     var iconImage : UIImage? {
         didSet {
@@ -46,13 +46,12 @@ class ExperienceEnhancerAnimatingIconView : UIView {
     
     private func sharedInit() {
         
-        // Create background icon view
+        // Background icon view
         self.backgroundEBView.alpha = 0.3
         self.addSubview(self.backgroundEBView)
         self.v_addFitToParentConstraintsToSubview(self.backgroundEBView)
         
-        // Create foreground icon view and add it to radial animation view
-        self.foregroundEBView = ExperienceEnhancerIconView()
+        // Customize foreground icon view and add it to radial animation view
         self.radialAnimatingView.addSubview(self.foregroundEBView)
         self.radialAnimatingView.v_addFitToParentConstraintsToSubview(self.foregroundEBView)
         
