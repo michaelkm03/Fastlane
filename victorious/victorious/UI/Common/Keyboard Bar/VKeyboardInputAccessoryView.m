@@ -140,13 +140,16 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
 
 - (CGSize)intrinsicContentSize
 {
-//    CGFloat attachmentBarHeight = -self.vertialSpaceAttachmentsBarToCommentUI.constant;
     CGFloat editingTextViewPadding = self.editingTextViewTopSpace.constant + self.editingTextViewBottomSpace.constant;
     CGFloat contentSizeHeight = self.editingTextView.contentSize.height;
     CGFloat heightSum = editingTextViewPadding + contentSizeHeight;
     CGSize intrinsicSize = CGSizeMake(CGRectGetWidth(self.bounds), MAX(heightSum, 50.0f));
-    VLog(@"%@", NSStringFromCGSize(intrinsicSize));
     return intrinsicSize;
+}
+
+- (BOOL)endEditing
+{
+    return [self.editingTextView resignFirstResponder];
 }
 
 #pragma mark - Property Accessors

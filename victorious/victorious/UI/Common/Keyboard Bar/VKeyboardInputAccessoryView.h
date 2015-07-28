@@ -90,6 +90,11 @@
  */
 @property (nonatomic, assign) UIReturnKeyType returnKeyType;
 
+/**
+ *  Call this to stop editing.
+ */
+- (BOOL)endEditing;
+
 - (void)startEditing;
 - (void)clearTextAndResign;
 

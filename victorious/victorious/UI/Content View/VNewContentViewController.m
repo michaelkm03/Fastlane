@@ -363,6 +363,17 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
+    // We need to update first responder status on the collection view for the comment bar
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
+    {
+        [self.textEntryView endEditing];
+        [self.contentCollectionView resignFirstResponder];
+    }
+    else
+    {
+        [self.contentCollectionView becomeFirstResponder];
+    }
+
     NSMutableArray *affectedViews = [[NSMutableArray alloc] init];
     
     if ( self.moreButton != nil )
