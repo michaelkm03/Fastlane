@@ -8,8 +8,10 @@
 
 import Cocoa
 
+/// Provides a command-line interface to instantiating and running an instance of VTemplateDownloader
 class TemplateDownloadCLI: NSObject, VTemplateDownloadOperationDelegate {
     
+    /// A URL to an application bundle where the template will be cached
     let bundleURL: NSURL
     private let operationQueue = NSOperationQueue()
     
@@ -17,6 +19,7 @@ class TemplateDownloadCLI: NSObject, VTemplateDownloadOperationDelegate {
         self.bundleURL = bundleURL
     }
     
+    /// Begins the process of downloading all templates
     func downloadTemplate() {
         
         let environmentsFileURL = bundleURL.URLByAppendingPathComponent(environmentsFilename)
