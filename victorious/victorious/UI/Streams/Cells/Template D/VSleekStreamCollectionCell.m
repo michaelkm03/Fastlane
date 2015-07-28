@@ -74,13 +74,6 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
     
     self.countsTextView.textSelectionDelegate = self;
     self.actionButtonAnimationController = [[VActionButtonAnimationController alloc] init];
-    [self textViewConstraint];
-}
-
-- (NSLayoutConstraint *)textViewConstraint
-{
-    _textViewConstraint.constant = ((kCountsTextViewMinHeight - 1.0f)/kNormalizedWidthOfView) * (CGRectGetWidth(self.frame));
-    return _textViewConstraint;
 }
 
 + (VCellSizeCollection *)cellLayoutCollection
@@ -277,7 +270,7 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
         [self.previewContainer addConstraint:heightToWidth];
         self.previewContainerHeightConstraint = heightToWidth;
     }
-    
+    self.textViewConstraint.constant = ((kCountsTextViewMinHeight - 1.0f)/kNormalizedWidthOfView) * (CGRectGetWidth(self.bounds));
     [super updateConstraints];
 }
 
