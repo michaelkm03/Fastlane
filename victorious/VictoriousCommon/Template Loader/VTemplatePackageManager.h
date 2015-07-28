@@ -18,7 +18,7 @@
 @property (nonatomic, readonly) NSDictionary *templateJSON; ///< The template passed into the init method
 
 /**
- Initializes a new instance of VTemplateAssociatedData 
+ Initializes a new instance of VTemplatePackageManager
  with a specific template file.
  */
 - (instancetype)initWithTemplateJSON:(NSDictionary *)templateJSON NS_DESIGNATED_INITIALIZER;
