@@ -281,9 +281,10 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VComment *comment = (VComment *)self.comments[indexPath.row];
+    BOOL hasMedia = [comment commentMediaType] != VCommentMediaTypeNoMedia;
     return [VCommentCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds)
                                              text:comment.text
-                                        withMedia:comment.hasMedia];
+                                        withMedia:hasMedia];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -313,38 +314,38 @@
                                                     tagAttributes:tagStringAttributes
                                                 defaultAttributes:defaultStringAttributes
                                                 andTagTapDelegate:self];
-    if (comment.hasMedia)
+    
+    VCommentMediaType commentMediaType = [comment commentMediaType];
+    BOOL hasMedia = commentMediaType != VCommentMediaTypeNoMedia;
+    
+    cell.commentTextView.hasMedia = hasMedia;
+    cell.commentTextView.mediaThumbnailView.hidden = !hasMedia;
+    [cell.commentTextView.mediaThumbnailView sd_setImageWithURL:hasMedia ? comment.previewImageURL : nil];
+    
+    switch ([comment commentMediaType])
     {
-        cell.commentTextView.hasMedia = YES;
-        cell.commentTextView.mediaThumbnailView.hidden = NO;
-        [cell.commentTextView.mediaThumbnailView sd_setImageWithURL:comment.previewImageURL];
-        
-        if ([comment.mediaUrl isKindOfClass:[NSString class]] && [comment.mediaUrl v_hasVideoExtension])
-        {
-            cell.commentTextView.mediaURL = [NSURL URLWithString:comment.mediaUrl];
-            cell.commentTextView.mediaTapDelegate = self;
-            
-            if ([comment.shouldAutoplay boolValue])
-            {
-                [cell.commentTextView setMediaType:VCommentMediaViewTypeGIF];
-                // Make sure to grab the mp4 URL if its a gif
-                cell.commentTextView.autoplayURL = [comment mp4MediaURL];
-            }
-            else
-            {
-                [cell.commentTextView setMediaType:VCommentMediaViewTypeVideo];
-            }
-        }
-        else
-        {
+        case VCommentMediaTypeImage:
             [cell.commentTextView setMediaType:VCommentMediaViewTypeImage];
-        }
+            break;
+        case VCommentMediaTypeVideo:
+            cell.commentTextView.mediaURL = [comment properMediaURLGivenContentType];
+            cell.commentTextView.mediaTapDelegate = self;
+            [cell.commentTextView setMediaType:VCommentMediaViewTypeVideo];
+            break;
+        case VCommentMediaTypeGIF:
+            cell.commentTextView.mediaURL = [comment properMediaURLGivenContentType];
+            cell.commentTextView.mediaTapDelegate = self;
+            [cell.commentTextView setMediaType:VCommentMediaViewTypeGIF];
+            // Make sure to grab the mp4 URL if its a gif
+            cell.commentTextView.autoplayURL = [comment properMediaURLGivenContentType];
+            break;
+        case VCommentMediaTypeBallistic:
+            
+            break;
+        default:
+            break;
     }
-    else
-    {
-        cell.commentTextView.mediaThumbnailView.hidden = YES;
-        cell.commentTextView.hasMedia = NO;
-    }
+    
     cell.profileImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     [cell.profileImageView setProfileImageURL:[NSURL URLWithString:comment.user.pictureUrl]];
     __weak typeof(self) welf = self;

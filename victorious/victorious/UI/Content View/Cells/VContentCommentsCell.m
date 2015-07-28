@@ -205,9 +205,9 @@ static NSCache *_sharedImageCache = nil;
     {
         self.realTimeCommentText = @"";
     }
-    self.hasMedia = comment.hasMedia;
+    self.hasMedia = comment.commentMediaType != VCommentMediaTypeNoMedia;
     
-    if (comment.hasMedia)
+    if (self.hasMedia)
     {
         self.mediaPreviewURL = comment.previewImageURL;
         self.mediaIsVideo = [comment.mediaUrl v_hasVideoExtension];
@@ -218,7 +218,7 @@ static NSCache *_sharedImageCache = nil;
             {
                 [self.commentAndMediaView setMediaType:VCommentMediaViewTypeGIF];
                 // Make sure to grab the mp4 URL if its a gif
-                self.commentAndMediaView.autoplayURL = [comment mp4MediaURL];
+                self.commentAndMediaView.autoplayURL = [comment properMediaURLGivenContentType];
             }
             else
             {

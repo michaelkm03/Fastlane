@@ -1198,7 +1198,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             VComment *comment = self.viewModel.comments[indexPath.row];
             CGSize size = [VContentCommentsCell sizeWithFullWidth:minBound
                                                       commentBody:comment.text
-                                                         hasMedia:comment.hasMedia
+                                                         hasMedia:comment.commentMediaType != VCommentMediaTypeNoMedia
                                                 dependencyManager:self.dependencyManager];
             return CGSizeMake( minBound, size.height );
         }

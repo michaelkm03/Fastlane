@@ -15,9 +15,35 @@ static NSString * const kmp4MimeType = @"video/mp4";
 
 @implementation VComment (Fetcher)
 
-- (BOOL)hasMedia
+- (VCommentMediaType)commentMediaType
 {
-    return (self.mediaUrl && ![self.mediaUrl isEmpty]) || (self.thumbnailUrl && ![self.thumbnailUrl isEmpty]);
+    if ([self hasMedia])
+    {
+        if ([self.mediaUrl v_hasVideoExtension]) // << Video media type
+        {
+            if ([self shouldAutoplay])
+            {
+                return VCommentMediaTypeGIF;
+            }
+            else
+            {
+                return VCommentMediaTypeVideo;
+            }
+        }
+        else // << Image media type
+        {
+            if (self.mediaType != nil && [self.mediaType isEqualToString:VConstantsMediaTypeVoteType])
+            {
+                return VCommentMediaTypeBallistic;
+            }
+            else
+            {
+                return VCommentMediaTypeImage;
+            }
+        }
+    }
+    
+    return VCommentMediaTypeNoMedia;
 }
 
 - (NSURL *)previewImageURL
@@ -31,8 +57,28 @@ static NSString * const kmp4MimeType = @"video/mp4";
     {
         url = [[NSURL alloc] initWithString:self.thumbnailUrl];
     }
-
+    
     return url;
+}
+
+- (NSURL *)properMediaURLGivenContentType
+{
+    switch ([self commentMediaType])
+    {
+        case VCommentMediaTypeGIF:
+            return [self mp4MediaURL];
+            break;
+        default:
+            return [NSURL URLWithString:self.mediaUrl];
+            break;
+    }
+}
+
+#pragma mark - Private Methods
+
+- (BOOL)hasMedia
+{
+    return (self.mediaUrl && ![self.mediaUrl isEmpty]) || (self.thumbnailUrl && ![self.thumbnailUrl isEmpty]);
 }
 
 - (NSURL *)mp4MediaURL
@@ -45,8 +91,6 @@ static NSString * const kmp4MimeType = @"video/mp4";
     
     return [NSURL URLWithString:mediaDataURLString];
 }
-
-#pragma mark - Private Methods
 
 - (NSString *)commentMediaURLForMimeType:(NSString *)mimeType
 {
