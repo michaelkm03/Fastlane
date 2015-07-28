@@ -16,12 +16,6 @@ static NSString * const kImageMacroKey = @"imageMacro";
 static NSString * const kScaleKey = @"scale";
 static NSString * const kMacroReplacement = @"XXXXX";
 
-@interface VTemplateImageMacro ()
-
-@property (nonatomic, readonly) NSArray *images;
-
-@end
-
 @implementation VTemplateImageMacro
 
 - (instancetype)initWithJSON:(NSDictionary *)imageMacroJSON

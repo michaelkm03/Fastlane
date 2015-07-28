@@ -9,10 +9,18 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class VTemplateImage;
 
 /**
- An image set that appears in a template
+ An image set is an array containing multiple versions of the same image
+ at different scales. This class parses an image set from template JSON
+ and determines which image should be used based on the current screen
+ scale.
+ 
+ For more information, see the "image set" data type in the template
+ specification.
  */
 @interface VTemplateImageSet : NSObject
 
@@ -47,3 +55,5 @@
 - (VTemplateImage *)imageForScreenScale:(CGFloat)scale;
 
 @end
+
+NS_ASSUME_NONNULL_END
