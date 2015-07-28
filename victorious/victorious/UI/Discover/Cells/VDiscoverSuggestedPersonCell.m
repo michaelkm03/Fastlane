@@ -115,6 +115,7 @@
     VUser *me = [[VObjectManager sharedManager] mainUser];
     self.followButton.hidden = (self.user == me);
     [self.followButton setControlState:[VFollowControl controlStateForFollowing:self.user.isFollowedByMainUser.boolValue] animated:animated];
+    [self populateData];
 }
 
 - (IBAction)onFollow:(VFollowControl *)sender

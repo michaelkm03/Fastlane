@@ -94,8 +94,9 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
+    NSBundle *bundleForClass = [NSBundle bundleForClass:self];
     VPublishViewController *publishViewController = [[VPublishViewController alloc] initWithNibName:NSStringFromClass([VPublishViewController class])
-                                                                                             bundle:nil];
+                                                                                             bundle:bundleForClass];
     publishViewController.dependencyManager = dependencyManager;
     return publishViewController;
 }
@@ -235,7 +236,15 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
     {
         shareSize.height += kCollectionViewVerticalSpace;
     }
-    CGFloat collectionViewHeight = [VPublishSaveCollectionViewCell desiredHeight] + shareSize.height + kCollectionViewVerticalSpace * 2;
+    CGFloat collectionViewHeight = 0.0f;
+    if ( self.hasShareCell )
+    {
+        collectionViewHeight += shareSize.height + kCollectionViewVerticalSpace;
+    }
+    if ( !self.publishParameters.isGIF )
+    {
+        collectionViewHeight += [VPublishSaveCollectionViewCell desiredHeight] + kCollectionViewVerticalSpace;
+    }
     self.cardHeightConstraint.constant = staticHeights + collectionViewHeight;
 }
 
@@ -273,6 +282,10 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
     self.publishParameters.captionType = VCaptionTypeNormal;
     
     self.publishParameters.shouldSaveToCameraRoll = self.saveContentCell.cameraRollSwitch.on;
+    if (self.publishParameters.shouldSaveToCameraRoll)
+    {
+        [self saveMediaToCameraRollFromURL:self.publishParameters.mediaToUploadURL];
+    }
     
     NSIndexSet *shareParams = self.shareContentCell.selectedShareTypes;
     self.publishParameters.shareToFacebook = [shareParams containsIndex:VShareTypeFacebook];
@@ -597,6 +610,41 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 
 #pragma mark - Private Methods
 
+- (void)saveMediaToCameraRollFromURL:(NSURL *)sourceUrl
+{
+    if ( self.publishParameters.isVideo )
+    {
+        // Video compatibility check is skipped here
+        UISaveVideoAtPathToSavedPhotosAlbum([sourceUrl path], self, @selector(savingToCameraRollCompletionForImage:didFinishSavingWithError:contextInfo:), nil);
+    }
+    else
+    {
+        UIImageWriteToSavedPhotosAlbum(self.publishParameters.previewImage, self, @selector(savingToCameraRollCompletionForVideo:didFinishSavingWithError:contextInfo:), nil);
+    }
+}
+
+- (void)savingToCameraRollCompletionForImage:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
+{
+    [self logMediaSavingProcess:error];
+}
+
+- (void)savingToCameraRollCompletionForVideo:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
+{
+    [self logMediaSavingProcess:error];
+}
+
+- (void)logMediaSavingProcess:(NSError *)error
+{
+    if ( error == nil )
+    {
+        VLog(@"Saved media to camera roll successfully");
+    }
+    else
+    {
+        VLog(@"Failed to save media to camera roll with error information: %@", error);
+    }
+}
+
 - (void)setupBehaviors
 {
     self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
@@ -628,7 +676,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 - (BOOL)isSaveCellAtIndexPath:(NSIndexPath *)indexPath
 {
     //The save cell should ALWAYS be the last cell in the table
-    return indexPath.row == [self.collectionView numberOfItemsInSection:indexPath.section] - 1;
+    return ( indexPath.row == [self.collectionView numberOfItemsInSection:indexPath.section] - 1 && !self.publishParameters.isGIF );
 }
 
 - (void)shareCollectionViewSelectedShareItemCell:(VShareItemCollectionViewCell *)shareItemCell
@@ -666,7 +714,6 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
                  shareItemCell.state = success ? VShareItemCellStateSelected : VShareItemCellStateUnselected;
                  if ( !success )
                  {
-                     [self.permissionsTrackingHelper permissionsDidChange:VTrackingValueTwitterDidAllow permissionState:VTrackingValueDenied];
                      [weakSelf showAlertForError:error fromShareItemCell:shareItemCell];
                  }
              }];
@@ -680,17 +727,22 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 
 - (void)showAlertForError:(NSError *)error fromShareItemCell:(VShareItemCollectionViewCell *)shareItemCell
 {
-    if ( [error.domain isEqualToString:VTwitterManagerErrorDomain] )
-    {
-        return;
-    }
-    
     NSArray *actions;
     NSString *alertMessage;
     if ( shareItemCell.shareMenuItem.shareType == VShareTypeFacebook && [error.domain isEqualToString:VFacebookManagerErrorDomain] )
     {
         //This CAN signal that we don't have publish permissions for facebook, don't prompt the user to retry.
         alertMessage = NSLocalizedString(@"We failed to retrieve publish permissions.", nil);
+        actions = @[ [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"") style:UIAlertActionStyleDefault handler:nil] ];
+    }
+    else if ( [error.domain isEqualToString:VTwitterManagerErrorDomain] )
+    {
+        if ( error.code == VTwitterManagerErrorCanceled )
+        {
+            return;
+        }
+        
+        alertMessage = NSLocalizedString(@"TwitterTroubleshooting", nil);
         actions = @[ [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"") style:UIAlertActionStyleDefault handler:nil] ];
     }
     else
@@ -721,12 +773,16 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    return 1;
+    if ( self.hasShareCell || !self.publishParameters.isGIF )
+    {
+        return 1;
+    }
+    return 0;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    if ( self.hasShareCell )
+    if ( self.hasShareCell && !self.publishParameters.isGIF )
     {
         return 2;
     }
@@ -807,6 +863,9 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 
 - (void)alongsidePresentation
 {
+    // force view to load
+    self.view.alpha = 1.0f;
+    
     self.blurView.alpha = 1.0f;
     self.publishPrompt.transform = CGAffineTransformIdentity;
 }

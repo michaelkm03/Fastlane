@@ -10,7 +10,7 @@
 
 @implementation NSIndexSet (Convenience)
 
-- (NSArray *)indexPathsFromIndexesWithSecion:(NSInteger)section
+- (NSArray *)indexPathsFromIndexesWithSection:(NSInteger)section
 {
     NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:self.count];
     [self enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop)

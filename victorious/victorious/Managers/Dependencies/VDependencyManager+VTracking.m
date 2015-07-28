@@ -9,6 +9,7 @@
 #import <objc/runtime.h>
 #import "VDependencyManager+VTracking.h"
 #import "VTrackingManager.h"
+#import "VMultipleContainer.h"
 
 NSString * const VTrackingStartKey                      = @"start";
 NSString * const VTrackingStopKey                       = @"stop";
@@ -36,22 +37,37 @@ static const char kAssociatedObjectViewWasHiddenKey;
     return tracking[ eventURLKey ] ?: @[];
 }
 
+- (BOOL)isComponentForTemplateClass:(Class)templateClass
+{
+    NSString *componentName = [self stringForKey:@"name"];
+    NSString *className = [self defaultDictionaryOfClassesByTemplateName][ componentName ];
+    return [className isEqualToString:NSStringFromClass(templateClass)];
+}
+
 - (void)trackViewWillAppear:(UIViewController *)viewController
 {
-    [self trackViewWillAppear:viewController withParameters:nil];
+    [self trackViewWillAppear:viewController withParameters:nil templateClass:nil];
 }
 
 - (void)trackViewWillAppear:(UIViewController *)viewController withParameters:(NSDictionary *)parameters
+{
+    [self trackViewWillAppear:viewController withParameters:parameters templateClass:nil];
+}
+
+- (void)trackViewWillAppear:(UIViewController *)viewController withParameters:(NSDictionary *)parameters templateClass:(Class)templateClass
 {
     NSNumber *number = objc_getAssociatedObject( viewController, &kAssociatedObjectViewWasHiddenKey );
     BOOL wasHidden = number.boolValue;
     if ( !wasHidden )
     {
-        NSArray *urls = [self trackingURLsForKey:kTrackingViewKey];
-        
-        if ( urls  == nil )
+        if ( ![self isComponentForTemplateClass:templateClass ?: [viewController class]] )
         {
-            VLog( @"A template component must have a tracking 'viewability' to be tracked with `trackViewWithParameters:`." );
+            return;
+        }
+        
+        NSArray *urls = [self trackingURLsForKey:kTrackingViewKey];
+        if ( urls.count == 0 )
+        {
             return;
         }
         
@@ -64,9 +80,33 @@ static const char kAssociatedObjectViewWasHiddenKey;
     objc_setAssociatedObject( viewController, &kAssociatedObjectViewWasHiddenKey, @NO, OBJC_ASSOCIATION_RETAIN_NONATOMIC );
 }
 
+- (UIViewController *)viewControllerInNavControllerFromViewController:(UIViewController *)viewController
+{
+    UIViewController *viewControllerInNavController = viewController;
+    if ( [viewController conformsToProtocol:@protocol(VMultipleContainerChild)] )
+    {
+        id<VMultipleContainerChildDelegate> delegate = ((id<VMultipleContainerChild>)viewController).multipleContainerChildDelegate;
+        if ( [delegate isKindOfClass:[UIViewController class]] )
+        {
+            viewControllerInNavController = (UIViewController *)delegate;
+        }
+    }
+    return viewControllerInNavController;
+}
+
 - (void)trackViewWillDisappear:(UIViewController *)viewController
 {
-    BOOL wasHidden = viewController.navigationController.viewControllers.count > 1 || viewController.presentedViewController != nil;
+    UIViewController *viewControllerInNavController = [self viewControllerInNavControllerFromViewController:viewController];
+    NSArray *navStackAfterViewController = @[];
+    NSArray *navStack = viewController.navigationController.viewControllers;
+    NSInteger start = [navStack indexOfObject:viewControllerInNavController];
+    if ( start != NSNotFound )
+    {
+        NSRange range = NSMakeRange(start, navStack.count - start);
+        navStackAfterViewController = [navStack subarrayWithRange:range];
+    }
+    
+    BOOL wasHidden = navStackAfterViewController.count > 1 ||  viewController.presentedViewController != nil;
     objc_setAssociatedObject( viewController, &kAssociatedObjectViewWasHiddenKey, @(wasHidden), OBJC_ASSOCIATION_RETAIN_NONATOMIC );
 }
 

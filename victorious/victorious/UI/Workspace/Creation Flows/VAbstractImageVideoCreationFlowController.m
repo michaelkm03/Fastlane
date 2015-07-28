@@ -15,7 +15,6 @@
 #import "VCaptureContainerViewController.h"
 #import "VAlternateCaptureOption.h"
 #import "VAssetCollectionGridViewController.h"
-#import "VCameraViewController.h"
 #import "VImageSearchViewController.h"
 #import "VAssetDownloader.h"
 #import "UIAlertController+VSimpleAlert.h"
@@ -47,7 +46,7 @@ static NSString * const kCreationFlowSourceLibrary = @"library";
 static NSString * const kCreationFlowSourceCamera = @"camera";
 static NSString * const kCreationFlowSourceSearch = @"search";
 
-@interface VAbstractImageVideoCreationFlowController () <UINavigationControllerDelegate, VAssetCollectionGridViewControllerDelegate, VScaleAnimatorSource>
+@interface VAbstractImageVideoCreationFlowController () <VAssetCollectionGridViewControllerDelegate, VScaleAnimatorSource>
 
 @property (nonatomic, strong) NSArray *cachedAssetCollections;
 
@@ -63,6 +62,10 @@ static NSString * const kCreationFlowSourceSearch = @"search";
 // These come from the workspace not capture
 @property (nonatomic, strong) NSURL *renderedMediaURL;
 @property (nonatomic, strong) UIImage *previewImage;
+
+// Remixing
+@property (nonatomic, strong) NSNumber *parentNodeID;
+@property (nonatomic, strong) NSString *parentSequenceID;
 
 @end
 
@@ -97,7 +100,11 @@ static NSString * const kCreationFlowSourceSearch = @"search";
 
 - (void)remixWithPreviewImage:(UIImage *)previewImage
                      mediaURL:(NSURL *)mediaURL
+                 parentNodeID:(NSNumber *)parentNodeID
+             parentSequenceID:(NSString *)parentSequenceID
 {
+    self.parentNodeID = parentNodeID;
+    self.parentSequenceID = parentSequenceID;
     [self setupWorkspace];
     [self prepareWorkspaceWithMediaURL:mediaURL andPreviewImage:previewImage];
     [self addCloseButtonToViewController:self.workspaceViewController];
@@ -193,6 +200,7 @@ static NSString * const kCreationFlowSourceSearch = @"search";
         }
         else
         {
+            [strongSelf.workspaceViewController gainedFocus];
             [strongSelf dismissViewControllerAnimated:YES
                                            completion:nil];
         }
@@ -228,6 +236,8 @@ static NSString * const kCreationFlowSourceSearch = @"search";
                                previewImage:(UIImage *)previewImage
                               fromWorkspace:(VWorkspaceViewController *)workspace
 {
+    [workspace lostFocus];
+    
     // Setup presenter
     [self setupPublishPresenter];
     
@@ -235,6 +245,8 @@ static NSString * const kCreationFlowSourceSearch = @"search";
     self.publishParameters.source = [self sourceStringForSourceType:self.source];
     self.publishParameters.mediaToUploadURL = renderedMediaURL;
     self.publishParameters.previewImage = previewImage;
+    self.publishParameters.parentNodeID = self.parentNodeID;
+    self.publishParameters.parentSequenceID = self.parentSequenceID;
     [self configurePublishParameters:self.publishParameters
                        withWorkspace:workspace];
     self.publishPresenter.publishParameters = self.publishParameters;
@@ -284,7 +296,9 @@ static NSString * const kCreationFlowSourceSearch = @"search";
 
 #pragma mark - UINavigationControllerDelegate
 
-- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+- (void)navigationController:(UINavigationController *)navigationController
+       didShowViewController:(UIViewController *)viewController
+                    animated:(BOOL)animated
 {
     // Cleanup as we enter or exit different states
     if (viewController == self.captureContainerViewController)

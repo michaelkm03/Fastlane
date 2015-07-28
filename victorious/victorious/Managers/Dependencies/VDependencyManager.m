@@ -138,6 +138,11 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
     return [NSString stringWithFormat:@"%@\n%@", NSStringFromClass([self class]), self.configuration];
 }
 
+- (BOOL)containsKey:(NSString *)key
+{
+    return self.configuration[ key ] != nil;
+}
+
 #pragma mark - High-level dependency getters
 
 - (UIColor *)colorForKey:(NSString *)key

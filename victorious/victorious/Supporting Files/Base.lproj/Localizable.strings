@@ -347,7 +347,7 @@
 
 "ExpiresOn"             =   "Expires on %@";
 
-"me"                    =   "Me";
+"Me"                    =   "Me";
 
 "Edit"                  =   "Edit";
 "editProfileButton"     =   "Edit Profile";
@@ -600,6 +600,9 @@
 "Video failed to load" = "Video failed to load";
 "We encountered an error trying to edit this video." = "We encountered an error trying to edit this video.";
 
+"No Photos" = "No Photos";
+"No Videos" = "No Videos";
+
 "#nofilter" = "#nofilter";
 "Create a meme" = "Create a meme";
 "Create a quote" = "Create a quote";
@@ -631,9 +634,9 @@
 "Follow content from other fans." = "Follow content from other fans.";
 "Share creations with the community." = "Share creations with the community.";
 "Join in on the conversation." = "Join in on the conversation.";
-"By signing up you are agreeing to our \nterms of service and privacy policy." = "By signing up you are agreeing to our \nterms of service and privacy policy.";
-"terms of service" = "terms of service";
-"privacy policy" = "privacy policy";
+"By signing up you are agreeing to our" = "By signing up you are agreeing to our";
+"terms of service"      =   "terms of service";
+"privacy policy"        =   "privacy policy";
 "Sign up with Email" = "Sign up with Email";
 "Sign up with Facebook" = "Sign up with Facebook";
 "Create an account and join the community." = "Create an account and join the community.";

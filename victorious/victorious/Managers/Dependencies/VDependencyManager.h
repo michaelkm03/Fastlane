@@ -67,6 +67,12 @@ extern NSString * const VDependencyManagerEditTextWorkspaceKey;
 @interface VDependencyManager : NSObject
 
 /**
+ Provides a copy of the "templateClasses.plist" data used internally for instantiating
+ tempalte components.
+ */
+@property (nonatomic, copy, readonly) NSDictionary *defaultDictionaryOfClassesByTemplateName;
+
+/**
  Creates the root of the dependency manager.
  
  @param parentManager The next dependency manager up in the hierarchy
@@ -78,6 +84,12 @@ extern NSString * const VDependencyManagerEditTextWorkspaceKey;
 - (instancetype)initWithParentManager:(VDependencyManager *)parentManager
                         configuration:(NSDictionary *)configuration
     dictionaryOfClassesByTemplateName:(NSDictionary *)classesByTemplateName NS_DESIGNATED_INITIALIZER;
+
+/**
+ Checks for an entry in internal configuration by provided key.
+ Does not look in parent dependency managers, only checks at the local level.
+ */
+- (BOOL)containsKey:(NSString *)key;
 
 /**
  Returns the color with the specified key

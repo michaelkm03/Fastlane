@@ -1,0 +1,15 @@
+/* Class = "UIButton"; normalTitle = "Create Poll"; ObjectID = "5P2-t5-UdW"; */
+"5P2-t5-UdW.normalTitle" = "Tạo Bình chọn";
+
+/* Class = "UILabel"; text = "Ask a question..."; ObjectID = "YXm-O2-nI2"; */
+"YXm-O2-nI2.text" = "Hỏi một câu...";
+
+/* Class = "UILabel"; text = "Vote that"; ObjectID = "bEL-Dg-FBP"; */
+"bEL-Dg-FBP.text" = "Ủng hộ";
+
+/* Class = "UILabel"; text = "Vote this"; ObjectID = "kIg-QZ-oeo"; */
+"kIg-QZ-oeo.text" = "Ủng hộ";
+
+/* Class = "UINavigationItem"; title = "New Poll"; ObjectID = "vcX-pq-4nF"; */
+"vcX-pq-4nF.title" = "Bình chọn Mới";
+

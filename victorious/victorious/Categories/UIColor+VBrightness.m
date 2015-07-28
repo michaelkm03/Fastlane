@@ -8,6 +8,8 @@
 
 #import "UIColor+VBrightness.h"
 
+CGFloat VDefaultHighlightAmount = 0.2f;
+
 @implementation UIColor (VBrightness)
 
 - (VColorLuminance)v_colorLuminance
@@ -63,6 +65,19 @@
                                alpha:a];
     }
     return nil;
+}
+
+- (UIColor *)v_highlightColorBy:(CGFloat)amount
+{
+    VColorLuminance luminance = [self v_colorLuminance];
+    if (luminance == VColorLuminanceBright)
+    {
+        return [self v_colorDarkenedBy:amount];
+    }
+    else
+    {
+        return [self v_colorLightenedBy:amount];
+    }
 }
 
 @end
