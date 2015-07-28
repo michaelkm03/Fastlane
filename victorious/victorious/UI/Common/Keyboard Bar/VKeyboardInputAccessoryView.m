@@ -27,13 +27,21 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
 @property (nonatomic, strong) VUserTaggingTextStorage *textStorage;
 @property (nonatomic, assign) CGSize lastContentSize;
 
+// Views
 @property (weak, nonatomic) IBOutlet UIImageView *attachmentThumbnail;
-
 @property (nonatomic, weak) IBOutlet UIButton *attachmentsButton;
 @property (nonatomic, weak) IBOutlet UIButton *sendButton;
 @property (nonatomic, weak) UITextView *editingTextView;
 @property (nonatomic, weak) IBOutlet UIView *editingTextSuperview;
 @property (nonatomic, weak) IBOutlet UILabel *placeholderLabel;
+
+// Constraints
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *topSpaceAttachmentsToContainer;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *attachmentsBarHeightConstraint;
+
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *editingTextViewTopSpace;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *editingTextViewBottomSpace;
+
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, assign) BOOL addedTextView;
@@ -109,6 +117,17 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
 
 #pragma mark - UIView
 
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+{
+    UIView *superResult = [super hitTest:point withEvent:event];
+    if (superResult == self)
+    {
+        // Self should pass-through our containers will take everything else
+        return nil;
+    }
+    return superResult;
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
@@ -121,7 +140,12 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
 
 - (CGSize)intrinsicContentSize
 {
-    CGSize intrinsicSize = CGSizeMake(CGRectGetWidth(self.bounds), self.editingTextView.contentSize.height + 60.0f);
+//    CGFloat attachmentBarHeight = -self.vertialSpaceAttachmentsBarToCommentUI.constant;
+    CGFloat editingTextViewPadding = self.editingTextViewTopSpace.constant + self.editingTextViewBottomSpace.constant;
+    CGFloat contentSizeHeight = self.editingTextView.contentSize.height;
+    CGFloat heightSum = editingTextViewPadding + contentSizeHeight;
+    CGSize intrinsicSize = CGSizeMake(CGRectGetWidth(self.bounds), MAX(heightSum, 50.0f));
+    VLog(@"%@", NSStringFromCGSize(intrinsicSize));
     return intrinsicSize;
 }
 
@@ -252,6 +276,12 @@ shouldChangeTextInRange:(NSRange)range
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
+    [self animateAttachmentsBarAnimations:^
+    {
+        self.topSpaceAttachmentsToContainer.constant = self.attachmentsBarHeightConstraint.constant;
+    }
+                                    delay:NO];
+    
     if ([self.delegate respondsToSelector:@selector(keyboardInputAccessoryViewDidEndEditing:)])
     {
         [self.delegate keyboardInputAccessoryViewDidEndEditing:self];
@@ -260,6 +290,13 @@ shouldChangeTextInRange:(NSRange)range
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
+    [self animateAttachmentsBarAnimations:^
+    {
+        self.topSpaceAttachmentsToContainer.constant = 0.0f;
+    }
+                                    delay:YES];
+    
+    
     if ([self.delegate respondsToSelector:@selector(keyboardInputAccessoryViewDidBeginEditing:)])
     {
         [self.delegate keyboardInputAccessoryViewDidBeginEditing:self];
@@ -267,6 +304,22 @@ shouldChangeTextInRange:(NSRange)range
 }
 
 #pragma mark - Convenience
+
+- (void)animateAttachmentsBarAnimations:(void (^)(void))animations
+                                  delay:(BOOL)shouldDelay
+{
+    NSParameterAssert(animations != nil);
+    
+    [UIView animateWithDuration:0.2f
+                          delay:shouldDelay ? 0.5f : 0.0f
+                        options:kNilOptions
+                     animations:^
+     {
+         animations();
+         [self layoutIfNeeded];
+     }
+                     completion:nil];
+}
 
 - (NSDictionary *)textEntryAttributes
 {

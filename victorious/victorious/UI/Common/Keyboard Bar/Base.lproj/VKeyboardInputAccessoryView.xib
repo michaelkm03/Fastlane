@@ -18,7 +18,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v84-Mw-D11" userLabel="Comment UI" customClass="VKeyboardInputAccessoryView">
-                    <rect key="frame" x="0.0" y="50" width="320" height="51"/>
+                    <rect key="frame" x="0.0" y="51" width="320" height="50"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6MC-qB-WZJ" userLabel="Seperator">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
@@ -28,14 +28,14 @@
                             </constraints>
                         </view>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lDX-Xw-9Dk" userLabel="Attachment Thumbnail Image View">
-                            <rect key="frame" x="10" y="8" width="35" height="35"/>
+                            <rect key="frame" x="10" y="7" width="35" height="35"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="35" id="LOk-ge-GVA"/>
                                 <constraint firstAttribute="height" constant="35" id="Lwc-wz-QPk"/>
                             </constraints>
                         </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f5c-Th-WLf" userLabel="Attachments Button">
-                            <rect key="frame" x="5" y="0.0" width="45" height="51"/>
+                            <rect key="frame" x="5" y="-1" width="45" height="51"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="51" id="WK9-EV-eYt"/>
                                 <constraint firstAttribute="width" constant="45" id="lPv-aP-R4t"/>
@@ -44,7 +44,7 @@
                             <state key="normal" image="MessageCamera"/>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GKz-NI-jVc" userLabel="Send Button">
-                            <rect key="frame" x="270" y="0.0" width="40" height="51"/>
+                            <rect key="frame" x="270" y="-1" width="40" height="51"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="51" id="F5g-IC-8hQ"/>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="FI9-Uu-Ity"/>
@@ -52,13 +52,16 @@
                             <state key="normal" title="Send">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="pressedSend:" destination="HeO-pU-V0k" eventType="touchUpInside" id="rC8-4N-Obb"/>
+                            </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q7x-zi-ZRw" userLabel="Editing Superview">
-                            <rect key="frame" x="45" y="5" width="225" height="41"/>
+                            <rect key="frame" x="45" y="5" width="225" height="40"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7pn-fk-jDk" userLabel="Placeholder Label">
-                            <rect key="frame" x="50" y="17" width="76.5" height="17"/>
+                            <rect key="frame" x="50" y="16.5" width="76.5" height="17"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
@@ -66,6 +69,7 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="height" constant="50" id="16i-Pc-vT9"/>
                         <constraint firstItem="GKz-NI-jVc" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="7pn-fk-jDk" secondAttribute="trailing" constant="10" id="1kf-tM-gDb"/>
                         <constraint firstItem="f5c-Th-WLf" firstAttribute="leading" secondItem="v84-Mw-D11" secondAttribute="leading" constant="5" id="2Rg-FQ-T8h"/>
                         <constraint firstItem="6MC-qB-WZJ" firstAttribute="top" secondItem="v84-Mw-D11" secondAttribute="top" id="9WA-RO-aIO"/>
@@ -85,24 +89,28 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="v84-Mw-D11" secondAttribute="bottom" id="0ZT-44-C3a"/>
                 <constraint firstItem="Ycr-9I-eI5" firstAttribute="top" secondItem="HeO-pU-V0k" secondAttribute="top" id="BV2-uE-JWO"/>
+                <constraint firstItem="v84-Mw-D11" firstAttribute="top" relation="greaterThanOrEqual" secondItem="HeO-pU-V0k" secondAttribute="top" constant="50" id="GAk-gi-QZI"/>
                 <constraint firstItem="Ycr-9I-eI5" firstAttribute="leading" secondItem="HeO-pU-V0k" secondAttribute="leading" id="IAP-XV-5qe"/>
                 <constraint firstAttribute="trailing" secondItem="v84-Mw-D11" secondAttribute="trailing" id="JAX-EF-P6T"/>
                 <constraint firstItem="v84-Mw-D11" firstAttribute="leading" secondItem="HeO-pU-V0k" secondAttribute="leading" id="X7t-RU-796"/>
-                <constraint firstItem="v84-Mw-D11" firstAttribute="top" secondItem="Ycr-9I-eI5" secondAttribute="bottom" id="cI2-bv-WUz"/>
                 <constraint firstAttribute="trailing" secondItem="Ycr-9I-eI5" secondAttribute="trailing" id="fxC-Me-PPS"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="attachmentThumbnail" destination="lDX-Xw-9Dk" id="BGM-M5-2ZZ"/>
+                <outlet property="attachmentsBarHeightConstraint" destination="AR3-WE-2Aj" id="5GY-6n-jko"/>
                 <outlet property="attachmentsButton" destination="f5c-Th-WLf" id="aog-r9-kI8"/>
                 <outlet property="editingTextSuperview" destination="q7x-zi-ZRw" id="Diw-Cr-pBK"/>
+                <outlet property="editingTextViewBottomSpace" destination="hcZ-w7-KCp" id="WqV-Th-L6f"/>
+                <outlet property="editingTextViewTopSpace" destination="LYe-Wa-lSs" id="kap-lE-eos"/>
                 <outlet property="placeholderLabel" destination="7pn-fk-jDk" id="a8e-VS-Dtq"/>
                 <outlet property="sendButton" destination="GKz-NI-jVc" id="1IC-hD-kLc"/>
+                <outlet property="topSpaceAttachmentsToContainer" destination="BV2-uE-JWO" id="Eyw-Yo-bhN"/>
             </connections>
             <point key="canvasLocation" x="-110" y="362.5"/>
         </view>

@@ -364,10 +364,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
     NSMutableArray *affectedViews = [[NSMutableArray alloc] init];
-//    if ( self.textEntryView != nil )
-//    {
-//        [affectedViews addObject:self.textEntryView];
-//    }
+    
     if ( self.moreButton != nil )
     {
         [affectedViews addObject:self.moreButton];
@@ -398,10 +395,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-//    self.contentCollectionView.accessoryView =
-//    self.draggingDismissalView = [[VInputAccessoryView alloc] initWithFrame:CGRectZero];
-//    
+
     self.authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                            dependencyManager:self.dependencyManager];
     
@@ -433,38 +427,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         self.textEntryView = inputAccessoryView;
         self.contentCollectionView.accessoryView = self.textEntryView;
         [self.contentCollectionView becomeFirstResponder];
-//        NSLayoutConstraint *inputViewLeadingConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
-//                                                                                      attribute:NSLayoutAttributeLeading
-//                                                                                      relatedBy:NSLayoutRelationEqual
-//                                                                                         toItem:self.view
-//                                                                                      attribute:NSLayoutAttributeLeading
-//                                                                                     multiplier:1.0f
-//                                                                                       constant:0.0f];
-//        NSLayoutConstraint *inputViewTrailingconstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
-//                                                                                       attribute:NSLayoutAttributeTrailing
-//                                                                                       relatedBy:NSLayoutRelationEqual
-//                                                                                          toItem:self.view
-//                                                                                       attribute:NSLayoutAttributeTrailing
-//                                                                                      multiplier:1.0f
-//                                                                                        constant:0.0f];
-//        self.keyboardInputBarHeightConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
-//                                                                             attribute:NSLayoutAttributeHeight
-//                                                                             relatedBy:NSLayoutRelationEqual
-//                                                                                toItem:nil
-//                                                                             attribute:NSLayoutAttributeNotAnAttribute
-//                                                                            multiplier:1.0f
-//                                                                              constant:101.0f];
-//        self.bottomKeyboardToContainerBottomConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
-//                                                                                      attribute:NSLayoutAttributeBottom
-//                                                                                      relatedBy:NSLayoutRelationEqual
-//                                                                                         toItem:self.view
-//                                                                                      attribute:NSLayoutAttributeBottom
-//                                                                                     multiplier:1.0f
-//                                                                                       constant:0.0f];
-//
-//        self.bottomKeyboardToContainerBottomConstraint.priority = UILayoutPriorityDefaultLow;
-//        [self.view addSubview:inputAccessoryView];
-//        [self.view addConstraints:@[inputViewLeadingConstraint, inputViewTrailingconstraint, self.bottomKeyboardToContainerBottomConstraint]];
         
         // Adjust focus area for keyboard bar
         [self.focusHelper setFocusAreaInsets:UIEdgeInsetsMake(0, 0, CGRectGetHeight(inputAccessoryView.bounds), 0)];
@@ -515,6 +477,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                              animated:YES];
     
     self.contentCollectionView.delegate = self;
+    
+    [self.contentCollectionView becomeFirstResponder];
     self.videoCell.delegate = self;
 
 #ifdef V_ALLOW_VIDEO_DOWNLOADS
@@ -627,7 +591,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 #endif
     
     // We don't care about these notifications anymore but we still care about new user loggedin
-    
+    [self.contentCollectionView resignFirstResponder];
     self.contentCollectionView.delegate = nil;
     self.videoCell.delegate = nil;
     
@@ -1407,8 +1371,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
     {
         return;
     }
-    self.inputAccessoryView.frame = CGRectMake(0, 0, size.width, size.height);
-//    self.keyboardInputBarHeightConstraint.constant = size.height;
     [self.view layoutIfNeeded];
 }
 
