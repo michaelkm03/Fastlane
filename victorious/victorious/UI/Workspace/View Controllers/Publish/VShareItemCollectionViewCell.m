@@ -40,6 +40,13 @@
 
 #pragma mark - Setters
 
+- (void)setHighlighted:(BOOL)highlighted
+{
+    [super setHighlighted:highlighted];
+    
+    self.button.highlighted = highlighted;
+}
+
 - (void)setState:(VShareItemCellState)state
 {
     _state = state;

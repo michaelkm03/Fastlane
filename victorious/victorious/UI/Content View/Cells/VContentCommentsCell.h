@@ -8,12 +8,14 @@
 
 #import "VSwipeCollectionViewCell.h"
 
+#import "VCellFocus.h"
+
 @class VComment, VCommentTextAndMediaView, VDependencyManager, VSequencePermissions;
 
 /**
  *  UICollectionViewCell for representing a general comment on an item.
  */
-@interface VContentCommentsCell : VSwipeCollectionViewCell
+@interface VContentCommentsCell : VSwipeCollectionViewCell <VCellFocus>
 
 @property (nonatomic, strong) VComment *comment;
 @property (nonatomic, readonly) NSURL *mediaURL;

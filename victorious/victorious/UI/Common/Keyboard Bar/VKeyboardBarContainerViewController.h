@@ -15,5 +15,6 @@
 @property (strong, nonatomic) IBOutlet UIView *topConstraintView;
 @property (strong, nonatomic) UITableViewController *conversationTableViewController;
 @property (strong, nonatomic) VDependencyManager *dependencyManager;
+@property (assign, nonatomic) CGFloat keyboardBarHeight;
 
 @end

@@ -29,7 +29,7 @@
 - (instancetype)initWithObjectManager:(VObjectManager *)objectManager
 {
     self = [super init];
-    if (self)
+    if ( self != nil )
     {
         _objectManager = objectManager;
     }
@@ -57,6 +57,7 @@
         self.profileViewController = [VUserProfileViewController userProfileWithUser:self.objectManager.mainUser
                                                                 andDependencyManager:self.dependencyManager];
         self.profileViewController.representsMainUser = YES;
+        self.profileViewController.viewTrackingClassOverride = [self class];
     }
 }
 

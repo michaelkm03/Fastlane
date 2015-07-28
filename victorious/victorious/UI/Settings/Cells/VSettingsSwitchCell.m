@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) IBOutlet UISwitch *settingSwitch;
 @property (nonatomic, strong) IBOutlet UILabel *settingLabel;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, assign) BOOL shouldPreventNotifyingDelegate;
 
 @end
 
@@ -45,11 +46,26 @@ NS_ASSUME_NONNULL_BEGIN
     return self.settingSwitch.on;
 }
 
+- (void)setValue:(BOOL)value animated:(BOOL)animated
+{
+    self.shouldPreventNotifyingDelegate = YES;
+    [self.settingSwitch setOn:value animated:animated];
+    self.shouldPreventNotifyingDelegate = NO;
+}
+
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    self.shouldPreventNotifyingDelegate = NO;
+}
+
 #pragma mark - Actions
 
 - (IBAction)settingValueDidchange:(UISwitch *)settingSwitch
 {
-    if ( self.delegate != nil && [self.delegate respondsToSelector:@selector(settingsDidUpdateFromCell:)] )
+    if ( !self.shouldPreventNotifyingDelegate &&
+         self.delegate != nil &&
+         [self.delegate respondsToSelector:@selector(settingsDidUpdateFromCell:)] )
     {
         [self.delegate settingsDidUpdateFromCell:self];
     }

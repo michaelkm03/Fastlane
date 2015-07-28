@@ -33,7 +33,7 @@
 /**
  *  The parent sequence id if this is a remix.
  */
-@property (nonatomic, strong) NSNumber *parentSequenceID;
+@property (nonatomic, strong) NSString *parentSequenceID;
 
 /**
  *  The parent node id if this is a remix.

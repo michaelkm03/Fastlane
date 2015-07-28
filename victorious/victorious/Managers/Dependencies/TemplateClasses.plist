@@ -62,6 +62,10 @@
 	<string>VTextColorTool</string>
 	<key>camera.screen</key>
 	<string>VCameraViewController</string>
+	<key>imageCamera.screen</key>
+	<string>VImageCameraViewController</string>
+	<key>videoCamera.screen</key>
+	<string>VVideoCameraViewController</string>
 	<key>workspace.screen</key>
 	<string>VWorkspaceViewController</string>
 	<key>imageVideoGallery.screen</key>

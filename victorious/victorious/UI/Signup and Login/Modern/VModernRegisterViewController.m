@@ -176,6 +176,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 {
     if ([self shouldSignUp])
     {
+        [self.view endEditing:YES];
         [self.delegate registerWithEmail:self.emailField.text
                                 password:self.passwordField.text
                               completion:^(BOOL success, BOOL alreadyRegistered, NSError *error)
@@ -304,6 +305,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)signup
 {
+    [self.view endEditing:YES];
     if ([self shouldSignUp])
     {
         [self.delegate registerWithEmail:self.emailField.text

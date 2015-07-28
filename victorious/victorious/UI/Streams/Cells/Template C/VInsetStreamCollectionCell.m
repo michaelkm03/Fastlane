@@ -418,9 +418,16 @@ static const UIEdgeInsets kCaptionInsets            = { 4.0, 0.0, 4.0, 0.0  };
 {
     CGSize base = CGSizeMake( CGRectGetWidth(bounds), 0.0 );
     NSDictionary *userInfo = @{ kCellSizingSequenceKey : sequence,
-                                VCellSizeCacheKey : sequence.remoteId ?: @"",
+                                VCellSizeCacheKey : [self cacheKeyForSequence:sequence],
                                 kCellSizingDependencyManagerKey : dependencyManager };
     return [[[self class] cellLayoutCollection] totalSizeWithBaseSize:base userInfo:userInfo];
+}
+
++ (NSString *)cacheKeyForSequence:(VSequence *)sequence
+{
+    NSString *name = sequence.name ?: @"";
+    NSString *aspectRatioString = [NSString stringWithFormat:@"%.5f", [sequence previewAssetAspectRatio]];
+    return [name stringByAppendingString:aspectRatioString];
 }
 
 #pragma mark - CCHLinkTextViewDelegate
@@ -438,19 +445,19 @@ static const UIEdgeInsets kCaptionInsets            = { 4.0, 0.0, 4.0, 0.0  };
                               fromView:self];
 }
 
-#pragma mark - VStreamCellFocus
+#pragma mark - VCellFocus
 
 - (void)setHasFocus:(BOOL)hasFocus
 {
-    if ([self.previewView conformsToProtocol:@protocol(VStreamCellFocus)])
+    if ([self.previewView conformsToProtocol:@protocol(VCellFocus)])
     {
-        [(id <VStreamCellFocus>)self.previewView setHasFocus:hasFocus];
+        [(id <VCellFocus>)self.previewView setHasFocus:hasFocus];
     }
 }
 
 - (CGRect)contentArea
 {
-    return self.previewView.frame;
+    return self.previewContainer.frame;
 }
 
 #pragma mark - VHighlightContainer

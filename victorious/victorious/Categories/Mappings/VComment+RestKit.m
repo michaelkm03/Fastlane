@@ -7,6 +7,7 @@
 //
 
 #import "VComment+RestKit.h"
+#import "VCommentMedia+RestKit.h"
 
 @implementation VComment (RestKit)
 
@@ -31,7 +32,8 @@
                                   @"posted_at" : VSelectorName(postedAt),
                                   @"thumbnail_url" : VSelectorName(thumbnailUrl),
                                   @"realtime" : VSelectorName(realtime),
-                                  @"asset_id" : VSelectorName(assetId)
+                                  @"asset_id" : VSelectorName(assetId),
+                                  @"should_autoplay" : VSelectorName(shouldAutoplay)
                                   };
 
     RKEntityMapping *mapping = [RKEntityMapping
@@ -45,6 +47,13 @@
     [mapping addConnectionForRelationship:@"user" connectedBy:@{@"userId" : @"remoteId"}];
     [mapping addConnectionForRelationship:@"asset" connectedBy:@{@"assetId" : @"remoteId"}];
     [mapping addConnectionForRelationship:@"sequence" connectedBy:@{@"sequenceId" : @"remoteId"}];
+    
+    // Comment media
+    RKRelationshipMapping *commentMediaMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"media"
+                                                                                             toKeyPath:VSelectorName(commentMedia)
+                                                                                           withMapping:[VCommentMedia entityMapping]];
+    
+    [mapping addPropertyMapping:commentMediaMapping];
 
     return mapping;
 }

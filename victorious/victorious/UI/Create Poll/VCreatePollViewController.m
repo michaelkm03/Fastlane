@@ -22,10 +22,13 @@ static const NSInteger kMinLength = 2;
 
 static NSString * const kImageIconKey = @"imageIcon";
 static NSString * const kVideoIconKey = @"videoIcon";
+static NSString * const kOrIconKey = @"orIcon";
 
 static char KVOContext;
 
 @interface VCreatePollViewController() <UITextViewDelegate>
+
+@property (weak, nonatomic) IBOutlet UIImageView *middleOrIconImageView;
 
 @property (weak, nonatomic) IBOutlet UIImageView *leftPreviewImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *rightPreviewImageView;
@@ -100,6 +103,7 @@ static char KVOContext;
 
     UIImage *imageIcon = [self.dependencyManager imageForKey:kImageIconKey];
     UIImage *videoIcon = [self.dependencyManager imageForKey:kVideoIconKey];
+    UIImage *orIcon = [self.dependencyManager imageForKey:kOrIconKey];
     // If we have icons use them, if not stick with defaults.
     if (imageIcon != nil)
     {
@@ -108,6 +112,10 @@ static char KVOContext;
     if (videoIcon != nil)
     {
         [self.videoButton setImage:videoIcon forState:UIControlStateNormal];
+    }
+    if (orIcon != nil)
+    {
+        [self.middleOrIconImageView setImage:orIcon];
     }
     
     UIImage *newImage = [self.leftRemoveButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
@@ -315,10 +323,10 @@ static char KVOContext;
     self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager];
     __weak typeof(self) welf = self;
     self.attachmentPresenter.attachmentTypes = attachmentOptions;
-    self.attachmentPresenter.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
+    self.attachmentPresenter.resultHandler = ^void(BOOL success, VPublishParameters *publishParameters)
     {
-        [welf imagePickerFinishedWithURL:mediaURL
-                            previewImage:previewImage];
+        [welf imagePickerFinishedWithURL:publishParameters.mediaToUploadURL
+                            previewImage:publishParameters.previewImage];
         [welf dismissViewControllerAnimated:YES
                                  completion:nil];
     };

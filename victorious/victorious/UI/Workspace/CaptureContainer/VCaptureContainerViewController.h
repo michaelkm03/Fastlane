@@ -23,7 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setContainedViewController:(UIViewController *)viewController;
 
 /**
- *  An array of VAlternateCaptureOptions.
+ *  An array of VAlternateCaptureOptions. Disables the alternate capture buttons after an option has been chosen. 
+ *  Will not re-enable until viewWillAppear: is called again.
  */
 @property (nonatomic, strong) NSArray *alternateCaptureOptions;
 

@@ -100,8 +100,8 @@ $CURL -s -F api_key="${TESTFAIRY_API_KEY}" -F dsym=@"${DSYM_FILE}" -o /dev/null 
 echo ".dSYM was successfully uploaded to TestFairy."
 
 # Post Test Fairy url to VAMS
-echo
-echo "Posting Test Fairy url for '${APPNAME}' to Victorious backend"
-python vams_postbuild.py ${APPNAME} ios ${URL}
+# echo
+# echo "Posting Test Fairy url for '${APPNAME}' to Victorious backend"
+# python vams_postbuild.py ${APPNAME} ios ${URL}
 
 exit 0

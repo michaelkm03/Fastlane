@@ -14,7 +14,7 @@
 #import "VAssetCollectionGridViewController.h"
 #import "VVideoAssetDownloader.h"
 #import "VAlternateCaptureOption.h"
-#import "VCameraViewController.h"
+#import "VVideoCameraViewController.h"
 #import "victorious-Swift.h"
 
 // Edit
@@ -33,7 +33,7 @@ NSString * const VGIFCreationFlowControllerKey = @"gifCreateFlow";
 static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 
-@interface VGIFCreationFlowController () <GIFSearchViewControllerDelegate>
+@interface VGIFCreationFlowController () <GIFSearchViewControllerDelegate, VVideoCameraViewControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) GIFSearchViewController *gifSearchViewController;
@@ -48,6 +48,7 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
     self = [super initWithDependencyManager:dependencyManager];
     if (self != nil)
     {
+        [self setContext:VCameraContextVideoContentCreation];
         _dependencyManager = dependencyManager;
         
         _gridViewController = [self gridViewControllerWithDependencyManager:dependencyManager];
@@ -69,25 +70,6 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
     return [dependencyManager templateValueOfType:[VAssetCollectionGridViewController class]
                                            forKey:kImageVideoLibrary
                             withAddedDependencies:@{VAssetCollectionGridViewControllerMediaType:@(PHAssetMediaTypeVideo)}];
-}
-
-- (VCameraViewController *)cameraViewController
-{
-    __weak typeof(self) welf = self;
-    return [VCameraViewController cameraViewControllerWithContext:self.context
-                                                dependencyManager:self.dependencyManager
-                                                    resultHanlder:^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-            {
-                __strong typeof(welf) strongSelf = welf;
-                if (finished)
-                {
-                    strongSelf.source = VCreationFlowSourceCamera;
-                    [strongSelf captureFinishedWithMediaURL:capturedMediaURL
-                                               previewImage:previewImage];
-                }
-                
-                [strongSelf dismissViewControllerAnimated:YES completion:nil];
-            }];
 }
 
 - (VWorkspaceViewController *)workspaceViewControllerWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -123,7 +105,7 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
                                                                          andSelectionBlock:^void()
                                              {
                                                  __strong typeof(welf) strongSelf = welf;
-                                                 [strongSelf pushViewController:[strongSelf cameraViewController] animated:YES];
+                                                 [strongSelf showCamera];
                                              }];
     VAlternateCaptureOption *galleryOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Gallery", nil)
                                                                                        icon:[UIImage imageNamed:@"contententry_galleryicon"]
@@ -136,20 +118,31 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
     return @[ cameraOption, galleryOption ];
 }
 
+- (void)showCamera
+{
+    // Camera
+    VVideoCameraViewController *videoCamera = [VVideoCameraViewController videoCameraWithDependencyManager:self.dependencyManager
+                                                                                             cameraContext:self.context];
+    videoCamera.delegate = self;
+    [self pushViewController:videoCamera animated:YES];
+}
+
 #pragma mark - GIFSearchViewControllerDelegate
 
 - (void)GIFSelectedWithPreviewImage:(UIImage *)previewImage capturedMediaURL:(NSURL *)capturedMediaURL
 {
     self.source = VCreationFlowSourceSearch;
-    BOOL responds = [self.creationFlowDelegate respondsToSelector:@selector(shouldShowPublishScreenForFlowController)];
-    if ( !responds || (responds && [self.creationFlowDelegate shouldShowPublishScreenForFlowController]) )
+    [self captureFinishedWithMediaURL:capturedMediaURL previewImage:previewImage shouldSkipTrimmer:YES];
+}
+
+#pragma mark - VVideoCameraViewControllerDelegate
+
+- (void)videoCameraViewController:(VVideoCameraViewController *)videoCamera capturedVideoAtFileURL:(NSURL *)url
+{
+    // We only care if it's the top of the stack
+    if ([self.viewControllers lastObject] == videoCamera)
     {
-        [self setupPublishPresenter];
-        [self toPublishScreenWithRenderedMediaURL:capturedMediaURL previewImage:previewImage fromWorkspace:nil];
-    }
-    else
-    {
-        [self captureFinishedWithMediaURL:capturedMediaURL previewImage:previewImage shouldSkipTrimmer:YES];
+        [self captureFinishedWithMediaURL:url previewImage:nil];
     }
 }
 

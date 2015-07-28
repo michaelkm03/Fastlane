@@ -7,11 +7,11 @@
 //
 
 #import "VSequencePreviewView.h"
-#import "VStreamCellFocus.h"
+#import "VCellFocus.h"
 
 /**
  *  A Sequence preview view for video sequences.
  */
-@interface VVideoSequencePreviewView : VSequencePreviewView <VStreamCellFocus>
+@interface VVideoSequencePreviewView : VSequencePreviewView <VCellFocus>
 
 @end

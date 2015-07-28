@@ -17,13 +17,13 @@
 #import "VHashmarkView.h"
 #import "VTimeMarkView.h"
 #import "VTrimmerFlowLayout.h"
+#import "UIView+AutoLayout.h"
 
 // Dependencies
 #import "VDependencyManager.h"
 
 static NSString *const emptyCellIdentifier = @"emptyCell";
 
-static const CGFloat kMinimumThumbnailHeight = 70.0f; //The minimum height for the thumbnail preview collection view
 static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of the thumbnail collectionview
 
 @interface VTrimmerViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
@@ -31,8 +31,6 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
 @property (nonatomic, strong) UICollectionView *thumbnailCollectionView;
 
 @property (nonatomic, strong) VTrimControl *trimControl;
-
-@property (nonatomic, strong) UILabel *titleLabel;
 
 @property (nonatomic, strong) NSLayoutConstraint *dimmingViewWidthConstraint;
 
@@ -42,6 +40,7 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
 @property (nonatomic, strong) VTrimmerFlowLayout *trimmerFlowLayout;
 
 @property (nonatomic, assign) NSInteger numberOfFrames;
+@property (nonatomic, assign) CGFloat lastFrameWidth;
 
 @end
 
@@ -65,7 +64,7 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
 {
     [super viewDidLoad];
 
-    [self prepareThumbnailCollectionViewAndTitleLabel];
+    [self prepareThumbnailCollectionView];
     [self preparePlaybackOverlay];
     [self prepareTrimControl];
 }
@@ -74,22 +73,6 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
 {
     [super viewWillAppear:animated];
     [self registerSupplementaryViews];
-    self.titleLabel.alpha = 1.0f;
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [UIView animateWithDuration:1.5f
-                          delay:2.0f
-         usingSpringWithDamping:1.0f
-          initialSpringVelocity:0.0f
-                        options:kNilOptions
-                     animations:^
-     {
-         self.titleLabel.alpha = 0.0f;
-     }
-                     completion:nil];
 }
 
 #pragma mark - Property Accessors
@@ -97,8 +80,6 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
 - (void)setMaximumTrimDuration:(CMTime)maximumTrimDuration
 {
     _maximumTrimDuration = maximumTrimDuration;
-    self.trimControl.maxDuration = maximumTrimDuration;
-    [self updateTrimControlTitleWithTime:self.trimControl.selectedDuration];
     [self.thumbnailCollectionView.collectionViewLayout invalidateLayout];
 }
 
@@ -120,9 +101,11 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
 
 - (CMTimeRange)selectedTimeRange
 {
-    CMTime timeScrolled = CMTimeSubtract([self maximumEndTime], [self currentTimeOffset]);
-    CMTime upperRange = CMTIME_COMPARE_INLINE(timeScrolled, <, self.trimControl.selectedDuration) ? timeScrolled : self.trimControl.selectedDuration;
-    return CMTimeRangeMake([self currentTimeOffset], upperRange);
+    CMTime currentTime = [self currentTimeOffset];
+    CMTime selectedDuration = [self selectedDuration];
+    CMTime timeScrolled = CMTimeSubtract([self maximumEndTime], currentTime);
+    CMTime upperRange = CMTIME_COMPARE_INLINE(timeScrolled, <, selectedDuration) ? timeScrolled : selectedDuration;
+    return CMTimeRangeMake(currentTime, upperRange);
 }
 
 - (void)setCurrentPlayTime:(CMTime)currentPlayTime
@@ -130,10 +113,11 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
     _currentPlayTime = currentPlayTime;
     if (CMTIME_COMPARE_INLINE(currentPlayTime, >, kCMTimeZero))
     {
-        Float64 progress = (CMTimeGetSeconds(currentPlayTime) - CMTimeGetSeconds([self currentTimeOffset])) / CMTimeGetSeconds(self.maximumTrimDuration);
-        CGFloat playbackOverlayWidth = (CGRectGetWidth(self.view.bounds) * progress) - (CGRectGetWidth(self.trimControl.trimThumbBody.frame)/2);
-        self.currentPlayBackWidthConstraint.constant = ((playbackOverlayWidth >= 0) && (playbackOverlayWidth <= CGRectGetMaxX(self.trimControl.trimThumbBody.frame))) ? playbackOverlayWidth  : 0.0f;
-        [self.view layoutIfNeeded];
+        Float64 progress = CMTimeGetSeconds(CMTimeSubtract(currentPlayTime, [self currentTimeOffset])) / CMTimeGetSeconds([self selectedDuration]);
+        CGFloat maxWidth = CGRectGetMaxX(self.trimControl.trimThumbBody.frame);
+        CGFloat playbackOverlayWidth = (maxWidth * progress);
+        self.currentPlayBackWidthConstraint.constant = ((playbackOverlayWidth >= 0) && (playbackOverlayWidth <= maxWidth)) ? playbackOverlayWidth  : 0.0f;
+        [self.view setNeedsLayout];
     }
 }
 
@@ -142,12 +126,6 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
     _thumbnailDataSource = thumbnailDataSource;
     
     [self.thumbnailCollectionView reloadData];
-}
-
-- (void)setTitle:(NSString *)title
-{
-    [super setTitle:title];
-    self.titleLabel.text = NSLocalizedString(title, @"");
 }
 
 - (BOOL)isInteracting
@@ -180,11 +158,12 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
     
     while (neededTimeLineWidth > 0)
     {
+        self.lastFrameWidth = neededTimeLineWidth;
         numberOfFrames++;
         neededTimeLineWidth = neededTimeLineWidth - frameWidth;
     }
-    self.numberOfFrames = numberOfFrames - 1;
-    return numberOfFrames; // 1 extra for a spacer cell
+    self.numberOfFrames = numberOfFrames;
+    return numberOfFrames;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
@@ -251,21 +230,15 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGSize size;
-    NSInteger numberOfItems = [self collectionView:collectionView
-                            numberOfItemsInSection:indexPath.section];
-    
-    // Empty Cell
-    if (indexPath.row == numberOfItems - 1)
-    {
-        return CGSizeMake(0, 0);
-    }
-    
     [self.currentPlayBackOverlayView updateConstraintsIfNeeded];
 
-    CGFloat width = MIN(VTrimControlMaximumHeight, CGRectGetHeight(self.currentPlayBackOverlayView.frame));
-    size = CGSizeMake(width, width);
-    return size;
+    CGFloat height = CGRectGetHeight(collectionView.bounds);
+    CGFloat width = height;
+    if ( indexPath.row == [collectionView numberOfItemsInSection:indexPath.section] - 1 )
+    {
+        width = self.lastFrameWidth;
+    }
+    return CGSizeMake(width, height);
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
@@ -339,45 +312,42 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 
 - (void)updateAndNotify
 {
-    if (isnan(CMTimeGetSeconds(self.trimControl.maxDuration)))
+    if (isnan(CMTimeGetSeconds(self.maximumTrimDuration)))
     {
         return;
     }
-    [self updateTrimControlTitleWithTime:self.trimControl.selectedDuration];
+    [self updateTrimControlTitleWithTime:[self selectedDuration]];
     
     if ([self.delegate respondsToSelector:@selector(trimmerViewController:didUpdateSelectedTimeRange:)])
     {
         [self.delegate trimmerViewController:self
                   didUpdateSelectedTimeRange:[self selectedTimeRange]];
     }
-    Float64 progress = CMTimeGetSeconds(self.trimControl.selectedDuration) / CMTimeGetSeconds(self.maxDuration);
-    self.dimmingViewWidthConstraint.constant = CGRectGetWidth(self.view.bounds) - (CGRectGetWidth(self.view.bounds) * progress);
-   [self.view layoutIfNeeded];
+    CGFloat trimEnd = CGRectGetMaxX(self.trimControl.trimThumbBody.frame);
+    Float64 progress = trimEnd / [self visibleThumbnailCollectionViewWidth];
     
-    CGFloat progressOfThumbs = 1.0f - (self.thumbnailCollectionView.contentOffset.x / (CGRectGetWidth(self.thumbnailCollectionView.bounds)));
-    
-    if (progress > progressOfThumbs)
+    CGFloat width = CGRectGetWidth(self.view.bounds) - (CGRectGetWidth(self.view.bounds) * progress);
+    if ( self.dimmingViewWidthConstraint.constant != width )
     {
-        self.trimControl.trimThumbBody.center = CGPointMake(progressOfThumbs*CGRectGetWidth(self.thumbnailCollectionView.bounds), self.trimControl.trimThumbBody.center.y);
+        self.dimmingViewWidthConstraint.constant = CGRectGetWidth(self.view.bounds) - (CGRectGetWidth(self.view.bounds) * progress);
+        [self.view setNeedsLayout];
     }
     
-    for (UICollectionViewCell *cell in [self.thumbnailCollectionView visibleCells])
+    if (progress >= 1.0f && self.thumbnailCollectionView.contentSize.width != 0)
     {
-        NSIndexPath *indexPath = [self.thumbnailCollectionView indexPathForCell:cell];
-        NSInteger lastIndex = [indexPath indexAtPosition:[indexPath length] - 1];
-        lastIndex = lastIndex + 1;
-        if (lastIndex == self.numberOfFrames)
-        {
-            CGRect frame;
-            frame.size = cell.frame.size;
-            frame.origin = CGPointMake(cell.frame.origin.x - self.thumbnailCollectionView.contentOffset.x, cell.frame.origin.y + self.thumbnailCollectionView.contentOffset.y);
-            
-            if (CGRectGetMaxX(frame) < CGRectGetMaxX(self.trimControl.trimThumbBody.frame))
-            {
-                self.trimControl.trimThumbBody.center = CGPointMake(CGRectGetMaxX(frame) - (CGRectGetWidth(self.trimControl.trimThumbBody.frame)/2), self.trimControl.trimThumbBody.center.y);
-            }
-        }
+        self.trimControl.trimThumbBody.center = CGPointMake([self visibleThumbnailCollectionViewWidth] - CGRectGetWidth(self.trimControl.trimThumbBody.bounds) / 2, self.trimControl.trimThumbBody.center.y);
     }
+}
+
+- (CGFloat)visibleThumbnailCollectionViewWidth
+{
+    return MIN(self.thumbnailCollectionView.contentSize.width - self.thumbnailCollectionView.contentOffset.x, CGRectGetWidth(self.thumbnailCollectionView.bounds));
+}
+
+- (CMTime)selectedDuration
+{
+    CGFloat percentSelected = CGRectGetMaxX(self.trimControl.trimThumbBody.frame) / self.thumbnailCollectionView.contentSize.width;
+    return CMTimeMultiplyByFloat64(self.maximumTrimDuration, percentSelected);
 }
 
 - (void)updateTrimControlTitleWithTime:(CMTime)time
@@ -394,7 +364,8 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 
 - (CGFloat)timelineWidthForFullTrack
 {
-    return [self timelineWidthPerSecond] * CMTimeGetSeconds(self.maximumEndTime);
+    CGFloat duration =  CMTimeGetSeconds(self.maximumEndTime) - CMTimeGetSeconds(self.minimumStartTime);
+    return [self timelineWidthPerSecond] * duration;
 }
 
 - (CMTime)currentTimeOffset
@@ -404,7 +375,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 
 #pragma mark View Hierarcy Setup
 
-- (void)prepareThumbnailCollectionViewAndTitleLabel
+- (void)prepareThumbnailCollectionView
 {
     self.trimmerFlowLayout = [[VTrimmerFlowLayout alloc] init];
     CGRect bounds = self.view.bounds;
@@ -425,34 +396,21 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
     self.thumbnailCollectionView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, kCollectionViewRightInset);
     
     [self.view addSubview:self.thumbnailCollectionView];
-
-    self.titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    self.titleLabel.text = NSLocalizedString(self.title, @"");
-    self.titleLabel.textAlignment = NSTextAlignmentCenter;
-    self.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
-    self.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    self.titleLabel.textColor = [UIColor whiteColor];
-    [self.view addSubview:self.titleLabel];
-
+    
     NSDictionary *viewMap = @{
                               @"collectionView": self.thumbnailCollectionView,
-                              @"titleLabel": self.titleLabel
                               };
-    CGFloat topPadding = [VTrimControl topPadding];
+    CGFloat topPadding = VTrimmerTopPadding;
+    CGFloat bottomPadding = topPadding / 2;
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[collectionView]|"
                                                                       options:kNilOptions
                                                                       metrics:nil
                                                                         views:viewMap]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[titleLabel]|"
-                                                                      options:kNilOptions
-                                                                      metrics:nil
-                                                                        views:viewMap]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-kTimelineTopPadding-[collectionView(kMinimumThumbnailHeight@748,>=kMinimumThumbnailHeight@749)][titleLabel(<=kMaximumLabelHeight)]|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(timeLinePadding)-[collectionView]-(bottomPadding)-|"
                                                                       options:kNilOptions
                                                                       metrics:@{
-                                                                                @"kTimelineTopPadding":@(topPadding),
-                                                                                @"kMinimumThumbnailHeight":@(kMinimumThumbnailHeight),
-                                                                                @"kMaximumLabelHeight":@(topPadding)
+                                                                                @"timeLinePadding":@(topPadding),
+                                                                                @"bottomPadding":@(bottomPadding)
                                                                                 }
                                                                         views:viewMap]];
 }
@@ -491,7 +449,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 
 - (void)preparePlaybackOverlay
 {
-    CGRect frame = CGRectMake(0, 0, 123.6f, 55.0f);
+    CGRect frame = CGRectMake(0, 0, 123.0f, 55.0f);
     self.currentPlayBackOverlayView = [[UIView alloc] initWithFrame:frame];
     self.currentPlayBackOverlayView.userInteractionEnabled = NO;
     

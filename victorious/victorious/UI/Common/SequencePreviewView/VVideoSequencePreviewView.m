@@ -110,7 +110,7 @@
     }
 }
 
-#pragma mark - VStreamCellFocus
+#pragma mark - VCellFocus
 
 - (void)setHasFocus:(BOOL)hasFocus
 {

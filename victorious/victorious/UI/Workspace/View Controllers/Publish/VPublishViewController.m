@@ -94,8 +94,9 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
+    NSBundle *bundleForClass = [NSBundle bundleForClass:self];
     VPublishViewController *publishViewController = [[VPublishViewController alloc] initWithNibName:NSStringFromClass([VPublishViewController class])
-                                                                                             bundle:nil];
+                                                                                             bundle:bundleForClass];
     publishViewController.dependencyManager = dependencyManager;
     return publishViewController;
 }
@@ -666,7 +667,6 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
                  shareItemCell.state = success ? VShareItemCellStateSelected : VShareItemCellStateUnselected;
                  if ( !success )
                  {
-                     [self.permissionsTrackingHelper permissionsDidChange:VTrackingValueTwitterDidAllow permissionState:VTrackingValueDenied];
                      [weakSelf showAlertForError:error fromShareItemCell:shareItemCell];
                  }
              }];
@@ -680,17 +680,22 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 
 - (void)showAlertForError:(NSError *)error fromShareItemCell:(VShareItemCollectionViewCell *)shareItemCell
 {
-    if ( [error.domain isEqualToString:VTwitterManagerErrorDomain] )
-    {
-        return;
-    }
-    
     NSArray *actions;
     NSString *alertMessage;
     if ( shareItemCell.shareMenuItem.shareType == VShareTypeFacebook && [error.domain isEqualToString:VFacebookManagerErrorDomain] )
     {
         //This CAN signal that we don't have publish permissions for facebook, don't prompt the user to retry.
         alertMessage = NSLocalizedString(@"We failed to retrieve publish permissions.", nil);
+        actions = @[ [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"") style:UIAlertActionStyleDefault handler:nil] ];
+    }
+    else if ( [error.domain isEqualToString:VTwitterManagerErrorDomain] )
+    {
+        if ( error.code == VTwitterManagerErrorCanceled )
+        {
+            return;
+        }
+        
+        alertMessage = NSLocalizedString(@"TwitterTroubleshooting", nil);
         actions = @[ [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"") style:UIAlertActionStyleDefault handler:nil] ];
     }
     else
@@ -807,6 +812,9 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 
 - (void)alongsidePresentation
 {
+    // force view to load
+    self.view.alpha = 1.0f;
+    
     self.blurView.alpha = 1.0f;
     self.publishPrompt.transform = CGAffineTransformIdentity;
 }

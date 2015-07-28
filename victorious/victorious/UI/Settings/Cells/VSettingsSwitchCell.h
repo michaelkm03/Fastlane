@@ -26,6 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setTitle:(NSString *)title value:(BOOL)value;
 
+- (void)setValue:(BOOL)value animated:(BOOL)animated;
+
 + (NSString *)suggestedReuseIdentifier;
 
 /**

@@ -7,13 +7,30 @@
 //
 
 #import "VTwitterAccountsHelper.h"
+#import "VPermissionsTrackingHelper.h"
 
 // Selector
 #import "VSelectorViewController.h"
 
 @import Accounts;
 
+@interface VTwitterAccountsHelper ()
+
+@property (nonatomic, strong) VPermissionsTrackingHelper *permissionsTrackingHelper;
+
+@end
+
 @implementation VTwitterAccountsHelper
+
+- (instancetype)init
+{
+    self = [super init];
+    if ( self != nil )
+    {
+        _permissionsTrackingHelper = [[VPermissionsTrackingHelper alloc] init];
+    }
+    return self;
+}
 
 - (void)selectTwitterAccountWithViewControler:(UIViewController *)viewControllerToPresentOnIfNeeded
                                 completion:(VTwitterAccountsHelperCompletion)completion
@@ -29,12 +46,14 @@
      {
          if (!granted)
          {
+             [self.permissionsTrackingHelper permissionsDidChange:VTrackingValueTwitterDidAllow permissionState:VTrackingValueDenied];
              [self twitterAccessNotGrantedWithCompletion:completion
                                viewControllerToPresentOn:viewControllerToPresentOnIfNeeded
                                                    error:error];
          }
          else
          {
+             [self.permissionsTrackingHelper permissionsDidChange:VTrackingValueTwitterDidAllow permissionState:VTrackingValueTwitterDidAllow];
              NSArray *twitterAccounts = [account accountsWithAccountType:accountType];
              if (twitterAccounts.count > 0)
              {
