@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  When cached items are included in the application bundle,
  the filename should be the cache ID with this constant
@@ -61,11 +63,12 @@ extern NSString * const VDataCacheBundleResourceExtension;
 - (BOOL)cacheDataAtURL:(NSURL *)fileURL forID:(id<VDataCacheID>)identifier error:(NSError **)error;
 
 /**
- Retrieves data previously cached with the given ID.
+ Retrieves data previously cached with the given ID. Also searches
+ the application bundle for data cached at build time.
  
  @return the data previously cached, or nil if none could be found.
  */
-- (NSData *)cachedDataForID:(id<VDataCacheID>)identifier;
+- (nullable NSData *)cachedDataForID:(id<VDataCacheID>)identifier;
 
 /**
  Returns YES if we've already cached data with the specified ID.
@@ -79,3 +82,5 @@ extern NSString * const VDataCacheBundleResourceExtension;
 - (NSSet *)setOfIDsWithoutCachedDataFromIDSet:(NSSet *)setOfIDs;
 
 @end
+
+NS_ASSUME_NONNULL_END
