@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
  and determines which image should be used based on the current screen
  scale.
  
- For more information, see the "image set" data type in the template
+ For more information, see the "Image Macro" data type in the template
  specification.
  */
 @interface VTemplateImageSet : NSObject
