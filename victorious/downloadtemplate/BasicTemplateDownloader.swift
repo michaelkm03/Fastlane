@@ -17,13 +17,18 @@ class BasicTemplateDownloader: NSObject, VTemplateDownloader {
     let requestDecorator = VAPIRequestDecorator()
     
     private let environment: VEnvironment
+    private var apiURL: NSURL {
+        get {
+            return NSURL(string: "/api/template", relativeToURL: environment.baseURL)!
+        }
+    }
     
     init(environment: VEnvironment) {
         self.environment = environment
     }
     
     func downloadTemplateWithCompletion( completion: VTemplateDownloaderCompletion ) {
-        let request = NSMutableURLRequest(URL: apiURL())
+        let request = NSMutableURLRequest(URL: apiURL)
         requestDecorator.appID = environment.appID
         requestDecorator.updateHeadersInRequest(request)
         
@@ -32,9 +37,5 @@ class BasicTemplateDownloader: NSObject, VTemplateDownloader {
             completion(data, error)
         }
         dataTask.resume()
-    }
-    
-    private func apiURL() -> NSURL {
-        return NSURL(string: "/api/template", relativeToURL: environment.baseURL)!
     }
 }
