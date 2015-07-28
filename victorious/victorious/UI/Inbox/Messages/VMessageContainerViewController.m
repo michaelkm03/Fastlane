@@ -26,6 +26,7 @@
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VAccessoryNavigationSource.h"
 #import "VDependencyManager+VNavigationItem.h"
+#import "VDependencyManager+VTracking.h"
 #import "UIViewController+VAccessoryScreens.h"
 
 static const NSUInteger kCharacterLimit = 1024;
@@ -73,10 +74,20 @@ static const NSUInteger kCharacterLimit = 1024;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.dependencyManager trackViewWillAppear:self];
+    
     [self setEdgesForExtendedLayout:UIRectEdgeAll];
     [self updateTitle];
     [self.dependencyManager configureNavigationItem:self.navigationItem];
     [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [self.dependencyManager trackViewWillDisappear:self];
 }
 
 - (void)viewDidAppear:(BOOL)animated

@@ -35,7 +35,7 @@ fi
 
 # Grab the latest assets and configuration data from VAMS.
 # DO NOT put a trailing slash after the configurations directory.
-python build-scripts/vams_prebuild.py $FOLDER configurations/$FOLDER ios
+# python build-scripts/vams_prebuild.py $FOLDER configurations/$FOLDER ios
 
 FOLDER="configurations/$FOLDER"
 

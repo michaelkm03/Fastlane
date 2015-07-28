@@ -56,6 +56,13 @@
     self.selectionView.alpha = selected ? 1.0f : 0.0f;
 }
 
+- (void)setHighlighted:(BOOL)highlighted
+{
+    [super setHighlighted:highlighted];
+    
+    self.selectionView.alpha = highlighted ? 1.0f : 0.0f;
+}
+
 #pragma mark - Property Accessors
 
 - (void)setAsset:(PHAsset *)asset

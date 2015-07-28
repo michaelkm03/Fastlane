@@ -36,12 +36,6 @@
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2op-9K-t9j">
                                                     <rect key="frame" x="0.0" y="0.0" width="294" height="251"/>
                                                 </imageView>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="siM-bf-RMn" customClass="VVideoView">
-                                                    <rect key="frame" x="0.0" y="0.0" width="294" height="251"/>
-                                                    <connections>
-                                                        <outlet property="delegate" destination="c5h-qB-UfL" id="KLJ-gp-bq9"/>
-                                                    </connections>
-                                                </view>
                                                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="jY3-bw-i3y">
                                                     <rect key="frame" x="137" y="116" width="20" height="20"/>
                                                 </activityIndicatorView>
@@ -53,19 +47,14 @@
                                             <constraint firstAttribute="bottom" secondItem="2op-9K-t9j" secondAttribute="bottom" id="3O8-iw-c2i"/>
                                             <constraint firstItem="2op-9K-t9j" firstAttribute="leading" secondItem="c5h-qB-UfL" secondAttribute="leading" id="AWe-HL-Qwd"/>
                                             <constraint firstAttribute="trailing" secondItem="2op-9K-t9j" secondAttribute="trailing" id="Dh4-KS-nDN"/>
-                                            <constraint firstItem="siM-bf-RMn" firstAttribute="leading" secondItem="c5h-qB-UfL" secondAttribute="leading" id="KNv-0G-RuO"/>
                                             <constraint firstAttribute="centerY" secondItem="jY3-bw-i3y" secondAttribute="centerY" id="LeN-1Q-5l6"/>
                                             <constraint firstItem="2op-9K-t9j" firstAttribute="top" secondItem="c5h-qB-UfL" secondAttribute="top" id="Ows-6D-nhD"/>
-                                            <constraint firstAttribute="bottom" secondItem="siM-bf-RMn" secondAttribute="bottom" id="PT5-Yo-YNW"/>
                                             <constraint firstAttribute="centerX" secondItem="jY3-bw-i3y" secondAttribute="centerX" constant="0.5" id="d1Z-Jd-OcB"/>
-                                            <constraint firstItem="siM-bf-RMn" firstAttribute="top" secondItem="c5h-qB-UfL" secondAttribute="top" id="kox-uq-u2A"/>
-                                            <constraint firstAttribute="trailing" secondItem="siM-bf-RMn" secondAttribute="trailing" id="rFn-jB-7xx"/>
                                         </constraints>
                                         <size key="customSize" width="294" height="251"/>
                                         <connections>
                                             <outlet property="activityIndicator" destination="jY3-bw-i3y" id="X27-Xe-8Tf"/>
                                             <outlet property="imageView" destination="2op-9K-t9j" id="A5h-41-yoH"/>
-                                            <outlet property="videoView" destination="siM-bf-RMn" id="ud3-b1-6VQ"/>
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="GIFSearchResultCell" id="jzn-p0-A5p" customClass="GIFSearchResultCell" customModule="victorious" customModuleProvider="target">
