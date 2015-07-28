@@ -6,15 +6,14 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-import Darwin
 import Foundation
 
 let appName = Process.arguments.first ?? "downloadtemplate"
-let usage = "Usage: \(appName) <path to application bundle>\n\n"
+let usage = "Usage: \(appName.lastPathComponent) <path to application bundle>\n"
 let environmentsFilename = "environments.plist"
 
 if Process.arguments.count < 2 {
-    fputs(usage, __stderrp)
+    println(usage)
     exit(1)
 }
 let bundlePath = Process.arguments[1]
@@ -24,6 +23,6 @@ if let bundleURL = NSURL(fileURLWithPath: bundlePath, isDirectory: true) {
     cli.downloadTemplate()
 }
 else {
-    fputs("Invalid bundle: \(bundlePath)\n\n", __stderrp)
+    println("Invalid bundle: \(bundlePath)\n")
     exit(1)
 }

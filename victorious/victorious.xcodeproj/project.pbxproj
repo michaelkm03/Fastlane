@@ -1139,6 +1139,13 @@
 			remoteGlobalIDString = 034527AF1B606F5D00E990BB;
 			remoteInfo = VictoriousCommonOSX;
 		};
+		0366EAE21B66F9E10073A233 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0392694B1B5C720400FCD0AA;
+			remoteInfo = downloadtemplate;
+		};
 		039269801B5C87EE00FCD0AA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
@@ -7279,6 +7286,7 @@
 				039269481B5C720400FCD0AA /* Sources */,
 				039269491B5C720400FCD0AA /* Frameworks */,
 				0392694A1B5C720400FCD0AA /* CopyFiles */,
+				0366EAE41B6708EA0073A233 /* Install into build-scripts folder */,
 			);
 			buildRules = (
 			);
@@ -7329,6 +7337,7 @@
 			);
 			dependencies = (
 				039269811B5C87EE00FCD0AA /* PBXTargetDependency */,
+				0366EAE31B66F9E10073A233 /* PBXTargetDependency */,
 			);
 			name = victorious;
 			productName = victorious;
@@ -7679,6 +7688,21 @@
 			shellScript = "./3rd\\ Party\\ SDKs/Crashlytics.framework/run 58f61748f3d33b03387e43014fdfff29c5a1da73 1f6107cc26a24ef5594a23046bc37d904f8a2f33ef5c68c4b0a22309236c4f1d\n";
 			showEnvVarsInLog = 0;
 		};
+		0366EAE41B6708EA0073A233 /* Install into build-scripts folder */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Install into build-scripts folder";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cp \"$BUILT_PRODUCTS_DIR/$EXECUTABLE_NAME\" \"$PROJECT_DIR/../build-scripts\"\nexit $?\n";
+			showEnvVarsInLog = 0;
+		};
 		03A00E601AE889BA00A2B733 /* Copy Environments Configuration */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -7706,7 +7730,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "INFOPLIST=\"$TARGET_BUILD_DIR/$INFOPLIST_PATH\"\nBUILDNUM=$(/usr/libexec/PlistBuddy -c \"Print :CFBundleVersion\" \"$INFOPLIST\")\n../build-scripts/download-template.sh \"$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH/environments.plist\" \"$BUILDNUM\" \"$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH\"\n";
+			shellScript = "if [ \"$DownloadTemplate\" == \"no\" ]; then\n    echo \"Skipping template download.\"\n    exit 0\nfi\n\nBUNDLE=\"$BUILT_PRODUCTS_DIR/$EXECUTABLE_FOLDER_PATH\"\n../build-scripts/downloadtemplate \"$BUNDLE\"\nexit $?";
 			showEnvVarsInLog = 0;
 		};
 		03CE66F819B50C340011BB9E /* Objective Clean */ = {
@@ -8785,6 +8809,11 @@
 			target = 034527AF1B606F5D00E990BB /* VictoriousCommonOSX */;
 			targetProxy = 034527D21B606FC600E990BB /* PBXContainerItemProxy */;
 		};
+		0366EAE31B66F9E10073A233 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0392694B1B5C720400FCD0AA /* downloadtemplate */;
+			targetProxy = 0366EAE21B66F9E10073A233 /* PBXContainerItemProxy */;
+		};
 		039269811B5C87EE00FCD0AA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 039269591B5C774400FCD0AA /* VictoriousCommon */;
@@ -9120,6 +9149,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEFINES_MODULE = YES;
+				DownloadTemplate = yes;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
@@ -9579,6 +9609,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEFINES_MODULE = YES;
+				DownloadTemplate = yes;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
@@ -9764,6 +9795,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEFINES_MODULE = YES;
+				DownloadTemplate = no;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
@@ -9798,6 +9830,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEFINES_MODULE = YES;
+				DownloadTemplate = yes;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
@@ -9953,6 +9986,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEFINES_MODULE = YES;
+				DownloadTemplate = yes;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",

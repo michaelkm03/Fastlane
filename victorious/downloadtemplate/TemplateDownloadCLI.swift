@@ -41,7 +41,7 @@ class TemplateDownloadCLI: NSObject, VTemplateDownloadOperationDelegate {
             operationQueue.addOperations([downloadOperation], waitUntilFinished: true)
             
             if !downloadOperation.completedSuccessfully {
-                fputs("Unable to download template for environment: \(environment.name)\n\n", __stderrp)
+                println("Unable to download template for environment: \(environment.name)\n")
                 exit(1)
             }
         }
@@ -55,12 +55,12 @@ class TemplateDownloadCLI: NSObject, VTemplateDownloadOperationDelegate {
                 return environments
             }
             else {
-                fputs("Unable to read \(environmentsFileURL.path!)\n\n", __stderrp)
+                println("Unable to read \(environmentsFileURL.path!)\n")
                 exit(1)
             }
         }
         else {
-            fputs("Unable to read from bundle at \(bundlePath)\n\n", __stderrp)
+            println("Unable to read from bundle at \(bundlePath)\n")
             exit(1)
         }
     }
@@ -88,7 +88,7 @@ class TemplateDownloadCLI: NSObject, VTemplateDownloadOperationDelegate {
             return returnValue
         }
         else {
-            fputs("Unable to read from: \(infoPlistURL.path!)", __stderrp)
+            println("Unable to read from: \(infoPlistURL.path!)")
             exit(1)
         }
     }
