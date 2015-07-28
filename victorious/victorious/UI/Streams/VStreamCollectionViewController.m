@@ -738,7 +738,12 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     NSParameterAssert(self.currentStream != nil);
     [self.streamTrackingHelper onStreamCellSelectedWithStream:self.currentStream sequence:sequence];
     
-    [VContentViewPresenter presentContentViewFromViewController:self withDependencyManager:self.dependencyManager ForSequence:sequence inStreamWithID:streamId commentID:nil withPreviewImage:previewImage];
+    [VContentViewPresenter presentContentViewFromViewController:self
+                                          withDependencyManager:self.dependencyManager
+                                                    ForSequence:sequence
+                                                 inStreamWithID:streamId
+                                                      commentID:nil
+                                               withPreviewImage:previewImage];
 }
 
 #pragma mark - Upload Progress View
