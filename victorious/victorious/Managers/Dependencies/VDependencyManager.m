@@ -419,19 +419,14 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
     VTemplateImageMacro *imageMacro = [[VTemplateImageMacro alloc] initWithJSON:macroDictionary];
     NSArray *templateImages = [imageMacro images];
     
-    BOOL returnValue = NO;
     for (VTemplateImage *templateImage in templateImages)
     {
-        if ( [dataCache hasCachedDataForID:templateImage.imageURL] )
-        {
-            returnValue = YES;
-        }
-        else
+        if ( ![dataCache hasCachedDataForID:templateImage.imageURL] )
         {
             return NO;
         }
     }
-    return returnValue;
+    return YES;
 }
 
 - (NSArray *)arrayOfImageURLsWithDictionary:(NSDictionary *)imageDictionary
