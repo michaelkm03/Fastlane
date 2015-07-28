@@ -133,13 +133,8 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
 
 - (void)enableOrDisableSendButtonAsAppropriate
 {
-    self.sendButton.enabled = self.publishParameters.mediaToUploadURL != nil || (self.textView.text.length > 0);
-    
     NSString *textWithoutSpace = [self.textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    if (textWithoutSpace.length == 0)
-    {
-        self.sendButton.enabled = NO;
-    }
+    self.sendButton.enabled = self.publishParameters.mediaToUploadURL != nil || (textWithoutSpace.length > 0);
 }
 
 - (IBAction)sendButtonAction:(id)sender

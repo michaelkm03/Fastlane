@@ -54,7 +54,7 @@
 - (void)reloadVideoPlayer
 {
     self.videoPlayer.shouldShowToolbar = !self.hidePlayControls;
-    self.videoPlayer.isAudioEnabled = !self.muteAudio;
+    self.videoPlayer.audioMuted = self.muteAudio;
     [self.videoPlayer setItemURL:[NSURL URLWithString:self.mediaUrlString] loop:self.loop];
 }
 
@@ -78,7 +78,7 @@
 - (void)setMuteAudio:(BOOL)muteAudio
 {
     _muteAudio = muteAudio;
-    self.videoPlayer.isAudioEnabled = !muteAudio;
+    self.videoPlayer.audioMuted = muteAudio;
 }
 
 #pragma mark - VCVideoPlayerDelegate methods

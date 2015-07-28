@@ -11,8 +11,8 @@
 NSString *const HashmarkViewKind = @"HashmarkKind";
 NSString *const TimemarkViewKind = @"TimemarkKind";
 
-const static int kNumberOfHashes = 30;
-const static int kNumberOfTimeLabels = 10;
+const static NSUInteger kNumberOfHashes = 30;
+const static NSUInteger kNumberOfTimeLabels = 10;
 
 const static CGFloat kSpacingOfHashes = 33.333f;
 const static CGFloat kSpacingOfTimeLables = 100.0f;
@@ -34,14 +34,14 @@ const static CGFloat kTimemarkOffsetY = -49.0f;
     // Call super to get elements
     NSMutableArray *answer = [[super layoutAttributesForElementsInRect:rect] mutableCopy];
     
-    int index =  (int) (self.collectionView.contentOffset.x/kSpacingOfHashes);
-    for (int i = 0; i < kNumberOfHashes; i++)
+    NSUInteger index = (self.collectionView.contentOffset.x/kSpacingOfHashes);
+    for (NSUInteger i = 0; i < kNumberOfHashes; i++)
     {
         UICollectionViewLayoutAttributes *hashtribute = [self layoutAttributesForSupplementaryViewOfKind:HashmarkViewKind atIndexPath:[NSIndexPath indexPathForItem:index+i inSection:0]];
         [answer addObject:hashtribute];
     }
     index =  (int) (self.collectionView.contentOffset.x/kSpacingOfTimeLables);
-    for (int i = 0; i < kNumberOfTimeLabels; i++)
+    for (NSUInteger i = 0; i < kNumberOfTimeLabels; i++)
     {
         UICollectionViewLayoutAttributes *attribute = [self layoutAttributesForSupplementaryViewOfKind:TimemarkViewKind atIndexPath:[NSIndexPath indexPathForItem:i + index inSection:0]];
         [answer addObject:attribute];
@@ -73,8 +73,7 @@ const static CGFloat kTimemarkOffsetY = -49.0f;
     
         CGRect visibleRect;
         visibleRect.origin = CGPointMake(0.0f, self.collectionView.contentOffset.y);
-        visibleRect.size = self.collectionViewContentSize;
-        visibleRect.size = CGSizeMake(self.collectionViewContentSize.width, self.collectionViewContentSize.height);
+        visibleRect.size = CGSizeMake(self.collectionViewContentSize.width - 15.0f, self.collectionViewContentSize.height);
         
         if (!CGRectIntersectsRect(visibleRect, frame))
         {

@@ -45,7 +45,18 @@ const CGFloat VStreamCollectionViewControllerCreateButtonHeight; ///< The height
  */
 @property (nonatomic, assign) float trackingMinRequiredCellVisibilityRatio;
 
+/**
+ *  The sequence action controller that will respond to actions taken on sequences
+ *  represented by cells within this collection view controller.
+ */
 @property (readonly, nonatomic) VSequenceActionController *sequenceActionController;
+
+/**
+ Allows a context that instantiates a VUserProfileViewController to provide a class (possibly itself)
+ used to override behavior of template-driven view tracking.
+ @see VDependencyManager+VTracking
+ */
+@property (nonatomic, assign) Class viewTrackingClassOverride;
 
 @end
 

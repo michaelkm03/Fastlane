@@ -13,6 +13,6 @@
 /**
  *  Generates an array of indexpaths from the index set with the passed section.
  */
-- (NSArray *)indexPathsFromIndexesWithSecion:(NSInteger)section;
+- (NSArray *)indexPathsFromIndexesWithSection:(NSInteger)section;
 
 @end

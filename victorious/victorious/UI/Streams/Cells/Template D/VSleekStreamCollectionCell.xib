@@ -22,7 +22,7 @@
                         </constraints>
                     </view>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" scrollEnabled="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ls-Bo-1cB" customClass="VHashTagTextView">
-                        <rect key="frame" x="45" y="50" width="247" height="33"/>
+                        <rect key="frame" x="50" y="50" width="238" height="33"/>
                         <constraints>
                             <constraint firstAttribute="height" priority="1" constant="33" id="hNl-bg-Zz4"/>
                             <constraint firstAttribute="height" relation="lessThanOrEqual" constant="200" id="vjm-N9-XLg"/>

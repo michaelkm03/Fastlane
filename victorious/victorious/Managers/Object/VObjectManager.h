@@ -30,7 +30,7 @@ typedef void (^VFailBlock) (NSOperation *__nullable operation, NSError *__nullab
 
 @property (nonatomic, strong) NSString *experimentIDs; //<A string that stores all of the users experimental IDs (in comma seperated list)
 
-+ (void)setupObjectManagerWithUploadManager:(VUploadManager *)uploadManagexr;
++ (void)setupObjectManagerWithUploadManager:(VUploadManager *)uploadManager;
 
 - (id)objectWithEntityName:(NSString *)entityName subclass:(Class)subclass;
 

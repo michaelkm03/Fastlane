@@ -31,6 +31,7 @@
 
 @import AVFoundation;
 
+static NSString * const kTitleKey = @"title";
 static CGFloat const kWorkspaceToolButtonSize = 44.0f;
 static CGFloat const kInspectorToolDisabledAlpha = 0.3f;
 static CGFloat const kMinimumToolViewHeight = 100.0f;
@@ -94,7 +95,7 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
     [super viewDidLoad];
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 120, 44)];
-    titleLabel.text = NSLocalizedString(@"Edit", nil);
+    titleLabel.text = [self.dependencyManager stringForKey:kTitleKey] ?: NSLocalizedString(@"Edit", nil);
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.textColor = [UIColor whiteColor];
     titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
@@ -297,6 +298,24 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
     self.verticalSpaceBottomBarToContainer.constant = 0.0f;
     
     [self.view layoutIfNeeded];
+}
+
+#pragma mark - Focus
+
+- (void)gainedFocus
+{
+    if ([self.toolController.selectedTool respondsToSelector:@selector(setSelected:)])
+    {
+        [self.toolController.selectedTool setSelected:YES];
+    }
+}
+
+- (void)lostFocus
+{
+    if ([self.toolController.selectedTool respondsToSelector:@selector(setSelected:)])
+    {
+        [self.toolController.selectedTool setSelected:NO];
+    }
 }
 
 #pragma mark - Private Methods

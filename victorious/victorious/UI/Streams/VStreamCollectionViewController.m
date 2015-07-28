@@ -44,6 +44,7 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Discover.h"
 #import "VUploadManager.h"
+#import "VContentViewFactory.h"
 
 //Categories
 #import "NSArray+VMap.h"
@@ -59,6 +60,7 @@
 #import "VTracking.h"
 #import "VHashtagStreamCollectionViewController.h"
 #import "VAuthorizedAction.h"
+#import "VContentViewPresenter.h"
 
 #import "VFullscreenMarqueeSelectionDelegate.h"
 #import "VAbstractMarqueeController.h"
@@ -77,6 +79,7 @@
 #import "VCoachmarkDisplayer.h"
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VDependencyManager+VTracking.h"
+#import "UIViewController+VAccessoryScreens.h"
 
 #import "VCollectionViewStreamFocusHelper.h"
 
@@ -226,7 +229,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
         [self.streamCellFactory registerCellsWithCollectionView:self.collectionView];
     }
     
-    
     self.collectionView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     
     if ( self.streamDataSource == nil )
@@ -273,7 +275,11 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 {
     [super viewWillAppear:animated];
     
-    [self.dependencyManager trackViewWillAppear:self];
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
+    
+    [self updateNavigationItems];
+    
+    [self.dependencyManager trackViewWillAppear:self withParameters:nil templateClass:self.viewTrackingClassOverride];
 
     if ( self.streamDataSource.count == 0 )
     {
@@ -297,6 +303,9 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    [self addBadgingToNavigationItems];
+    
     [self.collectionView flashScrollIndicators];
     [self updateCellVisibilityTracking];
     
@@ -423,12 +432,12 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     [self addUploadProgressView];
     
-    UINavigationItem *navigationItem = self.navigationItem;
-    if ( self.multipleContainerChildDelegate != nil )
-    {
-        navigationItem = [self.multipleContainerChildDelegate parentNavigationItem];
-    }
-    [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
+    [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
+}
+
+- (void)addBadgingToNavigationItems
+{
+    [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 - (void)multipleContainerDidSetSelected:(BOOL)isDefault
@@ -735,7 +744,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     NSParameterAssert(self.currentStream != nil);
     [self.streamTrackingHelper onStreamCellSelectedWithStream:self.currentStream sequence:sequence];
     
-    [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:sequence streamID:streamId commentId:nil placeHolderImage:previewImage];
+    [VContentViewPresenter presentContentViewFromViewController:self withDependencyManager:self.dependencyManager ForSequence:sequence inStreamWithID:streamId commentID:nil withPreviewImage:previewImage];
 }
 
 #pragma mark - Upload Progress View

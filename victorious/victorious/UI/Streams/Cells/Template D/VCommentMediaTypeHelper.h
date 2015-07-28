@@ -9,10 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "VCommentMediaType.h"
 
-#warning NEEDS TESTS
-
-@class VAsset;
-
 /**
     A helper for finding the appropriate media type for a category string or asset.
  */

@@ -39,9 +39,6 @@
                             <constraint firstAttribute="height" constant="28" id="3Xz-UF-7Y0"/>
                             <constraint firstAttribute="width" secondItem="e30-NG-QZb" secondAttribute="height" multiplier="1:1" id="UfJ-GE-Zb0"/>
                         </constraints>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="boolean" keyPath="following" value="YES"/>
-                        </userDefinedRuntimeAttributes>
                         <connections>
                             <action selector="onFollow:" destination="S5P-xq-Z0y" eventType="touchUpInside" id="nQL-as-d2A"/>
                         </connections>
