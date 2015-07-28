@@ -33,7 +33,7 @@ extern NSString * const VDataCacheBundleResourceExtension;
 @end
 
 /**
- Saves data to a cache on desk and loads previously cached data.
+ Saves data to a cache on disk and loads previously cached data.
  */
 @interface VDataCache : NSObject
 
