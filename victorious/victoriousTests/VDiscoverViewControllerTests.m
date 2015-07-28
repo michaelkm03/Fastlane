@@ -68,6 +68,10 @@
                                                                                       withBlock:^{}];
     
     self.viewController = [[VDiscoverViewController alloc] init];
+    NSDictionary *configuration = @{};
+    self.viewController.dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
+                                                                                configuration:configuration
+                                                            dictionaryOfClassesByTemplateName:nil];
     XCTAssertNotNil( self.viewController );
     XCTAssertNotNil( self.viewController.tableView );
     XCTAssertNotNil( self.viewController.suggestedPeopleViewController );
