@@ -47,6 +47,11 @@ typedef void (^VTemplateDownloaderCompletion)(NSData *__nullable templateData, N
  */
 - (void)templateDownloadOperationDidFallbackOnCache:(VTemplateDownloadOperation *)downloadOperation;
 
+/**
+ Notifies the delegate that the template download operation failed and there was no cache to fall back on.
+ */
+- (void)templateDownloadOperationFailedWithNoFallback:(VTemplateDownloadOperation *)downloadOperation;
+
 @end
 
 #pragma mark -

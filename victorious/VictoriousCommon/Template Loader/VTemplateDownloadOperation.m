@@ -265,6 +265,10 @@ static char kPrivateQueueSpecific;
     NSData *templateData = [self.dataCache cachedDataForID:self.templateConfigurationCacheID];
     if ( templateData == nil )
     {
+        if ( [self.delegate respondsToSelector:@selector(templateDownloadOperationFailedWithNoFallback:)] )
+        {
+            [self.delegate templateDownloadOperationFailedWithNoFallback:self];
+        }
         return;
     }
     
@@ -307,20 +311,6 @@ static char kPrivateQueueSpecific;
             {
                 // `downloadDidFinishWithData` will fail with nil data, so don't worry about checking it here
                 [weakSelf downloadDidFinishWithData:templateData];
-                
-#if 0 // TODO
-                // If a retry failed and we're using a user environment, then we should switch back to the default
-                VEnvironment *currentEnvironment = [[VEnvironmentManager sharedInstance] currentEnvironment];
-                const BOOL shouldRevertToPreviousEnvironment = currentEnvironment.isUserEnvironment && templateData == nil;
-                if ( shouldRevertToPreviousEnvironment )
-                {
-                    [[VEnvironmentManager sharedInstance] revertToPreviousEnvironment];
-                    NSDictionary *userInfo = @{ VEnvironmentErrorKey : error };
-                    [[NSNotificationCenter defaultCenter] postNotificationName:VSessionTimerNewSessionShouldStart
-                                                                        object:weakSelf
-                                                                      userInfo:userInfo];
-                }
-#endif
             }];
         }
     });

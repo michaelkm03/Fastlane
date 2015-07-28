@@ -15,7 +15,7 @@ NSString * const kAppIDKey = @"appID";
 NSString * const kBaseURLKey = @"baseURL";
 NSString * const kUserKey = @"isUser";
 
-NSString * const VEnvironmentErrorKey = @"com.victorious.VEnvironment.ErrorKey";
+NSString * const VEnvironmentDidFailToLoad = @"VEnvironmentDidFailToLoad";
 
 @implementation VEnvironment
 

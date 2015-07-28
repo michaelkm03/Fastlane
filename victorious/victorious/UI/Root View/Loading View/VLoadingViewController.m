@@ -19,6 +19,7 @@
 #import "VObjectManager+VTemplateDownloaderConformance.h"
 #import "VUser.h"
 #import "VReachability.h"
+#import "VSessionTimer.h"
 #import "VTemplateDecorator.h"
 #import "VTemplateDownloadOperation.h"
 #import "VUserManager.h"
@@ -212,6 +213,25 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
         return;
     }
     [self.finishLoadingOperation removeDependency:downloadOperation];
+}
+
+- (void)templateDownloadOperationFailedWithNoFallback:(VTemplateDownloadOperation *)downloadOperation
+{
+    [self.finishLoadingOperation cancel];
+    [downloadOperation cancel];
+    dispatch_async(dispatch_get_main_queue(), ^(void)
+    {
+        // If the template download failed and we're using a user environment, then we should switch back to the default
+        VEnvironment *currentEnvironment = [[VEnvironmentManager sharedInstance] currentEnvironment];
+        if ( currentEnvironment.isUserEnvironment )
+        {
+            [[VEnvironmentManager sharedInstance] revertToPreviousEnvironment];
+            NSDictionary *userInfo = @{ VEnvironmentDidFailToLoad : @YES };
+            [[NSNotificationCenter defaultCenter] postNotificationName:VSessionTimerNewSessionShouldStart
+                                                                object:self
+                                                              userInfo:userInfo];
+        }
+    });
 }
 
 @end

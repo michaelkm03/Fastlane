@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern NSString * const VEnvironmentErrorKey;
+extern NSString * const VEnvironmentDidFailToLoad;
 
 /**
  A VEnvironment object represents a server environment, like Dev, QA or Production.
