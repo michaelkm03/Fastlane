@@ -389,7 +389,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (void)loadUserWithRemoteId:(NSNumber *)remoteId forceReload:(BOOL)forceReload
 {
     self.remoteId = remoteId;
-    [[VObjectManager sharedManager] fetchUser:self.remoteId forceReload:forceReload
+    [[VObjectManager sharedManager] fetchUser:self.remoteId
+                                  forceReload:forceReload
                              withSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          [self.retryHUD hide:YES];
