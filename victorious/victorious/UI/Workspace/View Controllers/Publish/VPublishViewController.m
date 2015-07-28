@@ -636,11 +636,11 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 {
     if ( error == nil )
     {
-        NSLog(@"Saved media to camera roll successfully");
+        VLog(@"Saved media to camera roll successfully");
     }
     else
     {
-        NSLog(@"Failed to save media to camera roll with error information: %@", error);
+        VLog(@"Failed to save media to camera roll with error information: %@", error);
     }
 }
 
