@@ -217,14 +217,14 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
 
 - (void)templateDownloadOperationFailedWithNoFallback:(VTemplateDownloadOperation *)downloadOperation
 {
-    [self.finishLoadingOperation cancel];
-    [downloadOperation cancel];
     dispatch_async(dispatch_get_main_queue(), ^(void)
     {
         // If the template download failed and we're using a user environment, then we should switch back to the default
         VEnvironment *currentEnvironment = [[VEnvironmentManager sharedInstance] currentEnvironment];
         if ( currentEnvironment.isUserEnvironment )
         {
+            [self.finishLoadingOperation cancel];
+            [downloadOperation cancel];
             [[VEnvironmentManager sharedInstance] revertToPreviousEnvironment];
             NSDictionary *userInfo = @{ VEnvironmentDidFailToLoad : @YES };
             [[NSNotificationCenter defaultCenter] postNotificationName:VSessionTimerNewSessionShouldStart
