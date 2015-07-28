@@ -37,12 +37,18 @@ static NSString * const kmp4MimeType = @"video/mp4";
 
 - (NSURL *)mp4MediaURL
 {
-    return [self mediaURLForMimeType:kmp4MimeType];
+    NSString *mediaDataURLString = [self commentMediaURLForMimeType:kmp4MimeType];
+    if ( mediaDataURLString == nil && [self.mediaUrl v_isExtensionMp4] )
+    {
+        mediaDataURLString = self.mediaUrl;
+    }
+    
+    return [NSURL URLWithString:mediaDataURLString];
 }
 
 #pragma mark - Private Methods
 
-- (NSURL *)mediaURLForMimeType:(NSString *)mimeType
+- (NSString *)commentMediaURLForMimeType:(NSString *)mimeType
 {
     __block NSString *mediaURLStringForMimeType = nil;
     [self.commentMedia enumerateObjectsUsingBlock:^(VCommentMedia *media, BOOL *stop)
@@ -54,12 +60,7 @@ static NSString * const kmp4MimeType = @"video/mp4";
          }
      }];
     
-    if (mediaURLStringForMimeType == nil && [self.mediaUrl v_isExtensionMp4])
-    {
-        mediaURLStringForMimeType = self.mediaUrl;
-    }
-    
-    return [NSURL URLWithString:mediaURLStringForMimeType];
+    return mediaURLStringForMimeType;
 }
 
 @end
