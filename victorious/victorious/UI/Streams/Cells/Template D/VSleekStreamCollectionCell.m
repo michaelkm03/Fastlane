@@ -33,6 +33,7 @@ static const CGFloat kSleekCellHeaderHeight = 50.0f;
 static const CGFloat kSleekCellActionViewHeight = 48.0f;
 static const CGFloat kCaptionToPreviewVerticalSpacing = 7.0f;
 static const CGFloat kMaxCaptionTextViewHeight = 200.0f;
+static const CGFloat kNormalizedWidthOfView = 302.0f;
 static const CGFloat kCountsTextViewMinHeight = 29.0f;
 static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
 
@@ -73,6 +74,13 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
     
     self.countsTextView.textSelectionDelegate = self;
     self.actionButtonAnimationController = [[VActionButtonAnimationController alloc] init];
+    [self textViewConstraint];
+}
+
+- (NSLayoutConstraint *)textViewConstraint
+{
+    _textViewConstraint.constant = ((kCountsTextViewMinHeight - 1.0f)/kNormalizedWidthOfView) * (CGRectGetWidth(self.frame));
+    return _textViewConstraint;
 }
 
 + (VCellSizeCollection *)cellLayoutCollection

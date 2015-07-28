@@ -39,4 +39,6 @@
  */
 @property (nonatomic, strong) VStream *stream;
 
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *textViewConstraint;
+
 @end
