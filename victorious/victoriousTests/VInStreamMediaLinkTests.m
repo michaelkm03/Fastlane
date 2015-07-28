@@ -17,7 +17,7 @@
 @property (nonatomic, strong) UIFont *font;
 @property (nonatomic, strong) NSString *urlString;
 @property (nonatomic, strong) UIImage *icon;
-@property (nonatomic, assign) VMediaType mediaType;
+@property (nonatomic, assign) VCommentMediaType mediaType;
 @property (nonatomic, strong) NSString *prompt;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -41,7 +41,7 @@
     XCTAssertNoThrow([VInStreamMediaLink newWithTintColor:self.tintColor font:self.font linkType:self.mediaType urlString:self.urlString andDependencyManager:self.dependencyManager]);
     XCTAssertNoThrow([VInStreamMediaLink newWithTintColor:nil font:self.font linkType:self.mediaType urlString:self.urlString andDependencyManager:self.dependencyManager]);
     XCTAssertNoThrow([VInStreamMediaLink newWithTintColor:self.tintColor font:nil linkType:self.mediaType urlString:self.urlString andDependencyManager:self.dependencyManager]);
-    XCTAssertNoThrow([VInStreamMediaLink newWithTintColor:self.tintColor font:self.font linkType:VMediaTypeUnknown urlString:self.urlString andDependencyManager:self.dependencyManager]);
+    XCTAssertNoThrow([VInStreamMediaLink newWithTintColor:self.tintColor font:self.font linkType:VCommentMediaTypeUnknown urlString:self.urlString andDependencyManager:self.dependencyManager]);
 
     XCTAssertThrows([VInStreamMediaLink newWithTintColor:self.tintColor font:self.font linkType:self.mediaType urlString:nil andDependencyManager:self.dependencyManager]);
     XCTAssertThrows([VInStreamMediaLink newWithTintColor:self.tintColor font:self.font linkType:self.mediaType urlString:self.urlString andDependencyManager:nil]);
@@ -68,7 +68,7 @@
     XCTAssertNoThrow([[VInStreamMediaLink alloc] initWithTintColor:self.tintColor font:nil text:self.prompt icon:self.icon linkType:self.mediaType urlString:self.urlString]);
     XCTAssertNoThrow([[VInStreamMediaLink alloc] initWithTintColor:self.tintColor font:self.font text:nil icon:self.icon linkType:self.mediaType urlString:self.urlString]);
     XCTAssertNoThrow([[VInStreamMediaLink alloc] initWithTintColor:self.tintColor font:self.font text:self.prompt icon:nil linkType:self.mediaType urlString:self.urlString]);
-    XCTAssertNoThrow([[VInStreamMediaLink alloc] initWithTintColor:self.tintColor font:self.font text:self.prompt icon:self.icon linkType:VMediaTypeUnknown urlString:self.urlString]);
+    XCTAssertNoThrow([[VInStreamMediaLink alloc] initWithTintColor:self.tintColor font:self.font text:self.prompt icon:self.icon linkType:VCommentMediaTypeUnknown urlString:self.urlString]);
     
     XCTAssertThrows([[VInStreamMediaLink alloc] initWithTintColor:self.tintColor font:self.font text:self.prompt icon:self.icon linkType:self.mediaType urlString:nil]);
 }

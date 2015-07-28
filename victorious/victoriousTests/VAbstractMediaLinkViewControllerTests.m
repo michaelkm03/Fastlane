@@ -26,12 +26,12 @@
 
 - (void)testClassMethodInit
 {
-    XCTAssertThrows([VAbstractMediaLinkViewController newWithMediaUrlString:nil andMediaLinkType:VMediaTypeImage]);
+    XCTAssertThrows([VAbstractMediaLinkViewController newWithMediaUrlString:nil andMediaLinkType:VCommentMediaTypeImage]);
     
-    XCTAssertNotNil([VAbstractMediaLinkViewController newWithMediaUrlString:self.urlString andMediaLinkType:VMediaTypeImage]);
-    XCTAssertNotNil([VAbstractMediaLinkViewController newWithMediaUrlString:self.urlString andMediaLinkType:VMediaTypeGif]);
-    XCTAssertNotNil([VAbstractMediaLinkViewController newWithMediaUrlString:self.urlString andMediaLinkType:VMediaTypeVideo]);
-    XCTAssertNotNil([VAbstractMediaLinkViewController newWithMediaUrlString:self.urlString andMediaLinkType:VMediaTypeUnknown]);
+    XCTAssertNotNil([VAbstractMediaLinkViewController newWithMediaUrlString:self.urlString andMediaLinkType:VCommentMediaTypeImage]);
+    XCTAssertNotNil([VAbstractMediaLinkViewController newWithMediaUrlString:self.urlString andMediaLinkType:VCommentMediaTypeGIF]);
+    XCTAssertNotNil([VAbstractMediaLinkViewController newWithMediaUrlString:self.urlString andMediaLinkType:VCommentMediaTypeVideo]);
+    XCTAssertNotNil([VAbstractMediaLinkViewController newWithMediaUrlString:self.urlString andMediaLinkType:VCommentMediaTypeUnknown]);
 }
 
 @end

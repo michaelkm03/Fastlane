@@ -1107,7 +1107,7 @@
 		F0FC97F91B5DB69E0098AFCB /* VInStreamCommentCellContentsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97F81B5DB69E0098AFCB /* VInStreamCommentCellContentsTests.m */; };
 		F0FC97FB1B5DB6AE0098AFCB /* VInStreamCommentsShowMoreAttributesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97FA1B5DB6AE0098AFCB /* VInStreamCommentsShowMoreAttributesTests.m */; };
 		F0FC97FD1B5DB6DF0098AFCB /* VAbstractMediaLinkViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97FC1B5DB6DF0098AFCB /* VAbstractMediaLinkViewControllerTests.m */; };
-		F0FC97FF1B5DB6F10098AFCB /* VMediaTypeHelperTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97FE1B5DB6F10098AFCB /* VMediaTypeHelperTests.m */; };
+		F0FC97FF1B5DB6F10098AFCB /* VCommentMediaTypeHelperTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97FE1B5DB6F10098AFCB /* VCommentMediaTypeHelperTests.m */; };
 		F0FC98021B5EB63C0098AFCB /* VAbstractCommentHighlighter.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC98011B5EB63C0098AFCB /* VAbstractCommentHighlighter.m */; };
 /* End PBXBuildFile section */
 
@@ -3178,7 +3178,7 @@
 		F0FC97F81B5DB69E0098AFCB /* VInStreamCommentCellContentsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInStreamCommentCellContentsTests.m; sourceTree = "<group>"; };
 		F0FC97FA1B5DB6AE0098AFCB /* VInStreamCommentsShowMoreAttributesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInStreamCommentsShowMoreAttributesTests.m; sourceTree = "<group>"; };
 		F0FC97FC1B5DB6DF0098AFCB /* VAbstractMediaLinkViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractMediaLinkViewControllerTests.m; sourceTree = "<group>"; };
-		F0FC97FE1B5DB6F10098AFCB /* VMediaTypeHelperTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMediaTypeHelperTests.m; sourceTree = "<group>"; };
+		F0FC97FE1B5DB6F10098AFCB /* VCommentMediaTypeHelperTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCommentMediaTypeHelperTests.m; sourceTree = "<group>"; };
 		F0FC98001B5EB63C0098AFCB /* VAbstractCommentHighlighter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractCommentHighlighter.h; sourceTree = "<group>"; };
 		F0FC98011B5EB63C0098AFCB /* VAbstractCommentHighlighter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractCommentHighlighter.m; sourceTree = "<group>"; };
 		F0FFBA351AD5B1DC00283936 /* VMarqueeDataDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeDataDelegate.h; sourceTree = "<group>"; };
@@ -5834,7 +5834,7 @@
 				F0FC97F81B5DB69E0098AFCB /* VInStreamCommentCellContentsTests.m */,
 				F0FC97FA1B5DB6AE0098AFCB /* VInStreamCommentsShowMoreAttributesTests.m */,
 				F0FC97FC1B5DB6DF0098AFCB /* VAbstractMediaLinkViewControllerTests.m */,
-				F0FC97FE1B5DB6F10098AFCB /* VMediaTypeHelperTests.m */,
+				F0FC97FE1B5DB6F10098AFCB /* VCommentMediaTypeHelperTests.m */,
 				039D02AE1A10441500DB9236 /* VDependencyManagerTests.m */,
 				A70564CB19E78250004A8387 /* VDiscoverViewControllerTests.m */,
 				BE9674F719E335060072E87A /* VElapsedTimeFormatterTests.m */,
@@ -8390,7 +8390,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F0FC97FF1B5DB6F10098AFCB /* VMediaTypeHelperTests.m in Sources */,
+				F0FC97FF1B5DB6F10098AFCB /* VCommentMediaTypeHelperTests.m in Sources */,
 				F0C83A3B1B0F9EF900A6EC1A /* VCoachmarkManagerTests.m in Sources */,
 				03A058C11AEF44E200CF39D1 /* VTemplateDownloadManagerTests.m in Sources */,
 				D80BAB571A688673003A3068 /* VNodeFetcherTests.m in Sources */,
