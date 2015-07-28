@@ -199,7 +199,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     if ( !self.isCurrentUser && self.user == nil && self.remoteId != nil )
     {
-        [self loadUserWithRemoteId:self.remoteId];
+        [self showRefreshHUD];
+        [self loadUserWithRemoteId:self.remoteId forceReload:NO];
     }
     
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
@@ -371,9 +372,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
 }
 
-- (void)loadUserWithRemoteId:(NSNumber *)remoteId
+- (void)showRefreshHUD
 {
-    self.remoteId = remoteId;
     if ( self.retryHUD == nil )
     {
         self.retryHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -384,8 +384,13 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         self.retryHUD.margin = self.defaultMBProgressHUDMargin;
         self.retryHUD.mode = MBProgressHUDModeIndeterminate;
     }
-    
+}
+
+- (void)loadUserWithRemoteId:(NSNumber *)remoteId forceReload:(BOOL)forceReload
+{
+    self.remoteId = remoteId;
     [[VObjectManager sharedManager] fetchUser:self.remoteId
+                                  forceReload:forceReload
                              withSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          [self.retryHUD hide:YES];
@@ -408,7 +413,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     //Disable user interaction to avoid spamming
     [self.retryProfileLoadButton setUserInteractionEnabled:NO];
-    [self loadUserWithRemoteId:self.remoteId];
+    [self showRefreshHUD];
+    [self loadUserWithRemoteId:self.remoteId forceReload:NO];
 }
 
 - (UIButton *)retryProfileLoadButton
@@ -824,6 +830,14 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)refresh:(UIRefreshControl *)sender
 {
+    NSNumber *mainUserId = [VObjectManager sharedManager].mainUser.remoteId;
+    const BOOL hasUserData = self.representsMainUser && mainUserId != nil;
+    const BOOL wasTriggeredByUIElement = sender != nil;
+    if ( wasTriggeredByUIElement && hasUserData )
+    {
+        [self loadUserWithRemoteId:mainUserId forceReload:YES];
+    }
+    
     if (self.collectionView.dataSource == self.notLoggedInDataSource)
     {
         return;

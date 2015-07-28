@@ -274,7 +274,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
     if ( self.streamDataSource.count == 0 )
     {
-        [self refresh:self.refreshControl];
+        [self refresh:nil];
     }
     else
     {
