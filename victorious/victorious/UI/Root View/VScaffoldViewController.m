@@ -170,7 +170,12 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
 
 - (void)showContentViewWithSequence:(id)sequence streamID:(NSString *)streamId commentId:(NSNumber *)commentID placeHolderImage:(UIImage *)placeholderImage
 {
-    [VContentViewPresenter presentContentViewFromViewController:self withDependencyManager:self.dependencyManager ForSequence:sequence inStreamWithID:streamId commentID:commentID withPreviewImage:placeholderImage];
+    [VContentViewPresenter presentContentViewFromViewController:self
+                                          withDependencyManager:self.dependencyManager
+                                                    ForSequence:sequence
+                                                 inStreamWithID:streamId
+                                                      commentID:commentID
+                                               withPreviewImage:placeholderImage];
 }
 
 #pragma mark - VLightweightContentViewControllerDelegate

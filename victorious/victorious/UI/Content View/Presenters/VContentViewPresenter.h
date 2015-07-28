@@ -27,6 +27,11 @@
  is being presented when the app is launched with a deep link URL.  If there
  is no comment, simply pass `nil`.
  */
-+ (void)presentContentViewFromViewController:(UIViewController *)viewController withDependencyManager:(VDependencyManager *)dependencyManager ForSequence:(VSequence *)sequence inStreamWithID:(NSString *)streamId commentID:(NSNumber *)commentID withPreviewImage:(UIImage *)previewImage;
++ (void)presentContentViewFromViewController:(UIViewController *)viewController
+                       withDependencyManager:(VDependencyManager *)dependencyManager
+                                 ForSequence:(VSequence *)sequence
+                              inStreamWithID:(NSString *)streamId
+                                   commentID:(NSNumber *)commentID
+                            withPreviewImage:(UIImage *)previewImage;
 
 @end
