@@ -255,11 +255,11 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
         NSString *imageName = @"A_more";
         NSDictionary *moreAcessory = @{ VDependencyManagerDestinationKey: [NSNull null],
                                         VDependencyManagerTitleKey: title,
-                                        VDependencyManagerIconKey: @{ VDependencyManagerImageURLKey: imageName },
+                                        VDependencyManagerIconKey: [UIImage imageNamed:imageName],
                                         VDependencyManagerIdentifierKey: VDependencyManagerAccessoryItemMore,
                                         VDependencyManagerPositionKey: VDependencyManagerPositionRight };
-        NSDictionary *childCondifuration = @{ VDependencyManagerAccessoryScreensKey : @[ moreAcessory ] };
-        VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:childCondifuration];
+        NSDictionary *childConfiguration = @{ VDependencyManagerAccessoryScreensKey : @[ moreAcessory ] };
+        VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:childConfiguration];
         messageViewController = [VMessageContainerViewController messageViewControllerForUser:otherUser dependencyManager:childDependencyManager];
         self.messageViewControllers[otherUser.remoteId] = messageViewController;
     }

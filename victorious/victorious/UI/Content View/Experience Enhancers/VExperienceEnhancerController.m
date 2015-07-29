@@ -12,8 +12,6 @@
 #import "VVoteType.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Private.h"
-#import "VFileCache.h"
-#import "VFileCache+VVoteType.h"
 #import "VVoteType.h"
 #import "VVoteResult.h"
 #import "VTracking.h"
@@ -21,7 +19,6 @@
 
 @interface VExperienceEnhancerController ()
 
-@property (nonatomic, strong) VFileCache *fileCache;
 @property (nonatomic, strong, readwrite) VSequence *sequence;
 @property (nonatomic, strong) NSArray *experienceEnhancers;
 @property (nonatomic, strong) NSArray *validExperienceEnhancers;
@@ -52,14 +49,7 @@
     if (self)
     {
         self.sequence = sequence;
-        
-        self.fileCache = [[VFileCache alloc] init];
-        
         self.purchaseManager = [VPurchaseManager sharedInstance];
-        
-        // Start saving images to disk if not already downloaded
-        [self.fileCache cacheImagesForVoteTypes:voteTypes];
-        
         self.experienceEnhancers = [self createExperienceEnhancersFromVoteTypes:voteTypes sequence:self.sequence];
         self.validExperienceEnhancers = self.experienceEnhancers;
         
@@ -98,37 +88,30 @@
          NSUInteger existingVoteCount = result.count.unsignedIntegerValue;
          VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] initWithVoteType:voteType voteCount:existingVoteCount];
          
-         // Get animation sequence files asynchronously
-         [self.fileCache getSpriteImagesForVoteType:voteType completionCallback:^(NSArray *images)
-          {
-              if ( images == nil || images.count == 0 )
-              {
-                  // This effectively marks it as invalid and it will not display
-                  // until the required images are loaded
-                  enhancer.iconImage = nil;
-              }
-              else
-              {
-                  NSMutableArray *adjustedSequence = [[NSMutableArray alloc] init];
-                  [images enumerateObjectsUsingBlock:^(UIImage *image, NSUInteger idx, BOOL *stop)
-                   {
-                       [adjustedSequence addObject:[UIImage imageWithCGImage:image.CGImage scale:[voteType.scaleFactor floatValue] orientation:image.imageOrientation]];
-                   }];
-                  enhancer.animationSequence = adjustedSequence;
-                  enhancer.flightImage = [adjustedSequence firstObject];
-              }
-          }];
+         NSArray *images = voteType.images;
+
+         if ( images == nil || images.count == 0 )
+         {
+             // This effectively marks it as invalid and it will not display
+             // until the required images are loaded
+             enhancer.iconImage = nil;
+         }
+         else
+         {
+             enhancer.animationSequence = images;
+             enhancer.flightImage = [images firstObject];
+         }
          
          // Get icon image synhronously (we need it right away)
          NSCache *imageMemoryCache = [VExperienceEnhancerController imageMemoryCache];
-         NSString *key = [self.fileCache savePathForImage:VVoteTypeIconName forVote:voteType];
+         NSString *key = voteType.voteTypeID;
          if ( [imageMemoryCache objectForKey:key] )
          {
              enhancer.iconImage = [imageMemoryCache objectForKey:key];
          }
          else
          {
-             enhancer.iconImage = [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:voteType];
+             enhancer.iconImage = voteType.iconImage;
              if ( enhancer.iconImage != nil )
              {
                  [imageMemoryCache setObject:enhancer.iconImage forKey:key];

@@ -106,7 +106,10 @@ applyConfiguration(){
     # Download the latest template
     INFOPLIST="victorious.xcarchive/Products/Applications/victorious.app/Info.plist"
     BUILDNUM=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$INFOPLIST")
-    ./build-scripts/download-template.sh "victorious.xcarchive/Products/Applications/victorious.app/environments.plist" "$BUILDNUM" "victorious.xcarchive/Products/Applications/victorious.app"
+    ./build-scripts/downloadtemplate "victorious.xcarchive/Products/Applications/victorious.app"
+    if [ $? != 0 ]; then
+        exit 1
+    fi
 
     # Copy standard provisioning profile
     cp "$HOME/Library/MobileDevice/Provisioning Profiles/$DEFAULT_PROVISIONING_PROFILE_UUID.mobileprovision" "victorious.xcarchive/Products/Applications/victorious.app/embedded.mobileprovision"

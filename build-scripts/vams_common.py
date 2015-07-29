@@ -17,6 +17,8 @@ def init():
     sys.dont_write_bytecode = True
 
     global _LOGIN_ENDPOINT
+    global _DEFAULT_CONFIG_DIRECTORY
+    global _DEFAULT_DEST_DIRECTORY
     global _DEFAULT_VAMS_USERID
     global _DEFAULT_VAMS_USER
     global _DEFAULT_VAMS_PASSWORD
@@ -34,6 +36,9 @@ def init():
 
     _LOGIN_ENDPOINT = '/api/login'
 
+    _DEFAULT_CONFIG_DIRECTORY = 'configurations'
+    _DEFAULT_DEST_DIRECTORY = 'victorious/AppSpecific'
+
     _DEFAULT_VAMS_USERID = 0
     _DEFAULT_VAMS_USER = 'vicky@example.com'
     _DEFAULT_VAMS_PASSWORD = 'abc123456'
@@ -43,7 +48,7 @@ def init():
     _DEFAULT_HEADER_DATE = subprocess.check_output("date", shell=True).rstrip()
 
 
-    _DEFAULT_PLATFORM = 'android'
+    _DEFAULT_PLATFORM = 'ios'
     _PRODUCTION_HOST = 'http://api.getvictorious.com'
     _STAGING_HOST = 'http://staging.getvictorious.com'
     _QA_HOST = 'http://qa.getvictorious.com'

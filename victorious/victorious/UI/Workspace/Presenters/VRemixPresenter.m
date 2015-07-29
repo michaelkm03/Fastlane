@@ -12,6 +12,7 @@
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VAsset+Fetcher.h"
+#import "VImageToolController.h"
 
 // Dependencies
 #import "VDependencyManager.h"
@@ -70,8 +71,10 @@ static NSString * const kGifCreationFlowKey = @"gifCreateFlow";
     }
     if ([self.sequenceToRemix isImage])
     {
+        NSDictionary *remixInitialDependencies = @{VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateText)};
         VAbstractImageVideoCreationFlowController *flowController = [self.dependencyManager templateValueOfType:[VAbstractImageVideoCreationFlowController class]
-                                                                                                         forKey:kImageCreationFlowKey];
+                                                                                                         forKey:kImageCreationFlowKey
+                                                                                          withAddedDependencies:remixInitialDependencies];
         flowController.creationFlowDelegate = self;
         [flowController remixWithPreviewImage:nil
                                      mediaURL:remixURL

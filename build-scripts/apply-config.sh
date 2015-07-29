@@ -22,11 +22,6 @@ if [ "$FOLDER" == "" ]; then
     exit 1
 fi
 
-if [ ! -d "configurations/$FOLDER" ]; then
-    echo "Folder \"$FOLDER\" not found."
-    exit 1
-fi
-
 if [ "$A_FLAG" == "-a" -a "$CONFIGURATION" == "" ]; then
     echo "If \"-a\" option is specified, <archive path> and <configuration> must be provided."
     echo ""
@@ -35,9 +30,16 @@ fi
 
 # Grab the latest assets and configuration data from VAMS.
 # DO NOT put a trailing slash after the configurations directory.
-# python build-scripts/vams_prebuild.py $FOLDER configurations/$FOLDER ios
+TMP_FOLDER=$(python build-scripts/vams_prebuild.py $FOLDER ios 2>&1)
 
-FOLDER="configurations/$FOLDER"
+# If no working folder is returned then exit
+if [ "$TMP_FOLDER" == "" ]; then
+    echo "No app named '$FOLDER' was located in VAMS"
+    exit 1
+fi
+
+FOLDER="$TMP_FOLDER"
+
 
 if [ "$A_FLAG" == "-a" ]; then
     if [ ! -d "$XCARCHIVE_PATH" ]; then
@@ -71,13 +73,11 @@ copyFile "Icon-40@2x.png"
 copyFile "Icon-60@2x.png"
 copyFile "homeHeaderImage.png"
 copyFile "homeHeaderImage@2x.png"
-copyFile "creator-avatar.png"
-copyFile "creator-avatar@2x.png"
 
 
 ### Modify Info.plist
 
-APP_ID=$(./build-scripts/get-app-id.sh `basename $FOLDER` $CONFIGURATION 2> /dev/null )
+APP_ID=$(./build-scripts/get-app-id.sh "$FOLDER" "$CONFIGURATION" 2> /dev/null )
 
 if [ "$A_FLAG" == "-a" ]; then
     PRODUCT_PREFIX=`/usr/libexec/PlistBuddy -c "Print ProductPrefix" "$DEST_PATH/Info.plist"`
@@ -93,9 +93,9 @@ fi
 
 ### Set App IDs
 
-QA_APP_ID=$(./build-scripts/get-app-id.sh `basename $FOLDER` "QA" 2> /dev/null)
-STAGING_APP_ID=$(./build-scripts/get-app-id.sh `basename $FOLDER` "Staging" 2> /dev/null)
-PRODUCTION_APP_ID=$(./build-scripts/get-app-id.sh `basename $FOLDER` "Production" 2> /dev/null)
+QA_APP_ID=$(./build-scripts/get-app-id.sh "$FOLDER" "QA" 2> /dev/null)
+STAGING_APP_ID=$(./build-scripts/get-app-id.sh "$FOLDER" "Staging" 2> /dev/null)
+PRODUCTION_APP_ID=$(./build-scripts/get-app-id.sh "$FOLDER" "Production" 2> /dev/null)
 
 setAppIDs(){
     ENVIRONMENTS_PLIST="$1"
@@ -124,3 +124,8 @@ for PLIST_FILE in $PLIST_FILES
 do
     setAppIDs "$PLIST_FILE"
 done
+
+
+### Remove Temp Directory
+
+rm -rf $TMP_FOLDER
