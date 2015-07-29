@@ -93,6 +93,9 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
     
     if ([searchText length] > 0)
     {
+        // Searching state
+        self.searchState = VInlineSearchStateSearching;
+        
         NSString *sequenceId = [self.dependencyManager stringForKey:@"sequenceId"];
         
         self.searchOperation = [[VObjectManager sharedManager] findUsersBySearchString:searchText
