@@ -6,7 +6,11 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import "NSURL+VDataCacheID.h"
+#import "VDataCache.h"
 #import "VDependencyManager.h"
+#import "VTemplateImage.h"
+#import "VTemplateImageSet.h"
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
@@ -31,39 +35,185 @@
     self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:baseDependencyManager configuration:configuration dictionaryOfClassesByTemplateName:nil];
 }
 
-- (void)testArrayOfImageURLs
+- (void)testImageWithName
 {
-    NSArray *images = [self.dependencyManager arrayOfImageURLsForKey:@"myImages"];
-    XCTAssertEqual(images.count, 5u);
-    XCTAssertEqualObjects(images[0], @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00000.png");
-    XCTAssertEqualObjects(images[1], @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00001.png");
-    XCTAssertEqualObjects(images[2], @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00002.png");
-    XCTAssertEqualObjects(images[3], @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00003.png");
-    XCTAssertEqualObjects(images[4], @"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00004.png");
+    UIImage *expected = [UIImage imageNamed:@"C_menu"];
+    XCTAssertNotNil(expected); // This assert will fail if the "C_menu" image is ever removed from our project
+    UIImage *actual = [self.dependencyManager imageForKey:@"myImage"];
+    XCTAssertEqualObjects(expected, actual);
 }
 
-- (void)testAllImageURLs
+- (void)testImage
 {
-    NSArray *images = [self.dependencyManager arrayOfAllImageURLs];
-    XCTAssertEqual(images.count, 18u);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00000.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00001.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00002.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00003.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/tomato_00004.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00000.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00001.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00002.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00003.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00004.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00005.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00006.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00007.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00008.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00009.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00010.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00011.png"]);
-    XCTAssert([images containsObject:@"http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/images/heart_00012.png"]);
+    // This test will fail if the "C_menu" image is ever removed from our project
+    UIImage *sampleImage = [UIImage imageNamed:@"C_menu"];
+    VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
+                                                                                configuration:@{ @"myImage": sampleImage }
+                                                            dictionaryOfClassesByTemplateName:nil];
+    UIImage *actual = [dependencyManager imageForKey:@"myImage"];
+    XCTAssertEqualObjects(actual, sampleImage);
+}
+
+- (void)testImageSet
+{
+    NSURL *imageBundleURL1 = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleImage" withExtension:@"png"];
+    NSData *imageData1 = [NSData dataWithContentsOfURL:imageBundleURL1];
+    UIImage *expected1 = [[UIImage alloc] initWithData:imageData1 scale:1.0f];
+    
+    NSURL *imageBundleURL2 = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleImage2" withExtension:@"png"];
+    NSData *imageData2 = [NSData dataWithContentsOfURL:imageBundleURL2];
+    UIImage *expected2 = [[UIImage alloc] initWithData:imageData2 scale:2.0f];
+    
+    NSURL *url1 = [NSURL URLWithString:@"http://www.example.com/set1.png"];
+    NSURL *url2 = [NSURL URLWithString:@"http://www.example.com/set2.png"];
+    
+    VDataCache *dataCache = [[VDataCache alloc] init];
+    NSError *error = nil;
+    [dataCache cacheDataAtURL:imageBundleURL1 forID:url1 error:&error];
+    XCTAssertNil(error);
+    
+    error = nil;
+    [dataCache cacheDataAtURL:imageBundleURL2 forID:url2 error:&error];
+    XCTAssertNil(error);
+    
+    NSDictionary *imageSetDictionary = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:@"myDifferentImages"];
+    VTemplateImageSet *imageSet = [[VTemplateImageSet alloc] initWithJSON:imageSetDictionary];
+    VTemplateImage *expectedImage = [imageSet imageForScreenScale:[[UIScreen mainScreen] scale]];
+    
+    UIImage *actualImage = [self.dependencyManager imageForKey:@"myDifferentImages"];
+    XCTAssert( [actualImage isKindOfClass:[UIImage class]] );
+
+    if ( [expectedImage.imageURL isEqual:url1] )
+    {
+        XCTAssert( CGSizeEqualToSize([actualImage size], expected1.size) );
+        XCTAssertEqual( [actualImage scale], 1.0f );
+    }
+    else if ( [expectedImage.imageURL isEqual:url2] )
+    {
+        XCTAssert( CGSizeEqualToSize([actualImage size], expected2.size) );
+        XCTAssertEqual( [actualImage scale], 2.0f );
+    }
+    else
+    {
+        XCTFail(@"Something weird happened. Check the VTemplateImageSet class for bugs. (Are all of its unit tests passing?)");
+    }
+}
+
+- (void)testRemoteImage
+{
+    NSURL *imageBundleURL = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleImage" withExtension:@"png"];
+    NSData *imageData = [NSData dataWithContentsOfURL:imageBundleURL];
+    UIImage *expected = [UIImage imageWithData:imageData];
+    
+    VDataCache *dataCache = [[VDataCache alloc] init];
+    NSError *error = nil;
+    [dataCache cacheDataAtURL:imageBundleURL forID:[NSURL URLWithString:@"http://www.example.com/testRemoteImage"] error:&error];
+    XCTAssertNil(error);
+    
+    UIImage *actual = [self.dependencyManager imageForKey:@"myRemoteImage"];
+    XCTAssert( [actual isKindOfClass:[UIImage class]] );
+    XCTAssert( CGSizeEqualToSize(expected.size, actual.size) );
+}
+
+- (void)testImageArray
+{
+    NSURL *imageBundleURL1 = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleImage" withExtension:@"png"];
+    NSData *imageData1 = [NSData dataWithContentsOfURL:imageBundleURL1];
+    UIImage *expected1 = [UIImage imageWithData:imageData1];
+    
+    NSURL *imageBundleURL2 = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleImage2" withExtension:@"png"];
+    NSData *imageData2 = [NSData dataWithContentsOfURL:imageBundleURL2];
+    UIImage *expected2 = [[UIImage alloc] initWithData:imageData2 scale:3.0f];
+    
+    VDataCache *dataCache = [[VDataCache alloc] init];
+    NSError *error = nil;
+    [dataCache cacheDataAtURL:imageBundleURL1 forID:[NSURL URLWithString:@"http://www.example.com/testImageArrayOne"] error:&error];
+    XCTAssertNil(error);
+    
+    error = nil;
+    [dataCache cacheDataAtURL:imageBundleURL2 forID:[NSURL URLWithString:@"http://www.example.com/testImageArrayTwo"] error:&error];
+    XCTAssertNil(error);
+    
+    NSArray *actualArray = [self.dependencyManager arrayOfValuesOfType:[UIImage class] forKey:@"myBasicImageArray"];
+    XCTAssertEqual(actualArray.count, 2u);
+    XCTAssert( [actualArray[0] isKindOfClass:[UIImage class]] );
+    XCTAssert( [actualArray[1] isKindOfClass:[UIImage class]] );
+    XCTAssert( CGSizeEqualToSize([actualArray[0] size], expected1.size) );
+    XCTAssert( CGSizeEqualToSize([actualArray[1] size], expected2.size) );
+    XCTAssertEqual( [(UIImage *)actualArray[1] scale], 3.0f );
+}
+
+- (void)testArrayOfLiteralImages
+{
+    NSURL *imageBundleURL1 = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleImage" withExtension:@"png"];
+    NSData *imageData1 = [NSData dataWithContentsOfURL:imageBundleURL1];
+    UIImage *image1 = [UIImage imageWithData:imageData1];
+    
+    NSURL *imageBundleURL2 = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleImage2" withExtension:@"png"];
+    NSData *imageData2 = [NSData dataWithContentsOfURL:imageBundleURL2];
+    UIImage *image2 = [UIImage imageWithData:imageData2];
+    
+    VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.dependencyManager
+                                                                                configuration:@{ @"myLiteralImages": @[ image1, image2] }
+                                                            dictionaryOfClassesByTemplateName:nil];
+
+    NSArray *images = [dependencyManager arrayOfValuesOfType:[UIImage class] forKey:@"myLiteralImages"];
+    XCTAssertEqual(images.count, 2u);
+    XCTAssertEqualObjects(image1, images[0]);
+    XCTAssertEqualObjects(image2, images[1]);
+}
+
+- (void)testImageMacro
+{
+    NSURL *imageBundleURL1 = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleImage" withExtension:@"png"];
+    NSData *imageData1 = [NSData dataWithContentsOfURL:imageBundleURL1];
+    UIImage *image1 = [[UIImage alloc] initWithData:imageData1 scale:2.0f];
+    
+    NSURL *imageBundleURL2 = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleImage2" withExtension:@"png"];
+    NSData *imageData2 = [NSData dataWithContentsOfURL:imageBundleURL2];
+    UIImage *image2 = [[UIImage alloc] initWithData:imageData2 scale:2.0f];
+    
+    VDataCache *dataCache = [[VDataCache alloc] init];
+    NSError *error = nil;
+    [dataCache cacheDataAtURL:imageBundleURL1 forID:[NSURL URLWithString:@"http://www.example.com/e35b3a0f-9993-47c1-845a-1429c7e4c692/tomato_00000.png"] error:&error];
+    XCTAssertNil(error);
+    
+    error = nil;
+    [dataCache cacheDataAtURL:imageBundleURL2 forID:[NSURL URLWithString:@"http://www.example.com/e35b3a0f-9993-47c1-845a-1429c7e4c692/tomato_00001.png"] error:&error];
+    XCTAssertNil(error);
+    
+    XCTAssert([self.dependencyManager hasArrayOfImagesForKey:@"macroImages"]);
+    NSArray *images = [self.dependencyManager arrayOfImagesForKey:@"macroImages"];
+    
+    XCTAssertEqual(images.count, 2u);
+    XCTAssert( [images[0] isKindOfClass:[UIImage class]] );
+    XCTAssert( [images[1] isKindOfClass:[UIImage class]] );
+    XCTAssert( CGSizeEqualToSize([images[0] size], image1.size) );
+    XCTAssert( CGSizeEqualToSize([images[1] size], image2.size) );
+    XCTAssertEqual( [(UIImage *)images[0] scale], 2.0f );
+    XCTAssertEqual( [(UIImage *)images[1] scale], 2.0f );
+}
+
+- (void)testMissingArray
+{
+    XCTAssertFalse( [self.dependencyManager hasArrayOfImagesForKey:@"missingMacroImages"] );
+}
+
+- (void)testPartiallyMissingArray
+{
+    NSURL *imageBundleURL1 = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleImage" withExtension:@"png"];
+    NSURL *imageBundleURL2 = [[NSBundle bundleForClass:[self class]] URLForResource:@"sampleImage2" withExtension:@"png"];
+    
+    VDataCache *dataCache = [[VDataCache alloc] init];
+    NSError *error = nil;
+    [dataCache cacheDataAtURL:imageBundleURL1 forID:[NSURL URLWithString:@"http://www.example.com/c2baabc6-3648-4684-96bd-3637201c0ba3/sup_00000.png"] error:&error];
+    XCTAssertNil(error);
+    
+    error = nil;
+    [dataCache cacheDataAtURL:imageBundleURL2 forID:[NSURL URLWithString:@"http://www.example.com/c2baabc6-3648-4684-96bd-3637201c0ba3/sup_00001.png"] error:&error];
+    XCTAssertNil(error);
+    
+    XCTAssertFalse( [self.dependencyManager hasArrayOfImagesForKey:@"partiallyMissing"] );
 }
 
 @end
