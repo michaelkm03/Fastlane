@@ -33,6 +33,12 @@ typedef NS_ENUM(NSInteger, VKeyboardBarAttachmentType)
 - (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
     selectedAttachmentType:(VKeyboardBarAttachmentType)attachmentType;
 
+/**
+ *  Notifies the delegate that the user tapped the thumbnail of the currently attached media.
+ */
+- (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
+                selectedClearMedia:(UIImage *)thumbnail;
+
 @optional
 
 /**

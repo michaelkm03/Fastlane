@@ -20,6 +20,7 @@
 
 static const NSInteger kCharacterLimit = 255;
 static const CGFloat VTextViewTopInsetAddition = 2.0f;
+static const CGFloat kAttachmentThumbnailWidth = 35.0f;
 
 @interface VKeyboardInputAccessoryView () <UITextViewDelegate>
 
@@ -28,7 +29,6 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
 @property (nonatomic, assign) CGSize lastContentSize;
 
 // Views
-@property (weak, nonatomic) IBOutlet UIImageView *attachmentThumbnail;
 @property (nonatomic, weak) IBOutlet UIButton *attachmentsButton;
 @property (nonatomic, weak) IBOutlet UIButton *sendButton;
 @property (nonatomic, weak) UITextView *editingTextView;
@@ -38,6 +38,7 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
 // Constraints
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *topSpaceAttachmentsToContainer;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *attachmentsBarHeightConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *attachmentButtonWidthConstraint;
 
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *editingTextViewTopSpace;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *editingTextViewBottomSpace;
@@ -98,6 +99,7 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
     editingTextView.translatesAutoresizingMaskIntoConstraints = NO;
     editingTextView.delegate = self;
     editingTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    editingTextView.backgroundColor = [UIColor clearColor];
     editingTextView.font = defaultFont;
     
     //Adding this to the top inset centers the text with it's placeholder
@@ -169,14 +171,16 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
 
 - (void)setSelectedThumbnail:(UIImage *)selectedThumbnail
 {
-    self.attachmentThumbnail.layer.cornerRadius = 2.0f;
-    self.attachmentThumbnail.layer.masksToBounds = YES;
-    self.attachmentThumbnail.image = selectedThumbnail;
-
-    self.selectedMedia = (selectedThumbnail != nil);
-    [self.attachmentsButton setImage:(selectedThumbnail != nil) ? nil : [UIImage imageNamed:@"MessageCamera"]
-                            forState:UIControlStateNormal];
+    self.attachmentsButton.layer.cornerRadius = 2.0f;
+    self.attachmentsButton.layer.masksToBounds = YES;
+    self.attachmentsButton.clipsToBounds = YES;
     
+    [self.attachmentsButton setBackgroundImage:selectedThumbnail
+                                      forState:UIControlStateNormal];
+    
+    self.selectedMedia = (selectedThumbnail != nil);
+    
+    [self updateAttachmentThumbnail];
     [self updateSendButton];
 }
 
@@ -198,11 +202,10 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
 {
     self.editingTextView.text = nil;
     self.sendButton.enabled = NO;
-    self.attachmentThumbnail.image = nil;
     self.selectedThumbnail = nil;
     self.attachmentsButton.alpha = 1.0f;
     self.selectedMedia = NO;
-    [self.attachmentsButton setImage:[UIImage imageNamed:@"MessageCamera"]
+    [self.attachmentsButton setImage:nil
                             forState:UIControlStateNormal];
     self.attachmentsButton.selected = NO;
 
@@ -233,6 +236,13 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
 - (IBAction)pressedSend:(id)sender
 {
     [self.delegate pressedSendOnKeyboardInputAccessoryView:self];
+}
+
+- (IBAction)tappedMediaAttachment:(id)sender
+{
+    UIImage *currentThumbnail = [self.attachmentsButton backgroundImageForState:UIControlStateNormal];
+    [self.delegate keyboardInputAccessoryView:self
+                           selectedClearMedia:currentThumbnail];
 }
 
 #pragma mark - UITextViewDelegate
@@ -295,8 +305,7 @@ shouldChangeTextInRange:(NSRange)range
     [self animateAttachmentsBarAnimations:^
     {
         self.topSpaceAttachmentsToContainer.constant = self.attachmentsBarHeightConstraint.constant;
-    }
-                                    delay:NO];
+    }];
     
     if ([self.delegate respondsToSelector:@selector(keyboardInputAccessoryViewDidEndEditing:)])
     {
@@ -309,8 +318,7 @@ shouldChangeTextInRange:(NSRange)range
     [self animateAttachmentsBarAnimations:^
     {
         self.topSpaceAttachmentsToContainer.constant = 0.0f;
-    }
-                                    delay:YES];
+    }];
     
     
     if ([self.delegate respondsToSelector:@selector(keyboardInputAccessoryViewDidBeginEditing:)])
@@ -322,12 +330,11 @@ shouldChangeTextInRange:(NSRange)range
 #pragma mark - Convenience
 
 - (void)animateAttachmentsBarAnimations:(void (^)(void))animations
-                                  delay:(BOOL)shouldDelay
 {
     NSParameterAssert(animations != nil);
     
     [UIView animateWithDuration:0.2f
-                          delay:shouldDelay ? 0.5f : 0.0f
+                          delay:0.0f
                         options:kNilOptions
                      animations:^
      {
@@ -345,6 +352,12 @@ shouldChangeTextInRange:(NSRange)range
 - (void)updateSendButton
 {
     self.sendButton.enabled = (self.selectedMedia || (self.composedText.length > 0));
+}
+
+- (void)updateAttachmentThumbnail
+{
+    self.attachmentsButton.enabled = self.selectedMedia;
+    self.attachmentButtonWidthConstraint.constant = self.selectedMedia ? kAttachmentThumbnailWidth : 0.0f;
 }
 
 - (void)setDelegate:(id<VKeyboardInputAccessoryViewDelegate>)delegate

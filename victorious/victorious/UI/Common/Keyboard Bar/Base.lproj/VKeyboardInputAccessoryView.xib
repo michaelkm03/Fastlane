@@ -11,7 +11,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ycr-9I-eI5" userLabel="Attachments">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                    <rect key="frame" x="0.0" y="50" width="320" height="50"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XuK-1c-4iY" userLabel="Image Button">
                             <rect key="frame" x="20" y="0.0" width="50" height="50"/>
@@ -64,7 +64,7 @@
                         <constraint firstItem="nWU-Vd-xRZ" firstAttribute="leading" secondItem="U0r-cL-7X4" secondAttribute="trailing" constant="20" id="v1A-J8-8JQ"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v84-Mw-D11" userLabel="Comment UI" customClass="VKeyboardInputAccessoryView">
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v84-Mw-D11" userLabel="Comment UI">
                     <rect key="frame" x="0.0" y="51" width="320" height="50"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6MC-qB-WZJ" userLabel="Seperator">
@@ -74,21 +74,16 @@
                                 <constraint firstAttribute="height" constant="1" id="7sx-ZP-usg"/>
                             </constraints>
                         </view>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lDX-Xw-9Dk" userLabel="Attachment Thumbnail Image View">
-                            <rect key="frame" x="10" y="7" width="35" height="35"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f5c-Th-WLf" userLabel="Clear Attachments Button">
+                            <rect key="frame" x="10" y="8" width="0.0" height="35"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="35" id="LOk-ge-GVA"/>
-                                <constraint firstAttribute="height" constant="35" id="Lwc-wz-QPk"/>
-                            </constraints>
-                        </imageView>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f5c-Th-WLf" userLabel="Attachments Button">
-                            <rect key="frame" x="5" y="-1" width="45" height="51"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="51" id="WK9-EV-eYt"/>
-                                <constraint firstAttribute="width" constant="45" id="lPv-aP-R4t"/>
+                                <constraint firstAttribute="height" constant="35" id="WK9-EV-eYt"/>
+                                <constraint firstAttribute="width" id="lPv-aP-R4t"/>
                             </constraints>
                             <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            <state key="normal" image="MessageCamera"/>
+                            <connections>
+                                <action selector="tappedMediaAttachment:" destination="HeO-pU-V0k" eventType="touchUpInside" id="6dy-iK-2La"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GKz-NI-jVc" userLabel="Send Button">
                             <rect key="frame" x="270" y="-1" width="40" height="51"/>
@@ -104,42 +99,43 @@
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q7x-zi-ZRw" userLabel="Editing Superview">
-                            <rect key="frame" x="45" y="5" width="225" height="40"/>
+                            <rect key="frame" x="10" y="5" width="260" height="40"/>
+                            <subviews>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7pn-fk-jDk" userLabel="Placeholder Label">
+                                    <rect key="frame" x="5" y="12" width="76.5" height="17"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="7pn-fk-jDk" firstAttribute="leading" secondItem="q7x-zi-ZRw" secondAttribute="leading" constant="5" id="ch8-4g-7Sb"/>
+                                <constraint firstAttribute="centerY" secondItem="7pn-fk-jDk" secondAttribute="centerY" id="fYa-OM-aKJ"/>
+                            </constraints>
                         </view>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7pn-fk-jDk" userLabel="Placeholder Label">
-                            <rect key="frame" x="50" y="16" width="76.5" height="17"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="16i-Pc-vT9"/>
-                        <constraint firstItem="GKz-NI-jVc" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="7pn-fk-jDk" secondAttribute="trailing" constant="10" id="1kf-tM-gDb"/>
-                        <constraint firstItem="f5c-Th-WLf" firstAttribute="leading" secondItem="v84-Mw-D11" secondAttribute="leading" constant="5" id="2Rg-FQ-T8h"/>
+                        <constraint firstItem="f5c-Th-WLf" firstAttribute="leading" secondItem="v84-Mw-D11" secondAttribute="leading" constant="10" id="2Rg-FQ-T8h"/>
                         <constraint firstItem="6MC-qB-WZJ" firstAttribute="top" secondItem="v84-Mw-D11" secondAttribute="top" id="9WA-RO-aIO"/>
-                        <constraint firstItem="7pn-fk-jDk" firstAttribute="leading" secondItem="f5c-Th-WLf" secondAttribute="trailing" id="Dii-Dk-cjI"/>
-                        <constraint firstAttribute="centerY" secondItem="7pn-fk-jDk" secondAttribute="centerY" id="DpX-ng-0Pz"/>
                         <constraint firstAttribute="trailing" secondItem="GKz-NI-jVc" secondAttribute="trailing" constant="10" id="EHm-5w-m5k"/>
                         <constraint firstItem="GKz-NI-jVc" firstAttribute="leading" secondItem="q7x-zi-ZRw" secondAttribute="trailing" id="EMD-Xb-nta"/>
-                        <constraint firstItem="q7x-zi-ZRw" firstAttribute="leading" secondItem="f5c-Th-WLf" secondAttribute="trailing" constant="-5" id="I1u-uM-iW4"/>
+                        <constraint firstItem="q7x-zi-ZRw" firstAttribute="leading" secondItem="f5c-Th-WLf" secondAttribute="trailing" id="I1u-uM-iW4"/>
                         <constraint firstAttribute="bottom" secondItem="q7x-zi-ZRw" secondAttribute="bottom" constant="5" id="LYe-Wa-lSs"/>
+                        <constraint firstAttribute="centerY" secondItem="f5c-Th-WLf" secondAttribute="centerY" id="Lyw-4z-GwL"/>
                         <constraint firstItem="6MC-qB-WZJ" firstAttribute="leading" secondItem="v84-Mw-D11" secondAttribute="leading" id="Pnt-q9-L60"/>
-                        <constraint firstAttribute="bottom" secondItem="f5c-Th-WLf" secondAttribute="bottom" id="UyU-Bt-OgD"/>
                         <constraint firstAttribute="bottom" secondItem="GKz-NI-jVc" secondAttribute="bottom" id="XaQ-We-Fbh"/>
                         <constraint firstItem="q7x-zi-ZRw" firstAttribute="top" secondItem="v84-Mw-D11" secondAttribute="top" constant="5" id="hcZ-w7-KCp"/>
                         <constraint firstAttribute="trailing" secondItem="6MC-qB-WZJ" secondAttribute="trailing" id="nWf-cy-12i"/>
-                        <constraint firstAttribute="bottom" secondItem="lDX-Xw-9Dk" secondAttribute="bottom" constant="8" id="qdN-ju-a6n"/>
-                        <constraint firstItem="lDX-Xw-9Dk" firstAttribute="leading" secondItem="v84-Mw-D11" secondAttribute="leading" constant="10" id="zS6-eh-A0c"/>
                     </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="v84-Mw-D11" secondAttribute="bottom" id="0ZT-44-C3a"/>
-                <constraint firstItem="Ycr-9I-eI5" firstAttribute="top" secondItem="HeO-pU-V0k" secondAttribute="top" id="BV2-uE-JWO"/>
+                <constraint firstItem="Ycr-9I-eI5" firstAttribute="top" secondItem="HeO-pU-V0k" secondAttribute="top" constant="50" id="BV2-uE-JWO"/>
                 <constraint firstItem="v84-Mw-D11" firstAttribute="top" relation="greaterThanOrEqual" secondItem="HeO-pU-V0k" secondAttribute="top" constant="50" id="GAk-gi-QZI"/>
                 <constraint firstItem="Ycr-9I-eI5" firstAttribute="leading" secondItem="HeO-pU-V0k" secondAttribute="leading" id="IAP-XV-5qe"/>
                 <constraint firstAttribute="trailing" secondItem="v84-Mw-D11" secondAttribute="trailing" id="JAX-EF-P6T"/>
@@ -149,7 +145,7 @@
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="attachmentThumbnail" destination="lDX-Xw-9Dk" id="BGM-M5-2ZZ"/>
+                <outlet property="attachmentButtonWidthConstraint" destination="lPv-aP-R4t" id="3j6-aZ-XfQ"/>
                 <outlet property="attachmentsBarHeightConstraint" destination="AR3-WE-2Aj" id="5GY-6n-jko"/>
                 <outlet property="attachmentsButton" destination="f5c-Th-WLf" id="aog-r9-kI8"/>
                 <outlet property="editingTextSuperview" destination="q7x-zi-ZRw" id="Diw-Cr-pBK"/>
@@ -163,7 +159,6 @@
         </view>
     </objects>
     <resources>
-        <image name="MessageCamera" width="22" height="23"/>
         <image name="commentfield_gif" width="20" height="20"/>
         <image name="commentfield_image" width="20" height="20"/>
         <image name="commentfield_video" width="20" height="20"/>

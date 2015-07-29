@@ -1412,6 +1412,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
      }];
 }
 
+- (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView selectedClearMedia:(UIImage *)thumbnail
+{
+    [self.textEntryView setSelectedThumbnail:nil];
+}
+
 - (void)pressedAlternateReturnKeyonKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
 {
     if (inputAccessoryView.composedText.length == 0)
