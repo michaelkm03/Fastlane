@@ -41,6 +41,6 @@ extern const NSInteger kSearchTableDesiredMinimumHeight;
  
  @param searchText NSString text to search for
  */
-- (void)searchFollowingList:(NSString *)searchText;
+- (void)searchWithText:(NSString *)searchText;
 
 @end
