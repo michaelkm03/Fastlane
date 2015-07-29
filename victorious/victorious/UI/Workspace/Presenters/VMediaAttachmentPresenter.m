@@ -125,7 +125,7 @@
         }
         else if (self.attachmentTypes & VMediaAttachmentOptionsGIF)
         {
-            videoActionHandler();
+            gifActionHandler();
         }
     }
     else if (attachmentActionSheet.actions.count > 1)

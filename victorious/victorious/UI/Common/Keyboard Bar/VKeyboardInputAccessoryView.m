@@ -11,6 +11,7 @@
 
 // Layout
 #import "UIView+AutoLayout.h"
+#import "VCompatibility.h"
 
 // Constants
 #import "VConstants.h"
@@ -21,6 +22,10 @@
 static const NSInteger kCharacterLimit = 255;
 static const CGFloat VTextViewTopInsetAddition = 2.0f;
 static const CGFloat kAttachmentThumbnailWidth = 35.0f;
+static const CGFloat kCommentBarVerticalPaddingToTextView = 10.0f;
+static const CGFloat kMaxTextViewHeight = 150.0f;
+static const CGFloat kMinTextViewHeight = 40.0f;
+static const CGFloat kAttachmentBarHeight = 50.0f;
 
 @interface VKeyboardInputAccessoryView () <UITextViewDelegate>
 
@@ -36,13 +41,12 @@ static const CGFloat kAttachmentThumbnailWidth = 35.0f;
 @property (nonatomic, weak) IBOutlet UILabel *placeholderLabel;
 
 // Constraints
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *topSpaceAttachmentsToContainer;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *topSpaceAttachmentsToContainer;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *attachmentsBarHeightConstraint;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *attachmentButtonWidthConstraint;
-
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *attachmentButtonWidthConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *commentUIContainerHeightConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *editingTextViewTopSpace;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *editingTextViewBottomSpace;
-
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, assign) BOOL addedTextView;
@@ -86,7 +90,7 @@ static const CGFloat kAttachmentThumbnailWidth = 35.0f;
 
 - (void)addTextViewToContainer
 {
-    UIFont *defaultFont = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
+    UIFont *defaultFont = [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
     self.textStorage = [[VUserTaggingTextStorage alloc] initWithTextView:nil defaultFont:defaultFont taggingDelegate:self.delegate dependencyManager:self.dependencyManager];
     
     NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
@@ -146,7 +150,7 @@ static const CGFloat kAttachmentThumbnailWidth = 35.0f;
     CGFloat editingTextViewPadding = self.editingTextViewTopSpace.constant + self.editingTextViewBottomSpace.constant;
     CGFloat contentSizeHeight = self.editingTextView.contentSize.height;
     CGFloat heightSum = editingTextViewPadding + contentSizeHeight;
-    CGSize intrinsicSize = CGSizeMake(CGRectGetWidth(self.bounds), MAX(heightSum, 50.0f));
+    CGSize intrinsicSize = CGSizeMake(CGRectGetWidth(self.bounds), MAX(heightSum, kAttachmentBarHeight));
     return intrinsicSize;
 }
 
@@ -190,6 +194,12 @@ static const CGFloat kAttachmentThumbnailWidth = 35.0f;
     
     [self updateAttachmentThumbnail];
     [self updateSendButton];
+    [self updateAttachmentsBar];
+}
+
+- (void)setAttachmentsBarHidden:(BOOL)attachmentsBarHidden
+{
+    _attachmentsBarHidden = attachmentsBarHidden;
     [self updateAttachmentsBar];
 }
 
@@ -258,6 +268,8 @@ static const CGFloat kAttachmentThumbnailWidth = 35.0f;
         // New size
         [self invalidateIntrinsicContentSize];
         self.lastContentSize = textView.contentSize;
+        CGFloat textViewSize = CLAMP(kMinTextViewHeight, textView.contentSize.height, kMaxTextViewHeight);
+        self.commentUIContainerHeightConstraint.constant = textViewSize + kCommentBarVerticalPaddingToTextView;
     }
     
     if (textView.text.length == 0)
@@ -342,6 +354,12 @@ static const CGFloat kAttachmentThumbnailWidth = 35.0f;
 
 - (BOOL)shouldShowAttachmentsBar
 {
+    // If set to yes then override default behavior
+    if (self.isAttachmentsBarHidden)
+    {
+        return NO;
+    }
+    
     if (self.selectedMedia)
     {
         return NO;
@@ -354,6 +372,22 @@ static const CGFloat kAttachmentThumbnailWidth = 35.0f;
     {
         return NO;
     }
+}
+
+@end
+
+@implementation VKeyboardInputAccessoryView (keyboardSize)
+
+- (CGRect)obscuredRectInWindow:(UIWindow *)window
+{
+    CGRect rectInOwnWindow = [self.window convertRect:self.frame fromView:self.superview];
+    CGRect rectInDestinationWindow = [window convertRect:rectInOwnWindow fromWindow:self.window];
+    if (![self shouldShowAttachmentsBar])
+    {
+        rectInDestinationWindow.origin.y = rectInDestinationWindow.origin.y + kAttachmentBarHeight;
+        rectInDestinationWindow.size.height = rectInDestinationWindow.size.height - kAttachmentBarHeight;
+    }
+    return rectInDestinationWindow;
 }
 
 @end

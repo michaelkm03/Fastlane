@@ -13,6 +13,13 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ycr-9I-eI5" userLabel="Attachments">
                     <rect key="frame" x="0.0" y="50" width="320" height="50"/>
                     <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5jQ-4D-Yes" userLabel="Seperator">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                            <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="CC3-3X-QrD"/>
+                            </constraints>
+                        </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XuK-1c-4iY" userLabel="Image Button">
                             <rect key="frame" x="20" y="0.0" width="50" height="50"/>
                             <constraints>
@@ -52,11 +59,14 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstItem="5jQ-4D-Yes" firstAttribute="top" secondItem="Ycr-9I-eI5" secondAttribute="top" id="92e-ig-xGP"/>
                         <constraint firstAttribute="bottom" secondItem="XuK-1c-4iY" secondAttribute="bottom" id="ABa-Aj-NBL"/>
                         <constraint firstAttribute="height" constant="50" id="AR3-WE-2Aj"/>
                         <constraint firstAttribute="bottom" secondItem="U0r-cL-7X4" secondAttribute="bottom" id="Elj-Zr-v8Q"/>
+                        <constraint firstAttribute="trailing" secondItem="5jQ-4D-Yes" secondAttribute="trailing" id="Qw8-Ug-maN"/>
                         <constraint firstItem="nWU-Vd-xRZ" firstAttribute="top" secondItem="Ycr-9I-eI5" secondAttribute="top" id="bu6-Gv-f5a"/>
                         <constraint firstItem="U0r-cL-7X4" firstAttribute="top" secondItem="Ycr-9I-eI5" secondAttribute="top" id="c8L-fq-n9P"/>
+                        <constraint firstItem="5jQ-4D-Yes" firstAttribute="leading" secondItem="Ycr-9I-eI5" secondAttribute="leading" id="dB7-Vo-PGd"/>
                         <constraint firstItem="XuK-1c-4iY" firstAttribute="top" secondItem="Ycr-9I-eI5" secondAttribute="top" id="gGp-Zu-oLE"/>
                         <constraint firstItem="XuK-1c-4iY" firstAttribute="leading" secondItem="Ycr-9I-eI5" secondAttribute="leading" constant="20" id="mWh-1Q-XJI"/>
                         <constraint firstItem="U0r-cL-7X4" firstAttribute="leading" secondItem="XuK-1c-4iY" secondAttribute="trailing" constant="20" id="tSm-90-0CY"/>
@@ -124,9 +134,9 @@
                         <constraint firstItem="GKz-NI-jVc" firstAttribute="leading" secondItem="q7x-zi-ZRw" secondAttribute="trailing" id="EMD-Xb-nta"/>
                         <constraint firstItem="q7x-zi-ZRw" firstAttribute="leading" secondItem="f5c-Th-WLf" secondAttribute="trailing" id="I1u-uM-iW4"/>
                         <constraint firstAttribute="bottom" secondItem="q7x-zi-ZRw" secondAttribute="bottom" constant="5" id="LYe-Wa-lSs"/>
-                        <constraint firstAttribute="centerY" secondItem="f5c-Th-WLf" secondAttribute="centerY" id="Lyw-4z-GwL"/>
                         <constraint firstItem="6MC-qB-WZJ" firstAttribute="leading" secondItem="v84-Mw-D11" secondAttribute="leading" id="Pnt-q9-L60"/>
                         <constraint firstAttribute="bottom" secondItem="GKz-NI-jVc" secondAttribute="bottom" id="XaQ-We-Fbh"/>
+                        <constraint firstAttribute="bottom" secondItem="f5c-Th-WLf" secondAttribute="bottom" constant="7" id="f1f-P2-bym"/>
                         <constraint firstItem="q7x-zi-ZRw" firstAttribute="top" secondItem="v84-Mw-D11" secondAttribute="top" constant="5" id="hcZ-w7-KCp"/>
                         <constraint firstAttribute="trailing" secondItem="6MC-qB-WZJ" secondAttribute="trailing" id="nWf-cy-12i"/>
                     </constraints>
@@ -148,6 +158,7 @@
                 <outlet property="attachmentButtonWidthConstraint" destination="lPv-aP-R4t" id="3j6-aZ-XfQ"/>
                 <outlet property="attachmentsBarHeightConstraint" destination="AR3-WE-2Aj" id="5GY-6n-jko"/>
                 <outlet property="attachmentsButton" destination="f5c-Th-WLf" id="aog-r9-kI8"/>
+                <outlet property="commentUIContainerHeightConstraint" destination="16i-Pc-vT9" id="raK-gp-17p"/>
                 <outlet property="editingTextSuperview" destination="q7x-zi-ZRw" id="Diw-Cr-pBK"/>
                 <outlet property="editingTextViewBottomSpace" destination="hcZ-w7-KCp" id="WqV-Th-L6f"/>
                 <outlet property="editingTextViewTopSpace" destination="LYe-Wa-lSs" id="kap-lE-eos"/>

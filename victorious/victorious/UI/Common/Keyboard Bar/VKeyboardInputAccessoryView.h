@@ -93,6 +93,11 @@ typedef NS_ENUM(NSInteger, VKeyboardBarAttachmentType)
 @property (nonatomic, strong) NSString *placeholderText;
 
 /**
+ *  Use this property to override the default behavior of the attachments bar and force it to hidden.
+ */
+@property (nonatomic, assign, getter=isAttachmentsBarHidden) BOOL attachmentsBarHidden;
+
+/**
  *  The selected thumbnail image for the current attachment. Setting this to nil will restore the original placeholder image.
  */
 - (void)setSelectedThumbnail:(UIImage *)selectedThumbnail;
@@ -104,5 +109,11 @@ typedef NS_ENUM(NSInteger, VKeyboardBarAttachmentType)
 
 - (void)startEditing;
 - (void)clearTextAndResign;
+
+@end
+
+@interface VKeyboardInputAccessoryView (keyboardSize)
+
+- (CGRect)obscuredRectInWindow:(UIWindow *)window;
 
 @end

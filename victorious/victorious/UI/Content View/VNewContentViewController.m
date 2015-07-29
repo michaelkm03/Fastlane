@@ -437,9 +437,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         self.textEntryView = inputAccessoryView;
         self.contentCollectionView.accessoryView = self.textEntryView;
         [self.contentCollectionView becomeFirstResponder];
-        
-        // Adjust focus area for keyboard bar
-        [self.focusHelper setFocusAreaInsets:UIEdgeInsetsMake(0, 0, CGRectGetHeight(inputAccessoryView.bounds), 0)];
     }
     
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
@@ -490,14 +487,11 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     [self.contentCollectionView becomeFirstResponder];
     self.videoCell.delegate = self;
-
+    
 #ifdef V_ALLOW_VIDEO_DOWNLOADS
     // We could probably move this here anyway, but not going to for now to avoid bugs.
     self.videoCell.viewModel = self.viewModel.videoViewModel;
 #endif
-    
-    self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(VShrinkingContentLayoutMinimumContentHeight, 0, CGRectGetHeight(self.textEntryView.bounds), 0);
-    self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.textEntryView.bounds) , 0);
     
     if (self.viewModel.sequence.isImage)
     {
@@ -536,6 +530,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    [self updateInsetsForKeyboardBarState];
     
     NSString *contextType = [self trackingValueForContentType] ?: @"";
     [[VTrackingManager sharedInstance] setValue:contextType forSessionParameterWithKey:VTrackingKeyContentType];
@@ -683,6 +679,17 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 #pragma mark - Private Mehods
 
+- (void)updateInsetsForKeyboardBarState
+{
+    // Adjust focus area for keyboard bar
+    CGRect obscuredRectInWindow = [self.textEntryView obscuredRectInWindow:self.view.window];
+    CGRect obscuredRectInOwnView = [self.view.window convertRect:obscuredRectInWindow toView:self.view];
+    CGFloat bottomObscuredSize = CGRectGetMaxY(self.view.bounds) - CGRectGetMinY(obscuredRectInOwnView);
+    self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(VShrinkingContentLayoutMinimumContentHeight, 0, bottomObscuredSize, 0);
+    self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, bottomObscuredSize, 0);
+    [self.focusHelper setFocusAreaInsets:UIEdgeInsetsMake(0, 0, bottomObscuredSize, 0)];
+}
+
 - (void)removeCollectionViewFromContainer
 {
     self.snapshotView = [self.view snapshotViewAfterScreenUpdates:NO];
@@ -690,9 +697,10 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     self.offsetBeforeRemoval = self.contentCollectionView.contentOffset;
     self.contentCollectionView.delegate = nil;
     self.contentCollectionView.dataSource = nil;
-
+    [self.contentCollectionView resignFirstResponder];
+    [self.textEntryView stopEditing];
     [self.videoCell prepareForRemoval];
-    
+
     [self.contentCollectionView removeFromSuperview];
 }
 
@@ -715,7 +723,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                                                         views:@{@"collectionView":self.contentCollectionView}]];
     [self.view bringSubviewToFront:self.closeButton];
     [self.view bringSubviewToFront:self.moreButton];
-//    [self.view bringSubviewToFront:self.textEntryView];
 }
 
 - (void)updateInitialExperienceEnhancerState
@@ -1374,16 +1381,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 #pragma mark - VKeyboardInputAccessoryViewDelegate
 
-- (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inpoutAccessoryView
-                         wantsSize:(CGSize)size
-{
-    if (size.height > kMaxInputBarHeight)
-    {
-        return;
-    }
-    [self.view layoutIfNeeded];
-}
-
 - (void)pressedSendOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
 {
     __weak typeof(self) welf = self;
@@ -1413,6 +1410,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView selectedClearMedia:(UIImage *)thumbnail
 {
+#warning Add action sheet here
     [self.textEntryView setSelectedThumbnail:nil];
 }
 
@@ -1448,8 +1446,15 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self clearEditingRealTimeComment];
 }
 
+- (void)keyboardInputAccessoryViewDidEndEditing:(VKeyboardInputAccessoryView *)inpoutAccessoryView
+{
+    [self updateInsetsForKeyboardBarState];
+}
+
 - (void)keyboardInputAccessoryViewDidBeginEditing:(VKeyboardInputAccessoryView *)inpoutAccessoryView
 {
+    [self updateInsetsForKeyboardBarState];
+    
     if ( self.viewModel.type != VContentViewTypeVideo )
     {
         return;
@@ -1486,25 +1491,24 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)userTaggingTextStorage:(VUserTaggingTextStorage *)textStorage wantsToDismissViewController:(UITableViewController *)tableViewController
 {
     [tableViewController.view removeFromSuperview];
+    self.textEntryView.attachmentsBarHidden = NO;
 }
 
 - (void)userTaggingTextStorage:(VUserTaggingTextStorage *)textStorage wantsToShowViewController:(UIViewController *)viewController
 {    
     // Inline Search layout constraints
     UIView *searchTableView = viewController.view;
-    UIView *superview = self.view;
-//    [superview insertSubview:searchTableView belowSubview:self.textEntryView];
+    [self.view addSubview:searchTableView];
     [searchTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
     searchTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-    NSDictionary *views = @{@"searchTableView":searchTableView, @"textEntryView":self.textEntryView};
-    [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[searchTableView(>=height)][textEntryView]"
-                                                                      options:0
-                                                                      metrics:@{ @"height":@(kSearchTableDesiredMinimumHeight) }
-                                                                        views:views]];
-    [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[searchTableView]|"
-                                                                      options:kNilOptions
-                                                                      metrics:nil
-                                                                        views:views]];
+//    [self.view v_addFitToParentConstraintsToSubview:searchTableView];
+    
+    UIWindow *ownWindow = self.view.window;
+    CGRect obscuredRectInWindow = [self.textEntryView obscuredRectInWindow:ownWindow];
+    CGRect obscuredRectInOwnView = [ownWindow convertRect:obscuredRectInWindow toView:self.view];
+    [self.view v_addFitToParentConstraintsToSubview:searchTableView leading:0.0f trailing:0.0f top:0.0f bottom:CGRectGetMinY(obscuredRectInOwnView)];
+
+    self.textEntryView.attachmentsBarHidden = YES;
 }
 
 - (void)submitCommentWithText:(NSString *)commentText
