@@ -34,7 +34,8 @@ TMP_FOLDER=$(python build-scripts/vams_prebuild.py $FOLDER ios 2>&1)
 
 # If no working folder is returned then exit
 if [ "$TMP_FOLDER" == "" ]; then
-    exit 0
+    echo "No app named '$FOLDER' was located in VAMS"
+    exit 1
 fi
 
 FOLDER="$TMP_FOLDER"
