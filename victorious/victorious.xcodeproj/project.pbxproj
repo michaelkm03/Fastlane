@@ -114,6 +114,8 @@
 		03610584194140AA0069D49E /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 03610583194140AA0069D49E /* libsqlite3.dylib */; };
 		0361058A194154F40069D49E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03610589194154F40069D49E /* SystemConfiguration.framework */; };
 		0362B42119F5F6950036B9C8 /* VUploadProgressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B83B5E19E0992400DC04E4 /* VUploadProgressView.xib */; };
+		0366EAE51B67E89C0073A233 /* EndCard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0366EAE71B67E89C0073A233 /* EndCard.storyboard */; };
+		0366EAF91B68714A0073A233 /* VAssetCollectionListViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0366EAFB1B68714A0073A233 /* VAssetCollectionListViewController.storyboard */; };
 		036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AE5EC18FF0C0600A74BDA /* VReachability.m */; };
 		036DE7C01B607A600038A25E /* VEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951161B28AB9A00D9DB0A /* VEnvironment.m */; };
 		036DE7C11B607A610038A25E /* VEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951161B28AB9A00D9DB0A /* VEnvironment.m */; };
@@ -337,7 +339,6 @@
 		A601FB5F1B437E2B0050536C /* VAbstractPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB5E1B437E2B0050536C /* VAbstractPresenter.m */; };
 		A60658251B56FF7200414DB7 /* VCollectionListPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = A60658241B56FF7200414DB7 /* VCollectionListPresentationController.m */; };
 		A631F0961B4D99B600CC6C80 /* VAssetCollectionGridViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A631F0951B4D99B600CC6C80 /* VAssetCollectionGridViewController.storyboard */; };
-		A631F0981B4D99BF00CC6C80 /* VAssetCollectionListViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A631F0971B4D99BF00CC6C80 /* VAssetCollectionListViewController.storyboard */; };
 		A631F09B1B4DB52700CC6C80 /* VAlternateCaptureOption.m in Sources */ = {isa = PBXBuildFile; fileRef = A631F09A1B4DB52700CC6C80 /* VAlternateCaptureOption.m */; };
 		A650EFDA1B421F61005529E5 /* VAssetCollectionGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A650EFD91B421F61005529E5 /* VAssetCollectionGridViewController.m */; };
 		A650EFDD1B422378005529E5 /* VAssetCollectionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A650EFDC1B422378005529E5 /* VAssetCollectionListViewController.m */; };
@@ -731,7 +732,6 @@
 		A7D7079E1A7C144C00D9993F /* VEndCardBannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D707931A7C144C00D9993F /* VEndCardBannerViewController.m */; };
 		A7D7079F1A7C144C00D9993F /* VEndCardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D707951A7C144C00D9993F /* VEndCardModel.m */; };
 		A7D707A01A7C144C00D9993F /* VEndCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D707971A7C144C00D9993F /* VEndCardViewController.m */; };
-		A7D707A21A7C145E00D9993F /* EndCard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7D707A11A7C145E00D9993F /* EndCard.storyboard */; };
 		A7D7ED511B59BEB900FA346A /* UISearchBar+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D7ED501B59BEB900FA346A /* UISearchBar+Extensions.swift */; };
 		A7D7ED541B5D6A6300FA346A /* VUser+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7ED531B5D6A6300FA346A /* VUser+Fetcher.m */; };
 		A7D7ED571B5D6B0000FA346A /* VScaleAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7ED561B5D6B0000FA346A /* VScaleAnimator.m */; };
@@ -1441,6 +1441,22 @@
 		03669B981B6332DB003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Localizable.strings; sourceTree = "<group>"; };
 		03669B991B6332DB003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/VPublishViewController.strings; sourceTree = "<group>"; };
 		03669B9F1B6332DC003C2D8F /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Discover.strings; sourceTree = "<group>"; };
+		0366EAE61B67E89C0073A233 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/EndCard.storyboard; sourceTree = "<group>"; };
+		0366EAE91B67E8A60073A233 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/EndCard.strings; sourceTree = "<group>"; };
+		0366EAEB1B67E8A80073A233 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/EndCard.strings; sourceTree = "<group>"; };
+		0366EAED1B67E8AA0073A233 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/EndCard.strings; sourceTree = "<group>"; };
+		0366EAEF1B67E8AC0073A233 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/EndCard.strings; sourceTree = "<group>"; };
+		0366EAF11B67E8AD0073A233 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/EndCard.strings; sourceTree = "<group>"; };
+		0366EAF31B67E8AF0073A233 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/EndCard.strings; sourceTree = "<group>"; };
+		0366EAF51B67E8B00073A233 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/EndCard.strings; sourceTree = "<group>"; };
+		0366EAFA1B68714A0073A233 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/VAssetCollectionListViewController.storyboard; sourceTree = "<group>"; };
+		0366EAFD1B6871510073A233 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VAssetCollectionListViewController.strings; sourceTree = "<group>"; };
+		0366EAFF1B6871520073A233 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VAssetCollectionListViewController.strings; sourceTree = "<group>"; };
+		0366EB011B6871520073A233 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/VAssetCollectionListViewController.strings; sourceTree = "<group>"; };
+		0366EB031B6871540073A233 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/VAssetCollectionListViewController.strings; sourceTree = "<group>"; };
+		0366EB051B6871550073A233 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/VAssetCollectionListViewController.strings; sourceTree = "<group>"; };
+		0366EB071B6871560073A233 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/VAssetCollectionListViewController.strings; sourceTree = "<group>"; };
+		0366EB091B6871570073A233 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/VAssetCollectionListViewController.strings; sourceTree = "<group>"; };
 		036AE5EB18FF0C0600A74BDA /* VReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VReachability.h; sourceTree = "<group>"; };
 		036AE5EC18FF0C0600A74BDA /* VReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VReachability.m; sourceTree = "<group>"; };
 		036DE7C21B608C100038A25E /* VAPIRequestDecorator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAPIRequestDecorator.h; sourceTree = "<group>"; };
@@ -1832,7 +1848,6 @@
 		A60658231B56FF7200414DB7 /* VCollectionListPresentationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCollectionListPresentationController.h; sourceTree = "<group>"; };
 		A60658241B56FF7200414DB7 /* VCollectionListPresentationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCollectionListPresentationController.m; sourceTree = "<group>"; };
 		A631F0951B4D99B600CC6C80 /* VAssetCollectionGridViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VAssetCollectionGridViewController.storyboard; sourceTree = "<group>"; };
-		A631F0971B4D99BF00CC6C80 /* VAssetCollectionListViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VAssetCollectionListViewController.storyboard; sourceTree = "<group>"; };
 		A631F0991B4DB52700CC6C80 /* VAlternateCaptureOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAlternateCaptureOption.h; sourceTree = "<group>"; };
 		A631F09A1B4DB52700CC6C80 /* VAlternateCaptureOption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAlternateCaptureOption.m; sourceTree = "<group>"; };
 		A650EFD81B421F61005529E5 /* VAssetCollectionGridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAssetCollectionGridViewController.h; sourceTree = "<group>"; };
@@ -2528,7 +2543,6 @@
 		A7D707951A7C144C00D9993F /* VEndCardModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VEndCardModel.m; path = EndCard/VEndCardModel.m; sourceTree = "<group>"; };
 		A7D707961A7C144C00D9993F /* VEndCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VEndCardViewController.h; path = EndCard/VEndCardViewController.h; sourceTree = "<group>"; };
 		A7D707971A7C144C00D9993F /* VEndCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VEndCardViewController.m; path = EndCard/VEndCardViewController.m; sourceTree = "<group>"; };
-		A7D707A11A7C145E00D9993F /* EndCard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = EndCard.storyboard; path = EndCard/EndCard.storyboard; sourceTree = "<group>"; };
 		A7D7ED501B59BEB900FA346A /* UISearchBar+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UISearchBar+Extensions.swift"; sourceTree = "<group>"; };
 		A7D7ED521B5D6A6300FA346A /* VUser+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VUser+Fetcher.h"; sourceTree = "<group>"; };
 		A7D7ED531B5D6A6300FA346A /* VUser+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VUser+Fetcher.m"; sourceTree = "<group>"; };
@@ -4910,7 +4924,7 @@
 				A631F0951B4D99B600CC6C80 /* VAssetCollectionGridViewController.storyboard */,
 				A650EFDB1B422378005529E5 /* VAssetCollectionListViewController.h */,
 				A650EFDC1B422378005529E5 /* VAssetCollectionListViewController.m */,
-				A631F0971B4D99BF00CC6C80 /* VAssetCollectionListViewController.storyboard */,
+				0366EAFB1B68714A0073A233 /* VAssetCollectionListViewController.storyboard */,
 				A6BB61211B583256002C3B7C /* VAssetCollectionUnauthorizedDataSource.h */,
 				A6BB61221B583256002C3B7C /* VAssetCollectionUnauthorizedDataSource.m */,
 				A650EFDE1B42297A005529E5 /* VAssetCollectionViewCell.h */,
@@ -5854,7 +5868,7 @@
 		A7D707831A7B103C00D9993F /* EndCard */ = {
 			isa = PBXGroup;
 			children = (
-				A7D707A11A7C145E00D9993F /* EndCard.storyboard */,
+				0366EAE71B67E89C0073A233 /* EndCard.storyboard */,
 				A7D707871A7C144C00D9993F /* VCountdownView.h */,
 				A7D707881A7C144C00D9993F /* VCountdownView.m */,
 				A7D707891A7C144C00D9993F /* VCountdownViewController.h */,
@@ -7499,6 +7513,8 @@
 				de,
 				pt,
 				ja,
+				ko,
+				vi,
 			);
 			mainGroup = BE171D6D1868BE64004E5202;
 			productRefGroup = BE171D771868BE64004E5202 /* Products */;
@@ -7633,7 +7649,7 @@
 				A75C64981AD78DCA00245125 /* VTextPostViewController.xib in Resources */,
 				0362B42119F5F6950036B9C8 /* VUploadProgressView.xib in Resources */,
 				D89D7F7E1A9FF5F400B61783 /* Launch Screen.xib in Resources */,
-				A631F0981B4D99BF00CC6C80 /* VAssetCollectionListViewController.storyboard in Resources */,
+				0366EAF91B68714A0073A233 /* VAssetCollectionListViewController.storyboard in Resources */,
 				036F38651A0C4DEA0014DF66 /* Arvo-Bold.ttf in Resources */,
 				C35265FB1B28EA09001F093F /* CreateSheet.storyboard in Resources */,
 				036F386B1A0C4DEA0014DF66 /* DroidSans-Bold.ttf in Resources */,
@@ -7684,7 +7700,7 @@
 				039269C91B5F370F00FCD0AA /* VPublishViewController.xib in Resources */,
 				A7A390CA1A3257A300709812 /* ContentView.storyboard in Resources */,
 				C3475B6F1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard in Resources */,
-				A7D707A21A7C145E00D9993F /* EndCard.storyboard in Resources */,
+				0366EAE51B67E89C0073A233 /* EndCard.storyboard in Resources */,
 				036F386F1A0C4DEA0014DF66 /* JosefinSlab-Bold.ttf in Resources */,
 				036F38711A0C4DEA0014DF66 /* Junction-bold.otf in Resources */,
 				A769C3F71A13D69500698D0C /* WebBrowser.storyboard in Resources */,
@@ -8931,6 +8947,37 @@
 				0308B1111AB23A2B00144E53 /* es */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		0366EAE71B67E89C0073A233 /* EndCard.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0366EAE61B67E89C0073A233 /* Base */,
+				0366EAE91B67E8A60073A233 /* es */,
+				0366EAEB1B67E8A80073A233 /* fr */,
+				0366EAED1B67E8AA0073A233 /* de */,
+				0366EAEF1B67E8AC0073A233 /* pt */,
+				0366EAF11B67E8AD0073A233 /* ja */,
+				0366EAF31B67E8AF0073A233 /* ko */,
+				0366EAF51B67E8B00073A233 /* vi */,
+			);
+			name = EndCard.storyboard;
+			path = EndCard;
+			sourceTree = "<group>";
+		};
+		0366EAFB1B68714A0073A233 /* VAssetCollectionListViewController.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0366EAFA1B68714A0073A233 /* Base */,
+				0366EAFD1B6871510073A233 /* es */,
+				0366EAFF1B6871520073A233 /* fr */,
+				0366EB011B6871520073A233 /* de */,
+				0366EB031B6871540073A233 /* pt */,
+				0366EB051B6871550073A233 /* ja */,
+				0366EB071B6871560073A233 /* ko */,
+				0366EB091B6871570073A233 /* vi */,
+			);
+			name = VAssetCollectionListViewController.storyboard;
 			sourceTree = "<group>";
 		};
 		03803DE31B0C270300B63F05 /* Purchases.storyboard */ = {
