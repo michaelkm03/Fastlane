@@ -334,7 +334,7 @@ static NSString * const kInitialKey = @"initial";
     [self displayViewControllerAtIndex:index animated:NO isDefaultSelection:NO];
 }
 
--(void)updateBadge
+- (void)updateBadge
 {
     [self.selector updateBadging];
 }
