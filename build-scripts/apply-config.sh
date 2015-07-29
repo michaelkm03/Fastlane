@@ -32,6 +32,11 @@ fi
 # DO NOT put a trailing slash after the configurations directory.
 TMP_FOLDER=$(python build-scripts/vams_prebuild.py $FOLDER ios 2>&1)
 
+# If no working folder is returned then exit
+if [ "$TMP_FOLDER" == "" ]; then
+    exit 0
+fi
+
 FOLDER="$TMP_FOLDER"
 
 
@@ -119,12 +124,7 @@ do
     setAppIDs "$PLIST_FILE"
 done
 
-### Prompt to Remove Temp Asset Directory
 
-read -r -p "Remove working folder? [y/N]" response
-case $response in
-    [yY][eE][sS]|[yY])
-        rm -rf $TMP_FOLDER
-        ;;
-    *)
-esac
+### Remove Temp Directory
+
+rm -rf $TMP_FOLDER

@@ -18,6 +18,7 @@ https://github.com/TouchFrame/VictoriousiOS
 import requests
 import sys
 import subprocess
+import shutil
 import os
 import urllib
 import tempfile
@@ -94,8 +95,9 @@ def retrieveAppDetails(app_name):
         setAppConfig(json)
     else:
         #print 'No updated data for "%s" found in the Victorious backend' % app_name
-        return_path = "%s/%s" % (vams._DEFAULT_CONFIG_DIRECTORY, app_name)
-        sys.exit(return_path)
+        cleanUp()
+        shutil.rmtree(_WORKING_DIRECTORY)
+        sys.exit(1)
 
 
 def setAppConfig(json_obj):
