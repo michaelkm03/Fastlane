@@ -8,6 +8,7 @@
 
 #import "VExperienceEnhancerCell.h"
 #import "VDependencyManager.h"
+#import "victorious-Swift.h"  // for experience enhancer view
 
 static const CGFloat kVExperienceEnhancerCellWidth = 50.0f;
 static const CGFloat kThreePointFiveInchScreenHeight = 480.0f;
@@ -20,9 +21,9 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
 
 @interface VExperienceEnhancerCell ()
 
-@property (weak, nonatomic) IBOutlet UIImageView *experienceEnhancerOverlayImageView;
-@property (weak, nonatomic) IBOutlet UIImageView *experienceEnhancerIconImageView;
+@property (weak, nonatomic) IBOutlet ExperienceEnhancerAnimatingIconView *ballisticIconView;
 @property (weak, nonatomic) IBOutlet UILabel *experienceEnhancerLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *padlockImageView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSpaceIconImageViewToContianerConstraint;
 @property (nonatomic, assign) BOOL isUnhighlighting;
 @property (nonatomic, strong) UIImage *unlockedBallisticBackground;
@@ -54,6 +55,7 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
 
 - (void)prepareForReuse
 {
+    [self.ballisticIconView reset];
     self.contentView.alpha = 1.0f;
 }
 
@@ -62,6 +64,13 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
 - (void)setHighlighted:(BOOL)highlighted
 {
     [super setHighlighted:highlighted];
+    
+    // Return if we're cooling down
+    if (highlighted && [self.ballisticIconView isAnimating])
+    {
+        return;
+    }
+    
     [UIView animateWithDuration:0.2f
                           delay:0.0f
          usingSpringWithDamping:1.0f
@@ -69,12 +78,22 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
                         options:UIViewAnimationOptionBeginFromCurrentState
                      animations:^
      {
-         self.experienceEnhancerIconImageView.alpha = highlighted ? 0.5f : 1.0f;
+         self.ballisticIconView.alpha = highlighted ? 0.5f : 1.0f;
      }
                      completion:nil];
 }
 
 #pragma mark - Property Accessors
+
+- (void)setCooldownStartValue:(CGFloat)cooldownStartValue
+{
+    _cooldownStartValue = MAX(MIN(cooldownStartValue, 1), 0);
+}
+
+- (void)setCooldownEndValue:(CGFloat)cooldownEndValue
+{
+    _cooldownEndValue = MAX(MIN(cooldownEndValue, 1), 0);
+}
 
 - (void)setExperienceEnhancerTitle:(NSString *)experienceEnhancerTitle
 {
@@ -85,7 +104,7 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
 - (void)setExperienceEnhancerIcon:(UIImage *)experienceEnhancerIcon
 {
     _experienceEnhancerIcon = experienceEnhancerIcon;
-    self.experienceEnhancerIconImageView.image = experienceEnhancerIcon;
+    self.ballisticIconView.iconImage = experienceEnhancerIcon;
 }
 
 - (void)setEnabled:(BOOL)enabled
@@ -102,13 +121,32 @@ NSString * const VExperienceEnhancerCellShouldShowCountKey = @"showBallisticCoun
 
 #pragma mark - Appearance styling
 
+- (void)startCooldown
+{
+    if ([self readyToCooldown])
+    {
+        [self.ballisticIconView animate:self.cooldownDuration
+                             startValue:self.cooldownStartValue
+                               endValue:self.cooldownEndValue];
+    }
+}
+
+- (BOOL)readyToCooldown
+{
+    BOOL cooldownTimesValid = self.cooldownEndValue > self.cooldownStartValue && self.cooldownStartValue != 1;
+    BOOL timeIntervalValid = self.cooldownDuration > 0;
+    return cooldownTimesValid && timeIntervalValid;
+}
+
 - (void)updateOverlayImageView
 {
     UIImage *image = self.isLocked ? [self.dependencyManager imageForKey:kLockedBallisticBackgroundIconKey] : [self.dependencyManager imageForKey:kUnlockedBallisticBackgroundIconKey];
     if ( image != nil )
     {
-        self.experienceEnhancerOverlayImageView.image = image;
+        self.ballisticIconView.overlayImage = image;
     }
+    
+    self.padlockImageView.hidden = !self.isLocked;
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager

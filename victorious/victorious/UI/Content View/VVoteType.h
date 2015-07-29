@@ -23,6 +23,7 @@ extern NSString * const VDependencyManagerVoteTypesKey; ///< The key for retriev
 @property (nonatomic, readonly) NSArray *images;
 @property (nonatomic, readonly) NSNumber *flightDuration;
 @property (nonatomic, readonly) NSNumber *animationDuration;
+@property (nonatomic, readonly) NSNumber *cooldownDuration;
 @property (nonatomic, readonly) NSNumber *isPaid;
 @property (nonatomic, readonly) NSString *imageContentMode;
 @property (nonatomic, readonly) NSString *productIdentifier;
