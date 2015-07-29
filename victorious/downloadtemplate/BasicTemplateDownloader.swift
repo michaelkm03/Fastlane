@@ -18,9 +18,7 @@ class BasicTemplateDownloader: NSObject, VTemplateDownloader {
     
     private let environment: VEnvironment
     private var apiURL: NSURL {
-        get {
-            return NSURL(string: "/api/template", relativeToURL: environment.baseURL)!
-        }
+        return NSURL(string: "/api/template", relativeToURL: environment.baseURL)!
     }
     
     init(environment: VEnvironment) {
