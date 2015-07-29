@@ -95,7 +95,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     if (forced)
     {
         // Add a parameter indicating that the user was forced to post this
-        NSURLQueryItem *forcedParam = [NSURLQueryItem queryItemWithName:@"forced" value:@"true"];
+        NSURLQueryItem *forcedParam = [NSURLQueryItem queryItemWithName:@"ftue" value:@"true"];
         components.queryItems = @[forcedParam];
     }
     
