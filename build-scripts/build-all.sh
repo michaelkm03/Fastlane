@@ -100,7 +100,7 @@ applyConfiguration(){
     ./build-scripts/apply-config.sh "$1" -a victorious.xcarchive $CONFIGURATION
     if [ $? != 0 ]; then
         echo "Error applying configuration for $1"
-        exit 1
+        return 1
     fi
 
     # Download the latest template
@@ -108,7 +108,7 @@ applyConfiguration(){
     BUILDNUM=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$INFOPLIST")
     ./build-scripts/downloadtemplate "victorious.xcarchive/Products/Applications/victorious.app"
     if [ $? != 0 ]; then
-        exit 1
+        return 1
     fi
 
     # Copy standard provisioning profile
@@ -127,7 +127,7 @@ applyConfiguration(){
             cp "$CUSTOM_PROVISIONING_PROFILE_PATH" "victorious.xcarchive/Products/Applications/victorious.app/embedded.mobileprovision"
             if [ $? != 0 ]; then
                 >&2 echo "Error: \"$CODESIGNING_PLIST_FILE\" specifies a provisioning profile that could not be found."
-                exit 1
+                return 1
             fi
         fi
     fi
@@ -150,7 +150,7 @@ applyConfiguration(){
 
     if [ $CODESIGNRESULT != 0 ]; then
         echo "Codesign failed."
-        exit $CODESIGNRESULT
+        return $CODESIGNRESULT
     fi
 
     xcodebuild -exportArchive -exportFormat ipa -archivePath "victorious.xcarchive" \
@@ -160,7 +160,7 @@ applyConfiguration(){
     if [ $EXPORTRESULT == 0 ]; then
         cp victorious.app.dSYM.zip "products/$FOLDER.app.dSYM.zip"
     else
-        exit $EXPORTRESULT
+        return $EXPORTRESULT
     fi
 }
 
@@ -178,7 +178,9 @@ do
     DEFAULT_APP_ID=$(./build-scripts/get-app-id.sh $FOLDER $CONFIGURATION)
     if [ "$DEFAULT_APP_ID" != "0" -a "$DEFAULT_APP_ID" != "" ]; then # don't build apps with empty app ID or 0
         applyConfiguration $FOLDER
-        ANY_APP_BUILT=1
+        if [ $? == 0 ]; then
+            ANY_APP_BUILT=1
+        fi
     fi
 done
 
