@@ -76,13 +76,9 @@ static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
     }
     
     // Configure default tool
-    if (defaultTool == nil && [shouldDisableText boolValue])
+    if (defaultTool == nil || [shouldDisableText boolValue])
     {
         [toolController setDefaultImageTool:VImageToolControllerInitialImageEditStateFilter];
-    }
-    else if (defaultTool == nil)
-    {
-        [toolController setDefaultImageTool:VImageToolControllerInitialImageEditStateText];
     }
     else
     {

@@ -28,19 +28,19 @@
 @interface VLocationManager : NSObject
 
 /**
- Read-only property to report on permission to use location information
- */
-@property (nonatomic, readonly) BOOL permissionGranted;
-
-/**
  CoreLocation CLLocationManager object to retrieve / manage location data
  */
-@property (nonatomic, strong) CLLocationManager *locationManager;
+@property (nonatomic, readonly) CLLocationManager *locationManager;
 
 /**
- CoreLocation CLPlacemark object to get detailed location information
+ A placemark that describes the user's current location, if we have it
  */
-@property (nonatomic, strong) CLPlacemark *locationPlacemark;
+@property (nonatomic, readonly) CLPlacemark *locationPlacemark;
+
+/**
+ The user's current location, if we have it
+ */
+@property (nonatomic, readonly) CLLocation *location;
 
 /**
  Delegate object to handle forwarding of CLLocation information
@@ -60,20 +60,6 @@
  @return BOOL value indicating access permission
  */
 + (BOOL)haveLocationServicesPermission;
-
-/**
- Class method that returns the last location retrieved by the VLocationManager
- 
- @return NSString of the last location retrieved
- */
-- (CLPlacemark *)lastLocationRetrieved;
-
-/**
- Formatted string of location information
- 
- @return Location information formatted for backend HTTP header
- */
-- (NSString *)httpFormattedLocationString;
 
 /**
  Method to start location monitoring
