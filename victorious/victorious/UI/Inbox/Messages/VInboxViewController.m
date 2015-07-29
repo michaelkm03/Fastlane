@@ -117,7 +117,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     [self.refreshControl beginRefreshing];
     [self refresh:nil];
     self.edgesForExtendedLayout = UIRectEdgeBottom;
-    self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(-CGRectGetHeight(self.navigationController.navigationBar.frame), 0, 0, 0);
+    self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(- 2.0f - self.tableView.estimatedRowHeight + CGRectGetHeight(self.navigationController.navigationBar.frame), 0, 0, 0);
 }
 
 - (void)viewDidAppear:(BOOL)animated
