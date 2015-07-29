@@ -21,7 +21,7 @@ static NSString * const kmp4MimeType = @"video/mp4";
     {
         if ([self.mediaUrl v_hasVideoExtension]) // << Video media type
         {
-            if ([self shouldAutoplay])
+            if ([[self shouldAutoplay] boolValue])
             {
                 return VCommentMediaTypeGIF;
             }
