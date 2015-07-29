@@ -32,13 +32,12 @@ static CGFloat kDiameterForNotifications = 20.0f;
 
 - (CGRect)frameOfButtonAtIndex:(NSUInteger)index
 {
-    NSAssert(FALSE, @"subclasses of VSelectorViewBase must override frameOfButtonAtIndex");
+    NSAssert(NO, @"subclasses of VSelectorViewBase must override frameOfButtonAtIndex");
     
     return CGRectZero;
 }
 
-
-- (void)layoutIfNeeded
+- (void)layoutSubviews
 {
     [self updateBadging];
 }

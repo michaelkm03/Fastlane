@@ -15,6 +15,6 @@
  */
 @protocol VBadgeResponder <NSObject>
 
-- (void)updateBadge:(UIViewController *)viewController;
+- (void)updateBadge;
 
 @end

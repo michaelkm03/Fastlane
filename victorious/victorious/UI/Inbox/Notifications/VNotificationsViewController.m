@@ -232,7 +232,17 @@ NSString * const VNotificationViewControllerPushReceivedNotification = @"VInboxC
 
 - (void)markAllNotificationsRead
 {
-    [[VObjectManager sharedManager] markAllNotificationsRead:nil failBlock:nil];
+    VFailBlock fail = ^(NSOperation *operation, NSError *error)
+    {
+        VLog(@"Failed to mark all notifications as read: %@", [error localizedDescription]);
+    };
+    
+    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        [self fetchNotificationCount];
+    };
+    
+    [[VObjectManager sharedManager] markAllNotificationsRead:success failBlock:fail];
 }
 
 - (void)refreshTableView
@@ -284,8 +294,6 @@ NSString * const VNotificationViewControllerPushReceivedNotification = @"VInboxC
         self.refreshRequest = nil;
         [self setHasNotifications:(self.fetchedResultsController.fetchedObjects.count > 0)];
         [self markAllNotificationsRead];
-        [self fetchNotificationCount];
-
     };
     
     self.refreshRequest = [[VObjectManager sharedManager] loadNotificationsListWithPageType:VPageTypeFirst
@@ -309,7 +317,6 @@ NSString * const VNotificationViewControllerPushReceivedNotification = @"VInboxC
 
 - (void)inboxMessageNotification:(NSNotification *)notification
 {
-    NSLog(@"about to fetch notification");
     [self fetchNotificationCount];
 }
 
@@ -321,9 +328,9 @@ NSString * const VNotificationViewControllerPushReceivedNotification = @"VInboxC
     }
     _badgeNumber = badgeNumber;
     
-    id<VBadgeResponder> badgeResponder = [[self nextResponder] targetForAction:@selector(updateBadge:)
+    id<VBadgeResponder> badgeResponder = [[self nextResponder] targetForAction:@selector(updateBadge)
                                                                     withSender:nil];
-    [badgeResponder updateBadge:self];
+    [badgeResponder updateBadge];
     
     if ( self.badgeNumberUpdateBlock != nil )
     {

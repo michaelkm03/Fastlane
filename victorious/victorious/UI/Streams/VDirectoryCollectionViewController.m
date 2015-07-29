@@ -91,8 +91,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     flowLayout.delegate = streamDirectory;
     streamDirectory.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
     streamDirectory.marqueeController = [dependencyManager templateValueOfType:[VAbstractMarqueeController class] forKey:kMarqueeKey];
-#warning - get rid of this eventually;
-    streamDirectory.marqueeController = nil; // TODO: remove this line
     streamDirectory.marqueeController.stream = stream;
     streamDirectory.marqueeController.selectionDelegate = streamDirectory;
     streamDirectory.marqueeController.dataDelegate = streamDirectory;

@@ -557,8 +557,8 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
 - (void)updateBadges
 {
-    id<VBadgeResponder> badgeResponder = [[self nextResponder] targetForAction:@selector(updateBadge:) withSender:nil];
-    [badgeResponder updateBadge:self];
+    id<VBadgeResponder> badgeResponder = [[self nextResponder] targetForAction:@selector(updateBadge) withSender:nil];
+    [badgeResponder updateBadge];
 }
 
 #pragma mark - Key-Value Observation

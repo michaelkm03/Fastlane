@@ -13,7 +13,7 @@
 
 //%%% bump values
 static CGFloat const kAnimationAscendDistance = 8.0;
-static CGFloat const KAnimationAscendTime = 0.13;
+static CGFloat const kAnimationAscendTime = 0.13;
 static CGFloat const kAnimationDescendDistance = 4.0;
 static CGFloat const kAnimationDescendTime = 0.1;
 
@@ -158,7 +158,7 @@ static UIEdgeInsets const kMargin = { 2.0f, 4.0f, 2.0f, 4.0f }; //<this determin
 
     if (badgeNumber > _badgeNumber)
     {
-        [self bump:self];
+        [self bumpWithKeyFrame:self];
     }
     _badgeNumber = badgeNumber;
     self.label.text = badgeNumber == 0 ? @"" : [VBadgeStringFormatter formattedBadgeStringForBadgeNumber:badgeNumber];
@@ -168,16 +168,41 @@ static UIEdgeInsets const kMargin = { 2.0f, 4.0f, 2.0f, 4.0f }; //<this determin
     [self invalidateIntrinsicContentSize];
 }
 
+- (void)bumpWithKeyFrame:(UIView *)view
+{
+    [self bumpCenterY:0.0f view:view];
+    CGFloat totalTime = 2*(kAnimationAscendTime + kAnimationDescendTime);
+    
+    [UIView animateKeyframesWithDuration:totalTime delay:0.0f options:UIViewKeyframeAnimationOptionOverrideInheritedOptions animations:^{
+        
+        [UIView addKeyframeWithRelativeStartTime:0.0 relativeDuration:kAnimationAscendTime/totalTime animations:^{
+            [self bumpCenterY:kAnimationAscendDistance view:view];
+        }];
+        [UIView addKeyframeWithRelativeStartTime:kAnimationAscendTime/totalTime relativeDuration:kAnimationAscendTime/totalTime animations:^{
+            [self bumpCenterY:0.0f view:view];
+        }];
+        [UIView addKeyframeWithRelativeStartTime:2 * (kAnimationAscendTime / totalTime) relativeDuration:kAnimationDescendTime/totalTime animations:^{
+            [self bumpCenterY:kAnimationAscendDistance view:view];
+        }];
+        [UIView addKeyframeWithRelativeStartTime:((2*kAnimationAscendTime) + kAnimationDescendTime)/totalTime relativeDuration:kAnimationDescendTime/totalTime animations:^{
+            [self bumpCenterY:0.0f view:view];
+        }];
+    } completion:^(BOOL finished)
+    {
+        //Completion Block
+    }];
+}
+
 - (void)bump:(UIView *)view
 {
     [self bumpCenterY:0 view:view];
-    [UIView animateWithDuration:KAnimationAscendTime animations:^
+    [UIView animateWithDuration:kAnimationAscendTime animations:^
      {
          [self bumpCenterY:kAnimationAscendDistance view:view];
      }
                      completion:^(BOOL complete)
      {
-         [UIView animateWithDuration:KAnimationAscendTime animations:^
+         [UIView animateWithDuration:kAnimationAscendTime animations:^
           {
               [self bumpCenterY:0 view:view];
           }
