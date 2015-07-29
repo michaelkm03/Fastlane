@@ -101,6 +101,7 @@ static const CGFloat kAttachmentThumbnailWidth = 35.0f;
     editingTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     editingTextView.backgroundColor = [UIColor clearColor];
     editingTextView.font = defaultFont;
+    editingTextView.keyboardType = UIKeyboardTypeTwitter;
     
     //Adding this to the top inset centers the text with it's placeholder
     UIEdgeInsets textContainerInset = editingTextView.textContainerInset;
@@ -156,6 +157,13 @@ static const CGFloat kAttachmentThumbnailWidth = 35.0f;
 
 #pragma mark - Property Accessors
 
+- (void)setDelegate:(id<VKeyboardInputAccessoryViewDelegate>)delegate
+{
+    _delegate = delegate;
+    self.textStorage.taggingDelegate = delegate;
+    self.textStorage.textView = self.editingTextView;
+}
+
 - (NSString *)composedText
 {
     NSString *composedText = [self.textStorage databaseFormattedString];
@@ -182,13 +190,7 @@ static const CGFloat kAttachmentThumbnailWidth = 35.0f;
     
     [self updateAttachmentThumbnail];
     [self updateSendButton];
-}
-
-- (void)setReturnKeyType:(UIReturnKeyType)returnKeyType
-{
-    _returnKeyType = returnKeyType;
-    
-    self.editingTextView.returnKeyType = returnKeyType;
+    [self updateAttachmentsBar];
 }
 
 #pragma mark - Public Methods
@@ -277,35 +279,9 @@ static const CGFloat kAttachmentThumbnailWidth = 35.0f;
     return kCharacterLimit;
 }
 
-- (BOOL)textView:(UITextView *)textView
-shouldChangeTextInRange:(NSRange)range
- replacementText:(NSString *)text
-{
-    if (self.returnKeyType == UIReturnKeyDefault)
-    {
-        return YES;
-    }
-    
-    if ([text rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]].location != NSNotFound)
-    {
-        if ([self.delegate respondsToSelector:@selector(pressedAlternateReturnKeyonKeyboardInputAccessoryView:)])
-        {
-            [self.delegate pressedAlternateReturnKeyonKeyboardInputAccessoryView:self];
-        }
-        
-        [self.editingTextView resignFirstResponder];
-        return NO;
-    }
-    
-    return [textView.text stringByReplacingCharactersInRange:range withString:text].length <= (NSUInteger)self.characterLimit;
-}
-
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
-    [self animateAttachmentsBarAnimations:^
-    {
-        self.topSpaceAttachmentsToContainer.constant = self.attachmentsBarHeightConstraint.constant;
-    }];
+    [self updateAttachmentsBar];
     
     if ([self.delegate respondsToSelector:@selector(keyboardInputAccessoryViewDidEndEditing:)])
     {
@@ -315,11 +291,7 @@ shouldChangeTextInRange:(NSRange)range
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
-    [self animateAttachmentsBarAnimations:^
-    {
-        self.topSpaceAttachmentsToContainer.constant = 0.0f;
-    }];
-    
+    [self updateAttachmentsBar];
     
     if ([self.delegate respondsToSelector:@selector(keyboardInputAccessoryViewDidBeginEditing:)])
     {
@@ -360,11 +332,28 @@ shouldChangeTextInRange:(NSRange)range
     self.attachmentButtonWidthConstraint.constant = self.selectedMedia ? kAttachmentThumbnailWidth : 0.0f;
 }
 
-- (void)setDelegate:(id<VKeyboardInputAccessoryViewDelegate>)delegate
+- (void)updateAttachmentsBar
 {
-    _delegate = delegate;
-    self.textStorage.taggingDelegate = delegate;
-    self.textStorage.textView = self.editingTextView;
+    [self animateAttachmentsBarAnimations:^
+     {
+         self.topSpaceAttachmentsToContainer.constant = [self shouldShowAttachmentsBar] ? 0.0f : self.attachmentsBarHeightConstraint.constant;
+     }];
+}
+
+- (BOOL)shouldShowAttachmentsBar
+{
+    if (self.selectedMedia)
+    {
+        return NO;
+    }
+    else if (self.editingTextView.isFirstResponder)
+    {
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
 }
 
 @end

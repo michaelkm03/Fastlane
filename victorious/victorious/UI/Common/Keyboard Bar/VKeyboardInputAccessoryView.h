@@ -98,11 +98,6 @@ typedef NS_ENUM(NSInteger, VKeyboardBarAttachmentType)
 - (void)setSelectedThumbnail:(UIImage *)selectedThumbnail;
 
 /**
- *  Assigning to this will determine the behavior of the return key. UIReturnKeyDefault will allow the user to insert newline characters into the text view while any other return key type will resign first responder status on the text field.
- */
-@property (nonatomic, assign) UIReturnKeyType returnKeyType;
-
-/**
  *  Call this to stop editing.
  */
 - (BOOL)stopEditing;

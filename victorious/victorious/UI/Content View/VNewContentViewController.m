@@ -433,7 +433,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     {
         VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryViewWithDependencyManager:self.dependencyManager];
         inputAccessoryView.translatesAutoresizingMaskIntoConstraints = NO;
-        inputAccessoryView.returnKeyType = UIReturnKeyDone;
         inputAccessoryView.delegate = self;
         self.textEntryView = inputAccessoryView;
         self.contentCollectionView.accessoryView = self.textEntryView;
