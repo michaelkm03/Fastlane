@@ -270,7 +270,7 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
         [self.previewContainer addConstraint:heightToWidth];
         self.previewContainerHeightConstraint = heightToWidth;
     }
-    self.textViewConstraint.constant = ((kCountsTextViewMinHeight - 1.0f)/kNormalizedWidthOfView) * (CGRectGetWidth(self.bounds));
+    self.textViewConstraint.constant = self.sleekActionView.leftMargin;
     [super updateConstraints];
 }
 
