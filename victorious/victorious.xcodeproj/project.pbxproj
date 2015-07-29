@@ -1188,8 +1188,8 @@
 		0314D34D19B46B5E00FA363C /* VKeyboardBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKeyboardBarViewController.m; sourceTree = "<group>"; };
 		0314D34E19B46B5E00FA363C /* VActivityIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActivityIndicatorView.h; sourceTree = "<group>"; };
 		0314D34F19B46B5E00FA363C /* VActivityIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActivityIndicatorView.m; sourceTree = "<group>"; };
-		0314D35019B46B5E00FA363C /* VCommentTextAndMediaView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCommentTextAndMediaView.h; sourceTree = "<group>"; };
-		0314D35119B46B5E00FA363C /* VCommentTextAndMediaView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCommentTextAndMediaView.m; sourceTree = "<group>"; };
+		0314D35019B46B5E00FA363C /* VCommentTextAndMediaView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCommentTextAndMediaView.h; path = ../Common/VCommentTextAndMediaView.h; sourceTree = "<group>"; };
+		0314D35119B46B5E00FA363C /* VCommentTextAndMediaView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCommentTextAndMediaView.m; path = ../Common/VCommentTextAndMediaView.m; sourceTree = "<group>"; };
 		0314D35219B46B5E00FA363C /* VContentInputAccessoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentInputAccessoryView.h; sourceTree = "<group>"; };
 		0314D35319B46B5E00FA363C /* VContentInputAccessoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentInputAccessoryView.m; sourceTree = "<group>"; };
 		0314D35419B46B5E00FA363C /* VNoContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNoContentView.h; sourceTree = "<group>"; };
@@ -3435,6 +3435,8 @@
 				0314D34319B46B5E00FA363C /* VCommentsContainerViewController.m */,
 				0314D34419B46B5E00FA363C /* VCommentsTableViewController.h */,
 				0314D34519B46B5E00FA363C /* VCommentsTableViewController.m */,
+				0314D35019B46B5E00FA363C /* VCommentTextAndMediaView.h */,
+				0314D35119B46B5E00FA363C /* VCommentTextAndMediaView.m */,
 				A7E2EFC91A49001000372547 /* VEditCommentViewController.h */,
 				A7E2EFCA1A49001000372547 /* VEditCommentViewController.m */,
 			);
@@ -3466,8 +3468,6 @@
 				D84558FF1ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m */,
 				A7A390C31A32441E00709812 /* VButton.h */,
 				A7A390C41A32441E00709812 /* VButton.m */,
-				0314D35019B46B5E00FA363C /* VCommentTextAndMediaView.h */,
-				0314D35119B46B5E00FA363C /* VCommentTextAndMediaView.m */,
 				0314D35219B46B5E00FA363C /* VContentInputAccessoryView.h */,
 				0314D35319B46B5E00FA363C /* VContentInputAccessoryView.m */,
 				D8A411C01AE5B17A000A7229 /* VCreationInfoContainer.h */,
