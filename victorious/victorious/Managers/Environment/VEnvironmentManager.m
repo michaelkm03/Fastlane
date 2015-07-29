@@ -135,24 +135,7 @@ static NSString * const kPlist = @"plist";
     dispatch_once(&onceToken, ^(void)
     {
         NSURL *environmentsConfigurationURL = [[NSBundle bundleForClass:[self class]] URLForResource:kEnvironmentsFilename withExtension:kPlist];
-        NSInputStream *fileStream = [[NSInputStream alloc] initWithURL:environmentsConfigurationURL];
-        [fileStream open];
-        NSArray *environmentsPlist = [NSPropertyListSerialization propertyListWithStream:fileStream options:0 format:nil error:nil];
-        [fileStream close];
-        
-        NSMutableArray *environments = [[NSMutableArray alloc] initWithCapacity:environmentsPlist.count];
-        for ( NSDictionary *environmentDictionary in environmentsPlist)
-        {
-            if ( [environmentDictionary isKindOfClass:[NSDictionary class]] )
-            {
-                VEnvironment *environment = [[VEnvironment alloc] initWithDictionary:environmentDictionary];
-                if ( environment != nil )
-                {
-                    [environments addObject:environment];
-                }
-            }
-        }
-        bundleEnvironments = [NSArray arrayWithArray:environments];
+        bundleEnvironments = [VEnvironment environmentsFromPlist:environmentsConfigurationURL];
     });
     return bundleEnvironments;
 }

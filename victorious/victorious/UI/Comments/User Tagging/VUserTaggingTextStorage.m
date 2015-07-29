@@ -141,7 +141,7 @@ static NSString * const VOriginalFont = @"NSOriginalFont";
     //If range is <= triggerCharacterLength, the range is looking at a blank or only "kTriggerCharacter" string and does not need to search
     if ( range.length > triggerStringLength )
     {
-        [self.searchTableViewController searchFollowingList:[[self.displayStorage.string substringWithRange:range] substringFromIndex:triggerStringLength]];
+        [self.searchTableViewController searchWithText:[[self.displayStorage.string substringWithRange:range] substringFromIndex:triggerStringLength]];
     }
 }
 

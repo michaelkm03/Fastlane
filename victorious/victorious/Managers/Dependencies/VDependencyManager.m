@@ -6,12 +6,18 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "NSArray+VMap.h"
+#import "NSURL+VDataCacheID.h"
+#import "VDataCache.h"
 #import "VDependencyManager.h"
 #import "VHasManagedDependencies.h"
 #import "VJSONHelper.h"
 #import "VSolidColorBackground.h"
+#import "VTemplateImage.h"
+#import "VTemplateImageMacro.h"
+#import "VTemplateImageSet.h"
+#import "VTemplatePackageManager.h"
 #import "VURLMacroReplacement.h"
-#import "UIImage+VTint.h"
 
 typedef BOOL (^TypeTest)(Class);
 
@@ -21,7 +27,6 @@ static NSString * const kPlistFileExtension = @"plist";
 // multi-purpose keys
 NSString * const VDependencyManagerTitleKey = @"title";
 NSString * const VDependencyManagerBackgroundKey = @"background";
-NSString * const VDependencyManagerImageURLKey = @"imageURL";
 
 // Keys for colors
 NSString * const VDependencyManagerBackgroundColorKey = @"color.background";
@@ -59,7 +64,6 @@ static NSString * const kReferenceIDKey = @"referenceID";
 static NSString * const kClassNameKey = @"name";
 static NSString * const kFontNameKey = @"fontName";
 static NSString * const kFontSizeKey = @"fontSize";
-static NSString * const kImageURLKey = @"imageURL";
 
 // Keys for experiments
 NSString * const VDependencyManagerHistogramEnabledKey = @"histogram_enabled";
@@ -79,12 +83,6 @@ NSString * const VDependencyManagerImageWorkspaceKey = @"imageWorkspace";
 NSString * const VDependencyManagerEditTextWorkspaceKey = @"editTextWorkspace";
 NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
 
-// Keys for image URLs
-static NSString * const kImageCountKey = @"imageCount";
-static NSString * const kImageMacroKey = @"imageMacro";
-static NSString * const kScaleKey = @"scale";
-static NSString * const kMacroReplacement = @"XXXXX";
-
 @interface VDependencyManager ()
 
 @property (nonatomic, strong) VDependencyManager *parentManager;
@@ -92,7 +90,6 @@ static NSString * const kMacroReplacement = @"XXXXX";
 @property (nonatomic, copy) NSDictionary *classesByTemplateName;
 @property (nonatomic, strong) NSMutableDictionary *singletonsByID; ///< This dictionary should only be accessed from the privateQueue
 @property (nonatomic, strong) NSMutableDictionary *childDependencyManagersByID; ///< This dictionary should only be accessed from the privateQueue
-@property (nonatomic, strong) NSMutableArray *imageURLs; ///< This array should only be accessed from the privateQueue
 @property (nonatomic) dispatch_queue_t privateQueue;
 
 @end
@@ -114,7 +111,6 @@ static NSString * const kMacroReplacement = @"XXXXX";
         {
             _singletonsByID = [[NSMutableDictionary alloc] init];
             _childDependencyManagersByID = [[NSMutableDictionary alloc] init];
-            _imageURLs = [[NSMutableArray alloc] init];
         }
         [self scanConfiguration:_configuration];
         
@@ -140,6 +136,11 @@ static NSString * const kMacroReplacement = @"XXXXX";
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"%@\n%@", NSStringFromClass([self class]), self.configuration];
+}
+
+- (BOOL)containsKey:(NSString *)key
+{
+    return self.configuration[ key ] != nil;
 }
 
 #pragma mark - High-level dependency getters
@@ -250,24 +251,27 @@ static NSString * const kMacroReplacement = @"XXXXX";
 
 - (UIImage *)imageForKey:(NSString *)key
 {
-    UIImage *image = nil;
     NSDictionary *imageDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
     
     if ( imageDictionary != nil )
     {
-        NSString *imageURL = imageDictionary[kImageURLKey];
-        
-        if (![imageURL isKindOfClass:[NSString class]])
+        if ( [VTemplateImage isImageJSON:imageDictionary] )
         {
-            return nil;
+            VTemplateImage *templateImage = [[VTemplateImage alloc] initWithJSON:imageDictionary];
+            return [self imageWithTemplateImage:templateImage];
         }
-        image = [UIImage imageNamed:imageURL];
+        else if ( [VTemplateImageSet isImageSetJSON:imageDictionary] )
+        {
+            VTemplateImageSet *imageSet = [[VTemplateImageSet alloc] initWithJSON:imageDictionary];
+            CGFloat scale = [[UIScreen mainScreen] scale];
+            return [self imageWithTemplateImage:[imageSet imageForScreenScale:scale]];
+        }
+        return nil;
     }
     else
     {
-        image = [self templateValueOfType:[UIImage class] forKey:key];
+        return [self templateValueOfType:[UIImage class] forKey:key];
     }
-    return image;
 }
 
 - (UIViewController *)viewControllerForKey:(NSString *)key
@@ -357,7 +361,7 @@ static NSString * const kMacroReplacement = @"XXXXX";
         {
             dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)templateObject objectForKey:kReferenceIDKey]];
         }
-        else if ( !typeTest([NSDictionary class]) && [templateObject isKindOfClass:[NSDictionary class]] )
+        else if ( !typeTest([NSDictionary class]) && [templateObject isKindOfClass:[NSDictionary class]] && [self isDictionaryAComponent:templateObject] )
         {
             dependencyManager = [self childDependencyManagerForID:[(NSDictionary *)templateObject objectForKey:VDependencyManagerIDKey]];
         }
@@ -365,6 +369,16 @@ static NSString * const kMacroReplacement = @"XXXXX";
         {
             [returnValue addObject:templateObject];
             continue;
+        }
+        else if ( typeTest([UIImage class]) && [templateObject isKindOfClass:[NSDictionary class]] && [VTemplateImage isImageJSON:templateObject] )
+        {
+            VTemplateImage *templateImage = [[VTemplateImage alloc] initWithJSON:templateObject];
+            UIImage *image = [self imageWithTemplateImage:templateImage];
+            if ( image != nil )
+            {
+                [returnValue addObject:image];
+                continue;
+            }
         }
         
         if ( dependencyManager != nil )
@@ -379,51 +393,52 @@ static NSString * const kMacroReplacement = @"XXXXX";
     return [returnValue copy];
 }
 
-- (NSArray *)arrayOfImageURLsForKey:(NSString *)key
+- (NSArray *)arrayOfImagesForKey:(NSString *)key
 {
-    NSDictionary *imageDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
-    if ( imageDictionary == nil )
+    NSDictionary *macroDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
+    VTemplateImageMacro *imageMacro = [[VTemplateImageMacro alloc] initWithJSON:macroDictionary];
+    
+    NSArray *templateImages = [imageMacro images];
+    NSMutableArray *returnValue = [[NSMutableArray alloc] initWithCapacity:templateImages.count];
+    for (VTemplateImage *templateImage in templateImages)
     {
-        return nil;
+        UIImage *image = [self imageWithTemplateImage:templateImage];
+        if ( image == nil )
+        {
+            return @[];
+        }
+        [returnValue addObject:image];
     }
-    return [self arrayOfImageURLsWithDictionary:imageDictionary];
+    return returnValue;
+}
+
+- (BOOL)hasArrayOfImagesForKey:(NSString *)key
+{
+    VDataCache *dataCache = [[VDataCache alloc] init];
+    NSDictionary *macroDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
+    VTemplateImageMacro *imageMacro = [[VTemplateImageMacro alloc] initWithJSON:macroDictionary];
+    NSArray *templateImages = [imageMacro images];
+    
+    for (VTemplateImage *templateImage in templateImages)
+    {
+        if ( ![dataCache hasCachedDataForID:templateImage.imageURL] )
+        {
+            return NO;
+        }
+    }
+    return YES;
 }
 
 - (NSArray *)arrayOfImageURLsWithDictionary:(NSDictionary *)imageDictionary
 {
-    NSNumber *imageCount = imageDictionary[kImageCountKey];
-    NSString *macro = imageDictionary[kImageMacroKey];
-    
-    if ( ![imageCount isKindOfClass:[NSNumber class]] || ![macro isKindOfClass:[NSString class]] )
-    {
-        return nil;
-    }
-    
-    NSMutableArray *imageURLs = [[NSMutableArray alloc] initWithCapacity:[imageCount unsignedIntegerValue]];
-    VURLMacroReplacement *macroReplacement = [[VURLMacroReplacement alloc] init];
-    for (NSUInteger n = 0; n < [imageCount unsignedIntegerValue]; n++)
-    {
-        NSString *macroReplacementString = [NSString stringWithFormat:@"%.5lu", (unsigned long)n];
-        [imageURLs addObject:[macroReplacement urlByReplacingMacrosFromDictionary:@{ kMacroReplacement: macroReplacementString}
-                                                                      inURLString:macro]];
-    }
-    
-    return imageURLs;
-}
+    VTemplateImageMacro *macro = [[VTemplateImageMacro alloc] initWithJSON:imageDictionary];
 
-- (NSArray *)arrayOfAllImageURLs
-{
-    if ( self.imageURLs == nil )
+    NSArray *imagesWithNonNilURL = [macro.images filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"imageURL != nil"]];
+    NSArray *imageURLStrings = [imagesWithNonNilURL v_map:^(VTemplateImage *image)
     {
-        return [self.parentManager arrayOfAllImageURLs];
-    }
-    
-    __block NSArray *allImageURLs;
-    dispatch_sync(self.privateQueue, ^(void)
-    {
-        allImageURLs = [self.imageURLs copy];
-    });
-    return allImageURLs;
+        return image.imageURL.absoluteString;
+    }];
+    return imageURLStrings;
 }
 
 #pragma mark - Singleton dependencies
@@ -667,7 +682,6 @@ static NSString * const kMacroReplacement = @"XXXXX";
  1. Finds all component definitions, creates child dependency
     managers for them, and adds those child DMs to the 
     self.childDependencyManagersByID dictionary
- 2. Finds all image URLs and adds them to the self.imageURLs array
  */
 - (void)scanConfiguration:(NSDictionary *)dictionary
 {
@@ -683,11 +697,6 @@ static NSString * const kMacroReplacement = @"XXXXX";
                     VDependencyManager *childDependencyManager = [self childDependencyManagerWithAddedConfiguration:value];
                     [self setChildDependencyManager:childDependencyManager forID:value[VDependencyManagerIDKey]];
                 }
-            }
-            else if ( value[kImageMacroKey] != nil )
-            {
-                NSArray *images = [self arrayOfImageURLsWithDictionary:value];
-                [self addImageURLsWithArray:images];
             }
             else
             {
@@ -762,32 +771,6 @@ static NSString * const kMacroReplacement = @"XXXXX";
     return childDependencyManager;
 }
 
-- (void)addImageURL:(NSString *)imageURL
-{
-    if ( self.imageURLs == nil )
-    {
-        [self.parentManager addImageURL:imageURL];
-        return;
-    }
-    dispatch_barrier_async(self.privateQueue, ^(void)
-    {
-        [self.imageURLs addObject:imageURL];
-    });
-}
-
-- (void)addImageURLsWithArray:(NSArray *)imageArray
-{
-    if ( self.imageURLs == nil )
-    {
-        [self.parentManager addImageURLsWithArray:imageArray];
-        return;
-    }
-    dispatch_barrier_async(self.privateQueue, ^(void)
-    {
-        [self.imageURLs addObjectsFromArray:imageArray];
-    });
-}
-
 /**
  Takes a configuration dictionary and returns it after adding IDs to any components that are missing one.
  */
@@ -860,6 +843,31 @@ static NSString * const kMacroReplacement = @"XXXXX";
     {
         return component;
     }
+}
+
+- (UIImage *)imageWithTemplateImage:(VTemplateImage *)templateImage
+{
+    if ( templateImage.imageURL != nil &&
+        templateImage.imageURL.scheme.length > 0 &&
+        [[VTemplatePackageManager validSchemes] containsObject:templateImage.imageURL.scheme] )
+    {
+        NSData *imageData = [[[VDataCache alloc] init] cachedDataForID:templateImage.imageURL];
+        
+        if ( imageData == nil )
+        {
+            return nil;
+        }
+        
+        if ( templateImage.scale == nil )
+        {
+            return [UIImage imageWithData:imageData];
+        }
+        else
+        {
+            return [[UIImage alloc] initWithData:imageData scale:[templateImage.scale VCGFLOAT_VALUE]];
+        }
+    }
+    return [UIImage imageNamed:templateImage.imageURL.absoluteString];
 }
 
 - (BOOL)isDictionaryAComponent:(NSDictionary *)possibleComponent

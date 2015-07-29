@@ -12,6 +12,7 @@
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VAsset+Fetcher.h"
+#import "VImageToolController.h"
 
 // Dependencies
 #import "VDependencyManager.h"
@@ -70,10 +71,15 @@ static NSString * const kGifCreationFlowKey = @"gifCreateFlow";
     }
     if ([self.sequenceToRemix isImage])
     {
+        NSDictionary *remixInitialDependencies = @{VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateText)};
         VAbstractImageVideoCreationFlowController *flowController = [self.dependencyManager templateValueOfType:[VAbstractImageVideoCreationFlowController class]
-                                                                                                         forKey:kImageCreationFlowKey];
+                                                                                                         forKey:kImageCreationFlowKey
+                                                                                          withAddedDependencies:remixInitialDependencies];
         flowController.creationFlowDelegate = self;
-        [flowController remixWithPreviewImage:nil mediaURL:remixURL];
+        [flowController remixWithPreviewImage:nil
+                                     mediaURL:remixURL
+                                 parentNodeID:[self.sequenceToRemix firstNode].remoteId
+                             parentSequenceID:self.sequenceToRemix.remoteId];
         [viewControllerToPresentOn presentViewController:flowController
                                                 animated:YES
                                               completion:nil];
@@ -83,7 +89,10 @@ static NSString * const kGifCreationFlowKey = @"gifCreateFlow";
         VAbstractImageVideoCreationFlowController *flowController = [self.dependencyManager templateValueOfType:[VAbstractImageVideoCreationFlowController class]
                                                                                                          forKey:kGifCreationFlowKey];
         flowController.creationFlowDelegate = self;
-        [flowController remixWithPreviewImage:nil mediaURL:remixURL];
+        [flowController remixWithPreviewImage:nil
+                                     mediaURL:remixURL
+                                 parentNodeID:[self.sequenceToRemix firstNode].remoteId
+                             parentSequenceID:self.sequenceToRemix.remoteId];
         [viewControllerToPresentOn presentViewController:flowController
                                                 animated:YES
                                               completion:nil];

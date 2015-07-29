@@ -28,6 +28,12 @@ extern NSString * const VTwitterManagerErrorDomain;
  */
 extern CGFloat const VTwitterManagerErrorCanceled;
 
+/**
+ *  Error code representing that we failed to get the user's access token.
+ *  The Twitter acounts manager DOES NOT show an alert in these cases.
+ */
+extern CGFloat const VTwitterManagerErrorFailed;
+
 @interface VTwitterManager : NSObject
 
 @property (nonatomic, readonly) NSString *oauthToken;

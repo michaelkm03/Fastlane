@@ -19,7 +19,7 @@
 @end
 
 static CGFloat kMaxFontPointSize = 12.0f;
-static UIEdgeInsets const kMargin = { 2.0f, 4.0f, 2.0f, 4.0f };
+static UIEdgeInsets const kMargin = { 2.0f, 4.0f, 2.0f, 4.0f }; //<this determines the padding around the badgeview
 
 @implementation VNumericalBadgeView
 
@@ -58,47 +58,37 @@ static UIEdgeInsets const kMargin = { 2.0f, 4.0f, 2.0f, 4.0f };
     [self addSubview:backgroundView];
     _backgroundView = backgroundView;
     
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[backgroundView]|"
-                                                                 options:0
-                                                                 metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(backgroundView)]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[backgroundView]|"
-                                                                 options:0
-                                                                 metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(backgroundView)]];
-    
     UILabel *label = [[UILabel alloc] init];
-    label.translatesAutoresizingMaskIntoConstraints = NO;
     label.textAlignment = NSTextAlignmentCenter;
     label.textColor = [UIColor whiteColor];
     [self addSubview:label];
     _label = label;
-    
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:label
+
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:backgroundView
                                                      attribute:NSLayoutAttributeWidth
                                                      relatedBy:NSLayoutRelationEqual
-                                                        toItem:self
+                                                        toItem:label
                                                      attribute:NSLayoutAttributeWidth
                                                     multiplier:1.0f
                                                       constant:0.0f]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:label
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:backgroundView
                                                      attribute:NSLayoutAttributeHeight
                                                      relatedBy:NSLayoutRelationEqual
-                                                        toItem:self
+                                                        toItem:label
                                                      attribute:NSLayoutAttributeHeight
                                                     multiplier:1.0f
                                                       constant:0.0f]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:label
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:backgroundView
                                                      attribute:NSLayoutAttributeCenterX
                                                      relatedBy:NSLayoutRelationEqual
-                                                        toItem:self
+                                                        toItem:label
                                                      attribute:NSLayoutAttributeCenterX
                                                     multiplier:1.0f
                                                       constant:0.0f]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:label
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:backgroundView
                                                      attribute:NSLayoutAttributeCenterY
                                                      relatedBy:NSLayoutRelationEqual
-                                                        toItem:self
+                                                        toItem:label
                                                      attribute:NSLayoutAttributeCenterY
                                                     multiplier:1.0f
                                                       constant:0.0f]];
@@ -158,6 +148,10 @@ static UIEdgeInsets const kMargin = { 2.0f, 4.0f, 2.0f, 4.0f };
     _badgeNumber = badgeNumber;
     
     self.label.text = badgeNumber == 0 ? @"" : [VBadgeStringFormatter formattedBadgeStringForBadgeNumber:badgeNumber];
+    CGRect newFrame = self.label.frame;
+    newFrame.size = [self intrinsicContentSize];
+    self.label.frame = newFrame;
+    
     [self invalidateIntrinsicContentSize];
 }
 

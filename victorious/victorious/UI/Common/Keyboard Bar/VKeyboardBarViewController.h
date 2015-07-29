@@ -8,6 +8,7 @@
 
 #import "VHasManagedDependencies.h"
 #import "VUserTaggingTextStorageDelegate.h"
+#import "VPublishParameters.h"
 
 @class VKeyboardBarViewController;
 
@@ -18,7 +19,7 @@
 
 @optional
 
-- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL;
+- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text publishParameters:(VPublishParameters *)publishParameters;
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar wouldLikeToBeResizedToHeight:(CGFloat)height;
 - (void)didCancelKeyboardBar:(VKeyboardBarViewController *)keyboardBar;
 - (BOOL)canPerformAuthorizedAction;

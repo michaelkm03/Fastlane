@@ -9,6 +9,12 @@
 #import "NSURL+MediaType.h"
 #import "VConstants.h"
 
+static inline BOOL isExtensionMp4(NSString *pathExtension)
+{
+    NSString *lowercasePathExtension = [pathExtension lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
+    return [lowercasePathExtension isEqualToString:VConstantMediaExtensionMP4];
+}
+
 static inline BOOL isVideoExtension(NSString *pathExtension)
 {
     NSString *lowercasePathExtension = [pathExtension lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
@@ -49,6 +55,11 @@ static inline BOOL isImageExtension(NSString *pathExtension)
 - (BOOL)v_hasImageExtension
 {
     return isImageExtension([self pathExtension]);
+}
+
+- (BOOL)v_isExtensionMp4
+{
+    return isExtensionMp4([self pathExtension]);
 }
 
 @end

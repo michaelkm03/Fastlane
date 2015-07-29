@@ -9,6 +9,7 @@
 #import "VObjectManager.h"
 #import "VConstants.h"
 #import "VUploadManager.h"
+#import "VPublishParameters.h"
 
 @class VSequence, VComment, VConversation, VAsset, VMessage, VNode, VPublishParameters;
 
@@ -72,7 +73,7 @@ extern NSString * const VObjectManagerContentIndexKey;
  @param time Timestamp in seconds to post the realtime comment.  Use negative values for invalid times
  */
 - (AFHTTPRequestOperation *)addCommentWithText:(NSString *)text
-                                      mediaURL:(NSURL *)mediaURL
+                             publishParameters:(VPublishParameters *)publishParameters
                                     toSequence:(VSequence *)sequence
                                      andParent:(VComment *)parent
                                   successBlock:(VSuccessBlock)success
@@ -87,8 +88,8 @@ Creates a new realtime comment
  @param time Timestamp in seconds to post the realtime comment.  Use negative values for invalid times
  */
 - (AFHTTPRequestOperation *)addRealtimeCommentWithText:(NSString *)text
-                                              mediaURL:(NSURL *)mediaURL
-                                                toAsset:(VAsset *)asset
+                                     publishParameters:(VPublishParameters *)publishParameters
+                                               toAsset:(VAsset *)asset
                                                 atTime:(NSNumber *)time
                                           successBlock:(VSuccessBlock)success
                                              failBlock:(VFailBlock)fail;
