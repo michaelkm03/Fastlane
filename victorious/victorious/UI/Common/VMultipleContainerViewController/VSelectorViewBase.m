@@ -44,35 +44,23 @@ static CGFloat kDiameterForNotifications = 20.0f;
 
 - (void)updateBadging
 {
-    NSUInteger idx = 0;
-    NSArray *arrayOfBadgeNumbers = [self arrayOfBadgeNumbers];
+    NSUInteger index = 0;
+    
     for (UIView *subview in self.subviews)
     {
         if ([subview isKindOfClass:[VNumericalBadgeView class]])
         {
-            NSUInteger badgeNumber = [[arrayOfBadgeNumbers objectAtIndex:idx] integerValue];
-            [((VNumericalBadgeView *) subview) setBadgeNumber: badgeNumber];
-            idx++;
+            UIViewController *viewController = self.viewControllers[index];
+            if ([viewController conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)])
+            {
+                id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)viewController;
+                NSInteger badgeNumber = [badgeProvider badgeNumber];
+                
+                [((VNumericalBadgeView *) subview) setBadgeNumber: badgeNumber];
+                index++;
+            }
         }
     }
-}
-
-- (NSArray *)arrayOfBadgeNumbers
-{
-    NSMutableArray *mutableResult = [[NSMutableArray alloc] init];
-    for (UIViewController *viewController in self.viewControllers)
-    {
-        if ([viewController conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)])
-        {
-            id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)viewController;
-            NSInteger badgeNumber = [badgeProvider badgeNumber];
-            NSNumber *badgeNumberObject = [NSNumber numberWithInteger:badgeNumber];
-            [mutableResult addObject:badgeNumberObject];
-        }
-    }
-    _arrayOfBadgeNumbers = [mutableResult copy];
-
-    return _arrayOfBadgeNumbers;
 }
 
 - (void)setViewControllers:(NSArray *)viewControllers
