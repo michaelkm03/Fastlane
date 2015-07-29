@@ -11,8 +11,6 @@
 #import "VPurchaseCell.h"
 #import "VPurchaseActionCell.h"
 #import "VVoteType.h"
-#import "VFileCache.h"
-#import "VFileCache+VVoteType.h"
 #import "VAlertController.h"
 #import "VNoContentTableViewCell.h"
 #import "VPurchaseStringMaker.h"
@@ -40,7 +38,6 @@ static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
 
 @interface VPurchaseSettingsViewController()
 
-@property (nonatomic, strong) VFileCache *fileCache;
 @property (nonatomic, strong) VPurchaseManager *purchaseManager;
 @property (nonatomic, assign) BOOL isRestoringPurchases;
 @property (strong, nonatomic) VPurchaseStringMaker *stringMaker;
@@ -56,7 +53,6 @@ static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
     [super viewDidLoad];
     
     self.stringMaker = [[VPurchaseStringMaker alloc] init];
-    self.fileCache = [[VFileCache alloc] init];
     self.purchaseManager = [VPurchaseManager sharedInstance];
     
     [VNoContentTableViewCell registerNibWithTableView:self.tableView];
@@ -139,8 +135,7 @@ static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
             NSString *productIdentifier = [self.purchaseManager.purchasedProductIdentifiers.allObjects objectAtIndex:indexPath.row];
             VProduct *product = [self.purchaseManager purchaseableProductForProductIdentifier:productIdentifier];
             VVoteType *voteType = [self.dependencyManager voteTypeWithProductIdentifier:productIdentifier];
-            UIImage *image = [self.fileCache getImageWithName:VVoteTypeIconName forVoteType:voteType];
-            [cell setProductImage:image withTitle:product.localizedTitle];
+            [cell setProductImage:voteType.iconImage withTitle:product.localizedTitle];
             return cell;
         }
         else

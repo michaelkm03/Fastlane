@@ -152,7 +152,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     self.collectionView.dataSource = self.streamDataSource;
     self.collectionView.delegate = self;
     
-    [self refresh:self.refreshControl];
+    [self refresh:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated

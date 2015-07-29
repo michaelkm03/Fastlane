@@ -7,30 +7,10 @@
 //
 
 #import "VVoteSettings.h"
-#import "VFileCache.h"
-#import "VFileCache+VVoteType.h"
 #import "VVoteType.h"
 #import "VPurchaseManager.h"
 
-#define OVERWRITE_WITH_PAID_BALLISTICS 0
-
-@interface VVoteSettings()
-
-@property (nonatomic, strong) VFileCache *fileCache;
-
-@end
-
 @implementation VVoteSettings
-
-- (instancetype)init
-{
-    self = [super init];
-    if (self)
-    {
-        self.fileCache = [[VFileCache alloc] init];
-    }
-    return self;
-}
 
 - (void)setVoteTypes:(NSArray *)voteTypes
 {
@@ -47,20 +27,6 @@
                               }];
     _voteTypes = [(_voteTypes ?: @[]) arrayByAddingObjectsFromArray:voteTypes];
     _voteTypes = [voteTypes filteredArrayUsingPredicate:predicate];
-    
-#if OVERWRITE_WITH_PAID_BALLISTICS
-#warning Testing only to create correctly configured purchaseable products
-    ((VVoteType *)_voteTypes[0]).isPaid = @YES;
-    ((VVoteType *)_voteTypes[0]).productIdentifier = @"com.getvictorious.eatyourkimchi.ballistic.meemers";
-    ((VVoteType *)_voteTypes[0]).iconImage = @"http://10.18.11.51:8000/meemers-icon.png";
-    ((VVoteType *)_voteTypes[0]).iconImageLarge = @"http://10.18.11.51:8000/meemers-product-image.png";
-    ((VVoteType *)_voteTypes[1]).isPaid = @YES;
-    ((VVoteType *)_voteTypes[1]).productIdentifier = @"com.getvictorious.eatyourkimchi.ballistic.spudgy";
-    ((VVoteType *)_voteTypes[1]).iconImage = @"http://10.18.11.51:8000/spudgy-icon.png";
-    ((VVoteType *)_voteTypes[1]).iconImageLarge = @"http://10.18.11.51:8000/spudgy-product-image.png";
-#endif
-    
-    [self.fileCache cacheImagesForVoteTypes:_voteTypes];
     
     [self fetchProducts];
 }

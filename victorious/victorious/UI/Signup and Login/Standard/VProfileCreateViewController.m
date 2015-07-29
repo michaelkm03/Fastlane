@@ -110,7 +110,7 @@
     }
     else
     {
-        if ([VLocationManager sharedInstance].lastLocationRetrieved != nil)
+        if ([VLocationManager sharedInstance].locationPlacemark != nil)
         {
             CLPlacemark *placemark = [VLocationManager sharedInstance].locationPlacemark;
             NSDictionary *locationDictionary = [self formatLocationData:placemark];

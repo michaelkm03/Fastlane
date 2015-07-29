@@ -11,8 +11,6 @@
 #import "VAlertController.h"
 #import "VThemeManager.h"
 #import "VButton.h"
-#import "VFileCache.h"
-#import "VFileCache+VVoteType.h"
 #import "VPurchaseStringMaker.h"
 #import "VDependencyManager.h"
 #import "VCreatorInfoHelper.h"
@@ -120,8 +118,7 @@ static const CGFloat kRestorePurchaseDescriptionGrayLevel = 0.557f;
 
 - (void)populateDataWithVoteType:(VVoteType *)voteType
 {
-    VFileCache *fileCache = [[VFileCache alloc] init];
-    self.productImageView.image = [fileCache getImageWithName:VVoteTypeIconLargeName forVoteType:self.voteType];
+    self.productImageView.image = voteType.iconImageLarge;
 }
 
 - (void)populateDataWithProduct:(VProduct *)product
