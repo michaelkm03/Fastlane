@@ -556,7 +556,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     {
         if (self.viewModel.favoredAnswer != VPollAnswerInvalid)
         {
-            [self.ballotCell setVotingDisabledWithFavoredBallot:(self.viewModel.favoredAnswer == VPollAnswerA) ? VBallotA : VBallotB animated:YES];
+            VBallot favoredBallot = (self.viewModel.favoredAnswer == VPollAnswerA) ? VBallotA : VBallotB;
+            [self.ballotCell setVotingDisabledWithFavoredBallot:favoredBallot animated:YES];
         }
     }
 
