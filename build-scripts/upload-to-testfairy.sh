@@ -102,6 +102,7 @@ echo ".dSYM was successfully uploaded to TestFairy."
 # Post Test Fairy url to VAMS
 echo
 echo "Posting Test Fairy url for '${APPNAME}' to Victorious backend"
+echo pwd
 python vams_postbuild.py ${APPNAME} ios ${URL}
 
 exit 0
