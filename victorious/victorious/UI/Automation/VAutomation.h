@@ -18,6 +18,8 @@ static NSString * const VAutomationIdentifierAddPost                    = @"Add 
 static NSString * const VAutomationIdentifierMainMenu                   = @"Menu Open";
 static NSString * const VAutomationIdentifierGenericBack                = @"Back";
 
+static NSString * const VAutomationIdentifierKeyboardHashtagButton      = @"Keyboard Hashtag Button";
+
 static NSString * const VAutomationIdentifierSettingsLogIn              = @"Settings Log In";
 static NSString * const VAutomationIdentifierSettingsLogOut             = @"Settings Log Out";
 
@@ -48,3 +50,5 @@ static NSString * const VAutomationIdentifierWelcomeDismiss             = @"Welc
 
 static NSString * const VAutomationIdentifierPublishCatpionPlaceholder  = @"Publish Caption Placeholder";
 static NSString * const VAutomationIdentifierPublishCatpionText         = @"Publish Caption Text";
+
+static NSString * const VAutomationIdentifierTextPostMainField          = @"Text Post Main Field";

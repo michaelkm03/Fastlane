@@ -339,6 +339,7 @@
 		A70FC1131A2D61A000F5BBDE /* VProductsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC1121A2D61A000F5BBDE /* VProductsRequest.m */; };
 		A70FC1251A31207400F5BBDE /* VVoteSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC1241A31207400F5BBDE /* VVoteSettings.m */; };
 		A716FC2A1AAE0EF50032AA40 /* VAuthorizedActionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A716FC291AAE0EF50032AA40 /* VAuthorizedActionTests.m */; };
+		A71DAF241B695FC200E0BE53 /* AutomationId.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71DAF231B695FC200E0BE53 /* AutomationId.swift */; };
 		A72004FB1A02FEC000285A9C /* sampleImage.png in Resources */ = {isa = PBXBuildFile; fileRef = A72004FA1A02FEC000285A9C /* sampleImage.png */; };
 		A72005251A03073B00285A9C /* NSStringVCryptoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AC453B19BA1F7900CE4351 /* NSStringVCryptoTests.m */; };
 		A72005271A03073B00285A9C /* VElapsedTimeFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674F719E335060072E87A /* VElapsedTimeFormatterTests.m */; };
@@ -1738,6 +1739,7 @@
 		A716FC291AAE0EF50032AA40 /* VAuthorizedActionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAuthorizedActionTests.m; sourceTree = "<group>"; };
 		A719CD5719F6D5030019E866 /* VFileSystemTestHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFileSystemTestHelpers.h; sourceTree = "<group>"; };
 		A719CD5819F6D5030019E866 /* VFileSystemTestHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFileSystemTestHelpers.m; sourceTree = "<group>"; };
+		A71DAF231B695FC200E0BE53 /* AutomationId.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutomationId.swift; sourceTree = "<group>"; };
 		A72004FA1A02FEC000285A9C /* sampleImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sampleImage.png; sourceTree = "<group>"; };
 		A720054A1A030D9300285A9C /* VTrackingConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingConstants.h; sourceTree = "<group>"; };
 		A720054B1A030D9300285A9C /* VTrackingConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingConstants.m; sourceTree = "<group>"; };
@@ -5224,6 +5226,7 @@
 			isa = PBXGroup;
 			children = (
 				A77AD4C51A1EFA3D00142F24 /* VAutomation.h */,
+				A71DAF231B695FC200E0BE53 /* AutomationId.swift */,
 			);
 			path = Automation;
 			sourceTree = "<group>";
@@ -7480,6 +7483,7 @@
 				A7A2E0071A38E44B00F8C705 /* VPurchaseViewController.m in Sources */,
 				A721E94F1B572454000B7901 /* UIImage+ImageCreation.m in Sources */,
 				D85B707C1B0EAF3F0038CA5B /* VTabInfo.m in Sources */,
+				A71DAF241B695FC200E0BE53 /* AutomationId.swift in Sources */,
 				A778B4521B55B8B5004F9F54 /* GIFSearchActivityFooter.swift in Sources */,
 				A7ECC1CD1AD617480003E00A /* VTextToolController.m in Sources */,
 				D85E428D1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.m in Sources */,
