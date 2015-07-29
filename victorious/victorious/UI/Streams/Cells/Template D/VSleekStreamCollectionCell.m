@@ -55,6 +55,7 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
 @property (nonatomic, strong) IBOutlet VListicleView *listicleView;
 @property (nonatomic, readwrite) VStreamItem *streamItem;
 @property (nonatomic, strong) VEditorializationItem *editorialization;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *textViewConstraint;
 
 @end
 
@@ -270,6 +271,7 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
         self.previewContainerHeightConstraint = heightToWidth;
     }
     self.textViewConstraint.constant = self.sleekActionView.leftMargin;
+    self.countsTextView.textContainer.lineFragmentPadding = 0.0f;
     [super updateConstraints];
 }
 
