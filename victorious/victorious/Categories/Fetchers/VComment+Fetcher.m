@@ -49,13 +49,13 @@ static NSString * const kmp4MimeType = @"video/mp4";
 - (NSURL *)previewImageURL
 {
     NSURL *url;
-    if (self.thumbnailUrl && ![self.thumbnailUrl isEmpty])
+    if (self.thumbnailUrl != nil && ![self.thumbnailUrl isEmpty])
     {
         url = [[NSURL alloc] initWithString:self.thumbnailUrl];
     }
-    else if (self.mediaUrl && ![self.mediaUrl isEmpty] && [self.mediaType isEqualToString:VConstantsMediaTypeImage])
+    else if (self.mediaUrl != nil && ![self.mediaUrl isEmpty] && [self.mediaType isEqualToString:VConstantsMediaTypeImage])
     {
-        url = [[NSURL alloc] initWithString:self.thumbnailUrl];
+        url = [[NSURL alloc] initWithString:self.mediaUrl];
     }
     
     return url;
