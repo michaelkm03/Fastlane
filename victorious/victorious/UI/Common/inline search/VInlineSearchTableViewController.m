@@ -24,6 +24,9 @@
 
 #import "VDependencyManager.h"
 
+#import "VObjectManager+Pagination.h"
+#import "VScrollPaginator.h"
+
 const NSInteger kSearchTableDesiredMinimumHeight = 100;
 
 static NSString * const kVInlineUserCellIdentifier = @"VInlineUserTableViewCell";
@@ -37,7 +40,7 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
     VInlineSearchStateSuccessful
 };
 
-@interface VInlineSearchTableViewController ()
+@interface VInlineSearchTableViewController () <VScrollPaginatorDelegate>
 
 @property (nonatomic, strong) NSArray *usersFollowing;
 @property (nonatomic, strong) NSLayoutConstraint *tableViewHeightConstraint;
@@ -45,6 +48,8 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
 @property (nonatomic, strong) UIButton *backgroundButton;
 @property (nonatomic, strong) NSTimer *UIUpdateTimer;
 @property (nonatomic, strong) RKObjectRequestOperation *searchOperation;
+@property (nonatomic, strong) VScrollPaginator *scrollPaginator;
+@property (nonatomic, strong) NSString *currentSearchText;
 
 @end
 
@@ -65,13 +70,18 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
 
     self.tableView.backgroundView = self.backgroundButton;
     self.searchState = VInlineSearchStateNoSearch;
+    
+    self.scrollPaginator = [[VScrollPaginator alloc] init];
+    self.scrollPaginator.delegate = self;
 }
 
 #pragma mark - Loading / Filtering / Presenting Data
 
-- (void)searchFollowingList:(NSString *)searchText
+- (void)searchWithText:(NSString *)searchText
 {
     [self.searchOperation cancel];
+    
+    self.currentSearchText = searchText;
     VSuccessBlock searchSuccess = ^( NSOperation *operation, id fullResponse, NSArray *resultObjects )
     {
         [self presentLoadedData:resultObjects];
@@ -80,12 +90,20 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
     if ([searchText length] > 0)
     {
        NSString *sequenceId = [self.dependencyManager stringForKey:@"sequenceId"];
+        
         [[VObjectManager sharedManager] findUsersBySearchString:searchText
                                                      sequenceID:sequenceId
-                                                          limit:kSearchResultLimit
+                                                       pageType:VPageTypeFirst
                                                         context:VObjectManagerSearchContextUserTag
                                                withSuccessBlock:searchSuccess
                                                       failBlock:nil];
+//        
+//        [[VObjectManager sharedManager] findUsersBySearchString:searchText
+//                                                     sequenceID:sequenceId
+//                                                          limit:kSearchResultLimit
+//                                                        context:VObjectManagerSearchContextUserTag
+//                                               withSuccessBlock:searchSuccess
+//                                                      failBlock:nil];
     }
     else
     {
@@ -93,6 +111,25 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
         self.searchState = VInlineSearchStateNoSearch;
         [self updateBackgroundView];
     }
+}
+
+#pragma mark - Pagination
+
+- (void)shouldLoadNextPage
+{
+    VSuccessBlock searchSuccess = ^( NSOperation *operation, id fullResponse, NSArray *resultObjects )
+    {
+        [self presentLoadedData:resultObjects];
+    };
+    
+    NSString *sequenceId = [self.dependencyManager stringForKey:@"sequenceId"];
+
+    [[VObjectManager sharedManager] findUsersBySearchString:self.currentSearchText
+                                                 sequenceID:sequenceId
+                                                   pageType:VPageTypeNext
+                                                    context:VObjectManagerSearchContextUserTag
+                                           withSuccessBlock:searchSuccess
+                                                  failBlock:nil];
 }
 
 - (void)presentLoadedData:(NSArray *)data
