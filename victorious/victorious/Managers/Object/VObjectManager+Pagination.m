@@ -32,6 +32,7 @@
 const NSInteger kTooManyNewMessagesErrorCode = 999;
 
 static const NSInteger kDefaultPageSize = 40;
+static const NSInteger kUserSearchResultLimit = 20;
 
 @implementation VObjectManager (Pagination)
 
@@ -585,7 +586,7 @@ static const NSInteger kDefaultPageSize = 40;
     VAbstractFilter *filter = (VAbstractFilter *)[self.paginationManager filterForPath:formattedPath
                                                                             entityName:[VAbstractFilter entityName]
                                                                   managedObjectContext:self.managedObjectStore.persistentStoreManagedObjectContext];
-    filter.perPageNumber = @(kDefaultPageSize);
+    filter.perPageNumber = @(kUserSearchResultLimit);
     return filter;
 }
 
