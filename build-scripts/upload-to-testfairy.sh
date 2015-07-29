@@ -104,6 +104,6 @@ echo
 echo "Posting Test Fairy url for '${APPNAME}' to Victorious backend"
 
 
-python "/Users/Shared/Jenkins/Home/jobs/iOS Stable Build/workspace/vams_postbuild.py" ${APPNAME} ios ${URL}
+python "build-scripts/vams_postbuild.py" ${APPNAME} ios ${URL}
 
 exit 0
