@@ -119,6 +119,12 @@ do
     setAppIDs "$PLIST_FILE"
 done
 
-### Remove Temp Asset Directory
+### Prompt to Remove Temp Asset Directory
 
-rm -rf $TMP_FOLDER
+read -r -p "Remove working folder? [y/N]" response
+case $response in
+    [yY][eE][sS]|[yY])
+        rm -rf $TMP_FOLDER
+        ;;
+    *)
+esac

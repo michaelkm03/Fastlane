@@ -17,6 +17,7 @@ def init():
     sys.dont_write_bytecode = True
 
     global _LOGIN_ENDPOINT
+    global _DEFAULT_CONFIG_DIRECTORY
     global _DEFAULT_DEST_DIRECTORY
     global _DEFAULT_VAMS_USERID
     global _DEFAULT_VAMS_USER
@@ -35,6 +36,7 @@ def init():
 
     _LOGIN_ENDPOINT = '/api/login'
 
+    _DEFAULT_CONFIG_DIRECTORY = 'configurations'
     _DEFAULT_DEST_DIRECTORY = 'victorious/AppSpecific'
 
     _DEFAULT_VAMS_USERID = 0

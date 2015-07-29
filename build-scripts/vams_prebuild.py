@@ -93,7 +93,9 @@ def retrieveAppDetails(app_name):
         # Now set the app config data
         setAppConfig(json)
     else:
-        print 'No updated data for "%s" found in the Victorious backend' % app_name
+        #print 'No updated data for "%s" found in the Victorious backend' % app_name
+        return_path = "%s/%s" % (vams._DEFAULT_CONFIG_DIRECTORY, app_name)
+        sys.exit(return_path)
 
 
 def setAppConfig(json_obj):
@@ -202,7 +204,7 @@ def main(argv):
          #print 'There was a problem authenticating with the Victorious backend. Exiting now...'
          return 1
     
-    exit(_WORKING_DIRECTORY)
+    sys.exit(_WORKING_DIRECTORY)
 
 
 if __name__ == '__main__':
