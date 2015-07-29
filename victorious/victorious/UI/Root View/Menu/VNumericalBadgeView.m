@@ -156,8 +156,11 @@ static UIEdgeInsets const kMargin = { 2.0f, 4.0f, 2.0f, 4.0f }; //<this determin
  
     self.hidden = (badgeNumber == 0);
 
+    if (badgeNumber > _badgeNumber)
+    {
+        [self bump:self];
+    }
     _badgeNumber = badgeNumber;
-    [self bump:self];
     self.label.text = badgeNumber == 0 ? @"" : [VBadgeStringFormatter formattedBadgeStringForBadgeNumber:badgeNumber];
     CGRect newFrame = self.label.frame;
     newFrame.size = [self intrinsicContentSize];

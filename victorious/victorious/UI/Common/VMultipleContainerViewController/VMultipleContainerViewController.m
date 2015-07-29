@@ -29,7 +29,6 @@
 @property (nonatomic, strong) VSelectorViewBase *selector;
 @property (nonatomic) BOOL didShowInitial;
 @property (nonatomic) NSUInteger selectedIndex;
-@property (nonatomic, strong) NSArray *arrayOfBadgeNumbers;
 
 @end
 
@@ -74,7 +73,6 @@ static NSString * const kInitialKey = @"initial";
 - (void)loadView
 {
     self.view = [[UIView alloc] init];
-    self.selector.arrayOfBadgeNumbers = [self arrayOfBadgeNumbers];
     self.flowLayout = [[UICollectionViewFlowLayout alloc] init];
     self.flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     self.flowLayout.sectionInset = UIEdgeInsetsZero;
@@ -158,23 +156,6 @@ static NSString * const kInitialKey = @"initial";
     id<VMultipleContainerChild> child = self.viewControllers[ self.selector.activeViewControllerIndex ];
     [child multipleContainerDidSetSelected:YES];
     [self.selector updateBadging];
-}
-
-- (NSArray *)arrayOfBadgeNumbers
-{
-    _badgeNumberUpdateBlock = nil;
-    NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
-    for (UIViewController *vc in _viewControllers)
-    {
-        if ([vc conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)])
-        {
-            id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)vc;
-            NSInteger badgeNumber =    [badgeProvider badgeNumber];
-            [mutableArray addObject:[NSNumber numberWithInteger:badgeNumber]];
-        }
-    }
-    _arrayOfBadgeNumbers = [mutableArray copy];
-    return _arrayOfBadgeNumbers;
 }
 
 #pragma mark - Rotation

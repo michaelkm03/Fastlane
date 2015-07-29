@@ -12,6 +12,9 @@
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "VBadgeResponder.h"
 
+static CGFloat kPaddingForNotifications = 10.0f;
+static CGFloat kDiameterForNotifications = 20.0f;
+
 @implementation VSelectorViewBase
 
 #pragma mark VHasManagedDependencies conforming initializer
@@ -43,7 +46,7 @@
 - (void)updateBadging
 {
     NSUInteger idx = 0;
-    NSArray *arrayOfBadgeNumbers = self.arrayOfBadgeNumbers;
+    NSArray *arrayOfBadgeNumbers = [self arrayOfBadgeNumbers];
     for (UIView *subview in self.subviews)
     {
         if ([subview isKindOfClass:[VNumericalBadgeView class]])
@@ -80,10 +83,14 @@
   
         if ([viewController conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)])
         {
-            CGFloat xPos = ((index + 1) * (320.0f / self.viewControllers.count )) - 20.0f;
-            VNumericalBadgeView *badgeView = [[VNumericalBadgeView alloc] initWithFrame:CGRectMake(xPos, 0, 20, 20)];
+            self.layer.borderColor = [UIColor yellowColor].CGColor;
+            self.layer.borderWidth = 1.5f;
+            CGFloat widthOfSelector = CGRectGetWidth(viewController.view.frame) - (2 * kPaddingForNotifications);
+            CGFloat centerX = ((index + 1) * (widthOfSelector / self.viewControllers.count )) + kPaddingForNotifications ;
+            VNumericalBadgeView *badgeView = [[VNumericalBadgeView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, kDiameterForNotifications, kDiameterForNotifications)];
+            badgeView.center = CGPointMake(centerX, badgeView.center.y);
             badgeView.font = [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
-            badgeView.layer.zPosition = 1000;
+            badgeView.layer.zPosition = 1000.0f;
             
             id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)viewController;
             NSInteger badgeNumber = [badgeProvider badgeNumber];

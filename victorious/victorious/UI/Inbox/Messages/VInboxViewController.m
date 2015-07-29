@@ -547,7 +547,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
          } failBlock:nil];
         
         [self.dependencyManager.objectManager loadNotificationsListWithPageType:VPageTypeFirst
-                                                                   successBlock:^(NSOperation * __nullable operation, id  __nullable result, NSArray * __nonnull resultObjects)
+                                                                   successBlock:^(NSOperation *__nullable operation, id  __nullable result, NSArray *__nonnull resultObjects)
          {
              [self updateBadges];
          }
@@ -557,12 +557,8 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
 - (void)updateBadges
 {
-    id<VBadgeResponder> badgeResponder = [[self nextResponder] targetForAction:@selector(updateBadge:)
-                                                                    withSender:nil];
-    if ([badgeResponder respondsToSelector:@selector(updateBadge:)])
-    {
-        [badgeResponder updateBadge:self];
-    }
+    id<VBadgeResponder> badgeResponder = [[self nextResponder] targetForAction:@selector(updateBadge:) withSender:nil];
+    [badgeResponder updateBadge:self];
 }
 
 #pragma mark - Key-Value Observation

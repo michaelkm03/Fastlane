@@ -309,6 +309,7 @@ NSString * const VNotificationViewControllerPushReceivedNotification = @"VInboxC
 
 - (void)inboxMessageNotification:(NSNotification *)notification
 {
+    NSLog(@"about to fetch notification");
     [self fetchNotificationCount];
 }
 
@@ -322,11 +323,8 @@ NSString * const VNotificationViewControllerPushReceivedNotification = @"VInboxC
     
     id<VBadgeResponder> badgeResponder = [[self nextResponder] targetForAction:@selector(updateBadge:)
                                                                     withSender:nil];
-    if ([badgeResponder respondsToSelector:@selector(updateBadge:)])
-    {
-        [badgeResponder updateBadge:self];
-    }
-
+    [badgeResponder updateBadge:self];
+    
     if ( self.badgeNumberUpdateBlock != nil )
     {
         self.badgeNumberUpdateBlock(self.badgeNumber);
