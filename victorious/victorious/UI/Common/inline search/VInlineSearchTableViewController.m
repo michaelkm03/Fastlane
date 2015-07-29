@@ -97,13 +97,6 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
                                                         context:VObjectManagerSearchContextUserTag
                                                withSuccessBlock:searchSuccess
                                                       failBlock:nil];
-//        
-//        [[VObjectManager sharedManager] findUsersBySearchString:searchText
-//                                                     sequenceID:sequenceId
-//                                                          limit:kSearchResultLimit
-//                                                        context:VObjectManagerSearchContextUserTag
-//                                               withSuccessBlock:searchSuccess
-//                                                      failBlock:nil];
     }
     else
     {
@@ -119,7 +112,7 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
 {
     VSuccessBlock searchSuccess = ^( NSOperation *operation, id fullResponse, NSArray *resultObjects )
     {
-        [self presentLoadedData:resultObjects];
+        [self addPage:resultObjects];
     };
     
     NSString *sequenceId = [self.dependencyManager stringForKey:@"sequenceId"];
@@ -136,13 +129,7 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
 {
     if (data.count > 0)
     {
-        NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name"
-                                                               ascending:YES
-                                                                selector:@selector( localizedCaseInsensitiveCompare: )];
-
-        self.usersFollowing = [data sortedArrayUsingDescriptors:@[sort]];
-        self.searchState = VInlineSearchStateSuccessful;
-        [self updateBackgroundView];
+        [self addPage:data];
     }
     else
     {
@@ -150,6 +137,19 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
         self.searchState = VInlineSearchStateNoResults;
     }
     [self.tableView reloadData];
+}
+
+- (void)addPage:(NSArray *)data
+{
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"name"
+                                                         ascending:YES
+                                                          selector:@selector( localizedCaseInsensitiveCompare: )];
+    
+    NSMutableArray *usersShowing = [self.usersFollowing mutableCopy];
+    [usersShowing addObjectsFromArray:[data sortedArrayUsingDescriptors:@[sort]]];
+    self.usersFollowing = usersShowing;
+    self.searchState = VInlineSearchStateSuccessful;
+    [self updateBackgroundView];
 }
 
 - (void)updateViewConstraints
