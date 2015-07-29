@@ -1410,8 +1410,14 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView selectedClearMedia:(UIImage *)thumbnail
 {
-#warning Add action sheet here
-    [self.textEntryView setSelectedThumbnail:nil];
+    [inputAccessoryView stopEditing];
+    UIAlertController *alertController = [self.alertHelper alertForConfirmDiscardMediaWithDelete:^
+                                          {
+                                              
+                                              [self.textEntryView setSelectedThumbnail:nil];
+                                          }
+                                                                                          cancel:nil];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)pressedAlternateReturnKeyonKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
