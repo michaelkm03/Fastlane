@@ -564,7 +564,6 @@ static const NSInteger kUserSearchResultLimit = 20;
     NSString *apiPath = [NSString stringWithFormat:@"/api/userinfo/search_paginate/%@/%@/%@/", searchText, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
 
     NSURLComponents *components = [[NSURLComponents alloc] init];
-    components.path = @"";
     
     NSMutableArray *queryItems = [NSMutableArray new];
     if (context != nil && context.length > 0)
