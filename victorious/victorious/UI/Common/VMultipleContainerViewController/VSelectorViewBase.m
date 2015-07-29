@@ -82,8 +82,6 @@ static CGFloat kDiameterForNotifications = 20.0f;
   
         if ([viewController conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)])
         {
-            self.layer.borderColor = [UIColor yellowColor].CGColor;
-            self.layer.borderWidth = 1.5f;
             CGFloat widthOfSelector = CGRectGetWidth(viewController.view.frame) - (2 * kPaddingForNotifications);
             CGFloat centerX = ((index + 1) * (widthOfSelector / self.viewControllers.count )) + kPaddingForNotifications ;
             VNumericalBadgeView *badgeView = [[VNumericalBadgeView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, kDiameterForNotifications, kDiameterForNotifications)];
