@@ -103,7 +103,8 @@ echo ".dSYM was successfully uploaded to TestFairy."
 echo
 echo "Posting Test Fairy url for '${APPNAME}' to Victorious backend"
 
-
-python "build-scripts/vams_postbuild.py" ${APPNAME} ios ${URL}
+if [ $GROUP == "Stable" ]; then
+    python "build-scripts/vams_postbuild.py" ${APPNAME} ios ${URL}
+fi
 
 exit 0
