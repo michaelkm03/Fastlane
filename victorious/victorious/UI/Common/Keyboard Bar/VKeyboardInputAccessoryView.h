@@ -9,6 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "VUserTaggingTextStorageDelegate.h"
 
+typedef NS_ENUM(NSInteger, VKeyboardBarAttachmentType)
+{
+    VKeyboardBarAttachmentTypeImage,
+    VKeyboardBarAttachmentTypeVideo,
+    VKeyboardBarAttachmentTypeGIF,
+};
+
 @class VKeyboardInputAccessoryView, VDependencyManager;
 
 @protocol VKeyboardInputAccessoryViewDelegate <NSObject, VUserTaggingTextStorageDelegate>
@@ -21,11 +28,10 @@
 - (void)pressedSendOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView;
 
 /**
- *  Notifies the delegate of the input accessory view that the attachment key has been pressed.
- *
- *  @param inputAccessoryView The input accessory view that the attachment key belongs to.
+ *  Notifies the delegate that the user selected a particular attachment type.
  */
-- (void)pressedAttachmentOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView;
+- (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
+    selectedAttachmentType:(VKeyboardBarAttachmentType)attachmentType;
 
 @optional
 
@@ -93,7 +99,7 @@
 /**
  *  Call this to stop editing.
  */
-- (BOOL)endEditing;
+- (BOOL)stopEditing;
 
 - (void)startEditing;
 - (void)clearTextAndResign;

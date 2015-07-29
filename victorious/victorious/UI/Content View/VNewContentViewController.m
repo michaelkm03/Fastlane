@@ -366,7 +366,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     // We need to update first responder status on the collection view for the comment bar
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
     {
-        [self.textEntryView endEditing];
+        [self.textEntryView stopEditing];
         [self.contentCollectionView resignFirstResponder];
     }
     else
@@ -1420,7 +1420,8 @@ referenceSizeForHeaderInSection:(NSInteger)section
     }
 }
 
-- (void)pressedAttachmentOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
+- (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
+            selectedAttachmentType:(VKeyboardBarAttachmentType)attachmentType
 {
     __weak typeof(self) welf = self;
     [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^(BOOL authorized)
@@ -1429,7 +1430,8 @@ referenceSizeForHeaderInSection:(NSInteger)section
          {
              return;
          }
-         [welf addMediaToComment];
+         __strong typeof(welf) strongSelf = welf;
+         [strongSelf addMediaToCommentWithAttachmentType:attachmentType];
      }];
 }
 
@@ -1518,40 +1520,26 @@ referenceSizeForHeaderInSection:(NSInteger)section
      }];
 }
 
-- (void)addMediaToComment
+- (void)addMediaToCommentWithAttachmentType:(VKeyboardBarAttachmentType)attachmentType
 {
-    void (^showCamera)(void) = ^void(void)
-    {
-        [self showMediaAttachmentUI];
-    };
+    [self.textEntryView stopEditing];
     
-    if (self.publishParameters.mediaToUploadURL == nil)
-    {
-        showCamera();
-        return;
-    }
-    
-    void (^clearMediaSelection)(void) = ^void(void)
-    {
-        self.publishParameters.mediaToUploadURL = nil;
-        [self.textEntryView setSelectedThumbnail:nil];
-    };
-    
-    UIAlertController *alertController = [self.alertHelper alertForConfirmDiscardMediaWithDelete:^
-                                          {
-                                              clearMediaSelection();
-                                              showCamera();
-                                          }
-                                                                                          cancel:nil];
-    [self presentViewController:alertController animated:YES completion:nil];
-}
-
-- (void)showMediaAttachmentUI
-{
-    [self.view endEditing:YES];
     self.mediaAttachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager];
     __weak typeof(self) welf = self;
-    self.mediaAttachmentPresenter.attachmentTypes = VMediaAttachmentOptionsImage | VMediaAttachmentOptionsVideo | VMediaAttachmentOptionsGIF;
+    VMediaAttachmentOptions attachmentOption;
+    switch (attachmentType)
+    {
+        case VKeyboardBarAttachmentTypeVideo:
+            attachmentOption = VMediaAttachmentOptionsVideo;
+            break;
+        case VKeyboardBarAttachmentTypeImage:
+            attachmentOption = VMediaAttachmentOptionsImage;
+            break;
+        case VKeyboardBarAttachmentTypeGIF:
+            attachmentOption = VMediaAttachmentOptionsGIF;
+            break;
+    }
+    self.mediaAttachmentPresenter.attachmentTypes = attachmentOption;
     self.mediaAttachmentPresenter.resultHandler = ^void(BOOL success, VPublishParameters *publishParameters)
     {
         __strong typeof(self) strongSelf = welf;

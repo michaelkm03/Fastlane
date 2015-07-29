@@ -147,7 +147,7 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
     return intrinsicSize;
 }
 
-- (BOOL)endEditing
+- (BOOL)stopEditing
 {
     return [self.editingTextView resignFirstResponder];
 }
@@ -212,14 +212,27 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
 
 #pragma mark - IBActions
 
+- (IBAction)tappedImage:(id)sender
+{
+    [self.delegate keyboardInputAccessoryView:self
+                       selectedAttachmentType:VKeyboardBarAttachmentTypeImage];
+}
+
+- (IBAction)tappedVideo:(id)sender
+{
+    [self.delegate keyboardInputAccessoryView:self
+                       selectedAttachmentType:VKeyboardBarAttachmentTypeVideo];
+}
+
+- (IBAction)tappedGIF:(id)sender
+{
+    [self.delegate keyboardInputAccessoryView:self
+                       selectedAttachmentType:VKeyboardBarAttachmentTypeGIF];
+}
+
 - (IBAction)pressedSend:(id)sender
 {
     [self.delegate pressedSendOnKeyboardInputAccessoryView:self];
-}
-
-- (IBAction)pressedAttachments:(id)sender
-{
-    [self.delegate pressedAttachmentOnKeyboardInputAccessoryView:self];
 }
 
 #pragma mark - UITextViewDelegate

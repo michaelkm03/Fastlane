@@ -12,9 +12,56 @@
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ycr-9I-eI5" userLabel="Attachments">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XuK-1c-4iY" userLabel="Image Button">
+                            <rect key="frame" x="20" y="0.0" width="50" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="50" id="an1-CM-ZHN"/>
+                            </constraints>
+                            <state key="normal" image="commentfield_image">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="tappedImage:" destination="HeO-pU-V0k" eventType="touchUpInside" id="ftj-c1-ko2"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U0r-cL-7X4" userLabel="Video Button">
+                            <rect key="frame" x="90" y="0.0" width="50" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="50" id="9gj-2a-CI7"/>
+                            </constraints>
+                            <state key="normal" image="commentfield_video">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="tappedVideo:" destination="HeO-pU-V0k" eventType="touchUpInside" id="R9r-Ud-a0Z"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nWU-Vd-xRZ" userLabel="GIF Button">
+                            <rect key="frame" x="160" y="0.0" width="50" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="50" id="Wxx-KJ-ZpW"/>
+                            </constraints>
+                            <state key="normal" image="commentfield_gif">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="tappedGIF:" destination="HeO-pU-V0k" eventType="touchUpInside" id="rDx-Hc-ajW"/>
+                            </connections>
+                        </button>
+                    </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="bottom" secondItem="XuK-1c-4iY" secondAttribute="bottom" id="ABa-Aj-NBL"/>
                         <constraint firstAttribute="height" constant="50" id="AR3-WE-2Aj"/>
+                        <constraint firstAttribute="bottom" secondItem="U0r-cL-7X4" secondAttribute="bottom" id="Elj-Zr-v8Q"/>
+                        <constraint firstItem="nWU-Vd-xRZ" firstAttribute="top" secondItem="Ycr-9I-eI5" secondAttribute="top" id="bu6-Gv-f5a"/>
+                        <constraint firstItem="U0r-cL-7X4" firstAttribute="top" secondItem="Ycr-9I-eI5" secondAttribute="top" id="c8L-fq-n9P"/>
+                        <constraint firstItem="XuK-1c-4iY" firstAttribute="top" secondItem="Ycr-9I-eI5" secondAttribute="top" id="gGp-Zu-oLE"/>
+                        <constraint firstItem="XuK-1c-4iY" firstAttribute="leading" secondItem="Ycr-9I-eI5" secondAttribute="leading" constant="20" id="mWh-1Q-XJI"/>
+                        <constraint firstItem="U0r-cL-7X4" firstAttribute="leading" secondItem="XuK-1c-4iY" secondAttribute="trailing" constant="20" id="tSm-90-0CY"/>
+                        <constraint firstAttribute="bottom" secondItem="nWU-Vd-xRZ" secondAttribute="bottom" id="tuT-QV-Vgx"/>
+                        <constraint firstItem="nWU-Vd-xRZ" firstAttribute="leading" secondItem="U0r-cL-7X4" secondAttribute="trailing" constant="20" id="v1A-J8-8JQ"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v84-Mw-D11" userLabel="Comment UI" customClass="VKeyboardInputAccessoryView">
@@ -61,7 +108,7 @@
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7pn-fk-jDk" userLabel="Placeholder Label">
-                            <rect key="frame" x="50" y="16.5" width="76.5" height="17"/>
+                            <rect key="frame" x="50" y="16" width="76.5" height="17"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
@@ -117,6 +164,9 @@
     </objects>
     <resources>
         <image name="MessageCamera" width="22" height="23"/>
+        <image name="commentfield_gif" width="20" height="20"/>
+        <image name="commentfield_image" width="20" height="20"/>
+        <image name="commentfield_video" width="20" height="20"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
