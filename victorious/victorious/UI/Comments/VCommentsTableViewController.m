@@ -322,37 +322,6 @@
                                                 defaultAttributes:defaultStringAttributes
                                                 andTagTapDelegate:self];
     
-//    VCommentMediaType commentMediaType = [comment commentMediaType];
-//    BOOL hasMedia = commentMediaType != VCommentMediaTypeNoMedia;
-//    
-//    cell.commentTextView.hasMedia = hasMedia;
-//    cell.commentTextView.mediaThumbnailView.hidden = !hasMedia;
-//    [cell.commentTextView.mediaThumbnailView sd_setImageWithURL:hasMedia ? comment.previewImageURL : nil];
-//    
-//    switch ([comment commentMediaType])
-//    {
-//        case VCommentMediaTypeImage:
-//            [cell.commentTextView setMediaType:VCommentMediaViewTypeImage];
-//            break;
-//        case VCommentMediaTypeVideo:
-//            cell.commentTextView.mediaURL = [comment properMediaURLGivenContentType];
-//            cell.commentTextView.mediaTapDelegate = self;
-//            [cell.commentTextView setMediaType:VCommentMediaViewTypeVideo];
-//            break;
-//        case VCommentMediaTypeGIF:
-//            cell.commentTextView.mediaURL = [comment properMediaURLGivenContentType];
-//            cell.commentTextView.mediaTapDelegate = self;
-//            [cell.commentTextView setMediaType:VCommentMediaViewTypeGIF];
-//            // Make sure to grab the mp4 URL if its a gif
-//            cell.commentTextView.autoplayURL = [comment properMediaURLGivenContentType];
-//            break;
-//        case VCommentMediaTypeBallistic:
-//            
-//            break;
-//        default:
-//            break;
-//    }
-    
     [cell.textAndMediaView setComment:comment];
     
     cell.profileImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "VVideoView.h"
+#import "VDependencyManager.h"
 #import "victorious-Swift.h"
 
 static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
@@ -29,22 +29,14 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
  */
 @interface VTextAndMediaView : UIView
 
-@property (nonatomic, copy)           NSString           *text;
-@property (nonatomic, copy)           NSAttributedString *attributedText;
-@property (nonatomic, weak, readonly) UIImageView        *mediaThumbnailView;
-@property (nonatomic, weak, readonly) UIImageView        *playIcon; ///< Default is hidden. Show for video content
-@property (nonatomic)                 CGFloat            preferredMaxLayoutWidth; ///< Used when calculating intrinsicContentSize
-@property (nonatomic)                 BOOL               hasMedia;                ///< If YES, the size of the media thumbnail is included in the intrinsicContentSize
-@property (nonatomic, copy)           void               (^onMediaTapped)(); ///< Called when the user taps the media icon
+@property (nonatomic) CGFloat preferredMaxLayoutWidth; ///< Used when calculating intrinsicContentSize
+@property (nonatomic, copy) void (^onMediaTapped)(); ///< Called when the user taps the media icon
 
-//@property (nonatomic, strong) NSURL *mediaURL;
 @property (nonatomic, weak) id<VCommentMediaTapDelegate> mediaTapDelegate;
 
 @property (nonatomic) UIFont *textFont;
 @property (nonatomic, strong) VTagSensitiveTextView *textView;
-//@property (nonatomic, strong) NSURL *autoplayURL;
 
-@property (nonatomic, strong, readonly) VVideoView *videoView;
 @property (nonatomic, assign) BOOL inFocus;
 
 @property (nonatomic, strong, readonly) MediaAttachmentView *mediaAttachmentView;

@@ -129,9 +129,6 @@ static NSCache *_sharedImageCache = nil;
 - (void)prepareContentAndMediaView
 {
     [self.commentAndMediaView resetView];
-    self.commentAndMediaView.hasMedia = NO;
-    self.commentAndMediaView.mediaThumbnailView.image = nil;
-    self.commentAndMediaView.mediaThumbnailView.hidden = YES;
     
     __weak typeof(self) welf = self;
     self.commentAndMediaView.onMediaTapped = ^(void)
@@ -218,74 +215,6 @@ static NSCache *_sharedImageCache = nil;
     self.swipeViewController.cellDelegate = self.commentCellUtilitiesController;
 }
 
-- (void)setHasMedia:(BOOL)hasMedia
-{
-    _hasMedia = hasMedia;
-    self.commentAndMediaView.mediaThumbnailView.hidden = !hasMedia;
-    self.commentAndMediaView.hasMedia = hasMedia;
-}
-
-- (void)setMediaPreviewURL:(NSURL *)mediaPreviewURL
-{
-    _mediaPreviewURL = [mediaPreviewURL copy];
-    [self loadImageWithURL:_mediaPreviewURL intoImageView:self.commentAndMediaView.mediaThumbnailView withImageCache:[[self class] sharedImageCached]];
-}
-
-- (void)loadImageWithURL:(NSURL *)url intoImageView:(UIImageView *)imageView withImageCache:(NSCache *)imageCache
-{
-    NSParameterAssert( imageView != nil );
-    NSParameterAssert( imageCache != nil );
-    
-    if ( url == nil )
-    {
-        imageView.image = nil;
-        return;
-    }
-    
-    __block NSString *keyString = url.absoluteString;
-    UIImage *cachedImage = [imageCache objectForKey:keyString];
-    
-    if ( cachedImage != nil && [cachedImage isKindOfClass:[UIImage class]] )
-    {
-        [imageView setImage:cachedImage];
-    }
-    else
-    {
-        imageView.alpha = 0.0f;
-        [self.commentAndMediaView.mediaThumbnailView sd_setImageWithURL:url
-                                                              completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
-        {
-            if (error != nil)
-            {
-                return;
-            }
-            
-            /**
-             If the assetOrientation property was set, it was done so in a temporary comment
-             after the comment was posted and before it could be reloaded from the server.
-             In those cases, the rotation of the preview image will be off and requires adjustment
-             */
-            if ( self.mediaAssetOrientation != nil )
-            {
-                UIDeviceOrientation orientation = (UIDeviceOrientation)self.mediaAssetOrientation.integerValue;
-                image = [image imageRotatedByDegrees:[AVAsset rotationAdjustmentForOrientation:orientation]];
-            }
-            
-            [imageView setImage:image];
-            [UIView animateWithDuration:kImagePreviewLoadedAnimationDuration animations:^
-            {
-                imageView.alpha = 1.0f;
-            }];
-            [imageCache setObject:image forKey:keyString];
-        }];
-    }
-}
-
-- (void)setMediaIsVideo:(BOOL)mediaIsVideo
-{
-    _mediaIsVideo = mediaIsVideo;
-    self.commentAndMediaView.playIcon.hidden = !mediaIsVideo;
-}
 
 - (void)setCommentBody:(NSString *)commentBody
 {
@@ -321,16 +250,6 @@ static NSCache *_sharedImageCache = nil;
 {
     _realTimeCommentText = [realTimeCommentText copy];
     self.realtimeCommentLocationLabel.text  = realTimeCommentText;
-}
-
-- (UIImage *)previewImage
-{
-    return self.commentAndMediaView.mediaThumbnailView.image;
-}
-
-- (UIView *)previewView
-{
-    return self.commentAndMediaView.mediaThumbnailView;
 }
 
 - (NSURL *)mediaURL

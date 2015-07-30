@@ -50,7 +50,11 @@ protocol Focus {
     var hasFocus: Bool { get set }
 }
 
-class MediaAttachmentView : UIView, Focus {
+protocol Reuse {
+    func prepareForReuse()
+}
+
+class MediaAttachmentView : UIView, Focus, Reuse {
     
     var comment: VComment?
     var message: VMessage?
@@ -105,6 +109,10 @@ class MediaAttachmentView : UIView, Focus {
     // Returns an cell reuse identifer for the proper concrete subclass
     class func reuseIdentifierForMessage(message: VMessage) -> String {
         return MediaAttachmentType.attachmentType(message).description
+    }
+    
+    func prepareForReuse() {
+        // Subclasses can override
     }
 }
 
@@ -193,6 +201,7 @@ class MediaAttachmentGIFView : MediaAttachmentView {
         didSet {
             if let autoplayURL = comment?.properMediaURLGivenContentType() {
                 self.videoView.setItemURL(autoplayURL, loop: true, audioMuted: true)
+                self.videoView.hidden = false
             }
         }
     }

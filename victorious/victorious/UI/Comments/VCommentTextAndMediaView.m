@@ -27,7 +27,9 @@
     }
     
     _comment = comment;
-    self.hasMedia = [comment hasMediaAttachment];
+    
+    self.textView.hidden = comment.text == nil || comment.text.length == 0;
+    
     [self.mediaAttachmentView removeFromSuperview];
     self.mediaAttachmentView = [MediaAttachmentView mediaViewWithComment:comment];
     if (self.mediaAttachmentView != nil)

@@ -167,7 +167,7 @@
     VMessageCell *cell = [dataSource.tableView dequeueReusableCellWithIdentifier:kVMessageCellNibName forIndexPath:indexPath];
     
     cell.timeLabel.text = [message.postedAt timeSince];
-    cell.commentTextView.text = message.text;
+//    cell.commentTextView.text = message.text;
     cell.profileImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     
     if ([message.sender isEqualToUser:[[VObjectManager sharedManager] mainUser]])
@@ -178,19 +178,14 @@
     BOOL hasMedia = [message.thumbnailPath isKindOfClass:[NSString class]] && ![message.thumbnailPath isEqualToString:@""];
     if (hasMedia)
     {
-        cell.commentTextView.hasMedia = YES;
-        cell.commentTextView.mediaThumbnailView.hidden = NO;
-        [cell.commentTextView.mediaThumbnailView sd_setImageWithURL:[NSURL URLWithString:message.thumbnailPath]];
         if ([message.mediaPath v_hasVideoExtension])
         {
 //            cell.commentTextView.onMediaTapped = [cell.commentTextView standardMediaTapHandlerWithMediaURL:[NSURL URLWithString:message.mediaPath] presentingViewController:self];
             cell.commentTextView.mediaTapDelegate = self;
-            cell.commentTextView.playIcon.hidden = NO;
         }
     }
     else
     {
-        cell.commentTextView.mediaThumbnailView.hidden = YES;
     }
     
     NSURL *pictureURL = [NSURL URLWithString:message.sender.pictureUrl];
