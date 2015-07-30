@@ -12,7 +12,6 @@
 // multi-purpose keys
 extern NSString * const VDependencyManagerTitleKey;
 extern NSString * const VDependencyManagerBackgroundKey;
-extern NSString * const VDependencyManagerImageURLKey;
 
 // Keys for colors
 extern NSString * const VDependencyManagerBackgroundColorKey;
@@ -168,15 +167,18 @@ extern NSString * const VDependencyManagerEditTextWorkspaceKey;
 - (NSArray *)arrayOfSingletonValuesConformingToProtocol:(Protocol *)protocol forKey:(NSString *)key;
 
 /**
- Returns an NSArray of NSString objects for the specified key. These 
- NSString objects will contain URLs pointing to images.
+ Returns an NSArray of UIImage objects specified in a macro format.
+ (See "Image Macros" in the template spec for details)
  */
-- (NSArray *)arrayOfImageURLsForKey:(NSString *)key;
+- (NSArray *)arrayOfImagesForKey:(NSString *)key;
 
 /**
- Returns an array of all image URLs that appear in the template.
+ Returns YES if a call to -arrayOfImagesForKey: with a given key is
+ likely to sucessfully return an array of images. If such a call
+ is likely (or guaranteed) to result in an empty array, this
+ method will return NO.
  */
-- (NSArray *)arrayOfAllImageURLs;
+- (BOOL)hasArrayOfImagesForKey:(NSString *)key;
 
 /**
  Returns the value stored for the specified key in the configuration
