@@ -48,6 +48,7 @@
         _contentMode = voteType.contentMode;
         _flightDuration = (float)voteType.flightDuration.unsignedIntegerValue / 1000.0f;
         _animationDuration = (float)voteType.animationDuration.unsignedIntegerValue / 1000.0f;
+        _cooldownDuration = (double)voteType.cooldownDuration.unsignedIntegerValue / 1000.0f;
     }
     return self;
 }
@@ -55,11 +56,6 @@
 - (BOOL)isBallistic
 {
     return self.flightDuration > 0.0;
-}
-
-- (void)vote
-{
-    self.voteCount++;
 }
 
 - (NSArray *)trackingUrls
@@ -70,6 +66,64 @@
 - (NSString *)debugDescription
 {
     return [NSString stringWithFormat:@"%@: %p: %@ (%ld)", NSStringFromClass([self class]), self, self.voteType.voteTypeName, (long)self.voteCount];
+}
+
+#pragma mark - Voting
+
+- (BOOL)vote
+{
+    if ( ![self isCoolingDown] )
+    {
+        self.voteCount++;
+        
+        // Save date that we last voted
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setObject:[NSDate date] forKey:[self coolDownPersistenceKey]];
+        [userDefaults synchronize];
+        return YES;
+    }
+    
+    return NO;
+}
+
+- (BOOL)isCoolingDown
+{
+    return [self secondsUntilCooldownIsOver] > 0;
+}
+
+- (NSTimeInterval)secondsUntilCooldownIsOver
+{
+    return self.cooldownDuration - [self secondsSinceLastVote];
+}
+
+- (CGFloat)ratioOfCooldownComplete
+{
+    return [self secondsSinceLastVote] / self.cooldownDuration;
+}
+
+- (NSDate *)lastVoted
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSDate *lastVoted = [userDefaults objectForKey:[self coolDownPersistenceKey]];
+    return lastVoted;
+}
+
+- (NSTimeInterval)secondsSinceLastVote
+{
+    NSDate *now = [NSDate date];
+    return [now timeIntervalSince1970] - [[self lastVoted] timeIntervalSince1970];
+}
+
+- (NSString *)coolDownPersistenceKey
+{
+    return [@"cooldown-" stringByAppendingString:self.voteType.voteTypeID];
+}
+
+- (void)resetCooldownTimer
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults removeObjectForKey:[self coolDownPersistenceKey]];
+    [userDefaults synchronize];
 }
 
 @end
