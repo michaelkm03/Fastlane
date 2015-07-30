@@ -48,6 +48,8 @@
 #import "VLightboxTransitioningDelegate.h"
 #import "victorious-Swift.h"
 #import "VCommentTextAndMediaView.h"
+#import "NSURL+MediaType.h"
+#import "VImageLightboxViewController.h"
 
 @import Social;
 
@@ -443,7 +445,17 @@
 
 - (void)tappedMediaWithURL:(NSURL *)mediaURL previewImage:(UIImage *)image fromView:(UIView *)view
 {
-    VVideoLightboxViewController *lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:image videoURL:mediaURL];
+    VLightboxViewController *lightbox;
+    if ([mediaURL v_hasImageExtension])
+    {
+        lightbox = [[VImageLightboxViewController alloc] initWithImage:image];
+    }
+    else
+    {
+        lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:image videoURL:mediaURL];
+        ((VVideoLightboxViewController *)lightbox).onVideoFinished = lightbox.onCloseButtonTapped;
+        ((VVideoLightboxViewController *)lightbox).titleForAnalytics = @"Video Comment";
+    }
     [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox referenceView:view];
     
     __weak typeof(self) weakSelf = self;
@@ -452,8 +464,6 @@
         __strong typeof(weakSelf) strongSelf = weakSelf;
         [strongSelf dismissViewControllerAnimated:YES completion:nil];
     };
-    lightbox.onVideoFinished = lightbox.onCloseButtonTapped;
-    lightbox.titleForAnalytics = @"Video Comment";
     [self presentViewController:lightbox animated:YES completion:nil];
 }
 

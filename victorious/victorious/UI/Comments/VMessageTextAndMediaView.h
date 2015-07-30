@@ -22,6 +22,7 @@
 
 /**
  Same as above but without a custom font.
- */+ (CGFloat)estimatedHeightWithWidth:(CGFloat)width message:(VMessage *)message;
+ */
++ (CGFloat)estimatedHeightWithWidth:(CGFloat)width message:(VMessage *)message;
 
 @end
