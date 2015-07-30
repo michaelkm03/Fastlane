@@ -126,7 +126,7 @@
     }
     else
     {
-        if (url.host != nil)
+        if ((url.host != nil) || (url.path != nil))
         {
             [self showBadDeeplinkError];
         }
