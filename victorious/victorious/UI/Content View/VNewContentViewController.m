@@ -1406,12 +1406,13 @@ referenceSizeForHeaderInSection:(NSInteger)section
      }];
 }
 
-- (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
+- (void)keyboardInputAccessoryViewWantsToClearMedia:(VKeyboardInputAccessoryView *)inputAccessoryView
 {
     [inputAccessoryView stopEditing];
     UIAlertController *alertController = [self.alertHelper alertForConfirmDiscardMediaWithDelete:^
                                           {
                                               [self.textEntryView setSelectedThumbnail:nil];
+                                              [self.textEntryView startEditing];
                                           }
                                                                                           cancel:nil];
     [self presentViewController:alertController animated:YES completion:nil];
@@ -1428,6 +1429,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
             selectedAttachmentType:(VKeyboardBarAttachmentType)attachmentType
 {
+    [inputAccessoryView stopEditing];
     __weak typeof(self) welf = self;
     [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^(BOOL authorized)
      {

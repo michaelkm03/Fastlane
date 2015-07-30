@@ -31,12 +31,12 @@ typedef NS_ENUM(NSInteger, VKeyboardBarAttachmentType)
  *  Notifies the delegate that the user selected a particular attachment type.
  */
 - (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
-    selectedAttachmentType:(VKeyboardBarAttachmentType)attachmentType;
+            selectedAttachmentType:(VKeyboardBarAttachmentType)attachmentType;
 
 /**
  *  Notifies the delegate that the user tapped the thumbnail of the currently attached media.
  */
-- (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView;
+- (void)keyboardInputAccessoryViewWantsToClearMedia:(VKeyboardInputAccessoryView *)inputAccessoryView;
 
 @optional
 
