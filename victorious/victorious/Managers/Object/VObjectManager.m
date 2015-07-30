@@ -433,6 +433,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id)objectWithEntityName:(NSString *)entityName subclass:(Class)subclass
 {
+    NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
+    
     NSManagedObjectContext *context = [[self managedObjectStore] mainQueueManagedObjectContext];
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:entityName inManagedObjectContext:context];
     return [[subclass alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:context];
