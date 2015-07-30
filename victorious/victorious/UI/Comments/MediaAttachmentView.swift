@@ -258,14 +258,18 @@ class MediaAttachmentBallisticView : MediaAttachmentView {
     }
     
     private func sharedInit() {
+        self.ballisticView.setTranslatesAutoresizingMaskIntoConstraints(false)
         self.addSubview(self.ballisticView)
-        self.v_addFitToParentConstraintsToSubview(self.ballisticView)
+        let vConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[ballisticView(50)]", options: nil, metrics: nil, views: ["ballisticView": self.ballisticView])
+        let hConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|[ballisticView(50)]", options: nil, metrics: nil, views: ["ballisticView": self.ballisticView])
+        self.addConstraints(vConstraints)
+        self.addConstraints(hConstraints)
     }
     
     override var comment: VComment? {
         didSet {
             if let iconURLString = comment?.properMediaURLGivenContentType() {
-                self.ballisticView.iconURL = iconURLString
+                self.ballisticView.iconURL = NSURL(string: "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/icon/heart_icon.png")
             }
         }
     }

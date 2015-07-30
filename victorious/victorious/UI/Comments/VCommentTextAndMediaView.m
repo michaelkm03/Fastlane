@@ -55,8 +55,20 @@
          }];
         mediaSpacing = kSpacingBetweenTextAndMedia;
     }
-    CGFloat mediaSize = comment.hasMediaAttachment ? width + mediaSpacing : 0.0f;
-    return VCEIL(CGRectGetHeight(boundingRect)) + mediaSize;
+    
+    CGFloat totalMediaHeight = 0;
+    if (comment.commentMediaType == VCommentMediaTypeBallistic)
+    {
+        totalMediaHeight = 50 + mediaSpacing;
+    }
+    else if (comment.commentMediaType == VCommentMediaTypeImage ||
+             comment.commentMediaType == VCommentMediaTypeVideo ||
+             comment.commentMediaType == VCommentMediaTypeGIF)
+    {
+        totalMediaHeight = width + mediaSpacing;
+    }
+    
+    return VCEIL(CGRectGetHeight(boundingRect)) + totalMediaHeight;
 }
 
 @end
