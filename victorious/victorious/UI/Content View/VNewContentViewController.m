@@ -179,6 +179,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
 
 @property (nonatomic, strong) NSURL *mediaURL;
+@property (nonatomic, strong) NSMutableArray *commentCellReuseIdentifiers;
 
 @end
 
@@ -489,8 +490,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                  forCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentImageCell nibForCell]
                  forCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]];
-    [self.contentCollectionView registerNib:[VContentCommentsCell nibForCell]
-                 forCellWithReuseIdentifier:[VContentCommentsCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VHistogramCell nibForCell]
                  forCellWithReuseIdentifier:[VHistogramCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VExperienceEnhancerBarCell nibForCell]
@@ -508,6 +507,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                          forDecorationViewOfKind:VShrinkingContentLayoutContentBackgroundView];
     
     self.viewModel.experienceEnhancerController.delegate = self;
+    
+    self.commentCellReuseIdentifiers = [NSMutableArray new];
     
     [self.viewModel reloadData];
 }
@@ -1095,7 +1096,16 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         }
         case VContentViewSectionAllComments:
         {
-            VContentCommentsCell *commentCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCommentsCell suggestedReuseIdentifier]
+            VComment *comment = self.viewModel.comments[indexPath.row];
+            NSString *reuseIdentifier = [MediaAttachmentView reuseIdentifierForComment:comment];
+            
+            if (![self.commentCellReuseIdentifiers containsObject:reuseIdentifier])
+            {
+                [self.contentCollectionView registerNib:[VContentCommentsCell nibForCell] forCellWithReuseIdentifier:reuseIdentifier];
+                [self.commentCellReuseIdentifiers addObject:reuseIdentifier];
+            }
+            
+            VContentCommentsCell *commentCell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier
                                                                                           forIndexPath:indexPath];
             commentCell.sequencePermissions = self.viewModel.sequence.permissions;
             [self configureCommentCell:commentCell withIndex:indexPath.row];
