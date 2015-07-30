@@ -63,18 +63,18 @@ static NSString * const kMediaIdentifierSuffix = @"withMedia";
 
     if ( contents.username.length > 0 )
     {
-        NSTextStorage *attributedString = self.commentTextView.textStorage;
+        NSTextStorage *textStorage = self.commentTextView.textStorage;
         NSUInteger length = [VTagStringFormatter delimiterString].length + 1;
-        if ( self.commentTextView.tagDictionary.count > 0 && attributedString.length >= length)
+        if ( self.commentTextView.tagDictionary.count > 0 && textStorage.length >= length)
         {
             //Apply special font to username
-            NSIndexSet *indexSet = [VTagStringFormatter tagRangesInRange:NSMakeRange(0, length) ofAttributedString:attributedString withTagDictionary:self.commentTextView.tagDictionary];
+            NSIndexSet *indexSet = [VTagStringFormatter tagRangesInRange:NSMakeRange(0, length) ofAttributedString:textStorage withTagDictionary:self.commentTextView.tagDictionary];
             if ( indexSet != nil )
             {
                 //A username was present and formatted
                 [indexSet enumerateRangesUsingBlock:^(NSRange range, BOOL *stop)
                 {
-                    [attributedString addAttribute:NSFontAttributeName value:contents.usernameFont range:range];
+                    [textStorage addAttribute:NSFontAttributeName value:contents.usernameFont range:range];
                     *stop = YES; //Just in case something has gone wrong and we find more than 1
                 }];
             }

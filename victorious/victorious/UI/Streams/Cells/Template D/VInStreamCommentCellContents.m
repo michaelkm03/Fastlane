@@ -61,7 +61,7 @@
         UIFont *usernameFont = [dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
         UIFont *commentFont = [dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
         UIFont *timestampFont = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
-        UIFont *mediaLinkFont = [dependencyManager fontForKey:VDependencyManagerLabel4FontKey];
+        UIFont *mediaLinkFont = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
         
         VInStreamMediaLink *mediaLink = nil;
         NSString *mediaUrl = comment.mediaUrl;
@@ -76,7 +76,6 @@
         }
         
         NSString *tappableUserName = [VTagStringFormatter databaseFormattedStringFromUser:comment.user];
-        
         NSMutableDictionary *commentTextAttributes = [[NSMutableDictionary alloc] init];
         NSMutableDictionary *highlightTextAttributes = [[NSMutableDictionary alloc] init];
         

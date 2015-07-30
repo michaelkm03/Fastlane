@@ -2,19 +2,18 @@
 //  VComment.m
 //  victorious
 //
-//  Created by Sharif Ahmed on 7/16/15.
+//  Created by Sharif Ahmed on 7/29/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
 #import "VComment.h"
-#import "VAsset.h"
+#import "VCommentMedia.h"
 #import "VSequence.h"
 #import "VUser.h"
 
 
 @implementation VComment
 
-@dynamic assetId;
 @dynamic assetOrientation;
 @dynamic dislikes;
 @dynamic flags;
@@ -26,14 +25,13 @@
 @dynamic realtime;
 @dynamic remoteId;
 @dynamic sequenceId;
+@dynamic shouldAutoplay;
 @dynamic text;
 @dynamic thumbnailUrl;
 @dynamic userId;
-@dynamic asset;
+@dynamic inStreamSequence;
+@dynamic commentMedia;
 @dynamic sequence;
 @dynamic user;
-@dynamic inStreamSequence;
-@dynamic shouldAutoplay;
-@dynamic commentMedia;
 
 @end

@@ -92,6 +92,7 @@
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(user) mapping:[VUser simpleMapping]];
     
     [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"sequenceId"}];
+    [mapping addConnectionForRelationship:VSelectorName(recentComments) connectedBy:@{@"remoteId" : @"sequenceId"}];
     
     return mapping;
 }
@@ -137,6 +138,7 @@
     [mapping addPropertyMapping:endCardMapping];
     
     [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"sequenceId"}];
+    [mapping addConnectionForRelationship:VSelectorName(recentComments) connectedBy:@{@"remoteId" : @"sequenceId"}];
     
     return mapping;
 }

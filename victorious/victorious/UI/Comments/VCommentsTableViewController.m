@@ -177,7 +177,7 @@
 {
     _sequence = sequence;
 
-    [self setHasComments:self.sequence.commentCount.integerValue];
+    [self setHasComments:self.sequence.commentCount.integerValue != 0];
     
     self.title = sequence.name;
     

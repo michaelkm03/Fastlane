@@ -421,10 +421,6 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         newComment = [self newCommentWithID:commentID onSequence:sequence text:payload[@"text"] shouldAutoplay:shouldAutoplay mediaURLPath:[mediaURL absoluteString]];
         newComment.realtime = time;
         [self fetchCommentByID:[payload[@"id"] integerValue] successBlock:nil failBlock:nil];
-        if (asset)
-        {
-            [asset addCommentsObject: newComment];
-        }
         
         NSString *commentText = payload[@"text"];
         NSDictionary *params = @{ VTrackingKeyTextLength : @(commentText.length),

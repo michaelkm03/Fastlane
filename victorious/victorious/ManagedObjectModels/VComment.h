@@ -2,18 +2,17 @@
 //  VComment.h
 //  victorious
 //
-//  Created by Sharif Ahmed on 7/16/15.
+//  Created by Sharif Ahmed on 7/29/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class VAsset, VNotification, VSequence, VUser, VCommentMedia;
+@class VCommentMedia, VSequence, VUser;
 
 @interface VComment : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * assetId;
 @property (nonatomic, retain) NSNumber * assetOrientation;
 @property (nonatomic, retain) NSNumber * dislikes;
 @property (nonatomic, retain) NSNumber * flags;
@@ -25,16 +24,14 @@
 @property (nonatomic, retain) NSNumber * realtime;
 @property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) NSString * sequenceId;
+@property (nonatomic, retain) NSNumber * shouldAutoplay;
 @property (nonatomic, retain) NSString * text;
 @property (nonatomic, retain) NSString * thumbnailUrl;
 @property (nonatomic, retain) NSNumber * userId;
-@property (nonatomic, retain) NSNumber * shouldAutoplay;
-@property (nonatomic, retain) VAsset *asset;
-@property (nonatomic, retain) VSequence *sequence;
-@property (nonatomic, retain) VUser *user;
 @property (nonatomic, retain) VSequence *inStreamSequence;
 @property (nonatomic, retain) NSSet *commentMedia;
-
+@property (nonatomic, retain) VSequence *sequence;
+@property (nonatomic, retain) VUser *user;
 @end
 
 @interface VComment (CoreDataGeneratedAccessors)
