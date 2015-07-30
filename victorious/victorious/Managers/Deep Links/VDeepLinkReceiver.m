@@ -126,7 +126,10 @@
     }
     else
     {
-        [self showBadDeeplinkError];
+        if ((url.host != nil) || (url.path != nil))
+        {
+            [self showBadDeeplinkError];
+        }
     }
 }
 
