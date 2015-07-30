@@ -122,7 +122,7 @@
 - (void)publishContent
 {
     // Check with delegate to see if publishing is forced
-    if ([self.delegate respondsToSelector:@selector(isCreationForced)])
+    if ([self.textFlowDelegate respondsToSelector:@selector(isCreationForced)])
     {
         self.textToolController.publishIsForced = [self.textFlowDelegate isCreationForced];
     }
