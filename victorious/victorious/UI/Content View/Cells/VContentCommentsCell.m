@@ -88,15 +88,13 @@ static NSCache *_sharedImageCache = nil;
 }
 
 + (CGSize)sizeWithFullWidth:(CGFloat)width
-                commentBody:(NSString *)commentBody
+                    comment:(VComment *)comment
                    hasMedia:(BOOL)hasMedia
           dependencyManager:(VDependencyManager *)dependencyManager
 {
-//    CGFloat textHeight = [VCommentTextAndMediaView estimatedHeightWithWidth:(width - kTextInsets.left - kTextInsets.right)
-//                                                                       text:commentBody
-//                                                                  withMedia:hasMedia
-//                                                                    andFont:[dependencyManager fontForKey:VDependencyManagerParagraphFontKey]];
-    CGFloat textHeight = 100;
+    CGFloat textHeight = [VCommentTextAndMediaView estimatedHeightWithWidth:(width - kTextInsets.left - kTextInsets.right)
+                                                                    comment:comment
+                                                                    andFont:[dependencyManager fontForKey:VDependencyManagerParagraphFontKey]];
     CGFloat finalHeight = textHeight + kTextInsets.top + kTextInsets.bottom;
     return CGSizeMake(width, finalHeight);
 }

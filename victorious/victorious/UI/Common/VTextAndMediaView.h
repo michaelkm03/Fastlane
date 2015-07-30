@@ -39,7 +39,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
 
 @property (nonatomic, assign) BOOL inFocus;
 
-@property (nonatomic, strong, readonly) MediaAttachmentView *mediaAttachmentView;
+@property (nonatomic, strong) MediaAttachmentView *mediaAttachmentView;
 
 /**
  Removes common customizations (text, images, etc) and returns this view to a pristine state.

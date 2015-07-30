@@ -11,13 +11,9 @@
 
 @interface VCommentTextAndMediaView ()
 
-@property (nonatomic, strong) MediaAttachmentView *mediaAttachmentView;
-
 @end
 
 @implementation VCommentTextAndMediaView
-
-@synthesize mediaAttachmentView = _mediaAttachmentView;
 
 - (void)setComment:(VComment *)comment
 {
@@ -28,16 +24,8 @@
     
     _comment = comment;
     
-    self.textView.hidden = comment.text == nil || comment.text.length == 0;
-    
     [self.mediaAttachmentView removeFromSuperview];
     self.mediaAttachmentView = [MediaAttachmentView mediaViewWithComment:comment];
-    if (self.mediaAttachmentView != nil)
-    {
-        self.mediaAttachmentView.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addSubview:self.mediaAttachmentView];
-        [self setNeedsUpdateConstraints];
-    }
 }
 
 + (CGFloat)estimatedHeightWithWidth:(CGFloat)width comment:(VComment *)comment

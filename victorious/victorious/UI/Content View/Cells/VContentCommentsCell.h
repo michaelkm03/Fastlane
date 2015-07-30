@@ -45,7 +45,7 @@
  *  @return The size required to display the cell at full size.
  */
 + (CGSize)sizeWithFullWidth:(CGFloat)width
-                commentBody:(NSString *)commentBody
+                    comment:(VComment *)comment
                    hasMedia:(BOOL)hasMedia
           dependencyManager:(VDependencyManager *)dependencyManager;
 

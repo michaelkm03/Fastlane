@@ -21,12 +21,7 @@
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
-@property (nonatomic) BOOL addedConstraints;
-//@property (nonatomic, weak) UIButton *mediaButton;
-//@property (nonatomic, readwrite) UIImageView *mediaThumbnailView;
-//@property (nonatomic, readwrite) UIImageView *playIcon;
-//@property (nonatomic, strong) UIView *mediaBackground;
-//@property (nonatomic, strong) VVideoView *videoView;
+@property (nonatomic, strong) NSArray *mediaViewVerticalConstraints;
 
 @end
 
@@ -56,8 +51,7 @@
 {
     self.textView = [[VTagSensitiveTextView alloc] init];
     self.textView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.textView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
-    self.textView.backgroundColor = [UIColor redColor];
+    self.textView.backgroundColor = [UIColor clearColor];
     self.textView.selectable = YES;
     self.textView.editable = NO;
     self.textView.scrollEnabled = NO;
@@ -69,33 +63,17 @@
     self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
     [self addSubview:self.textView];
     
-//    UIView *background = [[UIView alloc] init];
-//    background.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
-//    background.translatesAutoresizingMaskIntoConstraints = NO;
-//    [self addSubview:background];
-//    self.mediaBackground = background;
-//    
-//    UIImageView *mediaThumbnailView = [[UIImageView alloc] init];
-//    mediaThumbnailView.translatesAutoresizingMaskIntoConstraints = NO;
-//    mediaThumbnailView.clipsToBounds = YES;
-//    mediaThumbnailView.contentMode = UIViewContentModeScaleAspectFill;
-//    mediaThumbnailView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
-//    [self addSubview:mediaThumbnailView];
-//    self.mediaThumbnailView = mediaThumbnailView;
-//    
-//    UIImageView *playIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlayIcon"]];
-//    playIcon.translatesAutoresizingMaskIntoConstraints = NO;
-//    playIcon.hidden = YES;
-//    [self addSubview:playIcon];
-//    self.playIcon = playIcon;
-//    
-//    UIButton *mediaButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//    mediaButton.translatesAutoresizingMaskIntoConstraints = NO;
-//    mediaButton.adjustsImageWhenHighlighted = NO;
-//    mediaButton.clipsToBounds = YES;
-//    [mediaButton addTarget:self action:@selector(mediaTapped:) forControlEvents:UIControlEventTouchUpInside];
-//    [self addSubview:mediaButton];
-//    self.mediaButton = mediaButton;
+    UITextView *textView = self.textView;
+    
+    [self.textView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[textView]"
+                                                                 options:0
+                                                                 metrics:nil
+                                                                   views:NSDictionaryOfVariableBindings(textView)]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[textView]|"
+                                                                 options:0
+                                                                 metrics:nil
+                                                                   views:NSDictionaryOfVariableBindings(textView)]];
 }
 
 - (void)layoutSubviews
@@ -107,136 +85,50 @@
     }
 }
 
-- (void)updateConstraints
+- (void)setMediaAttachmentView:(MediaAttachmentView *)mediaAttachmentView
 {
-    UITextView *textView = self.textView;
-    MediaAttachmentView *mediaAttachmentView = self.mediaAttachmentView;
-//    UIButton *mediaButton = self.mediaButton;
-//    UIImageView *mediaThumbnailView = self.mediaThumbnailView;
-//    UIImageView *playIcon = self.playIcon;
-//    UIView *background = self.mediaBackground;
-    
-    if (!self.addedConstraints)
+    _mediaAttachmentView = mediaAttachmentView;
+    if (mediaAttachmentView != nil)
     {
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[textView]"
-                                                                     options:0
-                                                                     metrics:nil
-                                                                       views:NSDictionaryOfVariableBindings(textView)]];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[textView]|"
-                                                                     options:0
-                                                                     metrics:nil
-                                                                       views:NSDictionaryOfVariableBindings(textView)]];
-//        [self addConstraint:[NSLayoutConstraint constraintWithItem:mediaThumbnailView
-//                                                         attribute:NSLayoutAttributeLeading
-//                                                         relatedBy:NSLayoutRelationEqual
-//                                                            toItem:mediaButton
-//                                                         attribute:NSLayoutAttributeLeading
-//                                                        multiplier:1.0f
-//                                                          constant:0.0f]];
-//        [self addConstraint:[NSLayoutConstraint constraintWithItem:mediaButton
-//                                                         attribute:NSLayoutAttributeHeight
-//                                                         relatedBy:NSLayoutRelationEqual
-//                                                            toItem:mediaButton
-//                                                         attribute:NSLayoutAttributeWidth
-//                                                        multiplier:1.0f
-//                                                          constant:0.0f]];
-//        [self addConstraint:[NSLayoutConstraint constraintWithItem:mediaThumbnailView
-//                                                         attribute:NSLayoutAttributeTrailing
-//                                                         relatedBy:NSLayoutRelationEqual
-//                                                            toItem:mediaButton
-//                                                         attribute:NSLayoutAttributeTrailing
-//                                                        multiplier:1.0f
-//                                                          constant:0.0f]];
-//        [self addConstraint:[NSLayoutConstraint constraintWithItem:mediaThumbnailView
-//                                                         attribute:NSLayoutAttributeTop
-//                                                         relatedBy:NSLayoutRelationEqual
-//                                                            toItem:mediaButton
-//                                                         attribute:NSLayoutAttributeTop
-//                                                        multiplier:1.0f
-//                                                          constant:0.0f]];
-//        [self addConstraint:[NSLayoutConstraint constraintWithItem:mediaThumbnailView
-//                                                         attribute:NSLayoutAttributeBottom
-//                                                         relatedBy:NSLayoutRelationEqual
-//                                                            toItem:mediaButton
-//                                                         attribute:NSLayoutAttributeBottom
-//                                                        multiplier:1.0f
-//                                                          constant:0.0f]];
-//        [self addConstraint:[NSLayoutConstraint constraintWithItem:playIcon
-//                                                         attribute:NSLayoutAttributeCenterX
-//                                                         relatedBy:NSLayoutRelationEqual
-//                                                            toItem:mediaThumbnailView
-//                                                         attribute:NSLayoutAttributeCenterX
-//                                                        multiplier:1.0f
-//                                                          constant:0.0f]];
-//        [self addConstraint:[NSLayoutConstraint constraintWithItem:playIcon
-//                                                         attribute:NSLayoutAttributeCenterY
-//                                                         relatedBy:NSLayoutRelationEqual
-//                                                            toItem:mediaThumbnailView
-//                                                         attribute:NSLayoutAttributeCenterY
-//                                                        multiplier:1.0f
-//                                                          constant:0.0f]];
-//        
-//        [self addConstraint:[NSLayoutConstraint constraintWithItem:mediaThumbnailView
-//                                                         attribute:NSLayoutAttributeWidth
-//                                                         relatedBy:NSLayoutRelationEqual
-//                                                            toItem:background
-//                                                         attribute:NSLayoutAttributeWidth
-//                                                        multiplier:1.0f
-//                                                          constant:0.0f]];
-//        [self addConstraint:[NSLayoutConstraint constraintWithItem:mediaThumbnailView
-//                                                         attribute:NSLayoutAttributeHeight
-//                                                         relatedBy:NSLayoutRelationEqual
-//                                                            toItem:background
-//                                                         attribute:NSLayoutAttributeHeight
-//                                                        multiplier:1.0f
-//                                                          constant:0.0f]];
-//        [self addConstraint:[NSLayoutConstraint constraintWithItem:mediaThumbnailView
-//                                                         attribute:NSLayoutAttributeCenterX
-//                                                         relatedBy:NSLayoutRelationEqual
-//                                                            toItem:background
-//                                                         attribute:NSLayoutAttributeCenterX
-//                                                        multiplier:1.0f
-//                                                          constant:0.0f]];
-//        [self addConstraint:[NSLayoutConstraint constraintWithItem:mediaThumbnailView
-//                                                         attribute:NSLayoutAttributeCenterY
-//                                                         relatedBy:NSLayoutRelationEqual
-//                                                            toItem:background
-//                                                         attribute:NSLayoutAttributeCenterY
-//                                                        multiplier:1.0f
-//                                                          constant:0.0f]];
+        _mediaAttachmentView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self addSubview:_mediaAttachmentView];
         
-        self.addedConstraints = YES;
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_mediaAttachmentView]|"
+                                                                     options:0
+                                                                     metrics:nil
+                                                                       views:NSDictionaryOfVariableBindings(_mediaAttachmentView)]];
     }
     
+    [self setNeedsUpdateConstraints];
+}
+
+- (void)updateConstraints
+{
     if (self.mediaAttachmentView != nil)
     {
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[textView]-5-[mediaAttachmentView]|"
-                                                                     options:0
-                                                                     metrics:nil
-                                                                       views:NSDictionaryOfVariableBindings(textView, mediaAttachmentView)]];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[mediaAttachmentView]|"
-                                                                     options:0
-                                                                     metrics:nil
-                                                                       views:NSDictionaryOfVariableBindings(mediaAttachmentView)]];
+        [self removeConstraints:self.mediaViewVerticalConstraints];
+        
+        if (self.textView.attributedText.length > 0 || self.textView.text.length > 0)
+        {
+            self.mediaViewVerticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_textView]-space-[_mediaAttachmentView]|"
+                                                                                        options:0
+                                                                                        metrics:@{@"space" : @(kSpacingBetweenTextAndMedia)}
+                                                                                          views:NSDictionaryOfVariableBindings(_textView, _mediaAttachmentView)];
+            
+        }
+        else
+        {
+            self.mediaViewVerticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_mediaAttachmentView]|"
+                                                                                        options:0
+                                                                                        metrics:nil
+                                                                                          views:NSDictionaryOfVariableBindings(_mediaAttachmentView)];
+        }
+        
+        [self addConstraints:self.mediaViewVerticalConstraints];
     }
     
     [super updateConstraints];
 }
-
-//- (CGSize)intrinsicContentSize
-//{
-//    CGSize textViewSize = [self.textView sizeThatFits:CGSizeMake( self.preferredMaxLayoutWidth, CGFLOAT_MAX)];
-//    
-//    if (self.hasMedia)
-//    {
-//        CGFloat mediaThumbnailSize = MAX(textViewSize.width, self.preferredMaxLayoutWidth); // CGFloat instead of CGSize because it's a square thumbnail
-//        return CGSizeMake(MAX(textViewSize.width, mediaThumbnailSize), textViewSize.height + kSpacingBetweenTextAndMedia + mediaThumbnailSize);
-//    }
-//    else
-//    {
-//        return textViewSize;
-//    }
-//}
 
 #pragma mark - Properties
 
