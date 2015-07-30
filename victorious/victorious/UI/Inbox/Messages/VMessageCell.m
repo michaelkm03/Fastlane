@@ -22,7 +22,7 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
 
 @interface VMessageCell ()
 
-@property (nonatomic, weak, readwrite) IBOutlet VTextAndMediaView *commentTextView;
+@property (nonatomic, weak, readwrite) IBOutlet VMessageTextAndMediaView *messageTextAndMediaView;
 @property (nonatomic, weak, readwrite) IBOutlet UILabel                  *timeLabel;
 @property (nonatomic, weak, readwrite) IBOutlet VDefaultProfileImageView *profileImageView;
 @property (nonatomic, weak, readwrite) IBOutlet UIImageView              *chatBubble;
@@ -55,7 +55,7 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    self.commentTextView.preferredMaxLayoutWidth = CGRectGetWidth(self.contentView.bounds) - kTextInsets.left - kTextInsets.right;
+    self.messageTextAndMediaView.preferredMaxLayoutWidth = CGRectGetWidth(self.contentView.bounds) - kTextInsets.left - kTextInsets.right;
     [super layoutSubviews]; // two-pass layout because we're changing the preferredMaxLayoutWidth, above, which means constraints need to be re-calculated.
 }
 
@@ -179,7 +179,7 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
 - (void)resetView
 {
     self.chatBubble.tintColor = [UIColor whiteColor];
-    [self.commentTextView resetView];
+    [self.messageTextAndMediaView resetView];
     [self.profileImageView setup];
     self.profileImageOnRight = NO;
 }

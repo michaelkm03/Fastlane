@@ -42,7 +42,15 @@ enum MediaAttachmentType {
     }
     
     static func attachmentType(message: VMessage) -> MediaAttachmentType {
-        return .NoMedia
+        let messageMediaType = message.messageMediaType()
+        switch (messageMediaType) {
+        case .Image:
+            return .Image
+        case .Video:
+            return .Video
+        default:
+            return .NoMedia
+        }
     }
 }
 
@@ -145,8 +153,24 @@ class MediaAttachmentImageView : MediaAttachmentView {
     
     override var comment: VComment? {
         didSet {
+            if let unwrapped = comment {
+                self.previewImageURL = unwrapped.previewImageURL()
+            }
+        }
+    }
+    
+    override var message: VMessage? {
+        didSet {
+            if let unwrapped = message {
+                self.previewImageURL = unwrapped.previewImageURL()
+            }
+        }
+    }
+    
+    var previewImageURL: NSURL? {
+        didSet {
             self.imageView.alpha = 0
-            if let previewURL = comment?.previewImageURL() {
+            if let previewURL = previewImageURL {
                 self.imageView.sd_setImageWithURL(previewURL, completed: {
                     (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) -> Void in
                     

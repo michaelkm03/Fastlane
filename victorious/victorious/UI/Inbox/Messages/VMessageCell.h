@@ -6,13 +6,15 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@class VTextAndMediaView, VDefaultProfileImageView, VMessage;
+#import "VMessageTextAndMediaView.h"
+
+@class VDefaultProfileImageView, VMessage;
 
 extern NSString * const kVMessageCellNibName;
 
 @interface VMessageCell : UITableViewCell
 
-@property (nonatomic, weak, readonly) IBOutlet VTextAndMediaView  *commentTextView;
+@property (nonatomic, weak, readonly) IBOutlet VMessageTextAndMediaView  *messageTextAndMediaView;
 @property (nonatomic, weak, readonly) IBOutlet UILabel                   *timeLabel;
 @property (nonatomic, weak, readonly) IBOutlet VDefaultProfileImageView  *profileImageView;
 @property (nonatomic, copy)                    void                     (^onProfileImageTapped)();

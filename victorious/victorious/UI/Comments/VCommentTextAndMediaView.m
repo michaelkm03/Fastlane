@@ -10,10 +10,6 @@
 #import "VTagSensitiveTextView.h"
 #import "VComment+Fetcher.h"
 
-@interface VCommentTextAndMediaView ()
-
-@end
-
 @implementation VCommentTextAndMediaView
 
 - (void)setComment:(VComment *)comment

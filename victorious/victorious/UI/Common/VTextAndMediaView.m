@@ -16,11 +16,7 @@
 
 @interface VTextAndMediaView ()
 
-@property (nonatomic, strong) NSString *text;
-@property (nonatomic, strong) NSAttributedString *attributedText;
-
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-
 @property (nonatomic, strong) NSArray *mediaViewVerticalConstraints;
 
 @end

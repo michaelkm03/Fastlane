@@ -57,3 +57,4 @@
 #import "VComment+Fetcher.h"
 #import "UIImage+ImageCreation.h"
 #import "VVideoView.h"
+#import "VMessage+Fetcher.h"

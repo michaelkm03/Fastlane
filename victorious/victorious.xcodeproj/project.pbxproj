@@ -842,6 +842,7 @@
 		C3E47F6C1B69451B0084FF65 /* MediaAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E47F6B1B69451B0084FF65 /* MediaAttachmentView.swift */; };
 		C3E47F6F1B6990C30084FF65 /* VCommentTextAndMediaView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E47F6E1B6990C30084FF65 /* VCommentTextAndMediaView.m */; };
 		C3E47F721B6990F10084FF65 /* VMessageTextAndMediaView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E47F711B6990F10084FF65 /* VMessageTextAndMediaView.m */; };
+		C3E47F751B6ABB3F0084FF65 /* VMessage+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E47F741B6ABB3F0084FF65 /* VMessage+Fetcher.m */; };
 		C3E772141B44B3FD005809A5 /* VLikedContentStreamCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E772131B44B3FD005809A5 /* VLikedContentStreamCollectionViewController.m */; };
 		C3E7721A1B45EAF7005809A5 /* VActionSheetTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E772191B45EAF7005809A5 /* VActionSheetTextView.m */; };
 		C3E772201B4DBA78005809A5 /* VStreamFocusHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E7721F1B4DBA78005809A5 /* VStreamFocusHelper.m */; };
@@ -2773,6 +2774,8 @@
 		C3E47F6E1B6990C30084FF65 /* VCommentTextAndMediaView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCommentTextAndMediaView.m; sourceTree = "<group>"; };
 		C3E47F701B6990F10084FF65 /* VMessageTextAndMediaView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMessageTextAndMediaView.h; sourceTree = "<group>"; };
 		C3E47F711B6990F10084FF65 /* VMessageTextAndMediaView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMessageTextAndMediaView.m; sourceTree = "<group>"; };
+		C3E47F731B6ABB3F0084FF65 /* VMessage+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VMessage+Fetcher.h"; sourceTree = "<group>"; };
+		C3E47F741B6ABB3F0084FF65 /* VMessage+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VMessage+Fetcher.m"; sourceTree = "<group>"; };
 		C3E772121B44B3FD005809A5 /* VLikedContentStreamCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLikedContentStreamCollectionViewController.h; sourceTree = "<group>"; };
 		C3E772131B44B3FD005809A5 /* VLikedContentStreamCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLikedContentStreamCollectionViewController.m; sourceTree = "<group>"; };
 		C3E772181B45EAF7005809A5 /* VActionSheetTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionSheetTextView.h; sourceTree = "<group>"; };
@@ -5197,6 +5200,8 @@
 				A721E86E1B572452000B7901 /* VEndCard+Fetcher.m */,
 				A721E86F1B572452000B7901 /* VImageAsset+Fetcher.h */,
 				A721E8701B572452000B7901 /* VImageAsset+Fetcher.m */,
+				C3E47F731B6ABB3F0084FF65 /* VMessage+Fetcher.h */,
+				C3E47F741B6ABB3F0084FF65 /* VMessage+Fetcher.m */,
 				A721E8711B572452000B7901 /* VNode+Fetcher.h */,
 				A721E8721B572452000B7901 /* VNode+Fetcher.m */,
 				A721E8731B572452000B7901 /* VNotificationSettings+Fetcher.h */,
@@ -8625,6 +8630,7 @@
 				A6EED6A91B5EE4210074052E /* VAlongsideTransitioner.m in Sources */,
 				D8E39BB819CB7C3C007FD86A /* VContentViewViewModel.m in Sources */,
 				C30AA4DA1B0517170010CEFE /* VPermissionAlertViewController.m in Sources */,
+				C3E47F751B6ABB3F0084FF65 /* VMessage+Fetcher.m in Sources */,
 				A7B98A421A264D1D00C58335 /* VNotificationSettingsStateManager.m in Sources */,
 				A76D93921B32151B007A150D /* VContentLikeButton.m in Sources */,
 				A721E9521B572454000B7901 /* UIImage+Round.m in Sources */,

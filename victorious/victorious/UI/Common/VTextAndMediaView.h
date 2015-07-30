@@ -43,6 +43,9 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
 
 @property (nonatomic, strong) NSURL *mediaURLForLightbox;
 
+@property (nonatomic, strong) NSString *text;
+@property (nonatomic, strong) NSAttributedString *attributedText;
+
 /**
  Removes common customizations (text, images, etc) and returns this view to a pristine state.
  */
