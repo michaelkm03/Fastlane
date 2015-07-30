@@ -36,8 +36,7 @@ typedef NS_ENUM(NSInteger, VKeyboardBarAttachmentType)
 /**
  *  Notifies the delegate that the user tapped the thumbnail of the currently attached media.
  */
-- (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
-                selectedClearMedia:(UIImage *)thumbnail;
+- (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView;
 
 @optional
 
@@ -66,7 +65,11 @@ typedef NS_ENUM(NSInteger, VKeyboardBarAttachmentType)
 @end
 
 /**
- *  The VKeyboardInputAccessoryView manages a message composition interface. It contains an attachment button, a textView and a send button. As the textview's text changes the VKeyboardInputAccessoryView will attempt to resize itself to accomodate the text. After reaching the maximum allowed growing space as defined by it's delegate the VKeyboardInputAccessoryView will stop growing and let the textView scroll it's content. This behavior is similar to the messages app as it appeared in iOS7.
+ *  The VKeyboardInputAccessoryView manages a message composition interface. It contains an attachment button, a textView 
+ *  and a send button. As the textview's text changes the VKeyboardInputAccessoryView will attempt to resize itself to 
+ *  accomodate the text. After reaching the maximum allowed growing space as defined by it's delegate the 
+ *  VKeyboardInputAccessoryView will stop growing and let the textView scroll it's content. This behavior is similar to 
+ *  the messages app as it appeared in iOS7.
  */
 @interface VKeyboardInputAccessoryView : UIView
 
@@ -104,6 +107,8 @@ typedef NS_ENUM(NSInteger, VKeyboardBarAttachmentType)
 
 /**
  *  Call this to stop editing.
+ *
+ *  @return Returns whether or not the view really stopped editing and resigned first responder.
  */
 - (BOOL)stopEditing;
 
@@ -114,6 +119,10 @@ typedef NS_ENUM(NSInteger, VKeyboardBarAttachmentType)
 
 @interface VKeyboardInputAccessoryView (keyboardSize)
 
+/**
+ *  The keyboardInputAccessoryView is taller than it's contents actually require, this rect represents the actually visible portion of the 
+ *  window covered by this view. Note touches that do not intersect this rect are passed through.
+ */
 - (CGRect)obscuredRectInWindow:(UIWindow *)window;
 
 @end

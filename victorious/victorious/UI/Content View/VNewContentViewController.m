@@ -1406,7 +1406,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
      }];
 }
 
-- (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView selectedClearMedia:(UIImage *)thumbnail
+- (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
 {
     [inputAccessoryView stopEditing];
     UIAlertController *alertController = [self.alertHelper alertForConfirmDiscardMediaWithDelete:^

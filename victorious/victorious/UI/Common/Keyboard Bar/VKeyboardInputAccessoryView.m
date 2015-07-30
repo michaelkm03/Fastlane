@@ -253,8 +253,7 @@ static const CGFloat kAttachmentBarHeight = 50.0f;
 - (IBAction)tappedMediaAttachment:(id)sender
 {
     UIImage *currentThumbnail = [self.attachmentsButton backgroundImageForState:UIControlStateNormal];
-    [self.delegate keyboardInputAccessoryView:self
-                           selectedClearMedia:currentThumbnail];
+    [self.delegate keyboardInputAccessoryView:self];
 }
 
 #pragma mark - UITextViewDelegate
