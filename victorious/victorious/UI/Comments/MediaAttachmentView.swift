@@ -145,6 +145,7 @@ class MediaAttachmentImageView : MediaAttachmentView {
     
     override var comment: VComment? {
         didSet {
+            self.imageView.alpha = 0
             if let previewURL = comment?.previewImageURL() {
                 self.imageView.sd_setImageWithURL(previewURL, completed: {
                     (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) -> Void in
@@ -155,6 +156,10 @@ class MediaAttachmentImageView : MediaAttachmentView {
                     }
                     
                     self.imageView.image = image
+                    
+                    UIView.animateWithDuration(0.2, animations: { () -> Void in
+                        self.imageView.alpha = 1
+                    })
                 })
             }
         }
