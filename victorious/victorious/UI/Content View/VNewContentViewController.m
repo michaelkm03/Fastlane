@@ -1362,7 +1362,8 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                   VTrackingKeyStreamId : self.viewModel.streamId,
                                   VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
                                   VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[],
-                                  VTrackingKeyLoadTime : @(videoLoadTime) };
+                                  VTrackingKeyLoadTime : @(videoLoadTime),
+                                  VTrackingKeyTimeCurrent : @( self.videoCell.currentTimeMilliseconds ) };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
     }
     [UIView animateWithDuration:0.5f
