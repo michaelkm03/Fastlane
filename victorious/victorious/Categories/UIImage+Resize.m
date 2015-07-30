@@ -334,4 +334,32 @@
     return croppedImage;
 }
 
+- (UIImage *)scaledImageWithMaxDimension:(CGFloat)maxDimension
+{
+    // Do nothing we are already the correct size
+    if (self.size.width < maxDimension && self.size.height < maxDimension)
+    {
+        return self;
+    }
+    
+    // Protect against divides by 0
+    if (self.size.width == 0.0f || self.size.height == 0.0f)
+    {
+        return self;
+    }
+    
+    CGFloat scaleFactor;
+    if (self.size.width > self.size.height)
+    {
+        scaleFactor = maxDimension / self.size.width;
+    }
+    else
+    {
+        scaleFactor = maxDimension / self.size.height;
+    }
+    
+    CGSize newSize = CGSizeMake(self.size.width * scaleFactor, self.size.height * scaleFactor);
+    return [self smoothResizedImageWithNewSize:newSize];
+}
+
 @end
