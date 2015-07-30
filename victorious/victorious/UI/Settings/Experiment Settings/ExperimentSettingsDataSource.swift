@@ -79,6 +79,8 @@ class ExperimentSettingsDataSource: NSObject {
     
     func updateData( #deafultExperimentIds: [String], allExperiments: [Experiment] ) {
         
+        self.sections = []
+        
         // Get the enabled experiments as determined by the server
         self.defaultEnabledExperimentIds = deafultExperimentIds
         
@@ -99,12 +101,9 @@ class ExperimentSettingsDataSource: NSObject {
         
         VObjectManager.sharedManager().getDeviceExperiments(
             success: { (operation, result, results) -> Void in
-                if let result = result as? [String: AnyObject],
-                    let experimentIdsFromResponse = result[ "experiment_ids" ] as? [String] {
-                        let experiments = results as? [Experiment] ?? [Experiment]()
-                        self.updateData( deafultExperimentIds: [ "2", "5" ], allExperiments: experiments )
-                }
-                
+                let experimentIdsFromResponse = result?[ "experiment_ids" ] as? [String] ?? [String]()
+                let experiments = results as? [Experiment] ?? [Experiment]()
+                self.updateData( deafultExperimentIds: experimentIdsFromResponse, allExperiments: experiments )
                 self.state = self.sections.count > 0 ? .Content : .NoContent
                 self.delegate?.tableView.reloadData()
             },
@@ -139,15 +138,15 @@ extension ExperimentSettingsDataSource: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return max( self.sections[ section ].experiments.count, 1 )
+        return self.state == .Content ? max( self.sections[ section ].experiments.count, 1 ) : 1
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return self.sections.count
+        return self.state == .Content ? self.sections.count : 1
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return self.sections[ section ].title
+        return self.state == .Content ? self.sections[ section ].title : ""
     }
 }
 
@@ -160,11 +159,16 @@ extension ExperimentSettingsDataSource: VSettingsSwitchCellDelegate {
             let experiment = section.experiments[ indexPath.row ]
             
             // Update our data model
-            self.userEnabledExperimentIds.append( experiment.id )
-            self.userEnabledExperimentIds = self.userEnabledExperimentIds.filter {
-                // Keep only experiment IDs that are not in this section or the experiment ID we just selected.
-                // In other words, make sure only one experiment per section is selected.
-                return !section.containsExperiment( $0 ) || $0 == experiment.id
+            if cell.value {
+                self.userEnabledExperimentIds.append( experiment.id )
+                self.userEnabledExperimentIds = self.userEnabledExperimentIds.filter {
+                    // Keep only experiment IDs that are not in this section or the experiment ID we just selected.
+                    // In other words, make sure only one experiment per section is selected.
+                    return !section.containsExperiment( $0 ) || $0 == experiment.id
+                }
+            }
+            else {
+                self.userEnabledExperimentIds = self.userEnabledExperimentIds.filter { $0 != experiment.id }
             }
             
             // Update values only on visible cells that need updating

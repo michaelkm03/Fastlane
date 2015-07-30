@@ -63,7 +63,7 @@
         [request addValue:self.sessionID forHTTPHeaderField:@"X-Client-Session-ID"];
     }
     
-    if ( self.experimentIDs != nil && self.experimentIDs.count > 0 )
+    if ( self.experimentIDs.count > 0 )
     {
         NSString *commaSeparatedIDs = [self.experimentIDs componentsJoinedByString:@","];
         [request addValue:commaSeparatedIDs forHTTPHeaderField:@"X-Client-Experiment-IDs"];

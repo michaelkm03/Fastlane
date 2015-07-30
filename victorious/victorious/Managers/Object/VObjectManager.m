@@ -443,16 +443,6 @@ NS_ASSUME_NONNULL_BEGIN
     return nil;
 }
 
-- (void)setExperimentIDsFromCommandSeparatedString:(NSString *__nonnull)commaSeparatedExperimentIDs
-{
-    if ( commaSeparatedExperimentIDs.length == 0 )
-    {
-        return;
-    }
-    
-    self.experimentIDs = [commaSeparatedExperimentIDs componentsSeparatedByString:@","];
-}
-
 #pragma mark - Subclass
 
 - (NSMutableURLRequest *)requestWithObject:(id)object
@@ -477,6 +467,7 @@ NS_ASSUME_NONNULL_BEGIN
     requestDecorator.appID = [[VEnvironmentManager sharedInstance] currentEnvironment].appID;
     requestDecorator.deviceID = [[UIDevice currentDevice].identifierForVendor UUIDString];
     requestDecorator.locale = [[[NSBundle mainBundle] preferredLocalizations] firstObject];
+    requestDecorator.experimentIDs = self.experimentIDs;
     
     // this may cause a deadlock if the main thread synchronously calls a background thread which then tries to initiate a networking call.
     // Can't think of a good reason why you'd ever do that, but still, beware.

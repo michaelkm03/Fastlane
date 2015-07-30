@@ -30,11 +30,6 @@ typedef void (^VFailBlock) (NSOperation *__nullable operation, NSError *__nullab
 
 @property (nonatomic, strong, nullable) NSArray *experimentIDs; //<A set that stores all of the users experimental IDs
 
-/**
- Sets the experientIDs array from a comma-separated list of strings, as might be provided by the template.
- */
-- (void)setExperimentIDsFromCommandSeparatedString:(NSString *)commaSeparatedExperimentIDs;
-
 + (void)setupObjectManagerWithUploadManager:(VUploadManager *)uploadManager;
 
 - (id)objectWithEntityName:(NSString *)entityName subclass:(Class)subclass;
