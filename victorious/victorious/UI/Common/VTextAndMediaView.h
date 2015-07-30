@@ -30,7 +30,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
 @interface VTextAndMediaView : UIView
 
 @property (nonatomic) CGFloat preferredMaxLayoutWidth; ///< Used when calculating intrinsicContentSize
-@property (nonatomic, copy) void (^onMediaTapped)(); ///< Called when the user taps the media icon
+@property (nonatomic, copy) void (^onMediaTapped)(UIImage *previewImage); ///< Called when the user taps the media icon
 
 @property (nonatomic, weak) id<VCommentMediaTapDelegate> mediaTapDelegate;
 
@@ -40,6 +40,8 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
 @property (nonatomic, assign) BOOL inFocus;
 
 @property (nonatomic, strong) MediaAttachmentView *mediaAttachmentView;
+
+@property (nonatomic, strong) NSURL *mediaURLForLightbox;
 
 /**
  Removes common customizations (text, images, etc) and returns this view to a pristine state.

@@ -32,6 +32,7 @@
 
 #import "VSequence+Fetcher.h"
 #import "VSequencePermissions.h"
+#import "VComment+Fetcher.h"
 
 
 static const UIEdgeInsets kTextInsets = { 32.0f, 56.0f, 11.0f, 55.0f };
@@ -127,12 +128,6 @@ static NSCache *_sharedImageCache = nil;
 - (void)prepareContentAndMediaView
 {
     [self.commentAndMediaView resetView];
-    
-    __weak typeof(self) welf = self;
-    self.commentAndMediaView.onMediaTapped = ^(void)
-    {
-        [welf tappedOnMedia];
-    };
 }
 
 #pragma mark - UICollectionReusableView
@@ -149,14 +144,6 @@ static NSCache *_sharedImageCache = nil;
 }
 
 #pragma mark - Target/Action
-
-- (void)tappedOnMedia
-{
-    if ((self.onMediaTapped != nil) && (self.mediaURL != nil))
-    {
-        self.onMediaTapped();
-    }
-}
 
 - (IBAction)tappedOnProfileImage:(id)sender
 {
@@ -191,6 +178,7 @@ static NSCache *_sharedImageCache = nil;
     self.commenterName = comment.user.name;
     self.URLForCommenterAvatar = [NSURL URLWithString:comment.user.pictureUrl];
     self.timestampText = [comment.postedAt timeSince];
+    self.mediaIsVideo = comment.commentMediaType == VCommentMediaTypeVideo;
     
     if ((comment.realtime != nil) && (comment.realtime.floatValue >= 0))
     {
@@ -252,7 +240,7 @@ static NSCache *_sharedImageCache = nil;
 
 - (NSURL *)mediaURL
 {
-    return [NSURL URLWithString:self.comment.mediaUrl];
+    return [self.comment properMediaURLGivenContentType];
 }
 
 #pragma mark - lazy loading of string attributes

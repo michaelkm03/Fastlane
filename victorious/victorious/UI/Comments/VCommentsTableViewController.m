@@ -323,6 +323,7 @@
                                                 andTagTapDelegate:self];
     
     [cell.textAndMediaView setComment:comment];
+    cell.textAndMediaView.mediaTapDelegate = self;
     
     cell.profileImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     [cell.profileImageView setProfileImageURL:[NSURL URLWithString:comment.user.pictureUrl]];

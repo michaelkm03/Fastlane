@@ -91,6 +91,11 @@
     if (mediaAttachmentView != nil)
     {
         _mediaAttachmentView.translatesAutoresizingMaskIntoConstraints = NO;
+        __weak VTextAndMediaView *wSelf = self;
+        [_mediaAttachmentView setRespondToButton:^(UIImage *previewImage) {
+            __strong VTextAndMediaView *sSelf = wSelf;
+            [sSelf mediaTappedWithPreviewImage:previewImage];
+        }];
         [self addSubview:_mediaAttachmentView];
         
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_mediaAttachmentView]|"
@@ -161,15 +166,15 @@
 
 #pragma mark - Actions
 
-- (void)mediaTapped:(UIButton *)sender
+- (void)mediaTappedWithPreviewImage:(UIImage *)previewImage
 {
     if (self.onMediaTapped != nil)
     {
-        self.onMediaTapped();
+        self.onMediaTapped(previewImage);
     }
     else if ([self.mediaTapDelegate respondsToSelector:@selector(tappedMediaWithURL:previewImage:fromView:)])
     {
-//        [self.mediaTapDelegate tappedMediaWithURL:self.mediaURL previewImage:self.mediaThumbnailView.image fromView:self.mediaThumbnailView];
+        [self.mediaTapDelegate tappedMediaWithURL:self.mediaURLForLightbox previewImage:previewImage fromView:self.mediaAttachmentView];
     }
 }
 

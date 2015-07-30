@@ -816,13 +816,14 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     __weak typeof(commentCell) wCommentCell = commentCell;
     __weak typeof(self) welf = self;
-    commentCell.onMediaTapped = ^(void)
-    {
-        [welf showLightBoxWithMediaURL:wCommentCell.mediaURL
-                          previewImage:wCommentCell.previewImage
-                               isVideo:wCommentCell.mediaIsVideo
-                            sourceView:wCommentCell.previewView];
-    };
+    [commentCell.commentAndMediaView setOnMediaTapped:^(UIImage *previewImage)
+     {
+         [welf showLightBoxWithMediaURL:[wCommentCell.comment properMediaURLGivenContentType]
+                           previewImage:previewImage
+                                isVideo:wCommentCell.mediaIsVideo
+                             sourceView:wCommentCell.commentAndMediaView];
+     }];
+    
     commentCell.onUserProfileTapped = ^(void)
     {
         VUserProfileViewController *profileViewController = [welf.dependencyManager userProfileViewControllerWithUser:wCommentCell.comment.user];

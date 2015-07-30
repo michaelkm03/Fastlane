@@ -50,7 +50,6 @@ class ExperienceEnhancerIconView : UIView {
         
         self.iconImageView.contentMode = UIViewContentMode.ScaleAspectFit;
         self.addSubview(self.iconImageView)
-        self.iconImageView.hidden = true
         self.v_addFitToParentConstraintsToSubview(self.iconImageView)
     }
 }

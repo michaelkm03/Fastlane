@@ -22,7 +22,6 @@
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VSequencePermissions *sequencePermissions;
 
-@property (nonatomic, copy) void (^onMediaTapped)();
 @property (nonatomic, copy) void (^onUserProfileTapped)();
 
 @property (nonatomic, readonly) UIImage *previewImage;

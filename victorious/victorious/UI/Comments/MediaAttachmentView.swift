@@ -58,6 +58,7 @@ class MediaAttachmentView : UIView, Focus, Reuse {
     
     var comment: VComment?
     var message: VMessage?
+    var respondToButton:((previewImage: UIImage?) -> Void)?
     var hasFocus = false
     
     // Factory method for returning correct concrete subclass with a comment
@@ -156,6 +157,12 @@ class MediaAttachmentImageView : MediaAttachmentView {
                     self.imageView.image = image
                 })
             }
+        }
+    }
+    
+    func mediaButtonPressed() {
+        if let completion = self.respondToButton {
+            completion(previewImage: self.imageView.image)
         }
     }
 }

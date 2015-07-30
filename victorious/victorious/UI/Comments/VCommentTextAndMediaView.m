@@ -8,6 +8,7 @@
 
 #import "VCommentTextAndMediaView.h"
 #import "VTagSensitiveTextView.h"
+#import "VComment+Fetcher.h"
 
 @interface VCommentTextAndMediaView ()
 
@@ -23,6 +24,9 @@
     }
     
     _comment = comment;
+    
+    // Set up proper media URL to use in lightbox
+    self.mediaURLForLightbox = [comment properMediaURLGivenContentType];
     
     [self.mediaAttachmentView removeFromSuperview];
     self.mediaAttachmentView = [MediaAttachmentView mediaViewWithComment:comment];
