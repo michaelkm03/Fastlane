@@ -684,7 +684,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
      }];
 }
 
--(NSInteger)currentTimeMilliseconds
+- (NSInteger)currentTimeMilliseconds
 {
     return (NSUInteger)(CMTimeGetSeconds( self.currentTime ) * 1000.0);
 }
