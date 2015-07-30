@@ -354,23 +354,11 @@ static const CGFloat kAttachmentBarHeight = 50.0f;
 - (BOOL)shouldShowAttachmentsBar
 {
     // If set to yes then override default behavior
-    if (self.isAttachmentsBarHidden)
+    if (self.isAttachmentsBarHidden || self.selectedMedia)
     {
         return NO;
     }
-    
-    if (self.selectedMedia)
-    {
-        return NO;
-    }
-    else if (self.editingTextView.isFirstResponder)
-    {
-        return YES;
-    }
-    else
-    {
-        return NO;
-    }
+    return self.editingTextSuperview.isFirstResponder;
 }
 
 @end
