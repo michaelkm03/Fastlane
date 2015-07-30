@@ -35,7 +35,6 @@
 #import "VStream+RestKit.h"
 #import "VNotificationSettings+RestKit.h"
 #import "VEnvironmentManager.h"
-#import "NSArray+VJoin.h"
 
 #define EnableRestKitLogs 0 // Set to "1" to see RestKit logging, but please remember to set it back to "0" before committing your changes.
 
@@ -506,7 +505,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     if ( self.experimentIDs != nil && self.experimentIDs.count > 0 )
     {
-        NSString *commaSeparatedIDs = [self.experimentIDs v_joinWithSeparator:@","];
+        NSString *commaSeparatedIDs = [self.experimentIDs componentsJoinedByString:@","];
         [request addValue:commaSeparatedIDs forHTTPHeaderField:@"X-Client-Experiment-IDs"];
     }
     
