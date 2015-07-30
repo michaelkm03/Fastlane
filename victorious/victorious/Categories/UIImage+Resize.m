@@ -330,7 +330,6 @@
     }
     
     UIImage *croppedImage = [self croppedImage:cropRect];
-    croppedImage = [croppedImage fixOrientation];
     return croppedImage;
 }
 

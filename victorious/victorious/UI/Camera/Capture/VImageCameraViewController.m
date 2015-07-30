@@ -41,7 +41,7 @@ static const CGRect kDefaultBarItemFrame = {{0.0f, 0.0f}, {50.0f, 50.0f}};
 static const CGFloat kGradientDelta = 20.0f;
 static const CGFloat kVerySmallInnerRadius = 0.0f;
 static const CGFloat kVerySmallOuterRadius = 0.01f;
-static const CGFloat kMaxImageDimension = 320.0f;
+static const CGFloat kMaxImageDimension = 640.0f;
 
 @interface VImageCameraViewController () <VCaptureVideoPreviewViewDelegate>
 
@@ -260,7 +260,7 @@ static const CGFloat kMaxImageDimension = 320.0f;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
                        {
                            __strong typeof(welf) strongSelf = welf;
-                           UIImage *smallerImage = [[image fixOrientation] scaledImageWithMaxDimension:kMaxImageDimension];
+                           UIImage *smallerImage = [[image scaledImageWithMaxDimension:kMaxImageDimension] fixOrientation];
                            UIImage *previewImage = [smallerImage squareImageByCropping];
                            NSURL *savedFileURL = [strongSelf persistToFileWithImage:previewImage];
                            dispatch_async(dispatch_get_main_queue(), ^
