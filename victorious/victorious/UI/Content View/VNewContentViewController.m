@@ -144,13 +144,11 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 // Text input
 @property (nonatomic, weak) VKeyboardInputAccessoryView *textEntryView;
-//@property (nonatomic, strong) VInputAccessoryView *draggingDismissalView;
 @property (nonatomic, strong) VElapsedTimeFormatter *elapsedTimeFormatter;
 @property (nonatomic, strong) VMediaAttachmentPresenter *mediaAttachmentPresenter;
 
 // Constraints
 @property (nonatomic, weak) NSLayoutConstraint *bottomKeyboardToContainerBottomConstraint;
-//@property (nonatomic, weak) NSLayoutConstraint *keyboardInputBarHeightConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *leadingCollectionViewToContainer;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *trailingCollectionViewToContainer;
 
@@ -487,7 +485,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     [self.contentCollectionView becomeFirstResponder];
     self.videoCell.delegate = self;
-    
+
 #ifdef V_ALLOW_VIDEO_DOWNLOADS
     // We could probably move this here anyway, but not going to for now to avoid bugs.
     self.videoCell.viewModel = self.viewModel.videoViewModel;
@@ -1413,7 +1411,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [inputAccessoryView stopEditing];
     UIAlertController *alertController = [self.alertHelper alertForConfirmDiscardMediaWithDelete:^
                                           {
-                                              
                                               [self.textEntryView setSelectedThumbnail:nil];
                                           }
                                                                                           cancel:nil];
