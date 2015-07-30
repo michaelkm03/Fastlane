@@ -73,6 +73,14 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
     {
         [mutableButtonConfigs addObject:sharedConfig.flagButtonConfig];
     }
+    
+ # warning uncomment this when done
+ // commented out for testing purposes:
+ // if ( !isMainUserOwnerOfComment )
+    {
+        [mutableButtonConfigs addObject:sharedConfig.replyButtonConfig];
+    }
+    
     self.buttonConfigs = [NSArray arrayWithArray:mutableButtonConfigs];
 }
 
@@ -154,6 +162,11 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
     return YES;
 }
 
+- (void)replyToComment:(VComment *)comment
+{
+    [self.delegate replyToComment:comment];
+}
+
 #pragma mark - VSwipeViewCellDelegate
 
 - (void)utilityButton:(VUtilityButtonCell *)button selectedAtIndex:(NSUInteger)index
@@ -171,6 +184,9 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
             break;
         case VCommentCellUtilityTypeDelete:
             [self deleteComment];
+            break;
+        case VCommentCellUtilityTypeReply:
+            [self replyToComment:self.comment];
             break;
     }
 }

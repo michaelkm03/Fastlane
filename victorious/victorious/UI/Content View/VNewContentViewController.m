@@ -1741,6 +1741,16 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self presentViewController:editViewController animated:YES completion:nil];
 }
 
+- (void)replyToComment:(VComment *)comment
+{
+    NSUInteger row = [self.viewModel.comments indexOfObject:comment];
+    NSIndexPath *indexPath =  [NSIndexPath indexPathForRow:row inSection:VContentViewSectionAllComments] ;
+    [self.contentCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:YES];
+    
+    NSString *username = comment.user.name;
+    [self.textEntryView appendText:[NSString stringWithFormat:@"@%@: ", username]];
+}
+
 #pragma mark - VEditCommentViewControllerDelegate
 
 - (void)didFinishEditingComment:(VComment *)comment

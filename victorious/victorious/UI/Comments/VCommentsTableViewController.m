@@ -55,7 +55,6 @@
 @property (nonatomic, assign) BOOL hasComments;
 @property (nonatomic, assign) BOOL needsRefresh;
 @property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
-@property (nonatomic, strong) NSArray *comments;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VNoContentView *noContentView;
 @property (nonatomic, strong) VTableViewStreamFocusHelper *focusHelper;
@@ -436,6 +435,16 @@
     editViewController.transitioningDelegate = self.transitionDelegate;
     editViewController.delegate = self;
     [self presentViewController:editViewController animated:YES completion:nil];
+}
+
+- (void)replyToComment:(VComment *)comment
+{
+    NSUInteger index = [self.comments indexOfObject:comment];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0] ;
+    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    
+    id<VCommentsTableViewControllerDelegate> replyResponder = [[self nextResponder] targetForAction:@selector(streamsCommentsController:shouldReplyToUser:) withSender:nil];
+    [replyResponder streamsCommentsController:self shouldReplyToUser:comment.user];
 }
 
 #pragma mark - VEditCommentViewControllerDelegate

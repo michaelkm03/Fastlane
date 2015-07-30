@@ -28,7 +28,6 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
 
 @property (nonatomic, weak) IBOutlet UIButton *attachmentsButton;
 @property (nonatomic, weak) IBOutlet UIButton *sendButton;
-@property (nonatomic, weak) UITextView *editingTextView;
 @property (nonatomic, weak) IBOutlet UIView *editingTextSuperview;
 @property (nonatomic, weak) IBOutlet UILabel *placeholderLabel;
 
@@ -187,6 +186,13 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
 
     [self.editingTextView resignFirstResponder];
     [self textViewDidChange:self.editingTextView];
+}
+
+- (void)appendText:(NSString *)text
+{
+    self.editingTextView.text = text;
+    [self textViewDidChange:self.editingTextView];
+    [self startEditing];
 }
 
 #pragma mark - IBActions

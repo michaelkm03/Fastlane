@@ -114,7 +114,10 @@ extern const CGFloat VInputAccessoryViewDesiredMinimumHeight;
  */
 @property (nonatomic, assign) UIReturnKeyType returnKeyType;
 
+@property (nonatomic, weak) UITextView *editingTextView;
+
 - (void)startEditing;
 - (void)clearTextAndResign;
+- (void)appendText:(NSString *)text;
 
 @end

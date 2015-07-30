@@ -42,6 +42,11 @@
     self.flagButtonConfig.backgroundColor = [UIColor colorWithWhite:0.75f alpha:1.0f];
     self.flagButtonConfig.iconImage = [UIImage imageNamed:@"warningIcon"];
     self.flagButtonConfig.type = VCommentCellUtilityTypeFlag;
+    
+    self.replyButtonConfig = [[VUtilityButtonConfig alloc] init];
+    self.replyButtonConfig.backgroundColor = [UIColor colorWithWhite:0.75f alpha:1.0f];
+    self.replyButtonConfig.type = VCommentCellUtilityTypeReply;
+    self.replyButtonConfig.iconImage = [UIImage imageNamed:@"replyIcon"];
 }
 
 @end
