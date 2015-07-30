@@ -126,7 +126,8 @@
     }
     else
     {
-        [self showBadDeeplinkError];
+        // url is not supported, fail silently
+        VLog(@"Deep link URL is not supported");
     }
 }
 
