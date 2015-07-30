@@ -28,6 +28,7 @@
 
 // SDWebImage
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <SDWebImage/SDWebImageDownloader.h>
 
 // MBProgressHUD
 #import <MBProgressHUD/MBProgressHUD.h>
@@ -51,3 +52,8 @@
 #import "VScrollPaginator.h"
 #import "NSCharacterSet+VURLParts.h"
 #import "UIView+AutoLayout.h"
+#import "VComment.h"
+#import "VMessage.h"
+#import "VComment+Fetcher.h"
+#import "UIImage+ImageCreation.h"
+#import "VVideoView.h"

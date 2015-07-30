@@ -13,7 +13,7 @@ import UIKit
 class ExperienceEnhancerIconView : UIView {
     
     private let iconImageView = UIImageView()
-    private let overlayImageView = UIImageView()
+    private let overlayImageView = UIImageView(image: UIImage(named: "ballistic_background_icon"))
     
     var iconImage : UIImage? {
         didSet {
@@ -24,6 +24,12 @@ class ExperienceEnhancerIconView : UIView {
     var overlayImage : UIImage? {
         didSet {
             self.overlayImageView.image = overlayImage;
+        }
+    }
+    
+    var iconURL : NSURL? {
+        didSet {
+            self.iconImageView.sd_setImageWithURL(iconURL)
         }
     }
     
@@ -44,6 +50,7 @@ class ExperienceEnhancerIconView : UIView {
         
         self.iconImageView.contentMode = UIViewContentMode.ScaleAspectFit;
         self.addSubview(self.iconImageView)
+        self.iconImageView.hidden = true
         self.v_addFitToParentConstraintsToSubview(self.iconImageView)
     }
 }

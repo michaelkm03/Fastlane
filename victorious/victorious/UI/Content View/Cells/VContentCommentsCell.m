@@ -33,6 +33,7 @@
 #import "VSequence+Fetcher.h"
 #import "VSequencePermissions.h"
 
+
 static const UIEdgeInsets kTextInsets = { 32.0f, 56.0f, 11.0f, 55.0f };
 
 static const CGFloat kImagePreviewLoadedAnimationDuration = 0.25f;
@@ -91,10 +92,11 @@ static NSCache *_sharedImageCache = nil;
                    hasMedia:(BOOL)hasMedia
           dependencyManager:(VDependencyManager *)dependencyManager
 {
-    CGFloat textHeight = [VCommentTextAndMediaView estimatedHeightWithWidth:(width - kTextInsets.left - kTextInsets.right)
-                                                                       text:commentBody
-                                                                  withMedia:hasMedia
-                                                                    andFont:[dependencyManager fontForKey:VDependencyManagerParagraphFontKey]];
+//    CGFloat textHeight = [VCommentTextAndMediaView estimatedHeightWithWidth:(width - kTextInsets.left - kTextInsets.right)
+//                                                                       text:commentBody
+//                                                                  withMedia:hasMedia
+//                                                                    andFont:[dependencyManager fontForKey:VDependencyManagerParagraphFontKey]];
+    CGFloat textHeight = 100;
     CGFloat finalHeight = textHeight + kTextInsets.top + kTextInsets.bottom;
     return CGSizeMake(width, finalHeight);
 }
@@ -207,34 +209,7 @@ static NSCache *_sharedImageCache = nil;
     }
     self.hasMedia = comment.commentMediaType != VCommentMediaTypeNoMedia;
     
-    if (self.hasMedia)
-    {
-        self.mediaPreviewURL = comment.previewImageURL;
-        self.mediaIsVideo = [comment.mediaUrl v_hasVideoExtension];
-        
-        if (self.mediaIsVideo)
-        {
-            if ([comment.shouldAutoplay boolValue])
-            {
-                [self.commentAndMediaView setMediaType:VCommentMediaViewTypeGIF];
-                // Make sure to grab the mp4 URL if its a gif
-                self.commentAndMediaView.autoplayURL = [comment properMediaURLGivenContentType];
-            }
-            else
-            {
-                [self.commentAndMediaView setMediaType:VCommentMediaViewTypeVideo];
-            }
-        }
-        else
-        {
-            [self.commentAndMediaView setMediaType:VCommentMediaViewTypeImage];
-        }
-    }
-    else
-    {
-        self.commentAndMediaView.mediaThumbnailView.hidden = YES;
-        self.commentAndMediaView.hasMedia = NO;
-    }
+    [self.commentAndMediaView setComment:comment];
 
     self.commentCellUtilitiesController = [[VCommentCellUtilitesController alloc] initWithComment:self.comment
                                                                                          cellView:self
@@ -385,7 +360,7 @@ static NSCache *_sharedImageCache = nil;
         return _defaultStringAttributes;
     }
     
-    _defaultStringAttributes = [VCommentTextAndMediaView attributesForTextWithFont:self.commentAndMediaView.textFont];
+    _defaultStringAttributes = [VTextAndMediaView attributesForTextWithFont:self.commentAndMediaView.textFont];
     return _defaultStringAttributes;
 }
 

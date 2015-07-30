@@ -43,4 +43,9 @@ typedef NS_ENUM(NSInteger, VCommentMediaType)
  */
 - (NSURL *)properMediaURLGivenContentType;
 
+/**
+ Returns YES if comment has a media attachment
+ */
+- (BOOL)hasMediaAttachment;
+
 @end

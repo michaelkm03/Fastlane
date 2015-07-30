@@ -74,6 +74,11 @@ static NSString * const kmp4MimeType = @"video/mp4";
     }
 }
 
+- (BOOL)hasMediaAttachment
+{
+    return [self commentMediaType] != VCommentMediaTypeNoMedia;
+}
+
 #pragma mark - Private Methods
 
 - (BOOL)hasMedia

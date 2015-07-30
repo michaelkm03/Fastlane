@@ -7,7 +7,7 @@
 //
 
 #import "VCommentsTableViewController.h"
-#import "VCommentTextAndMediaView.h"
+#import "VTextAndMediaView.h"
 #import "VRTCUserPostedAtFormatter.h"
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VLoginViewController.h"
@@ -46,6 +46,8 @@
 #import "VScrollPaginator.h"
 #import "VVideoLightboxViewController.h"
 #import "VLightboxTransitioningDelegate.h"
+#import "victorious-Swift.h"
+#import "VCommentTextAndMediaView.h"
 
 @import Social;
 
@@ -60,6 +62,7 @@
 @property (nonatomic, strong) VNoContentView *noContentView;
 @property (nonatomic, strong) VTableViewStreamFocusHelper *focusHelper;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
+@property (nonatomic, strong) NSMutableArray *reuseIdentifiers;
 
 @end
 
@@ -82,9 +85,6 @@
     
     VSimpleModalTransition *modalTransition = [[VSimpleModalTransition alloc] init];
     self.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
-    
-    [self.tableView registerNib:[UINib nibWithNibName:kVCommentCellNibName bundle:nil]
-         forCellReuseIdentifier:kVCommentCellNibName];
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     //This hides the seperators for empty cells
@@ -104,6 +104,8 @@
     
     // Initialize our focus helper
     self.focusHelper = [[VTableViewStreamFocusHelper alloc] initWithTableView:self.tableView];
+    
+    self.reuseIdentifiers = [NSMutableArray new];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -281,16 +283,21 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VComment *comment = (VComment *)self.comments[indexPath.row];
-    BOOL hasMedia = [comment commentMediaType] != VCommentMediaTypeNoMedia;
-    return [VCommentCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds)
-                                             text:comment.text
-                                        withMedia:hasMedia];
+    return [VCommentCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds) comment:comment];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:kVCommentCellNibName forIndexPath:indexPath];
     VComment *comment = self.comments[indexPath.row];
+    NSString *reuseIdentifier = [MediaAttachmentView reuseIdentifierForComment:comment];
+    
+    if (![self.reuseIdentifiers containsObject:reuseIdentifier])
+    {
+        [self.tableView registerNib:[UINib nibWithNibName:kVCommentCellNibName bundle:nil] forCellReuseIdentifier:reuseIdentifier];
+        [self.reuseIdentifiers addObject:reuseIdentifier];
+    }
+    
+    VCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
     
     cell.timeLabel.text = [comment.postedAt timeSince];
     if (comment.realtime.integerValue < 0)
@@ -307,44 +314,46 @@
     }
     
     //Ugly, but only way I can think of to reliably update to proper string formatting per each cell
-    NSDictionary *defaultStringAttributes = cell.commentTextView.textFont ? [VCommentTextAndMediaView attributesForTextWithFont:cell.commentTextView.textFont] : [VCommentTextAndMediaView attributesForText];
+    NSDictionary *defaultStringAttributes = cell.textAndMediaView.textFont ? [VTextAndMediaView attributesForTextWithFont:cell.textAndMediaView.textFont] : [VTextAndMediaView attributesForText];
     NSMutableDictionary *tagStringAttributes = [[NSMutableDictionary alloc] initWithDictionary:defaultStringAttributes];
     tagStringAttributes[NSForegroundColorAttributeName] = [self.dependencyManager colorForKey:[VTagStringFormatter defaultDependencyManagerTagColorKey]];
-    [cell.commentTextView.textView setupWithDatabaseFormattedText:comment.text
+    [cell.textAndMediaView.textView setupWithDatabaseFormattedText:comment.text
                                                     tagAttributes:tagStringAttributes
                                                 defaultAttributes:defaultStringAttributes
                                                 andTagTapDelegate:self];
     
-    VCommentMediaType commentMediaType = [comment commentMediaType];
-    BOOL hasMedia = commentMediaType != VCommentMediaTypeNoMedia;
+//    VCommentMediaType commentMediaType = [comment commentMediaType];
+//    BOOL hasMedia = commentMediaType != VCommentMediaTypeNoMedia;
+//    
+//    cell.commentTextView.hasMedia = hasMedia;
+//    cell.commentTextView.mediaThumbnailView.hidden = !hasMedia;
+//    [cell.commentTextView.mediaThumbnailView sd_setImageWithURL:hasMedia ? comment.previewImageURL : nil];
+//    
+//    switch ([comment commentMediaType])
+//    {
+//        case VCommentMediaTypeImage:
+//            [cell.commentTextView setMediaType:VCommentMediaViewTypeImage];
+//            break;
+//        case VCommentMediaTypeVideo:
+//            cell.commentTextView.mediaURL = [comment properMediaURLGivenContentType];
+//            cell.commentTextView.mediaTapDelegate = self;
+//            [cell.commentTextView setMediaType:VCommentMediaViewTypeVideo];
+//            break;
+//        case VCommentMediaTypeGIF:
+//            cell.commentTextView.mediaURL = [comment properMediaURLGivenContentType];
+//            cell.commentTextView.mediaTapDelegate = self;
+//            [cell.commentTextView setMediaType:VCommentMediaViewTypeGIF];
+//            // Make sure to grab the mp4 URL if its a gif
+//            cell.commentTextView.autoplayURL = [comment properMediaURLGivenContentType];
+//            break;
+//        case VCommentMediaTypeBallistic:
+//            
+//            break;
+//        default:
+//            break;
+//    }
     
-    cell.commentTextView.hasMedia = hasMedia;
-    cell.commentTextView.mediaThumbnailView.hidden = !hasMedia;
-    [cell.commentTextView.mediaThumbnailView sd_setImageWithURL:hasMedia ? comment.previewImageURL : nil];
-    
-    switch ([comment commentMediaType])
-    {
-        case VCommentMediaTypeImage:
-            [cell.commentTextView setMediaType:VCommentMediaViewTypeImage];
-            break;
-        case VCommentMediaTypeVideo:
-            cell.commentTextView.mediaURL = [comment properMediaURLGivenContentType];
-            cell.commentTextView.mediaTapDelegate = self;
-            [cell.commentTextView setMediaType:VCommentMediaViewTypeVideo];
-            break;
-        case VCommentMediaTypeGIF:
-            cell.commentTextView.mediaURL = [comment properMediaURLGivenContentType];
-            cell.commentTextView.mediaTapDelegate = self;
-            [cell.commentTextView setMediaType:VCommentMediaViewTypeGIF];
-            // Make sure to grab the mp4 URL if its a gif
-            cell.commentTextView.autoplayURL = [comment properMediaURLGivenContentType];
-            break;
-        case VCommentMediaTypeBallistic:
-            
-            break;
-        default:
-            break;
-    }
+    [cell.textAndMediaView setComment:comment];
     
     cell.profileImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     [cell.profileImageView setProfileImageURL:[NSURL URLWithString:comment.user.pictureUrl]];

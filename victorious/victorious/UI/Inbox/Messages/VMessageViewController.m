@@ -10,7 +10,7 @@
 #import "NSDate+timeSince.h"
 #import "NSURL+MediaType.h"
 #import "UIImage+ImageEffects.h"
-#import "VCommentTextAndMediaView.h"
+#import "VTextAndMediaView.h"
 #import "VConstants.h"
 #import "VConversation.h"
 #import "VMessageTableDataSource.h"
@@ -230,8 +230,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VMessage *message = [self.tableDataSource messageAtIndexPath:indexPath];
-    BOOL hasMedia = [message.thumbnailPath isKindOfClass:[NSString class]] && ![message.thumbnailPath isEqualToString:@""];
-    return [VMessageCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds) text:message.text withMedia:hasMedia];
+    return [VMessageCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds) message:message];
 }
 
 #pragma mark - UIScrollViewDelegate

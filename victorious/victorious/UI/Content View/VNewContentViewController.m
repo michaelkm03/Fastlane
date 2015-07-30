@@ -87,7 +87,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 
 #import "VInlineSearchTableViewController.h"
-#import "VCommentTextAndMediaView.h"
+#import "VTextAndMediaView.h"
 #import "VTagSensitiveTextView.h"
 #import "VTag.h"
 #import "VUserTag.h"
@@ -106,6 +106,7 @@
 #import "VSequenceExpressionsObserver.h"
 #import "VExperienceEnhancerResponder.h"
 #import "VDependencyManager+VTracking.h"
+#import "VCommentTextAndMediaView.h"
 
 // Cell focus
 #import "VCollectionViewStreamFocusHelper.h"
