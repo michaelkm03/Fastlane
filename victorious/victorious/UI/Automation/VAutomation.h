@@ -48,3 +48,6 @@ static NSString * const VAutomationIdentifierWelcomeDismiss             = @"Welc
 
 static NSString * const VAutomationIdentifierPublishCatpionPlaceholder  = @"Publish Caption Placeholder";
 static NSString * const VAutomationIdentifierPublishCatpionText         = @"Publish Caption Text";
+
+static NSString * const VAutomationIdentifierContentViewBallotButtonA   = @"Ballot Button A";
+static NSString * const VAutomationIdentifierContentViewBallotButtonB   = @"Ballot Button B";
