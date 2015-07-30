@@ -43,6 +43,7 @@
 // Everything else
 #import "VTextPostTextView.h"
 #import "VObjectManager.h"
+#import "VObjectManager+Private.h"
 #import "VPaginationManager.h"
 #import "VPageType.h"
 #import "VCaptureContainerViewController.h"
@@ -58,3 +59,4 @@
 #import "UIImage+ImageCreation.h"
 #import "VVideoView.h"
 #import "VMessage+Fetcher.h"
+#import "VSettingsSwitchCell.h"

@@ -28,7 +28,7 @@ typedef void (^VFailBlock) (NSOperation *__nullable operation, NSError *__nullab
 
 @property (nonatomic, readonly) VUploadManager *uploadManager; ///< An object responsible for uploading files
 
-@property (nonatomic, strong) NSString *experimentIDs; //<A string that stores all of the users experimental IDs (in comma seperated list)
+@property (nonatomic, strong, nullable) NSArray *experimentIDs; //<A set that stores all of the users experimental IDs
 
 + (void)setupObjectManagerWithUploadManager:(VUploadManager *)uploadManager;
 

@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, nullable) NSString *locale; ///< Preferred locale
 @property (nonatomic, strong, nullable) NSNumber *userID; ///< currently-logged-in user, or nil if no user is logged in.
 @property (nonatomic, copy, nullable) NSString *token; ///< Auth token, if available.
-@property (nonatomic, copy, nullable) NSString *experimentIDs; ///< Comma-separated list of active experiment IDs.
+@property (nonatomic, copy, nullable) NSArray *experimentIDs; ///< Comma-separated list of active experiment IDs.
 @property (nonatomic) CLLocationCoordinate2D location; ///< User's location, if available
 @property (nonatomic, copy, nullable) NSString *postalCode; ///< User's postal code, if available
 

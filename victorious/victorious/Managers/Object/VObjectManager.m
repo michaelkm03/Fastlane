@@ -130,6 +130,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self addResponseDescriptorsFromArray:[VHashtag descriptors]];
     [self addResponseDescriptorsFromArray:[VNotificationSettings descriptors]];
     [self addResponseDescriptorsFromArray:[GIFSearchResult descriptors]];
+    [self addResponseDescriptorsFromArray:[Experiment descriptors]];
     
     [self addResponseDescriptorsFromArray: @[errorDescriptor,
                                              verrorDescriptor,
@@ -433,6 +434,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id)objectWithEntityName:(NSString *)entityName subclass:(Class)subclass
 {
+    NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
+    
     NSManagedObjectContext *context = [[self managedObjectStore] mainQueueManagedObjectContext];
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:entityName inManagedObjectContext:context];
     return [[subclass alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:context];
@@ -464,6 +467,7 @@ NS_ASSUME_NONNULL_BEGIN
     requestDecorator.appID = [[VEnvironmentManager sharedInstance] currentEnvironment].appID;
     requestDecorator.deviceID = [[UIDevice currentDevice].identifierForVendor UUIDString];
     requestDecorator.locale = [[[NSBundle mainBundle] preferredLocalizations] firstObject];
+    requestDecorator.experimentIDs = self.experimentIDs;
     
     // this may cause a deadlock if the main thread synchronously calls a background thread which then tries to initiate a networking call.
     // Can't think of a good reason why you'd ever do that, but still, beware.
