@@ -1507,7 +1507,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self.view addSubview:searchTableView];
     [searchTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
     searchTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-//    [self.view v_addFitToParentConstraintsToSubview:searchTableView];
     
     UIWindow *ownWindow = self.view.window;
     CGRect obscuredRectInWindow = [self.textEntryView obscuredRectInWindow:ownWindow];
