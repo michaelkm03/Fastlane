@@ -48,9 +48,9 @@ static NSString * const VAutomationIdentifierProfilSelectImage          = @"Prof
 
 static NSString * const VAutomationIdentifierWelcomeDismiss             = @"Welcome Dismiss";
 
+static NSString * const VAutomationIdentifierGrantLibraryAccess         = @"Library Grant Access";
 static NSString * const VAutomationIdentifierPublishCatpionPlaceholder  = @"Publish Caption Placeholder";
 static NSString * const VAutomationIdentifierPublishCatpionText         = @"Publish Caption Text";
-
 
 static NSString * const VAutomationIdentifierContentViewBallotButtonA   = @"Ballot Button A";
 static NSString * const VAutomationIdentifierContentViewBallotButtonB   = @"Ballot Button B";
