@@ -18,8 +18,10 @@ https://github.com/TouchFrame/VictoriousiOS
 import requests
 import sys
 import subprocess
+import shutil
 import os
 import urllib
+import tempfile
 import vams_common as vams
 
 # Supress compiled files
@@ -28,7 +30,7 @@ sys.dont_write_bytecode = True
 _ASSETS_ENDPOINT = '/api/app/appassets_by_build_name'
 _DEFAULT_HOST = ''
 
-_CONFIG_DIRECTORY = ''
+_WORKING_DIRECTORY = ''
 
 def retrieveAppDetails(app_name):
     """
@@ -66,32 +68,36 @@ def retrieveAppDetails(app_name):
 
         current_cnt = 0
 
-        if not os.path.exists(_CONFIG_DIRECTORY):
-            os.makedirs(_CONFIG_DIRECTORY)
+        if not os.path.exists(_WORKING_DIRECTORY):
+            os.makedirs(_WORKING_DIRECTORY)
 
         # Uncomment the following line to log out the directory being used for assets and config data
-        # print "\nUsing Directory: %s" % config_directory
+        # print "\nUsing Directory: %s" % _WORKING_DIRECTORY
 
-        print '\nDownloading the Most Recent Art Assets for %s...' % app_title
+        # print '\nDownloading the Most Recent Art Assets for %s...' % app_title
         for asset in platform_assets:
 
             if not platform_assets[asset] == None:
                 img_url = platform_assets[asset]
                 asset_name = asset.replace('_', '-')
-                new_file = '%s/%s.png' % (_CONFIG_DIRECTORY, asset_name)
+                new_file = '%s/%s.png' % (_WORKING_DIRECTORY, asset_name)
 
-                print '%s (%s)' % (asset_name, platform_assets[asset])
+                # Uncomment the following line to display the link to each asset being retrieved via VAMS
+                # print '%s (%s)' % (asset_name, platform_assets[asset])
 
                 urllib.urlretrieve(img_url,new_file)
                 current_cnt = current_cnt+1
 
-        print '\n%s images downloaded' % current_cnt
-        print ''
+        # print '\n%s images downloaded' % current_cnt
+        # print ''
 
         # Now set the app config data
         setAppConfig(json)
     else:
-        print 'No updated data for "%s" found in the Victorious backend' % app_name
+        #print 'No updated data for "%s" found in the Victorious backend' % app_name
+        cleanUp()
+        shutil.rmtree(_WORKING_DIRECTORY)
+        sys.exit(1)
 
 
 def setAppConfig(json_obj):
@@ -110,10 +116,10 @@ def setAppConfig(json_obj):
     file_name = 'config.xml'
     if vams._DEFAULT_PLATFORM == 'ios':
         file_name = 'Info.plist'
-    config_file = '%s/%s' % (_CONFIG_DIRECTORY, file_name)
+    config_file = '%s/%s' % (_WORKING_DIRECTORY, file_name)
 
-    print 'Applying Most Recent App Configuration Data to %s' % app_title
-    print ''
+    # print 'Applying Most Recent App Configuration Data to %s' % app_title
+    # print ''
     # Uncomment out the following line to display the retrieved config data
     # print app_config
 
@@ -125,8 +131,8 @@ def setAppConfig(json_obj):
     # Clean-up compiled python files
     cleanUp()
 
-    print 'Configuration and assets applied successfully!'
-    print ''
+    # print 'Configuration and assets applied successfully!'
+    # print ''
 
 
 def cleanUp():
@@ -135,7 +141,7 @@ def cleanUp():
 
 def showProperUsage():
         print ''
-        print 'Usage: ./vams_prebuild.py <app_name> <config_path> <platform> <environment> <port>'
+        print 'Usage: ./vams_prebuild.py <app_name> <platform> <environment> <port>'
         print ''
         print '<app_name> is the name of the application data to retrieve from VAMS.'
         print '<config_path> is the path on disk where the application data is to be written to.'
@@ -146,36 +152,36 @@ def showProperUsage():
         print 'NOTE: If no <environment> parameter is provided, the system will use PRODUCTION.'
         print ''
         print 'examples:'
-        print './vams_prebuild.py awesomeness configurations/awesomenesstv ios     <-- will use PRODUCTION'
+        print './vams_prebuild.py awesomeness ios     <-- will use PRODUCTION'
         print '  -- OR --'
-        print './vams_prebuild.py awesomeness configurations/awesomenesstv ios qa  <-- will use QA'
+        print './vams_prebuild.py awesomeness ios qa  <-- will use QA'
         print ''
         return 1
 
 
 def main(argv):
-    if len(argv) < 4:
+    if len(argv) < 3:
         showProperUsage()
 
     vams.init()
 
     app_name = argv[1]
-    app_path = argv[2]
 
-    global _CONFIG_DIRECTORY
-    _CONFIG_DIRECTORY = app_path
+    global _WORKING_DIRECTORY
+    app_path = tempfile.mkdtemp()
+    _WORKING_DIRECTORY = app_path
 
-    platform = argv[3]
+    platform = argv[2]
     if platform == 'ios':
         vams._DEFAULT_PLATFORM = 'ios'
 
-    if len(argv) == 5:
-        server = argv[4]
+    if len(argv) == 4:
+        server = argv[3]
     else:
         server = ''
 
-    if len(argv) == 6:
-        vams._DEFAULT_LOCAL_PORT = argv[5]
+    if len(argv) == 5:
+        vams._DEFAULT_LOCAL_PORT = argv[4]
 
     global _DEFAULT_HOST
     if server.lower() == 'dev':
@@ -197,10 +203,10 @@ def main(argv):
     if vams.authenticateUser(_DEFAULT_HOST):
         retrieveAppDetails(app_name)
     else:
-         print 'There was a problem authenticating with the Victorious backend. Exiting now...'
+         #print 'There was a problem authenticating with the Victorious backend. Exiting now...'
          return 1
     
-    return 0
+    sys.exit(_WORKING_DIRECTORY)
 
 
 if __name__ == '__main__':

@@ -4,6 +4,9 @@
 /* Class = "UIButton"; normalTitle = "Sign Up with Twitter"; ObjectID = "Xpp-jF-2DP"; */
 "Xpp-jF-2DP.normalTitle" = "S'inscrire via Twitter";
 
+/* Class = "UILabel"; text = "By signing up you agree to:"; ObjectID = "lKN-X9-uiX"; */
+"lKN-X9-uiX.text" = "En vous inscrivant, vous acceptez :";
+
 /* Class = "UIButton"; normalTitle = "Sign Up with Facebook"; ObjectID = "tTi-xz-WY3"; */
 "tTi-xz-WY3.normalTitle" = "S'inscrire via Facebook";
 

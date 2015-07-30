@@ -10,17 +10,8 @@
 /* Class = "UILabel"; text = "No Internet Connection."; ObjectID = "9lr-kw-Rjm"; */
 "9lr-kw-Rjm.text" = "No hay conexión a internet .";
 
-/* Class = "UINavigationItem"; title = "New Poll"; ObjectID = "18V-Wp-b3G"; */
-"18V-Wp-b3G.title" = "Nueva encuesta";
-
-/* Class = "UILabel"; text = "Vote this"; ObjectID = "83v-Xs-Bp8"; */
-"83v-Xs-Bp8.text" = "Da tu voto";
-
 /* Class = "UINavigationItem"; title = "Messages"; ObjectID = "AHd-Fh-04G"; */
 "AHd-Fh-04G.title" = "Mensajes";
-
-/* Class = "UITextField"; placeholder = "Search for an image"; ObjectID = "GSS-PO-98I"; */
-"GSS-PO-98I.placeholder" = "Buscar una imagen";
 
 /* Class = "UILabel"; text = "Pull up for more..."; ObjectID = "O7q-AE-sOJ"; */
 "O7q-AE-sOJ.text" = "Levante para obtener más...";
@@ -31,23 +22,14 @@
 /* Class = "UINavigationItem"; title = "Messages"; ObjectID = "YF4-gT-XTx"; */
 "YF4-gT-XTx.title" = "Mensajes";
 
-/* Class = "UIButton"; normalTitle = "Create Poll"; ObjectID = "ZZw-Pe-VXw"; */
-"ZZw-Pe-VXw.normalTitle" = "Crea una encuesta";
-
 /* Class = "UILabel"; text = "NO USERS FOUND"; ObjectID = "a8q-j6-UKa"; */
 "a8q-j6-UKa.text" = "NO SE ENCONTRARON USUARIOS";
-
-/* Class = "UILabel"; text = "Vote that"; ObjectID = "aHa-OF-GOS"; */
-"aHa-OF-GOS.text" = "Da tu voto";
 
 /* Class = "UINavigationItem"; title = "Inbox"; ObjectID = "gHQ-c1-wpe"; */
 "gHQ-c1-wpe.title" = "Correos";
 
 /* Class = "UILabel"; text = "Type a reply..."; ObjectID = "gwv-3A-zYK"; */
 "gwv-3A-zYK.text" = "Escribe una respuesta...";
-
-/* Class = "UILabel"; text = "Ask a question..."; ObjectID = "hOL-9P-6fa"; */
-"hOL-9P-6fa.text" = "Haz una pregunta";
 
 /* Class = "UILabel"; text = "COMMENTS"; ObjectID = "kYy-hF-Nue"; */
 "kYy-hF-Nue.text" = "COMENTARIOS";

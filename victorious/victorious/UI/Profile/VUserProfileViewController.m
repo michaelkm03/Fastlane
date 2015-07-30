@@ -41,10 +41,11 @@
 #import "VProfileDeeplinkHandler.h"
 #import "VInboxDeepLinkHandler.h"
 #import "VFloatingUserProfileHeaderViewController.h"
-
+#import "UIViewController+VAccessoryScreens.h"
 #import "VUsersViewController.h"
 #import "VFollowersDataSource.h"
 #import "VUserIsFollowingDataSource.h"
+#import "VDependencyManager+VTracking.h"
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
@@ -159,8 +160,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                         options:NSKeyValueObservingOptionNew
                         context:VUserProfileViewContext];
     [self updateCollectionViewDataSource];
-    
-    [self.dependencyManager configureNavigationItem:self.navigationItem];
 }
 
 - (void)updateProfileHeader
@@ -200,7 +199,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     if ( !self.isCurrentUser && self.user == nil && self.remoteId != nil )
     {
-        [self loadUserWithRemoteId:self.remoteId];
+        [self showRefreshHUD];
+        [self loadUserWithRemoteId:self.remoteId forceReload:NO];
     }
     
     UIColor *backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
@@ -213,6 +213,10 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     self.didEndViewWillAppear = YES;
     [self attemptToRefreshProfileUI];
+    
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
+    
+    [self addAccessoryItems];
     
     self.navigationViewfloatingController.animationEnabled = YES;
     
@@ -237,11 +241,11 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     [super viewDidAppear:animated];
     
+    [self addBadgingToAccessoryItems];
+    
     [[VTrackingManager sharedInstance] setValue:VTrackingValueUserProfile forSessionParameterWithKey:VTrackingKeyContext];
     
     [self setupFloatingView];
-    
-    [self updateAccessoryItems];
     
     // Hide title if necessary
     [self updateTitleVisibilityWithVerticalOffset:self.collectionView.contentOffset.y];
@@ -249,8 +253,18 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)updateAccessoryItems
 {
-    [self.dependencyManager configureNavigationItem:self.navigationItem];
-    [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
+    [self addAccessoryItems];
+    [self addBadgingToAccessoryItems];
+}
+
+- (void)addAccessoryItems
+{
+    [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
+}
+
+- (void)addBadgingToAccessoryItems
+{
+    [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -358,9 +372,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
 }
 
-- (void)loadUserWithRemoteId:(NSNumber *)remoteId
+- (void)showRefreshHUD
 {
-    self.remoteId = remoteId;
     if ( self.retryHUD == nil )
     {
         self.retryHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -371,8 +384,13 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         self.retryHUD.margin = self.defaultMBProgressHUDMargin;
         self.retryHUD.mode = MBProgressHUDModeIndeterminate;
     }
-    
+}
+
+- (void)loadUserWithRemoteId:(NSNumber *)remoteId forceReload:(BOOL)forceReload
+{
+    self.remoteId = remoteId;
     [[VObjectManager sharedManager] fetchUser:self.remoteId
+                                  forceReload:forceReload
                              withSuccessBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          [self.retryHUD hide:YES];
@@ -395,7 +413,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     //Disable user interaction to avoid spamming
     [self.retryProfileLoadButton setUserInteractionEnabled:NO];
-    [self loadUserWithRemoteId:self.remoteId];
+    [self showRefreshHUD];
+    [self loadUserWithRemoteId:self.remoteId forceReload:NO];
 }
 
 - (UIButton *)retryProfileLoadButton
@@ -607,7 +626,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)followerHandler
 {
-    VUsersViewController *usersViewController = [[VUsersViewController alloc] initWithDependencyManager:self.dependencyManager];
+    VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{}];
+    VUsersViewController *usersViewController = [[VUsersViewController alloc] initWithDependencyManager:childDependencyManager];
     usersViewController.title = NSLocalizedString( @"followers", nil );
     usersViewController.usersDataSource = [[VFollowersDataSource alloc] initWithUser:self.user];
     
@@ -622,7 +642,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     }
     else
     {
-        VUsersViewController *usersViewController = [[VUsersViewController alloc] initWithDependencyManager:self.dependencyManager];
+        VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{}];
+        VUsersViewController *usersViewController = [[VUsersViewController alloc] initWithDependencyManager:childDependencyManager];
         usersViewController.title = NSLocalizedString( @"Following", nil );
         usersViewController.usersDataSource = [[VUserIsFollowingDataSource alloc] initWithUser:self.user];
         
@@ -809,6 +830,14 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)refresh:(UIRefreshControl *)sender
 {
+    NSNumber *mainUserId = [VObjectManager sharedManager].mainUser.remoteId;
+    const BOOL hasUserData = self.representsMainUser && mainUserId != nil;
+    const BOOL wasTriggeredByUIElement = sender != nil;
+    if ( wasTriggeredByUIElement && hasUserData )
+    {
+        [self loadUserWithRemoteId:mainUserId forceReload:YES];
+    }
+    
     if (self.collectionView.dataSource == self.notLoggedInDataSource)
     {
         return;

@@ -51,7 +51,6 @@ static NSString * const kSequenceIdKey = @"sequenceId";
     NSDictionary *dic = @{ kSequenceIdKey : sequence.remoteId};
     
     VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:dic];
-    NSLog(@"adding seq. id to dep. manager");
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel dependencyManager:childDependencyManager];
     contentViewController.placeholderImage = placeholderImage;
     

@@ -113,7 +113,7 @@ def main(argv):
     else:
         server = ''
 
-    if len(argv[6]):
+    if len(argv) == 6:
         vams._DEFAULT_LOCAL_PORT = argv[5]
 
     global _DEFAULT_HOST

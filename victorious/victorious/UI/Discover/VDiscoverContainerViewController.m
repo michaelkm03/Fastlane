@@ -31,6 +31,7 @@
 #import "VTransitionDelegate.h"
 #import "VDiscoverDeepLinkHandler.h"
 #import "VCoachmarkDisplayer.h"
+#import "UIViewController+VAccessoryScreens.h"
 
 @interface VDiscoverContainerViewController () <UITextFieldDelegate, VMultipleContainerChild, VBackgroundContainer, VCoachmarkDisplayer>
 
@@ -99,6 +100,9 @@
 {
     [super viewWillAppear:animated];
 
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
+    
+    [self updateAccessoryScreens];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(showSuggestedPersonProfile:)
@@ -114,21 +118,19 @@
                                                                             constant:0];
     self.searchTopConstraint.constant = self.v_layoutInsets.top;
     [self.view addConstraint:self.searchTopConstraint];
-    
-    [self.dependencyManager configureNavigationItem:self.navigationItem];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    [self updateAccessoryScreens];
+    [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)dealloc
@@ -232,12 +234,7 @@
 
 - (void)updateAccessoryScreens
 {
-    UINavigationItem *navigationItem = self.navigationItem;
-    if ( self.multipleContainerChildDelegate != nil )
-    {
-        navigationItem = [self.multipleContainerChildDelegate parentNavigationItem];
-    }
-    [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
+    [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 #pragma mark - VMultipleContainerChild

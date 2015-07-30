@@ -151,7 +151,7 @@
 {
     if (self.resultHandler != nil)
     {
-        self.resultHandler(YES, previewImage, capturedMediaURL);
+        self.resultHandler(YES, creationFlowController.publishParameters);
     }
     else
     {
@@ -164,7 +164,7 @@
 {
     if (self.resultHandler != nil)
     {
-        self.resultHandler(NO, nil, nil);
+        self.resultHandler(NO, nil);
     }
 }
 
