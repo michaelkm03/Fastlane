@@ -26,6 +26,7 @@
 #import "NSString+VParseHelp.h"
 #import "VCellSizeCollection.h"
 #import "VCellSizingUserInfoKeys.h"
+#import "VContentModeAdjustablePreviewView.h"
 
 static const UIEdgeInsets kTextInsets           = { 4.0f, 20.0f, 5.0f, 20.0f };
 static const CGFloat kHeaderHeight              = 74.0f;
@@ -351,6 +352,10 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     [self.contentContainer v_addPinToTopToSubview:self.previewView];
     [self.contentContainer v_addPinToLeadingTrailingToSubview:self.previewView];
     [self updateContentContainerHeightConstraint];
+    if ( [self.previewView conformsToProtocol:@protocol(VContentModeAdjustablePreviewView)] )
+    {
+        [(VSequencePreviewView <VContentModeAdjustablePreviewView> *)self.previewView updateToFitContent:YES withBackgroundSupplier:self.dependencyManager];
+    }
     
     if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
     {

@@ -18,12 +18,16 @@
 #import "UIView+AutoLayout.h"
 #import "VVideoView.h"
 
+#import "VDependencyManager+VBackgroundContainer.h"
+#import "VDependencyManager+VBackground.h"
+
 @interface VVideoSequencePreviewView () <VVideoViewDelegate>
 
 @property (nonatomic, strong) UIImageView *previewImageView;
 @property (nonatomic, strong) UIView *playIconContainerView;
 @property (nonatomic, strong) VVideoView *videoView;
 @property (nonatomic, assign) BOOL hasFocus;
+@property (nonatomic, strong) UIView *backgroundContainerView;
 
 @end
 
@@ -55,6 +59,7 @@
         
         _videoView = [[VVideoView alloc] initWithFrame:self.bounds];
         _videoView.delegate = self;
+        _videoView.layer.shouldRasterize = YES;
         [self addSubview:_videoView];
         [self v_addFitToParentConstraintsToSubview:_videoView];
     }
@@ -67,12 +72,18 @@
 {
     [super setSequence:sequence];
     
+    [self makeBackgroundContainerViewVisible:NO];
+    
     // Hide video view in case we're not auto playing
     self.videoView.hidden = YES;
     
     __weak VVideoSequencePreviewView *weakSelf = self;
     [self.previewImageView fadeInImageAtURL:[sequence inStreamPreviewImageURL]
                            placeholderImage:nil
+                        alongsideAnimations:^
+     {
+         [self makeBackgroundContainerViewVisible:YES];
+     }
                                  completion:^(UIImage *image)
      {
          __strong VVideoSequencePreviewView *strongSelf = weakSelf;
@@ -89,9 +100,14 @@
     {
         self.videoView.hidden = NO;
         self.playIconContainerView.hidden = YES;
+        __weak VVideoSequencePreviewView *weakSelf = self;
         [self.videoView setItemURL:[NSURL URLWithString:asset.data]
                               loop:asset.loop.boolValue
-                        audioMuted:asset.audioMuted.boolValue];
+                        audioMuted:asset.audioMuted.boolValue
+                alongsideAnimation:^
+         {
+             [weakSelf makeBackgroundContainerViewVisible:YES];
+         }];
     }
     else
     {
@@ -106,6 +122,7 @@
 {
     if (self.hasFocus)
     {
+        [self makeBackgroundContainerViewVisible:YES];
         [videoView play];
     }
 }
@@ -117,6 +134,7 @@
     _hasFocus = hasFocus;
     if (_hasFocus)
     {
+        [self makeBackgroundContainerViewVisible:YES];
         [self.videoView play];
     }
     else
@@ -128,6 +146,46 @@
 - (CGRect)contentArea
 {
     return self.bounds;
+}
+
+#pragma mark - VContentModeAdjustablePreviewView
+
+- (void)updateToFitContent:(BOOL)fit withBackgroundSupplier:(VDependencyManager *)dependencyManager
+{
+    self.videoView.useAspectFit = fit;
+    self.previewImageView.contentMode = fit ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleToFill;
+    [dependencyManager addBackgroundToBackgroundHost:self];
+}
+
+- (UIView *)backgroundContainerView
+{
+    if ( _backgroundContainerView != nil )
+    {
+        return _backgroundContainerView;
+    }
+    
+    _backgroundContainerView = [[UIView alloc] init];
+    _backgroundContainerView.backgroundColor = [UIColor clearColor];
+    _backgroundContainerView.alpha = 0.0f;
+    [self addSubview:_backgroundContainerView];
+    [self sendSubviewToBack:_backgroundContainerView];
+    [self v_addFitToParentConstraintsToSubview:_backgroundContainerView];
+    return _backgroundContainerView;
+}
+
+- (void)makeBackgroundContainerViewVisible:(BOOL)visible
+{
+    if ( visible )
+    {
+        if ( self.backgroundContainerView.alpha == 0.0f )
+        {
+            self.backgroundContainerView.alpha = 1.0f;
+        }
+    }
+    else
+    {
+        self.backgroundContainerView.alpha = 0.0f;
+    }
 }
 
 @end

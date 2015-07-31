@@ -7,7 +7,8 @@
 //
 
 #import "VSequencePreviewView.h"
+#import "VContentModeAdjustablePreviewView.h"
 
-@interface VImageSequencePreviewView : VSequencePreviewView
+@interface VImageSequencePreviewView : VSequencePreviewView <VContentModeAdjustablePreviewView>
 
 @end

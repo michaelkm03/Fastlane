@@ -26,6 +26,7 @@
 #import "VCellSizeCollection.h"
 #import "VCellSizingUserInfoKeys.h"
 #import "VActionButtonAnimationController.h"
+#import "VContentModeAdjustablePreviewView.h"
 
 static const CGFloat kInsetCellHeaderHeight         = 50.0f;
 static const CGFloat kInsetCellActionViewHeight     = 41.0f;
@@ -351,6 +352,10 @@ static const UIEdgeInsets kCaptionInsets            = { 4.0, 0.0, 4.0, 0.0  };
     if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
     {
         [self.previewView setDependencyManager:self.dependencyManager];
+    }
+    if ( [self.previewView conformsToProtocol:@protocol(VContentModeAdjustablePreviewView)] )
+    {
+        [(VSequencePreviewView <VContentModeAdjustablePreviewView> *)self.previewView updateToFitContent:YES withBackgroundSupplier:self.dependencyManager];
     }
     [self.previewView setSequence:sequence];
 }
