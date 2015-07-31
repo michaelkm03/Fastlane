@@ -35,9 +35,7 @@ class MediaAttachmentBallisticView : MediaAttachmentView {
     override var comment: VComment? {
         didSet {
             if let iconURLString = comment?.properMediaURLGivenContentType() {
-                // WARNING: testing
-                self.ballisticView.iconURL = NSURL(string: "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/icon/heart_icon.png")
-                //                self.ballisticView.iconURL = iconURLString
+                self.ballisticView.iconURL = iconURLString
             }
         }
     }

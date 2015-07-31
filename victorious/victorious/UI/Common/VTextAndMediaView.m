@@ -82,6 +82,11 @@
 
 - (void)setMediaAttachmentView:(MediaAttachmentView *)mediaAttachmentView
 {
+    if (_mediaAttachmentView == mediaAttachmentView)
+    {
+        return;
+    }
+    
     _mediaAttachmentView = mediaAttachmentView;
     if (mediaAttachmentView != nil)
     {
@@ -141,7 +146,7 @@
 - (void)setText:(NSString *)text
 {
     _text = [text copy];
-    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:(text ?: @"") attributes: self.textFont ? [[self class] attributesForTextWithFont:self.textFont] :[[self class] attributesForText]];;
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:(text ?: @"") attributes: self.textFont ? [[self class] attributesForTextWithFont:self.textFont] :[[self class] attributesForText]];
     self.textView.attributedText = attributedText;
     [self invalidateIntrinsicContentSize];
 }
