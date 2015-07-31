@@ -420,6 +420,8 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         //Use payload to populate the text to avoid empty text if textcontainer containing text adjusts it before this block is called
         newComment = [self newCommentWithID:commentID onSequence:sequence text:payload[@"text"] shouldAutoplay:shouldAutoplay mediaURLPath:[mediaURL absoluteString]];
         newComment.realtime = time;
+        newComment.mediaWidth = [NSString stringWithFormat:@"%li", (long)publishParameters.width];
+        newComment.mediaHeight = [NSString stringWithFormat:@"%li", (long)publishParameters.Height];
         [self fetchCommentByID:[payload[@"id"] integerValue] successBlock:nil failBlock:nil];
         if (asset)
         {
