@@ -35,7 +35,7 @@
 #import "VComment+Fetcher.h"
 
 
-static const UIEdgeInsets kTextInsets = { 32.0f, 56.0f, 11.0f, 55.0f };
+static const UIEdgeInsets kTextInsets = { 38.0f, 56.0f, 11.0f, 55.0f };
 
 static NSCache *_sharedImageCache = nil;
 
@@ -191,6 +191,7 @@ static NSCache *_sharedImageCache = nil;
     self.hasMedia = comment.commentMediaType != VCommentMediaTypeNoMedia;
     
     [self.commentAndMediaView setComment:comment];
+    [self.commentAndMediaView setDependencyManager:self.dependencyManager];
 
     self.commentCellUtilitiesController = [[VCommentCellUtilitesController alloc] initWithComment:self.comment
                                                                                          cellView:self

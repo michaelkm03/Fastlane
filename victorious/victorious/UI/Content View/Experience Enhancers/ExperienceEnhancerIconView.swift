@@ -17,19 +17,33 @@ class ExperienceEnhancerIconView : UIView {
     
     var iconImage : UIImage? {
         didSet {
-            self.iconImageView.image = iconImage;
+            self.iconImageView.image = iconImage
         }
     }
     
     var overlayImage : UIImage? {
         didSet {
-            self.overlayImageView.image = overlayImage;
+            self.overlayImageView.image = overlayImage
         }
     }
     
     var iconURL : NSURL? {
         didSet {
-            self.iconImageView.sd_setImageWithURL(iconURL)
+            self.alpha = 0
+            self.iconImageView.sd_setImageWithURL(iconURL, completed: {
+                (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) -> Void in
+                
+                if (error != nil) {
+                    return;
+                }
+                
+                self.iconImageView.image = image.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+                self.overlayImageView.image = self.overlayImageView.image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+                
+                UIView.animateWithDuration(0.2, animations: { () -> Void in
+                    self.alpha = 1
+                })
+            })
         }
     }
     

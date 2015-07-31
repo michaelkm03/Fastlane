@@ -68,6 +68,7 @@ class MediaAttachmentView : UIView, Focus, Reuse {
     var message: VMessage?
     var respondToButton:((previewImage: UIImage?) -> Void)?
     var hasFocus = false
+    var dependencyManager: VDependencyManager?
     
     // Factory method for returning correct concrete subclass with a comment
     class func mediaViewWithComment(comment: VComment) -> MediaAttachmentView? {
@@ -270,6 +271,14 @@ class MediaAttachmentBallisticView : MediaAttachmentView {
         didSet {
             if let iconURLString = comment?.properMediaURLGivenContentType() {
                 self.ballisticView.iconURL = NSURL(string: "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/ballistics/6/icon/heart_icon.png")
+            }
+        }
+    }
+    
+    override var dependencyManager: VDependencyManager? {
+        didSet {
+            if let unwrappedDM = dependencyManager {
+                self.ballisticView.tintColor = unwrappedDM.colorForKey(VDependencyManagerAccentColorKey)
             }
         }
     }

@@ -16,7 +16,6 @@
 
 @interface VTextAndMediaView ()
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) NSArray *mediaViewVerticalConstraints;
 
 @end
@@ -101,6 +100,12 @@
     }
     
     [self setNeedsUpdateConstraints];
+}
+
+- (void)setDependencyManager:(VDependencyManager *)dependencyManager
+{
+    _dependencyManager = dependencyManager;
+    self.mediaAttachmentView.dependencyManager = dependencyManager;
 }
 
 - (void)updateConstraints

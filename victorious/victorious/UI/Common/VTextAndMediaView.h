@@ -46,6 +46,8 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
 @property (nonatomic, strong) NSString *text;
 @property (nonatomic, strong) NSAttributedString *attributedText;
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
 /**
  Removes common customizations (text, images, etc) and returns this view to a pristine state.
  */

@@ -60,3 +60,4 @@
 #import "VVideoView.h"
 #import "VMessage+Fetcher.h"
 #import "VSettingsSwitchCell.h"
+#import "UIImage+VTint.h"

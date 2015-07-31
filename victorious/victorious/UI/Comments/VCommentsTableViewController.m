@@ -325,6 +325,7 @@
                                                 andTagTapDelegate:self];
     
     [cell.textAndMediaView setComment:comment];
+    [cell.textAndMediaView setDependencyManager:self.dependencyManager];
     cell.textAndMediaView.mediaTapDelegate = self;
     
     cell.profileImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
