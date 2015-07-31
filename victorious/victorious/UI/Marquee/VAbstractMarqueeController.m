@@ -213,7 +213,8 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
             if (sequenceToTrack != nil)
             {
                 [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithStream:self.stream
-                                                                         sequence:sequenceToTrack];
+                                                                         sequence:sequenceToTrack
+                                                                        fromShelf:YES];
             }
         }
     }

@@ -82,28 +82,30 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 
 #pragma mark - Cell visibily tracking (SequenceDidAppearInStream event)
 
-- (void)onStreamCellDidBecomeVisibleWithStream:(VStream *)stream sequence:(VSequence *)sequence
+- (void)onStreamCellDidBecomeVisibleWithStream:(VStream *)stream sequence:(VSequence *)sequence fromShelf:(BOOL)fromShelf
 {
     if ( sequence == nil || stream == nil )
     {
         return;
     }
     
+    NSString *trackingID = fromShelf ? stream.shelfId : stream.trackingIdentifier;
     NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
                               VTrackingKeyTimeStamp : [NSDate date],
                               VTrackingKeyUrls : sequence.tracking.cellView,
-                              VTrackingKeyStreamId : stream.trackingIdentifier ?: @""};
+                              VTrackingKeyStreamId : trackingID ?: @""};
     [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream
                                        parameters:params
                                           eventId:sequence.remoteId];
 }
 
-- (void)onStreamCellSelectedWithStream:(VStream *)stream sequence:(VSequence *)sequence
+- (void)onStreamCellSelectedWithStream:(VStream *)stream sequence:(VSequence *)sequence fromShelf:(BOOL)fromShelf
 {
+    NSString *trackingID = fromShelf ? stream.shelfId : stream.trackingIdentifier;
     NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
                               VTrackingKeyTimeStamp : [NSDate date],
                               VTrackingKeyUrls : sequence.tracking.cellClick,
-                              VTrackingKeyStreamId : stream.trackingIdentifier ?: @""};
+                              VTrackingKeyStreamId : trackingID ?: @""};
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromStream parameters:params];
 }
 

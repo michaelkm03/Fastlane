@@ -464,7 +464,9 @@ static const NSInteger kDefaultPageSize = 40;
             stream.marqueeItems = marqueeItems;
         }
         NSString *streamId = fullResponse[ @"stream_id" ];
+        NSString *shelfId = fullResponse[ @"shelf_id" ];
         stream.streamId = streamId;
+        stream.shelfId = shelfId;
         
         // Any extra parameters from the top-level of the response (i.e. above the "payload" field)
         stream.trackingIdentifier = streamId;

@@ -47,12 +47,12 @@
 /**
  Call this whenever a cell becomes visisble according to any applicable visibility threshold requirements.
  */
-- (void)onStreamCellDidBecomeVisibleWithStream:(VStream *)stream sequence:(VSequence *)sequence;
+- (void)onStreamCellDidBecomeVisibleWithStream:(VStream *)stream sequence:(VSequence *)sequence fromShelf:(BOOL)fromShelf;
 
 /**
  Call this when a stream cell is selected and another view will be presented/pushed to show its content.
  */
-- (void)onStreamCellSelectedWithStream:(VStream *)stream sequence:(VSequence *)sequence;
+- (void)onStreamCellSelectedWithStream:(VStream *)stream sequence:(VSequence *)sequence fromShelf:(BOOL)fromShelf;
 
 /**
  Call this after a stream has been fetched from the server and all information necessary

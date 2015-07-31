@@ -27,9 +27,9 @@
     return self.marqueeItems.count > 0;
 }
 
-- (BOOL)hasMarqueeID
+- (BOOL)hasShelfID
 {
-    return self.marqueeId != nil && ![self.marqueeId isEqualToString:@""];
+    return self.shelfId != nil && ![self.shelfId isEqualToString:@""];
 }
 
 + (VStream *)streamForUser:(VUser *)user

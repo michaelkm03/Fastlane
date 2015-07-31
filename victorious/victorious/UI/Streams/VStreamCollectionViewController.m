@@ -448,8 +448,8 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
-        NSString *marqueeStreamID = [marquee.stream hasMarqueeID] ? marquee.stream.marqueeId : marquee.stream.streamId;
-        [self showContentViewForSequence:(VSequence *)streamItem inStreamWithID:marqueeStreamID withPreviewImage:image];
+        NSString *marqueeStreamID = [marquee.stream hasShelfID] ? marquee.stream.shelfId : marquee.stream.streamId;
+        [self showContentViewForSequence:(VSequence *)streamItem inStreamWithID:marqueeStreamID withPreviewImage:image fromShelf:YES];
     }
     else if ( [streamItem isSingleStream] )
     {
@@ -505,7 +505,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     self.lastSelectedIndexPath = indexPath;
     VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
-    [self showContentViewForSequence:sequence inStreamWithID:self.currentStream.streamId withPreviewImage:nil];
+    [self showContentViewForSequence:sequence inStreamWithID:self.currentStream.streamId withPreviewImage:nil fromShelf:NO];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
@@ -703,11 +703,10 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     self.collectionView.backgroundView = newBackgroundView;
 }
 
-- (void)showContentViewForSequence:(VSequence *)sequence inStreamWithID:(NSString *)streamId withPreviewImage:(UIImage *)previewImage
+- (void)showContentViewForSequence:(VSequence *)sequence inStreamWithID:(NSString *)streamId withPreviewImage:(UIImage *)previewImage fromShelf:(BOOL)fromShelf
 {
     NSParameterAssert(sequence != nil);
     NSParameterAssert(self.currentStream != nil);
-    [self.streamTrackingHelper onStreamCellSelectedWithStream:self.currentStream sequence:sequence];
     
     [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:sequence streamID:streamId commentId:nil placeHolderImage:previewImage];
 }
@@ -961,7 +960,8 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
         {
             VSequence *sequenceToTrack = [(id<VStreamCellTracking>)cell sequenceToTrack];
             [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithStream:self.currentStream
-                                                                     sequence:sequenceToTrack];
+                                                                     sequence:sequenceToTrack
+                                                                    fromShelf:NO];
         }
     }
 }
