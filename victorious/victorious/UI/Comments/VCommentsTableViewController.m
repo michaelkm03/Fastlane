@@ -313,6 +313,7 @@
     NSDictionary *defaultStringAttributes = cell.textAndMediaView.textFont ? [VTextAndMediaView attributesForTextWithFont:cell.textAndMediaView.textFont] : [VTextAndMediaView attributesForText];
     NSMutableDictionary *tagStringAttributes = [[NSMutableDictionary alloc] initWithDictionary:defaultStringAttributes];
     tagStringAttributes[NSForegroundColorAttributeName] = [self.dependencyManager colorForKey:[VTagStringFormatter defaultDependencyManagerTagColorKey]];
+    
     [cell.textAndMediaView setText:comment.text];
     [cell.textAndMediaView.textView setupWithDatabaseFormattedText:comment.text
                                                     tagAttributes:tagStringAttributes
