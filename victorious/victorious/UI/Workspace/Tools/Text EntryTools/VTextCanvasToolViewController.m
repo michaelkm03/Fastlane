@@ -11,12 +11,12 @@
 #import "UIView+AutoLayout.h"
 #import "VEditableTextPostViewController.h"
 #import "VRoundedBackgroundButton.h"
+#import "VForcedWorkspaceContainerViewController.h"
 
 @interface VTextCanvasToolViewController () <UITextViewDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
-@property (nonatomic, weak) IBOutlet VRoundedBackgroundButton *buttonImageSearch;
 @property (nonatomic, weak) IBOutlet VRoundedBackgroundButton *buttonCamera;
 @property (nonatomic, weak) IBOutlet VRoundedBackgroundButton *buttonClear;
 
@@ -39,14 +39,15 @@
 {
     [super viewDidLoad];
 
-    for ( VRoundedBackgroundButton *button in @[ self.buttonCamera, self.buttonClear, self.buttonImageSearch ] )
+    for ( VRoundedBackgroundButton *button in @[ self.buttonCamera, self.buttonClear ] )
     {
-        button.selectedColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        button.unselectedColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     }
     
     [self setShouldProvideClearOption:NO animated:NO];
     
     self.textPostViewController = [VEditableTextPostViewController newWithDependencyManager:self.dependencyManager];
+    self.textPostViewController.defaultHashtag = [self.dependencyManager stringForKey:kHashtagKey];
     [self addChildViewController:self.textPostViewController];
     [self.textPostViewController willMoveToParentViewController:self];
     [self.view insertSubview:self.textPostViewController.view atIndex:0];
@@ -111,11 +112,6 @@
 - (IBAction)backgroundImageCameraSelected:(id)sender
 {
     [self.delegate textCanvasToolDidSelectCamera:self];
-}
-
-- (IBAction)backgroundImageSearchSelected:(id)sender
-{
-    [self.delegate textCanvasToolDidSelectImageSearch:self];
 }
 
 - (IBAction)backgroundImageClearSelected:(id)sender

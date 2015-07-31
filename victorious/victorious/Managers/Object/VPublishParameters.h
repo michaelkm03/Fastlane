@@ -33,7 +33,7 @@
 /**
  *  The parent sequence id if this is a remix.
  */
-@property (nonatomic, strong) NSNumber *parentSequenceID;
+@property (nonatomic, strong) NSString *parentSequenceID;
 
 /**
  *  The parent node id if this is a remix.
@@ -99,5 +99,10 @@
  *  A boolean indicating whether or not this asset shoudl be shared to twitter on publish
  */
 @property (nonatomic, assign) BOOL shareToTwitter;
+
+/**
+ *  The source of the asset.
+ */
+@property (nonatomic, copy) NSString *source;
 
 @end

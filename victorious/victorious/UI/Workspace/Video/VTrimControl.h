@@ -11,6 +11,8 @@
 #import <CoreMedia/CMTime.h>
 #import <CoreMedia/CMTimeRange.h>
 
+extern const CGFloat VTrimmerTopPadding;
+
 // Sends UIControlEventValueChanged on new selection
 
 /**
@@ -19,23 +21,13 @@
 @interface VTrimControl : UIControl
 
 /**
- *  Updates max duration that the trim control can select. Doesn't send control events.
- */
-@property (nonatomic, assign) CMTime maxDuration;
-
-/**
  *  The text to display in the thumb head.
  */
 @property (nonatomic, copy) NSAttributedString *attributedTitle;
 
 /**
- *  The current time duration selected by the trim control.
+ *  The view for the handle of the trimmer control
  */
-@property (nonatomic, readonly) CMTime selectedDuration;
-
-/**
- *  The height of the trimmer body plus the vertical inset of the body
- */
-+ (CGFloat)topPadding;
+@property (nonatomic, strong) UIView *trimThumbBody;
 
 @end

@@ -14,6 +14,7 @@
 #import "VPermissionAlertAnimator.h"
 #import "VRoundedImageView.h"
 #import "VAppInfo.h"
+#import "VPermissionsTrackingHelper.h"
 
 static const CGFloat kMaxAlertHeightDifferenceFromSuperview = 100.0f;
 static const CGFloat kTextViewCornerRadius = 24.0f;
@@ -27,6 +28,8 @@ static NSString * const kDenyButtonTitleKey = @"title.button2";
 @property (strong, nonatomic) VDependencyManager *dependencyManager;
 
 @property (strong, nonatomic) VPermissionAlertTransitionDelegate *transitionDelegate;
+
+@property (strong, nonatomic) VPermissionsTrackingHelper *permissionsTrackingHelper;
 
 @property (weak, nonatomic) IBOutlet UIView *alertContainerView;
 @property (weak, nonatomic) IBOutlet UITextView *messageTextView;
@@ -71,7 +74,7 @@ static NSString * const kDenyButtonTitleKey = @"title.button2";
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor clearColor];
-    
+    self.permissionsTrackingHelper = [[VPermissionsTrackingHelper alloc] init];
     self.alertContainerView.layer.cornerRadius = kTextViewCornerRadius;
     self.alertContainerView.clipsToBounds = YES;
     
@@ -102,7 +105,12 @@ static NSString * const kDenyButtonTitleKey = @"title.button2";
 
 - (BOOL)prefersStatusBarHidden
 {
-    return YES;
+    return NO;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
 }
 
 - (void)updateViewConstraints
@@ -179,7 +187,7 @@ static NSString * const kDenyButtonTitleKey = @"title.button2";
 {
     if (_confirmButtonText == nil || _confirmButtonText.length == 0)
     {
-        return NSLocalizedString(@"Okay!", nil);
+        return NSLocalizedString(@"OK", nil);
     }
     
     return _confirmButtonText;

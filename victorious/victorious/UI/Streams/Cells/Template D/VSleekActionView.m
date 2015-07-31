@@ -23,23 +23,21 @@
 // Views + Helpers
 #import "UIView+Autolayout.h"
 #import "VLargeNumberFormatter.h"
-#import "VRepostButtonController.h"
 
 static CGFloat const kActionButtonHeight = 31.0f;
 static NSUInteger const kMaxNumberOfActionButtons = 4;
 
 @interface VSleekActionView ()
 
-@property (nonatomic, strong) VSleekActionButton *commentButton;
-@property (nonatomic, strong) VSleekActionButton *repostButton;
-@property (nonatomic, strong) VSleekActionButton *memeButton;
-@property (nonatomic, strong) VSleekActionButton *gifButton;
+@property (nonatomic, strong, readwrite) VSleekActionButton *commentButton;
+@property (nonatomic, strong, readwrite) VSleekActionButton *repostButton;
+@property (nonatomic, strong, readwrite) VSleekActionButton *memeButton;
+@property (nonatomic, strong, readwrite) VSleekActionButton *gifButton;
 @property (nonatomic, strong, readwrite) VSleekActionButton *likeButton;
 @property (nonatomic, strong) NSArray *actionButtons;
 
 @property (nonatomic, strong) VLargeNumberFormatter *largeNumberFormatter;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) VRepostButtonController *repostButtonController;
 
 // Each view will be reused for a unique configuration (share only, share+repost, et)
 @property (nonatomic, assign) BOOL hasLayedOutActionView;
@@ -91,15 +89,6 @@ static NSUInteger const kMaxNumberOfActionButtons = 4;
     return [NSString stringWithString:identifier];
 }
 
-#pragma mark - VAbstractActionView
-
-- (void)setReposting:(BOOL)reposting
-{
-    [super setReposting:reposting];
-    
-    self.repostButtonController.reposting = reposting;
-}
-
 #pragma mark - Property Accessors
 
 - (VLargeNumberFormatter *)largeNumberFormatter
@@ -125,7 +114,9 @@ static NSUInteger const kMaxNumberOfActionButtons = 4;
 {
     if (_repostButton == nil)
     {
-        _repostButton = [self actionButtonWithImage:[UIImage imageNamed:@"D_repostIcon"] action:@selector(repost:)];
+        UIImage *image = [UIImage imageNamed:@"D_repostIcon"];
+        UIImage *selectedImage = [UIImage imageNamed:@"D_repostIcon-success"];
+        _repostButton = [self actionButtonWithImage:image selectedImage:selectedImage action:@selector(repost:)];
     }
     return _repostButton;
 }
@@ -170,10 +161,9 @@ static NSUInteger const kMaxNumberOfActionButtons = 4;
         [self.actionButtons enumerateObjectsUsingBlock:^(VSleekActionButton *actionButton, NSUInteger idx, BOOL *stop)
          {
              actionButton.unselectedTintColor = [_dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+             actionButton.selectedTintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
              actionButton.backgroundColor = [_dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
          }];
-        
-        self.likeButton.selectedTintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     }
 }
 
@@ -225,7 +215,7 @@ static NSUInteger const kMaxNumberOfActionButtons = 4;
     
     CGFloat summedButtonWidths = kActionButtonHeight * kMaxNumberOfActionButtons;
     CGFloat interButtonSpace = ( actionBarWidth - summedButtonWidths ) / kMaxNumberOfActionButtons;
-
+    self.leftMargin = interButtonSpace/2;
     NSMutableArray *actionItems = [[NSMutableArray alloc] init];
     //The buttons should be inset from either edge of the cell by half the width of the space between each of them
     [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:interButtonSpace / 2]];
@@ -246,15 +236,6 @@ static NSUInteger const kMaxNumberOfActionButtons = 4;
     actionBar.actionItems = actionItems;
     
     self.hasLayedOutActionView = YES;
-}
-
-- (void)updateRepostButtonForSequence:(VSequence *)sequence
-{
-    [self.repostButtonController invalidate];
-    self.repostButtonController = [[VRepostButtonController alloc] initWithSequence:sequence
-                                                                       repostButton:self.repostButton
-                                                                      repostedImage:[UIImage imageNamed:@"D_repostIcon-success"]
-                                                                    unRepostedImage:[UIImage imageNamed:@"D_repostIcon"]];
 }
 
 #pragma mark - Button Factory

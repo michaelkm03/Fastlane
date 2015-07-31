@@ -27,10 +27,12 @@
 #import "NSString+VParseHelp.h"
 #import "VStream+Fetcher.h"
 #import "VStreamItem+Fetcher.h"
+#import "VEditorializationItem.h"
 
 const NSInteger kTooManyNewMessagesErrorCode = 999;
 
 static const NSInteger kDefaultPageSize = 40;
+static const NSInteger kUserSearchResultLimit = 20;
 
 @implementation VObjectManager (Pagination)
 
@@ -446,20 +448,39 @@ static const NSInteger kDefaultPageSize = 40;
         
         VStream *fullStream = [resultObjects lastObject];
 
+        NSString *apiPath = stream.apiPath;
+        
         //Strip the marqueeItems and streamItems from the newly returned stream
+        BOOL marqueeNeedsUpdate = NO;
         for (VStreamItem *marqueeItem in fullStream.marqueeItems )
         {
             VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:marqueeItem.objectID];
+            if ( !marqueeNeedsUpdate )
+            {
+                //Check marquees to see if we do after all
+                VEditorializationItem *oldItem = [streamItemInContext editorializationForStreamWithApiPath:apiPath];
+                BOOL bothNil = oldItem.marqueeHeadline == nil && marqueeItem.headline == nil;
+                BOOL headlineIsSame = [oldItem.marqueeHeadline isEqualToString:marqueeItem.headline];
+                if ( !( bothNil || headlineIsSame ) )
+                {
+                    //The editorialization item has changed or been created anew, we need to update the marquee
+                    marqueeNeedsUpdate = YES;
+                }
+            }
+            [self addEditorializationToStreamItem:streamItemInContext inStreamWithApiPath:apiPath usingHeadline:marqueeItem.headline inMarquee:YES];
+            marqueeItem.headline = nil;
             [marqueeItems addObject:streamItemInContext];
         }
         
         for (VStreamItem *streamItem in fullStream.streamItems)
         {
             VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:streamItem.objectID];
+            [self addEditorializationToStreamItem:streamItemInContext inStreamWithApiPath:apiPath usingHeadline:streamItem.headline inMarquee:NO];
+            streamItem.headline = nil;
             [streamItems addObject:streamItemInContext];
         }
         stream.streamItems = streamItems;
-        if ( ![marqueeItems isEqualToOrderedSet:stream.marqueeItems] )
+        if ( ![marqueeItems isEqualToOrderedSet:stream.marqueeItems] || marqueeNeedsUpdate )
         {
             stream.marqueeItems = marqueeItems;
         }
@@ -479,6 +500,19 @@ static const NSInteger kDefaultPageSize = 40;
     };
     
     return [self.paginationManager loadFilter:filter withPageType:pageType successBlock:fullSuccessBlock failBlock:fail];
+}
+
+- (void)addEditorializationToStreamItem:(VStreamItem *)streamItem inStreamWithApiPath:(NSString *)apiPath usingHeadline:(NSString *)headline inMarquee:(BOOL)inMarquee
+{
+    VEditorializationItem *editorializationItem = [streamItem editorializationForStreamWithApiPath:apiPath];
+    if ( inMarquee )
+    {
+        editorializationItem.marqueeHeadline = headline;
+    }
+    else
+    {
+        editorializationItem.headline = headline;
+    }
 }
 
 #pragma mark - Likers
@@ -503,7 +537,59 @@ static const NSInteger kDefaultPageSize = 40;
     return [self.paginationManager loadFilter:filter withPageType:pageType successBlock:fullSuccessBlock failBlock:fail];
 }
 
+#pragma mark - User Search
+
+- (RKManagedObjectRequestOperation *)findUsersBySearchString:(NSString *)search_string
+                                                  sequenceID:(NSString *)sequenceID
+                                                    pageType:(VPageType)pageType
+                                                     context:(NSString *)context
+                                            withSuccessBlock:(VSuccessBlock)success
+                                                   failBlock:(VFailBlock)fail
+{
+    VAbstractFilter *filter = [self userSearchFilterForSequenceID:sequenceID searchText:search_string context:context];
+    
+    VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        if ( success != nil )
+        {
+            success(operation, fullResponse, resultObjects);
+        }
+    };
+    
+    return [self.paginationManager loadFilter:filter withPageType:pageType successBlock:fullSuccessBlock failBlock:fail];
+}
+
 #pragma mark - Filter Fetchers
+
+- (VAbstractFilter *)userSearchFilterForSequenceID:(NSString *)sequenceID searchText:(NSString *)searchText context:(NSString *)context
+{
+    NSString *apiPath = [NSString stringWithFormat:@"/api/userinfo/search_paginate/%@/%@/%@/", searchText, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
+
+    NSURLComponents *components = [[NSURLComponents alloc] init];
+    
+    NSMutableArray *queryItems = [NSMutableArray new];
+    if (context != nil && context.length > 0)
+    {
+        NSURLQueryItem *contextParam = [NSURLQueryItem queryItemWithName:@"context" value:context];
+        [queryItems addObject:contextParam];
+    }
+    
+    if (sequenceID != nil && sequenceID.length > 0)
+    {
+        NSURLQueryItem *sequenceIDParam = [NSURLQueryItem queryItemWithName:@"sequence_id" value:sequenceID];
+        [queryItems addObject:sequenceIDParam];
+    }
+    
+    components.queryItems = queryItems;
+
+    NSString *formattedPath = [apiPath stringByAppendingString:components.URL.absoluteString];
+    
+    VAbstractFilter *filter = (VAbstractFilter *)[self.paginationManager filterForPath:formattedPath
+                                                                            entityName:[VAbstractFilter entityName]
+                                                                  managedObjectContext:self.managedObjectStore.persistentStoreManagedObjectContext];
+    filter.perPageNumber = @(kUserSearchResultLimit);
+    return filter;
+}
 
 - (VAbstractFilter *)likersFilterForSequence:(VSequence *)sequence
 {

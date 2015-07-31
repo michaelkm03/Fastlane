@@ -78,6 +78,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                backgroundColor:(UIColor *)backgroundColor
                       mediaURL:(NSURL *)mediaToUploadURL
                   previewImage:(UIImage *)previewImage
+                        forced:(BOOL)forced
                     completion:(VUploadManagerTaskCompleteBlock)completionBlock
 {
     NSParameterAssert( backgroundColor != nil || mediaToUploadURL != nil ); // One or the other must be non-nil
@@ -85,11 +86,21 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     NSDictionary *parameters = @{ @"content" : textContent,
                                   @"background_image": mediaToUploadURL ?: @"",
                                   @"background_color" : [backgroundColor v_hexString] ?: @"" };
-    
+
     VLog( @"Uploading text post with parameters: %@", parameters );
     
-    NSURL *endpoint = [NSURL URLWithString:@"/api/text/create" relativeToURL:self.baseURL];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:endpoint];
+    NSURLComponents *components = [[NSURLComponents alloc] init];
+    components.path = @"/api/text/create";
+    
+    if (forced)
+    {
+        // Add a parameter indicating that the user was forced to post this
+        NSURLQueryItem *forcedParam = [NSURLQueryItem queryItemWithName:@"ftue" value:@"true"];
+        components.queryItems = @[forcedParam];
+    }
+    
+    NSURL *endpoint = [NSURL URLWithString:components.URL.absoluteString relativeToURL:self.baseURL];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:endpoint ];
     request.HTTPMethod = RKStringFromRequestMethod(RKRequestMethodPOST);
     
     VUploadTaskCreator *uploadTaskCreator = [[VUploadTaskCreator alloc] initWithUploadManager:self.uploadManager];
@@ -210,9 +221,9 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     {
         parameters[@"parent_node_id"] = [publishParameters.parentNodeID stringValue];
     }
-    if (publishParameters.parentSequenceID && ![publishParameters.parentSequenceID isEqualToNumber:@(0)])
+    if (publishParameters.parentSequenceID && publishParameters.parentSequenceID.length > 0)
     {
-        parameters[@"parent_sequence_id"] = [publishParameters.parentSequenceID stringValue];
+        parameters[@"parent_sequence_id"] = publishParameters.parentSequenceID;
     }
     if (publishParameters.captionType == VCaptionTypeMeme)
     {
@@ -240,6 +251,11 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         
         parameters[@"speed"] = [NSString stringWithFormat:@"%.1f", speed];
         parameters[@"playback"] = loopParam;
+    }
+    
+    if (publishParameters.source != nil)
+    {
+        parameters[@"source"] = publishParameters.source;
     }
     
     NSURL *endpoint = [NSURL URLWithString:@"/api/mediaupload/create" relativeToURL:self.baseURL];
@@ -330,14 +346,14 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 #pragma mark - Comment
 
 - (AFHTTPRequestOperation *)addRealtimeCommentWithText:(NSString *)text
-                                              mediaURL:(NSURL *)mediaURL
+                                     publishParameters:(VPublishParameters *)publishParameters
                                                 toAsset:(VAsset *)asset
                                                 atTime:(NSNumber *)time
                                           successBlock:(VSuccessBlock)success
                                              failBlock:(VFailBlock)fail
 {
     return [self addCommentWithText:text
-                           mediaURL:mediaURL
+                  publishParameters:(VPublishParameters *)publishParameters
                          toSequence:asset.node.sequence
                               asset:asset
                           andParent:nil
@@ -347,14 +363,14 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 }
 
 - (AFHTTPRequestOperation *)addCommentWithText:(NSString *)text
-                                      mediaURL:(NSURL *)mediaURL
+                             publishParameters:(VPublishParameters *)publishParameters
                                     toSequence:(VSequence *)sequence
                                      andParent:(VComment *)parent
                                   successBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail
 {
     return [self addCommentWithText:text
-                           mediaURL:mediaURL
+                  publishParameters:(VPublishParameters *)publishParameters
                          toSequence:sequence
                               asset:nil
                           andParent:parent
@@ -364,7 +380,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 }
 
 - (AFHTTPRequestOperation *)addCommentWithText:(NSString *)text
-                                      mediaURL:(NSURL *)mediaURL
+                             publishParameters:(VPublishParameters *)publishParameters
                                     toSequence:(VSequence *)sequence
                                          asset:(VAsset *)asset
                                      andParent:(VComment *)parent
@@ -375,6 +391,15 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     NSMutableDictionary *parameters = [@{@"sequence_id" : sequence.remoteId ?: [NSNull null],
                                          @"parent_id" : parent.remoteId.stringValue ?: [NSNull null],
                                          @"text" : text ?: [NSNull null]} mutableCopy];
+    
+    if (publishParameters.mediaToUploadURL != nil)
+    {
+        NSString *gifParameterValue = publishParameters.isGIF ? @"true" : @"false";
+        parameters[@"is_gif_style"] = gifParameterValue;
+    }
+    
+    NSURL *mediaURL = publishParameters.mediaToUploadURL;
+    
     NSDictionary *allURLs;
     if (mediaURL != nil)
     {
@@ -391,8 +416,9 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         VComment *newComment;
         NSDictionary *payload = fullResponse[kVPayloadKey];
         NSNumber *commentID = @([payload[@"id"] integerValue]);
+        BOOL shouldAutoplay = [payload[@"should_autoplay"] boolValue];
         //Use payload to populate the text to avoid empty text if textcontainer containing text adjusts it before this block is called
-        newComment = [self newCommentWithID:commentID onSequence:sequence text:payload[@"text"] mediaURLPath:[mediaURL absoluteString]];
+        newComment = [self newCommentWithID:commentID onSequence:sequence text:payload[@"text"] shouldAutoplay:shouldAutoplay mediaURLPath:[mediaURL absoluteString]];
         newComment.realtime = time;
         [self fetchCommentByID:[payload[@"id"] integerValue] successBlock:nil failBlock:nil];
         if (asset)
@@ -431,7 +457,8 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 
 - (VComment *)newCommentWithID:(NSNumber *)remoteID
                    onSequence:(VSequence *)sequence
-                         text:(NSString *)text
+                          text:(NSString *)text
+                shouldAutoplay:(BOOL)shouldAutoplay
                  mediaURLPath:(NSString *)mediaURLPath
 {
     VComment *tempComment = [sequence.managedObjectContext insertNewObjectForEntityForName:[VComment entityName]];
@@ -444,6 +471,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     tempComment.thumbnailUrl = [self localImageURLForVideo:mediaURLPath];
     tempComment.mediaUrl = mediaURLPath;
     tempComment.userId = self.mainUser.remoteId;
+    tempComment.shouldAutoplay = [NSNumber numberWithBool:shouldAutoplay];
     
     if ( tempComment.mediaUrl )
     {

@@ -78,7 +78,7 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
 - (void)addTextViewToContainer
 {
     UIFont *defaultFont = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
-    self.textStorage = [[VUserTaggingTextStorage alloc] initWithTextView:nil defaultFont:defaultFont taggingDelegate:self.delegate];
+    self.textStorage = [[VUserTaggingTextStorage alloc] initWithTextView:nil defaultFont:defaultFont taggingDelegate:self.delegate dependencyManager:self.dependencyManager];
     
     NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
     [self.textStorage addLayoutManager:layoutManager];
@@ -289,13 +289,8 @@ shouldChangeTextInRange:(NSRange)range
 
 - (void)updateSendButton
 {
-    self.sendButton.enabled = (self.selectedMedia || (self.composedText.length > 0));
-    
-    NSString *textWithoutSpace = [self.composedText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    if (textWithoutSpace.length == 0)
-    {
-        self.sendButton.enabled = NO;
-    }
+    NSString *stringWithoutSpace = [self.composedText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    self.sendButton.enabled = (self.selectedMedia || (stringWithoutSpace.length > 0));
 }
 
 - (void)setDelegate:(id<VKeyboardInputAccessoryViewDelegate>)delegate

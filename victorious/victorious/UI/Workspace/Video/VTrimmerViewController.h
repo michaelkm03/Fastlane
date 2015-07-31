@@ -21,7 +21,8 @@
  */
 - (void)trimmerViewController:(VTrimmerViewController *)trimmer
              thumbnailForTime:(CMTime)time
-               withCompletion:(void (^)(UIImage *thumbnail, CMTime timeForImage, id generatingDataSource))completion;
+                  withSuccess:(void (^)(UIImage *thumbnail, CMTime timeForImage, id generatingDataSource))success
+                  withFailure:(void (^)(NSError *error))errorBlock;
 
 @end
 

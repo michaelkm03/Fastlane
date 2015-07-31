@@ -8,10 +8,6 @@
 
 #import "VModernLandingViewController.h"
 
-// Libraries
-#import <CCHLinkTextView/CCHLinkTextView.h>
-#import <CCHLinkTextView/CCHLinkTextViewDelegate.h>
-
 // Views + Helpers
 #import "VLoginFlowControllerDelegate.h"
 #import "UIView+AutoLayout.h"
@@ -38,14 +34,17 @@ static NSString * const kTwitterKey = @"twitter";
 
 static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 
-@interface VModernLandingViewController () <CCHLinkTextViewDelegate, VBackgroundContainer, VLoginFlowScreen>
+@interface VModernLandingViewController () <VBackgroundContainer, VLoginFlowScreen>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, weak) IBOutlet UIButton *twitterButton;
 @property (nonatomic, weak) IBOutlet UIButton *emailButton;
 @property (nonatomic, weak) IBOutlet UIButton *facebookButton;
-@property (nonatomic, weak) IBOutlet CCHLinkTextView *legalTextView;
+@property (strong, nonatomic) IBOutlet UILabel *legalIntroLabel;
+@property (nonatomic, strong) IBOutlet UIButton *termsOfServiceButton;
+@property (nonatomic, strong) IBOutlet UIButton *privacyPolicyButton;
+@property (nonatomic, strong) IBOutlet UIView *legalButtonContainer;
 
 @end
 
@@ -92,49 +91,25 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
                                                                    target:self
                                                                    action:@selector(login)];
     self.navigationItem.rightBarButtonItem = loginButton;
-
-    // Legal Text
-    NSString *fullLegalText = NSLocalizedString(@"By signing up you are agreeing to our \nterms of service and privacy policy.", nil);
-    NSString *termsOfServiceLinkText = NSLocalizedString(@"terms of service", nil);
-    NSString *privacyPolicyLinkText = NSLocalizedString(@"privacy policy.", nil);
-    NSDictionary *legalTextAttributes = @{
-                                          NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey],
-                                          NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey],
-                                          };
-    NSDictionary *legalTextHighlightAttributes = @{
+    
+    NSDictionary *legalAttributes = @{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey],
+                                      NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]};
+    NSDictionary *legalAttributesWithUnderline = @{
                                                    NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey],
-                                                   NSForegroundColorAttributeName: [[self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey] colorWithAlphaComponent:0.5f],
+                                                   NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey],
+                                                   NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
                                                    };
-    NSMutableAttributedString *attributedLegalText = [[NSMutableAttributedString alloc] initWithString:fullLegalText
-                                                                                            attributes:legalTextAttributes];
-    NSRange rangeOfTOSLink = [attributedLegalText.string rangeOfString:termsOfServiceLinkText];
-    NSRange rangeOfPrivacyPolicyLink = [attributedLegalText.string rangeOfString:privacyPolicyLinkText];
-    [attributedLegalText addAttribute:CCHLinkAttributeName
-                                value:kTermsOfServiceLinkValue
-                                range:rangeOfTOSLink];
-    [attributedLegalText addAttribute:CCHLinkAttributeName
-                                value:kPrivacyPolicyLinkValue
-                                range:rangeOfPrivacyPolicyLink];
-    [attributedLegalText addAttribute:(NSString *)kCTUnderlineStyleAttributeName
-                                value:[NSNumber numberWithInt:kCTUnderlineStyleSingle]
-                                range:rangeOfTOSLink];
-    [attributedLegalText addAttribute:(NSString *)kCTUnderlineStyleAttributeName
-                                value:[NSNumber numberWithInt:kCTUnderlineStyleSingle]
-                                range:rangeOfPrivacyPolicyLink];
-    self.legalTextView.attributedText = attributedLegalText;
-    self.legalTextView.textAlignment = NSTextAlignmentCenter;
-    self.legalTextView.linkTextAttributes = legalTextAttributes;
-    self.legalTextView.linkDelegate = self;
-    self.legalTextView.linkTextTouchAttributes = legalTextHighlightAttributes;
-
+    
+    NSAttributedString *legalIntoText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"By signing up you are agreeing to our", nil)
+                                                                        attributes:legalAttributes];
+    NSAttributedString *tosText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"terms of service", nil)
+                                                                  attributes:legalAttributesWithUnderline];
+    NSAttributedString *ppText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"privacy policy", nil)
+                                                                 attributes:legalAttributesWithUnderline];
+    self.legalIntroLabel.attributedText = legalIntoText;
+    [self.termsOfServiceButton setAttributedTitle:tosText forState:UIControlStateNormal];
+    [self.privacyPolicyButton setAttributedTitle:ppText forState:UIControlStateNormal];
     [self.dependencyManager addBackgroundToBackgroundHost:self];
-}
-
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-    // Text was scrolled out of frame without this.
-    self.legalTextView.contentOffset = CGPointZero;
 }
 
 #pragma mark - Storyboard
@@ -170,6 +145,16 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
     [self.delegate selectedFacebookAuthorization];
 }
 
+- (IBAction)showTermsOfService:(id)sender
+{
+    [self.delegate showTermsOfService];
+}
+
+- (IBAction)showPrivacyPolicy:(id)sender
+{
+    [self.delegate showPrivacyPolicy];
+}
+
 #pragma mark - Helpers
 
 - (void)showErrorWithMessage:(NSString *)message
@@ -187,20 +172,6 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
     return self.view;
 }
 
-#pragma mark - CCHLinkTextViewDelegate
-
-- (void)linkTextView:(CCHLinkTextView *)linkTextView didTapLinkWithValue:(id)value
-{
-    if ([value isEqualToString:kTermsOfServiceLinkValue])
-    {
-        [self.delegate showTermsOfService];
-    }
-    else
-    {
-        [self.delegate showPrivacyPolicy];
-    }
-}
-
 #pragma mark - Internal Methods
 
 - (void)setupSigninOptions
@@ -212,7 +183,7 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
     NSArray *options = [self.dependencyManager arrayForKey:kSigninOptionsKey];
     
     UIButton *firstButton = [self buttonForLoginType:[options firstObject]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.legalTextView
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.legalButtonContainer
                                                           attribute:NSLayoutAttributeBottom
                                                           relatedBy:NSLayoutRelationEqual
                                                              toItem:firstButton

@@ -23,6 +23,10 @@
 #import "VSequenceExpressionsObserver.h"
 #import "VCellSizeCollection.h"
 #import "VCellSizingUserInfoKeys.h"
+#import "VActionButtonAnimationController.h"
+#import "VListicleView.h"
+#import "VEditorializationItem.h"
+#import "VStream.h"
 
 // These values must match the constraint values in interface builder
 static const CGFloat kSleekCellHeaderHeight = 50.0f;
@@ -30,8 +34,7 @@ static const CGFloat kSleekCellActionViewHeight = 48.0f;
 static const CGFloat kCaptionToPreviewVerticalSpacing = 7.0f;
 static const CGFloat kMaxCaptionTextViewHeight = 200.0f;
 static const CGFloat kCountsTextViewMinHeight = 29.0f;
-static const UIEdgeInsets kCaptionMargins = { 0.0f, 28.0f, 5.0f, 28.0f };
-static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
+static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
 
 @interface VSleekStreamCollectionCell () <VBackgroundContainer, CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate>
 
@@ -46,8 +49,13 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
 @property (nonatomic, weak ) IBOutlet NSLayoutConstraint *captionHeight;
 @property (nonatomic, strong) UIView *dimmingContainer;
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
+@property (nonatomic, strong) VActionButtonAnimationController *actionButtonAnimationController;
 @property (nonatomic, weak) IBOutlet VSequenceCountsTextView *countsTextView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *captiontoPreviewVerticalSpacing;
+@property (nonatomic, strong) IBOutlet VListicleView *listicleView;
+@property (nonatomic, readwrite) VStreamItem *streamItem;
+@property (nonatomic, strong) VEditorializationItem *editorialization;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *textViewConstraint;
 
 @end
 
@@ -58,11 +66,14 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
     [super awakeFromNib];
     
     self.previewContainer.clipsToBounds = YES;
-    self.captionTextView.textContainerInset = kCaptionInsets;
+    self.captionTextView.contentInset = UIEdgeInsetsZero;
+    self.captionTextView.textContainer.lineFragmentPadding = 0.0f;
+    self.captionTextView.textContainerInset = UIEdgeInsetsZero;
     self.captionTextView.linkDelegate = self;
     [self setupDimmingContainer];
     
     self.countsTextView.textSelectionDelegate = self;
+    self.actionButtonAnimationController = [[VActionButtonAnimationController alloc] init];
 }
 
 + (VCellSizeCollection *)cellLayoutCollection
@@ -82,7 +93,7 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
                  NSDictionary *attributes = [self sequenceDescriptionAttributesWithDependencyManager:dependencyManager];
                  CGFloat textWidth = size.width - kCaptionMargins.left - kCaptionMargins.right;
                  textHeight = VCEIL( [sequence.name frameSizeForWidth:textWidth andAttributes:attributes].height );
-                 textHeight += kCaptionInsets.top + kCaptionInsets.bottom;
+                 textHeight += kCaptionMargins.top + kCaptionMargins.bottom;
              }
              return CGSizeMake( 0.0f, textHeight );
          }];
@@ -131,6 +142,12 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
 
 #pragma mark - VHasManagedDependencies
 
+- (void)setStream:(VStream *)stream
+{
+    _stream = stream;
+    [self updateListicleForSequence:self.sequence andStream:self.stream];
+}
+
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager
 {
     if (_dependencyManager == dependencyManager)
@@ -154,6 +171,10 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
     if ([self.captionTextView respondsToSelector:@selector(setDependencyManager:)])
     {
         [self.captionTextView setDependencyManager:dependencyManager];
+    }
+    if ([self.listicleView respondsToSelector:@selector(setDependencyManager:)])
+    {
+        [self.listicleView setDependencyManager:dependencyManager];
     }
     
     [self.countsTextView setTextHighlightAttributes:[[self class] sequenceCountsActiveAttributesWithDependencyManager:dependencyManager]];
@@ -184,16 +205,24 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
     self.headerView.sequence = sequence;
     self.sleekActionView.sequence = sequence;
     [self updateCaptionViewForSequence:sequence];
-    [self.previewContainer removeConstraint:self.previewContainerHeightConstraint];
     [self setNeedsUpdateConstraints];
     
     __weak typeof(self) welf = self;
     self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
     [self.expressionsObserver startObservingWithSequence:sequence onUpdate:^
      {
-         welf.sleekActionView.likeButton.selected = sequence.isLikedByMainUser.boolValue;
-         [welf updateCountsTextViewForSequence:sequence];
+         typeof(self) strongSelf = welf;
+         [strongSelf updateCountsTextViewForSequence:sequence];
+         [strongSelf.actionButtonAnimationController setButton:strongSelf.sleekActionView.likeButton
+                                                      selected:sequence.isLikedByMainUser.boolValue];
+         [strongSelf.actionButtonAnimationController setButton:strongSelf.sleekActionView.repostButton
+                                                      selected:sequence.hasReposted.boolValue];
      }];
+}
+
+- (BOOL)needsAspectRatioUpdateForSequence:(VSequence *)sequence
+{
+    return self.previewContainerHeightConstraint.multiplier != 1.0f / [sequence previewAssetAspectRatio];
 }
 
 - (void)updateCountsTextViewForSequence:(VSequence *)sequence
@@ -227,17 +256,22 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
 - (void)updateConstraints
 {
     // Add new height constraint for preview container to account for aspect ratio of preview asset
-    CGFloat aspectRatio = [self.sequence previewAssetAspectRatio];
-    NSLayoutConstraint *heightToWidth = [NSLayoutConstraint constraintWithItem:self.previewContainer
-                                                                     attribute:NSLayoutAttributeHeight
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:self.previewContainer
-                                                                     attribute:NSLayoutAttributeWidth
-                                                                    multiplier:(1 / aspectRatio)
-                                                                      constant:0.0f];
-    [self.previewContainer addConstraint:heightToWidth];
-    self.previewContainerHeightConstraint = heightToWidth;
-    
+    if ( [self needsAspectRatioUpdateForSequence:self.sequence] )
+    {
+        CGFloat aspectRatio = [self.sequence previewAssetAspectRatio];
+        [self.previewContainer removeConstraint:self.previewContainerHeightConstraint];
+        NSLayoutConstraint *heightToWidth = [NSLayoutConstraint constraintWithItem:self.previewContainer
+                                                                         attribute:NSLayoutAttributeHeight
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:self.previewContainer
+                                                                         attribute:NSLayoutAttributeWidth
+                                                                        multiplier:(1.0f / aspectRatio)
+                                                                          constant:0.0f];
+        [self.previewContainer addConstraint:heightToWidth];
+        self.previewContainerHeightConstraint = heightToWidth;
+    }
+    self.textViewConstraint.constant = self.sleekActionView.leftMargin;
+    self.countsTextView.textContainer.lineFragmentPadding = 0.0f;
     [super updateConstraints];
 }
 
@@ -276,6 +310,24 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
         self.captionHeight.constant = kMaxCaptionTextViewHeight;
     }
     [self layoutIfNeeded];
+}
+
+- (void)updateListicleForSequence:(VSequence *)sequence andStream:(VStream *)stream
+{
+    // Headline depends on both the sequence AND the stream
+    NSString *apiPath = stream.apiPath;
+    self.editorialization = [sequence editorializationForStreamWithApiPath:apiPath];
+    BOOL hasHeadline = self.editorialization.headline.length > 0;
+    if (hasHeadline && (self.editorialization.headline != nil))
+    {
+        self.listicleView.hidden = NO;
+        self.listicleView.headlineText = self.editorialization.headline;
+    }
+}
+
+- (void)prepareForReuse
+{
+    self.listicleView.hidden = YES;
 }
 
 #pragma mark - VBackgroundContainer
@@ -331,18 +383,25 @@ static const UIEdgeInsets kCaptionInsets = { 4.0, 0.0, 0.0, 4.0 };
 {
     CGSize base = CGSizeMake( CGRectGetWidth(bounds), 0.0 );
     NSDictionary *userInfo = @{ kCellSizingSequenceKey : sequence,
-                                VCellSizeCacheKey : sequence.name ?: @"",
+                                VCellSizeCacheKey : [self cacheKeyForSequence:sequence],
                                 kCellSizingDependencyManagerKey : dependencyManager };
     return [[[self class] cellLayoutCollection] totalSizeWithBaseSize:base userInfo:userInfo];
 }
 
-#pragma mark - VStreamCellFocus
++ (NSString *)cacheKeyForSequence:(VSequence *)sequence
+{
+    NSString *name = sequence.name ?: @"";
+    NSString *aspectRatioString = [NSString stringWithFormat:@"%.5f", [sequence previewAssetAspectRatio]];
+    return [name stringByAppendingString:aspectRatioString];
+}
+
+#pragma mark - VCellFocus
 
 - (void)setHasFocus:(BOOL)hasFocus
 {
-    if ([self.previewView conformsToProtocol:@protocol(VStreamCellFocus)])
+    if ([self.previewView conformsToProtocol:@protocol(VCellFocus)])
     {
-        [(id <VStreamCellFocus>)self.previewView setHasFocus:hasFocus];
+        [(id <VCellFocus>)self.previewView setHasFocus:hasFocus];
     }
 }
 

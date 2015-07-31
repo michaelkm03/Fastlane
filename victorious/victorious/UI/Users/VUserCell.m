@@ -13,7 +13,7 @@
 #import "VUser.h"
 #import "VDependencyManager.h"
 #import "VDefaultProfileButton.h"
-#import "VFollowUserControl.h"
+#import "VFollowControl.h"
 #import "VDefaultProfileImageView.h"
 #import "UIImageView+VLoadingAnimations.h"
 #import <KVOController/FBKVOController.h>
@@ -24,7 +24,7 @@ static const CGFloat kUserCellHeight = 51.0f;
 
 @property (weak, nonatomic) IBOutlet VDefaultProfileImageView *userImageView;
 @property (nonatomic, weak) IBOutlet UILabel *userName;
-@property (nonatomic, weak) IBOutlet VFollowUserControl *followControl;
+@property (nonatomic, weak) IBOutlet VFollowControl *followControl;
 @property (nonatomic, strong) VUser *user;
 
 @end
@@ -94,37 +94,57 @@ static const CGFloat kUserCellHeight = 51.0f;
 
 #pragma mark - Target/Action
 
-- (IBAction)tappedFollowControl:(VFollowUserControl *)sender
+- (IBAction)tappedFollowControl:(VFollowControl *)sender
 {
-    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withCompletion:)
-                                                                      withSender:nil];
-    NSAssert(followResponder != nil, @"VUserCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
-    sender.enabled = NO;
-    if (sender.following)
+    if ( sender.controlState == VFollowControlStateLoading )
     {
-        [followResponder unfollowUser:self.user withCompletion:^(VUser *userActedOn)
-         {
-             sender.enabled = YES;
-         }];
+        return;
+    }
+    
+    void (^authorizedBlock)() = ^
+    {
+        [sender setControlState:VFollowControlStateLoading
+                       animated:YES];
+    };
+    
+    void (^completionBlock)(VUser *) = ^(VUser *userActedOn)
+    {
+        [self updateFollowingAnimated:YES];
+    };
+    
+    if (sender.controlState == VFollowControlStateFollowed)
+    {
+        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:)
+                                                                          withSender:nil];
+        NSAssert(followResponder != nil, @"VUserCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
+        
+        [followResponder unfollowUser:self.user
+                  withAuthorizedBlock:authorizedBlock
+                        andCompletion:completionBlock];
     }
     else
     {
-        [followResponder followUser:self.user withCompletion:^(VUser *userActedOn)
-         {
-             sender.enabled = YES;
-         }];
+        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:)
+                                                                          withSender:nil];
+        NSAssert(followResponder != nil, @"VUserCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
+        
+        [followResponder followUser:self.user
+                  withAuthorizedBlock:authorizedBlock
+                        andCompletion:completionBlock];
     }
 }
-
-#pragma mark - Private Methods
 
 - (void)updateFollowingAnimated:(BOOL)animated
 {
     // If this is the currently logged in user, then hide the follow button
     VUser *me = [[VObjectManager sharedManager] mainUser];
     self.followControl.hidden = [self.user isEqual:me];
-    [self.followControl setFollowing:[me.following containsObject:self.user]
-                            animated:animated];
+    VFollowControlState desiredControlState = [VFollowControl controlStateForFollowing:[me.following containsObject:self.user]];
+    if ( self.followControl.controlState != desiredControlState )
+    {
+        [self.followControl setControlState:desiredControlState
+                                   animated:animated];
+    }
 }
 
 @end

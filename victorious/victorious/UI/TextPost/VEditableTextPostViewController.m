@@ -18,7 +18,7 @@
 #import "UIView+AutoLayout.h"
 #import "CCHLinkGestureRecognizer.h"
 
-static NSString * const kDefaultTextKey = @"defaultText";
+NSString * const kDefaultTextKey = @"defaultText";
 static NSString * const kCharacterLimit = @"characterLimit";
 static const CGFloat kAccessoryViewHeight = 44.0f;
 
@@ -215,9 +215,21 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     if ( self.text.length == 0 && self.hashtagHelper.embeddedHashtags.count == 0 )
     {
         self.isShowingPlaceholderText = YES;
-        self.text = NSLocalizedString(self.placeholderText, @"");
+        NSString *attachment = self.defaultHashtag? [VHashTags stringWithPrependedHashmarkFromString:self.defaultHashtag] : @"";
+        self.text = [NSLocalizedString(self.placeholderText, @"") stringByAppendingString:attachment];
         self.textView.alpha = 0.5f;
-        self.textView.selectedRange = NSMakeRange( self.textView.text.length, 0 );
+        
+        NSRange cursorPosition = NSMakeRange( self.textView.text.length, 0 );
+        if (self.defaultHashtag != nil)
+        {
+            cursorPosition = NSMakeRange( 0, 0 );
+        }
+        
+        // Set proper cursor position
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            self.textView.selectedRange = cursorPosition;
+        });
     }
 }
 
@@ -225,10 +237,19 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 {
     if ( self.isShowingPlaceholderText )
     {
-        NSString *text = [self.textView.text stringByReplacingOccurrencesOfString:self.placeholderText withString:@""];
+        // Add a space before the default hashtag if there is one
+        NSString *replacementString = self.defaultHashtag != nil ? @" " : @"";
+        NSString *text = [self.textView.text stringByReplacingOccurrencesOfString:NSLocalizedString(self.placeholderText, @"")
+                                                                       withString:replacementString];
         self.text = text;
         self.isShowingPlaceholderText = NO;
         self.textView.alpha = 1.0;
+        
+        // Move cursor in front of default hashtag
+        if (self.defaultHashtag != nil)
+        {
+            self.textView.selectedRange = NSMakeRange(0, 0);
+        }
     }
 }
 
@@ -290,7 +311,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     
     [self hidePlaceholderText];
     
-    return textAfter.length < self.characterCountMax;
+    return textAfter.length <= self.characterCountMax;
 }
 
 #pragma mark - Setting background image and color

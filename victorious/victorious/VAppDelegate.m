@@ -26,7 +26,6 @@
 #import <Crashlytics/Crashlytics.h>
 
 #import "VFlurryTracking.h"
-#import "VGoogleAnalyticsTracking.h"
 #import "VPurchaseManager.h"
 #import "UIStoryboard+VMainStoryboard.h"
 
@@ -60,8 +59,6 @@ static BOOL isRunningTests(void) __attribute__((const));
     [VObjectManager setupObjectManagerWithUploadManager:[VUploadManager sharedManager]];
 
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
-    
-    [[VTrackingManager sharedInstance] addDelegate:[[VGoogleAnalyticsTracking alloc] init]];
     
     VFlurryTracking *flurryTracking = [[VFlurryTracking alloc] init];
     flurryTracking.unwantedParameterKeys = @[ VTrackingKeySequenceId, VTrackingKeyUrls, VTrackingKeyStreamId, VTrackingKeyTimeStamp ];

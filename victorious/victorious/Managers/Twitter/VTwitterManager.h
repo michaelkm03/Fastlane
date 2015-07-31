@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "VPermission.h"
 
 /**
  *  Describes the completion block of the refreshTwitterTokenWithIdentifier:fromViewController:completionBlock:.
@@ -26,6 +27,12 @@ extern NSString * const VTwitterManagerErrorDomain;
  *  The Twitter acounts manager already shows an alert in these cases.
  */
 extern CGFloat const VTwitterManagerErrorCanceled;
+
+/**
+ *  Error code representing that we failed to get the user's access token.
+ *  The Twitter acounts manager DOES NOT show an alert in these cases.
+ */
+extern CGFloat const VTwitterManagerErrorFailed;
 
 @interface VTwitterManager : NSObject
 

@@ -18,6 +18,8 @@
 
 #import <KVOController/FBKVOController.h>
 
+@import AudioToolbox;
+
 const CGFloat VExperienceEnhancerDesiredMinimumHeight = 60.0f;
 
 static const CGFloat kExperienceEnhancerSelectionScale = 1.5f;
@@ -90,6 +92,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(VExperienceEnhancerCell *cell, NSUInteger idx, BOOL *stop)
     {
         cell.enabled = _enabled;
+        [cell startCooldown];
     }];
 }
 
@@ -137,7 +140,26 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     experienceEnhancerCell.isLocked = enhancerForIndexPath.isLocked;
     experienceEnhancerCell.enabled = self.enabled;
     experienceEnhancerCell.dependencyManager = self.dependencyManager;
+    
+    // Update cooldown values
+    [self updateCooldownValuesForEnhancerCell:experienceEnhancerCell enhancer:enhancerForIndexPath];
+
+    if (self.enabled)
+    {
+        // Start cooldown animation if necessary
+        [experienceEnhancerCell startCooldown];
+    }
+    
     return experienceEnhancerCell;
+}
+
+- (void)updateCooldownValuesForEnhancerCell:(VExperienceEnhancerCell *)cell enhancer:(VExperienceEnhancer *)enhancer
+{
+    // Start value should be how much we've already waited
+    cell.cooldownStartValue = [enhancer ratioOfCooldownComplete];
+    // End value is always 1
+    cell.cooldownEndValue = 1.0f;
+    cell.cooldownDuration = [enhancer secondsUntilCooldownIsOver];
 }
 
 #pragma mark - KVOConroller
@@ -174,7 +196,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     {
         return;
     }
-   
+    
     if ( ![VObjectManager sharedManager].authorized )  // Check if the user is logged in first
     {
         id<VExperienceEnhancerResponder>responder = [self v_targetConformingToProtocol:@protocol(VExperienceEnhancerResponder)];
@@ -196,6 +218,7 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
 - (void)selectExperienceEnhancerAtIndexPath:(NSIndexPath *)indexPath
 {
     VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
+    VExperienceEnhancerCell *experienceEnhancerCell = (VExperienceEnhancerCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
     if ( enhancerForIndexPath.isLocked  ) // Check if the user must buy this experience enhancer first
     {
         id<VExperienceEnhancerResponder>responder = [self v_targetConformingToProtocol:@protocol(VExperienceEnhancerResponder)];
@@ -205,32 +228,38 @@ static const CGFloat kExperienceEnhancerSelectionAnimationDecayDuration = 0.2f;
     else
     {
         // Increment the vote count
-        [enhancerForIndexPath vote];
-        
-        // Call the selection block (configured in VNewContentViewController) to play the animations
-        if ( self.selectionBlock != nil )
+        if ( [enhancerForIndexPath vote] )
         {
-            UICollectionViewCell *selectedCell = [self.collectionView cellForItemAtIndexPath:indexPath];
-            CGPoint convertedCenter = [selectedCell.superview convertPoint:selectedCell.center toView:self];
-            self.selectionBlock(enhancerForIndexPath, convertedCenter);
-        }
-        
-        if ( [self.delegate respondsToSelector:@selector(experienceEnhancerSelected:)] )
-        {
-            [self.delegate experienceEnhancerSelected:enhancerForIndexPath];
+            // Restart cooldown
+            [self updateCooldownValuesForEnhancerCell:experienceEnhancerCell enhancer:enhancerForIndexPath];
+            [experienceEnhancerCell startCooldown];
+            
+            // Call the selection block (configured in VNewContentViewController) to play the animations
+            if ( self.selectionBlock != nil )
+            {
+                UICollectionViewCell *selectedCell = [self.collectionView cellForItemAtIndexPath:indexPath];
+                CGPoint convertedCenter = [selectedCell.superview convertPoint:selectedCell.center toView:self];
+                self.selectionBlock(enhancerForIndexPath, convertedCenter);
+            }
+            
+            if ( [self.delegate respondsToSelector:@selector(experienceEnhancerSelected:)] )
+            {
+                [self.delegate experienceEnhancerSelected:enhancerForIndexPath];
+            }
         }
     }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
+
     if ( !self.enabled )
     {
         return;
     }
     
-    VExperienceEnhancer *enhancerForIndexPath = [self.enhancers objectAtIndex:indexPath.row];
-    if ( enhancerForIndexPath.isLocked  )
+    if ( enhancerForIndexPath.isLocked || [enhancerForIndexPath isCoolingDown] )
     {
         return;
     }

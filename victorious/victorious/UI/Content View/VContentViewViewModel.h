@@ -12,6 +12,7 @@
 #import "VExperienceEnhancerController.h"
 #import "VHistogramDataSource.h"
 #import "VAbstractFilter+RestKit.h"
+#import "VPublishParameters.h"
 
 @protocol VContentViewViewModelDelegate <NSObject>
 
@@ -108,7 +109,7 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 - (void)loadNextSequenceSuccess:(void(^)(VSequence *))success failure:(void(^)(NSError *))failure;
 
 - (void)addCommentWithText:(NSString *)text
-                  mediaURL:(NSURL *)mediaURL
+         publishParameters:(VPublishParameters *)publishParameters
                   realTime:(CMTime)realTime
                 completion:(void (^)(BOOL succeeded))completion;
 

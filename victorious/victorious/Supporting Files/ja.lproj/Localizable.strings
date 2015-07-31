@@ -1,0 +1,703 @@
+/* 
+  Localizable.strings
+  victorious
+
+  Created by Gary Philipp on 12/23/13.
+  Copyright (c) 2013 Victorious Inc. All rights reserved.
+*/
+"Home" = "ホーム";
+"Create" = "作成";
+"Channel" = "チャンネル";
+"Channels" = "チャンネル";
+"Community" = "コミュニティ";
+"Owner" = "所有者";
+"Inbox" = "受信ボックス";
+"Store" = "ストア";
+"Messages" = "メッセージ";
+"Notifications" = "通知";
+"Comments" = "コメント";
+"Remixes" = "リミックス";
+"GIFs" = "GIF";
+"Memes" = "ミーム";
+"OK" = "OK";
+"CancelButton" = "キャンセル";
+"DeleteButton" = "削除";
+"ConfirmButton" = "確認";
+"Reply" = "返信";
+"ResetButton" = "リセット";
+"YesButton" = "はい";
+"NoButton" = "いいえ";
+"BackButton" = "戻る";
+"Exit" = "修了";
+"Publish" = "公開";
+"Publishing..." = "公開処理中…";
+"Rendering..." = "レンダリング中…";
+"Next" = "次へ";
+"Done" = "完了";
+"More" = "詳細";
+"Quote" = "引用";
+"Meme" = "ミーム";
+"Share" = "共有";
+"Discover" = "発見";
+"Profile" = "プロフィール";
+"Settings" = "設定";
+"Save" = "保存";
+"Continue" = "続行";
+"Loading..." = "読み込み中…";
+"Finding fans to connect with..." = "繋がれるファンを検索中...";
+
+"Featured" = "特集中";
+"Recent" = "新着";
+"Following" = "フォロー中";
+"FOLLOWERS" = "フォロワー";
+"FOLLOWING" = "フォロー中";
+"NumStreams" = "%@ 件のストリーム";
+"NumItems" = "%@ 個のアイテム";
+
+"Keep up to date with users and hashtags you're following here" = "こちらでフォローしているユーザーやハッシュタグの最新情報を入手しましょう";
+"View content from users and hashtags you're following here" = "こちらでフォローしているユーザーやハッシュタグのコンテンツを確認しましょう";
+"Tap here to view posts from the entire community" = "ここをタップすれば全コミュニティの投稿を確認できます";
+"Tap here to view posts from other fans" = "ここをタップすればその他のファンの投稿を確認できます";
+"View posts from the entire community here" = "こちらで全コミュニティの投稿を確認しましょう";
+"View posts from other fans here" = "こちらでその他のファンの投稿を確認しましょう";
+"Tap here to watch my exclusive videos" = "ここをタップすれば私の限定動画を観ることができます";
+"Tap here to watch exclusive videos" = "ここをタップすれば限定動画を観ることができます";
+"Tap here to watch my videos" = "ここをタップすれば私の動画を観ることができます";
+"Tap here to watch videos" = "ここをタップすれば動画を観ることができます";
+"Watch my exclusive videos here" = "こちらで私の限定動画を観てください";
+"Watch exclusive videos here" = "こちらで限定動画を観てください";
+"Watch my videos here" = "こちらで私の動画を観てください";
+"Watch videos here" = "こちらで動画を観てください";
+"Tap here to create your first post" = "ここをタップして初めての投稿を作成しましょう";
+"Tap here to create a post" = "ここをタップして投稿を作成しましょう";
+"Tap here and create a post now!" = "ここをタップして、今すぐ投稿を作成しましょう！";
+
+"TimeSeparator" = ":";
+"InvalidTimePlaceholder" = "-:--";
+"%ld+" = "%ld+";
+
+"Login" = "ログイン";
+"Log in here" = "ログインはこちら";
+"Already Registered?" = "すでに登録済みですか？";
+"Get Started" = "始め方";
+"Forgot Password?" = "パスワードをお忘れですか？";
+"Reset here" = "リセットはこちら";
+"SetupButton" = "初期設定";
+"EmailValidation" = "無効なメールアドレスです";
+"Minimum 8 characters" = "最短8文字";
+"PasswordValidation" = "パスワードが8文字以下です";
+"UsernameValidation" = "ユーザー名が8文字以下です";
+"AgreeTOS" = "あなたの年齢が13歳以上であり、利用規約に同意されたことをクリックしてください";
+"InvalidCredentials" = "無効な認証情報です";
+"PasswordNotMatching" = "パスワードが一致しません";
+"PollAlreadyAnswered" = "アンケート結果はすでに回答済みです";
+"LoginFail" = "ログインに失敗";
+"GenericFailMessage" = "おっと！ 何か問題が起きたようです。";
+"FacebookLoginFailed" = "Facebookでのログインに失敗。もう一度お試しください。";
+"NotLoggedInMessage" = "おっと！ まだログインされていないようです。";
+"SignupFail" = "アカウント作成に失敗";
+"AccountUpdateFail" = "アカウント更新に失敗";
+"You're not logged in!" = "現在ログインしていません！";
+"ProfileNotLoggedInMessage" = "まだ閲覧できる内容がありません！ とりあえずは私達のコミュニティに参加していただき、ありがとうございます。アカウントを作成してあなたらしさを皆に見せてあげましょう。";
+"ProfileSaveFail" = "サーバーエラーのため、あなたのプロフィール情報が保存されませんでした";
+"ProfileSave" = "あなたのプロフィールをアップロード中";
+"ProfileIncomplete" = "プロフィールが未完成です";
+"ProfileAborted" = "プロフィールが完成するまで一部の機能を利用できません。";
+"ProfileRequired" = "次のご提供をお願いします:";
+"ProfileRequiredPhoto" = "あなたのプロフィール画像";
+"ProfileNameSpaces" = "プロフィール名を空白にすることはできません。";
+"ProfileRequiredName" = "あなたのお名前";
+"ProfileRequiredToS" = "当社利用規約への同意";
+"ProfileRequiredTagLine" = "あなたのキャッチフレーズ";
+"ProfileUpdateFailed" = "プロフィール更新に失敗";
+"Profile load failed!" = "プロフィールの読み込みに失敗！";
+
+"User already exists" = "このユーザーはすでに存在します";
+"User already exists but the password is incorrect" = "既存のユーザーですがパスワードが間違っています。";
+"Invalid email address or password" = "無効なメールアドレスもしくはパスワードです";
+"Sorry, I can't display that right now" = "ごめんなさい、そちらは現在表示できません";
+
+"WereSorry" = "ごめんなさい";
+"ErrorOccured" = "何かしらの理由でサーバーに接続できません。また後ほどお試しください！";
+
+"NoEmail" = "メールアカウントがありません";
+"NoEmailDetail" = "メールアカウントがありません。今すぐアカウントを設定しますか？";
+"EmailFail" = "メール送信に失敗";
+"SMSFail" = "SMS送信に失敗";
+"CouldNotSend" = "メッセージが送信されませんでした";
+
+"Missing Content" = "あらら！";
+"Missing Content Message" = "お探しのものを見つけられませんでした！";
+
+"MissingMedia" = "写真が2枚必要です。";
+"QuestionTextToShort" = "質問は長さ2文字以上を記入してください。";
+"AnswerTextToShort" = "解答は長さ2文字以上を記入してください。";
+
+"NoMessagesTitle" = "新着メッセージなし";
+"NoMessagesMessage" = "このアプリを利用している人なら誰にでもメッセージを送れます！ その人のプロフィールを開いて、画面右上の新規作成アイコンをクリックするだけ。";
+
+"NoNotificationsTitle" = "新着の通知はありません";
+"NoNotificationsMessage" = "コメントやリミックス、新規コンテンツの投稿などでコミュニティに関わっていくことで、皆もあなたに関わってくれます。彼らの反応はこちらから見られます。";
+
+"NoCommentsTitle" = "最初のコメントを投稿しましょう！";
+"NoCommentsMessage" = "テキスト、写真もしくは動画コメントを投稿して、他の皆がなんていうか見てみましょう！";
+"LeaveACommentAt" = "コメントを投稿 @";
+"LeaveAComment" = "コメントを投稿する";
+
+"NoFollowersTitle" = "むむっ！ まだ誰もあなたをフォローしていません";
+"NoFollowersMessage" = "コメントやリミックス、新規コンテンツの投稿などでコミュニティに関わって、あなた自身のフォロワーを募りましょう。";
+
+"NotFollowingTitle" = "ああっと！ まだ誰もフォローしていません";
+"NotFollowingMessage" = "他の人をフォローして、あなたのストリーム上に彼らのコンテンツを表示できます。新たなコンテンツを探したり、新しい友達を作ったりするのに最適です。";
+
+"NoLikersMessage" = "お気に入りのコンテンツを「いいね」してあなたにとって大事なものをコミュニティーに見せよう。";
+"NoLikersTitle" = "誰も「いいね」していません...今はまだ！";
+
+"ProfileNoFollowersTitle" = "このユーザー最初のフォロワーになりましょう";
+"ProfileNoFollowersMessage" = "他のユーザーをフォローしてコミュニティを形成しましょう。その人が新しいコンテンツを投稿すると通知を受け取れます。";
+
+"ProfileNotFollowingTitle" = "あれっ！ この人はまだ誰もフォローしてません";
+"ProfileNotFollowingMessage" = "他のユーザーをフォローしてコミュニティを作り、彼らにあなたをフォローしてもらいましょう。";
+
+"SuggestedFollowersNone" = "フォロワーなし";
+"SuggestedFollowersSing" = "%@人のフォロワー";
+"SuggestedFollowersPlur" = "%@人のフォロワー";
+"SuggestedFollowersK" = "%@人のフォロワー";
+
+"NoRepostersTitle" = "最初に再投稿しちゃいましょう！";
+"NoRepostersMessage" = "このコンテンツをあなたのフォロワーたちと共有しましょう！";
+
+"NoGiffersTitle" = "最初にGIFにしちゃいましょう！";
+"NoGiffersMessage" = "この動画のお気に入りの部分を選んでGIFを作成して、他のファンとシェアしよう！";
+
+"NoMemersTitle" = "最初にミームにしちゃいましょう！";
+"NoMemersMessage" = "ミームを作ってこのコンテンツを自分の作品にして他のファンとシェアしよう！";
+
+// strings for both UGC and creator
+"UGCSharePollFormat" = "このアンケートを見てみて！"; //Check out this poll! <URL>
+/* Check out this video! <URL> */
+"UGCShareVideoFormat" = "この動画を見てみて！";
+/* Check out this gif! <URL> */
+"UGCShareGIFFormat" = "このGIFアニメを見てみて！";
+/* Check out this photo! <URL> */
+"UGCShareImageFormat" = "この写真を見てみて！";
+/* Check out this post! <URL> */
+"UGCShareTextFormat" = "この投稿を見てみて！";
+"UGCShareLinkFormat" = "これを見てみて！";
+
+/* Check out this post from the <creator name> app! */
+"EmailShareSubjectFormat" = "%@アプリのこの投稿を見てみて！";
+
+"Facebook" = "Facebook";
+"FacebookFailed" = "Facebookに接続できませんでした。";
+
+"Search people and hashtags" = "人の名前もしくはハッシュタグで検索";
+"No People Found In Search Title" = "該当する人が見つかりませんでした";
+"No people found in search" = "検索内容を調整してもう一度お試しください。";
+"No Hashtags Found In Search Title" = "タグが見つかりませんでした！";
+"No hashtags found in search" = "検索内容を調整してもう一度お試しください。";
+
+"SearchFailed" = "検索に失敗しました。";
+"ImageDownloadFailed" = "画像のダウンロードに失敗しました。";
+
+"TwitterDeniedTitle" = "あなたのTwitterアカウントにアクセスできませんでした";
+"TwitterDenied" = "[設定] > [プライバシー] > [Twitter]からTwitterアカウントへのアクセスを許可してください";
+"TwitterTroubleshooting" = "設定メニューであなたのTwitterアカウントの削除と再度追加をお試しください";
+
+"CameraRollDeniedTitle" = "あなたの写真にアクセスできませんでした";
+"CameraRollDenied" = "[設定] > [プライバシー]から写真へのアクセスを許可してください";
+"CameraFailed" = "カメラを起動できませんでした";
+"CameraSwitchFailed" = "カメラモードを切り替えることができませんでした";
+/* Button that opens the camera */
+"Camera" = "カメラ";
+/* Button that opens web search for images */
+"Search" = "検索する";
+/* Button that opens gallery to photo library for images and videos */
+"Gallery" = "ギャラリー";
+"StillCaptureFailed" = "写真を撮影できませんでした";
+"VideoCaptureFailed" = "動画を撮影できませんでした";
+"VideoSaveFailed" = "動画を保存できませんでした";
+"VideoCoachMessage" = "長押しで録画開始";
+"LibraryCaptureFailed" = "ライブラリのアイテムにアクセスできません";
+
+"NoTwitterTitle" = "Twitterアカウントが見つかりません！";
+"NoTwitterMessage" = "デバイス設定を開いて、新しいTwitterアカウントを追加してください。";
+
+"SelectTwitter" = "Twitterアカウントを選択してください";
+
+"HelpNeeded" = "ヘルプの欲しい内容…";
+
+"ReportInappropriate" = "不適切な内容を報告";
+"ReportedTitle" = "了解！";
+"ReportContentMessage" = "このコンテンツは24時間以内に審査されます。";
+"ReportCommentMessage" = "このコンテンツは24時間以内に審査されます。";
+"ReportUserMessage" = "このユーザーは24時間以内に審査されます";
+"CommentAlreadyReported" = "コメントはすでに報告済みです";
+
+"BlockUser" = "ユーザーをブロック";
+"CopyProfileURL" = "プロフィールURLをコピー";
+
+"Create a Video Post" = "動画投稿を作成";
+"Create an Image Post" = "画像投稿を作成";
+"Create a Poll" = "アンケートを作成";
+"Create a Text Post" = "このテキスト投稿を見てみて";
+
+"NEW POLL" = "新しいアンケート";
+"Ask a question..." = "質問する…";
+"Vote this" = "これに投票する";
+"Vote that" = "あれに投票する";
+"Create Poll" = "アンケート作成";
+
+"TranscodingMediaTitle" = "アップロード内容を変換中";
+"TranscodingMediaBody" = "アップロード内容の変換がいつも以上に時間が掛かっています。作業完了後に表示されます。";
+"PollUploadTitle" = "アンケートのアップロード失敗";
+"PollUploadBody" = "アンケートをサーバーにアップロードできませんでした";
+
+"UploadFailedTitle" = "メディアのアップロード失敗";
+"DuplicateVideoTitle" = "すでに存在する動画";
+"DuplicateVideoBody" = "アップロード中の動画はすでにアップロードされているようです。";
+
+"Uploading" = "あなたのコンテンツをアップロード中…";
+"UploadFinalizing" = "あなたの投稿は最終段階に入っています、あと少しで表示されます。";
+"UploadFailed" = "ごめんなさい、アップロードが失敗してしまいました。ご利用の接続を確認の上、もう一度お試しください。";
+"UploadSuccess" = "成功です！ 投稿がアップロードされました。";
+"UploadError" = "アップロードエラー";
+"UploadErrorBody" = "何かしらの問題が発生し、現時点ではアップロードを完了できませんでした。";
+"UploadCancelAreYouSure" = "本当にこのアップロードをキャンセルしてよろしいですか？";
+"YesCancelUpload" = "はい、アップロードをキャンセルします";
+"NoKeepUploading" = "いいえ、アップロードを続けます";
+"Cancelling..." = "キャンセルしています…";
+
+"RefreshError" = "更新できませんでした。";
+
+"MediaAlreadyCreated" = "メディアはすでに作成済みです。";
+
+"FollowError" = "このユーザーのフォロー開始中にエラーが発生しました。";
+"UnfollowError" = "このユーザーのフォロー解除中にエラーが発生しました。";
+
+"FollowingSectionHeader" = "すでにフォロー中です";
+"FacebookFollowingSectionHeader" = "Facebookフレンドをフォロー";
+"TwitterFollowingSectionHeader" = "Twitterフレンドをフォロー";
+"AddressBookFollowingSectionHeader" = "連絡先に登録している人をフォロー";
+
+"ConversationLoadError" = "会話を読み込めませんでした";
+"ConversationDelError" = "会話を削除できませんでした";
+"ConversationSendError" = "メッセージを送信できませんでした";
+
+"Normal" = "ノーマル";
+
+"ClosePreviewConfirm" = "ウィンドウを閉じて本当によろしいですか？ あなたの作品は失われてしまいます。";
+"Stay" = "そのままにする";
+"Close" = "閉じる";
+
+"PublishUpload" = "あなたのコンテンツがアップロード中です。";
+
+"PublishSucceeded" = "公開されました";
+"PublishSucceededDetail" = "あなたのメディアがサーバーへ送信されました。コンテンツが表示されるまで数分かかる場合があります。";
+
+"PublishDescriptionRequired" = "テキストが必要です";
+"PublishDescription" = "コンテンツのキャプションを入力してください。";
+
+"PublishDescriptionMinCharacters" = "もっと長い説明文を入力してください。";
+
+"Sorry, we were having some trouble on our end. Please retry." = "申し訳ありません。こちら側で問題があったようです。もう一度お試しください。";
+"We failed to retrieve publish permissions." = "公開の許可を取得するのに失敗しました。";
+"Retry" = "再試行";
+
+"ReplaceVideo" = "動画を入れ替える";
+
+"VideoPlayFailed" = "動画の読み込みに失敗しました。";
+"See More" = "詳細";
+"..." = "…";
+
+"PostWillExpire" = "投稿は期限切れになります";
+"CancelExpiration" = "期限を取り消しますか？";
+"CancelExirationConfirm" = "期限日付の設定を取り消して本当によろしいですか？";
+
+"Now" = "今";
+"SecondsAgo" = "%d秒";
+"MinuteAgo" = "1分間";
+"MinutesAgo" = "%d分間";
+"HourAgo" = "1時間";
+"HoursAgo" = "%d時間";
+"Yesterday" = "1日間";
+"DaysAgo" = "%d日間";
+"LastWeek" = "1週間";
+"WeeksAgo" = "%d週間";
+"LastMonth" = "1ヶ月間";
+"MonthsAgo" = "%dヶ月間";
+"LastYear" = "1年間";
+"YearsAgo" = "%d年間";
+
+"Minute" = "分";
+"Hour" = "時間";
+"Day" = "日";
+"Week" = "週間";
+"Month" = "ヶ月";
+
+"Minutes" = "分";
+"Hours" = "時間";
+"Days" = "日";
+"Weeks" = "週間";
+"Months" = "ヶ月";
+
+"JustAMoment" = "少々お待ちください";
+"LocatingVideo" = "動画を探しています…";
+"DownloadingVideo" = "動画をダウンロード中…";
+"Stitching" = "縫い合わせ中…";
+
+"SegmentDownloadFail" = "動画を取得できませんでした";
+
+"TryAgain" = "後ほど改めてお試しください。";
+
+"ExpiresOn" = "%@に期限が切れます";
+
+"Me" = "あなた";
+
+"Edit" = "編集する";
+"editProfileButton" = "プロフィール編集";
+"followers" = "フォロワー";
+"following" = "フォロー中";
+"follow" = "フォロー中";
+
+"ResetPassword" = "パスワードのリセット";
+"ResetPasswordPrompt" = "あなたのメールアドレスを入力してください。";
+"ResetPasswordPlaceholder" = "メールアドレス";
+
+"PasswordError" = "パスワードエラー";
+"ResetPasswordErrorExpiredTitle" = "リセット用コードの期限切れ";
+"ResetPasswordErrorExpiredMessage" = "別のリセットコードを新たに取得して、もう一度お試しください。";
+
+"ResetPasswordErrorInvalidTitle" = "現在のパスワードが無効";
+"ResetPasswordErrorIncorrectTitle" = "誤ったパスワード";
+"ResetPasswordErrorMessage" = "現在のパスワードを再度入力してください。";
+
+"ResetPasswordErrorFailTitle" = "パスワードのリセットエラー";
+"ResetPasswordErrorFailMessage" = "現在あなたのパスワードをリセットできません。後ほど改めてお試しください。";
+
+"ResetPasswordNewEqualsCurrentTitle" = "新しいパスワードが無効";
+"ResetPasswordNewEqualsCurrentMessage" = "現在のパスワードとは異なるパスワードを新たに入力してください。";
+
+"ResetPasswordConfirmCancelTitle" = "確認";
+"ResetPasswordConfirmCancelMessage" = "パスワードリセットを取り消してよろしいですか？";
+"ResetPasswordYesCancelButton" = "はい、キャンセルします";
+"ResetPasswordNoContinueButton" = "いいえ、続行します";
+
+"Error Resetting Password" = "パスワードのリセットエラー";
+"Please check your network connection or try again later." = "お使いのネットワーク接続をご確認するか、もう一度お試しください。";
+
+"EnterResetCodeMessage" = "こちらのアドレスにパスワードリセット手順の記載されたメールが送信されました。";
+"An email was sent to this address containing reset password instructions." = "こちらのアドレスにパスワードリセット手順の記載されたメールが送信されました。";
+"EnterCodeTitle" = "コード入力";
+"Resend Email" = "メールを再送信する";
+
+"EmailNotFound" = "入力されたメールアドレスが見つかりませんでした。このアカウント作成時に使用されたメールアドレスを入力してください。";
+"EmailNotValid" = "このアカウント作成時に使用されたメールアドレスを入力してください。";
+"Thanks" = "ありがとうございます！";
+"CannotVerify" = "アカウントの認証できません";
+"IncorrectCode" = "アカウントの認証に使用されたコードが間違っています";
+
+"Image Search" = "画像検索";
+"Pull up for more..." = "上へ引っぱってさらに表示…";
+"search for users" = "ユーザーを探す";
+"searching" = "検索中";
+"no results" = "該当結果なし";
+"No results" = "該当結果なし";
+
+"Invite" = "招待";
+"InviteYourFriends" = "お友達を招待しましょう！";
+"InviteUsingEmail" = "メールで招待";
+"InviteUsingSMS" = "SMSで招待";
+"InviteFriendsSubject" = "%@の新しいアプリを試してみて";
+"InviteFriendsBody" = "やっほー！\n\n%@から新しいアプリをダウンロードしてみました。私達の様な人達が交流するためのコミュニティなんです。ダウンロードはこちら：";
+
+"FindContacts" = "連絡先リストからフレンドを探す";
+"Access Your Contacts" = "あなたの連絡先にアクセス";
+"ContactsSafety" = "ご心配なく、ご連絡先の情報は安全です！フレンドを探すにはご連絡先情報を当社サーバーまで安全性の高い接続を介して送信する必要があります。";
+
+"AccessMicrophoneDenied" = "お使いのデバイスで動画を録画するには、[設定] > [プライバシー] > [マイク]からアクセスを許可してください";
+"AccessMicrophoneRestricted" = "お使いのデバイスにおける制限により、マイクにアクセスできませんでした。";
+"AccessLibraryRestricted" = "カメラロールからメディアにアクセスするには、[設定] > [プライバシー] > [写真]からアクセスを許可してください";
+"AccessCameraDenied" = "カメラを使用するには、[設定] > [プライバシー]からアクセスを許可してください";
+"AccessCameraRestricted" = "お使いのデバイスにおける制限により、カメラにアクセスできませんでした。";
+"UnableSelectVideo" = "動画を選択できませんでした。";
+
+"AccessContactsDenied" = "連絡先からフレンドを検索するには、[設定] > [プライバシー] > [連絡先]からアクセスを許可してください";
+"AccessContactsRestricted" = "お使いのデバイスにおける制限により、連絡先にアクセスできませんでした。";
+
+"FindFBFriends" = "Facebookからフレンドを探す";
+"Connect to Facebook" = "Facebookに接続する";
+"FBSafety" = "当社ではパスワードを保存せず、あなたの許可なしに何かを投稿することは決してありません。";
+
+"FindTwitterFriends" = "Twitterからフレンドを探す";
+"Connect to Twitter" = "Twitterに接続する";
+"TwitterSafety" = "当社ではパスワードを保存せず、あなたの許可なしに何かを投稿することは決してありません。";
+
+"FindInstagramFriends" = "Instagramでフレンドを探す";
+"Connect to Instagram" = "Instagramに接続する";
+
+"Logout" = "ログアウト";
+
+
+"UserBannedTitle" = "あちゃー！";
+"UserBannedMessage" = "残念ながらあなたのアカウントは停止されてしまいました。コンテンツを表示することはできますが、投稿したり、他の人と交流したりすることはできません。";
+
+"AddDescription" = "説明文を追加してください… それから #ハッシュタグ もお忘れなく";
+"AddDescriptionAnchor" = "#ハッシュタグ";
+"InsertTextHere" = "こちらにテキストを記入";
+
+"NotConnected" = "未接続";
+"ConnectedTo" = "%@に接続しています";
+
+"Version" = "バージョン %@";
+
+"ToSText" = "利用規約";
+"ToSAgreement" = "私の年齢は13歳以上であり、利用規約の内容に同意します";
+
+"Privacy Policy" = "プライバシーポリシー";
+
+"NoFriends" = "一致する結果なし";
+"NoFriendsDetail" = "このアプリをご利用中のお友達が見つかりませんでした。逆に彼らを招待しちゃいましょう！";
+
+/* e.g. "Username at 0:04" */
+"RTCUserPostedAtSyntax" = "%@ - %@";
+
+"Report/Flag" = "報告/フラグ";
+"CreatedBy" = "作成者";
+"remixes" = "リミックス";
+"Remix" = "リミックス";
+"RemixVerb" = "リミックス";
+"reposts" = "再投稿";
+"REPOSTS" = "再投稿";
+"REMIXES" = "リミックス";
+"Repost" = "再投稿";
+"Reposted" = "再投稿済";
+"RepostContentView" = "再投稿";
+"RepostedContentView" = "再投稿済";
+"Comment" = "コメント";
+
+"repostedByFormat" = "%@が再投稿";
+"doubleRepostedByFormat" = "%@と他1人が再投稿";
+"multipleRepostedByFormat" = "%@と他%lu人が再投稿";
+"+ %lu others" = "+ %lu人の人々";
+"remixedFromFormat" = "%@からのリミックス";
+"giffedFromFormat" = "%@からのGIFアニメ";
+
+"leaveACommentFormat" = "%@でコメントを投稿する";
+
+"facebook" = "Facebook";
+"twitter" = "Twitter";
+"tumblr" = "Tumblr";
+"saveToLibrary" = "ライブラリに保存する";
+
+"areYouSure" = "本当によろしいですか？";
+"contentIsntPublished" = "あなたのコンテンツはまだ公開されていません！ いま終了すると変更内容がすべて失われてしまいます。";
+"captionIsntPublished" = "あなたのコンテンツはまだ公開されていません！ いま戻るとキャプションが失われてしまいます。";
+
+"SupportEmailSubject" = "フィードバック";
+"SupportEmailSubjectWithName" = "%@に関するフィードバック";
+
+"DiscoverSuggestedPeopleError" = "申し訳ありません、提案されるユーザーを読み込めませんでした。";
+"DiscoverTrendingTagsError" = "申し訳ありません、トレンド中のタグを読み込めませんでした。";
+"Suggested People" = "提案されるユーザー";
+"Trending Tags" = "トレンド中のタグ";
+"Voters" = "人の投票者";
+
+"HashtagSubscribeError" = "申し訳ありません、このハッシュタグのフォロー開始時にエラーが発生しました。もう一度お試しください。";
+"HashtagUnsubscribeError" = "申し訳ありません、このハッシュタグのフォロー解除時にエラーが発生しました。もう一度お試しください。";
+
+"NoFollowingHashtagsTitle" = "ああっと！ まだフォローしているタグがありません";
+"NoFollowingHashtagsMessage" = "タグ付けされたアイテムをタップすることで、お気に入りコンテンツのリストを作成することができます。";
+
+"NoHashtagsTitle" = "こちらにハッシュタグがありません！";
+"NoHashtagsMessage" = "ハッシュタグ #%@ の付いた投稿はありませんでした。";
+
+"Type your feedback here..." = "あなたのフィードバックはこちらに入力…";
+"Device:" = "デバイス：";
+"OS Version:" = "OSバージョン：";
+"App Version:" = "アプリバージョン：";
+"AreYouSureYouWantToDelete" = "本当に削除してよろしいですか？";
+
+"ShareFacebook" = "Fjacebookでシェア";
+"ShareTwitter" = "Twitterでシェア";
+"OpenSafari" = "Safariで開く";
+"ShareSMS" = "SMSとして送信";
+
+"Delete this content and select something else?" = "このコンテンツを削除して別のものを選択しますか？";
+"Delete" = "削除";
+"Cancel" = "キャンセル";
+
+"PostFromCreator" = "%@からの投稿";
+"PostFromFollowed" = "あなたのフォロー中の人からの投稿";
+"NewComment" = "あなたの投稿に対する新着コメント";
+"PostOnFollowedHashTag" = "フォロー中のハッシュタグへの投稿";
+"NewPrivateMessage" = "新着のプライベートメッセージ";
+"NewFollower" = "あなたをフォロー中の人";
+"TagInComment" = "あなたの事を話した人";
+
+"Always" = "常時";
+"Never" = "しない";
+"Only on Wifi" = "Wi-fiでのみ";
+"NotificationSettingSectionFeeds" = "フィードバック";
+"NotificationSettingSectionPeople" = "人々";
+"Open Settings" = "設定を開く";
+
+"ErrorPushNotificationsNotEnabled" = "お使いのデバイスではプッシュ通知が有効になっていません。\nプッシュ通知を有効にするには、デバイス設定から有効にしてください。";
+"ErrorPushNotificationsUnknown" = "通知設定の読み込み中にエラーが発生しました。\n後ほど改めてお試しください。";
+"ErrorPushNotificationsNotSaved" = "個人設定の保存エラー";
+"ErrorPushNotificationsNotSavedMessage" = "後ほど改めてお試しください。";
+
+"We need permission to access your photo library." = "あなたの写真ライブラリにアクセスする必要があります。";
+"We need access to this permission." = "この権限にアクセスする必要があります。";
+"Maybe Later" = "また後で";
+
+"RestorePurchaseDescription" = "別のデバイスで購入済みですか？\n以下をタップすればすべての購入を復元することができます。";
+"PurchaseErrorTitle" = "購入中のエラー";
+"PurchaseErrorProductNotAvailable" = "申し訳ありません、この商品は現在利用できません。後ほど改めてお試しください。";
+"PurchaseErrorTransaction" = "取引を完了できませんでした。また後ほどお試しください。";
+"RestorePurchasesNoPurchasesTitle" = "復元された購入はありません";
+"RestorePurchasesNoPurchases" = "お使いのiTunesアカウントに関連付けられたアプリ内購入が見つかりませんでした。";
+"ProductsRequestError" = "App Storeからの商品情報を読み込めません。後ほど改めてお試しください。";
+"RestorePurchasesErrorTitle" = "購入の復元エラー";
+"RestorePurchasesError" = "現在、購入を復元できません。後ほど改めてお試しください。";
+/* e.g. "1 Purchase Restored!"" */
+"RestorePurchasesSuccessTitleSingular" = "%lu個の購入を復元しました！";
+/* e.g. "5 PurchaseS Restored!"" */
+"RestorePurchasesSuccessTitlePlural" = "%lu個の購入を復元しました！";
+"RestorePurchasesSuccess" = "これまでの購入内容は「設定」画面から確認できます。";
+"ActivityRestoring" = " 復元しています…";
+"ActivityPurchasing" = " 購入処理中です…";
+/* e.g. "Unlock for $0.99" */
+"PurchaseUnlockWithPrice" = "%@でアンロック";
+"SettingsRestorePurchases" = "購入を復元";
+"SettingsRestorePurchasesPrompt" = "このデバイスで購入されたものはありません。\n別のデバイスで購入されている場合は、[購入を復元]ボタンをタップして復元してください。";
+
+"AuthorizationContextDefault" = "このコミュニティにご参加いただき、ありがとうございます！ アカウントを作成すると、なにかを作ったり、投稿したり、共有したりできます！";
+"AuthorizationContextCreatePost" = "やりましたね！ 私達もあなたの初投稿が待ち遠しいです。さっそくアカウントを作成して、あなたの素晴らしい作品をコミュニティにシェアしてあげましょう！";
+"AuthorizationContextFollowHashtag" = "ハッシュタグはとっても役立ちます。アカウントを作成してから、こちらで行われるアッと驚くような会話をフォローしてみましょう！";
+"AuthorizationContextFollowUser" = "私達のコミュニティに参加していただくことで、他のファンたちのコンテンツをフォローできます。相手もフォローし返せるようにプロフィールを作成しましょう！";
+"AuthorizationContextVoteBallistic" = "どうです、この絵文字。良いと思いません？ アカウントを作成して、愛する気持ちを拡散しちゃいましょう。";
+"AuthorizationContextVotePoll" = "あなたの清き一票を！ アカウントを作成して投票を始めましょう！";
+"AuthorizationContextRepost" = "今の投稿、なかなかでした。アカウント作成してさっそく再投稿しましょう！";
+"AuthorizationContextRemix" = "あなたのつくった作品をぜひ見てみたいと思います。あなたのプロフィールに関連付けられるように、アカウントを作成しましょう。";
+"AuthorizationContextViewProfile" = "まだ閲覧できる内容がありません！ とりあえずは私達のコミュニティに参加していただき、ありがとうございます。アカウントを作成してあなたらしさを皆に見せてあげましょう。";
+"AuthorizationContextAddComment" = "会話の輪に加わりましょう！ あなたの声を是非とも聞きたいと思います。アカウントを作成すればもうあと一歩です！";
+"AuthorizationContextInbox" = "私達のコミュニティに参加していただき、ファンの皆へメッセージを送れるようになったこと、本当にワクワクします。アカウントを作成すれば、メッセージを送ったり受け取ったりできるようになりますよ！";
+"AuthorizationContextNotification" = "私達のコミュニティに参加し、ファンの皆さんと交流していただけることにワクワクしています。さっそくアカウントを作成して、重要な情報に関する通知を受け取りましょう！";
+
+"This will discard any content added to your post" = "これによりあなたの投稿に追加された全コンテンツが破棄されます";
+
+/* No color selected */
+"No Color" = "色なし";
+/* The default color before a selection is made */
+"Standard" = "通常";
+/* The color red */
+"Red" = "レッド";
+/* red */
+"Magenta" = "マゼンタ";
+/* The color orange */
+"Orange" = "オレンジ";
+/* orange */
+"Peach" = "ピーチ";
+/* The color yellow */
+"Yellow" = "イエロー";
+/* The color green */
+"Green" = "グリーン";
+/* green */
+"Teal" = "ティール";
+/* The color blue */
+"Blue" = "ブルー";
+/* The color purp[le */
+"Purple" = "パープル";
+/* The color black */
+"Black" = "ブラック";
+
+"Video loading failed." = "動画の読み込みに失敗しました。";
+"Error Loading Next Video" = "次の動画の読み込みエラー";
+"Failed to fetch products" = "商品の取得に失敗";
+
+"This will discard any content from the camera" = "これによりカメラからのあらゆるコンテンツが破棄されます";
+"Discard" = "破棄";
+"Video failed to load" = "動画が読み込めませんでした";
+"We encountered an error trying to edit this video." = "この動画の編集開始時にエラーが発生しました。";
+
+"No Photos" = "写真がありません";
+"No Videos" = "動画がありません";
+
+"#nofilter" = "#フィルターなし";
+"Create a meme" = "ミームを作成";
+"Create a quote" = "引用文を作成";
+"Create a GIF" = "GIFアニメを作成";
+"Pick an attachment style" = "添付の形式を選んでください";
+"Image" = "画像";
+"Video" = "動画";
+"Type your text here!" = "こちらにテキストを記入してください！";
+"GIF" = "GIF";
+"GIF Search" = "GIF検索";
+
+"GIF MODE" = "GIFモード";
+"VIDEO MODE" = "動画モード";
+"Write a caption (optional)" = "キャプションを書く (任意)";
+
+"Downloading..." = "ダウンロード中...";
+"Exporting..." = "エクスポート中...";
+"Render failure" = "レンダリングに失敗";
+
+"Upload failure" = "アップロードに失敗";
+"Error loading results" = "結果の読み込みエラー";
+"Error rendering GIF" = "GIFレンダリングエラー";
+
+"Before you can take and share photos with the community, we need access to your camera. Allow camera access now?" = "写真を撮影したりコミュニティで共有したりするには、あなたのカメラにアクセスする必要があります。今すぐカメラへのアクセスを許可しますか？";
+"Thank you for joining the community! To add a profile picture, we need access to your camera. Allow camera access now?" = "コミュニティに参加していただきありがとうございます！ プロフィール写真を追加するには、カメラにアクセスする必要があります。今すぐカメラへのアクセスを許可しますか？";
+"Before you can record and share videos, we need access to your microphone. Allow microphone access now?" = "ビデオを撮ったり共有したりするには、マイクにアクセスする必要があります。今すぐマイクへのアクセスを許可しますか？";
+
+"We are so excited to have you join our community! Create an account and you’ll be able to create, post, and share!" = "コミュニティにご参加いただき、ありがとうございます！ アカウントを作成すると、なにかを作ったり、投稿したり、共有したりできます！";
+"Follow content from other fans." = "他のファンのコンテンツをフォローしましょう。";
+"Share creations with the community." = "作品をコミュニティで共有しましょう。";
+"Join in on the conversation." = "議論に参加しましょう。";
+"By signing up you are agreeing to our" = "サインアップすることで、次に同意したものとみなされます: 当社の";
+"terms of service" = "利用規約";
+"privacy policy" = "プライバシーポリシー";
+"Sign up with Email" = "メールアドレスで登録する";
+"Sign up with Facebook" = "Facebookでサインアップ";
+"Create an account and join the community." = "アカウントを作成してコミュニティに参加しましょう。";
+"Create a username and introduce yourself to the community." = "ユーザー名を作成して、コミュニティに自己紹介しましょう。";
+"Add photo" = "写真を追加する";
+"Add your profile picture." = "プロフィール写真を追加しましょう。";
+"Enter Email" = "メールアドレスを入力";
+"Enter name" = "名前を入力";
+"You must enter a name." = "名前を入力してください。";
+"Enter Password" = "パスワードを入力";
+"Tap Here" = "ここをタップ";
+"Forgot your password?" = "パスワードをお忘れですか？";
+"Enter Code" = "コードを入力";
+/* A code the user can use to verify their identitiy when resetting their password via email */
+"Code" = "コード";
+"Create a new password" = "新しいパスワードを作成";
+"Enter a new Password" = "新しいパスワードを入力";
+"Confirm your new password" = "新しいパスワードを確認";
+"Welcome Back!" = "おかえりなさい！";
+
+"Nice!" = "ナイス！";
+"Edit photo" = "写真を編集";
+
+/* e.g. "1 Comment" */
+"CommentsSingularFormat" = "%@件のコメント";
+/* e.g. "20 Comments" */
+"CommentsPluralFormat" = "%@件のコメント";
+/* e.g. "1 Like", where "Like" is a noun */
+"LikesSingularFormat" = "%@件のいいね";
+/* e.g. "20 Likes", where "Like" is a noun */
+"LikesPluralFormat" = "%@件のいいね";
+"LikersTitle" = "いいねした人";
+
+"TEXT" = "テキスト";
+"POLL" = "アンケート";
+"VIDEO" = "動画";
+"IMAGE" = "画像";
+"Nevermind" = "やめておく";
+
+/* Liked content no content view */
+"NOTHING LIKED YET" = "「いいね」したものはまだありません";
+/* Liked content no content view */
+"Posts you like will appear here." = "あなたが「いいね」した投稿がこちらに表示されます。";

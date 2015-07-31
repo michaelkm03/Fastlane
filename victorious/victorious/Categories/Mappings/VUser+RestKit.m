@@ -33,6 +33,7 @@
               @"status" : VSelectorName(status),
               @"am_following" : VSelectorName(isFollowedByMainUser),
               @"number_of_followers" : VSelectorName(numberOfFollowers),
+              @"max_video_duration" : VSelectorName(maxUploadDuration),
     };
 }
 
@@ -190,6 +191,12 @@
              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                           method:RKRequestMethodAny
                                                      pathPattern:@"/api/userinfo/search/:search_term/:limit/:context"
+                                                         keyPath:@"payload"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
+             [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                          method:RKRequestMethodAny
+                                                     pathPattern:@"/api/userinfo/search_paginate/:search_term/:page/:perpage/"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
              

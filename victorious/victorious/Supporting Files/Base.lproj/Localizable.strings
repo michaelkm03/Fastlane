@@ -36,6 +36,8 @@
 "Publishing..."         =   "Publishing...";
 "Rendering..."          =   "Rendering...";
 "Next"                  =   "Next";
+"Done"                  =   "Done";
+"More"                  =   "More";
 "Quote"                 =   "Quote";
 "Meme"                  =   "Meme";
 "Share"                 =   "Share";
@@ -204,10 +206,14 @@
 "CameraRollDenied"      =   "Please grant access to your photos in Settings -> Privacy.";
 "CameraFailed"          =   "Unable to start camera";
 "CameraSwitchFailed"    =   "Unable to switch camera mode";
+"Camera"                =   "Camera";   // Button that opens the camera
+"Search"                =   "Search";   // Button that opens web search for images
+"Gallery"               =   "Gallery";  // Button that opens gallery to photo library for images and videos
 "StillCaptureFailed"    =   "Unable to take picture";
 "VideoCaptureFailed"    =   "Unable to record video";
 "VideoSaveFailed"       =   "Unable to save video";
 "VideoCoachMessage"     =   "Press and hold to record";
+"LibraryCaptureFailed"  =   "Unable to access item in library";
 
 "NoTwitterTitle"        =   "Can't find a Twitter account!";
 "NoTwitterMessage"      =   "Please open your device settings and add a new Twitter account";
@@ -341,8 +347,9 @@
 
 "ExpiresOn"             =   "Expires on %@";
 
-"me"                    =   "Me";
+"Me"                    =   "Me";
 
+"Edit"                  =   "Edit";
 "editProfileButton"     =   "Edit Profile";
 "followers"             =   "Followers";
 "following"             =   "Following";
@@ -385,7 +392,7 @@
 "CannotVerify"          =   "Cannot Verify Account";
 "IncorrectCode"         =   "The code used for account verification is incorrect.";
 
-"Search for an image"   =   "Search for an image";
+"Image Search"          =   "Image Search";
 "Pull up for more..."   =   "Pull up for more...";
 "search for users"      =   "search for users";
 "searching"             =   "searching";
@@ -441,6 +448,8 @@
 
 "ToSText"               =   "Terms of Service";
 "ToSAgreement"          =   "I'm at least 13 years old and agree to Terms of Service";
+
+"Privacy Policy"        =   "Privacy Policy";
 
 "NoFriends"             =   "No Matches";
 "NoFriendsDetail"       =   "We could not find any of your friends who use our app. Go ahead and invite them!";
@@ -532,6 +541,10 @@
 "ErrorPushNotificationsNotSaved"        = "Error Saving Preferences";
 "ErrorPushNotificationsNotSavedMessage" = "Please try again later.";
 
+"We need permission to access your photo library." = "We need permission to access your photo library.";
+"We need access to this permission."               = "We need access to this permission.";
+"Maybe Later"                                      = "Maybe Later";
+
 "RestorePurchaseDescription"            = "Already purchased on another device?\nTap below to restore all of your purchases.";
 "PurchaseErrorTitle"                    = "Error Making Purchase";
 "PurchaseErrorProductNotAvailable"      = "Sorry, this product is not currently available. Please try again later.";
@@ -587,20 +600,31 @@
 "Video failed to load" = "Video failed to load";
 "We encountered an error trying to edit this video." = "We encountered an error trying to edit this video.";
 
+"No Photos" = "No Photos";
+"No Videos" = "No Videos";
+
 "#nofilter" = "#nofilter";
 "Create a meme" = "Create a meme";
 "Create a quote" = "Create a quote";
 "Create a GIF" = "Create a GIF";
+"Pick an attachment style" = "Pick an attachment style";
+"Image" = "Image";
+"Video" = "Video";
 "Type your text here!" = "Type your text here!";
 "GIF" = "GIF";
+"GIF Search" = "GIF Search";
 "Quote" = "Quote";
 "GIF MODE" = "GIF MODE";
 "VIDEO MODE" = "VIDEO MODE";
 "Write a caption (optional)" = "Write a caption (optional)";
 "Rendering..." = "Rendering...";
+"Downloading..." = "Downloading...";
+"Exporting..." = "Exporting...";
 "Render failure" = "Render failure";
 "Publishing..." = "Publishing...";
 "Upload failure" = "Upload failure";
+"Error loading results" = "Error loading results";
+"Error rendering GIF" = "Error rendering GIF.  Please try again.";
 
 "Before you can take and share photos with the community, we need access to your camera. Allow camera access now?" = "Before you can take and share photos with the community, we need access to your camera. Allow camera access now?";
 "Thank you for joining the community! To add a profile picture, we need access to your camera. Allow camera access now?" = "Thank you for joining the community! To add a profile picture, we need access to your camera. Allow camera access now?";
@@ -610,7 +634,9 @@
 "Follow content from other fans." = "Follow content from other fans.";
 "Share creations with the community." = "Share creations with the community.";
 "Join in on the conversation." = "Join in on the conversation.";
-"By signing up you are agreeing to our \nterms of service and privacy policy." = "By signing up you are agreeing to our \nterms of service and privacy policy.";
+"By signing up you are agreeing to our" = "By signing up you are agreeing to our";
+"terms of service"      =   "terms of service";
+"privacy policy"        =   "privacy policy";
 "Sign up with Email" = "Sign up with Email";
 "Sign up with Facebook" = "Sign up with Facebook";
 "Create an account and join the community." = "Create an account and join the community.";
@@ -619,6 +645,7 @@
 "Add your profile picture." = "Add your profile picture.";
 "Enter Email" = "Enter Email";
 "Enter name" = "Enter name";
+"You must enter a name." = "You must enter a name.";
 "Enter Password" = "Enter Password";
 "Tap Here" = "Tap Here";
 "Forgot your password?" = "Forgot your password?";
@@ -644,5 +671,5 @@
 "IMAGE" = "IMAGE";
 "Nevermind" = "Nevermind";
 
-"NOTHING LIKED YET" = "NOTHING LIKED YET";
-"Posts you like will appear here." = "Posts you like will appear here.";
+"NOTHING LIKED YET" = "NOTHING LIKED YET"; // Liked content no content view
+"Posts you like will appear here." = "Posts you like will appear here."; // Liked content no content view

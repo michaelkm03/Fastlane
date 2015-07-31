@@ -46,10 +46,11 @@
 @property (nonatomic, copy) NSString *titleForAnalytics;                ///< If set, analytics events will use this property for the "label" parameter
 @property (nonatomic) BOOL shouldFireAnalytics;                         ///< Set to NO to disable analytics. YES by default.
 @property (nonatomic, readonly) CMTime currentTime;
+@property (nonatomic, readonly) NSInteger currentTimeMilliseconds;
 @property (nonatomic, assign) BOOL shouldContinuePlayingAfterDismissal;
 @property (nonatomic, copy) NSString *videoPlayerLayerVideoGravity;   ///< Forwards to the player layer
 @property (nonatomic, assign) BOOL shouldChangeVideoGravityOnDoubleTap;
-@property (nonatomic, assign) BOOL isAudioEnabled;
+@property (nonatomic, assign) BOOL audioMuted;
 @property (nonatomic, assign) BOOL loopWithoutComposition;              ///< Loops by playing the asset again instead of making a composition that repeats
 @property (nonatomic, assign) BOOL toolbarHidden;
 @property (nonatomic, assign) CMTime sliderTouchInteractionStartTime; ///< The time at which a touch slider interaction (scrub) began

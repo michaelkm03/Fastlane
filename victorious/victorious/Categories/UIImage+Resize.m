@@ -313,4 +313,52 @@
     return newImage;
 }
 
+- (UIImage *)squareImageByCropping
+{
+    CGFloat minDimension = fminf(self.size.width, self.size.height);
+    CGFloat x = (self.size.width - minDimension) / 2.0f;
+    CGFloat y = (self.size.height - minDimension) / 2.0f;
+    
+    CGRect cropRect;
+    if (self.imageOrientation == UIImageOrientationRight || self.imageOrientation == UIImageOrientationLeft)
+    {
+        cropRect = CGRectMake(y, x, minDimension, minDimension);
+    }
+    else
+    {
+        cropRect = CGRectMake(x, y, minDimension, minDimension);
+    }
+    
+    UIImage *croppedImage = [self croppedImage:cropRect];
+    return croppedImage;
+}
+
+- (UIImage *)scaledImageWithMaxDimension:(CGFloat)maxDimension
+{
+    // Do nothing we are already the correct size
+    if (self.size.width < maxDimension && self.size.height < maxDimension)
+    {
+        return self;
+    }
+    
+    // Protect against divides by 0
+    if (self.size.width == 0.0f || self.size.height == 0.0f)
+    {
+        return self;
+    }
+    
+    CGFloat scaleFactor;
+    if (self.size.width > self.size.height)
+    {
+        scaleFactor = maxDimension / self.size.width;
+    }
+    else
+    {
+        scaleFactor = maxDimension / self.size.height;
+    }
+    
+    CGSize newSize = CGSizeMake(self.size.width * scaleFactor, self.size.height * scaleFactor);
+    return [self smoothResizedImageWithNewSize:newSize];
+}
+
 @end

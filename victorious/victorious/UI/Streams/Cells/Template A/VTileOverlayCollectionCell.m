@@ -31,7 +31,7 @@ static const UIEdgeInsets kTextInsets           = { 4.0f, 20.0f, 5.0f, 20.0f };
 static const CGFloat kHeaderHeight              = 74.0f;
 static const CGFloat kGradientAlpha             = 0.3f;
 static const CGFloat kShadowAlpha               = 0.5f;
-static const CGFloat kCountsTextViewMinHeight   = 80.0f;
+static const CGFloat kCountsTextViewMaxHeight   = 80.0f;
 static const CGFloat kButtonWidth               = 44.0f;
 static const CGFloat kButtonHeight              = 44.0f;
 static const CGFloat kCountsTextViewHeight      = 20.0f;
@@ -56,6 +56,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
 @property (nonatomic, strong) NSLayoutConstraint *captionHeight;
 @property (nonatomic, strong) NSLayoutConstraint *commentToLikeButtonHorizontalSpacing;
 @property (nonatomic, strong) NSLayoutConstraint *likeButtonWidth;
+@property (nonatomic, strong) NSLayoutConstraint *contentContainerHeightConstraint;
 
 @end
 
@@ -154,10 +155,11 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     _captionTextView.editable = NO;
     _captionTextView.linkDelegate = self;
     _captionTextView.textContainerInset = kTextInsets;
+    _captionTextView.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
     _captionTextView.backgroundColor = [UIColor clearColor];
     [_overlayContainer addSubview:_captionTextView];
     [_overlayContainer v_addPinToLeadingTrailingToSubview:_captionTextView];
-    _captionHeight = [NSLayoutConstraint constraintWithItem:_captionTextView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:kCountsTextViewMinHeight];
+    _captionHeight = [NSLayoutConstraint constraintWithItem:_captionTextView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:kCountsTextViewMaxHeight];
     [_captionTextView addConstraint:_captionHeight];
     [_overlayContainer addConstraint:[NSLayoutConstraint constraintWithItem:_captionTextView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_countsTextView attribute:NSLayoutAttributeTop multiplier:1.0f constant:0.0f]];
     
@@ -214,6 +216,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
              if ( sequence.name.length > 0 )
              {
                  textHeight = VCEIL( [sequence.name frameSizeForWidth:size.width andAttributes:attributes].height );
+                 textHeight = MIN( textHeight, kCountsTextViewMaxHeight);
              };
              return CGSizeMake( 0.0f, textHeight );
          }];
@@ -224,7 +227,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
              
              // FIXME: The use of "V" is just to get a good size for *something* in this text field since
              // we can't know what the actual text for the label is in a static method
-             return CGSizeMake( 0.0f, MAX( kCountsTextViewMinHeight, [@"V" frameSizeForWidth:size.width andAttributes:attributes].height ) );
+             return CGSizeMake( 0.0f, MAX( kCountsTextViewMaxHeight, [@"V" frameSizeForWidth:size.width andAttributes:attributes].height ) );
          }];
     }
     return collection;
@@ -336,27 +339,44 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
 {
     if ([self.previewView canHandleSequence:sequence])
     {
+        [self updateContentContainerHeightConstraint];
         [self.previewView setSequence:sequence];
         return;
     }
     
     [self.previewView removeFromSuperview];
+    self.contentContainerHeightConstraint = nil;
     self.previewView = [VSequencePreviewView sequencePreviewViewWithSequence:sequence];
     [self.contentContainer addSubview:self.previewView];
     [self.contentContainer v_addPinToTopToSubview:self.previewView];
     [self.contentContainer v_addPinToLeadingTrailingToSubview:self.previewView];
-    
-    NSDictionary *views = @{ @"previewView" : self.previewView };
-    CGFloat height = CGRectGetWidth(self.bounds) / [sequence previewAssetAspectRatio];
-    NSDictionary *metrics = @{ @"height" : @(height) };
-    NSArray *constraintsV = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[previewView(height)]" options:kNilOptions metrics:metrics views:views];
-    [self.contentContainer addConstraints:constraintsV];
+    [self updateContentContainerHeightConstraint];
     
     if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
     {
         [self.previewView setDependencyManager:self.dependencyManager];
     }
     [self.previewView setSequence:sequence];
+}
+
+- (void)updateContentContainerHeightConstraint
+{
+    if ( self.sequence == nil )
+    {
+        return;
+    }
+    
+    CGFloat height = CGRectGetWidth(self.bounds) / [self.sequence previewAssetAspectRatio];
+    if ( self.contentContainerHeightConstraint == nil )
+    {
+        CGFloat height = CGRectGetWidth(self.bounds) / [self.sequence previewAssetAspectRatio];
+        self.contentContainerHeightConstraint = [self.previewView v_addHeightConstraint:height];
+    }
+    else
+    {
+        self.contentContainerHeightConstraint.constant = height;
+    }
+    [self setNeedsLayout];
 }
 
 - (void)updateCaptionViewForSequence:(VSequence *)sequence
@@ -367,7 +387,7 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     }
     else
     {
-        self.captionHeight.constant = kCountsTextViewMinHeight;
+        self.captionHeight.constant = kCountsTextViewMaxHeight;
         self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
                                                                               attributes:[VTileOverlayCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
     }
@@ -404,9 +424,16 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
 {
     CGSize base = CGSizeMake( CGRectGetWidth(bounds), 0.0 );
     NSDictionary *userInfo = @{ kCellSizingSequenceKey : sequence,
-                                VCellSizeCacheKey : sequence.name ?: @"",
+                                VCellSizeCacheKey : [self cacheKeyForSequence:sequence],
                                 kCellSizingDependencyManagerKey : dependencyManager };
     return [[[self class] cellLayoutCollection] totalSizeWithBaseSize:base userInfo:userInfo];
+}
+
++ (NSString *)cacheKeyForSequence:(VSequence *)sequence
+{
+    NSString *name = sequence.name ?: @"";
+    NSString *aspectRatioString = [NSString stringWithFormat:@"%.5f", [sequence previewAssetAspectRatio]];
+    return [name stringByAppendingString:aspectRatioString];
 }
 
 #pragma mark - VBackgroundContainer
@@ -481,13 +508,13 @@ static const CGFloat kCountsTextViewHeight      = 20.0f;
     [responder hashTag:value tappedFromSequence:self.sequence fromView:self];
 }
 
-#pragma mark - VStreamCellFocus
+#pragma mark - VCellFocus
 
 - (void)setHasFocus:(BOOL)hasFocus
 {
-    if ([self.previewView conformsToProtocol:@protocol(VStreamCellFocus)])
+    if ([self.previewView conformsToProtocol:@protocol(VCellFocus)])
     {
-        [(id <VStreamCellFocus>)self.previewView setHasFocus:hasFocus];
+        [(id <VCellFocus>)self.previewView setHasFocus:hasFocus];
     }
 }
 

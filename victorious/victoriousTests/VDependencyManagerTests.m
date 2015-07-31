@@ -466,27 +466,6 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     XCTAssertEqual(array[1], otherArray[1]);
 }
 
-#pragma mark - Images
-
-- (void)testImageWithName
-{
-    UIImage *expected = [UIImage imageNamed:@"C_menu"];
-    XCTAssertNotNil(expected); // This assert will fail if the "C_menu" image is ever removed from our project
-    UIImage *actual = [self.dependencyManager imageForKey:@"myImage"];
-    XCTAssertEqualObjects(expected, actual);
-}
-
-- (void)testImage
-{
-    // This test will fail if the "C_menu" image is ever removed from our project
-    UIImage *sampleImage = [UIImage imageNamed:@"C_menu"];
-    VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil
-                                                                                configuration:@{ @"myImage": sampleImage }
-                                                            dictionaryOfClassesByTemplateName:self.dictionaryOfClassesByTemplateName];
-    UIImage *actual = [dependencyManager imageForKey:@"myImage"];
-    XCTAssertEqualObjects(actual, sampleImage);
-}
-
 #pragma mark - Dictionaries
 
 - (void)testDictionary
@@ -520,6 +499,14 @@ static NSString * const kTestObjectWithPropertyTemplateName = @"testProperty";
     id viewController = [self.dependencyManager viewControllerForKey:@"otherNVC"];
     XCTAssert([viewController isKindOfClass:[VTestViewControllerWithNewMethod class]]);
     XCTAssert([viewController calledNewMethod]);
+}
+
+- (void)testReferencedObjectWithAddedDependencies
+{
+    NSDictionary *added = @{ @"new": @"value" };
+    VTestViewControllerWithNewMethod *value = (VTestViewControllerWithNewMethod *)[self.dependencyManager templateValueOfType:[UIViewController class] forKey:@"otherNVC" withAddedDependencies:added];
+    XCTAssert([value isKindOfClass:[VTestViewControllerWithNewMethod class]]);
+    XCTAssertEqualObjects([value.dependencyManager stringForKey:@"new"], @"value");
 }
 
 - (void)testDeepReference

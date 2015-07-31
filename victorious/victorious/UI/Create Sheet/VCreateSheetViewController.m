@@ -158,7 +158,7 @@ static const CGFloat kLineSpacing = 40.0f;
     VNavigationMenuItem *menuItem = self.menuItems[indexPath.row];
     
     VCreateSheetCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"createSheetCell" forIndexPath:indexPath];
-    cell.itemLabel.text = NSLocalizedString(menuItem.title, @"");
+    cell.itemLabel.text = menuItem.title;
     cell.itemLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
     cell.itemLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     [cell.iconImageView setImage:[menuItem.icon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
@@ -179,30 +179,30 @@ static const CGFloat kLineSpacing = 40.0f;
     }
 }
 
-- (VCreateSheetItemIdentifier)itemIdentifierFromString:(NSString *)identifierString
+- (VCreationType)itemIdentifierFromString:(NSString *)identifierString
 {
     if ([identifierString isEqualToString:kCreateImageIdentifier])
     {
-        return VCreateSheetItemIdentifierImage;
+        return VCreationTypeImage;
     }
     else if ([identifierString isEqualToString:kCreateVideoIdentifier])
     {
-        return VCreateSheetItemIdentifierVideo;
+        return VCreationTypeVideo;
     }
     else if ([identifierString isEqualToString:kCreatePollIdentifier])
     {
-        return VCreateSheetItemIdentifierPoll;
+        return VCreationTypePoll;
     }
     else if ([identifierString isEqualToString:kCreateMemeIdentifier])
     {
-        return VCreateSheetItemIdentifierText;
+        return VCreationTypeText;
     }
     else if ([identifierString isEqualToString:kCreateGIFIdentifier])
     {
-        return VCreateSheetItemIdentifierGIF;
+        return VCreationTypeGIF;
     }
     
-    return VCreateSheetItemIdentifierUnknown;
+    return VCreationTypeUnknown;
 }
 
 #pragma mark - Flow Layout Delegate

@@ -14,6 +14,11 @@ typedef NS_ENUM(NSInteger, VColorLuminance)
     VColorLuminanceDark,
 };
 
+/**
+ *  Use this constant to highlight by a standard amount.
+ */
+extern CGFloat VDefaultHighlightAmount;
+
 @interface UIColor (VBrightness)
 
 - (VColorLuminance)v_colorLuminance;
@@ -33,5 +38,12 @@ typedef NS_ENUM(NSInteger, VColorLuminance)
  to 1.0, effectively bringing all color channels closer to white.
  */
 - (UIColor *)v_colorDarkenedBy:(CGFloat)amount;
+
+/**
+ *  Returns a new color either brightened or darkened according to luminance. 
+ *  luminanceBright -> darkenedBy:
+ *  luminanceDark   -> lightenedBy:
+ */
+- (UIColor *)v_highlightColorBy:(CGFloat)amount;
 
 @end

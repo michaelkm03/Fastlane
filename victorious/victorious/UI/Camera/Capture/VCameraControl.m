@@ -60,7 +60,7 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
     self.multipleTouchEnabled = NO;
     self.layer.cornerRadius = kMinHeightSize * 0.5f;
     self.clipsToBounds = YES;
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = self.defaultTintColor;
     self.captureMode = VCameraControlCaptureModeVideo | VCameraControlCaptureModeImage;
     
     self.progressView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -106,9 +106,17 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
 - (void)flashShutterAnimations
 {
     self.transform = CGAffineTransformMakeScale(0.01f, 0.01f);
+    self.alpha = 0.0f;
 }
 
 #pragma mark - Setters
+
+- (void)setDefaultTintColor:(UIColor *)defaultTintColor
+{
+    _defaultTintColor = defaultTintColor;
+    
+    self.backgroundColor = _defaultTintColor;
+}
 
 - (void)setTintColor:(UIColor *)tintColor
 {
@@ -138,7 +146,7 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
     [UIView animateWithDuration:0.2f
                      animations:^
     {
-        self.backgroundColor = enabled ? [UIColor whiteColor] : [UIColor lightGrayColor];
+        self.backgroundColor = enabled ? self.defaultTintColor : [UIColor lightGrayColor];
     }];
     
     [super setEnabled:enabled];
@@ -165,10 +173,11 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
             {
                 [self sendActionsForControlEvents:VCameraControlEventEndRecordingVideo];
             }
+            self.alpha = 1.0f;
             animationDuration = kRecordingShrinkAnimationDuration;
             animations = ^
             {
-                self.backgroundColor = [UIColor whiteColor];
+                self.backgroundColor = self.defaultTintColor;
                 self.transform = CGAffineTransformIdentity;
                 self.layer.cornerRadius = kMinHeightSize * 0.5f;
                 self.frame = CGRectMake(0, 0, kMinHeightSize, kMinHeightSize);

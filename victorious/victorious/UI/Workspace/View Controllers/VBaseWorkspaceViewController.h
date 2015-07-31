@@ -36,26 +36,29 @@ typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL
 
 @property (nonatomic, weak, readonly) VCanvasView *canvasView;
 
-/**
- *  The initial edit state. (since dependency injection doesn't inherit from parent to child).
- */
-@property (nonatomic, strong) NSNumber *initalEditState;
-
-@property (nonatomic, assign) BOOL showCloseButton;
 @property (nonatomic, assign) BOOL continueButtonEnabled;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *continueButton;
-@property (nonatomic, weak) IBOutlet UIBarButtonItem *backButton;
 
 @property (nonatomic, assign) BOOL disablesInpectorOnKeyboardAppearance;
-@property (nonatomic, assign) BOOL disablesNavigationItemsOnKeyboardAppearance;
 @property (nonatomic, assign) BOOL adjustsCanvasViewFrameOnKeyboardAppearance;
 
 - (void)callCompletionWithSuccess:(BOOL)success
                      previewImage:(UIImage *)previewImage
                  renderedMediaURL:(NSURL *)renderedMediaURL;
 
-- (void)bringTopChromeOutOfView;
 - (void)bringBottomChromeOutOfView;
 - (void)bringChromeIntoView;
+
+/**
+ *  Call this after a lostFocus to inform the workspace it can resume any playback
+ *  or expensive live rendering.
+ */
+- (void)gainedFocus;
+
+/**
+ *  Call these methods for the workspace to update it's tools selected state.
+ *  For example to pause any playing video or expensive tasks.
+ */
+- (void)lostFocus;
 
 @end

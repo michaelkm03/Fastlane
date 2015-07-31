@@ -25,15 +25,9 @@
 #import "VNavigationController.h"
 #import "VNewContentViewController.h"
 
-// Workspace
-#import "VWorkspaceFlowController.h"
-#import "VImageToolController.h"
-#import "VVideoToolController.h"
-#import "VTextWorkspaceFlowController.h"
-
 //Views
 #import "VNoContentView.h"
-#import "VStreamCellFocus.h"
+#import "VCellFocus.h"
 
 //Data models
 #import "VStream+Fetcher.h"
@@ -49,6 +43,7 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Discover.h"
 #import "VUploadManager.h"
+#import "VContentViewFactory.h"
 
 //Categories
 #import "NSArray+VMap.h"
@@ -59,11 +54,12 @@
 #import "UIViewController+VLayoutInsets.h"
 
 #import "VURLMacroReplacement.h"
-#import "VWorkspacePresenter.h"
+#import "VCreationFlowPresenter.h"
 #import "VConstants.h"
 #import "VTracking.h"
 #import "VHashtagStreamCollectionViewController.h"
 #import "VAuthorizedAction.h"
+#import "VContentViewPresenter.h"
 
 #import "VFullscreenMarqueeSelectionDelegate.h"
 #import "VAbstractMarqueeController.h"
@@ -82,6 +78,9 @@
 #import "VCoachmarkDisplayer.h"
 #import "VDependencyManager+VCoachmarkManager.h"
 #import "VDependencyManager+VTracking.h"
+#import "UIViewController+VAccessoryScreens.h"
+
+#import "VCollectionViewStreamFocusHelper.h"
 
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
 
@@ -114,7 +113,9 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 @property (nonatomic, assign) BOOL hasRefreshed;
 
-@property (nonatomic, strong) VWorkspacePresenter *workspacePresenter;
+@property (nonatomic, strong) VCreationFlowPresenter *creationFlowPresenter;
+
+@property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
 
 @end
 
@@ -227,7 +228,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
         [self.streamCellFactory registerCellsWithCollectionView:self.collectionView];
     }
     
-    
     self.collectionView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     
     if ( self.streamDataSource == nil )
@@ -247,6 +247,8 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     self.collectionView.dataSource = self.streamDataSource;
     self.streamDataSource.collectionView = self.collectionView;
+    
+    self.focusHelper = [[VCollectionViewStreamFocusHelper alloc] initWithCollectionView:self.collectionView];
     
     // Setup custom flow layout for parallax
     BOOL hasParallax = [[self.dependencyManager numberForKey:kHasHeaderParallaxKey] boolValue];
@@ -272,11 +274,15 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 {
     [super viewWillAppear:animated];
     
-    [self.dependencyManager trackViewWillAppear:self];
+    [self.dependencyManager configureNavigationItem:self.navigationItem];
+    
+    [self updateNavigationItems];
+    
+    [self.dependencyManager trackViewWillAppear:self withParameters:nil templateClass:self.viewTrackingClassOverride];
 
     if ( self.streamDataSource.count == 0 )
     {
-        [self refresh:self.refreshControl];
+        [self refresh:nil];
     }
     else
     {
@@ -291,9 +297,14 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    [self addBadgingToNavigationItems];
+    
     [self.collectionView flashScrollIndicators];
     [self updateCellVisibilityTracking];
-    [self updateCurrentlyPlayingMediaAsset];
+    
+    // Start any video cells that are on screen
+    [self.focusHelper updateFocus];
     
     //Because a stream can be presented without refreshing, we need to refresh the user post icon here
     [self updateNavigationItems];
@@ -313,6 +324,14 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     // Stop tracking marquee views
     self.marqueeCellController.shouldTrackMarqueeCellViews = NO;
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    // Stop any video cells
+    [self.focusHelper endFocusOnAllCells];
 }
 
 - (BOOL)shouldAutorotate
@@ -407,12 +426,12 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     [self addUploadProgressView];
     
-    UINavigationItem *navigationItem = self.navigationItem;
-    if ( self.multipleContainerChildDelegate != nil )
-    {
-        navigationItem = [self.multipleContainerChildDelegate parentNavigationItem];
-    }
-    [self.dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
+    [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
+}
+
+- (void)addBadgingToNavigationItems
+{
+    [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 - (void)multipleContainerDidSetSelected:(BOOL)isDefault
@@ -432,9 +451,10 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
          {
              return;
          }
-         weakSelf.workspacePresenter = [VWorkspacePresenter workspacePresenterWithViewControllerToPresentOn:self dependencyManager:self.dependencyManager];
-         weakSelf.workspacePresenter.showsCreationSheetFromTop = YES;
-         [weakSelf.workspacePresenter present];
+         __strong typeof(weakSelf) strongSelf = weakSelf;
+         strongSelf.creationFlowPresenter = [[VCreationFlowPresenter alloc] initWithDependencymanager:strongSelf.dependencyManager];
+         strongSelf.creationFlowPresenter.showsCreationSheetFromTop = YES;
+         [strongSelf.creationFlowPresenter presentOnViewController:strongSelf];
      }];
 }
 
@@ -530,10 +550,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ( [cell conformsToProtocol:@protocol(VStreamCellFocus)] )
-    {
-        [(id <VStreamCellFocus>)cell setHasFocus:NO];
-    }
+    [self.focusHelper endFocusOnCell:cell];
 }
 
 #pragma mark - Activity indivator footer
@@ -563,8 +580,21 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     }
     
     VSequence *sequence = (VSequence *)[self.currentStream.streamItems objectAtIndex:indexPath.row];
-    UICollectionViewCell *cell = [self.streamCellFactory collectionView:self.collectionView
-                                                      cellForStreamItem:sequence atIndexPath:indexPath];
+    UICollectionViewCell *cell;
+    if ([self.streamCellFactory respondsToSelector:@selector(collectionView:cellForStreamItem:atIndexPath:inStream:)])
+    {
+        cell = [self.streamCellFactory collectionView:self.collectionView
+                                    cellForStreamItem:sequence
+                                          atIndexPath:indexPath
+                                             inStream:self.currentStream];
+    }
+    else
+    {
+        cell = [self.streamCellFactory collectionView:self.collectionView
+                                    cellForStreamItem:sequence
+                                          atIndexPath:indexPath];
+    }
+
     
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
     
@@ -708,7 +738,12 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     NSParameterAssert(sequence != nil);
     NSParameterAssert(self.currentStream != nil);
     
-    [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:sequence streamID:streamId commentId:nil placeHolderImage:previewImage];
+    [VContentViewPresenter presentContentViewFromViewController:self
+                                          withDependencyManager:self.dependencyManager
+                                                    ForSequence:sequence
+                                                 inStreamWithID:streamId
+                                                      commentID:nil
+                                               withPreviewImage:previewImage];
 }
 
 #pragma mark - Upload Progress View
@@ -871,7 +906,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     [self updateCellVisibilityTracking];
     
-    [self updateCurrentlyPlayingMediaAsset];
+    [self.focusHelper updateFocus];
 }
 
 #pragma mark - Cell visibility
@@ -903,53 +938,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     self.marqueeCellController.shouldTrackMarqueeCellViews = shouldTrackMarquee;
     // Fire right away to catch any events while scrolling stream
     [self.marqueeCellController updateCellVisibilityTracking];
-}
-
-- (void)updateCurrentlyPlayingMediaAsset
-{
-    const CGRect streamVisibleRect = self.collectionView.bounds;
-    
-    // Was a video begins playing, all other visible cells will be paused
-    __block BOOL didPlayVideo = NO;
-    
-    NSArray *visibleCells = self.collectionView.visibleCells;
-    [visibleCells enumerateObjectsUsingBlock:^(UICollectionViewCell *cell, NSUInteger idx, BOOL *stop)
-     {
-         if ( [VNoContentCollectionViewCellFactory isNoContentCell:cell] )
-         {
-             return;
-         }
-         
-         id <VStreamCellFocus>focusCell;
-         if ( [cell conformsToProtocol:@protocol(VStreamCellFocus)] )
-         {
-             focusCell = (id <VStreamCellFocus>)cell;
-         }
-         
-         // Calculate visible ratio for just the media content of the cell
-         const CGRect contentFrameInCell = [focusCell contentArea];
-         
-         if ( CGRectGetHeight( contentFrameInCell ) > 0.0 )
-         {
-             const CGRect contentIntersection = CGRectIntersection( streamVisibleRect, cell.frame );
-             const float mediaContentVisibleRatio = CGRectGetHeight( contentIntersection ) / CGRectGetHeight( contentFrameInCell );
-             if ( mediaContentVisibleRatio >= 0.8f )
-             {
-                 if ( [cell conformsToProtocol:@protocol(VStreamCellFocus)] )
-                 {
-                     [(id <VStreamCellFocus>)cell setHasFocus:YES];
-                 }
-                 didPlayVideo = YES;
-             }
-             else
-             {
-                 if ( [cell conformsToProtocol:@protocol(VStreamCellFocus)] )
-                 {
-                     [(id <VStreamCellFocus>)cell setHasFocus:NO];
-                 }
-             }
-         }
-     }];
 }
 
 - (void)collectionViewCell:(UICollectionViewCell *)cell didUpdateCellVisibility:(CGFloat)visibiltyRatio

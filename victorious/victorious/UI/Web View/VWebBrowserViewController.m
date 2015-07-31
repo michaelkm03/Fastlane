@@ -23,6 +23,7 @@
 #import "VDependencyManager+VWebBrowser.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VTracking.h"
+#import "UIViewController+VAccessoryScreens.h"
 
 static NSString * const kURLKey = @"url";
 
@@ -147,7 +148,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
     }
     
-    [self.dependencyManager addAccessoryScreensToNavigationItem:self.navigationItem fromViewController:self];
+    [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -172,6 +173,8 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
     
     [self.dependencyManager trackViewWillAppear:self];
 }

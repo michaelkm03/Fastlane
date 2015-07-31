@@ -31,4 +31,16 @@
  */
 - (UIImage *)smoothResizedImageWithNewSize:(CGSize)newSize;
 
+/**
+ *  Scales the image, preserving aspect ratio, to a new size with a given max height or width.
+ *
+ *  @param maxDimension The maximum height or width of the new image.
+ */
+- (UIImage *)scaledImageWithMaxDimension:(CGFloat)maxDimension;
+
+/**
+ *  Crops an image to what it would looko like in a square imageView with aspectFill.
+ */
+- (UIImage *)squareImageByCropping;
+
 @end

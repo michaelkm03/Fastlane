@@ -17,6 +17,7 @@
 #import "VDependencyManager+VScaffoldViewController.h"
 
 static NSString * const kContentViewComponentKey = @"contentView";
+static NSString * const kSequenceIdKey = @"sequenceId";
 
 @interface VContentViewFactory ()
 
@@ -46,7 +47,11 @@ static NSString * const kContentViewComponentKey = @"contentView";
     
     VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence streamID:streamId depenencyManager:self.dependencyManager];
     contentViewModel.deepLinkCommentId = commentID;
-    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel dependencyManager:self.dependencyManager];
+    
+    NSDictionary *dic = @{ kSequenceIdKey : sequence.remoteId};
+    
+    VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:dic];
+    VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel dependencyManager:childDependencyManager];
     contentViewController.placeholderImage = placeholderImage;
     
     if ( contentViewController == nil )

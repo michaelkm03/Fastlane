@@ -22,10 +22,14 @@
 // Theme Manager
 #import "VThemeManager.h"
 
+#import "VDependencyManager.h"
+
+#import "VObjectManager+Pagination.h"
+#import "VScrollPaginator.h"
+
 const NSInteger kSearchTableDesiredMinimumHeight = 100;
 
 static NSString * const kVInlineUserCellIdentifier = @"VInlineUserTableViewCell";
-static const NSInteger kSearchResultLimit = 20;
 
 typedef NS_ENUM(NSInteger, VInlineSearchState)
 {
@@ -35,7 +39,7 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
     VInlineSearchStateSuccessful
 };
 
-@interface VInlineSearchTableViewController ()
+@interface VInlineSearchTableViewController () <VScrollPaginatorDelegate>
 
 @property (nonatomic, strong) NSArray *usersFollowing;
 @property (nonatomic, strong) NSLayoutConstraint *tableViewHeightConstraint;
@@ -43,6 +47,8 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
 @property (nonatomic, strong) UIButton *backgroundButton;
 @property (nonatomic, strong) NSTimer *UIUpdateTimer;
 @property (nonatomic, strong) RKObjectRequestOperation *searchOperation;
+@property (nonatomic, strong) VScrollPaginator *scrollPaginator;
+@property (nonatomic, strong) NSString *currentSearchText;
 
 @end
 
@@ -63,25 +69,41 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
 
     self.tableView.backgroundView = self.backgroundButton;
     self.searchState = VInlineSearchStateNoSearch;
+    
+    self.usersFollowing = [NSMutableArray new];
+    
+    self.scrollPaginator = [[VScrollPaginator alloc] init];
+    self.scrollPaginator.delegate = self;
 }
 
 #pragma mark - Loading / Filtering / Presenting Data
 
-- (void)searchFollowingList:(NSString *)searchText
+- (void)searchWithText:(NSString *)searchText
 {
     [self.searchOperation cancel];
+    
+    self.usersFollowing = @[];
+    [self.tableView reloadData];
+    
+    self.currentSearchText = searchText;
     VSuccessBlock searchSuccess = ^( NSOperation *operation, id fullResponse, NSArray *resultObjects )
     {
         [self presentLoadedData:resultObjects];
     };
-
+    
     if ([searchText length] > 0)
     {
-        [[VObjectManager sharedManager] findUsersBySearchString:searchText
-                                                          limit:kSearchResultLimit
-                                                        context:VObjectManagerSearchContextUserTag
-                                               withSuccessBlock:searchSuccess
-                                                      failBlock:nil];
+        // Searching state
+        self.searchState = VInlineSearchStateSearching;
+        
+        NSString *sequenceId = [self.dependencyManager stringForKey:@"sequenceId"];
+        
+        self.searchOperation = [[VObjectManager sharedManager] findUsersBySearchString:searchText
+                                                                            sequenceID:sequenceId
+                                                                              pageType:VPageTypeFirst
+                                                                               context:VObjectManagerSearchContextUserTag
+                                                                      withSuccessBlock:searchSuccess
+                                                                             failBlock:nil];
     }
     else
     {
@@ -95,13 +117,7 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
 {
     if (data.count > 0)
     {
-        NSSortDescriptor   *sort = [[NSSortDescriptor alloc] initWithKey:@"name"
-                                                               ascending:YES
-                                                                selector:@selector( localizedCaseInsensitiveCompare: )];
-
-        self.usersFollowing = [data sortedArrayUsingDescriptors:@[sort]];
-        self.searchState = VInlineSearchStateSuccessful;
-        [self updateBackgroundView];
+        [self addPage:data];
     }
     else
     {
@@ -109,6 +125,15 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
         self.searchState = VInlineSearchStateNoResults;
     }
     [self.tableView reloadData];
+}
+
+- (void)addPage:(NSArray *)data
+{
+    NSMutableArray *usersShowing = [self.usersFollowing mutableCopy];
+    [usersShowing addObjectsFromArray:data];
+    self.usersFollowing = usersShowing;
+    self.searchState = VInlineSearchStateSuccessful;
+    [self updateBackgroundView];
 }
 
 - (void)updateViewConstraints
@@ -174,6 +199,30 @@ typedef NS_ENUM(NSInteger, VInlineSearchState)
 - (void)backgroundButtonPressed
 {
     [self.delegate dismissButtonWasPressedInTableView:self];
+}
+
+#pragma mark - Pagination
+
+- (void)shouldLoadNextPage
+{
+    VSuccessBlock searchSuccess = ^( NSOperation *operation, id fullResponse, NSArray *resultObjects )
+    {
+        [self addPage:resultObjects];
+    };
+    
+    NSString *sequenceId = [self.dependencyManager stringForKey:@"sequenceId"];
+    
+    [[VObjectManager sharedManager] findUsersBySearchString:self.currentSearchText
+                                                 sequenceID:sequenceId
+                                                   pageType:VPageTypeNext
+                                                    context:VObjectManagerSearchContextUserTag
+                                           withSuccessBlock:searchSuccess
+                                                  failBlock:nil];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [self.scrollPaginator scrollViewDidScroll:scrollView];
 }
 
 #pragma mark - TableView Delegate Methods

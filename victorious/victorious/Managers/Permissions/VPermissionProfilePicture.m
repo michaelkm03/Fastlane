@@ -9,12 +9,19 @@
 #import "VPermissionProfilePicture.h"
 #import "VAppInfo.h"
 
+@import AVFoundation;
+
 @implementation VPermissionProfilePicture
 
 - (NSString *)messageWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSString *message = [dependencyManager stringForKey:@"profileImagePermission.message"];
     return NSLocalizedString(message, @"");
+}
+
+- (void)trackPermission:(NSString *)trackingStatus
+{
+    [self.permissionsTrackingHelper permissionsDidChange:VTrackingValueCameraDidAllow permissionState:trackingStatus];
 }
 
 @end

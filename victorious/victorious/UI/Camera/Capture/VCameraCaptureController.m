@@ -10,7 +10,6 @@
 #import "VCameraCaptureController.h"
 #import "VCameraVideoEncoder.h"
 #import "VConstants.h"
-#import "VWorkspaceFlowController.h"
 
 @import AVFoundation;
 
@@ -47,9 +46,12 @@ static inline AVCaptureDevice *defaultCaptureDevice()
     {
         _captureSession = [[AVCaptureSession alloc] init];
         _sessionQueue = dispatch_queue_create("VCameraCaptureController setup", DISPATCH_QUEUE_SERIAL);
-        _currentDevice = defaultCaptureDevice();
+        _currentDevice = [self defaultDevice];
         _backgroundTaskID = UIBackgroundTaskInvalid;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(captureSessionWasInterrupted:) name:AVCaptureSessionWasInterruptedNotification object:_captureSession];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(captureSessionWasInterrupted:)
+                                                     name:AVCaptureSessionWasInterruptedNotification
+                                                   object:_captureSession];
     }
     return self;
 }
@@ -73,6 +75,20 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 - (AVCaptureDevice *)defaultDevice
 {
     return defaultCaptureDevice();
+}
+
+- (void)setContext:(VCameraContext)context
+{
+    _context = context;
+    if (context == VCameraContextProfileImage || context == VCameraContextProfileImageRegistration)
+    {
+        AVCaptureDevice *desiredDevice = [self firstDeviceForPosition:AVCaptureDevicePositionFront];
+        if (desiredDevice != nil)
+        {
+            [self setCurrentDevice:desiredDevice
+                    withCompletion:nil];
+        }
+    }
 }
 
 #pragma clang diagnostic push
@@ -143,17 +159,6 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 
 - (void)startRunningWithVideoEnabled:(BOOL)videoEnabled andCompletion:(void (^)(NSError *))completion
 {
-    if ((self.context ==  VWorkspaceFlowControllerContextProfileImage ) || (self.context == VWorkspaceFlowControllerContextProfileImageRegistration ))
-    {
-        for (AVCaptureDevice *device in self.devices)
-        {
-            if (([device position] == AVCaptureDevicePositionFront) && [device hasMediaType:AVMediaTypeVideo])
-            {
-                self.currentDevice = device;
-            }
-        }
-    }
-    
     dispatch_async(self.sessionQueue, ^(void)
     {
         if (self.captureSession.isRunning)
@@ -289,18 +294,21 @@ static inline AVCaptureDevice *defaultCaptureDevice()
                 });
             }
         }];
-        
-        [self.captureSession startRunning];
-        
-        if (completion)
+        // Dispatch to main thread to avoid nasty bug where app locks up for a bit
+        dispatch_async(dispatch_get_main_queue(), ^
         {
-            completion(nil);
-        }
+            [self.captureSession startRunning];
+            if (completion != nil)
+            {
+                completion(nil);
+            }
+        });
     });
 }
 
 - (void)stopRunningWithCompletion:(void(^)(void))completion
 {
+    VLog(@"");
     dispatch_async(self.sessionQueue, ^(void)
     {
         [self _stopRunningWithCompletion:completion];
@@ -309,12 +317,16 @@ static inline AVCaptureDevice *defaultCaptureDevice()
 
 - (void)_stopRunningWithCompletion:(void(^)(void))completion
 {
-    [self.captureSession stopRunning];
-    [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskID];
-    if (completion)
+    // dispatch to main thread to avoid nasty locking bug
+    dispatch_async(dispatch_get_main_queue(), ^
     {
-        completion();
-    }
+        [self.captureSession stopRunning];
+        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskID];
+        if (completion != nil)
+        {
+            completion();
+        }
+    });
 }
 
 #pragma mark - Capture
@@ -437,6 +449,101 @@ static inline AVCaptureDevice *defaultCaptureDevice()
     return NO;
 }
 
+#pragma mark - Public Methods
+
+- (AVCaptureDevice *)firstAlternatePositionDevice
+{
+    AVCaptureDevicePosition currentPostion = self.currentDevice.position;
+    AVCaptureDevicePosition desiredPostion = (currentPostion == AVCaptureDevicePositionFront) ? AVCaptureDevicePositionBack : AVCaptureDevicePositionFront;
+    return [self firstDeviceForPosition:desiredPostion];
+}
+
+- (AVCaptureDevice *)firstDeviceForPosition:(AVCaptureDevicePosition)position
+{
+    for (AVCaptureDevice *device in self.devices)
+    {
+        if (device.position == position)
+        {
+            return device;
+        }
+    }
+    return nil;
+}
+
+- (void)toggleFlashWithCompletion:(void(^)(NSError *error))completion
+{
+    dispatch_async(self.sessionQueue, ^
+    {
+        AVCaptureDevice *currentDevice = self.currentDevice;
+        AVCaptureFlashMode currentFlashMode = currentDevice.flashMode;
+        AVCaptureFlashMode desiredFlashMode = (currentFlashMode == AVCaptureFlashModeOn) ? AVCaptureFlashModeOff : AVCaptureFlashModeOn;
+        BOOL canSwitch = [currentDevice isFlashModeSupported:desiredFlashMode];
+        NSError *lockError = nil;
+        if (canSwitch && [currentDevice lockForConfiguration:&lockError])
+        {
+            VLog(@"device locked");
+            currentDevice.flashMode = desiredFlashMode;
+            [currentDevice unlockForConfiguration];
+            VLog(@"Flash mode set");
+        }
+        else
+        {
+            VLog(@"Lock failure: %@", lockError.localizedDescription);
+        }
+        if (completion != nil)
+        {
+            completion(lockError);
+        }
+    });
+}
+
+- (void)focusAtPointOfInterest:(CGPoint)locationInCaptureDeviceCoordinates
+                withCompletion:(void(^)(NSError *error))completion
+{
+    dispatch_async(self.sessionQueue, ^
+    {
+        AVCaptureDevice *currentDevice = self.currentDevice;
+        NSError *lockError = nil;
+        if ([currentDevice isFocusPointOfInterestSupported] && [currentDevice lockForConfiguration:&lockError])
+        {
+            // Lock focus and begin observing subjectArea changes
+            [currentDevice setFocusPointOfInterest:locationInCaptureDeviceCoordinates];
+            [currentDevice setFocusMode:AVCaptureFocusModeAutoFocus];
+            [currentDevice setSubjectAreaChangeMonitoringEnabled:YES];
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(subjectAreaChanged)
+                                                         name:AVCaptureDeviceSubjectAreaDidChangeNotification
+                                                       object:currentDevice];
+            
+            [currentDevice unlockForConfiguration];
+        }
+        if (completion != nil)
+        {
+            completion(lockError);
+        }
+    });
+}
+
+- (void)restoreContinuousFocusWithCompletion:(void(^)(NSError *error))completion
+{
+    dispatch_async(self.sessionQueue, ^
+    {
+        // Unlock focus and move to continuous auto focus
+        AVCaptureDevice *currentDevice = self.currentDevice;
+        NSError *lockError = nil;
+        if ([currentDevice lockForConfiguration:&lockError])
+        {
+            [currentDevice setFocusMode:AVCaptureFocusModeContinuousAutoFocus];
+            [currentDevice setSubjectAreaChangeMonitoringEnabled:NO];
+            [currentDevice unlockForConfiguration];
+        }
+        if (completion != nil)
+        {
+            completion(lockError);
+        }
+    });
+}
+
 #pragma mark - Notifications
 
 - (void)captureSessionWasInterrupted:(NSNotification *)notification
@@ -445,6 +552,11 @@ static inline AVCaptureDevice *defaultCaptureDevice()
     {
         self.videoEncoder.recording = NO;
     }
+}
+
+- (void)subjectAreaChanged
+{
+    [self restoreContinuousFocusWithCompletion:nil];
 }
 
 - (AVCaptureVideoOrientation)currentVideoOrientation

@@ -25,6 +25,7 @@
 #import "VSequenceExpressionsObserver.h"
 #import "VCellSizeCollection.h"
 #import "VCellSizingUserInfoKeys.h"
+#import "VActionButtonAnimationController.h"
 
 static const CGFloat kInsetCellHeaderHeight         = 50.0f;
 static const CGFloat kInsetCellActionViewHeight     = 41.0f;
@@ -46,6 +47,7 @@ static const UIEdgeInsets kCaptionInsets            = { 4.0, 0.0, 4.0, 0.0  };
 @property (nonatomic, strong) NSLayoutConstraint *previewViewHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *countsVerticalSpacing;
 @property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
+@property (nonatomic, strong) VActionButtonAnimationController *actionButtonAnimationController;
 @property (nonatomic, strong) UIView *separatorView;
 
 @end
@@ -74,6 +76,8 @@ static const UIEdgeInsets kCaptionInsets            = { 4.0, 0.0, 4.0, 0.0  };
 
 - (void)sharedInit
 {
+    _actionButtonAnimationController = [[VActionButtonAnimationController alloc] init];
+    
     // Header at the top, left to right and kInsetCellHeaderHeight
     _header = [[VStreamHeaderTimeSince alloc] initWithFrame:CGRectZero];
     [self.contentView addSubview:_header];
@@ -304,8 +308,12 @@ static const UIEdgeInsets kCaptionInsets            = { 4.0, 0.0, 4.0, 0.0  };
     self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
     [self.expressionsObserver startObservingWithSequence:sequence onUpdate:^
      {
-         welf.actionView.likeButton.selected = sequence.isLikedByMainUser.boolValue;
-         [welf updateCountsTextViewForSequence:sequence];
+         typeof(self) strongSelf = welf;
+         [strongSelf updateCountsTextViewForSequence:sequence];
+         [strongSelf.actionButtonAnimationController setButton:strongSelf.actionView.likeButton
+                                                      selected:sequence.isLikedByMainUser.boolValue];
+         [strongSelf.actionButtonAnimationController setButton:strongSelf.actionView.repostButton
+                                                      selected:sequence.hasReposted.boolValue];
      }];
 }
 
@@ -410,9 +418,16 @@ static const UIEdgeInsets kCaptionInsets            = { 4.0, 0.0, 4.0, 0.0  };
 {
     CGSize base = CGSizeMake( CGRectGetWidth(bounds), 0.0 );
     NSDictionary *userInfo = @{ kCellSizingSequenceKey : sequence,
-                                VCellSizeCacheKey : sequence.remoteId ?: @"",
+                                VCellSizeCacheKey : [self cacheKeyForSequence:sequence],
                                 kCellSizingDependencyManagerKey : dependencyManager };
     return [[[self class] cellLayoutCollection] totalSizeWithBaseSize:base userInfo:userInfo];
+}
+
++ (NSString *)cacheKeyForSequence:(VSequence *)sequence
+{
+    NSString *name = sequence.name ?: @"";
+    NSString *aspectRatioString = [NSString stringWithFormat:@"%.5f", [sequence previewAssetAspectRatio]];
+    return [name stringByAppendingString:aspectRatioString];
 }
 
 #pragma mark - CCHLinkTextViewDelegate
@@ -430,19 +445,19 @@ static const UIEdgeInsets kCaptionInsets            = { 4.0, 0.0, 4.0, 0.0  };
                               fromView:self];
 }
 
-#pragma mark - VStreamCellFocus
+#pragma mark - VCellFocus
 
 - (void)setHasFocus:(BOOL)hasFocus
 {
-    if ([self.previewView conformsToProtocol:@protocol(VStreamCellFocus)])
+    if ([self.previewView conformsToProtocol:@protocol(VCellFocus)])
     {
-        [(id <VStreamCellFocus>)self.previewView setHasFocus:hasFocus];
+        [(id <VCellFocus>)self.previewView setHasFocus:hasFocus];
     }
 }
 
 - (CGRect)contentArea
 {
-    return self.previewView.frame;
+    return self.previewContainer.frame;
 }
 
 #pragma mark - VHighlightContainer

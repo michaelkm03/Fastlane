@@ -1,13 +1,10 @@
-
 /* 
   Localizable.strings
   victorious
+
   Created by Gary Philipp on 12/23/13.
   Copyright (c) 2013 Victorious Inc. All rights reserved.
 */
-
-
-
 "Home" = "Inicio";
 "Create" = "Crear";
 "Channel" = "Canal";
@@ -19,6 +16,9 @@
 "Messages" = "Mensajes";
 "Notifications" = "Notificaciones";
 "Comments" = "Comentarios";
+"Remixes" = "Remixes";
+"GIFs" = "GIFs";
+"Memes" = "Memes";
 "OK" = "Bien";
 "CancelButton" = "Cancelar";
 "DeleteButton" = "Borrar";
@@ -33,6 +33,8 @@
 "Publishing..." = "Publicando...";
 "Rendering..." = "Reproduciendo...";
 "Next" = "Siguiente";
+"Done" = "Hecho";
+"More" = "Más";
 "Quote" = "Mensaje";
 "Meme" = "Meme";
 "Share" = "Compartir";
@@ -42,6 +44,7 @@
 "Save" = "Guardar";
 "Continue" = "Continuar";
 "Loading..." = "Cargando...";
+"Finding fans to connect with..." = "Localizando aficionados para conectar...";
 
 "Featured" = "Destacado";
 "Recent" = "Reciente";
@@ -90,6 +93,7 @@
 "PollAlreadyAnswered" = "El resultado de la encuesta ya fue dado";
 "LoginFail" = "Error al ingresar";
 "GenericFailMessage" = "¡Ups! Algo salió mal.";
+"FacebookLoginFailed" = "¡Vaya! Hubo un error en el inicio de sesión en Facebook. Por favor vuelve a intentarlo.";
 "NotLoggedInMessage" = "¡Ups! parece que no has ingresado";
 "SignupFail" = "Error al crear la cuenta";
 "AccountUpdateFail" = "Error al actualizar la cuenta";
@@ -109,6 +113,7 @@
 "Profile load failed!" = "Error al cargar el perfil";
 
 "User already exists" = "El usuario ya existe";
+"User already exists but the password is incorrect" = "El usuario ya existe, pero la contraseña no es correcta";
 "Invalid email address or password" = "Email o contraseña inválidos";
 "Sorry, I can't display that right now" = "Lo sentimos, no podemos mostrar eso ahora";
 
@@ -145,6 +150,9 @@
 "NotFollowingTitle" = "¡RUH-ROH! NO SIGUES A NADIE AÚN";
 "NotFollowingMessage" = "Sigue a otras personas para ver su contenido en tu corriente. Es una buena manera de encontrar nuevos contenidos o hacer amigos.";
 
+"NoLikersMessage" = "Muestrale a la comunidad lo que piensas que es importante haciendo clic en me gusta en tus favoritos";
+"NoLikersTitle" = "A NADIE LE GUSTA ESTO... ¡TODAVÍA!";
+
 "ProfileNoFollowersTitle" = "SÉ EL PRIMERO EN SEGUIR A ESTE USUARIO";
 "ProfileNoFollowersMessage" = "Construye tu propia comunidad siguiendo a otros usuarios. Se te avisará cuando publiquen nuevos contenidos.";
 
@@ -156,35 +164,17 @@
 "SuggestedFollowersPlur" = "%@ seguidores";
 "SuggestedFollowersK" = "%@ seguidores";
 
-"NoRepostersTitle"      =   "BE THE 1st TO REPOST!";
-"NoRepostersMessage"    =   "Share this content with all of your followers!";
-
-"NoGiffersTitle"       =   "BE THE 1ST TO GIF!";
-"NoGiffersMessage"     =   "Make a GIF by selecting your favorite clip from this video and sharing it with other fans!";
-
-"NoMemersTitle"       =   "BE THE 1ST TO MEME!";
-"NoMemersMessage"     =   "Make this content your own by making it into a meme and sharing it with other fans!";
-
 "NoRepostersTitle" = "¡SÉ EL PRIMERO EN VOLVER A PUBLICAR!";
 "NoRepostersMessage" = "¡Comparte este contenido con todos tus seguidores!";
 
-"NoRemixersTitle" = "¡SÉ EL PRIMERO EN REMEZCLAR!";
-"NoRemixersMessage" = "Haz este contenido tuyo añadiendo un comentario, otros vídeoclips, ¡y mucho más!";
+"NoGiffersTitle" = "¡SÉ EL PRIMERO EN HACER UN GIF!";
+"NoGiffersMessage" = "¡Haz un GIF seleccionando tu sección favorita de este video y compartiéndolo con otros aficionados!";
 
-/* Check out this poll by <creator>! <URL> */
-"OwnerSharePollFormat" = "¡Mira esta encuesta hecha por %@!";
-/* Check out "<video name>" by <creator>! <URL> */
-"OwnerShareVideoFormat" = "Dale un ojo a %@ por %@";
-/* Check out this videy by <creator>! <URL> */
-"OwnerShareVideoFormatNoVideoName" = "¡Mira este video de %@!";
-/* Check out this photo by <creator>! <URL> */
-"OwnerShareImageFormat" = "Mira esta foto de %@";
-/* Check out this post by <creator>! <URL> */
-"OwnerShareTextFormat" = "Mira esta publicación de \"%@\"";
-/* Check this out */
-"OwnerShareLinkFormat"   =    "Mira esto!";
-/* Check out this poll! <URL> */
-"UGCSharePollFormat" = "¡Mira esta encuesta!";
+"NoMemersTitle" = "¡SÉ EL PRIMERO EN HACER UN MEME!";
+"NoMemersMessage" = "¡Haz tuyo este contenido convirtiéndolo en un meme y compartiéndolo con otros aficionados!";
+
+// strings for both UGC and creator
+"UGCSharePollFormat" = "¡Mira esta encuesta!"; //Check out this poll! <URL>
 /* Check out this video! <URL> */
 "UGCShareVideoFormat" = "¡Checa este video!";
 /* Check out this gif! <URL> */
@@ -193,8 +183,8 @@
 "UGCShareImageFormat" = "¡Mira esta foto!";
 /* Check out this post! <URL> */
 "UGCShareTextFormat" = "¡Mira esta publicación!";
-/* Check this out */
-"UGCShareLinkFormat"   =    "Mira esto!";
+"UGCShareLinkFormat" = "¡Chécate esto!";
+
 /* Check out this post from the <creator name> app! */
 "EmailShareSubjectFormat" = "¡Mira esta publicación de la app %@!";
 
@@ -218,10 +208,17 @@
 "CameraRollDenied" = "Por favor, permite el acceso a tus fotos en Configuración -> Privacidad.";
 "CameraFailed" = "No se pudo iniciar la cámara";
 "CameraSwitchFailed" = "No se puede cambiar al modo de cámara";
+/* Button that opens the camera */
+"Camera" = "Cámara";
+/* Button that opens web search for images */
+"Search" = "Buscar";
+/* Button that opens gallery to photo library for images and videos */
+"Gallery" = "Galería";
 "StillCaptureFailed" = "No se pudo tomar la foto";
 "VideoCaptureFailed" = "No se pudo grabar el video";
 "VideoSaveFailed" = "No se pudo guardar el video";
 "VideoCoachMessage" = "Para grabar, presiona y mantén";
+"LibraryCaptureFailed" = "No fue posible acceder al artículo en la biblioteca";
 
 "NoTwitterTitle" = "¡No se pudo encontrar una cuenta de Twitter";
 "NoTwitterMessage" = "Por favor, abre tu configuración y añade una nueva cuenta de Twitter";
@@ -303,6 +300,10 @@
 
 "PublishDescriptionMinCharacters" = "Por favor, ingresa una descripción más larga.";
 
+"Sorry, we were having some trouble on our end. Please retry." = "Lo sentimos, tenemos algunos problemas aquí. Por favor vuelve a intentarlo.";
+"We failed to retrieve publish permissions." = "No pudimos conseguir los permisos de publicación.";
+"Retry" = "Vuelve a intentarlo";
+
 "ReplaceVideo" = "Reemplazar el video";
 
 "VideoPlayFailed" = "Error al reproducir el video";
@@ -351,8 +352,9 @@
 
 "ExpiresOn" = "Expira el %@";
 
-"me" = "Yo";
+"Me" = "Yo";
 
+"Edit" = "Editar";
 "editProfileButton" = "Editar perfil";
 "followers" = "Seguidores";
 "following" = "Siguiendo";
@@ -395,7 +397,7 @@
 "CannotVerify" = "No se puede verificar la cuenta";
 "IncorrectCode" = "El código usado para la verificación de cuenta no es correcto.";
 
-"Search for an image" = "Buscar una imagen";
+"Image Search" = "Buscar imagen";
 "Pull up for more..." = "Levantar para ver más...";
 "search for users" = "buscar usuarios";
 "searching" = "buscando";
@@ -436,6 +438,7 @@
 
 "Logout" = "Salir";
 
+
 "UserBannedTitle" = "¡Ruh Roh!";
 "UserBannedMessage" = "Desafortunadamente, eres un miembro prohibido de la comunidad. No puedes ver el contenido ni interactuar con los demás.";
 
@@ -450,6 +453,8 @@
 
 "ToSText" = "Términos del servicio";
 "ToSAgreement" = "Soy mayor de 13 años de edad y estoy de acuerdo con los términos del servicio";
+
+"Privacy Policy" = "Política de privacidad";
 
 "NoFriends" = "No hay coincidencias";
 "NoFriendsDetail" = "No pudimos encontrar amigos tuyos que usen nuestra app. ¡Invítalos!";
@@ -542,6 +547,10 @@
 "ErrorPushNotificationsNotSaved" = "Error al guardar las preferencias";
 "ErrorPushNotificationsNotSavedMessage" = "Por favor, intentar más tarde.";
 
+"We need permission to access your photo library." = "Necesitamos permiso para acceder a tu biblioteca de fotografías.";
+"We need access to this permission." = "Necesitamos acceder a este permiso.";
+"Maybe Later" = "Tal vez luego";
+
 "RestorePurchaseDescription" = "¿Ya lo compraste en otro dispositivo?\nToca abajo para restaurar todas tus compras.";
 "PurchaseErrorTitle" = "Error al hacer la comora";
 "PurchaseErrorProductNotAvailable" = "Lo sentimos, error en las compras";
@@ -612,18 +621,31 @@
 "Video failed to load" = "Error al cargar el video";
 "We encountered an error trying to edit this video." = "Detectamos un error al intentar editar este video.";
 
+"No Photos" = "No hay fotos";
+"No Videos" = "No hay videos";
+
 "#nofilter" = "#nohayfiltro";
-"Create a meme" = "Crear meme";
-"Create a quote" = "Crear un mensaje";
+"Create a meme" = "Crea un mema";
+"Create a quote" = "Crea una cita";
 "Create a GIF" = "Crea un GIF";
+"Pick an attachment style" = "Escoge un estilo de anexo";
+"Image" = "Imagen";
+"Video" = "Vídeo";
 "Type your text here!" = "¡Escribe tu texto aquí!";
 "GIF" = "GIF";
-"Quote" = "Mensaje";
+"GIF Search" = "Buscar GIF";
+
 "GIF MODE" = "MODO GIF";
 "VIDEO MODE" = "MODO VIDEO";
 "Write a caption (optional)" = "Escribir un subtítulo (opcional)";
+
+"Downloading..." = "Descargando...";
+"Exporting..." = "Exportando...";
 "Render failure" = "Error de reproducción";
+
 "Upload failure" = "Error al cargar";
+"Error loading results" = "Error al cargar los resultados";
+"Error rendering GIF" = "Error al renderizar el GIF. Por favor vuelve a intentarlo.";
 
 "Before you can take and share photos with the community, we need access to your camera. Allow camera access now?" = "Antes de poder tomar y compartir fotos con la comunidad, necesitamos tener acceso a tu cámara. ¿Permites el acceso a la cámara ahora?";
 "Thank you for joining the community! To add a profile picture, we need access to your camera. Allow camera access now?" = "¡Gracias por unirte a la comunidad! Para agregar una foto de perfil, necesitamos tener acceso a tu cámara. ¿Permites el acceso a la cámara ahora?";
@@ -633,7 +655,9 @@
 "Follow content from other fans." = "Sigue el contenido de otros fans.";
 "Share creations with the community." = "Comparte las creaciones con la comunidad.";
 "Join in on the conversation." = "Únete a la conversación.";
-"By signing up you are agreeing to our \\nterms of service and privacy policy." = "Al suscribirte aceptas nuestros \nTérminos de Servicio y Política de Privacidad.";
+"By signing up you are agreeing to our" = "Al firmar aceptas nuestros";
+"terms of service" = "términos del servicio";
+"privacy policy" = "política de privacidad";
 "Sign up with Email" = "Regístrate con un email";
 "Sign up with Facebook" = "Regístrate con Facebook";
 "Create an account and join the community." = "Crea una cuenta y únete a la comunidad.";
@@ -642,6 +666,7 @@
 "Add your profile picture." = "Añade tu imagen de perfil";
 "Enter Email" = "Ingresa tu email";
 "Enter name" = "Ingresa tu nombre";
+"You must enter a name." = "Debes ingresar un nombre.";
 "Enter Password" = "Ingresa una contraseña";
 "Tap Here" = "Toca aquí";
 "Forgot your password?" = "¿Olvidaste tu contraseña?";
@@ -652,3 +677,27 @@
 "Enter a new Password" = "Ingresa una contraseña nueva";
 "Confirm your new password" = "Confirma tu contraseña nueva";
 "Welcome Back!" = "¡Bienvenido de vuelta!";
+
+"Nice!" = "¡Bien!";
+"Edit photo" = "Editar fotografía";
+
+/* e.g. "1 Comment" */
+"CommentsSingularFormat" = "%@ Comentario";
+/* e.g. "20 Comments" */
+"CommentsPluralFormat" = "%@ Comentarios";
+/* e.g. "1 Like", where "Like" is a noun */
+"LikesSingularFormat" = "%@ Me gusta";
+/* e.g. "20 Likes", where "Like" is a noun */
+"LikesPluralFormat" = "%@ Me gusta";
+"LikersTitle" = "Les gusta";
+
+"TEXT" = "TEXTO";
+"POLL" = "ENCUESTA";
+"VIDEO" = "VIDEO";
+"IMAGE" = "IMAGEN";
+"Nevermind" = "No importa";
+
+/* Liked content no content view */
+"NOTHING LIKED YET" = "TODAVÍA NO HAY NADA QUE TE GUSTE";
+/* Liked content no content view */
+"Posts you like will appear here." = "Publicaciones que te gustaría que aparezcan aquí.";

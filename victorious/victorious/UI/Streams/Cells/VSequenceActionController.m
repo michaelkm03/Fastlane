@@ -41,8 +41,8 @@
 #import "VCoachmarkManager.h"
 #import "VDependencyManager+VCoachmarkManager.h"
 
-#pragma mark - Workflow
-#import "VWorkspaceFlowController.h"
+#pragma mark - Remixing
+#import "VRemixPresenter.h"
 #import "VImageToolController.h"
 #import "VVideoToolController.h"
 #import "VAuthorizedAction.h"
@@ -52,9 +52,10 @@
 #import "VUsersViewController.h"
 #import "VLikersDataSource.h"
 
-@interface VSequenceActionController () <VWorkspaceFlowControllerDelegate>
+@interface VSequenceActionController ()
 
 @property (nonatomic, strong) UIViewController *viewControllerPresentingWorkspace;
+@property (nonatomic, strong) VRemixPresenter *remixPresenter;
 
 @end
 
@@ -109,14 +110,7 @@
 {
     NSAssert( ![sequence isPoll], @"You cannot remix polls." );
     NSMutableDictionary *addedDependencies = [[NSMutableDictionary alloc] init];
-    if (sequence)
-    {
-        [addedDependencies setObject:sequence forKey:VWorkspaceFlowControllerSequenceToRemixKey];
-    }
-    if (preloadedImage)
-    {
-        [addedDependencies setObject:preloadedImage forKey:VWorkspaceFlowControllerPreloadedImageKey];
-    }
+
     [addedDependencies setObject:@(VImageToolControllerInitialImageEditStateText) forKey:VImageToolControllerInitialImageEditStateKey];
     VVideoToolControllerInitialVideoEditState editState;
     switch (defaultVideoEdit)
@@ -141,16 +135,10 @@
          {
              return;
          }
-         
-         VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager templateValueOfType:[VWorkspaceFlowController class]
-                                                                                                  forKey:VDependencyManagerWorkspaceFlowKey
-                                                                                   withAddedDependencies:addedDependencies];
-         
-         workspaceFlowController.delegate = self;
+         self.remixPresenter = [[VRemixPresenter alloc] initWithDependencymanager:self.dependencyManager
+                                                                  sequenceToRemix:sequence];
+         [self.remixPresenter presentOnViewController:viewController];
          self.viewControllerPresentingWorkspace = viewController;
-         [viewController presentViewController:workspaceFlowController.flowRootViewController
-                                      animated:YES
-                                    completion:nil];
      }];
 }
 
@@ -224,16 +212,6 @@
 
 #pragma mark - Repost
 
-- (BOOL)canRespost
-{
-    if (![VObjectManager sharedManager].authorized)
-    {
-        return NO;
-    }
-    
-    return YES;
-}
-
 - (void)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node
 {
     [self repostActionFromViewController:viewController node:node completion:nil];
@@ -241,6 +219,12 @@
 
 - (void)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node completion:(void(^)(BOOL))completion
 {
+    if ([node.sequence.hasReposted boolValue])
+    {
+        completion(YES);
+        return;
+    }
+    
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                       dependencyManager:self.dependencyManager];
     [authorization performFromViewController:viewController context:VAuthorizationContextRepost completion:^(BOOL authorized)
@@ -302,7 +286,8 @@
 
 - (void)showLikersFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
 {
-    VUsersViewController *usersViewController = [[VUsersViewController alloc] initWithDependencyManager:self.dependencyManager];
+    VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{}];
+    VUsersViewController *usersViewController = [[VUsersViewController alloc] initWithDependencyManager:childDependencyManager];
     usersViewController.title = NSLocalizedString( @"LikersTitle", nil );
     usersViewController.usersDataSource = [[VLikersDataSource alloc] initWithSequence:sequence];
     
@@ -450,28 +435,6 @@
     }
     
     return shareText;
-}
-
-#pragma mark - VWorkspaceFlowControllerDelegate
-
-- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
-{
-    [self.viewControllerPresentingWorkspace dismissViewControllerAnimated:YES
-                                                               completion:^
-     {
-         self.viewControllerPresentingWorkspace = nil;
-     }];
-}
-
-- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-       finishedWithPreviewImage:(UIImage *)previewImage
-               capturedMediaURL:(NSURL *)capturedMediaURL
-{
-    [self.viewControllerPresentingWorkspace dismissViewControllerAnimated:YES
-                                                               completion:^
-     {
-         self.viewControllerPresentingWorkspace = nil;
-     }];
 }
 
 @end

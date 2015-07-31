@@ -12,6 +12,7 @@
 #import "VTag.h"
 #import "VTagStringFormatter.h"
 #import "VTagDictionary.h"
+#import "VDependencyManager.h"
 
 typedef NS_ENUM(NSInteger, VUserTaggingTextStorageState)
 {
@@ -43,6 +44,7 @@ static NSString * const VOriginalFont = @"NSOriginalFont";
 - (instancetype)initWithTextView:(UITextView *)textView
                      defaultFont:(UIFont *)defaultFont
                  taggingDelegate:(id<VUserTaggingTextStorageDelegate>)taggingDelegate
+               dependencyManager:(VDependencyManager *)dependencyManager
 {
     NSAssert(defaultFont != nil, @"DefaultFont must not be nil");
     
@@ -52,6 +54,8 @@ static NSString * const VOriginalFont = @"NSOriginalFont";
         _taggingDelegate = taggingDelegate;
         _textView = textView;
         _defaultFont = defaultFont;
+        _dependencyManager = dependencyManager;
+        
         BOOL hasTextView = _textView != nil;
         
         if ( hasTextView )
@@ -137,7 +141,7 @@ static NSString * const VOriginalFont = @"NSOriginalFont";
     //If range is <= triggerCharacterLength, the range is looking at a blank or only "kTriggerCharacter" string and does not need to search
     if ( range.length > triggerStringLength )
     {
-        [self.searchTableViewController searchFollowingList:[[self.displayStorage.string substringWithRange:range] substringFromIndex:triggerStringLength]];
+        [self.searchTableViewController searchWithText:[[self.displayStorage.string substringWithRange:range] substringFromIndex:triggerStringLength]];
     }
 }
 
@@ -453,6 +457,7 @@ static NSString * const VOriginalFont = @"NSOriginalFont";
     }
     
     _searchTableViewController = [[VInlineSearchTableViewController alloc] initWithNibName:nil bundle:nil];
+    _searchTableViewController.dependencyManager = self.dependencyManager;
     _searchTableViewController.delegate = self;
     return _searchTableViewController;
 }

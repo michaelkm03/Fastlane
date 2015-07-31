@@ -18,8 +18,6 @@
 #import "VObjectManager+Login.h"
 
 //View Controllers
-#import "VFindFriendsViewController.h"
-#import "VWorkspaceFlowController.h"
 #import "VNavigationController.h"
 
 //Data Models

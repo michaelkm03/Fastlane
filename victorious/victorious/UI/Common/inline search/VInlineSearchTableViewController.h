@@ -10,7 +10,7 @@
 
 extern const NSInteger kSearchTableDesiredMinimumHeight;
 
-@class VInlineSearchTableViewController, VUser;
+@class VInlineSearchTableViewController, VUser, VDependencyManager;
 
 @protocol VInlineSearchTableViewControllerDelegate <NSObject>
 
@@ -34,11 +34,13 @@ extern const NSInteger kSearchTableDesiredMinimumHeight;
  */
 @property (nonatomic, weak) id <VInlineSearchTableViewControllerDelegate> delegate;
 
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
+
 /**
  Called to perform a user search
  
  @param searchText NSString text to search for
  */
-- (void)searchFollowingList:(NSString *)searchText;
+- (void)searchWithText:(NSString *)searchText;
 
 @end

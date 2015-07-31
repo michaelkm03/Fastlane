@@ -22,11 +22,14 @@
 #import "VDependencyManager+VObjectManager.h"
 #import "VAuthorizationContext.h"
 #import "VNavigationDestination.h"
-
+#import "UIViewController+VAccessoryScreens.h"
 #import "UIViewController+VLayoutInsets.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VAppDelegate.h"
 #import "VRootViewController.h"
+#import "VDependencyManager+VAccessoryScreens.h"
+#import "VDependencyManager+VNavigationMenuItem.h"
+#import "VDependencyManager+VTracking.h"
 
 static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
 static CGFloat const kVNotificationCellHeight = 64.0f;
@@ -82,7 +85,7 @@ static int const kNotificationFetchBatchSize = 50;
 
 - (void)multipleContainerDidSetSelected:(BOOL)isDefault
 {
-    
+    // Empty
 }
 
 #pragma mark - View Lifecycle
@@ -101,6 +104,9 @@ static int const kNotificationFetchBatchSize = 50;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.dependencyManager trackViewWillAppear:self];
+    [self updateNavigationItem];
     [self.refreshControl beginRefreshing];
     [self.tableView setContentOffset:CGPointZero];
     [self refresh:nil];
@@ -111,11 +117,16 @@ static int const kNotificationFetchBatchSize = 50;
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:@"Notifications"];
     self.badgeNumber = 0;
+    
+    [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [self.dependencyManager trackViewWillDisappear:self];
+    
     [[VTrackingManager sharedInstance] endEvent:@"Notifications"];
     if (self.refreshRequest.isExecuting)
     {
@@ -333,6 +344,11 @@ static int const kNotificationFetchBatchSize = 50;
     }
 }
 
+- (void)updateNavigationItem
+{
+    [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
+}
+
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -344,6 +360,22 @@ static int const kNotificationFetchBatchSize = 50;
     {
         [self loadNextPageAction];
     }
+}
+
+#pragma mark - Navigation Destination
+
+- (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
+{
+    return YES;
+}
+
+- (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
+{
+    if ([menuItem.identifier isEqualToString:VDependencyManagerAccessoryNewMessage])
+    {
+        return NO;
+    }
+    return YES;
 }
 
 @end

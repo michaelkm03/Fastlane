@@ -352,8 +352,10 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 {
     NSURL *deepLink = [NSURL URLWithString:pushNotification[kDeepLinkURLKey]];
     NSString *notificationID = pushNotification[kNotificationIDKey];
-    
-    [self openURL:deepLink fromExternalSourceWithOptionalNotificationID:notificationID];
+    if (deepLink != nil)
+    {
+        [self openURL:deepLink fromExternalSourceWithOptionalNotificationID:notificationID];
+    }
 }
 
 - (void)applicationOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
@@ -438,12 +440,12 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     }
     
 #ifdef V_SWITCH_ENVIRONMENTS
-    NSError *environmentError = notification.userInfo[ VEnvironmentErrorKey ];
-    if ( environmentError != nil )
+    NSNumber *environmentError = notification.userInfo[ VEnvironmentDidFailToLoad ];
+    if ( environmentError.boolValue )
     {
-        NSString *message = [NSString stringWithFormat:@"%@\nReverting back to default environment.", environmentError.localizedDescription];
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Environment Error" message:message preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Environment Error" message:@"Error while launching on custom environment.\nReverting back to default." preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action)
+        {
             [alert dismissViewControllerAnimated:YES completion:nil];
         }]];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
@@ -505,16 +507,22 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     }
 }
 
-#pragma mark - VFollowing
+#pragma mark - VFollowResponder
 
-- (void)followUser:(VUser *)user withCompletion:(VFollowEventCompletion)completion
+- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion
 {
-    [self.followHelper followUser:user withCompletion:completion];
+    [self.followHelper followUser:user
+              withAuthorizedBlock:authorizedBlock
+                    andCompletion:completion];
 }
 
-- (void)unfollowUser:(VUser *)user withCompletion:(VFollowEventCompletion)completion
+- (void)unfollowUser:(VUser *)user
+ withAuthorizedBlock:(void (^)(void))authorizedBlock
+       andCompletion:(VFollowHelperCompletion)completion
 {
-    [self.followHelper unfollowUser:user withCompletion:completion];
+    [self.followHelper unfollowUser:user
+                withAuthorizedBlock:authorizedBlock
+                      andCompletion:completion];
 }
 
 #pragma mark - VHashtag

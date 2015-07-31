@@ -31,6 +31,7 @@
 
 @import AVFoundation;
 
+static NSString * const kTitleKey = @"title";
 static CGFloat const kWorkspaceToolButtonSize = 44.0f;
 static CGFloat const kInspectorToolDisabledAlpha = 0.3f;
 static CGFloat const kMinimumToolViewHeight = 100.0f;
@@ -41,7 +42,6 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
 
 @property (nonatomic, strong, readwrite) VDependencyManager *dependencyManager;
 
-@property (nonatomic, weak) IBOutlet UIToolbar *topToolbar;
 @property (nonatomic, weak) IBOutlet UIToolbar *bottomToolbar;
 @property (nonatomic, weak) IBOutlet VCanvasView *canvasView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *verticalSpaceCanvasToTopOfContainerConstraint;
@@ -53,7 +53,6 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
 
 @property (nonatomic, strong) VKeyboardNotificationManager *keyboardManager;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceTopBarToContainer;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceBottomBarToContainer;
 
 @property (nonatomic, strong) UIVisualEffectView *blurView;
@@ -69,7 +68,6 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
     UIStoryboard *workspaceStoryboard = [UIStoryboard storyboardWithName:@"Workspace" bundle:nil];
     VBaseWorkspaceViewController *workspaceViewController = [workspaceStoryboard instantiateViewControllerWithIdentifier:NSStringFromClass([self class])];
     workspaceViewController.dependencyManager = dependencyManager;
-    
     return workspaceViewController;
 }
 
@@ -79,11 +77,6 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
 }
 
 #pragma mark - UIViewController
-
-- (BOOL)prefersStatusBarHidden
-{
-    return YES;
-}
 
 - (BOOL)shouldAutorotate
 {
@@ -101,9 +94,14 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
 {
     [super viewDidLoad];
     
-    [self.continueButton setTitle:self.continueText];
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 120, 44)];
+    titleLabel.text = [self.dependencyManager stringForKey:kTitleKey] ?: NSLocalizedString(@"Edit", nil);
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+    self.navigationItem.titleView = titleLabel;
     
-    [self updateBackButton];
+    [self.continueButton setTitle:self.continueText];
     
     self.view.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     
@@ -181,6 +179,10 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
                                                       animationCurve:animationCurve];
                             }
                                                                           willChangeFrameBlock:nil];
+    if (self.toolController.shouldBottomBarBeHidden)
+    {
+        self.bottomToolbar.items = nil;
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -282,27 +284,7 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
     [self.continueButton setTitle:continueText];
 }
 
-- (void)setShowCloseButton:(BOOL)showCloseButton
-{
-    _showCloseButton = showCloseButton;
-    
-    [self updateBackButton];
-}
-
-- (void)updateBackButton
-{
-    NSString *imageName = self.showCloseButton ? @"cameraButtonClose" : @"cameraButtonBack";
-    self.backButton.image = [UIImage imageNamed:imageName];
-}
-
 #pragma mark - Public Methods
-
-- (void)bringTopChromeOutOfView
-{
-    self.verticalSpaceTopBarToContainer.constant = -CGRectGetHeight(self.topToolbar.frame);
-    self.view.backgroundColor = [UIColor clearColor];
-    [self.view layoutIfNeeded];
-}
 
 - (void)bringBottomChromeOutOfView
 {
@@ -313,10 +295,27 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
 
 - (void)bringChromeIntoView
 {
-    self.verticalSpaceTopBarToContainer.constant = 0.0f;
     self.verticalSpaceBottomBarToContainer.constant = 0.0f;
     
     [self.view layoutIfNeeded];
+}
+
+#pragma mark - Focus
+
+- (void)gainedFocus
+{
+    if ([self.toolController.selectedTool respondsToSelector:@selector(setSelected:)])
+    {
+        [self.toolController.selectedTool setSelected:YES];
+    }
+}
+
+- (void)lostFocus
+{
+    if ([self.toolController.selectedTool respondsToSelector:@selector(setSelected:)])
+    {
+        [self.toolController.selectedTool setSelected:NO];
+    }
 }
 
 #pragma mark - Private Methods
@@ -348,17 +347,9 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
             self.inspectorToolViewController.view.alpha = kInspectorToolDisabledAlpha;
         }
         
-        if ( self.disablesNavigationItemsOnKeyboardAppearance )
-        {
-            [self.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
-             {
-                 [item setEnabled:NO];
-             }];
-        }
-        
         if ( self.adjustsCanvasViewFrameOnKeyboardAppearance )
         {
-            self.verticalSpaceCanvasToTopOfContainerConstraint.constant = -CGRectGetHeight(overlap) + CGRectGetHeight(self.topToolbar.frame);
+            self.verticalSpaceCanvasToTopOfContainerConstraint.constant = -CGRectGetHeight(overlap) + [self.topLayoutGuide length];
             self.inspectorToolViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
             self.inspectorToolViewController.view.frame = inspectorFrame;
             [self.view layoutIfNeeded];
@@ -395,17 +386,10 @@ static CGFloat const kMinimumToolViewHeight = 100.0f;
             self.inspectorToolViewController.view.userInteractionEnabled = YES;
             self.inspectorToolViewController.view.alpha = 1.0f;
         }
-        if ( self.disablesNavigationItemsOnKeyboardAppearance )
-        {
-            [self.topToolbar.items enumerateObjectsUsingBlock:^(UIBarButtonItem *item, NSUInteger idx, BOOL *stop)
-             {
-                 [item setEnabled:YES];
-             }];
-        }
         
         if ( self.adjustsCanvasViewFrameOnKeyboardAppearance )
         {
-            self.verticalSpaceCanvasToTopOfContainerConstraint.constant = CGRectGetHeight(self.topToolbar.frame);
+            self.verticalSpaceCanvasToTopOfContainerConstraint.constant = [self.topLayoutGuide length];
             [self.view layoutIfNeeded];
         }
     };

@@ -6,15 +6,11 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VDependencyManager+VWorkspace.h"
-#import "VWorkspaceFlowController.h"
-#import "VImageToolController.h"
-#import "VVideoToolController.h"
-
-#import "VContentInputAccessoryView.h"
 #import "VKeyboardBarViewController.h"
-#import "VLoginViewController.h"
 
+#import "VMediaAttachmentPresenter.h"
+#import "VContentInputAccessoryView.h"
+#import "VLoginViewController.h"
 #import "VObjectManager+Login.h"
 #import "UIActionSheet+VBlocks.h"
 #import "VConstants.h"
@@ -24,13 +20,14 @@
 
 static const CGFloat kTextInputFieldMaxLines = 3.0f;
 
-@interface VKeyboardBarViewController() <UITextViewDelegate, VWorkspaceFlowControllerDelegate>
+@interface VKeyboardBarViewController() <UITextViewDelegate>
 
 @property (nonatomic, weak, readwrite) IBOutlet UIView *textViewContainer;
 @property (nonatomic, strong, readwrite) UITextView *textView;
 @property (weak, nonatomic) IBOutlet UIButton *mediaButton;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
-@property (nonatomic, strong) NSURL *mediaURL;
+@property (nonatomic, strong) VPublishParameters *publishParameters;
+@property (nonatomic, strong) VMediaAttachmentPresenter *attachmentPresenter;
 
 @property (nonatomic, assign, readonly) CGFloat maxTextFieldHeight;
 
@@ -65,7 +62,8 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
 - (void)createTextView
 {
     UIFont *defaultFont = [UIFont fontWithName:@"Helvetica" size:16.0f];
-    self.textStorage = [[VUserTaggingTextStorage alloc] initWithTextView:nil defaultFont:defaultFont taggingDelegate:self.delegate];
+    
+    self.textStorage = [[VUserTaggingTextStorage alloc] initWithTextView:nil defaultFont:defaultFont taggingDelegate:self.delegate dependencyManager:self.dependencyManager];
     
     NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
     [self.textStorage addLayoutManager:layoutManager];
@@ -129,19 +127,14 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
 {
     [self.mediaButton setImage:[UIImage imageNamed:@"MessageCamera"] forState:UIControlStateNormal];
     self.textView.text = nil;
-    self.mediaURL = nil;
+    self.publishParameters.mediaToUploadURL = nil;
     [self textViewDidChange:self.textView];
 }
 
 - (void)enableOrDisableSendButtonAsAppropriate
 {
-    self.sendButton.enabled = self.mediaURL || (self.textView.text.length > 0);
-    
     NSString *textWithoutSpace = [self.textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    if (textWithoutSpace.length == 0)
-    {
-        self.sendButton.enabled = NO;
-    }
+    self.sendButton.enabled = self.publishParameters.mediaToUploadURL != nil || (textWithoutSpace.length > 0);
 }
 
 - (IBAction)sendButtonAction:(id)sender
@@ -156,10 +149,10 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
     
     [self.textView resignFirstResponder];
 
-    if ([self.delegate respondsToSelector:@selector(keyboardBar:didComposeWithText:mediaURL:)])
+    if ([self.delegate respondsToSelector:@selector(keyboardBar:didComposeWithText:publishParameters:)])
     {
         NSString *text = [self.textStorage databaseFormattedString];
-        [self.delegate keyboardBar:self didComposeWithText:text mediaURL:self.mediaURL];
+        [self.delegate keyboardBar:self didComposeWithText:text publishParameters:self.publishParameters];
     }
     if (self.shouldAutoClearOnCompose)
     {
@@ -172,7 +165,7 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
     [self.textView resignFirstResponder];
     [self.mediaButton setImage:[UIImage imageNamed:@"MessageCamera"] forState:UIControlStateNormal];
     self.textView.text = nil;
-    self.mediaURL = nil;
+    self.publishParameters.mediaToUploadURL = nil;
     
     if ([self.delegate respondsToSelector:@selector(didCancelKeyboardBar:)])
     {
@@ -192,16 +185,27 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
     
     void (^showCamera)(void) = ^void(void)
     {
-        VWorkspaceFlowController *workspaceFlowController = [self.dependencyManager workspaceFlowControllerWithAddedDependencies:@{ VImageToolControllerInitialImageEditStateKey: @(VImageToolControllerInitialImageEditStateFilter),
-                                                                                                                                    VVideoToolControllerInitalVideoEditStateKey: @(VVideoToolControllerInitialVideoEditStateVideo) }];
-        workspaceFlowController.delegate = self;
-        workspaceFlowController.videoEnabled = YES;
-        [self presentViewController:workspaceFlowController.flowRootViewController
-                           animated:YES
-                         completion:nil];
+        self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager];
+        __weak typeof(self) welf = self;
+        self.attachmentPresenter.attachmentTypes = VMediaAttachmentOptionsImage | VMediaAttachmentOptionsVideo | VMediaAttachmentOptionsGIF;
+        self.attachmentPresenter.resultHandler = ^void(BOOL success, VPublishParameters *publishParameters)
+        {
+            __strong typeof(self) strongSelf = welf;
+            if (success)
+            {
+                strongSelf.publishParameters = publishParameters;
+                [strongSelf.mediaButton setImage:publishParameters.previewImage forState:UIControlStateNormal];
+            }
+            [strongSelf dismissViewControllerAnimated:YES
+                                     completion:^
+             {
+                 [strongSelf enableOrDisableSendButtonAsAppropriate];
+             }];
+        };
+        [self.attachmentPresenter presentOnViewController:self];
     };
     
-    if (self.mediaURL == nil)
+    if (self.publishParameters.mediaToUploadURL == nil)
     {
         showCamera();
         return;
@@ -214,7 +218,7 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
     
     void (^clearMediaSelection)(void) = ^void(void)
     {
-        self.mediaURL = nil;
+        self.publishParameters.mediaToUploadURL = nil;
         [self.mediaButton setImage:[UIImage imageNamed:@"MessageCamera"] forState:UIControlStateNormal];
     };
     
@@ -334,32 +338,6 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
             }
         }
     }
-}
-
-#pragma mark - VWorkspaceFlowControllerDelegate
-
-- (void)workspaceFlowControllerDidCancel:(VWorkspaceFlowController *)workspaceFlowController
-{
-    [self dismissViewControllerAnimated:YES
-                             completion:nil];
-}
-
-- (void)workspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-       finishedWithPreviewImage:(UIImage *)previewImage
-               capturedMediaURL:(NSURL *)capturedMediaURL
-{
-    self.mediaURL = capturedMediaURL;
-    [self.mediaButton setImage:previewImage forState:UIControlStateNormal];
-    [self dismissViewControllerAnimated:YES
-                             completion:^
-     {
-         [self enableOrDisableSendButtonAsAppropriate];
-     }];
-}
-
-- (BOOL)shouldShowPublishForWorkspaceFlowController:(VWorkspaceFlowController *)workspaceFlowController
-{
-    return NO;
 }
 
 @end

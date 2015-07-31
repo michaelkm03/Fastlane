@@ -11,52 +11,37 @@
 
 @import AVFoundation;
 
-static const CGFloat kTrimHeadHeight = 44.0f;
-static const CGFloat kTrimHeadInset = 4.0f;
-static const CGFloat kTrimHeadWidth = 56.0f;
 static const CGFloat kTrimBodyWidth = 5.0f;
+static const CGFloat kTrimScrubberWidth = kTrimBodyWidth * 3;
+
+static const CGFloat scaleFactorX = 0.15f; //x-ratio for handle subview on trim control
+static const CGFloat scaleFactorY = 0.50f; //y-ratio for handle subview on trim control
+static const CGFloat kLineLength = 1000.0f; //Length of underbar on trim control
+static const CGFloat kLineThickness = 1.0f; //Thickness of underbar on trim control
+
+const CGFloat VTrimmerTopPadding = 42.0f;
 
 @interface VTrimControl () <UICollisionBehaviorDelegate, UIDynamicAnimatorDelegate>
 
 @property (nonatomic, readwrite) CMTime selectedDuration;
 
-@property (nonatomic, strong) UIView *trimThumbHead;
-@property (nonatomic, strong) UIView *trimThumbBody;
+@property (nonatomic, strong) UIView *topBar;
+@property (nonatomic, strong) UIView *bottomBar;
+@property (nonatomic, strong) UIView *leftHandle;
 
 @property (nonatomic, strong) UILabel *thumbLabel;
 
-@property (nonatomic, strong) UIPanGestureRecognizer *headGestureRecognizer;
 @property (nonatomic, strong) UIPanGestureRecognizer *bodyGestureRecognizer;
-@property (nonatomic, strong) NSArray *trimGestureRecognziers;
 
 @property (nonatomic, strong) UIDynamicAnimator *animator;
 @property (nonatomic, strong) UIPushBehavior *pushBehavior;
 @property (nonatomic, strong) UIAttachmentBehavior *attachmentBehavior;
 @property (nonatomic, strong) UIAttachmentBehavior *clampingBehavior;
 @property (nonatomic, strong) UICollisionBehavior *collisionBehavior;
-@property (nonatomic, strong) UIDynamicItemBehavior *itemBehavior;
 
 @property (nonatomic, assign) BOOL hasPerformedInitialLayout;
 
 @end
-
-static inline CGFloat TrimHeadYCenter()
-{
-    return (kTrimHeadInset + kTrimHeadHeight) * 0.5f;
-}
-
-static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
-{
-    if (point.x < xMin)
-    {
-        point.x = xMin;
-    }
-    else if (point.x > xMax)
-    {
-        point.x = xMax;
-    }
-    return point;
-}
 
 @implementation VTrimControl
 
@@ -82,27 +67,16 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
 
 - (void)sharedInit
 {
-    self.trimThumbHead = [[UIView alloc] initWithFrame:CGRectMake(0, kTrimHeadInset, kTrimHeadWidth, kTrimHeadHeight)];
-    self.trimThumbHead.backgroundColor = [UIColor whiteColor];
-    self.trimThumbHead.layer.cornerRadius = kTrimHeadHeight * 0.5f;
-    [self addSubview:self.trimThumbHead];
-    self.headGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self
-                                                                         action:@selector(pannedThumb:)];
-    [self.trimThumbHead addGestureRecognizer:self.headGestureRecognizer];
+    self.trimThumbBody = [[UIView alloc] init];
+    self.leftHandle = [[UIView alloc] init];
     
-    self.trimThumbBody = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.trimThumbHead.frame) - 0.5f * kTrimBodyWidth,
-                                                                CGRectGetMaxY(self.trimThumbHead.frame),
-                                                                kTrimBodyWidth,
-                                                                CGRectGetMaxY(self.bounds) - CGRectGetMaxY(self.trimThumbHead.frame))];
     self.trimThumbBody.backgroundColor = [UIColor whiteColor];
     [self addSubview:self.trimThumbBody];
-    self.bodyGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self
-                                                                         action:@selector(pannedThumb:)];
-    [self.trimThumbBody addGestureRecognizer:self.bodyGestureRecognizer];
-    self.thumbLabel = [[UILabel alloc] initWithFrame:self.trimThumbHead.bounds];
-    [self.trimThumbHead addSubview:self.thumbLabel];
+    [self addSubview:self.leftHandle];
     
-    self.trimGestureRecognziers = @[self.headGestureRecognizer, self.bodyGestureRecognizer];
+    self.bodyGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pannedThumb:)];
+    
+    [self.trimThumbBody addGestureRecognizer:self.bodyGestureRecognizer];
 }
 
 #pragma mark - UIControl
@@ -110,22 +84,15 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
 - (BOOL)isTracking
 {
     __block BOOL isTracking = NO;
-    [self.trimGestureRecognziers enumerateObjectsUsingBlock:^(UIGestureRecognizer *gestureRecognizer, NSUInteger idx, BOOL *stop)
+    switch (self.bodyGestureRecognizer.state)
     {
-        switch (gestureRecognizer.state)
-        {
-            case UIGestureRecognizerStateBegan:
-            case UIGestureRecognizerStateChanged:
-                isTracking = YES;
-                *stop = YES;
-                break;
-            case UIGestureRecognizerStatePossible:
-            case UIGestureRecognizerStateEnded:
-            case UIGestureRecognizerStateCancelled:
-            case UIGestureRecognizerStateFailed:
-                break;
-        }
-    }];
+        case UIGestureRecognizerStateBegan:
+        case UIGestureRecognizerStateChanged:
+            isTracking = YES;
+            break;
+        default:
+            break;
+    }
     if (!isTracking)
     {
         isTracking = self.animator.isRunning;
@@ -137,36 +104,43 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
 
 - (void)layoutSubviews
 {
-    CGFloat previewHeight = CGRectGetMaxY(self.bounds) - CGRectGetMaxY(self.trimThumbHead.frame) - kTrimHeadInset/2;
-    
-    //The added 1s avoid a small visible divide between the thumb head and the trimmer line
-    self.trimThumbBody.frame = CGRectMake(CGRectGetMidX(self.trimThumbHead.frame) - 0.5f * kTrimBodyWidth,
-                                          CGRectGetMaxY(self.trimThumbHead.frame) - 1.0f,
-                                          kTrimBodyWidth,
-                                          previewHeight + kTrimHeadInset/2 + 1.0f);
-    [self updateThumAndDimmingViewWithNewThumbCenter:self.trimThumbHead.center];
-    
     if (!self.hasPerformedInitialLayout)
     {
-        UIView *trimOpenView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.trimThumbHead.frame) + kTrimHeadInset/2, kTrimBodyWidth, previewHeight)];
-        trimOpenView.backgroundColor = [UIColor whiteColor];
-        trimOpenView.userInteractionEnabled = NO;
-        [self addSubview:trimOpenView];
+        CGFloat yOrigin = VTrimmerTopPadding;
+        CGFloat previewHeight = CGRectGetHeight(self.bounds) - yOrigin;
         
-        [self updateThumAndDimmingViewWithNewThumbCenter:CGPointMake(CGRectGetMaxX(self.bounds) - (CGRectGetWidth(self.trimThumbHead.frame) / 2), self.trimThumbHead.center.y)];
+        CGRect thumbBodyFrame = CGRectZero;
+        thumbBodyFrame.origin.y = yOrigin;
+        thumbBodyFrame.size = CGSizeMake(kTrimScrubberWidth, previewHeight);
+
+        self.trimThumbBody.frame = thumbBodyFrame;
+        
+        CGRect rect = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.trimThumbBody.frame) * scaleFactorX, CGRectGetHeight(self.trimThumbBody.frame) * scaleFactorY);
+        UIView *innerView = [[UIView alloc] initWithFrame:rect];
+        innerView.center = CGPointMake(self.trimThumbBody.center.x, CGRectGetHeight(self.trimThumbBody.frame) / 2);
+        innerView.backgroundColor = [UIColor colorWithWhite:0.8f alpha:1.0f];
+        
+        self.topBar = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.trimThumbBody.frame) - kLineLength, -kLineThickness, kLineLength, kLineThickness)];
+        self.bottomBar = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.trimThumbBody.frame) - kLineLength, CGRectGetHeight(self.trimThumbBody.frame), kLineLength, kLineThickness)];
+        
+        self.topBar.backgroundColor = [UIColor whiteColor];
+        self.bottomBar.backgroundColor = [UIColor whiteColor];
+        [self.trimThumbBody addSubview:self.topBar];
+        [self.trimThumbBody addSubview:self.bottomBar];
+        
+        [self.trimThumbBody addSubview:innerView];
+        
+        CGRect leftHandleFrame = thumbBodyFrame;
+        leftHandleFrame.size.width = kTrimBodyWidth;
+        self.leftHandle.frame = leftHandleFrame;
+        self.leftHandle.backgroundColor = [UIColor whiteColor];
+        self.leftHandle.userInteractionEnabled = NO;
+        
         self.hasPerformedInitialLayout = YES;
-        
         self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self];
         self.animator.delegate = self;
-        self.pushBehavior = [[UIPushBehavior alloc] initWithItems:@[self.trimThumbHead] mode:UIPushBehaviorModeInstantaneous];
-        self.collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.trimThumbHead]];
-        self.collisionBehavior.translatesReferenceBoundsIntoBoundary = YES;
-        [self.collisionBehavior setTranslatesReferenceBoundsIntoBoundaryWithInsets:UIEdgeInsetsMake(0, -CGRectGetWidth(self.trimThumbHead.bounds)/4, 0.0f, -CGRectGetWidth(self.trimThumbHead.bounds)/2)]; // Hackey should make full width seekable
-        self.collisionBehavior.collisionDelegate = self;
-        self.itemBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[self.trimThumbHead]];
-        self.itemBehavior.resistance = 10.5f;
-        self.itemBehavior.allowsRotation = NO;
-        [self.animator addBehavior:self.collisionBehavior];
+        [self layoutIfNeeded];
+        [self updateThumbAndDimmingViewWithThumbHorizontalCenter:CGRectGetWidth(self.frame) - (CGRectGetWidth(self.trimThumbBody.frame)/2)];
     }
 }
 
@@ -177,20 +151,25 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
     UIView *hitView = [super hitTest:point
                            withEvent:event];
     
-    if ((hitView == self.trimThumbBody) || (hitView == self.trimThumbHead))
+    if (hitView == self.trimThumbBody)
     {
         return hitView;
     }
     else
     {
-        CGFloat padding = 22.0f;
-        CGFloat midXThumbBody = CGRectGetMidX(self.trimThumbBody.frame);
-        if (ABS(midXThumbBody - point.x) < padding)
+        CGFloat padding = kTrimBodyWidth + kTrimScrubberWidth * 2;
+        if (point.x < padding)
         {
             return self.trimThumbBody;
         }
-        return nil;
+        
+        CGFloat buffer = 5.0f * kTrimBodyWidth;
+        if ( (point.x > (CGRectGetMinX(self.trimThumbBody.frame) - buffer)) && ( point.x < (CGRectGetMaxX(self.trimThumbBody.frame) + buffer)) )
+        {
+            return self.trimThumbBody;
+        }
     }
+    return nil;
 }
 
 #pragma mark - Property Accessors
@@ -206,13 +185,6 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
     return self.thumbLabel.attributedText;
 }
 
-- (void)setMaxDuration:(CMTime)maxDuration
-{
-    _maxDuration = maxDuration;
-    
-    [self updateSelectedDuration];
-}
-
 #pragma mark - Gesture Recognizer
 
 - (void)pannedThumb:(UIPanGestureRecognizer *)gestureRecognizer
@@ -226,7 +198,7 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
             break;
         case UIGestureRecognizerStateChanged:
         {
-            [self pangGestureChanged:gestureRecognizer];
+            [self panGestureChanged:gestureRecognizer];
         }
             break;
         case UIGestureRecognizerStateCancelled:
@@ -244,40 +216,36 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
 - (void)panGestureBegan:(UIPanGestureRecognizer *)gestureRecognizer
 {
     self.bodyGestureRecognizer.enabled = (gestureRecognizer == self.bodyGestureRecognizer);
-    self.headGestureRecognizer.enabled = (gestureRecognizer == self.headGestureRecognizer);
     
     [self.animator removeBehavior:self.clampingBehavior];
-    self.attachmentBehavior = [[UIAttachmentBehavior alloc] initWithItem:self.trimThumbHead attachedToAnchor:CGPointMake([gestureRecognizer locationInView:self].x, CGRectGetMidY(self.trimThumbHead.frame))];
+    self.attachmentBehavior = [[UIAttachmentBehavior alloc] initWithItem:self.trimThumbBody attachedToAnchor:CGPointMake([gestureRecognizer locationInView:self].x, CGRectGetMidY(self.trimThumbBody.frame))];
     [self.animator addBehavior:self.attachmentBehavior];
     self.pushBehavior.active = NO;
-    [self.animator removeBehavior:self.itemBehavior];
 }
 
-- (void)pangGestureChanged:(UIPanGestureRecognizer *)gestureRecognizer
+- (void)panGestureChanged:(UIPanGestureRecognizer *)gestureRecognizer
 {
     CGPoint anchorPoint = [gestureRecognizer locationInView:self];
-    anchorPoint.y = CGRectGetMidY(self.trimThumbHead.frame);
+    anchorPoint.y = CGRectGetMidY(self.trimThumbBody.frame);
     
     self.attachmentBehavior.anchorPoint = anchorPoint;
     __weak typeof(self) welf = self;
     self.attachmentBehavior.action = ^()
     {
-        [welf updateThumAndDimmingViewWithNewThumbCenter:welf.trimThumbHead.center];
+        [welf updateThumbAndDimmingViewWithThumbHorizontalCenter:CGRectGetMidX(welf.trimThumbBody.frame)];
     };
 }
 
 - (void)panGestureFailed:(UIPanGestureRecognizer *)gestureRecognizer
 {
     [self.animator removeBehavior:self.attachmentBehavior];
-    [self.animator addBehavior:self.itemBehavior];
     self.bodyGestureRecognizer.enabled = YES;
-    self.headGestureRecognizer.enabled = YES;
     
     if (ABS([gestureRecognizer velocityInView:self].x) < 30)
     {
         return;
     }
-    CGVector forceVector = [self v_forceFromVelocity:[gestureRecognizer velocityInView:self] withDensity:0.1];
+    CGVector forceVector = [self v_forceFromVelocity:[gestureRecognizer velocityInView:self] withDensity:0.1f];
     forceVector.dy = 0;
     self.pushBehavior.pushDirection = forceVector;
     self.pushBehavior.active = YES;
@@ -285,40 +253,8 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
     __weak typeof(self) welf = self;
     self.pushBehavior.action = ^()
     {
-        [welf updateThumAndDimmingViewWithNewThumbCenter:welf.trimThumbHead.center];
+        [welf updateThumbAndDimmingViewWithThumbHorizontalCenter:CGRectGetMidX(welf.trimThumbBody.frame)];
     };
-}
-
-#pragma mark - UICollisionBehaviorDelegate
-
-- (void)collisionBehavior:(UICollisionBehavior *)behavior
-      beganContactForItem:(id<UIDynamicItem>)item
-   withBoundaryIdentifier:(id<NSCopying>)identifier
-                  atPoint:(CGPoint)p
-{
-    CGPoint anchor;
-    if (p.x > CGRectGetMidX(self.bounds))
-    {
-        anchor = CGPointMake(CGRectGetMaxX(self.bounds), CGRectGetMidY(self.trimThumbHead.frame));
-    }
-    else
-    {
-        anchor = CGPointMake(0.0f, CGRectGetMidY(self.trimThumbHead.frame));
-    }
-    [self.animator removeBehavior:self.clampingBehavior];
-    self.clampingBehavior = [[UIAttachmentBehavior alloc] initWithItem:self.trimThumbHead
-                                                      attachedToAnchor:anchor];
-    self.clampingBehavior.frequency = 2;
-    self.clampingBehavior.damping = 0.5f;
-    self.clampingBehavior.length = 0.0f;
-    [self.animator addBehavior:self.clampingBehavior];
-}
-
-#pragma mark - Convenience accessor
-
-+ (CGFloat)topPadding
-{
-    return kTrimHeadHeight + kTrimHeadInset;
 }
 
 #pragma mark - UIDynamicAnimatorDelegate
@@ -332,8 +268,6 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
 
 - (void)sendActionsForControlEvents:(UIControlEvents)controlEvents
 {
-    [self updateSelectedDuration];
-    
     // Make sure we don't have a nil target
     if (self.allTargets.count > 0 && ![self.allTargets containsObject:[NSNull null]])
     {
@@ -343,20 +277,14 @@ static inline CGPoint ClampX(CGPoint point, CGFloat xMin, CGFloat xMax)
 
 #pragma mark - Private Methods
 
-- (void)updateSelectedDuration
+- (void)updateThumbAndDimmingViewWithThumbHorizontalCenter:(CGFloat)horizontalCenter
 {
-    CGFloat percentSelected = CGRectGetMidX(self.trimThumbBody.frame) / CGRectGetWidth(self.bounds);
-    self.selectedDuration =  CMTimeMultiplyByFloat64(self.maxDuration, percentSelected);
-}
-
-- (void)updateThumAndDimmingViewWithNewThumbCenter:(CGPoint)thumbCenter
-{
-    CGPoint newCenter = CGPointMake(thumbCenter.x, TrimHeadYCenter());
-    CGFloat minHeadX = 0.0f;
-    CGFloat maxHeadX = CGRectGetWidth(self.bounds);
-    self.trimThumbHead.center = ClampX(newCenter, minHeadX, maxHeadX);
-    self.trimThumbBody.center = CGPointMake(thumbCenter.x, self.trimThumbBody.center.y);
-    
+    // prevents trimmer from going outside the view
+    CGFloat trimWidth = CGRectGetWidth(self.trimThumbBody.frame)/2;
+    horizontalCenter = MIN(horizontalCenter, CGRectGetWidth(self.frame) - trimWidth);
+    horizontalCenter = MAX(trimWidth, horizontalCenter);
+    self.trimThumbBody.center = CGPointMake(horizontalCenter, self.trimThumbBody.center.y);
+    self.leftHandle.center = CGPointMake(self.leftHandle.center.x, self.trimThumbBody.center.y);
     [self sendActionsForControlEvents:UIControlEventValueChanged];
 }
 
