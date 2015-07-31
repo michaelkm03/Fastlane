@@ -23,7 +23,6 @@
 {
     return @{
              @"id"                  :   VSelectorName(remoteId),
-             @"stream_id"           :   VSelectorName(streamId),
              @"shelf_id"            :   VSelectorName(shelfId),
              @"entry_label"         :   VSelectorName(headline),
              @"stream_content_type" :   VSelectorName(streamContentType),

@@ -20,7 +20,6 @@
 @property (nonatomic, retain) NSString * hashtag;
 @property (nonatomic, retain) NSNumber * isUserPostAllowed;
 @property (nonatomic, retain) NSString * trackingIdentifier;
-@property (nonatomic, retain) NSString * streamId;
 @property (nonatomic, retain) NSString * shelfId;
 @property (nonatomic, retain) NSOrderedSet *marqueeItems;
 @property (nonatomic, retain) NSOrderedSet *streamItems;
