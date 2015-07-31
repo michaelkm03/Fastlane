@@ -267,7 +267,15 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
     }
 }
 
-#pragma mark - Capture
+#pragma mark - Private
+
+- (void)clearRecordedVideoAndResetControl
+{
+    [self updateProgressForSecond:0];
+    [self.cameraControl restoreCameraControlToDefault];
+    self.trashButton.hidden = YES;
+    self.trashButton.backgroundColor = [UIColor clearColor];
+}
 
 // Returns YES if successfully created encoder or it already exists
 - (BOOL)setupEncoderIfNeeded
@@ -340,15 +348,6 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
     CGFloat progress = ABS( totalRecorded / VConstantsMaximumVideoDuration);
     [self.cameraControl setRecordingProgress:progress
                                     animated:YES];
-}
-
-
-- (void)clearRecordedVideoAndResetControl
-{
-    [self updateProgressForSecond:0];
-    [self.cameraControl restoreCameraControlToDefault];
-    self.trashButton.hidden = YES;
-    self.trashButton.backgroundColor = [UIColor clearColor];
 }
 
 #pragma mark - VCaptureVideoPreviewViewDelegate
@@ -489,6 +488,20 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
     hud.mode = MBProgressHUDModeText;
     hud.labelText = errorText;
     [hud hide:YES afterDelay:kErrorMessageDisplayDuration];
+}
+
+@end
+
+@implementation VVideoCameraViewController (CreatorExtensions)
+
+- (void)clearCaptureState
+{
+    [self clearRecordedVideoAndResetControl];
+}
+
+- (void)resumeCapture
+{
+    [self viewWillAppear:YES];
 }
 
 @end

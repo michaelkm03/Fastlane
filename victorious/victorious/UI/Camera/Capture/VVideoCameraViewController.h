@@ -38,3 +38,22 @@
 @property (nonatomic, readonly) NSURL *savedVideoURL;
 
 @end
+
+/**
+ *  If the current user is a creator we need some extra functionality to update the state of the camera.
+ */
+@interface VVideoCameraViewController (CreatorExtensions)
+
+/**
+ *  Should be called after the video camera leaves the screen (ONLY WHEN IN CREATOR MODE). This behavior 
+ *  is automatic on view lifecycle methods when not in creator mode.
+ */
+- (void)clearCaptureState;
+
+/**
+ *  Should be called when the video camera will return to the forefront (ONLY WHEN IN CREATOR MODE). This behavior
+ *  is automatic on view lifecycle methods when not in creator mode.
+ */
+- (void)resumeCapture;
+
+@end
