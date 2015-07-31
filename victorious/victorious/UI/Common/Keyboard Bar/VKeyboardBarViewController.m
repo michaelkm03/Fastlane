@@ -258,7 +258,7 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
 
 - (void)setTextViewText:(NSAttributedString *)textViewText
 {
-    self.textView.attributedText = [self attributedStringForString:self.textView.text];
+    self.textView.attributedText = textViewText;
     if ([self respondsToSelector:@selector(textViewDidChange:)])
     {
         [self textViewDidChange:self.textView];
@@ -303,19 +303,10 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
 {
     if ([text isEqualToString:@"\n"])
     {
-        switch (textView.returnKeyType)
+        [textView resignFirstResponder];
+        if ([self.delegate respondsToSelector:@selector(didCancelKeyboardBar:)])
         {
-            case UIReturnKeyGo:
-            case UIReturnKeyDone:
-            case UIReturnKeySend:
-                [textView resignFirstResponder];
-                if ([self.delegate respondsToSelector:@selector(didCancelKeyboardBar:)])
-                {
-                    [self.delegate didCancelKeyboardBar:self];
-                }
-                return NO;
-            default:
-                break;
+            [self.delegate didCancelKeyboardBar:self];
         }
     }
     
@@ -329,7 +320,9 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
 - (void)textViewDidChange:(UITextView *)textView
 {
     self.promptLabel.hidden = ([textView.text length] != 0);
+    [self.textStorage beginEditing];
     self.textView.attributedText = [self attributedStringForString:self.textView.text];
+    [self.textStorage endEditing];
     [self enableOrDisableSendButtonAsAppropriate];
 }
 

@@ -59,6 +59,12 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
     // Until then, we do the logic here
     BOOL isMainUserOwnerOfComment = [[VObjectManager sharedManager].mainUser isEqual:self.comment.user];
     
+# warning uncomment this when done
+    // commented out for testing purposes:
+    // if ( !isMainUserOwnerOfComment )
+    {
+        [mutableButtonConfigs addObject:sharedConfig.replyButtonConfig];
+    }
     if ( isMainUserOwnerOfComment || self.permissions.canEditComments )
     {
         [mutableButtonConfigs addObject:sharedConfig.editButtonConfig];
@@ -72,13 +78,6 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
     if ( !isMainUserOwnerOfComment && [self commentIsFlaggable:self.comment]  )
     {
         [mutableButtonConfigs addObject:sharedConfig.flagButtonConfig];
-    }
-    
- # warning uncomment this when done
- // commented out for testing purposes:
- // if ( !isMainUserOwnerOfComment )
-    {
-        [mutableButtonConfigs addObject:sharedConfig.replyButtonConfig];
     }
     
     self.buttonConfigs = [NSArray arrayWithArray:mutableButtonConfigs];
