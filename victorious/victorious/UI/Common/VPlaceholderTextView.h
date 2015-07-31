@@ -18,6 +18,4 @@
 
 @property (nonatomic, copy) NSString *placeholderText; ///< The placeholder text to display in the placeholder view.
 
-@property (nonatomic, readonly) UITextView *placeholderTextView;
-
 @end
