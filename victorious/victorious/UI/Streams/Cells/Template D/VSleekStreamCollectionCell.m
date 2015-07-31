@@ -143,10 +143,9 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
                 return CGSizeMake( 0.0f, kCaptionMargins.bottom);
             }
             
-            BOOL showPreviousCommentsCellEnabled = [self inStreamCommentsShouldDisplayShowMoreCellForSequence:sequence];
             NSArray *commentCellContents = [VInStreamCommentCellContents inStreamCommentsForComments:[self inStreamCommentsArrayForSequence:sequence] andDependencyManager:dependencyManager];
             
-            CGFloat height = [VInStreamCommentsController desiredHeightForCommentCellContents:commentCellContents withMaxWidth:size.width showMoreAttributes:[VInStreamCommentsShowMoreAttributes newWithDependencyManager:dependencyManager] andShowMoreCommentsCellEnabled:showPreviousCommentsCellEnabled];
+            CGFloat height = [VInStreamCommentsController desiredHeightForCommentCellContents:commentCellContents withMaxWidth:size.width andShowMoreAttributes:[VInStreamCommentsShowMoreAttributes newWithDependencyManager:dependencyManager]];
             return CGSizeMake( 0.0f, height );
         }];
     }

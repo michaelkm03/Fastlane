@@ -78,7 +78,7 @@ static NSString * const kGifIconKey = @"watch_gif_icon";
 
         case VCommentMediaTypeGIF:
             iconKey = kGifIconKey;
-            linkPrompt = @"Watch Gif";
+            linkPrompt = @"Watch GIF";
             break;
             
         case VCommentMediaTypeVideo:

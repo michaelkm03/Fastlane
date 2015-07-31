@@ -20,7 +20,7 @@
 
 - (instancetype)init
 {
-    return [super initWithNibName:NSStringFromClass([VLightboxViewController class]) bundle:nil];
+    return [super initWithNibName:NSStringFromClass([VLightboxViewController class]) bundle:[NSBundle bundleForClass:[VLightboxViewController class]]];
 }
 
 #pragma mark - View lifecycle

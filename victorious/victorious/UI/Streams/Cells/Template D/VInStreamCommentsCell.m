@@ -22,7 +22,7 @@
 
 //Warning, must match up EXACTLY with values in this class' xib
 static UIEdgeInsets const kTextInsets = { 6.0f, 28.0f, 6.0f, 0.0f };
-static CGFloat const kInterLabelSpace = 11.0f;
+static CGFloat const kInterLabelSpace = 6.0f;
 static CGFloat const kMediaButtonMaxHeight = 50.0f;
 static NSString * const kMediaIdentifierSuffix = @"withMedia";
 
@@ -32,7 +32,6 @@ static NSString * const kMediaIdentifierSuffix = @"withMedia";
 @property (nonatomic, weak) IBOutlet UIButton *mediaLinkButton;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *mediaLinkTopConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *mediaLinkButtonHeightConstraint;
-@property (nonatomic, weak) IBOutlet UILabel *timestampLabel;
 @property (nonatomic, weak) IBOutlet VDefaultProfileButton *profileButton;
 
 @property (nonatomic, readwrite) VInStreamCommentCellContents *commentCellContents;
@@ -83,8 +82,6 @@ static NSString * const kMediaIdentifierSuffix = @"withMedia";
     
     self.mediaLinkTopConstraint.constant = [[self class] contentsHasValidMediaLink:contents] ? kInterLabelSpace : 0.0f;
     [self setupMediaLinkButtonWithInStreamMediaLink:contents.inStreamMediaLink forSizing:NO];
-    
-    self.timestampLabel.attributedText = [[self class] timestampAttributedStringForContents:contents];
     
     [self.profileButton setProfileImageURL:[NSURL URLWithString:contents.profileImageUrlString] forState:UIControlStateNormal];
 }
@@ -161,19 +158,6 @@ static NSString * const kMediaIdentifierSuffix = @"withMedia";
      }];
 }
 
-+ (NSAttributedString *)timestampAttributedStringForContents:(VInStreamCommentCellContents *)contents
-{
-    NSParameterAssert(contents.creationDate != nil);
-    NSParameterAssert(contents.timestampTextAttributes != nil);
-    
-    NSAttributedString *attributedString = nil;
-    if ( contents.creationDate != nil && contents.timestampTextAttributes != nil )
-    {
-        attributedString = [[NSAttributedString alloc] initWithString:[contents.creationDate timeSince] attributes:contents.timestampTextAttributes];
-    }
-    return attributedString;
-}
-
 + (CGFloat)mediaLinkButtonHeightForContents:(VInStreamCommentCellContents *)contents withMaxWidth:(CGFloat)width
 {
     CGFloat height = 0.0f;
@@ -197,19 +181,16 @@ static NSString * const kMediaIdentifierSuffix = @"withMedia";
     {
         commentAttributedString = attributedString;
     }];
-    NSAttributedString *timestampAttributedString = [self timestampAttributedStringForContents:contents];
     CGFloat mediaLinkButtonHeight = [self mediaLinkButtonHeightForContents:contents withMaxWidth:maxWidth];
     CGFloat commentHeight = CGRectGetHeight([commentAttributedString boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
                                                                                   options:NSStringDrawingUsesLineFragmentOrigin context:nil]);
-    CGFloat timestampHeight = CGRectGetHeight([timestampAttributedString boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
-                                                                                      options:NSStringDrawingUsesLineFragmentOrigin context:nil]);
-    CGFloat height = kInterLabelSpace;
+    CGFloat height = 0.0f;
     if ( mediaLinkButtonHeight != 0.0f )
     {
         height += kInterLabelSpace;
     }
     
-    height += commentHeight + timestampHeight + mediaLinkButtonHeight;
+    height += commentHeight + mediaLinkButtonHeight;
     height += kTextInsets.top + kTextInsets.bottom;
     return height;
 }

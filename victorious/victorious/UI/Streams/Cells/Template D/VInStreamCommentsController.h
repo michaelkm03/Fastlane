@@ -39,14 +39,12 @@
     @param commentCellContents An array of VInStreamCommentCellContents representing comments that should be displayed.
     @param width The maximum width the cell can have. This should be the collection view's width minus any pertinent insets.
     @param attributes The display attributes for the show more cell.
-    @param enabled Whether or not the show the "show more" cell.
  
     @return The ideal height for the collection view.
  */
 + (CGFloat)desiredHeightForCommentCellContents:(NSArray *)commentCellContents
                                   withMaxWidth:(CGFloat)width
-                            showMoreAttributes:(VInStreamCommentsShowMoreAttributes *)attributes
-                andShowMoreCommentsCellEnabled:(BOOL)enabled;
+                         andShowMoreAttributes:(VInStreamCommentsShowMoreAttributes *)attributes;
 
 /**
     The display attributes of the show more cell.

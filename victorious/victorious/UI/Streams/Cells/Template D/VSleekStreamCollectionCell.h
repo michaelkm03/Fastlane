@@ -37,7 +37,8 @@
 @property (nonatomic, strong) VSequence *sequence;
 
 /**
- *
+ *  Set to YES to signal that this cell's size should be
+ *  refreshed the next time it's displayed.
  */
 @property (nonatomic, readonly) BOOL needsRefresh;
 

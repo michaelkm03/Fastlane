@@ -661,7 +661,7 @@
 
 "Open Image" = "Open Image";
 "Watch Video" = "Watch Video";
-"Watch Gif" = "Watch Gif";
+"Watch GIF" = "Watch GIF";
 
 "CommentsSingularFormat" = "%@ Comment";  // e.g. "1 Comment"
 "CommentsPluralFormat" = "%@ Comments";  // e.g. "20 Comments"

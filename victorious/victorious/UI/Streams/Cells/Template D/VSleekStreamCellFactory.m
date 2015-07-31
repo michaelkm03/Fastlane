@@ -125,14 +125,15 @@
 - (void)updateVisibleCellsInCollectionView:(UICollectionView *)collectionView
 {
     NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
-    for ( VSleekStreamCollectionCell *cell in collectionView.visibleCells )
+    for ( UICollectionViewCell *cell in collectionView.visibleCells )
     {
-        if ( [cell respondsToSelector:@selector(needsRefresh)] )
+        if ( [cell isKindOfClass:[VSleekStreamCollectionCell class]] )
         {
-            if ( cell.needsRefresh )
+            VSleekStreamCollectionCell *sleekCell = (VSleekStreamCollectionCell *)cell;
+            if ( sleekCell.needsRefresh )
             {
-                [indexPaths addObject:[collectionView indexPathForCell:cell]];
-                [cell purgeSizeCacheValue];
+                [indexPaths addObject:[collectionView indexPathForCell:sleekCell]];
+                [sleekCell purgeSizeCacheValue];
             }
         }
     }

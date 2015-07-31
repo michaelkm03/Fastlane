@@ -1095,7 +1095,6 @@
 		F098D8151A9D29EA0003B6D4 /* VTagSensitiveTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D8141A9D29EA0003B6D4 /* VTagSensitiveTextView.m */; };
 		F098D81A1A9E39380003B6D4 /* VTagSensitiveTextViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D8191A9E39380003B6D4 /* VTagSensitiveTextViewTests.m */; };
 		F098D81D1A9E4A890003B6D4 /* VUserTag.m in Sources */ = {isa = PBXBuildFile; fileRef = F098D81C1A9E4A890003B6D4 /* VUserTag.m */; };
-		F09FEBCC1B66D231001151A7 /* VInStreamCommentsShowMoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0FC97C41B59D7550098AFCB /* VInStreamCommentsShowMoreCell.xib */; };
 		F0A04FA61A8D6DF100504E26 /* VTextbarSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A04FA51A8D6DF100504E26 /* VTextbarSelectorView.m */; };
 		F0A82AF71AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A82AF61AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m */; };
 		F0A82AFA1AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A82AF91AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m */; };
@@ -1144,7 +1143,6 @@
 		F0FC97AA1B5563A40098AFCB /* VInStreamCommentsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0FC97A91B5563A40098AFCB /* VInStreamCommentsCell.xib */; };
 		F0FC97AD1B56B3910098AFCB /* VInStreamMediaLink.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97AC1B56B3910098AFCB /* VInStreamMediaLink.m */; };
 		F0FC97BC1B58547A0098AFCB /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97BB1B58547A0098AFCB /* VSequence.m */; };
-		F0FC97BF1B59C9940098AFCB /* VInStreamCommentsShowMoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97BE1B59C9940098AFCB /* VInStreamCommentsShowMoreCell.m */; };
 		F0FC97CD1B59DCD60098AFCB /* VInStreamCommentsShowMoreAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97CC1B59DCD60098AFCB /* VInStreamCommentsShowMoreAttributes.m */; };
 		F0FC97D21B5AE9130098AFCB /* VStreamCollectionViewController+VInStreamCommentsResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97D11B5AE9130098AFCB /* VStreamCollectionViewController+VInStreamCommentsResponder.m */; };
 		F0FC97D51B5AF0EE0098AFCB /* VCollectionViewCommentHighlighter.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97D41B5AF0EE0098AFCB /* VCollectionViewCommentHighlighter.m */; };
@@ -3376,9 +3374,6 @@
 		F0FC97AC1B56B3910098AFCB /* VInStreamMediaLink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInStreamMediaLink.m; sourceTree = "<group>"; };
 		F0FC97BA1B58547A0098AFCB /* VSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequence.h; sourceTree = "<group>"; };
 		F0FC97BB1B58547A0098AFCB /* VSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequence.m; sourceTree = "<group>"; };
-		F0FC97BD1B59C9940098AFCB /* VInStreamCommentsShowMoreCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInStreamCommentsShowMoreCell.h; sourceTree = "<group>"; };
-		F0FC97BE1B59C9940098AFCB /* VInStreamCommentsShowMoreCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInStreamCommentsShowMoreCell.m; sourceTree = "<group>"; };
-		F0FC97C31B59D7550098AFCB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/VInStreamCommentsShowMoreCell.xib; sourceTree = "<group>"; };
 		F0FC97CB1B59DCD60098AFCB /* VInStreamCommentsShowMoreAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInStreamCommentsShowMoreAttributes.h; sourceTree = "<group>"; };
 		F0FC97CC1B59DCD60098AFCB /* VInStreamCommentsShowMoreAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInStreamCommentsShowMoreAttributes.m; sourceTree = "<group>"; };
 		F0FC97CF1B5AD6E40098AFCB /* VInStreamCommentsResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInStreamCommentsResponder.h; sourceTree = "<group>"; };
@@ -7514,9 +7509,6 @@
 				F0FC97A61B5563960098AFCB /* VInStreamCommentsCell.h */,
 				F0FC97A71B5563960098AFCB /* VInStreamCommentsCell.m */,
 				F0FC97A91B5563A40098AFCB /* VInStreamCommentsCell.xib */,
-				F0FC97BD1B59C9940098AFCB /* VInStreamCommentsShowMoreCell.h */,
-				F0FC97BE1B59C9940098AFCB /* VInStreamCommentsShowMoreCell.m */,
-				F0FC97C41B59D7550098AFCB /* VInStreamCommentsShowMoreCell.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -7708,7 +7700,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F09FEBCC1B66D231001151A7 /* VInStreamCommentsShowMoreCell.xib in Resources */,
 				D85B706B1B0EAF3F0038CA5B /* login.storyboard in Resources */,
 				036F38701A0C4DEA0014DF66 /* JosefinSlab-SemiBold.ttf in Resources */,
 				D82E76E519F5C06B00FFB722 /* VContentPollBallotCell.xib in Resources */,
@@ -8665,7 +8656,6 @@
 				D8CA63BB19D5240C002046E5 /* VActionSheetPresentationAnimator.m in Sources */,
 				037CB74519CFE8D20084BBED /* VUploadTaskInformation.m in Sources */,
 				F0FC97A81B5563960098AFCB /* VInStreamCommentsCell.m in Sources */,
-				F0FC97BF1B59C9940098AFCB /* VInStreamCommentsShowMoreCell.m in Sources */,
 				A721E9581B572454000B7901 /* UIResponder+VResponderChain.m in Sources */,
 				0314D4B619B46B5E00FA363C /* VLightboxTransitioningDelegate.m in Sources */,
 				0314D4D219B46B5E00FA363C /* VRootViewController.m in Sources */,
@@ -9512,14 +9502,6 @@
 				03669B921B6332D9003C2D8F /* vi */,
 			);
 			name = settings.storyboard;
-			sourceTree = "<group>";
-		};
-		F0FC97C41B59D7550098AFCB /* VInStreamCommentsShowMoreCell.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F0FC97C31B59D7550098AFCB /* Base */,
-			);
-			name = VInStreamCommentsShowMoreCell.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

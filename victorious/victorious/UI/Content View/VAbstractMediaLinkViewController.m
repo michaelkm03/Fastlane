@@ -36,7 +36,6 @@
             linkViewController = [[VGifLinkViewController alloc] initWithUrlString:urlString];
             break;
             
-            
         case VCommentMediaTypeImage:
         default:
             linkViewController = [[VImageLinkViewController alloc] initWithUrlString:urlString];
@@ -47,7 +46,7 @@
 
 - (instancetype)initWithUrlString:(NSString *)urlString
 {
-    self = [super initWithNibName:NSStringFromClass([VAbstractMediaLinkViewController class]) bundle:nil];
+    self = [super initWithNibName:NSStringFromClass([VAbstractMediaLinkViewController class]) bundle:[NSBundle bundleForClass:[VAbstractMediaLinkViewController class]]];
     if ( self != nil )
     {
         _mediaUrlString = urlString;

@@ -44,6 +44,11 @@ extern NSString * const VCellSizeCacheKey;
  */
 - (CGSize)totalSizeWithBaseSize:(CGSize)base userInfo:(NSDictionary *)userInfo;
 
+/**
+ Removes the size registered for the provided key from the cache.
+ 
+ @param key The key that was used to initially cache the size value.
+ */
 - (void)removeSizeCacheForItemWithCacheKey:(NSString *)key;
 
 @end

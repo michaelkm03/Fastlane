@@ -46,7 +46,7 @@
          if ( image != nil )
          {
              CGSize size = self.imageView.image.size;
-             aspectRatio = size.width / size.height;
+             aspectRatio = size.height == 0.0f ? 1.0f : size.width / size.height;
          }
          completionBlock( aspectRatio );
      }];
