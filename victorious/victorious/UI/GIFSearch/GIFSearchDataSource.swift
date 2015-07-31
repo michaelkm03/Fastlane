@@ -121,12 +121,12 @@ class GIFSearchDataSource: NSObject {
         }
         
         self.state = .Loading
-        self.mostRecentSearchText = searchText
         VObjectManager.sharedManager().searchForGIF( searchText,
             pageType: pageType,
             success: { (results, isLastPage) in
                 self.state = .Content
                 self.isLastPage = isLastPage
+                self.mostRecentSearchText = searchText
                 let result = self.updateDataSource( results, pageType: pageType )
                 completion?( result )
             },
