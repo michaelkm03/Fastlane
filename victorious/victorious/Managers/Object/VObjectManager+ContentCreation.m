@@ -469,9 +469,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     tempComment.text = text;
     tempComment.postedAt = [NSDate dateWithTimeIntervalSinceNow:-1];
     tempComment.sequenceId = sequence.remoteId;
-#warning Testing code
-    tempComment.mediaType = @"votetype";
-//    tempComment.mediaType = kTemporaryContentStatus;
+    tempComment.mediaType = kTemporaryContentStatus;
     tempComment.thumbnailUrl = [self localImageURLForVideo:mediaURLPath];
     tempComment.mediaUrl = mediaURLPath;
     tempComment.userId = self.mainUser.remoteId;
