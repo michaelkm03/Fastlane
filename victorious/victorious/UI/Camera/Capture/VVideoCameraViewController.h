@@ -18,7 +18,8 @@
 @protocol VVideoCameraViewControllerDelegate <NSObject>
 
 - (void)videoCameraViewController:(VVideoCameraViewController *)videoCamera
-           capturedVideoAtFileURL:(NSURL *)url;
+           capturedVideoAtFileURL:(NSURL *)url
+                     previewImage:(UIImage *)previewImage;
 
 @end
 
@@ -35,7 +36,15 @@
  */
 @property (nonatomic, weak) id <VVideoCameraViewControllerDelegate> delegate;
 
+/**
+ *  The URL the video recorded by the video camera was saved to.
+ */
 @property (nonatomic, readonly) NSURL *savedVideoURL;
+
+/**
+ *  A preview image to use representing the captured video. Attempts to capture a frame near time 0.
+ */
+@property (nonatomic, readonly) UIImage *previewImage;
 
 @end
 

@@ -275,6 +275,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
     [self.cameraControl restoreCameraControlToDefault];
     self.trashButton.hidden = YES;
     self.trashButton.backgroundColor = [UIColor clearColor];
+    self.nextButton.enabled = NO;
 }
 
 // Returns YES if successfully created encoder or it already exists
@@ -348,6 +349,17 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
     CGFloat progress = ABS( totalRecorded / VConstantsMaximumVideoDuration);
     [self.cameraControl setRecordingProgress:progress
                                     animated:YES];
+}
+
+- (UIImage *)previewImageWithAssetAtURL:(NSURL *)url
+{
+    AVURLAsset *assetAtURL = [AVURLAsset assetWithURL:url];
+    AVAssetImageGenerator *imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:assetAtURL];
+    imageGenerator.appliesPreferredTrackTransform = YES;
+    CGImageRef imageAtTimeZero = [imageGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:nil];
+    UIImage *image = [UIImage imageWithCGImage:imageAtTimeZero];
+    CGImageRelease(imageAtTimeZero);
+    return image;
 }
 
 #pragma mark - VCaptureVideoPreviewViewDelegate
@@ -462,6 +474,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
                        else
                        {
                            _savedVideoURL = videoEncoder.fileURL;
+                           _previewImage = [self previewImageWithAssetAtURL:_savedVideoURL];
                            self.captureController.videoEncoder = nil;
                            if (self.captureController.captureSession.running)
                            {
@@ -472,7 +485,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
                                                    {
                                                        __strong typeof(welf) strongSelf = welf;
                                                        [strongSelf.delegate videoCameraViewController:strongSelf
-                                                                               capturedVideoAtFileURL:self.savedVideoURL];
+                                                                               capturedVideoAtFileURL:self.savedVideoURL
+                                                                                         previewImage:self.previewImage];
                                                    });
                                 }];
                            }
