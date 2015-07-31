@@ -203,8 +203,8 @@ static NSString * const kCreationFlowSourceSearch = @"search";
         {
             if ([strongSelf.topViewController isKindOfClass:[VVideoCameraViewController class]])
             {
-                VVideoCameraViewController *videocmaera = (VVideoCameraViewController *)strongSelf.topViewController;
-                [videocmaera resumeCapture];
+                VVideoCameraViewController *videoCmamera = (VVideoCameraViewController *)strongSelf.topViewController;
+                [videoCmamera resumeCapture];
             }
             [strongSelf.workspaceViewController gainedFocus];
             [strongSelf dismissViewControllerAnimated:YES

@@ -62,6 +62,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 
 // State
 @property (nonatomic, assign, getter=isTrashOpen) BOOL trashOpen;
+@property (nonatomic, readwrite) NSURL *savedVideoURL;
+@property (nonatomic, readwrite) UIImage *previewImage;
 
 @end
 
@@ -473,8 +475,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
                        }
                        else
                        {
-                           _savedVideoURL = videoEncoder.fileURL;
-                           _previewImage = [self previewImageWithAssetAtURL:_savedVideoURL];
+                           self.savedVideoURL = videoEncoder.fileURL;
+                           self.previewImage = [self previewImageWithAssetAtURL:_savedVideoURL];
                            self.captureController.videoEncoder = nil;
                            if (self.captureController.captureSession.running)
                            {
