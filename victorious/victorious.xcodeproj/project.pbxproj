@@ -851,6 +851,11 @@
 		C3E47F6F1B6990C30084FF65 /* VCommentTextAndMediaView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E47F6E1B6990C30084FF65 /* VCommentTextAndMediaView.m */; };
 		C3E47F721B6990F10084FF65 /* VMessageTextAndMediaView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E47F711B6990F10084FF65 /* VMessageTextAndMediaView.m */; };
 		C3E47F751B6ABB3F0084FF65 /* VMessage+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E47F741B6ABB3F0084FF65 /* VMessage+Fetcher.m */; };
+		C3E47F771B6BE3730084FF65 /* MediaAttachmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E47F761B6BE3730084FF65 /* MediaAttachmentType.swift */; };
+		C3E47F791B6BE3A80084FF65 /* MediaAttachmentImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E47F781B6BE3A80084FF65 /* MediaAttachmentImageView.swift */; };
+		C3E47F7B1B6BE4250084FF65 /* MediaAttachmentVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E47F7A1B6BE4250084FF65 /* MediaAttachmentVideoView.swift */; };
+		C3E47F7D1B6BE46D0084FF65 /* MediaAttachmentGIFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E47F7C1B6BE46D0084FF65 /* MediaAttachmentGIFView.swift */; };
+		C3E47F7F1B6BE48D0084FF65 /* MediaAttachmentBallisticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E47F7E1B6BE48D0084FF65 /* MediaAttachmentBallisticView.swift */; };
 		C3E772141B44B3FD005809A5 /* VLikedContentStreamCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E772131B44B3FD005809A5 /* VLikedContentStreamCollectionViewController.m */; };
 		C3E7721A1B45EAF7005809A5 /* VActionSheetTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E772191B45EAF7005809A5 /* VActionSheetTextView.m */; };
 		C3E772201B4DBA78005809A5 /* VStreamFocusHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E7721F1B4DBA78005809A5 /* VStreamFocusHelper.m */; };
@@ -2792,6 +2797,11 @@
 		C3E47F711B6990F10084FF65 /* VMessageTextAndMediaView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMessageTextAndMediaView.m; sourceTree = "<group>"; };
 		C3E47F731B6ABB3F0084FF65 /* VMessage+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VMessage+Fetcher.h"; sourceTree = "<group>"; };
 		C3E47F741B6ABB3F0084FF65 /* VMessage+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VMessage+Fetcher.m"; sourceTree = "<group>"; };
+		C3E47F761B6BE3730084FF65 /* MediaAttachmentType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaAttachmentType.swift; sourceTree = "<group>"; };
+		C3E47F781B6BE3A80084FF65 /* MediaAttachmentImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaAttachmentImageView.swift; sourceTree = "<group>"; };
+		C3E47F7A1B6BE4250084FF65 /* MediaAttachmentVideoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaAttachmentVideoView.swift; sourceTree = "<group>"; };
+		C3E47F7C1B6BE46D0084FF65 /* MediaAttachmentGIFView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaAttachmentGIFView.swift; sourceTree = "<group>"; };
+		C3E47F7E1B6BE48D0084FF65 /* MediaAttachmentBallisticView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaAttachmentBallisticView.swift; sourceTree = "<group>"; };
 		C3E772121B44B3FD005809A5 /* VLikedContentStreamCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLikedContentStreamCollectionViewController.h; sourceTree = "<group>"; };
 		C3E772131B44B3FD005809A5 /* VLikedContentStreamCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLikedContentStreamCollectionViewController.m; sourceTree = "<group>"; };
 		C3E772181B45EAF7005809A5 /* VActionSheetTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionSheetTextView.h; sourceTree = "<group>"; };
@@ -3642,6 +3652,12 @@
 			children = (
 				A7738B0A1A4B4A0D008EA973 /* CommentCellUtilities */,
 				A7E2EFD11A49066F00372547 /* EditComment.storyboard */,
+				C3E47F7E1B6BE48D0084FF65 /* MediaAttachmentBallisticView.swift */,
+				C3E47F7C1B6BE46D0084FF65 /* MediaAttachmentGIFView.swift */,
+				C3E47F781B6BE3A80084FF65 /* MediaAttachmentImageView.swift */,
+				C3E47F761B6BE3730084FF65 /* MediaAttachmentType.swift */,
+				C3E47F7A1B6BE4250084FF65 /* MediaAttachmentVideoView.swift */,
+				C3E47F6B1B69451B0084FF65 /* MediaAttachmentView.swift */,
 				03C82F1D1A81DDA400190C7D /* User Tagging */,
 				0314D33F19B46B5E00FA363C /* VCommentCell.h */,
 				0314D34019B46B5E00FA363C /* VCommentCell.m */,
@@ -3650,15 +3666,14 @@
 				0314D34319B46B5E00FA363C /* VCommentsContainerViewController.m */,
 				0314D34419B46B5E00FA363C /* VCommentsTableViewController.h */,
 				0314D34519B46B5E00FA363C /* VCommentsTableViewController.m */,
-				0314D35019B46B5E00FA363C /* VTextAndMediaView.h */,
-				0314D35119B46B5E00FA363C /* VTextAndMediaView.m */,
-				A7E2EFC91A49001000372547 /* VEditCommentViewController.h */,
-				A7E2EFCA1A49001000372547 /* VEditCommentViewController.m */,
-				C3E47F6B1B69451B0084FF65 /* MediaAttachmentView.swift */,
 				C3E47F6D1B6990C30084FF65 /* VCommentTextAndMediaView.h */,
 				C3E47F6E1B6990C30084FF65 /* VCommentTextAndMediaView.m */,
+				A7E2EFC91A49001000372547 /* VEditCommentViewController.h */,
+				A7E2EFCA1A49001000372547 /* VEditCommentViewController.m */,
 				C3E47F701B6990F10084FF65 /* VMessageTextAndMediaView.h */,
 				C3E47F711B6990F10084FF65 /* VMessageTextAndMediaView.m */,
+				0314D35019B46B5E00FA363C /* VTextAndMediaView.h */,
+				0314D35119B46B5E00FA363C /* VTextAndMediaView.m */,
 			);
 			path = Comments;
 			sourceTree = "<group>";
@@ -8366,6 +8381,7 @@
 				0394203C1AB7A4F20087ADFA /* VInsetStreamCellFactory.m in Sources */,
 				D85B70731B0EAF3F0038CA5B /* VFindFriendsTableView.m in Sources */,
 				0314D4D919B46B5E00FA363C /* VServerEnvironmentTableViewController.m in Sources */,
+				C3E47F7B1B6BE4250084FF65 /* MediaAttachmentVideoView.swift in Sources */,
 				D8E7EBCB19CCA540007DA693 /* VSectionHandleReusableView.m in Sources */,
 				D8332DBD1A7C275800C3FEE0 /* VCameraControl.m in Sources */,
 				A7A922621AC6166600F4755E /* VContentTextCell.m in Sources */,
@@ -8526,6 +8542,7 @@
 				A7AEF9D01A83F2F500A3D3A0 /* VVideoUtils.m in Sources */,
 				D84559001ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m in Sources */,
 				D80A94DB1A536C8C0035D788 /* VTrimmerViewController.m in Sources */,
+				C3E47F791B6BE3A80084FF65 /* MediaAttachmentImageView.swift in Sources */,
 				A721E93F1B572454000B7901 /* NSManagedObject+RestKit.m in Sources */,
 				0314D2E919B46B2200FA363C /* VErrorMessage.m in Sources */,
 				A721E9481B572454000B7901 /* UIActivityViewController+VStatusBarHandling.m in Sources */,
@@ -8624,6 +8641,7 @@
 				D87AD2AE1AD4866B00C481D0 /* VAsset+VAssetCache.m in Sources */,
 				D80536241B17B4310049B77A /* VPromptCarouselViewController.m in Sources */,
 				66AF79521B60A8E4006DDCD8 /* VVideoCameraViewController.m in Sources */,
+				C3E47F7D1B6BE46D0084FF65 /* MediaAttachmentGIFView.swift in Sources */,
 				03B3D3D31A3BC4DD00F0634A /* VNumericalBadgeView.m in Sources */,
 				A6E104D91B56C88D0062392A /* VShareItemCollectionViewCell.m in Sources */,
 				A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */,
@@ -8693,6 +8711,7 @@
 				C3C734501B5F118F00D6795D /* ExperienceEnhancerIconView.swift in Sources */,
 				0394204D1AB9026C0087ADFA /* VVoteType.m in Sources */,
 				0314D2E219B46AF300FA363C /* VThemeManager.m in Sources */,
+				C3E47F771B6BE3730084FF65 /* MediaAttachmentType.swift in Sources */,
 				F0FC97A51B547BA80098AFCB /* VStreamItem.m in Sources */,
 				D8DF71E71AFC3784002EA7A5 /* VTileOverlayCollectionCell.m in Sources */,
 				A75C64941AD78DCA00245125 /* VEditableTextPostViewController.m in Sources */,
@@ -8930,6 +8949,7 @@
 				A6BB61201B582815002C3B7C /* VAssetCollectionGridDataSource.m in Sources */,
 				D8DF71E41AFC3681002EA7A5 /* VTitleOverlayStreamCellFactory.m in Sources */,
 				A6E2E76E1B545328008A1CA9 /* VVideoAssetDownloader.m in Sources */,
+				C3E47F7F1B6BE48D0084FF65 /* MediaAttachmentBallisticView.swift in Sources */,
 				0314D4AC19B46B5E00FA363C /* VMessageTableDataSource.m in Sources */,
 				A7F1CDA51A673DE9003CB936 /* VScrollPaginator.m in Sources */,
 				D85B70831B0EAF3F0038CA5B /* VProfileCreateViewController.m in Sources */,

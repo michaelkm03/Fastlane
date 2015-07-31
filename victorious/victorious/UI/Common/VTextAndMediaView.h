@@ -25,7 +25,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
 /**
  This view is used inside the comment and messaging views
  to display comment text and any media that might
- be attached to the comment.
+ be attached to the comment or message.
  */
 @interface VTextAndMediaView : UIView
 
