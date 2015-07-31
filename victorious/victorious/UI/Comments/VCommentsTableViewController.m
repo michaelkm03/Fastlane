@@ -167,15 +167,8 @@
     
     [self.tableView reloadData];
     
-    if (self.sequence.commentCount.integerValue == 0) //If we don't have comments, try to pull more.
-    {
-        self.needsRefresh = YES;
-        [self refresh:self.refreshControl];
-    }
-    else
-    {
-        self.needsRefresh = NO;
-    }
+    self.needsRefresh = YES;
+    [self refresh:self.refreshControl];
 }
 
 - (void)setHasComments:(BOOL)hasComments
