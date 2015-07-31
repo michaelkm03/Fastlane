@@ -162,14 +162,12 @@
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
-
-    [self setHasComments:self.sequence.commentCount.integerValue];
     
     self.title = sequence.name;
     
     [self.tableView reloadData];
     
-    if (self.hasComments) //If we don't have comments, try to pull more.
+    if (self.sequence.commentCount.integerValue == 0) //If we don't have comments, try to pull more.
     {
         self.needsRefresh = YES;
         [self refresh:self.refreshControl];
@@ -236,6 +234,9 @@
                                                                                            successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
                                                   {
                                                       self.comments = [self.sequence.comments array];
+                                                      
+                                                      self.hasComments = self.comments.count > 0;
+                                                      
                                                       self.needsRefresh = NO;
                                                       [self.tableView reloadData];
                                                       [self.refreshControl endRefreshing];
