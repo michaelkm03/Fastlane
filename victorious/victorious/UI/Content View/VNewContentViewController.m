@@ -115,7 +115,6 @@
 #import "VCollectionViewStreamFocusHelper.h"
 
 #define HANDOFFENABLED 0
-static const CGFloat kMaxInputBarHeight = 200.0f;
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
@@ -146,6 +145,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, weak) VKeyboardInputAccessoryView *textEntryView;
 @property (nonatomic, strong) VElapsedTimeFormatter *elapsedTimeFormatter;
 @property (nonatomic, strong) VMediaAttachmentPresenter *mediaAttachmentPresenter;
+@property (nonatomic, assign) BOOL shouldResumeEditingAfterClearActionSheet;
 
 // Constraints
 @property (nonatomic, weak) NSLayoutConstraint *bottomKeyboardToContainerBottomConstraint;
@@ -1408,13 +1408,23 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)keyboardInputAccessoryViewWantsToClearMedia:(VKeyboardInputAccessoryView *)inputAccessoryView
 {
+    BOOL shouldResumeEditing = [inputAccessoryView isEditing];
     [inputAccessoryView stopEditing];
     UIAlertController *alertController = [self.alertHelper alertForConfirmDiscardMediaWithDelete:^
                                           {
-                                              [self.textEntryView setSelectedThumbnail:nil];
-                                              [self.textEntryView startEditing];
+                                              [inputAccessoryView setSelectedThumbnail:nil];
+                                              if (shouldResumeEditing)
+                                              {
+                                                  [inputAccessoryView startEditing];
+                                              }
                                           }
-                                                                                          cancel:nil];
+                                                                                          cancel:^
+                                          {
+                                              if (shouldResumeEditing)
+                                              {
+                                                  [inputAccessoryView startEditing];
+                                              }
+                                          }];
     [self presentViewController:alertController animated:YES completion:nil];
 }
 

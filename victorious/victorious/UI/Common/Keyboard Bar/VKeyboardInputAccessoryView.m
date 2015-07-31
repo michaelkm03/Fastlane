@@ -210,6 +210,11 @@ static const CGFloat kAttachmentBarHeight = 50.0f;
     [self.editingTextView becomeFirstResponder];
 }
 
+- (BOOL)isEditing
+{
+    return [self.editingTextView isFirstResponder];
+}
+
 - (void)clearTextAndResign
 {
     self.editingTextView.text = nil;

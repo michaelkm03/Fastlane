@@ -112,7 +112,21 @@ typedef NS_ENUM(NSInteger, VKeyboardBarAttachmentType)
  */
 - (BOOL)stopEditing;
 
+/**
+ *  Call this to have the textView embedded in this view to become first responder.
+ */
 - (void)startEditing;
+
+/**
+ *  Used to infrom callers on the current editing state.
+ *
+ *  @param return Whether or not this is editing.
+ */
+- (BOOL)isEditing;
+
+/**
+ *  Call this to clear out text and media input on this view.
+ */
 - (void)clearTextAndResign;
 
 @end
