@@ -33,7 +33,9 @@
                                   @"thumbnail_url" : VSelectorName(thumbnailUrl),
                                   @"realtime" : VSelectorName(realtime),
                                   @"asset_id" : VSelectorName(assetId),
-                                  @"should_autoplay" : VSelectorName(shouldAutoplay)
+                                  @"should_autoplay" : VSelectorName(shouldAutoplay),
+                                  @"media_width" : VSelectorName(mediaWidth),
+                                  @"media_height" : VSelectorName(mediaHeight)
                                   };
 
     RKEntityMapping *mapping = [RKEntityMapping

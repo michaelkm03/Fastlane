@@ -34,6 +34,8 @@
 @property (nonatomic, retain) VSequence *sequence;
 @property (nonatomic, retain) VUser *user;
 @property (nonatomic, retain) NSSet *commentMedia;
+@property (nonatomic, retain) NSString *mediaWidth;
+@property (nonatomic, retain) NSString *mediaHeight;
 
 @end
 

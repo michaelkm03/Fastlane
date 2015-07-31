@@ -79,6 +79,26 @@ static NSString * const kmp4MimeType = @"video/mp4";
     return [self commentMediaType] != VCommentMediaTypeNoMedia;
 }
 
+- (CGFloat)mediaAspectRatio
+{
+    if (self.mediaHeight == nil || self.mediaWidth == nil)
+    {
+        return 1;
+    }
+    
+    CGFloat mediaHeight = [self.mediaHeight floatValue];
+    CGFloat mediaWidth = [self.mediaWidth floatValue];
+    
+    CGFloat aspectRatio = 1.0f;
+    
+    if (mediaHeight > 0 && mediaWidth > 0)
+    {
+        aspectRatio = mediaHeight / mediaWidth;
+    }
+    
+    return MAX(MIN(4, aspectRatio), 0);
+}
+
 #pragma mark - Private Methods
 
 - (BOOL)hasMedia

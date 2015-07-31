@@ -143,6 +143,8 @@ class MediaAttachmentImageView : MediaAttachmentView {
     
     private func sharedInit() {
         
+        self.backgroundColor = UIColor.blackColor()
+        
         self.mediaButton.addTarget(self, action: "mediaButtonPressed", forControlEvents: .TouchUpInside)
         
         self.addSubview(imageView)
@@ -230,6 +232,9 @@ class MediaAttachmentGIFView : MediaAttachmentView {
     }
     
     private func sharedInit() {
+        
+        self.backgroundColor = UIColor.blackColor()
+
         self.addSubview(self.videoView)
         self.v_addFitToParentConstraintsToSubview(self.videoView)
     }

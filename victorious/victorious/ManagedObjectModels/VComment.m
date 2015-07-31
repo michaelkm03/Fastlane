@@ -36,5 +36,7 @@
 @dynamic assetOrientation;
 @dynamic shouldAutoplay;
 @dynamic commentMedia;
+@dynamic mediaWidth;
+@dynamic mediaHeight;
 
 @end

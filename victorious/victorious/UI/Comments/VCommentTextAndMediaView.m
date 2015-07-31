@@ -65,7 +65,8 @@
              comment.commentMediaType == VCommentMediaTypeVideo ||
              comment.commentMediaType == VCommentMediaTypeGIF)
     {
-        totalMediaHeight = width + mediaSpacing;
+        CGFloat aspectRatio = [comment mediaAspectRatio];
+        totalMediaHeight = (width * aspectRatio) + mediaSpacing;
     }
     
     return VCEIL(CGRectGetHeight(boundingRect)) + totalMediaHeight;
