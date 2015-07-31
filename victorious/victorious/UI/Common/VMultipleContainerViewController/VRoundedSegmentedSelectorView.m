@@ -11,6 +11,7 @@
 #import "VExtendedView.h"
 #import "UIImage+ImageCreation.h"
 #import "UIView+AutoLayout.h"
+#import "VProvidesNavigationMenuItemBadge.h"
 
 static CGFloat const kVBarHeight = 40.0f;
 static CGFloat const kVPillHeight = 29.0f;
@@ -123,8 +124,20 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
              return;
          }
          
+         NSString *title = viewController.navigationItem.title;
+         
+         id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)viewController;
+         if ([badgeProvider respondsToSelector:@selector(badgeNumber)])
+         {
+             NSInteger badgeNumber = [badgeProvider badgeNumber];
+             if (badgeNumber > 0)
+             {
+                 title = [title stringByAppendingString:[NSString stringWithFormat:@" (%ld)", (long)badgeNumber]];
+             }
+         }
+         
          //Note: Setting the button's text color to the "highlighted" color here so that it appears that way in the snapshot below
-         UIButton *button = [self newButtonWithTitle:viewController.navigationItem.title font:[[self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey] fontWithSize:kVBoldFontPointSize] andTextColor:buttonSelectionColor];
+         UIButton *button = [self newButtonWithTitle:title font:[[self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey] fontWithSize:kVBoldFontPointSize] andTextColor:buttonSelectionColor];
          button.tag = idx;
          [button addTarget:sSelf action:@selector(pressedHeaderButton:) forControlEvents:UIControlEventTouchUpInside];
          

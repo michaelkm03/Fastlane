@@ -44,45 +44,8 @@ static CGFloat kDiameterForNotifications = 20.0f;
 
 - (void)updateBadging
 {
-    NSUInteger index = 0;
-    
-    for (UIView *subview in self.subviews)
-    {
-        if ([subview isKindOfClass:[VNumericalBadgeView class]])
-        {
-            UIViewController *viewController = self.viewControllers[index];
-            if ([viewController conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)])
-            {
-                id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)viewController;
-                NSInteger badgeNumber = [badgeProvider badgeNumber];
-                
-                [((VNumericalBadgeView *) subview) setBadgeNumber: badgeNumber];
-                index++;
-            }
-        }
-    }
-}
-
-- (void)setViewControllers:(NSArray *)viewControllers
-{
-    _viewControllers = viewControllers;
-    [viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger index, BOOL *stop) {
-  
-        if ([viewController conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)])
-        {
-            CGFloat widthOfSelector = CGRectGetWidth(viewController.view.frame) - (2 * kPaddingForNotifications);
-            CGFloat centerX = ((index + 1) * (widthOfSelector / self.viewControllers.count )) + kPaddingForNotifications ;
-            VNumericalBadgeView *badgeView = [[VNumericalBadgeView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, kDiameterForNotifications, kDiameterForNotifications)];
-            badgeView.center = CGPointMake(centerX, badgeView.center.y);
-            badgeView.font = [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
-            badgeView.layer.zPosition = 1000.0f;
-            
-            id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)viewController;
-            NSInteger badgeNumber = [badgeProvider badgeNumber];
-            [badgeView setBadgeNumber:badgeNumber];
-            [self addSubview:badgeView];
-        }
-    }];
+    // subclasses can override this method
+    return;
 }
 
 #pragma mark - Properties
