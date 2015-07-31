@@ -17,6 +17,7 @@
 #import "VThemeManager.h"
 #import "VAppDelegate.h"
 #import "VUserTaggingTextStorage.h"
+#import "VDependencyManager.h"
 
 static const CGFloat kTextInputFieldMaxLines = 3.0f;
 
@@ -121,6 +122,14 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
     
     self.mediaButton.layer.cornerRadius = 2;
     self.mediaButton.clipsToBounds = YES;
+}
+
+#pragma mark - public methods
+
+- (void)appendText:(NSString *)text
+{
+    self.textView.attributedText = [self attributedStringForString:text];
+    [self textViewDidChange:self.textView];
 }
 
 - (void)clearKeyboardBar
@@ -249,7 +258,7 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
 
 - (void)setTextViewText:(NSAttributedString *)textViewText
 {
-    self.textView.attributedText = textViewText;
+    self.textView.attributedText = [self attributedStringForString:self.textView.text];
     if ([self respondsToSelector:@selector(textViewDidChange:)])
     {
         [self textViewDidChange:self.textView];
@@ -320,6 +329,7 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
 - (void)textViewDidChange:(UITextView *)textView
 {
     self.promptLabel.hidden = ([textView.text length] != 0);
+    self.textView.attributedText = [self attributedStringForString:self.textView.text];
     [self enableOrDisableSendButtonAsAppropriate];
 }
 
@@ -338,6 +348,23 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
             }
         }
     }
+}
+
+#pragma mark - helper methods
+
+- (NSAttributedString *)attributedStringForString:(NSString *)string
+{
+    NSMutableAttributedString *atrSting = [[NSMutableAttributedString alloc] initWithString:string];
+    if ([string containsString:@"@"] && [string containsString:@":"])
+    {
+        NSUInteger start = [string rangeOfString:@"@"].location;
+        NSUInteger end = [string rangeOfString:@":"].location;
+        
+        [atrSting addAttribute:NSForegroundColorAttributeName
+                         value:[self.dependencyManager colorForKey:VDependencyManagerAccentColorKey]
+                         range:NSMakeRange(start, end - start + 1)];
+    }
+    return [atrSting copy];
 }
 
 @end

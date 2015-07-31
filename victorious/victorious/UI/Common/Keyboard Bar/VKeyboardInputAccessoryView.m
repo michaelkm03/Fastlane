@@ -190,9 +190,25 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
 
 - (void)appendText:(NSString *)text
 {
-    self.editingTextView.text = text;
+    self.editingTextView.attributedText = [self attributedStringForString:text];
+    
     [self textViewDidChange:self.editingTextView];
     [self startEditing];
+}
+
+- (NSAttributedString *)attributedStringForString:(NSString *)string
+{
+    NSMutableAttributedString *atrSting = [[NSMutableAttributedString alloc] initWithString:string];
+    if ([string containsString:@"@"] && [string containsString:@":"])
+    {
+        NSUInteger start = [string rangeOfString:@"@"].location;
+        NSUInteger end = [string rangeOfString:@":"].location;
+        
+        [atrSting addAttribute:NSForegroundColorAttributeName
+                         value:[self.dependencyManager colorForKey:VDependencyManagerAccentColorKey]
+                         range:NSMakeRange(start, end - start + 1)];
+    }
+    return [atrSting copy];
 }
 
 #pragma mark - IBActions
@@ -239,6 +255,7 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
     [self updateSendButton];
     
     //Keeps currently selected range in view and fixes odd issue where top of text is cut off after layout
+    self.editingTextView.attributedText = [self attributedStringForString:textView.text];
     [self.editingTextView scrollRangeToVisible:self.editingTextView.selectedRange];
 }
 
@@ -266,8 +283,8 @@ shouldChangeTextInRange:(NSRange)range
         [self.editingTextView resignFirstResponder];
         return NO;
     }
-    
-    return [textView.text stringByReplacingCharactersInRange:range withString:text].length <= (NSUInteger)self.characterLimit;
+    [textView.text stringByReplacingCharactersInRange:range withString:text];
+    return textView.text.length <= (NSUInteger)self.characterLimit;
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView
