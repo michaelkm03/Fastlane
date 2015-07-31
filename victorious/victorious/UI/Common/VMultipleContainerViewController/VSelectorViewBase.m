@@ -37,11 +37,6 @@ static CGFloat kDiameterForNotifications = 20.0f;
     return CGRectZero;
 }
 
-- (void)layoutSubviews
-{
-    [self updateBadging];
-}
-
 - (void)updateBadging
 {
     // subclasses can override this method

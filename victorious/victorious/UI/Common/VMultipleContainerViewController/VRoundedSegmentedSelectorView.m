@@ -182,8 +182,8 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
 
 - (void)resetSubviews
 {
-    [self removeConstraints:self.constraints];
-    [self.pillView removeConstraints:self.pillView.constraints];
+    [NSLayoutConstraint deactivateConstraints:self.constraints];
+    [NSLayoutConstraint deactivateConstraints:self.pillView.constraints];
     
     //Remove any existing subviews from superview
     for ( UIButton *button in self.buttons )
@@ -321,6 +321,29 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
 {
     [super setBounds:bounds];
     [self setupWithCurrentViewControllers];
+}
+
+- (void)updateBadging
+{
+    [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop)
+     {
+         NSString *title = viewController.navigationItem.title;
+         
+         id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)viewController;
+         if ([badgeProvider respondsToSelector:@selector(badgeNumber)])
+         {
+             NSInteger badgeNumber = [badgeProvider badgeNumber];
+             if (badgeNumber > 0)
+             {
+                 title = [title stringByAppendingString:[NSString stringWithFormat:@" (%ld)", (long)badgeNumber]];
+               
+             }
+             UIButton *button = self.buttons[idx];
+
+             [button setTitle:title forState:UIControlStateNormal];
+             [button setTitle:title forState:UIControlStateHighlighted];
+         }
+     }];
 }
 
 #pragma mark - selectionView updating

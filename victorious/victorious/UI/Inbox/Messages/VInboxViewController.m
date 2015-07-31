@@ -130,6 +130,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:@"Inbox"];
+    [self markAllConversationsAsRead];
     
     [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
     
@@ -587,5 +588,22 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     return YES;
 }
+
+- (void)markAllConversationsAsRead
+{
+    VFailBlock fail = ^(NSOperation *operation, NSError *error)
+    {
+        VLog(@"Failed to mark all notifications as read: %@", [error localizedDescription]);
+    };
+    
+    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+
+    };
+    
+    [[VObjectManager sharedManager] markAllConversationsRead:success failBlock:fail];
+}
+
+
 
 @end
