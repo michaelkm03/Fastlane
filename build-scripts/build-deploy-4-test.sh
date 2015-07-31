@@ -30,9 +30,8 @@ fi
 ### Change to project folder
 pushd victorious > /dev/null
 
-./apply-config.sh "UIAutomation"
 
-exit 0
+
 
 if [ "device" == $Deploy ]; then
     ### work order of attached devices: iPhone > iPod > iPad 
