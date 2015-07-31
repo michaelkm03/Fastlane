@@ -48,7 +48,6 @@ copyPListValue 'CFBundleIdentifier'
 copyPListValue 'FacebookAppID'
 copyPListValue 'TWITTER_CONSUMER_KEY'
 copyPListValue 'TWITTER_CONSUMER_SECRET'
-copyPListValue 'GAID'
 copyPListValue 'FlurryAPIKey'
 copyPListValue 'CreatorSalutation'
 
