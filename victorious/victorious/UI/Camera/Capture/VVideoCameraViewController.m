@@ -476,7 +476,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
                        else
                        {
                            self.savedVideoURL = videoEncoder.fileURL;
-                           self.previewImage = [self previewImageWithAssetAtURL:_savedVideoURL];
+                           self.previewImage = [self previewImageWithAssetAtURL:self.savedVideoURL];
                            self.captureController.videoEncoder = nil;
                            if (self.captureController.captureSession.running)
                            {
