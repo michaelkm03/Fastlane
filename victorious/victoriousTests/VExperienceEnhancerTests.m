@@ -39,7 +39,6 @@ static const NSUInteger kExperienceEnhancerCount = 20;
 @interface VExperienceEnhancerController (UnitTests)
 
 @property (nonatomic, strong) NSArray *experienceEnhancers;
-@property (nonatomic, strong) VFileCache *fileCache;
 
 - (BOOL)updateExperience:(NSArray *)experienceEnhancers withSequence:(VSequence *)sequence;
 - (NSArray *)createExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes sequence:(VSequence *)sequence;
@@ -52,8 +51,6 @@ static const NSUInteger kExperienceEnhancerCount = 20;
 @property (nonatomic, retain) VExperienceEnhancerController *viewController;
 @property (nonatomic, retain) NSArray *voteTypes;
 @property (nonatomic, retain) VSequence *sequence;
-@property (nonatomic, assign) IMP isImageCached;
-@property (nonatomic, assign) IMP areSpriteImagesCached;
 @property (nonatomic, strong) VAsyncTestHelper *asyncHelper;
 
 @end
@@ -66,16 +63,6 @@ static const NSUInteger kExperienceEnhancerCount = 20;
     
     self.asyncHelper = [[VAsyncTestHelper alloc] init];
     
-    self.isImageCached = [VFileCache v_swizzleMethod:@selector(isImageCached:forVoteType:) withBlock:^BOOL
-                         {
-                             return YES;
-                         }];
-    
-    self.areSpriteImagesCached = [VFileCache v_swizzleMethod:@selector(areSpriteImagesCachedForVoteType:) withBlock:^BOOL
-                                 {
-                                     return YES;
-                                 }];
-    
     self.voteTypes = [VDummyModels createVoteTypes:kExperienceEnhancerCount];
     self.sequence = (VSequence *)[VDummyModels objectWithEntityName:@"Sequence" subclass:[VSequence class]];
     self.sequence.voteResults = [NSSet setWithArray:[VDummyModels createVoteResults:kExperienceEnhancerCount]];
@@ -84,13 +71,6 @@ static const NSUInteger kExperienceEnhancerCount = 20;
     VApplicationTracking *trackingManager = [[VApplicationTracking alloc] init];
     id myObjectMock = OCMPartialMock( trackingManager  );
     OCMStub( [myObjectMock sendRequest:[OCMArg any]] );
-}
-
-- (void)tearDown
-{
-    [super tearDown];
-    [VFileCache v_restoreOriginalImplementation:self.isImageCached forMethod:@selector(isImageCached:forVoteType:)];
-    [VFileCache v_restoreOriginalImplementation:self.areSpriteImagesCached forMethod:@selector(areSpriteImagesCachedForVoteType:)];
 }
 
 - (void)testCreateExperienceEnhancers
