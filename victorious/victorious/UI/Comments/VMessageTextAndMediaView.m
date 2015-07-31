@@ -23,6 +23,9 @@
     // Set up proper media URL to use in lightbox
     self.mediaURLForLightbox = [NSURL URLWithString:message.mediaPath];
     
+    // For calculating intrinsic content size
+    self.hasMedia = [message hasMediaAttachment];
+    
     [self.mediaAttachmentView removeFromSuperview];
     self.mediaAttachmentView = [MediaAttachmentView mediaViewWithMessage:message];
 }

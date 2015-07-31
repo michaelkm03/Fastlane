@@ -24,6 +24,9 @@
     // Set up proper media URL to use in lightbox
     self.mediaURLForLightbox = [comment properMediaURLGivenContentType];
     
+    // For calculating intrinsic content size
+    self.hasMedia = [comment hasMediaAttachment];
+    
     [self.mediaAttachmentView removeFromSuperview];
     self.mediaAttachmentView = [MediaAttachmentView mediaViewWithComment:comment];
 }

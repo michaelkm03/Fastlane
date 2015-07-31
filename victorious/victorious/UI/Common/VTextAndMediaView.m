@@ -141,6 +141,21 @@
     [super updateConstraints];
 }
 
+- (CGSize)intrinsicContentSize
+{
+    CGSize textViewSize = [self.textView sizeThatFits:CGSizeMake( self.preferredMaxLayoutWidth, CGFLOAT_MAX)];
+
+    if (self.hasMedia)
+    {
+        CGFloat mediaThumbnailSize = MAX(textViewSize.width, self.preferredMaxLayoutWidth); // CGFloat instead of CGSize because it's a square thumbnail
+        return CGSizeMake(MAX(textViewSize.width, mediaThumbnailSize), textViewSize.height + kSpacingBetweenTextAndMedia + mediaThumbnailSize);
+    }
+    else
+    {
+        return textViewSize;
+    }
+}
+
 #pragma mark - Properties
 
 - (void)setText:(NSString *)text

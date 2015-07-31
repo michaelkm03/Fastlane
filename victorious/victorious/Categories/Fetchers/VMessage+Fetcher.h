@@ -32,6 +32,9 @@ typedef NS_ENUM(NSInteger, VMessageMediaType)
  */
 - (BOOL)hasMediaAttachment;
 
+/**
+ Returns the URL for this message's preview image
+ */
 - (NSURL *)previewImageURL;
 
 @end

@@ -46,6 +46,9 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
 @property (nonatomic, strong) NSString *text;
 @property (nonatomic, strong) NSAttributedString *attributedText;
 
+// For calculating intrinsic content size
+@property (nonatomic, assign) BOOL hasMedia;
+
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 /**
