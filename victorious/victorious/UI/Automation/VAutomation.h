@@ -12,6 +12,9 @@
  * Some parts of the app that are dynamically driven as part of the template system
  * wil not be listed here, but instead will have an non-localized 'identifier' property
  * configured at the JSON level that is designed for accessibility and automation purposes.
+ *
+ * There is an equivalent file for Swift code that defines identifiers as enums.
+ * @see "AutomationId.swift"
  */
 
 static NSString * const VAutomationIdentifierAddPost                    = @"Add Post";
