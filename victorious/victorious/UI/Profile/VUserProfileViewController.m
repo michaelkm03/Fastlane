@@ -708,10 +708,15 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)updateTitleVisibilityWithVerticalOffset:(CGFloat)verticalOffset
 {
+    NSString *title = [self.dependencyManager stringForKey:VDependencyManagerTitleKey];
     if ([self isDisplayingFloatingProfileHeader] && [self isCurrentUser])
     {
         BOOL shouldHideTitle = [(VStreamNavigationViewFloatingController *)self.navigationViewfloatingController visibility] > 0.4f;
-        self.navigationItem.title = shouldHideTitle ? @"" : [self.dependencyManager stringForKey:VDependencyManagerTitleKey];
+        self.navigationItem.title = shouldHideTitle ? @"" : title;
+    }
+    else if ([self isCurrentUser])
+    {
+        self.navigationItem.title = title;
     }
 }
 
