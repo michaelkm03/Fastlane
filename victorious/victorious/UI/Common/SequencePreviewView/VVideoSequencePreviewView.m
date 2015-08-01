@@ -175,14 +175,7 @@
 
 - (void)makeBackgroundContainerViewVisible:(BOOL)visible
 {
-    if ( visible )
-    {
-        self.backgroundContainerView.alpha = 1.0f;
-    }
-    else
-    {
-        self.backgroundContainerView.alpha = 0.0f;
-    }
+    self.backgroundContainerView.alpha = visible ? 1.0f : 0.0f;
 }
 
 @end
