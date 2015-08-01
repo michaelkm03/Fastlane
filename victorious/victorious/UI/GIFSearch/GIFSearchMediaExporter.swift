@@ -37,7 +37,7 @@ struct GIFSearchMediaExporter {
                 videoOperation.completionBlock = {
                     
                     // Load the image synchronously before we leave this thread
-                    var previewImage: UIImage? = {
+                    let previewImage: UIImage? = {
                         var error: NSError?
                         if let previewImageData = NSData(contentsOfURL: previewImageURL, options: nil, error: &error) {
                             return UIImage(data: previewImageData)

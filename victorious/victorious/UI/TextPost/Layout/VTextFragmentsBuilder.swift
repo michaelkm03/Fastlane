@@ -153,7 +153,7 @@ class VTextFragmentsBuilder: NSObject
                 height: original.size.height - original.size.height * VTextFragment.bottomInsetMultipler
             )
             
-            if let nextFragment = (i < fragments.count - 1 ? fragments[i+1] : nil)
+            if let nextFragment = (i < fragments.count - 1 ? Optional(fragments[i+1]) : nil)
             {
                 if nextFragment.isNewLine
                 {

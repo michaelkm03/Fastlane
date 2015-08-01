@@ -26,7 +26,7 @@ that are broken apart or "called out" from the main rectangle of the surrounding
     {
         let calloutRanges: [NSRange] = map( calloutRangeObjects, { ($0 as! NSValue).rangeValue } )
         textView.textContainer.size = CGSizeMake( textView.bounds.size.width, CGFloat.max )
-        var fragments = self.fragmentsBuilder.fragmentsInTextView( textView, calloutRanges: calloutRanges )
+        let fragments = self.fragmentsBuilder.fragmentsInTextView( textView, calloutRanges: calloutRanges )
         self.fragmentsBuilder.applySpacingToFragments( fragments, spacing: 1.0, horizontalOffset: characterWidth )
         
         return fragments.map { NSValue( CGRect: $0.rect ) }
