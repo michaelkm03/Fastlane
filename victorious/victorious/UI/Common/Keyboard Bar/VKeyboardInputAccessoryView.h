@@ -118,6 +118,6 @@ extern const CGFloat VInputAccessoryViewDesiredMinimumHeight;
 
 - (void)startEditing;
 - (void)clearTextAndResign;
-- (void)appendText:(NSString *)text;
+- (void)replyToUser:(VUser *)user;
 
 @end

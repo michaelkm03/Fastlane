@@ -18,6 +18,8 @@
 #import "VAppDelegate.h"
 #import "VUserTaggingTextStorage.h"
 #import "VDependencyManager.h"
+#import "VTag.h"
+#import "VTagStringFormatter.h"
 
 static const CGFloat kTextInputFieldMaxLines = 3.0f;
 
@@ -126,10 +128,10 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
 
 #pragma mark - public methods
 
-- (void)appendText:(NSString *)text
+- (void)repliedToUser:(VUser *)user
 {
-    self.textView.attributedText = [self attributedStringForString:text];
-    [self textViewDidChange:self.textView];
+    [self.textStorage repliedToUser:user];
+    self.promptLabel.hidden = (self.textStorage.textView.text != nil);
 }
 
 - (void)clearKeyboardBar
@@ -320,9 +322,6 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
 - (void)textViewDidChange:(UITextView *)textView
 {
     self.promptLabel.hidden = ([textView.text length] != 0);
-    [self.textStorage beginEditing];
-    self.textView.attributedText = [self attributedStringForString:self.textView.text];
-    [self.textStorage endEditing];
     [self enableOrDisableSendButtonAsAppropriate];
 }
 
@@ -341,23 +340,6 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
             }
         }
     }
-}
-
-#pragma mark - helper methods
-
-- (NSAttributedString *)attributedStringForString:(NSString *)string
-{
-    NSMutableAttributedString *atrSting = [[NSMutableAttributedString alloc] initWithString:string];
-    if ([string containsString:@"@"] && [string containsString:@":"])
-    {
-        NSUInteger start = [string rangeOfString:@"@"].location;
-        NSUInteger end = [string rangeOfString:@":"].location;
-        
-        [atrSting addAttribute:NSForegroundColorAttributeName
-                         value:[self.dependencyManager colorForKey:VDependencyManagerAccentColorKey]
-                         range:NSMakeRange(start, end - start + 1)];
-    }
-    return [atrSting copy];
 }
 
 @end

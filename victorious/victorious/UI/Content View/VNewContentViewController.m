@@ -1747,8 +1747,8 @@ referenceSizeForHeaderInSection:(NSInteger)section
     NSIndexPath *indexPath =  [NSIndexPath indexPathForRow:row inSection:VContentViewSectionAllComments] ;
     [self.contentCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:YES];
     
-    NSString *username = comment.user.name;
-    [self.textEntryView appendText:[NSString stringWithFormat:@"@%@: ", username]];
+    [self.textEntryView replyToUser:comment.user];
+    [self.textEntryView.editingTextView becomeFirstResponder];
 }
 
 #pragma mark - VEditCommentViewControllerDelegate

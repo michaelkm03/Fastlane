@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "VUserTaggingTextStorageDelegate.h"
+#import "VUserTaggingReply.h"
 
 @class VDependencyManager;
 
@@ -15,7 +16,7 @@
  An NSTextStorage subclass that supports
  searching and tagging users.
  */
-@interface VUserTaggingTextStorage : NSTextStorage
+@interface VUserTaggingTextStorage : NSTextStorage <VUserTaggingReply>
 
 /**
  Initialize a new VUserTaggingTextStorage with the given textView, default string font, and tagging delegate.
