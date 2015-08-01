@@ -13,8 +13,8 @@ import UIKit
     
     /// The user selected a GIF image and wants to proceed with it in a creation flow.
     ///
-    /// :param: `previewImage` A small, still image that is loaded into memory and ready to display
-    /// :param: `capturedMediaURL` The file URL of the GIF's mp4 video asset downloaded to a file temporary location on the device
+    /// :param: previewImage A small, still image that is loaded into memory and ready to display
+    /// :param: capturedMediaURL The file URL of the GIF's mp4 video asset downloaded to a file temporary location on the device
     func GIFSelectedWithPreviewImage( previewImage: UIImage, capturedMediaURL: NSURL )
 }
 
