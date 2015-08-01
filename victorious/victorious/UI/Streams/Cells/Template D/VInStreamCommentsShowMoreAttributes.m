@@ -33,7 +33,7 @@
     UIColor *unselectedColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
     UIColor *selectedColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     
-    UIFont *font = [dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
+    UIFont *font = [dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
     
     NSMutableDictionary *unselectedAttributes = [[NSMutableDictionary alloc] init];
     NSMutableDictionary *selectedAttributes = [[NSMutableDictionary alloc] init];

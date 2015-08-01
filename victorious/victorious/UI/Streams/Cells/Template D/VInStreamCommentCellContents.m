@@ -55,7 +55,7 @@
         
         UIFont *usernameFont = [dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
         UIFont *commentFont = [dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
-        UIFont *mediaLinkFont = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+        UIFont *mediaLinkFont = [dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
         
         VInStreamMediaLink *mediaLink = nil;
         NSString *mediaUrl = comment.mediaUrl;

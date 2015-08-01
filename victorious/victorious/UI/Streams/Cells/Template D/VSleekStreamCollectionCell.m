@@ -227,14 +227,14 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
 + (NSDictionary *)sequenceCountsActiveAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    UIFont *font = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+    UIFont *font = [dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
     UIColor *textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     return @{ NSFontAttributeName: font, NSForegroundColorAttributeName: textColor };
 }
 
 + (NSDictionary *)sequenceCountsAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    UIFont *font = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+    UIFont *font = [dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
     UIColor *textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
     return @{ NSFontAttributeName: font, NSForegroundColorAttributeName: textColor };
 }
