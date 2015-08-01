@@ -97,11 +97,14 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 
 #pragma mark - Reachability implementation
 
+@interface VReachability ()
+
+@property (nonatomic) BOOL alwaysReturnLocalWiFiStatus; //default is NO
+@property (nonatomic) SCNetworkReachabilityRef reachabilityRef;
+
+@end
+
 @implementation VReachability
-{
-	BOOL _alwaysReturnLocalWiFiStatus; //default is NO
-	SCNetworkReachabilityRef _reachabilityRef;
-}
 
 + (instancetype)reachabilityWithAddress:(const struct sockaddr_in *)hostAddress
 {
@@ -114,8 +117,8 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 		returnValue = [[self alloc] init];
 		if (returnValue != NULL)
 		{
-			returnValue->_reachabilityRef = reachability;
-			returnValue->_alwaysReturnLocalWiFiStatus = NO;
+			returnValue.reachabilityRef = reachability;
+			returnValue.alwaysReturnLocalWiFiStatus = NO;
 		}
 	}
 	return returnValue;
@@ -170,6 +173,21 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 	{
 		CFRelease(_reachabilityRef);
 	}
+}
+
+#pragma mark - Properties
+
+- (void)setReachabilityRef:(SCNetworkReachabilityRef)reachabilityRef
+{
+    if ( _reachabilityRef != NULL )
+    {
+        CFRelease(_reachabilityRef);
+    }
+    if ( reachabilityRef != NULL )
+    {
+        CFRetain(reachabilityRef);
+    }
+    _reachabilityRef = reachabilityRef;
 }
 
 #pragma mark - Network Flag Handling
