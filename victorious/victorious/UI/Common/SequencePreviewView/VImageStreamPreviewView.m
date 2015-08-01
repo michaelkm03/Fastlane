@@ -91,10 +91,7 @@
 {
     if ( visible )
     {
-        if ( self.backgroundContainerView.alpha == 0.0f )
-        {
-            self.backgroundContainerView.alpha = 1.0f;
-        }
+        self.backgroundContainerView.alpha = 1.0f;
     }
     else
     {

@@ -1,5 +1,5 @@
 //
-//  VContentModeAdjustablePreviewView.h
+//  VPreviewViewBackgroundHost.h
 //  victorious
 //
 //  Created by Sharif Ahmed on 7/31/15.
@@ -13,7 +13,7 @@
     Describes preview views that can update their content mode and add a background view that will
         be animated alongside the content.
  */
-@protocol VContentModeAdjustablePreviewView <NSObject, VBackgroundContainer>
+@protocol VPreviewViewBackgroundHost <NSObject, VBackgroundContainer>
 
 /**
     Conformers should use this method to update the content view of their content-displaying
