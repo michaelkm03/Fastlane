@@ -36,10 +36,23 @@ static UIEdgeInsets const kSectionEdgeInsets = { 0.0f, 0.0f, 0.0f, 2.0f };
     if ( self != nil )
     {
         _collectionView = collectionView;
-        _leftInset = 0.0f;
+        _leftInset = kSectionEdgeInsets.left;
         [self setupCollectionView];
     }
     return self;
+}
+
+- (void)setLeftInset:(CGFloat)leftInset
+{
+    BOOL needsUpdate = _leftInset != leftInset;
+    _leftInset = leftInset;
+    if ( needsUpdate )
+    {
+        UIEdgeInsets contentInset = self.collectionView.contentInset;
+        contentInset.left = leftInset;
+        self.collectionView.contentInset = contentInset;
+        [self.collectionView reloadData];
+    }
 }
 
 - (void)setupCollectionView

@@ -151,7 +151,9 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
             BOOL showPreviousCommentsCellEnabled = [self inStreamCommentsShouldDisplayShowMoreCellForSequence:sequence];
             NSArray *commentCellContents = [VInStreamCommentCellContents inStreamCommentsForComments:[self inStreamCommentsArrayForSequence:sequence] andDependencyManager:dependencyManager];
             
-            CGFloat height = [VInStreamCommentsController desiredHeightForCommentCellContents:commentCellContents withMaxWidth:size.width showMoreAttributes:[VInStreamCommentsShowMoreAttributes newWithDependencyManager:dependencyManager] andShowMoreCommentsCellEnabled:showPreviousCommentsCellEnabled];
+            CGFloat width = size.width;
+            width -= [VSleekActionView outerMarginForBarWidth:width];
+            CGFloat height = [VInStreamCommentsController desiredHeightForCommentCellContents:commentCellContents withMaxWidth:width showMoreAttributes:[VInStreamCommentsShowMoreAttributes newWithDependencyManager:dependencyManager] andShowMoreCommentsCellEnabled:showPreviousCommentsCellEnabled];
             height += kInStreamCommentsTopSpace; //Top space
             height += ( kSleekCellActionViewHeight - VActionButtonHeight ) / 2; //Bottom space
             return CGSizeMake( 0.0f, height );
@@ -347,6 +349,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     }
     
     self.textViewConstraint.constant = self.sleekActionView.leftMargin;
+    self.inStreamCommentsController.leftInset = self.sleekActionView.leftMargin;
 
     [super updateConstraints];
 }

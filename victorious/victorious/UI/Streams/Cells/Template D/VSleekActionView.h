@@ -18,6 +18,8 @@ extern CGFloat const VActionButtonHeight;
  */
 @interface VSleekActionView : VAbstractActionView <VHasManagedDependencies>
 
++ (CGFloat)outerMarginForBarWidth:(CGFloat)width;
+
 @property (nonatomic, strong, readonly) VSleekActionButton *commentButton;
 @property (nonatomic, strong, readonly) VSleekActionButton *repostButton;
 @property (nonatomic, strong, readonly) VSleekActionButton *memeButton;
