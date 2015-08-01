@@ -1061,6 +1061,10 @@
 		F03C134E1B69373200287F4C /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C134C1B69373200287F4C /* VUser.m */; };
 		F03C135A1B698F6F00287F4C /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C13591B698F6F00287F4C /* VAsset.m */; };
 		F03C135D1B698F7000287F4C /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C135C1B698F7000287F4C /* VComment.m */; };
+		F03C13741B6C340A00287F4C /* VInStreamCommentsShowMoreAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C13731B6C340A00287F4C /* VInStreamCommentsShowMoreAttributes.m */; };
+		F03C13761B6C341900287F4C /* VInStreamCommentsShowMoreAttributesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C13751B6C341900287F4C /* VInStreamCommentsShowMoreAttributesTests.m */; };
+		F03C137A1B6C367900287F4C /* VInStreamCommentsShowMoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C13781B6C367900287F4C /* VInStreamCommentsShowMoreCell.m */; };
+		F03C137B1B6C367900287F4C /* VInStreamCommentsShowMoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F03C13791B6C367900287F4C /* VInStreamCommentsShowMoreCell.xib */; };
 		F0411E811B45AACD00557176 /* VTimeSinceWidget.m in Sources */ = {isa = PBXBuildFile; fileRef = F0411E801B45AACD00557176 /* VTimeSinceWidget.m */; };
 		F0411E841B4AE5D300557176 /* VAbstractCrossFadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0411E831B4AE5D300557176 /* VAbstractCrossFadingView.m */; };
 		F0411E871B4AE6D800557176 /* VMarqueeCaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0411E861B4AE6D800557176 /* VMarqueeCaptionView.m */; };
@@ -1143,7 +1147,6 @@
 		F0FC97AA1B5563A40098AFCB /* VInStreamCommentsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0FC97A91B5563A40098AFCB /* VInStreamCommentsCell.xib */; };
 		F0FC97AD1B56B3910098AFCB /* VInStreamMediaLink.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97AC1B56B3910098AFCB /* VInStreamMediaLink.m */; };
 		F0FC97BC1B58547A0098AFCB /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97BB1B58547A0098AFCB /* VSequence.m */; };
-		F0FC97CD1B59DCD60098AFCB /* VInStreamCommentsShowMoreAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97CC1B59DCD60098AFCB /* VInStreamCommentsShowMoreAttributes.m */; };
 		F0FC97D21B5AE9130098AFCB /* VStreamCollectionViewController+VInStreamCommentsResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97D11B5AE9130098AFCB /* VStreamCollectionViewController+VInStreamCommentsResponder.m */; };
 		F0FC97D51B5AF0EE0098AFCB /* VCollectionViewCommentHighlighter.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97D41B5AF0EE0098AFCB /* VCollectionViewCommentHighlighter.m */; };
 		F0FC97D81B5AF0FD0098AFCB /* VTableViewCommentHighlighter.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97D71B5AF0FD0098AFCB /* VTableViewCommentHighlighter.m */; };
@@ -1155,7 +1158,6 @@
 		F0FC97F21B5C4F6F0098AFCB /* VCommentMediaTypeHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97F11B5C4F6F0098AFCB /* VCommentMediaTypeHelper.m */; };
 		F0FC97F71B5DB63B0098AFCB /* VInStreamMediaLinkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97F61B5DB63B0098AFCB /* VInStreamMediaLinkTests.m */; };
 		F0FC97F91B5DB69E0098AFCB /* VInStreamCommentCellContentsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97F81B5DB69E0098AFCB /* VInStreamCommentCellContentsTests.m */; };
-		F0FC97FB1B5DB6AE0098AFCB /* VInStreamCommentsShowMoreAttributesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97FA1B5DB6AE0098AFCB /* VInStreamCommentsShowMoreAttributesTests.m */; };
 		F0FC97FD1B5DB6DF0098AFCB /* VAbstractMediaLinkViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97FC1B5DB6DF0098AFCB /* VAbstractMediaLinkViewControllerTests.m */; };
 		F0FC97FF1B5DB6F10098AFCB /* VCommentMediaTypeHelperTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97FE1B5DB6F10098AFCB /* VCommentMediaTypeHelperTests.m */; };
 		F0FC98021B5EB63C0098AFCB /* VAbstractCommentHighlighter.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC98011B5EB63C0098AFCB /* VAbstractCommentHighlighter.m */; };
@@ -3224,6 +3226,12 @@
 		F03C13591B698F6F00287F4C /* VAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAsset.m; sourceTree = "<group>"; };
 		F03C135B1B698F7000287F4C /* VComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VComment.h; sourceTree = "<group>"; };
 		F03C135C1B698F7000287F4C /* VComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VComment.m; sourceTree = "<group>"; };
+		F03C13721B6C340A00287F4C /* VInStreamCommentsShowMoreAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInStreamCommentsShowMoreAttributes.h; sourceTree = "<group>"; };
+		F03C13731B6C340A00287F4C /* VInStreamCommentsShowMoreAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInStreamCommentsShowMoreAttributes.m; sourceTree = "<group>"; };
+		F03C13751B6C341900287F4C /* VInStreamCommentsShowMoreAttributesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInStreamCommentsShowMoreAttributesTests.m; sourceTree = "<group>"; };
+		F03C13771B6C367900287F4C /* VInStreamCommentsShowMoreCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInStreamCommentsShowMoreCell.h; sourceTree = "<group>"; };
+		F03C13781B6C367900287F4C /* VInStreamCommentsShowMoreCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInStreamCommentsShowMoreCell.m; sourceTree = "<group>"; };
+		F03C13791B6C367900287F4C /* VInStreamCommentsShowMoreCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VInStreamCommentsShowMoreCell.xib; sourceTree = "<group>"; };
 		F0411E7F1B45AACD00557176 /* VTimeSinceWidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTimeSinceWidget.h; sourceTree = "<group>"; };
 		F0411E801B45AACD00557176 /* VTimeSinceWidget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTimeSinceWidget.m; sourceTree = "<group>"; };
 		F0411E821B4AE5D300557176 /* VAbstractCrossFadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractCrossFadingView.h; sourceTree = "<group>"; };
@@ -3374,8 +3382,6 @@
 		F0FC97AC1B56B3910098AFCB /* VInStreamMediaLink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInStreamMediaLink.m; sourceTree = "<group>"; };
 		F0FC97BA1B58547A0098AFCB /* VSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequence.h; sourceTree = "<group>"; };
 		F0FC97BB1B58547A0098AFCB /* VSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequence.m; sourceTree = "<group>"; };
-		F0FC97CB1B59DCD60098AFCB /* VInStreamCommentsShowMoreAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInStreamCommentsShowMoreAttributes.h; sourceTree = "<group>"; };
-		F0FC97CC1B59DCD60098AFCB /* VInStreamCommentsShowMoreAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInStreamCommentsShowMoreAttributes.m; sourceTree = "<group>"; };
 		F0FC97CF1B5AD6E40098AFCB /* VInStreamCommentsResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInStreamCommentsResponder.h; sourceTree = "<group>"; };
 		F0FC97D01B5AE9130098AFCB /* VStreamCollectionViewController+VInStreamCommentsResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VStreamCollectionViewController+VInStreamCommentsResponder.h"; sourceTree = "<group>"; };
 		F0FC97D11B5AE9130098AFCB /* VStreamCollectionViewController+VInStreamCommentsResponder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VStreamCollectionViewController+VInStreamCommentsResponder.m"; sourceTree = "<group>"; };
@@ -3397,7 +3403,6 @@
 		F0FC97F31B5C52330098AFCB /* VCommentMediaType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VCommentMediaType.h; sourceTree = "<group>"; };
 		F0FC97F61B5DB63B0098AFCB /* VInStreamMediaLinkTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInStreamMediaLinkTests.m; sourceTree = "<group>"; };
 		F0FC97F81B5DB69E0098AFCB /* VInStreamCommentCellContentsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInStreamCommentCellContentsTests.m; sourceTree = "<group>"; };
-		F0FC97FA1B5DB6AE0098AFCB /* VInStreamCommentsShowMoreAttributesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInStreamCommentsShowMoreAttributesTests.m; sourceTree = "<group>"; };
 		F0FC97FC1B5DB6DF0098AFCB /* VAbstractMediaLinkViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractMediaLinkViewControllerTests.m; sourceTree = "<group>"; };
 		F0FC97FE1B5DB6F10098AFCB /* VCommentMediaTypeHelperTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCommentMediaTypeHelperTests.m; sourceTree = "<group>"; };
 		F0FC98001B5EB63C0098AFCB /* VAbstractCommentHighlighter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractCommentHighlighter.h; sourceTree = "<group>"; };
@@ -6223,7 +6228,6 @@
 				039420491AB88A9A0087ADFA /* VDependencyManagerImageTests.m */,
 				F0FC97F61B5DB63B0098AFCB /* VInStreamMediaLinkTests.m */,
 				F0FC97F81B5DB69E0098AFCB /* VInStreamCommentCellContentsTests.m */,
-				F0FC97FA1B5DB6AE0098AFCB /* VInStreamCommentsShowMoreAttributesTests.m */,
 				F0FC97FC1B5DB6DF0098AFCB /* VAbstractMediaLinkViewControllerTests.m */,
 				F0FC97FE1B5DB6F10098AFCB /* VCommentMediaTypeHelperTests.m */,
 				039D02AE1A10441500DB9236 /* VDependencyManagerTests.m */,
@@ -6241,6 +6245,7 @@
 				D8AF00F01A129CD100B147C4 /* VHashTagTextViewTests.m */,
 				D89AC2BE19F1FEA700921131 /* VHistogramDataSourceTests.m */,
 				A7D378521AF06C65007FF197 /* VImageAssetFinderTests.m */,
+				F03C13751B6C341900287F4C /* VInStreamCommentsShowMoreAttributesTests.m */,
 				0306F7A71ADDF990009FE3AA /* VJSONHelperTests.m */,
 				A75C649D1ADC4A4E00245125 /* VKeyboardBarViewControllerTests.m */,
 				F0D3CFB61A8C3FDE00EAD55E /* VKeyboardInputAccessoryViewTests.m */,
@@ -7494,8 +7499,8 @@
 			children = (
 				F0FC97311B507EB40098AFCB /* VInStreamCommentCellContents.h */,
 				F0FC97321B507EB40098AFCB /* VInStreamCommentCellContents.m */,
-				F0FC97CB1B59DCD60098AFCB /* VInStreamCommentsShowMoreAttributes.h */,
-				F0FC97CC1B59DCD60098AFCB /* VInStreamCommentsShowMoreAttributes.m */,
+				F03C13721B6C340A00287F4C /* VInStreamCommentsShowMoreAttributes.h */,
+				F03C13731B6C340A00287F4C /* VInStreamCommentsShowMoreAttributes.m */,
 				F0FC97AB1B56B3910098AFCB /* VInStreamMediaLink.h */,
 				F0FC97AC1B56B3910098AFCB /* VInStreamMediaLink.m */,
 			);
@@ -7509,6 +7514,9 @@
 				F0FC97A61B5563960098AFCB /* VInStreamCommentsCell.h */,
 				F0FC97A71B5563960098AFCB /* VInStreamCommentsCell.m */,
 				F0FC97A91B5563A40098AFCB /* VInStreamCommentsCell.xib */,
+				F03C13771B6C367900287F4C /* VInStreamCommentsShowMoreCell.h */,
+				F03C13781B6C367900287F4C /* VInStreamCommentsShowMoreCell.m */,
+				F03C13791B6C367900287F4C /* VInStreamCommentsShowMoreCell.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -7739,6 +7747,7 @@
 				036F38861A0C4DEA0014DF66 /* PT_Sans-Web-Bold.ttf in Resources */,
 				D85B70701B0EAF3F0038CA5B /* FindFriendsTableView.strings in Resources */,
 				A66D76861B5B2E31004765EA /* VLibraryFolderControl.xib in Resources */,
+				F03C137B1B6C367900287F4C /* VInStreamCommentsShowMoreCell.xib in Resources */,
 				036F38831A0C4DEA0014DF66 /* Oswald-Regular.ttf in Resources */,
 				036F388C1A0C4DEA0014DF66 /* Raleway-SemiBold.ttf in Resources */,
 				039269AF1B5F354700FCD0AA /* VCreatePollViewController.storyboard in Resources */,
@@ -8501,7 +8510,6 @@
 				A75ED0031AB0B6B400C35063 /* VTextToolViewController.m in Sources */,
 				A721E9131B572454000B7901 /* VAnswer+Fetcher.m in Sources */,
 				F0C83A631B162DE200A6EC1A /* VImageStreamPreviewView.m in Sources */,
-				F0FC97CD1B59DCD60098AFCB /* VInStreamCommentsShowMoreAttributes.m in Sources */,
 				BE799B8F19C8A91C0023CE88 /* VInteraction.m in Sources */,
 				D8D8958919E88C2100632663 /* VExperienceEnhancerBarCell.m in Sources */,
 				A75ECFFE1AB0B6B400C35063 /* VCropOverlayView.m in Sources */,
@@ -8583,6 +8591,7 @@
 				D84559001ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m in Sources */,
 				D80A94DB1A536C8C0035D788 /* VTrimmerViewController.m in Sources */,
 				A721E93F1B572454000B7901 /* NSManagedObject+RestKit.m in Sources */,
+				F03C137A1B6C367900287F4C /* VInStreamCommentsShowMoreCell.m in Sources */,
 				0314D2E919B46B2200FA363C /* VErrorMessage.m in Sources */,
 				A721E9481B572454000B7901 /* UIActivityViewController+VStatusBarHandling.m in Sources */,
 				A75C64991AD78DCA00245125 /* VTextPostViewModel.m in Sources */,
@@ -8838,6 +8847,7 @@
 				A721E9111B572454000B7901 /* CIImage+VImage.m in Sources */,
 				A601FB5C1B4369550050536C /* VEditProfilePicturePresenter.m in Sources */,
 				D85E42811AFA9A0F00A13BD3 /* VImageSequencePreviewView.m in Sources */,
+				F03C13741B6C340A00287F4C /* VInStreamCommentsShowMoreAttributes.m in Sources */,
 				0314D0B319B4698800FA363C /* VObjectManager+ImageSearch.m in Sources */,
 				A743E7E41A0816D500339CB3 /* VPasswordValidator.m in Sources */,
 				0314D48C19B46B5E00FA363C /* VSelectorViewController.m in Sources */,
@@ -9052,6 +9062,7 @@
 				A72005321A03073B00285A9C /* VUploadManagerTests.m in Sources */,
 				F0B390BD1A8535E300EE70C7 /* VTagTests.m in Sources */,
 				A70AFE641A1684880027549F /* VFlurryTrackingTests.m in Sources */,
+				F03C13761B6C341900287F4C /* VInStreamCommentsShowMoreAttributesTests.m in Sources */,
 				03A7614F1B3232970016B69D /* NSURL+VDataCacheIDTests.m in Sources */,
 				F0E0F1AC1AE8A4B900143CBF /* VLaunchScreenProviderTests.m in Sources */,
 				F028F3E91AC0F2BB00ABFDDC /* VAppInfoTests.m in Sources */,
@@ -9085,7 +9096,6 @@
 				F0FC97F91B5DB69E0098AFCB /* VInStreamCommentCellContentsTests.m in Sources */,
 				F015BEF31A8A8392008A0D67 /* VUserTaggingTextStorageTests.m in Sources */,
 				0306F7A81ADDF990009FE3AA /* VJSONHelperTests.m in Sources */,
-				F0FC97FB1B5DB6AE0098AFCB /* VInStreamCommentsShowMoreAttributesTests.m in Sources */,
 				038C511E1B37CEF800A903C2 /* VTemplateImageSetTests.m in Sources */,
 				A720052B1A03073B00285A9C /* VAbstractMarqueeControllerTests.m in Sources */,
 				A766CFEA1B66CF5A00419688 /* NSString+Unicode.swift in Sources */,

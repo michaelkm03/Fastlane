@@ -56,6 +56,8 @@ static NSString * const kDividerDelimeter = @"•";
     self.scrollEnabled = NO;
     self.editable = NO;
     self.textContainer.lineFragmentPadding = 0.0f;
+    self.textContainerInset = UIEdgeInsetsZero;
+    self.contentInset = UIEdgeInsetsZero;
     self.linkDelegate = self;
 }
 

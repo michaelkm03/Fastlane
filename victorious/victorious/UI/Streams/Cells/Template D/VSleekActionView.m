@@ -24,7 +24,7 @@
 #import "UIView+Autolayout.h"
 #import "VLargeNumberFormatter.h"
 
-static CGFloat const kActionButtonHeight = 31.0f;
+CGFloat const VActionButtonHeight = 31.0f;
 static NSUInteger const kMaxNumberOfActionButtons = 4;
 
 @interface VSleekActionView ()
@@ -217,7 +217,7 @@ static NSUInteger const kMaxNumberOfActionButtons = 4;
         [actionButtons addObject:self.memeButton];
     }
     
-    CGFloat summedButtonWidths = kActionButtonHeight * kMaxNumberOfActionButtons;
+    CGFloat summedButtonWidths = VActionButtonHeight * kMaxNumberOfActionButtons;
     CGFloat interButtonSpace = ( actionBarWidth - summedButtonWidths ) / kMaxNumberOfActionButtons;
 
     NSMutableArray *actionItems = [[NSMutableArray alloc] init];
@@ -253,15 +253,15 @@ static NSUInteger const kMaxNumberOfActionButtons = 4;
                                       selectedImage:(UIImage *)selectedImage
                                              action:(SEL)action
 {
-    VSleekActionButton *actionButton = [[VSleekActionButton alloc] initWithFrame:CGRectMake(0, 0, kActionButtonHeight, kActionButtonHeight)];
+    VSleekActionButton *actionButton = [[VSleekActionButton alloc] initWithFrame:CGRectMake(0, 0, VActionButtonHeight, VActionButtonHeight)];
     actionButton.translatesAutoresizingMaskIntoConstraints = NO;
     actionButton.unselectedTintColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
     actionButton.selectedTintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     [actionButton setImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     [actionButton setImage:[selectedImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateSelected];
     actionButton.selected = NO;
-    [actionButton v_addWidthConstraint:kActionButtonHeight];
-    [actionButton v_addHeightConstraint:kActionButtonHeight];
+    [actionButton v_addWidthConstraint:VActionButtonHeight];
+    [actionButton v_addHeightConstraint:VActionButtonHeight];
     [actionButton addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
     
     return actionButton;

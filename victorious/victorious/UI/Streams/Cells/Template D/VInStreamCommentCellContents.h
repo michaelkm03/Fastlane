@@ -24,8 +24,6 @@
                      commentText:(NSString *)commentText
            commentTextAttributes:(NSDictionary *)commentTextAttributes
        highlightedTextAttributes:(NSDictionary *)highlightedTextAttributes
-                    creationDate:(NSDate *)creationDate
-         timestampTextAttributes:(NSDictionary *)timestampTextAttributes
                inStreamMediaLink:(VInStreamMediaLink *)inStreamMediaLink
            profileImageUrlString:(NSString *)profileImageUrlString
                          comment:(VComment *)comment;
@@ -49,8 +47,6 @@
 @property (nonatomic, readonly) NSString *commentText; ///< The comment left by the user
 @property (nonatomic, readonly) NSDictionary *commentTextAttributes; ///< The attributes for the comment text
 @property (nonatomic, readonly) NSDictionary *highlightedTextAttributes; ///< The attributes of highlighted text (tags)
-@property (nonatomic, readonly) NSDate *creationDate; ///< The date the comment was created
-@property (nonatomic, readonly) NSDictionary *timestampTextAttributes; ///< The text attributes of the timestamp
 @property (nonatomic, readonly) VInStreamMediaLink *inStreamMediaLink; ///< The media link representing a piece of media posted in the comment
 @property (nonatomic, readonly) NSString *profileImageUrlString; ///< A string representing the url of poster's profile image
 @property (nonatomic, readonly) VComment *comment; ///< The comment that this contents object is representing

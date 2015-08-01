@@ -15,13 +15,13 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="760" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" bounces="NO" scrollEnabled="NO" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FhT-n3-Uet" customClass="VTagSensitiveTextView">
-                        <rect key="frame" x="28" y="2" width="334" height="33"/>
+                        <rect key="frame" x="28" y="0.0" width="334" height="33"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     </textView>
                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="760" verticalHuggingPriority="760" horizontalCompressionResistancePriority="760" verticalCompressionResistancePriority="760" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kjj-iN-Gwp" userLabel="Media Link Button">
-                        <rect key="frame" x="28" y="46" width="3" height="15"/>
+                        <rect key="frame" x="28" y="39" width="3" height="15"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="lessThanOrEqual" constant="50" id="Mgb-7K-amd"/>
                         </constraints>
@@ -34,7 +34,7 @@
                         </state>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oEM-ln-Jno" userLabel="Profile Icon Button" customClass="VDefaultProfileButton">
-                        <rect key="frame" x="0.0" y="6" width="20" height="20"/>
+                        <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="oEM-ln-Jno" secondAttribute="height" multiplier="1:1" id="EnX-yu-auj"/>
@@ -50,14 +50,14 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="oEM-ln-Jno" firstAttribute="leading" secondItem="tlu-ZV-fzz" secondAttribute="leading" id="0xz-Wg-jF9"/>
-                <constraint firstItem="Kjj-iN-Gwp" firstAttribute="top" secondItem="FhT-n3-Uet" secondAttribute="bottom" constant="11" id="Ghj-hV-wZH"/>
+                <constraint firstItem="Kjj-iN-Gwp" firstAttribute="top" secondItem="FhT-n3-Uet" secondAttribute="bottom" constant="6" id="Ghj-hV-wZH"/>
                 <constraint firstItem="Kjj-iN-Gwp" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="FhT-n3-Uet" secondAttribute="trailing" id="JyY-Af-DDy"/>
-                <constraint firstItem="oEM-ln-Jno" firstAttribute="top" relation="lessThanOrEqual" secondItem="FhT-n3-Uet" secondAttribute="top" constant="4" id="Noj-SY-FJM"/>
+                <constraint firstItem="oEM-ln-Jno" firstAttribute="top" relation="lessThanOrEqual" secondItem="FhT-n3-Uet" secondAttribute="top" id="Noj-SY-FJM"/>
                 <constraint firstItem="FhT-n3-Uet" firstAttribute="leading" secondItem="oEM-ln-Jno" secondAttribute="trailing" constant="8" id="QoC-wK-LaM"/>
                 <constraint firstItem="oEM-ln-Jno" firstAttribute="centerY" secondItem="FhT-n3-Uet" secondAttribute="centerY" priority="750" id="TAU-8g-EbF"/>
                 <constraint firstAttribute="trailing" secondItem="FhT-n3-Uet" secondAttribute="trailing" id="aYA-eO-OWt"/>
                 <constraint firstItem="FhT-n3-Uet" firstAttribute="leading" secondItem="Kjj-iN-Gwp" secondAttribute="leading" id="bRh-P8-JPa"/>
-                <constraint firstItem="oEM-ln-Jno" firstAttribute="top" secondItem="tlu-ZV-fzz" secondAttribute="top" constant="6" id="lXa-id-T53"/>
+                <constraint firstItem="oEM-ln-Jno" firstAttribute="top" secondItem="tlu-ZV-fzz" secondAttribute="top" id="lXa-id-T53"/>
             </constraints>
             <size key="customSize" width="362" height="129.5"/>
             <connections>

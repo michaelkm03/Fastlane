@@ -117,6 +117,7 @@
                 <outlet property="headerView" destination="21k-Mb-C9q" id="qKP-yg-aYp"/>
                 <outlet property="inStreamCommentsCollectionView" destination="j5x-K6-9xu" id="ZL0-Mf-PGF"/>
                 <outlet property="inStreamCommentsCollectionViewBottomConstraint" destination="dxi-2J-A1B" id="Mjd-rf-4SI"/>
+                <outlet property="inStreamCommentsCollectionViewTopConstraint" destination="EDl-v9-JeG" id="CkV-sA-dCv"/>
                 <outlet property="listicleView" destination="73D-7F-ayQ" id="xds-PV-w1Y"/>
                 <outlet property="loadingBackgroundContainer" destination="JB7-zc-ces" id="dXU-4M-ad5"/>
                 <outlet property="previewContainer" destination="0yG-Rl-S8H" id="cof-z2-mUe"/>

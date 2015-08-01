@@ -21,9 +21,11 @@
 #import "VTagStringFormatter.h"
 
 //Warning, must match up EXACTLY with values in this class' xib
-static UIEdgeInsets const kTextInsets = { 6.0f, 28.0f, 6.0f, 0.0f };
-static CGFloat const kInterLabelSpace = 6.0f;
+static CGFloat const kContentSeparationSpace = 6.0f;
+static UIEdgeInsets const kProfileButtonInsets = { 0.0f, 0.0f, 0.0f, 0.0f };
+static UIEdgeInsets const kTextInsets = { 0.0f, 28.0f, 0.0f, 0.0f };
 static CGFloat const kMediaButtonMaxHeight = 50.0f;
+static CGFloat const kProfileButtonHeight = 20.0f;
 static NSString * const kMediaIdentifierSuffix = @"withMedia";
 
 @interface VInStreamCommentsCell () <VTagSensitiveTextViewDelegate>
@@ -80,7 +82,7 @@ static NSString * const kMediaIdentifierSuffix = @"withMedia";
         }
     }
     
-    self.mediaLinkTopConstraint.constant = [[self class] contentsHasValidMediaLink:contents] ? kInterLabelSpace : 0.0f;
+    self.mediaLinkTopConstraint.constant = [[self class] contentsHasValidMediaLink:contents] ? kContentSeparationSpace : 0.0f;
     [self setupMediaLinkButtonWithInStreamMediaLink:contents.inStreamMediaLink forSizing:NO];
     
     [self.profileButton setProfileImageURL:[NSURL URLWithString:contents.profileImageUrlString] forState:UIControlStateNormal];
@@ -170,7 +172,7 @@ static NSString * const kMediaIdentifierSuffix = @"withMedia";
         [sizingCell setupMediaLinkButtonWithInStreamMediaLink:contents.inStreamMediaLink forSizing:YES];
         height = CGRectGetHeight(sizingCell.mediaLinkButton.bounds);
     }
-    return height;
+    return VCEIL(height);
 }
 
 + (CGFloat)desiredHeightForCommentCellContents:(VInStreamCommentCellContents *)contents withMaxWidth:(CGFloat)width
@@ -182,16 +184,23 @@ static NSString * const kMediaIdentifierSuffix = @"withMedia";
         commentAttributedString = attributedString;
     }];
     CGFloat mediaLinkButtonHeight = [self mediaLinkButtonHeightForContents:contents withMaxWidth:maxWidth];
-    CGFloat commentHeight = CGRectGetHeight([commentAttributedString boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
-                                                                                  options:NSStringDrawingUsesLineFragmentOrigin context:nil]);
+    CGFloat commentHeight = VCEIL(CGRectGetHeight([commentAttributedString boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
+                                                                                        options:NSStringDrawingUsesLineFragmentOrigin
+                                                                                        context:nil]));
     CGFloat height = 0.0f;
     if ( mediaLinkButtonHeight != 0.0f )
     {
-        height += kInterLabelSpace;
+        height += kContentSeparationSpace;
     }
     
     height += commentHeight + mediaLinkButtonHeight;
+    if ( commentHeight < kProfileButtonHeight )
+    {
+        height += (kProfileButtonHeight - commentHeight);
+    }
     height += kTextInsets.top + kTextInsets.bottom;
+    CGFloat minimumHeight = kProfileButtonHeight + kProfileButtonInsets.top + kProfileButtonInsets.bottom;
+    height = MAX(height, minimumHeight);
     return height;
 }
 

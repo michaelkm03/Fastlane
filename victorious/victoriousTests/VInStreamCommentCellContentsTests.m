@@ -22,8 +22,6 @@
 @property (nonatomic, strong) NSString *commentText;
 @property (nonatomic, strong) NSDictionary *commentTextAttributes;
 @property (nonatomic, strong) NSDictionary *highlightedTextAttributes;
-@property (nonatomic, strong) NSDate *creationDate;
-@property (nonatomic, strong) NSDictionary *timestampTextAttributes;
 @property (nonatomic, strong) VInStreamMediaLink *inStreamMediaLink;
 @property (nonatomic, strong) NSString *profileImageUrlString;
 @property (nonatomic, strong) VComment *comment1;
@@ -42,8 +40,6 @@
     self.commentText = @"comment";
     self.commentTextAttributes = @{ @"commentTextAttribute" : @"attribute" };
     self.highlightedTextAttributes = @{ @"highlightedTextAttributes" : @"attribute" };
-    self.creationDate = [NSDate date];
-    self.timestampTextAttributes = @{ @"timestampTextAttributes" : @"attribute" };
     self.inStreamMediaLink = [OCMockObject mockForClass:[VInStreamMediaLink class]];
     self.profileImageUrlString = @"profileImage";
     self.comment1 = [VDummyModels objectWithEntityName:@"Comment" subclass:[VComment class]];
@@ -74,32 +70,28 @@
 
 - (void)testInstanceMethodInit
 {
-    XCTAssertNoThrow([[VInStreamCommentCellContents alloc] initWithUsername:self.username usernameFont:self.usernameFont commentText:self.commentText commentTextAttributes:self.commentTextAttributes highlightedTextAttributes:self.highlightedTextAttributes creationDate:self.creationDate timestampTextAttributes:self.timestampTextAttributes inStreamMediaLink:self.inStreamMediaLink profileImageUrlString:self.profileImageUrlString comment:self.comment1]);
+    XCTAssertNoThrow([[VInStreamCommentCellContents alloc] initWithUsername:self.username usernameFont:self.usernameFont commentText:self.commentText commentTextAttributes:self.commentTextAttributes highlightedTextAttributes:self.highlightedTextAttributes inStreamMediaLink:self.inStreamMediaLink profileImageUrlString:self.profileImageUrlString comment:self.comment1]);
     
-    XCTAssertNoThrow([[VInStreamCommentCellContents alloc] initWithUsername:nil usernameFont:self.usernameFont commentText:self.commentText commentTextAttributes:self.commentTextAttributes highlightedTextAttributes:self.highlightedTextAttributes creationDate:self.creationDate timestampTextAttributes:self.timestampTextAttributes inStreamMediaLink:self.inStreamMediaLink profileImageUrlString:self.profileImageUrlString comment:self.comment1]);
-    XCTAssertNoThrow([[VInStreamCommentCellContents alloc] initWithUsername:self.username usernameFont:nil commentText:self.commentText commentTextAttributes:self.commentTextAttributes highlightedTextAttributes:self.highlightedTextAttributes creationDate:self.creationDate timestampTextAttributes:self.timestampTextAttributes inStreamMediaLink:self.inStreamMediaLink profileImageUrlString:self.profileImageUrlString comment:self.comment1]);
-    XCTAssertNoThrow([[VInStreamCommentCellContents alloc] initWithUsername:self.username usernameFont:self.usernameFont commentText:nil commentTextAttributes:self.commentTextAttributes highlightedTextAttributes:self.highlightedTextAttributes creationDate:self.creationDate timestampTextAttributes:self.timestampTextAttributes inStreamMediaLink:self.inStreamMediaLink profileImageUrlString:self.profileImageUrlString comment:self.comment1]);
-    XCTAssertNoThrow([[VInStreamCommentCellContents alloc] initWithUsername:self.username usernameFont:self.usernameFont commentText:self.commentText commentTextAttributes:nil highlightedTextAttributes:self.highlightedTextAttributes creationDate:self.creationDate timestampTextAttributes:self.timestampTextAttributes inStreamMediaLink:self.inStreamMediaLink profileImageUrlString:self.profileImageUrlString comment:self.comment1]);
-    XCTAssertNoThrow([[VInStreamCommentCellContents alloc] initWithUsername:self.username usernameFont:self.usernameFont commentText:self.commentText commentTextAttributes:self.commentTextAttributes highlightedTextAttributes:nil creationDate:self.creationDate timestampTextAttributes:self.timestampTextAttributes inStreamMediaLink:self.inStreamMediaLink profileImageUrlString:self.profileImageUrlString comment:self.comment1]);
-    XCTAssertNoThrow([[VInStreamCommentCellContents alloc] initWithUsername:self.username usernameFont:self.usernameFont commentText:self.commentText commentTextAttributes:self.commentTextAttributes highlightedTextAttributes:self.highlightedTextAttributes creationDate:nil timestampTextAttributes:self.timestampTextAttributes inStreamMediaLink:self.inStreamMediaLink profileImageUrlString:self.profileImageUrlString comment:self.comment1]);
-    XCTAssertNoThrow([[VInStreamCommentCellContents alloc] initWithUsername:self.username usernameFont:self.usernameFont commentText:self.commentText commentTextAttributes:self.commentTextAttributes highlightedTextAttributes:self.highlightedTextAttributes creationDate:self.creationDate timestampTextAttributes:nil inStreamMediaLink:self.inStreamMediaLink profileImageUrlString:self.profileImageUrlString comment:self.comment1]);
-    XCTAssertNoThrow([[VInStreamCommentCellContents alloc] initWithUsername:self.username usernameFont:self.usernameFont commentText:self.commentText commentTextAttributes:self.commentTextAttributes highlightedTextAttributes:self.highlightedTextAttributes creationDate:self.creationDate timestampTextAttributes:self.timestampTextAttributes inStreamMediaLink:nil profileImageUrlString:self.profileImageUrlString comment:self.comment1]);
-    XCTAssertNoThrow([[VInStreamCommentCellContents alloc] initWithUsername:self.username usernameFont:self.usernameFont commentText:self.commentText commentTextAttributes:self.commentTextAttributes highlightedTextAttributes:self.highlightedTextAttributes creationDate:self.creationDate timestampTextAttributes:self.timestampTextAttributes inStreamMediaLink:self.inStreamMediaLink profileImageUrlString:nil comment:self.comment1]);
+    XCTAssertNoThrow([[VInStreamCommentCellContents alloc] initWithUsername:nil usernameFont:self.usernameFont commentText:self.commentText commentTextAttributes:self.commentTextAttributes highlightedTextAttributes:self.highlightedTextAttributes inStreamMediaLink:self.inStreamMediaLink profileImageUrlString:self.profileImageUrlString comment:self.comment1]);
+    XCTAssertNoThrow([[VInStreamCommentCellContents alloc] initWithUsername:self.username usernameFont:nil commentText:self.commentText commentTextAttributes:self.commentTextAttributes highlightedTextAttributes:self.highlightedTextAttributes inStreamMediaLink:self.inStreamMediaLink profileImageUrlString:self.profileImageUrlString comment:self.comment1]);
+    XCTAssertNoThrow([[VInStreamCommentCellContents alloc] initWithUsername:self.username usernameFont:self.usernameFont commentText:nil commentTextAttributes:self.commentTextAttributes highlightedTextAttributes:self.highlightedTextAttributes inStreamMediaLink:self.inStreamMediaLink profileImageUrlString:self.profileImageUrlString comment:self.comment1]);
+    XCTAssertNoThrow([[VInStreamCommentCellContents alloc] initWithUsername:self.username usernameFont:self.usernameFont commentText:self.commentText commentTextAttributes:nil highlightedTextAttributes:self.highlightedTextAttributes inStreamMediaLink:self.inStreamMediaLink profileImageUrlString:self.profileImageUrlString comment:self.comment1]);
+    XCTAssertNoThrow([[VInStreamCommentCellContents alloc] initWithUsername:self.username usernameFont:self.usernameFont commentText:self.commentText commentTextAttributes:self.commentTextAttributes highlightedTextAttributes:nil inStreamMediaLink:self.inStreamMediaLink profileImageUrlString:self.profileImageUrlString comment:self.comment1]);
+    XCTAssertNoThrow([[VInStreamCommentCellContents alloc] initWithUsername:self.username usernameFont:self.usernameFont commentText:self.commentText commentTextAttributes:self.commentTextAttributes highlightedTextAttributes:self.highlightedTextAttributes inStreamMediaLink:nil profileImageUrlString:self.profileImageUrlString comment:self.comment1]);
+    XCTAssertNoThrow([[VInStreamCommentCellContents alloc] initWithUsername:self.username usernameFont:self.usernameFont commentText:self.commentText commentTextAttributes:self.commentTextAttributes highlightedTextAttributes:self.highlightedTextAttributes inStreamMediaLink:self.inStreamMediaLink profileImageUrlString:nil comment:self.comment1]);
     
-    XCTAssertThrows([[VInStreamCommentCellContents alloc] initWithUsername:self.username usernameFont:self.usernameFont commentText:self.commentText commentTextAttributes:self.commentTextAttributes highlightedTextAttributes:self.highlightedTextAttributes creationDate:self.creationDate timestampTextAttributes:self.timestampTextAttributes inStreamMediaLink:self.inStreamMediaLink profileImageUrlString:self.profileImageUrlString comment:nil]);
+    XCTAssertThrows([[VInStreamCommentCellContents alloc] initWithUsername:self.username usernameFont:self.usernameFont commentText:self.commentText commentTextAttributes:self.commentTextAttributes highlightedTextAttributes:self.highlightedTextAttributes inStreamMediaLink:self.inStreamMediaLink profileImageUrlString:self.profileImageUrlString comment:nil]);
 }
 
 - (void)testInstanceMethodInitFields
 {
-    VInStreamCommentCellContents *contents = [[VInStreamCommentCellContents alloc] initWithUsername:self.username usernameFont:self.usernameFont commentText:self.commentText commentTextAttributes:self.commentTextAttributes highlightedTextAttributes:self.highlightedTextAttributes creationDate:self.creationDate timestampTextAttributes:self.timestampTextAttributes inStreamMediaLink:self.inStreamMediaLink profileImageUrlString:self.profileImageUrlString comment:self.comment1];
+    VInStreamCommentCellContents *contents = [[VInStreamCommentCellContents alloc] initWithUsername:self.username usernameFont:self.usernameFont commentText:self.commentText commentTextAttributes:self.commentTextAttributes highlightedTextAttributes:self.highlightedTextAttributes inStreamMediaLink:self.inStreamMediaLink profileImageUrlString:self.profileImageUrlString comment:self.comment1];
     
     XCTAssertEqual(contents.username, self.username);
     XCTAssertEqual(contents.usernameFont, self.usernameFont);
     XCTAssertEqual(contents.commentText, self.commentText);
     XCTAssertEqual(contents.commentTextAttributes, self.commentTextAttributes);
     XCTAssertEqual(contents.highlightedTextAttributes, self.highlightedTextAttributes);
-    XCTAssertEqual(contents.creationDate, self.creationDate);
-    XCTAssertEqual(contents.timestampTextAttributes, self.timestampTextAttributes);
     XCTAssertEqual(contents.inStreamMediaLink, self.inStreamMediaLink);
     XCTAssertEqual(contents.profileImageUrlString, self.profileImageUrlString);
     XCTAssertEqual(contents.comment, self.comment1);

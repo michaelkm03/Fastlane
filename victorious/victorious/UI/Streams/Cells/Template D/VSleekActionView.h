@@ -11,6 +11,8 @@
 #import "VHasManagedDependencies.h"
 #import "VSleekActionButton.h"
 
+extern CGFloat const VActionButtonHeight;
+
 /**
  *  An VAbstractActionView for sleek cells.
  */

@@ -24,9 +24,9 @@
 #import "VCellSizeCollection.h"
 #import "VCellSizingUserInfoKeys.h"
 #import "VInStreamCommentCellContents.h"
+#import "VInStreamCommentsShowMoreAttributes.h"
 #import "VInStreamCommentsController.h"
 #import <FBKVOController.h>
-#import "VInStreamCommentsShowMoreAttributes.h"
 #import "VActionButtonAnimationController.h"
 #import "VListicleView.h"
 #import "VEditorializationItem.h"
@@ -37,9 +37,10 @@ static const CGFloat kSleekCellHeaderHeight = 50.0f;
 static const CGFloat kSleekCellActionViewHeight = 48.0f;
 static const CGFloat kCaptionToPreviewVerticalSpacing = 7.0f;
 static const CGFloat kMaxCaptionTextViewHeight = 200.0f;
-static const CGFloat kCountsTextViewMinHeight = 29.0f;
-static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
+static const CGFloat kCountsTextViewMinHeight = 0.0f;
+static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, kCaptionToPreviewVerticalSpacing, 14.0f };
 static const NSUInteger kMaxNumberOfInStreamComments = 3;
+static const CGFloat kInStreamCommentsTopSpace = 6.0f;
 static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
 @interface VSleekStreamCollectionCell () <VBackgroundContainer, CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate>
@@ -60,6 +61,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *captiontoPreviewVerticalSpacing;
 @property (nonatomic, strong) VInStreamCommentsController *inStreamCommentsController;
 @property (nonatomic, weak) IBOutlet UICollectionView *inStreamCommentsCollectionView;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *inStreamCommentsCollectionViewTopConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *inStreamCommentsCollectionViewBottomConstraint;
 @property (nonatomic, readwrite) BOOL needsRefresh;
 @property (nonatomic, strong) IBOutlet VListicleView *listicleView;
@@ -82,6 +84,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     [self setupDimmingContainer];
     
     self.countsTextView.textSelectionDelegate = self;
+    self.inStreamCommentsCollectionViewTopConstraint.constant = kInStreamCommentsTopSpace;
     self.actionButtonAnimationController = [[VActionButtonAnimationController alloc] init];
 }
 
@@ -102,7 +105,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
                  NSDictionary *attributes = [self sequenceDescriptionAttributesWithDependencyManager:dependencyManager];
                  CGFloat textWidth = size.width - kCaptionMargins.left - kCaptionMargins.right;
                  textHeight = VCEIL( [sequence.name frameSizeForWidth:textWidth andAttributes:attributes].height );
-                 textHeight += kCaptionMargins.top + kCaptionMargins.bottom;
+                 textHeight += kCaptionMargins.top;
              }
              return CGSizeMake( 0.0f, textHeight );
          }];
@@ -133,19 +136,22 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
             VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
             if ( ![[dependencyManager numberForKey:kShouldShowCommentsKey] boolValue] )
             {
-                return CGSizeMake( 0.0f, kCaptionMargins.bottom);
+                return CGSizeMake( 0.0f, ( kSleekCellActionViewHeight - VActionButtonHeight ) / 2);
             }
             
             VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
             NSArray *comments = [self inStreamCommentsArrayForSequence:sequence];
             if ( comments.count == 0 )
             {
-                return CGSizeMake( 0.0f, kCaptionMargins.bottom);
+                return CGSizeMake( 0.0f, ( kSleekCellActionViewHeight - VActionButtonHeight ) / 2);
             }
             
+            BOOL showPreviousCommentsCellEnabled = [self inStreamCommentsShouldDisplayShowMoreCellForSequence:sequence];
             NSArray *commentCellContents = [VInStreamCommentCellContents inStreamCommentsForComments:[self inStreamCommentsArrayForSequence:sequence] andDependencyManager:dependencyManager];
             
-            CGFloat height = [VInStreamCommentsController desiredHeightForCommentCellContents:commentCellContents withMaxWidth:size.width andShowMoreAttributes:[VInStreamCommentsShowMoreAttributes newWithDependencyManager:dependencyManager]];
+            CGFloat height = [VInStreamCommentsController desiredHeightForCommentCellContents:commentCellContents withMaxWidth:size.width showMoreAttributes:[VInStreamCommentsShowMoreAttributes newWithDependencyManager:dependencyManager] andShowMoreCommentsCellEnabled:showPreviousCommentsCellEnabled];
+            height += kInStreamCommentsTopSpace; //Top space
+            height += ( kSleekCellActionViewHeight - VActionButtonHeight ) / 2; //Bottom space
             return CGSizeMake( 0.0f, height );
         }];
     }
