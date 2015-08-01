@@ -47,6 +47,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setItemURL:(NSURL *)itemURL loop:(BOOL)loop audioMuted:(BOOL)audioMuted;
 
 /**
+ Set the URL of the asset to play.
+ @param loop If YES, build a clean-looping asset from the URL provided and play on a loop.
+ @param audioMuted If YES, player audio will be disabled.
+ @param animations The animations that should be run alongside the video player animations.
+ */
+- (void)setItemURL:(NSURL *)itemURL loop:(BOOL)loop audioMuted:(BOOL)audioMuted alongsideAnimation:(void (^ __nullable)(void))animations;
+
+/**
  Start playing.  If already playing, this is a no-op.
  */
 - (void)play;

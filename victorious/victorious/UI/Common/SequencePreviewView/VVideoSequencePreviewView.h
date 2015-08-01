@@ -8,10 +8,11 @@
 
 #import "VSequencePreviewView.h"
 #import "VCellFocus.h"
+#import "VPreviewViewBackgroundHost.h"
 
 /**
  *  A Sequence preview view for video sequences.
  */
-@interface VVideoSequencePreviewView : VSequencePreviewView <VCellFocus>
+@interface VVideoSequencePreviewView : VSequencePreviewView <VCellFocus, VPreviewViewBackgroundHost>
 
 @end

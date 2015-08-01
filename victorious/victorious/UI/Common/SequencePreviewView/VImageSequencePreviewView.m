@@ -15,9 +15,13 @@
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIView+AutoLayout.h"
 
+#import "VDependencyManager+VBackgroundContainer.h"
+#import "VDependencyManager+VBackground.h"
+
 @interface VImageSequencePreviewView ()
 
 @property (nonatomic, strong) UIImageView *previewImageView;
+@property (nonatomic, strong) UIView *backgroundContainerView;
 
 @end
 
@@ -43,13 +47,46 @@
 - (void)setSequence:(VSequence *)sequence
 {
     [super setSequence:sequence];
-    
+    [self makeBackgroundContainerViewVisible:NO];
     [self.previewImageView fadeInImageAtURL:sequence.inStreamPreviewImageURL
                            placeholderImage:nil
+                        alongsideAnimations:^
+     {
+         [self makeBackgroundContainerViewVisible:YES];
+     }
                                  completion:^(UIImage *image)
      {
          self.readyForDisplay = YES;
      }];
+}
+
+#pragma mark - VContentModeAdjustablePreviewView
+
+- (void)updateToFitContent:(BOOL)fit withBackgroundSupplier:(VDependencyManager *)dependencyManager
+{
+    self.previewImageView.contentMode = fit ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleToFill;
+    [dependencyManager addBackgroundToBackgroundHost:self];
+}
+
+- (UIView *)backgroundContainerView
+{
+    if ( _backgroundContainerView != nil )
+    {
+        return _backgroundContainerView;
+    }
+    
+    _backgroundContainerView = [[UIView alloc] init];
+    _backgroundContainerView.backgroundColor = [UIColor clearColor];
+    _backgroundContainerView.alpha = 0.0f;
+    [self addSubview:_backgroundContainerView];
+    [self sendSubviewToBack:_backgroundContainerView];
+    [self v_addFitToParentConstraintsToSubview:_backgroundContainerView];
+    return _backgroundContainerView;
+}
+
+- (void)makeBackgroundContainerViewVisible:(BOOL)visible
+{
+    self.backgroundContainerView.alpha = visible ? 1.0f : 0.0f;
 }
 
 @end
