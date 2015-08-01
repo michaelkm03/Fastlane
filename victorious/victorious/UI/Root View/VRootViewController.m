@@ -352,8 +352,10 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 {
     NSURL *deepLink = [NSURL URLWithString:pushNotification[kDeepLinkURLKey]];
     NSString *notificationID = pushNotification[kNotificationIDKey];
-    
-    [self openURL:deepLink fromExternalSourceWithOptionalNotificationID:notificationID];
+    if (deepLink != nil)
+    {
+        [self openURL:deepLink fromExternalSourceWithOptionalNotificationID:notificationID];
+    }
 }
 
 - (void)applicationOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation

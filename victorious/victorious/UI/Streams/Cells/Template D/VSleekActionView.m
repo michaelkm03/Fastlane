@@ -219,7 +219,7 @@ static NSUInteger const kMaxNumberOfActionButtons = 4;
     
     CGFloat summedButtonWidths = VActionButtonHeight * kMaxNumberOfActionButtons;
     CGFloat interButtonSpace = ( actionBarWidth - summedButtonWidths ) / kMaxNumberOfActionButtons;
-
+    self.leftMargin = interButtonSpace/2;
     NSMutableArray *actionItems = [[NSMutableArray alloc] init];
     //The buttons should be inset from either edge of the cell by half the width of the space between each of them
     [actionItems addObject:[VActionBarFixedWidthItem fixedWidthItemWithWidth:interButtonSpace / 2]];

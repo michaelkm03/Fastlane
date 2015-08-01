@@ -17,7 +17,7 @@
 #import "VInStreamCommentsShowMoreCell.h"
 
 static CGFloat const kMinimumInterItemSpace = 10.0f;
-static UIEdgeInsets const kSectionEdgeInsets = { 0.0f, 27.0f, 0.0f, 2.0f };
+static UIEdgeInsets const kSectionEdgeInsets = { 0.0f, 0.0f, 0.0f, 2.0f };
 
 @interface VInStreamCommentsController () <CCHLinkTextViewDelegate>
 
@@ -36,6 +36,7 @@ static UIEdgeInsets const kSectionEdgeInsets = { 0.0f, 27.0f, 0.0f, 2.0f };
     if ( self != nil )
     {
         _collectionView = collectionView;
+        _leftInset = 0.0f;
         [self setupCollectionView];
     }
     return self;

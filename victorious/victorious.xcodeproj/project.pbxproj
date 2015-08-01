@@ -298,7 +298,6 @@
 		03C1859219B42CEA00E27D05 /* MuseoSans-300.otf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1858F19B42CEA00E27D05 /* MuseoSans-300.otf */; };
 		03C185A719B42D3000E27D05 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C1859519B42D3000E27D05 /* Crashlytics.framework */; };
 		03C185A819B42D3000E27D05 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C1859619B42D3000E27D05 /* FacebookSDK.framework */; };
-		03C185A919B42D3000E27D05 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C1859F19B42D3000E27D05 /* libGoogleAnalyticsServices.a */; };
 		03C185B819B42E5D00E27D05 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185AF19B42E5D00E27D05 /* NSData+Base64.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		03C185B919B42E5D00E27D05 /* OAuth+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185B119B42E5D00E27D05 /* OAuth+Additions.m */; };
 		03C185BA19B42E5D00E27D05 /* OAuthCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185B319B42E5D00E27D05 /* OAuthCore.m */; };
@@ -432,7 +431,6 @@
 		A720054C1A030D9300285A9C /* VTrackingConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = A720054B1A030D9300285A9C /* VTrackingConstants.m */; };
 		A720055E1A030E4700285A9C /* VApplicationTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A72005591A030E4700285A9C /* VApplicationTracking.m */; };
 		A720055F1A030E4700285A9C /* VFlurryTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A720055B1A030E4700285A9C /* VFlurryTracking.m */; };
-		A72005601A030E4700285A9C /* VGoogleAnalyticsTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A720055D1A030E4700285A9C /* VGoogleAnalyticsTracking.m */; };
 		A72005701A03ECDC00285A9C /* VTrackingURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = A720056F1A03ECDC00285A9C /* VTrackingURLRequest.m */; };
 		A721E7521B56054B000B7901 /* GIFSearchDataSource+CollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721E7511B56054B000B7901 /* GIFSearchDataSource+CollectionViewDataSource.swift */; };
 		A721E7541B56059A000B7901 /* GIFSearchViewController+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721E7531B56059A000B7901 /* GIFSearchViewController+Layout.swift */; };
@@ -832,6 +830,10 @@
 		C39B220E1B0A693600D3DFE7 /* VPermissionProfilePicture.m in Sources */ = {isa = PBXBuildFile; fileRef = C39B220D1B0A693600D3DFE7 /* VPermissionProfilePicture.m */; };
 		C3C734461B5EA8BD00D6795D /* VCommentMedia.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C734451B5EA8BD00D6795D /* VCommentMedia.m */; };
 		C3C7344C1B5EC0F500D6795D /* VCommentMedia+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C7344B1B5EC0F500D6795D /* VCommentMedia+RestKit.m */; };
+		C3C734501B5F118F00D6795D /* ExperienceEnhancerIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C7344F1B5F118F00D6795D /* ExperienceEnhancerIconView.swift */; };
+		C3C734571B606BD500D6795D /* RadialAnimatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C734561B606BD500D6795D /* RadialAnimatingView.swift */; };
+		C3C734591B60714C00D6795D /* ExperienceEnhancerAnimatingIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C734581B60714C00D6795D /* ExperienceEnhancerAnimatingIconView.swift */; };
+		C3C7345B1B61CF3D00D6795D /* voteTypes.json in Resources */ = {isa = PBXBuildFile; fileRef = C3C7345A1B61CF3D00D6795D /* voteTypes.json */; };
 		C3E772141B44B3FD005809A5 /* VLikedContentStreamCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E772131B44B3FD005809A5 /* VLikedContentStreamCollectionViewController.m */; };
 		C3E7721A1B45EAF7005809A5 /* VActionSheetTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E772191B45EAF7005809A5 /* VActionSheetTextView.m */; };
 		C3E772201B4DBA78005809A5 /* VStreamFocusHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E7721F1B4DBA78005809A5 /* VStreamFocusHelper.m */; };
@@ -1761,18 +1763,6 @@
 		03C1859019B42CEA00E27D05 /* MuseoSans-500.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-500.otf"; sourceTree = "<group>"; };
 		03C1859519B42D3000E27D05 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		03C1859619B42D3000E27D05 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
-		03C1859919B42D3000E27D05 /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
-		03C1859A19B42D3000E27D05 /* GAIDictionaryBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIDictionaryBuilder.h; sourceTree = "<group>"; };
-		03C1859B19B42D3000E27D05 /* GAIFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIFields.h; sourceTree = "<group>"; };
-		03C1859C19B42D3000E27D05 /* GAILogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAILogger.h; sourceTree = "<group>"; };
-		03C1859D19B42D3000E27D05 /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITrackedViewController.h; sourceTree = "<group>"; };
-		03C1859E19B42D3000E27D05 /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITracker.h; sourceTree = "<group>"; };
-		03C1859F19B42D3000E27D05 /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
-		03C185A119B42D3000E27D05 /* TAGContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAGContainer.h; sourceTree = "<group>"; };
-		03C185A219B42D3000E27D05 /* TAGContainerOpener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAGContainerOpener.h; sourceTree = "<group>"; };
-		03C185A319B42D3000E27D05 /* TAGDataLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAGDataLayer.h; sourceTree = "<group>"; };
-		03C185A419B42D3000E27D05 /* TAGLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAGLogger.h; sourceTree = "<group>"; };
-		03C185A519B42D3000E27D05 /* TAGManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAGManager.h; sourceTree = "<group>"; };
 		03C185A619B42D3000E27D05 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		03C185AE19B42E5D00E27D05 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		03C185AF19B42E5D00E27D05 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
@@ -2004,8 +1994,6 @@
 		A72005591A030E4700285A9C /* VApplicationTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VApplicationTracking.m; sourceTree = "<group>"; };
 		A720055A1A030E4700285A9C /* VFlurryTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFlurryTracking.h; sourceTree = "<group>"; };
 		A720055B1A030E4700285A9C /* VFlurryTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFlurryTracking.m; sourceTree = "<group>"; };
-		A720055C1A030E4700285A9C /* VGoogleAnalyticsTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGoogleAnalyticsTracking.h; sourceTree = "<group>"; };
-		A720055D1A030E4700285A9C /* VGoogleAnalyticsTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VGoogleAnalyticsTracking.m; sourceTree = "<group>"; };
 		A72005611A030EB100285A9C /* VTrackingDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VTrackingDelegate.h; sourceTree = "<group>"; };
 		A720056E1A03ECDC00285A9C /* VTrackingURLRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingURLRequest.h; sourceTree = "<group>"; };
 		A720056F1A03ECDC00285A9C /* VTrackingURLRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingURLRequest.m; sourceTree = "<group>"; };
@@ -2772,6 +2760,10 @@
 		C3C734451B5EA8BD00D6795D /* VCommentMedia.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCommentMedia.m; sourceTree = "<group>"; };
 		C3C7344A1B5EC0F500D6795D /* VCommentMedia+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VCommentMedia+RestKit.h"; sourceTree = "<group>"; };
 		C3C7344B1B5EC0F500D6795D /* VCommentMedia+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VCommentMedia+RestKit.m"; sourceTree = "<group>"; };
+		C3C7344F1B5F118F00D6795D /* ExperienceEnhancerIconView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperienceEnhancerIconView.swift; sourceTree = "<group>"; };
+		C3C734561B606BD500D6795D /* RadialAnimatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadialAnimatingView.swift; sourceTree = "<group>"; };
+		C3C734581B60714C00D6795D /* ExperienceEnhancerAnimatingIconView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperienceEnhancerAnimatingIconView.swift; sourceTree = "<group>"; };
+		C3C7345A1B61CF3D00D6795D /* voteTypes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = voteTypes.json; sourceTree = "<group>"; };
 		C3E772121B44B3FD005809A5 /* VLikedContentStreamCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLikedContentStreamCollectionViewController.h; sourceTree = "<group>"; };
 		C3E772131B44B3FD005809A5 /* VLikedContentStreamCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLikedContentStreamCollectionViewController.m; sourceTree = "<group>"; };
 		C3E772181B45EAF7005809A5 /* VActionSheetTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionSheetTextView.h; sourceTree = "<group>"; };
@@ -3232,6 +3224,7 @@
 		F03C13771B6C367900287F4C /* VInStreamCommentsShowMoreCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInStreamCommentsShowMoreCell.h; sourceTree = "<group>"; };
 		F03C13781B6C367900287F4C /* VInStreamCommentsShowMoreCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInStreamCommentsShowMoreCell.m; sourceTree = "<group>"; };
 		F03C13791B6C367900287F4C /* VInStreamCommentsShowMoreCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VInStreamCommentsShowMoreCell.xib; sourceTree = "<group>"; };
+		F03C13711B6BE5B400287F4C /* VPreviewViewBackgroundHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPreviewViewBackgroundHost.h; sourceTree = "<group>"; };
 		F0411E7F1B45AACD00557176 /* VTimeSinceWidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTimeSinceWidget.h; sourceTree = "<group>"; };
 		F0411E801B45AACD00557176 /* VTimeSinceWidget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTimeSinceWidget.m; sourceTree = "<group>"; };
 		F0411E821B4AE5D300557176 /* VAbstractCrossFadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractCrossFadingView.h; sourceTree = "<group>"; };
@@ -3469,7 +3462,6 @@
 				BE171D801868BE64004E5202 /* CoreData.framework in Frameworks */,
 				BE171D7E1868BE64004E5202 /* UIKit.framework in Frameworks */,
 				038B7F9519DB8D2500F739DF /* ADEUMInstrumentation.framework in Frameworks */,
-				03C185A919B42D3000E27D05 /* libGoogleAnalyticsServices.a in Frameworks */,
 				DBC45CD519F4C4C1003079C4 /* libLiveRail.a in Frameworks */,
 				BE171D7A1868BE64004E5202 /* Foundation.framework in Frameworks */,
 				DBAD88FD19F5B83A00D678A0 /* libOpenXMSDK.a in Frameworks */,
@@ -4607,6 +4599,7 @@
 				03F2F7941B560B8E00F2EF16 /* sampleImage2.png */,
 				039D02B01A10443200DB9236 /* template.json */,
 				03A058C21AEF59E600CF39D1 /* templateCache.json */,
+				C3C7345A1B61CF3D00D6795D /* voteTypes.json */,
 				0386F87B1B37EB8500E8D459 /* templateWithImageURLs.json */,
 			);
 			path = "Test Data";
@@ -4744,47 +4737,11 @@
 				038B7F9419DB8D2500F739DF /* ADEUMInstrumentation.framework */,
 				03C1859519B42D3000E27D05 /* Crashlytics.framework */,
 				03C1859619B42D3000E27D05 /* FacebookSDK.framework */,
-				03C1859719B42D3000E27D05 /* GoogleAnalytics */,
 				03CE66F919B59F260011BB9E /* Image Effects */,
 				03C185A619B42D3000E27D05 /* Reveal.framework */,
 				03C185AD19B42E5D00E27D05 /* TWAPIManager */,
 			);
 			path = "3rd Party SDKs";
-			sourceTree = "<group>";
-		};
-		03C1859719B42D3000E27D05 /* GoogleAnalytics */ = {
-			isa = PBXGroup;
-			children = (
-				03C1859819B42D3000E27D05 /* GAI */,
-				03C1859F19B42D3000E27D05 /* libGoogleAnalyticsServices.a */,
-				03C185A019B42D3000E27D05 /* TAG */,
-			);
-			path = GoogleAnalytics;
-			sourceTree = "<group>";
-		};
-		03C1859819B42D3000E27D05 /* GAI */ = {
-			isa = PBXGroup;
-			children = (
-				03C1859919B42D3000E27D05 /* GAI.h */,
-				03C1859A19B42D3000E27D05 /* GAIDictionaryBuilder.h */,
-				03C1859B19B42D3000E27D05 /* GAIFields.h */,
-				03C1859C19B42D3000E27D05 /* GAILogger.h */,
-				03C1859D19B42D3000E27D05 /* GAITrackedViewController.h */,
-				03C1859E19B42D3000E27D05 /* GAITracker.h */,
-			);
-			path = GAI;
-			sourceTree = "<group>";
-		};
-		03C185A019B42D3000E27D05 /* TAG */ = {
-			isa = PBXGroup;
-			children = (
-				03C185A119B42D3000E27D05 /* TAGContainer.h */,
-				03C185A219B42D3000E27D05 /* TAGContainerOpener.h */,
-				03C185A319B42D3000E27D05 /* TAGDataLayer.h */,
-				03C185A419B42D3000E27D05 /* TAGLogger.h */,
-				03C185A519B42D3000E27D05 /* TAGManager.h */,
-			);
-			path = TAG;
 			sourceTree = "<group>";
 		};
 		03C185AD19B42E5D00E27D05 /* TWAPIManager */ = {
@@ -5111,8 +5068,6 @@
 				A72005591A030E4700285A9C /* VApplicationTracking.m */,
 				A720055A1A030E4700285A9C /* VFlurryTracking.h */,
 				A720055B1A030E4700285A9C /* VFlurryTracking.m */,
-				A720055C1A030E4700285A9C /* VGoogleAnalyticsTracking.h */,
-				A720055D1A030E4700285A9C /* VGoogleAnalyticsTracking.m */,
 			);
 			path = Delegates;
 			sourceTree = "<group>";
@@ -6953,6 +6908,9 @@
 				D8C7CF5E19DCCD0D00BA33E5 /* VExperienceEnhancerCell.xib */,
 				D8360CEE19E3768300D7E260 /* VExperienceEnhancerController.h */,
 				D8360CEF19E3768300D7E260 /* VExperienceEnhancerController.m */,
+				C3C7344F1B5F118F00D6795D /* ExperienceEnhancerIconView.swift */,
+				C3C734561B606BD500D6795D /* RadialAnimatingView.swift */,
+				C3C734581B60714C00D6795D /* ExperienceEnhancerAnimatingIconView.swift */,
 			);
 			path = "Experience Enhancers";
 			sourceTree = "<group>";
@@ -7404,6 +7362,7 @@
 		F0C83A591B161C0100A6EC1A /* StreamItemPreviewView */ = {
 			isa = PBXGroup;
 			children = (
+				F03C13711B6BE5B400287F4C /* VPreviewViewBackgroundHost.h */,
 				F0C83A561B161BF500A6EC1A /* VStreamItemPreviewView.h */,
 				F0C83A571B161BF500A6EC1A /* VStreamItemPreviewView.m */,
 				F079FAB21B183ABC009833CD /* VFailureStreamItemPreviewView.h */,
@@ -7931,6 +7890,7 @@
 				A7CFC1BC19FAF6BF00726772 /* portrait_upsidedown.m4v in Resources */,
 				A7CFC1CC19FEE24300726772 /* front_portrait.m4v in Resources */,
 				039D2FD6197D93C600DFBE60 /* filters.xml in Resources */,
+				C3C7345B1B61CF3D00D6795D /* voteTypes.json in Resources */,
 				A7D378501AF0682B007FF197 /* component.json in Resources */,
 				A72004FB1A02FEC000285A9C /* sampleImage.png in Resources */,
 			);
@@ -8478,7 +8438,6 @@
 				C35266071B2A0907001F093F /* VCreateSheetPresentationController.m in Sources */,
 				D87351881A3120F5006D97B2 /* VCanvasView.m in Sources */,
 				D83AC7AA1AB201A600F63603 /* VPlayerView.m in Sources */,
-				A72005601A030E4700285A9C /* VGoogleAnalyticsTracking.m in Sources */,
 				A743E7EA1A081FFF00339CB3 /* VStringValidator.m in Sources */,
 				F0FC98021B5EB63C0098AFCB /* VAbstractCommentHighlighter.m in Sources */,
 				0314D4A419B46B5E00FA363C /* VForceUpgradeAnimatedTransition.m in Sources */,
@@ -8758,6 +8717,7 @@
 				BE5C7379187E36E800A3340D /* VNodeAction.m in Sources */,
 				0314D4B719B46B5E00FA363C /* VLightboxViewController.m in Sources */,
 				D8F12A6D1A6F093900E99B3D /* VPublishParameters.m in Sources */,
+				C3C734501B5F118F00D6795D /* ExperienceEnhancerIconView.swift in Sources */,
 				0394204D1AB9026C0087ADFA /* VVoteType.m in Sources */,
 				0314D2E219B46AF300FA363C /* VThemeManager.m in Sources */,
 				F0FC97A51B547BA80098AFCB /* VStreamItem.m in Sources */,
@@ -8789,6 +8749,7 @@
 				A6E104DD1B56C8C20062392A /* VPublishPresenter.m in Sources */,
 				D85B70821B0EAF3F0038CA5B /* VLoginWithEmailViewController.m in Sources */,
 				0309318E1A18425B004E9781 /* VMenuCollectionViewDataSource.m in Sources */,
+				C3C734591B60714C00D6795D /* ExperienceEnhancerAnimatingIconView.swift in Sources */,
 				BE42842919DDC19100AEDBA6 /* VDefaultProfileButton.m in Sources */,
 				A75FAF1719E8AC1E00EB87C1 /* VDiscoverSuggestedPeopleSectionCell.m in Sources */,
 				F0C83A551B156D1700A6EC1A /* VCoachmarkManager+VObjectAssociation.m in Sources */,
@@ -8895,6 +8856,7 @@
 				A7792FD71AE8209200E2ECC1 /* VTemplateDecorator.m in Sources */,
 				A721E91E1B572454000B7901 /* VAbstractFilter+RestKit.m in Sources */,
 				D8D812A11B13CB9300E93B37 /* VModernEnterNameViewController.m in Sources */,
+				C3C734571B606BD500D6795D /* RadialAnimatingView.swift in Sources */,
 				DB9497701AAE66C600CCEFD0 /* VFirstTimeInstallHelper.m in Sources */,
 				A7724FD31B3241D100B1BBB3 /* VFollowersDataSource.m in Sources */,
 				A7D378401AEF4ED5007FF197 /* VProfileHeaderCell.m in Sources */,
@@ -9587,7 +9549,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/3rd\\ Party\\ SDKs/GoogleAnalytics",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/LiveRail",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/OpenXMSDK",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/Tremor",
@@ -9618,6 +9579,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
+					"$(TARGET_TEMP_DIR)/../$(PROJECT_NAME).build/DerivedSources",
 				);
 				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -10060,7 +10022,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/3rd\\ Party\\ SDKs/GoogleAnalytics",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/LiveRail",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/OpenXMSDK",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/Tremor",
@@ -10091,6 +10052,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
+					"$(TARGET_TEMP_DIR)/../$(PROJECT_NAME).build/DerivedSources",
 				);
 				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -10249,7 +10211,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/3rd\\ Party\\ SDKs/GoogleAnalytics",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/LiveRail",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/OpenXMSDK",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/Tremor",
@@ -10284,7 +10245,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/3rd\\ Party\\ SDKs/GoogleAnalytics",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/LiveRail",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/OpenXMSDK",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/Tremor",
@@ -10319,6 +10279,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
+					"$(TARGET_TEMP_DIR)/../$(PROJECT_NAME).build/DerivedSources",
 				);
 				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -10350,6 +10311,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
+					"$(TARGET_TEMP_DIR)/../$(PROJECT_NAME).build/DerivedSources",
 				);
 				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -10447,7 +10409,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/3rd\\ Party\\ SDKs/GoogleAnalytics",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/LiveRail",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/OpenXMSDK",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/Ad\\ Networks/Tremor",
@@ -10478,6 +10439,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/victoriousTests/3rd\\ Party\\ SDKs",
+					"$(TARGET_TEMP_DIR)/../$(PROJECT_NAME).build/DerivedSources",
 				);
 				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

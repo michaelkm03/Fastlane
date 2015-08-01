@@ -31,6 +31,7 @@
 #import "VListicleView.h"
 #import "VEditorializationItem.h"
 #import "VStream.h"
+#import "VPreviewViewBackgroundHost.h"
 
 // These values must match the constraint values in interface builder
 static const CGFloat kSleekCellHeaderHeight = 50.0f;
@@ -67,6 +68,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 @property (nonatomic, strong) IBOutlet VListicleView *listicleView;
 @property (nonatomic, readwrite) VStreamItem *streamItem;
 @property (nonatomic, strong) VEditorializationItem *editorialization;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *textViewConstraint;
 
 @end
 
@@ -344,6 +346,8 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
         }
     }
     
+    self.textViewConstraint.constant = self.sleekActionView.leftMargin;
+
     [super updateConstraints];
 }
 
@@ -362,6 +366,10 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
     {
         [self.previewView setDependencyManager:self.dependencyManager];
+    }
+    if ( [self.previewView conformsToProtocol:@protocol(VPreviewViewBackgroundHost)] )
+    {
+        [(VSequencePreviewView <VPreviewViewBackgroundHost> *)self.previewView updateToFitContent:YES withBackgroundSupplier:self.dependencyManager];
     }
     [self.previewView setSequence:sequence];
 }

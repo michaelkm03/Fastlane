@@ -59,4 +59,6 @@
  */
 @property (nonatomic, readonly) UICollectionView *collectionView;
 
+@property (nonatomic, assign) CGFloat leftInset;
+
 @end

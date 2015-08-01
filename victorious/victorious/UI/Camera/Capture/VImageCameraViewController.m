@@ -41,6 +41,7 @@ static const CGRect kDefaultBarItemFrame = {{0.0f, 0.0f}, {50.0f, 50.0f}};
 static const CGFloat kGradientDelta = 20.0f;
 static const CGFloat kVerySmallInnerRadius = 0.0f;
 static const CGFloat kVerySmallOuterRadius = 0.01f;
+static const CGFloat kMaxImageDimension = 640.0f;
 
 @interface VImageCameraViewController () <VCaptureVideoPreviewViewDelegate>
 
@@ -101,7 +102,7 @@ static const CGFloat kVerySmallOuterRadius = 0.01f;
     if (self != nil)
     {
         _captureController = [[VCameraCaptureController alloc] init];
-        [_captureController setSessionPreset:AVCaptureSessionPresetPhoto
+        [_captureController setSessionPreset:AVCaptureSessionPresetMedium
                                   completion:nil];
     }
     return self;
@@ -259,8 +260,9 @@ static const CGFloat kVerySmallOuterRadius = 0.01f;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
                        {
                            __strong typeof(welf) strongSelf = welf;
-                           NSURL *savedFileURL = [strongSelf persistToFileWithImage:image];
-                           UIImage *previewImage = [image squareImageByCropping];
+                           UIImage *smallerImage = [[image scaledImageWithMaxDimension:kMaxImageDimension] fixOrientation];
+                           UIImage *previewImage = [smallerImage squareImageByCropping];
+                           NSURL *savedFileURL = [strongSelf persistToFileWithImage:previewImage];
                            dispatch_async(dispatch_get_main_queue(), ^
                                           {
                                               [strongSelf.delegate imageCameraViewController:strongSelf
@@ -419,7 +421,7 @@ static const CGFloat kVerySmallOuterRadius = 0.01f;
 - (NSURL *)persistToFileWithImage:(UIImage *)image
 {
     NSURL *fileURL = [NSURL v_temporaryFileURLWithExtension:VConstantMediaExtensionJPG];
-    NSData *jpegData = UIImageJPEGRepresentation([image squareImageByCropping], VConstantJPEGCompressionQuality);
+    NSData *jpegData = UIImageJPEGRepresentation(image, VConstantJPEGCompressionQuality);
     [jpegData writeToURL:fileURL atomically:YES];
     return fileURL;
 }

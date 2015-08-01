@@ -71,6 +71,11 @@ static NSString * const kImageURLKey = @"imageURL";
     return [self.dependencyManager numberForKey:@"animationDuration"];
 }
 
+- (NSNumber *)cooldownDuration
+{
+    return [self.dependencyManager numberForKey:@"cooldownDuration"];
+}
+
 - (NSNumber *)isPaid
 {
     return [self.dependencyManager numberForKey:@"isPaid"];

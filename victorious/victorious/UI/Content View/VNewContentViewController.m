@@ -552,6 +552,14 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                                              tintColor:nil];
     }
     
+    if ([self.viewModel.sequence isPoll])
+    {
+        if (self.viewModel.favoredAnswer != VPollAnswerInvalid)
+        {
+            VBallot favoredBallot = (self.viewModel.favoredAnswer == VPollAnswerA) ? VBallotA : VBallotB;
+            [self.ballotCell setVotingDisabledWithFavoredBallot:favoredBallot animated:YES];
+        }
+    }
 
     if (self.viewModel.type == VContentViewTypeVideo)
     {
@@ -622,10 +630,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     if ( self.videoCell != nil && !self.videoCell.didFinishPlayingOnce  )
     {
-        Float64 currentTimeSeconds = CMTimeGetSeconds(self.videoCell.currentTime);
         NSDictionary *params = @{ VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStop,
                                   VTrackingKeyStreamId : self.viewModel.streamId,
-                                  VTrackingKeyTimeCurrent : @( (NSUInteger)(currentTimeSeconds * 1000) ) };
+                                  VTrackingKeyTimeCurrent : @( self.videoCell.currentTimeMilliseconds ) };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidStop parameters:params];
     }
 
@@ -1405,7 +1412,8 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                   VTrackingKeyStreamId : self.viewModel.streamId,
                                   VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
                                   VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[],
-                                  VTrackingKeyLoadTime : @(videoLoadTime) };
+                                  VTrackingKeyLoadTime : @(videoLoadTime),
+                                  VTrackingKeyTimeCurrent : @( self.videoCell.currentTimeMilliseconds ) };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
     }
     [UIView animateWithDuration:0.5f

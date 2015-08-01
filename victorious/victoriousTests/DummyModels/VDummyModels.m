@@ -53,30 +53,21 @@ NSString * const kMacroBallisticsCount = @"%%COUNT%%";
     return [NSArray arrayWithArray:models];
 }
 
-// TODO
-#if 0
 + (NSArray *)createVoteTypes:(NSInteger)count
 {
+    NSDictionary *configuration = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:@"voteTypes" ofType:@"json"]] options:0 error:nil];
+    NSArray *voteTypes = configuration[@"voteTypes"];
+    
     NSMutableArray *models = [[NSMutableArray alloc] init];
-    for ( NSInteger i = 0; i < count; i++ )
+    for (NSDictionary *voteTypeDict in voteTypes)
     {
-        VVoteType *voteType = (VVoteType *)[self objectWithEntityName:@"VoteType" subclass:[VVoteType class]];
-        voteType.name = [NSString stringWithFormat:@"voteType_%lu", (unsigned long)i];
-        voteType.remoteId = @(i+1);
-        voteType.iconImage = @"https://www.google.com/images/icons/product/chrome-48.png";
-        voteType.imageFormat = @"https://www.google.com/images/icons/product/XXXXX.png";
-        voteType.imageCount = @(5);
-        voteType.displayOrder = @(i+1);
-        
-        NSString *trackingUrl = [NSString stringWithFormat:@"http://www.tracking.com/%@", kMacroBallisticsCount];
-        voteType.tracking = (VTracking *)[VDummyModels objectWithEntityName:@"Tracking" subclass:[VTracking class]];
-        voteType.tracking.ballisticCount = @[ trackingUrl, trackingUrl, trackingUrl ];
-        
+        VDependencyManager *dm = [[VDependencyManager alloc] initWithParentManager:nil configuration:voteTypeDict dictionaryOfClassesByTemplateName:nil];
+        VVoteType *voteType = [[VVoteType alloc] initWithDependencyManager:dm];
         [models addObject:voteType];
     }
+    
     return [NSArray arrayWithArray:models];
 }
-#endif
 
 + (NSArray *)createUsers:(NSInteger)count
 {
