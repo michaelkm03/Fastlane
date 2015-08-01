@@ -3189,6 +3189,7 @@
 		F028F3E51AC0D9E800ABFDDC /* VAppInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAppInfo.h; sourceTree = "<group>"; };
 		F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAppInfo.m; sourceTree = "<group>"; };
 		F028F3E81AC0F2BB00ABFDDC /* VAppInfoTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAppInfoTests.m; sourceTree = "<group>"; };
+		F03C13711B6BE5B400287F4C /* VPreviewViewBackgroundHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPreviewViewBackgroundHost.h; sourceTree = "<group>"; };
 		F0411E7F1B45AACD00557176 /* VTimeSinceWidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTimeSinceWidget.h; sourceTree = "<group>"; };
 		F0411E801B45AACD00557176 /* VTimeSinceWidget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTimeSinceWidget.m; sourceTree = "<group>"; };
 		F0411E821B4AE5D300557176 /* VAbstractCrossFadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractCrossFadingView.h; sourceTree = "<group>"; };
@@ -7289,6 +7290,7 @@
 		F0C83A591B161C0100A6EC1A /* StreamItemPreviewView */ = {
 			isa = PBXGroup;
 			children = (
+				F03C13711B6BE5B400287F4C /* VPreviewViewBackgroundHost.h */,
 				F0C83A561B161BF500A6EC1A /* VStreamItemPreviewView.h */,
 				F0C83A571B161BF500A6EC1A /* VStreamItemPreviewView.m */,
 				F079FAB21B183ABC009833CD /* VFailureStreamItemPreviewView.h */,

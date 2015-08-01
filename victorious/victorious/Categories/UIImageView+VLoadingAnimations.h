@@ -19,6 +19,12 @@
 - (void)fadeInImageAtURL:(NSURL *)url
         placeholderImage:(UIImage *)placeholderImage
               completion:(void (^)(UIImage *))completion;
+- (void)fadeInImageAtURL:(NSURL *)url
+        placeholderImage:(UIImage *)placeholderImage
+     alongsideAnimations:(void (^)(void))animations
+              completion:(void (^)(UIImage *))completion;
 - (void)fadeInImage:(UIImage *)image;
+- (void)fadeInImage:(UIImage *)image
+alongsideAnimations:(void (^)(void))animations;
 
 @end

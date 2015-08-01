@@ -9,6 +9,8 @@
 #import "VDependencyManager.h"
 #import "VBackgroundContainer.h"
 
+@class VBackground;
+
 /**
  *  Convenience category to safely add backgrounds to background hosts. Can only host one 
  *  type of background either background or loading background.
