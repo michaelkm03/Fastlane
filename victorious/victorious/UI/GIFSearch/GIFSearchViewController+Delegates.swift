@@ -56,7 +56,6 @@ extension GIFSearchViewController : VScrollPaginatorDelegate {
 extension GIFSearchViewController : UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let section = self.searchDataSource.sections[ indexPath.section ]
         if collectionView.cellForItemAtIndexPath( indexPath ) is GIFSearchResultCell {
             if self.selectedIndexPath == indexPath {
                 self.hidePreviewForResult( indexPath )

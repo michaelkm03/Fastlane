@@ -29,7 +29,6 @@ class VTextFragmentsBuilder: NSObject
         var currentFragmentRect = CGRectZero
         var lastFragmentRect = CGRectZero
         var lastCalloutIndex: Int = -1
-        var selectedRangeLocation = 0
         var fragmentStartIndex = 0
         var isNewLine = true
         
@@ -40,11 +39,9 @@ class VTextFragmentsBuilder: NSObject
             let fragmentRect = textView.layoutManager.boundingRectForGlyphRange( glyphRange, inTextContainer: textView.textContainer )
             let fragmentRange = NSMakeRange( fragmentStartIndex, i - fragmentStartIndex )
             let fragmentText = text.substringWithRange( fragmentRange )
-            let isSpace = currentCharacter == " "
             let needsNewLine = i > 0 && fragmentRect.origin.y > lastFragmentRect.origin.y
             let isLastCharacter = i == text.length-1
             let isFirstCharacter = i == 0
-            let isMinCalloutLength = fragmentRange.length > 2
             let calloutIndex: Int = self.indexOfCalloutRangeContainingIndex( i, calloutRanges: calloutRanges ) ?? -1
             let isLineBreak = currentCharacter == "\n"
             
