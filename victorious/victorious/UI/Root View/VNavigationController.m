@@ -160,7 +160,7 @@ static const CGFloat kStatusBarHeight = 20.0f;
     return self.wantsStatusBarHidden;
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return [self.innerNavigationController.topViewController supportedInterfaceOrientations];
 }

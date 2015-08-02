@@ -111,7 +111,7 @@ static const CGFloat kTabBarAnimationTimeInterval = 0.3;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotification:) name:kCreationSheetWillHide object:nil];
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }

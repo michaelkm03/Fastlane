@@ -165,7 +165,7 @@ static const NSInteger kSearchResultLimit = 100;
     [self.searchField resignFirstResponder];
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }

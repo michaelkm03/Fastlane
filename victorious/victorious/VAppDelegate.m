@@ -87,7 +87,7 @@ static BOOL shouldCompleteLaunch(void) __attribute__((const));
     }
 }
 
-- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
 {
     return UIInterfaceOrientationMaskAllButUpsideDown;
 }
