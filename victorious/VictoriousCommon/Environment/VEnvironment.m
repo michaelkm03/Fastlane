@@ -75,7 +75,7 @@ NSString * const VEnvironmentDidFailToLoad = @"VEnvironmentDidFailToLoad";
 
 #pragma mark - NSCoding
 
-- (instancetype)initWithCoder:(NSCoder *)coder
+- (nullable instancetype)initWithCoder:(NSCoder *)coder
 {
     NSString *name = [coder decodeObjectForKey:kNameKey];
     NSNumber *appID = [coder decodeObjectForKey:kAppIDKey ];
