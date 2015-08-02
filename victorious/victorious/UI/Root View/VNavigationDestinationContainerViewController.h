@@ -37,6 +37,9 @@
  */
 - (instancetype)initWithNavigationDestination:(id<VNavigationDestination>)navigationdestination NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
+- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
+
 /**
  *  The VNavigationDestination that is being contained by this viewController.
  */

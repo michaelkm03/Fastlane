@@ -133,6 +133,12 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"%@\n%@", NSStringFromClass([self class]), self.configuration];

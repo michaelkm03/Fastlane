@@ -19,6 +19,12 @@ NSString * const VEnvironmentDidFailToLoad = @"VEnvironmentDidFailToLoad";
 
 @implementation VEnvironment
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (instancetype)initWithName:(NSString *)name baseURL:(NSURL *)baseURL appID:(NSNumber *)appID
 {
     self = [super init];

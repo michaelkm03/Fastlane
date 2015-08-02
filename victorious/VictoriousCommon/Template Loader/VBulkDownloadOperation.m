@@ -27,6 +27,12 @@ static const NSTimeInterval kDefaultRetryInterval = 2.0;
 
 @implementation VBulkDownloadOperation
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (instancetype)initWithURLs:(NSSet *)urls completion:(VDownloadOperationCompletion)completionBlock
 {
     self = [super init];

@@ -13,6 +13,12 @@
 
 #pragma mark VHasManagedDependencies conforming initializer
 
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super initWithFrame:CGRectZero];
@@ -22,6 +28,12 @@
         _foregroundColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     }
     return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
 }
 
 - (CGRect)frameOfButtonAtIndex:(NSUInteger)index

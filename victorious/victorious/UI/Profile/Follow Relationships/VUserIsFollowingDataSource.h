@@ -23,4 +23,6 @@
  */
 - (instancetype)initWithUser:(VUser *)user NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 @end

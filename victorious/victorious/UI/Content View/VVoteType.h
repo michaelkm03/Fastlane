@@ -34,6 +34,7 @@ extern NSString * const VDependencyManagerVoteTypesKey; ///< The key for retriev
 @property (nonatomic, readonly) BOOL mustBePurchased;
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
+- (instancetype)init NS_UNAVAILABLE;
 
 /**
  Objects of type VVoteType may have a string value assigned to their `productIdentifier`
