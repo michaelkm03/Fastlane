@@ -10,7 +10,6 @@
 #import "VRealtimeCommentsViewModel.h"
 #import "VAdViewController.h"
 #import "VExperienceEnhancerController.h"
-#import "VHistogramDataSource.h"
 #import "VAbstractFilter+RestKit.h"
 #import "VPublishParameters.h"
 
@@ -32,11 +31,6 @@
  * Called whenever the server returns an updated state of this content.
  */
 - (void)didUpdateContent;
-
-/**
- * Called whenever new histogram data is made available.
- */
-- (void)didUpdateHistogramData;
 
 /**
  * Called whenever new poll data is made available.
@@ -257,13 +251,6 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
 
 - (void)answerPollWithAnswer:(VPollAnswer)selectedAnswer
                   completion:(void (^)(BOOL succeeded, NSError *error))completion;
-
-#pragma mark - Histogram
-
-/** This will be nil if no histogram data is available.
- */
-@property (nonatomic, strong, readonly) VHistogramDataSource *histogramDataSource;
-
 /**
  Set a comment ID using this property after initializtion to scroll to and highlight
  that comment when the content view loads.
