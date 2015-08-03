@@ -942,8 +942,6 @@
 		D893674D1ADDDD5E001D2426 /* VSleekActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = D893674C1ADDDD5E001D2426 /* VSleekActionView.m */; };
 		D89367501ADDE1B9001D2426 /* VActionButtonAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D893674F1ADDE1B9001D2426 /* VActionButtonAnimationController.m */; };
 		D89367531ADDE98F001D2426 /* VInsetActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = D89367521ADDE98F001D2426 /* VInsetActionView.m */; };
-		D89AC2BC19F1FD6B00921131 /* VHistogramDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = D89AC2B919F1FD6B00921131 /* VHistogramDataSource.m */; };
-		D89AC2BD19F1FD6B00921131 /* VHistogramBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = D89AC2BB19F1FD6B00921131 /* VHistogramBarView.m */; };
 		D89D7F7E1A9FF5F400B61783 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D89D7F7D1A9FF5F400B61783 /* Launch Screen.xib */; };
 		D89F1CDA1ABE747000AF14A5 /* VRoundedBackgroundButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D89F1CD91ABE747000AF14A5 /* VRoundedBackgroundButton.m */; };
 		D8A411C21AE5B17A000A7229 /* VCreationInfoContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = D8A411C11AE5B17A000A7229 /* VCreationInfoContainer.m */; };
@@ -2969,10 +2967,6 @@
 		D893674F1ADDE1B9001D2426 /* VActionButtonAnimationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionButtonAnimationController.m; sourceTree = "<group>"; };
 		D89367511ADDE98F001D2426 /* VInsetActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInsetActionView.h; sourceTree = "<group>"; };
 		D89367521ADDE98F001D2426 /* VInsetActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInsetActionView.m; sourceTree = "<group>"; };
-		D89AC2B819F1FD6B00921131 /* VHistogramDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHistogramDataSource.h; sourceTree = "<group>"; };
-		D89AC2B919F1FD6B00921131 /* VHistogramDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHistogramDataSource.m; sourceTree = "<group>"; };
-		D89AC2BA19F1FD6B00921131 /* VHistogramBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHistogramBarView.h; sourceTree = "<group>"; };
-		D89AC2BB19F1FD6B00921131 /* VHistogramBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHistogramBarView.m; sourceTree = "<group>"; };
 		D89AC2BE19F1FEA700921131 /* VHistogramDataSourceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHistogramDataSourceTests.m; sourceTree = "<group>"; };
 		D89D7F7D1A9FF5F400B61783 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		D89F1CD81ABE747000AF14A5 /* VRoundedBackgroundButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRoundedBackgroundButton.h; sourceTree = "<group>"; };
@@ -3717,7 +3711,6 @@
 				0314D36519B46B5E00FA363C /* Content Info */,
 				A7A390C91A3257A300709812 /* ContentView.storyboard */,
 				D8C7CF5319DCCC3000BA33E5 /* Experience Enhancers */,
-				D89AC2B719F1FD6B00921131 /* Histogram */,
 				D82C08F419D0C04200273E0D /* Layouts */,
 				0314D36A19B46B5E00FA363C /* Polls */,
 				0314D37119B46B5E00FA363C /* RealtimeComments */,
@@ -6762,17 +6755,6 @@
 			path = Controls;
 			sourceTree = "<group>";
 		};
-		D89AC2B719F1FD6B00921131 /* Histogram */ = {
-			isa = PBXGroup;
-			children = (
-				D89AC2BA19F1FD6B00921131 /* VHistogramBarView.h */,
-				D89AC2BB19F1FD6B00921131 /* VHistogramBarView.m */,
-				D89AC2B819F1FD6B00921131 /* VHistogramDataSource.h */,
-				D89AC2B919F1FD6B00921131 /* VHistogramDataSource.m */,
-			);
-			path = Histogram;
-			sourceTree = "<group>";
-		};
 		D8A93F131A2E84A9009B8A18 /* Workspace */ = {
 			isa = PBXGroup;
 			children = (
@@ -8333,7 +8315,6 @@
 				A685A5D31B6801CF00389DA5 /* VInputAccessoryCollectionView.swift in Sources */,
 				A7A2DFFF1A37813D00F8C705 /* VPurchaseActionCell.m in Sources */,
 				D8B70FEA1A805CC800090C5E /* VInlineValidationView.m in Sources */,
-				D89AC2BC19F1FD6B00921131 /* VHistogramDataSource.m in Sources */,
 				A66D76841B5B2E23004765EA /* VLibraryFolderControl.m in Sources */,
 				A75FAF1B19E8AC1E00EB87C1 /* VTrendingTagCell.m in Sources */,
 				D87AD2B11AD48AC500C481D0 /* VAsset+VCachedData.m in Sources */,
@@ -8724,7 +8705,6 @@
 				A7724FD31B3241D100B1BBB3 /* VFollowersDataSource.m in Sources */,
 				A7D378401AEF4ED5007FF197 /* VProfileHeaderCell.m in Sources */,
 				A721E9371B572454000B7901 /* NSArray+VMap.m in Sources */,
-				D89AC2BD19F1FD6B00921131 /* VHistogramBarView.m in Sources */,
 				03449FE51A0C7EBB0070EC80 /* VSessionTimer.m in Sources */,
 				A721E9541B572454000B7901 /* UIImage+VTint.m in Sources */,
 				C3C7344C1B5EC0F500D6795D /* VCommentMedia+RestKit.m in Sources */,
