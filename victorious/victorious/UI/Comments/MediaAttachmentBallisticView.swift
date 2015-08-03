@@ -34,11 +34,11 @@ class MediaAttachmentBallisticView : MediaAttachmentView {
     
     override var comment: VComment? {
         didSet {
-            if let iconURLString = comment?.properMediaURLGivenContentType() {
-                if let cachedImageData = VDataCache().cachedDataForID(iconURLString) {
+            if let iconURL = comment?.properMediaURLGivenContentType() {
+                if let cachedImageData = VDataCache().cachedDataForID(iconURL) {
                     self.ballisticView.setTintedIcon(UIImage(data: cachedImageData)!)
                 } else {
-                    self.ballisticView.iconURL = iconURLString
+                    self.ballisticView.iconURL = iconURL
                 }
             }
         }
