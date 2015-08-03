@@ -61,3 +61,5 @@
 #import "VMessage+Fetcher.h"
 #import "VSettingsSwitchCell.h"
 #import "UIImage+VTint.h"
+#import "VDataCache.h"
+#import "NSURL+VDataCacheID.h"
