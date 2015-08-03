@@ -29,6 +29,8 @@ typedef void (^VImageVideoLibraryAlternateCaptureSelection)();
                          icon:(UIImage *)icon
             andSelectionBlock:(VImageVideoLibraryAlternateCaptureSelection)selectionBlock NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /**
  *  The title passed in the designated initializer.
  */

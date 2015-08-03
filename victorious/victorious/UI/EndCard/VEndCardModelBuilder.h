@@ -14,6 +14,7 @@
 @interface VEndCardModelBuilder : NSObject <VHasManagedDependencies>
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
+- (instancetype)init NS_UNAVAILABLE;
 
 /**
  Creates a VEndCardModel object based on the provided sequence.

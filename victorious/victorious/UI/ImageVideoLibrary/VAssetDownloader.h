@@ -20,6 +20,8 @@
  */
 - (instancetype)initWithAsset:(PHAsset *)asset NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /**
  *  Downloads the asset passed in the designated initializer asynchronously.
  *

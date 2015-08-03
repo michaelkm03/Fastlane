@@ -84,6 +84,8 @@ extern NSString * const VDependencyManagerEditTextWorkspaceKey;
                         configuration:(NSDictionary *)configuration
     dictionaryOfClassesByTemplateName:(NSDictionary *)classesByTemplateName NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /**
  Checks for an entry in internal configuration by provided key.
  Does not look in parent dependency managers, only checks at the local level.

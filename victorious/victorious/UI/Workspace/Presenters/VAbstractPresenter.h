@@ -22,6 +22,8 @@
  */
 - (instancetype)initWithDependencymanager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /**
  *  Subclasses will override this method to perform the appropriate presentation.
  */

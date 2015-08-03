@@ -28,4 +28,6 @@
  */
 - (instancetype)initWithObjectManager:(VObjectManager *)objectManager NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 @end
