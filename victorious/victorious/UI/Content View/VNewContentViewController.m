@@ -19,6 +19,7 @@
 
 // Layout
 #import "VShrinkingContentLayout.h"
+#import "UIView+AutoLayout.h"
 
 // Cells
 #import "VContentCell.h"
@@ -67,6 +68,9 @@
 // Experiments
 #import "VDependencyManager+VScaffoldViewController.h"
 
+// Swift
+#import "victorious-Swift.h"
+
 #import "VSequence+Fetcher.h"
 
 #import "VTransitionDelegate.h"
@@ -111,7 +115,6 @@
 #import "VCollectionViewStreamFocusHelper.h"
 
 #define HANDOFFENABLED 0
-static const CGFloat kMaxInputBarHeight = 200.0f;
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
@@ -123,7 +126,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, strong) VPublishParameters *publishParameters;
 @property (nonatomic, assign) BOOL hasAutoPlayed;
 
-@property (nonatomic, weak) IBOutlet UICollectionView *contentCollectionView;
+@property (nonatomic, weak) IBOutlet VInputAccessoryCollectionView *contentCollectionView;
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
 @property (nonatomic, weak) IBOutlet UIButton *closeButton;
 @property (nonatomic, weak) IBOutlet UIButton *moreButton;
@@ -142,10 +145,10 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, weak) VKeyboardInputAccessoryView *textEntryView;
 @property (nonatomic, strong) VElapsedTimeFormatter *elapsedTimeFormatter;
 @property (nonatomic, strong) VMediaAttachmentPresenter *mediaAttachmentPresenter;
+@property (nonatomic, assign) BOOL shouldResumeEditingAfterClearActionSheet;
 
 // Constraints
 @property (nonatomic, weak) NSLayoutConstraint *bottomKeyboardToContainerBottomConstraint;
-@property (nonatomic, weak) NSLayoutConstraint *keyboardInputBarHeightConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *leadingCollectionViewToContainer;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *trailingCollectionViewToContainer;
 
@@ -211,8 +214,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (void)dealloc
 {
     [VContentCommentsCell clearSharedImageCache];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - VContentViewViewModelDelegate
@@ -324,21 +325,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     }
 }
 
-#pragma mark - UIResponder
-
-- (UIView *)inputAccessoryView
-{
-    VInputAccessoryView *_inputAccessoryView = nil;
-    if (_inputAccessoryView)
-    {
-        return _inputAccessoryView;
-    }
-    
-    _inputAccessoryView = [VInputAccessoryView new];
-    
-    return _inputAccessoryView;
-}
-
 #pragma mark Rotation
 
 - (BOOL)shouldAutorotate
@@ -375,11 +361,19 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-    NSMutableArray *affectedViews = [[NSMutableArray alloc] init];
-    if ( self.textEntryView != nil )
+    // We need to update first responder status on the collection view for the comment bar
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
     {
-        [affectedViews addObject:self.textEntryView];
+        [self.textEntryView stopEditing];
+        [self.contentCollectionView resignFirstResponder];
     }
+    else
+    {
+        [self.contentCollectionView becomeFirstResponder];
+    }
+
+    NSMutableArray *affectedViews = [[NSMutableArray alloc] init];
+    
     if ( self.moreButton != nil )
     {
         [affectedViews addObject:self.moreButton];
@@ -410,7 +404,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                            dependencyManager:self.dependencyManager];
     
@@ -437,44 +431,10 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     {
         VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryViewWithDependencyManager:self.dependencyManager];
         inputAccessoryView.translatesAutoresizingMaskIntoConstraints = NO;
-        inputAccessoryView.returnKeyType = UIReturnKeyDone;
         inputAccessoryView.delegate = self;
         self.textEntryView = inputAccessoryView;
-        NSLayoutConstraint *inputViewLeadingConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
-                                                                                      attribute:NSLayoutAttributeLeading
-                                                                                      relatedBy:NSLayoutRelationEqual
-                                                                                         toItem:self.view
-                                                                                      attribute:NSLayoutAttributeLeading
-                                                                                     multiplier:1.0f
-                                                                                       constant:0.0f];
-        NSLayoutConstraint *inputViewTrailingconstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
-                                                                                       attribute:NSLayoutAttributeTrailing
-                                                                                       relatedBy:NSLayoutRelationEqual
-                                                                                          toItem:self.view
-                                                                                       attribute:NSLayoutAttributeTrailing
-                                                                                      multiplier:1.0f
-                                                                                        constant:0.0f];
-        self.keyboardInputBarHeightConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
-                                                                             attribute:NSLayoutAttributeHeight
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:nil
-                                                                             attribute:NSLayoutAttributeNotAnAttribute
-                                                                            multiplier:1.0f
-                                                                              constant:VInputAccessoryViewDesiredMinimumHeight];
-        self.bottomKeyboardToContainerBottomConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
-                                                                                      attribute:NSLayoutAttributeBottom
-                                                                                      relatedBy:NSLayoutRelationEqual
-                                                                                         toItem:self.view
-                                                                                      attribute:NSLayoutAttributeBottom
-                                                                                     multiplier:1.0f
-                                                                                       constant:0.0f];
-
-        self.bottomKeyboardToContainerBottomConstraint.priority = UILayoutPriorityDefaultLow;
-        [self.view addSubview:inputAccessoryView];
-        [self.view addConstraints:@[self.keyboardInputBarHeightConstraint, inputViewLeadingConstraint, inputViewTrailingconstraint, self.bottomKeyboardToContainerBottomConstraint]];
-        
-        // Adjust focus area for keyboard bar
-        [self.focusHelper setFocusAreaInsets:UIEdgeInsetsMake(0, 0, self.keyboardInputBarHeightConstraint.constant, 0)];
+        self.contentCollectionView.accessoryView = self.textEntryView;
+        [self.contentCollectionView becomeFirstResponder];
     }
     
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
@@ -517,28 +477,19 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     [self.dependencyManager trackViewWillAppear:self];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardDidChangeFrame:)
-                                                 name:UIKeyboardDidChangeFrameNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardDidChangeFrame:)
-                                                 name:VInputAccessoryViewKeyboardFrameDidChangeNotification
-                                               object:nil];
     
     [self.navigationController setNavigationBarHidden:YES
                                              animated:YES];
     
     self.contentCollectionView.delegate = self;
+    
+    [self.contentCollectionView becomeFirstResponder];
     self.videoCell.delegate = self;
 
 #ifdef V_ALLOW_VIDEO_DOWNLOADS
     // We could probably move this here anyway, but not going to for now to avoid bugs.
     self.videoCell.viewModel = self.viewModel.videoViewModel;
 #endif
-    
-    self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(VShrinkingContentLayoutMinimumContentHeight, 0, CGRectGetHeight(self.textEntryView.bounds), 0);
-    self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.textEntryView.bounds) , 0);
     
     if (self.viewModel.sequence.isImage)
     {
@@ -585,6 +536,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    [self updateInsetsForKeyboardBarState];
     
     NSString *contextType = [self trackingValueForContentType] ?: @"";
     [[VTrackingManager sharedInstance] setValue:contextType forSessionParameterWithKey:VTrackingKeyContentType];
@@ -649,13 +602,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 #endif
     
     // We don't care about these notifications anymore but we still care about new user loggedin
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardDidChangeFrameNotification
-                                                  object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:VInputAccessoryViewKeyboardFrameDidChangeNotification
-                                                  object:nil];
-    
+    [self.contentCollectionView resignFirstResponder];
     self.contentCollectionView.delegate = nil;
     self.videoCell.delegate = nil;
     
@@ -718,25 +665,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     }
 }
 
-#pragma mark - Notification Handlers
-
-- (void)keyboardDidChangeFrame:(NSNotification *)notification
-{
-    CGRect endFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
- 
-    if ([notification.name isEqualToString:VInputAccessoryViewKeyboardFrameDidChangeNotification])
-    {
-        CGFloat newBottomKeyboardBarToContainerConstraintHeight = 0.0f;
-        if (!isnan(endFrame.origin.y) && !isinf(endFrame.origin.y))
-        {
-            newBottomKeyboardBarToContainerConstraintHeight = -CGRectGetHeight([UIScreen mainScreen].bounds) + endFrame.origin.y;// + offset;
-        }
-        
-        self.bottomKeyboardToContainerBottomConstraint.constant = newBottomKeyboardBarToContainerConstraintHeight;
-        [self.view layoutIfNeeded];
-    }
-}
-
 #pragma mark - IBActions
 
 - (IBAction)pressedClose:(id)sender
@@ -756,6 +684,17 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 #pragma mark - Private Mehods
 
+- (void)updateInsetsForKeyboardBarState
+{
+    // Adjust focus area for keyboard bar
+    CGRect obscuredRectInWindow = [self.textEntryView obscuredRectInWindow:self.view.window];
+    CGRect obscuredRectInOwnView = [self.view.window convertRect:obscuredRectInWindow toView:self.view];
+    CGFloat bottomObscuredSize = CGRectGetMaxY(self.view.bounds) - CGRectGetMinY(obscuredRectInOwnView);
+    self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(VShrinkingContentLayoutMinimumContentHeight, 0, bottomObscuredSize, 0);
+    self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, bottomObscuredSize, 0);
+    [self.focusHelper setFocusAreaInsets:UIEdgeInsetsMake(0, 0, bottomObscuredSize, 0)];
+}
+
 - (void)removeCollectionViewFromContainer
 {
     self.snapshotView = [self.view snapshotViewAfterScreenUpdates:NO];
@@ -763,9 +702,10 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     self.offsetBeforeRemoval = self.contentCollectionView.contentOffset;
     self.contentCollectionView.delegate = nil;
     self.contentCollectionView.dataSource = nil;
-
+    [self.contentCollectionView resignFirstResponder];
+    [self.textEntryView stopEditing];
     [self.videoCell prepareForRemoval];
-    
+
     [self.contentCollectionView removeFromSuperview];
 }
 
@@ -788,7 +728,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                                                         views:@{@"collectionView":self.contentCollectionView}]];
     [self.view bringSubviewToFront:self.closeButton];
     [self.view bringSubviewToFront:self.moreButton];
-    [self.view bringSubviewToFront:self.textEntryView];
 }
 
 - (void)updateInitialExperienceEnhancerState
@@ -1448,17 +1387,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 #pragma mark - VKeyboardInputAccessoryViewDelegate
 
-- (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inpoutAccessoryView
-                         wantsSize:(CGSize)size
-{
-    if (size.height > kMaxInputBarHeight)
-    {
-        return;
-    }
-    self.keyboardInputBarHeightConstraint.constant = size.height;
-    [self.view layoutIfNeeded];
-}
-
 - (void)pressedSendOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
 {
     __weak typeof(self) welf = self;
@@ -1486,6 +1414,28 @@ referenceSizeForHeaderInSection:(NSInteger)section
      }];
 }
 
+- (void)keyboardInputAccessoryViewWantsToClearMedia:(VKeyboardInputAccessoryView *)inputAccessoryView
+{
+    BOOL shouldResumeEditing = [inputAccessoryView isEditing];
+    [inputAccessoryView stopEditing];
+    UIAlertController *alertController = [self.alertHelper alertForConfirmDiscardMediaWithDelete:^
+                                          {
+                                              [inputAccessoryView setSelectedThumbnail:nil];
+                                              if (shouldResumeEditing)
+                                              {
+                                                  [inputAccessoryView startEditing];
+                                              }
+                                          }
+                                                                                          cancel:^
+                                          {
+                                              if (shouldResumeEditing)
+                                              {
+                                                  [inputAccessoryView startEditing];
+                                              }
+                                          }];
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
 - (void)pressedAlternateReturnKeyonKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
 {
     if (inputAccessoryView.composedText.length == 0)
@@ -1494,8 +1444,10 @@ referenceSizeForHeaderInSection:(NSInteger)section
     }
 }
 
-- (void)pressedAttachmentOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
+- (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
+            selectedAttachmentType:(VKeyboardBarAttachmentType)attachmentType
 {
+    [inputAccessoryView stopEditing];
     __weak typeof(self) welf = self;
     [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^(BOOL authorized)
      {
@@ -1503,7 +1455,8 @@ referenceSizeForHeaderInSection:(NSInteger)section
          {
              return;
          }
-         [welf addMediaToComment];
+         __strong typeof(welf) strongSelf = welf;
+         [strongSelf addMediaToCommentWithAttachmentType:attachmentType];
      }];
 }
 
@@ -1516,8 +1469,15 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self clearEditingRealTimeComment];
 }
 
+- (void)keyboardInputAccessoryViewDidEndEditing:(VKeyboardInputAccessoryView *)inpoutAccessoryView
+{
+    [self updateInsetsForKeyboardBarState];
+}
+
 - (void)keyboardInputAccessoryViewDidBeginEditing:(VKeyboardInputAccessoryView *)inpoutAccessoryView
 {
+    [self updateInsetsForKeyboardBarState];
+    
     if ( self.viewModel.type != VContentViewTypeVideo )
     {
         return;
@@ -1554,25 +1514,23 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)userTaggingTextStorage:(VUserTaggingTextStorage *)textStorage wantsToDismissViewController:(UITableViewController *)tableViewController
 {
     [tableViewController.view removeFromSuperview];
+    self.textEntryView.attachmentsBarHidden = NO;
 }
 
 - (void)userTaggingTextStorage:(VUserTaggingTextStorage *)textStorage wantsToShowViewController:(UIViewController *)viewController
 {    
     // Inline Search layout constraints
     UIView *searchTableView = viewController.view;
-    UIView *superview = self.view;
-    [superview insertSubview:searchTableView belowSubview:self.textEntryView];
+    [self.view addSubview:searchTableView];
     [searchTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
     searchTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-    NSDictionary *views = @{@"searchTableView":searchTableView, @"textEntryView":self.textEntryView};
-    [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[searchTableView(>=height)][textEntryView]"
-                                                                      options:0
-                                                                      metrics:@{ @"height":@(kSearchTableDesiredMinimumHeight) }
-                                                                        views:views]];
-    [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[searchTableView]|"
-                                                                      options:kNilOptions
-                                                                      metrics:nil
-                                                                        views:views]];
+    
+    UIWindow *ownWindow = self.view.window;
+    CGRect obscuredRectInWindow = [self.textEntryView obscuredRectInWindow:ownWindow];
+    CGRect obscuredRectInOwnView = [ownWindow convertRect:obscuredRectInWindow toView:self.view];
+    [self.view v_addFitToParentConstraintsToSubview:searchTableView leading:0.0f trailing:0.0f top:0.0f bottom:CGRectGetMinY(obscuredRectInOwnView)];
+
+    self.textEntryView.attachmentsBarHidden = YES;
 }
 
 - (void)submitCommentWithText:(NSString *)commentText
@@ -1592,40 +1550,26 @@ referenceSizeForHeaderInSection:(NSInteger)section
      }];
 }
 
-- (void)addMediaToComment
+- (void)addMediaToCommentWithAttachmentType:(VKeyboardBarAttachmentType)attachmentType
 {
-    void (^showCamera)(void) = ^void(void)
-    {
-        [self showMediaAttachmentUI];
-    };
+    [self.textEntryView stopEditing];
     
-    if (self.publishParameters.mediaToUploadURL == nil)
-    {
-        showCamera();
-        return;
-    }
-    
-    void (^clearMediaSelection)(void) = ^void(void)
-    {
-        self.publishParameters.mediaToUploadURL = nil;
-        [self.textEntryView setSelectedThumbnail:nil];
-    };
-    
-    UIAlertController *alertController = [self.alertHelper alertForConfirmDiscardMediaWithDelete:^
-                                          {
-                                              clearMediaSelection();
-                                              showCamera();
-                                          }
-                                                                                          cancel:nil];
-    [self presentViewController:alertController animated:YES completion:nil];
-}
-
-- (void)showMediaAttachmentUI
-{
-    [self.view endEditing:YES];
     self.mediaAttachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager];
     __weak typeof(self) welf = self;
-    self.mediaAttachmentPresenter.attachmentTypes = VMediaAttachmentOptionsImage | VMediaAttachmentOptionsVideo | VMediaAttachmentOptionsGIF;
+    VMediaAttachmentOptions attachmentOption;
+    switch (attachmentType)
+    {
+        case VKeyboardBarAttachmentTypeVideo:
+            attachmentOption = VMediaAttachmentOptionsVideo;
+            break;
+        case VKeyboardBarAttachmentTypeImage:
+            attachmentOption = VMediaAttachmentOptionsImage;
+            break;
+        case VKeyboardBarAttachmentTypeGIF:
+            attachmentOption = VMediaAttachmentOptionsGIF;
+            break;
+    }
+    self.mediaAttachmentPresenter.attachmentTypes = attachmentOption;
     self.mediaAttachmentPresenter.resultHandler = ^void(BOOL success, VPublishParameters *publishParameters)
     {
         __strong typeof(self) strongSelf = welf;
