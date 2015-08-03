@@ -31,11 +31,11 @@
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VBadgeResponder.h"
 #import "VDependencyManager+VTracking.h"
+#import "VInboxViewController.h"
 
 static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
 static CGFloat const kVNotificationCellHeight = 64.0f;
 static int const kNotificationFetchBatchSize = 50;
-NSString * const VNotificationViewControllerPushReceivedNotification = @"VInboxContainerViewControllerInboxPushReceivedNotification";
 
 @interface VNotificationsViewController () <VNavigationDestination>
 
@@ -44,7 +44,6 @@ NSString * const VNotificationViewControllerPushReceivedNotification = @"VInboxC
 @property (strong, nonatomic) RKManagedObjectRequestOperation *refreshRequest;
 
 @end
-
 
 @implementation VNotificationsViewController
 
@@ -61,7 +60,7 @@ NSString * const VNotificationViewControllerPushReceivedNotification = @"VInboxC
         
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(applicationDidBecomeActive:) name:VApplicationDidBecomeActiveNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(inboxMessageNotification:) name:VNotificationViewControllerPushReceivedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(inboxMessageNotification:) name:VInboxViewControllerInboxPushReceivedNotification object:nil];
 
         [viewController loggedInChanged:nil];
     }
@@ -103,7 +102,6 @@ NSString * const VNotificationViewControllerPushReceivedNotification = @"VInboxC
     self.tableView.estimatedRowHeight = kVNotificationCellHeight;
     self.tableView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.automaticallyAdjustsScrollViewInsets = NO;
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -330,6 +328,7 @@ NSString * const VNotificationViewControllerPushReceivedNotification = @"VInboxC
     
     id<VBadgeResponder> badgeResponder = [[self nextResponder] targetForAction:@selector(updateBadge)
                                                                     withSender:nil];
+    NSAssert(badgeResponder != nil, @"badge responder cannot be nil");
     [badgeResponder updateBadge];
     
     if ( self.badgeNumberUpdateBlock != nil )

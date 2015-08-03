@@ -12,9 +12,6 @@
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "VBadgeResponder.h"
 
-static CGFloat kPaddingForNotifications = 10.0f;
-static CGFloat kDiameterForNotifications = 20.0f;
-
 @implementation VSelectorViewBase
 
 #pragma mark VHasManagedDependencies conforming initializer
@@ -40,7 +37,6 @@ static CGFloat kDiameterForNotifications = 20.0f;
 - (void)updateBadging
 {
     // subclasses can override this method
-    return;
 }
 
 #pragma mark - Properties
