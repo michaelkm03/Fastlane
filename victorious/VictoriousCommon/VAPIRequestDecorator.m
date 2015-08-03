@@ -8,12 +8,19 @@
 
 #import "NSString+SHA1Digest.h"
 #import "VAPIRequestDecorator.h"
+#import "VictoriousCommon-Swift.h"
 
 #ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
 #import <UIKit/UIKit.h>
 #endif
 
 @import CoreLocation;
+
+@interface VAPIRequestDecorator()
+
+@property (nonatomic, strong) ExperimentSettings* experimentSettings;
+
+@end
 
 @implementation VAPIRequestDecorator
 
@@ -63,11 +70,11 @@
         [request addValue:self.sessionID forHTTPHeaderField:@"X-Client-Session-ID"];
     }
     
-    if ( self.experimentIDs.count > 0 )
+    /*if ( self.experimentIDs.count > 0 )
     {
-        NSString *commaSeparatedIDs = [self.experimentIDs componentsJoinedByString:@","];
+        NSString *commaSeparatedIDs = [self.experimentIDs.allObjects componentsJoinedByString:@","];
         [request addValue:commaSeparatedIDs forHTTPHeaderField:@"X-Client-Experiment-IDs"];
-    }
+    }*/
     
     if ( self.locale != nil )
     {

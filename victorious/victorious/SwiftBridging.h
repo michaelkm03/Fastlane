@@ -53,3 +53,5 @@
 #import "NSCharacterSet+VURLParts.h"
 #import "VSettingsSwitchCell.h"
 #import "UIView+AutoLayout.h"
+#import "VButton.h"
+#import "VHasManagedDependencies.h"

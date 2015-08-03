@@ -15,6 +15,8 @@ class ExperimentSettingsViewController: UITableViewController, ExperimentSetting
     
     let dataSource = ExperimentSettingsDataSource()
     
+    var dependencyManager: VDependencyManager?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

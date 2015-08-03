@@ -8,26 +8,19 @@
 
 import UIKit
 
-/// This equality operator comapres two arrays of strings that are expected to contain integer text
-/// such as "1" or "2".  It converts the strings to integers, sorts, then compares with the `Array`
-/// type's default equality operator.
-private func ==( lhs: [String], rhs: [String] ) -> Bool {
-    if rhs.count == lhs.count {
-        return false
-    }
-    return lhs.map({ $0.toInt()! }).sorted{ $0 < $1 } == rhs.map({ $0.toInt()! }).sorted{ $0 < $1 }
-}
-
 /// Designed to provided an `ExperimentSettingsDataSource` instance with a reference to
 /// the table view it's feeding so that it can reload it or get access to individual cells
 /// that need updating based on changes in the data model
 protocol ExperimentSettingsDataSourceDelegate {
     var tableView: UITableView! { get }
+    var dependencyManager: VDependencyManager? { get }
 }
 
 class ExperimentSettingsDataSource: NSObject {
     
     var delegate:ExperimentSettingsDataSourceDelegate?
+    
+    let experimentSettings = ExperimentSettings()
     
     private enum State: Int {
         case Loading, Content, NoContent, Error
@@ -51,59 +44,36 @@ class ExperimentSettingsDataSource: NSObject {
     struct Section {
         let title: String
         let experiments: [Experiment]
-        
-        func containsExperiment( experimentId: String ) -> Bool {
-            return contains( self.experiments.map { $0.id }, experimentId )
-        }
     }
     private var sections = [Section]()
-    
-    private var userEnabledExperimentIds = [String]()
-    private var defaultEnabledExperimentIds = [String]()
     private var state: State = .Loading
     
     func saveSettings() {
-        // If the user changed any settings from the default (the backend settings)...
-        if self.defaultEnabledExperimentIds != self.userEnabledExperimentIds {
-            
-            // ...we should update the `experimentIDs` in `VObjectManager` to add the header
-            // which actually changes experiment membership
-            VObjectManager.sharedManager().experimentIDs = self.userEnabledExperimentIds
-        }
-        else {
-            // Otherwise, set the `experimentIDs` back to nil so that the header is not added
-            // and the backend's experiment membership settings are applied as normal
-            VObjectManager.sharedManager().experimentIDs = nil
-        }
-    }
-    
-    func updateData( #deafultExperimentIds: [String], allExperiments: [Experiment] ) {
-        
-        self.sections = []
-        
-        // Get the enabled experiments as determined by the server
-        self.defaultEnabledExperimentIds = deafultExperimentIds
-        
-        // Get any user enabled experiment IDs previosuly selected from this settings view
-        // Or just use the defaults provided by the server if there are none
-        self.userEnabledExperimentIds = VObjectManager.sharedManager().experimentIDs as? [String] ?? self.defaultEnabledExperimentIds
-        
-        // Create sections to be shown in the table view based on the data
-        let layers = Set<String>( map( allExperiments, { $0.layerName }) )
-        for layer in layers {
-            let experiments = filter(allExperiments, { $0.layerName == layer })
-            self.sections.append( Section(title: layer, experiments: experiments) )
-        }
+        self.experimentSettings.activeExperiments = Set<Int>( self.sections.flatMap { $0.experiments.filter { $0.isEnabled.boolValue }.map { $0.id.integerValue } } )
     }
     
     func loadSettings() {
         self.state = .Loading
         
         VObjectManager.sharedManager().getDeviceExperiments(
-            success: { (operation, result, results) -> Void in
-                let experimentIdsFromResponse = result?[ "experiment_ids" ] as? [String] ?? [String]()
-                let experiments = results as? [Experiment] ?? [Experiment]()
-                self.updateData( deafultExperimentIds: experimentIdsFromResponse, allExperiments: experiments )
+            success: { (operation, result, resultObjects) -> Void in
+                self.sections = []
+                
+                let remoteExperimentIds = Set<Int>( result?[ "experiment_ids" ] as? [Int] ?? [Int]() )
+                
+                // Set experiment enabled if ID is present in self.experimentIDs
+                let experiments = resultObjects as? [Experiment] ?? [Experiment]()
+                
+                for experiment in experiments.filter({ remoteExperimentIds.contains($0.id.integerValue) }) {
+                    experiment.isEnabled = true
+                }
+                
+                let layers = Set<String>( map( experiments, { $0.layerName }) )
+                for layer in layers {
+                    let experimentsInLayer = filter( experiments, { $0.layerName == layer })
+                    self.sections.append( Section(title: layer, experiments: experimentsInLayer) )
+                }
+                
                 self.state = self.sections.count > 0 ? .Content : .NoContent
                 self.delegate?.tableView.reloadData()
             },
@@ -118,35 +88,71 @@ class ExperimentSettingsDataSource: NSObject {
 extension ExperimentSettingsDataSource: UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let identifier = VSettingsSwitchCell.suggestedReuseIdentifier()
-        if self.state == .Content, let cell = tableView.dequeueReusableCellWithIdentifier( identifier, forIndexPath: indexPath ) as? VSettingsSwitchCell {
-            
-            let experiment = self.sections[ indexPath.section ].experiments[ indexPath.row ]
-            let enabled = contains( self.userEnabledExperimentIds, experiment.id )
-            cell.setTitle( experiment.name, value: enabled )
-            cell.delegate = self
-            return cell
-        }
         
         let noContentIdentifier = SettingsEmptyCell.defaultSwiftReuseIdentifier
-        if let cell = tableView.dequeueReusableCellWithIdentifier( noContentIdentifier, forIndexPath: indexPath ) as? SettingsEmptyCell {
-            cell.message = self.state.message
-            return cell
+        if self.state != .Content,
+            let cell = tableView.dequeueReusableCellWithIdentifier( noContentIdentifier, forIndexPath: indexPath ) as? SettingsEmptyCell {
+                cell.message = self.state.message
+                return cell
+        }
+        
+        let buttonCellIdentifier = SettingsButtonCell.defaultSwiftReuseIdentifier
+        if self.state == .Content && indexPath.section == tableView.lastSection(),
+            let cell = tableView.dequeueReusableCellWithIdentifier( buttonCellIdentifier, forIndexPath: indexPath ) as? SettingsButtonCell {
+                if let button = cell.button as? VButton,
+                    let color = self.delegate?.dependencyManager?.colorForKey( VDependencyManagerLinkColorKey ),
+                    let font = self.delegate?.dependencyManager?.fontForKey( VDependencyManagerHeaderFontKey ) {
+                        button.primaryColor = color
+                        button.titleLabel?.font = font
+                        button.style = .Primary
+                }
+                cell.delegate = self
+                return cell
+        }
+        
+        let identifier = VSettingsSwitchCell.suggestedReuseIdentifier()
+        if self.state == .Content,
+            let cell = tableView.dequeueReusableCellWithIdentifier( identifier, forIndexPath: indexPath ) as? VSettingsSwitchCell {
+                let experiment = self.sections[ indexPath.section ].experiments[ indexPath.row ]
+                cell.setTitle( experiment.name, value: experiment.isEnabled.boolValue )
+                cell.delegate = self
+                return cell
         }
         
         fatalError( "Could not load cell" )
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.state == .Content ? max( self.sections[ section ].experiments.count, 1 ) : 1
+        switch state {
+        case .Content where section != tableView.lastSection():
+            return self.sections[ section ].experiments.count
+        default:
+            return 1 // No content/loading cell
+        }
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return self.state == .Content ? self.sections.count : 1
+        switch state {
+        case .Content:
+            return self.sections.count + 1 // Reset button
+        default:
+            return 1 // No content/loading cell
+        }
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return self.state == .Content ? self.sections[ section ].title : ""
+        switch state {
+        case .Content where section != tableView.lastSection():
+            return self.sections[ section ].title
+        default:
+            return ""
+        }
+    }
+}
+
+private extension UITableView {
+    func lastSection() -> Int {
+        return max( 0, self.numberOfSections() - 1)
     }
 }
 
@@ -156,28 +162,30 @@ extension ExperimentSettingsDataSource: VSettingsSwitchCellDelegate {
         if let indexPath = self.delegate?.tableView.indexPathForCell( cell ) {
             
             let section = self.sections[ indexPath.section ]
-            let experiment = section.experiments[ indexPath.row ]
-            
-            // Update our data model
-            if cell.value {
-                self.userEnabledExperimentIds.append( experiment.id )
-                self.userEnabledExperimentIds = self.userEnabledExperimentIds.filter {
-                    // Keep only experiment IDs that are not in this section or the experiment ID we just selected.
-                    // In other words, make sure only one experiment per section is selected.
-                    return !section.containsExperiment( $0 ) || $0 == experiment.id
-                }
-            }
-            else {
-                self.userEnabledExperimentIds = self.userEnabledExperimentIds.filter { $0 != experiment.id }
+            let selectedExperiment = section.experiments[ indexPath.row ]
+            for experiment in section.experiments {
+                experiment.isEnabled = selectedExperiment == experiment ? cell.value : false
             }
             
             // Update values only on visible cells that need updating
             for i in 0..<section.experiments.count {
                 let otherCellIndexPath = NSIndexPath(forRow: i, inSection: indexPath.section)
-                if let cell = self.delegate?.tableView.cellForRowAtIndexPath( otherCellIndexPath ) as? VSettingsSwitchCell where otherCellIndexPath != indexPath {
-                    cell.setValue(false, animated: true)
+                if otherCellIndexPath != indexPath,
+                    let cell = self.delegate?.tableView.cellForRowAtIndexPath( otherCellIndexPath ) as? VSettingsSwitchCell {
+                        cell.setValue(false, animated: true)
                 }
             }
         }
     }
 }
+
+extension ExperimentSettingsDataSource: SettingsButtonCellDelegate {
+    
+    func buttonPressed( button: UIButton ) {
+        self.experimentSettings.reset()
+    }
+}
+
+
+
+
