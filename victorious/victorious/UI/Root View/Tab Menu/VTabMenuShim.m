@@ -96,6 +96,7 @@
         shimViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:menuItem.identifier ?: menuItem.title image:image selectedImage:menuItem.selectedIcon];
         [shimViewController.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor clearColor]} forState:UIControlStateNormal];
         shimViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0);
+        shimViewController.tabBarItem.accessibilityIdentifier = menuItem.identifier;
         [wrappedMenuItems addObject:shimViewController];
     }
     self.badgeProviders = [NSArray arrayWithArray:badgeProviders];
