@@ -50,12 +50,24 @@ static const CGFloat kCollectionViewRightInset = 250.0f; //The right-inset of th
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    self = [super init];
+    self = [super initWithNibName:nil bundle:nil];
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
     }
     return self;
+}
+
+- (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
+- (instancetype)initWithCoder:(nonnull NSCoder *)aDecoder
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
 }
 
 #pragma mark - UIViewController

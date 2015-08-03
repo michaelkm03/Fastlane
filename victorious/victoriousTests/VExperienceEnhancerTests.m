@@ -51,8 +51,6 @@ static const NSUInteger kExperienceEnhancerCount = 20;
 @property (nonatomic, retain) VExperienceEnhancerController *viewController;
 @property (nonatomic, retain) NSArray *voteTypes;
 @property (nonatomic, retain) VSequence *sequence;
-@property (nonatomic, assign) IMP isImageCached;
-@property (nonatomic, assign) IMP areSpriteImagesCached;
 @property (nonatomic, strong) VAsyncTestHelper *asyncHelper;
 
 @end
@@ -75,11 +73,14 @@ static const NSUInteger kExperienceEnhancerCount = 20;
     OCMStub( [myObjectMock sendRequest:[OCMArg any]] );
 }
 
+<<<<<<< HEAD
 - (void)tearDown
 {
     [super tearDown];
 }
 
+=======
+>>>>>>> 57fc483cbb99c8ae5fad7c2ead4a40eed90542e5
 - (void)testCreateExperienceEnhancers
 {
     NSArray *experienceEnhancers = [self.viewController createExperienceEnhancersFromVoteTypes:self.voteTypes sequence:self.sequence];

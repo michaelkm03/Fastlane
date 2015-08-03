@@ -20,6 +20,8 @@
  */
 - (instancetype)initWithMediaType:(PHAssetMediaType)mediaType NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /**
  *  The media type this class was initialized with.
  */

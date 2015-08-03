@@ -41,6 +41,8 @@ extern NSString * const kMarqueeURLKey;
  */
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /**
     Sends -registerClass:forCellWithReuseIdentifier: and -registerNib:forCellWithReuseIdentifier:
         messages to the collection view. Should be called as soon as the collection view is initialized.

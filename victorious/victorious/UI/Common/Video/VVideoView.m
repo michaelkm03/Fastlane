@@ -48,13 +48,27 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setUseAspectFit:(BOOL)useAspectFit
 {
     _useAspectFit = useAspectFit;
-    self.playerLayer.videoGravity = useAspectFit ? AVLayerVideoGravityResizeAspect : AVLayerVideoGravityResizeAspectFill;
+    self.playerLayer.videoGravity = [self videoGravity];
 }
 
-- (void)setItemURL:(NSURL *)itemURL loop:(BOOL)loop audioMuted:(BOOL)audioMuted
+- (NSString *)videoGravity
+{
+    return self.useAspectFit ? AVLayerVideoGravityResizeAspect : AVLayerVideoGravityResizeAspectFill;
+}
+
+- (void)setItemURL:(NSURL *__nonnull)itemURL loop:(BOOL)loop audioMuted:(BOOL)audioMuted
+{
+    [self setItemURL:itemURL loop:loop audioMuted:audioMuted alongsideAnimation:nil];
+}
+
+- (void)setItemURL:(NSURL *__nonnull)itemURL loop:(BOOL)loop audioMuted:(BOOL)audioMuted alongsideAnimation:(void (^ __nullable)(void))animations
 {
     if ( [_itemURL isEqual:itemURL] )
     {
+        if ( animations != nil )
+        {
+            animations();
+        }
         return;
     }
     
@@ -62,7 +76,7 @@ NS_ASSUME_NONNULL_BEGIN
     {
         self.player = [[AVPlayer alloc] init];
         self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
-        self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+        self.playerLayer.videoGravity = [self videoGravity];
         [self.layer addSublayer:self.playerLayer];
         self.playerLayer.frame = self.bounds;
         self.playerLayer.opacity = 0.0f;
@@ -83,6 +97,10 @@ NS_ASSUME_NONNULL_BEGIN
              if ([playerLayer.player.currentItem isEqual:newestPlayerItem] && playerLayer.isReadyForDisplay)
              {
                  playerLayer.opacity = 1.0f;
+                 if ( animations != nil )
+                 {
+                     animations();
+                 }
              }
          }];
         

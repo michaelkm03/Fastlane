@@ -19,5 +19,6 @@
 @interface VContentDeepLinkHandler : NSObject <VDeeplinkHandler>
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
+- (instancetype)init NS_UNAVAILABLE;
 
 @end

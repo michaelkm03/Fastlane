@@ -18,4 +18,6 @@
 - (instancetype)initWithAsset:(AVAsset *)asset
           andVideoComposition:(AVVideoComposition *)videoComposition NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 @end

@@ -160,7 +160,7 @@
 
 - (void)presentCameraViewController
 {
-    self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager
+    self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencyManager:self.dependencyManager
                                                                           addedDependencies:@{VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateCrop),
                                                                                               VImageToolControllerShouldDisableTextOverlayKey:@(YES)}];
     self.attachmentPresenter.attachmentTypes = VMediaAttachmentOptionsImage;

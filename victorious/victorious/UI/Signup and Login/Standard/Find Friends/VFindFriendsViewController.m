@@ -23,10 +23,11 @@
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VTracking.h"
 #import "UIViewController+VAccessoryScreens.h"
+#import "VAuthorizationContextProvider.h"
 
 @import MessageUI;
 
-@interface VFindFriendsViewController () <MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate, VFindFriendsTableViewControllerDelegate>
+@interface VFindFriendsViewController () <MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate, VFindFriendsTableViewControllerDelegate, VAuthorizationContextProvider>
 
 @property (nonatomic, weak)   IBOutlet UIView   *containerView;
 
@@ -341,6 +342,18 @@
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - VAuthorizationContextProvider
+
+- (BOOL)requiresAuthorization
+{
+    return YES;
+}
+
+- (VAuthorizationContext)authorizationContext
+{
+    return VAuthorizationContextDefault;
 }
 
 @end

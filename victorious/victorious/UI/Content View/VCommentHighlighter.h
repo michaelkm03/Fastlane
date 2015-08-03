@@ -28,6 +28,8 @@
  */
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /**
  Trigger an animation that scrolls to and highlights the cell at the specified index
  path to call the attention of the user to that cell.

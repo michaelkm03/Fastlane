@@ -10,7 +10,6 @@
 
 #import "MBProgressHUD.h"
 
-#import "VGoogleAnalyticsTracking.h"
 #import "VCommentsTableViewController.h"
 #import "VDependencyManager.h"
 #import "VKeyboardBarViewController.h"

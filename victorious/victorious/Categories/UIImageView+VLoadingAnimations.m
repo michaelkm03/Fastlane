@@ -30,6 +30,14 @@
         placeholderImage:(UIImage *)placeholderImage
               completion:(void (^)(UIImage *))completion
 {
+    [self fadeInImageAtURL:url placeholderImage:placeholderImage alongsideAnimations:nil completion:completion];
+}
+
+- (void)fadeInImageAtURL:(NSURL *)url
+        placeholderImage:(UIImage *)placeholderImage
+     alongsideAnimations:(void (^)(void))animations
+              completion:(void (^)(UIImage *))completion
+{
     __weak UIImageView *weakSelf = self;
     
     [self sd_setImageWithURL:url
@@ -51,20 +59,35 @@
              if ( image != nil )
              {
                  strongSelf.image = image;
+                 if ( animations != nil )
+                 {
+                     animations();
+                 }
              }
              return;
          }
          
-         [strongSelf fadeInImage:image];
+         [strongSelf fadeInImage:image alongsideAnimations:animations];
      }];
 }
 
 - (void)fadeInImage:(UIImage *)image
 {
+    [self fadeInImage:image alongsideAnimations:nil];
+}
+
+- (void)fadeInImage:(UIImage *)image
+alongsideAnimations:(void (^)(void))animations
+{
     self.alpha = 0;
     self.image = image;
     [UIView animateWithDuration:.3f animations:^
      {
+         if ( animations != nil )
+         {
+             animations();
+         }
+         
          self.alpha = 1;
      }];
 }
