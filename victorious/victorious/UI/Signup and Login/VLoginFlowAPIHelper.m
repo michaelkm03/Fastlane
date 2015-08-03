@@ -62,6 +62,12 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 #pragma mark - Public Methods
 
 - (void)selectedTwitterAuthorizationWithCompletion:(void (^)(BOOL))completion

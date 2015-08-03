@@ -20,6 +20,12 @@
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (void)presentOnViewController:(UIViewController *)viewControllerToPresentOn
 {
     NSAssert(false, @"Implement %@ in subclasses.", NSStringFromSelector(@selector(presentOnViewController:)));

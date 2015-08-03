@@ -22,4 +22,6 @@
 @property (nonatomic, strong, readonly) VSleekActionButton *gifButton;
 @property (nonatomic, strong, readonly) VSleekActionButton *likeButton;
 
+@property (nonatomic) CGFloat leftMargin;
+
 @end

@@ -156,6 +156,7 @@ static NSMutableDictionary *sizingCache;
     if (self.answerASelectionHandler)
     {
         self.answerASelectionHandler();
+        [self setVotingDisabledWithFavoredBallot:VBallotA animated:YES];
     }
 }
 
@@ -174,6 +175,7 @@ static NSMutableDictionary *sizingCache;
     if (self.answerBSelectionHandler)
     {
         self.answerBSelectionHandler();
+        [self setVotingDisabledWithFavoredBallot:VBallotB animated:YES];
     }
 }
 

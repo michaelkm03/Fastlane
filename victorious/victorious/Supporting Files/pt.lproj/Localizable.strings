@@ -229,8 +229,8 @@
 
 "ReportInappropriate" = "Denunciar como Impróprio";
 "ReportedTitle" = "Tudo certo!";
-"ReportContentMessage" = "Faremos a revisão deste contúdo no prazo de 24 horas.";
-"ReportCommentMessage" = "Faremos a revisão deste contúdo no prazo de 24 horas.";
+"ReportContentMessage" = "Faremos a revisão deste conteúdo no prazo de 24 horas.";
+"ReportCommentMessage" = "Faremos a revisão deste conteúdo no prazo de 24 horas.";
 "ReportUserMessage" = "Este usuário será revisado no prazo de 24 horas";
 "CommentAlreadyReported" = "Comentário já Sinalizado";
 
@@ -621,6 +621,9 @@
 "Video failed to load" = "Falha ao carregar o vídeo";
 "We encountered an error trying to edit this video." = "Erro ao tentar editar este vídeo.";
 
+"No Photos" = "Nenhuma foto";
+"No Videos" = "Nenhum vídeo";
+
 "#nofilter" = "#semfiltro";
 "Create a meme" = "Criar um meme";
 "Create a quote" = "Crie uma citação";
@@ -689,10 +692,10 @@
 "LikersTitle" = "Curtidores";
 
 "TEXT" = "TEXTO";
-"POLL" = "PESQUISA";
+"POLL" = "VOTAÇÃO";
 "VIDEO" = "VÍDEO";
 "IMAGE" = "IMAGEM";
-"Nevermind" = "Deixe para lá";
+"Nevermind" = "Esquece";
 
 /* Liked content no content view */
 "NOTHING LIKED YET" = "NADA FOI CURTIDO AINDA";

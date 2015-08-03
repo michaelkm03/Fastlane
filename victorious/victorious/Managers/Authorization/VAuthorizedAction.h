@@ -16,6 +16,8 @@ typedef void (^VAuthorizedActionCompletion)(BOOL authorized);
 
 @interface VAuthorizedAction : NSObject
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /**
  Desginated initializer that provides the requires dependencies in order to present
  and complete the authorizaion process for any attmpted authorized actions.

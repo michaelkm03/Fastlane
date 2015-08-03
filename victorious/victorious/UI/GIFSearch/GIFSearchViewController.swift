@@ -13,8 +13,8 @@ import UIKit
     
     /// The user selected a GIF image and wants to proceed with it in a creation flow.
     ///
-    /// :param: `previewImage` A small, still image that is loaded into memory and ready to display
-    /// :param: `capturedMediaURL` The file URL of the GIF's mp4 video asset downloaded to a file temporary location on the device
+    /// :param: previewImage A small, still image that is loaded into memory and ready to display
+    /// :param: capturedMediaURL The file URL of the GIF's mp4 video asset downloaded to a file temporary location on the device
     func GIFSelectedWithPreviewImage( previewImage: UIImage, capturedMediaURL: NSURL )
 }
 
@@ -85,7 +85,7 @@ class GIFSearchViewController: UIViewController {
             
             let selectedGIF = self.searchDataSource.sections[ indexPath.section ][ indexPath.row ]
             
-            var progressHUD = MBProgressHUD.showHUDAddedTo( self.view, animated: true )
+            let progressHUD = MBProgressHUD.showHUDAddedTo( self.view, animated: true )
             progressHUD.mode = .Indeterminate
             progressHUD.dimBackground = true
             progressHUD.show(true)
@@ -96,7 +96,7 @@ class GIFSearchViewController: UIViewController {
                     self.delegate?.GIFSelectedWithPreviewImage( previewImage, capturedMediaURL: mediaURL )
                 }
                 else {
-                    var progressHUD = MBProgressHUD.showHUDAddedTo( self.view, animated: true )
+                    let progressHUD = MBProgressHUD.showHUDAddedTo( self.view, animated: true )
                     progressHUD.mode = .Text
                     progressHUD.labelText = NSLocalizedString( "Error rendering GIF", comment:"" )
                     progressHUD.hide(true, afterDelay: 3.0)
@@ -147,7 +147,7 @@ class GIFSearchViewController: UIViewController {
     }
     
     private func titleViewWithTitle( text: String ) -> UIView {
-        var label = UILabel()
+        let label = UILabel()
         label.text = text
         label.font = UIFont.preferredFontForTextStyle( UIFontTextStyleHeadline )
         label.textColor = UIColor.whiteColor()

@@ -29,6 +29,12 @@ static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationVie
 
 @implementation VAuthorizedAction
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (instancetype)initWithObjectManager:(VObjectManager *)objectManager
                     dependencyManager:(VDependencyManager *)dependencyManager
 {

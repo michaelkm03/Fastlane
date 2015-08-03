@@ -59,6 +59,12 @@ NSString * const VDependencyManagerPositionRight    = @"right";
                       position:position tintColor:tintColor];
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (BOOL)isEqual:(id)object
 {
     if ( [object isKindOfClass:[VNavigationMenuItem class]] )

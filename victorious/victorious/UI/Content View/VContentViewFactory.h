@@ -25,6 +25,8 @@
  */
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /**
  Checks to make sure the specified sequence is capable of being displayed.
  

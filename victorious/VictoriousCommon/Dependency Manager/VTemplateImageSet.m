@@ -12,43 +12,48 @@
 
 static NSString * const kImageSetKey = @"imageSet";
 
-@interface VTemplateImageSet ()
-
-@property (nonatomic, readonly) NSArray *images;
-
-@end
-
 @implementation VTemplateImageSet
 
-- (instancetype)initWithJSON:(NSDictionary *)imageSetJSON
+- (instancetype)init
+{
+    return [self initWithImages:@[]];
+}
+
+- (instancetype)initWithImages:(NSArray *)images
 {
     self = [super init];
     if ( self != nil )
     {
-        NSArray *imageDictionaries = imageSetJSON[kImageSetKey];
-        if ( [imageDictionaries isKindOfClass:[NSArray class]] )
-        {
-            NSMutableArray *images = [[NSMutableArray alloc] initWithCapacity:imageDictionaries.count];
-            for (NSDictionary *imageDictionary in imageDictionaries)
-            {
-                if ( [imageDictionary isKindOfClass:[NSDictionary class]] )
-                {
-                    if ( [VTemplateImage isImageJSON:imageDictionary] )
-                    {
-                        VTemplateImage *image = [[VTemplateImage alloc] initWithJSON:imageDictionary];
-                        [images addObject:image];
-                    }
-                }
-            }
-            [images sortUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(scale)) ascending:NO] ]];
-            _images = [images copy];
-        }
-        else
-        {
-            _images = @[];
-        }
+        NSMutableArray *sortedImages = [images mutableCopy];
+        [sortedImages sortUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:NSStringFromSelector(@selector(scale)) ascending:NO] ]];
+        _images = [sortedImages copy];
     }
     return self;
+}
+
+- (instancetype)initWithJSON:(NSDictionary *)imageSetJSON
+{
+    NSArray *imageDictionaries = imageSetJSON[kImageSetKey];
+    if ( [imageDictionaries isKindOfClass:[NSArray class]] )
+    {
+        NSMutableArray *images = [[NSMutableArray alloc] initWithCapacity:imageDictionaries.count];
+        for (NSDictionary *imageDictionary in imageDictionaries)
+        {
+            if ( [imageDictionary isKindOfClass:[NSDictionary class]] )
+            {
+                if ( [VTemplateImage isImageJSON:imageDictionary] )
+                {
+                    VTemplateImage *image = [[VTemplateImage alloc] initWithJSON:imageDictionary];
+                    [images addObject:image];
+                }
+            }
+        }
+        return [self initWithImages:images];
+    }
+    else
+    {
+        return [self init];
+    }
 }
 
 + (BOOL)isImageSetJSON:(NSDictionary *)imageSetJSON

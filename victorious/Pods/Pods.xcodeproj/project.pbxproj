@@ -5397,6 +5397,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3F89F9B5DE635B83A4DAB862 /* Pods-VictoriousCommonOSX.staging.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
@@ -5511,6 +5512,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 253B99A77AD3868F985DA4E5 /* Pods-VictoriousCommonOSX-IGDigest-Private.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
@@ -5640,6 +5642,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 606DACC112EDB29682152D98 /* Pods-VictoriousCommonOSX.stable.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
@@ -5768,6 +5771,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 253B99A77AD3868F985DA4E5 /* Pods-VictoriousCommonOSX-IGDigest-Private.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
@@ -5865,6 +5869,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 524FB2AD11D05E756CE9243F /* Pods-VictoriousCommonOSX.qa.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
@@ -6307,6 +6312,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9C1CF45F24AB6A3553E54AFA /* Pods-VictoriousCommonOSX.release.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
@@ -6803,6 +6809,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 253B99A77AD3868F985DA4E5 /* Pods-VictoriousCommonOSX-IGDigest-Private.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
@@ -6836,6 +6843,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 253B99A77AD3868F985DA4E5 /* Pods-VictoriousCommonOSX-IGDigest-Private.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_PREFIX_HEADER = "Target Support Files/Pods-VictoriousCommonOSX-IGDigest/Pods-VictoriousCommonOSX-IGDigest-prefix.pch";
@@ -6900,6 +6908,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 253B99A77AD3868F985DA4E5 /* Pods-VictoriousCommonOSX-IGDigest-Private.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
@@ -7233,6 +7242,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B6B776431E25EE457153048B /* Pods-VictoriousCommonOSX.debug.xcconfig */;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXECUTABLE_PREFIX = lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;

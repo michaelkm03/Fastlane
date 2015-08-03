@@ -14,6 +14,11 @@ static NSString * const kScaleKey = @"scale";
 
 @implementation VTemplateImage
 
+- (instancetype)init
+{
+    return [self initWithImageURL:nil scale:nil];
+}
+
 - (instancetype)initWithImageURL:(NSURL *)imageURL scale:(NSNumber *)scale
 {
     self = [super init];

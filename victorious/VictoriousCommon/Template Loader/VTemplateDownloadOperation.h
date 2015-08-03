@@ -130,6 +130,8 @@ typedef void (^VTemplateDownloaderCompletion)(NSData *__nullable templateData, N
  */
 - (instancetype)initWithDownloader:(id<VTemplateDownloader>)downloader andDelegate:(id<VTemplateDownloadOperationDelegate> __nullable)delegate NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 @end
 
 NS_ASSUME_NONNULL_END

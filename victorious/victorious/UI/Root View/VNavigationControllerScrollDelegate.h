@@ -32,6 +32,8 @@
  */
 - (instancetype)initWithNavigationController:(VNavigationController *)navigationController NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 // SCROLL VIEW DELEGATE METHODS - please forward these manually if this object is not set as your scroll view delegate //////////////////
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView;

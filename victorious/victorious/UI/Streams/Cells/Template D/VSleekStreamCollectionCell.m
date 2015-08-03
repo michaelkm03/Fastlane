@@ -27,6 +27,7 @@
 #import "VListicleView.h"
 #import "VEditorializationItem.h"
 #import "VStream.h"
+#import "VPreviewViewBackgroundHost.h"
 
 // These values must match the constraint values in interface builder
 static const CGFloat kSleekCellHeaderHeight = 50.0f;
@@ -55,6 +56,7 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
 @property (nonatomic, strong) IBOutlet VListicleView *listicleView;
 @property (nonatomic, readwrite) VStreamItem *streamItem;
 @property (nonatomic, strong) VEditorializationItem *editorialization;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *textViewConstraint;
 
 @end
 
@@ -271,7 +273,8 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
         [self.previewContainer addConstraint:heightToWidth];
         self.previewContainerHeightConstraint = heightToWidth;
     }
-    
+    self.textViewConstraint.constant = self.sleekActionView.leftMargin;
+    self.countsTextView.textContainer.lineFragmentPadding = 0.0f;
     [super updateConstraints];
 }
 
@@ -290,6 +293,10 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
     if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
     {
         [self.previewView setDependencyManager:self.dependencyManager];
+    }
+    if ( [self.previewView conformsToProtocol:@protocol(VPreviewViewBackgroundHost)] )
+    {
+        [(VSequencePreviewView <VPreviewViewBackgroundHost> *)self.previewView updateToFitContent:YES withBackgroundSupplier:self.dependencyManager];
     }
     [self.previewView setSequence:sequence];
 }
