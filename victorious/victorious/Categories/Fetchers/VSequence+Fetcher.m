@@ -330,7 +330,7 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
 {
     return [self.comments sortedArrayUsingComparator:^NSComparisonResult(VComment *comment1, VComment *comment2)
             {
-                return [comment2.postedAt compare:comment1.postedAt];
+                return [comment2.postedAt timeIntervalSinceDate:comment1.postedAt] > 0;
             }];
 }
 

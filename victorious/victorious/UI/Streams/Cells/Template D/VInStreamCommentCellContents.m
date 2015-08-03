@@ -48,8 +48,9 @@
     NSParameterAssert(dependencyManager != nil);
     
     NSMutableArray *contents = [[NSMutableArray alloc] init];
-    for ( VComment *comment in comments )
+    for ( NSUInteger index = 0; index < comments.count; index ++ )
     {
+        VComment *comment = comments[index];
         UIColor *linkColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         UIColor *mainTextColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
         
