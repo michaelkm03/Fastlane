@@ -10,6 +10,8 @@ SCHEME=$1
 CONFIGURATION=$2
 DEFAULT_PROVISIONING_PROFILE_PATH="build-scripts/victorious.mobileprovision"
 DEFAULT_CODESIGN_ID="iPhone Distribution: Victorious, Inc"
+BUILDINFO_PLIST="buildinfo.plist"
+MD5=$(git rev-parse HEAD 2> /dev/null)
 
 shift 2
 
@@ -20,24 +22,23 @@ fi
 
 if [ "$1" == "--prefix" ]; then
     shift
-    SPECIAL_PREFIX="ProductPrefix=$1-"
+    SPECIAL_PREFIX=$1
+    PREFIX_COMMAND="ProductPrefix=$SPECIAL_PREFIX-"
     shift
 else
     SPECIAL_PREFIX=""
+    PREFIX_COMMAND=""
 fi
 
 if [ "$1" == "--macros" ]; then
     shift
-    MACROS="GCC_PREPROCESSOR_DEFINITIONS=\$GCC_PREPROCESSOR_DEFINITIONS $1"
+    MACROS=$1
+    MACROS_COMMAND="GCC_PREPROCESSOR_DEFINITIONS=\$GCC_PREPROCESSOR_DEFINITIONS $MACROS"
     shift
 else
     MACROS=""
+    MACROS_COMMAND=""
 fi
-
-### Copy provisioning profile into Xcode
-
-DEFAULT_PROVISIONING_PROFILE_UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i "$DEFAULT_PROVISIONING_PROFILE_PATH")`
-cp "$DEFAULT_PROVISIONING_PROFILE_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$DEFAULT_PROVISIONING_PROFILE_UUID.mobileprovision"
 
 
 ### Clean products folder
@@ -48,50 +49,80 @@ else
     mkdir products
 fi
 
-if [ -d "victorious.xcarchive" ]; then
-    rm -rf victorious.xcarchive
-fi
-
-if [ -a "victorious.app.dSYM.zip" ]; then
-    rm -f victorious.app.dSYM.zip
-fi
-
-
-### Change to project folder
-
-pushd victorious > /dev/null
-
-
-### Clean
-
-xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination generic/platform=iOS clean
-
 
 ### Build
 
-if [ "$MACROS" == "" ]; then
-    xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
-               -archivePath "../victorious.xcarchive" PROVISIONING_PROFILE="$DEFAULT_PROVISIONING_PROFILE_UUID" \
-               CODE_SIGN_IDENTITY="$DEFAULT_CODESIGN_ID" $SPECIAL_PREFIX archive
-else
-    xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
-               -archivePath "../victorious.xcarchive" PROVISIONING_PROFILE="$DEFAULT_PROVISIONING_PROFILE_UUID" \
-               CODE_SIGN_IDENTITY="$DEFAULT_CODESIGN_ID" $SPECIAL_PREFIX "$MACROS" archive
-fi
-BUILDRESULT=$?
-if [ $BUILDRESULT == 0 ]; then
-    pushd ../victorious.xcarchive/dSYMs > /dev/null
-    zip -r ../../victorious.app.dSYM.zip victorious.app.dSYM
+build(){
+
+    if [ -d "victorious.xcarchive" ]; then
+        rm -rf victorious.xcarchive
+    fi
+
+    if [ -f "victorious.app.dSYM.zip" ]; then
+        rm -f victorious.app.dSYM.zip
+    fi
+    
+    if [ -f "$BUILDINFO_PLIST" ]; then
+        rm -f "$BUILDINFO_PLIST"
+    fi
+
+    # Copy provisioning profile into Xcode
+    DEFAULT_PROVISIONING_PROFILE_UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i "$DEFAULT_PROVISIONING_PROFILE_PATH")`
+    cp "$DEFAULT_PROVISIONING_PROFILE_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$DEFAULT_PROVISIONING_PROFILE_UUID.mobileprovision"
+
+    # Change to project folder
+    pushd victorious > /dev/null
+
+    # Clean
+    xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination generic/platform=iOS clean
+
+    # Build
+    if [ "$MACROS_COMMAND" == "" ]; then
+        xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
+                   -archivePath "../victorious.xcarchive" PROVISIONING_PROFILE="$DEFAULT_PROVISIONING_PROFILE_UUID" \
+                   CODE_SIGN_IDENTITY="$DEFAULT_CODESIGN_ID" $PREFIX_COMMAND archive
+    else
+        xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
+                   -archivePath "../victorious.xcarchive" PROVISIONING_PROFILE="$DEFAULT_PROVISIONING_PROFILE_UUID" \
+                   CODE_SIGN_IDENTITY="$DEFAULT_CODESIGN_ID" $PREFIX_COMMAND "$MACROS_COMMAND" archive
+    fi
+    BUILDRESULT=$?
+    if [ $BUILDRESULT == 0 ]; then
+        pushd ../victorious.xcarchive/dSYMs > /dev/null
+        zip -r ../../victorious.app.dSYM.zip victorious.app.dSYM
+        popd > /dev/null
+    else
+        popd > /dev/null
+        exit $BUILDRESULT
+    fi
+
+    # Change back to top folder
     popd > /dev/null
-else
-    popd > /dev/null
-    exit $BUILDRESULT
+    
+    # Write build info
+    /usr/libexec/PlistBuddy -x -c "Add :commit string $MD5" "$BUILDINFO_PLIST"
+    /usr/libexec/PlistBuddy -x -c "Add :scheme string $SCHEME" "$BUILDINFO_PLIST"
+    /usr/libexec/PlistBuddy -x -c "Add :configuration string $CONFIGURATION" "$BUILDINFO_PLIST"
+    /usr/libexec/PlistBuddy -x -c "Add :prefix string $SPECIAL_PREFIX" "$BUILDINFO_PLIST"
+    /usr/libexec/PlistBuddy -x -c "Add :macros string $MACROS" "$BUILDINFO_PLIST"
+}
+
+SKIP_BUILD="no"
+if [ "$MD5" != "" -a -d "victorious.xcarchive" -a -f "$BUILDINFO_PLIST" ]; then
+    PREVIOUS_MD5=$(/usr/libexec/PlistBuddy -c "Print :commit" "$BUILDINFO_PLIST")
+    PREVIOUS_SCHEME=$(/usr/libexec/PlistBuddy -c "Print :scheme" "$BUILDINFO_PLIST")
+    PREVIOUS_CONFIGURATION=$(/usr/libexec/PlistBuddy -c "Print :configuration" "$BUILDINFO_PLIST")
+    PREVIOUS_PREFIX=$(/usr/libexec/PlistBuddy -c "Print :prefix" "$BUILDINFO_PLIST")
+    PREVIOUS_MACROS=$(/usr/libexec/PlistBuddy -c "Print :macros" "$BUILDINFO_PLIST")
+    
+    if [ "$PREVIOUS_MD5" == "$MD5" -a "$PREVIOUS_SCHEME" == "$SCHEME" -a "$PREVIOUS_CONFIGURATION" == "$CONFIGURATION" -a "$PREVIOUS_PREFIX" == "$SPECIAL_PREFIX" -a "$PREVIOUS_MACROS" == "$MACROS" ]; then
+        SKIP_BUILD="yes"
+    fi
 fi
 
-
-### Change back to top folder
-
-popd > /dev/null
+if [ "$SKIP_BUILD" != "yes" ]; then
+    build
+fi
 
 
 ### Package the individual apps
