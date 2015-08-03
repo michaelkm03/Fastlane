@@ -24,11 +24,21 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface VTemplateImageSet : NSObject
 
+@property (nonatomic, readonly) NSArray *images; ///< An array of VTemplateImage objects
+
+/**
+ Initializes a new instance of VTemplateImageSet
+ with an array of VTemplateImage objects. These
+ objects should probably all have different
+ scale values, but that's not a requirement.
+ */
+- (instancetype)initWithImages:(NSArray *)images NS_DESIGNATED_INITIALIZER;
+
 /**
  Initializes a new instance of VTemplateImageSet
  with a snippet of JSON from a template.
  */
-- (instancetype)initWithJSON:(NSDictionary *)imageSetJSON NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithJSON:(NSDictionary *)imageSetJSON;
 
 /**
  Returns YES for an input that looks like an image

@@ -27,6 +27,8 @@
  */
 - (instancetype)initWithObjectManager:(VObjectManager *)objectManager NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /**
  Asynchronously retrieves the current unread message 
  count from the server. Get the result by key-value

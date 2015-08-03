@@ -11,7 +11,6 @@
 
 // SubViews
 #import "VExperienceEnhancerBar.h"
-#import "VHistogramBarView.h"
 
 // Images
 #import "UIImage+ImageCreation.h"
@@ -28,9 +27,7 @@
 #import "VContentPollCell.h"
 #import "VContentPollQuestionCell.h"
 #import "VContentPollBallotCell.h"
-//#import "VTickerCell.h"
 #import "VContentCommentsCell.h"
-#import "VHistogramCell.h"
 #import "VExperienceEnhancerBarCell.h"
 #import "VContentTextCell.h"
 
@@ -137,7 +134,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, weak) VContentVideoCell *videoCell;
 @property (nonatomic, weak) VExperienceEnhancerBarCell *experienceEnhancerCell;
 @property (nonatomic, weak) VSectionHandleReusableView *handleView;
-@property (nonatomic, weak) VHistogramCell *histogramCell;
 @property (nonatomic, weak) VContentPollCell *pollCell;
 @property (nonatomic, weak) VContentPollBallotCell *ballotCell;
 @property (nonatomic, weak) VContentTextCell *textCell;
@@ -300,16 +296,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     self.videoCell.viewModel = self.viewModel.videoViewModel;
 }
 
-- (void)didUpdateHistogramData
-{
-    if ( self.viewModel.histogramDataSource == nil )
-    {
-        return;
-    }
-    self.histogramCell.histogramView.dataSource = self.viewModel.histogramDataSource;
-    [self.contentCollectionView.collectionViewLayout invalidateLayout];
-}
-
 - (void)didUpdatePollsData
 {
     if (!self.viewModel.votingEnabled)
@@ -450,8 +436,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                  forCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentImageCell nibForCell]
                  forCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]];
-    [self.contentCollectionView registerNib:[VHistogramCell nibForCell]
-                 forCellWithReuseIdentifier:[VHistogramCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VExperienceEnhancerBarCell nibForCell]
                  forCellWithReuseIdentifier:[VExperienceEnhancerBarCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentPollCell nibForCell]
@@ -848,20 +832,12 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     {
         case VContentViewSectionContent:
             return 1;
-        case VContentViewSectionHistogramOrQuestion:
+        case VContentViewSectionPollQuestion:
         {
             if (self.viewModel.type == VContentViewTypePoll)
             {
                 return 1;
             }
-            
-            BOOL histogramEnabled = [[self.dependencyManager numberForKey:VDependencyManagerHistogramEnabledKey] boolValue];
-            BOOL isVideo = (self.viewModel.type == VContentViewTypeVideo);
-            if (histogramEnabled && isVideo)
-            {
-                return 1;
-            }
-            
             return 0;
         }
             
@@ -895,28 +871,13 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             }
             return cell;
         }
-        case VContentViewSectionHistogramOrQuestion:
+        case VContentViewSectionPollQuestion:
         {
-            if (self.viewModel.type == VContentViewTypePoll)
-            {
-                VContentPollQuestionCell *questionCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollQuestionCell suggestedReuseIdentifier]
-                                                                 forIndexPath:indexPath];
-                questionCell.question = [[NSAttributedString alloc] initWithString:self.viewModel.sequence.name
-                                                                        attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey]}];
-                return questionCell;
-            }
-            
-            if (self.histogramCell)
-            {
-                return self.histogramCell;
-            }
-            self.histogramCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VHistogramCell suggestedReuseIdentifier]
-                                                                                     forIndexPath:indexPath];
-            
-            self.histogramCell.histogramView.dataSource = self.viewModel.histogramDataSource;
-            [self.histogramCell.histogramView reloadData];
-            
-            return self.histogramCell;
+            VContentPollQuestionCell *questionCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollQuestionCell suggestedReuseIdentifier]
+                                                                                               forIndexPath:indexPath];
+            questionCell.question = [[NSAttributedString alloc] initWithString:self.viewModel.sequence.name
+                                                                    attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey]}];
+            return questionCell;
         }
         case VContentViewSectionExperienceEnhancers:
         {
@@ -1076,7 +1037,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                                              forIndexPath:indexPath];
         }
             
-        case VContentViewSectionHistogramOrQuestion:
+        case VContentViewSectionPollQuestion:
             return nil;
         case VContentViewSectionExperienceEnhancers:
             return nil;
@@ -1124,15 +1085,10 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                     return [VContentTextCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
             }
         }
-        case VContentViewSectionHistogramOrQuestion:
-            if (self.viewModel.type == VContentViewTypePoll)
-            {
-                CGSize ret = [VContentPollQuestionCell actualSizeWithQuestion:self.viewModel.sequence.name
-                                                                   attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey]}
-                                                                  maximumSize:CGSizeMake(CGRectGetWidth(self.contentCollectionView.bounds), CGRectGetHeight(self.contentCollectionView.bounds)/2)];
-                return  ret;
-            }
-            return [VHistogramCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+        case VContentViewSectionPollQuestion:
+            return  [VContentPollQuestionCell actualSizeWithQuestion:self.viewModel.sequence.name
+                                                          attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey]}
+                                                         maximumSize:CGSizeMake(CGRectGetWidth(self.contentCollectionView.bounds), CGRectGetHeight(self.contentCollectionView.bounds)/2)];;
         case VContentViewSectionExperienceEnhancers:
         {
             if (self.viewModel.type == VContentViewTypePoll)
@@ -1177,7 +1133,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     {
         case VContentViewSectionContent:
             return CGSizeZero;
-        case VContentViewSectionHistogramOrQuestion:
+        case VContentViewSectionPollQuestion:
             return CGSizeZero;
         case VContentViewSectionExperienceEnhancers:
             return CGSizeZero;
@@ -1341,7 +1297,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
         self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
     }
 
-    self.histogramCell.histogramView.progress = CMTimeGetSeconds(time) / CMTimeGetSeconds(totalTime);
     self.viewModel.realTimeCommentsViewModel.currentTime = time;
 }
 
@@ -1376,7 +1331,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell withTotalTime:(CMTime)totalTime
 {
-    self.histogramCell.histogramView.progress = CMTimeGetSeconds(totalTime) / CMTimeGetSeconds(totalTime);
     if (!self.enteringRealTimeComment)
     {
         self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:totalTime]];

@@ -35,6 +35,8 @@
  */
 - (instancetype)initWithCellReuseID:(NSString *)cellReuseID sectionsOfMenuItems:(NSArray /* NSArrays of VNavigationMenuItem */ *)menuSections NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /**
  Returns the menu item at the given index path
  */

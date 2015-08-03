@@ -22,6 +22,8 @@
 - (instancetype)initWithRequest:(NSURLRequest *)request
                downloadLocation:(NSURL *)downloadLocation NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /**
  *  ATTENTION: FOR DEMO PURPOSES ONLY
  */
