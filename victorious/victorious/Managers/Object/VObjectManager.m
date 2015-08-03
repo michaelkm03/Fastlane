@@ -437,7 +437,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     NSManagedObjectContext *context = [[self managedObjectStore] mainQueueManagedObjectContext];
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:entityName inManagedObjectContext:context];
-    return [[subclass alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:context];
+    return [(NSManagedObject *)[subclass alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:context];
     
     return nil;
 }

@@ -18,7 +18,7 @@ static const NSInteger kAllCommentsZIndex = 6666;
 @interface VShrinkingContentLayout ()
 
 @property (nonatomic, assign) CGSize mediaContentSize;
-@property (nonatomic, assign) CGSize histogramSize;
+@property (nonatomic, assign) CGSize pollQuestionSize;
 @property (nonatomic, assign) CGSize allCommentsHandleSize;
 @property (nonatomic, assign) CGSize experienceEnhancerSize;
 
@@ -58,11 +58,11 @@ static const NSInteger kAllCommentsZIndex = 6666;
                                                             atIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]]];
     
     
-    if ([self.collectionView numberOfItemsInSection:VContentViewSectionHistogramOrQuestion] > 0)
+    if ([self.collectionView numberOfItemsInSection:VContentViewSectionPollQuestion] > 0)
     {
-        UICollectionViewLayoutAttributes *histogramOrQuestionLayoutAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionHistogramOrQuestion]];
-        histogramOrQuestionLayoutAttributes.zIndex = 0;
-        [attributes addObject:histogramOrQuestionLayoutAttributes];
+        UICollectionViewLayoutAttributes *questionLayoutAttributes = [self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionPollQuestion]];
+        questionLayoutAttributes.zIndex = 0;
+        [attributes addObject:questionLayoutAttributes];
     }
     
     if ([self.collectionView numberOfItemsInSection:VContentViewSectionExperienceEnhancers] > 0)
@@ -113,15 +113,15 @@ static const NSInteger kAllCommentsZIndex = 6666;
                 layoutAttributesForIndexPath.frame = rect;
             }
             break;
-        case VContentViewSectionHistogramOrQuestion:
+        case VContentViewSectionPollQuestion:
             layoutAttributesForIndexPath.frame = CGRectMake(CGRectGetMinX(self.collectionView.bounds),
                                                             self.collectionView.contentOffset.y + self.mediaContentSize.height,
                                                             CGRectGetWidth(self.collectionView.bounds),
-                                                            self.histogramSize.height);
+                                                            self.pollQuestionSize.height);
             break;
         case VContentViewSectionExperienceEnhancers:
             layoutAttributesForIndexPath.frame = CGRectMake(CGRectGetMinX(self.collectionView.bounds),
-                                                            self.collectionView.contentOffset.y + self.mediaContentSize.height + self.histogramSize.height,
+                                                            self.collectionView.contentOffset.y + self.mediaContentSize.height + self.pollQuestionSize.height,
                                                             CGRectGetWidth(self.collectionView.bounds),
                                                             self.experienceEnhancerSize.height);
             break;
@@ -149,7 +149,7 @@ static const NSInteger kAllCommentsZIndex = 6666;
             layoutAttributesForSupplementaryView.zIndex = kContentBackgroundZIndex;
         }
             break;
-        case VContentViewSectionHistogramOrQuestion:
+        case VContentViewSectionPollQuestion:
             break;
         case VContentViewSectionExperienceEnhancers:
             break;
@@ -267,11 +267,11 @@ static const NSInteger kAllCommentsZIndex = 6666;
                                                     layout:self
                                     sizeForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionContent]];
     
-    if ([self.collectionView numberOfItemsInSection:VContentViewSectionHistogramOrQuestion])
+    if ([self.collectionView numberOfItemsInSection:VContentViewSectionPollQuestion])
     {
-        self.histogramSize = [layoutDelegate collectionView:self.collectionView
+        self.pollQuestionSize = [layoutDelegate collectionView:self.collectionView
                                                      layout:self
-                                     sizeForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionHistogramOrQuestion]];
+                                     sizeForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionPollQuestion]];
     }
     if ([self.collectionView numberOfItemsInSection:VContentViewSectionExperienceEnhancers])
     {

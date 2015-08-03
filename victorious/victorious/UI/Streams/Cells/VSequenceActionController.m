@@ -257,7 +257,10 @@
 {
     if ([node.sequence.hasReposted boolValue])
     {
-        completion(YES);
+        if ( completion != nil )
+        {
+            completion(YES);
+        }
         return;
     }
     
@@ -267,7 +270,10 @@
      {
          if (!authorized)
          {
-             completion(NO);
+             if ( completion != nil )
+             {
+                 completion(NO);
+             }
              return;
          }
          [[VObjectManager sharedManager] repostNode:node
