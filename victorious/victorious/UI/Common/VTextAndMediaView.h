@@ -21,7 +21,6 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
 
 @class VTagSensitiveTextView;
 
-
 /**
  This view is used inside the comment and messaging views
  to display comment text and any media that might

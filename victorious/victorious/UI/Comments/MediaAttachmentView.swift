@@ -33,7 +33,7 @@ class MediaAttachmentView : UIView, Focus, Reuse {
     // Factory method for returning correct concrete subclass with a comment
     class func mediaViewWithComment(comment: VComment) -> MediaAttachmentView? {
         let attachmentType = MediaAttachmentType.attachmentType(comment)
-        let mediaAttachmentView = MediaAttachmentView.mediaViewFactory(attachmentType)
+        let mediaAttachmentView = MediaAttachmentView.mediaViewForAttachment(attachmentType)
         if let unwrapped = mediaAttachmentView {
             unwrapped.comment = comment
             return unwrapped
@@ -44,7 +44,7 @@ class MediaAttachmentView : UIView, Focus, Reuse {
     // Factory method for returning correct concrete subclass with a message
     class func mediaViewWithMessage(message: VMessage) -> MediaAttachmentView? {
         let attachmentType = MediaAttachmentType.attachmentType(message)
-        let mediaAttachmentView = MediaAttachmentView.mediaViewFactory(attachmentType)
+        let mediaAttachmentView = MediaAttachmentView.mediaViewForAttachment(attachmentType)
         if let unwrapped = mediaAttachmentView {
             unwrapped.message = message
             return unwrapped
@@ -53,23 +53,23 @@ class MediaAttachmentView : UIView, Focus, Reuse {
     }
     
     // Class method for returning a cell reuse identifier given a certain media type
-    class func mediaViewFactory(type: MediaAttachmentType) -> MediaAttachmentView? {
-        var retVal: MediaAttachmentView?
+    class func mediaViewForAttachment(type: MediaAttachmentType) -> MediaAttachmentView? {
+        var mediaAttachmentView: MediaAttachmentView?
         
         switch (type) {
         case .Image:
-            retVal = MediaAttachmentImageView()
+            mediaAttachmentView = MediaAttachmentImageView()
         case .Video:
-            retVal = MediaAttachmentVideoView()
+            mediaAttachmentView = MediaAttachmentVideoView()
         case .GIF:
-            retVal = MediaAttachmentGIFView()
+            mediaAttachmentView = MediaAttachmentGIFView()
         case .Ballistic:
-            retVal = MediaAttachmentBallisticView()
+            mediaAttachmentView = MediaAttachmentBallisticView()
         default:
-            retVal = nil
+            mediaAttachmentView = nil
         }
         
-        return retVal
+        return mediaAttachmentView
     }
     
     // Returns an cell reuse identifer for the proper concrete subclass

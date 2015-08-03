@@ -41,11 +41,11 @@
     NSURL *url;
     if (self.thumbnailPath != nil && ![self.thumbnailPath isEmpty])
     {
-        url = [[NSURL alloc] initWithString:self.thumbnailPath];
+        url = [NSURL URLWithString:self.thumbnailPath];
     }
     else if (self.mediaPath != nil && ![self.mediaPath isEmpty] && [self messageMediaType] == VMessageMediaTypeImage)
     {
-        url = [[NSURL alloc] initWithString:self.mediaPath];
+        url = [NSURL URLWithString:self.mediaPath];
     }
     
     return url;

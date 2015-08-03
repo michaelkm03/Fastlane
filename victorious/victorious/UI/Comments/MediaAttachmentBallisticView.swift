@@ -42,8 +42,8 @@ class MediaAttachmentBallisticView : MediaAttachmentView {
     
     override var dependencyManager: VDependencyManager? {
         didSet {
-            if let unwrappedDM = dependencyManager {
-                self.ballisticView.tintColor = unwrappedDM.colorForKey(VDependencyManagerAccentColorKey)
+            if let unwrappedDependencyManager = dependencyManager {
+                self.ballisticView.tintColor = unwrappedDependencyManager.colorForKey(VDependencyManagerAccentColorKey)
             }
         }
     }

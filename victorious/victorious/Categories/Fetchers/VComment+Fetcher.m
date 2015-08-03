@@ -10,6 +10,7 @@
 #import "NSString+VParseHelp.h"
 #import "VCommentMedia.h"
 #import "NSURL+MediaType.h"
+#import "VCompatibility.h"
 
 static NSString * const kmp4MimeType = @"video/mp4";
 
@@ -96,7 +97,7 @@ static NSString * const kmp4MimeType = @"video/mp4";
         aspectRatio = mediaHeight / mediaWidth;
     }
     
-    return MAX(MIN(4, aspectRatio), 0);
+    return CLAMP(0, aspectRatio, 2);
 }
 
 #pragma mark - Private Methods
