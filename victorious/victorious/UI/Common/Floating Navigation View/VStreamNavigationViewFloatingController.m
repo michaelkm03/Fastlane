@@ -71,6 +71,12 @@ static CGFloat easeInSine( CGFloat t )
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (void)setVerticalThresholdWithStart:(CGFloat)start end:(CGFloat)end
 {
     NSParameterAssert( start < end );

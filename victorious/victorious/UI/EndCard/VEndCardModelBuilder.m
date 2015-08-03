@@ -46,6 +46,12 @@ static NSString * const kMemeActionIconKey = @"action_meme_icon";
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (VEndCardModel *)createWithSequence:(VSequence *)sequence
 {
 #if FORCE_SHOW_DEBUG_END_CARD

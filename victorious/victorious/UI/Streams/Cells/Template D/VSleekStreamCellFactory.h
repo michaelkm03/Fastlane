@@ -18,6 +18,8 @@
  */
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 - (void)updateVisibleCellsInCollectionView:(UICollectionView *)collectionView;
 
 @end

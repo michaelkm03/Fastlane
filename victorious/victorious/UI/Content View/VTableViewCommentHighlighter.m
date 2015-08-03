@@ -17,6 +17,12 @@
 
 @implementation VTableViewCommentHighlighter
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (instancetype)initWithTableView:(UITableView *)tableView
 {
     self = [super init];

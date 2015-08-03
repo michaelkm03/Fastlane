@@ -17,6 +17,12 @@
 
 @implementation VCollectionViewCommentHighlighter
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView
 {
     self = [super init];

@@ -81,6 +81,12 @@ NSString * const VVideoFrameRateCompositionErrorDomain = @"VVideoFrameRateCompos
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (AVAssetExportSession *)makeExportable
 {
     AVAssetExportSession *exportSession = [AVAssetExportSession exportSessionWithAsset:[self.mutableComposition copy]

@@ -33,6 +33,12 @@
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (void)followUser:(VUser *)user
 withAuthorizedBlock:(void (^)(void))authorizedBlock
      andCompletion:(VFollowHelperCompletion)completion

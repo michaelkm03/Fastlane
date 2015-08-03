@@ -39,6 +39,7 @@
 @interface VToolController : NSObject
 
 - (instancetype)initWithTools:(NSArray /* NSArray of tools that conform to <VWorkspaceTool> */ *)tools NS_DESIGNATED_INITIALIZER;
+- (instancetype)init NS_UNAVAILABLE;
 
 @property (nonatomic, copy) void (^canRenderAndExportChangeBlock)(BOOL canRenderAndExport);
 

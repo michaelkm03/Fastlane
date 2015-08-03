@@ -43,6 +43,9 @@
  */
 - (id)initWithMonetizationPartner:(VMonetizationPartner)monetizationPartner details:(NSArray *)details NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
+- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
+
 /**
  Boolean that reports if an ad is currently playing
  */

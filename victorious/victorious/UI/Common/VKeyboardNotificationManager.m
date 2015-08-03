@@ -58,6 +58,12 @@
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 #pragma mark - Notification Handlers;
 
 - (void)keyboardWillShow:(NSNotification *)notification

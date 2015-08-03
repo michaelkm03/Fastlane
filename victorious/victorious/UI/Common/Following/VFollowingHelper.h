@@ -29,6 +29,8 @@ typedef void (^VFollowHelperCompletion)(VUser *userActedOn);
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
                 viewControllerToPresentOn:(UIViewController *)viewControllerToPresentOn NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /**
  *  Will present authorization on this viewController must not be nil 
  *  by the time VFollowerCommandHandler receives VFollowCommands.

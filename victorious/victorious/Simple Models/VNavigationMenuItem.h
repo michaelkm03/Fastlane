@@ -48,6 +48,8 @@ extern NSString * const VDependencyManagerPositionRight;
  */
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /**
  Tests whether the template-provided destination on this navigation item is in
  fact a valid view controller or other navigation desitnation, and not some 
