@@ -39,7 +39,6 @@ static const NSUInteger kExperienceEnhancerCount = 20;
 @interface VExperienceEnhancerController (UnitTests)
 
 @property (nonatomic, strong) NSArray *experienceEnhancers;
-@property (nonatomic, strong) VFileCache *fileCache;
 
 - (BOOL)updateExperience:(NSArray *)experienceEnhancers withSequence:(VSequence *)sequence;
 - (NSArray *)createExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes sequence:(VSequence *)sequence;
@@ -66,16 +65,6 @@ static const NSUInteger kExperienceEnhancerCount = 20;
     
     self.asyncHelper = [[VAsyncTestHelper alloc] init];
     
-    self.isImageCached = [VFileCache v_swizzleMethod:@selector(isImageCached:forVoteType:) withBlock:^BOOL
-                         {
-                             return YES;
-                         }];
-    
-    self.areSpriteImagesCached = [VFileCache v_swizzleMethod:@selector(areSpriteImagesCachedForVoteType:) withBlock:^BOOL
-                                 {
-                                     return YES;
-                                 }];
-    
     self.voteTypes = [VDummyModels createVoteTypes:kExperienceEnhancerCount];
     self.sequence = (VSequence *)[VDummyModels objectWithEntityName:@"Sequence" subclass:[VSequence class]];
     self.sequence.voteResults = [NSSet setWithArray:[VDummyModels createVoteResults:kExperienceEnhancerCount]];
@@ -89,8 +78,6 @@ static const NSUInteger kExperienceEnhancerCount = 20;
 - (void)tearDown
 {
     [super tearDown];
-    [VFileCache v_restoreOriginalImplementation:self.isImageCached forMethod:@selector(isImageCached:forVoteType:)];
-    [VFileCache v_restoreOriginalImplementation:self.areSpriteImagesCached forMethod:@selector(areSpriteImagesCachedForVoteType:)];
 }
 
 - (void)testCreateExperienceEnhancers

@@ -29,10 +29,4 @@ class ExperimentSettingsViewController: UITableViewController, ExperimentSetting
         
         self.dataSource.loadSettings()
     }
-    
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear( animated )
-        
-        self.dataSource.saveSettings()
-    }
 }

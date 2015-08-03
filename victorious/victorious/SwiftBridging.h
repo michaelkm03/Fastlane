@@ -38,6 +38,7 @@
 // Victorious Models
 #import "VAbstractFilter.h"
 #import "VSEquence.h"
+#import "VExperimentSettings.h"
 
 // Everything else
 #import "VTextPostTextView.h"

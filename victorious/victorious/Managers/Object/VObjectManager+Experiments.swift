@@ -10,19 +10,26 @@ import Foundation
 
 extension VObjectManager {
     
+    typealias ExperimentSuccess = (experiments:[Experiment], defaultExperimentIds: Set<Int>) -> ()
+    
     /// Loads all available experiments from the backend as `Experiment`
     ///
     /// :param: success Closure to be called if server does not return an error.
     /// :param: failure Closure to be called if server returns an error.
-    func getDeviceExperiments( #success: VSuccessBlock, failure: VFailBlock ) -> RKManagedObjectRequestOperation? {
+    func getDeviceExperiments( #success: ExperimentSuccess, failure: VFailBlock ) -> RKManagedObjectRequestOperation? {
         
         let fullSuccess: VSuccessBlock = { (operation, result, resultObjects) in
             
             // WARNING: This is sample code, delete when done testing
             var hardcodedExperiments = [Experiment]()
             let sampleData = [
-                "exp0" : "layer1", "exp1" : "layer1", "exp2" : "layer1",
-                "exp3" : "layer2", "exp4" : "layer2", "exp5" : "layer2" ]
+                "exp0" : "layer1",
+                "exp1" : "layer1",
+                "exp2" : "layer1",
+                
+                "exp3" : "layer2",
+                "exp4" : "layer2",
+                "exp5" : "layer2" ]
             var i = 0
             for (name, layer) in sampleData {
                 if let experiment = VObjectManager.sharedManager().objectWithEntityName( Experiment.v_defaultEntityName, subclass: Experiment.self ) as? Experiment {
@@ -33,7 +40,10 @@ extension VObjectManager {
                 }
             }
             
-            success( operation, result, hardcodedExperiments )
+            let defaultExperimentIds = Set<Int>([101, 102]) //Set<Int>( result?[ "experiment_ids" ] as? [Int] ?? [Int]() )
+            var experiments = hardcodedExperiments //resultObjects as? [Experiment] ?? [Experiment]()
+            
+            success( experiments: experiments, defaultExperimentIds: defaultExperimentIds )
         }
         
         return self.GET( "/api/device/experiments",

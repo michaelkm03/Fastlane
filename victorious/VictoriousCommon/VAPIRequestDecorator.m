@@ -8,7 +8,7 @@
 
 #import "NSString+SHA1Digest.h"
 #import "VAPIRequestDecorator.h"
-#import "VictoriousCommon-Swift.h"
+#import "VExperimentSettings.h"
 
 #ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
 #import <UIKit/UIKit.h>
@@ -18,7 +18,7 @@
 
 @interface VAPIRequestDecorator()
 
-@property (nonatomic, strong) ExperimentSettings* experimentSettings;
+@property (nonatomic, strong) VExperimentSettings *experimentSettings;
 
 @end
 
@@ -30,6 +30,7 @@
     if ( self != nil )
     {
         _location = kCLLocationCoordinate2DInvalid;
+        _experimentSettings = [[VExperimentSettings alloc] init];
     }
     return self;
 }
@@ -70,11 +71,10 @@
         [request addValue:self.sessionID forHTTPHeaderField:@"X-Client-Session-ID"];
     }
     
-    /*if ( self.experimentIDs.count > 0 )
+    if ( self.experimentSettings.activeExperiments != nil )
     {
-        NSString *commaSeparatedIDs = [self.experimentIDs.allObjects componentsJoinedByString:@","];
-        [request addValue:commaSeparatedIDs forHTTPHeaderField:@"X-Client-Experiment-IDs"];
-    }*/
+        [request addValue:self.experimentSettings.commaSeparatedList forHTTPHeaderField:@"X-Client-Experiment-IDs"];
+    }
     
     if ( self.locale != nil )
     {
