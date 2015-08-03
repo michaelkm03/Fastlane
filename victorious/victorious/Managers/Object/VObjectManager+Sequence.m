@@ -370,27 +370,4 @@ NSString * const kPollResultsLoaded = @"kPollResultsLoaded";
             }];
 }
 
-#pragma mark - Realtime
-
-- (RKManagedObjectRequestOperation *)fetchHistogramDataForSequence:(VSequence *)sequence
-                                                         withAsset:(VAsset *)asset
-                                                    withCompletion:(void(^)(NSArray *histogramData, NSError *error))completion
-{
-    return [self GET:[NSString stringWithFormat:@"api/histogram/asset/%@", asset.remoteId]
-              object:nil
-          parameters:nil
-        successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-            {
-                NSArray *objects = result[kVPayloadKey][kVObjectsKey];
-                if ([objects isKindOfClass:[NSArray class]])
-                {
-                    completion (objects, nil);
-                }
-            }
-           failBlock:^(NSOperation *operation, NSError *error)
-            {
-                completion(nil, error);
-            }];
-}
-
 @end
