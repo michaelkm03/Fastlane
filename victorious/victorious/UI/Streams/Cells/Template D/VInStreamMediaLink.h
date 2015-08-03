@@ -24,7 +24,7 @@
                              text:(NSString *)text
                              icon:(UIImage *)icon
                          linkType:(VCommentMediaType)linkType
-                        urlString:(NSString *)urlString;
+                              url:(NSURL *)url;
 
 /**
     Creates and returns a new VInStreamMediaLink based on the provided fields. Gets images for
@@ -33,7 +33,7 @@
 + (instancetype)newWithTintColor:(UIColor *)tintColor
                             font:(UIFont *)font
                         linkType:(VCommentMediaType)linkType
-                       urlString:(NSString *)urlString
+                             url:(NSURL *)url
             andDependencyManager:(VDependencyManager *)dependencyManager;
 
 @property (nonatomic, readonly) UIColor *tintColor; ///< The color of the image and text in the link button
@@ -41,6 +41,6 @@
 @property (nonatomic, readonly) NSString *text; ///< The text that should be displayed in the link button
 @property (nonatomic, readonly) UIImage *icon; ///< The icon that should be displayed in the link button
 @property (nonatomic, readonly) VCommentMediaType mediaLinkType; ///< The type of media represented by the link button
-@property (nonatomic, readonly) NSString *urlString; ///< A string representing the url of the media represented by the link button
+@property (nonatomic, readonly) NSURL *url; ///< The url of the media represented by the link button
 
 @end

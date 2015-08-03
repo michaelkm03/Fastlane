@@ -21,35 +21,37 @@
 
 @implementation VAbstractMediaLinkViewController
 
-+ (instancetype)newWithMediaUrlString:(NSString *)urlString andMediaLinkType:(VCommentMediaType)linkType
++ (instancetype)newWithMediaUrl:(NSURL *)url andMediaLinkType:(VCommentMediaType)linkType
 {
-    NSParameterAssert(urlString != nil);
+    NSParameterAssert(url != nil);
     
     VAbstractMediaLinkViewController *linkViewController;
     switch (linkType)
     {
         case VCommentMediaTypeVideo:
-            linkViewController = [[VVideoLinkViewController alloc] initWithUrlString:urlString];
+            linkViewController = [[VVideoLinkViewController alloc] initWithUrl:url];
             break;
             
         case VCommentMediaTypeGIF:
-            linkViewController = [[VGifLinkViewController alloc] initWithUrlString:urlString];
+            linkViewController = [[VGifLinkViewController alloc] initWithUrl:url];
             break;
             
         case VCommentMediaTypeImage:
         default:
-            linkViewController = [[VImageLinkViewController alloc] initWithUrlString:urlString];
+            linkViewController = [[VImageLinkViewController alloc] initWithUrl:url];
             break;
     }
     return linkViewController;
 }
 
-- (instancetype)initWithUrlString:(NSString *)urlString
+- (instancetype)initWithUrl:(NSURL *)url
 {
+    NSParameterAssert(url != nil);
+    
     self = [super initWithNibName:NSStringFromClass([VAbstractMediaLinkViewController class]) bundle:[NSBundle bundleForClass:[VAbstractMediaLinkViewController class]]];
     if ( self != nil )
     {
-        _mediaUrlString = urlString;
+        _mediaUrl = url;
         _contentAspectRatio = 1.0f;
     }
     return self;

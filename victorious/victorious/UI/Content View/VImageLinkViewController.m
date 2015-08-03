@@ -18,9 +18,9 @@
 
 @implementation VImageLinkViewController
 
-- (instancetype)initWithUrlString:(NSString *)urlString
+- (instancetype)initWithUrl:(NSURL *)url
 {
-    self = [super initWithUrlString:urlString];
+    self = [super initWithUrl:url];
     if ( self != nil )
     {
         _imageView = [[UIImageView alloc] init];
@@ -38,7 +38,7 @@
 
 - (void)loadMediaWithCompletionBlock:(MediaLoadingCompletionBlock)completionBlock
 {
-    [self.imageView fadeInImageAtURL:[NSURL URLWithString:self.mediaUrlString]
+    [self.imageView fadeInImageAtURL:self.mediaUrl
                     placeholderImage:nil
                           completion:^(UIImage *image)
      {

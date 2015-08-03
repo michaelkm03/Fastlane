@@ -58,14 +58,15 @@
         UIFont *mediaLinkFont = [dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
         
         VInStreamMediaLink *mediaLink = nil;
-        NSString *mediaUrl = comment.mediaUrl;
-        if ( mediaUrl.length > 0 )
+        NSString *mediaUrlString = comment.mediaUrl;
+        if ( mediaUrlString.length > 0 )
         {
-            VCommentMediaType linkType = [VCommentMediaTypeHelper mediaTypeForUrl:[NSURL URLWithString:mediaUrl] andShouldAutoplay:[comment.shouldAutoplay boolValue]];
+            NSURL *mediaUrl = [NSURL URLWithString:mediaUrlString];
+            VCommentMediaType linkType = [VCommentMediaTypeHelper mediaTypeForUrl:mediaUrl andShouldAutoplay:[comment.shouldAutoplay boolValue]];
             mediaLink = [VInStreamMediaLink newWithTintColor:linkColor
                                                         font:mediaLinkFont
                                                     linkType:linkType
-                                                   urlString:mediaUrl
+                                                         url:mediaUrl
                                         andDependencyManager:dependencyManager];
         }
         

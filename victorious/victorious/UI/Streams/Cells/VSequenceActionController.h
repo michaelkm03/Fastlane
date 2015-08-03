@@ -30,7 +30,7 @@ typedef NS_ENUM(NSInteger, VDefaultVideoEdit)
 
 - (BOOL)showProfile:(VUser *)user fromViewController:(UIViewController *)viewController;
 
-- (BOOL)showMediaContentViewForUrlString:(NSString *)urlString withMediaLinkType:(VCommentMediaType)linkType fromViewController:(UIViewController *)viewController;
+- (BOOL)showMediaContentViewForUrl:(NSURL *)url withMediaLinkType:(VCommentMediaType)linkType fromViewController:(UIViewController *)viewController;
 
 /**
  *  Presents remix UI on a viewcontroller with a given sequence to remix.

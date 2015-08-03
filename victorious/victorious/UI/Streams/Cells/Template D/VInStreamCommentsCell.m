@@ -270,7 +270,7 @@ static NSString * const kMediaIdentifierSuffix = @"withMedia";
 - (void)mediaButtonPressed
 {
     VInStreamMediaLink *inStreamMediaLink = self.commentCellContents.inStreamMediaLink;
-    [self performActionForSelectedMediaUrlString:inStreamMediaLink.urlString andMediaLinkType:inStreamMediaLink.mediaLinkType];
+    [self performActionForSelectedMediaUrl:inStreamMediaLink.url andMediaLinkType:inStreamMediaLink.mediaLinkType];
 }
 
 - (void)profileButtonPressed
@@ -311,12 +311,12 @@ static NSString * const kMediaIdentifierSuffix = @"withMedia";
     [commentsResponder actionForInStreamHashtagSelection:hashtagString];
 }
 
-- (void)performActionForSelectedMediaUrlString:(NSString *)mediaUrlString andMediaLinkType:(VCommentMediaType)linkType
+- (void)performActionForSelectedMediaUrl:(NSURL *)mediaUrl andMediaLinkType:(VCommentMediaType)linkType
 {
     id<VInStreamCommentsResponder> commentsResponder = [[self nextResponder] targetForAction:@selector(actionForInStreamMediaSelection:withMediaLinkType:)
                                                                                   withSender:nil];
     NSAssert(commentsResponder != nil, @"VInStreamCommentsCell needs a VInStreamCommentsResponder higher up the chain to communicate comment selection commands with.");
-    [commentsResponder actionForInStreamMediaSelection:mediaUrlString withMediaLinkType:linkType];
+    [commentsResponder actionForInStreamMediaSelection:mediaUrl withMediaLinkType:linkType];
 }
 
 @end

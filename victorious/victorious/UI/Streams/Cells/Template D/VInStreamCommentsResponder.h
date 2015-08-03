@@ -42,9 +42,9 @@
 /**
     Called when a piece of media is selected from an in stream comment.
  
-    @param mediaUrlString A string representing the url that the media should be loaded from.
+    @param mediaUrl The url that the media should be loaded from.
     @param linkType The type of media represented by the media button in the in stream comment.
  */
-- (void)actionForInStreamMediaSelection:(NSString *)mediaUrlString withMediaLinkType:(VCommentMediaType)linkType;
+- (void)actionForInStreamMediaSelection:(NSURL *)mediaUrl withMediaLinkType:(VCommentMediaType)linkType;
 
 @end

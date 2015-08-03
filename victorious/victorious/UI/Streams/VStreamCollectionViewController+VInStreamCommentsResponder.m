@@ -25,9 +25,9 @@
     [self.sequenceActionController showProfileWithRemoteId:userId fromViewController:self];
 }
 
-- (void)actionForInStreamMediaSelection:(NSString *)mediaUrlString withMediaLinkType:(VCommentMediaType)linkType
+- (void)actionForInStreamMediaSelection:(NSURL *)mediaUrl withMediaLinkType:(VCommentMediaType)linkType
 {
-    [self.sequenceActionController showMediaContentViewForUrlString:mediaUrlString withMediaLinkType:linkType fromViewController:self];
+    [self.sequenceActionController showMediaContentViewForUrl:mediaUrl withMediaLinkType:linkType fromViewController:self];
 }
 
 @end

@@ -21,30 +21,30 @@ typedef void (^MediaLoadingCompletionBlock) (CGFloat contentAspectRatio);
 @interface VAbstractMediaLinkViewController : UIViewController
 
 /**
-    Factory method for creating the proper media link view controller class for the provided urlString and linkType.
+    Factory method for creating the proper media link view controller class for the provided url and linkType.
  
-    @param urlString A string representation of the url that media should be loaded from. Must not be nil.
+    @param url The url that media should be loaded from. Must not be nil.
     @param linkType The kind of media present at the url represented by the urlString.
  
     @return A VAbstractMediaLinkViewController subclass that will be able to display the loaded media appropriately or
                 a VImageMediaLinkViewController if an unrecognized linkType is provided.
  */
-+ (instancetype)newWithMediaUrlString:(NSString *)urlString andMediaLinkType:(VCommentMediaType)linkType;
++ (instancetype)newWithMediaUrl:(NSURL *)url andMediaLinkType:(VCommentMediaType)linkType;
 
 /**
-    Sets the mediaUrlString property and default value of the contentAspectRatio. Expected to
+    Sets the mediaUrl property and default value of the contentAspectRatio. Expected to
         be overridden by subclasses which should also call the superclass implementation.
  
-    @param urlString A string representation of the url that media should be loaded from. Must not be nil.
+    @param url The url that media should be loaded from. Must not be nil.
  
     @return A VAbstractMediaLinkViewController.
  */
-- (instancetype)initWithUrlString:(NSString *)urlString;
+- (instancetype)initWithUrl:(NSURL *)url NS_DESIGNATED_INITIALIZER;
 
 /**
-    A string representation of the url that media should be loaded from.
+    The url that media should be loaded from.
  */
-@property (nonatomic, readonly) NSString *mediaUrlString;
+@property (nonatomic, readonly) NSURL *mediaUrl;
 
 /**
     The view containing the view that will display media. Subclasses should add the

@@ -15,7 +15,7 @@
 
 @property (nonatomic, strong) UIColor *tintColor;
 @property (nonatomic, strong) UIFont *font;
-@property (nonatomic, strong) NSString *urlString;
+@property (nonatomic, strong) NSURL *url;
 @property (nonatomic, strong) UIImage *icon;
 @property (nonatomic, assign) VCommentMediaType mediaType;
 @property (nonatomic, strong) NSString *prompt;
@@ -30,7 +30,7 @@
     [super setUp];
     self.tintColor = [UIColor redColor];
     self.font = [UIFont systemFontOfSize:13.0f];
-    self.urlString = @"url";
+    self.url = [NSURL URLWithString:@"url"];
     self.icon = [UIImage new];
     self.prompt = @"prompt";
     self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil configuration:nil dictionaryOfClassesByTemplateName:nil];
@@ -38,13 +38,13 @@
 
 - (void)testClassMethodInit
 {
-    XCTAssertNoThrow([VInStreamMediaLink newWithTintColor:self.tintColor font:self.font linkType:self.mediaType urlString:self.urlString andDependencyManager:self.dependencyManager]);
-    XCTAssertNoThrow([VInStreamMediaLink newWithTintColor:nil font:self.font linkType:self.mediaType urlString:self.urlString andDependencyManager:self.dependencyManager]);
-    XCTAssertNoThrow([VInStreamMediaLink newWithTintColor:self.tintColor font:nil linkType:self.mediaType urlString:self.urlString andDependencyManager:self.dependencyManager]);
-    XCTAssertNoThrow([VInStreamMediaLink newWithTintColor:self.tintColor font:self.font linkType:VCommentMediaTypeUnknown urlString:self.urlString andDependencyManager:self.dependencyManager]);
+    XCTAssertNoThrow([VInStreamMediaLink newWithTintColor:self.tintColor font:self.font linkType:self.mediaType url:self.url andDependencyManager:self.dependencyManager]);
+    XCTAssertNoThrow([VInStreamMediaLink newWithTintColor:nil font:self.font linkType:self.mediaType url:self.url andDependencyManager:self.dependencyManager]);
+    XCTAssertNoThrow([VInStreamMediaLink newWithTintColor:self.tintColor font:nil linkType:self.mediaType url:self.url andDependencyManager:self.dependencyManager]);
+    XCTAssertNoThrow([VInStreamMediaLink newWithTintColor:self.tintColor font:self.font linkType:VCommentMediaTypeUnknown url:self.url andDependencyManager:self.dependencyManager]);
 
-    XCTAssertThrows([VInStreamMediaLink newWithTintColor:self.tintColor font:self.font linkType:self.mediaType urlString:nil andDependencyManager:self.dependencyManager]);
-    XCTAssertThrows([VInStreamMediaLink newWithTintColor:self.tintColor font:self.font linkType:self.mediaType urlString:self.urlString andDependencyManager:nil]);
+    XCTAssertThrows([VInStreamMediaLink newWithTintColor:self.tintColor font:self.font linkType:self.mediaType url:nil andDependencyManager:self.dependencyManager]);
+    XCTAssertThrows([VInStreamMediaLink newWithTintColor:self.tintColor font:self.font linkType:self.mediaType url:self.url  andDependencyManager:nil]);
 }
 
 - (void)testClassMethodInitFields
@@ -52,25 +52,25 @@
     VInStreamMediaLink *mediaLink = [VInStreamMediaLink newWithTintColor:self.tintColor
                                                                     font:self.font
                                                                 linkType:self.mediaType
-                                                               urlString:self.urlString
+                                                                     url:self.url
                                                     andDependencyManager:self.dependencyManager];
     
     XCTAssertEqual(mediaLink.tintColor, self.tintColor);
     XCTAssertEqual(mediaLink.font, self.font);
-    XCTAssertEqual(mediaLink.urlString, self.urlString);
+    XCTAssertEqual(mediaLink.url, self.url);
     XCTAssertEqual(mediaLink.mediaLinkType, self.mediaType);
 }
 
 - (void)testInstanceInit
 {
-    XCTAssertNoThrow([[VInStreamMediaLink alloc] initWithTintColor:self.tintColor font:self.font text:self.prompt icon:self.icon linkType:self.mediaType urlString:self.urlString]);
-    XCTAssertNoThrow([[VInStreamMediaLink alloc] initWithTintColor:nil font:self.font text:self.prompt icon:self.icon linkType:self.mediaType urlString:self.urlString]);
-    XCTAssertNoThrow([[VInStreamMediaLink alloc] initWithTintColor:self.tintColor font:nil text:self.prompt icon:self.icon linkType:self.mediaType urlString:self.urlString]);
-    XCTAssertNoThrow([[VInStreamMediaLink alloc] initWithTintColor:self.tintColor font:self.font text:nil icon:self.icon linkType:self.mediaType urlString:self.urlString]);
-    XCTAssertNoThrow([[VInStreamMediaLink alloc] initWithTintColor:self.tintColor font:self.font text:self.prompt icon:nil linkType:self.mediaType urlString:self.urlString]);
-    XCTAssertNoThrow([[VInStreamMediaLink alloc] initWithTintColor:self.tintColor font:self.font text:self.prompt icon:self.icon linkType:VCommentMediaTypeUnknown urlString:self.urlString]);
+    XCTAssertNoThrow([[VInStreamMediaLink alloc] initWithTintColor:self.tintColor font:self.font text:self.prompt icon:self.icon linkType:self.mediaType url:self.url]);
+    XCTAssertNoThrow([[VInStreamMediaLink alloc] initWithTintColor:nil font:self.font text:self.prompt icon:self.icon linkType:self.mediaType url:self.url]);
+    XCTAssertNoThrow([[VInStreamMediaLink alloc] initWithTintColor:self.tintColor font:nil text:self.prompt icon:self.icon linkType:self.mediaType url:self.url]);
+    XCTAssertNoThrow([[VInStreamMediaLink alloc] initWithTintColor:self.tintColor font:self.font text:nil icon:self.icon linkType:self.mediaType url:self.url]);
+    XCTAssertNoThrow([[VInStreamMediaLink alloc] initWithTintColor:self.tintColor font:self.font text:self.prompt icon:nil linkType:self.mediaType url:self.url]);
+    XCTAssertNoThrow([[VInStreamMediaLink alloc] initWithTintColor:self.tintColor font:self.font text:self.prompt icon:self.icon linkType:VCommentMediaTypeUnknown url:self.url]);
     
-    XCTAssertThrows([[VInStreamMediaLink alloc] initWithTintColor:self.tintColor font:self.font text:self.prompt icon:self.icon linkType:self.mediaType urlString:nil]);
+    XCTAssertThrows([[VInStreamMediaLink alloc] initWithTintColor:self.tintColor font:self.font text:self.prompt icon:self.icon linkType:self.mediaType url:nil]);
 }
 
 - (void)testInstanceInitFields
@@ -80,11 +80,11 @@
                                                                              text:self.prompt
                                                                              icon:self.icon
                                                                          linkType:self.mediaType
-                                                                        urlString:self.urlString];
+                                                                              url:self.url];
     
     XCTAssertEqual(mediaLink.tintColor, self.tintColor);
     XCTAssertEqual(mediaLink.font, self.font);
-    XCTAssertEqual(mediaLink.urlString, self.urlString);
+    XCTAssertEqual(mediaLink.url, self.url);
     XCTAssertEqual(mediaLink.icon, self.icon);
     XCTAssertEqual(mediaLink.mediaLinkType, self.mediaType);
     XCTAssertEqual(mediaLink.text, self.prompt);

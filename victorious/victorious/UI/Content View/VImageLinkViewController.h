@@ -13,4 +13,13 @@
  */
 @interface VImageLinkViewController : VAbstractMediaLinkViewController
 
+/**
+ Sets the mediaUrl property and default value of the contentAspectRatio.
+ 
+ @param url The url that media should be loaded from. Must not be nil.
+ 
+ @return A VImageLinkViewController.
+ */
+- (instancetype)initWithUrl:(NSURL *)url NS_DESIGNATED_INITIALIZER;
+
 @end

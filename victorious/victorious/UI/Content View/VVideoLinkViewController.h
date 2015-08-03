@@ -14,6 +14,15 @@
 @interface VVideoLinkViewController : VAbstractMediaLinkViewController
 
 /**
+ Sets the mediaUrl property and default value of the contentAspectRatio.
+ 
+ @param url The url that media should be loaded from. Must not be nil.
+ 
+ @return A VVideoLinkViewController.
+ */
+- (instancetype)initWithUrl:(NSURL *)url NS_DESIGNATED_INITIALIZER;
+
+/**
     Whether or not the video should loop after completing. Defaults to NO.
  */
 @property (nonatomic, assign) BOOL loop;

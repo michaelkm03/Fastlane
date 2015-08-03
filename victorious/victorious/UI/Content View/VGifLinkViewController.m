@@ -10,6 +10,11 @@
 
 @implementation VGifLinkViewController
 
+- (instancetype)initWithUrl:(NSURL *)url
+{
+    return [super initWithUrl:url];
+}
+
 - (BOOL)loop
 {
     return YES;

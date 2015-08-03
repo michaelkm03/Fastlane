@@ -12,7 +12,7 @@
 
 @interface VAbstractMediaLinkViewControllerTests : XCTestCase
 
-@property (nonatomic, strong) NSString *urlString;
+@property (nonatomic, strong) NSURL *url;
 
 @end
 
@@ -21,17 +21,17 @@
 - (void)setUp
 {
     [super setUp];
-    self.urlString = @"";
+    self.url = [NSURL URLWithString:@"url"];
 }
 
 - (void)testClassMethodInit
 {
-    XCTAssertThrows([VAbstractMediaLinkViewController newWithMediaUrlString:nil andMediaLinkType:VCommentMediaTypeImage]);
+    XCTAssertThrows([VAbstractMediaLinkViewController newWithMediaUrl:nil andMediaLinkType:VCommentMediaTypeImage]);
     
-    XCTAssertNotNil([VAbstractMediaLinkViewController newWithMediaUrlString:self.urlString andMediaLinkType:VCommentMediaTypeImage]);
-    XCTAssertNotNil([VAbstractMediaLinkViewController newWithMediaUrlString:self.urlString andMediaLinkType:VCommentMediaTypeGIF]);
-    XCTAssertNotNil([VAbstractMediaLinkViewController newWithMediaUrlString:self.urlString andMediaLinkType:VCommentMediaTypeVideo]);
-    XCTAssertNotNil([VAbstractMediaLinkViewController newWithMediaUrlString:self.urlString andMediaLinkType:VCommentMediaTypeUnknown]);
+    XCTAssertNotNil([VAbstractMediaLinkViewController newWithMediaUrl:self.url andMediaLinkType:VCommentMediaTypeImage]);
+    XCTAssertNotNil([VAbstractMediaLinkViewController newWithMediaUrl:self.url andMediaLinkType:VCommentMediaTypeGIF]);
+    XCTAssertNotNil([VAbstractMediaLinkViewController newWithMediaUrl:self.url andMediaLinkType:VCommentMediaTypeVideo]);
+    XCTAssertNotNil([VAbstractMediaLinkViewController newWithMediaUrl:self.url andMediaLinkType:VCommentMediaTypeUnknown]);
 }
 
 @end

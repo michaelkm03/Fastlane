@@ -20,9 +20,9 @@
 
 @implementation VVideoLinkViewController
 
-- (instancetype)initWithUrlString:(NSString *)urlString
+- (instancetype)initWithUrl:(NSURL *)url
 {
-    self = [super initWithUrlString:urlString];
+    self = [super initWithUrl:url];
     if ( self != nil )
     {
         _videoPlayer = [[VCVideoPlayerViewController alloc] init];
@@ -55,7 +55,7 @@
 {
     self.videoPlayer.shouldShowToolbar = !self.hidePlayControls;
     self.videoPlayer.audioMuted = self.muteAudio;
-    [self.videoPlayer setItemURL:[NSURL URLWithString:self.mediaUrlString] loop:self.loop];
+    [self.videoPlayer setItemURL:self.mediaUrl loop:self.loop];
 }
 
 #pragma mark - Setters
@@ -69,7 +69,7 @@
 - (void)setLoop:(BOOL)loop
 {
     _loop = loop;
-    if ( self.videoPlayer.isLooping != loop && self.mediaUrlString != nil )
+    if ( self.videoPlayer.isLooping != loop && self.mediaUrl != nil )
     {
         [self reloadVideoPlayer];
     }

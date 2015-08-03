@@ -18,10 +18,10 @@ static NSString * const kGifIconKey = @"watch_gif_icon";
 + (instancetype)newWithTintColor:(UIColor *)tintColor
                             font:(UIFont *)font
                         linkType:(VCommentMediaType)linkType
-                       urlString:(NSString *)urlString
+                             url:(NSURL *)url
             andDependencyManager:(VDependencyManager *)dependencyManager
 {
-    NSParameterAssert(urlString != nil);
+    NSParameterAssert(url != nil);
     NSParameterAssert(dependencyManager != nil);
     
     __block NSString *linkLabelText;
@@ -40,7 +40,7 @@ static NSString * const kGifIconKey = @"watch_gif_icon";
                                                     text:linkLabelText
                                                     icon:linkIcon
                                                 linkType:linkType
-                                               urlString:urlString];
+                                                     url:url];
 }
 
 - (instancetype)initWithTintColor:(UIColor *)tintColor
@@ -48,9 +48,9 @@ static NSString * const kGifIconKey = @"watch_gif_icon";
                              text:(NSString *)text
                              icon:(UIImage *)icon
                          linkType:(VCommentMediaType)linkType
-                        urlString:(NSString *)urlString
+                              url:(NSURL *)url
 {
-    NSParameterAssert(urlString != nil);
+    NSParameterAssert(url != nil);
     
     self = [super init];
     if ( self != nil )
@@ -60,7 +60,7 @@ static NSString * const kGifIconKey = @"watch_gif_icon";
         _text = text;
         _icon = icon;
         _mediaLinkType = linkType;
-        _urlString = urlString;
+        _url = url;
     }
     return self;
 }
@@ -110,12 +110,12 @@ static NSString * const kGifIconKey = @"watch_gif_icon";
 
 - (BOOL)isEqualToInStreamMediaLink:(VInStreamMediaLink *)inStreamMediaLink
 {
-    return [self.urlString isEqualToString:inStreamMediaLink.urlString];
+    return [self.url isEqual:inStreamMediaLink.url];
 }
 
 - (NSUInteger)hash
 {
-    return [self.urlString hash];
+    return [self.url hash];
 }
 
 @end

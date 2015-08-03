@@ -11,6 +11,7 @@
 #import "VInStreamCommentsShowMoreAttributes.h"
 
 static UIEdgeInsets const kPromptInsets = { 0.0f, 0.0f, 0.0f, 0.0f };
+static NSString * const kPromptTextLocalizedStringKey = @"Show Previous Comments";
 
 @interface VInStreamCommentsShowMoreCell ()
 
@@ -27,7 +28,7 @@ static UIEdgeInsets const kPromptInsets = { 0.0f, 0.0f, 0.0f, 0.0f };
     self.promptTextView.contentInset = UIEdgeInsetsZero;
     self.promptTextView.textContainerInset = UIEdgeInsetsZero;
     self.promptTextView.textContainer.lineFragmentPadding = 0.0f;
-    self.promptTextView.text = [[self class] promptText];
+    self.promptTextView.text = NSLocalizedString(kPromptTextLocalizedStringKey, nil);;
 }
 
 - (void)setupWithAttributes:(VInStreamCommentsShowMoreAttributes *)attributes andLinkDelegate:(id <CCHLinkTextViewDelegate>)linkDelegate
@@ -53,22 +54,12 @@ static UIEdgeInsets const kPromptInsets = { 0.0f, 0.0f, 0.0f, 0.0f };
 + (CGFloat)desiredHeightForAttributes:(VInStreamCommentsShowMoreAttributes *)attributes withMaxWidth:(CGFloat)width
 {
     CGFloat maxWidth = width - kPromptInsets.left - kPromptInsets.right;
-    NSAttributedString *promptAttributedString = [[NSAttributedString alloc] initWithString:[self promptText] attributes:attributes.unselectedTextAttributes];
+    NSAttributedString *promptAttributedString = [[NSAttributedString alloc] initWithString:NSLocalizedString(kPromptTextLocalizedStringKey, nil) attributes:attributes.unselectedTextAttributes];
     CGFloat height = VCEIL([promptAttributedString boundingRectWithSize:CGSizeMake(width, maxWidth)
                                                                 options:NSStringDrawingUsesLineFragmentOrigin
                                                                 context:nil].size.height);
     height += kPromptInsets.bottom + kPromptInsets.top;
     return height;
-}
-
-+ (NSString *)promptText
-{
-    static NSString *text;
-    if ( text == nil )
-    {
-        text = NSLocalizedString(@"Show Previous Comments", nil);
-    }
-    return text;
 }
 
 @end
