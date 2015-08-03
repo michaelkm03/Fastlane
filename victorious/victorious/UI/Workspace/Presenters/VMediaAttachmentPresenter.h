@@ -29,9 +29,9 @@ typedef void(^VMediaAttachmentResultHandler)(BOOL success, VPublishParameters *p
 @interface VMediaAttachmentPresenter : VAbstractPresenter
 
 /**
- *  An extra initializer to injext extra dependencies into the dependency tree.
+ *  An extra initializer to inject extra dependencies into the dependency tree.
  */
-- (instancetype)initWithDependencymanager:(VDependencyManager *)dependencyManager
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
                         addedDependencies:(NSDictionary *)addedDependencies;
 
 /**
