@@ -64,6 +64,8 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
 {
     [super awakeFromNib];
     
+    self.accessibilityIdentifier = VAutomationIdentifierStreamCell;
+    
     self.previewContainer.clipsToBounds = YES;
     self.captionTextView.contentInset = UIEdgeInsetsZero;
     self.captionTextView.textContainer.lineFragmentPadding = 0.0f;

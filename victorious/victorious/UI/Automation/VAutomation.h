@@ -48,6 +48,7 @@ static NSString * const VAutomationIdentifierProfileLocationField       = @"Prof
 static NSString * const VAutomationIdentifierProfileDone                = @"Profile Done";
 static NSString * const VAutomationIdentifierProfileAgeAgreeSwitch      = @"Profile Age Switch";
 static NSString * const VAutomationIdentifierProfilSelectImage          = @"Profile Select Image";
+static NSString * const VAutomationIdentifierProfileLogInButton         = @"Log In Button";
 
 static NSString * const VAutomationIdentifierWelcomeDismiss             = @"Welcome Dismiss";
 
@@ -57,5 +58,8 @@ static NSString * const VAutomationIdentifierPublishCatpionText         = @"Publ
 
 static NSString * const VAutomationIdentifierContentViewBallotButtonA   = @"Ballot Button A";
 static NSString * const VAutomationIdentifierContentViewBallotButtonB   = @"Ballot Button B";
+static NSString * const VAutomationIdentifierContentViewCommentBar      = @"Content View Comment Bar";
 
 static NSString * const VAutomationIdentifierTextPostMainField          = @"Text Post Main Field";
+
+static NSString * const VAutomationIdentifierStreamCell                 = @"Stream Cell";
