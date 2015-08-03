@@ -30,7 +30,7 @@ extension VObjectManager {
     /// :param: failure Closure to be called when request receives an error response
     func searchForGIF( searchText: String, pageType:VPageType, success:GIFSearchSuccess?, failure:GIFSearchFailure? ) -> RKManagedObjectRequestOperation? {
         
-        var filter = self.filterForKeywords( searchText )
+        let filter = self.filterForKeywords( searchText )
         if !filter.canLoadPageType( pageType ) {
             failure?( error: nil, isLastPage: true )
             return nil
@@ -53,7 +53,7 @@ extension VObjectManager {
     /// :param: failure Closure to be called when request receives an error response
     func loadTrendingGIFs( pageType:VPageType, success:GIFSearchSuccess?, failure:GIFSearchFailure? ) -> RKManagedObjectRequestOperation? {
         
-        var filter = self.filterForTrending()
+        let filter = self.filterForTrending()
         if !filter.canLoadPageType( pageType ) {
             failure?( error: nil, isLastPage: true )
             return nil

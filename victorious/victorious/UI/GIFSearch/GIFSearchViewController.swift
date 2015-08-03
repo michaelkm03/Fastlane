@@ -84,7 +84,7 @@ class GIFSearchViewController: UIViewController {
             
             let selectedGIF = self.searchDataSource.sections[ indexPath.section ][ indexPath.row ]
             
-            var progressHUD = MBProgressHUD.showHUDAddedTo( self.view, animated: true )
+            let progressHUD = MBProgressHUD.showHUDAddedTo( self.view, animated: true )
             progressHUD.mode = .Indeterminate
             progressHUD.dimBackground = true
             progressHUD.show(true)
@@ -95,7 +95,7 @@ class GIFSearchViewController: UIViewController {
                     self.delegate?.GIFSelectedWithPreviewImage( previewImage, capturedMediaURL: mediaURL, width: selectedGIF.width.integerValue, height: selectedGIF.height.integerValue )
                 }
                 else {
-                    var progressHUD = MBProgressHUD.showHUDAddedTo( self.view, animated: true )
+                    let progressHUD = MBProgressHUD.showHUDAddedTo( self.view, animated: true )
                     progressHUD.mode = .Text
                     progressHUD.labelText = NSLocalizedString( "Error rendering GIF", comment:"" )
                     progressHUD.hide(true, afterDelay: 3.0)
@@ -146,7 +146,7 @@ class GIFSearchViewController: UIViewController {
     }
     
     private func titleViewWithTitle( text: String ) -> UIView {
-        var label = UILabel()
+        let label = UILabel()
         label.text = text
         label.font = UIFont.preferredFontForTextStyle( UIFontTextStyleHeadline )
         label.textColor = UIColor.whiteColor()

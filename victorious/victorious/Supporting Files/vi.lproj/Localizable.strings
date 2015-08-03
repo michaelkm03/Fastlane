@@ -621,6 +621,9 @@
 "Video failed to load" = "Tải video không thành công";
 "We encountered an error trying to edit this video." = "Chúng tôi đã gặp một lỗi khi đang cố chỉnh sửa video này.";
 
+"No Photos" = "Không có Ảnh";
+"No Videos" = "Không có Video";
+
 "#nofilter" = "#nofilter";
 "Create a meme" = "Tạo ra một meme";
 "Create a quote" = "Tạo ra một trích dẫn";

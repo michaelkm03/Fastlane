@@ -103,7 +103,6 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     [super viewDidLoad];
 
-    self.automaticallyAdjustsScrollViewInsets = YES;
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
     self.tableView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -123,6 +122,8 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     
     [self.refreshControl beginRefreshing];
     [self refresh:nil];
+    self.edgesForExtendedLayout = UIRectEdgeBottom;
+    self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(-CGRectGetHeight(self.navigationController.navigationBar.bounds), 0, 0, 0);
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -500,6 +501,11 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 }
 
 #pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    self.tableView.scrollIndicatorInsets = UIEdgeInsetsZero;
+}
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {

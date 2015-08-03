@@ -53,8 +53,6 @@
 	<string>VictoriousApp Dev</string>
 	<key>FlurryAPIKey</key>
 	<string>XXXXXXXXXX</string>
-	<key>GAID</key>
-	<string>UA-51702806-9</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
