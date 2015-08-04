@@ -55,7 +55,6 @@
     [self.commentsUtilitiesDelegate replyToComment:comment];
 }
 
-
 - (void)commentRemoved:(VComment *)comment
 {
     [self.commentsUtilitiesDelegate commentRemoved:comment];

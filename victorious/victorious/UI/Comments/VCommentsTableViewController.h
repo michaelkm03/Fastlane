@@ -17,7 +17,7 @@
 @property (nonatomic, strong) VSequence *sequence;
 @property (nonatomic, weak) id<VCommentsTableViewControllerDelegate> delegate;
 @property (nonatomic, assign) UIEdgeInsets focusAreaInset;
-@property (nonatomic, strong) NSArray *comments;
+@property (nonatomic, readonly) NSArray *comments;
 
 /**
  Creates a new instance of VCommentsTableViewController by passing in an instance of VDependencyManager

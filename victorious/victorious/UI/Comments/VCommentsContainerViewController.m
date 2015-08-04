@@ -144,7 +144,7 @@ static NSString * const kSequenceIdKey = @"sequenceId";
 
 - (void)streamsCommentsController:(VCommentsTableViewController *)viewController shouldReplyToUser:(VUser *)user
 {
-    [self.keyboardBarViewController repliedToUser:user];
+    [self.keyboardBarViewController setReplyRecipient:user];
     [self.keyboardBarViewController becomeFirstResponder];
 }
 

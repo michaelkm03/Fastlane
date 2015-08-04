@@ -46,6 +46,6 @@
 - (IBAction)cameraPressed:(id)sender;
 - (void)clearKeyboardBar; ///< Clears all text and media from the keyboard bar
 - (void)setHideAccessoryBar:(BOOL)hideAccessoryBar; ///< Hides or shows the input accessory view.
-- (void)repliedToUser:(VUser *)user; // replies to a certain user
+- (void)setReplyRecipient:(VUser *)user; // replies to a certain user
 
 @end

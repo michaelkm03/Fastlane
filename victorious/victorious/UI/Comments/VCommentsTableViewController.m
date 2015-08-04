@@ -59,6 +59,7 @@
 @property (nonatomic, strong) VNoContentView *noContentView;
 @property (nonatomic, strong) VTableViewStreamFocusHelper *focusHelper;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
+@property (nonatomic, readwrite) NSArray *comments;
 
 @end
 
@@ -440,10 +441,11 @@
 - (void)replyToComment:(VComment *)comment
 {
     NSUInteger index = [self.comments indexOfObject:comment];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0] ;
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     
     id<VCommentsTableViewControllerDelegate> replyResponder = [[self nextResponder] targetForAction:@selector(streamsCommentsController:shouldReplyToUser:) withSender:nil];
+    NSAssert(replyResponder != nil, @"replyResponder in VCommentsTableViewController cannot be nil");
     [replyResponder streamsCommentsController:self shouldReplyToUser:comment.user];
 }
 

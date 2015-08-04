@@ -130,7 +130,11 @@ typedef NS_ENUM(NSInteger, VKeyboardBarAttachmentType)
  *  Call this to clear out text and media input on this view.
  */
 - (void)clearTextAndResign;
-- (void)replyToUser:(VUser *)user;
+
+/**
+ * Call this whenever you are composing a reply
+ */
+- (void)setReplyRecipient:(VUser *)user;
 
 @end
 

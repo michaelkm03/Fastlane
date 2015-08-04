@@ -2643,7 +2643,6 @@
 		B07BFD621B26780900784FC8 /* VHashtagResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagResponder.h; sourceTree = "<group>"; };
 		B0D8BAAB1B545A3600087057 /* VListicleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VListicleView.h; sourceTree = "<group>"; };
 		B0D8BAAC1B545A3600087057 /* VListicleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VListicleView.m; sourceTree = "<group>"; };
-		B0DB76521B6C4B860030C451 /* VUserTaggingReply.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserTaggingReply.h; sourceTree = "<group>"; };
 		B0DDD5551B4DF7F80065E540 /* VPermissionsTrackingHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPermissionsTrackingHelper.h; sourceTree = "<group>"; };
 		B0DDD5561B4DF7F80065E540 /* VPermissionsTrackingHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPermissionsTrackingHelper.m; sourceTree = "<group>"; };
 		B0DDD55B1B4F0C230065E540 /* NSDictionary+VMerge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+VMerge.h"; sourceTree = "<group>"; };
@@ -4744,7 +4743,6 @@
 				F098D81C1A9E4A890003B6D4 /* VUserTag.m */,
 				03C82F1E1A81DDFE00190C7D /* VUserTaggingTextStorage.h */,
 				03C82F1F1A81DDFE00190C7D /* VUserTaggingTextStorage.m */,
-				B0DB76521B6C4B860030C451 /* VUserTaggingReply.h */,
 				F05AA9841A8401D0002F8917 /* VUserTaggingTextStorageDelegate.h */,
 			);
 			path = "User Tagging";

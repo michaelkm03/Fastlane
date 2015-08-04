@@ -128,7 +128,7 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
 
 #pragma mark - public methods
 
-- (void)repliedToUser:(VUser *)user
+- (void)setReplyRecipient:(VUser *)user
 {
     [self.textStorage repliedToUser:user];
     self.promptLabel.hidden = (self.textStorage.textView.text != nil);

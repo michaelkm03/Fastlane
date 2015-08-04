@@ -161,11 +161,6 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
     return YES;
 }
 
-- (void)replyToComment:(VComment *)comment
-{
-    [self.delegate replyToComment:comment];
-}
-
 #pragma mark - VSwipeViewCellDelegate
 
 - (void)utilityButton:(VUtilityButtonCell *)button selectedAtIndex:(NSUInteger)index
@@ -185,7 +180,7 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
             [self deleteComment];
             break;
         case VCommentCellUtilityTypeReply:
-            [self replyToComment:self.comment];
+            [self.delegate replyToComment:self.comment];
             break;
     }
 }

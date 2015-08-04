@@ -1653,7 +1653,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     NSIndexPath *indexPath =  [NSIndexPath indexPathForRow:row inSection:VContentViewSectionAllComments] ;
     [self.contentCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:YES];
     
-    [self.textEntryView replyToUser:comment.user];
+    [self.textEntryView setReplyRecipient:comment.user];
     [self.textEntryView.editingTextView becomeFirstResponder];
 }
 

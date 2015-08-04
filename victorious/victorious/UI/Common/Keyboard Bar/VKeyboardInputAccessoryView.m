@@ -229,7 +229,7 @@ static const CGFloat kAttachmentBarHeight = 50.0f;
     [self textViewDidChange:self.editingTextView];
 }
 
-- (void)replyToUser:(VUser *)user
+- (void)setReplyRecipient:(VUser *)user
 {
     [self.textStorage repliedToUser:user];
     self.placeholderLabel.hidden = (self.textStorage.textView.text.length == 0) ? NO : YES;
