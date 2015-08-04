@@ -23,6 +23,8 @@
  */
 - (instancetype)initWithTemplateJSON:(NSDictionary *)templateJSON NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /**
  Returns a set of NSURL objects pointing to other items 
  (e.g. images) that must also be downloaded as part of

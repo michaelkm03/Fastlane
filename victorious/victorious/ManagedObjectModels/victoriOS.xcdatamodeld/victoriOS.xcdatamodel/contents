@@ -103,6 +103,15 @@
         <relationship name="nextSequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="parentEndCard" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="parentSequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="endCard" inverseEntity="Sequence" syncable="YES"/>
     </entity>
+    <entity name="Experiment" representedClassName="victorious.Experiment" syncable="YES">
+        <attribute name="bucketCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="bucketType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="isEnabled" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="layerId" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="layerName" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="GIFSearchResult" representedClassName="victorious.GIFSearchResult" syncable="YES">
         <attribute name="frames" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="gifSize" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -323,6 +332,7 @@
         <element name="Conversation" positionX="1528" positionY="-468" width="128" height="148"/>
         <element name="EditorializationItem" positionX="657" positionY="-612" width="128" height="120"/>
         <element name="EndCard" positionX="693" positionY="-648" width="128" height="165"/>
+        <element name="Experiment" positionX="621" positionY="-648" width="128" height="150"/>
         <element name="GIFSearchResult" positionX="621" positionY="-648" width="128" height="180"/>
         <element name="Hashtag" positionX="1087" positionY="-630" width="128" height="90"/>
         <element name="ImageAsset" positionX="423" positionY="-594" width="128" height="135"/>
@@ -338,7 +348,7 @@
         <element name="Sequence" positionX="1078" positionY="-540" width="128" height="585"/>
         <element name="Stream" positionX="1069" positionY="-792" width="128" height="165"/>
         <element name="StreamItem" positionX="871" positionY="-765" width="128" height="180"/>
-        <element name="Tracking" positionX="828" positionY="-630" width="128" height="225"/>
+        <element name="Tracking" positionX="828" positionY="-630" width="128" height="240"/>
         <element name="User" positionX="1321" positionY="-324" width="128" height="465"/>
         <element name="VoteResult" positionX="864" positionY="164" width="128" height="90"/>
     </elements>

@@ -110,6 +110,7 @@ static const CGFloat kStatusBarHeight = 20.0f;
 
     UIView *statusBarBackgroundView = [[UIView alloc] init];
     statusBarBackgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+    statusBarBackgroundView.userInteractionEnabled = NO;
     statusBarBackgroundView.backgroundColor = [[self.dependencyManager dependencyManagerForNavigationBar] colorForKey:VDependencyManagerBackgroundColorKey];
     [self.view addSubview:statusBarBackgroundView];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[statusBarBackgroundView]|"

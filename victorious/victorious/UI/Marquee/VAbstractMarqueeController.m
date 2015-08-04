@@ -53,6 +53,12 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (void)dealloc
 {
     if (_collectionView.delegate == self)

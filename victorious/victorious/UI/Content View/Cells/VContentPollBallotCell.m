@@ -11,6 +11,7 @@
 #import "UIImage+ImageCreation.h"
 
 #import "VThemeManager.h"
+#import "VAutomation.h"
 
 static CGFloat const kMinimumHeight = 60.0f;
 static UIEdgeInsets const kAnswerInsets = { 10, 0, 10, 0};
@@ -93,6 +94,9 @@ static NSMutableDictionary *sizingCache;
     
     self.answerAButton.titleLabel.numberOfLines = 0;
     self.answerBButton.titleLabel.numberOfLines = 0;
+    
+    self.answerAButton.accessibilityIdentifier = VAutomationIdentifierContentViewBallotButtonA;
+    self.answerBButton.accessibilityIdentifier = VAutomationIdentifierContentViewBallotButtonB;
 }
 
 #pragma mark - Property Accessors
@@ -152,6 +156,7 @@ static NSMutableDictionary *sizingCache;
     if (self.answerASelectionHandler)
     {
         self.answerASelectionHandler();
+        [self setVotingDisabledWithFavoredBallot:VBallotA animated:YES];
     }
 }
 
@@ -170,6 +175,7 @@ static NSMutableDictionary *sizingCache;
     if (self.answerBSelectionHandler)
     {
         self.answerBSelectionHandler();
+        [self setVotingDisabledWithFavoredBallot:VBallotB animated:YES];
     }
 }
 

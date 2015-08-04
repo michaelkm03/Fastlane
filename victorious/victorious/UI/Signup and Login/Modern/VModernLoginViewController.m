@@ -17,6 +17,7 @@
 #import "VDependencyManager+VKeyboardStyle.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VConstants.h"
+#import "VAutomation.h"
 
 // Views + Helpers
 #import "VInlineValidationTextField.h"
@@ -159,6 +160,9 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                                       target:self
                                                       action:@selector(login:)];
     self.navigationItem.rightBarButtonItem = self.nextButton;
+    
+    self.emailField.accessibilityIdentifier = VAutomationIdentifierLoginUsernameField;
+    self.passwordField.accessibilityIdentifier = VAutomationIdentifierLoginPasswordField;
 }
 
 - (void)viewDidAppear:(BOOL)animated

@@ -39,6 +39,12 @@
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 #pragma mark - Property Accessors
 
 - (void)setSelectedTool:(id<VWorkspaceTool>)selectedTool

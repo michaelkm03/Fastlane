@@ -28,6 +28,12 @@
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (void)registerNoContentCellWithCollectionView:(UICollectionView *)collectionView
 {
     NSParameterAssert( [collectionView isKindOfClass:[UICollectionView class]] );

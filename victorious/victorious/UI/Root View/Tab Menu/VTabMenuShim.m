@@ -93,8 +93,10 @@
         }
         
         UIImage *image = [[menuItem.icon v_imageByMaskingImageWithColor:self.unselectedIconColor] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        shimViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:nil image:image selectedImage:menuItem.selectedIcon];
+        shimViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:menuItem.identifier ?: menuItem.title image:image selectedImage:menuItem.selectedIcon];
+        [shimViewController.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor clearColor]} forState:UIControlStateNormal];
         shimViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0);
+        shimViewController.tabBarItem.accessibilityIdentifier = menuItem.identifier;
         [wrappedMenuItems addObject:shimViewController];
     }
     self.badgeProviders = [NSArray arrayWithArray:badgeProviders];

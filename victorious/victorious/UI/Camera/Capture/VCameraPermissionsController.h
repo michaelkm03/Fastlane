@@ -21,6 +21,8 @@
  */
 - (instancetype)initWithViewControllerToPresentOn:(UIViewController *)viewController NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /**
  *  Requests permisssions for the passed in permission object.
  *  Completion called after user has responded to the prompts. 

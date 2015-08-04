@@ -212,16 +212,6 @@
 
 #pragma mark - Repost
 
-- (BOOL)canRespost
-{
-    if (![VObjectManager sharedManager].authorized)
-    {
-        return NO;
-    }
-    
-    return YES;
-}
-
 - (void)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node
 {
     [self repostActionFromViewController:viewController node:node completion:nil];
@@ -229,13 +219,25 @@
 
 - (void)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node completion:(void(^)(BOOL))completion
 {
+    if ([node.sequence.hasReposted boolValue])
+    {
+        if ( completion != nil )
+        {
+            completion(YES);
+        }
+        return;
+    }
+    
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                       dependencyManager:self.dependencyManager];
     [authorization performFromViewController:viewController context:VAuthorizationContextRepost completion:^(BOOL authorized)
      {
          if (!authorized)
          {
-             completion(NO);
+             if ( completion != nil )
+             {
+                 completion(NO);
+             }
              return;
          }
          [[VObjectManager sharedManager] repostNode:node

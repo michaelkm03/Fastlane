@@ -26,6 +26,8 @@
 - (instancetype)initWithViewControllerToPresentOn:(UIViewController *)viewController
                                 dependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /**
  *  The user has selected twitter authorization.
  */

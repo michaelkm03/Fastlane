@@ -20,9 +20,8 @@
 #import "VApplicationTracking.h"
 
 // TODO
-#if 0
 
-static const NSUInteger kValidExperienceEnhancerCount = 10;
+static const NSUInteger kValidExperienceEnhancerCount = 9;
 static const NSUInteger kExperienceEnhancerCount = 20;
 
 @interface VApplicationTracking (UnitTests)
@@ -40,7 +39,6 @@ static const NSUInteger kExperienceEnhancerCount = 20;
 @interface VExperienceEnhancerController (UnitTests)
 
 @property (nonatomic, strong) NSArray *experienceEnhancers;
-@property (nonatomic, strong) VFileCache *fileCache;
 
 - (BOOL)updateExperience:(NSArray *)experienceEnhancers withSequence:(VSequence *)sequence;
 - (NSArray *)createExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes sequence:(VSequence *)sequence;
@@ -53,8 +51,6 @@ static const NSUInteger kExperienceEnhancerCount = 20;
 @property (nonatomic, retain) VExperienceEnhancerController *viewController;
 @property (nonatomic, retain) NSArray *voteTypes;
 @property (nonatomic, retain) VSequence *sequence;
-@property (nonatomic, assign) IMP isImageCached;
-@property (nonatomic, assign) IMP areSpriteImagesCached;
 @property (nonatomic, strong) VAsyncTestHelper *asyncHelper;
 
 @end
@@ -67,16 +63,6 @@ static const NSUInteger kExperienceEnhancerCount = 20;
     
     self.asyncHelper = [[VAsyncTestHelper alloc] init];
     
-    self.isImageCached = [VFileCache v_swizzleMethod:@selector(isImageCached:forVoteType:) withBlock:^BOOL
-                         {
-                             return YES;
-                         }];
-    
-    self.areSpriteImagesCached = [VFileCache v_swizzleMethod:@selector(areSpriteImagesCachedForVoteType:) withBlock:^BOOL
-                                 {
-                                     return YES;
-                                 }];
-    
     self.voteTypes = [VDummyModels createVoteTypes:kExperienceEnhancerCount];
     self.sequence = (VSequence *)[VDummyModels objectWithEntityName:@"Sequence" subclass:[VSequence class]];
     self.sequence.voteResults = [NSSet setWithArray:[VDummyModels createVoteResults:kExperienceEnhancerCount]];
@@ -87,13 +73,14 @@ static const NSUInteger kExperienceEnhancerCount = 20;
     OCMStub( [myObjectMock sendRequest:[OCMArg any]] );
 }
 
+<<<<<<< HEAD
 - (void)tearDown
 {
     [super tearDown];
-    [VFileCache v_restoreOriginalImplementation:self.isImageCached forMethod:@selector(isImageCached:forVoteType:)];
-    [VFileCache v_restoreOriginalImplementation:self.areSpriteImagesCached forMethod:@selector(areSpriteImagesCachedForVoteType:)];
 }
 
+=======
+>>>>>>> 57fc483cbb99c8ae5fad7c2ead4a40eed90542e5
 - (void)testCreateExperienceEnhancers
 {
     NSArray *experienceEnhancers = [self.viewController createExperienceEnhancersFromVoteTypes:self.voteTypes sequence:self.sequence];
@@ -107,13 +94,15 @@ static const NSUInteger kExperienceEnhancerCount = 20;
     [self.viewController updateExperience:experienceEnhancers withSequence:self.sequence];
     
     __block NSUInteger matches = 0;
+    NSMutableArray *array = [NSMutableArray new];
     [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *exp, NSUInteger idx, BOOL *stop)
      {
          [self.sequence.voteResults.allObjects enumerateObjectsUsingBlock:^(VVoteResult *result, NSUInteger idx, BOOL *stop)
           {
-              if ( [result.remoteId isEqual:exp.voteType.voteTypeID] )
+              if ( [[result.remoteId stringValue] isEqualToString:exp.voteType.voteTypeID ] )
               {
-                  XCTAssertEqual( exp.startingVoteCount, result.count.unsignedIntegerValue );
+                  [array addObject:exp];
+                  XCTAssertEqual( exp.voteCount, result.count.integerValue );
                   matches++;
               }
           }];
@@ -127,7 +116,6 @@ static const NSUInteger kExperienceEnhancerCount = 20;
     NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
     [self.voteTypes enumerateObjectsUsingBlock:^(VVoteType *voteType, NSUInteger idx, BOOL *stop) {
         VExperienceEnhancer *enhancer = [[VExperienceEnhancer alloc] initWithVoteType:voteType voteCount:0];
-        enhancer.voteType.displayOrder = @( arc4random() % self.voteTypes.count );
         if ( idx < kValidExperienceEnhancerCount )
         {
             enhancer.iconImage = [UIImage new];
@@ -180,8 +168,10 @@ static const NSUInteger kExperienceEnhancerCount = 20;
     
     [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *exp, NSUInteger idx, BOOL *stop)
      {
-         NSUInteger start = arc4random() % 200;
-         [exp resetStartingVoteCount:start];
+         NSUInteger start = exp.voteCount;
+         
+         // Set cooldown time to zero to test votes
+         [exp setCooldownDuration:0];
          
          NSUInteger count = arc4random() % 200;
          for ( NSUInteger i = 0; i < count; i++ )
@@ -189,15 +179,76 @@ static const NSUInteger kExperienceEnhancerCount = 20;
              [exp vote];
          }
          
-         XCTAssertEqual( exp.totalVoteCount, start + count );
-         
-         [exp resetSessionVoteCount];
-         XCTAssertEqual( exp.totalVoteCount, start );
-         XCTAssertEqual( exp.sessionVoteCount, (NSUInteger)0 );
+         NSInteger totalCount = start + count;
+         XCTAssertEqual( exp.voteCount, totalCount );
          
      }];
 }
 
-@end
+- (void)testCoolDownTimers
+{
+    NSArray *experienceEnhancers = [self createExperienceEnhancers];
+    
+    [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *exp, NSUInteger idx, BOOL *stop)
+     {
+         [exp resetCooldownTimer];
+         
+         exp.cooldownDuration = 10;
+         
+         NSUInteger count = arc4random() % 200;
+         for ( NSUInteger i = 0; i < count; i++ )
+         {
+             [exp vote];
+         }
+         
+         // Make sure vote count is one since cool down
+         XCTAssertEqual( exp.voteCount, 1 );
+         
+     }];
+    
+    [experienceEnhancers enumerateObjectsUsingBlock:^(VExperienceEnhancer *exp, NSUInteger idx, BOOL *stop)
+     {
+         [exp resetCooldownTimer];
 
-#endif
+         NSInteger startingVotes = exp.voteCount;
+         NSUInteger cooldown = (arc4random() % 5) + 1;
+         NSUInteger timeUntilVote = cooldown + 1;
+         
+         // Set the cooldown time
+         exp.cooldownDuration = cooldown;
+         
+         // Vote multiple times, should only register one
+         NSUInteger count = 3;
+         for ( NSUInteger i = 0; i < count; i++ )
+         {
+             [exp vote];
+         }
+         
+         // Check if we're cooling down
+         XCTAssertTrue(exp.isCoolingDown);
+         
+         XCTestExpectation *expectation = [self expectationWithDescription:@"High Expectations"];
+         
+         // Wait out the cooldown time
+         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeUntilVote * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+         {
+             XCTAssertTrue([exp ratioOfCooldownComplete] >= 1);
+             XCTAssertTrue([exp secondsUntilCooldownIsOver] <= 0);
+             
+             // Vote again, should register now that cooldown is over
+             [exp vote];
+             XCTAssertEqual( exp.voteCount, startingVotes + 2 );
+             [expectation fulfill];
+         });
+         
+         [self waitForExpectationsWithTimeout:timeUntilVote + 1 handler:^(NSError *error)
+         {
+             if (error != nil)
+             {
+                 XCTFail(@"Error");
+             }
+         }];
+     }];
+}
+
+@end

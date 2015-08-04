@@ -34,6 +34,12 @@ static NSString * const kProfileDeeplinkHostComponent = @"profile";
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (BOOL)canDisplayContentForDeeplinkURL:(NSURL *)url
 {
     const BOOL isValidUserID = [url v_firstNonSlashPathComponent] != nil && [[url v_firstNonSlashPathComponent] integerValue] > 0;

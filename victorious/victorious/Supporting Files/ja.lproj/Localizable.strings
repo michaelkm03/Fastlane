@@ -621,6 +621,9 @@
 "Video failed to load" = "動画が読み込めませんでした";
 "We encountered an error trying to edit this video." = "この動画の編集開始時にエラーが発生しました。";
 
+"No Photos" = "写真がありません";
+"No Videos" = "動画がありません";
+
 "#nofilter" = "#フィルターなし";
 "Create a meme" = "ミームを作成";
 "Create a quote" = "引用文を作成";

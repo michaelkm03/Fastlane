@@ -9,22 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "VUserTaggingTextStorageDelegate.h"
 
+typedef NS_ENUM(NSInteger, VKeyboardBarAttachmentType)
+{
+    VKeyboardBarAttachmentTypeImage,
+    VKeyboardBarAttachmentTypeVideo,
+    VKeyboardBarAttachmentTypeGIF,
+};
+
 @class VKeyboardInputAccessoryView, VDependencyManager;
-
-extern NSString * const VInputAccessoryViewKeyboardFrameDidChangeNotification;
-
-extern const CGFloat VInputAccessoryViewDesiredMinimumHeight;
-
-/**
- *  !!!ATTENTION!!!
- *  !!!ATTENTION!!!
- *  Need to provide one of these on your UIViewController that controls the superview of the keyboardInputAccessoryView.
- *  !!!ATTENTION!!!
- *  !!!ATTENTION!!!
- */
-@interface VInputAccessoryView : UIView
-
-@end
 
 @protocol VKeyboardInputAccessoryViewDelegate <NSObject, VUserTaggingTextStorageDelegate>
 
@@ -36,20 +28,15 @@ extern const CGFloat VInputAccessoryViewDesiredMinimumHeight;
 - (void)pressedSendOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView;
 
 /**
- *  Notifies the delegate of the input accessory view that the attachment key has been pressed.
- *
- *  @param inputAccessoryView The input accessory view that the attachment key belongs to.
+ *  Notifies the delegate that the user selected a particular attachment type.
  */
-- (void)pressedAttachmentOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView;
+- (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
+            selectedAttachmentType:(VKeyboardBarAttachmentType)attachmentType;
 
 /**
- *  Asks the delegate to resize the inputAccessoryView to a specific size. Note that input accessory view will never request a size larger than its maximumAllowedSize property.
- *
- *  @param inpoutAccessoryView The inputAccessoryView that would like to be resized.
- *  @param size                The desired size fo the inputAccessoryView.
+ *  Notifies the delegate that the user tapped the thumbnail of the currently attached media.
  */
-- (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inpoutAccessoryView
-                         wantsSize:(CGSize)size;
+- (void)keyboardInputAccessoryViewWantsToClearMedia:(VKeyboardInputAccessoryView *)inputAccessoryView;
 
 @optional
 
@@ -78,7 +65,11 @@ extern const CGFloat VInputAccessoryViewDesiredMinimumHeight;
 @end
 
 /**
- *  The VKeyboardInputAccessoryView manages a message composition interface. It contains an attachment button, a textView and a send button. As the textview's text changes the VKeyboardInputAccessoryView will attempt to resize itself to accomodate the text. After reaching the maximum allowed growing space as defined by it's delegate the VKeyboardInputAccessoryView will stop growing and let the textView scroll it's content. This behavior is similar to the messages app as it appeared in iOS7.
+ *  The VKeyboardInputAccessoryView manages a message composition interface. It contains an attachment button, a textView 
+ *  and a send button. As the textview's text changes the VKeyboardInputAccessoryView will attempt to resize itself to 
+ *  accomodate the text. After reaching the maximum allowed growing space as defined by it's delegate the 
+ *  VKeyboardInputAccessoryView will stop growing and let the textView scroll it's content. This behavior is similar to 
+ *  the messages app as it appeared in iOS7.
  */
 @interface VKeyboardInputAccessoryView : UIView
 
@@ -105,19 +96,50 @@ extern const CGFloat VInputAccessoryViewDesiredMinimumHeight;
 @property (nonatomic, strong) NSString *placeholderText;
 
 /**
+ *  Use this property to override the default behavior of the attachments bar and force it to hidden.
+ */
+@property (nonatomic, assign, getter=isAttachmentsBarHidden) BOOL attachmentsBarHidden;
+
+/**
  *  The selected thumbnail image for the current attachment. Setting this to nil will restore the original placeholder image.
  */
 - (void)setSelectedThumbnail:(UIImage *)selectedThumbnail;
 
 /**
- *  Assigning to this will determine the behavior of the return key. UIReturnKeyDefault will allow the user to insert newline characters into the text view while any other return key type will resign first responder status on the text field.
+ *  Call this to stop editing.
+ *
+ *  @return Returns whether or not the view really stopped editing and resigned first responder.
  */
-@property (nonatomic, assign) UIReturnKeyType returnKeyType;
+- (BOOL)stopEditing;
 
 @property (nonatomic, weak) UITextView *editingTextView;
 
+/**
+ *  Call this to have the textView embedded in this view to become first responder.
+ */
 - (void)startEditing;
+
+/**
+ *  Used to infrom callers on the current editing state.
+ *
+ *  @param return Whether or not this is editing.
+ */
+- (BOOL)isEditing;
+
+/**
+ *  Call this to clear out text and media input on this view.
+ */
 - (void)clearTextAndResign;
 - (void)replyToUser:(VUser *)user;
+
+@end
+
+@interface VKeyboardInputAccessoryView (keyboardSize)
+
+/**
+ *  The keyboardInputAccessoryView is taller than it's contents actually require, this rect represents the actually visible portion of the 
+ *  window covered by this view. Note touches that do not intersect this rect are passed through.
+ */
+- (CGRect)obscuredRectInWindow:(UIWindow *)window;
 
 @end

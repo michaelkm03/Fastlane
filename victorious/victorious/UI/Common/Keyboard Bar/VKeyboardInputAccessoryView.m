@@ -9,6 +9,10 @@
 #import "VKeyboardInputAccessoryView.h"
 #import "VUserTaggingTextStorage.h"
 
+// Layout
+#import "UIView+AutoLayout.h"
+#import "VCompatibility.h"
+
 // Constants
 #import "VConstants.h"
 
@@ -16,23 +20,32 @@
 #import "VDependencyManager.h"
 
 static const NSInteger kCharacterLimit = 255;
-const CGFloat VInputAccessoryViewDesiredMinimumHeight = 51.0f;
 static const CGFloat VTextViewTopInsetAddition = 2.0f;
+static const CGFloat kAttachmentThumbnailWidth = 35.0f;
+static const CGFloat kCommentBarVerticalPaddingToTextView = 10.0f;
+static const CGFloat kMaxTextViewHeight = 150.0f;
+static const CGFloat kMinTextViewHeight = 40.0f;
+static const CGFloat kAttachmentBarHeight = 50.0f;
 
 @interface VKeyboardInputAccessoryView () <UITextViewDelegate>
 
 @property (nonatomic, assign) BOOL selectedMedia;
 @property (nonatomic, strong) VUserTaggingTextStorage *textStorage;
+@property (nonatomic, assign) CGSize lastContentSize;
 
-@property (weak, nonatomic) IBOutlet UIImageView *attachmentThumbnail;
-
+// Views
 @property (nonatomic, weak) IBOutlet UIButton *attachmentsButton;
 @property (nonatomic, weak) IBOutlet UIButton *sendButton;
 @property (nonatomic, weak) IBOutlet UIView *editingTextSuperview;
 @property (nonatomic, weak) IBOutlet UILabel *placeholderLabel;
 
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *verticalSpaceTextViewContainerToTopConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *verticalSpaceTextViewContainerToBottomConstraint;
+// Constraints
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *topSpaceAttachmentsToContainer;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *attachmentsBarHeightConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *attachmentButtonWidthConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *commentUIContainerHeightConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *editingTextViewTopSpace;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *editingTextViewBottomSpace;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, assign) BOOL addedTextView;
@@ -76,7 +89,7 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
 
 - (void)addTextViewToContainer
 {
-    UIFont *defaultFont = [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
+    UIFont *defaultFont = [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
     self.textStorage = [[VUserTaggingTextStorage alloc] initWithTextView:nil defaultFont:defaultFont taggingDelegate:self.delegate dependencyManager:self.dependencyManager];
     
     NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
@@ -89,7 +102,9 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
     editingTextView.translatesAutoresizingMaskIntoConstraints = NO;
     editingTextView.delegate = self;
     editingTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    editingTextView.backgroundColor = [UIColor clearColor];
     editingTextView.font = defaultFont;
+    editingTextView.keyboardType = UIKeyboardTypeTwitter;
     
     //Adding this to the top inset centers the text with it's placeholder
     UIEdgeInsets textContainerInset = editingTextView.textContainerInset;
@@ -103,17 +118,21 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
     
     self.textStorage.textView = self.editingTextView;
     
-    [self.editingTextSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[editingTextView]|"
-                                                                                      options:0
-                                                                                      metrics:nil
-                                                                                        views:NSDictionaryOfVariableBindings(editingTextView)]];
-    [self.editingTextSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[editingTextView]|"
-                                                                                      options:0
-                                                                                      metrics:nil
-                                                                                        views:NSDictionaryOfVariableBindings(editingTextView)]];
+    [self.editingTextSuperview v_addFitToParentConstraintsToSubview:editingTextView];
 }
 
 #pragma mark - UIView
+
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+{
+    UIView *superResult = [super hitTest:point withEvent:event];
+    if (superResult == self)
+    {
+        // Self should pass-through our containers will take everything else
+        return nil;
+    }
+    return superResult;
+}
 
 - (void)layoutSubviews
 {
@@ -127,10 +146,26 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
 
 - (CGSize)intrinsicContentSize
 {
-    return CGSizeMake(320.0f, VInputAccessoryViewDesiredMinimumHeight);
+    CGFloat editingTextViewPadding = self.editingTextViewTopSpace.constant + self.editingTextViewBottomSpace.constant;
+    CGFloat contentSizeHeight = self.editingTextView.contentSize.height;
+    CGFloat heightSum = editingTextViewPadding + contentSizeHeight;
+    CGSize intrinsicSize = CGSizeMake(CGRectGetWidth(self.bounds), MAX(heightSum, kAttachmentBarHeight));
+    return intrinsicSize;
+}
+
+- (BOOL)stopEditing
+{
+    return [self.editingTextView resignFirstResponder];
 }
 
 #pragma mark - Property Accessors
+
+- (void)setDelegate:(id<VKeyboardInputAccessoryViewDelegate>)delegate
+{
+    _delegate = delegate;
+    self.textStorage.taggingDelegate = delegate;
+    self.textStorage.textView = self.editingTextView;
+}
 
 - (NSString *)composedText
 {
@@ -147,22 +182,24 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
 
 - (void)setSelectedThumbnail:(UIImage *)selectedThumbnail
 {
-    self.attachmentThumbnail.layer.cornerRadius = 2.0f;
-    self.attachmentThumbnail.layer.masksToBounds = YES;
-    self.attachmentThumbnail.image = selectedThumbnail;
-
-    self.selectedMedia = (selectedThumbnail != nil);
-    [self.attachmentsButton setImage:(selectedThumbnail != nil) ? nil : [UIImage imageNamed:@"MessageCamera"]
-                            forState:UIControlStateNormal];
+    self.attachmentsButton.layer.cornerRadius = 2.0f;
+    self.attachmentsButton.layer.masksToBounds = YES;
+    self.attachmentsButton.clipsToBounds = YES;
     
+    [self.attachmentsButton setBackgroundImage:selectedThumbnail
+                                      forState:UIControlStateNormal];
+    
+    self.selectedMedia = (selectedThumbnail != nil);
+    
+    [self updateAttachmentThumbnail];
     [self updateSendButton];
+    [self updateAttachmentsBar];
 }
 
-- (void)setReturnKeyType:(UIReturnKeyType)returnKeyType
+- (void)setAttachmentsBarHidden:(BOOL)attachmentsBarHidden
 {
-    _returnKeyType = returnKeyType;
-    
-    self.editingTextView.returnKeyType = returnKeyType;
+    _attachmentsBarHidden = attachmentsBarHidden;
+    [self updateAttachmentsBar];
 }
 
 #pragma mark - Public Methods
@@ -172,15 +209,19 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
     [self.editingTextView becomeFirstResponder];
 }
 
+- (BOOL)isEditing
+{
+    return [self.editingTextView isFirstResponder];
+}
+
 - (void)clearTextAndResign
 {
     self.editingTextView.text = nil;
     self.sendButton.enabled = NO;
-    self.attachmentThumbnail.image = nil;
     self.selectedThumbnail = nil;
     self.attachmentsButton.alpha = 1.0f;
     self.selectedMedia = NO;
-    [self.attachmentsButton setImage:[UIImage imageNamed:@"MessageCamera"]
+    [self.attachmentsButton setImage:nil
                             forState:UIControlStateNormal];
     self.attachmentsButton.selected = NO;
 
@@ -196,14 +237,32 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
 
 #pragma mark - IBActions
 
+- (IBAction)tappedImage:(id)sender
+{
+    [self.delegate keyboardInputAccessoryView:self
+                       selectedAttachmentType:VKeyboardBarAttachmentTypeImage];
+}
+
+- (IBAction)tappedVideo:(id)sender
+{
+    [self.delegate keyboardInputAccessoryView:self
+                       selectedAttachmentType:VKeyboardBarAttachmentTypeVideo];
+}
+
+- (IBAction)tappedGIF:(id)sender
+{
+    [self.delegate keyboardInputAccessoryView:self
+                       selectedAttachmentType:VKeyboardBarAttachmentTypeGIF];
+}
+
 - (IBAction)pressedSend:(id)sender
 {
     [self.delegate pressedSendOnKeyboardInputAccessoryView:self];
 }
 
-- (IBAction)pressedAttachments:(id)sender
+- (IBAction)tappedMediaAttachment:(id)sender
 {
-    [self.delegate pressedAttachmentOnKeyboardInputAccessoryView:self];
+    [self.delegate keyboardInputAccessoryViewWantsToClearMedia:self];
 }
 
 #pragma mark - UITextViewDelegate
@@ -212,19 +271,13 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
 {
     self.placeholderLabel.hidden = (textView.text.length == 0) ? NO : YES;
     
-    CGFloat width = CGRectGetWidth(self.editingTextView.bounds);
-    CGFloat textHeight = self.editingTextView.contentSize.height;
-
-    CGFloat desiredHeight = self.verticalSpaceTextViewContainerToTopConstraint.constant + self.verticalSpaceTextViewContainerToBottomConstraint.constant + textHeight + VTextViewTopInsetAddition;
-    if (CGRectGetHeight(self.frame) < desiredHeight)
+    if (!CGSizeEqualToSize(self.lastContentSize, textView.contentSize))
     {
-        [self.delegate keyboardInputAccessoryView:self
-                                        wantsSize:CGSizeMake(width, roundf(desiredHeight))];
-    }
-    else if (CGRectGetHeight(self.frame) > desiredHeight)
-    {
-        [self.delegate keyboardInputAccessoryView:self
-                                        wantsSize:CGSizeMake(width, fmaxf(desiredHeight, self.intrinsicContentSize.height))];
+        // New size
+        [self invalidateIntrinsicContentSize];
+        self.lastContentSize = textView.contentSize;
+        CGFloat textViewSize = CLAMP(kMinTextViewHeight, textView.contentSize.height, kMaxTextViewHeight);
+        self.commentUIContainerHeightConstraint.constant = textViewSize + kCommentBarVerticalPaddingToTextView;
     }
     
     if (textView.text.length == 0)
@@ -250,7 +303,7 @@ static const CGFloat VTextViewTopInsetAddition = 2.0f;
 shouldChangeTextInRange:(NSRange)range
  replacementText:(NSString *)text
 {
-    if (self.returnKeyType == UIReturnKeyDefault)
+    if (self.textStorage.textView.returnKeyType == UIReturnKeyDefault)
     {
         return YES;
     }
@@ -271,6 +324,8 @@ shouldChangeTextInRange:(NSRange)range
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
+    [self updateAttachmentsBar];
+    
     if ([self.delegate respondsToSelector:@selector(keyboardInputAccessoryViewDidEndEditing:)])
     {
         [self.delegate keyboardInputAccessoryViewDidEndEditing:self];
@@ -279,6 +334,8 @@ shouldChangeTextInRange:(NSRange)range
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
+    [self updateAttachmentsBar];
+    
     if ([self.delegate respondsToSelector:@selector(keyboardInputAccessoryViewDidBeginEditing:)])
     {
         [self.delegate keyboardInputAccessoryViewDidBeginEditing:self];
@@ -287,6 +344,21 @@ shouldChangeTextInRange:(NSRange)range
 
 #pragma mark - Convenience
 
+- (void)animateAttachmentsBarAnimations:(void (^)(void))animations
+{
+    NSParameterAssert(animations != nil);
+    
+    [UIView animateWithDuration:0.2f
+                          delay:0.0f
+                        options:kNilOptions
+                     animations:^
+     {
+         animations();
+         [self layoutIfNeeded];
+     }
+                     completion:nil];
+}
+
 - (NSDictionary *)textEntryAttributes
 {
     return @{ NSFontAttributeName : [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey] };
@@ -294,51 +366,48 @@ shouldChangeTextInRange:(NSRange)range
 
 - (void)updateSendButton
 {
-    self.sendButton.enabled = (self.selectedMedia || (self.composedText.length > 0));
+    NSString *stringWithoutSpace = [self.composedText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    self.sendButton.enabled = (self.selectedMedia || (stringWithoutSpace.length > 0));
 }
 
-- (void)setDelegate:(id<VKeyboardInputAccessoryViewDelegate>)delegate
+- (void)updateAttachmentThumbnail
 {
-    _delegate = delegate;
-    self.textStorage.taggingDelegate = delegate;
-    self.textStorage.textView = self.editingTextView;
+    self.attachmentsButton.enabled = self.selectedMedia;
+    self.attachmentButtonWidthConstraint.constant = self.selectedMedia ? kAttachmentThumbnailWidth : 0.0f;
+}
+
+- (void)updateAttachmentsBar
+{
+    [self animateAttachmentsBarAnimations:^
+     {
+         self.topSpaceAttachmentsToContainer.constant = [self shouldShowAttachmentsBar] ? 0.0f : self.attachmentsBarHeightConstraint.constant;
+     }];
+}
+
+- (BOOL)shouldShowAttachmentsBar
+{
+    // If set to yes then override default behavior
+    if (self.isAttachmentsBarHidden || self.selectedMedia)
+    {
+        return NO;
+    }
+    return self.editingTextView.isFirstResponder;
 }
 
 @end
 
-#pragma mark - Input AccessoryView
+@implementation VKeyboardInputAccessoryView (keyboardSize)
 
-NSString * const VInputAccessoryViewKeyboardFrameDidChangeNotification = @"com.victorious.VInputAccessoryViewKeyboardFrameDidChangeNotification";
-
-@implementation VInputAccessoryView
-
-- (void)willMoveToSuperview:(UIView *)newSuperview
+- (CGRect)obscuredRectInWindow:(UIWindow *)window
 {
-    if (self.superview)
+    CGRect rectInOwnWindow = [self.window convertRect:self.frame fromView:self.superview];
+    CGRect rectInDestinationWindow = [window convertRect:rectInOwnWindow fromWindow:self.window];
+    if (![self shouldShowAttachmentsBar])
     {
-        [self.superview removeObserver:self forKeyPath:NSStringFromSelector(@selector(center))];
+        rectInDestinationWindow.origin.y = rectInDestinationWindow.origin.y + kAttachmentBarHeight;
+        rectInDestinationWindow.size.height = rectInDestinationWindow.size.height - kAttachmentBarHeight;
     }
-    
-    [newSuperview addObserver:self forKeyPath:NSStringFromSelector(@selector(center)) options:0 context:NULL];
-    
-    [super willMoveToSuperview:newSuperview];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if ([object isEqual:self.superview] && [keyPath isEqualToString:NSStringFromSelector(@selector(center))])
-    {
-        NSDictionary *userInfo = @{UIKeyboardFrameEndUserInfoKey:[NSValue valueWithCGRect:[object frame]]};
-        [[NSNotificationCenter defaultCenter] postNotificationName:VInputAccessoryViewKeyboardFrameDidChangeNotification object:nil userInfo:userInfo];
-    }
-}
-
-- (void)dealloc
-{
-    if (self.superview)
-    {
-        [self.superview removeObserver:self forKeyPath:NSStringFromSelector(@selector(center))];
-    }
+    return rectInDestinationWindow;
 }
 
 @end

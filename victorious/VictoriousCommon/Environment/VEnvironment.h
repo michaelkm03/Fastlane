@@ -27,6 +27,8 @@ extern NSString * const VEnvironmentDidFailToLoad;
 
 - (instancetype)initWithName:(NSString *)name baseURL:(NSURL *)baseURL appID:(NSNumber *)appID NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /**
  Initializes a VEnvironment object with the name, baseURL, and appID read from a dictionary
  */

@@ -62,8 +62,4 @@ extern NSString * const kPollResultsLoaded;
 - (RKManagedObjectRequestOperation *)fetchUserInteractionsForSequence:(VSequence *)sequence
                                                        withCompletion:(void (^)(VSequenceUserInteractions *userInteractions, NSError *error))completion;
 
-- (RKManagedObjectRequestOperation *)fetchHistogramDataForSequence:(VSequence *)sequence
-                                                         withAsset:(VAsset *)asset
-                                                    withCompletion:(void(^)(NSArray *histogramData, NSError *error))completion;
-
 @end

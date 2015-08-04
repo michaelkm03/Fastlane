@@ -31,6 +31,12 @@ static NSString * const kImageURLKey = @"imageURL";
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (NSNumber *)displayOrder
 {
     return [self.dependencyManager numberForKey:@"displayOrder"];
@@ -69,6 +75,11 @@ static NSString * const kImageURLKey = @"imageURL";
 - (NSNumber *)animationDuration
 {
     return [self.dependencyManager numberForKey:@"animationDuration"];
+}
+
+- (NSNumber *)cooldownDuration
+{
+    return [self.dependencyManager numberForKey:@"cooldownDuration"];
 }
 
 - (NSNumber *)isPaid

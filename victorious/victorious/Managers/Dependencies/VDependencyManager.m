@@ -66,7 +66,6 @@ static NSString * const kFontNameKey = @"fontName";
 static NSString * const kFontSizeKey = @"fontSize";
 
 // Keys for experiments
-NSString * const VDependencyManagerHistogramEnabledKey = @"histogram_enabled";
 NSString * const VDependencyManagerProfileImageRequiredKey = @"requireProfileImage";
 NSString * const VDependencyManagerPauseVideoWhenCommentingKey = @"pause_video_when_commenting";
 NSString * const VDependencyManagerLikeButtonEnabledKey = @"likeButtonEnabled";
@@ -131,6 +130,12 @@ NSString * const VDependencyManagerVideoWorkspaceKey = @"videoWorkspace";
         }
     }
     return self;
+}
+
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
 }
 
 - (NSString *)description

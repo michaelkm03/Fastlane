@@ -16,16 +16,16 @@ struct GIFSearchMediaExporter {
     
     /// Completion closure to be called when all operations are complete.
     ///
-    /// :param: `previewImage`: A UIImage loaded with a still thumbnail asset
-    /// :param: `mediaUrl`: The URL on disk of the downloaded media file
-    /// :param: `error`: An NSError instance defined if there was en error, otherwise `nil`
+    /// :param: previewImage A UIImage loaded with a still thumbnail asset
+    /// :param: mediaUrl The URL on disk of the downloaded media file
+    /// :param: error An NSError instance defined if there was en error, otherwise `nil`
     typealias GIFSearchMediaExporterCompletion = (previewImage: UIImage?, mediaUrl: NSURL?, error: NSError?)->()
     
     /// For the provided GIFSearchResult, downlods its video asset to disk and loads a preview image
     /// needed for subsequent steps in the publish flow.
     ///
-    /// :param: `gifSearchResult`: The GIFSearchResult whose assets will be loaded/downloaded
-    /// :param: `completion`: A completion closure called wehn all opeartions are complete
+    /// :param: gifSearchResult The GIFSearchResult whose assets will be loaded/downloaded
+    /// :param: completion A completion closure called wehn all opeartions are complete
     func loadMedia( gifSearchResult: GIFSearchResult, completion: GIFSearchMediaExporterCompletion ) {
         
         let downloadPath = self.downloadPathForRemotePath( gifSearchResult.mp4Url )
@@ -37,7 +37,7 @@ struct GIFSearchMediaExporter {
                 videoOperation.completionBlock = {
                     
                     // Load the image synchronously before we leave this thread
-                    var previewImage: UIImage? = {
+                    let previewImage: UIImage? = {
                         var error: NSError?
                         if let previewImageData = NSData(contentsOfURL: previewImageURL, options: nil, error: &error) {
                             return UIImage(data: previewImageData)

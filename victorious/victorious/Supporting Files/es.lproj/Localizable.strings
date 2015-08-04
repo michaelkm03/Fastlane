@@ -621,6 +621,9 @@
 "Video failed to load" = "Error al cargar el video";
 "We encountered an error trying to edit this video." = "Detectamos un error al intentar editar este video.";
 
+"No Photos" = "No hay fotos";
+"No Videos" = "No hay videos";
+
 "#nofilter" = "#nohayfiltro";
 "Create a meme" = "Crea un mema";
 "Create a quote" = "Crea una cita";

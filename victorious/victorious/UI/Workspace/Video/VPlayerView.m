@@ -38,6 +38,18 @@
     return self;
 }
 
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (AVPlayerLayer *)playerLayer
 {
     return (AVPlayerLayer *)self.layer;

@@ -42,6 +42,12 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (BOOL)requiresAuthorization
 {
     return NO;

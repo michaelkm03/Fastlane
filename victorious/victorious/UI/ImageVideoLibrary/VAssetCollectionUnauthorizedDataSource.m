@@ -15,6 +15,7 @@
 
 // Permissions
 #import "VPermissionPhotoLibrary.h"
+#import "VAutomation.h"
 
 static NSString * const kAccessUndeterminedPromptKey = @"accessUndeterminedPrompt";
 static NSString * const kAccessUndeterminedCalltoActionKey = @"accessUndeterminedCallToAction";
@@ -43,6 +44,12 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -62,7 +69,7 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
     authorizationCell.callToActionText = [self.dependencyManager stringForKey:isAllowAccess ? kAccessUndeterminedCalltoActionKey : nil];
     authorizationCell.callToActionFont = [self.dependencyManager fontForKey:kNotAuthorizedCallToActionFont];
     authorizationCell.callToActionColor = [self.dependencyManager colorForKey:kNotAuthorizedTextColorKey];
-
+    authorizationCell.accessibilityIdentifier = VAutomationIdentifierGrantLibraryAccess;
     return authorizationCell;
 }
 

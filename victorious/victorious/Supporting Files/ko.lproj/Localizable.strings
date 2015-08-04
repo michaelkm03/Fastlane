@@ -621,6 +621,9 @@
 "Video failed to load" = "영상 불러오기 실패";
 "We encountered an error trying to edit this video." = "이 영상을 편집하는 데 오류가 발생했습니다.";
 
+"No Photos" = "사진 없음";
+"No Videos" = "영상 없음";
+
 "#nofilter" = "#필터없음";
 "Create a meme" = "짤방 만들기";
 "Create a quote" = "인용구 만들기";
