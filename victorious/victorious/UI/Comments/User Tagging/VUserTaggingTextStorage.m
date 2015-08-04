@@ -516,22 +516,25 @@ static NSString * const VOriginalFont = @"NSOriginalFont";
 
 - (void)repliedToUser:(VUser *)user
 {
-    self.textView.text = @" "; // add a space after the user_tag
-    //Insert username into text and adjust location of cursor
-    self.state = VUserTaggingTextStorageStateInactive;
-    VTag *tag = [VTag tagWithUser:user andTagStringAttributes:self.textView.linkTextAttributes];
-    NSMutableAttributedString *attributedString = [VTagStringFormatter delimitedAttributedString:tag.displayString withDelimiterAttributes:self.textView.typingAttributes];
-    
-    //adjust selection to right after the newly created display-formatted tag string
-    NSRange newSelection = NSMakeRange(self.searchTermRange.location + attributedString.string.length + 1, 0);
-    
-    //Add newly selected tag to tagDictionary
-    [self.tagDictionary incrementTag:tag];
-    
-    NSRange range = NSRangeFromString(self.textView.text);
-    [self replaceCharactersInRange:range withAttributedString:attributedString];
-    
-    self.textView.selectedRange = newSelection;
+    if (user != nil)
+    {
+        self.textView.text = @" "; // add a space after the user_tag
+        //Insert username into text and adjust location of cursor
+        self.state = VUserTaggingTextStorageStateInactive;
+        VTag *tag = [VTag tagWithUser:user andTagStringAttributes:self.textView.linkTextAttributes];
+        NSMutableAttributedString *attributedString = [VTagStringFormatter delimitedAttributedString:tag.displayString withDelimiterAttributes:self.textView.typingAttributes];
+        
+        //adjust selection to right after the newly created display-formatted tag string
+        NSRange newSelection = NSMakeRange(self.searchTermRange.location + attributedString.string.length + 1, 0);
+        
+        //Add newly selected tag to tagDictionary
+        [self.tagDictionary incrementTag:tag];
+        
+        NSRange range = NSRangeFromString(self.textView.text);
+        [self replaceCharactersInRange:range withAttributedString:attributedString];
+        
+        self.textView.selectedRange = newSelection;
+    }
 }
 
 @end
