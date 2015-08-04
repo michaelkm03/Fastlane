@@ -7,6 +7,7 @@
 //
 
 #import "VComment+Fetcher.h"
+#import "VComment+RestKit.h"
 #import "NSString+VParseHelp.h"
 #import "VCommentMedia.h"
 #import "NSURL+MediaType.h"

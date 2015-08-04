@@ -11,6 +11,8 @@
 
 @interface VComment (RestKit)
 
++ (RKEntityMapping *)inStreamEntityMapping;
+
 + (NSArray *)descriptors;
 
 @end

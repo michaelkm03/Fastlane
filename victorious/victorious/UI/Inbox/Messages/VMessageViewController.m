@@ -183,7 +183,6 @@
         [cell.commentTextView.mediaThumbnailView sd_setImageWithURL:[NSURL URLWithString:message.thumbnailPath]];
         if ([message.mediaPath v_hasVideoExtension])
         {
-//            cell.commentTextView.onMediaTapped = [cell.commentTextView standardMediaTapHandlerWithMediaURL:[NSURL URLWithString:message.mediaPath] presentingViewController:self];
             cell.commentTextView.mediaTapDelegate = self;
             cell.commentTextView.playIcon.hidden = NO;
         }

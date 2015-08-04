@@ -128,4 +128,26 @@
     return UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
+- (void)updateVisibleCellsInCollectionView:(UICollectionView *)collectionView
+{
+    NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+    for ( UICollectionViewCell *cell in collectionView.visibleCells )
+    {
+        if ( [cell isKindOfClass:[VSleekStreamCollectionCell class]] )
+        {
+            VSleekStreamCollectionCell *sleekCell = (VSleekStreamCollectionCell *)cell;
+            if ( sleekCell.needsRefresh )
+            {
+                [indexPaths addObject:[collectionView indexPathForCell:sleekCell]];
+                [sleekCell purgeSizeCacheValue];
+            }
+        }
+    }
+    
+    if ( indexPaths.count > 0 )
+    {
+        [collectionView reloadItemsAtIndexPaths:indexPaths];
+    }
+}
+
 @end

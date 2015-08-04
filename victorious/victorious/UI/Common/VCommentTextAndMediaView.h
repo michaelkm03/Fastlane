@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "VVideoView.h"
+#import "VCommentMediaType.h"
 
 @protocol VCommentMediaTapDelegate <NSObject>
 
@@ -19,23 +20,13 @@
 @class VTagSensitiveTextView;
 
 /**
- A type of comment media
- */
-typedef NS_ENUM(NSInteger, VCommentMediaViewType)
-{
-    VCommentMediaViewTypeImage,
-    VCommentMediaViewTypeVideo,
-    VCommentMediaViewTypeGIF,
-};
-
-/**
  This view is used inside the comment and messaging views
  to display comment text and any media that might
  be attached to the comment.
  */
 @interface VCommentTextAndMediaView : UIView
 
-@property (nonatomic, assign) VCommentMediaViewType mediaType;
+@property (nonatomic, assign) VCommentMediaType mediaType;
 @property (nonatomic, copy)           NSString           *text;
 @property (nonatomic, copy)           NSAttributedString *attributedText;
 @property (nonatomic, weak, readonly) UIImageView        *mediaThumbnailView;

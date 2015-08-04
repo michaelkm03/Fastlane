@@ -12,10 +12,6 @@
 
 @interface VObjectManager (Comment)
 
-- (RKManagedObjectRequestOperation *)fetchFiltedRealtimeCommentForAssetId:(NSInteger)assetId
-                                                           successBlock:(VSuccessBlock)success
-                                                              failBlock:(VFailBlock)fail;
-
 - (RKManagedObjectRequestOperation *)fetchCommentByID:(NSInteger)commentID
                                          successBlock:(VSuccessBlock)success
                                             failBlock:(VFailBlock)fail;

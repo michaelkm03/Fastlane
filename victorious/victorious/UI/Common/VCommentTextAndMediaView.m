@@ -260,24 +260,18 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
     [self invalidateIntrinsicContentSize];
 }
 
-- (void)setMediaType:(VCommentMediaViewType)mediaType
+- (void)setMediaType:(VCommentMediaType)mediaType
 {
     _mediaType = mediaType;
     switch (mediaType)
     {
-        case VCommentMediaViewTypeImage:
-        {
-            self.playIcon.hidden = YES;
-            break;
-        }
-            
-        case VCommentMediaViewTypeVideo:
+        case VCommentMediaTypeVideo:
         {
             self.playIcon.hidden = NO;
             break;
         }
             
-        case VCommentMediaViewTypeGIF:
+        case VCommentMediaTypeGIF:
         {
             if (self.videoView == nil)
             {
@@ -289,12 +283,19 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
             self.playIcon.hidden = YES;
             break;
         }
+        
+        case VCommentMediaTypeImage:
+        default:
+        {
+            self.playIcon.hidden = YES;
+            break;
+        }
     }
 }
 
 - (void)setAutoplayURL:(NSURL *)autoplayURL
 {
-    if (_autoplayURL == autoplayURL || self.mediaType != VCommentMediaViewTypeGIF)
+    if (_autoplayURL == autoplayURL || self.mediaType != VCommentMediaTypeGIF)
     {
         return;
     }
@@ -307,7 +308,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
 - (void)setInFocus:(BOOL)inFocus
 {
     _inFocus = inFocus;
-    if (self.mediaType == VCommentMediaViewTypeGIF)
+    if (self.mediaType == VCommentMediaTypeGIF)
     {
         inFocus ? [self.videoView play] : [self.videoView pause];
     }
