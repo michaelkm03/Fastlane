@@ -56,6 +56,7 @@ class GIFSearchViewController: UIViewController {
         self.scrollPaginator.delegate = self
         
         self.searchBar.delegate = self
+        self.searchBar.accessibilityIdentifier = AutomationId.GIFSearchSearchbar.rawValue
         if let searchTextField = self.searchBar.v_textField {
             searchTextField.tintColor = self.dependencyManager?.colorForKey(VDependencyManagerLinkColorKey)
             searchTextField.font = self.dependencyManager?.fontForKey(VDependencyManagerHeading4FontKey)
@@ -156,6 +157,7 @@ class GIFSearchViewController: UIViewController {
     
     private func updateNavigationItemState() {
         self.navigationItem.rightBarButtonItem?.enabled = selectedIndexPath != nil
+        self.navigationItem.rightBarButtonItem?.accessibilityIdentifier = AutomationId.GIFSearchNext.rawValue
     }
     
     /// Inserts a new section into the collection view that shows a fullsize preview video for the GIF search result
