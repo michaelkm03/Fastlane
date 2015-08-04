@@ -83,7 +83,7 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 
 #pragma mark - Cell visibily tracking (SequenceDidAppearInStream event)
 
-- (void)onStreamCellDidBecomeVisibleWithCellEvent:(StreamCellTrackingEvent *)event
+- (void)onStreamCellDidBecomeVisibleWithCellEvent:(StreamCellContext *)event
 {
     VSequence *sequence = (VSequence *)event.streamItem;
     VStream *stream = event.stream;
@@ -103,7 +103,7 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
                                           eventId:sequence.remoteId];
 }
 
-- (void)onStreamCellSelectedWithCellEvent:(StreamCellTrackingEvent *)event
+- (void)onStreamCellSelectedWithCellEvent:(StreamCellContext *)event
 {
     VSequence *sequence = (VSequence *)event.streamItem;
     VStream *stream = event.stream;

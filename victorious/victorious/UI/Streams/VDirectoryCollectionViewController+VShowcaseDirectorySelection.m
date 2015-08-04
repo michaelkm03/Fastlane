@@ -15,10 +15,9 @@
 
 - (void)showcaseDirectoryCell:(VShowcaseDirectoryCell *)showcaseDirectoryCell didSelectStreamItem:(VStreamItem *)streamItem
 {
-    StreamCellTrackingEvent *event = [StreamCellTrackingEvent new];
-    event.stream = self.currentStream;
-    event.streamItem = streamItem;
-    event.fromShelf = NO;
+    StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:streamItem
+                                                                      stream:self.currentStream
+                                                                   fromShelf:NO];
     
     [self navigateToDisplayStreamItemWithEvent:event];
 }

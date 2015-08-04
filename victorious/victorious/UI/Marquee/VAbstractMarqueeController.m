@@ -226,10 +226,9 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
             VSequence *sequenceToTrack = [(id<VStreamCellTracking>)cell sequenceToTrack];
             if (sequenceToTrack != nil)
             {
-                StreamCellTrackingEvent *event = [StreamCellTrackingEvent new];
-                event.stream = self.stream;
-                event.streamItem = sequenceToTrack;
-                event.fromShelf = YES;
+                StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:sequenceToTrack
+                                                                                  stream:self.stream
+                                                                               fromShelf:YES];
                 
                 [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithCellEvent:event];
             }

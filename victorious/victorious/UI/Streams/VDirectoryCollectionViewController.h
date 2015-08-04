@@ -19,6 +19,6 @@
  
     @param event The stream cell event that occured
  */
-- (void)navigateToDisplayStreamItemWithEvent:(StreamCellTrackingEvent *)event;
+- (void)navigateToDisplayStreamItemWithEvent:(StreamCellContext *)event;
 
 @end

@@ -8,7 +8,7 @@
 
 @import Foundation;
 
-@class VStream, VSequence, StreamCellTrackingEvent;
+@class VStream, VSequence, StreamCellContext;
 
 /**
  A helper class that handles the somewhat complex state management rules relates
@@ -47,12 +47,12 @@
 /**
  Call this whenever a cell becomes visisble according to any applicable visibility threshold requirements.
  */
-- (void)onStreamCellDidBecomeVisibleWithCellEvent:(StreamCellTrackingEvent *)event;
+- (void)onStreamCellDidBecomeVisibleWithCellEvent:(StreamCellContext *)event;
 
 /**
  Call this when a stream cell is selected and another view will be presented/pushed to show its content.
  */
-- (void)onStreamCellSelectedWithCellEvent:(StreamCellTrackingEvent *)event;
+- (void)onStreamCellSelectedWithCellEvent:(StreamCellContext *)event;
 
 /**
  Call this after a stream has been fetched from the server and all information necessary

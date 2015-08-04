@@ -475,10 +475,9 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
-        StreamCellTrackingEvent *event = [StreamCellTrackingEvent new];
-        event.stream = marquee.stream;
-        event.streamItem = streamItem;
-        event.fromShelf = YES;
+        StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:streamItem
+                                                                          stream:marquee.stream
+                                                                       fromShelf:YES];
         
         [self showContentViewForCellEvent:event withPreviewImage:image];
     }
@@ -537,10 +536,9 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     self.lastSelectedIndexPath = indexPath;
     VStreamItem *streamItem = (VStreamItem *)[self.streamDataSource itemAtIndexPath:indexPath];
     
-    StreamCellTrackingEvent *event = [StreamCellTrackingEvent new];
-    event.stream = self.currentStream;
-    event.streamItem = streamItem;
-    event.fromShelf = NO;
+    StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:streamItem
+                                                                      stream:self.currentStream
+                                                                   fromShelf:NO];
     
     [self showContentViewForCellEvent:event withPreviewImage:nil];
 }
@@ -750,7 +748,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     self.collectionView.backgroundView = newBackgroundView;
 }
 
-- (void)showContentViewForCellEvent:(StreamCellTrackingEvent *)event withPreviewImage:(UIImage *)previewImage
+- (void)showContentViewForCellEvent:(StreamCellContext *)event withPreviewImage:(UIImage *)previewImage
 {
     NSParameterAssert(event.streamItem != nil);
     NSParameterAssert(self.currentStream != nil);
@@ -968,10 +966,9 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
         {
             VSequence *sequenceToTrack = [(id<VStreamCellTracking>)cell sequenceToTrack];
             
-            StreamCellTrackingEvent *event = [StreamCellTrackingEvent new];
-            event.stream = self.currentStream;
-            event.streamItem = sequenceToTrack;
-            event.fromShelf = NO;
+            StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:sequenceToTrack
+                                                                              stream:self.currentStream
+                                                                           fromShelf:NO];
             
             [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithCellEvent:event];
         }

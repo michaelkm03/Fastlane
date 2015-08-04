@@ -213,10 +213,9 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
                               VTrackingKeyRemoteId : streamItem.remoteId ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromMarquee parameters:params];
     
-    StreamCellTrackingEvent *event = [StreamCellTrackingEvent new];
-    event.stream = self.currentStream;
-    event.streamItem = streamItem;
-    event.fromShelf = YES;
+    StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:streamItem
+                                                                      stream:self.currentStream
+                                                                   fromShelf:YES];
     
     [self navigateToDisplayStreamItemWithEvent:event];
 }
@@ -292,15 +291,14 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 {
     VStreamItem *streamItem = [self.streamDataSource itemAtIndexPath:indexPath];
     
-    StreamCellTrackingEvent *event = [StreamCellTrackingEvent new];
-    event.stream = self.currentStream;
-    event.streamItem = streamItem;
-    event.fromShelf = NO;
+    StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:streamItem
+                                                                      stream:self.currentStream
+                                                                   fromShelf:NO];
     
     [self navigateToDisplayStreamItemWithEvent:event];
 }
 
-- (void)navigateToDisplayStreamItemWithEvent:(StreamCellTrackingEvent *)event
+- (void)navigateToDisplayStreamItemWithEvent:(StreamCellContext *)event
 {
     VStreamItem *streamItem = event.streamItem;
     
