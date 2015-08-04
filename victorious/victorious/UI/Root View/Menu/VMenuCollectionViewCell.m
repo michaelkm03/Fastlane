@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAutomation.h"
 #import "VNumericalBadgeView.h"
 #import "VDependencyManager.h"
 #import "VMenuCollectionViewCell.h"
