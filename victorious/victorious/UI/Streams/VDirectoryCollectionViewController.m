@@ -30,6 +30,7 @@
 #import "VDependencyManager+VTracking.h"
 #import "VTracking.h"
 #import "UIViewController+VAccessoryScreens.h"
+#import "victorious-Swift.h"
 
 static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kMarqueeKey = @"marqueeCell";
@@ -212,7 +213,12 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
                               VTrackingKeyRemoteId : streamItem.remoteId ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromMarquee parameters:params];
     
-    [self navigateToDisplayStreamItem:streamItem];
+    StreamCellTrackingEvent *event = [StreamCellTrackingEvent new];
+    event.stream = self.currentStream;
+    event.streamItem = streamItem;
+    event.fromShelf = YES;
+    
+    [self navigateToDisplayStreamItemWithEvent:event];
 }
 
 - (void)marquee:(VAbstractMarqueeController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path
@@ -285,11 +291,19 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VStreamItem *streamItem = [self.streamDataSource itemAtIndexPath:indexPath];
-    [self navigateToDisplayStreamItem:streamItem];
+    
+    StreamCellTrackingEvent *event = [StreamCellTrackingEvent new];
+    event.stream = self.currentStream;
+    event.streamItem = streamItem;
+    event.fromShelf = NO;
+    
+    [self navigateToDisplayStreamItemWithEvent:event];
 }
 
-- (void)navigateToDisplayStreamItem:(VStreamItem *)streamItem
+- (void)navigateToDisplayStreamItemWithEvent:(StreamCellTrackingEvent *)event
 {
+    VStreamItem *streamItem = event.streamItem;
+    
     if ( streamItem.isSingleStream )
     {
         VStreamCollectionViewController *streamCollection = [self.dependencyManager templateValueOfType:[VStreamCollectionViewController class]
@@ -299,7 +313,9 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     }
     else if ( streamItem.isContent )
     {
-        NSString *streamId = [self.marqueeController.stream hasShelfID] ? self.marqueeController.stream.shelfId : self.marqueeController.stream.streamId;
+        [self.streamTrackingHelper onStreamCellSelectedWithCellEvent:event];
+        
+        NSString *streamId = [self.marqueeController.stream hasShelfID] && event.fromShelf ? self.marqueeController.stream.shelfId : self.marqueeController.stream.streamId;
         [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:(VSequence *)streamItem streamID:streamId commentId:nil placeHolderImage:nil];
     }
     else if ( [streamItem isKindOfClass:[VStream class]] )

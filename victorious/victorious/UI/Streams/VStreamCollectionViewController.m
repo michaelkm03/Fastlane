@@ -477,7 +477,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     {
         StreamCellTrackingEvent *event = [StreamCellTrackingEvent new];
         event.stream = marquee.stream;
-        event.sequence = (VSequence *)streamItem;
+        event.streamItem = streamItem;
         event.fromShelf = YES;
         
         [self showContentViewForCellEvent:event withPreviewImage:image];
@@ -535,11 +535,11 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     }
     
     self.lastSelectedIndexPath = indexPath;
-    VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
+    VStreamItem *streamItem = (VStreamItem *)[self.streamDataSource itemAtIndexPath:indexPath];
     
     StreamCellTrackingEvent *event = [StreamCellTrackingEvent new];
     event.stream = self.currentStream;
-    event.sequence = sequence;
+    event.streamItem = streamItem;
     event.fromShelf = NO;
     
     [self showContentViewForCellEvent:event withPreviewImage:nil];
@@ -752,7 +752,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)showContentViewForCellEvent:(StreamCellTrackingEvent *)event withPreviewImage:(UIImage *)previewImage
 {
-    NSParameterAssert(event.sequence != nil);
+    NSParameterAssert(event.streamItem != nil);
     NSParameterAssert(self.currentStream != nil);
     
     [self.streamTrackingHelper onStreamCellSelectedWithCellEvent:event];
@@ -760,7 +760,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     NSString *streamID = [event.stream hasShelfID] && event.fromShelf ? event.stream.shelfId : event.stream.streamId;
     [VContentViewPresenter presentContentViewFromViewController:self
                                           withDependencyManager:self.dependencyManager
-                                                    ForSequence:event.sequence
+                                                    ForSequence:(VSequence *)event.streamItem
                                                  inStreamWithID:streamID
                                                       commentID:nil
                                                withPreviewImage:previewImage];
@@ -970,7 +970,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
             
             StreamCellTrackingEvent *event = [StreamCellTrackingEvent new];
             event.stream = self.currentStream;
-            event.sequence = sequenceToTrack;
+            event.streamItem = sequenceToTrack;
             event.fromShelf = NO;
             
             [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithCellEvent:event];

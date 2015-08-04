@@ -17,8 +17,8 @@
 /**
     Navigates to a view controller that can appropriately display the provided stream item.
  
-    @param streamItem The stream item to display in a new view controller
+    @param event The stream cell event that occured
  */
-- (void)navigateToDisplayStreamItem:(VStreamItem *)streamItem;
+- (void)navigateToDisplayStreamItemWithEvent:(StreamCellTrackingEvent *)event;
 
 @end

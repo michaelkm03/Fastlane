@@ -228,7 +228,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
             {
                 StreamCellTrackingEvent *event = [StreamCellTrackingEvent new];
                 event.stream = self.stream;
-                event.sequence = sequenceToTrack;
+                event.streamItem = sequenceToTrack;
                 event.fromShelf = YES;
                 
                 [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithCellEvent:event];

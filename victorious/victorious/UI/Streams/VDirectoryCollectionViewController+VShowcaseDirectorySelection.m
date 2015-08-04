@@ -9,12 +9,18 @@
 #import "VDirectoryCollectionViewController+VShowcaseDirectorySelection.h"
 #import "VStream.h"
 #import "VStreamItem+Fetcher.h"
+#import "victorious-Swift.h"
 
 @implementation VDirectoryCollectionViewController (VShowcaseDirectorySelection)
 
 - (void)showcaseDirectoryCell:(VShowcaseDirectoryCell *)showcaseDirectoryCell didSelectStreamItem:(VStreamItem *)streamItem
 {
-    [self navigateToDisplayStreamItem:streamItem];
+    StreamCellTrackingEvent *event = [StreamCellTrackingEvent new];
+    event.stream = self.currentStream;
+    event.streamItem = streamItem;
+    event.fromShelf = NO;
+    
+    [self navigateToDisplayStreamItemWithEvent:event];
 }
 
 @end

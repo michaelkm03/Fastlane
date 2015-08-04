@@ -9,7 +9,7 @@
 import Foundation
 
 @objc class StreamCellTrackingEvent : NSObject {
-    var sequence: VSequence?
+    var streamItem: VStreamItem?
     var stream: VStream?
     var fromShelf = false
 }
