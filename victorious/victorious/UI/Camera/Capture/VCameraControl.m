@@ -9,12 +9,16 @@
 #import "VCameraControl.h"
 
 #import "UIColor+VBrightness.h"
+#import "UIColor+VHex.h"
+#import "UIView+AutoLayout.h"
 
 static const CGFloat kMinHeightSize = 80.0f;
 static const CGFloat kWidthScaleFactorImageOnly = 1.2f;
 static const CGFloat kWidthScaleFactorDefault = 1.7f;
 static const CGFloat kHighlightedAlpha = 0.6f;
 static const CGFloat kHighlightedScaleFactor = 0.85;
+static const CGFloat kRecordingDotDiameter = 27.0f;
+static NSString * const kRecordingDotHexColor = @"ED1C24";
 
 static const NSTimeInterval kMaxElapsedTimeImageTriggerWithVideo = 0.2;
 static const NSTimeInterval kRecordingTriggerDuration = 0.45;
@@ -30,6 +34,8 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
 @property (nonatomic, assign) NSTimeInterval currentStartTrackingTime;
 @property (nonatomic, assign) BOOL growing;
 @property (nonatomic, assign) BOOL recording;
+
+@property (nonatomic, strong) UIView *redDotView;
 
 @end
 
@@ -110,6 +116,28 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
 }
 
 #pragma mark - Setters
+
+- (void)setCaptureMode:(VCameraControlCaptureMode)captureMode
+{
+    _captureMode = captureMode;
+    
+    if (captureMode == VCameraControlCaptureModeVideo)
+    {
+        if (self.redDotView != nil)
+        {
+            [self.redDotView removeFromSuperview];
+        }
+        self.redDotView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kRecordingDotDiameter, kRecordingDotDiameter)];
+        self.redDotView.userInteractionEnabled = NO;
+        self.redDotView.backgroundColor = [UIColor v_colorFromHexString:kRecordingDotHexColor];
+        self.redDotView.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+        self.redDotView.layer.cornerRadius = kRecordingDotDiameter / 2.0f;
+        self.redDotView.layer.masksToBounds = YES;
+        self.redDotView.translatesAutoresizingMaskIntoConstraints = NO;
+        self.redDotView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+        [self addSubview:self.redDotView];
+    }
+}
 
 - (void)setDefaultTintColor:(UIColor *)defaultTintColor
 {
