@@ -997,6 +997,14 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                        [animationImageView removeFromSuperview];
                                    });
                 }
+                
+                // Refresh comments 2 seconds after user throws an EB
+                __weak typeof(self) welf = self;
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                {
+                    __strong typeof(welf) strongSelf = welf;
+                    [strongSelf reloadComments];
+                });
             };
             
             return self.experienceEnhancerCell;
@@ -1507,13 +1515,14 @@ referenceSizeForHeaderInSection:(NSInteger)section
                               realTime:welf.realtimeCommentBeganTime
                             completion:^(BOOL succeeded)
      {
-         [welf.viewModel loadComments:VPageTypeFirst];
-         [UIView animateWithDuration:0.0f
-                          animations:^
-          {
-              [welf didUpdateCommentsWithPageType:VPageTypeFirst];
-          }];
+         __strong typeof(welf) strongSelf = welf;
+         [strongSelf reloadComments];
      }];
+}
+
+- (void)reloadComments
+{
+    [self.viewModel loadComments:VPageTypeFirst];
 }
 
 - (void)addMediaToCommentWithAttachmentType:(VKeyboardBarAttachmentType)attachmentType
