@@ -137,12 +137,15 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 
 #pragma mark - VVideoCameraViewControllerDelegate
 
-- (void)videoCameraViewController:(VVideoCameraViewController *)videoCamera capturedVideoAtFileURL:(NSURL *)url
+- (void)videoCameraViewController:(VVideoCameraViewController *)videoCamera
+           capturedVideoAtFileURL:(NSURL *)url
+                     previewImage:(UIImage *)previewImage
 {
     // We only care if it's the top of the stack
     if ([self.viewControllers lastObject] == videoCamera)
     {
-        [self captureFinishedWithMediaURL:url previewImage:nil];
+        [self captureFinishedWithMediaURL:url
+                             previewImage:previewImage];
     }
 }
 

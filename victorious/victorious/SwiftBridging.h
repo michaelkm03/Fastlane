@@ -38,10 +38,12 @@
 // Victorious Models
 #import "VAbstractFilter.h"
 #import "VSEquence.h"
+#import "VExperimentSettings.h"
 
 // Everything else
 #import "VTextPostTextView.h"
 #import "VObjectManager.h"
+#import "VObjectManager+Private.h"
 #import "VPaginationManager.h"
 #import "VPageType.h"
 #import "VCaptureContainerViewController.h"
@@ -50,4 +52,8 @@
 #import "VDependencyManager.h"
 #import "VScrollPaginator.h"
 #import "NSCharacterSet+VURLParts.h"
+#import "VSettingsSwitchCell.h"
 #import "UIView+AutoLayout.h"
+#import "VButton.h"
+#import "VHasManagedDependencies.h"
+#import "VSessionTimer.h"

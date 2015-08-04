@@ -58,7 +58,7 @@
 {
     [super setUp];
     
-    self.dependencyManager = [[VDependencyManager alloc] init];
+    self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil configuration:@{ } dictionaryOfClassesByTemplateName:@{ }];
     self.objectManager = [[VMockObjectManager alloc] init];
     self.viewController = [[VMockViewController alloc] init];
     self.authroizedAction = [[VAuthorizedAction alloc] initWithObjectManager:self.objectManager

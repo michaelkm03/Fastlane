@@ -8,6 +8,7 @@
 
 #import "VConstants.h"
 #import "VContentInputAccessoryView.h"
+#import "VAutomation.h"
 
 @interface VContentInputAccessoryView ()
 
@@ -114,6 +115,7 @@
 - (void)setHashtagButton:(UIBarButtonItem *)hashtagButton
 {
     _hashtagButton = hashtagButton;
+    _hashtagButton.accessibilityIdentifier = VAutomationIdentifierKeyboardHashtagButton;
 }
 
 - (void)setMaxCharacterLength:(NSUInteger)maxCharacterLength
@@ -136,6 +138,7 @@
     // Update our own state
     NSString *text = [notification.object text];
     self.hashtagButton.enabled = ((text.length < self.maxCharacterLength) && ([self shouldAddHashTags]));
+    self.hashtagButton.accessibilityIdentifier = VAutomationIdentifierKeyboardHashtagButton;
     self.countDownLabel.title = [self charactersRemainingStringForCharacterCount: text.length];
     
     // Limit text input to maxCharacterLength

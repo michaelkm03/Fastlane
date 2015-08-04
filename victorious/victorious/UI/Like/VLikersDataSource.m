@@ -30,6 +30,12 @@
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 #pragma mark - VUsersDataSource
 
 - (NSString *)noContentTitle

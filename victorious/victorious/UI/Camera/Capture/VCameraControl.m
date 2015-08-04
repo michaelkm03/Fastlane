@@ -314,7 +314,7 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
                  return;
              }
              [UIView animateWithDuration:kRecordingTriggerDuration/2
-                              animations:nil
+                              animations:^{ }
                               completion:^(BOOL finished)
               {
                   BOOL videoCaptureModeEnabled = (self.captureMode & VCameraControlCaptureModeVideo);

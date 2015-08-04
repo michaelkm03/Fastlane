@@ -12,7 +12,7 @@ extension UIView {
     
     /// Recursively finds the any subviews that return true when used as the parameter to the `pattern` closure
     ///
-    /// :parameter: `pattern`: Closure to call to determine if view is the one sought
+    /// :param: pattern Closure to call to determine if view is the one sought
     /// :returns: A view that passes the test or nil
     func v_findSubviews( pattern: (UIView)->(Bool) ) -> [UIView] {
         var output = [UIView]()

@@ -38,6 +38,12 @@ static char kPrivateQueueSpecific;
 
 @implementation VTemplateDownloadOperation
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (instancetype)initWithDownloader:(id<VTemplateDownloader>)downloader andDelegate:(id<VTemplateDownloadOperationDelegate>)delegate
 {
     NSParameterAssert(downloader != nil);

@@ -43,6 +43,12 @@ static const CGFloat kThresholdPercent = 0.25f;
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if ( self.state == VNavigationControllerScrollDelegateStateHiding || self.state == VNavigationControllerScrollDelegateStateShowing )

@@ -31,6 +31,12 @@ static NSString * const kImageURLKey = @"imageURL";
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (NSNumber *)displayOrder
 {
     return [self.dependencyManager numberForKey:@"displayOrder"];

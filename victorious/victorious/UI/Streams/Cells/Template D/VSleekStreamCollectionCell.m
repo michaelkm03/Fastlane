@@ -27,6 +27,7 @@
 #import "VListicleView.h"
 #import "VEditorializationItem.h"
 #import "VStream.h"
+#import "VPreviewViewBackgroundHost.h"
 
 // These values must match the constraint values in interface builder
 static const CGFloat kSleekCellHeaderHeight = 50.0f;
@@ -290,6 +291,10 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
     if ([self.previewView respondsToSelector:@selector(setDependencyManager:)])
     {
         [self.previewView setDependencyManager:self.dependencyManager];
+    }
+    if ( [self.previewView conformsToProtocol:@protocol(VPreviewViewBackgroundHost)] )
+    {
+        [(VSequencePreviewView <VPreviewViewBackgroundHost> *)self.previewView updateToFitContent:YES withBackgroundSupplier:self.dependencyManager];
     }
     [self.previewView setSequence:sequence];
 }

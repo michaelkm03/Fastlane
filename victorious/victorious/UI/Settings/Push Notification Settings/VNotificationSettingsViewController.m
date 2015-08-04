@@ -7,7 +7,7 @@
 //
 
 #import "VNotificationSettingsViewController.h"
-#import "VNotificationSettingCell.h"
+#import "VSettingsSwitchCell.h"
 #import "VObjectManager+DeviceRegistration.h"
 #import "VNotificationSettings.h"
 #import "VNoContentTableViewCell.h"
@@ -19,7 +19,7 @@
 #import "VDependencyManager.h"
 #import "VAppInfo.h"
 #import "VPermissionsTrackingHelper.h"
-@interface VNotificationSettingsViewController() <VNotificationSettingCellDelegate, VNotificiationSettingsStateManagerDelegate>
+@interface VNotificationSettingsViewController() <VSettingsSwitchCellDelegate, VNotificiationSettingsStateManagerDelegate>
 
 @property (nonatomic, strong) VNotificationSettings *settings;
 @property (nonatomic, strong) NSOrderedSet *sections;
@@ -290,9 +290,9 @@
     [self.permissionsTrackingHelper permissionsDidChange:permissionChanged permissionState:trackingValueState];
 }
 
-#pragma mark - VNotificationSettingCellDelegate
+#pragma mark - VSettingsSwitchCellDelegate
 
-- (void)settingsDidUpdateFromCell:(VNotificationSettingCell *)cell
+- (void)settingsDidUpdateFromCell:(VSettingsSwitchCell *)cell
 {
     if (self.settings == nil )
     {
@@ -317,8 +317,8 @@
         }
         
         // Create cell from VNotificationSettingsTableSection and VNotificationSettingsTableRow rows
-        NSString *reuseId = NSStringFromClass([VNotificationSettingCell class]);
-        VNotificationSettingCell *cell = [self.tableView dequeueReusableCellWithIdentifier:reuseId];
+        NSString *reuseId = NSStringFromClass([VSettingsSwitchCell class]);
+        VSettingsSwitchCell *cell = [self.tableView dequeueReusableCellWithIdentifier:reuseId];
         
         VNotificationSettingsTableSection *section = self.sections[ indexPath.section ];
         VNotificationSettingsTableRow *row = [section rowAtIndex:indexPath.row];

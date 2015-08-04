@@ -7,7 +7,8 @@
 //
 
 #import "VStreamPreviewView.h"
+#import "VPreviewViewBackgroundHost.h"
 
-@interface VImageStreamPreviewView : VStreamPreviewView
+@interface VImageStreamPreviewView : VStreamPreviewView <VPreviewViewBackgroundHost>
 
 @end

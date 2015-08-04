@@ -64,7 +64,6 @@
 @property (nonatomic, strong, readwrite) VExperienceEnhancerController *experienceEnhancerController;
 
 @property (nonatomic, strong) NSString *followersText;
-@property (nonatomic, strong, readwrite) VHistogramDataSource *histogramDataSource;
 @property (nonatomic, assign, readwrite) VVideoCellViewModel *videoViewModel;
 
 @property (nonatomic, strong) NSMutableArray *adChain;
@@ -324,7 +323,6 @@
 {
     [self fetchPollData];
     [self fetchComments];
-    [self fetchHistogramData];
     [self fetchUserinfo];
     [self fetchSequenceData];
 }
@@ -365,25 +363,6 @@
              self.hasReposted = userInteractions.hasReposted;
          }];
     }
-}
-
-- (void)fetchHistogramData
-{
-    if (![self.sequence isVideo])
-    {
-        return;
-    }
-
-    [[VObjectManager sharedManager] fetchHistogramDataForSequence:self.sequence
-                                                        withAsset:self.currentAsset
-                                                   withCompletion:^(NSArray *histogramData, NSError *error)
-     {
-         if (histogramData)
-         {
-             self.histogramDataSource = [VHistogramDataSource histogramDataSourceWithDataPoints:histogramData];
-             [self.delegate didUpdateHistogramData];
-         }
-     }];
 }
 
 - (void)fetchPollData

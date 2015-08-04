@@ -36,7 +36,7 @@
     NSData *testData = [NSData dataWithContentsOfURL:[[NSBundle bundleForClass:[self class]] URLForResource:@"template" withExtension:@"json"]];
     NSDictionary *configuration = [NSJSONSerialization JSONObjectWithData:testData options:0 error:nil];
     self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil configuration:configuration dictionaryOfClassesByTemplateName:nil];
-    self.dependencyManager = [[VDependencyManager alloc] init];
+    self.dependencyManager = [[VDependencyManager alloc] initWithParentManager:nil configuration:@{ } dictionaryOfClassesByTemplateName:@{ }];
     self.users = [VDummyModels createUsers:4];
     self.hashtags = [VDummyModels createHashtags:6];
     self.userFormatString = @"@{%@:%@}";

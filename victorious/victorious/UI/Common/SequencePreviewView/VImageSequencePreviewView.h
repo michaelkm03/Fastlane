@@ -7,7 +7,8 @@
 //
 
 #import "VSequencePreviewView.h"
+#import "VPreviewViewBackgroundHost.h"
 
-@interface VImageSequencePreviewView : VSequencePreviewView
+@interface VImageSequencePreviewView : VSequencePreviewView <VPreviewViewBackgroundHost>
 
 @end
