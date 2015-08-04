@@ -561,7 +561,6 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     self.badgeNumber = self.messageCountCoordinator.unreadMessageCount;
 
     id<VBadgeResponder> badgeResponder = [[self nextResponder] targetForAction:@selector(updateBadge) withSender:nil];
-    NSAssert(badgeResponder != nil, @"badge responder cannot be nil in VInboxViewController");
     [badgeResponder updateBadge];
 }
 
