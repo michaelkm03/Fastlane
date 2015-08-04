@@ -998,8 +998,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                    });
                 }
                 
-                // Refresh comments 2 seconds after user throws an EB
-                __weak typeof(self) welf = self;
+                // Refresh comments 2 seconds after user throws an EB in case we need to show an EB comment
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
                 {
                     __strong typeof(welf) strongSelf = welf;
