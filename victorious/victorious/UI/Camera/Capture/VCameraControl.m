@@ -10,7 +10,6 @@
 
 #import "UIColor+VBrightness.h"
 #import "UIColor+VHex.h"
-#import "UIView+AutoLayout.h"
 
 static const CGFloat kMinHeightSize = 80.0f;
 static const CGFloat kWidthScaleFactorImageOnly = 1.2f;
