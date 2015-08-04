@@ -2,18 +2,18 @@
 //  VAsset.m
 //  victorious
 //
-//  Created by Michael Sena on 1/15/15.
+//  Created by Sharif Ahmed on 7/29/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
 #import "VAsset.h"
-#import "VComment.h"
 #import "VNode.h"
 
 
 @implementation VAsset
 
 @dynamic audioMuted;
+@dynamic backgroundColor;
 @dynamic data;
 @dynamic loop;
 @dynamic mimeType;
@@ -23,8 +23,6 @@
 @dynamic speed;
 @dynamic streamAutoplay;
 @dynamic type;
-@dynamic comments;
 @dynamic node;
-@dynamic backgroundColor;
 
 @end

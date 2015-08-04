@@ -1,9 +1,9 @@
 //
 //  VSequence.h
-//  victorious
+//  
 //
-//  Created by Sharif Ahmed on 7/13/15.
-//  Copyright (c) 2015 Victorious. All rights reserved.
+//  Created by Sharif Ahmed on 7/16/15.
+//
 //
 
 #import <Foundation/Foundation.h>
@@ -50,6 +50,7 @@
 @property (nonatomic, retain) VTracking *tracking;
 @property (nonatomic, retain) VUser *user;
 @property (nonatomic, retain) NSSet *voteResults;
+@property (nonatomic, retain) NSOrderedSet *recentComments;
 @end
 
 @interface VSequence (CoreDataGeneratedAccessors)
@@ -109,4 +110,14 @@
 - (void)addVoteResults:(NSSet *)values;
 - (void)removeVoteResults:(NSSet *)values;
 
+- (void)insertObject:(VComment *)value inRecentCommentsAtIndex:(NSUInteger)idx;
+- (void)removeObjectFromRecentCommentsAtIndex:(NSUInteger)idx;
+- (void)insertRecentComments:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
+- (void)removeRecentCommentsAtIndexes:(NSIndexSet *)indexes;
+- (void)replaceObjectInRecentCommentsAtIndex:(NSUInteger)idx withObject:(VComment *)value;
+- (void)replaceRecentCommentsAtIndexes:(NSIndexSet *)indexes withRecentComments:(NSArray *)values;
+- (void)addRecentCommentsObject:(VComment *)value;
+- (void)removeRecentCommentsObject:(VComment *)value;
+- (void)addRecentComments:(NSOrderedSet *)values;
+- (void)removeRecentComments:(NSOrderedSet *)values;
 @end

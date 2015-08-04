@@ -216,18 +216,18 @@ static NSCache *_sharedImageCache = nil;
         {
             if ([comment.shouldAutoplay boolValue])
             {
-                [self.commentAndMediaView setMediaType:VCommentMediaViewTypeGIF];
+                [self.commentAndMediaView setMediaType:VCommentMediaTypeGIF];
                 // Make sure to grab the mp4 URL if its a gif
                 self.commentAndMediaView.autoplayURL = [comment mp4MediaURL];
             }
             else
             {
-                [self.commentAndMediaView setMediaType:VCommentMediaViewTypeVideo];
+                [self.commentAndMediaView setMediaType:VCommentMediaTypeVideo];
             }
         }
         else
         {
-            [self.commentAndMediaView setMediaType:VCommentMediaViewTypeImage];
+            [self.commentAndMediaView setMediaType:VCommentMediaTypeImage];
         }
     }
     else

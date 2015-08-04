@@ -12,7 +12,7 @@
 
 #import "VDependencyManager.h"
 
-@class VSequence, VDependencyManager;
+@class VSequence, VComment, VDependencyManager;
 
 @interface VCommentsContainerViewController : VKeyboardBarContainerViewController <VAnimation>
 
@@ -25,5 +25,7 @@
 @interface VDependencyManager (VCommentsContainerViewController)
 
 - (VCommentsContainerViewController *)commentsContainerWithSequence:(VSequence *)sequence;
+
+- (VCommentsContainerViewController *)commentsContainerWithSequence:(VSequence *)sequence andSelectedComment:(VComment *)selectedComment;
 
 @end

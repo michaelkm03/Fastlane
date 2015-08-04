@@ -75,13 +75,13 @@
 #import "VSimpleModalTransition.h"
 
 #import "VTracking.h"
-#import "VCommentHighlighter.h"
+#import "VCollectionViewCommentHighlighter.h"
 #import "VScrollPaginator.h"
 #import "VSequenceActionController.h"
 #import "VContentViewRotationHelper.h"
 #import "VEndCard.h"
 #import "VContentRepopulateTransition.h"
-#import "VCommentHighlighter.h"
+#import "VAbstractCommentHighlighter.h"
 #import "VEndCardActionModel.h"
 #import "VContentViewAlertHelper.h"
 
@@ -155,7 +155,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, strong) VTransitionDelegate *modalTransitionDelegate;
 @property (nonatomic, strong) VTransitionDelegate *repopulateTransitionDelegate;
 
-@property (nonatomic, strong) VCommentHighlighter *commentHighlighter;
+@property (nonatomic, strong) VCollectionViewCommentHighlighter *commentHighlighter;
 
 @property (nonatomic, weak) IBOutlet VContentViewAlertHelper *alertHelper;
 @property (nonatomic, weak) IBOutlet VContentViewRotationHelper *rotationHelper;
@@ -394,7 +394,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     self.authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                            dependencyManager:self.dependencyManager];
     
-    self.commentHighlighter = [[VCommentHighlighter alloc] initWithCollectionView:self.contentCollectionView];
+    self.commentHighlighter = [[VCollectionViewCommentHighlighter alloc] initWithCollectionView:self.contentCollectionView];
     
     // Hack to remove margins stuff should probably refactor :(
     if ([self.view respondsToSelector:@selector(setLayoutMargins:)])
@@ -1813,7 +1813,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)willCommentOnSequence:(VSequence *)sequenceObject fromView:(UIView *)commentView
 {
-    [self.sequenceActionController showCommentsFromViewController:self sequence:sequenceObject];
+    [self.sequenceActionController showCommentsFromViewController:self sequence:sequenceObject withSelectedComment:nil];
 }
 
 #pragma mark - UINavigationControllerDelegate

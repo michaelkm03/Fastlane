@@ -60,7 +60,6 @@
     
     _sequence = sequence;
     
-    [self layoutIfNeeded];
     [self updateActionItemsOnBar:self.actionBar forSequence:_sequence];
 }
 
