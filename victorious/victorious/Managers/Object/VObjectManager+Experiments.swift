@@ -20,28 +20,8 @@ extension VObjectManager {
         
         let fullSuccess: VSuccessBlock = { (operation, result, resultObjects) in
             
-            // WARNING: This is sample code, delete when done testing
-            var hardcodedExperiments = [Experiment]()
-            let sampleData = [
-                "exp0" : "layer1",
-                "exp1" : "layer1",
-                "exp2" : "layer1",
-                
-                "exp3" : "layer2",
-                "exp4" : "layer2",
-                "exp5" : "layer2" ]
-            var i = 0
-            for (name, layer) in sampleData {
-                if let experiment = VObjectManager.sharedManager().objectWithEntityName( Experiment.v_defaultEntityName, subclass: Experiment.self ) as? Experiment {
-                    experiment.name = name
-                    experiment.layerName = layer
-                    experiment.id = NSNumber(integer: 100 + i++)
-                    hardcodedExperiments.append( experiment )
-                }
-            }
-            
-            let defaultExperimentIds = Set<Int>([101, 102]) //Set<Int>( result?[ "experiment_ids" ] as? [Int] ?? [Int]() )
-            var experiments = hardcodedExperiments //resultObjects as? [Experiment] ?? [Experiment]()
+            let defaultExperimentIds = Set<Int>( result?[ "experiment_ids" ] as? [Int] ?? [Int]() )
+            var experiments = resultObjects as? [Experiment] ?? [Experiment]()
             
             success( experiments: experiments, defaultExperimentIds: defaultExperimentIds )
         }

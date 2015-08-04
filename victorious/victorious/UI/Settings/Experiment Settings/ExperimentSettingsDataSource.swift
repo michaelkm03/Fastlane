@@ -25,7 +25,7 @@ class ExperimentSettingsDataSource: NSObject {
         static let modified = UIColor.redColor()
         var current = TintColor.unmodified
     }
-    private var tintColor  = TintColor()
+    private var tintColor = TintColor()
     
     var selectedExperimentIds: Set<Int> {
         return Set<Int>( self.sections.flatMap { $0.experiments.filter { $0.isEnabled.boolValue }.map { $0.id.integerValue } } )
