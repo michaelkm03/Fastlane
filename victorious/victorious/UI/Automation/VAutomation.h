@@ -63,8 +63,6 @@ static NSString * const VAutomationIdentifierContentViewCommentCell     = @"Cont
 
 static NSString * const VAutomationIdentifierTextPostMainField          = @"Text Post Main Field";
 
-static NSString * const VAutomationIdentifierStreamCell                 = @"Stream Cell";
-
 static NSString * const VAutomationIdentifierCommentBarTextView         = @"Comment Bar Text View";
 static NSString * const VAutomationIdentifierCommentBarImageButton      = @"Comment Bar Image Button";
 static NSString * const VAutomationIdentifierCommentBarVideoButton      = @"Comment Bar Video Button";
