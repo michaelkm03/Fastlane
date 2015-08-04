@@ -17,7 +17,7 @@
     return @"Comment";
 }
 
-+ (RKEntityMapping *)entityMapping
++ (RKEntityMapping *)baseMapping
 {
     NSDictionary *propertyMap = @{
                                   @"id" : VSelectorName(remoteId),
@@ -35,20 +35,16 @@
                                   @"realtime" : VSelectorName(realtime),
                                   @"should_autoplay" : VSelectorName(shouldAutoplay)
                                   };
-
+    
     RKEntityMapping *mapping = [RKEntityMapping
                                 mappingForEntityForName:[self entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
-
+    
     mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
-
+    
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(user) mapping:[VUser simpleMapping]];
-
-    [mapping addConnectionForRelationship:@"sequence" connectedBy:@{@"sequenceId" : @"remoteId"}];
-    [mapping addConnectionForRelationship:@"inStreamSequence" connectedBy:@{@"sequenceId" : @"remoteId"}];
-    [mapping addConnectionForRelationship:@"user" connectedBy:@{@"userId" : @"remoteId"}];
     
     // Comment media
     RKRelationshipMapping *commentMediaMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"media"
@@ -56,6 +52,24 @@
                                                                                            withMapping:[VCommentMedia entityMapping]];
     
     [mapping addPropertyMapping:commentMediaMapping];
+    
+    return mapping;
+}
+
++ (RKEntityMapping *)inStreamEntityMapping
+{
+    RKEntityMapping *mapping = [self baseMapping];
+
+    [mapping addConnectionForRelationship:@"inStreamSequence" connectedBy:@{@"sequenceId" : @"remoteId"}];
+    
+    return mapping;
+}
+
++ (RKEntityMapping *)entityMapping
+{
+    RKEntityMapping *mapping = [self baseMapping];
+    
+    [mapping addConnectionForRelationship:@"sequence" connectedBy:@{@"sequenceId" : @"remoteId"}];
 
     return mapping;
 }

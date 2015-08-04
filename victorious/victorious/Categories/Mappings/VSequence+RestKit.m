@@ -83,17 +83,14 @@
     
     RKRelationshipMapping *recentCommentsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"recent_comments"
                                                                                               toKeyPath:VSelectorName(recentComments)
-                                                                                            withMapping:[VComment entityMapping]];
+                                                                                            withMapping:[VComment inStreamEntityMapping]];
     
     [mapping addPropertyMapping:recentCommentsMapping];
     
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(nodes) mapping:[VNode entityMapping]];
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(comments) mapping:[VComment entityMapping]];
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(user) mapping:[VUser simpleMapping]];
-    
-    [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"sequenceId"}];
-    [mapping addConnectionForRelationship:VSelectorName(recentComments) connectedBy:@{@"remoteId" : @"sequenceId"}];
-    
+        
     return mapping;
 }
 
@@ -109,7 +106,7 @@
     
     RKRelationshipMapping *recentCommentsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"recent_comments"
                                                                                                toKeyPath:VSelectorName(recentComments)
-                                                                                             withMapping:[VComment entityMapping]];
+                                                                                             withMapping:[VComment inStreamEntityMapping]];
     
     [mapping addPropertyMapping:recentCommentsMapping];
     
@@ -136,9 +133,6 @@
     [mapping addPropertyMapping:adBreaksMapping];
     [mapping addPropertyMapping:trackingMapping];
     [mapping addPropertyMapping:endCardMapping];
-    
-    [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"sequenceId"}];
-    [mapping addConnectionForRelationship:VSelectorName(recentComments) connectedBy:@{@"remoteId" : @"sequenceId"}];
     
     return mapping;
 }

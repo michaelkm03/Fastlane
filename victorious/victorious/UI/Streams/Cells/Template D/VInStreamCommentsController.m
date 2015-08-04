@@ -205,7 +205,8 @@ static UIEdgeInsets const kSectionEdgeInsets = { 0.0f, 0.0f, 0.0f, 2.0f };
 {
     if ( self.commentCellContents.count > 0 )
     {
-        return ((VInStreamCommentCellContents *)self.commentCellContents.firstObject).comment.sequence;
+        VComment *comment = ((VInStreamCommentCellContents *)self.commentCellContents.firstObject).comment;
+        return comment.sequence ?: comment.inStreamSequence;
     }
     return nil;
 }
