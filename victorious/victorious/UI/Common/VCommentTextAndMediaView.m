@@ -52,6 +52,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
 - (void)commonInit
 {
     self.textView = [[VTagSensitiveTextView alloc] init];
+    self.textView.accessibilityIdentifier = VAutomationIdentifierContentViewCommentCell;
     self.textView.translatesAutoresizingMaskIntoConstraints = NO;
     self.textView.backgroundColor = [UIColor clearColor];
     self.textView.selectable = YES;

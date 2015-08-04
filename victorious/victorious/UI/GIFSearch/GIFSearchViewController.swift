@@ -53,6 +53,8 @@ class GIFSearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.collectionView.accessibilityIdentifier = AutomationId.GIFSearchCollection.rawValue
+        
         self.scrollPaginator.delegate = self
         
         self.searchBar.delegate = self

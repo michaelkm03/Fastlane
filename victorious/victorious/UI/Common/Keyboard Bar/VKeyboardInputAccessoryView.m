@@ -34,11 +34,15 @@ static const CGFloat kAttachmentBarHeight = 50.0f;
 @property (nonatomic, assign) CGSize lastContentSize;
 
 // Views
-@property (nonatomic, weak) IBOutlet UIButton *attachmentsButton;
-@property (nonatomic, weak) IBOutlet UIButton *sendButton;
-@property (nonatomic, weak) UITextView *editingTextView;
-@property (nonatomic, weak) IBOutlet UIView *editingTextSuperview;
-@property (nonatomic, weak) IBOutlet UILabel *placeholderLabel;
+@property (nonatomic, strong) IBOutlet UIButton *attachmentsButton;
+@property (nonatomic, strong) IBOutlet UIButton *sendButton;
+@property (nonatomic, strong) UITextView *editingTextView;
+@property (nonatomic, strong) IBOutlet UIView *editingTextSuperview;
+@property (nonatomic, strong) IBOutlet UILabel *placeholderLabel;
+@property (nonatomic, strong) IBOutlet UIButton *imageButton;
+@property (nonatomic, strong) IBOutlet UIButton *videoButton;
+@property (nonatomic, strong) IBOutlet UIButton *gifButton;
+@property (nonatomic, strong) IBOutlet UIButton *clearAttachmentButton;
 
 // Constraints
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *topSpaceAttachmentsToContainer;
@@ -88,6 +92,18 @@ static const CGFloat kAttachmentBarHeight = 50.0f;
     }
 }
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    // Automation Support
+    self.imageButton.accessibilityIdentifier = VAutomationIdentifierCommentBarImageButton;
+    self.videoButton.accessibilityIdentifier = VAutomationIdentifierCommentBarVideoButton;
+    self.gifButton.accessibilityIdentifier = VAutomationIdentifierCommentBarGIFButton;
+    self.sendButton.accessibilityIdentifier = VAutomationIdentifierCommentBarSendButton;
+    self.clearAttachmentButton.accessibilityIdentifier = VAutomationIdentifierCommentBarClearButton;
+}
+
 - (void)addTextViewToContainer
 {
     UIFont *defaultFont = [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
@@ -100,6 +116,7 @@ static const CGFloat kAttachmentBarHeight = 50.0f;
     [layoutManager addTextContainer:textContainer];
     
     UITextView *editingTextView = [[UITextView alloc] initWithFrame:CGRectZero textContainer:textContainer];
+    editingTextView.accessibilityIdentifier = VAutomationIdentifierCommentBarTextView;
     editingTextView.translatesAutoresizingMaskIntoConstraints = NO;
     editingTextView.delegate = self;
     editingTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
@@ -113,7 +130,7 @@ static const CGFloat kAttachmentBarHeight = 50.0f;
     editingTextView.textContainerInset = textContainerInset;
     
     editingTextView.autocapitalizationType = UITextAutocapitalizationTypeSentences;
-    
+
     [self.editingTextSuperview addSubview:editingTextView];
     self.editingTextView = editingTextView;
     

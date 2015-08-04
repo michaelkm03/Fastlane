@@ -59,7 +59,17 @@ static NSString * const VAutomationIdentifierPublishCatpionText         = @"Publ
 static NSString * const VAutomationIdentifierContentViewBallotButtonA   = @"Ballot Button A";
 static NSString * const VAutomationIdentifierContentViewBallotButtonB   = @"Ballot Button B";
 static NSString * const VAutomationIdentifierContentViewCommentBar      = @"Content View Comment Bar";
+static NSString * const VAutomationIdentifierContentViewCommentCell     = @"Content View Comment Cell Text View";
 
 static NSString * const VAutomationIdentifierTextPostMainField          = @"Text Post Main Field";
 
 static NSString * const VAutomationIdentifierStreamCell                 = @"Stream Cell";
+
+static NSString * const VAutomationIdentifierCommentBarTextView         = @"Comment Bar Text View";
+static NSString * const VAutomationIdentifierCommentBarImageButton      = @"Comment Bar Image Button";
+static NSString * const VAutomationIdentifierCommentBarVideoButton      = @"Comment Bar Video Button";
+static NSString * const VAutomationIdentifierCommentBarGIFButton        = @"Comment Bar GIF Button";
+static NSString * const VAutomationIdentifierCommentBarSendButton       = @"Comment Bar Send Button";
+static NSString * const VAutomationIdentifierCommentBarClearButton      = @"Comment Bar Clear Attachment Button";
+
+static NSString * const VAutomationIdentifierMediaGalleryCollection     = @"Media Gallery Collection";

@@ -15,4 +15,5 @@ enum AutomationId: String {
     case None = ""
     case GIFSearchNext = "GIF Search Next"
     case GIFSearchSearchbar = "GIF Search Searchbar"
+    case GIFSearchCollection = "GIF Seach Collection"
 }

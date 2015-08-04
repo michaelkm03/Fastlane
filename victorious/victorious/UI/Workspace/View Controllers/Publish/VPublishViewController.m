@@ -185,7 +185,6 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
     self.captionTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.captionTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.captionTextView.accessibilityIdentifier = VAutomationIdentifierPublishCatpionText;
-    self.captionTextView.placeholderTextView.accessibilityIdentifier = VAutomationIdentifierPublishCatpionPlaceholder;
     
     NSString *placeholderText = [self.dependencyManager stringForKey:kPlaceholderTextKey];
     self.captionTextView.placeholderText = NSLocalizedString(placeholderText, @"Caption entry placeholder text");

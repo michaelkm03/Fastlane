@@ -72,6 +72,8 @@ static NSString * const kVideoTitleKey = @"videoTitle";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.collectionView.accessibilityIdentifier = VAutomationIdentifierMediaGalleryCollection;
     self.definesPresentationContext = YES;
     switch ([self.libraryPermission permissionState])
     {
