@@ -650,6 +650,12 @@
 		A780ED5D1A933D9300A8CD5D /* VPhotoFilterCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A780ED531A933D9300A8CD5D /* VPhotoFilterCollectionViewCell.m */; };
 		A780ED5E1A933D9300A8CD5D /* VPhotoFilterCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A780ED551A933D9300A8CD5D /* VPhotoFilterCollectionViewDataSource.m */; };
 		A780ED5F1A933D9300A8CD5D /* VPhotoFilterSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = A780ED581A933D9300A8CD5D /* VPhotoFilterSerialization.m */; };
+		A7815E1B1B6C5D9F007797B7 /* SettingsButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7815E1A1B6C5D9F007797B7 /* SettingsButtonCell.swift */; };
+		A7815E291B701076007797B7 /* VExperimentSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A7815E281B701076007797B7 /* VExperimentSettings.m */; };
+		A7815E2A1B70124B007797B7 /* VExperimentSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A7815E281B701076007797B7 /* VExperimentSettings.m */; };
+		A7815E2C1B7016C1007797B7 /* VExperimentSettingsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7815E2B1B7016C1007797B7 /* VExperimentSettingsTests.m */; };
+		A78F17731B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78F17711B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift */; };
+		A78F17741B67F3AE009F6B8F /* ExperimentSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78F17721B67F3AE009F6B8F /* ExperimentSettingsViewController.swift */; };
 		A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8231A01980F00C4F208 /* VTrackingEvent.m */; };
 		A790C82A1A01980F00C4F208 /* VTrackingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8251A01980F00C4F208 /* VTrackingManager.m */; };
 		A79869EB1AD7124D00F2564A /* VContentDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A79869E11AD7124D00F2564A /* VContentDeepLinkHandler.m */; };
@@ -688,11 +694,11 @@
 		A7B514581A464E770074282F /* VUtilityButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7B514571A464E770074282F /* VUtilityButtonCell.xib */; };
 		A7B89EF01AA7B26A00475CC2 /* VPresentWithBlurTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B89EEF1AA7B26A00475CC2 /* VPresentWithBlurTransition.m */; };
 		A7B98A331A251D7D00C58335 /* VTestHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A321A251D7D00C58335 /* VTestHelpers.m */; };
-		A7B98A3D1A264D0900C58335 /* VNotificationSettingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A381A264D0900C58335 /* VNotificationSettingCell.m */; };
 		A7B98A3E1A264D0900C58335 /* VNotificationSettingsTableSection.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A3A1A264D0900C58335 /* VNotificationSettingsTableSection.m */; };
 		A7B98A3F1A264D0900C58335 /* VNotificationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A3C1A264D0900C58335 /* VNotificationSettingsViewController.m */; };
 		A7B98A421A264D1D00C58335 /* VNotificationSettingsStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A411A264D1D00C58335 /* VNotificationSettingsStateManager.m */; };
 		A7B98A441A267AAA00C58335 /* VNotificationSettingsStateManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A431A267AAA00C58335 /* VNotificationSettingsStateManagerTests.m */; };
+		A7BF9D141B5ECB1E002C0A98 /* VSettingsSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7BF9D131B5ECB1E002C0A98 /* VSettingsSwitchCell.m */; };
 		A7CD87521B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CD87511B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.m */; };
 		A7CD87591B1E74AE002532A9 /* VImageAssetFinder.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CD87581B1E74AE002532A9 /* VImageAssetFinder.m */; };
 		A7CFC1BA19FAF6BF00726772 /* landscape_left.m4v in Resources */ = {isa = PBXBuildFile; fileRef = A7CFC1B619FAF64700726772 /* landscape_left.m4v */; };
@@ -737,6 +743,12 @@
 		A7DAFCA71B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCA61B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift */; };
 		A7DAFCA91B4EDACE00B51C92 /* GIFSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCA81B4EDACE00B51C92 /* GIFSearchResult.swift */; };
 		A7DAFCAD1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCAC1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift */; };
+		A7DDA6AA1B5F0018005CE55E /* Experiment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6A91B5F0018005CE55E /* Experiment.swift */; };
+		A7DDA6AC1B5F003B005CE55E /* Experiment+RestKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6AB1B5F003B005CE55E /* Experiment+RestKit.swift */; };
+		A7DDA6AE1B5F006B005CE55E /* VObjectManager+Experiments.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6AD1B5F006B005CE55E /* VObjectManager+Experiments.swift */; };
+		A7DDA6E31B601C95005CE55E /* SettingsEmptyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6E21B601C95005CE55E /* SettingsEmptyCell.swift */; };
+		A7DDA6E51B601D0D005CE55E /* UITableViewCell+SwiftReuse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6E41B601D0D005CE55E /* UITableViewCell+SwiftReuse.swift */; };
+		A7DDA6E71B601D20005CE55E /* UICollectionViewCell+SwiftReuse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6E61B601D20005CE55E /* UICollectionViewCell+SwiftReuse.swift */; };
 		A7E2EFCB1A49001000372547 /* VEditCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E2EFCA1A49001000372547 /* VEditCommentViewController.m */; };
 		A7E2EFD21A49066F00372547 /* EditComment.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7E2EFD11A49066F00372547 /* EditComment.storyboard */; };
 		A7E3985F1A34F6E1000E4CAC /* creator-avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = A7E3985D1A34F6E1000E4CAC /* creator-avatar.png */; };
@@ -2390,6 +2402,13 @@
 		A780ED571A933D9300A8CD5D /* VPhotoFilterSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPhotoFilterSerialization.h; sourceTree = "<group>"; };
 		A780ED581A933D9300A8CD5D /* VPhotoFilterSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPhotoFilterSerialization.m; sourceTree = "<group>"; };
 		A7814A0919E5FD0600D89B90 /* VPasswordValidationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPasswordValidationTests.m; sourceTree = "<group>"; };
+		A7815E1A1B6C5D9F007797B7 /* SettingsButtonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsButtonCell.swift; sourceTree = "<group>"; };
+		A7815E1E1B6C7337007797B7 /* VictoriousCommon-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VictoriousCommon-Bridging-Header.h"; sourceTree = "<group>"; };
+		A7815E271B701076007797B7 /* VExperimentSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExperimentSettings.h; sourceTree = "<group>"; };
+		A7815E281B701076007797B7 /* VExperimentSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExperimentSettings.m; sourceTree = "<group>"; };
+		A7815E2B1B7016C1007797B7 /* VExperimentSettingsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExperimentSettingsTests.m; sourceTree = "<group>"; };
+		A78F17711B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperimentSettingsDataSource.swift; sourceTree = "<group>"; };
+		A78F17721B67F3AE009F6B8F /* ExperimentSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperimentSettingsViewController.swift; sourceTree = "<group>"; };
 		A790C8221A01980F00C4F208 /* VTrackingEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingEvent.h; sourceTree = "<group>"; };
 		A790C8231A01980F00C4F208 /* VTrackingEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingEvent.m; sourceTree = "<group>"; };
 		A790C8241A01980F00C4F208 /* VTrackingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingManager.h; sourceTree = "<group>"; };
@@ -2467,8 +2486,6 @@
 		A7B89EEF1AA7B26A00475CC2 /* VPresentWithBlurTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPresentWithBlurTransition.m; sourceTree = "<group>"; };
 		A7B98A311A251D7D00C58335 /* VTestHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTestHelpers.h; path = "Test Helpers/VTestHelpers.h"; sourceTree = "<group>"; };
 		A7B98A321A251D7D00C58335 /* VTestHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTestHelpers.m; path = "Test Helpers/VTestHelpers.m"; sourceTree = "<group>"; };
-		A7B98A371A264D0900C58335 /* VNotificationSettingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingCell.h; sourceTree = "<group>"; };
-		A7B98A381A264D0900C58335 /* VNotificationSettingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingCell.m; sourceTree = "<group>"; };
 		A7B98A391A264D0900C58335 /* VNotificationSettingsTableSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingsTableSection.h; sourceTree = "<group>"; };
 		A7B98A3A1A264D0900C58335 /* VNotificationSettingsTableSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsTableSection.m; sourceTree = "<group>"; };
 		A7B98A3B1A264D0900C58335 /* VNotificationSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingsViewController.h; sourceTree = "<group>"; };
@@ -2476,6 +2493,8 @@
 		A7B98A401A264D1D00C58335 /* VNotificationSettingsStateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingsStateManager.h; sourceTree = "<group>"; };
 		A7B98A411A264D1D00C58335 /* VNotificationSettingsStateManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsStateManager.m; sourceTree = "<group>"; };
 		A7B98A431A267AAA00C58335 /* VNotificationSettingsStateManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsStateManagerTests.m; sourceTree = "<group>"; };
+		A7BF9D121B5ECB1E002C0A98 /* VSettingsSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSettingsSwitchCell.h; sourceTree = "<group>"; };
+		A7BF9D131B5ECB1E002C0A98 /* VSettingsSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSettingsSwitchCell.m; sourceTree = "<group>"; };
 		A7CD87501B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VAccessoryScreens.h"; sourceTree = "<group>"; };
 		A7CD87511B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VAccessoryScreens.m"; sourceTree = "<group>"; };
 		A7CD87571B1E74AE002532A9 /* VImageAssetFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VImageAssetFinder.h; path = ImageAssetFinder/VImageAssetFinder.h; sourceTree = "<group>"; };
@@ -2545,6 +2564,12 @@
 		A7DAFCA61B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VObjectManager+GIFSearch.swift"; sourceTree = "<group>"; };
 		A7DAFCA81B4EDACE00B51C92 /* GIFSearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchResult.swift; sourceTree = "<group>"; };
 		A7DAFCAC1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Extensions.swift"; sourceTree = "<group>"; };
+		A7DDA6A91B5F0018005CE55E /* Experiment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Experiment.swift; sourceTree = "<group>"; };
+		A7DDA6AB1B5F003B005CE55E /* Experiment+RestKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Experiment+RestKit.swift"; sourceTree = "<group>"; };
+		A7DDA6AD1B5F006B005CE55E /* VObjectManager+Experiments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VObjectManager+Experiments.swift"; sourceTree = "<group>"; };
+		A7DDA6E21B601C95005CE55E /* SettingsEmptyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsEmptyCell.swift; sourceTree = "<group>"; };
+		A7DDA6E41B601D0D005CE55E /* UITableViewCell+SwiftReuse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+SwiftReuse.swift"; sourceTree = "<group>"; };
+		A7DDA6E61B601D20005CE55E /* UICollectionViewCell+SwiftReuse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+SwiftReuse.swift"; sourceTree = "<group>"; };
 		A7E2EFC91A49001000372547 /* VEditCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEditCommentViewController.h; sourceTree = "<group>"; };
 		A7E2EFCA1A49001000372547 /* VEditCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEditCommentViewController.m; sourceTree = "<group>"; };
 		A7E2EFD11A49066F00372547 /* EditComment.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EditComment.storyboard; sourceTree = "<group>"; };
@@ -3495,6 +3520,7 @@
 				0314D2E519B46B0E00FA363C /* VPaginationManager.m */,
 				D8F12A6B1A6F093900E99B3D /* VPublishParameters.h */,
 				D8F12A6C1A6F093900E99B3D /* VPublishParameters.m */,
+				A7DDA6AD1B5F006B005CE55E /* VObjectManager+Experiments.swift */,
 				A7DAFCA61B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift */,
 			);
 			path = Object;
@@ -3559,6 +3585,7 @@
 				A7A2E0021A38E41800F8C705 /* Purchases */,
 				0314D3E219B46B5E00FA363C /* Root View */,
 				0314D3EF19B46B5E00FA363C /* Search */,
+				0314D3F219B46B5E00FA363C /* Settings */,
 				0314D40019B46B5E00FA363C /* Sharing */,
 				0314D40319B46B5E00FA363C /* Signup and Login */,
 				0314D43319B46B5E00FA363C /* Streams */,
@@ -3919,10 +3946,14 @@
 		0314D3F219B46B5E00FA363C /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				A7BF9D111B5ECB1E002C0A98 /* Cells */,
+				A78F17701B67F3AE009F6B8F /* Experiment Settings */,
 				A7EECAD21A377FA000A8BAE1 /* Purchase Settings */,
 				A7B98A351A264D0900C58335 /* Push Notification Settings */,
 				DB2A494519DF44CF00CB687B /* settings.storyboard */,
 				A769FE421ABCFCC700888ED8 /* Tracking Settings */,
+				A73C7E2D1B2608C70093F792 /* VAddServerEnvironmentViewController.h */,
+				A73C7E2E1B2608C70093F792 /* VAddServerEnvironmentViewController.m */,
 				A7D7076E1A79671C00D9993F /* VAutoplaySettingsViewController.h */,
 				A7D7076F1A79671C00D9993F /* VAutoplaySettingsViewController.m */,
 				0314D3F419B46B5E00FA363C /* VChangePasswordViewController.h */,
@@ -3931,8 +3962,6 @@
 				0314D3F919B46B5E00FA363C /* VPrivacyPoliciesViewController.m */,
 				0314D3FA19B46B5E00FA363C /* VServerEnvironmentTableViewController.h */,
 				0314D3FB19B46B5E00FA363C /* VServerEnvironmentTableViewController.m */,
-				A73C7E2D1B2608C70093F792 /* VAddServerEnvironmentViewController.h */,
-				A73C7E2E1B2608C70093F792 /* VAddServerEnvironmentViewController.m */,
 				A734A04B1A98278100C3E86F /* VSettingsTableViewCell.h */,
 				A734A04C1A98278100C3E86F /* VSettingsTableViewCell.m */,
 				0314D3FC19B46B5E00FA363C /* VSettingsViewController.h */,
@@ -3942,14 +3971,12 @@
 				A7D707711A797B8A00D9993F /* VVideoSettings.h */,
 				A7D707721A797B8A00D9993F /* VVideoSettings.m */,
 			);
-			name = Settings;
-			path = ../Settings;
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		0314D40019B46B5E00FA363C /* Sharing */ = {
 			isa = PBXGroup;
 			children = (
-				0314D3F219B46B5E00FA363C /* Settings */,
 				0314D40119B46B5E00FA363C /* VFacebookActivity.h */,
 				0314D40219B46B5E00FA363C /* VFacebookActivity.m */,
 			);
@@ -4419,6 +4446,9 @@
 				034527A51B604A9100E990BB /* Template Loader */,
 				036DE7C21B608C100038A25E /* VAPIRequestDecorator.h */,
 				036DE7C31B608C100038A25E /* VAPIRequestDecorator.m */,
+				A7815E271B701076007797B7 /* VExperimentSettings.h */,
+				A7815E281B701076007797B7 /* VExperimentSettings.m */,
+				A7815E1E1B6C7337007797B7 /* VictoriousCommon-Bridging-Header.h */,
 			);
 			path = VictoriousCommon;
 			sourceTree = "<group>";
@@ -5099,6 +5129,8 @@
 				A721E90B1B572454000B7901 /* VConversation+UnreadMessageCount.m */,
 				A721E90E1B572454000B7901 /* VSequence+OrderedSet.h */,
 				A721E90F1B572454000B7901 /* VSequence+OrderedSet.m */,
+				A7DDA6E41B601D0D005CE55E /* UITableViewCell+SwiftReuse.swift */,
+				A7DDA6E61B601D20005CE55E /* UICollectionViewCell+SwiftReuse.swift */,
 				A6B9FD0D1B60630900166BE8 /* NSURL+VTemporaryFiles.h */,
 				A6B9FD0E1B60630900166BE8 /* NSURL+VTemporaryFiles.m */,
 			);
@@ -5138,6 +5170,7 @@
 		A721E87B1B572452000B7901 /* Mappings */ = {
 			isa = PBXGroup;
 			children = (
+				A7DDA6AB1B5F003B005CE55E /* Experiment+RestKit.swift */,
 				A721E87C1B572452000B7901 /* GIFSearchResult+RestKit.swift */,
 				A721E87D1B572452000B7901 /* VAbstractFilter+RestKit.h */,
 				A721E87E1B572452000B7901 /* VAbstractFilter+RestKit.m */,
@@ -5632,6 +5665,15 @@
 			path = "Photo Filters";
 			sourceTree = "<group>";
 		};
+		A78F17701B67F3AE009F6B8F /* Experiment Settings */ = {
+			isa = PBXGroup;
+			children = (
+				A78F17711B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift */,
+				A78F17721B67F3AE009F6B8F /* ExperimentSettingsViewController.swift */,
+			);
+			path = "Experiment Settings";
+			sourceTree = "<group>";
+		};
 		A790C81C1A01980F00C4F208 /* Tracking */ = {
 			isa = PBXGroup;
 			children = (
@@ -5792,7 +5834,6 @@
 		A7B98A351A264D0900C58335 /* Push Notification Settings */ = {
 			isa = PBXGroup;
 			children = (
-				A7B98A361A264D0900C58335 /* Cells */,
 				A7B98A401A264D1D00C58335 /* VNotificationSettingsStateManager.h */,
 				A7B98A411A264D1D00C58335 /* VNotificationSettingsStateManager.m */,
 				A70FC0F51A2D012E00F5BBDE /* VNotificationSettingsTableRow.h */,
@@ -5805,11 +5846,13 @@
 			path = "Push Notification Settings";
 			sourceTree = "<group>";
 		};
-		A7B98A361A264D0900C58335 /* Cells */ = {
+		A7BF9D111B5ECB1E002C0A98 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				A7B98A371A264D0900C58335 /* VNotificationSettingCell.h */,
-				A7B98A381A264D0900C58335 /* VNotificationSettingCell.m */,
+				A7BF9D121B5ECB1E002C0A98 /* VSettingsSwitchCell.h */,
+				A7BF9D131B5ECB1E002C0A98 /* VSettingsSwitchCell.m */,
+				A7DDA6E21B601C95005CE55E /* SettingsEmptyCell.swift */,
+				A7815E1A1B6C5D9F007797B7 /* SettingsButtonCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -6114,6 +6157,7 @@
 				BE9674F719E335060072E87A /* VElapsedTimeFormatterTests.m */,
 				A743E7EB1A082AD200339CB3 /* VEmailValidatorTests.m */,
 				A7EF97BB19F889F800972E74 /* VExperienceEnhancerTests.m */,
+				A7815E2B1B7016C1007797B7 /* VExperimentSettingsTests.m */,
 				A769FE401ABC17C200888ED8 /* VFirstInstallTests.m */,
 				DB61811B1AB206D700DED29F /* VFirstTimeInstallHelperTests.m */,
 				A70AFE631A1684880027549F /* VFlurryTrackingTests.m */,
@@ -6222,6 +6266,7 @@
 		BE171DE91868C211004E5202 /* ManagedObjectModels */ = {
 			isa = PBXGroup;
 			children = (
+				A7DDA6A91B5F0018005CE55E /* Experiment.swift */,
 				A7DAFCA81B4EDACE00B51C92 /* GIFSearchResult.swift */,
 				A7DAFCAC1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift */,
 				BE89D98B1921531400D97E7F /* VAbstractFilter.h */,
@@ -7994,6 +8039,7 @@
 				036DE7F51B62F7DA0038A25E /* NSCharacterSet+VURLParts.m in Sources */,
 				036DE7C61B6141040038A25E /* VAPIRequestDecorator.m in Sources */,
 				034527D01B606F8200E990BB /* VTemplatePackageManager.m in Sources */,
+				A7815E2A1B70124B007797B7 /* VExperimentSettings.m in Sources */,
 				036DE7C11B607A610038A25E /* VEnvironment.m in Sources */,
 				036DE7F21B62F6A20038A25E /* VJSONHelper.m in Sources */,
 				034527D11B606F8200E990BB /* VTemplateSerialization.m in Sources */,
@@ -8031,6 +8077,7 @@
 				036DE7C51B6141030038A25E /* VAPIRequestDecorator.m in Sources */,
 				039269781B5C871700FCD0AA /* VBulkDownloadOperation.m in Sources */,
 				036DE7C01B607A600038A25E /* VEnvironment.m in Sources */,
+				A7815E291B701076007797B7 /* VExperimentSettings.m in Sources */,
 				036DE7F11B62F6A10038A25E /* VJSONHelper.m in Sources */,
 				0392697A1B5C871700FCD0AA /* VTemplateDownloadOperation.m in Sources */,
 				0392697C1B5C871700FCD0AA /* VTemplateSerialization.m in Sources */,
@@ -8070,6 +8117,7 @@
 				F0411E8D1B4B1B9D00557176 /* VCrossFadingMarqueeLabel.m in Sources */,
 				A75FAF2119E8AC1E00EB87C1 /* VDiscoverViewController.m in Sources */,
 				A6E2E76B1B544D79008A1CA9 /* VImageAssetDownloader.m in Sources */,
+				A78F17741B67F3AE009F6B8F /* ExperimentSettingsViewController.swift in Sources */,
 				A721E9711B581F78000B7901 /* GIFSearchPreviewCell.swift in Sources */,
 				0314D48919B46B5E00FA363C /* VContentInputAccessoryView.m in Sources */,
 				A7A2E0071A38E44B00F8C705 /* VPurchaseViewController.m in Sources */,
@@ -8080,6 +8128,7 @@
 				F0FC98141B61AAA10098AFCB /* UIViewController+VAccessoryScreens.m in Sources */,
 				D85E428D1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.m in Sources */,
 				F089E3561AC3BB740076DC4D /* VAbstractMarqueeStreamItemCell.m in Sources */,
+				A7DDA6E51B601D0D005CE55E /* UITableViewCell+SwiftReuse.swift in Sources */,
 				A7299EA31AA69C1600B6BC1F /* VAuthorizedAction.m in Sources */,
 				A79869EF1AD7124D00F2564A /* VProfileDeepLinkHandler.m in Sources */,
 				A721E94E1B572454000B7901 /* UIImage+Cropping.m in Sources */,
@@ -8088,6 +8137,7 @@
 				A77951351B29021D00D9DB0A /* VContentThumbnailCell.m in Sources */,
 				A721E93B1B572454000B7901 /* NSDictionary+VJSONLogging.m in Sources */,
 				037FCF1A1A8DAF0E00E8ABFC /* VNavigationController.m in Sources */,
+				A7815E1B1B6C5D9F007797B7 /* SettingsButtonCell.swift in Sources */,
 				D89367531ADDE98F001D2426 /* VInsetActionView.m in Sources */,
 				F098D8151A9D29EA0003B6D4 /* VTagSensitiveTextView.m in Sources */,
 				0314D0B619B4698800FA363C /* VObjectManager+Sequence.m in Sources */,
@@ -8129,7 +8179,6 @@
 				F089E3601AC486620076DC4D /* VBlurredMarqueeStreamItemCell.m in Sources */,
 				A721E95D1B572454000B7901 /* UIView+MotionEffects.m in Sources */,
 				A6DAEB6E1B4CBDCB00935EA0 /* VCaptureContainerViewController.m in Sources */,
-				A7B98A3D1A264D0900C58335 /* VNotificationSettingCell.m in Sources */,
 				A601FB531B4363240050536C /* VCreationFlowPresenter.m in Sources */,
 				A79869EE1AD7124D00F2564A /* VInboxDeepLinkHandler.m in Sources */,
 				C3E772271B4DD163005809A5 /* VTableViewStreamFocusHelper.m in Sources */,
@@ -8254,6 +8303,7 @@
 				A79869EB1AD7124D00F2564A /* VContentDeepLinkHandler.m in Sources */,
 				A721E95B1B572454000B7901 /* UIView+AutoLayout.m in Sources */,
 				0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */,
+				A7DDA6E71B601D20005CE55E /* UICollectionViewCell+SwiftReuse.swift in Sources */,
 				A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */,
 				A601FB591B43657F0050536C /* VMediaAttachmentPresenter.m in Sources */,
 				A721E9621B572454000B7901 /* UIViewController+ForceOrientationChange.m in Sources */,
@@ -8331,6 +8381,7 @@
 				A721E9331B572454000B7901 /* VStream+RestKit.m in Sources */,
 				0314D4DC19B46B5E00FA363C /* VFacebookActivity.m in Sources */,
 				A7D707991A7C144C00D9993F /* VCountdownViewController.m in Sources */,
+				A7DDA6AA1B5F0018005CE55E /* Experiment.swift in Sources */,
 				A601FB4F1B4355A30050536C /* VCreationFlowController.m in Sources */,
 				A721E9361B572454000B7901 /* VVoteResult+RestKit.m in Sources */,
 				A7D7079F1A7C144C00D9993F /* VEndCardModel.m in Sources */,
@@ -8341,6 +8392,7 @@
 				D85B709B1B0EF0520038CA5B /* VModernRegisterViewController.m in Sources */,
 				A70FC10A1A2D558200F5BBDE /* VPurchase.m in Sources */,
 				A705F4531B3DC7C1007DBD3C /* VCellSizeComponent.m in Sources */,
+				A78F17731B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift in Sources */,
 				DB34DC5C1A09B5AF001EC711 /* VLiveRailAdViewController.m in Sources */,
 				A721E92A1B572454000B7901 /* VInteractionAction+RestKit.m in Sources */,
 				0309318D1A18425B004E9781 /* VMenuCollectionViewCell.m in Sources */,
@@ -8383,6 +8435,7 @@
 				D87D70961A9804CD002D4FED /* VNavigationDestinationContainerViewController.m in Sources */,
 				F0AD21761AF43DFA001BDCC6 /* VCollectionsDirectoryCellFactory.m in Sources */,
 				03C185BC19B42E5D00E27D05 /* TWSignedRequest.m in Sources */,
+				A7DDA6AE1B5F006B005CE55E /* VObjectManager+Experiments.swift in Sources */,
 				C3475B6D1B507087007C3782 /* VForcedWorkspaceContainerViewController.m in Sources */,
 				A7AEF9D01A83F2F500A3D3A0 /* VVideoUtils.m in Sources */,
 				D84559001ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m in Sources */,
@@ -8441,6 +8494,7 @@
 				D86448A11A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m in Sources */,
 				A6B9FD121B6070B100166BE8 /* VCameraFocusView.m in Sources */,
 				03CE670019B640CD0011BB9E /* VDeviceInfo.m in Sources */,
+				A7DDA6AC1B5F003B005CE55E /* Experiment+RestKit.swift in Sources */,
 				C30AA4DD1B055C000010CEFE /* VPermissionAlertPresentationController.m in Sources */,
 				A77AD5011A2011E000142F24 /* UIActionSheet+VBlocks.m in Sources */,
 				036E87B21ACB6B3F00E5AAAD /* VContentViewFactory.m in Sources */,
@@ -8471,6 +8525,7 @@
 				A7ECC1D91AD6178F0003E00A /* VWorkspaceViewController.m in Sources */,
 				D8D812B81B15819600E93B37 /* VModernFlowControllerAnimationController.m in Sources */,
 				D85B70741B0EAF3F0038CA5B /* VFindFriendsTableViewController.m in Sources */,
+				A7BF9D141B5ECB1E002C0A98 /* VSettingsSwitchCell.m in Sources */,
 				A779512E1B28F61C00D9DB0A /* VContentThumbnailsViewController.m in Sources */,
 				A705F4571B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m in Sources */,
 				D8758D251B100571008C6C0D /* VTwitterAccountsHelper.m in Sources */,
@@ -8631,6 +8686,7 @@
 				037FCF271A8DAF5400E8ABFC /* VMultipleContainerViewController.m in Sources */,
 				A721E9251B572454000B7901 /* VConversation+RestKit.m in Sources */,
 				0314D4B019B46B5E00FA363C /* VFetchedResultsTableViewController.m in Sources */,
+				A7DDA6E31B601C95005CE55E /* SettingsEmptyCell.swift in Sources */,
 				C30AA4F01B0678BB0010CEFE /* VPermission.m in Sources */,
 				A7738B081A4A36C9008EA973 /* VTransitionModel.m in Sources */,
 				BE5C736A187E36E800A3340D /* VRule.m in Sources */,
@@ -8815,6 +8871,7 @@
 				A720052A1A03073B00285A9C /* VLargeNumberFormatterTests.m in Sources */,
 				A720052D1A03073B00285A9C /* VObjectManagerStringTest.m in Sources */,
 				D8DCE5921ADD85820004B782 /* VActionBarTests.m in Sources */,
+				A7815E2C1B7016C1007797B7 /* VExperimentSettingsTests.m in Sources */,
 				A72005371A03073B00285A9C /* VVoteSettingManagerTests.m in Sources */,
 				F0804A6B1A8916BC00A0E1A1 /* VTagDictionaryTests.m in Sources */,
 				A72005451A03073B00285A9C /* VFollowControlTests.m in Sources */,
@@ -9637,6 +9694,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CD6337D3797118138953FB8E /* Pods-VictoriousCommon.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -9647,6 +9705,8 @@
 					"$(inherited)",
 				);
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -9654,6 +9714,8 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "VictoriousCommon/VictoriousCommon-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -9661,12 +9723,15 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CEB3CFB5FC7A8DA2E1CC4E8D /* Pods-VictoriousCommon.qa.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREFIX_HEADER = VictoriousCommon/PrefixHeader.pch;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -9674,6 +9739,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "VictoriousCommon/VictoriousCommon-Bridging-Header.h";
 			};
 			name = QA;
 		};
@@ -9681,12 +9747,15 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A0CB9853103CFBEFFF1BF6FF /* Pods-VictoriousCommon.staging.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREFIX_HEADER = VictoriousCommon/PrefixHeader.pch;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -9694,6 +9763,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "VictoriousCommon/VictoriousCommon-Bridging-Header.h";
 			};
 			name = Staging;
 		};
@@ -9701,12 +9771,15 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E50D8B24AC3B063A7A6F4D23 /* Pods-VictoriousCommon.stable.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREFIX_HEADER = VictoriousCommon/PrefixHeader.pch;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -9714,6 +9787,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "VictoriousCommon/VictoriousCommon-Bridging-Header.h";
 			};
 			name = Stable;
 		};
@@ -9721,12 +9795,15 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DE20E60A8BE791474B9B24CA /* Pods-VictoriousCommon.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREFIX_HEADER = VictoriousCommon/PrefixHeader.pch;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -9734,6 +9811,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "VictoriousCommon/VictoriousCommon-Bridging-Header.h";
 			};
 			name = Release;
 		};
@@ -9770,6 +9848,7 @@
 					"V_SWITCH_ENVIRONMENTS=1",
 					"V_TRACKING_ALERTS=1",
 					"V_RESET_PURCHASES=1",
+					"V_SHOW_EXPERIMENT_SETTINGS=1",
 				);
 				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -9895,6 +9974,7 @@
 					"V_SWITCH_ENVIRONMENTS=1",
 					"V_TRACKING_ALERTS=1",
 					"V_RESET_PURCHASES=1",
+					"V_SHOW_EXPERIMENT_SETTINGS=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
@@ -9954,6 +10034,7 @@
 					"V_NO_ENFORCE_PURCHASABLE_BALLISTICS=1",
 					"V_SHOW_BUILD_NUMBER_IN_SETTINGS=1",
 					"V_SWITCH_ENVIRONMENTS=1",
+					"V_SHOW_EXPERIMENT_SETTINGS=1",
 				);
 				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -10141,6 +10222,7 @@
 					"V_SWITCH_ENVIRONMENTS=1",
 					"V_TRACKING_ALERTS=1",
 					"V_RESET_PURCHASES=1",
+					"V_SHOW_EXPERIMENT_SETTINGS=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
