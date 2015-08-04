@@ -15,6 +15,10 @@ class ExperimentSettingsViewController: UITableViewController, ExperimentSetting
     
     let dataSource = ExperimentSettingsDataSource()
     
+    var dependencyManager: VDependencyManager?
+    
+    var initialExperimentIds: Set<Int>?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -25,12 +29,16 @@ class ExperimentSettingsViewController: UITableViewController, ExperimentSetting
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear( animated )
         
+        self.initialExperimentIds = self.dataSource.experimentSettings.activeExperiments as? Set<Int>
         self.dataSource.loadSettings()
     }
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear( animated )
         
-        self.dataSource.saveSettings()
+        // If any changes were made since this view was presented
+        if self.dataSource.experimentSettings.activeExperiments != self.initialExperimentIds {
+            NSNotificationCenter.defaultCenter().postNotificationName(VSessionTimerNewSessionShouldStart, object: nil)
+        }
     }
 }

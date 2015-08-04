@@ -9,19 +9,13 @@
 #import "VPublishViewController.h"
 #import "UIView+VDynamicsHelpers.h"
 #import "VDependencyManager.h"
-
 #import "VPlaceholderTextView.h"
 #import "VContentInputAccessoryView.h"
-
 #import "VObjectManager+ContentCreation.h"
 #import "VPublishParameters.h"
-
 #import "UIAlertView+VBlocks.h"
-
 #import <MBProgressHUD/MBProgressHUD.h>
-
 #import "NSURL+MediaType.h"
-
 #import "VPublishSaveCollectionViewCell.h"
 #import "VPublishShareCollectionViewCell.h"
 #import "VShareItemCollectionViewCell.h"
@@ -35,6 +29,7 @@
 #import "VDependencyManager+VTracking.h"
 #import "VPermissionsTrackingHelper.h"
 #import "VAlongsidePresentationAnimator.h"
+#import "VAutomation.h"
 
 @import AssetsLibrary;
 
@@ -189,6 +184,7 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
     [self.captionTextView setPlaceholderTextColor:[self.dependencyManager colorForKey:VDependencyManagerPlaceholderTextColorKey]];
     self.captionTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.captionTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    self.captionTextView.accessibilityIdentifier = VAutomationIdentifierPublishCatpionText;
     
     NSString *placeholderText = [self.dependencyManager stringForKey:kPlaceholderTextKey];
     self.captionTextView.placeholderText = NSLocalizedString(placeholderText, @"Caption entry placeholder text");

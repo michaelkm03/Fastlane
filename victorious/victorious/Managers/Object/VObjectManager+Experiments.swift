@@ -10,16 +10,26 @@ import Foundation
 
 extension VObjectManager {
     
+    typealias ExperimentSuccess = (experiments:[Experiment], defaultExperimentIds: Set<Int>) -> ()
+    
     /// Loads all available experiments from the backend as `Experiment`
     ///
     /// :param: success Closure to be called if server does not return an error.
     /// :param: failure Closure to be called if server returns an error.
-    func getDeviceExperiments( #success: VSuccessBlock, failure: VFailBlock ) -> RKManagedObjectRequestOperation? {
+    func getDeviceExperiments( #success: ExperimentSuccess, failure: VFailBlock ) -> RKManagedObjectRequestOperation? {
+        
+        let fullSuccess: VSuccessBlock = { (operation, result, resultObjects) in
+            
+            let defaultExperimentIds = Set<Int>( result?[ "experiment_ids" ] as? [Int] ?? [Int]() )
+            var experiments = resultObjects as? [Experiment] ?? [Experiment]()
+            
+            success( experiments: experiments, defaultExperimentIds: defaultExperimentIds )
+        }
         
         return self.GET( "/api/device/experiments",
             object: nil,
             parameters: nil,
-            successBlock: success,
+            successBlock: fullSuccess,
             failBlock: failure )
     }
 }

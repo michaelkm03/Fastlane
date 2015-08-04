@@ -41,6 +41,12 @@ NS_ASSUME_NONNULL_BEGIN
     self.settingSwitch.on = value;
 }
 
+- (void)setSwitchColor:(UIColor *__nonnull)switchColor
+{
+    _switchColor = switchColor;
+    self.settingSwitch.onTintColor = switchColor;
+}
+
 - (BOOL)value
 {
     return self.settingSwitch.on;

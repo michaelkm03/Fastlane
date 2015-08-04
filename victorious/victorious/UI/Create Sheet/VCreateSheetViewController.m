@@ -163,6 +163,7 @@ static const CGFloat kLineSpacing = 40.0f;
     cell.itemLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     [cell.iconImageView setImage:[menuItem.icon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
     cell.iconImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    cell.accessibilityIdentifier = menuItem.identifier;
         
     return cell;
 }

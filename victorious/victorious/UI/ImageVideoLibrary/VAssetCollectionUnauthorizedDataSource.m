@@ -15,6 +15,7 @@
 
 // Permissions
 #import "VPermissionPhotoLibrary.h"
+#import "VAutomation.h"
 
 static NSString * const kAccessUndeterminedPromptKey = @"accessUndeterminedPrompt";
 static NSString * const kAccessUndeterminedCalltoActionKey = @"accessUndeterminedCallToAction";
@@ -68,7 +69,7 @@ static NSString * const kNotAuthorizedCallToActionFont = @"notAuthorizedCallToAc
     authorizationCell.callToActionText = [self.dependencyManager stringForKey:isAllowAccess ? kAccessUndeterminedCalltoActionKey : nil];
     authorizationCell.callToActionFont = [self.dependencyManager fontForKey:kNotAuthorizedCallToActionFont];
     authorizationCell.callToActionColor = [self.dependencyManager colorForKey:kNotAuthorizedTextColorKey];
-
+    authorizationCell.accessibilityIdentifier = VAutomationIdentifierGrantLibraryAccess;
     return authorizationCell;
 }
 
