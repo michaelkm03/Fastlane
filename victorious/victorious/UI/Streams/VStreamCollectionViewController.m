@@ -475,8 +475,12 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
-        NSString *marqueeStreamID = [marquee.stream hasShelfID] ? marquee.stream.shelfId : marquee.stream.streamId;
-        [self showContentViewForSequence:(VSequence *)streamItem inStreamWithID:marqueeStreamID withPreviewImage:image];
+        StreamCellTrackingEvent *event = [StreamCellTrackingEvent new];
+        event.stream = marquee.stream;
+        event.sequence = (VSequence *)streamItem;
+        event.fromShelf = YES;
+        
+        [self showContentViewForCellEvent:event withPreviewImage:image];
     }
     else if ( [streamItem isSingleStream] )
     {
@@ -532,7 +536,13 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     self.lastSelectedIndexPath = indexPath;
     VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
-    [self showContentViewForSequence:sequence inStreamWithID:self.currentStream.streamId withPreviewImage:nil];
+    
+    StreamCellTrackingEvent *event = [StreamCellTrackingEvent new];
+    event.stream = self.currentStream;
+    event.sequence = sequence;
+    event.fromShelf = NO;
+    
+    [self showContentViewForCellEvent:event withPreviewImage:nil];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
@@ -740,15 +750,18 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     self.collectionView.backgroundView = newBackgroundView;
 }
 
-- (void)showContentViewForSequence:(VSequence *)sequence inStreamWithID:(NSString *)streamId withPreviewImage:(UIImage *)previewImage
+- (void)showContentViewForCellEvent:(StreamCellTrackingEvent *)event withPreviewImage:(UIImage *)previewImage
 {
-    NSParameterAssert(sequence != nil);
+    NSParameterAssert(event.sequence != nil);
     NSParameterAssert(self.currentStream != nil);
     
+    [self.streamTrackingHelper onStreamCellSelectedWithCellEvent:event];
+    
+    NSString *streamID = [event.stream hasShelfID] && event.fromShelf ? event.stream.shelfId : event.stream.streamId;
     [VContentViewPresenter presentContentViewFromViewController:self
                                           withDependencyManager:self.dependencyManager
-                                                    ForSequence:sequence
-                                                 inStreamWithID:streamId
+                                                    ForSequence:event.sequence
+                                                 inStreamWithID:streamID
                                                       commentID:nil
                                                withPreviewImage:previewImage];
 }
