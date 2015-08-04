@@ -423,10 +423,6 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         newComment.mediaWidth = @(publishParameters.width);
         newComment.mediaHeight = @(publishParameters.Height);
         [self fetchCommentByID:[payload[@"id"] integerValue] successBlock:nil failBlock:nil];
-        if (asset)
-        {
-            [asset addCommentsObject: newComment];
-        }
         
         NSString *commentText = payload[@"text"];
         NSDictionary *params = @{ VTrackingKeyTextLength : @(commentText.length),

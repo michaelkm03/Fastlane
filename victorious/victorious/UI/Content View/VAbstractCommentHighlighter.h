@@ -9,10 +9,10 @@
 #import <Foundation/Foundation.h>
 
 /**
- A helper class that primary animates the contentOffset (scroll position) of a collection view
- and highlights a specific cell to call the attention of the user.
+ A helper class that primary animates the contentOffset (scroll position) of a celled scrollable view
+ (tableview or collectionview) and highlights a specific cell to call the attention of the user.
  */
-@interface VCommentHighlighter : NSObject
+@interface VAbstractCommentHighlighter : NSObject
 
 /**
  Returns YES if the animations triggered by `scrollToAndHighlightIndexPath:delay:completion` are
@@ -21,14 +21,6 @@
  be animating.
  */
 @property (nonatomic, assign, readonly) BOOL isAnimatingCellHighlight;
-
-/**
- The desginated initializer requiring a collectionView to work with so it can control
- animation of the contentOffset and cells within.
- */
-- (instancetype)initWithCollectionView:(UICollectionView *)collectionView NS_DESIGNATED_INITIALIZER;
-
-- (instancetype)init NS_UNAVAILABLE;
 
 /**
  Trigger an animation that scrolls to and highlights the cell at the specified index
@@ -44,5 +36,28 @@
  not be called if this method is called before the end of any currently active animations.
  */
 - (void)stopAnimations;
+
+#pragma mark - Required overrides
+
+/**
+ Subclasses should return the number of sections in the celled scrollable view.
+ */
+- (NSInteger)numberOfSections;
+
+/**
+ Subclasses should scroll to the provided index path.
+ 
+ @param indexPath The index path that should be scrolled to.
+ */
+- (void)scrollToIndexPath:(NSIndexPath *)indexPath;
+
+/**
+ Subclasses should return the view that should be highlighted for the provided index path.
+ 
+ @param indexPath The index path of the view that should be animated.
+ 
+ @return The view representing content at the provided index path.
+ */
+- (UIView *)viewToAnimateForIndexPath:(NSIndexPath *)indexPath;
 
 @end

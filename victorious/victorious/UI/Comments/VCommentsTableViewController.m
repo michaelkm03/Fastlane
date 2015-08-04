@@ -41,6 +41,7 @@
 #import "UIView+AutoLayout.h"
 #import "VNoContentView.h"
 #import "VDependencyManager+VTracking.h"
+#import "VTableViewCommentHighlighter.h"
 #import "VTableViewStreamFocusHelper.h"
 #import "VCommentMedia.h"
 #import "VScrollPaginator.h"
@@ -62,6 +63,7 @@
 @property (nonatomic, strong) NSArray *comments;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VNoContentView *noContentView;
+@property (nonatomic, strong) VTableViewCommentHighlighter *commentHighlighter;
 @property (nonatomic, strong) VTableViewStreamFocusHelper *focusHelper;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 @property (nonatomic, strong) NSMutableArray *reuseIdentifiers;
@@ -87,6 +89,8 @@
     
     VSimpleModalTransition *modalTransition = [[VSimpleModalTransition alloc] init];
     self.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
+    
+    self.commentHighlighter = [[VTableViewCommentHighlighter alloc] initWithTableView:self.tableView];
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     //This hides the seperators for empty cells
@@ -121,6 +125,20 @@
         [self.refreshControl beginRefreshing];
     }
     
+    if ( self.selectedComment != nil )
+    {
+        for ( NSUInteger i = 0; i < self.comments.count; i++ )
+        {
+            VComment *comment = self.comments[i];
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+            if ( [comment.remoteId isEqualToNumber:self.selectedComment.remoteId] )
+            {
+                [self.commentHighlighter scrollToAndHighlightIndexPath:indexPath delay:0.3f completion:nil];
+                break;
+            }
+        }
+    }
+
     // Update cell focus
     [self.focusHelper updateFocus];
     
@@ -190,16 +208,7 @@
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         self.tableView.backgroundView = nil;
     }
-    self.comments = [self.sequence.comments array];
-}
-
-- (void)setComments:(NSArray *)comments
-{
-    NSArray *sortedComments = [comments sortedArrayUsingComparator:^NSComparisonResult(VComment *comment1, VComment *comment2)
-                               {
-                                   return [comment2.postedAt compare:comment1.postedAt];
-                               }];
-    _comments = sortedComments;
+    self.comments = [self.sequence dateSortedComments];
 }
 
 #pragma mark - Public Mehtods
@@ -226,7 +235,7 @@
                                                                                                pageType:VPageTypeFirst
                                                                                            successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
                                                   {
-                                                      self.comments = [self.sequence.comments array];
+                                                      self.comments = [self.sequence dateSortedComments];
                                                       
                                                       self.hasComments = self.comments.count > 0;
                                                       
@@ -258,7 +267,7 @@
                                                   pageType:VPageTypeNext
                                               successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
-         self.comments = [self.sequence.comments array];
+         self.comments = [self.sequence dateSortedComments];
          [self.tableView reloadData];
      }
                                                  failBlock:nil];

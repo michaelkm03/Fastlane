@@ -199,8 +199,12 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
      {
          if ( error == nil )
          {
-             objc_setAssociatedObject(weakSelf, &kAssociatedURLKey, image, OBJC_ASSOCIATION_ASSIGN);
-         }
+             UIImageView *strongSelf = weakSelf;
+             if ( strongSelf != nil && image != nil )
+             {
+                 objc_setAssociatedObject(strongSelf, &kAssociatedURLKey, image, OBJC_ASSOCIATION_ASSIGN);
+             }
+        }
          
          if ( callbackBlock != nil )
          {
@@ -238,7 +242,7 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
     
     __weak UIImageView *weakSelf = self;
     self.alpha = 0.0f;
-    objc_setAssociatedObject(weakSelf, &kAssociatedImageKey, image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &kAssociatedImageKey, image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     [self blurImage:image withTintColor:tintColor toCallbackBlock:^(UIImage *blurredImage)
      {
          if ( ![objc_getAssociatedObject(weakSelf, &kAssociatedImageKey) isEqual:image] )

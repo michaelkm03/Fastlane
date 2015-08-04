@@ -7,19 +7,7 @@
 //
 
 #import "VComment.h"
-
-/**
- An enum which describes the type of media attached
- to this comment.
- */
-typedef NS_ENUM(NSInteger, VCommentMediaType)
-{
-    VCommentMediaTypeNoMedia,
-    VCommentMediaTypeImage,
-    VCommentMediaTypeBallistic,
-    VCommentMediaTypeVideo,
-    VCommentMediaTypeGIF
-};
+#import "VCommentMediaType.h"
 
 @class VCommentMedia;
 
