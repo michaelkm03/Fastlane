@@ -8,6 +8,8 @@
 
 #include <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class VDependencyManager;
 
 /**
@@ -34,3 +36,5 @@
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager;
 
 @end
+
+NS_ASSUME_NONNULL_END

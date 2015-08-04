@@ -129,20 +129,25 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 
 #pragma mark - GIFSearchViewControllerDelegate
 
-- (void)GIFSelectedWithPreviewImage:(UIImage *)previewImage capturedMediaURL:(NSURL *)capturedMediaURL
+- (void)GIFSelectedWithPreviewImage:(UIImage *)previewImage capturedMediaURL:(NSURL *)capturedMediaURL width:(NSInteger)width height:(NSInteger)height
 {
     self.source = VCreationFlowSourceSearch;
+    self.publishParameters.width = width;
+    self.publishParameters.Height = height;
     [self captureFinishedWithMediaURL:capturedMediaURL previewImage:previewImage shouldSkipTrimmer:YES];
 }
 
 #pragma mark - VVideoCameraViewControllerDelegate
 
-- (void)videoCameraViewController:(VVideoCameraViewController *)videoCamera capturedVideoAtFileURL:(NSURL *)url
+- (void)videoCameraViewController:(VVideoCameraViewController *)videoCamera
+           capturedVideoAtFileURL:(NSURL *)url
+                     previewImage:(UIImage *)previewImage
 {
     // We only care if it's the top of the stack
     if ([self.viewControllers lastObject] == videoCamera)
     {
-        [self captureFinishedWithMediaURL:url previewImage:nil];
+        [self captureFinishedWithMediaURL:url
+                             previewImage:previewImage];
     }
 }
 

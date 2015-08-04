@@ -11,7 +11,6 @@
 
 // SubViews
 #import "VExperienceEnhancerBar.h"
-#import "VHistogramBarView.h"
 
 // Images
 #import "UIImage+ImageCreation.h"
@@ -19,6 +18,7 @@
 
 // Layout
 #import "VShrinkingContentLayout.h"
+#import "UIView+AutoLayout.h"
 
 // Cells
 #import "VContentCell.h"
@@ -27,9 +27,7 @@
 #import "VContentPollCell.h"
 #import "VContentPollQuestionCell.h"
 #import "VContentPollBallotCell.h"
-//#import "VTickerCell.h"
 #import "VContentCommentsCell.h"
-#import "VHistogramCell.h"
 #import "VExperienceEnhancerBarCell.h"
 #import "VContentTextCell.h"
 
@@ -67,6 +65,9 @@
 // Experiments
 #import "VDependencyManager+VScaffoldViewController.h"
 
+// Swift
+#import "victorious-Swift.h"
+
 #import "VSequence+Fetcher.h"
 
 #import "VTransitionDelegate.h"
@@ -74,20 +75,20 @@
 #import "VSimpleModalTransition.h"
 
 #import "VTracking.h"
-#import "VCommentHighlighter.h"
+#import "VCollectionViewCommentHighlighter.h"
 #import "VScrollPaginator.h"
 #import "VSequenceActionController.h"
 #import "VContentViewRotationHelper.h"
 #import "VEndCard.h"
 #import "VContentRepopulateTransition.h"
-#import "VCommentHighlighter.h"
+#import "VAbstractCommentHighlighter.h"
 #import "VEndCardActionModel.h"
 #import "VContentViewAlertHelper.h"
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
 #import "VInlineSearchTableViewController.h"
-#import "VCommentTextAndMediaView.h"
+#import "VTextAndMediaView.h"
 #import "VTagSensitiveTextView.h"
 #import "VTag.h"
 #import "VUserTag.h"
@@ -106,12 +107,12 @@
 #import "VSequenceExpressionsObserver.h"
 #import "VExperienceEnhancerResponder.h"
 #import "VDependencyManager+VTracking.h"
+#import "VCommentTextAndMediaView.h"
 
 // Cell focus
 #import "VCollectionViewStreamFocusHelper.h"
 
 #define HANDOFFENABLED 0
-static const CGFloat kMaxInputBarHeight = 200.0f;
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
@@ -123,7 +124,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, strong) VPublishParameters *publishParameters;
 @property (nonatomic, assign) BOOL hasAutoPlayed;
 
-@property (nonatomic, weak) IBOutlet UICollectionView *contentCollectionView;
+@property (nonatomic, weak) IBOutlet VInputAccessoryCollectionView *contentCollectionView;
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
 @property (nonatomic, weak) IBOutlet UIButton *closeButton;
 @property (nonatomic, weak) IBOutlet UIButton *moreButton;
@@ -133,7 +134,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, weak) VContentVideoCell *videoCell;
 @property (nonatomic, weak) VExperienceEnhancerBarCell *experienceEnhancerCell;
 @property (nonatomic, weak) VSectionHandleReusableView *handleView;
-@property (nonatomic, weak) VHistogramCell *histogramCell;
 @property (nonatomic, weak) VContentPollCell *pollCell;
 @property (nonatomic, weak) VContentPollBallotCell *ballotCell;
 @property (nonatomic, weak) VContentTextCell *textCell;
@@ -142,10 +142,10 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, weak) VKeyboardInputAccessoryView *textEntryView;
 @property (nonatomic, strong) VElapsedTimeFormatter *elapsedTimeFormatter;
 @property (nonatomic, strong) VMediaAttachmentPresenter *mediaAttachmentPresenter;
+@property (nonatomic, assign) BOOL shouldResumeEditingAfterClearActionSheet;
 
 // Constraints
 @property (nonatomic, weak) NSLayoutConstraint *bottomKeyboardToContainerBottomConstraint;
-@property (nonatomic, weak) NSLayoutConstraint *keyboardInputBarHeightConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *leadingCollectionViewToContainer;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *trailingCollectionViewToContainer;
 
@@ -156,7 +156,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, strong) VTransitionDelegate *modalTransitionDelegate;
 @property (nonatomic, strong) VTransitionDelegate *repopulateTransitionDelegate;
 
-@property (nonatomic, strong) VCommentHighlighter *commentHighlighter;
+@property (nonatomic, strong) VCollectionViewCommentHighlighter *commentHighlighter;
 
 @property (nonatomic, weak) IBOutlet VContentViewAlertHelper *alertHelper;
 @property (nonatomic, weak) IBOutlet VContentViewRotationHelper *rotationHelper;
@@ -178,6 +178,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
 
 @property (nonatomic, strong) NSURL *mediaURL;
+@property (nonatomic, strong) NSMutableArray *commentCellReuseIdentifiers;
 
 @end
 
@@ -211,8 +212,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (void)dealloc
 {
     [VContentCommentsCell clearSharedImageCache];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - VContentViewViewModelDelegate
@@ -297,16 +296,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     self.videoCell.viewModel = self.viewModel.videoViewModel;
 }
 
-- (void)didUpdateHistogramData
-{
-    if ( self.viewModel.histogramDataSource == nil )
-    {
-        return;
-    }
-    self.histogramCell.histogramView.dataSource = self.viewModel.histogramDataSource;
-    [self.contentCollectionView.collectionViewLayout invalidateLayout];
-}
-
 - (void)didUpdatePollsData
 {
     if (!self.viewModel.votingEnabled)
@@ -322,21 +311,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         self.pollCell.answerBIsFavored = (self.viewModel.favoredAnswer == VPollAnswerB);
         self.pollCell.numberOfVotersText = self.viewModel.numberOfVotersText;
     }
-}
-
-#pragma mark - UIResponder
-
-- (UIView *)inputAccessoryView
-{
-    VInputAccessoryView *_inputAccessoryView = nil;
-    if (_inputAccessoryView)
-    {
-        return _inputAccessoryView;
-    }
-    
-    _inputAccessoryView = [VInputAccessoryView new];
-    
-    return _inputAccessoryView;
 }
 
 #pragma mark Rotation
@@ -375,11 +349,19 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-    NSMutableArray *affectedViews = [[NSMutableArray alloc] init];
-    if ( self.textEntryView != nil )
+    // We need to update first responder status on the collection view for the comment bar
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
     {
-        [affectedViews addObject:self.textEntryView];
+        [self.textEntryView stopEditing];
+        [self.contentCollectionView resignFirstResponder];
     }
+    else
+    {
+        [self.contentCollectionView becomeFirstResponder];
+    }
+
+    NSMutableArray *affectedViews = [[NSMutableArray alloc] init];
+    
     if ( self.moreButton != nil )
     {
         [affectedViews addObject:self.moreButton];
@@ -410,11 +392,11 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                            dependencyManager:self.dependencyManager];
     
-    self.commentHighlighter = [[VCommentHighlighter alloc] initWithCollectionView:self.contentCollectionView];
+    self.commentHighlighter = [[VCollectionViewCommentHighlighter alloc] initWithCollectionView:self.contentCollectionView];
     
     // Hack to remove margins stuff should probably refactor :(
     if ([self.view respondsToSelector:@selector(setLayoutMargins:)])
@@ -437,44 +419,10 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     {
         VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryViewWithDependencyManager:self.dependencyManager];
         inputAccessoryView.translatesAutoresizingMaskIntoConstraints = NO;
-        inputAccessoryView.returnKeyType = UIReturnKeyDone;
         inputAccessoryView.delegate = self;
         self.textEntryView = inputAccessoryView;
-        NSLayoutConstraint *inputViewLeadingConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
-                                                                                      attribute:NSLayoutAttributeLeading
-                                                                                      relatedBy:NSLayoutRelationEqual
-                                                                                         toItem:self.view
-                                                                                      attribute:NSLayoutAttributeLeading
-                                                                                     multiplier:1.0f
-                                                                                       constant:0.0f];
-        NSLayoutConstraint *inputViewTrailingconstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
-                                                                                       attribute:NSLayoutAttributeTrailing
-                                                                                       relatedBy:NSLayoutRelationEqual
-                                                                                          toItem:self.view
-                                                                                       attribute:NSLayoutAttributeTrailing
-                                                                                      multiplier:1.0f
-                                                                                        constant:0.0f];
-        self.keyboardInputBarHeightConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
-                                                                             attribute:NSLayoutAttributeHeight
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:nil
-                                                                             attribute:NSLayoutAttributeNotAnAttribute
-                                                                            multiplier:1.0f
-                                                                              constant:VInputAccessoryViewDesiredMinimumHeight];
-        self.bottomKeyboardToContainerBottomConstraint = [NSLayoutConstraint constraintWithItem:inputAccessoryView
-                                                                                      attribute:NSLayoutAttributeBottom
-                                                                                      relatedBy:NSLayoutRelationEqual
-                                                                                         toItem:self.view
-                                                                                      attribute:NSLayoutAttributeBottom
-                                                                                     multiplier:1.0f
-                                                                                       constant:0.0f];
-
-        self.bottomKeyboardToContainerBottomConstraint.priority = UILayoutPriorityDefaultLow;
-        [self.view addSubview:inputAccessoryView];
-        [self.view addConstraints:@[self.keyboardInputBarHeightConstraint, inputViewLeadingConstraint, inputViewTrailingconstraint, self.bottomKeyboardToContainerBottomConstraint]];
-        
-        // Adjust focus area for keyboard bar
-        [self.focusHelper setFocusAreaInsets:UIEdgeInsetsMake(0, 0, self.keyboardInputBarHeightConstraint.constant, 0)];
+        self.contentCollectionView.accessoryView = self.textEntryView;
+        [self.contentCollectionView becomeFirstResponder];
     }
     
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
@@ -488,10 +436,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                  forCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentImageCell nibForCell]
                  forCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]];
-    [self.contentCollectionView registerNib:[VContentCommentsCell nibForCell]
-                 forCellWithReuseIdentifier:[VContentCommentsCell suggestedReuseIdentifier]];
-    [self.contentCollectionView registerNib:[VHistogramCell nibForCell]
-                 forCellWithReuseIdentifier:[VHistogramCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VExperienceEnhancerBarCell nibForCell]
                  forCellWithReuseIdentifier:[VExperienceEnhancerBarCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentPollCell nibForCell]
@@ -508,6 +452,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     self.viewModel.experienceEnhancerController.delegate = self;
     
+    self.commentCellReuseIdentifiers = [NSMutableArray new];
+    
     [self.viewModel reloadData];
 }
 
@@ -517,28 +463,19 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     [self.dependencyManager trackViewWillAppear:self];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardDidChangeFrame:)
-                                                 name:UIKeyboardDidChangeFrameNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardDidChangeFrame:)
-                                                 name:VInputAccessoryViewKeyboardFrameDidChangeNotification
-                                               object:nil];
     
     [self.navigationController setNavigationBarHidden:YES
                                              animated:YES];
     
     self.contentCollectionView.delegate = self;
+    
+    [self.contentCollectionView becomeFirstResponder];
     self.videoCell.delegate = self;
 
 #ifdef V_ALLOW_VIDEO_DOWNLOADS
     // We could probably move this here anyway, but not going to for now to avoid bugs.
     self.videoCell.viewModel = self.viewModel.videoViewModel;
 #endif
-    
-    self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(VShrinkingContentLayoutMinimumContentHeight, 0, CGRectGetHeight(self.textEntryView.bounds), 0);
-    self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.textEntryView.bounds) , 0);
     
     if (self.viewModel.sequence.isImage)
     {
@@ -552,6 +489,14 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                                              tintColor:nil];
     }
     
+    if ([self.viewModel.sequence isPoll])
+    {
+        if (self.viewModel.favoredAnswer != VPollAnswerInvalid)
+        {
+            VBallot favoredBallot = (self.viewModel.favoredAnswer == VPollAnswerA) ? VBallotA : VBallotB;
+            [self.ballotCell setVotingDisabledWithFavoredBallot:favoredBallot animated:YES];
+        }
+    }
 
     if (self.viewModel.type == VContentViewTypeVideo)
     {
@@ -577,6 +522,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    [self updateInsetsForKeyboardBarState];
     
     NSString *contextType = [self trackingValueForContentType] ?: @"";
     [[VTrackingManager sharedInstance] setValue:contextType forSessionParameterWithKey:VTrackingKeyContentType];
@@ -622,10 +569,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     if ( self.videoCell != nil && !self.videoCell.didFinishPlayingOnce  )
     {
-        Float64 currentTimeSeconds = CMTimeGetSeconds(self.videoCell.currentTime);
         NSDictionary *params = @{ VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStop,
                                   VTrackingKeyStreamId : self.viewModel.streamId,
-                                  VTrackingKeyTimeCurrent : @( (NSUInteger)(currentTimeSeconds * 1000) ) };
+                                  VTrackingKeyTimeCurrent : @( self.videoCell.currentTimeMilliseconds ) };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidStop parameters:params];
     }
 
@@ -642,13 +588,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 #endif
     
     // We don't care about these notifications anymore but we still care about new user loggedin
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardDidChangeFrameNotification
-                                                  object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:VInputAccessoryViewKeyboardFrameDidChangeNotification
-                                                  object:nil];
-    
+    [self.contentCollectionView resignFirstResponder];
     self.contentCollectionView.delegate = nil;
     self.videoCell.delegate = nil;
     
@@ -711,25 +651,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     }
 }
 
-#pragma mark - Notification Handlers
-
-- (void)keyboardDidChangeFrame:(NSNotification *)notification
-{
-    CGRect endFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
- 
-    if ([notification.name isEqualToString:VInputAccessoryViewKeyboardFrameDidChangeNotification])
-    {
-        CGFloat newBottomKeyboardBarToContainerConstraintHeight = 0.0f;
-        if (!isnan(endFrame.origin.y) && !isinf(endFrame.origin.y))
-        {
-            newBottomKeyboardBarToContainerConstraintHeight = -CGRectGetHeight([UIScreen mainScreen].bounds) + endFrame.origin.y;// + offset;
-        }
-        
-        self.bottomKeyboardToContainerBottomConstraint.constant = newBottomKeyboardBarToContainerConstraintHeight;
-        [self.view layoutIfNeeded];
-    }
-}
-
 #pragma mark - IBActions
 
 - (IBAction)pressedClose:(id)sender
@@ -749,6 +670,17 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 #pragma mark - Private Mehods
 
+- (void)updateInsetsForKeyboardBarState
+{
+    // Adjust focus area for keyboard bar
+    CGRect obscuredRectInWindow = [self.textEntryView obscuredRectInWindow:self.view.window];
+    CGRect obscuredRectInOwnView = [self.view.window convertRect:obscuredRectInWindow toView:self.view];
+    CGFloat bottomObscuredSize = CGRectGetMaxY(self.view.bounds) - CGRectGetMinY(obscuredRectInOwnView);
+    self.contentCollectionView.scrollIndicatorInsets = UIEdgeInsetsMake(VShrinkingContentLayoutMinimumContentHeight, 0, bottomObscuredSize, 0);
+    self.contentCollectionView.contentInset = UIEdgeInsetsMake(0, 0, bottomObscuredSize, 0);
+    [self.focusHelper setFocusAreaInsets:UIEdgeInsetsMake(0, 0, bottomObscuredSize, 0)];
+}
+
 - (void)removeCollectionViewFromContainer
 {
     self.snapshotView = [self.view snapshotViewAfterScreenUpdates:NO];
@@ -756,9 +688,10 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     self.offsetBeforeRemoval = self.contentCollectionView.contentOffset;
     self.contentCollectionView.delegate = nil;
     self.contentCollectionView.dataSource = nil;
-
+    [self.contentCollectionView resignFirstResponder];
+    [self.textEntryView stopEditing];
     [self.videoCell prepareForRemoval];
-    
+
     [self.contentCollectionView removeFromSuperview];
 }
 
@@ -781,7 +714,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                                                         views:@{@"collectionView":self.contentCollectionView}]];
     [self.view bringSubviewToFront:self.closeButton];
     [self.view bringSubviewToFront:self.moreButton];
-    [self.view bringSubviewToFront:self.textEntryView];
 }
 
 - (void)updateInitialExperienceEnhancerState
@@ -815,13 +747,14 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     __weak typeof(commentCell) wCommentCell = commentCell;
     __weak typeof(self) welf = self;
-    commentCell.onMediaTapped = ^(void)
-    {
-        [welf showLightBoxWithMediaURL:wCommentCell.mediaURL
-                          previewImage:wCommentCell.previewImage
-                               isVideo:wCommentCell.mediaIsVideo
-                            sourceView:wCommentCell.previewView];
-    };
+    [commentCell.commentAndMediaView setOnMediaTapped:^(UIImage *previewImage)
+     {
+         [welf showLightBoxWithMediaURL:[wCommentCell.comment properMediaURLGivenContentType]
+                           previewImage:previewImage
+                                isVideo:wCommentCell.mediaIsVideo
+                             sourceView:wCommentCell.commentAndMediaView];
+     }];
+    
     commentCell.onUserProfileTapped = ^(void)
     {
         VUserProfileViewController *profileViewController = [welf.dependencyManager userProfileViewControllerWithUser:wCommentCell.comment.user];
@@ -899,20 +832,12 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     {
         case VContentViewSectionContent:
             return 1;
-        case VContentViewSectionHistogramOrQuestion:
+        case VContentViewSectionPollQuestion:
         {
             if (self.viewModel.type == VContentViewTypePoll)
             {
                 return 1;
             }
-            
-            BOOL histogramEnabled = [[self.dependencyManager numberForKey:VDependencyManagerHistogramEnabledKey] boolValue];
-            BOOL isVideo = (self.viewModel.type == VContentViewTypeVideo);
-            if (histogramEnabled && isVideo)
-            {
-                return 1;
-            }
-            
             return 0;
         }
             
@@ -946,28 +871,13 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             }
             return cell;
         }
-        case VContentViewSectionHistogramOrQuestion:
+        case VContentViewSectionPollQuestion:
         {
-            if (self.viewModel.type == VContentViewTypePoll)
-            {
-                VContentPollQuestionCell *questionCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollQuestionCell suggestedReuseIdentifier]
-                                                                 forIndexPath:indexPath];
-                questionCell.question = [[NSAttributedString alloc] initWithString:self.viewModel.sequence.name
-                                                                        attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey]}];
-                return questionCell;
-            }
-            
-            if (self.histogramCell)
-            {
-                return self.histogramCell;
-            }
-            self.histogramCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VHistogramCell suggestedReuseIdentifier]
-                                                                                     forIndexPath:indexPath];
-            
-            self.histogramCell.histogramView.dataSource = self.viewModel.histogramDataSource;
-            [self.histogramCell.histogramView reloadData];
-            
-            return self.histogramCell;
+            VContentPollQuestionCell *questionCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentPollQuestionCell suggestedReuseIdentifier]
+                                                                                               forIndexPath:indexPath];
+            questionCell.question = [[NSAttributedString alloc] initWithString:self.viewModel.sequence.name
+                                                                    attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey]}];
+            return questionCell;
         }
         case VContentViewSectionExperienceEnhancers:
         {
@@ -1087,13 +997,29 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                        [animationImageView removeFromSuperview];
                                    });
                 }
+                
+                // Refresh comments 2 seconds after user throws an EB in case we need to show an EB comment
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                {
+                    __strong typeof(welf) strongSelf = welf;
+                    [strongSelf reloadComments];
+                });
             };
             
             return self.experienceEnhancerCell;
         }
         case VContentViewSectionAllComments:
         {
-            VContentCommentsCell *commentCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCommentsCell suggestedReuseIdentifier]
+            VComment *comment = self.viewModel.comments[indexPath.row];
+            NSString *reuseIdentifier = [MediaAttachmentView reuseIdentifierForComment:comment];
+            
+            if (![self.commentCellReuseIdentifiers containsObject:reuseIdentifier])
+            {
+                [self.contentCollectionView registerNib:[VContentCommentsCell nibForCell] forCellWithReuseIdentifier:reuseIdentifier];
+                [self.commentCellReuseIdentifiers addObject:reuseIdentifier];
+            }
+            
+            VContentCommentsCell *commentCell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier
                                                                                           forIndexPath:indexPath];
             commentCell.sequencePermissions = self.viewModel.sequence.permissions;
             [self configureCommentCell:commentCell withIndex:indexPath.row];
@@ -1118,7 +1044,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                                              forIndexPath:indexPath];
         }
             
-        case VContentViewSectionHistogramOrQuestion:
+        case VContentViewSectionPollQuestion:
             return nil;
         case VContentViewSectionExperienceEnhancers:
             return nil;
@@ -1166,15 +1092,10 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                     return [VContentTextCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
             }
         }
-        case VContentViewSectionHistogramOrQuestion:
-            if (self.viewModel.type == VContentViewTypePoll)
-            {
-                CGSize ret = [VContentPollQuestionCell actualSizeWithQuestion:self.viewModel.sequence.name
-                                                                   attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey]}
-                                                                  maximumSize:CGSizeMake(CGRectGetWidth(self.contentCollectionView.bounds), CGRectGetHeight(self.contentCollectionView.bounds)/2)];
-                return  ret;
-            }
-            return [VHistogramCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds];
+        case VContentViewSectionPollQuestion:
+            return  [VContentPollQuestionCell actualSizeWithQuestion:self.viewModel.sequence.name
+                                                          attributes:@{NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey]}
+                                                         maximumSize:CGSizeMake(CGRectGetWidth(self.contentCollectionView.bounds), CGRectGetHeight(self.contentCollectionView.bounds)/2)];;
         case VContentViewSectionExperienceEnhancers:
         {
             if (self.viewModel.type == VContentViewTypePoll)
@@ -1197,8 +1118,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             const CGFloat minBound = MIN( CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds) );
             VComment *comment = self.viewModel.comments[indexPath.row];
             CGSize size = [VContentCommentsCell sizeWithFullWidth:minBound
-                                                      commentBody:comment.text
-                                                         hasMedia:comment.hasMedia
+                                                          comment:comment
+                                                         hasMedia:comment.commentMediaType != VCommentMediaTypeNoMedia
                                                 dependencyManager:self.dependencyManager];
             return CGSizeMake( minBound, size.height );
         }
@@ -1219,7 +1140,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     {
         case VContentViewSectionContent:
             return CGSizeZero;
-        case VContentViewSectionHistogramOrQuestion:
+        case VContentViewSectionPollQuestion:
             return CGSizeZero;
         case VContentViewSectionExperienceEnhancers:
             return CGSizeZero;
@@ -1383,7 +1304,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
         self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
     }
 
-    self.histogramCell.histogramView.progress = CMTimeGetSeconds(time) / CMTimeGetSeconds(totalTime);
     self.viewModel.realTimeCommentsViewModel.currentTime = time;
 }
 
@@ -1405,7 +1325,8 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                   VTrackingKeyStreamId : self.viewModel.streamId,
                                   VTrackingKeySequenceId : self.viewModel.sequence.remoteId,
                                   VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStart ?: @[],
-                                  VTrackingKeyLoadTime : @(videoLoadTime) };
+                                  VTrackingKeyLoadTime : @(videoLoadTime),
+                                  VTrackingKeyTimeCurrent : @( self.videoCell.currentTimeMilliseconds ) };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
     }
     [UIView animateWithDuration:0.5f
@@ -1417,7 +1338,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell withTotalTime:(CMTime)totalTime
 {
-    self.histogramCell.histogramView.progress = CMTimeGetSeconds(totalTime) / CMTimeGetSeconds(totalTime);
     if (!self.enteringRealTimeComment)
     {
         self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:totalTime]];
@@ -1439,17 +1359,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
 }
 
 #pragma mark - VKeyboardInputAccessoryViewDelegate
-
-- (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inpoutAccessoryView
-                         wantsSize:(CGSize)size
-{
-    if (size.height > kMaxInputBarHeight)
-    {
-        return;
-    }
-    self.keyboardInputBarHeightConstraint.constant = size.height;
-    [self.view layoutIfNeeded];
-}
 
 - (void)pressedSendOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
 {
@@ -1478,6 +1387,28 @@ referenceSizeForHeaderInSection:(NSInteger)section
      }];
 }
 
+- (void)keyboardInputAccessoryViewWantsToClearMedia:(VKeyboardInputAccessoryView *)inputAccessoryView
+{
+    BOOL shouldResumeEditing = [inputAccessoryView isEditing];
+    [inputAccessoryView stopEditing];
+    UIAlertController *alertController = [self.alertHelper alertForConfirmDiscardMediaWithDelete:^
+                                          {
+                                              [inputAccessoryView setSelectedThumbnail:nil];
+                                              if (shouldResumeEditing)
+                                              {
+                                                  [inputAccessoryView startEditing];
+                                              }
+                                          }
+                                                                                          cancel:^
+                                          {
+                                              if (shouldResumeEditing)
+                                              {
+                                                  [inputAccessoryView startEditing];
+                                              }
+                                          }];
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
 - (void)pressedAlternateReturnKeyonKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
 {
     if (inputAccessoryView.composedText.length == 0)
@@ -1486,8 +1417,10 @@ referenceSizeForHeaderInSection:(NSInteger)section
     }
 }
 
-- (void)pressedAttachmentOnKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
+- (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
+            selectedAttachmentType:(VKeyboardBarAttachmentType)attachmentType
 {
+    [inputAccessoryView stopEditing];
     __weak typeof(self) welf = self;
     [self.authorizedAction performFromViewController:self context:VAuthorizationContextAddComment completion:^(BOOL authorized)
      {
@@ -1495,7 +1428,8 @@ referenceSizeForHeaderInSection:(NSInteger)section
          {
              return;
          }
-         [welf addMediaToComment];
+         __strong typeof(welf) strongSelf = welf;
+         [strongSelf addMediaToCommentWithAttachmentType:attachmentType];
      }];
 }
 
@@ -1508,8 +1442,15 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self clearEditingRealTimeComment];
 }
 
+- (void)keyboardInputAccessoryViewDidEndEditing:(VKeyboardInputAccessoryView *)inpoutAccessoryView
+{
+    [self updateInsetsForKeyboardBarState];
+}
+
 - (void)keyboardInputAccessoryViewDidBeginEditing:(VKeyboardInputAccessoryView *)inpoutAccessoryView
 {
+    [self updateInsetsForKeyboardBarState];
+    
     if ( self.viewModel.type != VContentViewTypeVideo )
     {
         return;
@@ -1546,25 +1487,23 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)userTaggingTextStorage:(VUserTaggingTextStorage *)textStorage wantsToDismissViewController:(UITableViewController *)tableViewController
 {
     [tableViewController.view removeFromSuperview];
+    self.textEntryView.attachmentsBarHidden = NO;
 }
 
 - (void)userTaggingTextStorage:(VUserTaggingTextStorage *)textStorage wantsToShowViewController:(UIViewController *)viewController
 {    
     // Inline Search layout constraints
     UIView *searchTableView = viewController.view;
-    UIView *superview = self.view;
-    [superview insertSubview:searchTableView belowSubview:self.textEntryView];
+    [self.view addSubview:searchTableView];
     [searchTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
     searchTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-    NSDictionary *views = @{@"searchTableView":searchTableView, @"textEntryView":self.textEntryView};
-    [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[searchTableView(>=height)][textEntryView]"
-                                                                      options:0
-                                                                      metrics:@{ @"height":@(kSearchTableDesiredMinimumHeight) }
-                                                                        views:views]];
-    [superview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[searchTableView]|"
-                                                                      options:kNilOptions
-                                                                      metrics:nil
-                                                                        views:views]];
+    
+    UIWindow *ownWindow = self.view.window;
+    CGRect obscuredRectInWindow = [self.textEntryView obscuredRectInWindow:ownWindow];
+    CGRect obscuredRectInOwnView = [ownWindow convertRect:obscuredRectInWindow toView:self.view];
+    [self.view v_addFitToParentConstraintsToSubview:searchTableView leading:0.0f trailing:0.0f top:0.0f bottom:CGRectGetMinY(obscuredRectInOwnView)];
+
+    self.textEntryView.attachmentsBarHidden = YES;
 }
 
 - (void)submitCommentWithText:(NSString *)commentText
@@ -1575,49 +1514,36 @@ referenceSizeForHeaderInSection:(NSInteger)section
                               realTime:welf.realtimeCommentBeganTime
                             completion:^(BOOL succeeded)
      {
-         [welf.viewModel loadComments:VPageTypeFirst];
-         [UIView animateWithDuration:0.0f
-                          animations:^
-          {
-              [welf didUpdateCommentsWithPageType:VPageTypeFirst];
-          }];
+         __strong typeof(welf) strongSelf = welf;
+         [strongSelf reloadComments];
      }];
 }
 
-- (void)addMediaToComment
+- (void)reloadComments
 {
-    void (^showCamera)(void) = ^void(void)
-    {
-        [self showMediaAttachmentUI];
-    };
-    
-    if (self.publishParameters.mediaToUploadURL == nil)
-    {
-        showCamera();
-        return;
-    }
-    
-    void (^clearMediaSelection)(void) = ^void(void)
-    {
-        self.publishParameters.mediaToUploadURL = nil;
-        [self.textEntryView setSelectedThumbnail:nil];
-    };
-    
-    UIAlertController *alertController = [self.alertHelper alertForConfirmDiscardMediaWithDelete:^
-                                          {
-                                              clearMediaSelection();
-                                              showCamera();
-                                          }
-                                                                                          cancel:nil];
-    [self presentViewController:alertController animated:YES completion:nil];
+    [self.viewModel loadComments:VPageTypeFirst];
 }
 
-- (void)showMediaAttachmentUI
+- (void)addMediaToCommentWithAttachmentType:(VKeyboardBarAttachmentType)attachmentType
 {
-    [self.view endEditing:YES];
+    [self.textEntryView stopEditing];
+    
     self.mediaAttachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager];
     __weak typeof(self) welf = self;
-    self.mediaAttachmentPresenter.attachmentTypes = VMediaAttachmentOptionsImage | VMediaAttachmentOptionsVideo | VMediaAttachmentOptionsGIF;
+    VMediaAttachmentOptions attachmentOption;
+    switch (attachmentType)
+    {
+        case VKeyboardBarAttachmentTypeVideo:
+            attachmentOption = VMediaAttachmentOptionsVideo;
+            break;
+        case VKeyboardBarAttachmentTypeImage:
+            attachmentOption = VMediaAttachmentOptionsImage;
+            break;
+        case VKeyboardBarAttachmentTypeGIF:
+            attachmentOption = VMediaAttachmentOptionsGIF;
+            break;
+    }
+    self.mediaAttachmentPresenter.attachmentTypes = attachmentOption;
     self.mediaAttachmentPresenter.resultHandler = ^void(BOOL success, VPublishParameters *publishParameters)
     {
         __strong typeof(self) strongSelf = welf;
@@ -1907,7 +1833,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)willCommentOnSequence:(VSequence *)sequenceObject fromView:(UIView *)commentView
 {
-    [self.sequenceActionController showCommentsFromViewController:self sequence:sequenceObject];
+    [self.sequenceActionController showCommentsFromViewController:self sequence:sequenceObject withSelectedComment:nil];
 }
 
 #pragma mark - UINavigationControllerDelegate

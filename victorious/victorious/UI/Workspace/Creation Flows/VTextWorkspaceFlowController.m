@@ -122,7 +122,7 @@
 - (void)publishContent
 {
     // Check with delegate to see if publishing is forced
-    if ([self.delegate respondsToSelector:@selector(isCreationForced)])
+    if ([self.textFlowDelegate respondsToSelector:@selector(isCreationForced)])
     {
         self.textToolController.publishIsForced = [self.textFlowDelegate isCreationForced];
     }
@@ -160,7 +160,7 @@
 
 - (void)presentCameraViewController
 {
-    self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager
+    self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencyManager:self.dependencyManager
                                                                           addedDependencies:@{VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateCrop),
                                                                                               VImageToolControllerShouldDisableTextOverlayKey:@(YES)}];
     self.attachmentPresenter.attachmentTypes = VMediaAttachmentOptionsImage;

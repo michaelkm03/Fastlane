@@ -32,6 +32,7 @@
 const NSInteger kTooManyNewMessagesErrorCode = 999;
 
 static const NSInteger kDefaultPageSize = 40;
+static const NSInteger kUserSearchResultLimit = 20;
 
 @implementation VObjectManager (Pagination)
 
@@ -97,7 +98,10 @@ static const NSInteger kDefaultPageSize = 40;
             {
                 NSMutableOrderedSet *comments = [[NSMutableOrderedSet alloc] initWithArray:resultObjects];
                 [comments addObjectsFromArray:sequence.comments.array];
-                sequenceInContext.comments = [comments copy];
+                if ( ![sequence.comments isEqualToOrderedSet:sequenceInContext.comments] )
+                {
+                    sequenceInContext.comments = [comments copy];
+                }
             }
             else
             {
@@ -544,7 +548,59 @@ static const NSInteger kDefaultPageSize = 40;
     return [self.paginationManager loadFilter:filter withPageType:pageType successBlock:fullSuccessBlock failBlock:fail];
 }
 
+#pragma mark - User Search
+
+- (RKManagedObjectRequestOperation *)findUsersBySearchString:(NSString *)search_string
+                                                  sequenceID:(NSString *)sequenceID
+                                                    pageType:(VPageType)pageType
+                                                     context:(NSString *)context
+                                            withSuccessBlock:(VSuccessBlock)success
+                                                   failBlock:(VFailBlock)fail
+{
+    VAbstractFilter *filter = [self userSearchFilterForSequenceID:sequenceID searchText:search_string context:context];
+    
+    VSuccessBlock fullSuccessBlock = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        if ( success != nil )
+        {
+            success(operation, fullResponse, resultObjects);
+        }
+    };
+    
+    return [self.paginationManager loadFilter:filter withPageType:pageType successBlock:fullSuccessBlock failBlock:fail];
+}
+
 #pragma mark - Filter Fetchers
+
+- (VAbstractFilter *)userSearchFilterForSequenceID:(NSString *)sequenceID searchText:(NSString *)searchText context:(NSString *)context
+{
+    NSString *apiPath = [NSString stringWithFormat:@"/api/userinfo/search_paginate/%@/%@/%@/", searchText, VPaginationManagerPageNumberMacro, VPaginationManagerItemsPerPageMacro];
+
+    NSURLComponents *components = [[NSURLComponents alloc] init];
+    
+    NSMutableArray *queryItems = [NSMutableArray new];
+    if (context != nil && context.length > 0)
+    {
+        NSURLQueryItem *contextParam = [NSURLQueryItem queryItemWithName:@"context" value:context];
+        [queryItems addObject:contextParam];
+    }
+    
+    if (sequenceID != nil && sequenceID.length > 0)
+    {
+        NSURLQueryItem *sequenceIDParam = [NSURLQueryItem queryItemWithName:@"sequence_id" value:sequenceID];
+        [queryItems addObject:sequenceIDParam];
+    }
+    
+    components.queryItems = queryItems;
+
+    NSString *formattedPath = [apiPath stringByAppendingString:components.URL.absoluteString];
+    
+    VAbstractFilter *filter = (VAbstractFilter *)[self.paginationManager filterForPath:formattedPath
+                                                                            entityName:[VAbstractFilter entityName]
+                                                                  managedObjectContext:self.managedObjectStore.persistentStoreManagedObjectContext];
+    filter.perPageNumber = @(kUserSearchResultLimit);
+    return filter;
+}
 
 - (VAbstractFilter *)likersFilterForSequence:(VSequence *)sequence
 {

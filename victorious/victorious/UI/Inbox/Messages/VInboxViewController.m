@@ -103,7 +103,6 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     [super viewDidLoad];
 
-    self.automaticallyAdjustsScrollViewInsets = YES;
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
     self.tableView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -123,6 +122,10 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     [self.dependencyManager trackViewWillAppear:self];
     
     [self.refreshControl beginRefreshing];
+
+    [self refresh:nil];
+    self.edgesForExtendedLayout = UIRectEdgeBottom;
+    self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(-CGRectGetHeight(self.navigationController.navigationBar.bounds), 0, 0, 0);
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -255,11 +258,11 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
         NSString *imageName = @"A_more";
         NSDictionary *moreAcessory = @{ VDependencyManagerDestinationKey: [NSNull null],
                                         VDependencyManagerTitleKey: title,
-                                        VDependencyManagerIconKey: @{ VDependencyManagerImageURLKey: imageName },
+                                        VDependencyManagerIconKey: [UIImage imageNamed:imageName],
                                         VDependencyManagerIdentifierKey: VDependencyManagerAccessoryItemMore,
                                         VDependencyManagerPositionKey: VDependencyManagerPositionRight };
-        NSDictionary *childCondifuration = @{ VDependencyManagerAccessoryScreensKey : @[ moreAcessory ] };
-        VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:childCondifuration];
+        NSDictionary *childConfiguration = @{ VDependencyManagerAccessoryScreensKey : @[ moreAcessory ] };
+        VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:childConfiguration];
         messageViewController = [VMessageContainerViewController messageViewControllerForUser:otherUser dependencyManager:childDependencyManager];
         self.messageViewControllers[otherUser.remoteId] = messageViewController;
     }
@@ -501,6 +504,11 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 }
 
 #pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    self.tableView.scrollIndicatorInsets = UIEdgeInsetsZero;
+}
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {

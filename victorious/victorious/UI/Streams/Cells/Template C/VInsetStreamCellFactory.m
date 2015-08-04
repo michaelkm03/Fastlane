@@ -42,6 +42,12 @@
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView
 {
     [self.noContentCollectionViewCellFactory registerNoContentCellWithCollectionView:collectionView];

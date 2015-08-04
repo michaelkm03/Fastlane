@@ -12,7 +12,7 @@ extension GIFSearchViewController : UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         if let searchBarText = searchBar.text where count(searchBarText) > 0 {
-            self.performSearchWithText( searchBar.text )
+            self.performSearchWithText( searchBarText )
             self.clearSearch()
             searchBar.resignFirstResponder()
         }
@@ -56,7 +56,6 @@ extension GIFSearchViewController : VScrollPaginatorDelegate {
 extension GIFSearchViewController : UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let section = self.searchDataSource.sections[ indexPath.section ]
         if collectionView.cellForItemAtIndexPath( indexPath ) is GIFSearchResultCell {
             if self.selectedIndexPath == indexPath {
                 self.hidePreviewForResult( indexPath )
@@ -66,14 +65,14 @@ extension GIFSearchViewController : UICollectionViewDelegate {
                 self.showPreviewForResult( indexPath )
             }
         }
+        else if collectionView.cellForItemAtIndexPath( indexPath ) is GIFSearchPreviewCell {
+            self.exportSelectedItem( nil )
+        }
     }
     
     func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        if collectionView.cellForItemAtIndexPath( indexPath ) is GIFSearchPreviewCell {
-            self.exportSelectedItem( nil )
-            return false
-        }
-        return true
+        let cell = collectionView.cellForItemAtIndexPath( indexPath )
+        return cell is GIFSearchResultCell || cell is GIFSearchPreviewCell
     }
     
     func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {

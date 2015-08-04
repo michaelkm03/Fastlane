@@ -26,6 +26,7 @@
 #import "VCellSizeCollection.h"
 #import "VCellSizingUserInfoKeys.h"
 #import "VActionButtonAnimationController.h"
+#import "VPreviewViewBackgroundHost.h"
 
 static const CGFloat kInsetCellHeaderHeight         = 50.0f;
 static const CGFloat kInsetCellActionViewHeight     = 41.0f;
@@ -352,6 +353,10 @@ static const UIEdgeInsets kCaptionInsets            = { 4.0, 0.0, 4.0, 0.0  };
     {
         [self.previewView setDependencyManager:self.dependencyManager];
     }
+    if ( [self.previewView conformsToProtocol:@protocol(VPreviewViewBackgroundHost)] )
+    {
+        [(VSequencePreviewView <VPreviewViewBackgroundHost> *)self.previewView updateToFitContent:YES withBackgroundSupplier:self.dependencyManager];
+    }
     [self.previewView setSequence:sequence];
 }
 
@@ -418,9 +423,16 @@ static const UIEdgeInsets kCaptionInsets            = { 4.0, 0.0, 4.0, 0.0  };
 {
     CGSize base = CGSizeMake( CGRectGetWidth(bounds), 0.0 );
     NSDictionary *userInfo = @{ kCellSizingSequenceKey : sequence,
-                                VCellSizeCacheKey : sequence.remoteId ?: @"",
+                                VCellSizeCacheKey : [self cacheKeyForSequence:sequence],
                                 kCellSizingDependencyManagerKey : dependencyManager };
     return [[[self class] cellLayoutCollection] totalSizeWithBaseSize:base userInfo:userInfo];
+}
+
++ (NSString *)cacheKeyForSequence:(VSequence *)sequence
+{
+    NSString *name = sequence.name ?: @"";
+    NSString *aspectRatioString = [NSString stringWithFormat:@"%.5f", [sequence previewAssetAspectRatio]];
+    return [name stringByAppendingString:aspectRatioString];
 }
 
 #pragma mark - CCHLinkTextViewDelegate

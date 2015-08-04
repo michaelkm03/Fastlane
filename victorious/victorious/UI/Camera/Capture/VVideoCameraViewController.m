@@ -62,6 +62,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
 
 // State
 @property (nonatomic, assign, getter=isTrashOpen) BOOL trashOpen;
+@property (nonatomic, readwrite) NSURL *savedVideoURL;
+@property (nonatomic, readwrite) UIImage *previewImage;
 
 @end
 
@@ -206,6 +208,7 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
     self.captureController.videoEncoder = nil;
     [self.cameraControl restoreCameraControlToDefault];
     self.previewView.hidden = NO;
+    [self clearRecordedVideoAndResetControl];
 }
 
 #pragma mark - Target/Action
@@ -266,7 +269,16 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
     }
 }
 
-#pragma mark - Capture
+#pragma mark - Private
+
+- (void)clearRecordedVideoAndResetControl
+{
+    [self updateProgressForSecond:0];
+    [self.cameraControl restoreCameraControlToDefault];
+    self.trashButton.hidden = YES;
+    self.trashButton.backgroundColor = [UIColor clearColor];
+    self.nextButton.enabled = NO;
+}
 
 // Returns YES if successfully created encoder or it already exists
 - (BOOL)setupEncoderIfNeeded
@@ -341,13 +353,15 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
                                     animated:YES];
 }
 
-
-- (void)clearRecordedVideoAndResetControl
+- (UIImage *)previewImageWithAssetAtURL:(NSURL *)url
 {
-    [self updateProgressForSecond:0];
-    [self.cameraControl restoreCameraControlToDefault];
-    self.trashButton.hidden = YES;
-    self.trashButton.backgroundColor = [UIColor clearColor];
+    AVURLAsset *assetAtURL = [AVURLAsset assetWithURL:url];
+    AVAssetImageGenerator *imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:assetAtURL];
+    imageGenerator.appliesPreferredTrackTransform = YES;
+    CGImageRef imageAtTimeZero = [imageGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:nil];
+    UIImage *image = [UIImage imageWithCGImage:imageAtTimeZero];
+    CGImageRelease(imageAtTimeZero);
+    return image;
 }
 
 #pragma mark - VCaptureVideoPreviewViewDelegate
@@ -461,7 +475,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
                        }
                        else
                        {
-                           _savedVideoURL = videoEncoder.fileURL;
+                           self.savedVideoURL = videoEncoder.fileURL;
+                           self.previewImage = [self previewImageWithAssetAtURL:self.savedVideoURL];
                            self.captureController.videoEncoder = nil;
                            if (self.captureController.captureSession.running)
                            {
@@ -472,7 +487,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
                                                    {
                                                        __strong typeof(welf) strongSelf = welf;
                                                        [strongSelf.delegate videoCameraViewController:strongSelf
-                                                                               capturedVideoAtFileURL:self.savedVideoURL];
+                                                                               capturedVideoAtFileURL:self.savedVideoURL
+                                                                                         previewImage:self.previewImage];
                                                    });
                                 }];
                            }
@@ -488,6 +504,20 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
     hud.mode = MBProgressHUDModeText;
     hud.labelText = errorText;
     [hud hide:YES afterDelay:kErrorMessageDisplayDuration];
+}
+
+@end
+
+@implementation VVideoCameraViewController (CreatorExtensions)
+
+- (void)clearCaptureState
+{
+    [self clearRecordedVideoAndResetControl];
+}
+
+- (void)resumeCapture
+{
+    [self viewWillAppear:YES];
 }
 
 @end

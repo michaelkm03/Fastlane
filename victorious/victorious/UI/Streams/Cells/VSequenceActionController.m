@@ -23,6 +23,7 @@
 #import "VUserProfileViewController.h"
 #import "VCommentsContainerViewController.h"
 #import "VWorkspaceViewController.h"
+#import "VAbstractMediaLinkViewController.h"
 
 #pragma mark-  Views
 #import "VNoContentView.h"
@@ -63,9 +64,18 @@
 
 #pragma mark - Comments
 
-- (void)showCommentsFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
+- (void)showCommentsFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence withSelectedComment:(VComment *)selectedComment
 {
-    [viewController.navigationController pushViewController:[self.dependencyManager commentsContainerWithSequence:sequence] animated:YES];
+    VCommentsContainerViewController *commentsContainerViewController;
+    if ( selectedComment != nil )
+    {
+        commentsContainerViewController = [self.dependencyManager commentsContainerWithSequence:sequence andSelectedComment:selectedComment];
+    }
+    else
+    {
+        commentsContainerViewController = [self.dependencyManager commentsContainerWithSequence:sequence];
+    }
+    [viewController.navigationController pushViewController:commentsContainerViewController animated:YES];
 }
 
 #pragma mark - User
@@ -78,6 +88,25 @@
     }
     
     return [self showProfile:sequence.user fromViewController:viewController];
+}
+
+- (BOOL)showProfileWithRemoteId:(NSNumber *)remoteId fromViewController:(UIViewController *)viewController
+{
+    if ( viewController == nil || viewController.navigationController == nil || remoteId == nil )
+    {
+        return NO;
+    }
+    
+    if ( [viewController isKindOfClass:[VUserProfileViewController class]] &&
+        [((VUserProfileViewController *)viewController).user.remoteId isEqual:remoteId] )
+    {
+        return NO;
+    }
+    
+    VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithRemoteId:remoteId];
+    [viewController.navigationController pushViewController:profileViewController animated:YES];
+    
+    return YES;
 }
 
 - (BOOL)showProfile:(VUser *)user fromViewController:(UIViewController *)viewController
@@ -96,6 +125,13 @@
     VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:user];
     [viewController.navigationController pushViewController:profileViewController animated:YES];
     
+    return YES;
+}
+
+- (BOOL)showMediaContentViewForUrl:(NSURL *)url withMediaLinkType:(VCommentMediaType)linkType fromViewController:(UIViewController *)viewController
+{
+    VAbstractMediaLinkViewController *mediaLinkViewController = [VAbstractMediaLinkViewController newWithMediaUrl:url andMediaLinkType:linkType];
+    [viewController presentViewController:mediaLinkViewController animated:YES completion:nil];
     return YES;
 }
 
@@ -212,16 +248,6 @@
 
 #pragma mark - Repost
 
-- (BOOL)canRespost
-{
-    if (![VObjectManager sharedManager].authorized)
-    {
-        return NO;
-    }
-    
-    return YES;
-}
-
 - (void)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node
 {
     [self repostActionFromViewController:viewController node:node completion:nil];
@@ -229,13 +255,25 @@
 
 - (void)repostActionFromViewController:(UIViewController *)viewController node:(VNode *)node completion:(void(^)(BOOL))completion
 {
+    if ([node.sequence.hasReposted boolValue])
+    {
+        if ( completion != nil )
+        {
+            completion(YES);
+        }
+        return;
+    }
+    
     VAuthorizedAction *authorization = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                       dependencyManager:self.dependencyManager];
     [authorization performFromViewController:viewController context:VAuthorizationContextRepost completion:^(BOOL authorized)
      {
          if (!authorized)
          {
-             completion(NO);
+             if ( completion != nil )
+             {
+                 completion(NO);
+             }
              return;
          }
          [[VObjectManager sharedManager] repostNode:node

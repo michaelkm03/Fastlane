@@ -38,6 +38,12 @@
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (void)updateUnreadMessageCount
 {
     dispatch_async(self.privateQueue, ^(void)

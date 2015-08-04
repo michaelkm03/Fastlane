@@ -9,6 +9,7 @@
 #import "victorious-Swift.h"
 
 #import "NSArray+VMap.h"
+#import "VAPIRequestDecorator.h"
 #import "VEnvironment.h"
 #import "VErrorMessage.h"
 #import "VMultipartFormDataWriter.h"
@@ -129,6 +130,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self addResponseDescriptorsFromArray:[VHashtag descriptors]];
     [self addResponseDescriptorsFromArray:[VNotificationSettings descriptors]];
     [self addResponseDescriptorsFromArray:[GIFSearchResult descriptors]];
+    [self addResponseDescriptorsFromArray:[Experiment descriptors]];
     
     [self addResponseDescriptorsFromArray: @[errorDescriptor,
                                              verrorDescriptor,
@@ -432,9 +434,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (id)objectWithEntityName:(NSString *)entityName subclass:(Class)subclass
 {
+    NSAssert([NSThread isMainThread], @"This method must be called on the main thread");
+    
     NSManagedObjectContext *context = [[self managedObjectStore] mainQueueManagedObjectContext];
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:entityName inManagedObjectContext:context];
-    return [[subclass alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:context];
+    return [(NSManagedObject *)[subclass alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:context];
     
     return nil;
 }
@@ -453,66 +457,36 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)updateHTTPHeadersInRequest:(NSMutableURLRequest *)request
 {
-    NSString *currentDate = [self rFC2822DateTimeString];
+    VAPIRequestDecorator *requestDecorator = [[VAPIRequestDecorator alloc] init];
+    
     NSString *userAgent = (self.HTTPClient.defaultHeaders)[kVUserAgentHeader];
-    NSString *buildNumber = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleVersion"];
-    NSString *appVersion = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-    NSNumber *appID = [[VEnvironmentManager sharedInstance] currentEnvironment].appID;
-    userAgent = [NSString stringWithFormat:@"%@ aid:%@ uuid:%@ build:%@", userAgent, appID.stringValue, [[UIDevice currentDevice].identifierForVendor UUIDString], buildNumber];
     [request setValue:userAgent forHTTPHeaderField:kVUserAgentHeader];
     
-    __block NSString *token;
-    __block NSNumber *userID;
+    requestDecorator.buildNumber = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleVersion"];
+    requestDecorator.versionNumber = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    requestDecorator.appID = [[VEnvironmentManager sharedInstance] currentEnvironment].appID;
+    requestDecorator.deviceID = [[UIDevice currentDevice].identifierForVendor UUIDString];
+    requestDecorator.locale = [[[NSBundle mainBundle] preferredLocalizations] firstObject];
+    
     // this may cause a deadlock if the main thread synchronously calls a background thread which then tries to initiate a networking call.
     // Can't think of a good reason why you'd ever do that, but still, beware.
     [self.managedObjectStore.mainQueueManagedObjectContext performBlockAndWait:^(void)
-     {
-         userID = self.mainUser.remoteId;
-         token = self.mainUser.token ?: @"";
-     }];
-    
-    // Build string to be hashed.
-    NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:request.URL resolvingAgainstBaseURL:YES];
-    NSString *sha1String = [[NSString stringWithFormat:@"%@%@%@%@%@",
-                             currentDate,
-                             urlComponents.percentEncodedPath,
-                             userAgent,
-                             token,
-                             request.HTTPMethod] SHA1HexDigest];
-    
-    sha1String = [NSString stringWithFormat:@"Basic %@:%@", userID, sha1String];
-    
-    [request addValue:sha1String forHTTPHeaderField:@"Authorization"];
-    [request addValue:currentDate forHTTPHeaderField:@"Date"];
-    [request addValue:@"iOS" forHTTPHeaderField:@"X-Client-Platform"];
-    [request addValue:[[UIDevice currentDevice] systemVersion] forHTTPHeaderField:@"X-Client-OS-Version"];
-    [request addValue:appVersion forHTTPHeaderField:@"X-Client-App-Version"];
-    if ( self.sessionID != nil )
     {
-        [request addValue:self.sessionID forHTTPHeaderField:@"X-Client-Session-ID"];
-    }
-    
-    if (self.experimentIDs != nil)
-    {
-        [request addValue:self.experimentIDs forHTTPHeaderField:@"X-Client-Experiment-IDs"];
-    }
-    
-    NSString *locale = [[[NSBundle mainBundle] preferredLocalizations] firstObject];
-    if ( locale != nil )
-    {
-        [request addValue:locale forHTTPHeaderField:@"Accept-Language"];
-    }
+        requestDecorator.userID = self.mainUser.remoteId;
+        requestDecorator.token = self.mainUser.token;
+    }];
     
     // Add location data to request if we have permission to collect it
     if ( [NSThread isMainThread] ) // locationManager can only be used from the main thread
     {
         VLocationManager *locationManager = [VLocationManager sharedInstance];
-        NSString *locationString = [locationManager httpFormattedLocationString];
-        if ([locationManager permissionGranted] && ![locationString isEqualToString:@""])
+        if ( [VLocationManager haveLocationServicesPermission] && locationManager.location != nil )
         {
-            [request addValue:locationString forHTTPHeaderField:@"X-Geo-Location"];
+            requestDecorator.location = locationManager.location.coordinate;
         }
     }
+    
+    [requestDecorator updateHeadersInRequest:request];
 }
 
 - (NSString *)rFC2822DateTimeString

@@ -21,6 +21,6 @@ else
     DEFAULT_APP_ID_KEY="VictoriousAppID"
 fi
 
-DEFAULT_APP_ID=$(/usr/libexec/PlistBuddy -c "Print $DEFAULT_APP_ID_KEY" "configurations/$FOLDER/Info.plist" 2> /dev/null)
+DEFAULT_APP_ID=$(/usr/libexec/PlistBuddy -c "Print $DEFAULT_APP_ID_KEY" "$FOLDER/Info.plist" 2> /dev/null)
 
 echo $DEFAULT_APP_ID

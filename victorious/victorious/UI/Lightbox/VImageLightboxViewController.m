@@ -19,8 +19,8 @@
 
 - (instancetype)initWithImage:(UIImage *)image
 {
-    self = [super initWithNibName:nil bundle:nil];
-    if (self)
+    self = [super init];
+    if ( self != nil )
     {
         self.image = image;
     }

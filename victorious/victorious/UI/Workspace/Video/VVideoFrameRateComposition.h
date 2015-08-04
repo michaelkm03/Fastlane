@@ -27,6 +27,8 @@ extern NSString * const VVideoFrameRateCompositionErrorDomain; ///< Errors gener
                    frameDuration:(CMTime)frameDuration
                        muteAudio:(BOOL)muteAudio NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /**
  *  The url to create an AVAsset from.
  */

@@ -29,6 +29,11 @@
                                     @{
                                         @"fontSize" : @10,
                                         @"fontName" : @"STHeitiSC-Light"
+                                        },
+                                VDependencyManagerParagraphFontKey :
+                                    @{
+                                        @"fontSize" : @10,
+                                        @"fontName" : @"STHeitiSC-Light"
                                         }
                                 }
                                              dictionaryOfClassesByTemplateName:nil];

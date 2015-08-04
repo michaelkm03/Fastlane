@@ -23,18 +23,26 @@
 #import "VSequenceExpressionsObserver.h"
 #import "VCellSizeCollection.h"
 #import "VCellSizingUserInfoKeys.h"
+#import "VInStreamCommentCellContents.h"
+#import "VInStreamCommentsShowMoreAttributes.h"
+#import "VInStreamCommentsController.h"
+#import <FBKVOController.h>
 #import "VActionButtonAnimationController.h"
 #import "VListicleView.h"
 #import "VEditorializationItem.h"
 #import "VStream.h"
+#import "VPreviewViewBackgroundHost.h"
 
 // These values must match the constraint values in interface builder
 static const CGFloat kSleekCellHeaderHeight = 50.0f;
 static const CGFloat kSleekCellActionViewHeight = 48.0f;
 static const CGFloat kCaptionToPreviewVerticalSpacing = 7.0f;
 static const CGFloat kMaxCaptionTextViewHeight = 200.0f;
-static const CGFloat kCountsTextViewMinHeight = 29.0f;
-static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
+static const CGFloat kCountsTextViewMinHeight = 0.0f;
+static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, kCaptionToPreviewVerticalSpacing, 14.0f };
+static const NSUInteger kMaxNumberOfInStreamComments = 3;
+static const CGFloat kInStreamCommentsTopSpace = 6.0f;
+static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
 @interface VSleekStreamCollectionCell () <VBackgroundContainer, CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate>
 
@@ -52,9 +60,16 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
 @property (nonatomic, strong) VActionButtonAnimationController *actionButtonAnimationController;
 @property (nonatomic, weak) IBOutlet VSequenceCountsTextView *countsTextView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *captiontoPreviewVerticalSpacing;
+@property (nonatomic, strong) VInStreamCommentsController *inStreamCommentsController;
+@property (nonatomic, weak) IBOutlet UICollectionView *inStreamCommentsCollectionView;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *inStreamCommentsCollectionViewTopConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *inStreamCommentsCollectionViewBottomConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *inStreamCommentsCollectionViewHeightConstraint;
+@property (nonatomic, readwrite) BOOL needsRefresh;
 @property (nonatomic, strong) IBOutlet VListicleView *listicleView;
 @property (nonatomic, readwrite) VStreamItem *streamItem;
 @property (nonatomic, strong) VEditorializationItem *editorialization;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *textViewConstraint;
 
 @end
 
@@ -72,6 +87,7 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
     [self setupDimmingContainer];
     
     self.countsTextView.textSelectionDelegate = self;
+    self.inStreamCommentsCollectionViewTopConstraint.constant = kInStreamCommentsTopSpace;
     self.actionButtonAnimationController = [[VActionButtonAnimationController alloc] init];
 }
 
@@ -92,7 +108,7 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
                  NSDictionary *attributes = [self sequenceDescriptionAttributesWithDependencyManager:dependencyManager];
                  CGFloat textWidth = size.width - kCaptionMargins.left - kCaptionMargins.right;
                  textHeight = VCEIL( [sequence.name frameSizeForWidth:textWidth andAttributes:attributes].height );
-                 textHeight += kCaptionMargins.top + kCaptionMargins.bottom;
+                 textHeight += kCaptionMargins.top;
              }
              return CGSizeMake( 0.0f, textHeight );
          }];
@@ -104,7 +120,7 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
              VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
-             CGFloat previewHeight =  size.width  / [sequence previewAssetAspectRatio];
+             CGFloat previewHeight =  VCEIL( size.width  / [sequence previewAssetAspectRatio] );
              return CGSizeMake( 0.0f, previewHeight );
          }];
         [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kSleekCellActionViewHeight)];
@@ -116,11 +132,42 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
              
              // FIXME: The use of "V" is just to get a good size for *something* in this text field since
              // we can't know what the actual text for the label is in a static method
-             return CGSizeMake( 0.0f, MAX( kCountsTextViewMinHeight, [@"V" frameSizeForWidth:textWidth andAttributes:attributes].height ) );
+             return CGSizeMake( 0.0f, MAX( kCountsTextViewMinHeight, VCEIL( [@"V" frameSizeForWidth:textWidth andAttributes:attributes].height ) ) );
          }];
-        [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kCaptionMargins.bottom)];
+        [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
+        {
+            CGFloat defaultHeight = VCEIL( ( kSleekCellActionViewHeight - VActionButtonHeight ) / 2 );
+            
+            VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
+            if ( ![[dependencyManager numberForKey:kShouldShowCommentsKey] boolValue] )
+            {
+                return CGSizeMake( 0.0f, defaultHeight );
+            }
+            
+            VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
+            NSArray *comments = [self inStreamCommentsArrayForSequence:sequence];
+            if ( comments.count == 0 )
+            {
+                return CGSizeMake( 0.0f, defaultHeight );
+            }
+            
+            BOOL showPreviousCommentsCellEnabled = [self inStreamCommentsShouldDisplayShowMoreCellForSequence:sequence];
+            NSArray *commentCellContents = [VInStreamCommentCellContents inStreamCommentsForComments:[userInfo objectForKey:VCellSizingCommentsKey] andDependencyManager:dependencyManager];
+            
+            CGFloat width = size.width;
+            width -= VCEIL( [VSleekActionView outerMarginForBarWidth:width] );
+            CGFloat height = [VInStreamCommentsController desiredHeightForCommentCellContents:commentCellContents withMaxWidth:width showMoreAttributes:[VInStreamCommentsShowMoreAttributes newWithDependencyManager:dependencyManager] andShowMoreCommentsCellEnabled:showPreviousCommentsCellEnabled];
+            height += kInStreamCommentsTopSpace; //Top space
+            height += VCEIL( ( kSleekCellActionViewHeight - VActionButtonHeight ) / 2.0f ); //Bottom space
+            return CGSizeMake( 0.0f, height );
+        }];
     }
     return collection;
+}
+
++ (BOOL)inStreamCommentsShouldDisplayShowMoreCellForSequence:(VSequence *)sequence
+{
+    return sequence.commentCount.unsignedIntegerValue > kMaxNumberOfInStreamComments && [self inStreamCommentsArrayForSequence:sequence].count == kMaxNumberOfInStreamComments;
 }
 
 #pragma mark - VSequenceCountsTextViewDelegate
@@ -178,18 +225,19 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
     
     [self.countsTextView setTextHighlightAttributes:[[self class] sequenceCountsActiveAttributesWithDependencyManager:dependencyManager]];
     [self.countsTextView setTextAttributes:[[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager]];
+    self.inStreamCommentsController.showMoreAttributes = [VInStreamCommentsShowMoreAttributes newWithDependencyManager:dependencyManager];
 }
 
 + (NSDictionary *)sequenceCountsActiveAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    UIFont *font = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+    UIFont *font = [dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
     UIColor *textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     return @{ NSFontAttributeName: font, NSForegroundColorAttributeName: textColor };
 }
 
 + (NSDictionary *)sequenceCountsAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    UIFont *font = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
+    UIFont *font = [dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
     UIColor *textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
     return @{ NSFontAttributeName: font, NSForegroundColorAttributeName: textColor };
 }
@@ -198,7 +246,19 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
 
 - (void)setSequence:(VSequence *)sequence
 {
+    [self.KVOController unobserve:_sequence];
+    
     _sequence = sequence;
+    
+    [self.KVOController observe:_sequence
+                        keyPath:@"comments"
+                        options:NSKeyValueObservingOptionNew
+                         action:@selector(commentsUpdated)];
+    
+    [self.KVOController observe:_sequence
+                        keyPath:@"inStreamComments"
+                        options:NSKeyValueObservingOptionNew
+                         action:@selector(commentsUpdated)];
     
     [self updatePreviewViewForSequence:sequence];
     self.headerView.sequence = sequence;
@@ -210,13 +270,21 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
     self.expressionsObserver = [[VSequenceExpressionsObserver alloc] init];
     [self.expressionsObserver startObservingWithSequence:sequence onUpdate:^
      {
-         typeof(self) strongSelf = welf;
+         __strong VSleekStreamCollectionCell *strongSelf = welf;
+         if ( strongSelf == nil )
+         {
+             return;
+         }
+         
          [strongSelf updateCountsTextViewForSequence:sequence];
          [strongSelf.actionButtonAnimationController setButton:strongSelf.sleekActionView.likeButton
                                                       selected:sequence.isLikedByMainUser.boolValue];
          [strongSelf.actionButtonAnimationController setButton:strongSelf.sleekActionView.repostButton
                                                       selected:sequence.hasReposted.boolValue];
      }];
+    
+    NSArray *inStreamComments = [[[self class] cellLayoutCollection] commentsForCacheKey:[[self class] cacheKeyForSequence:sequence]];
+    [self.inStreamCommentsController setupWithCommentCellContents:[VInStreamCommentCellContents inStreamCommentsForComments:inStreamComments andDependencyManager:self.dependencyManager] withShowMoreCellVisible:[[self class] inStreamCommentsShouldDisplayShowMoreCellForSequence:sequence]];
 }
 
 - (BOOL)needsAspectRatioUpdateForSequence:(VSequence *)sequence
@@ -270,6 +338,30 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
         self.previewContainerHeightConstraint = heightToWidth;
     }
     
+    if ( [self shouldShowCaptionForSequence:self.sequence] )
+    {
+        if ( self.captionHeight.constant != kMaxCaptionTextViewHeight || self.captiontoPreviewVerticalSpacing.constant != kCaptionToPreviewVerticalSpacing )
+        {
+            self.captiontoPreviewVerticalSpacing.constant = kCaptionToPreviewVerticalSpacing;
+            self.captionHeight.constant = kMaxCaptionTextViewHeight;
+        }
+    }
+    else
+    {
+        if ( self.captionHeight.constant != 0.0f || self.captiontoPreviewVerticalSpacing.constant != 0.0f )
+        {
+            self.captiontoPreviewVerticalSpacing.constant = 0.0f;
+            self.captionHeight.constant = 0.0f;
+        }
+    }
+    
+    BOOL hasComments = [[self class] inStreamCommentsArrayForSequence:self.sequence].count > 0;
+    self.inStreamCommentsCollectionViewBottomConstraint.active = hasComments;
+    self.inStreamCommentsCollectionViewHeightConstraint.active = !hasComments;
+    
+    self.textViewConstraint.constant = self.sleekActionView.leftMargin;
+    self.inStreamCommentsController.leftInset = self.sleekActionView.leftMargin;
+
     [super updateConstraints];
 }
 
@@ -289,25 +381,27 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
     {
         [self.previewView setDependencyManager:self.dependencyManager];
     }
+    if ( [self.previewView conformsToProtocol:@protocol(VPreviewViewBackgroundHost)] )
+    {
+        [(VSequencePreviewView <VPreviewViewBackgroundHost> *)self.previewView updateToFitContent:YES withBackgroundSupplier:self.dependencyManager];
+    }
     [self.previewView setSequence:sequence];
 }
 
 - (void)updateCaptionViewForSequence:(VSequence *)sequence
 {
-    if ( sequence.name == nil || sequence.name.length == 0|| self.dependencyManager == nil)
+    NSAttributedString *captionAttributedString = nil;
+    if ( [self shouldShowCaptionForSequence:sequence] )
     {
-        self.captionTextView.attributedText = nil;
-        self.captionHeight.constant = 0.0f;
-        self.captiontoPreviewVerticalSpacing.constant = 0.0f;
+        captionAttributedString = [[NSAttributedString alloc] initWithString:sequence.name
+                                                                  attributes:[VSleekStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
     }
-    else
-    {
-        self.captionTextView.attributedText = [[NSAttributedString alloc] initWithString:sequence.name
-                                                                              attributes:[VSleekStreamCollectionCell sequenceDescriptionAttributesWithDependencyManager:self.dependencyManager]];
-        self.captiontoPreviewVerticalSpacing.constant = kCaptionToPreviewVerticalSpacing;
-        self.captionHeight.constant = kMaxCaptionTextViewHeight;
-    }
-    [self layoutIfNeeded];
+    self.captionTextView.attributedText = captionAttributedString;
+}
+
+- (BOOL)shouldShowCaptionForSequence:(VSequence *)sequence
+{
+    return sequence.name.length > 0 && self.dependencyManager != nil;
 }
 
 - (void)updateListicleForSequence:(VSequence *)sequence andStream:(VStream *)stream
@@ -380,17 +474,12 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
                            dependencyManager:(VDependencyManager *)dependencyManager
 {
     CGSize base = CGSizeMake( CGRectGetWidth(bounds), 0.0 );
+    NSArray *comments = [self inStreamCommentsArrayForSequence:sequence];
     NSDictionary *userInfo = @{ kCellSizingSequenceKey : sequence,
                                 VCellSizeCacheKey : [self cacheKeyForSequence:sequence],
-                                kCellSizingDependencyManagerKey : dependencyManager };
+                                kCellSizingDependencyManagerKey : dependencyManager,
+                                VCellSizingCommentsKey: comments };
     return [[[self class] cellLayoutCollection] totalSizeWithBaseSize:base userInfo:userInfo];
-}
-
-+ (NSString *)cacheKeyForSequence:(VSequence *)sequence
-{
-    NSString *name = sequence.name ?: @"";
-    NSString *aspectRatioString = [NSString stringWithFormat:@"%.5f", [sequence previewAssetAspectRatio]];
-    return [name stringByAppendingString:aspectRatioString];
 }
 
 #pragma mark - VCellFocus
@@ -440,6 +529,47 @@ static const UIEdgeInsets kCaptionMargins = { 0.0f, 50.0f, 7.0f, 14.0f };
 - (VSequence *)sequenceToTrack
 {
     return self.sequence;
+}
+
+- (void)commentsUpdated
+{
+    self.needsRefresh = YES;
+}
+
+- (void)purgeSizeCacheValue
+{
+    [[[self class] cellLayoutCollection] removeSizeCacheForItemWithCacheKey:[[self class] cacheKeyForSequence:self.sequence]];
+    self.needsRefresh = NO;
+}
+
++ (NSString *)cacheKeyForSequence:(VSequence *)sequence
+{
+    return sequence.remoteId ?: @"";
+}
+
++ (NSArray *)inStreamCommentsArrayForSequence:(VSequence *)sequence
+{
+    NSArray *recentComments = [[sequence recentComments] array];
+    NSArray *comments = [sequence dateSortedComments];
+    if ( comments.count > recentComments.count )
+    {
+        return [comments subarrayWithRange:NSMakeRange(0, MIN(comments.count, kMaxNumberOfInStreamComments))];
+    }
+    return recentComments;
+}
+
+- (VInStreamCommentsController *)inStreamCommentsController
+{
+    if ( _inStreamCommentsController != nil )
+    {
+        return _inStreamCommentsController;
+    }
+    
+    if ( [[self.dependencyManager numberForKey:kShouldShowCommentsKey] boolValue] )
+    {
+        _inStreamCommentsController = [[VInStreamCommentsController alloc] initWithCollectionView:self.inStreamCommentsCollectionView];
+    }
+    return _inStreamCommentsController;
 }
 
 @end

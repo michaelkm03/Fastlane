@@ -31,6 +31,12 @@ static NSString * const kImageURLKey = @"imageURL";
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (NSNumber *)displayOrder
 {
     return [self.dependencyManager numberForKey:@"displayOrder"];
@@ -46,23 +52,19 @@ static NSString * const kImageURLKey = @"imageURL";
     return [self.dependencyManager stringForKey:@"voteTypeID"];
 }
 
-- (NSString *)iconImage
+- (UIImage *)iconImage
 {
-    NSDictionary *imageDictionary = [self.dependencyManager templateValueOfType:[NSDictionary class]
-                                                                         forKey:@"icon"];
-    return imageDictionary[kImageURLKey];
+    return [self.dependencyManager imageForKey:@"icon"];
 }
 
-- (NSString *)iconImageLarge
+- (UIImage *)iconImageLarge
 {
-    NSDictionary *imageDictionary = [self.dependencyManager templateValueOfType:[NSDictionary class]
-                                                                         forKey:@"iconLarge"];
-    return imageDictionary[kImageURLKey];
+    return [self.dependencyManager imageForKey:@"iconLarge"];
 }
 
 - (NSArray *)images
 {
-    return [self.dependencyManager arrayOfImageURLsForKey:@"images"];
+    return [self.dependencyManager arrayOfImagesForKey:@"images"];
 }
 
 - (NSNumber *)flightDuration
@@ -73,6 +75,11 @@ static NSString * const kImageURLKey = @"imageURL";
 - (NSNumber *)animationDuration
 {
     return [self.dependencyManager numberForKey:@"animationDuration"];
+}
+
+- (NSNumber *)cooldownDuration
+{
+    return [self.dependencyManager numberForKey:@"cooldownDuration"];
 }
 
 - (NSNumber *)isPaid
@@ -90,12 +97,6 @@ static NSString * const kImageURLKey = @"imageURL";
     return [self.dependencyManager trackingURLsForKey:VTrackingBallisticCountKey];
 }
 
-- (NSNumber *)scaleFactor
-{
-    NSDictionary *images = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:@"images"];
-    return images[@"scale"];
-}
-
 + (NSSet *)productIdentifiersFromVoteTypes:(NSArray *)voteTypes
 {
     NSMutableSet *productIdentifiers = [[NSMutableSet alloc] init];
@@ -111,8 +112,9 @@ static NSString * const kImageURLKey = @"imageURL";
 
 - (BOOL)containsRequiredData
 {
-    BOOL isNonPaidAndValid = self.images.count > 0 && self.voteTypeName.length > 0 && self.iconImage.length > 0;
-    BOOL isUnlockableAndValid = self.iconImageLarge.length > 0;
+    BOOL hasValidImages = [self.dependencyManager hasArrayOfImagesForKey:@"images"];
+    BOOL isNonPaidAndValid = hasValidImages && self.voteTypeName.length > 0 && self.iconImage != nil;
+    BOOL isUnlockableAndValid = self.iconImageLarge != nil;
     
     return isNonPaidAndValid || (isUnlockableAndValid && isNonPaidAndValid);
 }

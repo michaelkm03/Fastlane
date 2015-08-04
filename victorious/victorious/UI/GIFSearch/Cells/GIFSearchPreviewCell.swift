@@ -31,7 +31,7 @@ class GIFSearchPreviewCell: UICollectionViewCell {
             self.videoView?.removeFromSuperview()
             self.videoView = nil
             if let url = self.assetUrl {
-                var videoView = VVideoView(frame: self.bounds)
+                let videoView = VVideoView(frame: self.bounds)
                 self.videoView = videoView
                 self.addSubview( videoView )
                 self.v_addFitToParentConstraintsToSubview(videoView)

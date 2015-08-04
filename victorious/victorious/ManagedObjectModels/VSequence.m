@@ -1,9 +1,9 @@
 //
 //  VSequence.m
-//  victorious
+//  
 //
-//  Created by Sharif Ahmed on 7/13/15.
-//  Copyright (c) 2015 Victorious. All rights reserved.
+//  Created by Sharif Ahmed on 7/16/15.
+//
 //
 
 #import "VSequence.h"
@@ -56,5 +56,6 @@
 @dynamic tracking;
 @dynamic user;
 @dynamic voteResults;
+@dynamic recentComments;
 
 @end

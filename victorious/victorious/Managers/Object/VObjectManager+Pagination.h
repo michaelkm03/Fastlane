@@ -22,6 +22,15 @@ extern const NSInteger kTooManyNewMessagesErrorCode;
                                           successBlock:(VSuccessBlock)success
                                              failBlock:(VFailBlock)fail;
 
+#pragma mark - User Search
+
+- (RKManagedObjectRequestOperation *)findUsersBySearchString:(NSString *)search_string
+                                                  sequenceID:(NSString *)sequenceID
+                                                    pageType:(VPageType)pageType
+                                                     context:(NSString *)context
+                                            withSuccessBlock:(VSuccessBlock)success
+                                                   failBlock:(VFailBlock)fail;
+
 #pragma mark Comments
 
 - (RKManagedObjectRequestOperation *)findCommentPageOnSequence:(VSequence *)sequence

@@ -28,6 +28,12 @@
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (void)requestPermissionWithPermission:(VPermission *)permission
                              completion:(void (^)(BOOL deniedPrePrompt, VPermissionState state))completion
 {

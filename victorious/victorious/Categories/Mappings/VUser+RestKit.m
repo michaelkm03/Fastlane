@@ -76,9 +76,8 @@
                                                                                             withMapping:[VSequence simpleMapping]];
     [mapping addPropertyMapping:recentSequencesMapping];
     
-    [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"userId"}];
-    [mapping addConnectionForRelationship:@"conversation" connectedBy:@{@"remoteId" : @"other_interlocutor_user_id"}];
-    [mapping addConnectionForRelationship:@"messages" connectedBy:@{@"remoteId" : @"senderUserId"}];
+    [mapping addConnectionForRelationship:VSelectorName(conversation) connectedBy:@{@"remoteId" : @"other_interlocutor_user_id"}];
+    [mapping addConnectionForRelationship:VSelectorName(messages) connectedBy:@{@"remoteId" : @"senderUserId"}];
     
     return mapping;
 }
@@ -191,6 +190,12 @@
              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                           method:RKRequestMethodAny
                                                      pathPattern:@"/api/userinfo/search/:search_term/:limit/:context"
+                                                         keyPath:@"payload"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
+             [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                          method:RKRequestMethodAny
+                                                     pathPattern:@"/api/userinfo/search_paginate/:search_term/:page/:perpage/"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
              

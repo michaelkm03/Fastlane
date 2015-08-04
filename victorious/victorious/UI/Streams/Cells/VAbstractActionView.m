@@ -60,7 +60,6 @@
     
     _sequence = sequence;
     
-    [self layoutIfNeeded];
     [self updateActionItemsOnBar:self.actionBar forSequence:_sequence];
 }
 
@@ -98,6 +97,12 @@
 
 - (void)repost:(id)sender
 {
+    if ([self.sequence.hasReposted boolValue] || ![self.sequence.permissions canRepost])
+    {
+        // do nothing if we have already reposted
+        return;
+    }
+    
     UIResponder<VSequenceActionsDelegate> *targetForRepost = [self targetForAction:@selector(willRepostSequence:fromView:completion:)
                                                                         withSender:self];
     NSAssert( targetForRepost != nil, @"We need an object in the responder chain for resposting.");

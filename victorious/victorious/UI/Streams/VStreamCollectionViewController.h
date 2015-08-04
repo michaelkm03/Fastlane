@@ -37,11 +37,19 @@ const CGFloat VStreamCollectionViewControllerCreateButtonHeight; ///< The height
  */
 + (instancetype)streamViewControllerForStream:(VStream *)stream;
 
+- (void)showHashtagStreamWithHashtag:(NSString *)hashtag;
+
 /**
  *  For tracking purposes, each cell will only count as having been viewed if the ratio of its
  *  visible area is greater than or equal to this value.
  */
 @property (nonatomic, assign) float trackingMinRequiredCellVisibilityRatio;
+
+/**
+ *  The sequence action controller that will respond to actions taken on sequences
+ *  represented by cells within this collection view controller.
+ */
+@property (readonly, nonatomic) VSequenceActionController *sequenceActionController;
 
 /**
  Allows a context that instantiates a VUserProfileViewController to provide a class (possibly itself)

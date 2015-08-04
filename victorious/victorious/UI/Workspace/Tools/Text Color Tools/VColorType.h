@@ -23,4 +23,6 @@
 
 @property (nonatomic, readonly) UIColor *color;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 @end

@@ -43,6 +43,8 @@
 @property (nonatomic, readonly) UIColor *foregroundColor; ///< The foreground color of the selector
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithFrame:(CGRect)frame NS_UNAVAILABLE;
+- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
 
 /**
  Returns the frame of a button at the provided index.

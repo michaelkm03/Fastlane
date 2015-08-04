@@ -32,6 +32,12 @@
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (VNavigationMenuItem *)menuItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSAssert((NSUInteger)indexPath.section < self.menuSections.count, @"Invalid section specified");

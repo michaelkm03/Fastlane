@@ -21,6 +21,12 @@
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 #pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -32,7 +38,7 @@
 {
     VNoAssetsCell *noAssetCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VNoAssetsCell suggestedReuseIdentifier]
                                                                            forIndexPath:indexPath];
-    noAssetCell.titleLabel.text = (self.mediaType == PHAssetMediaTypeImage) ? @"No Photos" : @"No Videos";
+    noAssetCell.titleLabel.text = (self.mediaType == PHAssetMediaTypeImage) ? NSLocalizedString(@"No Photos", nil) : NSLocalizedString(@"No Videos", nil);
     return noAssetCell;
 }
 

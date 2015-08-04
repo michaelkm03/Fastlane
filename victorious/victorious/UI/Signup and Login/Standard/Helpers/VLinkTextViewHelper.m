@@ -25,9 +25,16 @@
     self = [super init];
     if ( self != nil )
     {
+        NSParameterAssert(dependencyManager != nil);
         _dependencyManager = dependencyManager;
     }
     return self;
+}
+
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
 }
 
 - (void)setupLinkTextView:(CCHLinkTextView *)linkTextView withText:(NSString *)text range:(NSRange)range

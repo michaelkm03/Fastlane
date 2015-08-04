@@ -24,4 +24,6 @@
  */
 - (instancetype)initWithSequence:(VSequence *)sequence NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 @end

@@ -18,15 +18,15 @@ extern NSString * const VDependencyManagerVoteTypesKey; ///< The key for retriev
 @property (nonatomic, readonly) NSNumber *displayOrder;
 @property (nonatomic, readonly) NSString *voteTypeName;
 @property (nonatomic, readonly) NSString *voteTypeID;
-@property (nonatomic, readonly) NSString *iconImage;
-@property (nonatomic, readonly) NSString *iconImageLarge;
+@property (nonatomic, readonly) UIImage *iconImage;
+@property (nonatomic, readonly) UIImage *iconImageLarge;
 @property (nonatomic, readonly) NSArray *images;
 @property (nonatomic, readonly) NSNumber *flightDuration;
 @property (nonatomic, readonly) NSNumber *animationDuration;
+@property (nonatomic, readonly) NSNumber *cooldownDuration;
 @property (nonatomic, readonly) NSNumber *isPaid;
 @property (nonatomic, readonly) NSString *imageContentMode;
 @property (nonatomic, readonly) NSString *productIdentifier;
-@property (nonatomic, readonly) NSNumber *scaleFactor;
 @property (nonatomic, readonly) NSArray *trackingURLs;
 
 @property (nonatomic, readonly) UIViewContentMode contentMode;
@@ -34,6 +34,7 @@ extern NSString * const VDependencyManagerVoteTypesKey; ///< The key for retriev
 @property (nonatomic, readonly) BOOL mustBePurchased;
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
+- (instancetype)init NS_UNAVAILABLE;
 
 /**
  Objects of type VVoteType may have a string value assigned to their `productIdentifier`

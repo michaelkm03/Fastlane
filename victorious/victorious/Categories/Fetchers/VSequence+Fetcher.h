@@ -36,6 +36,8 @@
 
 - (VAsset *)primaryAssetWithPreferredMimeType:(NSString *)mimeType;
 
+- (NSArray *)dateSortedComments;
+
 /**
  Retrieves the aspect ratio of the highest resolution
  preview asset for this sequence as a width/height float value. 

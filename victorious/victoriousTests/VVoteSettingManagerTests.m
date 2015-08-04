@@ -11,7 +11,6 @@
 #import "VVoteType.h"
 #import "VDummyModels.h"
 #import "NSObject+VMethodSwizzling.h"
-#import "VFileCache.h"
 
 // TODO
 #if 0

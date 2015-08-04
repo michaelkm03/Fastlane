@@ -28,6 +28,7 @@
 //Views
 #import "VNoContentView.h"
 #import "VCellFocus.h"
+#import "VSleekStreamCellFactory.h"
 
 //Data models
 #import "VStream+Fetcher.h"
@@ -43,6 +44,7 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Discover.h"
 #import "VUploadManager.h"
+#import "VContentViewFactory.h"
 
 //Categories
 #import "NSArray+VMap.h"
@@ -58,6 +60,7 @@
 #import "VTracking.h"
 #import "VHashtagStreamCollectionViewController.h"
 #import "VAuthorizedAction.h"
+#import "VContentViewPresenter.h"
 
 #import "VFullscreenMarqueeSelectionDelegate.h"
 #import "VAbstractMarqueeController.h"
@@ -107,7 +110,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 @property (strong, nonatomic) VUploadProgressViewController *uploadProgressViewController;
 @property (strong, nonatomic) NSLayoutConstraint *uploadProgressViewYconstraint;
 
-@property (strong, nonatomic) VSequenceActionController *sequenceActionController;
+@property (readwrite, nonatomic) VSequenceActionController *sequenceActionController;
 
 @property (nonatomic, assign) BOOL hasRefreshed;
 
@@ -280,7 +283,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
     if ( self.streamDataSource.count == 0 )
     {
-        [self refresh:self.refreshControl];
+        [self refresh:nil];
     }
     else
     {
@@ -289,7 +292,12 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
          to rotate in case it's timer has been invalidated by the presentation of another viewController
          */
         [self.marqueeCellController enableTimer];
-    } 
+    }
+    
+    if ( [self.streamCellFactory isKindOfClass:[VSleekStreamCellFactory class]] )
+    {
+        [(VSleekStreamCellFactory *)self.streamCellFactory updateVisibleCellsInCollectionView:self.collectionView];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -615,7 +623,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)willCommentOnSequence:(VSequence *)sequenceObject fromView:(UIView *)commentView
 {
-    [self.sequenceActionController showCommentsFromViewController:self sequence:sequenceObject];
+    [self.sequenceActionController showCommentsFromViewController:self sequence:sequenceObject withSelectedComment:nil];
 }
 
 - (void)selectedUser:(VUser *)user onSequence:(VSequence *)sequence fromView:(UIView *)userSelectionView
@@ -736,7 +744,12 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     NSParameterAssert(self.currentStream != nil);
     [self.streamTrackingHelper onStreamCellSelectedWithStream:self.currentStream sequence:sequence];
     
-    [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:sequence streamID:streamId commentId:nil placeHolderImage:previewImage];
+    [VContentViewPresenter presentContentViewFromViewController:self
+                                          withDependencyManager:self.dependencyManager
+                                                    ForSequence:sequence
+                                                 inStreamWithID:streamId
+                                                      commentID:nil
+                                               withPreviewImage:previewImage];
 }
 
 #pragma mark - Upload Progress View

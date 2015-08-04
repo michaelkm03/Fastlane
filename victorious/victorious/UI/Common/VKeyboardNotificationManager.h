@@ -34,4 +34,6 @@ typedef void (^VKeyboardManagerKeyboardChangeBlock) (CGRect keyboardFrameBegin,
  */
 @property (nonatomic, assign) BOOL stopCallingHandlerBlocks;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 @end

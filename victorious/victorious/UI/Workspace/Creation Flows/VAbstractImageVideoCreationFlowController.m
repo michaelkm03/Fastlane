@@ -18,6 +18,7 @@
 #import "VImageSearchViewController.h"
 #import "VAssetDownloader.h"
 #import "UIAlertController+VSimpleAlert.h"
+#import "VVideoCameraViewController.h"
 
 // Animator Support
 #import "VScaleAnimator.h"
@@ -200,6 +201,11 @@ static NSString * const kCreationFlowSourceSearch = @"search";
         }
         else
         {
+            if ([strongSelf.topViewController isKindOfClass:[VVideoCameraViewController class]])
+            {
+                VVideoCameraViewController *videoCamera = (VVideoCameraViewController *)strongSelf.topViewController;
+                [videoCamera resumeCapture];
+            }
             [strongSelf.workspaceViewController gainedFocus];
             [strongSelf dismissViewControllerAnimated:YES
                                            completion:nil];
@@ -290,6 +296,13 @@ static NSString * const kCreationFlowSourceSearch = @"search";
         self.renderedMediaURL = mediaURL;
         self.previewImage = previewImage;
         [self afterEditingFinished];
+        
+        // Since we're skipping the video camera clear the state
+        if ([self.topViewController isKindOfClass:[VVideoCameraViewController class]])
+        {
+            VVideoCameraViewController *videoCamera = (VVideoCameraViewController *)self.topViewController;
+            [videoCamera clearCaptureState];
+        }
     }
     else
     {

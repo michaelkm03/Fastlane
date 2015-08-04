@@ -70,10 +70,6 @@ static NSUInteger const kVSequenceAlreadyReposted       = 1005;
 static NSUInteger const kVUpgradeRequiredError          = 426;
 static NSUInteger const kVUnauthoizedError              = 401;
 
-#pragma mark - Info.plist keys
-
-static NSString * const kGAID = @"GAID";
-
 #pragma mark - API Payload keys
 
 static NSString * const   kVUserAgentHeader    = @"User-Agent";
@@ -87,6 +83,7 @@ static NSString * const   kRemoteIdKey         = @"remoteId";
 static NSString * const VConstantsMediaTypeYoutube   = @"youtube_video_id";
 static NSString * const VConstantsMediaTypeVideo     = @"video";
 static NSString * const VConstantsMediaTypeImage     = @"image";
+static NSString * const VConstantsMediaTypeVoteType  = @"votetype";
 
 static NSString * const VConstantMediaExtensionM3U8      = @"m3u8";
 static NSString * const VConstantMediaExtensionPNG       = @"png";

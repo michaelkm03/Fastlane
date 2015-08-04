@@ -25,4 +25,6 @@
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
              inboxViewController:(VInboxViewController *)inboxViewController NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 @end
