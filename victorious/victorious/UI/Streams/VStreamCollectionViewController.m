@@ -27,6 +27,7 @@
 //Views
 #import "VNoContentView.h"
 #import "VCellFocus.h"
+#import "VSleekStreamCellFactory.h"
 
 //Data models
 #import "VStream+Fetcher.h"
@@ -108,7 +109,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 @property (strong, nonatomic) VUploadProgressViewController *uploadProgressViewController;
 @property (strong, nonatomic) NSLayoutConstraint *uploadProgressViewYconstraint;
 
-@property (strong, nonatomic) VSequenceActionController *sequenceActionController;
+@property (readwrite, nonatomic) VSequenceActionController *sequenceActionController;
 
 @property (nonatomic, assign) BOOL hasRefreshed;
 
@@ -290,7 +291,12 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
          to rotate in case it's timer has been invalidated by the presentation of another viewController
          */
         [self.marqueeCellController enableTimer];
-    } 
+    }
+    
+    if ( [self.streamCellFactory isKindOfClass:[VSleekStreamCellFactory class]] )
+    {
+        [(VSleekStreamCellFactory *)self.streamCellFactory updateVisibleCellsInCollectionView:self.collectionView];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -616,7 +622,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)willCommentOnSequence:(VSequence *)sequenceObject fromView:(UIView *)commentView
 {
-    [self.sequenceActionController showCommentsFromViewController:self sequence:sequenceObject];
+    [self.sequenceActionController showCommentsFromViewController:self sequence:sequenceObject withSelectedComment:nil];
 }
 
 - (void)selectedUser:(VUser *)user onSequence:(VSequence *)sequence fromView:(UIView *)userSelectionView
