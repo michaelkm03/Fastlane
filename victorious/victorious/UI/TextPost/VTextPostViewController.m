@@ -18,7 +18,6 @@
 #import "UIColor+VBrightness.h"
 #import "VURLDetector.h"
 #import "VTextPostCalloutHelper.h"
-#import "VAutomation.h"
 
 static const CGFloat kAnimationDuration = 0.35f;
 static NSString * const kStandardBackgroundColorKey = @"color.standard.textPost";

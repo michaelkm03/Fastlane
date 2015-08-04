@@ -19,7 +19,6 @@
 #import "VAppDelegate.h"
 #import "VLoginViewController.h"
 #import "VObjectManager+Websites.h"
-#import "VAutomation.h"
 #import "VNotificationSettingsViewController.h"
 #import "VButton.h"
 #import "VPurchaseManager.h"

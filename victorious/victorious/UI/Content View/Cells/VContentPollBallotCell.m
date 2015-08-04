@@ -11,7 +11,6 @@
 #import "UIImage+ImageCreation.h"
 
 #import "VThemeManager.h"
-#import "VAutomation.h"
 
 static CGFloat const kMinimumHeight = 60.0f;
 static UIEdgeInsets const kAnswerInsets = { 10, 0, 10, 0};
