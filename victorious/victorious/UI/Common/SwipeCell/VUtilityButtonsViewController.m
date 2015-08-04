@@ -115,7 +115,7 @@ static const CGFloat kCollectionViewSectionsCount = 1;
     
     if (kind == kUtilityButtonSeperatorKind)
     {
-        reusableview = [VUtilityButtonSeperator collectionReusableViewForCollectionView:collectionView forIndexPath:indexPath withKind:kind];
+        reusableview = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:[VUtilityButtonSeperator suggestedReuseIdentifier] forIndexPath:indexPath];
     }
     
     return reusableview;

@@ -15,10 +15,4 @@
  */
 @interface VUtilityButtonSeperator : VBaseSupplementaryView
 
-/*
- *  Override for returning the VUtilityButtonSeperator view for the collectionview
- */
-+ (id)collectionReusableViewForCollectionView:(UICollectionView *)collectionView
-                                 forIndexPath:(NSIndexPath *)indexPath withKind:(NSString *)kind;
-
 @end
