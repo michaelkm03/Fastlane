@@ -76,9 +76,8 @@
                                                                                             withMapping:[VSequence simpleMapping]];
     [mapping addPropertyMapping:recentSequencesMapping];
     
-    [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"userId"}];
-    [mapping addConnectionForRelationship:@"conversation" connectedBy:@{@"remoteId" : @"other_interlocutor_user_id"}];
-    [mapping addConnectionForRelationship:@"messages" connectedBy:@{@"remoteId" : @"senderUserId"}];
+    [mapping addConnectionForRelationship:VSelectorName(conversation) connectedBy:@{@"remoteId" : @"other_interlocutor_user_id"}];
+    [mapping addConnectionForRelationship:VSelectorName(messages) connectedBy:@{@"remoteId" : @"senderUserId"}];
     
     return mapping;
 }

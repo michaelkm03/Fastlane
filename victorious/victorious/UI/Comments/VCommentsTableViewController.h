@@ -15,6 +15,7 @@
 @interface VCommentsTableViewController : UITableViewController <VHasManagedDependencies>
 
 @property (nonatomic, strong) VSequence *sequence;
+@property (nonatomic, strong) VComment *selectedComment;
 @property (nonatomic, weak) id<VCommentsTableViewControllerDelegate> delegate;
 @property (nonatomic, assign) UIEdgeInsets focusAreaInset;
 @property (nonatomic, readonly) NSArray *comments;

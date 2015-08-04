@@ -21,7 +21,6 @@ static NSString * const kDividerDelimeter = @"•";
 
 @interface VSequenceCountsTextView () <CCHLinkTextViewDelegate>
 
-@property (nonatomic, strong) CCHLinkTextView *countsTextView;
 @property (nonatomic, strong) VLargeNumberFormatter *numberFormatter;
 
 @property (nonatomic, assign) NSInteger likesCount;
@@ -56,6 +55,9 @@ static NSString * const kDividerDelimeter = @"•";
     self.backgroundColor = [UIColor clearColor];
     self.scrollEnabled = NO;
     self.editable = NO;
+    self.textContainer.lineFragmentPadding = 0.0f;
+    self.textContainerInset = UIEdgeInsetsZero;
+    self.contentInset = UIEdgeInsetsZero;
     self.linkDelegate = self;
 }
 

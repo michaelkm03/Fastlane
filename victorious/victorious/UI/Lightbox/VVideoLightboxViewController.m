@@ -29,8 +29,8 @@
 
 - (instancetype)initWithPreviewImage:(UIImage *)previewImage videoURL:(NSURL *)videoURL
 {
-    self = [super initWithNibName:nil bundle:nil];
-    if (self)
+    self = [super init];
+    if ( self != nil )
     {
         self.previewImage = previewImage;
         self.videoURL = videoURL;

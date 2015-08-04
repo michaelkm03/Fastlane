@@ -7,7 +7,7 @@
 //
 
 #import "VCommentsTableViewController.h"
-#import "VCommentTextAndMediaView.h"
+#import "VTextAndMediaView.h"
 #import "VRTCUserPostedAtFormatter.h"
 #import "VDependencyManager+VScaffoldViewController.h"
 #import "VLoginViewController.h"
@@ -41,11 +41,16 @@
 #import "UIView+AutoLayout.h"
 #import "VNoContentView.h"
 #import "VDependencyManager+VTracking.h"
+#import "VTableViewCommentHighlighter.h"
 #import "VTableViewStreamFocusHelper.h"
 #import "VCommentMedia.h"
 #import "VScrollPaginator.h"
 #import "VVideoLightboxViewController.h"
 #import "VLightboxTransitioningDelegate.h"
+#import "victorious-Swift.h"
+#import "VCommentTextAndMediaView.h"
+#import "NSURL+MediaType.h"
+#import "VImageLightboxViewController.h"
 
 @import Social;
 
@@ -57,9 +62,11 @@
 @property (nonatomic, strong) VTransitionDelegate *transitionDelegate;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VNoContentView *noContentView;
+@property (nonatomic, strong) VTableViewCommentHighlighter *commentHighlighter;
 @property (nonatomic, strong) VTableViewStreamFocusHelper *focusHelper;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 @property (nonatomic, readwrite) NSArray *comments;
+@property (nonatomic, strong) NSMutableArray *reuseIdentifiers;
 
 @end
 
@@ -83,8 +90,7 @@
     VSimpleModalTransition *modalTransition = [[VSimpleModalTransition alloc] init];
     self.transitionDelegate = [[VTransitionDelegate alloc] initWithTransition:modalTransition];
     
-    [self.tableView registerNib:[UINib nibWithNibName:kVCommentCellNibName bundle:nil]
-         forCellReuseIdentifier:kVCommentCellNibName];
+    self.commentHighlighter = [[VTableViewCommentHighlighter alloc] initWithTableView:self.tableView];
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     //This hides the seperators for empty cells
@@ -104,6 +110,8 @@
     
     // Initialize our focus helper
     self.focusHelper = [[VTableViewStreamFocusHelper alloc] initWithTableView:self.tableView];
+    
+    self.reuseIdentifiers = [NSMutableArray new];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -117,6 +125,20 @@
         [self.refreshControl beginRefreshing];
     }
     
+    if ( self.selectedComment != nil )
+    {
+        for ( NSUInteger i = 0; i < self.comments.count; i++ )
+        {
+            VComment *comment = self.comments[i];
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+            if ( [comment.remoteId isEqualToNumber:self.selectedComment.remoteId] )
+            {
+                [self.commentHighlighter scrollToAndHighlightIndexPath:indexPath delay:0.3f completion:nil];
+                break;
+            }
+        }
+    }
+
     // Update cell focus
     [self.focusHelper updateFocus];
     
@@ -158,22 +180,13 @@
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
-
-    [self setHasComments:self.sequence.commentCount.integerValue];
     
     self.title = sequence.name;
     
     [self.tableView reloadData];
     
-    if (self.hasComments) //If we don't have comments, try to pull more.
-    {
-        self.needsRefresh = YES;
-        [self refresh:self.refreshControl];
-    }
-    else
-    {
-        self.needsRefresh = NO;
-    }
+    self.needsRefresh = YES;
+    [self refresh:self.refreshControl];
 }
 
 - (void)setHasComments:(BOOL)hasComments
@@ -195,16 +208,7 @@
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         self.tableView.backgroundView = nil;
     }
-    self.comments = [self.sequence.comments array];
-}
-
-- (void)setComments:(NSArray *)comments
-{
-    NSArray *sortedComments = [comments sortedArrayUsingComparator:^NSComparisonResult(VComment *comment1, VComment *comment2)
-                               {
-                                   return [comment2.postedAt compare:comment1.postedAt];
-                               }];
-    _comments = sortedComments;
+    self.comments = [self.sequence dateSortedComments];
 }
 
 #pragma mark - Public Mehtods
@@ -231,7 +235,10 @@
                                                                                                pageType:VPageTypeFirst
                                                                                            successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
                                                   {
-                                                      self.comments = [self.sequence.comments array];
+                                                      self.comments = [self.sequence dateSortedComments];
+                                                      
+                                                      self.hasComments = self.comments.count > 0;
+                                                      
                                                       self.needsRefresh = NO;
                                                       [self.tableView reloadData];
                                                       [self.refreshControl endRefreshing];
@@ -260,7 +267,7 @@
                                                   pageType:VPageTypeNext
                                               successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
      {
-         self.comments = [self.sequence.comments array];
+         self.comments = [self.sequence dateSortedComments];
          [self.tableView reloadData];
      }
                                                  failBlock:nil];
@@ -281,15 +288,21 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VComment *comment = (VComment *)self.comments[indexPath.row];
-    return [VCommentCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds)
-                                             text:comment.text
-                                        withMedia:comment.hasMedia];
+    return [VCommentCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds) comment:comment];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:kVCommentCellNibName forIndexPath:indexPath];
     VComment *comment = self.comments[indexPath.row];
+    NSString *reuseIdentifier = [MediaAttachmentView reuseIdentifierForComment:comment];
+    
+    if (![self.reuseIdentifiers containsObject:reuseIdentifier])
+    {
+        [self.tableView registerNib:[UINib nibWithNibName:kVCommentCellNibName bundle:nil] forCellReuseIdentifier:reuseIdentifier];
+        [self.reuseIdentifiers addObject:reuseIdentifier];
+    }
+    
+    VCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
     
     cell.timeLabel.text = [comment.postedAt timeSince];
     if (comment.realtime.integerValue < 0)
@@ -306,45 +319,20 @@
     }
     
     //Ugly, but only way I can think of to reliably update to proper string formatting per each cell
-    NSDictionary *defaultStringAttributes = cell.commentTextView.textFont ? [VCommentTextAndMediaView attributesForTextWithFont:cell.commentTextView.textFont] : [VCommentTextAndMediaView attributesForText];
+    NSDictionary *defaultStringAttributes = cell.textAndMediaView.textFont ? [VTextAndMediaView attributesForTextWithFont:cell.textAndMediaView.textFont] : [VTextAndMediaView attributesForText];
     NSMutableDictionary *tagStringAttributes = [[NSMutableDictionary alloc] initWithDictionary:defaultStringAttributes];
     tagStringAttributes[NSForegroundColorAttributeName] = [self.dependencyManager colorForKey:[VTagStringFormatter defaultDependencyManagerTagColorKey]];
-    [cell.commentTextView.textView setupWithDatabaseFormattedText:comment.text
+    
+    [cell.textAndMediaView setText:comment.text];
+    [cell.textAndMediaView.textView setupWithDatabaseFormattedText:comment.text
                                                     tagAttributes:tagStringAttributes
                                                 defaultAttributes:defaultStringAttributes
                                                 andTagTapDelegate:self];
-    if (comment.hasMedia)
-    {
-        cell.commentTextView.hasMedia = YES;
-        cell.commentTextView.mediaThumbnailView.hidden = NO;
-        [cell.commentTextView.mediaThumbnailView sd_setImageWithURL:comment.previewImageURL];
-        
-        if ([comment.mediaUrl isKindOfClass:[NSString class]] && [comment.mediaUrl v_hasVideoExtension])
-        {
-            cell.commentTextView.mediaURL = [NSURL URLWithString:comment.mediaUrl];
-            cell.commentTextView.mediaTapDelegate = self;
-            
-            if ([comment.shouldAutoplay boolValue])
-            {
-                [cell.commentTextView setMediaType:VCommentMediaViewTypeGIF];
-                // Make sure to grab the mp4 URL if its a gif
-                cell.commentTextView.autoplayURL = [comment mp4MediaURL];
-            }
-            else
-            {
-                [cell.commentTextView setMediaType:VCommentMediaViewTypeVideo];
-            }
-        }
-        else
-        {
-            [cell.commentTextView setMediaType:VCommentMediaViewTypeImage];
-        }
-    }
-    else
-    {
-        cell.commentTextView.mediaThumbnailView.hidden = YES;
-        cell.commentTextView.hasMedia = NO;
-    }
+    
+    [cell.textAndMediaView setComment:comment];
+    [cell.textAndMediaView setDependencyManager:self.dependencyManager];
+    cell.textAndMediaView.mediaTapDelegate = self;
+    
     cell.profileImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     [cell.profileImageView setProfileImageURL:[NSURL URLWithString:comment.user.pictureUrl]];
     __weak typeof(self) welf = self;
@@ -474,7 +462,17 @@
 
 - (void)tappedMediaWithURL:(NSURL *)mediaURL previewImage:(UIImage *)image fromView:(UIView *)view
 {
-    VVideoLightboxViewController *lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:image videoURL:mediaURL];
+    VLightboxViewController *lightbox;
+    if ([mediaURL v_hasImageExtension])
+    {
+        lightbox = [[VImageLightboxViewController alloc] initWithImage:image];
+    }
+    else
+    {
+        lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:image videoURL:mediaURL];
+        ((VVideoLightboxViewController *)lightbox).onVideoFinished = lightbox.onCloseButtonTapped;
+        ((VVideoLightboxViewController *)lightbox).titleForAnalytics = @"Video Comment";
+    }
     [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox referenceView:view];
     
     __weak typeof(self) weakSelf = self;
@@ -483,8 +481,6 @@
         __strong typeof(weakSelf) strongSelf = weakSelf;
         [strongSelf dismissViewControllerAnimated:YES completion:nil];
     };
-    lightbox.onVideoFinished = lightbox.onCloseButtonTapped;
-    lightbox.titleForAnalytics = @"Video Comment";
     [self presentViewController:lightbox animated:YES completion:nil];
 }
 
