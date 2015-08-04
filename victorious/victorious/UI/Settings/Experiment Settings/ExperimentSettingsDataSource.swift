@@ -25,10 +25,10 @@ class ExperimentSettingsDataSource: NSObject {
         static let modified = UIColor.redColor()
         var current = TintColor.unmodified
     }
-    var tintColor  = TintColor()
+    private var tintColor  = TintColor()
     
-    var hasBeenModified: Bool {
-        return self.experimentSettings.activeExperiments != nil
+    var selectedExperimentIds: Set<Int> {
+        return Set<Int>( self.sections.flatMap { $0.experiments.filter { $0.isEnabled.boolValue }.map { $0.id.integerValue } } )
     }
     
     let experimentSettings = VExperimentSettings()
@@ -60,8 +60,7 @@ class ExperimentSettingsDataSource: NSObject {
     private var state: State = .Loading
     
     func saveSettings() {
-        let experimentIds = self.sections.flatMap { $0.experiments.filter { $0.isEnabled.boolValue }.map { $0.id.integerValue } }
-        self.experimentSettings.activeExperiments = NSSet(array: experimentIds ) as Set<NSObject>
+        self.experimentSettings.activeExperiments = self.selectedExperimentIds
     }
     
     func resetSettings() {
@@ -99,11 +98,11 @@ class ExperimentSettingsDataSource: NSObject {
         )
     }
     
-    func updateTintColor() {
+    private func updateTintColor() {
         self.tintColor.current = self.experimentSettings.activeExperiments != nil ? TintColor.modified : TintColor.unmodified
     }
     
-    func updateVisibleCells() {
+    private func updateVisibleCells() {
         if let tableView = self.delegate?.tableView {
             for cell in tableView.visibleCells() {
                 if let switchCell = cell as? VSettingsSwitchCell {
