@@ -470,7 +470,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
         NSString *marqueeStreamID = [marquee.stream hasShelfID] ? marquee.stream.shelfId : marquee.stream.streamId;
-        [self showContentViewForSequence:(VSequence *)streamItem inStreamWithID:marqueeStreamID withPreviewImage:image fromShelf:YES];
+        [self showContentViewForSequence:(VSequence *)streamItem inStreamWithID:marqueeStreamID withPreviewImage:image];
     }
     else if ( [streamItem isSingleStream] )
     {
@@ -526,7 +526,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     self.lastSelectedIndexPath = indexPath;
     VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
-    [self showContentViewForSequence:sequence inStreamWithID:self.currentStream.streamId withPreviewImage:nil fromShelf:NO];
+    [self showContentViewForSequence:sequence inStreamWithID:self.currentStream.streamId withPreviewImage:nil];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
@@ -734,7 +734,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     self.collectionView.backgroundView = newBackgroundView;
 }
 
-- (void)showContentViewForSequence:(VSequence *)sequence inStreamWithID:(NSString *)streamId withPreviewImage:(UIImage *)previewImage fromShelf:(BOOL)fromShelf
+- (void)showContentViewForSequence:(VSequence *)sequence inStreamWithID:(NSString *)streamId withPreviewImage:(UIImage *)previewImage
 {
     NSParameterAssert(sequence != nil);
     NSParameterAssert(self.currentStream != nil);
