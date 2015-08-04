@@ -7,11 +7,11 @@
 //
 
 #import "VCommentCell.h"
-#import "VCommentTextAndMediaView.h"
 #import "VThemeManager.h"
 #import "UIImage+ImageCreation.h"
 #import "VDefaultProfileImageView.h"
 #import "UIView+Autolayout.h"
+#import "VCommentTextAndMediaView.h"
 
 NSString * const kVCommentCellNibName = @"VCommentCell";
 
@@ -20,7 +20,7 @@ static const UIEdgeInsets kTextInsets        = { 39.0f, 66.0f, 11.0f, 55.0f };
 
 @interface VCommentCell()
 
-@property (nonatomic, weak, readwrite) IBOutlet VCommentTextAndMediaView *commentTextView;
+@property (nonatomic, weak, readwrite) IBOutlet VCommentTextAndMediaView *textAndMediaView;
 @property (nonatomic, weak, readwrite) IBOutlet UILabel                  *timeLabel;
 @property (nonatomic, weak, readwrite) IBOutlet VDefaultProfileImageView *profileImageView;
 @property (nonatomic, weak, readwrite) IBOutlet UIButton                 *profileImageButton;
@@ -40,9 +40,9 @@ static const UIEdgeInsets kTextInsets        = { 39.0f, 66.0f, 11.0f, 55.0f };
     [self.contentView v_addFitToParentConstraintsToSubview:self.swipeViewController.view];
 }
 
-+ (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text withMedia:(BOOL)hasMedia
++ (CGFloat)estimatedHeightWithWidth:(CGFloat)width comment:(VComment *)comment
 {
-    return MAX([VCommentTextAndMediaView estimatedHeightWithWidth:(width - kTextInsets.left - kTextInsets.right) text:text withMedia:hasMedia] +
+    return MAX([VCommentTextAndMediaView estimatedHeightWithWidth:(width - kTextInsets.left - kTextInsets.right) comment:comment] +
                kTextInsets.top +
                kTextInsets.bottom,
                kMinimumCellHeight);
@@ -58,7 +58,7 @@ static const UIEdgeInsets kTextInsets        = { 39.0f, 66.0f, 11.0f, 55.0f };
 
 - (void)prepareForReuse
 {
-    [self.commentTextView resetView];
+    [self.textAndMediaView resetView];
     [self.profileImageView setup];
 }
 
@@ -66,14 +66,14 @@ static const UIEdgeInsets kTextInsets        = { 39.0f, 66.0f, 11.0f, 55.0f };
 
 - (void)setHasFocus:(BOOL)hasFocus
 {
-    self.commentTextView.inFocus = hasFocus;
+    self.textAndMediaView.inFocus = hasFocus;
 }
 
 - (CGRect)contentArea
 {
-    CGRect mediaThumbnailFrame = self.commentTextView.mediaThumbnailView.frame;
+    CGRect mediaThumbnailFrame = self.textAndMediaView.mediaAttachmentView.frame;
     CGRect mediaFrame = CGRectMake(CGRectGetMinX(mediaThumbnailFrame),
-                                   CGRectGetMinY(self.commentTextView.frame) + CGRectGetMinY(mediaThumbnailFrame),
+                                   CGRectGetMinY(self.textAndMediaView.frame) + CGRectGetMinY(mediaThumbnailFrame),
                                    CGRectGetWidth(mediaThumbnailFrame),
                                    CGRectGetHeight(mediaThumbnailFrame));
     return mediaFrame;

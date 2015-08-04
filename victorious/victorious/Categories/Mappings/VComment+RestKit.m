@@ -33,6 +33,8 @@
                                   @"posted_at" : VSelectorName(postedAt),
                                   @"thumbnail_url" : VSelectorName(thumbnailUrl),
                                   @"realtime" : VSelectorName(realtime),
+                                  @"media_width" : VSelectorName(mediaWidth),
+                                  @"media_height" : VSelectorName(mediaHeight),
                                   @"should_autoplay" : VSelectorName(shouldAutoplay)
                                   };
     

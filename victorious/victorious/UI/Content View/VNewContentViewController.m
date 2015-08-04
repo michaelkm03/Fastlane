@@ -88,7 +88,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 
 #import "VInlineSearchTableViewController.h"
-#import "VCommentTextAndMediaView.h"
+#import "VTextAndMediaView.h"
 #import "VTagSensitiveTextView.h"
 #import "VTag.h"
 #import "VUserTag.h"
@@ -107,6 +107,7 @@
 #import "VSequenceExpressionsObserver.h"
 #import "VExperienceEnhancerResponder.h"
 #import "VDependencyManager+VTracking.h"
+#import "VCommentTextAndMediaView.h"
 
 // Cell focus
 #import "VCollectionViewStreamFocusHelper.h"
@@ -177,6 +178,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
 
 @property (nonatomic, strong) NSURL *mediaURL;
+@property (nonatomic, strong) NSMutableArray *commentCellReuseIdentifiers;
 
 @end
 
@@ -434,8 +436,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                  forCellWithReuseIdentifier:[VContentVideoCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentImageCell nibForCell]
                  forCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]];
-    [self.contentCollectionView registerNib:[VContentCommentsCell nibForCell]
-                 forCellWithReuseIdentifier:[VContentCommentsCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VExperienceEnhancerBarCell nibForCell]
                  forCellWithReuseIdentifier:[VExperienceEnhancerBarCell suggestedReuseIdentifier]];
     [self.contentCollectionView registerNib:[VContentPollCell nibForCell]
@@ -451,6 +451,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                          forDecorationViewOfKind:VShrinkingContentLayoutContentBackgroundView];
     
     self.viewModel.experienceEnhancerController.delegate = self;
+    
+    self.commentCellReuseIdentifiers = [NSMutableArray new];
     
     [self.viewModel reloadData];
 }
@@ -745,13 +747,14 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     __weak typeof(commentCell) wCommentCell = commentCell;
     __weak typeof(self) welf = self;
-    commentCell.onMediaTapped = ^(void)
-    {
-        [welf showLightBoxWithMediaURL:wCommentCell.mediaURL
-                          previewImage:wCommentCell.previewImage
-                               isVideo:wCommentCell.mediaIsVideo
-                            sourceView:wCommentCell.previewView];
-    };
+    [commentCell.commentAndMediaView setOnMediaTapped:^(UIImage *previewImage)
+     {
+         [welf showLightBoxWithMediaURL:[wCommentCell.comment properMediaURLGivenContentType]
+                           previewImage:previewImage
+                                isVideo:wCommentCell.mediaIsVideo
+                             sourceView:wCommentCell.commentAndMediaView];
+     }];
+    
     commentCell.onUserProfileTapped = ^(void)
     {
         VUserProfileViewController *profileViewController = [welf.dependencyManager userProfileViewControllerWithUser:wCommentCell.comment.user];
@@ -994,13 +997,29 @@ static NSString * const kPollBallotIconKey = @"orIcon";
                                        [animationImageView removeFromSuperview];
                                    });
                 }
+                
+                // Refresh comments 2 seconds after user throws an EB in case we need to show an EB comment
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                {
+                    __strong typeof(welf) strongSelf = welf;
+                    [strongSelf reloadComments];
+                });
             };
             
             return self.experienceEnhancerCell;
         }
         case VContentViewSectionAllComments:
         {
-            VContentCommentsCell *commentCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentCommentsCell suggestedReuseIdentifier]
+            VComment *comment = self.viewModel.comments[indexPath.row];
+            NSString *reuseIdentifier = [MediaAttachmentView reuseIdentifierForComment:comment];
+            
+            if (![self.commentCellReuseIdentifiers containsObject:reuseIdentifier])
+            {
+                [self.contentCollectionView registerNib:[VContentCommentsCell nibForCell] forCellWithReuseIdentifier:reuseIdentifier];
+                [self.commentCellReuseIdentifiers addObject:reuseIdentifier];
+            }
+            
+            VContentCommentsCell *commentCell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier
                                                                                           forIndexPath:indexPath];
             commentCell.sequencePermissions = self.viewModel.sequence.permissions;
             [self configureCommentCell:commentCell withIndex:indexPath.row];
@@ -1099,8 +1118,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             const CGFloat minBound = MIN( CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds) );
             VComment *comment = self.viewModel.comments[indexPath.row];
             CGSize size = [VContentCommentsCell sizeWithFullWidth:minBound
-                                                      commentBody:comment.text
-                                                         hasMedia:comment.hasMedia
+                                                          comment:comment
+                                                         hasMedia:comment.commentMediaType != VCommentMediaTypeNoMedia
                                                 dependencyManager:self.dependencyManager];
             return CGSizeMake( minBound, size.height );
         }
@@ -1495,13 +1514,14 @@ referenceSizeForHeaderInSection:(NSInteger)section
                               realTime:welf.realtimeCommentBeganTime
                             completion:^(BOOL succeeded)
      {
-         [welf.viewModel loadComments:VPageTypeFirst];
-         [UIView animateWithDuration:0.0f
-                          animations:^
-          {
-              [welf didUpdateCommentsWithPageType:VPageTypeFirst];
-          }];
+         __strong typeof(welf) strongSelf = welf;
+         [strongSelf reloadComments];
      }];
+}
+
+- (void)reloadComments
+{
+    [self.viewModel loadComments:VPageTypeFirst];
 }
 
 - (void)addMediaToCommentWithAttachmentType:(VKeyboardBarAttachmentType)attachmentType

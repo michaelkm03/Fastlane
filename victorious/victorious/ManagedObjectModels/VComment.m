@@ -33,5 +33,7 @@
 @dynamic commentMedia;
 @dynamic sequence;
 @dynamic user;
+@dynamic mediaWidth;
+@dynamic mediaHeight;
 
 @end

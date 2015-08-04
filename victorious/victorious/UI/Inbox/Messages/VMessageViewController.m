@@ -10,7 +10,7 @@
 #import "NSDate+timeSince.h"
 #import "NSURL+MediaType.h"
 #import "UIImage+ImageEffects.h"
-#import "VCommentTextAndMediaView.h"
+#import "VMessageTextAndMediaView.h"
 #import "VConstants.h"
 #import "VConversation.h"
 #import "VMessageTableDataSource.h"
@@ -30,6 +30,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "VLightboxTransitioningDelegate.h"
 #import "VVideoLightboxViewController.h"
+#import "VImageLightboxViewController.h"
 
 @interface VMessageViewController () <VMessageTableDataDelegate, VCommentMediaTapDelegate>
 
@@ -37,6 +38,7 @@
 @property (nonatomic, strong)    VDependencyManager      *dependencyManager;
 @property (nonatomic)            BOOL                     shouldScrollToBottom;
 @property (nonatomic)            BOOL                     refreshFailed;
+@property (nonatomic, strong) NSMutableArray *reuseIdentifiers;
 
 @end
 
@@ -64,8 +66,7 @@
 {
     [super viewDidLoad];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [self.tableView registerNib:[UINib nibWithNibName:kVMessageCellNibName bundle:nil]
-         forCellReuseIdentifier:kVMessageCellNibName];
+    self.reuseIdentifiers = [NSMutableArray new];
 }
 
 - (void)viewDidLayoutSubviews
@@ -164,10 +165,21 @@
 
 - (UITableViewCell *)dataSource:(VMessageTableDataSource *)dataSource cellForMessage:(VMessage *)message atIndexPath:(NSIndexPath *)indexPath
 {
-    VMessageCell *cell = [dataSource.tableView dequeueReusableCellWithIdentifier:kVMessageCellNibName forIndexPath:indexPath];
+    NSString *reuseIdentifier = [MediaAttachmentView reuseIdentifierForMessage:message];
+    
+    if (![self.reuseIdentifiers containsObject:reuseIdentifier])
+    {
+        [self.tableView registerNib:[UINib nibWithNibName:kVMessageCellNibName bundle:nil] forCellReuseIdentifier:reuseIdentifier];
+        [self.reuseIdentifiers addObject:reuseIdentifier];
+    }
+    
+    VMessageCell *cell = [dataSource.tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
     
     cell.timeLabel.text = [message.postedAt timeSince];
-    cell.commentTextView.text = message.text;
+    
+    cell.messageTextAndMediaView.text = message.text;
+    [cell.messageTextAndMediaView setMessage:message];
+
     cell.profileImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     
     if ([message.sender isEqualToUser:[[VObjectManager sharedManager] mainUser]])
@@ -175,22 +187,7 @@
         cell.profileImageOnRight = YES;
     }
     
-    BOOL hasMedia = [message.thumbnailPath isKindOfClass:[NSString class]] && ![message.thumbnailPath isEqualToString:@""];
-    if (hasMedia)
-    {
-        cell.commentTextView.hasMedia = YES;
-        cell.commentTextView.mediaThumbnailView.hidden = NO;
-        [cell.commentTextView.mediaThumbnailView sd_setImageWithURL:[NSURL URLWithString:message.thumbnailPath]];
-        if ([message.mediaPath v_hasVideoExtension])
-        {
-            cell.commentTextView.mediaTapDelegate = self;
-            cell.commentTextView.playIcon.hidden = NO;
-        }
-    }
-    else
-    {
-        cell.commentTextView.mediaThumbnailView.hidden = YES;
-    }
+    cell.messageTextAndMediaView.mediaTapDelegate = self;
     
     NSURL *pictureURL = [NSURL URLWithString:message.sender.pictureUrl];
     if (pictureURL)
@@ -229,8 +226,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VMessage *message = [self.tableDataSource messageAtIndexPath:indexPath];
-    BOOL hasMedia = [message.thumbnailPath isKindOfClass:[NSString class]] && ![message.thumbnailPath isEqualToString:@""];
-    return [VMessageCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds) text:message.text withMedia:hasMedia];
+    return [VMessageCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds) message:message];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -250,7 +246,17 @@
 
 - (void)tappedMediaWithURL:(NSURL *)mediaURL previewImage:(UIImage *)image fromView:(UIView *)view
 {
-    VVideoLightboxViewController *lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:image videoURL:mediaURL];
+    VLightboxViewController *lightbox;
+    if ([mediaURL v_hasImageExtension])
+    {
+        lightbox = [[VImageLightboxViewController alloc] initWithImage:image];
+    }
+    else
+    {
+        lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:image videoURL:mediaURL];
+        ((VVideoLightboxViewController *)lightbox).onVideoFinished = lightbox.onCloseButtonTapped;
+        ((VVideoLightboxViewController *)lightbox).titleForAnalytics = @"Video Comment";
+    }
     [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox referenceView:view];
     
     __weak typeof(self) weakSelf = self;
@@ -259,8 +265,6 @@
         __strong typeof(weakSelf) strongSelf = weakSelf;
         [strongSelf dismissViewControllerAnimated:YES completion:nil];
     };
-    lightbox.onVideoFinished = lightbox.onCloseButtonTapped;
-    lightbox.titleForAnalytics = @"Video Comment";
     [self presentViewController:lightbox animated:YES completion:nil];
 }
 

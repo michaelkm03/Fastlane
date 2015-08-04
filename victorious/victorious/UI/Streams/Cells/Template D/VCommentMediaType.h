@@ -11,8 +11,10 @@
  */
 typedef NS_ENUM(NSInteger, VCommentMediaType)
 {
+    VCommentMediaTypeNoMedia,
     VCommentMediaTypeImage,
     VCommentMediaTypeVideo,
     VCommentMediaTypeGIF,
+    VCommentMediaTypeBallistic,
     VCommentMediaTypeUnknown
 };
