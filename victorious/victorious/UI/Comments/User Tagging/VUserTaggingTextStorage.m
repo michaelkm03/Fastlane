@@ -519,15 +519,15 @@ static NSString * const VOriginalFont = @"NSOriginalFont";
     if (user.name != nil)
     {
         self.textView.text = @" "; // add a space after the user_tag
-        //Insert username into text and adjust location of cursor
+        // Insert username into text and adjust location of cursor
         self.state = VUserTaggingTextStorageStateInactive;
         VTag *tag = [VTag tagWithUser:user andTagStringAttributes:self.textView.linkTextAttributes];
         NSMutableAttributedString *attributedString = [VTagStringFormatter delimitedAttributedString:tag.displayString withDelimiterAttributes:self.textView.typingAttributes];
         
-        //adjust selection to right after the newly created display-formatted tag string
+        // Adjust selection to right after the newly created display-formatted tag string
         NSRange newSelection = NSMakeRange(self.searchTermRange.location + attributedString.string.length + 1, 0);
         
-        //Add newly selected tag to tagDictionary
+        // Add newly selected tag to tagDictionary
         [self.tagDictionary incrementTag:tag];
         
         NSRange range = NSRangeFromString(self.textView.text);

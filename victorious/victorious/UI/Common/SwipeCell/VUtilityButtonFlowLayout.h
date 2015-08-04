@@ -10,6 +10,9 @@
 
 extern NSString * const kUtilityButtonSeperatorKind;
 
+/*
+ *  Controls the layout for the utility buttons on the swipable comment cell
+ */
 @interface VUtilityButtonFlowLayout : UICollectionViewFlowLayout
 
 @end

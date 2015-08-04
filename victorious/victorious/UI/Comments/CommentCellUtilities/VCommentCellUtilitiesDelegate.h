@@ -26,8 +26,8 @@
 - (void)editComment:(VComment *)comment;
 
 /**
- used for replying to a comment, and requires the calling code to update
- the UI
+ Used for replying to a comment, and requires the calling code to update
+ the UI.
  */
 - (void)replyToComment:(VComment *)comment;
 

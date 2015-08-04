@@ -28,23 +28,25 @@
 
 - (void)createUtilityButtonConfigurations
 {
+    UIColor *backgroundColor = [UIColor colorWithWhite:0.75f alpha:1.0f];
+    
     self.editButtonConfig = [[VUtilityButtonConfig alloc] init];
-    self.editButtonConfig.backgroundColor = [UIColor colorWithWhite:0.75f alpha:1.0f];
+    self.editButtonConfig.backgroundColor = backgroundColor;
     self.editButtonConfig.iconImage = [UIImage imageNamed:@"editIcon"];
     self.editButtonConfig.type = VCommentCellUtilityTypeEdit;
     
     self.deleteButtonConfig = [[VUtilityButtonConfig alloc] init];
-    self.deleteButtonConfig.backgroundColor = [UIColor colorWithWhite:0.75f alpha:1.0f];
+    self.deleteButtonConfig.backgroundColor = backgroundColor;
     self.deleteButtonConfig.iconImage = [UIImage imageNamed:@"trashIcon"];
     self.deleteButtonConfig.type = VCommentCellUtilityTypeDelete;
     
     self.flagButtonConfig = [[VUtilityButtonConfig alloc] init];
-    self.flagButtonConfig.backgroundColor = [UIColor colorWithWhite:0.75f alpha:1.0f];
+    self.flagButtonConfig.backgroundColor = backgroundColor;
     self.flagButtonConfig.iconImage = [UIImage imageNamed:@"warningIcon"];
     self.flagButtonConfig.type = VCommentCellUtilityTypeFlag;
     
     self.replyButtonConfig = [[VUtilityButtonConfig alloc] init];
-    self.replyButtonConfig.backgroundColor = [UIColor colorWithWhite:0.75f alpha:1.0f];
+    self.replyButtonConfig.backgroundColor = backgroundColor;
     self.replyButtonConfig.type = VCommentCellUtilityTypeReply;
     self.replyButtonConfig.iconImage = [UIImage imageNamed:@"replyIcon"];
 }
