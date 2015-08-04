@@ -11,6 +11,7 @@
 #import "VStreamItem+Fetcher.h"
 #import "VSequence.h"
 #import "VTracking.h"
+#import "victorious-Swift.h"
 
 NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvictorious.LoggedInChangedNotification";
 
@@ -82,14 +83,17 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 
 #pragma mark - Cell visibily tracking (SequenceDidAppearInStream event)
 
-- (void)onStreamCellDidBecomeVisibleWithStream:(VStream *)stream sequence:(VSequence *)sequence fromShelf:(BOOL)fromShelf
+- (void)onStreamCellDidBecomeVisibleWithCellEvent:(StreamCellTrackingEvent *)event
 {
+    VSequence *sequence = event.sequence;
+    VStream *stream = event.stream;
+    
     if ( sequence == nil || stream == nil )
     {
         return;
     }
     
-    NSString *trackingID = fromShelf ? stream.shelfId : stream.trackingIdentifier;
+    NSString *trackingID = event.fromShelf ? stream.shelfId : stream.trackingIdentifier;
     NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
                               VTrackingKeyTimeStamp : [NSDate date],
                               VTrackingKeyUrls : sequence.tracking.cellView,
@@ -99,9 +103,12 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
                                           eventId:sequence.remoteId];
 }
 
-- (void)onStreamCellSelectedWithStream:(VStream *)stream sequence:(VSequence *)sequence fromShelf:(BOOL)fromShelf
+- (void)onStreamCellSelectedWithCellEvent:(StreamCellTrackingEvent *)event
 {
-    NSString *trackingID = fromShelf ? stream.shelfId : stream.trackingIdentifier;
+    VSequence *sequence = event.sequence;
+    VStream *stream = event.stream;
+    
+    NSString *trackingID = event.fromShelf ? stream.shelfId : stream.trackingIdentifier;
     NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
                               VTrackingKeyTimeStamp : [NSDate date],
                               VTrackingKeyUrls : sequence.tracking.cellClick,

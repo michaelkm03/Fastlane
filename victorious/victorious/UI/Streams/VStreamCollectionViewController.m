@@ -81,6 +81,7 @@
 #import "UIViewController+VAccessoryScreens.h"
 
 #import "VCollectionViewStreamFocusHelper.h"
+#import "victorious-Swift.h"
 
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
 
@@ -947,9 +948,13 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
         if ([cell conformsToProtocol:@protocol(VStreamCellTracking)])
         {
             VSequence *sequenceToTrack = [(id<VStreamCellTracking>)cell sequenceToTrack];
-            [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithStream:self.currentStream
-                                                                     sequence:sequenceToTrack
-                                                                    fromShelf:NO];
+            
+            StreamCellTrackingEvent *event = [StreamCellTrackingEvent new];
+            event.stream = self.currentStream;
+            event.sequence = sequenceToTrack;
+            event.fromShelf = NO;
+            
+            [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithCellEvent:event];
         }
     }
 }
