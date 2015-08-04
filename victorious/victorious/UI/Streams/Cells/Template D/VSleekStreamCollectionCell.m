@@ -64,6 +64,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 @property (nonatomic, weak) IBOutlet UICollectionView *inStreamCommentsCollectionView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *inStreamCommentsCollectionViewTopConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *inStreamCommentsCollectionViewBottomConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *inStreamCommentsCollectionViewHeightConstraint;
 @property (nonatomic, readwrite) BOOL needsRefresh;
 @property (nonatomic, strong) IBOutlet VListicleView *listicleView;
 @property (nonatomic, readwrite) VStreamItem *streamItem;
@@ -119,7 +120,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
          {
              VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
-             CGFloat previewHeight =  size.width  / [sequence previewAssetAspectRatio];
+             CGFloat previewHeight =  VCEIL( size.width  / [sequence previewAssetAspectRatio] );
              return CGSizeMake( 0.0f, previewHeight );
          }];
         [collection addComponentWithConstantSize:CGSizeMake( 0.0f, kSleekCellActionViewHeight)];
@@ -131,31 +132,33 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
              
              // FIXME: The use of "V" is just to get a good size for *something* in this text field since
              // we can't know what the actual text for the label is in a static method
-             return CGSizeMake( 0.0f, MAX( kCountsTextViewMinHeight, [@"V" frameSizeForWidth:textWidth andAttributes:attributes].height ) );
+             return CGSizeMake( 0.0f, MAX( kCountsTextViewMinHeight, VCEIL( [@"V" frameSizeForWidth:textWidth andAttributes:attributes].height ) ) );
          }];
         [collection addComponentWithDynamicSize:^CGSize(CGSize size, NSDictionary *userInfo)
         {
+            CGFloat defaultHeight = VCEIL( ( kSleekCellActionViewHeight - VActionButtonHeight ) / 2 );
+            
             VDependencyManager *dependencyManager = userInfo[ kCellSizingDependencyManagerKey ];
             if ( ![[dependencyManager numberForKey:kShouldShowCommentsKey] boolValue] )
             {
-                return CGSizeMake( 0.0f, ( kSleekCellActionViewHeight - VActionButtonHeight ) / 2);
+                return CGSizeMake( 0.0f, defaultHeight );
             }
             
             VSequence *sequence = userInfo[ kCellSizingSequenceKey ];
             NSArray *comments = [self inStreamCommentsArrayForSequence:sequence];
             if ( comments.count == 0 )
             {
-                return CGSizeMake( 0.0f, ( kSleekCellActionViewHeight - VActionButtonHeight ) / 2);
+                return CGSizeMake( 0.0f, defaultHeight );
             }
             
             BOOL showPreviousCommentsCellEnabled = [self inStreamCommentsShouldDisplayShowMoreCellForSequence:sequence];
-            NSArray *commentCellContents = [VInStreamCommentCellContents inStreamCommentsForComments:[self inStreamCommentsArrayForSequence:sequence] andDependencyManager:dependencyManager];
+            NSArray *commentCellContents = [VInStreamCommentCellContents inStreamCommentsForComments:[userInfo objectForKey:VCellSizingCommentsKey] andDependencyManager:dependencyManager];
             
             CGFloat width = size.width;
-            width -= [VSleekActionView outerMarginForBarWidth:width];
+            width -= VCEIL( [VSleekActionView outerMarginForBarWidth:width] );
             CGFloat height = [VInStreamCommentsController desiredHeightForCommentCellContents:commentCellContents withMaxWidth:width showMoreAttributes:[VInStreamCommentsShowMoreAttributes newWithDependencyManager:dependencyManager] andShowMoreCommentsCellEnabled:showPreviousCommentsCellEnabled];
             height += kInStreamCommentsTopSpace; //Top space
-            height += ( kSleekCellActionViewHeight - VActionButtonHeight ) / 2; //Bottom space
+            height += VCEIL( ( kSleekCellActionViewHeight - VActionButtonHeight ) / 2.0f ); //Bottom space
             return CGSizeMake( 0.0f, height );
         }];
     }
@@ -252,6 +255,11 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
                         options:NSKeyValueObservingOptionNew
                          action:@selector(commentsUpdated)];
     
+    [self.KVOController observe:_sequence
+                        keyPath:@"inStreamComments"
+                        options:NSKeyValueObservingOptionNew
+                         action:@selector(commentsUpdated)];
+    
     [self updatePreviewViewForSequence:sequence];
     self.headerView.sequence = sequence;
     self.sleekActionView.sequence = sequence;
@@ -275,8 +283,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
                                                       selected:sequence.hasReposted.boolValue];
      }];
     
-    NSArray *inStreamComments = [[self class] inStreamCommentsArrayForSequence:sequence];
-    self.inStreamCommentsCollectionViewBottomConstraint.active = inStreamComments.count > 0;
+    NSArray *inStreamComments = [[[self class] cellLayoutCollection] commentsForCacheKey:[[self class] cacheKeyForSequence:sequence]];
     [self.inStreamCommentsController setupWithCommentCellContents:[VInStreamCommentCellContents inStreamCommentsForComments:inStreamComments andDependencyManager:self.dependencyManager] withShowMoreCellVisible:[[self class] inStreamCommentsShouldDisplayShowMoreCellForSequence:sequence]];
 }
 
@@ -347,6 +354,10 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
             self.captionHeight.constant = 0.0f;
         }
     }
+    
+    BOOL hasComments = [[self class] inStreamCommentsArrayForSequence:self.sequence].count > 0;
+    self.inStreamCommentsCollectionViewBottomConstraint.active = hasComments;
+    self.inStreamCommentsCollectionViewHeightConstraint.active = !hasComments;
     
     self.textViewConstraint.constant = self.sleekActionView.leftMargin;
     self.inStreamCommentsController.leftInset = self.sleekActionView.leftMargin;
@@ -463,9 +474,11 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
                            dependencyManager:(VDependencyManager *)dependencyManager
 {
     CGSize base = CGSizeMake( CGRectGetWidth(bounds), 0.0 );
+    NSArray *comments = [self inStreamCommentsArrayForSequence:sequence];
     NSDictionary *userInfo = @{ kCellSizingSequenceKey : sequence,
                                 VCellSizeCacheKey : [self cacheKeyForSequence:sequence],
-                                kCellSizingDependencyManagerKey : dependencyManager };
+                                kCellSizingDependencyManagerKey : dependencyManager,
+                                VCellSizingCommentsKey: comments };
     return [[[self class] cellLayoutCollection] totalSizeWithBaseSize:base userInfo:userInfo];
 }
 
@@ -538,7 +551,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 {
     NSArray *recentComments = [[sequence recentComments] array];
     NSArray *comments = [sequence dateSortedComments];
-    if ( comments.count > 0 && recentComments.count != kMaxNumberOfInStreamComments)
+    if ( comments.count > recentComments.count )
     {
         return [comments subarrayWithRange:NSMakeRange(0, MIN(comments.count, kMaxNumberOfInStreamComments))];
     }

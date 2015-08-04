@@ -10,9 +10,14 @@
 #import "VCellSizeComponent.h"
 
 /**
- A key used internally to unique identify size of layouts for caching purposes.
+ A key used internally to identify size of layouts for caching purposes.
  */
 extern NSString * const VCellSizeCacheKey;
+
+/*
+ A key used to identify the array of comments used in creating the size.
+ */
+extern NSString * const VCellSizingCommentsKey;
 
 /**
  An object used by stream cells to model the constant and dynamic sizes of its components,
@@ -50,5 +55,15 @@ extern NSString * const VCellSizeCacheKey;
  @param key The key that was used to initially cache the size value.
  */
 - (void)removeSizeCacheForItemWithCacheKey:(NSString *)key;
+
+/**
+ Retrieves the comments used to create the sizing information for the given cache key.
+    This should be the same cache key used when creating the sizing information.
+ 
+ @param key The cache key that identifies this sizing information.
+ 
+ @return An array of comments that were used in sizing this cell.
+ */
+- (NSArray *)commentsForCacheKey:(NSString *)key;
 
 @end

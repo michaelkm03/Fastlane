@@ -9,7 +9,7 @@
 #import "VCellSizeCollection.h"
 
 NSString * const VCellSizeCacheKey = @"cacheKey";
-
+NSString * const VCellSizingCommentsKey = @"comments";
 
 @interface VCellSizeCollection ()
 
@@ -57,7 +57,7 @@ NSString * const VCellSizeCacheKey = @"cacheKey";
     
     NSAssert( cacheKey != nil, @"Calling code must provide a value for `%@` in the userInfo parameter", VCellSizeCacheKey );
     
-    NSValue *cachedValue = (NSValue *)[self.cache objectForKey:cacheKey];
+    NSValue *cachedValue = (NSValue *)[(NSDictionary *)[self.cache objectForKey:cacheKey] objectForKey:VCellSizeCacheKey];
     if ( cachedValue != nil )
     {
         return cachedValue.CGSizeValue;
@@ -76,7 +76,15 @@ NSString * const VCellSizeCacheKey = @"cacheKey";
         total.height += component.constantSize.height;
     }
     
-    [self.cache setObject:[NSValue valueWithCGSize:total] forKey:cacheKey];
+    NSDictionary *cacheValue = @{ VCellSizeCacheKey : [NSValue valueWithCGSize:total] };
+    NSArray *comments = [userInfo objectForKey:VCellSizingCommentsKey];
+    if ( comments != nil )
+    {
+        NSMutableDictionary *updatedCacheValue = [cacheValue mutableCopy];
+        [updatedCacheValue addEntriesFromDictionary:@{ VCellSizingCommentsKey : comments }];
+        cacheValue = [updatedCacheValue copy];
+    }
+    [self.cache setObject:cacheValue forKey:cacheKey];
     
     return total;
 }
@@ -84,6 +92,11 @@ NSString * const VCellSizeCacheKey = @"cacheKey";
 - (void)removeSizeCacheForItemWithCacheKey:(NSString *)key
 {
     [self.cache removeObjectForKey:key];
+}
+
+- (NSArray *)commentsForCacheKey:(NSString *)key
+{
+    return [(NSDictionary *)[self.cache objectForKey:key] objectForKey:VCellSizingCommentsKey];
 }
 
 @end
