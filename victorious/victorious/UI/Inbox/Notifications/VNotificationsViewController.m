@@ -325,7 +325,6 @@ static int const kNotificationFetchBatchSize = 50;
     
     id<VBadgeResponder> badgeResponder = [[self nextResponder] targetForAction:@selector(updateBadge)
                                                                     withSender:nil];
-    NSAssert(badgeResponder != nil, @"badge responder cannot be nil in VNotificationsViewController");
     [badgeResponder updateBadge];
     
     if ( self.badgeNumberUpdateBlock != nil )
