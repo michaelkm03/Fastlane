@@ -30,6 +30,7 @@
 
 // Global Defines for 32/64 bit
 #import "VCompatibility.h"
+
 #import "VAutomation.h"
 
 #ifdef DEBUG
