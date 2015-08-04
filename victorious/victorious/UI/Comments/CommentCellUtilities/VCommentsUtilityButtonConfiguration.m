@@ -34,7 +34,7 @@
     self.editButtonConfig.type = VCommentCellUtilityTypeEdit;
     
     self.deleteButtonConfig = [[VUtilityButtonConfig alloc] init];
-    self.deleteButtonConfig.backgroundColor = [UIColor colorWithWhite:0.47f alpha:1.0f];
+    self.deleteButtonConfig.backgroundColor = [UIColor colorWithWhite:0.75f alpha:1.0f];
     self.deleteButtonConfig.iconImage = [UIImage imageNamed:@"trashIcon"];
     self.deleteButtonConfig.type = VCommentCellUtilityTypeDelete;
     
