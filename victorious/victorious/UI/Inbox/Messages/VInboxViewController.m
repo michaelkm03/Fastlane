@@ -109,6 +109,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = VConversationCellHeight;
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    [self refresh:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -122,14 +123,12 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     [self.dependencyManager trackViewWillAppear:self];
     
     [self.refreshControl beginRefreshing];
-    [self refresh:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:@"Inbox"];
-    [self markAllConversationsAsRead];
     
     [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
     
