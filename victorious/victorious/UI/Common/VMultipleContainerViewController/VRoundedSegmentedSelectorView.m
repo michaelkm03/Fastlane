@@ -29,6 +29,7 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
 @property (nonatomic, strong) NSLayoutConstraint *selectionViewLeftConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *selectionViewWidthConstraint;
 @property (nonatomic, strong) UIImageView *highlightMask;
+@property (nonatomic, strong) UIImageView *highlightOverView;
 
 @end
 
@@ -124,17 +125,7 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
              return;
          }
          
-         NSString *title = viewController.navigationItem.title;
-         
-         id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)viewController;
-         if ([badgeProvider respondsToSelector:@selector(badgeNumber)])
-         {
-             NSInteger badgeNumber = [badgeProvider badgeNumber];
-             if (badgeNumber > 0)
-             {
-                 title = [title stringByAppendingString:[NSString stringWithFormat:@" (%ld)", (long)badgeNumber]];
-             }
-         }
+         NSString *title = [self titleForViewController:viewController];
          
          //Note: Setting the button's text color to the "highlighted" color here so that it appears that way in the snapshot below
          UIButton *button = [self newButtonWithTitle:title font:[[self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey] fontWithSize:kVBoldFontPointSize] andTextColor:buttonSelectionColor];
@@ -148,8 +139,19 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
          [sSelf.buttons addObject:button];
      }];
     
-    [self.pillView layoutIfNeeded];
     
+    [self setMaskingLayer];
+    
+    if ( _realActiveViewControllerIndex >= self.buttons.count )
+    {
+        _realActiveViewControllerIndex = 0;
+    }
+    [self updateSelectionViewConstraintAnimated:NO];
+}
+
+- (void)setMaskingLayer
+{
+    [self.pillView layoutIfNeeded];
     //Take a snapshot of the buttons in their current state so that our mask view will mask all of the button texts as it is moved across a single view
     UIGraphicsBeginImageContextWithOptions(self.pillView.bounds.size, NO, 0.0);
     [self.pillView.layer renderInContext:UIGraphicsGetCurrentContext()];
@@ -167,12 +169,6 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
     }
     
     [self addHighlightViewWithSnapshot:barScreenShot];
-    
-    if ( _realActiveViewControllerIndex >= self.buttons.count )
-    {
-        _realActiveViewControllerIndex = 0;
-    }
-    [self updateSelectionViewConstraintAnimated:NO];
 }
 
 - (BOOL)hasValidLayout
@@ -279,13 +275,13 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
 - (void)addHighlightViewWithSnapshot:(UIImage *)snapshot
 {
     //Add the snapshot imageview to our bar
-    UIImageView *highlightOverView = [[UIImageView alloc] initWithImage:snapshot];
-    [self.pillView addSubview:highlightOverView];
-    [self.pillView v_addFitToParentConstraintsToSubview:highlightOverView];
+    self.highlightOverView = [[UIImageView alloc] initWithImage:snapshot];
+    self.highlightOverView.bounds = self.pillView.bounds;
+    [self.pillView addSubview:self.highlightOverView];
     
     //Create the mask layer that will mask the snapshot of the highlighted text
     self.highlightMask.frame = self.selectionView.bounds;
-    highlightOverView.maskView = self.highlightMask;
+    self.highlightOverView.maskView = self.highlightMask;
 }
 
 #pragma mark - display updating
@@ -323,27 +319,46 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
     [self setupWithCurrentViewControllers];
 }
 
-- (void)updateBadging
+- (void)setButtonTitles
 {
     [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop)
      {
-         NSString *title = viewController.navigationItem.title;
-         
-         id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)viewController;
-         if ([badgeProvider respondsToSelector:@selector(badgeNumber)])
-         {
-             NSInteger badgeNumber = [badgeProvider badgeNumber];
-             if (badgeNumber > 0)
-             {
-                 title = [title stringByAppendingString:[NSString stringWithFormat:@" (%ld)", (long)badgeNumber]];
-               
-             }
-             UIButton *button = self.buttons[idx];
-
-             [button setTitle:title forState:UIControlStateNormal];
-             [button setTitle:title forState:UIControlStateHighlighted];
-         }
+         NSString *title = [self titleForViewController:viewController];
+         UIButton *button = self.buttons[idx];
+         [button setTitle:title forState:UIControlStateNormal];
+         [button setTitle:title forState:UIControlStateHighlighted];
+         [button setTitleColor: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey] forState:UIControlStateNormal];
+         [[button titleLabel] setFont:[[self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey] fontWithSize:kVBoldFontPointSize]];
      }];
+}
+
+- (void)updateSelectorTitle
+{
+    [self.selectionView removeFromSuperview];
+    [self.highlightOverView removeFromSuperview ];
+    [self setButtonTitles];
+    [self.pillView layoutIfNeeded];
+    [self setMaskingLayer];
+    if ( _realActiveViewControllerIndex >= self.buttons.count )
+    {
+        _realActiveViewControllerIndex = 0;
+    }
+    [self updateSelectionViewConstraintAnimated:NO];
+}
+
+- (NSString *)titleForViewController:(UIViewController *)viewController
+{
+    NSString *title = viewController.navigationItem.title;
+    id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)viewController;
+    if ([badgeProvider respondsToSelector:@selector(badgeNumber)])
+    {
+        NSInteger badgeNumber = [badgeProvider badgeNumber];
+        if (badgeNumber > 0)
+        {
+            title = [title stringByAppendingString:[NSString stringWithFormat:@" (%ld)", (long)badgeNumber]];
+        }        
+    }
+    return title;
 }
 
 #pragma mark - selectionView updating

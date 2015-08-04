@@ -48,7 +48,6 @@ static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 
 @property (strong, nonatomic) NSMutableDictionary *messageViewControllers;
 @property (strong, nonatomic) VUnreadMessageCountCoordinator *messageCountCoordinator;
-@property (nonatomic) NSInteger badgeNumber;
 @property (strong, nonatomic) RKManagedObjectRequestOperation *refreshRequest;
 @property (nonatomic, strong) VUser *userWithQueuedConversation;
 
@@ -435,6 +434,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
         [self.tableView reloadData];
         [self setHasMessages:(self.fetchedResultsController.fetchedObjects.count > 0)];
         [self.messageCountCoordinator updateUnreadMessageCount];
+        [self updateBadges];
     };
 
     self.refreshRequest = [[VObjectManager sharedManager] loadConversationListWithPageType:VPageTypeFirst
@@ -558,7 +558,10 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 
 - (void)updateBadges
 {
+    self.badgeNumber = self.messageCountCoordinator.unreadMessageCount;
+
     id<VBadgeResponder> badgeResponder = [[self nextResponder] targetForAction:@selector(updateBadge) withSender:nil];
+    NSAssert(badgeResponder != nil, @"badge responder cannot be nil in VInboxViewController");
     [badgeResponder updateBadge];
 }
 

@@ -230,17 +230,14 @@ static int const kNotificationFetchBatchSize = 50;
 
 - (void)markAllNotificationsRead
 {
-    VFailBlock fail = ^(NSOperation *operation, NSError *error)
-    {
-        VLog(@"Failed to mark all notifications as read: %@", [error localizedDescription]);
-    };
-    
-    VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
-    {
-        [self fetchNotificationCount];
-    };
-    
-    [[VObjectManager sharedManager] markAllNotificationsRead:success failBlock:fail];
+    [[VObjectManager sharedManager] markAllNotificationsRead:^(NSOperation *__nullable operation, id __nullable result, NSArray *__nonnull resultObjects)
+     {
+         [self fetchNotificationCount];
+     }
+                                                   failBlock:^(NSOperation *__nullable operation, NSError *__nullable error)
+     {
+         VLog(@"Failed to mark all notifications as read: %@", [error localizedDescription]);
+     }];
 }
 
 - (void)refreshTableView
@@ -328,7 +325,7 @@ static int const kNotificationFetchBatchSize = 50;
     
     id<VBadgeResponder> badgeResponder = [[self nextResponder] targetForAction:@selector(updateBadge)
                                                                     withSender:nil];
-    NSAssert(badgeResponder != nil, @"badge responder cannot be nil");
+    NSAssert(badgeResponder != nil, @"badge responder cannot be nil in VNotificationsViewController");
     [badgeResponder updateBadge];
     
     if ( self.badgeNumberUpdateBlock != nil )

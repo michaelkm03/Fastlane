@@ -34,7 +34,7 @@
     return CGRectZero;
 }
 
-- (void)updateBadging
+- (void)updateSelectorTitle
 {
     // subclasses can override this method
 }

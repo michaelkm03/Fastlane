@@ -336,7 +336,7 @@ static NSString * const kInitialKey = @"initial";
 
 - (void)updateBadge
 {
-    [self.selector updateBadging];
+    [self.selector updateSelectorTitle];
 }
 
 #pragma mark - VProvidesNavigationMenuItemBadge
