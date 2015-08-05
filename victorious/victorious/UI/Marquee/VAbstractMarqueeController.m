@@ -22,6 +22,7 @@
 #import "VStreamTrackingHelper.h"
 #import "VCellFocus.h"
 #import "VStreamItemPreviewView.h"
+#import "victorious-Swift.h"
 
 static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kSequenceIDKey = @"sequenceID";
@@ -225,8 +226,11 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
             VSequence *sequenceToTrack = [(id<VStreamCellTracking>)cell sequenceToTrack];
             if (sequenceToTrack != nil)
             {
-                [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithStream:self.stream
-                                                                         sequence:sequenceToTrack];
+                StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:sequenceToTrack
+                                                                                  stream:self.stream
+                                                                               fromShelf:YES];
+                
+                [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithCellEvent:event];
             }
         }
     }

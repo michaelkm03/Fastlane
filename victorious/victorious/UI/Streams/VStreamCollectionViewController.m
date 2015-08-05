@@ -81,6 +81,7 @@
 #import "UIViewController+VAccessoryScreens.h"
 
 #import "VCollectionViewStreamFocusHelper.h"
+#import "victorious-Swift.h"
 
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
 
@@ -473,7 +474,11 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
-        [self showContentViewForSequence:(VSequence *)streamItem inStreamWithID:marquee.stream.streamId withPreviewImage:image];
+        StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:streamItem
+                                                                          stream:marquee.stream
+                                                                       fromShelf:YES];
+        
+        [self showContentViewForCellEvent:event withPreviewImage:image];
     }
     else if ( [streamItem isSingleStream] )
     {
@@ -528,8 +533,13 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     }
     
     self.lastSelectedIndexPath = indexPath;
-    VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
-    [self showContentViewForSequence:sequence inStreamWithID:self.currentStream.streamId withPreviewImage:nil];
+    VStreamItem *streamItem = (VStreamItem *)[self.streamDataSource itemAtIndexPath:indexPath];
+    
+    StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:streamItem
+                                                                      stream:self.currentStream
+                                                                   fromShelf:NO];
+    
+    [self showContentViewForCellEvent:event withPreviewImage:nil];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
@@ -737,16 +747,18 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     self.collectionView.backgroundView = newBackgroundView;
 }
 
-- (void)showContentViewForSequence:(VSequence *)sequence inStreamWithID:(NSString *)streamId withPreviewImage:(UIImage *)previewImage
+- (void)showContentViewForCellEvent:(StreamCellContext *)event withPreviewImage:(UIImage *)previewImage
 {
-    NSParameterAssert(sequence != nil);
+    NSParameterAssert(event.streamItem != nil);
     NSParameterAssert(self.currentStream != nil);
-    [self.streamTrackingHelper onStreamCellSelectedWithStream:self.currentStream sequence:sequence];
     
+    [self.streamTrackingHelper onStreamCellSelectedWithCellEvent:event];
+    
+    NSString *streamID = [event.stream hasShelfID] && event.fromShelf ? event.stream.shelfId : event.stream.streamId;
     [VContentViewPresenter presentContentViewFromViewController:self
                                           withDependencyManager:self.dependencyManager
-                                                    ForSequence:sequence
-                                                 inStreamWithID:streamId
+                                                    ForSequence:(VSequence *)event.streamItem
+                                                 inStreamWithID:streamID
                                                       commentID:nil
                                                withPreviewImage:previewImage];
 }
@@ -952,8 +964,12 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
         if ([cell conformsToProtocol:@protocol(VStreamCellTracking)])
         {
             VSequence *sequenceToTrack = [(id<VStreamCellTracking>)cell sequenceToTrack];
-            [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithStream:self.currentStream
-                                                                     sequence:sequenceToTrack];
+            
+            StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:sequenceToTrack
+                                                                              stream:self.currentStream
+                                                                           fromShelf:NO];
+            
+            [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithCellEvent:event];
         }
     }
 }
