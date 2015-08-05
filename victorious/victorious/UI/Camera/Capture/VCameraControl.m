@@ -92,6 +92,8 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
 
 - (void)restoreCameraControlToDefault
 {
+    self.recordingProgress = 0.0f;
+    self.redDotView.alpha = 1.0f;
     self.cameraControlState = VCameraControlStateDefault;
 }
 
@@ -204,6 +206,8 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
             animationDuration = kRecordingShrinkAnimationDuration;
             animations = ^
             {
+                VLog(@"progress: %f", self.recordingProgress);
+                self.redDotView.alpha = (self.recordingProgress == 0.0f) ? 1.0f : 0.0f;
                 self.backgroundColor = self.defaultTintColor;
                 self.transform = CGAffineTransformIdentity;
                 self.layer.cornerRadius = kMinHeightSize * 0.5f;
@@ -224,6 +228,7 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
             
             animations = ^
             {
+                self.redDotView.alpha = 0.0f;
                 self.alpha = 1.0f;
                 self.transform = CGAffineTransformIdentity;
                 self.frame = CGRectInset(self.frame, -35.0f, 0.0f);
@@ -261,7 +266,7 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
     BOOL defaultTrackingWithTouch = [super beginTrackingWithTouch:touch
                                                         withEvent:event];
     self.currentStartTrackingTime = event.timestamp;
-
+    
     return defaultTrackingWithTouch;
 }
 
