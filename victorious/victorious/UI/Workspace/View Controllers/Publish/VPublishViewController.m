@@ -29,7 +29,6 @@
 #import "VDependencyManager+VTracking.h"
 #import "VPermissionsTrackingHelper.h"
 #import "VAlongsidePresentationAnimator.h"
-#import "VAutomation.h"
 
 @import AssetsLibrary;
 

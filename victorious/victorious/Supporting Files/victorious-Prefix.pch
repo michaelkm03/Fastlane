@@ -31,6 +31,8 @@
 // Global Defines for 32/64 bit
 #import "VCompatibility.h"
 
+#import "VAutomation.h"
+
 #ifdef DEBUG
 #define VLog(fmt, ...) NSLog((@"%s [Line %d] " fmt),  __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 #define TICK NSDate *tickTime = [NSDate date];

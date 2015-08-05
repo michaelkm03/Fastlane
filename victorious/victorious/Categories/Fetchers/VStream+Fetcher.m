@@ -27,6 +27,11 @@
     return self.marqueeItems.count > 0;
 }
 
+- (BOOL)hasShelfID
+{
+    return self.shelfId != nil && ![self.shelfId isEqualToString:@""];
+}
+
 + (VStream *)streamForUser:(VUser *)user
 {
     NSAssert([NSThread isMainThread], @"This method must be called on the main thread");

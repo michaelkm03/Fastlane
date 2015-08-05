@@ -21,7 +21,6 @@
 #import "UIAlertView+VBlocks.h"
 #import "VPasswordValidator.h"
 #import "VEmailValidator.h"
-#import "VAutomation.h"
 #import "VButton.h"
 #import "VInlineValidationTextField.h"
 #import "CCHLinkTextView.h"

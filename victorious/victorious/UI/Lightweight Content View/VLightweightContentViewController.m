@@ -19,7 +19,6 @@
 #import "VTrackingConstants.h"
 #import "VTracking.h"
 #import "UIView+AutoLayout.h"
-#import "VAutomation.h"
 
 static NSString * const kSequenceURLKey = @"sequenceURL";
 

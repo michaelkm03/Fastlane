@@ -18,7 +18,6 @@
 #import "VLoginWithEmailViewController.h"
 #import "VSignupWithEmailViewController.h"
 #import "VObjectManager.h"
-#import "VAutomation.h"
 
 #import "VLoginButton.h"
 

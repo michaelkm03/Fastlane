@@ -15,7 +15,6 @@
 
 // Permissions
 #import "VPermissionPhotoLibrary.h"
-#import "VAutomation.h"
 
 static NSString * const kAccessUndeterminedPromptKey = @"accessUndeterminedPrompt";
 static NSString * const kAccessUndeterminedCalltoActionKey = @"accessUndeterminedCallToAction";
