@@ -25,3 +25,9 @@ target :VictoriousCommon do
     pod 'IGDigest'
     link_with 'VictoriousCommon'
 end
+
+target :VictoriousCommonOSX do
+    platform :osx, "10.10"
+    pod 'IGDigest'
+    link_with 'VictoriousCommonOSX'
+end

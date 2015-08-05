@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01637162645D9BF8EC9E6C08 /* libPods-VictoriousCommonOSX.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 693498EEB4388179C36EF74A /* libPods-VictoriousCommonOSX.a */; };
 		0307F8411B4F3BA400342C13 /* VLoginOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0307F8401B4F3BA400342C13 /* VLoginOperation.m */; };
 		0308B1191AB2B00100144E53 /* VInsetStreamCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0308B1181AB2B00100144E53 /* VInsetStreamCollectionCell.m */; };
 		0309318D1A18425B004E9781 /* VMenuCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 030931891A18425B004E9781 /* VMenuCollectionViewCell.m */; };
@@ -103,6 +104,28 @@
 		0352FC741B72AA7E00DB6EAB /* libPods-victorious-test-VictoriousCommonTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0352FC731B72AA7E00DB6EAB /* libPods-victorious-test-VictoriousCommonTests.a */; };
 		0352FC771B72AE3800DB6EAB /* VictoriousCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0370FBB31B71B260009047B6 /* VictoriousCommon.framework */; };
 		0352FC781B72B09900DB6EAB /* templateCache.json in Resources */ = {isa = PBXBuildFile; fileRef = 03A058C21AEF59E600CF39D1 /* templateCache.json */; };
+		0352FCA31B72BAC600DB6EAB /* VictoriousCommonOSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0352FC7E1B72B90000DB6EAB /* VictoriousCommonOSX.framework */; };
+		0352FCA61B72BB3D00DB6EAB /* VExperimentSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A7815E281B701076007797B7 /* VExperimentSettings.m */; };
+		0352FCA71B72BB3D00DB6EAB /* NSCharacterSet+VURLParts.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8B21B572453000B7901 /* NSCharacterSet+VURLParts.m */; };
+		0352FCA81B72BB3D00DB6EAB /* NSString+VCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8C51B572453000B7901 /* NSString+VCrypto.m */; };
+		0352FCA91B72BB3D00DB6EAB /* NSString+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A761511B324BFF0016B69D /* NSString+VDataCacheID.m */; };
+		0352FCAA1B72BB3D00DB6EAB /* NSURL+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A7614C1B3232040016B69D /* NSURL+VDataCacheID.m */; };
+		0352FCAB1B72BB3D00DB6EAB /* VBundleWriterDataCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7E01B62E4A70038A25E /* VBundleWriterDataCache.m */; };
+		0352FCAC1B72BB3D00DB6EAB /* VDataCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A761491B322F830016B69D /* VDataCache.m */; };
+		0352FCAD1B72BB3D00DB6EAB /* VEnvironment+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 032F49441B45A424005325CA /* VEnvironment+VDataCacheID.m */; };
+		0352FCAE1B72BB3D00DB6EAB /* VTemplateImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 038C51181B37B3D700A903C2 /* VTemplateImage.m */; };
+		0352FCAF1B72BB3D00DB6EAB /* VTemplateImageMacro.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F87E1B37F01700E8D459 /* VTemplateImageMacro.m */; };
+		0352FCB01B72BB3D00DB6EAB /* VTemplateImageSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 038C511B1B37C8F500A903C2 /* VTemplateImageSet.m */; };
+		0352FCB11B72BB3D00DB6EAB /* VURLMacroReplacement.m in Sources */ = {isa = PBXBuildFile; fileRef = 032954A41A9FF4E000698119 /* VURLMacroReplacement.m */; };
+		0352FCB21B72BB3D00DB6EAB /* VEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951161B28AB9A00D9DB0A /* VEnvironment.m */; };
+		0352FCB31B72BB3D00DB6EAB /* VJSONHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0306F7A51ADDF939009FE3AA /* VJSONHelper.m */; };
+		0352FCB41B72BB3D00DB6EAB /* VBulkDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F8861B38F76700E8D459 /* VBulkDownloadOperation.m */; };
+		0352FCB51B72BB3D00DB6EAB /* VDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F88B1B390ADE00E8D459 /* VDownloadOperation.m */; };
+		0352FCB61B72BB3D00DB6EAB /* VTemplateDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058BE1AEF44D600CF39D1 /* VTemplateDownloadOperation.m */; };
+		0352FCB71B72BB3D00DB6EAB /* VTemplatePackageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F8771B37E52500E8D459 /* VTemplatePackageManager.m */; };
+		0352FCB81B72BB3D00DB6EAB /* VTemplateSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058B91AED7FB600CF39D1 /* VTemplateSerialization.m */; };
+		0352FCB91B72BB3D00DB6EAB /* VAPIRequestDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7C31B608C100038A25E /* VAPIRequestDecorator.m */; };
+		0352FCBA1B72BB7200DB6EAB /* VictoriousCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = 0370FBB71B71B261009047B6 /* VictoriousCommon.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0358FCEE1A65E785004DD7A1 /* VScaffoldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0358FCED1A65E785004DD7A1 /* VScaffoldViewController.m */; };
 		035926D21B1EA33400E910A7 /* Quicksand-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 035926CF1B1EA33400E910A7 /* Quicksand-Bold.ttf */; };
 		035926D31B1EA33400E910A7 /* Quicksand-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 035926D01B1EA33400E910A7 /* Quicksand-Light.ttf */; };
@@ -1177,6 +1200,20 @@
 			remoteGlobalIDString = 0370FBB21B71B260009047B6;
 			remoteInfo = VictoriousCommon;
 		};
+		0352FCA01B72BA8200DB6EAB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0352FC7D1B72B90000DB6EAB;
+			remoteInfo = VictoriousCommonOSX;
+		};
+		0352FCA41B72BACF00DB6EAB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0392694B1B5C720400FCD0AA;
+			remoteInfo = downloadtemplate;
+		};
 		0370FBBF1B71B261009047B6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
@@ -1419,6 +1456,8 @@
 		034D1A671AAF5A8B00EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/settings.strings; sourceTree = "<group>"; };
 		034D1A6B1AAF5A8B00EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		0352FC731B72AA7E00DB6EAB /* libPods-victorious-test-VictoriousCommonTests.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-victorious-test-VictoriousCommonTests.a"; path = "Pods/../build/Debug-iphoneos/libPods-victorious-test-VictoriousCommonTests.a"; sourceTree = "<group>"; };
+		0352FC7E1B72B90000DB6EAB /* VictoriousCommonOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = VictoriousCommonOSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0352FC9E1B72B9A800DB6EAB /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0358FCEC1A65E785004DD7A1 /* VScaffoldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VScaffoldViewController.h; sourceTree = "<group>"; };
 		0358FCED1A65E785004DD7A1 /* VScaffoldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VScaffoldViewController.m; sourceTree = "<group>"; };
 		035926CF1B1EA33400E910A7 /* Quicksand-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Bold.ttf"; sourceTree = "<group>"; };
@@ -3445,6 +3484,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		0352FC7A1B72B90000DB6EAB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				01637162645D9BF8EC9E6C08 /* libPods-VictoriousCommonOSX.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0370FBAF1B71B260009047B6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -3467,6 +3514,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0352FCA31B72BAC600DB6EAB /* VictoriousCommonOSX.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4175,6 +4223,14 @@
 			path = "Test Data";
 			sourceTree = "<group>";
 		};
+		0352FC9D1B72B9A800DB6EAB /* OSX */ = {
+			isa = PBXGroup;
+			children = (
+				0352FC9E1B72B9A800DB6EAB /* Info.plist */,
+			);
+			path = OSX;
+			sourceTree = "<group>";
+		};
 		035926CE1B1EA33400E910A7 /* Quicksand */ = {
 			isa = PBXGroup;
 			children = (
@@ -4511,6 +4567,7 @@
 		0370FBB51B71B261009047B6 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0352FC9D1B72B9A800DB6EAB /* OSX */,
 				039269821B5C9DD600FCD0AA /* PrefixHeader.pch */,
 				0370FBB61B71B261009047B6 /* Info.plist */,
 			);
@@ -6198,6 +6255,7 @@
 				0392694C1B5C720400FCD0AA /* downloadtemplate */,
 				0370FBB31B71B260009047B6 /* VictoriousCommon.framework */,
 				0370FBBD1B71B261009047B6 /* VictoriousCommonTests.xctest */,
+				0352FC7E1B72B90000DB6EAB /* VictoriousCommonOSX.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -7583,6 +7641,14 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		0352FC7B1B72B90000DB6EAB /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0352FCBA1B72BB7200DB6EAB /* VictoriousCommon.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0370FBB01B71B260009047B6 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -7594,6 +7660,26 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		0352FC7D1B72B90000DB6EAB /* VictoriousCommonOSX */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0352FC911B72B90100DB6EAB /* Build configuration list for PBXNativeTarget "VictoriousCommonOSX" */;
+			buildPhases = (
+				3F67012261BC0CF8FADD3BDA /* Check Pods Manifest.lock */,
+				0352FC791B72B90000DB6EAB /* Sources */,
+				0352FC7A1B72B90000DB6EAB /* Frameworks */,
+				0352FC7B1B72B90000DB6EAB /* Headers */,
+				0352FC7C1B72B90000DB6EAB /* Resources */,
+				3FE2550DB9DC09572F208C90 /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VictoriousCommonOSX;
+			productName = VictoriousCommonOSX;
+			productReference = 0352FC7E1B72B90000DB6EAB /* VictoriousCommonOSX.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		0370FBB21B71B260009047B6 /* VictoriousCommon */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0370FBCC1B71B262009047B6 /* Build configuration list for PBXNativeTarget "VictoriousCommon" */;
@@ -7647,6 +7733,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				0352FCA11B72BA8200DB6EAB /* PBXTargetDependency */,
 			);
 			name = downloadtemplate;
 			productName = downloadtemplate;
@@ -7673,6 +7760,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				0352FCA51B72BACF00DB6EAB /* PBXTargetDependency */,
 				0370FBC91B71B261009047B6 /* PBXTargetDependency */,
 			);
 			name = victorious;
@@ -7712,6 +7800,9 @@
 				LastUpgradeCheck = 0640;
 				ORGANIZATIONNAME = Victorious;
 				TargetAttributes = {
+					0352FC7D1B72B90000DB6EAB = {
+						CreatedOnToolsVersion = 6.4;
+					};
 					0370FBB21B71B260009047B6 = {
 						CreatedOnToolsVersion = 6.4;
 						DevelopmentTeam = ABHRJGEGKA;
@@ -7762,11 +7853,19 @@
 				0392694B1B5C720400FCD0AA /* downloadtemplate */,
 				0370FBB21B71B260009047B6 /* VictoriousCommon */,
 				0370FBBC1B71B261009047B6 /* VictoriousCommonTests */,
+				0352FC7D1B72B90000DB6EAB /* VictoriousCommonOSX */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		0352FC7C1B72B90000DB6EAB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0370FBB11B71B260009047B6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -8121,6 +8220,36 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		3F67012261BC0CF8FADD3BDA /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		3FE2550DB9DC09572F208C90 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		3FF8C50618A5A06A00812968 /* Set Build Number */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -8257,6 +8386,33 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		0352FC791B72B90000DB6EAB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0352FCB61B72BB3D00DB6EAB /* VTemplateDownloadOperation.m in Sources */,
+				0352FCB91B72BB3D00DB6EAB /* VAPIRequestDecorator.m in Sources */,
+				0352FCB11B72BB3D00DB6EAB /* VURLMacroReplacement.m in Sources */,
+				0352FCA61B72BB3D00DB6EAB /* VExperimentSettings.m in Sources */,
+				0352FCB71B72BB3D00DB6EAB /* VTemplatePackageManager.m in Sources */,
+				0352FCB01B72BB3D00DB6EAB /* VTemplateImageSet.m in Sources */,
+				0352FCAF1B72BB3D00DB6EAB /* VTemplateImageMacro.m in Sources */,
+				0352FCA81B72BB3D00DB6EAB /* NSString+VCrypto.m in Sources */,
+				0352FCAA1B72BB3D00DB6EAB /* NSURL+VDataCacheID.m in Sources */,
+				0352FCAC1B72BB3D00DB6EAB /* VDataCache.m in Sources */,
+				0352FCB81B72BB3D00DB6EAB /* VTemplateSerialization.m in Sources */,
+				0352FCB41B72BB3D00DB6EAB /* VBulkDownloadOperation.m in Sources */,
+				0352FCAE1B72BB3D00DB6EAB /* VTemplateImage.m in Sources */,
+				0352FCA91B72BB3D00DB6EAB /* NSString+VDataCacheID.m in Sources */,
+				0352FCAD1B72BB3D00DB6EAB /* VEnvironment+VDataCacheID.m in Sources */,
+				0352FCB31B72BB3D00DB6EAB /* VJSONHelper.m in Sources */,
+				0352FCB21B72BB3D00DB6EAB /* VEnvironment.m in Sources */,
+				0352FCAB1B72BB3D00DB6EAB /* VBundleWriterDataCache.m in Sources */,
+				0352FCB51B72BB3D00DB6EAB /* VDownloadOperation.m in Sources */,
+				0352FCA71B72BB3D00DB6EAB /* NSCharacterSet+VURLParts.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0370FBAE1B71B260009047B6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -9200,6 +9356,16 @@
 			target = 0370FBB21B71B260009047B6 /* VictoriousCommon */;
 			targetProxy = 0352FC751B72AE3200DB6EAB /* PBXContainerItemProxy */;
 		};
+		0352FCA11B72BA8200DB6EAB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0352FC7D1B72B90000DB6EAB /* VictoriousCommonOSX */;
+			targetProxy = 0352FCA01B72BA8200DB6EAB /* PBXContainerItemProxy */;
+		};
+		0352FCA51B72BACF00DB6EAB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0392694B1B5C720400FCD0AA /* downloadtemplate */;
+			targetProxy = 0352FCA41B72BACF00DB6EAB /* PBXContainerItemProxy */;
+		};
 		0370FBC01B71B261009047B6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 0370FBB21B71B260009047B6 /* VictoriousCommon */;
@@ -9709,6 +9875,145 @@
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_TRACKING = NO;
 				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+		0352FC921B72B90100DB6EAB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 861888B7B5EA1C709A7ABB6B /* Pods-VictoriousCommonOSX.debug.xcconfig */;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_VERSION = A;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "VictoriousCommon/Supporting Files/PrefixHeader.pch";
+				INFOPLIST_FILE = "VictoriousCommon/Supporting Files/OSX/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		0352FC931B72B90100DB6EAB /* QA */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 79ACFD16A2EFEF8FE18E316E /* Pods-VictoriousCommonOSX.qa.xcconfig */;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_VERSION = A;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "VictoriousCommon/Supporting Files/PrefixHeader.pch";
+				INFOPLIST_FILE = "VictoriousCommon/Supporting Files/OSX/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = QA;
+		};
+		0352FC941B72B90100DB6EAB /* Staging */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6346130F32A50A474A9D3D05 /* Pods-VictoriousCommonOSX.staging.xcconfig */;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_VERSION = A;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "VictoriousCommon/Supporting Files/PrefixHeader.pch";
+				INFOPLIST_FILE = "VictoriousCommon/Supporting Files/OSX/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Staging;
+		};
+		0352FC951B72B90100DB6EAB /* Stable */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6C14CC0531211B1486085544 /* Pods-VictoriousCommonOSX.stable.xcconfig */;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_VERSION = A;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "VictoriousCommon/Supporting Files/PrefixHeader.pch";
+				INFOPLIST_FILE = "VictoriousCommon/Supporting Files/OSX/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Stable;
+		};
+		0352FC961B72B90100DB6EAB /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 04F19C7363CDE715B04BAB21 /* Pods-VictoriousCommonOSX.release.xcconfig */;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_VERSION = A;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "VictoriousCommon/Supporting Files/PrefixHeader.pch";
+				INFOPLIST_FILE = "VictoriousCommon/Supporting Files/OSX/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
@@ -10360,7 +10665,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEFINES_MODULE = YES;
-				DownloadTemplate = no;
+				DownloadTemplate = yes;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
@@ -10604,6 +10909,18 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		0352FC911B72B90100DB6EAB /* Build configuration list for PBXNativeTarget "VictoriousCommonOSX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0352FC921B72B90100DB6EAB /* Debug */,
+				0352FC931B72B90100DB6EAB /* QA */,
+				0352FC941B72B90100DB6EAB /* Staging */,
+				0352FC951B72B90100DB6EAB /* Stable */,
+				0352FC961B72B90100DB6EAB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		0370FBCC1B71B262009047B6 /* Build configuration list for PBXNativeTarget "VictoriousCommon" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
