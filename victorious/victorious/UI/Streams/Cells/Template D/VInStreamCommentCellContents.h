@@ -32,7 +32,6 @@
     A convenience method for creating in stream comments from an array of comments.
  
     @param comments The array of comments that should be translated into VInStreamCommentCellContents.
-                        Must not be nil.
     @param dependencyManager The dependency manager whose images and color values should be used to
                                 populate each VInStreamCommentCellContents in the returned array.
                                 Must not be nil.
