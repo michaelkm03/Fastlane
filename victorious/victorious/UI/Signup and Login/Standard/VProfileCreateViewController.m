@@ -19,7 +19,6 @@
 #import "VConstants.h"
 #import "UIImageView+WebCache.h"
 #import "UIAlertView+VBlocks.h"
-#import "VAutomation.h"
 #import "VButton.h"
 #import "VDefaultProfileImageView.h"
 #import "VLocationManager.h"

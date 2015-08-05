@@ -256,6 +256,7 @@
         <attribute name="filterName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="hashtag" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
         <attribute name="isUserPostAllowed" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="shelfId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="trackingIdentifier" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="marqueeItems" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="StreamItem" inverseName="marquees" inverseEntity="StreamItem" syncable="YES"/>
         <relationship name="streamItems" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="StreamItem" inverseName="streams" inverseEntity="StreamItem" syncable="YES"/>

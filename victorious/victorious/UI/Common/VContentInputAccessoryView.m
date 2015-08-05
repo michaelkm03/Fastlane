@@ -8,7 +8,6 @@
 
 #import "VConstants.h"
 #import "VContentInputAccessoryView.h"
-#import "VAutomation.h"
 
 @interface VContentInputAccessoryView ()
 

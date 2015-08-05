@@ -17,7 +17,6 @@
 #import "VDependencyManager+VKeyboardStyle.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VConstants.h"
-#import "VAutomation.h"
 
 // Views + Helpers
 #import "VInlineValidationTextField.h"
