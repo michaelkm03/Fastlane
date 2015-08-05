@@ -100,6 +100,9 @@
 		0352FC701B729B0300DB6EAB /* VTemplateImageSetTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 038C511D1B37CEF800A903C2 /* VTemplateImageSetTests.m */; };
 		0352FC711B729B0300DB6EAB /* VTemplateSerializationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058BB1AED802400CF39D1 /* VTemplateSerializationTests.m */; };
 		0352FC721B729B0300DB6EAB /* VURLMacroReplacementTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 032954A61A9FFD9100698119 /* VURLMacroReplacementTests.m */; };
+		0352FC741B72AA7E00DB6EAB /* libPods-victorious-test-VictoriousCommonTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0352FC731B72AA7E00DB6EAB /* libPods-victorious-test-VictoriousCommonTests.a */; };
+		0352FC771B72AE3800DB6EAB /* VictoriousCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0370FBB31B71B260009047B6 /* VictoriousCommon.framework */; };
+		0352FC781B72B09900DB6EAB /* templateCache.json in Resources */ = {isa = PBXBuildFile; fileRef = 03A058C21AEF59E600CF39D1 /* templateCache.json */; };
 		0358FCEE1A65E785004DD7A1 /* VScaffoldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0358FCED1A65E785004DD7A1 /* VScaffoldViewController.m */; };
 		035926D21B1EA33400E910A7 /* Quicksand-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 035926CF1B1EA33400E910A7 /* Quicksand-Bold.ttf */; };
 		035926D31B1EA33400E910A7 /* Quicksand-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 035926D01B1EA33400E910A7 /* Quicksand-Light.ttf */; };
@@ -256,7 +259,6 @@
 		039ED29C19C908F400305987 /* VCVideoPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ED29419C908F400305987 /* VCVideoPlayerViewController.m */; };
 		039ED29D19C908F400305987 /* VElapsedTimeFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ED29619C908F400305987 /* VElapsedTimeFormatter.m */; };
 		039ED29E19C908F400305987 /* VVideoDownloadProgressIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 039ED29819C908F400305987 /* VVideoDownloadProgressIndicatorView.m */; };
-		03A058C31AEF59E600CF39D1 /* templateCache.json in Resources */ = {isa = PBXBuildFile; fileRef = 03A058C21AEF59E600CF39D1 /* templateCache.json */; };
 		03A058C91AF05D8300CF39D1 /* VObjectManager+VTemplateDownloaderConformance.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058C81AF05D8300CF39D1 /* VObjectManager+VTemplateDownloaderConformance.m */; };
 		03A7614F1B3232970016B69D /* NSURL+VDataCacheIDTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A7614E1B3232970016B69D /* NSURL+VDataCacheIDTests.m */; };
 		03A9CBEE1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A9CBED1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.m */; };
@@ -304,6 +306,7 @@
 		03FD87D719F96F8700D93BAA /* VContentVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FD87D619F96F8700D93BAA /* VContentVideoCell.xib */; };
 		03FD87D919F96FB700D93BAA /* VDiscoverSuggestedPersonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FD87D819F96FB700D93BAA /* VDiscoverSuggestedPersonCell.xib */; };
 		03FD87E819FAC19300D93BAA /* VLightboxViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FD87E719FAC19300D93BAA /* VLightboxViewController.xib */; };
+		376A73B405D15983F20679CF /* libPods-victorious-test.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7B45F61E6B2831D5E9459C3 /* libPods-victorious-test.a */; };
 		6617DB3A19F3EB53008C1FF5 /* VContentPollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6617DB3919F3EB53008C1FF5 /* VContentPollCell.xib */; };
 		669EBBE41A30239100DE317D /* VBasicToolPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 669EBBE01A30239100DE317D /* VBasicToolPickerCell.m */; };
 		669EBBE51A30239100DE317D /* VTickerPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 669EBBE31A30239100DE317D /* VTickerPickerViewController.m */; };
@@ -1167,6 +1170,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		0352FC751B72AE3200DB6EAB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0370FBB21B71B260009047B6;
+			remoteInfo = VictoriousCommon;
+		};
 		0370FBBF1B71B261009047B6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
@@ -1408,6 +1418,7 @@
 		034D1A661AAF5A8A00EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		034D1A671AAF5A8B00EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/settings.strings; sourceTree = "<group>"; };
 		034D1A6B1AAF5A8B00EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		0352FC731B72AA7E00DB6EAB /* libPods-victorious-test-VictoriousCommonTests.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-victorious-test-VictoriousCommonTests.a"; path = "Pods/../build/Debug-iphoneos/libPods-victorious-test-VictoriousCommonTests.a"; sourceTree = "<group>"; };
 		0358FCEC1A65E785004DD7A1 /* VScaffoldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VScaffoldViewController.h; sourceTree = "<group>"; };
 		0358FCED1A65E785004DD7A1 /* VScaffoldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VScaffoldViewController.m; sourceTree = "<group>"; };
 		035926CF1B1EA33400E910A7 /* Quicksand-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Bold.ttf"; sourceTree = "<group>"; };
@@ -3446,7 +3457,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0352FC741B72AA7E00DB6EAB /* libPods-victorious-test-VictoriousCommonTests.a in Frameworks */,
 				0370FBBE1B71B261009047B6 /* VictoriousCommon.framework in Frameworks */,
+				376A73B405D15983F20679CF /* libPods-victorious-test.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3496,6 +3509,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0352FC771B72AE3800DB6EAB /* VictoriousCommon.framework in Frameworks */,
 				A769C3F31A131D8C00698D0C /* WebKit.framework in Frameworks */,
 				BE171D981868BE64004E5202 /* XCTest.framework in Frameworks */,
 				BE171D9B1868BE64004E5202 /* CoreData.framework in Frameworks */,
@@ -4155,6 +4169,7 @@
 		0352FC671B729A6C00DB6EAB /* Test Data */ = {
 			isa = PBXGroup;
 			children = (
+				03A058C21AEF59E600CF39D1 /* templateCache.json */,
 				0386F87B1B37EB8500E8D459 /* templateWithImageURLs.json */,
 			);
 			path = "Test Data";
@@ -4690,7 +4705,6 @@
 				A72004FA1A02FEC000285A9C /* sampleImage.png */,
 				03F2F7941B560B8E00F2EF16 /* sampleImage2.png */,
 				039D02B01A10443200DB9236 /* template.json */,
-				03A058C21AEF59E600CF39D1 /* templateCache.json */,
 				C3C7345A1B61CF3D00D6795D /* voteTypes.json */,
 			);
 			path = "Test Data";
@@ -6191,6 +6205,7 @@
 		BE171D781868BE64004E5202 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0352FC731B72AA7E00DB6EAB /* libPods-victorious-test-VictoriousCommonTests.a */,
 				A75A639C1B58858500EC4D53 /* MobileCoreServices.framework */,
 				A7F8DD621A0B1A8B00F82256 /* WebKit.framework */,
 				DBD02A7919F5860A00E0AC95 /* AdSupport.framework */,
@@ -7603,9 +7618,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0370FBD31B71B262009047B6 /* Build configuration list for PBXNativeTarget "VictoriousCommonTests" */;
 			buildPhases = (
+				45DBD7CAABBDE609B50C929F /* Check Pods Manifest.lock */,
 				0370FBB91B71B261009047B6 /* Sources */,
 				0370FBBA1B71B261009047B6 /* Frameworks */,
 				0370FBBB1B71B261009047B6 /* Resources */,
+				F9A9DAE186931073496F8707 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -7677,6 +7694,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				0352FC761B72AE3200DB6EAB /* PBXTargetDependency */,
 				BE171D9D1868BE64004E5202 /* PBXTargetDependency */,
 			);
 			name = victoriousTests;
@@ -7760,6 +7778,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0352FC781B72B09900DB6EAB /* templateCache.json in Resources */,
 				0370FBF31B728618009047B6 /* templateWithImageURLs.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7980,7 +7999,6 @@
 				F0C83A451B0FDD2B00A6EC1A /* coachmarks.json in Resources */,
 				037CB73519CFE02C0084BBED /* sampleImage.jpg in Resources */,
 				03F2F7951B560B8E00F2EF16 /* sampleImage2.png in Resources */,
-				03A058C31AEF59E600CF39D1 /* templateCache.json in Resources */,
 				A7CFC1CA19FEE24300726772 /* front_landscape_right.m4v in Resources */,
 				039420481AB88A450087ADFA /* image-template.json in Resources */,
 				039D02B11A10443200DB9236 /* template.json in Resources */,
@@ -8118,6 +8136,21 @@
 			shellScript = "#!/bin/bash\n\nBUILD_NUMBER=$(git rev-list HEAD --count)\nTARGET_FILE=\"$TARGET_BUILD_DIR/$INFOPLIST_PATH\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BUILD_NUMBER\" \"$TARGET_FILE\"\n";
 			showEnvVarsInLog = 0;
 		};
+		45DBD7CAABBDE609B50C929F /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		589F0499A2CD6F9EB3A82CC5 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -8177,6 +8210,21 @@
 			showEnvVarsInLog = 0;
 		};
 		EBEFC4B1B5229BA47216AF31 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F9A9DAE186931073496F8707 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -9147,6 +9195,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		0352FC761B72AE3200DB6EAB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0370FBB21B71B260009047B6 /* VictoriousCommon */;
+			targetProxy = 0352FC751B72AE3200DB6EAB /* PBXContainerItemProxy */;
+		};
 		0370FBC01B71B261009047B6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 0370FBB21B71B260009047B6 /* VictoriousCommon */;
@@ -9814,6 +9867,7 @@
 		};
 		0370FBD41B71B262009047B6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8E360EC509E852CE3E872948 /* Pods-victorious-test.debug.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -9832,6 +9886,10 @@
 				INFOPLIST_FILE = "VictoriousCommonTests/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
@@ -9840,6 +9898,7 @@
 		};
 		0370FBD51B71B262009047B6 /* QA */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E8193ED8CA9746EB7E3D7AD2 /* Pods-victorious-test.qa.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -9855,6 +9914,10 @@
 				INFOPLIST_FILE = "VictoriousCommonTests/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
@@ -9863,6 +9926,7 @@
 		};
 		0370FBD61B71B262009047B6 /* Staging */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 910A7A7036C6609BF5F7723D /* Pods-victorious-test.staging.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -9878,6 +9942,10 @@
 				INFOPLIST_FILE = "VictoriousCommonTests/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
@@ -9886,6 +9954,7 @@
 		};
 		0370FBD71B71B262009047B6 /* Stable */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 62B9E8365153DC8C04105B08 /* Pods-victorious-test.stable.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -9901,6 +9970,10 @@
 				INFOPLIST_FILE = "VictoriousCommonTests/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
@@ -9909,6 +9982,7 @@
 		};
 		0370FBD81B71B262009047B6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E0F99C8D8C60943CBE645C0D /* Pods-victorious-test.release.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -9924,6 +9998,10 @@
 				INFOPLIST_FILE = "VictoriousCommonTests/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
