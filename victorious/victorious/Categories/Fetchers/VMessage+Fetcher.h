@@ -10,13 +10,14 @@
 
 /**
  An enum which describes the type of media attached
- to this message.
+ to a message.
  */
 typedef NS_ENUM(NSInteger, VMessageMediaType)
 {
     VMessageMediaTypeNoMedia,
     VMessageMediaTypeImage,
-    VMessageMediaTypeVideo
+    VMessageMediaTypeVideo,
+    VMessageMediaTypeGIF
 };
 
 @interface VMessage (Fetcher)
