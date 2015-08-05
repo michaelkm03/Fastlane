@@ -36,7 +36,6 @@ static const CGFloat kAttachmentBarHeight = 50.0f;
 // Views
 @property (nonatomic, strong) IBOutlet UIButton *attachmentsButton;
 @property (nonatomic, strong) IBOutlet UIButton *sendButton;
-@property (nonatomic, strong) UITextView *editingTextView;
 @property (nonatomic, strong) IBOutlet UIView *editingTextSuperview;
 @property (nonatomic, strong) IBOutlet UILabel *placeholderLabel;
 @property (nonatomic, strong) IBOutlet UIButton *imageButton;
