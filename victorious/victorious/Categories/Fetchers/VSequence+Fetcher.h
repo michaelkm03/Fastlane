@@ -19,7 +19,6 @@
 - (BOOL)isQuiz;
 - (BOOL)isImage;
 - (BOOL)isVideo;
-- (BOOL)isOwnerContent;
 - (BOOL)isWebContent;
 - (BOOL)isPreviewWebContent;
 - (BOOL)isPreviewImageContent;

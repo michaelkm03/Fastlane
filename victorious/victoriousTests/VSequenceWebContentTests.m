@@ -24,10 +24,7 @@
 - (void)testSequenceWebContent
 {
     VSequence *sequence = (VSequence *)[VDummyModels objectWithEntityName:@"Sequence" subclass:[VSequence class]];
-    
-    XCTAssertFalse( [sequence isOwnerContent] );
-    XCTAssert( [sequence isOwnerContent] );
-    
+        
     XCTAssertFalse( [sequence isPreviewWebContent] );
     XCTAssertNil( [sequence webContentPreviewUrl] );
     sequence.previewType = kVAssetTypeURL;

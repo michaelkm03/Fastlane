@@ -129,7 +129,6 @@ static NSString * const   kVUGCQuoteRepostCategory     = @"ugc_secret_repost";
 
 static NSString * const   kVPreferedMimeType            = @"application/x-mpegURL";
 
-NSArray *VOwnerCategories();
 NSArray *VUGCCategories();
 NSArray *VImageCategories();
 NSArray *VVideoCategories();
