@@ -325,9 +325,11 @@ static const NSInteger kSearchResultLimit = 100;
 
 - (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion
 {
+    NSString *screenName = VFollowSourceScreenUserSearch;
     [self.followHelper followUser:user
               withAuthorizedBlock:authorizedBlock
-                    andCompletion:completion];
+                    andCompletion:completion
+                       fromScreen:screenName];
 }
 
 - (void)unfollowUser:(VUser *)user

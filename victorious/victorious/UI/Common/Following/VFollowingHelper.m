@@ -16,6 +16,15 @@
 #import "VUser.h"
 #import "VObjectManager+Users.h"
 
+NSString * const VFollowSourceScreenDiscover = @"follow_discover";
+NSString * const VFollowSourceScreenFindFriends = @"follow_find_friends";
+NSString * const VFollowSourceScreenReposter = @"follow_reposter";
+NSString * const VFollowSourceScreenRootview = @"follow_rootview";
+NSString * const VFollowSourceScreenProfile = @"follow_profile";
+NSString * const VFollowSourceScreenUserSearchResults = @"follow_user_search_results";
+NSString * const VFollowSourceScreenUserSearch = @"follow_user_search";
+NSString * const VFollowSourceScreenUsersView = @"follow_user_view";
+
 @implementation VFollowingHelper
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -42,6 +51,7 @@
 - (void)followUser:(VUser *)user
 withAuthorizedBlock:(void (^)(void))authorizedBlock
      andCompletion:(VFollowHelperCompletion)completion
+        fromScreen:(NSString *)screenName
 {
     NSParameterAssert(completion != nil);
     
@@ -80,7 +90,10 @@ withAuthorizedBlock:(void (^)(void))authorizedBlock
          };
          
          // Add user at backend
-         [[VObjectManager sharedManager] followUser:user successBlock:successBlock failBlock:failureBlock];
+         [[VObjectManager sharedManager] followUser:user
+                                       successBlock:successBlock
+                                          failBlock:failureBlock
+                                         fromScreen:screenName];
      }];
 }
 

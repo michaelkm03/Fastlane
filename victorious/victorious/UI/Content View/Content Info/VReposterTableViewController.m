@@ -192,7 +192,8 @@
 {
     NSDictionary *params = @{ VTrackingKeyContext : VTrackingValueReposters };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFollowUser parameters:params];
-    [self.followingHelper followUser:user withAuthorizedBlock:authorizedBlock andCompletion:completion];
+    NSString *screenName = VFollowSourceScreenReposter;
+    [self.followingHelper followUser:user withAuthorizedBlock:authorizedBlock andCompletion:completion fromScreen:screenName];
 }
 
 - (void)unfollowUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowEventCompletion)completion

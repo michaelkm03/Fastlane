@@ -511,9 +511,11 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion
 {
+    NSString *screenName = VFollowSourceScreenRootview;
     [self.followHelper followUser:user
               withAuthorizedBlock:authorizedBlock
-                    andCompletion:completion];
+                    andCompletion:completion
+                       fromScreen:screenName];
 }
 
 - (void)unfollowUser:(VUser *)user

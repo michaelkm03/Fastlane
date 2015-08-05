@@ -46,6 +46,7 @@
 #import "VFollowersDataSource.h"
 #import "VUserIsFollowingDataSource.h"
 #import "VDependencyManager+VTracking.h"
+#import "VFollowingHelper.h"
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
@@ -73,6 +74,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 @property (nonatomic, strong) UIButton *retryProfileLoadButton;
 
 @property (nonatomic, strong) MBProgressHUD *retryHUD;
+@property (nonatomic, strong) VFollowingHelper *followingHelper;
 
 @end
 
@@ -82,6 +84,9 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     NSParameterAssert(dependencyManager != nil);
     VUserProfileViewController *viewController = [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
+    viewController.followingHelper = [[VFollowingHelper alloc]
+                                      initWithDependencyManager:dependencyManager
+                                      viewControllerToPresentOn:viewController];
     
     //Set the dependencyManager before setting the profile since setting the profile creates the profileHeaderViewController
     viewController.dependencyManager = dependencyManager;
@@ -105,6 +110,10 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     NSParameterAssert(dependencyManager != nil);
     VUserProfileViewController *viewController = [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
+    viewController.followingHelper = [[VFollowingHelper alloc]
+                                      initWithDependencyManager:dependencyManager
+                                      viewControllerToPresentOn:viewController];
+
     
     //Set the dependencyManager before setting the profile since setting the profile creates the profileHeaderViewController
     viewController.dependencyManager = dependencyManager;
@@ -519,13 +528,15 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     {
         [self stopObservingUserProfile];
         self.profileHeaderViewController.loading = YES;
-        [[VObjectManager sharedManager] followUser:self.user
-                                      successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-         {
-             self.profileHeaderViewController.loading = NO;
-             self.profileHeaderViewController.state = VUserProfileHeaderStateFollowingUser;
-         }
-                                         failBlock:fail];
+        
+        NSString *screenName = VFollowSourceScreenProfile;
+        
+        [self.followingHelper followUser:self.user withAuthorizedBlock:nil
+                           andCompletion:^(VUser *userActedOn) {
+                               self.profileHeaderViewController.loading = NO;
+                               self.profileHeaderViewController.state = VUserProfileHeaderStateFollowingUser;
+                           }
+                              fromScreen:screenName];
     }
 }
 

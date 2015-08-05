@@ -8,6 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+extern NSString * const VFollowSourceScreenDiscover;
+extern NSString * const VFollowSourceScreenFindFriends;
+extern NSString * const VFollowSourceScreenReposter;
+extern NSString * const VFollowSourceScreenRootview;
+extern NSString * const VFollowSourceScreenProfile;
+extern NSString * const VFollowSourceScreenUserSearchResults;
+extern NSString * const VFollowSourceScreenUserSearch;
+extern NSString * const VFollowSourceScreenUsersView;
+
 @class VDependencyManager;
 @class VUser;
 
@@ -49,7 +58,8 @@ typedef void (^VFollowHelperCompletion)(VUser *userActedOn);
  */
 - (void)followUser:(VUser *)user
 withAuthorizedBlock:(void (^)(void))authorizedBlock
-    andCompletion:(VFollowHelperCompletion)completion;
+    andCompletion:(VFollowHelperCompletion)completion
+        fromScreen:(NSString *)screenName;
 
 /**
  * Follows the user passed in after any authorization.
