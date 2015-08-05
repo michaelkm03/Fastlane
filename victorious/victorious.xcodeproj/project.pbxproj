@@ -90,11 +90,6 @@
 		0343AF831A143F550025B9F8 /* AVAsset+OrientationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */; };
 		0343AF841A143FD20025B9F8 /* NSDate+timeSinceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE49323519E338CE00C0912E /* NSDate+timeSinceTests.m */; };
 		03449FE51A0C7EBB0070EC80 /* VSessionTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 03449FE41A0C7EBB0070EC80 /* VSessionTimer.m */; };
-		034527CD1B606F8200E990BB /* VBulkDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F8861B38F76700E8D459 /* VBulkDownloadOperation.m */; };
-		034527CE1B606F8200E990BB /* VDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F88B1B390ADE00E8D459 /* VDownloadOperation.m */; };
-		034527CF1B606F8200E990BB /* VTemplateDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058BE1AEF44D600CF39D1 /* VTemplateDownloadOperation.m */; };
-		034527D01B606F8200E990BB /* VTemplatePackageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F8771B37E52500E8D459 /* VTemplatePackageManager.m */; };
-		034527D11B606F8200E990BB /* VTemplateSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058B91AED7FB600CF39D1 /* VTemplateSerialization.m */; };
 		034527D71B6074F500E990BB /* BasicTemplateDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034527D61B6074F500E990BB /* BasicTemplateDownloader.swift */; };
 		034BCC3F19F5CF5D00114F6C /* MuseoSans-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1859019B42CEA00E27D05 /* MuseoSans-500.otf */; };
 		034D1A6A1AAF5A8B00EB7B2D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 034D1A6C1AAF5A8B00EB7B2D /* Localizable.strings */; };
@@ -117,38 +112,8 @@
 		0366EAE51B67E89C0073A233 /* EndCard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0366EAE71B67E89C0073A233 /* EndCard.storyboard */; };
 		0366EAF91B68714A0073A233 /* VAssetCollectionListViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0366EAFB1B68714A0073A233 /* VAssetCollectionListViewController.storyboard */; };
 		036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AE5EC18FF0C0600A74BDA /* VReachability.m */; };
-		036DE7C01B607A600038A25E /* VEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951161B28AB9A00D9DB0A /* VEnvironment.m */; };
-		036DE7C11B607A610038A25E /* VEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951161B28AB9A00D9DB0A /* VEnvironment.m */; };
-		036DE7C51B6141030038A25E /* VAPIRequestDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7C31B608C100038A25E /* VAPIRequestDecorator.m */; };
-		036DE7C61B6141040038A25E /* VAPIRequestDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7C31B608C100038A25E /* VAPIRequestDecorator.m */; };
-		036DE7D71B62E3430038A25E /* NSString+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A761511B324BFF0016B69D /* NSString+VDataCacheID.m */; };
-		036DE7D81B62E3430038A25E /* NSURL+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A7614C1B3232040016B69D /* NSURL+VDataCacheID.m */; };
-		036DE7D91B62E3430038A25E /* VDataCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A761491B322F830016B69D /* VDataCache.m */; };
-		036DE7DA1B62E3430038A25E /* VEnvironment+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 032F49441B45A424005325CA /* VEnvironment+VDataCacheID.m */; };
-		036DE7DB1B62E3430038A25E /* NSString+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A761511B324BFF0016B69D /* NSString+VDataCacheID.m */; };
-		036DE7DC1B62E3430038A25E /* NSURL+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A7614C1B3232040016B69D /* NSURL+VDataCacheID.m */; };
-		036DE7DD1B62E3430038A25E /* VDataCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A761491B322F830016B69D /* VDataCache.m */; };
-		036DE7DE1B62E3430038A25E /* VEnvironment+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 032F49441B45A424005325CA /* VEnvironment+VDataCacheID.m */; };
-		036DE7E11B62E4A70038A25E /* VBundleWriterDataCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 036DE7DF1B62E4A70038A25E /* VBundleWriterDataCache.h */; };
-		036DE7E21B62E4A70038A25E /* VBundleWriterDataCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7E01B62E4A70038A25E /* VBundleWriterDataCache.m */; };
-		036DE7E31B62E4A70038A25E /* VBundleWriterDataCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7E01B62E4A70038A25E /* VBundleWriterDataCache.m */; };
 		036DE7E51B62E6C20038A25E /* VBundleWriterDataCacheTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7E41B62E6C20038A25E /* VBundleWriterDataCacheTests.m */; };
-		036DE7E81B62F4700038A25E /* libVictoriousCommonOSX.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 034527B01B606F5D00E990BB /* libVictoriousCommonOSX.a */; };
-		036DE7EA1B62F6000038A25E /* VTemplateImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 038C51181B37B3D700A903C2 /* VTemplateImage.m */; };
-		036DE7EB1B62F6000038A25E /* VTemplateImageMacro.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F87E1B37F01700E8D459 /* VTemplateImageMacro.m */; };
-		036DE7EC1B62F6000038A25E /* VTemplateImageSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 038C511B1B37C8F500A903C2 /* VTemplateImageSet.m */; };
-		036DE7ED1B62F6000038A25E /* VTemplateImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 038C51181B37B3D700A903C2 /* VTemplateImage.m */; };
-		036DE7EE1B62F6000038A25E /* VTemplateImageMacro.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F87E1B37F01700E8D459 /* VTemplateImageMacro.m */; };
-		036DE7EF1B62F6000038A25E /* VTemplateImageSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 038C511B1B37C8F500A903C2 /* VTemplateImageSet.m */; };
-		036DE7F11B62F6A10038A25E /* VJSONHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0306F7A51ADDF939009FE3AA /* VJSONHelper.m */; };
-		036DE7F21B62F6A20038A25E /* VJSONHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0306F7A51ADDF939009FE3AA /* VJSONHelper.m */; };
-		036DE7F41B62F7DA0038A25E /* NSCharacterSet+VURLParts.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8B21B572453000B7901 /* NSCharacterSet+VURLParts.m */; };
-		036DE7F51B62F7DA0038A25E /* NSCharacterSet+VURLParts.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8B21B572453000B7901 /* NSCharacterSet+VURLParts.m */; };
-		036DE7F61B62F7EA0038A25E /* VURLMacroReplacement.m in Sources */ = {isa = PBXBuildFile; fileRef = 032954A41A9FF4E000698119 /* VURLMacroReplacement.m */; };
-		036DE7F71B62F7EC0038A25E /* VURLMacroReplacement.m in Sources */ = {isa = PBXBuildFile; fileRef = 032954A41A9FF4E000698119 /* VURLMacroReplacement.m */; };
 		036DE7F91B6306880038A25E /* TemplateDownloadCLI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7F81B6306880038A25E /* TemplateDownloadCLI.swift */; };
-		036DE7FA1B6314800038A25E /* NSString+VCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8C51B572453000B7901 /* NSString+VCrypto.m */; };
-		036DE7FB1B6314810038A25E /* NSString+VCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8C51B572453000B7901 /* NSString+VCrypto.m */; };
 		036E87B21ACB6B3F00E5AAAD /* VContentViewFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 036E87B11ACB6B3F00E5AAAD /* VContentViewFactory.m */; };
 		036F38631A0C4DEA0014DF66 /* Arimo-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38131A0C4DE90014DF66 /* Arimo-Bold.ttf */; };
 		036F38641A0C4DEA0014DF66 /* Arimo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38141A0C4DE90014DF66 /* Arimo-Regular.ttf */; };
@@ -204,6 +169,30 @@
 		036F38961A0C4DEA0014DF66 /* Ubuntu-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F385F1A0C4DEA0014DF66 /* Ubuntu-Regular.ttf */; };
 		036F38971A0C4DEA0014DF66 /* Volkhov-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38611A0C4DEA0014DF66 /* Volkhov-Bold.ttf */; };
 		036F38981A0C4DEA0014DF66 /* Volkhov-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 036F38621A0C4DEA0014DF66 /* Volkhov-Regular.ttf */; };
+		0370FBB81B71B261009047B6 /* VictoriousCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = 0370FBB71B71B261009047B6 /* VictoriousCommon.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0370FBBE1B71B261009047B6 /* VictoriousCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0370FBB31B71B260009047B6 /* VictoriousCommon.framework */; };
+		0370FBCA1B71B261009047B6 /* VictoriousCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0370FBB31B71B260009047B6 /* VictoriousCommon.framework */; };
+		0370FBCB1B71B261009047B6 /* VictoriousCommon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0370FBB31B71B260009047B6 /* VictoriousCommon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0370FBDE1B71B3C4009047B6 /* VExperimentSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A7815E281B701076007797B7 /* VExperimentSettings.m */; };
+		0370FBDF1B71B3C4009047B6 /* NSCharacterSet+VURLParts.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8B21B572453000B7901 /* NSCharacterSet+VURLParts.m */; };
+		0370FBE01B71B3C4009047B6 /* NSString+VCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8C51B572453000B7901 /* NSString+VCrypto.m */; };
+		0370FBE11B71B3C4009047B6 /* NSString+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A761511B324BFF0016B69D /* NSString+VDataCacheID.m */; };
+		0370FBE21B71B3C4009047B6 /* NSURL+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A7614C1B3232040016B69D /* NSURL+VDataCacheID.m */; };
+		0370FBE31B71B3C4009047B6 /* VBundleWriterDataCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7E01B62E4A70038A25E /* VBundleWriterDataCache.m */; };
+		0370FBE41B71B3C4009047B6 /* VDataCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A761491B322F830016B69D /* VDataCache.m */; };
+		0370FBE51B71B3C4009047B6 /* VEnvironment+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 032F49441B45A424005325CA /* VEnvironment+VDataCacheID.m */; };
+		0370FBE61B71B3C4009047B6 /* VTemplateImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 038C51181B37B3D700A903C2 /* VTemplateImage.m */; };
+		0370FBE71B71B3C4009047B6 /* VTemplateImageMacro.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F87E1B37F01700E8D459 /* VTemplateImageMacro.m */; };
+		0370FBE81B71B3C4009047B6 /* VTemplateImageSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 038C511B1B37C8F500A903C2 /* VTemplateImageSet.m */; };
+		0370FBE91B71B3C4009047B6 /* VURLMacroReplacement.m in Sources */ = {isa = PBXBuildFile; fileRef = 032954A41A9FF4E000698119 /* VURLMacroReplacement.m */; };
+		0370FBEA1B71B3C4009047B6 /* VEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951161B28AB9A00D9DB0A /* VEnvironment.m */; };
+		0370FBEB1B71B3C4009047B6 /* VJSONHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0306F7A51ADDF939009FE3AA /* VJSONHelper.m */; };
+		0370FBEC1B71B3C4009047B6 /* VBulkDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F8861B38F76700E8D459 /* VBulkDownloadOperation.m */; };
+		0370FBED1B71B3C4009047B6 /* VDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F88B1B390ADE00E8D459 /* VDownloadOperation.m */; };
+		0370FBEE1B71B3C4009047B6 /* VTemplateDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058BE1AEF44D600CF39D1 /* VTemplateDownloadOperation.m */; };
+		0370FBEF1B71B3C4009047B6 /* VTemplatePackageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F8771B37E52500E8D459 /* VTemplatePackageManager.m */; };
+		0370FBF01B71B3C4009047B6 /* VTemplateSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058B91AED7FB600CF39D1 /* VTemplateSerialization.m */; };
+		0370FBF11B71B3C4009047B6 /* VAPIRequestDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7C31B608C100038A25E /* VAPIRequestDecorator.m */; };
 		0372587519D61B0800836B3F /* VUploadTaskCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0372587419D61B0800836B3F /* VUploadTaskCreator.m */; };
 		037A643019F727AB0001C90B /* VCVideoPlayerToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 037A642F19F727AB0001C90B /* VCVideoPlayerToolbarView.xib */; };
 		037CB73519CFE02C0084BBED /* sampleImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 037CB73419CFE02C0084BBED /* sampleImage.jpg */; };
@@ -240,12 +229,6 @@
 		0390087019F3A01A00FD7EDF /* VNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390086F19F3A01A00FD7EDF /* VNotificationCell.xib */; };
 		0390087419F3A0CF00FD7EDF /* VFullscreenMarqueeStreamItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0390087319F3A0CF00FD7EDF /* VFullscreenMarqueeStreamItemCell.xib */; };
 		0392694F1B5C720400FCD0AA /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0392694E1B5C720400FCD0AA /* main.swift */; };
-		039269781B5C871700FCD0AA /* VBulkDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F8861B38F76700E8D459 /* VBulkDownloadOperation.m */; };
-		039269791B5C871700FCD0AA /* VDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F88B1B390ADE00E8D459 /* VDownloadOperation.m */; };
-		0392697A1B5C871700FCD0AA /* VTemplateDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058BE1AEF44D600CF39D1 /* VTemplateDownloadOperation.m */; };
-		0392697B1B5C871700FCD0AA /* VTemplatePackageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F8771B37E52500E8D459 /* VTemplatePackageManager.m */; };
-		0392697C1B5C871700FCD0AA /* VTemplateSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058B91AED7FB600CF39D1 /* VTemplateSerialization.m */; };
-		0392697F1B5C87DC00FCD0AA /* libVictoriousCommon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0392695A1B5C774400FCD0AA /* libVictoriousCommon.a */; };
 		039269AF1B5F354700FCD0AA /* VCreatePollViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 039269B11B5F354700FCD0AA /* VCreatePollViewController.storyboard */; };
 		039269BC1B5F36F500FCD0AA /* VPublishShareCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 039269BE1B5F36F500FCD0AA /* VPublishShareCollectionViewCell.xib */; };
 		039269C91B5F370F00FCD0AA /* VPublishViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 039269CB1B5F370F00FCD0AA /* VPublishViewController.xib */; };
@@ -320,14 +303,12 @@
 		03FD87D719F96F8700D93BAA /* VContentVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FD87D619F96F8700D93BAA /* VContentVideoCell.xib */; };
 		03FD87D919F96FB700D93BAA /* VDiscoverSuggestedPersonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FD87D819F96FB700D93BAA /* VDiscoverSuggestedPersonCell.xib */; };
 		03FD87E819FAC19300D93BAA /* VLightboxViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FD87E719FAC19300D93BAA /* VLightboxViewController.xib */; };
-		64C7EE1E6B5A2D59F0F93D84 /* libPods-VictoriousCommonOSX.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 693498EEB4388179C36EF74A /* libPods-VictoriousCommonOSX.a */; };
 		6617DB3A19F3EB53008C1FF5 /* VContentPollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6617DB3919F3EB53008C1FF5 /* VContentPollCell.xib */; };
 		669EBBE41A30239100DE317D /* VBasicToolPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 669EBBE01A30239100DE317D /* VBasicToolPickerCell.m */; };
 		669EBBE51A30239100DE317D /* VTickerPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 669EBBE31A30239100DE317D /* VTickerPickerViewController.m */; };
 		66AF79521B60A8E4006DDCD8 /* VVideoCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66AF79511B60A8E4006DDCD8 /* VVideoCameraViewController.m */; };
 		66AF79541B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */; };
 		67C69F591B67ECDF00C59230 /* VContentViewPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 67C69F581B67ECDF00C59230 /* VContentViewPresenter.m */; };
-		8E8C04404B9E03E76E65C052 /* libPods-VictoriousCommon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A713F955EEE0E7D467CAE0E1 /* libPods-VictoriousCommon.a */; };
 		99F4DB51782658B7D034EC2F /* libPods-victorious-test.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7B45F61E6B2831D5E9459C3 /* libPods-victorious-test.a */; };
 		9F95A0FBA78C16AF3EA43793 /* libPods-victorious.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */; };
 		A601FB491B4354D10050536C /* VAbstractImageVideoCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB481B4354D10050536C /* VAbstractImageVideoCreationFlowController.m */; };
@@ -650,8 +631,6 @@
 		A780ED5E1A933D9300A8CD5D /* VPhotoFilterCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A780ED551A933D9300A8CD5D /* VPhotoFilterCollectionViewDataSource.m */; };
 		A780ED5F1A933D9300A8CD5D /* VPhotoFilterSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = A780ED581A933D9300A8CD5D /* VPhotoFilterSerialization.m */; };
 		A7815E1B1B6C5D9F007797B7 /* SettingsButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7815E1A1B6C5D9F007797B7 /* SettingsButtonCell.swift */; };
-		A7815E291B701076007797B7 /* VExperimentSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A7815E281B701076007797B7 /* VExperimentSettings.m */; };
-		A7815E2A1B70124B007797B7 /* VExperimentSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A7815E281B701076007797B7 /* VExperimentSettings.m */; };
 		A7815E2C1B7016C1007797B7 /* VExperimentSettingsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7815E2B1B7016C1007797B7 /* VExperimentSettingsTests.m */; };
 		A78F17731B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78F17711B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift */; };
 		A78F17741B67F3AE009F6B8F /* ExperimentSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78F17721B67F3AE009F6B8F /* ExperimentSettingsViewController.swift */; };
@@ -1184,29 +1163,30 @@
 		F0FC98021B5EB63C0098AFCB /* VAbstractCommentHighlighter.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC98011B5EB63C0098AFCB /* VAbstractCommentHighlighter.m */; };
 		F0FC98141B61AAA10098AFCB /* UIViewController+VAccessoryScreens.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC98131B61AAA10098AFCB /* UIViewController+VAccessoryScreens.m */; };
 		F0FC98221B6298620098AFCB /* VNavigationTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC98211B6298620098AFCB /* VNavigationTitleView.m */; };
+		FD3D31F1386FF6CB56A28558 /* libPods-VictoriousCommon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A713F955EEE0E7D467CAE0E1 /* libPods-VictoriousCommon.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		034527D21B606FC600E990BB /* PBXContainerItemProxy */ = {
+		0370FBBF1B71B261009047B6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 034527AF1B606F5D00E990BB;
-			remoteInfo = VictoriousCommonOSX;
+			remoteGlobalIDString = 0370FBB21B71B260009047B6;
+			remoteInfo = VictoriousCommon;
 		};
-		0366EAE21B66F9E10073A233 /* PBXContainerItemProxy */ = {
+		0370FBC11B71B261009047B6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 0392694B1B5C720400FCD0AA;
-			remoteInfo = downloadtemplate;
+			remoteGlobalIDString = BE171D751868BE64004E5202;
+			remoteInfo = victorious;
 		};
-		039269801B5C87EE00FCD0AA /* PBXContainerItemProxy */ = {
+		0370FBC81B71B261009047B6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 039269591B5C774400FCD0AA;
-			remoteInfo = TemplateLoader;
+			remoteGlobalIDString = 0370FBB21B71B260009047B6;
+			remoteInfo = VictoriousCommon;
 		};
 		BE171D9C1868BE64004E5202 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1218,6 +1198,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		0370FBD21B71B262009047B6 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				0370FBCB1B71B261009047B6 /* VictoriousCommon.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0392694A1B5C720400FCD0AA /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1226,15 +1217,6 @@
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 1;
-		};
-		039269581B5C774400FCD0AA /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "include/$(PRODUCT_NAME)";
-			dstSubfolderSpec = 16;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -1415,7 +1397,6 @@
 		03449FE31A0C7EBB0070EC80 /* VSessionTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSessionTimer.h; sourceTree = "<group>"; };
 		03449FE41A0C7EBB0070EC80 /* VSessionTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSessionTimer.m; sourceTree = "<group>"; };
 		034527A81B606C1F00E990BB /* SwiftBridging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftBridging.h; sourceTree = "<group>"; };
-		034527B01B606F5D00E990BB /* libVictoriousCommonOSX.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libVictoriousCommonOSX.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		034527D61B6074F500E990BB /* BasicTemplateDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicTemplateDownloader.swift; sourceTree = "<group>"; };
 		034D1A541AAF5A8500EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Profile.strings; sourceTree = "<group>"; };
 		034D1A551AAF5A8600EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/VKeyboardInputAccessoryView.strings; sourceTree = "<group>"; };
@@ -1569,6 +1550,11 @@
 		036F385F1A0C4DEA0014DF66 /* Ubuntu-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Ubuntu-Regular.ttf"; sourceTree = "<group>"; };
 		036F38611A0C4DEA0014DF66 /* Volkhov-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Volkhov-Bold.ttf"; sourceTree = "<group>"; };
 		036F38621A0C4DEA0014DF66 /* Volkhov-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Volkhov-Regular.ttf"; sourceTree = "<group>"; };
+		0370FBB31B71B260009047B6 /* VictoriousCommon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = VictoriousCommon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0370FBB61B71B261009047B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0370FBB71B71B261009047B6 /* VictoriousCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VictoriousCommon.h; sourceTree = "<group>"; };
+		0370FBBD1B71B261009047B6 /* VictoriousCommonTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VictoriousCommonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0370FBC51B71B261009047B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Supporting Files/Info.plist"; sourceTree = "<group>"; };
 		0372587319D61B0800836B3F /* VUploadTaskCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUploadTaskCreator.h; sourceTree = "<group>"; };
 		0372587419D61B0800836B3F /* VUploadTaskCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadTaskCreator.m; sourceTree = "<group>"; };
 		037A642F19F727AB0001C90B /* VCVideoPlayerToolbarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VCVideoPlayerToolbarView.xib; sourceTree = "<group>"; };
@@ -1672,7 +1658,6 @@
 		0390087E19F3A4B400FD7EDF /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/settings.strings; sourceTree = "<group>"; };
 		0392694C1B5C720400FCD0AA /* downloadtemplate */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = downloadtemplate; sourceTree = BUILT_PRODUCTS_DIR; };
 		0392694E1B5C720400FCD0AA /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		0392695A1B5C774400FCD0AA /* libVictoriousCommon.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libVictoriousCommon.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		039269821B5C9DD600FCD0AA /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		039269B01B5F354700FCD0AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/VCreatePollViewController.storyboard; sourceTree = "<group>"; };
 		039269B31B5F354A00FCD0AA /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/VCreatePollViewController.strings; sourceTree = "<group>"; };
@@ -3449,11 +3434,19 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		034527AD1B606F5D00E990BB /* Frameworks */ = {
+		0370FBAF1B71B260009047B6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				64C7EE1E6B5A2D59F0F93D84 /* libPods-VictoriousCommonOSX.a in Frameworks */,
+				FD3D31F1386FF6CB56A28558 /* libPods-VictoriousCommon.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0370FBBA1B71B261009047B6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0370FBBE1B71B261009047B6 /* VictoriousCommon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3461,15 +3454,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				036DE7E81B62F4700038A25E /* libVictoriousCommonOSX.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		039269571B5C774400FCD0AA /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8E8C04404B9E03E76E65C052 /* libPods-VictoriousCommon.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3479,7 +3463,6 @@
 			files = (
 				0361058A194154F40069D49E /* SystemConfiguration.framework in Frameworks */,
 				A75A639D1B58858500EC4D53 /* MobileCoreServices.framework in Frameworks */,
-				0392697F1B5C87DC00FCD0AA /* libVictoriousCommon.a in Frameworks */,
 				DBAD6C9C1A2FD67F00AB5A4B /* libTremorVideoAd.a in Frameworks */,
 				A7F8DD631A0B1A8B00F82256 /* WebKit.framework in Frameworks */,
 				DBAD890A19F5BBAD00D678A0 /* CoreLocation.framework in Frameworks */,
@@ -3504,6 +3487,7 @@
 				DBC45CD519F4C4C1003079C4 /* libLiveRail.a in Frameworks */,
 				BE171D7A1868BE64004E5202 /* Foundation.framework in Frameworks */,
 				DBAD88FD19F5B83A00D678A0 /* libOpenXMSDK.a in Frameworks */,
+				0370FBCA1B71B261009047B6 /* VictoriousCommon.framework in Frameworks */,
 				9F95A0FBA78C16AF3EA43793 /* libPods-victorious.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4482,6 +4466,59 @@
 			path = Volkhov;
 			sourceTree = "<group>";
 		};
+		0370FBB41B71B261009047B6 /* VictoriousCommon */ = {
+			isa = PBXGroup;
+			children = (
+				0370FBD91B71B358009047B6 /* Experiment Settings */,
+				036DE7F31B62F7940038A25E /* Categories */,
+				036DE7CA1B62E30B0038A25E /* Data Cache */,
+				036DE7E91B62F5560038A25E /* Dependency Manager */,
+				034527D81B60788B00E990BB /* Environment */,
+				036DE7F01B62F66E0038A25E /* JSON Helper */,
+				0370FBB51B71B261009047B6 /* Supporting Files */,
+				034527A51B604A9100E990BB /* Template Loader */,
+				036DE7C21B608C100038A25E /* VAPIRequestDecorator.h */,
+				036DE7C31B608C100038A25E /* VAPIRequestDecorator.m */,
+				A7815E1E1B6C7337007797B7 /* VictoriousCommon-Bridging-Header.h */,
+				0370FBB71B71B261009047B6 /* VictoriousCommon.h */,
+			);
+			path = VictoriousCommon;
+			sourceTree = "<group>";
+		};
+		0370FBB51B71B261009047B6 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				039269821B5C9DD600FCD0AA /* PrefixHeader.pch */,
+				0370FBB61B71B261009047B6 /* Info.plist */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0370FBC31B71B261009047B6 /* VictoriousCommonTests */ = {
+			isa = PBXGroup;
+			children = (
+				0370FBC41B71B261009047B6 /* Supporting Files */,
+			);
+			path = VictoriousCommonTests;
+			sourceTree = "<group>";
+		};
+		0370FBC41B71B261009047B6 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0370FBC51B71B261009047B6 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0370FBD91B71B358009047B6 /* Experiment Settings */ = {
+			isa = PBXGroup;
+			children = (
+				A7815E271B701076007797B7 /* VExperimentSettings.h */,
+				A7815E281B701076007797B7 /* VExperimentSettings.m */,
+			);
+			path = "Experiment Settings";
+			sourceTree = "<group>";
+		};
 		037CB73919CFE8550084BBED /* Upload */ = {
 			isa = PBXGroup;
 			children = (
@@ -4531,25 +4568,6 @@
 				036DE7F81B6306880038A25E /* TemplateDownloadCLI.swift */,
 			);
 			path = downloadtemplate;
-			sourceTree = "<group>";
-		};
-		0392695B1B5C774400FCD0AA /* VictoriousCommon */ = {
-			isa = PBXGroup;
-			children = (
-				036DE7F31B62F7940038A25E /* Categories */,
-				036DE7CA1B62E30B0038A25E /* Data Cache */,
-				036DE7E91B62F5560038A25E /* Dependency Manager */,
-				034527D81B60788B00E990BB /* Environment */,
-				036DE7F01B62F66E0038A25E /* JSON Helper */,
-				039269821B5C9DD600FCD0AA /* PrefixHeader.pch */,
-				034527A51B604A9100E990BB /* Template Loader */,
-				036DE7C21B608C100038A25E /* VAPIRequestDecorator.h */,
-				036DE7C31B608C100038A25E /* VAPIRequestDecorator.m */,
-				A7815E271B701076007797B7 /* VExperimentSettings.h */,
-				A7815E281B701076007797B7 /* VExperimentSettings.m */,
-				A7815E1E1B6C7337007797B7 /* VictoriousCommon-Bridging-Header.h */,
-			);
-			path = VictoriousCommon;
 			sourceTree = "<group>";
 		};
 		0395575719C142C2005E32FB /* Capture */ = {
@@ -6129,10 +6147,11 @@
 				BE76FBE218E4AA95009E6DD7 /* AppSpecific */,
 				0392694D1B5C720400FCD0AA /* downloadtemplate */,
 				03C1856219B42C9100E27D05 /* Fonts */,
+				0370FBB41B71B261009047B6 /* VictoriousCommon */,
+				0370FBC31B71B261009047B6 /* VictoriousCommonTests */,
 				BE171D781868BE64004E5202 /* Frameworks */,
 				3B85CC77EBE2E15F24627208 /* Pods */,
 				BE171D771868BE64004E5202 /* Products */,
-				0392695B1B5C774400FCD0AA /* VictoriousCommon */,
 				BE171D811868BE64004E5202 /* victorious */,
 				BE171D9E1868BE64004E5202 /* victoriousTests */,
 			);
@@ -6144,8 +6163,8 @@
 				BE171D761868BE64004E5202 /* victorious.app */,
 				BE171D961868BE64004E5202 /* victoriousTests.xctest */,
 				0392694C1B5C720400FCD0AA /* downloadtemplate */,
-				0392695A1B5C774400FCD0AA /* libVictoriousCommon.a */,
-				034527B01B606F5D00E990BB /* libVictoriousCommonOSX.a */,
+				0370FBB31B71B260009047B6 /* VictoriousCommon.framework */,
+				0370FBBD1B71B261009047B6 /* VictoriousCommonTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -7541,35 +7560,55 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		034527AE1B606F5D00E990BB /* Headers */ = {
+		0370FBB01B71B260009047B6 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				036DE7E11B62E4A70038A25E /* VBundleWriterDataCache.h in Headers */,
+				0370FBB81B71B261009047B6 /* VictoriousCommon.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		034527AF1B606F5D00E990BB /* VictoriousCommonOSX */ = {
+		0370FBB21B71B260009047B6 /* VictoriousCommon */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 034527C11B606F5E00E990BB /* Build configuration list for PBXNativeTarget "VictoriousCommonOSX" */;
+			buildConfigurationList = 0370FBCC1B71B262009047B6 /* Build configuration list for PBXNativeTarget "VictoriousCommon" */;
 			buildPhases = (
-				D14E68D568C37DADEDB34E5F /* Check Pods Manifest.lock */,
-				034527AC1B606F5D00E990BB /* Sources */,
-				034527AD1B606F5D00E990BB /* Frameworks */,
-				034527AE1B606F5D00E990BB /* Headers */,
-				76F9AB998987408B2DB1DF5D /* Copy Pods Resources */,
+				336ADB2C290246046015EE7E /* Check Pods Manifest.lock */,
+				0370FBAE1B71B260009047B6 /* Sources */,
+				0370FBAF1B71B260009047B6 /* Frameworks */,
+				0370FBB01B71B260009047B6 /* Headers */,
+				0370FBB11B71B260009047B6 /* Resources */,
+				FFEBCF2C58781DBE47702915 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = VictoriousCommonOSX;
-			productName = VictoriousCommonOSX;
-			productReference = 034527B01B606F5D00E990BB /* libVictoriousCommonOSX.a */;
-			productType = "com.apple.product-type.library.static";
+			name = VictoriousCommon;
+			productName = VictoriousCommon;
+			productReference = 0370FBB31B71B260009047B6 /* VictoriousCommon.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		0370FBBC1B71B261009047B6 /* VictoriousCommonTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0370FBD31B71B262009047B6 /* Build configuration list for PBXNativeTarget "VictoriousCommonTests" */;
+			buildPhases = (
+				0370FBB91B71B261009047B6 /* Sources */,
+				0370FBBA1B71B261009047B6 /* Frameworks */,
+				0370FBBB1B71B261009047B6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0370FBC01B71B261009047B6 /* PBXTargetDependency */,
+				0370FBC21B71B261009047B6 /* PBXTargetDependency */,
+			);
+			name = VictoriousCommonTests;
+			productName = VictoriousCommonTests;
+			productReference = 0370FBBD1B71B261009047B6 /* VictoriousCommonTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		0392694B1B5C720400FCD0AA /* downloadtemplate */ = {
 			isa = PBXNativeTarget;
@@ -7583,31 +7622,11 @@
 			buildRules = (
 			);
 			dependencies = (
-				034527D31B606FC600E990BB /* PBXTargetDependency */,
 			);
 			name = downloadtemplate;
 			productName = downloadtemplate;
 			productReference = 0392694C1B5C720400FCD0AA /* downloadtemplate */;
 			productType = "com.apple.product-type.tool";
-		};
-		039269591B5C774400FCD0AA /* VictoriousCommon */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 0392696B1B5C774500FCD0AA /* Build configuration list for PBXNativeTarget "VictoriousCommon" */;
-			buildPhases = (
-				1069092A95854E0537502A9E /* Check Pods Manifest.lock */,
-				039269561B5C774400FCD0AA /* Sources */,
-				039269571B5C774400FCD0AA /* Frameworks */,
-				039269581B5C774400FCD0AA /* CopyFiles */,
-				0024560DF646B1E0D52B5C33 /* Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = VictoriousCommon;
-			productName = TemplateLoader;
-			productReference = 0392695A1B5C774400FCD0AA /* libVictoriousCommon.a */;
-			productType = "com.apple.product-type.library.static";
 		};
 		BE171D751868BE64004E5202 /* victorious */ = {
 			isa = PBXNativeTarget;
@@ -7624,12 +7643,12 @@
 				03A058CA1AF09C4500CF39D1 /* Download Template */,
 				032948A81970BDA700208FBA /* Crashlytics */,
 				A721E9731B582065000B7901 /* Turn Swift landmarks into warnings */,
+				0370FBD21B71B262009047B6 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				039269811B5C87EE00FCD0AA /* PBXTargetDependency */,
-				0366EAE31B66F9E10073A233 /* PBXTargetDependency */,
+				0370FBC91B71B261009047B6 /* PBXTargetDependency */,
 			);
 			name = victorious;
 			productName = victorious;
@@ -7667,13 +7686,15 @@
 				LastUpgradeCheck = 0640;
 				ORGANIZATIONNAME = Victorious;
 				TargetAttributes = {
-					034527AF1B606F5D00E990BB = {
+					0370FBB21B71B260009047B6 = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = ABHRJGEGKA;
+					};
+					0370FBBC1B71B261009047B6 = {
+						CreatedOnToolsVersion = 6.4;
+						TestTargetID = BE171D751868BE64004E5202;
 					};
 					0392694B1B5C720400FCD0AA = {
-						CreatedOnToolsVersion = 6.4;
-					};
-					039269591B5C774400FCD0AA = {
 						CreatedOnToolsVersion = 6.4;
 					};
 					BE171D751868BE64004E5202 = {
@@ -7713,13 +7734,27 @@
 				BE171D751868BE64004E5202 /* victorious */,
 				BE171D951868BE64004E5202 /* victoriousTests */,
 				0392694B1B5C720400FCD0AA /* downloadtemplate */,
-				039269591B5C774400FCD0AA /* VictoriousCommon */,
-				034527AF1B606F5D00E990BB /* VictoriousCommonOSX */,
+				0370FBB21B71B260009047B6 /* VictoriousCommon */,
+				0370FBBC1B71B261009047B6 /* VictoriousCommonTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		0370FBB11B71B260009047B6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0370FBBB1B71B261009047B6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BE171D741868BE64004E5202 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -7955,21 +7990,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0024560DF646B1E0D52B5C33 /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VictoriousCommon/Pods-VictoriousCommon-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		032948A81970BDA700208FBA /* Crashlytics */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -8045,21 +8065,6 @@
 			shellScript = "if [[ -d \"${LOCAL_APPS_DIR}/Objective-Clean.app\" ]]; then\n\"${LOCAL_APPS_DIR}\"/Objective-Clean.app/Contents/Resources/ObjClean.app/Contents/MacOS/ObjClean \"${SRCROOT}\"?!Pods,!3rd\\ Party\\ SDKs,!ManagedObjectModels,!SCAudioVideoRecorder\nelse\necho \"warning: Please install Objective-Clean to check for style issues in the code!\"\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		1069092A95854E0537502A9E /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
 		22C3ACF4C6878DDD064D31BF /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -8073,6 +8078,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-victorious/Pods-victorious-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		336ADB2C290246046015EE7E /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		3FF8C50618A5A06A00812968 /* Set Build Number */ = {
@@ -8105,21 +8125,6 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		76F9AB998987408B2DB1DF5D /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		A721E9731B582065000B7901 /* Turn Swift landmarks into warnings */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -8147,21 +8152,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "#\n# Searches for unused tracking macros defined in VTrackingConstants.h and emits error if found\n#\n# If you are running tests frequently and this is too slow, set VALIDATE_TRACKING to NO in the User-defined Macros build setting.\n#\n\nif [[ ${VALIDATE_TRACKING} != \"YES\" ]];\nthen\n    exit 0\nfi\n\nFILES=( \"events.csv\" \"keys.csv\" \"values.csv\" )\nPREFIXES=( \"VTrackingEvent\" \"VTrackingKey\" \"VTrackingValue\" )\nBASE_DIR=\"${SRCROOT}/../build-scripts/tracking_csv/\"\n\nfor i in {0..2}\ndo\n    FILE=${FILES[$i]}\n    PREFIX=${PREFIXES[$i]}\n    (cat \"$BASE_DIR$FILE\" ; echo) | while IFS=, read -r COLUMN_1 COLUMN_2\n    do\n        if [[ $COLUMN_1 != *\"//\"* ]] && [ ${#COLUMN_1} != 0 ];\n        then\n            SEARCH_STRING=\"$PREFIX$COLUMN_1\"\n            SEARCH_RESULT=$(find \"${SRCROOT}/victorious\" -name \"*.m\" -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($SEARCH_STRING).*\\$\" | perl -p -e \"s/($SEARCH_STRING)/ \\Tracking constant not    implemented./\")\n            LINE_COUNT=$(echo \"$SEARCH_RESULT\" | wc -l)\n            NUM_USES=$(($LINE_COUNT-1))\n            if [ $NUM_USES == 0 ];\n            then\n                echo $SEARCH_RESULT\n            fi\n        fi\n    done\ndone";
-		};
-		D14E68D568C37DADEDB34E5F /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
 		};
 		E8C387ACF3E64C873179907C /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -8193,33 +8183,55 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		FFEBCF2C58781DBE47702915 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VictoriousCommon/Pods-VictoriousCommon-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		034527AC1B606F5D00E990BB /* Sources */ = {
+		0370FBAE1B71B260009047B6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				034527CE1B606F8200E990BB /* VDownloadOperation.m in Sources */,
-				036DE7ED1B62F6000038A25E /* VTemplateImage.m in Sources */,
-				036DE7EF1B62F6000038A25E /* VTemplateImageSet.m in Sources */,
-				036DE7DD1B62E3430038A25E /* VDataCache.m in Sources */,
-				036DE7DE1B62E3430038A25E /* VEnvironment+VDataCacheID.m in Sources */,
-				036DE7F51B62F7DA0038A25E /* NSCharacterSet+VURLParts.m in Sources */,
-				036DE7C61B6141040038A25E /* VAPIRequestDecorator.m in Sources */,
-				034527D01B606F8200E990BB /* VTemplatePackageManager.m in Sources */,
-				A7815E2A1B70124B007797B7 /* VExperimentSettings.m in Sources */,
-				036DE7C11B607A610038A25E /* VEnvironment.m in Sources */,
-				036DE7F21B62F6A20038A25E /* VJSONHelper.m in Sources */,
-				034527D11B606F8200E990BB /* VTemplateSerialization.m in Sources */,
-				034527CD1B606F8200E990BB /* VBulkDownloadOperation.m in Sources */,
-				036DE7F71B62F7EC0038A25E /* VURLMacroReplacement.m in Sources */,
-				036DE7FB1B6314810038A25E /* NSString+VCrypto.m in Sources */,
-				036DE7EE1B62F6000038A25E /* VTemplateImageMacro.m in Sources */,
-				036DE7DB1B62E3430038A25E /* NSString+VDataCacheID.m in Sources */,
-				036DE7DC1B62E3430038A25E /* NSURL+VDataCacheID.m in Sources */,
-				036DE7E31B62E4A70038A25E /* VBundleWriterDataCache.m in Sources */,
-				034527CF1B606F8200E990BB /* VTemplateDownloadOperation.m in Sources */,
+				0370FBEE1B71B3C4009047B6 /* VTemplateDownloadOperation.m in Sources */,
+				0370FBF11B71B3C4009047B6 /* VAPIRequestDecorator.m in Sources */,
+				0370FBE91B71B3C4009047B6 /* VURLMacroReplacement.m in Sources */,
+				0370FBDE1B71B3C4009047B6 /* VExperimentSettings.m in Sources */,
+				0370FBEF1B71B3C4009047B6 /* VTemplatePackageManager.m in Sources */,
+				0370FBE81B71B3C4009047B6 /* VTemplateImageSet.m in Sources */,
+				0370FBE71B71B3C4009047B6 /* VTemplateImageMacro.m in Sources */,
+				0370FBE01B71B3C4009047B6 /* NSString+VCrypto.m in Sources */,
+				0370FBE21B71B3C4009047B6 /* NSURL+VDataCacheID.m in Sources */,
+				0370FBE41B71B3C4009047B6 /* VDataCache.m in Sources */,
+				0370FBF01B71B3C4009047B6 /* VTemplateSerialization.m in Sources */,
+				0370FBEC1B71B3C4009047B6 /* VBulkDownloadOperation.m in Sources */,
+				0370FBE61B71B3C4009047B6 /* VTemplateImage.m in Sources */,
+				0370FBE11B71B3C4009047B6 /* NSString+VDataCacheID.m in Sources */,
+				0370FBE51B71B3C4009047B6 /* VEnvironment+VDataCacheID.m in Sources */,
+				0370FBEB1B71B3C4009047B6 /* VJSONHelper.m in Sources */,
+				0370FBEA1B71B3C4009047B6 /* VEnvironment.m in Sources */,
+				0370FBE31B71B3C4009047B6 /* VBundleWriterDataCache.m in Sources */,
+				0370FBED1B71B3C4009047B6 /* VDownloadOperation.m in Sources */,
+				0370FBDF1B71B3C4009047B6 /* NSCharacterSet+VURLParts.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0370FBB91B71B261009047B6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8230,33 +8242,6 @@
 				036DE7F91B6306880038A25E /* TemplateDownloadCLI.swift in Sources */,
 				0392694F1B5C720400FCD0AA /* main.swift in Sources */,
 				034527D71B6074F500E990BB /* BasicTemplateDownloader.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		039269561B5C774400FCD0AA /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				039269791B5C871700FCD0AA /* VDownloadOperation.m in Sources */,
-				036DE7EA1B62F6000038A25E /* VTemplateImage.m in Sources */,
-				036DE7EC1B62F6000038A25E /* VTemplateImageSet.m in Sources */,
-				036DE7D91B62E3430038A25E /* VDataCache.m in Sources */,
-				036DE7DA1B62E3430038A25E /* VEnvironment+VDataCacheID.m in Sources */,
-				036DE7F41B62F7DA0038A25E /* NSCharacterSet+VURLParts.m in Sources */,
-				036DE7C51B6141030038A25E /* VAPIRequestDecorator.m in Sources */,
-				039269781B5C871700FCD0AA /* VBulkDownloadOperation.m in Sources */,
-				036DE7C01B607A600038A25E /* VEnvironment.m in Sources */,
-				A7815E291B701076007797B7 /* VExperimentSettings.m in Sources */,
-				036DE7F11B62F6A10038A25E /* VJSONHelper.m in Sources */,
-				0392697A1B5C871700FCD0AA /* VTemplateDownloadOperation.m in Sources */,
-				0392697C1B5C871700FCD0AA /* VTemplateSerialization.m in Sources */,
-				036DE7F61B62F7EA0038A25E /* VURLMacroReplacement.m in Sources */,
-				036DE7FA1B6314800038A25E /* NSString+VCrypto.m in Sources */,
-				036DE7EB1B62F6000038A25E /* VTemplateImageMacro.m in Sources */,
-				036DE7D71B62E3430038A25E /* NSString+VDataCacheID.m in Sources */,
-				036DE7D81B62E3430038A25E /* NSURL+VDataCacheID.m in Sources */,
-				036DE7E21B62E4A70038A25E /* VBundleWriterDataCache.m in Sources */,
-				0392697B1B5C871700FCD0AA /* VTemplatePackageManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9154,20 +9139,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		034527D31B606FC600E990BB /* PBXTargetDependency */ = {
+		0370FBC01B71B261009047B6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 034527AF1B606F5D00E990BB /* VictoriousCommonOSX */;
-			targetProxy = 034527D21B606FC600E990BB /* PBXContainerItemProxy */;
+			target = 0370FBB21B71B260009047B6 /* VictoriousCommon */;
+			targetProxy = 0370FBBF1B71B261009047B6 /* PBXContainerItemProxy */;
 		};
-		0366EAE31B66F9E10073A233 /* PBXTargetDependency */ = {
+		0370FBC21B71B261009047B6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 0392694B1B5C720400FCD0AA /* downloadtemplate */;
-			targetProxy = 0366EAE21B66F9E10073A233 /* PBXContainerItemProxy */;
+			target = BE171D751868BE64004E5202 /* victorious */;
+			targetProxy = 0370FBC11B71B261009047B6 /* PBXContainerItemProxy */;
 		};
-		039269811B5C87EE00FCD0AA /* PBXTargetDependency */ = {
+		0370FBC91B71B261009047B6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 039269591B5C774400FCD0AA /* VictoriousCommon */;
-			targetProxy = 039269801B5C87EE00FCD0AA /* PBXContainerItemProxy */;
+			target = 0370FBB21B71B260009047B6 /* VictoriousCommon */;
+			targetProxy = 0370FBC81B71B261009047B6 /* PBXContainerItemProxy */;
 		};
 		BE171D9D1868BE64004E5202 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -9666,127 +9651,279 @@
 			};
 			name = Release;
 		};
-		034527C21B606F5E00E990BB /* Debug */ = {
+		0370FBCD1B71B262009047B6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 861888B7B5EA1C709A7ABB6B /* Pods-VictoriousCommonOSX.debug.xcconfig */;
+			baseConfigurationReference = CD6337D3797118138953FB8E /* Pods-VictoriousCommon.debug.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_UNREACHABLE_CODE = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				EXECUTABLE_PREFIX = lib;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = VictoriousCommon/PrefixHeader.pch;
+				GCC_PREFIX_HEADER = "VictoriousCommon/Supporting Files/PrefixHeader.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "VictoriousCommon/Supporting Files/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-					"-l\"Pods-VictoriousCommonOSX-IGDigest\"",
-				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
+				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
 		};
-		034527C31B606F5E00E990BB /* QA */ = {
+		0370FBCE1B71B262009047B6 /* QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 79ACFD16A2EFEF8FE18E316E /* Pods-VictoriousCommonOSX.qa.xcconfig */;
+			baseConfigurationReference = CEB3CFB5FC7A8DA2E1CC4E8D /* Pods-VictoriousCommon.qa.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_UNREACHABLE_CODE = YES;
-				COMBINE_HIDPI_IMAGES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				EXECUTABLE_PREFIX = lib;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = VictoriousCommon/PrefixHeader.pch;
+				GCC_PREFIX_HEADER = "VictoriousCommon/Supporting Files/PrefixHeader.pch";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "VictoriousCommon/Supporting Files/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-					"-l\"Pods-VictoriousCommonOSX-IGDigest\"",
-				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
+				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = QA;
 		};
-		034527C41B606F5E00E990BB /* Staging */ = {
+		0370FBCF1B71B262009047B6 /* Staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6346130F32A50A474A9D3D05 /* Pods-VictoriousCommonOSX.staging.xcconfig */;
+			baseConfigurationReference = A0CB9853103CFBEFFF1BF6FF /* Pods-VictoriousCommon.staging.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_UNREACHABLE_CODE = YES;
-				COMBINE_HIDPI_IMAGES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				EXECUTABLE_PREFIX = lib;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = VictoriousCommon/PrefixHeader.pch;
+				GCC_PREFIX_HEADER = "VictoriousCommon/Supporting Files/PrefixHeader.pch";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "VictoriousCommon/Supporting Files/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-					"-l\"Pods-VictoriousCommonOSX-IGDigest\"",
-				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
+				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Staging;
 		};
-		034527C51B606F5E00E990BB /* Stable */ = {
+		0370FBD01B71B262009047B6 /* Stable */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6C14CC0531211B1486085544 /* Pods-VictoriousCommonOSX.stable.xcconfig */;
+			baseConfigurationReference = E50D8B24AC3B063A7A6F4D23 /* Pods-VictoriousCommon.stable.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_UNREACHABLE_CODE = YES;
-				COMBINE_HIDPI_IMAGES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				EXECUTABLE_PREFIX = lib;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = VictoriousCommon/PrefixHeader.pch;
+				GCC_PREFIX_HEADER = "VictoriousCommon/Supporting Files/PrefixHeader.pch";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "VictoriousCommon/Supporting Files/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-					"-l\"Pods-VictoriousCommonOSX-IGDigest\"",
-				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
+				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Stable;
 		};
-		034527C61B606F5E00E990BB /* Release */ = {
+		0370FBD11B71B262009047B6 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 04F19C7363CDE715B04BAB21 /* Pods-VictoriousCommonOSX.release.xcconfig */;
+			baseConfigurationReference = DE20E60A8BE791474B9B24CA /* Pods-VictoriousCommon.release.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_UNREACHABLE_CODE = YES;
-				COMBINE_HIDPI_IMAGES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "VictoriousCommon/Supporting Files/PrefixHeader.pch";
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "VictoriousCommon/Supporting Files/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		0370FBD41B71B262009047B6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				EXECUTABLE_PREFIX = lib;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = VictoriousCommon/PrefixHeader.pch;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = (
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
-					"-ObjC",
-					"-l\"Pods-VictoriousCommonOSX-IGDigest\"",
 				);
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = VictoriousCommonTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
+			};
+			name = Debug;
+		};
+		0370FBD51B71B262009047B6 /* QA */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = VictoriousCommonTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
+			};
+			name = QA;
+		};
+		0370FBD61B71B262009047B6 /* Staging */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = VictoriousCommonTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
+			};
+			name = Staging;
+		};
+		0370FBD71B71B262009047B6 /* Stable */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = VictoriousCommonTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
+			};
+			name = Stable;
+		};
+		0370FBD81B71B262009047B6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = VictoriousCommonTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
 			};
 			name = Release;
 		};
@@ -9885,131 +10022,6 @@
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = downloadtemplate/SwiftBridging.h;
 				USER_HEADER_SEARCH_PATHS = "VictoriousCommon/**";
-			};
-			name = Release;
-		};
-		0392696C1B5C774500FCD0AA /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = CD6337D3797118138953FB8E /* Pods-VictoriousCommon.debug.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = VictoriousCommon/PrefixHeader.pch;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"$(inherited)",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "VictoriousCommon/VictoriousCommon-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-			};
-			name = Debug;
-		};
-		0392696D1B5C774500FCD0AA /* QA */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = CEB3CFB5FC7A8DA2E1CC4E8D /* Pods-VictoriousCommon.qa.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = VictoriousCommon/PrefixHeader.pch;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"$(inherited)",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "VictoriousCommon/VictoriousCommon-Bridging-Header.h";
-			};
-			name = QA;
-		};
-		0392696E1B5C774500FCD0AA /* Staging */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = A0CB9853103CFBEFFF1BF6FF /* Pods-VictoriousCommon.staging.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = VictoriousCommon/PrefixHeader.pch;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"$(inherited)",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "VictoriousCommon/VictoriousCommon-Bridging-Header.h";
-			};
-			name = Staging;
-		};
-		0392696F1B5C774500FCD0AA /* Stable */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = E50D8B24AC3B063A7A6F4D23 /* Pods-VictoriousCommon.stable.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = VictoriousCommon/PrefixHeader.pch;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"$(inherited)",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "VictoriousCommon/VictoriousCommon-Bridging-Header.h";
-			};
-			name = Stable;
-		};
-		039269701B5C774500FCD0AA /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = DE20E60A8BE791474B9B24CA /* Pods-VictoriousCommon.release.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = VictoriousCommon/PrefixHeader.pch;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"$(inherited)",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "VictoriousCommon/VictoriousCommon-Bridging-Header.h";
 			};
 			name = Release;
 		};
@@ -10511,14 +10523,26 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		034527C11B606F5E00E990BB /* Build configuration list for PBXNativeTarget "VictoriousCommonOSX" */ = {
+		0370FBCC1B71B262009047B6 /* Build configuration list for PBXNativeTarget "VictoriousCommon" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				034527C21B606F5E00E990BB /* Debug */,
-				034527C31B606F5E00E990BB /* QA */,
-				034527C41B606F5E00E990BB /* Staging */,
-				034527C51B606F5E00E990BB /* Stable */,
-				034527C61B606F5E00E990BB /* Release */,
+				0370FBCD1B71B262009047B6 /* Debug */,
+				0370FBCE1B71B262009047B6 /* QA */,
+				0370FBCF1B71B262009047B6 /* Staging */,
+				0370FBD01B71B262009047B6 /* Stable */,
+				0370FBD11B71B262009047B6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0370FBD31B71B262009047B6 /* Build configuration list for PBXNativeTarget "VictoriousCommonTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0370FBD41B71B262009047B6 /* Debug */,
+				0370FBD51B71B262009047B6 /* QA */,
+				0370FBD61B71B262009047B6 /* Staging */,
+				0370FBD71B71B262009047B6 /* Stable */,
+				0370FBD81B71B262009047B6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -10531,18 +10555,6 @@
 				039269531B5C720400FCD0AA /* Staging */,
 				039269541B5C720400FCD0AA /* Stable */,
 				039269551B5C720400FCD0AA /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		0392696B1B5C774500FCD0AA /* Build configuration list for PBXNativeTarget "VictoriousCommon" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				0392696C1B5C774500FCD0AA /* Debug */,
-				0392696D1B5C774500FCD0AA /* QA */,
-				0392696E1B5C774500FCD0AA /* Staging */,
-				0392696F1B5C774500FCD0AA /* Stable */,
-				039269701B5C774500FCD0AA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
