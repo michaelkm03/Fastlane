@@ -462,6 +462,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 {
     [super viewWillAppear:animated];
     
+    [self reloadComments];
     [self.dependencyManager trackViewWillAppear:self];
     
     
