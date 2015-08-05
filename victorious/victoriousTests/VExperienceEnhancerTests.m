@@ -208,7 +208,8 @@ static const NSUInteger kExperienceEnhancerCount = 20;
          [exp resetCooldownTimer];
 
          NSInteger startingVotes = exp.voteCount;
-         NSUInteger cooldown = (arc4random() % 5) + 1;
+         // Random cooldown time between 0.1 and 0.5 seconds
+         NSTimeInterval cooldown = ((arc4random() % 5) + 1) * 0.1;
          NSUInteger timeUntilVote = cooldown + 1;
          
          // Set the cooldown time
