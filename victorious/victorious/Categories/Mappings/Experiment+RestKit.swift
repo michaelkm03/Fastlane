@@ -36,7 +36,7 @@ extension Experiment {
                 method: .Any,
                 pathPattern: "/api/device/experiments",
                 keyPath: "payload",
-                statusCodes: RKStatusCodeIndexSetForClass(UInt(RKStatusCodeClassSuccessful))
+                statusCodes: RKStatusCodeIndexSetForClass(.Successful)
             )
         ]
     }

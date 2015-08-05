@@ -37,7 +37,7 @@ extension GIFSearchResult {
                 method: RKRequestMethod.GET,
                 pathPattern: "/api/image/gif_search/:search_term/:page/:perpage",
                 keyPath: "payload",
-                statusCodes: RKStatusCodeIndexSetForClass(UInt(RKStatusCodeClassSuccessful))
+                statusCodes: RKStatusCodeIndexSetForClass(.Successful)
             ),
             
             RKResponseDescriptor(
@@ -45,7 +45,7 @@ extension GIFSearchResult {
                 method: RKRequestMethod.GET,
                 pathPattern: "/api/image/trending_gifs/:page/:perpage",
                 keyPath: "payload",
-                statusCodes: RKStatusCodeIndexSetForClass(UInt(RKStatusCodeClassSuccessful))
+                statusCodes: RKStatusCodeIndexSetForClass(.Successful)
             )
         ]
     }
