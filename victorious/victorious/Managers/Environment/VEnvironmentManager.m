@@ -140,10 +140,4 @@ static NSString * const kPlist = @"plist";
     return bundleEnvironments;
 }
 
-- (NSURL *)documentsDirectoryWithPath:(NSString *)path
-{
-    NSString *documentsDirectory = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] firstObject];
-    return [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:path]];
-}
-
 @end
