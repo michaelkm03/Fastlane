@@ -506,7 +506,6 @@
 		A721E95D1B572454000B7901 /* UIView+MotionEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8FA1B572454000B7901 /* UIView+MotionEffects.m */; };
 		A721E95E1B572454000B7901 /* UIView+RecursiveSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721E8FB1B572454000B7901 /* UIView+RecursiveSearch.swift */; };
 		A721E95F1B572454000B7901 /* UIView+VDynamicsHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8FD1B572454000B7901 /* UIView+VDynamicsHelpers.m */; };
-		A721E9601B572454000B7901 /* UIView+VShadows.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8FF1B572454000B7901 /* UIView+VShadows.m */; };
 		A721E9611B572454000B7901 /* UIView+VViewRendering.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E9011B572454000B7901 /* UIView+VViewRendering.m */; };
 		A721E9621B572454000B7901 /* UIViewController+ForceOrientationChange.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E9031B572454000B7901 /* UIViewController+ForceOrientationChange.m */; };
 		A721E9631B572454000B7901 /* UIViewController+VLayoutInsets.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E9051B572454000B7901 /* UIViewController+VLayoutInsets.m */; };
@@ -2158,8 +2157,6 @@
 		A721E8FB1B572454000B7901 /* UIView+RecursiveSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+RecursiveSearch.swift"; sourceTree = "<group>"; };
 		A721E8FC1B572454000B7901 /* UIView+VDynamicsHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+VDynamicsHelpers.h"; sourceTree = "<group>"; };
 		A721E8FD1B572454000B7901 /* UIView+VDynamicsHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+VDynamicsHelpers.m"; sourceTree = "<group>"; };
-		A721E8FE1B572454000B7901 /* UIView+VShadows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+VShadows.h"; sourceTree = "<group>"; };
-		A721E8FF1B572454000B7901 /* UIView+VShadows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+VShadows.m"; sourceTree = "<group>"; };
 		A721E9001B572454000B7901 /* UIView+VViewRendering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+VViewRendering.h"; sourceTree = "<group>"; };
 		A721E9011B572454000B7901 /* UIView+VViewRendering.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+VViewRendering.m"; sourceTree = "<group>"; };
 		A721E9021B572454000B7901 /* UIViewController+ForceOrientationChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ForceOrientationChange.h"; sourceTree = "<group>"; };
@@ -5186,8 +5183,6 @@
 				A7D7ED501B59BEB900FA346A /* UISearchBar+Extensions.swift */,
 				A721E8FC1B572454000B7901 /* UIView+VDynamicsHelpers.h */,
 				A721E8FD1B572454000B7901 /* UIView+VDynamicsHelpers.m */,
-				A721E8FE1B572454000B7901 /* UIView+VShadows.h */,
-				A721E8FF1B572454000B7901 /* UIView+VShadows.m */,
 				A721E9001B572454000B7901 /* UIView+VViewRendering.h */,
 				A721E9011B572454000B7901 /* UIView+VViewRendering.m */,
 				A721E9021B572454000B7901 /* UIViewController+ForceOrientationChange.h */,
@@ -8865,7 +8860,6 @@
 				A6DAEB541B4C43BA00935EA0 /* VTextWorkspaceFlowController.m in Sources */,
 				F0AD21841AF43EB3001BDCC6 /* VCardDirectoryCellDecorator.m in Sources */,
 				A743E7E71A08173B00339CB3 /* VEmailValidator.m in Sources */,
-				A721E9601B572454000B7901 /* UIView+VShadows.m in Sources */,
 				A75C64B01AE0299900245125 /* VTextPostImageHelper.m in Sources */,
 				DBDD7D5F1A97F4EE0023CBF9 /* VLocationManager.m in Sources */,
 				A7724FE11B32432D00B1BBB3 /* VLikersDataSource.m in Sources */,
