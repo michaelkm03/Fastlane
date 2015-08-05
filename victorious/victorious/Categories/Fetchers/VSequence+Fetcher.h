@@ -23,7 +23,6 @@
 - (BOOL)isWebContent;
 - (BOOL)isPreviewWebContent;
 - (BOOL)isPreviewImageContent;
-- (BOOL)isAnnouncement;
 - (BOOL)isRemixableType;
 - (BOOL)isGIFVideo;
 - (BOOL)isText;

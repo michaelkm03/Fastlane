@@ -10,7 +10,7 @@
 
 NSArray *VOwnerCategories()
 {
-    return @[kVOwnerPollCategory, kVOwnerImageCategory, kVOwnerImageRepostCategory, kVOwnerVideoCategory, kVOwnerVideoRemixCategory, kVOwnerVideoRepostCategory, kVOwnerImageMemeCategory, kVOwnerImageQuoteCategory, kVOwnerMemeRepostCategory, kVOwnerQuoteRepostCategory, kVOwnerAnnouncementCategory];
+    return @[kVOwnerPollCategory, kVOwnerImageCategory, kVOwnerImageRepostCategory, kVOwnerVideoCategory, kVOwnerVideoRemixCategory, kVOwnerVideoRepostCategory, kVOwnerImageMemeCategory, kVOwnerImageQuoteCategory, kVOwnerMemeRepostCategory, kVOwnerQuoteRepostCategory];
 }
 NSArray *VUGCCategories()
 {

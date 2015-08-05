@@ -99,11 +99,6 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
     return false;
 }
 
-- (BOOL)isAnnouncement
-{
-    return [self.category isEqualToString:kVOwnerAnnouncementCategory];
-}
-
 - (BOOL)isPreviewImageContent
 {
     BOOL isImageURL = NO;
