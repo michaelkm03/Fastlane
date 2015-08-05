@@ -323,9 +323,11 @@ static int const kNotificationFetchBatchSize = 50;
     }
     _badgeNumber = badgeNumber;
     
-    id<VBadgeResponder> badgeResponder = [[self nextResponder] targetForAction:@selector(updateBadge)
-                                                                    withSender:nil];
-    [badgeResponder updateBadge];
+    id<VBadgeResponder> badgeResponder = [[self nextResponder] targetForAction:@selector(updateBadge) withSender:nil];
+    if (badgeResponder != nil)
+    {
+        [badgeResponder updateBadge];
+    }
     
     if ( self.badgeNumberUpdateBlock != nil )
     {
