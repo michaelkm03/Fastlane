@@ -23,7 +23,7 @@
     }
     
     NSMutableArray *array = [[NSMutableArray alloc] init];
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"#(\\w+)"
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern: @"#(\\w+[a-zA-Z]\\w+)"
                                                                            options:0
                                                                              error:nil];
     NSArray *tags = [regex matchesInString:fieldText
