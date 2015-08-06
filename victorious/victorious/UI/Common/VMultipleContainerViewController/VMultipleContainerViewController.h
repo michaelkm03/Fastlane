@@ -11,7 +11,7 @@
 #import "VAuthorizationContextProvider.h"
 #import "VInitialViewController.h"
 #import "VTabMenuButtonTap.h"
-
+#import "VBadgeResponder.h"
 /**
  *  Similar to a UITabBarController, except the tab bar
  *  is at the top and isn't necessarily a tab bar.
@@ -19,7 +19,7 @@
  *  Forwards VAuthorizationContextProvider methods to the
  *  currently selected viewController.
  */
-@interface VMultipleContainerViewController : UIViewController <VHasManagedDependencies, VMultipleContainer, VAuthorizationContextProvider, VInitialViewController, VTabMenuButtonTap>
+@interface VMultipleContainerViewController : UIViewController <VHasManagedDependencies, VMultipleContainer, VAuthorizationContextProvider, VInitialViewController, VTabMenuButtonTap, VBadgeResponder>
 
 @property (nonatomic, copy) NSArray /* UIViewController */ *viewControllers; ///< The view controllers to be displayed
 @property (nonatomic, assign) BOOL isInitialViewController;

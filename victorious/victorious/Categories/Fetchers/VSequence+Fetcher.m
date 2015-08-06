@@ -86,24 +86,6 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
     return [textCategories containsObject:self.category];
 }
 
-- (BOOL)isOwnerContent
-{
-    for (NSString *category in VOwnerCategories())
-    {
-        if ([self.category isEqualToString:category])
-        {
-            return true;
-        }
-    }
-    
-    return false;
-}
-
-- (BOOL)isAnnouncement
-{
-    return [self.category isEqualToString:kVOwnerAnnouncementCategory];
-}
-
 - (BOOL)isPreviewImageContent
 {
     BOOL isImageURL = NO;
