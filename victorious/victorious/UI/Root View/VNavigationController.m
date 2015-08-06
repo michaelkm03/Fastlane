@@ -15,6 +15,7 @@
 #import "UIViewController+VLayoutInsets.h"
 #import  "UIColor+VBrightness.h"
 #import "VTabMenuViewController.h"
+#import "VTabMenuButtonTap.h"
 
 #import <objc/runtime.h>
 
@@ -500,7 +501,16 @@ static const CGFloat kStatusBarHeight = 20.0f;
 
 - (void)reselected
 {
-    [self.innerNavigationController popToRootViewControllerAnimated:YES];
+    NSArray *poppedControllers = [self.innerNavigationController popToRootViewControllerAnimated:YES];
+    
+    if ( poppedControllers == nil || [poppedControllers count] == 0 )
+    {
+        id viewController = self.innerNavigationController.viewControllers[0];
+        if ( [viewController conformsToProtocol:@protocol(VTabMenuButtonTap)] )
+        {
+            [((id<VTabMenuButtonTap>)viewController) scrollContentToTop];
+        }
+    }
 }
 
 @end

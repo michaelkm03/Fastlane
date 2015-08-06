@@ -282,4 +282,14 @@
     return self.view;
 }
 
+#pragma mark - VTabMenuButtonTap
+
+- (void)scrollContentToTop
+{
+    if ( [self.childViewController conformsToProtocol:@protocol(VTabMenuButtonTap)] )
+    {
+        [((id<VTabMenuButtonTap>)self.childViewController) scrollContentToTop];
+    }
+}
+
 @end

@@ -376,4 +376,11 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     return [self.dependencyManager stringForKey:VDependencyManagerIDKey];
 }
 
+#pragma mark - VTabMenuButtonTap
+
+- (void)scrollContentToTop
+{
+    [self.collectionView setContentOffset:CGPointZero animated:YES];
+}
+
 @end

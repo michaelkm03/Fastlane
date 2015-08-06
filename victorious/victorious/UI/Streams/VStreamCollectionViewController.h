@@ -14,6 +14,7 @@
 #import "VSequenceActionsDelegate.h"
 #import "VNewContentViewController.h"
 #import "VAccessoryNavigationSource.h"
+#import "VTabMenuButtonTap.h"
 
 extern NSString * const VStreamCollectionViewControllerStreamURLKey; ///< The key that identifies the stream URL path in VDependencyManager
 extern NSString * const VStreamCollectionViewControllerCellComponentKey; ///< A VDependencyManager key for the stream cell component
@@ -22,7 +23,7 @@ const CGFloat VStreamCollectionViewControllerCreateButtonHeight; ///< The height
 
 @class VStreamCollectionViewDataSource;
 
-@interface VStreamCollectionViewController : VAbstractStreamCollectionViewController <UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, VSequenceActionsDelegate, VHasManagedDependencies, VAccessoryNavigationSource>
+@interface VStreamCollectionViewController : VAbstractStreamCollectionViewController <UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, VSequenceActionsDelegate, VHasManagedDependencies, VAccessoryNavigationSource, VTabMenuButtonTap>
 
 @property (nonatomic, weak) id<VSequenceActionsDelegate>actionDelegate;///<Optional param.  If this is not set, the collection view will act as the action delegate for the cells.  Use this if you are embedding this view controller somewhere (i.e. the page view controller)
 @property (nonatomic, strong) UIView *noContentView;///<Sets this view as the background if it cannot fetch items for the current steam.

@@ -594,4 +594,11 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     [self.followingHelper unfollowUser:user withAuthorizedBlock:authorizedBlock andCompletion:completion];
 }
 
+#pragma mark - VTabMenuButtonTap
+
+- (void)scrollContentToTop
+{
+    [self.tableView setContentOffset:CGPointZero animated:YES];
+}
+
 @end

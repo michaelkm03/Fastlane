@@ -11,10 +11,11 @@
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "VDeepLinkHandler.h"
+#import "VTabMenuButtonTap.h"
 
 @class VUser;
 
-@interface VUserProfileViewController : VStreamCollectionViewController <VAccessoryNavigationSource, VProvidesNavigationMenuItemBadge, VDeeplinkSupporter>
+@interface VUserProfileViewController : VStreamCollectionViewController <VAccessoryNavigationSource, VProvidesNavigationMenuItemBadge, VTabMenuButtonTap, VDeeplinkSupporter>
 
 @property (nonatomic, strong) VUser *user;
 
