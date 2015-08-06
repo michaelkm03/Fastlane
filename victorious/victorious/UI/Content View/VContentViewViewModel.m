@@ -835,11 +835,20 @@
 
 - (NSString *)numberOfVotersText
 {
-    if ( self.sequence.permissions.canShowVoteCount )
+    if ( !self.sequence.permissions.canShowVoteCount )
     {
         return nil;
     }
-    return [NSString stringWithFormat:@"%@ %@", [self.largeNumberFormatter stringForInteger:[self totalVotes]], NSLocalizedString(@"Voters", @"")];
+    
+    switch ([self totalVotes])
+    {
+        case 1:
+            return [NSString stringWithFormat:@"%@ %@", [self.largeNumberFormatter stringForInteger:[self totalVotes]], NSLocalizedString(@"Voter", @"")];
+            break;
+        default:
+            return [NSString stringWithFormat:@"%@ %@", [self.largeNumberFormatter stringForInteger:[self totalVotes]], NSLocalizedString(@"Voters", @"")];
+            break;
+    }
 }
 
 @end
