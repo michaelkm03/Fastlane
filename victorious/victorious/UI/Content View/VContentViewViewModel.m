@@ -843,10 +843,10 @@
     switch ([self totalVotes])
     {
         case 1:
-            return [NSString stringWithFormat:@"%@ %@", [self.largeNumberFormatter stringForInteger:[self totalVotes]], NSLocalizedString(@"Voter", @"")];
+            return [NSString stringWithFormat:NSLocalizedString(@"%@ Voter", @""), [self.largeNumberFormatter stringForInteger:[self totalVotes]]];
             break;
         default:
-            return [NSString stringWithFormat:@"%@ %@", [self.largeNumberFormatter stringForInteger:[self totalVotes]], NSLocalizedString(@"Voters", @"")];
+            return [NSString stringWithFormat:NSLocalizedString(@"%@ Voters", @""), [self.largeNumberFormatter stringForInteger:[self totalVotes]]];
             break;
     }
 }
