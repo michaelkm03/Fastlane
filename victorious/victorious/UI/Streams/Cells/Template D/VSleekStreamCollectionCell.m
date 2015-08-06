@@ -32,6 +32,7 @@
 #import "VEditorializationItem.h"
 #import "VStream.h"
 #import "VPreviewViewBackgroundHost.h"
+#import "victorious-Swift.h"
 
 // These values must match the constraint values in interface builder
 static const CGFloat kSleekCellHeaderHeight = 50.0f;
@@ -285,6 +286,9 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     
     NSArray *inStreamComments = [[[self class] cellLayoutCollection] commentsForCacheKey:[[self class] cacheKeyForSequence:sequence]];
     [self.inStreamCommentsController setupWithCommentCellContents:[VInStreamCommentCellContents inStreamCommentsForComments:inStreamComments andDependencyManager:self.dependencyManager] withShowMoreCellVisible:[[self class] inStreamCommentsShouldDisplayShowMoreCellForSequence:sequence]];
+    
+    SoundBarView *view = [[SoundBarView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+    [self addSubview:view];
 }
 
 - (BOOL)needsAspectRatioUpdateForSequence:(VSequence *)sequence
