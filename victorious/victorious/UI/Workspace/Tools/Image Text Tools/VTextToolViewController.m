@@ -10,6 +10,7 @@
 #import "VCapitalizingTextStorage.h"
 
 static const CGFloat kTextRenderingSize = 512.0f;
+static const NSUInteger kCharacterLimit = 60;
 
 @interface VTextToolViewController () <UITextViewDelegate, NSTextStorageDelegate>
 
@@ -156,6 +157,14 @@ shouldChangeTextInRange:(NSRange)range
     if ([text rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]].location != NSNotFound)
     {
         [textView resignFirstResponder];
+        return NO;
+    }
+    if (text.length == 0)
+    {
+        return YES;
+    }
+    if (textView.text.length >= kCharacterLimit)
+    {
         return NO;
     }
     return YES;
