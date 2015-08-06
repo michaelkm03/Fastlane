@@ -59,9 +59,7 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
     // Until then, we do the logic here
     BOOL isMainUserOwnerOfComment = [[VObjectManager sharedManager].mainUser isEqual:self.comment.user];
     
-# warning uncomment this when done
-    // commented out for testing purposes:
-    // if ( !isMainUserOwnerOfComment )
+    if ( !isMainUserOwnerOfComment )
     {
         [mutableButtonConfigs addObject:sharedConfig.replyButtonConfig];
     }
