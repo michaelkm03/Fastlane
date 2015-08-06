@@ -54,7 +54,8 @@
     NSArray *comments = @[ self.comment1, self.comment2 ];
     XCTAssertNoThrow([VInStreamCommentCellContents inStreamCommentsForComments:comments andDependencyManager:self.dependencyManager]);
     
-    XCTAssertThrows([VInStreamCommentCellContents inStreamCommentsForComments:nil andDependencyManager:self.dependencyManager]);
+    XCTAssertNoThrow([VInStreamCommentCellContents inStreamCommentsForComments:nil andDependencyManager:self.dependencyManager]);
+
     XCTAssertThrows([VInStreamCommentCellContents inStreamCommentsForComments:comments andDependencyManager:nil]);
 }
 

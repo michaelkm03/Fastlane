@@ -1394,6 +1394,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [inputAccessoryView stopEditing];
     UIAlertController *alertController = [self.alertHelper alertForConfirmDiscardMediaWithDelete:^
                                           {
+                                              self.publishParameters.mediaToUploadURL = nil;
                                               [inputAccessoryView setSelectedThumbnail:nil];
                                               if (shouldResumeEditing)
                                               {
