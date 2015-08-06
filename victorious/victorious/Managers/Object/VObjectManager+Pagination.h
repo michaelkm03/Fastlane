@@ -93,8 +93,6 @@ extern const NSInteger kTooManyNewMessagesErrorCode;
                                                              failBlock:(VFailBlock)fail;
 - (RKManagedObjectRequestOperation *)markAllNotificationsRead:(VSuccessBlock)success
                                                     failBlock:(VFailBlock)fail;
-- (RKManagedObjectRequestOperation *)markAllConversationsRead:(VSuccessBlock)success
-                                                    failBlock:(VFailBlock)fail;
 - (RKManagedObjectRequestOperation *)notificationsCount:(VSuccessBlock)success
                                               failBlock:(VFailBlock)fail;
 

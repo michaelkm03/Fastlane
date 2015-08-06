@@ -601,12 +601,4 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     return YES;
 }
 
-- (void)markAllConversationsAsRead
-{
-    [[VObjectManager sharedManager] markAllConversationsRead:nil failBlock:^(NSOperation *__nullable operation, NSError *__nullable error)
-    {
-        VLog(@"Failed to mark all notifications as read: %@", [error localizedDescription]);
-    }];
-}
-
 @end

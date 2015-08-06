@@ -205,16 +205,6 @@ static const NSInteger kUserSearchResultLimit = 20;
             failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)markAllConversationsRead:(VSuccessBlock)success
-                                                    failBlock:(VFailBlock)fail
-{
-    return [self POST:@"/api/notification/mark_all_conversations_read"
-               object:nil
-           parameters:@{}
-         successBlock:success
-            failBlock:fail];
-}
-
 #pragma mark - Conversations
 
 - (RKManagedObjectRequestOperation *)loadConversationListWithPageType:(VPageType)pageType
