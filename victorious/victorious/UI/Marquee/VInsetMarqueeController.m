@@ -68,7 +68,7 @@ static CGFloat const kAnimationBounceCoefficient = 0.008;
 {
     CGFloat pageWidth = CGRectGetWidth(self.collectionView.bounds);
     NSUInteger currentPage = ( self.collectionView.contentOffset.x / pageWidth ) + 1;
-    if (currentPage == self.stream.marqueeItems.count)
+    if (currentPage == self.marqueeItems.count)
     {
         currentPage = 0;
     }

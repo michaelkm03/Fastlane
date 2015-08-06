@@ -197,6 +197,8 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     if ([self.delegate respondsToSelector:@selector(loadingViewController:didFinishLoadingWithDependencyManager:)])
     {
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
+        
+        [templateDecorator replaceOccurencesOfString:@"fullscreen.marqueeCell" withString:@"inset.marqueeCell"];
 
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate

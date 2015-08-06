@@ -9,23 +9,26 @@
 #import <UIKit/UIKit.h>
 #import "VMarqueeDataDelegate.h"
 #import "VMarqueeSelectionDelegate.h"
+#import "VMarqueeController.h"
 
 extern NSString * const kMarqueeURLKey;
 
-@class VDependencyManager, VStream, VStreamItem, VTimerManager, VUser, VAbstractMarqueeCollectionViewCell, VAbstractMarqueeStreamItemCell;
+@class VDependencyManager, VStream, VStreamItem, VTimerManager, VUser, VAbstractMarqueeCollectionViewCell, VAbstractMarqueeStreamItemCell, VShelf;
 
 /**
     A controller responsible for managing the content offset of the collection view, updating the collection view when marquee content changes,
         populating the stream item cells in the collection view, and relaying messages to delegates when marquee content changes or the user
         interacts with the marquee
  */
-@interface VAbstractMarqueeController : NSObject <UIScrollViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@interface VAbstractMarqueeController : NSObject <UIScrollViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, VMarqueeController>
 
 @property (nonatomic, weak) id <VMarqueeSelectionDelegate> selectionDelegate; ///< The object that should be notified of selections of marquee content
 @property (nonatomic, weak) id <VMarqueeDataDelegate> dataDelegate; ///< The object that should be notified of changes in marquee content
 
 @property (nonatomic, strong) UICollectionView *collectionView; ///< The colletion view used to display the streamItems
 @property (nonatomic, strong) VStream *stream; ///< The Marquee Stream
+@property (nonatomic, strong) VShelf *shelf; ///< The Marquee Shelf
+@property (nonatomic, readonly) NSArray *marqueeItems;
 @property (nonatomic, readonly) VTimerManager *autoScrollTimerManager; ///< The timer in control of auto scroll
 @property (nonatomic, assign) BOOL shouldTrackMarqueeCellViews; ///< Whether or not cell_view tracking events are sent for marquee items
 
@@ -42,12 +45,6 @@ extern NSString * const kMarqueeURLKey;
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;
-
-/**
-    Sends -registerClass:forCellWithReuseIdentifier: and -registerNib:forCellWithReuseIdentifier:
-        messages to the collection view. Should be called as soon as the collection view is initialized.
- */
-- (void)registerStreamItemCellsWithCollectionView:(UICollectionView *)collectionView forMarqueeItems:(NSArray *)marqueeItems;
 
 /**
     Invalidates the auto-scrolling timer
@@ -88,32 +85,5 @@ extern NSString * const kMarqueeURLKey;
  Sends visibility tracking events for current visible marquee cell
  */
 - (void)updateCellVisibilityTracking;
-
-#pragma mark - Abstract methods
-
-/**
-    Overridden by subclasses to provide a fully configured marquee cell for use in the provided collectionView.
-    This should use the same reuse identifier
- */
-- (VAbstractMarqueeCollectionViewCell *)marqueeCellForCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath;
-
-/**
-    Overridden by subclasses to surface the desired size for the collection view that this marquee controller manages.
-        In most instances, subclasses should just return the desired size of their
-        associated VAbstractMarqueeCollectionViewCell subclass
- 
-    @return A CGSize corresponding to the desired size of the collection view that this marquee controller manages
- */
-- (CGSize)desiredSizeWithCollectionViewBounds:(CGRect)bounds;
-
-/**
-    Overridden by subclasses to register the proper VAbstractMarqueeCollectionViewCell subclass with the provided collectionView.
- */
-- (void)registerCollectionViewCellWithCollectionView:(UICollectionView *)collectionView;
-
-/**
-    Overridden by subclasses to provide an appropriate subclass of VAbstractMarqueeStreamItemCell whose reuse will be managed by this class.
- */
-+ (Class)marqueeStreamItemCellClass;
 
 @end

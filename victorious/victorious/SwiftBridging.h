@@ -68,3 +68,11 @@
 #import "VButton.h"
 #import "VHasManagedDependencies.h"
 #import "VSessionTimer.h"
+
+//Shelves
+#import "VStreamCellFactory.h"
+#import "VSleekStreamCellFactory.h"
+#import "VMarqueeController.h"
+#import "VAbstractMarqueeController.h"
+#import "VAbstractMarqueeCollectionViewCell.h"
+#import "VShelf.h"
