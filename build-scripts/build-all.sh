@@ -80,11 +80,11 @@ build(){
     if [ "$MACROS_COMMAND" == "" ]; then
         xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
                    -archivePath "../victorious.xcarchive" PROVISIONING_PROFILE="$DEFAULT_PROVISIONING_PROFILE_UUID" \
-                   CODE_SIGN_IDENTITY="$DEFAULT_CODESIGN_ID" $PREFIX_COMMAND archive
+                   CODE_SIGN_IDENTITY="$DEFAULT_CODESIGN_ID" DownloadTemplate=no $PREFIX_COMMAND archive
     else
         xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
                    -archivePath "../victorious.xcarchive" PROVISIONING_PROFILE="$DEFAULT_PROVISIONING_PROFILE_UUID" \
-                   CODE_SIGN_IDENTITY="$DEFAULT_CODESIGN_ID" $PREFIX_COMMAND "$MACROS_COMMAND" archive
+                   CODE_SIGN_IDENTITY="$DEFAULT_CODESIGN_ID" DownloadTemplate=no $PREFIX_COMMAND "$MACROS_COMMAND" archive
     fi
     BUILDRESULT=$?
     if [ $BUILDRESULT == 0 ]; then
@@ -128,6 +128,8 @@ fi
 ### Package the individual apps
 
 applyConfiguration(){
+    echo "Configuring for $1"
+
     ./build-scripts/apply-config.sh "$1" -a victorious.xcarchive $CONFIGURATION
     if [ $? != 0 ]; then
         echo "Error applying configuration for $1"
@@ -206,12 +208,9 @@ fi
 
 for FOLDER in $CONFIG_FOLDERS
 do
-    DEFAULT_APP_ID=$(./build-scripts/get-app-id.sh $FOLDER $CONFIGURATION)
-    if [ "$DEFAULT_APP_ID" != "0" -a "$DEFAULT_APP_ID" != "" ]; then # don't build apps with empty app ID or 0
-        applyConfiguration $FOLDER
-        if [ $? == 0 ]; then
-            ANY_APP_BUILT=1
-        fi
+    applyConfiguration $FOLDER
+    if [ $? == 0 ]; then
+        ANY_APP_BUILT=1
     fi
 done
 
