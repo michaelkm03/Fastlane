@@ -12,7 +12,8 @@ typedef NS_ENUM( NSUInteger, VCommentCellUtilityType )
 {
     VCommentCellUtilityTypeEdit,
     VCommentCellUtilityTypeDelete,
-    VCommentCellUtilityTypeFlag
+    VCommentCellUtilityTypeFlag, 
+    VCommentCellUtilityTypeReply
 };
 
 @interface VUtilityButtonConfig : NSObject
@@ -37,5 +38,6 @@ typedef NS_ENUM( NSUInteger, VCommentCellUtilityType )
 @property (nonatomic, strong) VUtilityButtonConfig *editButtonConfig;
 @property (nonatomic, strong) VUtilityButtonConfig *deleteButtonConfig;
 @property (nonatomic, strong) VUtilityButtonConfig *flagButtonConfig;
+@property (nonatomic, strong) VUtilityButtonConfig *replyButtonConfig;
 
 @end

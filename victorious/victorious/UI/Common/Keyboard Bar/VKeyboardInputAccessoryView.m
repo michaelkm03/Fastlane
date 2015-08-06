@@ -36,7 +36,6 @@ static const CGFloat kAttachmentBarHeight = 50.0f;
 // Views
 @property (nonatomic, strong) IBOutlet UIButton *attachmentsButton;
 @property (nonatomic, strong) IBOutlet UIButton *sendButton;
-@property (nonatomic, strong) UITextView *editingTextView;
 @property (nonatomic, strong) IBOutlet UIView *editingTextSuperview;
 @property (nonatomic, strong) IBOutlet UILabel *placeholderLabel;
 @property (nonatomic, strong) IBOutlet UIButton *imageButton;
@@ -247,6 +246,12 @@ static const CGFloat kAttachmentBarHeight = 50.0f;
     [self textViewDidChange:self.editingTextView];
 }
 
+- (void)setReplyRecipient:(VUser *)user
+{
+    [self.textStorage repliedToUser:user];
+    self.placeholderLabel.hidden = (self.textStorage.textView.text.length == 0) ? NO : YES;
+}
+
 #pragma mark - IBActions
 
 - (IBAction)tappedImage:(id)sender
@@ -309,6 +314,29 @@ static const CGFloat kAttachmentBarHeight = 50.0f;
 - (NSInteger)characterLimit
 {
     return kCharacterLimit;
+}
+
+- (BOOL)textView:(UITextView *)textView
+shouldChangeTextInRange:(NSRange)range
+ replacementText:(NSString *)text
+{
+    if (self.textStorage.textView.returnKeyType == UIReturnKeyDefault)
+    {
+        return YES;
+    }
+    
+    if ([text rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]].location != NSNotFound)
+    {
+        if ([self.delegate respondsToSelector:@selector(pressedAlternateReturnKeyonKeyboardInputAccessoryView:)])
+        {
+            [self.delegate pressedAlternateReturnKeyonKeyboardInputAccessoryView:self];
+        }
+        
+        [self.editingTextView resignFirstResponder];
+        return NO;
+    }
+    [textView.text stringByReplacingCharactersInRange:range withString:text];
+    return textView.text.length <= (NSUInteger)self.characterLimit;
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView
