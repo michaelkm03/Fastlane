@@ -14,7 +14,7 @@
 @interface VNumericalBadgeView ()
 
 @property (nonatomic, weak) UILabel *label;
-@property (nonatomic, weak) VBadgeBackgroundView *backgroundView;
+@property (nonatomic, strong) VBadgeBackgroundView *backgroundView;
 
 @end
 
@@ -52,11 +52,10 @@ static UIEdgeInsets const kMargin = { 2.0f, 4.0f, 2.0f, 4.0f }; //<this determin
 {
     super.backgroundColor = [UIColor clearColor];
     
-    VBadgeBackgroundView *backgroundView = [[VBadgeBackgroundView alloc] init];
-    backgroundView.color = self.defaultBadgeColor;
-    backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:backgroundView];
-    _backgroundView = backgroundView;
+    self.backgroundView = [[VBadgeBackgroundView alloc] init];
+    self.backgroundView.color = self.defaultBadgeColor;
+    self.backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:self.backgroundView];
     
     UILabel *label = [[UILabel alloc] init];
     label.textAlignment = NSTextAlignmentCenter;
@@ -64,28 +63,28 @@ static UIEdgeInsets const kMargin = { 2.0f, 4.0f, 2.0f, 4.0f }; //<this determin
     [self addSubview:label];
     _label = label;
 
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:backgroundView
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.backgroundView
                                                      attribute:NSLayoutAttributeWidth
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:label
                                                      attribute:NSLayoutAttributeWidth
                                                     multiplier:1.0f
                                                       constant:0.0f]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:backgroundView
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.backgroundView
                                                      attribute:NSLayoutAttributeHeight
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:label
                                                      attribute:NSLayoutAttributeHeight
                                                     multiplier:1.0f
                                                       constant:0.0f]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:backgroundView
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.backgroundView
                                                      attribute:NSLayoutAttributeCenterX
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:label
                                                      attribute:NSLayoutAttributeCenterX
                                                     multiplier:1.0f
                                                       constant:0.0f]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:backgroundView
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.backgroundView
                                                      attribute:NSLayoutAttributeCenterY
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:label
@@ -145,13 +144,14 @@ static UIEdgeInsets const kMargin = { 2.0f, 4.0f, 2.0f, 4.0f }; //<this determin
     {
         return;
     }
+ 
+    self.hidden = (badgeNumber == 0);
+
     _badgeNumber = badgeNumber;
-    
     self.label.text = badgeNumber == 0 ? @"" : [VBadgeStringFormatter formattedBadgeStringForBadgeNumber:badgeNumber];
     CGRect newFrame = self.label.frame;
     newFrame.size = [self intrinsicContentSize];
     self.label.frame = newFrame;
-    
     [self invalidateIntrinsicContentSize];
 }
 
