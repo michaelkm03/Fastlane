@@ -100,7 +100,7 @@ static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
-@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VMarqueeSelectionDelegate, VMarqueeDataDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer>
+@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VMarqueeSelectionDelegate, VMarqueeDataDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -218,6 +218,12 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     self.sequenceActionController.dependencyManager = self.dependencyManager;
     
     self.streamCellFactory = [self.dependencyManager templateValueConformingToProtocol:@protocol(VStreamCellFactory) forKey:VStreamCollectionViewControllerCellComponentKey];
+    
+    if ( [self.streamCellFactory isKindOfClass:[VStreamContentCellFactory class]] )
+    {
+        VStreamContentCellFactory *factory = (VStreamContentCellFactory *)self.streamCellFactory;
+        factory.delegate = self;
+    }
 
     if ([self.streamCellFactory respondsToSelector:@selector(registerCellsWithCollectionView:withStreamItems:)])
     {
@@ -399,10 +405,23 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     }
     
     // Set the size of the marquee on our navigation scroll delegate so it wont hide until we scroll past the marquee
-    if (self.streamDataSource.hasHeaderCell)
+    BOOL hasMarqueeShelfAtTop = NO;
+    NSArray *streamItems = [self.streamDataSource.stream.streamItems array];
+    if ( streamItems.count > 0 )
+    {
+        VStreamItem *streamItem = [streamItems firstObject];
+        hasMarqueeShelfAtTop = [streamItem normalizedItemType] == VItemTypeShelf && [streamItem normalizedItemSubType] == VItemSubTypeMarquee;
+    }
+    
+    if (self.streamDataSource.hasHeaderCell || hasMarqueeShelfAtTop)
     {
         CGSize marqueeSize = [self.marqueeCellController desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
-        self.navigationControllerScrollDelegate.catchOffset = marqueeSize.height;
+        CGFloat offset = marqueeSize.height;
+        if ( hasMarqueeShelfAtTop )
+        {
+            offset += [self.streamCellFactory minimumLineSpacing];
+        }
+        self.navigationControllerScrollDelegate.catchOffset = offset;
     }
     else
     {

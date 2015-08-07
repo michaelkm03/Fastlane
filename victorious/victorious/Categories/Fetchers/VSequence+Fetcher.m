@@ -20,6 +20,7 @@
 #import "VImageAsset+Fetcher.h"
 #import "VImageAssetFinder.h"
 #import "VComment.h"
+#import "victorious-Swift.h"
 
 static const CGFloat kMinimumAspectRatio = 0.5f;
 static const CGFloat kMaximumAspectRatio = 2.0f;
@@ -54,7 +55,7 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
         }
     }
     
-    return NO;
+    return self.normalizedItemSubType == VItemSubTypeImage;
 }
 
 - (BOOL)isVideo
@@ -63,11 +64,11 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
     {
         if ([self.category isEqualToString:videoCategory])
         {
-            return true;
+            return YES;
         }
     }
     
-    return false;
+    return self.normalizedItemSubType == VItemSubTypeVideo;
 }
 
 - (BOOL)isGIFVideo

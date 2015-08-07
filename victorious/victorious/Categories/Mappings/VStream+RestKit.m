@@ -14,6 +14,8 @@
 
 #import "VEditorializationItem.h"
 
+#import "victorious-Swift.h"
+
 @implementation VStream (RestKit)
 
 + (NSString *)entityName
@@ -32,8 +34,8 @@
              @"preview_image"       :   VSelectorName(previewImagesObject),
              @"ugc_post_allowed"    :   VSelectorName(isUserPostAllowed),
              @"count"               :   VSelectorName(count),
-             @"type"                :   VSelectorName(streamType),
-             @"subType"             :   VSelectorName(subType),
+             @"type"                :   VSelectorName(itemType),
+             @"subtype"             :   VSelectorName(itemSubType),
              };
 }
 
@@ -136,17 +138,22 @@
 
 + (RKEntityMapping *)feedPayloadMapping
 {
+    return [self feedPayloadMappingAtChildLevel:NO];
+}
+
++ (RKEntityMapping *)feedPayloadMappingAtChildLevel:(BOOL)child
+{
     RKEntityMapping *mapping = [VStream mappingBase];
     
     RKRelationshipMapping *contentMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"items"
                                                                                         toKeyPath:VSelectorName(streamItems)
-                                                                                      withMapping:[self feedItemsByStreamMapping]];
+                                                                                      withMapping:[self feedItemsByStreamMappingAtChildLevel:child]];
     [mapping addPropertyMapping:contentMapping];
     
     return mapping;
 }
 
-+ (RKDynamicMapping *)feedItemsByStreamMapping
++ (RKDynamicMapping *)feedItemsByStreamMappingAtChildLevel:(BOOL)child
 {
     RKDynamicMapping *contentMapping = [RKDynamicMapping new];
     
@@ -156,18 +163,36 @@
         if ( [representation isKindOfClass:[NSDictionary class]] )
         {
             NSDictionary *dictionaryRepresentation = (NSDictionary *)representation;
-            NSString *type = [dictionaryRepresentation objectForKey:@"type"];
-            if ( [type isEqualToString:@"stream"] )
+            VItemType itemType = [VStreamItem normalizedItemType:[dictionaryRepresentation objectForKey:@"type"]];
+            switch (itemType)
             {
-                mapping = [self entityMapping];
-            }
-            else if ( [type isEqualToString:@"sequence"] )
-            {
-                mapping = [VSequence entityMapping];
-            }
-            else if ( [type isEqualToString:@"shelf"] )
-            {
-                mapping = [VShelf mappingForStreamSubType:[dictionaryRepresentation objectForKey:@"subtype"]];
+                case VItemTypeStream:
+                {
+                    if ( child )
+                    {
+                        mapping = [self childStreamMapping];
+                    }
+                    else
+                    {
+                        mapping = [self feedPayloadMappingAtChildLevel:NO];
+                    }
+                    break;
+                }
+                    
+                case VItemTypeSequence:
+                {
+                    mapping = [VSequence entityMapping];
+                    break;
+                }
+                    
+                case VItemTypeShelf:
+                {
+                    mapping = [VShelf mappingForStreamSubType:[dictionaryRepresentation objectForKey:@"subtype"]];
+                    break;
+                }
+                    
+                default:
+                    break;
             }
         }
         

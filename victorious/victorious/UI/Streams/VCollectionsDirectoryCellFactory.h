@@ -12,6 +12,6 @@
 /**
     This factory provides sizing and collection view registration for VCollectionsDirectoryCells.
  */
-@interface VCollectionsDirectoryCellFactory : NSObject <VDirectoryCellFactory>
+@interface VCollectionsDirectoryCellFactory : NSObject <VDirectoryCellFactory, VDirectoryCellFactoryUpdatable>
 
 @end

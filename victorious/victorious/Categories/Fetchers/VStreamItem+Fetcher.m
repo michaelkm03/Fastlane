@@ -8,6 +8,7 @@
 
 #import "VStreamItem+Fetcher.h"
 #import "VEditorializationItem+Restkit.h"
+#import "victorious-Swift.h"
 
 static NSString * const kVStreamContentTypeContent = @"content";
 static NSString * const kVStreamContentTypeStream = @"stream";
@@ -16,16 +17,28 @@ static NSString * const kVStreamContentTypeStream = @"stream";
 
 - (BOOL)isContent
 {
+    if ( self.itemType != nil )
+    {
+        return self.normalizedItemType == VItemTypeSequence;
+    }
     return self.streamContentType == nil;
 }
 
 - (BOOL)isSingleStream
 {
+    if ( self.itemType != nil )
+    {
+        return self.normalizedItemSubType == VItemSubTypeContent;
+    }
     return [self.streamContentType isEqualToString:kVStreamContentTypeContent];
 }
 
 - (BOOL)isStreamOfStreams
 {
+    if ( self.itemType != nil )
+    {
+        return self.normalizedItemSubType == VItemSubTypeStream;
+    }
     return [self.streamContentType isEqualToString:kVStreamContentTypeStream];
 }
 

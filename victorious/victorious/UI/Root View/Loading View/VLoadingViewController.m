@@ -198,7 +198,8 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     {
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
         
-        [templateDecorator replaceOccurencesOfString:@"fullscreen.marqueeCell" withString:@"inset.marqueeCell"];
+        [templateDecorator replaceOccurencesOfString:@"inset.marqueeCell" withString:@"blurred.marqueeCell"];
+        [templateDecorator replaceOccurencesOfString:@"showcase.directoryCell" withString:@"collections.directoryCell"];
 
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate

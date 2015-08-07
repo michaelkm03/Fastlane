@@ -212,7 +212,7 @@
         <relationship name="interaction" maxCount="1" deletionRule="Nullify" destinationEntity="Interaction" inverseName="rules" inverseEntity="Interaction" syncable="YES"/>
     </entity>
     <entity name="Sequence" representedClassName="VSequence" parentEntity="StreamItem" syncable="YES">
-        <attribute name="category" attributeType="String" syncable="YES"/>
+        <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="commentCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="createdBy" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="expiresAt" optional="YES" attributeType="Date" syncable="YES"/>
@@ -267,13 +267,13 @@
     </entity>
     <entity name="StreamItem" representedClassName="VStreamItem" isAbstract="YES" syncable="YES">
         <attribute name="headline" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="itemSubType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="itemType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="previewImagesObject" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="remoteId" optional="YES" attributeType="String" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="streamContentType" optional="YES" attributeType="String" regularExpressionString="(content|stream)?" syncable="YES"/>
         <attribute name="streamId" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="streamType" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="subType" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="editorializations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="EditorializationItem" inverseName="streamItem" inverseEntity="EditorializationItem" syncable="YES"/>
         <relationship name="marquees" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Stream" inverseName="marqueeItems" inverseEntity="Stream" syncable="YES"/>
         <relationship name="streams" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Stream" inverseName="streamItems" inverseEntity="Stream" syncable="YES"/>

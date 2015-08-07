@@ -306,6 +306,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 - (void)setCollectionView:(UICollectionView *)collectionView
 {
     _collectionView = collectionView;
+    [self.registeredReuseIdentifiers removeAllObjects];
     NSArray *marqueeItems = self.marqueeItems;
     [self registerStreamItemCellsWithCollectionView:collectionView forMarqueeItems:marqueeItems];
     collectionView.delegate = self;

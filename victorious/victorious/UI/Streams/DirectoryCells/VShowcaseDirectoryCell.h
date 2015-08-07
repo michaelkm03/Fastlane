@@ -22,8 +22,8 @@
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 /**
- *  The VStream used to populate fields on the cell.
+ *  The VStreamItem used to populate fields on the cell.
  */
-@property (nonatomic, strong) VStream *stream;
+@property (nonatomic, strong) VStreamItem *streamItem;
 
 @end

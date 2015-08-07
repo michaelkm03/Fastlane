@@ -10,10 +10,10 @@ import UIKit
 
 class VMarqueeCellFactory: NSObject, VStreamCellFactory, VHasManagedDependencies {
     
-    private let marqueeController : VMarqueeController?
+    let marqueeController : VMarqueeController?
 
     required init(dependencyManager: VDependencyManager) {
-        let templateValue: AnyObject! = dependencyManager.templateValueOfType(VAbstractMarqueeController.self, forKey: "marqueeCell")
+        let templateValue: AnyObject! = dependencyManager.templateValueConformingToProtocol(VMarqueeController.self, forKey: "marqueeCell")
         if let marquee = templateValue as? VMarqueeController {
             marqueeController = marquee
         }

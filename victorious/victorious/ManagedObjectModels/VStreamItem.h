@@ -2,16 +2,16 @@
 //  VStreamItem.h
 //  victorious
 //
-//  Created by Sharif Ahmed on 8/5/15.
+//  Created by Sharif Ahmed on 8/6/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-NS_ASSUME_NONNULL_BEGIN
-
 @class VEditorializationItem, VStream;
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface VStreamItem : NSManagedObject
 
@@ -21,8 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain) NSString * remoteId;
 @property (nonatomic, retain) NSString * __nullable streamContentType;
 @property (nonatomic, retain) NSString * __nullable streamId;
-@property (nonatomic, retain) NSString * __nullable subType;
-@property (nonatomic, retain) NSString * __nullable streamType;
+@property (nonatomic, retain) NSString * __nullable itemType;
+@property (nonatomic, retain) NSString * __nullable itemSubType;
 @property (nonatomic, retain) NSSet * __nullable editorializations;
 @property (nonatomic, retain) NSSet * __nullable marquees;
 @property (nonatomic, retain) NSSet * __nullable streams;

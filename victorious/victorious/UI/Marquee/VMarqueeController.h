@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "VHasManagedDependencies.h"
+#import "VMarqueeSelectionDelegate.h"
+#import "VMarqueeDataDelegate.h"
 
 @class VAbstractMarqueeCollectionViewCell, VShelf;
 
@@ -45,5 +47,9 @@
 - (void)registerStreamItemCellsWithCollectionView:(UICollectionView *)collectionView forMarqueeItems:(NSArray *)marqueeItems;
 
 - (void)setShelf:(VShelf *)shelf;
+
+- (void)setSelectionDelegate:(id <VMarqueeSelectionDelegate>)selectionDelegate;
+
+- (void)setDataDelegate:(id <VMarqueeDataDelegate>)dataDelegate;
 
 @end

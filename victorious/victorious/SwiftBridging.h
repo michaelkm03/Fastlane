@@ -76,3 +76,6 @@
 #import "VAbstractMarqueeController.h"
 #import "VAbstractMarqueeCollectionViewCell.h"
 #import "VShelf.h"
+#import "VStreamContentCellFactoryDelegate.h"
+#import "VDirectoryCellFactory.h"
+#import "VDirectoryCollectionFlowLayout.h"

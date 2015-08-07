@@ -62,7 +62,7 @@ static CGFloat const kDirectoryInset = 10.0f;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath
-{
+{    
     if ( streamItem == nil )
     {
         //Return the "see more" cell

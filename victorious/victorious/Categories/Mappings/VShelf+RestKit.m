@@ -9,6 +9,7 @@
 #import "VShelf+RestKit.h"
 #import "VStream+RestKit.h"
 #import "VSequence+RestKit.h"
+#import "victorious-Swift.h"
 
 @implementation VShelf (RestKit)
 
@@ -21,8 +22,8 @@
 {
     return @{
              @"id"      :   VSelectorName(remoteId),
-             @"type"    :   VSelectorName(streamType),
-             @"subtype" :   VSelectorName(subType),
+             @"type"    :   VSelectorName(itemType),
+             @"subtype" :   VSelectorName(itemSubType),
              };
 }
 
@@ -54,9 +55,15 @@
 + (RKObjectMapping *)mappingForStreamSubType:(NSString *)subType
 {
     RKObjectMapping *mapping = nil;
-    if ( [subType isEqualToString:@"marquee"] )
+    VItemSubType normalizedSubType = [VStreamItem normalizedItemSubType:subType];
+    switch (normalizedSubType)
     {
-        mapping = [self marqueeShelfMapping];
+        case VItemSubTypeMarquee:
+            mapping = [self marqueeShelfMapping];
+            break;
+            
+        default:
+            break;
     }
     return mapping;
 }
