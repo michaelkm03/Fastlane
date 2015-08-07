@@ -424,7 +424,7 @@ static NSString * const kInitialKey = @"initial";
 
 - (void)scrollContentToTop
 {
-    id childViewController = [self children][_selectedIndex];
+    id childViewController = [self children][self.selectedIndex];
     if ( [childViewController conformsToProtocol:@protocol(VTabMenuButtonTap)] )
     {
         [((id<VTabMenuButtonTap>)childViewController) scrollContentToTop];

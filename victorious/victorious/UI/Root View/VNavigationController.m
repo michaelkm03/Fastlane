@@ -505,7 +505,7 @@ static const CGFloat kStatusBarHeight = 20.0f;
     
     if ( poppedControllers == nil || [poppedControllers count] == 0 )
     {
-        id viewController = self.innerNavigationController.viewControllers[0];
+        id viewController = self.innerNavigationController.viewControllers.firstObject;
         if ( [viewController conformsToProtocol:@protocol(VTabMenuButtonTap)] )
         {
             [((id<VTabMenuButtonTap>)viewController) scrollContentToTop];

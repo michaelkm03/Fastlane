@@ -380,6 +380,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
 - (void)scrollContentToTop
 {
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self.collectionView setContentOffset:CGPointZero animated:YES];
 }
 
