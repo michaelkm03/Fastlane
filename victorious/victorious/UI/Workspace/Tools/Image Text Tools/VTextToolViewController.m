@@ -159,10 +159,6 @@ shouldChangeTextInRange:(NSRange)range
         [textView resignFirstResponder];
         return NO;
     }
-    if (textView.text.length + text.length > kCharacterLimit)
-    {
-        return NO;
-    }
     return YES;
 }
 
@@ -175,6 +171,15 @@ shouldChangeTextInRange:(NSRange)range
     if (styledFont != nil)
     {
         sizedAttributes[NSFontAttributeName] = styledFont;
+    }
+    
+    if (textView.text.length > kCharacterLimit)
+    {
+        UITextPosition *beginning = self.textView.beginningOfDocument;
+        UITextPosition *start = [self.textView positionFromPosition:beginning offset:kCharacterLimit];
+        UITextPosition *end = [self.textView positionFromPosition:start offset:(textView.text.length - kCharacterLimit)];
+        UITextRange *textRange = [self.textView textRangeFromPosition:start toPosition:end];
+        [self.textView replaceRange:textRange withText:@""];
     }
     
     NSRange selectedRange = textView.selectedRange;
