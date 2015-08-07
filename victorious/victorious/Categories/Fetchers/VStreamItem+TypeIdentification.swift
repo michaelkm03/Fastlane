@@ -23,9 +23,9 @@ extension VStreamItem {
     
     @objc
     enum VItemType: Int, Enumerable {
-        case Sequence, Stream, Shelf, Unknown
+        case Sequence, Stream, Marquee, User, Hashtag, Feed, Unknown
         
-        static let valueMap = ["sequence" : Sequence, "stream" : Stream, "shelf" : Shelf]
+        static let valueMap = ["sequence" : Sequence, "stream" : Stream, "marquee" : Marquee, "user" : User, "hashtag" : Hashtag, "feed" : Feed]
         
         static func defaultValue() -> VItemType {
             return .Unknown
@@ -43,9 +43,9 @@ extension VStreamItem {
 
     @objc
     enum VItemSubType: Int, Enumerable {
-        case Image, Video, Marquee, Stream, Content, Unknown
+        case Image, Video, Poll, Text, Content, Stream, Unknown
         
-        static let valueMap = ["image" : Image, "video" : Video, "stream" : Stream, "content" : Content, "marquee" : Marquee]
+        static let valueMap = ["image" : Image, "video" : Video, "poll" : Poll, "text" : Text, "content" : Content, "stream" : Stream]
         
         static func defaultValue() -> VItemSubType {
             return .Unknown

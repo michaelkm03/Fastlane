@@ -1111,6 +1111,7 @@
 		F07557E81B73B86600BB2648 /* VStreamItem+TypeIdentification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07557E71B73B86600BB2648 /* VStreamItem+TypeIdentification.swift */; };
 		F07557EC1B751F5300BB2648 /* VDirectoryContentCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07557EB1B751F5300BB2648 /* VDirectoryContentCellFactory.swift */; };
 		F07557EE1B751F8C00BB2648 /* VSequenceContentCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07557ED1B751F8C00BB2648 /* VSequenceContentCellFactory.swift */; };
+		F07557F01B75321800BB2648 /* devShelfTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = F07557EF1B75321800BB2648 /* devShelfTemplate.json */; };
 		F079FAB31B183ABC009833CD /* VFailureStreamItemPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F079FAB11B183ABC009833CD /* VFailureStreamItemPreviewView.m */; };
 		F07E825D1AEF35BE00821CEA /* VDiscoverHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = F07E825C1AEF35BE00821CEA /* VDiscoverHeaderView.m */; };
 		F07E825F1AEF365400821CEA /* VDiscoverHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F07E825E1AEF365400821CEA /* VDiscoverHeaderView.xib */; };
@@ -3318,6 +3319,7 @@
 		F07557EA1B73EBD400BB2648 /* VStreamContentCellFactoryDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamContentCellFactoryDelegate.h; sourceTree = "<group>"; };
 		F07557EB1B751F5300BB2648 /* VDirectoryContentCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VDirectoryContentCellFactory.swift; sourceTree = "<group>"; };
 		F07557ED1B751F8C00BB2648 /* VSequenceContentCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VSequenceContentCellFactory.swift; sourceTree = "<group>"; };
+		F07557EF1B75321800BB2648 /* devShelfTemplate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = devShelfTemplate.json; sourceTree = "<group>"; };
 		F079FAB11B183ABC009833CD /* VFailureStreamItemPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFailureStreamItemPreviewView.m; sourceTree = "<group>"; };
 		F079FAB21B183ABC009833CD /* VFailureStreamItemPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFailureStreamItemPreviewView.h; sourceTree = "<group>"; };
 		F07E825B1AEF35BE00821CEA /* VDiscoverHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverHeaderView.h; sourceTree = "<group>"; };
@@ -4534,6 +4536,7 @@
 			children = (
 				0314D3E719B46B5E00FA363C /* VLoadingViewController.h */,
 				0314D3E819B46B5E00FA363C /* VLoadingViewController.m */,
+				F07557EF1B75321800BB2648 /* devShelfTemplate.json */,
 				0307F83F1B4F3BA400342C13 /* VLoginOperation.h */,
 				0307F8401B4F3BA400342C13 /* VLoginOperation.m */,
 			);
@@ -7849,6 +7852,7 @@
 				F0E0F1B81AE8C28300143CBF /* VInsetMarqueeCollectionViewCell.xib in Resources */,
 				036F38821A0C4DEA0014DF66 /* Oswald-Light.ttf in Resources */,
 				A7F712041AE1D5A00086F729 /* VNotAuthorizedProfileCollectionViewCell.xib in Resources */,
+				F07557F01B75321800BB2648 /* devShelfTemplate.json in Resources */,
 				036F38891A0C4DEA0014DF66 /* PT_Serif-Web-Bold.ttf in Resources */,
 				D80A94EB1A546E680035D788 /* VThumbnailCell.xib in Resources */,
 				D85B706F1B0EAF3F0038CA5B /* FindFriendsTableView.xib in Resources */,

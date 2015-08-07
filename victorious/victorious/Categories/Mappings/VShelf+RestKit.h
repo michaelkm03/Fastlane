@@ -10,7 +10,7 @@
 
 @interface VShelf (RestKit)
 
-+ (RKObjectMapping *)mappingForStreamSubType:(NSString *)subType;
++ (RKObjectMapping *)mappingForItemType:(NSString *)subType;
 
 + (NSString *)entityName;
 

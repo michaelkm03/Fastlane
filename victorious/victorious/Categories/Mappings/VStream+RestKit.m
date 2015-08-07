@@ -163,7 +163,8 @@
         if ( [representation isKindOfClass:[NSDictionary class]] )
         {
             NSDictionary *dictionaryRepresentation = (NSDictionary *)representation;
-            VItemType itemType = [VStreamItem normalizedItemType:[dictionaryRepresentation objectForKey:@"type"]];
+            NSString *type = [dictionaryRepresentation objectForKey:@"type"];
+            VItemType itemType = [VStreamItem normalizedItemType:type];
             switch (itemType)
             {
                 case VItemTypeStream:
@@ -185,9 +186,11 @@
                     break;
                 }
                     
-                case VItemTypeShelf:
+                case VItemTypeMarquee:
+                case VItemTypeUser:
+                case VItemTypeHashtag:
                 {
-                    mapping = [VShelf mappingForStreamSubType:[dictionaryRepresentation objectForKey:@"subtype"]];
+                    mapping = [VShelf mappingForItemType:type];
                     break;
                 }
                     
@@ -277,25 +280,25 @@
              //Feed parsing
              [RKResponseDescriptor responseDescriptorWithMapping:[self feedPayloadMapping]
                                                           method:RKRequestMethodGET
-                                                     pathPattern:@"/api/sequence/detail_list_by_stream_with_shelf/:streamId/:page/:perpage"
+                                                     pathPattern:@"/api/sequence/feed/:streamId/:page/:perpage"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
              
              [RKResponseDescriptor responseDescriptorWithMapping:[self feedPayloadMapping]
                                                           method:RKRequestMethodGET
-                                                     pathPattern:@"/api/sequence/detail_list_by_stream_with_shelf/:stream/:page/:perpage"
+                                                     pathPattern:@"/api/sequence/feed/:stream/:page/:perpage"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
              
              [RKResponseDescriptor responseDescriptorWithMapping:[self feedPayloadMapping]
                                                           method:RKRequestMethodGET
-                                                     pathPattern:@"/api/sequence/detail_list_by_stream_with_shelf/:streamId/:filterId/:page/:perpage"
+                                                     pathPattern:@"/api/sequence/feed/:streamId/:filterId/:page/:perpage"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
              
              [RKResponseDescriptor responseDescriptorWithMapping:[self feedPayloadMapping]
                                                           method:RKRequestMethodGET
-                                                     pathPattern:@"/api/sequence/detail_list_by_stream_with_shelf/:category/:filtername"
+                                                     pathPattern:@"/api/sequence/feed/:category/:filtername"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
               ];

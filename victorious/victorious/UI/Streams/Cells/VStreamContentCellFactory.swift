@@ -55,13 +55,8 @@ class VStreamContentCellFactory: NSObject, VStreamCellFactory, VHasManagedDepend
         let subType = streamItem.normalizedItemSubType()
         
         switch itemType {
-        case .Shelf:
-            switch subType {
-            case .Marquee:
-                return marqueeCellFactory
-            default:
-                break
-            }
+        case .Marquee:
+            return marqueeCellFactory
         default:
             break
         }

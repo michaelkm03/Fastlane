@@ -410,7 +410,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     if ( streamItems.count > 0 )
     {
         VStreamItem *streamItem = [streamItems firstObject];
-        hasMarqueeShelfAtTop = [streamItem normalizedItemType] == VItemTypeShelf && [streamItem normalizedItemSubType] == VItemSubTypeMarquee;
+        hasMarqueeShelfAtTop = [streamItem normalizedItemType] == VItemTypeMarquee;
     }
     
     if (self.streamDataSource.hasHeaderCell || hasMarqueeShelfAtTop)

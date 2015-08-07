@@ -52,13 +52,13 @@
     return [self mappingBase];
 }
 
-+ (RKObjectMapping *)mappingForStreamSubType:(NSString *)subType
++ (RKObjectMapping *)mappingForItemType:(NSString *)type
 {
     RKObjectMapping *mapping = nil;
-    VItemSubType normalizedSubType = [VStreamItem normalizedItemSubType:subType];
-    switch (normalizedSubType)
+    VItemType normalizedType = [VStreamItem normalizedItemType:type];
+    switch (normalizedType)
     {
-        case VItemSubTypeMarquee:
+        case VItemTypeMarquee:
             mapping = [self marqueeShelfMapping];
             break;
             
