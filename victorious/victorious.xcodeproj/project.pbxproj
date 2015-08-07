@@ -3320,6 +3320,7 @@
 		F07557EB1B751F5300BB2648 /* VDirectoryContentCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VDirectoryContentCellFactory.swift; sourceTree = "<group>"; };
 		F07557ED1B751F8C00BB2648 /* VSequenceContentCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VSequenceContentCellFactory.swift; sourceTree = "<group>"; };
 		F07557EF1B75321800BB2648 /* devShelfTemplate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = devShelfTemplate.json; sourceTree = "<group>"; };
+		F07557F11B756E7600BB2648 /* VDirectoryCellUpdateableFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VDirectoryCellUpdateableFactory.h; sourceTree = "<group>"; };
 		F079FAB11B183ABC009833CD /* VFailureStreamItemPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFailureStreamItemPreviewView.m; sourceTree = "<group>"; };
 		F079FAB21B183ABC009833CD /* VFailureStreamItemPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFailureStreamItemPreviewView.h; sourceTree = "<group>"; };
 		F07E825B1AEF35BE00821CEA /* VDiscoverHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverHeaderView.h; sourceTree = "<group>"; };
@@ -7310,6 +7311,7 @@
 				F0AD21741AF43DFA001BDCC6 /* VCollectionsDirectoryCellFactory.h */,
 				F0AD21751AF43DFA001BDCC6 /* VCollectionsDirectoryCellFactory.m */,
 				F02024A21ADCABA900C61313 /* VDirectoryCellFactory.h */,
+				F07557F11B756E7600BB2648 /* VDirectoryCellUpdateableFactory.h */,
 				F0AD217F1AF43E4C001BDCC6 /* VShowcaseDirectoryCellFactory.h */,
 				F0AD21801AF43E4C001BDCC6 /* VShowcaseDirectoryCellFactory.m */,
 			);

@@ -11,6 +11,10 @@
 
 @class VDirectoryCollectionFlowLayout;
 
+/**
+    Classes that conform to this protocol will provide information
+        regarding the spacing and layout of directory cells.
+ */
 @protocol VDirectoryCellFactory <NSObject, VStreamCellFactory>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -24,31 +28,6 @@ NS_ASSUME_NONNULL_BEGIN
     @return The collection view flow layout that will be used by the VDirectoryViewController's collection view
  */
 - (VDirectoryCollectionFlowLayout *__nullable)collectionViewFlowLayout;
-
-NS_ASSUME_NONNULL_END
-
-@end
-
-@protocol VDirectoryCellFactoryUpdatable <NSObject>
-
-NS_ASSUME_NONNULL_BEGIN
-
-/**
- Called by VDirectoryViewController in collectionView:willDisplayCell:atIndexPath.
- Use this to adjust cell properties right before display.
- 
- @param cell The collection view cell that is about to be displayed
- @param collectionView The collection view that is about to display the cell
- @param indexPath The index path where the cell will be displayed
- */
-- (void)prepareCell:(UICollectionViewCell *)cell forDisplayInCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath;
-
-/**
- Called by VDirectoryViewController in scrollViewDidScroll:
- 
- @param collectionView The collection view that has just scrolled
- */
-- (void)collectionViewDidScroll:(UICollectionView *)collectionView;
 
 NS_ASSUME_NONNULL_END
 

@@ -8,12 +8,16 @@
 
 import UIKit
 
+//Describes an objc-friendly enum that can identify an enum from a string
 protocol Enumerable {
     
+    //Return a default value to be used when no items match those from the enum value map.
     static func defaultValue() -> Self
+    
+    //Return a dictionary of string-keyed enum values.
     static func enumValueMap() -> [ String : Self ]
     
-    //2.0 Improvement: Move generic implementation into protocol extension
+    //2.0 Improvement: Move generic implementation into protocol extension.
     static func normalizedType(string : String?) -> Self
 
 }
@@ -22,6 +26,7 @@ protocol Enumerable {
 extension VStreamItem {
     
     @objc
+    //Describes the base type of this stream item. Ex: Stream, Sequence, Marquee.
     enum VItemType: Int, Enumerable {
         case Sequence, Stream, Marquee, User, Hashtag, Feed, Unknown
         
@@ -42,6 +47,7 @@ extension VStreamItem {
     }
 
     @objc
+    //Describes the sub type of this stream item. Ex: Image, Video, Poll.
     enum VItemSubType: Int, Enumerable {
         case Image, Video, Poll, Text, Content, Stream, Unknown
         
@@ -77,21 +83,25 @@ extension VStreamItem {
 extension VStreamItem {
     
     @objc
+    //The item type of this stream item
     func normalizedItemType() -> VItemType {
         return VStreamItem.normalizedItemType(self.itemType)
     }
     
     @objc
+    //The item type for the provided string
     class func normalizedItemType(string : String?) -> VItemType {
         return VItemType.normalizedType(string)
     }
     
     @objc
+    //The item sub type of this stream item
     func normalizedItemSubType() -> VItemSubType {
         return VStreamItem.normalizedItemSubType(self.itemSubType)
     }
     
     @objc
+    //The item sub type for the provided string
     class func normalizedItemSubType(string : String?) -> VItemSubType {
         return VItemSubType.normalizedType(string)
     }

@@ -14,6 +14,7 @@
 #import "VAbstractMarqueeController.h"
 #import "VUserProfileViewController.h"
 #import "VDirectoryCellFactory.h"
+#import "VDirectoryCellUpdateableFactory.h"
 #import "VStreamItem+Fetcher.h"
 #import "VStreamItem.h"
 #import "VDependencyManager+VScaffoldViewController.h"
@@ -358,7 +359,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     if ( ![self isMarqueeSection:indexPath.section] && [self.directoryCellFactory respondsToSelector:@selector(prepareCell:forDisplayInCollectionView:atIndexPath:)] )
     {
         //Allow directory cell factory to prepare cell for display
-        [(id <VDirectoryCellFactoryUpdatable>)self.directoryCellFactory prepareCell:cell forDisplayInCollectionView:localCollectionView atIndexPath:indexPath];
+        [(id <VDirectoryCellUpdeatableFactory>)self.directoryCellFactory prepareCell:cell forDisplayInCollectionView:localCollectionView atIndexPath:indexPath];
     }
 }
 
@@ -371,7 +372,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     
     if ( [scrollView isKindOfClass:[UICollectionView class]] && [self.directoryCellFactory respondsToSelector:@selector(collectionViewDidScroll:)] )
     {
-        [(id <VDirectoryCellFactoryUpdatable>)self.directoryCellFactory collectionViewDidScroll:(UICollectionView *)scrollView];
+        [(id <VDirectoryCellUpdeatableFactory>)self.directoryCellFactory collectionViewDidScroll:(UICollectionView *)scrollView];
     }
 }
 

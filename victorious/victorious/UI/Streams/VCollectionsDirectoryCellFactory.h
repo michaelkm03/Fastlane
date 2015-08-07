@@ -8,10 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import "VDirectoryCellFactory.h"
+#import "VDirectoryCellUpdateableFactory.h"
 
 /**
     This factory provides sizing and collection view registration for VCollectionsDirectoryCells.
  */
-@interface VCollectionsDirectoryCellFactory : NSObject <VDirectoryCellFactory, VDirectoryCellFactoryUpdatable>
+@interface VCollectionsDirectoryCellFactory : NSObject <VDirectoryCellFactory, VDirectoryCellUpdeatableFactory>
 
 @end

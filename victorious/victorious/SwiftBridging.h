@@ -78,4 +78,5 @@
 #import "VShelf.h"
 #import "VStreamContentCellFactoryDelegate.h"
 #import "VDirectoryCellFactory.h"
+#import "VDirectoryCellUpdateableFactory.h"
 #import "VDirectoryCollectionFlowLayout.h"
