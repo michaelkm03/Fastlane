@@ -44,7 +44,6 @@
 
 + (NSArray *)inStreamCommentsForComments:(NSArray *)comments andDependencyManager:(VDependencyManager *)dependencyManager
 {
-    //NSParameterAssert(comments != nil);
     NSParameterAssert(dependencyManager != nil);
     
     NSMutableArray *contents = [[NSMutableArray alloc] init];

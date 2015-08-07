@@ -174,7 +174,7 @@
                     }
                     else
                     {
-                        mapping = [self feedPayloadMappingAtChildLevel:NO];
+                        mapping = [self feedPayloadMappingAtChildLevel:YES];
                     }
                     break;
                 }

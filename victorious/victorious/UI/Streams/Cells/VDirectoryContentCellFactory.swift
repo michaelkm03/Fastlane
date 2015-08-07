@@ -1,5 +1,5 @@
 //
-//  VDirectroyStreamContentCellFactory.swift
+//  VDirectoryContentCellFactory.swift
 //  victorious
 //
 //  Created by Sharif Ahmed on 8/7/15.
