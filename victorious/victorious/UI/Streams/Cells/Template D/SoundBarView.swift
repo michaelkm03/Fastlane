@@ -15,7 +15,7 @@ class SoundBarView : UIView {
     private var isAnimating = false
     private var counter = 0
     
-    var numberOfBars = 5 {
+    var numberOfBars = 4 {
         didSet {
             numberOfBars = max(numberOfBars, 1)
             reset()

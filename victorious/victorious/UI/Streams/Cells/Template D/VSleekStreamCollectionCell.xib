@@ -90,9 +90,9 @@
                         </connections>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GLD-4c-p3i" userLabel="Soundbar view" customClass="SoundBarView" customModule="victorious" customModuleProvider="target">
-                        <rect key="frame" x="266" y="104" width="20" height="26"/>
+                        <rect key="frame" x="266" y="104" width="20" height="22"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="26" id="Hqh-v7-qyF"/>
+                            <constraint firstAttribute="height" constant="22" id="Hqh-v7-qyF"/>
                             <constraint firstAttribute="width" constant="20" id="x0O-14-cem"/>
                         </constraints>
                     </view>
