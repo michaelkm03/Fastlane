@@ -15,14 +15,18 @@ class SoundBarView : UIView {
     private var isAnimating = false
     private var counter = 0
     
-    var numberOfBars = 20 {
+    var numberOfBars = 5 {
         didSet {
+            numberOfBars = max(numberOfBars, 1)
+            reset()
             setNeedsLayout()
         }
     }
     
-    var distanceBetweenBars = 0 {
+    var distanceBetweenBars = 1.0 {
         didSet {
+            distanceBetweenBars = max(distanceBetweenBars, 0.0)
+            reset()
             setNeedsLayout()
         }
     }
@@ -31,14 +35,15 @@ class SoundBarView : UIView {
     
     override func layoutSubviews() {
         
-        reset(true)
+        super.layoutSubviews()
         
         for index in 0...numberOfBars-1 {
-            let rectangle = CAShapeLayer()
-            rectangle.path = barPath(index, endpoint: randomEndpoint()).CGPath
-            rectangle.fillColor = UIColor.redColor().CGColor
-            self.layer.addSublayer(rectangle)
-            barLayers.append(rectangle)
+            let bar = CAShapeLayer()
+            let path = barPath(index, endpoint: randomEndpoint()).CGPath
+            bar.path = path
+            bar.fillColor = UIColor.whiteColor().CGColor
+            self.layer.addSublayer(bar)
+            barLayers.append(bar)
         }
         
         startAnimating()
@@ -70,8 +75,9 @@ class SoundBarView : UIView {
             
             let animation = CABasicAnimation(keyPath: "path")
             animation.toValue = newPath.CGPath
-            animation.duration = 0.2
+            animation.duration = 0.3
             animation.delegate = self
+            animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
             animation.fillMode = kCAFillModeForwards
             animation.removedOnCompletion = false
             
@@ -80,24 +86,29 @@ class SoundBarView : UIView {
     }
     
     func stopAnimating() {
-        reset(false)
+        barPaths = [UIBezierPath]()
+        counter = 0
+        for (index, bar) in enumerate(barLayers) {
+            bar.removeAllAnimations()
+        }
+        isAnimating = false
     }
     
     // MARK: Helpers
     
-    private func reset(clearBars: Bool) {
-        isAnimating = false
-        barPaths = [UIBezierPath]()
-        counter = 0
-        
-        if (clearBars) {
-            barLayers = [CAShapeLayer]()
+    private func reset() {
+        stopAnimating()
+        for bar in barLayers {
+            bar.removeFromSuperlayer()
         }
+        barLayers = [CAShapeLayer]()
     }
     
     func barPath(barIndex: Int, endpoint: Double) -> UIBezierPath {
-        let barWidth = Double (CGRectGetWidth(self.bounds)) / Double (numberOfBars)
-        return UIBezierPath(rect: CGRect(x: barWidth * Double (barIndex), y:  Double (CGRectGetHeight(self.bounds)), width: barWidth, height: -endpoint))
+        let gapsWidth = distanceBetweenBars * Double (numberOfBars - 1)
+        let totalBarWidth = Double (CGRectGetWidth(self.bounds)) - gapsWidth
+        let barWidth = totalBarWidth / Double (numberOfBars)
+        return UIBezierPath(rect: CGRect(x: (barWidth + distanceBetweenBars) * Double (barIndex), y:  Double (CGRectGetHeight(self.bounds)), width: barWidth, height: -endpoint))
     }
     
     func randomEndpoint() -> Double {
@@ -107,12 +118,15 @@ class SoundBarView : UIView {
     // MARK: Animation Delegate
     
     override func animationDidStop(anim: CAAnimation!, finished flag: Bool) {
-        let bar = barLayers[counter]
-        bar.path = barPaths[counter].CGPath
-        counter++
-        if (counter == numberOfBars) {
-            reset(false)
-            startAnimating()
+
+        if (flag) {
+            let bar = barLayers[counter]
+            bar.path = barPaths[counter].CGPath
+            counter++
+            if (counter == barLayers.count) {
+                stopAnimating()
+                startAnimating()
+            }
         }
     }
 }

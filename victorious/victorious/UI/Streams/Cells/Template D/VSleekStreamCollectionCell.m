@@ -286,9 +286,6 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     
     NSArray *inStreamComments = [[[self class] cellLayoutCollection] commentsForCacheKey:[[self class] cacheKeyForSequence:sequence]];
     [self.inStreamCommentsController setupWithCommentCellContents:[VInStreamCommentCellContents inStreamCommentsForComments:inStreamComments andDependencyManager:self.dependencyManager] withShowMoreCellVisible:[[self class] inStreamCommentsShouldDisplayShowMoreCellForSequence:sequence]];
-    
-    SoundBarView *view = [[SoundBarView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-    [self addSubview:view];
 }
 
 - (BOOL)needsAspectRatioUpdateForSequence:(VSequence *)sequence

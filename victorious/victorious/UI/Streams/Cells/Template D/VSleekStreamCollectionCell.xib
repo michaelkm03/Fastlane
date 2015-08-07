@@ -89,6 +89,13 @@
                             <outlet property="bannerHeightConstraint" destination="bK9-ma-8mL" id="xha-av-pS0"/>
                         </connections>
                     </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GLD-4c-p3i" userLabel="Soundbar view" customClass="SoundBarView" customModule="victorious" customModuleProvider="target">
+                        <rect key="frame" x="266" y="104" width="20" height="26"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="26" id="Hqh-v7-qyF"/>
+                            <constraint firstAttribute="width" constant="20" id="x0O-14-cem"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
@@ -107,6 +114,7 @@
                 <constraint firstItem="j5x-K6-9xu" firstAttribute="leading" secondItem="k5V-32-ew9" secondAttribute="leading" id="QHS-3o-zcd"/>
                 <constraint firstItem="gyd-x0-d0C" firstAttribute="top" secondItem="0yG-Rl-S8H" secondAttribute="bottom" id="ZOU-St-XOJ"/>
                 <constraint firstAttribute="trailing" secondItem="0yG-Rl-S8H" secondAttribute="trailing" id="aos-SC-C9i"/>
+                <constraint firstItem="0yG-Rl-S8H" firstAttribute="trailing" secondItem="GLD-4c-p3i" secondAttribute="trailing" constant="16" id="dXJ-h1-ENX"/>
                 <constraint firstAttribute="trailing" secondItem="gyd-x0-d0C" secondAttribute="trailing" constant="-1" id="dv4-PW-cKq"/>
                 <constraint firstAttribute="bottom" secondItem="j5x-K6-9xu" secondAttribute="bottom" constant="1" id="dxi-2J-A1B"/>
                 <constraint firstItem="gyd-x0-d0C" firstAttribute="leading" secondItem="k5V-32-ew9" secondAttribute="leading" constant="-1" id="erY-pN-MTf"/>
@@ -115,6 +123,7 @@
                 <constraint firstItem="6Ls-Bo-1cB" firstAttribute="leading" secondItem="k5V-32-ew9" secondAttribute="leading" constant="50" id="hxm-u0-3dS"/>
                 <constraint firstAttribute="trailing" secondItem="j5x-K6-9xu" secondAttribute="trailing" id="iAv-Ml-nbS"/>
                 <constraint firstItem="JB7-zc-ces" firstAttribute="top" secondItem="73D-7F-ayQ" secondAttribute="bottom" constant="-50" id="qRa-uv-LnY"/>
+                <constraint firstItem="0yG-Rl-S8H" firstAttribute="top" secondItem="GLD-4c-p3i" secondAttribute="top" constant="-14" id="vgJ-VH-NIw"/>
             </constraints>
             <size key="customSize" width="543" height="356"/>
             <connections>
