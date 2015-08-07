@@ -159,11 +159,7 @@ shouldChangeTextInRange:(NSRange)range
         [textView resignFirstResponder];
         return NO;
     }
-    if (text.length == 0)
-    {
-        return YES;
-    }
-    if (textView.text.length >= kCharacterLimit)
+    if (textView.text.length + text.length >= kCharacterLimit)
     {
         return NO;
     }
