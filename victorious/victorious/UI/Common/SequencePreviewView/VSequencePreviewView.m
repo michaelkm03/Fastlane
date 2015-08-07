@@ -16,9 +16,10 @@
 #import "VTextSequencePreviewView.h"
 #import "VPollSequencePreviewView.h"
 #import "VImageSequencePreviewView.h"
-#import "VVideoSequencePreviewView.h"
 #import "VHTMLSequncePreviewView.h"
 #import "VFailureStreamItemPreviewView.h"
+#import "VGIFVideoSequencePreviewView.h"
+#import "VVideoSequencePreviewView.h"
 
 @implementation VSequencePreviewView
 
@@ -35,7 +36,14 @@
     }
     else if ([sequence isVideo])
     {
-        classType = [VVideoSequencePreviewView class];
+        if (sequence.isGifStyle.boolValue)
+        {
+            classType = [VGIFVideoSequencePreviewView class];
+        }
+        else
+        {
+            classType = [VVideoSequencePreviewView class];
+        }
     }
     else if ([sequence isImage] || [sequence isPreviewImageContent])
     {

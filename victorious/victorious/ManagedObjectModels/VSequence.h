@@ -51,6 +51,7 @@
 @property (nonatomic, retain) VUser *user;
 @property (nonatomic, retain) NSSet *voteResults;
 @property (nonatomic, retain) NSOrderedSet *recentComments;
+@property (nonatomic, retain) NSNumber *isGifStyle;
 @end
 
 @interface VSequence (CoreDataGeneratedAccessors)

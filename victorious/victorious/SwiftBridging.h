@@ -41,6 +41,8 @@
 #import "VSEquence.h"
 #import "VStream.h"
 #import "VExperimentSettings.h"
+#import "VSequence.h"
+#import "VSequence+Fetcher.h"
 
 // Everything else
 #import "VTextPostTextView.h"
@@ -68,3 +70,6 @@
 #import "VButton.h"
 #import "VHasManagedDependencies.h"
 #import "VSessionTimer.h"
+#import "VSequencePreviewView.h"
+#import "VBaseVideoSequencePreviewView.h"
+#import "VAsset+Fetcher.h"

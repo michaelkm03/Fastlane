@@ -1,5 +1,5 @@
 //
-//  VVideoSequencePreviewView.h
+//  VGIFVideoSequencePreviewView.h
 //  victorious
 //
 //  Created by Cody Kolodziejzyk on 8/7/15.
@@ -8,6 +8,6 @@
 
 #import "VBaseVideoSequencePreviewView.h"
 
-@interface VVideoSequencePreviewView : VBaseVideoSequencePreviewView
+@interface VGIFVideoSequencePreviewView : VBaseVideoSequencePreviewView
 
 @end

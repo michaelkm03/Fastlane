@@ -2,32 +2,17 @@
 //  VVideoSequencePreviewView.m
 //  victorious
 //
-//  Created by Michael Sena on 5/6/15.
+//  Created by Cody Kolodziejzyk on 8/7/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
 #import "VVideoSequencePreviewView.h"
+#import "victorious-Swift.h"
 
-// Models + Helpers
-#import "VSequence+Fetcher.h"
-#import "VNode+Fetcher.h"
-#import "VAsset+Fetcher.h"
+@interface VVideoSequencePreviewView ()
 
-// Views + Helpers
-#import "UIImageView+VLoadingAnimations.h"
-#import "UIView+AutoLayout.h"
-#import "VVideoView.h"
-
-#import "VDependencyManager+VBackgroundContainer.h"
-#import "VDependencyManager+VBackground.h"
-
-@interface VVideoSequencePreviewView () <VVideoViewDelegate>
-
-@property (nonatomic, strong) UIImageView *previewImageView;
-@property (nonatomic, strong) UIView *playIconContainerView;
-@property (nonatomic, strong) VVideoView *videoView;
-@property (nonatomic, assign) BOOL hasFocus;
-@property (nonatomic, strong) UIView *backgroundContainerView;
+@property (nonatomic, strong) SoundBarView *soundIndicator;
+@property (nonatomic, assign) BOOL shouldLoop;
 
 @end
 
@@ -38,144 +23,74 @@
     self = [super initWithFrame:frame];
     if (self != nil)
     {
-        _previewImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
-        _previewImageView.contentMode = UIViewContentModeScaleAspectFill;
-        _previewImageView.clipsToBounds = YES;
-        [self addSubview:_previewImageView];
-        [self v_addFitToParentConstraintsToSubview:_previewImageView];
+        _soundIndicator = [[SoundBarView alloc] init];
+        _soundIndicator.translatesAutoresizingMaskIntoConstraints = NO;
+        _soundIndicator.hidden = YES;
+        [self addSubview:_soundIndicator];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[_soundIndicator(25)]"
+                                                                               options:0
+                                                                               metrics:nil
+                                                                                 views:NSDictionaryOfVariableBindings(_soundIndicator)]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_soundIndicator(25)]-10-|"
+                                                                                options:0
+                                                                                metrics:nil
+                                                                                  views:NSDictionaryOfVariableBindings(_soundIndicator)]];
         
-        _playIconContainerView = [[UIView alloc] initWithFrame:CGRectZero];
-        _playIconContainerView.backgroundColor = [UIColor clearColor];
-        [self addSubview:_playIconContainerView];
-        [self v_addCenterToParentContraintsToSubview:_playIconContainerView];
-        
-        UIImageView *playIconCircle = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlayCircle"]];
-        [_playIconContainerView addSubview:playIconCircle];
-        [_playIconContainerView v_addFitToParentConstraintsToSubview:playIconCircle];
-        
-        UIImageView *playIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlayTriangle"]];
-        [_playIconContainerView addSubview:playIconView];
-        [_playIconContainerView v_addFitToParentConstraintsToSubview:playIconView];
-        
-        _videoView = [[VVideoView alloc] initWithFrame:self.bounds];
-        _videoView.delegate = self;
-        _videoView.layer.shouldRasterize = YES;
-        [self addSubview:_videoView];
-        [self v_addFitToParentConstraintsToSubview:_videoView];
     }
     return self;
 }
-
-#pragma mark - VSequencePreviewView Overrides
 
 - (void)setSequence:(VSequence *)sequence
 {
     [super setSequence:sequence];
     
-    [self makeBackgroundContainerViewVisible:NO];
+    VAsset *HLSAsset = [sequence.firstNode httpLiveStreamingAsset];
+    VAsset *mp4Asset = [sequence.firstNode mp4Asset];
     
-    // Hide video view in case we're not auto playing
-    self.videoView.hidden = YES;
-    
-    __weak VVideoSequencePreviewView *weakSelf = self;
-    [self.previewImageView fadeInImageAtURL:[sequence inStreamPreviewImageURL]
-                           placeholderImage:nil
-                        alongsideAnimations:^
-     {
-         [self makeBackgroundContainerViewVisible:YES];
-     }
-                                 completion:^(UIImage *image)
-     {
-         __strong VVideoSequencePreviewView *strongSelf = weakSelf;
-         if ( strongSelf == nil )
-         {
-             return;
-         }
-         
-         strongSelf.readyForDisplay = YES;
-     }];
-    
-    VAsset *asset = [sequence.firstNode mp4Asset];
-    if ( asset.streamAutoplay.boolValue )
+    // First check mp4 asset to see if we should autoplay and only if it's under 30 seconds
+    if ( mp4Asset.streamAutoplay.boolValue && mp4Asset.duration != nil && mp4Asset.duration.integerValue < 30 )
     {
         self.videoView.hidden = NO;
         self.playIconContainerView.hidden = YES;
+        self.shouldLoop = YES;
+        
         __weak VVideoSequencePreviewView *weakSelf = self;
-        [self.videoView setItemURL:[NSURL URLWithString:asset.data]
-                              loop:asset.loop.boolValue
-                        audioMuted:asset.audioMuted.boolValue
+        [self.videoView setItemURL:[NSURL URLWithString:mp4Asset.data]
+                              loop:YES
+                        audioMuted:YES
                 alongsideAnimation:^
          {
+             weakSelf.soundIndicator.hidden = NO;
+             [weakSelf.soundIndicator startAnimating];
              [weakSelf makeBackgroundContainerViewVisible:YES];
          }];
+    }
+    // Else check HLS asset to see if we should autoplay and only if it's over 30 seconds
+    else if ( HLSAsset.streamAutoplay.boolValue && HLSAsset.duration != nil && HLSAsset.duration.integerValue >= 30)
+    {
+        
+        self.videoView.hidden = NO;
+        self.playIconContainerView.hidden = YES;
+        self.shouldLoop = NO;
+        
+        __weak VVideoSequencePreviewView *weakSelf = self;
+        [self.videoView setItemURL:[NSURL URLWithString:HLSAsset.data]
+                              loop:NO
+                        audioMuted:YES
+                alongsideAnimation:^
+         {
+             weakSelf.soundIndicator.hidden = NO;
+             [weakSelf.soundIndicator startAnimating];
+             [weakSelf makeBackgroundContainerViewVisible:YES];
+         }];
+        
     }
     else
     {
         self.videoView.hidden = YES;
         self.playIconContainerView.hidden = NO;
+        self.soundIndicator.hidden = YES;
     }
-}
-
-#pragma mark - VVideoViewDelegate
-
-- (void)videoViewPlayerDidBecomeReady:(VVideoView *)videoView
-{
-    if (self.hasFocus)
-    {
-        [self makeBackgroundContainerViewVisible:YES];
-        [videoView play];
-    }
-}
-
-#pragma mark - VCellFocus
-
-- (void)setHasFocus:(BOOL)hasFocus
-{
-    _hasFocus = hasFocus;
-    if (_hasFocus)
-    {
-        [self makeBackgroundContainerViewVisible:YES];
-        [self.videoView play];
-    }
-    else
-    {
-        [self.videoView pause];
-    }
-}
-
-- (CGRect)contentArea
-{
-    return self.bounds;
-}
-
-#pragma mark - VContentModeAdjustablePreviewView
-
-- (void)updateToFitContent:(BOOL)fit withBackgroundSupplier:(VDependencyManager *)dependencyManager
-{
-    self.videoView.useAspectFit = fit;
-    self.previewImageView.contentMode = fit ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleToFill;
-    [dependencyManager addBackgroundToBackgroundHost:self];
-}
-
-- (UIView *)backgroundContainerView
-{
-    if ( _backgroundContainerView != nil )
-    {
-        return _backgroundContainerView;
-    }
-    
-    _backgroundContainerView = [[UIView alloc] init];
-    _backgroundContainerView.backgroundColor = [UIColor clearColor];
-    _backgroundContainerView.alpha = 0.0f;
-    [self addSubview:_backgroundContainerView];
-    [self sendSubviewToBack:_backgroundContainerView];
-    [self v_addFitToParentConstraintsToSubview:_backgroundContainerView];
-    return _backgroundContainerView;
-}
-
-- (void)makeBackgroundContainerViewVisible:(BOOL)visible
-{
-    self.backgroundContainerView.alpha = visible ? 1.0f : 0.0f;
 }
 
 @end
