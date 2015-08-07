@@ -959,11 +959,11 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     return [[VProfileDeeplinkHandler alloc] initWithDependencyManager:self.dependencyManager];
 }
 
-#pragma mark - VTabMenuButtonTap
+#pragma mark - VTabMenuContainedViewControllerNavigation
 
-- (void)scrollContentToTop
+- (void)reselected
 {
-    [self.collectionView setContentOffset:CGPointZero animated:YES];
+    [self floatingViewSelected:nil];
 }
 
 @end

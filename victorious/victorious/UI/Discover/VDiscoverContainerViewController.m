@@ -282,13 +282,13 @@
     return self.view;
 }
 
-#pragma mark - VTabMenuButtonTap
+#pragma mark - VTabMenuContainedViewControllerNavigation
 
-- (void)scrollContentToTop
+- (void)reselected
 {
-    if ( [self.childViewController conformsToProtocol:@protocol(VTabMenuButtonTap)] )
+    if ( [self.childViewController conformsToProtocol:@protocol(VTabMenuContainedViewControllerNavigation)] )
     {
-        [((id<VTabMenuButtonTap>)self.childViewController) scrollContentToTop];
+        [((id<VTabMenuContainedViewControllerNavigation>)self.childViewController) reselected];
     }
 }
 

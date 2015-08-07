@@ -420,14 +420,14 @@ static NSString * const kInitialKey = @"initial";
     return [self.dependencyManager stringForKey:VDependencyManagerIDKey];
 }
 
-#pragma mark - VTabMenuButtonTap
+#pragma mark - VTabMenuContainedViewControllerNavigation
 
-- (void)scrollContentToTop
+- (void)reselected
 {
     id childViewController = [self children][self.selectedIndex];
-    if ( [childViewController conformsToProtocol:@protocol(VTabMenuButtonTap)] )
+    if ( [childViewController conformsToProtocol:@protocol(VTabMenuContainedViewControllerNavigation)] )
     {
-        [((id<VTabMenuButtonTap>)childViewController) scrollContentToTop];
+        [((id<VTabMenuContainedViewControllerNavigation>)childViewController) reselected];
     }
 }
 

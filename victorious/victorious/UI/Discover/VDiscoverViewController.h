@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VTabMenuButtonTap.h"
+#import "VTabMenuContainedViewControllerNavigation.h"
 
 @class VDependencyManager;
 
@@ -18,7 +18,7 @@ enum
     VDiscoverViewControllerSectionsCount
 };
 
-@interface VDiscoverViewController : UITableViewController <VTabMenuButtonTap>
+@interface VDiscoverViewController : UITableViewController <VTabMenuContainedViewControllerNavigation>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 

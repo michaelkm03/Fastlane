@@ -1033,7 +1033,9 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     return !self.navigationController.navigationBarHidden;
 }
 
-- (void)scrollContentToTop
+#pragma mark - VTabMenuContainedViewControllerNavigation
+
+- (void)reselected
 {
     [self.v_navigationController setNavigationBarHidden:NO];
     [self.collectionView setContentOffset:CGPointZero animated:YES];
