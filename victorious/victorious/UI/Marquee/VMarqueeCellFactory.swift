@@ -8,6 +8,8 @@
 
 import UIKit
 
+//WARNING: DO TESTS
+
 /// A wrapper around the marquee controller that adds conformance to the VStreamCellFactory protocol.
 class VMarqueeCellFactory: NSObject, VHasManagedDependencies {
     
@@ -39,7 +41,9 @@ extension VMarqueeCellFactory : VStreamCellFactory {
             return controller.marqueeCellForCollectionView(collectionView, atIndexPath:indexPath)
         }
         assertionFailure("A marquee cell was requested from a factory with a nil marquee controller. Check marqueeCell in template response.")
-        return UICollectionViewCell.new()
+        let marqueeFailureIdentifier = "marqueeFailure"
+        collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: marqueeFailureIdentifier)
+        return collectionView.dequeueReusableCellWithReuseIdentifier(marqueeFailureIdentifier, forIndexPath: indexPath) as! UICollectionViewCell
     }
     
     func sizeWithCollectionViewBounds(bounds: CGRect, ofCellForStreamItem streamItem: VStreamItem) -> CGSize {
