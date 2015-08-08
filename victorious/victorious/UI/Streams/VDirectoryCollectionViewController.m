@@ -35,7 +35,6 @@
 
 static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kMarqueeKey = @"marqueeCell";
-static NSString * const kDirectoryCellFactoryKey = @"directoryCell";
 
 static NSString * const kDestinationDirectoryKey = @"destinationDirectory";
 static NSString * const kStreamCollectionKey = @"destinationStream";
@@ -97,7 +96,8 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     
     VDirectoryCollectionFlowLayout *flowLayout = streamDirectory.directoryCellFactory.collectionViewFlowLayout;
     flowLayout.delegate = streamDirectory;
-    streamDirectory.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
+    UICollectionViewFlowLayout *layout = flowLayout ?: [[UICollectionViewFlowLayout alloc] init];
+    streamDirectory.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
     streamDirectory.marqueeController = marqueeController;
     streamDirectory.marqueeController.stream = stream;
     [streamDirectory.marqueeController registerCollectionViewCellWithCollectionView:streamDirectory.collectionView];

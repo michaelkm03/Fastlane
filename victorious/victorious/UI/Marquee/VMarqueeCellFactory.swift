@@ -8,12 +8,10 @@
 
 import UIKit
 
-/**
-    A wrapper around the marquee controller that adds conformance to the VStreamCellFactory protocol.
-*/
+/// A wrapper around the marquee controller that adds conformance to the VStreamCellFactory protocol.
 class VMarqueeCellFactory: NSObject, VHasManagedDependencies {
     
-    //The controller responsible for managing the display, reuse, and data updating for a marquee.
+    /// The controller responsible for managing the display, reuse, and data updating for a marquee.
     let marqueeController : VMarqueeController?
 
     required init(dependencyManager: VDependencyManager) {

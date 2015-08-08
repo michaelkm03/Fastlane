@@ -8,12 +8,10 @@
 
 import UIKit
 
-/**
-    A cell factory for providing cells that represent single sequences within a stream.
-*/
+/// A cell factory for providing cells that represent single sequences within a stream.
 class VSequenceContentCellFactory : VStreamContentCellFactory {
     
-    //The cell factory that will provide cells that represent single sequences
+    /// The cell factory that will provide cells that represent single sequences
     let streamCellFactory : VSleekStreamCellFactory
     
     required init(dependencyManager: VDependencyManager) {

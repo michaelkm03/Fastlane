@@ -1108,7 +1108,6 @@
 		F074097F1B059CA200C44623 /* VCoachmarkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F074097E1B059CA200C44623 /* VCoachmarkManager.m */; };
 		F07409841B059FEA00C44623 /* VCoachmark.m in Sources */ = {isa = PBXBuildFile; fileRef = F07409831B059FEA00C44623 /* VCoachmark.m */; };
 		F07557E61B73B49F00BB2648 /* VStreamItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F07557E51B73B49F00BB2648 /* VStreamItem.m */; };
-		F07557E81B73B86600BB2648 /* VStreamItem+TypeIdentification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07557E71B73B86600BB2648 /* VStreamItem+TypeIdentification.swift */; };
 		F07557EC1B751F5300BB2648 /* VDirectoryContentCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07557EB1B751F5300BB2648 /* VDirectoryContentCellFactory.swift */; };
 		F07557EE1B751F8C00BB2648 /* VSequenceContentCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07557ED1B751F8C00BB2648 /* VSequenceContentCellFactory.swift */; };
 		F07557F01B75321800BB2648 /* devShelfTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = F07557EF1B75321800BB2648 /* devShelfTemplate.json */; };
@@ -3315,7 +3314,6 @@
 		F07409831B059FEA00C44623 /* VCoachmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCoachmark.m; sourceTree = "<group>"; };
 		F07557E41B73B49F00BB2648 /* VStreamItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamItem.h; sourceTree = "<group>"; };
 		F07557E51B73B49F00BB2648 /* VStreamItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamItem.m; sourceTree = "<group>"; };
-		F07557E71B73B86600BB2648 /* VStreamItem+TypeIdentification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VStreamItem+TypeIdentification.swift"; sourceTree = "<group>"; };
 		F07557EA1B73EBD400BB2648 /* VStreamContentCellFactoryDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamContentCellFactoryDelegate.h; sourceTree = "<group>"; };
 		F07557EB1B751F5300BB2648 /* VDirectoryContentCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VDirectoryContentCellFactory.swift; sourceTree = "<group>"; };
 		F07557ED1B751F8C00BB2648 /* VSequenceContentCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VSequenceContentCellFactory.swift; sourceTree = "<group>"; };
@@ -5282,7 +5280,6 @@
 				A721E8781B572452000B7901 /* VStream+Fetcher.m */,
 				A721E8791B572452000B7901 /* VStreamItem+Fetcher.h */,
 				A721E87A1B572452000B7901 /* VStreamItem+Fetcher.m */,
-				F07557E71B73B86600BB2648 /* VStreamItem+TypeIdentification.swift */,
 				A7D7ED521B5D6A6300FA346A /* VUser+Fetcher.h */,
 				A7D7ED531B5D6A6300FA346A /* VUser+Fetcher.m */,
 			);
@@ -8916,7 +8913,6 @@
 				A721E9251B572454000B7901 /* VConversation+RestKit.m in Sources */,
 				0314D4B019B46B5E00FA363C /* VFetchedResultsTableViewController.m in Sources */,
 				A7DDA6E31B601C95005CE55E /* SettingsEmptyCell.swift in Sources */,
-				F07557E81B73B86600BB2648 /* VStreamItem+TypeIdentification.swift in Sources */,
 				C30AA4F01B0678BB0010CEFE /* VPermission.m in Sources */,
 				A7738B081A4A36C9008EA973 /* VTransitionModel.m in Sources */,
 				BE5C736A187E36E800A3340D /* VRule.m in Sources */,

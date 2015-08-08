@@ -8,25 +8,24 @@
 
 import UIKit
 
-/**
-    A cell factory that prepares and provides directory cells based
-        on the dependency manager used to init it and stream items
-        provided to create each cell.
-*/
+/// A cell factory that prepares and provides directory cells based on the
+/// dependency manager used to init it and stream items provided to create each cell.
 class VDirectoryContentCellFactory : VStreamContentCellFactory {
     
-    //The key of the directory cell returned in the dependency manager
+    /// The key of the directory cell returned in the dependency manager
     private static let kDirectoryCellFactoryKey = "directoryCell"
     
-    /**
-        The directory cell factory subclass created from the dependency manager
-            provided to this class' init
-    */
+    /// The directory cell factory subclass created from the dependency manager provided to this class' init
     private let directoryCellFactory : VDirectoryCellFactory?
     
     required init(dependencyManager: VDependencyManager) {
         let templateValue: AnyObject! = dependencyManager.templateValueConformingToProtocol(VDirectoryCellFactory.self, forKey: VDirectoryContentCellFactory.kDirectoryCellFactoryKey)
-        directoryCellFactory = templateValue as? VDirectoryCellFactory
+        if let factory = dependencyManager.templateValueConformingToProtocol(VDirectoryCellFactory.self, forKey: VDirectoryContentCellFactory.kDirectoryCellFactoryKey) as? VDirectoryCellFactory {
+            directoryCellFactory = factory
+        } else {
+            assertionFailure("The directory content cell factory was created with a nil directory cell. Check the directoryCell value in the template.")
+            directoryCellFactory = nil
+        }
         super.init(dependencyManager: dependencyManager)
     }
     

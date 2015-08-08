@@ -55,15 +55,9 @@
 + (RKObjectMapping *)mappingForItemType:(NSString *)type
 {
     RKObjectMapping *mapping = nil;
-    VItemType normalizedType = [VStreamItem normalizedItemType:type];
-    switch (normalizedType)
+    if ( [type isEqualToString:VStreamItemTypeMarquee] )
     {
-        case VItemTypeMarquee:
-            mapping = [self marqueeShelfMapping];
-            break;
-            
-        default:
-            break;
+        mapping = [self marqueeShelfMapping];
     }
     return mapping;
 }

@@ -10,8 +10,21 @@
 #import "VEditorializationItem+Restkit.h"
 #import "victorious-Swift.h"
 
-static NSString * const kVStreamContentTypeContent = @"content";
-static NSString * const kVStreamContentTypeStream = @"stream";
+//Type values
+NSString * const VStreamItemTypeSequence = @"sequence";
+NSString * const VStreamItemTypeStream = @"stream";
+NSString * const VStreamItemTypeMarquee = @"marquee";
+NSString * const VStreamItemTypeUser = @"user";
+NSString * const VStreamItemTypeHashtag = @"hashtag";
+NSString * const VStreamItemTypeFeed = @"feed";
+
+//Subtype values
+NSString * const VStreamItemSubTypeImage = @"image";
+NSString * const VStreamItemSubTypeVideo = @"video";
+NSString * const VStreamItemSubTypePoll = @"poll";
+NSString * const VStreamItemSubTypeText = @"text";
+NSString * const VStreamItemSubTypeContent = @"content";
+NSString * const VStreamItemSubTypeStream = @"stream";
 
 @implementation VStreamItem (Fetcher)
 
@@ -19,27 +32,27 @@ static NSString * const kVStreamContentTypeStream = @"stream";
 {
     if ( self.itemType != nil )
     {
-        return self.normalizedItemType == VItemTypeSequence;
+        return [self.itemType isEqualToString:VStreamItemTypeSequence];
     }
     return self.streamContentType == nil;
 }
 
 - (BOOL)isSingleStream
 {
-    if ( self.itemType != nil )
+    if ( self.itemSubType != nil )
     {
-        return self.normalizedItemSubType == VItemSubTypeContent;
+        return [self.itemSubType isEqualToString:VStreamItemSubTypeContent];
     }
-    return [self.streamContentType isEqualToString:kVStreamContentTypeContent];
+    return [self.streamContentType isEqualToString:VStreamItemSubTypeContent];
 }
 
 - (BOOL)isStreamOfStreams
 {
     if ( self.itemType != nil )
     {
-        return self.normalizedItemSubType == VItemSubTypeStream;
+        return [self.itemSubType isEqualToString:VStreamItemSubTypeStream];
     }
-    return [self.streamContentType isEqualToString:kVStreamContentTypeStream];
+    return [self.streamContentType isEqualToString:VStreamItemSubTypeStream];
 }
 
 - (NSArray *)previewImagePaths

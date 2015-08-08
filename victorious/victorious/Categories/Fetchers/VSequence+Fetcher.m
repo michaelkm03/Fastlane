@@ -33,11 +33,11 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
     {
         if ([self.category isEqualToString:category])
         {
-            return true;
+            return YES;
         }
     }
     
-    return false;
+    return [self.itemSubType isEqualToString:VStreamItemSubTypePoll];
 }
 
 - (BOOL)isQuiz
@@ -55,7 +55,7 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
         }
     }
     
-    return self.normalizedItemSubType == VItemSubTypeImage;
+    return [self.itemSubType isEqualToString:VStreamItemSubTypeImage];
 }
 
 - (BOOL)isVideo
@@ -68,7 +68,7 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
         }
     }
     
-    return self.normalizedItemSubType == VItemSubTypeVideo;
+    return [self.itemSubType isEqualToString:VStreamItemSubTypeVideo];
 }
 
 - (BOOL)isGIFVideo
@@ -84,7 +84,12 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
 - (BOOL)isText
 {
     NSArray *textCategories = @[ kVUGCTextCategory, kVUGCTextRepostCategory, kVOwnerTextCategory, kVOwnerTextRepostCategory];
-    return [textCategories containsObject:self.category];
+    if ( [textCategories containsObject:self.category] )
+    {
+        return YES;
+    }
+    
+    return [self.itemSubType isEqualToString:VStreamItemSubTypeText];
 }
 
 - (BOOL)isOwnerContent

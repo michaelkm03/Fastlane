@@ -8,17 +8,14 @@
 
 import UIKit
 
-/**
-    A cell factory for representing shelved streams across the app.
-        Treat this as an abstract base class and only use concrete
-        subclasses to utilize this class' functionality. In Swift 2.0
-        this class should be transformed into a protocol extension.
-*/
-
 //2.0 Improvement: Transform this into a protocol extension.
+
+/// A cell factory for representing shelved streams across the app. Treat this as an
+/// abstract base class and only use concrete subclasses to utilize this class' functionality.
+/// In Swift 2.0 this class should be transformed into a protocol extension.
 class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
     
-    //The object that should recieve messages about marquee data and selection updates.
+    /// The object that should recieve messages about marquee data and selection updates.
     weak var delegate : VStreamContentCellFactoryDelegate? {
         didSet {
             marqueeCellFactory.marqueeController?.setSelectionDelegate(delegate)
@@ -26,31 +23,27 @@ class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
         }
     }
     
-    //The cell factory that will provide marquee cells
+    /// The cell factory that will provide marquee cells
     private let marqueeCellFactory : VMarqueeCellFactory
     
-    //The dependency manager used to style all cells from this factory
+    /// The dependency manager used to style all cells from this factory
     private let dependencyManager : VDependencyManager
     
-    //Nil by default, overridden by subclasses to return a factory that provides non-shelf cells
+    /// Nil by default, overridden by subclasses to return a factory that provides non-shelf cells
     func defaultFactory() -> VStreamCellFactory? {
         return nil
     }
-    
+
     required init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
         marqueeCellFactory = VMarqueeCellFactory(dependencyManager: dependencyManager)
     }
     
     private func factory(streamItem: VStreamItem) -> VStreamCellFactory? {
-        let itemType = streamItem.normalizedItemType()
-        let subType = streamItem.normalizedItemSubType()
-        
-        switch itemType {
-        case .Marquee:
-            return marqueeCellFactory
-        default:
-            break
+        if let itemType = streamItem.itemType {
+            if itemType == VStreamItemTypeMarquee {
+                return marqueeCellFactory
+            }
         }
         return defaultFactory()
     }
@@ -72,7 +65,7 @@ extension VStreamContentCellFactory : VStreamCellFactory {
     }
     
     func sizeWithCollectionViewBounds(bounds: CGRect, ofCellForStreamItem streamItem: VStreamItem) -> CGSize {
-        if let factory = factory(streamItem) {
+        if let factory = self.factory(streamItem) {
             return factory.sizeWithCollectionViewBounds(bounds, ofCellForStreamItem: streamItem)
         }
         return CGSizeZero

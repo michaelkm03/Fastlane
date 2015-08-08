@@ -36,7 +36,6 @@ static const CGFloat kOffsetOvershoot = 20.0f;
 @property (nonatomic, assign) BOOL firstImageLoaded;
 @property (nonatomic, assign) BOOL backgroundCellIsVisible;
 @property (nonatomic, strong) NSMutableArray *loadingPreviewViews;
-@property (nonatomic, strong) VBlurredMarqueeCollectionViewCell *marqueeCell;
 
 @end
 
@@ -235,26 +234,22 @@ static const CGFloat kOffsetOvershoot = 20.0f;
 
 - (VAbstractMarqueeCollectionViewCell *)marqueeCellForCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath
 {
-    if ( self.marqueeCell == nil )
-    {
-        VBlurredMarqueeCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VBlurredMarqueeCollectionViewCell suggestedReuseIdentifier]
-                                                         forIndexPath:indexPath];
-        cell.dependencyManager = self.dependencyManager;
-        cell.marquee = self;
-        self.collectionView.hidden = !self.showedInitialDisplayAnimation;
-        CGSize desiredSize = [VBlurredMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:collectionView.bounds];
-        cell.bounds = CGRectMake(0, 0, desiredSize.width, desiredSize.height);
-        self.marqueeCell = cell;
-    }
+    VBlurredMarqueeCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VBlurredMarqueeCollectionViewCell suggestedReuseIdentifier]
+                                                                                        forIndexPath:indexPath];
+    cell.dependencyManager = self.dependencyManager;
+    cell.marquee = self;
+    self.collectionView.hidden = !self.showedInitialDisplayAnimation;
+    CGSize desiredSize = [VBlurredMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:collectionView.bounds];
+    cell.bounds = CGRectMake(0, 0, desiredSize.width, desiredSize.height);
     
     [self enableTimer];
-    [self.marqueeCell layoutIfNeeded];
+    [cell layoutIfNeeded];
     if ( !self.showedInitialDisplayAnimation )
     {
         [self refreshCellSubviews];
     }
     
-    return self.marqueeCell;
+    return cell;
 }
 
 - (void)setCrossfadingLabel:(VCrossFadingMarqueeLabel *)crossfadingLabel

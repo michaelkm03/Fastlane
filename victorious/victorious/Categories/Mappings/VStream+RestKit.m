@@ -164,38 +164,24 @@
         {
             NSDictionary *dictionaryRepresentation = (NSDictionary *)representation;
             NSString *type = [dictionaryRepresentation objectForKey:@"type"];
-            VItemType itemType = [VStreamItem normalizedItemType:type];
-            switch (itemType)
+            if ( [type isEqualToString:VStreamItemTypeStream] )
             {
-                case VItemTypeStream:
+                if ( child )
                 {
-                    if ( child )
-                    {
-                        mapping = [self childStreamMapping];
-                    }
-                    else
-                    {
-                        mapping = [self feedPayloadMappingAtChildLevel:YES];
-                    }
-                    break;
+                    mapping = [self childStreamMapping];
                 }
-                    
-                case VItemTypeSequence:
+                else
                 {
-                    mapping = [VSequence entityMapping];
-                    break;
+                    mapping = [self feedPayloadMappingAtChildLevel:YES];
                 }
-                    
-                case VItemTypeMarquee:
-                case VItemTypeUser:
-                case VItemTypeHashtag:
-                {
-                    mapping = [VShelf mappingForItemType:type];
-                    break;
-                }
-                    
-                default:
-                    break;
+            }
+            else if ( [type isEqualToString:VStreamItemTypeSequence] )
+            {
+                mapping = [VSequence entityMapping];
+            }
+            else if ( [type isEqualToString:VStreamItemTypeMarquee] || [type isEqualToString:VStreamItemTypeUser] || [type isEqualToString:VStreamItemTypeHashtag] )
+            {
+                mapping = [VShelf mappingForItemType:type];
             }
         }
         

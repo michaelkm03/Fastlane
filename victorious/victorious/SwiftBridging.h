@@ -80,3 +80,4 @@
 #import "VDirectoryCellFactory.h"
 #import "VDirectoryCellUpdateableFactory.h"
 #import "VDirectoryCollectionFlowLayout.h"
+#import "VStreamItem+Fetcher.h"
