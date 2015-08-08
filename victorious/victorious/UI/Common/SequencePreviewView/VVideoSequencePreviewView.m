@@ -38,19 +38,19 @@
                                                                                   views:NSDictionaryOfVariableBindings(_soundIndicator)]];
         
         _replayButton = [[UIButton alloc] init];
-        _replayButton.translatesAutoresizingMaskIntoConstraints = NO;
-        [_replayButton addTarget:self action:@selector(replayPressed:) forControlEvents:UIControlEventTouchUpInside];
-        [_replayButton setImage:[UIImage imageNamed:@"restart_video"] forState:UIControlStateNormal];
-        _replayButton.hidden = YES;
-        [self addSubview:_replayButton];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_replayButton(50)]-10-|"
-                                                                     options:0
-                                                                     metrics:nil
-                                                                       views:NSDictionaryOfVariableBindings(_replayButton)]];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-25-[_replayButton(50)]"
-                                                                     options:0
-                                                                     metrics:nil
-                                                                       views:NSDictionaryOfVariableBindings(_replayButton)]];
+//        _replayButton.translatesAutoresizingMaskIntoConstraints = NO;
+//        [_replayButton addTarget:self action:@selector(replayPressed:) forControlEvents:UIControlEventTouchUpInside];
+//        [_replayButton setImage:[UIImage imageNamed:@"restart_video"] forState:UIControlStateNormal];
+//        _replayButton.hidden = YES;
+//        [self addSubview:_replayButton];
+//        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_replayButton(50)]-10-|"
+//                                                                     options:0
+//                                                                     metrics:nil
+//                                                                       views:NSDictionaryOfVariableBindings(_replayButton)]];
+//        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-25-[_replayButton(50)]"
+//                                                                     options:0
+//                                                                     metrics:nil
+//                                                                       views:NSDictionaryOfVariableBindings(_replayButton)]];
         
         
     }
@@ -68,9 +68,9 @@
     VAsset *mp4Asset = [sequence.firstNode mp4Asset];
     
     // First check mp4 asset to see if we should autoplay and only if it's under 30 seconds
-//    if ( !mp4Asset.streamAutoplay.boolValue && mp4Asset.duration != nil && mp4Asset.duration.integerValue < 30 )
+    if ( mp4Asset.streamAutoplay.boolValue && mp4Asset.duration != nil && mp4Asset.duration.integerValue < 30 )
 #warning - Testing
-    if ( !mp4Asset.streamAutoplay.boolValue )
+//    if ( !mp4Asset.streamAutoplay.boolValue )
     {
         self.videoView.hidden = NO;
         self.playIconContainerView.hidden = YES;
@@ -86,7 +86,8 @@
          }];
     }
     // Else check HLS asset to see if we should autoplay and only if it's over 30 seconds
-    else if ( !HLSAsset.streamAutoplay.boolValue && HLSAsset.duration != nil && HLSAsset.duration.integerValue >= 30)
+//    else if ( !HLSAsset.streamAutoplay.boolValue && HLSAsset.duration != nil && HLSAsset.duration.integerValue >= 30)
+    else if ( !HLSAsset.streamAutoplay.boolValue )
     {
         
         self.videoView.hidden = NO;
@@ -140,6 +141,16 @@
 {
     self.soundIndicator.hidden = YES;
     self.replayButton.hidden = NO;
+}
+
+- (void)videoViewDidStartBuffering:(VVideoView *__nonnull)videoView
+{
+    self.videoView.hidden = YES;
+}
+
+- (void)videoViewDidStopBuffering:(VVideoView *__nonnull)videoView
+{
+    self.videoView.hidden = NO;
 }
 
 @end

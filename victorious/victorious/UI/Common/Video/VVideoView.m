@@ -152,6 +152,35 @@ NS_ASSUME_NONNULL_BEGIN
                                                  name:AVPlayerItemDidPlayToEndTimeNotification
                                                object:playerItem];
     
+    __weak VVideoView *weakSelf = self;
+    [self.KVOController observe:playerItem
+                       keyPaths:@[@"playbackBufferEmpty"]
+                        options:NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change) {
+                              if (playerItem.playbackBufferEmpty)
+                              {
+                                  __strong VVideoView *strongSelf = weakSelf;
+                                  if ([strongSelf.delegate respondsToSelector:@selector(videoViewDidStartBuffering:)])
+                                  {
+                                      [strongSelf.delegate videoViewDidStartBuffering:strongSelf];
+                                  }
+                              }
+                          }];
+    
+    [self.KVOController observe:playerItem
+                       keyPaths:@[@"playbackLikelyToKeepUp"]
+                        options:NSKeyValueObservingOptionNew
+                          block:^(id observer, id object, NSDictionary *change) {
+                              if (playerItem.playbackLikelyToKeepUp)
+                              {
+                                  __strong VVideoView *strongSelf = weakSelf;
+                                  if ([strongSelf.delegate respondsToSelector:@selector(videoViewDidStopBuffering:)])
+                                  {
+                                      [strongSelf.delegate videoViewDidStopBuffering:strongSelf];
+                                  }
+                              }
+                          }];
+    
     if ( self.delegate != nil )
     {
         [self.delegate videoViewPlayerDidBecomeReady:self];

@@ -28,6 +28,16 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)videoDidReachEnd:(VVideoView *)videoView;
 
+/**
+ Called when the video's buffer is empty
+ */
+- (void)videoViewDidStartBuffering:(VVideoView *)videoView;
+
+/**
+ Called when the video's buffer is likely to keep up
+ */
+- (void)videoViewDidStopBuffering:(VVideoView *) videoView;
+
 @end
 
 /**
