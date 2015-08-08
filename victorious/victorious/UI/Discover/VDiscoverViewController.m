@@ -594,4 +594,11 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     [self.followingHelper unfollowUser:user withAuthorizedBlock:authorizedBlock andCompletion:completion];
 }
 
+#pragma mark - VTabMenuContainedViewControllerNavigation
+
+- (void)reselected
+{
+    [self.tableView setContentOffset:CGPointZero animated:YES];
+}
+
 @end

@@ -420,4 +420,15 @@ static NSString * const kInitialKey = @"initial";
     return [self.dependencyManager stringForKey:VDependencyManagerIDKey];
 }
 
+#pragma mark - VTabMenuContainedViewControllerNavigation
+
+- (void)reselected
+{
+    id childViewController = [self children][self.selectedIndex];
+    if ( [childViewController conformsToProtocol:@protocol(VTabMenuContainedViewControllerNavigation)] )
+    {
+        [((id<VTabMenuContainedViewControllerNavigation>)childViewController) reselected];
+    }
+}
+
 @end
