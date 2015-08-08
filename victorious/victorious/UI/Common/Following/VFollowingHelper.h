@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-extern NSString * const VFollowSourceScreenDiscover;
+extern NSString * const VFollowSourceScreenDiscoverSuggestedUsers;
 extern NSString * const VFollowSourceScreenReposter;
 extern NSString * const VFollowSourceScreenProfile;
-extern NSString * const VFollowSourceScreenUserSearchResults;
+extern NSString * const VFollowSourceScreenDiscoverUserSearchResults;
 extern NSString * const VFollowSourceScreenFollowersList;
 extern NSString * const VFollowSourceScreenFollowingList;
 extern NSString * const VFollowSourceScreenLikersList;

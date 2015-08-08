@@ -197,7 +197,7 @@
 
 - (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion
 {
-    NSString *screenName = VFollowSourceScreenUserSearchResults;
+    NSString *screenName = VFollowSourceScreenDiscoverUserSearchResults;
     [self.followHelper followUser:user
               withAuthorizedBlock:authorizedBlock
                     andCompletion:completion

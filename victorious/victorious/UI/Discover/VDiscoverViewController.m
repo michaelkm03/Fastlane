@@ -586,7 +586,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 - (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion
 {
-    NSString *screenName = VFollowSourceScreenDiscover;
+    NSString *screenName = VFollowSourceScreenDiscoverSuggestedUsers;
     [self.followingHelper followUser:user
                  withAuthorizedBlock:authorizedBlock
                        andCompletion:completion

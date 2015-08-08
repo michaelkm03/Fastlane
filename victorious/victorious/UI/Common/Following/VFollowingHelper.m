@@ -16,10 +16,10 @@
 #import "VUser.h"
 #import "VObjectManager+Users.h"
 
-NSString * const VFollowSourceScreenDiscover = @"follow_discover";
+NSString * const VFollowSourceScreenDiscoverSuggestedUsers = @"follow_discover.suggest";
 NSString * const VFollowSourceScreenReposter = @"follow_reposter";
 NSString * const VFollowSourceScreenProfile = @"follow_profile";
-NSString * const VFollowSourceScreenUserSearchResults = @"follow_user_search_results";
+NSString * const VFollowSourceScreenDiscoverUserSearchResults = @"follow_discover.search";
 NSString * const VFollowSourceScreenFollowersList = @"follow_followers_list";
 NSString * const VFollowSourceScreenFollowingList = @"follow_following_list";
 NSString * const VFollowSourceScreenLikersList = @"follow_likers_list";
