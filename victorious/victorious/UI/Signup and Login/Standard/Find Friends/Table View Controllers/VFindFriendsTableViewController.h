@@ -16,6 +16,9 @@
 
 - (void)inviteButtonWasTappedInFindFriendsTableViewController:(VFindFriendsTableViewController *)findFriendsTableViewController;
 
+@optional
+- (UIViewController *)currentViewControllerDisplayed;
+
 @end
 
 typedef NS_ENUM(NSInteger, VFindFriendsTableViewState)

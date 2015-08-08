@@ -17,13 +17,18 @@
 #import "VObjectManager+Users.h"
 
 NSString * const VFollowSourceScreenDiscover = @"follow_discover";
-NSString * const VFollowSourceScreenFindFriends = @"follow_find_friends";
 NSString * const VFollowSourceScreenReposter = @"follow_reposter";
-NSString * const VFollowSourceScreenRootview = @"follow_rootview";
 NSString * const VFollowSourceScreenProfile = @"follow_profile";
 NSString * const VFollowSourceScreenUserSearchResults = @"follow_user_search_results";
-NSString * const VFollowSourceScreenUserSearch = @"follow_user_search";
-NSString * const VFollowSourceScreenUsersView = @"follow_user_view";
+NSString * const VFollowSourceScreenFollowersList = @"follow_followers_list";
+NSString * const VFollowSourceScreenFollowingList = @"follow_following_list";
+NSString * const VFollowSourceScreenLikersList = @"follow_likers_list";
+NSString * const VFollowSourceScreenMessageableUsersList = @"follow_messageable_users_list";
+NSString * const VFollowSourceScreenFindFriendsContacts = @"follow_find_friends.contacts";
+NSString * const VFollowSourceScreenFindFriendsFacebook = @"follow_find_friends.facebook";
+NSString * const VFollowSourceScreenFindFriendsTwitter = @"follow_find_friends.twitter";
+NSString * const VFollowSourceScreenShelf = @"follow_shelf";
+NSString * const VFollowSourceUntracked = @"follow_untracked";
 
 @implementation VFollowingHelper
 

@@ -208,7 +208,19 @@
 
 - (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion
 {
-    NSString *screenName = VFollowSourceScreenUsersView;
+    NSString *screenName = VFollowSourceUntracked;
+    NSDictionary *dict = @{
+                           @"Followers" : VFollowSourceScreenFollowersList,
+                           @"Following" : VFollowSourceScreenFollowingList,
+                           @"Likers"    : VFollowSourceScreenLikersList
+                           };
+    
+    NSString *screenNameLookUpResult = [dict valueForKey:self.title];
+    if ( screenNameLookUpResult != nil )
+    {
+        screenName = screenNameLookUpResult;
+    }
+
     [self.followingHelper followUser:user
                  withAuthorizedBlock:authorizedBlock
                        andCompletion:completion

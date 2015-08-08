@@ -214,6 +214,11 @@
 
 #pragma mark - VFindFriendsTableViewControllerDelegate Method
 
+- (UIViewController *)currentViewControllerDisplayed
+{
+    return self.tabBarViewController.displayedViewController;
+}
+
 - (void)inviteButtonWasTappedInFindFriendsTableViewController:(VFindFriendsTableViewController *)findFriendsTableViewController
 {
     [self sendInvitation];

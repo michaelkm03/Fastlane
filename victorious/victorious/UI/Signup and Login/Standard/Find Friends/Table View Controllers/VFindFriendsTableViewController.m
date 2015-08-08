@@ -21,6 +21,9 @@
 #import "VDependencyManager.h"
 #import "VFollowResponder.h"
 #import "VFollowingHelper.h"
+#import "VFindContactsTableViewController.h"
+#import "VFindFacebookFriendsTableViewController.h"
+#import "VFindTwitterFriendsTableViewController.h"
 
 @interface VFindFriendsTableViewController () <UITableViewDataSource, UITableViewDelegate, VFollowResponder>
 
@@ -464,7 +467,21 @@
 
 - (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion
 {
-    NSString *screenName = VFollowSourceScreenFindFriends;
+    NSString *screenName = VFollowSourceUntracked;
+    UIViewController *displayedVC = [self.delegate currentViewControllerDisplayed];
+    
+    NSDictionary *dict = @{
+                           NSStringFromClass([VFindContactsTableViewController class]) : VFollowSourceScreenFindFriendsContacts,
+                           NSStringFromClass([VFindFacebookFriendsTableViewController class]) : VFollowSourceScreenFindFriendsFacebook,
+                           NSStringFromClass([VFindTwitterFriendsTableViewController class]) : VFollowSourceScreenFindFriendsTwitter
+                           };
+    
+    NSString *screenNameLookUpResult = [dict valueForKey:NSStringFromClass([displayedVC class])];
+    if ( screenNameLookUpResult != nil )
+    {
+        screenName = screenNameLookUpResult;
+    }
+    
     [self.followingHelper followUser:user
                  withAuthorizedBlock:authorizedBlock
                        andCompletion:completion
