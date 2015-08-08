@@ -18,7 +18,7 @@
 /**
  *  A Sequence preview view for video sequences.
  */
-@interface VBaseVideoSequencePreviewView : VSequencePreviewView <VCellFocus, VPreviewViewBackgroundHost>
+@interface VBaseVideoSequencePreviewView : VSequencePreviewView <VCellFocus, VPreviewViewBackgroundHost, VVideoViewDelegate>
 
 @property (nonatomic, strong) UIView *playIconContainerView;
 @property (nonatomic, strong) VVideoView *videoView;

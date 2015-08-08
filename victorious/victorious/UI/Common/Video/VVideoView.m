@@ -161,6 +161,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)playerItemDidReachEnd:(NSNotification *)notification
 {
     [self.player.currentItem seekToTime:kCMTimeZero];
+    
+    if ([self.delegate respondsToSelector:@selector(videoDidReachEnd:)])
+    {
+        [self.delegate videoDidReachEnd:self];
+    }
 }
 
 - (BOOL)isPlayingVideo

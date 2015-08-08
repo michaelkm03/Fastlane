@@ -20,7 +20,7 @@
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VDependencyManager+VBackground.h"
 
-@interface VBaseVideoSequencePreviewView () <VVideoViewDelegate>
+@interface VBaseVideoSequencePreviewView ()
 
 @property (nonatomic, strong) UIImageView *previewImageView;
 @property (nonatomic, assign) BOOL hasFocus;

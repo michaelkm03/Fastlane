@@ -21,6 +21,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)videoViewPlayerDidBecomeReady:(VVideoView *)videoView;
 
+@optional
+
+/**
+ This video view's video reached the end
+ */
+- (void)videoDidReachEnd:(VVideoView *)videoView;
+
 @end
 
 /**
