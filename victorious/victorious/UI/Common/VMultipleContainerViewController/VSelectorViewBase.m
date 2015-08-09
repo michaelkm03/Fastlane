@@ -8,6 +8,9 @@
 
 #import "VDependencyManager.h"
 #import "VSelectorViewBase.h"
+#import "VNumericalBadgeView.h"
+#import "VProvidesNavigationMenuItemBadge.h"
+#import "VBadgeResponder.h"
 
 @implementation VSelectorViewBase
 
@@ -38,8 +41,14 @@
 
 - (CGRect)frameOfButtonAtIndex:(NSUInteger)index
 {
-    NSAssert(false, @"frameOfButtonAtIndex: must be overridden by subclasses of VSelectorViewBase");
+    NSAssert(NO, @"subclasses of VSelectorViewBase must override frameOfButtonAtIndex");
+    
     return CGRectZero;
+}
+
+- (void)updateSelectorTitle
+{
+    // subclasses can override this method
 }
 
 #pragma mark - Properties

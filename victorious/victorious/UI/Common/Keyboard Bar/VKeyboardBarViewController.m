@@ -17,6 +17,9 @@
 #import "VThemeManager.h"
 #import "VAppDelegate.h"
 #import "VUserTaggingTextStorage.h"
+#import "VDependencyManager.h"
+#import "VTag.h"
+#import "VTagStringFormatter.h"
 
 static const CGFloat kTextInputFieldMaxLines = 3.0f;
 
@@ -121,6 +124,14 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
     
     self.mediaButton.layer.cornerRadius = 2;
     self.mediaButton.clipsToBounds = YES;
+}
+
+#pragma mark - public methods
+
+- (void)setReplyRecipient:(VUser *)user
+{
+    [self.textStorage repliedToUser:user];
+    self.promptLabel.hidden = (self.textStorage.textView.text != nil);
 }
 
 - (void)clearKeyboardBar
@@ -294,19 +305,10 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
 {
     if ([text isEqualToString:@"\n"])
     {
-        switch (textView.returnKeyType)
+        [textView resignFirstResponder];
+        if ([self.delegate respondsToSelector:@selector(didCancelKeyboardBar:)])
         {
-            case UIReturnKeyGo:
-            case UIReturnKeyDone:
-            case UIReturnKeySend:
-                [textView resignFirstResponder];
-                if ([self.delegate respondsToSelector:@selector(didCancelKeyboardBar:)])
-                {
-                    [self.delegate didCancelKeyboardBar:self];
-                }
-                return NO;
-            default:
-                break;
+            [self.delegate didCancelKeyboardBar:self];
         }
     }
     

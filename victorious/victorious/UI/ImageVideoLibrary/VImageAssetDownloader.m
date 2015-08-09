@@ -15,6 +15,7 @@ NSString * const VImageAssetDownloaderErrorDomain = @"com.victorious.VImageAsset
 @interface VImageAssetDownloader ()
 
 @property (nonatomic, strong) PHAsset *asset;
+@property (nonatomic, strong) CIContext *context;
 
 @end
 
@@ -27,6 +28,8 @@ NSString * const VImageAssetDownloaderErrorDomain = @"com.victorious.VImageAsset
     if (self != nil)
     {
         _asset = asset;
+        _context = [CIContext contextWithOptions:@{kCIContextUseSoftwareRenderer:@(NO),
+                                                   kCIContextPriorityRequestLow:@(YES)}];
     }
     return self;
 }
@@ -85,15 +88,17 @@ NSString * const VImageAssetDownloaderErrorDomain = @"com.victorious.VImageAsset
                             });
                             UIImage *imageFromData = [UIImage imageWithData:imageData];
                             UIImage *imageWithProperOrientation = [[UIImage imageWithCGImage:imageFromData.CGImage scale:1.0f orientation:orientation] fixOrientation];
+                            CGFloat compensationDimension = ([self.context inputImageMaximumSize].width * (1 / [UIScreen mainScreen].scale) - 1);
+                            UIImage *scaledImage = [imageWithProperOrientation scaledImageWithMaxDimension:compensationDimension];
                             NSError *error;
-                            NSData *imageData = UIImageJPEGRepresentation(imageWithProperOrientation, 1.0f);
+                            NSData *imageData = UIImageJPEGRepresentation(scaledImage, 1.0f);
                             BOOL success = [imageData writeToURL:urlForAsset options:NSDataWritingAtomic error:&error];
                             
                             dispatch_async(dispatch_get_main_queue(), ^
                                            {
                                                if (success)
                                                {
-                                                   completion(nil, urlForAsset, imageWithProperOrientation);
+                                                   completion(nil, urlForAsset, scaledImage);
                                                }
                                                else
                                                {

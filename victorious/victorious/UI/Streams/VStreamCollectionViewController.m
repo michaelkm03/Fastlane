@@ -100,7 +100,7 @@ static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
-@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VMarqueeSelectionDelegate, VMarqueeDataDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate>
+@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -1050,6 +1050,14 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 - (BOOL)selectorIsVisible
 {
     return !self.navigationController.navigationBarHidden;
+}
+
+#pragma mark - VTabMenuContainedViewControllerNavigation
+
+- (void)reselected
+{
+    [self.v_navigationController setNavigationBarHidden:NO];
+    [self.collectionView setContentOffset:CGPointZero animated:YES];
 }
 
 @end
