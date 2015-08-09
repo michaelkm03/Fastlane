@@ -39,7 +39,7 @@ class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
         marqueeCellFactory = VMarqueeCellFactory(dependencyManager: dependencyManager)
     }
     
-    private func factory(streamItem: VStreamItem) -> VStreamCellFactory? {
+    private func factoryForStreamItem(streamItem: VStreamItem) -> VStreamCellFactory? {
         if let itemType = streamItem.itemType {
             if itemType == VStreamItemTypeMarquee {
                 return marqueeCellFactory
@@ -57,7 +57,7 @@ extension VStreamContentCellFactory : VStreamCellFactory {
     }
     
     func collectionView(collectionView: UICollectionView, cellForStreamItem streamItem: VStreamItem, atIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if let factory = factory(streamItem) {
+        if let factory = factoryForStreamItem(streamItem) {
             return factory.collectionView(collectionView, cellForStreamItem: streamItem, atIndexPath: indexPath)
         }
         assertionFailure("A cell was requested from a content cell factory with a nil default factory.")
@@ -65,7 +65,7 @@ extension VStreamContentCellFactory : VStreamCellFactory {
     }
     
     func sizeWithCollectionViewBounds(bounds: CGRect, ofCellForStreamItem streamItem: VStreamItem) -> CGSize {
-        if let factory = self.factory(streamItem) {
+        if let factory = factoryForStreamItem(streamItem) {
             return factory.sizeWithCollectionViewBounds(bounds, ofCellForStreamItem: streamItem)
         }
         return CGSizeZero
