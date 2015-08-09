@@ -8,8 +8,6 @@
 
 import UIKit
 
-//WARNING: DO TESTS
-
 /// A wrapper around the marquee controller that adds conformance to the VStreamCellFactory protocol.
 class VMarqueeCellFactory: NSObject, VHasManagedDependencies {
     
