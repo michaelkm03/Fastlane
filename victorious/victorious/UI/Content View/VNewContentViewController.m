@@ -844,7 +844,16 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         }
             
         case VContentViewSectionExperienceEnhancers:
-            return 1;
+        {
+            if (self.viewModel.type == VContentViewTypePoll)
+            {
+                return 1;
+            }
+            else
+            {
+                return self.viewModel.experienceEnhancerController.numberOfExperienceEnhancers > 0;
+            }
+        }
         case VContentViewSectionAllComments:
             return (NSInteger)self.viewModel.comments.count;
         case VContentViewSectionCount:
