@@ -48,7 +48,7 @@ extension VMarqueeCellFactory: VStreamCellFactory {
         if let marquee = marqueeController {
             return marquee.desiredSizeWithCollectionViewBounds(bounds)
         }
-        return CGSizeZero
+        return CGSize.zeroSize
     }
     
     func minimumLineSpacing() -> CGFloat {

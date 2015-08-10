@@ -68,7 +68,7 @@ extension VStreamContentCellFactory: VStreamCellFactory {
         if let factory = factoryForStreamItem(streamItem) {
             return factory.sizeWithCollectionViewBounds(bounds, ofCellForStreamItem: streamItem)
         }
-        return CGSizeZero
+        return CGSize.zeroSize
     }
     
     func minimumLineSpacing() -> CGFloat {
