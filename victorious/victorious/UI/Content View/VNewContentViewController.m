@@ -462,6 +462,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 {
     [super viewWillAppear:animated];
     
+    [self didUpdateCommentsWithPageType:VPageTypeFirst];
     [self.dependencyManager trackViewWillAppear:self];
     
     
@@ -1667,6 +1668,16 @@ referenceSizeForHeaderInSection:(NSInteger)section
     editViewController.transitioningDelegate = self.modalTransitionDelegate;
     editViewController.delegate = self;
     [self presentViewController:editViewController animated:YES completion:nil];
+}
+
+- (void)replyToComment:(VComment *)comment
+{
+    NSUInteger row = [self.viewModel.comments indexOfObject:comment];
+    NSIndexPath *indexPath =  [NSIndexPath indexPathForRow:row inSection:VContentViewSectionAllComments] ;
+    [self.contentCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:YES];
+    
+    [self.textEntryView setReplyRecipient:comment.user];
+    [self.textEntryView.editingTextView becomeFirstResponder];
 }
 
 #pragma mark - VEditCommentViewControllerDelegate

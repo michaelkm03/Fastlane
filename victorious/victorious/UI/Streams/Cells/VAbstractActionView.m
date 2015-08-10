@@ -106,14 +106,9 @@
     UIResponder<VSequenceActionsDelegate> *targetForRepost = [self targetForAction:@selector(willRepostSequence:fromView:completion:)
                                                                         withSender:self];
     NSAssert( targetForRepost != nil, @"We need an object in the responder chain for resposting.");
-    UIButton *button = sender;
-    button.enabled = NO;
     [targetForRepost willRepostSequence:self.sequence
                                fromView:self
-                             completion:^(BOOL success)
-     {
-         button.enabled = YES;
-     }];
+                             completion:nil];
 }
 
 - (void)meme:(id)sender

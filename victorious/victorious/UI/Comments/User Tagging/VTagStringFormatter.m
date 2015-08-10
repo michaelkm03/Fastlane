@@ -178,7 +178,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^(void)
                   {
-                      hashtagRegex = [NSRegularExpression regularExpressionWithPattern:@"(#\\w+)"
+                      hashtagRegex = [NSRegularExpression regularExpressionWithPattern:@"(#\\w*[a-zA-Z]\\w*)"
                                                                                options:0
                                                                                  error:nil];
                   });
