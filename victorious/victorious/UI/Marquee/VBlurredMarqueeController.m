@@ -236,17 +236,20 @@ static const CGFloat kOffsetOvershoot = 20.0f;
 {
     VBlurredMarqueeCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VBlurredMarqueeCollectionViewCell suggestedReuseIdentifier]
                                                                                         forIndexPath:indexPath];
-    cell.dependencyManager = self.dependencyManager;
-    cell.marquee = self;
-    self.collectionView.hidden = !self.showedInitialDisplayAnimation;
-    CGSize desiredSize = [VBlurredMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:collectionView.bounds];
-    cell.bounds = CGRectMake(0, 0, desiredSize.width, desiredSize.height);
-    
-    [self enableTimer];
-    [cell layoutIfNeeded];
-    if ( !self.showedInitialDisplayAnimation )
+    if ( cell.marquee != self )
     {
-        [self refreshCellSubviews];
+        cell.dependencyManager = self.dependencyManager;
+        cell.marquee = self;
+        self.collectionView.hidden = !self.showedInitialDisplayAnimation;
+        CGSize desiredSize = [VBlurredMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:collectionView.bounds];
+        cell.bounds = CGRectMake(0, 0, desiredSize.width, desiredSize.height);
+        
+        [self enableTimer];
+        [cell layoutIfNeeded];
+        if ( !self.showedInitialDisplayAnimation )
+        {
+            [self refreshCellSubviews];
+        }
     }
     
     return cell;

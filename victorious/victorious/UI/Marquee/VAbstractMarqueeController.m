@@ -74,6 +74,11 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 
 - (void)setStream:(VStream *)stream
 {
+    if ( stream == _stream )
+    {
+        return;
+    }
+    
     [self.KVOController unobserve:_stream];
     _stream = stream;
     [self reset];
@@ -85,6 +90,11 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 
 - (void)setShelf:(VShelf *)shelf
 {
+    if ( shelf == _shelf )
+    {
+        return;
+    }
+    
     [self.KVOController unobserve:_shelf.stream];
     _shelf = shelf;
     [self reset];
