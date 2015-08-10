@@ -475,6 +475,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     VUserSearchViewController *userSearch = [VUserSearchViewController newWithDependencyManager:self.dependencyManager];
     userSearch.searchContext = VObjectManagerSearchContextMessage;
     userSearch.messageSearchDelegate = self;
+    userSearch.userSearchPresenter = VUserSearchPresenterMessages;
     
     //Create a navigation controller that will hold the user search view controller
     VNavigationController *navigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];

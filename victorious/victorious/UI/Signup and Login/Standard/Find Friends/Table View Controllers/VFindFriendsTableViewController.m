@@ -467,7 +467,6 @@
 
 - (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion
 {
-    NSString *screenName = VFollowSourceUntracked;
     UIViewController *displayedVC = [self.delegate currentViewControllerDisplayed];
     
     NSDictionary *dict = @{
@@ -476,11 +475,7 @@
                            NSStringFromClass([VFindTwitterFriendsTableViewController class]) : VFollowSourceScreenFindFriendsTwitter
                            };
     
-    NSString *screenNameLookUpResult = [dict valueForKey:NSStringFromClass([displayedVC class])];
-    if ( screenNameLookUpResult != nil )
-    {
-        screenName = screenNameLookUpResult;
-    }
+    NSString *screenName = [dict valueForKey:NSStringFromClass([displayedVC class])];
     
     [self.followingHelper followUser:user
                  withAuthorizedBlock:authorizedBlock

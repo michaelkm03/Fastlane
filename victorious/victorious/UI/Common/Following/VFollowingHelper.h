@@ -12,10 +12,10 @@ extern NSString * const VFollowSourceScreenDiscoverSuggestedUsers;
 extern NSString * const VFollowSourceScreenReposter;
 extern NSString * const VFollowSourceScreenProfile;
 extern NSString * const VFollowSourceScreenDiscoverUserSearchResults;
-extern NSString * const VFollowSourceScreenFollowersList;
-extern NSString * const VFollowSourceScreenFollowingList;
-extern NSString * const VFollowSourceScreenLikersList;
-extern NSString * const VFollowSourceScreenMessageableUsersList;
+extern NSString * const VFollowSourceScreenFollowers;
+extern NSString * const VFollowSourceScreenFollowing;
+extern NSString * const VFollowSourceScreenLikers;
+extern NSString * const VFollowSourceScreenMessageableUsers;
 extern NSString * const VFollowSourceScreenFindFriendsContacts;
 extern NSString * const VFollowSourceScreenFindFriendsFacebook;
 extern NSString * const VFollowSourceScreenFindFriendsTwitter;
@@ -23,7 +23,7 @@ extern NSString * const VFollowSourceScreenShelf;
 // Untracked is used when a screen performs 'follow' action
 // through the responder chain unexpectedly. Instead of sending nil,
 // send this so we can track them down later
-extern NSString * const VFollowSourceUntracked;
+extern NSString * const VFollowSourceScreenUnknown;
 
 @class VDependencyManager;
 @class VUser;

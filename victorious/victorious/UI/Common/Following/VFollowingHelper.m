@@ -16,19 +16,19 @@
 #import "VUser.h"
 #import "VObjectManager+Users.h"
 
-NSString * const VFollowSourceScreenDiscoverSuggestedUsers = @"follow_discover.suggest";
-NSString * const VFollowSourceScreenReposter = @"follow_reposter";
-NSString * const VFollowSourceScreenProfile = @"follow_profile";
-NSString * const VFollowSourceScreenDiscoverUserSearchResults = @"follow_discover.search";
-NSString * const VFollowSourceScreenFollowersList = @"follow_followers_list";
-NSString * const VFollowSourceScreenFollowingList = @"follow_following_list";
-NSString * const VFollowSourceScreenLikersList = @"follow_likers_list";
-NSString * const VFollowSourceScreenMessageableUsersList = @"follow_messageable_users_list";
-NSString * const VFollowSourceScreenFindFriendsContacts = @"follow_find_friends.contacts";
-NSString * const VFollowSourceScreenFindFriendsFacebook = @"follow_find_friends.facebook";
-NSString * const VFollowSourceScreenFindFriendsTwitter = @"follow_find_friends.twitter";
-NSString * const VFollowSourceScreenShelf = @"follow_shelf";
-NSString * const VFollowSourceUntracked = @"follow_untracked";
+NSString * const VFollowSourceScreenDiscoverSuggestedUsers = @"follow.discover.suggest";
+NSString * const VFollowSourceScreenReposter = @"follow.reposter";
+NSString * const VFollowSourceScreenProfile = @"follow.profile";
+NSString * const VFollowSourceScreenDiscoverUserSearchResults = @"follow.discover.search";
+NSString * const VFollowSourceScreenFollowers = @"follow.followers";
+NSString * const VFollowSourceScreenFollowing = @"follow.following";
+NSString * const VFollowSourceScreenLikers = @"follow.likers";
+NSString * const VFollowSourceScreenMessageableUsers = @"follow.messageable_users";
+NSString * const VFollowSourceScreenFindFriendsContacts = @"follow.find_friends.contacts";
+NSString * const VFollowSourceScreenFindFriendsFacebook = @"follow.find_friends.facebook";
+NSString * const VFollowSourceScreenFindFriendsTwitter = @"follow.find_friends.twitter";
+NSString * const VFollowSourceScreenShelf = @"follow.shelf";
+NSString * const VFollowSourceScreenUnknown = @"follow.unknown";
 
 @implementation VFollowingHelper
 
@@ -95,10 +95,11 @@ withAuthorizedBlock:(void (^)(void))authorizedBlock
          };
          
          // Add user at backend
+         NSString *sourceScreen = screenName == nil ? VFollowSourceScreenUnknown : screenName;
          [[VObjectManager sharedManager] followUser:user
                                        successBlock:successBlock
                                           failBlock:failureBlock
-                                         fromScreen:screenName];
+                                         fromScreen:sourceScreen];
      }];
 }
 

@@ -325,16 +325,8 @@ static const NSInteger kSearchResultLimit = 100;
 
 - (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion
 {
-    NSString *title = [self.dependencyManager stringForKey:VDependencyManagerTitleKey];
     NSString *screenName;
-    if ( [title isEqualToString:@"Messages"] )
-    {
-        screenName = VFollowSourceScreenMessageableUsersList;
-    }
-    else
-    {
-        screenName = VFollowSourceUntracked;
-    }
+    screenName = self.userSearchPresenter == VUserSearchPresenterMessages ? VFollowSourceScreenMessageableUsers : nil;
 
     [self.followHelper followUser:user
               withAuthorizedBlock:authorizedBlock
