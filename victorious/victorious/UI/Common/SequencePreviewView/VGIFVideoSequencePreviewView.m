@@ -35,4 +35,28 @@
     }
 }
 
+#pragma mark - VVideoViewDelegate
+
+- (void)videoViewPlayerDidBecomeReady:(VVideoView *)videoView
+{
+    [super videoViewPlayerDidBecomeReady:videoView];
+    if (self.inFocus)
+    {
+        [videoView play];
+    }
+}
+
+- (void)setHasFocus:(BOOL)hasFocus
+{
+    [super setHasFocus:hasFocus];
+    if (self.inFocus)
+    {
+        [self.videoView play];
+    }
+    else
+    {
+        [self.videoView pause];
+    }
+}
+
 @end

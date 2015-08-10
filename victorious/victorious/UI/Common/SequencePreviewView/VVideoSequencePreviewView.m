@@ -9,11 +9,25 @@
 #import "VVideoSequencePreviewView.h"
 #import "victorious-Swift.h"
 
+/**
+ Describes the state of the video preview view
+ */
+typedef NS_ENUM(NSUInteger, VVideoPreviewViewState)
+{
+    VVideoPreviewViewStateBuffering,
+    VVideoPreviewViewStatePlaying,
+    VVideoPreviewViewStateEnded
+};
+
 @interface VVideoSequencePreviewView ()
 
-@property (nonatomic, strong) SoundBarView *soundIndicator;
-@property (nonatomic, strong) UIButton *replayButton;
+@property (nonatomic, assign) VVideoPreviewViewState state;
 @property (nonatomic, assign) BOOL shouldLoop;
+@property (nonatomic, assign) BOOL hasPlayed;
+@property (nonatomic, strong) NSURL *assetURL;
+
+@property (nonatomic, strong) SoundBarView *soundIndicator;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -28,31 +42,21 @@
         _soundIndicator.translatesAutoresizingMaskIntoConstraints = NO;
         _soundIndicator.hidden = YES;
         [self addSubview:_soundIndicator];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[_soundIndicator(25)]"
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[_soundIndicator(20)]"
                                                                                options:0
                                                                                metrics:nil
                                                                                  views:NSDictionaryOfVariableBindings(_soundIndicator)]];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_soundIndicator(25)]-10-|"
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_soundIndicator(16)]-10-|"
                                                                                 options:0
                                                                                 metrics:nil
                                                                                   views:NSDictionaryOfVariableBindings(_soundIndicator)]];
         
-        _replayButton = [[UIButton alloc] init];
-//        _replayButton.translatesAutoresizingMaskIntoConstraints = NO;
-//        [_replayButton addTarget:self action:@selector(replayPressed:) forControlEvents:UIControlEventTouchUpInside];
-//        [_replayButton setImage:[UIImage imageNamed:@"restart_video"] forState:UIControlStateNormal];
-//        _replayButton.hidden = YES;
-//        [self addSubview:_replayButton];
-//        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_replayButton(50)]-10-|"
-//                                                                     options:0
-//                                                                     metrics:nil
-//                                                                       views:NSDictionaryOfVariableBindings(_replayButton)]];
-//        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-25-[_replayButton(50)]"
-//                                                                     options:0
-//                                                                     metrics:nil
-//                                                                       views:NSDictionaryOfVariableBindings(_replayButton)]];
-        
-        
+        _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        _activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
+        _activityIndicator.hidesWhenStopped = YES;
+        _activityIndicator.hidden = YES;
+        [self addSubview:_activityIndicator];
+        [self v_addCenterToParentContraintsToSubview:_activityIndicator];
     }
     return self;
 }
@@ -61,96 +65,121 @@
 {
     [super setSequence:sequence];
     
-    self.soundIndicator.hidden = YES;
-    self.replayButton.hidden = YES;
+    [self setState:VVideoPreviewViewStateEnded];
+    
+    self.assetURL = nil;
     
     VAsset *HLSAsset = [sequence.firstNode httpLiveStreamingAsset];
     VAsset *mp4Asset = [sequence.firstNode mp4Asset];
     
     // First check mp4 asset to see if we should autoplay and only if it's under 30 seconds
-    if ( mp4Asset.streamAutoplay.boolValue && mp4Asset.duration != nil && mp4Asset.duration.integerValue < 30 )
-#warning - Testing
-//    if ( !mp4Asset.streamAutoplay.boolValue )
+//    if ( mp4Asset.streamAutoplay.boolValue && mp4Asset.duration != nil && mp4Asset.duration.integerValue < 30 )
+    if ( !mp4Asset.streamAutoplay.boolValue )
     {
-        self.videoView.hidden = NO;
-        self.playIconContainerView.hidden = YES;
-        self.shouldLoop = YES;
-        
-        __weak VVideoSequencePreviewView *weakSelf = self;
-        [self.videoView setItemURL:[NSURL URLWithString:mp4Asset.data]
-                              loop:NO
-                        audioMuted:YES
-                alongsideAnimation:^
-         {
-             [weakSelf makeBackgroundContainerViewVisible:YES];
-         }];
+        [self loadAssetURL:[NSURL URLWithString:mp4Asset.data] andLoop:YES];
     }
     // Else check HLS asset to see if we should autoplay and only if it's over 30 seconds
 //    else if ( !HLSAsset.streamAutoplay.boolValue && HLSAsset.duration != nil && HLSAsset.duration.integerValue >= 30)
     else if ( !HLSAsset.streamAutoplay.boolValue )
     {
-        
-        self.videoView.hidden = NO;
-        self.playIconContainerView.hidden = YES;
-        self.shouldLoop = NO;
-        
-        __weak VVideoSequencePreviewView *weakSelf = self;
-        [self.videoView setItemURL:[NSURL URLWithString:HLSAsset.data]
-                              loop:NO
-                        audioMuted:YES
-                alongsideAnimation:^
-         {
-             [weakSelf makeBackgroundContainerViewVisible:YES];
-         }];
-        
+        [self loadAssetURL:[NSURL URLWithString:HLSAsset.data] andLoop:NO];
     }
-    else
+}
+
+- (void)loadAssetURL:(NSURL *)url andLoop:(BOOL)loop
+{
+    self.shouldLoop = loop;
+    self.hasPlayed = NO;
+    
+    self.assetURL = url;
+    
+    __weak VVideoSequencePreviewView *weakSelf = self;
+    [self.videoView setItemURL:url
+                          loop:loop
+                    audioMuted:YES
+            alongsideAnimation:^
+     {
+         [weakSelf makeBackgroundContainerViewVisible:YES];
+     }];
+}
+
+- (void)setState:(VVideoPreviewViewState)state
+{
+    _state = state;
+    switch (state)
     {
-        self.videoView.hidden = YES;
-        self.playIconContainerView.hidden = NO;
-        self.soundIndicator.hidden = YES;
+        case VVideoPreviewViewStateBuffering:
+            [self.activityIndicator startAnimating];
+            self.activityIndicator.hidden = NO;
+            [self.soundIndicator stopAnimating];
+            self.soundIndicator.hidden = YES;
+            self.videoView.hidden = NO;
+            self.playIconContainerView.hidden = YES;
+            break;
+        case VVideoPreviewViewStatePlaying:
+            [self makeBackgroundContainerViewVisible:YES];
+            [self.activityIndicator stopAnimating];
+            self.soundIndicator.hidden = NO;
+            [self.soundIndicator startAnimating];
+            self.videoView.hidden = NO;
+            self.playIconContainerView.hidden = YES;
+            break;
+        case VVideoPreviewViewStateEnded:
+            [self.activityIndicator stopAnimating];
+            self.soundIndicator.hidden = YES;
+            [self.soundIndicator stopAnimating];
+            self.videoView.hidden = YES;
+            self.playIconContainerView.hidden = NO;
+            break;
+        default:
+            break;
     }
 }
 
 - (void)setHasFocus:(BOOL)hasFocus
 {
     [super setHasFocus:hasFocus];
-    
-    if (hasFocus && self.videoView.hidden == NO)
+    if (![self playVideo])
     {
-        self.soundIndicator.hidden = NO;
-    }
-    else
-    {
-        self.soundIndicator.hidden = YES;
+        [self.videoView pause];
+        [self setState:VVideoPreviewViewStateEnded];
     }
 }
 
-#pragma mark - Actions
-
-- (void)replayPressed:(id)sender
+- (BOOL)playVideo
 {
-    self.replayButton.hidden = YES;
-    self.soundIndicator.hidden = NO;
-    [self.videoView play];
+    if (self.inFocus && !self.hasPlayed && self.assetURL != nil)
+    {
+        [self.videoView play];
+        [self setState:VVideoPreviewViewStatePlaying];
+        return YES;
+    }
+    
+    return NO;
 }
 
 #pragma mark - Video Player Delegate
 
+- (void)videoViewPlayerDidBecomeReady:(VVideoView *__nonnull)videoView
+{
+    [super videoViewPlayerDidBecomeReady:videoView];
+    [self playVideo];
+}
+
 - (void)videoDidReachEnd:(VVideoView *__nonnull)videoView
 {
-    self.soundIndicator.hidden = YES;
-    self.replayButton.hidden = NO;
+    self.hasPlayed = YES;
+    [self setState:VVideoPreviewViewStateEnded];
 }
 
 - (void)videoViewDidStartBuffering:(VVideoView *__nonnull)videoView
 {
-    self.videoView.hidden = YES;
+//    [self setState:VVideoPreviewViewStateBuffering];
 }
 
 - (void)videoViewDidStopBuffering:(VVideoView *__nonnull)videoView
 {
-    self.videoView.hidden = NO;
+//    [self setState:VVideoPreviewViewStatePlaying];
 }
 
 @end

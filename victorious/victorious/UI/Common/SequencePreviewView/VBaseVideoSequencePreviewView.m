@@ -23,7 +23,6 @@
 @interface VBaseVideoSequencePreviewView ()
 
 @property (nonatomic, strong) UIImageView *previewImageView;
-@property (nonatomic, assign) BOOL hasFocus;
 @property (nonatomic, strong) UIView *backgroundContainerView;
 @property (nonatomic, strong) VAsset *asset;
 
@@ -98,10 +97,9 @@
 
 - (void)videoViewPlayerDidBecomeReady:(VVideoView *)videoView
 {
-    if (self.hasFocus)
+    if (self.inFocus)
     {
         [self makeBackgroundContainerViewVisible:YES];
-        [videoView play];
     }
 }
 
@@ -109,15 +107,10 @@
 
 - (void)setHasFocus:(BOOL)hasFocus
 {
-    _hasFocus = hasFocus;
-    if (_hasFocus)
+    self.inFocus = hasFocus;
+    if (hasFocus)
     {
         [self makeBackgroundContainerViewVisible:YES];
-        [self.videoView play];
-    }
-    else
-    {
-        [self.videoView pause];
     }
 }
 

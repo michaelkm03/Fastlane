@@ -18,7 +18,7 @@ class SoundBarView : UIView {
     var numberOfBars = 4 {
         didSet {
             numberOfBars = max(numberOfBars, 1)
-            reset()
+            reset(true)
             setNeedsLayout()
         }
     }
@@ -26,7 +26,7 @@ class SoundBarView : UIView {
     var distanceBetweenBars = 1.0 {
         didSet {
             distanceBetweenBars = max(distanceBetweenBars, 0.0)
-            reset()
+            reset(true)
             setNeedsLayout()
         }
     }
@@ -41,7 +41,7 @@ class SoundBarView : UIView {
             let bar = CAShapeLayer()
             let path = barPath(index, endpoint: randomEndpoint()).CGPath
             bar.path = path
-            bar.fillColor = UIColor.whiteColor().CGColor
+            bar.fillColor = UIColor(red: 247, green: 247, blue: 247, alpha: 0.8).CGColor
             self.layer.addSublayer(bar)
             barLayers.append(bar)
         }
@@ -86,8 +86,6 @@ class SoundBarView : UIView {
     }
     
     func stopAnimating() {
-        barPaths = [UIBezierPath]()
-        counter = 0
         for (index, bar) in enumerate(barLayers) {
             bar.removeAllAnimations()
         }
@@ -96,12 +94,18 @@ class SoundBarView : UIView {
     
     // MARK: Helpers
     
-    private func reset() {
-        stopAnimating()
-        for bar in barLayers {
-            bar.removeFromSuperlayer()
+    private func reset(clearBars: Bool) {
+        
+        barPaths = [UIBezierPath]()
+        counter = 0
+        isAnimating = false
+        
+        if (clearBars) {
+            for bar in barLayers {
+                bar.removeFromSuperlayer()
+            }
+            barLayers = [CAShapeLayer]()
         }
-        barLayers = [CAShapeLayer]()
     }
     
     func barPath(barIndex: Int, endpoint: Double) -> UIBezierPath {
@@ -124,7 +128,7 @@ class SoundBarView : UIView {
             bar.path = barPaths[counter].CGPath
             counter++
             if (counter == barLayers.count) {
-                stopAnimating()
+                reset(false)
                 startAnimating()
             }
         }

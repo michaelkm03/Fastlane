@@ -22,6 +22,7 @@
 
 @property (nonatomic, strong) UIView *playIconContainerView;
 @property (nonatomic, strong) VVideoView *videoView;
+@property (nonatomic, assign) BOOL inFocus;
 
 - (void)makeBackgroundContainerViewVisible:(BOOL)visible;
 

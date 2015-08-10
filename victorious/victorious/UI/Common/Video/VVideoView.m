@@ -144,8 +144,8 @@ NS_ASSUME_NONNULL_BEGIN
     [self.player replaceCurrentItemWithPlayerItem:playerItem];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                 name:AVPlayerItemDidPlayToEndTimeNotification
-                                               object:playerItem];
+                                                    name:AVPlayerItemDidPlayToEndTimeNotification
+                                                  object:playerItem];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(playerItemDidReachEnd:)
@@ -156,30 +156,32 @@ NS_ASSUME_NONNULL_BEGIN
     [self.KVOController observe:playerItem
                        keyPaths:@[@"playbackBufferEmpty"]
                         options:NSKeyValueObservingOptionNew
-                          block:^(id observer, id object, NSDictionary *change) {
-                              if (playerItem.playbackBufferEmpty)
-                              {
-                                  __strong VVideoView *strongSelf = weakSelf;
-                                  if ([strongSelf.delegate respondsToSelector:@selector(videoViewDidStartBuffering:)])
-                                  {
-                                      [strongSelf.delegate videoViewDidStartBuffering:strongSelf];
-                                  }
-                              }
-                          }];
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         if ([change[@"new"] boolValue])
+         {
+             __strong VVideoView *strongSelf = weakSelf;
+             if ([strongSelf.delegate respondsToSelector:@selector(videoViewDidStartBuffering:)])
+             {
+                 [strongSelf.delegate videoViewDidStartBuffering:strongSelf];
+             }
+         }
+     }];
     
     [self.KVOController observe:playerItem
                        keyPaths:@[@"playbackLikelyToKeepUp"]
                         options:NSKeyValueObservingOptionNew
-                          block:^(id observer, id object, NSDictionary *change) {
-                              if (playerItem.playbackLikelyToKeepUp)
-                              {
-                                  __strong VVideoView *strongSelf = weakSelf;
-                                  if ([strongSelf.delegate respondsToSelector:@selector(videoViewDidStopBuffering:)])
-                                  {
-                                      [strongSelf.delegate videoViewDidStopBuffering:strongSelf];
-                                  }
-                              }
-                          }];
+                          block:^(id observer, id object, NSDictionary *change)
+     {
+         if ([change[@"new"] boolValue])
+         {
+             __strong VVideoView *strongSelf = weakSelf;
+             if ([strongSelf.delegate respondsToSelector:@selector(videoViewDidStopBuffering:)])
+             {
+                 [strongSelf.delegate videoViewDidStopBuffering:strongSelf];
+             }
+         }
+     }];
     
     if ( self.delegate != nil )
     {

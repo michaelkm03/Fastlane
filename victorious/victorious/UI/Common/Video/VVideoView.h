@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Called when the video's buffer is likely to keep up
  */
-- (void)videoViewDidStopBuffering:(VVideoView *) videoView;
+- (void)videoViewDidStopBuffering:(VVideoView *)videoView;
 
 @end
 
