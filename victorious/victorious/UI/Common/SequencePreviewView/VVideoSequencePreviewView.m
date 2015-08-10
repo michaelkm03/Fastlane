@@ -8,6 +8,7 @@
 
 #import "VVideoSequencePreviewView.h"
 #import "victorious-Swift.h"
+#import "VVideoSettings.h"
 
 /**
  Describes the state of the video preview view
@@ -25,6 +26,7 @@ typedef NS_ENUM(NSUInteger, VVideoPreviewViewState)
 @property (nonatomic, assign) BOOL shouldLoop;
 @property (nonatomic, assign) BOOL hasPlayed;
 @property (nonatomic, strong) NSURL *assetURL;
+@property (nonatomic, strong) VVideoSettings *videoSettings;
 
 @property (nonatomic, strong) SoundBarView *soundIndicator;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
@@ -57,6 +59,8 @@ typedef NS_ENUM(NSUInteger, VVideoPreviewViewState)
         _activityIndicator.hidden = YES;
         [self addSubview:_activityIndicator];
         [self v_addCenterToParentContraintsToSubview:_activityIndicator];
+        
+        _videoSettings = [[VVideoSettings alloc] init];
     }
     return self;
 }
@@ -68,6 +72,12 @@ typedef NS_ENUM(NSUInteger, VVideoPreviewViewState)
     [self setState:VVideoPreviewViewStateEnded];
     
     self.assetURL = nil;
+    
+    // Check if autoplay is enabled before loading asset URL
+    if (![self.videoSettings isAutoplayEnabled])
+    {
+        return;
+    }
     
     VAsset *HLSAsset = [sequence.firstNode httpLiveStreamingAsset];
     VAsset *mp4Asset = [sequence.firstNode mp4Asset];
