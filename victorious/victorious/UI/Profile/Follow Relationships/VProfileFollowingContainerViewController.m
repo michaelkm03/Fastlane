@@ -82,7 +82,7 @@
     self.userFollowingViewController = [[VUsersViewController alloc] initWithDependencyManager:childDependencyManager];
     VUser *user = [VObjectManager sharedManager].mainUser;
     self.userFollowingViewController.usersDataSource = [[VUserIsFollowingDataSource alloc] initWithUser:user];
-    self.userFollowingViewController.usersViewContentMode = VUsersViewContentModeFollowing;
+    self.userFollowingViewController.usersViewContext = VUsersViewContextFollowing;
     
     self.hashtagFollowingViewController = [[VHashtagFollowingTableViewController alloc] initWithDependencyManager:self.dependencyManager];
     

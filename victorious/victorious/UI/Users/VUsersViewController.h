@@ -11,14 +11,14 @@
 #import "VUsersDataSource.h"
 
 /**
- The possible content identifier that this view is presented as
+ The possible context identifier that this view is presented as
  */
-typedef NS_ENUM( NSInteger, VUsersViewContentMode )
+typedef NS_ENUM( NSInteger, VUsersViewContext )
 {
-    VUsersViewContentModeNone, // Default value
-    VUsersViewContentModeFollowers, // Set when presented from followers list
-    VUsersViewContentModeFollowing, // Set when presented from following list
-    VUsersViewContentModeLikers // Set when presented from likers list
+    VUsersViewContextNone, // Default value
+    VUsersViewContextFollowers, // Set when presented as followers list
+    VUsersViewContextFollowing, // Set when presented as following list
+    VUsersViewContextLikers // Set when presented as likers list
 };
 
 /**
@@ -35,6 +35,6 @@ typedef NS_ENUM( NSInteger, VUsersViewContentMode )
  An object that loads and provides a list of users to display in the collection view.
  */
 @property (nonatomic, strong) id<VUsersDataSource> usersDataSource;
-@property (nonatomic, assign) VUsersViewContentMode usersViewContentMode;
+@property (nonatomic, assign) VUsersViewContext usersViewContext;
 
 @end

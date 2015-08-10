@@ -641,7 +641,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     VUsersViewController *usersViewController = [[VUsersViewController alloc] initWithDependencyManager:childDependencyManager];
     usersViewController.title = NSLocalizedString( @"followers", nil );
     usersViewController.usersDataSource = [[VFollowersDataSource alloc] initWithUser:self.user];
-    usersViewController.usersViewContentMode = VUsersViewContentModeFollowers;
+    usersViewController.usersViewContext = VUsersViewContextFollowers;
     
     [self.navigationController pushViewController:usersViewController animated:YES];
 }
@@ -658,7 +658,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         VUsersViewController *usersViewController = [[VUsersViewController alloc] initWithDependencyManager:childDependencyManager];
         usersViewController.title = NSLocalizedString( @"Following", nil );
         usersViewController.usersDataSource = [[VUserIsFollowingDataSource alloc] initWithUser:self.user];
-        usersViewController.usersViewContentMode = VUsersViewContentModeFollowing;
+        usersViewController.usersViewContext = VUsersViewContextFollowing;
         [self.navigationController pushViewController:usersViewController animated:YES];
     }
 }
