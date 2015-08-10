@@ -322,6 +322,7 @@
 		66AF79521B60A8E4006DDCD8 /* VVideoCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66AF79511B60A8E4006DDCD8 /* VVideoCameraViewController.m */; };
 		66AF79541B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */; };
 		67C69F591B67ECDF00C59230 /* VContentViewPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 67C69F581B67ECDF00C59230 /* VContentViewPresenter.m */; };
+		79A80C7D1B7928FD00C14020 /* VTabScaffoldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A80C7C1B7928FD00C14020 /* VTabScaffoldViewController.m */; };
 		8E8C04404B9E03E76E65C052 /* libPods-VictoriousCommon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A713F955EEE0E7D467CAE0E1 /* libPods-VictoriousCommon.a */; };
 		99F4DB51782658B7D034EC2F /* libPods-victorious-test.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7B45F61E6B2831D5E9459C3 /* libPods-victorious-test.a */; };
 		9F95A0FBA78C16AF3EA43793 /* libPods-victorious.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */; };
@@ -1848,6 +1849,8 @@
 		67C69F581B67ECDF00C59230 /* VContentViewPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentViewPresenter.m; path = Presenters/VContentViewPresenter.m; sourceTree = "<group>"; };
 		693498EEB4388179C36EF74A /* libPods-VictoriousCommonOSX.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VictoriousCommonOSX.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C14CC0531211B1486085544 /* Pods-VictoriousCommonOSX.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.stable.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.stable.xcconfig"; sourceTree = "<group>"; };
+		79A80C7B1B7928FD00C14020 /* VTabScaffoldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTabScaffoldViewController.h; sourceTree = "<group>"; };
+		79A80C7C1B7928FD00C14020 /* VTabScaffoldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTabScaffoldViewController.m; sourceTree = "<group>"; };
 		79ACFD16A2EFEF8FE18E316E /* Pods-VictoriousCommonOSX.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.qa.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.qa.xcconfig"; sourceTree = "<group>"; };
 		83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.qa.xcconfig"; sourceTree = "<group>"; };
 		861888B7B5EA1C709A7ABB6B /* Pods-VictoriousCommonOSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.debug.xcconfig"; sourceTree = "<group>"; };
@@ -4000,6 +4003,8 @@
 				0314D3EC19B46B5E00FA363C /* VRootViewController.m */,
 				0358FCEC1A65E785004DD7A1 /* VScaffoldViewController.h */,
 				0358FCED1A65E785004DD7A1 /* VScaffoldViewController.m */,
+				79A80C7B1B7928FD00C14020 /* VTabScaffoldViewController.h */,
+				79A80C7C1B7928FD00C14020 /* VTabScaffoldViewController.m */,
 			);
 			path = "Root View";
 			sourceTree = "<group>";
@@ -8921,6 +8926,7 @@
 				D8360CEA19E3640000D7E260 /* VNewContentViewController+Actions.m in Sources */,
 				A721E9341B572454000B7901 /* VTracking+RestKit.m in Sources */,
 				D8D812B51B14FE5B00E93B37 /* VLoginFlowAPIHelper.m in Sources */,
+				79A80C7D1B7928FD00C14020 /* VTabScaffoldViewController.m in Sources */,
 				A721E95A1B572454000B7901 /* UIStoryboard+VMainStoryboard.m in Sources */,
 				A7AEF9A21A83F1C300A3D3A0 /* VSequenceActionController.m in Sources */,
 				B07BFD611B26761D00784FC8 /* VHashtagHelper.m in Sources */,
