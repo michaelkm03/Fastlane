@@ -32,7 +32,14 @@ class GIFSearchDataSource: NSObject {
     enum State: Int {
         case None, Loading, Content, Error, NoResults
     }
-    private(set) var state = State.None
+    private(set) var state = State.None {
+        didSet {
+            if filter([ .Content, .Error, .NoResults ], { $0 == oldValue }).count > 0 {
+                self.lastResultState = oldValue
+            }
+        }
+    }
+    private var lastResultState = State.None
     
     /// A type for organizing search results into grouped sections
     struct Section {
@@ -206,9 +213,9 @@ class GIFSearchDataSource: NSObject {
     
     private func updateDataSource( results: [GIFSearchResult], pageType: VPageType ) -> ChangeResult {
         var result = ChangeResult()
-        if pageType == .First {
+        if pageType == .First || lastResultState == .Error {
             if self.sections.count == 0 && results.count > 0 {
-                result.deletedSections = NSIndexSet(index: 0) // No content cell
+                result.deletedSections = NSIndexSet(index: 0) // NoContent/Error cell
             }
             else if self.sections.count > 0 && results.count == 0 {
                 let range = NSRange( location: 0, length: self.sections.count )
