@@ -14,6 +14,6 @@
 
 @interface VShelf : VStreamItem
 
-@property (nonatomic, retain) VStream * __nullable stream;
+@property (nonatomic, retain, nullable) VStream * stream;
 
 @end

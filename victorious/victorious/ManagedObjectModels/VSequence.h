@@ -16,15 +16,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface VSequence : VStreamItem
 
-@property (nonatomic, retain) NSString * __nullable category;
+@property (nonatomic, retain, nullable) NSString * category;
 @property (nonatomic, retain) NSNumber * commentCount;
 @property (nonatomic, retain) NSNumber * createdBy;
-@property (nonatomic, retain) NSDate * __nullable expiresAt;
-@property (nonatomic, retain) NSString * __nullable gameStatus;
+@property (nonatomic, retain, nullable) NSDate * expiresAt;
+@property (nonatomic, retain, nullable) NSString * gameStatus;
 @property (nonatomic, retain) NSNumber * gifCount;
 @property (nonatomic, retain) NSNumber * hasReposted;
-@property (nonatomic, retain) NSNumber * __nullable isComplete;
-@property (nonatomic, retain) NSNumber * __nullable isLikedByMainUser;
+@property (nonatomic, retain, nullable) NSNumber * isComplete;
+@property (nonatomic, retain, nullable) NSNumber * isLikedByMainUser;
 @property (nonatomic, retain) NSNumber * isRemix;
 @property (nonatomic, retain) NSNumber * isRepost;
 @property (nonatomic, retain) NSNumber * likeCount;
@@ -32,27 +32,27 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain) NSNumber * nameEmbeddedInContent;
 @property (nonatomic, retain) NSNumber * parentUserId;
 @property (nonatomic, retain) NSNumber * permissionsMask;
-@property (nonatomic, retain) id __nullable previewData;
-@property (nonatomic, retain) NSString * __nullable previewType;
-@property (nonatomic, retain) NSDate * __nullable releasedAt;
+@property (nonatomic, retain, nullable) id previewData;
+@property (nonatomic, retain, nullable) NSString * previewType;
+@property (nonatomic, retain, nullable) NSDate * releasedAt;
 @property (nonatomic, retain) NSNumber * repostCount;
-@property (nonatomic, retain) NSString * __nullable sequenceDescription;
+@property (nonatomic, retain, nullable) NSString * sequenceDescription;
 @property (nonatomic, retain) NSString * status;
-@property (nonatomic, retain) NSOrderedSet * __nullable adBreaks;
-@property (nonatomic, retain) NSOrderedSet * __nullable comments;
-@property (nonatomic, retain) VEndCard * __nullable endCard;
-@property (nonatomic, retain) NSSet *__nullable likers;
-@property (nonatomic, retain) NSOrderedSet * __nullable nodes;
-@property (nonatomic, retain) VEndCard * __nullable parentEndCard;
-@property (nonatomic, retain) VUser * __nullable parentUser;
-@property (nonatomic, retain) NSSet * __nullable pollResults;
-@property (nonatomic, retain) NSSet * __nullable previewAssets;
-@property (nonatomic, retain) VUser * __nullable recentUser;
-@property (nonatomic, retain) NSSet * __nullable reposters;
-@property (nonatomic, retain) VTracking * __nullable tracking;
-@property (nonatomic, retain) VUser * __nullable user;
-@property (nonatomic, retain) NSSet * __nullable voteResults;
-@property (nonatomic, retain) NSOrderedSet * __nullable recentComments;
+@property (nonatomic, retain, nullable) NSOrderedSet * adBreaks;
+@property (nonatomic, retain, nullable) NSOrderedSet * comments;
+@property (nonatomic, retain, nullable) VEndCard * endCard;
+@property (nonatomic, retain, nullable) NSSet * likers;
+@property (nonatomic, retain, nullable) NSOrderedSet * nodes;
+@property (nonatomic, retain, nullable) VEndCard * parentEndCard;
+@property (nonatomic, retain, nullable) VUser * parentUser;
+@property (nonatomic, retain, nullable) NSSet * pollResults;
+@property (nonatomic, retain, nullable) NSSet * previewAssets;
+@property (nonatomic, retain, nullable) VUser * recentUser;
+@property (nonatomic, retain, nullable) NSSet * reposters;
+@property (nonatomic, retain, nullable) VTracking * tracking;
+@property (nonatomic, retain, nullable) VUser * user;
+@property (nonatomic, retain, nullable) NSSet * voteResults;
+@property (nonatomic, retain, nullable) NSOrderedSet * recentComments;
 
 @end
 

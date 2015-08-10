@@ -15,17 +15,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface VStreamItem : NSManagedObject
 
-@property (nonatomic, retain) NSString * __nullable headline;
-@property (nonatomic, retain) NSString * __nullable name;
-@property (nonatomic, retain) id __nullable previewImagesObject;
+@property (nonatomic, retain, nullable) NSString * headline;
+@property (nonatomic, retain, nullable) NSString * name;
+@property (nonatomic, retain, nullable) id previewImagesObject;
 @property (nonatomic, retain) NSString * remoteId;
-@property (nonatomic, retain) NSString * __nullable streamContentType;
-@property (nonatomic, retain) NSString * __nullable streamId;
-@property (nonatomic, retain) NSString * __nullable itemType;
-@property (nonatomic, retain) NSString * __nullable itemSubType;
-@property (nonatomic, retain) NSSet * __nullable editorializations;
-@property (nonatomic, retain) NSSet * __nullable marquees;
-@property (nonatomic, retain) NSSet * __nullable streams;
+@property (nonatomic, retain, nullable) NSString * streamContentType;
+@property (nonatomic, retain, nullable) NSString * streamId;
+@property (nonatomic, retain, nullable) NSString * itemType;
+@property (nonatomic, retain, nullable) NSString * itemSubType;
+@property (nonatomic, retain, nullable) NSSet * editorializations;
+@property (nonatomic, retain, nullable) NSSet * marquees;
+@property (nonatomic, retain, nullable) NSSet * streams;
 @end
 
 @interface VStreamItem (CoreDataGeneratedAccessors)
