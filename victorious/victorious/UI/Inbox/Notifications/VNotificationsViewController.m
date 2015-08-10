@@ -29,7 +29,9 @@
 #import "VRootViewController.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
+#import "VBadgeResponder.h"
 #import "VDependencyManager+VTracking.h"
+#import "VInboxViewController.h"
 
 static NSString * const kNotificationCellViewIdentifier = @"VNotificationCell";
 static CGFloat const kVNotificationCellHeight = 64.0f;
@@ -42,7 +44,6 @@ static int const kNotificationFetchBatchSize = 50;
 @property (strong, nonatomic) RKManagedObjectRequestOperation *refreshRequest;
 
 @end
-
 
 @implementation VNotificationsViewController
 
@@ -59,6 +60,8 @@ static int const kNotificationFetchBatchSize = 50;
         
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(applicationDidBecomeActive:) name:VApplicationDidBecomeActiveNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(inboxMessageNotification:) name:VInboxViewControllerInboxPushReceivedNotification object:nil];
+
         [viewController loggedInChanged:nil];
     }
     return viewController;
@@ -99,6 +102,8 @@ static int const kNotificationFetchBatchSize = 50;
     self.tableView.estimatedRowHeight = kVNotificationCellHeight;
     self.tableView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.automaticallyAdjustsScrollViewInsets = NO;
+    [self markAllNotificationsRead];
+    [self refreshTableView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -109,7 +114,6 @@ static int const kNotificationFetchBatchSize = 50;
     [self updateNavigationItem];
     [self.refreshControl beginRefreshing];
     [self.tableView setContentOffset:CGPointZero];
-    [self refresh:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -226,10 +230,17 @@ static int const kNotificationFetchBatchSize = 50;
 
 - (void)markAllNotificationsRead
 {
-    [[VObjectManager sharedManager] markAllNotificationsRead:nil failBlock:nil];
+    [[VObjectManager sharedManager] markAllNotificationsRead:^(NSOperation *__nullable operation, id __nullable result, NSArray *__nonnull resultObjects)
+     {
+         [self fetchNotificationCount];
+     }
+                                                   failBlock:^(NSOperation *__nullable operation, NSError *__nullable error)
+     {
+         VLog(@"Failed to mark all notifications as read: %@", [error localizedDescription]);
+     }];
 }
 
-- (IBAction)refresh:(UIRefreshControl *)sender
+- (void)refreshTableView
 {
     if (self.refreshRequest != nil)
     {
@@ -285,6 +296,11 @@ static int const kNotificationFetchBatchSize = 50;
                                                                                   failBlock:fail];
 }
 
+- (IBAction)refresh:(UIRefreshControl *)sender
+{
+    [self refreshTableView];
+}
+
 - (void)loadNextPageAction
 {
     [[VObjectManager sharedManager] loadNotificationsListWithPageType:VPageTypeNext
@@ -294,6 +310,11 @@ static int const kNotificationFetchBatchSize = 50;
 
 #pragma mark - NSNotification handlers
 
+- (void)inboxMessageNotification:(NSNotification *)notification
+{
+    [self fetchNotificationCount];
+}
+
 - (void)setBadgeNumber:(NSInteger)badgeNumber
 {
     if ( badgeNumber == _badgeNumber )
@@ -301,6 +322,12 @@ static int const kNotificationFetchBatchSize = 50;
         return;
     }
     _badgeNumber = badgeNumber;
+    
+    id<VBadgeResponder> badgeResponder = [[self nextResponder] targetForAction:@selector(updateBadge) withSender:nil];
+    if (badgeResponder != nil)
+    {
+        [badgeResponder updateBadge];
+    }
     
     if ( self.badgeNumberUpdateBlock != nil )
     {

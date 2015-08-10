@@ -11,6 +11,7 @@
 #import "VStreamItem+Fetcher.h"
 #import "VSequence.h"
 #import "VTracking.h"
+#import "victorious-Swift.h"
 
 NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvictorious.LoggedInChangedNotification";
 
@@ -82,28 +83,36 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 
 #pragma mark - Cell visibily tracking (SequenceDidAppearInStream event)
 
-- (void)onStreamCellDidBecomeVisibleWithStream:(VStream *)stream sequence:(VSequence *)sequence
+- (void)onStreamCellDidBecomeVisibleWithCellEvent:(StreamCellContext *)event
 {
+    VSequence *sequence = (VSequence *)event.streamItem;
+    VStream *stream = event.stream;
+    
     if ( sequence == nil || stream == nil )
     {
         return;
     }
     
+    NSString *trackingID = event.fromShelf ? stream.shelfId : stream.trackingIdentifier;
     NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
                               VTrackingKeyTimeStamp : [NSDate date],
                               VTrackingKeyUrls : sequence.tracking.cellView,
-                              VTrackingKeyStreamId : stream.trackingIdentifier ?: @""};
+                              VTrackingKeyStreamId : trackingID ?: @""};
     [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream
                                        parameters:params
                                           eventId:sequence.remoteId];
 }
 
-- (void)onStreamCellSelectedWithStream:(VStream *)stream sequence:(VSequence *)sequence
+- (void)onStreamCellSelectedWithCellEvent:(StreamCellContext *)event
 {
+    VSequence *sequence = (VSequence *)event.streamItem;
+    VStream *stream = event.stream;
+    
+    NSString *trackingID = event.fromShelf ? stream.shelfId : stream.trackingIdentifier;
     NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
                               VTrackingKeyTimeStamp : [NSDate date],
                               VTrackingKeyUrls : sequence.tracking.cellClick,
-                              VTrackingKeyStreamId : stream.trackingIdentifier ?: @""};
+                              VTrackingKeyStreamId : trackingID ?: @""};
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromStream parameters:params];
 }
 

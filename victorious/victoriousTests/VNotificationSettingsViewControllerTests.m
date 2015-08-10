@@ -18,7 +18,7 @@
 #import "VObjectManager.h"
 #import "VObjectManager+DeviceRegistration.h"
 #import "VAsyncTestHelper.h"
-#import "VNotificationSettingCell.h"
+#import "VSettingsSwitchCell.h"
 #import "VNoContentTableViewCell.h"
 
 @interface VNotificationSettingsViewController (UnitTests)
@@ -27,7 +27,7 @@
 - (void)updateSettings;
 - (void)saveSettings;
 - (void)onError:(NSError *)error;
-- (void)settingsDidUpdateFromCell:(VNotificationSettingCell *)cell;
+- (void)settingsDidUpdateFromCell:(VSettingsSwitchCell *)cell;
 - (void)updateSettingsAtIndexPath:(NSIndexPath *)indexPath withValue:(BOOL)value;
 
 @property (nonatomic, assign, readonly) BOOL hasValidSettings;
@@ -125,7 +125,7 @@
                  r >= 0 && r < (NSInteger)section.rows.count )
             {
                 cell = [self.viewController tableView:self.viewController.tableView cellForRowAtIndexPath:indexPath];
-                XCTAssert( [cell isKindOfClass:[VNotificationSettingCell class]] );
+                XCTAssert( [cell isKindOfClass:[VSettingsSwitchCell class]] );
                 XCTAssertNotNil( cell );
             }
             else

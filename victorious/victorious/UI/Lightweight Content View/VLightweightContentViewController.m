@@ -85,6 +85,8 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
     self.containerView.hidden = YES;
     
     [self setupVideoUI];
+    
+    self.getStartedButton.accessibilityIdentifier = VAutomationIdentifierWelcomeDismiss;
 }
 
 - (void)viewWillAppear:(BOOL)animated

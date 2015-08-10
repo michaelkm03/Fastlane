@@ -93,6 +93,9 @@ static NSMutableDictionary *sizingCache;
     
     self.answerAButton.titleLabel.numberOfLines = 0;
     self.answerBButton.titleLabel.numberOfLines = 0;
+    
+    self.answerAButton.accessibilityIdentifier = VAutomationIdentifierContentViewBallotButtonA;
+    self.answerBButton.accessibilityIdentifier = VAutomationIdentifierContentViewBallotButtonB;
 }
 
 #pragma mark - Property Accessors

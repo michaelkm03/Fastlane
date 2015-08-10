@@ -32,10 +32,10 @@
 
 #import "VSequence+Fetcher.h"
 #import "VSequencePermissions.h"
+#import "VComment+Fetcher.h"
 
-static const UIEdgeInsets kTextInsets = { 32.0f, 56.0f, 11.0f, 55.0f };
 
-static const CGFloat kImagePreviewLoadedAnimationDuration = 0.25f;
+static const UIEdgeInsets kTextInsets = { 38.0f, 56.0f, 11.0f, 55.0f };
 
 static NSCache *_sharedImageCache = nil;
 
@@ -87,13 +87,12 @@ static NSCache *_sharedImageCache = nil;
 }
 
 + (CGSize)sizeWithFullWidth:(CGFloat)width
-                commentBody:(NSString *)commentBody
+                    comment:(VComment *)comment
                    hasMedia:(BOOL)hasMedia
           dependencyManager:(VDependencyManager *)dependencyManager
 {
     CGFloat textHeight = [VCommentTextAndMediaView estimatedHeightWithWidth:(width - kTextInsets.left - kTextInsets.right)
-                                                                       text:commentBody
-                                                                  withMedia:hasMedia
+                                                                    comment:comment
                                                                     andFont:[dependencyManager fontForKey:VDependencyManagerParagraphFontKey]];
     CGFloat finalHeight = textHeight + kTextInsets.top + kTextInsets.bottom;
     return CGSizeMake(width, finalHeight);
@@ -127,15 +126,6 @@ static NSCache *_sharedImageCache = nil;
 - (void)prepareContentAndMediaView
 {
     [self.commentAndMediaView resetView];
-    self.commentAndMediaView.hasMedia = NO;
-    self.commentAndMediaView.mediaThumbnailView.image = nil;
-    self.commentAndMediaView.mediaThumbnailView.hidden = YES;
-    
-    __weak typeof(self) welf = self;
-    self.commentAndMediaView.onMediaTapped = ^(void)
-    {
-        [welf tappedOnMedia];
-    };
 }
 
 #pragma mark - UICollectionReusableView
@@ -152,14 +142,6 @@ static NSCache *_sharedImageCache = nil;
 }
 
 #pragma mark - Target/Action
-
-- (void)tappedOnMedia
-{
-    if ((self.onMediaTapped != nil) && (self.mediaURL != nil))
-    {
-        self.onMediaTapped();
-    }
-}
 
 - (IBAction)tappedOnProfileImage:(id)sender
 {
@@ -194,6 +176,7 @@ static NSCache *_sharedImageCache = nil;
     self.commenterName = comment.user.name;
     self.URLForCommenterAvatar = [NSURL URLWithString:comment.user.pictureUrl];
     self.timestampText = [comment.postedAt timeSince];
+    self.mediaIsVideo = comment.commentMediaType == VCommentMediaTypeVideo;
     
     if ((comment.realtime != nil) && (comment.realtime.floatValue >= 0))
     {
@@ -205,36 +188,10 @@ static NSCache *_sharedImageCache = nil;
     {
         self.realTimeCommentText = @"";
     }
-    self.hasMedia = comment.hasMedia;
+    self.hasMedia = comment.commentMediaType != VCommentMediaTypeNoMedia;
     
-    if (comment.hasMedia)
-    {
-        self.mediaPreviewURL = comment.previewImageURL;
-        self.mediaIsVideo = [comment.mediaUrl v_hasVideoExtension];
-        
-        if (self.mediaIsVideo)
-        {
-            if ([comment.shouldAutoplay boolValue])
-            {
-                [self.commentAndMediaView setMediaType:VCommentMediaViewTypeGIF];
-                // Make sure to grab the mp4 URL if its a gif
-                self.commentAndMediaView.autoplayURL = [comment mp4MediaURL];
-            }
-            else
-            {
-                [self.commentAndMediaView setMediaType:VCommentMediaViewTypeVideo];
-            }
-        }
-        else
-        {
-            [self.commentAndMediaView setMediaType:VCommentMediaViewTypeImage];
-        }
-    }
-    else
-    {
-        self.commentAndMediaView.mediaThumbnailView.hidden = YES;
-        self.commentAndMediaView.hasMedia = NO;
-    }
+    [self.commentAndMediaView setComment:comment];
+    [self.commentAndMediaView setDependencyManager:self.dependencyManager];
 
     self.commentCellUtilitiesController = [[VCommentCellUtilitesController alloc] initWithComment:self.comment
                                                                                          cellView:self
@@ -243,74 +200,6 @@ static NSCache *_sharedImageCache = nil;
     self.swipeViewController.cellDelegate = self.commentCellUtilitiesController;
 }
 
-- (void)setHasMedia:(BOOL)hasMedia
-{
-    _hasMedia = hasMedia;
-    self.commentAndMediaView.mediaThumbnailView.hidden = !hasMedia;
-    self.commentAndMediaView.hasMedia = hasMedia;
-}
-
-- (void)setMediaPreviewURL:(NSURL *)mediaPreviewURL
-{
-    _mediaPreviewURL = [mediaPreviewURL copy];
-    [self loadImageWithURL:_mediaPreviewURL intoImageView:self.commentAndMediaView.mediaThumbnailView withImageCache:[[self class] sharedImageCached]];
-}
-
-- (void)loadImageWithURL:(NSURL *)url intoImageView:(UIImageView *)imageView withImageCache:(NSCache *)imageCache
-{
-    NSParameterAssert( imageView != nil );
-    NSParameterAssert( imageCache != nil );
-    
-    if ( url == nil )
-    {
-        imageView.image = nil;
-        return;
-    }
-    
-    __block NSString *keyString = url.absoluteString;
-    UIImage *cachedImage = [imageCache objectForKey:keyString];
-    
-    if ( cachedImage != nil && [cachedImage isKindOfClass:[UIImage class]] )
-    {
-        [imageView setImage:cachedImage];
-    }
-    else
-    {
-        imageView.alpha = 0.0f;
-        [self.commentAndMediaView.mediaThumbnailView sd_setImageWithURL:url
-                                                              completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
-        {
-            if (error != nil)
-            {
-                return;
-            }
-            
-            /**
-             If the assetOrientation property was set, it was done so in a temporary comment
-             after the comment was posted and before it could be reloaded from the server.
-             In those cases, the rotation of the preview image will be off and requires adjustment
-             */
-            if ( self.mediaAssetOrientation != nil )
-            {
-                UIDeviceOrientation orientation = (UIDeviceOrientation)self.mediaAssetOrientation.integerValue;
-                image = [image imageRotatedByDegrees:[AVAsset rotationAdjustmentForOrientation:orientation]];
-            }
-            
-            [imageView setImage:image];
-            [UIView animateWithDuration:kImagePreviewLoadedAnimationDuration animations:^
-            {
-                imageView.alpha = 1.0f;
-            }];
-            [imageCache setObject:image forKey:keyString];
-        }];
-    }
-}
-
-- (void)setMediaIsVideo:(BOOL)mediaIsVideo
-{
-    _mediaIsVideo = mediaIsVideo;
-    self.commentAndMediaView.playIcon.hidden = !mediaIsVideo;
-}
 
 - (void)setCommentBody:(NSString *)commentBody
 {
@@ -348,19 +237,9 @@ static NSCache *_sharedImageCache = nil;
     self.realtimeCommentLocationLabel.text  = realTimeCommentText;
 }
 
-- (UIImage *)previewImage
-{
-    return self.commentAndMediaView.mediaThumbnailView.image;
-}
-
-- (UIView *)previewView
-{
-    return self.commentAndMediaView.mediaThumbnailView;
-}
-
 - (NSURL *)mediaURL
 {
-    return [NSURL URLWithString:self.comment.mediaUrl];
+    return [self.comment properMediaURLGivenContentType];
 }
 
 #pragma mark - lazy loading of string attributes
@@ -385,7 +264,7 @@ static NSCache *_sharedImageCache = nil;
         return _defaultStringAttributes;
     }
     
-    _defaultStringAttributes = [VCommentTextAndMediaView attributesForTextWithFont:self.commentAndMediaView.textFont];
+    _defaultStringAttributes = [VTextAndMediaView attributesForTextWithFont:self.commentAndMediaView.textFont];
     return _defaultStringAttributes;
 }
 

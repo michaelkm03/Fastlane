@@ -282,4 +282,14 @@
     return self.view;
 }
 
+#pragma mark - VTabMenuContainedViewControllerNavigation
+
+- (void)reselected
+{
+    if ( [self.childViewController conformsToProtocol:@protocol(VTabMenuContainedViewControllerNavigation)] )
+    {
+        [((id<VTabMenuContainedViewControllerNavigation>)self.childViewController) reselected];
+    }
+}
+
 @end

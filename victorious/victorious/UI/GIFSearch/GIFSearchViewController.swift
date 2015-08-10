@@ -13,9 +13,9 @@ import UIKit
     
     /// The user selected a GIF image and wants to proceed with it in a creation flow.
     ///
-    /// :param: previewImage A small, still image that is loaded into memory and ready to display
-    /// :param: capturedMediaURL The file URL of the GIF's mp4 video asset downloaded to a file temporary location on the device
-    func GIFSelectedWithPreviewImage( previewImage: UIImage, capturedMediaURL: NSURL )
+    /// :param: `previewImage` A small, still image that is loaded into memory and ready to display
+    /// :param: `capturedMediaURL` The file URL of the GIF's mp4 video asset downloaded to a file temporary location on the device
+    func GIFSelectedWithPreviewImage( previewImage: UIImage, capturedMediaURL: NSURL, width: Int, height: Int )
 }
 
 /// View controller that allows users to search for GIF files using the Giphy API
@@ -53,9 +53,12 @@ class GIFSearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.collectionView.accessibilityIdentifier = AutomationId.GIFSearchCollection.rawValue
+        
         self.scrollPaginator.delegate = self
         
         self.searchBar.delegate = self
+        self.searchBar.accessibilityIdentifier = AutomationId.GIFSearchSearchbar.rawValue
         if let searchTextField = self.searchBar.v_textField {
             searchTextField.tintColor = self.dependencyManager?.colorForKey(VDependencyManagerLinkColorKey)
             searchTextField.font = self.dependencyManager?.fontForKey(VDependencyManagerHeading4FontKey)
@@ -92,7 +95,7 @@ class GIFSearchViewController: UIViewController {
             self.mediaExporter.loadMedia( selectedGIF ) { (previewImage, mediaURL, error) in
                 
                 if let previewImage = previewImage, let mediaURL = mediaURL {
-                    self.delegate?.GIFSelectedWithPreviewImage( previewImage, capturedMediaURL: mediaURL )
+                    self.delegate?.GIFSelectedWithPreviewImage( previewImage, capturedMediaURL: mediaURL, width: selectedGIF.width.integerValue, height: selectedGIF.height.integerValue )
                 }
                 else {
                     let progressHUD = MBProgressHUD.showHUDAddedTo( self.view, animated: true )
@@ -156,6 +159,7 @@ class GIFSearchViewController: UIViewController {
     
     private func updateNavigationItemState() {
         self.navigationItem.rightBarButtonItem?.enabled = selectedIndexPath != nil
+        self.navigationItem.rightBarButtonItem?.accessibilityIdentifier = AutomationId.GIFSearchNext.rawValue
     }
     
     /// Inserts a new section into the collection view that shows a fullsize preview video for the GIF search result

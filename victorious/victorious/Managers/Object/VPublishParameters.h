@@ -105,4 +105,14 @@
  */
 @property (nonatomic, copy) NSString *source;
 
+/**
+ *  The width of the asset if available
+ */
+@property (nonatomic, assign) NSInteger width;
+
+/**
+ *  The height of the asset if available
+ */
+@property (nonatomic, assign) NSInteger Height;
+
 @end

@@ -28,6 +28,7 @@
 
 // SDWebImage
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <SDWebImage/SDWebImageDownloader.h>
 
 // MBProgressHUD
 #import <MBProgressHUD/MBProgressHUD.h>
@@ -38,10 +39,13 @@
 // Victorious Models
 #import "VAbstractFilter.h"
 #import "VSEquence.h"
+#import "VStream.h"
+#import "VExperimentSettings.h"
 
 // Everything else
 #import "VTextPostTextView.h"
 #import "VObjectManager.h"
+#import "VObjectManager+Private.h"
 #import "VPaginationManager.h"
 #import "VPageType.h"
 #import "VCaptureContainerViewController.h"
@@ -51,3 +55,16 @@
 #import "VScrollPaginator.h"
 #import "NSCharacterSet+VURLParts.h"
 #import "UIView+AutoLayout.h"
+#import "VComment.h"
+#import "VMessage.h"
+#import "VComment+Fetcher.h"
+#import "UIImage+ImageCreation.h"
+#import "VVideoView.h"
+#import "VMessage+Fetcher.h"
+#import "VSettingsSwitchCell.h"
+#import "UIImage+VTint.h"
+#import "VDataCache.h"
+#import "NSURL+VDataCacheID.h"
+#import "VButton.h"
+#import "VHasManagedDependencies.h"
+#import "VSessionTimer.h"

@@ -98,7 +98,10 @@ static const NSInteger kUserSearchResultLimit = 20;
             {
                 NSMutableOrderedSet *comments = [[NSMutableOrderedSet alloc] initWithArray:resultObjects];
                 [comments addObjectsFromArray:sequence.comments.array];
-                sequenceInContext.comments = [comments copy];
+                if ( ![sequence.comments isEqualToOrderedSet:sequenceInContext.comments] )
+                {
+                    sequenceInContext.comments = [comments copy];
+                }
             }
             else
             {
@@ -485,7 +488,9 @@ static const NSInteger kUserSearchResultLimit = 20;
             stream.marqueeItems = marqueeItems;
         }
         NSString *streamId = fullResponse[ @"stream_id" ];
+        NSString *shelfId = fullResponse[ @"shelf_id" ];
         stream.streamId = streamId;
+        stream.shelfId = shelfId;
         
         // Any extra parameters from the top-level of the response (i.e. above the "payload" field)
         stream.trackingIdentifier = streamId;

@@ -102,7 +102,6 @@ static const NSUInteger kCharacterLimit = 1024;
     if ( !self.presentingFromProfile )
     {
         VMessageViewController *messageVC = (VMessageViewController *)self.conversationTableViewController;
-        messageVC.shouldRefreshOnAppearance = YES;
         self.navigationItem.title = messageVC.otherUser.name;
     }
 }

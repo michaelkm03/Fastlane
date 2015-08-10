@@ -19,6 +19,7 @@
 #import "NSURL+MediaType.h"
 #import "VImageAsset+Fetcher.h"
 #import "VImageAssetFinder.h"
+#import "VComment.h"
 
 static const CGFloat kMinimumAspectRatio = 0.5f;
 static const CGFloat kMaximumAspectRatio = 2.0f;
@@ -45,22 +46,22 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
 
 - (BOOL)isImage
 {
-    for (NSString *category in VImageCategories())
+    for (NSString *imageCategory in VImageCategories())
     {
-        if ([self.category isEqualToString:category])
+        if ([self.category isEqualToString:imageCategory])
         {
-            return true;
+            return YES;
         }
     }
     
-    return false;
+    return NO;
 }
 
 - (BOOL)isVideo
 {
-    for (NSString *category in VVideoCategories())
+    for (NSString *videoCategory in VVideoCategories())
     {
-        if ([self.category isEqualToString:category])
+        if ([self.category isEqualToString:videoCategory])
         {
             return true;
         }
@@ -73,34 +74,16 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
 {
     VAsset *asset = [[self firstNode] mp4Asset];
     return asset != nil &&
-            asset.playerControlsDisabled.boolValue == YES &&
-            asset.loop.boolValue == YES &&
-            asset.audioMuted.boolValue == YES &&
-            asset.streamAutoplay.boolValue == YES;
+    asset.playerControlsDisabled.boolValue == YES &&
+    asset.loop.boolValue == YES &&
+    asset.audioMuted.boolValue == YES &&
+    asset.streamAutoplay.boolValue == YES;
 }
 
 - (BOOL)isText
 {
     NSArray *textCategories = @[ kVUGCTextCategory, kVUGCTextRepostCategory, kVOwnerTextCategory, kVOwnerTextRepostCategory];
     return [textCategories containsObject:self.category];
-}
-
-- (BOOL)isOwnerContent
-{
-    for (NSString *category in VOwnerCategories())
-    {
-        if ([self.category isEqualToString:category])
-        {
-            return true;
-        }
-    }
-    
-    return false;
-}
-
-- (BOOL)isAnnouncement
-{
-    return [self.category isEqualToString:kVOwnerAnnouncementCategory];
 }
 
 - (BOOL)isPreviewImageContent
@@ -323,6 +306,14 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
         imageUrl = [self previewImageUrl];
     }
     return imageUrl;
+}
+
+- (NSArray *)dateSortedComments
+{
+    return [self.comments sortedArrayUsingComparator:^NSComparisonResult(VComment *comment1, VComment *comment2)
+            {
+                return [comment2.postedAt timeIntervalSinceDate:comment1.postedAt] > 0;
+            }];
 }
 
 @end

@@ -718,6 +718,16 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     [self updateTitleVisibilityWithVerticalOffset:scrollView.contentOffset.y];
 }
 
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    // Don't hide the title when we are back at top triggered by setContentOffset to CGPointZero
+    if ( self.collectionView.contentOffset.y == 0 )
+    {
+        NSString *title = [self.dependencyManager stringForKey:VDependencyManagerTitleKey];
+        self.navigationItem.title = title;
+    }
+}
+
 - (void)updateTitleVisibilityWithVerticalOffset:(CGFloat)verticalOffset
 {
     NSString *title = [self.dependencyManager stringForKey:VDependencyManagerTitleKey];
@@ -969,6 +979,13 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url
 {
     return [[VProfileDeeplinkHandler alloc] initWithDependencyManager:self.dependencyManager];
+}
+
+#pragma mark - VTabMenuContainedViewControllerNavigation
+
+- (void)reselected
+{
+    [self floatingViewSelected:nil];
 }
 
 @end

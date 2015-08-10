@@ -15,7 +15,7 @@
 
 @interface VTagSensitiveTextView () <UIGestureRecognizerDelegate>
 
-@property (nonatomic, strong) VTagDictionary *tagDictionary;
+@property (nonatomic, readwrite) VTagDictionary *tagDictionary;
 @property (nonatomic, assign) CGPoint touchDownLocation;
 @property (nonatomic, assign) NSRange highlightRange;
 @property (nonatomic, strong) VTag *selectedTag;
@@ -73,14 +73,13 @@
          {
              self.tagTapDelegate = tagTapDelegate;
          }
-         
      }];
 }
 
 + (void)displayFormattedStringFromDatabaseFormattedText:(NSString *)databaseFormattedText
-                                                          tagAttributes:(NSDictionary *)tagAttributes
-                                                   andDefaultAttributes:(NSDictionary *)defaultAttributes
-                                                        toCallbackBlock:(void (^)(VTagDictionary *foundTags, NSAttributedString *displayFormattedString))completionBlock
+                                          tagAttributes:(NSDictionary *)tagAttributes
+                                   andDefaultAttributes:(NSDictionary *)defaultAttributes
+                                        toCallbackBlock:(void (^)(VTagDictionary *foundTags, NSAttributedString *displayFormattedString))completionBlock
 {
     NSAssert(tagAttributes != nil, @"tagAttributes must be non-nil");
     NSAssert(defaultAttributes != nil, @"defaultAttributes must be non-nil");
@@ -88,8 +87,8 @@
     
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:databaseFormattedText != nil ? databaseFormattedText : @"" attributes:defaultAttributes];
     VTagDictionary *foundTags = [VTagStringFormatter tagDictionaryFromFormattingAttributedString:attributedString
-                                             withTagStringAttributes:tagAttributes
-                                          andDefaultStringAttributes:defaultAttributes];
+                                                                         withTagStringAttributes:tagAttributes
+                                                                      andDefaultStringAttributes:defaultAttributes];
     completionBlock(foundTags, attributedString);
 }
 
@@ -127,6 +126,56 @@
 
 - (void)didTouchDownAtLocation:(CGPoint)location
 {
+    [self tagAtLocation:location withCallbackBlock:^(VTag *tag, NSRange range)
+    {
+        if ( tag != nil )
+        {
+            self.highlightRange = range;
+            self.selectedTag = tag;
+            UIColor *highlightColor = [[tag.tagStringAttributes objectForKey:NSForegroundColorAttributeName] colorWithAlphaComponent:0.5f];
+            [self.textStorage addAttribute:NSForegroundColorAttributeName value:highlightColor range:self.highlightRange];
+        }
+    }];
+}
+
+- (void)didTapAtLocation:(CGPoint)location
+{
+    if ( self.selectedTag != nil && self.tagTapDelegate != nil )
+    {
+        [self.tagTapDelegate tagSensitiveTextView:self tappedTag:self.selectedTag];
+    }
+}
+
+- (void)didCancelTouchDownAtLocation:(CGPoint)location
+{
+    if ( self.selectedTag != nil )
+    {
+        [self.textStorage setAttributes:self.selectedTag.tagStringAttributes range:self.highlightRange];
+        self.selectedTag = nil;
+    }
+}
+
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
+{
+    BOOL pointInside = [super pointInside:point withEvent:event];
+
+    if ( !pointInside )
+    {
+        return NO;
+    }
+    
+    __block VTag *foundTag = nil;
+    [self tagAtLocation:point withCallbackBlock:^(VTag *tag, NSRange range)
+    {
+        foundTag = tag;
+    }];
+    return foundTag != nil;
+}
+
+- (void)tagAtLocation:(CGPoint)location withCallbackBlock:(void (^)(VTag *tag, NSRange range))callbackBlock
+{
+    NSParameterAssert(callbackBlock != nil);
+    
     //Highlight region here
     location.x -= self.textContainerInset.left;
     location.y -= self.textContainerInset.top;
@@ -140,39 +189,17 @@
     if (characterIndex < self.textStorage.length)
     {
         NSRange range;
-        UIColor *foregroundColor = [self.attributedText attribute:NSForegroundColorAttributeName atIndex:characterIndex longestEffectiveRange:&range inRange:NSMakeRange(0, self.attributedText.length)];
+        UIColor *foregroundColor = [self.textStorage attribute:NSForegroundColorAttributeName atIndex:characterIndex longestEffectiveRange:&range inRange:NSMakeRange(0, self.textStorage.length)];
         BOOL containsAttributes = [self.tagStringAttributes[NSForegroundColorAttributeName] isEqual:foregroundColor];
         
         if ( containsAttributes )
         {
-            VTag *tag = [self.tagDictionary tagForKey:[self.attributedText.string substringWithRange:range]];
-            if ( tag )
-            {
-                self.highlightRange = range;
-                self.selectedTag = tag;
-                UIColor *highlightColor = [[tag.tagStringAttributes objectForKey:NSForegroundColorAttributeName] colorWithAlphaComponent:0.5f];
-                [self.textStorage addAttribute:NSForegroundColorAttributeName value:highlightColor range:self.highlightRange];
-            }
+            VTag *tag =  [self.tagDictionary tagForKey:[self.textStorage.string substringWithRange:range]];
+            callbackBlock(tag, range);
+            return;
         }
     }
-}
-
-- (void)didTapAtLocation:(CGPoint)location
-{
-    if ( self.selectedTag != nil )
-    {
-        [self.tagTapDelegate tagSensitiveTextView:self tappedTag:self.selectedTag];
-    }
-}
-
-- (void)didCancelTouchDownAtLocation:(CGPoint)location
-{
-    if ( self.selectedTag != nil )
-    {
-        [self.textStorage setAttributes:self.selectedTag.tagStringAttributes range:self.highlightRange];
-        self.selectedTag = nil;
-    }
-
+    callbackBlock(nil, NSMakeRange(NSNotFound, 0));
 }
 
 @end

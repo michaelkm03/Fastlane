@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAutomation.h"
 #import "VScaffoldViewController.h"
 #import "VStreamCollectionViewController.h"
 #import "VStreamCollectionViewDataSource.h"
@@ -28,6 +27,7 @@
 //Views
 #import "VNoContentView.h"
 #import "VCellFocus.h"
+#import "VSleekStreamCellFactory.h"
 
 //Data models
 #import "VStream+Fetcher.h"
@@ -81,6 +81,7 @@
 #import "UIViewController+VAccessoryScreens.h"
 
 #import "VCollectionViewStreamFocusHelper.h"
+#import "victorious-Swift.h"
 
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
 
@@ -99,7 +100,7 @@ static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
-@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VMarqueeSelectionDelegate, VMarqueeDataDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer>
+@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VMarqueeSelectionDelegate, VMarqueeDataDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -109,7 +110,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 @property (strong, nonatomic) VUploadProgressViewController *uploadProgressViewController;
 @property (strong, nonatomic) NSLayoutConstraint *uploadProgressViewYconstraint;
 
-@property (strong, nonatomic) VSequenceActionController *sequenceActionController;
+@property (readwrite, nonatomic) VSequenceActionController *sequenceActionController;
 
 @property (nonatomic, assign) BOOL hasRefreshed;
 
@@ -291,7 +292,12 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
          to rotate in case it's timer has been invalidated by the presentation of another viewController
          */
         [self.marqueeCellController enableTimer];
-    } 
+    }
+    
+    if ( [self.streamCellFactory isKindOfClass:[VSleekStreamCellFactory class]] )
+    {
+        [(VSleekStreamCellFactory *)self.streamCellFactory updateVisibleCellsInCollectionView:self.collectionView];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -468,7 +474,11 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     if ( [streamItem isKindOfClass:[VSequence class]] )
     {
-        [self showContentViewForSequence:(VSequence *)streamItem inStreamWithID:marquee.stream.streamId withPreviewImage:image];
+        StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:streamItem
+                                                                          stream:marquee.stream
+                                                                       fromShelf:YES];
+        
+        [self showContentViewForCellEvent:event withPreviewImage:image];
     }
     else if ( [streamItem isSingleStream] )
     {
@@ -523,8 +533,13 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     }
     
     self.lastSelectedIndexPath = indexPath;
-    VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
-    [self showContentViewForSequence:sequence inStreamWithID:self.currentStream.streamId withPreviewImage:nil];
+    VStreamItem *streamItem = (VStreamItem *)[self.streamDataSource itemAtIndexPath:indexPath];
+    
+    StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:streamItem
+                                                                      stream:self.currentStream
+                                                                   fromShelf:NO];
+    
+    [self showContentViewForCellEvent:event withPreviewImage:nil];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
@@ -617,7 +632,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)willCommentOnSequence:(VSequence *)sequenceObject fromView:(UIView *)commentView
 {
-    [self.sequenceActionController showCommentsFromViewController:self sequence:sequenceObject];
+    [self.sequenceActionController showCommentsFromViewController:self sequence:sequenceObject withSelectedComment:nil];
 }
 
 - (void)selectedUser:(VUser *)user onSequence:(VSequence *)sequence fromView:(UIView *)userSelectionView
@@ -732,16 +747,18 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     self.collectionView.backgroundView = newBackgroundView;
 }
 
-- (void)showContentViewForSequence:(VSequence *)sequence inStreamWithID:(NSString *)streamId withPreviewImage:(UIImage *)previewImage
+- (void)showContentViewForCellEvent:(StreamCellContext *)event withPreviewImage:(UIImage *)previewImage
 {
-    NSParameterAssert(sequence != nil);
+    NSParameterAssert(event.streamItem != nil);
     NSParameterAssert(self.currentStream != nil);
-    [self.streamTrackingHelper onStreamCellSelectedWithStream:self.currentStream sequence:sequence];
     
+    [self.streamTrackingHelper onStreamCellSelectedWithCellEvent:event];
+    
+    NSString *streamID = [event.stream hasShelfID] && event.fromShelf ? event.stream.shelfId : event.stream.streamId;
     [VContentViewPresenter presentContentViewFromViewController:self
                                           withDependencyManager:self.dependencyManager
-                                                    ForSequence:sequence
-                                                 inStreamWithID:streamId
+                                                    ForSequence:(VSequence *)event.streamItem
+                                                 inStreamWithID:streamID
                                                       commentID:nil
                                                withPreviewImage:previewImage];
 }
@@ -947,8 +964,12 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
         if ([cell conformsToProtocol:@protocol(VStreamCellTracking)])
         {
             VSequence *sequenceToTrack = [(id<VStreamCellTracking>)cell sequenceToTrack];
-            [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithStream:self.currentStream
-                                                                     sequence:sequenceToTrack];
+            
+            StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:sequenceToTrack
+                                                                              stream:self.currentStream
+                                                                           fromShelf:NO];
+            
+            [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithCellEvent:event];
         }
     }
 }
@@ -1010,6 +1031,14 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 - (BOOL)selectorIsVisible
 {
     return !self.navigationController.navigationBarHidden;
+}
+
+#pragma mark - VTabMenuContainedViewControllerNavigation
+
+- (void)reselected
+{
+    [self.v_navigationController setNavigationBarHidden:NO];
+    [self.collectionView setContentOffset:CGPointZero animated:YES];
 }
 
 @end

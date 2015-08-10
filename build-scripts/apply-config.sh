@@ -57,27 +57,13 @@ if [ ! -d "$DEST_PATH" ]; then
 fi
 
 
-### Copy Files
-
-copyFile(){
-    if [ -a "$FOLDER/$1" ]; then
-        cp "$FOLDER/$1" "$DEST_PATH/$1"
-    elif [ -a "$DEST_PATH/$1" ]; then
-        rm "$DEST_PATH/$1"
-    fi
-}
-
-copyFile "LaunchImage@2x.png"
-copyFile "Icon-29@2x.png"
-copyFile "Icon-40@2x.png"
-copyFile "Icon-60@2x.png"
-copyFile "homeHeaderImage.png"
-copyFile "homeHeaderImage@2x.png"
-
-
 ### Modify Info.plist
 
 APP_ID=$(./build-scripts/get-app-id.sh "$FOLDER" "$CONFIGURATION" 2> /dev/null )
+if [ $? != 0 ]; then
+    echo "Could not read app ID from Info.plist"
+    exit 1
+fi
 
 if [ "$A_FLAG" == "-a" ]; then
     PRODUCT_PREFIX=`/usr/libexec/PlistBuddy -c "Print ProductPrefix" "$DEST_PATH/Info.plist"`
@@ -94,8 +80,22 @@ fi
 ### Set App IDs
 
 QA_APP_ID=$(./build-scripts/get-app-id.sh "$FOLDER" "QA" 2> /dev/null)
+if [ $? != 0 ]; then
+    echo "Could not read app ID from Info.plist"
+    exit 1
+fi
+
 STAGING_APP_ID=$(./build-scripts/get-app-id.sh "$FOLDER" "Staging" 2> /dev/null)
+if [ $? != 0 ]; then
+    echo "Could not read app ID from Info.plist"
+    exit 1
+fi
+
 PRODUCTION_APP_ID=$(./build-scripts/get-app-id.sh "$FOLDER" "Production" 2> /dev/null)
+if [ $? != 0 ]; then
+    echo "Could not read app ID from Info.plist"
+    exit 1
+fi
 
 setAppIDs(){
     ENVIRONMENTS_PLIST="$1"
@@ -124,6 +124,24 @@ for PLIST_FILE in $PLIST_FILES
 do
     setAppIDs "$PLIST_FILE"
 done
+
+
+### Copy Files
+
+copyFile(){
+    if [ -a "$FOLDER/$1" ]; then
+        cp "$FOLDER/$1" "$DEST_PATH/$1"
+    elif [ -a "$DEST_PATH/$1" ]; then
+        rm "$DEST_PATH/$1"
+    fi
+}
+
+copyFile "LaunchImage@2x.png"
+copyFile "Icon-29@2x.png"
+copyFile "Icon-40@2x.png"
+copyFile "Icon-60@2x.png"
+copyFile "homeHeaderImage.png"
+copyFile "homeHeaderImage@2x.png"
 
 
 ### Remove Temp Directory

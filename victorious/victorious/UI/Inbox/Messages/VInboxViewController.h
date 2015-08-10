@@ -23,6 +23,7 @@ extern NSString * const VInboxViewControllerInboxPushReceivedNotification; ///< 
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) id<VMultipleContainerChildDelegate> multipleContainerChildDelegate;
+@property (nonatomic) NSInteger badgeNumber;
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 

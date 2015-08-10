@@ -73,6 +73,11 @@ static const NSUInteger kExperienceEnhancerCount = 20;
     OCMStub( [myObjectMock sendRequest:[OCMArg any]] );
 }
 
+- (void)tearDown
+{
+    [super tearDown];
+}
+
 - (void)testCreateExperienceEnhancers
 {
     NSArray *experienceEnhancers = [self.viewController createExperienceEnhancersFromVoteTypes:self.voteTypes sequence:self.sequence];
@@ -185,6 +190,7 @@ static const NSUInteger kExperienceEnhancerCount = 20;
      {
          [exp resetCooldownTimer];
          
+         
          exp.cooldownDuration = 10;
          
          NSUInteger count = arc4random() % 200;
@@ -203,8 +209,8 @@ static const NSUInteger kExperienceEnhancerCount = 20;
          [exp resetCooldownTimer];
 
          NSInteger startingVotes = exp.voteCount;
-         NSUInteger cooldown = (arc4random() % 5) + 1;
-         NSUInteger timeUntilVote = cooldown + 1;
+         NSTimeInterval cooldown = 0.2;
+         NSTimeInterval timeUntilVote = cooldown + 0.2;
          
          // Set the cooldown time
          exp.cooldownDuration = cooldown;

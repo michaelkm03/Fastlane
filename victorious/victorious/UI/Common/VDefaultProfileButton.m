@@ -54,7 +54,7 @@
     // Re-render placeholder image if necessary
     if (_imageURL == nil || [_imageURL absoluteString].length == 0)
     {
-        [self setImage:[self placeholderImage] forState:UIControlStateNormal];
+        [self setBackgroundImage:[self placeholderImage] forState:UIControlStateNormal];
     }
 }
 
@@ -68,9 +68,11 @@
                                                    progress:nil
                                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
      {
+         __strong typeof(weakSelf) strongSelf = weakSelf;
+         
          if (!image)
          {
-             [weakSelf setImage:[weakSelf placeholderImage] forState:controlState];
+             [strongSelf setBackgroundImage:[strongSelf placeholderImage] forState:controlState];
              return;
          }
          
@@ -79,7 +81,7 @@
                             UIImage *roundedImage = [image roundedImageWithCornerRadius:image.size.height / 2];
                             dispatch_async(dispatch_get_main_queue(), ^
                                            {
-                                               [weakSelf setImage:roundedImage forState:controlState];
+                                               [strongSelf setBackgroundImage:roundedImage forState:controlState];
                                            });
                         });
      }];

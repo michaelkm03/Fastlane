@@ -496,6 +496,7 @@
 "Suggested People"      = "Suggested People";
 "Trending Tags"         = "Trending Tags";
 "Voters"                = "Voters";
+"Voter"                 = "Voter";
 
 "HashtagSubscribeError"  = "Sorry, an error occurred attempting to follow this hashtag. Please try again.";
 "HashtagUnsubscribeError"  = "Sorry, an error occurred attempting to unfollow this hashtag. Please try again.";
@@ -658,6 +659,10 @@
 
 "Nice!" = "Nice!";
 "Edit photo" = "Edit photo";
+
+"Open Image" = "Open Image";
+"Watch Video" = "Watch Video";
+"Watch GIF" = "Watch GIF";
 
 "CommentsSingularFormat" = "%@ Comment";  // e.g. "1 Comment"
 "CommentsPluralFormat" = "%@ Comments";  // e.g. "20 Comments"

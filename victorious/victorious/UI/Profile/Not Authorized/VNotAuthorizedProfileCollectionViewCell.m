@@ -69,6 +69,7 @@ static const CGFloat kCornderRadius = 3.0f;
  
     [self.loginButton setStyle:VButtonStylePrimary];
     [self.loginButton setTitle:NSLocalizedString(@"Login", @"") forState:UIControlStateNormal];
+    self.loginButton.accessibilityIdentifier = VAutomationIdentifierProfileLogInButton;
     
     self.noContentViewContainer.layer.cornerRadius = kCornderRadius;
     self.noContentViewContainer.layer.masksToBounds = YES;
