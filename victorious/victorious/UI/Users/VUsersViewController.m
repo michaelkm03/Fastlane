@@ -211,7 +211,7 @@
     NSDictionary *dict = @{
                            @(VUsersViewPresenterFollowers) : VFollowSourceScreenFollowers,
                            @(VUsersViewPresenterFollowing) : VFollowSourceScreenFollowing,
-                           @(VUsersViewPresenterFollowers) : VFollowSourceScreenLikers
+                           @(VUsersViewPresenterLikers) : VFollowSourceScreenLikers
                            };
     
     NSString *screenName = [dict objectForKey:@(self.usersViewPresenter)];
