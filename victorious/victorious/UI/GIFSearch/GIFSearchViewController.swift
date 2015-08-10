@@ -109,7 +109,7 @@ class GIFSearchViewController: UIViewController {
         }
     }
     
-    func selectSelectedIndexPath() {
+    func selectCellAtSelectedIndexPath() {
         if let indexPath = self.selectedIndexPath {
             collectionView.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: .None)
         }
