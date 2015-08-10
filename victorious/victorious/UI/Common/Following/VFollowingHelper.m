@@ -16,19 +16,19 @@
 #import "VUser.h"
 #import "VObjectManager+Users.h"
 
-NSString * const VFollowSourceScreenDiscoverSuggestedUsers = @"follow.discover.suggest";
-NSString * const VFollowSourceScreenReposter = @"follow.reposter";
-NSString * const VFollowSourceScreenProfile = @"follow.profile";
-NSString * const VFollowSourceScreenDiscoverUserSearchResults = @"follow.discover.search";
-NSString * const VFollowSourceScreenFollowers = @"follow.followers";
-NSString * const VFollowSourceScreenFollowing = @"follow.following";
-NSString * const VFollowSourceScreenLikers = @"follow.likers";
-NSString * const VFollowSourceScreenMessageableUsers = @"follow.messageable_users";
-NSString * const VFollowSourceScreenFindFriendsContacts = @"follow.find_friends.contacts";
-NSString * const VFollowSourceScreenFindFriendsFacebook = @"follow.find_friends.facebook";
-NSString * const VFollowSourceScreenFindFriendsTwitter = @"follow.find_friends.twitter";
-NSString * const VFollowSourceScreenShelf = @"follow.shelf";
-NSString * const VFollowSourceScreenUnknown = @"follow.unknown";
+NSString * const VFollowSourceScreenDiscoverSuggestedUsers = @"discover.suggest";
+NSString * const VFollowSourceScreenReposter = @"reposter";
+NSString * const VFollowSourceScreenProfile = @"profile";
+NSString * const VFollowSourceScreenDiscoverUserSearchResults = @"discover.search";
+NSString * const VFollowSourceScreenFollowers = @"followers";
+NSString * const VFollowSourceScreenFollowing = @"following";
+NSString * const VFollowSourceScreenLikers = @"likers";
+NSString * const VFollowSourceScreenMessageableUsers = @"messageable_users";
+NSString * const VFollowSourceScreenFindFriendsContacts = @"find_friends.contacts";
+NSString * const VFollowSourceScreenFindFriendsFacebook = @"find_friends.facebook";
+NSString * const VFollowSourceScreenFindFriendsTwitter = @"find_friends.twitter";
+NSString * const VFollowSourceScreenShelf = @"shelf";
+NSString * const VFollowSourceScreenUnknown = @"unknown";
 
 @implementation VFollowingHelper
 
