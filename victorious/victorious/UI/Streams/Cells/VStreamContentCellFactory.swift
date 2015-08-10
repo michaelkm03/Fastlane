@@ -11,7 +11,7 @@ import UIKit
 //2.0 Improvement: Transform this into a protocol extension.
 
 /// A cell factory for representing shelved streams across the app. Treat this as an
-/// abstract base class and only use concrete subclasses to utilize this class' functionality.
+/// abstract base class and only use concrete subclasses to utilize this class's functionality.
 /// In Swift 2.0 this class should be transformed into a protocol extension.
 class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
     
