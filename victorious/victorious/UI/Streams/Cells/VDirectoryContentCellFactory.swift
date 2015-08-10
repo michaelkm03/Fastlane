@@ -10,13 +10,13 @@ import UIKit
 
 /// A cell factory that prepares and provides directory cells based on the
 /// dependency manager used to init it and stream items provided to create each cell.
-class VDirectoryContentCellFactory : VStreamContentCellFactory {
+class VDirectoryContentCellFactory: VStreamContentCellFactory {
     
     /// The key of the directory cell returned in the dependency manager
     private static let kDirectoryCellFactoryKey = "directoryCell"
     
     /// The directory cell factory subclass created from the dependency manager provided to this class' init
-    private let directoryCellFactory : VDirectoryCellFactory?
+    private let directoryCellFactory: VDirectoryCellFactory?
     
     required init(dependencyManager: VDependencyManager) {
         let templateValue: AnyObject! = dependencyManager.templateValueConformingToProtocol(VDirectoryCellFactory.self, forKey: VDirectoryContentCellFactory.kDirectoryCellFactoryKey)
@@ -35,7 +35,7 @@ class VDirectoryContentCellFactory : VStreamContentCellFactory {
 
 }
 
-extension VDirectoryContentCellFactory : VDirectoryCellFactory {
+extension VDirectoryContentCellFactory: VDirectoryCellFactory {
  
     func minimumInterItemSpacing() -> CGFloat {
         if let factory = directoryCellFactory {
@@ -50,7 +50,7 @@ extension VDirectoryContentCellFactory : VDirectoryCellFactory {
     
 }
 
-extension VDirectoryContentCellFactory : VDirectoryCellUpdeatableFactory {
+extension VDirectoryContentCellFactory: VDirectoryCellUpdeatableFactory {
     
     func prepareCell(cell: UICollectionViewCell, forDisplayInCollectionView collectionView: UICollectionView, atIndexPath indexPath: NSIndexPath) {
         if let factory = directoryCellFactory as? VDirectoryCellUpdeatableFactory {

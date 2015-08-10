@@ -16,7 +16,7 @@ import UIKit
 class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
     
     /// The object that should recieve messages about marquee data and selection updates.
-    weak var delegate : VStreamContentCellFactoryDelegate? {
+    weak var delegate: VStreamContentCellFactoryDelegate? {
         didSet {
             marqueeCellFactory.marqueeController?.setSelectionDelegate(delegate)
             marqueeCellFactory.marqueeController?.setDataDelegate(delegate)
@@ -24,10 +24,10 @@ class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
     }
     
     /// The cell factory that will provide marquee cells
-    private let marqueeCellFactory : VMarqueeCellFactory
+    private let marqueeCellFactory: VMarqueeCellFactory
     
     /// The dependency manager used to style all cells from this factory
-    private let dependencyManager : VDependencyManager
+    private let dependencyManager: VDependencyManager
     
     /// Nil by default, overridden by subclasses to return a factory that provides non-shelf cells
     func defaultFactory() -> VStreamCellFactory? {
@@ -49,7 +49,7 @@ class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
     }
 }
 
-extension VStreamContentCellFactory : VStreamCellFactory {
+extension VStreamContentCellFactory: VStreamCellFactory {
     
     func registerCellsWithCollectionView(collectionView: UICollectionView) {
         defaultFactory()?.registerCellsWithCollectionView(collectionView)

@@ -12,7 +12,7 @@ import UIKit
 class VMarqueeCellFactory: NSObject, VHasManagedDependencies {
     
     /// The controller responsible for managing the display, reuse, and data updating for a marquee.
-    let marqueeController : VMarqueeController?
+    let marqueeController: VMarqueeController?
 
     required init(dependencyManager: VDependencyManager) {
         let templateValue: AnyObject! = dependencyManager.templateValueConformingToProtocol(VMarqueeController.self, forKey: "marqueeCell")
@@ -25,7 +25,7 @@ class VMarqueeCellFactory: NSObject, VHasManagedDependencies {
    
 }
 
-extension VMarqueeCellFactory : VStreamCellFactory {
+extension VMarqueeCellFactory: VStreamCellFactory {
     
     func registerCellsWithCollectionView(collectionView: UICollectionView) {
         marqueeController?.registerCollectionViewCellWithCollectionView(collectionView)
