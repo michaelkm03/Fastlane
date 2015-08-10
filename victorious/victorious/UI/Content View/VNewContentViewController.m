@@ -851,7 +851,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             }
             else
             {
-                return self.viewModel.experienceEnhancerController.numberOfExperienceEnhancers > 0;
+                return (self.viewModel.experienceEnhancerController.numberOfExperienceEnhancers > 0) ? 1 : 0;
             }
         }
         case VContentViewSectionAllComments:
