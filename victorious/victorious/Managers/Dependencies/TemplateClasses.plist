@@ -82,12 +82,8 @@
 	<string>VGIFCreationFlowController</string>
 	<key>pollCreation.screen</key>
 	<string>VCreatePollViewController</string>
-	<key>sideMenu.scaffold</key>
-	<string>VSideMenuViewController</string>
 	<key>tabMenu.scaffold</key>
 	<string>VTabMenuViewController</string>
-	<key>simple.menu</key>
-	<string>VMenuController</string>
 	<key>tab.menu</key>
 	<string>VTabMenuShim</string>
 	<key>stream.screen</key>
