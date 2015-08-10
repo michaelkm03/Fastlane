@@ -23,7 +23,7 @@ class VDirectoryContentCellFactory: VStreamContentCellFactory {
         if let factory = dependencyManager.templateValueConformingToProtocol(VDirectoryCellFactory.self, forKey: VDirectoryContentCellFactory.kDirectoryCellFactoryKey) as? VDirectoryCellFactory {
             directoryCellFactory = factory
         } else {
-            assertionFailure("The directory content cell factory was created with a nil directory cell. Check the directoryCell value in the template.")
+            assertionFailure("The directory content cell factory was created with an invalid directory cell factory; no directory cells will be shown. Troubleshoot by checking the directoryCell value in the template.")
             directoryCellFactory = nil
         }
         super.init(dependencyManager: dependencyManager)
