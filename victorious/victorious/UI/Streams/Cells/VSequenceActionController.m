@@ -279,7 +279,7 @@
          
          // Optimistically update the data store for a successul repost
          node.sequence.repostCount = @( node.sequence.repostCount.integerValue + 1 );
-         [self updateRespostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
+         [self updateRepostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
          node.sequence.hasReposted = @(YES);
          [node.sequence.managedObjectContext save:nil];
          
@@ -296,7 +296,7 @@
           {
               if ( error.code == kVSequenceAlreadyReposted )
               {
-                  [self updateRespostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
+                  [self updateRepostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
                   node.sequence.hasReposted = @(YES);
                   [node.sequence.managedObjectContext save:nil];
               }
@@ -304,7 +304,7 @@
               {
                   // Undo the repost optimistically assumed successful in the data store
                   node.sequence.repostCount = @( MAX( node.sequence.repostCount.integerValue - 1, 0 ) );
-                  [self updateRespostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
+                  [self updateRepostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
                   node.sequence.hasReposted = @(NO);
                   [node.sequence.managedObjectContext save:nil];
               }
@@ -317,7 +317,7 @@
      }];
 }
 
-- (void)updateRespostsForUser:(VUser *)user withSequence:(VSequence *)sequence
+- (void)updateRepostsForUser:(VUser *)user withSequence:(VSequence *)sequence
 {
     NSError *error = nil;
     [user addRepostedSequencesObject:sequence];
