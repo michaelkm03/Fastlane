@@ -8,15 +8,13 @@
 
 import Foundation
 
-/// Dispatchs provided closure after delay, saving the need for the cumbersome overhead
-/// of getting the correct `disaptch_time_t` value
+/// Executes a closure using `dispatch_after`, saving the need for the cumbersome overhead
+/// of getting the correct `disaptch_time_t` value.
 ///
 /// :param: The delay in seconds
+/// :closure: The closure to execute after the delay
 func dispatch_after( delay:NSTimeInterval, closure:()->() ) {
-    dispatch_after(
-        dispatch_time(
-            DISPATCH_TIME_NOW,
-            Int64(delay * Double(NSEC_PER_SEC))
-        ),
-        dispatch_get_main_queue(), closure)
+    
+    let time = dispatch_time( DISPATCH_TIME_NOW,  Int64(delay * Double(NSEC_PER_SEC)) )
+    dispatch_after( time, dispatch_get_main_queue(), closure)
 }
