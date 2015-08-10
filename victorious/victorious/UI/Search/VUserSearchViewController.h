@@ -26,7 +26,7 @@
 typedef NS_ENUM(NSInteger, VUserSearchPresenter)
 {
     VUserSearchPresenterNone, // Default value when it's not set. It's unexpected to see this
-    VUserSearchPresenterMessages // Set when the presenter is VINboxViewController
+    VUserSearchPresenterMessages // Set when the presenter is VInboxViewController
 };
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;

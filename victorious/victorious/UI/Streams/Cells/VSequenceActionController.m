@@ -296,7 +296,7 @@
     VUsersViewController *usersViewController = [[VUsersViewController alloc] initWithDependencyManager:childDependencyManager];
     usersViewController.title = NSLocalizedString( @"LikersTitle", nil );
     usersViewController.usersDataSource = [[VLikersDataSource alloc] initWithSequence:sequence];
-    usersViewController.usersViewPresenter = VUsersViewPresenterLikers;
+    usersViewController.usersViewContentMode = VUsersViewContentModeLikers;
     
     [viewController.navigationController pushViewController:usersViewController animated:YES];
 }

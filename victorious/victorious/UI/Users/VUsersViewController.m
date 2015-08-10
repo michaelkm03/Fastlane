@@ -209,12 +209,12 @@
 - (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion
 {
     NSDictionary *dict = @{
-                           @(VUsersViewPresenterFollowers) : VFollowSourceScreenFollowers,
-                           @(VUsersViewPresenterFollowing) : VFollowSourceScreenFollowing,
-                           @(VUsersViewPresenterLikers) : VFollowSourceScreenLikers
+                           @(VUsersViewContentModeFollowers) : VFollowSourceScreenFollowers,
+                           @(VUsersViewContentModeFollowing) : VFollowSourceScreenFollowing,
+                           @(VUsersViewContentModeLikers) : VFollowSourceScreenLikers
                            };
     
-    NSString *screenName = [dict objectForKey:@(self.usersViewPresenter)];
+    NSString *screenName = [dict objectForKey:@(self.usersViewContentMode)];
 
     [self.followingHelper followUser:user
                  withAuthorizedBlock:authorizedBlock

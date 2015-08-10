@@ -95,7 +95,7 @@ withAuthorizedBlock:(void (^)(void))authorizedBlock
          };
          
          // Add user at backend
-         NSString *sourceScreen = screenName == nil ? VFollowSourceScreenUnknown : screenName;
+         NSString *sourceScreen = screenName?:VFollowSourceScreenUnknown;
          [[VObjectManager sharedManager] followUser:user
                                        successBlock:successBlock
                                           failBlock:failureBlock
