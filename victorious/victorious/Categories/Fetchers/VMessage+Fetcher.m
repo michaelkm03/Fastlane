@@ -10,6 +10,7 @@
 #import "NSURL+MediaType.h"
 #import "NSString+VParseHelp.h"
 #import "VMediaAttachment.h"
+#import "VCompatibility.h"
 
 @implementation VMessage (Fetcher)
 
@@ -64,8 +65,8 @@
         return 1;
     }
     
-    CGFloat mediaHeight = [self.mediaHeight floatValue];
-    CGFloat mediaWidth = [self.mediaWidth floatValue];
+    CGFloat mediaHeight = [self.mediaHeight VCGFLOAT_VALUE];
+    CGFloat mediaWidth = [self.mediaWidth VCGFLOAT_VALUE];
     
     CGFloat aspectRatio = 1.0f;
     
