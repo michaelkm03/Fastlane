@@ -18,7 +18,7 @@
 #import "VImageSequencePreviewView.h"
 #import "VVideoSequencePreviewView.h"
 #import "VHTMLSequncePreviewView.h"
-#import "VFailureStreamItemPreviewView.h"
+#import "VFailureSequencePreviewView.h"
 
 @implementation VSequencePreviewView
 
@@ -47,8 +47,8 @@
     }
     else
     {
-        NSAssert(@"Unable to handle sequence!", @"");
-        classType = [VFailureStreamItemPreviewView class];
+        NSAssert(false, @"Unable to handle sequence!");
+        classType = [VFailureSequencePreviewView class];
     }
     
     return classType;
