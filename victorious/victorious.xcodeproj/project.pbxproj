@@ -82,6 +82,46 @@
 		0314D4DB19B46B5E00FA363C /* VTOSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D3FF19B46B5E00FA363C /* VTOSViewController.m */; };
 		0314D4DC19B46B5E00FA363C /* VFacebookActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D40219B46B5E00FA363C /* VFacebookActivity.m */; };
 		0314D4FD19B46B5E00FA363C /* VTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D44419B46B5E00FA363C /* VTableViewCell.m */; };
+		031DF6231B7981F200FDD7D3 /* VEnvironment.h in Headers */ = {isa = PBXBuildFile; fileRef = A77951151B28AB9A00D9DB0A /* VEnvironment.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF6241B7981F600FDD7D3 /* VEnvironment.h in Headers */ = {isa = PBXBuildFile; fileRef = A77951151B28AB9A00D9DB0A /* VEnvironment.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF6251B7983CE00FDD7D3 /* VExperimentSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = A7815E271B701076007797B7 /* VExperimentSettings.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF6261B7983D200FDD7D3 /* VExperimentSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = A7815E271B701076007797B7 /* VExperimentSettings.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF6271B7986E700FDD7D3 /* NSCharacterSet+VURLParts.h in Headers */ = {isa = PBXBuildFile; fileRef = A721E8B11B572453000B7901 /* NSCharacterSet+VURLParts.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF6281B7986E700FDD7D3 /* NSString+VCrypto.h in Headers */ = {isa = PBXBuildFile; fileRef = A721E8C41B572453000B7901 /* NSString+VCrypto.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF6291B7986E700FDD7D3 /* NSString+VDataCacheID.h in Headers */ = {isa = PBXBuildFile; fileRef = 03A761501B324BFF0016B69D /* NSString+VDataCacheID.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF62A1B7986E700FDD7D3 /* NSURL+VDataCacheID.h in Headers */ = {isa = PBXBuildFile; fileRef = 03A7614B1B3232040016B69D /* NSURL+VDataCacheID.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF62B1B7986E700FDD7D3 /* VBundleWriterDataCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 036DE7DF1B62E4A70038A25E /* VBundleWriterDataCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF62C1B7986E700FDD7D3 /* VDataCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 03A761481B322F830016B69D /* VDataCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF62D1B7986E700FDD7D3 /* VEnvironment+VDataCacheID.h in Headers */ = {isa = PBXBuildFile; fileRef = 032F49431B45A424005325CA /* VEnvironment+VDataCacheID.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF62E1B7986E700FDD7D3 /* VTemplateImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 038C51171B37B3D700A903C2 /* VTemplateImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF62F1B7986E700FDD7D3 /* VTemplateImageMacro.h in Headers */ = {isa = PBXBuildFile; fileRef = 0386F87D1B37F01700E8D459 /* VTemplateImageMacro.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF6301B7986E700FDD7D3 /* VTemplateImageSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 038C511A1B37C8F500A903C2 /* VTemplateImageSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF6311B7986E700FDD7D3 /* VURLMacroReplacement.h in Headers */ = {isa = PBXBuildFile; fileRef = 032954A31A9FF4E000698119 /* VURLMacroReplacement.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF6321B7986E700FDD7D3 /* VJSONHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 0306F7A41ADDF939009FE3AA /* VJSONHelper.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF6331B7986E700FDD7D3 /* VBulkDownloadOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 0386F8851B38F76700E8D459 /* VBulkDownloadOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF6341B7986E700FDD7D3 /* VDownloadOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 0386F88A1B390ADE00E8D459 /* VDownloadOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF6351B7986E700FDD7D3 /* VTemplateDownloadOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 03A058BD1AEF44D600CF39D1 /* VTemplateDownloadOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF6361B7986E700FDD7D3 /* VTemplatePackageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0386F8761B37E52500E8D459 /* VTemplatePackageManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF6371B7986E700FDD7D3 /* VTemplateSerialization.h in Headers */ = {isa = PBXBuildFile; fileRef = 03A058B81AED7FB600CF39D1 /* VTemplateSerialization.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF6381B7986E700FDD7D3 /* VAPIRequestDecorator.h in Headers */ = {isa = PBXBuildFile; fileRef = 036DE7C21B608C100038A25E /* VAPIRequestDecorator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF6391B7986EB00FDD7D3 /* NSCharacterSet+VURLParts.h in Headers */ = {isa = PBXBuildFile; fileRef = A721E8B11B572453000B7901 /* NSCharacterSet+VURLParts.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF63A1B7986EB00FDD7D3 /* NSString+VCrypto.h in Headers */ = {isa = PBXBuildFile; fileRef = A721E8C41B572453000B7901 /* NSString+VCrypto.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF63B1B7986EB00FDD7D3 /* NSString+VDataCacheID.h in Headers */ = {isa = PBXBuildFile; fileRef = 03A761501B324BFF0016B69D /* NSString+VDataCacheID.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF63C1B7986EB00FDD7D3 /* NSURL+VDataCacheID.h in Headers */ = {isa = PBXBuildFile; fileRef = 03A7614B1B3232040016B69D /* NSURL+VDataCacheID.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF63D1B7986EB00FDD7D3 /* VBundleWriterDataCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 036DE7DF1B62E4A70038A25E /* VBundleWriterDataCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF63E1B7986EB00FDD7D3 /* VDataCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 03A761481B322F830016B69D /* VDataCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF63F1B7986EB00FDD7D3 /* VEnvironment+VDataCacheID.h in Headers */ = {isa = PBXBuildFile; fileRef = 032F49431B45A424005325CA /* VEnvironment+VDataCacheID.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF6401B7986EB00FDD7D3 /* VTemplateImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 038C51171B37B3D700A903C2 /* VTemplateImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF6411B7986EB00FDD7D3 /* VTemplateImageMacro.h in Headers */ = {isa = PBXBuildFile; fileRef = 0386F87D1B37F01700E8D459 /* VTemplateImageMacro.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF6421B7986EB00FDD7D3 /* VTemplateImageSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 038C511A1B37C8F500A903C2 /* VTemplateImageSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF6431B7986EB00FDD7D3 /* VURLMacroReplacement.h in Headers */ = {isa = PBXBuildFile; fileRef = 032954A31A9FF4E000698119 /* VURLMacroReplacement.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF6441B7986EB00FDD7D3 /* VJSONHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 0306F7A41ADDF939009FE3AA /* VJSONHelper.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF6451B7986EB00FDD7D3 /* VBulkDownloadOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 0386F8851B38F76700E8D459 /* VBulkDownloadOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF6461B7986EB00FDD7D3 /* VDownloadOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 0386F88A1B390ADE00E8D459 /* VDownloadOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF6471B7986EB00FDD7D3 /* VTemplateDownloadOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 03A058BD1AEF44D600CF39D1 /* VTemplateDownloadOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF6481B7986EB00FDD7D3 /* VTemplatePackageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0386F8761B37E52500E8D459 /* VTemplatePackageManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF6491B7986EB00FDD7D3 /* VTemplateSerialization.h in Headers */ = {isa = PBXBuildFile; fileRef = 03A058B81AED7FB600CF39D1 /* VTemplateSerialization.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		031DF64A1B7986EB00FDD7D3 /* VAPIRequestDecorator.h in Headers */ = {isa = PBXBuildFile; fileRef = 036DE7C21B608C100038A25E /* VAPIRequestDecorator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0326BBBA19A8183800D995DA /* VPushNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0326BBB919A8183800D995DA /* VPushNotificationManager.m */; };
 		0326C36019F8226200DBC341 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0326C35F19F8226200DBC341 /* Images.xcassets */; };
 		0329B9A01ACBAAFB003BBCC5 /* VContentViewFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0329B99F1ACBAAFB003BBCC5 /* VContentViewFactoryTests.m */; };
@@ -2473,7 +2513,6 @@
 		A780ED581A933D9300A8CD5D /* VPhotoFilterSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPhotoFilterSerialization.m; sourceTree = "<group>"; };
 		A7814A0919E5FD0600D89B90 /* VPasswordValidationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPasswordValidationTests.m; sourceTree = "<group>"; };
 		A7815E1A1B6C5D9F007797B7 /* SettingsButtonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsButtonCell.swift; sourceTree = "<group>"; };
-		A7815E1E1B6C7337007797B7 /* VictoriousCommon-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VictoriousCommon-Bridging-Header.h"; sourceTree = "<group>"; };
 		A7815E271B701076007797B7 /* VExperimentSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExperimentSettings.h; sourceTree = "<group>"; };
 		A7815E281B701076007797B7 /* VExperimentSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExperimentSettings.m; sourceTree = "<group>"; };
 		A7815E2B1B7016C1007797B7 /* VExperimentSettingsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExperimentSettingsTests.m; sourceTree = "<group>"; };
@@ -4578,7 +4617,6 @@
 				034527A51B604A9100E990BB /* Template Loader */,
 				036DE7C21B608C100038A25E /* VAPIRequestDecorator.h */,
 				036DE7C31B608C100038A25E /* VAPIRequestDecorator.m */,
-				A7815E1E1B6C7337007797B7 /* VictoriousCommon-Bridging-Header.h */,
 				0370FBB71B71B261009047B6 /* VictoriousCommon.h */,
 				0352FCF11B72E74A00DB6EAB /* VictoriousCommonOSX.h */,
 			);
@@ -7671,7 +7709,27 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				031DF63F1B7986EB00FDD7D3 /* VEnvironment+VDataCacheID.h in Headers */,
+				031DF63A1B7986EB00FDD7D3 /* NSString+VCrypto.h in Headers */,
+				031DF6491B7986EB00FDD7D3 /* VTemplateSerialization.h in Headers */,
+				031DF6411B7986EB00FDD7D3 /* VTemplateImageMacro.h in Headers */,
+				031DF63D1B7986EB00FDD7D3 /* VBundleWriterDataCache.h in Headers */,
+				031DF6401B7986EB00FDD7D3 /* VTemplateImage.h in Headers */,
+				031DF63B1B7986EB00FDD7D3 /* NSString+VDataCacheID.h in Headers */,
+				031DF64A1B7986EB00FDD7D3 /* VAPIRequestDecorator.h in Headers */,
+				031DF6481B7986EB00FDD7D3 /* VTemplatePackageManager.h in Headers */,
+				031DF6391B7986EB00FDD7D3 /* NSCharacterSet+VURLParts.h in Headers */,
+				031DF6471B7986EB00FDD7D3 /* VTemplateDownloadOperation.h in Headers */,
+				031DF6261B7983D200FDD7D3 /* VExperimentSettings.h in Headers */,
 				0352FCF31B72E75000DB6EAB /* VictoriousCommonOSX.h in Headers */,
+				031DF6241B7981F600FDD7D3 /* VEnvironment.h in Headers */,
+				031DF6421B7986EB00FDD7D3 /* VTemplateImageSet.h in Headers */,
+				031DF6461B7986EB00FDD7D3 /* VDownloadOperation.h in Headers */,
+				031DF6451B7986EB00FDD7D3 /* VBulkDownloadOperation.h in Headers */,
+				031DF63C1B7986EB00FDD7D3 /* NSURL+VDataCacheID.h in Headers */,
+				031DF63E1B7986EB00FDD7D3 /* VDataCache.h in Headers */,
+				031DF6441B7986EB00FDD7D3 /* VJSONHelper.h in Headers */,
+				031DF6431B7986EB00FDD7D3 /* VURLMacroReplacement.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7679,7 +7737,27 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				031DF62D1B7986E700FDD7D3 /* VEnvironment+VDataCacheID.h in Headers */,
+				031DF6281B7986E700FDD7D3 /* NSString+VCrypto.h in Headers */,
+				031DF6371B7986E700FDD7D3 /* VTemplateSerialization.h in Headers */,
+				031DF62F1B7986E700FDD7D3 /* VTemplateImageMacro.h in Headers */,
+				031DF62B1B7986E700FDD7D3 /* VBundleWriterDataCache.h in Headers */,
+				031DF62E1B7986E700FDD7D3 /* VTemplateImage.h in Headers */,
+				031DF6291B7986E700FDD7D3 /* NSString+VDataCacheID.h in Headers */,
+				031DF6381B7986E700FDD7D3 /* VAPIRequestDecorator.h in Headers */,
+				031DF6361B7986E700FDD7D3 /* VTemplatePackageManager.h in Headers */,
+				031DF6271B7986E700FDD7D3 /* NSCharacterSet+VURLParts.h in Headers */,
+				031DF6351B7986E700FDD7D3 /* VTemplateDownloadOperation.h in Headers */,
+				031DF6251B7983CE00FDD7D3 /* VExperimentSettings.h in Headers */,
 				0370FBB81B71B261009047B6 /* VictoriousCommon.h in Headers */,
+				031DF6231B7981F200FDD7D3 /* VEnvironment.h in Headers */,
+				031DF6301B7986E700FDD7D3 /* VTemplateImageSet.h in Headers */,
+				031DF6341B7986E700FDD7D3 /* VDownloadOperation.h in Headers */,
+				031DF6331B7986E700FDD7D3 /* VBulkDownloadOperation.h in Headers */,
+				031DF62A1B7986E700FDD7D3 /* NSURL+VDataCacheID.h in Headers */,
+				031DF62C1B7986E700FDD7D3 /* VDataCache.h in Headers */,
+				031DF6321B7986E700FDD7D3 /* VJSONHelper.h in Headers */,
+				031DF6311B7986E700FDD7D3 /* VURLMacroReplacement.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9918,6 +9996,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 861888B7B5EA1C709A7ABB6B /* Pods-VictoriousCommonOSX.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -9937,6 +10016,7 @@
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -9946,6 +10026,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 79ACFD16A2EFEF8FE18E316E /* Pods-VictoriousCommonOSX.qa.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
@@ -9975,6 +10056,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6346130F32A50A474A9D3D05 /* Pods-VictoriousCommonOSX.staging.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
@@ -10004,6 +10086,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6C14CC0531211B1486085544 /* Pods-VictoriousCommonOSX.stable.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
@@ -10033,6 +10116,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 04F19C7363CDE715B04BAB21 /* Pods-VictoriousCommonOSX.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
@@ -10190,6 +10274,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CD6337D3797118138953FB8E /* Pods-VictoriousCommon.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
@@ -10206,6 +10291,31 @@
 					"$(inherited)",
 				);
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/CCHLinkTextView\"",
+					"\"${PODS_ROOT}/Headers/Public/FlurrySDK\"",
+					"\"${PODS_ROOT}/Headers/Public/IGDigest\"",
+					"\"${PODS_ROOT}/Headers/Public/ISO8601DateFormatterValueTransformer\"",
+					"\"${PODS_ROOT}/Headers/Public/KVOController\"",
+					"\"${PODS_ROOT}/Headers/Public/MBProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/Public/Nocilla\"",
+					"\"${PODS_ROOT}/Headers/Public/OAStackView\"",
+					"\"${PODS_ROOT}/Headers/Public/RKValueTransformers\"",
+					"\"${PODS_ROOT}/Headers/Public/RestKit\"",
+					"\"${PODS_ROOT}/Headers/Public/RestKit/CoreData\"",
+					"\"${PODS_ROOT}/Headers/Public/RestKit/Network\"",
+					"\"${PODS_ROOT}/Headers/Public/RestKit/ObjectMapping\"",
+					"\"${PODS_ROOT}/Headers/Public/RestKit/Support\"",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
+					"\"${PODS_ROOT}/Headers/Public/SOCKit\"",
+					"\"${PODS_ROOT}/Headers/Public/TTTAttributedLabel\"",
+					"\"${PODS_ROOT}/Headers/Public/TransitionKit\"",
+					"\"${PODS_ROOT}/Headers/Public/Vendor/LibComponentLogging/Core\"",
+					.,
+				);
 				INFOPLIST_FILE = "VictoriousCommon/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -10213,6 +10323,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -10223,6 +10334,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CEB3CFB5FC7A8DA2E1CC4E8D /* Pods-VictoriousCommon.qa.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -10236,6 +10348,31 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREFIX_HEADER = "VictoriousCommon/Supporting Files/PrefixHeader.pch";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/CCHLinkTextView\"",
+					"\"${PODS_ROOT}/Headers/Public/FlurrySDK\"",
+					"\"${PODS_ROOT}/Headers/Public/IGDigest\"",
+					"\"${PODS_ROOT}/Headers/Public/ISO8601DateFormatterValueTransformer\"",
+					"\"${PODS_ROOT}/Headers/Public/KVOController\"",
+					"\"${PODS_ROOT}/Headers/Public/MBProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/Public/Nocilla\"",
+					"\"${PODS_ROOT}/Headers/Public/OAStackView\"",
+					"\"${PODS_ROOT}/Headers/Public/RKValueTransformers\"",
+					"\"${PODS_ROOT}/Headers/Public/RestKit\"",
+					"\"${PODS_ROOT}/Headers/Public/RestKit/CoreData\"",
+					"\"${PODS_ROOT}/Headers/Public/RestKit/Network\"",
+					"\"${PODS_ROOT}/Headers/Public/RestKit/ObjectMapping\"",
+					"\"${PODS_ROOT}/Headers/Public/RestKit/Support\"",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
+					"\"${PODS_ROOT}/Headers/Public/SOCKit\"",
+					"\"${PODS_ROOT}/Headers/Public/TTTAttributedLabel\"",
+					"\"${PODS_ROOT}/Headers/Public/TransitionKit\"",
+					"\"${PODS_ROOT}/Headers/Public/Vendor/LibComponentLogging/Core\"",
+					.,
+				);
 				INFOPLIST_FILE = "VictoriousCommon/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -10253,6 +10390,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A0CB9853103CFBEFFF1BF6FF /* Pods-VictoriousCommon.staging.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -10266,6 +10404,31 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREFIX_HEADER = "VictoriousCommon/Supporting Files/PrefixHeader.pch";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/CCHLinkTextView\"",
+					"\"${PODS_ROOT}/Headers/Public/FlurrySDK\"",
+					"\"${PODS_ROOT}/Headers/Public/IGDigest\"",
+					"\"${PODS_ROOT}/Headers/Public/ISO8601DateFormatterValueTransformer\"",
+					"\"${PODS_ROOT}/Headers/Public/KVOController\"",
+					"\"${PODS_ROOT}/Headers/Public/MBProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/Public/Nocilla\"",
+					"\"${PODS_ROOT}/Headers/Public/OAStackView\"",
+					"\"${PODS_ROOT}/Headers/Public/RKValueTransformers\"",
+					"\"${PODS_ROOT}/Headers/Public/RestKit\"",
+					"\"${PODS_ROOT}/Headers/Public/RestKit/CoreData\"",
+					"\"${PODS_ROOT}/Headers/Public/RestKit/Network\"",
+					"\"${PODS_ROOT}/Headers/Public/RestKit/ObjectMapping\"",
+					"\"${PODS_ROOT}/Headers/Public/RestKit/Support\"",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
+					"\"${PODS_ROOT}/Headers/Public/SOCKit\"",
+					"\"${PODS_ROOT}/Headers/Public/TTTAttributedLabel\"",
+					"\"${PODS_ROOT}/Headers/Public/TransitionKit\"",
+					"\"${PODS_ROOT}/Headers/Public/Vendor/LibComponentLogging/Core\"",
+					.,
+				);
 				INFOPLIST_FILE = "VictoriousCommon/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -10283,6 +10446,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E50D8B24AC3B063A7A6F4D23 /* Pods-VictoriousCommon.stable.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -10296,6 +10460,31 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREFIX_HEADER = "VictoriousCommon/Supporting Files/PrefixHeader.pch";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/CCHLinkTextView\"",
+					"\"${PODS_ROOT}/Headers/Public/FlurrySDK\"",
+					"\"${PODS_ROOT}/Headers/Public/IGDigest\"",
+					"\"${PODS_ROOT}/Headers/Public/ISO8601DateFormatterValueTransformer\"",
+					"\"${PODS_ROOT}/Headers/Public/KVOController\"",
+					"\"${PODS_ROOT}/Headers/Public/MBProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/Public/Nocilla\"",
+					"\"${PODS_ROOT}/Headers/Public/OAStackView\"",
+					"\"${PODS_ROOT}/Headers/Public/RKValueTransformers\"",
+					"\"${PODS_ROOT}/Headers/Public/RestKit\"",
+					"\"${PODS_ROOT}/Headers/Public/RestKit/CoreData\"",
+					"\"${PODS_ROOT}/Headers/Public/RestKit/Network\"",
+					"\"${PODS_ROOT}/Headers/Public/RestKit/ObjectMapping\"",
+					"\"${PODS_ROOT}/Headers/Public/RestKit/Support\"",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
+					"\"${PODS_ROOT}/Headers/Public/SOCKit\"",
+					"\"${PODS_ROOT}/Headers/Public/TTTAttributedLabel\"",
+					"\"${PODS_ROOT}/Headers/Public/TransitionKit\"",
+					"\"${PODS_ROOT}/Headers/Public/Vendor/LibComponentLogging/Core\"",
+					.,
+				);
 				INFOPLIST_FILE = "VictoriousCommon/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -10313,6 +10502,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DE20E60A8BE791474B9B24CA /* Pods-VictoriousCommon.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -10326,6 +10516,31 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREFIX_HEADER = "VictoriousCommon/Supporting Files/PrefixHeader.pch";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/CCHLinkTextView\"",
+					"\"${PODS_ROOT}/Headers/Public/FlurrySDK\"",
+					"\"${PODS_ROOT}/Headers/Public/IGDigest\"",
+					"\"${PODS_ROOT}/Headers/Public/ISO8601DateFormatterValueTransformer\"",
+					"\"${PODS_ROOT}/Headers/Public/KVOController\"",
+					"\"${PODS_ROOT}/Headers/Public/MBProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/Public/Nocilla\"",
+					"\"${PODS_ROOT}/Headers/Public/OAStackView\"",
+					"\"${PODS_ROOT}/Headers/Public/RKValueTransformers\"",
+					"\"${PODS_ROOT}/Headers/Public/RestKit\"",
+					"\"${PODS_ROOT}/Headers/Public/RestKit/CoreData\"",
+					"\"${PODS_ROOT}/Headers/Public/RestKit/Network\"",
+					"\"${PODS_ROOT}/Headers/Public/RestKit/ObjectMapping\"",
+					"\"${PODS_ROOT}/Headers/Public/RestKit/Support\"",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
+					"\"${PODS_ROOT}/Headers/Public/SOCKit\"",
+					"\"${PODS_ROOT}/Headers/Public/TTTAttributedLabel\"",
+					"\"${PODS_ROOT}/Headers/Public/TransitionKit\"",
+					"\"${PODS_ROOT}/Headers/Public/Vendor/LibComponentLogging/Core\"",
+					.,
+				);
 				INFOPLIST_FILE = "VictoriousCommon/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
