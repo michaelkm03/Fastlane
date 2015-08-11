@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain) NSNumber * likeCount;
 @property (nonatomic, retain) NSNumber * memeCount;
 @property (nonatomic, retain) NSNumber * nameEmbeddedInContent;
-@property (nonatomic, retain) NSNumber * parentUserId;
+@property (nonatomic, retain, nullable) NSNumber * parentUserId;
 @property (nonatomic, retain) NSNumber * permissionsMask;
 @property (nonatomic, retain, nullable) id previewData;
 @property (nonatomic, retain, nullable) NSString * previewType;
