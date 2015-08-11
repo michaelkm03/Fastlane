@@ -110,7 +110,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 {
     [super viewWillAppear:animated];
     
-    [self.dependencyManager trackViewWillAppear:self];
+    [self.dependencyManager trackViewWillAppear:self withParameters:nil templateClass:[VDiscoverContainerViewController class]];
     
     if ( self.hasLoadedOnce )
     {
