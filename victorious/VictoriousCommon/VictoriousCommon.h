@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 //! Project version number for VictoriousCommon.
 FOUNDATION_EXPORT double VictoriousCommonVersionNumber;

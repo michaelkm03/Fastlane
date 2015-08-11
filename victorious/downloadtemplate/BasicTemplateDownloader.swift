@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import VictoriousCommon
 
 /// A straightforward implementation of VTemplateDownloader
 class BasicTemplateDownloader: NSObject, VTemplateDownloader {

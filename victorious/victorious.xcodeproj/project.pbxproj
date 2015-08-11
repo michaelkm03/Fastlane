@@ -120,6 +120,7 @@
 		0326BBBA19A8183800D995DA /* VPushNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0326BBB919A8183800D995DA /* VPushNotificationManager.m */; };
 		0326C36019F8226200DBC341 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0326C35F19F8226200DBC341 /* Images.xcassets */; };
 		0329B9A01ACBAAFB003BBCC5 /* VContentViewFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0329B99F1ACBAAFB003BBCC5 /* VContentViewFactoryTests.m */; };
+		032ABC421B7A6BCB00F968A3 /* VictoriousCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = 0370FBB71B71B261009047B6 /* VictoriousCommon.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0343AF831A143F550025B9F8 /* AVAsset+OrientationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */; };
 		0343AF841A143FD20025B9F8 /* NSDate+timeSinceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE49323519E338CE00C0912E /* NSDate+timeSinceTests.m */; };
 		03449FE51A0C7EBB0070EC80 /* VSessionTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 03449FE41A0C7EBB0070EC80 /* VSessionTimer.m */; };
@@ -160,9 +161,8 @@
 		0352FCE71B72C7C300DB6EAB /* BasicTemplateDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034527D61B6074F500E990BB /* BasicTemplateDownloader.swift */; };
 		0352FCE81B72C7C300DB6EAB /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0392694E1B5C720400FCD0AA /* main.swift */; };
 		0352FCE91B72C7C300DB6EAB /* TemplateDownloadCLI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7F81B6306880038A25E /* TemplateDownloadCLI.swift */; };
-		0352FCED1B72CAD900DB6EAB /* VictoriousCommonOSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0352FC7E1B72B90000DB6EAB /* VictoriousCommonOSX.framework */; };
-		0352FCEE1B72CAD900DB6EAB /* VictoriousCommonOSX.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0352FC7E1B72B90000DB6EAB /* VictoriousCommonOSX.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		0352FCF31B72E75000DB6EAB /* VictoriousCommonOSX.h in Headers */ = {isa = PBXBuildFile; fileRef = 0352FCF11B72E74A00DB6EAB /* VictoriousCommonOSX.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0352FCED1B72CAD900DB6EAB /* VictoriousCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0352FC7E1B72B90000DB6EAB /* VictoriousCommon.framework */; };
+		0352FCEE1B72CAD900DB6EAB /* VictoriousCommon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0352FC7E1B72B90000DB6EAB /* VictoriousCommon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0358FCEE1A65E785004DD7A1 /* VScaffoldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0358FCED1A65E785004DD7A1 /* VScaffoldViewController.m */; };
 		035926D21B1EA33400E910A7 /* Quicksand-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 035926CF1B1EA33400E910A7 /* Quicksand-Bold.ttf */; };
 		035926D31B1EA33400E910A7 /* Quicksand-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 035926D01B1EA33400E910A7 /* Quicksand-Light.ttf */; };
@@ -1288,7 +1288,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				0352FCEE1B72CAD900DB6EAB /* VictoriousCommonOSX.framework in Embed Frameworks */,
+				0352FCEE1B72CAD900DB6EAB /* VictoriousCommon.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1484,11 +1484,10 @@
 		034D1A661AAF5A8A00EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		034D1A671AAF5A8B00EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/settings.strings; sourceTree = "<group>"; };
 		034D1A6B1AAF5A8B00EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		0352FC7E1B72B90000DB6EAB /* VictoriousCommonOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = VictoriousCommonOSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0352FC7E1B72B90000DB6EAB /* VictoriousCommon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = VictoriousCommon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0352FC9E1B72B9A800DB6EAB /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0352FCBF1B72C60200DB6EAB /* downloadtemplate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = downloadtemplate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0352FCC21B72C60300DB6EAB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0352FCF11B72E74A00DB6EAB /* VictoriousCommonOSX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VictoriousCommonOSX.h; sourceTree = "<group>"; };
 		0358FCEC1A65E785004DD7A1 /* VScaffoldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VScaffoldViewController.h; sourceTree = "<group>"; };
 		0358FCED1A65E785004DD7A1 /* VScaffoldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VScaffoldViewController.m; sourceTree = "<group>"; };
 		035926CF1B1EA33400E910A7 /* Quicksand-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Bold.ttf"; sourceTree = "<group>"; };
@@ -3529,7 +3528,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0352FCED1B72CAD900DB6EAB /* VictoriousCommonOSX.framework in Frameworks */,
+				0352FCED1B72CAD900DB6EAB /* VictoriousCommon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4591,7 +4590,6 @@
 				036DE7C21B608C100038A25E /* VAPIRequestDecorator.h */,
 				036DE7C31B608C100038A25E /* VAPIRequestDecorator.m */,
 				0370FBB71B71B261009047B6 /* VictoriousCommon.h */,
-				0352FCF11B72E74A00DB6EAB /* VictoriousCommonOSX.h */,
 			);
 			path = VictoriousCommon;
 			sourceTree = "<group>";
@@ -6290,7 +6288,7 @@
 				BE171D961868BE64004E5202 /* victoriousTests.xctest */,
 				0370FBB31B71B260009047B6 /* VictoriousCommon.framework */,
 				0370FBBD1B71B261009047B6 /* VictoriousCommonTests.xctest */,
-				0352FC7E1B72B90000DB6EAB /* VictoriousCommonOSX.framework */,
+				0352FC7E1B72B90000DB6EAB /* VictoriousCommon.framework */,
 				0352FCBF1B72C60200DB6EAB /* downloadtemplate.app */,
 			);
 			name = Products;
@@ -7691,10 +7689,10 @@
 				031DF6391B7986EB00FDD7D3 /* NSCharacterSet+VURLParts.h in Headers */,
 				031DF6471B7986EB00FDD7D3 /* VTemplateDownloadOperation.h in Headers */,
 				031DF6261B7983D200FDD7D3 /* VExperimentSettings.h in Headers */,
-				0352FCF31B72E75000DB6EAB /* VictoriousCommonOSX.h in Headers */,
 				031DF6241B7981F600FDD7D3 /* VEnvironment.h in Headers */,
 				031DF6421B7986EB00FDD7D3 /* VTemplateImageSet.h in Headers */,
 				031DF6461B7986EB00FDD7D3 /* VDownloadOperation.h in Headers */,
+				032ABC421B7A6BCB00F968A3 /* VictoriousCommon.h in Headers */,
 				031DF6451B7986EB00FDD7D3 /* VBulkDownloadOperation.h in Headers */,
 				031DF63C1B7986EB00FDD7D3 /* NSURL+VDataCacheID.h in Headers */,
 				031DF63E1B7986EB00FDD7D3 /* VDataCache.h in Headers */,
@@ -7751,7 +7749,7 @@
 			);
 			name = VictoriousCommonOSX;
 			productName = VictoriousCommonOSX;
-			productReference = 0352FC7E1B72B90000DB6EAB /* VictoriousCommonOSX.framework */;
+			productReference = 0352FC7E1B72B90000DB6EAB /* VictoriousCommon.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		0352FCBE1B72C60200DB6EAB /* downloadtemplate */ = {
@@ -9960,6 +9958,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 861888B7B5EA1C709A7ABB6B /* Pods-VictoriousCommonOSX.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -9977,7 +9976,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_NAME = "${TARGET_NAME}";
+				PRODUCT_NAME = VictoriousCommon;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -10008,9 +10007,10 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "${TARGET_NAME}";
+				PRODUCT_NAME = VictoriousCommon;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				USER_HEADER_SEARCH_PATHS = "$(inherited) VictoriousCommon/**";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -10020,6 +10020,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6346130F32A50A474A9D3D05 /* Pods-VictoriousCommonOSX.staging.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -10038,9 +10039,10 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "${TARGET_NAME}";
+				PRODUCT_NAME = VictoriousCommon;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				USER_HEADER_SEARCH_PATHS = "$(inherited) VictoriousCommon/**";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -10050,6 +10052,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6C14CC0531211B1486085544 /* Pods-VictoriousCommonOSX.stable.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -10068,9 +10071,10 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "${TARGET_NAME}";
+				PRODUCT_NAME = VictoriousCommon;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				USER_HEADER_SEARCH_PATHS = "$(inherited) VictoriousCommon/**";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -10080,6 +10084,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 04F19C7363CDE715B04BAB21 /* Pods-VictoriousCommonOSX.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -10098,9 +10103,10 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "${TARGET_NAME}";
+				PRODUCT_NAME = VictoriousCommon;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				USER_HEADER_SEARCH_PATHS = "$(inherited) VictoriousCommon/**";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -10123,7 +10129,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"VictoriousCommon/**",
 				);
 				INFOPLIST_FILE = "downloadtemplate/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -10148,7 +10153,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"VictoriousCommon/**",
 				);
 				INFOPLIST_FILE = "downloadtemplate/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -10173,7 +10177,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"VictoriousCommon/**",
 				);
 				INFOPLIST_FILE = "downloadtemplate/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -10198,7 +10201,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"VictoriousCommon/**",
 				);
 				INFOPLIST_FILE = "downloadtemplate/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -10223,7 +10225,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"VictoriousCommon/**",
 				);
 				INFOPLIST_FILE = "downloadtemplate/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -10278,7 +10279,6 @@
 					"\"${PODS_ROOT}/Headers/Public/TTTAttributedLabel\"",
 					"\"${PODS_ROOT}/Headers/Public/TransitionKit\"",
 					"\"${PODS_ROOT}/Headers/Public/Vendor/LibComponentLogging/Core\"",
-					.,
 				);
 				INFOPLIST_FILE = "VictoriousCommon/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -10335,7 +10335,6 @@
 					"\"${PODS_ROOT}/Headers/Public/TTTAttributedLabel\"",
 					"\"${PODS_ROOT}/Headers/Public/TransitionKit\"",
 					"\"${PODS_ROOT}/Headers/Public/Vendor/LibComponentLogging/Core\"",
-					.,
 				);
 				INFOPLIST_FILE = "VictoriousCommon/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -10391,7 +10390,6 @@
 					"\"${PODS_ROOT}/Headers/Public/TTTAttributedLabel\"",
 					"\"${PODS_ROOT}/Headers/Public/TransitionKit\"",
 					"\"${PODS_ROOT}/Headers/Public/Vendor/LibComponentLogging/Core\"",
-					.,
 				);
 				INFOPLIST_FILE = "VictoriousCommon/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -10447,7 +10445,6 @@
 					"\"${PODS_ROOT}/Headers/Public/TTTAttributedLabel\"",
 					"\"${PODS_ROOT}/Headers/Public/TransitionKit\"",
 					"\"${PODS_ROOT}/Headers/Public/Vendor/LibComponentLogging/Core\"",
-					.,
 				);
 				INFOPLIST_FILE = "VictoriousCommon/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -10503,7 +10500,6 @@
 					"\"${PODS_ROOT}/Headers/Public/TTTAttributedLabel\"",
 					"\"${PODS_ROOT}/Headers/Public/TransitionKit\"",
 					"\"${PODS_ROOT}/Headers/Public/Vendor/LibComponentLogging/Core\"",
-					.,
 				);
 				INFOPLIST_FILE = "VictoriousCommon/Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
