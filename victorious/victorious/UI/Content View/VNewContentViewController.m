@@ -63,7 +63,7 @@
 #import "VExperienceEnhancer.h"
 
 // Experiments
-#import "VDependencyManager+VScaffoldViewController.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
 
 // Swift
 #import "victorious-Swift.h"
@@ -99,7 +99,7 @@
 #import "VDependencyManager+VUserProfile.h"
 #import "VHashtagSelectionResponder.h"
 #import "VURLSelectionResponder.h"
-#import "VDependencyManager+VScaffoldViewController.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VContentViewFactory.h"
 #import "VCoachmarkDisplayer.h"
 #import "VDependencyManager+VCoachmarkManager.h"

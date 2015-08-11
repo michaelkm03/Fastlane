@@ -15,7 +15,7 @@
 #import "VObjectManager+Sequence.h"
 #import "VAsset+Fetcher.h"
 #import "VNode+Fetcher.h"
-#import "VScaffoldViewController.h"
+#import "VTabScaffoldViewController.h"
 #import "VTrackingConstants.h"
 #import "VTracking.h"
 #import "UIView+AutoLayout.h"

@@ -14,6 +14,21 @@
 
 @class VSequence, VAuthorization, VCoachmarkManager;
 
+/**
+ The key that identifies the menu component in VDependencyManager
+ */
+extern NSString * const VScaffoldViewControllerMenuComponentKey;
+
+/**
+ The key that identifies the welcome view component in the VDependencyManager
+ */
+extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
+
+/**
+ The TabScaffold class comprises several container VCs at the root there is a fullscreen
+ UINavigationController which contains a UITabBarController, which contains several 
+ NavigationControllers wrapping the menu destinations.
+  */
 @interface VTabScaffoldViewController : UIViewController <VHasManagedDependencies, VNavigationDestinationsProvider>
 
 /**
@@ -82,5 +97,16 @@
 - (void)displayResultOfNavigation:(UIViewController *)viewController animated:(BOOL)animated;
 
 - (void)showWebBrowserWithURL:(NSURL *)URL;
+
+@end
+
+@interface UIViewController (VRootNavigationController)
+
+/**
+ The root Navigation Controller that contains the entire screen. Returns nil if for whatever reason
+ we cannot find the rootNavigationController in the viewController hierarchy.
+ NOTE: the navigation bar for this NavigationController is hidden.
+ */
+- (UINavigationController *)rootNavigationController;
 
 @end
