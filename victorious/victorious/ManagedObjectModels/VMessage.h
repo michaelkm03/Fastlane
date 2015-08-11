@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class VConversation, VNotification, VUser;
+@class VConversation, VNotification, VUser, VMediaAttachment;
 
 @interface VMessage : NSManagedObject
 
@@ -23,5 +23,18 @@
 @property (nonatomic, retain) VConversation *conversation;
 @property (nonatomic, retain) VNotification *notification;
 @property (nonatomic, retain) VUser *sender;
+@property (nonatomic, retain) NSSet *mediaAttachments;
+@property (nonatomic, retain) NSNumber * shouldAutoplay;
+@property (nonatomic, retain) NSNumber *mediaWidth;
+@property (nonatomic, retain) NSNumber *mediaHeight;
+
+@end
+
+@interface VMessage (CoreDataGeneratedAccessors)
+
+- (void)addMediaAttachmentsObject:(VMediaAttachment *)value;
+- (void)removeMediaAttachmentsObject:(VMediaAttachment *)value;
+- (void)addMediaAttachments:(NSSet *)values;
+- (void)removeMediaAttachments:(NSSet *)values;
 
 @end

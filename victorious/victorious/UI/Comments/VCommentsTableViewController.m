@@ -43,7 +43,7 @@
 #import "VDependencyManager+VTracking.h"
 #import "VTableViewCommentHighlighter.h"
 #import "VTableViewStreamFocusHelper.h"
-#import "VCommentMedia.h"
+#import "VMediaAttachment.h"
 #import "VScrollPaginator.h"
 #import "VVideoLightboxViewController.h"
 #import "VLightboxTransitioningDelegate.h"

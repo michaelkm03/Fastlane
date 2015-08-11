@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VCommentMedia.h"
+#import "VMediaAttachment.h"
 
-@interface VCommentMedia (RestKit)
+@interface VMediaAttachment (RestKit)
 
 @end

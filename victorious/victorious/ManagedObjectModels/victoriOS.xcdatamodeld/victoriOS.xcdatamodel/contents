@@ -66,15 +66,10 @@
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="thumbnailUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
-        <relationship name="commentMedia" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CommentMedia" inverseName="comment" inverseEntity="CommentMedia" syncable="YES"/>
+        <relationship name="commentMedia" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MediaAttachment" inverseName="comment" inverseEntity="MediaAttachment" syncable="YES"/>
         <relationship name="inStreamSequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="recentComments" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="comments" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="comments" inverseEntity="User" syncable="YES"/>
-    </entity>
-    <entity name="CommentMedia" representedClassName="VCommentMedia" syncable="YES">
-        <attribute name="mediaURL" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="mimeType" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="comment" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Comment" inverseName="commentMedia" inverseEntity="Comment" syncable="YES"/>
     </entity>
     <entity name="Conversation" representedClassName="VConversation" parentEntity="AbstractFilter" syncable="YES">
         <attribute name="isRead" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
@@ -154,15 +149,25 @@
         <attribute name="timeoutGotoNode" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <relationship name="relationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Interaction" inverseName="interactionAction" inverseEntity="Interaction" syncable="YES"/>
     </entity>
+    <entity name="MediaAttachment" representedClassName="VMediaAttachment" syncable="YES">
+        <attribute name="mediaURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mimeType" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="comment" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Comment" inverseName="commentMedia" inverseEntity="Comment" syncable="YES"/>
+        <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="mediaAttachments" inverseEntity="Message" syncable="YES"/>
+    </entity>
     <entity name="Message" representedClassName="VMessage" syncable="YES">
         <attribute name="isRead" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="mediaHeight" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="mediaPath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mediaWidth" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="postedAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 32" minValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="senderUserId" optional="YES" attributeType="Integer 32" minValueString="-1" defaultValueString="-1" syncable="YES"/>
+        <attribute name="shouldAutoplay" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="thumbnailPath" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="conversation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Conversation" inverseName="messages" inverseEntity="Conversation" syncable="YES"/>
+        <relationship name="mediaAttachments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MediaAttachment" inverseName="message" inverseEntity="MediaAttachment" syncable="YES"/>
         <relationship name="sender" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="messages" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="Node" representedClassName="VNode" syncable="YES">
@@ -323,35 +328,35 @@
         <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="voteResults" inverseEntity="Sequence" syncable="YES"/>
     </entity>
     <elements>
-        <element name="AbstractFilter" positionX="1366" positionY="-600" width="128" height="105"/>
-        <element name="AdBreak" positionX="504" positionY="-322" width="128" height="90"/>
-        <element name="AdBreakFallback" positionX="891" positionY="-324" width="128" height="135"/>
-        <element name="Answer" positionX="727" positionY="99" width="128" height="178"/>
-        <element name="AnswerAction" positionX="718" positionY="330" width="128" height="75"/>
-        <element name="Asset" positionX="646" positionY="-441" width="128" height="225"/>
-        <element name="Comment" positionX="1078" positionY="38" width="128" height="330"/>
-        <element name="CommentMedia" positionX="630" positionY="-639" width="128" height="90"/>
-        <element name="Conversation" positionX="1528" positionY="-468" width="128" height="148"/>
-        <element name="EditorializationItem" positionX="657" positionY="-612" width="128" height="120"/>
-        <element name="EndCard" positionX="693" positionY="-648" width="128" height="165"/>
-        <element name="Experiment" positionX="621" positionY="-648" width="128" height="150"/>
-        <element name="GIFSearchResult" positionX="621" positionY="-648" width="128" height="180"/>
-        <element name="Hashtag" positionX="1087" positionY="-630" width="128" height="90"/>
-        <element name="ImageAsset" positionX="423" positionY="-594" width="128" height="135"/>
-        <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
-        <element name="InteractionAction" positionX="495" positionY="-162" width="128" height="105"/>
-        <element name="Message" positionX="1582" positionY="-271" width="128" height="180"/>
-        <element name="Node" positionX="817" positionY="-180" width="128" height="135"/>
-        <element name="NodeAction" positionX="835" positionY="-9" width="128" height="90"/>
-        <element name="Notification" positionX="1593" positionY="87" width="128" height="210"/>
-        <element name="NotificationSettings" positionX="621" positionY="-747" width="128" height="150"/>
-        <element name="PollResult" positionX="1582" positionY="-36" width="128" height="118"/>
-        <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
-        <element name="Sequence" positionX="1078" positionY="-540" width="128" height="600"/>
-        <element name="Stream" positionX="1069" positionY="-792" width="128" height="165"/>
-        <element name="StreamItem" positionX="871" positionY="-765" width="128" height="180"/>
-        <element name="Tracking" positionX="828" positionY="-630" width="128" height="240"/>
-        <element name="User" positionX="1321" positionY="-324" width="128" height="465"/>
-        <element name="VoteResult" positionX="864" positionY="164" width="128" height="90"/>
+        <element name="AbstractFilter" positionX="0" positionY="0" width="128" height="105"/>
+        <element name="AdBreak" positionX="0" positionY="0" width="128" height="90"/>
+        <element name="AdBreakFallback" positionX="0" positionY="0" width="128" height="135"/>
+        <element name="Answer" positionX="0" positionY="0" width="128" height="180"/>
+        <element name="AnswerAction" positionX="0" positionY="0" width="128" height="75"/>
+        <element name="Asset" positionX="0" positionY="0" width="128" height="225"/>
+        <element name="Comment" positionX="0" positionY="0" width="128" height="360"/>
+        <element name="MediaAttachment" positionX="0" positionY="0" width="128" height="105"/>
+        <element name="Conversation" positionX="0" positionY="0" width="128" height="165"/>
+        <element name="EditorializationItem" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="EndCard" positionX="0" positionY="0" width="128" height="165"/>
+        <element name="Experiment" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="GIFSearchResult" positionX="0" positionY="0" width="128" height="180"/>
+        <element name="Hashtag" positionX="0" positionY="0" width="128" height="90"/>
+        <element name="ImageAsset" positionX="0" positionY="0" width="128" height="135"/>
+        <element name="Interaction" positionX="0" positionY="0" width="128" height="195"/>
+        <element name="InteractionAction" positionX="0" positionY="0" width="128" height="105"/>
+        <element name="Message" positionX="0" positionY="0" width="128" height="240"/>
+        <element name="Node" positionX="0" positionY="0" width="128" height="135"/>
+        <element name="NodeAction" positionX="0" positionY="0" width="128" height="90"/>
+        <element name="Notification" positionX="0" positionY="0" width="128" height="210"/>
+        <element name="NotificationSettings" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="PollResult" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="Rule" positionX="0" positionY="0" width="128" height="75"/>
+        <element name="Sequence" positionX="0" positionY="0" width="128" height="600"/>
+        <element name="Stream" positionX="0" positionY="0" width="128" height="180"/>
+        <element name="StreamItem" positionX="0" positionY="0" width="128" height="180"/>
+        <element name="Tracking" positionX="0" positionY="0" width="128" height="240"/>
+        <element name="User" positionX="0" positionY="0" width="128" height="465"/>
+        <element name="VoteResult" positionX="0" positionY="0" width="128" height="90"/>
     </elements>
 </model>

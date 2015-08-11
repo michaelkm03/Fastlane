@@ -6,12 +6,13 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VCommentMedia.h"
+#import "VMediaAttachment.h"
 
-@implementation VCommentMedia
+@implementation VMediaAttachment
 
 @dynamic mediaURL;
 @dynamic mimeType;
 @dynamic comment;
+@dynamic message;
 
 @end

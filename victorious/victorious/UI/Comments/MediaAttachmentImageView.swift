@@ -28,6 +28,8 @@ class MediaAttachmentImageView : MediaAttachmentView {
         
         self.backgroundColor = UIColor.blackColor()
         
+        self.imageView.contentMode = UIViewContentMode.ScaleAspectFill
+        
         self.mediaButton.addTarget(self, action: "mediaButtonPressed", forControlEvents: .TouchUpInside)
         
         self.addSubview(imageView)

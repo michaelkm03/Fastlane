@@ -51,7 +51,7 @@
     // Comment media
     RKRelationshipMapping *commentMediaMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"media"
                                                                                              toKeyPath:VSelectorName(commentMedia)
-                                                                                           withMapping:[VCommentMedia entityMapping]];
+                                                                                           withMapping:[VMediaAttachment entityMapping]];
     
     [mapping addPropertyMapping:commentMediaMapping];
     

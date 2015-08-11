@@ -38,4 +38,10 @@ typedef NS_ENUM(NSInteger, VMessageMediaType)
  */
 - (NSURL *)previewImageURL;
 
+/**
+ Returns the proper media URL if this message contains
+ attached media, and nil if it does not.
+ */
+- (NSURL *)properMediaURLGivenContentType;
+
 @end
