@@ -96,6 +96,9 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
  */
 - (void)displayResultOfNavigation:(UIViewController *)viewController animated:(BOOL)animated;
 
+/**
+ Presents a web browser ViewController with the given URL.
+ */
 - (void)showWebBrowserWithURL:(NSURL *)URL;
 
 @end

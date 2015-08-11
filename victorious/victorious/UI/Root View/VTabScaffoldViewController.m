@@ -8,6 +8,9 @@
 
 #import "VTabScaffoldViewController.h"
 
+// ViewControllers
+#import "VRootViewController.h"
+
 // Views + Helpers
 #import "UIView+AutoLayout.h"
 
@@ -18,6 +21,9 @@
 #import "VTabMenuShim.h"
 #import "VCoachmarkManager.h"
 
+// Swift Module
+#import "victorious-Swift.h"
+
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
 NSString * const VTrackingWelcomeVideoStartKey = @"welcome_video_start";
@@ -26,12 +32,16 @@ NSString * const VTrackingWelcomeStartKey = @"welcome_start";
 NSString * const VTrackingWelcomeGetStartedTapKey = @"get_started_tap";
 NSString * const kMenuKey = @"menu";
 
-@interface VTabScaffoldViewController () <UITabBarControllerDelegate>
+@interface VTabScaffoldViewController () <UITabBarControllerDelegate, VRootViewControllerContainedViewController>
 
 @property (nonatomic, strong) UINavigationController *rootNavigationController;
 @property (nonatomic, strong) UITabBarController *internalTabBarController;
 
 @property (nonatomic, strong) VTabMenuShim *tabShim;
+
+@property (nonatomic, strong) NSOperationQueue *launchOperationQueue;
+@property (nonatomic, weak) AutoShowLoginOperation *loginOperation;
+@property (nonatomic, assign) BOOL hasSetupFirstLaunchOperations;
 
 @end
 
@@ -47,6 +57,9 @@ NSString * const kMenuKey = @"menu";
         _dependencyManager = dependencyManager;
         _coachmarkManager = [[VCoachmarkManager alloc] initWithDependencyManager:_dependencyManager];
         _tabShim = [dependencyManager templateValueOfType:[VTabMenuShim class] forKey:kMenuKey];
+        _launchOperationQueue = [[NSOperationQueue alloc] init];
+        _launchOperationQueue.maxConcurrentOperationCount = 1;
+        _hasSetupFirstLaunchOperations = NO;
     }
     return self;
 }
@@ -77,6 +90,12 @@ NSString * const kMenuKey = @"menu";
     self.internalTabBarController.viewControllers = [self.tabShim wrappedNavigationDesinations];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self setupFirstLaunchOperations];
+}
+
 #pragma mark - Public API
 
 - (void)showContentViewWithSequence:(id)sequence streamID:(NSString *)streamId commentId:(NSNumber *)commentID placeHolderImage:(UIImage *)placeholderImage
@@ -104,11 +123,41 @@ NSString * const kMenuKey = @"menu";
     
 }
 
+#pragma mark - First Launch Operations
+
+- (void)setupFirstLaunchOperations
+{
+    if (self.hasSetupFirstLaunchOperations)
+    {
+        return;
+    }
+    self.hasSetupFirstLaunchOperations = YES;
+    
+    AutoShowLoginOperation *loginOperation = [[AutoShowLoginOperation alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                                 dependencyManager:self.dependencyManager
+                                                                       viewControllerToPresentFrom:self];
+    self.loginOperation = loginOperation;
+    
+    FTUEVideoOperation *videoOperation = [[FTUEVideoOperation alloc] init];
+    RequestPushNotificationPermissionOperation *pushNotificationOperation = [[RequestPushNotificationPermissionOperation alloc] init];
+    
+    NSBlockOperation *allLaunchOperationFinishedBlock = [NSBlockOperation blockOperationWithBlock:^
+    {
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            VLog(@"Enabling coachmarks");
+            self.coachmarkManager.allowCoachmarks = YES;
+        });
+    }];
+    
+    [self.launchOperationQueue addOperations:@[loginOperation, videoOperation, pushNotificationOperation, allLaunchOperationFinishedBlock] waitUntilFinished:NO];
+}
+
 #pragma mark - VRootViewControllerContainedViewController
 
 - (void)onLoadingCompletion
 {
-//    [self.authorizedAction execute];
+    [self.loginOperation.loginAuthorizedAction execute];
 }
 
 #pragma mark - UITabBarControllerDelegate

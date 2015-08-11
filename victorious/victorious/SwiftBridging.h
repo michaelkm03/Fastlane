@@ -68,3 +68,6 @@
 #import "VButton.h"
 #import "VHasManagedDependencies.h"
 #import "VSessionTimer.h"
+#import "VAuthorizedAction.h"
+#import "VObjectManager.h"
+#import "VAuthorizationContext.h"
