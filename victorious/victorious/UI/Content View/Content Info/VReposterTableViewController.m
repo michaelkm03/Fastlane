@@ -191,11 +191,11 @@
 {
     NSDictionary *params = @{ VTrackingKeyContext : VTrackingValueReposters };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFollowUser parameters:params];
-    NSString *sourceScreen = screenName?:VFollowSourceScreenReposter;
     
+    NSString *sourceScreen = screenName?:VFollowSourceScreenReposter;
     id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
                                                                       withSender:nil];
-    NSAssert(followResponder != nil, @"VUserCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
+    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", self.class);
     
     [followResponder followUser:user
             withAuthorizedBlock:authorizedBlock

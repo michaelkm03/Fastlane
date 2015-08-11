@@ -589,7 +589,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     NSString *sourceScreen = screenName?:VFollowSourceScreenDiscoverSuggestedUsers;
     id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
                                                                       withSender:nil];
-    NSAssert(followResponder != nil, @"VUserCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
+    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", self.class);
     
     [followResponder followUser:user
             withAuthorizedBlock:authorizedBlock

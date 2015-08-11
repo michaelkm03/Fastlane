@@ -328,7 +328,7 @@ static const NSInteger kSearchResultLimit = 100;
     NSString *sourceScreen = self.userSearchPresenter == VUserSearchPresenterMessages ? VFollowSourceScreenMessageableUsers : nil;
     id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
                                                                       withSender:nil];
-    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", self);
+    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", self.class);
     
     [followResponder followUser:user
             withAuthorizedBlock:authorizedBlock
