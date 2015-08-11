@@ -238,7 +238,11 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     self.dependencyManager = dependencyManager;
     self.applicationTracking.dependencyManager = dependencyManager;
     
-    self.followHelper = [[VFollowingHelper alloc] initWithDependencyManager:self.dependencyManager viewControllerToPresentOn:self];
+    VScaffoldViewController *scaffold = [self.dependencyManager scaffoldViewController];
+    // Initialize followHelper with scaffold.dependencyManager so that it knows about LoginFlow information
+    // This is a result of the refactor of FollowResponder protocol (VRootViewController is the actual responder
+    // for follow actions)
+    self.followHelper = [[VFollowingHelper alloc] initWithDependencyManager:scaffold.dependencyManager viewControllerToPresentOn:self];
     self.hashtagHelper = [[VHashtagHelper alloc] init];
     
     NSDictionary *scaffoldConfig = [dependencyManager templateValueOfType:[NSDictionary class] forKey:VDependencyManagerScaffoldViewControllerKey];
@@ -261,7 +265,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     
-    VScaffoldViewController *scaffold = [self.dependencyManager scaffoldViewController];
     [self showViewController:scaffold animated:YES completion:^(void)
     {
         self.launchState = VAppLaunchStateLaunched;
@@ -513,7 +516,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     [self.followHelper followUser:user
               withAuthorizedBlock:authorizedBlock
                     andCompletion:completion
-               fromViewController:self
+               fromViewController:viewControllerToPresentOn
                    withScreenName:screenName];
 }
 
