@@ -124,7 +124,7 @@ static const CGFloat kInviteCellHeight = 50.0f;
     {
         id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:)
                                                                           withSender:nil];
-        NSAssert(followResponder != nil, @"VFollowerTableViewCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
+        NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
         
         [followResponder unfollowUser:self.profile
                   withAuthorizedBlock:authorizedBlock
@@ -132,12 +132,14 @@ static const CGFloat kInviteCellHeight = 50.0f;
     }
     else
     {
-        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:)
+        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
                                                                           withSender:nil];
-        NSAssert(followResponder != nil, @"VFollowerTableViewCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
+        NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
         [followResponder followUser:self.profile
-                  withAuthorizedBlock:authorizedBlock
-                        andCompletion:completionBlock];
+                withAuthorizedBlock:authorizedBlock
+                      andCompletion:completionBlock
+                 fromViewController:nil
+                     withScreenName:nil];
     }
 }
 

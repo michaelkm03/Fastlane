@@ -15,6 +15,7 @@
 @required
 
 - (void)inviteButtonWasTappedInFindFriendsTableViewController:(VFindFriendsTableViewController *)findFriendsTableViewController;
+- (UIViewController *)currentViewControllerDisplayed;
 
 @end
 
