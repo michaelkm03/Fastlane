@@ -30,11 +30,10 @@ static NSString * const VFollowSourceScreenFindFriendsFacebook = @"find_friends.
 static NSString * const VFollowSourceScreenFindFriendsTwitter = @"find_friends.twitter";
 static NSString * const VFollowSourceScreenShelf = @"shelf";
 static NSString * const VFollowSourceScreenRegistrationSuggestedUsers = @"registration.suggest";
-static NSString * const VFollowSourceScreenUnknown = @"unknown";
 // Untracked is used when a screen performs 'follow' action
 // through the responder chain unexpectedly. Instead of sending nil,
 // send this so we can track them down later
-static NSString * const VFollowSourceScreenUnknown;
+static NSString * const VFollowSourceScreenUnknown = @"unknown";
 
 @protocol VFollowResponder <NSObject>
 

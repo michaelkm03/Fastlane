@@ -15,9 +15,8 @@
 #import "VConstants.h"
 #import "VUser.h"
 #import "VObjectManager+Users.h"
-#import "VFollowResponder.h"
 
-@interface VFollowingHelper () <VFollowResponder>
+@interface VFollowingHelper ()
 
 @property (nonatomic, weak, readwrite) UIViewController *viewControllerToPresentAuthorizationOn;
 
