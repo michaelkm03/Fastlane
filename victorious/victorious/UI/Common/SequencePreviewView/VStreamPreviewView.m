@@ -24,7 +24,6 @@
     }
     else
     {
-        NSAssert(false, @"Unable to handle stream!");
         classType = [VFailureStreamPreviewView class];
     }
     

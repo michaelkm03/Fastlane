@@ -47,7 +47,6 @@
     }
     else
     {
-        NSAssert(false, @"Unable to handle sequence!");
         classType = [VFailureSequencePreviewView class];
     }
     
