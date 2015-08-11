@@ -94,9 +94,20 @@
         self.tableDataSource.tableView = self.tableView;
         self.tableDataSource.delegate = self;
         self.tableDataSource.messageCountCoordinator = self.messageCountCoordinator;
+        
+        __weak typeof(self) weakSelf = self;
+        [self.tableDataSource setAfterUpdate:^
+         {
+             // Give cells a moment to come on screen
+             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                            {
+                                __strong typeof(weakSelf) strongSelf = weakSelf;
+                                [strongSelf.focusHelper updateFocus];
+                            });
+         }];
     }
     self.tableView.dataSource = self.tableDataSource;
-
+    
     if (self.shouldRefreshOnAppearance)
     {
         self.refreshFailed = NO;
@@ -106,31 +117,31 @@
             VMessageContainerViewController *container = (VMessageContainerViewController *)self.parentViewController;
             container.busyView.hidden = NO;
             [self.tableDataSource refreshWithCompletion:^(NSError *error)
-            {
-                container.busyView.hidden = YES;
-                if (error)
-                {
-                    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:container.view animated:YES];
-                    hud.mode = MBProgressHUDModeText;
-                    hud.labelText = NSLocalizedString(@"ConversationLoadError", @"");
-                    [hud hide:YES afterDelay:3.0];
-                    self.refreshFailed = YES;
-                }
-                else
-                {
-                    [self scrollToBottomAnimated:NO];
-                    
-                    // Give cells a moment to come on screen
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                                   {
-                                       [self.focusHelper updateFocus];
-                                   });
-                }
-            }];
+             {
+                 container.busyView.hidden = YES;
+                 if (error)
+                 {
+                     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:container.view animated:YES];
+                     hud.mode = MBProgressHUDModeText;
+                     hud.labelText = NSLocalizedString(@"ConversationLoadError", @"");
+                     [hud hide:YES afterDelay:3.0];
+                     self.refreshFailed = YES;
+                 }
+                 else
+                 {
+                     [self scrollToBottomAnimated:NO];
+                     
+                     // Give cells a moment to come on screen
+                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                                    {
+                                        [self.focusHelper updateFocus];
+                                    });
+                 }
+             }];
         }
         self.shouldScrollToBottom = YES;
     }
-
+    
     [self.tableView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)]];
 }
 
@@ -138,6 +149,11 @@
 {
     // This clears any selectected text in a message cell when the background is tapped
     [self.tableView reloadData];
+    // Give cells a moment to come on screen
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                   {
+                       [self.focusHelper updateFocus];
+                   });
 }
 
 - (void)viewDidAppear:(BOOL)animated

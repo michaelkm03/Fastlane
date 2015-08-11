@@ -518,6 +518,11 @@ static       char    kKVOContext;
     {
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:newIndex inSection:kPendingMessagesSection] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     });
+    
+    if (self.afterUpdate != nil)
+    {
+        self.afterUpdate();
+    }
 }
 
 #pragma mark - UITableViewDataSource methods
