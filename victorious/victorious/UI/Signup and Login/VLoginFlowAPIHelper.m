@@ -70,7 +70,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 #pragma mark - Public Methods
 
-- (void)selectedTwitterAuthorizationWithCompletion:(void (^)(BOOL))completion
+- (void)selectedTwitterAuthorizationWithCompletion:(void (^)(BOOL succeeded, BOOL isNewUser))completion
 {
     NSParameterAssert(completion != nil);
     
@@ -84,18 +84,18 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
          {
              // Either no twitter permissions or no account was selected
              [hud hide:YES];
-             completion(NO);
+             completion(NO, NO);
              return;
          }
          
          [[VUserManager sharedInstance] loginViaTwitterWithTwitterID:twitterAccount.identifier
                                                             isModern:YES
-                                                        OnCompletion:^(VUser *user, BOOL created)
+                                                        OnCompletion:^(VUser *user, BOOL isNewUser)
           {
               dispatch_async(dispatch_get_main_queue(), ^
                              {
                                  [hud hide:YES];
-                                 completion(YES);
+                                 completion(YES, isNewUser);
                              });
 
           }
@@ -109,25 +109,25 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                  [self.viewControllerToPresentOn presentViewController:alertController animated:YES completion:nil];
                                  
                                  [hud hide:YES];
-                                 completion(NO);
+                                 completion(NO, NO);
                              });
           }];
      }];
 }
 
-- (void)selectedFacebookAuthorizationWithCompletion:(void (^)(BOOL))completion
+- (void)selectedFacebookAuthorizationWithCompletion:(void (^)(BOOL succeeded, BOOL isNewUser))completion
 {
     NSParameterAssert(completion != nil);
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
                                               animated:YES];
     [[VUserManager sharedInstance] loginViaFacebookModern:YES
-                                             OnCompletion:^(VUser *user, BOOL created)
+                                             OnCompletion:^(VUser *user, BOOL isNewUser)
      {
          dispatch_async(dispatch_get_main_queue(), ^(void)
                         {
                             [hud hide:YES];
-                            completion(YES);
+                            completion(YES, isNewUser);
                         });
      }
                                                   onError:^(NSError *error, BOOL thirdPartyAPIFailed)
@@ -139,7 +139,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                                                                               andCancelButtonTitle:NSLocalizedString(@"OK", @"")];
                             [self.viewControllerToPresentOn presentViewController:alertController animated:YES completion:nil];
                             [hud hide:YES];
-                            completion(NO);
+                            completion(NO, NO);
                         });
      }];
 }
@@ -154,7 +154,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                               animated:YES];
     [[VUserManager sharedInstance] loginViaEmail:email
                                         password:password
-                                    onCompletion:^(VUser *user, BOOL created)
+                                    onCompletion:^(VUser *user, BOOL isNewUser)
      {
          dispatch_async(dispatch_get_main_queue(), ^
                         {
@@ -185,7 +185,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     [[VUserManager sharedInstance] createEmailAccount:email
                                              password:password
                                              userName:nil
-                                         onCompletion:^(VUser *user, BOOL created)
+                                         onCompletion:^(VUser *user, BOOL isNewUser)
      {
          dispatch_async(dispatch_get_main_queue(), ^
                         {
