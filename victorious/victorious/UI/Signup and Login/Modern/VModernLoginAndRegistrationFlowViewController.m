@@ -52,6 +52,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
 // Use this as a semaphore around asynchronous user interaction (navigation pushes, social logins, etc.)
 @property (nonatomic, assign) BOOL actionsDisabled;
 @property (nonatomic, assign) BOOL hasShownInitial;
+@property (nonatomic, assign) BOOL isRegisteredAsNewUser;
 @property (nonatomic, strong) VLoginFlowAPIHelper *loginFlowHelper;
 
 @end
@@ -260,11 +261,12 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     
     self.actionsDisabled = YES;
     
-    [self.loginFlowHelper selectedTwitterAuthorizationWithCompletion:^(BOOL success)
+    [self.loginFlowHelper selectedTwitterAuthorizationWithCompletion:^(BOOL success, BOOL isNewUser)
     {
         self.actionsDisabled = NO;
         if ( success )
         {
+            self.isRegisteredAsNewUser = isNewUser;
             [self continueRegistrationFlowAfterSocialRegistration];
         }
     }];
@@ -282,11 +284,12 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     
     self.actionsDisabled = YES;
     
-    [self.loginFlowHelper selectedFacebookAuthorizationWithCompletion:^(BOOL success)
+    [self.loginFlowHelper selectedFacebookAuthorizationWithCompletion:^(BOOL success, BOOL isNewUser)
     {
         self.actionsDisabled = NO;
         if ( success )
         {
+            self.isRegisteredAsNewUser = isNewUser;
             [self continueRegistrationFlowAfterSocialRegistration];
             [self.permissionsTrackingHelper permissionsDidChange:VTrackingValueFacebookDidAllow permissionState:VTrackingValueAuthorized];
         }
@@ -517,14 +520,14 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
 - (void)continueRegistrationFlowAfterSocialRegistration
 {
     UIViewController *nextRegisterViewController = [self nextScreenInSocialRegistrationAfter:self.topViewController inArray:self.registrationScreens];
-    if ( nextRegisterViewController == nil )
-    {
-        [self onAuthenticationFinishedWithSuccess:YES];
-    }
-    else
+    if ( nextRegisterViewController != nil && self.isRegisteredAsNewUser )
     {
         [self pushViewController:nextRegisterViewController
                         animated:YES];
+    }
+    else
+    {
+        [self onAuthenticationFinishedWithSuccess:YES];
     }
 }
 
