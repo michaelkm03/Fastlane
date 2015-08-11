@@ -19,8 +19,8 @@
 #import "VDependencyManager.h"
 #import "VCooldownNotification.h"
 
-static NSString * const kCooldownNotificationMessageKey         = @"ballisticsCooledPrompt";
-static NSString * const kCooldownNotificationAlertActionKey     = @"ballisticsCooledAction";
+static NSString * const kCooldownNotificationMessageKey = @"ballisticsCooledPrompt";
+static NSString * const kCooldownNotificationAlertActionKey = @"ballisticsCooledAction";
 
 @interface VExperienceEnhancerController ()
 
@@ -287,13 +287,8 @@ static NSString * const kCooldownNotificationAlertActionKey     = @"ballisticsCo
 
 - (void)registerCooldownNotificationType
 {
-    UIUserNotificationType types = UIUserNotificationTypeBadge |  UIUserNotificationTypeAlert;
-    UIMutableUserNotificationAction *goAction = [[UIMutableUserNotificationAction alloc] init];
-    goAction.identifier = VCoolDownNotificationActionIdentifier;
-    goAction.activationMode = UIUserNotificationActivationModeForeground;
-    goAction.authenticationRequired = NO;
-    NSSet *categories = [NSSet setWithObject:goAction];
-    UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:categories];
+    UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeAlert;
+    UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
     [[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];
 }
 
@@ -311,11 +306,9 @@ static NSString * const kCooldownNotificationAlertActionKey     = @"ballisticsCo
     
     // Schedule a new notification
     UILocalNotification *localNotification = [[UILocalNotification alloc] init];
-#warning Hardcoded test values:
-    NSString *message = @"MESSAGE"; //[self.dependencyManager stringForKey:kCooldownNotificationMessageKey];
-    NSString *alertAction = @"ALERT"; //[self.dependencyManager stringForKey:kCooldownNotificationAlertActionKey];
-    
-    if ( localNotification != nil && message.length > 0 && alertAction.length > 0 )
+    NSString *message = [self.dependencyManager stringForKey:kCooldownNotificationMessageKey];
+    NSString *alertAction = [self.dependencyManager stringForKey:kCooldownNotificationAlertActionKey];
+    if ( localNotification != nil && message.length > 0 )
     {
         localNotification.fireDate = fireDate;
         localNotification.timeZone = [NSTimeZone defaultTimeZone];
@@ -325,7 +318,6 @@ static NSString * const kCooldownNotificationAlertActionKey     = @"ballisticsCo
         localNotification.applicationIconBadgeNumber = 1;
         localNotification.userInfo = @{ VCoolDownNotificationIdentifierKey : VCoolDownNotificationIdentifier,
                                         VCoolDownNotificationBadgeCountKey : @(localNotification.applicationIconBadgeNumber) };
-        
         [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
     }
 }

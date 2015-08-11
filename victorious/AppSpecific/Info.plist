@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>${ProductPrefix}GlamLifeGuru</string>
+	<string>${ProductPrefix}victorious</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFiles</key>
@@ -15,7 +15,7 @@
 		<string>Icon-60</string>
 	</array>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}glamlifeguru</string>
+	<string>com.getvictorious.${ProductPrefix}victorious</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -31,7 +31,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1569391539949621</string>
+				<string>fb664946900317058</string>
 			</array>
 		</dict>
 		<dict>
@@ -39,20 +39,20 @@
 			<string>com.getvictorious.deeplinking.scheme</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>vapp14</string>
+				<string>vapp1</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>900</string>
 	<key>CreatorSalutation</key>
-	<string>GlamLifeGuru</string>
+	<string>Debug Victorious</string>
 	<key>FacebookAppID</key>
-	<string>1569391539949621</string>
+	<string>664946900317058</string>
 	<key>FacebookDisplayName</key>
 	<string>VictoriousApp Dev</string>
 	<key>FlurryAPIKey</key>
-	<string>XTJ4RY2KVKC3KKD9P7GH</string>
+	<string>XXXXXXXXXX</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
@@ -60,9 +60,9 @@
 	<key>ProductPrefix</key>
 	<string>${ProductPrefix}</string>
 	<key>TWITTER_CONSUMER_KEY</key>
-	<string>Pc1gL3BZXyG6IeLEhbBBhRNQ4</string>
+	<string>MhDYRpVPTaGQgWBT7ChmxQ</string>
 	<key>TWITTER_CONSUMER_SECRET</key>
-	<string>qymn0qB7KNkGNQREpBBLJjidsmFAM8ypoUuPBbrCngYrDGz2Y4</string>
+	<string>damxXK28SCObMZ1CEMTLszm3v8mdRt0L1wuVnzXtH1E</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Roboto-Light.ttf</string>
