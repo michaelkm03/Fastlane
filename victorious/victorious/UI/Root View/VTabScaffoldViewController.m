@@ -139,7 +139,10 @@ NSString * const kMenuKey = @"menu";
                                                                        viewControllerToPresentFrom:self];
     self.loginOperation = loginOperation;
     
-    FTUEVideoOperation *videoOperation = [[FTUEVideoOperation alloc] init];
+    FTUEVideoOperation *videoOperation = [[FTUEVideoOperation alloc] initWithDependencyManager:self.dependencyManager
+                                                                     viewControllerToPresentOn:self
+                                                                                  sessionTimer:[VRootViewController rootViewController].sessionTimer];
+    
     RequestPushNotificationPermissionOperation *pushNotificationOperation = [[RequestPushNotificationPermissionOperation alloc] init];
     
     NSBlockOperation *allLaunchOperationFinishedBlock = [NSBlockOperation blockOperationWithBlock:^

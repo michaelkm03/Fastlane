@@ -71,3 +71,8 @@
 #import "VAuthorizedAction.h"
 #import "VObjectManager.h"
 #import "VAuthorizationContext.h"
+#import "VLightweightContentViewController.h"
+#import "VFirstTimeInstallHelper.h"
+#import "VSessionTimer.h"
+#import "VTrackingManager.h"
+#import "VDependencyManager+VTracking.h"
