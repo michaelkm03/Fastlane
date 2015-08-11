@@ -92,7 +92,6 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
          
          // Add user at backend
          NSString *sourceScreen = screenName?:VFollowSourceScreenUnknown;
-         VLog("Follow happened at screen: %@", sourceScreen);
          [[VObjectManager sharedManager] followUser:user
                                        successBlock:successBlock
                                           failBlock:failureBlock
