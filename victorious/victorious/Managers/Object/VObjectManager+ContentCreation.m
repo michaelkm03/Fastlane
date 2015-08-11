@@ -37,6 +37,7 @@ NSString * const VObjectManagerContentWillBeCreatedNotification = @"VObjectManag
 NSString * const VObjectManagerContentWasCreatedNotification    = @"VObjectManagerContentWasCreatedNotification";
 NSString * const VObjectManagerContentFilterIDKey               = @"filterID";
 NSString * const VObjectManagerContentIndexKey                  = @"index";
+NSString * const VObjectManagerContentGIFParameter              = @"is_gif_style";
 
 @implementation VObjectManager (ContentCreation)
 
@@ -201,7 +202,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     
     NSMutableDictionary *parameters = [@{@"name": publishParameters.caption ?: [NSNull null],
                                          @"media_data": publishParameters.mediaToUploadURL,
-                                         @"is_gif_style": publishParameters.isGIF ? @"true" : @"false",
+                                         VObjectManagerContentGIFParameter: publishParameters.isGIF ? @"true" : @"false",
                                          @"did_crop": publishParameters.didCrop ? @"true" : @"false",
                                          @"did_trim": publishParameters.didTrim ? @"true" : @"false",
                                          } mutableCopy];
@@ -395,7 +396,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     if (publishParameters.mediaToUploadURL != nil)
     {
         NSString *gifParameterValue = publishParameters.isGIF ? @"true" : @"false";
-        parameters[@"is_gif_style"] = gifParameterValue;
+        parameters[VObjectManagerContentGIFParameter] = gifParameterValue;
     }
     
     NSURL *mediaURL = publishParameters.mediaToUploadURL;
@@ -508,7 +509,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     if (message.mediaPath != nil)
     {
         NSString *gifParameterValue = message.shouldAutoplay.boolValue ? @"true" : @"false";
-        parameters[@"is_gif_style"] = gifParameterValue;
+        parameters[VObjectManagerContentGIFParameter] = gifParameterValue;
     }
 
     NSDictionary *allURLs;
