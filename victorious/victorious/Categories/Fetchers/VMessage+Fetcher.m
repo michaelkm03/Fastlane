@@ -74,7 +74,7 @@
         aspectRatio = mediaHeight / mediaWidth;
     }
     
-    return CLAMP(0, aspectRatio, 1.5);
+    return CLAMP(0, aspectRatio, 1.5f);
 }
 
 - (NSURL *)properMediaURLGivenContentType
