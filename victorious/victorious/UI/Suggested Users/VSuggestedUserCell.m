@@ -137,13 +137,15 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
     }
     else
     {
-        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:)
+        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
                                                                           withSender:nil];
         
         NSAssert(followResponder != nil, @"Need a VFollowingResponder higher up the chain to communicate following commands.");
         [followResponder followUser:self.user
                 withAuthorizedBlock:authorizedBlock
-                      andCompletion:completionBlock];
+                      andCompletion:completionBlock
+                 fromViewController:nil
+                     withScreenName:VFollowSourceScreenRegistrationSuggestedUsers];
     }
 }
 

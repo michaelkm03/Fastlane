@@ -147,13 +147,15 @@
     }
     else
     {
-        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:)
+        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
                                                                           withSender:nil];
         NSAssert(followResponder != nil, @"VDiscoverSuggestedPersonCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
         
         [followResponder followUser:self.user
                 withAuthorizedBlock:authorizedBlock
-                      andCompletion:completionBlock];
+                      andCompletion:completionBlock
+                 fromViewController:nil
+                     withScreenName:nil];
     }
 }
 

@@ -16,7 +16,6 @@
 #import "VNoContentView.h"
 #import "VNavigationController.h"
 #import "VDependencyManager+VTracking.h"
-#import "VFollowResponder.h"
 #import "VFollowingHelper.h"
 
 @interface VUsersViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, VScrollPaginatorDelegate, VFollowResponder>
@@ -206,7 +205,7 @@
 
 #pragma mark - VFollowResponder
 
-- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion
+- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion fromViewController:(UIViewController *)viewControllerToPresentOn withScreenName:(NSString *)screenName
 {
     NSDictionary *dict = @{
                            @(VUsersViewContextFollowers) : VFollowSourceScreenFollowers,
@@ -214,12 +213,17 @@
                            @(VUsersViewContextLikers) : VFollowSourceScreenLikers
                            };
     
-    NSString *screenName = [dict objectForKey:@(self.usersViewContext)];
+    NSString *sourceScreen = screenName?:[dict objectForKey:@(self.usersViewContext)];
 
-    [self.followingHelper followUser:user
-                 withAuthorizedBlock:authorizedBlock
-                       andCompletion:completion
-                          fromScreen:screenName];
+    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
+                                                                      withSender:nil];
+    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", self);
+    
+    [followResponder followUser:user
+            withAuthorizedBlock:authorizedBlock
+                  andCompletion:completion
+             fromViewController:self
+                 withScreenName:sourceScreen];
 }
 
 - (void)unfollowUser:(VUser *)user

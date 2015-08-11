@@ -15,20 +15,13 @@
 #import "VConstants.h"
 #import "VUser.h"
 #import "VObjectManager+Users.h"
+#import "VFollowResponder.h"
 
-NSString * const VFollowSourceScreenDiscoverSuggestedUsers = @"discover.suggest";
-NSString * const VFollowSourceScreenReposter = @"reposter";
-NSString * const VFollowSourceScreenProfile = @"profile";
-NSString * const VFollowSourceScreenDiscoverUserSearchResults = @"discover.search";
-NSString * const VFollowSourceScreenFollowers = @"followers";
-NSString * const VFollowSourceScreenFollowing = @"following";
-NSString * const VFollowSourceScreenLikers = @"likers";
-NSString * const VFollowSourceScreenMessageableUsers = @"messageable_users";
-NSString * const VFollowSourceScreenFindFriendsContacts = @"find_friends.contacts";
-NSString * const VFollowSourceScreenFindFriendsFacebook = @"find_friends.facebook";
-NSString * const VFollowSourceScreenFindFriendsTwitter = @"find_friends.twitter";
-NSString * const VFollowSourceScreenShelf = @"shelf";
-NSString * const VFollowSourceScreenUnknown = @"unknown";
+@interface VFollowingHelper () <VFollowResponder>
+
+@property (nonatomic, weak, readwrite) UIViewController *viewControllerToPresentAuthorizationOn;
+
+@end
 
 @implementation VFollowingHelper
 
@@ -56,9 +49,13 @@ NSString * const VFollowSourceScreenUnknown = @"unknown";
 - (void)followUser:(VUser *)user
 withAuthorizedBlock:(void (^)(void))authorizedBlock
      andCompletion:(VFollowHelperCompletion)completion
-        fromScreen:(NSString *)screenName
+fromViewController:(UIViewController *)viewControllerToPresentOn
+    withScreenName:(NSString *)screenName
 {
     NSParameterAssert(completion != nil);
+    NSParameterAssert(viewControllerToPresentOn != nil);
+    
+    self.viewControllerToPresentAuthorizationOn = viewControllerToPresentOn;
     
     [self withAuthorizationDo:^(BOOL authorized)
      {
@@ -96,6 +93,7 @@ withAuthorizedBlock:(void (^)(void))authorizedBlock
          
          // Add user at backend
          NSString *sourceScreen = screenName?:VFollowSourceScreenUnknown;
+         VLog("Follow happened at screen: %@", sourceScreen);
          [[VObjectManager sharedManager] followUser:user
                                        successBlock:successBlock
                                           failBlock:failureBlock

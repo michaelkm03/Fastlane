@@ -47,6 +47,7 @@
 #import "VUserIsFollowingDataSource.h"
 #import "VDependencyManager+VTracking.h"
 #import "VFollowingHelper.h"
+#import "VFollowResponder.h"
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
@@ -58,7 +59,7 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
 
 static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
-@interface VUserProfileViewController () <VUserProfileHeaderDelegate, MBProgressHUDDelegate, VNotAuthorizedDataSourceDelegate, VNavigationViewFloatingControllerDelegate>
+@interface VUserProfileViewController () <VUserProfileHeaderDelegate, MBProgressHUDDelegate, VNotAuthorizedDataSourceDelegate, VNavigationViewFloatingControllerDelegate, VFollowResponder>
 
 @property (nonatomic, assign) BOOL didEndViewWillAppear;
 @property (nonatomic, assign) BOOL isMe;
@@ -503,40 +504,27 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)toggleFollowUser
 {
-    VFailBlock fail = ^(NSOperation *operation, NSError *error)
-    {
-        self.profileHeaderViewController.loading = NO;
-        [[[UIAlertView alloc] initWithTitle:nil
-                                    message:NSLocalizedString(@"UnfollowError", @"")
-                                   delegate:nil
-                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                          otherButtonTitles:nil] show];
-    };
-    
     if ( self.profileHeaderViewController.state == VUserProfileHeaderStateFollowingUser )
     {
         self.profileHeaderViewController.loading = YES;
-        [[VObjectManager sharedManager] unfollowUser:self.user
-                                        successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-         {
-             self.profileHeaderViewController.loading = NO;
-             self.profileHeaderViewController.state = VUserProfileHeaderStateNotFollowingUser;
-         }
-                                           failBlock:fail];
+        [self unfollowUser:self.user withAuthorizedBlock:nil andCompletion:^(VUser *userActedOn) {
+            self.profileHeaderViewController.loading = NO;
+            self.profileHeaderViewController.state = VUserProfileHeaderStateNotFollowingUser;
+        }];
     }
     else if ( self.profileHeaderViewController.state == VUserProfileHeaderStateNotFollowingUser )
     {
         [self stopObservingUserProfile];
         self.profileHeaderViewController.loading = YES;
-        
-        NSString *screenName = VFollowSourceScreenProfile;
-        
-        [self.followingHelper followUser:self.user withAuthorizedBlock:nil
-                           andCompletion:^(VUser *userActedOn) {
-                               self.profileHeaderViewController.loading = NO;
-                               self.profileHeaderViewController.state = VUserProfileHeaderStateFollowingUser;
-                           }
-                              fromScreen:screenName];
+        [self followUser:self.user
+     withAuthorizedBlock:nil
+           andCompletion:^(VUser *userActedOn)
+        {
+            self.profileHeaderViewController.loading = NO;
+            self.profileHeaderViewController.state = VUserProfileHeaderStateFollowingUser;
+        }
+      fromViewController:self
+          withScreenName:nil];
     }
 }
 
@@ -986,6 +974,27 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (void)reselected
 {
     [self floatingViewSelected:nil];
+}
+
+#pragma mark - VFollowResponder
+
+- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowEventCompletion)completion fromViewController:(UIViewController *)viewControllerToPresentOn withScreenName:(NSString *)screenName
+{
+    NSString *sourceScreen = screenName?:VFollowSourceScreenProfile;
+    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
+                                                                      withSender:nil];
+    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", self);
+    
+    [followResponder followUser:user
+            withAuthorizedBlock:authorizedBlock
+                  andCompletion:completion
+             fromViewController:self
+                 withScreenName:sourceScreen];
+}
+
+- (void)unfollowUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowEventCompletion)completion
+{
+    [self.followingHelper unfollowUser:user withAuthorizedBlock:authorizedBlock andCompletion:completion];
 }
 
 @end

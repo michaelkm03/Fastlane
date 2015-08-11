@@ -8,23 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-extern NSString * const VFollowSourceScreenDiscoverSuggestedUsers;
-extern NSString * const VFollowSourceScreenReposter;
-extern NSString * const VFollowSourceScreenProfile;
-extern NSString * const VFollowSourceScreenDiscoverUserSearchResults;
-extern NSString * const VFollowSourceScreenFollowers;
-extern NSString * const VFollowSourceScreenFollowing;
-extern NSString * const VFollowSourceScreenLikers;
-extern NSString * const VFollowSourceScreenMessageableUsers;
-extern NSString * const VFollowSourceScreenFindFriendsContacts;
-extern NSString * const VFollowSourceScreenFindFriendsFacebook;
-extern NSString * const VFollowSourceScreenFindFriendsTwitter;
-extern NSString * const VFollowSourceScreenShelf;
-// Untracked is used when a screen performs 'follow' action
-// through the responder chain unexpectedly. Instead of sending nil,
-// send this so we can track them down later
-extern NSString * const VFollowSourceScreenUnknown;
-
 @class VDependencyManager;
 @class VUser;
 
@@ -66,8 +49,9 @@ typedef void (^VFollowHelperCompletion)(VUser *userActedOn);
  */
 - (void)followUser:(VUser *)user
 withAuthorizedBlock:(void (^)(void))authorizedBlock
-    andCompletion:(VFollowHelperCompletion)completion
-        fromScreen:(NSString *)screenName;
+     andCompletion:(VFollowHelperCompletion)completion
+fromViewController:(UIViewController *)viewControllerToPresentOn
+    withScreenName:(NSString *)screenName;
 
 /**
  * Follows the user passed in after any authorization.

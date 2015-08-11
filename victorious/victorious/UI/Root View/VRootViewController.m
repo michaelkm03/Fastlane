@@ -508,13 +508,13 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 #pragma mark - VFollowResponder
 
-- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion
+- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion fromViewController:(UIViewController *)viewControllerToPresentOn withScreenName:(NSString *)screenName
 {
-    NSString *screenName = nil;
     [self.followHelper followUser:user
               withAuthorizedBlock:authorizedBlock
                     andCompletion:completion
-                       fromScreen:screenName];
+               fromViewController:self
+                   withScreenName:screenName];
 }
 
 - (void)unfollowUser:(VUser *)user
