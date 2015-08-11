@@ -133,6 +133,7 @@ NSString * const kMenuKey = @"menu";
     }
     self.hasSetupFirstLaunchOperations = YES;
     
+    // Login
     AutoShowLoginOperation *loginOperation = [[AutoShowLoginOperation alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                                                  dependencyManager:self.dependencyManager
                                                                        viewControllerToPresentFrom:self];
@@ -175,6 +176,8 @@ NSString * const kMenuKey = @"menu";
 
 - (UINavigationController *)recursiveRootViewControllerSearch
 {
+    // Recursively search up the viewController hierarchy for the viewController whose parent
+    // is VTabScaffold. This is the root navigation controller.
     UIViewController *parentViewController = self.parentViewController;
     if ([parentViewController isKindOfClass:[VTabScaffoldViewController class]])
     {
