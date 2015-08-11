@@ -1704,7 +1704,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
                  
                  // Try to reload the cell without reloading the whole section
                  NSIndexPath *indexPathToInvalidate = [self.contentCollectionView indexPathForCell:cell];
-                 if ( indexPathToInvalidate != nil && NO )
+                 if ( indexPathToInvalidate != nil )
                  {
                      [self.contentCollectionView performBatchUpdates:^void
                       {
