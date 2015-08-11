@@ -82,6 +82,7 @@ verify_settings
 /bin/echo "Uploading ${IPA_FILENAME} to TestFairy..."
 JSON=$( ${CURL} -s ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY} -F file="@${IPA_FILENAME}" -F video="${VIDEO}" -F max-duration="${MAX_DURATION}" -F comment="${COMMENT}" -F testers-groups="${TESTER_GROUPS}" -F auto-update="${AUTO_UPDATE}" -F notify="${NOTIFY}" -A "TestFairy iOS Command Line Uploader ${UPLOADER_VERSION}" )
 
+BUILD_DOWNLOAD_URL=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"instrumented_url"\s*:\s*"\([^"]*\)".*/\1/p' )
 URL=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"build_url"\s*:\s*"\([^"]*\)".*/\1/p' )
 if [ -z "$URL" ]; then
 	echo "ERROR: Build uploaded, but no reply from server. Please contact support@testfairy.com"
@@ -104,7 +105,7 @@ echo ".dSYM was successfully uploaded to TestFairy."
 if [ "$TESTER_GROUPS" == "Stable" ]; then
     echo
     echo "Posting Test Fairy url for '${APPNAME}' to Victorious backend"
-    python "build-scripts/vams_postbuild.py" ${APPNAME} ios ${URL}
+    python "build-scripts/vams_postbuild.py" ${APPNAME} ios ${BUILD_DOWNLOAD_URL}
 fi
 
 exit 0
