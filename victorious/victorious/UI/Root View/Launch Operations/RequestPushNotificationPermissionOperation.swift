@@ -16,22 +16,41 @@ class RequestPushNotificationPermissionOperation : NSOperation {
         super.init()
     }
     
+    // MARK: Override
+    
     override func start() {
         super.start()
+        
+        if cancelled || VPushNotificationManager.sharedPushNotificationManager().started {
+            executing = false
+            finished = true
+            return
+        }
+        
         executing = true
         finished = false
-        println("starting")
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1 * Double(NSEC_PER_SEC)))
-        dispatch_after(delayTime, dispatch_get_main_queue()) {
-            self.onPermissionGranted()
-        }
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "userRespondedToPushNotification",
+            name: VPushNotificationManagerDidRecieveRegisterOrFailureForRemoteNotificationsNotification,
+            object: VPushNotificationManager.sharedPushNotificationManager())
+        VPushNotificationManager.sharedPushNotificationManager().startPushNotificationManager()
     }
+    
+    // MARK: Notification Observer
+    
+    @objc func userRespondedToPushNotification() {
+        onPermissionGranted()
+    }
+    
+    // MARK: Internal
     
     private func onPermissionGranted() {
         executing = false
         finished = true
     }
 
+    // MARK: NSOperation State Properties
+    
     private var _executing : Bool
     override var executing : Bool {
         get {return _executing }

@@ -76,3 +76,4 @@
 #import "VSessionTimer.h"
 #import "VTrackingManager.h"
 #import "VDependencyManager+VTracking.h"
+#import "VPushNotificationManager.h"
