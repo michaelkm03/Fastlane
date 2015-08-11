@@ -130,7 +130,7 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
         id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:)
                                                                           withSender:nil];
         
-        NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands.", self.class);
+        NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
         [followResponder unfollowUser:self.user
                   withAuthorizedBlock:authorizedBlock
                         andCompletion:completionBlock];
@@ -140,7 +140,7 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
         id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
                                                                           withSender:nil];
         
-        NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands.", self.class);
+        NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
         [followResponder followUser:self.user
                 withAuthorizedBlock:authorizedBlock
                       andCompletion:completionBlock

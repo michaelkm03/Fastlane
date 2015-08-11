@@ -513,10 +513,12 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion fromViewController:(UIViewController *)viewControllerToPresentOn withScreenName:(NSString *)screenName
 {
+    UIViewController *sourceViewController = viewControllerToPresentOn?:self;
+    
     [self.followHelper followUser:user
               withAuthorizedBlock:authorizedBlock
                     andCompletion:completion
-               fromViewController:viewControllerToPresentOn
+               fromViewController:sourceViewController
                    withScreenName:screenName];
 }
 
