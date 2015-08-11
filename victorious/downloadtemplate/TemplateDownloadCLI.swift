@@ -19,8 +19,10 @@ class TemplateDownloadCLI: NSObject, VTemplateDownloadOperationDelegate {
         self.bundleURL = bundleURL
     }
     
-    /// Begins the process of downloading all templates
-    func downloadTemplate() {
+    /// Downloads templates for one or more environments
+    ///
+    /// :param: environmentName The name of the environment for which to download a template, or `nil` to download templates for all environments specified in the application bundle
+    func downloadTemplate(environmentName: String? = nil) {
         
         let environmentsFileURL = bundleURL.URLByAppendingPathComponent(environmentsFilename)
         let environments = environmentsFromFile(environmentsFileURL)
@@ -29,6 +31,9 @@ class TemplateDownloadCLI: NSObject, VTemplateDownloadOperationDelegate {
         
         for environment in environments {
             
+            if let environmentName = environmentName where environment.name != environmentName {
+                continue
+            }
             println("Downloading template and images for environment: \(environment.name)")
             
             let downloader = BasicTemplateDownloader(environment: environment)
