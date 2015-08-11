@@ -44,4 +44,11 @@ typedef NS_ENUM(NSInteger, VMessageMediaType)
  */
 - (NSURL *)properMediaURLGivenContentType;
 
+/**
+ Returns a float between 0 and 2 of the media's height
+ divided by it's width. Returns 1 if media info does not
+ exist.
+ */
+- (CGFloat)mediaAspectRatio;
+
 @end

@@ -438,12 +438,13 @@ static       char    kKVOContext;
     }
 }
 
-- (void)createMessageWithText:(NSString *)text mediaURL:(NSURL *)mediaURL completion:(void(^)(NSError *))completion
+- (void)createMessageWithText:(NSString *)text publishParamaters:(VPublishParameters *)publishParameters completion:(void(^)(NSError *))completion
 {
     NSAssert([NSThread isMainThread], @"VMessageTableDataSource is intended to be used only on the main thread");
     NSManagedObjectContext *context = self.objectManager.managedObjectStore.mainQueueManagedObjectContext;
     VMessage *message = [self.objectManager messageWithText:text
-                                               mediaURLPath:[mediaURL absoluteString]];
+                                          publishParameters:publishParameters];
+    
     [context saveToPersistentStore:nil];
     
     VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)

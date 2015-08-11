@@ -99,7 +99,7 @@ Creates a new realtime comment
  See sendMessage:successBlock:failBlock: for that.
  */
 - (VMessage *)messageWithText:(NSString *)text
-                 mediaURLPath:(NSString *)mediaURLPath;
+            publishParameters:(VPublishParameters *)publishParameters;
 
 /**
  Sends a new message to the server

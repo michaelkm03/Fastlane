@@ -31,6 +31,7 @@
 #import "VLightboxTransitioningDelegate.h"
 #import "VVideoLightboxViewController.h"
 #import "VImageLightboxViewController.h"
+#import "VTableViewStreamFocusHelper.h"
 
 @interface VMessageViewController () <VMessageTableDataDelegate, VCommentMediaTapDelegate>
 
@@ -39,6 +40,7 @@
 @property (nonatomic)            BOOL                     shouldScrollToBottom;
 @property (nonatomic)            BOOL                     refreshFailed;
 @property (nonatomic, strong) NSMutableArray *reuseIdentifiers;
+@property (nonatomic, strong) VTableViewStreamFocusHelper *focusHelper;
 
 @end
 
@@ -67,6 +69,9 @@
     [super viewDidLoad];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.reuseIdentifiers = [NSMutableArray new];
+    
+    // Initialize our focus helper
+    self.focusHelper = [[VTableViewStreamFocusHelper alloc] initWithTableView:self.tableView];
 }
 
 - (void)viewDidLayoutSubviews
@@ -114,6 +119,12 @@
                 else
                 {
                     [self scrollToBottomAnimated:NO];
+                    
+                    // Give cells a moment to come on screen
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                                   {
+                                       [self.focusHelper updateFocus];
+                                   });
                 }
             }];
         }
@@ -133,12 +144,23 @@
 {
     [super viewDidAppear:animated];
     [self.tableDataSource beginLiveUpdates];
+    
+    // Update cell focus
+    [self.focusHelper updateFocus];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [self.tableDataSource endLiveUpdates];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    // End focus on cells
+    [self.focusHelper endFocusOnAllCells];
 }
 
 - (void)loadNextPageAction
@@ -229,6 +251,12 @@
     return [VMessageCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds) message:message];
 }
 
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // End focus on this cell to stop video if there is one
+    [self.focusHelper endFocusOnCell:cell];
+}
+
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -240,6 +268,8 @@
     {
         [self loadNextPageAction];
     }
+    
+    [self.focusHelper updateFocus];
 }
 
 #pragma mark - Media Tap Delegate

@@ -231,7 +231,7 @@ static const NSUInteger kCharacterLimit = 1024;
     keyboardBar.sendButtonEnabled = NO;
     VMessageViewController *messageViewController = (VMessageViewController *)self.conversationTableViewController;
     self.busyView.hidden = NO;
-    [messageViewController.tableDataSource createMessageWithText:text mediaURL:publishParameters.mediaToUploadURL completion:^(NSError *error)
+    [messageViewController.tableDataSource createMessageWithText:text publishParamaters:publishParameters completion:^(NSError *error)
     {
         keyboardBar.sendButtonEnabled = YES;
         self.busyView.hidden = YES;
