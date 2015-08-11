@@ -67,6 +67,10 @@ extension GIFSearchViewController : UICollectionViewDelegate {
         }
         else if collectionView.cellForItemAtIndexPath( indexPath ) is GIFSearchPreviewCell {
             self.exportSelectedItem( nil )
+            self.selectCellAtSelectedIndexPath() //< Selects the cell that was selected before this preview cell
+            dispatch_after(0.0) {
+                self.selectCellAtSelectedIndexPath() //< Ensures it remains selected
+            }
         }
     }
     
