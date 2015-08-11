@@ -11,8 +11,8 @@ import Foundation
 /// Executes a closure using `dispatch_after`, saving the need for the cumbersome overhead
 /// of getting the correct `disaptch_time_t` value.
 ///
-/// :param: The delay in seconds
-/// :closure: The closure to execute after the delay
+/// :param: delay The delay in seconds
+/// :param: closure The closure to execute after the delay
 func dispatch_after( delay:NSTimeInterval, closure:()->() ) {
     
     let time = dispatch_time( DISPATCH_TIME_NOW,  Int64(delay * Double(NSEC_PER_SEC)) )
