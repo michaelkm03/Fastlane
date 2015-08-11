@@ -141,7 +141,6 @@
         }
         self.shouldScrollToBottom = YES;
     }
-    
     [self.tableView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)]];
 }
 
