@@ -106,7 +106,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     NSParameterAssert(dependencyManager != nil);
     VUserProfileViewController *viewController = [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
-
     
     //Set the dependencyManager before setting the profile since setting the profile creates the profileHeaderViewController
     viewController.dependencyManager = dependencyManager;
