@@ -14,10 +14,10 @@
 #import "VContentViewFactory.h"
 #import "VNavigationDestinationContainerViewController.h"
 #import "VNavigationController.h"
-#import "VCreateSheetViewController.h"
 
 // Views + Helpers
 #import "UIView+AutoLayout.h"
+#import "VTabScaffoldHidingHelper.h"
 
 // Deep Links
 #import "VDeeplinkHandler.h"
@@ -46,7 +46,6 @@ NSString * const VTrackingWelcomeStartKey = @"welcome_start";
 NSString * const VTrackingWelcomeGetStartedTapKey = @"get_started_tap";
 NSString * const kMenuKey = @"menu";
 
-static const CGFloat kTabBarAnimationTimeInterval = 0.3;
 
 @interface VTabScaffoldViewController () <UITabBarControllerDelegate, VRootViewControllerContainedViewController, VDeeplinkSupporter>
 
@@ -55,7 +54,7 @@ static const CGFloat kTabBarAnimationTimeInterval = 0.3;
 @property (nonatomic, strong) VNavigationDestinationContainerViewController *willSelectContainerViewController;
 
 @property (nonatomic, strong) VTabMenuShim *tabShim;
-
+@property (nonatomic, strong) VTabScaffoldHidingHelper *hidingHelper;
 @property (nonatomic, strong) NSOperationQueue *launchOperationQueue;
 @property (nonatomic, weak) AutoShowLoginOperation *loginOperation;
 @property (nonatomic, assign) BOOL hasSetupFirstLaunchOperations;
@@ -63,11 +62,6 @@ static const CGFloat kTabBarAnimationTimeInterval = 0.3;
 @end
 
 @implementation VTabScaffoldViewController
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -112,9 +106,7 @@ static const CGFloat kTabBarAnimationTimeInterval = 0.3;
     }
     self.internalTabBarController.viewControllers = [self.tabShim wrappedNavigationDesinations];
     
-    // Subscribe to notifications for showing and hiding tab bar
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideNotification:) name:kCreationSheetWillShow object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotification:) name:kCreationSheetWillHide object:nil];
+    self.hidingHelper = [[VTabScaffoldHidingHelper alloc] initWithTabBarToHide:_internalTabBarController.tabBar];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -336,9 +328,7 @@ static const CGFloat kTabBarAnimationTimeInterval = 0.3;
     FTUEVideoOperation *videoOperation = [[FTUEVideoOperation alloc] initWithDependencyManager:self.dependencyManager
                                                                      viewControllerToPresentOn:self
                                                                                   sessionTimer:[VRootViewController rootViewController].sessionTimer];
-    
     RequestPushNotificationPermissionOperation *pushNotificationOperation = [[RequestPushNotificationPermissionOperation alloc] init];
-    
     NSBlockOperation *allLaunchOperationFinishedBlock = [NSBlockOperation blockOperationWithBlock:^
     {
         dispatch_async(dispatch_get_main_queue(), ^
@@ -380,64 +370,6 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
     self.willSelectContainerViewController = viewController;
     [self navigateToDestination:viewController.navigationDestination animated:YES];
     return NO;
-}
-
-#pragma mark - Notifications
-
-- (void)hideNotification:(NSNotification *)notification
-{
-    [self hideTabBarAnimated:YES];
-}
-
-- (void)showNotification:(NSNotification *)notification
-{
-    [self showTabBarAnimated:YES];
-}
-
-#pragma mark - Animations
-
-- (void)showTabBarAnimated:(BOOL)animated
-{
-    [UIView animateWithDuration:animated ? kTabBarAnimationTimeInterval : 0 animations:^{
-        self.internalTabBarController.tabBar.transform = CGAffineTransformIdentity;
-    }];
-}
-
-- (void)hideTabBarAnimated:(BOOL)animated
-{
-    [UIView animateWithDuration:animated ? kTabBarAnimationTimeInterval : 0 animations:^{
-        self.internalTabBarController.tabBar.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight(self.internalTabBarController.tabBar.bounds));
-    }];
-}
-
-@end
-
-@implementation UIViewController (VRootNavigationController)
-
-- (UINavigationController *)rootNavigationController
-{
-    UINavigationController *rootNavigationController = [self recursiveRootViewControllerSearch];
-    
-    return rootNavigationController;
-}
-
-- (UINavigationController *)recursiveRootViewControllerSearch
-{
-    // Recursively search up the viewController hierarchy for the viewController whose parent
-    // is VTabScaffold. This is the root navigation controller.
-    UIViewController *parentViewController = self.parentViewController;
-    if ([parentViewController isKindOfClass:[VTabScaffoldViewController class]])
-    {
-        return (UINavigationController *)self;
-    }
-    else if (parentViewController == nil)
-    {
-        return nil;
-    }
-    else
-    {
-        return [parentViewController recursiveRootViewControllerSearch];
-    }
 }
 
 @end

@@ -11,6 +11,7 @@
 #import "VDependencyManager.h"
 #import "VHasManagedDependencies.h"
 #import "VNavigationDestinationsProvider.h"
+#import "UIViewController+VRootNavigationController.h"
 
 @class VSequence, VAuthorization, VCoachmarkManager;
 
@@ -100,16 +101,5 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
  Presents a web browser ViewController with the given URL.
  */
 - (void)showWebBrowserWithURL:(NSURL *)URL;
-
-@end
-
-@interface UIViewController (VRootNavigationController)
-
-/**
- The root Navigation Controller that contains the entire screen. Returns nil if for whatever reason
- we cannot find the rootNavigationController in the viewController hierarchy.
- NOTE: the navigation bar for this NavigationController is hidden.
- */
-- (UINavigationController *)rootNavigationController;
 
 @end
