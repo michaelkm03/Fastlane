@@ -1460,7 +1460,6 @@
 		034D1A661AAF5A8A00EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		034D1A671AAF5A8B00EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/settings.strings; sourceTree = "<group>"; };
 		034D1A6B1AAF5A8B00EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		0352FC731B72AA7E00DB6EAB /* libPods-victorious-test-VictoriousCommonTests.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-victorious-test-VictoriousCommonTests.a"; path = "Pods/../build/Debug-iphoneos/libPods-victorious-test-VictoriousCommonTests.a"; sourceTree = "<group>"; };
 		0352FC7E1B72B90000DB6EAB /* VictoriousCommonOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = VictoriousCommonOSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0352FC9E1B72B9A800DB6EAB /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0352FCBF1B72C60200DB6EAB /* downloadtemplate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = downloadtemplate.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -6291,9 +6290,6 @@
 		BE171D781868BE64004E5202 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				0352FC731B72AA7E00DB6EAB /* libPods-victorious-test-VictoriousCommonTests.a */,
-				A75A639C1B58858500EC4D53 /* MobileCoreServices.framework */,
-				A7F8DD621A0B1A8B00F82256 /* WebKit.framework */,
 				DBD02A7919F5860A00E0AC95 /* AdSupport.framework */,
 				DBD02A7B19F5863500E0AC95 /* AudioToolbox.framework */,
 				DBD02A7C19F5863500E0AC95 /* AVFoundation.framework */,
@@ -6309,16 +6305,18 @@
 				B528D1A8913A051BDDC4FE37 /* libPods-test.a */,
 				C7B45F61E6B2831D5E9459C3 /* libPods-victorious-test.a */,
 				A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */,
+				A713F955EEE0E7D467CAE0E1 /* libPods-VictoriousCommon.a */,
+				693498EEB4388179C36EF74A /* libPods-VictoriousCommonOSX.a */,
 				662F0867152745B2B2F08301 /* libPods.a */,
 				03610583194140AA0069D49E /* libsqlite3.dylib */,
 				038B7F9819DB8EBC00F739DF /* libz.dylib */,
 				DBAD890519F5BB9000D678A0 /* MapKit.framework */,
 				DBAD890719F5BB9C00D678A0 /* MediaPlayer.framework */,
+				A75A639C1B58858500EC4D53 /* MobileCoreServices.framework */,
 				03610589194154F40069D49E /* SystemConfiguration.framework */,
 				BE171D7D1868BE64004E5202 /* UIKit.framework */,
+				A7F8DD621A0B1A8B00F82256 /* WebKit.framework */,
 				BE171D971868BE64004E5202 /* XCTest.framework */,
-				A713F955EEE0E7D467CAE0E1 /* libPods-VictoriousCommon.a */,
-				693498EEB4388179C36EF74A /* libPods-VictoriousCommonOSX.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
