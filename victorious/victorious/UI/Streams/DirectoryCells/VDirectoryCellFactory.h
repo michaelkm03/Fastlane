@@ -11,9 +11,14 @@
 
 @class VDirectoryCollectionFlowLayout;
 
+/**
+    Classes that conform to this protocol will provide information
+        regarding the spacing and layout of directory cells.
+ */
 @protocol VDirectoryCellFactory <NSObject, VStreamCellFactory>
 
-@required
+NS_ASSUME_NONNULL_BEGIN
+
 /**
     @return A float representing the minimum space between cells
  */
@@ -22,25 +27,8 @@
 /**
     @return The collection view flow layout that will be used by the VDirectoryViewController's collection view
  */
-- (VDirectoryCollectionFlowLayout *)collectionViewFlowLayout;
+- (VDirectoryCollectionFlowLayout *__nullable)collectionViewFlowLayout;
 
-@optional
-
-/**
-    Called by VDirectoryViewController in collectionView:willDisplayCell:atIndexPath.
-    Use this to adjust cell properties right before display.
- 
-    @param cell The collection view cell that is about to be displayed
-    @param collectionView The collection view that is about to display the cell
-    @param indexPath The index path where the cell will be displayed
- */
-- (void)prepareCell:(UICollectionViewCell *)cell forDisplayInCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath;
-
-/**
-    Called by VDirectoryViewController in scrollViewDidScroll:
- 
-    @param collectionView The collection view that has just scrolled
- */
-- (void)collectionViewDidScroll:(UICollectionView *)collectionView;
+NS_ASSUME_NONNULL_END
 
 @end

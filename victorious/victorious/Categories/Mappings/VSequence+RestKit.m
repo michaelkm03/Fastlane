@@ -53,6 +53,8 @@
               @"preview.data"           : VSelectorName(previewData),
               @"stream_content_type" :   VSelectorName(streamContentType),
               @"has_reposted"   :   VSelectorName(hasReposted),
+              @"type"                :   VSelectorName(itemType),
+              @"subtype"             :   VSelectorName(itemSubType),
     };
 }
 

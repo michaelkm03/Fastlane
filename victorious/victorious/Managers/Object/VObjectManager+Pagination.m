@@ -454,7 +454,7 @@ static const NSInteger kUserSearchResultLimit = 20;
         NSString *apiPath = stream.apiPath;
         
         //Strip the marqueeItems and streamItems from the newly returned stream
-        BOOL marqueeNeedsUpdate = NO;
+        BOOL marqueeNeedsUpdate = marqueeItems.count != fullStream.marqueeItems.count;
         for (VStreamItem *marqueeItem in fullStream.marqueeItems )
         {
             VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:marqueeItem.objectID];
