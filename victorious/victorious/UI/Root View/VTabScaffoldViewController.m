@@ -8,11 +8,22 @@
 
 #import "VTabScaffoldViewController.h"
 
-// ViewControllers
+// ViewControllers + Presenters
 #import "VRootViewController.h"
+#import "VContentViewPresenter.h"
+#import "VContentViewFactory.h"
+#import "VNavigationDestinationContainerViewController.h"
+#import "VNavigationController.h"
+#import "VCreateSheetViewController.h"
 
 // Views + Helpers
 #import "UIView+AutoLayout.h"
+
+// Deep Links
+#import "VDeeplinkHandler.h"
+#import "VContentDeepLinkHandler.h"
+#import "VNavigationDestination.h"
+#import "VAuthorizationContextProvider.h"
 
 // Backgrounds
 #import "VSolidColorBackground.h"
@@ -20,6 +31,9 @@
 // Dependencies
 #import "VTabMenuShim.h"
 #import "VCoachmarkManager.h"
+
+// Etc
+#import "NSArray+VMap.h"
 
 // Swift Module
 #import "victorious-Swift.h"
@@ -32,10 +46,13 @@ NSString * const VTrackingWelcomeStartKey = @"welcome_start";
 NSString * const VTrackingWelcomeGetStartedTapKey = @"get_started_tap";
 NSString * const kMenuKey = @"menu";
 
-@interface VTabScaffoldViewController () <UITabBarControllerDelegate, VRootViewControllerContainedViewController>
+static const CGFloat kTabBarAnimationTimeInterval = 0.3;
+
+@interface VTabScaffoldViewController () <UITabBarControllerDelegate, VRootViewControllerContainedViewController, VDeeplinkSupporter>
 
 @property (nonatomic, strong) UINavigationController *rootNavigationController;
 @property (nonatomic, strong) UITabBarController *internalTabBarController;
+@property (nonatomic, strong) VNavigationDestinationContainerViewController *willSelectContainerViewController;
 
 @property (nonatomic, strong) VTabMenuShim *tabShim;
 
@@ -47,12 +64,18 @@ NSString * const kMenuKey = @"menu";
 
 @implementation VTabScaffoldViewController
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super initWithNibName:nil bundle:nil];
     if ( self != nil )
     {
         _internalTabBarController = [[UITabBarController alloc] init];
+        _internalTabBarController.delegate = self;
         _rootNavigationController = [[UINavigationController alloc] initWithRootViewController:_internalTabBarController];
         _dependencyManager = dependencyManager;
         _coachmarkManager = [[VCoachmarkManager alloc] initWithDependencyManager:_dependencyManager];
@@ -88,6 +111,10 @@ NSString * const kMenuKey = @"menu";
         self.internalTabBarController.tabBar.barTintColor = solidColorBackground.backgroundColor;
     }
     self.internalTabBarController.viewControllers = [self.tabShim wrappedNavigationDesinations];
+    
+    // Subscribe to notifications for showing and hiding tab bar
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideNotification:) name:kCreationSheetWillShow object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotification:) name:kCreationSheetWillHide object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -100,27 +127,194 @@ NSString * const kMenuKey = @"menu";
 
 - (void)showContentViewWithSequence:(id)sequence streamID:(NSString *)streamId commentId:(NSNumber *)commentID placeHolderImage:(UIImage *)placeholderImage
 {
-    
-}
-
-- (void)navigateToDestination:(id)navigationDestination animated:(BOOL)animated completion:(void(^)())completion
-{
-    
+    [VContentViewPresenter presentContentViewFromViewController:self
+                                          withDependencyManager:self.dependencyManager
+                                                    ForSequence:sequence
+                                                 inStreamWithID:streamId
+                                                      commentID:commentID
+                                               withPreviewImage:placeholderImage];
 }
 
 - (void)navigateToDestination:(id)navigationDestination animated:(BOOL)animated
 {
-    
+    [self navigateToDestination:navigationDestination
+                       animated:animated
+                     completion:nil];
+}
+
+- (void)navigateToDestination:(id)navigationDestination
+                     animated:(BOOL)animated
+                   completion:(void(^)())completion
+{
+    [self checkAuthorizationOnNavigationDestination:navigationDestination
+                                         completion:^(BOOL shouldNavigate)
+     {
+         if (shouldNavigate)
+         {
+             [self _navigateToDestination:navigationDestination
+                                 animated:animated
+                               completion:completion];
+         }
+     }];
+}
+
+- (void)checkAuthorizationOnNavigationDestination:(id)navigationDestination
+                                       completion:(void(^)(BOOL shouldNavigate))completion
+{
+    NSAssert(completion != nil, @"We need a completion to inform about the authorization check success!");
+
+    if ([navigationDestination conformsToProtocol:@protocol(VAuthorizationContextProvider)])
+    {
+        id <VAuthorizationContextProvider> authorizationContextProvider = (id <VAuthorizationContextProvider>)navigationDestination;
+        BOOL requiresAuthoriztion = [authorizationContextProvider requiresAuthorization];
+        if (requiresAuthoriztion)
+        {
+            VAuthorizationContext context = [authorizationContextProvider authorizationContext];
+            VAuthorizedAction *authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                                 dependencyManager:self.dependencyManager];
+            [authorizedAction performFromViewController:self context:context completion:^(BOOL authorized)
+             {
+                 completion(authorized);
+             }];
+        }
+        else
+        {
+            completion(YES);
+        }
+    }
+    else
+    {
+        completion(YES);
+    }
+}
+
+- (void)_navigateToDestination:(id)navigationDestination
+                      animated:(BOOL)animated
+                    completion:(void(^)())completion
+{
+    UIViewController *alternateDestination = nil;
+    BOOL shouldNavigateToAlternateDestination = NO;
+
+    if ([navigationDestination respondsToSelector:@selector(shouldNavigateWithAlternateDestination:)])
+    {
+        shouldNavigateToAlternateDestination = [navigationDestination shouldNavigateWithAlternateDestination:&alternateDestination];
+        if (!shouldNavigateToAlternateDestination)
+        {
+            if (completion != nil)
+            {
+                completion();
+            }
+            return;
+        }
+    }
+
+    if ( shouldNavigateToAlternateDestination && alternateDestination != nil )
+    {
+        [self navigateToDestination:alternateDestination animated:animated completion:completion];
+    }
+    else
+    {
+        NSAssert([navigationDestination isKindOfClass:[UIViewController class]], @"non-UIViewController specified as destination for navigation");
+        [self displayResultOfNavigation:navigationDestination animated:animated];
+
+        if ( completion != nil )
+        {
+            completion();
+        }
+    }
 }
 
 - (void)displayResultOfNavigation:(UIViewController *)viewController animated:(BOOL)animated
 {
+    if ( self.presentedViewController != nil )
+    {
+        [self dismissViewControllerAnimated:NO completion:nil];
+    }
     
+    if ( self.willSelectContainerViewController == nil )
+    {
+        for ( VNavigationDestinationContainerViewController *containerViewController in self.internalTabBarController.viewControllers )
+        {
+            if ( [containerViewController isKindOfClass:[VNavigationDestinationContainerViewController class]] )
+            {
+                const BOOL isViewControllerTabDestination = containerViewController.navigationDestination == (id<VNavigationDestination>)viewController;
+                const BOOL isAlternateViewControllerTabDestination  = [containerViewController.navigationDestination respondsToSelector:@selector(alternateViewController)] &&
+                viewController == [containerViewController.navigationDestination alternateViewController];
+                
+                if ( isAlternateViewControllerTabDestination || isViewControllerTabDestination )
+                {
+                    self.willSelectContainerViewController = containerViewController;
+                    break;
+                }
+            }
+        }
+    }
+    
+    if (self.willSelectContainerViewController != nil)
+    {
+        VNavigationController *navigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
+        if ( ![navigationController.innerNavigationController.viewControllers containsObject:viewController] )
+        {
+            if (self.willSelectContainerViewController.containedViewController == nil)
+            {
+                [navigationController.innerNavigationController pushViewController:viewController animated:NO];
+                [self.willSelectContainerViewController setContainedViewController:navigationController];
+            }
+            [self.internalTabBarController setSelectedViewController:self.willSelectContainerViewController];
+            [self setNeedsStatusBarAppearanceUpdate];
+            self.willSelectContainerViewController = nil;
+        }
+    }
+    else if ( [self.internalTabBarController.selectedViewController isKindOfClass:[VNavigationDestinationContainerViewController class]] )
+    {
+        VNavigationDestinationContainerViewController *containerViewController = (VNavigationDestinationContainerViewController *)self.internalTabBarController.selectedViewController;
+        if ( [containerViewController.containedViewController isKindOfClass:[VNavigationController class]] )
+        {
+            VNavigationController *navigationController = (VNavigationController *)containerViewController.containedViewController;
+            if ( ![navigationController.innerNavigationController.viewControllers containsObject:viewController] )
+            {
+                [navigationController.innerNavigationController pushViewController:viewController animated:animated];
+            }
+        }
+    }
 }
 
 - (void)showWebBrowserWithURL:(NSURL *)URL
 {
-    
+    VContentViewFactory *contentViewFactory = [self.dependencyManager contentViewFactory];
+    UIViewController *contentView = [contentViewFactory webContentViewControllerWithURL:URL];
+    if ( contentView != nil )
+    {
+        if ( self.presentedViewController )
+        {
+            [self dismissViewControllerAnimated:NO completion:nil];
+        }
+        [self presentViewController:contentView animated:YES completion:nil];
+    }
+}
+
+#pragma mark - VDeeplinkSupporter
+
+- (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url
+{
+    return [[VContentDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager];
+}
+
+#pragma mark - Navigation
+
+- (NSArray *)navigationDestinations
+{
+    return [self.internalTabBarController.viewControllers v_map:^id(VNavigationDestinationContainerViewController *container)
+            {
+                if ( [container isKindOfClass:[VNavigationDestinationContainerViewController class]] )
+                {
+                    return container.navigationDestination;
+                }
+                else
+                {
+                    return container;
+                }
+            }];
 }
 
 #pragma mark - First Launch Operations
@@ -165,6 +359,56 @@ NSString * const kMenuKey = @"menu";
 }
 
 #pragma mark - UITabBarControllerDelegate
+
+- (BOOL)tabBarController:(UITabBarController *)tabBarController
+shouldSelectViewController:(VNavigationDestinationContainerViewController *)viewController
+{
+    if (viewController == tabBarController.selectedViewController)
+    {
+        if ([viewController conformsToProtocol:@protocol(VTabMenuContainedViewControllerNavigation)])
+        {
+            [(id <VTabMenuContainedViewControllerNavigation>)viewController reselected];
+        }
+        return NO;
+    }
+    NSInteger index = [tabBarController.viewControllers indexOfObject:viewController];
+    if ( index != NSNotFound )
+    {
+        [self.tabShim willNavigateToIndex:index];
+    }
+    
+    self.willSelectContainerViewController = viewController;
+    [self navigateToDestination:viewController.navigationDestination animated:YES];
+    return NO;
+}
+
+#pragma mark - Notifications
+
+- (void)hideNotification:(NSNotification *)notification
+{
+    [self hideTabBarAnimated:YES];
+}
+
+- (void)showNotification:(NSNotification *)notification
+{
+    [self showTabBarAnimated:YES];
+}
+
+#pragma mark - Animations
+
+- (void)showTabBarAnimated:(BOOL)animated
+{
+    [UIView animateWithDuration:animated ? kTabBarAnimationTimeInterval : 0 animations:^{
+        self.internalTabBarController.tabBar.transform = CGAffineTransformIdentity;
+    }];
+}
+
+- (void)hideTabBarAnimated:(BOOL)animated
+{
+    [UIView animateWithDuration:animated ? kTabBarAnimationTimeInterval : 0 animations:^{
+        self.internalTabBarController.tabBar.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight(self.internalTabBarController.tabBar.bounds));
+    }];
+}
 
 @end
 
