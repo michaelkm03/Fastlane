@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import VictoriousCommon
 
 /// Provides a command-line interface to instantiating and running an instance of VTemplateDownloader
 class TemplateDownloadCLI: NSObject, VTemplateDownloadOperationDelegate {

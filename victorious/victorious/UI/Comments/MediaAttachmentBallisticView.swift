@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousCommon
 
 // A media attachment view used for showing emotive ballistics inline
 class MediaAttachmentBallisticView : MediaAttachmentView {
