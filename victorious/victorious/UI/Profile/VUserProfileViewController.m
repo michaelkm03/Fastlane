@@ -46,7 +46,6 @@
 #import "VFollowersDataSource.h"
 #import "VUserIsFollowingDataSource.h"
 #import "VDependencyManager+VTracking.h"
-#import "VFollowingHelper.h"
 #import "VFollowResponder.h"
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
@@ -75,7 +74,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 @property (nonatomic, strong) UIButton *retryProfileLoadButton;
 
 @property (nonatomic, strong) MBProgressHUD *retryHUD;
-@property (nonatomic, strong) VFollowingHelper *followingHelper;
 
 @end
 
@@ -85,9 +83,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     NSParameterAssert(dependencyManager != nil);
     VUserProfileViewController *viewController = [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
-    viewController.followingHelper = [[VFollowingHelper alloc]
-                                      initWithDependencyManager:dependencyManager
-                                      viewControllerToPresentOn:viewController];
     
     //Set the dependencyManager before setting the profile since setting the profile creates the profileHeaderViewController
     viewController.dependencyManager = dependencyManager;
@@ -111,9 +106,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     NSParameterAssert(dependencyManager != nil);
     VUserProfileViewController *viewController = [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
-    viewController.followingHelper = [[VFollowingHelper alloc]
-                                      initWithDependencyManager:dependencyManager
-                                      viewControllerToPresentOn:viewController];
 
     
     //Set the dependencyManager before setting the profile since setting the profile creates the profileHeaderViewController
@@ -994,7 +986,11 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)unfollowUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowEventCompletion)completion
 {
-    [self.followingHelper unfollowUser:user withAuthorizedBlock:authorizedBlock andCompletion:completion];
+    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:)
+                                                                      withSender:nil];
+    [followResponder unfollowUser:user
+              withAuthorizedBlock:authorizedBlock
+                    andCompletion:completion];
 }
 
 @end

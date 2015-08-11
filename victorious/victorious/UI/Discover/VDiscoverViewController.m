@@ -586,7 +586,6 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 - (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion fromViewController:(UIViewController *)viewControllerToPresentOn withScreenName:(NSString *)screenName
 {
-    NSLog(@"class: %@", self.class);
     NSString *sourceScreen = screenName?:VFollowSourceScreenDiscoverSuggestedUsers;
     id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
                                                                       withSender:nil];
