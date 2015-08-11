@@ -183,6 +183,14 @@
     [self.tableView setContentOffset:CGPointMake(0, MAX(self.tableView.contentSize.height + self.tableView.contentInset.top + self.tableView.contentInset.bottom - CGRectGetHeight(self.tableView.bounds), 0)) animated:animated];
 }
 
+#pragma mark - Property Accessors
+
+- (void)setFocusAreaInset:(UIEdgeInsets)focusAreaInset
+{
+    _focusAreaInset = focusAreaInset;
+    self.focusHelper.focusAreaInsets = focusAreaInset;
+}
+
 #pragma mark - VMessageTableDataDelegate methods
 
 - (UITableViewCell *)dataSource:(VMessageTableDataSource *)dataSource cellForMessage:(VMessage *)message atIndexPath:(NSIndexPath *)indexPath

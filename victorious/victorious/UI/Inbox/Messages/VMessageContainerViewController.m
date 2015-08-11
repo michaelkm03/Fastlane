@@ -31,7 +31,7 @@
 
 static const NSUInteger kCharacterLimit = 1024;
 
-@interface VMessageContainerViewController () <VAccessoryNavigationSource>
+@interface VMessageContainerViewController () <VAccessoryNavigationSource, VKeyboardBarDelegate>
 
 @property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
 
@@ -249,7 +249,18 @@ static const NSUInteger kCharacterLimit = 1024;
     }];
 }
 
-#pragma mark - I
+#pragma mark - Keyboard Delegate
+
+- (void)setKeyboardBarHeight:(CGFloat)keyboardBarHeight
+{
+    [super setKeyboardBarHeight:keyboardBarHeight];
+    
+    // Inset our focus area because of the keyboard bar
+    UIEdgeInsets focusAreaInsets = UIEdgeInsetsMake(0, 0, keyboardBarHeight, 0);
+    [(VMessageViewController *)self.conversationTableViewController setFocusAreaInset:focusAreaInsets];
+}
+
+#pragma mark - Authorization
 
 - (BOOL)requiresAuthorization
 {

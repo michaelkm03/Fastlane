@@ -57,8 +57,12 @@ class MediaAttachmentImageView : MediaAttachmentView {
     
     var previewImageURL: NSURL? {
         didSet {
-            self.imageView.alpha = 0
             if let previewURL = previewImageURL {
+                // Check if we're setting the same image
+                if (previewURL.isEqual(oldValue)) {
+                    return
+                }
+                self.imageView.alpha = 0
                 self.imageView.sd_setImageWithURL(previewURL, completed: {
                     (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) -> Void in
                     
