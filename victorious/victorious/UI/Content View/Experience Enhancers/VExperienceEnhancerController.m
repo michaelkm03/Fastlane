@@ -16,6 +16,14 @@
 #import "VVoteResult.h"
 #import "VTracking.h"
 #import "VPurchaseManager.h"
+#import "VDependencyManager.h"
+
+static NSString * const kCoolDownNotificationActionIdentifier   = @"com.getvictorious.coolDownNotificationActionIdentifier";
+static NSString * const kCoolDownNotificationIdentifier         = @"com.getvictorious.coolDownNotificationIdentifier";
+static NSString * const kCoolDownNotificationIdentifierKey      = @"com.getvictorious.coolDownNotificationIdentifierKey";
+
+static NSString * const kCooldownNotificationMessageKey         = @"ballistcCooldownMessage";
+static NSString * const kCooldownNotificationAlertActionKey     = @"ballistcCooldownAlertAction";
 
 @interface VExperienceEnhancerController ()
 
@@ -24,6 +32,7 @@
 @property (nonatomic, strong) NSArray *validExperienceEnhancers;
 @property (nonatomic, strong) NSMutableArray *collectedTrackingItems;
 @property (nonatomic, strong) VPurchaseManager *purchaseManager;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
@@ -43,33 +52,14 @@
     return cache;
 }
 
-- (instancetype)initWithSequence:(VSequence *)sequence voteTypes:(NSArray *)voteTypes
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
     if (self)
     {
-        self.sequence = sequence;
-        self.purchaseManager = [VPurchaseManager sharedInstance];
-        self.experienceEnhancers = [self createExperienceEnhancersFromVoteTypes:voteTypes sequence:self.sequence];
-        self.validExperienceEnhancers = self.experienceEnhancers;
+        _dependencyManager = dependencyManager;
         
-        // Pre-load any purchaseable products that might not have already been cached
-        // This is also called from VSettingsManager during app initialization, so ideally
-        // most of the purchaseable products are already fetched from the App Store.
-        // If not, we'll cache them now.
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(updateData)
-                                                     name:VPurchaseManagerProductsDidUpdateNotification
-                                                   object:nil];
-        NSSet *productIdentifiers = [VVoteType productIdentifiersFromVoteTypes:voteTypes];
-        
-        if ( !self.purchaseManager.isPurchaseRequestActive )
-        {
-            [self.purchaseManager fetchProductsWithIdentifiers:productIdentifiers success:nil failure:nil];
-        }
-        
-        [self.enhancerBar reloadData];
-        
+        [self setup];
     }
     return self;
 }
@@ -83,6 +73,34 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)setup
+{
+    self.sequence = [self.dependencyManager templateValueOfType:[VSequence class] forKey:@"sequence"];
+    NSArray *voteTypes = [self.dependencyManager templateValueOfType:[NSArray class] forKey:@"voteTypes"];
+    self.experienceEnhancers = [self createExperienceEnhancersFromVoteTypes:voteTypes sequence:self.sequence];
+    self.validExperienceEnhancers = self.experienceEnhancers;
+    
+    // Pre-load any purchaseable products that might not have already been cached
+    // This is also called from VSettingsManager during app initialization, so ideally
+    // most of the purchaseable products are already fetched from the App Store.
+    // If not, we'll cache them now.
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateData)
+                                                 name:VPurchaseManagerProductsDidUpdateNotification
+                                               object:nil];
+    NSSet *productIdentifiers = [VVoteType productIdentifiersFromVoteTypes:voteTypes];
+    
+    self.purchaseManager = [VPurchaseManager sharedInstance];
+    if ( !self.purchaseManager.isPurchaseRequestActive )
+    {
+        [self.purchaseManager fetchProductsWithIdentifiers:productIdentifiers success:nil failure:nil];
+    }
+    
+    [self.enhancerBar reloadData];
+    
+    [self registerCooldownNotificationType];
 }
 
 - (NSArray *)createExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes sequence:(VSequence *)sequence
@@ -244,6 +262,72 @@
     
     NSDictionary *finalParams = [NSDictionary dictionaryWithDictionary:params];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidVoteSequence parameters:finalParams];
+    
+    VExperienceEnhancer *lastExperienceEnhancerToCoolDown = [self lastExperienceEnhancerToCoolDown];
+    if ( lastExperienceEnhancerToCoolDown != nil )
+    {
+        [self scheduleNotificationWithFireData:lastExperienceEnhancerToCoolDown.cooldownDate];
+    }
+}
+
+- (VExperienceEnhancer *)lastExperienceEnhancerToCoolDown
+{
+    NSArray *sortedArray = [[self.experienceEnhancers filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL( VExperienceEnhancer *experienceEnhancer, NSDictionary *bindings) {
+        return experienceEnhancer.cooldownDate != nil;
+    }]] sortedArrayUsingComparator:^NSComparisonResult( VExperienceEnhancer *a, VExperienceEnhancer *b)
+                            {
+                                return [b.cooldownDate compare:a.cooldownDate];
+                            }];
+    VExperienceEnhancer *experienceEnhancer = sortedArray.firstObject;
+    if ( experienceEnhancer.cooldownDuration > 0.0 )
+    {
+        return experienceEnhancer;
+    }
+    return nil;
+}
+
+#pragma mark - Local notifications
+
+- (void)registerCooldownNotificationType
+{
+    UIUserNotificationType types = UIUserNotificationTypeBadge |  UIUserNotificationTypeAlert;
+    UIMutableUserNotificationAction *goAction = [[UIMutableUserNotificationAction alloc] init];
+    goAction.identifier = kCoolDownNotificationActionIdentifier;
+    goAction.activationMode = UIUserNotificationActivationModeForeground;
+    goAction.authenticationRequired = NO;
+    NSSet *categories = [NSSet setWithObject:goAction];
+    UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:categories];
+    [[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];
+}
+
+- (void)scheduleNotificationWithFireData:(NSDate *)fireDate
+{
+    // Cancel any previously scheduled notifications for emotive ballistic cooldowns
+    NSArray *scheduledNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
+    for ( UILocalNotification *notification in scheduledNotifications )
+    {
+        if ( [notification.userInfo[ kCoolDownNotificationIdentifierKey ] isEqualToString:kCoolDownNotificationIdentifier] )
+        {
+            [[UIApplication sharedApplication] cancelLocalNotification:notification];
+        }
+    }
+    
+    // Schedule a new notification
+    UILocalNotification *localNotif = [[UILocalNotification alloc] init];
+    NSString *message = [self.dependencyManager stringForKey:kCooldownNotificationMessageKey];
+    NSString *alertAction = [self.dependencyManager stringForKey:kCooldownNotificationAlertActionKey];
+    if ( localNotif != nil && message.length > 0 && alertAction.length > 0 )
+    {
+        localNotif.fireDate = fireDate;
+        localNotif.timeZone = [NSTimeZone defaultTimeZone];
+        localNotif.alertBody = message;
+        localNotif.alertAction = alertAction;
+        localNotif.soundName = UILocalNotificationDefaultSoundName;
+        localNotif.applicationIconBadgeNumber = 1;
+        localNotif.userInfo = @{ kCoolDownNotificationIdentifierKey : kCoolDownNotificationIdentifier };
+        
+        [[UIApplication sharedApplication] scheduleLocalNotification:localNotif];
+    }
 }
 
 @end
