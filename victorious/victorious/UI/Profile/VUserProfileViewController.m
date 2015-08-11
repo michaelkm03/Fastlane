@@ -500,7 +500,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         self.profileHeaderViewController.loading = YES;
         [self unfollowUser:self.user withAuthorizedBlock:nil andCompletion:^(VUser *userActedOn) {
             self.profileHeaderViewController.loading = NO;
-            self.profileHeaderViewController.state = VUserProfileHeaderStateNotFollowingUser;
+            [self reloadUserFollowingRelationship];
         }];
     }
     else if ( self.profileHeaderViewController.state == VUserProfileHeaderStateNotFollowingUser )
@@ -512,7 +512,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
            andCompletion:^(VUser *userActedOn)
         {
             self.profileHeaderViewController.loading = NO;
-            self.profileHeaderViewController.state = VUserProfileHeaderStateFollowingUser;
+            [self reloadUserFollowingRelationship];
         }
       fromViewController:self
           withScreenName:nil];
