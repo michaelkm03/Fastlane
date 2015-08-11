@@ -1702,20 +1702,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
                  // Update the cell's comment to show the new text
                  cell.comment = comment;
                  
-                 // Try to reload the cell without reloading the whole section
-                 NSIndexPath *indexPathToInvalidate = [self.contentCollectionView indexPathForCell:cell];
-                 if ( indexPathToInvalidate != nil && NO )
-                 {
-                     [self.contentCollectionView performBatchUpdates:^void
-                      {
-                          [self.contentCollectionView reloadItemsAtIndexPaths:@[ indexPathToInvalidate ]];
-                      }
-                                                          completion:nil];
-                 }
-                 else
-                 {
-                     [self.contentCollectionView reloadSections:[NSIndexSet indexSetWithIndex:VContentViewSectionAllComments] ];
-                 }
+                 [self.contentCollectionView reloadSections:[NSIndexSet indexSetWithIndex:VContentViewSectionAllComments]];
                  
                  *stop = YES;
              }
