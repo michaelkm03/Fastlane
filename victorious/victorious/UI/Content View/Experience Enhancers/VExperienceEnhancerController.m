@@ -17,13 +17,10 @@
 #import "VTracking.h"
 #import "VPurchaseManager.h"
 #import "VDependencyManager.h"
+#import "VCooldownNotification.h"
 
-static NSString * const kCoolDownNotificationActionIdentifier   = @"com.getvictorious.coolDownNotificationActionIdentifier";
-static NSString * const kCoolDownNotificationIdentifier         = @"com.getvictorious.coolDownNotificationIdentifier";
-static NSString * const kCoolDownNotificationIdentifierKey      = @"com.getvictorious.coolDownNotificationIdentifierKey";
-
-static NSString * const kCooldownNotificationMessageKey         = @"ballistcCooldownMessage";
-static NSString * const kCooldownNotificationAlertActionKey     = @"ballistcCooldownAlertAction";
+static NSString * const kCooldownNotificationMessageKey         = @"ballisticsCooledPrompt";
+static NSString * const kCooldownNotificationAlertActionKey     = @"ballisticsCooledAction";
 
 @interface VExperienceEnhancerController ()
 
@@ -292,7 +289,7 @@ static NSString * const kCooldownNotificationAlertActionKey     = @"ballistcCool
 {
     UIUserNotificationType types = UIUserNotificationTypeBadge |  UIUserNotificationTypeAlert;
     UIMutableUserNotificationAction *goAction = [[UIMutableUserNotificationAction alloc] init];
-    goAction.identifier = kCoolDownNotificationActionIdentifier;
+    goAction.identifier = VCoolDownNotificationActionIdentifier;
     goAction.activationMode = UIUserNotificationActivationModeForeground;
     goAction.authenticationRequired = NO;
     NSSet *categories = [NSSet setWithObject:goAction];
@@ -306,27 +303,30 @@ static NSString * const kCooldownNotificationAlertActionKey     = @"ballistcCool
     NSArray *scheduledNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
     for ( UILocalNotification *notification in scheduledNotifications )
     {
-        if ( [notification.userInfo[ kCoolDownNotificationIdentifierKey ] isEqualToString:kCoolDownNotificationIdentifier] )
+        if ( [notification.userInfo[ VCoolDownNotificationIdentifierKey ] isEqualToString:VCoolDownNotificationIdentifier] )
         {
             [[UIApplication sharedApplication] cancelLocalNotification:notification];
         }
     }
     
     // Schedule a new notification
-    UILocalNotification *localNotif = [[UILocalNotification alloc] init];
-    NSString *message = [self.dependencyManager stringForKey:kCooldownNotificationMessageKey];
-    NSString *alertAction = [self.dependencyManager stringForKey:kCooldownNotificationAlertActionKey];
-    if ( localNotif != nil && message.length > 0 && alertAction.length > 0 )
+    UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+#warning Hardcoded test values:
+    NSString *message = @"MESSAGE"; //[self.dependencyManager stringForKey:kCooldownNotificationMessageKey];
+    NSString *alertAction = @"ALERT"; //[self.dependencyManager stringForKey:kCooldownNotificationAlertActionKey];
+    
+    if ( localNotification != nil && message.length > 0 && alertAction.length > 0 )
     {
-        localNotif.fireDate = fireDate;
-        localNotif.timeZone = [NSTimeZone defaultTimeZone];
-        localNotif.alertBody = message;
-        localNotif.alertAction = alertAction;
-        localNotif.soundName = UILocalNotificationDefaultSoundName;
-        localNotif.applicationIconBadgeNumber = 1;
-        localNotif.userInfo = @{ kCoolDownNotificationIdentifierKey : kCoolDownNotificationIdentifier };
+        localNotification.fireDate = fireDate;
+        localNotification.timeZone = [NSTimeZone defaultTimeZone];
+        localNotification.alertBody = message;
+        localNotification.alertAction = alertAction;
+        localNotification.soundName = UILocalNotificationDefaultSoundName;
+        localNotification.applicationIconBadgeNumber = 1;
+        localNotification.userInfo = @{ VCoolDownNotificationIdentifierKey : VCoolDownNotificationIdentifier,
+                                        VCoolDownNotificationBadgeCountKey : @(localNotification.applicationIconBadgeNumber) };
         
-        [[UIApplication sharedApplication] scheduleLocalNotification:localNotif];
+        [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
     }
 }
 

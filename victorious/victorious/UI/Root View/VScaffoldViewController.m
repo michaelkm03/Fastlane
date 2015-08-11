@@ -9,7 +9,6 @@
 #import <MBProgressHUD/MBProgressHUD.h>
 
 #import "VContentViewFactory.h"
-#import "VDeeplinkHandler.h"
 #import "VNavigationDestination.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Pagination.h"
@@ -40,7 +39,7 @@ NSString * const VTrackingWelcomeGetStartedTapKey = @"get_started_tap";
 
 static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
 
-@interface VScaffoldViewController () <VLightweightContentViewControllerDelegate, VDeeplinkSupporter, VRootViewControllerContainedViewController>
+@interface VScaffoldViewController () <VLightweightContentViewControllerDelegate, VRootViewControllerContainedViewController>
 
 @property (nonatomic, assign, readwrite) BOOL hasBeenShown;
 @property (nonatomic, assign) BOOL isForcedRegistrationComplete;
@@ -233,7 +232,12 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
 
 - (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url
 {
-    return [[VContentDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager];
+    VContentDeepLinkHandler *contentDeepLinkHandler = [[VContentDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager];
+    if ( [contentDeepLinkHandler canDisplayContentForDeeplinkURL:url] )
+    {
+        return contentDeepLinkHandler;
+    }
+    return nil;
 }
 
 #pragma mark - Navigation

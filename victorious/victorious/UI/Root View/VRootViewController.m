@@ -34,6 +34,7 @@
 #import "VHashtagResponder.h"
 #import "VFollowResponder.h"
 #import "VURLSelectionResponder.h"
+#import "VCooldownNotification.h"
 
 NSString * const VApplicationDidBecomeActiveNotification = @"VApplicationDidBecomeActiveNotification";
 
@@ -387,6 +388,18 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     else if ( [deepLink.host isEqualToString:VInboxViewControllerDeeplinkHostComponent] )
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:VInboxViewControllerInboxPushReceivedNotification object:self];
+    }
+}
+
+- (void)handleLocalNotification:(UILocalNotification *)localNotification
+{
+    NSString *identifier = localNotification.userInfo[ VCoolDownNotificationIdentifierKey ];
+    if ( [identifier isEqualToString:VCoolDownNotificationIdentifier] )
+    {
+        NSNumber *badgeAddition = localNotification.userInfo[ VCoolDownNotificationBadgeCountKey ];
+        NSInteger decrementedBadgeNumber = localNotification.applicationIconBadgeNumber - badgeAddition.integerValue;
+        [UIApplication sharedApplication].applicationIconBadgeNumber = decrementedBadgeNumber;
+        [[VRootViewController rootViewController] openURL:[NSURL URLWithString:@"menu/0"]];
     }
 }
 
