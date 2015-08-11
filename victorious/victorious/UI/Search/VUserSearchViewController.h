@@ -21,7 +21,7 @@
 @interface VUserSearchViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 /**
- Set by the view controller that presents this VUserSearchViewController instance
+ Possible viewcontrollers who present this VUserSearchViewController.
  */
 typedef NS_ENUM(NSInteger, VUserSearchPresenter)
 {
