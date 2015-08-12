@@ -11,7 +11,7 @@
 #import "VShareItemCollectionViewCell.h"
 #import "VShareMenuItem.h"
 
-static CGFloat const kPreferredRowHeight = 34.0f;
+static CGFloat const kPreferredRowHeight = 31.0f;
 static CGFloat const kInterItemSpace = 5.0f;
 static NSUInteger const kNumberOfColumns = 2;
 static UIEdgeInsets const kDefaultContentInsets = { 4, 10, 12, 10 };
