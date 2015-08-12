@@ -197,6 +197,14 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     if ([self.delegate respondsToSelector:@selector(loadingViewController:didFinishLoadingWithDependencyManager:)])
     {
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
+        
+#warning Test only:
+        NSArray *notifications = @[@{ @"identifier" : @"ballisticsCooldown",
+                                      @"message" : @"Emotive ballistics are ready!",
+                                      @"action" : @"Throw",
+                                      @"deeplinkUrl" : @"vthisapp://menu/0",
+                                      @"badgeNumber" : @1 }];
+        [templateDecorator setTemplateValue:notifications forKeyPath:@"scaffold/localNotifications"];
 
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate

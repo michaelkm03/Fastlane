@@ -321,7 +321,7 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
 {
     if ( [self canDisplayContentForDeeplinkURL:url] )
     {
-        NSInteger index = [[url v_pathComponentAtIndex:1] integerValue];
+        NSInteger index = [[url v_firstNonSlashPathComponent] integerValue];
         UIViewController *viewController = self.internalTabBarViewController.viewControllers[ index ];
         [self.internalTabBarViewController setSelectedViewController:viewController];
         [self setNeedsStatusBarAppearanceUpdate];
@@ -330,8 +330,8 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
 
 - (BOOL)canDisplayContentForDeeplinkURL:(NSURL *)url
 {
-    const BOOL isHostValid = [[url v_firstNonSlashPathComponent] isEqualToString:kMenuDeeplinkURLHostComponent];
-    NSString *pathComponent = [url v_pathComponentAtIndex:1];
+    const BOOL isHostValid = [url.host isEqualToString:kMenuDeeplinkURLHostComponent];
+    NSString *pathComponent = [url v_firstNonSlashPathComponent];
     if ( pathComponent == nil )
     {
         return NO;

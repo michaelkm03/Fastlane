@@ -34,7 +34,7 @@
 #import "VHashtagResponder.h"
 #import "VFollowResponder.h"
 #import "VURLSelectionResponder.h"
-#import "VCooldownNotification.h"
+#import "victorious-Swift.h"
 
 NSString * const VApplicationDidBecomeActiveNotification = @"VApplicationDidBecomeActiveNotification";
 
@@ -393,13 +393,11 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (void)handleLocalNotification:(UILocalNotification *)localNotification
 {
-    NSString *identifier = localNotification.userInfo[ VCoolDownNotificationIdentifierKey ];
-    if ( [identifier isEqualToString:VCoolDownNotificationIdentifier] )
+    NSString *deeplinkUrlString = localNotification.userInfo[ [LocalNotificationScheduler deplinkURLKey] ];
+    if ( deeplinkUrlString != nil && deeplinkUrlString.length > 0 )
     {
-        NSNumber *badgeAddition = localNotification.userInfo[ VCoolDownNotificationBadgeCountKey ];
-        NSInteger decrementedBadgeNumber = localNotification.applicationIconBadgeNumber - badgeAddition.integerValue;
-        [UIApplication sharedApplication].applicationIconBadgeNumber = decrementedBadgeNumber;
-        [[VRootViewController rootViewController] openURL:[NSURL URLWithString:@"menu/0"]];
+        [UIApplication sharedApplication].applicationIconBadgeNumber -= localNotification.applicationIconBadgeNumber;
+        [[VRootViewController rootViewController] openURL:[NSURL URLWithString:deeplinkUrlString]];
     }
 }
 

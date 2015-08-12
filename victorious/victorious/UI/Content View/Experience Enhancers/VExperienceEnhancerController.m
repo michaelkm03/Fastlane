@@ -17,10 +17,13 @@
 #import "VTracking.h"
 #import "VPurchaseManager.h"
 #import "VDependencyManager.h"
-#import "VCooldownNotification.h"
+#import "victorious-Swift.h"
 
 static NSString * const kCooldownNotificationMessageKey = @"ballisticsCooledPrompt";
 static NSString * const kCooldownNotificationAlertActionKey = @"ballisticsCooledAction";
+static NSString * const kCooldownNotificationDeeplinkURLKey = @"ballisticsCooledDeeplinkUrl";
+
+static NSString * const kCooldownNotificationIdentifier = @"com.getvictorious.ballisticsCooldown";
 
 @interface VExperienceEnhancerController ()
 
@@ -30,6 +33,7 @@ static NSString * const kCooldownNotificationAlertActionKey = @"ballisticsCooled
 @property (nonatomic, strong) NSMutableArray *collectedTrackingItems;
 @property (nonatomic, strong) VPurchaseManager *purchaseManager;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong) LocalNotificationScheduler *localNotificationScheduler;
 
 @end
 
@@ -52,7 +56,7 @@ static NSString * const kCooldownNotificationAlertActionKey = @"ballisticsCooled
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     self = [super init];
-    if (self)
+    if ( self != nil )
     {
         _dependencyManager = dependencyManager;
         
@@ -97,7 +101,7 @@ static NSString * const kCooldownNotificationAlertActionKey = @"ballisticsCooled
     
     [self.enhancerBar reloadData];
     
-    [self registerCooldownNotificationType];
+    self.localNotificationScheduler = [[LocalNotificationScheduler alloc] initWithDependencyManager:self.dependencyManager];
 }
 
 - (NSArray *)createExperienceEnhancersFromVoteTypes:(NSArray *)voteTypes sequence:(VSequence *)sequence
@@ -263,63 +267,31 @@ static NSString * const kCooldownNotificationAlertActionKey = @"ballisticsCooled
     VExperienceEnhancer *lastExperienceEnhancerToCoolDown = [self lastExperienceEnhancerToCoolDown];
     if ( lastExperienceEnhancerToCoolDown != nil )
     {
-        [self scheduleNotificationWithFireData:lastExperienceEnhancerToCoolDown.cooldownDate];
+        // Schedule a new notification
+        NSDate *fireDate = lastExperienceEnhancerToCoolDown.cooldownDate;
+        NSString *identifier = [VDependencyManager localNotificationBallisticsCooldownIdentifier];
+        [self.localNotificationScheduler unscheduleNotification:identifier];
+        [self.localNotificationScheduler scheduleNotification:identifier fireDate:fireDate];
     }
 }
 
 - (VExperienceEnhancer *)lastExperienceEnhancerToCoolDown
 {
-    NSArray *sortedArray = [[self.experienceEnhancers filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL( VExperienceEnhancer *experienceEnhancer, NSDictionary *bindings) {
-        return experienceEnhancer.cooldownDate != nil;
-    }]] sortedArrayUsingComparator:^NSComparisonResult( VExperienceEnhancer *a, VExperienceEnhancer *b)
-                            {
-                                return [b.cooldownDate compare:a.cooldownDate];
-                            }];
-    VExperienceEnhancer *experienceEnhancer = sortedArray.firstObject;
+    NSPredicate *filterPredicate = [NSPredicate predicateWithBlock:^BOOL( VExperienceEnhancer *experienceEnhancer, NSDictionary *bindings)
+                                    {
+                                        return experienceEnhancer.cooldownDate != nil;
+                                    }];
+    NSArray *filtered = [self.experienceEnhancers filteredArrayUsingPredicate:filterPredicate];
+    NSArray *sorted = [filtered sortedArrayUsingComparator:^NSComparisonResult( VExperienceEnhancer *a, VExperienceEnhancer *b)
+                       {
+                           return [b.cooldownDate compare:a.cooldownDate];
+                       }];
+    VExperienceEnhancer *experienceEnhancer = sorted.firstObject;
     if ( experienceEnhancer.cooldownDuration > 0.0 )
     {
         return experienceEnhancer;
     }
     return nil;
-}
-
-#pragma mark - Local notifications
-
-- (void)registerCooldownNotificationType
-{
-    UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeAlert;
-    UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
-    [[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];
-}
-
-- (void)scheduleNotificationWithFireData:(NSDate *)fireDate
-{
-    // Cancel any previously scheduled notifications for emotive ballistic cooldowns
-    NSArray *scheduledNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
-    for ( UILocalNotification *notification in scheduledNotifications )
-    {
-        if ( [notification.userInfo[ VCoolDownNotificationIdentifierKey ] isEqualToString:VCoolDownNotificationIdentifier] )
-        {
-            [[UIApplication sharedApplication] cancelLocalNotification:notification];
-        }
-    }
-    
-    // Schedule a new notification
-    UILocalNotification *localNotification = [[UILocalNotification alloc] init];
-    NSString *message = [self.dependencyManager stringForKey:kCooldownNotificationMessageKey];
-    NSString *alertAction = [self.dependencyManager stringForKey:kCooldownNotificationAlertActionKey];
-    if ( localNotification != nil && message.length > 0 )
-    {
-        localNotification.fireDate = fireDate;
-        localNotification.timeZone = [NSTimeZone defaultTimeZone];
-        localNotification.alertBody = message;
-        localNotification.alertAction = alertAction;
-        localNotification.soundName = UILocalNotificationDefaultSoundName;
-        localNotification.applicationIconBadgeNumber = 1;
-        localNotification.userInfo = @{ VCoolDownNotificationIdentifierKey : VCoolDownNotificationIdentifier,
-                                        VCoolDownNotificationBadgeCountKey : @(localNotification.applicationIconBadgeNumber) };
-        [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
-    }
 }
 
 @end
