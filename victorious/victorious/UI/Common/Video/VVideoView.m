@@ -247,9 +247,9 @@ static void *kPlaybackBufferEmpty = &kPlaybackBufferEmpty;
     }
     else if (context == kPlaybackBufferEmpty)
     {
-        if ([self.delegate respondsToSelector:@selector(videoViewDidStopBuffering:)])
+        if ([self.delegate respondsToSelector:@selector(videoViewDidStartBuffering:)])
         {
-            [self.delegate videoViewDidStopBuffering:self];
+            [self.delegate videoViewDidStartBuffering:self];
         }
     }
 }
