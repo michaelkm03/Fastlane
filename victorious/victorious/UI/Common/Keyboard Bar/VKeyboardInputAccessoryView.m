@@ -27,11 +27,16 @@ static const CGFloat kMaxTextViewHeight = 150.0f;
 static const CGFloat kMinTextViewHeight = 40.0f;
 static const CGFloat kAttachmentBarHeight = 50.0f;
 
+static NSString * const kCommentPrompt = @"commentPrompt";
+static NSString * const kConfirmationText = @"commentConfirmationText";
+
 @interface VKeyboardInputAccessoryView () <UITextViewDelegate>
 
 @property (nonatomic, assign) BOOL selectedMedia;
 @property (nonatomic, strong) VUserTaggingTextStorage *textStorage;
 @property (nonatomic, assign) CGSize lastContentSize;
+@property (nonatomic, strong) NSString *placeholderText;
+
 
 // Views
 @property (nonatomic, strong) IBOutlet UIButton *attachmentsButton;
@@ -88,6 +93,9 @@ static const CGFloat kAttachmentBarHeight = 50.0f;
         }
         [self.sendButton setTitleColor:[_dependencyManager colorForKey:VDependencyManagerLinkColorKey]
                               forState:UIControlStateNormal];
+        [self.sendButton setTitle:[_dependencyManager stringForKey:kConfirmationText]
+                         forState:UIControlStateNormal];
+        self.placeholderText = [_dependencyManager stringForKey:kCommentPrompt];
     }
 }
 

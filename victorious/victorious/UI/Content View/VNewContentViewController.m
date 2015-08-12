@@ -417,7 +417,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     if (self.viewModel.sequence.permissions.canComment )
     {
-        VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryViewWithDependencyManager:self.dependencyManager];
+        NSDictionary *commentBarConfig = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:@"commentBar"];
+        VDependencyManager *commentBarDependencyManager = [[VDependencyManager alloc] initWithParentManager:self.dependencyManager configuration:commentBarConfig dictionaryOfClassesByTemplateName:nil];
+        VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryViewWithDependencyManager:commentBarDependencyManager];
         inputAccessoryView.translatesAutoresizingMaskIntoConstraints = NO;
         inputAccessoryView.delegate = self;
         inputAccessoryView.accessibilityIdentifier = VAutomationIdentifierContentViewCommentBar;
@@ -498,15 +500,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             VBallot favoredBallot = (self.viewModel.favoredAnswer == VPollAnswerA) ? VBallotA : VBallotB;
             [self.ballotCell setVotingDisabledWithFavoredBallot:favoredBallot animated:YES];
         }
-    }
-
-    if (self.viewModel.type == VContentViewTypeVideo)
-    {
-        self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:self.videoCell.currentTime]];
-    }
-    else
-    {
-        self.textEntryView.placeholderText = NSLocalizedString(@"LeaveAComment", @"");
     }
     
     if ( self.navigationController != nil )
@@ -1310,11 +1303,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)videoCell:(VContentVideoCell *)videoCell didPlayToTime:(CMTime)time totalTime:(CMTime)totalTime
 {
-    if (!self.enteringRealTimeComment && self.viewModel.type == VContentViewTypeVideo)
-    {
-        self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
-    }
-
     self.viewModel.realTimeCommentsViewModel.currentTime = time;
 }
 
@@ -1349,11 +1337,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell withTotalTime:(CMTime)totalTime
 {
-    if (!self.enteringRealTimeComment)
-    {
-        self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:totalTime]];
-    }
-    
     if (self.viewModel.videoViewModel.endCardViewModel != nil)
     {
         [UIView animateWithDuration:0.5f

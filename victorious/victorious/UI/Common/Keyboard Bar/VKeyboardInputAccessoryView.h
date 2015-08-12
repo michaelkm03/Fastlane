@@ -91,11 +91,6 @@ typedef NS_ENUM(NSInteger, VKeyboardBarAttachmentType)
 @property (nonatomic, readonly) NSString *composedText;
 
 /**
- *  The placeholder text to display when the user has not entered any text in the text view.
- */
-@property (nonatomic, strong) NSString *placeholderText;
-
-/**
  *  Use this property to override the default behavior of the attachments bar and force it to hidden.
  */
 @property (nonatomic, assign, getter=isAttachmentsBarHidden) BOOL attachmentsBarHidden;
