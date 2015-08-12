@@ -21,6 +21,8 @@ typedef NS_ENUM(NSUInteger, VVideoPreviewViewState)
     VVideoPreviewViewStateEnded
 };
 
+const CGFloat kMaximumLoopingTime = 30.0f;
+
 @interface VVideoSequencePreviewView ()
 
 @property (nonatomic, assign) VVideoPreviewViewState state;
@@ -78,7 +80,7 @@ typedef NS_ENUM(NSUInteger, VVideoPreviewViewState)
     self.HLSAsset = [sequence.firstNode httpLiveStreamingAsset];
     
     // Check HLS asset to see if we should autoplay and only if it's over 30 seconds
-    if ( self.HLSAsset.streamAutoplay.boolValue )
+    if ( !self.HLSAsset.streamAutoplay.boolValue )
     {
         // Check if autoplay is enabled before loading asset URL
         if ([self.videoSettings isAutoplayEnabled])
@@ -204,8 +206,8 @@ typedef NS_ENUM(NSUInteger, VVideoPreviewViewState)
 {
     self.hasPlayed = YES;
 
-    // Loop if asset is under 30 seconds
-    if (self.HLSAsset.duration != nil && [self.HLSAsset.duration integerValue] <= 30)
+    // Loop if asset is under max looping time
+    if (self.HLSAsset.duration != nil && [self.HLSAsset.duration integerValue] <= kMaximumLoopingTime)
     {
         dispatch_async(dispatch_get_main_queue(), ^
         {

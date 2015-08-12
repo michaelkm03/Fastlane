@@ -317,6 +317,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     // Start any video cells that are on screen
     [self.focusHelper updateFocus];
+    [self.marqueeCellController updateFocus];
     
     //Because a stream can be presented without refreshing, we need to refresh the user post icon here
     [self updateNavigationItems];
@@ -344,6 +345,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     // Stop any video cells
     [self.focusHelper endFocusOnAllCells];
+    [self.marqueeCellController updateFocus];
 }
 
 - (BOOL)shouldAutorotate
