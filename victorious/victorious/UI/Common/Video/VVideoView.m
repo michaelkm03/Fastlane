@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 static NSString * const kRateKey = @"rate";
 static void *kRateContext = &kRateContext;
+static NSString * const kBufferEmptyKey = @"playbackBufferEmpty";
+static void *kPlaybackBufferEmpty = &kPlaybackBufferEmpty;
 
 @interface VVideoView()
 
