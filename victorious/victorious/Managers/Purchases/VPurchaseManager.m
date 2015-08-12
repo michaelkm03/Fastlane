@@ -116,8 +116,7 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
     NSParameterAssert( successCallback != nil );
     NSAssert( !self.isPurchaseRequestActive, @"A purchase is already in progress." );
     
-#if SIMULATE_STOREKIT
-#if !SIMULATE_FETCH_PRODUCTS_ERROR
+#if SIMULATE_STOREKIT && !SIMULATE_FETCH_PRODUCTS_ERROR
     product.productIdentifier = SIMULATED_PRODUCT_IDENTIFIER;
     self.activePurchase = [[VPurchase alloc] initWithProduct:product success:successCallback failure:failureCallback];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SIMULATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
@@ -129,8 +128,7 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 #endif
                    });
     return;
-#endif
-#endif
+#else
     
     // This could happen if product requests are failing
     if ( product == nil )
@@ -144,6 +142,7 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
     self.activePurchase = [[VPurchase alloc] initWithProduct:product success:successCallback failure:failureCallback];
     SKPayment *payment = [SKPayment paymentWithProduct:product.storeKitProduct];
     [[SKPaymentQueue defaultQueue] addPayment:payment];
+#endif
 }
 
 - (void)restorePurchasesSuccess:(VPurchaseSuccessBlock)successCallback failure:(VPurchaseFailBlock)failureCallback
@@ -167,9 +166,10 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 #endif
     });
     return;
-#endif
+#else
     
     [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
+#endif
 }
 
 - (void)fetchProductsWithIdentifiers:(NSSet *)productIdentifiers
@@ -210,11 +210,12 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 #endif
     });
 return;
-#endif
+#else
 
     SKProductsRequest *request = [[SKProductsRequest alloc] initWithProductIdentifiers:uncachedProductIndentifiers];
     request.delegate = self;
     [request start];
+#endif
 }
 
 #ifdef V_RESET_PURCHASES
@@ -230,13 +231,11 @@ return;
 {
     VProduct *product;
     
-#if SIMULATE_STOREKIT
-#if !SIMULATE_FETCH_PRODUCTS_ERROR
+#if SIMULATE_STOREKIT && !SIMULATE_FETCH_PRODUCTS_ERROR
     product = [[VProduct alloc] init];
     product.productIdentifier = SIMULATED_PRODUCT_IDENTIFIER;
     return product;
-#endif
-#endif
+#else
     
     product = [self.fetchedProducts objectForKey:productIdentifier];
     
@@ -251,6 +250,7 @@ return;
 #endif
 
     return product;
+#endif
 }
 
 #pragma mark - Purchase product helpers
