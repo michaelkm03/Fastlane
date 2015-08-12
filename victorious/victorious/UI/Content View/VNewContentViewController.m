@@ -460,6 +460,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 {
     [super viewWillAppear:animated];
     
+    [self didUpdateCommentsWithPageType:VPageTypeFirst];
     [self.dependencyManager trackViewWillAppear:self];
     
     
@@ -841,7 +842,16 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         }
             
         case VContentViewSectionExperienceEnhancers:
-            return 1;
+        {
+            if (self.viewModel.type == VContentViewTypePoll)
+            {
+                return 1;
+            }
+            else
+            {
+                return (self.viewModel.experienceEnhancerController.numberOfExperienceEnhancers > 0) ? 1 : 0;
+            }
+        }
         case VContentViewSectionAllComments:
             return (NSInteger)self.viewModel.comments.count;
         case VContentViewSectionCount:
@@ -1667,6 +1677,16 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self presentViewController:editViewController animated:YES completion:nil];
 }
 
+- (void)replyToComment:(VComment *)comment
+{
+    NSUInteger row = [self.viewModel.comments indexOfObject:comment];
+    NSIndexPath *indexPath =  [NSIndexPath indexPathForRow:row inSection:VContentViewSectionAllComments] ;
+    [self.contentCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:YES];
+    
+    [self.textEntryView setReplyRecipient:comment.user];
+    [self.textEntryView.editingTextView becomeFirstResponder];
+}
+
 #pragma mark - VEditCommentViewControllerDelegate
 
 - (void)didFinishEditingComment:(VComment *)comment
@@ -1682,7 +1702,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
                  
                  // Try to reload the cell without reloading the whole section
                  NSIndexPath *indexPathToInvalidate = [self.contentCollectionView indexPathForCell:cell];
-                 if ( indexPathToInvalidate != nil && NO )
+                 if ( indexPathToInvalidate != nil )
                  {
                      [self.contentCollectionView performBatchUpdates:^void
                       {

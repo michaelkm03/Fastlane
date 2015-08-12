@@ -9,6 +9,8 @@
 #import "VUtilityButtonsViewController.h"
 #import "VUtilityButtonCell.h"
 #import "UIView+Autolayout.h"
+#import "VUtilityButtonSeperator.h"
+#import "VUtilityButtonFlowLayout.h"
 
 static const CGFloat kCollectionViewSectionsCount = 1;
 
@@ -34,7 +36,7 @@ static const CGFloat kCollectionViewSectionsCount = 1;
 {
     [super viewDidLoad];
     
-    UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
+    VUtilityButtonFlowLayout *collectionViewLayout = [[VUtilityButtonFlowLayout alloc] init];
     collectionViewLayout.sectionInset = UIEdgeInsetsZero;
     collectionViewLayout.minimumInteritemSpacing = 0.0;
     
@@ -43,6 +45,7 @@ static const CGFloat kCollectionViewSectionsCount = 1;
     self.collectionView.delaysContentTouches = NO;
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
+    self.collectionView.backgroundColor = [UIColor colorWithWhite:0.75f alpha:1.0f];
     [self.view addSubview:self.collectionView];
     
     [self.view v_addFitToParentConstraintsToSubview:self.collectionView];
@@ -50,6 +53,7 @@ static const CGFloat kCollectionViewSectionsCount = 1;
     NSString *reuseIdentifier = [VUtilityButtonCell reuseIdentifier];
     UINib *nib = [UINib nibWithNibName:reuseIdentifier bundle:[NSBundle mainBundle]];
     [self.collectionView registerNib:nib forCellWithReuseIdentifier:reuseIdentifier];
+    [self.collectionView registerNib:[VUtilityButtonSeperator nibForCell] forSupplementaryViewOfKind:kUtilityButtonSeperatorKind withReuseIdentifier:[VUtilityButtonSeperator suggestedReuseIdentifier]];
 }
 
 - (void)dealloc
@@ -74,6 +78,8 @@ static const CGFloat kCollectionViewSectionsCount = 1;
     buttonCell.iconImageView.image = [self.delegate.cellDelegate iconImageForButtonAtIndex:indexPath.row];
     buttonCell.backgroundColor = [self.delegate.cellDelegate backgroundColorForButtonAtIndex:indexPath.row];
     buttonCell.intendedFullWidth = [self.delegate.cellDelegate utilityButtonWidth];
+    buttonCell.center = [self.collectionView.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath].center;
+
     return buttonCell;
 }
 
@@ -101,6 +107,18 @@ static const CGFloat kCollectionViewSectionsCount = 1;
     CGFloat totalWidth = CGRectGetWidth( collectionView.frame);
     CGFloat width = totalWidth / (CGFloat)buttonCount;
     return CGSizeMake( width, height );
+}
+
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionReusableView *reusableview = nil;
+    
+    if (kind == kUtilityButtonSeperatorKind)
+    {
+        reusableview = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:[VUtilityButtonSeperator suggestedReuseIdentifier] forIndexPath:indexPath];
+    }
+    
+    return reusableview;
 }
 
 #pragma mark - UICollectionViewDelegate

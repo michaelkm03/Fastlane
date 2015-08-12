@@ -11,6 +11,7 @@
 #import "VExtendedView.h"
 #import "UIImage+ImageCreation.h"
 #import "UIView+AutoLayout.h"
+#import "VProvidesNavigationMenuItemBadge.h"
 
 static CGFloat const kVBarHeight = 40.0f;
 static CGFloat const kVPillHeight = 29.0f;
@@ -28,6 +29,7 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
 @property (nonatomic, strong) NSLayoutConstraint *selectionViewLeftConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *selectionViewWidthConstraint;
 @property (nonatomic, strong) UIImageView *highlightMask;
+@property (nonatomic, strong) UIImageView *highlightOverView;
 
 @end
 
@@ -123,8 +125,10 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
              return;
          }
          
+         NSString *title = [self titleForViewController:viewController];
+         
          //Note: Setting the button's text color to the "highlighted" color here so that it appears that way in the snapshot below
-         UIButton *button = [self newButtonWithTitle:viewController.navigationItem.title font:[[self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey] fontWithSize:kVBoldFontPointSize] andTextColor:buttonSelectionColor];
+         UIButton *button = [self newButtonWithTitle:title font:[[self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey] fontWithSize:kVBoldFontPointSize] andTextColor:buttonSelectionColor];
          button.tag = idx;
          [button addTarget:sSelf action:@selector(pressedHeaderButton:) forControlEvents:UIControlEventTouchUpInside];
          
@@ -135,8 +139,19 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
          [sSelf.buttons addObject:button];
      }];
     
-    [self.pillView layoutIfNeeded];
     
+    [self setMaskingLayer];
+    
+    if ( _realActiveViewControllerIndex >= self.buttons.count )
+    {
+        _realActiveViewControllerIndex = 0;
+    }
+    [self updateSelectionViewConstraintAnimated:NO];
+}
+
+- (void)setMaskingLayer
+{
+    [self.pillView layoutIfNeeded];
     //Take a snapshot of the buttons in their current state so that our mask view will mask all of the button texts as it is moved across a single view
     UIGraphicsBeginImageContextWithOptions(self.pillView.bounds.size, NO, 0.0);
     [self.pillView.layer renderInContext:UIGraphicsGetCurrentContext()];
@@ -154,12 +169,6 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
     }
     
     [self addHighlightViewWithSnapshot:barScreenShot];
-    
-    if ( _realActiveViewControllerIndex >= self.buttons.count )
-    {
-        _realActiveViewControllerIndex = 0;
-    }
-    [self updateSelectionViewConstraintAnimated:NO];
 }
 
 - (BOOL)hasValidLayout
@@ -169,8 +178,8 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
 
 - (void)resetSubviews
 {
-    [self removeConstraints:self.constraints];
-    [self.pillView removeConstraints:self.pillView.constraints];
+    [NSLayoutConstraint deactivateConstraints:self.constraints];
+    [NSLayoutConstraint deactivateConstraints:self.pillView.constraints];
     
     //Remove any existing subviews from superview
     for ( UIButton *button in self.buttons )
@@ -237,6 +246,8 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
 - (void)addSelectionView
 {
     //Now add the selectionView which will show which tab is selected. This must be done after the snapshot otherwise it will appear in the snapshot.
+    [self.selectionView removeConstraint:self.selectionViewWidthConstraint];
+    [self.selectionView removeConstraint:self.selectionViewLeftConstraint];
     [self.pillView addSubview:self.selectionView];
     NSDictionary *selectionViews = @{ @"selectionView" : self.selectionView };
     [self.pillView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[selectionView]|"
@@ -266,13 +277,13 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
 - (void)addHighlightViewWithSnapshot:(UIImage *)snapshot
 {
     //Add the snapshot imageview to our bar
-    UIImageView *highlightOverView = [[UIImageView alloc] initWithImage:snapshot];
-    [self.pillView addSubview:highlightOverView];
-    [self.pillView v_addFitToParentConstraintsToSubview:highlightOverView];
+    self.highlightOverView = [[UIImageView alloc] initWithImage:snapshot];
+    self.highlightOverView.bounds = self.pillView.bounds;
+    [self.pillView addSubview:self.highlightOverView];
     
     //Create the mask layer that will mask the snapshot of the highlighted text
     self.highlightMask.frame = self.selectionView.bounds;
-    highlightOverView.maskView = self.highlightMask;
+    self.highlightOverView.maskView = self.highlightMask;
 }
 
 #pragma mark - display updating
@@ -308,6 +319,48 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
 {
     [super setBounds:bounds];
     [self setupWithCurrentViewControllers];
+}
+
+- (void)setButtonTitles
+{
+    [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop)
+     {
+         NSString *title = [self titleForViewController:viewController];
+         UIButton *button = self.buttons[idx];
+         [button setTitle:title forState:UIControlStateNormal];
+         [button setTitle:title forState:UIControlStateHighlighted];
+         [button setTitleColor: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey] forState:UIControlStateNormal];
+         [[button titleLabel] setFont:[[self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey] fontWithSize:kVBoldFontPointSize]];
+     }];
+}
+
+- (void)updateSelectorTitle
+{
+    [self.selectionView removeFromSuperview];
+    [self.highlightOverView removeFromSuperview ];
+    [self setButtonTitles];
+    [self.pillView layoutIfNeeded];
+    [self setMaskingLayer];
+    if ( _realActiveViewControllerIndex >= self.buttons.count )
+    {
+        _realActiveViewControllerIndex = 0;
+    }
+    [self updateSelectionViewConstraintAnimated:NO];
+}
+
+- (NSString *)titleForViewController:(UIViewController *)viewController
+{
+    NSString *title = viewController.navigationItem.title;
+    id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)viewController;
+    if ([badgeProvider respondsToSelector:@selector(badgeNumber)])
+    {
+        NSInteger badgeNumber = [badgeProvider badgeNumber];
+        if (badgeNumber > 0)
+        {
+            title = [title stringByAppendingString:[NSString stringWithFormat:@" (%ld)", (long)badgeNumber]];
+        }        
+    }
+    return title;
 }
 
 #pragma mark - selectionView updating

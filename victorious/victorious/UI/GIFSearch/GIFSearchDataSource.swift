@@ -98,14 +98,15 @@ class GIFSearchDataSource: NSObject {
                     self.state = .Content
                 }
                 else {
-                    self.clear()
+                    if pageType == .First {
+                        self.clear()
+                    }
                     self.state = .Error
                     result.error = error
                 }
                 completion?( result )
             }
         )
-        
     }
     
     /// Fetches data from the server and repopulates its backing model collection
@@ -137,7 +138,9 @@ class GIFSearchDataSource: NSObject {
                     self.state = .Content
                 }
                 else {
-                    self.clear()
+                    if pageType == .First {
+                        self.clear()
+                    }
                     self.state = .Error
                     result.error = error
                 }

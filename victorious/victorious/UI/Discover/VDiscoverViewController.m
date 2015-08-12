@@ -110,7 +110,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 {
     [super viewWillAppear:animated];
     
-    [self.dependencyManager trackViewWillAppear:self];
+    [self.dependencyManager trackViewWillAppear:self withParameters:nil templateClass:[VDiscoverContainerViewController class]];
     
     if ( self.hasLoadedOnce )
     {
@@ -584,14 +584,29 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 #pragma mark - VFollowResponder
 
-- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion
+- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion fromViewController:(UIViewController *)viewControllerToPresentOn withScreenName:(NSString *)screenName
 {
-    [self.followingHelper followUser:user withAuthorizedBlock:authorizedBlock andCompletion:completion];
+    NSString *sourceScreen = screenName?:VFollowSourceScreenDiscoverSuggestedUsers;
+    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
+                                                                      withSender:nil];
+    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
+    [followResponder followUser:user
+            withAuthorizedBlock:authorizedBlock
+                  andCompletion:completion
+             fromViewController:self
+                 withScreenName:sourceScreen];
 }
 
 - (void)unfollowUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion
 {
     [self.followingHelper unfollowUser:user withAuthorizedBlock:authorizedBlock andCompletion:completion];
+}
+
+#pragma mark - VTabMenuContainedViewControllerNavigation
+
+- (void)reselected
+{
+    [self.tableView setContentOffset:CGPointZero animated:YES];
 }
 
 @end

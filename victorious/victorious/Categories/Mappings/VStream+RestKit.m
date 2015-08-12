@@ -10,7 +10,11 @@
 
 #import "VSequence+RestKit.h"
 
+#import "VShelf+RestKit.h"
+
 #import "VEditorializationItem.h"
+
+#import "victorious-Swift.h"
 
 @implementation VStream (RestKit)
 
@@ -30,6 +34,8 @@
              @"preview_image"       :   VSelectorName(previewImagesObject),
              @"ugc_post_allowed"    :   VSelectorName(isUserPostAllowed),
              @"count"               :   VSelectorName(count),
+             @"type"                :   VSelectorName(itemType),
+             @"subtype"             :   VSelectorName(itemSubType),
              };
 }
 
@@ -128,6 +134,65 @@
     return contentMapping;
 }
 
+#pragma mark - Feed parsing
+
++ (RKEntityMapping *)feedPayloadMapping
+{
+    return [self feedPayloadMappingAtChildLevel:NO];
+}
+
++ (RKEntityMapping *)feedPayloadMappingAtChildLevel:(BOOL)child
+{
+    RKEntityMapping *mapping = [VStream mappingBase];
+    
+    RKRelationshipMapping *contentMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"items"
+                                                                                        toKeyPath:VSelectorName(streamItems)
+                                                                                      withMapping:[self feedItemsByStreamMappingAtChildLevel:child]];
+    [mapping addPropertyMapping:contentMapping];
+    
+    return mapping;
+}
+
++ (RKDynamicMapping *)feedItemsByStreamMappingAtChildLevel:(BOOL)child
+{
+    RKDynamicMapping *contentMapping = [RKDynamicMapping new];
+    
+    [contentMapping addMatcher:[RKObjectMappingMatcher matcherWithPossibleMappings:@[[self entityMapping], [VSequence entityMapping]] block:^RKObjectMapping *(id representation)
+    {
+        RKObjectMapping *mapping = nil;
+        if ( [representation isKindOfClass:[NSDictionary class]] )
+        {
+            NSDictionary *dictionaryRepresentation = (NSDictionary *)representation;
+            NSString *type = [dictionaryRepresentation objectForKey:@"type"];
+            if ( [type isEqualToString:VStreamItemTypeStream] )
+            {
+                if ( child )
+                {
+                    mapping = [self childStreamMapping];
+                }
+                else
+                {
+                    mapping = [self feedPayloadMappingAtChildLevel:YES];
+                }
+            }
+            else if ( [type isEqualToString:VStreamItemTypeSequence] )
+            {
+                mapping = [VSequence entityMapping];
+            }
+            else if ( [type isEqualToString:VStreamItemTypeMarquee] || [type isEqualToString:VStreamItemTypeUser] || [type isEqualToString:VStreamItemTypeHashtag] )
+            {
+                mapping = [VShelf mappingForItemType:type];
+            }
+        }
+        
+        return mapping;
+    }]];
+    
+    return contentMapping;
+}
+
+#pragma mark - Descriptors
+
 + (NSArray *)descriptors
 {
     //Many of these are not being used currently, but at risk of missing any, I've updated the restkit mapping to work with all versions of the detail_list_by_stream endpoint that were present in the VSequence descriptors
@@ -196,7 +261,32 @@
                                                           method:RKRequestMethodGET
                                                      pathPattern:@"/api/sequence/detail_list_by_user/:userid/:page/:perpage"
                                                          keyPath:@""
-                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
+             //Feed parsing
+             [RKResponseDescriptor responseDescriptorWithMapping:[self feedPayloadMapping]
+                                                          method:RKRequestMethodGET
+                                                     pathPattern:@"/api/sequence/feed/:streamId/:page/:perpage"
+                                                         keyPath:@"payload"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
+             [RKResponseDescriptor responseDescriptorWithMapping:[self feedPayloadMapping]
+                                                          method:RKRequestMethodGET
+                                                     pathPattern:@"/api/sequence/feed/:stream/:page/:perpage"
+                                                         keyPath:@"payload"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
+             [RKResponseDescriptor responseDescriptorWithMapping:[self feedPayloadMapping]
+                                                          method:RKRequestMethodGET
+                                                     pathPattern:@"/api/sequence/feed/:streamId/:filterId/:page/:perpage"
+                                                         keyPath:@"payload"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
+             [RKResponseDescriptor responseDescriptorWithMapping:[self feedPayloadMapping]
+                                                          method:RKRequestMethodGET
+                                                     pathPattern:@"/api/sequence/feed/:category/:filtername"
+                                                         keyPath:@"payload"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
               ];
 }
 

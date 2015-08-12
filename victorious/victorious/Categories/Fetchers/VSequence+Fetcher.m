@@ -20,6 +20,7 @@
 #import "VImageAsset+Fetcher.h"
 #import "VImageAssetFinder.h"
 #import "VComment.h"
+#import "victorious-Swift.h"
 
 static const CGFloat kMinimumAspectRatio = 0.5f;
 static const CGFloat kMaximumAspectRatio = 2.0f;
@@ -32,11 +33,11 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
     {
         if ([self.category isEqualToString:category])
         {
-            return true;
+            return YES;
         }
     }
     
-    return false;
+    return [self.itemSubType isEqualToString:VStreamItemSubTypePoll];
 }
 
 - (BOOL)isQuiz
@@ -54,7 +55,7 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
         }
     }
     
-    return NO;
+    return [self.itemSubType isEqualToString:VStreamItemSubTypeImage];
 }
 
 - (BOOL)isVideo
@@ -63,11 +64,11 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
     {
         if ([self.category isEqualToString:videoCategory])
         {
-            return true;
+            return YES;
         }
     }
     
-    return false;
+    return [self.itemSubType isEqualToString:VStreamItemSubTypeVideo];
 }
 
 - (BOOL)isGIFVideo
@@ -83,25 +84,12 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
 - (BOOL)isText
 {
     NSArray *textCategories = @[ kVUGCTextCategory, kVUGCTextRepostCategory, kVOwnerTextCategory, kVOwnerTextRepostCategory];
-    return [textCategories containsObject:self.category];
-}
-
-- (BOOL)isOwnerContent
-{
-    for (NSString *category in VOwnerCategories())
+    if ( [textCategories containsObject:self.category] )
     {
-        if ([self.category isEqualToString:category])
-        {
-            return true;
-        }
+        return YES;
     }
     
-    return false;
-}
-
-- (BOOL)isAnnouncement
-{
-    return [self.category isEqualToString:kVOwnerAnnouncementCategory];
+    return [self.itemSubType isEqualToString:VStreamItemSubTypeText];
 }
 
 - (BOOL)isPreviewImageContent

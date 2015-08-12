@@ -112,6 +112,8 @@ typedef NS_ENUM(NSInteger, VKeyboardBarAttachmentType)
  */
 - (BOOL)stopEditing;
 
+@property (nonatomic, weak) UITextView *editingTextView;
+
 /**
  *  Call this to have the textView embedded in this view to become first responder.
  */
@@ -128,6 +130,11 @@ typedef NS_ENUM(NSInteger, VKeyboardBarAttachmentType)
  *  Call this to clear out text and media input on this view.
  */
 - (void)clearTextAndResign;
+
+/**
+ * Call this whenever you are composing a reply
+ */
+- (void)setReplyRecipient:(VUser *)user;
 
 @end
 

@@ -113,7 +113,6 @@ static NSString * const   kVOwnerVideoRemixCategory    = @"owner_video_remix";
 static NSString * const   kVOwnerVideoRepostCategory   = @"owner_video_repost";
 static NSString * const   kVOwnerMemeRepostCategory    = @"owner_meme_repost";
 static NSString * const   kVOwnerQuoteRepostCategory   = @"owner_secret_repost";
-static NSString * const   kVOwnerAnnouncementCategory  = @"owner_announcement";
 
 static NSString * const   kVUGCPollCategory            = @"ugc_poll";
 static NSString * const   kVUGCTextCategory            = @"ugc_text";
@@ -131,7 +130,6 @@ static NSString * const   kVUGCQuoteRepostCategory     = @"ugc_secret_repost";
 static NSString * const kVPreferedMimeType  = @"application/x-mpegURL";
 static NSString * const kmp4MimeType        = @"video/mp4";
 
-NSArray *VOwnerCategories();
 NSArray *VUGCCategories();
 NSArray *VImageCategories();
 NSArray *VVideoCategories();
