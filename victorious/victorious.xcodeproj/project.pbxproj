@@ -8293,7 +8293,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"$DownloadTemplate\" == \"no\" ]; then\n    echo \"Skipping template download.\"\n    exit 0\nfi\n\nBUNDLE=\"$BUILT_PRODUCTS_DIR/$EXECUTABLE_FOLDER_PATH\"\n../build-scripts/downloadtemplate \"$BUNDLE\"\nexit $?";
+			shellScript = "if [ \"$DownloadTemplate\" == \"no\" ]; then\n    echo \"Skipping template download.\"\n    exit 0\nfi\n\nBUNDLE=\"$BUILT_PRODUCTS_DIR/$EXECUTABLE_FOLDER_PATH\"\n../build-scripts/downloadtemplate \"$BUNDLE\" \"$DefaultEnvironment\"\nexit $?";
 			showEnvVarsInLog = 0;
 		};
 		03CE66F819B50C340011BB9E /* Objective Clean */ = {
