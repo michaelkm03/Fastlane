@@ -98,10 +98,11 @@
         __weak typeof(self) weakSelf = self;
         [self.tableDataSource setAfterUpdate:^
          {
-             dispatch_async(dispatch_get_main_queue(), ^{
-                 __strong typeof(weakSelf) strongSelf = weakSelf;
-                 [strongSelf.focusHelper updateFocus];
-             });
+             dispatch_async(dispatch_get_main_queue(), ^
+                            {
+                                __strong typeof(weakSelf) strongSelf = weakSelf;
+                                [strongSelf.focusHelper updateFocus];
+                            });
          }];
     }
     self.tableView.dataSource = self.tableDataSource;
@@ -116,23 +117,24 @@
             container.busyView.hidden = NO;
             [self.tableDataSource refreshWithCompletion:^(NSError *error)
              {
-                 container.busyView.hidden = YES;
-                 if (error)
+                 dispatch_async(dispatch_get_main_queue(), ^
                  {
-                     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:container.view animated:YES];
-                     hud.mode = MBProgressHUDModeText;
-                     hud.labelText = NSLocalizedString(@"ConversationLoadError", @"");
-                     [hud hide:YES afterDelay:3.0];
-                     self.refreshFailed = YES;
-                 }
-                 else
-                 {
-                     [self scrollToBottomAnimated:NO];
-                     
-                     dispatch_async(dispatch_get_main_queue(), ^{
+                     container.busyView.hidden = YES;
+                     if (error)
+                     {
+                         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:container.view animated:YES];
+                         hud.mode = MBProgressHUDModeText;
+                         hud.labelText = NSLocalizedString(@"ConversationLoadError", @"");
+                         [hud hide:YES afterDelay:3.0];
+                         self.refreshFailed = YES;
+                     }
+                     else
+                     {
+                         [self scrollToBottomAnimated:NO];
                          [self.focusHelper updateFocus];
-                     });
-                 }
+                     }
+                 });
+                 
              }];
         }
         self.shouldScrollToBottom = YES;
@@ -142,10 +144,10 @@
 
 - (void)tapped:(UITapGestureRecognizer *)tap
 {
-    // This clears any selectected text in a message cell when the background is tapped
-    [self.tableView reloadData];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_main_queue(), ^
+    {
+        // This clears any selectected text in a message cell when the background is tapped
+        [self.tableView reloadData];
         [self.focusHelper updateFocus];
     });
 }

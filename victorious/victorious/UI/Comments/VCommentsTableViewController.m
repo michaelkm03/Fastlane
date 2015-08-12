@@ -215,15 +215,16 @@
 
 - (void)addedNewComment:(VComment *)comment
 {
-    [self setHasComments:YES];
-    [self.tableView reloadData];
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
-                          atScrollPosition:UITableViewScrollPositionTop
-                                  animated:YES];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.focusHelper updateFocus];
-    });
+    dispatch_async(dispatch_get_main_queue(), ^
+                   {
+                       [self setHasComments:YES];
+                       [self.tableView reloadData];
+                       [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
+                                             atScrollPosition:UITableViewScrollPositionTop
+                                                     animated:YES];
+                       
+                       [self.focusHelper updateFocus];
+                   });
 }
 
 #pragma mark - IBActions
@@ -234,21 +235,25 @@
                                                                                                pageType:VPageTypeFirst
                                                                                            successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
                                                   {
-                                                      self.comments = [self.sequence dateSortedComments];
-                                                      
-                                                      self.hasComments = self.comments.count > 0;
-                                                      
-                                                      self.needsRefresh = NO;
-                                                      [self.tableView reloadData];
-                                                      [self.refreshControl endRefreshing];
-                                                      
-                                                      dispatch_async(dispatch_get_main_queue(), ^{
-                                                          [self.focusHelper updateFocus];
-                                                      });
+                                                      dispatch_async(dispatch_get_main_queue(), ^
+                                                                     {
+                                                                         self.comments = [self.sequence dateSortedComments];
+                                                                         
+                                                                         self.hasComments = self.comments.count > 0;
+                                                                         
+                                                                         self.needsRefresh = NO;
+                                                                         [self.tableView reloadData];
+                                                                         [self.refreshControl endRefreshing];
+                                                                         
+                                                                         [self.focusHelper updateFocus];
+                                                                     });
                                                   } failBlock:^(NSOperation *operation, NSError *error)
                                                   {
-                                                      self.needsRefresh = NO;
-                                                      [self.refreshControl endRefreshing];
+                                                      dispatch_async(dispatch_get_main_queue(), ^
+                                                                     {
+                                                                         self.needsRefresh = NO;
+                                                                         [self.refreshControl endRefreshing];
+                                                                     });
                                                   }];
     if (!operation)
     {
