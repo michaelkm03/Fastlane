@@ -238,7 +238,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     self.dependencyManager = dependencyManager;
     self.applicationTracking.dependencyManager = dependencyManager;
     
-    VScaffoldViewController *scaffold = [self.dependencyManager scaffoldViewController];
+    VTabScaffoldViewController *scaffold = [self.dependencyManager scaffoldViewController];
     // Initialize followHelper with scaffold.dependencyManager so that it knows about LoginFlow information
     // This is a result of the refactor of FollowResponder protocol (VRootViewController is the actual responder
     // for follow actions)
@@ -265,7 +265,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     
-    VTabScaffoldViewController *scaffold = [self.dependencyManager scaffoldViewController];
     [self showViewController:scaffold animated:YES completion:^(void)
     {
         self.launchState = VAppLaunchStateLaunched;
