@@ -1,5 +1,5 @@
 //
-//  VDependencyManager+VScaffoldViewController.h
+//  VDependencyManager+VTabScaffoldViewController.h
 //  victorious
 //
 //  Created by Josh Hinman on 2/12/15.
@@ -14,14 +14,14 @@
  */
 extern NSString * const VScaffoldViewControllerNavigationBarAppearanceKey;
 
-@class VScaffoldViewController;
+@class VTabScaffoldViewController;
 
-@interface VDependencyManager (VScaffoldViewController)
+@interface VDependencyManager (VTabScaffoldViewController)
 
 /**
  Returns a reference to the singleton instance of the current template's scaffolding
  */
-- (VScaffoldViewController *)scaffoldViewController;
+- (VTabScaffoldViewController *)scaffoldViewController;
 
 /**
  Applies style information to a navigation bar according 

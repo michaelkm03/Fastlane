@@ -278,7 +278,7 @@
 		037FCF261A8DAF5400E8ABFC /* VSegmentedSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF211A8DAF5400E8ABFC /* VSegmentedSelectorView.m */; };
 		037FCF271A8DAF5400E8ABFC /* VMultipleContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF231A8DAF5400E8ABFC /* VMultipleContainerViewController.m */; };
 		037FCF281A8DAF5400E8ABFC /* VSelectorViewBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF251A8DAF5400E8ABFC /* VSelectorViewBase.m */; };
-		037FCF2B1A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF2A1A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.m */; };
+		037FCF2B1A8DAF7600E8ABFC /* VDependencyManager+VTabScaffoldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF2A1A8DAF7600E8ABFC /* VDependencyManager+VTabScaffoldViewController.m */; };
 		03803DE11B0C270300B63F05 /* Purchases.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03803DE31B0C270300B63F05 /* Purchases.storyboard */; };
 		03848F951B0A41090092C660 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 03848F971B0A41090092C660 /* InfoPlist.strings */; };
 		0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0385FEE818EF41B4009FBD68 /* VImageSearchResult.m */; };
@@ -371,6 +371,13 @@
 		66AF79521B60A8E4006DDCD8 /* VVideoCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66AF79511B60A8E4006DDCD8 /* VVideoCameraViewController.m */; };
 		66AF79541B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */; };
 		67C69F591B67ECDF00C59230 /* VContentViewPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 67C69F581B67ECDF00C59230 /* VContentViewPresenter.m */; };
+		797006ED1B7AA32C0058B09A /* UIViewController+VRootNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 797006EC1B7AA32C0058B09A /* UIViewController+VRootNavigationController.m */; };
+		797006F01B7AA3980058B09A /* VTabScaffoldHidingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 797006EF1B7AA3980058B09A /* VTabScaffoldHidingHelper.m */; };
+		79A80C7D1B7928FD00C14020 /* VTabScaffoldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A80C7C1B7928FD00C14020 /* VTabScaffoldViewController.m */; };
+		79A80C821B797C6400C14020 /* AutoShowLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A80C811B797C6400C14020 /* AutoShowLoginOperation.swift */; };
+		79A80C841B797C7600C14020 /* FTUEVideoOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A80C831B797C7600C14020 /* FTUEVideoOperation.swift */; };
+		79A80C861B797C9900C14020 /* RequestPushNotificationPermissionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A80C851B797C9900C14020 /* RequestPushNotificationPermissionOperation.swift */; };
+		8E8C04404B9E03E76E65C052 /* libPods-VictoriousCommon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A713F955EEE0E7D467CAE0E1 /* libPods-VictoriousCommon.a */; };
 		99F4DB51782658B7D034EC2F /* libPods-victorious-test.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7B45F61E6B2831D5E9459C3 /* libPods-victorious-test.a */; };
 		9F95A0FBA78C16AF3EA43793 /* libPods-victorious.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */; };
 		A601FB491B4354D10050536C /* VAbstractImageVideoCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB481B4354D10050536C /* VAbstractImageVideoCreationFlowController.m */; };
@@ -1046,7 +1053,6 @@
 		D8DF71E71AFC3784002EA7A5 /* VTileOverlayCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DF71E61AFC3784002EA7A5 /* VTileOverlayCollectionCell.m */; };
 		D8DF71F11AFD987B002EA7A5 /* VFollowingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DF71F01AFD987B002EA7A5 /* VFollowingHelper.m */; };
 		D8DF72291AFEC360002EA7A5 /* VTabMenuShim.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DF72261AFEC360002EA7A5 /* VTabMenuShim.m */; };
-		D8DF722A1AFEC360002EA7A5 /* VTabMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DF72281AFEC360002EA7A5 /* VTabMenuViewController.m */; };
 		D8E2F6641B17F4D3008B1EC2 /* VEnterProfilePictureCameraViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8E2F6631B17F4D3008B1EC2 /* VEnterProfilePictureCameraViewController.storyboard */; };
 		D8E39BB819CB7C3C007FD86A /* VContentViewViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BB519CB7C3C007FD86A /* VContentViewViewModel.m */; };
 		D8E39BB919CB7C3C007FD86A /* VNewContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BB719CB7C3C007FD86A /* VNewContentViewController.m */; };
@@ -1674,8 +1680,8 @@
 		037FCF231A8DAF5400E8ABFC /* VMultipleContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMultipleContainerViewController.m; sourceTree = "<group>"; };
 		037FCF241A8DAF5400E8ABFC /* VSelectorViewBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSelectorViewBase.h; sourceTree = "<group>"; };
 		037FCF251A8DAF5400E8ABFC /* VSelectorViewBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSelectorViewBase.m; sourceTree = "<group>"; };
-		037FCF291A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VScaffoldViewController.h"; sourceTree = "<group>"; };
-		037FCF2A1A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VScaffoldViewController.m"; sourceTree = "<group>"; };
+		037FCF291A8DAF7600E8ABFC /* VDependencyManager+VTabScaffoldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VTabScaffoldViewController.h"; sourceTree = "<group>"; };
+		037FCF2A1A8DAF7600E8ABFC /* VDependencyManager+VTabScaffoldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VTabScaffoldViewController.m"; sourceTree = "<group>"; };
 		03803DE21B0C270300B63F05 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Purchases.storyboard; sourceTree = "<group>"; };
 		03803DE51B0C271B00B63F05 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Purchases.strings; sourceTree = "<group>"; };
 		03803DE71B0C271D00B63F05 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Purchases.strings; sourceTree = "<group>"; };
@@ -1937,6 +1943,15 @@
 		67C69F581B67ECDF00C59230 /* VContentViewPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentViewPresenter.m; path = Presenters/VContentViewPresenter.m; sourceTree = "<group>"; };
 		693498EEB4388179C36EF74A /* libPods-VictoriousCommonOSX.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VictoriousCommonOSX.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C14CC0531211B1486085544 /* Pods-VictoriousCommonOSX.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.stable.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.stable.xcconfig"; sourceTree = "<group>"; };
+		797006EB1B7AA32C0058B09A /* UIViewController+VRootNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+VRootNavigationController.h"; sourceTree = "<group>"; };
+		797006EC1B7AA32C0058B09A /* UIViewController+VRootNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+VRootNavigationController.m"; sourceTree = "<group>"; };
+		797006EE1B7AA3980058B09A /* VTabScaffoldHidingHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTabScaffoldHidingHelper.h; sourceTree = "<group>"; };
+		797006EF1B7AA3980058B09A /* VTabScaffoldHidingHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTabScaffoldHidingHelper.m; sourceTree = "<group>"; };
+		79A80C7B1B7928FD00C14020 /* VTabScaffoldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTabScaffoldViewController.h; sourceTree = "<group>"; };
+		79A80C7C1B7928FD00C14020 /* VTabScaffoldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTabScaffoldViewController.m; sourceTree = "<group>"; };
+		79A80C811B797C6400C14020 /* AutoShowLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoShowLoginOperation.swift; sourceTree = "<group>"; };
+		79A80C831B797C7600C14020 /* FTUEVideoOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTUEVideoOperation.swift; sourceTree = "<group>"; };
+		79A80C851B797C9900C14020 /* RequestPushNotificationPermissionOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestPushNotificationPermissionOperation.swift; sourceTree = "<group>"; };
 		79ACFD16A2EFEF8FE18E316E /* Pods-VictoriousCommonOSX.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.qa.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.qa.xcconfig"; sourceTree = "<group>"; };
 		83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.qa.xcconfig"; sourceTree = "<group>"; };
 		861888B7B5EA1C709A7ABB6B /* Pods-VictoriousCommonOSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.debug.xcconfig"; sourceTree = "<group>"; };
@@ -3184,8 +3199,6 @@
 		D8DF71F01AFD987B002EA7A5 /* VFollowingHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowingHelper.m; sourceTree = "<group>"; };
 		D8DF72251AFEC360002EA7A5 /* VTabMenuShim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTabMenuShim.h; sourceTree = "<group>"; };
 		D8DF72261AFEC360002EA7A5 /* VTabMenuShim.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTabMenuShim.m; sourceTree = "<group>"; };
-		D8DF72271AFEC360002EA7A5 /* VTabMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTabMenuViewController.h; sourceTree = "<group>"; };
-		D8DF72281AFEC360002EA7A5 /* VTabMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTabMenuViewController.m; sourceTree = "<group>"; };
 		D8DF722B1AFEC38B002EA7A5 /* VTabMenuContainedViewControllerNavigation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTabMenuContainedViewControllerNavigation.h; sourceTree = "<group>"; };
 		D8E2F6631B17F4D3008B1EC2 /* VEnterProfilePictureCameraViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VEnterProfilePictureCameraViewController.storyboard; sourceTree = "<group>"; };
 		D8E39BB419CB7C3C007FD86A /* VContentViewViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentViewViewModel.h; sourceTree = "<group>"; };
@@ -4106,9 +4119,12 @@
 			isa = PBXGroup;
 			children = (
 				C39864B41B22349200694AB3 /* Bar Buttons */,
+				79A80C801B797C2F00C14020 /* Launch Operations */,
 				0386F8841B38D32C00E8D459 /* Loading View */,
 				030931871A18425B004E9781 /* Menu */,
 				D8DF72241AFEC360002EA7A5 /* Tab Menu */,
+				797006EB1B7AA32C0058B09A /* UIViewController+VRootNavigationController.h */,
+				797006EC1B7AA32C0058B09A /* UIViewController+VRootNavigationController.m */,
 				DB94976E1AAE66C600CCEFD0 /* VFirstTimeInstallHelper.h */,
 				DB94976F1AAE66C600CCEFD0 /* VFirstTimeInstallHelper.m */,
 				037FCF141A8DAF0E00E8ABFC /* VNavigationController.h */,
@@ -4119,8 +4135,10 @@
 				D87D70951A9804CD002D4FED /* VNavigationDestinationContainerViewController.m */,
 				0314D3EB19B46B5E00FA363C /* VRootViewController.h */,
 				0314D3EC19B46B5E00FA363C /* VRootViewController.m */,
-				0358FCEC1A65E785004DD7A1 /* VScaffoldViewController.h */,
-				0358FCED1A65E785004DD7A1 /* VScaffoldViewController.m */,
+				797006EE1B7AA3980058B09A /* VTabScaffoldHidingHelper.h */,
+				797006EF1B7AA3980058B09A /* VTabScaffoldHidingHelper.m */,
+				79A80C7B1B7928FD00C14020 /* VTabScaffoldViewController.h */,
+				79A80C7C1B7928FD00C14020 /* VTabScaffoldViewController.m */,
 			);
 			path = "Root View";
 			sourceTree = "<group>";
@@ -4772,8 +4790,8 @@
 				037D2D5E1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.m */,
 				037D2D5A1A1A588D00947A22 /* VDependencyManager+VObjectManager.h */,
 				037D2D5B1A1A588D00947A22 /* VDependencyManager+VObjectManager.m */,
-				037FCF291A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.h */,
-				037FCF2A1A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.m */,
+				037FCF291A8DAF7600E8ABFC /* VDependencyManager+VTabScaffoldViewController.h */,
+				037FCF2A1A8DAF7600E8ABFC /* VDependencyManager+VTabScaffoldViewController.m */,
 				F0F04AF51B2A37CB00F6F401 /* VDependencyManager+VShareMenuItem.h */,
 				F0F04AF61B2A37CB00F6F401 /* VDependencyManager+VShareMenuItem.m */,
 				039420411AB7D1A70087ADFA /* VDependencyManager+VTracking.h */,
@@ -5130,6 +5148,16 @@
 				67C69F581B67ECDF00C59230 /* VContentViewPresenter.m */,
 			);
 			name = Presenters;
+			sourceTree = "<group>";
+		};
+		79A80C801B797C2F00C14020 /* Launch Operations */ = {
+			isa = PBXGroup;
+			children = (
+				79A80C811B797C6400C14020 /* AutoShowLoginOperation.swift */,
+				79A80C831B797C7600C14020 /* FTUEVideoOperation.swift */,
+				79A80C851B797C9900C14020 /* RequestPushNotificationPermissionOperation.swift */,
+			);
+			path = "Launch Operations";
 			sourceTree = "<group>";
 		};
 		A601FB461B4354750050536C /* Creation Flows */ = {
@@ -7240,8 +7268,6 @@
 				D8DF722B1AFEC38B002EA7A5 /* VTabMenuContainedViewControllerNavigation.h */,
 				D8DF72251AFEC360002EA7A5 /* VTabMenuShim.h */,
 				D8DF72261AFEC360002EA7A5 /* VTabMenuShim.m */,
-				D8DF72271AFEC360002EA7A5 /* VTabMenuViewController.h */,
-				D8DF72281AFEC360002EA7A5 /* VTabMenuViewController.m */,
 			);
 			path = "Tab Menu";
 			sourceTree = "<group>";
@@ -8651,7 +8677,6 @@
 				0314D4DB19B46B5E00FA363C /* VTOSViewController.m in Sources */,
 				0314D48A19B46B5E00FA363C /* VNoContentView.m in Sources */,
 				039ED28219C6AB0900305987 /* AVCaptureConnection+VOrientation.m in Sources */,
-				D8DF722A1AFEC360002EA7A5 /* VTabMenuViewController.m in Sources */,
 				A721E9681B572454000B7901 /* VSequence+OrderedSet.m in Sources */,
 				A6E104D51B56C88D0062392A /* VPublishShareCollectionViewCell.m in Sources */,
 				A7ECC1CE1AD617480003E00A /* VToolController.m in Sources */,
@@ -8728,7 +8753,6 @@
 				D836884119C370C400070F22 /* VBaseCollectionViewCell.m in Sources */,
 				F06F10C01AC1E11C0062E1D1 /* VCollectionsDirectoryCell.m in Sources */,
 				F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */,
-				0358FCEE1A65E785004DD7A1 /* VScaffoldViewController.m in Sources */,
 				0314D4B819B46B5E00FA363C /* VVideoLightboxViewController.m in Sources */,
 				D85B708F1B0ECC6D0038CA5B /* VModernLandingViewController.m in Sources */,
 				A708C95B1A8067B9000EE1EE /* VContentRepopulateTransition.m in Sources */,
@@ -8738,6 +8762,7 @@
 				F0E0F1AA1AE8811700143CBF /* VLaunchScreenProvider.m in Sources */,
 				A720054C1A030D9300285A9C /* VTrackingConstants.m in Sources */,
 				03B3D3D01A3BBCE900F0634A /* VBadgeBackgroundView.m in Sources */,
+				797006ED1B7AA32C0058B09A /* UIViewController+VRootNavigationController.m in Sources */,
 				D876E2021A9DA6DD002CAA29 /* VBlurredImageBackground.m in Sources */,
 				A721E9721B581F78000B7901 /* GIFSearchResultCell.swift in Sources */,
 				D8EC36EC1AB3F96700FB0CEB /* AVComposition+VTrimmedLoopingComposition.m in Sources */,
@@ -8926,6 +8951,7 @@
 				A7D378451AEF4ED5007FF197 /* VAbstractUserProfileHeaderViewController.m in Sources */,
 				0314D48519B46B5E00FA363C /* VKeyboardBarContainerViewController.m in Sources */,
 				F0FC97E41B5C1CAD0098AFCB /* VImageLinkViewController.m in Sources */,
+				79A80C841B797C7600C14020 /* FTUEVideoOperation.swift in Sources */,
 				D85B70851B0EAF3F0038CA5B /* VSignupWithEmailViewController.m in Sources */,
 				A721E91F1B572454000B7901 /* VAdBreak+RestKit.m in Sources */,
 				F06F10D11AC3B3AB0062E1D1 /* VAbstractMarqueeCollectionViewCell.m in Sources */,
@@ -9032,6 +9058,7 @@
 				037CB74519CFE8D20084BBED /* VUploadTaskInformation.m in Sources */,
 				F0FC97A81B5563960098AFCB /* VInStreamCommentsCell.m in Sources */,
 				A721E9581B572454000B7901 /* UIResponder+VResponderChain.m in Sources */,
+				797006F01B7AA3980058B09A /* VTabScaffoldHidingHelper.m in Sources */,
 				0314D4B619B46B5E00FA363C /* VLightboxTransitioningDelegate.m in Sources */,
 				0314D4D219B46B5E00FA363C /* VRootViewController.m in Sources */,
 				A7CD87521B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.m in Sources */,
@@ -9223,7 +9250,7 @@
 				0314D0B319B4698800FA363C /* VObjectManager+ImageSearch.m in Sources */,
 				A743E7E41A0816D500339CB3 /* VPasswordValidator.m in Sources */,
 				0314D48C19B46B5E00FA363C /* VSelectorViewController.m in Sources */,
-				037FCF2B1A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.m in Sources */,
+				037FCF2B1A8DAF7600E8ABFC /* VDependencyManager+VTabScaffoldViewController.m in Sources */,
 				D8FC09071A51DBC100E5FBE4 /* VPlaceholderTextView.m in Sources */,
 				A7AEF9C61A83F2AD00A3D3A0 /* VFollowersTextFormatter.m in Sources */,
 				A75ED0BB1AB78C7400C35063 /* VHashtagTool.m in Sources */,
@@ -9291,6 +9318,7 @@
 				D8360CEA19E3640000D7E260 /* VNewContentViewController+Actions.m in Sources */,
 				A721E9341B572454000B7901 /* VTracking+RestKit.m in Sources */,
 				D8D812B51B14FE5B00E93B37 /* VLoginFlowAPIHelper.m in Sources */,
+				79A80C7D1B7928FD00C14020 /* VTabScaffoldViewController.m in Sources */,
 				A721E95A1B572454000B7901 /* UIStoryboard+VMainStoryboard.m in Sources */,
 				A7AEF9A21A83F1C300A3D3A0 /* VSequenceActionController.m in Sources */,
 				B07BFD611B26761D00784FC8 /* VHashtagHelper.m in Sources */,
@@ -9313,11 +9341,13 @@
 				D87AD2AB1AD4781300C481D0 /* VDownloadTaskInformation.m in Sources */,
 				0314D49619B46B5E00FA363C /* VResultView.m in Sources */,
 				A7724FFB1B33905000B1BBB3 /* VSequenceCountsTextView.m in Sources */,
+				79A80C861B797C9900C14020 /* RequestPushNotificationPermissionOperation.swift in Sources */,
 				A721E92F1B572454000B7901 /* VNotificationSettings+RestKit.m in Sources */,
 				D80A94E61A546DF90035D788 /* VAssetThumbnailDataSource.m in Sources */,
 				A721E9321B572454000B7901 /* VSequence+RestKit.m in Sources */,
 				A7B89EF01AA7B26A00475CC2 /* VPresentWithBlurTransition.m in Sources */,
 				A6B9FD071B603FC600166BE8 /* VImageCameraViewController.m in Sources */,
+				79A80C821B797C6400C14020 /* AutoShowLoginOperation.swift in Sources */,
 				A776E00E1AE743F3001F25FF /* VStreamNavigationViewFloatingController.m in Sources */,
 				BE11447919D49AA4006A6D65 /* VFullscreenMarqueeStreamItemCell.m in Sources */,
 				F0FC97D51B5AF0EE0098AFCB /* VCollectionViewCommentHighlighter.m in Sources */,

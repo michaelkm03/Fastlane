@@ -9,7 +9,7 @@
 #import "VCommentsTableViewController.h"
 #import "VTextAndMediaView.h"
 #import "VRTCUserPostedAtFormatter.h"
-#import "VDependencyManager+VScaffoldViewController.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VLoginViewController.h"
 #import "VCommentCell.h"
 #import "VObjectManager+Pagination.h"

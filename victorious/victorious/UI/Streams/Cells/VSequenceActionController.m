@@ -24,6 +24,7 @@
 #import "VCommentsContainerViewController.h"
 #import "VWorkspaceViewController.h"
 #import "VAbstractMediaLinkViewController.h"
+#import "VTabScaffoldViewController.h"
 
 #pragma mark-  Views
 #import "VNoContentView.h"
@@ -75,7 +76,7 @@
     {
         commentsContainerViewController = [self.dependencyManager commentsContainerWithSequence:sequence];
     }
-    [viewController.navigationController pushViewController:commentsContainerViewController animated:YES];
+    [viewController.rootNavigationController pushViewController:commentsContainerViewController animated:YES];
 }
 
 #pragma mark - User

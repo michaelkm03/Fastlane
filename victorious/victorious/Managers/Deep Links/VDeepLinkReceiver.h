@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VScaffoldViewController.h"
 
 @class VDependencyManager;
 
