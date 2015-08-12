@@ -62,6 +62,16 @@ static void *kPlaybackBufferEmpty = &kPlaybackBufferEmpty;
     self.playerLayer.videoGravity = [self videoGravity];
 }
 
+- (BOOL)playbackBufferEmpty
+{
+    return [self.player.currentItem isPlaybackBufferEmpty];
+}
+
+- (BOOL)playbackLikelyToKeepUp
+{
+    return [self.player.currentItem isPlaybackLikelyToKeepUp];
+}
+
 - (NSString *)videoGravity
 {
     return self.useAspectFit ? AVLayerVideoGravityResizeAspect : AVLayerVideoGravityResizeAspectFill;

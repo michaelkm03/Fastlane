@@ -56,6 +56,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) BOOL useAspectFit;
 
+@property (nonatomic, assign, readonly) BOOL playbackLikelyToKeepUp;
+@property (nonatomic, assign, readonly) BOOL playbackBufferEmpty;
+
 /**
  Set the URL of the asset to play.
  @param loop If YES, build a clean-looping asset from the URL provided and play on a loop.

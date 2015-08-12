@@ -17,6 +17,7 @@ typedef NS_ENUM(NSUInteger, VVideoPreviewViewState)
 {
     VVideoPreviewViewStateBuffering,
     VVideoPreviewViewStatePlaying,
+    VVideoPreviewViewStatePaused,
     VVideoPreviewViewStateEnded
 };
 
@@ -27,6 +28,7 @@ typedef NS_ENUM(NSUInteger, VVideoPreviewViewState)
 @property (nonatomic, assign) BOOL hasPlayed;
 @property (nonatomic, strong) NSURL *assetURL;
 @property (nonatomic, strong) VVideoSettings *videoSettings;
+@property (nonatomic, strong) VAsset *HLSAsset;
 
 @property (nonatomic, strong) SoundBarView *soundIndicator;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
@@ -73,15 +75,15 @@ typedef NS_ENUM(NSUInteger, VVideoPreviewViewState)
     
     self.assetURL = nil;
     
-    VAsset *HLSAsset = [sequence.firstNode httpLiveStreamingAsset];
+    self.HLSAsset = [sequence.firstNode httpLiveStreamingAsset];
     
     // Check HLS asset to see if we should autoplay and only if it's over 30 seconds
-    if ( !HLSAsset.streamAutoplay.boolValue )
+    if ( !self.HLSAsset.streamAutoplay.boolValue )
     {
         // Check if autoplay is enabled before loading asset URL
         if ([self.videoSettings isAutoplayEnabled])
         {
-            [self loadAssetURL:[NSURL URLWithString:HLSAsset.data] andLoop:NO];
+            [self loadAssetURL:[NSURL URLWithString:self.HLSAsset.data] andLoop:NO];
         }
     }
 }
@@ -92,8 +94,6 @@ typedef NS_ENUM(NSUInteger, VVideoPreviewViewState)
     self.hasPlayed = NO;
     
     self.assetURL = url;
-    
-    [self setState:VVideoPreviewViewStateBuffering];
     
     __weak VVideoSequencePreviewView *weakSelf = self;
     [self.videoView setItemURL:url
@@ -126,6 +126,14 @@ typedef NS_ENUM(NSUInteger, VVideoPreviewViewState)
             self.videoView.hidden = NO;
             self.playIconContainerView.hidden = YES;
             break;
+        case VVideoPreviewViewStatePaused:
+            [self makeBackgroundContainerViewVisible:YES];
+            [self.activityIndicator stopAnimating];
+            self.soundIndicator.hidden = YES;
+            [self.soundIndicator stopAnimating];
+            self.videoView.hidden = YES;
+            self.playIconContainerView.hidden = YES;
+            break;
         case VVideoPreviewViewStateEnded:
             [self.activityIndicator stopAnimating];
             self.soundIndicator.hidden = YES;
@@ -141,21 +149,37 @@ typedef NS_ENUM(NSUInteger, VVideoPreviewViewState)
 - (void)setHasFocus:(BOOL)hasFocus
 {
     [super setHasFocus:hasFocus];
-    if (![self playVideo])
+    
+    // If we're not autoplaying, return right away
+    if (self.assetURL == nil)
     {
-        [self.videoView pause];
+        return;
+    }
+    
+    // Play or pause video depending on focus
+    if (self.inFocus)
+    {
+        if (!self.hasPlayed)
+        {
+            [self playVideo];
+        }
+    }
+    else
+    {
+        [self pauseVideo];
     }
 }
 
-- (BOOL)playVideo
+- (void)playVideo
 {
-    if (self.inFocus && !self.hasPlayed && self.assetURL != nil)
-    {
-        [self.videoView play];
-        return YES;
-    }
-    
-    return NO;
+    [self setState:VVideoPreviewViewStatePlaying];
+    [self.videoView play];
+}
+
+- (void)pauseVideo
+{
+    [self setState:VVideoPreviewViewStateEnded];
+    [self.videoView pause];
 }
 
 #pragma mark - Video Player Delegate
@@ -163,19 +187,33 @@ typedef NS_ENUM(NSUInteger, VVideoPreviewViewState)
 - (void)videoViewPlayerDidBecomeReady:(VVideoView *__nonnull)videoView
 {
     [super videoViewPlayerDidBecomeReady:videoView];
-    [self playVideo];
+    if (self.inFocus)
+    {
+        [self playVideo];
+    }
 }
 
 - (void)videoDidReachEnd:(VVideoView *__nonnull)videoView
 {
     self.hasPlayed = YES;
-    [self.videoView play];
-    [self setState:VVideoPreviewViewStateEnded];
+
+    // Loop if asset is under 30 seconds
+    if (self.HLSAsset.duration != nil && [self.HLSAsset.duration integerValue] <= 30)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            [self.videoView playFromStart];
+        });
+    }
+    else
+    {
+        [self setState:VVideoPreviewViewStateEnded];
+    }
 }
 
 - (void)videoViewDidStartBuffering:(VVideoView *__nonnull)videoView
 {
-    if (self.state != VVideoPreviewViewStateEnded)
+    if (self.inFocus)
     {
         [self setState:VVideoPreviewViewStateBuffering];
     }
@@ -183,7 +221,7 @@ typedef NS_ENUM(NSUInteger, VVideoPreviewViewState)
 
 - (void)videoViewDidStopBuffering:(VVideoView *__nonnull)videoView
 {
-    if (self.state != VVideoPreviewViewStateEnded)
+    if (self.inFocus)
     {
         [self setState:VVideoPreviewViewStatePlaying];
     }
