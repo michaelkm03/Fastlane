@@ -19,7 +19,7 @@
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ask a question..." lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YXm-O2-nI2" userLabel="Question Prompt">
                                 <rect key="frame" x="20" y="68" width="128" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="uTr-J9-jgD" userLabel="Question Text View">
@@ -36,22 +36,22 @@
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2HY-0S-kJK" userLabel="Left Background">
                                         <rect key="frame" x="0.0" y="0.0" width="300" height="274"/>
-                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3sC-v1-YKD" userLabel="Right Background">
                                         <rect key="frame" x="300" y="0.0" width="300" height="274"/>
-                                        <color key="backgroundColor" red="0.96078431369999995" green="0.96862745100000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.14901960784313725" green="0.15294117647058825" blue="0.14901960784313725" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Vote this" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kIg-QZ-oeo" userLabel="Left Answer Prompt">
                                         <rect key="frame" x="201" y="16" width="67" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Vote that" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bEL-Dg-FBP" userLabel="Right Answer Prompt">
                                         <rect key="frame" x="332" y="16" width="69" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="252" textAlignment="right" translatesAutoresizingMaskIntoConstraints="NO" id="fls-IP-s1P" userLabel="Left Answer Text View">
@@ -166,21 +166,21 @@
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nSk-Zp-1WW" userLabel="Top Horizontal Rule">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="1"/>
-                                        <color key="backgroundColor" red="0.80784313730000001" green="0.81960784310000001" blue="0.84705882349999995" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="AAP-kx-xaw"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CNU-XC-ilL" userLabel="Middle Horizontal Rule">
                                         <rect key="frame" x="0.0" y="60" width="600" height="1"/>
-                                        <color key="backgroundColor" red="0.80784313730000001" green="0.81960784310000001" blue="0.84705882349999995" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="bDM-7u-gWl"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R7A-qB-tMh" userLabel="Bottom Horizontal Rule">
                                         <rect key="frame" x="0.0" y="273" width="600" height="1"/>
-                                        <color key="backgroundColor" red="0.80784313730000001" green="0.81960784310000001" blue="0.84705882349999995" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="YnC-kP-xBz"/>
                                         </constraints>
@@ -248,34 +248,15 @@
                                     </mask>
                                 </variation>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5P2-t5-UdW" userLabel="Post Button">
-                                <rect key="frame" x="0.0" y="540" width="600" height="60"/>
-                                <color key="backgroundColor" white="0.59999999999999998" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="bOn-pf-Itd"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                <state key="normal" title="Create Poll">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="postButtonAction:" destination="7OL-yJ-fiR" eventType="touchUpInside" id="cev-50-gWf"/>
-                                </connections>
-                            </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="right" secondItem="uTr-J9-jgD" secondAttribute="right" constant="20" id="2fY-aI-fkj"/>
                             <constraint firstItem="YXm-O2-nI2" firstAttribute="top" secondItem="uTr-J9-jgD" secondAttribute="top" constant="8" id="3ck-Od-C3y"/>
-                            <constraint firstItem="akc-R4-U3T" firstAttribute="top" secondItem="5P2-t5-UdW" secondAttribute="bottom" id="6dm-F8-MUZ"/>
-                            <constraint firstAttribute="right" secondItem="5P2-t5-UdW" secondAttribute="right" id="BkL-0r-3Fa"/>
                             <constraint firstItem="Vb3-5e-iYL" firstAttribute="left" secondItem="akW-Po-dqH" secondAttribute="left" id="ClH-yU-QVY"/>
                             <constraint firstItem="YXm-O2-nI2" firstAttribute="leading" secondItem="uTr-J9-jgD" secondAttribute="leading" constant="5" id="G4Z-C0-llo"/>
-                            <constraint firstItem="5P2-t5-UdW" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Vb3-5e-iYL" secondAttribute="bottom" id="Y7F-Uo-hbg"/>
                             <constraint firstItem="Vb3-5e-iYL" firstAttribute="top" secondItem="uTr-J9-jgD" secondAttribute="bottom" id="YtL-EY-xLw"/>
                             <constraint firstAttribute="right" secondItem="Vb3-5e-iYL" secondAttribute="right" id="cO2-pm-T2a"/>
-                            <constraint firstItem="5P2-t5-UdW" firstAttribute="left" secondItem="akW-Po-dqH" secondAttribute="left" id="cwq-Cp-wVL"/>
                             <constraint firstItem="uTr-J9-jgD" firstAttribute="top" secondItem="eBg-QG-Ebj" secondAttribute="bottom" constant="16" id="iFm-84-7Jg"/>
                             <constraint firstItem="Vb3-5e-iYL" firstAttribute="top" secondItem="eBg-QG-Ebj" secondAttribute="bottom" priority="750" constant="160" id="mmL-h9-bz9"/>
                             <constraint firstItem="uTr-J9-jgD" firstAttribute="left" secondItem="akW-Po-dqH" secondAttribute="left" constant="15" id="o3E-gc-13P"/>
@@ -295,7 +276,6 @@
                         <outlet property="leftRemoveButton" destination="JgF-wI-Jcl" id="hD0-R8-UiU"/>
                         <outlet property="mediaButtonLeftSpacingConstraint" destination="IfJ-IV-Nw8" id="QCE-WV-qsq"/>
                         <outlet property="middleOrIconImageView" destination="GMp-aG-O9F" id="2gv-1m-j5l"/>
-                        <outlet property="postButton" destination="5P2-t5-UdW" id="wRX-7s-7KE"/>
                         <outlet property="questionPrompt" destination="YXm-O2-nI2" id="igR-WJ-gRh"/>
                         <outlet property="questionTextView" destination="uTr-J9-jgD" id="RaT-W9-wSq"/>
                         <outlet property="rightAnswerPrompt" destination="bEL-Dg-FBP" id="Y73-7v-3oy"/>
@@ -315,7 +295,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="D_pollOr" width="83" height="83"/>
+        <image name="D_pollOr" width="65" height="72"/>
         <image name="PostDelete" width="30" height="30"/>
         <image name="createImageIcon" width="22" height="22"/>
         <image name="createVideoIcon" width="22" height="22"/>
