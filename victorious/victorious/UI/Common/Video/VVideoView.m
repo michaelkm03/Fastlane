@@ -213,6 +213,7 @@ static void *kPlaybackBufferEmpty = &kPlaybackBufferEmpty;
     if ( !self.isPlayingVideo )
     {
         [self.player.currentItem seekToTime:kCMTimeZero];
+        
         [self.player play];
     }
 }
