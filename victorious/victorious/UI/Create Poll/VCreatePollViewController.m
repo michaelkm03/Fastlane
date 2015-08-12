@@ -502,6 +502,13 @@ static char KVOContext;
         [textView resignFirstResponder];
         return NO;
     }
+    else if ( (textView == self.leftAnswerTextView) || (textView == self.rightAnswerTextView) )
+    {
+        if (text.length + textView.text.length > VConstantsPollAnswerLength)
+        {
+            return NO;
+        }
+    }
     return YES;
 }
 
