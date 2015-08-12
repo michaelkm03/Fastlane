@@ -1121,6 +1121,7 @@
 		DBF8B4AB1A78942900CFFD47 /* VUsersAndTagsSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4AA1A78942900CFFD47 /* VUsersAndTagsSearchViewController.m */; };
 		DBF8B4B11A79F8F300CFFD47 /* VUserSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4B01A79F8F300CFFD47 /* VUserSearchResultsViewController.m */; };
 		DBF8B4B41A79F91300CFFD47 /* VTagsSearchResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF8B4B31A79F91300CFFD47 /* VTagsSearchResultsViewController.m */; };
+		F0024E3B1B730431000CF4FD /* VMarqueeCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0024E3A1B730431000CF4FD /* VMarqueeCellFactory.swift */; };
 		F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC01AA93AEB00B95642 /* VTimerManager.m */; };
 		F0140BC41AA9468500B95642 /* VTimerManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC31AA9468500B95642 /* VTimerManagerTests.m */; };
 		F0140BC71AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC61AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m */; };
@@ -1146,6 +1147,8 @@
 		F0537DAB1B3DAAF800152A2D /* VSuggestedUserRetryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0537DAA1B3DAAF800152A2D /* VSuggestedUserRetryCell.xib */; };
 		F05AA9821A83F6E3002F8917 /* VInlineSearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05AA97F1A83F6E3002F8917 /* VInlineSearchTableViewController.m */; };
 		F065A40A1B433C7B00F0281B /* VFollowControl.m in Sources */ = {isa = PBXBuildFile; fileRef = F065A4091B433C7B00F0281B /* VFollowControl.m */; };
+		F06B41711B7AA8D4008709E8 /* VFailureSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F06B41701B7AA8D4008709E8 /* VFailureSequencePreviewView.m */; };
+		F06B41741B7AAA95008709E8 /* VFailureStreamPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F06B41731B7AAA95008709E8 /* VFailureStreamPreviewView.m */; };
 		F06F10C01AC1E11C0062E1D1 /* VCollectionsDirectoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10BF1AC1E11C0062E1D1 /* VCollectionsDirectoryCell.m */; };
 		F06F10C21AC1E13A0062E1D1 /* VCollectionsDirectoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F06F10C11AC1E13A0062E1D1 /* VCollectionsDirectoryCell.xib */; };
 		F06F10C61AC2024A0062E1D1 /* VDirectoryCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10C51AC2024A0062E1D1 /* VDirectoryCollectionViewController.m */; };
@@ -1155,6 +1158,9 @@
 		F07409751B05876200C44623 /* VCoachmarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = F07409741B05876200C44623 /* VCoachmarkView.m */; };
 		F074097F1B059CA200C44623 /* VCoachmarkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F074097E1B059CA200C44623 /* VCoachmarkManager.m */; };
 		F07409841B059FEA00C44623 /* VCoachmark.m in Sources */ = {isa = PBXBuildFile; fileRef = F07409831B059FEA00C44623 /* VCoachmark.m */; };
+		F07557E61B73B49F00BB2648 /* VStreamItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F07557E51B73B49F00BB2648 /* VStreamItem.m */; };
+		F07557EC1B751F5300BB2648 /* VDirectoryContentCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07557EB1B751F5300BB2648 /* VDirectoryContentCellFactory.swift */; };
+		F07557EE1B751F8C00BB2648 /* VSequenceContentCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07557ED1B751F8C00BB2648 /* VSequenceContentCellFactory.swift */; };
 		F079FAB31B183ABC009833CD /* VFailureStreamItemPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F079FAB11B183ABC009833CD /* VFailureStreamItemPreviewView.m */; };
 		F07E825D1AEF35BE00821CEA /* VDiscoverHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = F07E825C1AEF35BE00821CEA /* VDiscoverHeaderView.m */; };
 		F07E825F1AEF365400821CEA /* VDiscoverHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F07E825E1AEF365400821CEA /* VDiscoverHeaderView.xib */; };
@@ -1186,6 +1192,9 @@
 		F0B390BD1A8535E300EE70C7 /* VTagTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390BC1A8535E300EE70C7 /* VTagTests.m */; };
 		F0B390C31A88502D00EE70C7 /* VTagDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390C21A88502D00EE70C7 /* VTagDictionary.m */; };
 		F0B390C61A8850CF00EE70C7 /* VTagStringFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390C51A8850CF00EE70C7 /* VTagStringFormatter.m */; };
+		F0BF9F691B72BBF900B24225 /* VShelf.m in Sources */ = {isa = PBXBuildFile; fileRef = F0BF9F681B72BBF900B24225 /* VShelf.m */; };
+		F0BF9F6C1B72C17700B24225 /* VShelf+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = F0BF9F6B1B72C17700B24225 /* VShelf+RestKit.m */; };
+		F0BF9F6E1B72DC1600B24225 /* VStreamContentCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BF9F6D1B72DC1600B24225 /* VStreamContentCellFactory.swift */; };
 		F0C83A2A1B0D3DC400A6EC1A /* VDependencyManager+VCoachmarkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A291B0D3DC400A6EC1A /* VDependencyManager+VCoachmarkManager.m */; };
 		F0C83A2D1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A2C1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.m */; };
 		F0C83A331B0ED7DA00A6EC1A /* VCoachmarkPassthroughContainerViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A321B0ED7DA00A6EC1A /* VCoachmarkPassthroughContainerViewTests.m */; };
@@ -1212,7 +1221,6 @@
 		F0FC97361B509C3D0098AFCB /* VInStreamCommentsController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97351B509C3D0098AFCB /* VInStreamCommentsController.m */; };
 		F0FC97841B545DB90098AFCB /* VStream.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97831B545DB90098AFCB /* VStream.m */; };
 		F0FC97961B546FBC0098AFCB /* VEditorializationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97951B546FBC0098AFCB /* VEditorializationItem.m */; };
-		F0FC97A51B547BA80098AFCB /* VStreamItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97A41B547BA80098AFCB /* VStreamItem.m */; };
 		F0FC97A81B5563960098AFCB /* VInStreamCommentsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97A71B5563960098AFCB /* VInStreamCommentsCell.m */; };
 		F0FC97AA1B5563A40098AFCB /* VInStreamCommentsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0FC97A91B5563A40098AFCB /* VInStreamCommentsCell.xib */; };
 		F0FC97AD1B56B3910098AFCB /* VInStreamMediaLink.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97AC1B56B3910098AFCB /* VInStreamMediaLink.m */; };
@@ -3321,6 +3329,8 @@
 		E50D8B24AC3B063A7A6F4D23 /* Pods-VictoriousCommon.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommon.stable.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommon/Pods-VictoriousCommon.stable.xcconfig"; sourceTree = "<group>"; };
 		E8193ED8CA9746EB7E3D7AD2 /* Pods-victorious-test.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.qa.xcconfig"; sourceTree = "<group>"; };
 		EDFC6598311E32933A2C83A7 /* Pods-test.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.staging.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.staging.xcconfig"; sourceTree = "<group>"; };
+		F0024E3A1B730431000CF4FD /* VMarqueeCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VMarqueeCellFactory.swift; sourceTree = "<group>"; };
+		F0024E3F1B730D83000CF4FD /* VMarqueeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeController.h; sourceTree = "<group>"; };
 		F0140BBF1AA93AEB00B95642 /* VTimerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTimerManager.h; sourceTree = "<group>"; };
 		F0140BC01AA93AEB00B95642 /* VTimerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTimerManager.m; sourceTree = "<group>"; };
 		F0140BC31AA9468500B95642 /* VTimerManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTimerManagerTests.m; sourceTree = "<group>"; };
@@ -3367,6 +3377,10 @@
 		F05AA9841A8401D0002F8917 /* VUserTaggingTextStorageDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserTaggingTextStorageDelegate.h; sourceTree = "<group>"; };
 		F065A4081B433C7B00F0281B /* VFollowControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFollowControl.h; sourceTree = "<group>"; };
 		F065A4091B433C7B00F0281B /* VFollowControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowControl.m; sourceTree = "<group>"; };
+		F06B416F1B7AA8D4008709E8 /* VFailureSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFailureSequencePreviewView.h; sourceTree = "<group>"; };
+		F06B41701B7AA8D4008709E8 /* VFailureSequencePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFailureSequencePreviewView.m; sourceTree = "<group>"; };
+		F06B41721B7AAA95008709E8 /* VFailureStreamPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFailureStreamPreviewView.h; sourceTree = "<group>"; };
+		F06B41731B7AAA95008709E8 /* VFailureStreamPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFailureStreamPreviewView.m; sourceTree = "<group>"; };
 		F06F10BE1AC1E11C0062E1D1 /* VCollectionsDirectoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCollectionsDirectoryCell.h; sourceTree = "<group>"; };
 		F06F10BF1AC1E11C0062E1D1 /* VCollectionsDirectoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCollectionsDirectoryCell.m; sourceTree = "<group>"; };
 		F06F10C11AC1E13A0062E1D1 /* VCollectionsDirectoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VCollectionsDirectoryCell.xib; sourceTree = "<group>"; };
@@ -3385,6 +3399,12 @@
 		F07409811B059E9600C44623 /* VCoachmarkPassthroughContainerViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCoachmarkPassthroughContainerViewDelegate.h; sourceTree = "<group>"; };
 		F07409821B059FEA00C44623 /* VCoachmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCoachmark.h; sourceTree = "<group>"; };
 		F07409831B059FEA00C44623 /* VCoachmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCoachmark.m; sourceTree = "<group>"; };
+		F07557E41B73B49F00BB2648 /* VStreamItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamItem.h; sourceTree = "<group>"; };
+		F07557E51B73B49F00BB2648 /* VStreamItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamItem.m; sourceTree = "<group>"; };
+		F07557EA1B73EBD400BB2648 /* VStreamContentCellFactoryDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamContentCellFactoryDelegate.h; sourceTree = "<group>"; };
+		F07557EB1B751F5300BB2648 /* VDirectoryContentCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VDirectoryContentCellFactory.swift; sourceTree = "<group>"; };
+		F07557ED1B751F8C00BB2648 /* VSequenceContentCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VSequenceContentCellFactory.swift; sourceTree = "<group>"; };
+		F07557F11B756E7600BB2648 /* VDirectoryCellUpdateableFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VDirectoryCellUpdateableFactory.h; sourceTree = "<group>"; };
 		F079FAB11B183ABC009833CD /* VFailureStreamItemPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFailureStreamItemPreviewView.m; sourceTree = "<group>"; };
 		F079FAB21B183ABC009833CD /* VFailureStreamItemPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFailureStreamItemPreviewView.h; sourceTree = "<group>"; };
 		F07E825B1AEF35BE00821CEA /* VDiscoverHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverHeaderView.h; sourceTree = "<group>"; };
@@ -3441,6 +3461,11 @@
 		F0B390C21A88502D00EE70C7 /* VTagDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagDictionary.m; sourceTree = "<group>"; };
 		F0B390C41A8850CF00EE70C7 /* VTagStringFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTagStringFormatter.h; sourceTree = "<group>"; };
 		F0B390C51A8850CF00EE70C7 /* VTagStringFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagStringFormatter.m; sourceTree = "<group>"; };
+		F0BF9F671B72BBF900B24225 /* VShelf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VShelf.h; sourceTree = "<group>"; };
+		F0BF9F681B72BBF900B24225 /* VShelf.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShelf.m; sourceTree = "<group>"; };
+		F0BF9F6A1B72C17700B24225 /* VShelf+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VShelf+RestKit.h"; sourceTree = "<group>"; };
+		F0BF9F6B1B72C17700B24225 /* VShelf+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VShelf+RestKit.m"; sourceTree = "<group>"; };
+		F0BF9F6D1B72DC1600B24225 /* VStreamContentCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VStreamContentCellFactory.swift; sourceTree = "<group>"; };
 		F0C83A231B0B86EB00A6EC1A /* VCoachmarkDisplayResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCoachmarkDisplayResponder.h; sourceTree = "<group>"; };
 		F0C83A241B0B893A00A6EC1A /* VCoachmarkDisplayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCoachmarkDisplayer.h; sourceTree = "<group>"; };
 		F0C83A281B0D3DC400A6EC1A /* VDependencyManager+VCoachmarkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VCoachmarkManager.h"; sourceTree = "<group>"; };
@@ -3487,8 +3512,6 @@
 		F0FC97831B545DB90098AFCB /* VStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStream.m; sourceTree = "<group>"; };
 		F0FC97941B546FBC0098AFCB /* VEditorializationItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEditorializationItem.h; sourceTree = "<group>"; };
 		F0FC97951B546FBC0098AFCB /* VEditorializationItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEditorializationItem.m; sourceTree = "<group>"; };
-		F0FC97A31B547BA80098AFCB /* VStreamItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamItem.h; sourceTree = "<group>"; };
-		F0FC97A41B547BA80098AFCB /* VStreamItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamItem.m; sourceTree = "<group>"; };
 		F0FC97A61B5563960098AFCB /* VInStreamCommentsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInStreamCommentsCell.h; sourceTree = "<group>"; };
 		F0FC97A71B5563960098AFCB /* VInStreamCommentsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInStreamCommentsCell.m; sourceTree = "<group>"; };
 		F0FC97A91B5563A40098AFCB /* VInStreamCommentsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VInStreamCommentsCell.xib; sourceTree = "<group>"; };
@@ -5487,6 +5510,8 @@
 				A721E8A61B572453000B7901 /* VSequence+RestKit.m */,
 				A721E8A71B572453000B7901 /* VStream+RestKit.h */,
 				A721E8A81B572453000B7901 /* VStream+RestKit.m */,
+				F0BF9F6A1B72C17700B24225 /* VShelf+RestKit.h */,
+				F0BF9F6B1B72C17700B24225 /* VShelf+RestKit.m */,
 				A721E8A91B572453000B7901 /* VTracking+RestKit.h */,
 				A721E8AA1B572453000B7901 /* VTracking+RestKit.m */,
 				A721E8AB1B572453000B7901 /* VUser+RestKit.h */,
@@ -6023,6 +6048,10 @@
 				D87E25ED1AE180DA008F0769 /* VAbstractActionView.h */,
 				D87E25EE1AE180DA008F0769 /* VAbstractActionView.m */,
 				A705F4541B3DC839007DBD3C /* VCellSizingUserInfoKeys.h */,
+				F0BF9F6D1B72DC1600B24225 /* VStreamContentCellFactory.swift */,
+				F07557EB1B751F5300BB2648 /* VDirectoryContentCellFactory.swift */,
+				F07557ED1B751F8C00BB2648 /* VSequenceContentCellFactory.swift */,
+				F07557EA1B73EBD400BB2648 /* VStreamContentCellFactoryDelegate.h */,
 				D893674E1ADDE1B9001D2426 /* VActionButtonAnimationController.h */,
 				D893674F1ADDE1B9001D2426 /* VActionButtonAnimationController.m */,
 				A7AEF9731A83F1C300A3D3A0 /* VSequenceActionController.h */,
@@ -6587,10 +6616,12 @@
 				BE5C7369187E36E800A3340D /* VRule.m */,
 				F0FC97BA1B58547A0098AFCB /* VSequence.h */,
 				F0FC97BB1B58547A0098AFCB /* VSequence.m */,
+				F0BF9F671B72BBF900B24225 /* VShelf.h */,
+				F0BF9F681B72BBF900B24225 /* VShelf.m */,
 				F0FC97821B545DB90098AFCB /* VStream.h */,
 				F0FC97831B545DB90098AFCB /* VStream.m */,
-				F0FC97A31B547BA80098AFCB /* VStreamItem.h */,
-				F0FC97A41B547BA80098AFCB /* VStreamItem.m */,
+				F07557E41B73B49F00BB2648 /* VStreamItem.h */,
+				F07557E51B73B49F00BB2648 /* VStreamItem.m */,
 				A7D8532219F6F3B100EDBFF8 /* VTracking.h */,
 				A7D8532319F6F3B100EDBFF8 /* VTracking.m */,
 				F03C134B1B69373200287F4C /* VUser.h */,
@@ -6640,6 +6671,8 @@
 				F06F10D01AC3B3AB0062E1D1 /* VAbstractMarqueeCollectionViewCell.m */,
 				F06F10D21AC3B4E60062E1D1 /* VAbstractMarqueeController.h */,
 				F06F10D31AC3B4E60062E1D1 /* VAbstractMarqueeController.m */,
+				F0024E3F1B730D83000CF4FD /* VMarqueeController.h */,
+				F0024E3A1B730431000CF4FD /* VMarqueeCellFactory.swift */,
 				F089E3541AC3BB740076DC4D /* VAbstractMarqueeStreamItemCell.h */,
 				F089E3551AC3BB740076DC4D /* VAbstractMarqueeStreamItemCell.m */,
 				F0411E851B4AE6D800557176 /* VMarqueeCaptionView.h */,
@@ -6969,6 +7002,8 @@
 				D85E42861AFA9A2F00A13BD3 /* VPollSequencePreviewView.m */,
 				D85E427C1AFA984400A13BD3 /* VSequencePreviewView.h */,
 				D85E427D1AFA984400A13BD3 /* VSequencePreviewView.m */,
+				F06B416F1B7AA8D4008709E8 /* VFailureSequencePreviewView.h */,
+				F06B41701B7AA8D4008709E8 /* VFailureSequencePreviewView.m */,
 				D85E42881AFA9A3C00A13BD3 /* VTextSequencePreviewView.h */,
 				D85E42891AFA9A3C00A13BD3 /* VTextSequencePreviewView.m */,
 				D85E42821AFA9A1F00A13BD3 /* VVideoSequencePreviewView.h */,
@@ -7439,6 +7474,7 @@
 				F0AD21741AF43DFA001BDCC6 /* VCollectionsDirectoryCellFactory.h */,
 				F0AD21751AF43DFA001BDCC6 /* VCollectionsDirectoryCellFactory.m */,
 				F02024A21ADCABA900C61313 /* VDirectoryCellFactory.h */,
+				F07557F11B756E7600BB2648 /* VDirectoryCellUpdateableFactory.h */,
 				F0AD217F1AF43E4C001BDCC6 /* VShowcaseDirectoryCellFactory.h */,
 				F0AD21801AF43E4C001BDCC6 /* VShowcaseDirectoryCellFactory.m */,
 			);
@@ -7598,6 +7634,8 @@
 				F0C83A621B162DE200A6EC1A /* VImageStreamPreviewView.m */,
 				F0C83A5A1B16214C00A6EC1A /* VStreamPreviewView.h */,
 				F0C83A5B1B16214C00A6EC1A /* VStreamPreviewView.m */,
+				F06B41721B7AAA95008709E8 /* VFailureStreamPreviewView.h */,
+				F06B41731B7AAA95008709E8 /* VFailureStreamPreviewView.m */,
 			);
 			name = StreamPreviewView;
 			path = SequencePreviewView;
@@ -8608,6 +8646,7 @@
 				0314D48919B46B5E00FA363C /* VContentInputAccessoryView.m in Sources */,
 				A7A2E0071A38E44B00F8C705 /* VPurchaseViewController.m in Sources */,
 				A721E94F1B572454000B7901 /* UIImage+ImageCreation.m in Sources */,
+				F0BF9F6C1B72C17700B24225 /* VShelf+RestKit.m in Sources */,
 				D85B707C1B0EAF3F0038CA5B /* VTabInfo.m in Sources */,
 				A71DAF241B695FC200E0BE53 /* AutomationId.swift in Sources */,
 				A778B4521B55B8B5004F9F54 /* GIFSearchActivityFooter.swift in Sources */,
@@ -8626,9 +8665,11 @@
 				037FCF1A1A8DAF0E00E8ABFC /* VNavigationController.m in Sources */,
 				A7815E1B1B6C5D9F007797B7 /* SettingsButtonCell.swift in Sources */,
 				D89367531ADDE98F001D2426 /* VInsetActionView.m in Sources */,
+				F07557EE1B751F8C00BB2648 /* VSequenceContentCellFactory.swift in Sources */,
 				F098D8151A9D29EA0003B6D4 /* VTagSensitiveTextView.m in Sources */,
 				0314D0B619B4698800FA363C /* VObjectManager+Sequence.m in Sources */,
 				A7B98A3E1A264D0900C58335 /* VNotificationSettingsTableSection.m in Sources */,
+				F07557EC1B751F5300BB2648 /* VDirectoryContentCellFactory.swift in Sources */,
 				D8B44CD21ADCB3A4006340E8 /* VSleekStreamCollectionCell.m in Sources */,
 				A7EB57521AF9378C006AA1CF /* VTextPostCalloutHelper.m in Sources */,
 				A7F529531A9E66E000F7E41F /* VStreamTrackingHelper.m in Sources */,
@@ -8663,6 +8704,7 @@
 				A721E92C1B572454000B7901 /* VNode+RestKit.m in Sources */,
 				A7D378431AEF4ED5007FF197 /* VStaticUserProfileHeaderViewController.m in Sources */,
 				D8CA63B319D51CB7002046E5 /* VActionSheetViewController.m in Sources */,
+				F0BF9F6E1B72DC1600B24225 /* VStreamContentCellFactory.swift in Sources */,
 				03C185B819B42E5D00E27D05 /* NSData+Base64.m in Sources */,
 				F089E3601AC486620076DC4D /* VBlurredMarqueeStreamItemCell.m in Sources */,
 				A721E95D1B572454000B7901 /* UIView+MotionEffects.m in Sources */,
@@ -8750,6 +8792,7 @@
 				D8DF72291AFEC360002EA7A5 /* VTabMenuShim.m in Sources */,
 				0314D4FD19B46B5E00FA363C /* VTableViewCell.m in Sources */,
 				A769C3EA1A13176700698D0C /* VWebBrowserHeaderViewController.m in Sources */,
+				F06B41711B7AA8D4008709E8 /* VFailureSequencePreviewView.m in Sources */,
 				0314D4A119B46B5E00FA363C /* VImageSearchResultsFooterView.m in Sources */,
 				D8CA63BE19D5DB06002046E5 /* VActionSheetTransitioningDelegate.m in Sources */,
 				A7D707A01A7C144C00D9993F /* VEndCardViewController.m in Sources */,
@@ -8810,6 +8853,7 @@
 				037D2D591A196B9800947A22 /* VUserProfileNavigationDestination.m in Sources */,
 				030931931A184285004E9781 /* VNavigationMenuItem.m in Sources */,
 				A7F711F91AE1D5A00086F729 /* VProfileEditViewController.m in Sources */,
+				F06B41741B7AAA95008709E8 /* VFailureStreamPreviewView.m in Sources */,
 				DBB1A0501A00AF4500E16D62 /* VOpenXAdViewController.m in Sources */,
 				D89367461ADDBA96001D2426 /* VActionBarFlexibleSpaceItem.m in Sources */,
 				A75ED0CB1AB798F100C35063 /* VColorPickerDataSource.m in Sources */,
@@ -8850,6 +8894,7 @@
 				A6EED6AD1B5EE4EB0074052E /* VAlongsidePresentationAnimator.m in Sources */,
 				A75ED0031AB0B6B400C35063 /* VTextToolViewController.m in Sources */,
 				A721E9131B572454000B7901 /* VAnswer+Fetcher.m in Sources */,
+				F07557E61B73B49F00BB2648 /* VStreamItem.m in Sources */,
 				F0C83A631B162DE200A6EC1A /* VImageStreamPreviewView.m in Sources */,
 				BE799B8F19C8A91C0023CE88 /* VInteraction.m in Sources */,
 				D8D8958919E88C2100632663 /* VExperienceEnhancerBarCell.m in Sources */,
@@ -8857,6 +8902,7 @@
 				A75ED0DE1AB7BC3E00C35063 /* VHashtagType.m in Sources */,
 				A7ECC1D71AD6178F0003E00A /* VBaseWorkspaceViewController.m in Sources */,
 				D8360CF019E3768300D7E260 /* VExperienceEnhancerController.m in Sources */,
+				F0BF9F691B72BBF900B24225 /* VShelf.m in Sources */,
 				D8FFB8E21B0272540022A491 /* VStreamLabel.m in Sources */,
 				0308B1191AB2B00100144E53 /* VInsetStreamCollectionCell.m in Sources */,
 				A6DAEB621B4C8DF900935EA0 /* VGIFCreationFlowController.m in Sources */,
@@ -9058,6 +9104,7 @@
 				F0C83A2D1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.m in Sources */,
 				A721E93E1B572454000B7901 /* NSLayoutConstraint+CenterConstraints.m in Sources */,
 				BE46F02A19D0C4B700CD7EF6 /* VMessage.m in Sources */,
+				F0024E3B1B730431000CF4FD /* VMarqueeCellFactory.swift in Sources */,
 				D89F1CDA1ABE747000AF14A5 /* VRoundedBackgroundButton.m in Sources */,
 				0314D48319B46B5E00FA363C /* VCommentsTableViewController.m in Sources */,
 				03CE66F719B47B590011BB9E /* VTwitterManager.m in Sources */,
@@ -9112,7 +9159,6 @@
 				0394204D1AB9026C0087ADFA /* VVoteType.m in Sources */,
 				0314D2E219B46AF300FA363C /* VThemeManager.m in Sources */,
 				C3E47F771B6BE3730084FF65 /* MediaAttachmentType.swift in Sources */,
-				F0FC97A51B547BA80098AFCB /* VStreamItem.m in Sources */,
 				D8DF71E71AFC3784002EA7A5 /* VTileOverlayCollectionCell.m in Sources */,
 				A75C64941AD78DCA00245125 /* VEditableTextPostViewController.m in Sources */,
 				F098D81D1A9E4A890003B6D4 /* VUserTag.m in Sources */,

@@ -31,10 +31,6 @@
     }
     else
     {
-        if ( streamItem != nil )
-        {
-            NSAssert(false, @"Unable to handle stream item!");
-        }
         classType = [VFailureStreamItemPreviewView class];
     }
     

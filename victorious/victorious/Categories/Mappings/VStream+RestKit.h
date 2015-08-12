@@ -14,4 +14,6 @@
 
 + (NSString *)entityName;
 
++ (RKEntityMapping *)feedPayloadMapping;
+
 @end

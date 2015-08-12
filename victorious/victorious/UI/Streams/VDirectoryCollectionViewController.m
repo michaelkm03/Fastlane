@@ -14,6 +14,7 @@
 #import "VAbstractMarqueeController.h"
 #import "VUserProfileViewController.h"
 #import "VDirectoryCellFactory.h"
+#import "VDirectoryCellUpdateableFactory.h"
 #import "VStreamItem+Fetcher.h"
 #import "VStreamItem.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
@@ -34,7 +35,6 @@
 
 static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kMarqueeKey = @"marqueeCell";
-static NSString * const kDirectoryCellFactoryKey = @"directoryCell";
 
 static NSString * const kDestinationDirectoryKey = @"destinationDirectory";
 static NSString * const kStreamCollectionKey = @"destinationStream";
@@ -42,7 +42,7 @@ static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceNameKey = @"sequenceName";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
-@interface VDirectoryCollectionViewController () <VMarqueeSelectionDelegate, VMarqueeDataDelegate, VDirectoryCollectionFlowLayoutDelegate, VCoachmarkDisplayer>
+@interface VDirectoryCollectionViewController () <VMarqueeSelectionDelegate, VMarqueeDataDelegate, VDirectoryCollectionFlowLayoutDelegate, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate>
 
 @property (nonatomic, readwrite) UICollectionView *collectionView;
 @property (nonatomic, strong) NSObject <VDirectoryCellFactory> *directoryCellFactory;
@@ -88,10 +88,17 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     streamDirectory.title = stream.name;
     streamDirectory.dependencyManager = dependencyManager;
     streamDirectory.directoryCellFactory = directoryCellFactory;
+    if ( [directoryCellFactory isKindOfClass:[VStreamContentCellFactory class]] )
+    {
+        VStreamContentCellFactory *streamItemFactory = (VStreamContentCellFactory *)directoryCellFactory;
+        streamItemFactory.delegate = streamDirectory;
+    }
+    
     VDirectoryCollectionFlowLayout *flowLayout = streamDirectory.directoryCellFactory.collectionViewFlowLayout;
     flowLayout.delegate = streamDirectory;
-    streamDirectory.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
-    streamDirectory.marqueeController = [dependencyManager templateValueOfType:[VAbstractMarqueeController class] forKey:kMarqueeKey];
+    UICollectionViewFlowLayout *layout = flowLayout ?: [[UICollectionViewFlowLayout alloc] init];
+    streamDirectory.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
+    streamDirectory.marqueeController = marqueeController;
     streamDirectory.marqueeController.stream = stream;
     [streamDirectory.marqueeController registerCollectionViewCellWithCollectionView:streamDirectory.collectionView];
     streamDirectory.marqueeController.selectionDelegate = streamDirectory;
@@ -118,7 +125,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     NSString *path = [url v_pathComponent];
     VStream *stream = [VStream streamForPath:path inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
     stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
-    NSObject <VDirectoryCellFactory> *cellFactory = [dependencyManager templateValueConformingToProtocol:@protocol(VDirectoryCellFactory) forKey:kDirectoryCellFactoryKey];
+    NSObject <VDirectoryCellFactory> *cellFactory = [[VDirectoryContentCellFactory alloc] initWithDependencyManager:dependencyManager];
     return [self streamDirectoryForStream:stream dependencyManager:dependencyManager andDirectoryCellFactory:cellFactory];
 }
 
@@ -352,7 +359,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     if ( ![self isMarqueeSection:indexPath.section] && [self.directoryCellFactory respondsToSelector:@selector(prepareCell:forDisplayInCollectionView:atIndexPath:)] )
     {
         //Allow directory cell factory to prepare cell for display
-        [self.directoryCellFactory prepareCell:cell forDisplayInCollectionView:localCollectionView atIndexPath:indexPath];
+        [(id <VDirectoryCellUpdeatableFactory>)self.directoryCellFactory prepareCell:cell forDisplayInCollectionView:localCollectionView atIndexPath:indexPath];
     }
 }
 
@@ -365,7 +372,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     
     if ( [scrollView isKindOfClass:[UICollectionView class]] && [self.directoryCellFactory respondsToSelector:@selector(collectionViewDidScroll:)] )
     {
-        [self.directoryCellFactory collectionViewDidScroll:(UICollectionView *)scrollView];
+        [(id <VDirectoryCellUpdeatableFactory>)self.directoryCellFactory collectionViewDidScroll:(UICollectionView *)scrollView];
     }
 }
 

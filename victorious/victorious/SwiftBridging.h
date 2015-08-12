@@ -77,3 +77,16 @@
 #import "VTrackingManager.h"
 #import "VDependencyManager+VTracking.h"
 #import "VPushNotificationManager.h"
+
+//Shelves
+#import "VStreamCellFactory.h"
+#import "VSleekStreamCellFactory.h"
+#import "VMarqueeController.h"
+#import "VAbstractMarqueeController.h"
+#import "VAbstractMarqueeCollectionViewCell.h"
+#import "VShelf.h"
+#import "VStreamContentCellFactoryDelegate.h"
+#import "VDirectoryCellFactory.h"
+#import "VDirectoryCellUpdateableFactory.h"
+#import "VDirectoryCollectionFlowLayout.h"
+#import "VStreamItem+Fetcher.h"
