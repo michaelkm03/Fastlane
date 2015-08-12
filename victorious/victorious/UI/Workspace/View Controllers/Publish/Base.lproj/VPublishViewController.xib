@@ -107,7 +107,6 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="fY0-oQ-HQH" firstAttribute="top" secondItem="MUp-lJ-Tpj" secondAttribute="top" id="6nE-1f-ukq"/>
-                        <constraint firstAttribute="width" constant="290" id="9uW-Hw-ye6"/>
                         <constraint firstItem="fY0-oQ-HQH" firstAttribute="leading" secondItem="MUp-lJ-Tpj" secondAttribute="leading" id="Dya-09-vy8"/>
                         <constraint firstItem="6Ix-FV-hcC" firstAttribute="top" secondItem="fY0-oQ-HQH" secondAttribute="bottom" id="E2m-d9-hiq"/>
                         <constraint firstAttribute="trailing" secondItem="fY0-oQ-HQH" secondAttribute="trailing" id="HGc-oB-nem"/>
@@ -132,6 +131,8 @@
                 <constraint firstItem="00O-RT-5rB" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="FAI-Ko-IwZ"/>
                 <constraint firstItem="92r-ti-u3W" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="J75-XT-9XC"/>
                 <constraint firstAttribute="bottom" secondItem="92r-ti-u3W" secondAttribute="bottom" constant="8" id="PVI-UY-bXN"/>
+                <constraint firstItem="MUp-lJ-Tpj" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="UxD-06-bv8"/>
+                <constraint firstAttribute="trailing" secondItem="MUp-lJ-Tpj" secondAttribute="trailing" constant="15" id="XAI-vP-bhW"/>
                 <constraint firstAttribute="centerX" secondItem="MUp-lJ-Tpj" secondAttribute="centerX" id="b7S-ra-woh"/>
                 <constraint firstItem="MUp-lJ-Tpj" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="50" id="f93-nz-NwD"/>
                 <constraint firstAttribute="trailing" secondItem="92r-ti-u3W" secondAttribute="trailing" constant="15" id="zOZ-sv-kY5"/>
