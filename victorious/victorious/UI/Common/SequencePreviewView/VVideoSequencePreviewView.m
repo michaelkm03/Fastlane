@@ -26,8 +26,6 @@ const CGFloat kMaximumLoopingTime = 30.0f;
 @interface VVideoSequencePreviewView ()
 
 @property (nonatomic, assign) VVideoPreviewViewState state;
-@property (nonatomic, assign) BOOL shouldLoop;
-@property (nonatomic, assign) BOOL hasPlayed;
 @property (nonatomic, strong) NSURL *assetURL;
 @property (nonatomic, strong) VVideoSettings *videoSettings;
 @property (nonatomic, strong) VAsset *HLSAsset;
@@ -92,9 +90,6 @@ const CGFloat kMaximumLoopingTime = 30.0f;
 
 - (void)loadAssetURL:(NSURL *)url andLoop:(BOOL)loop
 {
-    self.shouldLoop = loop;
-    self.hasPlayed = NO;
-    
     self.assetURL = url;
     
     __weak VVideoSequencePreviewView *weakSelf = self;
@@ -161,10 +156,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     // Play or pause video depending on focus
     if (self.inFocus)
     {
-        if (!self.hasPlayed)
-        {
-            [self playVideo];
-        }
+        [self playVideo];
     }
     else
     {
@@ -204,8 +196,6 @@ const CGFloat kMaximumLoopingTime = 30.0f;
 
 - (void)videoDidReachEnd:(VVideoView *__nonnull)videoView
 {
-    self.hasPlayed = YES;
-
     // Loop if asset is under max looping time
     if (self.HLSAsset.duration != nil && [self.HLSAsset.duration integerValue] <= kMaximumLoopingTime)
     {
