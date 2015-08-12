@@ -17,35 +17,3 @@ public enum AutomationId: String {
     case GIFSearchSearchbar = "GIF Search Searchbar"
     case GIFSearchCollection = "GIF Search Collection"
 }
-
-
-private var AssociatedObjectHandle: UInt8 = 0
-
-public protocol VAutomationElement {
-    var v_accessibilityIdentifier:String? { get set }
-}
-
-extension UIBarItem : VAutomationElement {
-    public var v_accessibilityIdentifier:String? {
-        get {
-            return objc_getAssociatedObject(self, &AssociatedObjectHandle) as? String
-        }
-        set {
-            objc_setAssociatedObject(self, &AssociatedObjectHandle, newValue, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
-        }
-    }
-    
-    var children: [AnyObject] {
-        return []
-    }
-}
-
-extension UIView : VAutomationElement {
-    
-    public var v_accessibilityIdentifier:String? {
-        set {}
-        get {
-            return self.accessibilityIdentifier
-        }
-    }
-}

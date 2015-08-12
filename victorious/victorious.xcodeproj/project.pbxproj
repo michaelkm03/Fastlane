@@ -785,7 +785,6 @@
 		A7DB4D3F1B7AB6CB00199D10 /* VAutomation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DB4D3D1B7AB6CB00199D10 /* VAutomation.m */; };
 		A7DB4D441B7ABA8C00199D10 /* ContentCreationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DB4D401B7ABA8C00199D10 /* ContentCreationTests.swift */; };
 		A7DB4D451B7ABA8C00199D10 /* KIFExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DB4D411B7ABA8C00199D10 /* KIFExtensions.swift */; };
-		A7DB4D461B7ABA8C00199D10 /* VAutomationElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DB4D421B7ABA8C00199D10 /* VAutomationElement.swift */; };
 		A7DB4D471B7ABA8C00199D10 /* VictoriousTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DB4D431B7ABA8C00199D10 /* VictoriousTestCase.swift */; };
 		A7DB4D481B7ACB9A00199D10 /* AutomationId.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71DAF231B695FC200E0BE53 /* AutomationId.swift */; };
 		A7DDA6AA1B5F0018005CE55E /* Experiment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6A91B5F0018005CE55E /* Experiment.swift */; };
@@ -2678,7 +2677,6 @@
 		A7DB4D3D1B7AB6CB00199D10 /* VAutomation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAutomation.m; sourceTree = "<group>"; };
 		A7DB4D401B7ABA8C00199D10 /* ContentCreationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentCreationTests.swift; sourceTree = "<group>"; };
 		A7DB4D411B7ABA8C00199D10 /* KIFExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KIFExtensions.swift; sourceTree = "<group>"; };
-		A7DB4D421B7ABA8C00199D10 /* VAutomationElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VAutomationElement.swift; sourceTree = "<group>"; };
 		A7DB4D431B7ABA8C00199D10 /* VictoriousTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VictoriousTestCase.swift; sourceTree = "<group>"; };
 		A7DDA6A91B5F0018005CE55E /* Experiment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Experiment.swift; sourceTree = "<group>"; };
 		A7DDA6AB1B5F003B005CE55E /* Experiment+RestKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Experiment+RestKit.swift"; sourceTree = "<group>"; };
@@ -6205,7 +6203,6 @@
 				A7DB4D411B7ABA8C00199D10 /* KIFExtensions.swift */,
 				A7DB4D2C1B7AB1D400199D10 /* Supporting Files */,
 				A7DB4D381B7AB63300199D10 /* UIAutomationTests-Bridging-Header.h */,
-				A7DB4D421B7ABA8C00199D10 /* VAutomationElement.swift */,
 				A7DB4D431B7ABA8C00199D10 /* VictoriousTestCase.swift */,
 			);
 			path = UIAutomationTests;
@@ -8684,7 +8681,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7DB4D461B7ABA8C00199D10 /* VAutomationElement.swift in Sources */,
 				A7DB4D441B7ABA8C00199D10 /* ContentCreationTests.swift in Sources */,
 				A7DB4D451B7ABA8C00199D10 /* KIFExtensions.swift in Sources */,
 				A7DB4D481B7ACB9A00199D10 /* AutomationId.swift in Sources */,

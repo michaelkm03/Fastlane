@@ -33,5 +33,5 @@ target :VictoriousCommonOSX do
 end
 
 target 'UIAutomationTests', :exclusive => true do
-  pod 'KIF', '~> 3.0', :configurations => ['Debug','Stable']
+  pod 'KIF', '~> 3.0', :configurations => ['Debug']
 end

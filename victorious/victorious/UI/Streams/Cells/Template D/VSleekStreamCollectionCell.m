@@ -84,7 +84,6 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     self.captionTextView.textContainer.lineFragmentPadding = 0.0f;
     self.captionTextView.textContainerInset = UIEdgeInsetsZero;
     self.captionTextView.linkDelegate = self;
-    self.captionTextView.accessibilityIdentifier = VAutomationIdentifierStreamCellCaption;
     [self setupDimmingContainer];
     
     self.countsTextView.textSelectionDelegate = self;

@@ -35,35 +35,3 @@ extension KIFTestActor {
         }
     }
 }
-
-extension KIFUITestActor {
-    
-    func waitForViewWithAccessbilityIdentifier( identifier: String, timeout:NSTimeInterval = 10.0 ) -> UIView {
-        var view: UIView? = nil
-        self.runBlock({ (error) -> KIFTestStepResult in
-            let app = UIApplication.sharedApplication()
-            view = app.v_viewWithAccessbilityIdentifier( identifier )
-            return view != nil ? KIFTestStepResult.Success : KIFTestStepResult.Wait
-        }, timeout: timeout )
-        return view!
-    }
-    
-    
-    func waitForObjectWithAccessbilityIdentifier( identifier: String, timeout:NSTimeInterval = 10.0 ) -> VAutomationElement {
-        var view: UIView? = nil
-        self.runBlock({ (error) -> KIFTestStepResult in
-            let app = UIApplication.sharedApplication()
-            view = app.v_elementWithAccessbilityIdentifier( identifier )
-            return view != nil ? KIFTestStepResult.Success : KIFTestStepResult.Wait
-        }, timeout: timeout )
-        return view!
-    }
-    
-    func enterText( text: String, intoViewWithAccessibilityIdentifier identifier:String ) {
-        let view = self.tester().waitForViewWithAccessbilityIdentifier( identifier )
-        view.becomeFirstResponder()
-        self.waitForTimeInterval( 0.25 )
-        self.enterTextIntoCurrentFirstResponder( text )
-        self.expectView( view, toContainText: text )
-    }
-}
