@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousCommon
 
 /// Designed to provided an `ExperimentSettingsDataSource` instance with a reference to
 /// the table view it's feeding so that it can reload it or get access to individual cells

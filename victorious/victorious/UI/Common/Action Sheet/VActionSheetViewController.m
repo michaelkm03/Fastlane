@@ -22,7 +22,6 @@
 
 // Categories
 #import "UIView+MotionEffects.h"
-#import "UIView+VShadows.h"
 
 // Gesture Recognizers
 #import "CCHLinkGestureRecognizer.h"

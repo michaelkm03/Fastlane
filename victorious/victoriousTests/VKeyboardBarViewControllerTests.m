@@ -81,11 +81,11 @@
         self.didCancelKeyboardBarWasCalled = YES;
         self.textView.returnKeyType = (UIReturnKeyType)num.integerValue;
         self.textView.text = @"01289";
-        NSString *replacementText = @"\n";
+        NSString *replacementText = @"\n"; // cancels keyboard
         NSRange range = NSMakeRange( self.textView.text.length, 0 );
         BOOL output = [self.keyboardBarViewController textView:self.textView shouldChangeTextInRange:range replacementText:replacementText];
         XCTAssertTrue( self.didCancelKeyboardBarWasCalled );
-        XCTAssertFalse( output );
+        XCTAssertTrue( output );
     }
 }
 
@@ -104,11 +104,11 @@
         self.didCancelKeyboardBarWasCalled = NO;
         self.textView.returnKeyType = (UIReturnKeyType)num.integerValue;
         self.textView.text = @"01289";
-        NSString *replacementText = @"\n";
+        NSString *replacementText = @"\n"; // cancels keyboard
         NSRange range = NSMakeRange( self.textView.text.length, 0 );
         BOOL output = [self.keyboardBarViewController textView:self.textView shouldChangeTextInRange:range replacementText:replacementText];
-        XCTAssertFalse( self.didCancelKeyboardBarWasCalled );
-        XCTAssert( output );
+        XCTAssertTrue( self.didCancelKeyboardBarWasCalled );
+        XCTAssertTrue( output );
     }
 }
 

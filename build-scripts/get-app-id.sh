@@ -1,21 +1,21 @@
-#!/bin/bash
+#!/bin/bash -e
 ###########
-# Generates the appropriate app ID for the build scheme and app configuration.
+# Finds the appropriate app ID for a given build configuration.
 ###########
 
 FOLDER=$1
-SCHEME=$2
+CONFIGURATION=$2
 
 if [ "$FOLDER" == "" ]; then
     exit 0
 fi
 
 # Default App ID key: the plist key that contains the app ID that corresponds to the configuration we're building.
-if [ "$SCHEME" == "Release" -o "$SCHEME" == "Stable" ]; then
+if [ "$CONFIGURATION" == "Release" -o "$CONFIGURATION" == "Stable" ]; then
     DEFAULT_APP_ID_KEY="VictoriousAppID"
-elif [ "$SCHEME" == "Staging" ]; then
+elif [ "$CONFIGURATION" == "Staging" ]; then
     DEFAULT_APP_ID_KEY="StagingAppID"
-elif [ "$SCHEME" == "QA" ]; then
+elif [ "$CONFIGURATION" == "QA" ]; then
     DEFAULT_APP_ID_KEY="QAAppID"
 else
     DEFAULT_APP_ID_KEY="VictoriousAppID"

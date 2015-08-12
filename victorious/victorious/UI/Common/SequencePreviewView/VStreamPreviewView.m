@@ -11,7 +11,7 @@
 #import "VStream.h"
 
 #import "VImageStreamPreviewView.h"
-#import "VFailureStreamItemPreviewView.h"
+#import "VFailureStreamPreviewView.h"
 
 @implementation VStreamPreviewView
 
@@ -24,8 +24,7 @@
     }
     else
     {
-        NSAssert(@"Unable to handle stream!", @"");
-        classType = [VFailureStreamItemPreviewView class];
+        classType = [VFailureStreamPreviewView class];
     }
     
     return classType;

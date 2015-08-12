@@ -109,6 +109,12 @@ class GIFSearchViewController: UIViewController {
         }
     }
     
+    func selectCellAtSelectedIndexPath() {
+        if let indexPath = self.selectedIndexPath {
+            collectionView.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: .None)
+        }
+    }
+    
     func loadDefaultContent( pageType: VPageType = .First ) {
         if self.searchDataSource.state != .Loading {
             self.searchDataSource.loadDefaultContent( pageType ) { (result) in

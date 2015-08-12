@@ -54,10 +54,10 @@ static CGFloat const kDirectoryInset = 5.0f;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath
-{
+{    
     NSString *identifier = [VShowcaseDirectoryCell suggestedReuseIdentifier];
     VShowcaseDirectoryCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-    cell.stream = (VStream *)streamItem;
+    cell.streamItem = streamItem;
     cell.dependencyManager = self.dependencyManager;
     return cell;
 }

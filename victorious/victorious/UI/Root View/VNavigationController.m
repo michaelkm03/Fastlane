@@ -13,7 +13,7 @@
 #import "VScaffoldViewController.h"
 #import "UIImage+VSolidColor.h"
 #import "UIViewController+VLayoutInsets.h"
-#import  "UIColor+VBrightness.h"
+#import "UIColor+VBrightness.h"
 #import "VTabMenuViewController.h"
 
 #import <objc/runtime.h>
@@ -500,7 +500,16 @@ static const CGFloat kStatusBarHeight = 20.0f;
 
 - (void)reselected
 {
-    [self.innerNavigationController popToRootViewControllerAnimated:YES];
+    NSArray *poppedControllers = [self.innerNavigationController popToRootViewControllerAnimated:YES];
+    
+    if ( poppedControllers == nil || [poppedControllers count] == 0 )
+    {
+        id viewController = self.innerNavigationController.viewControllers.firstObject;
+        if ( [viewController conformsToProtocol:@protocol(VTabMenuContainedViewControllerNavigation)] )
+        {
+            [((id<VTabMenuContainedViewControllerNavigation>)viewController) reselected];
+        }
+    }
 }
 
 @end
