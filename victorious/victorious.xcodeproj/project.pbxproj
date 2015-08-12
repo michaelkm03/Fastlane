@@ -161,7 +161,6 @@
 		0352FCE71B72C7C300DB6EAB /* BasicTemplateDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034527D61B6074F500E990BB /* BasicTemplateDownloader.swift */; };
 		0352FCE81B72C7C300DB6EAB /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0392694E1B5C720400FCD0AA /* main.swift */; };
 		0352FCE91B72C7C300DB6EAB /* TemplateDownloadCLI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7F81B6306880038A25E /* TemplateDownloadCLI.swift */; };
-		0352FCED1B72CAD900DB6EAB /* VictoriousCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0352FC7E1B72B90000DB6EAB /* VictoriousCommon.framework */; };
 		0352FCEE1B72CAD900DB6EAB /* VictoriousCommon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0352FC7E1B72B90000DB6EAB /* VictoriousCommon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0358FCEE1A65E785004DD7A1 /* VScaffoldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0358FCED1A65E785004DD7A1 /* VScaffoldViewController.m */; };
 		035926D21B1EA33400E910A7 /* Quicksand-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 035926CF1B1EA33400E910A7 /* Quicksand-Bold.ttf */; };
@@ -1252,13 +1251,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 0352FC7D1B72B90000DB6EAB;
 			remoteInfo = VictoriousCommonOSX;
-		};
-		0352FCF41B72E8DD00DB6EAB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0352FCBE1B72C60200DB6EAB;
-			remoteInfo = downloadtemplate;
 		};
 		0370FBBF1B71B261009047B6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -3553,7 +3545,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0352FCED1B72CAD900DB6EAB /* VictoriousCommon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7874,7 +7865,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				0352FCF51B72E8DD00DB6EAB /* PBXTargetDependency */,
 				0370FBC91B71B261009047B6 /* PBXTargetDependency */,
 			);
 			name = victorious;
@@ -9486,11 +9476,6 @@
 			isa = PBXTargetDependency;
 			target = 0352FC7D1B72B90000DB6EAB /* VictoriousCommonOSX */;
 			targetProxy = 0352FCEA1B72CA9900DB6EAB /* PBXContainerItemProxy */;
-		};
-		0352FCF51B72E8DD00DB6EAB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0352FCBE1B72C60200DB6EAB /* downloadtemplate */;
-			targetProxy = 0352FCF41B72E8DD00DB6EAB /* PBXContainerItemProxy */;
 		};
 		0370FBC01B71B261009047B6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
