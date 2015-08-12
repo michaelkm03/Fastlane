@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>downloadtemplate</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.victorious.downloadtemplate</string>
+	<string>com.getvictorious.downloadtemplate</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>

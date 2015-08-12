@@ -8254,7 +8254,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = "/bin/bash -e";
-			shellScript = "BUILD_SCRIPTS_PATH=\"$PROJECT_DIR/../build-scripts\"\n\nif [ -d \"$BUILD_SCRIPTS_PATH/$WRAPPER_NAME\" ]; then\n    rm -rf \"$BUILD_SCRIPTS_PATH/$WRAPPER_NAME\"\nfi\n\ncp -R \"$BUILT_PRODUCTS_DIR/$WRAPPER_NAME\" \"$BUILD_SCRIPTS_PATH\"\nln -Fs \"$BUILD_SCRIPTS_PATH/$EXECUTABLE_PATH\" \"$BUILD_SCRIPTS_PATH/downloadtemplate\"\n";
+			shellScript = "BUILD_SCRIPTS_PATH=\"$PROJECT_DIR/../build-scripts\"\n\nif [ -d \"$BUILD_SCRIPTS_PATH/$WRAPPER_NAME\" ]; then\n    rm -rf \"$BUILD_SCRIPTS_PATH/$WRAPPER_NAME\"\nfi\n\ncp -R \"$BUILT_PRODUCTS_DIR/$WRAPPER_NAME\" \"$BUILD_SCRIPTS_PATH\"\nln -Fs \"$EXECUTABLE_PATH\" \"$BUILD_SCRIPTS_PATH/downloadtemplate\"\n";
 		};
 		03A00E601AE889BA00A2B733 /* Copy Environments Configuration */ = {
 			isa = PBXShellScriptBuildPhase;
