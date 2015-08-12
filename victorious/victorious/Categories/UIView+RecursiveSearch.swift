@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension UIView {
+public extension UIView {
     
     /// Recursively finds the any subviews that return true when used as the parameter to the `pattern` closure
     ///

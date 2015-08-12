@@ -20,6 +20,20 @@
                ReferencedContainer = "container:victorious.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A7DB4D291B7AB1D300199D10"
+               BuildableName = "UIAutomationTests.xctest"
+               BlueprintName = "UIAutomationTests"
+               ReferencedContainer = "container:victorious.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -29,7 +43,7 @@
       buildConfiguration = "Debug">
       <Testables>
          <TestableReference
-            skipped = "NO">
+            skipped = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "BE171D951868BE64004E5202"
@@ -39,12 +53,22 @@
             </BuildableReference>
          </TestableReference>
          <TestableReference
-            skipped = "NO">
+            skipped = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "0370FBBC1B71B261009047B6"
                BuildableName = "VictoriousCommonTests.xctest"
                BlueprintName = "VictoriousCommonTests"
+               ReferencedContainer = "container:victorious.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A7DB4D291B7AB1D300199D10"
+               BuildableName = "UIAutomationTests.xctest"
+               BlueprintName = "UIAutomationTests"
                ReferencedContainer = "container:victorious.xcodeproj">
             </BuildableReference>
          </TestableReference>

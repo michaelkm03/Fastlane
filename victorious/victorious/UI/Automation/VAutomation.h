@@ -17,57 +17,55 @@
  * @see "AutomationId.swift"
  */
 
-static NSString * const VAutomationIdentifierAddPost                    = @"Add Post";
-static NSString * const VAutomationIdentifierMainMenu                   = @"Menu Open";
-static NSString * const VAutomationIdentifierGenericBack                = @"Back";
+extern NSString * const VAutomationIdentifierKeyboardHashtagButton;
 
-static NSString * const VAutomationIdentifierKeyboardHashtagButton      = @"Keyboard Hashtag Button";
+extern NSString * const VAutomationIdentifierSettingsLogIn;
+extern NSString * const VAutomationIdentifierSettingsLogOut;
 
-static NSString * const VAutomationIdentifierSettingsLogIn              = @"Settings Log In";
-static NSString * const VAutomationIdentifierSettingsLogOut             = @"Settings Log Out";
+extern NSString * const VAutomationIdentifierLoginSelectEmail;
+extern NSString * const VAutomationIdentifierLoginSelectPassword;
+extern NSString * const VAutomationIdentifierLoginUsernameField;
+extern NSString * const VAutomationIdentifierLoginPasswordField;
+extern NSString * const VAutomationIdentifierLoginSubmit;
+extern NSString * const VAutomationIdentifierLoginCancel;
+extern NSString * const VAutomationIdentifierLoginForgotPassword;
+extern NSString * const VAutomationIdentifierLoginSignUp;
+extern NSString * const VAutomationIdentifierLoginFacebook;
+extern NSString * const VAutomationIdentifierLoginTwitter;
 
-static NSString * const VAutomationIdentifierLoginSelectEmail           = @"Login Select Email";
-static NSString * const VAutomationIdentifierLoginSelectPassword        = @"Login Select Password";
-static NSString * const VAutomationIdentifierLoginUsernameField         = @"Login Username Field";
-static NSString * const VAutomationIdentifierLoginPasswordField         = @"Login Password Field";
-static NSString * const VAutomationIdentifierLoginSubmit                = @"Login Submit";
-static NSString * const VAutomationIdentifierLoginCancel                = @"Login Cancel";
-static NSString * const VAutomationIdentifierLoginForgotPassword        = @"Login Forgot Password";
-static NSString * const VAutomationIdentifierLoginSignUp                = @"Login Sign Up";
-static NSString * const VAutomationIdentifierLoginFacebook              = @"Login Facebook";
-static NSString * const VAutomationIdentifierLoginTwitter               = @"Login Twitter";
+extern NSString * const VAutomationIdentifierSignupUsernameField;
+extern NSString * const VAutomationIdentifierSignupPasswordField;
+extern NSString * const VAutomationIdentifierSignupPasswordConfirmField;
+extern NSString * const VAutomationIdentifierSignupSubmit;
+extern NSString * const VAutomationIdentifierSignupCancel;
 
-static NSString * const VAutomationIdentifierSignupUsernameField        = @"Signup Username Field";
-static NSString * const VAutomationIdentifierSignupPasswordField        = @"Signup Password Field";
-static NSString * const VAutomationIdentifierSignupPasswordConfirmField = @"Signup Password Confirm Field";
-static NSString * const VAutomationIdentifierSignupSubmit               = @"Signup Submit";
-static NSString * const VAutomationIdentifierSignupCancel               = @"Signup Cancel";
+extern NSString * const VAutomationIdentifierProfileUsernameField;
+extern NSString * const VAutomationIdentifierProfileLocationField;
+extern NSString * const VAutomationIdentifierProfileDone;
+extern NSString * const VAutomationIdentifierProfileAgeAgreeSwitch;
+extern NSString * const VAutomationIdentifierProfilSelectImage;
+extern NSString * const VAutomationIdentifierProfileLogInButton;
 
-static NSString * const VAutomationIdentifierProfileUsernameField       = @"Profile Username Field";
-static NSString * const VAutomationIdentifierProfileLocationField       = @"Profile Location Field";
-static NSString * const VAutomationIdentifierProfileDone                = @"Profile Done";
-static NSString * const VAutomationIdentifierProfileAgeAgreeSwitch      = @"Profile Age Switch";
-static NSString * const VAutomationIdentifierProfilSelectImage          = @"Profile Select Image";
-static NSString * const VAutomationIdentifierProfileLogInButton         = @"Log In Button";
+extern NSString * const VAutomationIdentifierWelcomeDismiss;
 
-static NSString * const VAutomationIdentifierWelcomeDismiss             = @"Welcome Dismiss";
+extern NSString * const VAutomationIdentifierGrantLibraryAccess;
+extern NSString * const VAutomationIdentifierPublishCatpionText;
+extern NSString * const VAutomationIdentifierPublishFinish;
+extern NSString * const VAutomationIdentifierStreamCellCaption;
 
-static NSString * const VAutomationIdentifierGrantLibraryAccess         = @"Library Grant Access";
-static NSString * const VAutomationIdentifierPublishCatpionPlaceholder  = @"Publish Caption Placeholder";
-static NSString * const VAutomationIdentifierPublishCatpionText         = @"Publish Caption Text";
+extern NSString * const VAutomationIdentifierContentViewBallotButtonA;
+extern NSString * const VAutomationIdentifierContentViewBallotButtonB;
+extern NSString * const VAutomationIdentifierContentViewCommentBar;
+extern NSString * const VAutomationIdentifierContentViewCommentCell;
 
-static NSString * const VAutomationIdentifierContentViewBallotButtonA   = @"Ballot Button A";
-static NSString * const VAutomationIdentifierContentViewBallotButtonB   = @"Ballot Button B";
-static NSString * const VAutomationIdentifierContentViewCommentBar      = @"Content View Comment Bar";
-static NSString * const VAutomationIdentifierContentViewCommentCell     = @"Content View Comment Cell Text View";
+extern NSString * const VAutomationIdentifierTextPostMainField;
 
-static NSString * const VAutomationIdentifierTextPostMainField          = @"Text Post Main Field";
+extern NSString * const VAutomationIdentifierCommentBarTextView;
+extern NSString * const VAutomationIdentifierCommentBarImageButton;
+extern NSString * const VAutomationIdentifierCommentBarVideoButton;
+extern NSString * const VAutomationIdentifierCommentBarGIFButton;
+extern NSString * const VAutomationIdentifierCommentBarSendButton;
+extern NSString * const VAutomationIdentifierCommentBarClearButton;
 
-static NSString * const VAutomationIdentifierCommentBarTextView         = @"Comment Bar Text View";
-static NSString * const VAutomationIdentifierCommentBarImageButton      = @"Comment Bar Image Button";
-static NSString * const VAutomationIdentifierCommentBarVideoButton      = @"Comment Bar Video Button";
-static NSString * const VAutomationIdentifierCommentBarGIFButton        = @"Comment Bar GIF Button";
-static NSString * const VAutomationIdentifierCommentBarSendButton       = @"Comment Bar Send Button";
-static NSString * const VAutomationIdentifierCommentBarClearButton      = @"Comment Bar Clear Attachment Button";
-
-static NSString * const VAutomationIdentifierMediaGalleryCollection     = @"Media Gallery Collection";
+extern NSString * const VAutomationIdentifierMediaGalleryCollection;
+extern NSString * const VAutomationIdentifierWorkspaceContinue;

@@ -782,6 +782,12 @@
 		A7DAFCA71B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCA61B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift */; };
 		A7DAFCA91B4EDACE00B51C92 /* GIFSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCA81B4EDACE00B51C92 /* GIFSearchResult.swift */; };
 		A7DAFCAD1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCAC1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift */; };
+		A7DB4D3F1B7AB6CB00199D10 /* VAutomation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DB4D3D1B7AB6CB00199D10 /* VAutomation.m */; };
+		A7DB4D441B7ABA8C00199D10 /* ContentCreationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DB4D401B7ABA8C00199D10 /* ContentCreationTests.swift */; };
+		A7DB4D451B7ABA8C00199D10 /* KIFExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DB4D411B7ABA8C00199D10 /* KIFExtensions.swift */; };
+		A7DB4D461B7ABA8C00199D10 /* VAutomationElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DB4D421B7ABA8C00199D10 /* VAutomationElement.swift */; };
+		A7DB4D471B7ABA8C00199D10 /* VictoriousTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DB4D431B7ABA8C00199D10 /* VictoriousTestCase.swift */; };
+		A7DB4D481B7ACB9A00199D10 /* AutomationId.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71DAF231B695FC200E0BE53 /* AutomationId.swift */; };
 		A7DDA6AA1B5F0018005CE55E /* Experiment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6A91B5F0018005CE55E /* Experiment.swift */; };
 		A7DDA6AC1B5F003B005CE55E /* Experiment+RestKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6AB1B5F003B005CE55E /* Experiment+RestKit.swift */; };
 		A7DDA6AE1B5F006B005CE55E /* VObjectManager+Experiments.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6AD1B5F006B005CE55E /* VObjectManager+Experiments.swift */; };
@@ -819,6 +825,7 @@
 		A7F8DD631A0B1A8B00F82256 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F8DD621A0B1A8B00F82256 /* WebKit.framework */; };
 		A7F8DD651A0BF55900F82256 /* VSequenceActionControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F8DD641A0BF55900F82256 /* VSequenceActionControllerTests.m */; };
 		A7FE8C3E19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A7FE8C3D19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf */; };
+		AA90D6EBCFC069A2EC1F478A /* libPods-UIAutomationTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 59DCA3FB8FBB475BA2334728 /* libPods-UIAutomationTests.a */; };
 		B066EC871B1F97CF006E1D40 /* VBarButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 037FCF131A8DAF0E00E8ABFC /* VBarButton.xib */; };
 		B074C5B41B39D41F00EA3FFC /* VHashmarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = B074C5B21B39D41F00EA3FFC /* VHashmarkView.m */; };
 		B074C5B51B39D41F00EA3FFC /* VHashmarkView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B074C5B31B39D41F00EA3FFC /* VHashmarkView.xib */; };
@@ -1272,6 +1279,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 0370FBB21B71B260009047B6;
 			remoteInfo = VictoriousCommon;
+		};
+		A7DB4D301B7AB1D400199D10 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BE171D751868BE64004E5202;
+			remoteInfo = victorious;
 		};
 		BE171D9C1868BE64004E5202 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1913,6 +1927,7 @@
 		138B5A4A675BB6176F7DA761 /* Pods-victorious.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.release.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.release.xcconfig"; sourceTree = "<group>"; };
 		173ED609974346F850624A73 /* Pods-test.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.release.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.release.xcconfig"; sourceTree = "<group>"; };
 		55FAA5574E7F158AB4EF865B /* Pods-victorious.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.staging.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.staging.xcconfig"; sourceTree = "<group>"; };
+		59DCA3FB8FBB475BA2334728 /* libPods-UIAutomationTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UIAutomationTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		62B9E8365153DC8C04105B08 /* Pods-victorious-test.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.stable.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.stable.xcconfig"; sourceTree = "<group>"; };
 		6346130F32A50A474A9D3D05 /* Pods-VictoriousCommonOSX.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.staging.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.staging.xcconfig"; sourceTree = "<group>"; };
 		6617DB3919F3EB53008C1FF5 /* VContentPollCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VContentPollCell.xib; sourceTree = "<group>"; };
@@ -1929,6 +1944,7 @@
 		67C69F581B67ECDF00C59230 /* VContentViewPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentViewPresenter.m; path = Presenters/VContentViewPresenter.m; sourceTree = "<group>"; };
 		693498EEB4388179C36EF74A /* libPods-VictoriousCommonOSX.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VictoriousCommonOSX.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C14CC0531211B1486085544 /* Pods-VictoriousCommonOSX.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.stable.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.stable.xcconfig"; sourceTree = "<group>"; };
+		72A0EF5391FF981DE4E9F79A /* Pods-UIAutomationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIAutomationTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-UIAutomationTests/Pods-UIAutomationTests.release.xcconfig"; sourceTree = "<group>"; };
 		79ACFD16A2EFEF8FE18E316E /* Pods-VictoriousCommonOSX.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.qa.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.qa.xcconfig"; sourceTree = "<group>"; };
 		83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.qa.xcconfig"; sourceTree = "<group>"; };
 		861888B7B5EA1C709A7ABB6B /* Pods-VictoriousCommonOSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.debug.xcconfig"; sourceTree = "<group>"; };
@@ -2461,7 +2477,6 @@
 		A77951331B29021D00D9DB0A /* VContentThumbnailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentThumbnailCell.m; path = "victorious/UI/Suggested Users/VContentThumbnailCell.m"; sourceTree = SOURCE_ROOT; };
 		A77951341B29021D00D9DB0A /* VContentThumbnailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VContentThumbnailCell.xib; path = "victorious/UI/Suggested Users/VContentThumbnailCell.xib"; sourceTree = SOURCE_ROOT; };
 		A779513B1B2A3C9A00D9DB0A /* VSuggestedUsersViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VSuggestedUsersViewController.xib; path = "victorious/UI/Suggested Users/VSuggestedUsersViewController.xib"; sourceTree = SOURCE_ROOT; };
-		A77AD4C51A1EFA3D00142F24 /* VAutomation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAutomation.h; sourceTree = "<group>"; };
 		A77AD4C61A1EFDB400142F24 /* VFollowersTextFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowersTextFormatterTests.m; sourceTree = "<group>"; };
 		A77AD4E51A1FD8B600142F24 /* VAlertAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAlertAction.h; path = "Alert Controller/VAlertAction.h"; sourceTree = "<group>"; };
 		A77AD4E61A1FD8B600142F24 /* VAlertAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAlertAction.m; path = "Alert Controller/VAlertAction.m"; sourceTree = "<group>"; };
@@ -2656,6 +2671,15 @@
 		A7DAFCA61B4DF8B200B51C92 /* VObjectManager+GIFSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VObjectManager+GIFSearch.swift"; sourceTree = "<group>"; };
 		A7DAFCA81B4EDACE00B51C92 /* GIFSearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchResult.swift; sourceTree = "<group>"; };
 		A7DAFCAC1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Extensions.swift"; sourceTree = "<group>"; };
+		A7DB4D2A1B7AB1D300199D10 /* UIAutomationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UIAutomationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7DB4D2D1B7AB1D400199D10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A7DB4D381B7AB63300199D10 /* UIAutomationTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIAutomationTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		A7DB4D3C1B7AB6CB00199D10 /* VAutomation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAutomation.h; sourceTree = "<group>"; };
+		A7DB4D3D1B7AB6CB00199D10 /* VAutomation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAutomation.m; sourceTree = "<group>"; };
+		A7DB4D401B7ABA8C00199D10 /* ContentCreationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentCreationTests.swift; sourceTree = "<group>"; };
+		A7DB4D411B7ABA8C00199D10 /* KIFExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KIFExtensions.swift; sourceTree = "<group>"; };
+		A7DB4D421B7ABA8C00199D10 /* VAutomationElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VAutomationElement.swift; sourceTree = "<group>"; };
+		A7DB4D431B7ABA8C00199D10 /* VictoriousTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VictoriousTestCase.swift; sourceTree = "<group>"; };
 		A7DDA6A91B5F0018005CE55E /* Experiment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Experiment.swift; sourceTree = "<group>"; };
 		A7DDA6AB1B5F003B005CE55E /* Experiment+RestKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Experiment+RestKit.swift"; sourceTree = "<group>"; };
 		A7DDA6AD1B5F006B005CE55E /* VObjectManager+Experiments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VObjectManager+Experiments.swift"; sourceTree = "<group>"; };
@@ -3304,9 +3328,12 @@
 		DBF8B4B21A79F91300CFFD47 /* VTagsSearchResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTagsSearchResultsViewController.h; sourceTree = "<group>"; };
 		DBF8B4B31A79F91300CFFD47 /* VTagsSearchResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTagsSearchResultsViewController.m; sourceTree = "<group>"; };
 		DE20E60A8BE791474B9B24CA /* Pods-VictoriousCommon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommon.release.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommon/Pods-VictoriousCommon.release.xcconfig"; sourceTree = "<group>"; };
+		DF7570C25D953516D1D78115 /* Pods-UIAutomationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIAutomationTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UIAutomationTests/Pods-UIAutomationTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E0F99C8D8C60943CBE645C0D /* Pods-victorious-test.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.release.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.release.xcconfig"; sourceTree = "<group>"; };
 		E50D8B24AC3B063A7A6F4D23 /* Pods-VictoriousCommon.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommon.stable.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommon/Pods-VictoriousCommon.stable.xcconfig"; sourceTree = "<group>"; };
+		E781D16A8108A3A2E52805D8 /* Pods-UIAutomationTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIAutomationTests.staging.xcconfig"; path = "Pods/Target Support Files/Pods-UIAutomationTests/Pods-UIAutomationTests.staging.xcconfig"; sourceTree = "<group>"; };
 		E8193ED8CA9746EB7E3D7AD2 /* Pods-victorious-test.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.qa.xcconfig"; sourceTree = "<group>"; };
+		EBD260F9D10C5B73D41754C7 /* Pods-UIAutomationTests.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIAutomationTests.qa.xcconfig"; path = "Pods/Target Support Files/Pods-UIAutomationTests/Pods-UIAutomationTests.qa.xcconfig"; sourceTree = "<group>"; };
 		EDFC6598311E32933A2C83A7 /* Pods-test.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.staging.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.staging.xcconfig"; sourceTree = "<group>"; };
 		F0140BBF1AA93AEB00B95642 /* VTimerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTimerManager.h; sourceTree = "<group>"; };
 		F0140BC01AA93AEB00B95642 /* VTimerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTimerManager.m; sourceTree = "<group>"; };
@@ -3514,6 +3541,7 @@
 		F0FC98211B6298620098AFCB /* VNavigationTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNavigationTitleView.m; sourceTree = "<group>"; };
 		F0FFBA351AD5B1DC00283936 /* VMarqueeDataDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeDataDelegate.h; sourceTree = "<group>"; };
 		F0FFBA361AD5B1EE00283936 /* VMarqueeSelectionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMarqueeSelectionDelegate.h; sourceTree = "<group>"; };
+		FA858308053108D75BD7AC73 /* Pods-UIAutomationTests.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIAutomationTests.stable.xcconfig"; path = "Pods/Target Support Files/Pods-UIAutomationTests/Pods-UIAutomationTests.stable.xcconfig"; sourceTree = "<group>"; };
 		FA9A96A39C05C50C7D098A8E /* Pods-test.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.qa.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.qa.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -3548,6 +3576,14 @@
 			files = (
 				0370FBBE1B71B261009047B6 /* VictoriousCommon.framework in Frameworks */,
 				376A73B405D15983F20679CF /* libPods-victorious-test.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A7DB4D271B7AB1D300199D10 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA90D6EBCFC069A2EC1F478A /* libPods-UIAutomationTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5077,6 +5113,11 @@
 				6346130F32A50A474A9D3D05 /* Pods-VictoriousCommonOSX.staging.xcconfig */,
 				6C14CC0531211B1486085544 /* Pods-VictoriousCommonOSX.stable.xcconfig */,
 				04F19C7363CDE715B04BAB21 /* Pods-VictoriousCommonOSX.release.xcconfig */,
+				DF7570C25D953516D1D78115 /* Pods-UIAutomationTests.debug.xcconfig */,
+				EBD260F9D10C5B73D41754C7 /* Pods-UIAutomationTests.qa.xcconfig */,
+				E781D16A8108A3A2E52805D8 /* Pods-UIAutomationTests.staging.xcconfig */,
+				FA858308053108D75BD7AC73 /* Pods-UIAutomationTests.stable.xcconfig */,
+				72A0EF5391FF981DE4E9F79A /* Pods-UIAutomationTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -5850,7 +5891,8 @@
 		A77AD4C41A1EFA3D00142F24 /* Automation */ = {
 			isa = PBXGroup;
 			children = (
-				A77AD4C51A1EFA3D00142F24 /* VAutomation.h */,
+				A7DB4D3C1B7AB6CB00199D10 /* VAutomation.h */,
+				A7DB4D3D1B7AB6CB00199D10 /* VAutomation.m */,
 				A71DAF231B695FC200E0BE53 /* AutomationId.swift */,
 			);
 			path = Automation;
@@ -6156,6 +6198,27 @@
 			name = EndCard;
 			sourceTree = "<group>";
 		};
+		A7DB4D2B1B7AB1D400199D10 /* UIAutomationTests */ = {
+			isa = PBXGroup;
+			children = (
+				A7DB4D401B7ABA8C00199D10 /* ContentCreationTests.swift */,
+				A7DB4D411B7ABA8C00199D10 /* KIFExtensions.swift */,
+				A7DB4D2C1B7AB1D400199D10 /* Supporting Files */,
+				A7DB4D381B7AB63300199D10 /* UIAutomationTests-Bridging-Header.h */,
+				A7DB4D421B7ABA8C00199D10 /* VAutomationElement.swift */,
+				A7DB4D431B7ABA8C00199D10 /* VictoriousTestCase.swift */,
+			);
+			path = UIAutomationTests;
+			sourceTree = "<group>";
+		};
+		A7DB4D2C1B7AB1D400199D10 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				A7DB4D2D1B7AB1D400199D10 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		A7ECC1C31AD617480003E00A /* Tool Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -6274,6 +6337,7 @@
 				BE76FBE218E4AA95009E6DD7 /* AppSpecific */,
 				0392694D1B5C720400FCD0AA /* downloadtemplate */,
 				03C1856219B42C9100E27D05 /* Fonts */,
+				A7DB4D2B1B7AB1D400199D10 /* UIAutomationTests */,
 				BE171D781868BE64004E5202 /* Frameworks */,
 				3B85CC77EBE2E15F24627208 /* Pods */,
 				BE171D771868BE64004E5202 /* Products */,
@@ -6293,6 +6357,7 @@
 				0370FBBD1B71B261009047B6 /* VictoriousCommonTests.xctest */,
 				0352FC7E1B72B90000DB6EAB /* VictoriousCommon.framework */,
 				0352FCBF1B72C60200DB6EAB /* downloadtemplate.app */,
+				A7DB4D2A1B7AB1D300199D10 /* UIAutomationTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -6327,6 +6392,7 @@
 				BE171D7D1868BE64004E5202 /* UIKit.framework */,
 				A7F8DD621A0B1A8B00F82256 /* WebKit.framework */,
 				BE171D971868BE64004E5202 /* XCTest.framework */,
+				59DCA3FB8FBB475BA2334728 /* libPods-UIAutomationTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -7816,6 +7882,26 @@
 			productReference = 0370FBBD1B71B261009047B6 /* VictoriousCommonTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		A7DB4D291B7AB1D300199D10 /* UIAutomationTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A7DB4D371B7AB1D400199D10 /* Build configuration list for PBXNativeTarget "UIAutomationTests" */;
+			buildPhases = (
+				ABB71B4D45755BD32AD3E79A /* Check Pods Manifest.lock */,
+				A7DB4D261B7AB1D300199D10 /* Sources */,
+				A7DB4D271B7AB1D300199D10 /* Frameworks */,
+				A7DB4D281B7AB1D300199D10 /* Resources */,
+				3283E0B1151CD21C10475B6F /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A7DB4D311B7AB1D400199D10 /* PBXTargetDependency */,
+			);
+			name = UIAutomationTests;
+			productName = UIAutomationTests;
+			productReference = A7DB4D2A1B7AB1D300199D10 /* UIAutomationTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		BE171D751868BE64004E5202 /* victorious */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BE171DA81868BE64004E5202 /* Build configuration list for PBXNativeTarget "victorious" */;
@@ -7873,6 +7959,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = V;
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0640;
 				ORGANIZATIONNAME = Victorious;
 				TargetAttributes = {
@@ -7887,6 +7974,10 @@
 						DevelopmentTeam = ABHRJGEGKA;
 					};
 					0370FBBC1B71B261009047B6 = {
+						CreatedOnToolsVersion = 6.4;
+						TestTargetID = BE171D751868BE64004E5202;
+					};
+					A7DB4D291B7AB1D300199D10 = {
 						CreatedOnToolsVersion = 6.4;
 						TestTargetID = BE171D751868BE64004E5202;
 					};
@@ -7930,6 +8021,7 @@
 				0370FBBC1B71B261009047B6 /* VictoriousCommonTests */,
 				0352FC7D1B72B90000DB6EAB /* VictoriousCommonOSX */,
 				0352FCBE1B72C60200DB6EAB /* downloadtemplate */,
+				A7DB4D291B7AB1D300199D10 /* UIAutomationTests */,
 			);
 		};
 /* End PBXProject section */
@@ -7962,6 +8054,13 @@
 			files = (
 				0352FC781B72B09900DB6EAB /* templateCache.json in Resources */,
 				0370FBF31B728618009047B6 /* templateWithImageURLs.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A7DB4D281B7AB1D300199D10 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8288,6 +8387,21 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-victorious/Pods-victorious-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		3283E0B1151CD21C10475B6F /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-UIAutomationTests/Pods-UIAutomationTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		336ADB2C290246046015EE7E /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -8405,6 +8519,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "#\n# Searches for unused tracking macros defined in VTrackingConstants.h and emits error if found\n#\n# If you are running tests frequently and this is too slow, set VALIDATE_TRACKING to NO in the User-defined Macros build setting.\n#\n\nif [[ ${VALIDATE_TRACKING} != \"YES\" ]];\nthen\n    exit 0\nfi\n\nFILES=( \"events.csv\" \"keys.csv\" \"values.csv\" )\nPREFIXES=( \"VTrackingEvent\" \"VTrackingKey\" \"VTrackingValue\" )\nBASE_DIR=\"${SRCROOT}/../build-scripts/tracking_csv/\"\n\nfor i in {0..2}\ndo\n    FILE=${FILES[$i]}\n    PREFIX=${PREFIXES[$i]}\n    (cat \"$BASE_DIR$FILE\" ; echo) | while IFS=, read -r COLUMN_1 COLUMN_2\n    do\n        if [[ $COLUMN_1 != *\"//\"* ]] && [ ${#COLUMN_1} != 0 ];\n        then\n            SEARCH_STRING=\"$PREFIX$COLUMN_1\"\n            SEARCH_RESULT=$(find \"${SRCROOT}/victorious\" -name \"*.m\" -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($SEARCH_STRING).*\\$\" | perl -p -e \"s/($SEARCH_STRING)/ \\Tracking constant not    implemented./\")\n            LINE_COUNT=$(echo \"$SEARCH_RESULT\" | wc -l)\n            NUM_USES=$(($LINE_COUNT-1))\n            if [ $NUM_USES == 0 ];\n            then\n                echo $SEARCH_RESULT\n            fi\n        fi\n    done\ndone";
+		};
+		ABB71B4D45755BD32AD3E79A /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
 		};
 		E8C387ACF3E64C873179907C /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -8551,6 +8680,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A7DB4D261B7AB1D300199D10 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7DB4D461B7ABA8C00199D10 /* VAutomationElement.swift in Sources */,
+				A7DB4D441B7ABA8C00199D10 /* ContentCreationTests.swift in Sources */,
+				A7DB4D451B7ABA8C00199D10 /* KIFExtensions.swift in Sources */,
+				A7DB4D481B7ACB9A00199D10 /* AutomationId.swift in Sources */,
+				A7DB4D471B7ABA8C00199D10 /* VictoriousTestCase.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BE171D721868BE64004E5202 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -8610,6 +8751,7 @@
 				0314D4DB19B46B5E00FA363C /* VTOSViewController.m in Sources */,
 				0314D48A19B46B5E00FA363C /* VNoContentView.m in Sources */,
 				039ED28219C6AB0900305987 /* AVCaptureConnection+VOrientation.m in Sources */,
+				A7DB4D3F1B7AB6CB00199D10 /* VAutomation.m in Sources */,
 				D8DF722A1AFEC360002EA7A5 /* VTabMenuViewController.m in Sources */,
 				A721E9681B572454000B7901 /* VSequence+OrderedSet.m in Sources */,
 				A6E104D51B56C88D0062392A /* VPublishShareCollectionViewCell.m in Sources */,
@@ -9460,6 +9602,11 @@
 			isa = PBXTargetDependency;
 			target = 0370FBB21B71B260009047B6 /* VictoriousCommon */;
 			targetProxy = 0370FBC81B71B261009047B6 /* PBXContainerItemProxy */;
+		};
+		A7DB4D311B7AB1D400199D10 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BE171D751868BE64004E5202 /* victorious */;
+			targetProxy = A7DB4D301B7AB1D400199D10 /* PBXContainerItemProxy */;
 		};
 		BE171D9D1868BE64004E5202 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -10763,6 +10910,130 @@
 			};
 			name = Staging;
 		};
+		A7DB4D321B7AB1D400199D10 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DF7570C25D953516D1D78115 /* Pods-UIAutomationTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = UIAutomationTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "UIAutomationTests/UIAutomationTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
+			};
+			name = Debug;
+		};
+		A7DB4D331B7AB1D400199D10 /* QA */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EBD260F9D10C5B73D41754C7 /* Pods-UIAutomationTests.qa.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = UIAutomationTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "UIAutomationTests/UIAutomationTests-Bridging-Header.h";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
+			};
+			name = QA;
+		};
+		A7DB4D341B7AB1D400199D10 /* Staging */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E781D16A8108A3A2E52805D8 /* Pods-UIAutomationTests.staging.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = UIAutomationTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "UIAutomationTests/UIAutomationTests-Bridging-Header.h";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
+			};
+			name = Staging;
+		};
+		A7DB4D351B7AB1D400199D10 /* Stable */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FA858308053108D75BD7AC73 /* Pods-UIAutomationTests.stable.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = UIAutomationTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "UIAutomationTests/UIAutomationTests-Bridging-Header.h";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
+			};
+			name = Stable;
+		};
+		A7DB4D361B7AB1D400199D10 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 72A0EF5391FF981DE4E9F79A /* Pods-UIAutomationTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = UIAutomationTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "UIAutomationTests/UIAutomationTests-Bridging-Header.h";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
+			};
+			name = Release;
+		};
 		BE171DA61868BE64004E5202 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -11188,6 +11459,18 @@
 				0370FBD61B71B262009047B6 /* Staging */,
 				0370FBD71B71B262009047B6 /* Stable */,
 				0370FBD81B71B262009047B6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A7DB4D371B7AB1D400199D10 /* Build configuration list for PBXNativeTarget "UIAutomationTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A7DB4D321B7AB1D400199D10 /* Debug */,
+				A7DB4D331B7AB1D400199D10 /* QA */,
+				A7DB4D341B7AB1D400199D10 /* Staging */,
+				A7DB4D351B7AB1D400199D10 /* Stable */,
+				A7DB4D361B7AB1D400199D10 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

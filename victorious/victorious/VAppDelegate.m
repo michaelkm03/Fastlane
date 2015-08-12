@@ -149,5 +149,5 @@ static BOOL isRunningTests(void)
 {
     NSDictionary *environment = [[NSProcessInfo processInfo] environment];
     NSString *injectBundle = environment[@"XCInjectBundle"];
-    return [[injectBundle pathExtension] isEqualToString:@"xctest"];
+    return [[injectBundle lastPathComponent] isEqualToString:@"victoriousTests.xctest"];
 }

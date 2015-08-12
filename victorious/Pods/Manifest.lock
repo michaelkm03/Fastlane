@@ -7,6 +7,9 @@ PODS:
   - IGDigest (1.1.2)
   - ISO8601DateFormatterValueTransformer (0.6.0):
     - RKValueTransformers (~> 1.1.0)
+  - KIF (3.2.3):
+    - KIF/XCTest (= 3.2.3)
+  - KIF/XCTest (3.2.3)
   - KVOController (1.0.3)
   - MBProgressHUD (0.9.1)
   - Nocilla (0.8.1)
@@ -42,6 +45,7 @@ DEPENDENCIES:
   - CCHLinkTextView
   - FlurrySDK
   - IGDigest
+  - KIF (~> 3.0)
   - KVOController
   - MBProgressHUD
   - Nocilla (from `https://github.com/TouchFrame/Nocilla.git`, branch `block-response`)
@@ -66,6 +70,7 @@ SPEC CHECKSUMS:
   FlurrySDK: 8478625434c06b323338f776758162756d92c3ed
   IGDigest: 066753c10f3f1b593b00037b9ee93dc96b9e7762
   ISO8601DateFormatterValueTransformer: 3ac3a721381697cab4e792d8049ce2f2e9ad3036
+  KIF: a94bffe9c97e449e44f8fa481c53243d21309e1e
   KVOController: 9fd8f0343670994e4b6f9f0b31f5a45663f3e1cf
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   Nocilla: 76a45b3103ac986bedd189eb8773f23995d9851d
@@ -77,4 +82,4 @@ SPEC CHECKSUMS:
   TransitionKit: 3a14b6acc7cf2d1dd3e454e24dbad1cfab9a1ef1
   TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.38.2

@@ -77,6 +77,7 @@
     self.toolController.canRenderAndExportChangeBlock = ^void(BOOL canRenderAndExport)
     {
         welf.continueButton.enabled = canRenderAndExport;
+        welf.continueButton.accessibilityIdentifier = VAutomationIdentifierWorkspaceContinue;
     };
     self.toolController.snapshotImageBecameAvailable = ^void(UIImage *snapshotImage)
     {

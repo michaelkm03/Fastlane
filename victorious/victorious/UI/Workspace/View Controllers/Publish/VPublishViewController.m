@@ -147,6 +147,7 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
     CGAffineTransform initialTransformTranslation = CGAffineTransformMakeTranslation(0, -CGRectGetMidY(self.view.frame));
     CGAffineTransform initialTransformRotation = CGAffineTransformMakeRotation(M_PI * (1-randomFloat));
     self.publishPrompt.transform = CGAffineTransformConcat(initialTransformTranslation, initialTransformRotation);
+     self.publishButton.accessibilityIdentifier = VAutomationIdentifierPublishFinish;
     
     [self setupCaptionTextView];
     
