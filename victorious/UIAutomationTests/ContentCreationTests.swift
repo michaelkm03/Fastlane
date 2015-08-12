@@ -18,12 +18,12 @@ class ContentCreationTests: VictoriousTestCase {
     }
     
     func testCreateImage() {
-        self.tester().waitForViewWithAccessibilityLabel( "Menu Create" ).tap()
+        self.tester().tapViewWithAccessibilityLabel( "Menu Create" )
         
         // Log in if presented after pressing "Create"
         self.loginIfRequired()
         
-        self.tester().waitForViewWithAccessibilityLabel( "IMAGE" ).tap()
+        self.tester().tapViewWithAccessibilityLabel( "Create Image" )
         
         // Grant library permission and dismiss alert
         if self.elementExistsWithAccessibilityLabel( VAutomationIdentifierGrantLibraryAccess ) {
@@ -37,27 +37,25 @@ class ContentCreationTests: VictoriousTestCase {
         self.tester().tapItemAtIndexPath( indexPath, inCollectionViewWithAccessibilityIdentifier: VAutomationIdentifierMediaGalleryCollection )
         
         // Add a random caption
-        let publishLabel = "Publish"
-        self.tester().waitForViewWithAccessibilityLabel( publishLabel )
-        self.tester().tapViewWithAccessibilityLabel( publishLabel )
+        let continueLabel = "Publish"
+        self.tester().tapViewWithAccessibilityLabel( continueLabel )
         
         self.tester().waitForTimeInterval( 10.0 )
         
-        let captionPlaceholder = "Please add a caption"
-        self.tester().waitForViewWithAccessibilityLabel( captionPlaceholder )
-        self.tester().tapViewWithAccessibilityLabel( captionPlaceholder )
+        self.tester().waitForViewWithAccessibilityLabel( VAutomationIdentifierPublishCatpionText )
+        self.tester().tapViewWithAccessibilityLabel( VAutomationIdentifierPublishCatpionText )
         
         let randomCaption = "caption \(1000 + arc4random() % 1000)"
         self.tester().enterTextIntoCurrentFirstResponder( randomCaption )
         
-        self.tester().waitForViewWithAccessibilityLabel( "PUBLISH" ).tap()
+        self.tester().waitForViewWithAccessibilityLabel( VAutomationIdentifierPublishFinish ).tap()
         
         // Wait for transcaoding to complete on backend
         self.tester().waitWithCountdownForInterval( 20.0 )
         
         // Confirm that post with our caption is presentin the profile stream
         self.tester().waitForViewWithAccessibilityLabel( "Menu Profile" ).tap()
-        let view = self.tester().waitForViewWithAccessibilityLabel( randomCaption )
+        let view = self.tester().waitForViewWithAccessibilityLabel( VAutomationIdentifierStreamCellCaption )
         self.tester().expectView( view, toContainText: randomCaption )
     }
 }

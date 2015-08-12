@@ -45,7 +45,7 @@ DEPENDENCIES:
   - CCHLinkTextView
   - FlurrySDK
   - IGDigest
-  - KIF (~> 3.0)
+  - KIF (from `https://github.com/TouchFrame/KIF.git`)
   - KVOController
   - MBProgressHUD
   - Nocilla (from `https://github.com/TouchFrame/Nocilla.git`, branch `block-response`)
@@ -55,11 +55,16 @@ DEPENDENCIES:
   - TTTAttributedLabel
 
 EXTERNAL SOURCES:
+  KIF:
+    :git: https://github.com/TouchFrame/KIF.git
   Nocilla:
     :branch: block-response
     :git: https://github.com/TouchFrame/Nocilla.git
 
 CHECKOUT OPTIONS:
+  KIF:
+    :commit: 9dc5e754f3fcced8104b90af5832f003495f1232
+    :git: https://github.com/TouchFrame/KIF.git
   Nocilla:
     :commit: 7223801397388bf0d05ec6d25657468453245af1
     :git: https://github.com/TouchFrame/Nocilla.git

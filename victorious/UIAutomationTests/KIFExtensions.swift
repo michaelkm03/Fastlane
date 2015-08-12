@@ -28,10 +28,10 @@ extension KIFTestActor {
     }
     
     func waitWithCountdownForInterval( interval:NSTimeInterval ) {
-        println( "Waiting for \(interval) seconds..." )
+        println( "Waiting for \(Int(interval)) seconds..." )
         for i in 0..<Int(interval) {
             self.tester().waitForTimeInterval( 1.0 )
-            println( "\(i)" )
+            println( "\(Int(interval)-i)..." )
         }
     }
 }

@@ -115,10 +115,11 @@ NS_INLINE BOOL StringsMatchExceptLineBreaks(NSString *expected, NSString *actual
         }
         
         BOOL labelsMatch = StringsMatchExceptLineBreaks(label, element.accessibilityLabel);
+        BOOL identifierMatches = [label isEqualToString:element.accessibilityIdentifier];
         BOOL traitsMatch = ((element.accessibilityTraits) & traits) == traits;
         BOOL valuesMatch = !value || [value isEqual:accessibilityValue];
 
-        return (BOOL)(labelsMatch && traitsMatch && valuesMatch);
+        return (BOOL)((identifierMatches || labelsMatch) && traitsMatch && valuesMatch);
     }];
 }
 

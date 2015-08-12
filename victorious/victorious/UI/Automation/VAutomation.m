@@ -57,4 +57,3 @@ NSString * const VAutomationIdentifierCommentBarSendButton       = @"Comment Bar
 NSString * const VAutomationIdentifierCommentBarClearButton      = @"Comment Bar Clear Attachment Button";
 
 NSString * const VAutomationIdentifierMediaGalleryCollection     = @"Media Gallery Collection";
-NSString * const VAutomationIdentifierWorkspaceContinue          = @"Continue";

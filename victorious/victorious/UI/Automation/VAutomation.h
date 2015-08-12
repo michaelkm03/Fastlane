@@ -68,4 +68,3 @@ extern NSString * const VAutomationIdentifierCommentBarSendButton;
 extern NSString * const VAutomationIdentifierCommentBarClearButton;
 
 extern NSString * const VAutomationIdentifierMediaGalleryCollection;
-extern NSString * const VAutomationIdentifierWorkspaceContinue;
