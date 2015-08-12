@@ -515,15 +515,15 @@ static char KVOContext;
 {
     if ( textView == self.questionTextView )
     {
-        [self.questionPrompt setHidden:YES];
+        self.questionPrompt.hidden = YES;
     }
     else if ( textView == self.leftAnswerTextView )
     {
-        [self.leftAnswerPrompt setHidden:YES];
+        self.leftAnswerPrompt.hidden = YES;
     }
     else if ( textView == self.rightAnswerTextView )
     {
-        [self.rightAnswerPrompt setHidden:YES];
+        self.rightAnswerPrompt.hidden = YES;
     }
 }
 
