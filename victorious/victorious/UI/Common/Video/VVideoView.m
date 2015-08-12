@@ -38,6 +38,7 @@ static void *kPlaybackBufferEmpty = &kPlaybackBufferEmpty;
     if (self.player.currentItem != nil)
     {
         [self.player removeObserver:self forKeyPath:kRateKey context:kRateContext];
+        [self.player.currentItem removeObserver:self forKeyPath:kBufferEmptyKey context:kPlaybackBufferEmpty];
     }
 }
 
@@ -159,9 +160,11 @@ static void *kPlaybackBufferEmpty = &kPlaybackBufferEmpty;
     if (self.player.currentItem != nil)
     {
         [self.player removeObserver:self forKeyPath:kRateKey context:kRateContext];
+        [self.player.currentItem removeObserver:self forKeyPath:kBufferEmptyKey context:kPlaybackBufferEmpty];
     }
     
     [self.player addObserver:self forKeyPath:kRateKey options:NSKeyValueObservingOptionNew context:kRateContext];
+    [playerItem addObserver:self forKeyPath:kBufferEmptyKey options:NSKeyValueObservingOptionNew context:kPlaybackBufferEmpty];
     
     [self.player replaceCurrentItemWithPlayerItem:playerItem];
     
@@ -240,6 +243,13 @@ static void *kPlaybackBufferEmpty = &kPlaybackBufferEmpty;
             {
                 [self.delegate videoViewDidStopBuffering:self];
             }
+        }
+    }
+    else if (context == kPlaybackBufferEmpty)
+    {
+        if ([self.delegate respondsToSelector:@selector(videoViewDidStopBuffering:)])
+        {
+            [self.delegate videoViewDidStopBuffering:self];
         }
     }
 }
