@@ -502,13 +502,13 @@ static char KVOContext;
         [textView resignFirstResponder];
         return NO;
     }
-    else if ( (textView == self.leftAnswerTextView) || (textView == self.rightAnswerTextView) )
+    
+    NSUInteger characterLimit = ((VContentInputAccessoryView *)textView.inputAccessoryView).maxCharacterLength;
+    if ((text.length + textView.text.length >  characterLimit) && (characterLimit > 0) )
     {
-        if (text.length + textView.text.length > VConstantsPollAnswerLength)
-        {
-            return NO;
-        }
+        return NO;
     }
+    
     return YES;
 }
 
