@@ -14,6 +14,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+static NSString * const kRateKey = @"rate";
+static void *kRateContext = &kRateContext;
+
 @interface VVideoView()
 
 @property (nonatomic, strong, nullable) AVPlayer *player;
@@ -29,6 +32,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    if (self.player.currentItem != nil)
+    {
+        [self.player removeObserver:self forKeyPath:kRateKey context:kRateContext];
+    }
 }
 
 - (void)reset
@@ -112,7 +120,9 @@ NS_ASSUME_NONNULL_BEGIN
     self.player.actionAtItemEnd = loop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
     self.player.muted = audioMuted;
     
+    
     _itemURL = itemURL;
+    
     self.newestPlayerItem = nil;
     self.playerLayer.opacity = 0.0f;
     [self.videoUtils createPlayerItemWithURL:itemURL loop:loop readyCallback:^(AVPlayerItem *playerItem, NSURL *composedItemURL, CMTime duration)
@@ -120,6 +130,9 @@ NS_ASSUME_NONNULL_BEGIN
          if ( [composedItemURL isEqual:_itemURL] )
          {
              self.newestPlayerItem = playerItem;
+             
+             
+             
              [self didFinishAssetCreation:playerItem];
          }
      }];
@@ -141,6 +154,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)didFinishAssetCreation:(AVPlayerItem *)playerItem
 {
+    if (self.player.currentItem != nil)
+    {
+        [self.player removeObserver:self forKeyPath:kRateKey context:kRateContext];
+    }
+    
+    [self.player addObserver:self forKeyPath:kRateKey options:NSKeyValueObservingOptionNew context:kRateContext];
+    
     [self.player replaceCurrentItemWithPlayerItem:playerItem];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
@@ -151,37 +171,6 @@ NS_ASSUME_NONNULL_BEGIN
                                              selector:@selector(playerItemDidReachEnd:)
                                                  name:AVPlayerItemDidPlayToEndTimeNotification
                                                object:playerItem];
-    
-    __weak VVideoView *weakSelf = self;
-    [self.KVOController observe:playerItem
-                       keyPaths:@[@"playbackBufferEmpty"]
-                        options:NSKeyValueObservingOptionNew
-                          block:^(id observer, id object, NSDictionary *change)
-     {
-         if ([change[@"new"] boolValue])
-         {
-             __strong VVideoView *strongSelf = weakSelf;
-             if ([strongSelf.delegate respondsToSelector:@selector(videoViewDidStartBuffering:)])
-             {
-                 [strongSelf.delegate videoViewDidStartBuffering:strongSelf];
-             }
-         }
-     }];
-    
-    [self.KVOController observe:playerItem
-                       keyPaths:@[@"playbackLikelyToKeepUp"]
-                        options:NSKeyValueObservingOptionNew
-                          block:^(id observer, id object, NSDictionary *change)
-     {
-         if ([change[@"new"] boolValue])
-         {
-             __strong VVideoView *strongSelf = weakSelf;
-             if ([strongSelf.delegate respondsToSelector:@selector(videoViewDidStopBuffering:)])
-             {
-                 [strongSelf.delegate videoViewDidStopBuffering:strongSelf];
-             }
-         }
-     }];
     
     if ( self.delegate != nil )
     {
@@ -226,6 +215,30 @@ NS_ASSUME_NONNULL_BEGIN
     {
         [self.player.currentItem seekToTime:kCMTimeZero];
         [self.player pause];
+    }
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (context == kRateContext)
+    {
+        if (self.player.rate == 0  )
+        {
+            if ([self.delegate respondsToSelector:@selector(videoViewDidStartBuffering:)])
+            {
+                [self.delegate videoViewDidStartBuffering:self];
+            }
+
+        }
+        else if (self.player.rate == 1)
+        {
+            if ([self.delegate respondsToSelector:@selector(videoViewDidStopBuffering:)])
+            {
+                [self.delegate videoViewDidStopBuffering:self];
+            }
+        }
     }
 }
 

@@ -83,8 +83,8 @@ typedef NS_ENUM(NSUInteger, VVideoPreviewViewState)
     VAsset *mp4Asset = [sequence.firstNode mp4Asset];
     
     // First check mp4 asset to see if we should autoplay and only if it's under 30 seconds
-//    if ( mp4Asset.streamAutoplay.boolValue && mp4Asset.duration != nil && mp4Asset.duration.integerValue < 30 )
-    if ( !mp4Asset.streamAutoplay.boolValue )
+    if ( mp4Asset.streamAutoplay.boolValue && mp4Asset.duration != nil && mp4Asset.duration.integerValue < 30 )
+//    if ( !mp4Asset.streamAutoplay.boolValue )
     {
         [self loadAssetURL:[NSURL URLWithString:mp4Asset.data] andLoop:YES];
     }
@@ -102,6 +102,8 @@ typedef NS_ENUM(NSUInteger, VVideoPreviewViewState)
     self.hasPlayed = NO;
     
     self.assetURL = url;
+    
+    [self setState:VVideoPreviewViewStateBuffering];
     
     __weak VVideoSequencePreviewView *weakSelf = self;
     [self.videoView setItemURL:url
@@ -152,7 +154,6 @@ typedef NS_ENUM(NSUInteger, VVideoPreviewViewState)
     if (![self playVideo])
     {
         [self.videoView pause];
-        [self setState:VVideoPreviewViewStateEnded];
     }
 }
 
@@ -161,7 +162,6 @@ typedef NS_ENUM(NSUInteger, VVideoPreviewViewState)
     if (self.inFocus && !self.hasPlayed && self.assetURL != nil)
     {
         [self.videoView play];
-        [self setState:VVideoPreviewViewStatePlaying];
         return YES;
     }
     
@@ -184,12 +184,18 @@ typedef NS_ENUM(NSUInteger, VVideoPreviewViewState)
 
 - (void)videoViewDidStartBuffering:(VVideoView *__nonnull)videoView
 {
-//    [self setState:VVideoPreviewViewStateBuffering];
+    if (self.state != VVideoPreviewViewStateEnded)
+    {
+        [self setState:VVideoPreviewViewStateBuffering];
+    }
 }
 
 - (void)videoViewDidStopBuffering:(VVideoView *__nonnull)videoView
 {
-//    [self setState:VVideoPreviewViewStatePlaying];
+    if (self.state != VVideoPreviewViewStateEnded)
+    {
+        [self setState:VVideoPreviewViewStatePlaying];
+    }
 }
 
 @end
