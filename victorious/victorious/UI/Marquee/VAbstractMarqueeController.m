@@ -174,6 +174,19 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     }
 }
 
+- (void)endFocusOnAllCells
+{
+    self.currentFocusPage = 0;
+    
+    for ( VAbstractMarqueeStreamItemCell *cell in self.collectionView.visibleCells )
+    {
+        if ( [cell.previewView conformsToProtocol:@protocol(VCellFocus)] )
+        {
+            [(VStreamItemPreviewView <VCellFocus> *)cell.previewView setHasFocus:NO];
+        }
+    }
+}
+
 - (void)selectNextTab
 {
     if ( !self.collectionView.isScrollEnabled )

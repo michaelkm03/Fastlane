@@ -91,4 +91,9 @@ extern NSString * const kMarqueeURLKey;
  */
 - (void)updateFocus;
 
+/**
+ End focus on marquee cells
+ */
+- (void)endFocusOnAllCells;
+
 @end

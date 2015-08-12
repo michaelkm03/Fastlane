@@ -345,7 +345,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     // Stop any video cells
     [self.focusHelper endFocusOnAllCells];
-    [self.marqueeCellController updateFocus];
+    [self.marqueeCellController endFocusOnAllCells];
 }
 
 - (BOOL)shouldAutorotate
