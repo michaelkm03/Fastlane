@@ -73,26 +73,16 @@ typedef NS_ENUM(NSUInteger, VVideoPreviewViewState)
     
     self.assetURL = nil;
     
-    // Check if autoplay is enabled before loading asset URL
-    if (![self.videoSettings isAutoplayEnabled])
-    {
-        return;
-    }
-    
     VAsset *HLSAsset = [sequence.firstNode httpLiveStreamingAsset];
-    VAsset *mp4Asset = [sequence.firstNode mp4Asset];
     
-    // First check mp4 asset to see if we should autoplay and only if it's under 30 seconds
-    if ( mp4Asset.streamAutoplay.boolValue && mp4Asset.duration != nil && mp4Asset.duration.integerValue < 30 )
-//    if ( !mp4Asset.streamAutoplay.boolValue )
+    // Check HLS asset to see if we should autoplay and only if it's over 30 seconds
+    if ( !HLSAsset.streamAutoplay.boolValue )
     {
-        [self loadAssetURL:[NSURL URLWithString:mp4Asset.data] andLoop:YES];
-    }
-    // Else check HLS asset to see if we should autoplay and only if it's over 30 seconds
-//    else if ( !HLSAsset.streamAutoplay.boolValue && HLSAsset.duration != nil && HLSAsset.duration.integerValue >= 30)
-    else if ( !HLSAsset.streamAutoplay.boolValue )
-    {
-        [self loadAssetURL:[NSURL URLWithString:HLSAsset.data] andLoop:NO];
+        // Check if autoplay is enabled before loading asset URL
+        if ([self.videoSettings isAutoplayEnabled])
+        {
+            [self loadAssetURL:[NSURL URLWithString:HLSAsset.data] andLoop:NO];
+        }
     }
 }
 
@@ -179,6 +169,7 @@ typedef NS_ENUM(NSUInteger, VVideoPreviewViewState)
 - (void)videoDidReachEnd:(VVideoView *__nonnull)videoView
 {
     self.hasPlayed = YES;
+    [self.videoView play];
     [self setState:VVideoPreviewViewStateEnded];
 }
 

@@ -14,9 +14,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-static NSString * const kRateKey = @"rate";
-static void *kRateContext = &kRateContext;
-static NSString * const kBufferEmptyKey = @"playbackBufferEmpty";
+static NSString * const kPlaybackBufferLikelyToKeepUpKey = @"playbackLikelyToKeepUp";
+static void *kPlaybackBufferLikelyToKeepUp = &kPlaybackBufferLikelyToKeepUp;
+static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 static void *kPlaybackBufferEmpty = &kPlaybackBufferEmpty;
 
 @interface VVideoView()
@@ -37,8 +37,8 @@ static void *kPlaybackBufferEmpty = &kPlaybackBufferEmpty;
     
     if (self.player.currentItem != nil)
     {
-        [self.player removeObserver:self forKeyPath:kRateKey context:kRateContext];
-        [self.player.currentItem removeObserver:self forKeyPath:kBufferEmptyKey context:kPlaybackBufferEmpty];
+        [self.player.currentItem removeObserver:self forKeyPath:kPlaybackBufferLikelyToKeepUpKey context:kPlaybackBufferLikelyToKeepUp];
+        [self.player.currentItem removeObserver:self forKeyPath:kPlaybackBufferEmptyKey context:kPlaybackBufferEmpty];
     }
 }
 
@@ -159,12 +159,12 @@ static void *kPlaybackBufferEmpty = &kPlaybackBufferEmpty;
 {
     if (self.player.currentItem != nil)
     {
-        [self.player removeObserver:self forKeyPath:kRateKey context:kRateContext];
-        [self.player.currentItem removeObserver:self forKeyPath:kBufferEmptyKey context:kPlaybackBufferEmpty];
+        [self.player.currentItem removeObserver:self forKeyPath:kPlaybackBufferLikelyToKeepUpKey context:kPlaybackBufferLikelyToKeepUp];
+        [self.player.currentItem removeObserver:self forKeyPath:kPlaybackBufferEmptyKey context:kPlaybackBufferEmpty];
     }
     
-    [self.player addObserver:self forKeyPath:kRateKey options:NSKeyValueObservingOptionNew context:kRateContext];
-    [playerItem addObserver:self forKeyPath:kBufferEmptyKey options:NSKeyValueObservingOptionNew context:kPlaybackBufferEmpty];
+    [playerItem addObserver:self forKeyPath:kPlaybackBufferLikelyToKeepUpKey options:NSKeyValueObservingOptionNew context:kPlaybackBufferLikelyToKeepUp];
+    [playerItem addObserver:self forKeyPath:kPlaybackBufferEmptyKey options:NSKeyValueObservingOptionNew context:kPlaybackBufferEmpty];
     
     [self.player replaceCurrentItemWithPlayerItem:playerItem];
     
@@ -227,17 +227,9 @@ static void *kPlaybackBufferEmpty = &kPlaybackBufferEmpty;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if (context == kRateContext)
+    if (context == kPlaybackBufferLikelyToKeepUp)
     {
-        if (self.player.rate == 0  )
-        {
-            if ([self.delegate respondsToSelector:@selector(videoViewDidStartBuffering:)])
-            {
-                [self.delegate videoViewDidStartBuffering:self];
-            }
-
-        }
-        else if (self.player.rate == 1)
+        if (self.player.currentItem.isPlaybackLikelyToKeepUp)
         {
             if ([self.delegate respondsToSelector:@selector(videoViewDidStopBuffering:)])
             {
@@ -247,9 +239,12 @@ static void *kPlaybackBufferEmpty = &kPlaybackBufferEmpty;
     }
     else if (context == kPlaybackBufferEmpty)
     {
-        if ([self.delegate respondsToSelector:@selector(videoViewDidStartBuffering:)])
+        if (self.player.currentItem.isPlaybackBufferEmpty)
         {
-            [self.delegate videoViewDidStartBuffering:self];
+            if ([self.delegate respondsToSelector:@selector(videoViewDidStartBuffering:)])
+            {
+                [self.delegate videoViewDidStartBuffering:self];
+            }
         }
     }
 }
