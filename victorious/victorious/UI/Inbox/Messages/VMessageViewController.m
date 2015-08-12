@@ -98,12 +98,10 @@
         __weak typeof(self) weakSelf = self;
         [self.tableDataSource setAfterUpdate:^
          {
-             // Give cells a moment to come on screen
-             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                            {
-                                __strong typeof(weakSelf) strongSelf = weakSelf;
-                                [strongSelf.focusHelper updateFocus];
-                            });
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 __strong typeof(weakSelf) strongSelf = weakSelf;
+                 [strongSelf.focusHelper updateFocus];
+             });
          }];
     }
     self.tableView.dataSource = self.tableDataSource;
@@ -131,11 +129,9 @@
                  {
                      [self scrollToBottomAnimated:NO];
                      
-                     // Give cells a moment to come on screen
-                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                                    {
-                                        [self.focusHelper updateFocus];
-                                    });
+                     dispatch_async(dispatch_get_main_queue(), ^{
+                         [self.focusHelper updateFocus];
+                     });
                  }
              }];
         }
@@ -148,11 +144,10 @@
 {
     // This clears any selectected text in a message cell when the background is tapped
     [self.tableView reloadData];
-    // Give cells a moment to come on screen
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                   {
-                       [self.focusHelper updateFocus];
-                   });
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.focusHelper updateFocus];
+    });
 }
 
 - (void)viewDidAppear:(BOOL)animated
