@@ -20,9 +20,22 @@
  */
 @interface VBaseVideoSequencePreviewView : VSequencePreviewView <VCellFocus, VPreviewViewBackgroundHost, VVideoViewDelegate>
 
+/**
+ * Responsible for the play icon that appears on the preview view.
+ * Subclasses can hide this if they are playing video in-line.
+ */
 @property (nonatomic, strong) UIView *playIconContainerView;
+
+/**
+ * Responsible for playing video in-line. Subclasses can hide this if
+ * there is no need to play video.
+ */
 @property (nonatomic, strong) VVideoView *videoView;
-@property (nonatomic, assign) BOOL inFocus;
+
+/**
+ * Indicated whether or not this preview view is currently in focus.
+ */
+@property (nonatomic, assign, readonly) BOOL inFocus;
 
 - (void)makeBackgroundContainerViewVisible:(BOOL)visible;
 
