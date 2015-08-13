@@ -122,7 +122,7 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     // Track an autoplay click if necessary
     if (!sequence.isGifStyle.boolValue)
     {
-        if (!sequence.firstNode.httpLiveStreamingAsset.streamAutoplay.boolValue && [self.videoSettings isAutoplayEnabled])
+        if (sequence.firstNode.httpLiveStreamingAsset.streamAutoplay.boolValue && [self.videoSettings isAutoplayEnabled])
         {
             self.autoplayTrackingHelper.trackingItem = sequence.tracking;
             [self.autoplayTrackingHelper trackAutoplayClick];
