@@ -37,7 +37,6 @@
 #import "UIViewController+VAccessoryScreens.h"
 
 static const NSInteger kSettingsSectionIndex = 0;
-static const NSInteger kAutoplaySettingsIndex = 1;
 
 typedef NS_ENUM(NSInteger, VSettingsAction)
 {
@@ -264,11 +263,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     return [VObjectManager sharedManager].mainUserLoggedIn && likeButtonOn;
 }
 
-- (BOOL)showAutoplaySettings
-{
-    return ![[self.dependencyManager numberForKey:VDependencyManagerAutoplaySettingsEnabled] boolValue];
-}
-
 - (BOOL)showChangePassword
 {
     return [VObjectManager sharedManager].mainUserLoggedIn && ![VObjectManager sharedManager].mainUserLoggedInWithSocial;
@@ -346,36 +340,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if (section == kAutoplaySettingsIndex && ![self showAutoplaySettings])
-    {
-        return 0.01f;
-    }
-    
-    return [super tableView:tableView heightForHeaderInSection:section];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    if (section == kAutoplaySettingsIndex && ![self showAutoplaySettings])
-    {
-        return 0.01f;
-    }
-    
-    return [super tableView:tableView heightForFooterInSection:section];
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    if (section == kAutoplaySettingsIndex)
-    {
-        return [self showAutoplaySettings] ? @"Video" : @"";
-    }
-    
-    return [super tableView:tableView titleForHeaderInSection:section];
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionChromecast)
@@ -414,10 +378,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionExperiments)
     {
         return self.showExperimentSettings ? self.tableView.rowHeight : 0.0;
-    }
-    else if (indexPath.section == kAutoplaySettingsIndex)
-    {
-        return [self showAutoplaySettings] ? self.tableView.rowHeight : 0.0;
     }
     
     return self.tableView.rowHeight;

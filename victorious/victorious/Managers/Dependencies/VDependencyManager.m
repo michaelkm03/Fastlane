@@ -70,7 +70,6 @@ NSString * const VDependencyManagerProfileImageRequiredKey = @"requireProfileIma
 NSString * const VDependencyManagerPauseVideoWhenCommentingKey = @"pause_video_when_commenting";
 NSString * const VDependencyManagerLikeButtonEnabledKey = @"likeButtonEnabled";
 NSString * const VDependencyManagerExperimentKeyIDs = @"experiment_ids";
-NSString * const VDependencyManagerAutoplaySettingsEnabled = @"autoplayEnabled";
 
 // Keys for view controllers
 NSString * const VDependencyManagerScaffoldViewControllerKey = @"scaffold";
