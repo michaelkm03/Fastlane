@@ -35,7 +35,7 @@
 /**
  * Indicated whether or not this preview view is currently in focus.
  */
-@property (nonatomic, assign, readonly) BOOL inFocus;
+@property (nonatomic, assign) BOOL inFocus;
 
 - (void)makeBackgroundContainerViewVisible:(BOOL)visible;
 
