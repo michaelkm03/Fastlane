@@ -143,9 +143,6 @@ static void *kPlaybackBufferEmpty = &kPlaybackBufferEmpty;
          if ( [composedItemURL isEqual:_itemURL] )
          {
              self.newestPlayerItem = playerItem;
-             
-             
-             
              [self didFinishAssetCreation:playerItem];
          }
      }];
