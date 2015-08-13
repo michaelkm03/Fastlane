@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// An `NSOperation` subclass for auto-showing login on startup.
+/// An `Operation` subclass for auto-showing login on startup.
 class AutoShowLoginOperation: Operation {
     
     private let autoShowLoginKey = "showLoginOnStartup"
@@ -32,6 +32,8 @@ class AutoShowLoginOperation: Operation {
         loginAuthorizedAction = VAuthorizedAction(objectManager: objectManager, dependencyManager: dependencyManager)
         
         super.init()
+        
+        qualityOfService = .UserInteractive
     }
     
     // MARK: - Override

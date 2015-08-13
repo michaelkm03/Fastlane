@@ -20,7 +20,7 @@ class FTUEVideoOperation: Operation, VLightweightContentViewControllerDelegate {
     private let dependencyManager: VDependencyManager
     private let firstTimeContentDependencyManager: VDependencyManager
     private let viewControllerToPresentOn: UIViewController
-    private let firstTimeInstallHelper: VFirstTimeInstallHelper
+    private let firstTimeInstallHelper = VFirstTimeInstallHelper()
     private let sessionTimer: VSessionTimer
     
     init(dependencyManager: VDependencyManager, viewControllerToPresentOn: UIViewController, sessionTimer: VSessionTimer) {
@@ -30,9 +30,10 @@ class FTUEVideoOperation: Operation, VLightweightContentViewControllerDelegate {
         self.firstTimeContentDependencyManager = self.dependencyManager.childDependencyManagerWithAddedConfiguration(configuration as [NSObject : AnyObject])
         
         self.viewControllerToPresentOn = viewControllerToPresentOn
-        firstTimeInstallHelper = VFirstTimeInstallHelper()
-        
+
         super.init()
+        
+        qualityOfService = .UserInteractive
     }
     
     // MARK: - Override
@@ -100,9 +101,9 @@ class FTUEVideoOperation: Operation, VLightweightContentViewControllerDelegate {
     }
     
     private func onVideoFinished() {
-        viewControllerToPresentOn.dismissViewControllerAnimated(true, completion: { () -> Void in
+        viewControllerToPresentOn.dismissViewControllerAnimated(true) {
             self.finishedExecuting()
-        })
+        }
     }
     
 }

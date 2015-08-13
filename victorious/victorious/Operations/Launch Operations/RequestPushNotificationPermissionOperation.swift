@@ -12,6 +12,11 @@ class RequestPushNotificationPermissionOperation : Operation {
     
     // MARK: - Override
     
+    override init() {
+        super.init()
+        qualityOfService = .UserInteractive
+    }
+    
     override func start() {
         super.start()
         
