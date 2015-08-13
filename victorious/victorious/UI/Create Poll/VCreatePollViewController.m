@@ -117,6 +117,9 @@ static char KVOContext;
         [self.middleOrIconImageView setImage:orIcon];
     }
     
+    [self.imageButton setBackgroundColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]];
+    [self.videoButton setBackgroundColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]];
+    
     UIImage *newImage = [self.leftRemoveButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     [self.rightRemoveButton setImage:newImage forState:UIControlStateNormal];
     
@@ -174,7 +177,7 @@ static char KVOContext;
     self.rightAnswerPrompt.text      = NSLocalizedString(@"Vote that", @"");
     self.rightAnswerPrompt.font      = [self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
     
-    [self.navigationController.navigationBar setBarTintColor:self.view.backgroundColor];
+    [self.navigationController.navigationBar setBarTintColor:[UIColor blackColor]];
     [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
     
