@@ -15,6 +15,7 @@ class SoundBarView : UIView {
     private var isAnimating = false
     private var counter = 0
     
+    /// Total number of vertical bars
     var numberOfBars = 4 {
         didSet {
             numberOfBars = max(numberOfBars, 1)
@@ -23,6 +24,7 @@ class SoundBarView : UIView {
         }
     }
     
+    /// Distance in points between sound bars
     var distanceBetweenBars = 1.0 {
         didSet {
             distanceBetweenBars = max(distanceBetweenBars, 0.0)
@@ -51,6 +53,7 @@ class SoundBarView : UIView {
     
     // MARK: Functions
     
+    /// Start the animation
     func startAnimating() {
         
         if (isAnimating) {
@@ -85,6 +88,7 @@ class SoundBarView : UIView {
         }
     }
     
+    /// Stop the animation
     func stopAnimating() {
         for (index, bar) in enumerate(barLayers) {
             bar.removeAllAnimations()
@@ -108,14 +112,14 @@ class SoundBarView : UIView {
         }
     }
     
-    func barPath(barIndex: Int, endpoint: Double) -> UIBezierPath {
+    private func barPath(barIndex: Int, endpoint: Double) -> UIBezierPath {
         let gapsWidth = distanceBetweenBars * Double (numberOfBars - 1)
         let totalBarWidth = Double (CGRectGetWidth(self.bounds)) - gapsWidth
         let barWidth = totalBarWidth / Double (numberOfBars)
         return UIBezierPath(rect: CGRect(x: (barWidth + distanceBetweenBars) * Double (barIndex), y:  Double (CGRectGetHeight(self.bounds)), width: barWidth, height: -endpoint))
     }
     
-    func randomEndpoint() -> Double {
+    private func randomEndpoint() -> Double {
         return Double (Int (arc4random()) % Int (CGRectGetHeight(self.bounds)))
     }
     
