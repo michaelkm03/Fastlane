@@ -22,6 +22,8 @@ class FTUEVideoOperation: NSOperation, VLightweightContentViewControllerDelegate
     private let viewControllerToPresentOn: UIViewController
     private let firstTimeInstallHelper: VFirstTimeInstallHelper
     private let sessionTimer: VSessionTimer
+    private var _executing : Bool
+    private var _finished : Bool
     
     init(dependencyManager: VDependencyManager, viewControllerToPresentOn: UIViewController, sessionTimer: VSessionTimer) {
         _executing = false
@@ -37,7 +39,7 @@ class FTUEVideoOperation: NSOperation, VLightweightContentViewControllerDelegate
         super.init()
     }
     
-    // MARK: Override
+    // MARK: - Override
     
     override func start() {
         super.start()
@@ -61,7 +63,7 @@ class FTUEVideoOperation: NSOperation, VLightweightContentViewControllerDelegate
         
     }
     
-    // MARK: VLightweightContentViewControllerDelegate
+    // MARK: - VLightweightContentViewControllerDelegate
     
     func videoHasStartedInLightweightContentView(lightweightContentViewController: VLightweightContentViewController!) {
         let sessionTime = NSNumber(unsignedLong: UInt(sessionTimer.sessionDuration))
@@ -93,7 +95,7 @@ class FTUEVideoOperation: NSOperation, VLightweightContentViewControllerDelegate
         onVideoFinished()
     }
     
-    // MARK: Internal
+    // MARK: - Internal
     
     private func trackFirstTimeContentView() {
         let sessionTime = NSNumber(unsignedLong: UInt(sessionTimer.sessionDuration))
@@ -110,9 +112,8 @@ class FTUEVideoOperation: NSOperation, VLightweightContentViewControllerDelegate
         })
     }
     
-    // MARK: NSOperation State Properties
+    // MARK: - KVO-able NSNotification State
     
-    private var _executing : Bool
     override var executing : Bool {
         get {return _executing }
         set {
@@ -122,7 +123,6 @@ class FTUEVideoOperation: NSOperation, VLightweightContentViewControllerDelegate
         }
     }
     
-    private var _finished : Bool
     override var finished : Bool {
         get {return _finished }
         set {

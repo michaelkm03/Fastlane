@@ -10,13 +10,16 @@ import UIKit
 
 class RequestPushNotificationPermissionOperation : NSOperation {
     
+    private var _executing : Bool
+    private var _finished : Bool
+    
     override init() {
         _executing = false
         _finished = false
         super.init()
     }
     
-    // MARK: Override
+    // MARK: - Override
     
     override func start() {
         super.start()
@@ -31,27 +34,26 @@ class RequestPushNotificationPermissionOperation : NSOperation {
         finished = false
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "userRespondedToPushNotification",
-            name: VPushNotificationManagerDidRecieveRegisterOrFailureForRemoteNotificationsNotification,
+            name: VPushNotificationManagerDidReceiveResponse,
             object: VPushNotificationManager.sharedPushNotificationManager())
         VPushNotificationManager.sharedPushNotificationManager().startPushNotificationManager()
     }
     
-    // MARK: Notification Observer
+    // MARK: - Notification Observer
     
     @objc func userRespondedToPushNotification() {
         onPermissionGranted()
     }
     
-    // MARK: Internal
+    // MARK: - Internal
     
     private func onPermissionGranted() {
         executing = false
         finished = true
     }
 
-    // MARK: NSOperation State Properties
+    // MARK: - KVO-able NSNotification State
     
-    private var _executing : Bool
     override var executing : Bool {
         get {return _executing }
         set {
@@ -61,7 +63,6 @@ class RequestPushNotificationPermissionOperation : NSOperation {
         }
     }
 
-    private var _finished : Bool
     override var finished : Bool {
         get {return _finished }
         set {

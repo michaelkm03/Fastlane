@@ -11,7 +11,7 @@
 /**
  Posted when the user repsonds to the remote notification prompt.
  */
-extern NSString *const VPushNotificationManagerDidRecieveRegisterOrFailureForRemoteNotificationsNotification;
+extern NSString *const VPushNotificationManagerDidReceiveResponse;
 
 /**
  This class registers for push notifications,
