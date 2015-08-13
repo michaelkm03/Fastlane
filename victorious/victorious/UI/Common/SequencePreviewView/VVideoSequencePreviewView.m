@@ -138,8 +138,6 @@ const CGFloat kMaximumLoopingTime = 30.0f;
             self.videoView.hidden = YES;
             self.playIconContainerView.hidden = NO;
             break;
-        default:
-            break;
     }
 }
 
