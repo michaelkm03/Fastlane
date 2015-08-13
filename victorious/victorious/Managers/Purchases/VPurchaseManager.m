@@ -127,7 +127,6 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
                        [self transactionDidCompleteWithProductIdentifier:SIMULATED_PRODUCT_IDENTIFIER];
 #endif
                    });
-    return;
 #else
     
     // This could happen if product requests are failing
@@ -165,7 +164,6 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
         [self purchasesDidRestore];
 #endif
     });
-    return;
 #else
     
     [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
@@ -209,7 +207,6 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
         [self productsRequestDidSucceed];
 #endif
     });
-return;
 #else
 
     SKProductsRequest *request = [[SKProductsRequest alloc] initWithProductIdentifiers:uncachedProductIndentifiers];
