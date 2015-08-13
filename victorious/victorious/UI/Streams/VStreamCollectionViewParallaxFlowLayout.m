@@ -27,6 +27,11 @@ static const CGFloat kHeaderFadeoutBuffer = 20.0f;
     NSArray *attributes = [super layoutAttributesForElementsInRect:rect];
     for (UICollectionViewLayoutAttributes *layoutAttributes in attributes)
     {
+        if ( layoutAttributes.indexPath.row != 0 )
+        {
+            continue;
+        }
+        
         UICollectionReusableView *cell = [self.collectionView cellForItemAtIndexPath:layoutAttributes.indexPath];
         
         if ([cell conformsToProtocol:@protocol(VParallaxScrolling)])
@@ -34,6 +39,8 @@ static const CGFloat kHeaderFadeoutBuffer = 20.0f;
             CGFloat parallaxRatio = [(id<VParallaxScrolling>)cell parallaxRatio];
             
             CGRect headerFrame = layoutAttributes.frame;
+            
+            layoutAttributes.zIndex = -1000.0f;
             
             CGPoint contentOffset = self.collectionView.contentOffset;
             if (contentOffset.y > 0)

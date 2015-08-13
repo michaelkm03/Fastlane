@@ -41,6 +41,7 @@
 #import "VDependencyManager+VTracking.h"
 #import "VBadgeResponder.h"
 #import "UIViewController+VAccessoryScreens.h"
+#import "VDependencyManager+VAccessoryScreens.h"
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 

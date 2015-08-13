@@ -2,7 +2,7 @@
 //  VStreamItem.m
 //  victorious
 //
-//  Created by Sharif Ahmed on 7/13/15.
+//  Created by Sharif Ahmed on 8/6/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
@@ -13,12 +13,14 @@
 
 @implementation VStreamItem
 
+@dynamic headline;
 @dynamic name;
 @dynamic previewImagesObject;
 @dynamic remoteId;
 @dynamic streamContentType;
 @dynamic streamId;
-@dynamic headline;
+@dynamic itemType;
+@dynamic itemSubType;
 @dynamic editorializations;
 @dynamic marquees;
 @dynamic streams;
