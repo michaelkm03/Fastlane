@@ -87,6 +87,8 @@ NSString * const kMenuKey = @"menu";
 {
     [super viewDidLoad];
     
+    self.definesPresentationContext = YES;
+    
     [self addChildViewController:self.rootNavigationController];
     self.rootNavigationController.view.frame = self.view.bounds;
     self.rootNavigationController.view.translatesAutoresizingMaskIntoConstraints = NO;
@@ -129,7 +131,7 @@ NSString * const kMenuKey = @"menu";
 
 - (void)showContentViewWithSequence:(id)sequence streamID:(NSString *)streamId commentId:(NSNumber *)commentID placeHolderImage:(UIImage *)placeholderImage
 {
-    [VContentViewPresenter presentContentViewFromViewController:self
+    [VContentViewPresenter presentContentViewFromViewController:self.navigationController
                                           withDependencyManager:self.dependencyManager
                                                     ForSequence:sequence
                                                  inStreamWithID:streamId

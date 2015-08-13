@@ -77,6 +77,14 @@
 #import "VTrackingManager.h"
 #import "VDependencyManager+VTracking.h"
 #import "VPushNotificationManager.h"
+#import "UIViewController+VRootNavigationController.h"
+#import "VKeyboardInputAccessoryView.h"
+#import "VUserTaggingTextStorageDelegate.h"
+#import "VContentCommentsCell.h"
+#import "VObjectManager+Pagination.h"
+#import "VComment+Fetcher.h"
+#import "VCommentMediaType.h"
+#import "VSequencePermissions.h"
 
 //Shelves
 #import "VStreamCellFactory.h"

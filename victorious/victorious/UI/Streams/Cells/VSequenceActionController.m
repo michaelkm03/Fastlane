@@ -54,6 +54,8 @@
 #import "VUsersViewController.h"
 #import "VLikersDataSource.h"
 
+#import "victorious-swift.h"
+
 @interface VSequenceActionController ()
 
 @property (nonatomic, strong) UIViewController *viewControllerPresentingWorkspace;
@@ -67,16 +69,17 @@
 
 - (void)showCommentsFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence withSelectedComment:(VComment *)selectedComment
 {
-    VCommentsContainerViewController *commentsContainerViewController;
-    if ( selectedComment != nil )
-    {
-        commentsContainerViewController = [self.dependencyManager commentsContainerWithSequence:sequence andSelectedComment:selectedComment];
-    }
-    else
-    {
-        commentsContainerViewController = [self.dependencyManager commentsContainerWithSequence:sequence];
-    }
-    [viewController.rootNavigationController pushViewController:commentsContainerViewController animated:YES];
+//    VCommentsContainerViewController *commentsContainerViewController;}
+//    if ( selectedComment != nil )
+//    {
+//        commentsContainerViewController = [self.dependencyManager commentsContainerWithSequence:sequence andSelectedComment:selectedComment];
+//    }
+//    else
+//    {
+//        commentsContainerViewController = [self.dependencyManager commentsContainerWithSequence:sequence];
+//    }
+    [viewController.rootNavigationController pushViewController:[self.dependencyManager commentsViewController:sequence]
+                                                       animated:YES];
 }
 
 #pragma mark - User

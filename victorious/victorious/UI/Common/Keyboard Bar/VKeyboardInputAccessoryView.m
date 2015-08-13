@@ -37,7 +37,6 @@ static NSString * const kConfirmationText = @"commentConfirmationText";
 @property (nonatomic, assign) CGSize lastContentSize;
 @property (nonatomic, strong) NSString *placeholderText;
 
-
 // Views
 @property (nonatomic, strong) IBOutlet UIButton *attachmentsButton;
 @property (nonatomic, strong) IBOutlet UIButton *sendButton;
@@ -47,6 +46,7 @@ static NSString * const kConfirmationText = @"commentConfirmationText";
 @property (nonatomic, strong) IBOutlet UIButton *videoButton;
 @property (nonatomic, strong) IBOutlet UIButton *gifButton;
 @property (nonatomic, strong) IBOutlet UIButton *clearAttachmentButton;
+@property (nonatomic, weak) UITextView *editingTextView;
 
 // Constraints
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *topSpaceAttachmentsToContainer;
@@ -114,7 +114,7 @@ static NSString * const kConfirmationText = @"commentConfirmationText";
 - (void)addTextViewToContainer
 {
     UIFont *defaultFont = [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
-    self.textStorage = [[VUserTaggingTextStorage alloc] initWithTextView:nil defaultFont:defaultFont taggingDelegate:self.delegate dependencyManager:self.dependencyManager];
+    self.textStorage = [[VUserTaggingTextStorage alloc] initWithTextView:nil defaultFont:defaultFont taggingDelegate:self.textStorageDelegate dependencyManager:self.dependencyManager];
     
     NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
     [self.textStorage addLayoutManager:layoutManager];
@@ -185,10 +185,10 @@ static NSString * const kConfirmationText = @"commentConfirmationText";
 
 #pragma mark - Property Accessors
 
-- (void)setDelegate:(id<VKeyboardInputAccessoryViewDelegate>)delegate
+- (void)setTextStorageDelegate:(id<VUserTaggingTextStorageDelegate>)textStorageDelegate
 {
-    _delegate = delegate;
-    self.textStorage.taggingDelegate = delegate;
+    _textStorageDelegate = textStorageDelegate;
+    self.textStorage.taggingDelegate = textStorageDelegate;
     self.textStorage.textView = self.editingTextView;
 }
 
@@ -201,8 +201,11 @@ static NSString * const kConfirmationText = @"commentConfirmationText";
 - (void)setPlaceholderText:(NSString *)placeholderText
 {
     _placeholderText = placeholderText;
-    self.placeholderLabel.attributedText = [[NSAttributedString alloc] initWithString:placeholderText
-                                                                           attributes:[self textEntryAttributes]];
+    if (_placeholderText != nil)
+    {
+        self.placeholderLabel.attributedText = [[NSAttributedString alloc] initWithString:placeholderText
+                                                                               attributes:[self textEntryAttributes]];
+    }
 }
 
 - (void)setSelectedThumbnail:(UIImage *)selectedThumbnail

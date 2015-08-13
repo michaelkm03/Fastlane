@@ -18,7 +18,7 @@ typedef NS_ENUM(NSInteger, VKeyboardBarAttachmentType)
 
 @class VKeyboardInputAccessoryView, VDependencyManager;
 
-@protocol VKeyboardInputAccessoryViewDelegate <NSObject, VUserTaggingTextStorageDelegate>
+@protocol VKeyboardInputAccessoryViewDelegate <NSObject>
 
 /**
  *  Notifies the delegate of the input accessory view that the send button has been pressed.
@@ -86,6 +86,11 @@ typedef NS_ENUM(NSInteger, VKeyboardBarAttachmentType)
 @property (nonatomic, weak) id <VKeyboardInputAccessoryViewDelegate> delegate;
 
 /**
+ *  A user tagging text storage delegate to be informed of user tagging relevant events.
+ */
+@property (nonatomic, weak) id <VUserTaggingTextStorageDelegate> textStorageDelegate;
+
+/**
  *  The text the user composed.
  */
 @property (nonatomic, readonly) NSString *composedText;
@@ -106,8 +111,6 @@ typedef NS_ENUM(NSInteger, VKeyboardBarAttachmentType)
  *  @return Returns whether or not the view really stopped editing and resigned first responder.
  */
 - (BOOL)stopEditing;
-
-@property (nonatomic, weak) UITextView *editingTextView;
 
 /**
  *  Call this to have the textView embedded in this view to become first responder.

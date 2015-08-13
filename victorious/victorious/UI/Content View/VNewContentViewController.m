@@ -116,7 +116,7 @@
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate>
 
 @property (nonatomic, strong) NSUserActivity *handoffObject;
 
@@ -422,6 +422,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryViewWithDependencyManager:commentBarDependencyManager];
         inputAccessoryView.translatesAutoresizingMaskIntoConstraints = NO;
         inputAccessoryView.delegate = self;
+        inputAccessoryView.textStorageDelegate = self;
         inputAccessoryView.accessibilityIdentifier = VAutomationIdentifierContentViewCommentBar;
         self.textEntryView = inputAccessoryView;
         self.contentCollectionView.accessoryView = self.textEntryView;
@@ -1471,13 +1472,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
      }];
 }
 
-#pragma mark - Comment Text Helpers
-
-- (void)clearEditingRealTimeComment
-{
-    self.enteringRealTimeComment = NO;
-    self.realtimeCommentBeganTime = kCMTimeZero;
-}
+#pragma mark - VUserTaggingTextStorageDelegate
 
 - (void)userTaggingTextStorage:(VUserTaggingTextStorage *)textStorage wantsToDismissViewController:(UITableViewController *)tableViewController
 {
@@ -1486,7 +1481,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 }
 
 - (void)userTaggingTextStorage:(VUserTaggingTextStorage *)textStorage wantsToShowViewController:(UIViewController *)viewController
-{    
+{
     // Inline Search layout constraints
     UIView *searchTableView = viewController.view;
     [self.view addSubview:searchTableView];
@@ -1497,8 +1492,16 @@ referenceSizeForHeaderInSection:(NSInteger)section
     CGRect obscuredRectInWindow = [self.textEntryView obscuredRectInWindow:ownWindow];
     CGRect obscuredRectInOwnView = [ownWindow convertRect:obscuredRectInWindow toView:self.view];
     [self.view v_addFitToParentConstraintsToSubview:searchTableView leading:0.0f trailing:0.0f top:0.0f bottom:CGRectGetMinY(obscuredRectInOwnView)];
-
+    
     self.textEntryView.attachmentsBarHidden = YES;
+}
+
+#pragma mark - Comment Text Helpers
+
+- (void)clearEditingRealTimeComment
+{
+    self.enteringRealTimeComment = NO;
+    self.realtimeCommentBeganTime = kCMTimeZero;
 }
 
 - (void)submitCommentWithText:(NSString *)commentText
@@ -1669,7 +1672,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self.contentCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:YES];
     
     [self.textEntryView setReplyRecipient:comment.user];
-    [self.textEntryView.editingTextView becomeFirstResponder];
+    [self.textEntryView startEditing];
 }
 
 #pragma mark - VEditCommentViewControllerDelegate
