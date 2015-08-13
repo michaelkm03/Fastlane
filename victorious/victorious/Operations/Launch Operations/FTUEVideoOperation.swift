@@ -11,11 +11,11 @@ import Foundation
 class FTUEVideoOperation: Operation, VLightweightContentViewControllerDelegate {
     
     // Constant Keys
-    private let firstTimeContentKey = "firstTimeContent"
-    private let welcomeStartKey = "welcome_start"
-    private let videoStartedKey = "welcome_video_start"
-    private let videoEndedKey = "welcome_video_end"
-    private let getStartedTapKey = "get_started_tap"
+    private let kFirstTimeContentKey = "firstTimeContent"
+    private let kWelcomeStartKey = "welcome_start"
+    private let kVideoStartedKey = "welcome_video_start"
+    private let kVideoEndedKey = "welcome_video_end"
+    private let kGetStartedTapKey = "get_started_tap"
     
     private let dependencyManager: VDependencyManager
     private let firstTimeContentDependencyManager: VDependencyManager
@@ -26,7 +26,7 @@ class FTUEVideoOperation: Operation, VLightweightContentViewControllerDelegate {
     init(dependencyManager: VDependencyManager, viewControllerToPresentOn: UIViewController, sessionTimer: VSessionTimer) {
         self.dependencyManager = dependencyManager
         self.sessionTimer = sessionTimer
-        var configuration = self.dependencyManager.templateValueOfType(NSDictionary.self, forKey: firstTimeContentKey) as! NSDictionary
+        var configuration = self.dependencyManager.templateValueOfType(NSDictionary.self, forKey: kFirstTimeContentKey) as! NSDictionary
         self.firstTimeContentDependencyManager = self.dependencyManager.childDependencyManagerWithAddedConfiguration(configuration as [NSObject : AnyObject])
         
         self.viewControllerToPresentOn = viewControllerToPresentOn
@@ -48,14 +48,13 @@ class FTUEVideoOperation: Operation, VLightweightContentViewControllerDelegate {
         }
         
         beganExecuting()
-
-        let lightWeightContentVC = self.firstTimeContentDependencyManager.templateValueOfType(VLightweightContentViewController.self, forKey: firstTimeContentKey) as! VLightweightContentViewController
-
-        lightWeightContentVC.delegate = self
-        viewControllerToPresentOn.presentViewController(lightWeightContentVC, animated: true) {
-            self.firstTimeInstallHelper.savePlaybackDefaults()
-        }
         
+        if let lightWeightContentVC = self.firstTimeContentDependencyManager.templateValueOfType(VLightweightContentViewController.self, forKey: kFirstTimeContentKey) as? VLightweightContentViewController {
+            lightWeightContentVC.delegate = self;
+            viewControllerToPresentOn.presentViewController(lightWeightContentVC, animated: true) {
+                self.firstTimeInstallHelper.savePlaybackDefaults()
+            }
+        }
     }
     
     // MARK: - VLightweightContentViewControllerDelegate
@@ -63,7 +62,7 @@ class FTUEVideoOperation: Operation, VLightweightContentViewControllerDelegate {
     func videoHasStartedInLightweightContentView(lightweightContentViewController: VLightweightContentViewController) {
         let sessionTime = NSNumber(unsignedLong: UInt(sessionTimer.sessionDuration))
         let params: [NSObject: AnyObject] = [
-            VTrackingKeyUrls: self.firstTimeContentDependencyManager.trackingURLsForKey(videoStartedKey),
+            VTrackingKeyUrls: self.firstTimeContentDependencyManager.trackingURLsForKey(kVideoStartedKey),
             VTrackingKeySessionTime: sessionTime]
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectWelcomeGetStarted, parameters: params)
     }
@@ -71,7 +70,7 @@ class FTUEVideoOperation: Operation, VLightweightContentViewControllerDelegate {
     func videoHasCompletedInLightweightContentView(lightweightContentViewController: VLightweightContentViewController) {
         let sessionTime = NSNumber(unsignedLong: UInt(sessionTimer.sessionDuration))
         let params: [NSObject: AnyObject] = [
-            VTrackingKeyUrls: self.firstTimeContentDependencyManager.trackingURLsForKey(videoEndedKey),
+            VTrackingKeyUrls: self.firstTimeContentDependencyManager.trackingURLsForKey(kVideoEndedKey),
             VTrackingKeySessionTime: sessionTime]
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectWelcomeGetStarted, parameters: params)
         onVideoFinished()
@@ -84,7 +83,7 @@ class FTUEVideoOperation: Operation, VLightweightContentViewControllerDelegate {
     func userWantsToDismissLightweightContentView(lightweightContentViewController: VLightweightContentViewController) {
         let sessionTime = NSNumber(unsignedLong: UInt(sessionTimer.sessionDuration))
         let params: [NSObject: AnyObject] = [
-            VTrackingKeyUrls: self.firstTimeContentDependencyManager.trackingURLsForKey(getStartedTapKey),
+            VTrackingKeyUrls: self.firstTimeContentDependencyManager.trackingURLsForKey(kGetStartedTapKey),
             VTrackingKeySessionTime: sessionTime]
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectWelcomeGetStarted, parameters: params)
         onVideoFinished()
@@ -96,7 +95,7 @@ class FTUEVideoOperation: Operation, VLightweightContentViewControllerDelegate {
         let sessionTime = NSNumber(unsignedLong: UInt(sessionTimer.sessionDuration))
         let params: [NSObject: AnyObject] = [
             VTrackingKeySessionTime: sessionTime,
-            VTrackingKeyUrls: self.firstTimeContentDependencyManager.trackingURLsForKey(welcomeStartKey)]
+            VTrackingKeyUrls: self.firstTimeContentDependencyManager.trackingURLsForKey(kWelcomeStartKey)]
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventWelcomeDidStart, parameters: params)
     }
     
