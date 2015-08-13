@@ -34,7 +34,7 @@ class LocalNotificationScheduler : NSObject {
     /// Unschedules notifications that were scheduled using this class's `scheduleNotification(_:identifier:deeplinkUrl:)` method.
     ///
     /// :param: identifier The identifier used to schedule the notification.
-    func unscheduleNotification( identifier: String ){
+    func unscheduleNotification( #identifier: String ){
         for obj in UIApplication.sharedApplication().scheduledLocalNotifications {
             if let notification = obj as? UILocalNotification,
                 let identifier = notification.userInfo?[ LocalNotificationScheduler.identifierKey ] as? String {
@@ -48,8 +48,8 @@ class LocalNotificationScheduler : NSObject {
     ///
     /// :param: identifier The identifier of a notification from the template.
     /// :param: fireDate The date at which the notification will be presented to the user
-    func scheduleNotification( identifier: String, fireDate: NSDate ) {
-        if let templateNotification = self.dependencyManager.notificationWithIdentifier( identifier ) {
+    func scheduleNotification( #identifier: String, fireDate: NSDate ) {
+        if let templateNotification = self.dependencyManager.getNotification( identifier: identifier ) {
             
             self.register() //< Configures settings and prompts for permission if required
             

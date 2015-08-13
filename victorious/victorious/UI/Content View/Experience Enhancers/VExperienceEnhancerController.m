@@ -19,12 +19,6 @@
 #import "VDependencyManager.h"
 #import "victorious-Swift.h"
 
-static NSString * const kCooldownNotificationMessageKey = @"ballisticsCooledPrompt";
-static NSString * const kCooldownNotificationAlertActionKey = @"ballisticsCooledAction";
-static NSString * const kCooldownNotificationDeeplinkURLKey = @"ballisticsCooledDeeplinkUrl";
-
-static NSString * const kCooldownNotificationIdentifier = @"com.getvictorious.ballisticsCooldown";
-
 @interface VExperienceEnhancerController ()
 
 @property (nonatomic, strong, readwrite) VSequence *sequence;
@@ -267,11 +261,14 @@ static NSString * const kCooldownNotificationIdentifier = @"com.getvictorious.ba
     VExperienceEnhancer *lastExperienceEnhancerToCoolDown = [self lastExperienceEnhancerToCoolDown];
     if ( lastExperienceEnhancerToCoolDown != nil )
     {
+        NSString *identifier = [VDependencyManager localNotificationBallisticsCooldownIdentifier];
+        
+        // Unschedule previous notifications (if any)
+        [self.localNotificationScheduler unscheduleNotificationWithIdentifier:identifier];
+        
         // Schedule a new notification
         NSDate *fireDate = lastExperienceEnhancerToCoolDown.cooldownDate;
-        NSString *identifier = [VDependencyManager localNotificationBallisticsCooldownIdentifier];
-        [self.localNotificationScheduler unscheduleNotification:identifier];
-        [self.localNotificationScheduler scheduleNotification:identifier fireDate:fireDate];
+        [self.localNotificationScheduler scheduleNotificationWithIdentifier:identifier fireDate:fireDate];
     }
 }
 

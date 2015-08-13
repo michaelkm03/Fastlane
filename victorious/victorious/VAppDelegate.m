@@ -81,7 +81,10 @@ static BOOL isRunningTests(void) __attribute__((const));
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)localNotification
 {
-    [[VRootViewController rootViewController] handleLocalNotification:localNotification];
+    if ( [application applicationState] == UIApplicationStateInactive )
+    {
+        [[VRootViewController rootViewController] handleLocalNotification:localNotification];
+    }
 }
 
 - (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window

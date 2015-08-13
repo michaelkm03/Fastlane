@@ -35,7 +35,7 @@ extension VDependencyManager {
     /// Parses a `TemplateNotification` object from the template
     ///
     /// :param: identifier The identifier of a notification to find and parse from the template
-    func notificationWithIdentifier( identifier: String ) -> TemplateNotification? {
+    func getNotification( #identifier: String ) -> TemplateNotification? {
         if let array = self.templateValueOfType( NSArray.self, forKey: Key.Notifications ) as? [AnyObject] {
             for object in array {
                 if let dictionary = object as? [ String : AnyObject ],
