@@ -54,7 +54,7 @@ class AutoShowLoginOperation: Operation {
             dispatch_async(dispatch_get_main_queue(), {
                 loginAuthorizedAction.prepareInViewController(viewControllerToPresentFrom,
                     context: VAuthorizationContext.Default,
-                    completion: { (success: Bool) -> Void in
+                    completion: { (success: Bool) in
                     self.finishedExecuting()
                 })
             })

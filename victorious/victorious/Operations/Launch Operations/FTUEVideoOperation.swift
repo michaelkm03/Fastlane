@@ -52,7 +52,7 @@ class FTUEVideoOperation: Operation, VLightweightContentViewControllerDelegate {
         let lightWeightContentVC = self.firstTimeContentDependencyManager.templateValueOfType(VLightweightContentViewController.self, forKey: firstTimeContentKey) as! VLightweightContentViewController
 
         lightWeightContentVC.delegate = self
-        viewControllerToPresentOn.presentViewController(lightWeightContentVC, animated: true) { () -> Void in
+        viewControllerToPresentOn.presentViewController(lightWeightContentVC, animated: true) {
             self.firstTimeInstallHelper.savePlaybackDefaults()
         }
         
