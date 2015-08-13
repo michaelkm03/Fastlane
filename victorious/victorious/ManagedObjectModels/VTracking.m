@@ -24,6 +24,13 @@
 @dynamic videoStall;
 @dynamic viewStart;
 @dynamic share;
+@dynamic autoplayView;
+@dynamic autoplayClick;
+@dynamic autoplayComplete25;
+@dynamic autoplayComplete50;
+@dynamic autoplayComplete75;
+@dynamic autoplayComplete100;
+@dynamic autoplayViewStall;
 @dynamic sequence;
 @dynamic voteType;
 
