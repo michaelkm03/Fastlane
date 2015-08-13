@@ -443,6 +443,7 @@
 		A70FC1251A31207400F5BBDE /* VVoteSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC1241A31207400F5BBDE /* VVoteSettings.m */; };
 		A716FC2A1AAE0EF50032AA40 /* VAuthorizedActionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A716FC291AAE0EF50032AA40 /* VAuthorizedActionTests.m */; };
 		A71DAF241B695FC200E0BE53 /* AutomationId.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71DAF231B695FC200E0BE53 /* AutomationId.swift */; };
+		A71F2E701B7D16DC00159392 /* VAutomation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DB4D3D1B7AB6CB00199D10 /* VAutomation.m */; };
 		A72004FB1A02FEC000285A9C /* sampleImage.png in Resources */ = {isa = PBXBuildFile; fileRef = A72004FA1A02FEC000285A9C /* sampleImage.png */; };
 		A72005251A03073B00285A9C /* NSStringVCryptoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03AC453B19BA1F7900CE4351 /* NSStringVCryptoTests.m */; };
 		A72005271A03073B00285A9C /* VElapsedTimeFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674F719E335060072E87A /* VElapsedTimeFormatterTests.m */; };
@@ -8681,6 +8682,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A71F2E701B7D16DC00159392 /* VAutomation.m in Sources */,
 				A7DB4D441B7ABA8C00199D10 /* ContentCreationTests.swift in Sources */,
 				A7DB4D451B7ABA8C00199D10 /* KIFExtensions.swift in Sources */,
 				A7DB4D481B7ACB9A00199D10 /* AutomationId.swift in Sources */,
@@ -10012,6 +10014,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = YES;
 				DefaultEnvironment = Production;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -10807,6 +10810,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = YES;
 				DefaultEnvironment = Staging;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -10912,6 +10916,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -10939,6 +10944,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -10962,6 +10968,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -10985,6 +10992,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -11008,6 +11016,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -11116,6 +11125,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = YES;
 				DefaultEnvironment = Production;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -11300,6 +11310,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = YES;
 				DefaultEnvironment = QA;
 				ENABLE_NS_ASSERTIONS = YES;

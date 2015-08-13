@@ -22,6 +22,9 @@ class VictoriousTestCase: KIFTestCase {
         }
     }
     
+    /// Checks if the element with the provided label is present on screen
+    ///
+    /// :param: accessibilityLabel The label (or identifier) of the sought element
     func elementExistsWithAccessibilityLabel( accessibilityLabel: String ) -> Bool {
         self.ignoreExceptions = true
         self.tester().waitForViewWithAccessibilityLabel( accessibilityLabel )
@@ -31,12 +34,30 @@ class VictoriousTestCase: KIFTestCase {
         return output
     }
     
-    func loginIfRequired() {
+    /// Grants library permission, dismiss permission alert
+    func grantLibraryPermissionIfRequired() {
+        if self.elementExistsWithAccessibilityLabel( VAutomationIdentifierGrantLibraryAccess ) {
+            self.tester().tapViewWithAccessibilityLabel( VAutomationIdentifierGrantLibraryAccess )
+            self.tester().tapViewWithAccessibilityLabel( "Allow" )
+        }
+    }
+    
+    /// Dismisses FTUE welcome screen if presented on first install.
+    func dismissWelcomeIfPresent() {
+        if self.elementExistsWithAccessibilityLabel( VAutomationIdentifierWelcomeDismiss ) {
+            self.tester().tapViewWithAccessibilityLabel( VAutomationIdentifierWelcomeDismiss )
+        }
+    }
+    
+    /// Logs in with an existing user account
+    ///
+    /// :param: email An email account to use.  Default is "user@user.com"
+    /// :param: ", password A ", password to use.  Default is "password"
+    func loginIfRequired( email: String = "user@user.com", password: String = "password" ) {
         if self.elementExistsWithAccessibilityLabel( "Log In" ) {
-            println( "Login required" )
             self.tester().waitForTappableViewWithAccessibilityLabel( "Log In" ).tap()
-            self.tester().enterText( "user@user.com", intoViewWithAccessibilityLabel: "Login Username Field" )
-            self.tester().enterText( "password", intoViewWithAccessibilityLabel: "Login Password Field" )
+            self.tester().enterText( email, intoViewWithAccessibilityLabel: "Login Username Field" )
+            self.tester().enterText( password, intoViewWithAccessibilityLabel: "Login Password Field" )
             self.tester().waitForTappableViewWithAccessibilityLabel( "Next" ).tap()
         }
     }

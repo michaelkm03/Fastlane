@@ -10,14 +10,13 @@ import UIKit
 
 class ContentCreationTests: VictoriousTestCase {
     
-    override func beforeAll() {
-        super.beforeAll()
-        
-        // Log in if force login is active
-        self.loginIfRequired()
-    }
-    
     func testCreateImage() {
+        
+        self.dismissWelcomeIfPresent()
+        
+        // Login if forced login is presented
+        self.loginIfRequired()
+        
         self.tester().tapViewWithAccessibilityLabel( "Menu Create" )
         
         // Log in if presented after pressing "Create"
@@ -25,11 +24,7 @@ class ContentCreationTests: VictoriousTestCase {
         
         self.tester().tapViewWithAccessibilityLabel( "Create Image" )
         
-        // Grant library permission and dismiss alert
-        if self.elementExistsWithAccessibilityLabel( VAutomationIdentifierGrantLibraryAccess ) {
-            self.tester().waitForViewWithAccessibilityLabel( VAutomationIdentifierGrantLibraryAccess ).tap()
-            self.tester().acknowledgeSystemAlert()
-        }
+        self.grantLibraryPermissionIfRequired()
         
         // Select image from gallery
         self.tester().waitForTimeInterval( 2.0 )
@@ -42,7 +37,7 @@ class ContentCreationTests: VictoriousTestCase {
         
         self.tester().tapViewWithAccessibilityLabel( VAutomationIdentifierPublishCatpionText )
         
-        let randomCaption = "caption \(1000 + arc4random() % 1000)"
+        let randomCaption = "\(100000 + arc4random() % 100000)"
         self.tester().enterTextIntoCurrentFirstResponder( randomCaption )
         
         self.tester().waitForViewWithAccessibilityLabel( VAutomationIdentifierPublishFinish ).tap()

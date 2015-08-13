@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VAutomation.h"
+
 NSString * const VAutomationIdentifierKeyboardHashtagButton      = @"Keyboard Hashtag Button";
 
 NSString * const VAutomationIdentifierSettingsLogIn              = @"Settings Log In";

@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+@import Foundation;
+
 /**
  * View Identifiers.
  * UI Automation testing depends on these, so be careful modifying them.
