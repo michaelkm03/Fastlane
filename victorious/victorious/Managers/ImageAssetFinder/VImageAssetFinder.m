@@ -82,53 +82,51 @@ static NSString * const kTextAsset = @"text";
 
 - (VAnswer *)answerAFromAssets:(NSSet *)assets
 {
-    __block VAnswer *answer = nil;
-    [assets enumerateObjectsUsingBlock:^(id object, BOOL *stop)
-     {
-         if ([object isKindOfClass:[VAsset class]])
-         {
-             VAsset *asset = (VAsset *) object;
-             if (asset.node.interactions.array.count > 0)
-             {
-                 answer = [asset.node.interactions.array firstObject];
-                 *stop = YES;
-             }
-         }
-     }];
+    VAnswer *answer = nil;
+    for (id object in assets)
+    {
+        if ([object isKindOfClass:[VAsset class]])
+        {
+            VAsset *asset = (VAsset *) object;
+            if (asset.node.interactions.array.count > 0)
+            {
+                answer = [asset.node.interactions.array firstObject];
+            }
+        }
+    }
     
     return answer;
 }
 
 - (VAnswer *)answerBFromAssets:(NSSet *)assets
 {
-    __block VAnswer *answer = nil;
-    [assets enumerateObjectsUsingBlock:^(id object, BOOL *stop)
-     {
-         if ([object isKindOfClass:[VAsset class]])
-         {
-             VAsset *asset = (VAsset *) object;
-             if (asset.node.interactions.array.count > 1)
-             {
-                 answer = asset.node.interactions.array[1];
-                 *stop = YES;
-             };
-         }
-     }];
+    VAnswer *answer = nil;
+    for (id object in assets)
+    {
+        if ([object isKindOfClass:[VAsset class]])
+        {
+            VAsset *asset = (VAsset *) object;
+            if (asset.node.interactions.array.count > 1)
+            {
+                answer = asset.node.interactions.array[1];
+            }
+        }
+    }
     
     return answer;
 }
 
 - (VAsset *)textAssetFromAssets:(NSSet *)assets
 {
-    __block VAsset *textAsset = nil;
-    [assets enumerateObjectsUsingBlock:^(VAsset *asset, BOOL *stop)
-     {
-         if ( asset.data != nil && [asset.type isEqualToString:kTextAsset] && [asset.data isKindOfClass:[NSString class]] )
-         {
-             textAsset = asset;
-             *stop = YES;
-         }
-     }];
+    VAsset *textAsset = nil;
+    
+    for (VAsset *asset in assets)
+    {
+        if ( asset.data != nil && [asset.type isEqualToString:kTextAsset] && [asset.data isKindOfClass:[NSString class]] )
+        {
+            textAsset = asset;
+        }
+    }
     
     return textAsset;
 }
