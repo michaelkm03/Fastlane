@@ -37,6 +37,7 @@ NSString * const VObjectManagerContentWillBeCreatedNotification = @"VObjectManag
 NSString * const VObjectManagerContentWasCreatedNotification    = @"VObjectManagerContentWasCreatedNotification";
 NSString * const VObjectManagerContentFilterIDKey               = @"filterID";
 NSString * const VObjectManagerContentIndexKey                  = @"index";
+NSString * const VObjectManagerContentGIFParameter              = @"is_gif_style";
 
 @implementation VObjectManager (ContentCreation)
 
@@ -201,7 +202,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     
     NSMutableDictionary *parameters = [@{@"name": publishParameters.caption ?: [NSNull null],
                                          @"media_data": publishParameters.mediaToUploadURL,
-                                         @"is_gif_style": publishParameters.isGIF ? @"true" : @"false",
+                                         VObjectManagerContentGIFParameter: publishParameters.isGIF ? @"true" : @"false",
                                          @"did_crop": publishParameters.didCrop ? @"true" : @"false",
                                          @"did_trim": publishParameters.didTrim ? @"true" : @"false",
                                          } mutableCopy];
@@ -395,7 +396,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     if (publishParameters.mediaToUploadURL != nil)
     {
         NSString *gifParameterValue = publishParameters.isGIF ? @"true" : @"false";
-        parameters[@"is_gif_style"] = gifParameterValue;
+        parameters[VObjectManagerContentGIFParameter] = gifParameterValue;
     }
     
     NSURL *mediaURL = publishParameters.mediaToUploadURL;
@@ -501,12 +502,19 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                               failBlock:(VFailBlock)fail
 {
     //Set the parameters
-    NSDictionary *parameters = [@{@"to_user_id" : user.remoteId.stringValue ?: [NSNull null],
-                                  @"text" : message.text ?: [NSNull null]
-                                  } mutableCopy];
+    NSMutableDictionary *parameters = [@{@"to_user_id" : user.remoteId.stringValue ?: [NSNull null],
+                                         @"text" : message.text ?: [NSNull null]
+                                         } mutableCopy];
+    
+    if (message.mediaPath != nil)
+    {
+        NSString *gifParameterValue = message.shouldAutoplay.boolValue ? @"true" : @"false";
+        parameters[VObjectManagerContentGIFParameter] = gifParameterValue;
+    }
+
     NSDictionary *allURLs;
     NSURL *mediaURL;
-    if (message.mediaPath)
+    if (message.mediaPath != nil)
     {
         mediaURL = [NSURL URLWithString:message.mediaPath];
         allURLs = @{@"media_data": mediaURL};
@@ -546,7 +554,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 }
 
 - (VMessage *)messageWithText:(NSString *)text
-                 mediaURLPath:(NSString *)mediaURLPath
+            publishParameters:(VPublishParameters *)publishParameters
 {
     NSAssert([NSThread isMainThread], @"This method should be called only on the main thread");
     VMessage *tempMessage = [self.managedObjectStore.mainQueueManagedObjectContext insertNewObjectForEntityForName:[VMessage entityName]];
@@ -554,10 +562,13 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     //Use a copy of the inputs to prevent the text and mediaPath from changing when these parameters fall out of memory or are reused
     tempMessage.text = [text copy];
     tempMessage.postedAt = [NSDate dateWithTimeIntervalSinceNow:-1];
-    tempMessage.thumbnailPath = [self localImageURLForVideo:mediaURLPath];
-    tempMessage.mediaPath = [mediaURLPath copy];
+    tempMessage.thumbnailPath = [self localImageURLForVideo:[publishParameters.mediaToUploadURL absoluteString]];
+    tempMessage.mediaPath = [[publishParameters.mediaToUploadURL absoluteString] copy];
     tempMessage.sender = self.mainUser;
     tempMessage.senderUserId = self.mainUser.remoteId;
+    tempMessage.shouldAutoplay = [NSNumber numberWithBool:publishParameters.isGIF];
+    tempMessage.mediaWidth = [NSNumber numberWithInteger:publishParameters.width];
+    tempMessage.mediaHeight = [NSNumber numberWithInteger:publishParameters.Height];
     
     return tempMessage;
 }

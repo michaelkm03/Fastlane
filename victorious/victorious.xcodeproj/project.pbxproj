@@ -883,10 +883,10 @@
 		C39864BD1B266A7700694AB3 /* VDependencyManager+VHighlightContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = C39864BC1B266A7600694AB3 /* VDependencyManager+VHighlightContainer.m */; };
 		C39B220B1B0A58EF00D3DFE7 /* VPermissionMicrophone.m in Sources */ = {isa = PBXBuildFile; fileRef = C39B220A1B0A58EF00D3DFE7 /* VPermissionMicrophone.m */; };
 		C39B220E1B0A693600D3DFE7 /* VPermissionProfilePicture.m in Sources */ = {isa = PBXBuildFile; fileRef = C39B220D1B0A693600D3DFE7 /* VPermissionProfilePicture.m */; };
+		C3C734461B5EA8BD00D6795D /* VMediaAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C734451B5EA8BD00D6795D /* VMediaAttachment.m */; };
 		C3BC59501B756C87000A4576 /* VGIFVideoSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3BC594F1B756C87000A4576 /* VGIFVideoSequencePreviewView.m */; };
 		C3BC59531B756E4C000A4576 /* VVideoSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3BC59521B756E4C000A4576 /* VVideoSequencePreviewView.m */; };
 		C3C1484C1B72F53B007F81B0 /* SoundBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C1484B1B72F53B007F81B0 /* SoundBarView.swift */; };
-		C3C734461B5EA8BD00D6795D /* VCommentMedia.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C734451B5EA8BD00D6795D /* VCommentMedia.m */; };
 		C3C7344C1B5EC0F500D6795D /* VCommentMedia+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C7344B1B5EC0F500D6795D /* VCommentMedia+RestKit.m */; };
 		C3C734501B5F118F00D6795D /* ExperienceEnhancerIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C7344F1B5F118F00D6795D /* ExperienceEnhancerIconView.swift */; };
 		C3C734571B606BD500D6795D /* RadialAnimatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C734561B606BD500D6795D /* RadialAnimatingView.swift */; };
@@ -2867,8 +2867,8 @@
 		C3BC59511B756E4C000A4576 /* VVideoSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoSequencePreviewView.h; sourceTree = "<group>"; };
 		C3BC59521B756E4C000A4576 /* VVideoSequencePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoSequencePreviewView.m; sourceTree = "<group>"; };
 		C3C1484B1B72F53B007F81B0 /* SoundBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundBarView.swift; sourceTree = "<group>"; };
-		C3C734441B5EA8BD00D6795D /* VCommentMedia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCommentMedia.h; sourceTree = "<group>"; };
-		C3C734451B5EA8BD00D6795D /* VCommentMedia.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCommentMedia.m; sourceTree = "<group>"; };
+		C3C734441B5EA8BD00D6795D /* VMediaAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMediaAttachment.h; sourceTree = "<group>"; };
+		C3C734451B5EA8BD00D6795D /* VMediaAttachment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMediaAttachment.m; sourceTree = "<group>"; };
 		C3C7344A1B5EC0F500D6795D /* VCommentMedia+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VCommentMedia+RestKit.h"; sourceTree = "<group>"; };
 		C3C7344B1B5EC0F500D6795D /* VCommentMedia+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VCommentMedia+RestKit.m"; sourceTree = "<group>"; };
 		C3C7344F1B5F118F00D6795D /* ExperienceEnhancerIconView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperienceEnhancerIconView.swift; sourceTree = "<group>"; };
@@ -6552,8 +6552,8 @@
 				F03C13591B698F6F00287F4C /* VAsset.m */,
 				F03C135B1B698F7000287F4C /* VComment.h */,
 				F03C135C1B698F7000287F4C /* VComment.m */,
-				C3C734441B5EA8BD00D6795D /* VCommentMedia.h */,
-				C3C734451B5EA8BD00D6795D /* VCommentMedia.m */,
+				C3C734441B5EA8BD00D6795D /* VMediaAttachment.h */,
+				C3C734451B5EA8BD00D6795D /* VMediaAttachment.m */,
 				F0F04AD41B1E271A00F6F401 /* VConversation.h */,
 				F0F04AD51B1E271A00F6F401 /* VConversation.m */,
 				F0FC97941B546FBC0098AFCB /* VEditorializationItem.h */,
@@ -8609,7 +8609,7 @@
 				A7B514551A4517A80074282F /* VSwipeViewController.m in Sources */,
 				A721E9401B572454000B7901 /* NSNotificationCenter+VNotificationDebugger.m in Sources */,
 				F0AD217D1AF43E3D001BDCC6 /* VShowcaseDirectoryCell.m in Sources */,
-				C3C734461B5EA8BD00D6795D /* VCommentMedia.m in Sources */,
+				C3C734461B5EA8BD00D6795D /* VMediaAttachment.m in Sources */,
 				A721E9281B572454000B7901 /* VImageAsset+RestKit.m in Sources */,
 				A6DAEB5F1B4C8DCA00935EA0 /* VVideoCreationFlowController.m in Sources */,
 				F07E825D1AEF35BE00821CEA /* VDiscoverHeaderView.m in Sources */,

@@ -46,6 +46,8 @@ enum MediaAttachmentType {
         switch (messageMediaType) {
         case .Image:
             return .Image
+        case .GIF:
+            return .GIF
         case .Video:
             return .Video
         default:
