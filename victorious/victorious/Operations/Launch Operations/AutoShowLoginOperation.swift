@@ -9,15 +9,13 @@
 import Foundation
 
 /// An `NSOperation` subclass for auto-showing login on startup.
-class AutoShowLoginOperation: NSOperation {
+class AutoShowLoginOperation: Operation {
     
     private let autoShowLoginKey = "showLoginOnStartup"
     
     let loginAuthorizedAction: VAuthorizedAction
     private let dependencyManager: VDependencyManager
     private let viewControllerToPresentFrom: UIViewController
-    private var _executing : Bool
-    private var _finished : Bool
     
     ///
     ///    Initializes a new AutoShowLoginOperation with the provided parameters.
@@ -29,8 +27,6 @@ class AutoShowLoginOperation: NSOperation {
     ///    :returns: An AutoShowLoginOperation.
     ///
     init(objectManager: VObjectManager, dependencyManager: VDependencyManager, viewControllerToPresentFrom: UIViewController) {
-        _executing = false
-        _finished = false
         self.dependencyManager = dependencyManager
         self.viewControllerToPresentFrom = viewControllerToPresentFrom
         loginAuthorizedAction = VAuthorizedAction(objectManager: objectManager, dependencyManager: dependencyManager)
@@ -44,13 +40,11 @@ class AutoShowLoginOperation: NSOperation {
         super.start()
         
         if cancelled {
-            executing = false
-            finished = true
+            finishedExecuting()
             return
         }
         
-        executing = true
-        finished = false
+        beganExecuting()
         
         var shouldAutoShowLogin = dependencyManager.numberForKey(autoShowLoginKey)
         if shouldAutoShowLogin.boolValue
@@ -59,43 +53,14 @@ class AutoShowLoginOperation: NSOperation {
                 loginAuthorizedAction.prepareInViewController(viewControllerToPresentFrom,
                     context: VAuthorizationContext.Default,
                     completion: { (success: Bool) -> Void in
-                    self.onLoginComplete()
+                    self.finishedExecuting()
                 })
             })
         }
         else
         {
-            executing = false
-            finished = true
+            finishedExecuting()
         }
     }
-    
-    // MARK: - Internal
-    
-    private func onLoginComplete() {
-        executing = false
-        finished = true
-    }
-    
-    // MARK: - KVO-able NSNotification State
-    
-    override var executing : Bool {
-        get {return _executing }
-        set {
-            willChangeValueForKey("isExecuting")
-            _executing = newValue
-            didChangeValueForKey("isExecuting")
-        }
-    }
-    
-    override var finished : Bool {
-        get {return _finished }
-        set {
-            willChangeValueForKey("isFinished")
-            _finished = newValue
-            didChangeValueForKey("isFinished")
-        }
-    }
-    
     
 }

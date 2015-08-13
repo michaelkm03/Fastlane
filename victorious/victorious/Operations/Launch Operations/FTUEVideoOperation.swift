@@ -8,7 +8,7 @@
 
 import Foundation
 
-class FTUEVideoOperation: NSOperation, VLightweightContentViewControllerDelegate {
+class FTUEVideoOperation: Operation, VLightweightContentViewControllerDelegate {
     
     // Constant Keys
     private let firstTimeContentKey = "firstTimeContent"
@@ -22,12 +22,8 @@ class FTUEVideoOperation: NSOperation, VLightweightContentViewControllerDelegate
     private let viewControllerToPresentOn: UIViewController
     private let firstTimeInstallHelper: VFirstTimeInstallHelper
     private let sessionTimer: VSessionTimer
-    private var _executing : Bool
-    private var _finished : Bool
     
     init(dependencyManager: VDependencyManager, viewControllerToPresentOn: UIViewController, sessionTimer: VSessionTimer) {
-        _executing = false
-        _finished = false
         self.dependencyManager = dependencyManager
         self.sessionTimer = sessionTimer
         var configuration = self.dependencyManager.templateValueOfType(NSDictionary.self, forKey: firstTimeContentKey) as! NSDictionary
@@ -46,13 +42,11 @@ class FTUEVideoOperation: NSOperation, VLightweightContentViewControllerDelegate
 
         // Bail early if we have already seen the FTUE Video
         if firstTimeInstallHelper.hasBeenShown() {
-            executing = false
-            finished = true
+            finishedExecuting()
             return
         }
         
-        executing = true
-        finished = false
+        beganExecuting()
 
         let lightWeightContentVC = self.firstTimeContentDependencyManager.templateValueOfType(VLightweightContentViewController.self, forKey: firstTimeContentKey) as! VLightweightContentViewController
 
@@ -107,29 +101,8 @@ class FTUEVideoOperation: NSOperation, VLightweightContentViewControllerDelegate
     
     private func onVideoFinished() {
         viewControllerToPresentOn.dismissViewControllerAnimated(true, completion: { () -> Void in
-            self.executing = false
-            self.finished = true
+            self.finishedExecuting()
         })
-    }
-    
-    // MARK: - KVO-able NSNotification State
-    
-    override var executing : Bool {
-        get {return _executing }
-        set {
-            willChangeValueForKey("isExecuting")
-            _executing = newValue
-            didChangeValueForKey("isExecuting")
-        }
-    }
-    
-    override var finished : Bool {
-        get {return _finished }
-        set {
-            willChangeValueForKey("isFinished")
-            _finished = newValue
-            didChangeValueForKey("isFinished")
-        }
     }
     
 }
