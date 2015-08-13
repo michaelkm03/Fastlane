@@ -60,7 +60,7 @@ class FTUEVideoOperation: Operation, VLightweightContentViewControllerDelegate {
     
     // MARK: - VLightweightContentViewControllerDelegate
     
-    func videoHasStartedInLightweightContentView(lightweightContentViewController: VLightweightContentViewController!) {
+    func videoHasStartedInLightweightContentView(lightweightContentViewController: VLightweightContentViewController) {
         let sessionTime = NSNumber(unsignedLong: UInt(sessionTimer.sessionDuration))
         let params: [NSObject: AnyObject] = [
             VTrackingKeyUrls: self.firstTimeContentDependencyManager.trackingURLsForKey(videoStartedKey),
@@ -68,7 +68,7 @@ class FTUEVideoOperation: Operation, VLightweightContentViewControllerDelegate {
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectWelcomeGetStarted, parameters: params)
     }
 
-    func videoHasCompletedInLightweightContentView(lightweightContentViewController: VLightweightContentViewController!) {
+    func videoHasCompletedInLightweightContentView(lightweightContentViewController: VLightweightContentViewController) {
         let sessionTime = NSNumber(unsignedLong: UInt(sessionTimer.sessionDuration))
         let params: [NSObject: AnyObject] = [
             VTrackingKeyUrls: self.firstTimeContentDependencyManager.trackingURLsForKey(videoEndedKey),
@@ -77,11 +77,11 @@ class FTUEVideoOperation: Operation, VLightweightContentViewControllerDelegate {
         onVideoFinished()
     }
     
-    func failedToLoadSequenceInLightweightContentView(lightweightContentViewController: VLightweightContentViewController!) {
+    func failedToLoadSequenceInLightweightContentView(lightweightContentViewController: VLightweightContentViewController) {
         onVideoFinished()
     }
     
-    func userWantsToDismissLightweightContentView(lightweightContentViewController: VLightweightContentViewController!) {
+    func userWantsToDismissLightweightContentView(lightweightContentViewController: VLightweightContentViewController) {
         let sessionTime = NSNumber(unsignedLong: UInt(sessionTimer.sessionDuration))
         let params: [NSObject: AnyObject] = [
             VTrackingKeyUrls: self.firstTimeContentDependencyManager.trackingURLsForKey(getStartedTapKey),
