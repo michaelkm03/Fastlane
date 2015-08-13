@@ -159,7 +159,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     currentFocusPage = MIN( currentFocusPage, (NSInteger)self.marqueeItems.count - 1 );
     currentFocusPage = MAX( currentFocusPage, 0 );
 
-    if ( (NSUInteger)currentFocusPage != self.currentFocusPage )
+    if ( self.marqueeItems.count > (NSUInteger)currentFocusPage )
     {
         self.currentFocusPage = currentFocusPage;
         VStreamItem *focusedStreamItem = self.marqueeItems[currentFocusPage];
