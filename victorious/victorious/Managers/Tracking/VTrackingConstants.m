@@ -171,6 +171,14 @@ NSString * const VTrackingEventVideoDidFail = @"VideoDidFail";
 NSString * const VTrackingEventVideoDidStall = @"VideoDidStall";
 NSString * const VTrackingEventVideoDidSkip = @"VideoDidSkip";
 
+NSString * const VTrackingEventAutoplayDidStart = @"AutoplayDidStart";
+NSString * const VTrackingEventAutoplayClick = @"AutoplayDidClick";
+NSString * const VTrackingEventAutoplayDidComplete25 = @"AutoplayDidComplete25";
+NSString * const VTrackingEventAutoplayDidComplete50 = @"AutoplayDidComplete50";
+NSString * const VTrackingEventAutoplayDidComplete75 = @"AutoplayDidComplete75";
+NSString * const VTrackingEventAutoplayDidComplete100 = @"AutoplayDidComplete100";
+NSString * const VTrackingEventAutoplayDidStall = @"AutoplayDidStall";
+
 // Find Friends
 NSString * const VTrackingEventUserDidSelectFindFriends = @"UserDidSelectFindFriends";
 NSString * const VTrackingEventUserDidImportDeviceContacts = @"UserDidImportDeviceContacts";

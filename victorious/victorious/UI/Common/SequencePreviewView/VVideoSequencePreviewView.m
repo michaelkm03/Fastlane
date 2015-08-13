@@ -9,6 +9,7 @@
 #import "VVideoSequencePreviewView.h"
 #import "victorious-Swift.h"
 #import "VVideoSettings.h"
+#import "VTrackingManager.h"
 
 /**
  Describes the state of the video preview view
@@ -29,6 +30,8 @@ const CGFloat kMaximumLoopingTime = 30.0f;
 @property (nonatomic, strong) NSURL *assetURL;
 @property (nonatomic, strong) VVideoSettings *videoSettings;
 @property (nonatomic, strong) VAsset *HLSAsset;
+@property (nonatomic, strong) VTracking *trackingItem;
+@property (nonatomic, strong) AutoplayTrackingHelper *trackingHelper;
 
 @property (nonatomic, strong) SoundBarView *soundIndicator;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
@@ -63,6 +66,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
         [self v_addCenterToParentContraintsToSubview:_activityIndicator];
         
         _videoSettings = [[VVideoSettings alloc] init];
+        _trackingHelper = [[AutoplayTrackingHelper alloc] initWithTrackingItem:self.trackingItem];
     }
     return self;
 }
@@ -83,7 +87,10 @@ const CGFloat kMaximumLoopingTime = 30.0f;
         // Check if autoplay is enabled before loading asset URL
         if ([self.videoSettings isAutoplayEnabled])
         {
+            self.trackingItem = sequence.tracking;
             [self loadAssetURL:[NSURL URLWithString:self.HLSAsset.data] andLoop:NO];
+            
+            [self.trackingHelper trackAutoplayStart];
         }
     }
 }
