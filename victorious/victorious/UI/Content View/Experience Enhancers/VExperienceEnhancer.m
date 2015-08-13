@@ -49,7 +49,6 @@
         _flightDuration = (float)voteType.flightDuration.unsignedIntegerValue / 1000.0f;
         _animationDuration = (float)voteType.animationDuration.unsignedIntegerValue / 1000.0f;
         _cooldownDuration = (double)voteType.cooldownDuration.unsignedIntegerValue / 1000.0f;
-        _cooldownDuration = 3.0f;
     }
     return self;
 }
