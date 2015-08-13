@@ -19,6 +19,7 @@
 // Views + Helpers
 #import "VPollView.h"
 #import "UIView+AutoLayout.h"
+#import "VImageAssetFinder.h"
 
 static NSString *kOrIconKey = @"orIcon";
 
@@ -87,8 +88,22 @@ static NSString *kOrIconKey = @"orIcon";
         strongSelf.loadedBothPollImages = YES;
     };
     
-    VAnswer *answerA = [sequence.firstNode answerA];
-    VAnswer *answerB = [sequence.firstNode answerB];
+    VImageAssetFinder *assetFinder = [[VImageAssetFinder alloc] init];
+    
+    VAnswer *answerA = [assetFinder answerAFromAssets:sequence.previewAssets];
+    VAnswer *answerB = [assetFinder answerBFromAssets:sequence.previewAssets];
+    
+    if (answerA == nil)
+    {
+        // fall back if needed
+        answerA = [sequence.firstNode answerA];
+    }
+    if (answerB == nil)
+    {
+        // fall back if needed
+        answerB = [sequence.firstNode answerB];
+    }
+    
     self.cancelingImageLoads = NO;
     [self.pollView setImageURL:answerA.previewMediaURL
                  forPollAnswer:VPollAnswerA
