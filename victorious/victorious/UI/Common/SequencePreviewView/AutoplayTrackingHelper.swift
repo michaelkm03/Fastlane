@@ -30,8 +30,7 @@ class AutoplayTrackingHelper : NSObject {
     var infoParameters: [String : String] {
         get {
             let volume = Int (AVAudioSession.sharedInstance().outputVolume * 100)
-            let info = [VTrackingKeyConnectivity : reachability.currentReachabilityStatus().trackingDescription,
-                VTrackingKeyVolumeLevel : String(volume)]
+            let info = [VTrackingKeyConnectivity : reachability.currentReachabilityStatus().trackingDescription, VTrackingKeyVolumeLevel : String(volume)]
             return info
         }
     }
