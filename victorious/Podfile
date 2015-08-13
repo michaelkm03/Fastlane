@@ -33,5 +33,5 @@ target :VictoriousCommonOSX do
 end
 
 target 'UIAutomationTests', :exclusive => true do
-  pod 'KIF', :git => 'https://github.com/TouchFrame/KIF.git', :configurations => ['Debug']
+  pod 'KIF', :git => 'https://github.com/TouchFrame/KIF.git'
 end

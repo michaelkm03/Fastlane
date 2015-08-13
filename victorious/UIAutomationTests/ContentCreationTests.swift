@@ -40,9 +40,6 @@ class ContentCreationTests: VictoriousTestCase {
         let continueLabel = "Publish"
         self.tester().tapViewWithAccessibilityLabel( continueLabel )
         
-        self.tester().waitForTimeInterval( 10.0 )
-        
-        self.tester().waitForViewWithAccessibilityLabel( VAutomationIdentifierPublishCatpionText )
         self.tester().tapViewWithAccessibilityLabel( VAutomationIdentifierPublishCatpionText )
         
         let randomCaption = "caption \(1000 + arc4random() % 1000)"
