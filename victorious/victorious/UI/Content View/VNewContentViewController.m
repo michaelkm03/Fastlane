@@ -226,30 +226,29 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             
             if ( !self.commentHighlighter.isAnimatingCellHighlight ) //< Otherwise the animation is interrupted
             {
-                [self.contentCollectionView reloadData];
-                
-                __weak typeof(self) welf = self;
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                               {
-                                   [welf.contentCollectionView flashScrollIndicators];
-                               });
-                
-                // If we're prepending new comments, we must adjust the scroll view's offset
-                if ( pageType == VPageTypePrevious )
+                dispatch_async(dispatch_get_main_queue(), ^
                 {
-                    CGSize endSize = self.contentCollectionView.collectionViewLayout.collectionViewContentSize;
-                    CGPoint diff = CGPointMake( endSize.width - startSize.width, endSize.height - startSize.height );
-                    CGPoint contentOffset = self.contentCollectionView.contentOffset;
-                    contentOffset.x += diff.x;
-                    contentOffset.y += diff.y;
-                    self.contentCollectionView.contentOffset = contentOffset;
-                }
-                
-                // Give cells a moment to come on screen before detecting focus
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-                               {
-                                   [welf.focusHelper updateFocus];
-                               });
+                    [self.contentCollectionView reloadData];
+                    
+                    __weak typeof(self) welf = self;
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                                   {
+                                       [welf.contentCollectionView flashScrollIndicators];
+                                   });
+                    
+                    // If we're prepending new comments, we must adjust the scroll view's offset
+                    if ( pageType == VPageTypePrevious )
+                    {
+                        CGSize endSize = self.contentCollectionView.collectionViewLayout.collectionViewContentSize;
+                        CGPoint diff = CGPointMake( endSize.width - startSize.width, endSize.height - startSize.height );
+                        CGPoint contentOffset = self.contentCollectionView.contentOffset;
+                        contentOffset.x += diff.x;
+                        contentOffset.y += diff.y;
+                        self.contentCollectionView.contentOffset = contentOffset;
+                    }
+                    
+                    [self.focusHelper updateFocus];
+                });
             }
         }
         else
@@ -844,7 +843,16 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         }
             
         case VContentViewSectionExperienceEnhancers:
-            return 1;
+        {
+            if (self.viewModel.type == VContentViewTypePoll)
+            {
+                return 1;
+            }
+            else
+            {
+                return (self.viewModel.experienceEnhancerController.numberOfExperienceEnhancers > 0) ? 1 : 0;
+            }
+        }
         case VContentViewSectionAllComments:
             return (NSInteger)self.viewModel.comments.count;
         case VContentViewSectionCount:
@@ -1695,7 +1703,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
                  
                  // Try to reload the cell without reloading the whole section
                  NSIndexPath *indexPathToInvalidate = [self.contentCollectionView indexPathForCell:cell];
-                 if ( indexPathToInvalidate != nil && NO )
+                 if ( indexPathToInvalidate != nil )
                  {
                      [self.contentCollectionView performBatchUpdates:^void
                       {

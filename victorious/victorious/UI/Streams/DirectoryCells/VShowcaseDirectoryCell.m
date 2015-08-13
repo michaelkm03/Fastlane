@@ -107,12 +107,21 @@ static NSString * const kGroupedDirectoryCellFactoryKey = @"groupedCell";
 
 #pragma mark - Property Accessors
 
-- (void)setStream:(VStream *)stream
+- (void)setStreamItem:(VStreamItem *)streamItem
 {
-    _stream = stream;
+    _streamItem = streamItem;
     
-    self.nameLabel.text = [stream.name uppercaseString];
+    self.nameLabel.text = [streamItem.name uppercaseString];
     [self.collectionView reloadData];
+}
+
+- (VStream *)stream
+{
+    if ( [self.streamItem isKindOfClass:[VStream class]] )
+    {
+        return (VStream *)self.streamItem;
+    }
+    return nil;
 }
 
 #pragma mark - UICollectionReusableView
@@ -136,7 +145,9 @@ static NSString * const kGroupedDirectoryCellFactoryKey = @"groupedCell";
     {
         return 1;
     }
-    return self.stream.streamItems.count + ([self shouldShowShowMore] ? 1 : 0);
+    
+    VStream *stream = [self stream];
+    return stream.streamItems.count + ([self shouldShowShowMore] ? 1 : 0);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -146,17 +157,17 @@ static NSString * const kGroupedDirectoryCellFactoryKey = @"groupedCell";
 
 - (BOOL)hasSequenceStream
 {
-    return [self.stream isKindOfClass:[VSequence class]];
+    return [self stream] == nil;
 }
 
 - (BOOL)hasStreamOfStreams
 {
-    if ( ![self.stream isKindOfClass:[VStream class]] )
+    if ( [self hasSequenceStream] )
     {
         return NO;
     }
     
-    for ( VStreamItem *streamItem in self.stream.streamItems )
+    for ( VStreamItem *streamItem in [self stream].streamItems )
     {
         if ( [streamItem isStreamOfStreams] )
         {
@@ -169,7 +180,8 @@ static NSString * const kGroupedDirectoryCellFactoryKey = @"groupedCell";
 
 - (BOOL)shouldShowShowMore
 {
-    if ([self.stream.count integerValue] > (NSInteger)self.stream.streamItems.count)
+    VStream *stream = [self stream];
+    if ([stream.count integerValue] > (NSInteger)stream.streamItems.count)
     {
         return YES;
     }
@@ -178,17 +190,18 @@ static NSString * const kGroupedDirectoryCellFactoryKey = @"groupedCell";
 
 - (VStreamItem *)streamItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    VStreamItem *streamItem = nil;
-    if ( [self.stream isKindOfClass:[VSequence class]] )
+    VStreamItem *streamItem = self.streamItem;
+    VStream *stream = [self stream];
+    if ( stream != nil )
     {
-        streamItem = self.stream;
-    }
-    else if ( [self.stream isKindOfClass:[VStream class]] )
-    {
-        NSOrderedSet *streamItems = self.stream.streamItems;
+        NSOrderedSet *streamItems = stream.streamItems;
         if ( (NSUInteger)indexPath.row < streamItems.count )
         {
             streamItem = streamItems[indexPath.row];
+        }
+        else
+        {
+            streamItem = nil;
         }
     }
     return streamItem;
@@ -205,7 +218,7 @@ static NSString * const kGroupedDirectoryCellFactoryKey = @"groupedCell";
         VStreamItem *streamItem = [self streamItemAtIndexPath:indexPath];
         if ( streamItem == nil )
         {
-            streamItem = self.stream;
+            streamItem = self.streamItem;
         }
         [responder showcaseDirectoryCell:self didSelectStreamItem:streamItem];
     }
@@ -220,7 +233,8 @@ static NSString * const kGroupedDirectoryCellFactoryKey = @"groupedCell";
     CGFloat width = CGRectGetWidth(self.bounds);
     
     CGFloat height = [VShowcaseDirectoryCell directoryCellHeightForWidth:width];
-    if ( self.stream.isStreamOfStreams )
+    VStream *stream = [self stream];
+    if ( stream.isStreamOfStreams )
     {
         height += VDirectoryItemStackHeight;
     }

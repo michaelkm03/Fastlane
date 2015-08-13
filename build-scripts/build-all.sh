@@ -52,6 +52,10 @@ fi
 
 ### Build
 
+# Copy provisioning profile into Xcode
+DEFAULT_PROVISIONING_PROFILE_UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i "$DEFAULT_PROVISIONING_PROFILE_PATH")`
+cp "$DEFAULT_PROVISIONING_PROFILE_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$DEFAULT_PROVISIONING_PROFILE_UUID.mobileprovision"
+
 build(){
 
     if [ -d "victorious.xcarchive" ]; then
@@ -65,10 +69,6 @@ build(){
     if [ -f "$BUILDINFO_PLIST" ]; then
         rm -f "$BUILDINFO_PLIST"
     fi
-
-    # Copy provisioning profile into Xcode
-    DEFAULT_PROVISIONING_PROFILE_UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i "$DEFAULT_PROVISIONING_PROFILE_PATH")`
-    cp "$DEFAULT_PROVISIONING_PROFILE_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$DEFAULT_PROVISIONING_PROFILE_UUID.mobileprovision"
 
     # Change to project folder
     pushd victorious > /dev/null
@@ -139,7 +139,8 @@ applyConfiguration(){
     # Download the latest template
     INFOPLIST="victorious.xcarchive/Products/Applications/victorious.app/Info.plist"
     BUILDNUM=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$INFOPLIST")
-    ./build-scripts/downloadtemplate "victorious.xcarchive/Products/Applications/victorious.app"
+    DEFAULT_ENVIRONMENT=$(/usr/libexec/PlistBuddy -c "Print :VictoriousServerEnvironment" "$INFOPLIST")
+    ./build-scripts/downloadtemplate "victorious.xcarchive/Products/Applications/victorious.app" "$DEFAULT_ENVIRONMENT"
     if [ $? != 0 ]; then
         return 1
     fi

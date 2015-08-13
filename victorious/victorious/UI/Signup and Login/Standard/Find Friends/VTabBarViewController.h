@@ -16,5 +16,6 @@
 
 @property (nonatomic, strong) UIColor *buttonBackgroundColor;
 @property (nonatomic, strong) NSArray /* VTabInfo */ *viewControllers;
+@property (nonatomic, strong, readonly) UIViewController *displayedViewController;
 
 @end

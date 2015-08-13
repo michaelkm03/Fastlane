@@ -195,11 +195,18 @@
 
 #pragma mark - VFollowResponder
 
-- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion
+- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion fromViewController:(UIViewController *)viewControllerToPresentOn withScreenName:(NSString *)screenName
 {
-    [self.followHelper followUser:user
-              withAuthorizedBlock:authorizedBlock
-                    andCompletion:completion];
+    NSString *sourceScreen = screenName?:VFollowSourceScreenDiscoverUserSearchResults;
+    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
+                                                                      withSender:nil];
+    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
+    
+    [followResponder followUser:user
+            withAuthorizedBlock:authorizedBlock
+                  andCompletion:completion
+             fromViewController:self
+                 withScreenName:sourceScreen];
 }
 
 - (void)unfollowUser:(VUser *)user

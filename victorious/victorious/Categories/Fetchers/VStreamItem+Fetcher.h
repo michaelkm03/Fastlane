@@ -8,6 +8,22 @@
 
 #import "VStreamItem.h"
 
+//Type values
+extern NSString * const VStreamItemTypeSequence;
+extern NSString * const VStreamItemTypeStream;
+extern NSString * const VStreamItemTypeMarquee;
+extern NSString * const VStreamItemTypeUser;
+extern NSString * const VStreamItemTypeHashtag;
+extern NSString * const VStreamItemTypeFeed;
+
+//Subtype values
+extern NSString * const VStreamItemSubTypeImage;
+extern NSString * const VStreamItemSubTypeVideo;
+extern NSString * const VStreamItemSubTypePoll;
+extern NSString * const VStreamItemSubTypeText;
+extern NSString * const VStreamItemSubTypeContent;
+extern NSString * const VStreamItemSubTypeStream;
+
 @interface VStreamItem (Fetcher)
 
 /**

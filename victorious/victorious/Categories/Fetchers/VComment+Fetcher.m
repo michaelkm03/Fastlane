@@ -9,11 +9,9 @@
 #import "VComment+Fetcher.h"
 #import "VComment+RestKit.h"
 #import "NSString+VParseHelp.h"
-#import "VCommentMedia.h"
+#import "VMediaAttachment.h"
 #import "NSURL+MediaType.h"
 #import "VCompatibility.h"
-
-static NSString * const kmp4MimeType = @"video/mp4";
 
 @implementation VComment (Fetcher)
 
@@ -122,7 +120,7 @@ static NSString * const kmp4MimeType = @"video/mp4";
 - (NSString *)commentMediaURLForMimeType:(NSString *)mimeType
 {
     __block NSString *mediaURLStringForMimeType = nil;
-    [self.commentMedia enumerateObjectsUsingBlock:^(VCommentMedia *media, BOOL *stop)
+    [self.commentMedia enumerateObjectsUsingBlock:^(VMediaAttachment *media, BOOL *stop)
      {
          if ([media.mimeType isEqualToString:mimeType])
          {

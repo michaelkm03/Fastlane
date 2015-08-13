@@ -246,6 +246,8 @@ static CGFloat const kVRegularFontPointSizeSubtractor = 1.0f;
 - (void)addSelectionView
 {
     //Now add the selectionView which will show which tab is selected. This must be done after the snapshot otherwise it will appear in the snapshot.
+    [self.selectionView removeConstraint:self.selectionViewWidthConstraint];
+    [self.selectionView removeConstraint:self.selectionViewLeftConstraint];
     [self.pillView addSubview:self.selectionView];
     NSDictionary *selectionViews = @{ @"selectionView" : self.selectionView };
     [self.pillView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[selectionView]|"

@@ -20,6 +20,15 @@
 
 @interface VUserSearchViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
+/**
+ Possible viewcontrollers who present this VUserSearchViewController.
+ */
+typedef NS_ENUM(NSInteger, VUserSearchPresenter)
+{
+    VUserSearchPresenterNone, // Default value when it's not set. It's unexpected to see this
+    VUserSearchPresenterMessages // Set when the presenter is VInboxViewController
+};
+
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
@@ -34,5 +43,6 @@
  */
 @property (nonatomic, strong) NSString *searchContext;
 @property (nonatomic, weak) id <VUserSearchViewControllerDelegate> messageSearchDelegate;
+@property (nonatomic, assign) VUserSearchPresenter userSearchPresenter;
 
 @end

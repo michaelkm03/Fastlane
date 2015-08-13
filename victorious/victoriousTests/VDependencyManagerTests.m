@@ -7,8 +7,7 @@
 //
 
 #import "VDependencyManager.h"
-#import "VSideMenuViewController.h"
-
+#import "VHasManagedDependencies.h"
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 

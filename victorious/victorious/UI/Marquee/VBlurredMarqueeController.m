@@ -69,7 +69,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     CGFloat pageWidth = CGRectGetWidth(self.collectionView.bounds);
     NSUInteger currentPage = ( self.collectionView.contentOffset.x / pageWidth ) + 1;
     CGFloat overshootAmount = kOffsetOvershoot;
-    if (currentPage == self.stream.marqueeItems.count)
+    if (currentPage == self.marqueeItems.count)
     {
         currentPage = 0;
         overshootAmount = - overshootAmount;
@@ -91,7 +91,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
 
 - (void)refreshCellSubviews
 {
-    if ( self.stream.marqueeItems.count == 0 || self.crossfadingBlurredImageView == nil || self.crossfadingLabel == nil )
+    if ( self.marqueeItems.count == 0 || self.crossfadingBlurredImageView == nil || self.crossfadingLabel == nil )
     {
         return;
     }
@@ -101,7 +101,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
         self.loadingPreviewViews = [[NSMutableArray alloc] init];
     }
     
-    NSArray *marqueeItems = [self.stream.marqueeItems array];
+    NSArray *marqueeItems = self.marqueeItems;
     NSInteger marqueeItemsCount = marqueeItems.count;
     if ( self.crossfadingBlurredImageView.imageViewCount != marqueeItemsCount )
     {
@@ -112,7 +112,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
     
     for ( VStreamItem *streamItem in marqueeItems )
     {
-        [self loadContentForStreamItem:streamItem andUpdateSubviewsAtIndex:[self.stream.marqueeItems indexOfObject:streamItem]];
+        [self loadContentForStreamItem:streamItem andUpdateSubviewsAtIndex:[marqueeItems indexOfObject:streamItem]];
     }
     
     [self.crossfadingLabel setupWithMarqueeItems:marqueeItems fromStreamWithApiPath:self.stream.apiPath];
@@ -236,17 +236,20 @@ static const CGFloat kOffsetOvershoot = 20.0f;
 {
     VBlurredMarqueeCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VBlurredMarqueeCollectionViewCell suggestedReuseIdentifier]
                                                                                         forIndexPath:indexPath];
-    cell.dependencyManager = self.dependencyManager;
-    cell.marquee = self;
-    self.collectionView.hidden = !self.showedInitialDisplayAnimation;
-    CGSize desiredSize = [VBlurredMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:collectionView.bounds];
-    cell.bounds = CGRectMake(0, 0, desiredSize.width, desiredSize.height);
-        
-    [self enableTimer];
-    [cell layoutIfNeeded];
-    if ( !self.showedInitialDisplayAnimation )
+    if ( cell.marquee != self )
     {
-        [self refreshCellSubviews];
+        cell.dependencyManager = self.dependencyManager;
+        cell.marquee = self;
+        self.collectionView.hidden = !self.showedInitialDisplayAnimation;
+        CGSize desiredSize = [VBlurredMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:collectionView.bounds];
+        cell.bounds = CGRectMake(0, 0, desiredSize.width, desiredSize.height);
+        
+        [self enableTimer];
+        [cell layoutIfNeeded];
+        if ( !self.showedInitialDisplayAnimation )
+        {
+            [self refreshCellSubviews];
+        }
     }
     
     return cell;

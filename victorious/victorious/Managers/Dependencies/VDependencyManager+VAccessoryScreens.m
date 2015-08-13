@@ -338,7 +338,7 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
     }
     
     BOOL requiresAuthorization = NO;
-    VAuthorizationContext context;
+    VAuthorizationContext context = VAuthorizationContextDefault;
     
     // First check if the source requires authorization
     id <VAccessoryNavigationSource> source = (id <VAccessoryNavigationSource>)sourceViewController;

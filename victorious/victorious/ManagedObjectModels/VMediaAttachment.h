@@ -8,12 +8,13 @@
 
 #import <CoreData/CoreData.h>
 
-@class VComment;
+@class VComment, VMessage;
 
-@interface VCommentMedia : NSManagedObject
+@interface VMediaAttachment : NSManagedObject
 
 @property (nonatomic, retain) NSString * mediaURL;
 @property (nonatomic, retain) NSString * mimeType;
 @property (nonatomic, retain) VComment * comment;
+@property (nonatomic, retain) VMessage * message;
 
 @end

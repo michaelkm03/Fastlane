@@ -58,9 +58,12 @@ static CGFloat const kAnimationBounceCoefficient = 0.008;
 - (VAbstractMarqueeCollectionViewCell *)marqueeCellForCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath
 {
     VInsetMarqueeCollectionViewCell *collectionViewCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VInsetMarqueeCollectionViewCell suggestedReuseIdentifier] forIndexPath:indexPath];
-    collectionViewCell.marquee = self;
-    collectionViewCell.dependencyManager = self.dependencyManager;
-    [self enableTimer];
+    if ( collectionViewCell.marquee != self )
+    {
+        collectionViewCell.marquee = self;
+        collectionViewCell.dependencyManager = self.dependencyManager;
+        [self enableTimer];
+    }
     return collectionViewCell;
 }
 
@@ -68,7 +71,7 @@ static CGFloat const kAnimationBounceCoefficient = 0.008;
 {
     CGFloat pageWidth = CGRectGetWidth(self.collectionView.bounds);
     NSUInteger currentPage = ( self.collectionView.contentOffset.x / pageWidth ) + 1;
-    if (currentPage == self.stream.marqueeItems.count)
+    if (currentPage == self.marqueeItems.count)
     {
         currentPage = 0;
     }
