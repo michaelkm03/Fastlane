@@ -45,7 +45,7 @@ NSString * const VTrackingWelcomeVideoEndKey = @"welcome_video_end";
 NSString * const VTrackingWelcomeStartKey = @"welcome_start";
 NSString * const VTrackingWelcomeGetStartedTapKey = @"get_started_tap";
 NSString * const kMenuKey = @"menu";
-
+NSString * const kFirstTimeContentKey = @"firstTimeContent";
 
 @interface VTabScaffoldViewController () <UITabBarControllerDelegate, VRootViewControllerContainedViewController, VDeeplinkSupporter>
 
@@ -330,16 +330,11 @@ NSString * const kMenuKey = @"menu";
     self.hasSetupFirstLaunchOperations = YES;
     
     // Login
-    AutoShowLoginOperation *loginOperation = [[AutoShowLoginOperation alloc] initWithObjectManager:[VObjectManager sharedManager]
-                                                                                 dependencyManager:self.dependencyManager
-                                                                       viewControllerToPresentFrom:self];
-    self.loginOperation = loginOperation;
+    [self queueLoginOperation];
+    [self queueFirstTimeContentOperation];
+    [self queuePushNotificationOperation];
     
-    FTUEVideoOperation *videoOperation = [[FTUEVideoOperation alloc] initWithDependencyManager:self.dependencyManager
-                                                                     viewControllerToPresentOn:self
-                                                                                  sessionTimer:[VRootViewController rootViewController].sessionTimer];
-    RequestPushNotificationPermissionOperation *pushNotificationOperation = [[RequestPushNotificationPermissionOperation alloc] init];
-    NSBlockOperation *allLaunchOperationFinishedBlock = [NSBlockOperation blockOperationWithBlock:^
+    NSBlockOperation *allLaunchOperationFinishedBlockOperation = [NSBlockOperation blockOperationWithBlock:^
     {
         dispatch_async(dispatch_get_main_queue(), ^
         {
@@ -347,8 +342,35 @@ NSString * const kMenuKey = @"menu";
             self.coachmarkManager.allowCoachmarks = YES;
         });
     }];
-    
-    [self.launchOperationQueue addOperations:@[loginOperation, videoOperation, pushNotificationOperation, allLaunchOperationFinishedBlock] waitUntilFinished:NO];
+    [self.launchOperationQueue addOperation:allLaunchOperationFinishedBlockOperation];
+}
+
+- (void)queueLoginOperation
+{
+    AutoShowLoginOperation *loginOperation = [[AutoShowLoginOperation alloc] initWithObjectManager:[VObjectManager sharedManager]
+                                                                                 dependencyManager:self.dependencyManager
+                                                                       viewControllerToPresentFrom:self];
+    self.loginOperation = loginOperation;
+    [self.launchOperationQueue addOperation:loginOperation];
+}
+
+- (void)queueFirstTimeContentOperation
+{
+    NSDictionary *firstTimeContentConfiguration = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:kFirstTimeContentKey];
+    VDependencyManager *firstTimeContentDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:firstTimeContentConfiguration];
+    if (firstTimeContentConfiguration != nil)
+    {
+        FTUEVideoOperation *videoOperation = [[FTUEVideoOperation alloc] initWithDependencyManager:firstTimeContentDependencyManager
+                                                                         viewControllerToPresentOn:self
+                                                                                      sessionTimer:[VRootViewController rootViewController].sessionTimer];
+        [self.launchOperationQueue addOperation:videoOperation];
+    }
+}
+
+- (void)queuePushNotificationOperation
+{
+    RequestPushNotificationPermissionOperation *pushNotificationOperation = [[RequestPushNotificationPermissionOperation alloc] init];
+    [self.launchOperationQueue addOperation:pushNotificationOperation];
 }
 
 #pragma mark - VRootViewControllerContainedViewController

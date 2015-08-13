@@ -55,7 +55,7 @@ class AutoShowLoginOperation: Operation {
                 loginAuthorizedAction.prepareInViewController(viewControllerToPresentFrom,
                     context: VAuthorizationContext.Default,
                     completion: { (success: Bool) in
-                    self.finishedExecuting()
+                        self.finishedExecuting()
                 })
             })
         }
