@@ -78,16 +78,12 @@
                            placeholderImage:nil
                         alongsideAnimations:^
      {
-         [self makeBackgroundContainerViewVisible:YES];
+         __strong VBaseVideoSequencePreviewView *strongSelf = weakSelf;
+         [strongSelf makeBackgroundContainerViewVisible:YES];
      }
                                  completion:^(UIImage *image)
      {
          __strong VBaseVideoSequencePreviewView *strongSelf = weakSelf;
-         if ( strongSelf == nil )
-         {
-             return;
-         }
-         
          strongSelf.readyForDisplay = YES;
      }];
 }
