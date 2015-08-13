@@ -21,6 +21,9 @@
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VDependencyManager+VBackground.h"
 
+#import "VImageAsset.h"
+#import "VImageAssetFinder.h"
+
 @interface VVideoSequencePreviewView () <VVideoViewDelegate>
 
 @property (nonatomic, strong) UIImageView *previewImageView;
@@ -77,8 +80,22 @@
     // Hide video view in case we're not auto playing
     self.videoView.hidden = YES;
     
+    VImageAssetFinder *imageFinder = [[VImageAssetFinder alloc] init];
+    VImageAsset *imageAsset = [imageFinder largestAssetFromAssets:sequence.previewAssets];
+
     __weak VVideoSequencePreviewView *weakSelf = self;
-    [self.previewImageView fadeInImageAtURL:[sequence inStreamPreviewImageURL]
+    void (^completionBlock)(void) = ^void(void)
+    {
+        __strong VVideoSequencePreviewView *strongSelf = weakSelf;
+        if ( strongSelf == nil )
+        {
+            return;
+        }
+        
+        strongSelf.readyForDisplay = YES;
+    };
+
+    [self.previewImageView fadeInImageAtURL:[NSURL URLWithString:imageAsset.imageURL]
                            placeholderImage:nil
                         alongsideAnimations:^
      {
@@ -86,13 +103,20 @@
      }
                                  completion:^(UIImage *image)
      {
-         __strong VVideoSequencePreviewView *strongSelf = weakSelf;
-         if ( strongSelf == nil )
+         if (image != nil)
          {
-             return;
+             completionBlock();
          }
-         
-         strongSelf.readyForDisplay = YES;
+         else
+         {
+             // that URL failed, lets gracefully fall back
+             [self.previewImageView fadeInImageAtURL:[sequence inStreamPreviewImageURL]
+                                    placeholderImage:nil
+                                          completion:^(UIImage *image)
+              {
+                  completionBlock();
+              }];
+         }
      }];
     
     VAsset *asset = [sequence.firstNode mp4Asset];

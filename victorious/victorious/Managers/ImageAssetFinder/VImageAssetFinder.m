@@ -8,6 +8,11 @@
 
 #import "VImageAssetFinder.h"
 #import "VImageAsset+Fetcher.h"
+#import "VAsset.h"
+#import "VAnswer.h"
+#import "VNode.h"
+
+static NSString * const kTextAsset = @"text";
 
 @implementation VImageAssetFinder
 
@@ -73,6 +78,59 @@
             {
                 return [@(asset2.area) compare:@(asset1.area)];
             }];
+}
+
+- (VAnswer *)answerAFromAssets:(NSSet *)assets
+{
+    __block VAnswer *answer = nil;
+    [assets enumerateObjectsUsingBlock:^(id object, BOOL *stop)
+     {
+         if ([object isKindOfClass:[VAsset class]])
+         {
+             VAsset *asset = (VAsset *) object;
+             if (asset.node.interactions.array.count > 0)
+             {
+                 answer = [asset.node.interactions.array firstObject];
+                 *stop = YES;
+             }
+         }
+     }];
+    
+    return answer;
+}
+
+- (VAnswer *)answerBFromAssets:(NSSet *)assets
+{
+    __block VAnswer *answer = nil;
+    [assets enumerateObjectsUsingBlock:^(id object, BOOL *stop)
+     {
+         if ([object isKindOfClass:[VAsset class]])
+         {
+             VAsset *asset = (VAsset *) object;
+             if (asset.node.interactions.array.count > 1)
+             {
+                 answer = asset.node.interactions.array[1];
+                 *stop = YES;
+             };
+         }
+     }];
+    
+    return answer;
+}
+
+- (VAsset *)textAssetFromAssets:(NSSet *)assets
+{
+    __block VAsset *textAsset = nil;
+    [assets enumerateObjectsUsingBlock:^(VAsset *asset, BOOL *stop)
+     {
+         if ( asset.data != nil && [asset.type isEqualToString:kTextAsset] && [asset.data isKindOfClass:[NSString class]] )
+         {
+             textAsset = asset;
+             *stop = YES;
+         }
+     }];
+    
+    return textAsset;
 }
 
 @end
