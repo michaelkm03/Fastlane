@@ -24,7 +24,7 @@ static const CGFloat kTabBarAnimationTimeInterval = 0.3;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (instancetype)initWithTabBarToHide:(UITabBar *)tabbar
+- (instancetype)initWithTabBar:(UITabBar *)tabbar
 {
     self = [super init];
     if (self != nil)

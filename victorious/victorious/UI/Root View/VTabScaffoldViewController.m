@@ -106,7 +106,7 @@ NSString * const kMenuKey = @"menu";
     }
     self.internalTabBarController.viewControllers = [self.tabShim wrappedNavigationDesinations];
     
-    self.hidingHelper = [[VTabScaffoldHidingHelper alloc] initWithTabBarToHide:_internalTabBarController.tabBar];
+    self.hidingHelper = [[VTabScaffoldHidingHelper alloc] initWithTabBar:_internalTabBarController.tabBar];
 }
 
 - (void)viewWillAppear:(BOOL)animated
