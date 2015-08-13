@@ -128,6 +128,10 @@
         <attribute name="tag" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="user" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="hashtags" inverseEntity="User" syncable="YES"/>
     </entity>
+    <entity name="HashtagShelf" representedClassName="victorious.HashtagShelf" parentEntity="Shelf" syncable="YES">
+        <attribute name="hashtagTitle" attributeType="String" syncable="YES"/>
+        <attribute name="postsCount" attributeType="Integer 64" syncable="YES"/>
+    </entity>
     <entity name="ImageAsset" representedClassName="VImageAsset" syncable="YES">
         <attribute name="height" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="imageURL" optional="YES" attributeType="String" syncable="YES"/>
@@ -154,6 +158,7 @@
         <attribute name="timeoutGotoNode" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <relationship name="relationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Interaction" inverseName="interactionAction" inverseEntity="Interaction" syncable="YES"/>
     </entity>
+    <entity name="MarqueeShelf" representedClassName="victorious.MarqueeShelf" parentEntity="Shelf" syncable="YES"/>
     <entity name="Message" representedClassName="VMessage" syncable="YES">
         <attribute name="isRead" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="mediaPath" optional="YES" attributeType="String" syncable="YES"/>
@@ -250,7 +255,7 @@
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="sequences" inverseEntity="User" syncable="YES"/>
         <relationship name="voteResults" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VoteResult" inverseName="sequence" inverseEntity="VoteResult" syncable="YES"/>
     </entity>
-    <entity name="Shelf" representedClassName="VShelf" parentEntity="StreamItem" syncable="YES">
+    <entity name="Shelf" representedClassName="VShelf" isAbstract="YES" parentEntity="StreamItem" syncable="YES">
         <relationship name="stream" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Stream" inverseName="shelves" inverseEntity="Stream" syncable="YES"/>
     </entity>
     <entity name="Stream" representedClassName="VStream" parentEntity="StreamItem" syncable="YES">
@@ -322,6 +327,12 @@
         <relationship name="recentSequences" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Sequence" inverseName="recentUser" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="repostedSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="reposters" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="sequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="user" inverseEntity="Sequence" syncable="YES"/>
+        <relationship name="shelves" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UserShelf" inverseName="user" inverseEntity="UserShelf" syncable="YES"/>
+    </entity>
+    <entity name="UserShelf" representedClassName="victorious.UserShelf" parentEntity="Shelf" syncable="YES">
+        <attribute name="followersCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="postsCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="shelves" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="VoteResult" representedClassName="VVoteResult" syncable="YES">
         <attribute name="count" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -358,7 +369,10 @@
         <element name="Stream" positionX="1069" positionY="-792" width="128" height="195"/>
         <element name="StreamItem" positionX="871" positionY="-765" width="128" height="210"/>
         <element name="Tracking" positionX="828" positionY="-630" width="128" height="240"/>
-        <element name="User" positionX="1321" positionY="-324" width="128" height="465"/>
+        <element name="User" positionX="1321" positionY="-324" width="128" height="480"/>
         <element name="VoteResult" positionX="864" positionY="164" width="128" height="90"/>
+        <element name="HashtagShelf" positionX="630" positionY="-639" width="128" height="75"/>
+        <element name="UserShelf" positionX="639" positionY="-630" width="128" height="90"/>
+        <element name="MarqueeShelf" positionX="648" positionY="-621" width="128" height="45"/>
     </elements>
 </model>

@@ -11,7 +11,7 @@ import Foundation
 // Provides the RestKit mapping and descriptors needed for GIFSearchResult model
 extension GIFSearchResult {
     
-    static var entityMapping: RKEntityMapping {
+    override static func entityMapping() -> RKEntityMapping {
         let propertyMap = [
             "gif_url"           : "gifUrl",
             "gif_size"          : "gifSize",
@@ -33,7 +33,7 @@ extension GIFSearchResult {
     static var descriptors: NSArray {
         return [
             RKResponseDescriptor(
-                mapping: self.entityMapping,
+                mapping: self.entityMapping(),
                 method: RKRequestMethod.GET,
                 pathPattern: "/api/image/gif_search/:search_term/:page/:perpage",
                 keyPath: "payload",
@@ -41,7 +41,7 @@ extension GIFSearchResult {
             ),
             
             RKResponseDescriptor(
-                mapping: self.entityMapping,
+                mapping: self.entityMapping(),
                 method: RKRequestMethod.GET,
                 pathPattern: "/api/image/trending_gifs/:page/:perpage",
                 keyPath: "payload",

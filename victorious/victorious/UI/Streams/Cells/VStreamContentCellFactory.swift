@@ -26,6 +26,10 @@ class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
     /// The cell factory that will provide marquee cells
     private let marqueeCellFactory: VMarqueeCellFactory
     
+    private let trendingUserShelfFactory : VTrendingUserShelfCellFactory
+    
+    private let trendingHashtagShelfFactory : VTrendingHashtagShelfCellFactory
+    
     /// The dependency manager used to style all cells from this factory
     private let dependencyManager: VDependencyManager
     
@@ -37,12 +41,21 @@ class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
     required init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
         marqueeCellFactory = VMarqueeCellFactory(dependencyManager: dependencyManager)
+        trendingUserShelfFactory = VTrendingUserShelfCellFactory(dependencyManager: dependencyManager)
+        trendingHashtagShelfFactory = VTrendingHashtagShelfCellFactory(dependencyManager: dependencyManager)
     }
     
     private func factoryForStreamItem(streamItem: VStreamItem) -> VStreamCellFactory? {
         if let itemType = streamItem.itemType {
-            if itemType == VStreamItemTypeMarquee {
+            switch itemType {
+            case VStreamItemTypeMarquee:
                 return marqueeCellFactory
+            case VStreamItemTypeHashtag:
+                return trendingHashtagShelfFactory
+            case VStreamItemTypeUser:
+                return trendingUserShelfFactory
+            default:
+                break
             }
         }
         return defaultFactory()
@@ -54,6 +67,8 @@ extension VStreamContentCellFactory: VStreamCellFactory {
     func registerCellsWithCollectionView(collectionView: UICollectionView) {
         defaultFactory()?.registerCellsWithCollectionView(collectionView)
         marqueeCellFactory.registerCellsWithCollectionView(collectionView)
+        trendingUserShelfFactory.registerCellsWithCollectionView(collectionView)
+        trendingHashtagShelfFactory.registerCellsWithCollectionView(collectionView)
     }
     
     func collectionView(collectionView: UICollectionView, cellForStreamItem streamItem: VStreamItem, atIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
