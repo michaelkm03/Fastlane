@@ -231,7 +231,6 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 #if SIMULATE_STOREKIT && !SIMULATE_FETCH_PRODUCTS_ERROR
     product = [[VProduct alloc] init];
     product.productIdentifier = SIMULATED_PRODUCT_IDENTIFIER;
-    return product;
 #else
     
     product = [self.fetchedProducts objectForKey:productIdentifier];
@@ -245,9 +244,9 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
                                                      localizedTitle:@"In-App Purchase"];
     }
 #endif
+#endif
 
     return product;
-#endif
 }
 
 #pragma mark - Purchase product helpers
