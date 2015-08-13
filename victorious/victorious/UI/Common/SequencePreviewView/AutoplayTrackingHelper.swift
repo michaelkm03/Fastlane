@@ -12,7 +12,7 @@ extension VNetworkStatus {
     var trackingDescription : String {
         switch (self) {
         case .NotReachable:
-            return "not_reachable"
+            return "unknown"
         case .ReachableViaWiFi:
             return "wifi"
         case .ReachableViaWWAN:
@@ -20,7 +20,6 @@ extension VNetworkStatus {
         }
     }
 }
-
 
 class AutoplayTrackingHelper : NSObject {
     
