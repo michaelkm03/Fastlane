@@ -11,6 +11,7 @@
 #import "VStreamItem+Fetcher.h"
 #import "VSequence.h"
 #import "VTracking.h"
+#import "VVideoSettings.h"
 #import "victorious-Swift.h"
 
 NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvictorious.LoggedInChangedNotification";
@@ -19,6 +20,9 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 
 @property (nonatomic, readwrite) BOOL didTrackViewDidAppear;
 @property (nonatomic, readwrite) BOOL canTrackViewDidAppear;
+
+@property (nonatomic, strong) VVideoSettings *videoSettings;
+@property (nonatomic, strong) AutoplayTrackingHelper *autoplayTrackingHelper;
 
 @end
 
@@ -114,6 +118,16 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
                               VTrackingKeyUrls : sequence.tracking.cellClick,
                               VTrackingKeyStreamId : trackingID ?: @""};
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromStream parameters:params];
+    
+    // Track an autoplay click if necessary
+    if (!sequence.isGifStyle.boolValue)
+    {
+        if (!sequence.firstNode.httpLiveStreamingAsset.streamAutoplay.boolValue && [self.videoSettings isAutoplayEnabled])
+        {
+            self.autoplayTrackingHelper.trackingItem = sequence.tracking;
+            [self.autoplayTrackingHelper trackAutoplayClick];
+        }
+    }
 }
 
 #pragma mark - State management for StreamDidAppear event
@@ -180,6 +194,24 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 - (void)resetCellVisibilityTracking
 {
     [[VTrackingManager sharedInstance] clearQueuedEventsWithName:VTrackingEventSequenceDidAppearInStream];
+}
+
+- (VVideoSettings *)videoSettings
+{
+    if (_videoSettings == nil)
+    {
+        _videoSettings = [[VVideoSettings alloc] init];
+    }
+    return _videoSettings;
+}
+
+- (AutoplayTrackingHelper *)autoplayTrackingHelper
+{
+    if (_autoplayTrackingHelper == nil)
+    {
+        _autoplayTrackingHelper = [[AutoplayTrackingHelper alloc] init];
+    }
+    return _autoplayTrackingHelper;
 }
 
 #pragma mark - Notificaiton handler

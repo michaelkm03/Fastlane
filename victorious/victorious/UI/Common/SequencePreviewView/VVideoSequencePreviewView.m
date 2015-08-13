@@ -32,6 +32,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
 @property (nonatomic, strong) VAsset *HLSAsset;
 @property (nonatomic, strong) VTracking *trackingItem;
 @property (nonatomic, strong) AutoplayTrackingHelper *trackingHelper;
+@property (nonatomic, strong) id timeObserver;
 
 @property (nonatomic, strong) SoundBarView *soundIndicator;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
@@ -89,8 +90,6 @@ const CGFloat kMaximumLoopingTime = 30.0f;
         {
             self.trackingItem = sequence.tracking;
             [self loadAssetURL:[NSURL URLWithString:self.HLSAsset.data] andLoop:NO];
-            
-            [self.trackingHelper trackAutoplayStart];
         }
     }
 }
@@ -164,6 +163,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     if (self.inFocus)
     {
         [self playVideo];
+        [self.trackingHelper trackAutoplayStart];
     }
     else
     {
@@ -176,6 +176,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     if (![self.videoView playbackLikelyToKeepUp])
     {
         [self setState:VVideoPreviewViewStateBuffering];
+        [self.trackingHelper trackAutoplayStall];
     }
     else
     {
@@ -198,6 +199,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     if (self.inFocus)
     {
         [self playVideo];
+        [self.trackingHelper trackAutoplayStart];
     }
 }
 
@@ -230,6 +232,26 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     if (self.inFocus)
     {
         [self setState:VVideoPreviewViewStatePlaying];
+    }
+}
+
+- (void)videoView:(VVideoView *__nonnull)videoView didProgressWithPercentComplete:(float)percent
+{
+    if (percent >= 25.0f && percent < 50.0f)
+    {
+        [self.trackingHelper trackAutoplayComplete25];
+    }
+    else if (percent >= 50.0f && percent < 75.0f)
+    {
+        [self.trackingHelper trackAutoplayComplete50];
+    }
+    else if (percent >= 75.0f && percent < 99.0f)
+    {
+        [self.trackingHelper trackAutoplayComplete75];
+    }
+    else if (percent >= 99)
+    {
+        [self.trackingHelper trackAutoplayComplete100];
     }
 }
 

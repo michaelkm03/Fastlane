@@ -24,7 +24,7 @@ extension VNetworkStatus {
 
 class AutoplayTrackingHelper : NSObject {
     
-    var trackingItem: VTracking
+    var trackingItem: VTracking?
     private let reachability = VReachability.reachabilityForInternetConnection()
     private let trackingManager = VTrackingManager.sharedInstance()
     
@@ -37,11 +37,13 @@ class AutoplayTrackingHelper : NSObject {
         }
     }
     
+    override init() { }
+    
     init(trackingItem: VTracking) {
         self.trackingItem = trackingItem
     }
     
-    private func formattedParameters(trackingURLObject: AnyObject) -> [String : String]? {
+    private func formattedParameters(trackingURLObject: AnyObject?) -> [String : String]? {
         if let trackingURL = trackingURLObject as? String {
             var parameters = infoParameters
             parameters[VTrackingKeyUrls] = trackingURL
@@ -52,43 +54,43 @@ class AutoplayTrackingHelper : NSObject {
     }
     
     func trackAutoplayStart() {
-        if let parameters = formattedParameters(trackingItem.autoplayView) {
+        if let trackingItem = trackingItem, parameters = formattedParameters(trackingItem.autoplayView) {
             trackingManager.trackEvent(VTrackingEventAutoplayDidStart, parameters: parameters)
         }
     }
     
     func trackAutoplayClick() {
-        if let parameters = formattedParameters(trackingItem.autoplayClick) {
+        if let trackingItem = trackingItem, parameters = formattedParameters(trackingItem.autoplayClick) {
             trackingManager.trackEvent(VTrackingEventAutoplayClick, parameters: parameters)
         }
     }
     
     func trackAutoplayComplete25() {
-        if let parameters = formattedParameters(trackingItem.autoplayComplete25) {
+        if let trackingItem = trackingItem, parameters = formattedParameters(trackingItem.autoplayComplete25) {
             trackingManager.trackEvent(VTrackingEventAutoplayDidComplete25, parameters: parameters)
         }
     }
     
     func trackAutoplayComplete50() {
-        if let parameters = formattedParameters(trackingItem.autoplayComplete50) {
+        if let trackingItem = trackingItem, parameters = formattedParameters(trackingItem.autoplayComplete50) {
             trackingManager.trackEvent(VTrackingEventAutoplayDidComplete50, parameters: parameters)
         }
     }
     
     func trackAutoplayComplete75() {
-        if let parameters = formattedParameters(trackingItem.autoplayComplete75) {
+        if let trackingItem = trackingItem, parameters = formattedParameters(trackingItem.autoplayComplete75) {
             trackingManager.trackEvent(VTrackingEventAutoplayDidComplete75, parameters: parameters)
         }
     }
     
     func trackAutoplayComplete100() {
-        if let parameters = formattedParameters(trackingItem.autoplayComplete100) {
+        if let trackingItem = trackingItem, parameters = formattedParameters(trackingItem.autoplayComplete100) {
             trackingManager.trackEvent(VTrackingEventAutoplayDidComplete100, parameters: parameters)
         }
     }
     
     func trackAutoplayStall() {
-        if let parameters = formattedParameters(trackingItem.autoplayViewStall) {
+        if let trackingItem = trackingItem, parameters = formattedParameters(trackingItem.autoplayViewStall) {
             trackingManager.trackEvent(VTrackingEventAutoplayDidStall, parameters: parameters)
         }
     }

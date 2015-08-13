@@ -26,6 +26,7 @@ static void *kPlaybackBufferEmpty = &kPlaybackBufferEmpty;
 @property (nonatomic, strong, nullable) AVPlayerItem *newestPlayerItem;
 @property (nonatomic, readonly) BOOL isPlayingVideo;
 @property (nonatomic, strong) VVideoUtils *videoUtils;
+@property (nonatomic, strong, nullable) id timeObserver;
 
 @end
 
@@ -39,6 +40,8 @@ static void *kPlaybackBufferEmpty = &kPlaybackBufferEmpty;
     {
         [self.player.currentItem removeObserver:self forKeyPath:kPlaybackBufferLikelyToKeepUpKey context:kPlaybackBufferLikelyToKeepUp];
         [self.player.currentItem removeObserver:self forKeyPath:kPlaybackBufferEmptyKey context:kPlaybackBufferEmpty];
+        [self.player removeTimeObserver:self.timeObserver];
+        self.timeObserver = nil;
     }
 }
 
@@ -171,10 +174,23 @@ static void *kPlaybackBufferEmpty = &kPlaybackBufferEmpty;
     {
         [self.player.currentItem removeObserver:self forKeyPath:kPlaybackBufferLikelyToKeepUpKey context:kPlaybackBufferLikelyToKeepUp];
         [self.player.currentItem removeObserver:self forKeyPath:kPlaybackBufferEmptyKey context:kPlaybackBufferEmpty];
+        [self.player removeTimeObserver:self.timeObserver];
     }
     
+    // Add buffer observers
     [playerItem addObserver:self forKeyPath:kPlaybackBufferLikelyToKeepUpKey options:NSKeyValueObservingOptionNew context:kPlaybackBufferLikelyToKeepUp];
     [playerItem addObserver:self forKeyPath:kPlaybackBufferEmptyKey options:NSKeyValueObservingOptionNew context:kPlaybackBufferEmpty];
+    
+    // Add progress observer
+    __weak VVideoView *weakSelf = self;
+    self.timeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 24)
+                                                                  queue:dispatch_get_main_queue()
+                                                             usingBlock:^(CMTime time)
+                         {
+                             __strong VVideoView *strongSelf = weakSelf;
+                             [strongSelf didPlayToTime:time];
+                         }];
+    
     
     [self.player replaceCurrentItemWithPlayerItem:playerItem];
     
@@ -231,6 +247,18 @@ static void *kPlaybackBufferEmpty = &kPlaybackBufferEmpty;
     {
         [self.player.currentItem seekToTime:kCMTimeZero];
         [self.player pause];
+    }
+}
+
+- (void)didPlayToTime:(CMTime)time
+{
+    Float64 durationInSeconds = CMTimeGetSeconds( self.player.currentItem.duration );
+    Float64 timeInSeconds     = CMTimeGetSeconds(time);
+    float percentElapsed      = timeInSeconds / durationInSeconds * 100.0f;
+    
+    if ([self.delegate respondsToSelector:@selector(videoView:didProgressWithPercentComplete:)])
+    {
+        [self.delegate videoView:self didProgressWithPercentComplete:percentElapsed];
     }
 }
 
