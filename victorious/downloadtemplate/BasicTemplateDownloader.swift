@@ -31,6 +31,7 @@ class BasicTemplateDownloader: NSObject, VTemplateDownloader {
         var request = NSMutableURLRequest(URL: apiURL)
         request.v_setAuthenticationHeader(appID: environment.appID.integerValue, deviceID: deviceID, buildNumber: buildNumber)
         request.v_setAppVersionHeaderValue(versionNumber)
+        request.v_setPlatformHeader()
         
         let urlSession = NSURLSession.sharedSession()
         let dataTask = urlSession.dataTaskWithRequest(request) { (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in

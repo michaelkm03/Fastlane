@@ -27,10 +27,6 @@
 		<data>
 		Bv1Yj8bt5BYg7ikF1lknWQ06R/g=
 		</data>
-		<key>Headers/VAPIRequestDecorator.h</key>
-		<data>
-		C16eWQcoR1Det4G6A3R70fuYsZQ=
-		</data>
 		<key>Headers/VBulkDownloadOperation.h</key>
 		<data>
 		Cc50W1rtcBwfZH+rfmdNEUsYv/M=
@@ -97,7 +93,7 @@
 		</data>
 		<key>Headers/VictoriousCommon.h</key>
 		<data>
-		Ss/6UctMPBeI7lK+qjb+4IhkcU8=
+		PXQN5wVBk34ktwc3Z8q2ugtHJAY=
 		</data>
 		<key>Modules/VictoriousCommon.swiftmodule/x86_64.swiftdoc</key>
 		<data>
@@ -105,7 +101,7 @@
 		</data>
 		<key>Modules/VictoriousCommon.swiftmodule/x86_64.swiftmodule</key>
 		<data>
-		SLaellgowqxm6I/I8LKFpmwwh+A=
+		+hs6dsPhzFtq6ddxTyvh5dRTfSM=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
