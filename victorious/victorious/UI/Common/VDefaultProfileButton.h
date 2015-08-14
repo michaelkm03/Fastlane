@@ -16,4 +16,6 @@
 - (void)setup;
 - (void)setProfileImageURL:(NSURL *)url forState:(UIControlState)controlState;
 
+- (void)addBorderWithWidth:(CGFloat)width andColor:(UIColor *)color;
+
 @end
