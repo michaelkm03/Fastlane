@@ -98,8 +98,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     self.applicationTracking = [[VApplicationTracking alloc] init];
     [[VTrackingManager sharedInstance] addDelegate:self.applicationTracking];
     
-    [[VObjectManager sharedManager] resetSessionID];
-    
     self.sessionTimer = [[VSessionTimer alloc] init];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newSessionShouldStart:) name:VSessionTimerNewSessionShouldStart object:nil];
