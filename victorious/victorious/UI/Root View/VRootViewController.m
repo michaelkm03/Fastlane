@@ -399,7 +399,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     NSString *deeplinkUrlString = localNotification.userInfo[ [LocalNotificationScheduler deplinkURLKey] ];
     if ( deeplinkUrlString != nil && deeplinkUrlString.length > 0 )
     {
-        [UIApplication sharedApplication].applicationIconBadgeNumber -= localNotification.applicationIconBadgeNumber;
         [[VRootViewController rootViewController] openURL:[NSURL URLWithString:deeplinkUrlString]];
     }
 }
