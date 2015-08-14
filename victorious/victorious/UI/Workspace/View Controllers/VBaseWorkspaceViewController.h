@@ -36,7 +36,6 @@ typedef void (^VWorkspaceCompletion)(BOOL finished, UIImage *previewImage, NSURL
 
 @property (nonatomic, weak, readonly) VCanvasView *canvasView;
 
-@property (nonatomic, assign) BOOL continueButtonEnabled;
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *continueButton;
 
 @property (nonatomic, assign) BOOL disablesInpectorOnKeyboardAppearance;

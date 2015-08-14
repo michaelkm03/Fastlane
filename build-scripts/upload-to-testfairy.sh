@@ -84,7 +84,7 @@ JSON=$( ${CURL} -s ${SERVER_ENDPOINT}/api/upload -F api_key=${TESTFAIRY_API_KEY}
 
 URL=$( echo ${JSON} | sed 's/\\\//\//g' | sed -n 's/.*"instrumented_url"\s*:\s*"\([^"]*\)".*/\1/p' )
 if [ -z "$URL" ]; then
-	echo "ERROR: Build uploaded, but no reply from server. Please contact support@testfairy.com"
+	echo "ERROR: Build uploaded, but no reply from server. Please contact support@testfairy.com: $JSON"
 	exit 1
 fi
 echo "SUCCESS: Build was successfully uploaded to TestFairy and is available at: ${URL}"

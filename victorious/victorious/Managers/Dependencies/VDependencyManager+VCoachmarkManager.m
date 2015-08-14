@@ -7,8 +7,8 @@
 //
 
 #import "VDependencyManager+VCoachmarkManager.h"
-#import "VDependencyManager+VScaffoldViewController.h"
-#import "VScaffoldViewController.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
+#import "VTabScaffoldViewController.h"
 
 NSString * const VLikeButtonCoachmarkIdentifier = @"like_button_coachmark";
 
