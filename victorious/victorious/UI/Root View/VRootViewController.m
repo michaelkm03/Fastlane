@@ -511,7 +511,11 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 #pragma mark - VFollowResponder
 
-- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion fromViewController:(UIViewController *)viewControllerToPresentOn withScreenName:(NSString *)screenName
+- (void)followUser:(VUser *)user
+withAuthorizedBlock:(void (^)(void))authorizedBlock
+     andCompletion:(VFollowHelperCompletion)completion
+fromViewController:(UIViewController *)viewControllerToPresentOn
+    withScreenName:(NSString *)screenName
 {
     UIViewController *sourceViewController = viewControllerToPresentOn?:self;
     
@@ -525,10 +529,16 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 - (void)unfollowUser:(VUser *)user
  withAuthorizedBlock:(void (^)(void))authorizedBlock
        andCompletion:(VFollowHelperCompletion)completion
+  fromViewController:(UIViewController *)viewControllerToPresentOn
+      withScreenName:(NSString *)screenName
 {
+    UIViewController *sourceViewController = viewControllerToPresentOn?:self;
+    
     [self.followHelper unfollowUser:user
                 withAuthorizedBlock:authorizedBlock
-                      andCompletion:completion];
+                      andCompletion:completion
+                 fromViewController:sourceViewController
+                     withScreenName:screenName];
 }
 
 #pragma mark - VHashtag

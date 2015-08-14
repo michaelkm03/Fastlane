@@ -490,10 +490,28 @@
 - (void)unfollowUser:(VUser *)user
  withAuthorizedBlock:(void (^)(void))authorizedBlock
        andCompletion:(VFollowHelperCompletion)completion
+  fromViewController:(UIViewController *)viewControllerToPresentOn
+      withScreenName:(NSString *)screenName
 {
-    [self.followingHelper unfollowUser:user
-                   withAuthorizedBlock:authorizedBlock
-                         andCompletion:completion];
+    UIViewController *displayedVC = [self.delegate currentViewControllerDisplayed];
+    
+    NSDictionary *dict = @{
+                           NSStringFromClass([VFindContactsTableViewController class]) : VFollowSourceScreenFindFriendsContacts,
+                           NSStringFromClass([VFindFacebookFriendsTableViewController class]) : VFollowSourceScreenFindFriendsFacebook,
+                           NSStringFromClass([VFindTwitterFriendsTableViewController class]) : VFollowSourceScreenFindFriendsTwitter
+                           };
+    
+    NSString *sourceScreen = screenName?:[dict valueForKey:NSStringFromClass([displayedVC class])];
+    
+    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
+                                                                      withSender:nil];
+    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
+    
+    [followResponder unfollowUser:user
+              withAuthorizedBlock:authorizedBlock
+                    andCompletion:completion
+               fromViewController:self
+                   withScreenName:sourceScreen];
 }
 
 @end
