@@ -24,13 +24,13 @@
  * Responsible for the play icon that appears on the preview view.
  * Subclasses can hide this if they are playing video in-line.
  */
-@property (nonatomic, strong) UIView *playIconContainerView;
+@property (nonatomic, strong, readonly) UIView *playIconContainerView;
 
 /**
  * Responsible for playing video in-line. Subclasses can hide this if
  * there is no need to play video.
  */
-@property (nonatomic, strong) VVideoView *videoView;
+@property (nonatomic, strong, readonly) VVideoView *videoView;
 
 /**
  * Indicated whether or not this preview view is currently in focus.
