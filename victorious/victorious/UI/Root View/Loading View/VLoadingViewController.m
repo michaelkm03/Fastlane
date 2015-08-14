@@ -202,8 +202,7 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
         NSArray *notifications = @[@{ @"identifier" : @"ballisticsCooldown",
                                       @"message" : @"Emotive ballistics are ready!",
                                       @"action" : @"Throw",
-                                      @"deeplinkUrl" : @"vthisapp://menu/0",
-                                      @"badgeNumber" : @1 }];
+                                      @"deeplinkUrl" : @"vthisapp://menu/0" }];
         [templateDecorator setTemplateValue:notifications forKeyPath:@"scaffold/localNotifications"];
 
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager

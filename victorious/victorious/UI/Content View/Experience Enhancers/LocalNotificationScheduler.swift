@@ -64,7 +64,9 @@ class LocalNotificationScheduler : NSObject {
             localNotification.alertBody = templateNotification.message
             localNotification.alertAction = templateNotification.action
             localNotification.soundName = UILocalNotificationDefaultSoundName
-            localNotification.applicationIconBadgeNumber = templateNotification.badgeNumber ?? 1
+            if let badgeNumber = templateNotification.badgeNumber {
+                localNotification.applicationIconBadgeNumber = badgeNumber
+            }
             localNotification.userInfo = userInfo
             
             UIApplication.sharedApplication().scheduleLocalNotification( localNotification )
