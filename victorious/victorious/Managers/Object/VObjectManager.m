@@ -473,7 +473,7 @@ NS_ASSUME_NONNULL_BEGIN
         }
     }];
     
-    [request v_setAuthenticationHeaderWithAppID:[[[VEnvironmentManager sharedInstance] currentEnvironment].appID stringValue]
+    [request v_setAuthenticationHeaderWithAppID:[[[VEnvironmentManager sharedInstance] currentEnvironment].appID integerValue]
                                        deviceID:[[UIDevice currentDevice].identifierForVendor UUIDString]
                                     buildNumber:[[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleVersion"]
                                          userID:userID

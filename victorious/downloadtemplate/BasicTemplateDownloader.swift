@@ -12,24 +12,25 @@ import VictoriousCommon
 /// A straightforward implementation of VTemplateDownloader
 class BasicTemplateDownloader: NSObject, VTemplateDownloader {
 
-    /// This decorator will be used to modify the API request before sending.
-    /// Please make sure all the properties therein are set properly
-    /// before calling downloadTemplateWithCompletion()
-    let requestDecorator = VAPIRequestDecorator()
-    
     private let environment: VEnvironment
+    private let deviceID: String
+    private let buildNumber: String
+    private let versionNumber: String
     private var apiURL: NSURL {
         return NSURL(string: "/api/template", relativeToURL: environment.baseURL)!
     }
     
-    init(environment: VEnvironment) {
+    init(environment: VEnvironment, deviceID: String, buildNumber: String, versionNumber: String) {
         self.environment = environment
+        self.deviceID = deviceID
+        self.buildNumber = buildNumber
+        self.versionNumber = versionNumber
     }
     
     func downloadTemplateWithCompletion( completion: VTemplateDownloaderCompletion ) {
-        let request = NSMutableURLRequest(URL: apiURL)
-        requestDecorator.appID = environment.appID
-        requestDecorator.updateHeadersInRequest(request)
+        var request = NSMutableURLRequest(URL: apiURL)
+        request.v_setAuthenticationHeader(appID: environment.appID.integerValue, deviceID: deviceID, buildNumber: buildNumber)
+        request.v_setAppVersionHeaderValue(versionNumber)
         
         let urlSession = NSURLSession.sharedSession()
         let dataTask = urlSession.dataTaskWithRequest(request) { (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in

@@ -36,7 +36,7 @@ extension NSMutableURLRequest {
     
     /// Sets the "Authentication" header appropriately for Victorious API requests. Since the Date and User-Agent headers are
     /// used in calculating the correct Authentication header, this method calculates and sets those, too.
-    public func v_setAuthenticationHeader(#appID: String, deviceID: String, buildNumber: String, userID: Int = 0, authenticationToken: String = "") {
+    public func v_setAuthenticationHeader(#appID: Int, deviceID: String, buildNumber: String, userID: Int = 0, authenticationToken: String = "") {
         
         let currentDate = NSMutableURLRequest.dateFormatter.stringFromDate(NSDate())
         setValue(currentDate, forHTTPHeaderField: HTTPHeader.date)

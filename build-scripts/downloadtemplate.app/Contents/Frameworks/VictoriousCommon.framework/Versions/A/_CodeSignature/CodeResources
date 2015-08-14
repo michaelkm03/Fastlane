@@ -6,7 +6,7 @@
 	<dict>
 		<key>Resources/Info.plist</key>
 		<data>
-		0PZQVCbWbqgEFfbnHCbe1ECGmBs=
+		ZmCisjgWKvJU/mTuwjLze9TcHE0=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -17,7 +17,7 @@
 		</data>
 		<key>Headers/NSString+VCrypto.h</key>
 		<data>
-		pM2L2Cy2UWgGJquPwlOxL9zExwI=
+		l3dbeoEhlx+9juMYp33o8+c7E4M=
 		</data>
 		<key>Headers/NSString+VDataCacheID.h</key>
 		<data>
@@ -57,7 +57,7 @@
 		</data>
 		<key>Headers/VExperimentSettings.h</key>
 		<data>
-		ZZa4551/QfbiBqVBwMq9ErVxKtc=
+		pd8K4+0ev9QaRWs2zqsshyPjFpw=
 		</data>
 		<key>Headers/VJSONHelper.h</key>
 		<data>
@@ -91,17 +91,29 @@
 		<data>
 		DXrr4leURCDZMeraHkM8t55qKdo=
 		</data>
+		<key>Headers/VictoriousCommon-Swift.h</key>
+		<data>
+		3X/GtQE/U2I+vme/jGOk0MJ+MzA=
+		</data>
 		<key>Headers/VictoriousCommon.h</key>
 		<data>
 		Ss/6UctMPBeI7lK+qjb+4IhkcU8=
 		</data>
+		<key>Modules/VictoriousCommon.swiftmodule/x86_64.swiftdoc</key>
+		<data>
+		N0cDDr8gVEPK8P5PEmvtbRHZ0Wc=
+		</data>
+		<key>Modules/VictoriousCommon.swiftmodule/x86_64.swiftmodule</key>
+		<data>
+		SLaellgowqxm6I/I8LKFpmwwh+A=
+		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
-		SW+FWEGgeaU0pr1N9VU7abYSQMo=
+		yhqQV4UiTphGjKfrxCxWVwKyuAk=
 		</data>
 		<key>Resources/Info.plist</key>
 		<data>
-		0PZQVCbWbqgEFfbnHCbe1ECGmBs=
+		ZmCisjgWKvJU/mTuwjLze9TcHE0=
 		</data>
 	</dict>
 	<key>rules</key>
