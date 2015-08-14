@@ -8,26 +8,33 @@
 
 import UIKit
 
-class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
+///Classes that conform to this protocol will receive messages when
+///a hashtag is selected from this shelf.
+@objc protocol VTrendingHashtagShelfResponder {
+    ///Sent when a user is selected from this shelf.
+    ///
+    ///:param: user The user that was selected.
+    ///:param: fromShelf The shelf that the hashtag was selected from.
+    func trendingHashtagShelfSelected(hashtag: String, fromShelf: HashtagShelf)
+}
 
-    private struct verticalConstraintConstants {
-        static let separatorHeight : CGFloat = 4
-        static let hashtagLabelVerticalSpace : CGFloat = 4
-        static let titleTopVerticalSpace : CGFloat = 18
-        static let titleToHashtagVerticalSpace : CGFloat = 17
-        static let hashtagToCountsVerticalSpace : CGFloat = 8
-        static let countsBottomVerticalSpace : CGFloat = 13
-        static let collectionViewHeight : CGFloat = 100
+///A shelf that displays a hashtag and its posts.
+class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
+    private struct VerticalConstraintConstants {
+        static let separatorHeight: CGFloat = 4
+        static let hashtagTextViewVerticalSpace: CGFloat = 4
+        static let titleTopVerticalSpace: CGFloat = 18
+        static let titleToHashtagVerticalSpace: CGFloat = 17
+        static let hashtagToCountsVerticalSpace: CGFloat = 8
+        static let countsBottomVerticalSpace: CGFloat = 13
+        static let collectionViewHeight: CGFloat = 100
         
-        static let baseHeight = separatorHeight + hashtagLabelVerticalSpace + titleTopVerticalSpace + titleToHashtagVerticalSpace + hashtagToCountsVerticalSpace + countsBottomVerticalSpace + collectionViewHeight
+        static let baseHeight = separatorHeight + hashtagTextViewVerticalSpace + titleTopVerticalSpace + titleToHashtagVerticalSpace + hashtagToCountsVerticalSpace + countsBottomVerticalSpace + collectionViewHeight
     }
     
-    @IBOutlet private weak var hashtagLabel: UILabel!
-    @IBOutlet private weak var postCountLabel: UILabel!
-    @IBOutlet private weak var followControl: VFollowControl!
+    @IBOutlet private weak var hashtagTextView: VHashTagTextView!
+    @IBOutlet private weak var postsCountLabel: UILabel!
     @IBOutlet private weak var hashtagLabelBackground: UIView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var separatorView: UIView!
     @IBOutlet private var hashtagLabelVerticalConstraints: [NSLayoutConstraint]!
     @IBOutlet private weak var titleTopVerticalSpace: NSLayoutConstraint!
     @IBOutlet private weak var titleToHashtagVerticalSpace: NSLayoutConstraint!
@@ -36,100 +43,181 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
     @IBOutlet private weak var collectionViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet private weak var separatorHeightConstraint: NSLayoutConstraint!
     
-    private static let titleText: NSString = NSLocalizedString("Fan Favorite", comment:"")
-    
-    private static let numberFormatter = VLargeNumberFormatter()
+    //MARK: - Setters
     
     override func onShelfSet()
     {
         super.onShelfSet()
         if let shelf = shelf as? HashtagShelf {
-            hashtagLabel.text = VTrendingHashtagShelfCollectionViewCell.hashtagText(shelf)
+            hashtagTextView.text = VTrendingHashtagShelfCollectionViewCell.hashtagText(shelf)
             titleLabel.text = VTrendingHashtagShelfCollectionViewCell.titleText as String
-            postCountLabel.text = VTrendingHashtagShelfCollectionViewCell.postCountText(shelf)
+            postsCountLabel.text = VTrendingHashtagShelfCollectionViewCell.postsCountText(shelf)
+            updateFollowControlState()
         }
     }
     
     override func onDependencyManagerSet() {
         super.onDependencyManagerSet()
         if let dependencyManager = dependencyManager {
-            followControl.dependencyManager = dependencyManager
             
             titleLabel.font = dependencyManager.titleFont
-            hashtagLabel.font = dependencyManager.hashtagFont
-            postCountLabel.font = dependencyManager.postCountFont
+            hashtagTextView.font = dependencyManager.hashtagFont
+            postsCountLabel.font = dependencyManager.postsCountFont
             
-            hashtagLabelBackground.backgroundColor = dependencyManager.colorForKey(VDependencyManagerAccentColorKey)
-            separatorView.backgroundColor = dependencyManager.colorForKey(VDependencyManagerAccentColorKey)
+            let accentColor = dependencyManager.accentColor
+            hashtagLabelBackground.backgroundColor = accentColor
+            separatorView.backgroundColor = accentColor
             
-            let textColor = dependencyManager.colorForKey(VDependencyManagerMainTextColorKey)
+            let textColor = dependencyManager.textColor
             titleLabel.textColor = textColor
-            hashtagLabel.textColor = textColor
-            postCountLabel.textColor = textColor
+            hashtagTextView.textColor = textColor
+            postsCountLabel.textColor = textColor
             
-            dependencyManager.addBackgroundToBackgroundHost(self)
+            hashtagTextView.dependencyManager = dependencyManager
+            hashtagTextView.updateForLinkTextForegroundColor(UIColor.whiteColor())
         }
     }
+    
+    //MARK: - Getters
+
+    private static let titleText: NSString = NSLocalizedString("Fan Favorite", comment:"")
+    
+    private static let numberFormatter = VLargeNumberFormatter()
+    
+    private class func hashtagText(shelf: HashtagShelf) -> String {
+        return "#" + shelf.hashtagTitle
+    }
+    
+    private class func postsCountText(shelf: HashtagShelf) -> String {
+        return NSString(format: NSLocalizedString("HashtagPostsCountFormat", comment: ""), numberFormatter.stringForInteger(shelf.postsCount.integerValue)) as String
+    }
+    
+    //MARK: - View management
     
     override func awakeFromNib() {
         super.awakeFromNib()
         for constraint in hashtagLabelVerticalConstraints {
-            constraint.constant = verticalConstraintConstants.hashtagLabelVerticalSpace
+            constraint.constant = VerticalConstraintConstants.hashtagTextViewVerticalSpace
         }
-        titleTopVerticalSpace.constant = verticalConstraintConstants.titleTopVerticalSpace
-        titleToHashtagVerticalSpace.constant = verticalConstraintConstants.titleToHashtagVerticalSpace
-        hashtagToCountsVerticalSpace.constant = verticalConstraintConstants.hashtagToCountsVerticalSpace
-        countsBottomVerticalSpace.constant = verticalConstraintConstants.countsBottomVerticalSpace
-        collectionViewHeightConstraint.constant = verticalConstraintConstants.collectionViewHeight
-        separatorHeightConstraint.constant = verticalConstraintConstants.separatorHeight
+        titleTopVerticalSpace.constant = VerticalConstraintConstants.titleTopVerticalSpace
+        titleToHashtagVerticalSpace.constant = VerticalConstraintConstants.titleToHashtagVerticalSpace
+        hashtagToCountsVerticalSpace.constant = VerticalConstraintConstants.hashtagToCountsVerticalSpace
+        countsBottomVerticalSpace.constant = VerticalConstraintConstants.countsBottomVerticalSpace
+        collectionViewHeightConstraint.constant = VerticalConstraintConstants.collectionViewHeight
+        separatorHeightConstraint.constant = VerticalConstraintConstants.separatorHeight
+        
+        hashtagTextView.textContainer.lineFragmentPadding = 0
+        hashtagTextView.textContainerInset = UIEdgeInsetsZero
+        hashtagTextView.contentInset = UIEdgeInsetsZero
+        hashtagTextView.linkDelegate = self
     }
     
     override class func nibForCell() -> UINib {
         return UINib(nibName: "VTrendingHashtagShelfCollectionViewCell", bundle: nil)
     }
+    
+    override func updateFollowControlState() {
+        if let shelf = shelf as? HashtagShelf {
+            var controlState = VFollowControlState.Unfollowed
+            if let mainUser = VObjectManager.sharedManager().mainUser {
+                if mainUser.isFollowingHashtagString(shelf.hashtagTitle) {
+                    controlState = VFollowControlState.Followed
+                }
+            }
+            followControl.setControlState(controlState, animated: true)
+        }
+    }
 
+    ///The optimal size for this cell.
+    ///
+    ///:param: bounds The bounds of the collection view containing this cell (minus any relevant insets)
+    ///:param: shelf The shelf whose content will populate this cell
+    ///:param: dependencyManager The dependency manager that will be used to style the cell
+    ///
+    ///:return: The optimal size for this cell.
     class func desiredSize(collectionViewBounds bounds: CGRect, shelf: HashtagShelf, dependencyManager: VDependencyManager) -> CGSize {
-        var height = verticalConstraintConstants.baseHeight
+        var height = VerticalConstraintConstants.baseHeight
         
         //Add the height of the labels to find the entire height of the cell
         let titleHeight = VTrendingHashtagShelfCollectionViewCell.titleText.frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.titleFont]).height
         let hashtagHeight = VTrendingHashtagShelfCollectionViewCell.hashtagText(shelf).frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.hashtagFont]).height
-        let postCountHeight = VTrendingHashtagShelfCollectionViewCell.postCountText(shelf).frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.postCountFont]).height
+        let postCountHeight = VTrendingHashtagShelfCollectionViewCell.postsCountText(shelf).frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.postsCountFont]).height
         
         height += titleHeight + hashtagHeight + postCountHeight
         
         return CGSizeMake(bounds.width, height)
     }
     
-    private class func hashtagText(shelf: HashtagShelf) -> String {
-        return "#" + shelf.hashtagTitle
-    }
+    //MARK: - Interaction response
     
-    private class func postCountText(shelf: HashtagShelf) -> String {
-        return "In " + numberFormatter.stringForInteger(shelf.postsCount.integerValue) + " posts"
+    @IBAction private func tappedFollowControl(followControl: VFollowControl) {
+        if followControl.controlState == VFollowControlState.Unfollowed {
+            if let target: VHashtagResponder = nextResponder()?.targetForAction(Selector("followHashtag:successBlock:failureBlock:"), withSender: followControl) as? VHashtagResponder, let shelf = shelf as? HashtagShelf {
+                followControl.setControlState(VFollowControlState.Loading, animated: true)
+                target.followHashtag(shelf.hashtagTitle, successBlock: { [weak self] ([AnyObject]) -> Void in
+                    if let strongSelf = self {
+                        strongSelf.updateFollowControlState()
+                    }
+                    }, failureBlock: { [weak self] (NSError) -> Void in
+                        if let strongSelf = self {
+                            strongSelf.updateFollowControlState()
+                        }
+                    })
+            }
+            else {
+                assertionFailure("The VTrendingHashtagShelfCollectionViewCell needs a hashtag responder further up its responder chain.")
+            }
+        }
+        else if followControl.controlState == VFollowControlState.Followed {
+            if let target: VHashtagResponder = nextResponder()?.targetForAction(Selector("unfollowHashtag:successBlock:failureBlock:"), withSender: followControl) as? VHashtagResponder, let shelf = shelf as? HashtagShelf {
+                followControl.setControlState(VFollowControlState.Loading, animated: true)
+                target.unfollowHashtag(shelf.hashtagTitle, successBlock: { [weak self] ([AnyObject]) -> Void in
+                    if let strongSelf = self {
+                        strongSelf.updateFollowControlState()
+                    }
+                    }, failureBlock: { [weak self] (NSError) -> Void in
+                        if let strongSelf = self {
+                            strongSelf.updateFollowControlState()
+                        }
+                    })
+            }
+            else {
+                assertionFailure("The VTrendingHashtagShelfCollectionViewCell needs a hashtag responder further up its responder chain.")
+            }
+        }
+    }
+}
+
+extension VTrendingHashtagShelfCollectionViewCell: CCHLinkTextViewDelegate {
+    func linkTextView(linkTextView: CCHLinkTextView!, didTapLinkWithValue value: AnyObject!) {
+        if let responder = nextResponder()?.targetForAction(Selector("trendingHashtagShelfSelected:fromShelf:"), withSender: nil) as? VTrendingHashtagShelfResponder, let hashtag = value as? String, let shelf = shelf as? HashtagShelf {
+            responder.trendingHashtagShelfSelected(hashtag, fromShelf: shelf)
+        }
+        else
+        {
+            assertionFailure("VTrendingHashtagShelfCollectionViewCell needs a VHashtagSelectionResponder up it's responder chain to send messages to.")
+        }
     }
 }
 
 private extension VDependencyManager {
-    
-    var titleFont : UIFont {
+    var titleFont: UIFont {
         return fontForKey(VDependencyManagerHeaderFontKey)
     }
     
-    var hashtagFont : UIFont {
+    var hashtagFont: UIFont {
         return fontForKey(VDependencyManagerHeading2FontKey)
     }
     
-    var postCountFont : UIFont {
+    var postsCountFont: UIFont {
         return fontForKey(VDependencyManagerLabel2FontKey)
     }
     
-}
-
-extension VTrendingHashtagShelfCollectionViewCell: VBackgroundContainer {
-    
-    func backgroundContainerView() -> UIView! {
-        return self.contentView
+    var accentColor: UIColor {
+        return colorForKey(VDependencyManagerAccentColorKey)
     }
     
+    var textColor: UIColor {
+        return colorForKey(VDependencyManagerMainTextColorKey)
+    }
 }

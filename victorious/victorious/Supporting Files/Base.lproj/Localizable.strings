@@ -678,3 +678,9 @@
 
 "NOTHING LIKED YET" = "NOTHING LIKED YET"; // Liked content no content view
 "Posts you like will appear here." = "Posts you like will appear here."; // Liked content no content view
+
+"Trending User" = "Trending User";
+"posts" = "Posts";
+
+"Fan Favorite" = "Fan Favorite";
+"HashtagPostsCountFormat" = "In %@ Posts";

@@ -14,6 +14,8 @@
  * that want to respond to messages about following and unfollowing users
  */
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol VHashtagResponder <NSObject>
 
 /**
@@ -35,3 +37,5 @@
 - (void)unfollowHashtag:(NSString *)hashtag successBlock:(void (^)(NSArray *))success failureBlock:(void (^)(NSError *))failure;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -8,14 +8,16 @@
 
 import UIKit
 
-class VTrendingHashtagShelfCellFactory: NSObject, VStreamCellFactory {
-    
-    let dependencyManager : VDependencyManager
+///A cell factory that returns trending hashtag shelves
+class VTrendingHashtagShelfCellFactory: NSObject {
+    private let dependencyManager : VDependencyManager
     
     required init!(dependencyManager: VDependencyManager!) {
         self.dependencyManager = dependencyManager;
     }
-    
+}
+
+extension VTrendingHashtagShelfCellFactory: VStreamCellFactory {
     func registerCellsWithCollectionView(collectionView: UICollectionView) {
         collectionView.registerNib(VTrendingHashtagShelfCollectionViewCell.nibForCell(), forCellWithReuseIdentifier: VTrendingHashtagShelfCollectionViewCell.suggestedReuseIdentifier())
     }
@@ -45,5 +47,4 @@ class VTrendingHashtagShelfCellFactory: NSObject, VStreamCellFactory {
     func sectionInsets() -> UIEdgeInsets {
         return UIEdgeInsetsMake(0, 15, 15, 0)
     }
-    
 }

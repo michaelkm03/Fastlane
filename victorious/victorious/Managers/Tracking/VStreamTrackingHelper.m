@@ -85,6 +85,10 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 
 - (void)onStreamCellDidBecomeVisibleWithCellEvent:(StreamCellContext *)event
 {
+    if ( ![event.streamItem isKindOfClass:[VSequence class]] )
+    {
+        return;
+    }
     VSequence *sequence = (VSequence *)event.streamItem;
     VStream *stream = event.stream;
     
@@ -105,6 +109,10 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 
 - (void)onStreamCellSelectedWithCellEvent:(StreamCellContext *)event
 {
+    if ( ![event.streamItem isKindOfClass:[VSequence class]] )
+    {
+        return;
+    }
     VSequence *sequence = (VSequence *)event.streamItem;
     VStream *stream = event.stream;
     

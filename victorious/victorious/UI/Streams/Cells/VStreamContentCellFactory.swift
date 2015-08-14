@@ -8,6 +8,16 @@
 
 import UIKit
 
+///Classes that conform to this protocol will receive messages about
+///stream items being selected from trending shelves.
+@objc protocol VShelfStreamItemSelectionResponder : NSObjectProtocol {
+    ///Sent when a stream item is selected from a trending shelf.
+    ///
+    ///:param: streamItem The selected stream item.
+    ///:param: fromShelf The shelf that the stream item was selected from.
+    func navigateTo(streamItem: VStreamItem, fromShelf: VShelf)
+}
+
 //2.0 Improvement: Transform this into a protocol extension.
 
 /// A cell factory for representing shelved streams across the app. Treat this as an

@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) AVPlayerItem *newestPlayerItem;
 @property (nonatomic, readonly) BOOL isPlayingVideo;
 @property (nonatomic, strong) VVideoUtils *videoUtils;
+@property (nonatomic, assign) BOOL wasPlayingVideo;
 
 @end
 
@@ -125,7 +126,7 @@ NS_ASSUME_NONNULL_BEGIN
      }];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(play)
+                                             selector:@selector(returnFromBackground)
                                                  name:UIApplicationWillEnterForegroundNotification
                                                object:nil];
 }
@@ -168,6 +169,14 @@ NS_ASSUME_NONNULL_BEGIN
     return self.player.rate > 0;
 }
 
+- (void)returnFromBackground
+{
+    if ( self.wasPlayingVideo )
+    {
+        [self play];
+    }
+}
+
 - (void)play
 {
     if ( !self.isPlayingVideo )
@@ -175,6 +184,7 @@ NS_ASSUME_NONNULL_BEGIN
         [self.player.currentItem seekToTime:kCMTimeZero];
         [self.player play];
     }
+    self.wasPlayingVideo = YES;
 }
 
 - (void)playFromStart
@@ -182,6 +192,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self.player pause];
     [self.player.currentItem seekToTime:kCMTimeZero];
     [self.player play];
+    self.wasPlayingVideo = YES;
 }
 
 - (void)pause
@@ -191,6 +202,7 @@ NS_ASSUME_NONNULL_BEGIN
         [self.player.currentItem seekToTime:kCMTimeZero];
         [self.player pause];
     }
+    self.wasPlayingVideo = NO;
 }
 
 NS_ASSUME_NONNULL_END
