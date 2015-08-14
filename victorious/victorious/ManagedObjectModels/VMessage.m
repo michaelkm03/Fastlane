@@ -24,5 +24,9 @@
 @dynamic conversation;
 @dynamic notification;
 @dynamic sender;
+@dynamic mediaAttachments;
+@dynamic shouldAutoplay;
+@dynamic mediaWidth;
+@dynamic mediaHeight;
 
 @end

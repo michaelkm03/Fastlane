@@ -43,6 +43,7 @@
 #import "VExperimentSettings.h"
 
 // Everything else
+#import "VAutomation.h"
 #import "VTextPostTextView.h"
 #import "VObjectManager.h"
 #import "VObjectManager+Private.h"
