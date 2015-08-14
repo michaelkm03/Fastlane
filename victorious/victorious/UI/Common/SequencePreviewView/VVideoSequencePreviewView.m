@@ -172,13 +172,13 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     {
         [self setState:VVideoPreviewViewStatePlaying];
     }
-    [self.videoView play];
+    [self.videoView playWithoutSeekingToBeginning];
 }
 
 - (void)pauseVideo
 {
     [self setState:VVideoPreviewViewStateEnded];
-    [self.videoView pause];
+    [self.videoView pauseWithoutSeekingToBeginning];
 }
 
 #pragma mark - Video Player Delegate

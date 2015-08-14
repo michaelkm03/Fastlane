@@ -224,11 +224,46 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 
 - (void)play
 {
+    [self playAndSeekToBeginning:YES];
+}
+
+- (void)playWithoutSeekingToBeginning
+{
+    [self playAndSeekToBeginning:NO];
+}
+
+- (void)playAndSeekToBeginning:(BOOL)shouldSeek
+{
     if ( !self.isPlayingVideo )
     {
-        [self.player.currentItem seekToTime:kCMTimeZero];
+        if (shouldSeek)
+        {
+            [self.player.currentItem seekToTime:kCMTimeZero];
+        }
         
         [self.player play];
+    }
+}
+
+- (void)pause
+{
+    [self pauseAndSeekToBeginning:YES];
+}
+
+- (void)pauseWithoutSeekingToBeginning
+{
+    [self pauseAndSeekToBeginning:NO];
+}
+
+- (void)pauseAndSeekToBeginning:(BOOL)shouldSeek
+{
+    if ( self.isPlayingVideo )
+    {
+        if (shouldSeek)
+        {
+            [self.player.currentItem seekToTime:kCMTimeZero];
+        }
+        [self.player pause];
     }
 }
 
@@ -237,15 +272,6 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
     [self.player pause];
     [self.player.currentItem seekToTime:kCMTimeZero];
     [self.player play];
-}
-
-- (void)pause
-{
-    if ( self.isPlayingVideo )
-    {
-        [self.player.currentItem seekToTime:kCMTimeZero];
-        [self.player pause];
-    }
 }
 
 NS_ASSUME_NONNULL_END
