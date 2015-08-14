@@ -463,6 +463,7 @@ NS_ASSUME_NONNULL_BEGIN
     requestDecorator.versionNumber = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     requestDecorator.appID = [[VEnvironmentManager sharedInstance] currentEnvironment].appID;
     requestDecorator.deviceID = [[UIDevice currentDevice].identifierForVendor UUIDString];
+    requestDecorator.sessionID = self.sessionID;
     requestDecorator.locale = [[[NSBundle mainBundle] preferredLocalizations] firstObject];
     
     // this may cause a deadlock if the main thread synchronously calls a background thread which then tries to initiate a networking call.
