@@ -37,12 +37,27 @@ class MediaAttachmentGIFView : MediaAttachmentView {
         self.v_addFitToParentConstraintsToSubview(self.videoView)
     }
     
-    override var comment: VComment? {
+    private var autoplayURL: NSURL? {
         didSet {
-            if let autoplayURL = comment?.properMediaURLGivenContentType() {
+            if let autoplayURL = autoplayURL {
                 self.videoView.setItemURL(autoplayURL, loop: true, audioMuted: true)
                 self.videoView.hidden = false
+                if (hasFocus) {
+                    self.videoView.play()
+                }
             }
+        }
+    }
+    
+    override var comment: VComment? {
+        didSet {
+            autoplayURL = comment?.properMediaURLGivenContentType()
+        }
+    }
+    
+    override var message: VMessage? {
+        didSet {
+            autoplayURL = message?.properMediaURLGivenContentType()
         }
     }
 }

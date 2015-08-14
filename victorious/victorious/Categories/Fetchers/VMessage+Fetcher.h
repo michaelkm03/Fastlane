@@ -10,13 +10,14 @@
 
 /**
  An enum which describes the type of media attached
- to this message.
+ to a message.
  */
 typedef NS_ENUM(NSInteger, VMessageMediaType)
 {
     VMessageMediaTypeNoMedia,
     VMessageMediaTypeImage,
-    VMessageMediaTypeVideo
+    VMessageMediaTypeVideo,
+    VMessageMediaTypeGIF
 };
 
 @interface VMessage (Fetcher)
@@ -36,5 +37,18 @@ typedef NS_ENUM(NSInteger, VMessageMediaType)
  Returns the URL for this message's preview image
  */
 - (NSURL *)previewImageURL;
+
+/**
+ Returns the proper media URL if this message contains
+ attached media, and nil if it does not.
+ */
+- (NSURL *)properMediaURLGivenContentType;
+
+/**
+ Returns a float between 0 and 2 of the media's height
+ divided by it's width. Returns 1 if media info does not
+ exist.
+ */
+- (CGFloat)mediaAspectRatio;
 
 @end

@@ -12,6 +12,7 @@
 // Layout
 #import "UIView+AutoLayout.h"
 #import "VCompatibility.h"
+#import "UIImage+Cropping.h"
 
 // Constants
 #import "VConstants.h"
@@ -41,7 +42,6 @@ static const CGFloat kAttachmentBarHeight = 50.0f;
 @property (nonatomic, strong) IBOutlet UIButton *imageButton;
 @property (nonatomic, strong) IBOutlet UIButton *videoButton;
 @property (nonatomic, strong) IBOutlet UIButton *gifButton;
-@property (nonatomic, strong) IBOutlet UIButton *clearAttachmentButton;
 
 // Constraints
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *topSpaceAttachmentsToContainer;
@@ -100,7 +100,6 @@ static const CGFloat kAttachmentBarHeight = 50.0f;
     self.videoButton.accessibilityIdentifier = VAutomationIdentifierCommentBarVideoButton;
     self.gifButton.accessibilityIdentifier = VAutomationIdentifierCommentBarGIFButton;
     self.sendButton.accessibilityIdentifier = VAutomationIdentifierCommentBarSendButton;
-    self.clearAttachmentButton.accessibilityIdentifier = VAutomationIdentifierCommentBarClearButton;
 }
 
 - (void)addTextViewToContainer
@@ -203,9 +202,9 @@ static const CGFloat kAttachmentBarHeight = 50.0f;
     self.attachmentsButton.layer.masksToBounds = YES;
     self.attachmentsButton.clipsToBounds = YES;
     
-    [self.attachmentsButton setBackgroundImage:selectedThumbnail
-                                      forState:UIControlStateNormal];
-    
+    UIImage *croppedThumbnail = [selectedThumbnail squareImageScaledToSize:MIN(selectedThumbnail.size.width, selectedThumbnail.size.height)];
+    [self.attachmentsButton setBackgroundImage:croppedThumbnail forState:UIControlStateNormal];
+
     self.selectedMedia = (selectedThumbnail != nil);
     
     [self updateAttachmentThumbnail];

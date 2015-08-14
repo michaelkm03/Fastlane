@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VScaffoldViewController.h"
+#import "VTabScaffoldViewController.h"
 #import "VStreamCollectionViewController.h"
 #import "VStreamCollectionViewDataSource.h"
 #import "VStreamCellFactory.h"
@@ -38,7 +38,7 @@
 
 //Managers
 #import "VDependencyManager+VObjectManager.h"
-#import "VDependencyManager+VScaffoldViewController.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Discover.h"
@@ -848,13 +848,13 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)dataSourceDidChange
 {
-    self.hasRefreshed = YES;
-    [self updateNoContentViewAnimated:YES];
-    
-    // Allow cells to populate before we track which are visible before user scrolls
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+    dispatch_async(dispatch_get_main_queue(), ^
     {
+        self.hasRefreshed = YES;
+        [self updateNoContentViewAnimated:YES];
+        
         [self updateCellVisibilityTracking];
+        [self.marqueeCellController updateFocus];
         [self.focusHelper updateFocus];
     });
 }

@@ -502,6 +502,13 @@ static char KVOContext;
         [textView resignFirstResponder];
         return NO;
     }
+    
+    NSUInteger characterLimit = ((VContentInputAccessoryView *)textView.inputAccessoryView).maxCharacterLength;
+    if ((text.length + textView.text.length >  characterLimit) && (characterLimit > 0) )
+    {
+        return NO;
+    }
+    
     return YES;
 }
 

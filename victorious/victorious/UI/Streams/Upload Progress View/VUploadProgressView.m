@@ -60,6 +60,8 @@ static const CGFloat kAccessoryButtonWidth = 44.0f;
     self.finishedIconCheckmark.tintColor = [UIColor colorWithRed:0.91f green:0.91f blue:0.91f alpha:1.0f];
     self.finishedIconCheckmark.image = [self.finishedIconCheckmark.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.finishedIcon.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.previewImageView.contentMode = UIViewContentModeScaleAspectFill;
+    self.previewImageView.clipsToBounds = YES;
     [self setProgress:0 animated:NO];
     [self updateViewAccordingToCurrentState];
 }

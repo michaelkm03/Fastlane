@@ -8,11 +8,11 @@
 
 #import "VCommentMedia+RestKit.h"
 
-@implementation VCommentMedia (RestKit)
+@implementation VMediaAttachment (RestKit)
 
 + (NSString *)entityName
 {
-    return @"CommentMedia";
+    return @"MediaAttachment";
 }
 
 + (RKEntityMapping *)entityMapping

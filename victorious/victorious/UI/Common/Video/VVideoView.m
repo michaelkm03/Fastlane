@@ -15,9 +15,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 static NSString * const kPlaybackBufferLikelyToKeepUpKey = @"playbackLikelyToKeepUp";
-static void *kPlaybackBufferLikelyToKeepUp = &kPlaybackBufferLikelyToKeepUp;
 static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
-static void *kPlaybackBufferEmpty = &kPlaybackBufferEmpty;
 
 @interface VVideoView()
 
@@ -38,8 +36,6 @@ static void *kPlaybackBufferEmpty = &kPlaybackBufferEmpty;
     
     if (self.player.currentItem != nil)
     {
-        [self.player.currentItem removeObserver:self forKeyPath:kPlaybackBufferLikelyToKeepUpKey context:kPlaybackBufferLikelyToKeepUp];
-        [self.player.currentItem removeObserver:self forKeyPath:kPlaybackBufferEmptyKey context:kPlaybackBufferEmpty];
         [self.player removeTimeObserver:self.timeObserver];
         self.timeObserver = nil;
     }
@@ -146,9 +142,6 @@ static void *kPlaybackBufferEmpty = &kPlaybackBufferEmpty;
          if ( [composedItemURL isEqual:_itemURL] )
          {
              self.newestPlayerItem = playerItem;
-             
-             
-             
              [self didFinishAssetCreation:playerItem];
          }
      }];
@@ -170,19 +163,45 @@ static void *kPlaybackBufferEmpty = &kPlaybackBufferEmpty;
 
 - (void)didFinishAssetCreation:(AVPlayerItem *)playerItem
 {
-    if (self.player.currentItem != nil)
+ 	[self.KVOController unobserve:self.player.currentItem keyPath:kPlaybackBufferLikelyToKeepUpKey];
+    [self.KVOController unobserve:self.player.currentItem keyPath:kPlaybackBufferEmptyKey];
+    
+    __weak VVideoView *weakSelf = self;
+    [self.KVOController observe:playerItem
+                       keyPaths:@[kPlaybackBufferLikelyToKeepUpKey]
+                        options:NSKeyValueObservingOptionNew
+                          block:^(id observer, AVPlayerItem *playerItem, NSDictionary *change)
+     {
+         __strong VVideoView *strongSelf = weakSelf;
+         if (strongSelf.player.currentItem.isPlaybackLikelyToKeepUp)
+         {
+             if ([strongSelf.delegate respondsToSelector:@selector(videoViewDidStopBuffering:)])
+             {
+                 [strongSelf.delegate videoViewDidStopBuffering:strongSelf];
+             }
+         }
+     }];
+    
+    [self.KVOController observe:playerItem
+                       keyPaths:@[kPlaybackBufferEmptyKey]
+                        options:NSKeyValueObservingOptionNew
+                          block:^(id observer, AVPlayerItem *playerItem, NSDictionary *change)
+     {
+         __strong VVideoView *strongSelf = weakSelf;
+         if (strongSelf.player.currentItem.isPlaybackBufferEmpty)
+         {
+             if ([strongSelf.delegate respondsToSelector:@selector(videoViewDidStartBuffering:)])
+             {
+                 [strongSelf.delegate videoViewDidStartBuffering:self];
+             }
+         }
+     }];
+
+	if (self.player.currentItem != nil)
     {
-        [self.player.currentItem removeObserver:self forKeyPath:kPlaybackBufferLikelyToKeepUpKey context:kPlaybackBufferLikelyToKeepUp];
-        [self.player.currentItem removeObserver:self forKeyPath:kPlaybackBufferEmptyKey context:kPlaybackBufferEmpty];
         [self.player removeTimeObserver:self.timeObserver];
     }
     
-    // Add buffer observers
-    [playerItem addObserver:self forKeyPath:kPlaybackBufferLikelyToKeepUpKey options:NSKeyValueObservingOptionNew context:kPlaybackBufferLikelyToKeepUp];
-    [playerItem addObserver:self forKeyPath:kPlaybackBufferEmptyKey options:NSKeyValueObservingOptionNew context:kPlaybackBufferEmpty];
-    
-    // Add progress observer
-    __weak VVideoView *weakSelf = self;
     self.timeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 24)
                                                                   queue:dispatch_get_main_queue()
                                                              usingBlock:^(CMTime time)
@@ -226,11 +245,46 @@ static void *kPlaybackBufferEmpty = &kPlaybackBufferEmpty;
 
 - (void)play
 {
+    [self playAndSeekToBeginning:YES];
+}
+
+- (void)playWithoutSeekingToBeginning
+{
+    [self playAndSeekToBeginning:NO];
+}
+
+- (void)playAndSeekToBeginning:(BOOL)shouldSeek
+{
     if ( !self.isPlayingVideo )
     {
-        [self.player.currentItem seekToTime:kCMTimeZero];
+        if (shouldSeek)
+        {
+            [self.player.currentItem seekToTime:kCMTimeZero];
+        }
         
         [self.player play];
+    }
+}
+
+- (void)pause
+{
+    [self pauseAndSeekToBeginning:YES];
+}
+
+- (void)pauseWithoutSeekingToBeginning
+{
+    [self pauseAndSeekToBeginning:NO];
+}
+
+- (void)pauseAndSeekToBeginning:(BOOL)shouldSeek
+{
+    if ( self.isPlayingVideo )
+    {
+        if (shouldSeek)
+        {
+            [self.player.currentItem seekToTime:kCMTimeZero];
+        }
+        [self.player pause];
     }
 }
 
@@ -239,15 +293,6 @@ static void *kPlaybackBufferEmpty = &kPlaybackBufferEmpty;
     [self.player pause];
     [self.player.currentItem seekToTime:kCMTimeZero];
     [self.player play];
-}
-
-- (void)pause
-{
-    if ( self.isPlayingVideo )
-    {
-        [self.player.currentItem seekToTime:kCMTimeZero];
-        [self.player pause];
-    }
 }
 
 - (void)didPlayToTime:(CMTime)time
@@ -259,32 +304,6 @@ static void *kPlaybackBufferEmpty = &kPlaybackBufferEmpty;
     if ([self.delegate respondsToSelector:@selector(videoView:didProgressWithPercentComplete:)])
     {
         [self.delegate videoView:self didProgressWithPercentComplete:percentElapsed];
-    }
-}
-
-#pragma mark - KVO
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if (context == kPlaybackBufferLikelyToKeepUp)
-    {
-        if (self.player.currentItem.isPlaybackLikelyToKeepUp)
-        {
-            if ([self.delegate respondsToSelector:@selector(videoViewDidStopBuffering:)])
-            {
-                [self.delegate videoViewDidStopBuffering:self];
-            }
-        }
-    }
-    else if (context == kPlaybackBufferEmpty)
-    {
-        if (self.player.currentItem.isPlaybackBufferEmpty)
-        {
-            if ([self.delegate respondsToSelector:@selector(videoViewDidStartBuffering:)])
-            {
-                [self.delegate videoViewDidStartBuffering:self];
-            }
-        }
     }
 }
 

@@ -84,12 +84,22 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)play;
 
-- (void)playFromStart;
+/**
+ Starts playing at current location.  If already playing, this is a no-op.
+ */
+- (void)playWithoutSeekingToBeginning;
 
 /**
  Pause playback.  If already paused, this is a no-op.
  */
 - (void)pause;
+
+/**
+ Pause playback at current location without restarting.  If already paused, this is a no-op.
+ */
+- (void)pauseWithoutSeekingToBeginning;
+
+- (void)playFromStart;
 
 - (void)reset;
 

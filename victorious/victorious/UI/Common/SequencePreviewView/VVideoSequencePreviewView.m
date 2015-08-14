@@ -144,8 +144,6 @@ const CGFloat kMaximumLoopingTime = 30.0f;
             self.videoView.hidden = YES;
             self.playIconContainerView.hidden = NO;
             break;
-        default:
-            break;
     }
 }
 
@@ -182,13 +180,13 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     {
         [self setState:VVideoPreviewViewStatePlaying];
     }
-    [self.videoView play];
+    [self.videoView playWithoutSeekingToBeginning];
 }
 
 - (void)pauseVideo
 {
     [self setState:VVideoPreviewViewStateEnded];
-    [self.videoView pause];
+    [self.videoView pauseWithoutSeekingToBeginning];
 }
 
 #pragma mark - Video Player Delegate

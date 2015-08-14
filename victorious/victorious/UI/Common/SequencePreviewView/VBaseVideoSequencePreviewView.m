@@ -19,6 +19,8 @@
 
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VDependencyManager+VBackground.h"
+#import "VImageAssetFinder.h"
+#import "VImageAsset.h"
 
 @interface VBaseVideoSequencePreviewView ()
 
@@ -56,7 +58,6 @@
         
         _videoView = [[VVideoView alloc] initWithFrame:self.bounds];
         _videoView.delegate = self;
-        _videoView.layer.shouldRasterize = YES;
         [self addSubview:_videoView];
         [self v_addFitToParentConstraintsToSubview:_videoView];
     }
@@ -74,22 +75,45 @@
     // Hide video view in case we're not auto playing
     self.videoView.hidden = YES;
     
+    VImageAssetFinder *imageFinder = [[VImageAssetFinder alloc] init];
+    VImageAsset *imageAsset = [imageFinder largestAssetFromAssets:sequence.previewAssets];
+    
     __weak VBaseVideoSequencePreviewView *weakSelf = self;
-    [self.previewImageView fadeInImageAtURL:[sequence inStreamPreviewImageURL]
+    void (^completionBlock)(void) = ^void(void)
+    {
+        __strong VBaseVideoSequencePreviewView *strongSelf = weakSelf;
+        if ( strongSelf == nil )
+        {
+            return;
+        }
+        
+        strongSelf.readyForDisplay = YES;
+    };
+    
+    [self.previewImageView fadeInImageAtURL:[NSURL URLWithString:imageAsset.imageURL]
                            placeholderImage:nil
                         alongsideAnimations:^
      {
-         [self makeBackgroundContainerViewVisible:YES];
+         __strong VBaseVideoSequencePreviewView *strongSelf = weakSelf;
+         [strongSelf makeBackgroundContainerViewVisible:YES];
      }
                                  completion:^(UIImage *image)
      {
-         __strong VBaseVideoSequencePreviewView *strongSelf = weakSelf;
-         if ( strongSelf == nil )
+         if (image != nil)
          {
-             return;
+             completionBlock();
          }
-         
-         strongSelf.readyForDisplay = YES;
+         else
+         {
+             __strong VBaseVideoSequencePreviewView *strongSelf = weakSelf;
+             // that URL failed, lets gracefully fall back
+             [strongSelf.previewImageView fadeInImageAtURL:[sequence inStreamPreviewImageURL]
+                                    placeholderImage:nil
+                                          completion:^(UIImage *image)
+              {
+                  completionBlock();
+              }];
+         }
      }];
 }
 

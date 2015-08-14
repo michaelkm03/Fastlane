@@ -7,6 +7,7 @@
 //
 
 #import "VMessage+RestKit.h"
+#import "VMediaAttachment.h"
 
 @implementation VMessage (RestKit)
 
@@ -25,6 +26,9 @@
                                   @"media_url" : VSelectorName(mediaPath),
                                   @"message_id" : VSelectorName(remoteId),
                                   @"is_read" : VSelectorName(isRead),
+                                  @"should_autoplay" : VSelectorName(shouldAutoplay),
+                                  @"media_width" : VSelectorName(mediaWidth),
+                                  @"media_height" : VSelectorName(mediaHeight)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
@@ -36,6 +40,13 @@
     [mapping addAttributeMappingsFromDictionary:propertyMap];
 
     [mapping addConnectionForRelationship:@"sender" connectedBy:@{@"senderUserId" : @"remoteId"}];
+    
+    // Message media
+    RKRelationshipMapping *messageMediaMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"media"
+                                                                                             toKeyPath:VSelectorName(mediaAttachments)
+                                                                                           withMapping:[VMediaAttachment entityMapping]];
+    
+    [mapping addPropertyMapping:messageMediaMapping];
     
     return mapping;
 }

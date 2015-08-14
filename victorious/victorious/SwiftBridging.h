@@ -48,6 +48,7 @@
 #import "VSequence+Fetcher.h"
 
 // Everything else
+#import "VAutomation.h"
 #import "VTextPostTextView.h"
 #import "VObjectManager.h"
 #import "VObjectManager+Private.h"
@@ -75,6 +76,15 @@
 #import "VTracking.h"
 #import "VTrackingManager.h"
 #import "VReachability.h"
+#import "VSessionTimer.h"
+#import "VAuthorizedAction.h"
+#import "VObjectManager.h"
+#import "VAuthorizationContext.h"
+#import "VLightweightContentViewController.h"
+#import "VFirstTimeInstallHelper.h"
+#import "VSessionTimer.h"
+#import "VDependencyManager+VTracking.h"
+#import "VPushNotificationManager.h"
 
 //Shelves
 #import "VStreamCellFactory.h"

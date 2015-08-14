@@ -8,6 +8,7 @@
 
 #import "VMessageTextAndMediaView.h"
 #import "VTagSensitiveTextView.h"
+#import "VMessage+Fetcher.h"
 
 @implementation VMessageTextAndMediaView
 
@@ -57,8 +58,13 @@
          }];
         mediaSpacing = kSpacingBetweenTextAndMedia;
     }
-    CGFloat mediaSize = (message.mediaPath != nil && message.mediaPath.length > 0) ? width + mediaSpacing : 0.0f;
-    return VCEIL(CGRectGetHeight(boundingRect)) + mediaSize;
+    CGFloat totalMediaHeight = 0;
+    if ([message hasMediaAttachment])
+    {
+        CGFloat aspectRatio = [message mediaAspectRatio];
+        totalMediaHeight = (width * aspectRatio) + mediaSpacing;
+    }
+    return VCEIL(CGRectGetHeight(boundingRect)) + totalMediaHeight;
 }
 
 @end
