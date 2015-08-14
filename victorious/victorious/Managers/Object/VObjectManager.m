@@ -9,7 +9,6 @@
 #import "victorious-Swift.h"
 
 #import "NSArray+VMap.h"
-#import "VAPIRequestDecorator.h"
 #import "VEnvironment.h"
 #import "VErrorMessage.h"
 #import "VMultipartFormDataWriter.h"

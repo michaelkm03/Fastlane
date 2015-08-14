@@ -35,4 +35,3 @@ FOUNDATION_EXPORT const unsigned char VictoriousCommonVersionString[];
 #import <VictoriousCommon/VTemplateDownloadOperation.h>
 #import <VictoriousCommon/VTemplatePackageManager.h>
 #import <VictoriousCommon/VTemplateSerialization.h>
-#import <VictoriousCommon/VAPIRequestDecorator.h>

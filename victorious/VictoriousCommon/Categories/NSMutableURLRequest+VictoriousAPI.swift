@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+import CoreLocation
 import Foundation
 
 #if os(iOS)

@@ -98,7 +98,6 @@
 		031DF6351B7986E700FDD7D3 /* VTemplateDownloadOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 03A058BD1AEF44D600CF39D1 /* VTemplateDownloadOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		031DF6361B7986E700FDD7D3 /* VTemplatePackageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0386F8761B37E52500E8D459 /* VTemplatePackageManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		031DF6371B7986E700FDD7D3 /* VTemplateSerialization.h in Headers */ = {isa = PBXBuildFile; fileRef = 03A058B81AED7FB600CF39D1 /* VTemplateSerialization.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		031DF6381B7986E700FDD7D3 /* VAPIRequestDecorator.h in Headers */ = {isa = PBXBuildFile; fileRef = 036DE7C21B608C100038A25E /* VAPIRequestDecorator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		031DF6391B7986EB00FDD7D3 /* NSCharacterSet+VURLParts.h in Headers */ = {isa = PBXBuildFile; fileRef = A721E8B11B572453000B7901 /* NSCharacterSet+VURLParts.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		031DF63A1B7986EB00FDD7D3 /* NSString+VCrypto.h in Headers */ = {isa = PBXBuildFile; fileRef = A721E8C41B572453000B7901 /* NSString+VCrypto.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		031DF63B1B7986EB00FDD7D3 /* NSString+VDataCacheID.h in Headers */ = {isa = PBXBuildFile; fileRef = 03A761501B324BFF0016B69D /* NSString+VDataCacheID.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -116,7 +115,6 @@
 		031DF6471B7986EB00FDD7D3 /* VTemplateDownloadOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 03A058BD1AEF44D600CF39D1 /* VTemplateDownloadOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		031DF6481B7986EB00FDD7D3 /* VTemplatePackageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0386F8761B37E52500E8D459 /* VTemplatePackageManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		031DF6491B7986EB00FDD7D3 /* VTemplateSerialization.h in Headers */ = {isa = PBXBuildFile; fileRef = 03A058B81AED7FB600CF39D1 /* VTemplateSerialization.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		031DF64A1B7986EB00FDD7D3 /* VAPIRequestDecorator.h in Headers */ = {isa = PBXBuildFile; fileRef = 036DE7C21B608C100038A25E /* VAPIRequestDecorator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0326BBBA19A8183800D995DA /* VPushNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0326BBB919A8183800D995DA /* VPushNotificationManager.m */; };
 		0326C36019F8226200DBC341 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0326C35F19F8226200DBC341 /* Images.xcassets */; };
 		0329B9A01ACBAAFB003BBCC5 /* VContentViewFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0329B99F1ACBAAFB003BBCC5 /* VContentViewFactoryTests.m */; };
@@ -159,7 +157,6 @@
 		0352FCB61B72BB3D00DB6EAB /* VTemplateDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058BE1AEF44D600CF39D1 /* VTemplateDownloadOperation.m */; };
 		0352FCB71B72BB3D00DB6EAB /* VTemplatePackageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F8771B37E52500E8D459 /* VTemplatePackageManager.m */; };
 		0352FCB81B72BB3D00DB6EAB /* VTemplateSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058B91AED7FB600CF39D1 /* VTemplateSerialization.m */; };
-		0352FCB91B72BB3D00DB6EAB /* VAPIRequestDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7C31B608C100038A25E /* VAPIRequestDecorator.m */; };
 		0352FCE71B72C7C300DB6EAB /* BasicTemplateDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034527D61B6074F500E990BB /* BasicTemplateDownloader.swift */; };
 		0352FCE81B72C7C300DB6EAB /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0392694E1B5C720400FCD0AA /* main.swift */; };
 		0352FCE91B72C7C300DB6EAB /* TemplateDownloadCLI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7F81B6306880038A25E /* TemplateDownloadCLI.swift */; };
@@ -261,7 +258,6 @@
 		0370FBEE1B71B3C4009047B6 /* VTemplateDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058BE1AEF44D600CF39D1 /* VTemplateDownloadOperation.m */; };
 		0370FBEF1B71B3C4009047B6 /* VTemplatePackageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F8771B37E52500E8D459 /* VTemplatePackageManager.m */; };
 		0370FBF01B71B3C4009047B6 /* VTemplateSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A058B91AED7FB600CF39D1 /* VTemplateSerialization.m */; };
-		0370FBF11B71B3C4009047B6 /* VAPIRequestDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7C31B608C100038A25E /* VAPIRequestDecorator.m */; };
 		0370FBF21B728612009047B6 /* VTemplatePackageManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0386F8791B37E7FB00E8D459 /* VTemplatePackageManagerTests.m */; };
 		0370FBF31B728618009047B6 /* templateWithImageURLs.json in Resources */ = {isa = PBXBuildFile; fileRef = 0386F87B1B37EB8500E8D459 /* templateWithImageURLs.json */; };
 		0372587519D61B0800836B3F /* VUploadTaskCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0372587419D61B0800836B3F /* VUploadTaskCreator.m */; };
@@ -1585,8 +1581,6 @@
 		0366EB091B6871570073A233 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/VAssetCollectionListViewController.strings; sourceTree = "<group>"; };
 		036AE5EB18FF0C0600A74BDA /* VReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VReachability.h; sourceTree = "<group>"; };
 		036AE5EC18FF0C0600A74BDA /* VReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VReachability.m; sourceTree = "<group>"; };
-		036DE7C21B608C100038A25E /* VAPIRequestDecorator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAPIRequestDecorator.h; sourceTree = "<group>"; };
-		036DE7C31B608C100038A25E /* VAPIRequestDecorator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAPIRequestDecorator.m; sourceTree = "<group>"; };
 		036DE7DF1B62E4A70038A25E /* VBundleWriterDataCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBundleWriterDataCache.h; sourceTree = "<group>"; };
 		036DE7E01B62E4A70038A25E /* VBundleWriterDataCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBundleWriterDataCache.m; sourceTree = "<group>"; };
 		036DE7E41B62E6C20038A25E /* VBundleWriterDataCacheTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBundleWriterDataCacheTests.m; sourceTree = "<group>"; };
@@ -4640,8 +4634,6 @@
 				036DE7F01B62F66E0038A25E /* JSON Helper */,
 				0370FBB51B71B261009047B6 /* Supporting Files */,
 				034527A51B604A9100E990BB /* Template Loader */,
-				036DE7C21B608C100038A25E /* VAPIRequestDecorator.h */,
-				036DE7C31B608C100038A25E /* VAPIRequestDecorator.m */,
 				0370FBB71B71B261009047B6 /* VictoriousCommon.h */,
 			);
 			path = VictoriousCommon;
@@ -7781,7 +7773,6 @@
 				031DF63D1B7986EB00FDD7D3 /* VBundleWriterDataCache.h in Headers */,
 				031DF6401B7986EB00FDD7D3 /* VTemplateImage.h in Headers */,
 				031DF63B1B7986EB00FDD7D3 /* NSString+VDataCacheID.h in Headers */,
-				031DF64A1B7986EB00FDD7D3 /* VAPIRequestDecorator.h in Headers */,
 				031DF6481B7986EB00FDD7D3 /* VTemplatePackageManager.h in Headers */,
 				031DF6391B7986EB00FDD7D3 /* NSCharacterSet+VURLParts.h in Headers */,
 				031DF6471B7986EB00FDD7D3 /* VTemplateDownloadOperation.h in Headers */,
@@ -7809,7 +7800,6 @@
 				031DF62B1B7986E700FDD7D3 /* VBundleWriterDataCache.h in Headers */,
 				031DF62E1B7986E700FDD7D3 /* VTemplateImage.h in Headers */,
 				031DF6291B7986E700FDD7D3 /* NSString+VDataCacheID.h in Headers */,
-				031DF6381B7986E700FDD7D3 /* VAPIRequestDecorator.h in Headers */,
 				031DF6361B7986E700FDD7D3 /* VTemplatePackageManager.h in Headers */,
 				031DF6271B7986E700FDD7D3 /* NSCharacterSet+VURLParts.h in Headers */,
 				031DF6351B7986E700FDD7D3 /* VTemplateDownloadOperation.h in Headers */,
@@ -8630,7 +8620,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0352FCB61B72BB3D00DB6EAB /* VTemplateDownloadOperation.m in Sources */,
-				0352FCB91B72BB3D00DB6EAB /* VAPIRequestDecorator.m in Sources */,
 				0352FCB11B72BB3D00DB6EAB /* VURLMacroReplacement.m in Sources */,
 				0352FCA61B72BB3D00DB6EAB /* VExperimentSettings.m in Sources */,
 				0352FCB71B72BB3D00DB6EAB /* VTemplatePackageManager.m in Sources */,
@@ -8668,7 +8657,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0370FBEE1B71B3C4009047B6 /* VTemplateDownloadOperation.m in Sources */,
-				0370FBF11B71B3C4009047B6 /* VAPIRequestDecorator.m in Sources */,
 				0370FBE91B71B3C4009047B6 /* VURLMacroReplacement.m in Sources */,
 				0370FBDE1B71B3C4009047B6 /* VExperimentSettings.m in Sources */,
 				0370FBEF1B71B3C4009047B6 /* VTemplatePackageManager.m in Sources */,
