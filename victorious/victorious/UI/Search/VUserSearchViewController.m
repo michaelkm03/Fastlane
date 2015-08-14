@@ -41,7 +41,6 @@
 #import "VTrackingManager.h"
 #import "VDependencyManager.h"
 
-#import "VFollowingHelper.h"
 #import "VFollowResponder.h"
 #import "VFollowControl.h"
 
@@ -64,7 +63,6 @@
 @property (nonatomic, weak) NSTimer *typeDelay;
 @property (nonatomic, assign) NSInteger charCount;
 @property (nonatomic, strong) VUser *selectedUser;
-@property (nonatomic, strong) VFollowingHelper *followHelper;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -83,8 +81,7 @@ static const NSInteger kSearchResultLimit = 100;
 {
     VUserSearchViewController *userSearchViewController = (VUserSearchViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:NSStringFromClass([VUserSearchViewController class])];
     userSearchViewController.dependencyManager = dependencyManager;
-    userSearchViewController.followHelper = [[VFollowingHelper alloc] initWithDependencyManager:dependencyManager
-                                                                      viewControllerToPresentOn:userSearchViewController];
+    
     return userSearchViewController;
 }
 
@@ -323,7 +320,11 @@ static const NSInteger kSearchResultLimit = 100;
 
 #pragma mark - VFollowResponder
 
-- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion fromViewController:(UIViewController *)viewControllerToPresentOn withScreenName:(NSString *)screenName
+- (void)followUser:(VUser *)user
+withAuthorizedBlock:(void (^)(void))authorizedBlock
+     andCompletion:(VFollowEventCompletion)completion
+fromViewController:(UIViewController *)viewControllerToPresentOn
+    withScreenName:(NSString *)screenName
 {
     NSString *sourceScreen = self.userSearchPresenter == VUserSearchPresenterMessages ? VFollowSourceScreenMessageableUsers : nil;
     id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
@@ -339,11 +340,20 @@ static const NSInteger kSearchResultLimit = 100;
 
 - (void)unfollowUser:(VUser *)user
  withAuthorizedBlock:(void (^)(void))authorizedBlock
-       andCompletion:(VFollowHelperCompletion)completion
+       andCompletion:(VFollowEventCompletion)completion
+  fromViewController:(UIViewController *)viewControllerToPresentOn
+      withScreenName:(NSString *)screenName
 {
-    [self.followHelper unfollowUser:user
-                withAuthorizedBlock:authorizedBlock
-                      andCompletion:completion];
+    NSString *sourceScreen = self.userSearchPresenter == VUserSearchPresenterMessages ? VFollowSourceScreenMessageableUsers : nil;
+    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
+                                                                      withSender:nil];
+    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
+    
+    [followResponder unfollowUser:user
+              withAuthorizedBlock:authorizedBlock
+                    andCompletion:completion
+               fromViewController:self
+                   withScreenName:sourceScreen];
 }
 
 @end
