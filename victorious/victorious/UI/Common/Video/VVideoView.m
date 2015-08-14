@@ -156,8 +156,8 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 
 - (void)didFinishAssetCreation:(AVPlayerItem *)playerItem
 {
-    [self.KVOController unobserve:self keyPath:kPlaybackBufferLikelyToKeepUpKey];
-    [self.KVOController unobserve:self keyPath:kPlaybackBufferEmptyKey];
+    [self.KVOController unobserve:self.player.currentItem keyPath:kPlaybackBufferLikelyToKeepUpKey];
+    [self.KVOController unobserve:self.player.currentItem keyPath:kPlaybackBufferEmptyKey];
     
     __weak VVideoView *weakSelf = self;
     [self.KVOController observe:playerItem
