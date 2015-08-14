@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Returns a command-separated list of hte active experiments for use in request header.
  */
-@property (nonatomic, readonly, copy) NSString *commaSeparatedList;
+@property (nonatomic, readonly, nullable) NSString *commaSeparatedList;
 
 /**
  Removes all active experiments and clears value in NSUserDefaults.

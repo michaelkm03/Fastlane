@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  A category for performing cryptographic operations on strings
  */
@@ -18,4 +20,11 @@
  */
 - (NSString *)v_sha256;
 
+/**
+ Returns a SHA1 hash of the receiver
+ */
+- (NSString *)v_sha1;
+
 @end
+
+NS_ASSUME_NONNULL_END
