@@ -7,16 +7,16 @@
 //
 
 #import "UIImage+VSolidColor.h"
-#import "VDependencyManager+VScaffoldViewController.h"
-#import "VScaffoldViewController.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
+#import "VTabScaffoldViewController.h"
 
 NSString * const VScaffoldViewControllerNavigationBarAppearanceKey = @"navigationBarAppearance";
 
 @implementation VDependencyManager (VScaffoldViewController)
 
-- (VScaffoldViewController *)scaffoldViewController
+- (VTabScaffoldViewController *)scaffoldViewController
 {
-    return [self singletonObjectOfType:[VScaffoldViewController class] forKey:VDependencyManagerScaffoldViewControllerKey];
+    return [self singletonObjectOfType:[VTabScaffoldViewController class] forKey:VDependencyManagerScaffoldViewControllerKey];
 }
 
 - (NSDictionary *)styleDictionaryForNavigationBar

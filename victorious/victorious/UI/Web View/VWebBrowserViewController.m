@@ -9,7 +9,7 @@
 @import WebKit;
 
 #import "VWebBrowserViewController.h"
-#import "VDependencyManager+VScaffoldViewController.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VWebBrowserHeaderViewController.h"
 #import "VWebBrowserActions.h"
 #import "VSequence+Fetcher.h"

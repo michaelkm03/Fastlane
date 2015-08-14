@@ -38,7 +38,7 @@ class VictoriousTestCase: KIFTestCase {
     func grantLibraryPermissionIfRequired() {
         if self.elementExistsWithAccessibilityLabel( VAutomationIdentifierGrantLibraryAccess ) {
             self.tester().tapViewWithAccessibilityLabel( VAutomationIdentifierGrantLibraryAccess )
-            self.tester().tapViewWithAccessibilityLabel( "Allow" )
+            self.tester().acknowledgeSystemAlert()
         }
     }
     

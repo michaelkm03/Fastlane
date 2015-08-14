@@ -11,12 +11,12 @@
 #import "VForceUpgradeViewController.h"
 #import "VDependencyManager+VDefaultTemplate.h"
 #import "VDependencyManager+VObjectManager.h"
-#import "VDependencyManager+VScaffoldViewController.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VInboxViewController.h"
 #import "VLoadingViewController.h"
 #import "VObjectManager.h"
 #import "VRootViewController.h"
-#import "VScaffoldViewController.h"
+#import "VTabScaffoldViewController.h"
 #import "VSessionTimer.h"
 #import "VThemeManager.h"
 #import "VTracking.h"
@@ -236,7 +236,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     self.dependencyManager = dependencyManager;
     self.applicationTracking.dependencyManager = dependencyManager;
     
-    VScaffoldViewController *scaffold = [self.dependencyManager scaffoldViewController];
+    VTabScaffoldViewController *scaffold = [self.dependencyManager scaffoldViewController];
     // Initialize followHelper with scaffold.dependencyManager so that it knows about LoginFlow information
     // This is a result of the refactor of FollowResponder protocol (VRootViewController is the actual responder
     // for follow actions)

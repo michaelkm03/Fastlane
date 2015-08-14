@@ -83,7 +83,7 @@
 	<key>pollCreation.screen</key>
 	<string>VCreatePollViewController</string>
 	<key>tabMenu.scaffold</key>
-	<string>VTabMenuViewController</string>
+	<string>VTabScaffoldViewController</string>
 	<key>tab.menu</key>
 	<string>VTabMenuShim</string>
 	<key>stream.screen</key>

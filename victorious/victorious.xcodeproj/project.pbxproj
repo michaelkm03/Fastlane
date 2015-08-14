@@ -159,7 +159,6 @@
 		0352FCE81B72C7C300DB6EAB /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0392694E1B5C720400FCD0AA /* main.swift */; };
 		0352FCE91B72C7C300DB6EAB /* TemplateDownloadCLI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036DE7F81B6306880038A25E /* TemplateDownloadCLI.swift */; };
 		0352FCEE1B72CAD900DB6EAB /* VictoriousCommon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0352FC7E1B72B90000DB6EAB /* VictoriousCommon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		0358FCEE1A65E785004DD7A1 /* VScaffoldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0358FCED1A65E785004DD7A1 /* VScaffoldViewController.m */; };
 		035926D21B1EA33400E910A7 /* Quicksand-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 035926CF1B1EA33400E910A7 /* Quicksand-Bold.ttf */; };
 		035926D31B1EA33400E910A7 /* Quicksand-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 035926D01B1EA33400E910A7 /* Quicksand-Light.ttf */; };
 		035926D41B1EA33400E910A7 /* Quicksand-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 035926D11B1EA33400E910A7 /* Quicksand-Regular.ttf */; };
@@ -272,7 +271,7 @@
 		037FCF261A8DAF5400E8ABFC /* VSegmentedSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF211A8DAF5400E8ABFC /* VSegmentedSelectorView.m */; };
 		037FCF271A8DAF5400E8ABFC /* VMultipleContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF231A8DAF5400E8ABFC /* VMultipleContainerViewController.m */; };
 		037FCF281A8DAF5400E8ABFC /* VSelectorViewBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF251A8DAF5400E8ABFC /* VSelectorViewBase.m */; };
-		037FCF2B1A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF2A1A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.m */; };
+		037FCF2B1A8DAF7600E8ABFC /* VDependencyManager+VTabScaffoldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF2A1A8DAF7600E8ABFC /* VDependencyManager+VTabScaffoldViewController.m */; };
 		03803DE11B0C270300B63F05 /* Purchases.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03803DE31B0C270300B63F05 /* Purchases.storyboard */; };
 		03848F951B0A41090092C660 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 03848F971B0A41090092C660 /* InfoPlist.strings */; };
 		0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0385FEE818EF41B4009FBD68 /* VImageSearchResult.m */; };
@@ -365,6 +364,13 @@
 		66AF79521B60A8E4006DDCD8 /* VVideoCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66AF79511B60A8E4006DDCD8 /* VVideoCameraViewController.m */; };
 		66AF79541B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */; };
 		67C69F591B67ECDF00C59230 /* VContentViewPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 67C69F581B67ECDF00C59230 /* VContentViewPresenter.m */; };
+		794246451B7D39B000F5F879 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794246441B7D39B000F5F879 /* Operation.swift */; };
+		7942464A1B7D3A5300F5F879 /* AutoShowLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794246471B7D3A5300F5F879 /* AutoShowLoginOperation.swift */; };
+		7942464B1B7D3A5300F5F879 /* FTUEVideoOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794246481B7D3A5300F5F879 /* FTUEVideoOperation.swift */; };
+		7942464C1B7D3A5300F5F879 /* RequestPushNotificationPermissionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794246491B7D3A5300F5F879 /* RequestPushNotificationPermissionOperation.swift */; };
+		797006ED1B7AA32C0058B09A /* UIViewController+VRootNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 797006EC1B7AA32C0058B09A /* UIViewController+VRootNavigationController.m */; };
+		797006F01B7AA3980058B09A /* VTabScaffoldHidingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 797006EF1B7AA3980058B09A /* VTabScaffoldHidingHelper.m */; };
+		79A80C7D1B7928FD00C14020 /* VTabScaffoldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A80C7C1B7928FD00C14020 /* VTabScaffoldViewController.m */; };
 		99F4DB51782658B7D034EC2F /* libPods-victorious-test.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7B45F61E6B2831D5E9459C3 /* libPods-victorious-test.a */; };
 		9F95A0FBA78C16AF3EA43793 /* libPods-victorious.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */; };
 		A601FB491B4354D10050536C /* VAbstractImageVideoCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB481B4354D10050536C /* VAbstractImageVideoCreationFlowController.m */; };
@@ -1046,7 +1052,6 @@
 		D8DF71E71AFC3784002EA7A5 /* VTileOverlayCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DF71E61AFC3784002EA7A5 /* VTileOverlayCollectionCell.m */; };
 		D8DF71F11AFD987B002EA7A5 /* VFollowingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DF71F01AFD987B002EA7A5 /* VFollowingHelper.m */; };
 		D8DF72291AFEC360002EA7A5 /* VTabMenuShim.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DF72261AFEC360002EA7A5 /* VTabMenuShim.m */; };
-		D8DF722A1AFEC360002EA7A5 /* VTabMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DF72281AFEC360002EA7A5 /* VTabMenuViewController.m */; };
 		D8E2F6641B17F4D3008B1EC2 /* VEnterProfilePictureCameraViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8E2F6631B17F4D3008B1EC2 /* VEnterProfilePictureCameraViewController.storyboard */; };
 		D8E39BB819CB7C3C007FD86A /* VContentViewViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BB519CB7C3C007FD86A /* VContentViewViewModel.m */; };
 		D8E39BB919CB7C3C007FD86A /* VNewContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8E39BB719CB7C3C007FD86A /* VNewContentViewController.m */; };
@@ -1498,8 +1503,6 @@
 		0352FC9E1B72B9A800DB6EAB /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0352FCBF1B72C60200DB6EAB /* downloadtemplate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = downloadtemplate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0352FCC21B72C60300DB6EAB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0358FCEC1A65E785004DD7A1 /* VScaffoldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VScaffoldViewController.h; sourceTree = "<group>"; };
-		0358FCED1A65E785004DD7A1 /* VScaffoldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VScaffoldViewController.m; sourceTree = "<group>"; };
 		035926CF1B1EA33400E910A7 /* Quicksand-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Bold.ttf"; sourceTree = "<group>"; };
 		035926D01B1EA33400E910A7 /* Quicksand-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Light.ttf"; sourceTree = "<group>"; };
 		035926D11B1EA33400E910A7 /* Quicksand-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Regular.ttf"; sourceTree = "<group>"; };
@@ -1673,8 +1676,8 @@
 		037FCF231A8DAF5400E8ABFC /* VMultipleContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMultipleContainerViewController.m; sourceTree = "<group>"; };
 		037FCF241A8DAF5400E8ABFC /* VSelectorViewBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSelectorViewBase.h; sourceTree = "<group>"; };
 		037FCF251A8DAF5400E8ABFC /* VSelectorViewBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSelectorViewBase.m; sourceTree = "<group>"; };
-		037FCF291A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VScaffoldViewController.h"; sourceTree = "<group>"; };
-		037FCF2A1A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VScaffoldViewController.m"; sourceTree = "<group>"; };
+		037FCF291A8DAF7600E8ABFC /* VDependencyManager+VTabScaffoldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VTabScaffoldViewController.h"; sourceTree = "<group>"; };
+		037FCF2A1A8DAF7600E8ABFC /* VDependencyManager+VTabScaffoldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+VTabScaffoldViewController.m"; sourceTree = "<group>"; };
 		03803DE21B0C270300B63F05 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Purchases.storyboard; sourceTree = "<group>"; };
 		03803DE51B0C271B00B63F05 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Purchases.strings; sourceTree = "<group>"; };
 		03803DE71B0C271D00B63F05 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Purchases.strings; sourceTree = "<group>"; };
@@ -1937,6 +1940,16 @@
 		67C69F581B67ECDF00C59230 /* VContentViewPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentViewPresenter.m; path = Presenters/VContentViewPresenter.m; sourceTree = "<group>"; };
 		693498EEB4388179C36EF74A /* libPods-VictoriousCommonOSX.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VictoriousCommonOSX.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C14CC0531211B1486085544 /* Pods-VictoriousCommonOSX.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.stable.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.stable.xcconfig"; sourceTree = "<group>"; };
+		794246441B7D39B000F5F879 /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
+		794246471B7D3A5300F5F879 /* AutoShowLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoShowLoginOperation.swift; sourceTree = "<group>"; };
+		794246481B7D3A5300F5F879 /* FTUEVideoOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTUEVideoOperation.swift; sourceTree = "<group>"; };
+		794246491B7D3A5300F5F879 /* RequestPushNotificationPermissionOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestPushNotificationPermissionOperation.swift; sourceTree = "<group>"; };
+		797006EB1B7AA32C0058B09A /* UIViewController+VRootNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+VRootNavigationController.h"; sourceTree = "<group>"; };
+		797006EC1B7AA32C0058B09A /* UIViewController+VRootNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+VRootNavigationController.m"; sourceTree = "<group>"; };
+		797006EE1B7AA3980058B09A /* VTabScaffoldHidingHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTabScaffoldHidingHelper.h; sourceTree = "<group>"; };
+		797006EF1B7AA3980058B09A /* VTabScaffoldHidingHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTabScaffoldHidingHelper.m; sourceTree = "<group>"; };
+		79A80C7B1B7928FD00C14020 /* VTabScaffoldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTabScaffoldViewController.h; sourceTree = "<group>"; };
+		79A80C7C1B7928FD00C14020 /* VTabScaffoldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTabScaffoldViewController.m; sourceTree = "<group>"; };
 		72A0EF5391FF981DE4E9F79A /* Pods-UIAutomationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIAutomationTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-UIAutomationTests/Pods-UIAutomationTests.release.xcconfig"; sourceTree = "<group>"; };
 		79ACFD16A2EFEF8FE18E316E /* Pods-VictoriousCommonOSX.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.qa.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.qa.xcconfig"; sourceTree = "<group>"; };
 		83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.qa.xcconfig"; sourceTree = "<group>"; };
@@ -3191,8 +3204,6 @@
 		D8DF71F01AFD987B002EA7A5 /* VFollowingHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowingHelper.m; sourceTree = "<group>"; };
 		D8DF72251AFEC360002EA7A5 /* VTabMenuShim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTabMenuShim.h; sourceTree = "<group>"; };
 		D8DF72261AFEC360002EA7A5 /* VTabMenuShim.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTabMenuShim.m; sourceTree = "<group>"; };
-		D8DF72271AFEC360002EA7A5 /* VTabMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTabMenuViewController.h; sourceTree = "<group>"; };
-		D8DF72281AFEC360002EA7A5 /* VTabMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTabMenuViewController.m; sourceTree = "<group>"; };
 		D8DF722B1AFEC38B002EA7A5 /* VTabMenuContainedViewControllerNavigation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTabMenuContainedViewControllerNavigation.h; sourceTree = "<group>"; };
 		D8E2F6631B17F4D3008B1EC2 /* VEnterProfilePictureCameraViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VEnterProfilePictureCameraViewController.storyboard; sourceTree = "<group>"; };
 		D8E39BB419CB7C3C007FD86A /* VContentViewViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentViewViewModel.h; sourceTree = "<group>"; };
@@ -4127,6 +4138,8 @@
 				0386F8841B38D32C00E8D459 /* Loading View */,
 				030931871A18425B004E9781 /* Menu */,
 				D8DF72241AFEC360002EA7A5 /* Tab Menu */,
+				797006EB1B7AA32C0058B09A /* UIViewController+VRootNavigationController.h */,
+				797006EC1B7AA32C0058B09A /* UIViewController+VRootNavigationController.m */,
 				DB94976E1AAE66C600CCEFD0 /* VFirstTimeInstallHelper.h */,
 				DB94976F1AAE66C600CCEFD0 /* VFirstTimeInstallHelper.m */,
 				037FCF141A8DAF0E00E8ABFC /* VNavigationController.h */,
@@ -4137,8 +4150,10 @@
 				D87D70951A9804CD002D4FED /* VNavigationDestinationContainerViewController.m */,
 				0314D3EB19B46B5E00FA363C /* VRootViewController.h */,
 				0314D3EC19B46B5E00FA363C /* VRootViewController.m */,
-				0358FCEC1A65E785004DD7A1 /* VScaffoldViewController.h */,
-				0358FCED1A65E785004DD7A1 /* VScaffoldViewController.m */,
+				797006EE1B7AA3980058B09A /* VTabScaffoldHidingHelper.h */,
+				797006EF1B7AA3980058B09A /* VTabScaffoldHidingHelper.m */,
+				79A80C7B1B7928FD00C14020 /* VTabScaffoldViewController.h */,
+				79A80C7C1B7928FD00C14020 /* VTabScaffoldViewController.m */,
 			);
 			path = "Root View";
 			sourceTree = "<group>";
@@ -4779,8 +4794,8 @@
 				037D2D5E1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.m */,
 				037D2D5A1A1A588D00947A22 /* VDependencyManager+VObjectManager.h */,
 				037D2D5B1A1A588D00947A22 /* VDependencyManager+VObjectManager.m */,
-				037FCF291A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.h */,
-				037FCF2A1A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.m */,
+				037FCF291A8DAF7600E8ABFC /* VDependencyManager+VTabScaffoldViewController.h */,
+				037FCF2A1A8DAF7600E8ABFC /* VDependencyManager+VTabScaffoldViewController.m */,
 				F0F04AF51B2A37CB00F6F401 /* VDependencyManager+VShareMenuItem.h */,
 				F0F04AF61B2A37CB00F6F401 /* VDependencyManager+VShareMenuItem.m */,
 				039420411AB7D1A70087ADFA /* VDependencyManager+VTracking.h */,
@@ -5142,6 +5157,25 @@
 				67C69F581B67ECDF00C59230 /* VContentViewPresenter.m */,
 			);
 			name = Presenters;
+			sourceTree = "<group>";
+		};
+		794246431B7D39A200F5F879 /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				794246461B7D3A5300F5F879 /* Launch Operations */,
+				794246441B7D39B000F5F879 /* Operation.swift */,
+			);
+			path = Operations;
+			sourceTree = "<group>";
+		};
+		794246461B7D3A5300F5F879 /* Launch Operations */ = {
+			isa = PBXGroup;
+			children = (
+				794246471B7D3A5300F5F879 /* AutoShowLoginOperation.swift */,
+				794246481B7D3A5300F5F879 /* FTUEVideoOperation.swift */,
+				794246491B7D3A5300F5F879 /* RequestPushNotificationPermissionOperation.swift */,
+			);
+			path = "Launch Operations";
 			sourceTree = "<group>";
 		};
 		A601FB461B4354750050536C /* Creation Flows */ = {
@@ -6405,6 +6439,9 @@
 				0326C35F19F8226200DBC341 /* Images.xcassets */,
 				BE171DE91868C211004E5202 /* ManagedObjectModels */,
 				BE171DD91868C211004E5202 /* Managers */,
+				B0DDD55B1B4F0C230065E540 /* NSDictionary+VMerge.h */,
+				B0DDD55C1B4F0C230065E540 /* NSDictionary+VMerge.m */,
+				794246431B7D39A200F5F879 /* Operations */,
 				03C185CD19B4308400E27D05 /* Protocols */,
 				D8B0500E19AD2A740048E2BE /* Simple Models */,
 				BE171D821868BE64004E5202 /* Supporting Files */,
@@ -6413,8 +6450,6 @@
 				BE171D8A1868BE64004E5202 /* VAppDelegate.h */,
 				BE171D8B1868BE64004E5202 /* VAppDelegate.m */,
 				D800A6161AEEAA0F00F1A06A /* VCompatibility.h */,
-				B0DDD55B1B4F0C230065E540 /* NSDictionary+VMerge.h */,
-				B0DDD55C1B4F0C230065E540 /* NSDictionary+VMerge.m */,
 				0314D07719B4685C00FA363C /* VConstants.h */,
 				0314D07819B4685C00FA363C /* VConstants.m */,
 			);
@@ -7277,8 +7312,6 @@
 				D8DF722B1AFEC38B002EA7A5 /* VTabMenuContainedViewControllerNavigation.h */,
 				D8DF72251AFEC360002EA7A5 /* VTabMenuShim.h */,
 				D8DF72261AFEC360002EA7A5 /* VTabMenuShim.m */,
-				D8DF72271AFEC360002EA7A5 /* VTabMenuViewController.h */,
-				D8DF72281AFEC360002EA7A5 /* VTabMenuViewController.m */,
 			);
 			path = "Tab Menu";
 			sourceTree = "<group>";
@@ -8729,6 +8762,7 @@
 				D85B707C1B0EAF3F0038CA5B /* VTabInfo.m in Sources */,
 				A71DAF241B695FC200E0BE53 /* AutomationId.swift in Sources */,
 				A778B4521B55B8B5004F9F54 /* GIFSearchActivityFooter.swift in Sources */,
+				7942464C1B7D3A5300F5F879 /* RequestPushNotificationPermissionOperation.swift in Sources */,
 				A7ECC1CD1AD617480003E00A /* VTextToolController.m in Sources */,
 				F0FC98141B61AAA10098AFCB /* UIViewController+VAccessoryScreens.m in Sources */,
 				D85E428D1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.m in Sources */,
@@ -8834,7 +8868,6 @@
 				D836884119C370C400070F22 /* VBaseCollectionViewCell.m in Sources */,
 				F06F10C01AC1E11C0062E1D1 /* VCollectionsDirectoryCell.m in Sources */,
 				F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */,
-				0358FCEE1A65E785004DD7A1 /* VScaffoldViewController.m in Sources */,
 				0314D4B819B46B5E00FA363C /* VVideoLightboxViewController.m in Sources */,
 				D85B708F1B0ECC6D0038CA5B /* VModernLandingViewController.m in Sources */,
 				A708C95B1A8067B9000EE1EE /* VContentRepopulateTransition.m in Sources */,
@@ -8844,6 +8877,7 @@
 				F0E0F1AA1AE8811700143CBF /* VLaunchScreenProvider.m in Sources */,
 				A720054C1A030D9300285A9C /* VTrackingConstants.m in Sources */,
 				03B3D3D01A3BBCE900F0634A /* VBadgeBackgroundView.m in Sources */,
+				797006ED1B7AA32C0058B09A /* UIViewController+VRootNavigationController.m in Sources */,
 				D876E2021A9DA6DD002CAA29 /* VBlurredImageBackground.m in Sources */,
 				A721E9721B581F78000B7901 /* GIFSearchResultCell.swift in Sources */,
 				D8EC36EC1AB3F96700FB0CEB /* AVComposition+VTrimmedLoopingComposition.m in Sources */,
@@ -9138,6 +9172,8 @@
 				037CB74519CFE8D20084BBED /* VUploadTaskInformation.m in Sources */,
 				F0FC97A81B5563960098AFCB /* VInStreamCommentsCell.m in Sources */,
 				A721E9581B572454000B7901 /* UIResponder+VResponderChain.m in Sources */,
+				7942464B1B7D3A5300F5F879 /* FTUEVideoOperation.swift in Sources */,
+				797006F01B7AA3980058B09A /* VTabScaffoldHidingHelper.m in Sources */,
 				0314D4B619B46B5E00FA363C /* VLightboxTransitioningDelegate.m in Sources */,
 				0314D4D219B46B5E00FA363C /* VRootViewController.m in Sources */,
 				A7CD87521B1D09CF002532A9 /* VDependencyManager+VAccessoryScreens.m in Sources */,
@@ -9162,6 +9198,7 @@
 				F0FC97D21B5AE9130098AFCB /* VStreamCollectionViewController+VInStreamCommentsResponder.m in Sources */,
 				D8E39BDF19CB7C80007FD86A /* VContentBackgroundSupplementaryView.m in Sources */,
 				A65F4D551B5D9E4900C96F1F /* VNoAssetsCell.m in Sources */,
+				7942464A1B7D3A5300F5F879 /* AutoShowLoginOperation.swift in Sources */,
 				BE799B9519C8A91C0023CE88 /* VAnswer.m in Sources */,
 				D87AD2AE1AD4866B00C481D0 /* VAsset+VAssetCache.m in Sources */,
 				D80536241B17B4310049B77A /* VPromptCarouselViewController.m in Sources */,
@@ -9329,7 +9366,7 @@
 				0314D0B319B4698800FA363C /* VObjectManager+ImageSearch.m in Sources */,
 				A743E7E41A0816D500339CB3 /* VPasswordValidator.m in Sources */,
 				0314D48C19B46B5E00FA363C /* VSelectorViewController.m in Sources */,
-				037FCF2B1A8DAF7600E8ABFC /* VDependencyManager+VScaffoldViewController.m in Sources */,
+				037FCF2B1A8DAF7600E8ABFC /* VDependencyManager+VTabScaffoldViewController.m in Sources */,
 				D8FC09071A51DBC100E5FBE4 /* VPlaceholderTextView.m in Sources */,
 				A7AEF9C61A83F2AD00A3D3A0 /* VFollowersTextFormatter.m in Sources */,
 				A75ED0BB1AB78C7400C35063 /* VHashtagTool.m in Sources */,
@@ -9397,6 +9434,7 @@
 				D8360CEA19E3640000D7E260 /* VNewContentViewController+Actions.m in Sources */,
 				A721E9341B572454000B7901 /* VTracking+RestKit.m in Sources */,
 				D8D812B51B14FE5B00E93B37 /* VLoginFlowAPIHelper.m in Sources */,
+				79A80C7D1B7928FD00C14020 /* VTabScaffoldViewController.m in Sources */,
 				A721E95A1B572454000B7901 /* UIStoryboard+VMainStoryboard.m in Sources */,
 				A7AEF9A21A83F1C300A3D3A0 /* VSequenceActionController.m in Sources */,
 				B07BFD611B26761D00784FC8 /* VHashtagHelper.m in Sources */,
@@ -9454,6 +9492,7 @@
 				F0A04FA61A8D6DF100504E26 /* VTextbarSelectorView.m in Sources */,
 				D888B52A1A86FC7800B34149 /* VRadialGradientLayer.m in Sources */,
 				A721E9101B572454000B7901 /* AVAsset+Orientation.m in Sources */,
+				794246451B7D39B000F5F879 /* Operation.swift in Sources */,
 				A761C9D11A48A97C00F0D0F9 /* VUtilityButtonsViewController.m in Sources */,
 				A7738B111A4B4A0D008EA973 /* VCommentsUtilityButtonConfiguration.m in Sources */,
 				A7AEF9B91A83F1C300A3D3A0 /* VStreamCollectionViewController.m in Sources */,

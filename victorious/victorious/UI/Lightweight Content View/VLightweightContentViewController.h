@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class VLightweightContentViewController;
 
 @protocol VLightweightContentViewControllerDelegate <NSObject>
@@ -41,6 +43,8 @@
 /**
  Reports when the video has completed or failed to load
  */
-@property (nonatomic, weak) id <VLightweightContentViewControllerDelegate> delegate;
+@property (nonatomic, weak, nullable) id <VLightweightContentViewControllerDelegate> delegate;
 
 @end
+
+NS_ASSUME_NONNULL_END
