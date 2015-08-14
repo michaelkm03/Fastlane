@@ -10,6 +10,6 @@
 
 @interface VTabScaffoldHidingHelper : NSObject
 
-- (instancetype)initWithTabBarToHide:(UITabBar *)tabbar;
+- (instancetype)initWithTabBar:(UITabBar *)tabbar;
 
 @end

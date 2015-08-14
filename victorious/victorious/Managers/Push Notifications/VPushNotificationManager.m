@@ -11,7 +11,7 @@
 #import "VPushNotificationManager.h"
 #import "VConstants.h"
 
-NSString *const VPushNotificationManagerDidRecieveRegisterOrFailureForRemoteNotificationsNotification = @"com.getvictorious.PushNotificationManagerDidRegister";
+NSString *const VPushNotificationManagerDidReceiveResponse = @"com.getvictorious.PushNotificationManagerDidRegister";
 
 @interface VPushNotificationManager ()
 
@@ -48,7 +48,7 @@ NSString *const VPushNotificationManagerDidRecieveRegisterOrFailureForRemoteNoti
 
 - (void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:VPushNotificationManagerDidRecieveRegisterOrFailureForRemoteNotificationsNotification object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:VPushNotificationManagerDidReceiveResponse object:self];
     self.apnsToken = deviceToken;
     [self sendAPNStokenToServer];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
@@ -87,7 +87,7 @@ NSString *const VPushNotificationManagerDidRecieveRegisterOrFailureForRemoteNoti
 
 - (void)didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:VPushNotificationManagerDidRecieveRegisterOrFailureForRemoteNotificationsNotification object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:VPushNotificationManagerDidReceiveResponse object:self];
     VLog(@"Error registering for push notifications: %@", [error localizedDescription]);
 }
 

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class VCommentMedia, VSequence, VUser;
+@class VMediaAttachment, VSequence, VUser;
 
 @interface VComment : NSManagedObject
 
@@ -39,8 +39,8 @@
 
 @interface VComment (CoreDataGeneratedAccessors)
 
-- (void)addCommentMediaObject:(VCommentMedia *)value;
-- (void)removeCommentMediaObject:(VCommentMedia *)value;
+- (void)addCommentMediaObject:(VMediaAttachment *)value;
+- (void)removeCommentMediaObject:(VMediaAttachment *)value;
 - (void)addCommentMedia:(NSSet *)values;
 - (void)removeCommentMedia:(NSSet *)values;
 

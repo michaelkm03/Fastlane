@@ -69,7 +69,6 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *previewHeightConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *dividerLineHeightConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *publishButtonHeightConstraint;
-@property (nonatomic, assign) CGFloat cellWidth;
 
 @property (nonatomic, strong) UIDynamicAnimator *animator;
 @property (nonatomic, strong) UIAttachmentBehavior *attachmentBehavior;
@@ -147,6 +146,7 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
     CGAffineTransform initialTransformTranslation = CGAffineTransformMakeTranslation(0, -CGRectGetMidY(self.view.frame));
     CGAffineTransform initialTransformRotation = CGAffineTransformMakeRotation(M_PI * (1-randomFloat));
     self.publishPrompt.transform = CGAffineTransformConcat(initialTransformTranslation, initialTransformRotation);
+    self.publishButton.accessibilityIdentifier = VAutomationIdentifierPublishFinish;
     
     [self setupCaptionTextView];
     
@@ -187,6 +187,7 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
     
     NSString *placeholderText = [self.dependencyManager stringForKey:kPlaceholderTextKey];
     self.captionTextView.placeholderText = NSLocalizedString(placeholderText, @"Caption entry placeholder text");
+    self.captionTextView.accessibilityLabel = placeholderText;
     UIFont *font = [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
     if ( font != nil )
     {
@@ -211,13 +212,17 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
     
     [self.collectionView registerNib:[VPublishSaveCollectionViewCell nibForCell] forCellWithReuseIdentifier:[VPublishSaveCollectionViewCell suggestedReuseIdentifier]];
     [self.collectionView registerNib:[VPublishShareCollectionViewCell nibForCell] forCellWithReuseIdentifier:[VPublishShareCollectionViewCell suggestedReuseIdentifier]];
-    
+}
+
+- (CGFloat)calculatedCellWidth
+{
     CGFloat width = CGRectGetWidth(self.collectionView.bounds);
     UIEdgeInsets contentInset = self.collectionView.contentInset;
     width -= contentInset.right + contentInset.left;
     UIEdgeInsets sectionInset = ((UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout).sectionInset;
     width -= sectionInset.right + sectionInset.left;
-    self.cellWidth = width;
+    
+    return width;
 }
 
 - (void)setupShareCard
@@ -226,15 +231,14 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
     
     CGFloat staticHeights = self.publishButtonHeightConstraint.constant + self.previewHeightConstraint.constant + self.dividerLineHeightConstraint.constant;
     CGFloat shareHeight = [VPublishShareCollectionViewCell desiredHeightForDependencyManager:self.dependencyManager];
-    CGSize shareSize = CGSizeMake(self.cellWidth, shareHeight);
-    if ( shareSize.height != 0 )
+    if ( shareHeight != 0 )
     {
-        shareSize.height += kCollectionViewVerticalSpace;
+        shareHeight += kCollectionViewVerticalSpace;
     }
     CGFloat collectionViewHeight = 0.0f;
     if ( self.hasShareCell )
     {
-        collectionViewHeight += shareSize.height + kCollectionViewVerticalSpace;
+        collectionViewHeight += shareHeight + kCollectionViewVerticalSpace;
     }
     if ( !self.publishParameters.isGIF )
     {
@@ -843,7 +847,7 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
     {
         size.height = [VPublishShareCollectionViewCell desiredHeightForDependencyManager:self.dependencyManager];
     }
-    size.width = self.cellWidth;
+    size.width = [self calculatedCellWidth];
     return size;
 }
 

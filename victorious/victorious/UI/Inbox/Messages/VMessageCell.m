@@ -184,4 +184,21 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
     self.profileImageOnRight = NO;
 }
 
+#pragma mark - focus
+
+- (void)setHasFocus:(BOOL)hasFocus
+{
+    self.messageTextAndMediaView.inFocus = hasFocus;
+}
+
+- (CGRect)contentArea
+{
+    CGRect mediaThumbnailFrame = self.messageTextAndMediaView.mediaAttachmentView.frame;
+    CGRect mediaFrame = CGRectMake(CGRectGetMinX(mediaThumbnailFrame),
+                                   CGRectGetMinY(self.messageTextAndMediaView.frame) + CGRectGetMinY(mediaThumbnailFrame),
+                                   CGRectGetWidth(mediaThumbnailFrame),
+                                   CGRectGetHeight(mediaThumbnailFrame));
+    return mediaFrame;
+}
+
 @end

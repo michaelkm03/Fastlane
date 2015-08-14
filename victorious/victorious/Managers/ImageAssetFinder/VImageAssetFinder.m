@@ -8,6 +8,11 @@
 
 #import "VImageAssetFinder.h"
 #import "VImageAsset+Fetcher.h"
+#import "VAsset.h"
+#import "VAnswer.h"
+#import "VNode.h"
+
+static NSString * const kTextAsset = @"text";
 
 @implementation VImageAssetFinder
 
@@ -73,6 +78,57 @@
             {
                 return [@(asset2.area) compare:@(asset1.area)];
             }];
+}
+
+- (VAnswer *)answerAFromAssets:(NSSet *)assets
+{
+    VAnswer *answer = nil;
+    for (id object in assets)
+    {
+        if ([object isKindOfClass:[VAsset class]])
+        {
+            VAsset *asset = (VAsset *) object;
+            if (asset.node.interactions.array.count > 0)
+            {
+                answer = [asset.node.interactions.array firstObject];
+            }
+        }
+    }
+    
+    return answer;
+}
+
+- (VAnswer *)answerBFromAssets:(NSSet *)assets
+{
+    VAnswer *answer = nil;
+    for (id object in assets)
+    {
+        if ([object isKindOfClass:[VAsset class]])
+        {
+            VAsset *asset = (VAsset *) object;
+            if (asset.node.interactions.array.count > 1)
+            {
+                answer = asset.node.interactions.array[1];
+            }
+        }
+    }
+    
+    return answer;
+}
+
+- (VAsset *)textAssetFromAssets:(NSSet *)assets
+{
+    VAsset *textAsset = nil;
+    
+    for (VAsset *asset in assets)
+    {
+        if ( asset.data != nil && [asset.type isEqualToString:kTextAsset] && [asset.data isKindOfClass:[NSString class]] )
+        {
+            textAsset = asset;
+        }
+    }
+    
+    return textAsset;
 }
 
 @end

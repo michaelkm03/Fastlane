@@ -12,6 +12,7 @@
 // Layout
 #import "UIView+AutoLayout.h"
 #import "VCompatibility.h"
+#import "UIImage+Cropping.h"
 
 // Constants
 #import "VConstants.h"
@@ -108,7 +109,6 @@ static NSString * const kConfirmationText = @"commentConfirmationText";
     self.videoButton.accessibilityIdentifier = VAutomationIdentifierCommentBarVideoButton;
     self.gifButton.accessibilityIdentifier = VAutomationIdentifierCommentBarGIFButton;
     self.sendButton.accessibilityIdentifier = VAutomationIdentifierCommentBarSendButton;
-    self.clearAttachmentButton.accessibilityIdentifier = VAutomationIdentifierCommentBarClearButton;
 }
 
 - (void)addTextViewToContainer
@@ -214,9 +214,9 @@ static NSString * const kConfirmationText = @"commentConfirmationText";
     self.attachmentsButton.layer.masksToBounds = YES;
     self.attachmentsButton.clipsToBounds = YES;
     
-    [self.attachmentsButton setBackgroundImage:selectedThumbnail
-                                      forState:UIControlStateNormal];
-    
+    UIImage *croppedThumbnail = [selectedThumbnail squareImageScaledToSize:MIN(selectedThumbnail.size.width, selectedThumbnail.size.height)];
+    [self.attachmentsButton setBackgroundImage:croppedThumbnail forState:UIControlStateNormal];
+
     self.selectedMedia = (selectedThumbnail != nil);
     
     [self updateAttachmentThumbnail];
