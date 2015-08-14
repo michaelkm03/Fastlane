@@ -45,7 +45,10 @@ extern NSString * const VFollowSourceScreenUnknown;
  *  A command for the current user to follow a specific user.
  *
  *  @param user The user
+ *  @param authorizedBlock Authroized block to be performed after authroization(if necessary)
  *  @param completion Required completion block.
+ *  @param viewControllerToPresentOn The viewController to present the authorization action on
+ *  @param screenName The sourceScreenName of source view controller
  */
 - (void)followUser:(VUser *)user
 withAuthorizedBlock:(void (^ __nullable)(void))authorizedBlock
@@ -57,11 +60,16 @@ fromViewController:(UIViewController * __nullable)viewControllerToPresentOn
  *  A command for the current user to unfollow a specific user.
  *
  *  @param user The user
+ *  @param authorizedBlock Authroized block to be performed after authroization(if necessary)
  *  @param completion Required completion block.
+ *  @param viewControllerToPresentOn The viewController to present the authorization action on
+ *  @param screenName The sourceScreenName of source view controller
  */
 - (void)unfollowUser:(VUser *)user
  withAuthorizedBlock:(void (^ __nullable)(void))authorizedBlock
-       andCompletion:(VFollowEventCompletion)completion;
+       andCompletion:(VFollowEventCompletion)completion
+  fromViewController:(UIViewController * __nullable)viewControllerToPresentOn
+       withScreenName:(NSString * __nullable)screenName;
 
 @end
 

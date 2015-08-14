@@ -9,7 +9,7 @@
 #import "VComment.h"
 #import "VCommentMediaType.h"
 
-@class VCommentMedia;
+@class VMediaAttachment;
 
 @interface VComment (Fetcher)
 

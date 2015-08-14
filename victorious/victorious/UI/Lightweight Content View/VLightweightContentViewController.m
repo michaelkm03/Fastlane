@@ -15,7 +15,7 @@
 #import "VObjectManager+Sequence.h"
 #import "VAsset+Fetcher.h"
 #import "VNode+Fetcher.h"
-#import "VScaffoldViewController.h"
+#import "VTabScaffoldViewController.h"
 #import "VTrackingConstants.h"
 #import "VTracking.h"
 #import "UIView+AutoLayout.h"
@@ -70,10 +70,6 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
 {
     [super viewDidLoad];
     
-    NSDictionary *vcDictionary = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VScaffoldViewControllerFirstTimeContentKey];
-    VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:vcDictionary];
-    self.dependencyManager = childDependencyManager;
-
     self.getStartedButton.secondaryColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.getStartedButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
     [self.getStartedButton setTitle:NSLocalizedString(@"Get Started", @"") forState:UIControlStateNormal];

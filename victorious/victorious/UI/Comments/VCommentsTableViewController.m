@@ -9,7 +9,7 @@
 #import "VCommentsTableViewController.h"
 #import "VTextAndMediaView.h"
 #import "VRTCUserPostedAtFormatter.h"
-#import "VDependencyManager+VScaffoldViewController.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VLoginViewController.h"
 #import "VCommentCell.h"
 #import "VObjectManager+Pagination.h"
@@ -43,7 +43,7 @@
 #import "VDependencyManager+VTracking.h"
 #import "VTableViewCommentHighlighter.h"
 #import "VTableViewStreamFocusHelper.h"
-#import "VCommentMedia.h"
+#import "VMediaAttachment.h"
 #import "VScrollPaginator.h"
 #import "VVideoLightboxViewController.h"
 #import "VLightboxTransitioningDelegate.h"
@@ -215,14 +215,14 @@
 
 - (void)addedNewComment:(VComment *)comment
 {
-    [self setHasComments:YES];
-    [self.tableView reloadData];
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
-                          atScrollPosition:UITableViewScrollPositionTop
-                                  animated:YES];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+    dispatch_async(dispatch_get_main_queue(), ^
                    {
+                       [self setHasComments:YES];
+                       [self.tableView reloadData];
+                       [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
+                                             atScrollPosition:UITableViewScrollPositionTop
+                                                     animated:YES];
+                       
                        [self.focusHelper updateFocus];
                    });
 }
@@ -235,23 +235,25 @@
                                                                                                pageType:VPageTypeFirst
                                                                                            successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
                                                   {
-                                                      self.comments = [self.sequence dateSortedComments];
-                                                      
-                                                      self.hasComments = self.comments.count > 0;
-                                                      
-                                                      self.needsRefresh = NO;
-                                                      [self.tableView reloadData];
-                                                      [self.refreshControl endRefreshing];
-                                                      
-                                                      // Give cells a moment to come on screen
-                                                      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+                                                      dispatch_async(dispatch_get_main_queue(), ^
                                                                      {
+                                                                         self.comments = [self.sequence dateSortedComments];
+                                                                         
+                                                                         self.hasComments = self.comments.count > 0;
+                                                                         
+                                                                         self.needsRefresh = NO;
+                                                                         [self.tableView reloadData];
+                                                                         [self.refreshControl endRefreshing];
+                                                                         
                                                                          [self.focusHelper updateFocus];
                                                                      });
                                                   } failBlock:^(NSOperation *operation, NSError *error)
                                                   {
-                                                      self.needsRefresh = NO;
-                                                      [self.refreshControl endRefreshing];
+                                                      dispatch_async(dispatch_get_main_queue(), ^
+                                                                     {
+                                                                         self.needsRefresh = NO;
+                                                                         [self.refreshControl endRefreshing];
+                                                                     });
                                                   }];
     if (!operation)
     {

@@ -158,7 +158,6 @@
                 <outlet property="attachmentButtonWidthConstraint" destination="lPv-aP-R4t" id="3j6-aZ-XfQ"/>
                 <outlet property="attachmentsBarHeightConstraint" destination="AR3-WE-2Aj" id="5GY-6n-jko"/>
                 <outlet property="attachmentsButton" destination="f5c-Th-WLf" id="aog-r9-kI8"/>
-                <outlet property="clearAttachmentButton" destination="f5c-Th-WLf" id="mem-t4-Oel"/>
                 <outlet property="commentUIContainerHeightConstraint" destination="16i-Pc-vT9" id="raK-gp-17p"/>
                 <outlet property="editingTextSuperview" destination="q7x-zi-ZRw" id="Diw-Cr-pBK"/>
                 <outlet property="editingTextViewBottomSpace" destination="hcZ-w7-KCp" id="WqV-Th-L6f"/>

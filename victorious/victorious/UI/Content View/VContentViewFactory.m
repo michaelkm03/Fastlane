@@ -14,7 +14,7 @@
 #import "VWebBrowserViewController.h"
 #import "NSURL+VCustomScheme.h"
 #import "VRootViewController.h"
-#import "VDependencyManager+VScaffoldViewController.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
 
 static NSString * const kContentViewComponentKey = @"contentView";
 static NSString * const kSequenceIdKey = @"sequenceId";

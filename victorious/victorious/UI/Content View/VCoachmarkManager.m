@@ -9,7 +9,7 @@
 #import "VCoachmarkManager.h"
 #import "VCoachmark.h"
 #import "VCoachmarkView.h"
-#import "VDependencyManager+VScaffoldViewController.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VCoachmarkDisplayResponder.h"
 #import "VNavigationController.h"
 #import "UIViewController+VLayoutInsets.h"

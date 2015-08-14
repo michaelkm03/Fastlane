@@ -27,7 +27,7 @@
 #import "VFindFriendsViewController.h"
 #import "VDependencyManager.h"
 #import "VBaseCollectionViewCell.h"
-#import "VDependencyManager+VScaffoldViewController.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VNotAuthorizedDataSource.h"
 #import "VNotAuthorizedProfileCollectionViewCell.h"
 #import "VUserProfileHeader.h"
@@ -498,15 +498,21 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     if ( self.profileHeaderViewController.state == VUserProfileHeaderStateFollowingUser )
     {
         self.profileHeaderViewController.loading = YES;
-        [self unfollowUser:self.user withAuthorizedBlock:nil andCompletion:^(VUser *userActedOn) {
+        
+        [self unfollowUser:self.user withAuthorizedBlock:nil andCompletion:^(VUser *userActedOn)
+        {
             self.profileHeaderViewController.loading = NO;
             [self reloadUserFollowingRelationship];
-        }];
+        }
+        fromViewController:self
+            withScreenName:nil
+         ];
     }
     else if ( self.profileHeaderViewController.state == VUserProfileHeaderStateNotFollowingUser )
     {
         [self stopObservingUserProfile];
         self.profileHeaderViewController.loading = YES;
+        
         [self followUser:self.user
      withAuthorizedBlock:nil
            andCompletion:^(VUser *userActedOn)
@@ -515,7 +521,8 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
             [self reloadUserFollowingRelationship];
         }
       fromViewController:self
-          withScreenName:nil];
+          withScreenName:nil
+         ];
     }
 }
 
@@ -969,7 +976,11 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 #pragma mark - VFollowResponder
 
-- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowEventCompletion)completion fromViewController:(UIViewController *)viewControllerToPresentOn withScreenName:(NSString *)screenName
+- (void)followUser:(VUser *)user
+withAuthorizedBlock:(void (^)(void))authorizedBlock
+     andCompletion:(VFollowEventCompletion)completion
+fromViewController:(UIViewController *)viewControllerToPresentOn
+    withScreenName:(NSString *)screenName
 {
     NSString *sourceScreen = screenName?:VFollowSourceScreenProfile;
     id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
@@ -983,13 +994,22 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
                  withScreenName:sourceScreen];
 }
 
-- (void)unfollowUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowEventCompletion)completion
+- (void)unfollowUser:(VUser *)user 
+ withAuthorizedBlock:(void (^)(void))authorizedBlock
+       andCompletion:(VFollowEventCompletion)completion
+  fromViewController:(UIViewController *)viewControllerToPresentOn
+      withScreenName:(NSString *)screenName
 {
-    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:)
+    NSString *sourceScreen = screenName?:VFollowSourceScreenProfile;
+    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
                                                                       withSender:nil];
+    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
+    
     [followResponder unfollowUser:user
               withAuthorizedBlock:authorizedBlock
-                    andCompletion:completion];
+                    andCompletion:completion
+               fromViewController:self
+                   withScreenName:sourceScreen];
 }
 
 @end

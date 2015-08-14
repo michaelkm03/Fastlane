@@ -204,7 +204,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
             }
         }
         else if followControl.controlState == VFollowControlState.Followed {
-            if let target: VFollowResponder = nextResponder()?.targetForAction(Selector("unfollowUser:withAuthorizedBlock:andCompletion:"), withSender: followControl) as? VFollowResponder, let shelf = shelf as? UserShelf {
+            if let target: VFollowResponder = nextResponder()?.targetForAction(Selector("unfollowUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:"), withSender: followControl) as? VFollowResponder, let shelf = shelf as? UserShelf {
                 followControl.setControlState(VFollowControlState.Loading, animated: true)
                 target.unfollowUser(shelf.user, withAuthorizedBlock: { () -> Void in
                     followControl.controlState = VFollowControlState.Loading
@@ -213,7 +213,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
                         if let strongSelf = self {
                             strongSelf.updateFollowControlState()
                         }
-                    })
+                    }, fromViewController: nil, withScreenName: VFollowSourceScreenTrendingUserShelf)
             }
             else {
                 assertionFailure("The VTrendingUserShelfCollectionViewCell needs a follow responder further up its responder chain.")

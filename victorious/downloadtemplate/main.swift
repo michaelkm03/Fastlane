@@ -19,7 +19,7 @@ if Process.arguments.count < 2 {
 let bundlePath = Process.arguments[1]
 
 var environmentName: String? = nil
-if Process.arguments.count >= 2 {
+if Process.arguments.count >= 3 {
     environmentName = Process.arguments[2]
 }
 

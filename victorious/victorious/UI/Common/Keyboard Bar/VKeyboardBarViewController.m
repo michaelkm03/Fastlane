@@ -59,6 +59,8 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
     
     self.promptLabel.textColor = [UIColor lightGrayColor];
     
+    self.mediaButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
+    
     [self enableOrDisableSendButtonAsAppropriate];
 }
 

@@ -55,10 +55,12 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
     withScreenName:(NSString *)screenName;
 
 /**
- * Follows the user passed in after any authorization.
+ * Unfollows the user passed in after any authorization.
  */
 - (void)unfollowUser:(VUser *)user
  withAuthorizedBlock:(void (^)(void))authorizedBlock
-      andCompletion:(VFollowHelperCompletion)completion;
+      andCompletion:(VFollowHelperCompletion)completion
+  fromViewController:(UIViewController *)viewControllerToPresentOn
+      withScreenName:(NSString *)screenName;
 
 @end

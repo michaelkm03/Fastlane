@@ -33,13 +33,13 @@
 @import MediaPlayer;
 @import CoreLocation;
 
-static BOOL isRunningTests(void) __attribute__((const));
+static BOOL shouldCompleteLaunch(void) __attribute__((const));
 
 @implementation VAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    if (isRunningTests())
+    if ( !shouldCompleteLaunch() )
     {
         return YES;
     }
@@ -145,9 +145,15 @@ static BOOL isRunningTests(void) __attribute__((const));
 
 #pragma mark -
 
-static BOOL isRunningTests(void)
+static BOOL shouldCompleteLaunch(void)
 {
     NSDictionary *environment = [[NSProcessInfo processInfo] environment];
     NSString *injectBundle = environment[@"XCInjectBundle"];
-    return [[injectBundle pathExtension] isEqualToString:@"xctest"];
+    if ( [[injectBundle pathExtension] isEqualToString:@"xctest"] )
+    {
+        NSBundle *testBundle = [NSBundle bundleWithPath:injectBundle];
+        NSNumber *shouldCompleteLaunchObject = [testBundle objectForInfoDictionaryKey:@"VShouldCompleteLaunch"];
+        return shouldCompleteLaunchObject == nil ? NO : shouldCompleteLaunchObject.boolValue;
+    }
+    return YES;
 }
