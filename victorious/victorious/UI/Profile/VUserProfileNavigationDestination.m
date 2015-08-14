@@ -8,7 +8,7 @@
 
 #import "VDependencyManager+VObjectManager.h"
 #import "VObjectManager+Users.h"
-#import "VScaffoldViewController.h"
+#import "VTabScaffoldViewController.h"
 #import "VUserProfileNavigationDestination.h"
 #import "VUserProfileViewController.h"
 #import "VUser.h"

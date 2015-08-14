@@ -10,18 +10,19 @@
 #import "VAuthorizedAction.h"
 #import "VMultipleContainer.h"
 #import "VDependencyManager+VObjectManager.h"
-#import "VDependencyManager+VScaffoldViewController.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VDeeplinkHandler.h"
 #import "VNavigationDestination.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
+#import "VTabScaffoldViewController.h"
 
 #define FORCE_DEEPLINK 0
 
 @interface VDeeplinkReceiver()
 
 @property (nonatomic, strong) VAuthorizedAction *authorizedAction;
-@property (nonatomic, readonly) VScaffoldViewController *scaffold;
+@property (nonatomic, readonly) VTabScaffoldViewController *scaffold;
 @property (nonatomic, strong) NSURL *queuedURL; ///< A deep link URL that came in before we were ready for it
 
 @end
@@ -46,7 +47,7 @@
     return self;
 }
 
-- (VScaffoldViewController *)scaffold
+- (VTabScaffoldViewController *)scaffold
 {
     return [self.dependencyManager scaffoldViewController];
 }
