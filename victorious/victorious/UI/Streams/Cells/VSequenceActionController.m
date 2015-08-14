@@ -76,7 +76,10 @@
     {
         commentsContainerViewController = [self.dependencyManager commentsContainerWithSequence:sequence];
     }
-    [viewController.rootNavigationController pushViewController:commentsContainerViewController animated:YES];
+    
+    // If we are embedded in the root nav push on that, otherwise push on the nearest navigationcontroller
+    UINavigationController *navigationControllerToPushOn = viewController.rootNavigationController ?: viewController.navigationController;
+    [navigationControllerToPushOn pushViewController:commentsContainerViewController animated:YES];
 }
 
 #pragma mark - User
