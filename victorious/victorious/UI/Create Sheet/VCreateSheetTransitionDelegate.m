@@ -10,7 +10,7 @@
 #import "VCreateSheetPresentationController.h"
 #import "VCreateSheetViewController.h"
 #import "VDependencyManager.h"
-#import "VTabMenuViewController.h"
+#import "VTabScaffoldViewController.h"
 
 static const NSTimeInterval kCellPresentTime = 0.8;
 static const NSTimeInterval kCellPresentDelay = 0.1;

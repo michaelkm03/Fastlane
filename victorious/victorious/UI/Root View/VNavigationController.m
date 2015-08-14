@@ -7,14 +7,13 @@
 //
 
 #import "VDependencyManager.h"
-#import "VDependencyManager+VScaffoldViewController.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VNavigationController.h"
 #import "VNavigationControllerScrollDelegate.h"
-#import "VScaffoldViewController.h"
 #import "UIImage+VSolidColor.h"
 #import "UIViewController+VLayoutInsets.h"
-#import "UIColor+VBrightness.h"
-#import "VTabMenuViewController.h"
+#import  "UIColor+VBrightness.h"
+#import "VTabScaffoldViewController.h"
 
 #import <objc/runtime.h>
 
