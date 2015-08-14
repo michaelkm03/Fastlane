@@ -24,6 +24,7 @@
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 @property (nonatomic, strong) VNoContentView *noContentView;
 @property (nonatomic, assign) BOOL canLoadNextPage;
+@property (nonatomic, copy, readonly) NSString *sourceScreenName;
 
 @end
 
@@ -208,14 +209,8 @@ withAuthorizedBlock:(void (^)(void))authorizedBlock
 fromViewController:(UIViewController *)viewControllerToPresentOn
     withScreenName:(NSString *)screenName
 {
-    NSDictionary *dict = @{
-                           @(VUsersViewContextFollowers) : VFollowSourceScreenFollowers,
-                           @(VUsersViewContextFollowing) : VFollowSourceScreenFollowing,
-                           @(VUsersViewContextLikers) : VFollowSourceScreenLikers
-                           };
-    
-    NSString *sourceScreen = screenName?:[dict objectForKey:@(self.usersViewContext)];
-
+    NSString *sourceScreen = screenName?:self.sourceScreenName;
+    VLog("%@", sourceScreen);
     id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
                                                                       withSender:nil];
     NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
@@ -233,14 +228,8 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
   fromViewController:(UIViewController *)viewControllerToPresentOn
       withScreenName:(NSString *)screenName
 {
-    NSDictionary *dict = @{
-                           @(VUsersViewContextFollowers) : VFollowSourceScreenFollowers,
-                           @(VUsersViewContextFollowing) : VFollowSourceScreenFollowing,
-                           @(VUsersViewContextLikers) : VFollowSourceScreenLikers
-                           };
-    
-    NSString *sourceScreen = screenName?:[dict objectForKey:@(self.usersViewContext)];
-    
+    NSString *sourceScreen = screenName?:self.sourceScreenName;
+    VLog("%@", sourceScreen);
     id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
                                                                       withSender:nil];
     NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
@@ -249,6 +238,17 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
               withAuthorizedBlock:authorizedBlock
                     andCompletion:completion
                fromViewController:self
-                   withScreenName:sourceScreen];}
+                   withScreenName:sourceScreen];
+}
+
+- (NSString *)sourceScreenName
+{
+    NSDictionary *dict = @{
+                           @(VUsersViewContextFollowers) : VFollowSourceScreenFollowers,
+                           @(VUsersViewContextFollowing) : VFollowSourceScreenFollowing,
+                           @(VUsersViewContextLikers) : VFollowSourceScreenLikers
+                           };
+    return [dict objectForKey:@(self.usersViewContext)];
+}
 
 @end
