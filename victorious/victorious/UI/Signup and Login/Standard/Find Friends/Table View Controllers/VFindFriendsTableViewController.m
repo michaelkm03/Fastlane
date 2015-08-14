@@ -20,7 +20,6 @@
 #import "VAuthorizedAction.h"
 #import "VDependencyManager.h"
 #import "VFollowResponder.h"
-#import "VFollowingHelper.h"
 #import "VFindContactsTableViewController.h"
 #import "VFindFacebookFriendsTableViewController.h"
 #import "VFindTwitterFriendsTableViewController.h"
@@ -31,7 +30,6 @@
 @property (nonatomic, strong) NSArray *users;
 @property (nonatomic, strong) NSMutableArray *usersFollowing;
 @property (nonatomic, strong) NSMutableArray *usersNotFollowing;
-@property (nonatomic, strong) VFollowingHelper *followingHelper;
 @property (nonatomic, assign) BOOL appearedOnce;
 
 @end
@@ -454,18 +452,7 @@
 
 #pragma mark - VFollowResponder
 
-- (VFollowingHelper *)followingHelper
-{
-    if ( _followingHelper != nil )
-    {
-        return _followingHelper;
-    }
-    
-    _followingHelper = [[VFollowingHelper alloc] initWithDependencyManager:self.dependencyManager viewControllerToPresentOn:self];
-    return _followingHelper;
-}
-
-- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion fromViewController:(UIViewController *)viewControllerToPresentOn withScreenName:(NSString *)screenName
+- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowEventCompletion)completion fromViewController:(UIViewController *)viewControllerToPresentOn withScreenName:(NSString *)screenName
 {
     UIViewController *displayedVC = [self.delegate currentViewControllerDisplayed];
     
@@ -489,7 +476,7 @@
 
 - (void)unfollowUser:(VUser *)user
  withAuthorizedBlock:(void (^)(void))authorizedBlock
-       andCompletion:(VFollowHelperCompletion)completion
+       andCompletion:(VFollowEventCompletion)completion
   fromViewController:(UIViewController *)viewControllerToPresentOn
       withScreenName:(NSString *)screenName
 {

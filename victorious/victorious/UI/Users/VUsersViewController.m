@@ -16,7 +16,6 @@
 #import "VNoContentView.h"
 #import "VNavigationController.h"
 #import "VDependencyManager+VTracking.h"
-#import "VFollowingHelper.h"
 
 @interface VUsersViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, VScrollPaginatorDelegate, VFollowResponder>
 
@@ -25,7 +24,6 @@
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 @property (nonatomic, strong) VNoContentView *noContentView;
 @property (nonatomic, assign) BOOL canLoadNextPage;
-@property (nonatomic, strong) VFollowingHelper *followingHelper;
 
 @end
 
@@ -37,7 +35,6 @@
     if ( self != nil )
     {
         _dependencyManager = dependencyManager;
-        _followingHelper = [[VFollowingHelper alloc] initWithDependencyManager:dependencyManager viewControllerToPresentOn:self];
     }
     return self;
 }
@@ -207,7 +204,7 @@
 
 - (void)followUser:(VUser *)user
 withAuthorizedBlock:(void (^)(void))authorizedBlock
-     andCompletion:(VFollowHelperCompletion)completion
+     andCompletion:(VFollowEventCompletion)completion
 fromViewController:(UIViewController *)viewControllerToPresentOn
     withScreenName:(NSString *)screenName
 {
@@ -232,7 +229,7 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
 
 - (void)unfollowUser:(VUser *)user
  withAuthorizedBlock:(void (^)(void))authorizedBlock
-       andCompletion:(VFollowHelperCompletion)completion
+       andCompletion:(VFollowEventCompletion)completion
   fromViewController:(UIViewController *)viewControllerToPresentOn
       withScreenName:(NSString *)screenName
 {

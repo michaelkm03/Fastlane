@@ -41,7 +41,6 @@
 #import "VTrackingManager.h"
 #import "VDependencyManager.h"
 
-#import "VFollowingHelper.h"
 #import "VFollowResponder.h"
 #import "VFollowControl.h"
 
@@ -64,7 +63,6 @@
 @property (nonatomic, weak) NSTimer *typeDelay;
 @property (nonatomic, assign) NSInteger charCount;
 @property (nonatomic, strong) VUser *selectedUser;
-@property (nonatomic, strong) VFollowingHelper *followHelper;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
@@ -83,8 +81,7 @@ static const NSInteger kSearchResultLimit = 100;
 {
     VUserSearchViewController *userSearchViewController = (VUserSearchViewController *)[[UIStoryboard v_mainStoryboard] instantiateViewControllerWithIdentifier:NSStringFromClass([VUserSearchViewController class])];
     userSearchViewController.dependencyManager = dependencyManager;
-    userSearchViewController.followHelper = [[VFollowingHelper alloc] initWithDependencyManager:dependencyManager
-                                                                      viewControllerToPresentOn:userSearchViewController];
+    
     return userSearchViewController;
 }
 
@@ -325,7 +322,7 @@ static const NSInteger kSearchResultLimit = 100;
 
 - (void)followUser:(VUser *)user
 withAuthorizedBlock:(void (^)(void))authorizedBlock
-     andCompletion:(VFollowHelperCompletion)completion
+     andCompletion:(VFollowEventCompletion)completion
 fromViewController:(UIViewController *)viewControllerToPresentOn
     withScreenName:(NSString *)screenName
 {
@@ -343,7 +340,7 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
 
 - (void)unfollowUser:(VUser *)user
  withAuthorizedBlock:(void (^)(void))authorizedBlock
-       andCompletion:(VFollowHelperCompletion)completion
+       andCompletion:(VFollowEventCompletion)completion
   fromViewController:(UIViewController *)viewControllerToPresentOn
       withScreenName:(NSString *)screenName
 {

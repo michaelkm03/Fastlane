@@ -18,9 +18,7 @@
 #import "VInviteFriendTableViewCell.h"
 #import "VNoContentView.h"
 #import "UIVIew+AutoLayout.h"
-#import "VFollowingHelper.h"
 #import "VDependencyManager+VUserProfile.h"
-#import "VFollowingHelper.h"
 #import "VFollowResponder.h"
 #import "VFollowControl.h"
 
@@ -28,7 +26,6 @@
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) UIView *dismissTapView;
-@property (nonatomic, strong) VFollowingHelper *followHelper;
 
 @end
 
@@ -40,8 +37,7 @@
 {
     VUserSearchResultsViewController *searchResultsVC = [[VUserSearchResultsViewController alloc] init];
     searchResultsVC.dependencyManager = dependencyManager;
-    searchResultsVC.followHelper = [[VFollowingHelper alloc] initWithDependencyManager:dependencyManager
-                                                             viewControllerToPresentOn:searchResultsVC];
+    
     return searchResultsVC;
 }
 
@@ -197,7 +193,7 @@
 
 - (void)followUser:(VUser *)user
 withAuthorizedBlock:(void (^)(void))authorizedBlock
-     andCompletion:(VFollowHelperCompletion)completion
+     andCompletion:(VFollowEventCompletion)completion
 fromViewController:(UIViewController *)viewControllerToPresentOn
     withScreenName:(NSString *)screenName
 {
@@ -215,7 +211,7 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
 
 - (void)unfollowUser:(VUser *)user
  withAuthorizedBlock:(void (^)(void))authorizedBlock
-       andCompletion:(VFollowHelperCompletion)completion
+       andCompletion:(VFollowEventCompletion)completion
   fromViewController:(UIViewController *)viewControllerToPresentOn
       withScreenName:(NSString *)screenName
 {

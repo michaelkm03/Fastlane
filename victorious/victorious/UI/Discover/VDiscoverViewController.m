@@ -36,7 +36,6 @@
 #import "VHashtagResponder.h"
 #import "VDependencyManager+VTracking.h"
 #import "VFollowControl.h"
-#import "VFollowingHelper.h"
 #import "VFollowResponder.h"
 
 static NSString * const kVSuggestedPeopleIdentifier = @"VSuggestedPeopleCell";
@@ -56,7 +55,6 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 @property (nonatomic, assign) BOOL wasHiddenByAnotherViewController;
 
 @property (nonatomic, weak) MBProgressHUD *failureHud;
-@property (nonatomic, strong) VFollowingHelper *followingHelper;
 
 @end
 
@@ -73,8 +71,6 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     self.suggestedPeopleViewController = [VDiscoverSuggestedPeopleViewController instantiateFromStoryboard:@"Discover"];
     self.suggestedPeopleViewController.dependencyManager = self.dependencyManager;
     self.suggestedPeopleViewController.delegate = self;
-    
-    self.followingHelper = [[VFollowingHelper alloc] initWithDependencyManager:self.dependencyManager viewControllerToPresentOn:self];
     
     [self addChildViewController:self.suggestedPeopleViewController];
     [self.suggestedPeopleViewController didMoveToParentViewController:self];
@@ -586,7 +582,7 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 - (void)followUser:(VUser *)user
 withAuthorizedBlock:(void (^)(void))authorizedBlock
-     andCompletion:(VFollowHelperCompletion)completion
+     andCompletion:(VFollowEventCompletion)completion
 fromViewController:(UIViewController *)viewControllerToPresentOn
     withScreenName:(NSString *)screenName
 {
@@ -604,7 +600,7 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
 
 - (void)unfollowUser:(VUser *)user 
  withAuthorizedBlock:(void (^)(void))authorizedBlock
-       andCompletion:(VFollowHelperCompletion)completion
+       andCompletion:(VFollowEventCompletion)completion
   fromViewController:(UIViewController *)viewControllerToPresentOn
       withScreenName:(NSString *)screenName
 {

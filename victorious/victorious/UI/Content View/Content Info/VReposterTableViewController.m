@@ -18,13 +18,11 @@
 #import "VUser.h"
 
 #import "VFollowResponder.h"
-#import "VFollowingHelper.h"
 
 @interface VReposterTableViewController () <VFollowResponder>
 
 @property (nonatomic, strong) NSArray *reposters;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) VFollowingHelper *followingHelper;
 
 @end
 
@@ -36,7 +34,6 @@
     if (self)
     {
         _dependencyManager = dependencyManager;
-        _followingHelper = [[VFollowingHelper alloc] initWithDependencyManager:dependencyManager viewControllerToPresentOn:self];
     }
     return self;
 }

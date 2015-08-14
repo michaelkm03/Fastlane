@@ -529,8 +529,7 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
 - (void)unfollowUser:(VUser *)user
  withAuthorizedBlock:(void (^)(void))authorizedBlock
        andCompletion:(VFollowHelperCompletion)completion
-  fromViewController:(UIViewController *)viewControllerToPresentOn
-      withScreenName:(NSString *)screenName
+  fromViewController:(UIViewController *)viewControllerToPresentOn withScreenName:(NSString *)screenName
 {
     UIViewController *sourceViewController = viewControllerToPresentOn?:self;
     
