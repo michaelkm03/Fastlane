@@ -79,8 +79,6 @@
 		0314D4FD19B46B5E00FA363C /* VTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D44419B46B5E00FA363C /* VTableViewCell.m */; };
 		031DF6231B7981F200FDD7D3 /* VEnvironment.h in Headers */ = {isa = PBXBuildFile; fileRef = A77951151B28AB9A00D9DB0A /* VEnvironment.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		031DF6241B7981F600FDD7D3 /* VEnvironment.h in Headers */ = {isa = PBXBuildFile; fileRef = A77951151B28AB9A00D9DB0A /* VEnvironment.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		031DF6251B7983CE00FDD7D3 /* VExperimentSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = A7815E271B701076007797B7 /* VExperimentSettings.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		031DF6261B7983D200FDD7D3 /* VExperimentSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = A7815E271B701076007797B7 /* VExperimentSettings.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		031DF6271B7986E700FDD7D3 /* NSCharacterSet+VURLParts.h in Headers */ = {isa = PBXBuildFile; fileRef = A721E8B11B572453000B7901 /* NSCharacterSet+VURLParts.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		031DF6281B7986E700FDD7D3 /* NSString+VCrypto.h in Headers */ = {isa = PBXBuildFile; fileRef = A721E8C41B572453000B7901 /* NSString+VCrypto.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		031DF6291B7986E700FDD7D3 /* NSString+VDataCacheID.h in Headers */ = {isa = PBXBuildFile; fileRef = 03A761501B324BFF0016B69D /* NSString+VDataCacheID.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -122,6 +120,7 @@
 		0343AF831A143F550025B9F8 /* AVAsset+OrientationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */; };
 		0343AF841A143FD20025B9F8 /* NSDate+timeSinceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE49323519E338CE00C0912E /* NSDate+timeSinceTests.m */; };
 		03449FE51A0C7EBB0070EC80 /* VSessionTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 03449FE41A0C7EBB0070EC80 /* VSessionTimer.m */; };
+		034912631B7E8F9D00EA8A07 /* VExperimentSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A7815E281B701076007797B7 /* VExperimentSettings.m */; };
 		034BCC3F19F5CF5D00114F6C /* MuseoSans-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1859019B42CEA00E27D05 /* MuseoSans-500.otf */; };
 		034D1A6A1AAF5A8B00EB7B2D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 034D1A6C1AAF5A8B00EB7B2D /* Localizable.strings */; };
 		0350E0581B7C1EDF002C4059 /* NSMutableURLRequest+VictoriousAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0350E0571B7C1EDF002C4059 /* NSMutableURLRequest+VictoriousAPI.swift */; };
@@ -138,7 +137,6 @@
 		0352FC721B729B0300DB6EAB /* VURLMacroReplacementTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 032954A61A9FFD9100698119 /* VURLMacroReplacementTests.m */; };
 		0352FC771B72AE3800DB6EAB /* VictoriousCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0370FBB31B71B260009047B6 /* VictoriousCommon.framework */; };
 		0352FC781B72B09900DB6EAB /* templateCache.json in Resources */ = {isa = PBXBuildFile; fileRef = 03A058C21AEF59E600CF39D1 /* templateCache.json */; };
-		0352FCA61B72BB3D00DB6EAB /* VExperimentSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A7815E281B701076007797B7 /* VExperimentSettings.m */; };
 		0352FCA71B72BB3D00DB6EAB /* NSCharacterSet+VURLParts.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8B21B572453000B7901 /* NSCharacterSet+VURLParts.m */; };
 		0352FCA81B72BB3D00DB6EAB /* NSString+VCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8C51B572453000B7901 /* NSString+VCrypto.m */; };
 		0352FCA91B72BB3D00DB6EAB /* NSString+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A761511B324BFF0016B69D /* NSString+VDataCacheID.m */; };
@@ -239,7 +237,6 @@
 		0370FBBE1B71B261009047B6 /* VictoriousCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0370FBB31B71B260009047B6 /* VictoriousCommon.framework */; };
 		0370FBCA1B71B261009047B6 /* VictoriousCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0370FBB31B71B260009047B6 /* VictoriousCommon.framework */; };
 		0370FBCB1B71B261009047B6 /* VictoriousCommon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0370FBB31B71B260009047B6 /* VictoriousCommon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		0370FBDE1B71B3C4009047B6 /* VExperimentSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A7815E281B701076007797B7 /* VExperimentSettings.m */; };
 		0370FBDF1B71B3C4009047B6 /* NSCharacterSet+VURLParts.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8B21B572453000B7901 /* NSCharacterSet+VURLParts.m */; };
 		0370FBE01B71B3C4009047B6 /* NSString+VCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8C51B572453000B7901 /* NSString+VCrypto.m */; };
 		0370FBE11B71B3C4009047B6 /* NSString+VDataCacheID.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A761511B324BFF0016B69D /* NSString+VDataCacheID.m */; };
@@ -4630,7 +4627,6 @@
 				036DE7CA1B62E30B0038A25E /* Data Cache */,
 				036DE7E91B62F5560038A25E /* Dependency Manager */,
 				034527D81B60788B00E990BB /* Environment */,
-				0370FBD91B71B358009047B6 /* Experiment Settings */,
 				036DE7F01B62F66E0038A25E /* JSON Helper */,
 				0370FBB51B71B261009047B6 /* Supporting Files */,
 				034527A51B604A9100E990BB /* Template Loader */,
@@ -4675,15 +4671,6 @@
 				0370FBC51B71B261009047B6 /* Info.plist */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		0370FBD91B71B358009047B6 /* Experiment Settings */ = {
-			isa = PBXGroup;
-			children = (
-				A7815E271B701076007797B7 /* VExperimentSettings.h */,
-				A7815E281B701076007797B7 /* VExperimentSettings.m */,
-			);
-			path = "Experiment Settings";
 			sourceTree = "<group>";
 		};
 		037CB73919CFE8550084BBED /* Upload */ = {
@@ -5961,6 +5948,8 @@
 			children = (
 				A78F17711B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift */,
 				A78F17721B67F3AE009F6B8F /* ExperimentSettingsViewController.swift */,
+				A7815E271B701076007797B7 /* VExperimentSettings.h */,
+				A7815E281B701076007797B7 /* VExperimentSettings.m */,
 			);
 			path = "Experiment Settings";
 			sourceTree = "<group>";
@@ -7776,7 +7765,6 @@
 				031DF6481B7986EB00FDD7D3 /* VTemplatePackageManager.h in Headers */,
 				031DF6391B7986EB00FDD7D3 /* NSCharacterSet+VURLParts.h in Headers */,
 				031DF6471B7986EB00FDD7D3 /* VTemplateDownloadOperation.h in Headers */,
-				031DF6261B7983D200FDD7D3 /* VExperimentSettings.h in Headers */,
 				031DF6241B7981F600FDD7D3 /* VEnvironment.h in Headers */,
 				031DF6421B7986EB00FDD7D3 /* VTemplateImageSet.h in Headers */,
 				031DF6461B7986EB00FDD7D3 /* VDownloadOperation.h in Headers */,
@@ -7803,7 +7791,6 @@
 				031DF6361B7986E700FDD7D3 /* VTemplatePackageManager.h in Headers */,
 				031DF6271B7986E700FDD7D3 /* NSCharacterSet+VURLParts.h in Headers */,
 				031DF6351B7986E700FDD7D3 /* VTemplateDownloadOperation.h in Headers */,
-				031DF6251B7983CE00FDD7D3 /* VExperimentSettings.h in Headers */,
 				0370FBB81B71B261009047B6 /* VictoriousCommon.h in Headers */,
 				031DF6231B7981F200FDD7D3 /* VEnvironment.h in Headers */,
 				031DF6301B7986E700FDD7D3 /* VTemplateImageSet.h in Headers */,
@@ -8621,7 +8608,6 @@
 			files = (
 				0352FCB61B72BB3D00DB6EAB /* VTemplateDownloadOperation.m in Sources */,
 				0352FCB11B72BB3D00DB6EAB /* VURLMacroReplacement.m in Sources */,
-				0352FCA61B72BB3D00DB6EAB /* VExperimentSettings.m in Sources */,
 				0352FCB71B72BB3D00DB6EAB /* VTemplatePackageManager.m in Sources */,
 				0352FCB01B72BB3D00DB6EAB /* VTemplateImageSet.m in Sources */,
 				0352FCAF1B72BB3D00DB6EAB /* VTemplateImageMacro.m in Sources */,
@@ -8658,7 +8644,6 @@
 			files = (
 				0370FBEE1B71B3C4009047B6 /* VTemplateDownloadOperation.m in Sources */,
 				0370FBE91B71B3C4009047B6 /* VURLMacroReplacement.m in Sources */,
-				0370FBDE1B71B3C4009047B6 /* VExperimentSettings.m in Sources */,
 				0370FBEF1B71B3C4009047B6 /* VTemplatePackageManager.m in Sources */,
 				0370FBE81B71B3C4009047B6 /* VTemplateImageSet.m in Sources */,
 				0370FBE71B71B3C4009047B6 /* VTemplateImageMacro.m in Sources */,
@@ -9455,6 +9440,7 @@
 				D8C8F5731A0400DF006BE3E8 /* VExtendedView.m in Sources */,
 				A721E9351B572454000B7901 /* VUser+RestKit.m in Sources */,
 				A721E9451B572454000B7901 /* NSURL+MediaType.m in Sources */,
+				034912631B7E8F9D00EA8A07 /* VExperimentSettings.m in Sources */,
 				0372587519D61B0800836B3F /* VUploadTaskCreator.m in Sources */,
 				0314D0B019B4698800FA363C /* VObjectManager+DeviceRegistration.m in Sources */,
 				0314D09019B4694600FA363C /* VInteractionManager.m in Sources */,

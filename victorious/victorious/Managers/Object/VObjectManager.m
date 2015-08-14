@@ -481,7 +481,12 @@ NS_ASSUME_NONNULL_BEGIN
     [request v_setPlatformHeader];
     [request v_setOSVersionHeader];
     [request v_setAppVersionHeaderValue:[[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
-    [request v_setExperimentsHeaderValue:[[VExperimentSettings alloc] init]];
+    
+    NSString *experimentSettings = [[[VExperimentSettings alloc] init] commaSeparatedList];
+    if ( experimentSettings != nil )
+    {
+        [request v_setExperimentsHeaderValue:experimentSettings];
+    }
     
     // Add location data to request if we have permission to collect it
     if ( [NSThread isMainThread] ) // locationManager can only be used from the main thread

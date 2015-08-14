@@ -28,7 +28,6 @@ FOUNDATION_EXPORT const unsigned char VictoriousCommonVersionString[];
 #import <VictoriousCommon/VTemplateImageSet.h>
 #import <VictoriousCommon/VURLMacroReplacement.h>
 #import <VictoriousCommon/VEnvironment.h>
-#import <VictoriousCommon/VExperimentSettings.h>
 #import <VictoriousCommon/VJSONHelper.h>
 #import <VictoriousCommon/VBulkDownloadOperation.h>
 #import <VictoriousCommon/VDownloadOperation.h>

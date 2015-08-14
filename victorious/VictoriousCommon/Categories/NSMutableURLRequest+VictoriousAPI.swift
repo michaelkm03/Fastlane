@@ -80,8 +80,8 @@ extension NSMutableURLRequest {
     }
     
     /// Sets the value of the "X-Client-Experiment-IDs" header
-    public func v_setExperimentsHeaderValue(experimentSettings: VExperimentSettings) {
-        setValue(experimentSettings.commaSeparatedList, forHTTPHeaderField: HTTPHeader.experimentIDs)
+    public func v_setExperimentsHeaderValue(experimentSettings: String) {
+        setValue(experimentSettings, forHTTPHeaderField: HTTPHeader.experimentIDs)
     }
     
     /// Sets the value of the "X-Geo-Location" header
