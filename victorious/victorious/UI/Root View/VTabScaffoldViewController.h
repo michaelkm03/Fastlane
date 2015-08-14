@@ -1,16 +1,17 @@
 //
-//  VScaffoldViewController.h
+//  VTabScaffoldViewController.h
 //  victorious
 //
-//  Created by Josh Hinman on 1/13/15.
+//  Created by Michael Sena on 8/10/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
+
+#import <UIKit/UIKit.h>
 
 #import "VDependencyManager.h"
 #import "VHasManagedDependencies.h"
 #import "VNavigationDestinationsProvider.h"
-
-#import <UIKit/UIKit.h>
+#import "UIViewController+VRootNavigationController.h"
 
 @class VSequence, VAuthorization, VCoachmarkManager;
 
@@ -25,15 +26,11 @@ extern NSString * const VScaffoldViewControllerMenuComponentKey;
 extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
 
 /**
- Abstract base class for view controllers that act as "scaffolding",
- meaning a root-level view controller that contains the other
- important component parts of the app: at minimum, a menu and a
- content view.
- 
- This base class does not do any custom view loading--loadView
- implementation is up to subclasses.
- */
-@interface VScaffoldViewController : UIViewController <VHasManagedDependencies, VNavigationDestinationsProvider>
+ The TabScaffold class comprises several container VCs at the root there is a fullscreen
+ UINavigationController which contains a UITabBarController, which contains several 
+ NavigationControllers wrapping the menu destinations.
+  */
+@interface VTabScaffoldViewController : UIViewController <VHasManagedDependencies, VNavigationDestinationsProvider>
 
 /**
  A dependency manager that contains appearance data
@@ -53,32 +50,20 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 /**
- Initializes the receiver with a nib name and an instance of VDependencyManager
- */
-//- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager nibName:(NSString *)nibName NS_DESIGNATED_INITIALIZER;
-
-/**
  Presents a content view for the specified VSequence object.
  
- @param placeHolderImage An image, typically the sequence's thumbnail, that can be displayed 
-                         in the place of content while the real thing is being loaded
+ @param placeHolderImage An image, typically the sequence's thumbnail, that can be displayed
+ in the place of content while the real thing is being loaded
  @param comment A comment ID to scroll to and highlight, typically used when content view
-                is being presented when the app is launched with a deep link URL.  If there
-                is no comment, simply pass `nil`.
+ is being presented when the app is launched with a deep link URL.  If there
+ is no comment, simply pass `nil`.
  */
 - (void)showContentViewWithSequence:(id)sequence streamID:(NSString *)streamId commentId:(NSNumber *)commentID placeHolderImage:(UIImage *)placeholderImage;
 
-/**
- Subclasses should override this and return a list of navigation destinations
- that they know about. For example, the list of items in a side menu or
- tab bar. This information will be used to find view controllers that can
- handle deep links.
- */
-- (NSArray *)navigationDestinations;
 
 /**
  Attempt to navigate to a destination (the destination will
- be given a chance to cancel the navigation before it 
+ be given a chance to cancel the navigation before it
  actually happens)
  
  @param navigationDestination Either an instance of UIViewController or an object conforming to VNavigationDestination
@@ -99,7 +84,7 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
  Displays the view controller that the user has navigated to through
  whatever primary means of navigation this scaffold provides. You
  normally don't need to call this method. It exists only as an
- override point for subclasses. (To programmatically effect 
+ override point for subclasses. (To programmatically effect
  navigation, see -navigateToDestination:completion:)
  
  Subclasses MUST override. The base implementation does nothing.
@@ -112,6 +97,9 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
  */
 - (void)displayResultOfNavigation:(UIViewController *)viewController animated:(BOOL)animated;
 
+/**
+ Presents a web browser ViewController with the given URL.
+ */
 - (void)showWebBrowserWithURL:(NSURL *)URL;
 
 @end
