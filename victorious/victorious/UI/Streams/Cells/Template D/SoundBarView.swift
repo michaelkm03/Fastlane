@@ -39,7 +39,7 @@ class SoundBarView : UIView {
         
         super.layoutSubviews()
         
-        for index in 0...numberOfBars-1 {
+        for index in 0..<numberOfBars {
             let bar = CAShapeLayer()
             let path = barPath(index, endpoint: randomEndpoint()).CGPath
             bar.path = path
@@ -56,20 +56,20 @@ class SoundBarView : UIView {
     /// Start the animation
     func startAnimating() {
         
-        if (isAnimating) {
+        if isAnimating {
             return
         }
         
         isAnimating = true
         
         for (index, bar) in enumerate(barLayers) {
-            let barWidth = Double (CGRectGetWidth(self.bounds)) / Double (numberOfBars)
+            let barWidth = Double(self.bounds.height) / Double(numberOfBars)
             
             let currentPath = UIBezierPath(CGPath: bar.path)
-            let currentEndpoint = Double (currentPath.bounds.height)
+            let currentEndpoint = Double(currentPath.bounds.height)
             
             var newRandomEndpoint = currentEndpoint
-            while (abs(currentEndpoint - newRandomEndpoint) < Double (CGRectGetHeight(self.bounds) / 4.0)) {
+            while abs(currentEndpoint - newRandomEndpoint) < Double(self.bounds.height / 4.0) {
                 newRandomEndpoint = randomEndpoint()
             }
             
@@ -104,7 +104,7 @@ class SoundBarView : UIView {
         counter = 0
         isAnimating = false
         
-        if (clearBars) {
+        if clearBars {
             for bar in barLayers {
                 bar.removeFromSuperlayer()
             }
@@ -113,25 +113,25 @@ class SoundBarView : UIView {
     }
     
     private func barPath(barIndex: Int, endpoint: Double) -> UIBezierPath {
-        let gapsWidth = distanceBetweenBars * Double (numberOfBars - 1)
-        let totalBarWidth = Double (CGRectGetWidth(self.bounds)) - gapsWidth
-        let barWidth = totalBarWidth / Double (numberOfBars)
-        return UIBezierPath(rect: CGRect(x: (barWidth + distanceBetweenBars) * Double (barIndex), y:  Double (CGRectGetHeight(self.bounds)), width: barWidth, height: -endpoint))
+        let gapsWidth = distanceBetweenBars * Double(numberOfBars - 1)
+        let totalBarWidth = Double(self.bounds.width) - gapsWidth
+        let barWidth = totalBarWidth / Double(numberOfBars)
+        return UIBezierPath(rect: CGRect(x: (barWidth + distanceBetweenBars) * Double(barIndex), y:  Double(self.bounds.height), width: barWidth, height: -endpoint))
     }
     
     private func randomEndpoint() -> Double {
-        return Double (Int (arc4random()) % Int (CGRectGetHeight(self.bounds)))
+        return Double(Int(arc4random()) % Int(self.bounds.height))
     }
     
     // MARK: Animation Delegate
     
     override func animationDidStop(anim: CAAnimation!, finished flag: Bool) {
 
-        if (flag) {
+        if flag {
             let bar = barLayers[counter]
             bar.path = barPaths[counter].CGPath
             counter++
-            if (counter == barLayers.count) {
+            if counter == barLayers.count {
                 reset(false)
                 startAnimating()
             }
