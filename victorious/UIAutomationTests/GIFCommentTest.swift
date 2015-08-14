@@ -12,9 +12,7 @@ class GIFCommentTest : VictoriousTestCase {
     
     func testGIFCommentContentView() {
         
-        self.dismissWelcomeIfPresent()
-        
-        // Go to profile
+        // Head to profile
         self.tester().waitForViewWithAccessibilityLabel( "Menu Profile" ).tap()
         
         // Tap first cell
@@ -28,7 +26,7 @@ class GIFCommentTest : VictoriousTestCase {
         // Tap first index path
         let testIndexPath = NSIndexPath(forItem: 0, inSection: 0)
         let gifCollectionViewIdentifier = AutomationId.GIFSearchCollection.rawValue
-        let cell = self.tester().waitForCellAtIndexPath(testIndexPath, inCollectionViewWithAccessibilityIdentifier: gifCollectionViewIdentifier)
+        self.tester().waitForCellAtIndexPath(testIndexPath, inCollectionViewWithAccessibilityIdentifier: gifCollectionViewIdentifier)
         self.tester().tapItemAtIndexPath(testIndexPath, inCollectionViewWithAccessibilityIdentifier: gifCollectionViewIdentifier)
         
         // Tap next button
