@@ -13,7 +13,7 @@ private let kActiveExperimentsKey = "com.getvictorious.experiments.active_experi
 /// Stores a list of active experiment IDs kept synched internally by NSUserDefaults.
 /// Multiple instances of this class can be used independenctly and NSUserDefaults
 /// will keep values synched.
-class ExperimentSettings {
+class ExperimentSettings: NSObject {
     
     /// A set of the user-selected experiments to be active in all subsequent backend interactions
     var activeExperiments: Set<Int>? {

@@ -485,7 +485,7 @@ NS_ASSUME_NONNULL_BEGIN
     [request v_setOSVersionHeader];
     [request v_setAppVersionHeaderValue:[[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
     
-    NSString *experimentSettings = [[[VExperimentSettings alloc] init] commaSeparatedList];
+    NSString *experimentSettings = [[[ExperimentSettings alloc] init] commaSeparatedList];
     if ( experimentSettings != nil )
     {
         [request v_setExperimentsHeaderValue:experimentSettings];
