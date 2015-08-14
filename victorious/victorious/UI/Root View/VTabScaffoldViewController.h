@@ -60,7 +60,6 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
  */
 - (void)showContentViewWithSequence:(id)sequence streamID:(NSString *)streamId commentId:(NSNumber *)commentID placeHolderImage:(UIImage *)placeholderImage;
 
-
 /**
  Attempt to navigate to a destination (the destination will
  be given a chance to cancel the navigation before it
@@ -79,23 +78,6 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
  @param navigationDestination Either an instance of UIViewController or an object conforming to VNavigationDestination
  */
 - (void)navigateToDestination:(id)navigationDestination animated:(BOOL)animated;
-
-/**
- Displays the view controller that the user has navigated to through
- whatever primary means of navigation this scaffold provides. You
- normally don't need to call this method. It exists only as an
- override point for subclasses. (To programmatically effect
- navigation, see -navigateToDestination:completion:)
- 
- Subclasses MUST override. The base implementation does nothing.
- 
- @param viewController The view controller to display as part of the scaffold's navgiation
- @param animated Whether subsequent navigation actions should be animated.  This will be propagated
- through to any navitgations that occur, and should be respected by subcomponents where appropriate for
- any built-in navigations ('presentViewController:animated:completion:` and `pushViewController:animated:`),
- as well as anything custom.
- */
-- (void)displayResultOfNavigation:(UIViewController *)viewController animated:(BOOL)animated;
 
 /**
  Presents a web browser ViewController with the given URL.
