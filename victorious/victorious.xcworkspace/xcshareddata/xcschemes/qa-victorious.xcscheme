@@ -20,6 +20,20 @@
                ReferencedContainer = "container:victorious.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A7DB4D291B7AB1D300199D10"
+               BuildableName = "UIAutomationTests.xctest"
+               BlueprintName = "UIAutomationTests"
+               ReferencedContainer = "container:victorious.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -28,6 +42,16 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "QA">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A7DB4D291B7AB1D300199D10"
+               BuildableName = "UIAutomationTests.xctest"
+               BlueprintName = "UIAutomationTests"
+               ReferencedContainer = "container:victorious.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

@@ -31,3 +31,7 @@ target :VictoriousCommonOSX do
     pod 'IGDigest'
     link_with 'VictoriousCommonOSX'
 end
+
+target 'UIAutomationTests', :exclusive => true do
+  pod 'KIF', :git => 'https://github.com/TouchFrame/KIF.git'
+end
