@@ -18,6 +18,8 @@ typedef NS_ENUM(NSInteger, VKeyboardBarAttachmentType)
 
 @class VKeyboardInputAccessoryView, VDependencyManager;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol VKeyboardInputAccessoryViewDelegate <NSObject>
 
 /**
@@ -103,7 +105,7 @@ typedef NS_ENUM(NSInteger, VKeyboardBarAttachmentType)
 /**
  *  The selected thumbnail image for the current attachment. Setting this to nil will restore the original placeholder image.
  */
-- (void)setSelectedThumbnail:(UIImage *)selectedThumbnail;
+- (void)setSelectedThumbnail:(nullable UIImage *)selectedThumbnail;
 
 /**
  *  Call this to stop editing.
@@ -145,3 +147,5 @@ typedef NS_ENUM(NSInteger, VKeyboardBarAttachmentType)
 - (CGRect)obscuredRectInWindow:(UIWindow *)window;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -94,7 +94,8 @@ static NSString * const kConfirmationText = @"commentConfirmationText";
         }
         [self.sendButton setTitleColor:[_dependencyManager colorForKey:VDependencyManagerLinkColorKey]
                               forState:UIControlStateNormal];
-        [self.sendButton setTitle:[_dependencyManager stringForKey:kConfirmationText]
+#warning FIXME!!
+        [self.sendButton setTitle:@"SEND"//[_dependencyManager stringForKey:kConfirmationText]
                          forState:UIControlStateNormal];
         self.placeholderText = [_dependencyManager stringForKey:kCommentPrompt];
     }

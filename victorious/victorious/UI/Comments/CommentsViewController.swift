@@ -22,26 +22,35 @@ extension VDependencyManager {
         commentViewController.sequence = sequnce
         return commentViewController
     }
-    
+
 }
 
-class CommentsViewController: UIViewController, VKeyboardInputAccessoryViewDelegate {
-    
-    private var dependencyManager : VDependencyManager!
+class CommentsViewController: UIViewController, VKeyboardInputAccessoryViewDelegate, UICollectionViewDataSource, CommentsDataSourceDelegate {
+
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> CommentsViewController {
         let vc: CommentsViewController = self.fromStoryboardInitialViewController()
         vc.dependencyManager = dependencyManager
         return vc
     }
     
-    private var sequence: VSequence? {
+    private var dependencyManager : VDependencyManager! {
         didSet {
-            if let sequence = sequence {
-                dataSource = CommentsCollectionViewDataSource(sequence: sequence, dependencyManager: dependencyManager)
+            if let dependencyManager = dependencyManager {
+                authorizedAction = VAuthorizedAction(objectManager: VObjectManager.sharedManager(), dependencyManager: dependencyManager)
             }
         }
     }
-    private var dataSource: CommentsCollectionViewDataSource?
+    private var sequence: VSequence? {
+        didSet {
+            commentsDataSourceSwitcher.sequence = sequence
+        }
+    }
+    private let commentsDataSourceSwitcher = CommentsDataSourceSwitchter()
+    private var registeredCommentReuseIdentifiers = Set<String>()
+    private let scrollPaginator = VScrollPaginator()
+    private var authorizedAction : VAuthorizedAction!
+    private var publishParameters: VPublishParameters?
+    private var mediaAttachmentPresenter: VMediaAttachmentPresenter?
     
     // MARK: Outlets
     
@@ -52,16 +61,18 @@ class CommentsViewController: UIViewController, VKeyboardInputAccessoryViewDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        scrollPaginator.delegate = self
+        
+        commentsDataSourceSwitcher.dataSource.delegate = self
+        
         keyboardBar = VKeyboardInputAccessoryView.defaultInputAccessoryViewWithDependencyManager(dependencyManager)
         keyboardBar?.setTranslatesAutoresizingMaskIntoConstraints(false)
-        
-        collectionView.dataSource = dataSource
+        keyboardBar?.delegate = self
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
-        // FIXME: This may not handle lightboxes well
         self.becomeFirstResponder()
         self.rootNavigationController().setNavigationBarHidden(false, animated: true)
     }
@@ -72,21 +83,11 @@ class CommentsViewController: UIViewController, VKeyboardInputAccessoryViewDeleg
         collectionView.accessoryView = keyboardBar
         collectionView.becomeFirstResponder()
         keyboardBar?.becomeFirstResponder()
-        
-        
-        // FIXME: This should be factored out into a separate class
-        VObjectManager.sharedManager().loadCommentsOnSequence(sequence,
-            pageType: VPageType.First,
-            successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) -> Void in
-                self.collectionView.reloadData()
-            },
-            failBlock: nil)
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
-        // FIXME: This may not handle lightboxes well
         self.resignFirstResponder()
         self.rootNavigationController().setNavigationBarHidden(true, animated: true)
     }
@@ -104,19 +105,139 @@ class CommentsViewController: UIViewController, VKeyboardInputAccessoryViewDeleg
             return keyboardBar
         }
     }
+
+}
+
+extension CommentsViewController: VKeyboardInputAccessoryViewDelegate {
     
-    // MARK: VKeyboardInputAccessoryViewDelegate
+    func pressedSendOnKeyboardInputAccessoryView(inputAccessoryView: VKeyboardInputAccessoryView) {
+        if let authorizedAction = authorizedAction {
+            authorizedAction.performFromViewController(self,
+                context: .AddComment,
+                completion: { [weak self](authorized: Bool) -> Void in
+                    if !authorized {
+                        return
+                    }
+                    if let strongSelf = self, let sequence = strongSelf.sequence {
+                        VObjectManager.sharedManager().addCommentWithText(inputAccessoryView.composedText,
+                            publishParameters: strongSelf.publishParameters,
+                            toSequence: sequence,
+                            andParent: nil,
+                            successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) -> Void in
+                                strongSelf.commentsDataSourceSwitcher.dataSource.loadFirstPage()
+                            }, failBlock: nil)
+                        
+                        strongSelf.keyboardBar?.clearTextAndResign()
+                        strongSelf.publishParameters?.mediaToUploadURL = nil
+                    }
+                })
+        }
+    }
     
-    func pressedSendOnKeyboardInputAccessoryView(inputAccessoryView: VKeyboardInputAccessoryView!) {
+    func keyboardInputAccessoryView(inputAccessoryView: VKeyboardInputAccessoryView, selectedAttachmentType attachmentType: VKeyboardBarAttachmentType) {
+        
+        inputAccessoryView.stopEditing()
+        
+        self.authorizedAction.performFromViewController(self, context: .AddComment) { [weak self](authorized: Bool) -> Void in
+            if !authorized {
+                return
+            }
+            if let strongSelf = self {
+                strongSelf.addMediaToCommentWithAttachmentType(attachmentType)
+            }
+        }
+    }
+    
+    func addMediaToCommentWithAttachmentType(attachmentType: VKeyboardBarAttachmentType) {
+        
+        mediaAttachmentPresenter = VMediaAttachmentPresenter(dependencymanager: dependencyManager)
+        
+        var mediaAttachmentOptions : VMediaAttachmentOptions
+        switch attachmentType {
+        case .Video:
+            mediaAttachmentOptions = VMediaAttachmentOptions.Video
+        case .GIF:
+            mediaAttachmentOptions = VMediaAttachmentOptions.GIF
+        case .Image:
+            mediaAttachmentOptions = VMediaAttachmentOptions.Image
+        }
+        
+        mediaAttachmentPresenter?.attachmentTypes = mediaAttachmentOptions
+        mediaAttachmentPresenter?.resultHandler = { [weak self](success: Bool, publishParameters: VPublishParameters?) -> Void in
+            if let strongSelf = self {
+                strongSelf.publishParameters = publishParameters
+                strongSelf.mediaAttachmentPresenter = nil
+                strongSelf.keyboardBar?.setSelectedThumbnail(publishParameters?.previewImage)
+                strongSelf.keyboardBar?.startEditing()
+            }
+        }
+    }
+    
+    func keyboardInputAccessoryViewWantsToClearMedia(inputAccessoryView: VKeyboardInputAccessoryView) {
+        
+        let shouldResumeEditing = inputAccessoryView.isEditing()
+        inputAccessoryView.stopEditing()
+        
+        let alertController = VCommentAlertHelper.alertForConfirmDiscardMediaWithDelete({ () -> Void in
+            self.publishParameters?.mediaToUploadURL = nil
+            inputAccessoryView.setSelectedThumbnail(nil)
+            if shouldResumeEditing {
+                inputAccessoryView.startEditing()
+            }
+        }, cancel: { () -> Void in
+            if shouldResumeEditing {
+                inputAccessoryView.startEditing()
+            }
+        })
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
         
     }
     
-    func keyboardInputAccessoryView(inputAccessoryView: VKeyboardInputAccessoryView!, selectedAttachmentType attachmentType: VKeyboardBarAttachmentType) {
+    func keyboardInputAccessoryViewDidBeginEditing(inpoutAccessoryView: VKeyboardInputAccessoryView) {
+        // update insets
         
     }
     
-    func keyboardInputAccessoryViewWantsToClearMedia(inputAccessoryView: VKeyboardInputAccessoryView!) {
+    func keyboardInputAccessoryViewDidEndEditing(inpoutAccessoryView: VKeyboardInputAccessoryView) {
+        // update insets
+    }
+
+}
+
+extension CommentsViewController: UICollectionViewDataSource, CommentsDataSourceDelegate {
+    
+    // MARK: UICollectionViewDataSource
+    
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return commentsDataSourceSwitcher.dataSource.numberOfComments
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
+        let commentForIndexPath = commentsDataSourceSwitcher.dataSource.commentAtIndex(indexPath.item)
+        let reuseIdentifierForComment = MediaAttachmentView.reuseIdentifierForComment(commentForIndexPath)
+        if !registeredCommentReuseIdentifiers.contains(reuseIdentifierForComment) {
+            collectionView.registerNib(VContentCommentsCell.nibForCell(), forCellWithReuseIdentifier: reuseIdentifierForComment)
+            registeredCommentReuseIdentifiers.insert(reuseIdentifierForComment)
+        }
+        
+        var cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifierForComment, forIndexPath: indexPath) as! VContentCommentsCell
+        cell.dependencyManager = dependencyManager
+        cell.comment = commentForIndexPath
+        return cell as UICollectionViewCell
+    }
+
+    func commentsDataSourceDidUpdate(dataSource: CommentsDataSource) {
+        collectionView.reloadData()
+    }
+    
+    func commentsDataSourceDidUpdate(dataSource: CommentsDataSource, deepLinkinkId: NSNumber) {
+        collectionView.reloadData()
     }
     
 }
@@ -132,44 +253,20 @@ extension CommentsViewController: UICollectionViewDelegateFlowLayout {
         return CGSizeMake(CGRectGetWidth(view.bounds), size.height)
     }
     
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        scrollPaginator.scrollViewDidScroll(scrollView)
+    }
+    
 }
 
-class CommentsCollectionViewDataSource : NSObject, UICollectionViewDataSource {
+extension CommentsViewController: VScrollPaginatorDelegate {
     
-    let mySequence : VSequence
-    let dependencyManager: VDependencyManager
-    var registeredCommentReuseIdentifiers = Set<String>()
-    
-    init(sequence: VSequence, dependencyManager: VDependencyManager) {
-        mySequence = sequence
-        self.dependencyManager = dependencyManager
-        super.init()
+    func shouldLoadNextPage() {
+        commentsDataSourceSwitcher.dataSource.loadNextPage()
     }
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return 1
+    func shouldLoadPreviousPage() {
+        commentsDataSourceSwitcher.dataSource.loadPreviousPage()
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let comments = mySequence.comments {
-            return comments.count
-        }
-        return 0
-    }
-    
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        
-        let commentForIndexPath = mySequence.comments?.array[indexPath.item] as! VComment
-        let reuseIdentifierForComment = MediaAttachmentView.reuseIdentifierForComment(commentForIndexPath)
-        if !registeredCommentReuseIdentifiers.contains(reuseIdentifierForComment) {
-            collectionView.registerNib(VContentCommentsCell.nibForCell(), forCellWithReuseIdentifier: reuseIdentifierForComment)
-            registeredCommentReuseIdentifiers.insert(reuseIdentifierForComment)
-        }
-        
-        var cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifierForComment, forIndexPath: indexPath) as! VContentCommentsCell
-        cell.dependencyManager = dependencyManager
-        cell.comment = commentForIndexPath
-        return cell as UICollectionViewCell
-    }
 }
-

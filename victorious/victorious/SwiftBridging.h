@@ -83,9 +83,13 @@
 #import "VUserTaggingTextStorageDelegate.h"
 #import "VContentCommentsCell.h"
 #import "VObjectManager+Pagination.h"
+#import "VObjectManager+ContentCreation.h"
 #import "VComment+Fetcher.h"
 #import "VCommentMediaType.h"
 #import "VSequencePermissions.h"
+#import "VPublishParameters.h"
+#import "VCommentAlertHelper.h"
+#import "VMediaAttachmentPresenter.h"
 
 //Shelves
 #import "VStreamCellFactory.h"

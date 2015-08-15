@@ -83,7 +83,7 @@
 #import "VContentRepopulateTransition.h"
 #import "VAbstractCommentHighlighter.h"
 #import "VEndCardActionModel.h"
-#import "VContentViewAlertHelper.h"
+#import "VCommentAlertHelper.h"
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
@@ -158,7 +158,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 @property (nonatomic, strong) VCollectionViewCommentHighlighter *commentHighlighter;
 
-@property (nonatomic, weak) IBOutlet VContentViewAlertHelper *alertHelper;
 @property (nonatomic, weak) IBOutlet VContentViewRotationHelper *rotationHelper;
 @property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
 @property (nonatomic, weak, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
@@ -177,7 +176,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 @property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
 
-@property (nonatomic, strong) NSURL *mediaURL;
 @property (nonatomic, strong) NSMutableArray *commentCellReuseIdentifiers;
 
 @end
@@ -1385,7 +1383,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     BOOL shouldResumeEditing = [inputAccessoryView isEditing];
     [inputAccessoryView stopEditing];
-    UIAlertController *alertController = [self.alertHelper alertForConfirmDiscardMediaWithDelete:^
+    UIAlertController *alertController = [VCommentAlertHelper alertForConfirmDiscardMediaWithDelete:^
                                           {
                                               self.publishParameters.mediaToUploadURL = nil;
                                               [inputAccessoryView setSelectedThumbnail:nil];
@@ -1554,7 +1552,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)onMediaAttachedWithPreviewImage:(UIImage *)previewImage
                                mediaURL:(NSURL *)mediaURL
 {
-    self.mediaURL = mediaURL;
     [self.textEntryView setSelectedThumbnail:previewImage];
     
     [self dismissViewControllerAnimated:YES completion:^
@@ -1759,7 +1756,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
      {
          [self.videoCell hideEndCard];
          
-         [self presentViewController:[self.alertHelper alertForNextSequenceErrorWithDismiss:nil] animated:YES completion:nil];
+         [self presentViewController:[VCommentAlertHelper alertForNextSequenceErrorWithDismiss:nil] animated:YES completion:nil];
      }];
 }
 
