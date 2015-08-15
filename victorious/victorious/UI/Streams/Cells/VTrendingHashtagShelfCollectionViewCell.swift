@@ -23,8 +23,8 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
     private struct VerticalConstraintConstants {
         static let separatorHeight: CGFloat = 4
         static let hashtagTextViewVerticalSpace: CGFloat = 4
-        static let titleTopVerticalSpace: CGFloat = 18
-        static let titleToHashtagVerticalSpace: CGFloat = 17
+        static let titleTopVerticalSpace: CGFloat = 11
+        static let titleToHashtagVerticalSpace: CGFloat = 11
         static let hashtagToCountsVerticalSpace: CGFloat = 8
         static let countsBottomVerticalSpace: CGFloat = 13
         static let collectionViewHeight: CGFloat = 100

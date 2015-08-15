@@ -11,11 +11,13 @@ import UIKit
 /// A wrapper around the marquee controller that adds conformance to the VStreamCellFactory protocol.
 class VMarqueeCellFactory: NSObject, VHasManagedDependencies {
     
+    private static let kMarqueeCellKey = "marqueeCell"
+    
     /// The controller responsible for managing the display, reuse, and data updating for a marquee.
     let marqueeController: VMarqueeController?
 
     required init(dependencyManager: VDependencyManager) {
-        let templateValue: AnyObject! = dependencyManager.templateValueConformingToProtocol(VMarqueeController.self, forKey: "marqueeCell")
+        let templateValue: AnyObject! = dependencyManager.templateValueConformingToProtocol(VMarqueeController.self, forKey: VMarqueeCellFactory.kMarqueeCellKey)
         if let marquee = templateValue as? VMarqueeController {
             marqueeController = marquee
         } else {

@@ -26,7 +26,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
         static let followControlHeight: CGFloat = 28
         static let minimumTitleToContentVerticalSpace: CGFloat = 5
         static let userAvatarHeight: CGFloat = 36
-        static let minimumBottomVerticalSpace: CGFloat = 5
+        static let minimumBottomVerticalSpace: CGFloat = 13
         static let collectionViewHeight: CGFloat = 100
         static let usernameBottomToAvatarCenterSpace: CGFloat = 0
         static let countsTopToAvatarCenterSpace: CGFloat = 0

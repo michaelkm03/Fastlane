@@ -1154,8 +1154,6 @@
 		F065A40A1B433C7B00F0281B /* VFollowControl.m in Sources */ = {isa = PBXBuildFile; fileRef = F065A4091B433C7B00F0281B /* VFollowControl.m */; };
 		F06B41711B7AA8D4008709E8 /* VFailureSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F06B41701B7AA8D4008709E8 /* VFailureSequencePreviewView.m */; };
 		F06B41741B7AAA95008709E8 /* VFailureStreamPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F06B41731B7AAA95008709E8 /* VFailureStreamPreviewView.m */; };
-		F06B417D1B7ADA4B008709E8 /* VTrendingUserShelfCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06B41751B7ADA4B008709E8 /* VTrendingUserShelfCellFactory.swift */; };
-		F06B417E1B7ADA4B008709E8 /* VTrendingHashtagShelfCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06B41761B7ADA4B008709E8 /* VTrendingHashtagShelfCellFactory.swift */; };
 		F06B417F1B7ADA4B008709E8 /* VTrendingShelfCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06B41771B7ADA4B008709E8 /* VTrendingShelfCollectionViewCell.swift */; };
 		F06B41801B7ADA4B008709E8 /* VTrendingUserShelfCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06B41781B7ADA4B008709E8 /* VTrendingUserShelfCollectionViewCell.swift */; };
 		F06B41811B7ADA4B008709E8 /* VTrendingHashtagShelfCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06B41791B7ADA4B008709E8 /* VTrendingHashtagShelfCollectionViewCell.swift */; };
@@ -1171,6 +1169,7 @@
 		F06B41B21B7D945C008709E8 /* VStreamCollectionViewController+FollowResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = F06B41B11B7D945C008709E8 /* VStreamCollectionViewController+FollowResponder.m */; };
 		F06B41B51B7D99F4008709E8 /* VStreamCollectionViewController+TrendingShelfResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = F06B41B41B7D99F4008709E8 /* VStreamCollectionViewController+TrendingShelfResponder.m */; };
 		F06B41B71B7E6C95008709E8 /* VFollowResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = F06B41B61B7E6C95008709E8 /* VFollowResponder.m */; };
+		F06B41B91B7EC6F3008709E8 /* VTrendingShelfCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06B41B81B7EC6F3008709E8 /* VTrendingShelfCellFactory.swift */; };
 		F06F10C01AC1E11C0062E1D1 /* VCollectionsDirectoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10BF1AC1E11C0062E1D1 /* VCollectionsDirectoryCell.m */; };
 		F06F10C21AC1E13A0062E1D1 /* VCollectionsDirectoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F06F10C11AC1E13A0062E1D1 /* VCollectionsDirectoryCell.xib */; };
 		F06F10C61AC2024A0062E1D1 /* VDirectoryCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10C51AC2024A0062E1D1 /* VDirectoryCollectionViewController.m */; };
@@ -1964,6 +1963,7 @@
 		67C69F581B67ECDF00C59230 /* VContentViewPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentViewPresenter.m; path = Presenters/VContentViewPresenter.m; sourceTree = "<group>"; };
 		693498EEB4388179C36EF74A /* libPods-VictoriousCommonOSX.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VictoriousCommonOSX.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C14CC0531211B1486085544 /* Pods-VictoriousCommonOSX.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.stable.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.stable.xcconfig"; sourceTree = "<group>"; };
+		72A0EF5391FF981DE4E9F79A /* Pods-UIAutomationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIAutomationTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-UIAutomationTests/Pods-UIAutomationTests.release.xcconfig"; sourceTree = "<group>"; };
 		794246441B7D39B000F5F879 /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
 		794246471B7D3A5300F5F879 /* AutoShowLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoShowLoginOperation.swift; sourceTree = "<group>"; };
 		794246481B7D3A5300F5F879 /* FTUEVideoOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTUEVideoOperation.swift; sourceTree = "<group>"; };
@@ -1974,7 +1974,6 @@
 		797006EF1B7AA3980058B09A /* VTabScaffoldHidingHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTabScaffoldHidingHelper.m; sourceTree = "<group>"; };
 		79A80C7B1B7928FD00C14020 /* VTabScaffoldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTabScaffoldViewController.h; sourceTree = "<group>"; };
 		79A80C7C1B7928FD00C14020 /* VTabScaffoldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTabScaffoldViewController.m; sourceTree = "<group>"; };
-		72A0EF5391FF981DE4E9F79A /* Pods-UIAutomationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIAutomationTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-UIAutomationTests/Pods-UIAutomationTests.release.xcconfig"; sourceTree = "<group>"; };
 		79ACFD16A2EFEF8FE18E316E /* Pods-VictoriousCommonOSX.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.qa.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.qa.xcconfig"; sourceTree = "<group>"; };
 		83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.qa.xcconfig"; sourceTree = "<group>"; };
 		861888B7B5EA1C709A7ABB6B /* Pods-VictoriousCommonOSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.debug.xcconfig"; sourceTree = "<group>"; };
@@ -3414,8 +3413,6 @@
 		F06B41701B7AA8D4008709E8 /* VFailureSequencePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFailureSequencePreviewView.m; sourceTree = "<group>"; };
 		F06B41721B7AAA95008709E8 /* VFailureStreamPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFailureStreamPreviewView.h; sourceTree = "<group>"; };
 		F06B41731B7AAA95008709E8 /* VFailureStreamPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFailureStreamPreviewView.m; sourceTree = "<group>"; };
-		F06B41751B7ADA4B008709E8 /* VTrendingUserShelfCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTrendingUserShelfCellFactory.swift; sourceTree = "<group>"; };
-		F06B41761B7ADA4B008709E8 /* VTrendingHashtagShelfCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTrendingHashtagShelfCellFactory.swift; sourceTree = "<group>"; };
 		F06B41771B7ADA4B008709E8 /* VTrendingShelfCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTrendingShelfCollectionViewCell.swift; sourceTree = "<group>"; };
 		F06B41781B7ADA4B008709E8 /* VTrendingUserShelfCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTrendingUserShelfCollectionViewCell.swift; sourceTree = "<group>"; };
 		F06B41791B7ADA4B008709E8 /* VTrendingHashtagShelfCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTrendingHashtagShelfCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -3433,6 +3430,7 @@
 		F06B41B31B7D99F4008709E8 /* VStreamCollectionViewController+TrendingShelfResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VStreamCollectionViewController+TrendingShelfResponder.h"; sourceTree = "<group>"; };
 		F06B41B41B7D99F4008709E8 /* VStreamCollectionViewController+TrendingShelfResponder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VStreamCollectionViewController+TrendingShelfResponder.m"; sourceTree = "<group>"; };
 		F06B41B61B7E6C95008709E8 /* VFollowResponder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowResponder.m; sourceTree = "<group>"; };
+		F06B41B81B7EC6F3008709E8 /* VTrendingShelfCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTrendingShelfCellFactory.swift; sourceTree = "<group>"; };
 		F06F10BE1AC1E11C0062E1D1 /* VCollectionsDirectoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCollectionsDirectoryCell.h; sourceTree = "<group>"; };
 		F06F10BF1AC1E11C0062E1D1 /* VCollectionsDirectoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCollectionsDirectoryCell.m; sourceTree = "<group>"; };
 		F06F10C11AC1E13A0062E1D1 /* VCollectionsDirectoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VCollectionsDirectoryCell.xib; sourceTree = "<group>"; };
@@ -7633,8 +7631,7 @@
 		F06B41851B7ADA52008709E8 /* Trending Shelf Cell */ = {
 			isa = PBXGroup;
 			children = (
-				F06B41751B7ADA4B008709E8 /* VTrendingUserShelfCellFactory.swift */,
-				F06B41761B7ADA4B008709E8 /* VTrendingHashtagShelfCellFactory.swift */,
+				F06B41B81B7EC6F3008709E8 /* VTrendingShelfCellFactory.swift */,
 				F06B41771B7ADA4B008709E8 /* VTrendingShelfCollectionViewCell.swift */,
 				F06B41781B7ADA4B008709E8 /* VTrendingUserShelfCollectionViewCell.swift */,
 				F06B41791B7ADA4B008709E8 /* VTrendingHashtagShelfCollectionViewCell.swift */,
@@ -8880,7 +8877,6 @@
 				0314D48A19B46B5E00FA363C /* VNoContentView.m in Sources */,
 				039ED28219C6AB0900305987 /* AVCaptureConnection+VOrientation.m in Sources */,
 				A7DB4D3F1B7AB6CB00199D10 /* VAutomation.m in Sources */,
-				D8DF722A1AFEC360002EA7A5 /* VTabMenuViewController.m in Sources */,
 				A721E9681B572454000B7901 /* VSequence+OrderedSet.m in Sources */,
 				A6E104D51B56C88D0062392A /* VPublishShareCollectionViewCell.m in Sources */,
 				A7ECC1CE1AD617480003E00A /* VToolController.m in Sources */,
@@ -8906,6 +8902,7 @@
 				D85E42841AFA9A1F00A13BD3 /* VVideoSequencePreviewView.m in Sources */,
 				A7D378551AF15EDB007FF197 /* VTextFragment.swift in Sources */,
 				A721E92C1B572454000B7901 /* VNode+RestKit.m in Sources */,
+				F06B41B91B7EC6F3008709E8 /* VTrendingShelfCellFactory.swift in Sources */,
 				A7D378431AEF4ED5007FF197 /* VStaticUserProfileHeaderViewController.m in Sources */,
 				D8CA63B319D51CB7002046E5 /* VActionSheetViewController.m in Sources */,
 				F0BF9F6E1B72DC1600B24225 /* VStreamContentCellFactory.swift in Sources */,
@@ -9539,7 +9536,6 @@
 				A7AEF9A21A83F1C300A3D3A0 /* VSequenceActionController.m in Sources */,
 				B07BFD611B26761D00784FC8 /* VHashtagHelper.m in Sources */,
 				03CE66F619B47B590011BB9E /* VFacebookManager.m in Sources */,
-				F06B417D1B7ADA4B008709E8 /* VTrendingUserShelfCellFactory.swift in Sources */,
 				A7D3785E1AF2D830007FF197 /* VStoredLogin.m in Sources */,
 				A761C9D71A48CB9800F0D0F9 /* VSwipeView.m in Sources */,
 				D85E427E1AFA984400A13BD3 /* VSequencePreviewView.m in Sources */,
@@ -9625,7 +9621,6 @@
 				F0FC97E71B5C1CB90098AFCB /* VVideoLinkViewController.m in Sources */,
 				A721E7541B56059A000B7901 /* GIFSearchViewController+Layout.swift in Sources */,
 				A7A343DB1A8A8452000F0BCF /* VContentViewAlertHelper.m in Sources */,
-				F06B417E1B7ADA4B008709E8 /* VTrendingHashtagShelfCellFactory.swift in Sources */,
 				A650EFE01B42297A005529E5 /* VAssetCollectionViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

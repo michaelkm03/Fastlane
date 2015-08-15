@@ -25,6 +25,8 @@ import UIKit
 /// In Swift 2.0 this class should be transformed into a protocol extension.
 class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
     
+    private static let kTrendingShelfKey = "trendingShelf"
+    
     /// The object that should recieve messages about marquee data and selection updates.
     weak var delegate: VStreamContentCellFactoryDelegate? {
         didSet {
@@ -36,9 +38,7 @@ class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
     /// The cell factory that will provide marquee cells
     private let marqueeCellFactory: VMarqueeCellFactory
     
-    private let trendingUserShelfFactory : VTrendingUserShelfCellFactory
-    
-    private let trendingHashtagShelfFactory : VTrendingHashtagShelfCellFactory
+    private let trendingShelfFactory : VTrendingShelfCellFactory?
     
     /// The dependency manager used to style all cells from this factory
     private let dependencyManager: VDependencyManager
@@ -51,8 +51,7 @@ class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
     required init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
         marqueeCellFactory = VMarqueeCellFactory(dependencyManager: dependencyManager)
-        trendingUserShelfFactory = VTrendingUserShelfCellFactory(dependencyManager: dependencyManager)
-        trendingHashtagShelfFactory = VTrendingHashtagShelfCellFactory(dependencyManager: dependencyManager)
+        trendingShelfFactory = dependencyManager.templateValueOfType(VTrendingShelfCellFactory.self, forKey: VStreamContentCellFactory.kTrendingShelfKey) as? VTrendingShelfCellFactory
     }
     
     private func factoryForStreamItem(streamItem: VStreamItem) -> VStreamCellFactory? {
@@ -60,10 +59,8 @@ class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
             switch itemType {
             case VStreamItemTypeMarquee:
                 return marqueeCellFactory
-            case VStreamItemTypeHashtag:
-                return trendingHashtagShelfFactory
-            case VStreamItemTypeUser:
-                return trendingUserShelfFactory
+            case VStreamItemTypeHashtag, VStreamItemTypeUser:
+                return trendingShelfFactory
             default:
                 break
             }
@@ -77,8 +74,7 @@ extension VStreamContentCellFactory: VStreamCellFactory {
     func registerCellsWithCollectionView(collectionView: UICollectionView) {
         defaultFactory()?.registerCellsWithCollectionView(collectionView)
         marqueeCellFactory.registerCellsWithCollectionView(collectionView)
-        trendingUserShelfFactory.registerCellsWithCollectionView(collectionView)
-        trendingHashtagShelfFactory.registerCellsWithCollectionView(collectionView)
+        trendingShelfFactory?.registerCellsWithCollectionView(collectionView)
     }
     
     func collectionView(collectionView: UICollectionView, cellForStreamItem streamItem: VStreamItem, atIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
