@@ -15,9 +15,7 @@ extension MarqueeShelf {
     }
     
     override static func entityMapping() -> RKEntityMapping {
-        var mapping = VShelf.mappingBaseForEntityWithName(MarqueeShelf.entityName())
-        mapping.addRelationshipMappingWithSourceKeyPath("user", mapping: VUser.entityMapping())
-        return mapping
+        return VShelf.mappingBaseForEntityWithName(MarqueeShelf.entityName())
     }
     
 }

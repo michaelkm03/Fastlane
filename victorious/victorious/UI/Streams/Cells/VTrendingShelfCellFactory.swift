@@ -8,16 +8,19 @@
 
 import UIKit
 
-///A cell factory that returns trending content shelves
+/// A cell factory that returns trending content shelves
 class VTrendingShelfCellFactory: NSObject {
+    
     private let dependencyManager : VDependencyManager
     
     required init!(dependencyManager: VDependencyManager!) {
         self.dependencyManager = dependencyManager;
     }
+    
 }
 
 extension VTrendingShelfCellFactory: VStreamCellFactory {
+    
     func registerCellsWithCollectionView(collectionView: UICollectionView) {
         collectionView.registerNib(VTrendingUserShelfCollectionViewCell.nibForCell(), forCellWithReuseIdentifier: VTrendingUserShelfCollectionViewCell.suggestedReuseIdentifier())
         collectionView.registerNib(VTrendingHashtagShelfCollectionViewCell.nibForCell(), forCellWithReuseIdentifier: VTrendingHashtagShelfCollectionViewCell.suggestedReuseIdentifier())
@@ -65,4 +68,5 @@ extension VTrendingShelfCellFactory: VStreamCellFactory {
     func sectionInsets() -> UIEdgeInsets {
         return UIEdgeInsetsMake(0, 15, 15, 0)
     }
+    
 }

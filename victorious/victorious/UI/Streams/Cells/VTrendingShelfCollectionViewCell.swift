@@ -8,9 +8,10 @@
 
 import UIKit
 
-///A shelf that displays a list of trending content along with some metadata.
-///Utilize subclasses for implementations.
+/// A shelf that displays a list of trending content along with some metadata.
+/// Utilize subclasses for implementations.
 class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
+    
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var separatorView: UIView!
@@ -33,7 +34,7 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
         }
     }
     
-    ///Override in subclasses to make adjustments based on the dependency manager
+    /// Override in subclasses to make adjustments based on the dependency manager
     func onDependencyManagerSet() {
         if let dependencyManager = dependencyManager {
             followControl.dependencyManager = dependencyManager
@@ -41,7 +42,7 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
         }
     }
     
-    ///Override in subclasses to make adjustments based on the shelf
+    /// Override in subclasses to make adjustments based on the shelf
     func onShelfSet() {
         if let streamItems = shelf?.stream?.streamItems {
             if let streamItems = streamItems.array as? [VStreamItem] {
@@ -55,15 +56,17 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
         self.collectionView.reloadData()
     }
     
-    ///Override in subclasses to update the follow button at the proper times
+    /// Override in subclasses to update the follow button at the proper times
     func updateFollowControlState() {}
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
+    
 }
 
 extension VTrendingShelfCollectionViewCell : UICollectionViewDataSource {
+    
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if let streamItems = shelf?.stream?.streamItems.array as? [VStreamItem] {
             let streamItem = streamItems[indexPath.row]
@@ -93,28 +96,39 @@ extension VTrendingShelfCollectionViewCell : UICollectionViewDataSource {
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1;
     }
+    
 }
 
 extension VTrendingShelfCollectionViewCell : UICollectionViewDelegate {
+    
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        if let streamItem = shelf?.stream?.streamItems[indexPath.row] as? VStreamItem, responder = nextResponder()?.targetForAction(Selector("navigateTo:fromShelf:"), withSender: nil) as? VShelfStreamItemSelectionResponder {
-            responder.navigateTo(streamItem, fromShelf: shelf!)
+        if let stream = shelf?.stream, let streamItem = stream.streamItems[indexPath.row] as? VStreamItem, responder = nextResponder()?.targetForAction(Selector("navigateTo:fromShelf:"), withSender: nil) as? VShelfStreamItemSelectionResponder {
+            var itemToNavigateTo: VStreamItem? = streamItem
+            if indexPath.row == stream.streamItems.count - 1 {
+                itemToNavigateTo = nil
+            }
+            responder.navigateTo(itemToNavigateTo, fromShelf: shelf!)
         }
         else {
             assertionFailure("VTrendingShelfCollectionViewCell needs a VShelfStreamItemSelectionResponder up it's responder chain to send messages to.")
         }
     }
+    
 }
 
 extension VTrendingShelfCollectionViewCell : UICollectionViewDelegateFlowLayout {
+    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return UIEdgeInsetsMake(0, 15, 15, 15)
     }
+    
 }
 
 
 extension VTrendingShelfCollectionViewCell: VBackgroundContainer {
+    
     func backgroundContainerView() -> UIView! {
         return contentView
     }
+    
 }

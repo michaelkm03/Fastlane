@@ -8,18 +8,21 @@
 
 import UIKit
 
-///Classes that conform to this protocol will receive messages when
-///a user is selected from this shelf.
+/// Classes that conform to this protocol will receive messages when
+/// a user is selected from this shelf.
 @objc protocol VTrendingUserShelfResponder {
-    ///Sent when a user is selected from this shelf.
+    
+    /// Sent when a user is selected from this shelf.
     ///
-    ///:param: user The user that was selected.
-    ///:param: fromShelf The shelf that the user was selected from.
+    /// :param: user The user that was selected.
+    /// :param: fromShelf The shelf that the user was selected from.
     func trendingUserShelfSelected(user: VUser, fromShelf: UserShelf)
+    
 }
 
-///A shelf that displays a user and a set of his/her posts.
+/// A shelf that displays a user and a set of his/her posts.
 class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
+    
     private struct VerticalConstraintConstants {
         static let separatorHeight: CGFloat = 4
         static let minimumTopVerticalSpace: CGFloat = 11
@@ -50,12 +53,11 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     
     //MARK: - Setters
     
-    override func onShelfSet()
-    {
+    override func onShelfSet() {
         super.onShelfSet()
         if let shelf = shelf as? UserShelf {
             titleLabel.text = VTrendingUserShelfCollectionViewCell.titleText as String
-            postsCountLabel.text = VTrendingUserShelfCollectionViewCell.postsCountText(shelf) as String
+            postsCountLabel.text = VTrendingUserShelfCollectionViewCell.getPostsCountText(shelf) as String
             userAvatarButton.setProfileImageURL(NSURL(string: shelf.user.pictureUrl), forState: UIControlState.Normal)
             updateUsername()
         }
@@ -84,11 +86,11 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     
     //MARK: - Getters
     
-    private class func usernameText(shelf: UserShelf) -> String {
+    private class func getUsernameText(shelf: UserShelf) -> String {
         return shelf.user.name
     }
     
-    private class func postsCountText(shelf: UserShelf) -> String {
+    private class func getPostsCountText(shelf: UserShelf) -> String {
         var countsText = ""
         let hasFollowersCount = shelf.followersCount.integerValue != 0
         if shelf.postsCount.integerValue != 0 {
@@ -133,20 +135,20 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
         usernameTextView.zeroInsets();
     }
     
-    ///The optimal size for this cell.
+    /// The optimal size for this cell.
     ///
-    ///:param: bounds The bounds of the collection view containing this cell (minus any relevant insets)
-    ///:param: shelf The shelf whose content will populate this cell
-    ///:param: dependencyManager The dependency manager that will be used to style the cell
+    /// :param: bounds The bounds of the collection view containing this cell (minus any relevant insets)
+    /// :param: shelf The shelf whose content will populate this cell
+    /// :param: dependencyManager The dependency manager that will be used to style the cell
     ///
-    ///:return: The optimal size for this cell.
+    /// :return: The optimal size for this cell.
     class func desiredSize(collectionViewBounds bounds: CGRect, shelf: UserShelf, dependencyManager: VDependencyManager) -> CGSize {
         var height = VerticalConstraintConstants.baseHeight
         
         //Add the height of the labels to find the entire height of the cell
         let titleHeight = VTrendingUserShelfCollectionViewCell.titleText.frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.titleFont]).height
-        let usernameHeight = VTrendingUserShelfCollectionViewCell.usernameText(shelf).frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.usernameFont]).height
-        let postCountHeight = VTrendingUserShelfCollectionViewCell.postsCountText(shelf).frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.postsCountFont]).height
+        let usernameHeight = VTrendingUserShelfCollectionViewCell.getUsernameText(shelf).frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.usernameFont]).height
+        let postCountHeight = VTrendingUserShelfCollectionViewCell.getPostsCountText(shelf).frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.postsCountFont]).height
         
         let topContentHeight = max(titleHeight, VerticalConstraintConstants.followControlHeight)
         let topHalfOfUserHeight = max(usernameHeight, VerticalConstraintConstants.userAvatarHeight / 2)
@@ -161,9 +163,9 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     
     override func updateFollowControlState() {
         if let shelf = shelf as? UserShelf {
-            var controlState = VFollowControlState.Unfollowed
+            var controlState: VFollowControlState = .Unfollowed
             if shelf.user.isFollowedByMainUser.boolValue {
-                controlState = VFollowControlState.Followed
+                controlState = .Followed
             }
             followControl.setControlState(controlState, animated: true)
         }
@@ -188,23 +190,24 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     }
     
     @IBAction private func tappedFollowControl(followControl: VFollowControl) {
-        if followControl.controlState == VFollowControlState.Unfollowed {
-            if let target: VFollowResponder = nextResponder()?.targetForAction(Selector("followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:"), withSender: followControl) as? VFollowResponder, let shelf = shelf as? UserShelf {
-                followControl.setControlState(VFollowControlState.Loading, animated: true)
-                target.followUser(shelf.user, withAuthorizedBlock: { () -> Void in
-                    followControl.controlState = VFollowControlState.Loading
-                    },
-                    andCompletion: { [weak self] (user: VUser) -> Void in
-                        if let strongSelf = self {
-                            strongSelf.updateFollowControlState()
-                        }
-                    }, fromViewController: nil, withScreenName: VFollowSourceScreenTrendingUserShelf)
+        switch followControl.controlState {
+        case .Unfollowed:
+            if let target: VFollowResponder = nextResponder()?.targetForAction(Selector("followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:"), withSender: followControl) as? VFollowResponder,
+                let shelf = shelf as? UserShelf {
+                    followControl.setControlState(.Loading, animated: true)
+                    target.followUser(shelf.user, withAuthorizedBlock: { () -> Void in
+                        followControl.controlState = .Loading
+                        },
+                        andCompletion: { [weak self] (user: VUser) -> Void in
+                            if let strongSelf = self {
+                                strongSelf.updateFollowControlState()
+                            }
+                        }, fromViewController: nil, withScreenName: VFollowSourceScreenTrendingUserShelf)
             }
             else {
                 assertionFailure("The VTrendingUserShelfCollectionViewCell needs a follow responder further up its responder chain.")
             }
-        }
-        else if followControl.controlState == VFollowControlState.Followed {
+        case .Followed:
             if let target: VFollowResponder = nextResponder()?.targetForAction(Selector("unfollowUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:"), withSender: followControl) as? VFollowResponder, let shelf = shelf as? UserShelf {
                 followControl.setControlState(VFollowControlState.Loading, animated: true)
                 target.unfollowUser(shelf.user, withAuthorizedBlock: { () -> Void in
@@ -219,21 +222,26 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
             else {
                 assertionFailure("The VTrendingUserShelfCollectionViewCell needs a follow responder further up its responder chain.")
             }
+        default:()
         }
     }
     
     @IBAction private func tappedAvatarButton(sender: VDefaultProfileButton) {
         respondToUserTap()
     }
+    
 }
 
 extension VTrendingUserShelfCollectionViewCell : VTagSensitiveTextViewDelegate {
+    
     func tagSensitiveTextView(tagSensitiveTextView: VTagSensitiveTextView!, tappedTag tag: VTag!) {
         respondToUserTap()
     }
+    
 }
 
 private extension VDependencyManager {
+    
     var titleFont: UIFont {
         return fontForKey(VDependencyManagerHeaderFontKey)
     }
@@ -253,4 +261,5 @@ private extension VDependencyManager {
     var textColor: UIColor {
         return colorForKey(VDependencyManagerMainTextColorKey)
     }
+    
 }

@@ -206,7 +206,6 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
 {
     UIImageRenderingMode renderingMode = self.tintUnselectedImage ? UIImageRenderingModeAlwaysTemplate : UIImageRenderingModeAlwaysOriginal;
     self.offImage = [[self.dependencyManager imageForKey:kFollowIconKey] imageWithRenderingMode:renderingMode];
-
 }
 
 + (VFollowControlState)controlStateForFollowing:(BOOL)following

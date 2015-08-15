@@ -74,7 +74,7 @@ class VTrendingShelfContentCollectionViewCell: VBaseCollectionViewCell {
         setup()
     }
 
-    required  init(coder aDecoder: NSCoder) {
+    required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -85,8 +85,7 @@ class VTrendingShelfContentCollectionViewCell: VBaseCollectionViewCell {
     
     static func reuseIdentifierForStreamItem(streamItem: VStreamItem, asShowMore: Bool, baseIdentifier: String?, dependencyManager: VDependencyManager?) -> String {
         var identifier = self .reuseIdentifierForStreamItem(streamItem, baseIdentifier: baseIdentifier, dependencyManager: dependencyManager)
-        if ( asShowMore )
-        {
+        if ( asShowMore ) {
             identifier += ".showMore"
         }
         return identifier

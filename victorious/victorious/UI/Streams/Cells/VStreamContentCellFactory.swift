@@ -15,7 +15,7 @@ import UIKit
     ///
     ///:param: streamItem The selected stream item.
     ///:param: fromShelf The shelf that the stream item was selected from.
-    func navigateTo(streamItem: VStreamItem, fromShelf: VShelf)
+    func navigateTo(streamItem: VStreamItem?, fromShelf: VShelf)
 }
 
 //2.0 Improvement: Transform this into a protocol extension.

@@ -10,7 +10,7 @@
 
 @implementation VStreamCollectionViewController (TrendingShelfResponder)
 
-- (void)navigateTo:(VStreamItem *__nonnull)streamItem fromShelf:(VShelf *__nonnull)fromShelf
+- (void)navigateTo:(VStreamItem *__nullable)streamItem fromShelf:(VShelf *__nonnull)fromShelf
 {
     [self navigateToStream:fromShelf.stream atStreamItem:streamItem];
 }
