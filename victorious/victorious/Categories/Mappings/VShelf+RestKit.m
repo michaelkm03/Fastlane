@@ -44,12 +44,8 @@
 
 + (RKObjectMapping *)mappingForItemType:(NSString *)type
 {
-    RKObjectMapping *mapping = nil;
-    if ( [type isEqualToString:VStreamItemTypeMarquee] )
-    {
-        mapping = [MarqueeShelf entityMapping];
-    }
-    else if ( [type isEqualToString:VStreamItemTypeUser] )
+    RKObjectMapping *mapping = [self mappingBaseForEntityWithName:@"Shelf"];
+    if ( [type isEqualToString:VStreamItemTypeUser] )
     {
         mapping = [UserShelf entityMapping];
     }

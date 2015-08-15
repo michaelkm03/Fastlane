@@ -153,7 +153,6 @@
         <attribute name="timeoutGotoNode" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <relationship name="relationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Interaction" inverseName="interactionAction" inverseEntity="Interaction" syncable="YES"/>
     </entity>
-    <entity name="MarqueeShelf" representedClassName="victorious.MarqueeShelf" parentEntity="Shelf" syncable="YES"/>
     <entity name="MediaAttachment" representedClassName="VMediaAttachment" syncable="YES">
         <attribute name="mediaURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mimeType" optional="YES" attributeType="String" syncable="YES"/>
@@ -260,7 +259,7 @@
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="sequences" inverseEntity="User" syncable="YES"/>
         <relationship name="voteResults" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VoteResult" inverseName="sequence" inverseEntity="VoteResult" syncable="YES"/>
     </entity>
-    <entity name="Shelf" representedClassName="VShelf" isAbstract="YES" parentEntity="StreamItem" syncable="YES">
+    <entity name="Shelf" representedClassName="VShelf" parentEntity="StreamItem" syncable="YES">
         <relationship name="stream" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Stream" inverseName="shelves" inverseEntity="Stream" syncable="YES"/>
     </entity>
     <entity name="Stream" representedClassName="VStream" parentEntity="StreamItem" syncable="YES">
@@ -358,6 +357,7 @@
         <element name="Experiment" positionX="0" positionY="0" width="128" height="150"/>
         <element name="GIFSearchResult" positionX="0" positionY="0" width="128" height="180"/>
         <element name="Hashtag" positionX="0" positionY="0" width="128" height="90"/>
+        <element name="HashtagShelf" positionX="630" positionY="-639" width="128" height="75"/>
         <element name="ImageAsset" positionX="0" positionY="0" width="128" height="135"/>
         <element name="Interaction" positionX="0" positionY="0" width="128" height="195"/>
         <element name="InteractionAction" positionX="0" positionY="0" width="128" height="105"/>
@@ -375,9 +375,7 @@
         <element name="StreamItem" positionX="871" positionY="-765" width="128" height="210"/>
         <element name="Tracking" positionX="828" positionY="-630" width="128" height="240"/>
         <element name="User" positionX="1321" positionY="-324" width="128" height="480"/>
-        <element name="VoteResult" positionX="864" positionY="164" width="128" height="90"/>
-        <element name="HashtagShelf" positionX="630" positionY="-639" width="128" height="75"/>
         <element name="UserShelf" positionX="639" positionY="-630" width="128" height="90"/>
-        <element name="MarqueeShelf" positionX="648" positionY="-621" width="128" height="45"/>
+        <element name="VoteResult" positionX="864" positionY="164" width="128" height="90"/>
     </elements>
 </model>
