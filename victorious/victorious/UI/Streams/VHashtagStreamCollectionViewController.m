@@ -19,13 +19,14 @@
 #import "VStream+Fetcher.h"
 #import "VNoContentView.h"
 #import "VAuthorizedAction.h"
-#import <FBKVOController.h>
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VBarButton.h"
 #import "VHashtagResponder.h"
 #import "VFollowControl.h"
 #import "UIViewController+VAccessoryScreens.h"
+
+@import KVOController;
 
 static NSString * const kHashtagStreamKey = @"hashtagStream";
 static NSString * const kHashtagKey = @"hashtag";

@@ -26,12 +26,13 @@
 #import "VInStreamCommentCellContents.h"
 #import "VInStreamCommentsShowMoreAttributes.h"
 #import "VInStreamCommentsController.h"
-#import <FBKVOController.h>
 #import "VActionButtonAnimationController.h"
 #import "VListicleView.h"
 #import "VEditorializationItem.h"
 #import "VStream.h"
 #import "VPreviewViewBackgroundHost.h"
+
+@import KVOController;
 
 // These values must match the constraint values in interface builder
 static const CGFloat kSleekCellHeaderHeight = 50.0f;

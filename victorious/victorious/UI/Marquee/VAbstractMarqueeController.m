@@ -17,13 +17,14 @@
 #import "NSString+VParseHelp.h"
 #import "VObjectManager.h"
 #import "VDependencyManager+VObjectManager.h"
-#import <FBKVOController.h>
 #import "VURLMacroReplacement.h"
 #import "VDependencyManager+VHighlightContainer.h"
 #import "VStreamTrackingHelper.h"
 #import "VCellFocus.h"
 #import "VStreamItemPreviewView.h"
 #import "victorious-Swift.h"
+
+@import KVOController;
 
 static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kSequenceIDKey = @"sequenceID";
