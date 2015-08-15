@@ -47,8 +47,12 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
         if let streamItems = shelf?.stream?.streamItems {
             if let streamItems = streamItems.array as? [VStreamItem] {
                 for (index, streamItem) in enumerate(streamItems) {
-                    let isShowMoreCell = index == streamItems.count - 1
-                    collectionView.registerClass(VTrendingShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: VTrendingShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, asShowMore: isShowMoreCell, baseIdentifier: nil, dependencyManager: dependencyManager))
+                    if index == streamItems.count - 1 {
+                        collectionView.registerClass(VTrendingShelfContentSeeAllCell.self, forCellWithReuseIdentifier: VTrendingShelfContentSeeAllCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager))
+                    }
+                    else {
+                        collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager))
+                    }
                 }
             }
         }
@@ -71,15 +75,11 @@ extension VTrendingShelfCollectionViewCell : UICollectionViewDataSource {
         if let streamItems = shelf?.stream?.streamItems.array as? [VStreamItem] {
             let streamItem = streamItems[indexPath.row]
             let isShowMoreCell = indexPath.row == streamItems.count - 1
-            let identifier = VTrendingShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, asShowMore: isShowMoreCell, baseIdentifier: nil, dependencyManager: dependencyManager)
-            let cell: UICollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as! UICollectionViewCell
-            if let cell = cell as? VTrendingShelfContentCollectionViewCell {
-                cell.streamItem = streamItem
-                cell.dependencyManager = dependencyManager
-                if isShowMoreCell {
-                    cell.showOverlay = true
-                }
-            }
+            let T = isShowMoreCell ? VTrendingShelfContentSeeAllCell.self : VShelfContentCollectionViewCell.self
+            let identifier = T.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
+            let cell: VShelfContentCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as! VShelfContentCollectionViewCell
+            cell.streamItem = streamItem
+            cell.dependencyManager = dependencyManager
             return cell
         }
         assertionFailure("VTrendingShelfCollectionViewCell was asked to display an object that isn't a stream item.")
@@ -121,6 +121,10 @@ extension VTrendingShelfCollectionViewCell : UICollectionViewDelegateFlowLayout 
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return UIEdgeInsetsMake(0, 11, 11, 11)
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        return CGSizeMake(89, 89)
     }
     
 }

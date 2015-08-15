@@ -64,8 +64,7 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
         if let streamItems = shelf?.stream?.streamItems {
             if let streamItems = streamItems.array as? [VStreamItem] {
                 for (index, streamItem) in enumerate(streamItems) {
-                    let isShowMoreCell = index == streamItems.count - 1
-                    collectionView.registerClass(VTrendingShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: VTrendingShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, asShowMore: isShowMoreCell, baseIdentifier: nil, dependencyManager: dependencyManager))
+                    collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager))
                 }
             }
         }
