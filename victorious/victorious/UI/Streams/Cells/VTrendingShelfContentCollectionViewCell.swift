@@ -11,8 +11,8 @@ import UIKit
 class VTrendingShelfContentCollectionViewCell: VBaseCollectionViewCell {
 
     private let previewViewContainer: UIView
-    private var overlayView: UIView?
-    private var overlayLabel: UILabel?
+    lazy private var overlayView: UIView = UIView()
+    lazy private var overlayLabel: UILabel = UILabel()
     private var previewView: VStreamItemPreviewView?
     
     var streamItem: VStreamItem? {
@@ -34,37 +34,40 @@ class VTrendingShelfContentCollectionViewCell: VBaseCollectionViewCell {
         }
     }
     
+    //Warning: can still make this cleaner, subclass?
     var showOverlay = false {
         didSet {
             if showOverlay {
-                if overlayView == nil && overlayLabel == nil {
-                    overlayView = UIView()
-                    if let overlayView = overlayView {
-                        contentView.addSubview(overlayView)
-                        contentView.v_addFitToParentConstraintsToSubview(overlayView)
-                        overlayView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
-                        
-                        overlayLabel = UILabel()
-                        if let overlayLabel = overlayLabel {
-                            overlayView.addSubview(overlayLabel)
-                            overlayView.v_addFitToParentConstraintsToSubview(overlayLabel)
-                            overlayLabel.text = NSLocalizedString("See all", comment: "")
-                            overlayLabel.textAlignment = NSTextAlignment.Center
-                        }
-                    }
+                if overlayView.superview == nil {
+                    contentView.addSubview(overlayView)
+                    contentView.v_addFitToParentConstraintsToSubview(overlayView)
+                    overlayView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
+                    
+                    overlayView.addSubview(overlayLabel)
+                    overlayView.v_addFitToParentConstraintsToSubview(overlayLabel)
+                    overlayLabel.text = NSLocalizedString("See all", comment: "")
+                    overlayLabel.textAlignment = NSTextAlignment.Center
+                    updateOverlayLabel()
                 }
             }
-            overlayView?.hidden = !showOverlay
         }
     }
     
     var dependencyManager: VDependencyManager? {
         didSet {
             if let dependencyManager = dependencyManager {
-                overlayLabel?.textColor = dependencyManager.seeAllTextColor()
-                overlayLabel?.font = dependencyManager.seeAllFont()
+                if showOverlay {
+                    updateOverlayLabel()
+                }
                 dependencyManager.addLoadingBackgroundToBackgroundHost(self)
             }
+        }
+    }
+    
+    private func updateOverlayLabel() {
+        if let dependencyManager = dependencyManager {
+            overlayLabel.textColor = dependencyManager.seeAllTextColor()
+            overlayLabel.font = dependencyManager.seeAllFont()
         }
     }
     

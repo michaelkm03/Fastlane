@@ -62,11 +62,11 @@ extension VTrendingShelfCellFactory: VStreamCellFactory {
     }
     
     func minimumLineSpacing() -> CGFloat {
-        return 11.0
+        return 7.0
     }
     
     func sectionInsets() -> UIEdgeInsets {
-        return UIEdgeInsetsMake(0, 15, 15, 0)
+        return UIEdgeInsetsMake(0, 11, 11, 11)
     }
     
 }

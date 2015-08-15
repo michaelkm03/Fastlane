@@ -23,7 +23,7 @@ import UIKit
 /// A shelf that displays a user and a set of his/her posts.
 class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     
-    private struct VerticalConstraintConstants {
+    private struct Constants {
         static let separatorHeight: CGFloat = 4
         static let minimumTopVerticalSpace: CGFloat = 11
         static let followControlHeight: CGFloat = 28
@@ -119,19 +119,19 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
         super.awakeFromNib()
         userAvatarButton.setup()
         for constraint in minimumTopVerticalSpaceConstraints {
-            constraint.constant = VerticalConstraintConstants.minimumTopVerticalSpace
+            constraint.constant = Constants.minimumTopVerticalSpace
         }
         for constraint in minimumTitleToContentVerticalSpaceConstraints {
-            constraint.constant = VerticalConstraintConstants.minimumTitleToContentVerticalSpace
+            constraint.constant = Constants.minimumTitleToContentVerticalSpace
         }
         for constraint in minimumBottomVerticalSpaceConstraints {
-            constraint.constant = VerticalConstraintConstants.minimumBottomVerticalSpace
+            constraint.constant = Constants.minimumBottomVerticalSpace
         }
-        separatorHeightConstraint.constant = VerticalConstraintConstants.separatorHeight
-        followControlHeightConstraint.constant = VerticalConstraintConstants.followControlHeight
-        userAvatarHeightConstraint.constant = VerticalConstraintConstants.userAvatarHeight
-        usernameCenterConstraint.constant = VerticalConstraintConstants.usernameBottomToAvatarCenterSpace
-        countsCenterConstraint.constant = VerticalConstraintConstants.countsTopToAvatarCenterSpace
+        separatorHeightConstraint.constant = Constants.separatorHeight
+        followControlHeightConstraint.constant = Constants.followControlHeight
+        userAvatarHeightConstraint.constant = Constants.userAvatarHeight
+        usernameCenterConstraint.constant = Constants.usernameBottomToAvatarCenterSpace
+        countsCenterConstraint.constant = Constants.countsTopToAvatarCenterSpace
         usernameTextView.zeroInsets();
     }
     
@@ -143,16 +143,16 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     ///
     /// :return: The optimal size for this cell.
     class func desiredSize(collectionViewBounds bounds: CGRect, shelf: UserShelf, dependencyManager: VDependencyManager) -> CGSize {
-        var height = VerticalConstraintConstants.baseHeight
+        var height = Constants.baseHeight
         
         //Add the height of the labels to find the entire height of the cell
         let titleHeight = VTrendingUserShelfCollectionViewCell.titleText.frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.titleFont]).height
         let usernameHeight = VTrendingUserShelfCollectionViewCell.getUsernameText(shelf).frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.usernameFont]).height
         let postCountHeight = VTrendingUserShelfCollectionViewCell.getPostsCountText(shelf).frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.postsCountFont]).height
         
-        let topContentHeight = max(titleHeight, VerticalConstraintConstants.followControlHeight)
-        let topHalfOfUserHeight = max(usernameHeight, VerticalConstraintConstants.userAvatarHeight / 2)
-        let bottomHalfOfUserHeight = max(postCountHeight, VerticalConstraintConstants.userAvatarHeight / 2)
+        let topContentHeight = max(titleHeight, Constants.followControlHeight)
+        let topHalfOfUserHeight = max(usernameHeight, Constants.userAvatarHeight / 2)
+        let bottomHalfOfUserHeight = max(postCountHeight, Constants.userAvatarHeight / 2)
         
         height += topContentHeight + topHalfOfUserHeight + bottomHalfOfUserHeight
         
@@ -181,7 +181,8 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     //MARK: - Interaction response
     
     private func respondToUserTap() {
-        if let responder = nextResponder()?.targetForAction(Selector("trendingUserShelfSelected:fromShelf:"), withSender: self) as? VTrendingUserShelfResponder, let shelf = shelf as? UserShelf {
+        let responder: VTrendingUserShelfResponder = typedResponder()
+        if let shelf = shelf as? UserShelf {
             responder.trendingUserShelfSelected(shelf.user, fromShelf: shelf)
         }
         else {
@@ -190,10 +191,10 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     }
     
     @IBAction private func tappedFollowControl(followControl: VFollowControl) {
+        let target: VFollowResponder = typedResponder()
         switch followControl.controlState {
         case .Unfollowed:
-            if let target: VFollowResponder = nextResponder()?.targetForAction(Selector("followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:"), withSender: followControl) as? VFollowResponder,
-                let shelf = shelf as? UserShelf {
+            if let shelf = shelf as? UserShelf {
                     followControl.setControlState(.Loading, animated: true)
                     target.followUser(shelf.user, withAuthorizedBlock: { () -> Void in
                         followControl.controlState = .Loading
@@ -208,7 +209,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
                 assertionFailure("The VTrendingUserShelfCollectionViewCell needs a follow responder further up its responder chain.")
             }
         case .Followed:
-            if let target: VFollowResponder = nextResponder()?.targetForAction(Selector("unfollowUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:"), withSender: followControl) as? VFollowResponder, let shelf = shelf as? UserShelf {
+            if let shelf = shelf as? UserShelf {
                 followControl.setControlState(VFollowControlState.Loading, animated: true)
                 target.unfollowUser(shelf.user, withAuthorizedBlock: { () -> Void in
                     followControl.controlState = VFollowControlState.Loading

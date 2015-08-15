@@ -102,7 +102,8 @@ extension VTrendingShelfCollectionViewCell : UICollectionViewDataSource {
 extension VTrendingShelfCollectionViewCell : UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        if let stream = shelf?.stream, let streamItem = stream.streamItems[indexPath.row] as? VStreamItem, responder = nextResponder()?.targetForAction(Selector("navigateTo:fromShelf:"), withSender: nil) as? VShelfStreamItemSelectionResponder {
+        let responder: VShelfStreamItemSelectionResponder = typedResponder()
+        if let stream = shelf?.stream, let streamItem = stream.streamItems[indexPath.row] as? VStreamItem {
             var itemToNavigateTo: VStreamItem? = streamItem
             if indexPath.row == stream.streamItems.count - 1 {
                 itemToNavigateTo = nil
