@@ -32,7 +32,7 @@ class ExperimentSettingsDataSource: NSObject {
         return Set<Int>( self.sections.flatMap { $0.experiments.filter { $0.isEnabled.boolValue }.map { $0.id.integerValue } } )
     }
     
-    let experimentSettings = VExperimentSettings()
+    let experimentSettings = ExperimentSettings()
     
     private enum State: Int {
         case Loading, Content, NoContent, Error
