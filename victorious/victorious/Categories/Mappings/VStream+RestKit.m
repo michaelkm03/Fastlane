@@ -179,7 +179,7 @@
             {
                 mapping = [VSequence entityMapping];
             }
-            else if ( [type isEqualToString:VStreamItemTypeMarquee] || [type isEqualToString:VStreamItemTypeUser] || [type isEqualToString:VStreamItemTypeHashtag] )
+            else if ( [type isEqualToString:VStreamItemTypeMarquee] || [type isEqualToString:VStreamItemTypeUser] || [type isEqualToString:VStreamItemTypeHashtag] || [type isEqualToString:VStreamItemTypePlaylist] || [type isEqualToString:VStreamItemTypeRecent] )
             {
                 mapping = [VShelf mappingForItemType:type];
             }

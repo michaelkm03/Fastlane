@@ -119,3 +119,4 @@
 #import "VTagSensitiveTextView.h"
 #import "VTagStringFormatter.h"
 #import "VTag.h"
+#import "VCompatibility.h"

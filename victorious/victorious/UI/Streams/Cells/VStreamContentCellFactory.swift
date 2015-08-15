@@ -26,6 +26,7 @@ import UIKit
 class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
     
     private static let kTrendingShelfKey = "trendingShelf"
+    private static let kListShelfKey = "listShelf"
     
     /// The object that should recieve messages about marquee data and selection updates.
     weak var delegate: VStreamContentCellFactoryDelegate? {
@@ -40,6 +41,8 @@ class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
     
     private let trendingShelfFactory : VTrendingShelfCellFactory?
     
+    private let listShelfFactory : VListShelfCellFactory?
+    
     /// The dependency manager used to style all cells from this factory
     private let dependencyManager: VDependencyManager
     
@@ -52,6 +55,7 @@ class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
         self.dependencyManager = dependencyManager
         marqueeCellFactory = VMarqueeCellFactory(dependencyManager: dependencyManager)
         trendingShelfFactory = dependencyManager.templateValueOfType(VTrendingShelfCellFactory.self, forKey: VStreamContentCellFactory.kTrendingShelfKey) as? VTrendingShelfCellFactory
+        listShelfFactory = dependencyManager.templateValueOfType(VListShelfCellFactory.self, forKey: VStreamContentCellFactory.kListShelfKey) as? VListShelfCellFactory
     }
     
     private func factoryForStreamItem(streamItem: VStreamItem) -> VStreamCellFactory? {
@@ -61,6 +65,8 @@ class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
                 return marqueeCellFactory
             case VStreamItemTypeHashtag, VStreamItemTypeUser:
                 return trendingShelfFactory
+            case VStreamItemTypePlaylist, VStreamItemTypeRecent:
+                return listShelfFactory
             default:
                 break
             }
@@ -75,6 +81,7 @@ extension VStreamContentCellFactory: VStreamCellFactory {
         defaultFactory()?.registerCellsWithCollectionView(collectionView)
         marqueeCellFactory.registerCellsWithCollectionView(collectionView)
         trendingShelfFactory?.registerCellsWithCollectionView(collectionView)
+        listShelfFactory?.registerCellsWithCollectionView(collectionView)
     }
     
     func collectionView(collectionView: UICollectionView, cellForStreamItem streamItem: VStreamItem, atIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {

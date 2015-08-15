@@ -16,6 +16,8 @@ NSString * const VStreamItemTypeStream = @"stream";
 NSString * const VStreamItemTypeMarquee = @"marquee";
 NSString * const VStreamItemTypeUser = @"user";
 NSString * const VStreamItemTypeHashtag = @"hashtag";
+NSString * const VStreamItemTypePlaylist = @"playlist";
+NSString * const VStreamItemTypeRecent = @"recent";
 NSString * const VStreamItemTypeFeed = @"feed";
 
 //Subtype values

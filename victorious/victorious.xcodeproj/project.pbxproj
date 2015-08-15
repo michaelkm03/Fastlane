@@ -1172,6 +1172,12 @@
 		F06B41B91B7EC6F3008709E8 /* VTrendingShelfCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06B41B81B7EC6F3008709E8 /* VTrendingShelfCellFactory.swift */; };
 		F06B41BB1B7ECC3C008709E8 /* devShelfTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = F06B41BA1B7ECC3C008709E8 /* devShelfTemplate.json */; };
 		F06B41BD1B7ED7FD008709E8 /* UIResponder+typedResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06B41BC1B7ED7FD008709E8 /* UIResponder+typedResponder.swift */; };
+		F06B41BF1B7EE4FB008709E8 /* VListShelfCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06B41BE1B7EE4FB008709E8 /* VListShelfCellFactory.swift */; };
+		F06B41C11B7EE606008709E8 /* VListShelfCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06B41C01B7EE606008709E8 /* VListShelfCollectionViewCell.swift */; };
+		F06B41C31B7FBE0D008709E8 /* VListPlaylistShelfCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06B41C21B7FBE0D008709E8 /* VListPlaylistShelfCollectionViewCell.swift */; };
+		F06B41C51B7FBE27008709E8 /* VListRecentShelfCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06B41C41B7FBE27008709E8 /* VListRecentShelfCollectionViewCell.swift */; };
+		F06B41C71B7FBEF8008709E8 /* VListRecentShelfCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F06B41C61B7FBEF8008709E8 /* VListRecentShelfCollectionViewCell.xib */; };
+		F06B41C91B7FBF08008709E8 /* VListPlaylistShelfCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F06B41C81B7FBF08008709E8 /* VListPlaylistShelfCollectionViewCell.xib */; };
 		F06F10C01AC1E11C0062E1D1 /* VCollectionsDirectoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10BF1AC1E11C0062E1D1 /* VCollectionsDirectoryCell.m */; };
 		F06F10C21AC1E13A0062E1D1 /* VCollectionsDirectoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F06F10C11AC1E13A0062E1D1 /* VCollectionsDirectoryCell.xib */; };
 		F06F10C61AC2024A0062E1D1 /* VDirectoryCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10C51AC2024A0062E1D1 /* VDirectoryCollectionViewController.m */; };
@@ -3435,6 +3441,12 @@
 		F06B41B81B7EC6F3008709E8 /* VTrendingShelfCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTrendingShelfCellFactory.swift; sourceTree = "<group>"; };
 		F06B41BA1B7ECC3C008709E8 /* devShelfTemplate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = devShelfTemplate.json; sourceTree = "<group>"; };
 		F06B41BC1B7ED7FD008709E8 /* UIResponder+typedResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIResponder+typedResponder.swift"; sourceTree = "<group>"; };
+		F06B41BE1B7EE4FB008709E8 /* VListShelfCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VListShelfCellFactory.swift; sourceTree = "<group>"; };
+		F06B41C01B7EE606008709E8 /* VListShelfCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VListShelfCollectionViewCell.swift; sourceTree = "<group>"; };
+		F06B41C21B7FBE0D008709E8 /* VListPlaylistShelfCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VListPlaylistShelfCollectionViewCell.swift; sourceTree = "<group>"; };
+		F06B41C41B7FBE27008709E8 /* VListRecentShelfCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VListRecentShelfCollectionViewCell.swift; sourceTree = "<group>"; };
+		F06B41C61B7FBEF8008709E8 /* VListRecentShelfCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VListRecentShelfCollectionViewCell.xib; sourceTree = "<group>"; };
+		F06B41C81B7FBF08008709E8 /* VListPlaylistShelfCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VListPlaylistShelfCollectionViewCell.xib; sourceTree = "<group>"; };
 		F06F10BE1AC1E11C0062E1D1 /* VCollectionsDirectoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCollectionsDirectoryCell.h; sourceTree = "<group>"; };
 		F06F10BF1AC1E11C0062E1D1 /* VCollectionsDirectoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCollectionsDirectoryCell.m; sourceTree = "<group>"; };
 		F06F10C11AC1E13A0062E1D1 /* VCollectionsDirectoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VCollectionsDirectoryCell.xib; sourceTree = "<group>"; };
@@ -6136,6 +6148,7 @@
 				F0BF9F6D1B72DC1600B24225 /* VStreamContentCellFactory.swift */,
 				F07557EB1B751F5300BB2648 /* VDirectoryContentCellFactory.swift */,
 				F07557ED1B751F8C00BB2648 /* VSequenceContentCellFactory.swift */,
+				F06B41CA1B7FBF10008709E8 /* List Shelf Cell */,
 				F06B41851B7ADA52008709E8 /* Trending Shelf Cell */,
 				F07557EA1B73EBD400BB2648 /* VStreamContentCellFactoryDelegate.h */,
 				D893674E1ADDE1B9001D2426 /* VActionButtonAnimationController.h */,
@@ -7648,6 +7661,19 @@
 			name = "Trending Shelf Cell";
 			sourceTree = "<group>";
 		};
+		F06B41CA1B7FBF10008709E8 /* List Shelf Cell */ = {
+			isa = PBXGroup;
+			children = (
+				F06B41BE1B7EE4FB008709E8 /* VListShelfCellFactory.swift */,
+				F06B41C01B7EE606008709E8 /* VListShelfCollectionViewCell.swift */,
+				F06B41C21B7FBE0D008709E8 /* VListPlaylistShelfCollectionViewCell.swift */,
+				F06B41C41B7FBE27008709E8 /* VListRecentShelfCollectionViewCell.swift */,
+				F06B41C61B7FBEF8008709E8 /* VListRecentShelfCollectionViewCell.xib */,
+				F06B41C81B7FBF08008709E8 /* VListPlaylistShelfCollectionViewCell.xib */,
+			);
+			name = "List Shelf Cell";
+			sourceTree = "<group>";
+		};
 		F06F10C31AC201B90062E1D1 /* Directory */ = {
 			isa = PBXGroup;
 			children = (
@@ -8249,6 +8275,7 @@
 				DB2A491F19DF43F900CB687B /* VForceUpgradeViewController.xib in Resources */,
 				03C1858A19B42C9100E27D05 /* Roboto-Regular.ttf in Resources */,
 				A7A0617F1B4DB5B500E8FFCF /* GIFSearch.storyboard in Resources */,
+				F06B41C91B7FBF08008709E8 /* VListPlaylistShelfCollectionViewCell.xib in Resources */,
 				03C92D161ABB96030057D30E /* LightweightContentView.storyboard in Resources */,
 				D82E76E019F5BFF900FFB722 /* VContentPollQuestionCell.xib in Resources */,
 				DB2A491B19DF437D00CB687B /* VNoContentView.xib in Resources */,
@@ -8283,6 +8310,7 @@
 				036F38791A0C4DEA0014DF66 /* LeagueGothic-Regular.otf in Resources */,
 				D8D8129E1B13849E00E93B37 /* VModernLoginViewController.storyboard in Resources */,
 				A7E398601A34F6E1000E4CAC /* creator-avatar@2x.png in Resources */,
+				F06B41C71B7FBEF8008709E8 /* VListRecentShelfCollectionViewCell.xib in Resources */,
 				03C1858919B42C9100E27D05 /* Roboto-MediumItalic.ttf in Resources */,
 				03C1859219B42CEA00E27D05 /* MuseoSans-300.otf in Resources */,
 				035926D41B1EA33400E910A7 /* Quicksand-Regular.ttf in Resources */,
@@ -8953,6 +8981,7 @@
 				A7423D791B4DD7FC00745EF4 /* GIFSearchDataSource.swift in Sources */,
 				A7D378411AEF4ED5007FF197 /* VFloatingUserProfileHeaderViewController.m in Sources */,
 				A705F4501B3DC7AC007DBD3C /* VCellSizeCollection.m in Sources */,
+				F06B41C31B7FBE0D008709E8 /* VListPlaylistShelfCollectionViewCell.swift in Sources */,
 				A721E9311B572454000B7901 /* VRule+RestKit.m in Sources */,
 				A75ED0C71AB7971400C35063 /* VColorOptionCell.m in Sources */,
 				A721E95E1B572454000B7901 /* UIView+RecursiveSearch.swift in Sources */,
@@ -9086,6 +9115,7 @@
 				03B83B6219E0D2CC00DC04E4 /* VUploadProgressViewController.m in Sources */,
 				F0411E811B45AACD00557176 /* VTimeSinceWidget.m in Sources */,
 				0314D49F19B46B5E00FA363C /* VImageSearchDataSource.m in Sources */,
+				F06B41C51B7FBE27008709E8 /* VListRecentShelfCollectionViewCell.swift in Sources */,
 				D8B44CD11ADCB3A4006340E8 /* VSleekStreamCellFactory.m in Sources */,
 				0314D4D619B46B5E00FA363C /* VChangePasswordViewController.m in Sources */,
 				D85B70841B0EAF3F0038CA5B /* VResetPasswordViewController.m in Sources */,
@@ -9208,6 +9238,7 @@
 				0314D2E619B46B0E00FA363C /* VPaginationManager.m in Sources */,
 				D8C7CF5819DCCC6E00BA33E5 /* VExperienceEnhancerBar.m in Sources */,
 				A721E95F1B572454000B7901 /* UIView+VDynamicsHelpers.m in Sources */,
+				F06B41C11B7EE606008709E8 /* VListShelfCollectionViewCell.swift in Sources */,
 				DBE1077F1A2FFDCD005D303E /* VAdBreakFallback.m in Sources */,
 				DBF8B4AB1A78942900CFFD47 /* VUsersAndTagsSearchViewController.m in Sources */,
 				A721E9411B572454000B7901 /* NSString+Unicode.swift in Sources */,
@@ -9251,6 +9282,7 @@
 				A6B9FD121B6070B100166BE8 /* VCameraFocusView.m in Sources */,
 				03CE670019B640CD0011BB9E /* VDeviceInfo.m in Sources */,
 				A7DDA6AC1B5F003B005CE55E /* Experiment+RestKit.swift in Sources */,
+				F06B41BF1B7EE4FB008709E8 /* VListShelfCellFactory.swift in Sources */,
 				C30AA4DD1B055C000010CEFE /* VPermissionAlertPresentationController.m in Sources */,
 				A77AD5011A2011E000142F24 /* UIActionSheet+VBlocks.m in Sources */,
 				036E87B21ACB6B3F00E5AAAD /* VContentViewFactory.m in Sources */,

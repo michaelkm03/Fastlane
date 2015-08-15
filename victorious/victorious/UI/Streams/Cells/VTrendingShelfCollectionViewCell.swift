@@ -120,7 +120,7 @@ extension VTrendingShelfCollectionViewCell : UICollectionViewDelegate {
 extension VTrendingShelfCollectionViewCell : UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(0, 15, 15, 15)
+        return UIEdgeInsetsMake(0, 11, 11, 11)
     }
     
 }

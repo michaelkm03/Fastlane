@@ -14,6 +14,8 @@ extern NSString * const VStreamItemTypeStream;
 extern NSString * const VStreamItemTypeMarquee;
 extern NSString * const VStreamItemTypeUser;
 extern NSString * const VStreamItemTypeHashtag;
+extern NSString * const VStreamItemTypePlaylist;;
+extern NSString * const VStreamItemTypeRecent;
 extern NSString * const VStreamItemTypeFeed;
 
 //Subtype values
