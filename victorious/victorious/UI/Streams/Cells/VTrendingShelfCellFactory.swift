@@ -8,7 +8,7 @@
 
 import UIKit
 
-///A cell factory that returns trending user shelves
+///A cell factory that returns trending content shelves
 class VTrendingShelfCellFactory: NSObject {
     private let dependencyManager : VDependencyManager
     
