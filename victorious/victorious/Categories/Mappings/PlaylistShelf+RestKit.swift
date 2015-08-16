@@ -1,24 +1,23 @@
 //
-//  HashtagShelf+RestKit.swift
+//  PlaylistShelf+RestKit.swift
 //  victorious
 //
-//  Created by Sharif Ahmed on 8/12/15.
+//  Created by Sharif Ahmed on 8/16/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
 import Foundation
 
-extension HashtagShelf {
+extension PlaylistShelf {
     
     static private var propertyMap : [String : String] {
         return [
-            "hashtag" : "hashtagTitle",
-            "postsCount" : "postsCount"
+            "playlistTitle" : "playlistTitle",
         ]
     }
     
     override static func entityName() -> String {
-        return "HashtagShelf"
+        return "PlaylistShelf"
     }
     
     override static func entityMapping() -> RKEntityMapping {

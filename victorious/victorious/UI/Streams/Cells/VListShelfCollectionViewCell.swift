@@ -62,7 +62,7 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
     /// Override in subclasses to make adjustments based on the shelf
     func onShelfSet() {
         if let shelf = shelf, let items = shelf.stream?.streamItems, let streamItems = items.array as? [VStreamItem] {
-            if shelf.itemType == VStreamItemTypeRecent {
+            if hasPlaylistShelf() {
                 collectionView.registerClass(VListShelfContentCoverCell.self, forCellWithReuseIdentifier: VListShelfContentCoverCell.reuseIdentifierForStreamItem(shelf.stream!, baseIdentifier: nil, dependencyManager: dependencyManager))
             }
             for (index, streamItem) in enumerate(streamItems) {
@@ -72,6 +72,10 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
         collectionView.reloadData()
         
         detailLabel.text = shelf?.stream?.name
+    }
+    
+    private func hasPlaylistShelf() -> Bool {
+        return shelf?.itemType == VStreamItemTypePlaylist
     }
     
     override func layoutSubviews() {
@@ -134,11 +138,13 @@ extension VListShelfCollectionViewCell : UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if let shelf = shelf, let streamItems = shelf.stream?.streamItems.array as? [VStreamItem] {
             var streamItem: VStreamItem?
+            var isCoverCell = false
             var T = VShelfContentCollectionViewCell.self
-            if shelf.itemType == VStreamItemTypeRecent {
+            if hasPlaylistShelf() {
                 if indexPath.row == 0 {
                     streamItem = shelf.stream!
                     T = VListShelfContentCoverCell.self
+                    isCoverCell = true
                 }
                 else {
                     streamItem = streamItems[indexPath.row - 1]
@@ -151,15 +157,18 @@ extension VListShelfCollectionViewCell : UICollectionViewDataSource {
             let cell: VShelfContentCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as! VShelfContentCollectionViewCell
             cell.streamItem = streamItem
             cell.dependencyManager = dependencyManager
+            if let cell = cell as? VListShelfContentCoverCell, let shelf = shelf as? PlaylistShelf {
+                cell.overlayText = shelf.playlistTitle
+            }
             return cell
         }
-        assertionFailure("VTrendingShelfCollectionViewCell was asked to display an object that isn't a stream item.")
+        assertionFailure("VListShelfCollectionViewCell was asked to display an object that isn't a stream item.")
         return UICollectionViewCell()
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let streamItems = shelf?.stream?.streamItems {
-            return shelf?.itemType == VStreamItemTypeRecent ? streamItems.count + 1 : streamItems.count
+            return hasPlaylistShelf() ? streamItems.count + 1 : streamItems.count
         }
         return 0
     }

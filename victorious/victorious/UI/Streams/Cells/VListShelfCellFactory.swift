@@ -38,6 +38,7 @@ extension VListShelfCellFactory: VStreamCellFactory {
                 cell = collectionView.dequeueReusableCellWithReuseIdentifier(VListRecentShelfCollectionViewCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as? UICollectionViewCell
                 if let cell = cell as? VListRecentShelfCollectionViewCell {
                     setup(cell, shelf: shelf, dependencyManager: dependencyManager)
+                    
                 }
             }
         }

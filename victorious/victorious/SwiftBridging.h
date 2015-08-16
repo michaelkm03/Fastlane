@@ -120,3 +120,4 @@
 #import "VTagStringFormatter.h"
 #import "VTag.h"
 #import "VCompatibility.h"
+#import "VEditorializationItem.h"

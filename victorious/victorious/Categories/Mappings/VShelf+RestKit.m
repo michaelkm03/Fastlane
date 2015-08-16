@@ -44,7 +44,7 @@
 
 + (RKObjectMapping *)mappingForItemType:(NSString *)type
 {
-    RKObjectMapping *mapping = [self mappingBaseForEntityWithName:@"Shelf"];
+    RKObjectMapping *mapping = nil;
     if ( [type isEqualToString:VStreamItemTypeUser] )
     {
         mapping = [UserShelf entityMapping];
@@ -52,6 +52,14 @@
     else if ( [type isEqualToString:VStreamItemTypeHashtag] )
     {
         mapping = [HashtagShelf entityMapping];
+    }
+    else if ( [type isEqualToString:VStreamItemTypePlaylist] )
+    {
+        mapping = [PlaylistShelf entityMapping];
+    }
+    else if ( [type isEqualToString:VStreamItemTypeMarquee] || [type isEqualToString:VStreamItemTypeRecent] || [type isEqualToString:VStreamItemTypeSequence] || [type isEqualToString:VStreamItemTypeStream] )
+    {
+        mapping = [self mappingBaseForEntityWithName:@"Shelf"];
     }
     return mapping;
 }
