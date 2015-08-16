@@ -13,12 +13,12 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
     struct Constants {
         static let separatorHeight: CGFloat = 4
         static let minimumTopVerticalSpace: CGFloat = 11
-        static let minimumTitleToDetailVerticalSpace: CGFloat = 5
+        static let minimumTitleToDetailVerticalSpace: CGFloat = 11
         static let detailToCollectionViewVerticalSpace: CGFloat = 12
         
         static let contentHorizontalInset: CGFloat = 18
         
-        static let interCellSpace: CGFloat = 4
+        static let interCellSpace: CGFloat = 2
         static let collectionViewSectionEdgeInsets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 11, bottom: 11, right: 11)
     }
 
@@ -61,36 +61,35 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
     
     /// Override in subclasses to make adjustments based on the shelf
     func onShelfSet() {
-        if let streamItems = shelf?.stream?.streamItems {
-            if let streamItems = streamItems.array as? [VStreamItem] {
-                for (index, streamItem) in enumerate(streamItems) {
-                    collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager))
-                }
+        if let shelf = shelf, let items = shelf.stream?.streamItems, let streamItems = items.array as? [VStreamItem] {
+            if shelf.itemType == VStreamItemTypeRecent {
+                collectionView.registerClass(VListShelfContentCoverCell.self, forCellWithReuseIdentifier: VListShelfContentCoverCell.reuseIdentifierForStreamItem(shelf.stream!, baseIdentifier: nil, dependencyManager: dependencyManager))
+            }
+            for (index, streamItem) in enumerate(streamItems) {
+                collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager))
             }
         }
         collectionView.reloadData()
         
-        detailLabel.text = shelf?.name
+        detailLabel.text = shelf?.stream?.name
     }
     
-    override var bounds : CGRect {
-        didSet {
-            updateCollectionViewSize()
-        }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        updateCollectionViewSize()
     }
     
     private func updateCollectionViewSize() {
         let totalWidths = VListShelfCollectionViewCell.totalCellWidths(collectionView.bounds.width)
         cellSideLength = VListShelfCollectionViewCell.cellSideLength(totalWidths)
-        centeringInset = floor(totalWidths % cellSideLength)
+        centeringInset = floor(totalWidths % cellSideLength) / 2
         collectionViewHeightConstraint.constant = VListShelfCollectionViewCell.collectionViewHeight(cellSideLength: cellSideLength)
         collectionView.collectionViewLayout.invalidateLayout()
     }
     
     private class func totalCellWidths(collectionViewWidth: CGFloat) -> CGFloat {
         let sectionInset = Constants.collectionViewSectionEdgeInsets
-        var totalCellWidths = collectionViewWidth - sectionInset.left - sectionInset.right - (Constants.interCellSpace * 4)
-        return totalCellWidths
+        return collectionViewWidth - sectionInset.left - sectionInset.right - (Constants.interCellSpace * 4)
     }
     
     private class func cellSideLength(totalCellWidths: CGFloat) -> CGFloat {
@@ -128,6 +127,47 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
         detailToCollectionViewSpaceConstraint.constant = Constants.detailToCollectionViewVerticalSpace
         updateCollectionViewSize()
     }
+}
+
+extension VListShelfCollectionViewCell : UICollectionViewDataSource {
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        if let shelf = shelf, let streamItems = shelf.stream?.streamItems.array as? [VStreamItem] {
+            var streamItem: VStreamItem?
+            var T = VShelfContentCollectionViewCell.self
+            if shelf.itemType == VStreamItemTypeRecent {
+                if indexPath.row == 0 {
+                    streamItem = shelf.stream!
+                    T = VListShelfContentCoverCell.self
+                }
+                else {
+                    streamItem = streamItems[indexPath.row - 1]
+                }
+            }
+            else {
+                streamItem = streamItems[indexPath.row]
+            }
+            var identifier = T.reuseIdentifierForStreamItem(streamItem!, baseIdentifier: nil, dependencyManager: dependencyManager)
+            let cell: VShelfContentCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as! VShelfContentCollectionViewCell
+            cell.streamItem = streamItem
+            cell.dependencyManager = dependencyManager
+            return cell
+        }
+        assertionFailure("VTrendingShelfCollectionViewCell was asked to display an object that isn't a stream item.")
+        return UICollectionViewCell()
+    }
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if let streamItems = shelf?.stream?.streamItems {
+            return shelf?.itemType == VStreamItemTypeRecent ? streamItems.count + 1 : streamItems.count
+        }
+        return 0
+    }
+    
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 1;
+    }
+    
 }
 
 extension VListShelfCollectionViewCell : UICollectionViewDelegateFlowLayout {

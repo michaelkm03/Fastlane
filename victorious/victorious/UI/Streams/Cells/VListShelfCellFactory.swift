@@ -28,20 +28,22 @@ extension VListShelfCellFactory: VStreamCellFactory {
     
     func collectionView(collectionView: UICollectionView, cellForStreamItem streamItem: VStreamItem, atIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         var cell: UICollectionViewCell? = nil
-        if let shelf = streamItem as? UserShelf {
-            cell = collectionView.dequeueReusableCellWithReuseIdentifier(VListPlaylistShelfCollectionViewCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as? UICollectionViewCell
-            if let cell = cell as? VListPlaylistShelfCollectionViewCell {
-                setup(cell, shelf: shelf, dependencyManager: dependencyManager)
-            }
-        } else if let shelf = streamItem as? HashtagShelf {
-            cell = collectionView.dequeueReusableCellWithReuseIdentifier(VListRecentShelfCollectionViewCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as? UICollectionViewCell
-            if let cell = cell as? VListRecentShelfCollectionViewCell {
-                setup(cell, shelf: shelf, dependencyManager: dependencyManager)
+        if let shelf = streamItem as? VShelf {
+            if streamItem.itemType == VStreamItemTypePlaylist {
+                cell = collectionView.dequeueReusableCellWithReuseIdentifier(VListPlaylistShelfCollectionViewCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as? UICollectionViewCell
+                if let cell = cell as? VListPlaylistShelfCollectionViewCell {
+                    setup(cell, shelf: shelf, dependencyManager: dependencyManager)
+                }
+            } else if streamItem.itemType == VStreamItemTypeRecent {
+                cell = collectionView.dequeueReusableCellWithReuseIdentifier(VListRecentShelfCollectionViewCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as? UICollectionViewCell
+                if let cell = cell as? VListRecentShelfCollectionViewCell {
+                    setup(cell, shelf: shelf, dependencyManager: dependencyManager)
+                }
             }
         }
         if cell == nil {
             cell = UICollectionViewCell()
-            assertionFailure("VTrendingShelfCellFactory was provided a shelf that was neither a user shelf nor a hashtag shelf")
+            assertionFailure("VListShelfCellFactory was provided a shelf that was neither a user shelf nor a hashtag shelf")
         }
         return cell!
     }

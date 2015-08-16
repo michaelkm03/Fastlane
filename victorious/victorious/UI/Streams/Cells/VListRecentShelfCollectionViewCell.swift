@@ -49,7 +49,7 @@ class VListRecentShelfCollectionViewCell: VListShelfCollectionViewCell {
         let seeAllButtonHeight = max(kSeeAllButtonText.frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.seeAllFont]).height, kSeeAllChevron.size.height)
         size.height += max(titleHeight, seeAllButtonHeight)
         
-        if let name = shelf.name {
+        if let name = shelf.stream?.name {
             size.height += NSString(string: name).frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.detailFont]).height
             size.height += Constants.detailToCollectionViewVerticalSpace
         }

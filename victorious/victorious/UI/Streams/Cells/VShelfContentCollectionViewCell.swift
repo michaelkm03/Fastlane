@@ -15,20 +15,7 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
     
     var streamItem: VStreamItem? {
         didSet {
-            if let previewView = previewView {
-                if previewView.canHandleStreamItem(streamItem) {
-                    previewView.streamItem = streamItem
-                    return
-                }
-                previewView.removeFromSuperview()
-            }
-
-            if let newPreviewView = VStreamItemPreviewView(streamItem: streamItem) {
-                newPreviewView.streamItem = streamItem
-                previewViewContainer.addSubview(newPreviewView)
-                v_addFitToParentConstraintsToSubview(newPreviewView)
-                previewView = newPreviewView
-            }
+            onStreamItemSet()
         }
     }
     
@@ -41,6 +28,23 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
     func onDependencyManagerSet() {
         if let dependencyManager = dependencyManager {
             dependencyManager.addLoadingBackgroundToBackgroundHost(self)
+        }
+    }
+    
+    func onStreamItemSet() {
+        if let previewView = previewView {
+            if previewView.canHandleStreamItem(streamItem) {
+                previewView.streamItem = streamItem
+                return
+            }
+            previewView.removeFromSuperview()
+        }
+        
+        if let newPreviewView = VStreamItemPreviewView(streamItem: streamItem) {
+            newPreviewView.streamItem = streamItem
+            previewViewContainer.addSubview(newPreviewView)
+            v_addFitToParentConstraintsToSubview(newPreviewView)
+            previewView = newPreviewView
         }
     }
     

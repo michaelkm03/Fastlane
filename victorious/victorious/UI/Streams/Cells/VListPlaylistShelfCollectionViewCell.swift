@@ -35,7 +35,7 @@ class VListPlaylistShelfCollectionViewCell: VListShelfCollectionViewCell {
     override class func desiredSize(collectionViewBounds: CGRect, shelf:VShelf, dependencyManager: VDependencyManager) -> CGSize {
         var size = super.desiredSize(collectionViewBounds, shelf: shelf, dependencyManager: dependencyManager)
         size.height += kTitleText.frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.titleFont]).height
-        if let name = shelf.name {
+        if let name = shelf.stream?.name {
             size.height += NSString(string: name).frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.detailFont]).height
             size.height += Constants.detailToCollectionViewVerticalSpace
         }
