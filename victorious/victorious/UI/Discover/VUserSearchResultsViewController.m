@@ -18,9 +18,7 @@
 #import "VInviteFriendTableViewCell.h"
 #import "VNoContentView.h"
 #import "UIVIew+AutoLayout.h"
-#import "VFollowingHelper.h"
 #import "VDependencyManager+VUserProfile.h"
-#import "VFollowingHelper.h"
 #import "VFollowResponder.h"
 #import "VFollowControl.h"
 
@@ -28,7 +26,6 @@
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) UIView *dismissTapView;
-@property (nonatomic, strong) VFollowingHelper *followHelper;
 
 @end
 
@@ -40,8 +37,7 @@
 {
     VUserSearchResultsViewController *searchResultsVC = [[VUserSearchResultsViewController alloc] init];
     searchResultsVC.dependencyManager = dependencyManager;
-    searchResultsVC.followHelper = [[VFollowingHelper alloc] initWithDependencyManager:dependencyManager
-                                                             viewControllerToPresentOn:searchResultsVC];
+    
     return searchResultsVC;
 }
 
@@ -195,7 +191,11 @@
 
 #pragma mark - VFollowResponder
 
-- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion fromViewController:(UIViewController *)viewControllerToPresentOn withScreenName:(NSString *)screenName
+- (void)followUser:(VUser *)user
+withAuthorizedBlock:(void (^)(void))authorizedBlock
+     andCompletion:(VFollowEventCompletion)completion
+fromViewController:(UIViewController *)viewControllerToPresentOn
+    withScreenName:(NSString *)screenName
 {
     NSString *sourceScreen = screenName?:VFollowSourceScreenDiscoverUserSearchResults;
     id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
@@ -211,11 +211,20 @@
 
 - (void)unfollowUser:(VUser *)user
  withAuthorizedBlock:(void (^)(void))authorizedBlock
-       andCompletion:(VFollowHelperCompletion)completion
+       andCompletion:(VFollowEventCompletion)completion
+  fromViewController:(UIViewController *)viewControllerToPresentOn
+      withScreenName:(NSString *)screenName
 {
-    [self.followHelper unfollowUser:user
-                withAuthorizedBlock:authorizedBlock
-                      andCompletion:completion];
+    NSString *sourceScreen = screenName?:VFollowSourceScreenDiscoverUserSearchResults;
+    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
+                                                                      withSender:nil];
+    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
+    
+    [followResponder unfollowUser:user
+              withAuthorizedBlock:authorizedBlock
+                    andCompletion:completion
+               fromViewController:self
+                   withScreenName:sourceScreen];
 }
 
 @end

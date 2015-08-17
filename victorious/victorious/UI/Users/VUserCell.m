@@ -114,13 +114,15 @@ static const CGFloat kUserCellHeight = 51.0f;
     
     if (sender.controlState == VFollowControlStateFollowed)
     {
-        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:)
+        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
                                                                           withSender:nil];
         NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
         
         [followResponder unfollowUser:self.user
                   withAuthorizedBlock:authorizedBlock
-                        andCompletion:completionBlock];
+                        andCompletion:completionBlock
+                   fromViewController:nil
+                       withScreenName:nil];
     }
     else
     {
