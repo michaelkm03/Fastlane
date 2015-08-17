@@ -11,7 +11,7 @@ import UIKit
 /// A cell factory that returns trending content shelves
 class VTrendingShelfCellFactory: NSObject {
     
-    private let dependencyManager : VDependencyManager
+    private let dependencyManager: VDependencyManager
     
     required init!(dependencyManager: VDependencyManager!) {
         self.dependencyManager = dependencyManager;
@@ -27,28 +27,27 @@ extension VTrendingShelfCellFactory: VStreamCellFactory {
     }
     
     func collectionView(collectionView: UICollectionView, cellForStreamItem streamItem: VStreamItem, atIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        var cell: UICollectionViewCell? = nil
         if let shelf = streamItem as? UserShelf {
-            cell = collectionView.dequeueReusableCellWithReuseIdentifier(VTrendingUserShelfCollectionViewCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as? UICollectionViewCell
-            if let cell = cell as? VTrendingUserShelfCollectionViewCell {
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(VTrendingUserShelfCollectionViewCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as? VTrendingUserShelfCollectionViewCell
+            if let cell = cell {
                 setup(cell, shelf: shelf, dependencyManager: dependencyManager)
+                return cell
             }
         } else if let shelf = streamItem as? HashtagShelf {
-            cell = collectionView.dequeueReusableCellWithReuseIdentifier(VTrendingHashtagShelfCollectionViewCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as? UICollectionViewCell
-            if let cell = cell as? VTrendingHashtagShelfCollectionViewCell {
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(VTrendingHashtagShelfCollectionViewCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as? VTrendingHashtagShelfCollectionViewCell
+            if let cell = cell {
                 setup(cell, shelf: shelf, dependencyManager: dependencyManager)
+                return cell
             }
         }
-        if cell == nil {
-            cell = UICollectionViewCell()
-            assertionFailure("VTrendingShelfCellFactory was provided a shelf that was neither a user shelf nor a hashtag shelf")
-        }
-        return cell!
+        let cell = UICollectionViewCell()
+        assertionFailure("VTrendingShelfCellFactory was provided a shelf that was neither a user shelf nor a hashtag shelf")
+        return cell
     }
     
     private func setup(cell: VTrendingShelfCollectionViewCell, shelf: VShelf, dependencyManager: VDependencyManager) {
         cell.dependencyManager = dependencyManager
-        cell.shelf = shelf;
+        cell.shelf = shelf
     }
     
     func sizeWithCollectionViewBounds(bounds: CGRect, ofCellForStreamItem streamItem: VStreamItem) -> CGSize {

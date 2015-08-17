@@ -223,7 +223,8 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
             else {
                 assertionFailure("The VTrendingUserShelfCollectionViewCell needs a follow responder further up its responder chain.")
             }
-        default:()
+        case .Loading:
+            break
         }
     }
     

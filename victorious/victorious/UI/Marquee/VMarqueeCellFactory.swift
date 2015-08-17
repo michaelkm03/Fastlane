@@ -17,10 +17,11 @@ class VMarqueeCellFactory: NSObject, VHasManagedDependencies {
     let marqueeController: VMarqueeController?
 
     required init(dependencyManager: VDependencyManager) {
-        let templateValue: AnyObject! = dependencyManager.templateValueConformingToProtocol(VMarqueeController.self, forKey: VMarqueeCellFactory.kMarqueeCellKey)
+        let templateValue: AnyObject? = dependencyManager.templateValueConformingToProtocol(VMarqueeController.self, forKey: VMarqueeCellFactory.kMarqueeCellKey)
         if let marquee = templateValue as? VMarqueeController {
             marqueeController = marquee
-        } else {
+        }
+        else {
             marqueeController = nil
         }
     }

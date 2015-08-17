@@ -32,7 +32,7 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
         }
     }
     
-    var dependencyManager : VDependencyManager? {
+    var dependencyManager: VDependencyManager? {
         didSet {
             if dependencyManager == oldValue {
                 return
@@ -52,8 +52,8 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     
     /// Override in subclasses to make adjustments based on the shelf
     func onShelfSet() {
-        if let streamItems = shelf?.stream?.streamItems {
-            if let streamItems = streamItems.array as? [VStreamItem] {
+        if let items = shelf?.stream?.streamItems,
+            let streamItems = items.array as? [VStreamItem] {
                 for (index, streamItem) in enumerate(streamItems) {
                     if index == streamItems.count - 1 {
                         collectionView.registerClass(VTrendingShelfContentSeeAllCell.self, forCellWithReuseIdentifier: VTrendingShelfContentSeeAllCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager))
@@ -62,7 +62,6 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
                         collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager))
                     }
                 }
-            }
         }
         updateFollowControlState()
         self.collectionView.reloadData()
@@ -95,10 +94,7 @@ extension VTrendingShelfCollectionViewCell : UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let streamItems = shelf?.stream?.streamItems {
-            return streamItems.count
-        }
-        return 0
+        return shelf?.stream?.streamItems?.count ?? 0
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
@@ -116,11 +112,12 @@ extension VTrendingShelfCollectionViewCell : UICollectionViewDelegate {
             if indexPath.row == stream.streamItems.count - 1 {
                 itemToNavigateTo = nil
             }
-            responder.navigateTo(itemToNavigateTo, fromShelf: shelf!)
+            if let shelf = shelf {
+                responder.navigateTo(itemToNavigateTo, fromShelf: shelf)
+                return
+            }
         }
-        else {
-            assertionFailure("VTrendingShelfCollectionViewCell needs a VShelfStreamItemSelectionResponder up it's responder chain to send messages to.")
-        }
+        assertionFailure("VTrendingShelfCollectionViewCell needs a VShelfStreamItemSelectionResponder up it's responder chain to send messages to.")
     }
     
 }

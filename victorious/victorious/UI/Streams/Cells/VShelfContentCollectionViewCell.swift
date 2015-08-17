@@ -13,8 +13,8 @@ import UIKit
 class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
 
     /// The view that will house the preview view.
-    let previewViewContainer: UIView = UIView()
-    private var previewView: VStreamItemPreviewView?
+    let previewViewContainer = UIView()
+    private var previewView: VStreamItemPreviewView = VImageSequencePreviewView()
     
     /// The stream item whose content will populate this cell.
     var streamItem: VStreamItem? {
@@ -23,20 +23,24 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
                 return
             }
             
-            if let previewView = previewView {
-                if previewView.canHandleStreamItem(streamItem) {
-                    previewView.streamItem = streamItem
-                    return
-                }
-                previewView.removeFromSuperview()
+            if previewView.canHandleStreamItem(streamItem) {
+                updatePreviewView(streamItem)
+                return
             }
+            previewView.removeFromSuperview()
 
             if let newPreviewView = VStreamItemPreviewView(streamItem: streamItem) {
-                newPreviewView.streamItem = streamItem
-                previewViewContainer.addSubview(newPreviewView)
-                v_addFitToParentConstraintsToSubview(newPreviewView)
                 previewView = newPreviewView
+                updatePreviewView(streamItem)
             }
+        }
+    }
+    
+    private func updatePreviewView(streamItem: VStreamItem?) {
+        previewView.streamItem = streamItem
+        if previewView.superview == nil {
+            previewViewContainer.addSubview(previewView)
+            v_addFitToParentConstraintsToSubview(previewView)
         }
     }
     

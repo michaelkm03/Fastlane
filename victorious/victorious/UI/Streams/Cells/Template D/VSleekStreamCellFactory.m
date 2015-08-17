@@ -78,6 +78,7 @@
 {
     if ( [self.noContentCollectionViewCellFactory shouldDisplayNoContentCellForContentClass:[streamItem class]] )
     {
+        VLog(@"VSleekStreamCellFactory encountered an unsupported streamItem subclass and will display a no content cell");
         return [self.noContentCollectionViewCellFactory noContentCellForCollectionView:collectionView atIndexPath:indexPath];
     }
     
