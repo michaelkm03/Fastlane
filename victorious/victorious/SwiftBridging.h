@@ -102,6 +102,10 @@
 #import "VHashtagStreamCollectionViewController.h"
 #import "VCommentTextAndMediaView.h"
 #import "VTextAndMediaView.h"
+#import "VUserTaggingTextStorageDelegate.h"
+#import "VUserTaggingTextStorage.h"
+#import "VInlineSearchTableViewController.h"
+#import "UIView+AutoLayout.h"
 
 //Shelves
 #import "VStreamCellFactory.h"

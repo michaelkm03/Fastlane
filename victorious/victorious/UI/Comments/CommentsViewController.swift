@@ -69,8 +69,12 @@ class CommentsViewController: UIViewController, VKeyboardInputAccessoryViewDeleg
         commentsDataSourceSwitcher.dataSource.delegate = self
         
         keyboardBar = VKeyboardInputAccessoryView.defaultInputAccessoryViewWithDependencyManager(dependencyManager)
-        keyboardBar?.setTranslatesAutoresizingMaskIntoConstraints(false)
-        keyboardBar?.delegate = self
+        if let keyboardBar = keyboardBar {
+            keyboardBar.setTranslatesAutoresizingMaskIntoConstraints(false)
+            keyboardBar.delegate = self
+            keyboardBar.textStorageDelegate = self
+        }
+        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -81,16 +85,18 @@ class CommentsViewController: UIViewController, VKeyboardInputAccessoryViewDeleg
         if let sequence = sequence, instreamPreviewURL = sequence.inStreamPreviewImageURL() {
             imageView.applyTintAndBlurToImageWithURL(instreamPreviewURL, withTintColor: nil)
         }
-        
+
+        collectionView.accessoryView = keyboardBar
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        collectionView.accessoryView = keyboardBar
+        // Do this here so that the keyboard bar animates in with pushes
         collectionView.becomeFirstResponder()
         keyboardBar?.becomeFirstResponder()
         focusHelper?.updateFocus()
+        updateInsetForKeyboardBarState()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -133,7 +139,7 @@ class CommentsViewController: UIViewController, VKeyboardInputAccessoryViewDeleg
 
 }
 
-extension CommentsViewController: VKeyboardInputAccessoryViewDelegate {
+extension CommentsViewController: VKeyboardInputAccessoryViewDelegate, VUserTaggingTextStorageDelegate {
     
     // MARK: - VKeyboardInputAccessoryViewDelegate
     
@@ -229,6 +235,30 @@ extension CommentsViewController: VKeyboardInputAccessoryViewDelegate {
     
     func keyboardInputAccessoryViewDidEndEditing(inpoutAccessoryView: VKeyboardInputAccessoryView) {
         updateInsetForKeyboardBarState()
+    }
+    
+    // MARK: - VUserTaggingTextStorageDelegate
+    
+    func userTaggingTextStorage(textStorage: VUserTaggingTextStorage!, wantsToShowViewController viewController: UIViewController!) {
+        
+        keyboardBar?.attachmentsBarHidden = true
+        
+        var searchTableView = viewController.view
+        searchTableView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        view.addSubview(searchTableView)
+        if let ownWindow = view.window, keyboardBar = keyboardBar {
+            var obscuredRectInWindow = keyboardBar.obscuredRectInWindow(ownWindow)
+            var obscuredRecInOwnView = ownWindow.convertRect(obscuredRectInWindow, toView: view)
+            var obscuredBottom = CGRectGetHeight(view.bounds) - CGRectGetMinY(obscuredRecInOwnView)
+            view.v_addFitToParentConstraintsToSubview(searchTableView, leading: 0, trailing: 0, top: topLayoutGuide.length, bottom: obscuredBottom)
+        }
+        
+    }
+    
+    func userTaggingTextStorage(textStorage: VUserTaggingTextStorage!, wantsToDismissViewController viewController: UIViewController!) {
+
+        viewController.view.removeFromSuperview()
+        keyboardBar?.attachmentsBarHidden = false
     }
 
 }
