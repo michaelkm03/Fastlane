@@ -204,7 +204,7 @@
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSearchBar];
 
-    VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController initWithDependencyManager:self.dependencyManager];
+    VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController newWithDependencyManager:self.dependencyManager];
     searchViewController.transitioningDelegate = self.transitionDelegate;
     [self.navigationController pushViewController:searchViewController animated:YES];
 }
