@@ -29,7 +29,7 @@ class ExperimentSettingsViewController: UITableViewController, ExperimentSetting
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear( animated )
         
-        self.initialExperimentIds = self.dataSource.experimentSettings.activeExperiments as? Set<Int>
+        self.initialExperimentIds = self.dataSource.experimentSettings.activeExperiments
         self.dataSource.loadSettings()
     }
     

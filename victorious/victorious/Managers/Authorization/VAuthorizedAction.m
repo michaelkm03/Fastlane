@@ -82,7 +82,6 @@ static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationVie
             [self showFailureAlertInViewController:presentingViewController];
         }
         
-        
         return NO;
     }
     else

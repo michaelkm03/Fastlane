@@ -11,12 +11,12 @@
 #import "VForceUpgradeViewController.h"
 #import "VDependencyManager+VDefaultTemplate.h"
 #import "VDependencyManager+VObjectManager.h"
-#import "VDependencyManager+VScaffoldViewController.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VInboxViewController.h"
 #import "VLoadingViewController.h"
 #import "VObjectManager.h"
 #import "VRootViewController.h"
-#import "VScaffoldViewController.h"
+#import "VTabScaffoldViewController.h"
 #import "VSessionTimer.h"
 #import "VThemeManager.h"
 #import "VTracking.h"
@@ -98,8 +98,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     self.deepLinkReceiver = [[VDeeplinkReceiver alloc] init];
     self.applicationTracking = [[VApplicationTracking alloc] init];
     [[VTrackingManager sharedInstance] addDelegate:self.applicationTracking];
-    
-    [[VObjectManager sharedManager] resetSessionID];
     
     self.sessionTimer = [[VSessionTimer alloc] init];
     
@@ -239,7 +237,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     self.dependencyManager = dependencyManager;
     self.applicationTracking.dependencyManager = dependencyManager;
     
-    VScaffoldViewController *scaffold = [self.dependencyManager scaffoldViewController];
+    VTabScaffoldViewController *scaffold = [self.dependencyManager scaffoldViewController];
     // Initialize followHelper with scaffold.dependencyManager so that it knows about LoginFlow information
     // This is a result of the refactor of FollowResponder protocol (VRootViewController is the actual responder
     // for follow actions)
@@ -521,7 +519,11 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 #pragma mark - VFollowResponder
 
-- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion fromViewController:(UIViewController *)viewControllerToPresentOn withScreenName:(NSString *)screenName
+- (void)followUser:(VUser *)user
+withAuthorizedBlock:(void (^)(void))authorizedBlock
+     andCompletion:(VFollowHelperCompletion)completion
+fromViewController:(UIViewController *)viewControllerToPresentOn
+    withScreenName:(NSString *)screenName
 {
     UIViewController *sourceViewController = viewControllerToPresentOn?:self;
     
@@ -535,10 +537,15 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 - (void)unfollowUser:(VUser *)user
  withAuthorizedBlock:(void (^)(void))authorizedBlock
        andCompletion:(VFollowHelperCompletion)completion
+  fromViewController:(UIViewController *)viewControllerToPresentOn withScreenName:(NSString *)screenName
 {
+    UIViewController *sourceViewController = viewControllerToPresentOn?:self;
+    
     [self.followHelper unfollowUser:user
                 withAuthorizedBlock:authorizedBlock
-                      andCompletion:completion];
+                      andCompletion:completion
+                 fromViewController:sourceViewController
+                     withScreenName:screenName];
 }
 
 #pragma mark - VHashtag

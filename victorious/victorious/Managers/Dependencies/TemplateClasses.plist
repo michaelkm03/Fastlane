@@ -83,7 +83,7 @@
 	<key>pollCreation.screen</key>
 	<string>VCreatePollViewController</string>
 	<key>tabMenu.scaffold</key>
-	<string>VTabMenuViewController</string>
+	<string>VTabScaffoldViewController</string>
 	<key>tab.menu</key>
 	<string>VTabMenuShim</string>
 	<key>stream.screen</key>
@@ -164,5 +164,7 @@
 	<string>VForcedWorkspaceContainerViewController</string>
 	<key>publish.screen</key>
 	<string>VPublishViewController</string>
+	<key>userHashtagSearch.screen</key>
+	<string>VUsersAndTagsSearchViewController</string>
 </dict>
 </plist>

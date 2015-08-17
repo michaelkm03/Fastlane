@@ -95,6 +95,7 @@
     
     VSleekStreamCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifierForSequence
                                                                                  forIndexPath:indexPath];
+    cell.accessibilityIdentifier = VAutomationIdentifierStreamCell;
     cell.dependencyManager = self.dependencyManager;
     cell.sequence = sequence;
     cell.stream = stream;

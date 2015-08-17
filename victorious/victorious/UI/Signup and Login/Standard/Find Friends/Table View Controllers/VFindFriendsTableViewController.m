@@ -20,7 +20,6 @@
 #import "VAuthorizedAction.h"
 #import "VDependencyManager.h"
 #import "VFollowResponder.h"
-#import "VFollowingHelper.h"
 #import "VFindContactsTableViewController.h"
 #import "VFindFacebookFriendsTableViewController.h"
 #import "VFindTwitterFriendsTableViewController.h"
@@ -31,8 +30,8 @@
 @property (nonatomic, strong) NSArray *users;
 @property (nonatomic, strong) NSMutableArray *usersFollowing;
 @property (nonatomic, strong) NSMutableArray *usersNotFollowing;
-@property (nonatomic, strong) VFollowingHelper *followingHelper;
 @property (nonatomic, assign) BOOL appearedOnce;
+@property (nonatomic, copy, readonly) NSString *sourceScreenName;
 
 @end
 
@@ -454,32 +453,13 @@
 
 #pragma mark - VFollowResponder
 
-- (VFollowingHelper *)followingHelper
+- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowEventCompletion)completion fromViewController:(UIViewController *)viewControllerToPresentOn withScreenName:(NSString *)screenName
 {
-    if ( _followingHelper != nil )
-    {
-        return _followingHelper;
-    }
-    
-    _followingHelper = [[VFollowingHelper alloc] initWithDependencyManager:self.dependencyManager viewControllerToPresentOn:self];
-    return _followingHelper;
-}
-
-- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion fromViewController:(UIViewController *)viewControllerToPresentOn withScreenName:(NSString *)screenName
-{
-    UIViewController *displayedVC = [self.delegate currentViewControllerDisplayed];
-    
-    NSDictionary *dict = @{
-                           NSStringFromClass([VFindContactsTableViewController class]) : VFollowSourceScreenFindFriendsContacts,
-                           NSStringFromClass([VFindFacebookFriendsTableViewController class]) : VFollowSourceScreenFindFriendsFacebook,
-                           NSStringFromClass([VFindTwitterFriendsTableViewController class]) : VFollowSourceScreenFindFriendsTwitter
-                           };
-    
-    NSString *sourceScreen = screenName?:[dict valueForKey:NSStringFromClass([displayedVC class])];
-    
+    NSString *sourceScreen = screenName?:self.sourceScreenName;
     id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
                                                                       withSender:nil];
     NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
+    
     [followResponder followUser:user
             withAuthorizedBlock:authorizedBlock
                   andCompletion:completion
@@ -489,11 +469,32 @@
 
 - (void)unfollowUser:(VUser *)user
  withAuthorizedBlock:(void (^)(void))authorizedBlock
-       andCompletion:(VFollowHelperCompletion)completion
+       andCompletion:(VFollowEventCompletion)completion
+  fromViewController:(UIViewController *)viewControllerToPresentOn
+      withScreenName:(NSString *)screenName
 {
-    [self.followingHelper unfollowUser:user
-                   withAuthorizedBlock:authorizedBlock
-                         andCompletion:completion];
+    NSString *sourceScreen = screenName?:self.sourceScreenName;
+    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
+                                                                      withSender:nil];
+    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
+    
+    [followResponder unfollowUser:user
+              withAuthorizedBlock:authorizedBlock
+                    andCompletion:completion
+               fromViewController:self
+                   withScreenName:sourceScreen];
+}
+
+- (NSString *)sourceScreenName
+{
+    UIViewController *displayedVC = [self.delegate currentViewControllerDisplayed];
+    
+    NSDictionary *dict = @{
+                           NSStringFromClass([VFindContactsTableViewController class]) : VFollowSourceScreenFindFriendsContacts,
+                           NSStringFromClass([VFindFacebookFriendsTableViewController class]) : VFollowSourceScreenFindFriendsFacebook,
+                           NSStringFromClass([VFindTwitterFriendsTableViewController class]) : VFollowSourceScreenFindFriendsTwitter
+                           };
+    return [dict valueForKey:NSStringFromClass([displayedVC class])];
 }
 
 @end

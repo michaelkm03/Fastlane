@@ -53,7 +53,7 @@ def init():
     _STAGING_HOST = 'http://staging.getvictorious.com'
     _QA_HOST = 'http://qa.getvictorious.com'
     _DEV_HOST = 'http://dev.getvictorious.com'
-    _LOCAL_HOST = 'http://localhost:8887'
+    _LOCAL_HOST = 'http://localhost'
     _DEFAULT_LOCAL_PORT = '8887'
 
     _AUTH_TOKEN = ''
