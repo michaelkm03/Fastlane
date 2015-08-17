@@ -12,6 +12,8 @@ import UIKit
 /// Utilize subclasses for implementations.
 class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     
+    private let kLoggedInChangedNotification = "com.getvictorious.LoggedInChangedNotification"
+    
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var separatorView: UIView!
@@ -72,6 +74,12 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("loginStatusDidChange"), name: kLoggedInChangedNotification, object: VObjectManager.sharedManager())
+    }
+    
+    /// Nils out shelf to respond to changes in login, should not be called except in response to a login change.
+    func loginStatusDidChange() {
+        shelf = nil
     }
     
 }

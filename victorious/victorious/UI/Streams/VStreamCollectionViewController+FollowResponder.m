@@ -26,21 +26,36 @@
     [followResponder unfollowUser:user withAuthorizedBlock:authorizedBlock andCompletion:completion fromViewController:self withScreenName:[self screenNameWithSubscreenName:screenName]];
 }
 
-- (void)followHashtag:(NSString *__nonnull)hashtag successBlock:(void (^ __nonnull)(NSArray *__nonnull))success failureBlock:(void (^ __nonnull)(NSError *__nonnull))failure
+- (void)followHashtag:(NSString *__nonnull)hashtag successBlock:(void (^ __nonnull)(NSArray *__nonnull))success failureBlock:(void (^ __nonnull)(NSError *))failure
 {
     [self withAuthorizationDo:^(BOOL authorized) {
-        id <VHashtagResponder> hashtagResponder = [self.nextResponder targetForAction:@selector(followHashtag:successBlock:failureBlock:) withSender:nil];
-        NSAssert(hashtagResponder != nil, @"VStreamCollectionViewController needs a hashtag repsonder up it's responder chain to send messages to.");
-        [hashtagResponder followHashtag:hashtag successBlock:success failureBlock:failure];
+        if ( authorized )
+        {
+            id <VHashtagResponder> hashtagResponder = [self.nextResponder targetForAction:@selector(followHashtag:successBlock:failureBlock:) withSender:nil];
+            NSAssert(hashtagResponder != nil, @"VStreamCollectionViewController needs a hashtag repsonder up it's responder chain to send messages to.");
+            [hashtagResponder followHashtag:hashtag successBlock:success failureBlock:failure];
+        }
+        else if ( failure != nil )
+        {
+            failure(nil);
+        }
     }];
+    
 }
 
-- (void)unfollowHashtag:(NSString *__nonnull)hashtag successBlock:(void (^ __nonnull)(NSArray *__nonnull))success failureBlock:(void (^ __nonnull)(NSError *__nonnull))failure
+- (void)unfollowHashtag:(NSString *__nonnull)hashtag successBlock:(void (^ __nonnull)(NSArray *__nonnull))success failureBlock:(void (^ __nonnull)(NSError *))failure
 {
     [self withAuthorizationDo:^(BOOL authorized) {
-        id <VHashtagResponder> hashtagResponder = [self.nextResponder targetForAction:@selector(unfollowHashtag:successBlock:failureBlock:) withSender:nil];
-        NSAssert(hashtagResponder != nil, @"VStreamCollectionViewController needs a hashtag repsonder up it's responder chain to send messages to.");
-        [hashtagResponder unfollowHashtag:hashtag successBlock:success failureBlock:failure];
+        if ( authorized )
+        {
+            id <VHashtagResponder> hashtagResponder = [self.nextResponder targetForAction:@selector(unfollowHashtag:successBlock:failureBlock:) withSender:nil];
+            NSAssert(hashtagResponder != nil, @"VStreamCollectionViewController needs a hashtag repsonder up it's responder chain to send messages to.");
+            [hashtagResponder unfollowHashtag:hashtag successBlock:success failureBlock:failure];
+        }
+        else if ( failure != nil )
+        {
+            failure(nil);
+        }
     }];
 }
 

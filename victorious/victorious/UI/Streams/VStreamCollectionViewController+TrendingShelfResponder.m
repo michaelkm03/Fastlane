@@ -22,7 +22,7 @@
 
 - (void)trendingHashtagShelfSelected:(NSString *__nonnull)hashtag fromShelf:(HashtagShelf *__nonnull)fromShelf
 {
-    [self navigateToStream:fromShelf.stream atStreamItem:nil];
+    [self showHashtagStreamWithHashtag:hashtag];
 }
 
 @end

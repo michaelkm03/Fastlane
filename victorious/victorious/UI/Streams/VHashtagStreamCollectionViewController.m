@@ -232,10 +232,8 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     {
         return;
     }
-    
     [self.followControl setControlState:VFollowControlStateLoading
                                animated:YES];
-    
     self.followingEnabled = NO;
     
     id <VHashtagResponder> responder = [self.nextResponder targetForAction:@selector(followHashtag:successBlock:failureBlock:) withSender:self];
@@ -264,10 +262,8 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     {
         return;
     }
-    
     [self.followControl setControlState:VFollowControlStateLoading
                                animated:YES];
-    
     self.followingEnabled = NO;
     
     id <VHashtagResponder> responder = [self.nextResponder targetForAction:@selector(unfollowHashtag:successBlock:failureBlock:) withSender:self];
