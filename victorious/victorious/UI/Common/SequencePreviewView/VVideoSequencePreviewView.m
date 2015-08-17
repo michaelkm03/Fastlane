@@ -243,11 +243,11 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     {
         [self.trackingHelper trackAutoplayComplete50];
     }
-    else if (percent >= 75.0f && percent < 99.0f)
+    else if (percent >= 75.0f && percent < 95.0f)
     {
         [self.trackingHelper trackAutoplayComplete75];
     }
-    else if (percent >= 99)
+    else if (percent >= 95.0f)
     {
         [self.trackingHelper trackAutoplayComplete100];
     }
