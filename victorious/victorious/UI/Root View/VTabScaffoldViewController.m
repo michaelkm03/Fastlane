@@ -31,6 +31,7 @@
 // Dependencies
 #import "VTabMenuShim.h"
 #import "VCoachmarkManager.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
 
 // Etc
 #import "NSArray+VMap.h"
@@ -93,6 +94,8 @@ NSString * const kFirstTimeContentKey = @"firstTimeContent";
     self.rootNavigationController.view.frame = self.view.bounds;
     self.rootNavigationController.view.translatesAutoresizingMaskIntoConstraints = NO;
     self.rootNavigationController.navigationBarHidden = YES;
+    self.rootNavigationController.navigationBar.translucent = NO;
+    [self.dependencyManager applyStyleToNavigationBar:self.rootNavigationController.navigationBar];
     [self.view addSubview:self.rootNavigationController.view];
     [self.view v_addFitToParentConstraintsToSubview:self.rootNavigationController.view];
     [self.rootNavigationController didMoveToParentViewController:self];

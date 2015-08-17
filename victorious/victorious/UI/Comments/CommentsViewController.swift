@@ -189,8 +189,10 @@ extension CommentsViewController: VKeyboardInputAccessoryViewDelegate {
                 strongSelf.mediaAttachmentPresenter = nil
                 strongSelf.keyboardBar?.setSelectedThumbnail(publishParameters?.previewImage)
                 strongSelf.keyboardBar?.startEditing()
+                strongSelf.dismissViewControllerAnimated(true, completion: nil)
             }
         }
+        mediaAttachmentPresenter?.presentOnViewController(self)
     }
     
     func keyboardInputAccessoryViewWantsToClearMedia(inputAccessoryView: VKeyboardInputAccessoryView) {
