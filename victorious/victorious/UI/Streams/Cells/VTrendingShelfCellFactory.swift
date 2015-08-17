@@ -28,14 +28,13 @@ extension VTrendingShelfCellFactory: VStreamCellFactory {
     
     func collectionView(collectionView: UICollectionView, cellForStreamItem streamItem: VStreamItem, atIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if let shelf = streamItem as? UserShelf {
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(VTrendingUserShelfCollectionViewCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as? VTrendingUserShelfCollectionViewCell
-            if let cell = cell {
+            if let cell = collectionView.dequeueReusableCellWithReuseIdentifier(VTrendingUserShelfCollectionViewCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as? VTrendingUserShelfCollectionViewCell {
                 setup(cell, shelf: shelf, dependencyManager: dependencyManager)
                 return cell
             }
-        } else if let shelf = streamItem as? HashtagShelf {
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(VTrendingHashtagShelfCollectionViewCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as? VTrendingHashtagShelfCollectionViewCell
-            if let cell = cell {
+        }
+        else if let shelf = streamItem as? HashtagShelf {
+            if let cell = collectionView.dequeueReusableCellWithReuseIdentifier(VTrendingHashtagShelfCollectionViewCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as? VTrendingHashtagShelfCollectionViewCell {
                 setup(cell, shelf: shelf, dependencyManager: dependencyManager)
                 return cell
             }
