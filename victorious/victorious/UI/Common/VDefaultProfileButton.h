@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  A UIButton for profiles.  It will default the profile image to the themed profile image.
  */
@@ -19,3 +21,5 @@
 - (void)addBorderWithWidth:(CGFloat)width andColor:(UIColor *)color;
 
 @end
+
+NS_ASSUME_NONNULL_END
