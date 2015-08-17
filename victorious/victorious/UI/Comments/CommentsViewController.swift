@@ -69,12 +69,6 @@ class CommentsViewController: UIViewController, VKeyboardInputAccessoryViewDeleg
         commentsDataSourceSwitcher.dataSource.delegate = self
         
         keyboardBar = VKeyboardInputAccessoryView.defaultInputAccessoryViewWithDependencyManager(dependencyManager)
-        if let keyboardBar = keyboardBar {
-            keyboardBar.setTranslatesAutoresizingMaskIntoConstraints(false)
-            keyboardBar.delegate = self
-            keyboardBar.textStorageDelegate = self
-        }
-        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -113,7 +107,15 @@ class CommentsViewController: UIViewController, VKeyboardInputAccessoryViewDeleg
     
     // MARK:  Keyboard Bar
     
-    private var keyboardBar : VKeyboardInputAccessoryView?
+    private var keyboardBar : VKeyboardInputAccessoryView? {
+        didSet {
+            if let keyboardBar = keyboardBar {
+                keyboardBar.setTranslatesAutoresizingMaskIntoConstraints(false)
+                keyboardBar.delegate = self
+                keyboardBar.textStorageDelegate = self
+            }
+        }
+    }
     
     override func canBecomeFirstResponder() -> Bool {
         return true
@@ -137,6 +139,10 @@ class CommentsViewController: UIViewController, VKeyboardInputAccessoryViewDeleg
         }
     }
 
+    // MARK: - Editing
+
+    private var modalTransitioningDelegate = VTransitionDelegate(transition: VSimpleModalTransition())
+    
 }
 
 extension CommentsViewController: VKeyboardInputAccessoryViewDelegate, VUserTaggingTextStorageDelegate {
@@ -288,6 +294,8 @@ extension CommentsViewController: UICollectionViewDataSource, CommentsDataSource
         cell.dependencyManager = dependencyManager
         cell.comment = commentForIndexPath
         cell.commentAndMediaView.textView.tagTapDelegate = self
+        cell.swipeViewController.controllerDelegate = self
+        cell.commentsUtilitiesDelegate = self
         cell.onUserProfileTapped = { [weak self] in
             if let strongSelf = self {
                 var profileViewController = strongSelf.dependencyManager.userProfileViewControllerWithUser(commentForIndexPath.user)
@@ -299,8 +307,11 @@ extension CommentsViewController: UICollectionViewDataSource, CommentsDataSource
 
     func commentsDataSourceDidUpdate(dataSource: CommentsDataSource) {
         collectionView.reloadData()
-        focusHelper?.updateFocus()
-        updateInsetForKeyboardBarState()
+        dispatch_after(0.1, {
+            self.focusHelper?.updateFocus()
+            self.updateInsetForKeyboardBarState()
+        })
+        
     }
     
     func commentsDataSourceDidUpdate(dataSource: CommentsDataSource, deepLinkinkId: NSNumber) {
@@ -339,7 +350,24 @@ extension CommentsViewController: UICollectionViewDelegateFlowLayout {
 
 }
 
-extension CommentsViewController: VTagSensitiveTextViewDelegate {
+extension CommentsViewController: VTagSensitiveTextViewDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate {
+    
+    // MARK: - VSwipeViewControllerDelegate
+    func backgroundColorForGutter() -> UIColor! {
+        return UIColor(white: 0.96, alpha: 1.0)
+    }
+
+    func cellWillShowUtilityButtons(cellView: UIView!) {
+        
+        for cell in collectionView.visibleCells() {
+            if cell as! NSObject === cellView {
+                continue
+            }
+            if let commentCell = cell as? VContentCommentsCell {
+                commentCell.swipeViewController.hideUtilityButtons()
+            }
+        }
+    }
     
     // MARK: - VTagSensitiveTextViewDelegate
     
@@ -355,6 +383,50 @@ extension CommentsViewController: VTagSensitiveTextViewDelegate {
         }
     }
     
+    // MARK: - VCommentCellUtilitiesDelegate
+
+    func commentRemoved(comment: VComment) {
+        // FIXME: removing comment
+    }
+
+    func editComment(comment: VComment) {
+        var editViewController = VEditCommentViewController.instantiateFromStoryboardWithComment(comment)
+        editViewController.transitioningDelegate = modalTransitioningDelegate
+        editViewController.delegate = self
+        self.presentViewController(editViewController, animated: true, completion: nil)
+    }
+
+    func replyToComment(comment: VComment) {
+        // FIXME: prepare to reply
+    }
+
+    // MARK: - VEditCommentViewControllerDelegate
+   
+    func didFinishEditingComment(comment: VComment) {
+        
+        dismissViewControllerAnimated(true, completion: {
+            for cell in self.collectionView.visibleCells() {
+                if let commentCell = cell as? VContentCommentsCell {
+                    if commentCell.comment.remoteId == comment.remoteId {
+                        // Set updated comment on cell
+                        commentCell.comment = comment
+
+                        // Try to reload the cell without reloading the whole section
+                        var indexPathToInvalidate = self.collectionView.indexPathForCell(commentCell)
+                        if let indexPathToInvalidate = indexPathToInvalidate {
+                            self.collectionView.performBatchUpdates({ () -> Void in
+                                self.collectionView.reloadItemsAtIndexPaths([indexPathToInvalidate])
+                            }, completion: nil)
+                        }
+                        else {
+                            self.collectionView.reloadSections(NSIndexSet(index: 0))
+                        }
+                    }
+                }
+            }
+        })
+    }
+
 }
 
 extension CommentsViewController: VScrollPaginatorDelegate {

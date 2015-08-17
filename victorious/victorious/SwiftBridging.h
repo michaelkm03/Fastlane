@@ -106,6 +106,12 @@
 #import "VUserTaggingTextStorage.h"
 #import "VInlineSearchTableViewController.h"
 #import "UIView+AutoLayout.h"
+#import "VSwipeView.h"
+#import "VUtilityButtonCell.h"
+#import "VCommentCellUtilitiesDelegate.h"
+#import "VEditCommentViewController.h"
+#import "VSimpleModalTransition.h"
+#import "VTransitionDelegate.h"
 
 //Shelves
 #import "VStreamCellFactory.h"
