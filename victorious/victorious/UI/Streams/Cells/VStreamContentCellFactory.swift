@@ -39,7 +39,7 @@ class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
     /// The cell factory that will provide marquee cells
     private let marqueeCellFactory: VMarqueeCellFactory
     
-    private let trendingShelfFactory : VTrendingShelfCellFactory?
+    private let trendingShelfFactory: VTrendingShelfCellFactory?
     
     private let listShelfFactory : VListShelfCellFactory?
     
@@ -67,8 +67,7 @@ class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
                 return trendingShelfFactory
             case VStreamItemTypePlaylist, VStreamItemTypeRecent:
                 return listShelfFactory
-            default:
-                break
+            default: ()
             }
         }
         return defaultFactory()

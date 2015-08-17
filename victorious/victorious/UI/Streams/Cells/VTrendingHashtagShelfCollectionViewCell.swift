@@ -161,7 +161,8 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
                     if let strongSelf = self {
                         strongSelf.updateFollowControlState()
                     }
-                    }, failureBlock: { [weak self] (NSError) -> Void in
+                    },
+                    failureBlock: { [weak self] (NSError) -> Void in
                         if let strongSelf = self {
                             strongSelf.updateFollowControlState()
                         }
@@ -173,7 +174,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
         case .Followed:
             if let shelf = shelf as? HashtagShelf {
                 followControl.setControlState(VFollowControlState.Loading, animated: true)
-                target.unfollowHashtag(shelf.hashtagTitle, successBlock: { [weak self] ([AnyObject]) -> Void in
+                target.unfollowHashtag(shelf.hashtagTitle, successBlock: { [weak self] ([AnyObject]) in
                     if let strongSelf = self {
                         strongSelf.updateFollowControlState()
                     }
@@ -186,7 +187,8 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
             else {
                 assertionFailure("The VTrendingHashtagShelfCollectionViewCell needs a hashtag responder further up its responder chain.")
             }
-        default:()
+        case .Loading:
+            break
         }
     }
 }

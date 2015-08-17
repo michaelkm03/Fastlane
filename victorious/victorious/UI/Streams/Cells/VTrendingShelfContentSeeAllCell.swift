@@ -11,8 +11,8 @@ import UIKit
 /// Displays a simple overlay and "see all" label on top of a shelf content collection view cell.
 class VTrendingShelfContentSeeAllCell: VShelfContentCollectionViewCell {
 
-    private let overlayView: UIView = UIView()
-    private let overlayLabel: UILabel = UILabel()
+    private let overlayView = UIView()
+    private let overlayLabel = UILabel()
     
     required init(frame: CGRect) {
         super.init(frame: frame)
