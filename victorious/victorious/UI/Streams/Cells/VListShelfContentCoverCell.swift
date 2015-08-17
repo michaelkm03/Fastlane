@@ -95,7 +95,8 @@ class VListShelfContentCoverCell : VShelfContentCollectionViewCell {
 extension VListShelfContentCoverCell: VStreamCellComponentSpecialization {
     
     override class func reuseIdentifierForStreamItem(streamItem: VStreamItem, baseIdentifier: String?, dependencyManager: VDependencyManager?) -> String {
-        return reuseIdentifierForStreamItem(streamItem, baseIdentifier: baseIdentifier, dependencyManager: dependencyManager, className: NSStringFromClass(self))
+        let base = identifier(baseIdentifier, className: NSStringFromClass(self))
+        return reuseIdentifierForStreamItem(streamItem, baseIdentifier: base, dependencyManager: dependencyManager)
     }
     
 }
