@@ -50,8 +50,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
     
     //MARK: - Setters
     
-    override func onShelfSet()
-    {
+    override func onShelfSet() {
         super.onShelfSet()
         if let shelf = shelf as? HashtagShelf {
             hashtagTextView.text = VTrendingHashtagShelfCollectionViewCell.getHashtagText(shelf)
@@ -157,12 +156,13 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
         case .Unfollowed:
             if let shelf = shelf as? HashtagShelf {
                 followControl.setControlState(VFollowControlState.Loading, animated: true)
-                target.followHashtag(shelf.hashtagTitle, successBlock: { [weak self] ([AnyObject]) -> Void in
-                    if let strongSelf = self {
-                        strongSelf.updateFollowControlState()
-                    }
+                target.followHashtag(shelf.hashtagTitle,
+                    successBlock: { [weak self] ([AnyObject]) in
+                        if let strongSelf = self {
+                            strongSelf.updateFollowControlState()
+                        }
                     },
-                    failureBlock: { [weak self] (NSError) -> Void in
+                    failureBlock: { [weak self] (NSError) in
                         if let strongSelf = self {
                             strongSelf.updateFollowControlState()
                         }
@@ -174,11 +174,12 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
         case .Followed:
             if let shelf = shelf as? HashtagShelf {
                 followControl.setControlState(VFollowControlState.Loading, animated: true)
-                target.unfollowHashtag(shelf.hashtagTitle, successBlock: { [weak self] ([AnyObject]) in
-                    if let strongSelf = self {
-                        strongSelf.updateFollowControlState()
-                    }
-                    }, failureBlock: { [weak self] (NSError) -> Void in
+                target.unfollowHashtag(shelf.hashtagTitle,
+                    successBlock: { [weak self] ([AnyObject]) in
+                        if let strongSelf = self {
+                            strongSelf.updateFollowControlState()
+                        }
+                    }, failureBlock: { [weak self] (NSError) in
                         if let strongSelf = self {
                             strongSelf.updateFollowControlState()
                         }
