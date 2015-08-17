@@ -24,12 +24,20 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     
     var shelf: VShelf? {
         didSet {
+            if shelf == oldValue {
+                return
+            }
+            
             self.onShelfSet()
         }
     }
     
     var dependencyManager : VDependencyManager? {
         didSet {
+            if dependencyManager == oldValue {
+                return
+            }
+            
             self.onDependencyManagerSet()
         }
     }

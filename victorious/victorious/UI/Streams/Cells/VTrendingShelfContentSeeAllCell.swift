@@ -52,14 +52,8 @@ class VTrendingShelfContentSeeAllCell: VShelfContentCollectionViewCell {
 extension VTrendingShelfContentSeeAllCell: VStreamCellComponentSpecialization {
     
     override class func reuseIdentifierForStreamItem(streamItem: VStreamItem, baseIdentifier: String?, dependencyManager: VDependencyManager?) -> String {
-        
-        var identifier = ""
-        if let baseIdentifier = baseIdentifier {
-            identifier = baseIdentifier + "."
-        }
-        identifier += NSStringFromClass(self)
-        
-        return super.reuseIdentifierForStreamItem(streamItem, baseIdentifier: baseIdentifier, dependencyManager: dependencyManager)
+        let updatedIdentifier = self.identifier(baseIdentifier, className: NSStringFromClass(self))
+        return super.reuseIdentifierForStreamItem(streamItem, baseIdentifier: updatedIdentifier, dependencyManager: dependencyManager)
     }
     
 }
