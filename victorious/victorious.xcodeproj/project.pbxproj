@@ -6127,25 +6127,25 @@
 				D8DF71E11AFC3476002EA7A5 /* Template A */,
 				0308B1161AB2AE9700144E53 /* Template C */,
 				D8B44CC51ADCB3A3006340E8 /* Template D */,
+				F06B41851B7ADA52008709E8 /* Trending Shelf Cell */,
 				D87E25ED1AE180DA008F0769 /* VAbstractActionView.h */,
 				D87E25EE1AE180DA008F0769 /* VAbstractActionView.m */,
-				A705F4541B3DC839007DBD3C /* VCellSizingUserInfoKeys.h */,
-				F0BF9F6D1B72DC1600B24225 /* VStreamContentCellFactory.swift */,
-				F07557EB1B751F5300BB2648 /* VDirectoryContentCellFactory.swift */,
-				F07557ED1B751F8C00BB2648 /* VSequenceContentCellFactory.swift */,
-				F06B41851B7ADA52008709E8 /* Trending Shelf Cell */,
-				F06B41CD1B7FE453008709E8 /* Shelf Content Cell */,
-				F07557EA1B73EBD400BB2648 /* VStreamContentCellFactoryDelegate.h */,
 				D893674E1ADDE1B9001D2426 /* VActionButtonAnimationController.h */,
 				D893674F1ADDE1B9001D2426 /* VActionButtonAnimationController.m */,
+				D888B43E1B01A32A00EA470D /* VCellFocus.h */,
+				A705F4541B3DC839007DBD3C /* VCellSizingUserInfoKeys.h */,
+				F07557EB1B751F5300BB2648 /* VDirectoryContentCellFactory.swift */,
 				A7AEF9731A83F1C300A3D3A0 /* VSequenceActionController.h */,
 				A7AEF9741A83F1C300A3D3A0 /* VSequenceActionController.m */,
+				F07557ED1B751F8C00BB2648 /* VSequenceContentCellFactory.swift */,
 				A7724FF81B33905000B1BBB3 /* VSequenceCountsTextView.h */,
 				A7724FF91B33905000B1BBB3 /* VSequenceCountsTextView.m */,
+				F06B417C1B7ADA4B008709E8 /* VShelfContentCollectionViewCell.swift */,
 				0308B1121AB2A80900144E53 /* VStreamCellFactory.h */,
-				D888B43E1B01A32A00EA470D /* VCellFocus.h */,
 				D8D122F41AFFEA2600F29BD5 /* VStreamCellSpecialization.h */,
 				C39864B01B1E9F6100694AB3 /* VStreamCellTracking.h */,
+				F0BF9F6D1B72DC1600B24225 /* VStreamContentCellFactory.swift */,
+				F07557EA1B73EBD400BB2648 /* VStreamContentCellFactoryDelegate.h */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -7634,23 +7634,15 @@
 		F06B41851B7ADA52008709E8 /* Trending Shelf Cell */ = {
 			isa = PBXGroup;
 			children = (
+				F06B41791B7ADA4B008709E8 /* VTrendingHashtagShelfCollectionViewCell.swift */,
+				F06B417B1B7ADA4B008709E8 /* VTrendingHashtagShelfCollectionViewCell.xib */,
 				F06B41B81B7EC6F3008709E8 /* VTrendingShelfCellFactory.swift */,
 				F06B41771B7ADA4B008709E8 /* VTrendingShelfCollectionViewCell.swift */,
-				F06B41781B7ADA4B008709E8 /* VTrendingUserShelfCollectionViewCell.swift */,
-				F06B41791B7ADA4B008709E8 /* VTrendingHashtagShelfCollectionViewCell.swift */,
-				F06B417A1B7ADA4B008709E8 /* VTrendingUserShelfCollectionViewCell.xib */,
-				F06B417B1B7ADA4B008709E8 /* VTrendingHashtagShelfCollectionViewCell.xib */,
 				F06B41CE1B7FE817008709E8 /* VTrendingShelfContentSeeAllCell.swift */,
+				F06B41781B7ADA4B008709E8 /* VTrendingUserShelfCollectionViewCell.swift */,
+				F06B417A1B7ADA4B008709E8 /* VTrendingUserShelfCollectionViewCell.xib */,
 			);
 			name = "Trending Shelf Cell";
-			sourceTree = "<group>";
-		};
-		F06B41CD1B7FE453008709E8 /* Shelf Content Cell */ = {
-			isa = PBXGroup;
-			children = (
-				F06B417C1B7ADA4B008709E8 /* VShelfContentCollectionViewCell.swift */,
-			);
-			name = "Shelf Content Cell";
 			sourceTree = "<group>";
 		};
 		F06F10C31AC201B90062E1D1 /* Directory */ = {

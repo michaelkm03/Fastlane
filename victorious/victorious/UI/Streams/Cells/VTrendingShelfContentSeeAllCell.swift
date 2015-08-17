@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// Displays a simple overlay and "see all" label on top of a shelf content collection view cell.
 class VTrendingShelfContentSeeAllCell: VShelfContentCollectionViewCell {
 
     private let overlayView: UIView = UIView()
@@ -51,7 +52,14 @@ class VTrendingShelfContentSeeAllCell: VShelfContentCollectionViewCell {
 extension VTrendingShelfContentSeeAllCell: VStreamCellComponentSpecialization {
     
     override class func reuseIdentifierForStreamItem(streamItem: VStreamItem, baseIdentifier: String?, dependencyManager: VDependencyManager?) -> String {
-        return reuseIdentifierForStreamItem(streamItem, baseIdentifier: baseIdentifier, dependencyManager: dependencyManager, className: NSStringFromClass(self))
+        
+        var identifier = ""
+        if let baseIdentifier = baseIdentifier {
+            identifier = baseIdentifier + "."
+        }
+        identifier += NSStringFromClass(self)
+        
+        return super.reuseIdentifierForStreamItem(streamItem, baseIdentifier: baseIdentifier, dependencyManager: dependencyManager)
     }
     
 }

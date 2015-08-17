@@ -192,6 +192,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
 }
 
 extension VTrendingHashtagShelfCollectionViewCell: CCHLinkTextViewDelegate {
+    
     func linkTextView(linkTextView: CCHLinkTextView!, didTapLinkWithValue value: AnyObject!) {
         let responder: VTrendingHashtagShelfResponder = typedResponder()
         if let hashtag = value as? String, let shelf = shelf as? HashtagShelf {
@@ -202,6 +203,7 @@ extension VTrendingHashtagShelfCollectionViewCell: CCHLinkTextViewDelegate {
             assertionFailure("VTrendingHashtagShelfCollectionViewCell needs a VHashtagSelectionResponder up it's responder chain to send messages to.")
         }
     }
+    
 }
 
 private extension VDependencyManager {

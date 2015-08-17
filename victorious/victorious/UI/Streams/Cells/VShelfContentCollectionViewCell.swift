@@ -8,11 +8,15 @@
 
 import UIKit
 
+/// A simple UICollectionViewCell with a loading background and a preview view
+/// for displaying the content of any provided stream item.
 class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
 
+    /// The view that will house the preview view.
     let previewViewContainer: UIView = UIView()
     private var previewView: VStreamItemPreviewView?
     
+    /// The stream item whose content will populate this cell.
     var streamItem: VStreamItem? {
         didSet {
             if let previewView = previewView {
@@ -32,12 +36,14 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
         }
     }
     
+    /// The dependency manager whose colors and fonts will be used to style this cell.
     var dependencyManager: VDependencyManager? {
         didSet {
             onDependencyManagerSet()
         }
     }
     
+    /// Called when a new dependency manager is set.
     func onDependencyManagerSet() {
         if let dependencyManager = dependencyManager {
             dependencyManager.addLoadingBackgroundToBackgroundHost(self)
@@ -54,17 +60,20 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
     }
     
     private func setup() {
+        previewViewContainer.backgroundColor = UIColor.clearColor()
         contentView.addSubview(previewViewContainer)
         contentView.v_addFitToParentConstraintsToSubview(previewViewContainer)
     }
     
-    static func reuseIdentifierForStreamItem(streamItem: VStreamItem, baseIdentifier: String?, dependencyManager: VDependencyManager?, className: String) -> String {
+}
+
+extension VShelfContentCollectionViewCell: VStreamCellComponentSpecialization {
+    
+    class func reuseIdentifierForStreamItem(streamItem: VStreamItem, baseIdentifier: String?, dependencyManager: VDependencyManager?) -> String {
         var identifier = ""
         if let base = baseIdentifier {
             identifier = base
         }
-        
-        identifier += className
         
         if let itemType = streamItem.itemType {
             identifier += "." + itemType
@@ -76,19 +85,12 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
         
         return identifier
     }
-}
-
-extension VShelfContentCollectionViewCell: VStreamCellComponentSpecialization {
-    
-    class func reuseIdentifierForStreamItem(streamItem: VStreamItem, baseIdentifier: String?, dependencyManager: VDependencyManager?) -> String {
-        return reuseIdentifierForStreamItem(streamItem, baseIdentifier: baseIdentifier, dependencyManager: dependencyManager, className: NSStringFromClass(self))
-    }
     
 }
 
 extension VShelfContentCollectionViewCell: VBackgroundContainer {
     
-    func backgroundContainerView() -> UIView! {
+    func loadingBackgroundContainerView() -> UIView! {
         return previewViewContainer
     }
     
