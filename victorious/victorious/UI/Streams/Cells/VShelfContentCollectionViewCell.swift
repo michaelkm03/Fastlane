@@ -19,6 +19,10 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
     /// The stream item whose content will populate this cell.
     var streamItem: VStreamItem? {
         didSet {
+            if streamItem == oldValue {
+                return
+            }
+            
             if let previewView = previewView {
                 if previewView.canHandleStreamItem(streamItem) {
                     previewView.streamItem = streamItem
@@ -70,20 +74,32 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
 extension VShelfContentCollectionViewCell: VStreamCellComponentSpecialization {
     
     class func reuseIdentifierForStreamItem(streamItem: VStreamItem, baseIdentifier: String?, dependencyManager: VDependencyManager?) -> String {
-        var identifier = ""
-        if let base = baseIdentifier {
-            identifier = base
-        }
+        var updatedIdentifier = identifier(baseIdentifier, className: NSStringFromClass(self))
         
         if let itemType = streamItem.itemType {
-            identifier += "." + itemType
+            updatedIdentifier += "." + itemType
         }
         
         if let itemSubType = streamItem.itemSubType {
-            identifier += "." + itemSubType
+            updatedIdentifier += "." + itemSubType
         }
         
-        return identifier
+        return updatedIdentifier
+    }
+    
+    /// The suggested identifier based on the provided baseIdentifier and class name.
+    ///
+    /// :param: baseIdentifier The existing identifier, if present.
+    /// :param: className The string representation of the current class or another unique identifier.
+    ///
+    /// :return: A string based on the provided inputs.
+    static func identifier(baseIdentifier: String?, className: String) -> String {
+        var updatedIdentifier = className
+        if let existingIdentifier = baseIdentifier {
+            updatedIdentifier = existingIdentifier
+        }
+        updatedIdentifier += "."
+        return updatedIdentifier
     }
     
 }
