@@ -92,6 +92,16 @@
 #import "VMediaAttachmentPresenter.h"
 #import "UIImageView+Blurring.h"
 #import "VSequence+Fetcher.h"
+#import "VCollectionViewStreamFocusHelper.h"
+#import "VUserProfileViewController.h"
+#import "VDependencyManager+VUserProfile.h"
+#import "VTagSensitiveTextViewDelegate.h"
+#import "VTagSensitiveTextView.h"
+#import "VTag.h"
+#import "VUserTag.h"
+#import "VHashtagStreamCollectionViewController.h"
+#import "VCommentTextAndMediaView.h"
+#import "VTextAndMediaView.h"
 
 //Shelves
 #import "VStreamCellFactory.h"

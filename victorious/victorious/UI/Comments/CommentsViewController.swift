@@ -51,6 +51,7 @@ class CommentsViewController: UIViewController, VKeyboardInputAccessoryViewDeleg
     private var authorizedAction : VAuthorizedAction!
     private var publishParameters: VPublishParameters?
     private var mediaAttachmentPresenter: VMediaAttachmentPresenter?
+    private var focusHelper : VCollectionViewStreamFocusHelper?
     
     // MARK: Outlets
     
@@ -62,6 +63,7 @@ class CommentsViewController: UIViewController, VKeyboardInputAccessoryViewDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        focusHelper = VCollectionViewStreamFocusHelper(collectionView: collectionView)
         scrollPaginator.delegate = self
         
         commentsDataSourceSwitcher.dataSource.delegate = self
@@ -88,14 +90,19 @@ class CommentsViewController: UIViewController, VKeyboardInputAccessoryViewDeleg
         collectionView.accessoryView = keyboardBar
         collectionView.becomeFirstResponder()
         keyboardBar?.becomeFirstResponder()
-        updateInsetForKeyboardBarState()
+        focusHelper?.updateFocus()
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
         self.resignFirstResponder()
-        self.rootNavigationController().setNavigationBarHidden(true, animated: true)
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        focusHelper?.endFocusOnAllCells()
     }
     
     // MARK:  Keyboard Bar
@@ -117,11 +124,11 @@ class CommentsViewController: UIViewController, VKeyboardInputAccessoryViewDeleg
             var obscuredRectInWindow = keyboardBar.obscuredRectInWindow(currentWindow)
             var obscuredRecInOwnView = currentWindow.convertRect(obscuredRectInWindow, toView: view)
             var bottomObscuredHeight = CGRectGetMaxY(view.bounds) - CGRectGetMinY(obscuredRecInOwnView)
-            collectionView.contentInset = UIEdgeInsetsMake(topLayoutGuide.length, 0, bottomObscuredHeight, 0)
-            collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(topLayoutGuide.length, 0, bottomObscuredHeight, 0)
-            //FIXME: update the focus helper here
+            var insetsForKeyboardBarState = UIEdgeInsetsMake(topLayoutGuide.length, 0, bottomObscuredHeight, 0)
+            collectionView.contentInset = insetsForKeyboardBarState
+            collectionView.scrollIndicatorInsets = insetsForKeyboardBarState
+            focusHelper?.focusAreaInsets = insetsForKeyboardBarState
         }
-        
     }
 
 }
@@ -250,20 +257,44 @@ extension CommentsViewController: UICollectionViewDataSource, CommentsDataSource
         var cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifierForComment, forIndexPath: indexPath) as! VContentCommentsCell
         cell.dependencyManager = dependencyManager
         cell.comment = commentForIndexPath
+        cell.commentAndMediaView.textView.tagTapDelegate = self
+        cell.onUserProfileTapped = { [weak self] in
+            if let strongSelf = self {
+                var profileViewController = strongSelf.dependencyManager.userProfileViewControllerWithUser(commentForIndexPath.user)
+                strongSelf.rootNavigationController()?.pushViewController(profileViewController, animated: true)
+            }
+        }
         return cell as UICollectionViewCell
     }
 
     func commentsDataSourceDidUpdate(dataSource: CommentsDataSource) {
         collectionView.reloadData()
+        focusHelper?.updateFocus()
+        updateInsetForKeyboardBarState()
     }
     
     func commentsDataSourceDidUpdate(dataSource: CommentsDataSource, deepLinkinkId: NSNumber) {
         collectionView.reloadData()
+        focusHelper?.updateFocus()
+        updateInsetForKeyboardBarState()
     }
     
 }
 
 extension CommentsViewController: UICollectionViewDelegateFlowLayout {
+    
+    // MARK: - UIScrollViewDelegate
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        focusHelper?.updateFocus()
+        scrollPaginator.scrollViewDidScroll(scrollView)
+    }
+    
+    // MARK: - UICollectionViewDelegate
+    
+    func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        focusHelper?.endFocusOnCell(cell)
+    }
     
     // MARK: - UICollectionViewDelegateFlowLayout
     
@@ -275,9 +306,23 @@ extension CommentsViewController: UICollectionViewDelegateFlowLayout {
             dependencyManager: dependencyManager)
         return CGSizeMake(CGRectGetWidth(view.bounds), size.height)
     }
+
+}
+
+extension CommentsViewController: VTagSensitiveTextViewDelegate {
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        scrollPaginator.scrollViewDidScroll(scrollView)
+    // MARK: - VTagSensitiveTextViewDelegate
+    
+    func tagSensitiveTextView(tagSensitiveTextView: VTagSensitiveTextView, tappedTag tag: VTag) {
+        if let tag = tag as? VUserTag {
+            var profileViewController = dependencyManager.userProfileViewControllerWithRemoteId(tag.remoteId)
+            self.navigationController?.pushViewController(profileViewController, animated: true)
+        }
+        else {
+            var justHashTagText = (tag.displayString.string as NSString).substringFromIndex(1)
+            var hashtagViewController = dependencyManager.hashtagStreamWithHashtag(justHashTagText)
+            self.navigationController?.pushViewController(hashtagViewController, animated: true)
+        }
     }
     
 }

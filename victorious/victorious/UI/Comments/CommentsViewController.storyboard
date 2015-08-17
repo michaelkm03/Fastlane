@@ -46,7 +46,7 @@
                                 </connections>
                             </collectionView>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="TYx-cJ-9Jn" firstAttribute="leading" secondItem="y4P-4p-Taj" secondAttribute="leading" id="1tf-Je-Jdz"/>
                             <constraint firstItem="4KW-FJ-5kW" firstAttribute="top" secondItem="TYx-cJ-9Jn" secondAttribute="top" id="A9j-XH-z4q"/>

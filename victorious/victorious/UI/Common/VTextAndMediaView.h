@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 
 #import "VDependencyManager.h"
-#import "victorious-Swift.h"
 
 static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
 
@@ -20,6 +19,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
 @end
 
 @class VTagSensitiveTextView;
+@class MediaAttachmentView;
 
 /**
  This view is used inside the comment and messaging views
