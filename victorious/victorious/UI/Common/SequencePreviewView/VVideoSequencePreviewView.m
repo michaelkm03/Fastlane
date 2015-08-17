@@ -33,6 +33,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
 @property (nonatomic, strong) VTracking *trackingItem;
 @property (nonatomic, strong) AutoplayTrackingHelper *trackingHelper;
 @property (nonatomic, strong) id timeObserver;
+@property (nonatomic, assign) BOOL hasPlayed;
 
 @property (nonatomic, strong) SoundBarView *soundIndicator;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
@@ -97,6 +98,8 @@ const CGFloat kMaximumLoopingTime = 30.0f;
 - (void)loadAssetURL:(NSURL *)url andLoop:(BOOL)loop
 {
     self.assetURL = url;
+    
+    self.hasPlayed = NO;
     
     __weak VVideoSequencePreviewView *weakSelf = self;
     [self.videoView setItemURL:url
@@ -203,6 +206,8 @@ const CGFloat kMaximumLoopingTime = 30.0f;
 
 - (void)videoDidReachEnd:(VVideoView *__nonnull)videoView
 {
+    self.hasPlayed = YES;
+    
     // Loop if asset is under max looping time
     if (self.HLSAsset.duration != nil && [self.HLSAsset.duration integerValue] <= kMaximumLoopingTime)
     {
@@ -219,7 +224,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
 
 - (void)videoViewDidStartBuffering:(VVideoView *__nonnull)videoView
 {
-    if (self.inFocus)
+    if (self.inFocus && self.hasPlayed)
     {
         [self setState:VVideoPreviewViewStateBuffering];
     }
@@ -227,7 +232,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
 
 - (void)videoViewDidStopBuffering:(VVideoView *__nonnull)videoView
 {
-    if (self.inFocus)
+    if (self.inFocus && !self.hasPlayed)
     {
         [self setState:VVideoPreviewViewStatePlaying];
     }
