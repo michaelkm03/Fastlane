@@ -16,8 +16,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4KW-FJ-5kW">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </imageView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="TYx-cJ-9Jn" customClass="VInputAccessoryCollectionView" customModule="victorious" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="b0n-cC-Xft">
                                     <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -42,16 +46,21 @@
                                 </connections>
                             </collectionView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="TYx-cJ-9Jn" firstAttribute="leading" secondItem="y4P-4p-Taj" secondAttribute="leading" id="1tf-Je-Jdz"/>
+                            <constraint firstItem="4KW-FJ-5kW" firstAttribute="top" secondItem="TYx-cJ-9Jn" secondAttribute="top" id="A9j-XH-z4q"/>
                             <constraint firstItem="TYx-cJ-9Jn" firstAttribute="top" secondItem="y4P-4p-Taj" secondAttribute="top" id="JpF-OE-pD1"/>
                             <constraint firstItem="pdK-rA-ANI" firstAttribute="top" secondItem="TYx-cJ-9Jn" secondAttribute="bottom" id="Nhh-5L-c7U"/>
                             <constraint firstAttribute="trailing" secondItem="TYx-cJ-9Jn" secondAttribute="trailing" id="TuV-9D-LY3"/>
+                            <constraint firstItem="pdK-rA-ANI" firstAttribute="bottom" secondItem="4KW-FJ-5kW" secondAttribute="bottom" id="aIZ-8u-2fR"/>
+                            <constraint firstItem="4KW-FJ-5kW" firstAttribute="leading" secondItem="y4P-4p-Taj" secondAttribute="leading" id="h3y-KC-3wG"/>
+                            <constraint firstAttribute="trailing" secondItem="4KW-FJ-5kW" secondAttribute="trailing" id="iBZ-UX-cHC"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="TYx-cJ-9Jn" id="z3N-wT-Oq7"/>
+                        <outlet property="imageView" destination="4KW-FJ-5kW" id="8En-Nn-mje"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6FM-Ut-B5m" userLabel="First Responder" sceneMemberID="firstResponder"/>

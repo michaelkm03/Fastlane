@@ -90,6 +90,8 @@
 #import "VPublishParameters.h"
 #import "VCommentAlertHelper.h"
 #import "VMediaAttachmentPresenter.h"
+#import "UIImageView+Blurring.h"
+#import "VSequence+Fetcher.h"
 
 //Shelves
 #import "VStreamCellFactory.h"

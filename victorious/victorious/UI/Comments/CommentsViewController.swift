@@ -55,6 +55,7 @@ class CommentsViewController: UIViewController, VKeyboardInputAccessoryViewDeleg
     // MARK: Outlets
     
     @IBOutlet var collectionView: VInputAccessoryCollectionView!
+    @IBOutlet var imageView: UIImageView!
     
     // MARK: UIViewController
     
@@ -73,8 +74,12 @@ class CommentsViewController: UIViewController, VKeyboardInputAccessoryViewDeleg
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
-        self.becomeFirstResponder()
-        self.rootNavigationController().setNavigationBarHidden(false, animated: true)
+        becomeFirstResponder()
+        rootNavigationController().setNavigationBarHidden(false, animated: true)
+        if let sequence = sequence, instreamPreviewURL = sequence.inStreamPreviewImageURL() {
+            imageView.applyTintAndBlurToImageWithURL(instreamPreviewURL, withTintColor: nil)
+        }
+        
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -83,6 +88,7 @@ class CommentsViewController: UIViewController, VKeyboardInputAccessoryViewDeleg
         collectionView.accessoryView = keyboardBar
         collectionView.becomeFirstResponder()
         keyboardBar?.becomeFirstResponder()
+        updateInsetForKeyboardBarState()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -106,9 +112,23 @@ class CommentsViewController: UIViewController, VKeyboardInputAccessoryViewDeleg
         }
     }
 
+    private func updateInsetForKeyboardBarState() {
+        if let currentWindow = view.window, keyboardBar = keyboardBar {
+            var obscuredRectInWindow = keyboardBar.obscuredRectInWindow(currentWindow)
+            var obscuredRecInOwnView = currentWindow.convertRect(obscuredRectInWindow, toView: view)
+            var bottomObscuredHeight = CGRectGetMaxY(view.bounds) - CGRectGetMinY(obscuredRecInOwnView)
+            collectionView.contentInset = UIEdgeInsetsMake(topLayoutGuide.length, 0, bottomObscuredHeight, 0)
+            collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(topLayoutGuide.length, 0, bottomObscuredHeight, 0)
+            //FIXME: update the focus helper here
+        }
+        
+    }
+
 }
 
 extension CommentsViewController: VKeyboardInputAccessoryViewDelegate {
+    
+    // MARK: - VKeyboardInputAccessoryViewDelegate
     
     func pressedSendOnKeyboardInputAccessoryView(inputAccessoryView: VKeyboardInputAccessoryView) {
         if let authorizedAction = authorizedAction {
@@ -195,19 +215,18 @@ extension CommentsViewController: VKeyboardInputAccessoryViewDelegate {
     }
     
     func keyboardInputAccessoryViewDidBeginEditing(inpoutAccessoryView: VKeyboardInputAccessoryView) {
-        // update insets
-        
+        updateInsetForKeyboardBarState()
     }
     
     func keyboardInputAccessoryViewDidEndEditing(inpoutAccessoryView: VKeyboardInputAccessoryView) {
-        // update insets
+        updateInsetForKeyboardBarState()
     }
 
 }
 
 extension CommentsViewController: UICollectionViewDataSource, CommentsDataSourceDelegate {
     
-    // MARK: UICollectionViewDataSource
+    // MARK: - UICollectionViewDataSource + CommentsDataSourceDelegate
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
@@ -244,6 +263,8 @@ extension CommentsViewController: UICollectionViewDataSource, CommentsDataSource
 
 extension CommentsViewController: UICollectionViewDelegateFlowLayout {
     
+    // MARK: - UICollectionViewDelegateFlowLayout
+    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         var comment = sequence?.comments?[indexPath.item] as! VComment
         var size = VContentCommentsCell.sizeWithFullWidth(CGRectGetWidth(view.bounds),
@@ -260,6 +281,8 @@ extension CommentsViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension CommentsViewController: VScrollPaginatorDelegate {
+    
+    // MARK: - VScrollPaginatorDelegate
     
     func shouldLoadNextPage() {
         commentsDataSourceSwitcher.dataSource.loadNextPage()

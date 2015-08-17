@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface UIImageView (Blurring)
 
 /**
@@ -17,8 +19,8 @@
  *  @param placeholderImage An image to use as a placehold while blurring. May be nil.
  *  @param tintColor A color to tint the image with. May be nil.
  */
-- (void)setBlurredImageWithClearImage:(UIImage *)image placeholderImage:(UIImage *)placeholderImage tintColor:(UIColor *)tintColor;
-- (void)applyTintAndBlurToImageWithURL:(NSURL *)url withTintColor:(UIColor *)tintColor;
+- (void)setBlurredImageWithClearImage:(UIImage *)image placeholderImage:(nullable UIImage *)placeholderImage tintColor:(nullable UIColor *)tintColor;
+- (void)applyTintAndBlurToImageWithURL:(NSURL *)url withTintColor:(nullable UIColor *)tintColor;
 - (void)setLightBlurredImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholderImage;
 - (void)applyLightBlurAndAnimateImageWithURLToVisible:(NSURL *)url;
 - (void)setExtraLightBlurredImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholderImage;
@@ -36,15 +38,15 @@
  *  @param animations An block that will be executed while the blurred image is being faded in.
  */
 - (void)blurAndAnimateImageToVisible:(UIImage *)image
-                            cacheURL:(NSURL *)cacheURL
+                            cacheURL:(nullable NSURL *)cacheURL
                        withTintColor:(UIColor *)tintColor
                          andDuration:(NSTimeInterval)duration
-            withConcurrentAnimations:(void (^)(void))animations;
+            withConcurrentAnimations:(nullable void (^)(void))animations;
 
 /**
  *  Internally calls "blurAndAnimateImageToVisible:imageURL:withTintColor:andDuration:" with a nil imageURL.
  */
-- (void)blurAndAnimateImageToVisible:(UIImage *)image withTintColor:(UIColor *)tintColor andDuration:(NSTimeInterval)duration withConcurrentAnimations:(void (^)(void))animations;
+- (void)blurAndAnimateImageToVisible:(UIImage *)image withTintColor:(UIColor *)tintColor andDuration:(NSTimeInterval)duration withConcurrentAnimations:(nullable void (^)(void))animations;
 
 - (void)blurImage:(UIImage *)image withTintColor:(UIColor *)tintColor toCallbackBlock:(void (^)(UIImage *))callbackBlock;
 
@@ -56,3 +58,5 @@
 - (void)clearDownloadCache;
 
 @end
+
+NS_ASSUME_NONNULL_END
