@@ -9,7 +9,6 @@
 #import "victorious-Swift.h"
 
 #import "NSArray+VMap.h"
-#import "VAPIRequestDecorator.h"
 #import "VEnvironment.h"
 #import "VErrorMessage.h"
 #import "VMultipartFormDataWriter.h"
@@ -36,6 +35,8 @@
 #import "VStream+RestKit.h"
 #import "VNotificationSettings+RestKit.h"
 #import "VEnvironmentManager.h"
+
+@import VictoriousCommon;
 
 #define EnableRestKitLogs 0 // Set to "1" to see RestKit logging, but please remember to set it back to "0" before committing your changes.
 
@@ -85,11 +86,14 @@ NS_ASSUME_NONNULL_BEGIN
     // Configure a managed object cache to ensure we do not create duplicate objects
     managedObjectStore.managedObjectCache = [[RKInMemoryManagedObjectCache alloc] initWithManagedObjectContext:managedObjectStore.persistentStoreManagedObjectContext];
     
-    //This will allow us to call this manager with [RKObjectManager sharedManager]
+    // This will allow us to call this manager with [RKObjectManager sharedManager]
     [self setSharedManager:manager];
     
-    //This must be called AFTER we call setSharedManager as several of the entityDescriptions we add to our response descriptors call on the sharedManager
+    // This must be called AFTER we call setSharedManager as several of the entityDescriptions we add to our response descriptors call on the sharedManager
     [manager victoriousSetup];
+    
+    // Create an initial session ID
+    [manager resetSessionID];
 }
 
 + (NSDateFormatter *)dateFormatter
@@ -457,25 +461,35 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)updateHTTPHeadersInRequest:(NSMutableURLRequest *)request
 {
-    VAPIRequestDecorator *requestDecorator = [[VAPIRequestDecorator alloc] init];
-    
-    NSString *userAgent = (self.HTTPClient.defaultHeaders)[kVUserAgentHeader];
-    [request setValue:userAgent forHTTPHeaderField:kVUserAgentHeader];
-    
-    requestDecorator.buildNumber = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleVersion"];
-    requestDecorator.versionNumber = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-    requestDecorator.appID = [[VEnvironmentManager sharedInstance] currentEnvironment].appID;
-    requestDecorator.deviceID = [[UIDevice currentDevice].identifierForVendor UUIDString];
-    requestDecorator.sessionID = self.sessionID;
-    requestDecorator.locale = [[[NSBundle mainBundle] preferredLocalizations] firstObject];
+    __block NSInteger userID = 0;
+    __block NSString *token = @"";
     
     // this may cause a deadlock if the main thread synchronously calls a background thread which then tries to initiate a networking call.
     // Can't think of a good reason why you'd ever do that, but still, beware.
     [self.managedObjectStore.mainQueueManagedObjectContext performBlockAndWait:^(void)
     {
-        requestDecorator.userID = self.mainUser.remoteId;
-        requestDecorator.token = self.mainUser.token;
+        if ( self.mainUser.remoteId != nil && self.mainUser.token != nil )
+        {
+            userID = [self.mainUser.remoteId integerValue];
+            token = self.mainUser.token;
+        }
     }];
+    
+    [request v_setAuthenticationHeaderWithAppID:[[[VEnvironmentManager sharedInstance] currentEnvironment].appID integerValue]
+                                       deviceID:[[UIDevice currentDevice].identifierForVendor UUIDString]
+                                    buildNumber:[[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleVersion"]
+                                         userID:userID
+                            authenticationToken:token];
+
+    [request v_setPlatformHeader];
+    [request v_setOSVersionHeader];
+    [request v_setAppVersionHeaderValue:[[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
+    
+    NSString *experimentSettings = [[[ExperimentSettings alloc] init] commaSeparatedList];
+    if ( experimentSettings != nil )
+    {
+        [request v_setExperimentsHeaderValue:experimentSettings];
+    }
     
     // Add location data to request if we have permission to collect it
     if ( [NSThread isMainThread] ) // locationManager can only be used from the main thread
@@ -483,43 +497,18 @@ NS_ASSUME_NONNULL_BEGIN
         VLocationManager *locationManager = [VLocationManager sharedInstance];
         if ( [VLocationManager haveLocationServicesPermission] && locationManager.location != nil )
         {
-            requestDecorator.location = locationManager.location.coordinate;
+            [request v_setGeoLocationHeaderWithLocation:locationManager.location.coordinate postalCode:locationManager.locationPlacemark.postalCode];
         }
     }
-    
-    [requestDecorator updateHeadersInRequest:request];
-}
-
-- (NSString *)rFC2822DateTimeString
-{
-    static NSDateFormatter *sRFC2822DateFormatter = nil;
-    
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sRFC2822DateFormatter = [[NSDateFormatter alloc] init];
-        sRFC2822DateFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
-        sRFC2822DateFormatter.dateFormat = @"EEE, dd MMM yyyy HH:mm:ss Z"; //RFC2822-Format
-        
-        NSTimeZone *gmt = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
-        [sRFC2822DateFormatter setTimeZone:gmt];
-    });
-    
-    return [sRFC2822DateFormatter stringFromDate:[NSDate date]];
-}
-
-- (NSString *)stringFromObject:(id)object
-{
-    if ([object isKindOfClass:[NSString class]])
+    if ( self.sessionID != nil )
     {
-        return object;
+        [request v_setSessionIDHeaderValue:self.sessionID];
     }
-    else if ([object isKindOfClass:[NSNumber class]])
+    
+    NSString *locale = [[[NSBundle mainBundle] preferredLocalizations] firstObject];
+    if ( locale != nil )
     {
-        return [object stringValue];
-    }
-    else
-    {
-        return [object description];
+        [request setValue:locale forHTTPHeaderField:@"Accept-Language"];
     }
 }
 

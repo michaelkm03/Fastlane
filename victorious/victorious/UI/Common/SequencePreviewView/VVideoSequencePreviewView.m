@@ -78,7 +78,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     self.HLSAsset = [sequence.firstNode httpLiveStreamingAsset];
     
     // Check HLS asset to see if we should autoplay and only if it's over 30 seconds
-    if ( self.HLSAsset.streamAutoplay.boolValue )
+    if ( !self.HLSAsset.streamAutoplay.boolValue )
     {
         // Check if autoplay is enabled before loading asset URL
         if ([self.videoSettings isAutoplayEnabled])

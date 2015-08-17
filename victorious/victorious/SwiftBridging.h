@@ -40,7 +40,6 @@
 #import "VAbstractFilter.h"
 #import "VSEquence.h"
 #import "VStream.h"
-#import "VExperimentSettings.h"
 #import "VSequence.h"
 #import "VSequence+Fetcher.h"
 
