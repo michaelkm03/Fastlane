@@ -27,26 +27,22 @@ extension VListShelfCellFactory: VStreamCellFactory {
     }
     
     func collectionView(collectionView: UICollectionView, cellForStreamItem streamItem: VStreamItem, atIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        var cell: UICollectionViewCell? = nil
         if let shelf = streamItem as? VShelf {
             if streamItem.itemType == VStreamItemTypePlaylist {
-                cell = collectionView.dequeueReusableCellWithReuseIdentifier(VListPlaylistShelfCollectionViewCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as? UICollectionViewCell
-                if let cell = cell as? VListPlaylistShelfCollectionViewCell {
+                if let cell = collectionView.dequeueReusableCellWithReuseIdentifier(VListPlaylistShelfCollectionViewCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as? VListPlaylistShelfCollectionViewCell {
                     setup(cell, shelf: shelf, dependencyManager: dependencyManager)
+                    return cell
                 }
             } else if streamItem.itemType == VStreamItemTypeRecent {
-                cell = collectionView.dequeueReusableCellWithReuseIdentifier(VListRecentShelfCollectionViewCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as? UICollectionViewCell
-                if let cell = cell as? VListRecentShelfCollectionViewCell {
+                if let cell = collectionView.dequeueReusableCellWithReuseIdentifier(VListRecentShelfCollectionViewCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as? VListRecentShelfCollectionViewCell {
                     setup(cell, shelf: shelf, dependencyManager: dependencyManager)
-                    
+                    return cell
                 }
             }
         }
-        if cell == nil {
-            cell = UICollectionViewCell()
-            assertionFailure("VListShelfCellFactory was provided a shelf that was neither a user shelf nor a hashtag shelf")
-        }
-        return cell!
+        let cell = UICollectionViewCell()
+        assertionFailure("VListShelfCellFactory was provided a shelf that was neither a user shelf nor a hashtag shelf")
+        return cell
     }
     
     private func setup(cell: VListShelfCollectionViewCell, shelf: VShelf, dependencyManager: VDependencyManager) {
@@ -55,7 +51,7 @@ extension VListShelfCellFactory: VStreamCellFactory {
     }
     
     func sizeWithCollectionViewBounds(bounds: CGRect, ofCellForStreamItem streamItem: VStreamItem) -> CGSize {
-        if let shelf = streamItem as? VShelf {
+        if let shelf = streamItem as? ListShelf {
             if shelf.itemType == VStreamItemTypePlaylist {
                 return VListPlaylistShelfCollectionViewCell.desiredSize(bounds, shelf: shelf, dependencyManager: dependencyManager)
             }

@@ -1151,6 +1151,8 @@
 		F0537DA91B3DA8FE00152A2D /* VSuggestedUserRetryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0537DA81B3DA8FE00152A2D /* VSuggestedUserRetryCell.m */; };
 		F0537DAB1B3DAAF800152A2D /* VSuggestedUserRetryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0537DAA1B3DAAF800152A2D /* VSuggestedUserRetryCell.xib */; };
 		F05AA9821A83F6E3002F8917 /* VInlineSearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F05AA97F1A83F6E3002F8917 /* VInlineSearchTableViewController.m */; };
+		F05AD66D1B828EF300500CCF /* ListShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05AD66C1B828EF300500CCF /* ListShelf.swift */; };
+		F05AD66F1B82952300500CCF /* devShelfTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = F05AD66E1B82952300500CCF /* devShelfTemplate.json */; };
 		F065A40A1B433C7B00F0281B /* VFollowControl.m in Sources */ = {isa = PBXBuildFile; fileRef = F065A4091B433C7B00F0281B /* VFollowControl.m */; };
 		F06B41711B7AA8D4008709E8 /* VFailureSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F06B41701B7AA8D4008709E8 /* VFailureSequencePreviewView.m */; };
 		F06B41741B7AAA95008709E8 /* VFailureStreamPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F06B41731B7AAA95008709E8 /* VFailureStreamPreviewView.m */; };
@@ -1243,8 +1245,7 @@
 		F0EBAAAD1B8002E100515D4C /* VListShelfCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EBAAAC1B8002E100515D4C /* VListShelfCollectionViewFlowLayout.swift */; };
 		F0EBAAAF1B800FC800515D4C /* VRightSideIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EBAAAE1B800FC800515D4C /* VRightSideIconButton.swift */; };
 		F0EBAAB11B80121D00515D4C /* VListShelfContentCoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EBAAB01B80121D00515D4C /* VListShelfContentCoverCell.swift */; };
-		F0EBAAB31B80F85300515D4C /* PlaylistShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EBAAB21B80F85300515D4C /* PlaylistShelf.swift */; };
-		F0EBAAB51B80F90000515D4C /* PlaylistShelf+RestKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EBAAB41B80F90000515D4C /* PlaylistShelf+RestKit.swift */; };
+		F0EBAAB51B80F90000515D4C /* ListShelf+RestKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EBAAB41B80F90000515D4C /* ListShelf+RestKit.swift */; };
 		F0F04AD61B1E271A00F6F401 /* VConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F04AD51B1E271A00F6F401 /* VConversation.m */; };
 		F0F04AE21B20EEB600F6F401 /* VInsetMarqueeCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F04AE11B20EEB600F6F401 /* VInsetMarqueeCollectionViewFlowLayout.m */; };
 		F0F04AF41B29E8FE00F6F401 /* VShareMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F04AF31B29E8FE00F6F401 /* VShareMenuItem.m */; };
@@ -3418,6 +3419,8 @@
 		F05AA97E1A83F6E3002F8917 /* VInlineSearchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInlineSearchTableViewController.h; sourceTree = "<group>"; };
 		F05AA97F1A83F6E3002F8917 /* VInlineSearchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInlineSearchTableViewController.m; sourceTree = "<group>"; };
 		F05AA9841A8401D0002F8917 /* VUserTaggingTextStorageDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserTaggingTextStorageDelegate.h; sourceTree = "<group>"; };
+		F05AD66C1B828EF300500CCF /* ListShelf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListShelf.swift; sourceTree = "<group>"; };
+		F05AD66E1B82952300500CCF /* devShelfTemplate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = devShelfTemplate.json; sourceTree = "<group>"; };
 		F065A4081B433C7B00F0281B /* VFollowControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFollowControl.h; sourceTree = "<group>"; };
 		F065A4091B433C7B00F0281B /* VFollowControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowControl.m; sourceTree = "<group>"; };
 		F06B416F1B7AA8D4008709E8 /* VFailureSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFailureSequencePreviewView.h; sourceTree = "<group>"; };
@@ -3566,8 +3569,7 @@
 		F0EBAAAC1B8002E100515D4C /* VListShelfCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VListShelfCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		F0EBAAAE1B800FC800515D4C /* VRightSideIconButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VRightSideIconButton.swift; sourceTree = "<group>"; };
 		F0EBAAB01B80121D00515D4C /* VListShelfContentCoverCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VListShelfContentCoverCell.swift; sourceTree = "<group>"; };
-		F0EBAAB21B80F85300515D4C /* PlaylistShelf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistShelf.swift; sourceTree = "<group>"; };
-		F0EBAAB41B80F90000515D4C /* PlaylistShelf+RestKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PlaylistShelf+RestKit.swift"; sourceTree = "<group>"; };
+		F0EBAAB41B80F90000515D4C /* ListShelf+RestKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ListShelf+RestKit.swift"; sourceTree = "<group>"; };
 		F0F04AD41B1E271A00F6F401 /* VConversation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VConversation.h; sourceTree = "<group>"; };
 		F0F04AD51B1E271A00F6F401 /* VConversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VConversation.m; sourceTree = "<group>"; };
 		F0F04AE01B20EEB600F6F401 /* VInsetMarqueeCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInsetMarqueeCollectionViewFlowLayout.h; sourceTree = "<group>"; };
@@ -4801,6 +4803,7 @@
 			children = (
 				0314D3E719B46B5E00FA363C /* VLoadingViewController.h */,
 				0314D3E819B46B5E00FA363C /* VLoadingViewController.m */,
+				F05AD66E1B82952300500CCF /* devShelfTemplate.json */,
 				0307F83F1B4F3BA400342C13 /* VLoginOperation.h */,
 				0307F8401B4F3BA400342C13 /* VLoginOperation.m */,
 			);
@@ -5610,7 +5613,7 @@
 				A721E8A81B572453000B7901 /* VStream+RestKit.m */,
 				F0BF9F6A1B72C17700B24225 /* VShelf+RestKit.h */,
 				F0BF9F6B1B72C17700B24225 /* VShelf+RestKit.m */,
-				F0EBAAB41B80F90000515D4C /* PlaylistShelf+RestKit.swift */,
+				F0EBAAB41B80F90000515D4C /* ListShelf+RestKit.swift */,
 				F06B41A81B7C3D8F008709E8 /* HashtagShelf+RestKit.swift */,
 				F06B41AA1B7C3D8F008709E8 /* UserShelf+RestKit.swift */,
 				A721E8A91B572453000B7901 /* VTracking+RestKit.h */,
@@ -6722,7 +6725,7 @@
 				DB531B541A425A7200B4ADC8 /* VHashtag.h */,
 				DB531B551A425A7200B4ADC8 /* VHashtag.m */,
 				A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */,
-				F0EBAAB21B80F85300515D4C /* PlaylistShelf.swift */,
+				F05AD66C1B828EF300500CCF /* ListShelf.swift */,
 				F06B418E1B7C30BC008709E8 /* HashtagShelf.swift */,
 				F06B418C1B7C30BB008709E8 /* UserShelf.swift */,
 				A7D378461AF0578A007FF197 /* VImageAsset.h */,
@@ -8404,6 +8407,7 @@
 				036F38671A0C4DEA0014DF66 /* Bitter-Bold.ttf in Resources */,
 				D8D8958B19E88D5500632663 /* VExperienceEnhancerBarCell.xib in Resources */,
 				0390086E19F39F9900FD7EDF /* VMessageCell.xib in Resources */,
+				F05AD66F1B82952300500CCF /* devShelfTemplate.json in Resources */,
 				A6EC32671B3B488200824022 /* staticCreateSheet.json in Resources */,
 				039269C91B5F370F00FCD0AA /* VPublishViewController.xib in Resources */,
 				A7A390CA1A3257A300709812 /* ContentView.storyboard in Resources */,
@@ -9094,6 +9098,7 @@
 				A79869EB1AD7124D00F2564A /* VContentDeepLinkHandler.m in Sources */,
 				F03C135A1B698F6F00287F4C /* VAsset.m in Sources */,
 				A721E95B1B572454000B7901 /* UIView+AutoLayout.m in Sources */,
+				F05AD66D1B828EF300500CCF /* ListShelf.swift in Sources */,
 				0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */,
 				A7DDA6E71B601D20005CE55E /* UICollectionViewCell+SwiftReuse.swift in Sources */,
 				A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */,
@@ -9412,7 +9417,6 @@
 				F0411E841B4AE5D300557176 /* VAbstractCrossFadingView.m in Sources */,
 				A7F712021AE1D5A00086F729 /* VNotAuthorizedDataSource.m in Sources */,
 				039ED29E19C908F400305987 /* VVideoDownloadProgressIndicatorView.m in Sources */,
-				F0EBAAB31B80F85300515D4C /* PlaylistShelf.swift in Sources */,
 				A75ED00C1AB0B6D100C35063 /* VFilterTool.m in Sources */,
 				A75ED0BA1AB78C7400C35063 /* VHashtagPickerDataSource.m in Sources */,
 				A721E93A1B572454000B7901 /* NSDate+timeSince.m in Sources */,
@@ -9627,7 +9631,7 @@
 				A779511A1B28AB9A00D9DB0A /* VEnvironmentManager.m in Sources */,
 				0314D2E319B46AF300FA363C /* VUserManager.m in Sources */,
 				D8360CF319E379C200D7E260 /* VExperienceEnhancer.m in Sources */,
-				F0EBAAB51B80F90000515D4C /* PlaylistShelf+RestKit.swift in Sources */,
+				F0EBAAB51B80F90000515D4C /* ListShelf+RestKit.swift in Sources */,
 				D8B70FE71A8015E500090C5E /* VInlineValidationTextField.m in Sources */,
 				F03C135D1B698F7000287F4C /* VComment.m in Sources */,
 				0314D4DA19B46B5E00FA363C /* VSettingsViewController.m in Sources */,

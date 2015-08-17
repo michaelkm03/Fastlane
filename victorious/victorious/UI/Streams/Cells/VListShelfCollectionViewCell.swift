@@ -61,17 +61,17 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
     
     /// Override in subclasses to make adjustments based on the shelf
     func onShelfSet() {
-        if let shelf = shelf, let items = shelf.stream?.streamItems, let streamItems = items.array as? [VStreamItem] {
+        if let shelf = shelf as? ListShelf, let streamItems = shelf.stream?.streamItems.array as? [VStreamItem] {
             if hasPlaylistShelf() {
                 collectionView.registerClass(VListShelfContentCoverCell.self, forCellWithReuseIdentifier: VListShelfContentCoverCell.reuseIdentifierForStreamItem(shelf.stream!, baseIdentifier: nil, dependencyManager: dependencyManager))
             }
             for (index, streamItem) in enumerate(streamItems) {
                 collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager))
             }
+            
+            detailLabel.text = shelf.caption
         }
         collectionView.reloadData()
-        
-        detailLabel.text = shelf?.stream?.name
     }
     
     private func hasPlaylistShelf() -> Bool {
@@ -105,7 +105,7 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
         return length * 2 + Constants.interCellSpace + collectionViewSectionEdgeInsets.top + collectionViewSectionEdgeInsets.bottom
     }
     
-    class func desiredSize(collectionViewBounds: CGRect, shelf:VShelf, dependencyManager: VDependencyManager) -> CGSize {
+    class func desiredSize(collectionViewBounds: CGRect, shelf: ListShelf, dependencyManager: VDependencyManager) -> CGSize {
         let width = collectionViewBounds.width
         let length = cellSideLength(totalCellWidths(width))
         let collectionViewSectionEdgeInsets = Constants.collectionViewSectionEdgeInsets
@@ -157,8 +157,8 @@ extension VListShelfCollectionViewCell : UICollectionViewDataSource {
             let cell: VShelfContentCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as! VShelfContentCollectionViewCell
             cell.streamItem = streamItem
             cell.dependencyManager = dependencyManager
-            if let cell = cell as? VListShelfContentCoverCell, let shelf = shelf as? PlaylistShelf {
-                cell.overlayText = shelf.playlistTitle
+            if let cell = cell as? VListShelfContentCoverCell {
+                cell.overlayText = shelf.stream?.name
             }
             return cell
         }

@@ -1,5 +1,5 @@
 //
-//  PlaylistShelf+RestKit.swift
+//  ListShelf+RestKit.swift
 //  victorious
 //
 //  Created by Sharif Ahmed on 8/16/15.
@@ -8,16 +8,16 @@
 
 import Foundation
 
-extension PlaylistShelf {
+extension ListShelf {
     
     static private var propertyMap : [String : String] {
         return [
-            "playlistTitle" : "playlistTitle",
+            "caption" : "caption",
         ]
     }
     
     override static func entityName() -> String {
-        return "PlaylistShelf"
+        return "ListShelf"
     }
     
     override static func entityMapping() -> RKEntityMapping {

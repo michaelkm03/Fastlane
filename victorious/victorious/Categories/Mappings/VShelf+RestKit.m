@@ -53,11 +53,11 @@
     {
         mapping = [HashtagShelf entityMapping];
     }
-    else if ( [type isEqualToString:VStreamItemTypePlaylist] )
+    else if ( [type isEqualToString:VStreamItemTypePlaylist] || [type isEqualToString:VStreamItemTypeRecent] )
     {
-        mapping = [PlaylistShelf entityMapping];
+        mapping = [ListShelf entityMapping];
     }
-    else if ( [type isEqualToString:VStreamItemTypeMarquee] || [type isEqualToString:VStreamItemTypeRecent] || [type isEqualToString:VStreamItemTypeSequence] || [type isEqualToString:VStreamItemTypeStream] )
+    else if ( [type isEqualToString:VStreamItemTypeMarquee] || [type isEqualToString:VStreamItemTypeSequence] || [type isEqualToString:VStreamItemTypeStream] )
     {
         mapping = [self mappingBaseForEntityWithName:@"Shelf"];
     }
