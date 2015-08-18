@@ -109,6 +109,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         
+        collectionView.flashScrollIndicators()
         focusHelper?.endFocusOnAllCells()
     }
     
