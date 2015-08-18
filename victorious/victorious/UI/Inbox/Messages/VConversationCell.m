@@ -9,10 +9,7 @@
 #import "VConversationCell.h"
 #import "NSDate+timeSince.h"
 #import "VConversation+RestKit.h"
-#import "VMessage+RestKit.h"
 #import "VUser+RestKit.h"
-
-#import "UIImage+ImageCreation.h"
 
 #import "VUserProfileViewController.h"
 
