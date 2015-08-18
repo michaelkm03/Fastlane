@@ -171,8 +171,6 @@ extension CommentsViewController: UICollectionViewDelegateFlowLayout {
 
 extension CommentsViewController: VScrollPaginatorDelegate {
     
-    // MARK: - VScrollPaginatorDelegate
-    
     func shouldLoadNextPage() {
         commentsDataSourceSwitcher.dataSource.loadNextPage()
     }
