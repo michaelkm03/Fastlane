@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "VExperienceEnhancerBar.h"
 #import "VVideoCellViewModel.h"
+#import "VHasManagedDependencies.h"
 
 @protocol VExperienceEnhancerControllerDelegate <NSObject>
 
@@ -22,9 +23,8 @@
 
 @class VSequence;
 
-@interface VExperienceEnhancerController : NSObject <VExperienceEnhancerBarDataSource, VExperienceEnhancerBarDelegate>
+@interface VExperienceEnhancerController : NSObject <VExperienceEnhancerBarDataSource, VExperienceEnhancerBarDelegate, VHasManagedDependencies>
 
-- (instancetype)initWithSequence:(VSequence *)sequence voteTypes:(NSArray *)voteTypes NS_DESIGNATED_INITIALIZER;
 - (instancetype)init NS_UNAVAILABLE;
 
 - (void)updateData;

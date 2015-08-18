@@ -91,6 +91,13 @@
     return [self secondsUntilCooldownIsOver] > 0;
 }
 
+- (NSDate *)lastVoted
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSDate *lastVoted = [userDefaults objectForKey:[self coolDownPersistenceKey]];
+    return lastVoted;
+}
+
 - (NSTimeInterval)secondsUntilCooldownIsOver
 {
     return self.cooldownDuration - [self secondsSinceLastVote];
@@ -101,11 +108,9 @@
     return [self secondsSinceLastVote] / self.cooldownDuration;
 }
 
-- (NSDate *)lastVoted
+- (NSDate *)cooldownDate
 {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSDate *lastVoted = [userDefaults objectForKey:[self coolDownPersistenceKey]];
-    return lastVoted;
+    return [self.lastVoted dateByAddingTimeInterval:self.cooldownDuration];
 }
 
 - (NSTimeInterval)secondsSinceLastVote
