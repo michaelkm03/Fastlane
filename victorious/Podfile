@@ -3,7 +3,6 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.1'
 
 inhibit_all_warnings!
-use_frameworks!
 
 target :victorious do
     pod 'RestKit'
@@ -20,6 +19,17 @@ target :victorious do
         pod 'Nocilla', :git => 'https://github.com/TouchFrame/Nocilla.git', :branch => 'block-response'
         link_with 'victoriousTests', 'VictoriousCommonTests'
     end
+end
+
+target :VictoriousCommon do
+    pod 'IGDigest'
+    link_with 'VictoriousCommon'
+end
+
+target :VictoriousCommonOSX do
+    platform :osx, "10.10"
+    pod 'IGDigest'
+    link_with 'VictoriousCommonOSX'
 end
 
 target 'UIAutomationTests', :exclusive => true do

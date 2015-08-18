@@ -18,13 +18,12 @@
 #import "VStream+Fetcher.h"
 #import "VStreamCollectionViewController.h"
 #import "VNoContentView.h"
+#import <MBProgressHUD.h>
 #import "VHashtagStreamCollectionViewController.h"
 #import "VDependencyManager.h"
 #import <KVOController/FBKVOController.h>
 #import "VHashtagResponder.h"
 #import "VFollowControl.h"
-
-@import MBProgressHUD;
 
 static NSString * const kVFollowingTagIdentifier  = @"VTrendingTagCell";
 

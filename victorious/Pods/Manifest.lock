@@ -4,7 +4,8 @@ PODS:
   - FlurrySDK (6.6.0):
     - FlurrySDK/FlurrySDK (= 6.6.0)
   - FlurrySDK/FlurrySDK (6.6.0)
-  - ISO8601DateFormatterValueTransformer (0.6.1):
+  - IGDigest (1.1.2)
+  - ISO8601DateFormatterValueTransformer (0.6.0):
     - RKValueTransformers (~> 1.1.0)
   - KIF (3.2.3):
     - KIF/XCTest (= 3.2.3)
@@ -13,24 +14,24 @@ PODS:
   - MBProgressHUD (0.9.1)
   - Nocilla (0.8.1)
   - OAStackView (0.1.0)
-  - RestKit (0.25.0):
-    - RestKit/Core (= 0.25.0)
-  - RestKit/Core (0.25.0):
+  - RestKit (0.24.1):
+    - RestKit/Core (= 0.24.1)
+  - RestKit/Core (0.24.1):
     - RestKit/CoreData
     - RestKit/Network
     - RestKit/ObjectMapping
-  - RestKit/CoreData (0.25.0):
+  - RestKit/CoreData (0.24.1):
     - RestKit/ObjectMapping
-  - RestKit/Network (0.25.0):
+  - RestKit/Network (0.24.1):
     - AFNetworking (~> 1.3.0)
     - RestKit/ObjectMapping
     - RestKit/Support
     - SOCKit
-  - RestKit/ObjectMapping (0.25.0):
-    - ISO8601DateFormatterValueTransformer (~> 0.6.1)
+  - RestKit/ObjectMapping (0.24.1):
+    - ISO8601DateFormatterValueTransformer (~> 0.6.0)
     - RestKit/Support
     - RKValueTransformers (~> 1.1.0)
-  - RestKit/Support (0.25.0):
+  - RestKit/Support (0.24.1):
     - TransitionKit (~> 2.1.0)
   - RKValueTransformers (1.1.2)
   - SDWebImage (3.7.3):
@@ -43,6 +44,7 @@ PODS:
 DEPENDENCIES:
   - CCHLinkTextView
   - FlurrySDK
+  - IGDigest
   - KIF (from `https://github.com/TouchFrame/KIF.git`)
   - KVOController
   - MBProgressHUD
@@ -71,13 +73,14 @@ SPEC CHECKSUMS:
   AFNetworking: cf8e418e16f0c9c7e5c3150d019a3c679d015018
   CCHLinkTextView: bfe688e0b7d34088375a466524158765832f7657
   FlurrySDK: 8478625434c06b323338f776758162756d92c3ed
-  ISO8601DateFormatterValueTransformer: 52da467d6ec899d6aedda8e48280ac92e8ee97e6
+  IGDigest: 066753c10f3f1b593b00037b9ee93dc96b9e7762
+  ISO8601DateFormatterValueTransformer: 3ac3a721381697cab4e792d8049ce2f2e9ad3036
   KIF: a94bffe9c97e449e44f8fa481c53243d21309e1e
   KVOController: 9fd8f0343670994e4b6f9f0b31f5a45663f3e1cf
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   Nocilla: 76a45b3103ac986bedd189eb8773f23995d9851d
   OAStackView: 76e64242351e2746374b9161a03021cbc19341ff
-  RestKit: a4fcaf3d4bb2c204679856a46d596160bf208095
+  RestKit: 1987b5efef289c6b27bd980714d6ca48d3871b78
   RKValueTransformers: 66ac5e4f077fdbe3496e792d89eeff4c3eb67701
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   SOCKit: c7376ac262bea9115b8f749358f762522a47d392

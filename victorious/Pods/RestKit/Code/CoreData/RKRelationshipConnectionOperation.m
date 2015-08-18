@@ -148,14 +148,7 @@ static NSDictionary *RKConnectionAttributeValuesWithObject(RKConnectionDescripti
 {
     *shouldConnectRelationship = YES;
     id connectionResult = nil;
-    if (connection.sourcePredicate) {
-        __block BOOL evaluationResult;
-        [self.managedObject.managedObjectContext performBlockAndWait:^{
-            evaluationResult = [connection.sourcePredicate evaluateWithObject:self.managedObject];
-        }];
-        
-        if (!evaluationResult) return nil;
-    }
+    if (connection.sourcePredicate && ![connection.sourcePredicate evaluateWithObject:self.managedObject]) return nil;
     
     if ([connection isForeignKeyConnection]) {
         NSDictionary *attributeValues = RKConnectionAttributeValuesWithObject(connection, self.managedObject);
@@ -164,15 +157,11 @@ static NSDictionary *RKConnectionAttributeValuesWithObject(RKConnectionDescripti
             *shouldConnectRelationship = NO;
             return nil;
         }
-        __block NSSet *managedObjects = [self.managedObjectCache managedObjectsWithEntity:[connection.relationship destinationEntity]
-                                                                          attributeValues:attributeValues
-                                                                   inManagedObjectContext:self.managedObjectContext];
-
-        [self.managedObjectContext performBlockAndWait:^{
-            if (connection.destinationPredicate) managedObjects = [managedObjects filteredSetUsingPredicate:connection.destinationPredicate];
-            if (!connection.includesSubentities) managedObjects = [managedObjects filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"entity == %@", [connection.relationship destinationEntity]]];
-        }];
-        
+        NSSet *managedObjects = [self.managedObjectCache managedObjectsWithEntity:[connection.relationship destinationEntity]
+                                                                  attributeValues:attributeValues
+                                                           inManagedObjectContext:self.managedObjectContext];
+        if (connection.destinationPredicate) managedObjects = [managedObjects filteredSetUsingPredicate:connection.destinationPredicate];
+        if (!connection.includesSubentities) managedObjects = [managedObjects filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"entity == %@", [connection.relationship destinationEntity]]];
         if ([connection.relationship isToMany]) {
             connectionResult = managedObjects;
         } else {

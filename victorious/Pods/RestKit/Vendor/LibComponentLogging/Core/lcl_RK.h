@@ -31,8 +31,6 @@
 #define _RKLCL_VERSION_BUILD  1
 #define _RKLCL_VERSION_SUFFIX ""
 
-#import "lcl_config_components_RK.h"
-
 //
 // lcl -- LibComponentLogging, embedded, RestKit/RK
 //
@@ -133,7 +131,7 @@ enum _RKlcl_enum_component_t {
 #   define  _RKlcl_component(_identifier, _header, _name)                        \
     RKlcl_c##_identifier,                                                        \
   __RKlcl_log_symbol_RKlcl_c##_identifier = RKlcl_c##_identifier,
-    RKLCLComponentDefinitions
+#   include "lcl_config_components_RK.h"
 #   undef   _RKlcl_component
 
    _RKlcl_component_t_count,

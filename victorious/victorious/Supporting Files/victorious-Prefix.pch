@@ -25,8 +25,7 @@
 #endif
 
 // Make RestKit globally available
-@import RestKit;
-
+#import "RestKit.h"
 #import "VTrackingManager.h"
 
 // Global Defines for 32/64 bit

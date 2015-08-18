@@ -20,6 +20,7 @@
 #import "VRootViewController.h"
 #import "VLocationManager.h"
 #import "VConstants.h"
+#import "NSString+SHA1Digest.h"
 #import "NSString+VParseHelp.h"
 #import "VUser+RestKit.h"
 #import "VHashtag+RestKit.h"

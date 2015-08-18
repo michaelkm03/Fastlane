@@ -7,8 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@import CCHLinkTextView;
+#import "CCHLinkTextView.h"
 
 /**
  A custom UITextView subclass that provides drawing routines necessary

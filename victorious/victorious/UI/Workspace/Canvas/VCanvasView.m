@@ -8,10 +8,9 @@
 
 #import "VCanvasView.h"
 #import "CIImage+VImage.h"
+#import <UIImageView+WebCache.h>
 #import "UIScrollView+VCenterContent.h"
 #import "VPhotoFilter.h"
-
-@import SDWebImage;
 
 NSString * const VCanvasViewAssetSizeBecameAvailableNotification = @"VCanvasViewAssetSizeBecameAvailableNotification";
 

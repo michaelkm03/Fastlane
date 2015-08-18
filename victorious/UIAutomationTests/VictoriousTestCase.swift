@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import KIF
 
 class VictoriousTestCase: KIFTestCase {
     

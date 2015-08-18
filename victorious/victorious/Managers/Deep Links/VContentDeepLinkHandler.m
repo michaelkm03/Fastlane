@@ -6,14 +6,14 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import <MBProgressHUD.h>
+
 #import "VObjectManager+Sequence.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VContentDeepLinkHandler.h"
 #import "NSURL+VPathHelper.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VTabScaffoldViewController.h"
-
-@import MBProgressHUD;
 
 static NSString * const kContentDeeplinkURLHostComponent = @"content";
 static NSString * const kCommentDeeplinkURLHostComponent = @"comment";

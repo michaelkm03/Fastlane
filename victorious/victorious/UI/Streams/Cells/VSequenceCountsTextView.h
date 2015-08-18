@@ -7,8 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@import CCHLinkTextView;
+#import <CCHLinkTextView.h>
 
 /**
  Delegate for VSequenceCountsTextView designed to let calling code know when

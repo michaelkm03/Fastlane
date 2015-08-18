@@ -311,12 +311,10 @@ static NSMutableDictionary *RKRegisteredResponseMapperOperationDataSourceClasses
 {
     if (self.isCancelled && !self.error) self.error = [NSError errorWithDomain:RKErrorDomain code:RKOperationCancelledError userInfo:@{ NSLocalizedDescriptionKey: @"The operation was cancelled." }];
     
-    @synchronized(self) {
-        if (self.didFinishMappingBlock) {
-            if (self.error) self.didFinishMappingBlock(nil, self.error);
-            else self.didFinishMappingBlock(self.mappingResult, nil);
-            [self setDidFinishMappingBlock:nil];
-        }
+    if (self.didFinishMappingBlock) {
+        if (self.error) self.didFinishMappingBlock(nil, self.error);
+        else self.didFinishMappingBlock(self.mappingResult, nil);
+        [self setDidFinishMappingBlock:nil];
     }
 }
 

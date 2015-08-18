@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+#import <MBProgressHUD.h>
+
 #import "VInboxDeepLinkHandler.h"
 #import "NSURL+VPathHelper.h"
 #import "VConversation.h"
@@ -14,8 +16,6 @@
 #import "VInboxViewController.h"
 #import "VInboxViewController.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
-
-@import MBProgressHUD;
 
 @interface VInboxDeepLinkHandler()
 

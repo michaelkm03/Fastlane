@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-import SDWebImage
 import UIKit
 
 /// A emotive ballistic view responsible for showing

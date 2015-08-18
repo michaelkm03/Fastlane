@@ -120,7 +120,7 @@ class SoundBarView : UIView {
     }
     
     private func randomEndpoint() -> Double {
-        return Double(arc4random_uniform(UInt32(self.bounds.height)))
+        return Double(Int(arc4random()) % Int(self.bounds.height))
     }
     
     // MARK: Animation Delegate

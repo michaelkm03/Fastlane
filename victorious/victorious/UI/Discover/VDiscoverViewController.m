@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import <MBProgressHUD.h>
 #import "VDiscoverViewController.h"
 #import "VDiscoverContainerViewController.h"
 #import "VDiscoverSuggestedPeopleSectionCell.h"
@@ -36,8 +37,6 @@
 #import "VDependencyManager+VTracking.h"
 #import "VFollowControl.h"
 #import "VFollowResponder.h"
-
-@import MBProgressHUD;
 
 static NSString * const kVSuggestedPeopleIdentifier = @"VSuggestedPeopleCell";
 static NSString * const kVTrendingTagIdentifier = @"VTrendingTagCell";

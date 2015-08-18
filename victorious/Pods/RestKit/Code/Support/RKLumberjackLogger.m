@@ -75,7 +75,7 @@
     [DDLog log:async
          level:componentLevel
           flag:flag
-       context:0x524B5F00 + component
+       context:0 /* Could define a special value here to identify RestKit logs to any backend loggers */
           file:path function:function line:line
            tag:nil
         format:format args:args];
@@ -85,8 +85,6 @@
 @end
 
 /* Create a DDRegisteredDynamicLogging class for each RestKit component */
-
-#import "lcl_config_components_RK.h"
 
 #undef   _RKlcl_component
 #define  _RKlcl_component(_identifier, _header, _name)                                       \
@@ -102,8 +100,7 @@
     }                                                                                        \
     @end
 
-RKLCLComponentDefinitions
-
+#include "lcl_config_components_RK.h"
 #undef   _RKlcl_component
 
 
