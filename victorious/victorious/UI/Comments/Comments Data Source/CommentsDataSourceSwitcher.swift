@@ -20,12 +20,13 @@ class CommentsDataSourceSwitchter {
         dataSource = emptyDataSource
     }
     
-    var sequence : VSequence? {
-        willSet(newSequence) {
-            if let newSequence = newSequence {
-                dataSource = SequenceCommentsDataSource(sequence: newSequence)
+    var sequence: VSequence? {
+        didSet {
+            if let sequence = sequence {
+                dataSource = SequenceCommentsDataSource(sequence: sequence)
                 dataSource.delegate = emptyDataSource.delegate
-            } else {
+            }
+            else {
                 emptyDataSource.delegate = dataSource.delegate
                 dataSource = emptyDataSource
             }

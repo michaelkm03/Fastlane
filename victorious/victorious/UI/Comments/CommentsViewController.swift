@@ -10,9 +10,9 @@ import Foundation
 
 extension VDependencyManager {
     
-    func commentsViewController(sequence: VSequence) -> CommentsViewController {
-        var commentViewController = self.templateValueOfType(CommentsViewController.self, forKey: "commentsScreen") as! CommentsViewController
-        commentViewController.sequence = sequence
+    func commentsViewController(sequence: VSequence) -> CommentsViewController? {
+        var commentViewController = self.templateValueOfType(CommentsViewController.self, forKey: "commentsScreen") as? CommentsViewController
+        commentViewController?.sequence = sequence
         return commentViewController
     }
 
@@ -23,14 +23,14 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     // MARK: - Factory Method
     
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> CommentsViewController {
-        let vc: CommentsViewController = self.fromStoryboardInitialViewController()
+        let vc: CommentsViewController = self.v_fromStoryboardInitialViewController()
         vc.dependencyManager = dependencyManager
         return vc
     }
     
     // MARK: - Public Properties
     
-    var dependencyManager : VDependencyManager! {
+    var dependencyManager: VDependencyManager! {
         didSet {
             if let dependencyManager = dependencyManager {
                 authorizedAction = VAuthorizedAction(objectManager: VObjectManager.sharedManager(), dependencyManager: dependencyManager)
@@ -48,12 +48,12 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     private let commentsDataSourceSwitcher = CommentsDataSourceSwitchter()
     private var registeredCommentReuseIdentifiers = Set<String>()
     private let scrollPaginator = VScrollPaginator()
-    private var authorizedAction : VAuthorizedAction!
+    private var authorizedAction: VAuthorizedAction!
     private var publishParameters: VPublishParameters?
     private var mediaAttachmentPresenter: VMediaAttachmentPresenter?
-    private var focusHelper : VCollectionViewStreamFocusHelper?
+    private var focusHelper: VCollectionViewStreamFocusHelper?
     private var modalTransitioningDelegate = VTransitionDelegate(transition: VSimpleModalTransition())
-    private var keyboardBar : VKeyboardInputAccessoryView? {
+    private var keyboardBar: VKeyboardInputAccessoryView? {
         didSet {
             if let keyboardBar = keyboardBar {
                 keyboardBar.setTranslatesAutoresizingMaskIntoConstraints(false)
