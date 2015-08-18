@@ -373,6 +373,9 @@
 		7942464A1B7D3A5300F5F879 /* AutoShowLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794246471B7D3A5300F5F879 /* AutoShowLoginOperation.swift */; };
 		7942464B1B7D3A5300F5F879 /* FTUEVideoOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794246481B7D3A5300F5F879 /* FTUEVideoOperation.swift */; };
 		7942464C1B7D3A5300F5F879 /* RequestPushNotificationPermissionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794246491B7D3A5300F5F879 /* RequestPushNotificationPermissionOperation.swift */; };
+		796246671B82C28D00608B58 /* CommentsViewController+CommentCellActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 796246661B82C28D00608B58 /* CommentsViewController+CommentCellActions.swift */; };
+		796246691B82C2CB00608B58 /* CommentsViewController+DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 796246681B82C2CB00608B58 /* CommentsViewController+DataSource.swift */; };
+		7962466B1B82C37900608B58 /* CommentsViewController+KeyboardBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7962466A1B82C37900608B58 /* CommentsViewController+KeyboardBar.swift */; };
 		797006ED1B7AA32C0058B09A /* UIViewController+VRootNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 797006EC1B7AA32C0058B09A /* UIViewController+VRootNavigationController.m */; };
 		797006F01B7AA3980058B09A /* VTabScaffoldHidingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 797006EF1B7AA3980058B09A /* VTabScaffoldHidingHelper.m */; };
 		797226651B7E9EDC0023C851 /* CommentsDataSourceSwitcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797226641B7E9EDC0023C851 /* CommentsDataSourceSwitcher.swift */; };
@@ -1959,6 +1962,9 @@
 		794246471B7D3A5300F5F879 /* AutoShowLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoShowLoginOperation.swift; sourceTree = "<group>"; };
 		794246481B7D3A5300F5F879 /* FTUEVideoOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTUEVideoOperation.swift; sourceTree = "<group>"; };
 		794246491B7D3A5300F5F879 /* RequestPushNotificationPermissionOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestPushNotificationPermissionOperation.swift; sourceTree = "<group>"; };
+		796246661B82C28D00608B58 /* CommentsViewController+CommentCellActions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CommentsViewController+CommentCellActions.swift"; sourceTree = "<group>"; };
+		796246681B82C2CB00608B58 /* CommentsViewController+DataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CommentsViewController+DataSource.swift"; sourceTree = "<group>"; };
+		7962466A1B82C37900608B58 /* CommentsViewController+KeyboardBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CommentsViewController+KeyboardBar.swift"; sourceTree = "<group>"; };
 		797006EB1B7AA32C0058B09A /* UIViewController+VRootNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+VRootNavigationController.h"; sourceTree = "<group>"; };
 		797006EC1B7AA32C0058B09A /* UIViewController+VRootNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+VRootNavigationController.m"; sourceTree = "<group>"; };
 		797006EE1B7AA3980058B09A /* VTabScaffoldHidingHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTabScaffoldHidingHelper.h; sourceTree = "<group>"; };
@@ -3845,6 +3851,9 @@
 				797226631B7E9EC40023C851 /* Comments Data Source */,
 				79A809C31B7BF912006AE04E /* CommentsViewController.storyboard */,
 				79A809C11B7BF8F7006AE04E /* CommentsViewController.swift */,
+				796246661B82C28D00608B58 /* CommentsViewController+CommentCellActions.swift */,
+				796246681B82C2CB00608B58 /* CommentsViewController+DataSource.swift */,
+				7962466A1B82C37900608B58 /* CommentsViewController+KeyboardBar.swift */,
 				A7E2EFD11A49066F00372547 /* EditComment.storyboard */,
 				F0FC97E11B5C1C7E0098AFCB /* Media Link View Controllers */,
 				C3E47F7E1B6BE48D0084FF65 /* MediaAttachmentBallisticView.swift */,
@@ -9099,6 +9108,7 @@
 				F0C83A581B161BF500A6EC1A /* VStreamItemPreviewView.m in Sources */,
 				D85B709B1B0EF0520038CA5B /* VModernRegisterViewController.m in Sources */,
 				A70FC10A1A2D558200F5BBDE /* VPurchase.m in Sources */,
+				796246671B82C28D00608B58 /* CommentsViewController+CommentCellActions.swift in Sources */,
 				A705F4531B3DC7C1007DBD3C /* VCellSizeComponent.m in Sources */,
 				A78F17731B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift in Sources */,
 				DB34DC5C1A09B5AF001EC711 /* VLiveRailAdViewController.m in Sources */,
@@ -9514,6 +9524,7 @@
 				D82E76DE19F5BFED00FFB722 /* VContentPollQuestionCell.m in Sources */,
 				D87AD2AB1AD4781300C481D0 /* VDownloadTaskInformation.m in Sources */,
 				0314D49619B46B5E00FA363C /* VResultView.m in Sources */,
+				796246691B82C2CB00608B58 /* CommentsViewController+DataSource.swift in Sources */,
 				A7724FFB1B33905000B1BBB3 /* VSequenceCountsTextView.m in Sources */,
 				A721E92F1B572454000B7901 /* VNotificationSettings+RestKit.m in Sources */,
 				D80A94E61A546DF90035D788 /* VAssetThumbnailDataSource.m in Sources */,
@@ -9544,6 +9555,7 @@
 				A721E9631B572454000B7901 /* UIViewController+VLayoutInsets.m in Sources */,
 				A7B514541A4517A80074282F /* VSwipeTableViewCell.m in Sources */,
 				A721E9461B572454000B7901 /* NSURL+VCustomScheme.m in Sources */,
+				7962466B1B82C37900608B58 /* CommentsViewController+KeyboardBar.swift in Sources */,
 				F0A82AF71AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m in Sources */,
 				D85E428A1AFA9A3C00A13BD3 /* VTextSequencePreviewView.m in Sources */,
 				D85B706D1B0EAF3F0038CA5B /* VTemplateBackgroundView.m in Sources */,
