@@ -159,12 +159,14 @@ extension CommentsViewController: UICollectionViewDelegateFlowLayout {
     // MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        var comment = sequence?.comments?[indexPath.item] as! VComment
-        var size = VContentCommentsCell.sizeWithFullWidth(CGRectGetWidth(view.bounds),
-            comment: comment,
-            hasMedia: (comment.commentMediaType() != VCommentMediaType.NoMedia),
-            dependencyManager: dependencyManager)
-        return CGSizeMake(CGRectGetWidth(view.bounds), size.height)
+        if let comment = sequence?.comments?[indexPath.item] as? VComment {
+            var size = VContentCommentsCell.sizeWithFullWidth(CGRectGetWidth(view.bounds),
+                comment: comment,
+                hasMedia: (comment.commentMediaType() != VCommentMediaType.NoMedia),
+                dependencyManager: dependencyManager)
+            return CGSize(width: CGRectGetWidth(view.bounds), height: size.height)
+        }
+        return CGSize.zeroSize
     }
 
 }
