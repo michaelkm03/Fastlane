@@ -364,6 +364,8 @@
 		669EBBE51A30239100DE317D /* VTickerPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 669EBBE31A30239100DE317D /* VTickerPickerViewController.m */; };
 		66AF79521B60A8E4006DDCD8 /* VVideoCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66AF79511B60A8E4006DDCD8 /* VVideoCameraViewController.m */; };
 		66AF79541B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */; };
+		672E5F421B83A49B00D898DE /* Explore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 672E5F411B83A49B00D898DE /* Explore.storyboard */; };
+		672E5F441B83A4BF00D898DE /* VExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 672E5F431B83A4BF00D898DE /* VExploreViewController.swift */; };
 		67C69F591B67ECDF00C59230 /* VContentViewPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 67C69F581B67ECDF00C59230 /* VContentViewPresenter.m */; };
 		794246451B7D39B000F5F879 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794246441B7D39B000F5F879 /* Operation.swift */; };
 		7942464A1B7D3A5300F5F879 /* AutoShowLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794246471B7D3A5300F5F879 /* AutoShowLoginOperation.swift */; };
@@ -1959,6 +1961,8 @@
 		66AF79501B60A8E4006DDCD8 /* VVideoCameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoCameraViewController.h; sourceTree = "<group>"; };
 		66AF79511B60A8E4006DDCD8 /* VVideoCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoCameraViewController.m; sourceTree = "<group>"; };
 		66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VVideoCameraViewController.storyboard; sourceTree = "<group>"; };
+		672E5F411B83A49B00D898DE /* Explore.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Explore.storyboard; path = Explore/Explore.storyboard; sourceTree = "<group>"; };
+		672E5F431B83A4BF00D898DE /* VExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VExploreViewController.swift; path = Explore/VExploreViewController.swift; sourceTree = "<group>"; };
 		67C69F571B67ECDF00C59230 /* VContentViewPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContentViewPresenter.h; path = Presenters/VContentViewPresenter.h; sourceTree = "<group>"; };
 		67C69F581B67ECDF00C59230 /* VContentViewPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentViewPresenter.m; path = Presenters/VContentViewPresenter.m; sourceTree = "<group>"; };
 		693498EEB4388179C36EF74A /* libPods-VictoriousCommonOSX.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VictoriousCommonOSX.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3808,6 +3812,7 @@
 		0314D2EA19B46B5D00FA363C /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				672E5F3C1B83A22200D898DE /* Explore */,
 				A77AD4C91A1FC66300142F24 /* Alert Controller */,
 				A77AD4C41A1EFA3D00142F24 /* Automation */,
 				0314D2EB19B46B5D00FA363C /* Camera */,
@@ -5194,6 +5199,15 @@
 				669EBBE11A30239100DE317D /* VToolPicker.h */,
 			);
 			path = Pickers;
+			sourceTree = "<group>";
+		};
+		672E5F3C1B83A22200D898DE /* Explore */ = {
+			isa = PBXGroup;
+			children = (
+				672E5F411B83A49B00D898DE /* Explore.storyboard */,
+				672E5F431B83A4BF00D898DE /* VExploreViewController.swift */,
+			);
+			name = Explore;
 			sourceTree = "<group>";
 		};
 		67C69F561B67EC4F00C59230 /* Presenters */ = {
@@ -8328,6 +8342,7 @@
 				03C1858419B42C9100E27D05 /* Roboto-BoldItalic.ttf in Resources */,
 				036F38871A0C4DEA0014DF66 /* PT_Sans-Web-Regular.ttf in Resources */,
 				A7299E951AA5331000B6BC1F /* VCardSeeMoreDirectoryCell.xib in Resources */,
+				672E5F421B83A49B00D898DE /* Explore.storyboard in Resources */,
 				A7FE8C3E19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf in Resources */,
 				039D02AC1A1043D300DB9236 /* TemplateClasses.plist in Resources */,
 				03C1858B19B42C9100E27D05 /* Roboto-Thin.ttf in Resources */,
@@ -9493,6 +9508,7 @@
 				B0DDD5571B4DF7F80065E540 /* VPermissionsTrackingHelper.m in Sources */,
 				0386E1F71A8DDA7F00FC9BDF /* VFollowingStreamCollectionViewController.m in Sources */,
 				F0FC97DC1B5C0B9B0098AFCB /* VAbstractMediaLinkViewController.m in Sources */,
+				672E5F441B83A4BF00D898DE /* VExploreViewController.swift in Sources */,
 				A6E104D31B56C88D0062392A /* VPublishSaveCollectionViewCell.m in Sources */,
 				A7792FD71AE8209200E2ECC1 /* VTemplateDecorator.m in Sources */,
 				A721E91E1B572454000B7901 /* VAbstractFilter+RestKit.m in Sources */,
