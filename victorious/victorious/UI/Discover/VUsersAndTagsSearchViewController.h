@@ -27,7 +27,7 @@ extern NSString * const kVHashtagsSearchResultsChangedNotification;
  
  @return Instance of VUsersAndTagsSearchViewController view controller
  */
-+ (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager;
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *headerTopConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchBarTopConstraint;

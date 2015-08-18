@@ -21,6 +21,7 @@ extern NSString * const VStreamItemTypeFeed;
 //Subtype values
 extern NSString * const VStreamItemSubTypeImage;
 extern NSString * const VStreamItemSubTypeVideo;
+extern NSString * const VStreamItemSubTypeGif;
 extern NSString * const VStreamItemSubTypePoll;
 extern NSString * const VStreamItemSubTypeText;
 extern NSString * const VStreamItemSubTypeContent;

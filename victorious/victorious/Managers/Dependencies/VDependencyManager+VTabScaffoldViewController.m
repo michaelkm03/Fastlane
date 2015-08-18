@@ -38,7 +38,7 @@ NSString * const VScaffoldViewControllerNavigationBarAppearanceKey = @"navigatio
     navigationBar.shadowImage = [UIImage v_imageWithColor:[UIColor clearColor]];
     
     NSMutableDictionary *titleAttributes = [NSMutableDictionary dictionary];
-    UIColor *navigationBarTitleTintColor = [dependenciesForNavigationBar colorForKey:VDependencyManagerMainTextColorKey];
+    UIColor *navigationBarTitleTintColor = [self barItemTintColor];
     UIFont *navigationBarTitleFont = [dependenciesForNavigationBar fontForKey:VDependencyManagerHeaderFontKey];
     
     if ( navigationBarTitleTintColor != nil )
@@ -52,6 +52,11 @@ NSString * const VScaffoldViewControllerNavigationBarAppearanceKey = @"navigatio
         titleAttributes[NSFontAttributeName] = navigationBarTitleFont;
     }
     navigationBar.titleTextAttributes = titleAttributes;
+}
+
+- (UIColor *)barItemTintColor
+{
+    return [[self dependencyManagerForNavigationBar] colorForKey:VDependencyManagerMainTextColorKey];
 }
 
 @end

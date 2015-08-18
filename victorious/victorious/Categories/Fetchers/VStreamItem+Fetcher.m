@@ -23,6 +23,7 @@ NSString * const VStreamItemTypeFeed = @"feed";
 //Subtype values
 NSString * const VStreamItemSubTypeImage = @"image";
 NSString * const VStreamItemSubTypeVideo = @"video";
+NSString * const VStreamItemSubTypeGif = @"gif";
 NSString * const VStreamItemSubTypePoll = @"poll";
 NSString * const VStreamItemSubTypeText = @"text";
 NSString * const VStreamItemSubTypeContent = @"content";

@@ -71,7 +71,7 @@ static NSInteger const kVMaxSearchResults = 1000;
     return [storyboard instantiateViewControllerWithIdentifier:@"search"];
 }
 
-+ (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     VUsersAndTagsSearchViewController *usersAndTagsVC = [self usersAndTagsSearchViewController];
     usersAndTagsVC.dependencyManager = dependencyManager;

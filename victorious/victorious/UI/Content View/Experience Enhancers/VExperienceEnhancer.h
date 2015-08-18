@@ -47,6 +47,8 @@
 @property (nonatomic, assign) UIViewContentMode contentMode;
 @property (nonatomic, readonly) VVoteType *voteType;
 @property (nonatomic, readonly) BOOL isBallistic;
+@property (nonatomic, readonly) NSDate *lastVoted;
+@property (nonatomic, readonly) NSDate *cooldownDate;
 
 /**
  Determines if this experience enhancer is in the process

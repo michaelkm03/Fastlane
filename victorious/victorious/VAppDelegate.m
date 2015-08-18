@@ -70,7 +70,21 @@ static BOOL shouldCompleteLaunch(void) __attribute__((const));
     self.window.rootViewController = [storyboard instantiateInitialViewController];
     [self.window makeKeyAndVisible];
     
+    UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+    if ( localNotification != nil )
+    {
+        [[VRootViewController rootViewController] handleLocalNotification:localNotification];
+    }
+    
     return YES;
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)localNotification
+{
+    if ( [application applicationState] == UIApplicationStateInactive )
+    {
+        [[VRootViewController rootViewController] handleLocalNotification:localNotification];
+    }
 }
 
 - (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window

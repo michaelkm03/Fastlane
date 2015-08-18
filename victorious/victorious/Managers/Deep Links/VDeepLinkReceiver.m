@@ -39,7 +39,8 @@
         //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://inbox/491"];
         //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://content/11377"];
         //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://comment/11377/7511"];
-        NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://profile/431"];
+        NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://menu/4"];
+        //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://profile/431"];
         //NSURL *testDeepLinkURL = [NSURL URLWithString:@"vthisapp://discover/"];
         [self performSelector:@selector(receiveDeeplink:) withObject:testDeepLinkURL afterDelay:0.0];
 #endif

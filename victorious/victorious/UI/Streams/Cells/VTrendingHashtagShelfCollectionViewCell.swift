@@ -44,7 +44,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
     @IBOutlet private weak var collectionViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet private weak var separatorHeightConstraint: NSLayoutConstraint!
     
-    private static let titleText: NSString = NSLocalizedString("Fan Favorite", comment:"")
+    private static let titleText: NSString = NSLocalizedString("TRENDING HASHTAG", comment:"")
     
     private static let numberFormatter = VLargeNumberFormatter()
     

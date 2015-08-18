@@ -23,6 +23,7 @@
 @property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) NSNumber * speed;
 @property (nonatomic, retain) NSNumber * streamAutoplay;
+@property (nonatomic, retain) NSNumber * duration;
 @property (nonatomic, retain) NSString * type;
 @property (nonatomic, retain) VNode *node;
 

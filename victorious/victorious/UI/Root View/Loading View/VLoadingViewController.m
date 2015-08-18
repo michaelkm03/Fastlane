@@ -200,7 +200,7 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
         templateConfiguration = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:@"devShelfTemplate" ofType:@"json"]] options:0 error:nil][@"payload"];
         
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
-    
+
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];
