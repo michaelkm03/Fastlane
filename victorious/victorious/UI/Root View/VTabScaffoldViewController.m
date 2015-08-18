@@ -127,14 +127,14 @@ NSString * const kFirstTimeContentKey = @"firstTimeContent";
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    return UIInterfaceOrientationPortrait;
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 #pragma mark - Public API
 
 - (void)showContentViewWithSequence:(id)sequence streamID:(NSString *)streamId commentId:(NSNumber *)commentID placeHolderImage:(UIImage *)placeholderImage
 {
-    [VContentViewPresenter presentContentViewFromViewController:self.navigationController
+    [VContentViewPresenter presentContentViewFromViewController:self.rootNavigationController
                                           withDependencyManager:self.dependencyManager
                                                     ForSequence:sequence
                                                  inStreamWithID:streamId
