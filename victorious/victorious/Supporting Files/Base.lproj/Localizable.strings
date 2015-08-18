@@ -679,6 +679,22 @@
 "NOTHING LIKED YET" = "NOTHING LIKED YET"; // Liked content no content view
 "Posts you like will appear here." = "Posts you like will appear here."; // Liked content no content view
 
+"Barcelona" = "Barcelona";
+"London" = "London";
+"Paris" = "Paris";
+"Oslo" = "Oslo";
+"Rio" = "Rio";
+"Sydney" = "Sydney";
+"Tokyo" = "Tokyo";
+"Rome" = "Rome";
+"New York" = "New York";
+"LA" = "LA";
+"Athens" = "Athens";
+"St. Moritz" = "St. Moritz";
+"Helsinki" = "Helsinki";
+"Seoul" = "Seoul";
+"Montreal" = "Montreal";
+
 "Use mobile data and Wi-Fi" = "Use mobile data and Wi-Fi";
 "Use Wi-Fi only" = "Use Wi-Fi only";
 "Never play videos automatically" = "Never play videos automatically";
