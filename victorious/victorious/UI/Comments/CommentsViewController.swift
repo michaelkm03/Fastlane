@@ -353,7 +353,8 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         let shouldResumeEditing = inputAccessoryView.isEditing()
         inputAccessoryView.stopEditing()
         
-        let alertController = VCommentAlertHelper.alertForConfirmDiscardMediaWithDelete({
+        let alertController = VCommentAlertHelper.alertForConfirmDiscardMediaWithDelete(
+            {
                 self.publishParameters?.mediaToUploadURL = nil
                 inputAccessoryView.setSelectedThumbnail(nil)
                 if shouldResumeEditing {
@@ -363,7 +364,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             cancel: {
                 if shouldResumeEditing {
                     inputAccessoryView.startEditing()
-            }
+                }
         })
         
         self.presentViewController(alertController, animated: true, completion: nil)
@@ -391,8 +392,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
                 return VMediaAttachmentOptions.Image
             }
         }()
-        
-        
+
         mediaAttachmentPresenter?.attachmentTypes = mediaAttachmentOptions
         mediaAttachmentPresenter?.resultHandler = { [weak self](success: Bool, publishParameters: VPublishParameters?) -> Void in
             if let strongSelf = self {
