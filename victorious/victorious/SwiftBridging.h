@@ -114,6 +114,9 @@
 #import "VTransitionDelegate.h"
 #import "VCollectionViewCommentHighlighter.h"
 #import "VNavigationController.h"
+#import "VLightboxTransitioningDelegate.h"
+#import "VVideoLightboxViewController.h"
+#import "VImageLightboxViewController.h"
 
 //Shelves
 #import "VStreamCellFactory.h"

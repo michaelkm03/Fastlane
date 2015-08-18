@@ -283,7 +283,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         if var cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifierForComment, forIndexPath: indexPath) as? VContentCommentsCell {
             cell.dependencyManager = dependencyManager
             cell.comment = commentForIndexPath
-            cell.commentAndMediaView.textView.tagTapDelegate = self
+            cell.commentAndMediaView?.textView?.tagTapDelegate = self
             cell.swipeViewController.controllerDelegate = self
             cell.commentsUtilitiesDelegate = self
             cell.onUserProfileTapped = { [weak self] in
@@ -292,10 +292,40 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
                     strongSelf.rootNavigationController()?.innerNavigationController.pushViewController(profileViewController, animated: true)
                 }
             }
+            cell.commentAndMediaView.onMediaTapped = { [weak self, weak cell](previewImage: UIImage) in
+                if let strongSelf = self, strongCell = cell {
+                    strongSelf.showLightBoxWithMediaURL(strongCell.comment.properMediaURLGivenContentType(),
+                            previewImage: previewImage,
+                            isVideo: strongCell.mediaIsVideo,
+                            sourceView: strongCell.commentAndMediaView)
+                }
+            }
             return cell
         }
         
         fatalError("We must have registered a cell for this comment!")
+    }
+    
+    // MARK: LightBox
+    
+    func showLightBoxWithMediaURL(mediaURL: NSURL, previewImage: UIImage, isVideo: Bool, sourceView: UIView) {
+        var lightBox: VLightboxViewController?
+        if isVideo {
+            lightBox = VVideoLightboxViewController(previewImage: previewImage, videoURL: mediaURL)
+        }
+        else {
+            lightBox = VImageLightboxViewController(image: previewImage)
+        }
+        lightBox?.onCloseButtonTapped = { [weak lightBox, weak self] in
+            if let strongSelf = self where strongSelf.presentedViewController == lightBox {
+                strongSelf.dismissViewControllerAnimated(true, completion: nil)
+            }
+        }
+        if let videoLightBox = lightBox as? VVideoLightboxViewController {
+            videoLightBox.onVideoFinished = videoLightBox.onCloseButtonTapped
+        }
+        VLightboxTransitioningDelegate.addNewTransitioningDelegateToLightboxController(lightBox, referenceView: sourceView)
+        self.presentViewController(lightBox!, animated: true, completion: nil)
     }
     
     // MARK: - CommentsDataSourceDelegate
@@ -328,6 +358,8 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
                             andParent: nil,
                             successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
                                 strongSelf.collectionView.reloadData()
+                                strongSelf.collectionView.collectionViewLayout.invalidateLayout()
+                                strongSelf.updateInsetForKeyboardBarState()
                             }, failBlock: nil)
                         
                         strongSelf.keyboardBar?.clearTextAndResign()
