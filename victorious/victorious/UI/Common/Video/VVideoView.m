@@ -126,7 +126,6 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
     self.player.actionAtItemEnd = loop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
     self.player.muted = audioMuted;
     
-    
     _itemURL = itemURL;
     
     self.newestPlayerItem = nil;

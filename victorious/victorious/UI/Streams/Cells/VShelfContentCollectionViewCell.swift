@@ -54,7 +54,7 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
     /// Called when a new dependency manager is set.
     func onDependencyManagerSet() {
         if let dependencyManager = dependencyManager {
-            dependencyManager.addLoadingBackgroundToBackgroundHost(self)
+            //dependencyManager.addLoadingBackgroundToBackgroundHost(self)
         }
     }
     
@@ -81,7 +81,7 @@ extension VShelfContentCollectionViewCell: VStreamCellComponentSpecialization {
         var updatedIdentifier = identifier(baseIdentifier, className: NSStringFromClass(self))
         
         if let itemType = streamItem.itemType {
-            updatedIdentifier += "." + itemType
+            updatedIdentifier += itemType
         }
         
         if let itemSubType = streamItem.itemSubType {

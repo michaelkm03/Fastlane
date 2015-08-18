@@ -26,8 +26,13 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     
     var shelf: VShelf? {
         didSet {
-            if shelf == oldValue {
-                return
+            if ( shelf == oldValue ) {
+                if let newStreamItems = shelf?.stream?.streamItems, let oldStreamItems = shelf?.stream?.streamItems {
+                    if newStreamItems.isEqualToOrderedSet(oldStreamItems) {
+                        //The shelf AND its content are the same, no need to update
+                        return
+                    }
+                }
             }
             
             self.onShelfSet()

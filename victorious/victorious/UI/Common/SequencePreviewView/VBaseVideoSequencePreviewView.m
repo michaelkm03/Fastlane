@@ -72,9 +72,6 @@
     
     [self makeBackgroundContainerViewVisible:NO];
     
-    // Hide video view in case we're not auto playing
-    self.videoView.hidden = YES;
-    
     VImageAssetFinder *imageFinder = [[VImageAssetFinder alloc] init];
     VImageAsset *imageAsset = [imageFinder largestAssetFromAssets:sequence.previewAssets];
     
