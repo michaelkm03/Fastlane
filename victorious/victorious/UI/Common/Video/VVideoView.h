@@ -103,6 +103,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)reset;
 
+/**
+ Returns the current time of video playback;
+ */
+- (NSUInteger)currentTimeMilliseconds;
+
 NS_ASSUME_NONNULL_END
 
 @end

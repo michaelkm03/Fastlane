@@ -528,6 +528,11 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     }
 }
 
+- (NSDictionary *__nonnull)additionalInfo
+{
+    return [self.previewView trackingInfo];
+}
+
 #pragma mark - VHighlightContainer
 
 - (UIView *)highlightContainerView

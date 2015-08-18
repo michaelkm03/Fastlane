@@ -58,4 +58,9 @@ typedef void (^VPreviewViewDisplayReadyBlock)(VStreamItemPreviewView *previewVie
  */
 @property (nonatomic, assign) BOOL readyForDisplay;
 
+/**
+ *  Returns tracking info specific to things happening inside this preview view.
+ */
+- (NSDictionary *)trackingInfo;
+
 @end

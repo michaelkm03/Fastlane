@@ -295,4 +295,9 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     return event;
 }
 
+- (NSDictionary *)trackingInfo
+{
+    return @{VTrackingKeyTimeCurrent : [NSNumber numberWithUnsignedInteger:[self.videoView currentTimeMilliseconds]]};
+}
+
 @end

@@ -318,7 +318,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     }
     else if ( streamItem.isContent )
     {
-        [self.streamTrackingHelper onStreamCellSelectedWithCellEvent:event];
+        [self.streamTrackingHelper onStreamCellSelectedWithCellEvent:event additionalInfo:nil];
         
         NSString *streamId = [self.marqueeController.stream hasShelfID] && event.fromShelf ? self.marqueeController.stream.shelfId : self.marqueeController.stream.streamId;
         [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:(VSequence *)streamItem streamID:streamId commentId:nil placeHolderImage:nil];

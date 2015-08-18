@@ -75,6 +75,12 @@
     }
 }
 
+- (NSDictionary *)trackingInfo
+{
+    // Subclasses can override to provide necessary tracking info
+    return @{};
+}
+
 #pragma mark - VStreamCellComponentSpecialization
 
 + (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem

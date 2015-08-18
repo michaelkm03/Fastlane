@@ -108,7 +108,7 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
                                           eventId:sequence.remoteId];
 }
 
-- (void)onStreamCellSelectedWithCellEvent:(StreamCellContext *)context
+- (void)onStreamCellSelectedWithCellEvent:(StreamCellContext *)context additionalInfo:(NSDictionary *)info
 {
     VSequence *sequence = (VSequence *)context.streamItem;
     VStream *stream = context.stream;
@@ -126,6 +126,7 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
         {
             AutoplayTrackingEvent *event = [[AutoplayTrackingEvent alloc] initWithName:VTrackingEventVideoDidStop urls:sequence.tracking.viewStop];
             event.context = context;
+            event.watchTime = info[VTrackingKeyTimeCurrent];
             [self trackAutoplayEvent:event];
         }
     }
@@ -188,7 +189,8 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
                                  VTrackingKeyConnectivity : connectivityString,
                                  VTrackingKeyVolumeLevel : volumeString,
                                  VTrackingKeyUrls : event.urls,
-                                 VTrackingKeyStreamId : trackingID ?: @""};
+                                 VTrackingKeyStreamId : trackingID ?: @"",
+                                 VTrackingKeyTimeCurrent : [event.watchTime stringValue] ?: @""};
     
     [[VTrackingManager sharedInstance] queueEvent:event.name parameters:parameters eventId:event.context.streamItem.remoteId];
 }

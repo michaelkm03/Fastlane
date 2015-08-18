@@ -13,6 +13,7 @@ class AutoplayTrackingEvent : NSObject {
     var urls: AnyObject
     var loadTime: NSNumber?
     var context: StreamCellContext?
+    var watchTime: NSNumber?
     
     init(name: String, urls: AnyObject) {
         self.name = name
@@ -22,5 +23,5 @@ class AutoplayTrackingEvent : NSObject {
 
 @objc protocol AutoplayTracking {
     optional func trackAutoplayEvent(event: AutoplayTrackingEvent)
-    optional func additionalInfo() -> [String : String]
+    optional func additionalInfo() -> [String : AnyObject]
 }

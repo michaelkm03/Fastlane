@@ -307,6 +307,11 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
     }
 }
 
+- (NSUInteger)currentTimeMilliseconds
+{
+    return (NSUInteger)(CMTimeGetSeconds( self.player.currentTime ) * 1000.0);
+}
+
 NS_ASSUME_NONNULL_END
 
 @end

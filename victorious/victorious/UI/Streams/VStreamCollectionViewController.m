@@ -499,7 +499,17 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
                                                                           stream:marquee.stream
                                                                        fromShelf:YES];
         
-        [self showContentViewForCellEvent:event withPreviewImage:image];
+        UICollectionViewCell *cell = [marquee.collectionView cellForItemAtIndexPath:path];
+        NSDictionary *extraTrackingInfo;
+        if ([cell conformsToProtocol:@protocol(AutoplayTracking)])
+        {
+            if ([cell respondsToSelector:@selector(additionalInfo)])
+            {
+                extraTrackingInfo = [(id<AutoplayTracking>)cell additionalInfo];
+            }
+        }
+        
+        [self showContentViewForCellEvent:event trackingInfo:extraTrackingInfo withPreviewImage:image];
     }
     else if ( [streamItem isSingleStream] )
     {
@@ -560,7 +570,16 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
                                                                       stream:self.currentStream
                                                                    fromShelf:NO];
     
-    [self showContentViewForCellEvent:event withPreviewImage:nil];
+    NSDictionary *extraTrackingInfo;
+    if ([cell conformsToProtocol:@protocol(AutoplayTracking)])
+    {
+        if ([cell respondsToSelector:@selector(additionalInfo)])
+        {
+            extraTrackingInfo = [(id<AutoplayTracking>)cell additionalInfo];
+        }
+    }
+    
+    [self showContentViewForCellEvent:event trackingInfo:extraTrackingInfo withPreviewImage:nil];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
@@ -767,12 +786,12 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     self.collectionView.backgroundView = newBackgroundView;
 }
 
-- (void)showContentViewForCellEvent:(StreamCellContext *)event withPreviewImage:(UIImage *)previewImage
+- (void)showContentViewForCellEvent:(StreamCellContext *)event trackingInfo:(NSDictionary *)trackingInfo withPreviewImage:(UIImage *)previewImage
 {
     NSParameterAssert(event.streamItem != nil);
     NSParameterAssert(self.currentStream != nil);
     
-    [self.streamTrackingHelper onStreamCellSelectedWithCellEvent:event];
+    [self.streamTrackingHelper onStreamCellSelectedWithCellEvent:event additionalInfo:trackingInfo];
     
     NSString *streamID = [event.stream hasShelfID] && event.fromShelf ? event.stream.shelfId : event.stream.streamId;
     [VContentViewPresenter presentContentViewFromViewController:self
