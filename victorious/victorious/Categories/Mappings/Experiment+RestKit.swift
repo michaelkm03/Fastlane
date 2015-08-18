@@ -21,7 +21,7 @@ extension Experiment {
         ]
     }
     
-    static var entityMapping: RKEntityMapping {
+    override static func entityMapping() -> RKEntityMapping {
         var store = RKObjectManager.sharedManager().managedObjectStore
         var mapping = RKEntityMapping(forEntityForName: self.v_defaultEntityName, inManagedObjectStore: store )
         mapping.addAttributeMappingsFromDictionary( propertyMap )
@@ -32,7 +32,7 @@ extension Experiment {
     static var descriptors: NSArray {
         return [
             RKResponseDescriptor(
-                mapping: self.entityMapping,
+                mapping: self.entityMapping(),
                 method: .Any,
                 pathPattern: "/api/device/experiments",
                 keyPath: "payload",

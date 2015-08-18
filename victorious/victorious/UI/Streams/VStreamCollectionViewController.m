@@ -99,6 +99,7 @@ static NSString * const kGifStreamKey = @"gifStream";
 static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
+static NSString * const kStreamCollectionKey = @"destinationStream";
 
 @interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate>
 
@@ -162,8 +163,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForStream:stream];
     streamCollectionVC.dependencyManager = dependencyManager;
-    streamCollectionVC.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:stream];
-    streamCollectionVC.streamDataSource.delegate = streamCollectionVC;
     
     NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:kStreamATFThresholdKey];
     if ( cellVisibilityRatio != nil )
@@ -380,8 +379,18 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)setCurrentStream:(VStream *)currentStream
 {
-    self.title = NSLocalizedString(currentStream.name, @"");
-    self.navigationItem.title = NSLocalizedString(currentStream.name, @"");
+    NSString *streamName = currentStream.name;
+    self.title = NSLocalizedString(streamName, @"");
+    self.navigationItem.title = NSLocalizedString(streamName, @"");
+    if ( self.streamDataSource == nil )
+    {
+        self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:currentStream];
+        self.streamDataSource.delegate = self;
+    }
+    else
+    {
+        self.streamDataSource.stream = currentStream;
+    }
     [super setCurrentStream:currentStream];
 }
 
@@ -489,25 +498,21 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)marquee:(VAbstractMarqueeController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path previewImage:(UIImage *)image
 {
-    NSDictionary *params = @{ VTrackingKeyName : streamItem.name ?: @"",
-                              VTrackingKeyRemoteId : streamItem.remoteId ?: @"" };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromMarquee parameters:params];
-    
-    if ( [streamItem isKindOfClass:[VSequence class]] )
+    [self navigateToStreamItem:streamItem fromStream:marquee.stream previewImage:image];
+}
+
+- (void)navigateToStream:(VStream *)stream atStreamItem:(VStreamItem *)streamItem
+{
+    if ( [stream isSingleStream] )
     {
-        StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:streamItem
-                                                                          stream:marquee.stream
-                                                                       fromShelf:YES];
-        
-        [self showContentViewForCellEvent:event withPreviewImage:image];
+        VStreamCollectionViewController *streamCollection = [self.dependencyManager templateValueOfType:[VStreamCollectionViewController class]
+                                                                                                 forKey:kStreamCollectionKey
+                                                                                  withAddedDependencies:@{ kSequenceIDKey: stream.remoteId, VDependencyManagerTitleKey: stream.name }];
+        streamCollection.currentStream = stream;
+        streamCollection.targetStreamItem = streamItem;
+        [self.navigationController pushViewController:streamCollection animated:YES];
     }
-    else if ( [streamItem isSingleStream] )
-    {
-        VStreamCollectionViewController *viewController = [VStreamCollectionViewController streamViewControllerForStream:(VStream *)streamItem];
-        viewController.dependencyManager = self.dependencyManager;
-        [self.navigationController pushViewController:viewController animated:YES];
-    }
-    else if ( [streamItem isStreamOfStreams] )
+    else if ( [stream isStreamOfStreams] )
     {
         VDirectoryCollectionViewController *directory = [self.dependencyManager templateValueOfType:[VDirectoryCollectionViewController class] forKey:kMarqueeDestinationDirectory];
         
@@ -523,12 +528,35 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
         }
         
         //Set the selected stream as the current stream in the directory
-        directory.currentStream = (VStream *)streamItem;
+        directory.currentStream = stream;
         
         //Update the directory title to match the streamItem
-        directory.title = streamItem.name;
+        directory.title = stream.name;
+        
+        directory.targetStreamItem = streamItem;
         
         [self.navigationController pushViewController:directory animated:YES];
+    }
+}
+
+- (void)navigateToStreamItem:(VStreamItem *)streamItem fromStream:(VStream *)stream previewImage:(UIImage *)image
+{
+    NSDictionary *params = @{ VTrackingKeyName : streamItem.name ?: @"",
+                              VTrackingKeyRemoteId : streamItem.remoteId ?: @"" };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromMarquee parameters:params];
+    
+    if ( [streamItem isKindOfClass:[VSequence class]] )
+    {
+        StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:streamItem
+                                                                          stream:stream
+                                                                       fromShelf:YES];
+        
+        [self showContentViewForCellEvent:event withPreviewImage:image];
+    }
+    else if ( [streamItem isKindOfClass:[VStream class]] )
+    {
+        VStream *stream = (VStream *)streamItem;
+        [self navigateToStream:stream atStreamItem:nil];
     }
 }
 
@@ -775,13 +803,17 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     [self.streamTrackingHelper onStreamCellSelectedWithCellEvent:event];
     
-    NSString *streamID = [event.stream hasShelfID] && event.fromShelf ? event.stream.shelfId : event.stream.streamId;
-    [VContentViewPresenter presentContentViewFromViewController:self
-                                          withDependencyManager:self.dependencyManager
-                                                    ForSequence:(VSequence *)event.streamItem
-                                                 inStreamWithID:streamID
-                                                      commentID:nil
-                                               withPreviewImage:previewImage];
+    if ( [event.streamItem isKindOfClass:[VSequence class]] )
+    {
+        NSString *streamID = [event.stream hasShelfID] && event.fromShelf ? event.stream.shelfId : event.stream.streamId;
+        
+        [VContentViewPresenter presentContentViewFromViewController:self
+                                              withDependencyManager:self.dependencyManager
+                                                        ForSequence:(VSequence *)event.streamItem
+                                                     inStreamWithID:streamID
+                                                          commentID:nil
+                                                   withPreviewImage:previewImage];
+    }
 }
 
 #pragma mark - Upload Progress View

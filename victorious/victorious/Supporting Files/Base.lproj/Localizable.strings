@@ -679,6 +679,13 @@
 "NOTHING LIKED YET" = "NOTHING LIKED YET"; // Liked content no content view
 "Posts you like will appear here." = "Posts you like will appear here."; // Liked content no content view
 
+
+"TRENDING FAN" = "TRENDING FAN";
+"posts" = "Posts";
+
+"TRENDING HASHTAG" = "TRENDING HASHTAG";
+"HashtagPostsCountFormat" = "In %@ Posts";
+
 "Barcelona" = "Barcelona";
 "London" = "London";
 "Paris" = "Paris";

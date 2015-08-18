@@ -109,7 +109,6 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
     NSParameterAssert(viewControllerToPresentOn != nil);
     
     self.viewControllerToPresentAuthorizationOn = viewControllerToPresentOn;
-
     
     [self withAuthorizationDo:^(BOOL authorized)
      {

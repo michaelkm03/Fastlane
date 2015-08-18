@@ -26,6 +26,7 @@
 #import "VHashtagResponder.h"
 #import "VFollowControl.h"
 #import "UIViewController+VAccessoryScreens.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
 
 static NSString * const kHashtagStreamKey = @"hashtagStream";
 static NSString * const kHashtagKey = @"hashtag";
@@ -68,6 +69,8 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     
     streamCollection.followControl = [[VFollowControl alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
     streamCollection.followControl.dependencyManager = dependencyManager;
+    streamCollection.followControl.tintUnselectedImage = YES;
+    streamCollection.followControl.unselectedTintColor = [dependencyManager barItemTintColor];
     
     return streamCollection;
 }
@@ -232,10 +235,8 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     {
         return;
     }
-    
     [self.followControl setControlState:VFollowControlStateLoading
                                animated:YES];
-    
     self.followingEnabled = NO;
     
     id <VHashtagResponder> responder = [self.nextResponder targetForAction:@selector(followHashtag:successBlock:failureBlock:) withSender:self];
@@ -264,10 +265,8 @@ static NSString * const kHashtagURLMacro = @"%%HASHTAG%%";
     {
         return;
     }
-    
     [self.followControl setControlState:VFollowControlStateLoading
                                animated:YES];
-    
     self.followingEnabled = NO;
     
     id <VHashtagResponder> responder = [self.nextResponder targetForAction:@selector(unfollowHashtag:successBlock:failureBlock:) withSender:self];
