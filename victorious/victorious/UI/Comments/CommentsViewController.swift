@@ -216,7 +216,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     }
     
     func commentRemoved(comment: VComment, atIndex index: Int) {
-        collectionView.performBatchUpdates({ () -> Void in
+        collectionView.performBatchUpdates({
             self.collectionView.deleteItemsAtIndexPaths([NSIndexPath(forItem: index, inSection: 0)])
         }, completion: nil)
     }
@@ -249,7 +249,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
                     // Try to reload the cell without reloading the whole section
                     var indexPathToInvalidate = self.collectionView.indexPathForCell(commentCell)
                     if let indexPathToInvalidate = indexPathToInvalidate {
-                        self.collectionView.performBatchUpdates({ () -> Void in
+                        self.collectionView.performBatchUpdates({ () in
                             self.collectionView.reloadItemsAtIndexPaths([indexPathToInvalidate])
                             }, completion: nil)
                     }
@@ -320,13 +320,13 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         if let authorizedAction = authorizedAction {
             authorizedAction.performFromViewController(self,
                 context: .AddComment,
-                completion: { [weak self](authorized: Bool) -> Void in
+                completion: { [weak self](authorized: Bool) in
                     if authorized, let strongSelf = self, let sequence = strongSelf.sequence {
                         VObjectManager.sharedManager().addCommentWithText(inputAccessoryView.composedText,
                             publishParameters: strongSelf.publishParameters,
                             toSequence: sequence,
                             andParent: nil,
-                            successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) -> Void in
+                            successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
                                 strongSelf.collectionView.reloadData()
                             }, failBlock: nil)
                         
@@ -341,7 +341,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         
         inputAccessoryView.stopEditing()
         
-        self.authorizedAction.performFromViewController(self, context: .AddComment) { [weak self](authorized: Bool) -> Void in
+        self.authorizedAction.performFromViewController(self, context: .AddComment) { [weak self](authorized: Bool) in
             if authorized, let strongSelf = self {
                 strongSelf.addMediaToCommentWithAttachmentType(attachmentType)
             }
@@ -364,7 +364,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             cancel: {
                 if shouldResumeEditing {
                     inputAccessoryView.startEditing()
-                }
+            }
         })
         
         self.presentViewController(alertController, animated: true, completion: nil)
@@ -394,7 +394,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         }()
 
         mediaAttachmentPresenter?.attachmentTypes = mediaAttachmentOptions
-        mediaAttachmentPresenter?.resultHandler = { [weak self](success: Bool, publishParameters: VPublishParameters?) -> Void in
+        mediaAttachmentPresenter?.resultHandler = { [weak self](success: Bool, publishParameters: VPublishParameters?) in
             if let strongSelf = self {
                 strongSelf.publishParameters = publishParameters
                 strongSelf.mediaAttachmentPresenter = nil

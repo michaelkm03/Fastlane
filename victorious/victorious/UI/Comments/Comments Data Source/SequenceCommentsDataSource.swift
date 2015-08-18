@@ -20,7 +20,7 @@ class SequenceCommentsDataSource : CommentsDataSource {
         
         VObjectManager.sharedManager().loadCommentsOnSequence(sequence,
             pageType: VPageType.First,
-            successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) -> Void in
+            successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
                 delegate?.commentsDataSourceDidUpdate(self)
             },
             failBlock: nil)
@@ -29,7 +29,7 @@ class SequenceCommentsDataSource : CommentsDataSource {
     func loadNextPage() {
         VObjectManager.sharedManager().loadCommentsOnSequence(sequence,
             pageType: VPageType.Next,
-            successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) -> Void in
+            successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
                 delegate?.commentsDataSourceDidUpdate(self)
             },
             failBlock: nil)
@@ -38,7 +38,7 @@ class SequenceCommentsDataSource : CommentsDataSource {
     func loadPreviousPage() {
         VObjectManager.sharedManager().loadCommentsOnSequence(sequence,
             pageType: VPageType.Previous,
-            successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) -> Void in
+            successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
                 delegate?.commentsDataSourceDidUpdate(self)
             },
             failBlock: nil)
@@ -66,7 +66,7 @@ class SequenceCommentsDataSource : CommentsDataSource {
     
     func loadComments(commentID: NSNumber) {
         VObjectManager.sharedManager().findCommentPageOnSequence(sequence, withCommentId: commentID,
-            successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) -> Void in
+            successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
             self.delegate?.commentsDataSourceDidUpdate(self, deepLinkinkId: commentID)
         },
             failBlock: nil)
