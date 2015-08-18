@@ -74,7 +74,7 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
         NSArray *filterTools = [photoFilters v_map:^id(VPhotoFilter *photoFilter)
         {
             VFilterTypeTool *imageFilter = [[VFilterTypeTool alloc] init];
-            photoFilter.name = [photoFilter.name uppercaseString];
+            photoFilter.name = [NSLocalizedString(photoFilter.name, @"") uppercaseStringWithLocale:[NSLocale currentLocale]];
             imageFilter.filter = photoFilter;
             return imageFilter;
         }];

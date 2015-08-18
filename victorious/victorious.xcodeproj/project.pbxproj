@@ -689,8 +689,6 @@
 		A780ED5A1A933D9300A8CD5D /* filters.xml in Resources */ = {isa = PBXBuildFile; fileRef = A780ED4D1A933D9300A8CD5D /* filters.xml */; };
 		A780ED5B1A933D9300A8CD5D /* VCompositeImageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = A780ED4F1A933D9300A8CD5D /* VCompositeImageFilter.m */; };
 		A780ED5C1A933D9300A8CD5D /* VPhotoFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = A780ED511A933D9300A8CD5D /* VPhotoFilter.m */; };
-		A780ED5D1A933D9300A8CD5D /* VPhotoFilterCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A780ED531A933D9300A8CD5D /* VPhotoFilterCollectionViewCell.m */; };
-		A780ED5E1A933D9300A8CD5D /* VPhotoFilterCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A780ED551A933D9300A8CD5D /* VPhotoFilterCollectionViewDataSource.m */; };
 		A780ED5F1A933D9300A8CD5D /* VPhotoFilterSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = A780ED581A933D9300A8CD5D /* VPhotoFilterSerialization.m */; };
 		A7815E1B1B6C5D9F007797B7 /* SettingsButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7815E1A1B6C5D9F007797B7 /* SettingsButtonCell.swift */; };
 		A78F17731B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78F17711B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift */; };
@@ -2511,10 +2509,6 @@
 		A780ED4F1A933D9300A8CD5D /* VCompositeImageFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCompositeImageFilter.m; sourceTree = "<group>"; };
 		A780ED501A933D9300A8CD5D /* VPhotoFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPhotoFilter.h; sourceTree = "<group>"; };
 		A780ED511A933D9300A8CD5D /* VPhotoFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPhotoFilter.m; sourceTree = "<group>"; };
-		A780ED521A933D9300A8CD5D /* VPhotoFilterCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPhotoFilterCollectionViewCell.h; sourceTree = "<group>"; };
-		A780ED531A933D9300A8CD5D /* VPhotoFilterCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPhotoFilterCollectionViewCell.m; sourceTree = "<group>"; };
-		A780ED541A933D9300A8CD5D /* VPhotoFilterCollectionViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPhotoFilterCollectionViewDataSource.h; sourceTree = "<group>"; };
-		A780ED551A933D9300A8CD5D /* VPhotoFilterCollectionViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPhotoFilterCollectionViewDataSource.m; sourceTree = "<group>"; };
 		A780ED561A933D9300A8CD5D /* VPhotoFilterComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPhotoFilterComponent.h; sourceTree = "<group>"; };
 		A780ED571A933D9300A8CD5D /* VPhotoFilterSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPhotoFilterSerialization.h; sourceTree = "<group>"; };
 		A780ED581A933D9300A8CD5D /* VPhotoFilterSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPhotoFilterSerialization.m; sourceTree = "<group>"; };
@@ -5967,10 +5961,6 @@
 				A780ED4F1A933D9300A8CD5D /* VCompositeImageFilter.m */,
 				A780ED501A933D9300A8CD5D /* VPhotoFilter.h */,
 				A780ED511A933D9300A8CD5D /* VPhotoFilter.m */,
-				A780ED521A933D9300A8CD5D /* VPhotoFilterCollectionViewCell.h */,
-				A780ED531A933D9300A8CD5D /* VPhotoFilterCollectionViewCell.m */,
-				A780ED541A933D9300A8CD5D /* VPhotoFilterCollectionViewDataSource.h */,
-				A780ED551A933D9300A8CD5D /* VPhotoFilterCollectionViewDataSource.m */,
 				A780ED561A933D9300A8CD5D /* VPhotoFilterComponent.h */,
 				A780ED571A933D9300A8CD5D /* VPhotoFilterSerialization.h */,
 				A780ED581A933D9300A8CD5D /* VPhotoFilterSerialization.m */,
@@ -8802,7 +8792,6 @@
 				A721E92B1B572454000B7901 /* VMessage+RestKit.m in Sources */,
 				037FCF281A8DAF5400E8ABFC /* VSelectorViewBase.m in Sources */,
 				A7724FF11B33746A00B1BBB3 /* VCreatorInfoHelper.m in Sources */,
-				A780ED5E1A933D9300A8CD5D /* VPhotoFilterCollectionViewDataSource.m in Sources */,
 				D8B88F971ABA85F700DBAEA0 /* VWorkspaceShimDestination.m in Sources */,
 				03B83B5519E066AF00DC04E4 /* VUploadTaskSerializer.m in Sources */,
 				03B83B5D19E0990E00DC04E4 /* VUploadProgressView.m in Sources */,
@@ -8938,7 +8927,6 @@
 				0314D4AE19B46B5E00FA363C /* VNotificationCell.m in Sources */,
 				A7ECC1CF1AD617480003E00A /* VVideoToolController.m in Sources */,
 				A720055F1A030E4700285A9C /* VFlurryTracking.m in Sources */,
-				A780ED5D1A933D9300A8CD5D /* VPhotoFilterCollectionViewCell.m in Sources */,
 				D85B707E1B0EAF3F0038CA5B /* VLinkTextViewHelper.m in Sources */,
 				A721E9141B572454000B7901 /* VAsset+Fetcher.m in Sources */,
 				B0E158541B7159FE004F0A60 /* VUtilityButtonSeperator.m in Sources */,
