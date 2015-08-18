@@ -14,6 +14,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+static NSString * const kPlaybackBufferLikelyToKeepUpKey = @"playbackLikelyToKeepUp";
+static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
+
 @interface VVideoView()
 
 @property (nonatomic, strong, nullable) AVPlayer *player;
@@ -49,6 +52,16 @@ NS_ASSUME_NONNULL_BEGIN
 {
     _useAspectFit = useAspectFit;
     self.playerLayer.videoGravity = [self videoGravity];
+}
+
+- (BOOL)playbackBufferEmpty
+{
+    return [self.player.currentItem isPlaybackBufferEmpty];
+}
+
+- (BOOL)playbackLikelyToKeepUp
+{
+    return [self.player.currentItem isPlaybackLikelyToKeepUp];
 }
 
 - (NSString *)videoGravity
@@ -112,7 +125,9 @@ NS_ASSUME_NONNULL_BEGIN
     self.player.actionAtItemEnd = loop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
     self.player.muted = audioMuted;
     
+    
     _itemURL = itemURL;
+    
     self.newestPlayerItem = nil;
     self.playerLayer.opacity = 0.0f;
     [self.videoUtils createPlayerItemWithURL:itemURL loop:loop readyCallback:^(AVPlayerItem *playerItem, NSURL *composedItemURL, CMTime duration)
@@ -141,11 +156,45 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)didFinishAssetCreation:(AVPlayerItem *)playerItem
 {
+    [self.KVOController unobserve:self.player.currentItem keyPath:kPlaybackBufferLikelyToKeepUpKey];
+    [self.KVOController unobserve:self.player.currentItem keyPath:kPlaybackBufferEmptyKey];
+    
+    __weak VVideoView *weakSelf = self;
+    [self.KVOController observe:playerItem
+                       keyPaths:@[kPlaybackBufferLikelyToKeepUpKey]
+                        options:NSKeyValueObservingOptionNew
+                          block:^(id observer, AVPlayerItem *playerItem, NSDictionary *change)
+     {
+         __strong VVideoView *strongSelf = weakSelf;
+         if (strongSelf.player.currentItem.isPlaybackLikelyToKeepUp)
+         {
+             if ([strongSelf.delegate respondsToSelector:@selector(videoViewDidStopBuffering:)])
+             {
+                 [strongSelf.delegate videoViewDidStopBuffering:strongSelf];
+             }
+         }
+     }];
+    
+    [self.KVOController observe:playerItem
+                       keyPaths:@[kPlaybackBufferEmptyKey]
+                        options:NSKeyValueObservingOptionNew
+                          block:^(id observer, AVPlayerItem *playerItem, NSDictionary *change)
+     {
+         __strong VVideoView *strongSelf = weakSelf;
+         if (strongSelf.player.currentItem.isPlaybackBufferEmpty)
+         {
+             if ([strongSelf.delegate respondsToSelector:@selector(videoViewDidStartBuffering:)])
+             {
+                 [strongSelf.delegate videoViewDidStartBuffering:self];
+             }
+         }
+     }];
+    
     [self.player replaceCurrentItemWithPlayerItem:playerItem];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                 name:AVPlayerItemDidPlayToEndTimeNotification
-                                               object:playerItem];
+                                                    name:AVPlayerItemDidPlayToEndTimeNotification
+                                                  object:playerItem];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(playerItemDidReachEnd:)
@@ -161,6 +210,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)playerItemDidReachEnd:(NSNotification *)notification
 {
     [self.player.currentItem seekToTime:kCMTimeZero];
+    
+    if ([self.delegate respondsToSelector:@selector(videoDidReachEnd:)])
+    {
+        [self.delegate videoDidReachEnd:self];
+    }
 }
 
 - (BOOL)isPlayingVideo
@@ -170,10 +224,46 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)play
 {
+    [self playAndSeekToBeginning:YES];
+}
+
+- (void)playWithoutSeekingToBeginning
+{
+    [self playAndSeekToBeginning:NO];
+}
+
+- (void)playAndSeekToBeginning:(BOOL)shouldSeek
+{
     if ( !self.isPlayingVideo )
     {
-        [self.player.currentItem seekToTime:kCMTimeZero];
+        if (shouldSeek)
+        {
+            [self.player.currentItem seekToTime:kCMTimeZero];
+        }
+        
         [self.player play];
+    }
+}
+
+- (void)pause
+{
+    [self pauseAndSeekToBeginning:YES];
+}
+
+- (void)pauseWithoutSeekingToBeginning
+{
+    [self pauseAndSeekToBeginning:NO];
+}
+
+- (void)pauseAndSeekToBeginning:(BOOL)shouldSeek
+{
+    if ( self.isPlayingVideo )
+    {
+        if (shouldSeek)
+        {
+            [self.player.currentItem seekToTime:kCMTimeZero];
+        }
+        [self.player pause];
     }
 }
 
@@ -182,15 +272,6 @@ NS_ASSUME_NONNULL_BEGIN
     [self.player pause];
     [self.player.currentItem seekToTime:kCMTimeZero];
     [self.player play];
-}
-
-- (void)pause
-{
-    if ( self.isPlayingVideo )
-    {
-        [self.player.currentItem seekToTime:kCMTimeZero];
-        [self.player pause];
-    }
 }
 
 NS_ASSUME_NONNULL_END

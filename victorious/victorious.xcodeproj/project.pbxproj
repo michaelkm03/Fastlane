@@ -893,6 +893,9 @@
 		C39B220B1B0A58EF00D3DFE7 /* VPermissionMicrophone.m in Sources */ = {isa = PBXBuildFile; fileRef = C39B220A1B0A58EF00D3DFE7 /* VPermissionMicrophone.m */; };
 		C39B220E1B0A693600D3DFE7 /* VPermissionProfilePicture.m in Sources */ = {isa = PBXBuildFile; fileRef = C39B220D1B0A693600D3DFE7 /* VPermissionProfilePicture.m */; };
 		C3C734461B5EA8BD00D6795D /* VMediaAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C734451B5EA8BD00D6795D /* VMediaAttachment.m */; };
+		C3BC59501B756C87000A4576 /* VGIFVideoSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3BC594F1B756C87000A4576 /* VGIFVideoSequencePreviewView.m */; };
+		C3BC59531B756E4C000A4576 /* VVideoSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3BC59521B756E4C000A4576 /* VVideoSequencePreviewView.m */; };
+		C3C1484C1B72F53B007F81B0 /* SoundBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C1484B1B72F53B007F81B0 /* SoundBarView.swift */; };
 		C3C7344C1B5EC0F500D6795D /* VCommentMedia+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C7344B1B5EC0F500D6795D /* VCommentMedia+RestKit.m */; };
 		C3C734501B5F118F00D6795D /* ExperienceEnhancerIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C7344F1B5F118F00D6795D /* ExperienceEnhancerIconView.swift */; };
 		C3C734571B606BD500D6795D /* RadialAnimatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C734561B606BD500D6795D /* RadialAnimatingView.swift */; };
@@ -978,7 +981,7 @@
 		D85B709E1B0FA6340038CA5B /* VVideoBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B709D1B0FA6340038CA5B /* VVideoBackground.m */; };
 		D85E427E1AFA984400A13BD3 /* VSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E427D1AFA984400A13BD3 /* VSequencePreviewView.m */; };
 		D85E42811AFA9A0F00A13BD3 /* VImageSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E42801AFA9A0F00A13BD3 /* VImageSequencePreviewView.m */; };
-		D85E42841AFA9A1F00A13BD3 /* VVideoSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E42831AFA9A1F00A13BD3 /* VVideoSequencePreviewView.m */; };
+		D85E42841AFA9A1F00A13BD3 /* VBaseVideoSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E42831AFA9A1F00A13BD3 /* VBaseVideoSequencePreviewView.m */; };
 		D85E42871AFA9A2F00A13BD3 /* VPollSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E42861AFA9A2F00A13BD3 /* VPollSequencePreviewView.m */; };
 		D85E428A1AFA9A3C00A13BD3 /* VTextSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E42891AFA9A3C00A13BD3 /* VTextSequencePreviewView.m */; };
 		D85E428D1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = D85E428C1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.m */; };
@@ -2889,6 +2892,11 @@
 		C39B220A1B0A58EF00D3DFE7 /* VPermissionMicrophone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPermissionMicrophone.m; path = Permissions/VPermissionMicrophone.m; sourceTree = "<group>"; };
 		C39B220C1B0A693600D3DFE7 /* VPermissionProfilePicture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPermissionProfilePicture.h; path = Permissions/VPermissionProfilePicture.h; sourceTree = "<group>"; };
 		C39B220D1B0A693600D3DFE7 /* VPermissionProfilePicture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPermissionProfilePicture.m; path = Permissions/VPermissionProfilePicture.m; sourceTree = "<group>"; };
+		C3BC594E1B756C87000A4576 /* VGIFVideoSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGIFVideoSequencePreviewView.h; sourceTree = "<group>"; };
+		C3BC594F1B756C87000A4576 /* VGIFVideoSequencePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VGIFVideoSequencePreviewView.m; sourceTree = "<group>"; };
+		C3BC59511B756E4C000A4576 /* VVideoSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoSequencePreviewView.h; sourceTree = "<group>"; };
+		C3BC59521B756E4C000A4576 /* VVideoSequencePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoSequencePreviewView.m; sourceTree = "<group>"; };
+		C3C1484B1B72F53B007F81B0 /* SoundBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundBarView.swift; sourceTree = "<group>"; };
 		C3C734441B5EA8BD00D6795D /* VMediaAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMediaAttachment.h; sourceTree = "<group>"; };
 		C3C734451B5EA8BD00D6795D /* VMediaAttachment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMediaAttachment.m; sourceTree = "<group>"; };
 		C3C7344A1B5EC0F500D6795D /* VCommentMedia+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VCommentMedia+RestKit.h"; sourceTree = "<group>"; };
@@ -3063,8 +3071,8 @@
 		D85E427D1AFA984400A13BD3 /* VSequencePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequencePreviewView.m; sourceTree = "<group>"; };
 		D85E427F1AFA9A0F00A13BD3 /* VImageSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageSequencePreviewView.h; sourceTree = "<group>"; };
 		D85E42801AFA9A0F00A13BD3 /* VImageSequencePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageSequencePreviewView.m; sourceTree = "<group>"; };
-		D85E42821AFA9A1F00A13BD3 /* VVideoSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoSequencePreviewView.h; sourceTree = "<group>"; };
-		D85E42831AFA9A1F00A13BD3 /* VVideoSequencePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoSequencePreviewView.m; sourceTree = "<group>"; };
+		D85E42821AFA9A1F00A13BD3 /* VBaseVideoSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBaseVideoSequencePreviewView.h; sourceTree = "<group>"; };
+		D85E42831AFA9A1F00A13BD3 /* VBaseVideoSequencePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBaseVideoSequencePreviewView.m; sourceTree = "<group>"; };
 		D85E42851AFA9A2F00A13BD3 /* VPollSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPollSequencePreviewView.h; sourceTree = "<group>"; };
 		D85E42861AFA9A2F00A13BD3 /* VPollSequencePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollSequencePreviewView.m; sourceTree = "<group>"; };
 		D85E42881AFA9A3C00A13BD3 /* VTextSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextSequencePreviewView.h; sourceTree = "<group>"; };
@@ -7052,8 +7060,12 @@
 				F06B41701B7AA8D4008709E8 /* VFailureSequencePreviewView.m */,
 				D85E42881AFA9A3C00A13BD3 /* VTextSequencePreviewView.h */,
 				D85E42891AFA9A3C00A13BD3 /* VTextSequencePreviewView.m */,
-				D85E42821AFA9A1F00A13BD3 /* VVideoSequencePreviewView.h */,
-				D85E42831AFA9A1F00A13BD3 /* VVideoSequencePreviewView.m */,
+				D85E42821AFA9A1F00A13BD3 /* VBaseVideoSequencePreviewView.h */,
+				D85E42831AFA9A1F00A13BD3 /* VBaseVideoSequencePreviewView.m */,
+				C3BC594E1B756C87000A4576 /* VGIFVideoSequencePreviewView.h */,
+				C3BC594F1B756C87000A4576 /* VGIFVideoSequencePreviewView.m */,
+				C3BC59511B756E4C000A4576 /* VVideoSequencePreviewView.h */,
+				C3BC59521B756E4C000A4576 /* VVideoSequencePreviewView.m */,
 			);
 			path = SequencePreviewView;
 			sourceTree = "<group>";
@@ -7196,6 +7208,7 @@
 				D8B44CCB1ADCB3A4006340E8 /* VSleekStreamCollectionCell.m */,
 				D8B44CCC1ADCB3A4006340E8 /* VSleekStreamCollectionCell.xib */,
 				F0FC97CE1B5AD5D40098AFCB /* In Stream Comments */,
+				C3C1484B1B72F53B007F81B0 /* SoundBarView.swift */,
 			);
 			path = "Template D";
 			sourceTree = "<group>";
@@ -8735,6 +8748,7 @@
 			files = (
 				A7F593701A39436000B5E3A2 /* VPurchaseStringMaker.m in Sources */,
 				A73C7E2F1B2608C70093F792 /* VAddServerEnvironmentViewController.m in Sources */,
+				C3BC59501B756C87000A4576 /* VGIFVideoSequencePreviewView.m in Sources */,
 				D86528F31AE82ABF003832AC /* VPollView.m in Sources */,
 				A75ED0021AB0B6B400C35063 /* VTextTool.m in Sources */,
 				0314D4AD19B46B5E00FA363C /* VMessageViewController.m in Sources */,
@@ -8815,7 +8829,7 @@
 				F0ADB0681AD367970069DF0D /* VImageViewContainer.m in Sources */,
 				039ED29A19C908F400305987 /* VCVideoPlayerToolbarView.m in Sources */,
 				A79869ED1AD7124D00F2564A /* VDiscoverDeepLinkHandler.m in Sources */,
-				D85E42841AFA9A1F00A13BD3 /* VVideoSequencePreviewView.m in Sources */,
+				D85E42841AFA9A1F00A13BD3 /* VBaseVideoSequencePreviewView.m in Sources */,
 				A7D378551AF15EDB007FF197 /* VTextFragment.swift in Sources */,
 				A721E92C1B572454000B7901 /* VNode+RestKit.m in Sources */,
 				A7D378431AEF4ED5007FF197 /* VStaticUserProfileHeaderViewController.m in Sources */,
@@ -8874,6 +8888,7 @@
 				A708C95B1A8067B9000EE1EE /* VContentRepopulateTransition.m in Sources */,
 				BE88FF7F1A0005FF0064AB28 /* VFullscreenMarqueeCollectionCell.m in Sources */,
 				C3345F621B59ACB30091D889 /* VMenuItemControl.m in Sources */,
+				C3BC59531B756E4C000A4576 /* VVideoSequencePreviewView.m in Sources */,
 				0314D0B119B4698800FA363C /* VObjectManager+DirectMessaging.m in Sources */,
 				F0E0F1AA1AE8811700143CBF /* VLaunchScreenProvider.m in Sources */,
 				A720054C1A030D9300285A9C /* VTrackingConstants.m in Sources */,
@@ -8952,6 +8967,7 @@
 				D89367501ADDE1B9001D2426 /* VActionButtonAnimationController.m in Sources */,
 				A79869EB1AD7124D00F2564A /* VContentDeepLinkHandler.m in Sources */,
 				F03C135A1B698F6F00287F4C /* VAsset.m in Sources */,
+				C3C1484C1B72F53B007F81B0 /* SoundBarView.swift in Sources */,
 				A721E95B1B572454000B7901 /* UIView+AutoLayout.m in Sources */,
 				0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */,
 				A7DDA6E71B601D20005CE55E /* UICollectionViewCell+SwiftReuse.swift in Sources */,

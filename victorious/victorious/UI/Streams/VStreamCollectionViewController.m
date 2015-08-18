@@ -317,6 +317,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     // Start any video cells that are on screen
     [self.focusHelper updateFocus];
+    [self.marqueeCellController updateFocus];
     
     //Because a stream can be presented without refreshing, we need to refresh the user post icon here
     [self updateNavigationItems];
@@ -344,6 +345,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     // Stop any video cells
     [self.focusHelper endFocusOnAllCells];
+    [self.marqueeCellController endFocusOnAllCells];
 }
 
 - (BOOL)shouldAutorotate
@@ -846,13 +848,14 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)dataSourceDidChange
 {
-    self.hasRefreshed = YES;
-    [self updateNoContentViewAnimated:YES];
-    
-    // Allow cells to populate before we track which are visible before user scrolls
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+    dispatch_async(dispatch_get_main_queue(), ^
     {
+        self.hasRefreshed = YES;
+        [self updateNoContentViewAnimated:YES];
+        
         [self updateCellVisibilityTracking];
+        [self.marqueeCellController updateFocus];
+        [self.focusHelper updateFocus];
     });
 }
 

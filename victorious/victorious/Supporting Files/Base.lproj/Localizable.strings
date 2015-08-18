@@ -678,3 +678,7 @@
 
 "NOTHING LIKED YET" = "NOTHING LIKED YET"; // Liked content no content view
 "Posts you like will appear here." = "Posts you like will appear here."; // Liked content no content view
+
+"Use mobile data and Wi-Fi" = "Use mobile data and Wi-Fi";
+"Use Wi-Fi only" = "Use Wi-Fi only";
+"Never play videos automatically" = "Never play videos automatically";

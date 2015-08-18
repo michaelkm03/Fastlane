@@ -22,6 +22,7 @@
 @dynamic remoteId;
 @dynamic speed;
 @dynamic streamAutoplay;
+@dynamic duration;
 @dynamic type;
 @dynamic node;
 
