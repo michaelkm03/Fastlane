@@ -173,7 +173,7 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 {
     VReachability *reachability = [VReachability reachabilityForInternetConnection];
     NSString *connectivityString = [reachability reachabilityStatusDescription:[reachability currentReachabilityStatus]];
-    NSInteger outputVolume = (NSInteger)[[AVAudioSession sharedInstance] outputVolume] * 100;
+    NSInteger outputVolume = (NSInteger)([[AVAudioSession sharedInstance] outputVolume] * 100);
     NSString *volumeString = [NSString stringWithFormat:@"%li", (long)outputVolume];
     
     NSDictionary *parameters = @{VTrackingKeyAutoplay : @"true",
