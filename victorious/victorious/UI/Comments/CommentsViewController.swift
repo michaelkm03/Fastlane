@@ -408,7 +408,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
     // MARK: - VUserTaggingTextStorageDelegate
     
-    func userTaggingTextStorage(textStorage: VUserTaggingTextStorage!, wantsToShowViewController viewController: UIViewController!) {
+    func userTaggingTextStorage(textStorage: VUserTaggingTextStorage, wantsToShowViewController viewController: UIViewController) {
         
         keyboardBar?.attachmentsBarHidden = true
         
@@ -424,7 +424,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         
     }
     
-    func userTaggingTextStorage(textStorage: VUserTaggingTextStorage!, wantsToDismissViewController viewController: UIViewController!) {
+    func userTaggingTextStorage(textStorage: VUserTaggingTextStorage, wantsToDismissViewController viewController: UIViewController) {
         
         viewController.view.removeFromSuperview()
         keyboardBar?.attachmentsBarHidden = false
