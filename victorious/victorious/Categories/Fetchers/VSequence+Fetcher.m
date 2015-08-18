@@ -73,12 +73,7 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
 
 - (BOOL)isGIFVideo
 {
-    VAsset *asset = [[self firstNode] mp4Asset];
-    return asset != nil &&
-    asset.playerControlsDisabled.boolValue == YES &&
-    asset.loop.boolValue == YES &&
-    asset.audioMuted.boolValue == YES &&
-    asset.streamAutoplay.boolValue == YES;
+    return self.isGifStyle.boolValue || [self.itemSubType isEqual:VStreamItemSubTypeGif];
 }
 
 - (BOOL)isText

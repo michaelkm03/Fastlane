@@ -43,6 +43,7 @@ NSString * const VAutomationIdentifierGrantLibraryAccess         = @"Library Gra
 NSString * const VAutomationIdentifierPublishCatpionText         = @"Publish Caption Text";
 NSString * const VAutomationIdentifierPublishFinish              = @"Publish Finish";
 NSString * const VAutomationIdentifierStreamCellCaption          = @"Stream Cell Caption";
+NSString * const VAutomationIdentifierStreamCell                 = @"Stream Cell";
 
 NSString * const VAutomationIdentifierContentViewBallotButtonA   = @"Ballot Button A";
 NSString * const VAutomationIdentifierContentViewBallotButtonB   = @"Ballot Button B";

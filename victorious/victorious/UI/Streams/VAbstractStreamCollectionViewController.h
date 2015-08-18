@@ -40,6 +40,8 @@ static const CGFloat VStreamMarqueeParallaxRatio = 0.5f;
 @property (nonatomic, strong) VNavigationControllerScrollDelegate *navigationControllerScrollDelegate;
 @property (nonatomic, strong) id<VNavigationViewFloatingController> navigationViewfloatingController;
 
+@property (nonatomic, strong) VStreamItem *targetStreamItem;
+
 /**
     Called by the refresh controller when the user activates it by scrolling up to the top.
         Forwards onto `refreshWithCompletion:`.

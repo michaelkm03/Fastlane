@@ -10,29 +10,30 @@
 
 @implementation VGIFVideoSequencePreviewView
 
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if ( self != nil )
+    {
+        self.videoView.hidden = NO;
+        self.playIconContainerView.hidden = YES;
+    }
+    return self;
+}
+
 - (void)setSequence:(VSequence *)sequence
 {
     [super setSequence:sequence];
     
     VAsset *asset = [sequence.firstNode mp4Asset];
-    if ( asset.streamAutoplay.boolValue )
-    {
-        self.videoView.hidden = NO;
-        self.playIconContainerView.hidden = YES;
-        __weak VBaseVideoSequencePreviewView *weakSelf = self;
-        [self.videoView setItemURL:[NSURL URLWithString:asset.data]
-                              loop:asset.loop.boolValue
-                        audioMuted:asset.audioMuted.boolValue
-                alongsideAnimation:^
-         {
-             [weakSelf makeBackgroundContainerViewVisible:YES];
-         }];
-    }
-    else
-    {
-        self.videoView.hidden = YES;
-        self.playIconContainerView.hidden = NO;
-    }
+    __weak VBaseVideoSequencePreviewView *weakSelf = self;
+    [self.videoView setItemURL:[NSURL URLWithString:asset.data]
+                          loop:asset.loop.boolValue
+                    audioMuted:asset.audioMuted.boolValue
+            alongsideAnimation:^
+     {
+         [weakSelf makeBackgroundContainerViewVisible:YES];
+     }];
 }
 
 #pragma mark - VVideoViewDelegate

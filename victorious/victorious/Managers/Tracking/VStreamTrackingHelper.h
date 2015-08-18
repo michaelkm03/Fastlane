@@ -5,11 +5,10 @@
 //  Created by Patrick Lynch on 2/24/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
-#import "victorious-swift.h"
 
 @import Foundation;
 
-@class VStream, VSequence, StreamCellContext;
+@class VStream, VSequence, StreamCellContext, AutoplayTrackingEvent;
 
 /**
  A helper class that handles the somewhat complex state management rules relates

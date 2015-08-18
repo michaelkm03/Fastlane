@@ -24,6 +24,7 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 @property (nonatomic, strong, nullable) AVPlayerItem *newestPlayerItem;
 @property (nonatomic, readonly) BOOL isPlayingVideo;
 @property (nonatomic, strong) VVideoUtils *videoUtils;
+@property (nonatomic, assign) BOOL wasPlayingVideo;
 @property (nonatomic, strong, nullable) id timeObserver;
 
 @end
@@ -132,7 +133,6 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
     self.player.actionAtItemEnd = loop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
     self.player.muted = audioMuted;
     
-    
     _itemURL = itemURL;
     
     self.newestPlayerItem = nil;
@@ -147,7 +147,7 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
      }];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(play)
+                                             selector:@selector(returnFromBackground)
                                                  name:UIApplicationWillEnterForegroundNotification
                                                object:nil];
 }
@@ -243,6 +243,14 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
     return self.player.rate > 0;
 }
 
+- (void)returnFromBackground
+{
+    if ( self.wasPlayingVideo )
+    {
+        [self play];
+    }
+}
+
 - (void)play
 {
     [self playAndSeekToBeginning:YES];
@@ -264,6 +272,7 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
         
         [self.player play];
     }
+    self.wasPlayingVideo = YES;
 }
 
 - (void)pause
@@ -286,6 +295,7 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
         }
         [self.player pause];
     }
+    self.wasPlayingVideo = NO;
 }
 
 - (void)playFromStart

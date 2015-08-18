@@ -36,7 +36,7 @@
     }
     else if ([sequence isVideo])
     {
-        if (sequence.isGifStyle.boolValue)
+        if ([sequence isGIFVideo])
         {
             classType = [VGIFVideoSequencePreviewView class];
         }

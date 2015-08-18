@@ -12,6 +12,6 @@
 
 + (RKObjectMapping *)mappingForItemType:(NSString *)subType;
 
-+ (NSString *)entityName;
++ (RKEntityMapping *)mappingBaseForEntityWithName:(NSString *)entityName;
 
 @end

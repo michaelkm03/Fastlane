@@ -257,6 +257,7 @@ static NSString * const kVAPIParamContext = @"context";
         {
             // Add user relationship to local persistent store
             VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+            user.isFollowedByMainUser = @YES;
             [mainUser addFollowingObject:user];
         }
         fail(operation, error);

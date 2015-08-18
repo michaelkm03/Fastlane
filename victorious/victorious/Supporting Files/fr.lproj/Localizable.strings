@@ -134,7 +134,7 @@
 "AnswerTextToShort" = "Vos réponses doivent contenir au moins 2 caractères.";
 
 "NoMessagesTitle" = "AUCUN MESSAGE";
-"NoMessagesMessage" = "Vous pouvez envoyer des messages à tout le monde depuis l'application ! Il vous suffit de cliquer sur le profil qui vous intéresse, puis sur l'icône « Composer » dans le coin supérieur gauche.";
+"NoMessagesMessage" = "Vous pouvez envoyer des messages à tout le monde depuis l'application ! Il vous suffit de cliquer sur le profil qui vous intéresse, puis sur l'icône « Composer » dans le coin supérieur droite.";
 
 "NoNotificationsTitle" = "AUCUNE NOTIFICATION POUR LE MOMENT";
 "NoNotificationsMessage" = "Plus vous vous impliquerez dans la communauté en commentant, en remixant ou en publiant du nouveau contenu, plus elle interagira avec vous. Découvrez ses réactions.";

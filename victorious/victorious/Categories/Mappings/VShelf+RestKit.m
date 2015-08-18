@@ -13,11 +13,6 @@
 
 @implementation VShelf (RestKit)
 
-+ (NSString *)entityName
-{
-    return @"Shelf";
-}
-
 + (NSDictionary *)propertyMap
 {
     return @{
@@ -27,12 +22,12 @@
              };
 }
 
-+ (RKEntityMapping *)mappingBase
++ (RKEntityMapping *)mappingBaseForEntityWithName:(NSString *)entityName
 {
     NSDictionary *propertyMap = [VShelf propertyMap];
     
     RKEntityMapping *mapping = [RKEntityMapping
-                                mappingForEntityForName:[VShelf entityName]
+                                mappingForEntityForName:entityName
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
     mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
@@ -47,26 +42,18 @@
     return mapping;
 }
 
-+ (RKEntityMapping *)entityMapping
-{
-    return [self mappingBase];
-}
-
 + (RKObjectMapping *)mappingForItemType:(NSString *)type
 {
-    RKObjectMapping *mapping = nil;
-    if ( [type isEqualToString:VStreamItemTypeMarquee] )
+    RKObjectMapping *mapping = [self mappingBaseForEntityWithName:@"Shelf"];
+    if ( [type isEqualToString:VStreamItemTypeUser] )
     {
-        mapping = [self marqueeShelfMapping];
+        mapping = [UserShelf entityMapping];
+    }
+    else if ( [type isEqualToString:VStreamItemTypeHashtag] )
+    {
+        mapping = [HashtagShelf entityMapping];
     }
     return mapping;
-}
-
-#pragma mark - subtype mappings
-
-+ (RKEntityMapping *)marqueeShelfMapping
-{
-    return [self mappingBase];
 }
 
 @end

@@ -10,18 +10,6 @@ import UIKit
 
 class ContentCreationTests: VictoriousTestCase {
     
-    override func beforeAll() {
-        super.beforeAll()
-        
-        // Login if forced login is presented
-        self.loginIfRequired()
-        
-        self.dismissWelcomeIfPresent()
-        
-        // Grant notification permissions
-        self.tester().acknowledgeSystemAlert()
-    }
-    
     func testCreateImage() {
         
         self.tester().tapViewWithAccessibilityLabel( "Menu Create" )

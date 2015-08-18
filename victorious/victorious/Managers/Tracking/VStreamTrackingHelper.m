@@ -15,6 +15,7 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import "VReachability.h"
+#import "victorious-swift.h"
 
 NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvictorious.LoggedInChangedNotification";
 
@@ -90,6 +91,10 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 
 - (void)onStreamCellDidBecomeVisibleWithCellEvent:(StreamCellContext *)event
 {
+    if ( ![event.streamItem isKindOfClass:[VSequence class]] )
+    {
+        return;
+    }
     VSequence *sequence = (VSequence *)event.streamItem;
     VStream *stream = event.stream;
     
@@ -110,6 +115,10 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 
 - (void)onStreamCellSelectedWithCellEvent:(StreamCellContext *)context additionalInfo:(NSDictionary *)info
 {
+    if ( ![context.streamItem isKindOfClass:[VSequence class]] )
+    {
+        return;
+    }
     VSequence *sequence = (VSequence *)context.streamItem;
     VStream *stream = context.stream;
     

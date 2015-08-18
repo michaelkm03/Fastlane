@@ -50,4 +50,16 @@ typedef NS_ENUM(NSUInteger, VFollowControlState)
  */
 @property (nonatomic, assign) VFollowControlState controlState;
 
+/**
+    If YES, the unselected image will be tinted using the same
+        color as the followed background icon. Defaults to NO.
+ */
+@property (nonatomic, assign) BOOL tintUnselectedImage;
+
+/**
+    If non-nil, this color will be used to tint the follow control when tintUnselectedImage is also YES
+        when in the unselected state. Defaults to nil.
+ */
+@property (nonatomic, strong) UIColor *unselectedTintColor;
+
 @end
