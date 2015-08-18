@@ -109,6 +109,8 @@ static NSString * const kCommentBarKey = @"commentBar";
         self.sendButton.titleLabel.font = [_dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
         self.placeholderText = [_dependencyManager stringForKey:kCommentPrompt];
     }
+    // so the placeholder and send labels are updated and positioned appropriately
+    [self layoutIfNeeded];
 }
 
 - (void)awakeFromNib
