@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+import MBProgressHUD
 import UIKit
 
 /// Delegate that handles events that originate from within a `GIFSearchViewController`

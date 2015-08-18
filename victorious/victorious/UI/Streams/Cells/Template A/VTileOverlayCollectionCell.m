@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import <CCHLinkTextViewDelegate.h>
-
 #import "UIView+AutoLayout.h"
 #import "VTileOverlayCollectionCell.h"
 #import "VSequence+Fetcher.h"
@@ -27,6 +25,8 @@
 #import "VCellSizeCollection.h"
 #import "VCellSizingUserInfoKeys.h"
 #import "VPreviewViewBackgroundHost.h"
+
+@import CCHLinkTextView;
 
 static const UIEdgeInsets kTextInsets           = { 4.0f, 20.0f, 5.0f, 20.0f };
 static const CGFloat kHeaderHeight              = 74.0f;

@@ -6,10 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import <UIImageView+WebCache.h>
-#import <FBKVOController.h>
-#import <MBProgressHUD.h>
-
 #import "VUserProfileViewController.h"
 #import "VUser.h"
 #import "VLoginViewController.h"
@@ -47,6 +43,10 @@
 #import "VUserIsFollowingDataSource.h"
 #import "VDependencyManager+VTracking.h"
 #import "VFollowResponder.h"
+
+@import KVOController;
+@import MBProgressHUD;
+@import SDWebImage;
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;

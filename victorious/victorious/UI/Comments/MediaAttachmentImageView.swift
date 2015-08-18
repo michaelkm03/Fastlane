@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SDWebImage
 
 // A media attachment view used for showing image previews
 class MediaAttachmentImageView : MediaAttachmentView {
