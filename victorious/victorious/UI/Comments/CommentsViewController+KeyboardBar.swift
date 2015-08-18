@@ -26,7 +26,7 @@ extension CommentsViewController: VKeyboardInputAccessoryViewDelegate, VUserTagg
                             toSequence: sequence,
                             andParent: nil,
                             successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) -> Void in
-                                strongSelf.commentsDataSourceSwitcher.dataSource.loadFirstPage()
+                                strongSelf.collectionView.reloadData()
                             }, failBlock: nil)
                         
                         strongSelf.keyboardBar?.clearTextAndResign()
