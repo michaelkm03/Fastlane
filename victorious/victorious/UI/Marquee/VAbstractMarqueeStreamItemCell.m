@@ -14,8 +14,9 @@
 #import "VSequence+Fetcher.h"
 #import "UIView+AutoLayout.h"
 #import "VStreamItemPreviewView.h"
+#import "UIResponder+VResponderChain.h"
 
-@interface VAbstractMarqueeStreamItemCell () <VSharedCollectionReusableViewMethods>
+@interface VAbstractMarqueeStreamItemCell () <VSharedCollectionReusableViewMethods, AutoplayTracking>
 
 @end
 
@@ -127,6 +128,13 @@
     }
     
     return nil;
+}
+
+#pragma mark - Autoplay tracking
+
+- (StreamCellContext *__nonnull)trackingContext
+{
+    return self.context;
 }
 
 @end

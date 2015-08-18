@@ -64,7 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Returns a cell configured to display a stream item with stream parameter. Useful for listicle creation (since they require both sequence and stream information)
  */
-- (UICollectionViewCell *__nullable)collectionView:(UICollectionView *)collectionView cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath inStream:(VStream *__nullable)stream;
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath inStream:(VStream *__nullable)stream;
 
 NS_ASSUME_NONNULL_END
 

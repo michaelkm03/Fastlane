@@ -629,7 +629,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
                                     cellForStreamItem:sequence
                                           atIndexPath:indexPath];
     }
-
     
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
     
@@ -1067,10 +1066,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)trackAutoplayEvent:(AutoplayTrackingEvent *__nonnull)event
 {
-    StreamCellContext *context = [[StreamCellContext alloc] initWithStreamItem:event.sequence
-                                                                      stream:self.currentStream
-                                                                   fromShelf:NO];
-    [self.streamTrackingHelper trackAutoplayEvent:event context:context];
+    [self.streamTrackingHelper trackAutoplayEvent:event];
 }
 
 @end

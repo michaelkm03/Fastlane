@@ -292,18 +292,28 @@ const CGFloat kMaximumLoopingTime = 30.0f;
 
 - (void)trackAutoplayEvent:(NSString *)event urls:(NSArray *)urls
 {
-    // Walk responder chain to track autoplay events
-    id<AutoplayTracking>responder = [self v_targetConformingToProtocol:@protocol(AutoplayTracking)];
-    if (responder != nil)
+    AutoplayTrackingEvent *trackingEvent = [self eventWithName:event urls:urls ?: @[]];
+    
+    [self v_walkWithBlock:^(UIResponder *responder, BOOL *stop)
     {
-        [responder trackAutoplayEvent:[self eventWithName:event urls:urls ?: @[]]];
-    }
+        if ([responder conformsToProtocol:@protocol(AutoplayTracking)])
+        {
+            if ([responder respondsToSelector:@selector(trackingContext)])
+            {
+                trackingEvent.context = [(id<AutoplayTracking>)responder trackingContext];
+            }
+            
+            if ([responder respondsToSelector:@selector(trackAutoplayEvent:)])
+            {
+                [(id<AutoplayTracking>)responder trackAutoplayEvent:trackingEvent];
+            }
+        }
+    }];
 }
 
 - (AutoplayTrackingEvent *)eventWithName:(NSString *)name urls:(NSArray *)urls
 {
     AutoplayTrackingEvent *event = [[AutoplayTrackingEvent alloc] initWithName:name urls:urls];
-    event.sequence = (VSequence *)self.streamItem;
     if (self.initialDate != nil && self.loadDate != nil)
     {
         event.loadTime = [NSNumber numberWithUnsignedInteger:[self.loadDate timeIntervalSinceDate:self.initialDate] * 1000];

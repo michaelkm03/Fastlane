@@ -11,8 +11,8 @@ import Foundation
 class AutoplayTrackingEvent : NSObject {
     var name: String
     var urls: AnyObject
-    var sequence: VSequence?
     var loadTime: NSNumber?
+    var context: StreamCellContext?
     
     init(name: String, urls: AnyObject) {
         self.name = name
@@ -21,5 +21,6 @@ class AutoplayTrackingEvent : NSObject {
 }
 
 @objc protocol AutoplayTracking {
-    func trackAutoplayEvent(event: AutoplayTrackingEvent)
+    optional func trackAutoplayEvent(event: AutoplayTrackingEvent)
+    optional func trackingContext() -> StreamCellContext
 }

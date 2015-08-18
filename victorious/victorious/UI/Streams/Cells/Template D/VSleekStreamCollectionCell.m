@@ -32,7 +32,7 @@
 #import "VEditorializationItem.h"
 #import "VStream.h"
 #import "VPreviewViewBackgroundHost.h"
-#import "victorious-Swift.h"
+#import "UIResponder+VResponderChain.h"
 
 // These values must match the constraint values in interface builder
 static const CGFloat kSleekCellHeaderHeight = 50.0f;
@@ -45,7 +45,7 @@ static const NSUInteger kMaxNumberOfInStreamComments = 3;
 static const CGFloat kInStreamCommentsTopSpace = 6.0f;
 static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
-@interface VSleekStreamCollectionCell () <VBackgroundContainer, CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate>
+@interface VSleekStreamCollectionCell () <VBackgroundContainer, CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate, AutoplayTracking>
 
 @property (nonatomic, strong) VSequencePreviewView *previewView;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -490,7 +490,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 {
     if ([self.previewView conformsToProtocol:@protocol(VCellFocus)])
     {
-        [(id <VCellFocus>)self.previewView setHasFocus:hasFocus];
+        [(id<VCellFocus>)self.previewView setHasFocus:hasFocus];
     }
 }
 
@@ -512,6 +512,13 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     [targetForHashTagSelection hashTag:value
                     tappedFromSequence:self.sequence
                               fromView:self];
+}
+
+#pragma mark - Autoplay tracking
+
+- (StreamCellContext *__nonnull)trackingContext
+{
+    return self.context;
 }
 
 #pragma mark - VHighlightContainer

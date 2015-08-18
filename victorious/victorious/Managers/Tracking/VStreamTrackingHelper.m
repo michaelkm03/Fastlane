@@ -125,7 +125,8 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
         if (sequence.firstNode.httpLiveStreamingAsset.streamAutoplay.boolValue && [self.videoSettings isAutoplayEnabled])
         {
             AutoplayTrackingEvent *event = [[AutoplayTrackingEvent alloc] initWithName:VTrackingEventVideoDidStop urls:sequence.tracking.viewStop];
-            [self trackAutoplayEvent:event context:context];
+            event.context = context;
+            [self trackAutoplayEvent:event];
         }
     }
     
@@ -169,21 +170,28 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 
 #pragma mark - Autoplay
 
-- (void)trackAutoplayEvent:(AutoplayTrackingEvent *)event context:(StreamCellContext *)context
+- (void)trackAutoplayEvent:(AutoplayTrackingEvent *)event
 {
     VReachability *reachability = [VReachability reachabilityForInternetConnection];
     NSString *connectivityString = [reachability reachabilityStatusDescription:[reachability currentReachabilityStatus]];
     NSInteger outputVolume = (NSInteger)([[AVAudioSession sharedInstance] outputVolume] * 100);
     NSString *volumeString = [NSString stringWithFormat:@"%li", (long)outputVolume];
     
+    NSString *trackingID = @"";
+    if (event.context != nil)
+    {
+        StreamCellContext *context = event.context;
+        trackingID = context.fromShelf ? context.stream.shelfId : context.stream.trackingIdentifier;
+    }
+    
     NSDictionary *parameters = @{VTrackingKeyAutoplay : @"true",
                                  VTrackingKeyConnectivity : connectivityString,
                                  VTrackingKeyVolumeLevel : volumeString,
                                  VTrackingKeyLoadTime : event.loadTime ?: @(0),
                                  VTrackingKeyUrls : event.urls,
-                                 VTrackingKeyStreamId: context.stream.trackingIdentifier ?: @""};
+                                 VTrackingKeyStreamId : trackingID ?: @""};
     
-    [[VTrackingManager sharedInstance] queueEvent:event.name parameters:parameters eventId:context.streamItem.remoteId];
+    [[VTrackingManager sharedInstance] queueEvent:event.name parameters:parameters eventId:event.context.streamItem.remoteId];
 }
 
 #pragma mark - Private
