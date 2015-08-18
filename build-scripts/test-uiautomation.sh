@@ -82,7 +82,7 @@ fi
 # xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination generic/platform=iOS clean
 
 # Build
-xcodebuild test -workspace victorious/victorious.xcworkspace -scheme debug-victorious -destination platform='iOS',name='$DEVICE_NAME'
+xcodebuild test -workspace victorious/victorious.xcworkspace -scheme debug-victorious -destination platform='iOS',name='${DEVICE_NAME}'
 TEST_RESULT=$?
 
 exit $TEST_RESULT
