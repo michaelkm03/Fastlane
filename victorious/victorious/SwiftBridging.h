@@ -40,6 +40,8 @@
 #import "VAbstractFilter.h"
 #import "VSEquence.h"
 #import "VStream.h"
+#import "VSequence.h"
+#import "VSequence+Fetcher.h"
 
 // Everything else
 #import "VAutomation.h"
@@ -90,3 +92,7 @@
 #import "VDirectoryCellUpdateableFactory.h"
 #import "VDirectoryCollectionFlowLayout.h"
 #import "VStreamItem+Fetcher.h"
+#import "VSessionTimer.h"
+#import "VSequencePreviewView.h"
+#import "VBaseVideoSequencePreviewView.h"
+#import "VAsset+Fetcher.h"

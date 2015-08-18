@@ -18,11 +18,11 @@ static NSString * const kVideoAutoplaySettingKey = @"com.getvictorious.settings.
     switch (setting)
     {
         case VAutoplaySettingAlways:
-            return NSLocalizedString( @"Always", @"Setting indicating auto play every time." );
+            return NSLocalizedString( @"Use mobile data and Wi-Fi", @"Setting indicating auto play every time." );
         case VAutoplaySettingOnlyOnWifi:
-            return NSLocalizedString( @"Only on Wifi", @"Setting indicating auto play only with a Wifi connection." );
+            return NSLocalizedString( @"Use Wi-Fi only", @"Setting indicating auto play only with a Wifi connection." );
         case VAutoplaySettingNever:
-            return NSLocalizedString( @"Never", @"Setting indicating auto play never happens." );
+            return NSLocalizedString( @"Never play videos automatically", @"Setting indicating auto play never happens." );
         default:
             break;
     }
