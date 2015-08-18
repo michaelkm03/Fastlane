@@ -25,7 +25,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     
     private struct Constants {
         static let separatorHeight: CGFloat = 4
-        static let minimumTopVerticalSpace: CGFloat = 11
+        static let titleTopVerticalSpace: CGFloat = 11
         static let followControlHeight: CGFloat = 28
         static let minimumTitleToContentVerticalSpace: CGFloat = 5
         static let userAvatarHeight: CGFloat = 36
@@ -34,13 +34,13 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
         static let usernameBottomToAvatarCenterSpace: CGFloat = 0
         static let countsTopToAvatarCenterSpace: CGFloat = 0
         
-        static let baseHeight = separatorHeight + minimumTopVerticalSpace + minimumTitleToContentVerticalSpace + minimumBottomVerticalSpace + collectionViewHeight
+        static let baseHeight = separatorHeight + titleTopVerticalSpace + minimumTitleToContentVerticalSpace + minimumBottomVerticalSpace + collectionViewHeight
     }
     
     @IBOutlet private weak var usernameTextView: VTagSensitiveTextView!
     @IBOutlet private weak var userAvatarButton: VDefaultProfileButton!
     @IBOutlet private weak var postsCountLabel: UILabel!
-    @IBOutlet private var minimumTopVerticalSpaceConstraints: [NSLayoutConstraint]!
+    @IBOutlet private weak var titleTopVerticalSpaceConstraint: NSLayoutConstraint!
     @IBOutlet private var minimumBottomVerticalSpaceConstraints: [NSLayoutConstraint]!
     @IBOutlet private var minimumTitleToContentVerticalSpaceConstraints: [NSLayoutConstraint]!
     @IBOutlet private weak var separatorHeightConstraint: NSLayoutConstraint!
@@ -120,9 +120,6 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         userAvatarButton.setup()
-        for constraint in minimumTopVerticalSpaceConstraints {
-            constraint.constant = Constants.minimumTopVerticalSpace
-        }
         for constraint in minimumTitleToContentVerticalSpaceConstraints {
             constraint.constant = Constants.minimumTitleToContentVerticalSpace
         }
@@ -130,6 +127,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
             constraint.constant = Constants.minimumBottomVerticalSpace
         }
         separatorHeightConstraint.constant = Constants.separatorHeight
+        titleTopVerticalSpaceConstraint.constant = Constants.titleTopVerticalSpace
         followControlHeightConstraint.constant = Constants.followControlHeight
         userAvatarHeightConstraint.constant = Constants.userAvatarHeight
         usernameCenterConstraint.constant = Constants.usernameBottomToAvatarCenterSpace
