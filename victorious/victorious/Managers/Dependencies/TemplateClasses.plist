@@ -166,5 +166,7 @@
 	<string>VForcedWorkspaceContainerViewController</string>
 	<key>publish.screen</key>
 	<string>VPublishViewController</string>
+	<key>userHashtagSearch.screen</key>
+	<string>VUsersAndTagsSearchViewController</string>
 </dict>
 </plist>

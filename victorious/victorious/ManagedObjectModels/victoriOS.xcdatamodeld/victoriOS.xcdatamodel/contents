@@ -38,6 +38,7 @@
         <attribute name="audioMuted" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="backgroundColor" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="data" attributeType="String" syncable="YES"/>
+        <attribute name="duration" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="loop" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="mimeType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nodeId" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
@@ -229,6 +230,7 @@
         <attribute name="gifCount" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="hasReposted" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isComplete" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isGifStyle" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isLikedByMainUser" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isRemix" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isRepost" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>

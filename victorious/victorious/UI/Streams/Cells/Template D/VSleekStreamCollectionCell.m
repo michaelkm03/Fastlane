@@ -32,6 +32,7 @@
 #import "VEditorializationItem.h"
 #import "VStream.h"
 #import "VPreviewViewBackgroundHost.h"
+#import "victorious-Swift.h"
 
 // These values must match the constraint values in interface builder
 static const CGFloat kSleekCellHeaderHeight = 50.0f;

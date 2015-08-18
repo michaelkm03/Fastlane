@@ -40,7 +40,8 @@
 #import "VAbstractFilter.h"
 #import "VSEquence.h"
 #import "VStream.h"
-#import "VExperimentSettings.h"
+#import "VSequence.h"
+#import "VSequence+Fetcher.h"
 
 // Everything else
 #import "VAutomation.h"
@@ -120,3 +121,7 @@
 #import "VTagStringFormatter.h"
 #import "VTag.h"
 #import "VImageSequencePreviewView.h"
+#import "VSessionTimer.h"
+#import "VSequencePreviewView.h"
+#import "VBaseVideoSequencePreviewView.h"
+#import "VAsset+Fetcher.h"

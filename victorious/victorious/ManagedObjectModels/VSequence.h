@@ -53,6 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain, nullable) VUser * user;
 @property (nonatomic, retain, nullable) NSSet * voteResults;
 @property (nonatomic, retain, nullable) NSOrderedSet * recentComments;
+@property (nonatomic, retain) NSNumber * isGifStyle;
 
 @end
 

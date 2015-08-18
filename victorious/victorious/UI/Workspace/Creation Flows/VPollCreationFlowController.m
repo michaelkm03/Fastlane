@@ -42,4 +42,9 @@ static NSString * const kPollCreationScreenKey = @"pollCreationScreen";
     [self pushViewController:pollViewController animated:YES];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 @end
