@@ -34,6 +34,7 @@
 
 // Etc
 #import "NSArray+VMap.h"
+#import "NSURL+VPathHelper.h"
 
 // Swift Module
 #import "victorious-Swift.h"
@@ -46,8 +47,9 @@ NSString * const VTrackingWelcomeStartKey = @"welcome_start";
 NSString * const VTrackingWelcomeGetStartedTapKey = @"get_started_tap";
 NSString * const kMenuKey = @"menu";
 NSString * const kFirstTimeContentKey = @"firstTimeContent";
+NSString * const kMenuDeeplinkHost = @"menu";
 
-@interface VTabScaffoldViewController () <UITabBarControllerDelegate, VRootViewControllerContainedViewController, VDeeplinkSupporter>
+@interface VTabScaffoldViewController () <UITabBarControllerDelegate, VRootViewControllerContainedViewController, VDeeplinkHandler, VDeeplinkSupporter>
 
 @property (nonatomic, strong) UINavigationController *rootNavigationController;
 @property (nonatomic, strong) UITabBarController *internalTabBarController;
@@ -122,7 +124,7 @@ NSString * const kFirstTimeContentKey = @"firstTimeContent";
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    return UIInterfaceOrientationPortrait;
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 #pragma mark - Public API
@@ -295,13 +297,6 @@ NSString * const kFirstTimeContentKey = @"firstTimeContent";
     }
 }
 
-#pragma mark - VDeeplinkSupporter
-
-- (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url
-{
-    return [[VContentDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager];
-}
-
 #pragma mark - Navigation
 
 - (NSArray *)navigationDestinations
@@ -402,6 +397,49 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
     self.willSelectContainerViewController = viewController;
     [self navigateToDestination:viewController.navigationDestination animated:YES];
     return NO;
+}
+
+#pragma mark - VDeeplinkSupporter
+
+- (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url
+{
+    id<VDeeplinkHandler> contentDeeplinkHandler = [[VContentDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager];
+    if ( [contentDeeplinkHandler canDisplayContentForDeeplinkURL:url] )
+    {
+        return contentDeeplinkHandler;
+    }
+    return (id<VDeeplinkHandler>)self;
+}
+
+#pragma mark - VDeeplinkHandler
+
+- (BOOL)requiresAuthorization
+{
+    return NO;
+}
+
+- (void)displayContentForDeeplinkURL:(NSURL *)url completion:(VDeeplinkHandlerCompletionBlock)completion
+{
+    if ( [self canDisplayContentForDeeplinkURL:url] )
+    {
+        NSInteger index = [[url v_firstNonSlashPathComponent] integerValue];
+        UIViewController *viewController = self.internalTabBarController.viewControllers[ index ];
+        [self.internalTabBarController setSelectedViewController:viewController];
+        [self setNeedsStatusBarAppearanceUpdate];
+    }
+}
+
+- (BOOL)canDisplayContentForDeeplinkURL:(NSURL *)url
+{
+    const BOOL isHostValid = [url.host isEqualToString:kMenuDeeplinkHost];
+    NSString *pathComponent = [url v_firstNonSlashPathComponent];
+    if ( pathComponent == nil )
+    {
+        return NO;
+    }
+    const NSInteger index = [pathComponent integerValue];
+    const BOOL isSectionValid = index >= 0 && index < (NSInteger)self.internalTabBarController.viewControllers.count;
+    return isHostValid && isSectionValid;
 }
 
 @end
