@@ -30,6 +30,7 @@ static NSString * const kMacroSessionTime            = @"%%SESSION_TIME%%";
 static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
 static NSString * const kMacroPermissionState        = @"%%PERMISSION_STATE%%";
 static NSString * const kMacroPermissionName         = @"%%PERMISSION_NAME%%";
+static NSString * const kMacroAutoplay               = @"%%IS_AUTOPLAY%%";
 static NSString * const kMacroConnectivity           = @"%%CONNECTIVITY%%";
 static NSString * const kMacroVolumeLevel            = @"%%VOLUME_LEVEL%%";
 
@@ -73,6 +74,7 @@ static NSString * const kMacroVolumeLevel            = @"%%VOLUME_LEVEL%%";
                                     VTrackingKeyLoadTime           : kMacroLoadTime,
                                     VTrackingKeyPermissionName     : kMacroPermissionName,
                                     VTrackingKeyPermissionState    : kMacroPermissionState,
+                                    VTrackingKeyAutoplay           : kMacroAutoplay,
                                     VTrackingKeyConnectivity       : kMacroConnectivity,
                                     VTrackingKeyVolumeLevel        : kMacroVolumeLevel};
         

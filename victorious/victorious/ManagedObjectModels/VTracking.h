@@ -25,13 +25,6 @@
 @property (nonatomic, retain) id videoStall;
 @property (nonatomic, retain) id viewStart;
 @property (nonatomic, retain) id share;
-@property (nonatomic, retain) id autoplayView;
-@property (nonatomic, retain) id autoplayClick;
-@property (nonatomic, retain) id autoplayComplete25;
-@property (nonatomic, retain) id autoplayComplete50;
-@property (nonatomic, retain) id autoplayComplete75;
-@property (nonatomic, retain) id autoplayComplete100;
-@property (nonatomic, retain) id autoplayViewStall;
 @property (nonatomic, retain) VSequence *sequence;
 @property (nonatomic, retain) VVoteType *voteType;
 

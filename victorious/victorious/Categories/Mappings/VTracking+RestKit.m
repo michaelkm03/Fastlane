@@ -30,14 +30,7 @@
                                   @"view-skip"              :   VSelectorName(videoSkip),
                                   @"cell-view"              :   VSelectorName(cellView),
                                   @"cell-click"             :   VSelectorName(cellClick),
-                                  @"share"                  :   VSelectorName(share),
-                                  @"autoplay-view"          :   VSelectorName(autoplayView),
-                                  @"autoplay-click"         :   VSelectorName(autoplayClick),
-                                  @"autoplay-view-25"       :   VSelectorName(autoplayComplete25),
-                                  @"autoplay-view-50"       :   VSelectorName(autoplayComplete50),
-                                  @"autoplay-view-75"       :   VSelectorName(autoplayComplete75),
-                                  @"autoplay-view-100"      :   VSelectorName(autoplayComplete100),
-                                  @"autoplay-view-stall"    :   VSelectorName(autoplayViewStall)};
+                                  @"share"                  :   VSelectorName(share)};
     
     RKEntityMapping *mapping = [RKEntityMapping
                                 mappingForEntityForName:[self entityName]

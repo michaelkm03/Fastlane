@@ -171,14 +171,6 @@ extern NSString * const VTrackingEventVideoDidFail; //< Backend mapping: video-e
 extern NSString * const VTrackingEventVideoDidStall; //< Backend mapping: video-stall
 extern NSString * const VTrackingEventVideoDidSkip; //< Backend mapping: video-skip
 
-extern NSString * const VTrackingEventAutoplayDidStart; //< Backend mapping: autoplay-view
-extern NSString * const VTrackingEventAutoplayClick; //< Backend mapping: autoplay-click
-extern NSString * const VTrackingEventAutoplayDidComplete25; //< Backend mapping: autoplay-view-25
-extern NSString * const VTrackingEventAutoplayDidComplete50; //< Backend mapping: autoplay-view-50
-extern NSString * const VTrackingEventAutoplayDidComplete75; //< Backend mapping: autoplay-view-75
-extern NSString * const VTrackingEventAutoplayDidComplete100; //< Backend mapping: autoplay-view-100
-extern NSString * const VTrackingEventAutoplayDidStall; //< Backend mapping: autoplay-view-stall
-
 // Find Friends
 extern NSString * const VTrackingEventUserDidSelectFindFriends; 
 extern NSString * const VTrackingEventUserDidImportDeviceContacts; //< Params: Count (numer of contacts imported)
@@ -291,6 +283,7 @@ extern NSString * const VTrackingKeyLoadTime; //< The amount of time between req
 extern NSString * const VTrackingKeyPermissionName; 
 extern NSString * const VTrackingKeyPermissionState;
 
+extern NSString * const VTrackingKeyAutoplay; //< For tracking whether a video is autoplaying in the stream
 extern NSString * const VTrackingKeyConnectivity; //< For tracking connectivity level while autoplaying a video
 extern NSString * const VTrackingKeyVolumeLevel; //< For tracking volume level while autoplaying a video
 

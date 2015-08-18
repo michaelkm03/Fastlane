@@ -12,7 +12,9 @@
 #import "VSequence.h"
 #import "VTracking.h"
 #import "VVideoSettings.h"
-#import "victorious-Swift.h"
+
+#import <AVFoundation/AVFoundation.h>
+#import "VReachability.h"
 
 NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvictorious.LoggedInChangedNotification";
 
@@ -22,7 +24,6 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 @property (nonatomic, readwrite) BOOL canTrackViewDidAppear;
 
 @property (nonatomic, strong) VVideoSettings *videoSettings;
-@property (nonatomic, strong) AutoplayTrackingHelper *autoplayTrackingHelper;
 
 @end
 
@@ -113,21 +114,22 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     VStream *stream = event.stream;
     
     NSString *trackingID = event.fromShelf ? stream.shelfId : stream.trackingIdentifier;
-    NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
-                              VTrackingKeyTimeStamp : [NSDate date],
-                              VTrackingKeyUrls : sequence.tracking.cellClick,
-                              VTrackingKeyStreamId : trackingID ?: @""};
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromStream parameters:params];
+    NSMutableDictionary *params = [@{ VTrackingKeySequenceId : sequence.remoteId,
+                                       VTrackingKeyTimeStamp : [NSDate date],
+                                            VTrackingKeyUrls : sequence.tracking.cellClick,
+                                        VTrackingKeyStreamId : trackingID ?: @""} mutableCopy];
     
     // Track an autoplay click if necessary
     if (!sequence.isGifStyle.boolValue)
     {
         if (sequence.firstNode.httpLiveStreamingAsset.streamAutoplay.boolValue && [self.videoSettings isAutoplayEnabled])
         {
-            self.autoplayTrackingHelper.trackingItem = sequence.tracking;
-            [self.autoplayTrackingHelper trackAutoplayClick];
+            AutoplayTrackingEvent *event = [[AutoplayTrackingEvent alloc] initWithName:VTrackingEventVideoDidStop url:sequence.tracking.viewStop];
+            [self trackAutoplayEvent:event stream:stream];
         }
     }
+    
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromStream parameters:[NSDictionary dictionaryWithDictionary:params]];
 }
 
 #pragma mark - State management for StreamDidAppear event
@@ -163,6 +165,25 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     {
         [self trackStreamDidAppear:stream];
     }
+}
+
+#pragma mark - Autoplay
+
+- (void)trackAutoplayEvent:(AutoplayTrackingEvent *)event stream:(VStream *)stream
+{
+    VReachability *reachability = [VReachability reachabilityForInternetConnection];
+    NSString *connectivityString = [reachability reachabilityStatusDescription:[reachability currentReachabilityStatus]];
+    NSInteger outputVolume = (NSInteger)[[AVAudioSession sharedInstance] outputVolume] * 100;
+    NSString *volumeString = [NSString stringWithFormat:@"%li", (long)outputVolume];
+    
+    NSDictionary *parameters = @{VTrackingKeyAutoplay : @YES,
+                                 VTrackingKeyConnectivity : connectivityString,
+                                 VTrackingKeyVolumeLevel : volumeString,
+                                 VTrackingKeyLoadTime : event.loadTime ?: @(0),
+                                 VTrackingKeyUrls : @[event.url],
+                                 VTrackingKeyStreamId: stream.trackingIdentifier ?: @""};
+    
+    [[VTrackingManager sharedInstance] trackEvent:event.name parameters:parameters];
 }
 
 #pragma mark - Private
@@ -203,15 +224,6 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
         _videoSettings = [[VVideoSettings alloc] init];
     }
     return _videoSettings;
-}
-
-- (AutoplayTrackingHelper *)autoplayTrackingHelper
-{
-    if (_autoplayTrackingHelper == nil)
-    {
-        _autoplayTrackingHelper = [[AutoplayTrackingHelper alloc] init];
-    }
-    return _autoplayTrackingHelper;
 }
 
 #pragma mark - Notificaiton handler

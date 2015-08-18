@@ -5,6 +5,7 @@
 //  Created by Patrick Lynch on 2/24/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
+#import "victorious-swift.h"
 
 @import Foundation;
 
@@ -69,5 +70,10 @@
  Call this when a stream view is shown as the initial, default view in a multiple view controller container.
  */
 - (void)viewControllerAppearedAsInitial:(VStream *)stream;
+
+/**
+ Call this to track autoplaying video inside a stream cell.
+ */
+- (void)trackAutoplayEvent:(AutoplayTrackingEvent *)event stream:(VStream *)stream;
 
 @end
