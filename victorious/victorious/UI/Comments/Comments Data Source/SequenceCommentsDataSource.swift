@@ -12,7 +12,6 @@ class SequenceCommentsDataSource : CommentsDataSource {
     
     let sequence : VSequence
     
-    
     init(sequence: VSequence) {
         self.sequence = sequence
     }
@@ -54,9 +53,16 @@ class SequenceCommentsDataSource : CommentsDataSource {
     
     func commentAtIndex(index: Int) -> VComment {
         if let comments = sequence.comments {
-            return comments.array[index] as! VComment
+            return comments.objectAtIndex(index) as! VComment
         }
         return VComment()
+    }
+    
+    func indexOfComment(comment: VComment) -> Int {
+        if let comments = sequence.comments {
+            return comments.indexOfObject(comment)
+        }
+        return 0
     }
     
     var delegate : CommentsDataSourceDelegate? {

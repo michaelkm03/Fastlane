@@ -33,6 +33,15 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)replyToComment:(VComment *)comment;
 
+@optional
+
+/**
+ *  Instead of responding to for commentRemoved delegates can respond to this 
+ *  method to have index information along with removal notification.
+ */
+- (void)commentRemoved:(VComment *)comment
+               atIndex:(NSInteger)index;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -112,6 +112,7 @@
 #import "VEditCommentViewController.h"
 #import "VSimpleModalTransition.h"
 #import "VTransitionDelegate.h"
+#import "VCollectionViewCommentHighlighter.h"
 
 //Shelves
 #import "VStreamCellFactory.h"

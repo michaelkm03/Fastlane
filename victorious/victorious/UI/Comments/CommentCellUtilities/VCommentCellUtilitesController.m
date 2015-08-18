@@ -125,11 +125,20 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
 
 - (void)deleteComment
 {
+    NSInteger indexOfComment = [self.comment.sequence.comments indexOfObject:self.comment];
     [[VObjectManager sharedManager] removeComment:self.comment
                                        withReason:nil
                                      successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
-         [self.delegate commentRemoved:self.comment];
+         if ([self.delegate respondsToSelector:@selector(commentRemoved:atIndex:)])
+         {
+             [self.delegate commentRemoved:self.comment atIndex:indexOfComment];
+         }
+         else
+         {
+             [self.delegate commentRemoved:self.comment];
+         }
+         
          
          [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidDeleteComment];
      }

@@ -11,7 +11,10 @@ import Foundation
 protocol CommentsDataSource {
     
     var numberOfComments: Int { get }
+    
     func commentAtIndex(index: Int) -> VComment
+    
+    func indexOfComment(comment: VComment) -> Int
  
     var delegate: CommentsDataSourceDelegate? { get set }
     

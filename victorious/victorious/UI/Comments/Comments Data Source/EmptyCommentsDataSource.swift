@@ -18,6 +18,10 @@ class EmtpyCommentsDataSource : CommentsDataSource {
     func commentAtIndex(index: Int) -> VComment {
         fatalError("An EmtpyCommentsDataSource does not provide valid comments.")
     }
+    
+    func indexOfComment(comment: VComment) -> Int {
+        return 0
+    }
 
     var delegate: CommentsDataSourceDelegate?
 

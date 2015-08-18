@@ -67,22 +67,14 @@
 
 #pragma mark - Comments
 
-- (void)showCommentsFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence withSelectedComment:(VComment *)selectedComment
+- (void)showCommentsFromViewController:(UIViewController *)viewController
+                              sequence:(VSequence *)sequence
+                   withSelectedComment:(VComment *)selectedComment
 {
-  #warning FIXME!!
-//    VCommentsContainerViewController *commentsContainerViewController;
-//    if ( selectedComment != nil )
-//    {
-//        commentsContainerViewController = [self.dependencyManager commentsContainerWithSequence:sequence andSelectedComment:selectedComment];
-//    }
-//    else
-//    {
-//        commentsContainerViewController = [self.dependencyManager commentsContainerWithSequence:sequence];
-//    }
-    
+    CommentsViewController *commentsViewController = [self.dependencyManager commentsViewController:sequence];
     // If we are embedded in the root nav push on that, otherwise push on the nearest navigationcontroller
     UINavigationController *navigationControllerToPushOn = viewController.rootNavigationController ?: viewController.navigationController;
-    [navigationControllerToPushOn pushViewController:[self.dependencyManager commentsViewController:sequence] animated:YES];
+    [navigationControllerToPushOn pushViewController:commentsViewController animated:YES];
 }
 
 #pragma mark - User

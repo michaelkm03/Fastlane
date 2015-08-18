@@ -15,13 +15,6 @@ extension VDependencyManager {
         commentViewController.sequence = sequence
         return commentViewController
     }
-    
-    func commentsViewController(sequnce: VSequence, selectedComment: VComment) -> CommentsViewController {
-        var addedDependencies: [NSObject : AnyObject] = ["selectedComment" : selectedComment]
-        var commentViewController = self.templateValueOfType(CommentsViewController.self, forKey: "commentsScreen", withAddedDependencies: addedDependencies) as! CommentsViewController
-        commentViewController.sequence = sequnce
-        return commentViewController
-    }
 
 }
 
@@ -52,6 +45,7 @@ class CommentsViewController: UIViewController, VKeyboardInputAccessoryViewDeleg
     private var publishParameters: VPublishParameters?
     private var mediaAttachmentPresenter: VMediaAttachmentPresenter?
     private var focusHelper : VCollectionViewStreamFocusHelper?
+    private var shouldHideNavBar = true
     
     // MARK: Outlets
     
@@ -65,9 +59,7 @@ class CommentsViewController: UIViewController, VKeyboardInputAccessoryViewDeleg
         
         focusHelper = VCollectionViewStreamFocusHelper(collectionView: collectionView)
         scrollPaginator.delegate = self
-        
         commentsDataSourceSwitcher.dataSource.delegate = self
-        
         keyboardBar = VKeyboardInputAccessoryView.defaultInputAccessoryViewWithDependencyManager(dependencyManager)
     }
     
@@ -91,12 +83,18 @@ class CommentsViewController: UIViewController, VKeyboardInputAccessoryViewDeleg
         keyboardBar?.becomeFirstResponder()
         focusHelper?.updateFocus()
         updateInsetForKeyboardBarState()
+        shouldHideNavBar = true
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
         self.resignFirstResponder()
+        
+        if shouldHideNavBar {
+            self.rootNavigationController().setNavigationBarHidden(true, animated: true)
+        }
+        
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -299,6 +297,7 @@ extension CommentsViewController: UICollectionViewDataSource, CommentsDataSource
         cell.onUserProfileTapped = { [weak self] in
             if let strongSelf = self {
                 var profileViewController = strongSelf.dependencyManager.userProfileViewControllerWithUser(commentForIndexPath.user)
+                strongSelf.shouldHideNavBar = false
                 strongSelf.rootNavigationController()?.pushViewController(profileViewController, animated: true)
             }
         }
@@ -374,11 +373,13 @@ extension CommentsViewController: VTagSensitiveTextViewDelegate, VSwipeViewContr
     func tagSensitiveTextView(tagSensitiveTextView: VTagSensitiveTextView, tappedTag tag: VTag) {
         if let tag = tag as? VUserTag {
             var profileViewController = dependencyManager.userProfileViewControllerWithRemoteId(tag.remoteId)
+            self.shouldHideNavBar = false
             self.navigationController?.pushViewController(profileViewController, animated: true)
         }
         else {
             var justHashTagText = (tag.displayString.string as NSString).substringFromIndex(1)
             var hashtagViewController = dependencyManager.hashtagStreamWithHashtag(justHashTagText)
+            self.shouldHideNavBar = false
             self.navigationController?.pushViewController(hashtagViewController, animated: true)
         }
     }
@@ -386,7 +387,12 @@ extension CommentsViewController: VTagSensitiveTextViewDelegate, VSwipeViewContr
     // MARK: - VCommentCellUtilitiesDelegate
 
     func commentRemoved(comment: VComment) {
-        // FIXME: removing comment
+    }
+    
+    func commentRemoved(comment: VComment, atIndex index: Int) {
+        collectionView.performBatchUpdates({ () -> Void in
+            self.collectionView.deleteItemsAtIndexPaths([NSIndexPath(forItem: index, inSection: 0)])
+        }, completion: nil)
     }
 
     func editComment(comment: VComment) {
@@ -397,7 +403,12 @@ extension CommentsViewController: VTagSensitiveTextViewDelegate, VSwipeViewContr
     }
 
     func replyToComment(comment: VComment) {
-        // FIXME: prepare to reply
+        
+        var item = self.commentsDataSourceSwitcher.dataSource.indexOfComment(comment)
+        var indexPath = NSIndexPath(forItem: item, inSection: 0)
+        collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredVertically, animated: true)
+        keyboardBar?.setReplyRecipient(comment.user)
+        keyboardBar?.startEditing()
     }
 
     // MARK: - VEditCommentViewControllerDelegate
