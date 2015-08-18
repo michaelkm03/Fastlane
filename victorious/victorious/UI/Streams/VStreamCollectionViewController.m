@@ -99,6 +99,7 @@ static NSString * const kGifStreamKey = @"gifStream";
 static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
+static NSString * const kStreamCollectionKey = @"destinationStream";
 
 @interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate>
 
@@ -495,10 +496,11 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 {
     if ( [stream isSingleStream] )
     {
-        VStreamCollectionViewController *viewController = [VStreamCollectionViewController streamViewControllerForStream:stream];
-        viewController.dependencyManager = self.dependencyManager;
-        viewController.targetStreamItem = streamItem;
-        [self.navigationController pushViewController:viewController animated:YES];
+        VStreamCollectionViewController *streamCollection = [self.dependencyManager templateValueOfType:[VStreamCollectionViewController class]
+                                                                                                 forKey:kStreamCollectionKey
+                                                                                  withAddedDependencies:@{ kSequenceIDKey: stream.remoteId, VDependencyManagerTitleKey: stream.name }];
+        streamCollection.targetStreamItem = streamItem;
+        [self.navigationController pushViewController:streamCollection animated:YES];
     }
     else if ( [stream isStreamOfStreams] )
     {

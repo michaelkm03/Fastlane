@@ -2750,6 +2750,226 @@
                                     "alpha": 255
                                 }
                             },
+                                    "destinationStream": {
+                                    "name": "stream.screen",
+                                    "title": null,
+                                    "canAddContent": null,
+                                    "commentsScreen": {
+                                    "name": "comments.screen",
+                                    "title": "Comments",
+                                    "background": {
+                                    "name": "solidColor.background",
+                                    "color": {
+                                    "red": 255,
+                                    "green": 255,
+                                    "blue": 255,
+                                    "alpha": 255
+                                    }
+                                    },
+                                    "color.link": {
+                                    "red": 184,
+                                    "green": 54,
+                                    "blue": 191,
+                                    "alpha": 1
+                                    },
+                                    "color.text.content": {
+                                    "red": 0,
+                                    "green": 0,
+                                    "blue": 0,
+                                    "alpha": 255
+                                    },
+                                    "font.header": {
+                                    "fontName": "OpenSans-SemiBold",
+                                    "fontSize": 13
+                                    },
+                                    "font.label2": {
+                                    "fontName": "OpenSans-SemiBold",
+                                    "fontSize": 12
+                                    },
+                                    "play_video_icon": {
+                                    "imageURL": "D_play_video_icon"
+                                    },
+                                    "tracking": {
+                                    "view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/component_view\/comments%2Escreen"]
+                                    },
+                                    "id": "55c4116bc71ce"
+                                    },
+                                    "background": {
+                                    "name": "solidColor.background",
+                                    "color": {
+                                    "red": 241,
+                                    "green": 241,
+                                    "blue": 241,
+                                    "alpha": 255
+                                    }
+                                    },
+                                    "tracking": {
+                                    "view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/component_view\/stream%2Escreen"]
+                                    },
+                                    "createSequenceIcon": {
+                                    "imageURL": "createContentButton"
+                                    },
+                                    "follow_user_icon": {
+                                    "imageURL": "follow_user_icon"
+                                    },
+                                    "followed_user_icon": {
+                                    "imageURL": "followed_user_icon"
+                                    },
+                                    "followed_user_background_icon": {
+                                    "imageURL": "followed_user_background_icon"
+                                    },
+                                    "marqueeCell": {
+                                    "name": "blurred.marqueeCell",
+                                    "color.accent": {
+                                    "red": 184,
+                                    "green": 54,
+                                    "blue": 191,
+                                    "alpha": 102
+                                    },
+                                    "orIcon": {
+                                    "imageURL": "D_pollOr"
+                                    },
+                                    "color.standard.textPost": {
+                                    "red": 56,
+                                    "green": 199,
+                                    "blue": 239,
+                                    "alpha": 1
+                                    },
+                                    "background": {
+                                    "name": "solidColor.background",
+                                    "color": {
+                                    "red": 255,
+                                    "green": 255,
+                                    "blue": 255,
+                                    "alpha": 217
+                                    }
+                                    },
+                                    "color.text": {
+                                    "red": 56,
+                                    "green": 199,
+                                    "blue": 239,
+                                    "alpha": 1
+                                    },
+                                    "font.paragraph": {
+                                    "fontName": "OpenSans-SemiBold",
+                                    "fontSize": 12
+                                    },
+                                    "font.heading1": {
+                                    "fontName": "OpenSans-SemiBold",
+                                    "fontSize": 17
+                                    }
+                                    },
+                                    "streamCell": {
+                                    "background": {
+                                    "name": "solidColor.background",
+                                    "color": {
+                                    "red": 255,
+                                    "green": 255,
+                                    "blue": 255,
+                                    "alpha": 255
+                                    }
+                                    },
+                                    "color.accent.secondary": {
+                                    "red": 241,
+                                    "green": 241,
+                                    "blue": 241,
+                                    "alpha": 255
+                                    },
+                                    "color.text": {
+                                    "red": 51,
+                                    "green": 51,
+                                    "blue": 51,
+                                    "alpha": 255
+                                    },
+                                    "color.text.content": {
+                                    "red": 102,
+                                    "green": 102,
+                                    "blue": 102,
+                                    "alpha": 255
+                                    },
+                                    "color.link": {
+                                    "red": 184,
+                                    "green": 54,
+                                    "blue": 191,
+                                    "alpha": 1
+                                    },
+                                    "color.link.secondary": {
+                                    "red": 241,
+                                    "green": 241,
+                                    "blue": 241,
+                                    "alpha": 255
+                                    },
+                                    "font.label3": {
+                                    "fontName": "OpenSans-SemiBold",
+                                    "fontSize": 11
+                                    },
+                                    "loadingBackground": {
+                                    "name": "tilePattern.background",
+                                    "color": {
+                                    "red": 56,
+                                    "green": 199,
+                                    "blue": 239,
+                                    "alpha": 1
+                                    },
+                                    "image": {
+                                    "imageURL": "geometric_pattern"
+                                    },
+                                    "tiltParallax": true,
+                                    "shimmerAnimationActive": true
+                                    },
+                                    "name": "sleek.streamCell",
+                                    "showComments": true,
+                                    "color.standard.textPost": {
+                                    "red": 56,
+                                    "green": 199,
+                                    "blue": 239,
+                                    "alpha": 1
+                                    },
+                                    "orIcon": {
+                                    "imageURL": "D_pollOr"
+                                    },
+                                    "comment_icon": {
+                                    "imageURL": "D_comment_icon"
+                                    },
+                                    "share_icon": {
+                                    "imageURL": "D_share_icon"
+                                    },
+                                    "gif_icon": {
+                                    "imageURL": "D_gif_icon"
+                                    },
+                                    "meme_icon": {
+                                    "imageURL": "D_meme_icon"
+                                    },
+                                    "repost_icon": {
+                                    "imageURL": "D_repost_icon"
+                                    },
+                                    "repost_success_icon": {
+                                    "imageURL": "D_repost_success_icon"
+                                    },
+                                    "likeButtonEnabled": true,
+                                    "shouldShowComments": false,
+                                    "open_image_icon": {
+                                    "imageURL": "open_image_icon"
+                                    },
+                                    "watch_video_icon": {
+                                    "imageURL": "watch_video_icon"
+                                    },
+                                    "watch_gif_icon": {
+                                    "imageURL": "watch_gif_icon"
+                                    },
+                                    "color.text.secondary": {
+                                    "red": 255,
+                                    "green": 255,
+                                    "blue": 255,
+                                    "alpha": 255
+                                    }
+                                    },
+                                    "streamURL": "http:\/\/dev.getvictorious.com\/api\/sequence\/detail_list_by_stream_with_marquee\/%%SEQUENCE_ID%%\/0\/%%PAGE_NUM%%\/%%ITEMS_PER_PAGE%%",
+                                    "destinationDirectory": null,
+                                    "titleImage": null,
+                                    "hasHeaderParallax": true,
+                                    "accessoryScreens": []
+                                    },
                             "streamURL": "http:\/\/dev.getvictorious.com\/api\/sequence\/feed\/following\/1\/5",
                             "id": "55c4116bc6f30",
                             "destinationDirectory": {
@@ -2808,226 +3028,226 @@
                                 "tracking": {
                                     "view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/component_view\/directory%2Escreen"]
                                 },
-                                "destinationStream": {
+                                    "destinationStream": {
                                     "name": "stream.screen",
                                     "title": null,
                                     "canAddContent": null,
                                     "commentsScreen": {
-                                        "name": "comments.screen",
-                                        "title": "Comments",
-                                        "background": {
-                                            "name": "solidColor.background",
-                                            "color": {
-                                                "red": 255,
-                                                "green": 255,
-                                                "blue": 255,
-                                                "alpha": 255
-                                            }
-                                        },
-                                        "color.link": {
-                                            "red": 184,
-                                            "green": 54,
-                                            "blue": 191,
-                                            "alpha": 1
-                                        },
-                                        "color.text.content": {
-                                            "red": 0,
-                                            "green": 0,
-                                            "blue": 0,
-                                            "alpha": 255
-                                        },
-                                        "font.header": {
-                                            "fontName": "OpenSans-SemiBold",
-                                            "fontSize": 13
-                                        },
-                                        "font.label2": {
-                                            "fontName": "OpenSans-SemiBold",
-                                            "fontSize": 12
-                                        },
-                                        "play_video_icon": {
-                                            "imageURL": "D_play_video_icon"
-                                        },
-                                        "tracking": {
-                                            "view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/component_view\/comments%2Escreen"]
-                                        },
-                                        "id": "55c4116bc71ce"
-                                    },
+                                    "name": "comments.screen",
+                                    "title": "Comments",
                                     "background": {
-                                        "name": "solidColor.background",
-                                        "color": {
-                                            "red": 241,
-                                            "green": 241,
-                                            "blue": 241,
-                                            "alpha": 255
-                                        }
+                                    "name": "solidColor.background",
+                                    "color": {
+                                    "red": 255,
+                                    "green": 255,
+                                    "blue": 255,
+                                    "alpha": 255
+                                    }
+                                    },
+                                    "color.link": {
+                                    "red": 184,
+                                    "green": 54,
+                                    "blue": 191,
+                                    "alpha": 1
+                                    },
+                                    "color.text.content": {
+                                    "red": 0,
+                                    "green": 0,
+                                    "blue": 0,
+                                    "alpha": 255
+                                    },
+                                    "font.header": {
+                                    "fontName": "OpenSans-SemiBold",
+                                    "fontSize": 13
+                                    },
+                                    "font.label2": {
+                                    "fontName": "OpenSans-SemiBold",
+                                    "fontSize": 12
+                                    },
+                                    "play_video_icon": {
+                                    "imageURL": "D_play_video_icon"
                                     },
                                     "tracking": {
-                                        "view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/component_view\/stream%2Escreen"]
+                                    "view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/component_view\/comments%2Escreen"]
+                                    },
+                                    "id": "55c4116bc71ce"
+                                    },
+                                    "background": {
+                                    "name": "solidColor.background",
+                                    "color": {
+                                    "red": 241,
+                                    "green": 241,
+                                    "blue": 241,
+                                    "alpha": 255
+                                    }
+                                    },
+                                    "tracking": {
+                                    "view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/component_view\/stream%2Escreen"]
                                     },
                                     "createSequenceIcon": {
-                                        "imageURL": "createContentButton"
+                                    "imageURL": "createContentButton"
                                     },
                                     "follow_user_icon": {
-                                        "imageURL": "follow_user_icon"
+                                    "imageURL": "follow_user_icon"
                                     },
                                     "followed_user_icon": {
-                                        "imageURL": "followed_user_icon"
+                                    "imageURL": "followed_user_icon"
                                     },
                                     "followed_user_background_icon": {
-                                        "imageURL": "followed_user_background_icon"
+                                    "imageURL": "followed_user_background_icon"
                                     },
                                     "marqueeCell": {
-                                        "name": "blurred.marqueeCell",
-                                        "color.accent": {
-                                            "red": 184,
-                                            "green": 54,
-                                            "blue": 191,
-                                            "alpha": 102
-                                        },
-                                        "orIcon": {
-                                            "imageURL": "D_pollOr"
-                                        },
-                                        "color.standard.textPost": {
-                                            "red": 56,
-                                            "green": 199,
-                                            "blue": 239,
-                                            "alpha": 1
-                                        },
-                                        "background": {
-                                            "name": "solidColor.background",
-                                            "color": {
-                                                "red": 255,
-                                                "green": 255,
-                                                "blue": 255,
-                                                "alpha": 217
-                                            }
-                                        },
-                                        "color.text": {
-                                            "red": 56,
-                                            "green": 199,
-                                            "blue": 239,
-                                            "alpha": 1
-                                        },
-                                        "font.paragraph": {
-                                            "fontName": "OpenSans-SemiBold",
-                                            "fontSize": 12
-                                        },
-                                        "font.heading1": {
-                                            "fontName": "OpenSans-SemiBold",
-                                            "fontSize": 17
-                                        }
+                                    "name": "blurred.marqueeCell",
+                                    "color.accent": {
+                                    "red": 184,
+                                    "green": 54,
+                                    "blue": 191,
+                                    "alpha": 102
+                                    },
+                                    "orIcon": {
+                                    "imageURL": "D_pollOr"
+                                    },
+                                    "color.standard.textPost": {
+                                    "red": 56,
+                                    "green": 199,
+                                    "blue": 239,
+                                    "alpha": 1
+                                    },
+                                    "background": {
+                                    "name": "solidColor.background",
+                                    "color": {
+                                    "red": 255,
+                                    "green": 255,
+                                    "blue": 255,
+                                    "alpha": 217
+                                    }
+                                    },
+                                    "color.text": {
+                                    "red": 56,
+                                    "green": 199,
+                                    "blue": 239,
+                                    "alpha": 1
+                                    },
+                                    "font.paragraph": {
+                                    "fontName": "OpenSans-SemiBold",
+                                    "fontSize": 12
+                                    },
+                                    "font.heading1": {
+                                    "fontName": "OpenSans-SemiBold",
+                                    "fontSize": 17
+                                    }
                                     },
                                     "streamCell": {
-                                        "background": {
-                                            "name": "solidColor.background",
-                                            "color": {
-                                                "red": 255,
-                                                "green": 255,
-                                                "blue": 255,
-                                                "alpha": 255
-                                            }
-                                        },
-                                        "color.accent.secondary": {
-                                            "red": 241,
-                                            "green": 241,
-                                            "blue": 241,
-                                            "alpha": 255
-                                        },
-                                        "color.text": {
-                                            "red": 51,
-                                            "green": 51,
-                                            "blue": 51,
-                                            "alpha": 255
-                                        },
-                                        "color.text.content": {
-                                            "red": 102,
-                                            "green": 102,
-                                            "blue": 102,
-                                            "alpha": 255
-                                        },
-                                        "color.link": {
-                                            "red": 184,
-                                            "green": 54,
-                                            "blue": 191,
-                                            "alpha": 1
-                                        },
-                                        "color.link.secondary": {
-                                            "red": 241,
-                                            "green": 241,
-                                            "blue": 241,
-                                            "alpha": 255
-                                        },
-                                        "font.label3": {
-                                            "fontName": "OpenSans-SemiBold",
-                                            "fontSize": 11
-                                        },
-                                        "loadingBackground": {
-                                            "name": "tilePattern.background",
-                                            "color": {
-                                                "red": 56,
-                                                "green": 199,
-                                                "blue": 239,
-                                                "alpha": 1
-                                            },
-                                            "image": {
-                                                "imageURL": "geometric_pattern"
-                                            },
-                                            "tiltParallax": true,
-                                            "shimmerAnimationActive": true
-                                        },
-                                        "name": "sleek.streamCell",
-                                        "showComments": true,
-                                        "color.standard.textPost": {
-                                            "red": 56,
-                                            "green": 199,
-                                            "blue": 239,
-                                            "alpha": 1
-                                        },
-                                        "orIcon": {
-                                            "imageURL": "D_pollOr"
-                                        },
-                                        "comment_icon": {
-                                            "imageURL": "D_comment_icon"
-                                        },
-                                        "share_icon": {
-                                            "imageURL": "D_share_icon"
-                                        },
-                                        "gif_icon": {
-                                            "imageURL": "D_gif_icon"
-                                        },
-                                        "meme_icon": {
-                                            "imageURL": "D_meme_icon"
-                                        },
-                                        "repost_icon": {
-                                            "imageURL": "D_repost_icon"
-                                        },
-                                        "repost_success_icon": {
-                                            "imageURL": "D_repost_success_icon"
-                                        },
-                                        "likeButtonEnabled": true,
-                                        "shouldShowComments": false,
-                                        "open_image_icon": {
-                                            "imageURL": "open_image_icon"
-                                        },
-                                        "watch_video_icon": {
-                                            "imageURL": "watch_video_icon"
-                                        },
-                                        "watch_gif_icon": {
-                                            "imageURL": "watch_gif_icon"
-                                        },
-                                        "color.text.secondary": {
-                                            "red": 255,
-                                            "green": 255,
-                                            "blue": 255,
-                                            "alpha": 255
-                                        }
+                                    "background": {
+                                    "name": "solidColor.background",
+                                    "color": {
+                                    "red": 255,
+                                    "green": 255,
+                                    "blue": 255,
+                                    "alpha": 255
+                                    }
+                                    },
+                                    "color.accent.secondary": {
+                                    "red": 241,
+                                    "green": 241,
+                                    "blue": 241,
+                                    "alpha": 255
+                                    },
+                                    "color.text": {
+                                    "red": 51,
+                                    "green": 51,
+                                    "blue": 51,
+                                    "alpha": 255
+                                    },
+                                    "color.text.content": {
+                                    "red": 102,
+                                    "green": 102,
+                                    "blue": 102,
+                                    "alpha": 255
+                                    },
+                                    "color.link": {
+                                    "red": 184,
+                                    "green": 54,
+                                    "blue": 191,
+                                    "alpha": 1
+                                    },
+                                    "color.link.secondary": {
+                                    "red": 241,
+                                    "green": 241,
+                                    "blue": 241,
+                                    "alpha": 255
+                                    },
+                                    "font.label3": {
+                                    "fontName": "OpenSans-SemiBold",
+                                    "fontSize": 11
+                                    },
+                                    "loadingBackground": {
+                                    "name": "tilePattern.background",
+                                    "color": {
+                                    "red": 56,
+                                    "green": 199,
+                                    "blue": 239,
+                                    "alpha": 1
+                                    },
+                                    "image": {
+                                    "imageURL": "geometric_pattern"
+                                    },
+                                    "tiltParallax": true,
+                                    "shimmerAnimationActive": true
+                                    },
+                                    "name": "sleek.streamCell",
+                                    "showComments": true,
+                                    "color.standard.textPost": {
+                                    "red": 56,
+                                    "green": 199,
+                                    "blue": 239,
+                                    "alpha": 1
+                                    },
+                                    "orIcon": {
+                                    "imageURL": "D_pollOr"
+                                    },
+                                    "comment_icon": {
+                                    "imageURL": "D_comment_icon"
+                                    },
+                                    "share_icon": {
+                                    "imageURL": "D_share_icon"
+                                    },
+                                    "gif_icon": {
+                                    "imageURL": "D_gif_icon"
+                                    },
+                                    "meme_icon": {
+                                    "imageURL": "D_meme_icon"
+                                    },
+                                    "repost_icon": {
+                                    "imageURL": "D_repost_icon"
+                                    },
+                                    "repost_success_icon": {
+                                    "imageURL": "D_repost_success_icon"
+                                    },
+                                    "likeButtonEnabled": true,
+                                    "shouldShowComments": false,
+                                    "open_image_icon": {
+                                    "imageURL": "open_image_icon"
+                                    },
+                                    "watch_video_icon": {
+                                    "imageURL": "watch_video_icon"
+                                    },
+                                    "watch_gif_icon": {
+                                    "imageURL": "watch_gif_icon"
+                                    },
+                                    "color.text.secondary": {
+                                    "red": 255,
+                                    "green": 255,
+                                    "blue": 255,
+                                    "alpha": 255
+                                    }
                                     },
                                     "streamURL": "http:\/\/dev.getvictorious.com\/api\/sequence\/detail_list_by_stream_with_marquee\/%%SEQUENCE_ID%%\/0\/%%PAGE_NUM%%\/%%ITEMS_PER_PAGE%%",
                                     "destinationDirectory": null,
                                     "titleImage": null,
                                     "hasHeaderParallax": true,
                                     "accessoryScreens": []
-                                },
+                                    },
                                 "directoryCell": {
                                     "background": {
                                         "name": "solidColor.background",

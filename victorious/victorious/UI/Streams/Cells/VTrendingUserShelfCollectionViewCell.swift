@@ -49,7 +49,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     @IBOutlet private weak var usernameCenterConstraint: NSLayoutConstraint!
     @IBOutlet private weak var countsCenterConstraint: NSLayoutConstraint!
     
-    private static let titleText: NSString = NSLocalizedString("Trending User", comment:"")
+    private static let titleText: NSString = NSLocalizedString("TRENDING USER", comment:"")
     
     //MARK: - Setters
     
