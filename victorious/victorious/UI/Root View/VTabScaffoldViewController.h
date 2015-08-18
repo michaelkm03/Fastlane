@@ -11,6 +11,7 @@
 #import "VDependencyManager.h"
 #import "VHasManagedDependencies.h"
 #import "VNavigationDestinationsProvider.h"
+#import "VDeeplinkHandler.h"
 #import "UIViewController+VRootNavigationController.h"
 
 @class VSequence, VAuthorization, VCoachmarkManager;
@@ -30,7 +31,7 @@ extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
  UINavigationController which contains a UITabBarController, which contains several 
  NavigationControllers wrapping the menu destinations.
   */
-@interface VTabScaffoldViewController : UIViewController <VHasManagedDependencies, VNavigationDestinationsProvider>
+@interface VTabScaffoldViewController : UIViewController <VHasManagedDependencies, VNavigationDestinationsProvider, VDeeplinkSupporter>
 
 /**
  A dependency manager that contains appearance data

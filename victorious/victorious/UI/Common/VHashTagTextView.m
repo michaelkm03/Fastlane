@@ -66,21 +66,25 @@
     _dependencyManager = dependencyManager;
     if (dependencyManager != nil)
     {
-        UIColor *linkForegroundColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-        if (linkForegroundColor != nil)
-        {
-            self.linkTextAttributes = @{
-                                        NSForegroundColorAttributeName : linkForegroundColor,
-                                        };
-        }
-        
-        UIColor *highlightedLinkForegroundColor = [linkForegroundColor colorWithAlphaComponent:0.5f];
-        if (highlightedLinkForegroundColor)
-        {
-            self.linkTextTouchAttributes = @{
-                                             NSForegroundColorAttributeName : highlightedLinkForegroundColor,
-                                             };
-        }
+        [self updateForLinkTextForegroundColor:[dependencyManager colorForKey:VDependencyManagerLinkColorKey]];
+    }
+}
+
+- (void)updateForLinkTextForegroundColor:(UIColor *)color
+{
+    if (color != nil)
+    {
+        self.linkTextAttributes = @{
+                                    NSForegroundColorAttributeName : color,
+                                    };
+    }
+    
+    UIColor *highlightedLinkForegroundColor = [color colorWithAlphaComponent:0.5f];
+    if (highlightedLinkForegroundColor)
+    {
+        self.linkTextTouchAttributes = @{
+                                         NSForegroundColorAttributeName : highlightedLinkForegroundColor,
+                                         };
     }
 }
 

@@ -47,4 +47,5 @@
 - (void)removeStreamItemsObject:(VStreamItem *)value;
 - (void)addStreamItems:(NSOrderedSet *)values;
 - (void)removeStreamItems:(NSOrderedSet *)values;
+
 @end

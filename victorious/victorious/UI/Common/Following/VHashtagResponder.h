@@ -14,6 +14,8 @@
  * that want to respond to messages about following and unfollowing users
  */
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol VHashtagResponder <NSObject>
 
 /**
@@ -23,7 +25,7 @@
  *  @param success The success block
  *  @param failure The failure block
  */
-- (void)followHashtag:(NSString *)hashtag successBlock:(void (^)(NSArray *))success failureBlock:(void (^)(NSError *))failure;
+- (void)followHashtag:(NSString *)hashtag successBlock:(void (^)(NSArray *))success failureBlock:(void (^)(NSError *__nullable))failure;
 
 /**
  *  A command for the current user to unfollow a specific hashtag.
@@ -32,6 +34,8 @@
  *  @param success The success block
  *  @param failure The failure block
  */
-- (void)unfollowHashtag:(NSString *)hashtag successBlock:(void (^)(NSArray *))success failureBlock:(void (^)(NSError *))failure;
+- (void)unfollowHashtag:(NSString *)hashtag successBlock:(void (^)(NSArray *))success failureBlock:(void (^)(NSError *__nullable))failure;
 
 @end
+
+NS_ASSUME_NONNULL_END

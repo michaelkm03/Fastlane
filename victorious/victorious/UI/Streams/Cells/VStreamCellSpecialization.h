@@ -21,12 +21,16 @@
  */
 @protocol VStreamCellComponentSpecialization <NSObject>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  An identifier that represents the specialization of a cell or cell component to minimize 
  *  relayout or reconfiguration when reused.
  */
 + (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem
-                            baseIdentifier:(NSString *)baseIdentifier
-                         dependencyManager:(VDependencyManager *)dependencyManager;
+                            baseIdentifier:(NSString * __nullable)baseIdentifier
+                         dependencyManager:(VDependencyManager * __nullable)dependencyManager;
+
+NS_ASSUME_NONNULL_END
 
 @end

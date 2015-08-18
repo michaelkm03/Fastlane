@@ -23,6 +23,18 @@ class VictoriousTestCase: KIFTestCase {
         }
     }
     
+    override func beforeAll() {
+        super.beforeAll()
+        
+        // Login if forced login is presented
+        self.loginIfRequired()
+        
+        self.dismissWelcomeIfPresent()
+        
+        // Grant notification permissions
+        self.tester().acknowledgeSystemAlert()
+    }
+    
     /// Checks if the element with the provided label is present on screen
     ///
     /// :param: accessibilityLabel The label (or identifier) of the sought element

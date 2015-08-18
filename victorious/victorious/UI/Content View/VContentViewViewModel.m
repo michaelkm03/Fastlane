@@ -92,7 +92,9 @@
         
         _dependencyManager = dependencyManager;
         
-        _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithSequence:sequence voteTypes:[dependencyManager voteTypes]];
+        NSDictionary *configuration = @{ @"sequence" : sequence, @"voteTypes" : [dependencyManager voteTypes] };
+        VDependencyManager *childDependencyManager = [dependencyManager childDependencyManagerWithAddedConfiguration:configuration];
+        _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithDependencyManager:childDependencyManager];
         
         _currentNode = [sequence firstNode];
         
@@ -127,8 +129,6 @@
             _type = VContentViewTypeImage;
             _currentAsset = [self mediaAssetFromSequence:sequence];
         }
-        
-        _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithSequence:sequence voteTypes:[dependencyManager voteTypes]];
         
         _hasReposted = [sequence.hasReposted boolValue];
         

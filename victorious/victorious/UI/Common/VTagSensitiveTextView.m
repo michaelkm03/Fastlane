@@ -48,6 +48,13 @@
     return self;
 }
 
+- (void)zeroInsets
+{
+    self.textContainerInset = UIEdgeInsetsZero;
+    self.textContainer.lineFragmentPadding = 0.0f;
+    self.contentInset = UIEdgeInsetsZero;
+}
+
 - (void)setup
 {
     CCHLinkGestureRecognizer *linkGestureRecognizer = [[CCHLinkGestureRecognizer alloc] initWithTarget:self action:@selector(linkAction:)];

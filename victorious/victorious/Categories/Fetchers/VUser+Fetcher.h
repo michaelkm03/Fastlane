@@ -15,4 +15,11 @@
  */
 - (BOOL)shouldSkipTrimmer;
 
+/**
+ *  Returns YES when this user is following the hashtag identified by the hashtag string.
+ *
+ *  The hashtag's string value, without the leading #
+ */
+- (BOOL)isFollowingHashtagString:(NSString *)hashtag;
+
 @end
