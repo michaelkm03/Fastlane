@@ -366,6 +366,7 @@
 		66AF79541B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */; };
 		672E5F421B83A49B00D898DE /* Explore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 672E5F411B83A49B00D898DE /* Explore.storyboard */; };
 		672E5F441B83A4BF00D898DE /* VExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 672E5F431B83A4BF00D898DE /* VExploreViewController.swift */; };
+		672E5F461B83A99A00D898DE /* exploreScreenDevelopment.json in Resources */ = {isa = PBXBuildFile; fileRef = 672E5F451B83A99A00D898DE /* exploreScreenDevelopment.json */; };
 		67C69F591B67ECDF00C59230 /* VContentViewPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 67C69F581B67ECDF00C59230 /* VContentViewPresenter.m */; };
 		794246451B7D39B000F5F879 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794246441B7D39B000F5F879 /* Operation.swift */; };
 		7942464A1B7D3A5300F5F879 /* AutoShowLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794246471B7D3A5300F5F879 /* AutoShowLoginOperation.swift */; };
@@ -1963,6 +1964,7 @@
 		66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VVideoCameraViewController.storyboard; sourceTree = "<group>"; };
 		672E5F411B83A49B00D898DE /* Explore.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Explore.storyboard; path = Explore/Explore.storyboard; sourceTree = "<group>"; };
 		672E5F431B83A4BF00D898DE /* VExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VExploreViewController.swift; path = Explore/VExploreViewController.swift; sourceTree = "<group>"; };
+		672E5F451B83A99A00D898DE /* exploreScreenDevelopment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exploreScreenDevelopment.json; sourceTree = "<group>"; };
 		67C69F571B67ECDF00C59230 /* VContentViewPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContentViewPresenter.h; path = Presenters/VContentViewPresenter.h; sourceTree = "<group>"; };
 		67C69F581B67ECDF00C59230 /* VContentViewPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentViewPresenter.m; path = Presenters/VContentViewPresenter.m; sourceTree = "<group>"; };
 		693498EEB4388179C36EF74A /* libPods-VictoriousCommonOSX.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VictoriousCommonOSX.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -5204,6 +5206,7 @@
 		672E5F3C1B83A22200D898DE /* Explore */ = {
 			isa = PBXGroup;
 			children = (
+				672E5F451B83A99A00D898DE /* exploreScreenDevelopment.json */,
 				672E5F411B83A49B00D898DE /* Explore.storyboard */,
 				672E5F431B83A4BF00D898DE /* VExploreViewController.swift */,
 			);
@@ -8320,6 +8323,7 @@
 				A7D7079B1A7C144C00D9993F /* VEndCardActionCell.xib in Resources */,
 				0326C36019F8226200DBC341 /* Images.xcassets in Resources */,
 				037A643019F727AB0001C90B /* VCVideoPlayerToolbarView.xib in Resources */,
+				672E5F461B83A99A00D898DE /* exploreScreenDevelopment.json in Resources */,
 				036F38961A0C4DEA0014DF66 /* Ubuntu-Regular.ttf in Resources */,
 				A780ED5A1A933D9300A8CD5D /* filters.xml in Resources */,
 				A7AEF9B21A83F1C300A3D3A0 /* VFooterActivityIndicatorView.xib in Resources */,
