@@ -10,12 +10,16 @@ import Foundation
 
 extension UIViewController {
     
+    /// Instantiates a UIViewController within the appropriate bundle. Using a storyboard that is named exactly 
+    /// like the class name, with an identifier named exactly like the class name.
     static func fromStoryboardWithIdentifier<T: UIViewController>() -> T {
         let bundleForClass = NSBundle(forClass: self)
         let storyboard = UIStoryboard(name: NSStringFromClass(self).pathExtension, bundle: nil )
         return storyboard.instantiateViewControllerWithIdentifier( NSStringFromClass(self).pathExtension ) as! T
     }
     
+    /// Instantiates a UIViewController within the appropriate bundle. Using a storyboard that is named exactly
+    /// like the class name, with the initialViewController of the storyboard.
     static func fromStoryboardInitialViewController<T: UIViewController>() -> T {
         let bundleForClass = NSBundle(forClass: self)
         let storyboard = UIStoryboard(name: NSStringFromClass(self).pathExtension, bundle: nil )
