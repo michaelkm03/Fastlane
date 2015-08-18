@@ -20,7 +20,7 @@ extension VDependencyManager {
 
 class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayout, VScrollPaginatorDelegate, VTagSensitiveTextViewDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, UICollectionViewDataSource, CommentsDataSourceDelegate, VKeyboardInputAccessoryViewDelegate, VUserTaggingTextStorageDelegate {
 
-    // MARK: - Facotry Method
+    // MARK: - Factory Method
     
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> CommentsViewController {
         let vc: CommentsViewController = self.fromStoryboardInitialViewController()
