@@ -94,9 +94,14 @@ static NSString * const kConfirmationText = @"commentConfirmationText";
         }
         [self.sendButton setTitleColor:[_dependencyManager colorForKey:VDependencyManagerLinkColorKey]
                               forState:UIControlStateNormal];
-#warning FIXME!!
+#warning FIXME!! Waiting on https://github.com/TouchFrame/TouchFramePlatform/pull/2920 to be merged
         [self.sendButton setTitle:@"SEND"//[_dependencyManager stringForKey:kConfirmationText]
                          forState:UIControlStateNormal];
+        [self.sendButton setTitleColor:[_dependencyManager colorForKey:VDependencyManagerLinkColorKey]
+                              forState:UIControlStateNormal];
+        [self.sendButton setTitleColor:[UIColor lightGrayColor]
+                              forState:UIControlStateDisabled];
+        self.sendButton.titleLabel.font = [_dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
         self.placeholderText = [_dependencyManager stringForKey:kCommentPrompt];
     }
 }
@@ -158,16 +163,6 @@ static NSString * const kConfirmationText = @"commentConfirmationText";
         return nil;
     }
     return superResult;
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    
-    [self.sendButton setTitleColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]
-                          forState:UIControlStateNormal];
-    [self.sendButton setTitleColor:[UIColor lightGrayColor]
-                          forState:UIControlStateDisabled];
 }
 
 - (CGSize)intrinsicContentSize
