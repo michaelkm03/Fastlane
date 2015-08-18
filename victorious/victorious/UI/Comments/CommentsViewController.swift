@@ -119,9 +119,7 @@ class CommentsViewController: UIViewController, VKeyboardInputAccessoryViewDeleg
     }
     
     override var inputAccessoryView: UIView! {
-        get {
-            return keyboardBar
-        }
+        return keyboardBar
     }
 
     func updateInsetForKeyboardBarState() {
