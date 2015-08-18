@@ -376,6 +376,7 @@
 		796246671B82C28D00608B58 /* CommentsViewController+CommentCellActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 796246661B82C28D00608B58 /* CommentsViewController+CommentCellActions.swift */; };
 		796246691B82C2CB00608B58 /* CommentsViewController+DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 796246681B82C2CB00608B58 /* CommentsViewController+DataSource.swift */; };
 		7962466B1B82C37900608B58 /* CommentsViewController+KeyboardBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7962466A1B82C37900608B58 /* CommentsViewController+KeyboardBar.swift */; };
+		7962466D1B82CA2900608B58 /* NavigationBarHiddenTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7962466C1B82CA2900608B58 /* NavigationBarHiddenTabViewController.swift */; };
 		797006ED1B7AA32C0058B09A /* UIViewController+VRootNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 797006EC1B7AA32C0058B09A /* UIViewController+VRootNavigationController.m */; };
 		797006F01B7AA3980058B09A /* VTabScaffoldHidingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 797006EF1B7AA3980058B09A /* VTabScaffoldHidingHelper.m */; };
 		797226651B7E9EDC0023C851 /* CommentsDataSourceSwitcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797226641B7E9EDC0023C851 /* CommentsDataSourceSwitcher.swift */; };
@@ -1965,6 +1966,7 @@
 		796246661B82C28D00608B58 /* CommentsViewController+CommentCellActions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CommentsViewController+CommentCellActions.swift"; sourceTree = "<group>"; };
 		796246681B82C2CB00608B58 /* CommentsViewController+DataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CommentsViewController+DataSource.swift"; sourceTree = "<group>"; };
 		7962466A1B82C37900608B58 /* CommentsViewController+KeyboardBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CommentsViewController+KeyboardBar.swift"; sourceTree = "<group>"; };
+		7962466C1B82CA2900608B58 /* NavigationBarHiddenTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBarHiddenTabViewController.swift; sourceTree = "<group>"; };
 		797006EB1B7AA32C0058B09A /* UIViewController+VRootNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+VRootNavigationController.h"; sourceTree = "<group>"; };
 		797006EC1B7AA32C0058B09A /* UIViewController+VRootNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+VRootNavigationController.m"; sourceTree = "<group>"; };
 		797006EE1B7AA3980058B09A /* VTabScaffoldHidingHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTabScaffoldHidingHelper.h; sourceTree = "<group>"; };
@@ -4171,6 +4173,7 @@
 				C39864B41B22349200694AB3 /* Bar Buttons */,
 				0386F8841B38D32C00E8D459 /* Loading View */,
 				030931871A18425B004E9781 /* Menu */,
+				7962466C1B82CA2900608B58 /* NavigationBarHiddenTabViewController.swift */,
 				D8DF72241AFEC360002EA7A5 /* Tab Menu */,
 				797006EB1B7AA32C0058B09A /* UIViewController+VRootNavigationController.h */,
 				797006EC1B7AA32C0058B09A /* UIViewController+VRootNavigationController.m */,
@@ -9505,6 +9508,7 @@
 				A721E95A1B572454000B7901 /* UIStoryboard+VMainStoryboard.m in Sources */,
 				A7AEF9A21A83F1C300A3D3A0 /* VSequenceActionController.m in Sources */,
 				B07BFD611B26761D00784FC8 /* VHashtagHelper.m in Sources */,
+				7962466D1B82CA2900608B58 /* NavigationBarHiddenTabViewController.swift in Sources */,
 				03CE66F619B47B590011BB9E /* VFacebookManager.m in Sources */,
 				A7D3785E1AF2D830007FF197 /* VStoredLogin.m in Sources */,
 				A761C9D71A48CB9800F0D0F9 /* VSwipeView.m in Sources */,

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class VNavigationController;
+
 @interface UIViewController (VRootNavigationController)
 
 /**
@@ -15,6 +17,6 @@
  we cannot find the rootNavigationController in the viewController hierarchy.
  NOTE: the navigation bar for this NavigationController is hidden.
  */
-- (UINavigationController *)rootNavigationController;
+- (VNavigationController *)rootNavigationController;
 
 @end

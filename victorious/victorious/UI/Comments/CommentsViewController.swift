@@ -47,7 +47,6 @@ class CommentsViewController: UIViewController, VKeyboardInputAccessoryViewDeleg
     var publishParameters: VPublishParameters?
     var mediaAttachmentPresenter: VMediaAttachmentPresenter?
     var focusHelper : VCollectionViewStreamFocusHelper?
-    var shouldHideNavBar = true
     var modalTransitioningDelegate = VTransitionDelegate(transition: VSimpleModalTransition())
     
     // MARK: Outlets
@@ -70,7 +69,6 @@ class CommentsViewController: UIViewController, VKeyboardInputAccessoryViewDeleg
         super.viewWillAppear(animated)
 
         becomeFirstResponder()
-        rootNavigationController().setNavigationBarHidden(false, animated: true)
         if let sequence = sequence, instreamPreviewURL = sequence.inStreamPreviewImageURL() {
             imageView.applyTintAndBlurToImageWithURL(instreamPreviewURL, withTintColor: nil)
         }
@@ -86,23 +84,22 @@ class CommentsViewController: UIViewController, VKeyboardInputAccessoryViewDeleg
         keyboardBar?.becomeFirstResponder()
         focusHelper?.updateFocus()
         updateInsetForKeyboardBarState()
-        shouldHideNavBar = true
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
         self.resignFirstResponder()
-        
-        if shouldHideNavBar {
-            self.rootNavigationController().setNavigationBarHidden(true, animated: true)
-        }
     }
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         
         focusHelper?.endFocusOnAllCells()
+    }
+    
+    override func v_prefersNavigationBarHidden() -> Bool {
+        return false
     }
     
     // MARK:  Keyboard Bar

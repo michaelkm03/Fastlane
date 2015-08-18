@@ -39,8 +39,7 @@ extension CommentsViewController: UICollectionViewDataSource, CommentsDataSource
         cell.onUserProfileTapped = { [weak self] in
             if let strongSelf = self {
                 var profileViewController = strongSelf.dependencyManager.userProfileViewControllerWithUser(commentForIndexPath.user)
-                strongSelf.shouldHideNavBar = false
-                strongSelf.rootNavigationController()?.pushViewController(profileViewController, animated: true)
+                strongSelf.rootNavigationController()?.innerNavigationController.pushViewController(profileViewController, animated: true)
             }
         }
         return cell as UICollectionViewCell

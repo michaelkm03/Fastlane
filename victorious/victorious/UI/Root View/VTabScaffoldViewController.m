@@ -50,7 +50,7 @@ NSString * const kFirstTimeContentKey = @"firstTimeContent";
 
 @interface VTabScaffoldViewController () <UITabBarControllerDelegate, VRootViewControllerContainedViewController, VDeeplinkSupporter>
 
-@property (nonatomic, strong) UINavigationController *rootNavigationController;
+@property (nonatomic, strong) VNavigationController *rootNavigationController;
 @property (nonatomic, strong) UITabBarController *internalTabBarController;
 @property (nonatomic, strong) VNavigationDestinationContainerViewController *willSelectContainerViewController;
 
@@ -69,9 +69,10 @@ NSString * const kFirstTimeContentKey = @"firstTimeContent";
     self = [super initWithNibName:nil bundle:nil];
     if ( self != nil )
     {
-        _internalTabBarController = [[UITabBarController alloc] init];
+        _internalTabBarController = [[NavigationBarHiddenTabViewController alloc] init];
         _internalTabBarController.delegate = self;
-        _rootNavigationController = [[UINavigationController alloc] initWithRootViewController:_internalTabBarController];
+        _rootNavigationController = [[VNavigationController alloc] init];
+        _rootNavigationController.innerNavigationController.viewControllers = @[_internalTabBarController];
         _dependencyManager = dependencyManager;
         _coachmarkManager = [[VCoachmarkManager alloc] initWithDependencyManager:_dependencyManager];
         _tabShim = [dependencyManager templateValueOfType:[VTabMenuShim class] forKey:kMenuKey];
@@ -94,8 +95,8 @@ NSString * const kFirstTimeContentKey = @"firstTimeContent";
     self.rootNavigationController.view.frame = self.view.bounds;
     self.rootNavigationController.view.translatesAutoresizingMaskIntoConstraints = NO;
     self.rootNavigationController.navigationBarHidden = YES;
-    self.rootNavigationController.navigationBar.translucent = NO;
-    [self.dependencyManager applyStyleToNavigationBar:self.rootNavigationController.navigationBar];
+    self.rootNavigationController.innerNavigationController.navigationBar.translucent = NO;
+    [self.dependencyManager applyStyleToNavigationBar:self.rootNavigationController.innerNavigationController.navigationBar];
     [self.view addSubview:self.rootNavigationController.view];
     [self.view v_addFitToParentConstraintsToSubview:self.rootNavigationController.view];
     [self.rootNavigationController didMoveToParentViewController:self];

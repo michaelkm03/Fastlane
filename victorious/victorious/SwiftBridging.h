@@ -113,6 +113,7 @@
 #import "VSimpleModalTransition.h"
 #import "VTransitionDelegate.h"
 #import "VCollectionViewCommentHighlighter.h"
+#import "VNavigationController.h"
 
 //Shelves
 #import "VStreamCellFactory.h"

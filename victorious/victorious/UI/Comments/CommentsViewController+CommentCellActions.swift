@@ -32,13 +32,11 @@ extension CommentsViewController: VTagSensitiveTextViewDelegate, VSwipeViewContr
     func tagSensitiveTextView(tagSensitiveTextView: VTagSensitiveTextView, tappedTag tag: VTag) {
         if let tag = tag as? VUserTag {
             var profileViewController = dependencyManager.userProfileViewControllerWithRemoteId(tag.remoteId)
-            self.shouldHideNavBar = false
             self.navigationController?.pushViewController(profileViewController, animated: true)
         }
         else {
             var justHashTagText = (tag.displayString.string as NSString).substringFromIndex(1)
             var hashtagViewController = dependencyManager.hashtagStreamWithHashtag(justHashTagText)
-            self.shouldHideNavBar = false
             self.navigationController?.pushViewController(hashtagViewController, animated: true)
         }
     }
