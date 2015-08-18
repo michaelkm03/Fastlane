@@ -192,6 +192,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
         if (self.loadDate == nil)
         {
             self.loadDate = [NSDate date];
+            NSLog(@"%@", self.loadDate);
         }
     }
     [self.videoView playWithoutSeekingToBeginning];

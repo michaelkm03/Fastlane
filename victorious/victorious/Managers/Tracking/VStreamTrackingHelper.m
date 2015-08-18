@@ -176,7 +176,7 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     NSInteger outputVolume = (NSInteger)[[AVAudioSession sharedInstance] outputVolume] * 100;
     NSString *volumeString = [NSString stringWithFormat:@"%li", (long)outputVolume];
     
-    NSDictionary *parameters = @{VTrackingKeyAutoplay : @YES,
+    NSDictionary *parameters = @{VTrackingKeyAutoplay : @"true",
                                  VTrackingKeyConnectivity : connectivityString,
                                  VTrackingKeyVolumeLevel : volumeString,
                                  VTrackingKeyLoadTime : event.loadTime ?: @(0),
