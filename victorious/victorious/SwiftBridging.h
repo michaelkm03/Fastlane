@@ -87,7 +87,6 @@
 #import "VFollowResponder.h"
 #import "VHashtagResponder.h"
 #import "VHashTagTextView.h"
-#import <CCHLinkTextView/CCHLinkTextViewDelegate.h>
 #import "VDirectoryCollectionViewController.h"
 #import "VStreamCollectionViewController.h"
 #import "VHashtagSelectionResponder.h"
