@@ -34,6 +34,7 @@
 #import "VHashtagResponder.h"
 #import "VFollowResponder.h"
 #import "VURLSelectionResponder.h"
+#import "victorious-Swift.h"
 
 NSString * const VApplicationDidBecomeActiveNotification = @"VApplicationDidBecomeActiveNotification";
 
@@ -388,6 +389,15 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     else if ( [deepLink.host isEqualToString:VInboxViewControllerDeeplinkHostComponent] )
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:VInboxViewControllerInboxPushReceivedNotification object:self];
+    }
+}
+
+- (void)handleLocalNotification:(UILocalNotification *)localNotification
+{
+    NSString *deeplinkUrlString = localNotification.userInfo[ [LocalNotificationScheduler deplinkURLKey] ];
+    if ( deeplinkUrlString != nil && deeplinkUrlString.length > 0 )
+    {
+        [[VRootViewController rootViewController] openURL:[NSURL URLWithString:deeplinkUrlString]];
     }
 }
 
