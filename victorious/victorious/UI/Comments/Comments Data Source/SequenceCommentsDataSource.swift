@@ -45,36 +45,28 @@ class SequenceCommentsDataSource : CommentsDataSource {
     }
     
     var numberOfComments: Int {
-        if let comments = sequence.comments {
-            return comments.count
-        }
-        return 0
+        return sequence.comments?.count ?? 0
     }
     
     func commentAtIndex(index: Int) -> VComment {
-        if let comments = sequence.comments {
-            return comments.objectAtIndex(index) as! VComment
-        }
-        return VComment()
+        return sequence.comments?.objectAtIndex(index) as? VComment ?? VComment()
     }
     
     func indexOfComment(comment: VComment) -> Int {
-        if let comments = sequence.comments {
-            return comments.indexOfObject(comment)
-        }
-        return 0
+        return sequence.comments?.indexOfObject(comment) ?? 0
     }
     
     var delegate : CommentsDataSourceDelegate? {
         didSet {
-            if let delegate = delegate {
+            if delegate != nil {
                 loadFirstPage()
             }
         }
     }
     
     func loadComments(commentID: NSNumber) {
-        VObjectManager.sharedManager().findCommentPageOnSequence(sequence, withCommentId: commentID, successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) -> Void in
+        VObjectManager.sharedManager().findCommentPageOnSequence(sequence, withCommentId: commentID,
+            successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) -> Void in
             self.delegate?.commentsDataSourceDidUpdate(self, deepLinkinkId: commentID)
         },
             failBlock: nil)
