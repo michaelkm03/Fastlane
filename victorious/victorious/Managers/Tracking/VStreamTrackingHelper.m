@@ -114,10 +114,10 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     VStream *stream = context.stream;
     
     NSString *trackingID = context.fromShelf ? stream.shelfId : stream.trackingIdentifier;
-    NSMutableDictionary *params = [@{ VTrackingKeySequenceId : sequence.remoteId,
+    NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
                                        VTrackingKeyTimeStamp : [NSDate date],
                                             VTrackingKeyUrls : sequence.tracking.cellClick,
-                                        VTrackingKeyStreamId : trackingID ?: @""} mutableCopy];
+                                        VTrackingKeyStreamId : trackingID ?: @""};
     
     // Track an autoplay click if necessary
     if (!sequence.isGifStyle.boolValue)
@@ -187,7 +187,6 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     NSDictionary *parameters = @{VTrackingKeyAutoplay : @"true",
                                  VTrackingKeyConnectivity : connectivityString,
                                  VTrackingKeyVolumeLevel : volumeString,
-                                 VTrackingKeyLoadTime : event.loadTime ?: @(0),
                                  VTrackingKeyUrls : event.urls,
                                  VTrackingKeyStreamId : trackingID ?: @""};
     

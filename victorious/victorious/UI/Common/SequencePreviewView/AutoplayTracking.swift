@@ -22,5 +22,5 @@ class AutoplayTrackingEvent : NSObject {
 
 @objc protocol AutoplayTracking {
     optional func trackAutoplayEvent(event: AutoplayTrackingEvent)
-    optional func trackingContext() -> StreamCellContext
+    optional func additionalInfo() -> [String : String]
 }

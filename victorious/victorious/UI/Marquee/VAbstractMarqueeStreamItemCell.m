@@ -132,9 +132,16 @@
 
 #pragma mark - Autoplay tracking
 
-- (StreamCellContext *__nonnull)trackingContext
+- (void)trackAutoplayEvent:(AutoplayTrackingEvent *__nonnull)event
 {
-    return self.context;
+    // Set context and continue walking up responder chain
+    event.context = self.context;
+    
+    id<AutoplayTracking>responder = [self.nextResponder v_targetConformingToProtocol:@protocol(AutoplayTracking)];
+    if (responder != nil)
+    {
+        [responder trackAutoplayEvent:event];
+    }
 }
 
 @end
