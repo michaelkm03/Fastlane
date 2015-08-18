@@ -892,10 +892,10 @@
 		C39864BD1B266A7700694AB3 /* VDependencyManager+VHighlightContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = C39864BC1B266A7600694AB3 /* VDependencyManager+VHighlightContainer.m */; };
 		C39B220B1B0A58EF00D3DFE7 /* VPermissionMicrophone.m in Sources */ = {isa = PBXBuildFile; fileRef = C39B220A1B0A58EF00D3DFE7 /* VPermissionMicrophone.m */; };
 		C39B220E1B0A693600D3DFE7 /* VPermissionProfilePicture.m in Sources */ = {isa = PBXBuildFile; fileRef = C39B220D1B0A693600D3DFE7 /* VPermissionProfilePicture.m */; };
-		C3C734461B5EA8BD00D6795D /* VMediaAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C734451B5EA8BD00D6795D /* VMediaAttachment.m */; };
 		C3BC59501B756C87000A4576 /* VGIFVideoSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3BC594F1B756C87000A4576 /* VGIFVideoSequencePreviewView.m */; };
 		C3BC59531B756E4C000A4576 /* VVideoSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3BC59521B756E4C000A4576 /* VVideoSequencePreviewView.m */; };
 		C3C1484C1B72F53B007F81B0 /* SoundBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C1484B1B72F53B007F81B0 /* SoundBarView.swift */; };
+		C3C734461B5EA8BD00D6795D /* VMediaAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C734451B5EA8BD00D6795D /* VMediaAttachment.m */; };
 		C3C7344C1B5EC0F500D6795D /* VCommentMedia+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C7344B1B5EC0F500D6795D /* VCommentMedia+RestKit.m */; };
 		C3C734501B5F118F00D6795D /* ExperienceEnhancerIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C7344F1B5F118F00D6795D /* ExperienceEnhancerIconView.swift */; };
 		C3C734571B606BD500D6795D /* RadialAnimatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C734561B606BD500D6795D /* RadialAnimatingView.swift */; };
@@ -1167,7 +1167,6 @@
 		F06B41B51B7D99F4008709E8 /* VStreamCollectionViewController+TrendingShelfResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = F06B41B41B7D99F4008709E8 /* VStreamCollectionViewController+TrendingShelfResponder.m */; };
 		F06B41B71B7E6C95008709E8 /* VFollowResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = F06B41B61B7E6C95008709E8 /* VFollowResponder.m */; };
 		F06B41B91B7EC6F3008709E8 /* VTrendingShelfCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06B41B81B7EC6F3008709E8 /* VTrendingShelfCellFactory.swift */; };
-		F06B41BB1B7ECC3C008709E8 /* devShelfTemplate.json in Resources */ = {isa = PBXBuildFile; fileRef = F06B41BA1B7ECC3C008709E8 /* devShelfTemplate.json */; };
 		F06B41BD1B7ED7FD008709E8 /* UIResponder+typedResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06B41BC1B7ED7FD008709E8 /* UIResponder+typedResponder.swift */; };
 		F06B41CF1B7FE817008709E8 /* VTrendingShelfContentSeeAllCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06B41CE1B7FE817008709E8 /* VTrendingShelfContentSeeAllCell.swift */; };
 		F06F10C01AC1E11C0062E1D1 /* VCollectionsDirectoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F06F10BF1AC1E11C0062E1D1 /* VCollectionsDirectoryCell.m */; };
@@ -3430,7 +3429,6 @@
 		F06B41B41B7D99F4008709E8 /* VStreamCollectionViewController+TrendingShelfResponder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VStreamCollectionViewController+TrendingShelfResponder.m"; sourceTree = "<group>"; };
 		F06B41B61B7E6C95008709E8 /* VFollowResponder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowResponder.m; sourceTree = "<group>"; };
 		F06B41B81B7EC6F3008709E8 /* VTrendingShelfCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTrendingShelfCellFactory.swift; sourceTree = "<group>"; };
-		F06B41BA1B7ECC3C008709E8 /* devShelfTemplate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = devShelfTemplate.json; sourceTree = "<group>"; };
 		F06B41BC1B7ED7FD008709E8 /* UIResponder+typedResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIResponder+typedResponder.swift"; sourceTree = "<group>"; };
 		F06B41CE1B7FE817008709E8 /* VTrendingShelfContentSeeAllCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTrendingShelfContentSeeAllCell.swift; sourceTree = "<group>"; };
 		F06F10BE1AC1E11C0062E1D1 /* VCollectionsDirectoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCollectionsDirectoryCell.h; sourceTree = "<group>"; };
@@ -4769,7 +4767,6 @@
 			children = (
 				0314D3E719B46B5E00FA363C /* VLoadingViewController.h */,
 				0314D3E819B46B5E00FA363C /* VLoadingViewController.m */,
-				F06B41BA1B7ECC3C008709E8 /* devShelfTemplate.json */,
 				0307F83F1B4F3BA400342C13 /* VLoginOperation.h */,
 				0307F8401B4F3BA400342C13 /* VLoginOperation.m */,
 			);
@@ -8341,7 +8338,6 @@
 				036F38631A0C4DEA0014DF66 /* Arimo-Bold.ttf in Resources */,
 				D88CEAE91A92EEED00F5A837 /* VSnapshotViewController.xib in Resources */,
 				A7E3985F1A34F6E1000E4CAC /* creator-avatar.png in Resources */,
-				F06B41BB1B7ECC3C008709E8 /* devShelfTemplate.json in Resources */,
 				036F38751A0C4DEA0014DF66 /* Kreon-Bold.ttf in Resources */,
 				036F38671A0C4DEA0014DF66 /* Bitter-Bold.ttf in Resources */,
 				D8D8958B19E88D5500632663 /* VExperienceEnhancerBarCell.xib in Resources */,
