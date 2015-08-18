@@ -218,7 +218,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     func commentRemoved(comment: VComment, atIndex index: Int) {
         collectionView.performBatchUpdates({ () -> Void in
             self.collectionView.deleteItemsAtIndexPaths([NSIndexPath(forItem: index, inSection: 0)])
-            }, completion: nil)
+        }, completion: nil)
     }
     
     func editComment(comment: VComment) {
@@ -242,21 +242,19 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     func didFinishEditingComment(comment: VComment) {
         dismissViewControllerAnimated(true, completion: {
             for cell in self.collectionView.visibleCells() {
-                if let commentCell = cell as? VContentCommentsCell {
-                    if commentCell.comment.remoteId == comment.remoteId {
-                        // Set updated comment on cell
-                        commentCell.comment = comment
-                        
-                        // Try to reload the cell without reloading the whole section
-                        var indexPathToInvalidate = self.collectionView.indexPathForCell(commentCell)
-                        if let indexPathToInvalidate = indexPathToInvalidate {
-                            self.collectionView.performBatchUpdates({ () -> Void in
-                                self.collectionView.reloadItemsAtIndexPaths([indexPathToInvalidate])
-                                }, completion: nil)
-                        }
-                        else {
-                            self.collectionView.reloadSections(NSIndexSet(index: 0))
-                        }
+                if let commentCell = cell as? VContentCommentsCell where commentCell.comment.remoteId == comment.remoteId {
+                    // Set updated comment on cell
+                    commentCell.comment = comment
+                    
+                    // Try to reload the cell without reloading the whole section
+                    var indexPathToInvalidate = self.collectionView.indexPathForCell(commentCell)
+                    if let indexPathToInvalidate = indexPathToInvalidate {
+                        self.collectionView.performBatchUpdates({ () -> Void in
+                            self.collectionView.reloadItemsAtIndexPaths([indexPathToInvalidate])
+                            }, completion: nil)
+                    }
+                    else {
+                        self.collectionView.reloadSections(NSIndexSet(index: 0))
                     }
                 }
             }
@@ -282,30 +280,32 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             registeredCommentReuseIdentifiers.insert(reuseIdentifierForComment)
         }
         
-        var cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifierForComment, forIndexPath: indexPath) as! VContentCommentsCell
-        cell.dependencyManager = dependencyManager
-        cell.comment = commentForIndexPath
-        cell.commentAndMediaView.textView.tagTapDelegate = self
-        cell.swipeViewController.controllerDelegate = self
-        cell.commentsUtilitiesDelegate = self
-        cell.onUserProfileTapped = { [weak self] in
-            if let strongSelf = self {
-                var profileViewController = strongSelf.dependencyManager.userProfileViewControllerWithUser(commentForIndexPath.user)
-                strongSelf.rootNavigationController()?.innerNavigationController.pushViewController(profileViewController, animated: true)
+        if var cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifierForComment, forIndexPath: indexPath) as? VContentCommentsCell {
+            cell.dependencyManager = dependencyManager
+            cell.comment = commentForIndexPath
+            cell.commentAndMediaView.textView.tagTapDelegate = self
+            cell.swipeViewController.controllerDelegate = self
+            cell.commentsUtilitiesDelegate = self
+            cell.onUserProfileTapped = { [weak self] in
+                if let strongSelf = self {
+                    var profileViewController = strongSelf.dependencyManager.userProfileViewControllerWithUser(commentForIndexPath.user)
+                    strongSelf.rootNavigationController()?.innerNavigationController.pushViewController(profileViewController, animated: true)
+                }
             }
+            return cell
         }
-        return cell as UICollectionViewCell
+        
+        fatalError("We must have registered a cell for this comment!")
     }
     
     // MARK: - CommentsDataSourceDelegate
     
     func commentsDataSourceDidUpdate(dataSource: CommentsDataSource) {
         collectionView.reloadData()
-        dispatch_after(0.1, {
+        dispatch_after(0.1) {
             self.focusHelper?.updateFocus()
             self.updateInsetForKeyboardBarState()
-        })
-        
+        }
     }
     
     func commentsDataSourceDidUpdate(dataSource: CommentsDataSource, deepLinkinkId: NSNumber) {
@@ -314,7 +314,6 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         updateInsetForKeyboardBarState()
     }
 
-    
     // MARK: - VKeyboardInputAccessoryViewDelegate
     
     func pressedSendOnKeyboardInputAccessoryView(inputAccessoryView: VKeyboardInputAccessoryView) {
@@ -322,10 +321,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             authorizedAction.performFromViewController(self,
                 context: .AddComment,
                 completion: { [weak self](authorized: Bool) -> Void in
-                    if !authorized {
-                        return
-                    }
-                    if let strongSelf = self, let sequence = strongSelf.sequence {
+                    if authorized, let strongSelf = self, let sequence = strongSelf.sequence {
                         VObjectManager.sharedManager().addCommentWithText(inputAccessoryView.composedText,
                             publishParameters: strongSelf.publishParameters,
                             toSequence: sequence,
@@ -346,10 +342,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         inputAccessoryView.stopEditing()
         
         self.authorizedAction.performFromViewController(self, context: .AddComment) { [weak self](authorized: Bool) -> Void in
-            if !authorized {
-                return
-            }
-            if let strongSelf = self {
+            if authorized, let strongSelf = self {
                 strongSelf.addMediaToCommentWithAttachmentType(attachmentType)
             }
         }
@@ -360,20 +353,20 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         let shouldResumeEditing = inputAccessoryView.isEditing()
         inputAccessoryView.stopEditing()
         
-        let alertController = VCommentAlertHelper.alertForConfirmDiscardMediaWithDelete({ () -> Void in
-            self.publishParameters?.mediaToUploadURL = nil
-            inputAccessoryView.setSelectedThumbnail(nil)
-            if shouldResumeEditing {
-                inputAccessoryView.startEditing()
-            }
-            }, cancel: { () -> Void in
+        let alertController = VCommentAlertHelper.alertForConfirmDiscardMediaWithDelete({
+                self.publishParameters?.mediaToUploadURL = nil
+                inputAccessoryView.setSelectedThumbnail(nil)
                 if shouldResumeEditing {
                     inputAccessoryView.startEditing()
                 }
+            },
+            cancel: {
+                if shouldResumeEditing {
+                    inputAccessoryView.startEditing()
+            }
         })
         
         self.presentViewController(alertController, animated: true, completion: nil)
-        
     }
     
     func keyboardInputAccessoryViewDidBeginEditing(inpoutAccessoryView: VKeyboardInputAccessoryView) {
@@ -388,15 +381,17 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         
         mediaAttachmentPresenter = VMediaAttachmentPresenter(dependencymanager: dependencyManager)
         
-        var mediaAttachmentOptions : VMediaAttachmentOptions
-        switch attachmentType {
-        case .Video:
-            mediaAttachmentOptions = VMediaAttachmentOptions.Video
-        case .GIF:
-            mediaAttachmentOptions = VMediaAttachmentOptions.GIF
-        case .Image:
-            mediaAttachmentOptions = VMediaAttachmentOptions.Image
-        }
+        var mediaAttachmentOptions : VMediaAttachmentOptions = {
+            switch attachmentType {
+            case .Video:
+                return VMediaAttachmentOptions.Video
+            case .GIF:
+                return VMediaAttachmentOptions.GIF
+            case .Image:
+                return VMediaAttachmentOptions.Image
+            }
+        }()
+        
         
         mediaAttachmentPresenter?.attachmentTypes = mediaAttachmentOptions
         mediaAttachmentPresenter?.resultHandler = { [weak self](success: Bool, publishParameters: VPublishParameters?) -> Void in
@@ -410,7 +405,6 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         }
         mediaAttachmentPresenter?.presentOnViewController(self)
     }
-    
     
     // MARK: - VUserTaggingTextStorageDelegate
     

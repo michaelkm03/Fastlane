@@ -30,6 +30,7 @@ static const CGFloat kAttachmentBarHeight = 50.0f;
 
 static NSString * const kCommentPrompt = @"commentPrompt";
 static NSString * const kConfirmationText = @"commentConfirmationText";
+static NSString * const kCommentBarKey = @"commentBar";
 
 @interface VKeyboardInputAccessoryView () <UITextViewDelegate>
 
@@ -68,7 +69,7 @@ static NSString * const kConfirmationText = @"commentConfirmationText";
 
 + (VKeyboardInputAccessoryView *)defaultInputAccessoryViewWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    NSDictionary *commentBarConfiguration = [dependencyManager templateValueOfType:[NSDictionary class] forKey:@"commentBar"];
+    NSDictionary *commentBarConfiguration = [dependencyManager templateValueOfType:[NSDictionary class] forKey:kCommentBarKey];
     VDependencyManager *commentBarDependencyManager = [[VDependencyManager alloc] initWithParentManager:dependencyManager
                                                                                           configuration:commentBarConfiguration
                                                                       dictionaryOfClassesByTemplateName:nil];
