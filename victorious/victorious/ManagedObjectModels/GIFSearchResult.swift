@@ -19,4 +19,5 @@ import CoreData
     @NSManaged var height: NSNumber
     @NSManaged var thumbnailUrl: String
     @NSManaged var thumbnailStillUrl: String
+    @NSManaged var remoteId: String?
 }
