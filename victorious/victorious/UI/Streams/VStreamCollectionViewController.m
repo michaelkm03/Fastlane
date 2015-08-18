@@ -163,8 +163,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForStream:stream];
     streamCollectionVC.dependencyManager = dependencyManager;
-    streamCollectionVC.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:stream];
-    streamCollectionVC.streamDataSource.delegate = streamCollectionVC;
     
     NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:kStreamATFThresholdKey];
     if ( cellVisibilityRatio != nil )
@@ -384,6 +382,15 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     NSString *streamName = currentStream.name;
     self.title = NSLocalizedString(streamName, @"");
     self.navigationItem.title = NSLocalizedString(streamName, @"");
+    if ( self.streamDataSource == nil )
+    {
+        self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:currentStream];
+        self.streamDataSource.delegate = self;
+    }
+    else
+    {
+        self.streamDataSource.stream = currentStream;
+    }
     [super setCurrentStream:currentStream];
 }
 
@@ -501,6 +508,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         VStreamCollectionViewController *streamCollection = [self.dependencyManager templateValueOfType:[VStreamCollectionViewController class]
                                                                                                  forKey:kStreamCollectionKey
                                                                                   withAddedDependencies:@{ kSequenceIDKey: stream.remoteId, VDependencyManagerTitleKey: stream.name }];
+        streamCollection.currentStream = stream;
         streamCollection.targetStreamItem = streamItem;
         [self.navigationController pushViewController:streamCollection animated:YES];
     }
