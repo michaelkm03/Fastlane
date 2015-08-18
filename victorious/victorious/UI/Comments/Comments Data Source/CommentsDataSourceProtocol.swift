@@ -44,6 +44,6 @@ protocol CommentsDataSourceDelegate {
     
     /// Informs the delegate that the data source updated the content of the comments in relation 
     /// to a loadCommentsWithDeepLinkCommentID request.
-    func commentsDataSourceDidUpdate(dataSource: CommentsDataSource, deepLinkinkId: NSNumber)
+    func commentsDataSourceDidUpdate(dataSource: CommentsDataSource, deepLinkId: NSNumber)
     
 }

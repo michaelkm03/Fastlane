@@ -21,7 +21,9 @@ class SequenceCommentsDataSource : CommentsDataSource {
         VObjectManager.sharedManager().loadCommentsOnSequence(sequence,
             pageType: VPageType.First,
             successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
-                delegate?.commentsDataSourceDidUpdate(self)
+                dispatch_async(dispatch_get_main_queue(), { () in
+                    delegate?.commentsDataSourceDidUpdate(self)
+                })
             },
             failBlock: nil)
     }
@@ -30,7 +32,9 @@ class SequenceCommentsDataSource : CommentsDataSource {
         VObjectManager.sharedManager().loadCommentsOnSequence(sequence,
             pageType: VPageType.Next,
             successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
-                delegate?.commentsDataSourceDidUpdate(self)
+                dispatch_async(dispatch_get_main_queue(), { () in
+                    delegate?.commentsDataSourceDidUpdate(self)
+                })
             },
             failBlock: nil)
     }
@@ -39,7 +43,9 @@ class SequenceCommentsDataSource : CommentsDataSource {
         VObjectManager.sharedManager().loadCommentsOnSequence(sequence,
             pageType: VPageType.Previous,
             successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
-                delegate?.commentsDataSourceDidUpdate(self)
+                dispatch_async(dispatch_get_main_queue(), { () in
+                    delegate?.commentsDataSourceDidUpdate(self)
+                })
             },
             failBlock: nil)
     }
@@ -49,7 +55,8 @@ class SequenceCommentsDataSource : CommentsDataSource {
     }
     
     func commentAtIndex(index: Int) -> VComment {
-        return sequence.comments?.objectAtIndex(index) as? VComment ?? VComment()
+        var comment = sequence.comments?.objectAtIndex(index) as? VComment ?? VComment()
+        return comment
     }
     
     func indexOfComment(comment: VComment) -> Int {
@@ -67,7 +74,9 @@ class SequenceCommentsDataSource : CommentsDataSource {
     func loadComments(commentID: NSNumber) {
         VObjectManager.sharedManager().findCommentPageOnSequence(sequence, withCommentId: commentID,
             successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
-            self.delegate?.commentsDataSourceDidUpdate(self, deepLinkinkId: commentID)
+            dispatch_async(dispatch_get_main_queue(), { () in
+                delegate?.commentsDataSourceDidUpdate(self, deepLinkId: commentID)
+            })
         },
             failBlock: nil)
     }

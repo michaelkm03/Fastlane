@@ -82,11 +82,10 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
-        becomeFirstResponder()
         if let sequence = sequence, instreamPreviewURL = sequence.inStreamPreviewImageURL() {
             imageView.applyTintAndBlurToImageWithURL(instreamPreviewURL, withTintColor: nil)
         }
-
+        becomeFirstResponder()
         collectionView.accessoryView = keyboardBar
     }
     
@@ -94,8 +93,6 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         super.viewDidAppear(animated)
         
         // Do this here so that the keyboard bar animates in with pushes
-        collectionView.becomeFirstResponder()
-        keyboardBar?.becomeFirstResponder()
         focusHelper?.updateFocus()
         updateInsetForKeyboardBarState()
     }
@@ -332,14 +329,34 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     // MARK: - CommentsDataSourceDelegate
     
     func commentsDataSourceDidUpdate(dataSource: CommentsDataSource) {
-        collectionView.reloadData()
+        
+        if collectionView.numberOfItemsInSection(0) == 0 {
+            // First load 
+            collectionView.performBatchUpdates({ () in
+                    var indexPaths = [NSIndexPath]()
+                    for index in 0..<dataSource.numberOfComments {
+                        indexPaths.append(NSIndexPath(forItem: index, inSection: 0))
+                    }
+                    self.collectionView.insertItemsAtIndexPaths(indexPaths)
+                }, completion: { (finished: Bool) in
+                    self.collectionView.flashScrollIndicators()
+                    self.focusHelper?.updateFocus()
+                })
+        }
+        else if (collectionView.numberOfItemsInSection(0) != dataSource.numberOfComments) {
+            // We only need to update if things have changed
+            collectionView.reloadData()
+            dispatch_after(0.1, { () -> () in
+                self.collectionView.flashScrollIndicators()
+            })
+        }
         dispatch_after(0.1) {
             self.focusHelper?.updateFocus()
             self.updateInsetForKeyboardBarState()
         }
     }
     
-    func commentsDataSourceDidUpdate(dataSource: CommentsDataSource, deepLinkinkId: NSNumber) {
+    func commentsDataSourceDidUpdate(dataSource: CommentsDataSource, deepLinkId: NSNumber) {
         collectionView.reloadData()
         focusHelper?.updateFocus()
         updateInsetForKeyboardBarState()
@@ -348,26 +365,29 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     // MARK: - VKeyboardInputAccessoryViewDelegate
     
     func pressedSendOnKeyboardInputAccessoryView(inputAccessoryView: VKeyboardInputAccessoryView) {
-        if let authorizedAction = authorizedAction {
-            authorizedAction.performFromViewController(self,
-                context: .AddComment,
-                completion: { [weak self](authorized: Bool) in
-                    if authorized, let strongSelf = self, let sequence = strongSelf.sequence {
-                        VObjectManager.sharedManager().addCommentWithText(inputAccessoryView.composedText,
-                            publishParameters: strongSelf.publishParameters,
-                            toSequence: sequence,
-                            andParent: nil,
-                            successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
-                                strongSelf.collectionView.reloadData()
-                                strongSelf.collectionView.collectionViewLayout.invalidateLayout()
-                                strongSelf.updateInsetForKeyboardBarState()
-                            }, failBlock: nil)
-                        
-                        strongSelf.keyboardBar?.clearTextAndResign()
-                        strongSelf.publishParameters?.mediaToUploadURL = nil
-                    }
-                })
-        }
+        authorizedAction?.performFromViewController(self,
+            context: .AddComment,
+            completion: { [weak self](authorized: Bool) in
+                if authorized, let strongSelf = self, let sequence = strongSelf.sequence {
+                    VObjectManager.sharedManager().addCommentWithText(inputAccessoryView.composedText,
+                        publishParameters: strongSelf.publishParameters,
+                        toSequence: sequence,
+                        andParent: nil,
+                        successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
+                            dispatch_async(dispatch_get_main_queue(), { () in
+                                strongSelf.collectionView.performBatchUpdates({ () in
+                                        strongSelf.collectionView.insertItemsAtIndexPaths([NSIndexPath(forItem: 0, inSection: 0)])
+                                    }, completion: { (finished: Bool) -> Void in
+                                        strongSelf.updateInsetForKeyboardBarState()
+                                        strongSelf.focusHelper?.updateFocus()
+                                })
+                            })
+                        }, failBlock: nil)
+                    
+                    strongSelf.keyboardBar?.clearTextAndResign()
+                    strongSelf.publishParameters?.mediaToUploadURL = nil
+                }
+        })
     }
     
     func keyboardInputAccessoryView(inputAccessoryView: VKeyboardInputAccessoryView, selectedAttachmentType attachmentType: VKeyboardBarAttachmentType) {
@@ -455,7 +475,6 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             var obscuredBottom = view.bounds.height - obscuredRectInOwnView.minY
             view.v_addFitToParentConstraintsToSubview(searchTableView, leading: 0, trailing: 0, top: topLayoutGuide.length, bottom: obscuredBottom)
         }
-        
     }
     
     func userTaggingTextStorage(textStorage: VUserTaggingTextStorage, wantsToDismissViewController viewController: UIViewController) {
