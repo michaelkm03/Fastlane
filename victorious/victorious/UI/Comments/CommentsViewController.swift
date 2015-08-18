@@ -364,8 +364,9 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             cancel: {
                 if shouldResumeEditing {
                     inputAccessoryView.startEditing()
+                }
             }
-        })
+        )
         
         self.presentViewController(alertController, animated: true, completion: nil)
     }
