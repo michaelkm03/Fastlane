@@ -163,7 +163,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
                 comment: comment,
                 hasMedia: (comment.commentMediaType() != VCommentMediaType.NoMedia),
                 dependencyManager: dependencyManager)
-            return CGSize(width: CGRectGetWidth(view.bounds), height: size.height)
+            return CGSize(width: view.bounds.width, height: size.height)
         }
         return CGSize.zeroSize
     }
@@ -179,6 +179,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     }
     
     // MARK: - VSwipeViewControllerDelegate
+    
     func backgroundColorForGutter() -> UIColor! {
         return UIColor(white: 0.96, alpha: 1.0)
     }
@@ -422,8 +423,8 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         view.addSubview(searchTableView)
         if let ownWindow = view.window, keyboardBar = keyboardBar {
             var obscuredRectInWindow = keyboardBar.obscuredRectInWindow(ownWindow)
-            var obscuredRecInOwnView = ownWindow.convertRect(obscuredRectInWindow, toView: view)
-            var obscuredBottom = CGRectGetHeight(view.bounds) - CGRectGetMinY(obscuredRecInOwnView)
+            var obscuredRectInOwnView = ownWindow.convertRect(obscuredRectInWindow, toView: view)
+            var obscuredBottom = view.bounds.height - obscuredRectInOwnView.minY
             view.v_addFitToParentConstraintsToSubview(searchTableView, leading: 0, trailing: 0, top: topLayoutGuide.length, bottom: obscuredBottom)
         }
         
