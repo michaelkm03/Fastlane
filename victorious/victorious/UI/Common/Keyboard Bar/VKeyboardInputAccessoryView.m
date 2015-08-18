@@ -68,6 +68,11 @@ static NSString * const kConfirmationText = @"commentConfirmationText";
 
 + (VKeyboardInputAccessoryView *)defaultInputAccessoryViewWithDependencyManager:(VDependencyManager *)dependencyManager
 {
+    NSDictionary *commentBarConfiguration = [dependencyManager templateValueOfType:[NSDictionary class] forKey:@"commentBar"];
+    VDependencyManager *commentBarDependencyManager = [[VDependencyManager alloc] initWithParentManager:dependencyManager
+                                                                                          configuration:commentBarConfiguration
+                                                                      dictionaryOfClassesByTemplateName:nil];
+    
     UINib *nibForInputAccessoryView = [UINib nibWithNibName:NSStringFromClass([self class])
                                                      bundle:nil];
     NSArray *nibContents = [nibForInputAccessoryView instantiateWithOwner:nil
@@ -75,7 +80,7 @@ static NSString * const kConfirmationText = @"commentConfirmationText";
     
     VKeyboardInputAccessoryView *accessoryView = [nibContents firstObject];
     
-    accessoryView.dependencyManager = dependencyManager;
+    accessoryView.dependencyManager = commentBarDependencyManager;
     
     return accessoryView;
 }
@@ -94,14 +99,13 @@ static NSString * const kConfirmationText = @"commentConfirmationText";
         }
         [self.sendButton setTitleColor:[_dependencyManager colorForKey:VDependencyManagerLinkColorKey]
                               forState:UIControlStateNormal];
-#warning FIXME!! Waiting on https://github.com/TouchFrame/TouchFramePlatform/pull/2920 to be merged
-        [self.sendButton setTitle:@"SEND"//[_dependencyManager stringForKey:kConfirmationText]
+        [self.sendButton setTitle:[_dependencyManager stringForKey:kConfirmationText]
                          forState:UIControlStateNormal];
         [self.sendButton setTitleColor:[_dependencyManager colorForKey:VDependencyManagerLinkColorKey]
                               forState:UIControlStateNormal];
         [self.sendButton setTitleColor:[UIColor lightGrayColor]
                               forState:UIControlStateDisabled];
-        self.sendButton.titleLabel.font = [_dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
+        self.sendButton.titleLabel.font = [_dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
         self.placeholderText = [_dependencyManager stringForKey:kCommentPrompt];
     }
 }
