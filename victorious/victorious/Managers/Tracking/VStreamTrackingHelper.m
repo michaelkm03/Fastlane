@@ -108,12 +108,12 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
                                           eventId:sequence.remoteId];
 }
 
-- (void)onStreamCellSelectedWithCellEvent:(StreamCellContext *)event
+- (void)onStreamCellSelectedWithCellEvent:(StreamCellContext *)context
 {
-    VSequence *sequence = (VSequence *)event.streamItem;
-    VStream *stream = event.stream;
+    VSequence *sequence = (VSequence *)context.streamItem;
+    VStream *stream = context.stream;
     
-    NSString *trackingID = event.fromShelf ? stream.shelfId : stream.trackingIdentifier;
+    NSString *trackingID = context.fromShelf ? stream.shelfId : stream.trackingIdentifier;
     NSMutableDictionary *params = [@{ VTrackingKeySequenceId : sequence.remoteId,
                                        VTrackingKeyTimeStamp : [NSDate date],
                                             VTrackingKeyUrls : sequence.tracking.cellClick,
@@ -124,8 +124,8 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     {
         if (sequence.firstNode.httpLiveStreamingAsset.streamAutoplay.boolValue && [self.videoSettings isAutoplayEnabled])
         {
-            AutoplayTrackingEvent *event = [[AutoplayTrackingEvent alloc] initWithName:VTrackingEventVideoDidStop url:sequence.tracking.viewStop];
-            [self trackAutoplayEvent:event stream:stream];
+            AutoplayTrackingEvent *event = [[AutoplayTrackingEvent alloc] initWithName:VTrackingEventVideoDidStop urls:sequence.tracking.viewStop];
+            [self trackAutoplayEvent:event context:context];
         }
     }
     
@@ -169,7 +169,7 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 
 #pragma mark - Autoplay
 
-- (void)trackAutoplayEvent:(AutoplayTrackingEvent *)event stream:(VStream *)stream
+- (void)trackAutoplayEvent:(AutoplayTrackingEvent *)event context:(StreamCellContext *)context
 {
     VReachability *reachability = [VReachability reachabilityForInternetConnection];
     NSString *connectivityString = [reachability reachabilityStatusDescription:[reachability currentReachabilityStatus]];
@@ -180,10 +180,10 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
                                  VTrackingKeyConnectivity : connectivityString,
                                  VTrackingKeyVolumeLevel : volumeString,
                                  VTrackingKeyLoadTime : event.loadTime ?: @(0),
-                                 VTrackingKeyUrls : @[event.url],
-                                 VTrackingKeyStreamId: stream.trackingIdentifier ?: @""};
+                                 VTrackingKeyUrls : event.urls,
+                                 VTrackingKeyStreamId: context.stream.trackingIdentifier ?: @""};
     
-    [[VTrackingManager sharedInstance] trackEvent:event.name parameters:parameters];
+    [[VTrackingManager sharedInstance] queueEvent:event.name parameters:parameters eventId:context.streamItem.remoteId];
 }
 
 #pragma mark - Private

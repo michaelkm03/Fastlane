@@ -10,12 +10,13 @@ import Foundation
 
 class AutoplayTrackingEvent : NSObject {
     var name: String
-    var url: NSURL
+    var urls: AnyObject
+    var sequence: VSequence?
     var loadTime: NSNumber?
     
-    init(name: String, url: NSURL) {
+    init(name: String, urls: AnyObject) {
         self.name = name
-        self.url = url
+        self.urls = urls
     }
 }
 

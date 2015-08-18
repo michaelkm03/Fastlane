@@ -33,13 +33,18 @@ const CGFloat kMaximumLoopingTime = 30.0f;
 @property (nonatomic, strong) VAsset *HLSAsset;
 @property (nonatomic, strong) VTracking *trackingItem;
 @property (nonatomic, strong) id timeObserver;
-@property (nonatomic, assign) BOOL hasPlayed;
+@property (nonatomic, assign) BOOL noReply;
 
 @property (nonatomic, strong) NSDate *initialDate;
 @property (nonatomic, strong) NSDate *loadDate;
 
 @property (nonatomic, strong) SoundBarView *soundIndicator;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
+
+@property (nonatomic, assign) BOOL didPlay25;
+@property (nonatomic, assign) BOOL didPlay50;
+@property (nonatomic, assign) BOOL didPlay75;
+@property (nonatomic, assign) BOOL didPlay100;
 
 @end
 
@@ -86,7 +91,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     self.HLSAsset = [sequence.firstNode httpLiveStreamingAsset];
     
     // Check HLS asset to see if we should autoplay and only if it's over 30 seconds
-    if ( !self.HLSAsset.streamAutoplay.boolValue )
+    if ( self.HLSAsset.streamAutoplay.boolValue )
     {
         // Check if autoplay is enabled before loading asset URL
         if ([self.videoSettings isAutoplayEnabled])
@@ -101,10 +106,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
 {
     self.assetURL = url;
     
-    self.hasPlayed = NO;
-    
-    self.loadDate = nil;
-    self.initialDate = [NSDate date];
+    [self reset];
     
     __weak VVideoSequencePreviewView *weakSelf = self;
     [self.videoView setItemURL:url
@@ -114,6 +116,19 @@ const CGFloat kMaximumLoopingTime = 30.0f;
      {
          [weakSelf makeBackgroundContainerViewVisible:YES];
      }];
+}
+
+- (void)reset
+{
+    self.noReply = NO;
+    
+    self.loadDate = nil;
+    self.initialDate = [NSDate date];
+    
+    self.didPlay25 = NO;
+    self.didPlay50 = NO;
+    self.didPlay75 = NO;
+    self.didPlay100 = NO;
 }
 
 - (void)setState:(VVideoPreviewViewState)state
@@ -169,7 +184,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     if (self.inFocus)
     {
         [self playVideo];
-        [self trackAutoplayEvent:VTrackingEventViewDidStart url:self.trackingItem.viewStart];
+        [self trackAutoplayEvent:VTrackingEventViewDidStart urls:self.trackingItem.viewStart];
     }
     else
     {
@@ -182,11 +197,12 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     if (![self.videoView playbackLikelyToKeepUp])
     {
         [self setState:VVideoPreviewViewStateBuffering];
-        [self trackAutoplayEvent:VTrackingEventVideoDidStall url:self.trackingItem.videoStall];
+        [self trackAutoplayEvent:VTrackingEventVideoDidStall urls:self.trackingItem.videoStall];
     }
     else
     {
         [self setState:VVideoPreviewViewStatePlaying];
+        [self trackAutoplayEvent:VTrackingEventViewDidStart urls:self.trackingItem.viewStart];
         
         // Save the time the video was loaded
         if (self.loadDate == nil)
@@ -212,14 +228,11 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     if (self.inFocus)
     {
         [self playVideo];
-        [self trackAutoplayEvent:VTrackingEventViewDidStart url:self.trackingItem.viewStart];
     }
 }
 
 - (void)videoDidReachEnd:(VVideoView *__nonnull)videoView
 {
-    self.hasPlayed = YES;
-    
     // Loop if asset is under max looping time
     if (self.HLSAsset.duration != nil && [self.HLSAsset.duration integerValue] <= kMaximumLoopingTime)
     {
@@ -230,13 +243,14 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     }
     else
     {
+        self.noReply = YES;
         [self setState:VVideoPreviewViewStateEnded];
     }
 }
 
 - (void)videoViewDidStartBuffering:(VVideoView *__nonnull)videoView
 {
-    if (self.inFocus && self.hasPlayed)
+    if (self.inFocus && !self.noReply)
     {
         [self setState:VVideoPreviewViewStateBuffering];
     }
@@ -244,7 +258,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
 
 - (void)videoViewDidStopBuffering:(VVideoView *__nonnull)videoView
 {
-    if (self.inFocus && !self.hasPlayed)
+    if (self.inFocus && !self.noReply)
     {
         [self setState:VVideoPreviewViewStatePlaying];
     }
@@ -252,44 +266,44 @@ const CGFloat kMaximumLoopingTime = 30.0f;
 
 - (void)videoView:(VVideoView *__nonnull)videoView didProgressWithPercentComplete:(float)percent
 {
-    if (percent >= 25.0f && percent < 50.0f)
+    if (percent >= 25.0f && percent < 50.0f && !self.didPlay25)
     {
-        [self trackAutoplayEvent:VTrackingEventVideoDidComplete25 url:self.trackingItem.videoComplete25];
+        self.didPlay25 = YES;
+        [self trackAutoplayEvent:VTrackingEventVideoDidComplete25 urls:self.trackingItem.videoComplete25];
     }
-    else if (percent >= 50.0f && percent < 75.0f)
+    else if (percent >= 50.0f && percent < 75.0f && !self.didPlay50)
     {
-        [self trackAutoplayEvent:VTrackingEventVideoDidComplete50 url:self.trackingItem.videoComplete50];
+        self.didPlay50 = YES;
+        [self trackAutoplayEvent:VTrackingEventVideoDidComplete50 urls:self.trackingItem.videoComplete50];
     }
-    else if (percent >= 75.0f && percent < 95.0f)
+    else if (percent >= 75.0f && percent < 95.0f && !self.didPlay75)
     {
-        [self trackAutoplayEvent:VTrackingEventVideoDidComplete75 url:self.trackingItem.videoComplete75];
+        self.didPlay75 = YES;
+        [self trackAutoplayEvent:VTrackingEventVideoDidComplete75 urls:self.trackingItem.videoComplete75];
     }
-    else if (percent >= 95.0f)
+    else if (percent >= 95.0f && !self.didPlay100)
     {
-        [self trackAutoplayEvent:VTrackingEventVideoDidComplete100 url:self.trackingItem.videoComplete100];
+        self.didPlay100 = YES;
+        [self trackAutoplayEvent:VTrackingEventVideoDidComplete100 urls:self.trackingItem.videoComplete100];
     }
 }
 
 #pragma mark - Helpers
 
-- (void)trackAutoplayEvent:(NSString *)event url:(NSURL *)url
+- (void)trackAutoplayEvent:(NSString *)event urls:(NSArray *)urls
 {
-    if (url == nil)
-    {
-        return;
-    }
-    
     // Walk responder chain to track autoplay events
     id<AutoplayTracking>responder = [self v_targetConformingToProtocol:@protocol(AutoplayTracking)];
     if (responder != nil)
     {
-        [responder trackAutoplayEvent:[self eventWithName:event url:url]];
+        [responder trackAutoplayEvent:[self eventWithName:event urls:urls ?: @[]]];
     }
 }
 
-- (AutoplayTrackingEvent *)eventWithName:(NSString *)name url:(NSURL *)url
+- (AutoplayTrackingEvent *)eventWithName:(NSString *)name urls:(NSArray *)urls
 {
-    AutoplayTrackingEvent *event = [[AutoplayTrackingEvent alloc] initWithName:name url:url];
+    AutoplayTrackingEvent *event = [[AutoplayTrackingEvent alloc] initWithName:name urls:urls];
+    event.sequence = (VSequence *)self.streamItem;
     if (self.initialDate != nil && self.loadDate != nil)
     {
         event.loadTime = [NSNumber numberWithUnsignedInteger:[self.loadDate timeIntervalSinceDate:self.initialDate] * 1000];

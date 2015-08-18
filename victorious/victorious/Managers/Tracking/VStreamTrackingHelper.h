@@ -74,6 +74,6 @@
 /**
  Call this to track autoplaying video inside a stream cell.
  */
-- (void)trackAutoplayEvent:(AutoplayTrackingEvent *)event stream:(VStream *)stream;
+- (void)trackAutoplayEvent:(AutoplayTrackingEvent *)event context:(StreamCellContext *)context;
 
 @end

@@ -1067,7 +1067,10 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)trackAutoplayEvent:(AutoplayTrackingEvent *__nonnull)event
 {
-    [self.streamTrackingHelper trackAutoplayEvent:event stream:self.currentStream];
+    StreamCellContext *context = [[StreamCellContext alloc] initWithStreamItem:event.sequence
+                                                                      stream:self.currentStream
+                                                                   fromShelf:NO];
+    [self.streamTrackingHelper trackAutoplayEvent:event context:context];
 }
 
 @end
