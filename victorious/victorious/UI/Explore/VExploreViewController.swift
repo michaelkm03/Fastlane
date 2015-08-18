@@ -8,6 +8,8 @@
 
 import UIKit
 
+/// Base view controller for the explore screen that gets
+/// presented when "explore" button on the tab bar is tapped
 class VExploreViewController: UIViewController{
     
     @IBOutlet weak var searchBar: UISearchBar!
@@ -23,7 +25,7 @@ class VExploreViewController: UIViewController{
         self.navigationController?.navigationBarHidden = true
     }
     
-    class func new(#dependencyManager: VDependencyManager) -> VExploreViewController {
+    class func new( #dependencyManager: VDependencyManager ) -> VExploreViewController {
         let storyboard = UIStoryboard(name: "Explore", bundle: nil)
         if let exploreVC = storyboard.instantiateInitialViewController() as? VExploreViewController {
             exploreVC.dependencyManager = dependencyManager
