@@ -38,10 +38,8 @@ if [ $RESPONSE_CODE -ne 0 ]; then
     echo $RESPONSE_MESSAGE
     exit 1
 else
-    TMP_FOLDER=$RESPONSE_MESSAGE
+    FOLDER="$RESPONSE_MESSAGE"
 fi
-
-FOLDER="$TMP_FOLDER"
 
 
 if [ "$A_FLAG" == "-a" ]; then
