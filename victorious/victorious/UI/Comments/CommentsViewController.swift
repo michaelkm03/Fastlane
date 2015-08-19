@@ -162,14 +162,12 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     // MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        if let comment = sequence?.comments?[indexPath.item] as? VComment {
-            var size = VContentCommentsCell.sizeWithFullWidth(CGRectGetWidth(view.bounds),
-                comment: comment,
-                hasMedia: (comment.commentMediaType() != VCommentMediaType.NoMedia),
-                dependencyManager: dependencyManager)
-            return CGSize(width: view.bounds.width, height: size.height)
-        }
-        return CGSize.zeroSize
+        let comment = commentsDataSourceSwitcher.dataSource.commentAtIndex(indexPath.item)
+        let size = VContentCommentsCell.sizeWithFullWidth(CGRectGetWidth(view.bounds),
+            comment: comment,
+            hasMedia: (comment.commentMediaType() != VCommentMediaType.NoMedia),
+            dependencyManager: dependencyManager)
+        return CGSize(width: view.bounds.width, height: size.height)
     }
 
     // MARK: - VScrollPaginatorDelegate
