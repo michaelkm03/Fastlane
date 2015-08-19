@@ -56,11 +56,9 @@ def proccessAppAssets(json):
 
     if vams._DEFAULT_PLATFORM == vams._PLATFORM_ANDROID:
         _WORKING_DIRECTORY = '%s/%s' % (vams._DEFAULT_CONFIG_DIRECTORY, app_title)
-        if not os.path.exists(_WORKING_DIRECTORY):
-            os.makedirs(_WORKING_DIRECTORY)
-    else:
-        if not os.path.exists(_WORKING_DIRECTORY):
-            os.makedirs(_WORKING_DIRECTORY)
+
+    if not os.path.exists(_WORKING_DIRECTORY):
+        os.makedirs(_WORKING_DIRECTORY)
 
 
     if _DEBUG:
