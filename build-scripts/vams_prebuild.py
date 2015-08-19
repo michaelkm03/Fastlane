@@ -119,12 +119,15 @@ def retrieveAppDetails(app_name):
         proccessAppAssets(json)
 
     else:
+        response_message = 'No updated data for "%s" found in the Victorious backend' % app_name
         if _DEBUG:
-            print 'No updated data for "%s" found in the Victorious backend' % app_name
+            print response_message
 
         cleanUp()
+
         if vams._DEFAULT_PLATFORM == vams._PLATFORM_IOS:
             shutil.rmtree(_WORKING_DIRECTORY)
+            sys.exit('1|%s' % response_message)
 
         sys.exit(1)
 
@@ -244,15 +247,19 @@ def main(argv):
     if vams.authenticateUser(_DEFAULT_HOST):
         retrieveAppDetails(app_name)
     else:
+        exit_message = 'There was a problem authenticating with the Victorious backend. Exiting now...'
         if _DEBUG:
-            print 'There was a problem authenticating with the Victorious backend. Exiting now...'
+            print exit_message
 
-        sys.exit(1)
+        error_string = '1|%s' % exit_message
+        sys.exit(error_string)
 
+    response_message = 'App Data & Assets Downloaded from VAMS Successfully'
     if vams._DEFAULT_PLATFORM == vams._PLATFORM_IOS:
-        sys.exit(_WORKING_DIRECTORY)
+        response_message = '0|%s' % _WORKING_DIRECTORY
+        sys.exit(response_message)
     elif vams._DEFAULT_PLATFORM == vams._PLATFORM_ANDROID:
-        sys.exit(0)
+        sys.exit(response_message)
 
 
 if __name__ == '__main__':

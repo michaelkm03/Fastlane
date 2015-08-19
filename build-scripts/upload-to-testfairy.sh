@@ -103,12 +103,16 @@ echo ".dSYM was successfully uploaded to TestFairy."
 # Post Test Fairy url to VAMS if this is a Stable build
 if [ "$TESTER_GROUPS" == "Stable" ]; then
     echo
-    echo "Posting Test Fairy url for '${APPNAME}' to Victorious backend"
+    echo "Posting Test Fairy url for ${APPNAME} to Victorious backend"
 
-    UPLOAD=$(python "build-scripts/vams_postbuild.py" ${APPNAME} ios ${URL})
-    if [ $? -ne 0 ]; then
-        echo "ERROR: Uploading Test Fairy URL to VAMS"
-        exit 1
+    RESPONSE=$(python "build-scripts/vams_postbuild.py" ${APPNAME} ios ${URL} 2>&1)
+    RESPONSE_CODE=$(echo "$RESPONSE" | cut -f1 -d '|')
+    RESPONSE_MESSAGE=$(echo "$RESPONSE" | cut -f2 -d '|')
+    # If no working folder is returned then exit
+    if [ $RESPONSE_CODE -ne 0 ]; then
+        echo $RESPONSE_MESSAGE
+    else
+        echo "Test Fairy URL for ${APPNAME} was posted back to VAMS successfully"
     fi
 fi
 

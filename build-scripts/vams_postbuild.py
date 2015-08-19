@@ -66,9 +66,10 @@ def postTestFairyURL(app_name, testfairy_url):
     error_code = json['error']
 
     if not error_code == 0:
+        error_message = 'An error occurred posting the Test Fairy URL for %s.' % app_name
         if _DEBUG:
-            print 'An error occurred posting the Test Fairy URL for %s.' % app_name
-        return 1
+            print error_message
+        sys.exit('1|%s' % error_message)
 
     # Clean-up compiled python files
     cleanUp()
@@ -107,7 +108,8 @@ def main(argv):
     if len(argv) < 4:
         if _DEBUG:
             showProperUsage()
-        return 1
+        exit_message = '1|Wrong parameters were passed to vams_postbuild.py'
+        sys.exit(exit_message)
 
     vams.init()
 
@@ -153,11 +155,13 @@ def main(argv):
     if vams.authenticateUser(_DEFAULT_HOST):
         postTestFairyURL(app_name, url)
     else:
+        exit_message = '1|There was a problem authenticating with the Victorious backend. Exiting now...'
         if _DEBUG:
-            print 'There was a problem authenticating with the Victorious backend. Exiting now...'
-        return 1
+            print exit_message
+        sys.exit(exit_message)
+
     
-    return 0
+    sys.exit('0|Test Fairy URL Posted to VAMS Successfully')
 
 
 if __name__ == '__main__':
