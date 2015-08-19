@@ -31,7 +31,7 @@ class VictoriousTestCase: KIFTestCase {
         self.dismissWelcomeIfPresent()
         
         // Grant notification permissions
-        //self.tester().acknowledgeSystemAlert()
+        self.tester().acknowledgeSystemAlert()
     }
     
     /// Checks if the element with the provided label is present on screen
@@ -50,7 +50,7 @@ class VictoriousTestCase: KIFTestCase {
     func grantLibraryPermissionIfRequired() {
         if self.elementExistsWithAccessibilityLabel( VAutomationIdentifierGrantLibraryAccess ) {
             self.tester().tapViewWithAccessibilityLabel( VAutomationIdentifierGrantLibraryAccess )
-            //self.tester().acknowledgeSystemAlert()
+            self.tester().acknowledgeSystemAlert()
         }
     }
     

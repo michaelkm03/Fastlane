@@ -34,4 +34,8 @@ extension KIFTestActor {
             println( "\(Int(interval)-i)..." )
         }
     }
+    
+    func acknowledgeSystemAlert() {
+        self.tester().tapViewWithAccessibilityLabel( "OK" )
+    }
 }
