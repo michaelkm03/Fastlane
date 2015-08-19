@@ -49,9 +49,6 @@ BUILDNUM=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$INFOPLIST")
 #     exit 1
 # fi
 
-# Copy standard provisioning profile
-# cp "$HOME/Library/MobileDevice/Provisioning Profiles/$DEFAULT_PROVISIONING_PROFILE_UUID.mobileprovision" "victorious.xcarchive/Products/Applications/victorious.app/embedded.mobileprovision"
-
 CODESIGN_ID=$DEFAULT_CODESIGN_ID
 DEV_ACCOUNT=$DEFAULT_DEV_ACCOUNT
 CODESIGNING_PLIST_FILE="configurations/$CONFIGURATION/codesigning.plist"
@@ -82,7 +79,7 @@ fi
 # xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination generic/platform=iOS clean
 
 # Build
-xcodebuild test -workspace victorious/victorious.xcworkspace -scheme debug-victorious -destination platform='iOS',name='${DEVICE_NAME}'
+xcodebuild test -workspace victorious/victorious.xcworkspace -scheme debug-victorious -destination platform="iOS",name="${DEVICE_NAME}"
 TEST_RESULT=$?
 
 exit $TEST_RESULT

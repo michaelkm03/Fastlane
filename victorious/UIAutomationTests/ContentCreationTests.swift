@@ -26,8 +26,7 @@ class ContentCreationTests: VictoriousTestCase {
         self.tester().tapItemAtIndexPath( indexPath, inCollectionViewWithAccessibilityIdentifier: VAutomationIdentifierMediaGalleryCollection )
         
         // Add a random caption
-        let continueLabel = "Publish"
-        self.tester().tapViewWithAccessibilityLabel( continueLabel )
+        self.tester().tapViewWithAccessibilityLabel( "Publish" )
         
         self.tester().tapViewWithAccessibilityLabel( VAutomationIdentifierPublishCatpionText )
         
