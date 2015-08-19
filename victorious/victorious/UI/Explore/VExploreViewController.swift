@@ -12,8 +12,10 @@ import UIKit
 /// presented when "explore" button on the tab bar is tapped
 class VExploreViewController: UIViewController{
     
-    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak private var searchBar: UISearchBar!
 
+    /// The dependencyManager that is used to manage dependencies of explore screen
+    /// Setter only accessed privately, while getter accessed interally
     private(set) var dependencyManager: VDependencyManager?
     
     override func viewDidLoad() {
