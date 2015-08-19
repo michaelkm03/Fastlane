@@ -79,6 +79,8 @@
 #import "VTrackingManager.h"
 #import "VDependencyManager+VTracking.h"
 #import "VPushNotificationManager.h"
+#import "VNavigationController.h"
+
 
 //Shelves
 #import "VStreamCellFactory.h"
