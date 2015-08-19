@@ -43,7 +43,7 @@ def init():
 
     _DEFAULT_VAMS_USERID = 0
     _DEFAULT_VAMS_USER = 'autobuild@victorious.com'
-    _DEFAULT_VAMS_PASSWORD = 'R3@lVict0ry080213'
+    _DEFAULT_VAMS_PASSWORD = 'tGrg9qtxgdRBbbPwiRDNbRJkjwTxXFmEphCbdrdoePdoHdKs3m'
 
     _DEFAULT_USERAGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) ' \
                          'Chrome/43.0.2357.130 Safari/537.36 aid:11 uuid:FFFFFFFF-0000-0000-0000-FFFFFFFFFFFF build:1'

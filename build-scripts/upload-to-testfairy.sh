@@ -104,7 +104,12 @@ echo ".dSYM was successfully uploaded to TestFairy."
 if [ "$TESTER_GROUPS" == "Stable" ]; then
     echo
     echo "Posting Test Fairy url for '${APPNAME}' to Victorious backend"
-    python "build-scripts/vams_postbuild.py" ${APPNAME} ios ${URL}
+
+    UPLOAD=$(python "build-scripts/vams_postbuild.py" ${APPNAME} ios ${URL})
+    if [ $UPLOAD -ne 0 ]; then
+        echo "ERROR: Uploading Test Fairy URL to VAMS"
+        exit 1
+    fi
 fi
 
 exit 0
