@@ -33,7 +33,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
 @property (nonatomic, strong) VAsset *HLSAsset;
 @property (nonatomic, strong) VTracking *trackingItem;
 @property (nonatomic, strong) id timeObserver;
-@property (nonatomic, assign) BOOL noReply;
+@property (nonatomic, assign) BOOL noReplay;
 
 @property (nonatomic, strong) SoundBarView *soundIndicator;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
@@ -117,7 +117,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
 
 - (void)reset
 {
-    self.noReply = NO;
+    self.noReplay = NO;
     
     self.didPlay25 = NO;
     self.didPlay50 = NO;
@@ -230,14 +230,14 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     }
     else
     {
-        self.noReply = YES;
+        self.noReplay = YES;
         [self setState:VVideoPreviewViewStateEnded];
     }
 }
 
 - (void)videoViewDidStartBuffering:(VVideoView *__nonnull)videoView
 {
-    if (self.inFocus && !self.noReply)
+    if (self.inFocus && !self.noReplay)
     {
         [self setState:VVideoPreviewViewStateBuffering];
     }
@@ -245,7 +245,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
 
 - (void)videoViewDidStopBuffering:(VVideoView *__nonnull)videoView
 {
-    if (self.inFocus && !self.noReply)
+    if (self.inFocus && !self.noReplay)
     {
         [self setState:VVideoPreviewViewStatePlaying];
     }
