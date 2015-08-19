@@ -6,13 +6,12 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import <CCHLinkTextViewDelegate.h>
-#import <CCHLinkTextView.h>
-
 #import "VDependencyManager.h"
 #import "UIView+AutoLayout.h"
 #import "VSequenceCountsTextView.h"
 #import "VLargeNumberFormatter.h"
+
+@import CCHLinkTextView;
 
 static NSString * const kLinkIdentifierValueComments = @"comments";
 static NSString * const kLinkIdentifierValueLikes = @"likes";
