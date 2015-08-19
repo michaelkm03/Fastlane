@@ -6,7 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "CCHLinkTextView.h"
+@import CCHLinkTextView;
+
 @class VDependencyManager;
 
 /**

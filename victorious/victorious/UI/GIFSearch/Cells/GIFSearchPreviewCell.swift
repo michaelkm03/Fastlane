@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+import SDWebImage
 import UIKit
 
 /// The full size cell that plays the GIF video asset when an item is selected

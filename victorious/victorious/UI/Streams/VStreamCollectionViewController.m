@@ -11,6 +11,7 @@
 #import "VStreamCollectionViewDataSource.h"
 #import "VStreamCellFactory.h"
 #import "VStreamCellTracking.h"
+#import "VStreamContentCellFactoryDelegate.h"
 #import "VAbstractMarqueeCollectionViewCell.h"
 #import "VStreamCollectionViewParallaxFlowLayout.h"
 
@@ -64,9 +65,6 @@
 #import "VFullscreenMarqueeSelectionDelegate.h"
 #import "VAbstractMarqueeController.h"
 
-#import <SDWebImage/SDWebImagePrefetcher.h>
-#import <FBKVOController.h>
-
 #import "VDirectoryCollectionViewController.h"
 #import "VDependencyManager+VUserProfile.h"
 #import "VHashtagSelectionResponder.h"
@@ -82,6 +80,9 @@
 
 #import "VCollectionViewStreamFocusHelper.h"
 #import "victorious-Swift.h"
+
+@import KVOController;
+@import SDWebImage;
 
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
 

@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
+import KIF
 import UIKit
 
 class ContentCreationTests: VictoriousTestCase {
