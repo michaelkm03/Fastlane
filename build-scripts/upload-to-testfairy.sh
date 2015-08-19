@@ -108,9 +108,9 @@ if [ "$TESTER_GROUPS" == "Stable" ]; then
     RESPONSE=$(python "build-scripts/vams_postbuild.py" ${APPNAME} ios ${URL} 2>&1)
     RESPONSE_CODE=$(echo "$RESPONSE" | cut -f1 -d '|')
     RESPONSE_MESSAGE=$(echo "$RESPONSE" | cut -f2 -d '|')
-    # If no working folder is returned then exit
     if [ $RESPONSE_CODE -ne 0 ]; then
         echo $RESPONSE_MESSAGE
+        exit 1
     else
         echo "Test Fairy URL for ${APPNAME} was posted back to VAMS successfully"
     fi
