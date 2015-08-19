@@ -261,7 +261,7 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
         assetFetchOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d", mediaType];
         assetFetchOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
         
-        // We're going to add apropirate collecitons and fetch requests to these arrays
+        // We're going to add appropriate collections and fetch requests to these arrays
         NSMutableArray *assetCollections = [[NSMutableArray alloc] init];
         NSMutableArray *assetCollectionsFetchResutls = [[NSMutableArray alloc] init];
         
@@ -273,8 +273,17 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
             [newFetchResults addObject:albumMediaTypeResults];
             if (albumMediaTypeResults.count > 0)
             {
-                [assetCollections addObject:collection];
-                [assetCollectionsFetchResutls addObject:albumMediaTypeResults];
+                // Make sure camera roll is the first collection that the user lands on
+                if (collection.assetCollectionSubtype == PHAssetCollectionSubtypeSmartAlbumUserLibrary)
+                {
+                    [assetCollections insertObject:collection atIndex:0];
+                    [assetCollectionsFetchResutls insertObject:albumMediaTypeResults atIndex:0];
+                }
+                else
+                {
+                    [assetCollections addObject:collection];
+                    [assetCollectionsFetchResutls addObject:albumMediaTypeResults];
+                }
             }
         }
         for (PHAssetCollection *collection in userAlbums)
