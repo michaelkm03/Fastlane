@@ -112,8 +112,14 @@ static int const kNotificationFetchBatchSize = 50;
     
     [self.dependencyManager trackViewWillAppear:self];
     [self updateNavigationItem];
-    [self.refreshControl beginRefreshing];
     [self.tableView setContentOffset:CGPointZero];
+    [self refreshTableView];
+    
+    // Show refresh control if we're refreshing
+    if (self.refreshRequest != nil)
+    {
+        [self.refreshControl beginRefreshing];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
