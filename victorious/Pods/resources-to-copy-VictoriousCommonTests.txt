@@ -1,1 +1,0 @@
-/Users/patricklynch/Library/Developer/Xcode/DerivedData/victorious-dqufpmzfhfopnvhdnopxukcsrzrp/Build/Products/Debug-iphoneos/OAStackView.bundle
