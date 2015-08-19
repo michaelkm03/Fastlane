@@ -36,7 +36,6 @@
 #import "VHashtagResponder.h"
 #import "VDependencyManager+VTracking.h"
 #import "VFollowControl.h"
-#import "VFollowingHelper.h"
 #import "VFollowResponder.h"
 
 static NSString * const kVSuggestedPeopleIdentifier = @"VSuggestedPeopleCell";
@@ -56,7 +55,6 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 @property (nonatomic, assign) BOOL wasHiddenByAnotherViewController;
 
 @property (nonatomic, weak) MBProgressHUD *failureHud;
-@property (nonatomic, strong) VFollowingHelper *followingHelper;
 
 @end
 
@@ -73,8 +71,6 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
     self.suggestedPeopleViewController = [VDiscoverSuggestedPeopleViewController instantiateFromStoryboard:@"Discover"];
     self.suggestedPeopleViewController.dependencyManager = self.dependencyManager;
     self.suggestedPeopleViewController.delegate = self;
-    
-    self.followingHelper = [[VFollowingHelper alloc] initWithDependencyManager:self.dependencyManager viewControllerToPresentOn:self];
     
     [self addChildViewController:self.suggestedPeopleViewController];
     [self.suggestedPeopleViewController didMoveToParentViewController:self];
@@ -584,12 +580,17 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 #pragma mark - VFollowResponder
 
-- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion fromViewController:(UIViewController *)viewControllerToPresentOn withScreenName:(NSString *)screenName
+- (void)followUser:(VUser *)user
+withAuthorizedBlock:(void (^)(void))authorizedBlock
+     andCompletion:(VFollowEventCompletion)completion
+fromViewController:(UIViewController *)viewControllerToPresentOn
+    withScreenName:(NSString *)screenName
 {
     NSString *sourceScreen = screenName?:VFollowSourceScreenDiscoverSuggestedUsers;
     id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
                                                                       withSender:nil];
     NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
+    
     [followResponder followUser:user
             withAuthorizedBlock:authorizedBlock
                   andCompletion:completion
@@ -597,9 +598,22 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
                  withScreenName:sourceScreen];
 }
 
-- (void)unfollowUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion
+- (void)unfollowUser:(VUser *)user 
+ withAuthorizedBlock:(void (^)(void))authorizedBlock
+       andCompletion:(VFollowEventCompletion)completion
+  fromViewController:(UIViewController *)viewControllerToPresentOn
+      withScreenName:(NSString *)screenName
 {
-    [self.followingHelper unfollowUser:user withAuthorizedBlock:authorizedBlock andCompletion:completion];
+    NSString *sourceScreen = screenName?:VFollowSourceScreenDiscoverSuggestedUsers;
+    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
+                                                                      withSender:nil];
+    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
+    
+    [followResponder unfollowUser:user
+              withAuthorizedBlock:authorizedBlock
+                    andCompletion:completion
+               fromViewController:self
+                    withScreenName:sourceScreen];
 }
 
 #pragma mark - VTabMenuContainedViewControllerNavigation

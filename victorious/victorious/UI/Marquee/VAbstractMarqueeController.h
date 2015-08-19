@@ -86,4 +86,14 @@ extern NSString * const kMarqueeURLKey;
  */
 - (void)updateCellVisibilityTracking;
 
+/**
+ Updates focus on marquee cells
+ */
+- (void)updateFocus;
+
+/**
+ End focus on marquee cells
+ */
+- (void)endFocusOnAllCells;
+
 @end

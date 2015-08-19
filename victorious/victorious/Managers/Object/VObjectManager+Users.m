@@ -257,6 +257,7 @@ static NSString * const kVAPIParamContext = @"context";
         {
             // Add user relationship to local persistent store
             VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+            user.isFollowedByMainUser = @YES;
             [mainUser addFollowingObject:user];
         }
         fail(operation, error);
@@ -272,8 +273,10 @@ static NSString * const kVAPIParamContext = @"context";
 - (RKManagedObjectRequestOperation *)unfollowUser:(VUser *)user
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail
+                                       fromScreen:(NSString *)screenName
 {
-    NSDictionary *parameters = @{ @"target_user_id": user.remoteId };
+    NSDictionary *parameters = @{ @"target_user_id": user.remoteId,
+                                  @"source": screenName};
     
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
     {

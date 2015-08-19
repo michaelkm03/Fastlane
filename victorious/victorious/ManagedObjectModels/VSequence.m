@@ -57,5 +57,6 @@
 @dynamic user;
 @dynamic voteResults;
 @dynamic recentComments;
+@dynamic isGifStyle;
 
 @end

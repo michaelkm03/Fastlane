@@ -2,35 +2,36 @@
 //  VVideoSequencePreviewView.m
 //  victorious
 //
-//  Created by Michael Sena on 5/6/15.
+//  Created by Cody Kolodziejzyk on 8/7/15.
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
 #import "VVideoSequencePreviewView.h"
+#import "victorious-Swift.h"
+#import "VVideoSettings.h"
 
-// Models + Helpers
-#import "VSequence+Fetcher.h"
-#import "VNode+Fetcher.h"
-#import "VAsset+Fetcher.h"
+/**
+ Describes the state of the video preview view
+ */
+typedef NS_ENUM(NSUInteger, VVideoPreviewViewState)
+{
+    VVideoPreviewViewStateBuffering,
+    VVideoPreviewViewStatePlaying,
+    VVideoPreviewViewStatePaused,
+    VVideoPreviewViewStateEnded
+};
 
-// Views + Helpers
-#import "UIImageView+VLoadingAnimations.h"
-#import "UIView+AutoLayout.h"
-#import "VVideoView.h"
+const CGFloat kMaximumLoopingTime = 30.0f;
 
-#import "VDependencyManager+VBackgroundContainer.h"
-#import "VDependencyManager+VBackground.h"
+@interface VVideoSequencePreviewView ()
 
-#import "VImageAsset.h"
-#import "VImageAssetFinder.h"
+@property (nonatomic, assign) VVideoPreviewViewState state;
+@property (nonatomic, strong) NSURL *assetURL;
+@property (nonatomic, strong) VVideoSettings *videoSettings;
+@property (nonatomic, strong) VAsset *HLSAsset;
 
-@interface VVideoSequencePreviewView () <VVideoViewDelegate>
-
-@property (nonatomic, strong) UIImageView *previewImageView;
-@property (nonatomic, strong) UIView *playIconContainerView;
-@property (nonatomic, strong) VVideoView *videoView;
-@property (nonatomic, assign) BOOL hasFocus;
-@property (nonatomic, strong) UIView *backgroundContainerView;
+@property (nonatomic, strong) SoundBarView *soundIndicator;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -41,165 +42,186 @@
     self = [super initWithFrame:frame];
     if (self != nil)
     {
-        _previewImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
-        _previewImageView.contentMode = UIViewContentModeScaleAspectFill;
-        _previewImageView.clipsToBounds = YES;
-        [self addSubview:_previewImageView];
-        [self v_addFitToParentConstraintsToSubview:_previewImageView];
+        _soundIndicator = [[SoundBarView alloc] init];
+        _soundIndicator.translatesAutoresizingMaskIntoConstraints = NO;
+        _soundIndicator.hidden = YES;
+        [self addSubview:_soundIndicator];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[_soundIndicator(20)]"
+                                                                               options:0
+                                                                               metrics:nil
+                                                                                 views:NSDictionaryOfVariableBindings(_soundIndicator)]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_soundIndicator(16)]-10-|"
+                                                                                options:0
+                                                                                metrics:nil
+                                                                                  views:NSDictionaryOfVariableBindings(_soundIndicator)]];
         
-        _playIconContainerView = [[UIView alloc] initWithFrame:CGRectZero];
-        _playIconContainerView.backgroundColor = [UIColor clearColor];
-        [self addSubview:_playIconContainerView];
-        [self v_addCenterToParentContraintsToSubview:_playIconContainerView];
+        _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        _activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
+        _activityIndicator.hidesWhenStopped = YES;
+        _activityIndicator.hidden = YES;
+        [self addSubview:_activityIndicator];
+        [self v_addCenterToParentContraintsToSubview:_activityIndicator];
         
-        UIImageView *playIconCircle = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlayCircle"]];
-        [_playIconContainerView addSubview:playIconCircle];
-        [_playIconContainerView v_addFitToParentConstraintsToSubview:playIconCircle];
-        
-        UIImageView *playIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlayTriangle"]];
-        [_playIconContainerView addSubview:playIconView];
-        [_playIconContainerView v_addFitToParentConstraintsToSubview:playIconView];
-        
-        _videoView = [[VVideoView alloc] initWithFrame:self.bounds];
-        _videoView.delegate = self;
-        _videoView.layer.shouldRasterize = YES;
-        [self addSubview:_videoView];
-        [self v_addFitToParentConstraintsToSubview:_videoView];
+        _videoSettings = [[VVideoSettings alloc] init];
     }
     return self;
 }
-
-#pragma mark - VSequencePreviewView Overrides
 
 - (void)setSequence:(VSequence *)sequence
 {
     [super setSequence:sequence];
     
-    [self makeBackgroundContainerViewVisible:NO];
+    [self setState:VVideoPreviewViewStateEnded];
     
-    // Hide video view in case we're not auto playing
-    self.videoView.hidden = YES;
+    self.assetURL = nil;
     
-    VImageAssetFinder *imageFinder = [[VImageAssetFinder alloc] init];
-    VImageAsset *imageAsset = [imageFinder largestAssetFromAssets:sequence.previewAssets];
-
-    __weak VVideoSequencePreviewView *weakSelf = self;
-    void (^completionBlock)(void) = ^void(void)
+    self.HLSAsset = [sequence.firstNode httpLiveStreamingAsset];
+    
+    // Check HLS asset to see if we should autoplay and only if it's over 30 seconds
+    if ( self.HLSAsset.streamAutoplay.boolValue )
     {
-        __strong VVideoSequencePreviewView *strongSelf = weakSelf;
-        if ( strongSelf == nil )
+        // Check if autoplay is enabled before loading asset URL
+        if ([self.videoSettings isAutoplayEnabled])
         {
-            return;
+            [self loadAssetURL:[NSURL URLWithString:self.HLSAsset.data] andLoop:NO];
         }
-        
-        strongSelf.readyForDisplay = YES;
-    };
-
-    [self.previewImageView fadeInImageAtURL:[NSURL URLWithString:imageAsset.imageURL]
-                           placeholderImage:nil
-                        alongsideAnimations:^
-     {
-         [self makeBackgroundContainerViewVisible:YES];
-     }
-                                 completion:^(UIImage *image)
-     {
-         if (image != nil)
-         {
-             completionBlock();
-         }
-         else
-         {
-             // that URL failed, lets gracefully fall back
-             [self.previewImageView fadeInImageAtURL:[sequence inStreamPreviewImageURL]
-                                    placeholderImage:nil
-                                          completion:^(UIImage *image)
-              {
-                  completionBlock();
-              }];
-         }
-     }];
-    
-    VAsset *asset = [sequence.firstNode mp4Asset];
-    if ( asset.streamAutoplay.boolValue )
-    {
-        self.videoView.hidden = NO;
-        self.playIconContainerView.hidden = YES;
-        __weak VVideoSequencePreviewView *weakSelf = self;
-        [self.videoView setItemURL:[NSURL URLWithString:asset.data]
-                              loop:asset.loop.boolValue
-                        audioMuted:asset.audioMuted.boolValue
-                alongsideAnimation:^
-         {
-             [weakSelf makeBackgroundContainerViewVisible:YES];
-         }];
-    }
-    else
-    {
-        self.videoView.hidden = YES;
-        self.playIconContainerView.hidden = NO;
     }
 }
 
-#pragma mark - VVideoViewDelegate
-
-- (void)videoViewPlayerDidBecomeReady:(VVideoView *)videoView
+- (void)loadAssetURL:(NSURL *)url andLoop:(BOOL)loop
 {
-    if (self.hasFocus)
-    {
-        [self makeBackgroundContainerViewVisible:YES];
-        [videoView play];
-    }
+    self.assetURL = url;
+    
+    __weak VVideoSequencePreviewView *weakSelf = self;
+    [self.videoView setItemURL:url
+                          loop:loop
+                    audioMuted:YES
+            alongsideAnimation:^
+     {
+         [weakSelf makeBackgroundContainerViewVisible:YES];
+     }];
 }
 
-#pragma mark - VCellFocus
+- (void)setState:(VVideoPreviewViewState)state
+{
+    _state = state;
+    switch (state)
+    {
+        case VVideoPreviewViewStateBuffering:
+            [self.activityIndicator startAnimating];
+            self.activityIndicator.hidden = NO;
+            [self.soundIndicator stopAnimating];
+            self.soundIndicator.hidden = YES;
+            self.videoView.hidden = NO;
+            self.playIconContainerView.hidden = YES;
+            break;
+        case VVideoPreviewViewStatePlaying:
+            [self makeBackgroundContainerViewVisible:YES];
+            [self.activityIndicator stopAnimating];
+            self.soundIndicator.hidden = NO;
+            [self.soundIndicator startAnimating];
+            self.videoView.hidden = NO;
+            self.playIconContainerView.hidden = YES;
+            break;
+        case VVideoPreviewViewStatePaused:
+            [self makeBackgroundContainerViewVisible:YES];
+            [self.activityIndicator stopAnimating];
+            self.soundIndicator.hidden = YES;
+            [self.soundIndicator stopAnimating];
+            self.videoView.hidden = YES;
+            self.playIconContainerView.hidden = YES;
+            break;
+        case VVideoPreviewViewStateEnded:
+            [self.activityIndicator stopAnimating];
+            self.soundIndicator.hidden = YES;
+            [self.soundIndicator stopAnimating];
+            self.videoView.hidden = YES;
+            self.playIconContainerView.hidden = NO;
+            break;
+    }
+}
 
 - (void)setHasFocus:(BOOL)hasFocus
 {
-    _hasFocus = hasFocus;
-    if (_hasFocus)
+    [super setHasFocus:hasFocus];
+    
+    // If we're not autoplaying, return right away
+    if (self.assetURL == nil)
     {
-        [self makeBackgroundContainerViewVisible:YES];
-        [self.videoView play];
+        return;
+    }
+    
+    // Play or pause video depending on focus
+    if (self.inFocus)
+    {
+        [self playVideo];
     }
     else
     {
-        [self.videoView pause];
+        [self pauseVideo];
     }
 }
 
-- (CGRect)contentArea
+- (void)playVideo
 {
-    return self.bounds;
-}
-
-#pragma mark - VContentModeAdjustablePreviewView
-
-- (void)updateToFitContent:(BOOL)fit withBackgroundSupplier:(VDependencyManager *)dependencyManager
-{
-    self.videoView.useAspectFit = fit;
-    self.previewImageView.contentMode = fit ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleToFill;
-    [dependencyManager addBackgroundToBackgroundHost:self];
-}
-
-- (UIView *)backgroundContainerView
-{
-    if ( _backgroundContainerView != nil )
+    if (![self.videoView playbackLikelyToKeepUp])
     {
-        return _backgroundContainerView;
+        [self setState:VVideoPreviewViewStateBuffering];
     }
-    
-    _backgroundContainerView = [[UIView alloc] init];
-    _backgroundContainerView.backgroundColor = [UIColor clearColor];
-    _backgroundContainerView.alpha = 0.0f;
-    [self addSubview:_backgroundContainerView];
-    [self sendSubviewToBack:_backgroundContainerView];
-    [self v_addFitToParentConstraintsToSubview:_backgroundContainerView];
-    return _backgroundContainerView;
+    else
+    {
+        [self setState:VVideoPreviewViewStatePlaying];
+    }
+    [self.videoView playWithoutSeekingToBeginning];
 }
 
-- (void)makeBackgroundContainerViewVisible:(BOOL)visible
+- (void)pauseVideo
 {
-    self.backgroundContainerView.alpha = visible ? 1.0f : 0.0f;
+    [self setState:VVideoPreviewViewStateEnded];
+    [self.videoView pauseWithoutSeekingToBeginning];
+}
+
+#pragma mark - Video Player Delegate
+
+- (void)videoViewPlayerDidBecomeReady:(VVideoView *__nonnull)videoView
+{
+    [super videoViewPlayerDidBecomeReady:videoView];
+    if (self.inFocus)
+    {
+        [self playVideo];
+    }
+}
+
+- (void)videoDidReachEnd:(VVideoView *__nonnull)videoView
+{
+    // Loop if asset is under max looping time
+    if (self.HLSAsset.duration != nil && [self.HLSAsset.duration integerValue] <= kMaximumLoopingTime)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            [self.videoView playFromStart];
+        });
+    }
+    else
+    {
+        [self setState:VVideoPreviewViewStateEnded];
+    }
+}
+
+- (void)videoViewDidStartBuffering:(VVideoView *__nonnull)videoView
+{
+    if (self.inFocus)
+    {
+        [self setState:VVideoPreviewViewStateBuffering];
+    }
+}
+
+- (void)videoViewDidStopBuffering:(VVideoView *__nonnull)videoView
+{
+    if (self.inFocus)
+    {
+        [self setState:VVideoPreviewViewStatePlaying];
+    }
 }
 
 @end

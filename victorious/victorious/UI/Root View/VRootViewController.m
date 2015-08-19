@@ -34,6 +34,7 @@
 #import "VHashtagResponder.h"
 #import "VFollowResponder.h"
 #import "VURLSelectionResponder.h"
+#import "victorious-Swift.h"
 
 NSString * const VApplicationDidBecomeActiveNotification = @"VApplicationDidBecomeActiveNotification";
 
@@ -97,8 +98,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     self.deepLinkReceiver = [[VDeeplinkReceiver alloc] init];
     self.applicationTracking = [[VApplicationTracking alloc] init];
     [[VTrackingManager sharedInstance] addDelegate:self.applicationTracking];
-    
-    [[VObjectManager sharedManager] resetSessionID];
     
     self.sessionTimer = [[VSessionTimer alloc] init];
     
@@ -393,6 +392,15 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     }
 }
 
+- (void)handleLocalNotification:(UILocalNotification *)localNotification
+{
+    NSString *deeplinkUrlString = localNotification.userInfo[ [LocalNotificationScheduler deplinkURLKey] ];
+    if ( deeplinkUrlString != nil && deeplinkUrlString.length > 0 )
+    {
+        [[VRootViewController rootViewController] openURL:[NSURL URLWithString:deeplinkUrlString]];
+    }
+}
+
 - (void)openURL:(NSURL *)url
 {
     [self.deepLinkReceiver receiveDeeplink:url];
@@ -511,7 +519,11 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 #pragma mark - VFollowResponder
 
-- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion fromViewController:(UIViewController *)viewControllerToPresentOn withScreenName:(NSString *)screenName
+- (void)followUser:(VUser *)user
+withAuthorizedBlock:(void (^)(void))authorizedBlock
+     andCompletion:(VFollowHelperCompletion)completion
+fromViewController:(UIViewController *)viewControllerToPresentOn
+    withScreenName:(NSString *)screenName
 {
     UIViewController *sourceViewController = viewControllerToPresentOn?:self;
     
@@ -525,10 +537,15 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 - (void)unfollowUser:(VUser *)user
  withAuthorizedBlock:(void (^)(void))authorizedBlock
        andCompletion:(VFollowHelperCompletion)completion
+  fromViewController:(UIViewController *)viewControllerToPresentOn withScreenName:(NSString *)screenName
 {
+    UIViewController *sourceViewController = viewControllerToPresentOn?:self;
+    
     [self.followHelper unfollowUser:user
                 withAuthorizedBlock:authorizedBlock
-                      andCompletion:completion];
+                      andCompletion:completion
+                 fromViewController:sourceViewController
+                     withScreenName:screenName];
 }
 
 #pragma mark - VHashtag

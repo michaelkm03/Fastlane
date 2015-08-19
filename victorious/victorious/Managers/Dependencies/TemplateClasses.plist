@@ -140,10 +140,12 @@
 	<string>VCardDirectoryCellFactory</string>
 	<key>inset.streamCell</key>
 	<string>VInsetStreamCellFactory</string>
-	<key>sleek.streamCell</key>
-	<string>victorious.VSequenceContentCellFactory</string>
 	<key>titleOverlay.streamCell</key>
 	<string>VTitleOverlayStreamCellFactory</string>
+	<key>sleek.streamCell</key>
+	<string>victorious.VSequenceContentCellFactory</string>
+	<key>trending.shelf</key>
+	<string>victorious.VTrendingShelfCellFactory</string>
 	<key>fullscreen.marqueeCell</key>
 	<string>VFullscreenMarqueeController</string>
 	<key>blurred.marqueeCell</key>
@@ -164,5 +166,7 @@
 	<string>VForcedWorkspaceContainerViewController</string>
 	<key>publish.screen</key>
 	<string>VPublishViewController</string>
+	<key>userHashtagSearch.screen</key>
+	<string>VUsersAndTagsSearchViewController</string>
 </dict>
 </plist>

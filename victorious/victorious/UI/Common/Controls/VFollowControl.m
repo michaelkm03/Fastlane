@@ -158,6 +158,10 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
             break;
             
         case VFollowControlStateUnfollowed:
+        {
+            BOOL showUnselectedTintColor = self.unselectedTintColor != nil && self.controlState == VFollowControlStateUnfollowed && self.tintUnselectedImage;
+            tintColor = showUnselectedTintColor ? self.unselectedTintColor : self.selectedTintColor;
+        }
         default:
             break;
     }
@@ -189,12 +193,30 @@ static NSString * const kFollowedBackgroundIconKey = @"followed_user_background_
     if ( dependencyManager != nil )
     {
         self.onImage = [[dependencyManager imageForKey:kFollowedCheckmarkIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        self.offImage = [[dependencyManager imageForKey:kFollowIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         self.selectedBackgroundImage = [[dependencyManager imageForKey:kFollowedBackgroundIconKey] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        
         self.selectedTintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+        [self updateOffImage];
         [self updateFollowImageView];
     }
+}
+
+- (void)setTintUnselectedImage:(BOOL)tintUnselectedImage
+{
+    _tintUnselectedImage = tintUnselectedImage;
+    [self updateOffImage];
+    [self updateFollowImageView];
+}
+
+- (void)setUnselectedTintColor:(UIColor *)unselectedTintColor
+{
+    _unselectedTintColor = unselectedTintColor;
+    [self updateFollowImageView];
+}
+
+- (void)updateOffImage
+{
+    UIImageRenderingMode renderingMode = self.tintUnselectedImage ? UIImageRenderingModeAlwaysTemplate : UIImageRenderingModeAlwaysOriginal;
+    self.offImage = [[self.dependencyManager imageForKey:kFollowIconKey] imageWithRenderingMode:renderingMode];
 }
 
 + (VFollowControlState)controlStateForFollowing:(BOOL)following

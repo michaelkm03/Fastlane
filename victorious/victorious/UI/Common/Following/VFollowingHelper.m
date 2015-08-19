@@ -102,8 +102,13 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
 - (void)unfollowUser:(VUser *)user
  withAuthorizedBlock:(void (^)(void))authorizedBlock
        andCompletion:(VFollowHelperCompletion)completion
+  fromViewController:(UIViewController *)viewControllerToPresentOn
+      withScreenName:(NSString *)screenName
 {
     NSParameterAssert(completion != nil);
+    NSParameterAssert(viewControllerToPresentOn != nil);
+    
+    self.viewControllerToPresentAuthorizationOn = viewControllerToPresentOn;
     
     [self withAuthorizationDo:^(BOOL authorized)
      {
@@ -136,7 +141,11 @@ fromViewController:(UIViewController *)viewControllerToPresentOn
              completion(user);
          };
          
-         [[VObjectManager sharedManager] unfollowUser:user successBlock:successBlock failBlock:failureBlock];
+         NSString *sourceScreen = screenName?:VFollowSourceScreenUnknown;
+         [[VObjectManager sharedManager] unfollowUser:user
+                                         successBlock:successBlock
+                                            failBlock:failureBlock
+                                           fromScreen:sourceScreen];
      }];
 }
 

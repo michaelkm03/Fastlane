@@ -43,4 +43,6 @@ extern NSString * const VScaffoldViewControllerNavigationBarAppearanceKey;
  */
 - (VDependencyManager *)dependencyManagerForNavigationBar;
 
+- (UIColor *)barItemTintColor;
+
 @end

@@ -14,6 +14,8 @@
  */
 @interface VHashTagTextView : CCHLinkTextView
 
+- (void)updateForLinkTextForegroundColor:(UIColor *)color;
+
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end

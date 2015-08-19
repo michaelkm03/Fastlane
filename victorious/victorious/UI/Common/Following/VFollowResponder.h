@@ -10,6 +10,8 @@
 
 @class VUser;
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  VFollowCommandCompletion blocks are executed after a command has completed.
  *
@@ -17,23 +19,25 @@
  */
 typedef void (^VFollowEventCompletion)(VUser *userActedOn);
 
-static NSString * const VFollowSourceScreenDiscoverSuggestedUsers = @"discover.suggest";
-static NSString * const VFollowSourceScreenReposter = @"reposter";
-static NSString * const VFollowSourceScreenProfile = @"profile";
-static NSString * const VFollowSourceScreenDiscoverUserSearchResults = @"discover.search";
-static NSString * const VFollowSourceScreenFollowers = @"followers";
-static NSString * const VFollowSourceScreenFollowing = @"following";
-static NSString * const VFollowSourceScreenLikers = @"likers";
-static NSString * const VFollowSourceScreenMessageableUsers = @"messageable_users";
-static NSString * const VFollowSourceScreenFindFriendsContacts = @"find_friends.contacts";
-static NSString * const VFollowSourceScreenFindFriendsFacebook = @"find_friends.facebook";
-static NSString * const VFollowSourceScreenFindFriendsTwitter = @"find_friends.twitter";
-static NSString * const VFollowSourceScreenShelf = @"shelf";
-static NSString * const VFollowSourceScreenRegistrationSuggestedUsers = @"registration.suggest";
+extern NSString * const VFollowSourceScreenDiscoverSuggestedUsers;
+extern NSString * const VFollowSourceScreenReposter;
+extern NSString * const VFollowSourceScreenProfile;
+extern NSString * const VFollowSourceScreenDiscoverUserSearchResults;
+extern NSString * const VFollowSourceScreenFollowers;
+extern NSString * const VFollowSourceScreenFollowing;
+extern NSString * const VFollowSourceScreenLikers;
+extern NSString * const VFollowSourceScreenMessageableUsers;
+extern NSString * const VFollowSourceScreenFindFriendsContacts;
+extern NSString * const VFollowSourceScreenFindFriendsFacebook;
+extern NSString * const VFollowSourceScreenFindFriendsTwitter;
+extern NSString * const VFollowSourceScreenStream;
+extern NSString * const VFollowSourceScreenTrendingUserShelf;
+extern NSString * const VFollowSourceScreenRecommendedUserShelf;
+extern NSString * const VFollowSourceScreenRegistrationSuggestedUsers;
 // Untracked is used when a screen performs 'follow' action
 // through the responder chain unexpectedly. Instead of sending nil,
 // send this so we can track them down later
-static NSString * const VFollowSourceScreenUnknown = @"unknown";
+extern NSString * const VFollowSourceScreenUnknown;
 
 @protocol VFollowResponder <NSObject>
 
@@ -41,22 +45,32 @@ static NSString * const VFollowSourceScreenUnknown = @"unknown";
  *  A command for the current user to follow a specific user.
  *
  *  @param user The user
+ *  @param authorizedBlock Authroized block to be performed after authroization(if necessary)
  *  @param completion Required completion block.
+ *  @param viewControllerToPresentOn The viewController to present the authorization action on
+ *  @param screenName The sourceScreenName of source view controller
  */
 - (void)followUser:(VUser *)user
-withAuthorizedBlock:(void (^)(void))authorizedBlock
+withAuthorizedBlock:(void (^ __nullable)(void))authorizedBlock
      andCompletion:(VFollowEventCompletion)completion
-fromViewController:(UIViewController *)viewControllerToPresentOn
-    withScreenName:(NSString *)screenName;
+fromViewController:(UIViewController * __nullable)viewControllerToPresentOn
+    withScreenName:(NSString * __nullable)screenName;
 
 /**
  *  A command for the current user to unfollow a specific user.
  *
  *  @param user The user
+ *  @param authorizedBlock Authroized block to be performed after authroization(if necessary)
  *  @param completion Required completion block.
+ *  @param viewControllerToPresentOn The viewController to present the authorization action on
+ *  @param screenName The sourceScreenName of source view controller
  */
 - (void)unfollowUser:(VUser *)user
- withAuthorizedBlock:(void (^)(void))authorizedBlock
-       andCompletion:(VFollowEventCompletion)completion;
+ withAuthorizedBlock:(void (^ __nullable)(void))authorizedBlock
+       andCompletion:(VFollowEventCompletion)completion
+  fromViewController:(UIViewController * __nullable)viewControllerToPresentOn
+       withScreenName:(NSString * __nullable)screenName;
 
 @end
+
+NS_ASSUME_NONNULL_END

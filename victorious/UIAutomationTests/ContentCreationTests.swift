@@ -12,11 +12,6 @@ class ContentCreationTests: VictoriousTestCase {
     
     func testCreateImage() {
         
-        self.dismissWelcomeIfPresent()
-        
-        // Login if forced login is presented
-        self.loginIfRequired()
-        
         self.tester().tapViewWithAccessibilityLabel( "Menu Create" )
         
         // Log in if presented after pressing "Create"
@@ -27,7 +22,6 @@ class ContentCreationTests: VictoriousTestCase {
         self.grantLibraryPermissionIfRequired()
         
         // Select image from gallery
-        self.tester().waitForTimeInterval( 2.0 )
         let indexPath = NSIndexPath(forRow: 0, inSection: 0)
         self.tester().tapItemAtIndexPath( indexPath, inCollectionViewWithAccessibilityIdentifier: VAutomationIdentifierMediaGalleryCollection )
         

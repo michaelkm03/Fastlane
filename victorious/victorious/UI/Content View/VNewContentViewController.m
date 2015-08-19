@@ -1023,6 +1023,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             
             VContentCommentsCell *commentCell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier
                                                                                           forIndexPath:indexPath];
+            commentCell.accessibilityIdentifier = VAutomationIdentifierContentViewCommentCell;
             commentCell.sequencePermissions = self.viewModel.sequence.permissions;
             [self configureCommentCell:commentCell withIndex:indexPath.row];
             return commentCell;

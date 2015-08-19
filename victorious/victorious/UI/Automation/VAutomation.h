@@ -54,6 +54,7 @@ extern NSString * const VAutomationIdentifierGrantLibraryAccess;
 extern NSString * const VAutomationIdentifierPublishCatpionText;
 extern NSString * const VAutomationIdentifierPublishFinish;
 extern NSString * const VAutomationIdentifierStreamCellCaption;
+extern NSString * const VAutomationIdentifierStreamCell;
 
 extern NSString * const VAutomationIdentifierContentViewBallotButtonA;
 extern NSString * const VAutomationIdentifierContentViewBallotButtonB;

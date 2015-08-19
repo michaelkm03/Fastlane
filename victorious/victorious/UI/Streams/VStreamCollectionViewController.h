@@ -40,6 +40,10 @@ const CGFloat VStreamCollectionViewControllerCreateButtonHeight; ///< The height
 
 - (void)showHashtagStreamWithHashtag:(NSString *)hashtag;
 
+- (void)navigateToStreamItem:(VStreamItem *)streamItem fromStream:(VStream *)stream previewImage:(UIImage *)image;
+
+- (void)navigateToStream:(VStream *)stream atStreamItem:(VStreamItem *)streamItem;
+
 /**
  *  For tracking purposes, each cell will only count as having been viewed if the ratio of its
  *  visible area is greater than or equal to this value.
