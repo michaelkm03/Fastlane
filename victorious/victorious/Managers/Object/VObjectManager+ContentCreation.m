@@ -258,6 +258,10 @@ NSString * const VObjectManagerContentGIFParameter              = @"is_gif_style
     {
         parameters[@"source"] = publishParameters.source;
     }
+    if ( publishParameters.assetRemoteId != nil )
+    {
+        parameters[@"remote_id"] = publishParameters.assetRemoteId;
+    }
     
     NSURL *endpoint = [NSURL URLWithString:@"/api/mediaupload/create" relativeToURL:self.baseURL];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:endpoint];
@@ -422,7 +426,7 @@ NSString * const VObjectManagerContentGIFParameter              = @"is_gif_style
         newComment = [self newCommentWithID:commentID onSequence:sequence text:payload[@"text"] shouldAutoplay:shouldAutoplay mediaURLPath:[mediaURL absoluteString]];
         newComment.realtime = time;
         newComment.mediaWidth = @(publishParameters.width);
-        newComment.mediaHeight = @(publishParameters.Height);
+        newComment.mediaHeight = @(publishParameters.height);
         [self fetchCommentByID:[payload[@"id"] integerValue] successBlock:nil failBlock:nil];
         
         NSString *commentText = payload[@"text"];
@@ -568,7 +572,7 @@ NSString * const VObjectManagerContentGIFParameter              = @"is_gif_style
     tempMessage.senderUserId = self.mainUser.remoteId;
     tempMessage.shouldAutoplay = [NSNumber numberWithBool:publishParameters.isGIF];
     tempMessage.mediaWidth = [NSNumber numberWithInteger:publishParameters.width];
-    tempMessage.mediaHeight = [NSNumber numberWithInteger:publishParameters.Height];
+    tempMessage.mediaHeight = [NSNumber numberWithInteger:publishParameters.height];
     
     return tempMessage;
 }
