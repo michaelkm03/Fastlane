@@ -34,6 +34,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         didSet {
             if let dependencyManager = dependencyManager {
                 authorizedAction = VAuthorizedAction(objectManager: VObjectManager.sharedManager(), dependencyManager: dependencyManager)
+                navigationItem.title = dependencyManager.stringForKey(VDependencyManagerTitleKey)
             }
         }
     }
@@ -94,18 +95,20 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         
         // Do this here so that the keyboard bar animates in with pushes
         focusHelper?.updateFocus()
-        updateInsetForKeyboardBarState()
+        dispatch_after(0.1, { () -> () in
+            self.updateInsetForKeyboardBarState()
+        })
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
-        self.resignFirstResponder()
     }
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
-        
+
+        self.resignFirstResponder()
         collectionView.flashScrollIndicators()
         focusHelper?.endFocusOnAllCells()
     }
@@ -211,12 +214,11 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     // MARK: - VCommentCellUtilitiesDelegate
     
     func commentRemoved(comment: VComment) {
-    }
-    
-    func commentRemoved(comment: VComment, atIndex index: Int) {
         collectionView.performBatchUpdates({
-            self.collectionView.deleteItemsAtIndexPaths([NSIndexPath(forItem: index, inSection: 0)])
-        }, completion: nil)
+            var commentIndex = self.commentsDataSourceSwitcher.dataSource.indexOfComment(comment)
+            self.commentsDataSourceSwitcher.dataSource.removeCommentAtIndex(commentIndex)
+            self.collectionView.deleteItemsAtIndexPaths([NSIndexPath(forItem: commentIndex, inSection: 0)])
+            }, completion: nil)
     }
     
     func editComment(comment: VComment) {

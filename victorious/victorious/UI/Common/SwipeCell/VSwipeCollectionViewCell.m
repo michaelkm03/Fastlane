@@ -60,11 +60,6 @@
     [self.commentsUtilitiesDelegate commentRemoved:comment];
 }
 
-- (void)commentRemoved:(VComment *)comment atIndex:(NSInteger)index
-{
-    [self.commentsUtilitiesDelegate commentRemoved:comment atIndex:index];
-}
-
 - (void)editComment:(VComment *)comment
 {
     [self.commentsUtilitiesDelegate editComment:comment];

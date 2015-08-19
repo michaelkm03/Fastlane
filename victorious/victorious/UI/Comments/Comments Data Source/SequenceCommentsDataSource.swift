@@ -14,6 +14,7 @@ class SequenceCommentsDataSource : CommentsDataSource {
     
     init(sequence: VSequence) {
         self.sequence = sequence
+        sortInternalComments()
     }
     
     private var sortedInternalComments = [VComment]()
@@ -93,6 +94,13 @@ class SequenceCommentsDataSource : CommentsDataSource {
             })
         },
             failBlock: nil)
+    }
+    
+    func removeCommentAtIndex(index: Int) {
+        var updatedComments = sortedInternalComments
+        updatedComments.removeAtIndex(index)
+        sortedInternalComments = updatedComments
+        delegate?.commentsDataSourceDidUpdate(self)
     }
 
 }

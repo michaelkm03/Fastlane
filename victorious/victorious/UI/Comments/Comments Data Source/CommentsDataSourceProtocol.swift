@@ -34,6 +34,9 @@ protocol CommentsDataSource {
     
     /// Loads comements with a deepLink comment ID.
     func loadComments(deepLinkCommentID: NSNumber)
+    
+    /// Removes the comment from the data source. Note this is just to coordinate with commentCell which is doing the actual API request and deletion
+    func removeCommentAtIndex(index: Int)
 
 }
 

@@ -584,11 +584,21 @@
         return;
     }
     
+    VLog(@"loading comments on sequence with pageType: %@", @(pageType));
     [[VObjectManager sharedManager] loadCommentsOnSequence:self.sequence
                                                   pageType:pageType
                                               successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
+         for (VComment *comment in self.sequence.comments)
+         {
+             VLog(@"sequence.comment.text: %@", comment.text);
+         }
          self.comments = [self.sequence.comments array];
+         for (VComment *comment in self.sequence.comments)
+         
+         {
+             VLog(@"self.comments.text: %@", comment.text);
+         }
          [self.delegate didUpdateCommentsWithPageType:pageType];
      }
                                                  failBlock:nil];

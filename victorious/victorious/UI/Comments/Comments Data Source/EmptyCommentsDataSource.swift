@@ -33,4 +33,6 @@ class EmtpyCommentsDataSource : CommentsDataSource {
     
     func loadComments(commentID: NSNumber) { }
 
+    func removeCommentAtIndex(index: Int) {}
+    
 }
