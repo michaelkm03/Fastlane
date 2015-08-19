@@ -20,7 +20,6 @@ import sys
 import subprocess
 import shutil
 import os
-import urllib
 import tempfile
 import vams_common as vams
 
@@ -75,7 +74,11 @@ def proccessAppAssets(json):
             if _DEBUG:
                 print '%s (%s)' % (asset_name, platform_assets[asset])
 
-            urllib.urlretrieve(img_url,new_file)
+            response = requests.get(img_url)
+            if len(response.content) > 0:
+                with open(new_file, 'wb') as outfile:
+                    outfile.write(response.content)
+
             current_cnt = current_cnt+1
 
     if _DEBUG:
