@@ -11,11 +11,14 @@ import Foundation
 extension VDependencyManager {
     
     func commentsViewController(sequence: VSequence) -> CommentsViewController? {
-        var commentViewController = self.templateValueOfType(CommentsViewController.self, forKey: "commentsScreen") as? CommentsViewController
-        commentViewController?.sequence = sequence
-        return commentViewController
+        if let commentsViewController = self.templateValueOfType(CommentsViewController.self, forKey: "commentsScreen") as? CommentsViewController {
+            commentsViewController.sequence = sequence
+            return commentsViewController
+        }
+        else {
+            return nil
+        }
     }
-
 }
 
 class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayout, VScrollPaginatorDelegate, VTagSensitiveTextViewDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, UICollectionViewDataSource, CommentsDataSourceDelegate, VKeyboardInputAccessoryViewDelegate, VUserTaggingTextStorageDelegate {
@@ -95,9 +98,9 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         
         // Do this here so that the keyboard bar animates in with pushes
         focusHelper?.updateFocus()
-        dispatch_after(0.1, { () -> () in
+        dispatch_after(0.1){
             self.updateInsetForKeyboardBarState()
-        })
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -186,13 +189,11 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     }
     
     func cellWillShowUtilityButtons(cellView: UIView!) {
-        
-        for cell in collectionView.visibleCells() {
-            if cell as! NSObject === cellView {
-                continue
-            }
-            if let commentCell = cell as? VContentCommentsCell {
-                commentCell.swipeViewController.hideUtilityButtons()
+        if let commentCells = collectionView.visibleCells() as? [VContentCommentsCell] {
+            for cell in commentCells {
+                if cell != cellView {
+                    cell.swipeViewController.hideUtilityButtons()
+                }
             }
         }
     }
@@ -240,7 +241,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     // MARK: - VEditCommentViewControllerDelegate
     
     func didFinishEditingComment(comment: VComment) {
-        dismissViewControllerAnimated(true, completion: {
+        dismissViewControllerAnimated(true) {
             for cell in self.collectionView.visibleCells() {
                 if let commentCell = cell as? VContentCommentsCell where commentCell.comment.remoteId == comment.remoteId {
                     // Set updated comment on cell
@@ -258,7 +259,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
                     }
                 }
             }
-        })
+        }
     }
     
     // MARK: - UICollectionViewDataSource
@@ -436,7 +437,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         
         mediaAttachmentPresenter = VMediaAttachmentPresenter(dependencymanager: dependencyManager)
         
-        var mediaAttachmentOptions : VMediaAttachmentOptions = {
+        let mediaAttachmentOptions: VMediaAttachmentOptions = {
             switch attachmentType {
             case .Video:
                 return VMediaAttachmentOptions.Video
@@ -447,17 +448,19 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             }
         }()
 
-        mediaAttachmentPresenter?.attachmentTypes = mediaAttachmentOptions
-        mediaAttachmentPresenter?.resultHandler = { [weak self](success: Bool, publishParameters: VPublishParameters?) in
-            if let strongSelf = self {
-                strongSelf.publishParameters = publishParameters
-                strongSelf.mediaAttachmentPresenter = nil
-                strongSelf.keyboardBar?.setSelectedThumbnail(publishParameters?.previewImage)
-                strongSelf.keyboardBar?.startEditing()
-                strongSelf.dismissViewControllerAnimated(true, completion: nil)
+        if let mediaAttachmentPresenter = mediaAttachmentPresenter {
+            mediaAttachmentPresenter.attachmentTypes = mediaAttachmentOptions
+            mediaAttachmentPresenter.resultHandler = { [weak self](success: Bool, publishParameters: VPublishParameters?) in
+                if let strongSelf = self {
+                    strongSelf.publishParameters = publishParameters
+                    strongSelf.mediaAttachmentPresenter = nil
+                    strongSelf.keyboardBar?.setSelectedThumbnail(publishParameters?.previewImage)
+                    strongSelf.keyboardBar?.startEditing()
+                    strongSelf.dismissViewControllerAnimated(true, completion: nil)
+                }
             }
+            mediaAttachmentPresenter.presentOnViewController(self)
         }
-        mediaAttachmentPresenter?.presentOnViewController(self)
     }
     
     // MARK: - VUserTaggingTextStorageDelegate
