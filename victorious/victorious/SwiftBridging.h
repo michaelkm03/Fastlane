@@ -125,3 +125,4 @@
 #import "VSequencePreviewView.h"
 #import "VBaseVideoSequencePreviewView.h"
 #import "VAsset+Fetcher.h"
+#import "VPhotoFilter.h"
