@@ -540,7 +540,6 @@
 		A721E94D1B572454000B7901 /* UIColor+VHex.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8DA1B572453000B7901 /* UIColor+VHex.m */; };
 		A721E94E1B572454000B7901 /* UIImage+Cropping.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8DC1B572453000B7901 /* UIImage+Cropping.m */; };
 		A721E94F1B572454000B7901 /* UIImage+ImageCreation.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8DE1B572453000B7901 /* UIImage+ImageCreation.m */; };
-		A721E9501B572454000B7901 /* UIImage+Masking.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8E01B572453000B7901 /* UIImage+Masking.m */; };
 		A721E9511B572454000B7901 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8E21B572453000B7901 /* UIImage+Resize.m */; };
 		A721E9521B572454000B7901 /* UIImage+Round.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8E41B572453000B7901 /* UIImage+Round.m */; };
 		A721E9531B572454000B7901 /* UIImage+VSolidColor.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8E61B572453000B7901 /* UIImage+VSolidColor.m */; };
@@ -557,7 +556,6 @@
 		A721E95E1B572454000B7901 /* UIView+RecursiveSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721E8FB1B572454000B7901 /* UIView+RecursiveSearch.swift */; };
 		A721E95F1B572454000B7901 /* UIView+VDynamicsHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8FD1B572454000B7901 /* UIView+VDynamicsHelpers.m */; };
 		A721E9611B572454000B7901 /* UIView+VViewRendering.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E9011B572454000B7901 /* UIView+VViewRendering.m */; };
-		A721E9621B572454000B7901 /* UIViewController+ForceOrientationChange.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E9031B572454000B7901 /* UIViewController+ForceOrientationChange.m */; };
 		A721E9631B572454000B7901 /* UIViewController+VLayoutInsets.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E9051B572454000B7901 /* UIViewController+VLayoutInsets.m */; };
 		A721E9641B572454000B7901 /* VAlertViewBlockDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E9071B572454000B7901 /* VAlertViewBlockDelegate.m */; };
 		A721E9661B572454000B7901 /* VConversation+UnreadMessageCount.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E90B1B572454000B7901 /* VConversation+UnreadMessageCount.m */; };
@@ -833,7 +831,6 @@
 		B07BFD611B26761D00784FC8 /* VHashtagHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = B07BFD601B26761D00784FC8 /* VHashtagHelper.m */; };
 		B0D8BAAD1B545A3600087057 /* VListicleView.m in Sources */ = {isa = PBXBuildFile; fileRef = B0D8BAAC1B545A3600087057 /* VListicleView.m */; };
 		B0DDD5571B4DF7F80065E540 /* VPermissionsTrackingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = B0DDD5561B4DF7F80065E540 /* VPermissionsTrackingHelper.m */; };
-		B0DDD55D1B4F0C230065E540 /* NSDictionary+VMerge.m in Sources */ = {isa = PBXBuildFile; fileRef = B0DDD55C1B4F0C230065E540 /* NSDictionary+VMerge.m */; };
 		B0E1584E1B715269004F0A60 /* VUtilityButtonFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = B0E1584D1B715269004F0A60 /* VUtilityButtonFlowLayout.m */; };
 		B0E158541B7159FE004F0A60 /* VUtilityButtonSeperator.m in Sources */ = {isa = PBXBuildFile; fileRef = B0E158521B7159FE004F0A60 /* VUtilityButtonSeperator.m */; };
 		B0E158551B7159FE004F0A60 /* VUtilityButtonSeperator.xib in Resources */ = {isa = PBXBuildFile; fileRef = B0E158531B7159FE004F0A60 /* VUtilityButtonSeperator.xib */; };
@@ -1893,7 +1890,6 @@
 		03C185BE19B42F0E00E27D05 /* VSequenceUserInteractions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceUserInteractions.m; sourceTree = "<group>"; };
 		03C185C519B42FD600E27D05 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		03C185C619B42FD600E27D05 /* victorious-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "victorious-Prefix.pch"; sourceTree = "<group>"; };
-		03C185CE19B4308400E27D05 /* VAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAnimation.h; sourceTree = "<group>"; };
 		03C82F1E1A81DDFE00190C7D /* VUserTaggingTextStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserTaggingTextStorage.h; sourceTree = "<group>"; };
 		03C82F1F1A81DDFE00190C7D /* VUserTaggingTextStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserTaggingTextStorage.m; sourceTree = "<group>"; };
 		03C92D131ABB96030057D30E /* LightweightContentView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LightweightContentView.storyboard; sourceTree = "<group>"; };
@@ -2253,8 +2249,6 @@
 		A721E8DC1B572453000B7901 /* UIImage+Cropping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Cropping.m"; sourceTree = "<group>"; };
 		A721E8DD1B572453000B7901 /* UIImage+ImageCreation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageCreation.h"; sourceTree = "<group>"; };
 		A721E8DE1B572453000B7901 /* UIImage+ImageCreation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageCreation.m"; sourceTree = "<group>"; };
-		A721E8DF1B572453000B7901 /* UIImage+Masking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Masking.h"; sourceTree = "<group>"; };
-		A721E8E01B572453000B7901 /* UIImage+Masking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Masking.m"; sourceTree = "<group>"; };
 		A721E8E11B572453000B7901 /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resize.h"; sourceTree = "<group>"; };
 		A721E8E21B572453000B7901 /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
 		A721E8E31B572453000B7901 /* UIImage+Round.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Round.h"; sourceTree = "<group>"; };
@@ -2286,8 +2280,6 @@
 		A721E8FD1B572454000B7901 /* UIView+VDynamicsHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+VDynamicsHelpers.m"; sourceTree = "<group>"; };
 		A721E9001B572454000B7901 /* UIView+VViewRendering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+VViewRendering.h"; sourceTree = "<group>"; };
 		A721E9011B572454000B7901 /* UIView+VViewRendering.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+VViewRendering.m"; sourceTree = "<group>"; };
-		A721E9021B572454000B7901 /* UIViewController+ForceOrientationChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ForceOrientationChange.h"; sourceTree = "<group>"; };
-		A721E9031B572454000B7901 /* UIViewController+ForceOrientationChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ForceOrientationChange.m"; sourceTree = "<group>"; };
 		A721E9041B572454000B7901 /* UIViewController+VLayoutInsets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+VLayoutInsets.h"; sourceTree = "<group>"; };
 		A721E9051B572454000B7901 /* UIViewController+VLayoutInsets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+VLayoutInsets.m"; sourceTree = "<group>"; };
 		A721E9061B572454000B7901 /* VAlertViewBlockDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAlertViewBlockDelegate.h; sourceTree = "<group>"; };
@@ -2781,8 +2773,6 @@
 		B0D8BAAC1B545A3600087057 /* VListicleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VListicleView.m; sourceTree = "<group>"; };
 		B0DDD5551B4DF7F80065E540 /* VPermissionsTrackingHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPermissionsTrackingHelper.h; sourceTree = "<group>"; };
 		B0DDD5561B4DF7F80065E540 /* VPermissionsTrackingHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPermissionsTrackingHelper.m; sourceTree = "<group>"; };
-		B0DDD55B1B4F0C230065E540 /* NSDictionary+VMerge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+VMerge.h"; sourceTree = "<group>"; };
-		B0DDD55C1B4F0C230065E540 /* NSDictionary+VMerge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+VMerge.m"; sourceTree = "<group>"; };
 		B0E1584C1B715269004F0A60 /* VUtilityButtonFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUtilityButtonFlowLayout.h; sourceTree = "<group>"; };
 		B0E1584D1B715269004F0A60 /* VUtilityButtonFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUtilityButtonFlowLayout.m; sourceTree = "<group>"; };
 		B0E158511B7159FE004F0A60 /* VUtilityButtonSeperator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUtilityButtonSeperator.h; sourceTree = "<group>"; };
@@ -5046,7 +5036,6 @@
 		03C185CD19B4308400E27D05 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				03C185CE19B4308400E27D05 /* VAnimation.h */,
 				A74293991AAFE4A400532948 /* VAuthorizationContext.h */,
 				A74B43101B0BDF63003C19A0 /* VAccessoryNavigationSource.h */,
 				D8A2615C1AD7693A00780F00 /* VAuthorizationContextProvider.h */,
@@ -5430,8 +5419,6 @@
 				A721E8DC1B572453000B7901 /* UIImage+Cropping.m */,
 				A721E8DD1B572453000B7901 /* UIImage+ImageCreation.h */,
 				A721E8DE1B572453000B7901 /* UIImage+ImageCreation.m */,
-				A721E8DF1B572453000B7901 /* UIImage+Masking.h */,
-				A721E8E01B572453000B7901 /* UIImage+Masking.m */,
 				A721E8E11B572453000B7901 /* UIImage+Resize.h */,
 				A721E8E21B572453000B7901 /* UIImage+Resize.m */,
 				A721E8E31B572453000B7901 /* UIImage+Round.h */,
@@ -5465,8 +5452,6 @@
 				A721E8FD1B572454000B7901 /* UIView+VDynamicsHelpers.m */,
 				A721E9001B572454000B7901 /* UIView+VViewRendering.h */,
 				A721E9011B572454000B7901 /* UIView+VViewRendering.m */,
-				A721E9021B572454000B7901 /* UIViewController+ForceOrientationChange.h */,
-				A721E9031B572454000B7901 /* UIViewController+ForceOrientationChange.m */,
 				F0FC98121B61AAA10098AFCB /* UIViewController+VAccessoryScreens.h */,
 				F0FC98131B61AAA10098AFCB /* UIViewController+VAccessoryScreens.m */,
 				A721E9041B572454000B7901 /* UIViewController+VLayoutInsets.h */,
@@ -6482,8 +6467,6 @@
 				0326C35F19F8226200DBC341 /* Images.xcassets */,
 				BE171DE91868C211004E5202 /* ManagedObjectModels */,
 				BE171DD91868C211004E5202 /* Managers */,
-				B0DDD55B1B4F0C230065E540 /* NSDictionary+VMerge.h */,
-				B0DDD55C1B4F0C230065E540 /* NSDictionary+VMerge.m */,
 				794246431B7D39A200F5F879 /* Operations */,
 				03C185CD19B4308400E27D05 /* Protocols */,
 				D8B0500E19AD2A740048E2BE /* Simple Models */,
@@ -8974,7 +8957,6 @@
 				037D2D5F1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.m in Sources */,
 				D8917EA219F8498F0070BDBB /* VVideoCellViewModel.m in Sources */,
 				A77951311B28F7F400D9DB0A /* VContentThumbnailsDataSource.m in Sources */,
-				B0DDD55D1B4F0C230065E540 /* NSDictionary+VMerge.m in Sources */,
 				D85B708C1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.m in Sources */,
 				A7D707731A797B8A00D9993F /* VVideoSettings.m in Sources */,
 				D8DF72291AFEC360002EA7A5 /* VTabMenuShim.m in Sources */,
@@ -9030,7 +9012,6 @@
 				A7DDA6E71B601D20005CE55E /* UICollectionViewCell+SwiftReuse.swift in Sources */,
 				A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */,
 				A601FB591B43657F0050536C /* VMediaAttachmentPresenter.m in Sources */,
-				A721E9621B572454000B7901 /* UIViewController+ForceOrientationChange.m in Sources */,
 				B074C5B41B39D41F00EA3FFC /* VHashmarkView.m in Sources */,
 				C30AA4F61B06B82A0010CEFE /* VPermissionPhotoLibrary.m in Sources */,
 				03C82F201A81DDFE00190C7D /* VUserTaggingTextStorage.m in Sources */,
@@ -9199,7 +9180,6 @@
 				D80536271B17B5CB0049B77A /* VPromptCollectionViewCell.m in Sources */,
 				F02024AD1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m in Sources */,
 				0314D48619B46B5E00FA363C /* VKeyboardBarViewController.m in Sources */,
-				A721E9501B572454000B7901 /* UIImage+Masking.m in Sources */,
 				DB8D3A1319803A03005DD36D /* VHashTags.m in Sources */,
 				BE80780519D778E500EECDEB /* VFullscreenMarqueeController.m in Sources */,
 				D8D3B7181AB20E6600CF966C /* VTrimLoopingPlayerViewController.m in Sources */,

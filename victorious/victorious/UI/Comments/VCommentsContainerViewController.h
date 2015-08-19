@@ -7,14 +7,11 @@
 //
 
 #import "VKeyboardBarContainerViewController.h"
-
-#import "VAnimation.h"
-
 #import "VDependencyManager.h"
 
 @class VSequence, VComment, VDependencyManager;
 
-@interface VCommentsContainerViewController : VKeyboardBarContainerViewController <VAnimation>
+@interface VCommentsContainerViewController : VKeyboardBarContainerViewController
 
 @property (nonatomic, readonly) VSequence *sequence;
 
