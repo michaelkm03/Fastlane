@@ -330,18 +330,24 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
     func commentsDataSourceDidUpdate(dataSource: CommentsDataSource) {
         
+        for index in 0..<dataSource.numberOfComments {
+            var comment = dataSource.commentAtIndex(index)
+            println("commenttext: \(comment.text) at index: \(index)")
+        }
+        
         if collectionView.numberOfItemsInSection(0) == 0 {
             // First load 
-            collectionView.performBatchUpdates({ () in
-                    var indexPaths = [NSIndexPath]()
-                    for index in 0..<dataSource.numberOfComments {
-                        indexPaths.append(NSIndexPath(forItem: index, inSection: 0))
-                    }
-                    self.collectionView.insertItemsAtIndexPaths(indexPaths)
-                }, completion: { (finished: Bool) in
-                    self.collectionView.flashScrollIndicators()
-                    self.focusHelper?.updateFocus()
-                })
+//            collectionView.performBatchUpdates({ () in
+//                    var indexPaths = [NSIndexPath]()
+//                    for index in 0..<dataSource.numberOfComments {
+//                        indexPaths.append(NSIndexPath(forItem: index, inSection: 0))
+//                    }
+//                    self.collectionView.insertItemsAtIndexPaths(indexPaths)
+//                }, completion: { (finished: Bool) in
+//                    self.collectionView.flashScrollIndicators()
+//                    self.focusHelper?.updateFocus()
+//                })
+            collectionView.reloadData()
         }
         else if (collectionView.numberOfItemsInSection(0) != dataSource.numberOfComments) {
             // We only need to update if things have changed

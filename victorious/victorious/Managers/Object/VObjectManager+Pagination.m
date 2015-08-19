@@ -105,13 +105,30 @@ static const NSInteger kUserSearchResultLimit = 20;
             }
             else
             {
+                for (VComment *comment in sequence.comments)
+                {
+                    VLog(@"sequence comments comment text: %@, remoteID: %@", comment.text, comment.remoteId);
+                }
                 NSMutableOrderedSet *comments = [sequence.comments mutableCopy];
                 [comments addObjectsFromArray:resultObjects];
                 sequenceInContext.comments = [comments copy];
             }
             
+            for (VComment *resultObject in resultObjects)
+            {
+                VLog(@"result object: %@, remoteID: %@", resultObject.text, resultObject.remoteId);
+            }
+            
+            for (VComment *comment in sequenceInContext.comments)
+            {
+                VLog(@"comment text: %@, remoteID: %@", comment.text, comment.remoteId);
+            }
+            
             [sequenceInContext.managedObjectContext saveToPersistentStore:nil];
             
+            
+            
+//            VLog(@"sequence comments: %@", sequence.comments);
             if (success)
             {
                 success(operation, fullResponse, resultObjects);

@@ -19,7 +19,7 @@ class SequenceCommentsDataSource : CommentsDataSource {
     func loadFirstPage() {
         
         VObjectManager.sharedManager().loadCommentsOnSequence(sequence,
-            pageType: VPageType.First,
+            pageType: VPageType.Next,
             successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
                 dispatch_async(dispatch_get_main_queue(), { () in
                     delegate?.commentsDataSourceDidUpdate(self)
@@ -55,12 +55,27 @@ class SequenceCommentsDataSource : CommentsDataSource {
     }
     
     func commentAtIndex(index: Int) -> VComment {
-        var comment = sequence.comments?.objectAtIndex(index) as? VComment ?? VComment()
-        return comment
+        
+        
+        
+        var commentsArray = sequence.comments?.array as? [VComment]
+        if let commentsArray = commentsArray {
+            var comment = commentsArray[index]
+            println("comment: \(comment.text) at index: \(index)")
+            return comment
+        }
+        return VComment()
     }
     
     func indexOfComment(comment: VComment) -> Int {
-        return sequence.comments?.indexOfObject(comment) ?? 0
+        var commentsArray = sequence.comments?.array as? [VComment]
+        if let commentsArray = commentsArray {
+            var index = find(commentsArray, comment)
+            if let index = index {
+                return index
+            }
+        }
+        return 0
     }
     
     var delegate : CommentsDataSourceDelegate? {
