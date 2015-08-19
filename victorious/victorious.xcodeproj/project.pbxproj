@@ -381,6 +381,7 @@
 		79A809C41B7BF912006AE04E /* CommentsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 79A809C31B7BF912006AE04E /* CommentsViewController.storyboard */; };
 		79A809C61B7C07DF006AE04E /* UIViewController+Storyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A809C51B7C07DF006AE04E /* UIViewController+Storyboard.swift */; };
 		79A80C7D1B7928FD00C14020 /* VTabScaffoldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A80C7C1B7928FD00C14020 /* VTabScaffoldViewController.m */; };
+		79B51FD41B853A1900F826F3 /* NSDate+ComparableEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B51FD31B853A1900F826F3 /* NSDate+ComparableEquatable.swift */; };
 		99F4DB51782658B7D034EC2F /* libPods-victorious-test.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7B45F61E6B2831D5E9459C3 /* libPods-victorious-test.a */; };
 		9F95A0FBA78C16AF3EA43793 /* libPods-victorious.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7B5532F9C5AF61978DBF51E /* libPods-victorious.a */; };
 		A601FB491B4354D10050536C /* VAbstractImageVideoCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB481B4354D10050536C /* VAbstractImageVideoCreationFlowController.m */; };
@@ -1994,6 +1995,7 @@
 		79A80C7B1B7928FD00C14020 /* VTabScaffoldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTabScaffoldViewController.h; sourceTree = "<group>"; };
 		79A80C7C1B7928FD00C14020 /* VTabScaffoldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTabScaffoldViewController.m; sourceTree = "<group>"; };
 		79ACFD16A2EFEF8FE18E316E /* Pods-VictoriousCommonOSX.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.qa.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.qa.xcconfig"; sourceTree = "<group>"; };
+		79B51FD31B853A1900F826F3 /* NSDate+ComparableEquatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+ComparableEquatable.swift"; sourceTree = "<group>"; };
 		83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.qa.xcconfig"; sourceTree = "<group>"; };
 		861888B7B5EA1C709A7ABB6B /* Pods-VictoriousCommonOSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.debug.xcconfig"; sourceTree = "<group>"; };
 		8E360EC509E852CE3E872948 /* Pods-victorious-test.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.debug.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.debug.xcconfig"; sourceTree = "<group>"; };
@@ -5523,6 +5525,7 @@
 				A6B9FD0E1B60630900166BE8 /* NSURL+VTemporaryFiles.m */,
 				A7C713B11B74450A00089B5E /* GCDUtils.swift */,
 				79A809C51B7C07DF006AE04E /* UIViewController+Storyboard.swift */,
+				79B51FD31B853A1900F826F3 /* NSDate+ComparableEquatable.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -9392,6 +9395,7 @@
 				BE799B9219C8A91C0023CE88 /* VNode.m in Sources */,
 				D85B70881B0EB3350038CA5B /* VStandardLoginFlowViewController.m in Sources */,
 				BE5C7379187E36E800A3340D /* VNodeAction.m in Sources */,
+				79B51FD41B853A1900F826F3 /* NSDate+ComparableEquatable.swift in Sources */,
 				0314D4B719B46B5E00FA363C /* VLightboxViewController.m in Sources */,
 				D8F12A6D1A6F093900E99B3D /* VPublishParameters.m in Sources */,
 				C3C734501B5F118F00D6795D /* ExperienceEnhancerIconView.swift in Sources */,

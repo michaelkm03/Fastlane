@@ -20,13 +20,10 @@ class SequenceCommentsDataSource : CommentsDataSource {
     private var sortedInternalComments = [VComment]()
     
     func sortInternalComments() {
-        var sortedComments = self.sequence.comments?.sortedArrayUsingComparator{
-            let comment1 = $0 as! VComment
-            let comment2 = $1 as! VComment
-            let result = comment2.postedAt.compare(comment1.postedAt)
-            return result
+        if var comments = self.sequence.comments?.array as? [VComment] {
+            comments.sort({ $0.postedAt > $1.postedAt })
+            self.sortedInternalComments = comments
         }
-        sortedInternalComments = sortedComments as! [VComment]
     }
     
     func loadFirstPage() {
@@ -35,9 +32,9 @@ class SequenceCommentsDataSource : CommentsDataSource {
             pageType: VPageType.Next,
             successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
                 self.sortInternalComments()
-                dispatch_async(dispatch_get_main_queue(), { () in
+                dispatch_async(dispatch_get_main_queue()) {
                     delegate?.commentsDataSourceDidUpdate(self)
-                })
+                }
             },
             failBlock: nil)
     }
@@ -47,9 +44,9 @@ class SequenceCommentsDataSource : CommentsDataSource {
             pageType: VPageType.Next,
             successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
                 self.sortInternalComments()
-                dispatch_async(dispatch_get_main_queue(), { () in
+                dispatch_async(dispatch_get_main_queue()){
                     delegate?.commentsDataSourceDidUpdate(self)
-                })
+                }
             },
             failBlock: nil)
     }
@@ -59,9 +56,9 @@ class SequenceCommentsDataSource : CommentsDataSource {
             pageType: VPageType.Previous,
             successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
                 self.sortInternalComments()
-                dispatch_async(dispatch_get_main_queue(), { () in
+                dispatch_async(dispatch_get_main_queue()){
                     delegate?.commentsDataSourceDidUpdate(self)
-                })
+                }
             },
             failBlock: nil)
     }
@@ -75,7 +72,10 @@ class SequenceCommentsDataSource : CommentsDataSource {
     }
     
     func indexOfComment(comment: VComment) -> Int {
-        return find(sortedInternalComments, comment)!
+        if let commentIndex = find(sortedInternalComments, comment) {
+            return commentIndex
+        }
+        return 0
     }
     
     var delegate : CommentsDataSourceDelegate? {
@@ -89,9 +89,9 @@ class SequenceCommentsDataSource : CommentsDataSource {
     func loadComments(commentID: NSNumber) {
         VObjectManager.sharedManager().findCommentPageOnSequence(sequence, withCommentId: commentID,
             successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
-            dispatch_async(dispatch_get_main_queue(), { () in
+            dispatch_async(dispatch_get_main_queue()){
                 delegate?.commentsDataSourceDidUpdate(self, deepLinkId: commentID)
-            })
+            }
         },
             failBlock: nil)
     }
