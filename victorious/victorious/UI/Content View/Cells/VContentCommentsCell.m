@@ -219,10 +219,7 @@ static NSCache *_sharedImageCache = nil;
 - (void)setURLForCommenterAvatar:(NSURL *)URLForCommenterAvatar
 {
     _URLForCommenterAvatar = [URLForCommenterAvatar copy];
-
-    [self.commentersAvatarImageView sd_setImageWithURL:URLForCommenterAvatar
-                                      placeholderImage:self.commentersAvatarImageView.image];
-
+    [self.commentersAvatarImageView setProfileImageURL:_URLForCommenterAvatar];
 }
 
 - (void)setTimestampText:(NSString *)timestampText
