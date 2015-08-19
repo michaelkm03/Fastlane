@@ -279,7 +279,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
 
 - (void)trackAutoplayEvent:(NSString *)event urls:(NSArray *)urls
 {
-    AutoplayTrackingEvent *trackingEvent = [self eventWithName:event urls:urls ?: @[]];
+    AutoplayTrackingEvent *trackingEvent = [[AutoplayTrackingEvent alloc] initWithName:event urls:urls ?: @[]];
     
     // Walk responder chain to track autoplay events
     id<AutoplayTracking>responder = [self v_targetConformingToProtocol:@protocol(AutoplayTracking)];
@@ -287,12 +287,6 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     {
         [responder trackAutoplayEvent:trackingEvent];
     }
-}
-
-- (AutoplayTrackingEvent *)eventWithName:(NSString *)name urls:(NSArray *)urls
-{
-    AutoplayTrackingEvent *event = [[AutoplayTrackingEvent alloc] initWithName:name urls:urls];
-    return event;
 }
 
 - (NSDictionary *)trackingInfo

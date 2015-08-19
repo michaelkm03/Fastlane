@@ -130,11 +130,6 @@
     return nil;
 }
 
-- (NSDictionary *__nonnull)additionalInfo
-{
-    return [self.previewView trackingInfo];
-}
-
 #pragma mark - Autoplay tracking
 
 - (void)trackAutoplayEvent:(AutoplayTrackingEvent *__nonnull)event
@@ -147,6 +142,11 @@
     {
         [responder trackAutoplayEvent:event];
     }
+}
+
+- (NSDictionary *__nonnull)additionalInfo
+{
+    return [self.previewView trackingInfo] ?: @{};
 }
 
 @end

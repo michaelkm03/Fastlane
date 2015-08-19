@@ -11,6 +11,7 @@
 #import "VHasManagedDependencies.h"
 #import "VStreamCellSpecialization.h"
 
+NS_ASSUME_NONNULL_BEGIN
 @class VStreamItem, VStreamItemPreviewView;
 
 /**
@@ -34,23 +35,23 @@ typedef void (^VPreviewViewDisplayReadyBlock)(VStreamItemPreviewView *previewVie
  *  The factory method for the VStreamItemPreviewView, will provide a concrete subclass specialized to
  *  the given streamItem.
  */
-+ (VStreamItemPreviewView *)streamItemPreviewViewWithStreamItem:(VStreamItem *)streamItem;
++ (VStreamItemPreviewView *)streamItemPreviewViewWithStreamItem:(VStreamItem *__nullable)streamItem;
 
 /**
  *  Use to update a streamItem preview view for a new streamItem.
  */
-@property (nonatomic, strong) VStreamItem *streamItem;
+@property (nonatomic, strong, nullable) VStreamItem *streamItem;
 
 /**
  *  Returns YES if this instance of VStreamItemPreviewView can handle the given streamItem.
  */
-- (BOOL)canHandleStreamItem:(VStreamItem *)streamItem;
+- (BOOL)canHandleStreamItem:(VStreamItem *__nullable)streamItem;
 
 /**
  *  A block that should be called when the preview view becomes ready to display.
  *  This block is called automatically when readyForDisplay is set to YES.
  */
-@property (nonatomic, copy) VPreviewViewDisplayReadyBlock displayReadyBlock;
+@property (nonatomic, copy, nullable) VPreviewViewDisplayReadyBlock displayReadyBlock;
 
 /**
  *  Subclasses set this to YES when they have loaded all the content
@@ -59,8 +60,11 @@ typedef void (^VPreviewViewDisplayReadyBlock)(VStreamItemPreviewView *previewVie
 @property (nonatomic, assign) BOOL readyForDisplay;
 
 /**
- *  Returns tracking info specific to things happening inside this preview view.
+ *  Returns tracking info specific to things happening inside this preview view. 
+ *  Subclasses can override to provide necessary tracking info for when action is
+ *  taken on the cell (when the cell is tapped for example).
  */
 - (NSDictionary *)trackingInfo;
 
 @end
+NS_ASSUME_NONNULL_END

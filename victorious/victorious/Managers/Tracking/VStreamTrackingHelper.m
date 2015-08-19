@@ -188,9 +188,9 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
     NSString *volumeString = [NSString stringWithFormat:@"%li", (long)outputVolume];
     
     NSString *trackingID = @"";
+    StreamCellContext *context = event.context;
     if (event.context != nil)
     {
-        StreamCellContext *context = event.context;
         trackingID = context.fromShelf ? context.stream.shelfId : context.stream.trackingIdentifier;
     }
     
@@ -201,7 +201,7 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
                                  VTrackingKeyStreamId : trackingID ?: @"",
                                  VTrackingKeyTimeCurrent : [event.watchTime stringValue] ?: @""};
     
-    [[VTrackingManager sharedInstance] queueEvent:event.name parameters:parameters eventId:event.context.streamItem.remoteId];
+    [[VTrackingManager sharedInstance] queueEvent:event.name parameters:parameters eventId:context.streamItem.remoteId];
 }
 
 #pragma mark - Private

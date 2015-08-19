@@ -8,7 +8,8 @@
 
 import Foundation
 
-class AutoplayTrackingEvent : NSObject {
+class AutoplayTrackingEvent: NSObject {
+    
     var name: String
     var urls: AnyObject
     var loadTime: NSNumber?
@@ -22,6 +23,6 @@ class AutoplayTrackingEvent : NSObject {
 }
 
 @objc protocol AutoplayTracking {
-    optional func trackAutoplayEvent(event: AutoplayTrackingEvent)
-    optional func additionalInfo() -> [String : AnyObject]
+    func trackAutoplayEvent(event: AutoplayTrackingEvent)
+    func additionalInfo() -> [String : AnyObject]
 }

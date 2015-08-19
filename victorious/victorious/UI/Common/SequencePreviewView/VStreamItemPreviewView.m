@@ -77,7 +77,7 @@
 
 - (NSDictionary *)trackingInfo
 {
-    // Subclasses can override to provide necessary tracking info
+    // Override in subclass
     return @{};
 }
 

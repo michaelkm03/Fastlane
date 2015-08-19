@@ -555,10 +555,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         NSDictionary *extraTrackingInfo;
         if ([cell conformsToProtocol:@protocol(AutoplayTracking)])
         {
-            if ([cell respondsToSelector:@selector(additionalInfo)])
-            {
-                extraTrackingInfo = [(id<AutoplayTracking>)cell additionalInfo];
-            }
+            extraTrackingInfo = [(id<AutoplayTracking>)cell additionalInfo];
         }
         
         [self showContentViewForCellEvent:event trackingInfo:extraTrackingInfo withPreviewImage:image];
@@ -601,10 +598,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     NSDictionary *extraTrackingInfo;
     if ([cell conformsToProtocol:@protocol(AutoplayTracking)])
     {
-        if ([cell respondsToSelector:@selector(additionalInfo)])
-        {
-            extraTrackingInfo = [(id<AutoplayTracking>)cell additionalInfo];
-        }
+        extraTrackingInfo = [(id<AutoplayTracking>)cell additionalInfo];
     }
     
     [self showContentViewForCellEvent:event trackingInfo:extraTrackingInfo withPreviewImage:nil];
@@ -1118,6 +1112,11 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 - (void)trackAutoplayEvent:(AutoplayTrackingEvent *__nonnull)event
 {
     [self.streamTrackingHelper trackAutoplayEvent:event];
+}
+
+- (NSDictionary *__nonnull)additionalInfo
+{
+    return @{};
 }
 
 @end
