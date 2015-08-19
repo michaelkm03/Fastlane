@@ -334,7 +334,6 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         
         for index in 0..<dataSource.numberOfComments {
             var comment = dataSource.commentAtIndex(index)
-            println("commenttext: \(comment.text) at index: \(index)")
         }
         
         if collectionView.numberOfItemsInSection(0) == 0 {
