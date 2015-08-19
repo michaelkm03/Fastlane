@@ -22,7 +22,7 @@ sys.dont_write_bytecode = True
 
 _VICTORIOUS_ENDPOINT = '/api/app/update_testfairy_url'
 _DEFAULT_HOST = ''
-_DEBUG = False
+_CONSOLE_OUTPUT = False
 
 
 def postTestFairyURL(app_name, testfairy_url):
@@ -67,14 +67,14 @@ def postTestFairyURL(app_name, testfairy_url):
 
     if not error_code == 0:
         error_message = 'An error occurred posting the Test Fairy URL for %s.' % app_name
-        if _DEBUG:
+        if _CONSOLE_OUTPUT:
             print error_message
         sys.exit('1|%s' % error_message)
 
     # Clean-up compiled python files
     cleanUp()
 
-    if _DEBUG:
+    if _CONSOLE_OUTPUT:
         print 'Test Fairy URL posted successfully for %s!' % app_name
         print ''
 
@@ -103,10 +103,10 @@ def showProperUsage():
 
 def main(argv):
 
-    global _DEBUG
+    global _CONSOLE_OUTPUT
 
     if len(argv) < 4:
-        if _DEBUG:
+        if _CONSOLE_OUTPUT:
             showProperUsage()
         exit_message = '1|Wrong parameters were passed to vams_postbuild.py'
         sys.exit(exit_message)
@@ -120,7 +120,7 @@ def main(argv):
         vams._DEFAULT_PLATFORM = vams._PLATFORM_IOS
 
     if platform == vams._PLATFORM_ANDROID:
-        _DEBUG = True
+        _CONSOLE_OUTPUT = True
 
 
     url = argv[3]
@@ -147,7 +147,7 @@ def main(argv):
     else:
         _DEFAULT_HOST = vams._PRODUCTION_HOST
 
-    if _DEBUG:
+    if _CONSOLE_OUTPUT:
         print ''
         print 'Using host: %s' % _DEFAULT_HOST
         print ''
@@ -156,7 +156,7 @@ def main(argv):
         postTestFairyURL(app_name, url)
     else:
         exit_message = '1|There was a problem authenticating with the Victorious backend. Exiting now...'
-        if _DEBUG:
+        if _CONSOLE_OUTPUT:
             print exit_message
         sys.exit(exit_message)
 

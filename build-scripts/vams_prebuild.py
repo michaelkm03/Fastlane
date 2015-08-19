@@ -14,6 +14,8 @@ This script assumes it is being run from the root of the code directory.
 This script is used by the following Victorious repositories:
 https://github.com/TouchFrame/VictoriousAndroid
 https://github.com/TouchFrame/VictoriousiOS
+
+NOTE: iOS receives a folder string and so CONSOLE_OUTPUT is isolated to Android only.
 """
 import requests
 import sys
@@ -31,7 +33,7 @@ _DEFAULT_HOST = ''
 
 _WORKING_DIRECTORY = ''
 
-_DEBUG = False
+_CONSOLE_OUTPUT = False
 
 def proccessAppAssets(json):
     """
@@ -60,7 +62,7 @@ def proccessAppAssets(json):
         os.makedirs(_WORKING_DIRECTORY)
 
 
-    if _DEBUG:
+    if _CONSOLE_OUTPUT:
         print "\nUsing Directory: %s" % _WORKING_DIRECTORY
         print '\nDownloading the Most Recent Art Assets for %s...' % app_title
 
@@ -71,7 +73,7 @@ def proccessAppAssets(json):
             asset_name = asset.replace('_', '-')
             new_file = '%s/%s.png' % (_WORKING_DIRECTORY, asset_name)
 
-            if _DEBUG:
+            if _CONSOLE_OUTPUT:
                 print '%s (%s)' % (asset_name, platform_assets[asset])
 
             response = requests.get(img_url)
@@ -81,7 +83,7 @@ def proccessAppAssets(json):
 
             current_cnt = current_cnt+1
 
-    if _DEBUG:
+    if _CONSOLE_OUTPUT:
         print '\n%s images downloaded' % current_cnt
         print ''
 
@@ -121,7 +123,7 @@ def retrieveAppDetails(app_name):
 
     else:
         response_message = 'No updated data for "%s" found in the Victorious backend' % app_name
-        if _DEBUG:
+        if _CONSOLE_OUTPUT:
             print response_message
 
         cleanUp()
@@ -151,7 +153,7 @@ def setAppConfig(json_obj):
         file_name = 'Info.plist'
     config_file = '%s/%s' % (_WORKING_DIRECTORY, file_name)
 
-    if _DEBUG:
+    if _CONSOLE_OUTPUT:
         print 'Applying Most Recent App Configuration Data to %s' % app_title
         print ''
         # Uncomment out the following line to display the retrieved config data
@@ -165,7 +167,7 @@ def setAppConfig(json_obj):
     # Clean-up compiled python files
     cleanUp()
 
-    if _DEBUG:
+    if _CONSOLE_OUTPUT:
         print 'Configuration and assets applied successfully!'
         print ''
 
@@ -236,20 +238,20 @@ def main(argv):
     else:
         _DEFAULT_HOST = vams._PRODUCTION_HOST
 
-    global _DEBUG
+    global _CONSOLE_OUTPUT
     if vams._DEFAULT_PLATFORM == vams._PLATFORM_ANDROID:
-        _DEBUG = True
+        _CONSOLE_OUTPUT = True
 
 
     # Uncomment the following twolines to display the host being accessed
-    if _DEBUG:
+    if _CONSOLE_OUTPUT:
         print 'Using host: %s' % _DEFAULT_HOST
 
     if vams.authenticateUser(_DEFAULT_HOST):
         retrieveAppDetails(app_name)
     else:
         exit_message = 'There was a problem authenticating with the Victorious backend. Exiting now...'
-        if _DEBUG:
+        if _CONSOLE_OUTPUT:
             print exit_message
 
         error_string = '1|%s' % exit_message
