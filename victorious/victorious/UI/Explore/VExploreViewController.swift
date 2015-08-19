@@ -17,6 +17,7 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
 
     /// The dependencyManager that is used to manage dependencies of explore screen
     private(set) var dependencyManager: VDependencyManager?
+    private let numberOfSectionsInCollectionView = 3
     
     /// MARK: - View Controller Initialization
     
@@ -34,6 +35,8 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.v_supplementaryHeaderView = searchBar
+        self.automaticallyAdjustsScrollViewInsets = false;
+        self.extendedLayoutIncludesOpaqueBars = true;
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -42,8 +45,20 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     
     /// MARK: - UICollectionViewDataSource
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let placeHolderNumber = 100
-        return placeHolderNumber
+        var numberOfRows = 0
+        
+        switch (section) {
+        case 0:
+            numberOfRows = 3
+        case 1:
+            numberOfRows = 3
+        case 2:
+            numberOfRows = 12
+        default:
+            fatalError("Unexpected number of sections in collection view")
+        }
+        
+        return numberOfRows
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -51,5 +66,9 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
             return placeHolderCell
         }
         fatalError("Could not find a cell for item!")
+    }
+    
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return numberOfSectionsInCollectionView
     }
 }
