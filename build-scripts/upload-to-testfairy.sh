@@ -106,7 +106,7 @@ if [ "$TESTER_GROUPS" == "Stable" ]; then
     echo "Posting Test Fairy url for '${APPNAME}' to Victorious backend"
 
     UPLOAD=$(python "build-scripts/vams_postbuild.py" ${APPNAME} ios ${URL})
-    if [ $UPLOAD -ne 0 ]; then
+    if [ $? -ne 0 ]; then
         echo "ERROR: Uploading Test Fairy URL to VAMS"
         exit 1
     fi
