@@ -103,7 +103,6 @@ static int const kNotificationFetchBatchSize = 50;
     self.tableView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.automaticallyAdjustsScrollViewInsets = NO;
     [self markAllNotificationsRead];
-    [self refreshTableView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -114,12 +113,7 @@ static int const kNotificationFetchBatchSize = 50;
     [self updateNavigationItem];
     [self.tableView setContentOffset:CGPointZero];
     [self refreshTableView];
-    
-    // Show refresh control if we're refreshing
-    if (self.refreshRequest != nil)
-    {
-        [self.refreshControl beginRefreshing];
-    }
+    [self.refreshControl beginRefreshing];
 }
 
 - (void)viewDidAppear:(BOOL)animated
