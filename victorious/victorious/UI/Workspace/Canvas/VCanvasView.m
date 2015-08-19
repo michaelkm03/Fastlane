@@ -11,7 +11,6 @@
 #import <UIImageView+WebCache.h>
 #import "UIScrollView+VCenterContent.h"
 #import "VPhotoFilter.h"
-#import <ImageIO/ImageIO.h>
 
 NSString * const VCanvasViewAssetSizeBecameAvailableNotification = @"VCanvasViewAssetSizeBecameAvailableNotification";
 
