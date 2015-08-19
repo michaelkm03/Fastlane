@@ -380,6 +380,7 @@
 		797226671B7E9F740023C851 /* CommentsDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797226661B7E9F740023C851 /* CommentsDataSourceProtocol.swift */; };
 		797226691B7E9F920023C851 /* SequenceCommentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797226681B7E9F920023C851 /* SequenceCommentsDataSource.swift */; };
 		7972266B1B7E9FBC0023C851 /* EmptyCommentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7972266A1B7E9FBC0023C851 /* EmptyCommentsDataSource.swift */; };
+		797A38001B84132500F39B3B /* VSequenceCommmentsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 797A37FF1B84132500F39B3B /* VSequenceCommmentsDataSource.m */; };
 		79A809C21B7BF8F7006AE04E /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A809C11B7BF8F7006AE04E /* CommentsViewController.swift */; };
 		79A809C41B7BF912006AE04E /* CommentsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 79A809C31B7BF912006AE04E /* CommentsViewController.storyboard */; };
 		79A809C61B7C07DF006AE04E /* UIViewController+Storyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A809C51B7C07DF006AE04E /* UIViewController+Storyboard.swift */; };
@@ -1969,6 +1970,8 @@
 		797226661B7E9F740023C851 /* CommentsDataSourceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsDataSourceProtocol.swift; sourceTree = "<group>"; };
 		797226681B7E9F920023C851 /* SequenceCommentsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceCommentsDataSource.swift; sourceTree = "<group>"; };
 		7972266A1B7E9FBC0023C851 /* EmptyCommentsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyCommentsDataSource.swift; sourceTree = "<group>"; };
+		797A37FE1B84132500F39B3B /* VSequenceCommmentsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceCommmentsDataSource.h; sourceTree = "<group>"; };
+		797A37FF1B84132500F39B3B /* VSequenceCommmentsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceCommmentsDataSource.m; sourceTree = "<group>"; };
 		79A809C11B7BF8F7006AE04E /* CommentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
 		79A809C31B7BF912006AE04E /* CommentsViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CommentsViewController.storyboard; sourceTree = "<group>"; };
 		79A809C51B7C07DF006AE04E /* UIViewController+Storyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Storyboard.swift"; sourceTree = "<group>"; };
@@ -5224,6 +5227,8 @@
 				797226641B7E9EDC0023C851 /* CommentsDataSourceSwitcher.swift */,
 				7972266A1B7E9FBC0023C851 /* EmptyCommentsDataSource.swift */,
 				797226681B7E9F920023C851 /* SequenceCommentsDataSource.swift */,
+				797A37FE1B84132500F39B3B /* VSequenceCommmentsDataSource.h */,
+				797A37FF1B84132500F39B3B /* VSequenceCommmentsDataSource.m */,
 			);
 			path = "Comments Data Source";
 			sourceTree = "<group>";
@@ -9022,6 +9027,7 @@
 				039ED27E19C563B700305987 /* VCameraVideoEncoder.m in Sources */,
 				A7D7079A1A7C144C00D9993F /* VEndCardActionCell.m in Sources */,
 				0314D48719B46B5E00FA363C /* VActivityIndicatorView.m in Sources */,
+				797A38001B84132500F39B3B /* VSequenceCommmentsDataSource.m in Sources */,
 				037D2D591A196B9800947A22 /* VUserProfileNavigationDestination.m in Sources */,
 				030931931A184285004E9781 /* VNavigationMenuItem.m in Sources */,
 				A7F711F91AE1D5A00086F729 /* VProfileEditViewController.m in Sources */,

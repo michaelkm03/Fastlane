@@ -16,11 +16,24 @@ class SequenceCommentsDataSource : CommentsDataSource {
         self.sequence = sequence
     }
     
+    private var sortedInternalComments = [VComment]()
+    
+    func sortInternalComments() {
+        var sortedComments = self.sequence.comments?.sortedArrayUsingComparator{
+            let comment1 = $0 as! VComment
+            let comment2 = $1 as! VComment
+            let result = comment2.postedAt.compare(comment1.postedAt)
+            return result
+        }
+        sortedInternalComments = sortedComments as! [VComment]
+    }
+    
     func loadFirstPage() {
         
         VObjectManager.sharedManager().loadCommentsOnSequence(sequence,
             pageType: VPageType.Next,
             successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
+                self.sortInternalComments()
                 dispatch_async(dispatch_get_main_queue(), { () in
                     delegate?.commentsDataSourceDidUpdate(self)
                 })
@@ -32,6 +45,7 @@ class SequenceCommentsDataSource : CommentsDataSource {
         VObjectManager.sharedManager().loadCommentsOnSequence(sequence,
             pageType: VPageType.Next,
             successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
+                self.sortInternalComments()
                 dispatch_async(dispatch_get_main_queue(), { () in
                     delegate?.commentsDataSourceDidUpdate(self)
                 })
@@ -43,6 +57,7 @@ class SequenceCommentsDataSource : CommentsDataSource {
         VObjectManager.sharedManager().loadCommentsOnSequence(sequence,
             pageType: VPageType.Previous,
             successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
+                self.sortInternalComments()
                 dispatch_async(dispatch_get_main_queue(), { () in
                     delegate?.commentsDataSourceDidUpdate(self)
                 })
@@ -51,31 +66,15 @@ class SequenceCommentsDataSource : CommentsDataSource {
     }
     
     var numberOfComments: Int {
-        return sequence.comments?.count ?? 0
+        return self.sortedInternalComments.count
     }
     
     func commentAtIndex(index: Int) -> VComment {
-        
-        
-        
-        var commentsArray = sequence.comments?.array as? [VComment]
-        if let commentsArray = commentsArray {
-            var comment = commentsArray[index]
-            println("comment: \(comment.text) at index: \(index)")
-            return comment
-        }
-        return VComment()
+        return self.sortedInternalComments[index]
     }
     
     func indexOfComment(comment: VComment) -> Int {
-        var commentsArray = sequence.comments?.array as? [VComment]
-        if let commentsArray = commentsArray {
-            var index = find(commentsArray, comment)
-            if let index = index {
-                return index
-            }
-        }
-        return 0
+        return find(sortedInternalComments, comment)!
     }
     
     var delegate : CommentsDataSourceDelegate? {

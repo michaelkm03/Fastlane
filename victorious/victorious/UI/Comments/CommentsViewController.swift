@@ -337,16 +337,6 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         
         if collectionView.numberOfItemsInSection(0) == 0 {
             // First load 
-//            collectionView.performBatchUpdates({ () in
-//                    var indexPaths = [NSIndexPath]()
-//                    for index in 0..<dataSource.numberOfComments {
-//                        indexPaths.append(NSIndexPath(forItem: index, inSection: 0))
-//                    }
-//                    self.collectionView.insertItemsAtIndexPaths(indexPaths)
-//                }, completion: { (finished: Bool) in
-//                    self.collectionView.flashScrollIndicators()
-//                    self.focusHelper?.updateFocus()
-//                })
             collectionView.reloadData()
         }
         else if (collectionView.numberOfItemsInSection(0) != dataSource.numberOfComments) {
@@ -382,6 +372,9 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
                         successBlock: { (operation : NSOperation?, result : AnyObject?, resultObjects : [AnyObject]) in
                             dispatch_async(dispatch_get_main_queue(), { () in
                                 strongSelf.collectionView.performBatchUpdates({ () in
+                                        if let seqdataSource = strongSelf.commentsDataSourceSwitcher.dataSource as? SequenceCommentsDataSource {
+                                            seqdataSource.sortInternalComments()
+                                        }
                                         strongSelf.collectionView.insertItemsAtIndexPaths([NSIndexPath(forItem: 0, inSection: 0)])
                                     }, completion: { (finished: Bool) -> Void in
                                         strongSelf.updateInsetForKeyboardBarState()
