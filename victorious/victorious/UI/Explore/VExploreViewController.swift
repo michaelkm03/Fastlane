@@ -15,7 +15,6 @@ class VExploreViewController: UIViewController{
     @IBOutlet weak private var searchBar: UISearchBar!
 
     /// The dependencyManager that is used to manage dependencies of explore screen
-    /// Setter only accessed privately, while getter accessed interally
     private(set) var dependencyManager: VDependencyManager?
     
     override func viewDidLoad() {
