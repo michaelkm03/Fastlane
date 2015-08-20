@@ -11,7 +11,7 @@
 #import "VMessage+Fetcher.h"
 #import "victorious-Swift.h"
 
-static UIEdgeInsets const kTextInsets = { 2.0f, 4.0f, 2.0f, 4.0f };
+static UIEdgeInsets const kTextInsets = { 2.0f, 0.0f, 2.0f, 0.0f };
 
 @implementation VMessageTextAndMediaView
 
@@ -32,6 +32,8 @@ static UIEdgeInsets const kTextInsets = { 2.0f, 4.0f, 2.0f, 4.0f };
     
     [self.mediaAttachmentView removeFromSuperview];
     self.mediaAttachmentView = [MediaAttachmentView mediaViewWithMessage:message];
+    
+    self.textView.textContainerInset = UIEdgeInsetsMake(1.0f, 0.0f, 0.0f, 0.0f);
 }
 
 + (CGFloat)estimatedHeightWithWidth:(CGFloat)width message:(VMessage *)message
