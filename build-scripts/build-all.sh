@@ -2,8 +2,6 @@
 ###########
 # Builds, archives, and exports all the apps in the 'configurations' folder.
 # IPA and DSYM files will be placed in the 'products' folder.
-#
-# Requires Shenzhen:  see https://github.com/nomad/shenzhen
 ###########
 
 SCHEME=$1

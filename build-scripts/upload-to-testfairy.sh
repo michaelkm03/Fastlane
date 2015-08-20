@@ -1,8 +1,6 @@
 #!/bin/bash
 ###########
 # Uploads a single app in the 'products' folder to TestFairy.
-#
-# Requires Shenzhen: see https://github.com/nomad/shenzhen
 ###########
 
 APPNAME=`basename "$1"`
@@ -12,14 +10,27 @@ APPNAME=`basename "$1"`
 TESTER_GROUPS=$2
 
 # Should email testers about new version. Set to "off" to disable email notifications.
-[[ "$3" == "--notify" ]] && NOTIFY="on" || NOTIFY="off"
+if [ "$3" == "--notify" ]; then
+    NOTIFY="on"
+    shift
+else
+    NOTIFY="off"
+fi
+
+# Should the download URL be sent to VAMS
+if [ "$3" == "--vams" ]; then
+    VAMS="on"
+else
+    VAMS="off"
+fi
 
 usage() {
-	echo "Usage: upload-to-testfairy.sh <App Name> <Tester Groups> [--notify]"
+	echo "Usage: upload-to-testfairy.sh <App Name> <Tester Groups> [--notify] [--vams]"
 	echo
 	echo -e "  <App Name>\t\tThe name of the .ipa in the products folder of the app to upload."
 	echo -e "  <Tester Groups> \tComma-separated list (no spaces) of tester groups from TestFairy account to whom this build will be shared."
-	echo -e "  --notify\t\tWhether or not to notify invited testers."
+	echo -e "  --notify\t\tNotify invited testers via e-mail."
+	echo -e "  --vams\t\tSend the download URL to VAMS."
 	echo
 }
 
@@ -89,19 +100,8 @@ if [ -z "$URL" ]; then
 fi
 echo "SUCCESS: Build was successfully uploaded to TestFairy and is available at: ${URL}"
 
-DSYM_ENDPOINT="http://app.testfairy.com/upload/dsym/";
-DSYM_FILE="products/$APPNAME.app.dSYM.zip"
-FILE_SIZE=$(stat -f "%z" "${DSYM_FILE}")
-
-echo "Uploading .dSYM ($DSYM_FILE) at ${FILE_SIZE} bytes to .dSYM server..."
-
-$CURL -s -F api_key="${TESTFAIRY_API_KEY}" -F dsym=@"${DSYM_FILE}" -o /dev/null "${DSYM_ENDPOINT}"
-
-echo ".dSYM was successfully uploaded to TestFairy."
-
-
-# Post Test Fairy url to VAMS if this is a Stable build
-if [ "$TESTER_GROUPS" == "iOS-Stable" ]; then
+# Post Test Fairy url to VAMS if requested
+if [ "$VAMS" == "on" ]; then
     echo
     echo "Posting Test Fairy url for ${APPNAME} to Victorious backend"
 
