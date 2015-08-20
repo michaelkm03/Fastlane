@@ -16,7 +16,6 @@
 
 //Controllers
 #import "VAlertController.h"
-#import "VCommentsContainerViewController.h"
 #import "VCreatePollViewController.h"
 #import "VUploadProgressViewController.h"
 #import "VUserProfileViewController.h"

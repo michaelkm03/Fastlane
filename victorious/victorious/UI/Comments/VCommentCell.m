@@ -12,6 +12,7 @@
 #import "VDefaultProfileImageView.h"
 #import "UIView+Autolayout.h"
 #import "VCommentTextAndMediaView.h"
+#import "victorious-Swift.h"
 
 NSString * const kVCommentCellNibName = @"VCommentCell";
 

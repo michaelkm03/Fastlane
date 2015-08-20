@@ -6,11 +6,11 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VContentViewAlertHelper.h"
+#import "VCommentAlertHelper.h"
 
-@implementation VContentViewAlertHelper
+@implementation VCommentAlertHelper
 
-- (UIAlertController *)alertForConfirmDiscardMediaWithDelete:(void(^)())onDelete cancel:(void(^)())onCancel
++ (UIAlertController *)alertForConfirmDiscardMediaWithDelete:(void(^)())onDelete cancel:(void(^)())onCancel
 {
     // We already have a selected media does the user want to discard and re-take?
     NSString *actionSheetTitle = NSLocalizedString(@"Delete this content and select something else?", @"User has already selected media (pictire/video) as an attachment for commenting.");
@@ -45,7 +45,7 @@
     return alertController;
 }
 
-- (UIAlertController *)alertForNextSequenceErrorWithDismiss:(void(^)())onDismiss
++ (UIAlertController *)alertForNextSequenceErrorWithDismiss:(void(^)())onDismiss
 {
     NSString *title = NSLocalizedString( @"Error Loading Next Video", @"" );
     NSString *message = NSLocalizedString( @"TryAgain", @"" );

@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 
 #import "VDependencyManager.h"
-#import "victorious-Swift.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
 
@@ -20,6 +21,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
 @end
 
 @class VTagSensitiveTextView;
+@class MediaAttachmentView;
 
 /**
  This view is used inside the comment and messaging views
@@ -29,26 +31,26 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
 @interface VTextAndMediaView : UIView
 
 @property (nonatomic) CGFloat preferredMaxLayoutWidth; ///< Used when calculating intrinsicContentSize
-@property (nonatomic, copy) void (^onMediaTapped)(UIImage *previewImage); ///< Called when the user taps the media icon
+@property (nonatomic, copy, nullable) void (^onMediaTapped)(UIImage *previewImage); ///< Called when the user taps the media icon
 
-@property (nonatomic, weak) id<VCommentMediaTapDelegate> mediaTapDelegate;
+@property (nonatomic, weak, nullable) id<VCommentMediaTapDelegate> mediaTapDelegate;
 
-@property (nonatomic) UIFont *textFont;
-@property (nonatomic, strong) VTagSensitiveTextView *textView;
+@property (nonatomic, nullable) UIFont *textFont;
+@property (nonatomic, strong, nullable) VTagSensitiveTextView *textView;
 
 @property (nonatomic, assign) BOOL inFocus;
 
-@property (nonatomic, strong) MediaAttachmentView *mediaAttachmentView;
+@property (nonatomic, strong, nullable) MediaAttachmentView *mediaAttachmentView;
 
-@property (nonatomic, strong) NSURL *mediaURLForLightbox;
+@property (nonatomic, strong, nullable) NSURL *mediaURLForLightbox;
 
-@property (nonatomic, strong) NSString *text;
-@property (nonatomic, strong) NSAttributedString *attributedText;
+@property (nonatomic, strong, nullable) NSString *text;
+@property (nonatomic, strong, nullable) NSAttributedString *attributedText;
 
 // For calculating intrinsic content size
 @property (nonatomic, assign) BOOL hasMedia;
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong, nullable) VDependencyManager *dependencyManager;
 
 /**
  Removes common customizations (text, images, etc) and returns this view to a pristine state.
@@ -59,3 +61,5 @@ static const CGFloat kSpacingBetweenTextAndMedia = 4.0f;
 + (NSDictionary *)attributesForText;
 
 @end
+
+NS_ASSUME_NONNULL_END

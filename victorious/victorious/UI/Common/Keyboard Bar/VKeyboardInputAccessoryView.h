@@ -18,7 +18,9 @@ typedef NS_ENUM(NSInteger, VKeyboardBarAttachmentType)
 
 @class VKeyboardInputAccessoryView, VDependencyManager;
 
-@protocol VKeyboardInputAccessoryViewDelegate <NSObject, VUserTaggingTextStorageDelegate>
+NS_ASSUME_NONNULL_BEGIN
+
+@protocol VKeyboardInputAccessoryViewDelegate <NSObject>
 
 /**
  *  Notifies the delegate of the input accessory view that the send button has been pressed.
@@ -86,14 +88,14 @@ typedef NS_ENUM(NSInteger, VKeyboardBarAttachmentType)
 @property (nonatomic, weak) id <VKeyboardInputAccessoryViewDelegate> delegate;
 
 /**
+ *  A user tagging text storage delegate to be informed of user tagging relevant events.
+ */
+@property (nonatomic, weak) id <VUserTaggingTextStorageDelegate> textStorageDelegate;
+
+/**
  *  The text the user composed.
  */
 @property (nonatomic, readonly) NSString *composedText;
-
-/**
- *  The placeholder text to display when the user has not entered any text in the text view.
- */
-@property (nonatomic, strong) NSString *placeholderText;
 
 /**
  *  Use this property to override the default behavior of the attachments bar and force it to hidden.
@@ -103,7 +105,7 @@ typedef NS_ENUM(NSInteger, VKeyboardBarAttachmentType)
 /**
  *  The selected thumbnail image for the current attachment. Setting this to nil will restore the original placeholder image.
  */
-- (void)setSelectedThumbnail:(UIImage *)selectedThumbnail;
+- (void)setSelectedThumbnail:(nullable UIImage *)selectedThumbnail;
 
 /**
  *  Call this to stop editing.
@@ -111,8 +113,6 @@ typedef NS_ENUM(NSInteger, VKeyboardBarAttachmentType)
  *  @return Returns whether or not the view really stopped editing and resigned first responder.
  */
 - (BOOL)stopEditing;
-
-@property (nonatomic, weak) UITextView *editingTextView;
 
 /**
  *  Call this to have the textView embedded in this view to become first responder.
@@ -147,3 +147,5 @@ typedef NS_ENUM(NSInteger, VKeyboardBarAttachmentType)
 - (CGRect)obscuredRectInWindow:(UIWindow *)window;
 
 @end
+
+NS_ASSUME_NONNULL_END

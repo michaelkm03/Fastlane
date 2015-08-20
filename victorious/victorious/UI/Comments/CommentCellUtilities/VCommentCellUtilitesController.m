@@ -130,7 +130,6 @@ static const CGFloat kVCommentCellUtilityButtonWidth = 55.0f;
                                      successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
      {
          [self.delegate commentRemoved:self.comment];
-         
          [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidDeleteComment];
      }
                                         failBlock:^(NSOperation *operation, NSError *error)
