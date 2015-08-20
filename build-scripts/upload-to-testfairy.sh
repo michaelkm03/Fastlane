@@ -101,7 +101,7 @@ echo ".dSYM was successfully uploaded to TestFairy."
 
 
 # Post Test Fairy url to VAMS if this is a Stable build
-if [ "$TESTER_GROUPS" == "Stable" ]; then
+if [ "$TESTER_GROUPS" == "iOS-Stable" ]; then
     echo
     echo "Posting Test Fairy url for ${APPNAME} to Victorious backend"
 
