@@ -62,7 +62,7 @@ static UIEdgeInsets const kTextInsets = { 2.0f, 4.0f, 2.0f, 4.0f };
                                                                  options:NSStringDrawingUsesLineFragmentOrigin
                                                                  context:[[NSStringDrawingContext alloc] init]];
          }];
-        
+
         mediaSpacing = kSpacingBetweenTextAndMedia;
         totalTextHeight = VCEIL(CGRectGetHeight(boundingRect)) + kTextInsets.top + kTextInsets.bottom;
     }
