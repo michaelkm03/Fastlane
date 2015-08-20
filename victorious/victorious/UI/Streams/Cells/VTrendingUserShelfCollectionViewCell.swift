@@ -198,7 +198,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
             responder.trendingUserShelfSelected(shelf.user, fromShelf: shelf)
         }
         else {
-            assertionFailure("VTrendingUserShelfCollectionViewCell needs a VTrendingUserShelfResponder up it's responder chain to send messages to.")
+            assertionFailure("VTrendingUserShelfCollectionViewCell had a user selected from an invalid shelf")
         }
     }
     
@@ -218,7 +218,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
                         }, fromViewController: nil, withScreenName: VFollowSourceScreenTrendingUserShelf)
             }
             else {
-                assertionFailure("The VTrendingUserShelfCollectionViewCell needs a follow responder further up its responder chain.")
+                assertionFailure("The VTrendingUserShelfCollectionViewCell attempted to follow non-UserShelf shelf")
             }
         case .Followed:
             if let shelf = shelf as? UserShelf {
@@ -233,7 +233,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
                     }, fromViewController: nil, withScreenName: VFollowSourceScreenTrendingUserShelf)
             }
             else {
-                assertionFailure("The VTrendingUserShelfCollectionViewCell needs a follow responder further up its responder chain.")
+                assertionFailure("The VTrendingUserShelfCollectionViewCell attempted to unfollow non-UserShelf shelf")
             }
         case .Loading:
             break

@@ -181,7 +181,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
                     })
             }
             else {
-                assertionFailure("The VTrendingHashtagShelfCollectionViewCell needs a hashtag responder further up its responder chain.")
+                assertionFailure("The VTrendingHashtagShelfCollectionViewCell attempted to follow non-HashtagShelf shelf")
             }
         case .Followed:
             if let shelf = shelf as? HashtagShelf {
@@ -198,7 +198,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
                     })
             }
             else {
-                assertionFailure("The VTrendingHashtagShelfCollectionViewCell needs a hashtag responder further up its responder chain.")
+                assertionFailure("The VTrendingHashtagShelfCollectionViewCell attempted to unfollow non-HashtagShelf shelf")
             }
         case .Loading:
             break

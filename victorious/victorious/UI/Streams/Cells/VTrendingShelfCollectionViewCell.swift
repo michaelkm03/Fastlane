@@ -133,7 +133,7 @@ extension VTrendingShelfCollectionViewCell : UICollectionViewDelegate {
                 return
             }
         }
-        assertionFailure("VTrendingShelfCollectionViewCell needs a VShelfStreamItemSelectionResponder up it's responder chain to send messages to.")
+        assertionFailure("VTrendingShelfCollectionViewCell selected an invalid stream item")
     }
     
 }
