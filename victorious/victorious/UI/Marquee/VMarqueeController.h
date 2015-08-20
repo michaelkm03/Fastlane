@@ -11,7 +11,7 @@
 #import "VMarqueeSelectionDelegate.h"
 #import "VMarqueeDataDelegate.h"
 
-@class VAbstractMarqueeCollectionViewCell, VShelf;
+@class VAbstractMarqueeCollectionViewCell, Shelf;
 
 /**
     Classes that conform to this protocol will manage a marquee's display
@@ -55,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Sets up the marquee with the provided shelf. The shelf's items will be KVO'd to keep the marquee properly updated.
  */
-- (void)setShelf:(VShelf *)shelf;
+- (void)setShelf:(Shelf *)shelf;
 
 /**
  Sets the delegate that will be called when content is selected from the marquee.

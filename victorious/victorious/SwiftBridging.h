@@ -95,6 +95,7 @@
 #import "VShelf.h"
 #import "VSimpleModalTransition.h"
 #import "VSleekStreamCellFactory.h"
+#import "VStream+RestKit.h"
 #import "VStream.h"
 #import "VStreamCellFactory.h"
 #import "VStreamCellSpecialization.h"
