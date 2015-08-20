@@ -94,6 +94,7 @@
 #import "VLightboxTransitioningDelegate.h"
 #import "VVideoLightboxViewController.h"
 #import "VImageLightboxViewController.h"
+#import "VUsersAndTagsSearchViewController.h"
 
 // Shelves
 #import "VStreamCellFactory.h"
@@ -131,15 +132,9 @@
 #import "VDirectoryCollectionViewController.h"
 #import "VStreamCollectionViewController.h"
 #import "VHashtagSelectionResponder.h"
-#import "VTagSensitiveTextView.h"
 #import "VTagStringFormatter.h"
-#import "VTag.h"
 #import "VImageSequencePreviewView.h"
 #import "VSessionTimer.h"
 #import "VSequencePreviewView.h"
 #import "VBaseVideoSequencePreviewView.h"
 #import "VAsset+Fetcher.h"
-
-//Explore
-#import "VUsersAndTagsSearchViewController.h"
-
