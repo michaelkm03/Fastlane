@@ -36,6 +36,9 @@
 // AFNetworking
 #import <AFNetworking/AFNetworking.h>
 
+// AVFoundation
+#import <AVFoundation/AVFoundation.h>
+
 // Victorious Models
 #import "VAbstractFilter.h"
 #import "VSEquence.h"
@@ -69,6 +72,9 @@
 #import "NSURL+VDataCacheID.h"
 #import "VButton.h"
 #import "VHasManagedDependencies.h"
+#import "VTracking.h"
+#import "VTrackingManager.h"
+#import "VReachability.h"
 #import "VSessionTimer.h"
 #import "VAuthorizedAction.h"
 #import "VObjectManager.h"
@@ -76,7 +82,6 @@
 #import "VLightweightContentViewController.h"
 #import "VFirstTimeInstallHelper.h"
 #import "VSessionTimer.h"
-#import "VTrackingManager.h"
 #import "VDependencyManager+VTracking.h"
 #import "VPushNotificationManager.h"
 

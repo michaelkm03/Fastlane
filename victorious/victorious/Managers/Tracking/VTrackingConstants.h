@@ -281,7 +281,11 @@ extern NSString * const VTrackingKeyIndex; //< "Generic, to indicate selected it
 extern NSString * const VTrackingKeyUserLoggedIn; //< "0 if user is logged out, 1 if user is logged in",
 extern NSString * const VTrackingKeyLoadTime; //< The amount of time between requesting something from the backend and receiving the first byte of the response.
 extern NSString * const VTrackingKeyPermissionName; 
-extern NSString * const VTrackingKeyPermissionState; 
+extern NSString * const VTrackingKeyPermissionState;
+
+extern NSString * const VTrackingKeyAutoplay; //< For tracking whether a video is autoplaying in the stream
+extern NSString * const VTrackingKeyConnectivity; //< For tracking connectivity level while autoplaying a video
+extern NSString * const VTrackingKeyVolumeLevel; //< For tracking volume level while autoplaying a video
 
 // Tracking Event Values
 // ContentType values
