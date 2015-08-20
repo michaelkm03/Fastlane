@@ -13,7 +13,7 @@
 
 extern NSString * const kMarqueeURLKey;
 
-@class VDependencyManager, VStream, VStreamItem, VTimerManager, VUser, VAbstractMarqueeCollectionViewCell, VAbstractMarqueeStreamItemCell, VShelf;
+@class VDependencyManager, VStream, VStreamItem, VTimerManager, VUser, VAbstractMarqueeCollectionViewCell, VAbstractMarqueeStreamItemCell, Shelf;
 
 /**
     A controller responsible for managing the content offset of the collection view, updating the collection view when marquee content changes,
@@ -27,7 +27,7 @@ extern NSString * const kMarqueeURLKey;
 
 @property (nonatomic, strong) UICollectionView *collectionView; ///< The colletion view used to display the streamItems
 @property (nonatomic, strong) VStream *stream; ///< The Marquee Stream
-@property (nonatomic, strong) VShelf *shelf; ///< The Marquee Shelf
+@property (nonatomic, strong) Shelf *shelf; ///< The Marquee Shelf
 @property (nonatomic, readonly) NSArray *marqueeItems; ///< The array of items in the marquee
 @property (nonatomic, readonly) VTimerManager *autoScrollTimerManager; ///< The timer in control of auto scroll
 @property (nonatomic, assign) BOOL shouldTrackMarqueeCellViews; ///< Whether or not cell_view tracking events are sent for marquee items

@@ -36,7 +36,7 @@ extension VMarqueeCellFactory: VStreamCellFactory {
     
     func collectionView(collectionView: UICollectionView, cellForStreamItem streamItem: VStreamItem, atIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if let controller = marqueeController {
-            if let shelf = streamItem as? VShelf {
+            if let shelf = streamItem as? Shelf {
                 controller.setShelf(shelf)
             }
             return controller.marqueeCellForCollectionView(collectionView, atIndexPath:indexPath)

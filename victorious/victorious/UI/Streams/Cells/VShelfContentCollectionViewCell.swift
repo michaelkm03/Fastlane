@@ -28,9 +28,9 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
                 return
             }
             previewView.removeFromSuperview()
+            
+            previewView = VStreamItemPreviewView(streamItem: streamItem?.itemSubType == VStreamItemSubTypeText ? nil : streamItem)
 
-            let newPreviewView = VStreamItemPreviewView(streamItem: streamItem)
-            previewView = newPreviewView
             updatePreviewView(streamItem)
         }
     }
@@ -53,7 +53,7 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
     /// Called when a new dependency manager is set.
     func onDependencyManagerSet() {
         if let dependencyManager = dependencyManager {
-            //dependencyManager.addLoadingBackgroundToBackgroundHost(self)
+            dependencyManager.addLoadingBackgroundToBackgroundHost(self)
         }
     }
     

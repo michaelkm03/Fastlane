@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-class HashtagShelf: VShelf {
+class HashtagShelf: Shelf {
 
     @NSManaged var hashtagTitle: String
     @NSManaged var postsCount: NSNumber
