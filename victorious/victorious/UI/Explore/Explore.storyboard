@@ -19,6 +19,9 @@
                             <searchBar contentMode="redraw" text="" placeholder="Search People and Hashtags" translatesAutoresizingMaskIntoConstraints="NO" id="iKE-uz-fpI">
                                 <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="4Bu-8N-0Mt" id="KFg-Hw-fCb"/>
+                                </connections>
                             </searchBar>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FZp-Cf-hyG">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
