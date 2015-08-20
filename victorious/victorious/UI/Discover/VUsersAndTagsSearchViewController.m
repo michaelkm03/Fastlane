@@ -252,6 +252,9 @@ static NSInteger const kVMaxSearchResults = 1000;
     VFailBlock searchFail = ^(NSOperation *operation, NSError *error)
     {
         VLog(@"\n\nHashtag Search Failed with the following error:\n%@", error);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        });
     };
 
     NSString *searchTerm = [self.searchField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -291,6 +294,14 @@ static NSInteger const kVMaxSearchResults = 1000;
         });
     };
     
+    VFailBlock searchFail = ^(NSOperation *operation, NSError *error)
+    {
+        VLog(@"\n\nUser Search Failed with the following error: \n%@", error);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        });
+    };
+    
     if ( [self.searchField.text length] > 0 )
     {
         [[VObjectManager sharedManager] findUsersBySearchString:self.searchField.text
@@ -298,7 +309,7 @@ static NSInteger const kVMaxSearchResults = 1000;
                                                           limit:kVMaxSearchResults
                                                         context:VObjectManagerSearchContextDiscover
                                                withSuccessBlock:searchSuccess
-                                                      failBlock:nil];
+                                                      failBlock:searchFail];
     }
     else
     {
