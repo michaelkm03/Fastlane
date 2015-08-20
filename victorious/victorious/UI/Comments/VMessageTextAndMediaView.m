@@ -11,6 +11,7 @@
 #import "VMessage+Fetcher.h"
 
 static UIEdgeInsets const kTextInsets = { 2.0f, 4.0f, 2.0f, 4.0f };
+
 @implementation VMessageTextAndMediaView
 
 - (void)setMessage:(VMessage *)message
