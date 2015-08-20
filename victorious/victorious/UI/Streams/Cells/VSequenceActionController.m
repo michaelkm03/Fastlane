@@ -21,7 +21,6 @@
 #import "VStreamCollectionViewController.h"
 #import "VReposterTableViewController.h"
 #import "VUserProfileViewController.h"
-#import "VCommentsContainerViewController.h"
 #import "VWorkspaceViewController.h"
 #import "VAbstractMediaLinkViewController.h"
 #import "VTabScaffoldViewController.h"

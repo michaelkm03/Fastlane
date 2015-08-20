@@ -34,8 +34,6 @@
 		0314D2E619B46B0E00FA363C /* VPaginationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D2E519B46B0E00FA363C /* VPaginationManager.m */; };
 		0314D2E919B46B2200FA363C /* VErrorMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D2E819B46B2200FA363C /* VErrorMessage.m */; };
 		0314D48019B46B5E00FA363C /* VCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D34019B46B5E00FA363C /* VCommentCell.m */; };
-		0314D48219B46B5E00FA363C /* VCommentsContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D34319B46B5E00FA363C /* VCommentsContainerViewController.m */; };
-		0314D48319B46B5E00FA363C /* VCommentsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D34519B46B5E00FA363C /* VCommentsTableViewController.m */; };
 		0314D48519B46B5E00FA363C /* VKeyboardBarContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D34B19B46B5E00FA363C /* VKeyboardBarContainerViewController.m */; };
 		0314D48619B46B5E00FA363C /* VKeyboardBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D34D19B46B5E00FA363C /* VKeyboardBarViewController.m */; };
 		0314D48719B46B5E00FA363C /* VActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0314D34F19B46B5E00FA363C /* VActivityIndicatorView.m */; };
@@ -1418,10 +1416,6 @@
 		0314D2E819B46B2200FA363C /* VErrorMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VErrorMessage.m; sourceTree = "<group>"; };
 		0314D33F19B46B5E00FA363C /* VCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCommentCell.h; sourceTree = "<group>"; };
 		0314D34019B46B5E00FA363C /* VCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCommentCell.m; sourceTree = "<group>"; };
-		0314D34219B46B5E00FA363C /* VCommentsContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCommentsContainerViewController.h; sourceTree = "<group>"; };
-		0314D34319B46B5E00FA363C /* VCommentsContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCommentsContainerViewController.m; sourceTree = "<group>"; };
-		0314D34419B46B5E00FA363C /* VCommentsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCommentsTableViewController.h; sourceTree = "<group>"; };
-		0314D34519B46B5E00FA363C /* VCommentsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCommentsTableViewController.m; sourceTree = "<group>"; };
 		0314D34A19B46B5E00FA363C /* VKeyboardBarContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VKeyboardBarContainerViewController.h; sourceTree = "<group>"; };
 		0314D34B19B46B5E00FA363C /* VKeyboardBarContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKeyboardBarContainerViewController.m; sourceTree = "<group>"; };
 		0314D34C19B46B5E00FA363C /* VKeyboardBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VKeyboardBarViewController.h; sourceTree = "<group>"; };
@@ -3898,10 +3892,6 @@
 				0314D33F19B46B5E00FA363C /* VCommentCell.h */,
 				0314D34019B46B5E00FA363C /* VCommentCell.m */,
 				03F28F4A19F44728008BB3F7 /* VCommentCell.xib */,
-				0314D34219B46B5E00FA363C /* VCommentsContainerViewController.h */,
-				0314D34319B46B5E00FA363C /* VCommentsContainerViewController.m */,
-				0314D34419B46B5E00FA363C /* VCommentsTableViewController.h */,
-				0314D34519B46B5E00FA363C /* VCommentsTableViewController.m */,
 				C3E47F6D1B6990C30084FF65 /* VCommentTextAndMediaView.h */,
 				C3E47F6E1B6990C30084FF65 /* VCommentTextAndMediaView.m */,
 				A7E2EFC91A49001000372547 /* VEditCommentViewController.h */,
@@ -8943,7 +8933,6 @@
 				A79869EE1AD7124D00F2564A /* VInboxDeepLinkHandler.m in Sources */,
 				C3E772271B4DD163005809A5 /* VTableViewStreamFocusHelper.m in Sources */,
 				C39413B81B17B38300579A8E /* VStreamCollectionViewParallaxFlowLayout.m in Sources */,
-				0314D48219B46B5E00FA363C /* VCommentsContainerViewController.m in Sources */,
 				F06B418F1B7C30BC008709E8 /* HashtagShelf.swift in Sources */,
 				A758DC421ABA09F800EB4604 /* VFirstInstallManager.m in Sources */,
 				D80A94E91A546E5E0035D788 /* VThumbnailCell.m in Sources */,
@@ -9348,7 +9337,6 @@
 				F0024E3B1B730431000CF4FD /* VMarqueeCellFactory.swift in Sources */,
 				F06B41AD1B7C3D8F008709E8 /* UserShelf+RestKit.swift in Sources */,
 				D89F1CDA1ABE747000AF14A5 /* VRoundedBackgroundButton.m in Sources */,
-				0314D48319B46B5E00FA363C /* VCommentsTableViewController.m in Sources */,
 				03CE66F719B47B590011BB9E /* VTwitterManager.m in Sources */,
 				A721E9661B572454000B7901 /* VConversation+UnreadMessageCount.m in Sources */,
 				A7C713B21B74450A00089B5E /* GCDUtils.swift in Sources */,
