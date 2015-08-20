@@ -348,8 +348,12 @@ static NSString * const kCreationFlowSourceSearch = @"search";
          if (error == nil)
          {
              strongSelf.source = VCreationFlowSourceLibrary;
-             strongSelf.publishParameters.width = asset.pixelWidth;
-             strongSelf.publishParameters.Height = asset.pixelHeight;
+             // We need to set this so that local videos preserve aspect ratio.
+             if (asset.mediaType == PHAssetMediaTypeVideo)
+             {
+                 strongSelf.publishParameters.width = asset.pixelWidth;
+                 strongSelf.publishParameters.height = asset.pixelHeight;
+             }
              [strongSelf captureFinishedWithMediaURL:downloadedFileURL
                                         previewImage:previewImage];
          }
