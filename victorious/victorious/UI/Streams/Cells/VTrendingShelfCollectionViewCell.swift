@@ -127,15 +127,14 @@ extension VTrendingShelfCollectionViewCell : UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let responder: VShelfStreamItemSelectionResponder = typedResponder()
-        if let stream = shelf, let streamItem = stream.streamItems[indexPath.row] as? VStreamItem {
-            var itemToNavigateTo: VStreamItem? = streamItem
-            if indexPath.row == stream.streamItems.count - 1 {
-                itemToNavigateTo = nil
+        if let shelf = shelf, let streamItem = shelf.streamItems[indexPath.row] as? VStreamItem {
+            if indexPath.row != shelf.streamItems.count - 1 {
+                responder.navigateTo(nil, fromShelf: shelf)
             }
-            if let shelf = shelf {
-                responder.navigateTo(itemToNavigateTo, fromShelf: shelf)
-                return
+            else {
+                responder.navigateTo(streamItem, fromShelf: shelf)
             }
+            return
         }
         assertionFailure("VTrendingShelfCollectionViewCell selected an invalid stream item")
     }

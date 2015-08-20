@@ -505,7 +505,18 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 {
     if ( [stream isSingleStream] || [stream isShelf] )
     {
-        VStreamCollectionViewController *streamCollection = [VStreamCollectionViewController newWithDependencyManager:[self.dependencyManager childDependencyManagerWithAddedConfiguration:@{ kSequenceIDKey: stream.remoteId, VDependencyManagerTitleKey: stream.name }]];
+        Shelf *shelf = (Shelf *)stream;
+        VStreamCollectionViewController *streamCollection = nil;
+        VDependencyManager *dependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{ kSequenceIDKey: stream.remoteId, VDependencyManagerTitleKey: stream.name }];
+        if ( [shelf isKindOfClass:[HashtagShelf class]] )
+        {
+            HashtagShelf *hashtagShelf = (HashtagShelf *)shelf;
+            streamCollection = [dependencyManager hashtagStreamWithHashtag:hashtagShelf.hashtagTitle];
+        }
+        else
+        {
+            streamCollection = [VStreamCollectionViewController newWithDependencyManager:dependencyManager];
+        }
         
         streamCollection.currentStream = stream;
         streamCollection.targetStreamItem = streamItem;
