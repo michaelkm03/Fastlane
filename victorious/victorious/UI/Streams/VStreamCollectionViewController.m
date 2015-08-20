@@ -421,7 +421,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     if ( streamItems.count > 0 )
     {
         VStreamItem *streamItem = [streamItems firstObject];
-        hasMarqueeShelfAtTop = [streamItem.itemType isEqualToString:VStreamItemTypeMarquee];
+        hasMarqueeShelfAtTop = [streamItem.itemType isEqualToString:VStreamItemTypeShelf] && [streamItem.itemSubType isEqualToString:VStreamItemSubTypeMarquee];
     }
     
     if (self.streamDataSource.hasHeaderCell || hasMarqueeShelfAtTop)
@@ -503,7 +503,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)navigateToStream:(VStream *)stream atStreamItem:(VStreamItem *)streamItem
 {
-    if ( [stream isSingleStream] )
+    if ( [stream isSingleStream] || [stream isShelf] )
     {
         VStreamCollectionViewController *streamCollection = [self.dependencyManager templateValueOfType:[VStreamCollectionViewController class]
                                                                                                  forKey:kStreamCollectionKey

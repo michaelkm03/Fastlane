@@ -12,7 +12,7 @@ extension UserShelf {
     
     static private var propertyMap : [String : String] {
         return [
-            "postsCount" : "postsCount",
+            "postCount" : "postsCount",
             "followersCount" : "followersCount"
         ]
     }
@@ -22,7 +22,7 @@ extension UserShelf {
     }
     
     override static func entityMapping() -> RKEntityMapping {
-        var mapping = VShelf.mappingBaseForEntityWithName(UserShelf.entityName())
+        var mapping = Shelf.mappingBaseForEntity(named: UserShelf.entityName())
         mapping.addRelationshipMappingWithSourceKeyPath("user", mapping: VUser.entityMapping())
         mapping.addAttributeMappingsFromDictionary(propertyMap)
         return mapping

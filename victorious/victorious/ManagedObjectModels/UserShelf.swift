@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-class UserShelf: VShelf {
+class UserShelf: Shelf {
 
     @NSManaged var postsCount: NSNumber
     @NSManaged var followersCount: NSNumber

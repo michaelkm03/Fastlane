@@ -44,41 +44,44 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
     @IBOutlet private weak var collectionViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet private weak var separatorHeightConstraint: NSLayoutConstraint!
     
-    private static let titleText: NSString = NSLocalizedString("TRENDING HASHTAG", comment:"")
-    
     private static let numberFormatter = VLargeNumberFormatter()
     
     //MARK: - Setters
     
-    override func onShelfSet() {
-        super.onShelfSet()
-        if let shelf = shelf as? HashtagShelf {
-            hashtagTextView.text = VTrendingHashtagShelfCollectionViewCell.getHashtagText(shelf)
-            titleLabel.text = VTrendingHashtagShelfCollectionViewCell.titleText as String
-            postsCountLabel.text = VTrendingHashtagShelfCollectionViewCell.getPostsCountText(shelf)
-            updateFollowControlState()
+    override var shelf: Shelf? {
+        didSet {
+            if !VTrendingShelfCollectionViewCell.needsUpdate(fromShelf: oldValue, toShelf: shelf) { return }
+            
+            if let shelf = shelf as? HashtagShelf {
+                hashtagTextView.text = VTrendingHashtagShelfCollectionViewCell.getHashtagText(shelf)
+                titleLabel.text = shelf.title
+                postsCountLabel.text = VTrendingHashtagShelfCollectionViewCell.getPostsCountText(shelf)
+                updateFollowControlState()
+            }
         }
     }
     
-    override func onDependencyManagerSet() {
-        super.onDependencyManagerSet()
-        if let dependencyManager = dependencyManager {
+    override var dependencyManager: VDependencyManager? {
+        didSet {
+            if !VTrendingShelfCollectionViewCell.needsUpdate(fromDependencyManager: oldValue, toDependencyManager: dependencyManager) { return }
             
-            titleLabel.font = dependencyManager.titleFont
-            hashtagTextView.font = dependencyManager.hashtagFont
-            postsCountLabel.font = dependencyManager.postsCountFont
-            
-            let accentColor = dependencyManager.accentColor
-            hashtagLabelBackground.backgroundColor = accentColor
-            separatorView.backgroundColor = accentColor
-            
-            let textColor = dependencyManager.textColor
-            titleLabel.textColor = textColor
-            hashtagTextView.textColor = textColor
-            postsCountLabel.textColor = textColor
-            
-            hashtagTextView.dependencyManager = dependencyManager
-            hashtagTextView.updateForLinkTextForegroundColor(UIColor.whiteColor())
+            if let dependencyManager = dependencyManager {
+                titleLabel.font = dependencyManager.titleFont
+                hashtagTextView.font = dependencyManager.hashtagFont
+                postsCountLabel.font = dependencyManager.postsCountFont
+                
+                let accentColor = dependencyManager.accentColor
+                hashtagLabelBackground.backgroundColor = accentColor
+                separatorView.backgroundColor = accentColor
+                
+                let textColor = dependencyManager.textColor
+                titleLabel.textColor = textColor
+                hashtagTextView.textColor = textColor
+                postsCountLabel.textColor = textColor
+                
+                hashtagTextView.dependencyManager = dependencyManager
+                hashtagTextView.updateForLinkTextForegroundColor(UIColor.whiteColor())
+            }
         }
     }
     
@@ -139,7 +142,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
         var height = Constants.baseHeight
         
         //Add the height of the labels to find the entire height of the cell
-        let titleHeight = VTrendingHashtagShelfCollectionViewCell.titleText.frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.titleFont]).height
+        let titleHeight = shelf.title.frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.titleFont]).height
         let hashtagHeight = VTrendingHashtagShelfCollectionViewCell.getHashtagText(shelf).frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.hashtagFont]).height
         let postCountHeight = VTrendingHashtagShelfCollectionViewCell.getPostsCountText(shelf).frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.postsCountFont]).height
         

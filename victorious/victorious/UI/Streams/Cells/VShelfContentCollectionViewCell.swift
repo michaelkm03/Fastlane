@@ -54,7 +54,7 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
     /// Called when a new dependency manager is set.
     func onDependencyManagerSet() {
         if let dependencyManager = dependencyManager {
-            //dependencyManager.addLoadingBackgroundToBackgroundHost(self)
+            dependencyManager.addLoadingBackgroundToBackgroundHost(self)
         }
     }
     

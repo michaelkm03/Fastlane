@@ -15,7 +15,7 @@ import UIKit
     ///
     /// :param: streamItem The selected stream item.
     /// :param: fromShelf The shelf that the stream item was selected from.
-    func navigateTo(streamItem: VStreamItem?, fromShelf: VShelf)
+    func navigateTo(streamItem: VStreamItem?, fromShelf: Shelf)
 }
 
 //2.0 Improvement: Transform this into a protocol extension.
@@ -55,11 +55,11 @@ class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
     }
     
     private func factoryForStreamItem(streamItem: VStreamItem) -> VStreamCellFactory? {
-        if let itemType = streamItem.itemType {
-            switch itemType {
-            case VStreamItemTypeMarquee:
+        if let itemType = streamItem.itemType where itemType == VStreamItemTypeShelf, let itemSubType = streamItem.itemSubType {
+            switch itemSubType {
+            case VStreamItemSubTypeMarquee:
                 return marqueeCellFactory
-            case VStreamItemTypeHashtag, VStreamItemTypeUser:
+            case VStreamItemSubTypeHashtag, VStreamItemSubTypeUser:
                 return trendingShelfFactory
             default: ()
             }
