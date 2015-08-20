@@ -83,7 +83,7 @@
 #import "VContentRepopulateTransition.h"
 #import "VAbstractCommentHighlighter.h"
 #import "VEndCardActionModel.h"
-#import "VContentViewAlertHelper.h"
+#import "VCommentAlertHelper.h"
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
@@ -116,7 +116,7 @@
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate>
 
 @property (nonatomic, strong) NSUserActivity *handoffObject;
 
@@ -158,7 +158,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 @property (nonatomic, strong) VCollectionViewCommentHighlighter *commentHighlighter;
 
-@property (nonatomic, weak) IBOutlet VContentViewAlertHelper *alertHelper;
 @property (nonatomic, weak) IBOutlet VContentViewRotationHelper *rotationHelper;
 @property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
 @property (nonatomic, weak, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
@@ -177,7 +176,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 @property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
 
-@property (nonatomic, strong) NSURL *mediaURL;
 @property (nonatomic, strong) NSMutableArray *commentCellReuseIdentifiers;
 
 @end
@@ -416,9 +414,12 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     if (self.viewModel.sequence.permissions.canComment )
     {
-        VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryViewWithDependencyManager:self.dependencyManager];
+        NSDictionary *commentBarConfig = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:@"commentBar"];
+        VDependencyManager *commentBarDependencyManager = [[VDependencyManager alloc] initWithParentManager:self.dependencyManager configuration:commentBarConfig dictionaryOfClassesByTemplateName:nil];
+        VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryViewWithDependencyManager:commentBarDependencyManager];
         inputAccessoryView.translatesAutoresizingMaskIntoConstraints = NO;
         inputAccessoryView.delegate = self;
+        inputAccessoryView.textStorageDelegate = self;
         inputAccessoryView.accessibilityIdentifier = VAutomationIdentifierContentViewCommentBar;
         self.textEntryView = inputAccessoryView;
         self.contentCollectionView.accessoryView = self.textEntryView;
@@ -497,15 +498,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             VBallot favoredBallot = (self.viewModel.favoredAnswer == VPollAnswerA) ? VBallotA : VBallotB;
             [self.ballotCell setVotingDisabledWithFavoredBallot:favoredBallot animated:YES];
         }
-    }
-
-    if (self.viewModel.type == VContentViewTypeVideo)
-    {
-        self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:self.videoCell.currentTime]];
-    }
-    else
-    {
-        self.textEntryView.placeholderText = NSLocalizedString(@"LeaveAComment", @"");
     }
     
     if ( self.navigationController != nil )
@@ -1310,11 +1302,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)videoCell:(VContentVideoCell *)videoCell didPlayToTime:(CMTime)time totalTime:(CMTime)totalTime
 {
-    if (!self.enteringRealTimeComment && self.viewModel.type == VContentViewTypeVideo)
-    {
-        self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:time]];
-    }
-
     self.viewModel.realTimeCommentsViewModel.currentTime = time;
 }
 
@@ -1349,11 +1336,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)videoCellPlayedToEnd:(VContentVideoCell *)videoCell withTotalTime:(CMTime)totalTime
 {
-    if (!self.enteringRealTimeComment)
-    {
-        self.textEntryView.placeholderText = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"LeaveACommentAt", @""), [self.elapsedTimeFormatter stringForCMTime:totalTime]];
-    }
-    
     if (self.viewModel.videoViewModel.endCardViewModel != nil)
     {
         [UIView animateWithDuration:0.5f
@@ -1402,7 +1384,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     BOOL shouldResumeEditing = [inputAccessoryView isEditing];
     [inputAccessoryView stopEditing];
-    UIAlertController *alertController = [self.alertHelper alertForConfirmDiscardMediaWithDelete:^
+    UIAlertController *alertController = [VCommentAlertHelper alertForConfirmDiscardMediaWithDelete:^
                                           {
                                               self.publishParameters.mediaToUploadURL = nil;
                                               [inputAccessoryView setSelectedThumbnail:nil];
@@ -1488,13 +1470,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
      }];
 }
 
-#pragma mark - Comment Text Helpers
-
-- (void)clearEditingRealTimeComment
-{
-    self.enteringRealTimeComment = NO;
-    self.realtimeCommentBeganTime = kCMTimeZero;
-}
+#pragma mark - VUserTaggingTextStorageDelegate
 
 - (void)userTaggingTextStorage:(VUserTaggingTextStorage *)textStorage wantsToDismissViewController:(UITableViewController *)tableViewController
 {
@@ -1503,7 +1479,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 }
 
 - (void)userTaggingTextStorage:(VUserTaggingTextStorage *)textStorage wantsToShowViewController:(UIViewController *)viewController
-{    
+{
     // Inline Search layout constraints
     UIView *searchTableView = viewController.view;
     [self.view addSubview:searchTableView];
@@ -1514,8 +1490,16 @@ referenceSizeForHeaderInSection:(NSInteger)section
     CGRect obscuredRectInWindow = [self.textEntryView obscuredRectInWindow:ownWindow];
     CGRect obscuredRectInOwnView = [ownWindow convertRect:obscuredRectInWindow toView:self.view];
     [self.view v_addFitToParentConstraintsToSubview:searchTableView leading:0.0f trailing:0.0f top:0.0f bottom:CGRectGetMinY(obscuredRectInOwnView)];
-
+    
     self.textEntryView.attachmentsBarHidden = YES;
+}
+
+#pragma mark - Comment Text Helpers
+
+- (void)clearEditingRealTimeComment
+{
+    self.enteringRealTimeComment = NO;
+    self.realtimeCommentBeganTime = kCMTimeZero;
 }
 
 - (void)submitCommentWithText:(NSString *)commentText
@@ -1569,7 +1553,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)onMediaAttachedWithPreviewImage:(UIImage *)previewImage
                                mediaURL:(NSURL *)mediaURL
 {
-    self.mediaURL = mediaURL;
     [self.textEntryView setSelectedThumbnail:previewImage];
     
     [self dismissViewControllerAnimated:YES completion:^
@@ -1686,7 +1669,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self.contentCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:YES];
     
     [self.textEntryView setReplyRecipient:comment.user];
-    [self.textEntryView.editingTextView becomeFirstResponder];
+    [self.textEntryView startEditing];
 }
 
 #pragma mark - VEditCommentViewControllerDelegate
@@ -1774,7 +1757,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
      {
          [self.videoCell hideEndCard];
          
-         [self presentViewController:[self.alertHelper alertForNextSequenceErrorWithDismiss:nil] animated:YES completion:nil];
+         [self presentViewController:[VCommentAlertHelper alertForNextSequenceErrorWithDismiss:nil] animated:YES completion:nil];
      }];
 }
 

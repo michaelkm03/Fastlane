@@ -349,7 +349,7 @@ static NSString * const kCreationFlowSourceSearch = @"search";
          {
              strongSelf.source = VCreationFlowSourceLibrary;
              strongSelf.publishParameters.width = asset.pixelWidth;
-             strongSelf.publishParameters.Height = asset.pixelHeight;
+             strongSelf.publishParameters.height = asset.pixelHeight;
              [strongSelf captureFinishedWithMediaURL:downloadedFileURL
                                         previewImage:previewImage];
          }

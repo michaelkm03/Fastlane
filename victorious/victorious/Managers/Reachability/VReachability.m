@@ -62,7 +62,7 @@ NSString * const kVReachabilityChangedNotification = @"kVReachabilityChangedNoti
 
 #pragma mark - Supporting functions
 
-#define kShouldPrintReachabilityFlags 1
+#define kShouldPrintReachabilityFlags 0
 
 static void PrintReachabilityFlags(SCNetworkReachabilityFlags flags, const char *comment)
 {
@@ -284,6 +284,22 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 	}
     
 	return returnValue;
+}
+
+- (NSString *)reachabilityStatusDescription:(VNetworkStatus)status
+{
+    switch (status)
+    {
+        case VNetworkStatusReachableViaWiFi:
+            return @"wifi";
+            break;
+        case VNetworkStatusReachableViaWWAN:
+            return @"3g";
+            break;
+        case VNetworkStatusNotReachable:
+            return @"unknown";
+            break;
+    }
 }
 
 @end

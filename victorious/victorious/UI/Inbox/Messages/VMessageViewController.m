@@ -25,6 +25,7 @@
 #import "VVideoLightboxViewController.h"
 #import "VImageLightboxViewController.h"
 #import "VTableViewStreamFocusHelper.h"
+#import "victorious-Swift.h"
 
 @interface VMessageViewController () <VMessageTableDataDelegate, VCommentMediaTapDelegate>
 

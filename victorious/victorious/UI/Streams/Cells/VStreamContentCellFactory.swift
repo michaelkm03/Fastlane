@@ -76,6 +76,19 @@ extension VStreamContentCellFactory: VStreamCellFactory {
         trendingShelfFactory?.registerCellsWithCollectionView(collectionView)
     }
     
+    func collectionView(collectionView: UICollectionView, cellForStreamItem streamItem: VStreamItem, atIndexPath indexPath: NSIndexPath, inStream stream: VStream?) -> UICollectionViewCell {
+        if let factory = factoryForStreamItem(streamItem) {
+            if let cell = factory.collectionView?(collectionView, cellForStreamItem: streamItem, atIndexPath: indexPath, inStream: stream)  {
+                return cell;
+            }
+            else {
+                return factory.collectionView(collectionView, cellForStreamItem: streamItem, atIndexPath: indexPath)
+            }
+        }
+        assertionFailure("A cell was requested from a content cell factory with a nil default factory.")
+        return UICollectionViewCell.new()
+    }
+    
     func collectionView(collectionView: UICollectionView, cellForStreamItem streamItem: VStreamItem, atIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if let factory = factoryForStreamItem(streamItem) {
             return factory.collectionView(collectionView, cellForStreamItem: streamItem, atIndexPath: indexPath)

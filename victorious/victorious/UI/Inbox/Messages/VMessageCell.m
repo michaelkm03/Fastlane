@@ -9,6 +9,7 @@
 #import "VMessageTextAndMediaView.h"
 #import "VMessageCell.h"
 #import "VDefaultProfileImageView.h"
+#import "victorious-Swift.h"
 
 NSString * const kVMessageCellNibName = @"VMessageCell";
 

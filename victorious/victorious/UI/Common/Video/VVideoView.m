@@ -25,6 +25,7 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 @property (nonatomic, readonly) BOOL isPlayingVideo;
 @property (nonatomic, strong) VVideoUtils *videoUtils;
 @property (nonatomic, assign) BOOL wasPlayingVideo;
+@property (nonatomic, strong, nullable) id timeObserver;
 
 @end
 
@@ -33,6 +34,12 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    if (self.player.currentItem != nil)
+    {
+        [self.player removeTimeObserver:self.timeObserver];
+        self.timeObserver = nil;
+    }
 }
 
 - (void)reset
@@ -189,6 +196,20 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
              }
          }
      }];
+
+	if (self.player.currentItem != nil)
+    {
+        [self.player removeTimeObserver:self.timeObserver];
+    }
+    
+    self.timeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 24)
+                                                                  queue:dispatch_get_main_queue()
+                                                             usingBlock:^(CMTime time)
+                         {
+                             __strong VVideoView *strongSelf = weakSelf;
+                             [strongSelf didPlayToTime:time];
+                         }];
+    
     
     [self.player replaceCurrentItemWithPlayerItem:playerItem];
     
@@ -282,6 +303,23 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
     [self.player pause];
     [self.player.currentItem seekToTime:kCMTimeZero];
     [self.player play];
+}
+
+- (void)didPlayToTime:(CMTime)time
+{
+    Float64 durationInSeconds = CMTimeGetSeconds( self.player.currentItem.duration );
+    Float64 timeInSeconds     = CMTimeGetSeconds(time);
+    float percentElapsed      = timeInSeconds / durationInSeconds * 100.0f;
+    
+    if ([self.delegate respondsToSelector:@selector(videoView:didProgressWithPercentComplete:)])
+    {
+        [self.delegate videoView:self didProgressWithPercentComplete:percentElapsed];
+    }
+}
+
+- (NSUInteger)currentTimeMilliseconds
+{
+    return (NSUInteger)(CMTimeGetSeconds( self.player.currentTime ) * 1000.0);
 }
 
 NS_ASSUME_NONNULL_END
