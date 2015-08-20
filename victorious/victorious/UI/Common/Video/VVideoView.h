@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong, nullable) NSURL *itemURL;
 
-@property (nonatomic, weak) IBOutlet id<VVideoViewDelegate> delegate;
+@property (nonatomic, weak) id<VVideoViewDelegate> delegate;
 
 @property (nonatomic, assign) BOOL useAspectFit;
 

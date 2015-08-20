@@ -185,7 +185,7 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
          {
              if ([strongSelf.delegate respondsToSelector:@selector(videoViewDidStartBuffering:)])
              {
-                 [strongSelf.delegate videoViewDidStartBuffering:self];
+                 [strongSelf.delegate videoViewDidStartBuffering:strongSelf];
              }
          }
      }];
