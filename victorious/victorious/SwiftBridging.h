@@ -91,8 +91,6 @@
 #import "VSequencePreviewView.h"
 #import "VSessionTimer.h"
 #import "VSettingsSwitchCell.h"
-#import "VShelf+RestKit.h"
-#import "VShelf.h"
 #import "VSimpleModalTransition.h"
 #import "VSleekStreamCellFactory.h"
 #import "VStream+RestKit.h"
