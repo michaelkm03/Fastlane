@@ -33,6 +33,7 @@
 #import "VSimpleModalTransition.h"
 
 #import "UIVIew+AutoLayout.h"
+#import "MBProgressHUD.h"
 
 NSString *const kVUserSearchResultsChangedNotification = @"VUserSearchResultsChangedNotification";
 NSString *const kVHashtagsSearchResultsChangedNotification = @"VHashtagsSearchResultsChangedNotification";
@@ -267,6 +268,9 @@ static NSInteger const kVMaxSearchResults = 1000;
             [self showNoResultsReturnedForSearch];
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:kVHashtagsSearchResultsChangedNotification object:nil];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        });
     };
     
     VFailBlock searchFail = ^(NSOperation *operation, NSError *error)
@@ -307,6 +311,9 @@ static NSInteger const kVMaxSearchResults = 1000;
             [self showNoResultsReturnedForSearch];
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:kVUserSearchResultsChangedNotification object:nil];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        });
     };
     
     if ( [self.searchField.text length] > 0 )
@@ -375,8 +382,12 @@ static NSInteger const kVMaxSearchResults = 1000;
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [self segmentControlAction:nil];
     [self.searchField resignFirstResponder];
+
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        [self segmentControlAction:nil];
+    });
     
     return YES;
 }
