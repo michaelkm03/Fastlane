@@ -40,8 +40,6 @@ const CGFloat VStreamCollectionViewControllerCreateButtonHeight; ///< The height
 
 - (void)showHashtagStreamWithHashtag:(NSString *)hashtag;
 
-- (void)navigateToStreamItem:(VStreamItem *)streamItem fromStream:(VStream *)stream previewImage:(UIImage *)image;
-
 - (void)navigateToStream:(VStream *)stream atStreamItem:(VStreamItem *)streamItem;
 
 /**

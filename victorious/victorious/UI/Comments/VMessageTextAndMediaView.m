@@ -9,6 +9,7 @@
 #import "VMessageTextAndMediaView.h"
 #import "VTagSensitiveTextView.h"
 #import "VMessage+Fetcher.h"
+#import "victorious-Swift.h"
 
 @implementation VMessageTextAndMediaView
 

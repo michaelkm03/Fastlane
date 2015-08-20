@@ -31,7 +31,7 @@ class ExperienceEnhancerIconView : UIView {
         didSet {
             self.alpha = 0
             self.iconImageView.sd_setImageWithURL(iconURL, completed: {
-                (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) -> Void in
+                (image: UIImage!, error: NSError!, cacheType: SDImageCacheType, url: NSURL!) in
                 
                 if (error != nil) {
                     return

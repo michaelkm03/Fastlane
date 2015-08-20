@@ -10,8 +10,12 @@
 
 @class VTagSensitiveTextView, VTag;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol VTagSensitiveTextViewDelegate <NSObject>
 
 - (void)tagSensitiveTextView:(VTagSensitiveTextView *)tagSensitiveTextView tappedTag:(VTag *)tag;
 
 @end
+
+NS_ASSUME_NONNULL_END

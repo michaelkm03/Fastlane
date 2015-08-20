@@ -22,6 +22,7 @@ sys.dont_write_bytecode = True
 
 _VICTORIOUS_ENDPOINT = '/api/app/update_testfairy_url'
 _DEFAULT_HOST = ''
+_CONSOLE_OUTPUT = False
 
 
 def postTestFairyURL(app_name, testfairy_url):
@@ -65,46 +66,62 @@ def postTestFairyURL(app_name, testfairy_url):
     error_code = json['error']
 
     if not error_code == 0:
-        print 'An error occurred posting the Test Fairy URL for %s.' % app_name
-        return 1
+        error_message = 'An error occurred posting the Test Fairy URL for %s.' % app_name
+        if _CONSOLE_OUTPUT:
+            print error_message
+        sys.exit('1|%s' % error_message)
 
     # Clean-up compiled python files
     cleanUp()
 
-    print 'Test Fairy URL posted successfully for %s!' % app_name
-    print ''
+    if _CONSOLE_OUTPUT:
+        print 'Test Fairy URL posted successfully for %s!' % app_name
+        print ''
 
 
 def cleanUp():
     subprocess.call("find . -name '*.pyc' -delete", shell=True)
 
 
+def showProperUsage():
+    print ''
+    print 'Usage: ./vams_postbuild.py <app_name> <platform> <url> <environment> <port>'
+    print ''
+    print '<app_name> is the name of the application in VAMS that you want to post data to.'
+    print '<platform> is the OS platform for which this data is applicable.'
+    print '<url> is the Test Fairy project url to be sent to backend'
+    print '<environment> OPTIONAL: Is the server environment to post the data to.'
+    print '<port> OPTIONAL: Will only be used if <environment> is set to localhost'
+    print ''
+    print 'NOTE: If no <environment> parameter is provided, the system will use PRODUCTION.'
+    print ''
+    print 'examples:'
+    print './vams_postbuild.py awesomenesstv ios http://my-url     <-- will use PRODUCTION'
+    print '  -- OR --'
+    print './vams_postbuild.py awesomenesstv ios http://my-url qa  <-- will use QA'
+    print ''
+
 def main(argv):
+
+    global _CONSOLE_OUTPUT
+
     if len(argv) < 4:
-        print ''
-        print 'Usage: ./vams_postbuild.py <app_name> <platform> <url> <environment> <port>'
-        print ''
-        print '<app_name> is the name of the application in VAMS that you want to post data to.'
-        print '<platform> is the OS platform for which this data is applicable.'
-        print '<url> is the Test Fairy project url to be sent to backend'
-        print '<environment> OPTIONAL: Is the server environment to post the data to.'
-        print '<port> OPTIONAL: Will only be used if <environment> is set to localhost'
-        print ''
-        print 'NOTE: If no <environment> parameter is provided, the system will use PRODUCTION.'
-        print ''
-        print 'examples:'
-        print './vams_postbuild.py awesomenesstv ios http://my-url     <-- will use PRODUCTION'
-        print '  -- OR --'
-        print './vams_postbuild.py awesomenesstv ios http://my-url qa  <-- will use QA'
-        print ''
-        return 1
+        if _CONSOLE_OUTPUT:
+            showProperUsage()
+        exit_message = '1|Wrong parameters were passed to vams_postbuild.py'
+        sys.exit(exit_message)
 
     vams.init()
 
+
     app_name = argv[1]
     platform = argv[2]
-    if platform == 'ios':
-        vams._DEFAULT_PLATFORM = 'ios'
+    if platform == vams._PLATFORM_IOS:
+        vams._DEFAULT_PLATFORM = vams._PLATFORM_IOS
+
+    if platform == vams._PLATFORM_ANDROID:
+        _CONSOLE_OUTPUT = True
+
 
     url = argv[3]
 
@@ -129,18 +146,22 @@ def main(argv):
         _DEFAULT_HOST = '%s:%s' % (vams._LOCAL_HOST, vams._LOCAL_HOST)
     else:
         _DEFAULT_HOST = vams._PRODUCTION_HOST
-        
-    print ''
-    print 'Using host: %s' % _DEFAULT_HOST
-    print ''
+
+    if _CONSOLE_OUTPUT:
+        print ''
+        print 'Using host: %s' % _DEFAULT_HOST
+        print ''
 
     if vams.authenticateUser(_DEFAULT_HOST):
         postTestFairyURL(app_name, url)
     else:
-         print 'There was a problem authenticating with the Victorious backend. Exiting now...'
-         return 1
+        exit_message = '1|There was a problem authenticating with the Victorious backend. Exiting now...'
+        if _CONSOLE_OUTPUT:
+            print exit_message
+        sys.exit(exit_message)
+
     
-    return 0
+    sys.exit('0|Test Fairy URL Posted to VAMS Successfully')
 
 
 if __name__ == '__main__':

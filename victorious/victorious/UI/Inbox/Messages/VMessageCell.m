@@ -11,6 +11,7 @@
 #import "VMessageCell.h"
 #import "UIImage+ImageCreation.h"
 #import "VDefaultProfileImageView.h"
+#import "victorious-Swift.h"
 
 NSString * const kVMessageCellNibName = @"VMessageCell";
 

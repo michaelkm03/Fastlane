@@ -240,7 +240,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
 
 extension VTrendingUserShelfCollectionViewCell : VTagSensitiveTextViewDelegate {
     
-    func tagSensitiveTextView(tagSensitiveTextView: VTagSensitiveTextView!, tappedTag tag: VTag!) {
+    func tagSensitiveTextView(tagSensitiveTextView: VTagSensitiveTextView, tappedTag tag: VTag) {
         respondToUserTap()
     }
     

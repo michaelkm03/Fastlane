@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "VSimpleModalTransition.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class VComment;
 
 @interface VCommentTextView : UITextView
@@ -33,3 +35,5 @@
 @property (weak, nonatomic) id<VEditCommentViewControllerDelegate> delegate;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -13,14 +13,16 @@ extern const NSInteger kTooManyNewMessagesErrorCode;
 
 @class VAbstractFilter, VSequenceFilter, VAsset, VSequence, VConversation, VStream;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface VObjectManager (Pagination)
 
 #pragma mark - Likers
 
 - (RKManagedObjectRequestOperation *)likersForSequence:(VSequence *)sequence
                                               pageType:(VPageType)pageType
-                                          successBlock:(VSuccessBlock)success
-                                             failBlock:(VFailBlock)fail;
+                                          successBlock:(nullable VSuccessBlock)success
+                                             failBlock:(nullable VFailBlock)fail;
 
 #pragma mark - User Search
 
@@ -28,54 +30,55 @@ extern const NSInteger kTooManyNewMessagesErrorCode;
                                                   sequenceID:(NSString *)sequenceID
                                                     pageType:(VPageType)pageType
                                                      context:(NSString *)context
-                                            withSuccessBlock:(VSuccessBlock)success
-                                                   failBlock:(VFailBlock)fail;
+                                            withSuccessBlock:(nullable VSuccessBlock)success
+                                                   failBlock:(nullable VFailBlock)fail;
 
 #pragma mark Comments
 
 - (RKManagedObjectRequestOperation *)findCommentPageOnSequence:(VSequence *)sequence
                                                  withCommentId:(NSNumber *)commentId
-                                                  successBlock:(VSuccessBlock)success
-                                                     failBlock:(VFailBlock)fail;
+                                                  successBlock:(nullable VSuccessBlock)success
+                                                     failBlock:(nullable VFailBlock)fail;
+
 
 - (RKManagedObjectRequestOperation *)loadCommentsOnSequence:(VSequence *)sequence
                                                    pageType:(VPageType)pageType
-                                               successBlock:(VSuccessBlock)success
-                                                  failBlock:(VFailBlock)fail;
+                                               successBlock:(nullable VSuccessBlock)success
+                                                  failBlock:(nullable VFailBlock)fail;
 
 #pragma mark Sequence
 
 - (RKManagedObjectRequestOperation *)loadStream:(VStream *)stream
                                        pageType:(VPageType)pageType
-                                   successBlock:(VSuccessBlock)success
-                                      failBlock:(VFailBlock)fail;
+                                   successBlock:(nullable VSuccessBlock)success
+                                      failBlock:(nullable VFailBlock)fail;
 
 #pragma mark Following
 - (RKManagedObjectRequestOperation *)loadFollowersForUser:(VUser *)user
                                                  pageType:(VPageType)pageType
-                                             successBlock:(VSuccessBlock)success
-                                                failBlock:(VFailBlock)fail;
+                                             successBlock:(nullable VSuccessBlock)success
+                                                failBlock:(nullable VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)loadFollowingsForUser:(VUser *)user
                                                   pageType:(VPageType)pageType
-                                              successBlock:(VSuccessBlock)success
-                                                 failBlock:(VFailBlock)fail;
+                                              successBlock:(nullable VSuccessBlock)success
+                                                 failBlock:(nullable VFailBlock)fail;
 
 #pragma mark Repost
 - (RKManagedObjectRequestOperation *)loadRepostersForSequence:(VSequence *)sequence
                                                      pageType:(VPageType)pageType
-                                                 successBlock:(VSuccessBlock)success
-                                                    failBlock:(VFailBlock)fail;
+                                                 successBlock:(nullable VSuccessBlock)success
+                                                    failBlock:(nullable VFailBlock)fail;
 
 #pragma mark Direct Messaging
 - (RKManagedObjectRequestOperation *)loadMessagesForConversation:(VConversation *)conversation
                                                         pageType:(VPageType)pageType
-                                                    successBlock:(VSuccessBlock)success
-                                                       failBlock:(VFailBlock)fail;
+                                                    successBlock:(nullable VSuccessBlock)success
+                                                       failBlock:(nullable VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)loadConversationListWithPageType:(VPageType)pageType
-                                                         successBlock:(VSuccessBlock)success
-                                                            failBlock:(VFailBlock)fail;
+                                                         successBlock:(nullable VSuccessBlock)success
+                                                            failBlock:(nullable VFailBlock)fail;
 
 /**
  Loads page one from the server, but only returns messages that already exist. If every
@@ -84,17 +87,17 @@ extern const NSInteger kTooManyNewMessagesErrorCode;
  kTooManyNewMessagesErrorCode.
  */
 - (RKManagedObjectRequestOperation *)loadNewestMessagesInConversation:(VConversation *)conversation
-                                                         successBlock:(VSuccessBlock)success
-                                                            failBlock:(VFailBlock)fail;
+                                                         successBlock:(nullable VSuccessBlock)success
+                                                            failBlock:(nullable VFailBlock)fail;
 
 #pragma mark Notifications
 - (RKManagedObjectRequestOperation *)loadNotificationsListWithPageType:(VPageType)pageType
-                                                          successBlock:(VSuccessBlock)success
-                                                             failBlock:(VFailBlock)fail;
-- (RKManagedObjectRequestOperation *)markAllNotificationsRead:(VSuccessBlock)success
-                                                    failBlock:(VFailBlock)fail;
-- (RKManagedObjectRequestOperation *)notificationsCount:(VSuccessBlock)success
-                                              failBlock:(VFailBlock)fail;
+                                                          successBlock:(nullable VSuccessBlock)success
+                                                             failBlock:(nullable VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)markAllNotificationsRead:(nullable VSuccessBlock)success
+                                                    failBlock:(nullable VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)notificationsCount:(nullable VSuccessBlock)success
+                                              failBlock:(nullable VFailBlock)fail;
 
 #pragma mark Filters
 
@@ -113,3 +116,6 @@ extern const NSInteger kTooManyNewMessagesErrorCode;
 - (NSString *)apiPathForConversationWithRemoteID:(NSNumber *)remoteID;
 
 @end
+
+NS_ASSUME_NONNULL_END
+

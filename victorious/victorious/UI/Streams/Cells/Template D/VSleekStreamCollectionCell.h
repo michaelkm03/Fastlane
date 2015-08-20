@@ -13,6 +13,7 @@
 #import "VCellFocus.h"
 #import "VStreamCellTracking.h"
 #import "VHighlightContainer.h"
+#import "victorious-swift.h"
 
 @class VSequence, VStream;
 
@@ -46,5 +47,10 @@
  *  The stream that this VSleekStreamCollectionCell is in.
  */
 @property (nonatomic, strong) VStream *stream;
+
+/*
+ * A context object used for tracking purposes.
+ */
+@property (nonatomic, strong) StreamCellContext *context;
 
 @end
