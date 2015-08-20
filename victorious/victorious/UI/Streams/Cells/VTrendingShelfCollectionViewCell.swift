@@ -26,7 +26,9 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     
     var shelf: Shelf? {
         didSet {
-            if !VTrendingShelfCollectionViewCell.needsUpdate(fromShelf: oldValue, toShelf: shelf) { return }
+            if !VTrendingShelfCollectionViewCell.needsUpdate(fromShelf: oldValue, toShelf: shelf) {
+                return
+            }
             
             if let items = shelf?.streamItems,
                 let streamItems = items.array as? [VStreamItem] {
@@ -52,7 +54,9 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     
     var dependencyManager: VDependencyManager? {
         didSet {
-            if !VTrendingShelfCollectionViewCell.needsUpdate(fromDependencyManager: oldValue, toDependencyManager: dependencyManager) { return }
+            if !VTrendingShelfCollectionViewCell.needsUpdate(fromDependencyManager: oldValue, toDependencyManager: dependencyManager) {
+                return
+            }
             
             if let dependencyManager = dependencyManager {
                 followControl.dependencyManager = dependencyManager
