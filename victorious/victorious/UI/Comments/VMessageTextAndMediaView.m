@@ -11,6 +11,8 @@
 #import "VMessage+Fetcher.h"
 #import "victorious-Swift.h"
 
+static UIEdgeInsets const kTextInsets = { 2.0f, 0.0f, 2.0f, 0.0f };
+
 @implementation VMessageTextAndMediaView
 
 - (void)setMessage:(VMessage *)message
@@ -30,6 +32,8 @@
     
     [self.mediaAttachmentView removeFromSuperview];
     self.mediaAttachmentView = [MediaAttachmentView mediaViewWithMessage:message];
+    
+    self.textView.textContainerInset = UIEdgeInsetsMake(1.0f, 0.0f, 0.0f, 0.0f);
 }
 
 + (CGFloat)estimatedHeightWithWidth:(CGFloat)width message:(VMessage *)message
@@ -47,7 +51,11 @@
     }
     
     __block CGRect boundingRect = CGRectZero;
+    
+    CGFloat totalTextHeight = 0.0f;
+    CGFloat totalMediaHeight = 0.0f;
     CGFloat mediaSpacing = 0.0f;
+    
     if ( ![text isEqualToString:@""] )
     {
         NSDictionary *attributes = font != nil ? [self attributesForTextWithFont:font] : [self attributesForText];
@@ -57,15 +65,18 @@
                                                                  options:NSStringDrawingUsesLineFragmentOrigin
                                                                  context:[[NSStringDrawingContext alloc] init]];
          }];
+
         mediaSpacing = kSpacingBetweenTextAndMedia;
+        totalTextHeight = VCEIL(CGRectGetHeight(boundingRect)) + kTextInsets.top + kTextInsets.bottom;
     }
-    CGFloat totalMediaHeight = 0;
+
     if ([message hasMediaAttachment])
     {
         CGFloat aspectRatio = [message mediaAspectRatio];
         totalMediaHeight = (width * aspectRatio) + mediaSpacing;
     }
-    return VCEIL(CGRectGetHeight(boundingRect)) + totalMediaHeight;
+    
+    return  totalTextHeight + totalMediaHeight;
 }
 
 @end
