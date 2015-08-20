@@ -21,7 +21,8 @@ extension GIFSearchResult {
             "width"             : "width",
             "height"            : "height",
             "thumbnail"         : "thumbnailUrl",
-            "thumbnail_still"   : "thumbnailStillUrl" ]
+            "thumbnail_still"   : "thumbnailStillUrl",
+            "remote_id"         : "remoteId" ]
         
         let store = RKObjectManager.sharedManager().managedObjectStore
         let mapping = RKEntityMapping(forEntityForName: self.v_defaultEntityName, inManagedObjectStore: store )

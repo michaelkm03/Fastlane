@@ -79,10 +79,10 @@ build(){
     # Build
     if [ "$MACROS_COMMAND" == "" ]; then
         xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
-                   -archivePath "../victorious.xcarchive" $PREFIX_COMMAND archive
+                   -archivePath "../victorious.xcarchive" DownloadTemplate=no $PREFIX_COMMAND archive
     else
         xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
-                   -archivePath "../victorious.xcarchive" $PREFIX_COMMAND "$MACROS_COMMAND" archive
+                   -archivePath "../victorious.xcarchive" DownloadTemplate=no $PREFIX_COMMAND "$MACROS_COMMAND" archive
     fi
     BUILDRESULT=$?
     if [ $BUILDRESULT == 0 ]; then

@@ -31,7 +31,7 @@
 #import "VEditorializationItem.h"
 #import "VStream.h"
 #import "VPreviewViewBackgroundHost.h"
-#import "victorious-Swift.h"
+#import "UIResponder+VResponderChain.h"
 
 @import KVOController;
 
@@ -46,7 +46,7 @@ static const NSUInteger kMaxNumberOfInStreamComments = 3;
 static const CGFloat kInStreamCommentsTopSpace = 6.0f;
 static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
-@interface VSleekStreamCollectionCell () <VBackgroundContainer, CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate>
+@interface VSleekStreamCollectionCell () <VBackgroundContainer, CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate, AutoplayTracking>
 
 @property (nonatomic, strong) VSequencePreviewView *previewView;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -491,7 +491,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 {
     if ([self.previewView conformsToProtocol:@protocol(VCellFocus)])
     {
-        [(id <VCellFocus>)self.previewView setHasFocus:hasFocus];
+        [(id<VCellFocus>)self.previewView setHasFocus:hasFocus];
     }
 }
 
@@ -513,6 +513,25 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     [targetForHashTagSelection hashTag:value
                     tappedFromSequence:self.sequence
                               fromView:self];
+}
+
+#pragma mark - Autoplay tracking
+
+- (void)trackAutoplayEvent:(AutoplayTrackingEvent *__nonnull)event
+{
+    // Set context and continue walking up responder chain
+    event.context = self.context;
+    
+    id<AutoplayTracking>responder = [self.nextResponder v_targetConformingToProtocol:@protocol(AutoplayTracking)];
+    if (responder != nil)
+    {
+        [responder trackAutoplayEvent:event];
+    }
+}
+
+- (NSDictionary *__nonnull)additionalInfo
+{
+    return [self.previewView trackingInfo] ?: @{};
 }
 
 #pragma mark - VHighlightContainer

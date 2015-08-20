@@ -9,6 +9,7 @@
 #import "VCommentTextAndMediaView.h"
 #import "VTagSensitiveTextView.h"
 #import "VComment+Fetcher.h"
+#import "victorious-Swift.h"
 
 @implementation VCommentTextAndMediaView
 

@@ -21,7 +21,6 @@
 #import "VStreamCollectionViewController.h"
 #import "VReposterTableViewController.h"
 #import "VUserProfileViewController.h"
-#import "VCommentsContainerViewController.h"
 #import "VWorkspaceViewController.h"
 #import "VAbstractMediaLinkViewController.h"
 #import "VTabScaffoldViewController.h"
@@ -54,6 +53,8 @@
 #import "VUsersViewController.h"
 #import "VLikersDataSource.h"
 
+#import "victorious-swift.h"
+
 @interface VSequenceActionController ()
 
 @property (nonatomic, strong) UIViewController *viewControllerPresentingWorkspace;
@@ -65,21 +66,14 @@
 
 #pragma mark - Comments
 
-- (void)showCommentsFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence withSelectedComment:(VComment *)selectedComment
+- (void)showCommentsFromViewController:(UIViewController *)viewController
+                              sequence:(VSequence *)sequence
+                   withSelectedComment:(VComment *)selectedComment
 {
-    VCommentsContainerViewController *commentsContainerViewController;
-    if ( selectedComment != nil )
-    {
-        commentsContainerViewController = [self.dependencyManager commentsContainerWithSequence:sequence andSelectedComment:selectedComment];
-    }
-    else
-    {
-        commentsContainerViewController = [self.dependencyManager commentsContainerWithSequence:sequence];
-    }
-    
+    CommentsViewController *commentsViewController = [self.dependencyManager commentsViewController:sequence];
     // If we are embedded in the root nav push on that, otherwise push on the nearest navigationcontroller
-    UINavigationController *navigationControllerToPushOn = viewController.rootNavigationController ?: viewController.navigationController;
-    [navigationControllerToPushOn pushViewController:commentsContainerViewController animated:YES];
+    UINavigationController *navigationControllerToPushOn = viewController.rootNavigationController.innerNavigationController ?: viewController.navigationController;
+    [navigationControllerToPushOn pushViewController:commentsViewController animated:YES];
 }
 
 #pragma mark - User

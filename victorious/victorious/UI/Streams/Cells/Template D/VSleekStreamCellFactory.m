@@ -94,12 +94,15 @@
         [self.registeredReuseIdentifiers addObject:reuseIdentifierForSequence];
     }
     
+    StreamCellContext *context = [[StreamCellContext alloc] initWithStreamItem:streamItem stream:stream fromShelf:NO];
+    
     VSleekStreamCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifierForSequence
                                                                                  forIndexPath:indexPath];
     cell.accessibilityIdentifier = VAutomationIdentifierStreamCell;
     cell.dependencyManager = self.dependencyManager;
     cell.sequence = sequence;
     cell.stream = stream;
+    cell.context = context;
     [self.dependencyManager addLoadingBackgroundToBackgroundHost:cell];
     [self.dependencyManager addBackgroundToBackgroundHost:cell];
     [self.dependencyManager addHighlightViewToHost:cell];

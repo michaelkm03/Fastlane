@@ -9,6 +9,8 @@
 #import "VVideoSequencePreviewView.h"
 #import "victorious-Swift.h"
 #import "VVideoSettings.h"
+#import "VTrackingManager.h"
+#import "UIResponder+VResponderChain.h"
 
 /**
  Describes the state of the video preview view
@@ -29,9 +31,17 @@ const CGFloat kMaximumLoopingTime = 30.0f;
 @property (nonatomic, strong) NSURL *assetURL;
 @property (nonatomic, strong) VVideoSettings *videoSettings;
 @property (nonatomic, strong) VAsset *HLSAsset;
+@property (nonatomic, strong) VTracking *trackingItem;
+@property (nonatomic, strong) id timeObserver;
+@property (nonatomic, assign) BOOL noReplay;
 
 @property (nonatomic, strong) SoundBarView *soundIndicator;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
+
+@property (nonatomic, assign) BOOL didPlay25;
+@property (nonatomic, assign) BOOL didPlay50;
+@property (nonatomic, assign) BOOL didPlay75;
+@property (nonatomic, assign) BOOL didPlay100;
 
 @end
 
@@ -83,6 +93,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
         // Check if autoplay is enabled before loading asset URL
         if ([self.videoSettings isAutoplayEnabled])
         {
+            self.trackingItem = sequence.tracking;
             [self loadAssetURL:[NSURL URLWithString:self.HLSAsset.data] andLoop:NO];
         }
     }
@@ -92,6 +103,8 @@ const CGFloat kMaximumLoopingTime = 30.0f;
 {
     self.assetURL = url;
     
+    [self reset];
+    
     __weak VVideoSequencePreviewView *weakSelf = self;
     [self.videoView setItemURL:url
                           loop:loop
@@ -100,6 +113,16 @@ const CGFloat kMaximumLoopingTime = 30.0f;
      {
          [weakSelf makeBackgroundContainerViewVisible:YES];
      }];
+}
+
+- (void)reset
+{
+    self.noReplay = NO;
+    
+    self.didPlay25 = NO;
+    self.didPlay50 = NO;
+    self.didPlay75 = NO;
+    self.didPlay100 = NO;
 }
 
 - (void)setState:(VVideoPreviewViewState)state
@@ -155,6 +178,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     if (self.inFocus)
     {
         [self playVideo];
+        [self trackAutoplayEvent:VTrackingEventViewDidStart urls:self.trackingItem.viewStart];
     }
     else
     {
@@ -167,10 +191,12 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     if (![self.videoView playbackLikelyToKeepUp])
     {
         [self setState:VVideoPreviewViewStateBuffering];
+        [self trackAutoplayEvent:VTrackingEventVideoDidStall urls:self.trackingItem.videoStall];
     }
     else
     {
         [self setState:VVideoPreviewViewStatePlaying];
+        [self trackAutoplayEvent:VTrackingEventViewDidStart urls:self.trackingItem.viewStart];
     }
     [self.videoView playWithoutSeekingToBeginning];
 }
@@ -204,13 +230,14 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     }
     else
     {
+        self.noReplay = YES;
         [self setState:VVideoPreviewViewStateEnded];
     }
 }
 
 - (void)videoViewDidStartBuffering:(VVideoView *__nonnull)videoView
 {
-    if (self.inFocus)
+    if (self.inFocus && !self.noReplay)
     {
         [self setState:VVideoPreviewViewStateBuffering];
     }
@@ -218,10 +245,53 @@ const CGFloat kMaximumLoopingTime = 30.0f;
 
 - (void)videoViewDidStopBuffering:(VVideoView *__nonnull)videoView
 {
-    if (self.inFocus)
+    if (self.inFocus && !self.noReplay)
     {
         [self setState:VVideoPreviewViewStatePlaying];
     }
+}
+
+- (void)videoView:(VVideoView *__nonnull)videoView didProgressWithPercentComplete:(float)percent
+{
+    if (percent >= 25.0f && percent < 50.0f && !self.didPlay25)
+    {
+        self.didPlay25 = YES;
+        [self trackAutoplayEvent:VTrackingEventVideoDidComplete25 urls:self.trackingItem.videoComplete25];
+    }
+    else if (percent >= 50.0f && percent < 75.0f && !self.didPlay50)
+    {
+        self.didPlay50 = YES;
+        [self trackAutoplayEvent:VTrackingEventVideoDidComplete50 urls:self.trackingItem.videoComplete50];
+    }
+    else if (percent >= 75.0f && percent < 95.0f && !self.didPlay75)
+    {
+        self.didPlay75 = YES;
+        [self trackAutoplayEvent:VTrackingEventVideoDidComplete75 urls:self.trackingItem.videoComplete75];
+    }
+    else if (percent >= 95.0f && !self.didPlay100)
+    {
+        self.didPlay100 = YES;
+        [self trackAutoplayEvent:VTrackingEventVideoDidComplete100 urls:self.trackingItem.videoComplete100];
+    }
+}
+
+#pragma mark - Helpers
+
+- (void)trackAutoplayEvent:(NSString *)event urls:(NSArray *)urls
+{
+    AutoplayTrackingEvent *trackingEvent = [[AutoplayTrackingEvent alloc] initWithName:event urls:urls ?: @[]];
+    
+    // Walk responder chain to track autoplay events
+    id<AutoplayTracking>responder = [self v_targetConformingToProtocol:@protocol(AutoplayTracking)];
+    if (responder != nil)
+    {
+        [responder trackAutoplayEvent:trackingEvent];
+    }
+}
+
+- (NSDictionary *)trackingInfo
+{
+    return @{VTrackingKeyTimeCurrent : [NSNumber numberWithUnsignedInteger:[self.videoView currentTimeMilliseconds]]};
 }
 
 @end

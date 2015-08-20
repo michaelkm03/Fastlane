@@ -13,6 +13,7 @@
 #import "VTagSensitiveTextView.h"
 #import "UIView+AutoLayout.h"
 #import "VComment+Fetcher.h"
+#import "victorious-Swift.h"
 
 @interface VTextAndMediaView ()
 

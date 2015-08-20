@@ -33,24 +33,29 @@ def init():
     global _LOCAL_HOST
     global _DEFAULT_LOCAL_PORT
     global _AUTH_TOKEN
+    global _PLATFORM_ANDROID
+    global _PLATFORM_IOS
 
     _LOGIN_ENDPOINT = '/api/login'
 
-    _DEFAULT_CONFIG_DIRECTORY = 'configurations'
+    _DEFAULT_CONFIG_DIRECTORY = 'app/configuration'
     _DEFAULT_DEST_DIRECTORY = 'victorious/AppSpecific'
 
     _DEFAULT_VAMS_USERID = 0
-    _DEFAULT_VAMS_USER = 'vicky@example.com'
-    _DEFAULT_VAMS_PASSWORD = 'abc123456'
+    _DEFAULT_VAMS_USER = 'autobuild@victorious.com'
+    _DEFAULT_VAMS_PASSWORD = 'tGrg9qtxgdRBbbPwiRDNbRJkjwTxXFmEphCbdrdoePdoHdKs3m'
 
-    _DEFAULT_USERAGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36 aid:1 uuid:FFFFFFFF-0000-0000-0000-FFFFFFFFFFFF build:1'
+    _DEFAULT_USERAGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) ' \
+                         'Chrome/43.0.2357.130 Safari/537.36 aid:11 uuid:FFFFFFFF-0000-0000-0000-FFFFFFFFFFFF build:1'
     _DEFAULT_HEADERS = ''
     _DEFAULT_HEADER_DATE = subprocess.check_output("date", shell=True).rstrip()
 
+    _PLATFORM_ANDROID = 'android'
+    _PLATFORM_IOS = 'ios'
 
-    _DEFAULT_PLATFORM = 'ios'
-    _PRODUCTION_HOST = 'http://api.getvictorious.com'
-    _STAGING_HOST = 'http://staging.getvictorious.com'
+    _DEFAULT_PLATFORM = _PLATFORM_ANDROID
+    _PRODUCTION_HOST = 'https://api.getvictorious.com'
+    _STAGING_HOST = 'https://staging.getvictorious.com'
     _QA_HOST = 'http://qa.getvictorious.com'
     _DEV_HOST = 'http://dev.getvictorious.com'
     _LOCAL_HOST = 'http://localhost'
@@ -76,8 +81,11 @@ def authenticateUser(host):
         'Date': _DEFAULT_HEADER_DATE
     }
     response = requests.post(url, data=postData, headers=headers)
+    json = response.json()
+    error_code = json['error']
+    status_code = response.status_code
 
-    if not response.status_code == 200:
+    if not (error_code == 0 and status_code == 200):
         return False
 
     # Return the authentication JSON object
