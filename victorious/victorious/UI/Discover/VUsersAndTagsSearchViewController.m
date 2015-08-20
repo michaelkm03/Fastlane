@@ -124,31 +124,11 @@ static NSInteger const kVMaxSearchResults = 1000;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    // Add NSNotification Observers
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(segmentControlAction:)
-                                                 name:UITextFieldTextDidChangeNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(searchFieldTextChanged:)
-                                                 name:UITextFieldTextDidChangeNotification
-                                               object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    if (self.segmentControl.selectedSegmentIndex == 0)
-    {
-        [self.userSearchResultsVC.tableView reloadData];
-    }
-    else
-    {
-        [self.tagsSearchResultsVC.tableView reloadData];
-    }
 
     [self.searchField becomeFirstResponder];
     
@@ -158,9 +138,6 @@ static NSInteger const kVMaxSearchResults = 1000;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    // Remove NSNotification Observers
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
     
     if ( self.isBeingDismissed )
     {
@@ -342,17 +319,6 @@ static NSInteger const kVMaxSearchResults = 1000;
 - (void)tagsSearchComplete:(VTagsSearchResultsViewController *)tagsSearchResultsViewController
 {
     [self closeButtonAction:tagsSearchResultsViewController];
-}
-
-#pragma mark - Search Field Text Changed
-
-- (void)searchFieldTextChanged:(NSNotification *)notification
-{
-    if (self.searchField.text.length == 0)
-    {
-        self.userSearchResultsVC.searchResults = nil;
-        self.tagsSearchResultsVC.searchResults = nil;
-    }
 }
 
 #pragma mark - UITextFieldDelegate
