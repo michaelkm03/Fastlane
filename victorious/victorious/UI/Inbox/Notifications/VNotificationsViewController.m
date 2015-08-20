@@ -102,7 +102,6 @@ static int const kNotificationFetchBatchSize = 50;
     self.tableView.estimatedRowHeight = kVNotificationCellHeight;
     self.tableView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.automaticallyAdjustsScrollViewInsets = NO;
-    [self markAllNotificationsRead];
 }
 
 - (void)viewWillAppear:(BOOL)animated
