@@ -10,7 +10,7 @@ import UIKit
 
 /// Base view controller for the explore screen that gets
 /// presented when "explore" button on the tab bar is tapped
-class VExploreViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+class VExploreViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate {
     
     @IBOutlet weak private var searchBar: UISearchBar!
     @IBOutlet weak private var collectionView: UICollectionView!
@@ -44,6 +44,7 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     }
     
     /// MARK: - UICollectionViewDataSource
+    
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         var numberOfRows = 0
         
@@ -70,5 +71,13 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return numberOfSectionsInCollectionView
+    }
+    
+    /// Mark: - UISearchBarDelegate
+    
+    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+        if let searchVC = VUsersAndTagsSearchViewController .newWithDependencyManager(dependencyManager) {
+            v_navigationController().innerNavigationController.pushViewController(searchVC, animated: true)
+        }
     }
 }

@@ -80,6 +80,7 @@
 #import "VDependencyManager+VTracking.h"
 #import "VPushNotificationManager.h"
 #import "VNavigationController.h"
+#import "VUsersAndTagsSearchViewController.h"
 
 
 //Shelves
