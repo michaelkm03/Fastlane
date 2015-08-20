@@ -32,10 +32,16 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
                 let streamItems = items.array as? [VStreamItem] {
                     for (index, streamItem) in enumerate(streamItems) {
                         if index == streamItems.count - 1 {
-                            collectionView.registerClass(VTrendingShelfContentSeeAllCell.self, forCellWithReuseIdentifier: VTrendingShelfContentSeeAllCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager))
+                            
+                            let reuseIdentifier = VTrendingShelfContentSeeAllCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
+                            collectionView.registerClass(VTrendingShelfContentSeeAllCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+                            
                         }
                         else {
-                            collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager))
+                            
+                            let reuseIdentifier = VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
+                            collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier:reuseIdentifier)
+                            
                         }
                     }
             }
@@ -57,13 +63,11 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     
     /// Returns true when the 2 provided shelves differ enough to require a UI update
     static func needsUpdate(fromShelf oldValue: Shelf?, toShelf shelf: Shelf?) -> Bool {
-        if ( shelf == oldValue ) {
-            if let newStreamItems = shelf?.streamItems, let oldStreamItems = oldValue?.streamItems {
-                if newStreamItems.isEqualToOrderedSet(oldStreamItems) {
-                    //The shelf AND its content are the same, no need to update
-                    return false
-                }
-            }
+        if shelf == oldValue,
+            let newStreamItems = shelf?.streamItems,
+            let oldStreamItems = oldValue?.streamItems where newStreamItems.isEqualToOrderedSet(oldStreamItems) {
+            //The shelf AND its content are the same, no need to update
+            return false
         }
         return true
     }

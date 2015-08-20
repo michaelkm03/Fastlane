@@ -505,9 +505,8 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 {
     if ( [stream isSingleStream] || [stream isShelf] )
     {
-        VStreamCollectionViewController *streamCollection = [self.dependencyManager templateValueOfType:[VStreamCollectionViewController class]
-                                                                                                 forKey:kStreamCollectionKey
-                                                                                  withAddedDependencies:@{ kSequenceIDKey: stream.remoteId, VDependencyManagerTitleKey: stream.name }];
+        VStreamCollectionViewController *streamCollection = [VStreamCollectionViewController newWithDependencyManager:[self.dependencyManager childDependencyManagerWithAddedConfiguration:@{ kSequenceIDKey: stream.remoteId, VDependencyManagerTitleKey: stream.name }]];
+        
         streamCollection.currentStream = stream;
         streamCollection.targetStreamItem = streamItem;
         [self.navigationController pushViewController:streamCollection animated:YES];

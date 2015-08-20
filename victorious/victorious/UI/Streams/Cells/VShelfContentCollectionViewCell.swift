@@ -28,9 +28,9 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
                 return
             }
             previewView.removeFromSuperview()
+            
+            previewView = VStreamItemPreviewView(streamItem: streamItem?.itemSubType == VStreamItemSubTypeText ? nil : streamItem)
 
-            let newPreviewView = VStreamItemPreviewView(streamItem: streamItem)
-            previewView = newPreviewView
             updatePreviewView(streamItem)
         }
     }

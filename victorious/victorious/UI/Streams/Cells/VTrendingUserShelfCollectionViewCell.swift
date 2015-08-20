@@ -49,11 +49,15 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     @IBOutlet private weak var usernameCenterConstraint: NSLayoutConstraint!
     @IBOutlet private weak var countsCenterConstraint: NSLayoutConstraint!
     
+    private static let numberFormatter = VLargeNumberFormatter()
+    
     //MARK: - Setters
     
     override var shelf: Shelf? {
         didSet {
-            if !VTrendingShelfCollectionViewCell.needsUpdate(fromShelf: oldValue, toShelf: shelf) { return }
+            if !VTrendingShelfCollectionViewCell.needsUpdate(fromShelf: oldValue, toShelf: shelf) {
+                return
+            }
             
             if let shelf = shelf as? UserShelf {
                 titleLabel.text = shelf.title
@@ -68,7 +72,9 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     
     override var dependencyManager: VDependencyManager? {
         didSet {
-            if !VTrendingShelfCollectionViewCell.needsUpdate(fromDependencyManager: oldValue, toDependencyManager: dependencyManager) { return }
+            if !VTrendingShelfCollectionViewCell.needsUpdate(fromDependencyManager: oldValue, toDependencyManager: dependencyManager) {
+                return
+            }
             
             if let dependencyManager = dependencyManager {
                 followControl.dependencyManager = dependencyManager
@@ -100,13 +106,15 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
         var countsText = ""
         let hasFollowersCount = shelf.followersCount.integerValue != 0
         if shelf.postsCount.integerValue != 0 {
-            countsText = shelf.postsCount.stringValue + " " + NSLocalizedString("posts", comment: "")
+            let postsCount = numberFormatter.stringForInteger(shelf.postsCount.integerValue)
+            countsText = postsCount + " " + NSLocalizedString("posts", comment: "")
             if hasFollowersCount {
                 countsText += " • "
             }
         }
         if hasFollowersCount {
-            countsText += shelf.followersCount.stringValue + " " + NSLocalizedString("followers", comment: "")
+            let followersCount = numberFormatter.stringForInteger(shelf.postsCount.integerValue)
+            countsText += followersCount + " " + NSLocalizedString("followers", comment: "")
         }
         return countsText
     }

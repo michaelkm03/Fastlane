@@ -128,7 +128,7 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    // Draws a white background
+    // Draws a white background with a border around the icon if border width is > 0
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextAddEllipseInRect(context, rect);
     if ( self.borderWidth > 0.0f )
