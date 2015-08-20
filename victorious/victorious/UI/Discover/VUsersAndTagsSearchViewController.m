@@ -264,7 +264,6 @@ static NSInteger const kVMaxSearchResults = 1000;
         else
         {
             self.tagsSearchResultsVC.searchResults = nil;
-            [self.tagsSearchResultsVC.tableView reloadData];
             [self showNoResultsReturnedForSearch];
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:kVHashtagsSearchResultsChangedNotification object:nil];
@@ -307,7 +306,6 @@ static NSInteger const kVMaxSearchResults = 1000;
         else
         {
             self.userSearchResultsVC.searchResults = nil;
-            [self.userSearchResultsVC.tableView reloadData];
             [self showNoResultsReturnedForSearch];
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:kVUserSearchResultsChangedNotification object:nil];
@@ -353,10 +351,7 @@ static NSInteger const kVMaxSearchResults = 1000;
     if (self.searchField.text.length == 0)
     {
         self.userSearchResultsVC.searchResults = nil;
-        [self.userSearchResultsVC.tableView reloadData];
-        
         self.tagsSearchResultsVC.searchResults = nil;
-        [self.tagsSearchResultsVC.tableView reloadData];
     }
 }
 
@@ -370,11 +365,9 @@ static NSInteger const kVMaxSearchResults = 1000;
 - (BOOL)textFieldShouldClear:(UITextField *)textField
 {
     self.userSearchResultsVC.searchResults = nil;
-    [self.userSearchResultsVC.tableView reloadData];
     self.userSearchResultsVC.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
     self.tagsSearchResultsVC.searchResults = nil;
-    [self.tagsSearchResultsVC.tableView reloadData];
     self.tagsSearchResultsVC.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     return YES;
