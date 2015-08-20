@@ -12,13 +12,13 @@ extension NSDate: Equatable {}
 extension NSDate: Comparable {}
 
 public func ==(lhs: NSDate, rhs: NSDate) -> Bool {
-    return lhs.timeIntervalSince1970 == rhs.timeIntervalSince1970
+    return lhs.isEqualToDate(rhs)
 }
 
 public func <(lhs: NSDate, rhs: NSDate) -> Bool {
-    return lhs.timeIntervalSince1970 < rhs.timeIntervalSince1970
+    return lhs.compare(rhs) == NSComparisonResult.OrderedAscending
 }
 
 public func >(lhs: NSDate, rhs: NSDate) -> Bool {
-    return lhs.timeIntervalSince1970 > rhs.timeIntervalSince1970
+    return lhs.compare(rhs) == NSComparisonResult.OrderedDescending
 }
