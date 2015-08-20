@@ -28,11 +28,16 @@ static const CGFloat kMaxTextViewHeight = 150.0f;
 static const CGFloat kMinTextViewHeight = 40.0f;
 static const CGFloat kAttachmentBarHeight = 50.0f;
 
+static NSString * const kCommentPrompt = @"commentPrompt";
+static NSString * const kConfirmationText = @"commentConfirmationText";
+static NSString * const kCommentBarKey = @"commentBar";
+
 @interface VKeyboardInputAccessoryView () <UITextViewDelegate>
 
 @property (nonatomic, assign) BOOL selectedMedia;
 @property (nonatomic, strong) VUserTaggingTextStorage *textStorage;
 @property (nonatomic, assign) CGSize lastContentSize;
+@property (nonatomic, strong) NSString *placeholderText;
 
 // Views
 @property (nonatomic, strong) IBOutlet UIButton *attachmentsButton;
@@ -42,6 +47,8 @@ static const CGFloat kAttachmentBarHeight = 50.0f;
 @property (nonatomic, strong) IBOutlet UIButton *imageButton;
 @property (nonatomic, strong) IBOutlet UIButton *videoButton;
 @property (nonatomic, strong) IBOutlet UIButton *gifButton;
+@property (nonatomic, strong) IBOutlet UIButton *clearAttachmentButton;
+@property (nonatomic, weak) UITextView *editingTextView;
 
 // Constraints
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *topSpaceAttachmentsToContainer;
@@ -62,6 +69,11 @@ static const CGFloat kAttachmentBarHeight = 50.0f;
 
 + (VKeyboardInputAccessoryView *)defaultInputAccessoryViewWithDependencyManager:(VDependencyManager *)dependencyManager
 {
+    NSDictionary *commentBarConfiguration = [dependencyManager templateValueOfType:[NSDictionary class] forKey:kCommentBarKey];
+    VDependencyManager *commentBarDependencyManager = [[VDependencyManager alloc] initWithParentManager:dependencyManager
+                                                                                          configuration:commentBarConfiguration
+                                                                      dictionaryOfClassesByTemplateName:nil];
+    
     UINib *nibForInputAccessoryView = [UINib nibWithNibName:NSStringFromClass([self class])
                                                      bundle:nil];
     NSArray *nibContents = [nibForInputAccessoryView instantiateWithOwner:nil
@@ -69,7 +81,7 @@ static const CGFloat kAttachmentBarHeight = 50.0f;
     
     VKeyboardInputAccessoryView *accessoryView = [nibContents firstObject];
     
-    accessoryView.dependencyManager = dependencyManager;
+    accessoryView.dependencyManager = commentBarDependencyManager;
     
     return accessoryView;
 }
@@ -88,7 +100,17 @@ static const CGFloat kAttachmentBarHeight = 50.0f;
         }
         [self.sendButton setTitleColor:[_dependencyManager colorForKey:VDependencyManagerLinkColorKey]
                               forState:UIControlStateNormal];
+        [self.sendButton setTitle:[_dependencyManager stringForKey:kConfirmationText]
+                         forState:UIControlStateNormal];
+        [self.sendButton setTitleColor:[_dependencyManager colorForKey:VDependencyManagerLinkColorKey]
+                              forState:UIControlStateNormal];
+        [self.sendButton setTitleColor:[UIColor lightGrayColor]
+                              forState:UIControlStateDisabled];
+        self.sendButton.titleLabel.font = [_dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
+        self.placeholderText = [_dependencyManager stringForKey:kCommentPrompt];
     }
+    // so the placeholder and send labels are updated and positioned appropriately
+    [self layoutIfNeeded];
 }
 
 - (void)awakeFromNib
@@ -105,7 +127,7 @@ static const CGFloat kAttachmentBarHeight = 50.0f;
 - (void)addTextViewToContainer
 {
     UIFont *defaultFont = [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
-    self.textStorage = [[VUserTaggingTextStorage alloc] initWithTextView:nil defaultFont:defaultFont taggingDelegate:self.delegate dependencyManager:self.dependencyManager];
+    self.textStorage = [[VUserTaggingTextStorage alloc] initWithTextView:nil defaultFont:defaultFont taggingDelegate:self.textStorageDelegate dependencyManager:self.dependencyManager];
     
     NSLayoutManager *layoutManager = [[NSLayoutManager alloc] init];
     [self.textStorage addLayoutManager:layoutManager];
@@ -150,16 +172,6 @@ static const CGFloat kAttachmentBarHeight = 50.0f;
     return superResult;
 }
 
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    
-    [self.sendButton setTitleColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]
-                          forState:UIControlStateNormal];
-    [self.sendButton setTitleColor:[UIColor lightGrayColor]
-                          forState:UIControlStateDisabled];
-}
-
 - (CGSize)intrinsicContentSize
 {
     CGFloat editingTextViewPadding = self.editingTextViewTopSpace.constant + self.editingTextViewBottomSpace.constant;
@@ -176,10 +188,10 @@ static const CGFloat kAttachmentBarHeight = 50.0f;
 
 #pragma mark - Property Accessors
 
-- (void)setDelegate:(id<VKeyboardInputAccessoryViewDelegate>)delegate
+- (void)setTextStorageDelegate:(id<VUserTaggingTextStorageDelegate>)textStorageDelegate
 {
-    _delegate = delegate;
-    self.textStorage.taggingDelegate = delegate;
+    _textStorageDelegate = textStorageDelegate;
+    self.textStorage.taggingDelegate = textStorageDelegate;
     self.textStorage.textView = self.editingTextView;
 }
 
@@ -192,8 +204,11 @@ static const CGFloat kAttachmentBarHeight = 50.0f;
 - (void)setPlaceholderText:(NSString *)placeholderText
 {
     _placeholderText = placeholderText;
-    self.placeholderLabel.attributedText = [[NSAttributedString alloc] initWithString:placeholderText
-                                                                           attributes:[self textEntryAttributes]];
+    if (_placeholderText != nil)
+    {
+        self.placeholderLabel.attributedText = [[NSAttributedString alloc] initWithString:placeholderText
+                                                                               attributes:[self textEntryAttributes]];
+    }
 }
 
 - (void)setSelectedThumbnail:(UIImage *)selectedThumbnail

@@ -30,7 +30,7 @@
                                   @"view-skip"              :   VSelectorName(videoSkip),
                                   @"cell-view"              :   VSelectorName(cellView),
                                   @"cell-click"             :   VSelectorName(cellClick),
-                                  @"share"                  :   VSelectorName(share) };
+                                  @"share"                  :   VSelectorName(share)};
     
     RKEntityMapping *mapping = [RKEntityMapping
                                 mappingForEntityForName:[self entityName]

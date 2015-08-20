@@ -9,6 +9,7 @@
 #import "VMessageTextAndMediaView.h"
 #import "VTagSensitiveTextView.h"
 #import "VMessage+Fetcher.h"
+#import "victorious-Swift.h"
 
 static UIEdgeInsets const kTextInsets = { 2.0f, 4.0f, 2.0f, 4.0f };
 

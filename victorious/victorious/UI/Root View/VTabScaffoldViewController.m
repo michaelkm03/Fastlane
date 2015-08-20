@@ -31,6 +31,7 @@
 // Dependencies
 #import "VTabMenuShim.h"
 #import "VCoachmarkManager.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
 
 // Etc
 #import "NSArray+VMap.h"
@@ -51,7 +52,7 @@ NSString * const kMenuDeeplinkHost = @"menu";
 
 @interface VTabScaffoldViewController () <UITabBarControllerDelegate, VRootViewControllerContainedViewController, VDeeplinkHandler, VDeeplinkSupporter>
 
-@property (nonatomic, strong) UINavigationController *rootNavigationController;
+@property (nonatomic, strong) VNavigationController *rootNavigationController;
 @property (nonatomic, strong) UITabBarController *internalTabBarController;
 @property (nonatomic, strong) VNavigationDestinationContainerViewController *willSelectContainerViewController;
 
@@ -70,9 +71,10 @@ NSString * const kMenuDeeplinkHost = @"menu";
     self = [super initWithNibName:nil bundle:nil];
     if ( self != nil )
     {
-        _internalTabBarController = [[UITabBarController alloc] init];
+        _internalTabBarController = [[NavigationBarHiddenTabViewController alloc] init];
         _internalTabBarController.delegate = self;
-        _rootNavigationController = [[UINavigationController alloc] initWithRootViewController:_internalTabBarController];
+        _rootNavigationController = [[VNavigationController alloc] init];
+        _rootNavigationController.innerNavigationController.viewControllers = @[_internalTabBarController];
         _dependencyManager = dependencyManager;
         _coachmarkManager = [[VCoachmarkManager alloc] initWithDependencyManager:_dependencyManager];
         _tabShim = [dependencyManager templateValueOfType:[VTabMenuShim class] forKey:kMenuKey];
@@ -89,10 +91,14 @@ NSString * const kMenuDeeplinkHost = @"menu";
 {
     [super viewDidLoad];
     
+    self.definesPresentationContext = YES;
+    
     [self addChildViewController:self.rootNavigationController];
     self.rootNavigationController.view.frame = self.view.bounds;
     self.rootNavigationController.view.translatesAutoresizingMaskIntoConstraints = NO;
     self.rootNavigationController.navigationBarHidden = YES;
+    self.rootNavigationController.innerNavigationController.navigationBar.translucent = NO;
+    [self.dependencyManager applyStyleToNavigationBar:self.rootNavigationController.innerNavigationController.navigationBar];
     [self.view addSubview:self.rootNavigationController.view];
     [self.view v_addFitToParentConstraintsToSubview:self.rootNavigationController.view];
     [self.rootNavigationController didMoveToParentViewController:self];
@@ -131,7 +137,7 @@ NSString * const kMenuDeeplinkHost = @"menu";
 
 - (void)showContentViewWithSequence:(id)sequence streamID:(NSString *)streamId commentId:(NSNumber *)commentID placeHolderImage:(UIImage *)placeholderImage
 {
-    [VContentViewPresenter presentContentViewFromViewController:self
+    [VContentViewPresenter presentContentViewFromViewController:self.rootNavigationController
                                           withDependencyManager:self.dependencyManager
                                                     ForSequence:sequence
                                                  inStreamWithID:streamId
