@@ -30,15 +30,16 @@ fi
 
 # Grab the latest assets and configuration data from VAMS.
 # DO NOT put a trailing slash after the configurations directory.
-TMP_FOLDER=$(python build-scripts/vams_prebuild.py $FOLDER ios 2>&1)
-
+RESPONSE=$(python build-scripts/vams_prebuild.py $FOLDER ios 2>&1)
+RESPONSE_CODE=$(echo "$RESPONSE" | cut -f1 -d '|')
+RESPONSE_MESSAGE=$(echo "$RESPONSE" | cut -f2 -d '|')
 # If no working folder is returned then exit
-if [ "$TMP_FOLDER" == "" ]; then
-    echo "No app named '$FOLDER' was located in VAMS"
+if [ $RESPONSE_CODE -ne 0 ]; then
+    echo $RESPONSE_MESSAGE
     exit 1
+else
+    FOLDER="$RESPONSE_MESSAGE"
 fi
-
-FOLDER="$TMP_FOLDER"
 
 
 if [ "$A_FLAG" == "-a" ]; then

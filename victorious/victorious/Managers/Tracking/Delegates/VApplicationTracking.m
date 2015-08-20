@@ -30,6 +30,9 @@ static NSString * const kMacroSessionTime            = @"%%SESSION_TIME%%";
 static NSString * const kMacroLoadTime               = @"%%LOAD_TIME%%";
 static NSString * const kMacroPermissionState        = @"%%PERMISSION_STATE%%";
 static NSString * const kMacroPermissionName         = @"%%PERMISSION_NAME%%";
+static NSString * const kMacroAutoplay               = @"%%IS_AUTOPLAY%%";
+static NSString * const kMacroConnectivity           = @"%%CONNECTIVITY%%";
+static NSString * const kMacroVolumeLevel            = @"%%VOLUME_LEVEL%%";
 
 #define APPLICATION_TRACKING_LOGGING_ENABLED 0
 #define APPLICATION_TEMPLATE_MAPPING_LOGGING_ENABLED 0
@@ -70,7 +73,10 @@ static NSString * const kMacroPermissionName         = @"%%PERMISSION_NAME%%";
                                     VTrackingKeySessionTime        : kMacroSessionTime,
                                     VTrackingKeyLoadTime           : kMacroLoadTime,
                                     VTrackingKeyPermissionName     : kMacroPermissionName,
-                                    VTrackingKeyPermissionState    : kMacroPermissionState};
+                                    VTrackingKeyPermissionState    : kMacroPermissionState,
+                                    VTrackingKeyAutoplay           : kMacroAutoplay,
+                                    VTrackingKeyConnectivity       : kMacroConnectivity,
+                                    VTrackingKeyVolumeLevel        : kMacroVolumeLevel};
         
         _keyForEventMapping = @{ VTrackingEventUserDidStartCreateProfile           : VTrackingCreateProfileStartKey,
                                  VTrackingEventUserDidStartRegistration            : VTrackingRegistrationStartKey,

@@ -17,13 +17,14 @@
 #import "NSString+VParseHelp.h"
 #import "VObjectManager.h"
 #import "VDependencyManager+VObjectManager.h"
-#import <FBKVOController.h>
 #import "VURLMacroReplacement.h"
 #import "VDependencyManager+VHighlightContainer.h"
 #import "VStreamTrackingHelper.h"
 #import "VCellFocus.h"
 #import "VStreamItemPreviewView.h"
 #import "victorious-Swift.h"
+
+@import KVOController;
 
 static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kSequenceIDKey = @"sequenceID";
@@ -316,8 +317,10 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
         [self.registeredReuseIdentifiers addObject:reuseIdentifierForSequence];
     }
     
+    StreamCellContext *context = [[StreamCellContext alloc] initWithStreamItem:item stream:self.stream fromShelf:YES];
     cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[marqueeStreamItemCellClass reuseIdentifierForStreamItem:item baseIdentifier:nil dependencyManager:self.dependencyManager] forIndexPath:indexPath];
     cell.dependencyManager = self.dependencyManager;
+    cell.context = context;
     [cell setupWithStreamItem:item fromStreamWithApiPath:self.stream.apiPath];
     
     // Add highlight view

@@ -129,7 +129,7 @@
 	<key>discover.screen</key>
 	<string>VDiscoverContainerViewController</string>
 	<key>comments.screen</key>
-	<string>VCommentsContainerViewController</string>
+	<string>victorious.CommentsViewController</string>
 	<key>lightweight.contentView</key>
 	<string>VLightweightContentViewController</string>
 	<key>collections.directoryCell</key>

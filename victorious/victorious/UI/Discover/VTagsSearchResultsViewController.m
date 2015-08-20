@@ -19,8 +19,9 @@
 #import "VAuthorizedAction.h"
 #import "VTrendingTagCell.h"
 #import "VNoContentView.h"
-#import <MBProgressHUD.h>
 #import "VFollowControl.h"
+
+@import MBProgressHUD;
 
 static NSString * const kVTagResultIdentifier = @"VTrendingTagCell";
 

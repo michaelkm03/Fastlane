@@ -38,6 +38,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)videoViewDidStopBuffering:(VVideoView *)videoView;
 
+/**
+ Called as the video view is playing with the amount of the video watched as a percentage
+ */
+- (void)videoView:(VVideoView *)videoView didProgressWithPercentComplete:(float)percent;
+
 @end
 
 /**
@@ -97,6 +102,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)playFromStart;
 
 - (void)reset;
+
+/**
+ Returns the current time of video playback;
+ */
+- (NSUInteger)currentTimeMilliseconds;
 
 NS_ASSUME_NONNULL_END
 

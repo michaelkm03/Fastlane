@@ -10,32 +10,6 @@
  Use this file to import Objective-C headers that need to be exposed to any Swift code.
  */
 
-// iOS Frameworks
-#import <UIKit/UIKit.h>
-#import <CoreData/CoreData.h>
-#import <SystemConfiguration/SystemConfiguration.h>
-#import <MobileCoreServices/MobileCoreServices.h>
-
-// RestKit
-#import "RKEntityMapping.h"
-#import "RKObjectManager.h"
-#import "RKManagedObjectStore.h"
-#import "RKEntityMapping.h"
-#import "RKManagedObjectCaching.h"
-#import "RKManagedObjectRequestOperation.h"
-#import "RKResponseDescriptor.h"
-#import "RKHTTPUtilities.h"
-
-// SDWebImage
-#import <SDWebImage/UIImageView+WebCache.h>
-#import <SDWebImage/SDWebImageDownloader.h>
-
-// MBProgressHUD
-#import <MBProgressHUD/MBProgressHUD.h>
-
-// AFNetworking
-#import <AFNetworking/AFNetworking.h>
-
 // Victorious Models
 #import "VAbstractFilter.h"
 #import "VSEquence.h"
@@ -69,6 +43,9 @@
 #import "NSURL+VDataCacheID.h"
 #import "VButton.h"
 #import "VHasManagedDependencies.h"
+#import "VTracking.h"
+#import "VTrackingManager.h"
+#import "VReachability.h"
 #import "VSessionTimer.h"
 #import "VAuthorizedAction.h"
 #import "VObjectManager.h"
@@ -76,14 +53,49 @@
 #import "VLightweightContentViewController.h"
 #import "VFirstTimeInstallHelper.h"
 #import "VSessionTimer.h"
-#import "VTrackingManager.h"
 #import "VDependencyManager+VTracking.h"
 #import "VPushNotificationManager.h"
+#import "UIViewController+VRootNavigationController.h"
+#import "VKeyboardInputAccessoryView.h"
+#import "VUserTaggingTextStorageDelegate.h"
+#import "VContentCommentsCell.h"
+#import "VObjectManager+Pagination.h"
+#import "VObjectManager+ContentCreation.h"
+#import "VComment+Fetcher.h"
+#import "VCommentMediaType.h"
+#import "VSequencePermissions.h"
+#import "VPublishParameters.h"
+#import "VCommentAlertHelper.h"
+#import "VMediaAttachmentPresenter.h"
+#import "UIImageView+Blurring.h"
+#import "VSequence+Fetcher.h"
+#import "VCollectionViewStreamFocusHelper.h"
+#import "VUserProfileViewController.h"
+#import "VDependencyManager+VUserProfile.h"
+#import "VTagSensitiveTextViewDelegate.h"
+#import "VTagSensitiveTextView.h"
+#import "VTag.h"
+#import "VUserTag.h"
+#import "VHashtagStreamCollectionViewController.h"
+#import "VCommentTextAndMediaView.h"
+#import "VTextAndMediaView.h"
+#import "VUserTaggingTextStorageDelegate.h"
+#import "VUserTaggingTextStorage.h"
+#import "VInlineSearchTableViewController.h"
+#import "UIView+AutoLayout.h"
+#import "VSwipeView.h"
+#import "VUtilityButtonCell.h"
+#import "VCommentCellUtilitiesDelegate.h"
+#import "VEditCommentViewController.h"
+#import "VSimpleModalTransition.h"
+#import "VTransitionDelegate.h"
+#import "VCollectionViewCommentHighlighter.h"
 #import "VNavigationController.h"
-#import "VUsersAndTagsSearchViewController.h"
+#import "VLightboxTransitioningDelegate.h"
+#import "VVideoLightboxViewController.h"
+#import "VImageLightboxViewController.h"
 
-
-//Shelves
+// Shelves
 #import "VStreamCellFactory.h"
 #import "VSleekStreamCellFactory.h"
 #import "VMarqueeController.h"
@@ -116,7 +128,6 @@
 #import "VFollowResponder.h"
 #import "VHashtagResponder.h"
 #import "VHashTagTextView.h"
-#import <CCHLinkTextView/CCHLinkTextViewDelegate.h>
 #import "VDirectoryCollectionViewController.h"
 #import "VStreamCollectionViewController.h"
 #import "VHashtagSelectionResponder.h"
@@ -128,3 +139,7 @@
 #import "VSequencePreviewView.h"
 #import "VBaseVideoSequencePreviewView.h"
 #import "VAsset+Fetcher.h"
+
+//Explore
+#import "VUsersAndTagsSearchViewController.h"
+

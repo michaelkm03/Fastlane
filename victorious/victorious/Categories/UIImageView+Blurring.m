@@ -60,7 +60,11 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
                                                    progress:nil
                                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
      {
-         [weakSelf blurAndAnimateImageToVisible:image cacheURL:url withTintColor:tintColor andDuration:kDefaultAnimationDuration withConcurrentAnimations:nil];
+         [weakSelf blurAndAnimateImageToVisible:image
+                                       cacheURL:url
+                                  withTintColor:tintColor
+                                    andDuration:kDefaultAnimationDuration
+                       withConcurrentAnimations:nil];
      }];
 }
 
@@ -213,7 +217,7 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
      }];
 }
 
-- (void)blurAndAnimateImageToVisible:(UIImage *)image withTintColor:(UIColor *)tintColor andDuration:(NSTimeInterval)duration withConcurrentAnimations:(void (^)(void))animations
+- (void)blurAndAnimateImageToVisible:(UIImage *)image withTintColor:(UIColor *)tintColor andDuration:(NSTimeInterval)duration withConcurrentAnimations:(nullable void (^)(void))animations
 {
     [self blurAndAnimateImageToVisible:image
                               cacheURL:nil

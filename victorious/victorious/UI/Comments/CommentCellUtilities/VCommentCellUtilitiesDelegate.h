@@ -11,6 +11,8 @@
 
 @class VComment;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol VCommentCellUtilitiesDelegate <NSObject>
 
 /**
@@ -32,3 +34,5 @@
 - (void)replyToComment:(VComment *)comment;
 
 @end
+
+NS_ASSUME_NONNULL_END
