@@ -8,7 +8,13 @@
 
 #import "VSequencePreviewView.h"
 #import "VPreviewViewBackgroundHost.h"
+#import "VImagePreviewView.h"
 
-@interface VImageSequencePreviewView : VSequencePreviewView <VPreviewViewBackgroundHost>
+@interface VImageSequencePreviewView : VSequencePreviewView <VPreviewViewBackgroundHost, VImagePreviewView>
+
+/**
+ The image view that displays the sequence preview image.
+ */
+@property (nonatomic, readonly) UIImageView *previewImageView;
 
 @end

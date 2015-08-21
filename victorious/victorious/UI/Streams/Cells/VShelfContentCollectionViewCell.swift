@@ -11,6 +11,8 @@ import UIKit
 /// A simple UICollectionViewCell with a loading background and a preview view
 /// for displaying the content of any provided stream item.
 class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
+    
+    private static let kTextPostBackgroundColorKey = "color.standard.textPost"
 
     /// The view that will house the preview view.
     let previewViewContainer = UIView()
@@ -23,37 +25,54 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
                 return
             }
             
-            if previewView.canHandleStreamItem(streamItem) {
+            let isTextPost = streamItem?.itemSubType == VStreamItemSubTypeText
+            let shouldUpdateForTextPost = isTextPost && previewView.conformsToProtocol(VImagePreviewView.self)
+            if previewView.canHandleStreamItem(streamItem) || shouldUpdateForTextPost {
                 updatePreviewView(streamItem)
                 return
             }
             previewView.removeFromSuperview()
             
-            previewView = VStreamItemPreviewView(streamItem: streamItem?.itemSubType == VStreamItemSubTypeText ? nil : streamItem)
-
+            previewView = VStreamItemPreviewView(streamItem: streamItem)
+            previewView.dependencyManager = dependencyManager
+            
+            if isTextPost {
+                previewView = VImageSequencePreviewView(frame: CGRect.zeroRect)
+            }
+            
             updatePreviewView(streamItem)
         }
     }
     
     private func updatePreviewView(streamItem: VStreamItem?) {
-        previewView.streamItem = streamItem
-        if previewView.superview == nil {
-            previewViewContainer.addSubview(previewView)
-            v_addFitToParentConstraintsToSubview(previewView)
+        if let dependencyManager = previewView.dependencyManager {
+            if streamItem?.itemSubType != VStreamItemSubTypeText {
+                previewView.streamItem = streamItem
+            }
+            else if let imagePreviewView = previewView as? VImagePreviewView {
+                imagePreviewView.previewImageView().image = UIImage(named: "createTextIcon")
+                imagePreviewView.previewImageView().contentMode = UIViewContentMode.Center
+                imagePreviewView.makeBackgroundContainerViewVisible(true)
+                previewView.backgroundColor = dependencyManager.textPostBackgroundColor
+            }
+            if previewView.superview == nil {
+                previewViewContainer.addSubview(previewView)
+                v_addFitToParentConstraintsToSubview(previewView)
+            }
         }
     }
     
     /// The dependency manager whose colors and fonts will be used to style this cell.
     var dependencyManager: VDependencyManager? {
         didSet {
-            onDependencyManagerSet()
-        }
-    }
-    
-    /// Called when a new dependency manager is set.
-    func onDependencyManagerSet() {
-        if let dependencyManager = dependencyManager {
-            dependencyManager.addLoadingBackgroundToBackgroundHost(self)
+            if let dependencyManager = dependencyManager {
+                dependencyManager.addLoadingBackgroundToBackgroundHost(self)
+                let needsUpdate = previewView.dependencyManager == nil
+                previewView.dependencyManager = dependencyManager
+                if needsUpdate {
+                    updatePreviewView(streamItem)
+                }
+            }
         }
     }
     
@@ -111,6 +130,14 @@ extension VShelfContentCollectionViewCell: VBackgroundContainer {
     
     func loadingBackgroundContainerView() -> UIView! {
         return previewViewContainer
+    }
+    
+}
+
+private extension VDependencyManager {
+    
+    var textPostBackgroundColor: UIColor {
+        return colorForKey(VShelfContentCollectionViewCell.kTextPostBackgroundColorKey)
     }
     
 }

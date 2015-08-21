@@ -60,6 +60,11 @@ typedef void (^VPreviewViewDisplayReadyBlock)(VStreamItemPreviewView *previewVie
 @property (nonatomic, assign) BOOL readyForDisplay;
 
 /**
+ *  The dependency manager used, by some preview views, for styling
+ */
+@property (nonatomic, strong, nullable) VDependencyManager *dependencyManager;
+
+/**
  *  Returns tracking info specific to things happening inside this preview view. 
  *  Subclasses can override to provide necessary tracking info for when action is
  *  taken on the cell (when the cell is tapped for example).

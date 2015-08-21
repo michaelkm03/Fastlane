@@ -20,7 +20,7 @@
 
 @interface VImageSequencePreviewView ()
 
-@property (nonatomic, strong) UIImageView *previewImageView;
+@property (nonatomic, readwrite) UIImageView *previewImageView;
 @property (nonatomic, strong) UIView *backgroundContainerView;
 
 @end
