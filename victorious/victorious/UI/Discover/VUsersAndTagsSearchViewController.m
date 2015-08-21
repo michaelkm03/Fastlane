@@ -244,7 +244,8 @@ static NSInteger const kVMaxSearchResults = 1000;
             [self showNoResultsReturnedForSearch];
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:kVHashtagsSearchResultsChangedNotification object:nil];
-        dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
             [MBProgressHUD hideHUDForView:self.view animated:YES];
         });
     };
@@ -252,7 +253,8 @@ static NSInteger const kVMaxSearchResults = 1000;
     VFailBlock searchFail = ^(NSOperation *operation, NSError *error)
     {
         VLog(@"\n\nHashtag Search Failed with the following error:\n%@", error);
-        dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
             [MBProgressHUD hideHUDForView:self.view animated:YES];
         });
     };
@@ -260,10 +262,14 @@ static NSInteger const kVMaxSearchResults = 1000;
     NSString *searchTerm = [self.searchField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if (searchTerm.length > 0)
     {
-        [[VObjectManager sharedManager] findHashtagsBySearchString:searchTerm
-                                                      limitPerPage:kVMaxSearchResults
-                                                      successBlock:searchSuccess
-                                                         failBlock:searchFail];
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^
+        {
+            [[VObjectManager sharedManager] findHashtagsBySearchString:searchTerm
+                                                          limitPerPage:kVMaxSearchResults
+                                                          successBlock:searchSuccess
+                                                             failBlock:searchFail];
+        });
     }
     else
     {
@@ -289,7 +295,8 @@ static NSInteger const kVMaxSearchResults = 1000;
             [self showNoResultsReturnedForSearch];
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:kVUserSearchResultsChangedNotification object:nil];
-        dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
             [MBProgressHUD hideHUDForView:self.view animated:YES];
         });
     };
@@ -297,19 +304,24 @@ static NSInteger const kVMaxSearchResults = 1000;
     VFailBlock searchFail = ^(NSOperation *operation, NSError *error)
     {
         VLog(@"\n\nUser Search Failed with the following error: \n%@", error);
-        dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
             [MBProgressHUD hideHUDForView:self.view animated:YES];
         });
     };
     
     if ( [self.searchField.text length] > 0 )
     {
-        [[VObjectManager sharedManager] findUsersBySearchString:self.searchField.text
-                                                     sequenceID:nil
-                                                          limit:kVMaxSearchResults
-                                                        context:VObjectManagerSearchContextDiscover
-                                               withSuccessBlock:searchSuccess
-                                                      failBlock:searchFail];
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^
+        {
+            [[VObjectManager sharedManager] findUsersBySearchString:self.searchField.text
+                                                         sequenceID:nil
+                                                              limit:kVMaxSearchResults
+                                                            context:VObjectManagerSearchContextDiscover
+                                                   withSuccessBlock:searchSuccess
+                                                          failBlock:searchFail];
+        });
     }
     else
     {
@@ -353,11 +365,7 @@ static NSInteger const kVMaxSearchResults = 1000;
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [self.searchField resignFirstResponder];
-
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        [self segmentControlAction:nil];
-    });
+    [self segmentControlAction:nil];
     
     return YES;
 }
