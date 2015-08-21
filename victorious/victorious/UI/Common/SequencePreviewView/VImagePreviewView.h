@@ -16,7 +16,7 @@
  
  @parameter visible If YES, the background container is made visible without animation.
  */
-- (void)makeBackgroundContainerViewVisible:(BOOL)visible;
+- (void)setBackgroundContainerViewVisible:(BOOL)visible;
 
 /**
  The image view that displays the sequence preview image.

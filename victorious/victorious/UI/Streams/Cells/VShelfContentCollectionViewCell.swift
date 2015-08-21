@@ -25,22 +25,26 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
                 return
             }
             
-            let isTextPost = streamItem?.itemSubType == VStreamItemSubTypeText
-            let shouldUpdateForTextPost = isTextPost && previewView.conformsToProtocol(VImagePreviewView.self)
-            if previewView.canHandleStreamItem(streamItem) || shouldUpdateForTextPost {
-                updatePreviewView(streamItem)
-                return
-            }
-            previewView.removeFromSuperview()
-            
-            previewView = VStreamItemPreviewView(streamItem: streamItem)
-            previewView.dependencyManager = dependencyManager
-            
-            if isTextPost {
+            if streamItem?.itemSubType == VStreamItemSubTypeText {
+                //Dealing with a text post
+                if previewView.canHandleStreamItem(streamItem) || previewView.conformsToProtocol(VImagePreviewView.self) {
+                    updatePreviewView(streamItem)
+                    return
+                }
+                
+                previewView.removeFromSuperview()
+                
                 previewView = VImageSequencePreviewView(frame: CGRect.zeroRect)
+                previewView.dependencyManager = dependencyManager
+                updatePreviewView(streamItem)
             }
-            
-            updatePreviewView(streamItem)
+            else {
+                previewView.removeFromSuperview()
+                
+                previewView = VStreamItemPreviewView(streamItem: streamItem)
+                previewView.dependencyManager = dependencyManager
+                updatePreviewView(streamItem)
+            }
         }
     }
     
@@ -52,7 +56,7 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
             else if let imagePreviewView = previewView as? VImagePreviewView {
                 imagePreviewView.previewImageView().image = UIImage(named: "createTextIcon")
                 imagePreviewView.previewImageView().contentMode = UIViewContentMode.Center
-                imagePreviewView.makeBackgroundContainerViewVisible(true)
+                imagePreviewView.setBackgroundContainerViewVisible(true)
                 previewView.backgroundColor = dependencyManager.textPostBackgroundColor
             }
             if previewView.superview == nil {

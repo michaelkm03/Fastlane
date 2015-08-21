@@ -47,12 +47,12 @@
 - (void)setSequence:(VSequence *)sequence
 {
     [super setSequence:sequence];
-    [self makeBackgroundContainerViewVisible:NO];
+    [self setBackgroundContainerViewVisible:NO];
     [self.previewImageView fadeInImageAtURL:sequence.inStreamPreviewImageURL
                            placeholderImage:nil
                         alongsideAnimations:^
      {
-         [self makeBackgroundContainerViewVisible:YES];
+         [self setBackgroundContainerViewVisible:YES];
      }
                                  completion:^(UIImage *image)
      {
@@ -84,7 +84,7 @@
     return _backgroundContainerView;
 }
 
-- (void)makeBackgroundContainerViewVisible:(BOOL)visible
+- (void)setBackgroundContainerViewVisible:(BOOL)visible
 {
     self.backgroundContainerView.alpha = visible ? 1.0f : 0.0f;
 }

@@ -48,14 +48,14 @@
 {
     [super setStream:stream];
     
-    [self makeBackgroundContainerViewVisible:NO];
+    [self setBackgroundContainerViewVisible:NO];
     
     __weak VImageStreamPreviewView *weakSelf = self;
     [self.previewImageView fadeInImageAtURL:[stream previewImageUrl]
                            placeholderImage:nil
                         alongsideAnimations:^
      {
-         [self makeBackgroundContainerViewVisible:YES];
+         [self setBackgroundContainerViewVisible:YES];
      }
                                  completion:^(UIImage *image)
      {
@@ -87,7 +87,7 @@
     return _backgroundContainerView;
 }
 
-- (void)makeBackgroundContainerViewVisible:(BOOL)visible
+- (void)setBackgroundContainerViewVisible:(BOOL)visible
 {
     self.backgroundContainerView.alpha = visible ? 1.0f : 0.0f;
 }
