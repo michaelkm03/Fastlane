@@ -29,6 +29,8 @@ static NSString * const kAccountIdentifierDefaultsKey = @"com.getvictorious.VUse
 static NSString * const kKeychainServiceName          = @"com.getvictorious.VUserManager.LoginPassword";
 static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUserManager.TwitterAccountCreated";
 
+static const NSInteger kFacebookSystemLoginCancelledErrorCode = 5;
+
 @implementation VUserManager
 
 + (VUserManager *)sharedInstance
@@ -112,6 +114,13 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
             NSDictionary *payload = ((NSDictionary *)fullResponse)[ @"payload" ];
             isNewUser = ((NSNumber *)payload[ @"new_user" ]).boolValue;
             
+            if ( isNewUser )
+            {
+                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserPermissionDidChange
+                                                   parameters:@{ VTrackingKeyPermissionState : VTrackingValueFacebookDidAllow,
+                                                                 VTrackingKeyPermissionName : VTrackingValueAuthorized }];
+            }
+            
             VUser *user = [resultObjects firstObject];
             if ([user isKindOfClass:[VUser class]])
             {
@@ -169,7 +178,14 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
     
     void (^failureBlock)() = ^(NSError *error)
     {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail];
+        BOOL systemLoginDidFail = error.code == kFacebookSystemLoginCancelledErrorCode;
+        BOOL webFallbackLoginDidFail = error == nil;
+        if ( systemLoginDidFail || webFallbackLoginDidFail )
+        {
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserPermissionDidChange
+                                               parameters:@{ VTrackingKeyPermissionState : VTrackingValueFacebookDidAllow,
+                                                             VTrackingKeyPermissionName : VTrackingValueDenied }];
+        }
         
         if (errorBlock)
         {
