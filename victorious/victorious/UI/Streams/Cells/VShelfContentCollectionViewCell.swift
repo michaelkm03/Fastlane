@@ -52,7 +52,7 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
                 previewView.streamItem = streamItem
             }
             else if let imagePreviewView = previewView as? VImagePreviewView {
-                imagePreviewView.previewImageView().image = UIImage(named: "createTextIcon")
+                imagePreviewView.previewImageView().image = UIImage(named: "textPostThumbnail")
                 imagePreviewView.previewImageView().contentMode = UIViewContentMode.Center
                 imagePreviewView.setBackgroundContainerViewVisible(true)
                 previewView.backgroundColor = dependencyManager.textPostBackgroundColor
