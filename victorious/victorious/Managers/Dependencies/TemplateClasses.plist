@@ -168,5 +168,7 @@
 	<string>VPublishViewController</string>
 	<key>userHashtagSearch.screen</key>
 	<string>VUsersAndTagsSearchViewController</string>
+	<key>explore.screen</key>
+	<string>victorious.VExploreViewController</string>
 </dict>
 </plist>

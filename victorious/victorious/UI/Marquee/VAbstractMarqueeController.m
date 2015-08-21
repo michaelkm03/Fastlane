@@ -12,7 +12,6 @@
 #import "VTimerManager.h"
 #import "VStreamItem.h"
 #import "VStream+Fetcher.h"
-#import "VShelf.h"
 #import "VDependencyManager.h"
 #import "NSString+VParseHelp.h"
 #import "VObjectManager.h"
@@ -89,17 +88,17 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
                          action:@selector(marqueeItemsUpdated)];
 }
 
-- (void)setShelf:(VShelf *)shelf
+- (void)setShelf:(Shelf *)shelf
 {
     if ( shelf == _shelf )
     {
         return;
     }
     
-    [self.KVOController unobserve:_shelf.stream];
+    [self.KVOController unobserve:_shelf];
     _shelf = shelf;
     [self reset];
-    [self.KVOController observe:shelf.stream
+    [self.KVOController observe:shelf
                         keyPath:NSStringFromSelector(@selector(streamItems))
                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
                          action:@selector(marqueeItemsUpdated)];
@@ -110,7 +109,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     NSArray *items = [self.stream.marqueeItems array];
     if ( self.shelf != nil )
     {
-        items = [self.shelf.stream.streamItems array];
+        items = [self.shelf.streamItems array];
     }
     return items;
 }
