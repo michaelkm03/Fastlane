@@ -41,15 +41,8 @@
 // Swift Module
 #import "victorious-Swift.h"
 
-NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
-NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
-static NSString * const VTrackingWelcomeVideoStartKey = @"welcome_video_start";
-static NSString * const VTrackingWelcomeVideoEndKey = @"welcome_video_end";
-static NSString * const VTrackingWelcomeStartKey = @"welcome_start";
-static NSString * const VTrackingWelcomeGetStartedTapKey = @"get_started_tap";
 static NSString * const kMenuKey = @"menu";
 static NSString * const kFirstTimeContentKey = @"firstTimeContent";
-static NSString * const kMenuDeeplinkHost = @"menu";
 
 @interface VTabScaffoldViewController () <UITabBarControllerDelegate, VRootViewControllerContainedViewController, VDeeplinkHandler, VDeeplinkSupporter, VCoachmarkDisplayResponder>
 
@@ -438,7 +431,7 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
 
 - (BOOL)canDisplayContentForDeeplinkURL:(NSURL *)url
 {
-    const BOOL isHostValid = [url.host isEqualToString:kMenuDeeplinkHost];
+    const BOOL isHostValid = [url.host isEqualToString:kMenuKey];
     NSString *pathComponent = [url v_firstNonSlashPathComponent];
     if ( pathComponent == nil )
     {
