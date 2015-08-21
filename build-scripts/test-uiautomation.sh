@@ -10,7 +10,7 @@ SCHEME=$1
 ENVIRONMENT=$2
 CONFIGURATION=$3
 DEVICE_NAME=$4
-DEFAULT_PROVISIONING_PROFILE_PATH="build-scripts/victorious.mobileprovision"
+DEFAULT_PROVISIONING_PROFILE_PATH="build-scripts/tests.mobileprovision"
 DEFAULT_CODESIGN_ID="iPhone Distribution: Victorious, Inc"
 BUILDINFO_PLIST="buildinfo.plist"
 
@@ -18,6 +18,10 @@ if [ "$SCHEME" == "" -o "$ENVIRONMENT" == "" -o "$CONFIGURATION" == "" ]; then
     echo "Usage: `basename $0` <scheme> <environment> <configuration (App name)>"
     exit 1
 fi
+
+# Copy provisioning profile into Xcode
+DEFAULT_PROVISIONING_PROFILE_UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i "$DEFAULT_PROVISIONING_PROFILE_PATH")`
+cp "$DEFAULT_PROVISIONING_PROFILE_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$DEFAULT_PROVISIONING_PROFILE_UUID.mobileprovision"
 
 ### Clean products folder
 if [ -d "products" ]; then
@@ -49,7 +53,7 @@ BUILDNUM=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$INFOPLIST")
 # xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination generic/platform=iOS clean
 
 # Build
-xcodebuild test -workspace victorious/victorious.xcworkspace -scheme debug-victorious -destination platform="iOS",name="${DEVICE_NAME}" CODE_SIGN_IDENTITY="iPhone Developer"
+xcodebuild test -workspace victorious/victorious.xcworkspace -scheme debug-victorious -destination platform="iOS",name="${DEVICE_NAME}"
 TEST_RESULT=$?
 
 exit $TEST_RESULT
