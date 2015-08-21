@@ -334,7 +334,7 @@ NSString * const kMenuDeeplinkHost = @"menu";
     // Login
     [self queueLoginOperation];
     [self queueFirstTimeContentOperation];
-    //[self queuePushNotificationOperation];
+    [self queuePushNotificationOperation];
     
     NSBlockOperation *allLaunchOperationFinishedBlockOperation = [NSBlockOperation blockOperationWithBlock:^
     {
@@ -465,8 +465,8 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
             if ( [identifier isEqualToString:screenIdenifier] )
             {
                 //Found the screen that we're supposed to point out
-                CGRect frame = self.tabBarController.tabBar.frame;
-                CGFloat width = CGRectGetWidth(frame) / self.tabBarController.tabBar.items.count;
+                CGRect frame = self.internalTabBarController.tabBar.frame;
+                CGFloat width = CGRectGetWidth(frame) / self.internalTabBarController.tabBar.items.count;
                 frame.size.width = width;
                 frame.origin.x = width * index;
                 completion(YES, frame);
