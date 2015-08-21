@@ -4446,7 +4446,10 @@
                 }
               },
               "id": "55d365637e1ab",
-              "hasHeaderParallax": true
+              "hasHeaderParallax": true,
+              "trendingShelf": {
+                    "name": "trendingTopic.shelf"
+                  }
             },
             "icon": {
               "imageSet": [

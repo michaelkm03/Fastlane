@@ -12,7 +12,7 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
     
     @IBOutlet weak var collectionView: UICollectionView!
     
-    var shelf: VShelf? {
+    var shelf: Shelf? {
         didSet {
             if ( shelf == oldValue ) {
                 if let newStreamItems = streamItems(shelf), let oldStreamItems = streamItems(oldValue) {
@@ -45,8 +45,8 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
         }
     }
     
-    private func streamItems(shelf: VShelf?) -> NSOrderedSet? {
-        return shelf?.stream?.streamItems
+    private func streamItems(shelf: Shelf?) -> NSOrderedSet? {
+        return shelf?.streamItems
     }
 }
 

@@ -52,7 +52,7 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         case 0:
             numberOfRows = 3
         case 1:
-            numberOfRows = 3
+            numberOfRows = 1
         case 2:
             numberOfRows = 12
         default:
@@ -63,6 +63,9 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+//        if indexPath.section == 1 {
+//            if let
+//        }
         if let placeHolderCell = collectionView.dequeueReusableCellWithReuseIdentifier("placeHolder", forIndexPath: indexPath) as? UICollectionViewCell {
             return placeHolderCell
         }
