@@ -38,6 +38,7 @@
 //Managers
 #import "VDependencyManager+VObjectManager.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
+#import "VDependencyManager+VNavigationMenuItem.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Discover.h"
@@ -507,7 +508,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     {
         Shelf *shelf = (Shelf *)stream;
         VStreamCollectionViewController *streamCollection = nil;
-        VDependencyManager *dependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{ kSequenceIDKey: stream.remoteId, VDependencyManagerTitleKey: stream.name }];
+        VDependencyManager *dependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{ kSequenceIDKey: stream.remoteId, VDependencyManagerTitleKey: stream.name, VDependencyManagerAccessoryScreensKey : @[] }];
         if ( [shelf isKindOfClass:[HashtagShelf class]] )
         {
             HashtagShelf *hashtagShelf = (HashtagShelf *)shelf;
