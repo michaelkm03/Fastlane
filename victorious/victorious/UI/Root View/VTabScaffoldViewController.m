@@ -32,6 +32,7 @@
 #import "VTabMenuShim.h"
 #import "VCoachmarkManager.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
+#import "VCoachmarkDisplayResponder.h"
 
 // Etc
 #import "NSArray+VMap.h"
@@ -50,7 +51,7 @@ NSString * const kMenuKey = @"menu";
 NSString * const kFirstTimeContentKey = @"firstTimeContent";
 NSString * const kMenuDeeplinkHost = @"menu";
 
-@interface VTabScaffoldViewController () <UITabBarControllerDelegate, VRootViewControllerContainedViewController, VDeeplinkHandler, VDeeplinkSupporter>
+@interface VTabScaffoldViewController () <UITabBarControllerDelegate, VRootViewControllerContainedViewController, VDeeplinkHandler, VDeeplinkSupporter, VCoachmarkDisplayResponder>
 
 @property (nonatomic, strong) VNavigationController *rootNavigationController;
 @property (nonatomic, strong) UITabBarController *internalTabBarController;
@@ -333,7 +334,7 @@ NSString * const kMenuDeeplinkHost = @"menu";
     // Login
     [self queueLoginOperation];
     [self queueFirstTimeContentOperation];
-    [self queuePushNotificationOperation];
+    //[self queuePushNotificationOperation];
     
     NSBlockOperation *allLaunchOperationFinishedBlockOperation = [NSBlockOperation blockOperationWithBlock:^
     {
@@ -446,6 +447,43 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
     const NSInteger index = [pathComponent integerValue];
     const BOOL isSectionValid = index >= 0 && index < (NSInteger)self.internalTabBarController.viewControllers.count;
     return isHostValid && isSectionValid;
+}
+
+#pragma mark - VCoachmarkDisplayResponder
+
+- (void)findOnScreenMenuItemWithIdentifier:(NSString *)identifier andCompletion:(VMenuItemDiscoveryBlock)completion
+{
+    for ( NSUInteger index = 0; index < self.navigationDestinations.count; index++ )
+    {
+        UIViewController *viewController = self.navigationDestinations[index];
+        if ( [viewController conformsToProtocol:@protocol(VCoachmarkDisplayer)] )
+        {
+            UIViewController <VCoachmarkDisplayer> *coachmarkDisplayer = (UIViewController <VCoachmarkDisplayer> *)viewController;
+            
+            //View controller can display a coachmark
+            NSString *screenIdenifier = [coachmarkDisplayer screenIdentifier];
+            if ( [identifier isEqualToString:screenIdenifier] )
+            {
+                //Found the screen that we're supposed to point out
+                CGRect frame = self.tabBarController.tabBar.frame;
+                CGFloat width = CGRectGetWidth(frame) / self.tabBarController.tabBar.items.count;
+                frame.size.width = width;
+                frame.origin.x = width * index;
+                completion(YES, frame);
+                return;
+            }
+        }
+    }
+    
+    UIResponder <VCoachmarkDisplayResponder> *nextResponder = [self.nextResponder targetForAction:@selector(findOnScreenMenuItemWithIdentifier:andCompletion:) withSender:nil];
+    if ( nextResponder == nil )
+    {
+        completion(NO, CGRectZero);
+    }
+    else
+    {
+        [nextResponder findOnScreenMenuItemWithIdentifier:identifier andCompletion:completion];
+    }
 }
 
 @end
