@@ -67,8 +67,9 @@
 
 - (NSString *)v_pathComponent
 {
-    NSString *percentEndcoded = [self stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSURLComponents *components = [[NSURLComponents alloc] initWithString:percentEndcoded];
+    // We must percent encode the macros in our path otherwise NSURLComponents will return nil
+    NSString *percentEncoded = [self stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSURLComponents *components = [[NSURLComponents alloc] initWithString:percentEncoded];
     return components.path;
 }
 
