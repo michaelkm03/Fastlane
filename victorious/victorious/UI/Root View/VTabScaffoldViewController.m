@@ -43,13 +43,13 @@
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
-NSString * const VTrackingWelcomeVideoStartKey = @"welcome_video_start";
-NSString * const VTrackingWelcomeVideoEndKey = @"welcome_video_end";
-NSString * const VTrackingWelcomeStartKey = @"welcome_start";
-NSString * const VTrackingWelcomeGetStartedTapKey = @"get_started_tap";
-NSString * const kMenuKey = @"menu";
-NSString * const kFirstTimeContentKey = @"firstTimeContent";
-NSString * const kMenuDeeplinkHost = @"menu";
+static NSString * const VTrackingWelcomeVideoStartKey = @"welcome_video_start";
+static NSString * const VTrackingWelcomeVideoEndKey = @"welcome_video_end";
+static NSString * const VTrackingWelcomeStartKey = @"welcome_start";
+static NSString * const VTrackingWelcomeGetStartedTapKey = @"get_started_tap";
+static NSString * const kMenuKey = @"menu";
+static NSString * const kFirstTimeContentKey = @"firstTimeContent";
+static NSString * const kMenuDeeplinkHost = @"menu";
 
 @interface VTabScaffoldViewController () <UITabBarControllerDelegate, VRootViewControllerContainedViewController, VDeeplinkHandler, VDeeplinkSupporter, VCoachmarkDisplayResponder>
 
