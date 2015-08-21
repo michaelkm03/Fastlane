@@ -38,6 +38,7 @@
 //Managers
 #import "VDependencyManager+VObjectManager.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
+#import "VDependencyManager+VNavigationMenuItem.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Discover.h"
@@ -99,7 +100,6 @@ static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 static NSString * const kStreamCollectionKey = @"destinationStream";
-static NSString * const kAccessoryScreensKey = @"accessoryScreens";
 
 @interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate, AutoplayTracking>
 
@@ -508,7 +508,7 @@ static NSString * const kAccessoryScreensKey = @"accessoryScreens";
     {
         Shelf *shelf = (Shelf *)stream;
         VStreamCollectionViewController *streamCollection = nil;
-        VDependencyManager *dependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{ kSequenceIDKey: stream.remoteId, VDependencyManagerTitleKey: stream.name, kAccessoryScreensKey : @[] }];
+        VDependencyManager *dependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{ kSequenceIDKey: stream.remoteId, VDependencyManagerTitleKey: stream.name, VDependencyManagerAccessoryScreensKey : @[] }];
         if ( [shelf isKindOfClass:[HashtagShelf class]] )
         {
             HashtagShelf *hashtagShelf = (HashtagShelf *)shelf;
