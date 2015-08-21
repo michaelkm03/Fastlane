@@ -32,6 +32,7 @@
 #import "VTabMenuShim.h"
 #import "VCoachmarkManager.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
+#import "VCoachmarkDisplayResponder.h"
 
 // Etc
 #import "NSArray+VMap.h"
@@ -40,17 +41,10 @@
 // Swift Module
 #import "victorious-Swift.h"
 
-NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
-NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
-NSString * const VTrackingWelcomeVideoStartKey = @"welcome_video_start";
-NSString * const VTrackingWelcomeVideoEndKey = @"welcome_video_end";
-NSString * const VTrackingWelcomeStartKey = @"welcome_start";
-NSString * const VTrackingWelcomeGetStartedTapKey = @"get_started_tap";
-NSString * const kMenuKey = @"menu";
-NSString * const kFirstTimeContentKey = @"firstTimeContent";
-NSString * const kMenuDeeplinkHost = @"menu";
+static NSString * const kMenuKey = @"menu";
+static NSString * const kFirstTimeContentKey = @"firstTimeContent";
 
-@interface VTabScaffoldViewController () <UITabBarControllerDelegate, VRootViewControllerContainedViewController, VDeeplinkHandler, VDeeplinkSupporter>
+@interface VTabScaffoldViewController () <UITabBarControllerDelegate, VRootViewControllerContainedViewController, VDeeplinkHandler, VDeeplinkSupporter, VCoachmarkDisplayResponder>
 
 @property (nonatomic, strong) VNavigationController *rootNavigationController;
 @property (nonatomic, strong) UITabBarController *internalTabBarController;
@@ -437,7 +431,7 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
 
 - (BOOL)canDisplayContentForDeeplinkURL:(NSURL *)url
 {
-    const BOOL isHostValid = [url.host isEqualToString:kMenuDeeplinkHost];
+    const BOOL isHostValid = [url.host isEqualToString:kMenuKey];
     NSString *pathComponent = [url v_firstNonSlashPathComponent];
     if ( pathComponent == nil )
     {
@@ -446,6 +440,43 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
     const NSInteger index = [pathComponent integerValue];
     const BOOL isSectionValid = index >= 0 && index < (NSInteger)self.internalTabBarController.viewControllers.count;
     return isHostValid && isSectionValid;
+}
+
+#pragma mark - VCoachmarkDisplayResponder
+
+- (void)findOnScreenMenuItemWithIdentifier:(NSString *)identifier andCompletion:(VMenuItemDiscoveryBlock)completion
+{
+    for ( NSUInteger index = 0; index < self.navigationDestinations.count; index++ )
+    {
+        UIViewController *viewController = self.navigationDestinations[index];
+        if ( [viewController conformsToProtocol:@protocol(VCoachmarkDisplayer)] )
+        {
+            UIViewController <VCoachmarkDisplayer> *coachmarkDisplayer = (UIViewController <VCoachmarkDisplayer> *)viewController;
+            
+            //View controller can display a coachmark
+            NSString *screenIdenifier = [coachmarkDisplayer screenIdentifier];
+            if ( [identifier isEqualToString:screenIdenifier] )
+            {
+                //Found the screen that we're supposed to point out
+                CGRect frame = self.internalTabBarController.tabBar.frame;
+                CGFloat width = CGRectGetWidth(frame) / self.internalTabBarController.tabBar.items.count;
+                frame.size.width = width;
+                frame.origin.x = width * index;
+                completion(YES, frame);
+                return;
+            }
+        }
+    }
+    
+    UIResponder <VCoachmarkDisplayResponder> *nextResponder = [self.nextResponder targetForAction:@selector(findOnScreenMenuItemWithIdentifier:andCompletion:) withSender:nil];
+    if ( nextResponder == nil )
+    {
+        completion(NO, CGRectZero);
+    }
+    else
+    {
+        [nextResponder findOnScreenMenuItemWithIdentifier:identifier andCompletion:completion];
+    }
 }
 
 @end
