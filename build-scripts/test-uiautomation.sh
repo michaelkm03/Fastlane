@@ -28,10 +28,6 @@ fi
 
 ### Build
 
-# Copy provisioning profile into Xcode
-DEFAULT_PROVISIONING_PROFILE_UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i "$DEFAULT_PROVISIONING_PROFILE_PATH")`
-cp "$DEFAULT_PROVISIONING_PROFILE_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$DEFAULT_PROVISIONING_PROFILE_UUID.mobileprovision"
-
 # Apply app configuration
 # echo "Configuring for $CONFIGURATION"
 # ./build-scripts/apply-config.sh $CONFIGURATION
@@ -49,37 +45,11 @@ BUILDNUM=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$INFOPLIST")
 #     exit 1
 # fi
 
-CODESIGN_ID=$DEFAULT_CODESIGN_ID
-DEV_ACCOUNT=$DEFAULT_DEV_ACCOUNT
-CODESIGNING_PLIST_FILE="configurations/$CONFIGURATION/codesigning.plist"
-
-# Check for special provisioning profile
-if [ -e "$CODESIGNING_PLIST_FILE" ]; then
-    CUSTOM_PROVISIONING_PROFILE_PATH=$(/usr/libexec/PlistBuddy -c "Print ProvisioningProfiles:$ENVIRONMENT" "$CODESIGNING_PLIST_FILE")
-    if [ $? == 0 ]; then
-        CUSTOM_PROVISIONING_PROFILE_PATH="configurations/$1/$CUSTOM_PROVISIONING_PROFILE_PATH"
-        CPP_UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i "$CUSTOM_PROVISIONING_PROFILE_PATH")`
-        cp "$CUSTOM_PROVISIONING_PROFILE_PATH" "victorious.xcarchive/Products/Applications/victorious.app/embedded.mobileprovision"
-        if [ $? != 0 ]; then
-            >&2 echo "Error: \"$CODESIGNING_PLIST_FILE\" specifies a provisioning profile that could not be found."
-            exit 1
-        fi
-    fi
-fi
-
-# Check for special signing identity
-if [ -e "$CODESIGNING_PLIST_FILE" ]; then
-    CUSTOM_CODESIGN_ID=$(/usr/libexec/PlistBuddy -c "Print SigningIdentities:$ENVIRONMENT" "$CODESIGNING_PLIST_FILE")
-    if [ $? == 0 ]; then
-        CODESIGN_ID=$CUSTOM_CODESIGN_ID
-    fi
-fi
-
 # Clean
 # xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination generic/platform=iOS clean
 
 # Build
-xcodebuild test -workspace victorious/victorious.xcworkspace -scheme debug-victorious -destination platform="iOS",name="${DEVICE_NAME}"
+xcodebuild test -workspace victorious/victorious.xcworkspace -scheme debug-victorious -destination platform="iOS",name="${DEVICE_NAME}" CODE_SIGN_IDENTITY="iPhone Developer"
 TEST_RESULT=$?
 
 exit $TEST_RESULT
