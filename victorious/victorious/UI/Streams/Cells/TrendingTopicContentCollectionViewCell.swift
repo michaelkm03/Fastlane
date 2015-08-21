@@ -71,6 +71,8 @@ class TrendingTopicContentCollectionViewCell: VShelfContentCollectionViewCell {
         label.setTranslatesAutoresizingMaskIntoConstraints(false)
         self.contentView.addSubview(label)
         self.contentView.v_addFitToParentConstraintsToSubview(label)
+        
+        self.contentView.backgroundColor = UIColor.blackColor()
     }
 }
 

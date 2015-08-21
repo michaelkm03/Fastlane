@@ -10,7 +10,7 @@
             <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="400" height="250"/>
+                <rect key="frame" x="0.0" y="0.0" width="485" height="240"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XVO-nr-YBI">
@@ -48,6 +48,7 @@
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="XVO-nr-YBI" firstAttribute="top" secondItem="P2q-MJ-5OD" secondAttribute="top" constant="15" id="4uV-H4-WEp"/>
                 <constraint firstAttribute="bottom" secondItem="WU7-VE-uH6" secondAttribute="bottom" id="EQA-Z4-iti"/>
@@ -57,7 +58,7 @@
                 <constraint firstAttribute="trailing" secondItem="XVO-nr-YBI" secondAttribute="trailing" constant="20" id="mVn-L3-40P"/>
                 <constraint firstItem="XVO-nr-YBI" firstAttribute="leading" secondItem="P2q-MJ-5OD" secondAttribute="leading" constant="20" id="nSS-pE-6yz"/>
             </constraints>
-            <size key="customSize" width="418" height="159"/>
+            <size key="customSize" width="853" height="349"/>
             <variation key="default">
                 <mask key="subviews">
                     <exclude reference="XVO-nr-YBI"/>
@@ -91,7 +92,7 @@
             <connections>
                 <outlet property="collectionView" destination="WU7-VE-uH6" id="xOs-n1-fx9"/>
             </connections>
-            <point key="canvasLocation" x="365" y="395.5"/>
+            <point key="canvasLocation" x="343.5" y="444"/>
         </collectionViewCell>
     </objects>
 </document>

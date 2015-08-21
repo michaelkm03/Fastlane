@@ -48,21 +48,34 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
     private func streamItems(shelf: Shelf?) -> NSOrderedSet? {
         return shelf?.streamItems
     }
+    
+    class func reuseIdentifier() -> String {
+        return NSStringFromClass(self)
+    }
+    
+    override func awakeFromNib() {
+        collectionView.registerClass(TrendingTopicContentCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.reloadData()
+    }
 }
 
 extension TrendingTopicShelfCollectionViewCell: UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return streamItems(shelf)?.count ?? 0
+        return 40
+//        return streamItems(shelf)?.count ?? 0
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if let streamItems = streamItems(shelf)?.array as? [VStreamItem] {
-            let streamItem = streamItems[indexPath.row]
-            let reuseIdentifier = TrendingTopicContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! TrendingTopicContentCollectionViewCell
-            cell.streamItem = streamItem
-            cell.dependencyManager = dependencyManager
+//        if let streamItems = streamItems(shelf)?.array as? [VStreamItem] {
+//            let streamItem = streamItems[indexPath.row]
+//            let reuseIdentifier = TrendingTopicContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
+//            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! TrendingTopicContentCollectionViewCell
+//            cell.streamItem = streamItem
+//            cell.dependencyManager = dependencyManager
+//            return cell
+//        }
+        if let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as? TrendingTopicContentCollectionViewCell {
             return cell
         }
         assertionFailure("TrendingTopicShelfCollectionViewCell was asked to display an object that isn't a stream item.")
