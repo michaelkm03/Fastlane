@@ -100,6 +100,8 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 static NSString * const kStreamCollectionKey = @"destinationStream";
 
+static NSString * const kAccessoryScreensKey = @"accessoryScreens";
+
 @interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate, AutoplayTracking>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
@@ -515,7 +517,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         }
         else
         {
-            streamCollection = [VStreamCollectionViewController newWithDependencyManager:dependencyManager];
+            streamCollection = [VStreamCollectionViewController newWithDependencyManager:[dependencyManager childDependencyManagerWithAddedConfiguration:@{ kAccessoryScreensKey : @[] }]];
         }
         
         streamCollection.currentStream = stream;
