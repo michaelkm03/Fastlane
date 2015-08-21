@@ -12,8 +12,6 @@ import UIKit
 /// for displaying the content of any provided stream item.
 class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
     
-    private static let kTextPostBackgroundColorKey = "color.standard.textPost"
-
     /// The view that will house the preview view.
     let previewViewContainer = UIView()
     private var previewView: VStreamItemPreviewView = VImageSequencePreviewView()
@@ -141,7 +139,7 @@ extension VShelfContentCollectionViewCell: VBackgroundContainer {
 private extension VDependencyManager {
     
     var textPostBackgroundColor: UIColor {
-        return colorForKey(VShelfContentCollectionViewCell.kTextPostBackgroundColorKey)
+        return colorForKey("color.standard.textPost")
     }
     
 }
