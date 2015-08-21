@@ -74,4 +74,14 @@ class VictoriousTestCase: KIFTestCase {
             self.tester().waitForTappableViewWithAccessibilityLabel( "Next" ).tap()
         }
     }
+    
+    var testDescriptions = [String]()
+    
+    var description: String {
+        fatalError("All test cases must provide a detailed description.")
+    }
+    
+    func addDescription( description: String ) {
+        self.testDescriptions.append( description )
+    }
 }
