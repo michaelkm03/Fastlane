@@ -11,13 +11,13 @@ import UIKit
 
 class ContentCreationTests: VictoriousTestCase {
     
-    override var description: String {
+    override var testDescription: String {
         return "Tests the various types of content creation available to users."
     }
     
     func testCreateImage() {
         
-        self.addDescription( "Selects IMAGE from the creation menu." )
+        self.addNote( "Selects IMAGE from the creation menu." )
         
         self.tester().tapViewWithAccessibilityLabel( "Menu Create" )
         
@@ -28,8 +28,7 @@ class ContentCreationTests: VictoriousTestCase {
         
         self.grantLibraryPermissionIfRequired()
         
-        
-        self.addDescription( "Select the first image in the device's lirbary" )
+        self.addNote( "Select the first image in the device's lirbary" )
         
         // Select image from gallery
         let indexPath = NSIndexPath(forRow: 0, inSection: 0)
@@ -42,7 +41,7 @@ class ContentCreationTests: VictoriousTestCase {
         
         let randomCaption = "\(100000 + arc4random() % 100000)"
         self.tester().enterTextIntoCurrentFirstResponder( randomCaption )
-        self.addDescription( "Add a random caption (e.h. \(randomCaption)" )
+        self.addNote( "Add a random caption (e.h. \(randomCaption)" )
         
         self.tester().waitForViewWithAccessibilityLabel( VAutomationIdentifierPublishFinish ).tap()
         
@@ -54,6 +53,6 @@ class ContentCreationTests: VictoriousTestCase {
         let view = self.tester().waitForViewWithAccessibilityLabel( VAutomationIdentifierStreamCellCaption )
         self.tester().expectView( view, toContainText: randomCaption )
         
-        self.addDescription( "Wait long enough for the image to be transcoded on the backend and then checks that a post with the same random caption is available in the user's profile." )
+        self.addNote( "Wait long enough for the image to be transcoded on the backend and then check that a post with the same random caption is available in the user's profile." )
     }
 }

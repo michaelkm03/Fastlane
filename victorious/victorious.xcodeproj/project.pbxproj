@@ -650,6 +650,10 @@
 		A769FE411ABC17C200888ED8 /* VFirstInstallTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A769FE401ABC17C200888ED8 /* VFirstInstallTests.m */; };
 		A769FE451ABCFCE900888ED8 /* VTrackingSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A769FE441ABCFCE900888ED8 /* VTrackingSettingsViewController.m */; };
 		A769FE4B1ABD051A00888ED8 /* VTrackingEventLog.m in Sources */ = {isa = PBXBuildFile; fileRef = A769FE4A1ABD051A00888ED8 /* VTrackingEventLog.m */; };
+		A76A06A11B87B13600D91214 /* ContentCreationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76A069B1B87B13600D91214 /* ContentCreationTests.swift */; };
+		A76A06A21B87B13600D91214 /* GIFCommentTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76A069C1B87B13600D91214 /* GIFCommentTest.swift */; };
+		A76A06A31B87B13600D91214 /* KIFExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76A069F1B87B13600D91214 /* KIFExtensions.swift */; };
+		A76A06A41B87B13600D91214 /* VictoriousTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76A06A01B87B13600D91214 /* VictoriousTestCase.swift */; };
 		A76D938A1B320DD0007A150D /* VSequenceExpressionsObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D93871B320DD0007A150D /* VSequenceExpressionsObserver.m */; };
 		A76D93921B32151B007A150D /* VContentLikeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D938F1B32151B007A150D /* VContentLikeButton.m */; };
 		A771D0241A043AE8007CB0A5 /* VTrackingManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */; };
@@ -789,9 +793,6 @@
 		A7DAFCA91B4EDACE00B51C92 /* GIFSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCA81B4EDACE00B51C92 /* GIFSearchResult.swift */; };
 		A7DAFCAD1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DAFCAC1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift */; };
 		A7DB4D3F1B7AB6CB00199D10 /* VAutomation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DB4D3D1B7AB6CB00199D10 /* VAutomation.m */; };
-		A7DB4D441B7ABA8C00199D10 /* ContentCreationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DB4D401B7ABA8C00199D10 /* ContentCreationTests.swift */; };
-		A7DB4D451B7ABA8C00199D10 /* KIFExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DB4D411B7ABA8C00199D10 /* KIFExtensions.swift */; };
-		A7DB4D471B7ABA8C00199D10 /* VictoriousTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DB4D431B7ABA8C00199D10 /* VictoriousTestCase.swift */; };
 		A7DB4D481B7ACB9A00199D10 /* AutomationId.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71DAF231B695FC200E0BE53 /* AutomationId.swift */; };
 		A7DDA6AA1B5F0018005CE55E /* Experiment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6A91B5F0018005CE55E /* Experiment.swift */; };
 		A7DDA6AC1B5F003B005CE55E /* Experiment+RestKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6AB1B5F003B005CE55E /* Experiment+RestKit.swift */; };
@@ -879,7 +880,6 @@
 		C30AA4F31B067C370010CEFE /* VPermissionCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4F21B067C370010CEFE /* VPermissionCamera.m */; };
 		C30AA4F61B06B82A0010CEFE /* VPermissionPhotoLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4F51B06B82A0010CEFE /* VPermissionPhotoLibrary.m */; };
 		C3345F621B59ACB30091D889 /* VMenuItemControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C3345F611B59ACB30091D889 /* VMenuItemControl.m */; };
-		C33C7D191B7E657F00CCFBB6 /* GIFCommentTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33C7D181B7E657F00CCFBB6 /* GIFCommentTest.swift */; };
 		C3475B6D1B507087007C3782 /* VForcedWorkspaceContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3475B6C1B507087007C3782 /* VForcedWorkspaceContainerViewController.m */; };
 		C3475B6F1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3475B6E1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard */; };
 		C35265FB1B28EA09001F093F /* CreateSheet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C35265FA1B28EA09001F093F /* CreateSheet.storyboard */; };
@@ -2452,6 +2452,11 @@
 		A769FE441ABCFCE900888ED8 /* VTrackingSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTrackingSettingsViewController.m; path = "Tracking Settings/VTrackingSettingsViewController.m"; sourceTree = "<group>"; };
 		A769FE491ABD051A00888ED8 /* VTrackingEventLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingEventLog.h; sourceTree = "<group>"; };
 		A769FE4A1ABD051A00888ED8 /* VTrackingEventLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingEventLog.m; sourceTree = "<group>"; };
+		A76A069B1B87B13600D91214 /* ContentCreationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentCreationTests.swift; sourceTree = "<group>"; };
+		A76A069C1B87B13600D91214 /* GIFCommentTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFCommentTest.swift; sourceTree = "<group>"; };
+		A76A069D1B87B13600D91214 /* UIAutomationTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAutomationTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		A76A069F1B87B13600D91214 /* KIFExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KIFExtensions.swift; sourceTree = "<group>"; };
+		A76A06A01B87B13600D91214 /* VictoriousTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VictoriousTestCase.swift; sourceTree = "<group>"; };
 		A76D93871B320DD0007A150D /* VSequenceExpressionsObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceExpressionsObserver.m; sourceTree = "<group>"; };
 		A76D938B1B320E02007A150D /* VSequenceExpressionsObserver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VSequenceExpressionsObserver.h; sourceTree = "<group>"; };
 		A76D938E1B32151B007A150D /* VContentLikeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentLikeButton.h; sourceTree = "<group>"; };
@@ -2703,12 +2708,8 @@
 		A7DAFCAC1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Extensions.swift"; sourceTree = "<group>"; };
 		A7DB4D2A1B7AB1D300199D10 /* UIAutomationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UIAutomationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7DB4D2D1B7AB1D400199D10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A7DB4D381B7AB63300199D10 /* UIAutomationTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIAutomationTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		A7DB4D3C1B7AB6CB00199D10 /* VAutomation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAutomation.h; sourceTree = "<group>"; };
 		A7DB4D3D1B7AB6CB00199D10 /* VAutomation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAutomation.m; sourceTree = "<group>"; };
-		A7DB4D401B7ABA8C00199D10 /* ContentCreationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentCreationTests.swift; sourceTree = "<group>"; };
-		A7DB4D411B7ABA8C00199D10 /* KIFExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KIFExtensions.swift; sourceTree = "<group>"; };
-		A7DB4D431B7ABA8C00199D10 /* VictoriousTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VictoriousTestCase.swift; sourceTree = "<group>"; };
 		A7DDA6A91B5F0018005CE55E /* Experiment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Experiment.swift; sourceTree = "<group>"; };
 		A7DDA6AB1B5F003B005CE55E /* Experiment+RestKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Experiment+RestKit.swift"; sourceTree = "<group>"; };
 		A7DDA6AD1B5F006B005CE55E /* VObjectManager+Experiments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VObjectManager+Experiments.swift"; sourceTree = "<group>"; };
@@ -2879,7 +2880,6 @@
 		C30AA4F51B06B82A0010CEFE /* VPermissionPhotoLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPermissionPhotoLibrary.m; path = Permissions/VPermissionPhotoLibrary.m; sourceTree = "<group>"; };
 		C3345F601B59ACB30091D889 /* VMenuItemControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMenuItemControl.h; sourceTree = "<group>"; };
 		C3345F611B59ACB30091D889 /* VMenuItemControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMenuItemControl.m; sourceTree = "<group>"; };
-		C33C7D181B7E657F00CCFBB6 /* GIFCommentTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFCommentTest.swift; sourceTree = "<group>"; };
 		C3475B6B1B507087007C3782 /* VForcedWorkspaceContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VForcedWorkspaceContainerViewController.h; sourceTree = "<group>"; };
 		C3475B6C1B507087007C3782 /* VForcedWorkspaceContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VForcedWorkspaceContainerViewController.m; sourceTree = "<group>"; };
 		C3475B6E1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VForcedWorkspaceContainerViewController.storyboard; sourceTree = "<group>"; };
@@ -5858,6 +5858,15 @@
 			name = "Tracking Settings";
 			sourceTree = "<group>";
 		};
+		A76A069E1B87B13600D91214 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A76A069F1B87B13600D91214 /* KIFExtensions.swift */,
+				A76A06A01B87B13600D91214 /* VictoriousTestCase.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		A76D93741B31E8C0007A150D /* Expression */ = {
 			isa = PBXGroup;
 			children = (
@@ -6296,12 +6305,10 @@
 		A7DB4D2B1B7AB1D400199D10 /* UIAutomationTests */ = {
 			isa = PBXGroup;
 			children = (
-				A7DB4D401B7ABA8C00199D10 /* ContentCreationTests.swift */,
-				A7DB4D411B7ABA8C00199D10 /* KIFExtensions.swift */,
+				A76A069B1B87B13600D91214 /* ContentCreationTests.swift */,
+				A76A069C1B87B13600D91214 /* GIFCommentTest.swift */,
+				A76A069E1B87B13600D91214 /* Utils */,
 				A7DB4D2C1B7AB1D400199D10 /* Supporting Files */,
-				A7DB4D381B7AB63300199D10 /* UIAutomationTests-Bridging-Header.h */,
-				A7DB4D431B7ABA8C00199D10 /* VictoriousTestCase.swift */,
-				C33C7D181B7E657F00CCFBB6 /* GIFCommentTest.swift */,
 			);
 			path = UIAutomationTests;
 			sourceTree = "<group>";
@@ -6309,6 +6316,7 @@
 		A7DB4D2C1B7AB1D400199D10 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				A76A069D1B87B13600D91214 /* UIAutomationTests-Bridging-Header.h */,
 				A7DB4D2D1B7AB1D400199D10 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -8804,12 +8812,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C33C7D191B7E657F00CCFBB6 /* GIFCommentTest.swift in Sources */,
+				A76A06A21B87B13600D91214 /* GIFCommentTest.swift in Sources */,
+				A76A06A31B87B13600D91214 /* KIFExtensions.swift in Sources */,
 				A71F2E701B7D16DC00159392 /* VAutomation.m in Sources */,
-				A7DB4D441B7ABA8C00199D10 /* ContentCreationTests.swift in Sources */,
-				A7DB4D451B7ABA8C00199D10 /* KIFExtensions.swift in Sources */,
 				A7DB4D481B7ACB9A00199D10 /* AutomationId.swift in Sources */,
-				A7DB4D471B7ABA8C00199D10 /* VictoriousTestCase.swift in Sources */,
+				A76A06A41B87B13600D91214 /* VictoriousTestCase.swift in Sources */,
+				A76A06A11B87B13600D91214 /* ContentCreationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,6 +10,10 @@ import Foundation
 
 class GIFCommentTest : VictoriousTestCase {
     
+    override var testDescription: String {
+        return "Tests posting a GIF comment on a post from user's profile."
+    }
+    
     func testGIFCommentContentView() {
         
         // Head to profile

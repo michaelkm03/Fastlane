@@ -28,11 +28,14 @@ class VictoriousTestCase: KIFTestCase {
         
         // Login if forced login is presented
         self.loginIfRequired()
+        self.addNote( "Logs in using email if test is run while no user is logged in." )
         
         self.dismissWelcomeIfPresent()
+        self.addNote( "Dismisses the FTUE welcome screen if test is run on first install." )
         
         // Grant notification permissions
-        self.tester().acknowledgeSystemAlert()
+        self.acknowledgeSystemAlert()
+        self.addNote( "Grants push notification permission if test is run on first install." )
     }
     
     /// Checks if the element with the provided label is present on screen
@@ -51,8 +54,13 @@ class VictoriousTestCase: KIFTestCase {
     func grantLibraryPermissionIfRequired() {
         if self.elementExistsWithAccessibilityLabel( VAutomationIdentifierGrantLibraryAccess ) {
             self.tester().tapViewWithAccessibilityLabel( VAutomationIdentifierGrantLibraryAccess )
-            self.tester().acknowledgeSystemAlert()
+            self.acknowledgeSystemAlert()
         }
+    }
+    
+    func acknowledgeSystemAlert() {
+        self.tester().waitForTappableViewWithAccessibilityLabel("OK" )
+        self.tester().tapViewWithAccessibilityLabel( "OK" )
     }
     
     /// Dismisses FTUE welcome screen if presented on first install.
@@ -75,13 +83,13 @@ class VictoriousTestCase: KIFTestCase {
         }
     }
     
-    var testDescriptions = [String]()
+    var notes = [String]()
     
-    var description: String {
+    var testDescription: String {
         fatalError("All test cases must provide a detailed description.")
     }
     
-    func addDescription( description: String ) {
-        self.testDescriptions.append( description )
+    func addNote( text: String ) {
+        self.notes.append( text )
     }
 }

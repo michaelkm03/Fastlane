@@ -18,10 +18,10 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-JSON=$( ${CURL} -X PUT -d '{ "message": "Commit", "content": "FUCK", "sha": "8318c86b357b6ddbf674ad238b8745d2781cab4b" }' \
+JSON=$( ${CURL} -X PUT -d '{ "message": "Commit", "content": "Hello World", "sha": "8318c86b357b6ddbf674ad238b8745d2781cab4b" }' \
     -H "Authorization: token fe128103c64530916a3e2fcfb22844765ef3f490" \
     -H "Accept: application/vnd.github.v3+json" \
-    https://api.github.com/repos/TouchFrame/VictoriousiOS/contents/UI-Automation-Tests.md )
+    https://api.github.com/repos/TouchFrame/VictoriousiOS%2Ewiki/contents/UI-Automation-Tests.md )
 echo $JSON
 exit 0
 
