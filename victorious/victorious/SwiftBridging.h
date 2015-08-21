@@ -117,6 +117,7 @@
 #import "VUserTag.h"
 #import "VUserTaggingTextStorage.h"
 #import "VUserTaggingTextStorageDelegate.h"
+#import "VUsersAndTagsSearchViewController.h"
 #import "VUtilityButtonCell.h"
 #import "VVideoLightboxViewController.h"
 #import "VVideoView.h"
