@@ -16,6 +16,9 @@
 /* Class = "UITableViewController"; title = "Server Environment"; ObjectID = "6fa-Sd-wUR"; */
 "6fa-Sd-wUR.title" = "Entorno de servidor";
 
+/* Class = "UITableViewController"; title = "Experiments"; ObjectID = "6nd-lx-w31"; */
+"6nd-lx-w31.title" = "Experimentos";
+
 /* Class = "UILabel"; text = "TITLE"; ObjectID = "8Fn-0A-Ctn"; */
 "8Fn-0A-Ctn.text" = "TÍTULO";
 
@@ -39,6 +42,9 @@
 
 /* Class = "UILabel"; text = "Reset Coachmarks"; ObjectID = "FNb-Ni-uJN"; */
 "FNb-Ni-uJN.text" = "Reiniciar Coachmarks";
+
+/* Class = "UINavigationItem"; title = "Experiments"; ObjectID = "HQs-Ej-k6O"; */
+"HQs-Ej-k6O.title" = "Experimentos";
 
 /* Class = "UITextField"; placeholder = "Confirm Password"; ObjectID = "Hdx-TS-3uZ"; */
 "Hdx-TS-3uZ.placeholder" = "Confirmar contraseña";
@@ -79,6 +85,12 @@
 /* Class = "UILabel"; text = "Subtitle"; ObjectID = "U7G-Km-0yw"; */
 "U7G-Km-0yw.text" = "Subtitulo";
 
+/* Class = "UIButton"; normalTitle = "Reset Experiments"; ObjectID = "Ufb-HV-tDz"; */
+"Ufb-HV-tDz.normalTitle" = "Restablecer experimentos";
+
+/* Class = "UILabel"; text = "TITLE"; ObjectID = "Uxb-Bx-b8P"; */
+"Uxb-Bx-b8P.text" = "TÍTULO";
+
 /* Class = "UINavigationItem"; title = "Push Notifications"; ObjectID = "WVz-KR-Hhr"; */
 "WVz-KR-Hhr.title" = "Sacar notificaciones";
 
@@ -96,6 +108,9 @@
 
 /* Class = "UINavigationItem"; title = "Privacy Policy"; ObjectID = "dAg-zH-vd2"; */
 "dAg-zH-vd2.title" = "Política de privacidad";
+
+/* Class = "UILabel"; text = "Experiments"; ObjectID = "f7G-BC-zp9"; */
+"f7G-BC-zp9.text" = "Experimentos";
 
 /* Class = "UILabel"; text = "Always"; ObjectID = "iA5-m7-nZ8"; */
 "iA5-m7-nZ8.text" = "Siempre";
@@ -139,6 +154,9 @@
 /* Class = "UILabel"; text = "Change Password"; ObjectID = "xmy-by-M88"; */
 "xmy-by-M88.text" = "Cambiar contraseña";
 
-/* Class = "UILabel"; text = "Autoplay Next Video"; ObjectID = "yLq-Ze-kTh"; */
+/* Class = "UILabel"; text = "Autoplay Videos"; ObjectID = "yLq-Ze-kTh"; */
 "yLq-Ze-kTh.text" = "Autoplay siguiente vídeo";
+
+/* Class = "UILabel"; text = "MESSAGE"; ObjectID = "zvz-SG-J7d"; */
+"zvz-SG-J7d.text" = "MENSAJE";
 

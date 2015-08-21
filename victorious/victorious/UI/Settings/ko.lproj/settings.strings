@@ -16,6 +16,9 @@
 /* Class = "UITableViewController"; title = "Server Environment"; ObjectID = "6fa-Sd-wUR"; */
 "6fa-Sd-wUR.title" = "서버 환경";
 
+/* Class = "UITableViewController"; title = "Experiments"; ObjectID = "6nd-lx-w31"; */
+"6nd-lx-w31.title" = "실험";
+
 /* Class = "UILabel"; text = "TITLE"; ObjectID = "8Fn-0A-Ctn"; */
 "8Fn-0A-Ctn.text" = "제목";
 
@@ -39,6 +42,9 @@
 
 /* Class = "UILabel"; text = "Reset Coachmarks"; ObjectID = "FNb-Ni-uJN"; */
 "FNb-Ni-uJN.text" = "사용 안내 초기화";
+
+/* Class = "UINavigationItem"; title = "Experiments"; ObjectID = "HQs-Ej-k6O"; */
+"HQs-Ej-k6O.title" = "실험";
 
 /* Class = "UITextField"; placeholder = "Confirm Password"; ObjectID = "Hdx-TS-3uZ"; */
 "Hdx-TS-3uZ.placeholder" = "비밀번호 확인";
@@ -76,6 +82,12 @@
 /* Class = "UILabel"; text = "Subtitle"; ObjectID = "U7G-Km-0yw"; */
 "U7G-Km-0yw.text" = "자막";
 
+/* Class = "UIButton"; normalTitle = "Reset Experiments"; ObjectID = "Ufb-HV-tDz"; */
+"Ufb-HV-tDz.normalTitle" = "실험 초기화";
+
+/* Class = "UILabel"; text = "TITLE"; ObjectID = "Uxb-Bx-b8P"; */
+"Uxb-Bx-b8P.text" = "제목";
+
 /* Class = "UINavigationItem"; title = "Push Notifications"; ObjectID = "WVz-KR-Hhr"; */
 "WVz-KR-Hhr.title" = "푸시 알림";
 
@@ -93,6 +105,9 @@
 
 /* Class = "UINavigationItem"; title = "Privacy Policy"; ObjectID = "dAg-zH-vd2"; */
 "dAg-zH-vd2.title" = "개인정보 보호 정책";
+
+/* Class = "UILabel"; text = "Experiments"; ObjectID = "f7G-BC-zp9"; */
+"f7G-BC-zp9.text" = "실험";
 
 /* Class = "UILabel"; text = "Always"; ObjectID = "iA5-m7-nZ8"; */
 "iA5-m7-nZ8.text" = "항상";
@@ -136,6 +151,9 @@
 /* Class = "UILabel"; text = "Change Password"; ObjectID = "xmy-by-M88"; */
 "xmy-by-M88.text" = "비밀번호 변경";
 
-/* Class = "UILabel"; text = "Autoplay Next Video"; ObjectID = "yLq-Ze-kTh"; */
+/* Class = "UILabel"; text = "Autoplay Videos"; ObjectID = "yLq-Ze-kTh"; */
 "yLq-Ze-kTh.text" = "다음 영상 자동 재생";
+
+/* Class = "UILabel"; text = "MESSAGE"; ObjectID = "zvz-SG-J7d"; */
+"zvz-SG-J7d.text" = "메시지";
 
