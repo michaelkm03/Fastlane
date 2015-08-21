@@ -45,11 +45,7 @@ static const CGFloat kHandleDesiredHeight = 37.0f;
     _numberOfComments = numberOfComments;
     NSString *commentText = @"";
     
-    if (numberOfComments == 0)
-    {
-        commentText = @"";
-    }
-    else if (numberOfComments == 1)
+    if (numberOfComments == 1)
     {
         commentText = [NSString stringWithFormat:NSLocalizedString(@"CommentsSingularFormat", ""),  @(numberOfComments)];
     }
