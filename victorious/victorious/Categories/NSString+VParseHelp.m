@@ -67,19 +67,9 @@
 
 - (NSString *)v_pathComponent
 {
-    static NSRegularExpression *regex;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^(void)
-    {
-        regex = [[NSRegularExpression alloc] initWithPattern:@"\\w+:\\/\\/[\\w\\.]+(\\/.*)$" options:0 error:nil];
-    });
-    
-    NSTextCheckingResult *match = [regex firstMatchInString:self options:0 range:NSMakeRange(0, self.length)];
-    if ( match == nil || [match numberOfRanges] == 0 )
-    {
-        return nil;
-    }
-    return [self substringWithRange:[match rangeAtIndex:1]];
+    NSString *percentEndcoded = [self stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSURLComponents *components = [[NSURLComponents alloc] initWithString:percentEndcoded];
+    return components.path;
 }
 
 @end
