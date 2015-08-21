@@ -508,7 +508,7 @@ static NSString * const kAccessoryScreensKey = @"accessoryScreens";
     {
         Shelf *shelf = (Shelf *)stream;
         VStreamCollectionViewController *streamCollection = nil;
-        VDependencyManager *dependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{ kSequenceIDKey: stream.remoteId, VDependencyManagerTitleKey: stream.name }];
+        VDependencyManager *dependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{ kSequenceIDKey: stream.remoteId, VDependencyManagerTitleKey: stream.name, kAccessoryScreensKey : @[] }];
         if ( [shelf isKindOfClass:[HashtagShelf class]] )
         {
             HashtagShelf *hashtagShelf = (HashtagShelf *)shelf;
@@ -516,7 +516,7 @@ static NSString * const kAccessoryScreensKey = @"accessoryScreens";
         }
         else
         {
-            streamCollection = [VStreamCollectionViewController newWithDependencyManager:[dependencyManager childDependencyManagerWithAddedConfiguration:@{ kAccessoryScreensKey : @[] }]];
+            streamCollection = [VStreamCollectionViewController newWithDependencyManager:dependencyManager];
         }
         
         streamCollection.currentStream = stream;
