@@ -6,6 +6,29 @@
 # Requires Shenzhen:  see https://github.com/nomad/shenzhen
 ###########
 
+
+
+    
+
+# Check 'curl' tool
+CURL=curl
+${CURL} --help >/dev/null
+if [ $? -ne 0 ]; then
+    echo "Could not run curl tool, please check settings"
+    exit 1
+fi
+
+JSON=$( ${CURL} -X PUT -d '{ "message": "Commit", "content": "FUCK", "sha": "8318c86b357b6ddbf674ad238b8745d2781cab4b" }' \
+    -H "Authorization: token fe128103c64530916a3e2fcfb22844765ef3f490" \
+    -H "Accept: application/vnd.github.v3+json" \
+    https://api.github.com/repos/TouchFrame/VictoriousiOS/contents/UI-Automation-Tests.md )
+echo $JSON
+exit 0
+
+
+
+
+
 SCHEME=$1
 ENVIRONMENT=$2
 CONFIGURATION=$3
