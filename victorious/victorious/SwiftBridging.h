@@ -10,14 +10,11 @@
  Use this file to import Objective-C headers that need to be exposed to any Swift code.
  */
 
-// Victorious Models
 #import "VAbstractFilter.h"
 #import "VSEquence.h"
 #import "VStream.h"
 #import "VSequence.h"
 #import "VSequence+Fetcher.h"
-
-// Everything else
 #import "VAutomation.h"
 #import "VTextPostTextView.h"
 #import "VObjectManager.h"
@@ -53,6 +50,7 @@
 #import "VLightweightContentViewController.h"
 #import "VFirstTimeInstallHelper.h"
 #import "VSessionTimer.h"
+#import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VTracking.h"
 #import "VPushNotificationManager.h"
 #import "UIViewController+VRootNavigationController.h"
@@ -94,8 +92,6 @@
 #import "VLightboxTransitioningDelegate.h"
 #import "VVideoLightboxViewController.h"
 #import "VImageLightboxViewController.h"
-
-// Shelves
 #import "VStreamCellFactory.h"
 #import "VSleekStreamCellFactory.h"
 #import "VMarqueeController.h"

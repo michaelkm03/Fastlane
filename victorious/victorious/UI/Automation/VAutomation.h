@@ -23,6 +23,7 @@ extern NSString * const VAutomationIdentifierKeyboardHashtagButton;
 
 extern NSString * const VAutomationIdentifierSettingsLogIn;
 extern NSString * const VAutomationIdentifierSettingsLogOut;
+extern NSString * const VAutomationIdentifierSettingsTableView;
 
 extern NSString * const VAutomationIdentifierLoginSelectEmail;
 extern NSString * const VAutomationIdentifierLoginSelectPassword;
@@ -35,9 +36,12 @@ extern NSString * const VAutomationIdentifierLoginSignUp;
 extern NSString * const VAutomationIdentifierLoginFacebook;
 extern NSString * const VAutomationIdentifierLoginTwitter;
 
-extern NSString * const VAutomationIdentifierSignupUsernameField;
+extern NSString * const VAutomationIdentifierSignupEmailField;
+extern NSString * const VAutomationIdentifierSignupEmailFieldValidation;
 extern NSString * const VAutomationIdentifierSignupPasswordField;
-extern NSString * const VAutomationIdentifierSignupPasswordConfirmField;
+extern NSString * const VAutomationIdentifierSignupPasswordFieldValidation;
+extern NSString * const VAutomationIdentifierSignupUsernameField;
+extern NSString * const VAutomationIdentifierSignupUsernameFieldValidation;
 extern NSString * const VAutomationIdentifierSignupSubmit;
 extern NSString * const VAutomationIdentifierSignupCancel;
 
@@ -47,6 +51,14 @@ extern NSString * const VAutomationIdentifierProfileDone;
 extern NSString * const VAutomationIdentifierProfileAgeAgreeSwitch;
 extern NSString * const VAutomationIdentifierProfilSelectImage;
 extern NSString * const VAutomationIdentifierProfileLogInButton;
+
+extern NSString * const VAutomationIdentifierProfileUsernameTitle;
+
+extern NSString * const VAutomationIdentifierLRegistrationTwitter;
+extern NSString * const VAutomationIdentifierLRegistrationEmail;
+extern NSString * const VAutomationIdentifierLRegistrationFacebook;
+extern NSString * const VAutomationIdentifierLRegistrationTOS;
+extern NSString * const VAutomationIdentifierLRegistrationPrivacy;
 
 extern NSString * const VAutomationIdentifierWelcomeDismiss;
 

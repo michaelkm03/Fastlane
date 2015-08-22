@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VInlineValidationView.h"
 
 typedef NS_ENUM(NSInteger, VTextFieldStyle)
 {
@@ -31,6 +32,8 @@ typedef NS_ENUM(NSInteger, VTextFieldStyle)
 @property (nonatomic, strong) NSAttributedString *activePlaceholder;
 
 @property (nonatomic, readonly) BOOL hasResignedFirstResponder;
+
+@property (nonatomic, readonly) VInlineValidationView *inlineValidationView;
 
 /**
  *  Show invalid text with a conditional animation. Will not show animation or text while hasResignedFirstResponder AND force are NO.

@@ -111,9 +111,14 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     self.emailField.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];
     self.emailField.activePlaceholder = [[NSAttributedString alloc] initWithString:self.emailField.placeholder
                                                                         attributes:activePlaceholderAttributes];
+    self.emailField.accessibilityIdentifier = VAutomationIdentifierSignupEmailField;
+    self.emailField.inlineValidationView.accessibilityIdentifier = VAutomationIdentifierSignupEmailFieldValidation;
 
     self.passwordField.inactivePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter Password", nil)
-                                                                               attributes:placeholderTextFieldAttributes];
+                                                                             attributes:placeholderTextFieldAttributes];
+    self.passwordField.accessibilityIdentifier = VAutomationIdentifierSignupPasswordField;
+    self.passwordField.inlineValidationView.accessibilityIdentifier = VAutomationIdentifierSignupPasswordFieldValidation;
+    
     self.passwordField.font = textFieldAttributes[NSFontAttributeName];
     self.passwordField.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.passwordField.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:kKeyboardStyleKey];

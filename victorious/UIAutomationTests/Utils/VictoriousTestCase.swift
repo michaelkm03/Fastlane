@@ -32,10 +32,6 @@ class VictoriousTestCase: KIFTestCase {
         
         self.dismissWelcomeIfPresent()
         self.addNote( "Dismisses the FTUE welcome screen if test is run on first install." )
-        
-        // Grant notification permissions
-        self.acknowledgeSystemAlert()
-        self.addNote( "Grants push notification permission if test is run on first install." )
     }
     
     /// Checks if the element with the provided label is present on screen
@@ -48,19 +44,6 @@ class VictoriousTestCase: KIFTestCase {
         let output = self.exceptions.count == 0
         self.exceptions = []
         return output
-    }
-    
-    /// Grants library permission, dismiss permission alert
-    func grantLibraryPermissionIfRequired() {
-        if self.elementExistsWithAccessibilityLabel( VAutomationIdentifierGrantLibraryAccess ) {
-            self.tester().tapViewWithAccessibilityLabel( VAutomationIdentifierGrantLibraryAccess )
-            self.acknowledgeSystemAlert()
-        }
-    }
-    
-    func acknowledgeSystemAlert() {
-        self.tester().waitForTappableViewWithAccessibilityLabel("OK" )
-        self.tester().tapViewWithAccessibilityLabel( "OK" )
     }
     
     /// Dismisses FTUE welcome screen if presented on first install.

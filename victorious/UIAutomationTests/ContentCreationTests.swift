@@ -26,8 +26,6 @@ class ContentCreationTests: VictoriousTestCase {
         
         self.tester().tapViewWithAccessibilityLabel( "Create Image" )
         
-        self.grantLibraryPermissionIfRequired()
-        
         self.addNote( "Select the first image in the device's lirbary" )
         
         // Select image from gallery
