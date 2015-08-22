@@ -19,7 +19,7 @@
 static NSString * const kSearchResultCellReuseIdentifier          = @"kSearchResultCellReuseIdentifier";
 static NSString * const kSearchResultSectionFooterReuseIdentifier = @"kSearchResultSectionFooterReuseIdentifier";
 static const CGFloat    kVerySmallScale                           =  0.001f;
-static const CGFloat    kSearchResultSectionFooterHeight          = 55.0f;
+static const CGFloat    kSearchResultSectionFooterHeight          = 45.0f;
 static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
 
 @interface VImageSearchViewController () <UICollectionViewDelegateFlowLayout, UISearchBarDelegate, VImageSearchDataDelegate>
