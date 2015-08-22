@@ -12,7 +12,7 @@ import UIKit
 /// presented when "explore" button on the tab bar is tapped
 class VExploreViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate {
     
-    @IBOutlet weak private var searchBar: UISearchBar!
+    private lazy var searchBar = UISearchBar()
     @IBOutlet weak private var collectionView: UICollectionView!
 
     /// The dependencyManager that is used to manage dependencies of explore screen
@@ -34,9 +34,12 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.v_supplementaryHeaderView = searchBar
+        
+        // Make sure the bottom of view does not inset twice for the tab menu bar
         self.automaticallyAdjustsScrollViewInsets = false;
         self.extendedLayoutIncludesOpaqueBars = true;
+        
+        self.configureSearchBar()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -78,6 +81,16 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
         if let searchVC = VUsersAndTagsSearchViewController .newWithDependencyManager(dependencyManager) {
             v_navigationController().innerNavigationController.pushViewController(searchVC, animated: true)
+        }
+    }
+    
+    /// Mark: - Private Helper Methods
+    private func configureSearchBar() {
+        navigationItem.titleView = searchBar
+        searchBar.delegate = self
+        searchBar.placeholder = NSLocalizedString("Search people and hashtags", comment: "")
+        if let searchTextField = searchBar.v_textField {
+            // search text field customization goes here
         }
     }
 }
