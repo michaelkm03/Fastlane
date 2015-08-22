@@ -39,7 +39,7 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         self.extendedLayoutIncludesOpaqueBars = true;
         
         // WARNING: Testing
-        self.collectionView.registerNib(UINib(nibName: "TrendingTopicShelfCollectionViewCell", bundle: NSBundle.mainBundle()), forCellWithReuseIdentifier: TrendingTopicShelfCollectionViewCell.reuseIdentifier())
+        self.collectionView.registerClass(TrendingTopicShelfCollectionViewCell.self, forCellWithReuseIdentifier: TrendingTopicShelfCollectionViewCell.suggestedReuseIdentifier())
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -67,7 +67,7 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if indexPath.section == 1 {
-            if let cell = collectionView.dequeueReusableCellWithReuseIdentifier(TrendingTopicShelfCollectionViewCell.reuseIdentifier(), forIndexPath: indexPath) as? TrendingTopicShelfCollectionViewCell {
+            if let cell = collectionView.dequeueReusableCellWithReuseIdentifier(TrendingTopicShelfCollectionViewCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as? TrendingTopicShelfCollectionViewCell {
                 return cell
             }
         }
@@ -94,7 +94,7 @@ extension VExploreViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         if indexPath.section == 1 {
-            return CGSize(width: self.view.bounds.width, height: 240)
+            return CGSize(width: self.view.bounds.width, height: 160)
         }
         return CGSize(width: 100, height: 100)
     }

@@ -910,7 +910,6 @@
 		C3C7345B1B61CF3D00D6795D /* voteTypes.json in Resources */ = {isa = PBXBuildFile; fileRef = C3C7345A1B61CF3D00D6795D /* voteTypes.json */; };
 		C3D6CCB21B7D175B008644DD /* AutoplayTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D6CCB11B7D175B008644DD /* AutoplayTracking.swift */; };
 		C3E20B111B8659E400757F17 /* TrendingTopicShelfCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E20B101B8659E400757F17 /* TrendingTopicShelfCollectionViewCell.swift */; };
-		C3E20B131B865C1100757F17 /* TrendingTopicShelfCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3E20B121B865C1100757F17 /* TrendingTopicShelfCollectionViewCell.xib */; };
 		C3E20B151B8670BB00757F17 /* TrendingTopicContentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E20B141B8670BB00757F17 /* TrendingTopicContentCollectionViewCell.swift */; };
 		C3E47F6C1B69451B0084FF65 /* MediaAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E47F6B1B69451B0084FF65 /* MediaAttachmentView.swift */; };
 		C3E47F6F1B6990C30084FF65 /* VCommentTextAndMediaView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E47F6E1B6990C30084FF65 /* VCommentTextAndMediaView.m */; };
@@ -2936,7 +2935,6 @@
 		C3C7345A1B61CF3D00D6795D /* voteTypes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = voteTypes.json; sourceTree = "<group>"; };
 		C3D6CCB11B7D175B008644DD /* AutoplayTracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoplayTracking.swift; sourceTree = "<group>"; };
 		C3E20B101B8659E400757F17 /* TrendingTopicShelfCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingTopicShelfCollectionViewCell.swift; sourceTree = "<group>"; };
-		C3E20B121B865C1100757F17 /* TrendingTopicShelfCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TrendingTopicShelfCollectionViewCell.xib; sourceTree = "<group>"; };
 		C3E20B141B8670BB00757F17 /* TrendingTopicContentCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingTopicContentCollectionViewCell.swift; sourceTree = "<group>"; };
 		C3E47F6B1B69451B0084FF65 /* MediaAttachmentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaAttachmentView.swift; sourceTree = "<group>"; };
 		C3E47F6D1B6990C30084FF65 /* VCommentTextAndMediaView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCommentTextAndMediaView.h; sourceTree = "<group>"; };
@@ -6140,7 +6138,7 @@
 		A7AEF96C1A83F1C300A3D3A0 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				C3E20B0F1B8659B400757F17 /* Explore */,
+				C3E20B0F1B8659B400757F17 /* Trending Topic Shelf */,
 				F0AD21711AF32359001BDCC6 /* NoContentCollectionViewCell */,
 				A705F44D1B3DC787007DBD3C /* Sizing */,
 				D8DF71E11AFC3476002EA7A5 /* Template A */,
@@ -6912,15 +6910,14 @@
 			name = "Bar Buttons";
 			sourceTree = "<group>";
 		};
-		C3E20B0F1B8659B400757F17 /* Explore */ = {
+		C3E20B0F1B8659B400757F17 /* Trending Topic Shelf */ = {
 			isa = PBXGroup;
 			children = (
 				C3E20B101B8659E400757F17 /* TrendingTopicShelfCollectionViewCell.swift */,
-				C3E20B121B865C1100757F17 /* TrendingTopicShelfCollectionViewCell.xib */,
 				C3E20B141B8670BB00757F17 /* TrendingTopicContentCollectionViewCell.swift */,
 				C38254B41B86B8B200EDBE91 /* TrendingTopicGradientView.swift */,
 			);
-			name = Explore;
+			name = "Trending Topic Shelf";
 			sourceTree = "<group>";
 		};
 		C3E772241B4DD12A005809A5 /* Focus */ = {
@@ -8293,7 +8290,6 @@
 				A7299E931AA5331000B6BC1F /* VCardDirectoryCell.xib in Resources */,
 				03FD87D919F96FB700D93BAA /* VDiscoverSuggestedPersonCell.xib in Resources */,
 				036F38931A0C4DEA0014DF66 /* SourceSansPro-Regular.ttf in Resources */,
-				C3E20B131B865C1100757F17 /* TrendingTopicShelfCollectionViewCell.xib in Resources */,
 				F0FC97AA1B5563A40098AFCB /* VInStreamCommentsCell.xib in Resources */,
 				03C1858619B42C9100E27D05 /* Roboto-Light.ttf in Resources */,
 				F089E3621AC486A60076DC4D /* VBlurredMarqueeCollectionViewCell.xib in Resources */,

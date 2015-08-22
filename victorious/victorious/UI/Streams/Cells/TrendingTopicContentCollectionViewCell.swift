@@ -14,6 +14,14 @@ class TrendingTopicContentCollectionViewCell: VShelfContentCollectionViewCell {
     private var gradient = TrendingTopicGradientView()
     private var label = UILabel()
     private var imageView = UIImageView()
+    private var blurredImageView = UIImageView()
+    
+    private lazy var blurMask: TrendingTopicGradientView = {
+        let blurMask = TrendingTopicGradientView()
+        blurMask.primaryColor = UIColor.blackColor()
+        blurMask.gradientAlphas = (0, 1, 0)
+        return blurMask
+    }()
     
     var color: UIColor? {
         didSet {
@@ -26,8 +34,19 @@ class TrendingTopicContentCollectionViewCell: VShelfContentCollectionViewCell {
             if let image = self.image {
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     self.imageView.image = image
-//                    let color = image.dominantColors().first
-                    self.gradient.primaryColor = UIColor.blackColor()
+                    
+//                    let cube = CCColorCube()
+//                    let colors = cube.extractColorsFromImage(image, flags: CCOrderByBrightness.value)
+//                    if let color = colors.first as? UIColor {
+//                        self.gradient.primaryColor =  color
+//                    }
+                    
+                    self.gradient.primaryColor = UIColor.redColor()
+                    
+                    self.blurredImageView.blurImage(image, withTintColor: nil, toCallbackBlock: { (img) -> Void in
+                        self.blurredImageView.image = img
+                        self.blurredImageView.layer.mask = self.blurMask.layer
+                    })
                 });
             }
         }
@@ -52,27 +71,29 @@ class TrendingTopicContentCollectionViewCell: VShelfContentCollectionViewCell {
     
     private func setup() {
         
-        imageView.image = UIImage(named: "jennim")
-        imageView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        self.image = UIImage(named: "jennim")
         self.contentView.addSubview(imageView)
         self.contentView.v_addFitToParentConstraintsToSubview(imageView)
         
+        self.contentView.addSubview(blurredImageView)
+        self.contentView.v_addFitToParentConstraintsToSubview(blurredImageView)
+        
         screenView.backgroundColor = UIColor.blackColor().colorWithAlpha(0.2)
-        screenView.setTranslatesAutoresizingMaskIntoConstraints(false)
         self.contentView.addSubview(screenView)
         self.contentView.v_addFitToParentConstraintsToSubview(screenView)
         
-        gradient.setTranslatesAutoresizingMaskIntoConstraints(false)
+        self.contentView.addSubview(blurMask)
+        self.contentView.v_addFitToParentConstraintsToSubview(blurMask)
+        
         self.contentView.addSubview(gradient)
         self.contentView.v_addFitToParentConstraintsToSubview(gradient)
         
         label.textColor = UIColor.whiteColor()
         label.textAlignment = .Center
-        label.setTranslatesAutoresizingMaskIntoConstraints(false)
+        label.font = UIFont.boldSystemFontOfSize(12)
+        label.text = "#outfits"
         self.contentView.addSubview(label)
         self.contentView.v_addFitToParentConstraintsToSubview(label)
-        
-        self.contentView.backgroundColor = UIColor.blackColor()
     }
 }
 

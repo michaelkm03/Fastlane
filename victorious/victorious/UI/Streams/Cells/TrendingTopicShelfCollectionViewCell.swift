@@ -10,7 +10,59 @@ import Foundation
 
 class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
     
-    @IBOutlet weak var collectionView: UICollectionView!
+    private let collectionViewHeight = 90
+    private let contentInsets = UIEdgeInsets(top: 0, left: 22, bottom: 0, right: 22)
+    
+    private lazy var flowLayout: UICollectionViewFlowLayout = {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.scrollDirection = .Horizontal
+        flowLayout.itemSize = CGSize(width: 90, height: 90)
+        flowLayout.sectionInset = self.contentInsets
+        flowLayout.itemSize = CGSize(width: self.collectionViewHeight, height: self.collectionViewHeight)
+        return flowLayout
+    }()
+    
+    private lazy var collectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: self.flowLayout)
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.backgroundColor = UIColor.clearColor()
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        return collectionView
+    }()
+    
+    private lazy var label: UILabel = {
+        let label = UILabel()
+        label.text = "Trending Topics"
+        return label
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setup()
+    }
+    
+    private func setup() {
+        
+        self.backgroundColor = UIColor.whiteColor()
+        
+        label.setTranslatesAutoresizingMaskIntoConstraints(false)
+        self.contentView.addSubview(label)
+        collectionView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        self.contentView.addSubview(collectionView)
+        
+        self.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[label][collectionView(height)]|", options: nil, metrics: ["height" : collectionViewHeight], views: ["label" : label, "collectionView" : collectionView]))
+        self.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[collectionView]|", options: nil, metrics: nil, views: ["collectionView" : collectionView]))
+        self.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-lspace-[label]-rspace-|", options: nil, metrics: ["lspace" : contentInsets.left, "rspace" : contentInsets.right], views: ["label" : label]))
+        
+        // WARNING: Testing
+        collectionView.registerClass(TrendingTopicContentCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+    }
     
     var shelf: Shelf? {
         didSet {
@@ -41,21 +93,14 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
                 return
             }
             
-            // TODO: Customize
+            if let dependencyManager = dependencyManager {
+                self.label.font = dependencyManager.titleFont
+            }
         }
     }
     
     private func streamItems(shelf: Shelf?) -> NSOrderedSet? {
         return shelf?.streamItems
-    }
-    
-    class func reuseIdentifier() -> String {
-        return NSStringFromClass(self)
-    }
-    
-    override func awakeFromNib() {
-        collectionView.registerClass(TrendingTopicContentCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-        collectionView.reloadData()
     }
 }
 
@@ -87,10 +132,17 @@ extension TrendingTopicShelfCollectionViewCell: UICollectionViewDelegate {
     
 }
 
-extension TrendingTopicShelfCollectionViewCell: UICollectionViewDelegateFlowLayout {
+private extension VDependencyManager {
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSizeMake(90, 90)
+    var titleFont: UIFont {
+        return fontForKey(VDependencyManagerLabel1FontKey)
     }
     
+    var titleColor: UIColor {
+        return colorForKey(VDependencyManagerMainTextColorKey)
+    }
+    
+    var topicFont: UIFont {
+        return fontForKey(VDependencyManagerLabel2FontKey)
+    }
 }

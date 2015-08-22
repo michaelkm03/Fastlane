@@ -10,6 +10,12 @@ import Foundation
 
 class TrendingTopicGradientView: UIView {
     
+    var gradientAlphas = (0.05, 0.3, 0.05) {
+        didSet {
+            drawGradient()
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -36,9 +42,9 @@ class TrendingTopicGradientView: UIView {
         if let primaryColor = primaryColor {
             var gradient: CAGradientLayer = CAGradientLayer()
             gradient.frame = self.bounds
-            gradient.colors = [primaryColor.colorWithAlpha(0.05).CGColor,
-                primaryColor.colorWithAlpha(0.9).CGColor,
-                primaryColor.colorWithAlpha(0.05).CGColor]
+            gradient.colors = [primaryColor.colorWithAlpha(gradientAlphas.0).CGColor,
+                primaryColor.colorWithAlpha(gradientAlphas.1).CGColor,
+                primaryColor.colorWithAlpha(gradientAlphas.2).CGColor]
             self.layer.insertSublayer(gradient, atIndex: 0)
             gradientLayer = gradient
         }
@@ -46,12 +52,12 @@ class TrendingTopicGradientView: UIView {
 }
 
 extension UIColor {
-    func colorWithAlpha(alpha: CGFloat) -> UIColor {
+    func colorWithAlpha(alpha: Double) -> UIColor {
         var r: CGFloat = 0.0
         var g: CGFloat = 0.0
         var b: CGFloat = 0.0
         var a: CGFloat = 0.0
         self.getRed(&r, green: &g, blue: &b, alpha: &a)
-        return UIColor(red: r, green: g, blue: b, alpha: alpha)
+        return UIColor(red: r, green: g, blue: b, alpha: CGFloat(alpha))
     }
 }
