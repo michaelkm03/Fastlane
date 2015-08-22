@@ -63,7 +63,7 @@ static NSString * const kStatusBarStyleKey = @"statusBarStyle";
     // Disable swipe back gesture
     self.navigationItem.hidesBackButton = YES;
     
-    self.titleLabel.text = NSLocalizedString([self.dependencyManager stringForKey:kPromptKey], @"");
+    self.titleLabel.text = [self.dependencyManager stringForKey:kPromptKey];
     self.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
     self.doneButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerButton1FontKey];
     self.titleLabel.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
@@ -124,12 +124,12 @@ static NSString * const kStatusBarStyleKey = @"statusBarStyle";
 {
     if ([self showsSkipButton] && !self.ableToPublish)
     {
-        [self.doneButton setTitle:NSLocalizedString([self.dependencyManager stringForKey:kSkipButtonTextKey], @"")
+        [self.doneButton setTitle:[self.dependencyManager stringForKey:kSkipButtonTextKey]
                          forState:UIControlStateNormal];
     }
     else
     {
-        [self.doneButton setTitle:NSLocalizedString([self.dependencyManager stringForKey:kDoneButtonTextKey], @"")
+        [self.doneButton setTitle:[self.dependencyManager stringForKey:kDoneButtonTextKey]
                          forState:UIControlStateNormal];
         
         self.doneButton.enabled = self.ableToPublish;

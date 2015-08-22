@@ -103,7 +103,7 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
         }
         else if ( menuItem.title != nil )
         {
-            accessoryBarItem = [[VBarButtonItem alloc] initWithTitle:NSLocalizedString( menuItem.title, @"" )
+            accessoryBarItem = [[VBarButtonItem alloc] initWithTitle:menuItem.title
                                                                style:UIBarButtonItemStylePlain
                                                               target:self
                                                               action:@selector(accessoryMenuItemSelected:)];

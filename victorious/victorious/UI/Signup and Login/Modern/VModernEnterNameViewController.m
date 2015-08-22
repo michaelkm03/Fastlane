@@ -49,11 +49,12 @@
     
     self.separator.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryAccentColorKey];
     
+    NSString *promptText = [self.dependencyManager stringForKey:VScreenPromptKey] ?: @"";
     NSDictionary *promptAttributes = @{
                                        NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey],
                                        NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]
                                        };
-    self.promptLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString([self.dependencyManager stringForKey:VScreenPromptKey], nil)
+    self.promptLabel.attributedText = [[NSAttributedString alloc] initWithString:promptText
                                                                       attributes:promptAttributes];
 
     NSDictionary *fieldAttributes = @{

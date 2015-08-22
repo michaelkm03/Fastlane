@@ -278,7 +278,7 @@ shouldChangeTextInRange:(NSRange)range
         return;
     }
     
-    NSString *placeholderText = NSLocalizedString(textType.placeholderText, @"") ?: @"";
+    NSString *placeholderText = textType.placeholderText ?: @"";
     placeholderText = textType.shouldForceUppercase ? [placeholderText uppercaseStringWithLocale:[NSLocale currentLocale]] : placeholderText;
     self.placeholderTextView.attributedText = [[NSAttributedString alloc] initWithString:placeholderText
                                                                               attributes:textType.attributes];

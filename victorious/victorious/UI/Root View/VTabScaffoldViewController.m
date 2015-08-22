@@ -333,7 +333,6 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
     {
         dispatch_async(dispatch_get_main_queue(), ^
         {
-            VLog(@"Enabling coachmarks");
             self.coachmarkManager.allowCoachmarks = YES;
         });
     }];
