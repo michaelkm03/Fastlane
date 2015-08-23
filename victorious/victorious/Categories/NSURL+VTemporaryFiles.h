@@ -11,9 +11,9 @@
 @interface NSURL (VTemporaryFiles)
 
 /**
- *  A convenience method for generating URLs in the
- *  temp directory for the application.
+ *  A convenience method for generating URLs in the temp directory 
+ *  for the application nested inside of a temp directory where appropriate.
  */
-+ (NSURL *)v_temporaryFileURLWithExtension:(NSString *)extension;
++ (NSURL *)v_temporaryFileURLWithExtension:(NSString *)extension inDirectory:(NSString *)directory;
 
 @end

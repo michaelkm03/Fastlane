@@ -88,7 +88,7 @@ class GIFSearchViewController: UIViewController {
             
             let selectedGIF = self.searchDataSource.sections[ indexPath.section ][ indexPath.row ]
             
-            let progressHUD = MBProgressHUD.showHUDAddedTo( self.view, animated: true )
+            let progressHUD = MBProgressHUD.showHUDAddedTo( self.view.window, animated: true )
             progressHUD.mode = .Indeterminate
             progressHUD.dimBackground = true
             progressHUD.show(true)
