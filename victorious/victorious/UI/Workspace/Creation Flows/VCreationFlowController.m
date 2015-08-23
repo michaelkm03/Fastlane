@@ -101,6 +101,7 @@ static NSString * const kStatusBaryStleKey = @"statusBarStyle";
 
 - (void)selectedCancel:(UIBarButtonItem *)cancelButton
 {
+    [self.view endEditing:YES];
     self.delegate = nil;
     self.interactivePopGestureRecognizer.delegate = nil;
     if ([self.creationFlowDelegate respondsToSelector:@selector(creationFlowControllerDidCancel:)])
