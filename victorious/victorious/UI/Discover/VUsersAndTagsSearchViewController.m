@@ -262,7 +262,8 @@ static NSInteger const kVMaxSearchResults = 1000;
     NSString *searchTerm = [self.searchField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if (searchTerm.length > 0)
     {
-        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.userInteractionEnabled = NO;
         dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^
         {
             [[VObjectManager sharedManager] findHashtagsBySearchString:searchTerm
@@ -312,7 +313,8 @@ static NSInteger const kVMaxSearchResults = 1000;
     
     if ( [self.searchField.text length] > 0 )
     {
-        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.userInteractionEnabled = NO;
         dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^
         {
             [[VObjectManager sharedManager] findUsersBySearchString:self.searchField.text
