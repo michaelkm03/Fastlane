@@ -13,7 +13,6 @@ class TrendingTopicContentCollectionViewCell: VShelfContentCollectionViewCell {
     private var screenView = UIView()
     private var gradient = TrendingTopicGradientView()
     private var label = UILabel()
-    private var imageView = UIImageView()
     private var blurredImageView = UIImageView()
     private let colorCube = CCColorCube()
     
@@ -30,31 +29,31 @@ class TrendingTopicContentCollectionViewCell: VShelfContentCollectionViewCell {
         }
     }
     
+    override var streamItem: VStreamItem? {
+        didSet {
+            super.streamItem = streamItem
+            self.label.text = streamItem?.name ?? ""
+            self.previewView.displayReadyBlock = { (previewView: VStreamItemPreviewView) -> Void  in
+                //
+            }
+        }
+    }
+    
     var image: UIImage? {
         didSet {
             if let image = self.image {
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.imageView.image = image
                     
                     let colors = self.colorCube.extractColorsFromImage(image, flags: CCOrderByBrightness.value)
                     if let color = colors.first as? UIColor {
                         self.gradient.primaryColor =  color
                     }
                     
-                    self.gradient.primaryColor = UIColor.redColor()
-                    
                     self.blurredImageView.blurImage(image, withTintColor: nil, toCallbackBlock: { (img) -> Void in
                         self.blurredImageView.image = img
                         self.blurredImageView.layer.mask = self.blurMask.layer
                     })
                 });
-            }
-        }
-    }
-    
-    var url: NSURL? {
-        didSet {
-            if let url = self.url {
             }
         }
     }
@@ -70,10 +69,6 @@ class TrendingTopicContentCollectionViewCell: VShelfContentCollectionViewCell {
     }
     
     private func setup() {
-        
-        self.image = UIImage(named: "jennim")
-        self.contentView.addSubview(imageView)
-        self.contentView.v_addFitToParentConstraintsToSubview(imageView)
         
         self.contentView.addSubview(blurredImageView)
         self.contentView.v_addFitToParentConstraintsToSubview(blurredImageView)

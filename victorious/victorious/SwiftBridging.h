@@ -122,3 +122,4 @@
 #import "VVideoLightboxViewController.h"
 #import "VVideoView.h"
 #import "CCColorCube.h"
+#import "VObjectManager+Discover.h"

@@ -14,7 +14,7 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
     
     /// The view that will house the preview view.
     let previewViewContainer = UIView()
-    private var previewView: VStreamItemPreviewView = VImageSequencePreviewView()
+    private(set) var previewView: VStreamItemPreviewView = VImageSequencePreviewView()
     
     /// The stream item whose content will populate this cell.
     var streamItem: VStreamItem? {
