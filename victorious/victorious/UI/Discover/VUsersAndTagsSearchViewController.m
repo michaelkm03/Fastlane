@@ -60,6 +60,9 @@ static NSInteger const kVMaxSearchResults = 1000;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
+@property (nonatomic, strong) RKManagedObjectRequestOperation *userSearchRequest;
+@property (nonatomic, strong) RKManagedObjectRequestOperation *tagSearchRequest;
+
 @end
 
 @implementation VUsersAndTagsSearchViewController
@@ -164,6 +167,9 @@ static NSInteger const kVMaxSearchResults = 1000;
 
 - (IBAction)closeButtonAction:(id)sender
 {
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    [self cancelUserSearch:YES andHashtagSearch:YES];
+    
     if ( self.presentingViewController != nil )
     {
         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
@@ -179,11 +185,13 @@ static NSInteger const kVMaxSearchResults = 1000;
 - (IBAction)segmentControlAction:(id)sender
 {
     CGFloat bottomInsetHeight = self.keyboardHeight;
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     
     // Perform search
     if ( self.segmentControl.selectedSegmentIndex == 0 )
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectDiscoverSearchUser];
+        [self cancelUserSearch:NO andHashtagSearch:YES];
         
         self.userSearchResultsVC.view.alpha = 1.0f;
         self.tagsSearchResultsVC.view.alpha = 0;
@@ -201,6 +209,7 @@ static NSInteger const kVMaxSearchResults = 1000;
     else if ( self.segmentControl.selectedSegmentIndex == 1 )
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectDiscoverSearchHashtag];
+        [self cancelUserSearch:YES andHashtagSearch:NO];
         
         self.userSearchResultsVC.view.alpha = 0;
         self.tagsSearchResultsVC.view.alpha = 1.0f;
@@ -262,11 +271,13 @@ static NSInteger const kVMaxSearchResults = 1000;
     NSString *searchTerm = [self.searchField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if (searchTerm.length > 0)
     {
+        [self cancelUserSearch:NO andHashtagSearch:YES];
+        
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.userInteractionEnabled = NO;
-        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^
+        dispatch_async(dispatch_get_global_queue( QOS_CLASS_USER_INITIATED, 0), ^
         {
-            [[VObjectManager sharedManager] findHashtagsBySearchString:searchTerm
+            self.tagSearchRequest = [[VObjectManager sharedManager] findHashtagsBySearchString:searchTerm
                                                           limitPerPage:kVMaxSearchResults
                                                           successBlock:searchSuccess
                                                              failBlock:searchFail];
@@ -313,11 +324,13 @@ static NSInteger const kVMaxSearchResults = 1000;
     
     if ( [self.searchField.text length] > 0 )
     {
+        [self cancelUserSearch:YES andHashtagSearch:NO];
+
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.userInteractionEnabled = NO;
-        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^
+        dispatch_async(dispatch_get_global_queue( QOS_CLASS_USER_INITIATED, 0), ^
         {
-            [[VObjectManager sharedManager] findUsersBySearchString:self.searchField.text
+            self.userSearchRequest = [[VObjectManager sharedManager] findUsersBySearchString:self.searchField.text
                                                          sequenceID:nil
                                                               limit:kVMaxSearchResults
                                                             context:VObjectManagerSearchContextDiscover
@@ -329,6 +342,18 @@ static NSInteger const kVMaxSearchResults = 1000;
     {
         NSArray *results = [[NSArray alloc] init];
         self.userSearchResultsVC.searchResults = (NSMutableArray *)results;
+    }
+}
+
+- (void)cancelUserSearch:(BOOL)userFlag andHashtagSearch:(BOOL)tagFlag
+{
+    if (userFlag && self.userSearchRequest != nil)
+    {
+        [self.userSearchRequest cancel];
+    }
+    if (tagFlag && self.tagSearchRequest != nil)
+    {
+        [self.tagSearchRequest cancel];
     }
 }
 
