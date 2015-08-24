@@ -11,7 +11,10 @@ import Foundation
 extension Shelf {
     
     class func propertyMapping() -> [String : String] {
-        return ["title" : "title"]
+        return [
+            "title" : "title",
+            "streamUrl" : "streamUrl"
+        ]
     }
     
     class func mappingBaseForEntity(named entityName: String) -> RKEntityMapping {
