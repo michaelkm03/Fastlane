@@ -124,24 +124,4 @@ static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationVie
                                completion:nil];
 }
 
-- (void)execute
-{
-    if (self.loginController == nil)
-    {
-        return;
-    }
-//    [self.loginController willMoveToParentViewController:nil];
-////    [self.loginController.view removeFromSuperview];
-//    [self.loginController removeFromParentViewController];
-//    [self.presentingController presentViewController:self.loginController
-//                                            animated:NO
-//                                          completion:^
-//     {
-//         [self.replicantView removeFromSuperview];
-//         self.loginController = nil;
-//         self.presentingController = nil;
-//         self.replicantView = nil;
-//     }];
-}
-
 @end
