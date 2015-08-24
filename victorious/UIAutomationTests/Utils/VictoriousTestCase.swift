@@ -13,6 +13,7 @@ class VictoriousTestCase: KIFTestCase {
     
     private var ignoreExceptions: Bool = false
     private var exceptions = [NSException]()
+    private var notes = [String : [String]]()
     
     override func failWithException(exception: NSException!, stopTest stop: Bool) {
         if !self.ignoreExceptions {
@@ -23,8 +24,14 @@ class VictoriousTestCase: KIFTestCase {
         }
     }
     
+    var testDescription: String {
+        fatalError("All test cases must provide a detailed description.")
+    }
+    
     override func beforeAll() {
         super.beforeAll()
+        
+        self.addTextToReport( "##\(NSStringFromClass(self.dynamicType).pathExtension)\n\(self.testDescription)\n" )
         
         // Login if forced login is presented
         self.loginIfRequired()
@@ -66,13 +73,38 @@ class VictoriousTestCase: KIFTestCase {
         }
     }
     
-    var notes = [String]()
-    
-    var testDescription: String {
-        fatalError("All test cases must provide a detailed description.")
+    private func addTextToReport( var text: String ) {
+        let path = TEST_REPORT_PATH.stringByAppendingPathComponent(TEST_REPORT_FILE)
+        if let existingText = String(contentsOfFile: path, encoding: NSUTF8StringEncoding, error: nil) {
+            text = existingText + "\n" + text
+        }
+        text.writeToFile(path, atomically: false, encoding: NSUTF8StringEncoding, error: nil)
     }
     
-    func addNote( text: String ) {
-        self.notes.append( text )
+    func addNote( text: String, function: String = __FUNCTION__ ) {
+        if notes[ function ] == nil {
+            notes[ function ] = [String]()
+            let num = notes.count
+            self.addTextToReport( "####\(num). \(function.strippedParenthesesString.camelCaseSeparatedString.capitalizedString)" )
+        }
+        self.notes[ function ]?.append( text )
+        self.addTextToReport( "- \(text)" )
+    }
+}
+
+private extension String {
+    
+    var camelCaseSeparatedString: String {
+        if let regex = NSRegularExpression(pattern: "([a-z])([A-Z])", options: nil, error: nil) {
+            return regex.stringByReplacingMatchesInString(self,
+                options:nil,
+                range: NSMakeRange(0, count(self)),
+                withTemplate:"$1 $2")
+        }
+        return self
+    }
+    
+    var strippedParenthesesString: String {
+        return self.stringByReplacingOccurrencesOfString( "()", withString: "")
     }
 }

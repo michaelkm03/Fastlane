@@ -8021,6 +8021,7 @@
 				A7DB4D281B7AB1D300199D10 /* Resources */,
 				C196BCFAB4F897EDB1F66BF5 /* Embed Pods Frameworks */,
 				ECBBCF0BF207AF939EAD909A /* Copy Pods Resources */,
+				A7D535711B8BA2AD009D84C8 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -8653,6 +8654,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "#\n# Searches for unused tracking macros defined in VTrackingConstants.h and emits error if found\n#\n# If you are running tests frequently and this is too slow, set VALIDATE_TRACKING to NO in the User-defined Macros build setting.\n#\n\nif [[ ${VALIDATE_TRACKING} != \"YES\" ]];\nthen\n    exit 0\nfi\n\nFILES=( \"events.csv\" \"keys.csv\" \"values.csv\" )\nPREFIXES=( \"VTrackingEvent\" \"VTrackingKey\" \"VTrackingValue\" )\nBASE_DIR=\"${SRCROOT}/../build-scripts/tracking_csv/\"\n\nfor i in {0..2}\ndo\n    FILE=${FILES[$i]}\n    PREFIX=${PREFIXES[$i]}\n    (cat \"$BASE_DIR$FILE\" ; echo) | while IFS=, read -r COLUMN_1 COLUMN_2\n    do\n        if [[ $COLUMN_1 != *\"//\"* ]] && [ ${#COLUMN_1} != 0 ];\n        then\n            SEARCH_STRING=\"$PREFIX$COLUMN_1\"\n            SEARCH_RESULT=$(find \"${SRCROOT}/victorious\" -name \"*.m\" -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($SEARCH_STRING).*\\$\" | perl -p -e \"s/($SEARCH_STRING)/ \\Tracking constant not    implemented./\")\n            LINE_COUNT=$(echo \"$SEARCH_RESULT\" | wc -l)\n            NUM_USES=$(($LINE_COUNT-1))\n            if [ $NUM_USES == 0 ];\n            then\n                echo $SEARCH_RESULT\n            fi\n        fi\n    done\ndone";
+		};
+		A7D535711B8BA2AD009D84C8 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd $TEST_REPORT_PATH\ngit checkout $TEST_REPORT_FILE";
 		};
 		BBEA485F7CC85B7674FA8AEF /* Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -11082,6 +11096,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
+					"TEST_REPORT_PATH=@\\\"$(PROJECT_DIR)/../../VictoriousiOS.wiki\\\"",
+					"TEST_REPORT_FILE=@\\\"UI-Automation-Tests.md\\\"",
 				);
 				INFOPLIST_FILE = UIAutomationTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
