@@ -13,14 +13,15 @@
 //Type values
 NSString * const VStreamItemTypeSequence = @"sequence";
 NSString * const VStreamItemTypeStream = @"stream";
-NSString * const VStreamItemTypeMarquee = @"marquee";
-NSString * const VStreamItemTypeUser = @"user";
-NSString * const VStreamItemTypeHashtag = @"hashtag";
-NSString * const VStreamItemTypePlaylist = @"playlist";
-NSString * const VStreamItemTypeRecent = @"recent";
+NSString * const VStreamItemTypeShelf = @"shelf";
 NSString * const VStreamItemTypeFeed = @"feed";
 
 //Subtype values
+NSString * const VStreamItemSubTypeMarquee = @"marquee";
+NSString * const VStreamItemSubTypeUser = @"user";
+NSString * const VStreamItemSubTypeHashtag = @"hashtag";
+NSString * const VStreamItemSubTypePlaylist = @"playlist";
+NSString * const VStreamItemSubTypeRecent = @"recent";
 NSString * const VStreamItemSubTypeImage = @"image";
 NSString * const VStreamItemSubTypeVideo = @"video";
 NSString * const VStreamItemSubTypeGif = @"gif";
@@ -40,22 +41,42 @@ NSString * const VStreamItemSubTypeStream = @"stream";
     return self.streamContentType == nil;
 }
 
+- (BOOL)isStream
+{
+    if ( self.itemType != nil )
+    {
+        return [self.itemType isEqualToString:VStreamItemTypeStream];
+    }
+    return self.streamContentType != nil;
+}
+
 - (BOOL)isSingleStream
 {
-    if ( self.itemSubType != nil )
+    if ( [self isStream] )
     {
-        return [self.itemSubType isEqualToString:VStreamItemSubTypeContent];
+        if ( self.itemSubType != nil )
+        {
+            return [self.itemSubType isEqualToString:VStreamItemSubTypeContent];
+        }
     }
     return [self.streamContentType isEqualToString:VStreamItemSubTypeContent];
 }
 
 - (BOOL)isStreamOfStreams
 {
-    if ( self.itemType != nil )
+    if ( [self isStream] )
     {
-        return [self.itemSubType isEqualToString:VStreamItemSubTypeStream];
+        if ( self.itemSubType != nil )
+        {
+            return [self.itemSubType isEqualToString:VStreamItemSubTypeStream];
+        }
     }
     return [self.streamContentType isEqualToString:VStreamItemSubTypeStream];
+}
+
+- (BOOL)isShelf
+{
+    return [self.itemType isEqualToString:VStreamItemTypeShelf];
 }
 
 - (NSArray *)previewImagePaths

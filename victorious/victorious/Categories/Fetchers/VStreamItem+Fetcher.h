@@ -13,14 +13,15 @@ NS_ASSUME_NONNULL_BEGIN
 //Type values
 extern NSString * const VStreamItemTypeSequence;
 extern NSString * const VStreamItemTypeStream;
-extern NSString * const VStreamItemTypeMarquee;
-extern NSString * const VStreamItemTypeUser;
-extern NSString * const VStreamItemTypeHashtag;
-extern NSString * const VStreamItemTypePlaylist;;
-extern NSString * const VStreamItemTypeRecent;
+extern NSString * const VStreamItemTypeShelf;
 extern NSString * const VStreamItemTypeFeed;
 
 //Subtype values
+extern NSString * const VStreamItemSubTypeMarquee;
+extern NSString * const VStreamItemSubTypeUser;
+extern NSString * const VStreamItemSubTypeHashtag;
+extern NSString * const VStreamItemSubTypePlaylist;;
+extern NSString * const VStreamItemSubTypeRecent;
 extern NSString * const VStreamItemSubTypeImage;
 extern NSString * const VStreamItemSubTypeVideo;
 extern NSString * const VStreamItemSubTypeGif;
@@ -32,19 +33,24 @@ extern NSString * const VStreamItemSubTypeStream;
 @interface VStreamItem (Fetcher)
 
 /**
- Reads `streamContentType` property and compares to predefined value that indicates a a single stream
+ Returns YES if the stream item represents a stream of content.
  */
 @property (nonatomic, readonly) BOOL isSingleStream;
 
 /**
- Reads `streamContentType` property and compares to predefined value that indicates a stream of streams.
+ Returns YES if this streamItem represents a stream of streams.
  */
 @property (nonatomic, readonly) BOOL isStreamOfStreams;
 
 /**
- Reads `streamContentType` property and compares to predefined value that indicates a content (sequence).
+ Returns YES if this streamItem represents a sequence.
  */
 @property (nonatomic, readonly) BOOL isContent;
+
+/**
+ Returns YES if this streamItem represents a shelf.
+ */
+@property (nonatomic, readonly) BOOL isShelf;
 
 /**
  *  Returns URL Paths of all the preview images in self.previewImageObject

@@ -1,3 +1,6 @@
-/* Class = "UIButton"; normalTitle = "Send"; ObjectID = "Sf4-eg-OpA"; */
-"Sf4-eg-OpA.normalTitle" = "전송";
+/* Class = "UILabel"; text = "Placeholder"; ObjectID = "7pn-fk-jDk"; */
+"7pn-fk-jDk.text" = "자릿값";
+
+/* Class = "UIButton"; normalTitle = "Send"; ObjectID = "GKz-NI-jVc"; */
+"GKz-NI-jVc.normalTitle" = "전송";
 

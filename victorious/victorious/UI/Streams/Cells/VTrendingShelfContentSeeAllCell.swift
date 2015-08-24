@@ -35,9 +35,10 @@ class VTrendingShelfContentSeeAllCell: VShelfContentCollectionViewCell {
         updateOverlayLabel()
     }
     
-    override func onDependencyManagerSet() {
-        super.onDependencyManagerSet()
-        updateOverlayLabel()
+    override var dependencyManager: VDependencyManager? {
+        didSet {
+            updateOverlayLabel()
+        }
     }
     
     private func updateOverlayLabel() {

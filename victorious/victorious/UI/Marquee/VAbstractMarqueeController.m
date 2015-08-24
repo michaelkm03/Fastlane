@@ -12,18 +12,18 @@
 #import "VTimerManager.h"
 #import "VStreamItem.h"
 #import "VStream+Fetcher.h"
-#import "VShelf.h"
 #import "VDependencyManager.h"
 #import "NSString+VParseHelp.h"
 #import "VObjectManager.h"
 #import "VDependencyManager+VObjectManager.h"
-#import <FBKVOController.h>
 #import "VURLMacroReplacement.h"
 #import "VDependencyManager+VHighlightContainer.h"
 #import "VStreamTrackingHelper.h"
 #import "VCellFocus.h"
 #import "VStreamItemPreviewView.h"
 #import "victorious-Swift.h"
+
+@import KVOController;
 
 static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kSequenceIDKey = @"sequenceID";
@@ -88,17 +88,17 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
                          action:@selector(marqueeItemsUpdated)];
 }
 
-- (void)setShelf:(VShelf *)shelf
+- (void)setShelf:(Shelf *)shelf
 {
     if ( shelf == _shelf )
     {
         return;
     }
     
-    [self.KVOController unobserve:_shelf.stream];
+    [self.KVOController unobserve:_shelf];
     _shelf = shelf;
     [self reset];
-    [self.KVOController observe:shelf.stream
+    [self.KVOController observe:shelf
                         keyPath:NSStringFromSelector(@selector(streamItems))
                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
                          action:@selector(marqueeItemsUpdated)];
@@ -109,7 +109,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     NSArray *items = [self.stream.marqueeItems array];
     if ( self.shelf != nil )
     {
-        items = [self.shelf.stream.streamItems array];
+        items = [self.shelf.streamItems array];
     }
     return items;
 }
@@ -316,8 +316,10 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
         [self.registeredReuseIdentifiers addObject:reuseIdentifierForSequence];
     }
     
+    StreamCellContext *context = [[StreamCellContext alloc] initWithStreamItem:item stream:self.stream fromShelf:YES];
     cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[marqueeStreamItemCellClass reuseIdentifierForStreamItem:item baseIdentifier:nil dependencyManager:self.dependencyManager] forIndexPath:indexPath];
     cell.dependencyManager = self.dependencyManager;
+    cell.context = context;
     [cell setupWithStreamItem:item fromStreamWithApiPath:self.stream.apiPath];
     
     // Add highlight view

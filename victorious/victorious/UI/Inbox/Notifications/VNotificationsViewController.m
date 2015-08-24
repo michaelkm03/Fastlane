@@ -15,20 +15,13 @@
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+Login.h"
-#import "VPaginationManager.h"
 #import "VRootViewController.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VObjectManager.h"
-#import "VAuthorizationContext.h"
 #import "VNavigationDestination.h"
 #import "UIViewController+VAccessoryScreens.h"
 #import "UIViewController+VLayoutInsets.h"
-#import "VDependencyManager+VObjectManager.h"
-#import "VAppDelegate.h"
-#import "VRootViewController.h"
-#import "VDependencyManager+VAccessoryScreens.h"
-#import "VDependencyManager+VNavigationMenuItem.h"
 #import "VBadgeResponder.h"
 #import "VDependencyManager+VTracking.h"
 #import "VInboxViewController.h"
@@ -102,8 +95,6 @@ static int const kNotificationFetchBatchSize = 50;
     self.tableView.estimatedRowHeight = kVNotificationCellHeight;
     self.tableView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.automaticallyAdjustsScrollViewInsets = NO;
-    [self markAllNotificationsRead];
-    [self refreshTableView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -112,8 +103,9 @@ static int const kNotificationFetchBatchSize = 50;
     
     [self.dependencyManager trackViewWillAppear:self];
     [self updateNavigationItem];
-    [self.refreshControl beginRefreshing];
     [self.tableView setContentOffset:CGPointZero];
+    [self refreshTableView];
+    [self.refreshControl beginRefreshing];
 }
 
 - (void)viewDidAppear:(BOOL)animated

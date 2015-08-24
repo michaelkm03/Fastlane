@@ -11,7 +11,8 @@
 #import "VTagStringFormatter.h"
 #import "VTagDictionary.h"
 #import "VTag.h"
-#import <CCHLinkGestureRecognizer.h>
+
+@import CCHLinkTextView;
 
 @interface VTagSensitiveTextView () <UIGestureRecognizerDelegate>
 

@@ -8,22 +8,8 @@
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "NO"
-            buildForRunning = "NO"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BE171D751868BE64004E5202"
-               BuildableName = "victorious.app"
-               BlueprintName = "victorious"
-               ReferencedContainer = "container:victorious.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "NO"
             buildForRunning = "YES"
-            buildForProfiling = "NO"
+            buildForProfiling = "YES"
             buildForArchiving = "NO"
             buildForAnalyzing = "YES">
             <BuildableReference
@@ -95,9 +81,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BE171D751868BE64004E5202"
-            BuildableName = "victorious.app"
-            BlueprintName = "victorious"
+            BlueprintIdentifier = "0352FCBE1B72C60200DB6EAB"
+            BuildableName = "downloadtemplate.app"
+            BlueprintName = "downloadtemplate"
             ReferencedContainer = "container:victorious.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

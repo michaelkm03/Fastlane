@@ -67,7 +67,9 @@ static const NSUInteger kExperienceEnhancerCount = 20;
     self.sequence = (VSequence *)[VDummyModels objectWithEntityName:@"Sequence" subclass:[VSequence class]];
     self.sequence.voteResults = [NSSet setWithArray:[VDummyModels createVoteResults:kExperienceEnhancerCount]];
     
-    self.viewController = [[VExperienceEnhancerController alloc] initWithSequence:self.sequence voteTypes:self.voteTypes];
+    NSDictionary *configuration = @{ @"sequence" : self.sequence, @"voteTypes" : self.voteTypes };
+    VDependencyManager *childDependencyManager = [[VDependencyManager alloc] initWithParentManager:nil configuration:configuration dictionaryOfClassesByTemplateName:nil];
+    self.viewController = [[VExperienceEnhancerController alloc] initWithDependencyManager:childDependencyManager];
     VApplicationTracking *trackingManager = [[VApplicationTracking alloc] init];
     id myObjectMock = OCMPartialMock( trackingManager  );
     OCMStub( [myObjectMock sendRequest:[OCMArg any]] );

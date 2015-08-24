@@ -6,11 +6,10 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "UIImage+ImageCreation.h"
 #import "VMessageTextAndMediaView.h"
 #import "VMessageCell.h"
-#import "UIImage+ImageCreation.h"
 #import "VDefaultProfileImageView.h"
+#import "victorious-Swift.h"
 
 NSString * const kVMessageCellNibName = @"VMessageCell";
 

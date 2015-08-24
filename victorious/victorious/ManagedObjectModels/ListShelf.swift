@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-class ListShelf: VShelf {
+class ListShelf: Shelf {
 
     @NSManaged var caption: String
 

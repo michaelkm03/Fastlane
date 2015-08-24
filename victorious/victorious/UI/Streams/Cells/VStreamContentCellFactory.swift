@@ -15,7 +15,7 @@ import UIKit
     ///
     /// :param: streamItem The selected stream item.
     /// :param: fromShelf The shelf that the stream item was selected from.
-    func navigateTo(streamItem: VStreamItem?, fromShelf: VShelf)
+    func navigateTo(streamItem: VStreamItem?, fromShelf: Shelf)
 }
 
 //2.0 Improvement: Transform this into a protocol extension.
@@ -26,7 +26,7 @@ import UIKit
 class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
     
     private static let kTrendingShelfKey = "trendingShelf"
-    private static let kListShelfKey = "listShelf"
+    private static let kListShelfKey = "featuredShelf"
     
     /// The object that should recieve messages about marquee data and selection updates.
     weak var delegate: VStreamContentCellFactoryDelegate? {
@@ -59,13 +59,13 @@ class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
     }
     
     private func factoryForStreamItem(streamItem: VStreamItem) -> VStreamCellFactory? {
-        if let itemType = streamItem.itemType {
-            switch itemType {
-            case VStreamItemTypeMarquee:
+        if let itemType = streamItem.itemType where itemType == VStreamItemTypeShelf, let itemSubType = streamItem.itemSubType {
+            switch itemSubType {
+            case VStreamItemSubTypeMarquee:
                 return marqueeCellFactory
-            case VStreamItemTypeHashtag, VStreamItemTypeUser:
+            case VStreamItemSubTypeHashtag, VStreamItemSubTypeUser:
                 return trendingShelfFactory
-            case VStreamItemTypePlaylist, VStreamItemTypeRecent:
+            case VStreamItemSubTypePlaylist, VStreamItemSubTypeRecent:
                 return listShelfFactory
             default: ()
             }
@@ -81,6 +81,19 @@ extension VStreamContentCellFactory: VStreamCellFactory {
         marqueeCellFactory.registerCellsWithCollectionView(collectionView)
         trendingShelfFactory?.registerCellsWithCollectionView(collectionView)
         listShelfFactory?.registerCellsWithCollectionView(collectionView)
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForStreamItem streamItem: VStreamItem, atIndexPath indexPath: NSIndexPath, inStream stream: VStream?) -> UICollectionViewCell {
+        if let factory = factoryForStreamItem(streamItem) {
+            if let cell = factory.collectionView?(collectionView, cellForStreamItem: streamItem, atIndexPath: indexPath, inStream: stream)  {
+                return cell;
+            }
+            else {
+                return factory.collectionView(collectionView, cellForStreamItem: streamItem, atIndexPath: indexPath)
+            }
+        }
+        assertionFailure("A cell was requested from a content cell factory with a nil default factory.")
+        return UICollectionViewCell.new()
     }
     
     func collectionView(collectionView: UICollectionView, cellForStreamItem streamItem: VStreamItem, atIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {

@@ -14,7 +14,6 @@ class VListRecentShelfCollectionViewCell: VListShelfCollectionViewCell {
     
     @IBOutlet private weak var seeAllButtonHeightConstraint: NSLayoutConstraint!
     
-    private static let kTitleText: NSString = NSLocalizedString("RECENT POSTS", comment:"")
     private static let kSeeAllButtonText: NSString = NSLocalizedString("See all", comment:"")
     private static let kSeeAllChevron = UIImage(named: "chevron_icon")!
     
@@ -46,7 +45,6 @@ class VListRecentShelfCollectionViewCell: VListShelfCollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        titleLabel.text = VListRecentShelfCollectionViewCell.kTitleText as? String
         seeAllButton.setTitle(VListRecentShelfCollectionViewCell.kSeeAllButtonText as? String, forState: .Normal)
         seeAllButton.setImage(VListRecentShelfCollectionViewCell.kSeeAllChevron, forState: .Normal)
     }
@@ -54,7 +52,7 @@ class VListRecentShelfCollectionViewCell: VListShelfCollectionViewCell {
     override class func desiredSize(collectionViewBounds: CGRect, shelf: ListShelf, dependencyManager: VDependencyManager) -> CGSize {
         var size = super.desiredSize(collectionViewBounds, shelf: shelf, dependencyManager: dependencyManager)
         
-        let titleHeight = kTitleText.frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.titleFont]).height
+        let titleHeight = shelf.title.frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.titleFont]).height
         let seeAllButtonHeight = max(kSeeAllButtonText.frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.seeAllFont]).height, kSeeAllChevron.size.height)
         size.height += max(titleHeight, seeAllButtonHeight)
         
@@ -68,9 +66,38 @@ class VListRecentShelfCollectionViewCell: VListShelfCollectionViewCell {
         return UINib(nibName: "VListRecentShelfCollectionViewCell", bundle: nil)
     }
     
-    private func navigateTo(streamItem: VStreamItem?, fromShelf: VShelf) {
+    private func navigateTo(streamItem: VStreamItem?, fromShelf: Shelf) {
         let responder: VShelfStreamItemSelectionResponder = typedResponder()
         responder.navigateTo(streamItem, fromShelf: fromShelf)
+    }
+    
+}
+
+extension VListRecentShelfCollectionViewCell : UICollectionViewDataSource {
+    
+    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        if let shelf = shelf, let streamItems = shelf.streamItems.array as? [VStreamItem] {
+            var streamItem = streamItems[indexPath.row]
+            var identifier = VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
+            let cell: VShelfContentCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as! VShelfContentCollectionViewCell
+            cell.streamItem = streamItem
+            cell.dependencyManager = dependencyManager
+            if let cell = cell as? VListShelfContentCoverCell {
+                cell.overlayText = shelf.name
+            }
+            return cell
+        }
+        assertionFailure("VListRecentShelfCollectionViewCell was asked to display an object that isn't a stream item.")
+        return UICollectionViewCell()
+    }
+    
+    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if let streamItems = shelf?.streamItems {
+            //Max number of items at maxItemsCount to avoid showing erroneous UI if the backend returns an unexpected number of items.
+            let numberOfItems = streamItems.count
+            return min(numberOfItems, VListShelfCollectionViewCell.Constants.maxItemsCount)
+        }
+        return 0
     }
     
 }
@@ -78,7 +105,7 @@ class VListRecentShelfCollectionViewCell: VListShelfCollectionViewCell {
 extension VListRecentShelfCollectionViewCell : UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        if let shelf = shelf, let streamItem = shelf.stream.streamItems[indexPath.row] as? VStreamItem {
+        if let shelf = shelf, let streamItem = shelf.streamItems[indexPath.row] as? VStreamItem {
             self.navigateTo(streamItem, fromShelf: shelf)
         }
         else {

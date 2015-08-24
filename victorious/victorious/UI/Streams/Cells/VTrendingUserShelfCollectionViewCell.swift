@@ -49,16 +49,18 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     @IBOutlet private weak var usernameCenterConstraint: NSLayoutConstraint!
     @IBOutlet private weak var countsCenterConstraint: NSLayoutConstraint!
     
-    private static let titleText: NSString = NSLocalizedString("TRENDING USER", comment:"")
+    private static let numberFormatter = VLargeNumberFormatter()
     
     //MARK: - Setters
     
-    override var shelf: VShelf? {
+    override var shelf: Shelf? {
         didSet {
-            if !VTrendingShelfCollectionViewCell.needsUpdate(fromShelf: oldValue, toShelf: shelf) { return }
-
+            if !VTrendingShelfCollectionViewCell.needsUpdate(fromShelf: oldValue, toShelf: shelf) {
+                return
+            }
+            
             if let shelf = shelf as? UserShelf {
-                titleLabel.text = VTrendingUserShelfCollectionViewCell.titleText as String
+                titleLabel.text = shelf.title
                 postsCountLabel.text = VTrendingUserShelfCollectionViewCell.getPostsCountText(shelf) as String
                 if let pictureUrl = NSURL(string: shelf.user.pictureUrl) {
                     userAvatarButton.setProfileImageURL(pictureUrl, forState: UIControlState.Normal)
@@ -70,8 +72,10 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     
     override var dependencyManager: VDependencyManager? {
         didSet {
-            if !VTrendingShelfCollectionViewCell.needsUpdate(fromDependencyManager: oldValue, toDependencyManager: dependencyManager) { return }
-
+            if !VTrendingShelfCollectionViewCell.needsUpdate(fromDependencyManager: oldValue, toDependencyManager: dependencyManager) {
+                return
+            }
+            
             if let dependencyManager = dependencyManager {
                 followControl.dependencyManager = dependencyManager
                 
@@ -102,13 +106,15 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
         var countsText = ""
         let hasFollowersCount = shelf.followersCount.integerValue != 0
         if shelf.postsCount.integerValue != 0 {
-            countsText = shelf.postsCount.stringValue + " " + NSLocalizedString("posts", comment: "")
+            let postsCount = numberFormatter.stringForInteger(shelf.postsCount.integerValue)
+            countsText = postsCount + " " + NSLocalizedString("posts", comment: "")
             if hasFollowersCount {
                 countsText += " • "
             }
         }
         if hasFollowersCount {
-            countsText += shelf.followersCount.stringValue + " " + NSLocalizedString("followers", comment: "")
+            let followersCount = numberFormatter.stringForInteger(shelf.postsCount.integerValue)
+            countsText += followersCount + " " + NSLocalizedString("followers", comment: "")
         }
         return countsText
     }
@@ -152,7 +158,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
         var height = Constants.baseHeight
         
         //Add the height of the labels to find the entire height of the cell
-        let titleHeight = VTrendingUserShelfCollectionViewCell.titleText.frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.titleFont]).height
+        let titleHeight = shelf.title.frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.titleFont]).height
         let usernameHeight = VTrendingUserShelfCollectionViewCell.getUsernameText(shelf).frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.usernameFont]).height
         let postCountHeight = VTrendingUserShelfCollectionViewCell.getPostsCountText(shelf).frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.postsCountFont]).height
         
@@ -192,7 +198,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
             responder.trendingUserShelfSelected(shelf.user, fromShelf: shelf)
         }
         else {
-            assertionFailure("VTrendingUserShelfCollectionViewCell needs a VTrendingUserShelfResponder up it's responder chain to send messages to.")
+            assertionFailure("VTrendingUserShelfCollectionViewCell had a user selected from an invalid shelf")
         }
     }
     
@@ -212,7 +218,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
                         }, fromViewController: nil, withScreenName: VFollowSourceScreenTrendingUserShelf)
             }
             else {
-                assertionFailure("The VTrendingUserShelfCollectionViewCell needs a follow responder further up its responder chain.")
+                assertionFailure("The VTrendingUserShelfCollectionViewCell attempted to follow non-UserShelf shelf")
             }
         case .Followed:
             if let shelf = shelf as? UserShelf {
@@ -227,7 +233,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
                     }, fromViewController: nil, withScreenName: VFollowSourceScreenTrendingUserShelf)
             }
             else {
-                assertionFailure("The VTrendingUserShelfCollectionViewCell needs a follow responder further up its responder chain.")
+                assertionFailure("The VTrendingUserShelfCollectionViewCell attempted to unfollow non-UserShelf shelf")
             }
         case .Loading:
             break
@@ -242,7 +248,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
 
 extension VTrendingUserShelfCollectionViewCell : VTagSensitiveTextViewDelegate {
     
-    func tagSensitiveTextView(tagSensitiveTextView: VTagSensitiveTextView!, tappedTag tag: VTag!) {
+    func tagSensitiveTextView(tagSensitiveTextView: VTagSensitiveTextView, tappedTag tag: VTag) {
         respondToUserTap()
     }
     

@@ -14,13 +14,14 @@ This script assumes it is being run from the root of the code directory.
 This script is used by the following Victorious repositories:
 https://github.com/TouchFrame/VictoriousAndroid
 https://github.com/TouchFrame/VictoriousiOS
+
+NOTE: iOS receives a folder string and so CONSOLE_OUTPUT is isolated to Android only.
 """
 import requests
 import sys
 import subprocess
 import shutil
 import os
-import urllib
 import tempfile
 import vams_common as vams
 
@@ -32,6 +33,64 @@ _DEFAULT_HOST = ''
 
 _WORKING_DIRECTORY = ''
 
+_CONSOLE_OUTPUT = False
+
+def proccessAppAssets(json):
+    """
+    Processes the app design assets for a given platform.
+
+    :param json:
+        JSON object of app assets to process
+
+    """
+
+    payload = json['payload']
+    app_title = payload['app_title']
+    app_title = app_title.replace(' ','')
+
+    assets = payload['assets']
+    platform_assets = assets[vams._DEFAULT_PLATFORM]
+
+    current_cnt = 0
+
+    global _WORKING_DIRECTORY
+
+    if vams._DEFAULT_PLATFORM == vams._PLATFORM_ANDROID:
+        _WORKING_DIRECTORY = '%s/%s' % (vams._DEFAULT_CONFIG_DIRECTORY, app_title)
+
+    if not os.path.exists(_WORKING_DIRECTORY):
+        os.makedirs(_WORKING_DIRECTORY)
+
+
+    if _CONSOLE_OUTPUT:
+        print "\nUsing Directory: %s" % _WORKING_DIRECTORY
+        print '\nDownloading the Most Recent Art Assets for %s...' % app_title
+
+    for asset in platform_assets:
+
+        if not platform_assets[asset] == None:
+            img_url = platform_assets[asset]
+            asset_name = asset.replace('_', '-')
+            new_file = '%s/%s.png' % (_WORKING_DIRECTORY, asset_name)
+
+            if _CONSOLE_OUTPUT:
+                print '%s (%s)' % (asset_name, platform_assets[asset])
+
+            response = requests.get(img_url)
+            if len(response.content) > 0:
+                with open(new_file, 'wb') as outfile:
+                    outfile.write(response.content)
+
+            current_cnt = current_cnt+1
+
+    if _CONSOLE_OUTPUT:
+        print '\n%s images downloaded' % current_cnt
+        print ''
+
+    # Now set the app config data
+    setAppConfig(json)
+
+
 def retrieveAppDetails(app_name):
     """
     Collects all of the design assets for a given app
@@ -40,8 +99,8 @@ def retrieveAppDetails(app_name):
         The app name of the app whose assets to be downloaded.
 
     :return:
-        0 - For success
-        1 - For error
+        0 = Success
+        1 = Error
     """
 
     # Calculate request hash
@@ -60,43 +119,19 @@ def retrieveAppDetails(app_name):
     error_code = json['error']
 
     if error_code == 0:
-        payload = json['payload']
-        app_title = payload['app_title']
-        app_title = app_title.replace(' ','')
-        assets = payload['assets']
-        platform_assets = assets[vams._DEFAULT_PLATFORM]
+        proccessAppAssets(json)
 
-        current_cnt = 0
-
-        if not os.path.exists(_WORKING_DIRECTORY):
-            os.makedirs(_WORKING_DIRECTORY)
-
-        # Uncomment the following line to log out the directory being used for assets and config data
-        # print "\nUsing Directory: %s" % _WORKING_DIRECTORY
-
-        # print '\nDownloading the Most Recent Art Assets for %s...' % app_title
-        for asset in platform_assets:
-
-            if not platform_assets[asset] == None:
-                img_url = platform_assets[asset]
-                asset_name = asset.replace('_', '-')
-                new_file = '%s/%s.png' % (_WORKING_DIRECTORY, asset_name)
-
-                # Uncomment the following line to display the link to each asset being retrieved via VAMS
-                # print '%s (%s)' % (asset_name, platform_assets[asset])
-
-                urllib.urlretrieve(img_url,new_file)
-                current_cnt = current_cnt+1
-
-        # print '\n%s images downloaded' % current_cnt
-        # print ''
-
-        # Now set the app config data
-        setAppConfig(json)
     else:
-        #print 'No updated data for "%s" found in the Victorious backend' % app_name
+        response_message = 'No updated data for "%s" found in the Victorious backend' % app_name
+        if _CONSOLE_OUTPUT:
+            print response_message
+
         cleanUp()
-        shutil.rmtree(_WORKING_DIRECTORY)
+
+        if vams._DEFAULT_PLATFORM == vams._PLATFORM_IOS:
+            shutil.rmtree(_WORKING_DIRECTORY)
+            sys.exit('1|%s' % response_message)
+
         sys.exit(1)
 
 
@@ -114,14 +149,15 @@ def setAppConfig(json_obj):
     app_title = app_title.replace(' ','')
 
     file_name = 'config.xml'
-    if vams._DEFAULT_PLATFORM == 'ios':
+    if vams._DEFAULT_PLATFORM == vams._PLATFORM_IOS:
         file_name = 'Info.plist'
     config_file = '%s/%s' % (_WORKING_DIRECTORY, file_name)
 
-    # print 'Applying Most Recent App Configuration Data to %s' % app_title
-    # print ''
-    # Uncomment out the following line to display the retrieved config data
-    # print app_config
+    if _CONSOLE_OUTPUT:
+        print 'Applying Most Recent App Configuration Data to %s' % app_title
+        print ''
+        # Uncomment out the following line to display the retrieved config data
+        print app_config
 
     # Write config file to disk
     f = open(config_file, 'w')
@@ -131,8 +167,9 @@ def setAppConfig(json_obj):
     # Clean-up compiled python files
     cleanUp()
 
-    # print 'Configuration and assets applied successfully!'
-    # print ''
+    if _CONSOLE_OUTPUT:
+        print 'Configuration and assets applied successfully!'
+        print ''
 
 
 def cleanUp():
@@ -145,18 +182,20 @@ def showProperUsage():
         print ''
         print '<app_name> is the name of the application data to retrieve from VAMS.'
         print '<config_path> is the path on disk where the application data is to be written to.'
-        print '<platform> is the OS platform for which the assets need to be downloaded for.'
+        print '<platform> is the OS platform for which the assets need to be downloaded for. Choices = android OR ios'
         print '<environment> OPTIONAL: Is the server environment to retrieve the application data from.'
         print '<port> OPTIONAL: Will only be used if <environment> is set to local'
         print ''
-        print 'NOTE: If no <environment> parameter is provided, the system will use PRODUCTION.'
+        print 'NOTES: '
+        print '* If no <platform> parameter is provided, the script will assume ANDROID.'
+        print '* If no <environment> parameter is provided, the script will use PRODUCTION.'
         print ''
         print 'examples:'
         print './vams_prebuild.py awesomeness ios     <-- will use PRODUCTION'
         print '  -- OR --'
         print './vams_prebuild.py awesomeness ios qa  <-- will use QA'
         print ''
-        return 1
+        sys.exit(1)
 
 
 def main(argv):
@@ -168,12 +207,14 @@ def main(argv):
     app_name = argv[1]
 
     global _WORKING_DIRECTORY
-    app_path = tempfile.mkdtemp()
-    _WORKING_DIRECTORY = app_path
+    _WORKING_DIRECTORY = vams._DEFAULT_CONFIG_DIRECTORY
 
     platform = argv[2]
-    if platform == 'ios':
-        vams._DEFAULT_PLATFORM = 'ios'
+    if platform == vams._PLATFORM_IOS:
+        vams._DEFAULT_PLATFORM = vams._PLATFORM_IOS
+        app_path = tempfile.mkdtemp()
+        _WORKING_DIRECTORY = app_path
+
 
     if len(argv) == 4:
         server = argv[3]
@@ -197,16 +238,31 @@ def main(argv):
     else:
         _DEFAULT_HOST = vams._PRODUCTION_HOST
 
-    # Uncomment the following line to display the host being accessed
-    # print 'Using host: %s' % _DEFAULT_HOST
+    global _CONSOLE_OUTPUT
+    if vams._DEFAULT_PLATFORM == vams._PLATFORM_ANDROID:
+        _CONSOLE_OUTPUT = True
+
+
+    # Uncomment the following twolines to display the host being accessed
+    if _CONSOLE_OUTPUT:
+        print 'Using host: %s' % _DEFAULT_HOST
 
     if vams.authenticateUser(_DEFAULT_HOST):
         retrieveAppDetails(app_name)
     else:
-         #print 'There was a problem authenticating with the Victorious backend. Exiting now...'
-         return 1
-    
-    sys.exit(_WORKING_DIRECTORY)
+        exit_message = 'There was a problem authenticating with the Victorious backend. Exiting now...'
+        if _CONSOLE_OUTPUT:
+            print exit_message
+
+        error_string = '1|%s' % exit_message
+        sys.exit(error_string)
+
+    response_message = 'App Data & Assets Downloaded from VAMS Successfully'
+    if vams._DEFAULT_PLATFORM == vams._PLATFORM_IOS:
+        response_message = '0|%s' % _WORKING_DIRECTORY
+        sys.exit(response_message)
+    elif vams._DEFAULT_PLATFORM == vams._PLATFORM_ANDROID:
+        sys.exit(response_message)
 
 
 if __name__ == '__main__':

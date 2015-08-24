@@ -9,13 +9,10 @@
 #import "VUserCell.h"
 #import "VFollowResponder.h"
 #import "VObjectManager+Users.h"
-#import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VDependencyManager.h"
-#import "VDefaultProfileButton.h"
 #import "VFollowControl.h"
 #import "VDefaultProfileImageView.h"
-#import "UIImageView+VLoadingAnimations.h"
 #import <KVOController/FBKVOController.h>
 
 static const CGFloat kUserCellHeight = 51.0f;

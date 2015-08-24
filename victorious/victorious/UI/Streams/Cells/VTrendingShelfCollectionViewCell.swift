@@ -24,18 +24,26 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
         }
     }
     
-    var shelf: VShelf? {
+    var shelf: Shelf? {
         didSet {
-            if !VTrendingShelfCollectionViewCell.needsUpdate(fromShelf: oldValue, toShelf: shelf) { return }
+            if !VTrendingShelfCollectionViewCell.needsUpdate(fromShelf: oldValue, toShelf: shelf) {
+                return
+            }
             
-            if let items = shelf?.stream.streamItems,
+            if let items = shelf?.streamItems,
                 let streamItems = items.array as? [VStreamItem] {
                     for (index, streamItem) in enumerate(streamItems) {
                         if index == streamItems.count - 1 {
-                            collectionView.registerClass(VTrendingShelfContentSeeAllCell.self, forCellWithReuseIdentifier: VTrendingShelfContentSeeAllCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager))
+                            
+                            let reuseIdentifier = VTrendingShelfContentSeeAllCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
+                            collectionView.registerClass(VTrendingShelfContentSeeAllCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+                            
                         }
                         else {
-                            collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager))
+                            
+                            let reuseIdentifier = VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
+                            collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier:reuseIdentifier)
+                            
                         }
                     }
             }
@@ -46,7 +54,9 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     
     var dependencyManager: VDependencyManager? {
         didSet {
-            if !VTrendingShelfCollectionViewCell.needsUpdate(fromDependencyManager: oldValue, toDependencyManager: dependencyManager) { return }
+            if !VTrendingShelfCollectionViewCell.needsUpdate(fromDependencyManager: oldValue, toDependencyManager: dependencyManager) {
+                return
+            }
             
             if let dependencyManager = dependencyManager {
                 followControl.dependencyManager = dependencyManager
@@ -56,14 +66,12 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     }
     
     /// Returns true when the 2 provided shelves differ enough to require a UI update
-    static func needsUpdate(fromShelf oldValue: VShelf?, toShelf shelf: VShelf?) -> Bool {
-        if ( shelf == oldValue ) {
-            if let newStreamItems = shelf?.stream.streamItems, let oldStreamItems = oldValue?.stream.streamItems {
-                if newStreamItems.isEqualToOrderedSet(oldStreamItems) {
-                    //The shelf AND its content are the same, no need to update
-                    return false
-                }
-            }
+    static func needsUpdate(fromShelf oldValue: Shelf?, toShelf shelf: Shelf?) -> Bool {
+        if shelf == oldValue,
+            let newStreamItems = shelf?.streamItems,
+            let oldStreamItems = oldValue?.streamItems where newStreamItems.isEqualToOrderedSet(oldStreamItems) {
+            //The shelf AND its content are the same, no need to update
+            return false
         }
         return true
     }
@@ -91,7 +99,7 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
 extension VTrendingShelfCollectionViewCell : UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if let streamItems = shelf?.stream.streamItems.array as? [VStreamItem] {
+        if let streamItems = shelf?.streamItems.array as? [VStreamItem] {
             let streamItem = streamItems[indexPath.row]
             let isShowMoreCell = indexPath.row == streamItems.count - 1
             let T = isShowMoreCell ? VTrendingShelfContentSeeAllCell.self : VShelfContentCollectionViewCell.self
@@ -106,7 +114,7 @@ extension VTrendingShelfCollectionViewCell : UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return shelf?.stream.streamItems?.count ?? 0
+        return shelf?.streamItems?.count ?? 0
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
@@ -119,17 +127,16 @@ extension VTrendingShelfCollectionViewCell : UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let responder: VShelfStreamItemSelectionResponder = typedResponder()
-        if let stream = shelf?.stream, let streamItem = stream.streamItems[indexPath.row] as? VStreamItem {
-            var itemToNavigateTo: VStreamItem? = streamItem
-            if indexPath.row == stream.streamItems.count - 1 {
-                itemToNavigateTo = nil
+        if let shelf = shelf, let streamItem = shelf.streamItems[indexPath.row] as? VStreamItem {
+            if indexPath.row == shelf.streamItems.count - 1 {
+                responder.navigateTo(nil, fromShelf: shelf)
             }
-            if let shelf = shelf {
-                responder.navigateTo(itemToNavigateTo, fromShelf: shelf)
-                return
+            else {
+                responder.navigateTo(streamItem, fromShelf: shelf)
             }
+            return
         }
-        assertionFailure("VTrendingShelfCollectionViewCell needs a VShelfStreamItemSelectionResponder up it's responder chain to send messages to.")
+        assertionFailure("VTrendingShelfCollectionViewCell selected an invalid stream item")
     }
     
 }

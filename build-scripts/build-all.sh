@@ -2,8 +2,6 @@
 ###########
 # Builds, archives, and exports all the apps in the 'configurations' folder.
 # IPA and DSYM files will be placed in the 'products' folder.
-#
-# Requires Shenzhen:  see https://github.com/nomad/shenzhen
 ###########
 
 SCHEME=$1
@@ -79,12 +77,10 @@ build(){
     # Build
     if [ "$MACROS_COMMAND" == "" ]; then
         xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
-                   -archivePath "../victorious.xcarchive" PROVISIONING_PROFILE="$DEFAULT_PROVISIONING_PROFILE_UUID" \
-                   CODE_SIGN_IDENTITY="$DEFAULT_CODESIGN_ID" $PREFIX_COMMAND archive
+                   -archivePath "../victorious.xcarchive" DownloadTemplate=no $PREFIX_COMMAND archive
     else
         xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
-                   -archivePath "../victorious.xcarchive" PROVISIONING_PROFILE="$DEFAULT_PROVISIONING_PROFILE_UUID" \
-                   CODE_SIGN_IDENTITY="$DEFAULT_CODESIGN_ID" $PREFIX_COMMAND "$MACROS_COMMAND" archive
+                   -archivePath "../victorious.xcarchive" DownloadTemplate=no $PREFIX_COMMAND "$MACROS_COMMAND" archive
     fi
     BUILDRESULT=$?
     if [ $BUILDRESULT == 0 ]; then

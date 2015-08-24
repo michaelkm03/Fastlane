@@ -196,9 +196,6 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
 {
     if ([self.delegate respondsToSelector:@selector(loadingViewController:didFinishLoadingWithDependencyManager:)])
     {
-#warning HEEYYYYYYYYY!!! DONT FORGET TO TAKE THIS OUTTTTTT!!!!!!
-        templateConfiguration = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:@"devShelfTemplate" ofType:@"json"]] options:0 error:nil][@"payload"];
-        
         VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
 
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager

@@ -8,9 +8,10 @@
 
 #import "VCanvasView.h"
 #import "CIImage+VImage.h"
-#import <UIImageView+WebCache.h>
 #import "UIScrollView+VCenterContent.h"
 #import "VPhotoFilter.h"
+
+@import SDWebImage;
 
 NSString * const VCanvasViewAssetSizeBecameAvailableNotification = @"VCanvasViewAssetSizeBecameAvailableNotification";
 
@@ -217,13 +218,8 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 - (void)setSourceImage:(UIImage *)sourceImage
 {
     _sourceImage = sourceImage;
-
-    CGImageRef scaledImageRef = [self.context createCGImage:[self scaledImageForCurrentFrameAndMaxZoomLevel]
-                                                   fromRect:[[self scaledImageForCurrentFrameAndMaxZoomLevel] extent]];
-    _scaledImage = [UIImage imageWithCGImage:scaledImageRef
-                                       scale:sourceImage.scale
-                                 orientation:sourceImage.imageOrientation];
-    CGImageRelease(scaledImageRef);
+    
+    _scaledImage = [self scaledImageForCurrentFrameAndMaxZoomLevel];
     
     self.imageView.image = _scaledImage;
     
@@ -246,26 +242,20 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
         return;
     }
     
-    __block UIImage *filteredImage = nil;
-    
     dispatch_async(self.renderingQueue, ^
-    {
-        // Render
-        filteredImage = [filter imageByFilteringImage:self.scaledImage
-                                        withCIContext:self.context];
-        
-        // Cache
-        [self.renderedImageCache setObject:filteredImage
-                                    forKey:filter.description];
-        
-        dispatch_async(dispatch_get_main_queue(), ^
-                       {
-                           if (_filter.name == filter.name)
-                           {
-                               self.imageView.image = filteredImage;
-                           }
-                       });
-    });
+                   {
+                       // Render
+                       UIImage *filteredImage = [filter imageByFilteringImage:self.scaledImage withCIContext:self.context];
+                       dispatch_async(dispatch_get_main_queue(), ^
+                                      {
+                                          // Cache
+                                          [self.renderedImageCache setObject:filteredImage forKey:filter.description];
+                                          if (_filter.name == filter.name)
+                                          {
+                                              self.imageView.image = filteredImage;
+                                          }
+                                      });
+                   });
 }
 
 - (CGSize)assetSize
@@ -304,27 +294,27 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 
 #pragma mark - Private Mehtods
 
-- (CIImage *)scaledImageForCurrentFrameAndMaxZoomLevel
+- (UIImage *)scaledImageForCurrentFrameAndMaxZoomLevel
 {
-    CIImage *scaledImage = [CIImage v_imageWithUImage:_sourceImage];
-    
-    CGFloat scaleFactor = 1.0f;
-    CGRect sourceExtent = [scaledImage extent];
+    CGFloat scale = 1.0f;
+    CGRect sourceExtent = CGRectMake(0, 0, self.sourceImage.size.width, self.sourceImage.size.height);
     if (CGRectGetWidth(sourceExtent) > CGRectGetWidth(self.bounds) * self.canvasScrollView.maximumZoomScale * kRelatvieScaleFactor)
     {
-        scaleFactor = (CGRectGetWidth(self.bounds) * self.canvasScrollView.maximumZoomScale * kRelatvieScaleFactor)  / CGRectGetWidth(sourceExtent);
+        scale = (CGRectGetWidth(self.bounds) * self.canvasScrollView.maximumZoomScale * kRelatvieScaleFactor)  / CGRectGetWidth(sourceExtent);
     }
     else if (CGRectGetHeight(sourceExtent) > CGRectGetHeight(self.bounds) * self.canvasScrollView.maximumZoomScale * kRelatvieScaleFactor)
     {
-        scaleFactor = (CGRectGetHeight(self.bounds) * self.canvasScrollView.maximumZoomScale * kRelatvieScaleFactor) / CGRectGetHeight(sourceExtent);
+        scale = (CGRectGetHeight(self.bounds) * self.canvasScrollView.maximumZoomScale * kRelatvieScaleFactor) / CGRectGetHeight(sourceExtent);
     }
     
-    CIFilter *lanczosScaleFilter = [CIFilter filterWithName:@"CILanczosScaleTransform"];
-    [lanczosScaleFilter setValue:scaledImage
-                          forKey:kCIInputImageKey];
-    [lanczosScaleFilter setValue:@(scaleFactor)
-                          forKey:kCIInputScaleKey];
-    return [lanczosScaleFilter outputImage];
+    CGSize scaledSize = CGSizeApplyAffineTransform( self.sourceImage.size, CGAffineTransformMakeScale(scale, scale) );
+    
+    UIGraphicsBeginImageContextWithOptions(scaledSize, YES, [[UIScreen mainScreen] scale]);
+    [self.sourceImage drawInRect:CGRectMake(0, 0, scaledSize.width, scaledSize.height)];
+    UIImage *output = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return output;
 }
 
 #pragma mark - UIScrollViewDelegate

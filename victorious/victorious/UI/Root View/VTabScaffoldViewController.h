@@ -17,16 +17,6 @@
 @class VSequence, VAuthorization, VCoachmarkManager;
 
 /**
- The key that identifies the menu component in VDependencyManager
- */
-extern NSString * const VScaffoldViewControllerMenuComponentKey;
-
-/**
- The key that identifies the welcome view component in the VDependencyManager
- */
-extern NSString * const VScaffoldViewControllerFirstTimeContentKey;
-
-/**
  The TabScaffold class comprises several container VCs at the root there is a fullscreen
  UINavigationController which contains a UITabBarController, which contains several 
  NavigationControllers wrapping the menu destinations.

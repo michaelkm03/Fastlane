@@ -13,7 +13,7 @@ extension HashtagShelf {
     static private var propertyMap : [String : String] {
         return [
             "hashtag" : "hashtagTitle",
-            "postsCount" : "postsCount"
+            "postCount" : "postsCount"
         ]
     }
     
@@ -22,7 +22,7 @@ extension HashtagShelf {
     }
     
     override static func entityMapping() -> RKEntityMapping {
-        var mapping = VShelf.mappingBaseForEntityWithName(entityName())
+        var mapping = Shelf.mappingBaseForEntity(named: HashtagShelf.entityName())
         mapping.addAttributeMappingsFromDictionary(propertyMap)
         return mapping
     }

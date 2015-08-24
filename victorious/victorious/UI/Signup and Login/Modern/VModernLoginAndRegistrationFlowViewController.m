@@ -291,7 +291,6 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
         {
             self.isRegisteredAsNewUser = isNewUser;
             [self continueRegistrationFlowAfterSocialRegistration];
-            [self.permissionsTrackingHelper permissionsDidChange:VTrackingValueFacebookDidAllow permissionState:VTrackingValueAuthorized];
         }
         else
         {

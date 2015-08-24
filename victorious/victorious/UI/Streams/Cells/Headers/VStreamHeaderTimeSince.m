@@ -8,9 +8,6 @@
 
 #import "VStreamHeaderTimeSince.h"
 
-// Libraries
-#import <FBKVOController.h>
-
 // Dependencies
 #import "VDependencyManager.h"
 
@@ -29,6 +26,8 @@
 #import "VSequence+Fetcher.h"
 #import "VUser.h"
 
+// Frameworks
+@import KVOController;
 
 static const CGFloat kLeadingTrailingHeaderSpace = 11.0f;
 static const CGFloat kAvatarSize = 32.0f;

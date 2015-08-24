@@ -27,13 +27,13 @@ extension VListShelfCellFactory: VStreamCellFactory {
     }
     
     func collectionView(collectionView: UICollectionView, cellForStreamItem streamItem: VStreamItem, atIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if let shelf = streamItem as? VShelf {
-            if streamItem.itemType == VStreamItemTypePlaylist {
+        if let shelf = streamItem as? Shelf {
+            if streamItem.itemSubType == VStreamItemSubTypePlaylist {
                 if let cell = collectionView.dequeueReusableCellWithReuseIdentifier(VListPlaylistShelfCollectionViewCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as? VListPlaylistShelfCollectionViewCell {
                     setup(cell, shelf: shelf, dependencyManager: dependencyManager)
                     return cell
                 }
-            } else if streamItem.itemType == VStreamItemTypeRecent {
+            } else if streamItem.itemSubType == VStreamItemSubTypeRecent {
                 if let cell = collectionView.dequeueReusableCellWithReuseIdentifier(VListRecentShelfCollectionViewCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as? VListRecentShelfCollectionViewCell {
                     setup(cell, shelf: shelf, dependencyManager: dependencyManager)
                     return cell
@@ -41,21 +41,21 @@ extension VListShelfCellFactory: VStreamCellFactory {
             }
         }
         let cell = UICollectionViewCell()
-        assertionFailure("VListShelfCellFactory was provided a shelf that was neither a user shelf nor a hashtag shelf")
+        assertionFailure("VListShelfCellFactory was provided a shelf that was neither a playlist shelf nor a recent shelf")
         return cell
     }
     
-    private func setup(cell: VListShelfCollectionViewCell, shelf: VShelf, dependencyManager: VDependencyManager) {
+    private func setup(cell: VListShelfCollectionViewCell, shelf: Shelf, dependencyManager: VDependencyManager) {
         cell.dependencyManager = dependencyManager
         cell.shelf = shelf;
     }
     
     func sizeWithCollectionViewBounds(bounds: CGRect, ofCellForStreamItem streamItem: VStreamItem) -> CGSize {
         if let shelf = streamItem as? ListShelf {
-            if shelf.itemType == VStreamItemTypePlaylist {
+            if shelf.itemSubType == VStreamItemSubTypePlaylist {
                 return VListPlaylistShelfCollectionViewCell.desiredSize(bounds, shelf: shelf, dependencyManager: dependencyManager)
             }
-            else if shelf.itemType == VStreamItemTypeRecent {
+            else if shelf.itemSubType == VStreamItemSubTypeRecent {
                 return VListRecentShelfCollectionViewCell.desiredSize(bounds, shelf: shelf, dependencyManager: dependencyManager)
             }
         }

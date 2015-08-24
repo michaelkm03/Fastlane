@@ -282,6 +282,9 @@ NSString * const VTrackingKeyUserLoggedIn = @"UserLoggedIn";
 NSString * const VTrackingKeyLoadTime = @"LoadTime";
 NSString * const VTrackingKeyPermissionName = @"PermissionName";
 NSString * const VTrackingKeyPermissionState = @"PermissionState";
+NSString * const VTrackingKeyAutoplay = @"Autoplay";
+NSString * const VTrackingKeyConnectivity = @"Connectivity";
+NSString * const VTrackingKeyVolumeLevel = @"VolumeLevel";
 
 // Tracking Event Values
 // ContentType values

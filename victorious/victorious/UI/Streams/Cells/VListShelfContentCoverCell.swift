@@ -70,14 +70,16 @@ class VListShelfContentCoverCell : VShelfContentCollectionViewCell {
         overlayView.hidden = hidden
     }
     
-    override func onStreamItemSet() {
-        super.onStreamItemSet()
-        updateVisibility()
+    override var streamItem: VStreamItem? {
+        didSet {
+            updateVisibility()
+        }
     }
     
-    override func onDependencyManagerSet() {
-        super.onDependencyManagerSet()
-        updateOverlayLabel()
+    override var dependencyManager: VDependencyManager? {
+        didSet {
+            updateOverlayLabel()
+        }
     }
     
     private func updateOverlayLabel() {

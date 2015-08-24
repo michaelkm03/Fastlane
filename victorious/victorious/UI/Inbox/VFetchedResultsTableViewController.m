@@ -7,9 +7,7 @@
 //
 
 #import "VFetchedResultsTableViewController.h"
-#import "NSString+VParseHelp.h"
 #import "VPaginationManager.h"
-#import "VAbstractFilter.h"
 
 @implementation VFetchedResultsTableViewController
 

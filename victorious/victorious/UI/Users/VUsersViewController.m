@@ -14,7 +14,6 @@
 #import "VDependencyManager+VUserProfile.h"
 #import "VScrollPaginator.h"
 #import "VNoContentView.h"
-#import "VNavigationController.h"
 #import "VDependencyManager+VTracking.h"
 
 @interface VUsersViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, VScrollPaginatorDelegate, VFollowResponder>

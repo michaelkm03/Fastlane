@@ -10,8 +10,6 @@ import UIKit
 
 class VListPlaylistShelfCollectionViewCell: VListShelfCollectionViewCell {
     
-    private static let kTitleText: NSString = NSLocalizedString("FEATURED PLAYLIST", comment:"")
-    
     override var dependencyManager: VDependencyManager? {
         didSet {
             if !VListShelfCollectionViewCell.needsUpdate(fromDependencyManager: oldValue, toDependencyManager: dependencyManager) { return }
@@ -29,15 +27,10 @@ class VListPlaylistShelfCollectionViewCell: VListShelfCollectionViewCell {
     }
     
     //MARK: -View management
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        titleLabel.text = VListPlaylistShelfCollectionViewCell.kTitleText as? String
-    }
 
     override class func desiredSize(collectionViewBounds: CGRect, shelf: ListShelf, dependencyManager: VDependencyManager) -> CGSize {
         var size = super.desiredSize(collectionViewBounds, shelf: shelf, dependencyManager: dependencyManager)
-        size.height += kTitleText.frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.titleFont]).height
+        size.height += shelf.title.frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.titleFont]).height
         size.height += NSString(string: shelf.caption).frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.detailFont]).height
         size.height += Constants.detailToCollectionViewVerticalSpace
         return size
@@ -48,13 +41,52 @@ class VListPlaylistShelfCollectionViewCell: VListShelfCollectionViewCell {
     }
 }
 
+extension VListPlaylistShelfCollectionViewCell : UICollectionViewDataSource {
+    
+    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        if let shelf = shelf, let streamItems = shelf.streamItems.array as? [VStreamItem] {
+            var streamItem: VStreamItem?
+            var isCoverCell = false
+            var T = VShelfContentCollectionViewCell.self
+            if indexPath.row == 0 {
+                streamItem = shelf
+                T = VListShelfContentCoverCell.self
+                isCoverCell = true
+            }
+            else {
+                streamItem = streamItems[indexPath.row - 1]
+            }
+            var identifier = T.reuseIdentifierForStreamItem(streamItem!, baseIdentifier: nil, dependencyManager: dependencyManager)
+            let cell: VShelfContentCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as! VShelfContentCollectionViewCell
+            cell.streamItem = streamItem
+            cell.dependencyManager = dependencyManager
+            if let cell = cell as? VListShelfContentCoverCell {
+                cell.overlayText = shelf.name
+            }
+            return cell
+        }
+        assertionFailure("VListPlaylistShelfCollectionViewCell was asked to display an object that isn't a stream item.")
+        return UICollectionViewCell()
+    }
+    
+    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if let streamItems = shelf?.streamItems {
+            //Max number of items at maxItemsCount to avoid showing erroneous UI if the backend returns an unexpected number of items.
+            let numberOfItems = streamItems.count + 1
+            return min(numberOfItems, VListShelfCollectionViewCell.Constants.maxItemsCount)
+        }
+        return 0
+    }
+    
+}
+
 extension VListPlaylistShelfCollectionViewCell : UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let responder: VShelfStreamItemSelectionResponder = typedResponder()
         if let shelf = shelf {
             var itemToNavigateTo: VStreamItem?
-            if indexPath.row != 0, let streamItem = shelf.stream.streamItems[indexPath.row - 1] as? VStreamItem {
+            if indexPath.row != 0, let streamItem = shelf.streamItems[indexPath.row - 1] as? VStreamItem {
                 itemToNavigateTo = streamItem
             }
             responder.navigateTo(itemToNavigateTo, fromShelf: shelf)

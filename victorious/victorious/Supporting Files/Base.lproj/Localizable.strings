@@ -144,8 +144,6 @@
 
 "NoCommentsTitle"       =   "BE THE 1ST TO COMMENT!";
 "NoCommentsMessage"     =   "Post text, photo or video comments, and see what others say!";
-"LeaveACommentAt"       =   "Leave a comment at ";
-"LeaveAComment"          =   "Leave a comment";
 
 "NoFollowersTitle"      =   "WOMP WOMP! NO ONE HAS FOLLOWED YOU YET";
 "NoFollowersMessage"    =   "Build your own following by engaging with the community through commenting, remixing or posting new content.";
@@ -495,8 +493,8 @@
 "DiscoverTrendingTagsError"     = "Sorry, unable to load trending tags.";
 "Suggested People"      = "Suggested People";
 "Trending Tags"         = "Trending Tags";
-"Voters"                = "Voters";
-"Voter"                 = "Voter";
+"%@ Voters"             = "%@ Voters";
+"%@ Voter"              = "%@ Voter";
 
 "HashtagSubscribeError"  = "Sorry, an error occurred attempting to follow this hashtag. Please try again.";
 "HashtagUnsubscribeError"  = "Sorry, an error occurred attempting to unfollow this hashtag. Please try again.";
@@ -679,11 +677,7 @@
 "NOTHING LIKED YET" = "NOTHING LIKED YET"; // Liked content no content view
 "Posts you like will appear here." = "Posts you like will appear here."; // Liked content no content view
 
-
-"TRENDING FAN" = "TRENDING FAN";
 "posts" = "Posts";
-
-"TRENDING HASHTAG" = "TRENDING HASHTAG";
 "HashtagPostsCountFormat" = "In %@ Posts";
 
 "Barcelona" = "Barcelona";
