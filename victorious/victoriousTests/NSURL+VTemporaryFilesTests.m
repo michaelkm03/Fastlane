@@ -20,9 +20,9 @@
 {
     NSURL *urlForTempTestDir = [NSURL v_temporaryFileURLWithExtension:@"jpg" inDirectory:@"test"];
     XCTAssert([[urlForTempTestDir pathExtension] isEqualToString:@"jpg"]);
-    NSArray *pathCompontents = [urlForTempTestDir pathComponents];
-    NSString *directoryName = pathCompontents[pathCompontents.count-2];
-    XCTAssert([directoryName isEqualToString:@"test"]);
+    NSArray *pathComponents = [urlForTempTestDir pathComponents];
+    NSString *directoryName = pathComponents[pathComponents.count-2];
+    XCTAssertEqualObjects(directoryName, @"test");
     
     [self canWriteToFile:urlForTempTestDir];
 }
@@ -51,8 +51,9 @@
 {
     NSURL *urlForExtendedPath = [NSURL v_temporaryFileURLWithExtension:nil inDirectory:@"/test/nestedTest"];
     NSArray *pathComponents = [urlForExtendedPath pathComponents];
-    XCTAssert([pathComponents[pathComponents.count - 2] isEqualToString:@"nestedTest"]);
-    XCTAssert([pathComponents[pathComponents.count - 3] isEqualToString:@"test"]);
+    XCTAssertEqualObjects(pathComponents[pathComponents.count - 2], @"nestedTest");
+    XCTAssertEqualObjects(pathComponents[pathComponents.count - 3], @"test");
+    
     [self canWriteToFile:urlForExtendedPath];
 }
 
