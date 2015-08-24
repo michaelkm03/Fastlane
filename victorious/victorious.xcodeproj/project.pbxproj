@@ -885,6 +885,8 @@
 		C33C7D191B7E657F00CCFBB6 /* GIFCommentTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33C7D181B7E657F00CCFBB6 /* GIFCommentTest.swift */; };
 		C3475B6D1B507087007C3782 /* VForcedWorkspaceContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3475B6C1B507087007C3782 /* VForcedWorkspaceContainerViewController.m */; };
 		C3475B6F1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3475B6E1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard */; };
+		C348D1FB1B8B8A320040042C /* CCColorCube.m in Sources */ = {isa = PBXBuildFile; fileRef = C348D1F81B8B8A320040042C /* CCColorCube.m */; settings = {COMPILER_FLAGS = "-w"; }; };
+		C348D1FC1B8B8A320040042C /* CCLocalMaximum.m in Sources */ = {isa = PBXBuildFile; fileRef = C348D1FA1B8B8A320040042C /* CCLocalMaximum.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		C35265FB1B28EA09001F093F /* CreateSheet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C35265FA1B28EA09001F093F /* CreateSheet.storyboard */; };
 		C35265FE1B28F167001F093F /* VCreateSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C35265FD1B28F167001F093F /* VCreateSheetViewController.m */; };
 		C35266011B28F1B6001F093F /* VCreateSheetCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C35266001B28F1B6001F093F /* VCreateSheetCollectionViewCell.m */; };
@@ -2892,6 +2894,10 @@
 		C3475B6B1B507087007C3782 /* VForcedWorkspaceContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VForcedWorkspaceContainerViewController.h; sourceTree = "<group>"; };
 		C3475B6C1B507087007C3782 /* VForcedWorkspaceContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VForcedWorkspaceContainerViewController.m; sourceTree = "<group>"; };
 		C3475B6E1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VForcedWorkspaceContainerViewController.storyboard; sourceTree = "<group>"; };
+		C348D1F71B8B8A320040042C /* CCColorCube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCColorCube.h; sourceTree = "<group>"; };
+		C348D1F81B8B8A320040042C /* CCColorCube.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCColorCube.m; sourceTree = "<group>"; };
+		C348D1F91B8B8A320040042C /* CCLocalMaximum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCLocalMaximum.h; sourceTree = "<group>"; };
+		C348D1FA1B8B8A320040042C /* CCLocalMaximum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCLocalMaximum.m; sourceTree = "<group>"; };
 		C35265FA1B28EA09001F093F /* CreateSheet.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = CreateSheet.storyboard; path = "Create Sheet/CreateSheet.storyboard"; sourceTree = "<group>"; };
 		C35265FC1B28F167001F093F /* VCreateSheetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCreateSheetViewController.h; path = "Create Sheet/VCreateSheetViewController.h"; sourceTree = "<group>"; };
 		C35265FD1B28F167001F093F /* VCreateSheetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCreateSheetViewController.m; path = "Create Sheet/VCreateSheetViewController.m"; sourceTree = "<group>"; };
@@ -5033,6 +5039,7 @@
 		03C1859419B42D3000E27D05 /* 3rd Party SDKs */ = {
 			isa = PBXGroup;
 			children = (
+				C348D1F61B8B8A320040042C /* ColorCube */,
 				DBAD88EA19F5B7F200D678A0 /* Ad Networks */,
 				038B7F9419DB8D2500F739DF /* ADEUMInstrumentation.framework */,
 				03C1859519B42D3000E27D05 /* Crashlytics.framework */,
@@ -6869,6 +6876,17 @@
 				C39B220A1B0A58EF00D3DFE7 /* VPermissionMicrophone.m */,
 			);
 			name = Permissions;
+			sourceTree = "<group>";
+		};
+		C348D1F61B8B8A320040042C /* ColorCube */ = {
+			isa = PBXGroup;
+			children = (
+				C348D1F71B8B8A320040042C /* CCColorCube.h */,
+				C348D1F81B8B8A320040042C /* CCColorCube.m */,
+				C348D1F91B8B8A320040042C /* CCLocalMaximum.h */,
+				C348D1FA1B8B8A320040042C /* CCLocalMaximum.m */,
+			);
+			path = ColorCube;
 			sourceTree = "<group>";
 		};
 		C35265F91B28E349001F093F /* Create Sheet */ = {
@@ -9139,6 +9157,7 @@
 				F0C83A631B162DE200A6EC1A /* VImageStreamPreviewView.m in Sources */,
 				BE799B8F19C8A91C0023CE88 /* VInteraction.m in Sources */,
 				D8D8958919E88C2100632663 /* VExperienceEnhancerBarCell.m in Sources */,
+				C348D1FC1B8B8A320040042C /* CCLocalMaximum.m in Sources */,
 				A75ECFFE1AB0B6B400C35063 /* VCropOverlayView.m in Sources */,
 				A75ED0DE1AB7BC3E00C35063 /* VHashtagType.m in Sources */,
 				A7ECC1D71AD6178F0003E00A /* VBaseWorkspaceViewController.m in Sources */,
@@ -9632,6 +9651,7 @@
 				D85E428A1AFA9A3C00A13BD3 /* VTextSequencePreviewView.m in Sources */,
 				D85B706D1B0EAF3F0038CA5B /* VTemplateBackgroundView.m in Sources */,
 				F0A04FA61A8D6DF100504E26 /* VTextbarSelectorView.m in Sources */,
+				C348D1FB1B8B8A320040042C /* CCColorCube.m in Sources */,
 				D888B52A1A86FC7800B34149 /* VRadialGradientLayer.m in Sources */,
 				A721E9101B572454000B7901 /* AVAsset+Orientation.m in Sources */,
 				794246451B7D39B000F5F879 /* Operation.swift in Sources */,

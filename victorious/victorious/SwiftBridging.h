@@ -121,3 +121,4 @@
 #import "VUtilityButtonCell.h"
 #import "VVideoLightboxViewController.h"
 #import "VVideoView.h"
+#import "CCColorCube.h"

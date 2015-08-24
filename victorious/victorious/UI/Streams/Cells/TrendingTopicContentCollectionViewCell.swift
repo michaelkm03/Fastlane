@@ -15,6 +15,7 @@ class TrendingTopicContentCollectionViewCell: VShelfContentCollectionViewCell {
     private var label = UILabel()
     private var imageView = UIImageView()
     private var blurredImageView = UIImageView()
+    private let colorCube = CCColorCube()
     
     private lazy var blurMask: TrendingTopicGradientView = {
         let blurMask = TrendingTopicGradientView()
@@ -35,11 +36,10 @@ class TrendingTopicContentCollectionViewCell: VShelfContentCollectionViewCell {
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     self.imageView.image = image
                     
-//                    let cube = CCColorCube()
-//                    let colors = cube.extractColorsFromImage(image, flags: CCOrderByBrightness.value)
-//                    if let color = colors.first as? UIColor {
-//                        self.gradient.primaryColor =  color
-//                    }
+                    let colors = self.colorCube.extractColorsFromImage(image, flags: CCOrderByBrightness.value)
+                    if let color = colors.first as? UIColor {
+                        self.gradient.primaryColor =  color
+                    }
                     
                     self.gradient.primaryColor = UIColor.redColor()
                     
