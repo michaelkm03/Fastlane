@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// A UIButton with it's icon on the right side of the text instead of the left.
 class VRightSideIconButton: UIButton {
 
     override func imageRectForContentRect(contentRect: CGRect) -> CGRect {

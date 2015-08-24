@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// A shelf content collection view cell with a stylized, centered label on top.
 class VListShelfContentCoverCell : VShelfContentCollectionViewCell {
     
     private struct Constants {

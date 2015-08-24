@@ -42,19 +42,11 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
     /// The shelf whose content will populate this cell.
     var shelf: Shelf? {
         didSet {
-            if ( shelf == oldValue ) {
-                if let newStreamItems = shelf?.streamItems, let oldStreamItems = oldValue?.streamItems {
-                    if newStreamItems.isEqualToOrderedSet(oldStreamItems) {
-                        //The shelf AND its content are the same, no need to update
-                        return
-                    }
-                }
+            if !VListShelfCollectionViewCell.needsUpdate(fromShelf: oldValue, toShelf: shelf ) {
+                return
             }
             
             if let shelf = shelf as? ListShelf, let streamItems = shelf.streamItems.array as? [VStreamItem] {
-                if hasPlaylistShelf() {
-                    collectionView.registerClass(VListShelfContentCoverCell.self, forCellWithReuseIdentifier: VListShelfContentCoverCell.reuseIdentifierForStreamItem(shelf, baseIdentifier: nil, dependencyManager: dependencyManager))
-                }
                 for (index, streamItem) in enumerate(streamItems) {
                     collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager))
                 }
@@ -73,6 +65,14 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
             
             if let dependencyManager = dependencyManager {
                 dependencyManager.addBackgroundToBackgroundHost(self)
+                
+                separatorView.backgroundColor = dependencyManager.accentColor
+                
+                titleLabel.font = dependencyManager.titleFont
+                detailLabel.font = dependencyManager.detailFont
+                
+                titleLabel.textColor = dependencyManager.textColor
+                detailLabel.textColor = dependencyManager.textColor
             }
         }
     }
@@ -82,14 +82,20 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
         return dependencyManager != oldValue
     }
     
+    /// Returns true when the 2 provided shelves differ enough to require a UI update
+    static func needsUpdate(fromShelf oldValue: Shelf?, toShelf shelf: Shelf?) -> Bool {
+        if ( shelf == oldValue ) {
+            if let newStreamItems = shelf?.streamItems, let oldStreamItems = oldValue?.streamItems {
+                return !newStreamItems.isEqualToOrderedSet(oldStreamItems)
+            }
+        }
+        return true
+    }
+    
     private var centeringInset: CGFloat = 0
     private var cellSideLength: CGFloat = 0
     private var expandedCellSideLength: CGFloat {
         return cellSideLength * 2 + Constants.interCellSpace
-    }
-
-    private func hasPlaylistShelf() -> Bool {
-        return shelf?.itemSubType == VStreamItemSubTypePlaylist
     }
     
     override func layoutSubviews() {
@@ -199,6 +205,26 @@ extension VListShelfCollectionViewCell: VBackgroundContainer {
     
     func backgroundContainerView() -> UIView! {
         return contentView
+    }
+    
+}
+
+private extension VDependencyManager {
+    
+    var titleFont: UIFont {
+        return fontForKey(VDependencyManagerHeaderFontKey)
+    }
+    
+    var detailFont: UIFont {
+        return fontForKey(VDependencyManagerLabel3FontKey)
+    }
+    
+    var textColor: UIColor {
+        return colorForKey(VDependencyManagerMainTextColorKey)
+    }
+    
+    var accentColor: UIColor {
+        return colorForKey(VDependencyManagerAccentColorKey)
     }
     
 }

@@ -8,6 +8,8 @@
 
 import UIKit
 
+/// A list collection view cell that displays a "see all" button along with the
+/// first 7 pieces of content from a recent shelf.
 class VListRecentShelfCollectionViewCell: VListShelfCollectionViewCell {
     
     @IBOutlet private weak var seeAllButton: UIButton!
@@ -28,14 +30,7 @@ class VListRecentShelfCollectionViewCell: VListShelfCollectionViewCell {
             if !VListShelfCollectionViewCell.needsUpdate(fromDependencyManager: oldValue, toDependencyManager: dependencyManager) { return }
             
             if let dependencyManager = dependencyManager {
-                separatorView.backgroundColor = dependencyManager.accentColor
-                
-                titleLabel.font = dependencyManager.titleFont
-                detailLabel.font = dependencyManager.detailFont
                 seeAllButton.titleLabel?.font = dependencyManager.seeAllFont
-                
-                titleLabel.textColor = dependencyManager.textColor
-                detailLabel.textColor = dependencyManager.textColor
                 seeAllButton.tintColor = dependencyManager.textColor
             }
         }

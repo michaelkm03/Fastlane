@@ -8,20 +8,18 @@
 
 import UIKit
 
+/// A list shelf cell that displays a stylized label on top of the stream's preview image
+/// along with the first 7 pieces of content from a recent shelf.
 class VListPlaylistShelfCollectionViewCell: VListShelfCollectionViewCell {
     
-    override var dependencyManager: VDependencyManager? {
+    override var shelf: Shelf? {
         didSet {
-            if !VListShelfCollectionViewCell.needsUpdate(fromDependencyManager: oldValue, toDependencyManager: dependencyManager) { return }
-
-            if let dependencyManager = dependencyManager {
-                separatorView.backgroundColor = dependencyManager.accentColor
-                
-                titleLabel.font = dependencyManager.titleFont
-                detailLabel.font = dependencyManager.detailFont
-                
-                titleLabel.textColor = dependencyManager.textColor
-                detailLabel.textColor = dependencyManager.textColor
+            if !VListShelfCollectionViewCell.needsUpdate(fromShelf: oldValue, toShelf: shelf ) {
+                return
+            }
+            
+            if let shelf = shelf {
+                collectionView.registerClass(VListShelfContentCoverCell.self, forCellWithReuseIdentifier: VListShelfContentCoverCell.reuseIdentifierForStreamItem(shelf, baseIdentifier: nil, dependencyManager: dependencyManager))
             }
         }
     }

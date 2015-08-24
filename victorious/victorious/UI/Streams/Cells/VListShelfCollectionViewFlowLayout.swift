@@ -8,6 +8,8 @@
 
 import UIKit
 
+/// A simple collection flow layout that creates a grid of cells such that the left-most
+/// cell is twice the size (+ the space between cells) by comparison to the other cells.
 class VListShelfCollectionViewFlowLayout: UICollectionViewFlowLayout {
    
     required init(coder aDecoder: NSCoder) {

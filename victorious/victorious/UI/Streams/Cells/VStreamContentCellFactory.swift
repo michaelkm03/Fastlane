@@ -26,7 +26,7 @@ import UIKit
 class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
     
     private static let kTrendingShelfKey = "trendingShelf"
-    private static let kListShelfKey = "featuredShelf"
+    private static let kListShelfKey = "listShelf"
     
     /// The object that should recieve messages about marquee data and selection updates.
     weak var delegate: VStreamContentCellFactoryDelegate? {
