@@ -513,7 +513,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         if ( isShelf )
         {
             [baseConfiguration addEntriesFromDictionary:@{ VStreamCollectionViewControllerStreamURLKey : stream.apiPath }];
-            VDependencyManager *dependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:[baseConfiguration copy]];
+            VDependencyManager *dependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:baseConfiguration];
             if ( [stream isKindOfClass:[HashtagShelf class]] )
             {
                 HashtagShelf *hashtagShelf = (HashtagShelf *)stream;
@@ -526,7 +526,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
         }
         else
         {
-            VDependencyManager *dependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:[baseConfiguration copy]];
+            VDependencyManager *dependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:baseConfiguration];
             streamCollection = [VStreamCollectionViewController newWithDependencyManager:dependencyManager];
         }
         
