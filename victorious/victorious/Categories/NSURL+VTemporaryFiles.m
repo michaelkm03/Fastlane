@@ -25,16 +25,18 @@
     {
         tempFilename = [uuid UUIDString];
     }
+    NSURL *directoryURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:directory] isDirectory:YES];
     
     NSError *error = nil;
-    NSURL *urlForDirectory = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@", NSTemporaryDirectory(), directory]];
-    BOOL success = [[NSFileManager defaultManager] createDirectoryAtURL:urlForDirectory
+    BOOL success = [[NSFileManager defaultManager] createDirectoryAtURL:directoryURL
                                             withIntermediateDirectories:YES
                                                              attributes:nil
                                                                   error:&error];
+    NSURL *fileURL = [directoryURL URLByAppendingPathComponent:tempFilename];
+    
     if (success)
     {
-        return [NSURL fileURLWithPath:[urlForDirectory.absoluteString stringByAppendingString:tempFilename]];
+        return fileURL;
     }
     else
     {

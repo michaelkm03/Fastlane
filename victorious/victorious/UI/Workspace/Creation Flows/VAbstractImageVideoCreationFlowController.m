@@ -286,13 +286,14 @@ static NSString * const kCreationFlowSourceSearch = @"search";
                        previewImage:(UIImage *)previewImage
                   shouldSkipTrimmer:(BOOL)shouldSkipTrimmerForContext
 {
+    self.capturedMediaURL = mediaURL;
+    self.previewImage = previewImage;
+    
     // If the user has permission to skip the trimmmer (API Driven)
     // Go straight to publish do not pass go, do not collect $200
     BOOL shouldSkipTrimmerForUser = [[[VObjectManager sharedManager] mainUser] shouldSkipTrimmer] && [self isKindOfClass:[VVideoCreationFlowController class]];
     if ( shouldSkipTrimmerForContext || shouldSkipTrimmerForUser )
     {
-        self.capturedMediaURL = mediaURL;
-        self.previewImage = previewImage;
         [self afterEditingFinished];
         
         // Since we're skipping the video camera clear the state
