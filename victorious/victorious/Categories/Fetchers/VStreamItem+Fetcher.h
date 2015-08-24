@@ -8,6 +8,8 @@
 
 #import "VStreamItem.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 //Type values
 extern NSString * const VStreamItemTypeSequence;
 extern NSString * const VStreamItemTypeStream;
@@ -66,3 +68,5 @@ extern NSString * const VStreamItemSubTypeStream;
 - (VEditorializationItem *)editorializationForStreamWithApiPath:(NSString *)apiPath;
 
 @end
+
+NS_ASSUME_NONNULL_END

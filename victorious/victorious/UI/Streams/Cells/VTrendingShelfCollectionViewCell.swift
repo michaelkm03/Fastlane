@@ -26,52 +26,51 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     
     var shelf: VShelf? {
         didSet {
-            if ( shelf == oldValue ) {
-                if let newStreamItems = shelf?.stream?.streamItems, let oldStreamItems = shelf?.stream?.streamItems {
-                    if newStreamItems.isEqualToOrderedSet(oldStreamItems) {
-                        //The shelf AND its content are the same, no need to update
-                        return
-                    }
-                }
-            }
+            if !VTrendingShelfCollectionViewCell.needsUpdate(fromShelf: oldValue, toShelf: shelf) { return }
             
-            self.onShelfSet()
+            if let items = shelf?.stream.streamItems,
+                let streamItems = items.array as? [VStreamItem] {
+                    for (index, streamItem) in enumerate(streamItems) {
+                        if index == streamItems.count - 1 {
+                            collectionView.registerClass(VTrendingShelfContentSeeAllCell.self, forCellWithReuseIdentifier: VTrendingShelfContentSeeAllCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager))
+                        }
+                        else {
+                            collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager))
+                        }
+                    }
+            }
+            updateFollowControlState()
+            self.collectionView.reloadData()
         }
     }
     
     var dependencyManager: VDependencyManager? {
         didSet {
-            if dependencyManager == oldValue {
-                return
-            }
+            if !VTrendingShelfCollectionViewCell.needsUpdate(fromDependencyManager: oldValue, toDependencyManager: dependencyManager) { return }
             
-            self.onDependencyManagerSet()
+            if let dependencyManager = dependencyManager {
+                followControl.dependencyManager = dependencyManager
+                dependencyManager.addBackgroundToBackgroundHost(self)
+            }
         }
     }
     
-    /// Override in subclasses to make adjustments based on the dependency manager
-    func onDependencyManagerSet() {
-        if let dependencyManager = dependencyManager {
-            followControl.dependencyManager = dependencyManager
-            dependencyManager.addBackgroundToBackgroundHost(self)
-        }
-    }
-    
-    /// Override in subclasses to make adjustments based on the shelf
-    func onShelfSet() {
-        if let items = shelf?.stream?.streamItems,
-            let streamItems = items.array as? [VStreamItem] {
-                for (index, streamItem) in enumerate(streamItems) {
-                    if index == streamItems.count - 1 {
-                        collectionView.registerClass(VTrendingShelfContentSeeAllCell.self, forCellWithReuseIdentifier: VTrendingShelfContentSeeAllCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager))
-                    }
-                    else {
-                        collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager))
-                    }
+    /// Returns true when the 2 provided shelves differ enough to require a UI update
+    static func needsUpdate(fromShelf oldValue: VShelf?, toShelf shelf: VShelf?) -> Bool {
+        if ( shelf == oldValue ) {
+            if let newStreamItems = shelf?.stream.streamItems, let oldStreamItems = oldValue?.stream.streamItems {
+                if newStreamItems.isEqualToOrderedSet(oldStreamItems) {
+                    //The shelf AND its content are the same, no need to update
+                    return false
                 }
+            }
         }
-        updateFollowControlState()
-        self.collectionView.reloadData()
+        return true
+    }
+    
+    /// Returns true when the 2 provided dependency managers differ enough to require a UI update
+    static func needsUpdate(fromDependencyManager oldValue: VDependencyManager?, toDependencyManager dependencyManager: VDependencyManager?) -> Bool {
+        return dependencyManager != oldValue
     }
     
     /// Override in subclasses to update the follow button at the proper times
@@ -92,7 +91,7 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
 extension VTrendingShelfCollectionViewCell : UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if let streamItems = shelf?.stream?.streamItems.array as? [VStreamItem] {
+        if let streamItems = shelf?.stream.streamItems.array as? [VStreamItem] {
             let streamItem = streamItems[indexPath.row]
             let isShowMoreCell = indexPath.row == streamItems.count - 1
             let T = isShowMoreCell ? VTrendingShelfContentSeeAllCell.self : VShelfContentCollectionViewCell.self
@@ -107,7 +106,7 @@ extension VTrendingShelfCollectionViewCell : UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return shelf?.stream?.streamItems?.count ?? 0
+        return shelf?.stream.streamItems?.count ?? 0
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {

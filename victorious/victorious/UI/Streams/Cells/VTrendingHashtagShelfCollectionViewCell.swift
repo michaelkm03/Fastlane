@@ -50,35 +50,40 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
     
     //MARK: - Setters
     
-    override func onShelfSet() {
-        super.onShelfSet()
-        if let shelf = shelf as? HashtagShelf {
-            hashtagTextView.text = VTrendingHashtagShelfCollectionViewCell.getHashtagText(shelf)
-            titleLabel.text = VTrendingHashtagShelfCollectionViewCell.titleText as String
-            postsCountLabel.text = VTrendingHashtagShelfCollectionViewCell.getPostsCountText(shelf)
-            updateFollowControlState()
+    override var shelf: VShelf? {
+        didSet {
+            if !VTrendingShelfCollectionViewCell.needsUpdate(fromShelf: oldValue, toShelf: shelf) { return }
+            
+            if let shelf = shelf as? HashtagShelf {
+                hashtagTextView.text = VTrendingHashtagShelfCollectionViewCell.getHashtagText(shelf)
+                titleLabel.text = VTrendingHashtagShelfCollectionViewCell.titleText as String
+                postsCountLabel.text = VTrendingHashtagShelfCollectionViewCell.getPostsCountText(shelf)
+                updateFollowControlState()
+            }
         }
     }
     
-    override func onDependencyManagerSet() {
-        super.onDependencyManagerSet()
-        if let dependencyManager = dependencyManager {
+    override var dependencyManager: VDependencyManager? {
+        didSet {
+            if !VTrendingShelfCollectionViewCell.needsUpdate(fromDependencyManager: oldValue, toDependencyManager: dependencyManager) { return }
             
-            titleLabel.font = dependencyManager.titleFont
-            hashtagTextView.font = dependencyManager.hashtagFont
-            postsCountLabel.font = dependencyManager.postsCountFont
-            
-            let accentColor = dependencyManager.accentColor
-            hashtagLabelBackground.backgroundColor = accentColor
-            separatorView.backgroundColor = accentColor
-            
-            let textColor = dependencyManager.textColor
-            titleLabel.textColor = textColor
-            hashtagTextView.textColor = textColor
-            postsCountLabel.textColor = textColor
-            
-            hashtagTextView.dependencyManager = dependencyManager
-            hashtagTextView.updateForLinkTextForegroundColor(UIColor.whiteColor())
+            if let dependencyManager = dependencyManager {
+                titleLabel.font = dependencyManager.titleFont
+                hashtagTextView.font = dependencyManager.hashtagFont
+                postsCountLabel.font = dependencyManager.postsCountFont
+                
+                let accentColor = dependencyManager.accentColor
+                hashtagLabelBackground.backgroundColor = accentColor
+                separatorView.backgroundColor = accentColor
+                
+                let textColor = dependencyManager.textColor
+                titleLabel.textColor = textColor
+                hashtagTextView.textColor = textColor
+                postsCountLabel.textColor = textColor
+                
+                hashtagTextView.dependencyManager = dependencyManager
+                hashtagTextView.updateForLinkTextForegroundColor(UIColor.whiteColor())
+            }
         }
     }
     

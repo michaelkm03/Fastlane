@@ -28,6 +28,7 @@
 #import "VStream+Fetcher.h"
 #import "VStreamItem+Fetcher.h"
 #import "VEditorializationItem.h"
+#import "VShelf.h"
 
 const NSInteger kTooManyNewMessagesErrorCode = 999;
 
@@ -478,6 +479,15 @@ static const NSInteger kUserSearchResultLimit = 20;
         for (VStreamItem *streamItem in fullStream.streamItems)
         {
             VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:streamItem.objectID];
+            if ( [streamItemInContext isKindOfClass:[VShelf class]] && [streamItem isKindOfClass:[VShelf class]] )
+            {
+                NSOrderedSet *oldStreamItems = ((VShelf *)streamItemInContext).stream.streamItems;
+                NSOrderedSet *newStreamItems = ((VShelf *)streamItem).stream.streamItems;
+                if ( ![streamItems isEqualToOrderedSet:streamItems] )
+                {
+                    oldStreamItems = newStreamItems;
+                }
+            }
             [self addEditorializationToStreamItem:streamItemInContext inStreamWithApiPath:apiPath usingHeadline:streamItem.headline inMarquee:NO];
             streamItem.headline = nil;
             [streamItems addObject:streamItemInContext];

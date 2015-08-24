@@ -8,18 +8,21 @@
 
 import UIKit
 
+/// A shelf that displays "list shelf" content along with some metadata.
+/// Utilize subclasses for implementations.
 class VListShelfCollectionViewCell: VBaseCollectionViewCell {
     
     struct Constants {
         static let separatorHeight: CGFloat = 4
-        static let minimumTopVerticalSpace: CGFloat = 11
-        static let minimumTitleToDetailVerticalSpace: CGFloat = 11
-        static let detailToCollectionViewVerticalSpace: CGFloat = 12
-        
+        static let titleTopVerticalSpace: CGFloat = 11
+        static let minimumTitleToDetailVerticalSpace: CGFloat = 5
+        static let detailToCollectionViewVerticalSpace: CGFloat = 13
         static let contentHorizontalInset: CGFloat = 18
         
         static let interCellSpace: CGFloat = 2
         static let collectionViewSectionEdgeInsets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 11, bottom: 11, right: 11)
+        
+        static let baseHeight = separatorHeight + titleTopVerticalSpace + minimumTitleToDetailVerticalSpace
     }
 
     @IBOutlet weak var collectionView: UICollectionView!
@@ -28,22 +31,52 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
     @IBOutlet weak var separatorView: UIView!
     
     @IBOutlet weak var separatorHeightConstraint: NSLayoutConstraint!
-    @IBOutlet var minimumTitleToTopConstraints: [NSLayoutConstraint]!
+    @IBOutlet weak var titleTopVerticalSpace: NSLayoutConstraint!
     @IBOutlet var horizontalEdgeConstraints: [NSLayoutConstraint]!
     @IBOutlet var minimumTitleToDetailSpaceConstraints: [NSLayoutConstraint]!
     @IBOutlet weak var detailToCollectionViewSpaceConstraint: NSLayoutConstraint!
     @IBOutlet weak var collectionViewHeightConstraint: NSLayoutConstraint!
-        
+    
+    /// The shelf whose content will populate this cell.
     var shelf: VShelf? {
         didSet {
-            self.onShelfSet()
+            if ( shelf == oldValue ) {
+                if let newStreamItems = shelf?.stream.streamItems, let oldStreamItems = oldValue?.stream.streamItems {
+                    if newStreamItems.isEqualToOrderedSet(oldStreamItems) {
+                        //The shelf AND its content are the same, no need to update
+                        return
+                    }
+                }
+            }
+            
+            if let shelf = shelf as? ListShelf, let streamItems = shelf.stream.streamItems.array as? [VStreamItem] {
+                if hasPlaylistShelf() {
+                    collectionView.registerClass(VListShelfContentCoverCell.self, forCellWithReuseIdentifier: VListShelfContentCoverCell.reuseIdentifierForStreamItem(shelf.stream, baseIdentifier: nil, dependencyManager: dependencyManager))
+                }
+                for (index, streamItem) in enumerate(streamItems) {
+                    collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager))
+                }
+                
+                detailLabel.text = shelf.caption
+            }
+            collectionView.reloadData()
         }
     }
     
-    var dependencyManager : VDependencyManager? {
+    /// The dependency manager that will be used to style this cell.
+    var dependencyManager: VDependencyManager? {
         didSet {
-            self.onDependencyManagerSet()
+            if !VListShelfCollectionViewCell.needsUpdate(fromDependencyManager: oldValue, toDependencyManager: dependencyManager) { return }
+            
+            if let dependencyManager = dependencyManager {
+                dependencyManager.addBackgroundToBackgroundHost(self)
+            }
         }
+    }
+    
+    /// Returns true when the 2 provided dependency managers differ enough to require a UI update
+    static func needsUpdate(fromDependencyManager oldValue: VDependencyManager?, toDependencyManager dependencyManager: VDependencyManager?) -> Bool {
+        return dependencyManager != oldValue
     }
     
     private var centeringInset: CGFloat = 0
@@ -52,28 +85,6 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
         return cellSideLength * 2 + Constants.interCellSpace
     }
 
-    /// Override in subclasses to make adjustments based on the dependency manager
-    func onDependencyManagerSet() {
-        if let dependencyManager = dependencyManager {
-            dependencyManager.addBackgroundToBackgroundHost(self)
-        }
-    }
-    
-    /// Override in subclasses to make adjustments based on the shelf
-    func onShelfSet() {
-        if let shelf = shelf as? ListShelf, let streamItems = shelf.stream?.streamItems.array as? [VStreamItem] {
-            if hasPlaylistShelf() {
-                collectionView.registerClass(VListShelfContentCoverCell.self, forCellWithReuseIdentifier: VListShelfContentCoverCell.reuseIdentifierForStreamItem(shelf.stream!, baseIdentifier: nil, dependencyManager: dependencyManager))
-            }
-            for (index, streamItem) in enumerate(streamItems) {
-                collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager))
-            }
-            
-            detailLabel.text = shelf.caption
-        }
-        collectionView.reloadData()
-    }
-    
     private func hasPlaylistShelf() -> Bool {
         return shelf?.itemType == VStreamItemTypePlaylist
     }
@@ -105,12 +116,19 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
         return length * 2 + Constants.interCellSpace + collectionViewSectionEdgeInsets.top + collectionViewSectionEdgeInsets.bottom
     }
     
+    /// The optimal size for this cell.
+    ///
+    /// :param: collectionViewBounds The bounds of the collection view containing this cell (minus any relevant insets)
+    /// :param: shelf The shelf whose content will populate this cell
+    /// :param: dependencyManager The dependency manager that will be used to style the cell
+    ///
+    /// :return: The optimal size for this cell.
     class func desiredSize(collectionViewBounds: CGRect, shelf: ListShelf, dependencyManager: VDependencyManager) -> CGSize {
         let width = collectionViewBounds.width
         let length = cellSideLength(totalCellWidths(width))
         let collectionViewSectionEdgeInsets = Constants.collectionViewSectionEdgeInsets
         let collectionViewHeight = self.collectionViewHeight(cellSideLength: length)
-        let height = Constants.separatorHeight + Constants.minimumTopVerticalSpace + Constants.minimumTitleToDetailVerticalSpace + collectionViewHeight
+        let height = Constants.baseHeight + collectionViewHeight
         return CGSizeMake(width, height)
     }
     
@@ -118,15 +136,13 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        for constraint in minimumTitleToTopConstraints {
-            constraint.constant = Constants.minimumTopVerticalSpace
-        }
         for constraint in horizontalEdgeConstraints {
             constraint.constant = Constants.contentHorizontalInset
         }
         for constraint in minimumTitleToDetailSpaceConstraints {
             constraint.constant = Constants.minimumTitleToDetailVerticalSpace
         }
+        titleTopVerticalSpace.constant = Constants.titleTopVerticalSpace
         separatorHeightConstraint.constant = Constants.separatorHeight
         detailToCollectionViewSpaceConstraint.constant = Constants.detailToCollectionViewVerticalSpace
         updateCollectionViewSize()
@@ -136,13 +152,13 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
 extension VListShelfCollectionViewCell : UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if let shelf = shelf, let streamItems = shelf.stream?.streamItems.array as? [VStreamItem] {
+        if let shelf = shelf, let streamItems = shelf.stream.streamItems.array as? [VStreamItem] {
             var streamItem: VStreamItem?
             var isCoverCell = false
             var T = VShelfContentCollectionViewCell.self
             if hasPlaylistShelf() {
                 if indexPath.row == 0 {
-                    streamItem = shelf.stream!
+                    streamItem = shelf.stream
                     T = VListShelfContentCoverCell.self
                     isCoverCell = true
                 }
@@ -158,7 +174,7 @@ extension VListShelfCollectionViewCell : UICollectionViewDataSource {
             cell.streamItem = streamItem
             cell.dependencyManager = dependencyManager
             if let cell = cell as? VListShelfContentCoverCell {
-                cell.overlayText = shelf.stream?.name
+                cell.overlayText = shelf.stream.name
             }
             return cell
         }
@@ -167,8 +183,10 @@ extension VListShelfCollectionViewCell : UICollectionViewDataSource {
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let streamItems = shelf?.stream?.streamItems {
-            return hasPlaylistShelf() ? streamItems.count + 1 : streamItems.count
+        if let streamItems = shelf?.stream.streamItems {
+            //Max number of items at 7 to avoid showing erroneous UI if the backend returns an unexpected number of items.
+            let numberOfItems = hasPlaylistShelf() ? streamItems.count + 1 : streamItems.count
+            return min(numberOfItems, 7)
         }
         return 0
     }

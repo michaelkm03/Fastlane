@@ -10,26 +10,35 @@ import UIKit
 
 class VListRecentShelfCollectionViewCell: VListShelfCollectionViewCell {
     
-    @IBOutlet weak var seeAllButton: UIButton!
+    @IBOutlet private weak var seeAllButton: UIButton!
     
-    @IBOutlet weak var seeAllButtonHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var seeAllButtonHeightConstraint: NSLayoutConstraint!
     
     private static let kTitleText: NSString = NSLocalizedString("RECENT POSTS", comment:"")
     private static let kSeeAllButtonText: NSString = NSLocalizedString("See all", comment:"")
     private static let kSeeAllChevron = UIImage(named: "chevron_icon")!
     
-    override func onDependencyManagerSet() {
-        super.onDependencyManagerSet()
-        if let dependencyManager = dependencyManager {
-            separatorView.backgroundColor = dependencyManager.accentColor
+    @IBAction private func pressedSeeAllButton(sender: VRightSideIconButton) {
+        if let shelf = shelf {
+            self.navigateTo(nil, fromShelf: shelf)
+        }
+    }
+    
+    override var dependencyManager: VDependencyManager? {
+        didSet {
+            if !VListShelfCollectionViewCell.needsUpdate(fromDependencyManager: oldValue, toDependencyManager: dependencyManager) { return }
             
-            titleLabel.font = dependencyManager.titleFont
-            detailLabel.font = dependencyManager.detailFont
-            seeAllButton.titleLabel?.font = dependencyManager.seeAllFont
-
-            titleLabel.textColor = dependencyManager.textColor
-            detailLabel.textColor = dependencyManager.textColor
-            seeAllButton.tintColor = dependencyManager.textColor
+            if let dependencyManager = dependencyManager {
+                separatorView.backgroundColor = dependencyManager.accentColor
+                
+                titleLabel.font = dependencyManager.titleFont
+                detailLabel.font = dependencyManager.detailFont
+                seeAllButton.titleLabel?.font = dependencyManager.seeAllFont
+                
+                titleLabel.textColor = dependencyManager.textColor
+                detailLabel.textColor = dependencyManager.textColor
+                seeAllButton.tintColor = dependencyManager.textColor
+            }
         }
     }
     
@@ -59,17 +68,21 @@ class VListRecentShelfCollectionViewCell: VListShelfCollectionViewCell {
         return UINib(nibName: "VListRecentShelfCollectionViewCell", bundle: nil)
     }
     
+    private func navigateTo(streamItem: VStreamItem?, fromShelf: VShelf) {
+        let responder: VShelfStreamItemSelectionResponder = typedResponder()
+        responder.navigateTo(streamItem, fromShelf: fromShelf)
+    }
+    
 }
 
 extension VListRecentShelfCollectionViewCell : UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let responder: VShelfStreamItemSelectionResponder = typedResponder()
-        if let stream = shelf?.stream, let streamItem = stream.streamItems[indexPath.row] as? VStreamItem {
-            responder.navigateTo(streamItem, fromShelf: shelf!)
+        if let shelf = shelf, let streamItem = shelf.stream.streamItems[indexPath.row] as? VStreamItem {
+            self.navigateTo(streamItem, fromShelf: shelf)
         }
         else {
-            assertionFailure("VListRecentShelfCollectionViewCell needs a VShelfStreamItemSelectionResponder up it's responder chain to send messages to.")
+            assertionFailure("A cell with an unexpected index path was selected from the VListRecentShelfCollectionViewCell")
         }
     }
     

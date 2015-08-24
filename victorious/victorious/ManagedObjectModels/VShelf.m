@@ -9,7 +9,6 @@
 #import "VShelf.h"
 #import "VStream.h"
 
-
 @implementation VShelf
 
 @dynamic stream;

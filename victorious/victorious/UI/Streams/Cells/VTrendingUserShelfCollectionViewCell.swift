@@ -53,36 +53,42 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     
     //MARK: - Setters
     
-    override func onShelfSet() {
-        super.onShelfSet()
-        if let shelf = shelf as? UserShelf {
-            titleLabel.text = VTrendingUserShelfCollectionViewCell.titleText as String
-            postsCountLabel.text = VTrendingUserShelfCollectionViewCell.getPostsCountText(shelf) as String
-            if let pictureUrl = NSURL(string: shelf.user.pictureUrl) {
-                userAvatarButton.setProfileImageURL(pictureUrl, forState: UIControlState.Normal)
+    override var shelf: VShelf? {
+        didSet {
+            if !VTrendingShelfCollectionViewCell.needsUpdate(fromShelf: oldValue, toShelf: shelf) { return }
+
+            if let shelf = shelf as? UserShelf {
+                titleLabel.text = VTrendingUserShelfCollectionViewCell.titleText as String
+                postsCountLabel.text = VTrendingUserShelfCollectionViewCell.getPostsCountText(shelf) as String
+                if let pictureUrl = NSURL(string: shelf.user.pictureUrl) {
+                    userAvatarButton.setProfileImageURL(pictureUrl, forState: UIControlState.Normal)
+                }
+                updateUsername()
             }
-            updateUsername()
         }
     }
     
-    override func onDependencyManagerSet() {
-        super.onDependencyManagerSet()
-        if let dependencyManager = dependencyManager {
-            followControl.dependencyManager = dependencyManager
-            
-            titleLabel.font = dependencyManager.titleFont
-            postsCountLabel.font = dependencyManager.postsCountFont
-            
-            let accentColor = dependencyManager.accentColor
-            separatorView.backgroundColor = accentColor
-            userAvatarButton.tintColor = accentColor
-            userAvatarButton.addBorderWithWidth(2, andColor: accentColor)
-            
-            let textColor = dependencyManager.textColor
-            titleLabel.textColor = textColor
-            postsCountLabel.textColor = textColor
-            
-            updateUsername()
+    override var dependencyManager: VDependencyManager? {
+        didSet {
+            if !VTrendingShelfCollectionViewCell.needsUpdate(fromDependencyManager: oldValue, toDependencyManager: dependencyManager) { return }
+
+            if let dependencyManager = dependencyManager {
+                followControl.dependencyManager = dependencyManager
+                
+                titleLabel.font = dependencyManager.titleFont
+                postsCountLabel.font = dependencyManager.postsCountFont
+                
+                let accentColor = dependencyManager.accentColor
+                separatorView.backgroundColor = accentColor
+                userAvatarButton.tintColor = accentColor
+                userAvatarButton.addBorderWithWidth(2, andColor: accentColor)
+                
+                let textColor = dependencyManager.textColor
+                titleLabel.textColor = textColor
+                postsCountLabel.textColor = textColor
+                
+                updateUsername()
+            }
         }
     }
     

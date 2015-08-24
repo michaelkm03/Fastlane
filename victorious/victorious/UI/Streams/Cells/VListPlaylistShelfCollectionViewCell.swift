@@ -12,16 +12,19 @@ class VListPlaylistShelfCollectionViewCell: VListShelfCollectionViewCell {
     
     private static let kTitleText: NSString = NSLocalizedString("FEATURED PLAYLIST", comment:"")
     
-    override func onDependencyManagerSet() {
-        super.onDependencyManagerSet()
-        if let dependencyManager = dependencyManager {
-            separatorView.backgroundColor = dependencyManager.accentColor
+    override var dependencyManager: VDependencyManager? {
+        didSet {
+            if !VListShelfCollectionViewCell.needsUpdate(fromDependencyManager: oldValue, toDependencyManager: dependencyManager) { return }
 
-            titleLabel.font = dependencyManager.titleFont
-            detailLabel.font = dependencyManager.detailFont
-            
-            titleLabel.textColor = dependencyManager.textColor
-            detailLabel.textColor = dependencyManager.textColor
+            if let dependencyManager = dependencyManager {
+                separatorView.backgroundColor = dependencyManager.accentColor
+                
+                titleLabel.font = dependencyManager.titleFont
+                detailLabel.font = dependencyManager.detailFont
+                
+                titleLabel.textColor = dependencyManager.textColor
+                detailLabel.textColor = dependencyManager.textColor
+            }
         }
     }
     
@@ -49,15 +52,12 @@ extension VListPlaylistShelfCollectionViewCell : UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let responder: VShelfStreamItemSelectionResponder = typedResponder()
-        if let stream = shelf?.stream, let streamItem = stream.streamItems[indexPath.row - 1] as? VStreamItem {
-            var itemToNavigateTo: VStreamItem? = streamItem
-            if indexPath.row == 0 {
-                itemToNavigateTo = nil
+        if let shelf = shelf {
+            var itemToNavigateTo: VStreamItem?
+            if indexPath.row != 0, let streamItem = shelf.stream.streamItems[indexPath.row - 1] as? VStreamItem {
+                itemToNavigateTo = streamItem
             }
-            responder.navigateTo(itemToNavigateTo, fromShelf: shelf!)
-        }
-        else {
-            assertionFailure("VListPlaylistShelfCollectionViewCell needs a VShelfStreamItemSelectionResponder up it's responder chain to send messages to.")
+            responder.navigateTo(itemToNavigateTo, fromShelf: shelf)
         }
     }
     
