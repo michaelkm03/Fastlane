@@ -123,7 +123,7 @@
 #import "VLightboxTransitioningDelegate.h"
 #import "VVideoLightboxViewController.h"
 #import "VImageLightboxViewController.h"
-
+#import "NSString+VParseHelp.h"
 //Shelves
 #import "VStreamCellFactory.h"
 #import "VSleekStreamCellFactory.h"
