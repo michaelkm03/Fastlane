@@ -216,7 +216,7 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     {
         self.isShowingPlaceholderText = YES;
         NSString *attachment = [VHashTags stringWithPrependedHashmarkFromString:self.defaultHashtag];
-        self.text = [NSLocalizedString(self.placeholderText, @"") stringByAppendingString:attachment?: @""];
+        self.text = [NSLocalizedString(self.placeholderText, @"") stringByAppendingString:attachment ?: @""];
         self.textView.alpha = 0.5f;
         
         NSRange cursorPosition = NSMakeRange( self.textView.text.length, 0 );
