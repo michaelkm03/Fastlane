@@ -46,14 +46,14 @@ typedef void (^VAuthorizedActionCompletion)(BOOL authorized);
                        completion:(VAuthorizedActionCompletion)completionActionBlock;
 
 /**
- *  Use this for forced registration. Takes a snapshot and adds it to the presentingViewControllers view hierarchy and removes after "-execute" is called. Execute must be called after the viewController hierarchy is prepared.
+ Provides calling code with a configured loginViewController.
+ 
+ @param authorizationContext An authorization context appropriate for the current login context.
+ @param completion A completionblock for handling the results of logging in.
+ 
+ @return A configured loginViewController.
  */
-- (BOOL)prepareInViewController:(UIViewController *)presentingViewController
-                        context:(VAuthorizationContext)authorizationContext
-                     completion:(VAuthorizedActionCompletion)completionActionBlock;
-/**
- *  Finishes the preparation work done in "-prepareInViewController:context:completion:"
- */
-- (void)execute;
+- (UIViewController *)loginViewControllerWithContext:(VAuthorizationContext)authorizationContext
+                                      WithCompletion:(VAuthorizedActionCompletion)completion;
 
 @end
