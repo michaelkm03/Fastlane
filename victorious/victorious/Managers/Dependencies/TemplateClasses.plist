@@ -152,6 +152,8 @@
 	<string>VBlurredMarqueeController</string>
 	<key>inset.marqueeCell</key>
 	<string>VInsetMarqueeController</string>
+	<key>explore.marqueeCell</key>
+	<string>victorious.ExploreMarqueeController</string>
 	<key>webView.screen</key>
 	<string>VWebBrowserViewController</string>
 	<key>standard.coachmark</key>
