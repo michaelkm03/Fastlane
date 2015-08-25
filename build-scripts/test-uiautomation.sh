@@ -21,46 +21,46 @@ fi
 TEST_REPORT_REPO="../VictoriousiOS.wiki"
 TEST_REPORT_REPO_URL="git@github.com:TouchFrame/VictoriousiOS.wiki.git"
 TEST_REPORT_FILE="UI-Automation-Tests.md"
-git clone $TEST_REPORT_REPO_URL $TEST_REPORT_REPO
+# git clone $TEST_REPORT_REPO_URL $TEST_REPORT_REPO
 
-# Copy provisioning profile into Xcode
-DEFAULT_PROVISIONING_PROFILE_UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i "$DEFAULT_PROVISIONING_PROFILE_PATH")`
-cp "$DEFAULT_PROVISIONING_PROFILE_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$DEFAULT_PROVISIONING_PROFILE_UUID.mobileprovision"
+# # Copy provisioning profile into Xcode
+# DEFAULT_PROVISIONING_PROFILE_UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i "$DEFAULT_PROVISIONING_PROFILE_PATH")`
+# cp "$DEFAULT_PROVISIONING_PROFILE_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$DEFAULT_PROVISIONING_PROFILE_UUID.mobileprovision"
 
-### Clean products folder
-if [ -d "products" ]; then
-    rm -rf products/*
-else
-    mkdir products
-fi
+# ### Clean products folder
+# if [ -d "products" ]; then
+#     rm -rf products/*
+# else
+#     mkdir products
+# fi
 
-Apply app configuration
-echo "Configuring for $CONFIGURATION"
-./build-scripts/apply-config.sh $CONFIGURATION
-if [ $? != 0 ]; then
-    echo "Error applying configuration for $CONFIGURATION"
-    exit 1
-fi
-
-# Download the latest template
-INFOPLIST="victorious/AppSpecific/Info.plist"
-BUILDNUM=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$INFOPLIST")
-# DEFAULT_ENVIRONMENT=$(/usr/libexec/PlistBuddy -c "Print :VictoriousServerEnvironment" "$INFOPLIST")
-# ./build-scripts/downloadtemplate "victorious.xcarchive/Products/Applications/victorious.app" "$DEFAULT_ENVIRONMENT"
+# Apply app configuration
+# echo "Configuring for $CONFIGURATION"
+# ./build-scripts/apply-config.sh $CONFIGURATION
 # if [ $? != 0 ]; then
+#     echo "Error applying configuration for $CONFIGURATION"
 #     exit 1
 # fi
 
-# Clean
-xcodebuild -workspace victorious/victorious.xcworkspace \
-   -scheme $SCHEME \
-   -destination generic/platform=iOS clean
+# # Download the latest template
+# INFOPLIST="victorious/AppSpecific/Info.plist"
+# BUILDNUM=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$INFOPLIST")
+# # DEFAULT_ENVIRONMENT=$(/usr/libexec/PlistBuddy -c "Print :VictoriousServerEnvironment" "$INFOPLIST")
+# # ./build-scripts/downloadtemplate "victorious.xcarchive/Products/Applications/victorious.app" "$DEFAULT_ENVIRONMENT"
+# # if [ $? != 0 ]; then
+# #     exit 1
+# # fi
 
-# Build
-xcodebuild test \
-    -workspace victorious/victorious.xcworkspace \
-    -scheme $SCHEME \
-    -destination platform="iOS",name="${DEVICE_NAME}"
+# # Clean
+# xcodebuild -workspace victorious/victorious.xcworkspace \
+#    -scheme $SCHEME \
+#    -destination generic/platform=iOS clean
+
+# # Build
+# xcodebuild test \
+#     -workspace victorious/victorious.xcworkspace \
+#     -scheme $SCHEME \
+#     -destination platform="iOS",name="${DEVICE_NAME}"
 
 TEST_RESULT=$?
 
