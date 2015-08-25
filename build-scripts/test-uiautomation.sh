@@ -18,7 +18,7 @@ if [ "$SCHEME" == "" -o "$CONFIGURATION" == "" ]; then
     exit 1
 fi
 
-TEST_REPORT_REPO="../VictoriousiOS.wiki"
+TEST_REPORT_REPO="../WIKI"
 TEST_REPORT_REPO_URL="git@github.com:TouchFrame/VictoriousiOS.wiki.git"
 TEST_REPORT_FILE="UI-Automation-Tests.md"
 # git clone $TEST_REPORT_REPO_URL $TEST_REPORT_REPO
