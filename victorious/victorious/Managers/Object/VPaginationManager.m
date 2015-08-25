@@ -62,8 +62,10 @@ NS_ASSUME_NONNULL_BEGIN
     {
         VAbstractFilter *filter = (VAbstractFilter *)[self.objectManager.managedObjectStore.mainQueueManagedObjectContext objectWithID:filterID];
         
-        filter.maxPageNumber = @([fullResponse[@"total_pages"] integerValue]);
-        filter.currentPageNumber = @([fullResponse[@"page_number"] integerValue]);
+        NSInteger maxPages = [fullResponse[@"total_pages"] integerValue];
+        filter.maxPageNumber = @(maxPages);
+        NSInteger newCurrentPageNumber = [filter pageNumberForPageType:pageType];
+        filter.currentPageNumber = @(newCurrentPageNumber <= maxPages ? newCurrentPageNumber : 1);
         [filter.managedObjectContext saveToPersistentStore:nil];
         
         [self stopLoadingFilter:filter];
