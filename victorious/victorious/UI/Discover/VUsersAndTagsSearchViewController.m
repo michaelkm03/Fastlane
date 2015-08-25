@@ -251,7 +251,6 @@ static NSInteger const kVMaxSearchResults = 1000;
     
     VFailBlock searchFail = ^(NSOperation *operation, NSError *error)
     {
-        VLog(@"\n\nHashtag Search Failed with the following error:\n%@", error);
         dispatch_async(dispatch_get_main_queue(), ^
         {
             [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -268,9 +267,9 @@ static NSInteger const kVMaxSearchResults = 1000;
         dispatch_async(dispatch_get_global_queue( QOS_CLASS_USER_INITIATED, 0), ^
         {
             self.tagSearchRequest = [[VObjectManager sharedManager] findHashtagsBySearchString:searchTerm
-                                                          limitPerPage:kVMaxSearchResults
-                                                          successBlock:searchSuccess
-                                                             failBlock:searchFail];
+                                                                                  limitPerPage:kVMaxSearchResults
+                                                                                  successBlock:searchSuccess
+                                                                                     failBlock:searchFail];
         });
     }
     else
@@ -305,7 +304,6 @@ static NSInteger const kVMaxSearchResults = 1000;
     
     VFailBlock searchFail = ^(NSOperation *operation, NSError *error)
     {
-        VLog(@"\n\nUser Search Failed with the following error: \n%@", error);
         dispatch_async(dispatch_get_main_queue(), ^
         {
             [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -321,11 +319,11 @@ static NSInteger const kVMaxSearchResults = 1000;
         dispatch_async(dispatch_get_global_queue( QOS_CLASS_USER_INITIATED, 0), ^
         {
             self.userSearchRequest = [[VObjectManager sharedManager] findUsersBySearchString:self.searchField.text
-                                                         sequenceID:nil
-                                                              limit:kVMaxSearchResults
-                                                            context:VObjectManagerSearchContextDiscover
-                                                   withSuccessBlock:searchSuccess
-                                                          failBlock:searchFail];
+                                                                                  sequenceID:nil
+                                                                                       limit:kVMaxSearchResults
+                                                                                     context:VObjectManagerSearchContextDiscover
+                                                                            withSuccessBlock:searchSuccess
+                                                                                   failBlock:searchFail];
         });
     }
     else
