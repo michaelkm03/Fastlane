@@ -410,7 +410,7 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
 - (void)hideLoginViewController:(void (^ __nonnull)(void))completion
 {
     [self.autoShowLoginViewController willMoveToParentViewController:nil];
-    [UIView animateWithDuration:0.35
+    [UIView animateWithDuration:0.5
                           delay:0.0
          usingSpringWithDamping:1.0f
           initialSpringVelocity:0.0f
