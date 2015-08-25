@@ -6,7 +6,6 @@
   Copyright (c) 2013 Victorious Inc. All rights reserved.
 */
 
-"Messages"              =   "Messages";
 "OK"                    =   "OK";
 "CancelButton"          =   "Cancel";
 "DeleteButton"          =   "Delete";
@@ -160,10 +159,6 @@
 "ReportCommentMessage"  =   "We will review this content within 24 hours.";
 "ReportUserMessage"     =   "This user will be reviewed within 24 hours";
 "CommentAlreadyReported" =  "Comment Already Flagged";
-
-"Create a Video Post"   =   "Create a Video Post";
-"Create an Image Post"  =   "Create an Image Post";
-"Create a Poll"         =   "Create a Poll";
 
 "Ask a question..."     =   "Ask a question...";
 "Vote this"             =   "Vote this";

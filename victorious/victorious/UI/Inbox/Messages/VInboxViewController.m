@@ -66,7 +66,6 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     {
         viewController.dependencyManager = dependencyManager;
         viewController.messageCountCoordinator = [[VUnreadMessageCountCoordinator alloc] initWithObjectManager:[dependencyManager objectManager]];
-        viewController.title = NSLocalizedString(@"Messages", @"");
         
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(inboxMessageNotification:) name:VInboxViewControllerInboxPushReceivedNotification object:nil];
