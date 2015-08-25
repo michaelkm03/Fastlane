@@ -65,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
         NSInteger maxPages = [fullResponse[@"total_pages"] integerValue];
         filter.maxPageNumber = @(maxPages);
         NSInteger newCurrentPageNumber = [filter pageNumberForPageType:pageType];
-        filter.currentPageNumber = @(newCurrentPageNumber <= maxPages ? newCurrentPageNumber : 1);
+        filter.currentPageNumber = @(MIN(newCurrentPageNumber, maxPages));
         [filter.managedObjectContext saveToPersistentStore:nil];
         
         [self stopLoadingFilter:filter];
