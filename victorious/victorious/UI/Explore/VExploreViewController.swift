@@ -73,18 +73,23 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if indexPath.section == 0 {
+        
+        switch indexPath.section {
+        case 0:
             if let marqueeCell = marqueeCellController?.marqueeCellForCollectionView(collectionView, atIndexPath: indexPath){
                 return marqueeCell
             }
-        }
-        else {
+            else {
+                fallthrough
+            }
+        default:
             if let placeHolderCell = collectionView.dequeueReusableCellWithReuseIdentifier("placeHolder", forIndexPath: indexPath) as? UICollectionViewCell {
                 return placeHolderCell
             }
+            else {
+                fatalError("Failed to create a cell")
+            }
         }
-
-        fatalError("Could not find a cell for item!")
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {

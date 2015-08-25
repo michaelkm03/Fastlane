@@ -4433,8 +4433,12 @@
             "identifier":"Menu Explore",
             "title":"Explore",
             "id":"55dba251a3aa8",
-            "icon":"TBD explore menu icon",
-            "iconSelected":"TBD explore menu iconSelected",
+            "icon":{
+              "imageURL" : "D_home"
+            },
+            "selectedIcon": {
+              "imageURL" : "D_home_selected"
+              },
             "destination":
             {
                 "name":"explore.screen",

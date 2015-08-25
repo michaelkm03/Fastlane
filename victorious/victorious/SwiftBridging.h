@@ -64,6 +64,7 @@
 #import "VImageLightboxViewController.h"
 #import "VImageSequencePreviewView.h"
 #import "VInlineSearchTableViewController.h"
+#import "VInsetMarqueeController.h"
 #import "VKeyboardInputAccessoryView.h"
 #import "VLargeNumberFormatter.h"
 #import "VLightboxTransitioningDelegate.h"
