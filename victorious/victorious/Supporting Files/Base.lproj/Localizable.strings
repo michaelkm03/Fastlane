@@ -11,8 +11,6 @@
 "DeleteButton"          =   "Delete";
 "ResetButton"           =   "Reset";
 "Publish"               =   "Publish";
-"Publishing..."         =   "Publishing...";
-"Rendering..."          =   "Rendering...";
 "Next"                  =   "Next";
 "Done"                  =   "Done";
 "More"                  =   "More";
@@ -32,7 +30,6 @@
 "InvalidTimePlaceholder"=   "-:--";
 "%ld+"                  =   "%ld+";
 
-"Login"                 =   "Login";
 "Log in here"           =   "Log in here";
 "Already Registered?"   =   "Already Registered?";
 "Get Started"           =   "Get Started!";
