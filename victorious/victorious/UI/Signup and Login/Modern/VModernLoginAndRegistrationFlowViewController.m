@@ -234,7 +234,6 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
             self.completionBlock(NO);
         }
     }
-    
 }
 
 - (void)selectedLogin
@@ -550,14 +549,24 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     }
     
     [self.view endEditing:YES];
-    [self.presentingViewController dismissViewControllerAnimated:YES
-                                                      completion:^
-     {
-         if (self.completionBlock != nil)
+    if (self.presentingViewController != nil)
+    {
+        [self.presentingViewController dismissViewControllerAnimated:YES
+                                                          completion:^
          {
-             self.completionBlock(success);
-         }
-     }];
+             if (self.completionBlock != nil)
+             {
+                 self.completionBlock(success);
+             }
+         }];
+    }
+    else
+    {
+        if (self.completionBlock != nil)
+        {
+            self.completionBlock(success);
+        }
+    }
 }
 
 - (UIViewController *)nextScreenInSocialRegistrationAfter:(UIViewController *)currentViewController inArray:(NSArray *)array

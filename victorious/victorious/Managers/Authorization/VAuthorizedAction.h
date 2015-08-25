@@ -12,6 +12,8 @@
 
 @class VObjectManager, VDependencyManager;
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef void (^VAuthorizedActionCompletion)(BOOL authorized);
 
 @interface VAuthorizedAction : NSObject
@@ -46,14 +48,16 @@ typedef void (^VAuthorizedActionCompletion)(BOOL authorized);
                        completion:(VAuthorizedActionCompletion)completionActionBlock;
 
 /**
- Provides calling code with a configured loginViewController.
+ Provides calling code with a configured loginViewController. Or nil if the user is already logged in.
  
  @param authorizationContext An authorization context appropriate for the current login context.
  @param completion A completionblock for handling the results of logging in.
  
- @return A configured loginViewController.
+ @return A configured loginViewController. Or nil if the user is already logged in.
  */
-- (UIViewController *)loginViewControllerWithContext:(VAuthorizationContext)authorizationContext
-                                      WithCompletion:(VAuthorizedActionCompletion)completion;
+- (UIViewController *__nullable)loginViewControllerWithContext:(VAuthorizationContext)authorizationContext
+                                                WithCompletion:(VAuthorizedActionCompletion)completion;
 
 @end
+
+NS_ASSUME_NONNULL_END

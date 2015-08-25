@@ -93,8 +93,14 @@ static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationVie
 - (UIViewController *)loginViewControllerWithContext:(VAuthorizationContext)authorizationContext
                                       WithCompletion:(VAuthorizedActionCompletion)completion
 {
+    // Nothing to show if we are already logged in so don't even create the loginVC.
+    if (self.objectManager.mainUserLoggedIn)
+    {
+        return nil;
+    }
+    
     return [self loginFlowControllerWithAuthorizationContext:authorizationContext
-                                   andCompletionBlock:completion];
+                                          andCompletionBlock:completion];
 }
 
 - (UIViewController <VLoginRegistrationFlow> *)loginFlowControllerWithAuthorizationContext:(VAuthorizationContext)authorizationContext andCompletionBlock:(VAuthorizedActionCompletion)completionActionBlock

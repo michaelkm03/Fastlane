@@ -411,7 +411,7 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
 {
     [self.autoShowLoginViewController willMoveToParentViewController:nil];
     [UIView animateWithDuration:0.35
-                          delay:0.0f
+                          delay:0.0
          usingSpringWithDamping:1.0f
           initialSpringVelocity:0.0f
                         options:kNilOptions

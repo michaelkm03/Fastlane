@@ -28,7 +28,7 @@ class AutoShowLoginOperation: Operation {
     private let viewControllerToPresentFrom: UIViewController
     
     /// A Delegate to manage the showing/hiding of the loginViewController.
-    var delegate: AutoShowLoginOperationDelegate?
+    weak var delegate: AutoShowLoginOperationDelegate?
     
     /// Initializes a new AutoShowLoginOperation with the provided parameters.
     ///
@@ -60,8 +60,7 @@ class AutoShowLoginOperation: Operation {
         beganExecuting()
         
         var shouldAutoShowLogin = dependencyManager.numberForKey(autoShowLoginKey)
-        if shouldAutoShowLogin.boolValue
-        {
+        if shouldAutoShowLogin.boolValue {
             dispatch_async(dispatch_get_main_queue(), {
                 var loginVC = self.loginAuthorizedAction.loginViewControllerWithContext(.Default,
                     withCompletion: { (success: Bool) in
@@ -69,7 +68,13 @@ class AutoShowLoginOperation: Operation {
                             self.finishedExecuting()
                         }
                     })
-                self.delegate?.showLoginViewController(loginVC)
+                if let loginVC = loginVC {
+                    self.delegate?.showLoginViewController(loginVC)
+                }
+                else {
+                    // If the loginVC is nil we should not show and just finish up
+                    self.finishedExecuting()
+                }
             })
         }
         else
