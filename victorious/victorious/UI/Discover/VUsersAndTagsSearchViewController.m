@@ -196,11 +196,6 @@ static NSInteger const kVMaxSearchResults = 1000;
         self.userSearchResultsVC.view.alpha = 1.0f;
         self.tagsSearchResultsVC.view.alpha = 0;
         
-        if ( self.searchField.text.length > 0 )
-        {
-            [self userSearch:sender];
-        }
-        
         if (self.isKeyboardShowing)
         {
             [self.userSearchResultsVC.tableView setContentInset:UIEdgeInsetsMake(0, 0, bottomInsetHeight, 0)];
@@ -213,11 +208,6 @@ static NSInteger const kVMaxSearchResults = 1000;
         
         self.userSearchResultsVC.view.alpha = 0;
         self.tagsSearchResultsVC.view.alpha = 1.0f;
-
-        if ( self.searchField.text.length > 0 )
-        {
-            [self hashtagSearch:sender];
-        }
 
         if (self.isKeyboardShowing)
         {
@@ -349,11 +339,18 @@ static NSInteger const kVMaxSearchResults = 1000;
 {
     if (userFlag && self.userSearchRequest != nil)
     {
-        [self.userSearchRequest cancel];
+        if (self.userSearchRequest.isExecuting)
+        {
+            [self.userSearchRequest cancel];
+        }
+
     }
     if (tagFlag && self.tagSearchRequest != nil)
     {
-        [self.tagSearchRequest cancel];
+        if (self.tagSearchRequest.isExecuting)
+        {
+            [self.tagSearchRequest cancel];
+        }
     }
 }
 
@@ -392,7 +389,17 @@ static NSInteger const kVMaxSearchResults = 1000;
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [self.searchField resignFirstResponder];
-    [self segmentControlAction:nil];
+    if (self.searchField.text.length > 0)
+    {
+        if ( self.segmentControl.selectedSegmentIndex == 0 )
+        {
+            [self userSearch:nil];
+        }
+        else if (self.segmentControl.selectedSegmentIndex == 1)
+        {
+            [self hashtagSearch:nil];
+        }
+    }
     
     return YES;
 }
