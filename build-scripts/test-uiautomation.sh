@@ -21,7 +21,7 @@ fi
 TEST_REPORT_REPO="../WIKI"
 TEST_REPORT_REPO_URL="git@github.com:TouchFrame/VictoriousiOS.wiki.git"
 TEST_REPORT_FILE="UI-Automation-Tests.md"
-# git clone $TEST_REPORT_REPO_URL $TEST_REPORT_REPO
+git clone $TEST_REPORT_REPO_URL $TEST_REPORT_REPO
 
 # # Copy provisioning profile into Xcode
 # DEFAULT_PROVISIONING_PROFILE_UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i "$DEFAULT_PROVISIONING_PROFILE_PATH")`
@@ -66,7 +66,6 @@ TEST_RESULT=$?
 
 echo "Tests completed: ${TEST_RESULT}"
 
-mkdir -p $TEST_REPORT_REPO
 cd $TEST_REPORT_REPO
 DIFF=`git diff`
 
