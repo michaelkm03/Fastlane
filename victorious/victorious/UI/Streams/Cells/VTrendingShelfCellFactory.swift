@@ -44,7 +44,7 @@ extension VTrendingShelfCellFactory: VStreamCellFactory {
         return cell
     }
     
-    private func setup(cell: VTrendingShelfCollectionViewCell, shelf: VShelf, dependencyManager: VDependencyManager) {
+    private func setup(cell: VTrendingShelfCollectionViewCell, shelf: Shelf, dependencyManager: VDependencyManager) {
         cell.dependencyManager = dependencyManager
         cell.shelf = shelf
     }

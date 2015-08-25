@@ -420,7 +420,7 @@ static const CGFloat kMaxImageDimension = 640.0f;
 
 - (NSURL *)persistToFileWithImage:(UIImage *)image
 {
-    NSURL *fileURL = [NSURL v_temporaryFileURLWithExtension:VConstantMediaExtensionJPG];
+    NSURL *fileURL = [NSURL v_temporaryFileURLWithExtension:VConstantMediaExtensionJPG inDirectory:kCameraDirectory];
     NSData *jpegData = UIImageJPEGRepresentation(image, VConstantJPEGCompressionQuality);
     [jpegData writeToURL:fileURL atomically:YES];
     return fileURL;

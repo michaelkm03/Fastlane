@@ -39,6 +39,7 @@
 //Managers
 #import "VDependencyManager+VObjectManager.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
+#import "VDependencyManager+VNavigationMenuItem.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Discover.h"
@@ -421,7 +422,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     if ( streamItems.count > 0 )
     {
         VStreamItem *streamItem = [streamItems firstObject];
-        hasMarqueeShelfAtTop = [streamItem.itemType isEqualToString:VStreamItemTypeMarquee];
+        hasMarqueeShelfAtTop = [streamItem.itemType isEqualToString:VStreamItemTypeShelf] && [streamItem.itemSubType isEqualToString:VStreamItemSubTypeMarquee];
     }
     
     if (self.streamDataSource.hasHeaderCell || hasMarqueeShelfAtTop)
@@ -504,11 +505,32 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)navigateToStream:(VStream *)stream atStreamItem:(VStreamItem *)streamItem
 {
-    if ( [stream isSingleStream] )
+    BOOL isShelf = [stream isShelf];
+    if ( [stream isSingleStream] || isShelf )
     {
-        VStreamCollectionViewController *streamCollection = [self.dependencyManager templateValueOfType:[VStreamCollectionViewController class]
-                                                                                                 forKey:kStreamCollectionKey
-                                                                                  withAddedDependencies:@{ kSequenceIDKey: stream.remoteId, VDependencyManagerTitleKey: stream.name }];
+        VStreamCollectionViewController *streamCollection = nil;
+        NSMutableDictionary *baseConfiguration = [[NSMutableDictionary alloc] initWithDictionary:@{ kSequenceIDKey: stream.remoteId, VDependencyManagerTitleKey: stream.name, VDependencyManagerAccessoryScreensKey : @[] }];
+        
+        if ( isShelf )
+        {
+            [baseConfiguration addEntriesFromDictionary:@{ VStreamCollectionViewControllerStreamURLKey : stream.apiPath }];
+            VDependencyManager *dependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:baseConfiguration];
+            if ( [stream isKindOfClass:[HashtagShelf class]] )
+            {
+                HashtagShelf *hashtagShelf = (HashtagShelf *)stream;
+                streamCollection = [dependencyManager hashtagStreamWithHashtag:hashtagShelf.hashtagTitle];
+            }
+            else
+            {
+                streamCollection = [VStreamCollectionViewController newWithDependencyManager:dependencyManager];
+            }
+        }
+        else
+        {
+            VDependencyManager *dependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:baseConfiguration];
+            streamCollection = [VStreamCollectionViewController newWithDependencyManager:dependencyManager];
+        }
+        
         streamCollection.currentStream = stream;
         streamCollection.targetStreamItem = streamItem;
         [self.navigationController pushViewController:streamCollection animated:YES];

@@ -29,6 +29,8 @@
 #import "VStreamItem+Fetcher.h"
 #import "VEditorializationItem.h"
 
+#import "victorious-Swift.h"
+
 const NSInteger kTooManyNewMessagesErrorCode = 999;
 
 static const NSInteger kDefaultPageSize = 40;
@@ -480,6 +482,11 @@ static const NSInteger kUserSearchResultLimit = 20;
             VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:streamItem.objectID];
             [self addEditorializationToStreamItem:streamItemInContext inStreamWithApiPath:apiPath usingHeadline:streamItem.headline inMarquee:NO];
             streamItem.headline = nil;
+            if ( [streamItem isKindOfClass:[Shelf class]] )
+            {
+                Shelf *shelf = (Shelf *)streamItem;
+                shelf.apiPath = shelf.streamUrl.v_pathComponent;
+            }
             [streamItems addObject:streamItemInContext];
         }
         stream.streamItems = streamItems;

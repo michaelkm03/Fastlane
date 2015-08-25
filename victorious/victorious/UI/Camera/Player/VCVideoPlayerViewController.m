@@ -120,6 +120,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self removeObserverFromOldPlayerItemAndAddObserverToPlayerItem:nil];
     [_player removeObserver:self forKeyPath:NSStringFromSelector(@selector(currentItem))];
     [_player removeObserver:self forKeyPath:NSStringFromSelector(@selector(rate))];
@@ -172,6 +173,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     self.wasPlayingBeforeDissappeared = (self.player.rate > 0.0f);
     [self.player pause];
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -188,6 +191,11 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     {
         [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(returnFromBackground)
+                                                 name:UIApplicationWillEnterForegroundNotification
+                                               object:nil];
 }
 
 - (void)addDoubleTapGestureRecognizer
@@ -202,6 +210,15 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     doubleTap.delegate = self;
     self.videoFrameDoubleTapGesture = doubleTap;
     [self.view addGestureRecognizer:doubleTap];
+}
+
+- (void)returnFromBackground
+{
+    // Indicates a GIF
+    if (!self.shouldShowToolbar)
+    {
+        [self.player play];
+    }
 }
 
 #pragma mark - Properties

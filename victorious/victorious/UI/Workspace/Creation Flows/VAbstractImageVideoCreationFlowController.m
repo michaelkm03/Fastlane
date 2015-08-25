@@ -61,6 +61,7 @@ static NSString * const kCreationFlowSourceSearch = @"search";
 @property (nonatomic, strong) VPublishPresenter *publishPresenter;
 
 // These come from the workspace not capture
+@property (nonatomic, strong) NSURL *capturedMediaURL;
 @property (nonatomic, strong) NSURL *renderedMediaURL;
 @property (nonatomic, strong) UIImage *previewImage;
 
@@ -191,7 +192,6 @@ static NSString * const kCreationFlowSourceSearch = @"search";
             strongSelf.interactivePopGestureRecognizer.delegate = nil;
             strongSelf.publishPresenter = nil;
             [strongSelf cleanupCapturedFile];
-            [strongSelf cleanupRenderedFile];
             
             // We're done!
             [strongSelf.creationFlowDelegate creationFlowController:strongSelf
@@ -266,11 +266,10 @@ static NSString * const kCreationFlowSourceSearch = @"search";
 
 - (void)cleanupCapturedFile
 {
-    [[NSFileManager defaultManager] removeItemAtURL:self.workspaceViewController.mediaURL
+    [[NSFileManager defaultManager] removeItemAtURL:self.capturedMediaURL
                                               error:nil];
 }
 
-// Only call me when you know rendered mediaURL is no longer valid and any calling classes havne't been provided this URL
 - (void)cleanupRenderedFile
 {
     [[NSFileManager defaultManager] removeItemAtURL:self.renderedMediaURL
@@ -287,13 +286,14 @@ static NSString * const kCreationFlowSourceSearch = @"search";
                        previewImage:(UIImage *)previewImage
                   shouldSkipTrimmer:(BOOL)shouldSkipTrimmerForContext
 {
+    self.capturedMediaURL = mediaURL;
+    self.previewImage = previewImage;
+    
     // If the user has permission to skip the trimmmer (API Driven)
     // Go straight to publish do not pass go, do not collect $200
     BOOL shouldSkipTrimmerForUser = [[[VObjectManager sharedManager] mainUser] shouldSkipTrimmer] && [self isKindOfClass:[VVideoCreationFlowController class]];
     if ( shouldSkipTrimmerForContext || shouldSkipTrimmerForUser )
     {
-        self.renderedMediaURL = mediaURL;
-        self.previewImage = previewImage;
         [self afterEditingFinished];
         
         // Since we're skipping the video camera clear the state
@@ -329,7 +329,8 @@ static NSString * const kCreationFlowSourceSearch = @"search";
 - (void)gridViewController:(VAssetCollectionGridViewController *)gridViewController
              selectedAsset:(PHAsset *)asset
 {
-    MBProgressHUD *hudForView = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    MBProgressHUD *hudForView = [MBProgressHUD showHUDAddedTo:self.view.window animated:YES];
+    hudForView.dimBackground = YES;
     self.downloader = [self downloaderWithAsset:asset];
     __weak typeof(self) welf = self;
     [self.downloader downloadWithProgress:^(BOOL accurateProgress, double progress, NSString *progressText)
@@ -348,8 +349,12 @@ static NSString * const kCreationFlowSourceSearch = @"search";
          if (error == nil)
          {
              strongSelf.source = VCreationFlowSourceLibrary;
-             strongSelf.publishParameters.width = asset.pixelWidth;
-             strongSelf.publishParameters.height = asset.pixelHeight;
+             // We need to set this so that local videos preserve aspect ratio.
+             if (asset.mediaType == PHAssetMediaTypeVideo)
+             {
+                 strongSelf.publishParameters.width = asset.pixelWidth;
+                 strongSelf.publishParameters.height = asset.pixelHeight;
+             }
              [strongSelf captureFinishedWithMediaURL:downloadedFileURL
                                         previewImage:previewImage];
          }
