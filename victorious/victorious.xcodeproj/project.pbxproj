@@ -885,13 +885,10 @@
 		C33C7D191B7E657F00CCFBB6 /* GIFCommentTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33C7D181B7E657F00CCFBB6 /* GIFCommentTest.swift */; };
 		C3475B6D1B507087007C3782 /* VForcedWorkspaceContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3475B6C1B507087007C3782 /* VForcedWorkspaceContainerViewController.m */; };
 		C3475B6F1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3475B6E1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard */; };
-		C348D1FB1B8B8A320040042C /* CCColorCube.m in Sources */ = {isa = PBXBuildFile; fileRef = C348D1F81B8B8A320040042C /* CCColorCube.m */; settings = {COMPILER_FLAGS = "-w"; }; };
-		C348D1FC1B8B8A320040042C /* CCLocalMaximum.m in Sources */ = {isa = PBXBuildFile; fileRef = C348D1FA1B8B8A320040042C /* CCLocalMaximum.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		C348D20A1B8C03CA0040042C /* ColorDifference.swift in Sources */ = {isa = PBXBuildFile; fileRef = C348D1FE1B8C03CA0040042C /* ColorDifference.swift */; };
-		C348D20B1B8C03CA0040042C /* ColorSpaceConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = C348D2001B8C03CA0040042C /* ColorSpaceConversion.m */; };
+		C348D20B1B8C03CA0040042C /* ColorSpaceConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = C348D2001B8C03CA0040042C /* ColorSpaceConversion.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		C348D20C1B8C03CA0040042C /* DominantColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C348D2021B8C03CA0040042C /* DominantColors.swift */; };
-		C348D20D1B8C03CA0040042C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C348D2031B8C03CA0040042C /* Info.plist */; };
-		C348D20E1B8C03CA0040042C /* INVector3.m in Sources */ = {isa = PBXBuildFile; fileRef = C348D2051B8C03CA0040042C /* INVector3.m */; };
+		C348D20E1B8C03CA0040042C /* INVector3.m in Sources */ = {isa = PBXBuildFile; fileRef = C348D2051B8C03CA0040042C /* INVector3.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		C348D20F1B8C03CA0040042C /* INVector3SwiftExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C348D2061B8C03CA0040042C /* INVector3SwiftExtensions.swift */; };
 		C348D2101B8C03CA0040042C /* KMeans.swift in Sources */ = {isa = PBXBuildFile; fileRef = C348D2071B8C03CA0040042C /* KMeans.swift */; };
 		C348D2111B8C03CA0040042C /* Memoization.swift in Sources */ = {isa = PBXBuildFile; fileRef = C348D2081B8C03CA0040042C /* Memoization.swift */; };
@@ -2903,16 +2900,11 @@
 		C3475B6B1B507087007C3782 /* VForcedWorkspaceContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VForcedWorkspaceContainerViewController.h; sourceTree = "<group>"; };
 		C3475B6C1B507087007C3782 /* VForcedWorkspaceContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VForcedWorkspaceContainerViewController.m; sourceTree = "<group>"; };
 		C3475B6E1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VForcedWorkspaceContainerViewController.storyboard; sourceTree = "<group>"; };
-		C348D1F71B8B8A320040042C /* CCColorCube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCColorCube.h; sourceTree = "<group>"; };
-		C348D1F81B8B8A320040042C /* CCColorCube.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCColorCube.m; sourceTree = "<group>"; };
-		C348D1F91B8B8A320040042C /* CCLocalMaximum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCLocalMaximum.h; sourceTree = "<group>"; };
-		C348D1FA1B8B8A320040042C /* CCLocalMaximum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCLocalMaximum.m; sourceTree = "<group>"; };
 		C348D1FE1B8C03CA0040042C /* ColorDifference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorDifference.swift; sourceTree = "<group>"; };
 		C348D1FF1B8C03CA0040042C /* ColorSpaceConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorSpaceConversion.h; sourceTree = "<group>"; };
 		C348D2001B8C03CA0040042C /* ColorSpaceConversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorSpaceConversion.m; sourceTree = "<group>"; };
 		C348D2011B8C03CA0040042C /* DominantColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DominantColor.h; sourceTree = "<group>"; };
 		C348D2021B8C03CA0040042C /* DominantColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DominantColors.swift; sourceTree = "<group>"; };
-		C348D2031B8C03CA0040042C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C348D2041B8C03CA0040042C /* INVector3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INVector3.h; sourceTree = "<group>"; };
 		C348D2051B8C03CA0040042C /* INVector3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INVector3.m; sourceTree = "<group>"; };
 		C348D2061B8C03CA0040042C /* INVector3SwiftExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = INVector3SwiftExtensions.swift; sourceTree = "<group>"; };
@@ -5063,7 +5055,6 @@
 			isa = PBXGroup;
 			children = (
 				C348D1FD1B8C03CA0040042C /* DominantColor */,
-				C348D1F61B8B8A320040042C /* ColorCube */,
 				DBAD88EA19F5B7F200D678A0 /* Ad Networks */,
 				038B7F9419DB8D2500F739DF /* ADEUMInstrumentation.framework */,
 				03C1859519B42D3000E27D05 /* Crashlytics.framework */,
@@ -6902,17 +6893,6 @@
 			name = Permissions;
 			sourceTree = "<group>";
 		};
-		C348D1F61B8B8A320040042C /* ColorCube */ = {
-			isa = PBXGroup;
-			children = (
-				C348D1F71B8B8A320040042C /* CCColorCube.h */,
-				C348D1F81B8B8A320040042C /* CCColorCube.m */,
-				C348D1F91B8B8A320040042C /* CCLocalMaximum.h */,
-				C348D1FA1B8B8A320040042C /* CCLocalMaximum.m */,
-			);
-			path = ColorCube;
-			sourceTree = "<group>";
-		};
 		C348D1FD1B8C03CA0040042C /* DominantColor */ = {
 			isa = PBXGroup;
 			children = (
@@ -6921,7 +6901,6 @@
 				C348D2001B8C03CA0040042C /* ColorSpaceConversion.m */,
 				C348D2011B8C03CA0040042C /* DominantColor.h */,
 				C348D2021B8C03CA0040042C /* DominantColors.swift */,
-				C348D2031B8C03CA0040042C /* Info.plist */,
 				C348D2041B8C03CA0040042C /* INVector3.h */,
 				C348D2051B8C03CA0040042C /* INVector3.m */,
 				C348D2061B8C03CA0040042C /* INVector3SwiftExtensions.swift */,
@@ -8411,7 +8390,6 @@
 				0326C36019F8226200DBC341 /* Images.xcassets in Resources */,
 				037A643019F727AB0001C90B /* VCVideoPlayerToolbarView.xib in Resources */,
 				672E5F461B83A99A00D898DE /* exploreScreenDevelopment.json in Resources */,
-				C348D20D1B8C03CA0040042C /* Info.plist in Resources */,
 				036F38961A0C4DEA0014DF66 /* Ubuntu-Regular.ttf in Resources */,
 				A780ED5A1A933D9300A8CD5D /* filters.xml in Resources */,
 				A7AEF9B21A83F1C300A3D3A0 /* VFooterActivityIndicatorView.xib in Resources */,
@@ -9204,7 +9182,6 @@
 				F0C83A631B162DE200A6EC1A /* VImageStreamPreviewView.m in Sources */,
 				BE799B8F19C8A91C0023CE88 /* VInteraction.m in Sources */,
 				D8D8958919E88C2100632663 /* VExperienceEnhancerBarCell.m in Sources */,
-				C348D1FC1B8B8A320040042C /* CCLocalMaximum.m in Sources */,
 				A75ECFFE1AB0B6B400C35063 /* VCropOverlayView.m in Sources */,
 				A75ED0DE1AB7BC3E00C35063 /* VHashtagType.m in Sources */,
 				A7ECC1D71AD6178F0003E00A /* VBaseWorkspaceViewController.m in Sources */,
@@ -9703,7 +9680,6 @@
 				D85E428A1AFA9A3C00A13BD3 /* VTextSequencePreviewView.m in Sources */,
 				D85B706D1B0EAF3F0038CA5B /* VTemplateBackgroundView.m in Sources */,
 				F0A04FA61A8D6DF100504E26 /* VTextbarSelectorView.m in Sources */,
-				C348D1FB1B8B8A320040042C /* CCColorCube.m in Sources */,
 				D888B52A1A86FC7800B34149 /* VRadialGradientLayer.m in Sources */,
 				A721E9101B572454000B7901 /* AVAsset+Orientation.m in Sources */,
 				794246451B7D39B000F5F879 /* Operation.swift in Sources */,

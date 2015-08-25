@@ -15,7 +15,6 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell, VStreamCe
     private var gradient = TrendingTopicGradientView()
     private var label = UILabel()
     private var blurredImageView = UIImageView()
-    private let colorCube = CCColorCube()
     
     private lazy var blurMask: TrendingTopicGradientView = {
         let blurMask = TrendingTopicGradientView()
@@ -24,20 +23,16 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell, VStreamCe
         return blurMask
     }()
     
-    var color: UIColor? {
-        didSet {
-            gradient.primaryColor = color
-        }
-    }
-    
     var streamItem: VStreamItem? {
         didSet {
             self.label.text = streamItem?.name ?? ""
             if let previewImageURL = (streamItem?.previewImagesObject as? String),
                 url = NSURL(string: previewImageURL)  {
-                imageView.sd_setImageWithURL(url, placeholderImage: nil, completed: { (image, error, cacheType, url) -> Void in
+                imageView.sd_setImageWithURL(url, placeholderImage: nil, completed: {[weak self] (image, error, cacheType, url) -> Void in
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        self.image = image
+                        if let strongSelf = self {
+                            strongSelf.image = image
+                        }
                     })
                 })
             }
@@ -48,15 +43,27 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell, VStreamCe
         didSet {
             if let image = self.image {
                 
-                let colors = self.colorCube.extractColorsFromImage(image, flags: CCOrderByBrightness.value)
-                if let color = colors.first as? UIColor {
+                if let color = image.dominantColors().first {
                     self.gradient.primaryColor =  color
                 }
                 
                 self.blurredImageView.blurImage(image, withTintColor: nil, toCallbackBlock: { (img) -> Void in
                     self.blurredImageView.image = img
                     self.blurredImageView.layer.mask = self.blurMask.layer
+                    self.blurredImageView.alpha = 1
+                    self.gradient.alpha = 1
+                    self.blurMask.alpha = 1
                 })
+            }
+        }
+    }
+    
+    /// The dependency manager whose colors and fonts will be used to style this cell.
+    var dependencyManager: VDependencyManager? {
+        didSet {
+            if let dependencyManager = dependencyManager {
+                dependencyManager.addLoadingBackgroundToBackgroundHost(self)
+                label.font = dependencyManager.labelFont
             }
         }
     }
@@ -97,13 +104,40 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell, VStreamCe
         self.contentView.addSubview(label)
         self.contentView.v_addPinToLeadingTrailingToSubview(label, leading: 10, trailing: 10)
         self.contentView.v_addPintoTopBottomToSubview(label, top: 0, bottom: 0)
+        
+        initialState()
+    }
+    
+    override func prepareForReuse() {
+        initialState()
+    }
+    
+    private func initialState() {
+        blurredImageView.alpha = 0
+        gradient.alpha = 0
+        blurMask.alpha = 0
+        imageView.image = nil
+    }
+}
+
+extension TrendingTopicContentCollectionViewCell: VBackgroundContainer {
+    
+    func loadingBackgroundContainerView() -> UIView! {
+        return contentView
+    }
+}
+
+private extension VDependencyManager {
+    
+    var labelFont: UIFont {
+        return fontForKey(VDependencyManagerLabel2FontKey)
     }
 }
 
 extension TrendingTopicContentCollectionViewCell: VStreamCellComponentSpecialization {
     
     class func reuseIdentifierForStreamItem(streamItem: VStreamItem, baseIdentifier: String?, dependencyManager: VDependencyManager?) -> String {
-        return "trendingContentCell"
+        return NSStringFromClass(self)
     }
 }
 

@@ -116,7 +116,7 @@ extension TrendingTopicShelfCollectionViewCell: UICollectionViewDataSource {
             let reuseIdentifier = TrendingTopicContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! TrendingTopicContentCollectionViewCell
             cell.streamItem = streamItem
-//            cell.dependencyManager = dependencyManager
+            cell.dependencyManager = dependencyManager
             return cell
         }
         assertionFailure("TrendingTopicShelfCollectionViewCell was asked to display an object that isn't a stream item.")
