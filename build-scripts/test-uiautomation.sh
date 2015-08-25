@@ -13,8 +13,8 @@ DEFAULT_PROVISIONING_PROFILE_PATH="build-scripts/tests.mobileprovision"
 DEFAULT_CODESIGN_ID="iPhone Distribution: Victorious, Inc"
 BUILDINFO_PLIST="buildinfo.plist"
 
-if [ "$SCHEME" == "" == "" -o "$CONFIGURATION" == "" ]; then
-    echo "Usage: `basename $0` <scheme> <environment> <configuration (App name)>"
+if [ "$SCHEME" == "" -o "$CONFIGURATION" == "" ]; then
+    echo "Usage: `basename $0` <scheme> <configuration (App name)>"
     exit 1
 fi
 
@@ -47,20 +47,24 @@ BUILDNUM=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$INFOPLIST")
 # fi
 
 # Clean
-xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination generic/platform=iOS clean
+# xcodebuild -workspace victorious/victorious.xcworkspace \
+#    -scheme $SCHEME \
+#z    -destination generic/platform=iOS clean
 
 # xcodebuild test \
 #     -workspace victorious/victorious.xcworkspace \
 #     -scheme $SCHEME \
 #     -destination 'platform=iOS Simulator,name=iPhone 6'
 
-Build
+# Build
 xcodebuild test \
     -workspace victorious/victorious.xcworkspace \
     -scheme $SCHEME \
     -destination platform="iOS",name="${DEVICE_NAME}"
 
 TEST_RESULT=$?
+
+echo "Tests completed: ${TEST_RESULT}"
 
 TEST_REPORT_FILE="UI-Automation-Tests.md"
 TEST_REPORT_REPO="../VictoriousiOS.wiki"

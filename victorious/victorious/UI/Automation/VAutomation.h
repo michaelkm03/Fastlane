@@ -76,6 +76,7 @@ extern NSString * const VAutomationIdentifierContentViewCommentCell;
 extern NSString * const VAutomationIdentifierContentViewCloseButton;
 
 extern NSString * const VAutomationIdentifierTextPostMainField;
+extern NSString * const VAutomationIdentifierTextPostEditableMainField;
 
 extern NSString * const VAutomationIdentifierCommentBarTextView;
 extern NSString * const VAutomationIdentifierCommentBarImageButton;

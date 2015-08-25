@@ -452,9 +452,9 @@
 		A70FC1131A2D61A000F5BBDE /* VProductsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC1121A2D61A000F5BBDE /* VProductsRequest.m */; };
 		A70FC1251A31207400F5BBDE /* VVoteSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC1241A31207400F5BBDE /* VVoteSettings.m */; };
 		A716FC2A1AAE0EF50032AA40 /* VAuthorizedActionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A716FC291AAE0EF50032AA40 /* VAuthorizedActionTests.m */; };
-		A71CE3161B8BE8AD00E17BCD /* CommentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76A069C1B87B13600D91214 /* CommentTests.swift */; };
-		A71CE3181B8BEE6200E17BCD /* ContentCreationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76A069B1B87B13600D91214 /* ContentCreationTests.swift */; };
 		A71CE3191B8BEE6200E17BCD /* RegistrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D535651B87CDD9009D84C8 /* RegistrationTests.swift */; };
+		A71CE31A1B8D137600E17BCD /* CommentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76A069C1B87B13600D91214 /* CommentTests.swift */; };
+		A71CE31B1B8D137600E17BCD /* ContentCreationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76A069B1B87B13600D91214 /* ContentCreationTests.swift */; };
 		A71DAF241B695FC200E0BE53 /* AutomationId.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71DAF231B695FC200E0BE53 /* AutomationId.swift */; };
 		A71F2E6D1B7BD24F00159392 /* LocalNotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F2E6C1B7BD24F00159392 /* LocalNotificationScheduler.swift */; };
 		A71F2E6F1B7BFDEE00159392 /* VDependencyManager+LocalNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F2E6E1B7BFDEE00159392 /* VDependencyManager+LocalNotification.swift */; };
@@ -8818,8 +8818,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A76A06A31B87B13600D91214 /* KIFExtensions.swift in Sources */,
-				A71CE3161B8BE8AD00E17BCD /* CommentTests.swift in Sources */,
-				A71CE3181B8BEE6200E17BCD /* ContentCreationTests.swift in Sources */,
+				A71CE31B1B8D137600E17BCD /* ContentCreationTests.swift in Sources */,
+				A71CE31A1B8D137600E17BCD /* CommentTests.swift in Sources */,
 				A71F2E701B7D16DC00159392 /* VAutomation.m in Sources */,
 				A7DB4D481B7ACB9A00199D10 /* AutomationId.swift in Sources */,
 				A71CE3191B8BEE6200E17BCD /* RegistrationTests.swift in Sources */,

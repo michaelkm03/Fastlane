@@ -55,17 +55,21 @@ class RegistrationTests : VictoriousTestCase {
         self.tester().waitForViewWithAccessibilityLabel( VAutomationIdentifierSettingsLogOut ).tap()
     }
     
+    func generateRandomInteger() -> Int {
+        return 100000 + Int(arc4random() % 899999 )
+    }
+    
     func testSignupWithEmail() {
         self.tester().waitForTappableViewWithAccessibilityLabel( VAutomationIdentifierLRegistrationEmail ).tap()
         
-        let randomInteger = 100000 + Int(arc4random() % 899999 )
+        let randomCaptionInteger = self.generateRandomInteger()
         
         self.changeReturnKey()
         
         let email = "user@user.com"
         self.addStep( "Log in with existing user account (\(email)) and wrong password." )
         self.tester().enterText( email, intoViewWithAccessibilityLabel: VAutomationIdentifierSignupEmailField )
-        self.tester().enterText( "\(randomInteger)\(randomInteger)", intoViewWithAccessibilityLabel: VAutomationIdentifierSignupPasswordField )
+        self.tester().enterText( "\(randomCaptionInteger)\(randomCaptionInteger)", intoViewWithAccessibilityLabel: VAutomationIdentifierSignupPasswordField )
         self.tester().tapViewWithAccessibilityLabel( "Next" )
         self.addStep( "Ensure that error alert appears and dismiss by pressing *OK*." )
         self.tester().tapViewWithAccessibilityLabel( "OK" )
@@ -90,7 +94,7 @@ class RegistrationTests : VictoriousTestCase {
         XCTAssertFalse( emailValidationText.hidden )
         
         // Missing password
-        let randomEmail = "user\(randomInteger)@user.com"
+        let randomEmail = "user\(self.generateRandomInteger())@user.com"
         self.addStep( "Enter a random email (e.g. \(randomEmail)) but leave password blank." )
         self.tester().enterText( randomEmail, intoViewWithAccessibilityLabel: VAutomationIdentifierSignupEmailField )
         self.tester().enterText( "", intoViewWithAccessibilityLabel: VAutomationIdentifierSignupPasswordField )
@@ -104,21 +108,38 @@ class RegistrationTests : VictoriousTestCase {
         self.tester().enterText( "password", intoViewWithAccessibilityLabel: VAutomationIdentifierSignupPasswordField )
         self.tester().tapViewWithAccessibilityLabel( "Next" )
         
-        let username = "Automated User \(randomInteger)"
+        let username = "\(self.generateRandomInteger()) \(self.generateRandomInteger())"
         self.tester().enterText( username, intoViewWithAccessibilityLabel: VAutomationIdentifierSignupUsernameField )
         self.addStep( "Add a randomly generated user name (e.g. \(username))" )
         self.tester().tapViewWithAccessibilityLabel( "Next" )
         
         self.tester().waitForTimeInterval( 12.0 )
+        self.addStep( "Skipping add photo." )
         self.tester().tapViewWithAccessibilityLabel( "Next" )
         
         self.tester().waitForTimeInterval( 2.0 )
-        self.tester().tapViewWithAccessibilityLabel( "Skip" )
+        self.addStep( "Dismiss suggested users/follow tutorial (if present)" )
+        if self.elementExistsWithAccessibilityLabel( "Next" ) {
+            self.tester().tapViewWithAccessibilityLabel( "Next" )
+        }
+        
+        self.tester().waitForTimeInterval( 2.0 )
+        self.addStep( "Skip forced content creation (if possible), otherwise add random text for first post." )
+        if self.elementExistsWithAccessibilityLabel( "Skip" ) {
+            self.tester().tapViewWithAccessibilityLabel( "Skip" )
+        }
+        else {
+            let text = "\(self.generateRandomInteger()) \(self.generateRandomInteger())"
+            self.tester().waitForViewWithAccessibilityLabel(VAutomationIdentifierTextPostEditableMainField).tap()
+            self.tester().enterTextIntoCurrentFirstResponder( text )
+            self.tester().tapViewWithAccessibilityLabel( "Done" )
+            self.tester().waitForTimeInterval( 2.0 )
+            self.tester().tapViewWithAccessibilityLabel( "Done" )
+        }
+        
+        self.addStep( "Return to profile screen from settings." )
         self.tester().tapViewWithAccessibilityLabel( "Back" )
         
-        self.addStep( "Skip adding a photo and forced content creation" )
-        
-        // Logout button should be displayed
         self.addStep( "If registration in was successful, the profile stream should now be visible with the randomly-generated username used to sign up now visible in the UI." )
         let label = self.tester().waitForViewWithAccessibilityLabel( VAutomationIdentifierProfileUsernameTitle ) as! UILabel
         XCTAssertEqual( label.text!, username )

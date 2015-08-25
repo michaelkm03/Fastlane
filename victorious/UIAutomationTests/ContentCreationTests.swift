@@ -17,7 +17,7 @@ class ContentCreationTests: VictoriousTestCase {
     
     func testCreateImage() {
         
-        self.addStep( "Select IMAGE from the creation menu." )
+        self.addStep( "Select *IMAGE* from the creation menu." )
         
         self.tester().tapViewWithAccessibilityLabel( "Menu Create" )
         

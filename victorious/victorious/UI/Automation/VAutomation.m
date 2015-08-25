@@ -65,6 +65,7 @@ NSString * const VAutomationIdentifierContentViewCommentCell         = @"Content
 NSString * const VAutomationIdentifierContentViewCloseButton         = @"Content View Close Button";
 
 NSString * const VAutomationIdentifierTextPostMainField              = @"Text Post Main Field";
+NSString * const VAutomationIdentifierTextPostEditableMainField      = @"Text Post Editable Main Field";
 
 NSString * const VAutomationIdentifierCommentBarTextView             = @"Comment Bar Text View";
 NSString * const VAutomationIdentifierCommentBarImageButton          = @"Comment Bar Image Button";
