@@ -4444,6 +4444,15 @@
                   "blue": 255,
                   "alpha": 255
                 }
+               },
+               "loadingBackground": {
+                  "name": "tilePattern.background",
+                  "color": {
+                  "red": 255,
+                  "green": 255,
+                  "blue": 255,
+                  "alpha": 255
+                }
               },
               "id": "55d365637e1ab",
               "hasHeaderParallax": true,
