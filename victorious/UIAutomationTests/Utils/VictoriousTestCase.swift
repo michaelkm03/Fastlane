@@ -11,9 +11,11 @@ import KIF
 
 class VictoriousTestCase: KIFTestCase {
     
+    private static var shouldAppend = false
+    
     private var ignoreExceptions: Bool = false
     private var exceptions = [NSException]()
-    private var notes = [String : [String]]()
+    private var steps = [String : [String]]()
     
     override func failWithException(exception: NSException!, stopTest stop: Bool) {
         if !self.ignoreExceptions {
@@ -31,14 +33,15 @@ class VictoriousTestCase: KIFTestCase {
     override func beforeAll() {
         super.beforeAll()
         
-        self.addTextToReport( "##\(NSStringFromClass(self.dynamicType).pathExtension)\n\(self.testDescription)\n" )
+        let title = NSStringFromClass(self.dynamicType).pathExtension.camelCaseSeparatedString.capitalizedString
+        self.addTextToReport( "\n\n# \(title)\n\(self.testDescription)\n" )
         
         // Login if forced login is presented
         self.loginIfRequired()
-        self.addNote( "Logs in using email if test is run while no user is logged in." )
+        self.addStep( "Logs in using email if test is run while no user is logged in." )
         
         self.dismissWelcomeIfPresent()
-        self.addNote( "Dismisses the FTUE welcome screen if test is run on first install." )
+        self.addStep( "Dismisses the FTUE welcome screen if test is run on first install." )
     }
     
     /// Checks if the element with the provided label is present on screen
@@ -74,21 +77,45 @@ class VictoriousTestCase: KIFTestCase {
     }
     
     private func addTextToReport( var text: String ) {
-        let path = TEST_REPORT_PATH.stringByAppendingPathComponent(TEST_REPORT_FILE)
-        if let existingText = String(contentsOfFile: path, encoding: NSUTF8StringEncoding, error: nil) {
+        let path = TEST_REPORT_PATH
+        
+        // Only write reports if the file exists already
+        if !NSFileManager.defaultManager().fileExistsAtPath(TEST_REPORT_PATH) {
+            return
+        }
+        
+        if !VictoriousTestCase.shouldAppend {
+            VictoriousTestCase.shouldAppend = true
+        }
+        else if let existingText = String(contentsOfFile: path, encoding: NSUTF8StringEncoding, error: nil) {
             text = existingText + "\n" + text
         }
         text.writeToFile(path, atomically: false, encoding: NSUTF8StringEncoding, error: nil)
     }
     
-    func addNote( text: String, function: String = __FUNCTION__ ) {
-        if notes[ function ] == nil {
-            notes[ function ] = [String]()
-            let num = notes.count
-            self.addTextToReport( "####\(num). \(function.strippedParenthesesString.camelCaseSeparatedString.capitalizedString)" )
+    func addStep( text: String, function: String = __FUNCTION__ ) {
+        let testTitle = function.strippedParenthesesString.camelCaseSeparatedString.capitalizedString
+        if testTitle == "Before Each" || testTitle == "Before All" {
+            return
         }
-        self.notes[ function ]?.append( text )
+        if steps[ testTitle ] == nil {
+            steps[ testTitle ] = [String]()
+            self.addTextToReport( "\n#### \(testTitle)" )
+        }
+        println( ">>> \(text)" )
         self.addTextToReport( "- \(text)" )
+    }
+    
+    func logoutIfLoggedIn( function: String = __FUNCTION__ ) {
+        self.addStep( "Navigate to the settings section and log out if not already logged out.", function: function )
+        self.tester().waitForViewWithAccessibilityLabel( "Menu Profile" ).tap()
+        self.tester().waitForTimeInterval( 3.0 )
+        self.tester().waitForViewWithAccessibilityLabel( "Accessory Menu Settings" ).tap()
+        self.tester().scrollToBottomOfTableView( VAutomationIdentifierSettingsTableView )
+        if self.elementExistsWithAccessibilityLabel( VAutomationIdentifierSettingsLogOut ) {
+            self.tester().waitForViewWithAccessibilityLabel( VAutomationIdentifierSettingsLogOut ).tap()
+            self.tester().waitForTimeInterval( 3.0 )
+        }
     }
 }
 

@@ -67,11 +67,13 @@ extern NSString * const VAutomationIdentifierPublishCatpionText;
 extern NSString * const VAutomationIdentifierPublishFinish;
 extern NSString * const VAutomationIdentifierStreamCellCaption;
 extern NSString * const VAutomationIdentifierStreamCell;
+extern NSString * const VAutomationIDentifierStreamCollectionView;
 
 extern NSString * const VAutomationIdentifierContentViewBallotButtonA;
 extern NSString * const VAutomationIdentifierContentViewBallotButtonB;
 extern NSString * const VAutomationIdentifierContentViewCommentBar;
 extern NSString * const VAutomationIdentifierContentViewCommentCell;
+extern NSString * const VAutomationIdentifierContentViewCloseButton;
 
 extern NSString * const VAutomationIdentifierTextPostMainField;
 

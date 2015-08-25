@@ -56,11 +56,13 @@ NSString * const VAutomationIdentifierPublishCatpionText             = @"Publish
 NSString * const VAutomationIdentifierPublishFinish                  = @"Publish Finish";
 NSString * const VAutomationIdentifierStreamCellCaption              = @"Stream Cell Caption";
 NSString * const VAutomationIdentifierStreamCell                     = @"Stream Cell";
+NSString * const VAutomationIDentifierStreamCollectionView           = @"Stream Collection View";
 
 NSString * const VAutomationIdentifierContentViewBallotButtonA       = @"Ballot Button A";
 NSString * const VAutomationIdentifierContentViewBallotButtonB       = @"Ballot Button B";
 NSString * const VAutomationIdentifierContentViewCommentBar          = @"Content View Comment Bar";
 NSString * const VAutomationIdentifierContentViewCommentCell         = @"Content View Comment Cell Text View";
+NSString * const VAutomationIdentifierContentViewCloseButton         = @"Content View Close Button";
 
 NSString * const VAutomationIdentifierTextPostMainField              = @"Text Post Main Field";
 
