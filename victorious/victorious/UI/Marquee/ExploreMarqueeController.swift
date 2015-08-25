@@ -10,7 +10,6 @@ import UIKit
 
 class ExploreMarqueeController: VInsetMarqueeController {
     override func desiredSizeWithCollectionViewBounds(bounds: CGRect) -> CGSize {
-        let side = bounds.width
-        return CGSizeMake(side, side/2)
+        return ExploreMarqueeStreamItemCell.desiredSizeWithCollectionViewBounds(bounds)
     }
 }

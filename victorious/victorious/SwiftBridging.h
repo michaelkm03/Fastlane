@@ -122,3 +122,4 @@
 #import "VUtilityButtonCell.h"
 #import "VVideoLightboxViewController.h"
 #import "VVideoView.h"
+#import "VInsetMarqueeStreamItemCell.h"
