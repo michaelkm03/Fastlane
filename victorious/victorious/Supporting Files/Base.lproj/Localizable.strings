@@ -17,14 +17,12 @@
 "Next"                  =   "Next";
 "Done"                  =   "Done";
 "More"                  =   "More";
-"Quote"                 =   "Quote";
 "Meme"                  =   "Meme";
 "Share"                 =   "Share";
 "Continue"              =   "Continue";
 "Loading..."            =   "Loading...";
 "Finding fans to connect with..." = "Finding fans to connect with...";
 
-"Recent"                =   "Recent";
 "Following"             =   "Following";
 "FOLLOWERS"             =   "FOLLOWERS";
 "FOLLOWING"             =   "FOLLOWING";
@@ -311,10 +309,7 @@
 "RTCUserPostedAtSyntax" =   "%@ at %@";//e.g. "Username at 0:04"
 
 "Report/Flag"           =   "Report/Flag";
-"Remix"                 =   "Remix";
-"RemixVerb"             =   "Remix";
 "REPOSTS"               =   "Reposts";
-"REMIXES"               =   "Remixes";
 "Repost"                =   "Repost";
 "Reposted"              =   "Reposted";
 
@@ -414,8 +409,6 @@
 
 "No Color"  = "No Color";    // No color selected
 "Standard"  = "Standard";   // The default color before a selection is made
-"Red"       = "Red";        // The color red
-"Yellow"    = "Yellow";     // The color yellow
 
 "Error Loading Next Video" = "Error Loading Next Video";
 "Failed to fetch products" = "Failed to fetch products";
