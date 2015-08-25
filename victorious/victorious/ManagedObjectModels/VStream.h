@@ -10,17 +10,19 @@
 #import <CoreData/CoreData.h>
 #import "VStreamItem.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class VStreamItem;
 
 @interface VStream : VStreamItem
 
-@property (nonatomic, retain) NSString * apiPath;
+@property (nonatomic, retain, nullable) NSString * apiPath;
 @property (nonatomic, retain) NSNumber * count;
-@property (nonatomic, retain) NSString * filterName;
-@property (nonatomic, retain) NSString * hashtag;
-@property (nonatomic, retain) NSNumber * isUserPostAllowed;
-@property (nonatomic, retain) NSString * trackingIdentifier;
-@property (nonatomic, retain) NSString * shelfId;
+@property (nonatomic, retain, nullable) NSString * filterName;
+@property (nonatomic, retain, nullable) NSString * hashtag;
+@property (nonatomic, retain, nullable) NSNumber * isUserPostAllowed;
+@property (nonatomic, retain, nullable) NSString * trackingIdentifier;
+@property (nonatomic, retain, nullable) NSString * shelfId;
 @property (nonatomic, retain) NSOrderedSet *marqueeItems;
 @property (nonatomic, retain) NSOrderedSet *streamItems;
 @end
@@ -49,3 +51,5 @@
 - (void)removeStreamItems:(NSOrderedSet *)values;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -11,6 +11,7 @@
 #import "VVideoWorkspaceTool.h"
 
 #import "VConstants.h"
+#import "NSURL+VTemporaryFiles.h"
 
 // Should move this out of here.
 #import "VTrimVideoTool.h"
@@ -60,9 +61,7 @@ NSString * const VVideoToolControllerInitalVideoEditStateKey = @"VVideoToolContr
 {
     NSParameterAssert(completion != nil);
     
-    NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-    NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionMP4];
-
+    NSURL *tempFile = [NSURL v_temporaryFileURLWithExtension:VConstantMediaExtensionMP4 inDirectory:kWorkspaceDirectory];
     [(id <VVideoWorkspaceTool>)self.selectedTool exportToURL:tempFile
                                               withCompletion:^(BOOL finished, UIImage *previewImage, NSError *error)
      {

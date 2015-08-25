@@ -43,7 +43,7 @@ static const CGFloat kHandleDesiredHeight = 37.0f;
 - (void)setNumberOfComments:(NSInteger)numberOfComments
 {
     _numberOfComments = numberOfComments;
-    NSString *commentText = nil;
+    NSString *commentText = @"";
     
     if (numberOfComments == 1)
     {

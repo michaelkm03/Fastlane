@@ -10,11 +10,38 @@
 
 @implementation NSURL (VTemporaryFiles)
 
-+ (NSURL *)v_temporaryFileURLWithExtension:(NSString *)extension
++ (NSURL *)v_temporaryFileURLWithExtension:(NSString *)extension inDirectory:(NSString *)directory
 {
+    NSParameterAssert(directory != nil);
+    
     NSUUID *uuid = [NSUUID UUID];
-    NSString *tempFilename = [[uuid UUIDString] stringByAppendingPathExtension:extension];
-    return [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:tempFilename]];
+    NSString *tempFilename;
+    
+    if (extension != nil)
+    {
+        tempFilename = [[uuid UUIDString] stringByAppendingPathExtension:extension];
+    }
+    else
+    {
+        tempFilename = [uuid UUIDString];
+    }
+    NSURL *directoryURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:directory] isDirectory:YES];
+    
+    NSError *error = nil;
+    BOOL success = [[NSFileManager defaultManager] createDirectoryAtURL:directoryURL
+                                            withIntermediateDirectories:YES
+                                                             attributes:nil
+                                                                  error:&error];
+    NSURL *fileURL = [directoryURL URLByAppendingPathComponent:tempFilename];
+    
+    if (success)
+    {
+        return fileURL;
+    }
+    else
+    {
+        return nil;
+    }
 }
 
 @end

@@ -39,6 +39,7 @@
 //Managers
 #import "VDependencyManager+VObjectManager.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
+#import "VDependencyManager+VNavigationMenuItem.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Discover.h"
@@ -504,18 +505,29 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)navigateToStream:(VStream *)stream atStreamItem:(VStreamItem *)streamItem
 {
-    if ( [stream isSingleStream] || [stream isShelf] )
+    BOOL isShelf = [stream isShelf];
+    if ( [stream isSingleStream] || isShelf )
     {
-        Shelf *shelf = (Shelf *)stream;
         VStreamCollectionViewController *streamCollection = nil;
-        VDependencyManager *dependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{ kSequenceIDKey: stream.remoteId, VDependencyManagerTitleKey: stream.name }];
-        if ( [shelf isKindOfClass:[HashtagShelf class]] )
+        NSMutableDictionary *baseConfiguration = [[NSMutableDictionary alloc] initWithDictionary:@{ kSequenceIDKey: stream.remoteId, VDependencyManagerTitleKey: stream.name, VDependencyManagerAccessoryScreensKey : @[] }];
+        
+        if ( isShelf )
         {
-            HashtagShelf *hashtagShelf = (HashtagShelf *)shelf;
-            streamCollection = [dependencyManager hashtagStreamWithHashtag:hashtagShelf.hashtagTitle];
+            [baseConfiguration addEntriesFromDictionary:@{ VStreamCollectionViewControllerStreamURLKey : stream.apiPath }];
+            VDependencyManager *dependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:baseConfiguration];
+            if ( [stream isKindOfClass:[HashtagShelf class]] )
+            {
+                HashtagShelf *hashtagShelf = (HashtagShelf *)stream;
+                streamCollection = [dependencyManager hashtagStreamWithHashtag:hashtagShelf.hashtagTitle];
+            }
+            else
+            {
+                streamCollection = [VStreamCollectionViewController newWithDependencyManager:dependencyManager];
+            }
         }
         else
         {
+            VDependencyManager *dependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:baseConfiguration];
             streamCollection = [VStreamCollectionViewController newWithDependencyManager:dependencyManager];
         }
         
