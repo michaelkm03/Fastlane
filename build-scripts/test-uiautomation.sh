@@ -65,10 +65,8 @@ TEST_REPORT_FILE="UI-Automation-Tests.md"
 TEST_REPORT_REPO="../VictoriousiOS.wiki"
 
 mkdir -p $TEST_REPORT_REPO
-echo "Created REPO!" >> file.txt
-
-# cd $TEST_REPORT_REPO
-# DIFF=`git diff`
+cd $TEST_REPORT_REPO
+DIFF=`git diff`
 
 if [ $TEST_RESULT -eq 0 ]; then
     echo "Tests succeeded."
