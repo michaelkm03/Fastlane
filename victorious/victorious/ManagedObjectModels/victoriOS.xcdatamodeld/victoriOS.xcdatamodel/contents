@@ -108,6 +108,9 @@
         <attribute name="layerName" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="ExploreStream" representedClassName="victorious.ExploreStream" parentEntity="Stream" syncable="YES">
+        <relationship name="shelves" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Shelf" inverseName="exploreStream" inverseEntity="Shelf" syncable="YES"/>
+    </entity>
     <entity name="GIFSearchResult" representedClassName="victorious.GIFSearchResult" syncable="YES">
         <attribute name="frames" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="gifSize" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -265,6 +268,7 @@
     <entity name="Shelf" representedClassName="victorious.Shelf" parentEntity="Stream" syncable="YES">
         <attribute name="streamUrl" attributeType="String" syncable="YES"/>
         <attribute name="title" attributeType="String" syncable="YES"/>
+        <relationship name="exploreStream" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ExploreStream" inverseName="shelves" inverseEntity="ExploreStream" syncable="YES"/>
     </entity>
     <entity name="Stream" representedClassName="VStream" parentEntity="StreamItem" syncable="YES">
         <attribute name="apiPath" optional="YES" attributeType="String" syncable="YES"/>
@@ -373,12 +377,13 @@
         <element name="PollResult" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Rule" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Sequence" positionX="0" positionY="0" width="128" height="600"/>
-        <element name="Shelf" positionX="639" positionY="-630" width="128" height="75"/>
+        <element name="Shelf" positionX="639" positionY="-630" width="128" height="90"/>
         <element name="Stream" positionX="1069" positionY="-792" width="128" height="180"/>
         <element name="StreamItem" positionX="871" positionY="-765" width="128" height="210"/>
         <element name="Tracking" positionX="828" positionY="-630" width="128" height="240"/>
         <element name="User" positionX="1321" positionY="-324" width="128" height="480"/>
         <element name="UserShelf" positionX="639" positionY="-630" width="128" height="90"/>
         <element name="VoteResult" positionX="864" positionY="164" width="128" height="90"/>
+        <element name="ExploreStream" positionX="207" positionY="-639" width="128" height="60"/>
     </elements>
 </model>

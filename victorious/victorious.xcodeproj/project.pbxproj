@@ -1141,6 +1141,8 @@
 		F0140BC71AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC61AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m */; };
 		F015BEF31A8A8392008A0D67 /* VUserTaggingTextStorageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F015BEF21A8A8392008A0D67 /* VUserTaggingTextStorageTests.m */; };
 		F02024AD1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F02024AC1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m */; };
+		F027D8C61B8BDEF300BC6322 /* ExploreStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = F027D8C51B8BDEF300BC6322 /* ExploreStream.swift */; };
+		F027D8C81B8BDF3300BC6322 /* ExploreStream+RestKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F027D8C71B8BDF3300BC6322 /* ExploreStream+RestKit.swift */; };
 		F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */; };
 		F028F3E91AC0F2BB00ABFDDC /* VAppInfoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3E81AC0F2BB00ABFDDC /* VAppInfoTests.m */; };
 		F03C134E1B69373200287F4C /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C134C1B69373200287F4C /* VUser.m */; };
@@ -3386,6 +3388,8 @@
 		F02024A21ADCABA900C61313 /* VDirectoryCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDirectoryCellFactory.h; path = DirectoryCells/VDirectoryCellFactory.h; sourceTree = "<group>"; };
 		F02024AB1ADD7F3D00C61313 /* VCardDirectoryCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCardDirectoryCellFactory.h; sourceTree = "<group>"; };
 		F02024AC1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCardDirectoryCellFactory.m; sourceTree = "<group>"; };
+		F027D8C51B8BDEF300BC6322 /* ExploreStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreStream.swift; sourceTree = "<group>"; };
+		F027D8C71B8BDF3300BC6322 /* ExploreStream+RestKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ExploreStream+RestKit.swift"; sourceTree = "<group>"; };
 		F028F3E51AC0D9E800ABFDDC /* VAppInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAppInfo.h; sourceTree = "<group>"; };
 		F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAppInfo.m; sourceTree = "<group>"; };
 		F028F3E81AC0F2BB00ABFDDC /* VAppInfoTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAppInfoTests.m; sourceTree = "<group>"; };
@@ -5608,6 +5612,7 @@
 				A721E8A61B572453000B7901 /* VSequence+RestKit.m */,
 				A721E8A71B572453000B7901 /* VStream+RestKit.h */,
 				A721E8A81B572453000B7901 /* VStream+RestKit.m */,
+				F027D8C71B8BDF3300BC6322 /* ExploreStream+RestKit.swift */,
 				F059A0041B852DC100037BC8 /* Shelf+RestKit.swift */,
 				F06B41A81B7C3D8F008709E8 /* HashtagShelf+RestKit.swift */,
 				F06B41AA1B7C3D8F008709E8 /* UserShelf+RestKit.swift */,
@@ -6688,15 +6693,18 @@
 			isa = PBXGroup;
 			children = (
 				A7DDA6A91B5F0018005CE55E /* Experiment.swift */,
+				F027D8C51B8BDEF300BC6322 /* ExploreStream.swift */,
 				A7DAFCA81B4EDACE00B51C92 /* GIFSearchResult.swift */,
+				F06B418E1B7C30BC008709E8 /* HashtagShelf.swift */,
 				A7DAFCAC1B4EDE2B00B51C92 /* NSManagedObject+Extensions.swift */,
+				F059A0021B852D1800037BC8 /* Shelf.swift */,
+				F06B418C1B7C30BB008709E8 /* UserShelf.swift */,
 				BE89D98B1921531400D97E7F /* VAbstractFilter.h */,
 				BE89D98C1921531400D97E7F /* VAbstractFilter.m */,
 				DBDBE6EC1A16736C00DA1BB2 /* VAdBreak.h */,
 				DBDBE6ED1A16736C00DA1BB2 /* VAdBreak.m */,
 				DBE1077D1A2FFDCD005D303E /* VAdBreakFallback.h */,
 				DBE1077E1A2FFDCD005D303E /* VAdBreakFallback.m */,
-				F059A0021B852D1800037BC8 /* Shelf.swift */,
 				BE799B9319C8A91C0023CE88 /* VAnswer.h */,
 				BE799B9419C8A91C0023CE88 /* VAnswer.m */,
 				BE6C15231880A31A00469BA8 /* VAnswerAction.h */,
@@ -6705,8 +6713,6 @@
 				F03C13591B698F6F00287F4C /* VAsset.m */,
 				F03C135B1B698F7000287F4C /* VComment.h */,
 				F03C135C1B698F7000287F4C /* VComment.m */,
-				C3C734441B5EA8BD00D6795D /* VMediaAttachment.h */,
-				C3C734451B5EA8BD00D6795D /* VMediaAttachment.m */,
 				F0F04AD41B1E271A00F6F401 /* VConversation.h */,
 				F0F04AD51B1E271A00F6F401 /* VConversation.m */,
 				F0FC97941B546FBC0098AFCB /* VEditorializationItem.h */,
@@ -6716,8 +6722,6 @@
 				DB531B541A425A7200B4ADC8 /* VHashtag.h */,
 				DB531B551A425A7200B4ADC8 /* VHashtag.m */,
 				A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */,
-				F06B418E1B7C30BC008709E8 /* HashtagShelf.swift */,
-				F06B418C1B7C30BB008709E8 /* UserShelf.swift */,
 				A7D378461AF0578A007FF197 /* VImageAsset.h */,
 				A7D378471AF0578A007FF197 /* VImageAsset.m */,
 				0385FEE718EF41B4009FBD68 /* VImageSearchResult.h */,
@@ -6726,6 +6730,8 @@
 				BE799B8E19C8A91C0023CE88 /* VInteraction.m */,
 				BE5DE3F418DA72140047B67E /* VInteractionAction.h */,
 				BE5DE3F518DA72140047B67E /* VInteractionAction.m */,
+				C3C734441B5EA8BD00D6795D /* VMediaAttachment.h */,
+				C3C734451B5EA8BD00D6795D /* VMediaAttachment.m */,
 				BE46F02819D0C4B700CD7EF6 /* VMessage.h */,
 				BE46F02919D0C4B700CD7EF6 /* VMessage.m */,
 				BE799B9019C8A91C0023CE88 /* VNode.h */,
@@ -9055,6 +9061,7 @@
 				A721E9171B572454000B7901 /* VImageAsset+Fetcher.m in Sources */,
 				0314D4D019B46B5E00FA363C /* VLoadingViewController.m in Sources */,
 				C39B220E1B0A693600D3DFE7 /* VPermissionProfilePicture.m in Sources */,
+				F027D8C61B8BDEF300BC6322 /* ExploreStream.swift in Sources */,
 				BE5DE3F618DA72140047B67E /* VInteractionAction.m in Sources */,
 				A6886CFC1B5612F300D4F6F8 /* VAssetDownloader.m in Sources */,
 				DBF8B4B41A79F91300CFFD47 /* VTagsSearchResultsViewController.m in Sources */,
@@ -9475,6 +9482,7 @@
 				037FCF271A8DAF5400E8ABFC /* VMultipleContainerViewController.m in Sources */,
 				A721E9251B572454000B7901 /* VConversation+RestKit.m in Sources */,
 				0314D4B019B46B5E00FA363C /* VFetchedResultsTableViewController.m in Sources */,
+				F027D8C81B8BDF3300BC6322 /* ExploreStream+RestKit.swift in Sources */,
 				A7DDA6E31B601C95005CE55E /* SettingsEmptyCell.swift in Sources */,
 				C30AA4F01B0678BB0010CEFE /* VPermission.m in Sources */,
 				A7738B081A4A36C9008EA973 /* VTransitionModel.m in Sources */,

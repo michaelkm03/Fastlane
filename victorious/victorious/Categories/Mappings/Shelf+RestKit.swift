@@ -42,4 +42,16 @@ extension Shelf {
         }
     }
     
+    class func dynamicMapping() -> RKDynamicMapping {
+        var dynamicMapping = RKDynamicMapping()
+        dynamicMapping.addMatcher(RKObjectMappingMatcher(possibleMappings: [], block: { (mappable: AnyObject!) -> RKObjectMapping! in
+            var shelfMapping: RKObjectMapping?
+            if let streamItem = mappable as? VStreamItem, let subType = streamItem.itemSubType {
+                shelfMapping = Shelf.mapping(subType)
+            }
+            return shelfMapping
+        }))
+        return dynamicMapping
+    }
+    
 }
