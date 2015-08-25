@@ -18,6 +18,11 @@ if [ "$SCHEME" == "" -o "$CONFIGURATION" == "" ]; then
     exit 1
 fi
 
+TEST_REPORT_REPO="../VictoriousiOS.wiki"
+TEST_REPORT_REPO_URL="git@github.com:TouchFrame/VictoriousiOS.wiki.git"
+TEST_REPORT_FILE="UI-Automation-Tests.md"
+git clone $TEST_REPORT_REPO_URL $TEST_REPORT_REPO
+
 # Copy provisioning profile into Xcode
 DEFAULT_PROVISIONING_PROFILE_UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i "$DEFAULT_PROVISIONING_PROFILE_PATH")`
 cp "$DEFAULT_PROVISIONING_PROFILE_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$DEFAULT_PROVISIONING_PROFILE_UUID.mobileprovision"
@@ -60,9 +65,6 @@ xcodebuild test \
 TEST_RESULT=$?
 
 echo "Tests completed: ${TEST_RESULT}"
-
-TEST_REPORT_FILE="UI-Automation-Tests.md"
-TEST_REPORT_REPO="../VictoriousiOS.wiki"
 
 mkdir -p $TEST_REPORT_REPO
 cd $TEST_REPORT_REPO
