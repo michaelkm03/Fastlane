@@ -8,8 +8,9 @@
 
 import UIKit
 
-class TrendingTopicContentCollectionViewCell: VShelfContentCollectionViewCell {
+class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell, VStreamCellComponentSpecialization {
     
+    private var imageView = UIImageView()
     private var screenView = UIView()
     private var gradient = TrendingTopicGradientView()
     private var label = UILabel()
@@ -29,12 +30,16 @@ class TrendingTopicContentCollectionViewCell: VShelfContentCollectionViewCell {
         }
     }
     
-    override var streamItem: VStreamItem? {
+    var streamItem: VStreamItem? {
         didSet {
-            super.streamItem = streamItem
             self.label.text = streamItem?.name ?? ""
-            self.previewView.displayReadyBlock = { (previewView: VStreamItemPreviewView) -> Void  in
-                //
+            if let previewImageURL = (streamItem?.previewImagesObject as? String),
+                url = NSURL(string: previewImageURL)  {
+                imageView.sd_setImageWithURL(url, placeholderImage: nil, completed: { (image, error, cacheType, url) -> Void in
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.image = image
+                    })
+                })
             }
         }
     }
@@ -42,18 +47,16 @@ class TrendingTopicContentCollectionViewCell: VShelfContentCollectionViewCell {
     var image: UIImage? {
         didSet {
             if let image = self.image {
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    
-                    let colors = self.colorCube.extractColorsFromImage(image, flags: CCOrderByBrightness.value)
-                    if let color = colors.first as? UIColor {
-                        self.gradient.primaryColor =  color
-                    }
-                    
-                    self.blurredImageView.blurImage(image, withTintColor: nil, toCallbackBlock: { (img) -> Void in
-                        self.blurredImageView.image = img
-                        self.blurredImageView.layer.mask = self.blurMask.layer
-                    })
-                });
+                
+                let colors = self.colorCube.extractColorsFromImage(image, flags: CCOrderByBrightness.value)
+                if let color = colors.first as? UIColor {
+                    self.gradient.primaryColor =  color
+                }
+                
+                self.blurredImageView.blurImage(image, withTintColor: nil, toCallbackBlock: { (img) -> Void in
+                    self.blurredImageView.image = img
+                    self.blurredImageView.layer.mask = self.blurMask.layer
+                })
             }
         }
     }
@@ -63,12 +66,17 @@ class TrendingTopicContentCollectionViewCell: VShelfContentCollectionViewCell {
         setup()
     }
 
-    required  init(frame: CGRect) {
+    required override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
     }
     
     private func setup() {
+        
+        imageView.contentMode = UIViewContentMode.ScaleAspectFill
+        imageView.clipsToBounds = true
+        self.contentView.addSubview(imageView)
+        self.contentView.v_addFitToParentConstraintsToSubview(imageView)
         
         self.contentView.addSubview(blurredImageView)
         self.contentView.v_addFitToParentConstraintsToSubview(blurredImageView)
@@ -86,17 +94,16 @@ class TrendingTopicContentCollectionViewCell: VShelfContentCollectionViewCell {
         label.textColor = UIColor.whiteColor()
         label.textAlignment = .Center
         label.font = UIFont.boldSystemFontOfSize(12)
-        label.text = "#outfits"
         self.contentView.addSubview(label)
-        self.contentView.v_addFitToParentConstraintsToSubview(label)
+        self.contentView.v_addPinToLeadingTrailingToSubview(label, leading: 10, trailing: 10)
+        self.contentView.v_addPintoTopBottomToSubview(label, top: 0, bottom: 0)
     }
 }
 
 extension TrendingTopicContentCollectionViewCell: VStreamCellComponentSpecialization {
     
-    override class func reuseIdentifierForStreamItem(streamItem: VStreamItem, baseIdentifier: String?, dependencyManager: VDependencyManager?) -> String {
-        let updatedIdentifier = self.identifier(baseIdentifier, className: NSStringFromClass(self))
-        return super.reuseIdentifierForStreamItem(streamItem, baseIdentifier: updatedIdentifier, dependencyManager: dependencyManager)
+    class func reuseIdentifierForStreamItem(streamItem: VStreamItem, baseIdentifier: String?, dependencyManager: VDependencyManager?) -> String {
+        return "trendingContentCell"
     }
 }
 

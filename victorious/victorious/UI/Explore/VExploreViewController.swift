@@ -51,7 +51,9 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
             if let stream = results.last as? VStream {
                 for (ind, streamItem) in enumerate(stream.streamItems) {
                     if let newShelf = streamItem as? Shelf {
-                        self.shelf = newShelf
+                        if newShelf.itemSubType == VStreamItemSubTypeTrendingTopic {
+                            self.shelf = newShelf
+                        }
                     }
                 }
             }

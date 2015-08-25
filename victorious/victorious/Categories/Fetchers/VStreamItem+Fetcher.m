@@ -20,6 +20,7 @@ NSString * const VStreamItemTypeFeed = @"feed";
 NSString * const VStreamItemSubTypeMarquee = @"marquee";
 NSString * const VStreamItemSubTypeUser = @"user";
 NSString * const VStreamItemSubTypeHashtag = @"hashtag";
+NSString * const VStreamItemSubTypeTrendingTopic = @"trendingTopic";
 NSString * const VStreamItemSubTypeImage = @"image";
 NSString * const VStreamItemSubTypeVideo = @"video";
 NSString * const VStreamItemSubTypeGif = @"gif";

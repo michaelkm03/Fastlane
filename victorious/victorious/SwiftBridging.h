@@ -123,3 +123,5 @@
 #import "VVideoView.h"
 #import "CCColorCube.h"
 #import "VObjectManager+Discover.h"
+#import "INVector3.h"
+#import "ColorSpaceConversion.h"

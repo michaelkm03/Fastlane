@@ -18,6 +18,7 @@ extern NSString * const VStreamItemTypeFeed;
 extern NSString * const VStreamItemSubTypeMarquee;
 extern NSString * const VStreamItemSubTypeUser;
 extern NSString * const VStreamItemSubTypeHashtag;
+extern NSString * const VStreamItemSubTypeTrendingTopic;
 extern NSString * const VStreamItemSubTypeImage;
 extern NSString * const VStreamItemSubTypeVideo;
 extern NSString * const VStreamItemSubTypeGif;

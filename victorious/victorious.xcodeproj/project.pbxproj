@@ -887,6 +887,15 @@
 		C3475B6F1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3475B6E1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard */; };
 		C348D1FB1B8B8A320040042C /* CCColorCube.m in Sources */ = {isa = PBXBuildFile; fileRef = C348D1F81B8B8A320040042C /* CCColorCube.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		C348D1FC1B8B8A320040042C /* CCLocalMaximum.m in Sources */ = {isa = PBXBuildFile; fileRef = C348D1FA1B8B8A320040042C /* CCLocalMaximum.m */; settings = {COMPILER_FLAGS = "-w"; }; };
+		C348D20A1B8C03CA0040042C /* ColorDifference.swift in Sources */ = {isa = PBXBuildFile; fileRef = C348D1FE1B8C03CA0040042C /* ColorDifference.swift */; };
+		C348D20B1B8C03CA0040042C /* ColorSpaceConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = C348D2001B8C03CA0040042C /* ColorSpaceConversion.m */; };
+		C348D20C1B8C03CA0040042C /* DominantColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C348D2021B8C03CA0040042C /* DominantColors.swift */; };
+		C348D20D1B8C03CA0040042C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C348D2031B8C03CA0040042C /* Info.plist */; };
+		C348D20E1B8C03CA0040042C /* INVector3.m in Sources */ = {isa = PBXBuildFile; fileRef = C348D2051B8C03CA0040042C /* INVector3.m */; };
+		C348D20F1B8C03CA0040042C /* INVector3SwiftExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C348D2061B8C03CA0040042C /* INVector3SwiftExtensions.swift */; };
+		C348D2101B8C03CA0040042C /* KMeans.swift in Sources */ = {isa = PBXBuildFile; fileRef = C348D2071B8C03CA0040042C /* KMeans.swift */; };
+		C348D2111B8C03CA0040042C /* Memoization.swift in Sources */ = {isa = PBXBuildFile; fileRef = C348D2081B8C03CA0040042C /* Memoization.swift */; };
+		C348D2121B8C03CA0040042C /* PlatformExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C348D2091B8C03CA0040042C /* PlatformExtensions.swift */; };
 		C35265FB1B28EA09001F093F /* CreateSheet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C35265FA1B28EA09001F093F /* CreateSheet.storyboard */; };
 		C35265FE1B28F167001F093F /* VCreateSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C35265FD1B28F167001F093F /* VCreateSheetViewController.m */; };
 		C35266011B28F1B6001F093F /* VCreateSheetCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C35266001B28F1B6001F093F /* VCreateSheetCollectionViewCell.m */; };
@@ -2898,6 +2907,18 @@
 		C348D1F81B8B8A320040042C /* CCColorCube.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCColorCube.m; sourceTree = "<group>"; };
 		C348D1F91B8B8A320040042C /* CCLocalMaximum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCLocalMaximum.h; sourceTree = "<group>"; };
 		C348D1FA1B8B8A320040042C /* CCLocalMaximum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCLocalMaximum.m; sourceTree = "<group>"; };
+		C348D1FE1B8C03CA0040042C /* ColorDifference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorDifference.swift; sourceTree = "<group>"; };
+		C348D1FF1B8C03CA0040042C /* ColorSpaceConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorSpaceConversion.h; sourceTree = "<group>"; };
+		C348D2001B8C03CA0040042C /* ColorSpaceConversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorSpaceConversion.m; sourceTree = "<group>"; };
+		C348D2011B8C03CA0040042C /* DominantColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DominantColor.h; sourceTree = "<group>"; };
+		C348D2021B8C03CA0040042C /* DominantColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DominantColors.swift; sourceTree = "<group>"; };
+		C348D2031B8C03CA0040042C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C348D2041B8C03CA0040042C /* INVector3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INVector3.h; sourceTree = "<group>"; };
+		C348D2051B8C03CA0040042C /* INVector3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INVector3.m; sourceTree = "<group>"; };
+		C348D2061B8C03CA0040042C /* INVector3SwiftExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = INVector3SwiftExtensions.swift; sourceTree = "<group>"; };
+		C348D2071B8C03CA0040042C /* KMeans.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KMeans.swift; sourceTree = "<group>"; };
+		C348D2081B8C03CA0040042C /* Memoization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Memoization.swift; sourceTree = "<group>"; };
+		C348D2091B8C03CA0040042C /* PlatformExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlatformExtensions.swift; sourceTree = "<group>"; };
 		C35265FA1B28EA09001F093F /* CreateSheet.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = CreateSheet.storyboard; path = "Create Sheet/CreateSheet.storyboard"; sourceTree = "<group>"; };
 		C35265FC1B28F167001F093F /* VCreateSheetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCreateSheetViewController.h; path = "Create Sheet/VCreateSheetViewController.h"; sourceTree = "<group>"; };
 		C35265FD1B28F167001F093F /* VCreateSheetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCreateSheetViewController.m; path = "Create Sheet/VCreateSheetViewController.m"; sourceTree = "<group>"; };
@@ -5041,6 +5062,7 @@
 		03C1859419B42D3000E27D05 /* 3rd Party SDKs */ = {
 			isa = PBXGroup;
 			children = (
+				C348D1FD1B8C03CA0040042C /* DominantColor */,
 				C348D1F61B8B8A320040042C /* ColorCube */,
 				DBAD88EA19F5B7F200D678A0 /* Ad Networks */,
 				038B7F9419DB8D2500F739DF /* ADEUMInstrumentation.framework */,
@@ -6891,6 +6913,25 @@
 			path = ColorCube;
 			sourceTree = "<group>";
 		};
+		C348D1FD1B8C03CA0040042C /* DominantColor */ = {
+			isa = PBXGroup;
+			children = (
+				C348D1FE1B8C03CA0040042C /* ColorDifference.swift */,
+				C348D1FF1B8C03CA0040042C /* ColorSpaceConversion.h */,
+				C348D2001B8C03CA0040042C /* ColorSpaceConversion.m */,
+				C348D2011B8C03CA0040042C /* DominantColor.h */,
+				C348D2021B8C03CA0040042C /* DominantColors.swift */,
+				C348D2031B8C03CA0040042C /* Info.plist */,
+				C348D2041B8C03CA0040042C /* INVector3.h */,
+				C348D2051B8C03CA0040042C /* INVector3.m */,
+				C348D2061B8C03CA0040042C /* INVector3SwiftExtensions.swift */,
+				C348D2071B8C03CA0040042C /* KMeans.swift */,
+				C348D2081B8C03CA0040042C /* Memoization.swift */,
+				C348D2091B8C03CA0040042C /* PlatformExtensions.swift */,
+			);
+			path = DominantColor;
+			sourceTree = "<group>";
+		};
 		C35265F91B28E349001F093F /* Create Sheet */ = {
 			isa = PBXGroup;
 			children = (
@@ -8370,6 +8411,7 @@
 				0326C36019F8226200DBC341 /* Images.xcassets in Resources */,
 				037A643019F727AB0001C90B /* VCVideoPlayerToolbarView.xib in Resources */,
 				672E5F461B83A99A00D898DE /* exploreScreenDevelopment.json in Resources */,
+				C348D20D1B8C03CA0040042C /* Info.plist in Resources */,
 				036F38961A0C4DEA0014DF66 /* Ubuntu-Regular.ttf in Resources */,
 				A780ED5A1A933D9300A8CD5D /* filters.xml in Resources */,
 				A7AEF9B21A83F1C300A3D3A0 /* VFooterActivityIndicatorView.xib in Resources */,
@@ -8977,6 +9019,7 @@
 				A77AD5021A2011E000142F24 /* UIAlertView+VBlocks.m in Sources */,
 				A721E92D1B572454000B7901 /* VNodeAction+RestKit.m in Sources */,
 				A721E9231B572454000B7901 /* VAsset+RestKit.m in Sources */,
+				C348D20C1B8C03CA0040042C /* DominantColors.swift in Sources */,
 				A65318A21B59B35900389EA9 /* VCreationFlowAnimator.m in Sources */,
 				A60658251B56FF7200414DB7 /* VCollectionListPresentationController.m in Sources */,
 				A73A877D1A76BD71008C6355 /* VStreamWebViewController.m in Sources */,
@@ -9141,7 +9184,9 @@
 				F06B41BD1B7ED7FD008709E8 /* UIResponder+typedResponder.swift in Sources */,
 				F07228261AD8846A00085653 /* VNotification.m in Sources */,
 				F0F04AF41B29E8FE00F6F401 /* VShareMenuItem.m in Sources */,
+				C348D20B1B8C03CA0040042C /* ColorSpaceConversion.m in Sources */,
 				F07409751B05876200C44623 /* VCoachmarkView.m in Sources */,
+				C348D20E1B8C03CA0040042C /* INVector3.m in Sources */,
 				C35266011B28F1B6001F093F /* VCreateSheetCollectionViewCell.m in Sources */,
 				A75ED0E11AB7BEFC00C35063 /* VColorType.m in Sources */,
 				037FCF181A8DAF0E00E8ABFC /* VBarButton.m in Sources */,
@@ -9286,9 +9331,11 @@
 				D8EC36E91AB3EC7600FB0CEB /* VAssetLoader.m in Sources */,
 				D85B70771B0EAF3F0038CA5B /* VSuggestedFriendsTableViewController.m in Sources */,
 				A7AEF9C71A83F2AD00A3D3A0 /* VLargeNumberFormatter.m in Sources */,
+				C348D2111B8C03CA0040042C /* Memoization.swift in Sources */,
 				D8E5A4FA1AAA76460019F231 /* VBlurOverTransitioner.m in Sources */,
 				A721E9391B572454000B7901 /* NSData+AES.m in Sources */,
 				A75C64A71ADDDFC900245125 /* VTextBackgroundFrameMaker.swift in Sources */,
+				C348D2121B8C03CA0040042C /* PlatformExtensions.swift in Sources */,
 				037FCF1B1A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
 				039ED29919C908F400305987 /* VCVideoPlayerToolbarSlider.m in Sources */,
@@ -9332,6 +9379,7 @@
 				A6886CF91B55EC4F00D4F6F8 /* VImageCreationFlowController.m in Sources */,
 				A7ECC1D91AD6178F0003E00A /* VWorkspaceViewController.m in Sources */,
 				D8D812B81B15819600E93B37 /* VModernFlowControllerAnimationController.m in Sources */,
+				C348D20F1B8C03CA0040042C /* INVector3SwiftExtensions.swift in Sources */,
 				F0FC97BC1B58547A0098AFCB /* VSequence.m in Sources */,
 				D85B70741B0EAF3F0038CA5B /* VFindFriendsTableViewController.m in Sources */,
 				A7BF9D141B5ECB1E002C0A98 /* VSettingsSwitchCell.m in Sources */,
@@ -9363,6 +9411,7 @@
 				A7D378691AF45B7C007FF197 /* VSequencePermissions.m in Sources */,
 				A6BB61231B583256002C3B7C /* VAssetCollectionUnauthorizedDataSource.m in Sources */,
 				A601FB5F1B437E2B0050536C /* VAbstractPresenter.m in Sources */,
+				C348D20A1B8C03CA0040042C /* ColorDifference.swift in Sources */,
 				A721E9591B572454000B7901 /* UIScrollView+VCenterContent.m in Sources */,
 				F0C83A2D1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.m in Sources */,
 				A721E93E1B572454000B7901 /* NSLayoutConstraint+CenterConstraints.m in Sources */,
@@ -9414,6 +9463,7 @@
 				A75ED0BA1AB78C7400C35063 /* VHashtagPickerDataSource.m in Sources */,
 				A721E93A1B572454000B7901 /* NSDate+timeSince.m in Sources */,
 				D8B827DD19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m in Sources */,
+				C348D2101B8C03CA0040042C /* KMeans.swift in Sources */,
 				BE799B9219C8A91C0023CE88 /* VNode.m in Sources */,
 				D85B70881B0EB3350038CA5B /* VStandardLoginFlowViewController.m in Sources */,
 				BE5C7379187E36E800A3340D /* VNodeAction.m in Sources */,
