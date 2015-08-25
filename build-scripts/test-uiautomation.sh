@@ -29,13 +29,13 @@ else
     mkdir products
 fi
 
-# Apply app configuration
-# echo "Configuring for $CONFIGURATION"
-# ./build-scripts/apply-config.sh $CONFIGURATION
-# if [ $? != 0 ]; then
-#     echo "Error applying configuration for $CONFIGURATION"
-#     exit 1
-# fi
+Apply app configuration
+echo "Configuring for $CONFIGURATION"
+./build-scripts/apply-config.sh $CONFIGURATION
+if [ $? != 0 ]; then
+    echo "Error applying configuration for $CONFIGURATION"
+    exit 1
+fi
 
 # Download the latest template
 INFOPLIST="victorious/AppSpecific/Info.plist"
@@ -47,14 +47,9 @@ BUILDNUM=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$INFOPLIST")
 # fi
 
 # Clean
-# xcodebuild -workspace victorious/victorious.xcworkspace \
-#    -scheme $SCHEME \
-#z    -destination generic/platform=iOS clean
-
-# xcodebuild test \
-#     -workspace victorious/victorious.xcworkspace \
-#     -scheme $SCHEME \
-#     -destination 'platform=iOS Simulator,name=iPhone 6'
+xcodebuild -workspace victorious/victorious.xcworkspace \
+   -scheme $SCHEME \
+   -destination generic/platform=iOS clean
 
 # Build
 xcodebuild test \
@@ -69,8 +64,11 @@ echo "Tests completed: ${TEST_RESULT}"
 TEST_REPORT_FILE="UI-Automation-Tests.md"
 TEST_REPORT_REPO="../VictoriousiOS.wiki"
 
-cd $TEST_REPORT_REPO
-DIFF=`git diff`
+mkdir -p $TEST_REPORT_REPO
+echo "Created REPO!" >> file.txt
+
+# cd $TEST_REPORT_REPO
+# DIFF=`git diff`
 
 if [ $TEST_RESULT -eq 0 ]; then
     echo "Tests succeeded."
