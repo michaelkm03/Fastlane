@@ -4430,67 +4430,175 @@
         },
         "items": [
           {
-            "identifier": "Menu Explore",
-            "title": "Explore",
-            "destination": {
-              "name": "explore.screen",
-              "title": "Explore",
-              "canAddContent": false,
-              "background": {
-                "name": "solidColor.background",
-                "color": {
-                  "red": 255,
-                  "green": 255,
-                  "blue": 255,
-                  "alpha": 255
+            "identifier":"Menu Explore",
+            "title":"Explore",
+            "id":"55dba251a3aa8",
+            "icon":"TBD explore menu icon",
+            "iconSelected":"TBD explore menu iconSelected",
+            "destination":
+            {
+                "name":"explore.screen",
+                "font.label2":
+                {
+                    "fontName":"Oswald-Regular",
+                    "fontSize":12
+                },
+                "color.text.secondary":
+                {
+                    "red":255,
+                    "green":255,
+                    "blue":255,
+                    "alpha":255
+                },
+                "color.accent":
+                {
+                    "red":128,
+                    "green":166,
+                    "blue":116,
+                    "alpha":1
+                },
+                "background":
+                {
+                    "name":"solidColor.background",
+                    "color":
+                    {
+                        "red":255,
+                        "green":255,
+                        "blue":255,
+                        "alpha":255
+                    }
+                },
+                "marqueeCell":
+                {
+                    "name":"explore.marqueeCell",
+                    "font.paragraph":
+                    {
+                        "fontName":"Oswald-Regular",
+                        "fontSize":15
+                    },
+                    "background":
+                    {
+                        "name":"solidColor.background",
+                        "color":
+                        {
+                            "red":128,
+                            "green":166,
+                            "blue":116,
+                            "alpha":1
+                        }
+                    },
+                    "loadingBackground":
+                    {
+                        "name":"tilePattern.background",
+                        "color":
+                        {
+                            "red":150,
+                            "green":195,
+                            "blue":137,
+                            "alpha":1
+                        },
+                        "image":
+                        {
+                            "imageURL":"geometric_pattern"
+                        },
+                        "tiltParallax":true,
+                        "shimmerAnimationActive":true
+                    },
+                    "font.heading1":
+                    {
+                        "fontName":"Oswald-Regular",
+                        "fontSize":20
+                    },
+                    "color.text":
+                    {
+                        "red":255,
+                        "green":255,
+                        "blue":255,
+                        "alpha":255
+                    }
+                },
+                "trendingTopics":
+                {
+                    "name":"trendingTopic.shelf",
+                    "background":
+                    {
+                        "name":"solidColor.background",
+                        "color":
+                        {
+                            "red":255,
+                            "green":255,
+                            "blue":255,
+                            "alpha":255
+                        }
+                    },
+                    "font.label1":
+                    {
+                        "fontName":"Oswald-Regular",
+                        "fontSize":13
+                    },
+                    "color.text":
+                    {
+                        "red":38,
+                        "green":39,
+                        "blue":38,
+                        "alpha":255
+                    },
+                    "font.label2":
+                    {
+                        "fontName":"Oswald-Regular",
+                        "fontSize":12
+                    }
+                },
+                "stream.title":"RECENT POSTS",
+                "color.text":
+                {
+                    "red":38,
+                    "green":39,
+                    "blue":38,
+                    "alpha":255
+                },
+                "font.heading2":
+                {
+                    "fontName":"Oswald-Regular",
+                    "fontSize":13
+                },
+                "loadingBackground":
+                {
+                    "name":"tilePattern.background",
+                    "color":
+                    {
+                        "red":150,
+                        "green":195,
+                        "blue":137,
+                        "alpha":1
+                    },
+                    "image":
+                    {
+                        "imageURL":"geometric_pattern"
+                    },
+                    "tiltParallax":true,
+                    "shimmerAnimationActive":true
+                },
+                "streamURL":"TBD streamURL - GET FROM BACKEND",
+                "tracking":
+                {
+                    "view":["https:\/\/api.getvictorious.com\/api\/tracking\/component_view\/explore%2Escreen"
+                    ]
                 }
-              },
-              "id": "55d365637e1ab",
-              "hasHeaderParallax": true
             },
-            "icon": {
-              "imageSet": [
-                {
-                  "imageURL": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/icons/ios/toolbar_playlist1.png",
-                  "scale": 1
-                },
-                {
-                  "imageURL": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/icons/ios/toolbar_playlist1_@2x.png",
-                  "scale": 2
-                },
-                {
-                  "imageURL": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/icons/ios/toolbar_playlist1_@3x.png",
-                  "scale": 3
-                }
-              ]
+            "color.link":
+            {
+                "red":49,
+                "green":198,
+                "blue":133,
+                "alpha":1
             },
-            "selectedIcon": {
-              "imageSet": [
-                {
-                  "imageURL": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/icons/ios/toolbar_playlist1_selected.png",
-                  "scale": 1
-                },
-                {
-                  "imageURL": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/icons/ios/toolbar_playlist1_selected_@2x.png",
-                  "scale": 2
-                },
-                {
-                  "imageURL": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/icons/ios/toolbar_playlist1_selected_@3x.png",
-                  "scale": 3
-                }
-              ]
-            },
-            "color.link": {
-              "red": 184,
-              "green": 54,
-              "blue": 191,
-              "alpha": 1
-            },
-            "color.link.secondary": {
-              "red": 156,
-              "green": 46,
-              "blue": 162,
-              "alpha": 1
+            "color.link.secondary":
+            {
+                "red":42,
+                "green":168,
+                "blue":113,
+                "alpha":1
             }
           },
           {

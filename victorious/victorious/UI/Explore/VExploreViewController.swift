@@ -10,7 +10,7 @@ import UIKit
 
 /// Base view controller for the explore screen that gets
 /// presented when "explore" button on the tab bar is tapped
-class VExploreViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate {
+class VExploreViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate, VMarqueeDataDelegate, VMarqueeSelectionDelegate {
     
     @IBOutlet weak private var searchBar: UISearchBar!
     @IBOutlet weak private var collectionView: UICollectionView!
@@ -18,6 +18,11 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     /// The dependencyManager that is used to manage dependencies of explore screen
     private(set) var dependencyManager: VDependencyManager?
     private let numberOfSectionsInCollectionView = 3
+    private var marqueeCellController: VAbstractMarqueeController?
+    
+    private struct templateConstants {
+        let marqueeComponentKey = "marqueeCell"
+    }
     
     /// MARK: - View Controller Initialization
     
@@ -37,6 +42,11 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         navigationItem.v_supplementaryHeaderView = searchBar
         self.automaticallyAdjustsScrollViewInsets = false;
         self.extendedLayoutIncludesOpaqueBars = true;
+        
+        marqueeCellController = dependencyManager?.templateValueOfType(VAbstractMarqueeController.self, forKey: templateConstants().marqueeComponentKey) as? VAbstractMarqueeController
+        marqueeCellController?.dataDelegate = self
+        marqueeCellController?.selectionDelegate = self
+        marqueeCellController?.registerCollectionViewCellWithCollectionView(collectionView)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -50,7 +60,7 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         
         switch (section) {
         case 0:
-            numberOfRows = 3
+            numberOfRows = 1
         case 1:
             numberOfRows = 3
         case 2:
@@ -63,9 +73,17 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if let placeHolderCell = collectionView.dequeueReusableCellWithReuseIdentifier("placeHolder", forIndexPath: indexPath) as? UICollectionViewCell {
-            return placeHolderCell
+        if indexPath.section == 0 {
+            if let marqueeCell = marqueeCellController?.marqueeCellForCollectionView(collectionView, atIndexPath: indexPath){
+                return marqueeCell
+            }
         }
+        else {
+            if let placeHolderCell = collectionView.dequeueReusableCellWithReuseIdentifier("placeHolder", forIndexPath: indexPath) as? UICollectionViewCell {
+                return placeHolderCell
+            }
+        }
+
         fatalError("Could not find a cell for item!")
     }
     
@@ -73,11 +91,22 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         return numberOfSectionsInCollectionView
     }
     
-    /// Mark: - UISearchBarDelegate
+    /// MARK: - UISearchBarDelegate
     
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
         if let searchVC = VUsersAndTagsSearchViewController .newWithDependencyManager(dependencyManager) {
             v_navigationController().innerNavigationController.pushViewController(searchVC, animated: true)
         }
+    }
+    
+    /// MARK: - MarqueeDataDelegate
+    
+    func marquee(marquee: VAbstractMarqueeController!, reloadedStreamWithItems streamItems: [AnyObject]!) {
+        
+    }
+    
+    ///MARK: - MarqueeSelectionDelegate
+    func marquee(marquee: VAbstractMarqueeController!, selectedItem streamItem: VStreamItem!, atIndexPath path: NSIndexPath!, previewImage image: UIImage!) {
+        
     }
 }
