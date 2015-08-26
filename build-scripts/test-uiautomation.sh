@@ -23,7 +23,7 @@ TEST_REPORT_REPO="../VictoriousiOS.wiki"
 TEST_REPORT_REPO_URL="https://github.com/TouchFrame/VictoriousiOS.wiki.git"
 TEST_REPORT_FILE="UI-Automation-Tests.md"
 
-if [ ! -d $TEST_REPORT_REPO ] ; then
+if [ ! -d $TEST_REPORT_REPO ]; then
     git clone $TEST_REPORT_REPO_URL $TEST_REPORT_REPO
 else
     START_LOC=`pwd`
