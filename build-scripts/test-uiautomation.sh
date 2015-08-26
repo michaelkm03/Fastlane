@@ -25,6 +25,12 @@ TEST_REPORT_FILE="UI-Automation-Tests.md"
 
 if [ ! -d $TEST_REPORT_REPO ] ; then
     git clone $TEST_REPORT_REPO_URL $TEST_REPORT_REPO
+else
+    START_LOC=`pwd`
+    cd $TEST_REPORT_REPO
+    git checkout $TEST_REPORT_FILE
+    git pull origin master
+    cd $START_LOC
 fi
 
 # Copy provisioning profile into Xcode
