@@ -17,7 +17,6 @@ class CommentTests : VictoriousTestCase {
     override func beforeEach() {
         super.beforeEach()
         
-        self.logoutIfLoggedIn()
         self.tester().waitForTappableViewWithAccessibilityLabel( VAutomationIdentifierSettingsLogIn ).tap()
         let email = "user@user.com", password = "password"
         self.loginIfRequired(email: email, password: password)
