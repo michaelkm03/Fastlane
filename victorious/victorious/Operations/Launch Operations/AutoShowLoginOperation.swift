@@ -8,14 +8,27 @@
 
 import Foundation
 
+/// A delegate for the AutoShowLoginOperation. Conformers should be able to
+/// show/hide the given loginViewController. Either through containment or presentation.
+@objc protocol AutoShowLoginOperationDelegate {
+    
+    /// Informs the delegate that the AutoShowLoginOperation now needs it's loginVC to be shown.
+    func showLoginViewController(loginViewController: UIViewController)
+    
+    /// Informs the delegate that the loginViewController passed above should be hidden. This will always be called after `showLoginViewController`
+    func hideLoginViewController(completion: () -> Void)
+}
+
 /// An `Operation` subclass for auto-showing login on startup.
 class AutoShowLoginOperation: Operation {
     
     private let autoShowLoginKey = "showLoginOnStartup"
-    
     let loginAuthorizedAction: VAuthorizedAction
     private let dependencyManager: VDependencyManager
     private let viewControllerToPresentFrom: UIViewController
+    
+    /// A Delegate to manage the showing/hiding of the loginViewController.
+    weak var delegate: AutoShowLoginOperationDelegate?
     
     /// Initializes a new AutoShowLoginOperation with the provided parameters.
     ///
@@ -47,14 +60,21 @@ class AutoShowLoginOperation: Operation {
         beganExecuting()
         
         var shouldAutoShowLogin = dependencyManager.numberForKey(autoShowLoginKey)
-        if shouldAutoShowLogin.boolValue
-        {
+        if shouldAutoShowLogin.boolValue {
             dispatch_async(dispatch_get_main_queue(), {
-                loginAuthorizedAction.prepareInViewController(viewControllerToPresentFrom,
-                    context: VAuthorizationContext.Default,
-                    completion: { (success: Bool) in
-                        self.finishedExecuting()
-                })
+                var loginVC = self.loginAuthorizedAction.loginViewControllerWithContext(.Default,
+                    withCompletion: { (success: Bool) in
+                        self.delegate?.hideLoginViewController() {
+                            self.finishedExecuting()
+                        }
+                    })
+                if let loginVC = loginVC {
+                    self.delegate?.showLoginViewController(loginVC)
+                }
+                else {
+                    // If the loginVC is nil we should not show and just finish up
+                    self.finishedExecuting()
+                }
             })
         }
         else
