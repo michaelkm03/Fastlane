@@ -68,10 +68,13 @@ echo "Tests completed: ${TEST_RESULT}"
 
 mkdir -p $TEST_REPORT_REPO
 cd $TEST_REPORT_REPO
+DIR=`pwd`
+echo "Changed to directory: $DIR"
 DIFF=`git diff`
 
 if [ $TEST_RESULT -eq 0 ]; then
     echo "Tests succeeded."
+    echo "Diff = \"$DIFF\""
 
     if [ -n "$DIFF" ]; then
         # TODO: Send email?
