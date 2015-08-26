@@ -145,8 +145,4 @@ class RegistrationTests : VictoriousTestCase {
         let label = self.tester().waitForViewWithAccessibilityLabel( VAutomationIdentifierProfileUsernameTitle ) as! UILabel
         XCTAssertEqual( label.text!, username )
     }
-    
-    func testSample() {
-        self.addStep( "This test is part of a build serer test to make sure the Wiki page is updating properly." )
-    }
 }

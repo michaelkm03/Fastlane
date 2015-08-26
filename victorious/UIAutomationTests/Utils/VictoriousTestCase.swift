@@ -79,18 +79,19 @@ class VictoriousTestCase: KIFTestCase {
     private func addTextToReport( var text: String ) {
         let path = TEST_REPORT_PATH
         
-        // Only write reports if the file exists already
-        if !NSFileManager.defaultManager().fileExistsAtPath(TEST_REPORT_PATH) {
-            return
+        if let url = NSURL(string:"http://10.18.11.114:4000") {
+            let request = NSMutableURLRequest(URL: url)
+            request.HTTPBody = "append=\(VictoriousTestCase.shouldAppend)&text=\(text)".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
+            request.HTTPMethod = "POST"
+            NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue()) { (response, data, error) in
+                //XCTAssert( response.statusCode == 200, "Failed to update test report: \(error.localizedDescription)" )
+                return
+            }
         }
         
         if !VictoriousTestCase.shouldAppend {
             VictoriousTestCase.shouldAppend = true
         }
-        else if let existingText = String(contentsOfFile: path, encoding: NSUTF8StringEncoding, error: nil) {
-            text = existingText + "\n" + text
-        }
-        text.writeToFile(path, atomically: false, encoding: NSUTF8StringEncoding, error: nil)
     }
     
     func addStep( text: String, function: String = __FUNCTION__ ) {

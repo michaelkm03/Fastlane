@@ -18,10 +18,14 @@ if [ "$SCHEME" == "" -o "$CONFIGURATION" == "" ]; then
     exit 1
 fi
 
+TEST_REPORT_SERVER_PORT=4000
 TEST_REPORT_REPO="../VictoriousiOS.wiki"
 TEST_REPORT_REPO_URL="https://github.com/TouchFrame/VictoriousiOS.wiki.git"
 TEST_REPORT_FILE="UI-Automation-Tests.md"
-git clone $TEST_REPORT_REPO_URL $TEST_REPORT_REPO
+
+if [ ! -d $TEST_REPORT_REPO ] ; then
+    git clone $TEST_REPORT_REPO_URL $TEST_REPORT_REPO
+fi
 
 # Copy provisioning profile into Xcode
 DEFAULT_PROVISIONING_PROFILE_UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i "$DEFAULT_PROVISIONING_PROFILE_PATH")`
@@ -34,13 +38,18 @@ else
     mkdir products
 fi
 
-Apply app configuration
+# Apply app configuration
 echo "Configuring for $CONFIGURATION"
 ./build-scripts/apply-config.sh $CONFIGURATION
 if [ $? != 0 ]; then
     echo "Error applying configuration for $CONFIGURATION"
     exit 1
 fi
+
+# Start server
+python build-scripts/automation_test_report_server.py $TEST_REPORT_SERVER_PORT "$TEST_REPORT_REPO/$TEST_REPORT_FILE" &
+SERVER_PID=$!
+echo "Started reporting server with PID ${SERVER_PID}"
 
 # Download the latest template
 INFOPLIST="victorious/AppSpecific/Info.plist"
@@ -51,10 +60,10 @@ BUILDNUM=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$INFOPLIST")
 #     exit 1
 # fi
 
-# Clean
-# xcodebuild -workspace victorious/victorious.xcworkspace \
-#    -scheme $SCHEME \
-#    -destination generic/platform=iOS clean
+Clean
+xcodebuild -workspace victorious/victorious.xcworkspace \
+   -scheme $SCHEME \
+   -destination generic/platform=iOS clean
 
 # Build
 xcodebuild test \
@@ -63,13 +72,14 @@ xcodebuild test \
     -destination platform="iOS",name="${DEVICE_NAME}"
 
 TEST_RESULT=$?
+kill -15 $SERVER_PID
+
+echo "Shutting down reporting server."
 
 echo "Tests completed: ${TEST_RESULT}"
 
 mkdir -p $TEST_REPORT_REPO
 cd $TEST_REPORT_REPO
-DIR=`pwd`
-echo "Changed to directory: $DIR"
 DIFF=`git diff`
 
 if [ $TEST_RESULT -eq 0 ]; then
