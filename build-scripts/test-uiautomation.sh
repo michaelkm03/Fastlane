@@ -30,7 +30,7 @@ else
     cd $TEST_REPORT_REPO
     git checkout $TEST_REPORT_FILE
     git pull origin master
-    cd $START_LOC
+    cd "${START_LOC}"
 fi
 
 # Copy provisioning profile into Xcode
