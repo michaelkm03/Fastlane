@@ -94,6 +94,7 @@
 #import "VSettingsSwitchCell.h"
 #import "VSimpleModalTransition.h"
 #import "VSleekStreamCellFactory.h"
+#import "VStream+Fetcher.h"
 #import "VStream+RestKit.h"
 #import "VStream.h"
 #import "VStreamCellFactory.h"
@@ -123,3 +124,5 @@
 #import "VVideoLightboxViewController.h"
 #import "VVideoView.h"
 #import "VInsetMarqueeStreamItemCell.h"
+#import "VDependencyManager+VObjectManager.h"
+#import "VInsetMarqueeCollectionViewCell.h"

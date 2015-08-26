@@ -19,17 +19,30 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     private(set) var dependencyManager: VDependencyManager?
     private let numberOfSectionsInCollectionView = 3
     private var marqueeCellController: VAbstractMarqueeController?
+    private var currentStream: VStream?
     
     private struct templateConstants {
-        let marqueeComponentKey = "marqueeCell"
+        let kMarqueeComponentKey = "marqueeCell"
+        let kStreamURLKey = "streamURL"
     }
     
     /// MARK: - View Controller Initialization
     
     class func new( #dependencyManager: VDependencyManager ) -> VExploreViewController {
+        let url = dependencyManager.stringForKey(templateConstants().kStreamURLKey)
+        let path = url.v_pathComponent()
+        let stream = VStream(forPath: path, inContext: dependencyManager.objectManager().managedObjectStore.mainQueueManagedObjectContext)
+        stream.name = dependencyManager.stringForKey(VDependencyManagerTitleKey)
+        
+        return makeExploreViewController(dependencyManager, forStream: stream)
+    }
+    
+    private class func makeExploreViewController(dependencyManager: VDependencyManager, forStream stream: VStream) -> VExploreViewController {
         let storyboard = UIStoryboard(name: "Explore", bundle: nil)
         if let exploreVC = storyboard.instantiateInitialViewController() as? VExploreViewController {
             exploreVC.dependencyManager = dependencyManager
+            exploreVC.currentStream = stream
+            
             return exploreVC
         }
         fatalError("Failed to instantiate VExploreViewController with storyboard")
@@ -40,10 +53,16 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.v_supplementaryHeaderView = searchBar
+        
         self.automaticallyAdjustsScrollViewInsets = false;
         self.extendedLayoutIncludesOpaqueBars = true;
         
-        marqueeCellController = dependencyManager?.templateValueOfType(VAbstractMarqueeController.self, forKey: templateConstants().marqueeComponentKey) as? VAbstractMarqueeController
+        setUpMarqueeController()
+    }
+    
+    private func setUpMarqueeController() {
+        marqueeCellController = dependencyManager?.templateValueOfType(VAbstractMarqueeController.self, forKey: templateConstants().kMarqueeComponentKey) as? VAbstractMarqueeController
+        marqueeCellController?.stream = currentStream
         marqueeCellController?.dataDelegate = self
         marqueeCellController?.selectionDelegate = self
         marqueeCellController?.registerCollectionViewCellWithCollectionView(collectionView)
