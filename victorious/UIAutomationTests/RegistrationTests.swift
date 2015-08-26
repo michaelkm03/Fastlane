@@ -33,7 +33,7 @@ class RegistrationTests : VictoriousTestCase {
         self.logoutIfLoggedIn()
         
         self.addStep( "Select *Log In* button to present the login flow.")
-        self.tester().waitForTimeInterval( 2.0 )
+        self.tester().waitForTimeInterval( 4.0 )
     }
     
     func testLoginSuccess() {
