@@ -127,6 +127,7 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell, VStreamCe
     
     private func initialState() {
         imageView.alpha = 0
+        screenView.alpha = 0
         blurredImageView.alpha = 0
         gradient.alpha = 0
         blurMask.alpha = 0
@@ -134,8 +135,9 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell, VStreamCe
     }
     
     private func readyState(animated: Bool) {
-        UIView.animateWithDuration(animated ? 0.1 : 0, animations: { () -> Void in
+        UIView.animateWithDuration(animated ? 0.3 : 0, animations: { () -> Void in
             self.imageView.alpha = 1
+            self.screenView.alpha = 1
             self.blurredImageView.alpha = 1
             self.gradient.alpha = 1
             self.blurMask.alpha = 1
