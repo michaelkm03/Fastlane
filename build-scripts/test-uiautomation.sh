@@ -52,9 +52,9 @@ BUILDNUM=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$INFOPLIST")
 # fi
 
 # Clean
-xcodebuild -workspace victorious/victorious.xcworkspace \
-   -scheme $SCHEME \
-   -destination generic/platform=iOS clean
+# xcodebuild -workspace victorious/victorious.xcworkspace \
+#    -scheme $SCHEME \
+#    -destination generic/platform=iOS clean
 
 # Build
 xcodebuild test \
