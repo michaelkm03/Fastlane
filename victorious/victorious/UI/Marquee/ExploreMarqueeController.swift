@@ -1,0 +1,36 @@
+//
+//  ExploreMarqueeController.swift
+//  victorious
+//
+//  Created by Tian Lan on 8/25/15.
+//  Copyright (c) 2015 Victorious. All rights reserved.
+//
+
+import UIKit
+
+class ExploreMarqueeController: VInsetMarqueeController {
+
+    override func registerCollectionViewCellWithCollectionView(collectionView: UICollectionView) {
+        collectionView.registerNib(ExploreMarqueeCollectionViewCell.nibForCell(), forCellWithReuseIdentifier: ExploreMarqueeCollectionViewCell.suggestedReuseIdentifier())
+    }
+    
+    override func marqueeCellForCollectionView(collectionView: UICollectionView, atIndexPath indexPath: NSIndexPath) -> VAbstractMarqueeCollectionViewCell {
+        if let collectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(ExploreMarqueeCollectionViewCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as? VAbstractMarqueeCollectionViewCell {
+            if collectionViewCell.marquee != self {
+                collectionViewCell.marquee = self
+                collectionViewCell.dependencyManager = self.dependencyManager
+                self.enableTimer()
+            }
+            return collectionViewCell
+        }
+        fatalError("Failed to dequeue a marquee collection view cell!")
+    }
+    
+    override func desiredSizeWithCollectionViewBounds(bounds: CGRect) -> CGSize {
+        return ExploreMarqueeStreamItemCell.desiredSizeWithCollectionViewBounds(bounds)
+    }
+    
+    override class func marqueeStreamItemCellClass() -> AnyObject.Type {
+        return ExploreMarqueeStreamItemCell.self
+    }
+}
