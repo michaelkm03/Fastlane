@@ -7,8 +7,14 @@
 //
 
 import UIKit
+import SDWebImage
 
 class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell, VStreamCellComponentSpecialization {
+    
+    private struct Constants {
+        static let labelInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+        static let blurCacheString = "_blurred"
+    }
     
     private var imageView = UIImageView()
     private var screenView = UIView()
@@ -28,31 +34,14 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell, VStreamCe
             self.label.text = streamItem?.name ?? ""
             if let previewImageURL = (streamItem?.previewImagesObject as? String),
                 url = NSURL(string: previewImageURL)  {
-//                imageView.sd_setImageWithURL(url, placeholderImage: nil, completed: {[weak self] (image, error, cacheType, url) -> Void in
-//                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-//                        if let strongSelf = self {
-//                            strongSelf.image = image
-//                        }
-//                    })
-//                })
-            }
-        }
-    }
-    
-    var image: UIImage? {
-        didSet {
-            if let image = self.image {
-                
-                if let color = image.dominantColors().first {
-                    self.gradient.primaryColor =  color
-                }
-                
-                self.blurredImageView.blurImage(image, withTintColor: nil, toCallbackBlock: { (img) -> Void in
-                    self.blurredImageView.image = img
-                    self.blurredImageView.layer.mask = self.blurMask.layer
-                    self.blurredImageView.alpha = 1
-                    self.gradient.alpha = 1
-                    self.blurMask.alpha = 1
+                    
+                // Download preview image
+                imageView.sd_setImageWithURL(url, placeholderImage: nil, completed: {[weak self] (image, error, cacheType, url) -> Void in
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        if let strongSelf = self {
+                            strongSelf.updateWithImage(image, url: url, animated: cacheType != .Memory)
+                        }
+                    })
                 })
             }
         }
@@ -100,30 +89,69 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell, VStreamCe
         
         label.textColor = UIColor.whiteColor()
         label.textAlignment = .Center
-        label.font = UIFont.boldSystemFontOfSize(12)
         self.contentView.addSubview(label)
-        self.contentView.v_addPinToLeadingTrailingToSubview(label, leading: 5, trailing: 5)
+        self.contentView.v_addPinToLeadingTrailingToSubview(label, leading: Constants.labelInsets.left, trailing: Constants.labelInsets.right)
         self.contentView.v_addPintoTopBottomToSubview(label, top: 0, bottom: 0)
         
         initialState()
     }
     
-    override func prepareForReuse() {
-        initialState()
+    func updateWithImage(image: UIImage?, url: NSURL?, animated: Bool) {
+        if let image = image, url = url {
+            
+            if let color = image.dominantColors().first {
+                self.gradient.primaryColor =  color
+            }
+            
+            var finish = { (blurredImage: UIImage) -> Void in
+                self.blurredImageView.image = blurredImage
+                self.blurredImageView.layer.mask = self.blurMask.layer
+                self.readyState(animated)
+            }
+            
+            let cacheIdentifier: String? = url.absoluteString?.stringByAppendingString(Constants.blurCacheString)
+            
+            if let cacheIdentifier = cacheIdentifier, cachedImage = SDWebImageManager.sharedManager().imageCache.imageFromMemoryCacheForKey(cacheIdentifier) {
+                finish(cachedImage)
+            }
+            
+            // Blur the preview image
+            self.blurredImageView.blurImage(image, withTintColor: nil, toCallbackBlock: { (img) -> Void in
+                if let cacheIdentifier = cacheIdentifier {
+                    SDWebImageManager.sharedManager().imageCache.storeImage(img, forKey: cacheIdentifier)
+                }
+                finish(img)
+            })
+        }
     }
     
     private func initialState() {
+        imageView.alpha = 0
         blurredImageView.alpha = 0
         gradient.alpha = 0
         blurMask.alpha = 0
         imageView.image = nil
+    }
+    
+    private func readyState(animated: Bool) {
+        UIView.animateWithDuration(animated ? 0.1 : 0, animations: { () -> Void in
+            self.imageView.alpha = 1
+            self.blurredImageView.alpha = 1
+            self.gradient.alpha = 1
+            self.blurMask.alpha = 1
+        })
+    }
+    
+    override func prepareForReuse() {
+        imageView.cancelImageRequestOperation()
+        initialState()
     }
 }
 
 extension TrendingTopicContentCollectionViewCell: VBackgroundContainer {
     
     func loadingBackgroundContainerView() -> UIView! {
-        return screenView
+        return contentView
     }
 }
 

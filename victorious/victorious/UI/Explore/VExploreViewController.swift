@@ -12,8 +12,11 @@ import UIKit
 /// presented when "explore" button on the tab bar is tapped
 class VExploreViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate {
     
+    let trendingTopicShelfKey = "trendingShelf"
+    
     @IBOutlet weak private var searchBar: UISearchBar!
     @IBOutlet weak private var collectionView: UICollectionView!
+    private var trendingTopicShelfFactory: TrendingTopicShelfFactory?
     
     var shelf: Shelf? {
         didSet {
@@ -22,7 +25,15 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     }
 
     /// The dependencyManager that is used to manage dependencies of explore screen
-    private(set) var dependencyManager: VDependencyManager?
+    private(set) var dependencyManager: VDependencyManager? {
+        didSet {
+            if let dependencyManager = dependencyManager {
+                // Create trending topic shelf factory
+                trendingTopicShelfFactory = dependencyManager.templateValueOfType(TrendingTopicShelfFactory.self, forKey: trendingTopicShelfKey) as? TrendingTopicShelfFactory
+            }
+        }
+    }
+    
     private let numberOfSectionsInCollectionView = 3
     
     /// MARK: - View Controller Initialization
@@ -43,15 +54,14 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         navigationItem.v_supplementaryHeaderView = searchBar
         self.automaticallyAdjustsScrollViewInsets = false;
         self.extendedLayoutIncludesOpaqueBars = true;
-        
-        // WARNING: Testing
-        self.collectionView.registerClass(TrendingTopicShelfCollectionViewCell.self, forCellWithReuseIdentifier: TrendingTopicShelfCollectionViewCell.suggestedReuseIdentifier())
+        self.collectionView.backgroundColor = UIColor.whiteColor()
         
         VObjectManager.sharedManager().getExplore({ (op, obj, results) -> Void in
             if let stream = results.last as? VStream {
                 for (ind, streamItem) in enumerate(stream.streamItems) {
                     if let newShelf = streamItem as? Shelf {
                         if newShelf.itemSubType == VStreamItemSubTypeTrendingTopic {
+                            self.trendingTopicShelfFactory?.registerCellsWithCollectionView(self.collectionView)
                             self.shelf = newShelf
                         }
                     }
@@ -89,14 +99,13 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if let shelf = self.shelf {
             if indexPath.section == 1 {
-                if let cell = collectionView.dequeueReusableCellWithReuseIdentifier(TrendingTopicShelfCollectionViewCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as? TrendingTopicShelfCollectionViewCell {
-                    cell.dependencyManager = self.dependencyManager
-                    cell.shelf = self.shelf
+                if let cell = trendingTopicShelfFactory?.collectionView(collectionView, cellForStreamItem: shelf, atIndexPath: indexPath) {
                     return cell
                 }
             }
         }
         if let placeHolderCell = collectionView.dequeueReusableCellWithReuseIdentifier("placeHolder", forIndexPath: indexPath) as? UICollectionViewCell {
+            placeHolderCell.contentView.backgroundColor = UIColor.blackColor()
             return placeHolderCell
         }
         fatalError("Could not find a cell for item!")
@@ -119,7 +128,9 @@ extension VExploreViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         if indexPath.section == 1 {
-            return CGSize(width: self.view.bounds.width, height: 160)
+            if let shelf = shelf, trendingFactory = trendingTopicShelfFactory {
+                return trendingFactory.sizeWithCollectionViewBounds(collectionView.bounds, ofCellForStreamItem: shelf)
+            }
         }
         return CGSize(width: 100, height: 100)
     }

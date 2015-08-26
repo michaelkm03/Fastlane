@@ -4445,16 +4445,6 @@
                   "alpha": 255
                 }
                },
-                  
-               "loadingBackground": {
-                  "name": "tilePattern.background",
-                  "color": {
-                  "red": 100,
-                  "green": 200,
-                  "blue": 255,
-                  "alpha": 255
-                }
-              },
               "id": "55d365637e1ab",
               "hasHeaderParallax": true,
               "trendingShelf": {
@@ -4462,11 +4452,34 @@
                     "background": {
                         "name": "solidColor.background",
                         "color": {
-                        "red": 100,
-                        "green": 100,
+                        "red": 255,
+                        "green": 255,
                         "blue": 255,
                         "alpha": 255
                         }
+                    },
+                  "loadingBackground": {
+                    "name": "solidColor.background",
+                    "color": {
+                        "red": 56,
+                        "green": 199,
+                        "blue": 239,
+                        "alpha": 1
+                    }
+                  },
+                    "font.label1": {
+                        "fontName": "OpenSans-SemiBold",
+                        "fontSize": 12
+                    },
+                    "font.label2": {
+                        "fontName": "OpenSans-SemiBold",
+                        "fontSize": 12
+                    },
+                    "color.text": {
+                        "red": 0,
+                        "green": 0,
+                        "blue": 0,
+                        "alpha": 1
                     }
                   }
             },

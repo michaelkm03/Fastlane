@@ -10,15 +10,19 @@ import Foundation
 
 class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell, VBackgroundContainer {
     
-    private let collectionViewHeight = 90
-    private let contentInsets = UIEdgeInsets(top: 0, left: 22, bottom: 0, right: 22)
+    private struct Constants {
+        static let collectionViewHeight: CGFloat = 90
+        static let underLabelSpace: CGFloat = 12
+        static let contentInsets = UIEdgeInsets(top: 0, left: 11, bottom: 0, right: 11)
+    }
+    
+    // MARK: Properties
     
     private lazy var flowLayout: UICollectionViewFlowLayout = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .Horizontal
-        flowLayout.itemSize = CGSize(width: 90, height: 90)
-        flowLayout.sectionInset = self.contentInsets
-        flowLayout.itemSize = CGSize(width: self.collectionViewHeight, height: self.collectionViewHeight)
+        flowLayout.sectionInset = Constants.contentInsets
+        flowLayout.itemSize = CGSize(width: Constants.collectionViewHeight, height: Constants.collectionViewHeight)
         return flowLayout
     }()
     
@@ -28,14 +32,45 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell, VBackground
         collectionView.backgroundColor = UIColor.clearColor()
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.setTranslatesAutoresizingMaskIntoConstraints(false)
         return collectionView
     }()
     
     private lazy var label: UILabel = {
         let label = UILabel()
-        label.text = "Trending Topics"
+        label.setTranslatesAutoresizingMaskIntoConstraints(false)
         return label
     }()
+    
+    var shelf: Shelf? {
+        didSet {
+            if ( shelf == oldValue ) {
+                if let newStreamItems = streamItems(shelf), let oldStreamItems = streamItems(oldValue) {
+                    if newStreamItems.isEqualToOrderedSet(oldStreamItems) {
+                        //The shelf AND its content are the same, no need to update
+                        return
+                    }
+                }
+            }
+            onShelfSet()
+        }
+    }
+    
+    var dependencyManager: VDependencyManager? {
+        didSet {
+            if dependencyManager == oldValue {
+                return
+            }
+            
+            if let dependencyManager = dependencyManager {
+                dependencyManager.addBackgroundToBackgroundHost(self)
+                label.font = dependencyManager.titleFont
+                label.textColor = dependencyManager.titleColor
+            }
+        }
+    }
+    
+    // MARK: setup
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -49,59 +84,47 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell, VBackground
     
     private func setup() {
         
-        self.backgroundColor = UIColor.whiteColor()
-        
-        label.setTranslatesAutoresizingMaskIntoConstraints(false)
+        // Add subviews
         self.contentView.addSubview(label)
-        collectionView.setTranslatesAutoresizingMaskIntoConstraints(false)
         self.contentView.addSubview(collectionView)
         
-        self.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[label][collectionView(height)]|", options: nil, metrics: ["height" : collectionViewHeight], views: ["label" : label, "collectionView" : collectionView]))
+        // Setup constraints
+        self.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[label]-bottomSpace-[collectionView(height)]|", options: nil, metrics: ["height" : Constants.collectionViewHeight, "bottomSpace" : Constants.underLabelSpace], views: ["label" : label, "collectionView" : collectionView]))
         self.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[collectionView]|", options: nil, metrics: nil, views: ["collectionView" : collectionView]))
-        self.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-lspace-[label]-rspace-|", options: nil, metrics: ["lspace" : contentInsets.left, "rspace" : contentInsets.right], views: ["label" : label]))
+        self.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-lspace-[label]-rspace-|", options: nil, metrics: ["lspace" : Constants.contentInsets.left, "rspace" : Constants.contentInsets.right], views: ["label" : label]))
         
-        // WARNING: Testing
-        collectionView.registerClass(TrendingTopicContentCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        // Register trending topic content cell
+        collectionView.registerClass(TrendingTopicContentCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(TrendingTopicContentCollectionViewCell.self))
     }
     
-    var shelf: Shelf? {
-        didSet {
-            if ( shelf == oldValue ) {
-                if let newStreamItems = streamItems(shelf), let oldStreamItems = streamItems(oldValue) {
-                    if newStreamItems.isEqualToOrderedSet(oldStreamItems) {
-                        //The shelf AND its content are the same, no need to update
-                        return
-                    }
-                }
-            }
-            onShelfSet()
-            collectionView.reloadData()
-        }
-    }
+    //MARK: Helpers
     
     private func onShelfSet() {
-        if let streamItems = streamItems(shelf)?.array as? [VStreamItem] {
-            for (index, streamItem) in enumerate(streamItems) {
-                 collectionView.registerClass(TrendingTopicContentCollectionViewCell.self, forCellWithReuseIdentifier: TrendingTopicContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager))
-            }
-        }
-    }
-    
-    var dependencyManager: VDependencyManager? {
-        didSet {
-            if dependencyManager == oldValue {
-                return
-            }
-            
-            if let dependencyManager = dependencyManager {
-                dependencyManager.addBackgroundToBackgroundHost(self)
-                self.label.font = dependencyManager.titleFont
-            }
+        if let shelf = shelf {
+            label.text = shelf.title
+            collectionView.reloadData()
         }
     }
     
     private func streamItems(shelf: Shelf?) -> NSOrderedSet? {
         return shelf?.streamItems
+    }
+    
+    /// The optimal size for this cell.
+    ///
+    /// :param: bounds The bounds of the collection view containing this cell (minus any relevant insets)
+    /// :param: shelf The shelf whose content will populate this cell
+    /// :param: dependencyManager The dependency manager that will be used to style the cell
+    ///
+    /// :return: The optimal size for this cell.
+    class func desiredSize(collectionViewBounds bounds: CGRect, shelf: Shelf, dependencyManager: VDependencyManager) -> CGSize {
+        
+        //Add the height of the labels to find the entire height of the cell
+        let titleHeight = shelf.title.frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.titleFont]).height
+        let totalTitleHeight = titleHeight + Constants.underLabelSpace
+        let totalHeight = totalTitleHeight + Constants.collectionViewHeight
+        
+        return CGSize(width: bounds.width, height: totalHeight)
     }
 }
 
@@ -129,7 +152,8 @@ extension TrendingTopicShelfCollectionViewCell: UICollectionViewDelegate {
     
 }
 
-extension TrendingTopicContentCollectionViewCell: VBackgroundContainer {
+extension TrendingTopicShelfCollectionViewCell: VBackgroundContainer {
+    
     func backgroundContainerView() -> UIView! {
         return contentView
     }
@@ -143,9 +167,5 @@ private extension VDependencyManager {
     
     var titleColor: UIColor {
         return colorForKey(VDependencyManagerMainTextColorKey)
-    }
-    
-    var topicFont: UIFont {
-        return fontForKey(VDependencyManagerLabel2FontKey)
     }
 }

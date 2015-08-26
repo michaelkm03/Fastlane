@@ -907,6 +907,7 @@
 		C39864BD1B266A7700694AB3 /* VDependencyManager+VHighlightContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = C39864BC1B266A7600694AB3 /* VDependencyManager+VHighlightContainer.m */; };
 		C39B220B1B0A58EF00D3DFE7 /* VPermissionMicrophone.m in Sources */ = {isa = PBXBuildFile; fileRef = C39B220A1B0A58EF00D3DFE7 /* VPermissionMicrophone.m */; };
 		C39B220E1B0A693600D3DFE7 /* VPermissionProfilePicture.m in Sources */ = {isa = PBXBuildFile; fileRef = C39B220D1B0A693600D3DFE7 /* VPermissionProfilePicture.m */; };
+		C3A194F21B8D5EF6001A63C7 /* TrendingTopicShelfFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3A194F11B8D5EF6001A63C7 /* TrendingTopicShelfFactory.swift */; };
 		C3BC59501B756C87000A4576 /* VGIFVideoSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3BC594F1B756C87000A4576 /* VGIFVideoSequencePreviewView.m */; };
 		C3BC59531B756E4C000A4576 /* VVideoSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3BC59521B756E4C000A4576 /* VVideoSequencePreviewView.m */; };
 		C3C1484C1B72F53B007F81B0 /* SoundBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C1484B1B72F53B007F81B0 /* SoundBarView.swift */; };
@@ -2939,6 +2940,7 @@
 		C39B220A1B0A58EF00D3DFE7 /* VPermissionMicrophone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPermissionMicrophone.m; path = Permissions/VPermissionMicrophone.m; sourceTree = "<group>"; };
 		C39B220C1B0A693600D3DFE7 /* VPermissionProfilePicture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPermissionProfilePicture.h; path = Permissions/VPermissionProfilePicture.h; sourceTree = "<group>"; };
 		C39B220D1B0A693600D3DFE7 /* VPermissionProfilePicture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPermissionProfilePicture.m; path = Permissions/VPermissionProfilePicture.m; sourceTree = "<group>"; };
+		C3A194F11B8D5EF6001A63C7 /* TrendingTopicShelfFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingTopicShelfFactory.swift; sourceTree = "<group>"; };
 		C3BC594E1B756C87000A4576 /* VGIFVideoSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGIFVideoSequencePreviewView.h; sourceTree = "<group>"; };
 		C3BC594F1B756C87000A4576 /* VGIFVideoSequencePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VGIFVideoSequencePreviewView.m; sourceTree = "<group>"; };
 		C3BC59511B756E4C000A4576 /* VVideoSequencePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoSequencePreviewView.h; sourceTree = "<group>"; };
@@ -6956,6 +6958,7 @@
 				C3E20B101B8659E400757F17 /* TrendingTopicShelfCollectionViewCell.swift */,
 				C3E20B141B8670BB00757F17 /* TrendingTopicContentCollectionViewCell.swift */,
 				C38254B41B86B8B200EDBE91 /* TrendingTopicGradientView.swift */,
+				C3A194F11B8D5EF6001A63C7 /* TrendingTopicShelfFactory.swift */,
 			);
 			name = "Trending Topic Shelf";
 			sourceTree = "<group>";
@@ -9652,6 +9655,7 @@
 				A721E9321B572454000B7901 /* VSequence+RestKit.m in Sources */,
 				A7B89EF01AA7B26A00475CC2 /* VPresentWithBlurTransition.m in Sources */,
 				A6B9FD071B603FC600166BE8 /* VImageCameraViewController.m in Sources */,
+				C3A194F21B8D5EF6001A63C7 /* TrendingTopicShelfFactory.swift in Sources */,
 				A776E00E1AE743F3001F25FF /* VStreamNavigationViewFloatingController.m in Sources */,
 				BE11447919D49AA4006A6D65 /* VFullscreenMarqueeStreamItemCell.m in Sources */,
 				F0FC97D51B5AF0EE0098AFCB /* VCollectionViewCommentHighlighter.m in Sources */,
