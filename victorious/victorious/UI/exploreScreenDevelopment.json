@@ -4439,17 +4439,18 @@
               "background": {
                 "name": "solidColor.background",
                 "color": {
-                  "red": 255,
-                  "green": 255,
+                  "red": 100,
+                  "green": 100,
                   "blue": 255,
                   "alpha": 255
                 }
                },
+                  
                "loadingBackground": {
                   "name": "tilePattern.background",
                   "color": {
-                  "red": 255,
-                  "green": 255,
+                  "red": 100,
+                  "green": 200,
                   "blue": 255,
                   "alpha": 255
                 }
@@ -4457,7 +4458,16 @@
               "id": "55d365637e1ab",
               "hasHeaderParallax": true,
               "trendingShelf": {
-                    "name": "trendingTopic.shelf"
+                    "name": "trendingTopic.shelf",
+                    "background": {
+                        "name": "solidColor.background",
+                        "color": {
+                        "red": 100,
+                        "green": 100,
+                        "blue": 255,
+                        "alpha": 255
+                        }
+                    }
                   }
             },
             "icon": {

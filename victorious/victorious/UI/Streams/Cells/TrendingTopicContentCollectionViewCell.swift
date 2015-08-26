@@ -102,7 +102,7 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell, VStreamCe
         label.textAlignment = .Center
         label.font = UIFont.boldSystemFontOfSize(12)
         self.contentView.addSubview(label)
-        self.contentView.v_addPinToLeadingTrailingToSubview(label, leading: 10, trailing: 10)
+        self.contentView.v_addPinToLeadingTrailingToSubview(label, leading: 5, trailing: 5)
         self.contentView.v_addPintoTopBottomToSubview(label, top: 0, bottom: 0)
         
         initialState()

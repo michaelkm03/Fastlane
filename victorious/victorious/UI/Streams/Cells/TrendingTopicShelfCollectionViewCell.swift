@@ -8,7 +8,7 @@
 
 import Foundation
 
-class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
+class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell, VBackgroundContainer {
     
     private let collectionViewHeight = 90
     private let contentInsets = UIEdgeInsets(top: 0, left: 22, bottom: 0, right: 22)
@@ -94,6 +94,7 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
             }
             
             if let dependencyManager = dependencyManager {
+                dependencyManager.addBackgroundToBackgroundHost(self)
                 self.label.font = dependencyManager.titleFont
             }
         }
@@ -126,6 +127,12 @@ extension TrendingTopicShelfCollectionViewCell: UICollectionViewDataSource {
 
 extension TrendingTopicShelfCollectionViewCell: UICollectionViewDelegate {
     
+}
+
+extension TrendingTopicContentCollectionViewCell: VBackgroundContainer {
+    func backgroundContainerView() -> UIView! {
+        return contentView
+    }
 }
 
 private extension VDependencyManager {
