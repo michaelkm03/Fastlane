@@ -113,7 +113,6 @@
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
-            <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="Kna-OC-bH3" firstAttribute="top" secondItem="Iq7-J1-2fS" secondAttribute="top" constant="20" id="UA2-ys-EhW"/>
                 <constraint firstAttribute="bottom" secondItem="Kna-OC-bH3" secondAttribute="bottom" constant="20" id="VgJ-NT-2Aq"/>

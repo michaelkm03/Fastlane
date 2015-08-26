@@ -27,10 +27,15 @@ class ExploreMarqueeController: VInsetMarqueeController {
     }
     
     override func desiredSizeWithCollectionViewBounds(bounds: CGRect) -> CGSize {
-        return ExploreMarqueeStreamItemCell.desiredSizeWithCollectionViewBounds(bounds)
+        return ExploreMarqueeCollectionViewCell.desiredSizeWithCollectionViewBounds(bounds)
     }
     
     override class func marqueeStreamItemCellClass() -> AnyObject.Type {
         return ExploreMarqueeStreamItemCell.self
+    }
+    
+    // This is responsible for the cell size of the marquee collection view
+    override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        return ExploreMarqueeStreamItemCell.desiredSizeWithCollectionViewBounds(collectionView.bounds)
     }
 }
