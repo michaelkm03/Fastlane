@@ -152,7 +152,7 @@
 "xmy-by-M88.text" = "パスワード変更";
 
 /* Class = "UILabel"; text = "Autoplay Videos"; ObjectID = "yLq-Ze-kTh"; */
-"yLq-Ze-kTh.text" = "次の動画を自動再生する";
+"yLq-Ze-kTh.text" = "動画を自動再生する";
 
 /* Class = "UILabel"; text = "MESSAGE"; ObjectID = "zvz-SG-J7d"; */
 "zvz-SG-J7d.text" = "メッセージ";

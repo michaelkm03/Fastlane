@@ -145,8 +145,6 @@
 
 "NoCommentsTitle"       =   "첫 번째로 댓글을 달아주세요!";
 "NoCommentsMessage"     =   "글, 사진, 영상 댓글을 달고 다른 사람의 반응을 보세요!";
-"LeaveACommentAt"       =   "다음에 댓글 남기기";
-"LeaveAComment"          =   "댓글 남기기";
 
 "NoFollowersTitle"      =   "훌쩍! 아직 날 팔로우한 사람이 아무도 없습니다.";
 "NoFollowersMessage"    =   "댓글을 달고, 리믹스하고, 새 콘텐츠를 올려서 커뮤니티와 교류하고 팔로워를 늘리세요.";
@@ -304,6 +302,7 @@
 
 "VideoPlayFailed"       =   "영상 불러오기 실패.";
 "See More"              =   "더 보기";
+"See all"               =   "모두 보기";
 "..."                   =   "...";
 
 "PostWillExpire"        =   "글이 만료됩니다.";
@@ -660,6 +659,7 @@
 "Watch Video" = "영상 보기";
 "Watch GIF" = "GIF 보기";
 
+"Show Previous Comments" = "이전 댓글 보기";
 "CommentsSingularFormat" = "댓글 %@개";  // e.g. "1 Comment"
 "CommentsPluralFormat" = "댓글 %@개";  // e.g. "20 Comments"
 "LikesSingularFormat" = "좋아요 %@개";  // e.g. "1 Like", where "Like" is a noun
@@ -675,11 +675,7 @@
 "NOTHING LIKED YET" = "좋아한 게 아직 없습니다."; // Liked content no content view
 "Posts you like will appear here." = "좋아한다고 표시한 글이 여기에 표시됩니다."; // Liked content no content view
 
-
-"TRENDING FAN" = "인기 있는 팬";
 "posts" = "글";
-
-"TRENDING HASHTAG" = "인기 있는 해시태그";
 "HashtagPostsCountFormat" = "글 %@개 안";
 
 "Barcelona" = "바르셀로나";

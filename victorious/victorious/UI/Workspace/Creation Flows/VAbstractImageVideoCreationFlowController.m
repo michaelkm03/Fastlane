@@ -164,7 +164,7 @@ static NSString * const kCreationFlowSourceSearch = @"search";
         {
             strongSelf.renderedMediaURL = renderedMediaURL;
             strongSelf.previewImage = previewImage;
-            [strongSelf afterEditingFinished];
+            [strongSelf afterEditingFinishedUseCapturedMediaURL:NO];
         }
         else
         {
@@ -212,11 +212,12 @@ static NSString * const kCreationFlowSourceSearch = @"search";
     };
 }
 
-- (void)afterEditingFinished
+- (void)afterEditingFinishedUseCapturedMediaURL:(BOOL)shouldUseCapturedMediaURL
 {
     // Configure parameters
-    self.publishParameters.mediaToUploadURL = self.renderedMediaURL;
+    NSURL *mediaURL = shouldUseCapturedMediaURL ? self.capturedMediaURL : self.renderedMediaURL;
     self.publishParameters.previewImage = self.previewImage;
+    self.publishParameters.mediaToUploadURL = mediaURL;
     [self configurePublishParameters:self.publishParameters
                        withWorkspace:self.workspaceViewController];
     
@@ -224,7 +225,7 @@ static NSString * const kCreationFlowSourceSearch = @"search";
     {
         if ( [self.creationFlowDelegate shouldShowPublishScreenForFlowController])
         {
-            [self toPublishScreenWithRenderedMediaURL:self.renderedMediaURL
+            [self toPublishScreenWithRenderedMediaURL:mediaURL
                                          previewImage:self.previewImage
                                         fromWorkspace:self.workspaceViewController];
         }
@@ -232,12 +233,12 @@ static NSString * const kCreationFlowSourceSearch = @"search";
         {
             [self.creationFlowDelegate creationFlowController:self
                                      finishedWithPreviewImage:self.previewImage
-                                             capturedMediaURL:self.renderedMediaURL];
+                                             capturedMediaURL:mediaURL];
         }
     }
     else
     {
-        [self toPublishScreenWithRenderedMediaURL:self.renderedMediaURL
+        [self toPublishScreenWithRenderedMediaURL:mediaURL
                                      previewImage:self.previewImage
                                     fromWorkspace:self.workspaceViewController];
     }
@@ -254,7 +255,6 @@ static NSString * const kCreationFlowSourceSearch = @"search";
     
     // Configure parameters
     self.publishParameters.source = [self sourceStringForSourceType:self.source];
-    self.publishParameters.mediaToUploadURL = renderedMediaURL;
     self.publishParameters.previewImage = previewImage;
     self.publishParameters.parentNodeID = self.parentNodeID;
     self.publishParameters.parentSequenceID = self.parentSequenceID;
@@ -294,7 +294,7 @@ static NSString * const kCreationFlowSourceSearch = @"search";
     BOOL shouldSkipTrimmerForUser = [[[VObjectManager sharedManager] mainUser] shouldSkipTrimmer] && [self isKindOfClass:[VVideoCreationFlowController class]];
     if ( shouldSkipTrimmerForContext || shouldSkipTrimmerForUser )
     {
-        [self afterEditingFinished];
+        [self afterEditingFinishedUseCapturedMediaURL:YES];
         
         // Since we're skipping the video camera clear the state
         if ([self.topViewController isKindOfClass:[VVideoCameraViewController class]])
