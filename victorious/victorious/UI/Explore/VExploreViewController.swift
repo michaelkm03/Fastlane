@@ -10,7 +10,7 @@ import UIKit
 
 /// Base view controller for the explore screen that gets
 /// presented when "explore" button on the tab bar is tapped
-class VExploreViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate, VMarqueeDataDelegate, VMarqueeSelectionDelegate {
+class VExploreViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate, UICollectionViewDelegateFlowLayout, VMarqueeDataDelegate, VMarqueeSelectionDelegate {
     
     @IBOutlet weak private var searchBar: UISearchBar!
     @IBOutlet weak private var collectionView: UICollectionView!
@@ -113,5 +113,20 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     ///MARK: - MarqueeSelectionDelegate
     func marquee(marquee: VAbstractMarqueeController!, selectedItem streamItem: VStreamItem!, atIndexPath path: NSIndexPath!, previewImage image: UIImage!) {
         
+    }
+    
+    ///MARK: - UICollectionViewDelegateFlowLayout
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        switch indexPath.section {
+        case 0:
+            if let size = self.marqueeCellController?.desiredSizeWithCollectionViewBounds(collectionView.bounds) {
+                return size
+            }
+            else {
+                fallthrough
+            }
+        default:
+            return CGSizeMake(collectionView.bounds.width, 100)
+        }
     }
 }
