@@ -30,8 +30,6 @@
 #import "VFooterActivityIndicatorView.h"
 #import "VDependencyManager.h"
 
-const CGFloat kVLoadNextPagePoint = .75f;
-
 @interface VAbstractStreamCollectionViewController () <VScrollPaginatorDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;

@@ -22,7 +22,7 @@
 #import "VComment.h"
 #import "victorious-Swift.h"
 
-static const CGFloat kMinimumAspectRatio = 0.5f;
+static const CGFloat kMinimumVideoAspectRatio = 1.0f;
 static const CGFloat kMaximumAspectRatio = 2.0f;
 
 @implementation VSequence (Fetcher)
@@ -190,14 +190,17 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
         
         // Get aspect ratio of preview asset
         CGFloat aspectRatio = [previewAsset.width floatValue] / [previewAsset.height floatValue];
+        
         // Make sure aspect ratio is within bounds
-        return [self clamp:aspectRatio max:kMaximumAspectRatio min:kMinimumAspectRatio];
+        const BOOL isNonVideo = self.isVideo || self.isGifStyle.boolValue;
+        CGFloat min = isVideo ? kMinimumVideoAspectRatio : CGFLOAT_MIN;
+        return [self clampedValue:aspectRatio min:min max:kMaximumAspectRatio];
     }
     
     return 1.0f;
 }
 
-- (CGFloat)clamp:(CGFloat)value max:(CGFloat)max min:(CGFloat)min
+- (CGFloat)clampedValue:(CGFloat)value min:(CGFloat)min max:(CGFloat)max
 {
     if (value > max)
     {
@@ -207,10 +210,8 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
     {
         return min;
     }
-    
     return value;
 }
-
 
 - (NSArray *)initialImageURLs
 {

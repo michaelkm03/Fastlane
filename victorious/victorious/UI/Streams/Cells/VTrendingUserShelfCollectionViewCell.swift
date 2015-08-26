@@ -96,12 +96,6 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
         }
     }
     
-    //MARK: - Getters
-    
-    private class func getUsernameText(shelf: UserShelf) -> String {
-        return shelf.user.name
-    }
-    
     private class func getPostsCountText(shelf: UserShelf) -> String {
         var countsText = ""
         let hasFollowersCount = shelf.followersCount.integerValue != 0
@@ -159,7 +153,8 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
         
         //Add the height of the labels to find the entire height of the cell
         let titleHeight = shelf.title.frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.titleFont]).height
-        let usernameHeight = VTrendingUserShelfCollectionViewCell.getUsernameText(shelf).frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.usernameFont]).height
+        let username = Optional(shelf.user)?.name ?? ""
+        let usernameHeight = username.frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.usernameFont]).height
         let postCountHeight = VTrendingUserShelfCollectionViewCell.getPostsCountText(shelf).frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.postsCountFont]).height
         
         let topContentHeight = max(titleHeight, Constants.followControlHeight)
