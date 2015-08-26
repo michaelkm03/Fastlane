@@ -34,10 +34,10 @@ class RegistrationTests : VictoriousTestCase {
         
         self.addStep( "Select *Log In* button to present the login flow.")
         self.tester().waitForTimeInterval( 2.0 )
-        self.tester().waitForViewWithAccessibilityLabel( VAutomationIdentifierSettingsLogIn ).tap()
     }
     
     func testLoginSuccess() {
+        self.tester().waitForViewWithAccessibilityLabel( VAutomationIdentifierSettingsLogIn ).tap()
         // Allow enough time so that the settings won't be confused with the "Log In" button from the login landing screen
         self.tester().waitForTimeInterval( 4.0 )
         
@@ -52,7 +52,7 @@ class RegistrationTests : VictoriousTestCase {
         
         self.addStep( "If login in was successful, the *Log Out* button should now be visible" )
         self.tester().scrollToBottomOfTableView( VAutomationIdentifierSettingsTableView )
-        self.tester().waitForViewWithAccessibilityLabel( VAutomationIdentifierSettingsLogOut ).tap()
+        self.tester().waitForViewWithAccessibilityLabel( VAutomationIdentifierSettingsLogOut )
     }
     
     func generateRandomInteger() -> Int {
@@ -60,6 +60,7 @@ class RegistrationTests : VictoriousTestCase {
     }
     
     func testSignupWithEmail() {
+        self.tester().waitForViewWithAccessibilityLabel( VAutomationIdentifierSettingsLogIn ).tap()
         self.tester().waitForTappableViewWithAccessibilityLabel( VAutomationIdentifierLRegistrationEmail ).tap()
         
         let randomCaptionInteger = self.generateRandomInteger()
