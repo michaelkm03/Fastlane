@@ -452,9 +452,7 @@
 		A70FC1131A2D61A000F5BBDE /* VProductsRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC1121A2D61A000F5BBDE /* VProductsRequest.m */; };
 		A70FC1251A31207400F5BBDE /* VVoteSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC1241A31207400F5BBDE /* VVoteSettings.m */; };
 		A716FC2A1AAE0EF50032AA40 /* VAuthorizedActionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A716FC291AAE0EF50032AA40 /* VAuthorizedActionTests.m */; };
-		A71CE3191B8BEE6200E17BCD /* RegistrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D535651B87CDD9009D84C8 /* RegistrationTests.swift */; };
 		A71CE31A1B8D137600E17BCD /* CommentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76A069C1B87B13600D91214 /* CommentTests.swift */; };
-		A71CE31B1B8D137600E17BCD /* ContentCreationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76A069B1B87B13600D91214 /* ContentCreationTests.swift */; };
 		A71DAF241B695FC200E0BE53 /* AutomationId.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71DAF231B695FC200E0BE53 /* AutomationId.swift */; };
 		A71F2E6D1B7BD24F00159392 /* LocalNotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F2E6C1B7BD24F00159392 /* LocalNotificationScheduler.swift */; };
 		A71F2E6F1B7BFDEE00159392 /* VDependencyManager+LocalNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F2E6E1B7BFDEE00159392 /* VDependencyManager+LocalNotification.swift */; };
@@ -833,6 +831,8 @@
 		A7F7121B1AE5A3B10086F729 /* VLinearGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F7121A1AE5A3B10086F729 /* VLinearGradientView.m */; };
 		A7F8DD631A0B1A8B00F82256 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F8DD621A0B1A8B00F82256 /* WebKit.framework */; };
 		A7F8DD651A0BF55900F82256 /* VSequenceActionControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F8DD641A0BF55900F82256 /* VSequenceActionControllerTests.m */; };
+		A7FD45671B8E595C00C5174D /* ContentCreationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76A069B1B87B13600D91214 /* ContentCreationTests.swift */; };
+		A7FD45681B8E595C00C5174D /* RegistrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D535651B87CDD9009D84C8 /* RegistrationTests.swift */; };
 		A7FE8C3E19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A7FE8C3D19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf */; };
 		B066EC871B1F97CF006E1D40 /* VBarButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 037FCF131A8DAF0E00E8ABFC /* VBarButton.xib */; };
 		B074C5B41B39D41F00EA3FFC /* VHashmarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = B074C5B21B39D41F00EA3FFC /* VHashmarkView.m */; };
@@ -8818,11 +8818,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				A76A06A31B87B13600D91214 /* KIFExtensions.swift in Sources */,
-				A71CE31B1B8D137600E17BCD /* ContentCreationTests.swift in Sources */,
 				A71CE31A1B8D137600E17BCD /* CommentTests.swift in Sources */,
+				A7FD45671B8E595C00C5174D /* ContentCreationTests.swift in Sources */,
 				A71F2E701B7D16DC00159392 /* VAutomation.m in Sources */,
 				A7DB4D481B7ACB9A00199D10 /* AutomationId.swift in Sources */,
-				A71CE3191B8BEE6200E17BCD /* RegistrationTests.swift in Sources */,
+				A7FD45681B8E595C00C5174D /* RegistrationTests.swift in Sources */,
 				A76A06A41B87B13600D91214 /* VictoriousTestCase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

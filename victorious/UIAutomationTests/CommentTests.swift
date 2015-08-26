@@ -14,15 +14,6 @@ class CommentTests : VictoriousTestCase {
         return "Tests posting a GIF comment on a post from user's profile."
     }
     
-    override func beforeEach() {
-        super.beforeEach()
-        
-        self.tester().waitForTappableViewWithAccessibilityLabel( VAutomationIdentifierSettingsLogIn ).tap()
-        let email = "user@user.com", password = "password"
-        self.loginIfRequired(email: email, password: password)
-        self.addStep( "Log in with email \(email) and password \(password)" )
-    }
-    
     func testGifCommentOnContentView() {
         
         self.addStep( "Selects the profile tab." )
