@@ -41,6 +41,9 @@ typedef void (^MediaLoadingCompletionBlock) (CGFloat contentAspectRatio);
  */
 - (instancetype)initWithUrl:(NSURL *)url NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
+
 /**
     The url that media should be loaded from.
  */
