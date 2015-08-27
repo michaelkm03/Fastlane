@@ -126,3 +126,4 @@
 #import "VInsetMarqueeStreamItemCell.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VInsetMarqueeCollectionViewCell.h"
+#import "VObjectManager+Discover.h"

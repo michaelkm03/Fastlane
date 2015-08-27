@@ -4583,7 +4583,7 @@
                     "tiltParallax":true,
                     "shimmerAnimationActive":true
                 },
-                "streamURL":"http://dev.getvictorious.com/api/sequence/detail_list_by_stream_with_marquee/following/0/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
+                "streamURL":"http://dev.getvictorious.com/api/sequence/feed/following/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
                 "tracking":
                 {
                     "view":["https:\/\/api.getvictorious.com\/api\/tracking\/component_view\/explore%2Escreen"

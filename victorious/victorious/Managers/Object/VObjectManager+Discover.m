@@ -328,4 +328,21 @@
     return NO;
 }
 
+- (RKManagedObjectRequestOperation *)getExplore:(VSuccessBlock)success failBlock:(VFailBlock)fail
+{
+    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+    {
+        if (success != nil)
+        {
+            success(operation, fullResponse, resultObjects);
+        }
+    };
+    
+    return [self GET:@"/api/sequence/feed/following"
+              object:nil
+          parameters:nil
+        successBlock:fullSuccess
+           failBlock:fail];
+}
+
 @end

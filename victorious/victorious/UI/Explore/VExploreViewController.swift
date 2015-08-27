@@ -18,8 +18,8 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     /// The dependencyManager that is used to manage dependencies of explore screen
     private(set) var dependencyManager: VDependencyManager?
     private let numberOfSectionsInCollectionView = 3
-    private var marqueeCellController: VAbstractMarqueeController?
-    private var currentStream: VStream?
+    private var marqueeFactory: VMarqueeCellFactory?
+    private var marqueeShelf: Shelf?
     
     private struct templateConstants {
         let kMarqueeComponentKey = "marqueeCell"
@@ -29,23 +29,14 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     /// MARK: - View Controller Initialization
     
     class func new( #dependencyManager: VDependencyManager ) -> VExploreViewController {
-        let url = dependencyManager.stringForKey(templateConstants().kStreamURLKey)
-        let path = url.v_pathComponent()
-        let stream = VStream(forPath: path, inContext: dependencyManager.objectManager().managedObjectStore.mainQueueManagedObjectContext)
-        stream.name = dependencyManager.stringForKey(VDependencyManagerTitleKey)
-        
-        return makeExploreViewController(dependencyManager, forStream: stream)
-    }
-    
-    private class func makeExploreViewController(dependencyManager: VDependencyManager, forStream stream: VStream) -> VExploreViewController {
         let storyboard = UIStoryboard(name: "Explore", bundle: nil)
         if let exploreVC = storyboard.instantiateInitialViewController() as? VExploreViewController {
             exploreVC.dependencyManager = dependencyManager
-            exploreVC.currentStream = stream
+            exploreVC.marqueeFactory = VMarqueeCellFactory(dependencyManager: dependencyManager)
             
             return exploreVC
         }
-        fatalError("Failed to instantiate VExploreViewController with storyboard")
+        fatalError("Failed to instantiate an explore view controller!")
     }
     
     /// MARK: - View Controller LifeCycle
@@ -57,15 +48,23 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         self.automaticallyAdjustsScrollViewInsets = false;
         self.extendedLayoutIncludesOpaqueBars = true;
         
-        setUpMarqueeController()
-    }
-    
-    private func setUpMarqueeController() {
-        marqueeCellController = dependencyManager?.templateValueOfType(VAbstractMarqueeController.self, forKey: templateConstants().kMarqueeComponentKey) as? VAbstractMarqueeController
-        marqueeCellController?.stream = currentStream
-        marqueeCellController?.dataDelegate = self
-        marqueeCellController?.selectionDelegate = self
-        marqueeCellController?.registerCollectionViewCellWithCollectionView(collectionView)
+        self.marqueeFactory?.registerCellsWithCollectionView(self.collectionView)
+
+        
+        VObjectManager.sharedManager().getExplore({ (op, obj, results) -> Void in
+            if let stream = results.last as? VStream {
+                for (index, streamItem) in enumerate(stream.streamItems) {
+                    if let newShelf = streamItem as? Shelf {
+                        self.marqueeShelf = newShelf
+                        break
+                    }
+                }
+                self.collectionView.reloadData()
+            }
+            
+            }, failBlock: { (op, err) -> Void in
+                println(err)
+        })
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -95,20 +94,18 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         
         switch indexPath.section {
         case 0:
-            if let marqueeCell = marqueeCellController?.marqueeCellForCollectionView(collectionView, atIndexPath: indexPath){
-                return marqueeCell
+            if let shelf = marqueeShelf {
+                if let marqueeCell = marqueeFactory?.collectionView(collectionView, cellForStreamItem: shelf, atIndexPath: indexPath) {
+                    return marqueeCell
+                }
             }
-            else {
-                fallthrough
-            }
+
         default:
             if let placeHolderCell = collectionView.dequeueReusableCellWithReuseIdentifier("placeHolder", forIndexPath: indexPath) as? UICollectionViewCell {
                 return placeHolderCell
             }
-            else {
-                fatalError("Failed to create a cell")
-            }
         }
+        return collectionView.dequeueReusableCellWithReuseIdentifier("placeHolder", forIndexPath: indexPath) as! UICollectionViewCell
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
@@ -118,7 +115,7 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     /// MARK: - UISearchBarDelegate
     
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
-        if let searchVC = VUsersAndTagsSearchViewController .newWithDependencyManager(dependencyManager) {
+        if let searchVC = VUsersAndTagsSearchViewController.newWithDependencyManager(dependencyManager) {
             v_navigationController().innerNavigationController.pushViewController(searchVC, animated: true)
         }
     }
@@ -138,14 +135,14 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         switch indexPath.section {
         case 0:
-            if let size = self.marqueeCellController?.desiredSizeWithCollectionViewBounds(collectionView.bounds) {
-                return size
-            }
-            else {
-                fallthrough
+            if let shelf = marqueeShelf {
+                if let size = marqueeFactory?.sizeWithCollectionViewBounds(collectionView.bounds, ofCellForStreamItem: shelf) {
+                    return size
+                }
             }
         default:
             return CGSizeMake(collectionView.bounds.width, 100)
         }
+        return CGSizeMake(collectionView.bounds.width, 100)
     }
 }
