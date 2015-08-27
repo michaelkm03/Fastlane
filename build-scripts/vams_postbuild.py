@@ -11,6 +11,7 @@ Posts a Test Fairy build url for a specific app to the Victorious backend.
 This script is used by the following Victorious repositories:
 https://github.com/TouchFrame/VictoriousAndroid
 https://github.com/TouchFrame/VictoriousiOS
+
 """
 import requests
 import sys
@@ -46,7 +47,7 @@ def postTestFairyURL(app_name, testfairy_url):
     req_hash = vams.calcAuthHash(uri, 'POST')
 
     field_name = 'android_testfairy_url'
-    if vams._DEFAULT_PLATFORM == 'ios':
+    if vams._DEFAULT_PLATFORM == vams._PLATFORM_IOS:
         field_name = 'ios_testfairy_url'
 
     auth_header = 'BASIC %s:%s' % (vams._DEFAULT_VAMS_USERID, req_hash)
@@ -108,7 +109,7 @@ def main(argv):
     if len(argv) < 4:
         if _CONSOLE_OUTPUT:
             showProperUsage()
-        exit_message = '1|Wrong parameters were passed to vams_postbuild.py'
+        exit_message = 'Wrong parameters were passed to vams_postbuild.py'
         sys.exit(exit_message)
 
     vams.init()
@@ -119,8 +120,7 @@ def main(argv):
     if platform == vams._PLATFORM_IOS:
         vams._DEFAULT_PLATFORM = vams._PLATFORM_IOS
 
-    if platform == vams._PLATFORM_ANDROID:
-        _CONSOLE_OUTPUT = True
+    _CONSOLE_OUTPUT = False
 
 
     url = argv[3]
@@ -143,7 +143,7 @@ def main(argv):
     elif server.lower() == 'production':
         _DEFAULT_HOST = vams._PRODUCTION_HOST
     elif server.lower() == 'localhost':
-        _DEFAULT_HOST = '%s:%s' % (vams._LOCAL_HOST, vams._LOCAL_HOST)
+        _DEFAULT_HOST = '%s:%s' % (vams._LOCAL_HOST, vams._LOCAL_PORT)
     else:
         _DEFAULT_HOST = vams._PRODUCTION_HOST
 
@@ -155,13 +155,13 @@ def main(argv):
     if vams.authenticateUser(_DEFAULT_HOST):
         postTestFairyURL(app_name, url)
     else:
-        exit_message = '1|There was a problem authenticating with the Victorious backend. Exiting now...'
+        exit_message = 'There was a problem authenticating with the Victorious backend. Exiting now...'
         if _CONSOLE_OUTPUT:
             print exit_message
         sys.exit(exit_message)
 
     
-    sys.exit('0|Test Fairy URL Posted to VAMS Successfully')
+    sys.exit('\nTest Fairy URL Posted to VAMS Successfully for %s\n' % app_name)
 
 
 if __name__ == '__main__':
