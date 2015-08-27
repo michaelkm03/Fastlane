@@ -55,10 +55,13 @@ NSString * const VCellSizingCommentsKey = @"comments";
     
     id cacheKey = userInfo[ VCellSizeCacheKey ];
     
+    NSDictionary *cachedInfo = (NSDictionary *)[self.cache objectForKey:cacheKey];
+    BOOL commentsHaveUpdated = ![cachedInfo[VCellSizingCommentsKey] isEqualToArray:userInfo[VCellSizingCommentsKey]];
+    
     NSAssert( cacheKey != nil, @"Calling code must provide a value for `%@` in the userInfo parameter", VCellSizeCacheKey );
     
-    NSValue *cachedValue = (NSValue *)[(NSDictionary *)[self.cache objectForKey:cacheKey] objectForKey:VCellSizeCacheKey];
-    if ( cachedValue != nil )
+    NSValue *cachedValue = (NSValue *)[cachedInfo objectForKey:VCellSizeCacheKey];
+    if ( cachedValue != nil && !commentsHaveUpdated)
     {
         return cachedValue.CGSizeValue;
     }
