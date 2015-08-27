@@ -84,7 +84,7 @@ static NSString * const kMediaIdentifierSuffix = @"withMedia";
     
     self.mediaLinkTopConstraint.constant = [[self class] contentsHasValidMediaLink:contents] ? kContentSeparationSpace : 0.0f;
     [self setupMediaLinkButtonWithInStreamMediaLink:contents.inStreamMediaLink forSizing:NO];
-    
+        
     [self.profileButton setProfileImageURL:[NSURL URLWithString:contents.profileImageUrlString] forState:UIControlStateNormal];
 }
 
