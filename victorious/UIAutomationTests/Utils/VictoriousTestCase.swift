@@ -78,7 +78,7 @@ class VictoriousTestCase: KIFTestCase {
     
     private func addTextToReport( var text: String ) {
         
-        if let url = NSURL(string:"10.18.1.253") {
+        if let url = NSURL(string:"http://10.18.1.253:4000") {
             let request = NSMutableURLRequest(URL: url)
             request.HTTPBody = "append=\(VictoriousTestCase.shouldAppend)&text=\(text)".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
             request.HTTPMethod = "POST"
