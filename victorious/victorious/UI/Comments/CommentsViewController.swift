@@ -85,7 +85,6 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
 
         noContentView = NSBundle.mainBundle().loadNibNamed("VNoContentView", owner: nil, options: nil).first as? VNoContentView
         if let noContentView = noContentView {
-            noContentView.frame = self.view.bounds
             noContentView.setTranslatesAutoresizingMaskIntoConstraints(false)
             view.insertSubview(noContentView, aboveSubview: imageView)
             view.v_addFitToParentConstraintsToSubview(noContentView)
