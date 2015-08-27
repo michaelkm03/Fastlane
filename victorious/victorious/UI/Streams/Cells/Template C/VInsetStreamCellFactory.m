@@ -59,7 +59,7 @@
     {
         if (![streamItem isKindOfClass:[VSequence class]])
         {
-            NSAssert(false, @"This factory can only handle sequences.");
+            //NSAssert(false, @"This factory can only handle sequences.");
         }        
         NSString *reuseIdentifierForSequence = [VInsetStreamCollectionCell reuseIdentifierForStreamItem:streamItem
                                                                                          baseIdentifier:@""
@@ -72,6 +72,7 @@
             [self.registeredReuseIdentifiers addObject:reuseIdentifierForSequence];
         }
     }
+    [self.noContentCollectionViewCellFactory registerNoContentCellWithCollectionView:collectionView];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath
