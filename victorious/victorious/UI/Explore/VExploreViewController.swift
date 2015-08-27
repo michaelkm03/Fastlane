@@ -12,29 +12,19 @@ import UIKit
 /// presented when "explore" button on the tab bar is tapped
 class VExploreViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate {
     
-    let trendingTopicShelfKey = "trendingShelf"
+    struct Constants {
+        static let trendingTopicShelfKey = "trendingShelf"
+    }
     
     @IBOutlet weak private var searchBar: UISearchBar!
     @IBOutlet weak private var collectionView: UICollectionView!
     private var trendingTopicShelfFactory: TrendingTopicShelfFactory?
     
-    var shelf: Shelf? {
-        didSet {
-            self.collectionView.reloadData()
-        }
-    }
+    // Array of shelves to be displayed before recent content
+    var shelves: [Shelf] = []
 
     /// The dependencyManager that is used to manage dependencies of explore screen
-    private(set) var dependencyManager: VDependencyManager? {
-        didSet {
-            if let dependencyManager = dependencyManager {
-                // Create trending topic shelf factory
-                trendingTopicShelfFactory = dependencyManager.templateValueOfType(TrendingTopicShelfFactory.self, forKey: trendingTopicShelfKey) as? TrendingTopicShelfFactory
-            }
-        }
-    }
-    
-    private let numberOfSectionsInCollectionView = 3
+    private(set) var dependencyManager: VDependencyManager?
     
     /// MARK: - View Controller Initialization
     
@@ -42,6 +32,8 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         let storyboard = UIStoryboard(name: "Explore", bundle: nil)
         if let exploreVC = storyboard.instantiateInitialViewController() as? VExploreViewController {
             exploreVC.dependencyManager = dependencyManager
+            // For trending topic shelf
+            exploreVC.trendingTopicShelfFactory = dependencyManager.templateValueOfType(TrendingTopicShelfFactory.self, forKey: Constants.trendingTopicShelfKey) as? TrendingTopicShelfFactory
             return exploreVC
         }
         fatalError("Failed to instantiate VExploreViewController with storyboard")
@@ -58,18 +50,17 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         
         VObjectManager.sharedManager().getExplore({ (op, obj, results) -> Void in
             if let stream = results.last as? VStream {
-                for (ind, streamItem) in enumerate(stream.streamItems) {
+                for (index, streamItem) in enumerate(stream.streamItems) {
                     if let newShelf = streamItem as? Shelf {
-                        if newShelf.itemSubType == VStreamItemSubTypeTrendingTopic {
-                            self.trendingTopicShelfFactory?.registerCellsWithCollectionView(self.collectionView)
-                            self.shelf = newShelf
-                        }
+                        self.trendingTopicShelfFactory?.registerCellsWithCollectionView(self.collectionView)
+                        self.shelves.append(newShelf)
                     }
                 }
+                self.collectionView.reloadData()
             }
 
         }, failBlock: { (op, err) -> Void in
-            println(err)
+            // TODO: Deal with error
         })
     }
     
@@ -79,31 +70,19 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     
     /// MARK: - UICollectionViewDataSource
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        var numberOfRows = 0
-        
-        switch (section) {
-        case 0:
-            numberOfRows = 3
-        case 1:
-            numberOfRows = self.shelf != nil ? 1 : 0
-        case 2:
-            numberOfRows = 12
-        default:
-            fatalError("Unexpected number of sections in collection view")
-        }
-        
-        return numberOfRows
-    }
-    
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if let shelf = self.shelf {
-            if indexPath.section == 1 {
-                if let cell = trendingTopicShelfFactory?.collectionView(collectionView, cellForStreamItem: shelf, atIndexPath: indexPath) {
+        
+        if indexPath.section < shelves.count {
+            // Trending topic shelf
+            
+            let shelf = shelves[indexPath.section]
+            if shelf.itemSubType == VStreamItemSubTypeTrendingTopic {
+                if let cell = trendingTopicShelfFactory?.collectionView(collectionView, cellForStreamItem: shelf, atIndexPath: indexPath) as? TrendingTopicShelfCollectionViewCell {
                     return cell
                 }
             }
         }
+        
         if let placeHolderCell = collectionView.dequeueReusableCellWithReuseIdentifier("placeHolder", forIndexPath: indexPath) as? UICollectionViewCell {
             placeHolderCell.contentView.backgroundColor = UIColor.blackColor()
             return placeHolderCell
@@ -111,8 +90,18 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         fatalError("Could not find a cell for item!")
     }
     
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if section < shelves.count {
+            return 1
+        }
+        
+        // WARNING: Placeholder for recent content
+        return 69
+    }
+    
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return numberOfSectionsInCollectionView
+        // Total number of shelves plus one section for recent content
+        return shelves.count + 1
     }
     
     /// Mark: - UISearchBarDelegate
@@ -127,11 +116,19 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
 extension VExploreViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        if indexPath.section == 1 {
-            if let shelf = shelf, trendingFactory = trendingTopicShelfFactory {
-                return trendingFactory.sizeWithCollectionViewBounds(collectionView.bounds, ofCellForStreamItem: shelf)
+        if indexPath.section < shelves.count {
+            let shelf = shelves[indexPath.section]
+            // Trending topic shelf
+            if shelf.itemSubType == VStreamItemSubTypeTrendingTopic {
+                if let trendingFactory = trendingTopicShelfFactory {
+                    return trendingFactory.sizeWithCollectionViewBounds(collectionView.bounds, ofCellForStreamItem: shelf)
+                }
+            } else {
+                // WARNING: Placeholder for other shelves
+                return CGSize(width: self.collectionView.bounds.width, height: 150)
             }
         }
+        // WARNING: Placeholder for recent content
         return CGSize(width: 100, height: 100)
     }
 }
