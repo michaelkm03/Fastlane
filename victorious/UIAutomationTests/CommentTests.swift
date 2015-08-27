@@ -40,7 +40,7 @@ class CommentTests : VictoriousTestCase {
         // Tap next button
         self.tester().tapViewWithAccessibilityLabel( "Next" )
         
-        let randomCaption = "\(100000 + arc4random() % 100000)"
+        let randomCaption = "\(100000 + arc4random_uniform(100000))"
         self.addStep( "Adds a random caption to the GIF comment (e.g.\"\(randomCaption)\"" )
         self.tester().enterTextIntoCurrentFirstResponder( randomCaption )
         

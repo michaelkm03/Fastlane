@@ -1,12 +1,9 @@
 #!/bin/bash
 ###########
-# Builds, archives, and exports all the apps in the 'configurations' folder.
-# IPA and DSYM files will be placed in the 'products' folder.
-#
-# Requires Shenzhen:  see https://github.com/nomad/shenzhen
-###########
-
-#!/bin/bash
+# Runs unit and automation tests of the app built for a device in the specific scheme and configuration.
+# Sets up a simple python server to receive POSTs from the UIAutomationTests target that collections test summary data.
+# Uses collected test summary data to update the UI Test Automation page of the VictoriousIOS wiki.
+# See https://github.com/TouchFrame/VictoriousiOS/wiki/UI-Automation-Tests
 ###########
 
 SCHEME=$1
@@ -16,8 +13,9 @@ DEFAULT_PROVISIONING_PROFILE_PATH="build-scripts/tests.mobileprovision"
 DEFAULT_CODESIGN_ID="iPhone Distribution: Victorious, Inc"
 BUILDINFO_PLIST="buildinfo.plist"
 
-if [ "$SCHEME" == "" -o "$CONFIGURATION" == "" ]; then
-    echo "Usage: `basename $0` <scheme> <configuration (App name)>"
+# Check input
+if [ "$SCHEME" == "" -o "$CONFIGURATION" == "" -o "$DEVICE_NAME" == "" ]; then
+    echo "Usage: `basename $0` <xcode scheme> <configuration name> <device name>"
     exit 1
 fi
 
@@ -26,6 +24,7 @@ TEST_REPORT_REPO="../VictoriousiOS.wiki"
 TEST_REPORT_REPO_URL="https://github.com/TouchFrame/VictoriousiOS.wiki.git"
 TEST_REPORT_FILE="UI-Automation-Tests.md"
 
+# Clone or pull the latest from the Wiki repo
 if [ ! -d $TEST_REPORT_REPO ]; then
     git clone $TEST_REPORT_REPO_URL $TEST_REPORT_REPO
 else
@@ -55,36 +54,33 @@ if [ $? != 0 ]; then
     exit 1
 fi
 
-# Start server
+# Start server to receive POSTs from tests whiel running
 python build-scripts/automation_test_report_server.py $TEST_REPORT_SERVER_PORT "$TEST_REPORT_REPO/$TEST_REPORT_FILE" &
 SERVER_PID=$!
-echo "Started reporting server with PID ${SERVER_PID}"
+echo "Started reporting server (PID: ${SERVER_PID})"
 
 # Download the latest template
 INFOPLIST="victorious/AppSpecific/Info.plist"
 BUILDNUM=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$INFOPLIST")
-# DEFAULT_ENVIRONMENT=$(/usr/libexec/PlistBuddy -c "Print :VictoriousServerEnvironment" "$INFOPLIST")
-# ./build-scripts/downloadtemplate "victorious.xcarchive/Products/Applications/victorious.app" "$DEFAULT_ENVIRONMENT"
-# if [ $? != 0 ]; then
-#     exit 1
-# fi
 
 # Clean
 xcodebuild -workspace victorious/victorious.xcworkspace \
    -scheme $SCHEME \
    -destination generic/platform=iOS clean
+
 # Build
 xcodebuild test \
     -workspace victorious/victorious.xcworkspace \
     -scheme $SCHEME \
-    -destination platform="iOS",name="${DEVICE_NAME}"
+    -destination platform="iOS",name="${DEVICE_NAME}" \
+    DownloadTemplate=yes
 
 TEST_RESULT=$?
+echo "Tests completed: ${TEST_RESULT}."
+
+echo "Shutting down reporting server (PID: $SERVER_PID)."
 kill -15 $SERVER_PID
 
-echo "Shutting down reporting server."
-
-echo "Tests completed: ${TEST_RESULT}"
 
 mkdir -p $TEST_REPORT_REPO
 cd $TEST_REPORT_REPO

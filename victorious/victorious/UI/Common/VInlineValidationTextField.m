@@ -8,6 +8,7 @@
 
 #import "VInlineValidationTextField.h"
 #import "VThemeManager.h"
+#import "VInlineValidationView.h"
 #import "VPasswordValidator.h"
 
 static const CGFloat kInlineValidationHeight = 20.0f;

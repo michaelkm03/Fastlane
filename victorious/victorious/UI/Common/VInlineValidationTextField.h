@@ -7,14 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VInlineValidationView.h"
 
 typedef NS_ENUM(NSInteger, VTextFieldStyle)
 {
     VTextFieldStyleLoginRegistration,
 };
 
-@class VStringValidator;
+@class VStringValidator, VInlineValidationView;
 
 /**
  *  VInlineValidationTextField is a UITextField subclass for providing inline validation. Provide VInlineValidationTextField with a validator and set it's showInlineValidation to YES for it to update.

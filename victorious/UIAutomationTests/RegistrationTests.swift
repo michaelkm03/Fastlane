@@ -56,7 +56,7 @@ class RegistrationTests : VictoriousTestCase {
     }
     
     func generateRandomInteger() -> Int {
-        return 100000 + Int(arc4random() % 899999 )
+        return 100000 + Int(arc4random_uniform(899999))
     }
     
     func testSignupWithEmail() {

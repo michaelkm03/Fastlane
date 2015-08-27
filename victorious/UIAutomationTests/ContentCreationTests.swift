@@ -37,7 +37,7 @@ class ContentCreationTests: VictoriousTestCase {
         
         self.tester().tapViewWithAccessibilityLabel( VAutomationIdentifierPublishCatpionText )
         
-        let randomCaption = "\(100000 + arc4random() % 100000)"
+        let randomCaption = "\(100000 + arc4random_uniform(100000))"
         self.tester().enterTextIntoCurrentFirstResponder( randomCaption )
         self.addStep( "Add a random caption (e.g. \"\(randomCaption)\")" )
         

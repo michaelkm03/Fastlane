@@ -7,14 +7,10 @@
 //
 
 #import "VModernRegisterViewController.h"
-
-// Dependencies
 #import "VDependencyManager.h"
 #import "VDependencyManager+VKeyboardStyle.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VConstants.h"
-
-// Views + Helpers
 #import "VInlineValidationTextField.h"
 #import "VPasswordValidator.h"
 #import "VEmailValidator.h"
@@ -22,6 +18,7 @@
 #import "VLoginFlowControllerDelegate.h"
 #import "UIColor+VBrightness.h"
 #import "VDependencyManager+VTracking.h"
+#import "VInlineValidationView.h"
 
 static NSString * const kPromptKey = @"prompt";
 static NSString * const kKeyboardStyleKey = @"keyboardStyle";
