@@ -1058,6 +1058,11 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
             
             [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithCellEvent:event];
         }
+        else if ( [cell isKindOfClass:[VTrendingUserShelfCollectionViewCell class]] )
+        {
+            VTrendingUserShelfCollectionViewCell *trendingUserCell = (VTrendingUserShelfCollectionViewCell *)cell;
+            [trendingUserCell trackVisibleSequences];
+        }
     }
 }
 

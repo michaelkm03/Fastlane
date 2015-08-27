@@ -13,6 +13,8 @@ import UIKit
 class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     
     private let kLoggedInChangedNotification = "com.getvictorious.LoggedInChangedNotification"
+    private let kStreamATFThresholdKey = "streamAtfViewThreshold"
+    private let streamTrackingHelper = VStreamTrackingHelper()
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -23,6 +25,8 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
             followControl.tintUnselectedImage = true
         }
     }
+    
+    var trackingMinRequiredCellVisibilityRatio: CGFloat = 0.0
     
     var shelf: Shelf? {
         didSet {
@@ -60,6 +64,7 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
             
             if let dependencyManager = dependencyManager {
                 followControl.dependencyManager = dependencyManager
+                trackingMinRequiredCellVisibilityRatio = dependencyManager.numberForKey(kStreamATFThresholdKey) as CGFloat
                 dependencyManager.addBackgroundToBackgroundHost(self)
             }
         }
@@ -92,6 +97,30 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     /// Nils out shelf to respond to changes in login, should not be called except in response to a login change.
     func loginStatusDidChange() {
         shelf = nil
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        trackVisibleSequences()
+    }
+    
+    func trackVisibleSequences() {
+        let streamVisibleRect = collectionView.bounds;
+        if let visibleCells = collectionView.visibleCells() as? [UICollectionViewCell] {
+            for cell in visibleCells {
+                let intersection = streamVisibleRect.rectByIntersecting(cell.frame)
+                let visibleWidthRatio = intersection.width / cell.frame.width
+                let visibleHeightRatio = intersection.height / cell.frame.height
+                let roundedRatio = ceil(visibleWidthRatio * 100 + visibleHeightRatio * 100) / 200
+                if roundedRatio >= trackingMinRequiredCellVisibilityRatio {
+                    if let indexPath = collectionView.indexPathForCell(cell), let shelf = shelf,
+                        let streamItem: VStreamItem = shelf.streamItems[indexPath.row] as? VStreamItem {
+                        let event = StreamCellContext(streamItem: streamItem, stream: shelf, fromShelf: false)
+                        streamTrackingHelper.onStreamCellDidBecomeVisibleWithCellEvent(event)
+                    }
+                }
+            }
+            
+        }
     }
     
 }
