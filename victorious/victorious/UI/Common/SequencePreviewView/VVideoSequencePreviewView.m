@@ -34,6 +34,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
 @property (nonatomic, strong) VTracking *trackingItem;
 @property (nonatomic, strong) id timeObserver;
 @property (nonatomic, assign) BOOL noReplay;
+@property (nonatomic, strong) UIView *playingVideoBackgroundView;
 
 @property (nonatomic, strong) SoundBarView *soundIndicator;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
@@ -52,6 +53,11 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     self = [super initWithFrame:frame];
     if (self != nil)
     {
+        _playingVideoBackgroundView = [[UIView alloc] init];
+        _playingVideoBackgroundView.backgroundColor = [UIColor blackColor];
+        [self insertSubview:_playingVideoBackgroundView belowSubview:self.videoView];
+        [self v_addFitToParentConstraintsToSubview:_playingVideoBackgroundView];
+        
         _soundIndicator = [[SoundBarView alloc] init];
         _soundIndicator.translatesAutoresizingMaskIntoConstraints = NO;
         _soundIndicator.hidden = YES;
@@ -82,6 +88,7 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     [super setSequence:sequence];
     
     [self setState:VVideoPreviewViewStateEnded];
+    self.playingVideoBackgroundView.hidden = YES;
     
     self.assetURL = nil;
     
@@ -199,12 +206,14 @@ const CGFloat kMaximumLoopingTime = 30.0f;
         [self trackAutoplayEvent:VTrackingEventViewDidStart urls:self.trackingItem.viewStart];
     }
     [self.videoView playWithoutSeekingToBeginning];
+    self.playingVideoBackgroundView.hidden = NO;
 }
 
 - (void)pauseVideo
 {
     [self setState:VVideoPreviewViewStateEnded];
     [self.videoView pauseWithoutSeekingToBeginning];
+    self.playingVideoBackgroundView.hidden = YES;
 }
 
 #pragma mark - Video Player Delegate
