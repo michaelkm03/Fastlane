@@ -9,7 +9,7 @@
 import UIKit
 import SDWebImage
 
-class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell, VStreamCellComponentSpecialization {
+class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
     
     private struct Constants {
         static let labelInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
@@ -77,7 +77,7 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell, VStreamCe
         self.contentView.addSubview(blurredImageView)
         self.contentView.v_addFitToParentConstraintsToSubview(blurredImageView)
         
-        screenView.backgroundColor = UIColor.blackColor().colorWithAlpha(0.2)
+        screenView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.2)
         self.contentView.addSubview(screenView)
         self.contentView.v_addFitToParentConstraintsToSubview(screenView)
         
@@ -93,20 +93,20 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell, VStreamCe
         self.contentView.v_addPinToLeadingTrailingToSubview(label, leading: Constants.labelInsets.left, trailing: Constants.labelInsets.right)
         self.contentView.v_addPintoTopBottomToSubview(label, top: 0, bottom: 0)
         
-        initialState()
+        updateToInitialState()
     }
     
     func updateWithImage(image: UIImage?, url: NSURL?, animated: Bool) {
         if let image = image, url = url {
             
             if let color = image.dominantColors().first {
-                self.gradient.primaryColor =  color
+                self.gradient.primaryColor = color
             }
             
             var finish = { (blurredImage: UIImage) -> Void in
                 self.blurredImageView.image = blurredImage
                 self.blurredImageView.layer.mask = self.blurMask.layer
-                self.readyState(animated)
+                self.updateToReadyState(animated)
             }
             
             let cacheIdentifier: String? = url.absoluteString?.stringByAppendingString(Constants.blurCacheString)
@@ -125,7 +125,7 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell, VStreamCe
         }
     }
     
-    private func initialState() {
+    private func updateToInitialState() {
         imageView.alpha = 0
         screenView.alpha = 0
         blurredImageView.alpha = 0
@@ -134,7 +134,7 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell, VStreamCe
         imageView.image = nil
     }
     
-    private func readyState(animated: Bool) {
+    private func updateToReadyState(animated: Bool) {
         UIView.animateWithDuration(animated ? 0.3 : 0, animations: { () -> Void in
             self.imageView.alpha = 1
             self.screenView.alpha = 1
@@ -146,7 +146,11 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell, VStreamCe
     
     override func prepareForReuse() {
         imageView.cancelImageRequestOperation()
-        initialState()
+        updateToInitialState()
+    }
+    
+    class func reuseIdentifier() -> String {
+        return NSStringFromClass(TrendingTopicContentCollectionViewCell.self)
     }
 }
 
@@ -163,11 +167,3 @@ private extension VDependencyManager {
         return fontForKey(VDependencyManagerLabel2FontKey)
     }
 }
-
-extension TrendingTopicContentCollectionViewCell: VStreamCellComponentSpecialization {
-    
-    class func reuseIdentifierForStreamItem(streamItem: VStreamItem, baseIdentifier: String?, dependencyManager: VDependencyManager?) -> String {
-        return NSStringFromClass(self)
-    }
-}
-

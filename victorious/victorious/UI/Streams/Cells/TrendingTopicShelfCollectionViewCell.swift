@@ -8,7 +8,7 @@
 
 import Foundation
 
-class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell, VBackgroundContainer {
+class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
     
     private struct Constants {
         static let collectionViewHeight: CGFloat = 90
@@ -52,7 +52,11 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell, VBackground
                     }
                 }
             }
-            onShelfSet()
+            
+            if let shelf = shelf {
+                label.text = shelf.title
+                collectionView.reloadData()
+            }
         }
     }
     
@@ -99,13 +103,6 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell, VBackground
     
     //MARK: Helpers
     
-    private func onShelfSet() {
-        if let shelf = shelf {
-            label.text = shelf.title
-            collectionView.reloadData()
-        }
-    }
-    
     private func streamItems(shelf: Shelf?) -> NSOrderedSet? {
         return shelf?.streamItems
     }
@@ -137,8 +134,7 @@ extension TrendingTopicShelfCollectionViewCell: UICollectionViewDataSource {
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if let streamItems = streamItems(shelf)?.array as? [VStreamItem] {
             let streamItem = streamItems[indexPath.row]
-            let reuseIdentifier = TrendingTopicContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! TrendingTopicContentCollectionViewCell
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(TrendingTopicContentCollectionViewCell.reuseIdentifier(), forIndexPath: indexPath) as! TrendingTopicContentCollectionViewCell
             cell.streamItem = streamItem
             cell.dependencyManager = dependencyManager
             return cell

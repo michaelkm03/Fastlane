@@ -17,14 +17,6 @@ class TrendingTopicGradientView: UIView {
         }
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-    
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     private var gradientLayer: CAGradientLayer?
     
     // The primary color of the gradient
@@ -44,22 +36,11 @@ class TrendingTopicGradientView: UIView {
         if let primaryColor = primaryColor {
             var gradient: CAGradientLayer = CAGradientLayer()
             gradient.frame = self.bounds
-            gradient.colors = [primaryColor.colorWithAlpha(gradientAlphas.0).CGColor,
-                primaryColor.colorWithAlpha(gradientAlphas.1).CGColor,
-                primaryColor.colorWithAlpha(gradientAlphas.2).CGColor]
+            gradient.colors = [primaryColor.colorWithAlphaComponent(CGFloat(gradientAlphas.0)).CGColor,
+                primaryColor.colorWithAlphaComponent(CGFloat(gradientAlphas.1)).CGColor,
+                primaryColor.colorWithAlphaComponent(CGFloat(gradientAlphas.2)).CGColor]
             self.layer.insertSublayer(gradient, atIndex: 0)
             gradientLayer = gradient
         }
-    }
-}
-
-extension UIColor {
-    func colorWithAlpha(alpha: Double) -> UIColor {
-        var r: CGFloat = 0.0
-        var g: CGFloat = 0.0
-        var b: CGFloat = 0.0
-        var a: CGFloat = 0.0
-        self.getRed(&r, green: &g, blue: &b, alpha: &a)
-        return UIColor(red: r, green: g, blue: b, alpha: CGFloat(alpha))
     }
 }
