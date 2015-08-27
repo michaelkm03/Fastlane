@@ -87,7 +87,7 @@
                             UIImage *roundedImage = [image roundedImageWithCornerRadius:image.size.height / 2];
                             dispatch_async(dispatch_get_main_queue(), ^
                                            {
-                                               [strongSelf setBackgroundImage:roundedImage forState:controlState];
+                                               [strongSelf setImage:roundedImage forState:UIControlStateNormal];
                                            });
                         });
      }];
