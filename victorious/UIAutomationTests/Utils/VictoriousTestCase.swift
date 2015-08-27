@@ -77,20 +77,20 @@ class VictoriousTestCase: KIFTestCase {
     }
     
     private func addTextToReport( var text: String ) {
-        let path = TEST_REPORT_PATH
         
-        if let url = NSURL(string:"http://10.18.11.114:4000") {
+        if AUTOMATION_SERVER_HOST != "", let url = NSURL(string:"10.18.1.253") {
             let request = NSMutableURLRequest(URL: url)
             request.HTTPBody = "append=\(VictoriousTestCase.shouldAppend)&text=\(text)".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
             request.HTTPMethod = "POST"
             NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue()) { (response, data, error) in
-                //XCTAssert( response.statusCode == 200, "Failed to update test report: \(error.localizedDescription)" )
-                return
+                //XCTAssertNotNil( response, "Failed to update test report: \(error.localizedDescription)" )
+                if response == nil {
+                    println( "Failed to update test report: \(error.localizedDescription)"
+                }
             }
-        }
-        
-        if !VictoriousTestCase.shouldAppend {
-            VictoriousTestCase.shouldAppend = true
+            if !VictoriousTestCase.shouldAppend {
+                VictoriousTestCase.shouldAppend = true
+            }
         }
     }
     

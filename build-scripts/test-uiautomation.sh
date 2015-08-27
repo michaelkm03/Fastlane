@@ -6,6 +6,9 @@
 # Requires Shenzhen:  see https://github.com/nomad/shenzhen
 ###########
 
+#!/bin/bash
+###########
+
 SCHEME=$1
 CONFIGURATION=$2
 DEVICE_NAME=$3
@@ -66,11 +69,10 @@ BUILDNUM=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$INFOPLIST")
 #     exit 1
 # fi
 
-Clean
+# Clean
 xcodebuild -workspace victorious/victorious.xcworkspace \
    -scheme $SCHEME \
    -destination generic/platform=iOS clean
-
 # Build
 xcodebuild test \
     -workspace victorious/victorious.xcworkspace \
