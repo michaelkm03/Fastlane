@@ -135,3 +135,10 @@ extension VExploreViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: 100, height: 100)
     }
 }
+
+extension VExploreViewController : VTrendingTopicResponder {
+    
+    func trendingTopicSelected(hashtag: String, fromShelf: Shelf) {
+        println(hashtag)
+    }
+}

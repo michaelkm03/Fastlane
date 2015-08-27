@@ -150,6 +150,19 @@ extension TrendingTopicShelfCollectionViewCell: UICollectionViewDataSource {
 
 extension TrendingTopicShelfCollectionViewCell: UICollectionViewDelegate {
     
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        
+        collectionView.deselectItemAtIndexPath(indexPath, animated: false)
+        
+        let responder: VTrendingTopicResponder = typedResponder()
+        if let shelf = shelf, streamItems = streamItems(shelf)?.array as? [VStreamItem] {
+            let streamItem = streamItems[indexPath.row]
+            let hashtag = streamItem.name ?? ""
+            responder.trendingTopicSelected(hashtag, fromShelf: shelf)
+            return
+        }
+        assertionFailure("VTrendingShelfCollectionViewCell selected an invalid stream item")
+    }
 }
 
 extension TrendingTopicShelfCollectionViewCell: VBackgroundContainer {
