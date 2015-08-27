@@ -19,7 +19,6 @@ class VDirectoryContentCellFactory: VStreamContentCellFactory {
     private let directoryCellFactory: VDirectoryCellFactory?
     
     required init(dependencyManager: VDependencyManager) {
-        let templateValue: AnyObject! = dependencyManager.templateValueConformingToProtocol(VDirectoryCellFactory.self, forKey: VDirectoryContentCellFactory.kDirectoryCellFactoryKey)
         if let factory = dependencyManager.templateValueConformingToProtocol(VDirectoryCellFactory.self, forKey: VDirectoryContentCellFactory.kDirectoryCellFactoryKey) as? VDirectoryCellFactory {
             directoryCellFactory = factory
         }
