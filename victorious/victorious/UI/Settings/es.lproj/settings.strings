@@ -155,7 +155,7 @@
 "xmy-by-M88.text" = "Cambiar contraseña";
 
 /* Class = "UILabel"; text = "Autoplay Videos"; ObjectID = "yLq-Ze-kTh"; */
-"yLq-Ze-kTh.text" = "Autoplay siguiente vídeo";
+"yLq-Ze-kTh.text" = "Reproducir videos automáticamente";
 
 /* Class = "UILabel"; text = "MESSAGE"; ObjectID = "zvz-SG-J7d"; */
 "zvz-SG-J7d.text" = "MENSAJE";
