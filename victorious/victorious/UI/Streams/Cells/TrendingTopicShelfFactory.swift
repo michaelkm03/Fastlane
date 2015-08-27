@@ -8,18 +8,6 @@
 
 import Foundation
 
-/// Classes that conform to this protocol will receive messages when
-/// a hashtag is selected from the hashtag shelf
-@objc protocol VTrendingTopicResponder {
-    
-    /// Sent when a hashtag is selected from this shelf.
-    ///
-    /// :param: hashtag The hashtag that was selected.
-    /// :param: fromShelf The shelf that the hashtag was selected from.
-    func trendingTopicSelected(hashtag: String, fromShelf: Shelf)
-    
-}
-
 /// A cell factory that returns trending topic shelves
 class TrendingTopicShelfFactory: NSObject {
     

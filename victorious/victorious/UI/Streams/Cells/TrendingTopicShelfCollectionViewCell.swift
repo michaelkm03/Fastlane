@@ -154,11 +154,11 @@ extension TrendingTopicShelfCollectionViewCell: UICollectionViewDelegate {
         
         collectionView.deselectItemAtIndexPath(indexPath, animated: false)
         
-        let responder: VTrendingTopicResponder = typedResponder()
+        let responder: VHashtagSelectionResponder = typedResponder()
         if let shelf = shelf, streamItems = streamItems(shelf)?.array as? [VStreamItem] {
             let streamItem = streamItems[indexPath.row]
             let hashtag = streamItem.name ?? ""
-            responder.trendingTopicSelected(hashtag, fromShelf: shelf)
+            responder.hashtagSelected(hashtag)
             return
         }
         assertionFailure("VTrendingShelfCollectionViewCell selected an invalid stream item")
