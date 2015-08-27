@@ -139,6 +139,8 @@ extension VExploreViewController: UICollectionViewDelegateFlowLayout {
 extension VExploreViewController : VTrendingTopicResponder {
     
     func trendingTopicSelected(hashtag: String, fromShelf: Shelf) {
-        println(hashtag)
+        if let stream = dependencyManager?.hashtagStreamWithHashtag(hashtag) {
+            self.navigationController?.pushViewController(stream, animated: true)
+        }
     }
 }
