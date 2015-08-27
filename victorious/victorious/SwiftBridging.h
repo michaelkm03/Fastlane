@@ -74,6 +74,7 @@
 #import "VMessage+Fetcher.h"
 #import "VMessage.h"
 #import "VNavigationController.h"
+#import "VNoContentView.h"
 #import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+Private.h"
