@@ -13,6 +13,8 @@ class VictoriousTestCase: KIFTestCase {
     
     private static var shouldAppend = false
     
+    private static let networkQueue = NSOperationQueue()
+    
     private var ignoreExceptions: Bool = false
     private var exceptions = [NSException]()
     private var steps = [String : [String]]()
@@ -82,7 +84,8 @@ class VictoriousTestCase: KIFTestCase {
             let request = NSMutableURLRequest(URL: url)
             request.HTTPBody = "append=\(VictoriousTestCase.shouldAppend)&text=\(text)".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
             request.HTTPMethod = "POST"
-            NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue()) { (response, data, error) in
+            VictoriousTestCase.networkQueue.maxConcurrentOperationCount = 1
+            NSURLConnection.sendAsynchronousRequest(request, queue: VictoriousTestCase.networkQueue ) { (response, data, error) in
                 //XCTAssertNotNil( response, "Failed to update test report: \(error.localizedDescription)" )
                 if response == nil {
                     println( "Failed to update test report: \(error.localizedDescription)" )
