@@ -113,7 +113,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
             }
         }
         if hasFollowersCount {
-            let followersCount = numberFormatter.stringForInteger(shelf.postsCount.integerValue)
+            let followersCount = numberFormatter.stringForInteger(shelf.followersCount.integerValue)
             countsText += followersCount + " " + NSLocalizedString("followers", comment: "")
         }
         return countsText
