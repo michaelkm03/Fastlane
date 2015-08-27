@@ -35,7 +35,7 @@
 /**
  * The image view responsible for showing the video's preview image
  */
-@property (nonatomic, strong) UIImageView *previewImageView;
+@property (nonatomic, strong, readonly) UIImageView *previewImageView;
 
 
 /**

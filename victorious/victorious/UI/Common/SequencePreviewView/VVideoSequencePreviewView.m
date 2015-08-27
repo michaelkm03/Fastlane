@@ -88,7 +88,8 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     [super setSequence:sequence];
     
     [self setState:VVideoPreviewViewStateEnded];
-    self.playingVideoBackgroundView.hidden = YES;
+    self.playingVideoBackgroundView.alpha = 0;
+    self.videoView.alpha = 0;
     
     self.assetURL = nil;
     
@@ -206,14 +207,22 @@ const CGFloat kMaximumLoopingTime = 30.0f;
         [self trackAutoplayEvent:VTrackingEventViewDidStart urls:self.trackingItem.viewStart];
     }
     [self.videoView playWithoutSeekingToBeginning];
-    self.playingVideoBackgroundView.hidden = NO;
+    [UIView animateWithDuration:0.2 animations:^
+    {
+        self.playingVideoBackgroundView.alpha = 1;
+        self.videoView.alpha = 1;
+    }];
 }
 
 - (void)pauseVideo
 {
     [self setState:VVideoPreviewViewStateEnded];
     [self.videoView pauseWithoutSeekingToBeginning];
-    self.playingVideoBackgroundView.hidden = YES;
+    [UIView animateWithDuration:0.2 animations:^
+     {
+         self.playingVideoBackgroundView.alpha = 0;
+         self.videoView.alpha = 0;
+     }];
 }
 
 #pragma mark - Video Player Delegate
