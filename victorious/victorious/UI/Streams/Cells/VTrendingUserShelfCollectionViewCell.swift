@@ -98,7 +98,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     
     //MARK: - Getters
     
-    private class func getUsernameText(shelf: UserShelf, dependencyManager: VDependencyManager) -> String {
+    private class func getUsernameText(shelf: UserShelf) -> String {
         return VTagStringFormatter.databaseFormattedStringFromUser(shelf.user) ?? ""
     }
     
@@ -159,7 +159,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
         
         //Add the height of the labels to find the entire height of the cell
         let titleHeight = shelf.title.frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.titleFont]).height
-        let usernameHeight = VTrendingUserShelfCollectionViewCell.getUsernameText(shelf, dependencyManager: dependencyManager).frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.usernameFont]).height
+        let usernameHeight = VTrendingUserShelfCollectionViewCell.getUsernameText(shelf).frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.usernameFont]).height
         let postCountHeight = VTrendingUserShelfCollectionViewCell.getPostsCountText(shelf).frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.postsCountFont]).height
         
         let topContentHeight = max(titleHeight, Constants.followControlHeight)
@@ -185,7 +185,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     
     private func updateUsername() {
         if let shelf = shelf as? UserShelf, let dependencyManager = dependencyManager {
-            let formattedUsername = VTrendingUserShelfCollectionViewCell.getUsernameText(shelf, dependencyManager: dependencyManager)
+            let formattedUsername = VTrendingUserShelfCollectionViewCell.getUsernameText(shelf)
             usernameTextView.setupWithDatabaseFormattedText(formattedUsername, tagAttributes: [NSFontAttributeName : dependencyManager.usernameFont, NSForegroundColorAttributeName : dependencyManager.textColor], defaultAttributes: [NSFontAttributeName : dependencyManager.usernameFont, NSForegroundColorAttributeName : UIColor.whiteColor()], andTagTapDelegate: self)
         }
     }
