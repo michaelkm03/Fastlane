@@ -57,6 +57,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     private var mediaAttachmentPresenter: VMediaAttachmentPresenter?
     private var focusHelper: VCollectionViewStreamFocusHelper?
     private var modalTransitioningDelegate = VTransitionDelegate(transition: VSimpleModalTransition())
+    private var noContentView: VNoContentView?
     private var keyboardBar: VKeyboardInputAccessoryView? {
         didSet {
             if let keyboardBar = keyboardBar {
@@ -81,14 +82,28 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         scrollPaginator.delegate = self
         commentsDataSourceSwitcher.dataSource.delegate = self
         keyboardBar = VKeyboardInputAccessoryView.defaultInputAccessoryViewWithDependencyManager(dependencyManager)
+
+        noContentView = NSBundle.mainBundle().loadNibNamed("VNoContentView", owner: nil, options: nil).first as? VNoContentView
+        if let noContentView = noContentView {
+            noContentView.frame = self.view.bounds
+            noContentView.setTranslatesAutoresizingMaskIntoConstraints(false)
+            view.insertSubview(noContentView, aboveSubview: imageView)
+            view.v_addFitToParentConstraintsToSubview(noContentView)
+            noContentView.icon = UIImage(named: "noCommentIcon")
+            noContentView.title = NSLocalizedString("NoCommentsTitle", comment:"")
+            noContentView.message = NSLocalizedString("NoCommentsMessage", comment:"")
+            noContentView.resetInitialAnimationState()
+            noContentView.setDependencyManager(dependencyManager)
+        }
+        
+        if let sequence = sequence, instreamPreviewURL = sequence.inStreamPreviewImageURL() {
+            imageView.setLightBlurredImageWithURL(instreamPreviewURL, placeholderImage: nil)
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
-        if let sequence = sequence, instreamPreviewURL = sequence.inStreamPreviewImageURL() {
-            imageView.applyTintAndBlurToImageWithURL(instreamPreviewURL, withTintColor: nil)
-        }
         becomeFirstResponder()
         collectionView.accessoryView = keyboardBar
     }
@@ -267,6 +282,10 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if commentsDataSourceSwitcher.dataSource.numberOfComments > 0 {
+            noContentView?.hidden = false
+        }
+        
         return commentsDataSourceSwitcher.dataSource.numberOfComments
     }
     
@@ -331,6 +350,10 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
     func commentsDataSourceDidUpdate(dataSource: CommentsDataSource) {
         
+        if dataSource.numberOfComments == 0 {
+            noContentView?.animateTransitionIn()
+        }
+        
         for index in 0..<dataSource.numberOfComments {
             var comment = dataSource.commentAtIndex(index)
         }
@@ -376,6 +399,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
                                             seqdataSource.sortInternalComments()
                                         }
                                         strongSelf.collectionView.insertItemsAtIndexPaths([NSIndexPath(forItem: 0, inSection: 0)])
+                                        strongSelf.noContentView?.resetInitialAnimationState()
                                     }, completion: { (finished: Bool) -> Void in
                                         strongSelf.updateInsetForKeyboardBarState()
                                         strongSelf.focusHelper?.updateFocus()

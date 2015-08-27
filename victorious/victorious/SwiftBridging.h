@@ -124,6 +124,8 @@
 #import "VVideoLightboxViewController.h"
 #import "VImageLightboxViewController.h"
 #import "NSString+VParseHelp.h"
+#import "VNoContentView.h"
+
 //Shelves
 #import "VStreamCellFactory.h"
 #import "VSleekStreamCellFactory.h"
