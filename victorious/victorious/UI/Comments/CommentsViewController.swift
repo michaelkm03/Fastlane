@@ -281,10 +281,6 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if commentsDataSourceSwitcher.dataSource.numberOfComments > 0 {
-            noContentView?.hidden = false
-        }
-        
         return commentsDataSourceSwitcher.dataSource.numberOfComments
     }
     
@@ -351,6 +347,9 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         
         if dataSource.numberOfComments == 0 {
             noContentView?.animateTransitionIn()
+        }
+        else {
+            noContentView?.resetInitialAnimationState()
         }
         
         for index in 0..<dataSource.numberOfComments {
