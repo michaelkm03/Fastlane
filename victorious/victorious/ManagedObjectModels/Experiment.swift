@@ -8,7 +8,7 @@
 
 import Foundation
 
-@objc class Experiment: NSManagedObject {
+class Experiment: NSManagedObject {
     @NSManaged var name: String
     @NSManaged var id: NSNumber
     @NSManaged var bucketType: String?

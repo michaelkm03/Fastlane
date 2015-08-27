@@ -136,10 +136,10 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
 
     private func updateInsetForKeyboardBarState() {
         if let currentWindow = view.window, keyboardBar = keyboardBar {
-            var obscuredRectInWindow = keyboardBar.obscuredRectInWindow(currentWindow)
-            var obscuredRecInOwnView = currentWindow.convertRect(obscuredRectInWindow, toView: view)
-            var bottomObscuredHeight = CGRectGetMaxY(view.bounds) - CGRectGetMinY(obscuredRecInOwnView)
-            var insetsForKeyboardBarState = UIEdgeInsetsMake(topLayoutGuide.length, 0, bottomObscuredHeight, 0)
+            let obscuredRectInWindow = keyboardBar.obscuredRectInWindow(currentWindow)
+            let obscuredRecInOwnView = currentWindow.convertRect(obscuredRectInWindow, toView: view)
+            let bottomObscuredHeight = CGRectGetMaxY(view.bounds) - CGRectGetMinY(obscuredRecInOwnView)
+            let insetsForKeyboardBarState = UIEdgeInsetsMake(topLayoutGuide.length, 0, bottomObscuredHeight, 0)
             collectionView.contentInset = insetsForKeyboardBarState
             collectionView.scrollIndicatorInsets = insetsForKeyboardBarState
             focusHelper?.focusAreaInsets = insetsForKeyboardBarState
@@ -200,12 +200,12 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
     func tagSensitiveTextView(tagSensitiveTextView: VTagSensitiveTextView, tappedTag tag: VTag) {
         if let tag = tag as? VUserTag {
-            var profileViewController = dependencyManager.userProfileViewControllerWithRemoteId(tag.remoteId)
+            let profileViewController = dependencyManager.userProfileViewControllerWithRemoteId(tag.remoteId)
             self.navigationController?.pushViewController(profileViewController, animated: true)
         }
         else {
-            var justHashTagText = (tag.displayString.string as NSString).substringFromIndex(1)
-            var hashtagViewController = dependencyManager.hashtagStreamWithHashtag(justHashTagText)
+            let justHashTagText = (tag.displayString.string as NSString).substringFromIndex(1)
+            let hashtagViewController = dependencyManager.hashtagStreamWithHashtag(justHashTagText)
             self.navigationController?.pushViewController(hashtagViewController, animated: true)
         }
     }
@@ -214,14 +214,14 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
     func commentRemoved(comment: VComment) {
         collectionView.performBatchUpdates({
-            var commentIndex = self.commentsDataSourceSwitcher.dataSource.indexOfComment(comment)
+            let commentIndex = self.commentsDataSourceSwitcher.dataSource.indexOfComment(comment)
             self.commentsDataSourceSwitcher.dataSource.removeCommentAtIndex(commentIndex)
             self.collectionView.deleteItemsAtIndexPaths([NSIndexPath(forItem: commentIndex, inSection: 0)])
             }, completion: nil)
     }
     
     func editComment(comment: VComment) {
-        var editViewController = VEditCommentViewController.instantiateFromStoryboardWithComment(comment)
+        let editViewController = VEditCommentViewController.instantiateFromStoryboardWithComment(comment)
         editViewController.transitioningDelegate = modalTransitioningDelegate
         editViewController.delegate = self
         self.presentViewController(editViewController, animated: true, completion: nil)
@@ -229,8 +229,8 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
     func replyToComment(comment: VComment) {
         
-        var item = self.commentsDataSourceSwitcher.dataSource.indexOfComment(comment)
-        var indexPath = NSIndexPath(forItem: item, inSection: 0)
+        let item = self.commentsDataSourceSwitcher.dataSource.indexOfComment(comment)
+        let indexPath = NSIndexPath(forItem: item, inSection: 0)
         collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredVertically, animated: true)
         keyboardBar?.setReplyRecipient(comment.user)
         keyboardBar?.startEditing()
@@ -246,7 +246,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
                     commentCell.comment = comment
                     
                     // Try to reload the cell without reloading the whole section
-                    var indexPathToInvalidate = self.collectionView.indexPathForCell(commentCell)
+                    let indexPathToInvalidate = self.collectionView.indexPathForCell(commentCell)
                     if let indexPathToInvalidate = indexPathToInvalidate {
                         self.collectionView.performBatchUpdates({ () in
                             self.collectionView.reloadItemsAtIndexPaths([indexPathToInvalidate])
@@ -279,7 +279,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             registeredCommentReuseIdentifiers.insert(reuseIdentifierForComment)
         }
         
-        if var cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifierForComment, forIndexPath: indexPath) as? VContentCommentsCell {
+        if let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifierForComment, forIndexPath: indexPath) as? VContentCommentsCell {
             cell.dependencyManager = dependencyManager
             cell.comment = commentForIndexPath
             cell.commentAndMediaView?.textView?.tagTapDelegate = self
@@ -287,7 +287,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             cell.commentsUtilitiesDelegate = self
             cell.onUserProfileTapped = { [weak self] in
                 if let strongSelf = self {
-                    var profileViewController = strongSelf.dependencyManager.userProfileViewControllerWithUser(commentForIndexPath.user)
+                    let profileViewController = strongSelf.dependencyManager.userProfileViewControllerWithUser(commentForIndexPath.user)
                     strongSelf.rootNavigationController()?.innerNavigationController.pushViewController(profileViewController, animated: true)
                 }
             }
@@ -330,10 +330,6 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     // MARK: - CommentsDataSourceDelegate
     
     func commentsDataSourceDidUpdate(dataSource: CommentsDataSource) {
-        
-        for index in 0..<dataSource.numberOfComments {
-            var comment = dataSource.commentAtIndex(index)
-        }
         
         if collectionView.numberOfItemsInSection(0) == 0 {
             // First load 
@@ -467,13 +463,13 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         
         keyboardBar?.attachmentsBarHidden = true
         
-        var searchTableView = viewController.view
+        let searchTableView = viewController.view
         searchTableView.setTranslatesAutoresizingMaskIntoConstraints(false)
         view.addSubview(searchTableView)
         if let ownWindow = view.window, keyboardBar = keyboardBar {
-            var obscuredRectInWindow = keyboardBar.obscuredRectInWindow(ownWindow)
-            var obscuredRectInOwnView = ownWindow.convertRect(obscuredRectInWindow, toView: view)
-            var obscuredBottom = view.bounds.height - obscuredRectInOwnView.minY
+            let obscuredRectInWindow = keyboardBar.obscuredRectInWindow(ownWindow)
+            let obscuredRectInOwnView = ownWindow.convertRect(obscuredRectInWindow, toView: view)
+            let obscuredBottom = view.bounds.height - obscuredRectInOwnView.minY
             view.v_addFitToParentConstraintsToSubview(searchTableView, leading: 0, trailing: 0, top: topLayoutGuide.length, bottom: obscuredBottom)
         }
     }
