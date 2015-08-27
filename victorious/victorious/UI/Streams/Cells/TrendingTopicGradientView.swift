@@ -10,6 +10,7 @@ import Foundation
 
 class TrendingTopicGradientView: UIView {
     
+    // A tuple representing the alpha values of each of the three stages in the gradient
     var gradientAlphas = (0.05, 0.3, 0.05) {
         didSet {
             drawGradient()
@@ -24,8 +25,9 @@ class TrendingTopicGradientView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    var gradientLayer: CAGradientLayer?
+    private var gradientLayer: CAGradientLayer?
     
+    // The primary color of the gradient
     var primaryColor: UIColor? {
         didSet {
             drawGradient()

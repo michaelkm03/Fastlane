@@ -20,7 +20,7 @@ import Foundation
     
 }
 
-/// A cell factory that returns trending content shelves
+/// A cell factory that returns trending topic shelves
 class TrendingTopicShelfFactory: NSObject {
     
     private let dependencyManager: VDependencyManager
