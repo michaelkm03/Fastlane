@@ -38,6 +38,7 @@ static NSString * const kCommentBarKey = @"commentBar";
 @property (nonatomic, strong) VUserTaggingTextStorage *textStorage;
 @property (nonatomic, assign) CGSize lastContentSize;
 @property (nonatomic, strong) NSString *placeholderText;
+@property (nonatomic, strong) NSNumberFormatter *remainingCharacterFormater;
 
 // Views
 @property (nonatomic, strong) IBOutlet UIButton *attachmentsButton;
@@ -47,7 +48,7 @@ static NSString * const kCommentBarKey = @"commentBar";
 @property (nonatomic, strong) IBOutlet UIButton *imageButton;
 @property (nonatomic, strong) IBOutlet UIButton *videoButton;
 @property (nonatomic, strong) IBOutlet UIButton *gifButton;
-@property (nonatomic, strong) IBOutlet UIButton *clearAttachmentButton;
+@property (nonatomic, strong) IBOutlet UILabel *remainingCharacterLabel;
 @property (nonatomic, weak) UITextView *editingTextView;
 
 // Constraints
@@ -115,6 +116,9 @@ static NSString * const kCommentBarKey = @"commentBar";
 - (void)awakeFromNib
 {
     [super awakeFromNib];
+    
+    self.remainingCharacterFormater = [[NSNumberFormatter alloc] init];
+    self.remainingCharacterFormater.numberStyle = NSNumberFormatterNoStyle;
     
     // Automation Support
     self.imageButton.accessibilityIdentifier = VAutomationIdentifierCommentBarImageButton;
@@ -334,7 +338,19 @@ shouldChangeTextInRange:(NSRange)range
  replacementText:(NSString *)text
 {
     NSString *string = [textView.text stringByReplacingCharactersInRange:range withString:text];
-    BOOL shouldChange = string.length < (NSUInteger)self.characterLimit;
+    BOOL shouldChange = string.length <= (NSUInteger)self.characterLimit;
+    
+    if (shouldChange)
+    {
+        NSUInteger remaininCharacterCount = [self characterLimit] - string.length;
+        self.remainingCharacterLabel.text = [self.remainingCharacterFormater stringFromNumber:@(remaininCharacterCount)];
+        [UIView animateWithDuration:1.5
+                         animations:^
+        {
+            self.remainingCharacterLabel.alpha = (remaininCharacterCount < 20) ? 1.0f : 0.0f;
+        }];
+    }
+    
     return shouldChange;
 }
 

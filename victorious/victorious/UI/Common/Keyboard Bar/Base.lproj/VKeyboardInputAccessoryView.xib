@@ -56,6 +56,12 @@
                                 <action selector="tappedGIF:" destination="HeO-pU-V0k" eventType="touchUpInside" id="rDx-Hc-ajW"/>
                             </connections>
                         </button>
+                        <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L7n-St-qw3" userLabel="Remaining Character Label">
+                            <rect key="frame" x="282" y="19" width="29" height="14"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -64,12 +70,14 @@
                         <constraint firstAttribute="height" constant="50" id="AR3-WE-2Aj"/>
                         <constraint firstAttribute="bottom" secondItem="U0r-cL-7X4" secondAttribute="bottom" id="Elj-Zr-v8Q"/>
                         <constraint firstAttribute="trailing" secondItem="5jQ-4D-Yes" secondAttribute="trailing" id="Qw8-Ug-maN"/>
+                        <constraint firstAttribute="trailing" secondItem="L7n-St-qw3" secondAttribute="trailing" constant="10" id="Zi2-1g-dmB"/>
                         <constraint firstItem="nWU-Vd-xRZ" firstAttribute="top" secondItem="Ycr-9I-eI5" secondAttribute="top" id="bu6-Gv-f5a"/>
                         <constraint firstItem="U0r-cL-7X4" firstAttribute="top" secondItem="Ycr-9I-eI5" secondAttribute="top" id="c8L-fq-n9P"/>
                         <constraint firstItem="5jQ-4D-Yes" firstAttribute="leading" secondItem="Ycr-9I-eI5" secondAttribute="leading" id="dB7-Vo-PGd"/>
                         <constraint firstItem="XuK-1c-4iY" firstAttribute="top" secondItem="Ycr-9I-eI5" secondAttribute="top" id="gGp-Zu-oLE"/>
                         <constraint firstItem="XuK-1c-4iY" firstAttribute="leading" secondItem="Ycr-9I-eI5" secondAttribute="leading" constant="20" id="mWh-1Q-XJI"/>
                         <constraint firstItem="U0r-cL-7X4" firstAttribute="leading" secondItem="XuK-1c-4iY" secondAttribute="trailing" constant="20" id="tSm-90-0CY"/>
+                        <constraint firstAttribute="centerY" secondItem="L7n-St-qw3" secondAttribute="centerY" id="tZx-SZ-1nB"/>
                         <constraint firstAttribute="bottom" secondItem="nWU-Vd-xRZ" secondAttribute="bottom" id="tuT-QV-Vgx"/>
                         <constraint firstItem="nWU-Vd-xRZ" firstAttribute="leading" secondItem="U0r-cL-7X4" secondAttribute="trailing" constant="20" id="v1A-J8-8JQ"/>
                     </constraints>
@@ -165,6 +173,7 @@
                 <outlet property="gifButton" destination="nWU-Vd-xRZ" id="d9K-Tx-ilw"/>
                 <outlet property="imageButton" destination="XuK-1c-4iY" id="4wH-Fw-RK6"/>
                 <outlet property="placeholderLabel" destination="7pn-fk-jDk" id="a8e-VS-Dtq"/>
+                <outlet property="remainingCharacterLabel" destination="L7n-St-qw3" id="lQN-Kg-Tfh"/>
                 <outlet property="sendButton" destination="GKz-NI-jVc" id="1IC-hD-kLc"/>
                 <outlet property="topSpaceAttachmentsToContainer" destination="BV2-uE-JWO" id="Eyw-Yo-bhN"/>
                 <outlet property="videoButton" destination="U0r-cL-7X4" id="7sJ-lQ-7QC"/>
