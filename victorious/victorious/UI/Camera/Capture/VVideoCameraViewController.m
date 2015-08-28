@@ -289,7 +289,8 @@ static const VCameraCaptureVideoSize kVideoSize = { 640.0f, 640.0f };
     }
     
     NSError *encoderError;
-    VCameraVideoEncoder *encoder = [VCameraVideoEncoder videoEncoderWithFileURL:[NSURL v_temporaryFileURLWithExtension:VConstantMediaExtensionMP4]
+    NSURL *urlForEncoderDestination = [NSURL v_temporaryFileURLWithExtension:VConstantMediaExtensionMP4 inDirectory:kCameraDirectory];
+    VCameraVideoEncoder *encoder = [VCameraVideoEncoder videoEncoderWithFileURL:urlForEncoderDestination
                                                                       videoSize:kVideoSize
                                                                           error:&encoderError];
     if (encoder != nil)

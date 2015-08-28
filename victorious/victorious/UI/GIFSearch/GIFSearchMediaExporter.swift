@@ -38,8 +38,7 @@ struct GIFSearchMediaExporter {
                     
                     // Load the image synchronously before we leave this thread
                     let previewImage: UIImage? = {
-                        var error: NSError?
-                        if let previewImageData = NSData(contentsOfURL: previewImageURL, options: nil, error: &error) {
+                        if let previewImageData = NSData(contentsOfURL: previewImageURL, options: nil, error: nil) {
                             return UIImage(data: previewImageData)
                         }
                         return nil

@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)setBlurredImageWithClearImage:(UIImage *)image placeholderImage:(nullable UIImage *)placeholderImage tintColor:(nullable UIColor *)tintColor;
 - (void)applyTintAndBlurToImageWithURL:(NSURL *)url withTintColor:(nullable UIColor *)tintColor;
-- (void)setLightBlurredImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholderImage;
+- (void)setLightBlurredImageWithURL:(NSURL *)url placeholderImage:(nullable UIImage *)placeholderImage;
 - (void)applyLightBlurAndAnimateImageWithURLToVisible:(NSURL *)url;
 - (void)setExtraLightBlurredImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholderImage;
 - (void)applyExtraLightBlurAndAnimateImageWithURLToVisible:(NSURL *)url;
