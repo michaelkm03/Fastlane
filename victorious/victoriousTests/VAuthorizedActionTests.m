@@ -71,20 +71,6 @@
     [super tearDown];
 }
 
-- (void)testInvalidInputs
-{
-    XCTAssertThrows( [[VAuthorizedAction alloc] initWithObjectManager:nil dependencyManager:self.dependencyManager] );
-    XCTAssertThrows( [[VAuthorizedAction alloc] initWithObjectManager:self.objectManager dependencyManager:nil] );
-    XCTAssertThrows( [[VAuthorizedAction alloc] initWithObjectManager:nil dependencyManager:nil] );
-    
-    VAuthorizedAction *authroizedAction = [[VAuthorizedAction alloc] initWithObjectManager:self.objectManager
-                                                                         dependencyManager:self.dependencyManager];
-    
-    XCTAssertThrows( [authroizedAction performFromViewController:self.viewController context:VAuthorizationContextDefault completion:nil]);
-    XCTAssertThrows( [authroizedAction performFromViewController:nil context:VAuthorizationContextDefault completion:^(BOOL authorized){}]);
-    XCTAssertThrows( [authroizedAction performFromViewController:nil context:VAuthorizationContextDefault completion:nil]);
-}
-
 - (void)testPerformAction1
 {
     self.objectManager.mainUserLoggedIn = YES;
