@@ -1029,6 +1029,11 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
             const CGFloat visibleRatio = CGRectGetHeight( intersection ) / CGRectGetHeight( cell.frame );
             [self collectionViewCell:cell didUpdateCellVisibility:visibleRatio];
         }
+        
+        if ( [cell conformsToProtocol:@protocol(VisibilitySensitiveCell)] )
+        {
+            [(UICollectionViewCell <VisibilitySensitiveCell> *)cell onDidBecomeVisible];
+        }
     }
     
     // Fire right away to catch any events while scrolling stream
