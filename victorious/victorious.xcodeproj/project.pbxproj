@@ -4850,11 +4850,11 @@
 				037FCF291A8DAF7600E8ABFC /* VDependencyManager+VTabScaffoldViewController.h */,
 				037FCF2A1A8DAF7600E8ABFC /* VDependencyManager+VTabScaffoldViewController.m */,
 				F0F04AF51B2A37CB00F6F401 /* VDependencyManager+VShareMenuItem.h */,
-				F0F04AF61B2A37CB00F6F401 /* VDependencyManager+VShareMenuItem.m */,
-				039420411AB7D1A70087ADFA /* VDependencyManager+VTracking.h */,
+				F0F04AF61B2A37CB00F6F40A /* VDependencyManager+VTracking.h */,
 				039420421AB7D1A70087ADFA /* VDependencyManager+VTracking.m */,
 				A7F711D61AE1B8540086F729 /* VDependencyManager+VUserProfile.h */,
-				A7F711D71AE1B8540086F729 /* VDependencyManager+VUserProfile.m */,
+				A7F711D71AE1B8540086F71 /* VDependencyManager+VShareMenuItem.m */,
+				039420411AB7D1A70087ADF29 /* VDependencyManager+VUserProfile.m */,
 				A74679661AFC31AA005EB1D9 /* VDependencyManager+VWebBrowser.h */,
 				A74679671AFC31AA005EB1D9 /* VDependencyManager+VWebBrowser.m */,
 				03A9CBEC1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.h */,
@@ -11108,6 +11108,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -11131,6 +11132,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -11154,6 +11156,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -11177,6 +11180,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
