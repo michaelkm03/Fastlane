@@ -1403,14 +1403,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
-- (void)pressedAlternateReturnKeyonKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
-{
-    if (inputAccessoryView.composedText.length == 0)
-    {
-        [self clearEditingRealTimeComment];
-    }
-}
-
 - (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
             selectedAttachmentType:(VKeyboardBarAttachmentType)attachmentType
 {

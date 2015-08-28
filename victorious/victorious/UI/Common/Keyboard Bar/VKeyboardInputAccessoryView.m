@@ -24,7 +24,7 @@ static const NSInteger kCharacterLimit = 255;
 static const CGFloat VTextViewTopInsetAddition = 2.0f;
 static const CGFloat kAttachmentThumbnailWidth = 35.0f;
 static const CGFloat kCommentBarVerticalPaddingToTextView = 10.0f;
-static const CGFloat kMaxTextViewHeight = 150.0f;
+static const CGFloat kMaxTextViewHeight = 160.0f;
 static const CGFloat kMinTextViewHeight = 40.0f;
 static const CGFloat kAttachmentBarHeight = 50.0f;
 
@@ -333,23 +333,9 @@ static NSString * const kCommentBarKey = @"commentBar";
 shouldChangeTextInRange:(NSRange)range
  replacementText:(NSString *)text
 {
-    if (self.textStorage.textView.returnKeyType == UIReturnKeyDefault)
-    {
-        return YES;
-    }
-    
-    if ([text rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]].location != NSNotFound)
-    {
-        if ([self.delegate respondsToSelector:@selector(pressedAlternateReturnKeyonKeyboardInputAccessoryView:)])
-        {
-            [self.delegate pressedAlternateReturnKeyonKeyboardInputAccessoryView:self];
-        }
-        
-        [self.editingTextView resignFirstResponder];
-        return NO;
-    }
-    [textView.text stringByReplacingCharactersInRange:range withString:text];
-    return textView.text.length <= (NSUInteger)self.characterLimit;
+    NSString *string = [textView.text stringByReplacingCharactersInRange:range withString:text];
+    BOOL shouldChange = string.length < (NSUInteger)self.characterLimit;
+    return shouldChange;
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView
