@@ -97,10 +97,11 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     [self.KVOController unobserve:_shelf];
     _shelf = shelf;
     [self reset];
-    [self.KVOController observe:shelf
+    [self.KVOController observe:_shelf
                         keyPath:NSStringFromSelector(@selector(streamItems))
                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
                          action:@selector(marqueeItemsUpdated)];
+    [self updateFocus];
 }
 
 - (NSArray *)marqueeItems
@@ -117,6 +118,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 {
     self.currentPage = 0;
     self.currentFocusPage = 0;
+    [self updateFocus];
 }
 
 - (void)marqueeItemsUpdated
@@ -128,6 +130,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     NSUInteger marqueeItemsCount = marqueeItems.count;
     self.collectionView.scrollEnabled = marqueeItemsCount != 1;
     [self enableTimer];
+    [self updateFocus];
 }
 
 #pragma mark - UIScrollViewDelegate

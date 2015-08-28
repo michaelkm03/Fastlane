@@ -13,8 +13,7 @@ extension Shelf {
     class func propertyMapping() -> [String : String] {
         return [
             "title" : "title",
-            "streamUrl" : "streamUrl",
-            "id" : "trackingIdentifier"
+            "streamUrl" : "streamUrl"
         ]
     }
     

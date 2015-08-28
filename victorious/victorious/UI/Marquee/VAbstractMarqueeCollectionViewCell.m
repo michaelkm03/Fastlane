@@ -77,6 +77,8 @@
 - (void)onDidBecomeVisible
 {
     [self.marquee enableTimer];
+    [self.marquee updateFocus];
+    [self.marquee updateCellVisibilityTracking];
 }
 
 - (void)onStoppedBeingVisible
