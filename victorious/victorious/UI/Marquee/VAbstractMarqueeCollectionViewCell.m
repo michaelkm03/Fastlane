@@ -45,12 +45,6 @@
     marquee.collectionView = self.marqueeCollectionView;
 }
 
-- (void)prepareForReuse
-{
-    [super prepareForReuse];
-    [self.marquee.autoScrollTimerManager invalidate];
-}
-
 #pragma mark - UIResponder
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -75,6 +69,28 @@
 {
     [super touchesCancelled:touches withEvent:event];
     [self.marquee enableTimer];
+}
+
+#pragma mark - VisibilitySensitiveCell
+
+- (void)setHasFocus:(BOOL)hasFocus
+{
+    if ( hasFocus )
+    {
+        [self.marquee enableTimer];
+        [self.marquee updateFocus];
+        [self.marquee updateCellVisibilityTracking];
+    }
+    else
+    {
+        [self.marquee disableTimer];
+        [self.marquee endFocusOnAllCells];
+    }
+}
+
+- (CGRect)contentArea
+{
+    return self.frame;
 }
 
 #pragma mark - Parallax Scrolling

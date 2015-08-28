@@ -15,11 +15,14 @@ extension Shelf {
     }
     
     class func propertyMapping() -> [String : String] {
-        return ["title" : "title"]
+        return [
+            "title" : "title",
+            "streamUrl" : "streamUrl"
+        ]
     }
     
     class func mappingBaseForEntity(named entityName: String) -> RKEntityMapping {
-        var mapping = RKEntityMapping(forEntityForName: entityName, inManagedObjectStore: RKObjectManager.sharedManager().managedObjectStore)
+        let mapping = RKEntityMapping(forEntityForName: entityName, inManagedObjectStore: RKObjectManager.sharedManager().managedObjectStore)
         mapping.identificationAttributes = ["remoteId"]
         var attributesMapping = VStream.propertyMap()
         for (key, value) in self.propertyMapping() {

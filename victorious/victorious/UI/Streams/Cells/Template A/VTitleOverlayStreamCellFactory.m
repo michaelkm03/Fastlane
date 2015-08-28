@@ -65,6 +65,7 @@
             [self.registeredReuseIdentifiers addObject:reuseIdentifierForSequence];
         }
     }
+    [self.noContentCollectionViewCellFactory registerNoContentCellWithCollectionView:collectionView];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath

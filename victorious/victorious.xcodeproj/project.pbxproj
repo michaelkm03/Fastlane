@@ -117,6 +117,7 @@
 		0343AF831A143F550025B9F8 /* AVAsset+OrientationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */; };
 		0343AF841A143FD20025B9F8 /* NSDate+timeSinceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE49323519E338CE00C0912E /* NSDate+timeSinceTests.m */; };
 		03449FE51A0C7EBB0070EC80 /* VSessionTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 03449FE41A0C7EBB0070EC80 /* VSessionTimer.m */; };
+		0348F9D21B8FD9E500F31602 /* TypeUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0348F9D11B8FD9E500F31602 /* TypeUtilities.swift */; };
 		0349126E1B7EA5C200EA8A07 /* ExperimentSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0349126D1B7EA5C200EA8A07 /* ExperimentSettings.swift */; };
 		0349126F1B7EA5D400EA8A07 /* ExperimentSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0349126D1B7EA5C200EA8A07 /* ExperimentSettings.swift */; };
 		034912711B7EA5E700EA8A07 /* ExperimentSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034912701B7EA5E700EA8A07 /* ExperimentSettingsTests.swift */; };
@@ -376,6 +377,8 @@
 		797226691B7E9F920023C851 /* SequenceCommentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797226681B7E9F920023C851 /* SequenceCommentsDataSource.swift */; };
 		7972266B1B7E9FBC0023C851 /* EmptyCommentsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7972266A1B7E9FBC0023C851 /* EmptyCommentsDataSource.swift */; };
 		797A38001B84132500F39B3B /* VSequenceCommmentsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 797A37FF1B84132500F39B3B /* VSequenceCommmentsDataSource.m */; };
+		7987D7991B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7987D7981B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m */; };
+		7987D79A1B8A66E400EE4A39 /* NSURL+VTemporaryFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = A6B9FD0E1B60630900166BE8 /* NSURL+VTemporaryFiles.m */; };
 		79A809C21B7BF8F7006AE04E /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A809C11B7BF8F7006AE04E /* CommentsViewController.swift */; };
 		79A809C41B7BF912006AE04E /* CommentsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 79A809C31B7BF912006AE04E /* CommentsViewController.storyboard */; };
 		79A809C61B7C07DF006AE04E /* UIViewController+Storyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A809C51B7C07DF006AE04E /* UIViewController+Storyboard.swift */; };
@@ -1521,6 +1524,7 @@
 		03449FE41A0C7EBB0070EC80 /* VSessionTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSessionTimer.m; sourceTree = "<group>"; };
 		034527A81B606C1F00E990BB /* SwiftBridging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftBridging.h; sourceTree = "<group>"; };
 		034527D61B6074F500E990BB /* BasicTemplateDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicTemplateDownloader.swift; sourceTree = "<group>"; };
+		0348F9D11B8FD9E500F31602 /* TypeUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeUtilities.swift; sourceTree = "<group>"; };
 		0349126D1B7EA5C200EA8A07 /* ExperimentSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperimentSettings.swift; sourceTree = "<group>"; };
 		034912701B7EA5E700EA8A07 /* ExperimentSettingsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperimentSettingsTests.swift; sourceTree = "<group>"; };
 		034D1A541AAF5A8500EB7B2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Profile.strings; sourceTree = "<group>"; };
@@ -1989,6 +1993,7 @@
 		7972266A1B7E9FBC0023C851 /* EmptyCommentsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyCommentsDataSource.swift; sourceTree = "<group>"; };
 		797A37FE1B84132500F39B3B /* VSequenceCommmentsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceCommmentsDataSource.h; sourceTree = "<group>"; };
 		797A37FF1B84132500F39B3B /* VSequenceCommmentsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceCommmentsDataSource.m; sourceTree = "<group>"; };
+		7987D7981B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+VTemporaryFilesTests.m"; sourceTree = "<group>"; };
 		79A809C11B7BF8F7006AE04E /* CommentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
 		79A809C31B7BF912006AE04E /* CommentsViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CommentsViewController.storyboard; sourceTree = "<group>"; };
 		79A809C51B7C07DF006AE04E /* UIViewController+Storyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Storyboard.swift"; sourceTree = "<group>"; };
@@ -5429,11 +5434,13 @@
 				A721E8631B572452000B7901 /* CIImage+VImage.h */,
 				A721E8641B572452000B7901 /* CIImage+VImage.m */,
 				A721E8651B572452000B7901 /* Fetchers */,
+				A7C713B11B74450A00089B5E /* GCDUtils.swift */,
 				A721E87B1B572452000B7901 /* Mappings */,
 				A721E8AF1B572453000B7901 /* NSArray+VMap.h */,
 				A721E8B01B572453000B7901 /* NSArray+VMap.m */,
 				A721E8B31B572453000B7901 /* NSData+AES.h */,
 				A721E8B41B572453000B7901 /* NSData+AES.m */,
+				79B51FD31B853A1900F826F3 /* NSDate+ComparableEquatable.swift */,
 				A721E8B51B572453000B7901 /* NSDate+timeSince.h */,
 				A721E8B61B572453000B7901 /* NSDate+timeSince.m */,
 				A721E8B71B572453000B7901 /* NSDictionary+VJSONLogging.h */,
@@ -5459,12 +5466,16 @@
 				A721E8CD1B572453000B7901 /* NSURL+VCustomScheme.m */,
 				A721E8CE1B572453000B7901 /* NSURL+VPathHelper.h */,
 				A721E8CF1B572453000B7901 /* NSURL+VPathHelper.m */,
+				A6B9FD0D1B60630900166BE8 /* NSURL+VTemporaryFiles.h */,
+				A6B9FD0E1B60630900166BE8 /* NSURL+VTemporaryFiles.m */,
+				0348F9D11B8FD9E500F31602 /* TypeUtilities.swift */,
 				A721E8D01B572453000B7901 /* UIActivityViewController+VStatusBarHandling.h */,
 				A721E8D11B572453000B7901 /* UIActivityViewController+VStatusBarHandling.m */,
 				A721E8D21B572453000B7901 /* UIAlertController+VSimpleAlert.h */,
 				A721E8D31B572453000B7901 /* UIAlertController+VSimpleAlert.m */,
 				A721E8D41B572453000B7901 /* UICollectionView+Convenience.h */,
 				A721E8D51B572453000B7901 /* UICollectionView+Convenience.m */,
+				A7DDA6E61B601D20005CE55E /* UICollectionViewCell+SwiftReuse.swift */,
 				A721E8D71B572453000B7901 /* UIColor+VBrightness.h */,
 				A721E8D81B572453000B7901 /* UIColor+VBrightness.m */,
 				A721E8D91B572453000B7901 /* UIColor+VHex.h */,
@@ -5487,13 +5498,15 @@
 				A721E8EC1B572453000B7901 /* UIImageView+VLoadingAnimations.m */,
 				A721E8ED1B572454000B7901 /* UINavigationController+RotationMethodForwarding.h */,
 				A721E8EE1B572454000B7901 /* UINavigationController+RotationMethodForwarding.m */,
+				F06B41BC1B7ED7FD008709E8 /* UIResponder+typedResponder.swift */,
 				A721E8EF1B572454000B7901 /* UIResponder+VResponderChain.h */,
 				A721E8F01B572454000B7901 /* UIResponder+VResponderChain.m */,
-				F06B41BC1B7ED7FD008709E8 /* UIResponder+typedResponder.swift */,
 				A721E8F11B572454000B7901 /* UIScrollView+VCenterContent.h */,
 				A721E8F21B572454000B7901 /* UIScrollView+VCenterContent.m */,
+				A7D7ED501B59BEB900FA346A /* UISearchBar+Extensions.swift */,
 				A721E8F31B572454000B7901 /* UIStoryboard+VMainStoryboard.h */,
 				A721E8F41B572454000B7901 /* UIStoryboard+VMainStoryboard.m */,
+				A7DDA6E41B601D0D005CE55E /* UITableViewCell+SwiftReuse.swift */,
 				A721E8F51B572454000B7901 /* UIView+AutoLayout.h */,
 				A721E8F61B572454000B7901 /* UIView+AutoLayout.m */,
 				A721E8F71B572454000B7901 /* UIView+Masking.h */,
@@ -5501,11 +5514,11 @@
 				A721E8F91B572454000B7901 /* UIView+MotionEffects.h */,
 				A721E8FA1B572454000B7901 /* UIView+MotionEffects.m */,
 				A721E8FB1B572454000B7901 /* UIView+RecursiveSearch.swift */,
-				A7D7ED501B59BEB900FA346A /* UISearchBar+Extensions.swift */,
 				A721E8FC1B572454000B7901 /* UIView+VDynamicsHelpers.h */,
 				A721E8FD1B572454000B7901 /* UIView+VDynamicsHelpers.m */,
 				A721E9001B572454000B7901 /* UIView+VViewRendering.h */,
 				A721E9011B572454000B7901 /* UIView+VViewRendering.m */,
+				79A809C51B7C07DF006AE04E /* UIViewController+Storyboard.swift */,
 				F0FC98121B61AAA10098AFCB /* UIViewController+VAccessoryScreens.h */,
 				F0FC98131B61AAA10098AFCB /* UIViewController+VAccessoryScreens.m */,
 				A721E9041B572454000B7901 /* UIViewController+VLayoutInsets.h */,
@@ -5516,13 +5529,6 @@
 				A721E90B1B572454000B7901 /* VConversation+UnreadMessageCount.m */,
 				A721E90E1B572454000B7901 /* VSequence+OrderedSet.h */,
 				A721E90F1B572454000B7901 /* VSequence+OrderedSet.m */,
-				A7DDA6E41B601D0D005CE55E /* UITableViewCell+SwiftReuse.swift */,
-				A7DDA6E61B601D20005CE55E /* UICollectionViewCell+SwiftReuse.swift */,
-				A6B9FD0D1B60630900166BE8 /* NSURL+VTemporaryFiles.h */,
-				A6B9FD0E1B60630900166BE8 /* NSURL+VTemporaryFiles.m */,
-				A7C713B11B74450A00089B5E /* GCDUtils.swift */,
-				79A809C51B7C07DF006AE04E /* UIViewController+Storyboard.swift */,
-				79B51FD31B853A1900F826F3 /* NSDate+ComparableEquatable.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -6641,6 +6647,7 @@
 				A75FAEFA19E8A6D600EB87C1 /* VVoteSettingManagerTests.m */,
 				A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */,
 				D871A4011A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m */,
+				7987D7981B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -9687,6 +9694,7 @@
 				A7F1CDA51A673DE9003CB936 /* VScrollPaginator.m in Sources */,
 				D85B70831B0EAF3F0038CA5B /* VProfileCreateViewController.m in Sources */,
 				F04DC6CA1AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m in Sources */,
+				0348F9D21B8FD9E500F31602 /* TypeUtilities.swift in Sources */,
 				C3E772141B44B3FD005809A5 /* VLikedContentStreamCollectionViewController.m in Sources */,
 				F0FC97F21B5C4F6F0098AFCB /* VCommentMediaTypeHelper.m in Sources */,
 				F0FC97E71B5C1CB90098AFCB /* VVideoLinkViewController.m in Sources */,
@@ -9737,6 +9745,7 @@
 				F0FC97F71B5DB63B0098AFCB /* VInStreamMediaLinkTests.m in Sources */,
 				A7B98A331A251D7D00C58335 /* VTestHelpers.m in Sources */,
 				A7D378531AF06C65007FF197 /* VImageAssetFinderTests.m in Sources */,
+				7987D7991B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m in Sources */,
 				A720053A1A03073B00285A9C /* VVoteTypeFetcherTests.m in Sources */,
 				A769C3D71A12DD5000698D0C /* VUserManagerTests.m in Sources */,
 				A7D288201A2507A0006CF0EC /* VNotificationSettingsViewControllerTests.m in Sources */,
@@ -9762,6 +9771,7 @@
 				D871A4021A157D650046A12C /* VVRTCUserPostedAtFormatterTests.m in Sources */,
 				A72005431A03073B00285A9C /* VVideoTrackingTests.m in Sources */,
 				A7A2E0011A38C7B700F8C705 /* NSData+AESTests.m in Sources */,
+				7987D79A1B8A66E400EE4A39 /* NSURL+VTemporaryFiles.m in Sources */,
 				F098D81A1A9E39380003B6D4 /* VTagSensitiveTextViewTests.m in Sources */,
 				A7D378631AF2F369007FF197 /* VStoredLoginTests.m in Sources */,
 				DB61811C1AB206D700DED29F /* VFirstTimeInstallHelperTests.m in Sources */,

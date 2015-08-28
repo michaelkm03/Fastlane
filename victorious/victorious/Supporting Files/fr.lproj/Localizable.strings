@@ -145,8 +145,6 @@
 
 "NoCommentsTitle"       =   "SOYEZ LE PREMIER À COMMENTER !";
 "NoCommentsMessage"     =   "Publiez du texte, des photos ou des commentaires vidéo et découvrez ce qu'en pensent les autres !";
-"LeaveACommentAt"       =   "Laisser un commentaire sur";
-"LeaveAComment"          =   "Laisser un commentaire";
 
 "NoFollowersTitle"      =   "PAS DE CHANCE ! PERSONNE NE VOUS SUIT";
 "NoFollowersMessage"    =   "Créez votre propre réseau d'abonnés en étant actif/ve au sein de la communauté par des commentaires, remixes ou publications de nouveau contenu.";
@@ -304,6 +302,7 @@
 
 "VideoPlayFailed"       =   "Échec de lecture de la vidéo";
 "See More"              =   "Voir plus";
+"See all"               =   "Voir tout";
 "..."                   =   "…";
 
 "PostWillExpire"        =   "La publication va expirer";
@@ -660,6 +659,7 @@
 "Watch Video" = "Regarder la vidéo";
 "Watch GIF" = "Regarder le GIF";
 
+"Show Previous Comments" = "Afficher les commentaires précédents";
 "CommentsSingularFormat" = "%@ commentaire";  // e.g. "1 Comment"
 "CommentsPluralFormat" = "%@ commentaires";  // e.g. "20 Comments"
 "LikesSingularFormat" = "%@ mention J'aime";  // e.g. "1 Like", where "Like" is a noun
@@ -675,11 +675,7 @@
 "NOTHING LIKED YET" = "AUCUNE PUBLICATION AIMÉE POUR L'INSTANT"; // Liked content no content view
 "Posts you like will appear here." = "Les publications que vous avez aimées apparaîtront ici."; // Liked content no content view
 
-
-"TRENDING FAN" = "FAN TENDANCE";
 "posts" = "Publications";
-
-"TRENDING HASHTAG" = "HASHTAG TENDANCE";
 "HashtagPostsCountFormat" = "Dans %@ publications";
 
 "Barcelona" = "Barcelone";

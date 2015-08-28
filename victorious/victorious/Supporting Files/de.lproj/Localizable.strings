@@ -145,8 +145,6 @@
 
 "NoCommentsTitle"       =   "HINTERLASSE DEN 1. KOMMENTAR!";
 "NoCommentsMessage"     =   "Poste Text-, Foto- oder Videokommentare und sieh dir an, was die anderen sagen!";
-"LeaveACommentAt"       =   "Hinterlassen Sie einen Kommentar auf ";
-"LeaveAComment"          =   "Hinterlasse einen Kommentar";
 
 "NoFollowersTitle"      =   "UI UI! ES FOLGT DIR NOCH NIEMAND";
 "NoFollowersMessage"    =   "Baue deine eigene Gefolgschaft auf, indem du mit der Gemeinschaft in der Form von Kommentaren, wiederverwenten oder neuen Inhalten interagierst.";
@@ -304,6 +302,7 @@
 
 "VideoPlayFailed"       =   "Video konnte nicht wiedergegeben werden";
 "See More"              =   "Weitere ansehen";
+"See all"               =   "Alle anzeigen";
 "..."                   =   "...";
 
 "PostWillExpire"        =   "Beitrag wird ablaufen";
@@ -660,6 +659,7 @@
 "Watch Video" = "Video anschauen";
 "Watch GIF" = "GIF anschauen";
 
+"Show Previous Comments" = "Vorherige Kommentare anzeigen";
 "CommentsSingularFormat" = "%@ Kommentar";  // e.g. "1 Comment"
 "CommentsPluralFormat" = "%@ Kommentare";  // e.g. "20 Comments"
 "LikesSingularFormat" = "%@ Like";  // e.g. "1 Like", where "Like" is a noun
@@ -675,11 +675,7 @@
 "NOTHING LIKED YET" = "DIR GEFÄLLT NOCH NICHTS"; // Liked content no content view
 "Posts you like will appear here." = "Beiträge, die dir gefallen, werden hier angezeigt."; // Liked content no content view
 
-
-"TRENDING FAN" = "BELIEBTESTER FAN";
 "posts" = "Beiträge";
-
-"TRENDING HASHTAG" = "BELIEBTESTER HASHTAG";
 "HashtagPostsCountFormat" = "In %@ Beiträgen";
 
 "Barcelona" = "Barcelona";

@@ -21,7 +21,7 @@ extension VObjectManager {
         let fullSuccess: VSuccessBlock = { (operation, result, resultObjects) in
             
             let defaultExperimentIds = Set<Int>( result?[ "experiment_ids" ] as? [Int] ?? [Int]() )
-            var experiments = resultObjects as? [Experiment] ?? [Experiment]()
+            let experiments = resultObjects as? [Experiment] ?? [Experiment]()
             
             success( experiments: experiments, defaultExperimentIds: defaultExperimentIds )
         }
