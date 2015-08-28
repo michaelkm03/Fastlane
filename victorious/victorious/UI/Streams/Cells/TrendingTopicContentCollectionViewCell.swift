@@ -96,7 +96,7 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
         updateToInitialState()
     }
     
-    func updateWithImage(image: UIImage?, url: NSURL?, animated: Bool) {
+    private func updateWithImage(image: UIImage?, url: NSURL?, animated: Bool) {
         if let image = image, url = url {
             
             if let color = image.dominantColors().first {
