@@ -47,12 +47,12 @@ else
 fi
 
 # Apply app configuration
-# echo "Configuring for $CONFIGURATION"
-# ./build-scripts/apply-config.sh $CONFIGURATION
-# if [ $? != 0 ]; then
-#     echo "Error applying configuration for $CONFIGURATION"
-#     exit 1
-# fi
+echo "Configuring for $CONFIGURATION"
+./build-scripts/apply-config.sh $CONFIGURATION
+if [ $? != 0 ]; then
+    echo "Error applying configuration for $CONFIGURATION"
+    exit 1
+fi
 
 # Download the latest template
 INFOPLIST="victorious/AppSpecific/Info.plist"

@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>${ProductPrefix}UI Automation</string>
+	<string>${ProductPrefix}victorious</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFiles</key>
@@ -15,7 +15,7 @@
 		<string>Icon-60</string>
 	</array>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}uiautomation</string>
+	<string>com.getvictorious.${ProductPrefix}victorious</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -31,7 +31,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1262133760479609</string>
+				<string>fb664946900317058</string>
 			</array>
 		</dict>
 		<dict>
@@ -39,20 +39,20 @@
 			<string>com.getvictorious.deeplinking.scheme</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>vapp78</string>
+				<string>vapp1</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>900</string>
 	<key>CreatorSalutation</key>
-	<string>UI Automation</string>
+	<string>Debug Victorious</string>
 	<key>FacebookAppID</key>
-	<string>1262133760479609</string>
+	<string>664946900317058</string>
 	<key>FacebookDisplayName</key>
 	<string>VictoriousApp Dev</string>
 	<key>FlurryAPIKey</key>
-	<string></string>
+	<string>XXXXXXXXXX</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
@@ -60,9 +60,9 @@
 	<key>ProductPrefix</key>
 	<string>${ProductPrefix}</string>
 	<key>TWITTER_CONSUMER_KEY</key>
-	<string>xR3sH9x0eG5GWP7AuAIMkA5Nv</string>
+	<string>MhDYRpVPTaGQgWBT7ChmxQ</string>
 	<key>TWITTER_CONSUMER_SECRET</key>
-	<string>Rabaw5ZlPGTH7Ce1w1xZEsk1EjX8IU7JkBbwlWzw5faBmLKnX7</string>
+	<string>damxXK28SCObMZ1CEMTLszm3v8mdRt0L1wuVnzXtH1E</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Roboto-Light.ttf</string>
