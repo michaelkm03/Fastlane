@@ -17,10 +17,6 @@ extension HashtagShelf {
         ]
     }
     
-    override static func entityName() -> String {
-        return "HashtagShelf"
-    }
-    
     override static func entityMapping() -> RKEntityMapping {
         var mapping = Shelf.mappingBaseForEntity(named: HashtagShelf.entityName())
         mapping.addAttributeMappingsFromDictionary(propertyMap)

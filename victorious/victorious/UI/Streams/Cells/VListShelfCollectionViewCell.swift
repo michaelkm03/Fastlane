@@ -39,15 +39,21 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
     @IBOutlet weak var detailToCollectionViewSpaceConstraint: NSLayoutConstraint!
     @IBOutlet weak var collectionViewHeightConstraint: NSLayoutConstraint!
     
+    private var centeringInset: CGFloat = 0
+    private var cellSideLength: CGFloat = 0
+    private var expandedCellSideLength: CGFloat {
+        return cellSideLength * 2 + Constants.interCellSpace
+    }
+    
     /// The shelf whose content will populate this cell.
     var shelf: Shelf? {
         didSet {
-            if !VListShelfCollectionViewCell.needsUpdate(fromShelf: oldValue, toShelf: shelf ) {
+            if let oldValue = oldValue where oldValue.isEqualTo(shelf) {
                 return
             }
             
             if let shelf = shelf as? ListShelf, let streamItems = shelf.streamItems.array as? [VStreamItem] {
-                for (index, streamItem) in enumerate(streamItems) {
+                for streamItem in streamItems {
                     collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager))
                 }
                 
@@ -61,7 +67,9 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
     /// The dependency manager that will be used to style this cell.
     var dependencyManager: VDependencyManager? {
         didSet {
-            if !VListShelfCollectionViewCell.needsUpdate(fromDependencyManager: oldValue, toDependencyManager: dependencyManager) { return }
+            if oldValue == dependencyManager {
+                return
+            }
             
             if let dependencyManager = dependencyManager {
                 dependencyManager.addBackgroundToBackgroundHost(self)
@@ -75,27 +83,6 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
                 detailLabel.textColor = dependencyManager.textColor
             }
         }
-    }
-    
-    /// Returns true when the 2 provided dependency managers differ enough to require a UI update
-    static func needsUpdate(fromDependencyManager oldValue: VDependencyManager?, toDependencyManager dependencyManager: VDependencyManager?) -> Bool {
-        return dependencyManager != oldValue
-    }
-    
-    /// Returns true when the 2 provided shelves differ enough to require a UI update
-    static func needsUpdate(fromShelf oldValue: Shelf?, toShelf shelf: Shelf?) -> Bool {
-        if ( shelf == oldValue ) {
-            if let newStreamItems = shelf?.streamItems, let oldStreamItems = oldValue?.streamItems {
-                return !newStreamItems.isEqualToOrderedSet(oldStreamItems)
-            }
-        }
-        return true
-    }
-    
-    private var centeringInset: CGFloat = 0
-    private var cellSideLength: CGFloat = 0
-    private var expandedCellSideLength: CGFloat {
-        return cellSideLength * 2 + Constants.interCellSpace
     }
     
     override func layoutSubviews() {
@@ -203,7 +190,7 @@ extension VListShelfCollectionViewCell : UICollectionViewDelegateFlowLayout {
 
 extension VListShelfCollectionViewCell: VBackgroundContainer {
     
-    func backgroundContainerView() -> UIView! {
+    func backgroundContainerView() -> UIView {
         return contentView
     }
     

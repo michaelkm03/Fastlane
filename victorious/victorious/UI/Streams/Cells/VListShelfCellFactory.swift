@@ -11,12 +11,11 @@ import Foundation
 /// A cell factory that returns list content shelves
 class VListShelfCellFactory: NSObject {
     
-    private let dependencyManager : VDependencyManager
+    private let dependencyManager: VDependencyManager
     
-    required init!(dependencyManager: VDependencyManager!) {
+    required init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager;
     }
-    
 }
 
 extension VListShelfCellFactory: VStreamCellFactory {
@@ -40,9 +39,8 @@ extension VListShelfCellFactory: VStreamCellFactory {
                 }
             }
         }
-        let cell = UICollectionViewCell()
         assertionFailure("VListShelfCellFactory was provided a shelf that was neither a playlist shelf nor a recent shelf")
-        return cell
+        return UICollectionViewCell()
     }
     
     private func setup(cell: VListShelfCollectionViewCell, shelf: Shelf, dependencyManager: VDependencyManager) {

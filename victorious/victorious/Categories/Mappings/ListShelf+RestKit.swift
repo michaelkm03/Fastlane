@@ -10,14 +10,10 @@ import Foundation
 
 extension ListShelf {
     
-    static private var propertyMap : [String : String] {
+    static private var propertyMap: [String : String] {
         return [
             "caption" : "caption",
         ]
-    }
-    
-    override static func entityName() -> String {
-        return "ListShelf"
     }
     
     override static func entityMapping() -> RKEntityMapping {

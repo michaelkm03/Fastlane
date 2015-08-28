@@ -55,7 +55,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     
     override var shelf: Shelf? {
         didSet {
-            if !VTrendingShelfCollectionViewCell.needsUpdate(fromShelf: oldValue, toShelf: shelf) {
+            if let oldValue = oldValue where oldValue.isEqualTo(shelf) {
                 return
             }
             
@@ -72,7 +72,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     
     override var dependencyManager: VDependencyManager? {
         didSet {
-            if !VTrendingShelfCollectionViewCell.needsUpdate(fromDependencyManager: oldValue, toDependencyManager: dependencyManager) {
+            if oldValue == dependencyManager {
                 return
             }
             
@@ -99,7 +99,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     //MARK: - Getters
     
     private class func getUsernameText(shelf: UserShelf) -> String {
-        return shelf.user.name
+        return shelf.user.name ?? ""
     }
     
     private class func getPostsCountText(shelf: UserShelf) -> String {

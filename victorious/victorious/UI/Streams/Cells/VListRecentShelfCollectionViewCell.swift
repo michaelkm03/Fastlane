@@ -27,7 +27,9 @@ class VListRecentShelfCollectionViewCell: VListShelfCollectionViewCell {
     
     override var dependencyManager: VDependencyManager? {
         didSet {
-            if !VListShelfCollectionViewCell.needsUpdate(fromDependencyManager: oldValue, toDependencyManager: dependencyManager) { return }
+            if oldValue == dependencyManager {
+                return
+            }
             
             if let dependencyManager = dependencyManager {
                 seeAllButton.titleLabel?.font = dependencyManager.seeAllFont
@@ -74,13 +76,14 @@ extension VListRecentShelfCollectionViewCell : UICollectionViewDataSource {
         if let shelf = shelf, let streamItems = shelf.streamItems.array as? [VStreamItem] {
             var streamItem = streamItems[indexPath.row]
             var identifier = VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
-            let cell: VShelfContentCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as! VShelfContentCollectionViewCell
-            cell.streamItem = streamItem
-            cell.dependencyManager = dependencyManager
-            if let cell = cell as? VListShelfContentCoverCell {
-                cell.overlayText = shelf.name
+            if let cell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as? VShelfContentCollectionViewCell {
+                cell.streamItem = streamItem
+                cell.dependencyManager = dependencyManager
+                if let cell = cell as? VListShelfContentCoverCell {
+                    cell.overlayText = shelf.name
+                }
+                return cell
             }
-            return cell
         }
         assertionFailure("VListRecentShelfCollectionViewCell was asked to display an object that isn't a stream item.")
         return UICollectionViewCell()

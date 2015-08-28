@@ -141,7 +141,7 @@ extension VShelfContentCollectionViewCell: VStreamCellComponentSpecialization {
 
 extension VShelfContentCollectionViewCell: VBackgroundContainer {
     
-    func loadingBackgroundContainerView() -> UIView! {
+    func loadingBackgroundContainerView() -> UIView {
         return previewViewContainer
     }
     

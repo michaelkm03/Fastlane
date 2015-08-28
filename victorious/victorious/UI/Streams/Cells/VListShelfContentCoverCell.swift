@@ -50,7 +50,19 @@ class VListShelfContentCoverCell : VShelfContentCollectionViewCell {
         overlayView.addSubview(dividerLineLeft)
         overlayView.addSubview(dividerLineRight)
         overlayView.addSubview(overlayLabel)
-        overlayView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-space-[left(>=minWidth)]-space-[label]-space-[right(>=minWidth)]-space-|", options: NSLayoutFormatOptions.AlignAllCenterY, metrics: ["space" : Constants.kSpaceBetweenElements, "minWidth" : Constants.kDividerLineMinimumWidth], views: ["left" : dividerLineLeft, "label" : overlayLabel, "right" : dividerLineRight]))
+        let constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-space-[left(>=minWidth)]-space-[label]-space-[right(>=minWidth)]-space-|",
+            options: NSLayoutFormatOptions.AlignAllCenterY,
+            metrics: [
+                "space" : Constants.kSpaceBetweenElements,
+                "minWidth" : Constants.kDividerLineMinimumWidth
+            ],
+            views: [
+                "left" : dividerLineLeft,
+                "label" : overlayLabel,
+                "right" : dividerLineRight
+            ]
+        )
+        overlayView.addConstraints(constraints)
         
         overlayLabel.numberOfLines = 2
         overlayView.v_addCenterToParentContraintsToSubview(overlayLabel)

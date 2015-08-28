@@ -41,7 +41,7 @@ class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
     
     private let trendingShelfFactory: VTrendingShelfCellFactory?
     
-    private let listShelfFactory : VListShelfCellFactory?
+    private let listShelfFactory: VListShelfCellFactory?
     
     /// The dependency manager used to style all cells from this factory
     private let dependencyManager: VDependencyManager
