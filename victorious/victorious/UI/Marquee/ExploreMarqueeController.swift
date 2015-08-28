@@ -38,4 +38,10 @@ class ExploreMarqueeController: VInsetMarqueeController {
     override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return ExploreMarqueeStreamItemCell.desiredSizeWithCollectionViewBounds(collectionView.bounds)
     }
+    
+    override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+        let streamItemCellWidth = ExploreMarqueeStreamItemCell.desiredSizeWithCollectionViewBounds(collectionView.bounds).width
+        let sideInset = streamItemCellWidth / 2
+        return UIEdgeInsets(top: 0, left: sideInset, bottom: 0, right: sideInset)
+    }
 }
