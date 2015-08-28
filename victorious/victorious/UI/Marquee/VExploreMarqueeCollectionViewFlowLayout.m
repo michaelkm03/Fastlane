@@ -7,19 +7,13 @@
 //
 
 #import "VExploreMarqueeCollectionViewFlowLayout.h"
-#define ZOOM_FACTOR .25
+
+static CGFloat const kPerspectiveTransform = -1.0f/500.0f;
+static CGFloat const kMaxRotation = 2.0f * M_PI_4 / 3.0f;
+static CGFloat const kMaxHorizontalOffsetDivisor = 2.2f;
+static CGFloat const kMaxZoomDivisor = 30.0f;
 
 @implementation VExploreMarqueeCollectionViewFlowLayout
-
-- (instancetype)init
-{
-    self = [super init];
-    if (self != nil)
-    {
-        self.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    }
-    return self;
-}
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
 {
@@ -28,44 +22,25 @@
 
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
-    NSArray *attributes = [super layoutAttributesForElementsInRect:rect];
-    
-    CGRect visibleRect;
-    visibleRect.origin = self.collectionView.contentOffset;
-    visibleRect.size = self.collectionView.bounds.size;
-    
-    float collectionViewHalfFrame = self.collectionView.frame.size.width/2.0;
-    
-    for (UICollectionViewLayoutAttributes *layoutAttributes in attributes)
+    NSArray *layoutAttributes = [super layoutAttributesForElementsInRect:rect];
+    CGFloat screenWidth = CGRectGetWidth(self.collectionView.bounds) / 2;
+    CGFloat newOffset = self.collectionView.contentOffset.x / screenWidth;
+    CGFloat maxHorizontalOffset = screenWidth / kMaxHorizontalOffsetDivisor;
+    CGFloat maxZoom = screenWidth / kMaxZoomDivisor;
+    for ( UICollectionViewLayoutAttributes *attributes in layoutAttributes )
     {
-        if (CGRectIntersectsRect(layoutAttributes.frame, rect))
-        {
-            CGFloat distance = CGRectGetMidX(visibleRect) - layoutAttributes.center.x;
-            CGFloat normalizedDistance = distance / collectionViewHalfFrame;
-            
-            if (ABS(distance) < collectionViewHalfFrame)
-            {
-                CGFloat zoom = 1 + ZOOM_FACTOR*(1- ABS(normalizedDistance));
-                CATransform3D rotationTransform = CATransform3DIdentity;
-                rotationTransform = CATransform3DMakeRotation(normalizedDistance * M_PI_2 *0.8, 0.0f, 1.0f, 0.0f);
-                CATransform3D zoomTransform = CATransform3DMakeScale(zoom, zoom, 1.0);
-                layoutAttributes.transform3D = CATransform3DConcat(zoomTransform, rotationTransform);
-                layoutAttributes.zIndex = ABS(normalizedDistance) * 10.0f;
-                CGFloat alpha = (1  - ABS(normalizedDistance)) + 0.1;
-                if (alpha > 1.0f)
-                {
-                    alpha = 1.0f;
-                }
-                layoutAttributes.alpha = alpha;
-            }
-            else
-            {
-                layoutAttributes.alpha = 0.0f;
-            }
-        }
+        CGFloat difference = newOffset - attributes.indexPath.row;
+        CGFloat clampedTransformMultiplier = MIN(1.0f, MAX(difference, -1.0f));
+        
+        CATransform3D transform = CATransform3DIdentity;
+        transform.m34 = kPerspectiveTransform;
+        transform = CATransform3DRotate(transform, kMaxRotation * clampedTransformMultiplier, 0, 1, 0);
+        NSInteger sign = clampedTransformMultiplier < 0 ? -1 : 1;
+        transform = CATransform3DTranslate(transform, maxHorizontalOffset * clampedTransformMultiplier * clampedTransformMultiplier * sign, 0, maxZoom * -fabs(clampedTransformMultiplier));
+        
+        attributes.transform3D = transform;
     }
-    
-    return attributes;
+    return layoutAttributes;
 }
 
 @end

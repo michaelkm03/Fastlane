@@ -13,7 +13,7 @@ class ExploreMarqueeCollectionViewCell: VInsetMarqueeCollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         marqueeCollectionView.registerNib(ExploreMarqueeStreamItemCell.nibForCell(), forCellWithReuseIdentifier: ExploreMarqueeStreamItemCell.suggestedReuseIdentifier())
-        let flowLayout = VExploreMarqueeCollectionViewFlowLayout.new()
+        let flowLayout = VExploreMarqueeCollectionViewFlowLayout()
         marqueeCollectionView.collectionViewLayout = flowLayout
     }
     

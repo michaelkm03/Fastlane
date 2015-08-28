@@ -8,6 +8,6 @@
 
 #import "VInsetMarqueeCollectionViewFlowLayout.h"
 
-@interface VExploreMarqueeCollectionViewFlowLayout : UICollectionViewFlowLayout
+@interface VExploreMarqueeCollectionViewFlowLayout : VInsetMarqueeCollectionViewFlowLayout
 
 @end

@@ -115,15 +115,9 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 }
 
 - (CGFloat)pageWidth
-{
-    if ([self isKindOfClass:[ExploreMarqueeController class]])
-    {
-        _pageWidth = [ExploreMarqueeStreamItemCell desiredSizeWithCollectionViewBounds:self.collectionView.bounds].width;
-    }
-    else
-    {
-        _pageWidth = CGRectGetWidth(self.collectionView.bounds);
-    }
+{    
+    Class<VSharedCollectionReusableViewMethods> itemCellClass = [self.class marqueeStreamItemCellClass];
+    _pageWidth = [itemCellClass desiredSizeWithCollectionViewBounds: self.collectionView.bounds].width;
     return _pageWidth;
 }
 
