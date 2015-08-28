@@ -24,7 +24,6 @@
 
 @interface VBaseVideoSequencePreviewView ()
 
-@property (nonatomic, strong) UIImageView *previewImageView;
 @property (nonatomic, strong) UIView *backgroundContainerView;
 @property (nonatomic, strong) VAsset *asset;
 
