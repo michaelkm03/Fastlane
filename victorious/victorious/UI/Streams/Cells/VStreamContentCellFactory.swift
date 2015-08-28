@@ -13,8 +13,8 @@ import UIKit
 @objc protocol VShelfStreamItemSelectionResponder : NSObjectProtocol {
     /// Sent when a stream item is selected from a trending shelf.
     ///
-    /// :param: streamItem The selected stream item.
-    /// :param: fromShelf The shelf that the stream item was selected from.
+    /// - parameter streamItem: The selected stream item.
+    /// - parameter fromShelf: The shelf that the stream item was selected from.
     func navigateTo(streamItem: VStreamItem?, fromShelf: Shelf)
 }
 
@@ -86,7 +86,7 @@ extension VStreamContentCellFactory: VStreamCellFactory {
             }
         }
         assertionFailure("A cell was requested from a content cell factory with a nil default factory.")
-        return UICollectionViewCell.new()
+        return UICollectionViewCell()
     }
     
     func collectionView(collectionView: UICollectionView, cellForStreamItem streamItem: VStreamItem, atIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -94,14 +94,14 @@ extension VStreamContentCellFactory: VStreamCellFactory {
             return factory.collectionView(collectionView, cellForStreamItem: streamItem, atIndexPath: indexPath)
         }
         assertionFailure("A cell was requested from a content cell factory with a nil default factory.")
-        return UICollectionViewCell.new()
+        return UICollectionViewCell()
     }
     
     func sizeWithCollectionViewBounds(bounds: CGRect, ofCellForStreamItem streamItem: VStreamItem) -> CGSize {
         if let factory = factoryForStreamItem(streamItem) {
             return factory.sizeWithCollectionViewBounds(bounds, ofCellForStreamItem: streamItem)
         }
-        return CGSize.zeroSize
+        return CGSize.zero
     }
     
     func minimumLineSpacing() -> CGFloat {

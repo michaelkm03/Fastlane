@@ -56,7 +56,7 @@ extension VTrendingShelfCellFactory: VStreamCellFactory {
         else if let shelf = streamItem as? HashtagShelf {
             return VTrendingHashtagShelfCollectionViewCell.desiredSize(collectionViewBounds: bounds, shelf: shelf, dependencyManager: dependencyManager)
         }
-        return CGSize.zeroSize
+        return CGSize.zero
     }
     
     func minimumLineSpacing() -> CGFloat {

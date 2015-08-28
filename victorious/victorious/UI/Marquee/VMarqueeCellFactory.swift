@@ -44,14 +44,14 @@ extension VMarqueeCellFactory: VStreamCellFactory {
         assertionFailure("A marquee cell was requested from a factory with a nil marquee controller. Check marqueeCell in template response.")
         let marqueeFailureIdentifier = "marqueeFailure"
         collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: marqueeFailureIdentifier)
-        return collectionView.dequeueReusableCellWithReuseIdentifier(marqueeFailureIdentifier, forIndexPath: indexPath) as! UICollectionViewCell
+        return collectionView.dequeueReusableCellWithReuseIdentifier(marqueeFailureIdentifier, forIndexPath: indexPath)
     }
     
     func sizeWithCollectionViewBounds(bounds: CGRect, ofCellForStreamItem streamItem: VStreamItem) -> CGSize {
         if let marquee = marqueeController {
             return marquee.desiredSizeWithCollectionViewBounds(bounds)
         }
-        return CGSize.zeroSize
+        return CGSize.zero
     }
     
     func minimumLineSpacing() -> CGFloat {

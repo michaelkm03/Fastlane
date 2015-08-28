@@ -21,7 +21,7 @@ class SequenceCommentsDataSource : CommentsDataSource {
     
     func sortInternalComments() {
         if var comments = self.sequence.comments?.array as? [VComment] {
-            comments.sort({ $0.postedAt > $1.postedAt })
+            comments.sortInPlace({ $0.postedAt > $1.postedAt })
             self.sortedInternalComments = comments
         }
     }
@@ -76,7 +76,7 @@ class SequenceCommentsDataSource : CommentsDataSource {
     }
     
     func indexOfComment(comment: VComment) -> Int {
-        if let commentIndex = find(sortedInternalComments, comment) {
+        if let commentIndex = sortedInternalComments.indexOf(comment) {
             return commentIndex
         }
         return 0

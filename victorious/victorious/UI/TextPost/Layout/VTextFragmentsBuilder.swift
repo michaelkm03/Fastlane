@@ -23,7 +23,7 @@ class VTextFragmentsBuilder: NSObject
     {
         var output = [VTextFragment]()
         
-        let text: NSString = count(textView.attributedText.string) == 0 ? " " : textView.attributedText.string
+        let text: NSString = textView.attributedText.string.characters.count == 0 ? " " : textView.attributedText.string
         textView.textContainer.size = CGSizeMake( textView.bounds.size.width, CGFloat.max )
         
         var currentFragmentRect = CGRectZero
@@ -57,7 +57,7 @@ class VTextFragmentsBuilder: NSObject
             
             if isStartOfCallout
             {
-                if count(fragmentText) > 0
+                if fragmentText.characters.count > 0
                 {
                     output.append( VTextFragment(
                         text: fragmentText,
@@ -86,7 +86,7 @@ class VTextFragmentsBuilder: NSObject
             }
             else if needsNewLine
             {
-                let isValidFragment = count(fragmentText) > 0 && fragmentText != " " && fragmentText != "\n"
+                let isValidFragment = fragmentText.characters.count > 0 && fragmentText != " " && fragmentText != "\n"
                 if isValidFragment
                 {
                     output.append( VTextFragment(
@@ -111,7 +111,7 @@ class VTextFragmentsBuilder: NSObject
             {
                 let lastRange = NSMakeRange( fragmentStartIndex, i - fragmentStartIndex + 1 )
                 let text = text.substringWithRange( lastRange )
-                if count(text) > 0 && text != "\n"
+                if text.characters.count > 0 && text != "\n"
                 {
                     output.append( VTextFragment(
                         text: text,
@@ -137,7 +137,7 @@ class VTextFragmentsBuilder: NSObject
     */
     func applySpacingToFragments( fragments: [VTextFragment], spacing: CGFloat, horizontalOffset: CGFloat )
     {
-        for var i = 0; i < count(fragments); i++
+        for var i = 0; i < fragments.count; i++
         {
             let fragment = fragments[i]
             
