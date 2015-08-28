@@ -9,6 +9,8 @@
 import Foundation
 import KIF
 
+var shouldResetSession = false
+
 class VictoriousTestCase: KIFTestCase {
     
     private static var shouldAppend = false
@@ -44,6 +46,29 @@ class VictoriousTestCase: KIFTestCase {
         
         self.dismissWelcomeIfPresent()
         self.addStep( "Dismisses the FTUE welcome screen if test is run on first install." )
+    }
+    
+    /// Resets the session, returning the app to a state as if it has just been launched.
+    /// This method is called automatically before each test is run, but it is exposed here
+    /// so that tests can manually reset the session if needed.
+    func resetSession() {
+        if let window = UIApplication.sharedApplication().windows[0] as? UIWindow,
+            let rootViewController = window.rootViewController as? VRootViewController {
+                rootViewController.startNewSession()
+                self.tester().waitForTimeInterval( 10.0 )
+        }
+    }
+    
+    override func beforeEach() {
+        super.beforeEach()
+        
+        // Reset Session
+        if shouldResetSession {
+            self.resetSession()
+        }
+        
+        // After the first test is run, we should reset sesssions
+        shouldResetSession = true
     }
     
     /// Checks if the element with the provided label is present on screen

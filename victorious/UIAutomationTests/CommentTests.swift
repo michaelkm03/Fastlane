@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+//
 class CommentTests : VictoriousTestCase {
     
     override var testDescription: String {
@@ -22,6 +22,9 @@ class CommentTests : VictoriousTestCase {
         self.addStep( "Selects the first post in the user's profile stream." )
         self.tester().waitForViewWithAccessibilityLabel( VAutomationIdentifierStreamCell )
         self.tester().tapViewWithAccessibilityLabel( VAutomationIdentifierStreamCell )
+        
+        self.tester().waitForTimeInterval( 3.0 )
+        return;
         
         self.addStep( "Taps into the comment text field, then selects GIF option from the keyboard bar." )
         self.tester().tapViewWithAccessibilityLabel( VAutomationIdentifierCommentBarTextView )
@@ -57,5 +60,16 @@ class CommentTests : VictoriousTestCase {
         self.tester().expectView( commentCell, toContainText: randomCaption )
         
         self.tester().waitForViewWithAccessibilityLabel( VAutomationIdentifierContentViewCloseButton ).tap()
+    }
+    
+    func testHTest() {
+        self.addStep( "Selects the profile tab." )
+        self.tester().waitForViewWithAccessibilityLabel( "Menu Profile" ).tap()
+        
+        self.addStep( "Selects the first post in the user's profile stream." )
+        self.tester().waitForViewWithAccessibilityLabel( VAutomationIdentifierStreamCell )
+        self.tester().tapViewWithAccessibilityLabel( VAutomationIdentifierStreamCell )
+        
+        self.tester().waitForTimeInterval( 3.0 )
     }
 }

@@ -133,9 +133,12 @@ class RegistrationTests : VictoriousTestCase {
             let text = "\(self.generateRandomInteger()) \(self.generateRandomInteger())"
             self.tester().waitForViewWithAccessibilityLabel(VAutomationIdentifierTextPostEditableMainField).tap()
             self.tester().enterTextIntoCurrentFirstResponder( text )
-            self.tester().tapViewWithAccessibilityLabel( "Done" )
             self.tester().waitForTimeInterval( 2.0 )
             self.tester().tapViewWithAccessibilityLabel( "Done" )
+            self.tester().waitForTimeInterval( 2.0 )
+            if self.elementExistsWithAccessibilityLabel( "Done" ) {
+                self.tester().tapViewWithAccessibilityLabel( "Done" )
+            }
         }
         
         self.addStep( "Return to profile screen from settings." )
