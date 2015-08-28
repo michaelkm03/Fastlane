@@ -182,7 +182,6 @@ extension VTrendingShelfCollectionViewCell: UICollectionViewDelegateFlowLayout {
     
 }
 
-
 extension VTrendingShelfCollectionViewCell: VBackgroundContainer {
     
     func backgroundContainerView() -> UIView! {

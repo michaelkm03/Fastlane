@@ -31,7 +31,8 @@ extension Shelf {
     
     class func mapping(itemSubType: String) -> RKObjectMapping? {
         switch itemSubType {
-        case VStreamItemSubTypeMarquee:
+        case VStreamItemSubTypeMarquee,
+        VStreamItemSubTypeTrendingTopic:
             return mappingBaseForEntity(named: "Shelf")
         case VStreamItemSubTypeUser:
             return UserShelf.entityMapping()
