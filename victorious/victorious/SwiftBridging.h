@@ -128,3 +128,5 @@
 #import "VInsetMarqueeCollectionViewCell.h"
 #import "VObjectManager+Discover.h"
 #import "VExploreMarqueeCollectionViewFlowLayout.h"
+#import "VContentViewPresenter.h"
+#import "VDependencyManager+VNavigationMenuItem.h"

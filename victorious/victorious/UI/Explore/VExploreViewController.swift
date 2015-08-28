@@ -21,9 +21,9 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     private var marqueeFactory: VMarqueeCellFactory?
     private var marqueeShelf: Shelf?
     
-    private struct templateConstants {
-        let kMarqueeComponentKey = "marqueeCell"
-        let kStreamURLKey = "streamURL"
+    private struct Constants {
+        let sequenceIDKey = "sequenceID"
+        let marqueeDestinationDirectory = "destionationDirectory"
     }
     
     /// MARK: - View Controller Initialization
@@ -33,7 +33,6 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         if let exploreVC = storyboard.instantiateInitialViewController() as? VExploreViewController {
             exploreVC.dependencyManager = dependencyManager
             exploreVC.marqueeFactory = VMarqueeCellFactory(dependencyManager: dependencyManager)
-            
             return exploreVC
         }
         fatalError("Failed to instantiate an explore view controller!")
@@ -45,11 +44,12 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         super.viewDidLoad()
         navigationItem.v_supplementaryHeaderView = searchBar
         
-        self.automaticallyAdjustsScrollViewInsets = false;
-        self.extendedLayoutIncludesOpaqueBars = true;
+        automaticallyAdjustsScrollViewInsets = false;
+        extendedLayoutIncludesOpaqueBars = true;
         
-        self.marqueeFactory?.registerCellsWithCollectionView(self.collectionView)
-
+        marqueeFactory?.registerCellsWithCollectionView(self.collectionView)
+        marqueeFactory?.marqueeController?.setSelectionDelegate(self)
+        marqueeFactory?.marqueeController?.setDataDelegate(self)
         
         VObjectManager.sharedManager().getExplore({ (op, obj, results) -> Void in
             if let stream = results.last as? VStream {
@@ -127,11 +127,109 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     }
     
     ///MARK: - MarqueeSelectionDelegate
-    func marquee(marquee: VAbstractMarqueeController!, selectedItem streamItem: VStreamItem!, atIndexPath path: NSIndexPath!, previewImage image: UIImage!) {
-        
+    func marquee(marquee: VAbstractMarqueeController!, selectedItem streamItem: VStreamItem!, atIndexPath path: NSIndexPath!, previewImage image: UIImage) {
+        if let cell = marquee.collectionView.cellForItemAtIndexPath(path) {
+            navigate(toStreamItem: streamItem, fromStream: marquee.shelf, withPreviewImage: image, inCell: cell)
+        }
+        else {
+            fatalError("Unable to create a collection view cell")
+        }
     }
     
-    ///MARK: - UICollectionViewDelegateFlowLayout
+    func navigate(toStream stream: VStream, atStreamItem streamItem: VStreamItem?) {
+        let isShelf = stream.isShelf
+        if stream.isSingleStream || isShelf {
+            var streamCollection: VStreamCollectionViewController?
+            
+            let baseDict = [Constants().sequenceIDKey : stream.remoteId]
+            var config = NSMutableDictionary(dictionary: baseDict)
+            if let name = stream.name {
+                config[VDependencyManagerTitleKey] = name
+            }
+            
+            if isShelf {
+                config[VStreamCollectionViewControllerStreamURLKey] = stream.apiPath
+                if let childDependencyManager = self.dependencyManager?.childDependencyManagerWithAddedConfiguration(config as [NSObject : AnyObject]) {
+                    if let tagShelf = stream as? HashtagShelf {
+                        streamCollection = childDependencyManager.hashtagStreamWithHashtag(tagShelf.hashtagTitle)
+                    }
+                    else {
+                        streamCollection = VStreamCollectionViewController.newWithDependencyManager(childDependencyManager)
+                    }
+                }
+            }
+            else {
+                if let childDependencyManager = self.dependencyManager?.childDependencyManagerWithAddedConfiguration(config as [NSObject : AnyObject]) {
+                    streamCollection = VStreamCollectionViewController.newWithDependencyManager(childDependencyManager)
+                }
+            }
+            
+            streamCollection?.currentStream = stream
+            streamCollection?.targetStreamItem = streamItem
+            if let streamViewController = streamCollection {
+                navigationController?.pushViewController(streamViewController, animated: true)
+            }
+        }
+        else if stream.isStreamOfStreams {
+            if let directory = dependencyManager?.templateValueOfType(
+                VDirectoryCollectionViewController.self,
+                forKey: Constants().marqueeDestinationDirectory ) as? VDirectoryCollectionViewController {
+                    directory.currentStream = stream
+                    directory.title = stream.name
+                    directory.targetStreamItem = streamItem
+                    
+                    navigationController?.pushViewController(directory, animated: true)
+            }
+            else {
+                // No directory to show, alert the user
+                UIAlertView(
+                    title: nil,
+                    message: NSLocalizedString("GenericFailMessage", comment: ""),
+                    delegate: nil,
+                    cancelButtonTitle: NSLocalizedString("OK", comment: "")
+                )
+                return
+            }
+        }
+    }
+    
+    func navigate(toStreamItem streamItem: VStreamItem, fromStream stream: VStream, withPreviewImage image: UIImage, inCell cell: UICollectionViewCell) {
+        /// Marquee item selection tracking
+        let params = [ VTrackingKeyName : streamItem.name ?? "",
+            VTrackingKeyRemoteId : streamItem.remoteId ?? ""]
+        
+        VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectItemFromMarquee, parameters: params)
+        
+        if streamItem is VSequence {
+            let event = StreamCellContext(streamItem: streamItem, stream: stream, fromShelf: true)
+            
+            let extraTrackingInfo: [String : AnyObject]
+            if let autoplayCell = cell as? AutoplayTracking {
+                extraTrackingInfo = autoplayCell.additionalInfo()
+            }
+            else {
+                extraTrackingInfo = [String : AnyObject]()
+            }
+            
+            showContentView(forCellEvent: event, trackingInfo: extraTrackingInfo, previewImage: image)
+        }
+        else if streamItem is VStream {
+            if let stream = streamItem as? VStream {
+                navigate(toStream: stream, atStreamItem: nil)
+            }
+        }
+    }
+    
+    func showContentView(forCellEvent event: StreamCellContext, trackingInfo info: [String : AnyObject], previewImage image: UIImage) {
+        
+        if let streamItem = event.streamItem as? VSequence {
+            let streamID = event.stream.hasShelfID() && event.fromShelf ? event.stream.shelfId : event.stream.streamId
+            
+            VContentViewPresenter.presentContentViewFromViewController(self, withDependencyManager: dependencyManager, forSequence: event.streamItem as? VSequence, inStreamWithID: streamID, commentID: nil, withPreviewImage: image)
+        }
+    }
+    
+    /// MARK: - UICollectionViewDelegateFlowLayout
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         switch indexPath.section {
         case 0:
