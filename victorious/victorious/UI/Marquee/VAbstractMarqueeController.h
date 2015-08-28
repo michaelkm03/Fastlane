@@ -38,6 +38,7 @@ extern NSString * const kMarqueeURLKey;
  */
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, readonly) NSUInteger currentPage; ///< The current page of marquee content being displayed
+@property (nonatomic, assign) CGFloat pageWidth; ///< The page width of each marquee item cell in collection view
 
 /**
     Initializes the marquee cell factory with an instance of VDependencyManager
