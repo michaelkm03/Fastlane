@@ -31,7 +31,7 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
     
     var streamItem: VStreamItem? {
         didSet {
-            self.label.text = streamItem?.name ?? ""
+            self.label.text = VHashTags.stringWithPrependedHashmarkFromString(streamItem?.name) ?? ""
             if let previewImageURL = (streamItem?.previewImagesObject as? String),
                 url = NSURL(string: previewImageURL)  {
                     

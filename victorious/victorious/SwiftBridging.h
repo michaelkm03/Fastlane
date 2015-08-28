@@ -55,6 +55,7 @@
 #import "VFollowControl.h"
 #import "VFollowResponder.h"
 #import "VHasManagedDependencies.h"
+#import "VHashTags.h"
 #import "VHashTagTextView.h"
 #import "VHashtagResponder.h"
 #import "VHashtagSelectionResponder.h"

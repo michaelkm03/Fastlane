@@ -12,6 +12,7 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
     
     private struct Constants {
         static let collectionViewHeight: CGFloat = 90
+        static let overLabelSpace: CGFloat = 18
         static let underLabelSpace: CGFloat = 12
         static let contentInsets = UIEdgeInsets(top: 0, left: 11, bottom: 0, right: 11)
     }
@@ -93,7 +94,7 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
         self.contentView.addSubview(collectionView)
         
         // Setup constraints
-        self.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[label]-bottomSpace-[collectionView(height)]|", options: nil, metrics: ["height" : Constants.collectionViewHeight, "bottomSpace" : Constants.underLabelSpace], views: ["label" : label, "collectionView" : collectionView]))
+        self.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-topSpace-[label]-bottomSpace-[collectionView(height)]|", options: nil, metrics: ["height" : Constants.collectionViewHeight, "topSpace" : Constants.overLabelSpace, "bottomSpace" : Constants.underLabelSpace], views: ["label" : label, "collectionView" : collectionView]))
         self.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[collectionView]|", options: nil, metrics: nil, views: ["collectionView" : collectionView]))
         self.contentView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-lspace-[label]-rspace-|", options: nil, metrics: ["lspace" : Constants.contentInsets.left, "rspace" : Constants.contentInsets.right], views: ["label" : label]))
         
@@ -118,7 +119,7 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
         
         //Add the height of the labels to find the entire height of the cell
         let titleHeight = shelf.title.frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.titleFont]).height
-        let totalTitleHeight = titleHeight + Constants.underLabelSpace
+        let totalTitleHeight = titleHeight + Constants.underLabelSpace + Constants.overLabelSpace
         let totalHeight = totalTitleHeight + Constants.collectionViewHeight
         
         return CGSize(width: bounds.width, height: totalHeight)
