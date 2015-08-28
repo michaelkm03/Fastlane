@@ -14,7 +14,7 @@ class TrendingTopicShelfFactory: NSObject {
     private let dependencyManager: VDependencyManager
     
     required init!(dependencyManager: VDependencyManager!) {
-        self.dependencyManager = dependencyManager;
+        self.dependencyManager = dependencyManager
     }
     
 }
