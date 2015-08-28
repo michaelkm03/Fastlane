@@ -19,7 +19,6 @@ class ExploreMarqueeController: VInsetMarqueeController {
             if collectionViewCell.marquee != self {
                 collectionViewCell.marquee = self
                 collectionViewCell.dependencyManager = self.dependencyManager
-                pageWidth = ExploreMarqueeStreamItemCell.desiredSizeWithCollectionViewBounds(collectionView.bounds).width
                 self.enableTimer()
             }
             return collectionViewCell
