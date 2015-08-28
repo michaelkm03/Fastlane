@@ -29,6 +29,7 @@
 #import "VImageSearchResultsFooterView.h"
 #import "VFooterActivityIndicatorView.h"
 #import "VDependencyManager.h"
+#import "victorious-Swift.h"
 
 const CGFloat kVLoadNextPagePoint = .75f;
 
