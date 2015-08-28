@@ -70,6 +70,7 @@
            failBlock:fail];
 }
 
+#warning Testing
 - (RKManagedObjectRequestOperation *)getExplore:(VSuccessBlock)success failBlock:(VFailBlock)fail
 {
     VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)

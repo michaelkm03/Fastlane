@@ -123,7 +123,8 @@ extension VExploreViewController: UICollectionViewDelegateFlowLayout {
                 if let trendingFactory = trendingTopicShelfFactory {
                     return trendingFactory.sizeWithCollectionViewBounds(collectionView.bounds, ofCellForStreamItem: shelf)
                 }
-            } else {
+            }
+            else {
                 // WARNING: Placeholder for other shelves
                 return CGSize(width: self.collectionView.bounds.width, height: 150)
             }
@@ -134,6 +135,7 @@ extension VExploreViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension VExploreViewController : VHashtagSelectionResponder {
+    
     func hashtagSelected(text: String!) {
         if let hashtag = text, stream = dependencyManager?.hashtagStreamWithHashtag(hashtag) {
             self.navigationController?.pushViewController(stream, animated: true)
