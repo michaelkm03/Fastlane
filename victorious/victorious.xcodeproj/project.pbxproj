@@ -636,6 +636,8 @@
 		A75FAF1E19E8AC1E00EB87C1 /* VDiscoverContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF0E19E8AC1E00EB87C1 /* VDiscoverContainerViewController.m */; };
 		A75FAF2119E8AC1E00EB87C1 /* VDiscoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF1319E8AC1E00EB87C1 /* VDiscoverViewController.m */; };
 		A75FAF2219E8AC1E00EB87C1 /* VDiscoverSuggestedPeopleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75FAF1619E8AC1E00EB87C1 /* VDiscoverSuggestedPeopleViewController.m */; };
+		A7607DB21B8FEBAF0048B899 /* ContentCreationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76A069B1B87B13600D91214 /* ContentCreationTests.swift */; };
+		A7607DB31B8FEBAF0048B899 /* RegistrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D535651B87CDD9009D84C8 /* RegistrationTests.swift */; };
 		A761C9D11A48A97C00F0D0F9 /* VUtilityButtonsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A761C9D01A48A97C00F0D0F9 /* VUtilityButtonsViewController.m */; };
 		A761C9D71A48CB9800F0D0F9 /* VSwipeView.m in Sources */ = {isa = PBXBuildFile; fileRef = A761C9D61A48CB9800F0D0F9 /* VSwipeView.m */; };
 		A76567141B3B1DAA002721F3 /* VSleekActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A76567131B3B1DAA002721F3 /* VSleekActionButton.m */; };
@@ -831,8 +833,6 @@
 		A7F8DD631A0B1A8B00F82256 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F8DD621A0B1A8B00F82256 /* WebKit.framework */; };
 		A7F8DD651A0BF55900F82256 /* VSequenceActionControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F8DD641A0BF55900F82256 /* VSequenceActionControllerTests.m */; };
 		A7FD45A11B8E948000C5174D /* CommentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76A069C1B87B13600D91214 /* CommentTests.swift */; };
-		A7FD45A21B8E948000C5174D /* ContentCreationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76A069B1B87B13600D91214 /* ContentCreationTests.swift */; };
-		A7FD45A31B8E948000C5174D /* RegistrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D535651B87CDD9009D84C8 /* RegistrationTests.swift */; };
 		A7FE8C3E19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A7FE8C3D19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf */; };
 		B066EC871B1F97CF006E1D40 /* VBarButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 037FCF131A8DAF0E00E8ABFC /* VBarButton.xib */; };
 		B074C5B41B39D41F00EA3FFC /* VHashmarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = B074C5B21B39D41F00EA3FFC /* VHashmarkView.m */; };
@@ -8819,10 +8819,10 @@
 			files = (
 				A76A06A31B87B13600D91214 /* KIFExtensions.swift in Sources */,
 				A7FD45A11B8E948000C5174D /* CommentTests.swift in Sources */,
-				A7FD45A21B8E948000C5174D /* ContentCreationTests.swift in Sources */,
+				A7607DB21B8FEBAF0048B899 /* ContentCreationTests.swift in Sources */,
 				A71F2E701B7D16DC00159392 /* VAutomation.m in Sources */,
 				A7DB4D481B7ACB9A00199D10 /* AutomationId.swift in Sources */,
-				A7FD45A31B8E948000C5174D /* RegistrationTests.swift in Sources */,
+				A7607DB31B8FEBAF0048B899 /* RegistrationTests.swift in Sources */,
 				A76A06A41B87B13600D91214 /* VictoriousTestCase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -11079,7 +11079,6 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -11088,6 +11087,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
+					"TEST_SUMMARY_PATH=@\\\"$(PROJECT_DIR)/../../VictoriousiOS.wiki/UI-Automation-Tests.md\\\"",
 				);
 				INFOPLIST_FILE = UIAutomationTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -11108,7 +11108,6 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -11132,7 +11131,6 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -11156,7 +11154,6 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -11180,7 +11177,6 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",

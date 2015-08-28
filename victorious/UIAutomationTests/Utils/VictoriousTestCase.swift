@@ -78,22 +78,33 @@ class VictoriousTestCase: KIFTestCase {
         }
     }
     
+    lazy var dateFormatter: NSDateFormatter = {
+        var dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "MM-dd-yyyy @ HH:mm";
+        return dateFormatter
+    }()
+    
     private func addTextToReport( var text: String ) {
+        if !NSFileManager.defaultManager().fileExistsAtPath(TEST_SUMMARY_PATH) {
+            return
+        }
         
-        if let url = NSURL(string:"http://10.18.1.253:4000") {
-            let request = NSMutableURLRequest(URL: url)
-            request.HTTPBody = "append=\(VictoriousTestCase.shouldAppend)&text=\(text)".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
-            request.HTTPMethod = "POST"
-            VictoriousTestCase.networkQueue.maxConcurrentOperationCount = 1
-            NSURLConnection.sendAsynchronousRequest(request, queue: VictoriousTestCase.networkQueue ) { (response, data, error) in
-                //XCTAssertNotNil( response, "Failed to update test report: \(error.localizedDescription)" )
-                if response == nil {
-                    println( "Failed to update test report: \(error.localizedDescription)" )
-                }
-            }
-            if !VictoriousTestCase.shouldAppend {
-                VictoriousTestCase.shouldAppend = true
-            }
+        if !VictoriousTestCase.shouldAppend {
+            let appVersion = NSBundle.mainBundle().objectForInfoDictionaryKey( "CFBundleShortVersionString" ) as? String ?? ""
+            let appBuildNumber = NSBundle.mainBundle().objectForInfoDictionaryKey( kCFBundleVersionKey as String ) as? String ?? ""
+            let dateString = self.dateFormatter.stringFromDate(NSDate())
+            let versionText = "v\(appVersion) (\(appBuildNumber))"
+            text = "Updated: \(dateString)\n\n\(versionText)\n\(text)"
+        }
+        else if let existingText = String(contentsOfFile: TEST_SUMMARY_PATH, encoding: NSUTF8StringEncoding, error: nil) {
+            text = existingText + "\n" + text
+        }
+        var error: NSError?
+        if !text.writeToFile(TEST_SUMMARY_PATH, atomically: false, encoding: NSUTF8StringEncoding, error: &error) {
+            println( "Failed to write to file: \(error?.localizedDescription)" )
+        }
+        if !VictoriousTestCase.shouldAppend {
+            VictoriousTestCase.shouldAppend = true
         }
     }
     

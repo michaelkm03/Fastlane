@@ -45,9 +45,10 @@ class CommentTests : VictoriousTestCase {
         self.tester().enterTextIntoCurrentFirstResponder( randomCaption )
         
         self.addStep( "Tap send button" )
+        self.tester().waitForTimeInterval( 2.0 )
         self.tester().tapViewWithAccessibilityLabel( VAutomationIdentifierCommentBarSendButton )
         
-        let duration: NSTimeInterval = 10.0
+        let duration: NSTimeInterval = 20.0
         self.addStep( "Wait \(duration) seconds for comment to post" )
         self.tester().waitWithCountdownForInterval( duration )
 
