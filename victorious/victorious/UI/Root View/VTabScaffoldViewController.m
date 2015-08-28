@@ -44,7 +44,7 @@
 static NSString * const kMenuKey = @"menu";
 static NSString * const kFirstTimeContentKey = @"firstTimeContent";
 
-@interface VTabScaffoldViewController () <UITabBarControllerDelegate, VRootViewControllerContainedViewController, VDeeplinkHandler, VDeeplinkSupporter, VCoachmarkDisplayResponder>
+@interface VTabScaffoldViewController () <UITabBarControllerDelegate, VDeeplinkHandler, VDeeplinkSupporter, VCoachmarkDisplayResponder, AutoShowLoginOperationDelegate>
 
 @property (nonatomic, strong) VNavigationController *rootNavigationController;
 @property (nonatomic, strong) UITabBarController *internalTabBarController;
@@ -55,6 +55,8 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
 @property (nonatomic, strong) NSOperationQueue *launchOperationQueue;
 @property (nonatomic, weak) AutoShowLoginOperation *loginOperation;
 @property (nonatomic, assign) BOOL hasSetupFirstLaunchOperations;
+
+@property (nonatomic, strong) UIViewController *autoShowLoginViewController;
 
 @end
 
@@ -125,6 +127,30 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
+}
+
+- (UIViewController *)childViewControllerForStatusBarHidden
+{
+    if (self.autoShowLoginViewController != nil)
+    {
+        return self.autoShowLoginViewController;
+    }
+    else
+    {
+        return [super childViewControllerForStatusBarHidden];
+    }
+}
+
+- (UIViewController *)childViewControllerForStatusBarStyle
+{
+    if (self.autoShowLoginViewController != nil)
+    {
+        return self.autoShowLoginViewController;
+    }
+    else
+    {
+        return [super childViewControllerForStatusBarStyle];
+    }
 }
 
 #pragma mark - Public API
@@ -345,6 +371,7 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
                                                                                  dependencyManager:self.dependencyManager
                                                                        viewControllerToPresentFrom:self];
     self.loginOperation = loginOperation;
+    loginOperation.delegate = self;
     [self.launchOperationQueue addOperation:loginOperation];
 }
 
@@ -367,11 +394,39 @@ static NSString * const kFirstTimeContentKey = @"firstTimeContent";
     [self.launchOperationQueue addOperation:pushNotificationOperation];
 }
 
-#pragma mark - VRootViewControllerContainedViewController
+#pragma mark - AutoShowLoginOperationDelegate
 
-- (void)onLoadingCompletion
+- (void)showLoginViewController:(UIViewController *__nonnull)loginViewController
 {
-    [self.loginOperation.loginAuthorizedAction execute];
+    [self addChildViewController:loginViewController];
+    [self.view addSubview:loginViewController.view];
+    [self.view v_addFitToParentConstraintsToSubview:loginViewController.view];
+    [loginViewController didMoveToParentViewController:self];
+    self.autoShowLoginViewController = loginViewController;
+    [self setNeedsStatusBarAppearanceUpdate];
+}
+
+- (void)hideLoginViewController:(void (^ __nonnull)(void))completion
+{
+    [self.autoShowLoginViewController willMoveToParentViewController:nil];
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+         usingSpringWithDamping:1.0f
+          initialSpringVelocity:0.0f
+                        options:kNilOptions
+                     animations:^
+     {
+         CGFloat yTranslationAmount = CGRectGetHeight(self.autoShowLoginViewController.view.bounds);
+         self.autoShowLoginViewController.view.transform = CGAffineTransformMakeTranslation(0, yTranslationAmount);
+     }
+                     completion:^(BOOL finished)
+     {
+         [self.autoShowLoginViewController.view removeFromSuperview];
+         [self.autoShowLoginViewController removeFromParentViewController];
+         self.autoShowLoginViewController = nil;
+         [self setNeedsStatusBarAppearanceUpdate];
+         completion();
+     }];
 }
 
 #pragma mark - UITabBarControllerDelegate

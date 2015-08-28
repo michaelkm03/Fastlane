@@ -62,15 +62,15 @@
 "Tap here to view posts from the entire community" = "Toca aquí para ver los mensajes de toda la comunidad";
 "Tap here to view posts from other fans" = "Toqca aquí para ver las publicaciones de otros fans";
 "View posts from the entire community here" = "Ve aquí las publicaciones de toda la comunidad";
-"View posts from other fans here" = "Ve aquí las publicaciones de otros fans";
-"Tap here to watch my exclusive videos" = "Toca aquí para ver mis videos exclusivos";
-"Tap here to watch exclusive videos" = "Toca aquí para ver videos exclusivos";
-"Tap here to watch my videos" = "Toca aquí para ver mis videos";
-"Tap here to watch videos" = "Toca aquí para ver videos";
-"Watch my exclusive videos here" = "Ve aquí mis videos exclusivos";
-"Watch exclusive videos here" = "Ve aquí videos exclusivos";
-"Watch my videos here" = "Ve aquí mis videos";
-"Watch videos here" = "Ve aquí videos";
+"View posts from other fans here" = "Ve ­las publicaciones de otros fans aquí";
+"Tap here to watch my exclusive videos" = "Toca aquí­ para ver mis vídeos exclusivos";
+"Tap here to watch exclusive videos" = "Toca aquí­ para ver vídeos exclusivos";
+"Tap here to watch my videos" = "Toca aquí­ para ver mis vídeos";
+"Tap here to watch videos" = "Toca aquí­ para ver vídeos";
+"Watch my exclusive videos here" = "Ve mis vídeos exclusivos aquí­";
+"Watch exclusive videos here" = "Ve vídeos exclusivos aquí­";
+"Watch my videos here" = "Ve mis vídeos aquí";
+"Watch videos here" = "Ve vídeos aquí";
 "Tap here to create your first post" = "Toca aquí para crear tu primera publicación";
 "Tap here to create a post" = "Toca aquí para crear una publicación";
 "Tap here and create a post now!" = "¡Toca aquí y crea una publicación ahora!";
@@ -103,7 +103,7 @@
 "AccountUpdateFail"     =   "Error al actualizar la cuenta";
 "You're not logged in!" =   "¡No has ingresado!";
 "ProfileNotLoggedInMessage" = "¡Nada que ver aquí todavía! Estamos muy contentos de que te unas a nuestra comunidad. Crear una cuenta para mostrar a todos lo único que eres. ";
-"ProfileSaveFail"       =   "La información de tu perfil no pudo guardarse debido a un error en el servidor";
+"ProfileSaveFail"       =   "No pudo guardar la información de perfil debido a un error en el servidor";
 "ProfileSave"           =   "Cargando tu perfil";
 "ProfileIncomplete"     =   "Perfil incompleto";
 "ProfileAborted"        =   "No podrás usar algunas funciones hasta que hayas completado tu perfil.";
@@ -125,7 +125,7 @@
 "ErrorOccured"          =   "Por alguna razón no podemos conectarnos con el servidor. ¡Inténtalo de nuevo más tarde!";
 
 "NoEmail"               =   "No hay cuentas de email";
-"NoEmailDetail"         =   "No hay cuentas de email, ¿quieres abrir una?";
+"NoEmailDetail"         =   "No hay cuentas de email, ¿Quieres abrir una?";
 "EmailFail"             =   "No se pudo enviar el correo";
 "SMSFail"               =   "Error al enviar SMS";
 "CouldNotSend"          =   "El mensaje no se envió";
@@ -145,8 +145,6 @@
 
 "NoCommentsTitle"       =   "¡SÉ EL PRIMERO EN COMENTAR!";
 "NoCommentsMessage"     =   "Publica textos, fotos o comentarios a videos, ¡y ve lo que los demás dicen!";
-"LeaveACommentAt"       =   "Deja un comentario en ";
-"LeaveAComment"          =   "Deja un comentario";
 
 "NoFollowersTitle"      =   "¡BOMP BOMP! NADIE TE HA SEGUIDO AÚN";
 "NoFollowersMessage"    =   "Construye tu propio seguimiento participando con la comunidad a través de comentatios, remezcla o publica nuevo contenido.";
@@ -154,7 +152,7 @@
 "NotFollowingTitle"     =   "¡RUH-ROH! NO SIGUES A NADIE AÚN";
 "NotFollowingMessage"   =   "Sigue a otras personas para ver su contenido en tu corriente. Es una buena manera de encontrar nuevos contenidos o hacer amigos.";
 
-"NoLikersMessage"       =   "Muestrale a la comunidad lo que piensas que es importante haciendo clic en me gusta en tus favoritos";
+"NoLikersMessage"       =   "Muestra a la comunidad lo que piensas que es importante haciendo clic en me gusta en tus favoritos";
 "NoLikersTitle"         =   "A NADIE LE GUSTA ESTO... ¡TODAVÍA!";
 
 "ProfileNoFollowersTitle"      =   "SÉ EL PRIMERO EN SEGUIR A ESTE USUARIO";
@@ -190,7 +188,7 @@
 "Facebook"              =   "Facebook";
 "FacebookFailed"        =   "No pudo conectarse a Facebook.";
 
-"Search people and hashtags"  =  "Busca personas o hashtags";
+"Search people and hashtags"  =  "Busca personas o etiquetas";
 "No People Found In Search Title" = "NO SE ENCONTRARON PERSONAS";
 "No people found in search" = "Filtra la búsqueda y vuelve a intentar.";
 "No Hashtags Found In Search Title" = "¡NO SE ENCONTRARON ETIQUETAS!";
@@ -250,8 +248,8 @@
 "PollUploadBody"        =   "No se puede subir cargar la encuesta al servidor";
 
 "UploadFailedTitle"     =   "Error al cargar los medios";
-"DuplicateVideoTitle"   =   "Video duplicado";
-"DuplicateVideoBody"    =   "Parece que estás tratando de subir un video que ya ha sido cargado.";
+"DuplicateVideoTitle"   =   "Vídeo duplicado";
+"DuplicateVideoBody"    =   "Parece que estás tratando de subir un vídeo que ya ha sido cargado.";
 
 "Uploading"             =   "Tu contenido se está cargando...";
 "UploadFinalizing"      =   "Estamos por terminar tu publicación, pronto la verás.";
@@ -304,6 +302,7 @@
 
 "VideoPlayFailed"       =   "Error al reproducir el video";
 "See More"              =   "Ver más";
+"See all"               =   "Ver todo";
 "..."                   =   "...";
 
 "PostWillExpire"        =   "La publicación va a expirar";
@@ -660,6 +659,7 @@
 "Watch Video" = "Ver video";
 "Watch GIF" = "Ver GIF";
 
+"Show Previous Comments" = "Mostrar comentarios anteriores";
 "CommentsSingularFormat" = "%@ Comentario";  // e.g. "1 Comment"
 "CommentsPluralFormat" = "%@ Comentarios";  // e.g. "20 Comments"
 "LikesSingularFormat" = "%@ Me gusta";  // e.g. "1 Like", where "Like" is a noun
@@ -675,11 +675,7 @@
 "NOTHING LIKED YET" = "TODAVÍA NO HAY NADA QUE TE GUSTE"; // Liked content no content view
 "Posts you like will appear here." = "Publicaciones que te gustaría que aparezcan aquí."; // Liked content no content view
 
-
-"TRENDING FAN" = "SEGUIDOR DE TENDENCIA";
 "posts" = "Publicaciones";
-
-"TRENDING HASHTAG" = "HASHTAG DE TENDENCIA";
 "HashtagPostsCountFormat" = "En %@ publicaciones";
 
 "Barcelona" = "Barcelona";

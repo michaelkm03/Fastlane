@@ -33,6 +33,7 @@
 #import "VSimpleModalTransition.h"
 
 #import "UIVIew+AutoLayout.h"
+#import "MBProgressHUD.h"
 
 NSString *const kVUserSearchResultsChangedNotification = @"VUserSearchResultsChangedNotification";
 NSString *const kVHashtagsSearchResultsChangedNotification = @"VHashtagsSearchResultsChangedNotification";
@@ -58,6 +59,9 @@ static NSInteger const kVMaxSearchResults = 1000;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+
+@property (nonatomic, strong) RKManagedObjectRequestOperation *userSearchRequest;
+@property (nonatomic, strong) RKManagedObjectRequestOperation *tagSearchRequest;
 
 @end
 
@@ -123,31 +127,11 @@ static NSInteger const kVMaxSearchResults = 1000;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    // Add NSNotification Observers
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(segmentControlAction:)
-                                                 name:UITextFieldTextDidChangeNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(searchFieldTextChanged:)
-                                                 name:UITextFieldTextDidChangeNotification
-                                               object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    if (self.segmentControl.selectedSegmentIndex == 0)
-    {
-        [self.userSearchResultsVC.tableView reloadData];
-    }
-    else
-    {
-        [self.tagsSearchResultsVC.tableView reloadData];
-    }
 
     [self.searchField becomeFirstResponder];
     
@@ -157,9 +141,6 @@ static NSInteger const kVMaxSearchResults = 1000;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    // Remove NSNotification Observers
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
     
     if ( self.isBeingDismissed )
     {
@@ -186,6 +167,9 @@ static NSInteger const kVMaxSearchResults = 1000;
 
 - (IBAction)closeButtonAction:(id)sender
 {
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    [self cancelUserSearch:YES andHashtagSearch:YES];
+    
     if ( self.presentingViewController != nil )
     {
         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
@@ -201,19 +185,16 @@ static NSInteger const kVMaxSearchResults = 1000;
 - (IBAction)segmentControlAction:(id)sender
 {
     CGFloat bottomInsetHeight = self.keyboardHeight;
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     
     // Perform search
     if ( self.segmentControl.selectedSegmentIndex == 0 )
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectDiscoverSearchUser];
+        [self cancelUserSearch:NO andHashtagSearch:YES];
         
         self.userSearchResultsVC.view.alpha = 1.0f;
         self.tagsSearchResultsVC.view.alpha = 0;
-        
-        if ( self.searchField.text.length > 0 )
-        {
-            [self userSearch:sender];
-        }
         
         if (self.isKeyboardShowing)
         {
@@ -223,14 +204,10 @@ static NSInteger const kVMaxSearchResults = 1000;
     else if ( self.segmentControl.selectedSegmentIndex == 1 )
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectDiscoverSearchHashtag];
+        [self cancelUserSearch:YES andHashtagSearch:NO];
         
         self.userSearchResultsVC.view.alpha = 0;
         self.tagsSearchResultsVC.view.alpha = 1.0f;
-
-        if ( self.searchField.text.length > 0 )
-        {
-            [self hashtagSearch:sender];
-        }
 
         if (self.isKeyboardShowing)
         {
@@ -263,24 +240,37 @@ static NSInteger const kVMaxSearchResults = 1000;
         else
         {
             self.tagsSearchResultsVC.searchResults = nil;
-            [self.tagsSearchResultsVC.tableView reloadData];
             [self showNoResultsReturnedForSearch];
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:kVHashtagsSearchResultsChangedNotification object:nil];
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        });
     };
     
     VFailBlock searchFail = ^(NSOperation *operation, NSError *error)
     {
-        VLog(@"\n\nHashtag Search Failed with the following error:\n%@", error);
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        });
     };
 
     NSString *searchTerm = [self.searchField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if (searchTerm.length > 0)
     {
-        [[VObjectManager sharedManager] findHashtagsBySearchString:searchTerm
-                                                      limitPerPage:kVMaxSearchResults
-                                                      successBlock:searchSuccess
-                                                         failBlock:searchFail];
+        [self cancelUserSearch:NO andHashtagSearch:YES];
+        
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.userInteractionEnabled = NO;
+        dispatch_async(dispatch_get_global_queue( QOS_CLASS_USER_INITIATED, 0), ^
+        {
+            self.tagSearchRequest = [[VObjectManager sharedManager] findHashtagsBySearchString:searchTerm
+                                                                                  limitPerPage:kVMaxSearchResults
+                                                                                  successBlock:searchSuccess
+                                                                                     failBlock:searchFail];
+        });
     }
     else
     {
@@ -303,25 +293,62 @@ static NSInteger const kVMaxSearchResults = 1000;
         else
         {
             self.userSearchResultsVC.searchResults = nil;
-            [self.userSearchResultsVC.tableView reloadData];
             [self showNoResultsReturnedForSearch];
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:kVUserSearchResultsChangedNotification object:nil];
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        });
+    };
+    
+    VFailBlock searchFail = ^(NSOperation *operation, NSError *error)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        });
     };
     
     if ( [self.searchField.text length] > 0 )
     {
-        [[VObjectManager sharedManager] findUsersBySearchString:self.searchField.text
-                                                     sequenceID:nil
-                                                          limit:kVMaxSearchResults
-                                                        context:VObjectManagerSearchContextDiscover
-                                               withSuccessBlock:searchSuccess
-                                                      failBlock:nil];
+        [self cancelUserSearch:YES andHashtagSearch:NO];
+
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.userInteractionEnabled = NO;
+        dispatch_async(dispatch_get_global_queue( QOS_CLASS_USER_INITIATED, 0), ^
+        {
+            self.userSearchRequest = [[VObjectManager sharedManager] findUsersBySearchString:self.searchField.text
+                                                                                  sequenceID:nil
+                                                                                       limit:kVMaxSearchResults
+                                                                                     context:VObjectManagerSearchContextDiscover
+                                                                            withSuccessBlock:searchSuccess
+                                                                                   failBlock:searchFail];
+        });
     }
     else
     {
         NSArray *results = [[NSArray alloc] init];
         self.userSearchResultsVC.searchResults = (NSMutableArray *)results;
+    }
+}
+
+- (void)cancelUserSearch:(BOOL)userFlag andHashtagSearch:(BOOL)tagFlag
+{
+    if (userFlag && self.userSearchRequest != nil)
+    {
+        if (self.userSearchRequest.isExecuting)
+        {
+            [self.userSearchRequest cancel];
+        }
+
+    }
+    if (tagFlag && self.tagSearchRequest != nil)
+    {
+        if (self.tagSearchRequest.isExecuting)
+        {
+            [self.tagSearchRequest cancel];
+        }
     }
 }
 
@@ -339,20 +366,6 @@ static NSInteger const kVMaxSearchResults = 1000;
     [self closeButtonAction:tagsSearchResultsViewController];
 }
 
-#pragma mark - Search Field Text Changed
-
-- (void)searchFieldTextChanged:(NSNotification *)notification
-{
-    if (self.searchField.text.length == 0)
-    {
-        self.userSearchResultsVC.searchResults = nil;
-        [self.userSearchResultsVC.tableView reloadData];
-        
-        self.tagsSearchResultsVC.searchResults = nil;
-        [self.tagsSearchResultsVC.tableView reloadData];
-    }
-}
-
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -363,11 +376,9 @@ static NSInteger const kVMaxSearchResults = 1000;
 - (BOOL)textFieldShouldClear:(UITextField *)textField
 {
     self.userSearchResultsVC.searchResults = nil;
-    [self.userSearchResultsVC.tableView reloadData];
     self.userSearchResultsVC.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
     self.tagsSearchResultsVC.searchResults = nil;
-    [self.tagsSearchResultsVC.tableView reloadData];
     self.tagsSearchResultsVC.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     return YES;
@@ -375,8 +386,18 @@ static NSInteger const kVMaxSearchResults = 1000;
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [self segmentControlAction:nil];
     [self.searchField resignFirstResponder];
+    if (self.searchField.text.length > 0)
+    {
+        if ( self.segmentControl.selectedSegmentIndex == 0 )
+        {
+            [self userSearch:nil];
+        }
+        else if (self.segmentControl.selectedSegmentIndex == 1)
+        {
+            [self hashtagSearch:nil];
+        }
+    }
     
     return YES;
 }

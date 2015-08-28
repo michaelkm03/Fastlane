@@ -36,7 +36,11 @@ class SequenceCommentsDataSource : CommentsDataSource {
                     delegate?.commentsDataSourceDidUpdate(self)
                 }
             },
-            failBlock: nil)
+            failBlock: { (operation: NSOperation?, error: NSError?) in
+                dispatch_async(dispatch_get_main_queue()) {
+                    delegate?.commentsDataSourceDidUpdate(self)
+                }
+            })
     }
     
     func loadNextPage() {

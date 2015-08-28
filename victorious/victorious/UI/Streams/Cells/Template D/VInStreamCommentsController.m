@@ -28,6 +28,12 @@ static UIEdgeInsets const kSectionEdgeInsets = { 0.0f, 0.0f, 0.0f, 2.0f };
 
 @implementation VInStreamCommentsController
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView
 {
     NSParameterAssert(collectionView != nil);

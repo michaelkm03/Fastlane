@@ -90,6 +90,12 @@ static const NSUInteger kCharacterLimit = 60;
     [self.view addGestureRecognizer:tapToEditGesture];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self updateTextViewConstraintsForTextType:self.textType];
+}
+
 #pragma mark - Property Accessors
 
 - (void)setTextType:(VTextTypeTool *)textType
