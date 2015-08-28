@@ -68,9 +68,9 @@ if [ "$DEVICE_NAME" == "" ]; then
         -destination platform="iOS Simulator",name="iPhone 6"
 else
     # Clean
-    # xcodebuild -workspace victorious/victorious.xcworkspace \
-    #    -scheme $SCHEME \
-    #    -destination generic/platform=iOS clean
+    xcodebuild -workspace victorious/victorious.xcworkspace \
+       -scheme $SCHEME \
+       -destination generic/platform=iOS clean
 
     # Build for device
     xcodebuild test \
