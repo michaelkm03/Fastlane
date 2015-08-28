@@ -402,18 +402,6 @@ const CGFloat kVLoadNextPagePoint = .75f;
     {
         [self animateNewlyPopulatedCell:cell inCollectionView:collectionView atIndexPath:indexPath];
     }
-    if ( [cell conformsToProtocol:@protocol(VisibilitySensitiveCell)] )
-    {
-        [(UICollectionViewCell <VisibilitySensitiveCell> *)cell onDidBecomeVisible];
-    }
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    if ( [cell conformsToProtocol:@protocol(VisibilitySensitiveCell)] )
-    {
-        [(UICollectionViewCell <VisibilitySensitiveCell> *)cell onStoppedBeingVisible];
-    }
 }
 
 #pragma mark - VScrollPaginatorDelegate

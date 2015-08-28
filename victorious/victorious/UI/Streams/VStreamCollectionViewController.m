@@ -644,7 +644,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [super collectionView:collectionView didEndDisplayingCell:cell forItemAtIndexPath:indexPath];
     [self.focusHelper endFocusOnCell:cell];
 }
 
@@ -1028,11 +1027,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
             const CGRect intersection = CGRectIntersection( streamVisibleRect, cell.frame );
             const CGFloat visibleRatio = CGRectGetHeight( intersection ) / CGRectGetHeight( cell.frame );
             [self collectionViewCell:cell didUpdateCellVisibility:visibleRatio];
-        }
-        
-        if ( [cell conformsToProtocol:@protocol(VisibilitySensitiveCell)] )
-        {
-            [(UICollectionViewCell <VisibilitySensitiveCell> *)cell onDidBecomeVisible];
         }
     }
     

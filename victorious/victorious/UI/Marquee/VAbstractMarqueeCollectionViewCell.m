@@ -11,9 +11,8 @@
 #import "VStreamCollectionViewDataSource.h"
 #import "VTimerManager.h"
 #import "VAbstractMarqueeController.h"
-#import "victorious-Swift.h"
 
-@interface VAbstractMarqueeCollectionViewCell () <VisibilitySensitiveCell>
+@interface VAbstractMarqueeCollectionViewCell ()
 
 @property (nonatomic, weak) IBOutlet UICollectionView *marqueeCollectionView;
 
@@ -74,16 +73,24 @@
 
 #pragma mark - VisibilitySensitiveCell
 
-- (void)onDidBecomeVisible
+- (void)setHasFocus:(BOOL)hasFocus
 {
-    [self.marquee enableTimer];
-    [self.marquee updateFocus];
-    [self.marquee updateCellVisibilityTracking];
+    if ( hasFocus )
+    {
+        [self.marquee enableTimer];
+        [self.marquee updateFocus];
+        [self.marquee updateCellVisibilityTracking];
+    }
+    else
+    {
+        [self.marquee disableTimer];
+        [self.marquee endFocusOnAllCells];
+    }
 }
 
-- (void)onStoppedBeingVisible
+- (CGRect)contentArea
 {
-    [self.marquee disableTimer];
+    return self.frame;
 }
 
 #pragma mark - Parallax Scrolling
