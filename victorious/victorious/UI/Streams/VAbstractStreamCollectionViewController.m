@@ -29,6 +29,7 @@
 #import "VImageSearchResultsFooterView.h"
 #import "VFooterActivityIndicatorView.h"
 #import "VDependencyManager.h"
+#import "victorious-Swift.h"
 
 const CGFloat kVLoadNextPagePoint = .75f;
 
@@ -400,6 +401,18 @@ const CGFloat kVLoadNextPagePoint = .75f;
     if ( [self shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:indexPath.section] )
     {
         [self animateNewlyPopulatedCell:cell inCollectionView:collectionView atIndexPath:indexPath];
+    }
+    if ( [cell conformsToProtocol:@protocol(VisibilitySensitiveCell)] )
+    {
+        [(UICollectionViewCell <VisibilitySensitiveCell> *)cell onDidBecomeVisible];
+    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ( [cell conformsToProtocol:@protocol(VisibilitySensitiveCell)] )
+    {
+        [(UICollectionViewCell <VisibilitySensitiveCell> *)cell onStoppedBeingVisible];
     }
 }
 

@@ -11,8 +11,9 @@
 #import "VStreamCollectionViewDataSource.h"
 #import "VTimerManager.h"
 #import "VAbstractMarqueeController.h"
+#import "victorious-Swift.h"
 
-@interface VAbstractMarqueeCollectionViewCell ()
+@interface VAbstractMarqueeCollectionViewCell () <VisibilitySensitiveCell>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *marqueeCollectionView;
 
@@ -45,12 +46,6 @@
     marquee.collectionView = self.marqueeCollectionView;
 }
 
-- (void)prepareForReuse
-{
-    [super prepareForReuse];
-    [self.marquee.autoScrollTimerManager invalidate];
-}
-
 #pragma mark - UIResponder
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -75,6 +70,18 @@
 {
     [super touchesCancelled:touches withEvent:event];
     [self.marquee enableTimer];
+}
+
+#pragma mark - VisibilitySensitiveCell
+
+- (void)onDidBecomeVisible
+{
+    [self.marquee enableTimer];
+}
+
+- (void)onStoppedBeingVisible
+{
+    [self.marquee disableTimer];
 }
 
 #pragma mark - Parallax Scrolling

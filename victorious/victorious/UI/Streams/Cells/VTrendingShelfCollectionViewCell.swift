@@ -152,7 +152,7 @@ extension VTrendingShelfCollectionViewCell : UICollectionViewDataSource {
     
 }
 
-extension VTrendingShelfCollectionViewCell : UICollectionViewDelegate {
+extension VTrendingShelfCollectionViewCell: UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let responder: VShelfStreamItemSelectionResponder = typedResponder()
@@ -170,7 +170,7 @@ extension VTrendingShelfCollectionViewCell : UICollectionViewDelegate {
     
 }
 
-extension VTrendingShelfCollectionViewCell : UICollectionViewDelegateFlowLayout {
+extension VTrendingShelfCollectionViewCell: UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return UIEdgeInsetsMake(0, 11, 11, 11)

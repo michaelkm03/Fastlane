@@ -234,11 +234,6 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 
 - (void)updateCellVisibilityTracking
 {
-    if (!self.shouldTrackMarqueeCellViews)
-    {
-        return;
-    }
-    
     const CGRect streamVisibleRect = self.collectionView.bounds;
     
     NSArray *visibleCells = self.collectionView.visibleCells;
