@@ -192,7 +192,7 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
         CGFloat aspectRatio = [previewAsset.width floatValue] / [previewAsset.height floatValue];
         
         // Make sure aspect ratio is within bounds
-        const BOOL isNonVideo = self.isVideo || self.isGifStyle.boolValue;
+        const BOOL isVideo = self.isVideo || self.isGifStyle.boolValue;
         CGFloat min = isVideo ? kMinimumVideoAspectRatio : CGFLOAT_MIN;
         return [self clampedValue:aspectRatio min:min max:kMaximumAspectRatio];
     }

@@ -84,6 +84,13 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 
 - (void)setItemURL:(NSURL *__nonnull)itemURL loop:(BOOL)loop audioMuted:(BOOL)audioMuted alongsideAnimation:(void (^ __nullable)(void))animations
 {
+    NSArray *colors = @[
+                        [UIColor blackColor],
+                        [UIColor whiteColor],
+                        [[UIColor blackColor] colorWithAlphaComponent:0.05]
+                        ];
+    self.backgroundColor = colors[ arc4random_uniform( colors.count )];
+    
     if ( [_itemURL isEqual:itemURL] )
     {
         if ( animations != nil )
@@ -124,8 +131,6 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
                  }
              }
          }];
-        
-        self.backgroundColor = [UIColor clearColor];
         
         self.videoUtils = [[VVideoUtils alloc] init];
     }
