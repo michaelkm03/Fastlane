@@ -20,6 +20,8 @@
 // DependencyManager
 #import "VDependencyManager.h"
 
+#import "victorious-swift.h"
+
 static const NSInteger kCharacterLimit = 255;
 static const CGFloat VTextViewTopInsetAddition = 2.0f;
 static const CGFloat kAttachmentThumbnailWidth = 35.0f;
@@ -180,7 +182,7 @@ static NSString * const kCommentBarKey = @"commentBar";
     CGFloat editingTextViewPadding = self.editingTextViewTopSpace.constant + self.editingTextViewBottomSpace.constant;
     CGFloat contentSizeHeight = self.editingTextView.contentSize.height;
     CGFloat heightSum = editingTextViewPadding + contentSizeHeight;
-    CGSize intrinsicSize = CGSizeMake(CGRectGetWidth(self.bounds), MAX(heightSum, kAttachmentBarHeight));
+    CGSize intrinsicSize = CGSizeMake(CGRectGetWidth(self.bounds), CLAMP(kAttachmentBarHeight, heightSum, kMaxTextViewHeight + kAttachmentBarHeight + kCommentBarVerticalPaddingToTextView));
     return intrinsicSize;
 }
 
@@ -338,11 +340,12 @@ shouldChangeTextInRange:(NSRange)range
  replacementText:(NSString *)text
 {
     NSString *string = [textView.text stringByReplacingCharactersInRange:range withString:text];
-    BOOL shouldChange = string.length <= (NSUInteger)self.characterLimit;
+    NSInteger unicodeLength = string.lengthWithUnicode;
+    BOOL shouldChange = unicodeLength <= self.characterLimit;
     
     if (shouldChange)
     {
-        NSUInteger remaininCharacterCount = [self characterLimit] - string.length;
+        NSUInteger remaininCharacterCount = [self characterLimit] - unicodeLength;
         self.remainingCharacterLabel.text = [self.remainingCharacterFormater stringFromNumber:@(remaininCharacterCount)];
         [UIView animateWithDuration:1.5
                          animations:^
