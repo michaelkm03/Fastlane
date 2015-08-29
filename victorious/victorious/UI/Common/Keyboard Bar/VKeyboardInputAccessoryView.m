@@ -362,12 +362,12 @@ shouldChangeTextInRange:(NSRange)range
     
     if (shouldChange)
     {
-        NSUInteger remaininCharacterCount = [self characterLimit] - unicodeLength;
-        self.remainingCharacterLabel.text = [self.remainingCharacterFormater stringFromNumber:@(remaininCharacterCount)];
+        NSUInteger remainingCharacterCount = [self characterLimit] - unicodeLength;
+        self.remainingCharacterLabel.text = [self.remainingCharacterFormater stringFromNumber:@(remainingCharacterCount)];
         [UIView animateWithDuration:0.8
                          animations:^
         {
-            self.remainingCharacterLabel.alpha = (remaininCharacterCount < 20) ? 1.0f : 0.0f;
+            self.remainingCharacterLabel.alpha = (remainingCharacterCount < 20) ? 1.0f : 0.0f;
         }];
     }
     
