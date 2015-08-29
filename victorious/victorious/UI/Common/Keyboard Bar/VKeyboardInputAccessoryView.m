@@ -343,7 +343,7 @@ shouldChangeTextInRange:(NSRange)range
     if ([text rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]].location != NSNotFound)
     {
         // Strip out newline characters and replace with a space
-        NSArray *components = [text componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+        NSArray *components = [string componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
         NSString *stringByRemovingNewlines = [components componentsJoinedByString:@""];
         BOOL hasCharactersOtherThanNewLine = stringByRemovingNewlines.length > 0;
 
