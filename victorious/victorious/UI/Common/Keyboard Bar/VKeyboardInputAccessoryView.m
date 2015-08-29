@@ -342,7 +342,18 @@ shouldChangeTextInRange:(NSRange)range
     NSString *string = [textView.text stringByReplacingCharactersInRange:range withString:text];
     if ([text rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]].location != NSNotFound)
     {
-        textView.text = [string stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+        // Strip out newline characters and replace with a space
+        NSArray *components = [text componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+        NSString *stringByRemovingNewlines = [components componentsJoinedByString:@""];
+        BOOL hasCharactersOtherThanNewLine = stringByRemovingNewlines.length > 0;
+
+        if (components.count > 0 && hasCharactersOtherThanNewLine)
+        {
+            NSString *newString = [components componentsJoinedByString:@" "];
+            textView.text = newString;
+            [self textViewDidChange:textView];
+        }
+    
         return NO;
     }
     
