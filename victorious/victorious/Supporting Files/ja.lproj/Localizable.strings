@@ -145,8 +145,6 @@
 
 "NoCommentsTitle"       =   "最初のコメントを投稿しましょう！";
 "NoCommentsMessage"     =   "テキスト、写真もしくは動画コメントを投稿して、他の皆がなんていうか見てみましょう！";
-"LeaveACommentAt"       =   "コメントを投稿 @";
-"LeaveAComment"          =   "コメントを投稿する";
 
 "NoFollowersTitle"      =   "むむっ！ まだ誰もあなたをフォローしていません";
 "NoFollowersMessage"    =   "コメントやリミックス、新規コンテンツの投稿などでコミュニティに関わって、あなた自身のフォロワーを募りましょう。";
@@ -304,6 +302,7 @@
 
 "VideoPlayFailed"       =   "動画の読み込みに失敗しました。";
 "See More"              =   "詳細";
+"See all"               =   "すべて見る";
 "..."                   =   "…";
 
 "PostWillExpire"        =   "投稿は期限切れになります";
@@ -660,6 +659,7 @@
 "Watch Video" = "動画を観る";
 "Watch GIF" = "GIFを観る";
 
+"Show Previous Comments" = "前のコメントを表示する";
 "CommentsSingularFormat" = "%@件のコメント";  // e.g. "1 Comment"
 "CommentsPluralFormat" = "%@件のコメント";  // e.g. "20 Comments"
 "LikesSingularFormat" = "%@件のいいね";  // e.g. "1 Like", where "Like" is a noun
@@ -675,11 +675,7 @@
 "NOTHING LIKED YET" = "「いいね」したものはまだありません"; // Liked content no content view
 "Posts you like will appear here." = "あなたが「いいね」した投稿がこちらに表示されます。"; // Liked content no content view
 
-
-"TRENDING FAN" = "トレンド中のファン";
 "posts" = "投稿";
-
-"TRENDING HASHTAG" = "トレンド中のハッシュタグ";
 "HashtagPostsCountFormat" = "%@件の投稿中";
 
 "Barcelona" = "バルセロナ";

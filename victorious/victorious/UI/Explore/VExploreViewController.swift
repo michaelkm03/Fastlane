@@ -10,13 +10,19 @@ import UIKit
 
 /// Base view controller for the explore screen that gets
 /// presented when "explore" button on the tab bar is tapped
-class VExploreViewController: VAbstractStreamCollectionViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate {
+class VExploreViewController: VAbstractStreamCollectionViewController, UICollectionViewDelegate, UISearchBarDelegate {
+    
+    struct Constants {
+        static let trendingTopicShelfKey = "trendingShelf"
+    }
     
     @IBOutlet weak private var searchBar: UISearchBar!
+    private var trendingTopicShelfFactory: TrendingTopicShelfFactory?
+    private var streamShelfFactory: VStreamContentCellFactory?
+    private let failureCellFactory: VNoContentCollectionViewCellFactory = VNoContentCollectionViewCellFactory(acceptableContentClasses: [Shelf.self])
 
     /// The dependencyManager that is used to manage dependencies of explore screen
     private(set) var dependencyManager: VDependencyManager?
-    private let numberOfSectionsInCollectionView = 3
     
     /// MARK: - View Controller Initialization
     
@@ -26,6 +32,9 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UICollect
             exploreVC.dependencyManager = dependencyManager
             // WARNING: Testing code, remember to remove!
             exploreVC.currentStream = VStream(forPath: "/api/sequence/explore/1/15", inContext: dependencyManager.objectManager().managedObjectStore.mainQueueManagedObjectContext, withEntityName: ExploreStream.entityName())
+            // For trending topic shelf
+            exploreVC.trendingTopicShelfFactory = dependencyManager.templateValueOfType(TrendingTopicShelfFactory.self, forKey: Constants.trendingTopicShelfKey) as? TrendingTopicShelfFactory
+            exploreVC.streamShelfFactory = VStreamContentCellFactory(dependencyManager: dependencyManager)
             return exploreVC
         }
         fatalError("Failed to instantiate VExploreViewController with storyboard")
@@ -38,10 +47,16 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UICollect
         navigationItem.v_supplementaryHeaderView = searchBar
         self.automaticallyAdjustsScrollViewInsets = false;
         self.extendedLayoutIncludesOpaqueBars = true;
+        
+        trendingTopicShelfFactory?.registerCellsWithCollectionView(collectionView)
+        streamShelfFactory?.registerCellsWithCollectionView(collectionView)
+        failureCellFactory.registerNoContentCellWithCollectionView(collectionView)
+
         self.streamDataSource = VStreamCollectionViewDataSource(stream: currentStream)
         self.streamDataSource.delegate = self;
         self.streamDataSource.collectionView = self.collectionView;
         self.collectionView.dataSource = self.streamDataSource;
+        self.collectionView.backgroundColor = UIColor.whiteColor()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -49,36 +64,14 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UICollect
         self.refresh(refreshControl)
     }
     
-    /// MARK: - UICollectionViewDataSource
-    
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        var numberOfRows = 0
-        
-        switch (section) {
-        case 0:
-            numberOfRows = 3
-        case 1:
-            numberOfRows = 3
-        case 2:
-            numberOfRows = 12
-        default:
-            fatalError("Unexpected number of sections in collection view")
+    private var exploreStream: ExploreStream? {
+        if currentStream != nil {
+            if let currentStream = currentStream as? ExploreStream {
+                return currentStream
+            }
+            fatalError("The explore view controller is being shown with a non-explore-stream stream")
         }
-        
-        return numberOfRows
-    }
-    
-    
-    
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        if let placeHolderCell = collectionView.dequeueReusableCellWithReuseIdentifier("placeHolder", forIndexPath: indexPath) as? UICollectionViewCell {
-            return placeHolderCell
-        }
-        fatalError("Could not find a cell for item!")
-    }
-    
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return numberOfSectionsInCollectionView
+        return nil
     }
     
     /// Mark: - UISearchBarDelegate
@@ -93,10 +86,89 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UICollect
 extension VExploreViewController : VStreamCollectionDataDelegate {
     
     override func dataSource(dataSource: VStreamCollectionViewDataSource!, cellForIndexPath indexPath: NSIndexPath!) -> UICollectionViewCell! {
-        if let placeHolderCell = collectionView.dequeueReusableCellWithReuseIdentifier("placeHolder", forIndexPath: indexPath) as? UICollectionViewCell {
-            return placeHolderCell
+        if let stream = exploreStream {
+            if let shelves = stream.shelves.array as? [Shelf] {
+                if indexPath.section < shelves.count {
+                    // Trending topic shelf
+                    
+                    let shelf = shelves[indexPath.section]
+                    if shelf.itemSubType == VStreamItemSubTypeTrendingTopic {
+                        if let cell = trendingTopicShelfFactory?.collectionView(collectionView, cellForStreamItem: shelf, atIndexPath: indexPath) as? TrendingTopicShelfCollectionViewCell {
+                            return cell
+                        }
+                    }
+                    else {
+                        if let cell = streamShelfFactory?.collectionView(collectionView, cellForStreamItem: shelf, atIndexPath: indexPath) {
+                            return cell
+                        }
+                    }
+                }
+                
+                /// Warning: recent goes here
+            }
         }
-        fatalError("Could not find a cell for item!")
+        let cell = failureCellFactory.noContentCellForCollectionView(collectionView, atIndexPath: indexPath)
+        cell.backgroundColor = UIColor.redColor()
+        return cell
     }
     
+    override func numberOfSectionsForDataSource(dataSource: VStreamCollectionViewDataSource!) -> Int {
+        if let stream = exploreStream {
+            // Total number of shelves plus one section for recent content
+            return stream.shelves.count + 1
+        }
+        return 0
+    }
+    
+    override func dataSource(dataSource: VStreamCollectionViewDataSource!, numberOfRowsInSection section: UInt) -> Int {
+        if let stream = exploreStream {
+            if section < UInt(stream.shelves.count) {
+                return 1
+            }
+            else {
+                return stream.streamItems.count
+            }
+        }
+        return 0
+    }
+}
+
+extension VExploreViewController: UICollectionViewDelegateFlowLayout {
+    
+    override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        
+        if let stream = exploreStream {
+            if let shelves = stream.shelves.array as? [Shelf] {
+                if indexPath.section < shelves.count {
+                    let shelf = shelves[indexPath.section]
+                    
+                    // Trending topic shelf
+                    if shelf.itemSubType == VStreamItemSubTypeTrendingTopic {
+                        if let trendingFactory = trendingTopicShelfFactory {
+                            return trendingFactory.sizeWithCollectionViewBounds(collectionView.bounds, ofCellForStreamItem: shelf)
+                        }
+                    }
+                    else {
+                        if let streamShelfFactory = streamShelfFactory {
+                            return streamShelfFactory.sizeWithCollectionViewBounds(collectionView.bounds, ofCellForStreamItem: shelf)
+                        }
+                    }
+                }
+                else {
+                    // WARNING: Placeholder for recent content
+                    return CGSize(width: 100, height: 100)
+                }
+            }
+        }
+        return failureCellFactory.cellSizeForCollectionViewBounds(collectionView.bounds)
+    }
+}
+
+extension VExploreViewController : VHashtagSelectionResponder {
+    
+    func hashtagSelected(text: String!) {
+        if let hashtag = text, stream = dependencyManager?.hashtagStreamWithHashtag(hashtag) {
+            self.navigationController?.pushViewController(stream, animated: true)
+        }
+    }
 }

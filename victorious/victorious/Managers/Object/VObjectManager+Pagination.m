@@ -486,6 +486,7 @@ static const NSInteger kUserSearchResultLimit = 20;
             {
                 Shelf *shelf = (Shelf *)streamItem;
                 shelf.apiPath = shelf.streamUrl.v_pathComponent;
+                shelf.trackingIdentifier = shelf.remoteId;
             }
             [streamItems addObject:streamItemInContext];
         }
@@ -495,7 +496,7 @@ static const NSInteger kUserSearchResultLimit = 20;
             stream.marqueeItems = marqueeItems;
         }
         
-        if ( [stream isKindOfClass:[ExploreStream class]] )
+        if ( [stream isKindOfClass:[ExploreStream class]] && pageType == VPageTypeFirst )
         {
             ExploreStream *exploreStream = (ExploreStream *)stream;
             ExploreStream *newExploreStream = (ExploreStream *)fullStream;

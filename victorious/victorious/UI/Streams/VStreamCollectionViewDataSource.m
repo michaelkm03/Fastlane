@@ -167,6 +167,11 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
+    if ( [self.delegate respondsToSelector:@selector(dataSource:numberOfRowsInSection:)] )
+    {
+        return [self.delegate dataSource:self numberOfRowsInSection:section];
+    }
+    
     if (self.hasHeaderCell && section == 0)
     {
         return 1;
@@ -182,6 +187,11 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
+    if ( [self.delegate respondsToSelector:@selector(numberOfSectionsForDataSource:)] )
+    {
+        return [self.delegate numberOfSectionsForDataSource:self];
+    }
+    
     if (self.hasHeaderCell)
     {
         return 2;

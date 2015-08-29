@@ -145,8 +145,6 @@
 
 "NoCommentsTitle"       =   "HÃY LÀ NGƯỜI ĐẦU TIÊN VÀO BÌNH LUẬN!";
 "NoCommentsMessage"     =   "Đăng tin nhắn, ảnh hoặc bình luận video, và xem những điều mọi người nói!";
-"LeaveACommentAt"       =   "Để lại một lời nhắn tại";
-"LeaveAComment"          =   "Để lại một lời nhắn";
 
 "NoFollowersTitle"      =   "Ồ! CHƯA CÓ HAI THEO DÕI BẠN";
 "NoFollowersMessage"    =   "Hãy xây dựng mạng lưới những người theo dõi bạn bằng cách gắn bó với cộng đồng thông qua cơ chế bình luận, kết hợp lại hoặc đăng nội dung mới.";
@@ -304,6 +302,7 @@
 
 "VideoPlayFailed"       =   "Tải video lên không thành công.";
 "See More"              =   "Xem Thêm";
+"See all"               =   "Xem tất cả";
 "..."                   =   "...";
 
 "PostWillExpire"        =   "Bài Đăng sẽ Hết hạn";
@@ -660,6 +659,7 @@
 "Watch Video" = "Xem Video";
 "Watch GIF" = "Xem ảnh động GIF";
 
+"Show Previous Comments" = "Hiện thị bình luận trước";
 "CommentsSingularFormat" = "%@ Bình luận";  // e.g. "1 Comment"
 "CommentsPluralFormat" = "%@ Bình luận";  // e.g. "20 Comments"
 "LikesSingularFormat" = "%@ Thích";  // e.g. "1 Like", where "Like" is a noun
@@ -675,11 +675,7 @@
 "NOTHING LIKED YET" = "CHƯA CÓ GÌ ĐƯỢC THÍCH"; // Liked content no content view
 "Posts you like will appear here." = "Các bài đăng mà bạn thích sẽ xuất hiện ở đây."; // Liked content no content view
 
-
-"TRENDING FAN" = "NGƯỜI HÂM MỘ THEO XU HƯỚNG";
 "posts" = "Bài đăng";
-
-"TRENDING HASHTAG" = "TAG DẤU # THEO XU HƯỚNG";
 "HashtagPostsCountFormat" = "Trong %@ Bài đăng";
 
 "Barcelona" = "Barcelona";

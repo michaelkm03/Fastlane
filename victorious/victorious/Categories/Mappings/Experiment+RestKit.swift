@@ -22,8 +22,8 @@ extension Experiment {
     }
     
     override static func entityMapping() -> RKEntityMapping {
-        var store = RKObjectManager.sharedManager().managedObjectStore
-        var mapping = RKEntityMapping(forEntityForName: self.v_defaultEntityName, inManagedObjectStore: store )
+        let store = RKObjectManager.sharedManager().managedObjectStore
+        let mapping = RKEntityMapping(forEntityForName: self.v_defaultEntityName, inManagedObjectStore: store )
         mapping.addAttributeMappingsFromDictionary( propertyMap )
         mapping.identificationAttributes = [ "id" ]
         return mapping
