@@ -340,6 +340,12 @@ shouldChangeTextInRange:(NSRange)range
  replacementText:(NSString *)text
 {
     NSString *string = [textView.text stringByReplacingCharactersInRange:range withString:text];
+    if ([text rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]].location != NSNotFound)
+    {
+        textView.text = [string stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+        return NO;
+    }
+    
     NSInteger unicodeLength = string.lengthWithUnicode;
     BOOL shouldChange = unicodeLength <= self.characterLimit;
     
@@ -347,7 +353,7 @@ shouldChangeTextInRange:(NSRange)range
     {
         NSUInteger remaininCharacterCount = [self characterLimit] - unicodeLength;
         self.remainingCharacterLabel.text = [self.remainingCharacterFormater stringFromNumber:@(remaininCharacterCount)];
-        [UIView animateWithDuration:1.5
+        [UIView animateWithDuration:0.8
                          animations:^
         {
             self.remainingCharacterLabel.alpha = (remaininCharacterCount < 20) ? 1.0f : 0.0f;
