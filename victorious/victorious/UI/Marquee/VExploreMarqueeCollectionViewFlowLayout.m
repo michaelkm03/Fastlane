@@ -36,7 +36,7 @@ static CGFloat const kMaxZoomDivisor = 30.0f;
         transform.m34 = kPerspectiveTransform;
         transform = CATransform3DRotate(transform, kMaxRotation * clampedTransformMultiplier, 0, 1, 0);
         NSInteger sign = clampedTransformMultiplier < 0 ? -1 : 1;
-        transform = CATransform3DTranslate(transform, maxHorizontalOffset * clampedTransformMultiplier * clampedTransformMultiplier * sign, 0, maxZoom * -fabs(clampedTransformMultiplier));
+        transform = CATransform3DTranslate(transform, maxHorizontalOffset * clampedTransformMultiplier * clampedTransformMultiplier * sign, 0, maxZoom * - fabs(clampedTransformMultiplier));
         
         attributes.transform3D = transform;
     }
