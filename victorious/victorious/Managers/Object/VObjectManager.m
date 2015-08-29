@@ -130,6 +130,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self addResponseDescriptorsFromArray:[VComment descriptors]];
     [self addResponseDescriptorsFromArray:[VNotification descriptors]];
     [self addResponseDescriptorsFromArray:[VStream descriptors]];
+    [self addResponseDescriptorsFromArray:[ExploreStream descriptors]];
     [self addResponseDescriptorsFromArray:[VHashtag descriptors]];
     [self addResponseDescriptorsFromArray:[VNotificationSettings descriptors]];
     [self addResponseDescriptorsFromArray:[GIFSearchResult descriptors]];

@@ -46,8 +46,8 @@ extension Shelf {
         var dynamicMapping = RKDynamicMapping()
         dynamicMapping.addMatcher(RKObjectMappingMatcher(possibleMappings: [], block: { (mappable: AnyObject!) -> RKObjectMapping! in
             var shelfMapping: RKObjectMapping?
-            if let streamItem = mappable as? VStreamItem, let subType = streamItem.itemSubType {
-                shelfMapping = Shelf.mapping(subType)
+            if let dictionary = mappable as? [String : AnyObject], let subtype = dictionary["subtype"] as? String {
+                shelfMapping = Shelf.mapping(subtype)
             }
             return shelfMapping
         }))

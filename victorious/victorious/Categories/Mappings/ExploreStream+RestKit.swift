@@ -14,7 +14,7 @@ extension ExploreStream {
         return "ExploreStream"
     }
     
-    class func mapping() -> RKObjectMapping {
+    class func mapping() -> RKEntityMapping {
         var mapping = RKEntityMapping(forEntityForName: entityName(), inManagedObjectStore: RKObjectManager.sharedManager().managedObjectStore)
         mapping.identificationAttributes = ["remoteId"]
         mapping.addAttributeMappingsFromDictionary(VStream.propertyMap())
@@ -24,13 +24,9 @@ extension ExploreStream {
     }
     
     override class func descriptors() -> [AnyObject] {
-        //Feed parsing
         let mapping = ExploreStream.mapping()
         return [
-            RKResponseDescriptor(mapping: ExploreStream.mapping(), method: RKRequestMethod.GET, pathPattern: "/api/sequence/explore/:streamId/:page/:perpage", keyPath: "payload", statusCodes: RKStatusCodeIndexSetForClass(RKStatusCodeClass.Successful)),
-            RKResponseDescriptor(mapping: ExploreStream.mapping(), method: RKRequestMethod.GET, pathPattern: "/api/sequence/explore/:stream/:page/:perpage", keyPath: "payload", statusCodes: RKStatusCodeIndexSetForClass(RKStatusCodeClass.Successful)),
-            RKResponseDescriptor(mapping: ExploreStream.mapping(), method: RKRequestMethod.GET, pathPattern: "/api/sequence/explore/:streamId/:filterId/:page/:perpage", keyPath: "payload", statusCodes: RKStatusCodeIndexSetForClass(RKStatusCodeClass.Successful)),
-            RKResponseDescriptor(mapping: ExploreStream.mapping(), method: RKRequestMethod.GET, pathPattern: "/api/sequence/explore/:category/:filtername", keyPath: "payload", statusCodes: RKStatusCodeIndexSetForClass(RKStatusCodeClass.Successful))
+            RKResponseDescriptor(mapping: mapping, method: RKRequestMethod.GET, pathPattern: "/api/sequence/explore/:page/:perpage", keyPath: "payload", statusCodes: RKStatusCodeIndexSetForClass(RKStatusCodeClass.Successful)),
         ]
     }
 }

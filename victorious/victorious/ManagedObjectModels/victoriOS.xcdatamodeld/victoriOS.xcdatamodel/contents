@@ -362,6 +362,7 @@
         <element name="EditorializationItem" positionX="0" positionY="0" width="128" height="120"/>
         <element name="EndCard" positionX="0" positionY="0" width="128" height="165"/>
         <element name="Experiment" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="ExploreStream" positionX="207" positionY="-639" width="128" height="60"/>
         <element name="GIFSearchResult" positionX="0" positionY="0" width="128" height="195"/>
         <element name="Hashtag" positionX="0" positionY="0" width="128" height="90"/>
         <element name="HashtagShelf" positionX="630" positionY="-639" width="128" height="75"/>
@@ -384,6 +385,5 @@
         <element name="User" positionX="1321" positionY="-324" width="128" height="480"/>
         <element name="UserShelf" positionX="639" positionY="-630" width="128" height="90"/>
         <element name="VoteResult" positionX="864" positionY="164" width="128" height="90"/>
-        <element name="ExploreStream" positionX="207" positionY="-639" width="128" height="60"/>
     </elements>
 </model>
