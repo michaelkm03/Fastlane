@@ -37,7 +37,10 @@ extension GIFSearchDataSource : UICollectionViewDataSource {
         }
         else if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( GIFSearchResultCell.ReuseIdentifier, forIndexPath: indexPath ) as? GIFSearchResultCell {
             cell.assetUrl = NSURL(string: result.thumbnailStillUrl)
-            cell.selected = NSSet(array: collectionView.indexPathsForSelectedItems() ).containsObject( indexPath )
+            
+            if let indexPathsForSelectedItems = collectionView.indexPathsForSelectedItems() {
+                cell.selected = indexPathsForSelectedItems.contains( indexPath )
+            }
             return cell
         }
         fatalError( "Could not find cell." ) 
@@ -45,15 +48,10 @@ extension GIFSearchDataSource : UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         
-        if let attributionView = collectionView.dequeueReusableSupplementaryViewOfKind( UICollectionElementKindSectionHeader, withReuseIdentifier: GIFSearchDataSource.ReuseIdentifier.AttributionHeader, forIndexPath: indexPath ) as? UICollectionReusableView where indexPath.section == 0 {
-            return attributionView
+        if indexPath.section == 0 {
+            return collectionView.dequeueReusableSupplementaryViewOfKind( UICollectionElementKindSectionHeader, withReuseIdentifier: GIFSearchDataSource.ReuseIdentifier.AttributionHeader, forIndexPath: indexPath )
         }
-        
-        if let activityFooterView = collectionView.dequeueReusableSupplementaryViewOfKind( UICollectionElementKindSectionFooter, withReuseIdentifier: GIFSearchDataSource.ReuseIdentifier.ActivityFooter, forIndexPath: indexPath ) as? UICollectionReusableView {
-            return activityFooterView
-        }
-        
-        fatalError( "Could not find cell." )
+        return collectionView.dequeueReusableSupplementaryViewOfKind( UICollectionElementKindSectionFooter, withReuseIdentifier: GIFSearchDataSource.ReuseIdentifier.ActivityFooter, forIndexPath: indexPath )
     }
     
     // MARK: - Helpers

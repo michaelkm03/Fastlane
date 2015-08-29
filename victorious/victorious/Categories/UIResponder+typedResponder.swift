@@ -19,7 +19,7 @@ extension UIResponder {
     
     func typedResponder<T>() -> T {
         var responder: UIResponder? = self.nextResponder()
-        do {
+        repeat {
             if let typedResponder = responder as? T {
                 return typedResponder
             }

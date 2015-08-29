@@ -14,7 +14,7 @@ class MediaAttachmentBallisticView : MediaAttachmentView {
     
     let ballisticView = ExperienceEnhancerIconView(frame: CGRectZero)
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         sharedInit()
     }
@@ -25,10 +25,10 @@ class MediaAttachmentBallisticView : MediaAttachmentView {
     }
     
     private func sharedInit() {
-        self.ballisticView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        self.ballisticView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.ballisticView)
-        let vConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[ballisticView(50)]", options: nil, metrics: nil, views: ["ballisticView": self.ballisticView])
-        let hConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|[ballisticView(50)]", options: nil, metrics: nil, views: ["ballisticView": self.ballisticView])
+        let vConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[ballisticView(50)]", options: [], metrics: nil, views: ["ballisticView": self.ballisticView])
+        let hConstraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|[ballisticView(50)]", options: [], metrics: nil, views: ["ballisticView": self.ballisticView])
         self.addConstraints(vConstraints)
         self.addConstraints(hConstraints)
     }

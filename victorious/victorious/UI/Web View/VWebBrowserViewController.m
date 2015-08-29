@@ -151,7 +151,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     if ( !self.isLandscapeOrientationSupported )
     {

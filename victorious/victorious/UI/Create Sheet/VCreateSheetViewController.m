@@ -108,7 +108,7 @@ static const CGFloat kLineSpacing = 40.0f;
     [self.collectionView.backgroundView addGestureRecognizer:tapGesture];
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }

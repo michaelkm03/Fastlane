@@ -13,8 +13,8 @@ import UIKit
 @objc protocol VTrendingHashtagShelfResponder {
     /// Sent when a user is selected from this shelf.
     ///
-    /// :param: user The user that was selected.
-    /// :param: fromShelf The shelf that the hashtag was selected from.
+    /// - parameter user: The user that was selected.
+    /// - parameter fromShelf: The shelf that the hashtag was selected from.
     func trendingHashtagShelfSelected(hashtag: String, fromShelf: HashtagShelf)
 }
 
@@ -137,9 +137,9 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
 
     /// The optimal size for this cell.
     ///
-    /// :param: bounds The bounds of the collection view containing this cell (minus any relevant insets)
-    /// :param: shelf The shelf whose content will populate this cell
-    /// :param: dependencyManager The dependency manager that will be used to style the cell
+    /// - parameter bounds: The bounds of the collection view containing this cell (minus any relevant insets)
+    /// - parameter shelf: The shelf whose content will populate this cell
+    /// - parameter dependencyManager: The dependency manager that will be used to style the cell
     ///
     /// :return: The optimal size for this cell.
     class func desiredSize(collectionViewBounds bounds: CGRect, shelf: HashtagShelf, dependencyManager: VDependencyManager) -> CGSize {
@@ -169,7 +169,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
             if let shelf = shelf as? HashtagShelf {
                 followControl.setControlState(VFollowControlState.Loading, animated: true)
                 target.followHashtag(shelf.hashtagTitle,
-                    successBlock: { [weak self] ([AnyObject]) in
+                    successBlock: { [weak self] (_: [AnyObject]) in
                         if let strongSelf = self {
                             strongSelf.updateFollowControlState()
                         }
@@ -187,7 +187,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
             if let shelf = shelf as? HashtagShelf {
                 followControl.setControlState(VFollowControlState.Loading, animated: true)
                 target.unfollowHashtag(shelf.hashtagTitle,
-                    successBlock: { [weak self] ([AnyObject]) in
+                    successBlock: { [weak self] (_: [AnyObject]) in
                         if let strongSelf = self {
                             strongSelf.updateFollowControlState()
                         }

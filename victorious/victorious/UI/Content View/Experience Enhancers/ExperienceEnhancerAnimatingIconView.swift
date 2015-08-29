@@ -34,7 +34,7 @@ class ExperienceEnhancerAnimatingIconView : UIView {
         return self.radialAnimatingView.isAnimating
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         sharedInit()
     }
@@ -62,8 +62,8 @@ class ExperienceEnhancerAnimatingIconView : UIView {
     
     /// Starts the radial animation
     ///
-    /// :param: startValue A value between 0 and 1 determining how far around the circumference the animation will begin
-    /// :param: endValue A value between 0 and 1 determining how far around the circumference the animation will end
+    /// - parameter startValue: A value between 0 and 1 determining how far around the circumference the animation will begin
+    /// - parameter endValue: A value between 0 and 1 determining how far around the circumference the animation will end
     func animate(duration: NSTimeInterval, startValue: CGFloat, endValue: CGFloat) {
         self.radialAnimatingView.animate(duration, startValue: startValue, endValue: endValue)
     }
