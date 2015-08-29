@@ -41,7 +41,7 @@ class SoundBarView : UIView {
         
         for index in 0..<numberOfBars {
             let bar = CAShapeLayer()
-            let path = pathforBarAtIndex(index, endpoint: randomEndpoint()).CGPath
+            let path = pathForBarAtIndex(index, endpoint: randomEndpoint()).CGPath
             bar.path = path
             bar.fillColor = UIColor(red: 247, green: 247, blue: 247, alpha: 0.8).CGColor
             self.layer.addSublayer(bar)
@@ -75,7 +75,7 @@ class SoundBarView : UIView {
                 newRandomEndpoint = randomEndpoint()
             }
             
-            let newPath = pathforBarAtIndex(index, endpoint: newRandomEndpoint)
+            let newPath = pathForBarAtIndex(index, endpoint: newRandomEndpoint)
             barPaths += [newPath]
             
             let animation = CABasicAnimation(keyPath: "path")
@@ -114,7 +114,7 @@ class SoundBarView : UIView {
         }
     }
     
-    private func pathforBarAtIndex(barIndex: Int, endpoint: Double) -> UIBezierPath {
+    private func pathForBarAtIndex(barIndex: Int, endpoint: Double) -> UIBezierPath {
         let gapsWidth = distanceBetweenBars * Double(numberOfBars - 1)
         let totalBarWidth = Double(self.bounds.width) - gapsWidth
         let barWidth = totalBarWidth / Double(numberOfBars)

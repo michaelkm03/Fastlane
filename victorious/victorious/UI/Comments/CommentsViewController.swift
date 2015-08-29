@@ -70,7 +70,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
     // MARK: Outlets
     
-    private var collectionView: VInputAccessoryCollectionView!
+    @IBOutlet private var collectionView: VInputAccessoryCollectionView!
     @IBOutlet private var imageView: UIImageView!
     
     // MARK: - UIViewController
