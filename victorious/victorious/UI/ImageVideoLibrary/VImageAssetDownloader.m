@@ -73,9 +73,9 @@ NSString * const VImageAssetDownloaderErrorDomain = @"com.victorious.VImageAsset
          dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
                         {
                             dispatch_async(dispatch_get_main_queue(), ^
-                                           {
-                                               progressHandler(NO, 1.0f, NSLocalizedString(@"Exporting...", nil));
-                                           });
+                            {
+                               progressHandler(NO, 1.0f, NSLocalizedString(@"Exporting...", nil));
+                           });
                             NSError *error;
                             NSData *imageData = UIImageJPEGRepresentation(result, 1.0f);
                             BOOL success = [imageData writeToURL:urlForAsset options:NSDataWritingAtomic error:&error];
