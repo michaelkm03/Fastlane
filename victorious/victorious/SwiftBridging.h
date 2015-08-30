@@ -43,6 +43,7 @@
 #import "VContentCommentsCell.h"
 #import "VDataCache.h"
 #import "VDefaultProfileButton.h"
+#import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VDependencyManager+VTracking.h"
 #import "VDependencyManager+VUserProfile.h"

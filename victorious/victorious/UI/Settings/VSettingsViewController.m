@@ -101,6 +101,8 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 {
     [super viewDidLoad];
     
+    self.tableView.accessibilityIdentifier = VAutomationIdentifierSettingsTableView;
+    
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
     
     [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)

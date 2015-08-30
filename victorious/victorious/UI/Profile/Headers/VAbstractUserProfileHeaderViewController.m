@@ -47,6 +47,8 @@
 {
     [super viewDidLoad];
     
+    self.nameLabel.accessibilityIdentifier = VAutomationIdentifierProfileUsernameTitle;
+    
     [self setFollowersCount:nil];
     [self setFollowingCount:nil];
 

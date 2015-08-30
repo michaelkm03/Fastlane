@@ -57,13 +57,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)keyboardInputAccessoryViewDidEndEditing:(VKeyboardInputAccessoryView *)inpoutAccessoryView;
 
-/**
- *  Notifies the delegate of a return key press ONLY if that return key is not UIReturnKeyDefault
- *
- *  @param inputAccessoryView The corresponding input accessory view.
- */
-- (void)pressedAlternateReturnKeyonKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView;
-
 @end
 
 /**
