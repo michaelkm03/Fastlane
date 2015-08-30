@@ -86,7 +86,8 @@ extension VListRecentShelfCollectionViewCell : UICollectionViewDataSource {
             }
         }
         assertionFailure("VListRecentShelfCollectionViewCell was asked to display an object that isn't a stream item.")
-        return UICollectionViewCell()
+        failureCellFactory.registerNoContentCellWithCollectionView(collectionView)
+        return failureCellFactory.noContentCellForCollectionView(collectionView, atIndexPath: indexPath)
     }
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

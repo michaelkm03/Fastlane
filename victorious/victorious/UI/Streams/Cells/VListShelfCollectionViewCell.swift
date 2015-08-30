@@ -45,6 +45,8 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
         return cellSideLength * 2 + Constants.interCellSpace
     }
     
+    let failureCellFactory: VNoContentCollectionViewCellFactory = VNoContentCollectionViewCellFactory(acceptableContentClasses: nil)
+    
     /// The shelf whose content will populate this cell.
     var shelf: Shelf? {
         didSet {

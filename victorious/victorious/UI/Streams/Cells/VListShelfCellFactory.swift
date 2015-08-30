@@ -13,6 +13,8 @@ class VListShelfCellFactory: NSObject {
     
     private let dependencyManager: VDependencyManager
     
+    let failureCellFactory: VNoContentCollectionViewCellFactory = VNoContentCollectionViewCellFactory(acceptableContentClasses: nil)
+    
     required init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager;
     }
@@ -23,6 +25,7 @@ extension VListShelfCellFactory: VStreamCellFactory {
     func registerCellsWithCollectionView(collectionView: UICollectionView) {
         collectionView.registerNib(VListPlaylistShelfCollectionViewCell.nibForCell(), forCellWithReuseIdentifier: VListPlaylistShelfCollectionViewCell.suggestedReuseIdentifier())
         collectionView.registerNib(VListRecentShelfCollectionViewCell.nibForCell(), forCellWithReuseIdentifier: VListRecentShelfCollectionViewCell.suggestedReuseIdentifier())
+        failureCellFactory.registerNoContentCellWithCollectionView(collectionView)
     }
     
     func collectionView(collectionView: UICollectionView, cellForStreamItem streamItem: VStreamItem, atIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -40,7 +43,7 @@ extension VListShelfCellFactory: VStreamCellFactory {
             }
         }
         assertionFailure("VListShelfCellFactory was provided a shelf that was neither a playlist shelf nor a recent shelf")
-        return UICollectionViewCell()
+        return failureCellFactory.noContentCellForCollectionView(collectionView, atIndexPath: indexPath)
     }
     
     private func setup(cell: VListShelfCollectionViewCell, shelf: Shelf, dependencyManager: VDependencyManager) {

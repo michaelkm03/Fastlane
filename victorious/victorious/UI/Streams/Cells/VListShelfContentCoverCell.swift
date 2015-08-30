@@ -17,10 +17,10 @@ class VListShelfContentCoverCell : VShelfContentCollectionViewCell {
         static let kDividerLineHeight: CGFloat = 1
     }
     
-    private let overlayView: UIView = UIView()
-    private let overlayLabel: UILabel = UILabel()
-    private let dividerLineLeft: UIView = UIView()
-    private let dividerLineRight: UIView = UIView()
+    private let overlayView = UIView()
+    private let overlayLabel = UILabel()
+    private let dividerLineLeft = UIView()
+    private let dividerLineRight = UIView()
     
     var overlayText: String? {
         didSet {
