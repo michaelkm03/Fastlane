@@ -14,6 +14,18 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UICollect
     
     struct Constants {
         static let trendingTopicShelfKey = "trendingShelf"
+        
+        static let interItemSpace: CGFloat = 1
+        static let sectionEdgeInsets: UIEdgeInsets = UIEdgeInsetsMake(6, 0, 6, 0)
+        static let recentSectionEdgeInsets: UIEdgeInsets = {
+            var insets = sectionEdgeInsets
+            insets.left = 1
+            insets.right = 1
+            return insets
+        }()
+        static let minimumContentAspectRatio: CGFloat = 0.5
+        static let maximumContentAspectRatio: CGFloat = 2
+        static let minimizedContentAspectRatio: CGFloat = 9 / 16
     }
     
     @IBOutlet weak private var searchBar: UISearchBar!
@@ -51,6 +63,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UICollect
         trendingTopicShelfFactory?.registerCellsWithCollectionView(collectionView)
         streamShelfFactory?.registerCellsWithCollectionView(collectionView)
         failureCellFactory.registerNoContentCellWithCollectionView(collectionView)
+        collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: VShelfContentCollectionViewCell.suggestedReuseIdentifier())
 
         self.streamDataSource = VStreamCollectionViewDataSource(stream: currentStream)
         self.streamDataSource.delegate = self;
@@ -103,13 +116,16 @@ extension VExploreViewController : VStreamCollectionDataDelegate {
                         }
                     }
                 }
-                
-                /// Warning: recent goes here
+                else {
+                    if let cell = collectionView.dequeueReusableCellWithReuseIdentifier(VShelfContentCollectionViewCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as? VShelfContentCollectionViewCell {
+                        cell.streamItem = exploreStream?.streamItems[indexPath.row] as? VStreamItem
+                        cell.dependencyManager = dependencyManager
+                        return cell
+                    }
+                }
             }
         }
-        let cell = failureCellFactory.noContentCellForCollectionView(collectionView, atIndexPath: indexPath)
-        cell.backgroundColor = UIColor.redColor()
-        return cell
+        return failureCellFactory.noContentCellForCollectionView(collectionView, atIndexPath: indexPath)
     }
     
     override func numberOfSectionsForDataSource(dataSource: VStreamCollectionViewDataSource!) -> Int {
@@ -133,13 +149,12 @@ extension VExploreViewController : VStreamCollectionDataDelegate {
     }
 }
 
-extension VExploreViewController: UICollectionViewDelegateFlowLayout {
+extension VExploreViewController: CHTCollectionViewDelegateWaterfallLayout {
     
     override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        
         if let stream = exploreStream {
             if let shelves = stream.shelves.array as? [Shelf] {
-                if indexPath.section < shelves.count {
+                if indexPath.section != recentContentSection() {
                     let shelf = shelves[indexPath.section]
                     
                     // Trending topic shelf
@@ -155,12 +170,104 @@ extension VExploreViewController: UICollectionViewDelegateFlowLayout {
                     }
                 }
                 else {
-                    // WARNING: Placeholder for recent content
-                    return CGSize(width: 100, height: 100)
+                    var width = collectionView.bounds.width - ( Constants.interItemSpace * 2 + Constants.recentSectionEdgeInsets.left + Constants.recentSectionEdgeInsets.right )
+                    width /= 2
+                    width = floor(width)
+                    return CGSize(width: width, height: heightAt(indexPath, forCollectionViewWidth: width))
                 }
             }
         }
         return failureCellFactory.cellSizeForCollectionViewBounds(collectionView.bounds)
+    }
+    
+    private func heightAt(indexPath: NSIndexPath, forCollectionViewWidth width: CGFloat) -> CGFloat {
+        if let exploreStream = exploreStream {
+            let filter = VObjectManager.sharedManager().filterForStream(currentStream)
+            /// Warning: for testing
+            let perPageNumber = filter.perPageNumber.integerValue
+            let pageLocation = indexPath.row % perPageNumber
+            if pageLocation == 0 {
+                return width * Constants.minimizedContentAspectRatio
+            }
+            else if pageLocation == 1 {
+                return width
+            }
+            else if let layout = collectionView.collectionViewLayout as? CHTCollectionViewWaterfallLayout where pageLocation >= perPageNumber - 2 {
+                //Need to consider the height of the bottom 2 cells to make sure they level out properly
+                if let columnsAsNumbers = layout.heightsForColumnsInSection(UInt(recentContentSection())) as? [NSNumber] {
+                    let columnHeights = columnsAsNumbers.map({CGFloat($0.floatValue)})
+                    let shortColumnHeight = minElement(columnHeights)
+                    let tallColumnHeight = maxElement(columnHeights)
+                    
+                    if pageLocation == perPageNumber - 2 {
+                        //Make sure 2nd to last cell leaves enough space for the last cell to show properly
+                        var contentHeight = heightFor(exploreStream.streamItems[indexPath.row] as? VStreamItem, inCollectionViewWithWidth: width)
+                        let potentialColumnHeight = shortColumnHeight + contentHeight + Constants.interItemSpace
+                        let minimumLastCellHeight = Constants.minimumContentAspectRatio * width + Constants.interItemSpace
+                        
+                        if abs(potentialColumnHeight - tallColumnHeight) < minimumLastCellHeight {
+                            //We don't enough space for the last cell to be shown with the minimum height, adjust this cell to make that possible.
+                            if shortColumnHeight + minimumLastCellHeight * 2 < tallColumnHeight {
+                                //Can fit both into the currently short column, just do that.
+                                return tallColumnHeight - shortColumnHeight - minimumLastCellHeight
+                            }
+                            else {
+                                //The added height of this cell's content, even at maximum shortness, will make us unable to add more to this column.
+                                //Extend the height of this cell's content to allow the last cell to get added to the other column.
+                                return tallColumnHeight + minimumLastCellHeight - shortColumnHeight - Constants.interItemSpace
+                            }
+                        }
+                        else {
+                            return contentHeight
+                        }
+                    }
+                    else if pageLocation == perPageNumber - 1 {
+                        return tallColumnHeight - shortColumnHeight - Constants.interItemSpace
+                    }
+                }
+            }
+            
+            return heightFor(exploreStream.streamItems[indexPath.row] as? VStreamItem, inCollectionViewWithWidth: width)
+        }
+        return 0
+    }
+    
+    private func heightFor(streamItem: VStreamItem?, inCollectionViewWithWidth width: CGFloat) -> CGFloat {
+        if let sequence = streamItem as? VSequence {
+            let aspectRatio = min( 1 / sequence.previewAssetAspectRatio(), Constants.maximumContentAspectRatio )
+            return width * aspectRatio
+        }
+        else {
+            //Default to 1:1 for unexpected content types
+            return width
+        }
+    }
+    
+    private func recentContentSection() -> Int {
+        if let exploreStream = exploreStream {
+            return exploreStream.shelves.count
+        }
+        return 0
+    }
+    
+    override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return Constants.interItemSpace
+    }
+    
+    override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return Constants.interItemSpace
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, columnCountForSection section: Int) -> Int {
+        return section == recentContentSection() ? 2 : 1
+    }
+    
+    func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, minimumColumnSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return Constants.interItemSpace
+    }
+    
+    override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+        return section == recentContentSection() ? Constants.recentSectionEdgeInsets : Constants.sectionEdgeInsets
     }
 }
 
