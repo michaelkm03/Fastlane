@@ -24,7 +24,7 @@
                                 </connections>
                             </searchBar>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FZp-Cf-hyG">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <collectionViewLayout key="collectionViewLayout" id="XSk-uJ-b0R" customClass="CHTCollectionViewWaterfallLayout"/>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="placeHolder" id="svI-bE-31D">
@@ -58,7 +58,7 @@
                             <constraint firstAttribute="bottom" secondItem="FZp-Cf-hyG" secondAttribute="bottom" id="9ej-GZ-LXt"/>
                             <constraint firstItem="iKE-uz-fpI" firstAttribute="top" secondItem="1YQ-v8-00r" secondAttribute="bottom" id="G2q-Vd-mag"/>
                             <constraint firstAttribute="trailing" secondItem="iKE-uz-fpI" secondAttribute="trailing" id="Mt1-SI-HCD"/>
-                            <constraint firstItem="FZp-Cf-hyG" firstAttribute="top" secondItem="1YQ-v8-00r" secondAttribute="bottom" constant="44" id="TJZ-N5-k2E"/>
+                            <constraint firstItem="FZp-Cf-hyG" firstAttribute="top" secondItem="1YQ-v8-00r" secondAttribute="bottom" id="TJZ-N5-k2E"/>
                             <constraint firstItem="FZp-Cf-hyG" firstAttribute="leading" secondItem="h0j-sp-Ymq" secondAttribute="leading" id="ZqY-Qh-YsL"/>
                             <constraint firstItem="egd-1x-42e" firstAttribute="bottom" secondItem="FZp-Cf-hyG" secondAttribute="bottom" id="oAS-qc-CiT"/>
                             <constraint firstItem="iKE-uz-fpI" firstAttribute="leading" secondItem="h0j-sp-Ymq" secondAttribute="leading" id="quW-K1-rEv"/>

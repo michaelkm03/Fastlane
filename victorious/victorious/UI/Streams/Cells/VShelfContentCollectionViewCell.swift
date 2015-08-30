@@ -23,13 +23,17 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
                 return
             }
             
+            if previewView.canHandleStreamItem(streamItem) {
+                updatePreviewView(streamItem)
+                return
+            }
+            
             if streamItem?.itemSubType == VStreamItemSubTypeText {
                 //Dealing with a text post
-                if previewView.canHandleStreamItem(streamItem) || previewView.conformsToProtocol(VImagePreviewView.self) {
+                if previewView.conformsToProtocol(VImagePreviewView.self) {
                     updatePreviewView(streamItem)
                     return
                 }
-                
                 previewView.removeFromSuperview()
                 
                 previewView = VImageSequencePreviewView(frame: CGRect.zeroRect)
@@ -49,6 +53,9 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
     private func updatePreviewView(streamItem: VStreamItem?) {
         if let dependencyManager = previewView.dependencyManager {
             if streamItem?.itemSubType != VStreamItemSubTypeText {
+                if let imagePreviewView = previewView as? VImagePreviewView {
+                    imagePreviewView.previewImageView().contentMode = UIViewContentMode.ScaleAspectFit
+                }
                 previewView.streamItem = streamItem
             }
             else if let imagePreviewView = previewView as? VImagePreviewView {
@@ -105,7 +112,8 @@ extension VShelfContentCollectionViewCell: VStreamCellComponentSpecialization {
         }
         
         if let itemSubType = streamItem.itemSubType {
-            updatedIdentifier += "." + itemSubType
+            var subType = itemSubType == "text" ? "image" : itemSubType
+            updatedIdentifier += "." + subType
         }
         
         return updatedIdentifier

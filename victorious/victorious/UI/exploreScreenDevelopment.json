@@ -4446,6 +4446,7 @@
                 }
                },
               "id": "55d365637e1ab",
+              "streamURL": "http://dev.getvictorious.com/api/sequence/explore/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
               "hasHeaderParallax": true,
               "trendingShelf": {
                     "name": "trendingTopic.shelf",

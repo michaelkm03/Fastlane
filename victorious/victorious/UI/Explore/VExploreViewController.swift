@@ -32,7 +32,7 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UICollect
     private var trendingTopicShelfFactory: TrendingTopicShelfFactory?
     private var streamShelfFactory: VStreamContentCellFactory?
     private let failureCellFactory: VNoContentCollectionViewCellFactory = VNoContentCollectionViewCellFactory(acceptableContentClasses: [Shelf.self])
-
+    
     /// The dependencyManager that is used to manage dependencies of explore screen
     private(set) var dependencyManager: VDependencyManager?
     
@@ -42,8 +42,9 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UICollect
         let storyboard = UIStoryboard(name: "Explore", bundle: nil)
         if let exploreVC = storyboard.instantiateInitialViewController() as? VExploreViewController {
             exploreVC.dependencyManager = dependencyManager
-            // WARNING: Testing code, remember to remove!
-            exploreVC.currentStream = VStream(forPath: "/api/sequence/explore/1/15", inContext: dependencyManager.objectManager().managedObjectStore.mainQueueManagedObjectContext, withEntityName: ExploreStream.entityName())
+            let url = dependencyManager.stringForKey(VStreamCollectionViewControllerStreamURLKey);
+            let urlPath = url.v_pathComponent()
+            exploreVC.currentStream = VStream(forPath: urlPath, inContext: dependencyManager.objectManager().managedObjectStore.mainQueueManagedObjectContext, withEntityName:ExploreStream.entityName())
             // For trending topic shelf
             exploreVC.trendingTopicShelfFactory = dependencyManager.templateValueOfType(TrendingTopicShelfFactory.self, forKey: Constants.trendingTopicShelfKey) as? TrendingTopicShelfFactory
             exploreVC.streamShelfFactory = VStreamContentCellFactory(dependencyManager: dependencyManager)
@@ -63,7 +64,6 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UICollect
         trendingTopicShelfFactory?.registerCellsWithCollectionView(collectionView)
         streamShelfFactory?.registerCellsWithCollectionView(collectionView)
         failureCellFactory.registerNoContentCellWithCollectionView(collectionView)
-        collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: VShelfContentCollectionViewCell.suggestedReuseIdentifier())
 
         self.streamDataSource = VStreamCollectionViewDataSource(stream: currentStream)
         self.streamDataSource.delegate = self;
@@ -117,15 +117,27 @@ extension VExploreViewController : VStreamCollectionDataDelegate {
                     }
                 }
                 else {
-                    if let cell = collectionView.dequeueReusableCellWithReuseIdentifier(VShelfContentCollectionViewCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as? VShelfContentCollectionViewCell {
-                        cell.streamItem = exploreStream?.streamItems[indexPath.row] as? VStreamItem
-                        cell.dependencyManager = dependencyManager
-                        return cell
+                    if let streamItem = exploreStream?.streamItems[indexPath.row] as? VStreamItem {
+                        let identifier = VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
+                        if let cell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath:indexPath) as? VShelfContentCollectionViewCell {
+                            cell.streamItem = streamItem
+                            cell.dependencyManager = dependencyManager
+                            return cell
+                        }
                     }
                 }
             }
         }
         return failureCellFactory.noContentCellForCollectionView(collectionView, atIndexPath: indexPath)
+    }
+    
+    override func dataSource(dataSource: VStreamCollectionViewDataSource!, hasNewStreamItems streamItems: [AnyObject]!) {
+        if let streamItems = streamItems as? [VStreamItem] {
+            for streamItem in streamItems {
+                let identifier = VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
+                collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: identifier)
+            }
+        }
     }
     
     override func numberOfSectionsForDataSource(dataSource: VStreamCollectionViewDataSource!) -> Int {
@@ -267,7 +279,9 @@ extension VExploreViewController: CHTCollectionViewDelegateWaterfallLayout {
     }
     
     override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return section == recentContentSection() ? Constants.recentSectionEdgeInsets : Constants.sectionEdgeInsets
+        let insets = super.collectionView(collectionView, layout: collectionViewLayout, insetForSectionAtIndex: section)
+        let sectionDepedentInsets = section == recentContentSection() ? Constants.recentSectionEdgeInsets : Constants.sectionEdgeInsets
+        return insets + sectionDepedentInsets
     }
 }
 
