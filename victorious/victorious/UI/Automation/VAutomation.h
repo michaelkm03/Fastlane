@@ -23,6 +23,7 @@ extern NSString * const VAutomationIdentifierKeyboardHashtagButton;
 
 extern NSString * const VAutomationIdentifierSettingsLogIn;
 extern NSString * const VAutomationIdentifierSettingsLogOut;
+extern NSString * const VAutomationIdentifierSettingsTableView;
 
 extern NSString * const VAutomationIdentifierLoginSelectEmail;
 extern NSString * const VAutomationIdentifierLoginSelectPassword;
@@ -35,9 +36,12 @@ extern NSString * const VAutomationIdentifierLoginSignUp;
 extern NSString * const VAutomationIdentifierLoginFacebook;
 extern NSString * const VAutomationIdentifierLoginTwitter;
 
-extern NSString * const VAutomationIdentifierSignupUsernameField;
+extern NSString * const VAutomationIdentifierSignupEmailField;
+extern NSString * const VAutomationIdentifierSignupEmailFieldValidation;
 extern NSString * const VAutomationIdentifierSignupPasswordField;
-extern NSString * const VAutomationIdentifierSignupPasswordConfirmField;
+extern NSString * const VAutomationIdentifierSignupPasswordFieldValidation;
+extern NSString * const VAutomationIdentifierSignupUsernameField;
+extern NSString * const VAutomationIdentifierSignupUsernameFieldValidation;
 extern NSString * const VAutomationIdentifierSignupSubmit;
 extern NSString * const VAutomationIdentifierSignupCancel;
 
@@ -48,6 +52,14 @@ extern NSString * const VAutomationIdentifierProfileAgeAgreeSwitch;
 extern NSString * const VAutomationIdentifierProfilSelectImage;
 extern NSString * const VAutomationIdentifierProfileLogInButton;
 
+extern NSString * const VAutomationIdentifierProfileUsernameTitle;
+
+extern NSString * const VAutomationIdentifierLRegistrationTwitter;
+extern NSString * const VAutomationIdentifierLRegistrationEmail;
+extern NSString * const VAutomationIdentifierLRegistrationFacebook;
+extern NSString * const VAutomationIdentifierLRegistrationTOS;
+extern NSString * const VAutomationIdentifierLRegistrationPrivacy;
+
 extern NSString * const VAutomationIdentifierWelcomeDismiss;
 
 extern NSString * const VAutomationIdentifierGrantLibraryAccess;
@@ -55,13 +67,16 @@ extern NSString * const VAutomationIdentifierPublishCatpionText;
 extern NSString * const VAutomationIdentifierPublishFinish;
 extern NSString * const VAutomationIdentifierStreamCellCaption;
 extern NSString * const VAutomationIdentifierStreamCell;
+extern NSString * const VAutomationIDentifierStreamCollectionView;
 
 extern NSString * const VAutomationIdentifierContentViewBallotButtonA;
 extern NSString * const VAutomationIdentifierContentViewBallotButtonB;
 extern NSString * const VAutomationIdentifierContentViewCommentBar;
 extern NSString * const VAutomationIdentifierContentViewCommentCell;
+extern NSString * const VAutomationIdentifierContentViewCloseButton;
 
 extern NSString * const VAutomationIdentifierTextPostMainField;
+extern NSString * const VAutomationIdentifierTextPostEditableMainField;
 
 extern NSString * const VAutomationIdentifierCommentBarTextView;
 extern NSString * const VAutomationIdentifierCommentBarImageButton;

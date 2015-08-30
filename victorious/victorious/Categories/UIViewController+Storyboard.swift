@@ -13,14 +13,14 @@ extension UIViewController {
     /// Instantiates a UIViewController within the appropriate bundle. Using a storyboard that is named exactly 
     /// like the class name, with an identifier named exactly like the class name.
     static func v_fromStoryboardWithIdentifier<T: UIViewController>() -> T {
-        let storyboard = UIStoryboard(name: NSStringFromClass(self).pathExtension, bundle: nil )
-        return storyboard.instantiateViewControllerWithIdentifier( NSStringFromClass(self).pathExtension ) as! T
+        let storyboard = UIStoryboard(name: StringFromClass(self), bundle: nil )
+        return storyboard.instantiateViewControllerWithIdentifier( StringFromClass(self) ) as! T
     }
     
     /// Instantiates a UIViewController within the appropriate bundle. Using a storyboard that is named exactly
     /// like the class name, with the initialViewController of the storyboard.
     static func v_fromStoryboardInitialViewController<T: UIViewController>() -> T {
-        let storyboard = UIStoryboard(name: NSStringFromClass(self).pathExtension, bundle: nil )
+        let storyboard = UIStoryboard(name: StringFromClass(self), bundle: nil )
         return storyboard.instantiateInitialViewController() as! T
     }
     

@@ -69,6 +69,11 @@ extern NSString * const VApplicationDidBecomeActiveNotification;
  */
 - (void)openURL:(NSURL *)url;
 
+/**
+ Restarts the session of the app, returning it to a state as if it had just been launched.
+ */
+- (void)startNewSession;
+
 - (void)presentForceUpgradeScreen;
 
 @end
