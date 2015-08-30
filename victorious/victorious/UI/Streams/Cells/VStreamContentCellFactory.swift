@@ -40,6 +40,8 @@ class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
     
     private let trendingShelfFactory: VTrendingShelfCellFactory?
     
+    private let failureCellFactory: VNoContentCollectionViewCellFactory = VNoContentCollectionViewCellFactory(acceptableContentClasses: nil)
+    
     /// The dependency manager used to style all cells from this factory
     private let dependencyManager: VDependencyManager
     
@@ -74,6 +76,7 @@ extension VStreamContentCellFactory: VStreamCellFactory {
         defaultFactory()?.registerCellsWithCollectionView(collectionView)
         marqueeCellFactory.registerCellsWithCollectionView(collectionView)
         trendingShelfFactory?.registerCellsWithCollectionView(collectionView)
+        failureCellFactory.registerNoContentCellWithCollectionView(collectionView)
     }
     
     func collectionView(collectionView: UICollectionView, cellForStreamItem streamItem: VStreamItem, atIndexPath indexPath: NSIndexPath, inStream stream: VStream?) -> UICollectionViewCell {
@@ -86,7 +89,7 @@ extension VStreamContentCellFactory: VStreamCellFactory {
             }
         }
         assertionFailure("A cell was requested from a content cell factory with a nil default factory.")
-        return UICollectionViewCell.new()
+        return failureCellFactory.noContentCellForCollectionView(collectionView, atIndexPath: indexPath)
     }
     
     func collectionView(collectionView: UICollectionView, cellForStreamItem streamItem: VStreamItem, atIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -94,7 +97,7 @@ extension VStreamContentCellFactory: VStreamCellFactory {
             return factory.collectionView(collectionView, cellForStreamItem: streamItem, atIndexPath: indexPath)
         }
         assertionFailure("A cell was requested from a content cell factory with a nil default factory.")
-        return UICollectionViewCell.new()
+        return failureCellFactory.noContentCellForCollectionView(collectionView, atIndexPath: indexPath)
     }
     
     func sizeWithCollectionViewBounds(bounds: CGRect, ofCellForStreamItem streamItem: VStreamItem) -> CGSize {

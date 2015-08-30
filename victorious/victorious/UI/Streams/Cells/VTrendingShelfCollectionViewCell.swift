@@ -28,6 +28,8 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     
     var trackingMinRequiredCellVisibilityRatio: CGFloat = 0.0
     
+    private let failureCellFactory: VNoContentCollectionViewCellFactory = VNoContentCollectionViewCellFactory(acceptableContentClasses: nil)
+    
     var shelf: Shelf? {
         didSet {
             if !VTrendingShelfCollectionViewCell.needsUpdate(fromShelf: oldValue, toShelf: shelf) {
@@ -139,7 +141,8 @@ extension VTrendingShelfCollectionViewCell : UICollectionViewDataSource {
             return cell
         }
         assertionFailure("VTrendingShelfCollectionViewCell was asked to display an object that isn't a stream item.")
-        return UICollectionViewCell()
+        failureCellFactory.registerNoContentCellWithCollectionView(collectionView)
+        return failureCellFactory.noContentCellForCollectionView(collectionView, atIndexPath: indexPath)
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
