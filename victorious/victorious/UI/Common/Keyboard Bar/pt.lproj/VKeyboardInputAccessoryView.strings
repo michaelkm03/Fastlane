@@ -1,3 +1,6 @@
-/* Class = "UIButton"; normalTitle = "Send"; ObjectID = "Sf4-eg-OpA"; */
-"Sf4-eg-OpA.normalTitle" = "Enviar";
+/* Class = "UILabel"; text = "Placeholder"; ObjectID = "7pn-fk-jDk"; */
+"7pn-fk-jDk.text" = "Marcador de posição";
+
+/* Class = "UIButton"; normalTitle = "Send"; ObjectID = "GKz-NI-jVc"; */
+"GKz-NI-jVc.normalTitle" = "Enviar";
 

@@ -111,13 +111,11 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
     [self.privacyPolicyButton setAttributedTitle:ppText forState:UIControlStateNormal];
     [self.dependencyManager addBackgroundToBackgroundHost:self];
     
-    self.twitterButton.accessibilityIdentifier = @"";
-    self.emailButton.accessibilityIdentifier = @"";
-    self.facebookButton.accessibilityIdentifier = @"";
-    self.legalIntroLabel.accessibilityIdentifier = @"";
-    self.termsOfServiceButton.accessibilityIdentifier = @"";
-    self.privacyPolicyButton.accessibilityIdentifier = @"";
-    self.legalButtonContainer.accessibilityIdentifier = @"";
+    self.twitterButton.accessibilityIdentifier = VAutomationIdentifierLRegistrationTwitter;
+    self.emailButton.accessibilityIdentifier = VAutomationIdentifierLRegistrationEmail;
+    self.facebookButton.accessibilityIdentifier = VAutomationIdentifierLRegistrationFacebook;
+    self.termsOfServiceButton.accessibilityIdentifier = VAutomationIdentifierLRegistrationTOS;
+    self.privacyPolicyButton.accessibilityIdentifier = VAutomationIdentifierLRegistrationPrivacy;
 }
 
 #pragma mark - Storyboard

@@ -10,8 +10,6 @@
 
 #import "VSequence+RestKit.h"
 
-#import "VShelf+RestKit.h"
-
 #import "VEditorializationItem.h"
 
 #import "victorious-Swift.h"
@@ -141,15 +139,23 @@
     return [self feedPayloadMappingAtChildLevel:NO];
 }
 
-+ (RKEntityMapping *)feedPayloadMappingAtChildLevel:(BOOL)child
++ (void)addFeedChildMappingToMapping:(RKEntityMapping *)mapping
 {
-    RKEntityMapping *mapping = [VStream mappingBase];
-    
+    [self addFeedMappingToMapping:mapping atChildLevel:YES];
+}
+
++ (void)addFeedMappingToMapping:(RKEntityMapping *)mapping atChildLevel:(BOOL)child
+{
     RKRelationshipMapping *contentMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"items"
                                                                                         toKeyPath:VSelectorName(streamItems)
                                                                                       withMapping:[self feedItemsByStreamMappingAtChildLevel:child]];
     [mapping addPropertyMapping:contentMapping];
-    
+}
+
++ (RKEntityMapping *)feedPayloadMappingAtChildLevel:(BOOL)child
+{
+    RKEntityMapping *mapping = [VStream mappingBase];
+    [self addFeedMappingToMapping:mapping atChildLevel:child];
     return mapping;
 }
 
@@ -157,7 +163,7 @@
 {
     RKDynamicMapping *contentMapping = [RKDynamicMapping new];
     
-    [contentMapping addMatcher:[RKObjectMappingMatcher matcherWithPossibleMappings:@[[self entityMapping], [VSequence entityMapping]] block:^RKObjectMapping *(id representation)
+    [contentMapping addMatcher:[RKObjectMappingMatcher matcherWithPossibleMappings:nil block:^RKObjectMapping *(id representation)
     {
         RKObjectMapping *mapping = nil;
         if ( [representation isKindOfClass:[NSDictionary class]] )
@@ -179,9 +185,9 @@
             {
                 mapping = [VSequence entityMapping];
             }
-            else if ( [type isEqualToString:VStreamItemTypeMarquee] || [type isEqualToString:VStreamItemTypeUser] || [type isEqualToString:VStreamItemTypeHashtag] )
+            else if ( [type isEqualToString:VStreamItemTypeShelf] )
             {
-                mapping = [VShelf mappingForItemType:type];
+                mapping = [Shelf mapping:[dictionaryRepresentation objectForKey:@"subtype"]];
             }
         }
         
@@ -287,6 +293,14 @@
                                                      pathPattern:@"/api/sequence/feed/:category/:filtername"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
+#warning Testing
+             [RKResponseDescriptor responseDescriptorWithMapping:[self feedPayloadMapping]
+                                                          method:RKRequestMethodGET
+                                                     pathPattern:@"/api/sequence/feed/:category"
+                                                         keyPath:@"payload"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
               ];
 }
 

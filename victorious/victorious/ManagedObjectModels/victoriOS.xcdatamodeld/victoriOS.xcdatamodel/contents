@@ -155,6 +155,9 @@
         <attribute name="timeoutGotoNode" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <relationship name="relationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Interaction" inverseName="interactionAction" inverseEntity="Interaction" syncable="YES"/>
     </entity>
+    <entity name="ListShelf" representedClassName="victorious.ListShelf" parentEntity="Shelf" syncable="YES">
+        <attribute name="caption" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="MediaAttachment" representedClassName="VMediaAttachment" syncable="YES">
         <attribute name="mediaURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mimeType" optional="YES" attributeType="String" syncable="YES"/>
@@ -262,19 +265,19 @@
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="sequences" inverseEntity="User" syncable="YES"/>
         <relationship name="voteResults" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VoteResult" inverseName="sequence" inverseEntity="VoteResult" syncable="YES"/>
     </entity>
-    <entity name="Shelf" representedClassName="VShelf" parentEntity="StreamItem" syncable="YES">
-        <relationship name="stream" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Stream" inverseName="shelves" inverseEntity="Stream" syncable="YES"/>
+    <entity name="Shelf" representedClassName="victorious.Shelf" parentEntity="Stream" syncable="YES">
+        <attribute name="streamUrl" attributeType="String" syncable="YES"/>
+        <attribute name="title" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Stream" representedClassName="VStream" parentEntity="StreamItem" syncable="YES">
         <attribute name="apiPath" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="count" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="count" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="filterName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="hashtag" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
         <attribute name="isUserPostAllowed" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="shelfId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="trackingIdentifier" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="marqueeItems" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="StreamItem" inverseName="marquees" inverseEntity="StreamItem" syncable="YES"/>
-        <relationship name="shelves" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Shelf" inverseName="stream" inverseEntity="Shelf" syncable="YES"/>
         <relationship name="streamItems" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="StreamItem" inverseName="streams" inverseEntity="StreamItem" syncable="YES"/>
     </entity>
     <entity name="StreamItem" representedClassName="VStreamItem" isAbstract="YES" syncable="YES">
@@ -364,6 +367,7 @@
         <element name="ImageAsset" positionX="0" positionY="0" width="128" height="135"/>
         <element name="Interaction" positionX="0" positionY="0" width="128" height="195"/>
         <element name="InteractionAction" positionX="0" positionY="0" width="128" height="105"/>
+        <element name="ListShelf" positionX="207" positionY="-639" width="128" height="60"/>
         <element name="MediaAttachment" positionX="0" positionY="0" width="128" height="105"/>
         <element name="Message" positionX="0" positionY="0" width="128" height="240"/>
         <element name="Node" positionX="0" positionY="0" width="128" height="135"/>
@@ -373,8 +377,8 @@
         <element name="PollResult" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Rule" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Sequence" positionX="0" positionY="0" width="128" height="600"/>
-        <element name="Shelf" positionX="639" positionY="-630" width="128" height="60"/>
-        <element name="Stream" positionX="1069" positionY="-792" width="128" height="195"/>
+        <element name="Shelf" positionX="639" positionY="-630" width="128" height="75"/>
+        <element name="Stream" positionX="1069" positionY="-792" width="128" height="180"/>
         <element name="StreamItem" positionX="871" positionY="-765" width="128" height="210"/>
         <element name="Tracking" positionX="828" positionY="-630" width="128" height="240"/>
         <element name="User" positionX="1321" positionY="-324" width="128" height="480"/>

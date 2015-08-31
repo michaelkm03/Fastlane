@@ -8,6 +8,8 @@
 
 @class UIView;
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  VBackgroundContainer defines a common interface for any object to provide a container view for a background view.
  */
@@ -30,3 +32,5 @@
 - (UIView *)loadingBackgroundContainerView;
 
 @end
+
+NS_ASSUME_NONNULL_END

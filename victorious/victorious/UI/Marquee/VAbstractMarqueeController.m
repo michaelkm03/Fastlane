@@ -12,7 +12,6 @@
 #import "VTimerManager.h"
 #import "VStreamItem.h"
 #import "VStream+Fetcher.h"
-#import "VShelf.h"
 #import "VDependencyManager.h"
 #import "NSString+VParseHelp.h"
 #import "VObjectManager.h"
@@ -89,17 +88,17 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
                          action:@selector(marqueeItemsUpdated)];
 }
 
-- (void)setShelf:(VShelf *)shelf
+- (void)setShelf:(Shelf *)shelf
 {
     if ( shelf == _shelf )
     {
         return;
     }
     
-    [self.KVOController unobserve:_shelf.stream];
+    [self.KVOController unobserve:_shelf];
     _shelf = shelf;
     [self reset];
-    [self.KVOController observe:shelf.stream
+    [self.KVOController observe:_shelf
                         keyPath:NSStringFromSelector(@selector(streamItems))
                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
                          action:@selector(marqueeItemsUpdated)];
@@ -110,7 +109,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     NSArray *items = [self.stream.marqueeItems array];
     if ( self.shelf != nil )
     {
-        items = [self.shelf.stream.streamItems array];
+        items = [self.shelf.streamItems array];
     }
     return items;
 }
@@ -130,6 +129,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
     NSUInteger marqueeItemsCount = marqueeItems.count;
     self.collectionView.scrollEnabled = marqueeItemsCount != 1;
     [self enableTimer];
+    [self updateFocus];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -236,11 +236,6 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 
 - (void)updateCellVisibilityTracking
 {
-    if (!self.shouldTrackMarqueeCellViews)
-    {
-        return;
-    }
-    
     const CGRect streamVisibleRect = self.collectionView.bounds;
     
     NSArray *visibleCells = self.collectionView.visibleCells;
@@ -264,7 +259,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
             if (sequenceToTrack != nil)
             {
                 StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:sequenceToTrack
-                                                                                  stream:self.stream
+                                                                                  stream:self.shelf ?: self.stream
                                                                                fromShelf:YES];
                 
                 [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithCellEvent:event];
@@ -317,11 +312,12 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
         [self.registeredReuseIdentifiers addObject:reuseIdentifierForSequence];
     }
     
-    StreamCellContext *context = [[StreamCellContext alloc] initWithStreamItem:item stream:self.stream fromShelf:YES];
+    VStream *stream = self.shelf ?: self.stream;
+    StreamCellContext *context = [[StreamCellContext alloc] initWithStreamItem:item stream:stream fromShelf:YES];
     cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:[marqueeStreamItemCellClass reuseIdentifierForStreamItem:item baseIdentifier:nil dependencyManager:self.dependencyManager] forIndexPath:indexPath];
     cell.dependencyManager = self.dependencyManager;
     cell.context = context;
-    [cell setupWithStreamItem:item fromStreamWithApiPath:self.stream.apiPath];
+    [cell setupWithStreamItem:item fromStreamWithApiPath:stream.apiPath];
     
     // Add highlight view
     [self.dependencyManager addHighlightViewToHost:cell];

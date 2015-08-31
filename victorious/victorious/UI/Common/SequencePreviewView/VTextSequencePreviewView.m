@@ -22,7 +22,6 @@
 
 @interface VTextSequencePreviewView ()
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VTextPostViewController *textPostViewController;
 
 @end

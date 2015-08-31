@@ -29,6 +29,7 @@
 #import "VImageSearchResultsFooterView.h"
 #import "VFooterActivityIndicatorView.h"
 #import "VDependencyManager.h"
+#import "victorious-Swift.h"
 
 const CGFloat kVLoadNextPagePoint = .75f;
 
@@ -96,6 +97,8 @@ const CGFloat kVLoadNextPagePoint = .75f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.collectionView.accessibilityIdentifier = VAutomationIDentifierStreamCollectionView;
 
     [self.collectionView registerNib:[VFooterActivityIndicatorView nibForSupplementaryView]
           forSupplementaryViewOfKind:UICollectionElementKindSectionFooter

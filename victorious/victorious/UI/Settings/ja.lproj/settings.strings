@@ -16,6 +16,9 @@
 /* Class = "UITableViewController"; title = "Server Environment"; ObjectID = "6fa-Sd-wUR"; */
 "6fa-Sd-wUR.title" = "サーバー環境";
 
+/* Class = "UITableViewController"; title = "Experiments"; ObjectID = "6nd-lx-w31"; */
+"6nd-lx-w31.title" = "実験";
+
 /* Class = "UILabel"; text = "TITLE"; ObjectID = "8Fn-0A-Ctn"; */
 "8Fn-0A-Ctn.text" = "表題";
 
@@ -39,6 +42,9 @@
 
 /* Class = "UILabel"; text = "Reset Coachmarks"; ObjectID = "FNb-Ni-uJN"; */
 "FNb-Ni-uJN.text" = "コーチマークをリセット";
+
+/* Class = "UINavigationItem"; title = "Experiments"; ObjectID = "HQs-Ej-k6O"; */
+"HQs-Ej-k6O.title" = "実験";
 
 /* Class = "UITextField"; placeholder = "Confirm Password"; ObjectID = "Hdx-TS-3uZ"; */
 "Hdx-TS-3uZ.placeholder" = "パスワード確認";
@@ -76,6 +82,12 @@
 /* Class = "UILabel"; text = "Subtitle"; ObjectID = "U7G-Km-0yw"; */
 "U7G-Km-0yw.text" = "サブタイトル";
 
+/* Class = "UIButton"; normalTitle = "Reset Experiments"; ObjectID = "Ufb-HV-tDz"; */
+"Ufb-HV-tDz.normalTitle" = "実験をリセット";
+
+/* Class = "UILabel"; text = "TITLE"; ObjectID = "Uxb-Bx-b8P"; */
+"Uxb-Bx-b8P.text" = "タイトル";
+
 /* Class = "UINavigationItem"; title = "Push Notifications"; ObjectID = "WVz-KR-Hhr"; */
 "WVz-KR-Hhr.title" = "プッシュ通知";
 
@@ -93,6 +105,9 @@
 
 /* Class = "UINavigationItem"; title = "Privacy Policy"; ObjectID = "dAg-zH-vd2"; */
 "dAg-zH-vd2.title" = "プライバシーポリシー";
+
+/* Class = "UILabel"; text = "Experiments"; ObjectID = "f7G-BC-zp9"; */
+"f7G-BC-zp9.text" = "実験";
 
 /* Class = "UILabel"; text = "Always"; ObjectID = "iA5-m7-nZ8"; */
 "iA5-m7-nZ8.text" = "常時";
@@ -136,6 +151,9 @@
 /* Class = "UILabel"; text = "Change Password"; ObjectID = "xmy-by-M88"; */
 "xmy-by-M88.text" = "パスワード変更";
 
-/* Class = "UILabel"; text = "Autoplay Next Video"; ObjectID = "yLq-Ze-kTh"; */
-"yLq-Ze-kTh.text" = "次の動画を自動再生する";
+/* Class = "UILabel"; text = "Autoplay Videos"; ObjectID = "yLq-Ze-kTh"; */
+"yLq-Ze-kTh.text" = "動画を自動再生する";
+
+/* Class = "UILabel"; text = "MESSAGE"; ObjectID = "zvz-SG-J7d"; */
+"zvz-SG-J7d.text" = "メッセージ";
 

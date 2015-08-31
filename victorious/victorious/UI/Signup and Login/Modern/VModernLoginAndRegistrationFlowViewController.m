@@ -215,14 +215,25 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     {
         return;
     }
-    [self.presentingViewController dismissViewControllerAnimated:YES
-                                                      completion:^
-     {
-         if (self.completionBlock != nil)
+
+    if (self.presentingViewController != nil)
+    {
+        [self.presentingViewController dismissViewControllerAnimated:YES
+                                                          completion:^
          {
-             self.completionBlock(NO);
-         }
-     }];
+             if (self.completionBlock != nil)
+             {
+                 self.completionBlock(NO);
+             }
+         }];
+    }
+    else
+    {
+        if (self.completionBlock != nil)
+        {
+            self.completionBlock(NO);
+        }
+    }
 }
 
 - (void)selectedLogin
@@ -291,7 +302,6 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
         {
             self.isRegisteredAsNewUser = isNewUser;
             [self continueRegistrationFlowAfterSocialRegistration];
-            [self.permissionsTrackingHelper permissionsDidChange:VTrackingValueFacebookDidAllow permissionState:VTrackingValueAuthorized];
         }
         else
         {
@@ -539,14 +549,24 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     }
     
     [self.view endEditing:YES];
-    [self.presentingViewController dismissViewControllerAnimated:YES
-                                                      completion:^
-     {
-         if (self.completionBlock != nil)
+    if (self.presentingViewController != nil)
+    {
+        [self.presentingViewController dismissViewControllerAnimated:YES
+                                                          completion:^
          {
-             self.completionBlock(success);
-         }
-     }];
+             if (self.completionBlock != nil)
+             {
+                 self.completionBlock(success);
+             }
+         }];
+    }
+    else
+    {
+        if (self.completionBlock != nil)
+        {
+            self.completionBlock(success);
+        }
+    }
 }
 
 - (UIViewController *)nextScreenInSocialRegistrationAfter:(UIViewController *)currentViewController inArray:(NSArray *)array

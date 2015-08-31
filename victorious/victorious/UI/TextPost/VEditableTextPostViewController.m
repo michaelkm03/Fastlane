@@ -52,6 +52,8 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 {
     [super viewDidLoad];
     
+    self.textView.accessibilityIdentifier = VAutomationIdentifierTextPostEditableMainField;
+    
     self.overlayButton = [[UIButton alloc] initWithFrame:self.view.bounds];
     [self.view insertSubview:self.overlayButton belowSubview:self.textView];
     [self.view v_addFitToParentConstraintsToSubview:self.overlayButton];
@@ -215,8 +217,8 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
     if ( self.text.length == 0 && self.hashtagHelper.embeddedHashtags.count == 0 )
     {
         self.isShowingPlaceholderText = YES;
-        NSString *attachment = self.defaultHashtag? [VHashTags stringWithPrependedHashmarkFromString:self.defaultHashtag] : @"";
-        self.text = [NSLocalizedString(self.placeholderText, @"") stringByAppendingString:attachment];
+        NSString *attachment = [VHashTags stringWithPrependedHashmarkFromString:self.defaultHashtag];
+        self.text = [NSLocalizedString(self.placeholderText, @"") stringByAppendingString:attachment ?: @""];
         self.textView.alpha = 0.5f;
         
         NSRange cursorPosition = NSMakeRange( self.textView.text.length, 0 );

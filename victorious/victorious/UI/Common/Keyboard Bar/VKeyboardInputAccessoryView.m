@@ -20,11 +20,13 @@
 // DependencyManager
 #import "VDependencyManager.h"
 
+#import "victorious-swift.h"
+
 static const NSInteger kCharacterLimit = 255;
 static const CGFloat VTextViewTopInsetAddition = 2.0f;
 static const CGFloat kAttachmentThumbnailWidth = 35.0f;
 static const CGFloat kCommentBarVerticalPaddingToTextView = 10.0f;
-static const CGFloat kMaxTextViewHeight = 150.0f;
+static const CGFloat kMaxTextViewHeight = 160.0f;
 static const CGFloat kMinTextViewHeight = 40.0f;
 static const CGFloat kAttachmentBarHeight = 50.0f;
 
@@ -38,6 +40,7 @@ static NSString * const kCommentBarKey = @"commentBar";
 @property (nonatomic, strong) VUserTaggingTextStorage *textStorage;
 @property (nonatomic, assign) CGSize lastContentSize;
 @property (nonatomic, strong) NSString *placeholderText;
+@property (nonatomic, strong) NSNumberFormatter *remainingCharacterFormater;
 
 // Views
 @property (nonatomic, strong) IBOutlet UIButton *attachmentsButton;
@@ -47,7 +50,7 @@ static NSString * const kCommentBarKey = @"commentBar";
 @property (nonatomic, strong) IBOutlet UIButton *imageButton;
 @property (nonatomic, strong) IBOutlet UIButton *videoButton;
 @property (nonatomic, strong) IBOutlet UIButton *gifButton;
-@property (nonatomic, strong) IBOutlet UIButton *clearAttachmentButton;
+@property (nonatomic, strong) IBOutlet UILabel *remainingCharacterLabel;
 @property (nonatomic, weak) UITextView *editingTextView;
 
 // Constraints
@@ -82,7 +85,6 @@ static NSString * const kCommentBarKey = @"commentBar";
     VKeyboardInputAccessoryView *accessoryView = [nibContents firstObject];
     
     accessoryView.dependencyManager = commentBarDependencyManager;
-    
     return accessoryView;
 }
 
@@ -116,6 +118,9 @@ static NSString * const kCommentBarKey = @"commentBar";
 - (void)awakeFromNib
 {
     [super awakeFromNib];
+    
+    self.remainingCharacterFormater = [[NSNumberFormatter alloc] init];
+    self.remainingCharacterFormater.numberStyle = NSNumberFormatterNoStyle;
     
     // Automation Support
     self.imageButton.accessibilityIdentifier = VAutomationIdentifierCommentBarImageButton;
@@ -177,7 +182,7 @@ static NSString * const kCommentBarKey = @"commentBar";
     CGFloat editingTextViewPadding = self.editingTextViewTopSpace.constant + self.editingTextViewBottomSpace.constant;
     CGFloat contentSizeHeight = self.editingTextView.contentSize.height;
     CGFloat heightSum = editingTextViewPadding + contentSizeHeight;
-    CGSize intrinsicSize = CGSizeMake(CGRectGetWidth(self.bounds), MAX(heightSum, kAttachmentBarHeight));
+    CGSize intrinsicSize = CGSizeMake(CGRectGetWidth(self.bounds), CLAMP(kAttachmentBarHeight, heightSum, kMaxTextViewHeight + kAttachmentBarHeight + kCommentBarVerticalPaddingToTextView));
     return intrinsicSize;
 }
 
@@ -334,23 +339,39 @@ static NSString * const kCommentBarKey = @"commentBar";
 shouldChangeTextInRange:(NSRange)range
  replacementText:(NSString *)text
 {
-    if (self.textStorage.textView.returnKeyType == UIReturnKeyDefault)
-    {
-        return YES;
-    }
-    
+    NSString *string = [textView.text stringByReplacingCharactersInRange:range withString:text];
     if ([text rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]].location != NSNotFound)
     {
-        if ([self.delegate respondsToSelector:@selector(pressedAlternateReturnKeyonKeyboardInputAccessoryView:)])
+        // Strip out newline characters and replace with a space
+        NSArray *components = [string componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+        NSString *stringByRemovingNewlines = [components componentsJoinedByString:@""];
+        BOOL hasCharactersOtherThanNewLine = stringByRemovingNewlines.length > 0;
+
+        if (components.count > 0 && hasCharactersOtherThanNewLine)
         {
-            [self.delegate pressedAlternateReturnKeyonKeyboardInputAccessoryView:self];
+            NSString *newString = [components componentsJoinedByString:@" "];
+            textView.text = newString;
+            [self textViewDidChange:textView];
         }
-        
-        [self.editingTextView resignFirstResponder];
+    
         return NO;
     }
-    [textView.text stringByReplacingCharactersInRange:range withString:text];
-    return textView.text.length <= (NSUInteger)self.characterLimit;
+    
+    NSInteger unicodeLength = string.lengthWithUnicode;
+    BOOL shouldChange = unicodeLength <= self.characterLimit;
+    
+    if (shouldChange)
+    {
+        NSUInteger remainingCharacterCount = [self characterLimit] - unicodeLength;
+        self.remainingCharacterLabel.text = [self.remainingCharacterFormater stringFromNumber:@(remainingCharacterCount)];
+        [UIView animateWithDuration:0.8
+                         animations:^
+        {
+            self.remainingCharacterLabel.alpha = (remainingCharacterCount < 20) ? 1.0f : 0.0f;
+        }];
+    }
+    
+    return shouldChange;
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView

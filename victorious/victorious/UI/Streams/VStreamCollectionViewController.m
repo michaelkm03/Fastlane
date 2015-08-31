@@ -39,6 +39,7 @@
 //Managers
 #import "VDependencyManager+VObjectManager.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
+#import "VDependencyManager+VNavigationMenuItem.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Discover.h"
@@ -333,9 +334,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     [self.dependencyManager trackViewWillDisappear:self];
     
     [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
-    
-    // Stop tracking marquee views
-    self.marqueeCellController.shouldTrackMarqueeCellViews = NO;
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -421,7 +419,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     if ( streamItems.count > 0 )
     {
         VStreamItem *streamItem = [streamItems firstObject];
-        hasMarqueeShelfAtTop = [streamItem.itemType isEqualToString:VStreamItemTypeMarquee];
+        hasMarqueeShelfAtTop = [streamItem.itemType isEqualToString:VStreamItemTypeShelf] && [streamItem.itemSubType isEqualToString:VStreamItemSubTypeMarquee];
     }
     
     if (self.streamDataSource.hasHeaderCell || hasMarqueeShelfAtTop)
@@ -504,11 +502,32 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)navigateToStream:(VStream *)stream atStreamItem:(VStreamItem *)streamItem
 {
-    if ( [stream isSingleStream] )
+    BOOL isShelf = [stream isShelf];
+    if ( [stream isSingleStream] || isShelf )
     {
-        VStreamCollectionViewController *streamCollection = [self.dependencyManager templateValueOfType:[VStreamCollectionViewController class]
-                                                                                                 forKey:kStreamCollectionKey
-                                                                                  withAddedDependencies:@{ kSequenceIDKey: stream.remoteId, VDependencyManagerTitleKey: stream.name }];
+        VStreamCollectionViewController *streamCollection = nil;
+        NSMutableDictionary *baseConfiguration = [[NSMutableDictionary alloc] initWithDictionary:@{ kSequenceIDKey: stream.remoteId, VDependencyManagerTitleKey: stream.name, VDependencyManagerAccessoryScreensKey : @[] }];
+        
+        if ( isShelf )
+        {
+            [baseConfiguration addEntriesFromDictionary:@{ VStreamCollectionViewControllerStreamURLKey : stream.apiPath }];
+            VDependencyManager *dependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:baseConfiguration];
+            if ( [stream isKindOfClass:[HashtagShelf class]] )
+            {
+                HashtagShelf *hashtagShelf = (HashtagShelf *)stream;
+                streamCollection = [dependencyManager hashtagStreamWithHashtag:hashtagShelf.hashtagTitle];
+            }
+            else
+            {
+                streamCollection = [VStreamCollectionViewController newWithDependencyManager:dependencyManager];
+            }
+        }
+        else
+        {
+            VDependencyManager *dependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:baseConfiguration];
+            streamCollection = [VStreamCollectionViewController newWithDependencyManager:dependencyManager];
+        }
+        
         streamCollection.currentStream = stream;
         streamCollection.targetStreamItem = streamItem;
         [self.navigationController pushViewController:streamCollection animated:YES];
@@ -645,6 +664,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     {
         [self.streamCellFactory registerCellsWithCollectionView:self.collectionView withStreamItems:streamItems];
     }
+    [self updateCellVisibilityTracking];
 }
 
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
@@ -1000,8 +1020,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     
     NSArray *visibleCells = self.collectionView.visibleCells;
     
-    BOOL shouldTrackMarquee = NO;
-    
     for (UICollectionViewCell *cell in visibleCells)
     {
         if ( ![VNoContentCollectionViewCellFactory isNoContentCell:cell] )
@@ -1011,14 +1029,8 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
             const CGFloat visibleRatio = CGRectGetHeight( intersection ) / CGRectGetHeight( cell.frame );
             [self collectionViewCell:cell didUpdateCellVisibility:visibleRatio];
         }
-        
-        if ([cell isKindOfClass:[VAbstractMarqueeCollectionViewCell class]])
-        {
-            shouldTrackMarquee = YES;
-        }
     }
     
-    self.marqueeCellController.shouldTrackMarqueeCellViews = shouldTrackMarquee;
     // Fire right away to catch any events while scrolling stream
     [self.marqueeCellController updateCellVisibilityTracking];
 }
@@ -1036,6 +1048,11 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
                                                                            fromShelf:NO];
             
             [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithCellEvent:event];
+        }
+        else if ( [cell isKindOfClass:[VTrendingShelfCollectionViewCell class]] )
+        {
+            VTrendingShelfCollectionViewCell *trendingShelf = (VTrendingShelfCollectionViewCell *)cell;
+            [trendingShelf trackVisibleSequences];
         }
     }
 }
