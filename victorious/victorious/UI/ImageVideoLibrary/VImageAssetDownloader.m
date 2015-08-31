@@ -43,11 +43,11 @@ NSString * const VImageAssetDownloaderErrorDomain = @"com.victorious.VImageAsset
                   completion:(void (^)(NSError *error, NSURL *downloadedFileURL, UIImage *previewImage))completion
 
 {
-    PHImageRequestOptions *fullSizeRequestOptions = [[PHImageRequestOptions alloc] init];
-    fullSizeRequestOptions.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
-    fullSizeRequestOptions.version = PHImageRequestOptionsVersionCurrent;
-    fullSizeRequestOptions.networkAccessAllowed = YES;
-    fullSizeRequestOptions.progressHandler = ^void(double progress, NSError *error, BOOL *stop, NSDictionary *info)
+    PHImageRequestOptions *requestOptions = [[PHImageRequestOptions alloc] init];
+    requestOptions.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
+    requestOptions.version = PHImageRequestOptionsVersionCurrent;
+    requestOptions.networkAccessAllowed = YES;
+    requestOptions.progressHandler = ^void(double progress, NSError *error, BOOL *stop, NSDictionary *info)
     {
         dispatch_async(dispatch_get_main_queue(), ^
         {
@@ -64,41 +64,27 @@ NSString * const VImageAssetDownloaderErrorDomain = @"com.victorious.VImageAsset
     }
 
     NSURL *urlForAsset = [self temporaryURLForAsset:self.asset];
-    [[PHImageManager defaultManager] requestImageDataForAsset:self.asset
-                                                      options:fullSizeRequestOptions
-                                                resultHandler:^(NSData *imageData, NSString *dataUTI, UIImageOrientation orientation, NSDictionary *info)
+    [[PHImageManager defaultManager] requestImageForAsset:self.asset
+                                               targetSize:CGSizeMake(600.0, 600.0)
+                                              contentMode:PHImageContentModeDefault
+                                                  options:requestOptions
+                                            resultHandler:^(UIImage *result, NSDictionary *info)
      {
-         if (imageData == nil)
-         {
-             NSError *downloadFailure = [NSError errorWithDomain:VImageAssetDownloaderErrorDomain
-                                                            code:0
-                                                        userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"ImageDownloadFailed", nil)}];
-             dispatch_async(dispatch_get_main_queue(), ^
-             {
-                 completion(downloadFailure, nil, nil);
-             });
-             return;
-         }
-         // This handler is always called on main thread per header
          dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
                         {
                             dispatch_async(dispatch_get_main_queue(), ^
                             {
-                                progressHandler(NO, 1.0f, NSLocalizedString(@"Exporting...", nil));
-                            });
-                            UIImage *imageFromData = [UIImage imageWithData:imageData];
-                            UIImage *imageWithProperOrientation = [[UIImage imageWithCGImage:imageFromData.CGImage scale:1.0f orientation:orientation] fixOrientation];
-                            CGFloat compensationDimension = ([self.context inputImageMaximumSize].width * (1 / [UIScreen mainScreen].scale) - 1);
-                            UIImage *scaledImage = [imageWithProperOrientation scaledImageWithMaxDimension:compensationDimension];
+                               progressHandler(NO, 1.0f, NSLocalizedString(@"Exporting...", nil));
+                           });
                             NSError *error;
-                            NSData *imageData = UIImageJPEGRepresentation(scaledImage, 1.0f);
+                            NSData *imageData = UIImageJPEGRepresentation(result, 1.0f);
                             BOOL success = [imageData writeToURL:urlForAsset options:NSDataWritingAtomic error:&error];
                             
                             dispatch_async(dispatch_get_main_queue(), ^
                                            {
                                                if (success)
                                                {
-                                                   completion(nil, urlForAsset, scaledImage);
+                                                   completion(nil, urlForAsset, result);
                                                }
                                                else
                                                {

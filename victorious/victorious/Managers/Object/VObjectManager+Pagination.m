@@ -28,6 +28,7 @@
 #import "VStream+Fetcher.h"
 #import "VStreamItem+Fetcher.h"
 #import "VEditorializationItem.h"
+#import "victorious-Swift.h"
 
 #import "victorious-Swift.h"
 
@@ -480,6 +481,16 @@ static const NSInteger kUserSearchResultLimit = 20;
         for (VStreamItem *streamItem in fullStream.streamItems)
         {
             VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:streamItem.objectID];
+            if ( [streamItemInContext isKindOfClass:[Shelf class]] && [streamItem isKindOfClass:[Shelf class]] )
+            {
+                Shelf *shelfInContext = (Shelf *)streamItemInContext;
+                NSOrderedSet *oldStreamItems = shelfInContext.streamItems;
+                NSOrderedSet *newStreamItems = ((Shelf *)streamItem).streamItems;
+                if ( ![oldStreamItems isEqualToOrderedSet:newStreamItems] )
+                {
+                    shelfInContext.streamItems = newStreamItems;
+                }
+            }
             [self addEditorializationToStreamItem:streamItemInContext inStreamWithApiPath:apiPath usingHeadline:streamItem.headline inMarquee:NO];
             streamItem.headline = nil;
             if ( [streamItem isKindOfClass:[Shelf class]] )

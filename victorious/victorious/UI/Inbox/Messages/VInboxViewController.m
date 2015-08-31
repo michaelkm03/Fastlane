@@ -32,6 +32,8 @@
 #import "VBadgeResponder.h"
 #import "UIViewController+VAccessoryScreens.h"
 #import "VDependencyManager+VAccessoryScreens.h"
+#import "UIViewController+VRootNavigationController.h"
+#import "VNavigationController.h"
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 
@@ -383,7 +385,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     else
     {
         detailVC.messageCountCoordinator = self.messageCountCoordinator;
-        [self.navigationController pushViewController:detailVC animated:YES];
+        [[self rootNavigationController].innerNavigationController pushViewController:detailVC animated:YES];
     }
 }
 

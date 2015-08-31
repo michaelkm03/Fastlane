@@ -55,7 +55,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     
     override var shelf: Shelf? {
         didSet {
-            if !VTrendingShelfCollectionViewCell.needsUpdate(fromShelf: oldValue, toShelf: shelf) {
+            if oldValue == shelf {
                 return
             }
             
@@ -72,7 +72,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     
     override var dependencyManager: VDependencyManager? {
         didSet {
-            if !VTrendingShelfCollectionViewCell.needsUpdate(fromDependencyManager: oldValue, toDependencyManager: dependencyManager) {
+            if oldValue == dependencyManager {
                 return
             }
             

@@ -47,7 +47,7 @@
                 <constraint firstAttribute="trailing" secondItem="bho-MC-wQa" secondAttribute="trailing" id="jR4-pw-uki"/>
                 <constraint firstAttribute="centerY" secondItem="EdJ-vJ-rzg" secondAttribute="centerY" id="nCR-gS-ReL"/>
             </constraints>
-            <point key="canvasLocation" x="774" y="689"/>
+            <point key="canvasLocation" x="609" y="778"/>
         </view>
         <customObject id="uf6-RX-Z66" customClass="VTextPostViewModel"/>
     </objects>

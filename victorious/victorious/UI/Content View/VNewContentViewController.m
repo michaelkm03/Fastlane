@@ -389,6 +389,8 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.closeButton.accessibilityIdentifier = VAutomationIdentifierContentViewCloseButton;
 
     self.authorizedAction = [[VAuthorizedAction alloc] initWithObjectManager:[VObjectManager sharedManager]
                                                            dependencyManager:self.dependencyManager];
@@ -1401,14 +1403,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                               }
                                           }];
     [self presentViewController:alertController animated:YES completion:nil];
-}
-
-- (void)pressedAlternateReturnKeyonKeyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView
-{
-    if (inputAccessoryView.composedText.length == 0)
-    {
-        [self clearEditingRealTimeComment];
-    }
 }
 
 - (void)keyboardInputAccessoryView:(VKeyboardInputAccessoryView *)inputAccessoryView

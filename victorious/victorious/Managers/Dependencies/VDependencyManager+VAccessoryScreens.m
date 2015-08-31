@@ -41,6 +41,7 @@ NSString * const VDependencyManagerAccessoryItemCreatePost      = @"Accessory Cr
 NSString * const VDependencyManagerAccessoryItemFollowHashtag   = @"Accessory Follow Hashtag";
 NSString * const VDependencyManagerAccessoryItemMore            = @"Accessory More";
 NSString * const VDependencyManagerAccessoryNewMessage          = @"Accessory New Message";
+NSString * const VDependencyManagerAccessorySettings            = @"Accessory Menu Settings";
 
 static const char kAssociatedObjectSourceViewControllerKey;
 static const char kAssociatedObjectBadgeableBarButtonsKey;
@@ -94,12 +95,12 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
             [barButton setTintColor:menuItem.tintColor];
             [barButton addTarget:self action:@selector(accessoryMenuItemSelected:) forControlEvents:UIControlEventTouchUpInside];
             barButton.menuItem = menuItem;
-            
             [badgeableBarButtons addObject:barButton];
             
             accessoryBarItem = [[VBarButtonItem alloc] initWithCustomView:barButton];
             accessoryBarItem.menuItem = menuItem;
             accessoryBarItem.tintColor = menuItem.tintColor;
+            accessoryBarItem.accessibilityLabel = menuItem.identifier;
         }
         else if ( menuItem.title != nil )
         {
@@ -109,6 +110,7 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
                                                               action:@selector(accessoryMenuItemSelected:)];
             accessoryBarItem.menuItem = menuItem;
             accessoryBarItem.tintColor = menuItem.tintColor;
+            accessoryBarItem.accessibilityLabel = menuItem.identifier;
         }
         
         if ( accessoryBarItem == nil )

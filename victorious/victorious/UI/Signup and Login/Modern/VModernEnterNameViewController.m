@@ -71,6 +71,7 @@
     self.nameField.keyboardAppearance = [self.dependencyManager keyboardStyleForKey:VKeyboardStyleKey];
     self.nameField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter name", nil)
                                                                            attributes:placeholderTextFieldAttributes];
+    self.nameField.accessibilityIdentifier = VAutomationIdentifierSignupUsernameField;
     [self.dependencyManager addBackgroundToBackgroundHost:self];
     
     [self.delegate configureFlowNavigationItemWithScreen:self];

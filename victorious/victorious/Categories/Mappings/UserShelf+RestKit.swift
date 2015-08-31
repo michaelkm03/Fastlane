@@ -17,10 +17,6 @@ extension UserShelf {
         ]
     }
     
-    override static func entityName() -> String {
-        return "UserShelf"
-    }
-    
     override static func entityMapping() -> RKEntityMapping {
         let mapping = Shelf.mappingBaseForEntity(named: UserShelf.entityName())
         mapping.addRelationshipMappingWithSourceKeyPath("user", mapping: VUser.entityMapping())
