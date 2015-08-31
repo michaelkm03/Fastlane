@@ -6999,12 +6999,12 @@
 		C3E20B0F1B8659B400757F17 /* Trending Topic Shelf */ = {
 			isa = PBXGroup;
 			children = (
-				C3E20B101B8659E400757F17 /* TrendingTopicShelfCollectionViewCell.swift */,
 				C3E20B141B8670BB00757F17 /* TrendingTopicContentCollectionViewCell.swift */,
 				C38254B41B86B8B200EDBE91 /* TrendingTopicGradientView.swift */,
+				C3E20B101B8659E400757F17 /* TrendingTopicShelfCollectionViewCell.swift */,
 				C3A194F11B8D5EF6001A63C7 /* TrendingTopicShelfFactory.swift */,
 			);
-			name = "Trending Topic Shelf";
+			path = "Trending Topic Shelf";
 			sourceTree = "<group>";
 		};
 		C3E772241B4DD12A005809A5 /* Focus */ = {
@@ -7761,7 +7761,7 @@
 				F06B41781B7ADA4B008709E8 /* VTrendingUserShelfCollectionViewCell.swift */,
 				F06B417A1B7ADA4B008709E8 /* VTrendingUserShelfCollectionViewCell.xib */,
 			);
-			name = "Trending Shelf Cell";
+			path = "Trending Shelf Cell";
 			sourceTree = "<group>";
 		};
 		F06B41CA1B7FBF10008709E8 /* List Shelf Cell */ = {
