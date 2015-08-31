@@ -170,3 +170,4 @@
 #import "VBaseVideoSequencePreviewView.h"
 #import "VAsset+Fetcher.h"
 #import "VStream+RestKit.h"
+#import "VNoContentCollectionViewCellFactory.h"

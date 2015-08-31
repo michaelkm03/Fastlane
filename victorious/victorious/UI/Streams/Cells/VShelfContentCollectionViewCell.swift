@@ -57,10 +57,14 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
                 imagePreviewView.setBackgroundContainerViewVisible(true)
                 previewView.backgroundColor = dependencyManager.textPostBackgroundColor
             }
-            if previewView.superview == nil {
-                previewViewContainer.addSubview(previewView)
-                v_addFitToParentConstraintsToSubview(previewView)
-            }
+        }
+        else {
+            previewView.streamItem = streamItem
+        }
+        
+        if previewView.superview == nil {
+            previewViewContainer.addSubview(previewView)
+            v_addFitToParentConstraintsToSubview(previewView)
         }
     }
     
