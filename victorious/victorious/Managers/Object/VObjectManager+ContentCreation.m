@@ -237,12 +237,21 @@ NSString * const VObjectManagerContentGIFParameter              = @"is_gif_style
     
     if (publishParameters.shareToFacebook)
     {
-        parameters[@"facebook_access_token"] = [[VFacebookManager sharedFacebookManager] accessToken];
+        NSString *fbAccessToken = [[VFacebookManager sharedFacebookManager] accessToken];
+        if ( fbAccessToken != nil )
+        {
+            parameters[@"facebook_access_token"] = fbAccessToken;
+        }
     }
     if (publishParameters.shareToTwitter)
     {
-        parameters[@"twitter_access_token"] = [VTwitterManager sharedManager].oauthToken;
-        parameters[@"twitter_access_secret"] = [VTwitterManager sharedManager].secret;
+        NSString *twitterOauthToken = [VTwitterManager sharedManager].oauthToken;
+        NSString *twitterSecret = [VTwitterManager sharedManager].secret;
+        if ( twitterOauthToken != nil && twitterSecret != nil )
+        {
+            parameters[@"twitter_access_token"] = twitterOauthToken;
+            parameters[@"twitter_access_secret"] = twitterSecret;
+        }
     }
     
     if (publishParameters.parentNodeID && ![publishParameters.parentNodeID isEqualToNumber:@(0)])

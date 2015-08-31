@@ -181,16 +181,16 @@ static NSInteger const kScreenSizeCacheTrigger = 1 / 3.0f;
     // if we have incremental diffs, tell the collection view to animate insertions and deletions
     [self.collectionView performBatchUpdates:^
      {
-         NSIndexSet *insertedIndexes = [changeDetails insertedIndexes];
-         if ([insertedIndexes count] > 0)
-         {
-             [self.collectionView insertItemsAtIndexPaths:[insertedIndexes indexPathsFromIndexesWithSection:0]];
-         }
-         
          NSIndexSet *removedIndexes = [changeDetails removedIndexes];
          if ([removedIndexes count] > 0)
          {
              [self.collectionView deleteItemsAtIndexPaths:[removedIndexes indexPathsFromIndexesWithSection:0]];
+         }
+         
+         NSIndexSet *insertedIndexes = [changeDetails insertedIndexes];
+         if ([insertedIndexes count] > 0)
+         {
+             [self.collectionView insertItemsAtIndexPaths:[insertedIndexes indexPathsFromIndexesWithSection:0]];
          }
 
          NSIndexSet *changedIndexes = [changeDetails changedIndexes];
