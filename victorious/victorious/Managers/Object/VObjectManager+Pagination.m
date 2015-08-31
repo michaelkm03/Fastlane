@@ -496,16 +496,6 @@ static const NSInteger kUserSearchResultLimit = 20;
             stream.marqueeItems = marqueeItems;
         }
         
-        if ( [stream isKindOfClass:[ExploreStream class]] && pageType == VPageTypeFirst )
-        {
-            ExploreStream *exploreStream = (ExploreStream *)stream;
-            ExploreStream *newExploreStream = (ExploreStream *)fullStream;
-            if ( ![exploreStream.shelves isEqualToOrderedSet:newExploreStream.shelves] )
-            {
-                exploreStream.shelves = newExploreStream.shelves;
-            }
-        }
-        
         NSString *streamId = fullResponse[ @"stream_id" ];
         NSString *shelfId = fullResponse[ @"shelf_id" ];
         stream.streamId = streamId;
