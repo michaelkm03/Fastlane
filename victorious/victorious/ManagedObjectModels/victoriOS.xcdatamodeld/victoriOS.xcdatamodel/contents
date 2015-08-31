@@ -155,6 +155,9 @@
         <attribute name="timeoutGotoNode" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <relationship name="relationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Interaction" inverseName="interactionAction" inverseEntity="Interaction" syncable="YES"/>
     </entity>
+    <entity name="ListShelf" representedClassName="victorious.ListShelf" parentEntity="Shelf" syncable="YES">
+        <attribute name="caption" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="MediaAttachment" representedClassName="VMediaAttachment" syncable="YES">
         <attribute name="mediaURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mimeType" optional="YES" attributeType="String" syncable="YES"/>
@@ -364,6 +367,7 @@
         <element name="ImageAsset" positionX="0" positionY="0" width="128" height="135"/>
         <element name="Interaction" positionX="0" positionY="0" width="128" height="195"/>
         <element name="InteractionAction" positionX="0" positionY="0" width="128" height="105"/>
+        <element name="ListShelf" positionX="207" positionY="-639" width="128" height="60"/>
         <element name="MediaAttachment" positionX="0" positionY="0" width="128" height="105"/>
         <element name="Message" positionX="0" positionY="0" width="128" height="240"/>
         <element name="Node" positionX="0" positionY="0" width="128" height="135"/>

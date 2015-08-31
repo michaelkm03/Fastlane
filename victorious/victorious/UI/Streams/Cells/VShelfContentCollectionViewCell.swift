@@ -78,6 +78,17 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
         }
     }
     
+    func onStreamItemSet() {
+        if previewView.canHandleStreamItem(streamItem) {
+            updatePreviewView(streamItem)
+            return
+        }
+        previewView.removeFromSuperview()
+        
+        previewView = VStreamItemPreviewView(streamItem: streamItem)
+        updatePreviewView(streamItem)
+    }
+    
     required override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -130,7 +141,7 @@ extension VShelfContentCollectionViewCell: VStreamCellComponentSpecialization {
 
 extension VShelfContentCollectionViewCell: VBackgroundContainer {
     
-    func loadingBackgroundContainerView() -> UIView! {
+    func loadingBackgroundContainerView() -> UIView {
         return previewViewContainer
     }
     

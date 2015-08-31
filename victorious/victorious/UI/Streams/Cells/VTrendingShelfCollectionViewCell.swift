@@ -30,7 +30,7 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     
     var shelf: Shelf? {
         didSet {
-            if !VTrendingShelfCollectionViewCell.needsUpdate(fromShelf: oldValue, toShelf: shelf) {
+            if oldValue == shelf {
                 return
             }
             
@@ -58,7 +58,7 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     
     var dependencyManager: VDependencyManager? {
         didSet {
-            if !VTrendingShelfCollectionViewCell.needsUpdate(fromDependencyManager: oldValue, toDependencyManager: dependencyManager) {
+            if oldValue == dependencyManager {
                 return
             }
             
@@ -68,22 +68,6 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
                 dependencyManager.addBackgroundToBackgroundHost(self)
             }
         }
-    }
-    
-    /// Returns true when the 2 provided shelves differ enough to require a UI update
-    static func needsUpdate(fromShelf oldValue: Shelf?, toShelf shelf: Shelf?) -> Bool {
-        if shelf == oldValue,
-            let newStreamItems = shelf?.streamItems,
-            let oldStreamItems = oldValue?.streamItems where newStreamItems.isEqualToOrderedSet(oldStreamItems) {
-            //The shelf AND its content are the same, no need to update
-            return false
-        }
-        return true
-    }
-    
-    /// Returns true when the 2 provided dependency managers differ enough to require a UI update
-    static func needsUpdate(fromDependencyManager oldValue: VDependencyManager?, toDependencyManager dependencyManager: VDependencyManager?) -> Bool {
-        return dependencyManager != oldValue
     }
     
     /// Override in subclasses to update the follow button at the proper times
@@ -185,7 +169,7 @@ extension VTrendingShelfCollectionViewCell: UICollectionViewDelegateFlowLayout {
 
 extension VTrendingShelfCollectionViewCell: VBackgroundContainer {
     
-    func backgroundContainerView() -> UIView! {
+    func backgroundContainerView() -> UIView {
         return contentView
     }
     
