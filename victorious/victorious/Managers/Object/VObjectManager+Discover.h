@@ -49,6 +49,6 @@
                                                       failBlock:(VFailBlock)fail;
 #warning Testing
 - (RKManagedObjectRequestOperation *)getExplore:(VSuccessBlock)success
-                                       failBlock:(VFailBlock)fail;
+                                      failBlock:(VFailBlock)fail;
 
 @end
