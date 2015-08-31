@@ -3872,7 +3872,6 @@
 		0314D2EA19B46B5D00FA363C /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				672E5F3C1B83A22200D898DE /* Explore */,
 				A77AD4C91A1FC66300142F24 /* Alert Controller */,
 				A77AD4C41A1EFA3D00142F24 /* Automation */,
 				0314D2EB19B46B5D00FA363C /* Camera */,
@@ -3884,6 +3883,7 @@
 				C35265F91B28E349001F093F /* Create Sheet */,
 				A75FAF0019E8AC1E00EB87C1 /* Discover */,
 				A7D707831A7B103C00D9993F /* EndCard */,
+				672E5F3C1B83A22200D898DE /* Explore */,
 				0314D39019B46B5E00FA363C /* Force Upgrade */,
 				A7A0617B1B4DB36A00E8FFCF /* GIFSearch */,
 				A6EC32961B3B5AD800824022 /* ImageVideoLibrary */,
@@ -5265,8 +5265,8 @@
 		672E5F3C1B83A22200D898DE /* Explore */ = {
 			isa = PBXGroup;
 			children = (
-				672E5F451B83A99A00D898DE /* exploreScreenDevelopment.json */,
 				672E5F411B83A49B00D898DE /* Explore.storyboard */,
+				672E5F451B83A99A00D898DE /* exploreScreenDevelopment.json */,
 				672E5F431B83A4BF00D898DE /* VExploreViewController.swift */,
 			);
 			name = Explore;
@@ -6202,7 +6202,6 @@
 		A7AEF96C1A83F1C300A3D3A0 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				C3E20B0F1B8659B400757F17 /* Trending Topic Shelf */,
 				F06B41CA1B7FBF10008709E8 /* List Shelf Cell */,
 				F0AD21711AF32359001BDCC6 /* NoContentCollectionViewCell */,
 				F06B41CD1B7FE453008709E8 /* Shelf Content Cell */,
@@ -6211,6 +6210,7 @@
 				0308B1161AB2AE9700144E53 /* Template C */,
 				D8B44CC51ADCB3A3006340E8 /* Template D */,
 				F06B41851B7ADA52008709E8 /* Trending Shelf Cell */,
+				C3E20B0F1B8659B400757F17 /* Trending Topic Shelf */,
 				D87E25ED1AE180DA008F0769 /* VAbstractActionView.h */,
 				D87E25EE1AE180DA008F0769 /* VAbstractActionView.m */,
 				D893674E1ADDE1B9001D2426 /* VActionButtonAnimationController.h */,
