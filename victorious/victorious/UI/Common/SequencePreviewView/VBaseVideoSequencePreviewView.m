@@ -57,8 +57,10 @@
         
         _videoView = [[VVideoView alloc] initWithFrame:self.bounds];
         _videoView.delegate = self;
+        _videoView.backgroundColor = [UIColor colorWithWhite:0.95f alpha:1.0f]; // Visible when letterboxed
         [self addSubview:_videoView];
         [self v_addFitToParentConstraintsToSubview:_videoView];
+        
     }
     return self;
 }

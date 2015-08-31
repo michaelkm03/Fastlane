@@ -22,7 +22,7 @@
 #import "VComment.h"
 #import "victorious-Swift.h"
 
-static const CGFloat kAspectRectMargin = 150.0f;
+static const CGFloat kAspectRectMargin = 120.0f;
 static const CGFloat kMaximumAspectRatio = 2.0f;
 
 @implementation VSequence (Fetcher)
@@ -206,10 +206,6 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
         // Make sure aspect ratio is within bounds
         const BOOL isVideo = self.isVideo || self.isGifStyle.boolValue;
         CGFloat min = isVideo ? minAspectRatio : CGFLOAT_MIN;
-        if ( isVideo )
-        {
-            NSLog( @"minAspectRatio = %@", @(minAspectRatio) );
-        }
         return [self clampedValue:aspectRatio min:min max:kMaximumAspectRatio];
     }
     
