@@ -13,7 +13,7 @@ class VTrendingShelfCellFactory: NSObject {
     
     private let dependencyManager: VDependencyManager
     
-    private let failureCellFactory: VNoContentCollectionViewCellFactory = VNoContentCollectionViewCellFactory(acceptableContentClasses: nil)
+    private let failureCellFactory = VNoContentCollectionViewCellFactory(acceptableContentClasses: nil)
     
     required init!(dependencyManager: VDependencyManager!) {
         self.dependencyManager = dependencyManager;

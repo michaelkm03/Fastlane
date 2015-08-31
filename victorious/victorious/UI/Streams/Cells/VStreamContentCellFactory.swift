@@ -40,7 +40,7 @@ class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
     
     private let trendingShelfFactory: VTrendingShelfCellFactory?
     
-    private let failureCellFactory: VNoContentCollectionViewCellFactory = VNoContentCollectionViewCellFactory(acceptableContentClasses: nil)
+    private let failureCellFactory = VNoContentCollectionViewCellFactory(acceptableContentClasses: nil)
     
     /// The dependency manager used to style all cells from this factory
     private let dependencyManager: VDependencyManager

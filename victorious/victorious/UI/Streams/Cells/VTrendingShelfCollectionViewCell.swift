@@ -28,7 +28,7 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     
     var trackingMinRequiredCellVisibilityRatio: CGFloat = 0.0
     
-    private let failureCellFactory: VNoContentCollectionViewCellFactory = VNoContentCollectionViewCellFactory(acceptableContentClasses: nil)
+    private let failureCellFactory = VNoContentCollectionViewCellFactory(acceptableContentClasses: nil)
     
     var shelf: Shelf? {
         didSet {
