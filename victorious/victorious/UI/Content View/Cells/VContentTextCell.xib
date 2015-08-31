@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -18,22 +18,23 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="width" secondItem="l8i-BI-qve" secondAttribute="height" multiplier="1:1" id="HR3-I0-PCN"/>
+                            <constraint firstAttribute="width" constant="320" id="l7X-4b-aHr"/>
+                            <constraint firstAttribute="width" secondItem="l8i-BI-qve" secondAttribute="height" multiplier="1:1" id="xBi-SH-xpN"/>
                         </constraints>
                     </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="l8i-BI-qve" secondAttribute="trailing" id="D0M-h3-fax"/>
-                <constraint firstItem="l8i-BI-qve" firstAttribute="top" secondItem="mzk-ls-UwW" secondAttribute="top" id="wiQ-J2-KDc"/>
-                <constraint firstItem="l8i-BI-qve" firstAttribute="leading" secondItem="mzk-ls-UwW" secondAttribute="leading" id="z6A-5F-f1h"/>
+                <constraint firstItem="l8i-BI-qve" firstAttribute="top" secondItem="mzk-ls-UwW" secondAttribute="top" id="8TY-Lb-EyX"/>
+                <constraint firstAttribute="centerX" secondItem="l8i-BI-qve" secondAttribute="centerX" id="HW6-z4-eg6"/>
             </constraints>
             <size key="customSize" width="248" height="261"/>
             <connections>
-                <outlet property="contentContainer" destination="l8i-BI-qve" id="U5w-d5-5ZB"/>
+                <outlet property="contentContainer" destination="l8i-BI-qve" id="9Di-OS-DHq"/>
+                <outlet property="widthConstraint" destination="l7X-4b-aHr" id="SOR-cw-tuZ"/>
             </connections>
-            <point key="canvasLocation" x="540" y="368"/>
+            <point key="canvasLocation" x="307" y="323"/>
         </collectionViewCell>
     </objects>
 </document>

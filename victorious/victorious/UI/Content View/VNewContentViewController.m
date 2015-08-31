@@ -471,8 +471,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     [self.navigationController setNavigationBarHidden:YES
                                              animated:YES];
     
-    self.contentCollectionView.delegate = self;
-    
     [self.contentCollectionView becomeFirstResponder];
     self.videoCell.delegate = self;
 
@@ -584,7 +582,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     // We don't care about these notifications anymore but we still care about new user loggedin
     [self.contentCollectionView resignFirstResponder];
-    self.contentCollectionView.delegate = nil;
     self.videoCell.delegate = nil;
     
     [self.commentHighlighter stopAnimations];
@@ -795,12 +792,13 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     {
         if (welf.presentedViewController == weakLightBox)
         {
+            // sometimes the content dissapears withour reloading due to rotation 😱
+            [welf.contentCollectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:VContentViewSectionContent]]];
+            [welf.contentCollectionView.collectionViewLayout invalidateLayout];
             [welf dismissViewControllerAnimated:YES
                                      completion:^
              {
                  [[welf class] attemptRotationToDeviceOrientation];
-                 
-                 [welf.contentCollectionView.collectionViewLayout invalidateLayout];
              }];
         }
     };
