@@ -84,12 +84,7 @@ static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
 
 - (void)setItemURL:(NSURL *__nonnull)itemURL loop:(BOOL)loop audioMuted:(BOOL)audioMuted alongsideAnimation:(void (^ __nullable)(void))animations
 {
-    NSArray *colors = @[
-                        [UIColor blackColor],
-                        [UIColor whiteColor],
-                        [[UIColor blackColor] colorWithAlphaComponent:0.05]
-                        ];
-    self.backgroundColor = colors[ arc4random_uniform( colors.count )];
+    self.backgroundColor = [UIColor colorWithWhite:0.95f alpha:1.0f];
     
     if ( [_itemURL isEqual:itemURL] )
     {
