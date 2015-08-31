@@ -37,7 +37,7 @@ class LocalNotificationScheduler : NSObject {
     func unscheduleNotification( #identifier: String ){
         for obj in UIApplication.sharedApplication().scheduledLocalNotifications {
             if let notification = obj as? UILocalNotification,
-                let identifier = notification.userInfo?[ LocalNotificationScheduler.identifierKey ] as? String {
+                let _ = notification.userInfo?[ LocalNotificationScheduler.identifierKey ] as? String {
                     UIApplication.sharedApplication().cancelLocalNotification( notification )
             }
         }

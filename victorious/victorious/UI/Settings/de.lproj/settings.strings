@@ -154,8 +154,8 @@
 /* Class = "UILabel"; text = "Change Password"; ObjectID = "xmy-by-M88"; */
 "xmy-by-M88.text" = "Passwort ändern";
 
-/* Class = "UILabel"; text = "Autoplay Next Video"; ObjectID = "yLq-Ze-kTh"; */
-"yLq-Ze-kTh.text" = "Nächstes Video automatisch";
+/* Class = "UILabel"; text = "Autoplay Videos"; ObjectID = "yLq-Ze-kTh"; */
+"yLq-Ze-kTh.text" = "Videos automatisch abspielen";
 
 /* Class = "UILabel"; text = "MESSAGE"; ObjectID = "zvz-SG-J7d"; */
 "zvz-SG-J7d.text" = "NACHRICHT";

@@ -14,7 +14,11 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     
     @IBOutlet weak private var searchBar: UISearchBar!
     @IBOutlet weak private var collectionView: UICollectionView!
-
+    private var trendingTopicShelfFactory: TrendingTopicShelfFactory?
+    
+    // Array of shelves to be displayed before recent content
+    var shelves: [Shelf] = []
+    
     /// The dependencyManager that is used to manage dependencies of explore screen
     private(set) var dependencyManager: VDependencyManager?
     private let numberOfSectionsInCollectionView = 3
@@ -24,6 +28,7 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     private struct Constants {
         let sequenceIDKey = "sequenceID"
         let marqueeDestinationDirectory = "destionationDirectory"
+        let trendingTopicShelfKey = "trendingShelf"
     }
     
     /// MARK: - View Controller Initialization
@@ -33,6 +38,8 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         if let exploreVC = storyboard.instantiateInitialViewController() as? VExploreViewController {
             exploreVC.dependencyManager = dependencyManager
             exploreVC.marqueeFactory = VMarqueeCellFactory(dependencyManager: dependencyManager)
+            // For trending topic shelf
+            exploreVC.trendingTopicShelfFactory = dependencyManager.templateValueOfType(TrendingTopicShelfFactory.self, forKey: Constants().trendingTopicShelfKey) as? TrendingTopicShelfFactory
             return exploreVC
         }
         fatalError("Failed to instantiate an explore view controller!")
@@ -50,20 +57,20 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         marqueeFactory?.registerCellsWithCollectionView(self.collectionView)
         marqueeFactory?.marqueeController?.setSelectionDelegate(self)
         marqueeFactory?.marqueeController?.setDataDelegate(self)
+        self.collectionView.backgroundColor = UIColor.whiteColor()
         
         VObjectManager.sharedManager().getExplore({ (op, obj, results) -> Void in
             if let stream = results.last as? VStream {
                 for (index, streamItem) in enumerate(stream.streamItems) {
                     if let newShelf = streamItem as? Shelf {
-                        self.marqueeShelf = newShelf
-                        break
+                        self.trendingTopicShelfFactory?.registerCellsWithCollectionView(self.collectionView)
+                        self.shelves.append(newShelf)
                     }
                 }
                 self.collectionView.reloadData()
             }
-            
             }, failBlock: { (op, err) -> Void in
-                println(err)
+                // TODO: Deal with error
         })
     }
     
@@ -73,43 +80,44 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     
     /// MARK: - UICollectionViewDataSource
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        var numberOfRows = 0
-        
-        switch (section) {
-        case 0:
-            numberOfRows = 1
-        case 1:
-            numberOfRows = 3
-        case 2:
-            numberOfRows = 12
-        default:
-            fatalError("Unexpected number of sections in collection view")
-        }
-        
-        return numberOfRows
-    }
-    
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        
-        switch indexPath.section {
-        case 0:
-            if let shelf = marqueeShelf {
-                if let marqueeCell = marqueeFactory?.collectionView(collectionView, cellForStreamItem: shelf, atIndexPath: indexPath) {
-                    return marqueeCell
+        if indexPath.section < shelves.count {
+            let shelf = shelves[indexPath.section]
+            
+            if let subType = shelf.itemSubType {
+                switch subType {
+                case VStreamItemSubTypeMarquee:
+                    if let marqueeCell = marqueeFactory?.collectionView(collectionView, cellForStreamItem: shelf, atIndexPath: indexPath) {
+                        return marqueeCell
+                    }
+                case VStreamItemSubTypeTrendingTopic:
+                    if let cell = trendingTopicShelfFactory?.collectionView(collectionView, cellForStreamItem: shelf, atIndexPath: indexPath) as? TrendingTopicShelfCollectionViewCell {
+                        return cell
+                    }
+                default:
+                    if let placeHolderCell = collectionView.dequeueReusableCellWithReuseIdentifier("placeHolder", forIndexPath: indexPath) as? UICollectionViewCell {
+                        placeHolderCell.contentView.backgroundColor = UIColor.blackColor()
+                        return placeHolderCell
+                    }
                 }
             }
-
-        default:
-            if let placeHolderCell = collectionView.dequeueReusableCellWithReuseIdentifier("placeHolder", forIndexPath: indexPath) as? UICollectionViewCell {
-                return placeHolderCell
-            }
         }
+        
         return collectionView.dequeueReusableCellWithReuseIdentifier("placeHolder", forIndexPath: indexPath) as! UICollectionViewCell
     }
     
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if section < shelves.count {
+            return 1
+        }
+        
+        // WARNING: Placeholder for recent content
+        return 69
+    }
+    
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return numberOfSectionsInCollectionView
+        // Total number of shelves plus one section for recent content
+        return shelves.count + 1
     }
     
     /// MARK: - UISearchBarDelegate
@@ -228,19 +236,39 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
             VContentViewPresenter.presentContentViewFromViewController(self, withDependencyManager: dependencyManager, forSequence: event.streamItem as? VSequence, inStreamWithID: streamID, commentID: nil, withPreviewImage: image)
         }
     }
+}
+
+extension VExploreViewController: UICollectionViewDelegateFlowLayout {
     
-    /// MARK: - UICollectionViewDelegateFlowLayout
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        switch indexPath.section {
-        case 0:
-            if let shelf = marqueeShelf {
-                if let size = marqueeFactory?.sizeWithCollectionViewBounds(collectionView.bounds, ofCellForStreamItem: shelf) {
-                    return size
+        if indexPath.section < shelves.count {
+            let shelf = shelves[indexPath.section]
+            
+            if let subType = shelf.itemSubType {
+                switch subType {
+                case VStreamItemSubTypeMarquee:
+                    if let size = marqueeFactory?.sizeWithCollectionViewBounds(collectionView.bounds, ofCellForStreamItem: shelf) {
+                        return size
+                    }
+                case VStreamItemSubTypeTrendingTopic:
+                    if let trendingFactory = trendingTopicShelfFactory {
+                        return trendingFactory.sizeWithCollectionViewBounds(collectionView.bounds, ofCellForStreamItem: shelf)
+                    }
+                default:
+                    return CGSize(width: self.collectionView.bounds.width, height: 150)
                 }
             }
-        default:
-            return CGSizeMake(collectionView.bounds.width, 100)
         }
-        return CGSizeMake(collectionView.bounds.width, 100)
+        // WARNING: Placeholder for recent content
+        return CGSize(width: 100, height: 100)
+    }
+}
+
+extension VExploreViewController : VHashtagSelectionResponder {
+    
+    func hashtagSelected(text: String!) {
+        if let hashtag = text, stream = dependencyManager?.hashtagStreamWithHashtag(hashtag) {
+            self.navigationController?.pushViewController(stream, animated: true)
+        }
     }
 }

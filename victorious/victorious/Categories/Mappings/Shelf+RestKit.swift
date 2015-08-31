@@ -18,7 +18,7 @@ extension Shelf {
     }
     
     class func mappingBaseForEntity(named entityName: String) -> RKEntityMapping {
-        var mapping = RKEntityMapping(forEntityForName: entityName, inManagedObjectStore: RKObjectManager.sharedManager().managedObjectStore)
+        let mapping = RKEntityMapping(forEntityForName: entityName, inManagedObjectStore: RKObjectManager.sharedManager().managedObjectStore)
         mapping.identificationAttributes = ["remoteId"]
         var attributesMapping = VStream.propertyMap()
         for (key, value) in self.propertyMapping() {
@@ -31,7 +31,8 @@ extension Shelf {
     
     class func mapping(itemSubType: String) -> RKObjectMapping? {
         switch itemSubType {
-        case VStreamItemSubTypeMarquee:
+        case VStreamItemSubTypeMarquee,
+        VStreamItemSubTypeTrendingTopic:
             return mappingBaseForEntity(named: "Shelf")
         case VStreamItemSubTypeUser:
             return UserShelf.entityMapping()

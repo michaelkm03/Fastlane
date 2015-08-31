@@ -486,6 +486,7 @@ static const NSInteger kUserSearchResultLimit = 20;
             {
                 Shelf *shelf = (Shelf *)streamItem;
                 shelf.apiPath = shelf.streamUrl.v_pathComponent;
+                shelf.trackingIdentifier = shelf.remoteId;
             }
             [streamItems addObject:streamItemInContext];
         }

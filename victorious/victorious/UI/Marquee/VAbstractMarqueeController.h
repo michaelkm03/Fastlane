@@ -30,7 +30,6 @@ extern NSString * const kMarqueeURLKey;
 @property (nonatomic, strong) Shelf *shelf; ///< The Marquee Shelf
 @property (nonatomic, readonly) NSArray *marqueeItems; ///< The array of items in the marquee
 @property (nonatomic, readonly) VTimerManager *autoScrollTimerManager; ///< The timer in control of auto scroll
-@property (nonatomic, assign) BOOL shouldTrackMarqueeCellViews; ///< Whether or not cell_view tracking events are sent for marquee items
 
 /**
     The dependencyManager used to style the streamItem cells that are managed by this marquee controller.

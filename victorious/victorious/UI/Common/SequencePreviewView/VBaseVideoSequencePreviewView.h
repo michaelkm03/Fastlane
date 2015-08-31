@@ -33,6 +33,12 @@
 @property (nonatomic, strong, readonly) VVideoView *videoView;
 
 /**
+ * The image view responsible for showing the video's preview image
+ */
+@property (nonatomic, strong, readonly) UIImageView *previewImageView;
+
+
+/**
  * Indicated whether or not this preview view is currently in focus.
  */
 @property (nonatomic, assign) BOOL inFocus;

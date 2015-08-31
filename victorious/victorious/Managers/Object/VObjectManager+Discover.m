@@ -70,6 +70,24 @@
            failBlock:fail];
 }
 
+//#warning Testing
+//- (RKManagedObjectRequestOperation *)getExplore:(VSuccessBlock)success failBlock:(VFailBlock)fail
+//{
+//    VSuccessBlock fullSuccess = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+//    {
+//        if (success != nil)
+//        {
+//            success(operation, fullResponse, resultObjects);
+//        }
+//    };
+//    
+//    return [self GET:@"/api/sequence/feed/explore"
+//              object:nil
+//          parameters:nil
+//        successBlock:fullSuccess
+//           failBlock:fail];
+//}
+
 - (RKManagedObjectRequestOperation *)getHashtagsSubscribedToWithPageType:(VPageType)pageType
                                                             perPageLimit:(NSInteger)pageLimit
                                                            successBlock:(VSuccessBlock)success

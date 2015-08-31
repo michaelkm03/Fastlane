@@ -299,7 +299,8 @@
                                                      pathPattern:@"/api/sequence/feed/:category"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]
-              ];
+             
+             ];
 }
 
 @end

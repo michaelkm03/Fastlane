@@ -82,7 +82,6 @@ static NSString * const kCommentBarKey = @"commentBar";
     VKeyboardInputAccessoryView *accessoryView = [nibContents firstObject];
     
     accessoryView.dependencyManager = commentBarDependencyManager;
-    
     return accessoryView;
 }
 
