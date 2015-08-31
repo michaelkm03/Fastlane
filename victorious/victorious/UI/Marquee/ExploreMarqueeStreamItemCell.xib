@@ -14,7 +14,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="354" height="389"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kna-OC-bH3" userLabel="ContentContainer">
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kna-OC-bH3" userLabel="ContentContainer">
                         <rect key="frame" x="3" y="20" width="349" height="349"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vvx-wK-djC" userLabel="PreviewContainer">

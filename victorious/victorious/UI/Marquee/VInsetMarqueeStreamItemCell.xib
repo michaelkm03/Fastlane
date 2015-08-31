@@ -13,7 +13,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="354" height="389"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="38y-W4-W3o" userLabel="ContentContainer">
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="38y-W4-W3o" userLabel="ContentContainer">
                         <rect key="frame" x="20" y="20" width="314" height="349"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fO9-8F-2xW" userLabel="PreviewContainer">
