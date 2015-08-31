@@ -8,6 +8,8 @@
 
 #import "VStreamItem.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 //Type values
 extern NSString * const VStreamItemTypeSequence;
 extern NSString * const VStreamItemTypeStream;
@@ -19,6 +21,8 @@ extern NSString * const VStreamItemSubTypeMarquee;
 extern NSString * const VStreamItemSubTypeUser;
 extern NSString * const VStreamItemSubTypeHashtag;
 extern NSString * const VStreamItemSubTypeTrendingTopic;
+extern NSString * const VStreamItemSubTypePlaylist;;
+extern NSString * const VStreamItemSubTypeRecent;
 extern NSString * const VStreamItemSubTypeImage;
 extern NSString * const VStreamItemSubTypeVideo;
 extern NSString * const VStreamItemSubTypeGif;
@@ -71,3 +75,5 @@ extern NSString * const VStreamItemSubTypeStream;
 - (VEditorializationItem *)editorializationForStreamWithApiPath:(NSString *)apiPath;
 
 @end
+
+NS_ASSUME_NONNULL_END
