@@ -59,10 +59,10 @@ class AutoShowLoginOperation: Operation {
         
         beganExecuting()
         
-        var shouldAutoShowLogin = dependencyManager.numberForKey(autoShowLoginKey)
+        let shouldAutoShowLogin = dependencyManager.numberForKey(autoShowLoginKey)
         if shouldAutoShowLogin.boolValue {
             dispatch_async(dispatch_get_main_queue(), {
-                var loginVC = self.loginAuthorizedAction.loginViewControllerWithContext(.Default,
+                let loginVC = self.loginAuthorizedAction.loginViewControllerWithContext(.Default,
                     withCompletion: { (success: Bool) in
                         self.delegate?.hideLoginViewController() {
                             self.finishedExecuting()

@@ -13,10 +13,9 @@ class VTrendingShelfCellFactory: NSObject {
     
     private let dependencyManager: VDependencyManager
     
-    required init!(dependencyManager: VDependencyManager!) {
+    required init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager;
     }
-    
 }
 
 extension VTrendingShelfCellFactory: VStreamCellFactory {

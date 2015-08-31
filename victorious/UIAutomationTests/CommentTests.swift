@@ -7,43 +7,57 @@
 //
 
 import Foundation
-
-class GIFCommentTest : VictoriousTestCase {
+//
+class CommentTests : VictoriousTestCase {
     
-    func testGIFCommentContentView() {
+    override var testDescription: String {
+        return "Tests posting a GIF comment on a post from user's profile."
+    }
+    
+    func testGifCommentOnContentView() {
         
-        // Head to profile
+        self.addStep( "Selects the profile tab." )
         self.tester().waitForViewWithAccessibilityLabel( "Menu Profile" ).tap()
         
-        // Tap first cell
+        self.addStep( "Selects the first post in the user's profile stream." )
         self.tester().waitForViewWithAccessibilityLabel( VAutomationIdentifierStreamCell )
         self.tester().tapViewWithAccessibilityLabel( VAutomationIdentifierStreamCell )
         
-        // Tap comment bar and GIF button
+        self.tester().waitForTimeInterval( 3.0 )
+        
+        self.addStep( "Taps into the comment text field, then selects GIF option from the keyboard bar." )
         self.tester().tapViewWithAccessibilityLabel( VAutomationIdentifierCommentBarTextView )
         self.tester().tapViewWithAccessibilityLabel( VAutomationIdentifierCommentBarGIFButton )
         
+        // Wait for trending GIFs to load
+        self.tester().waitForTimeInterval( 8.0 )
+        
         // Tap first index path
+        self.addStep( "Selects the first GIF from the trending GIFs search results." )
         let testIndexPath = NSIndexPath(forItem: 0, inSection: 0)
         let gifCollectionViewIdentifier = AutomationId.GIFSearchCollection.rawValue
         self.tester().waitForCellAtIndexPath(testIndexPath, inCollectionViewWithAccessibilityIdentifier: gifCollectionViewIdentifier)
         self.tester().tapItemAtIndexPath(testIndexPath, inCollectionViewWithAccessibilityIdentifier: gifCollectionViewIdentifier)
         
         // Tap next button
-        self.tester().tapViewWithAccessibilityLabel( AutomationId.GIFSearchNext.rawValue )
+        self.tester().tapViewWithAccessibilityLabel( "Next" )
         
-        // Enter random caption
-        let randomCaption = "\(100000 + arc4random() % 100000)"
+        let randomCaption = "\(100000 + arc4random_uniform(100000))"
+        self.addStep( "Adds a random caption to the GIF comment (e.g.\"\(randomCaption)\"" )
         self.tester().enterTextIntoCurrentFirstResponder( randomCaption )
         
-        // Tap send button
+        self.addStep( "Tap send button" )
+        self.tester().waitForTimeInterval( 2.0 )
         self.tester().tapViewWithAccessibilityLabel( VAutomationIdentifierCommentBarSendButton )
         
-        // Wait for comment to post
-        self.tester().waitWithCountdownForInterval( 15.0 )
+        let duration: NSTimeInterval = 20.0
+        self.addStep( "Wait \(duration) seconds for comment to post" )
+        self.tester().waitWithCountdownForInterval( duration )
 
-        // See if first comment cell has proper caption
+        self.addStep( "Ensure first comment cell has proper caption." )
         let commentCell = self.tester().waitForViewWithAccessibilityLabel( VAutomationIdentifierContentViewCommentCell )
         self.tester().expectView( commentCell, toContainText: randomCaption )
+        
+        self.tester().waitForViewWithAccessibilityLabel( VAutomationIdentifierContentViewCloseButton ).tap()
     }
 }

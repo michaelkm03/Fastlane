@@ -440,6 +440,11 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     }
 }
 
+- (void)startNewSession
+{
+    [self newSessionShouldStart:nil];
+}
+
 #pragma mark - NSNotifications
 
 - (void)newSessionShouldStart:(NSNotification *)notification

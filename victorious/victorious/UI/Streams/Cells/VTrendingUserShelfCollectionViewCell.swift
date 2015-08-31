@@ -55,7 +55,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     
     override var shelf: Shelf? {
         didSet {
-            if !VTrendingShelfCollectionViewCell.needsUpdate(fromShelf: oldValue, toShelf: shelf) {
+            if oldValue == shelf {
                 return
             }
             
@@ -72,7 +72,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     
     override var dependencyManager: VDependencyManager? {
         didSet {
-            if !VTrendingShelfCollectionViewCell.needsUpdate(fromDependencyManager: oldValue, toDependencyManager: dependencyManager) {
+            if oldValue == dependencyManager {
                 return
             }
             
@@ -96,6 +96,12 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
         }
     }
     
+    //MARK: - Getters
+    
+    private class func getUsernameText(shelf: UserShelf) -> String {
+        return VTagStringFormatter.databaseFormattedStringFromUser(shelf.user) ?? ""
+    }
+    
     private class func getPostsCountText(shelf: UserShelf) -> String {
         var countsText = ""
         let hasFollowersCount = shelf.followersCount.integerValue != 0
@@ -107,7 +113,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
             }
         }
         if hasFollowersCount {
-            let followersCount = numberFormatter.stringForInteger(shelf.postsCount.integerValue)
+            let followersCount = numberFormatter.stringForInteger(shelf.followersCount.integerValue)
             countsText += followersCount + " " + NSLocalizedString("followers", comment: "")
         }
         return countsText
@@ -180,7 +186,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     
     private func updateUsername() {
         if let shelf = shelf as? UserShelf, let dependencyManager = dependencyManager {
-            let formattedUsername = VTagStringFormatter.databaseFormattedStringFromUser(shelf.user)
+            let formattedUsername = VTrendingUserShelfCollectionViewCell.getUsernameText(shelf)
             usernameTextView.setupWithDatabaseFormattedText(formattedUsername, tagAttributes: [NSFontAttributeName : dependencyManager.usernameFont, NSForegroundColorAttributeName : dependencyManager.textColor], defaultAttributes: [NSFontAttributeName : dependencyManager.usernameFont, NSForegroundColorAttributeName : UIColor.whiteColor()], andTagTapDelegate: self)
         }
     }

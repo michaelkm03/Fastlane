@@ -52,6 +52,8 @@ static const CGFloat kAccessoryViewHeight = 44.0f;
 {
     [super viewDidLoad];
     
+    self.textView.accessibilityIdentifier = VAutomationIdentifierTextPostEditableMainField;
+    
     self.overlayButton = [[UIButton alloc] initWithFrame:self.view.bounds];
     [self.view insertSubview:self.overlayButton belowSubview:self.textView];
     [self.view v_addFitToParentConstraintsToSubview:self.overlayButton];

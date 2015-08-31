@@ -29,6 +29,7 @@
 #import "VImageSearchResultsFooterView.h"
 #import "VFooterActivityIndicatorView.h"
 #import "VDependencyManager.h"
+#import "victorious-Swift.h"
 
 @interface VAbstractStreamCollectionViewController () <VScrollPaginatorDelegate>
 
@@ -94,6 +95,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.collectionView.accessibilityIdentifier = VAutomationIDentifierStreamCollectionView;
 
     [self.collectionView registerNib:[VFooterActivityIndicatorView nibForSupplementaryView]
           forSupplementaryViewOfKind:UICollectionElementKindSectionFooter

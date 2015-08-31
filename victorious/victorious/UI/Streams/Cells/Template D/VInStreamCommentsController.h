@@ -15,6 +15,8 @@
  */
 @interface VInStreamCommentsController : NSObject <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /**
     The designated initializer for this class, performs basic setup on the provided collection view.
  
