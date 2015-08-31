@@ -90,7 +90,17 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         searchBar.delegate = self
         searchBar.placeholder = NSLocalizedString("Search people and hashtags", comment: "")
         if let searchTextField = searchBar.v_textField {
-            // search text field customization goes here
+            if let dependencyManager = self.dependencyManager {
+                if let textFont = dependencyManager.fontForKey(VDependencyManagerLabel2FontKey) {
+                    searchTextField.font = textFont
+                }
+                if let textColor = dependencyManager.colorForKey(VDependencyManagerSecondaryTextColorKey) {
+                    searchTextField.textColor = textColor
+                }
+                if let backgroundColor = dependencyManager.colorForKey(VDependencyManagerAccentColorKey) {
+                    searchTextField.backgroundColor = backgroundColor
+                }
+            }
         }
     }
 }
