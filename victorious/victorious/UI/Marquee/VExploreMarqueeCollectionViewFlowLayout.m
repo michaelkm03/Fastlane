@@ -20,9 +20,14 @@ static CGFloat const kMaxZoomDivisor = 30.0f;
     return YES;
 }
 
+/*
+ Cover flow animation taken from inset marquee flow layout
+ Only change made was to make screenWidth half of the width of collectionview
+*/
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
     NSArray *layoutAttributes = [super layoutAttributesForElementsInRect:rect];
+    // This is the only change made from inset marquee flow layout
     CGFloat screenWidth = CGRectGetWidth(self.collectionView.bounds) / 2;
     CGFloat newOffset = self.collectionView.contentOffset.x / screenWidth;
     CGFloat maxHorizontalOffset = screenWidth / kMaxHorizontalOffsetDivisor;
@@ -43,6 +48,9 @@ static CGFloat const kMaxZoomDivisor = 30.0f;
     return layoutAttributes;
 }
 
+/*
+ Responsible for making the scroll view stop at each item
+ */
 - (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset
                                  withScrollingVelocity:(CGPoint)velocity
 {
@@ -56,18 +64,15 @@ static CGFloat const kMaxZoomDivisor = 30.0f;
     UICollectionViewLayoutAttributes *candidateAttributes;
     for (UICollectionViewLayoutAttributes *attributes in attributesArray)
     {
-        if (attributes.representedElementCategory !=
-            UICollectionElementCategoryCell)
+        if (attributes.representedElementCategory != UICollectionElementCategoryCell)
         {
             continue;
         }
-        
         if ( !candidateAttributes )
         {
             candidateAttributes = attributes;
             continue;
         }
-        
         if ( fabs(attributes.center.x - proposedContentOffsetCenterX) < fabs(candidateAttributes.center.x - proposedContentOffsetCenterX) )
         {
             candidateAttributes = attributes;
