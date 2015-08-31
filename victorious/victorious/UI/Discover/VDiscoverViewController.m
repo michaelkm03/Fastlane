@@ -247,11 +247,8 @@ static NSString * const kVHeaderIdentifier = @"VDiscoverHeader";
 
 - (void)updatedFollowedTags
 {
-    if ( !self.loadedUserFollowing )
-    {
-        [self reloadSection:VDiscoverViewControllerSectionTrendingTags];
-    }
     self.loadedUserFollowing = YES;
+    [self reloadSection:VDiscoverViewControllerSectionTrendingTags];
 }
 
 - (void)updatedFollowedUsers
