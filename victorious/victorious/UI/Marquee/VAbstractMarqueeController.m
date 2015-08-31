@@ -117,8 +117,7 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 - (CGFloat)pageWidth
 {    
     Class<VSharedCollectionReusableViewMethods> itemCellClass = [self.class marqueeStreamItemCellClass];
-    _pageWidth = [itemCellClass desiredSizeWithCollectionViewBounds: self.collectionView.bounds].width;
-    return _pageWidth;
+    return [itemCellClass desiredSizeWithCollectionViewBounds:self.collectionView.bounds].width;
 }
 
 - (void)reset

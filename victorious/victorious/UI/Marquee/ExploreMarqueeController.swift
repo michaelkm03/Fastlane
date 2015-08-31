@@ -44,8 +44,4 @@ class ExploreMarqueeController: VInsetMarqueeController {
         let sideInset = streamItemCellWidth / 2
         return UIEdgeInsets(top: 0, left: sideInset, bottom: 0, right: sideInset)
     }
-    
-    override func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        
-    }
 }
