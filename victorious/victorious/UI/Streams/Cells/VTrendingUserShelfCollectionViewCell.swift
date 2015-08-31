@@ -159,8 +159,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
         
         //Add the height of the labels to find the entire height of the cell
         let titleHeight = shelf.title.frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.titleFont]).height
-        let username = Optional(shelf.user)?.name ?? ""
-        let usernameHeight = username.frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.usernameFont]).height
+        let usernameHeight = VTrendingUserShelfCollectionViewCell.getUsernameText(shelf).frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.usernameFont]).height
         let postCountHeight = VTrendingUserShelfCollectionViewCell.getPostsCountText(shelf).frameSizeForWidth(CGFloat.max, andAttributes: [NSFontAttributeName : dependencyManager.postsCountFont]).height
         
         let topContentHeight = max(titleHeight, Constants.followControlHeight)
@@ -171,7 +170,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
         
         return CGSizeMake(bounds.width, height)
     }
-
+    
     //MARK: - View updating
     
     override func updateFollowControlState() {
@@ -208,15 +207,15 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
         switch followControl.controlState {
         case .Unfollowed:
             if let shelf = shelf as? UserShelf {
-                    followControl.setControlState(.Loading, animated: true)
-                    target.followUser(shelf.user, withAuthorizedBlock: { () -> Void in
-                        followControl.controlState = .Loading
-                        },
-                        andCompletion: { [weak self] (user: VUser) -> Void in
-                            if let strongSelf = self {
-                                strongSelf.updateFollowControlState()
-                            }
-                        }, fromViewController: nil, withScreenName: VFollowSourceScreenTrendingUserShelf)
+                followControl.setControlState(.Loading, animated: true)
+                target.followUser(shelf.user, withAuthorizedBlock: { () -> Void in
+                    followControl.controlState = .Loading
+                    },
+                    andCompletion: { [weak self] (user: VUser) -> Void in
+                        if let strongSelf = self {
+                            strongSelf.updateFollowControlState()
+                        }
+                    }, fromViewController: nil, withScreenName: VFollowSourceScreenTrendingUserShelf)
             }
             else {
                 assertionFailure("The VTrendingUserShelfCollectionViewCell attempted to follow non-UserShelf shelf")
