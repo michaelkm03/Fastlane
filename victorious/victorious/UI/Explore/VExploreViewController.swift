@@ -122,6 +122,53 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
             v_navigationController().innerNavigationController.pushViewController(searchVC, animated: true)
         }
     }
+}
+
+extension VExploreViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        if indexPath.section < shelves.count {
+            let shelf = shelves[indexPath.section]
+            
+            if let subType = shelf.itemSubType {
+                switch subType {
+                case VStreamItemSubTypeMarquee:
+                    if let marqueeFactory = marqueeShelfFactory {
+                        return marqueeFactory.sizeWithCollectionViewBounds(collectionView.bounds, ofCellForStreamItem: shelf)
+                    }
+                case VStreamItemSubTypeTrendingTopic:
+                    if let trendingFactory = trendingTopicShelfFactory {
+                        return trendingFactory.sizeWithCollectionViewBounds(collectionView.bounds, ofCellForStreamItem: shelf)
+                    }
+                default:
+                    // Do not show a shelf if we don't recognize its type
+                    return CGSizeZero
+                }
+            }
+        }
+        // WARNING: Placeholder for recent content
+        return CGSize(width: 100, height: 100)
+    }
+}
+
+extension VExploreViewController : VHashtagSelectionResponder {
+    
+    func hashtagSelected(text: String!) {
+        if let hashtag = text, stream = dependencyManager?.hashtagStreamWithHashtag(hashtag) {
+            self.navigationController?.pushViewController(stream, animated: true)
+        }
+    }
+}
+
+extension VExploreViewController : VMarqueeSelectionDelegate {
+    func marquee(marquee: VAbstractMarqueeController!, selectedItem streamItem: VStreamItem!, atIndexPath path: NSIndexPath!, previewImage image: UIImage) {
+        if let cell = marquee.collectionView.cellForItemAtIndexPath(path) {
+            navigate(toStreamItem: streamItem, fromStream: marquee.shelf, withPreviewImage: image, inCell: cell)
+        }
+        else {
+            fatalError("Unable to retrive a collection view cell")
+        }
+    }
     
     private func navigate(toStream stream: VStream, atStreamItem streamItem: VStreamItem?) {
         let isShelf = stream.isShelf
@@ -220,53 +267,6 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
             let streamID = ( event.stream.hasShelfID() && event.fromShelf ) ? event.stream.shelfId : event.stream.streamId
             
             VContentViewPresenter.presentContentViewFromViewController(self, withDependencyManager: dependencyManager, forSequence: event.streamItem as? VSequence, inStreamWithID: streamID, commentID: nil, withPreviewImage: image)
-        }
-    }
-}
-
-extension VExploreViewController: UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        if indexPath.section < shelves.count {
-            let shelf = shelves[indexPath.section]
-            
-            if let subType = shelf.itemSubType {
-                switch subType {
-                case VStreamItemSubTypeMarquee:
-                    if let marqueeFactory = marqueeShelfFactory {
-                        return marqueeFactory.sizeWithCollectionViewBounds(collectionView.bounds, ofCellForStreamItem: shelf)
-                    }
-                case VStreamItemSubTypeTrendingTopic:
-                    if let trendingFactory = trendingTopicShelfFactory {
-                        return trendingFactory.sizeWithCollectionViewBounds(collectionView.bounds, ofCellForStreamItem: shelf)
-                    }
-                default:
-                    // Do not show a shelf if we don't recognize its type
-                    return CGSizeZero
-                }
-            }
-        }
-        // WARNING: Placeholder for recent content
-        return CGSize(width: 100, height: 100)
-    }
-}
-
-extension VExploreViewController : VHashtagSelectionResponder {
-    
-    func hashtagSelected(text: String!) {
-        if let hashtag = text, stream = dependencyManager?.hashtagStreamWithHashtag(hashtag) {
-            self.navigationController?.pushViewController(stream, animated: true)
-        }
-    }
-}
-
-extension VExploreViewController : VMarqueeSelectionDelegate {
-    func marquee(marquee: VAbstractMarqueeController!, selectedItem streamItem: VStreamItem!, atIndexPath path: NSIndexPath!, previewImage image: UIImage) {
-        if let cell = marquee.collectionView.cellForItemAtIndexPath(path) {
-            navigate(toStreamItem: streamItem, fromStream: marquee.shelf, withPreviewImage: image, inCell: cell)
-        }
-        else {
-            fatalError("Unable to retrive a collection view cell")
         }
     }
 }

@@ -12,7 +12,6 @@ import UIKit
 class ExploreMarqueeStreamItemCell: VInsetMarqueeStreamItemCell {
     
     override class func desiredSizeWithCollectionViewBounds(bounds: CGRect) -> CGSize {
-        let width = bounds.width
-        return CGSizeMake( width / 2, width / 2 )
+        return CGSizeMake( bounds.width / 2, bounds.width / 2 )
     }
 }

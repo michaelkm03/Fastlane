@@ -26,8 +26,7 @@ class ExploreMarqueeCollectionViewCell: VInsetMarqueeCollectionViewCell, VBackgr
     }
     
     override class func desiredSizeWithCollectionViewBounds(bounds: CGRect) -> CGSize {
-        let side = bounds.width
-        return CGSizeMake(side, side / 2)
+        return CGSizeMake(bounds.width, bounds.width / 2)
     }
 }
 
