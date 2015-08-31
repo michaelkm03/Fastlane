@@ -15,7 +15,7 @@ class ExploreMarqueeController: VInsetMarqueeController {
     }
     
     override func marqueeCellForCollectionView(collectionView: UICollectionView, atIndexPath indexPath: NSIndexPath) -> VAbstractMarqueeCollectionViewCell {
-        if let collectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(ExploreMarqueeCollectionViewCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as? VAbstractMarqueeCollectionViewCell {
+        if let collectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(ExploreMarqueeCollectionViewCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as? ExploreMarqueeCollectionViewCell {
             if collectionViewCell.marquee != self {
                 collectionViewCell.marquee = self
                 collectionViewCell.dependencyManager = self.dependencyManager

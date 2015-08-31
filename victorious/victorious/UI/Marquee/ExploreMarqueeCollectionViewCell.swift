@@ -9,7 +9,16 @@
 import UIKit
 
 @objc(ExploreMarqueeCollectionViewCell)
-class ExploreMarqueeCollectionViewCell: VInsetMarqueeCollectionViewCell {
+class ExploreMarqueeCollectionViewCell: VInsetMarqueeCollectionViewCell, VBackgroundContainer {
+
+    override var dependencyManager: VDependencyManager? {
+        didSet {
+            if let dependencyManager = dependencyManager {
+                dependencyManager.addBackgroundToBackgroundHost(self)
+            }
+        }
+    }
+    
     override func awakeFromNib() {
         marqueeCollectionView.registerNib(ExploreMarqueeStreamItemCell.nibForCell(), forCellWithReuseIdentifier: ExploreMarqueeStreamItemCell.suggestedReuseIdentifier())
         let flowLayout = VExploreMarqueeCollectionViewFlowLayout()
@@ -19,5 +28,11 @@ class ExploreMarqueeCollectionViewCell: VInsetMarqueeCollectionViewCell {
     override class func desiredSizeWithCollectionViewBounds(bounds: CGRect) -> CGSize {
         let side = bounds.width
         return CGSizeMake(side, side / 2)
+    }
+}
+
+extension ExploreMarqueeCollectionViewCell: VBackgroundContainer {
+    func backgroundContainerView() -> UIView! {
+        return contentView
     }
 }
