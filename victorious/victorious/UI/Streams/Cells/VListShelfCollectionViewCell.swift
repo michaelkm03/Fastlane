@@ -50,7 +50,7 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
     /// The shelf whose content will populate this cell.
     var shelf: Shelf? {
         didSet {
-            if let oldValue = oldValue where oldValue.isEqualTo(shelf) {
+            if oldValue == shelf {
                 return
             }
             

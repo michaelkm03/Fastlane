@@ -50,7 +50,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
     
     override var shelf: Shelf? {
         didSet {
-            if let oldValue = oldValue where oldValue.isEqualTo(shelf) {
+            if oldValue == shelf {
                 return
             }
             
