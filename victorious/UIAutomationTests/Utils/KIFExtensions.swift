@@ -35,4 +35,13 @@ extension KIFTestActor {
             println( "\(Int(interval)-i)..." )
         }
     }
+    
+    func scrollToBottomOfTableView( accessibilityIdentifier: String ) {
+        if let tableView = self.tester().waitForViewWithAccessibilityLabel( accessibilityIdentifier ) as? UITableView {
+            let lastSection = max(tableView.numberOfSections()-1, 0)
+            let lastRow = max(tableView.numberOfRowsInSection(lastSection)-1, 0)
+            let indexPath = NSIndexPath(forRow: lastRow, inSection: lastSection)
+            tableView.scrollToRowAtIndexPath( indexPath, atScrollPosition: .Middle, animated: false)
+        }
+    }
 }

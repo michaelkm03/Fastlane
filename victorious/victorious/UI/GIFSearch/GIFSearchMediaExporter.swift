@@ -28,52 +28,54 @@ struct GIFSearchMediaExporter {
     /// :param: completion A completion closure called wehn all opeartions are complete
     func loadMedia( gifSearchResult: GIFSearchResult, completion: GIFSearchMediaExporterCompletion ) {
         
-        let downloadPath = self.downloadPathForRemotePath( gifSearchResult.mp4Url )
-        if let previewImageURL = NSURL(string: gifSearchResult.thumbnailStillUrl),
-            let videoURL = NSURL(string: gifSearchResult.mp4Url ),
-            let videoOutputStream = NSOutputStream(toFileAtPath: downloadPath, append: false ) {
-                
-                let videoOperation = AFURLConnectionOperation(request: NSURLRequest(URL: videoURL))
-                videoOperation.completionBlock = {
+        if let searchResultURL = NSURL(string: gifSearchResult.mp4Url) {
+            let downloadURL = self.downloadURLForRemoteURL( searchResultURL )
+            if let previewImageURL = NSURL(string: gifSearchResult.thumbnailStillUrl),
+                let videoURL = NSURL(string: gifSearchResult.mp4Url ),
+                let videoOutputStream = NSOutputStream( URL: downloadURL, append: false ) {
                     
-                    // Load the image synchronously before we leave this thread
-                    let previewImage: UIImage? = {
-                        if let previewImageData = NSData(contentsOfURL: previewImageURL, options: nil, error: nil) {
-                            return UIImage(data: previewImageData)
+                    let videoOperation = AFURLConnectionOperation(request: NSURLRequest(URL: videoURL))
+                    videoOperation.completionBlock = {
+                        
+                        // Load the image synchronously before we leave this thread
+                        let previewImage: UIImage? = {
+                            if let previewImageData = NSData(contentsOfURL: previewImageURL, options: nil, error: nil) {
+                                return UIImage(data: previewImageData)
+                            }
+                            return nil
+                        }()
+                        
+                        // Dispatch back to main thread for completion
+                        dispatch_async( dispatch_get_main_queue() ) {
+                            completion(
+                                previewImage: previewImage,
+                                mediaUrl: downloadURL,
+                                error: nil
+                            )
                         }
-                        return nil
-                    }()
-                    
-                    // Dispatch back to main thread for completion
-                    dispatch_async( dispatch_get_main_queue() ) {
-                        completion(
-                            previewImage: previewImage,
-                            mediaUrl: NSURL(fileURLWithPath: downloadPath),
-                            error: nil
-                        )
                     }
-                }
-                videoOperation.outputStream = videoOutputStream
-                self.operationQueue.addOperation( videoOperation )
+                    videoOperation.outputStream = videoOutputStream
+                    self.operationQueue.addOperation( videoOperation )
+            }
         }
     }
     
-    private func downloadPathForRemotePath( remotePath: String ) -> String {
+    private func downloadURLForRemoteURL( remoteURL: NSURL ) -> NSURL {
         
-        let filename = remotePath.lastPathComponent
-        let uniqueID = remotePath.stringByDeletingLastPathComponent.lastPathComponent
-        let paths = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true )
-        if var path = paths.first as? String {
-            path = path.stringByAppendingPathComponent( "com.getvictorious.gifSearch" )
+        if let filename = remoteURL.lastPathComponent,
+           let uniqueID = remoteURL.URLByDeletingLastPathComponent?.lastPathComponent,
+           let cacheDirectoryPath = NSSearchPathForDirectoriesInDomains( NSSearchPathDirectory.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true ).first as? String,
+           let cacheDirectoryURL = NSURL(fileURLWithPath: cacheDirectoryPath) {
+            
+            let subdirectory = cacheDirectoryURL.URLByAppendingPathComponent( "com.getvictorious.gifSearch" )
             
             var isDirectory: ObjCBool = false
-            if !NSFileManager.defaultManager().fileExistsAtPath( path, isDirectory: &isDirectory ) || isDirectory {
-                NSFileManager.defaultManager().createDirectoryAtPath( path, withIntermediateDirectories: true, attributes: nil, error: nil)
+            if !NSFileManager.defaultManager().fileExistsAtPath( subdirectory.path!, isDirectory: &isDirectory ) || !isDirectory {
+                NSFileManager.defaultManager().createDirectoryAtPath( subdirectory.path!, withIntermediateDirectories: true, attributes: nil, error: nil)
             }
             
             // Create a unique URL for the gif
-            path = path.stringByAppendingPathComponent( uniqueID + "-" + filename )
-            return path
+            return subdirectory.URLByAppendingPathComponent( "\(uniqueID)-\(filename)" )
         }
         fatalError( "Unable to find file path for temporary media download." )
     }

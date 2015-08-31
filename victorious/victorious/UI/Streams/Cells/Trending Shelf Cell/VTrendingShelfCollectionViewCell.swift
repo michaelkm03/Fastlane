@@ -28,9 +28,11 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     
     var trackingMinRequiredCellVisibilityRatio: CGFloat = 0.0
     
+    private let failureCellFactory = VNoContentCollectionViewCellFactory(acceptableContentClasses: nil)
+    
     var shelf: Shelf? {
         didSet {
-            if !VTrendingShelfCollectionViewCell.needsUpdate(fromShelf: oldValue, toShelf: shelf) {
+            if oldValue == shelf {
                 return
             }
             
@@ -58,7 +60,7 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     
     var dependencyManager: VDependencyManager? {
         didSet {
-            if !VTrendingShelfCollectionViewCell.needsUpdate(fromDependencyManager: oldValue, toDependencyManager: dependencyManager) {
+            if oldValue == dependencyManager {
                 return
             }
             
@@ -68,22 +70,6 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
                 dependencyManager.addBackgroundToBackgroundHost(self)
             }
         }
-    }
-    
-    /// Returns true when the 2 provided shelves differ enough to require a UI update
-    static func needsUpdate(fromShelf oldValue: Shelf?, toShelf shelf: Shelf?) -> Bool {
-        if shelf == oldValue,
-            let newStreamItems = shelf?.streamItems,
-            let oldStreamItems = oldValue?.streamItems where newStreamItems.isEqualToOrderedSet(oldStreamItems) {
-            //The shelf AND its content are the same, no need to update
-            return false
-        }
-        return true
-    }
-    
-    /// Returns true when the 2 provided dependency managers differ enough to require a UI update
-    static func needsUpdate(fromDependencyManager oldValue: VDependencyManager?, toDependencyManager dependencyManager: VDependencyManager?) -> Bool {
-        return dependencyManager != oldValue
     }
     
     /// Override in subclasses to update the follow button at the proper times
@@ -123,6 +109,10 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
         }
     }
     
+    override func prepareForReuse() {
+        collectionView.contentOffset = CGPoint.zeroPoint
+    }
+    
 }
 
 extension VTrendingShelfCollectionViewCell : UICollectionViewDataSource {
@@ -139,7 +129,8 @@ extension VTrendingShelfCollectionViewCell : UICollectionViewDataSource {
             return cell
         }
         assertionFailure("VTrendingShelfCollectionViewCell was asked to display an object that isn't a stream item.")
-        return UICollectionViewCell()
+        failureCellFactory.registerNoContentCellWithCollectionView(collectionView)
+        return failureCellFactory.noContentCellForCollectionView(collectionView, atIndexPath: indexPath)
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -184,7 +175,7 @@ extension VTrendingShelfCollectionViewCell: UICollectionViewDelegateFlowLayout {
 
 extension VTrendingShelfCollectionViewCell: VBackgroundContainer {
     
-    func backgroundContainerView() -> UIView! {
+    func backgroundContainerView() -> UIView {
         return contentView
     }
     

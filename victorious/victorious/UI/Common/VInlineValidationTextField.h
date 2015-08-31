@@ -13,7 +13,7 @@ typedef NS_ENUM(NSInteger, VTextFieldStyle)
     VTextFieldStyleLoginRegistration,
 };
 
-@class VStringValidator;
+@class VStringValidator, VInlineValidationView;
 
 /**
  *  VInlineValidationTextField is a UITextField subclass for providing inline validation. Provide VInlineValidationTextField with a validator and set it's showInlineValidation to YES for it to update.
@@ -31,6 +31,8 @@ typedef NS_ENUM(NSInteger, VTextFieldStyle)
 @property (nonatomic, strong) NSAttributedString *activePlaceholder;
 
 @property (nonatomic, readonly) BOOL hasResignedFirstResponder;
+
+@property (nonatomic, readonly) VInlineValidationView *inlineValidationView;
 
 /**
  *  Show invalid text with a conditional animation. Will not show animation or text while hasResignedFirstResponder AND force are NO.

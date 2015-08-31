@@ -164,7 +164,7 @@ extension TrendingTopicShelfCollectionViewCell: UICollectionViewDelegate {
 
 extension TrendingTopicShelfCollectionViewCell: VBackgroundContainer {
     
-    func backgroundContainerView() -> UIView! {
+    func backgroundContainerView() -> UIView {
         return contentView
     }
 }

@@ -54,7 +54,8 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
         if let dependencyManager = previewView.dependencyManager {
             if streamItem?.itemSubType != VStreamItemSubTypeText {
                 if let imagePreviewView = previewView as? VImagePreviewView {
-                    imagePreviewView.previewImageView().contentMode = UIViewContentMode.ScaleAspectFit
+                    previewView.backgroundColor = UIColor.clearColor()
+                    imagePreviewView.previewImageView().contentMode = UIViewContentMode.ScaleAspectFill
                 }
                 previewView.streamItem = streamItem
             }
@@ -64,10 +65,14 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
                 imagePreviewView.setBackgroundContainerViewVisible(true)
                 previewView.backgroundColor = dependencyManager.textPostBackgroundColor
             }
-            if previewView.superview == nil {
-                previewViewContainer.addSubview(previewView)
-                v_addFitToParentConstraintsToSubview(previewView)
-            }
+        }
+        else {
+            previewView.streamItem = streamItem
+        }
+        
+        if previewView.superview == nil {
+            previewViewContainer.addSubview(previewView)
+            v_addFitToParentConstraintsToSubview(previewView)
         }
     }
     
@@ -83,6 +88,17 @@ class VShelfContentCollectionViewCell: VBaseCollectionViewCell {
                 }
             }
         }
+    }
+    
+    func onStreamItemSet() {
+        if previewView.canHandleStreamItem(streamItem) {
+            updatePreviewView(streamItem)
+            return
+        }
+        previewView.removeFromSuperview()
+        
+        previewView = VStreamItemPreviewView(streamItem: streamItem)
+        updatePreviewView(streamItem)
     }
     
     required override init(frame: CGRect) {
@@ -138,7 +154,7 @@ extension VShelfContentCollectionViewCell: VStreamCellComponentSpecialization {
 
 extension VShelfContentCollectionViewCell: VBackgroundContainer {
     
-    func loadingBackgroundContainerView() -> UIView! {
+    func loadingBackgroundContainerView() -> UIView {
         return previewViewContainer
     }
     
