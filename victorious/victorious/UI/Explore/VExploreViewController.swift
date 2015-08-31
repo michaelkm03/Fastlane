@@ -10,24 +10,24 @@ import UIKit
 
 /// Base view controller for the explore screen that gets
 /// presented when "explore" button on the tab bar is tapped
-class VExploreViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate, UICollectionViewDelegateFlowLayout, VMarqueeSelectionDelegate {
+class VExploreViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate, UICollectionViewDelegateFlowLayout {
+    
+    private struct Constants {
+        static let sequenceIDKey = "sequenceID"
+        static let marqueeDestinationDirectory = "destionationDirectory"
+        static let trendingTopicShelfKey = "trendingShelf"
+    }
     
     @IBOutlet weak private var searchBar: UISearchBar!
     @IBOutlet weak private var collectionView: UICollectionView!
     private var trendingTopicShelfFactory: TrendingTopicShelfFactory?
-    private var marqueeFactory: VMarqueeCellFactory?
+    private var marqueeShelfFactory: VMarqueeCellFactory?
     
     // Array of shelves to be displayed before recent content
     var shelves: [Shelf] = []
     
     /// The dependencyManager that is used to manage dependencies of explore screen
     private(set) var dependencyManager: VDependencyManager?
-    
-    private struct Constants {
-        let sequenceIDKey = "sequenceID"
-        let marqueeDestinationDirectory = "destionationDirectory"
-        let trendingTopicShelfKey = "trendingShelf"
-    }
     
     /// MARK: - View Controller Initialization
     
@@ -36,9 +36,9 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         if let exploreVC = storyboard.instantiateInitialViewController() as? VExploreViewController {
             exploreVC.dependencyManager = dependencyManager
             // Factory for marquee shelf
-            exploreVC.marqueeFactory = VMarqueeCellFactory(dependencyManager: dependencyManager)
+            exploreVC.marqueeShelfFactory = VMarqueeCellFactory(dependencyManager: dependencyManager)
             // Factory for trending topic shelf
-            exploreVC.trendingTopicShelfFactory = dependencyManager.templateValueOfType(TrendingTopicShelfFactory.self, forKey: Constants().trendingTopicShelfKey) as? TrendingTopicShelfFactory
+            exploreVC.trendingTopicShelfFactory = dependencyManager.templateValueOfType(TrendingTopicShelfFactory.self, forKey: Constants.trendingTopicShelfKey) as? TrendingTopicShelfFactory
             return exploreVC
         }
         fatalError("Failed to instantiate an explore view controller!")
@@ -53,8 +53,8 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         automaticallyAdjustsScrollViewInsets = false;
         extendedLayoutIncludesOpaqueBars = true;
         
-        marqueeFactory?.registerCellsWithCollectionView(self.collectionView)
-        marqueeFactory?.marqueeController?.setSelectionDelegate(self)
+        marqueeShelfFactory?.registerCellsWithCollectionView(self.collectionView)
+        marqueeShelfFactory?.marqueeController?.setSelectionDelegate(self)
         
         self.collectionView.backgroundColor = UIColor.whiteColor()
         
@@ -82,7 +82,7 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
             if let subType = shelf.itemSubType {
                 switch subType {
                 case VStreamItemSubTypeMarquee:
-                    if let marqueeCell = marqueeFactory?.collectionView(collectionView, cellForStreamItem: shelf, atIndexPath: indexPath) as?ExploreMarqueeCollectionViewCell {
+                    if let marqueeCell = marqueeShelfFactory?.collectionView(collectionView, cellForStreamItem: shelf, atIndexPath: indexPath) as? ExploreMarqueeCollectionViewCell {
                         return marqueeCell
                     }
                 case VStreamItemSubTypeTrendingTopic:
@@ -123,23 +123,13 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         }
     }
     
-    ///MARK: - MarqueeSelectionDelegate
-    func marquee(marquee: VAbstractMarqueeController!, selectedItem streamItem: VStreamItem!, atIndexPath path: NSIndexPath!, previewImage image: UIImage) {
-        if let cell = marquee.collectionView.cellForItemAtIndexPath(path) {
-            navigate(toStreamItem: streamItem, fromStream: marquee.shelf, withPreviewImage: image, inCell: cell)
-        }
-        else {
-            fatalError("Unable to retrive a collection view cell")
-        }
-    }
-    
-    func navigate(toStream stream: VStream, atStreamItem streamItem: VStreamItem?) {
+    private func navigate(toStream stream: VStream, atStreamItem streamItem: VStreamItem?) {
         let isShelf = stream.isShelf
         if stream.isSingleStream || isShelf {
             var streamCollection: VStreamCollectionViewController?
             
             // The config dictionary here is initialized to solve objc/swift dictionary type inconsistency
-            let baseDict = [Constants().sequenceIDKey : stream.remoteId]
+            let baseDict = [Constants.sequenceIDKey : stream.remoteId]
             var configDict = NSMutableDictionary(dictionary: baseDict)
             if let name = stream.name {
                 configDict[VDependencyManagerTitleKey] = name
@@ -166,9 +156,9 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
                 }
             }
             
-            streamCollection?.currentStream = stream
-            streamCollection?.targetStreamItem = streamItem
             if let streamViewController = streamCollection {
+                streamViewController.currentStream = stream
+                streamViewController.targetStreamItem = streamItem
                 navigationController?.pushViewController(streamViewController, animated: true)
             }
         }
@@ -176,7 +166,7 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         else if stream.isStreamOfStreams {
             if let directory = dependencyManager?.templateValueOfType(
                 VDirectoryCollectionViewController.self,
-                forKey: Constants().marqueeDestinationDirectory ) as? VDirectoryCollectionViewController {
+                forKey: Constants.marqueeDestinationDirectory ) as? VDirectoryCollectionViewController {
                     directory.currentStream = stream
                     directory.title = stream.name
                     directory.targetStreamItem = streamItem
@@ -196,7 +186,7 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         }
     }
     
-    func navigate(toStreamItem streamItem: VStreamItem, fromStream stream: VStream, withPreviewImage image: UIImage, inCell cell: UICollectionViewCell) {
+    private func navigate(toStreamItem streamItem: VStreamItem, fromStream stream: VStream, withPreviewImage image: UIImage, inCell cell: UICollectionViewCell) {
         /// Marquee item selection tracking
         let params = [ VTrackingKeyName : streamItem.name ?? "",
             VTrackingKeyRemoteId : streamItem.remoteId ?? ""]
@@ -224,7 +214,7 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         }
     }
     
-    func showContentView(forCellEvent event: StreamCellContext, trackingInfo info: [String : AnyObject], previewImage image: UIImage) {
+    private func showContentView(forCellEvent event: StreamCellContext, trackingInfo info: [String : AnyObject], previewImage image: UIImage) {
         
         if let streamItem = event.streamItem as? VSequence {
             let streamID = ( event.stream.hasShelfID() && event.fromShelf ) ? event.stream.shelfId : event.stream.streamId
@@ -243,15 +233,16 @@ extension VExploreViewController: UICollectionViewDelegateFlowLayout {
             if let subType = shelf.itemSubType {
                 switch subType {
                 case VStreamItemSubTypeMarquee:
-                    if let size = marqueeFactory?.sizeWithCollectionViewBounds(collectionView.bounds, ofCellForStreamItem: shelf) {
-                        return size
+                    if let marqueeFactory = marqueeShelfFactory {
+                        return marqueeFactory.sizeWithCollectionViewBounds(collectionView.bounds, ofCellForStreamItem: shelf)
                     }
                 case VStreamItemSubTypeTrendingTopic:
                     if let trendingFactory = trendingTopicShelfFactory {
                         return trendingFactory.sizeWithCollectionViewBounds(collectionView.bounds, ofCellForStreamItem: shelf)
                     }
                 default:
-                    return CGSize(width: self.collectionView.bounds.width, height: 150)
+                    // Do not show a shelf if we don't recognize its type
+                    return CGSizeZero
                 }
             }
         }
@@ -265,6 +256,17 @@ extension VExploreViewController : VHashtagSelectionResponder {
     func hashtagSelected(text: String!) {
         if let hashtag = text, stream = dependencyManager?.hashtagStreamWithHashtag(hashtag) {
             self.navigationController?.pushViewController(stream, animated: true)
+        }
+    }
+}
+
+extension VExploreViewController : VMarqueeSelectionDelegate {
+    func marquee(marquee: VAbstractMarqueeController!, selectedItem streamItem: VStreamItem!, atIndexPath path: NSIndexPath!, previewImage image: UIImage) {
+        if let cell = marquee.collectionView.cellForItemAtIndexPath(path) {
+            navigate(toStreamItem: streamItem, fromStream: marquee.shelf, withPreviewImage: image, inCell: cell)
+        }
+        else {
+            fatalError("Unable to retrive a collection view cell")
         }
     }
 }
