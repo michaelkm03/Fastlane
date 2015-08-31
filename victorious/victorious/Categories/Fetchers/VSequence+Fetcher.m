@@ -206,23 +206,10 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
         // Make sure aspect ratio is within bounds
         const BOOL isVideo = self.isVideo || self.isGifStyle.boolValue;
         CGFloat min = isVideo ? minAspectRatio : CGFLOAT_MIN;
-        return [self clampedValue:aspectRatio min:min max:kMaximumAspectRatio];
+        return CLAMP(min, aspectRatio, kMaximumAspectRatio);
     }
     
     return 1.0f;
-}
-
-- (CGFloat)clampedValue:(CGFloat)value min:(CGFloat)min max:(CGFloat)max
-{
-    if (value > max)
-    {
-        return max;
-    }
-    else if (value < min)
-    {
-        return min;
-    }
-    return value;
 }
 
 - (NSArray *)initialImageURLs
