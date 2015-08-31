@@ -336,7 +336,6 @@
 		03C1859119B42CEA00E27D05 /* MuseoSans-100.otf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1858E19B42CEA00E27D05 /* MuseoSans-100.otf */; };
 		03C1859219B42CEA00E27D05 /* MuseoSans-300.otf in Resources */ = {isa = PBXBuildFile; fileRef = 03C1858F19B42CEA00E27D05 /* MuseoSans-300.otf */; };
 		03C185A719B42D3000E27D05 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C1859519B42D3000E27D05 /* Crashlytics.framework */; };
-		03C185A819B42D3000E27D05 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C1859619B42D3000E27D05 /* FacebookSDK.framework */; };
 		03C185B819B42E5D00E27D05 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185AF19B42E5D00E27D05 /* NSData+Base64.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		03C185B919B42E5D00E27D05 /* OAuth+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185B119B42E5D00E27D05 /* OAuth+Additions.m */; };
 		03C185BA19B42E5D00E27D05 /* OAuthCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185B319B42E5D00E27D05 /* OAuthCore.m */; };
@@ -1917,7 +1916,6 @@
 		03C1858F19B42CEA00E27D05 /* MuseoSans-300.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-300.otf"; sourceTree = "<group>"; };
 		03C1859019B42CEA00E27D05 /* MuseoSans-500.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-500.otf"; sourceTree = "<group>"; };
 		03C1859519B42D3000E27D05 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
-		03C1859619B42D3000E27D05 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		03C185A619B42D3000E27D05 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		03C185AE19B42E5D00E27D05 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		03C185AF19B42E5D00E27D05 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
@@ -3742,7 +3740,6 @@
 				DBD02A7F19F5863500E0AC95 /* AVFoundation.framework in Frameworks */,
 				DBD02A8019F5863500E0AC95 /* CoreMedia.framework in Frameworks */,
 				DBD02A7A19F5860A00E0AC95 /* AdSupport.framework in Frameworks */,
-				03C185A819B42D3000E27D05 /* FacebookSDK.framework in Frameworks */,
 				03C185A719B42D3000E27D05 /* Crashlytics.framework in Frameworks */,
 				03610584194140AA0069D49E /* libsqlite3.dylib in Frameworks */,
 				BE171D7C1868BE64004E5202 /* CoreGraphics.framework in Frameworks */,
@@ -5099,7 +5096,6 @@
 				DBAD88EA19F5B7F200D678A0 /* Ad Networks */,
 				038B7F9419DB8D2500F739DF /* ADEUMInstrumentation.framework */,
 				03C1859519B42D3000E27D05 /* Crashlytics.framework */,
-				03C1859619B42D3000E27D05 /* FacebookSDK.framework */,
 				03CE66F919B59F260011BB9E /* Image Effects */,
 				03C185A619B42D3000E27D05 /* Reveal.framework */,
 				03C185AD19B42E5D00E27D05 /* TWAPIManager */,
