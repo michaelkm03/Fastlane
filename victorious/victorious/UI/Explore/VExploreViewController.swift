@@ -16,6 +16,7 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         static let sequenceIDKey = "sequenceID"
         static let marqueeDestinationDirectory = "destionationDirectory"
         static let trendingTopicShelfKey = "trendingShelf"
+        static let destinationStreamKey = "destinationStream"
     }
     
     @IBOutlet weak private var searchBar: UISearchBar!
@@ -183,6 +184,7 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
             }
             
             // Navigating to a shelf
+            // WARNING: This shelf portion may need rework when merging in recent post
             if isShelf {
                 configDict[VStreamCollectionViewControllerStreamURLKey] = stream.apiPath
                 if let childDependencyManager = self.dependencyManager?.childDependencyManagerWithAddedConfiguration(configDict as [NSObject : AnyObject]) {
@@ -198,9 +200,7 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
             }
             // Navigating to a single stream
             else {
-                if let childDependencyManager = self.dependencyManager?.childDependencyManagerWithAddedConfiguration(configDict as [NSObject : AnyObject]) {
-                    streamCollection = VStreamCollectionViewController.newWithDependencyManager(childDependencyManager)
-                }
+                streamCollection = dependencyManager?.templateValueOfType(VStreamCollectionViewController.self, forKey: Constants.destinationStreamKey, withAddedDependencies: configDict as [NSObject : AnyObject]) as? VStreamCollectionViewController
             }
             
             if let streamViewController = streamCollection {

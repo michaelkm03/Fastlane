@@ -4472,6 +4472,427 @@
                         "alpha":255
                     }
                 },
+                "destinationStream": {
+                  "name": "stream.screen",
+                  "title": null,
+                  "canAddContent": null,
+                  "commentsScreen": {
+                    "name": "comments.screen",
+                    "title": "Comments",
+                    "background": {
+                      "name": "solidColor.background",
+                      "color": {
+                        "red": 255,
+                        "green": 255,
+                        "blue": 255,
+                        "alpha": 255
+                      }
+                    },
+                    "color.link": {
+                      "red": 184,
+                      "green": 54,
+                      "blue": 191,
+                      "alpha": 1
+                    },
+                    "color.text.content": {
+                      "red": 0,
+                      "green": 0,
+                      "blue": 0,
+                      "alpha": 255
+                    },
+                    "font.header": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 13
+                    },
+                    "font.label2": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 12
+                    },
+                    "play_video_icon": {
+                      "imageURL": "D_play_video_icon"
+                    },
+                    "tracking": {
+                      "view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/component_view\/comments%2Escreen"]
+                    },
+                    "commentBar": {
+                      "commentPrompt": "Leave a comment or a post",
+                      "commentConfirmationText": "Send",
+                      "gifIcon": {
+                        "imageURL": "GIF"
+                      },
+                      "imageIcon": {
+                        "imageURL": "Image"
+                      },
+                      "mainCommentBarBackground": {
+                        "name": "solidColor.background",
+                        "color": {
+                          "red": 255,
+                          "green": 255,
+                          "blue": 255,
+                          "alpha": 255
+                        }
+                      },
+                      "name": "standard.commentBar",
+                      "supplementaryCommentBarBackground": {
+                        "name": "solidColor.background",
+                        "color": {
+                          "red": 241,
+                          "green": 241,
+                          "blue": 241,
+                          "alpha": 255
+                        }
+                      },
+                      "videoIcon": {
+                        "imageURL": "Video"
+                      }
+                    },
+                    "id": "55e4d3886d5c2"
+                  },
+                  "background": {
+                    "name": "solidColor.background",
+                    "color": {
+                      "red": 241,
+                      "green": 241,
+                      "blue": 241,
+                      "alpha": 255
+                    }
+                  },
+                  "tracking": {
+                    "view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/component_view\/stream%2Escreen"]
+                  },
+                  "createSequenceIcon": {
+                    "imageURL": "createContentButton"
+                  },
+                  "follow_user_icon": {
+                    "imageURL": "follow_user_icon"
+                  },
+                  "followed_user_icon": {
+                    "imageURL": "followed_user_icon"
+                  },
+                  "followed_user_background_icon": {
+                    "imageURL": "followed_user_background_icon"
+                  },
+                  "marqueeCell": {
+                    "name": "inset.marqueeCell",
+                    "font.header": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 15
+                    },
+                    "loadingBackground": {
+                      "name": "tilePattern.background",
+                      "color": {
+                        "red": 56,
+                        "green": 199,
+                        "blue": 239,
+                        "alpha": 1
+                      },
+                      "image": {
+                        "imageURL": "geometric_pattern"
+                      },
+                      "tiltParallax": true,
+                      "shimmerAnimationActive": true
+                    },
+                    "orIcon": {
+                      "imageURL": "D_pollOr"
+                    },
+                    "color.standard.textPost": {
+                      "red": 56,
+                      "green": 199,
+                      "blue": 239,
+                      "alpha": 1
+                    },
+                    "background": {
+                      "name": "solidColor.background",
+                      "color": {
+                        "red": 48,
+                        "green": 169,
+                        "blue": 203,
+                        "alpha": 1
+                      }
+                    },
+                    "color.text": {
+                      "red": 255,
+                      "green": 255,
+                      "blue": 255,
+                      "alpha": 255
+                    },
+                    "font.paragraph": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 15
+                    },
+                    "font.heading1": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 20
+                    }
+                  },
+                  "streamCell": {
+                    "background": {
+                      "name": "solidColor.background",
+                      "color": {
+                        "red": 255,
+                        "green": 255,
+                        "blue": 255,
+                        "alpha": 255
+                      }
+                    },
+                    "color.accent.secondary": {
+                      "red": 241,
+                      "green": 241,
+                      "blue": 241,
+                      "alpha": 255
+                    },
+                    "color.text": {
+                      "red": 51,
+                      "green": 51,
+                      "blue": 51,
+                      "alpha": 255
+                    },
+                    "color.text.content": {
+                      "red": 102,
+                      "green": 102,
+                      "blue": 102,
+                      "alpha": 255
+                    },
+                    "color.link": {
+                      "red": 184,
+                      "green": 54,
+                      "blue": 191,
+                      "alpha": 1
+                    },
+                    "color.link.secondary": {
+                      "red": 241,
+                      "green": 241,
+                      "blue": 241,
+                      "alpha": 255
+                    },
+                    "font.label3": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 11
+                    },
+                    "loadingBackground": {
+                      "name": "tilePattern.background",
+                      "color": {
+                        "red": 56,
+                        "green": 199,
+                        "blue": 239,
+                        "alpha": 1
+                      },
+                      "image": {
+                        "imageURL": "geometric_pattern"
+                      },
+                      "tiltParallax": true,
+                      "shimmerAnimationActive": true
+                    },
+                    "name": "sleek.streamCell",
+                    "showComments": true,
+                    "color.standard.textPost": {
+                      "red": 56,
+                      "green": 199,
+                      "blue": 239,
+                      "alpha": 1
+                    },
+                    "orIcon": {
+                      "imageURL": "D_pollOr"
+                    },
+                    "comment_icon": {
+                      "imageURL": "D_comment_icon"
+                    },
+                    "share_icon": {
+                      "imageURL": "D_share_icon"
+                    },
+                    "gif_icon": {
+                      "imageURL": "D_gif_icon"
+                    },
+                    "meme_icon": {
+                      "imageURL": "D_meme_icon"
+                    },
+                    "repost_icon": {
+                      "imageURL": "D_repost_icon"
+                    },
+                    "repost_success_icon": {
+                      "imageURL": "D_repost_success_icon"
+                    },
+                    "likeButtonEnabled": true,
+                    "shouldShowComments": false,
+                    "open_image_icon": {
+                      "imageURL": "open_image_icon"
+                    },
+                    "watch_video_icon": {
+                      "imageURL": "watch_video_icon"
+                    },
+                    "watch_gif_icon": {
+                      "imageURL": "watch_gif_icon"
+                    },
+                    "color.text.secondary": {
+                      "red": 255,
+                      "green": 255,
+                      "blue": 255,
+                      "alpha": 255
+                    }
+                  },
+                  "listShelf": {
+                    "name": "list.shelf",
+                    "background": {
+                      "name": "solidColor.background",
+                      "color": {
+                        "red": 235,
+                        "green": 236,
+                        "blue": 240,
+                        "alpha": 255
+                      }
+                    },
+                    "font.label3": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 11
+                    },
+                    "color.text": {
+                      "red": 38,
+                      "green": 39,
+                      "blue": 38,
+                      "alpha": 255
+                    },
+                    "font.paragraph": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 13
+                    },
+                    "color.link": {
+                      "red": 255,
+                      "green": 255,
+                      "blue": 255,
+                      "alpha": 255
+                    },
+                    "font.header": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 18
+                    },
+                    "color.accent": {
+                      "red": 56,
+                      "green": 199,
+                      "blue": 239,
+                      "alpha": 1
+                    },
+                    "loadingBackground": {
+                      "name": "tilePattern.background",
+                      "color": {
+                        "red": 56,
+                        "green": 199,
+                        "blue": 239,
+                        "alpha": 1
+                      },
+                      "image": {
+                        "imageURL": "geometric_pattern"
+                      },
+                      "tiltParallax": true,
+                      "shimmerAnimationActive": true
+                    },
+                    "font.label2": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 12
+                    },
+                    "color.standard.textPost": {
+                      "red": 56,
+                      "green": 199,
+                      "blue": 239,
+                      "alpha": 1
+                    }
+                  },
+                  "trendingShelf": {
+                    "name": "trending.shelf",
+                    "background": {
+                      "name": "solidColor.background",
+                      "color": {
+                        "red": 235,
+                        "green": 236,
+                        "blue": 240,
+                        "alpha": 255
+                      }
+                    },
+                    "font.heading4": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 15
+                    },
+                    "color.text": {
+                      "red": 38,
+                      "green": 39,
+                      "blue": 38,
+                      "alpha": 255
+                    },
+                    "font.label2": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 12
+                    },
+                    "font.header": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 18
+                    },
+                    "font.heading2": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 20
+                    },
+                    "color.link.secondary": {
+                      "red": 235,
+                      "green": 236,
+                      "blue": 240,
+                      "alpha": 255
+                    },
+                    "color.accent": {
+                      "red": 56,
+                      "green": 199,
+                      "blue": 239,
+                      "alpha": 1
+                    },
+                    "color.link": {
+                      "red": 56,
+                      "green": 199,
+                      "blue": 239,
+                      "alpha": 1
+                    },
+                    "follow_user_icon": {
+                      "imageURL": "follow_user_icon"
+                    },
+                    "followed_user_icon": {
+                      "imageURL": "followed_user_icon"
+                    },
+                    "followed_user_background_icon": {
+                      "imageURL": "followed_user_background_icon"
+                    },
+                    "loadingBackground": {
+                      "name": "tilePattern.background",
+                      "color": {
+                        "red": 56,
+                        "green": 199,
+                        "blue": 239,
+                        "alpha": 1
+                      },
+                      "image": {
+                        "imageURL": "geometric_pattern"
+                      },
+                      "tiltParallax": true,
+                      "shimmerAnimationActive": true
+                    },
+                    "font.paragraph": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 13
+                    },
+                    "color.text.secondary": {
+                      "red": 255,
+                      "green": 255,
+                      "blue": 255,
+                      "alpha": 255
+                    },
+                    "color.standard.textPost": {
+                      "red": 56,
+                      "green": 199,
+                      "blue": 239,
+                      "alpha": 1
+                    }
+                  },
+                  "streamURL": "http:\/\/dev.getvictorious.com\/api\/sequence\/detail_list_by_stream_with_marquee\/%%SEQUENCE_ID%%\/0\/%%PAGE_NUM%%\/%%ITEMS_PER_PAGE%%",
+                  "destinationDirectory": null,
+                  "titleImage": null,
+                  "hasHeaderParallax": true,
+                  "accessoryScreens": []
+                },
                 "marqueeCell":
                 {
                     "name":"explore.marqueeCell",
