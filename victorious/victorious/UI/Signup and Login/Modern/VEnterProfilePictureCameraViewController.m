@@ -151,7 +151,7 @@
                                                  NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]
                                                  };
     
-    NSMutableAttributedString *attributedPrompt = [[NSMutableAttributedString alloc] initWithString:NSLocalizedString(message, nil)
+    NSMutableAttributedString *attributedPrompt = [[NSMutableAttributedString alloc] initWithString:message
                                                                                          attributes:screenPromptTextAttributes];
     self.promptLabel.attributedText = attributedPrompt;
 }
@@ -162,8 +162,8 @@
                                                  NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerButton1FontKey],
                                                  NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]
                                                  };
-    NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(message, nil)
-                                                                                       attributes:buttonPromptTextAttributes];
+    NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:message
+                                                                          attributes:buttonPromptTextAttributes];
     [self.addProfilePictureButton setAttributedTitle:attributedTitle
                                             forState:UIControlStateNormal];
 }

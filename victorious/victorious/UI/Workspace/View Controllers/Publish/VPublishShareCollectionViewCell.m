@@ -123,8 +123,7 @@ static NSString * const kOptionsContainerBackgroundKey = @"color.optionsContaine
     if ( dependencyManager != nil )
     {
         self.shareMenuItems = [dependencyManager shareMenuItems];
-        NSString *shareText = [dependencyManager stringForKey:kShareTextKey];
-        self.shareLabel.text = NSLocalizedString(shareText, @"");
+        self.shareLabel.text = [dependencyManager stringForKey:kShareTextKey];
         self.shareLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         self.shareLabel.font = [dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
         UIColor *backgroundColor = [dependencyManager colorForKey:kOptionsContainerBackgroundKey];

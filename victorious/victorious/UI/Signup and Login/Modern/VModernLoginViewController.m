@@ -92,7 +92,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                                  name:UITextFieldTextDidChangeNotification
                                                object:self.passwordField];
     
-    NSString *prompt = NSLocalizedString([self.dependencyManager stringForKey:kPromptKey], nil);
+    NSString *prompt = [self.dependencyManager stringForKey:kPromptKey] ?: @"";
     NSDictionary *promptAttributes = @{
                                        NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey],
                                        NSForegroundColorAttributeName: [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey]

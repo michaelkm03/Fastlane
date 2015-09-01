@@ -59,8 +59,7 @@
 
 - (NSString *)messageWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    NSString *message = [dependencyManager stringForKey:@"microphonePermission.message"];
-    return NSLocalizedString(message, @"");
+    return [dependencyManager stringForKey:@"microphonePermission.message"];
 }
 
 @end

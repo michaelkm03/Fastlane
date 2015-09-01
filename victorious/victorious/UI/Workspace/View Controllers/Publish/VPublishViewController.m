@@ -186,7 +186,7 @@ static NSString * const kEnableMediaSaveKey = @"autoEnableMediaSave";
     self.captionTextView.accessibilityIdentifier = VAutomationIdentifierPublishCatpionText;
     
     NSString *placeholderText = [self.dependencyManager stringForKey:kPlaceholderTextKey];
-    self.captionTextView.placeholderText = NSLocalizedString(placeholderText, @"Caption entry placeholder text");
+    self.captionTextView.placeholderText = placeholderText;
     self.captionTextView.accessibilityLabel = placeholderText;
     UIFont *font = [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
     if ( font != nil )
