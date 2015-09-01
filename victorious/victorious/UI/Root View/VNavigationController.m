@@ -14,6 +14,8 @@
 #import "UIViewController+VLayoutInsets.h"
 #import  "UIColor+VBrightness.h"
 #import "VTabScaffoldViewController.h"
+#import "victorious-Swift.h"
+#import "VExploreNavigationControllerAnimator.h"
 
 #import <objc/runtime.h>
 
@@ -509,6 +511,14 @@ static const CGFloat kStatusBarHeight = 20.0f;
             [((id<VTabMenuContainedViewControllerNavigation>)viewController) reselected];
         }
     }
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController animationControllerForOperation:(UINavigationControllerOperation)operation fromViewController:(UIViewController *)fromVC toViewController:(UIViewController *)toVC
+{
+    if ([toVC isKindOfClass:[VUsersAndTagsSearchViewController class]] && [fromVC isKindOfClass:[VExploreViewController class]]) {
+        return [[VExploreNavigationControllerAnimator alloc] init];
+    }
+    return nil;
 }
 
 @end

@@ -51,7 +51,7 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         
         configureSearchBar()
         collectionView.backgroundColor = UIColor.whiteColor()
-        navigationController?.delegate = self
+//        navigationController?.delegate = self
         
         VObjectManager.sharedManager().getExplore({ (op, obj, results) -> Void in
             if let stream = results.last as? VStream {
@@ -119,7 +119,7 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
         if let searchVC = VUsersAndTagsSearchViewController .newWithDependencyManager(dependencyManager) {
             self.navigationController?.navigationBarHidden = true
-            navigationController?.pushViewController(searchVC, animated: true)
+            v_navigationController().innerNavigationController.pushViewController(searchVC, animated: true)
         }
     }
     

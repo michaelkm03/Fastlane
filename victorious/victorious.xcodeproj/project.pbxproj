@@ -366,6 +366,7 @@
 		669EBBE51A30239100DE317D /* VTickerPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 669EBBE31A30239100DE317D /* VTickerPickerViewController.m */; };
 		66AF79521B60A8E4006DDCD8 /* VVideoCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66AF79511B60A8E4006DDCD8 /* VVideoCameraViewController.m */; };
 		66AF79541B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */; };
+		670230A61B9594890025B8E4 /* VExploreNavigationControllerAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 670230A51B9594890025B8E4 /* VExploreNavigationControllerAnimator.m */; };
 		672E5F421B83A49B00D898DE /* Explore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 672E5F411B83A49B00D898DE /* Explore.storyboard */; };
 		672E5F441B83A4BF00D898DE /* VExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 672E5F431B83A4BF00D898DE /* VExploreViewController.swift */; };
 		672E5F461B83A99A00D898DE /* exploreScreenDevelopment.json in Resources */ = {isa = PBXBuildFile; fileRef = 672E5F451B83A99A00D898DE /* exploreScreenDevelopment.json */; };
@@ -1991,6 +1992,8 @@
 		66AF79501B60A8E4006DDCD8 /* VVideoCameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoCameraViewController.h; sourceTree = "<group>"; };
 		66AF79511B60A8E4006DDCD8 /* VVideoCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoCameraViewController.m; sourceTree = "<group>"; };
 		66AF79531B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VVideoCameraViewController.storyboard; sourceTree = "<group>"; };
+		670230A41B9594890025B8E4 /* VExploreNavigationControllerAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VExploreNavigationControllerAnimator.h; sourceTree = "<group>"; };
+		670230A51B9594890025B8E4 /* VExploreNavigationControllerAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VExploreNavigationControllerAnimator.m; sourceTree = "<group>"; };
 		672E5F411B83A49B00D898DE /* Explore.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Explore.storyboard; path = Explore/Explore.storyboard; sourceTree = "<group>"; };
 		672E5F431B83A4BF00D898DE /* VExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VExploreViewController.swift; path = Explore/VExploreViewController.swift; sourceTree = "<group>"; };
 		672E5F451B83A99A00D898DE /* exploreScreenDevelopment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exploreScreenDevelopment.json; sourceTree = "<group>"; };
@@ -4252,6 +4255,8 @@
 				DB94976F1AAE66C600CCEFD0 /* VFirstTimeInstallHelper.m */,
 				037FCF141A8DAF0E00E8ABFC /* VNavigationController.h */,
 				037FCF151A8DAF0E00E8ABFC /* VNavigationController.m */,
+				670230A41B9594890025B8E4 /* VExploreNavigationControllerAnimator.h */,
+				670230A51B9594890025B8E4 /* VExploreNavigationControllerAnimator.m */,
 				037FCF161A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.h */,
 				037FCF171A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.m */,
 				D87D70941A9804CD002D4FED /* VNavigationDestinationContainerViewController.h */,
@@ -9125,6 +9130,7 @@
 				0314D4A019B46B5E00FA363C /* VImageSearchResultCell.m in Sources */,
 				A7F711FD1AE1D5A00086F729 /* VHashtagFollowingTableViewController.m in Sources */,
 				D876E1FF1A9DA6CB002CAA29 /* VSolidColorBackground.m in Sources */,
+				670230A61B9594890025B8E4 /* VExploreNavigationControllerAnimator.m in Sources */,
 				A7D378481AF0578A007FF197 /* VImageAsset.m in Sources */,
 				C39413B51B165F7800579A8E /* VPermissionAlertTextView.m in Sources */,
 				F079FAB31B183ABC009833CD /* VFailureStreamItemPreviewView.m in Sources */,

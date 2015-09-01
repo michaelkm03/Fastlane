@@ -127,7 +127,6 @@ static NSInteger const kVMaxSearchResults = 1000;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.navigationController.navigationBarHidden = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -147,7 +146,6 @@ static NSInteger const kVMaxSearchResults = 1000;
     {
         [[VTrackingManager sharedInstance] setValue:nil forSessionParameterWithKey:VTrackingKeyContext];
     }
-    self.navigationController.navigationBarHidden = NO;
 }
 
 - (void)viewDidDisappear:(BOOL)animated
