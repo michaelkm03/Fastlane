@@ -101,13 +101,9 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         }
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        collectionView.becomeFirstResponder()
-    }
-    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        collectionView.becomeFirstResponder()
         
         // Do this here so that the keyboard bar animates in with pushes
         focusHelper?.updateFocus()
