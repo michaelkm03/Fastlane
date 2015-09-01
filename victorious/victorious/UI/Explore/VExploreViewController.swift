@@ -173,43 +173,42 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
     
     private func navigate(toStream stream: VStream, atStreamItem streamItem: VStreamItem?) {
         let isShelf = stream.isShelf
-        if stream.isSingleStream || isShelf {
-            var streamCollection: VStreamCollectionViewController?
-            
-            // The config dictionary here is initialized to solve objc/swift dictionary type inconsistency
-            let baseDict = [Constants.sequenceIDKey : stream.remoteId]
-            var configDict = NSMutableDictionary(dictionary: baseDict)
-            if let name = stream.name {
-                configDict[VDependencyManagerTitleKey] = name
-            }
-            
-            // Navigating to a shelf
+        var streamCollection: VStreamCollectionViewController?
+        
+        // The config dictionary here is initialized to solve objc/swift dictionary type inconsistency
+        let baseDict = [Constants.sequenceIDKey : stream.remoteId]
+        var configDict = NSMutableDictionary(dictionary: baseDict)
+        if let name = stream.name {
+            configDict[VDependencyManagerTitleKey] = name
+        }
+        
+        // Navigating to a shelf
+        if isShelf {
             // WARNING: This shelf portion may need rework when merging in recent post
-            if isShelf {
-                configDict[VStreamCollectionViewControllerStreamURLKey] = stream.apiPath
-                if let childDependencyManager = self.dependencyManager?.childDependencyManagerWithAddedConfiguration(configDict as [NSObject : AnyObject]) {
-                    // Hashtag Shelf
-                    if let tagShelf = stream as? HashtagShelf {
-                        streamCollection = childDependencyManager.hashtagStreamWithHashtag(tagShelf.hashtagTitle)
-                    }
+            configDict[VStreamCollectionViewControllerStreamURLKey] = stream.apiPath
+            if let childDependencyManager = self.dependencyManager?.childDependencyManagerWithAddedConfiguration(configDict as [NSObject : AnyObject]) {
+                // Hashtag Shelf
+                if let tagShelf = stream as? HashtagShelf {
+                    streamCollection = childDependencyManager.hashtagStreamWithHashtag(tagShelf.hashtagTitle)
+                }
                     // Other shelves
-                    else {
-                        streamCollection = VStreamCollectionViewController.newWithDependencyManager(childDependencyManager)
-                    }
+                else {
+                    streamCollection = VStreamCollectionViewController.newWithDependencyManager(childDependencyManager)
                 }
             }
-            // Navigating to a single stream
-            else {
-                streamCollection = dependencyManager?.templateValueOfType(VStreamCollectionViewController.self, forKey: Constants.destinationStreamKey, withAddedDependencies: configDict as [NSObject : AnyObject]) as? VStreamCollectionViewController
-            }
-            
-            if let streamViewController = streamCollection {
-                streamViewController.currentStream = stream
-                streamViewController.targetStreamItem = streamItem
-                navigationController?.pushViewController(streamViewController, animated: true)
-            }
         }
-        // Navigating to a stream of streams
+        // Navigating to a single stream
+        else if stream.isSingleStream {
+            streamCollection = dependencyManager?.templateValueOfType(VStreamCollectionViewController.self, forKey: Constants.destinationStreamKey, withAddedDependencies: configDict as [NSObject : AnyObject]) as? VStreamCollectionViewController
+        }
+        
+        // show the stream view controller if it has been instantiated
+        if let streamViewController = streamCollection {
+            streamViewController.currentStream = stream
+            streamViewController.targetStreamItem = streamItem
+            navigationController?.pushViewController(streamViewController, animated: true)
+        }
+        // else Show the stream of streams
         else if stream.isStreamOfStreams {
             if let directory = dependencyManager?.templateValueOfType(
                 VDirectoryCollectionViewController.self,
