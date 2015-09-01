@@ -328,7 +328,16 @@ extension VExploreViewController: CHTCollectionViewDelegateWaterfallLayout {
     }
 }
 
-extension VExploreViewController : VHashtagSelectionResponder {
+extension VExploreViewController: UICollectionViewDelegate {
+    
+    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        if let streamItem = streamItemFor(indexPath) {
+            /// Warning: navigate to stream item here
+        }
+    }
+}
+
+extension VExploreViewController: VHashtagSelectionResponder {
     
     func hashtagSelected(text: String!) {
         if let hashtag = text, stream = dependencyManager?.hashtagStreamWithHashtag(hashtag) {
