@@ -73,24 +73,24 @@ static NSString * const kGifIconKey = @"watch_gif_icon";
     {
         case VCommentMediaTypeImage:
             iconKey = kImageIconKey;
-            linkPrompt = @"Open Image";
+            linkPrompt = NSLocalizedString(@"Open Image", @"");
             break;
 
         case VCommentMediaTypeGIF:
             iconKey = kGifIconKey;
-            linkPrompt = @"Watch GIF";
+            linkPrompt = NSLocalizedString(@"Watch GIF", @"");
             break;
             
         case VCommentMediaTypeVideo:
             iconKey = kVideoIconKey;
-            linkPrompt = @"Watch Video";
+            linkPrompt = NSLocalizedString(@"Watch Video", @"");
             break;
             
         default:
             break;
     }
     
-    callbackBlock( [dependencyManager imageForKey:iconKey], NSLocalizedString(linkPrompt,nil) );
+    callbackBlock( [dependencyManager imageForKey:iconKey], linkPrompt );
 }
 
 - (BOOL)isEqual:(id)object

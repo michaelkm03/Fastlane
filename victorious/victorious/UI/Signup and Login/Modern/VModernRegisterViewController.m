@@ -81,7 +81,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                                object:self.passwordField];
     
     NSString *prompt = [self.dependencyManager stringForKey:kPromptKey];
-    self.promptTextView.text = NSLocalizedString(prompt, nil);
+    self.promptTextView.text = prompt;
     self.promptTextView.font = [self.dependencyManager fontForKey:VDependencyManagerHeading1FontKey];
     self.promptTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.promptTextView.textAlignment = NSTextAlignmentCenter;

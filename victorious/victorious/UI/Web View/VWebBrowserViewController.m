@@ -66,7 +66,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     NSString *templateTitle = [dependencyManager stringForKey:VDependencyManagerTitleKey];
     if ( templateTitle != nil )
     {
-        webBrowserViewController.templateTitle = NSLocalizedString(templateTitle, @"");
+        webBrowserViewController.templateTitle = templateTitle;
         webBrowserViewController.headerContentAlignment = VWebBrowserHeaderContentAlignmentCenter;
     }
     return webBrowserViewController;

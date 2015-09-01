@@ -28,7 +28,7 @@ NSString * const VDependencyManagerTitleImageKey = @"titleImage";
     NSString *title = [self stringForKey:VDependencyManagerTitleKey];
     if ( title != nil )
     {
-        navigationItem.title = NSLocalizedString(title, @"");
+        navigationItem.title = title;
     }
     
     UIImage *titleImage = [self imageForKey:VDependencyManagerTitleImageKey];
