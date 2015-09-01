@@ -46,11 +46,12 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         super.viewDidLoad()
         
         // Make sure the bottom of view does not inset twice for the tab menu bar
-        self.automaticallyAdjustsScrollViewInsets = false;
-        self.extendedLayoutIncludesOpaqueBars = true;
+        automaticallyAdjustsScrollViewInsets = false;
+        extendedLayoutIncludesOpaqueBars = true;
         
-        self.configureSearchBar()
-        self.collectionView.backgroundColor = UIColor.whiteColor()
+        configureSearchBar()
+        collectionView.backgroundColor = UIColor.whiteColor()
+        navigationController?.delegate = self
         
         VObjectManager.sharedManager().getExplore({ (op, obj, results) -> Void in
             if let stream = results.last as? VStream {
@@ -112,8 +113,7 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
         if let searchVC = VUsersAndTagsSearchViewController .newWithDependencyManager(dependencyManager) {
-            searchVC.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-            self.presentViewController(searchVC, animated: true, completion: nil)
+            navigationController?.pushViewController(searchVC, animated: true)
         }
     }
     
@@ -167,11 +167,42 @@ extension VExploreViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension VExploreViewController : VHashtagSelectionResponder {
+extension VExploreViewController: VHashtagSelectionResponder {
     
     func hashtagSelected(text: String!) {
         if let hashtag = text, stream = dependencyManager?.hashtagStreamWithHashtag(hashtag) {
             self.navigationController?.pushViewController(stream, animated: true)
+        }
+    }
+}
+
+extension VExploreViewController: UINavigationControllerDelegate {
+    func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        if (toVC is VUsersAndTagsSearchViewController) && (fromVC is VExploreViewController) {
+            return ExploreNavigationAnimator()
+        }
+        else if (toVC is VExploreViewController) && (fromVC is VUsersAndTagsSearchViewController) {
+            return ExploreNavigationAnimator()
+        }
+        return nil
+    }
+}
+
+class ExploreNavigationAnimator: NSObject, UIViewControllerAnimatedTransitioning {
+    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
+        return 0.25
+    }
+    
+    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+        let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)
+        let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)
+        transitionContext.containerView().addSubview(toViewController!.view!)
+        toViewController!.view.alpha = 0
+        
+        UIView.animateWithDuration(transitionDuration(transitionContext), animations: { () -> Void in
+            toViewController!.view.alpha = 1
+            }) { (finished) -> Void in
+                transitionContext.completeTransition(!transitionContext.transitionWasCancelled())
         }
     }
 }
