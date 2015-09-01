@@ -66,6 +66,11 @@
     [self updatePreviewViewForStreamItem:streamItem];
 }
 
+- (BOOL)shouldOnlyShowPreview
+{
+    return NO;
+}
+
 - (void)updatePreviewViewForStreamItem:(VStreamItem *)streamItem
 {
     if ( streamItem == nil )
@@ -92,12 +97,9 @@
     }
     
     // Turn off autoplay for explore marquee shelf
-    if ([self isKindOfClass:[ExploreMarqueeStreamItemCell class]])
+    if ([self.previewView isKindOfClass:[VBaseVideoSequencePreviewView class]])
     {
-        if ([self.previewView isKindOfClass:[VBaseVideoSequencePreviewView class]])
-        {
-            ((VBaseVideoSequencePreviewView *)self.previewView).onlyShowPreview = YES;
-        }
+        ((VBaseVideoSequencePreviewView *)self.previewView).onlyShowPreview = self.shouldOnlyShowPreview;
     }
     
     [self.previewView setStreamItem:streamItem];

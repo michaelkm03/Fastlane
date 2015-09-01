@@ -14,4 +14,8 @@ class ExploreMarqueeStreamItemCell: VInsetMarqueeStreamItemCell {
     override class func desiredSizeWithCollectionViewBounds(bounds: CGRect) -> CGSize {
         return CGSizeMake( bounds.width / 2, bounds.width / 2 )
     }
+    
+    override var shouldOnlyShowPreview: Bool {
+        return true
+    }
 }
