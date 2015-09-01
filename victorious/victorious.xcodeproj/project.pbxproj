@@ -886,7 +886,6 @@
 		C30AA4F31B067C370010CEFE /* VPermissionCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4F21B067C370010CEFE /* VPermissionCamera.m */; };
 		C30AA4F61B06B82A0010CEFE /* VPermissionPhotoLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4F51B06B82A0010CEFE /* VPermissionPhotoLibrary.m */; };
 		C3345F621B59ACB30091D889 /* VMenuItemControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C3345F611B59ACB30091D889 /* VMenuItemControl.m */; };
-		C33C7D191B7E657F00CCFBB6 /* GIFCommentTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33C7D181B7E657F00CCFBB6 /* GIFCommentTest.swift */; };
 		C3475B6D1B507087007C3782 /* VForcedWorkspaceContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3475B6C1B507087007C3782 /* VForcedWorkspaceContainerViewController.m */; };
 		C3475B6F1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3475B6E1B5070C7007C3782 /* VForcedWorkspaceContainerViewController.storyboard */; };
 		C35265FB1B28EA09001F093F /* CreateSheet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C35265FA1B28EA09001F093F /* CreateSheet.storyboard */; };
@@ -8827,7 +8826,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C33C7D191B7E657F00CCFBB6 /* GIFCommentTest.swift in Sources */,
 				A71F2E701B7D16DC00159392 /* VAutomation.m in Sources */,
 				A7DB4D441B7ABA8C00199D10 /* ContentCreationTests.swift in Sources */,
 				A7DB4D451B7ABA8C00199D10 /* KIFExtensions.swift in Sources */,
