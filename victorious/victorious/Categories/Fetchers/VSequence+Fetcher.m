@@ -178,11 +178,8 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
 - (CGFloat)previewAssetAspectRatio
 {
     CGRect screenRect = [[UIScreen mainScreen] bounds];
-    CGRect apectContainerRect = CGRectMake(screenRect.origin.x,
-                                           screenRect.origin.y + kAspectRectMargin,
-                                           screenRect.size.width,
-                                           screenRect.size.height - kAspectRectMargin * 2.0 );
-    return [self previewAssetAspectRatioWithinRect:apectContainerRect];
+    CGRect aspectContainerRect = UIEdgeInsetsInsetRect( screenRect, UIEdgeInsetsMake( kAspectRectMargin, 0, kAspectRectMargin, 0 ) );
+    return [self previewAssetAspectRatioWithinRect:aspectContainerRect];
 }
 
 - (CGFloat)previewAssetAspectRatioWithinRect:(CGRect)rect
