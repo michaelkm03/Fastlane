@@ -322,14 +322,4 @@ extern NSString *const CHTCollectionElementKindSectionFooter;
  */
 - (CGFloat)itemWidthInSectionAtIndex:(NSInteger)section;
 
-/**
- *  Returns an array of NSNumbers that represent the heights of the columns in the provided section.
- *  This function is part of Victorious's extended implementation.
- *
- *  @param section The section whose column heights should be returned
- *
- *  @return An array of NSNumbers that represent the heights of the columns in the provided section.
- */
-- (NSArray *)heightsForColumnsInSection:(NSUInteger)section;
-
 @end

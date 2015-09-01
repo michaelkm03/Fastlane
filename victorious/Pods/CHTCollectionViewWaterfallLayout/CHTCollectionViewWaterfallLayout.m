@@ -13,7 +13,7 @@ NSString *const CHTCollectionElementKindSectionFooter = @"CHTCollectionElementKi
 
 @interface CHTCollectionViewWaterfallLayout ()
 /// The delegate will point to collection view's delegate automatically.
-@property (nonatomic, weak, readonly) id <CHTCollectionViewDelegateWaterfallLayout> delegate;
+@property (nonatomic, weak) id <CHTCollectionViewDelegateWaterfallLayout> delegate;
 /// Array to store height for each column
 @property (nonatomic, strong) NSMutableArray *columnHeights;
 /// Array of arrays. Each array stores item attributes for each section
@@ -126,11 +126,6 @@ static CGFloat CHTFloorCGFloat(CGFloat value) {
   }
 
   return CHTFloorCGFloat((width - (columnCount - 1) * columnSpacing) / columnCount);
-}
-
-- (NSArray *)heightsForColumnsInSection:(NSUInteger)section
-{
-    return self.columnHeights[section];
 }
 
 #pragma mark - Private Accessors
@@ -406,10 +401,10 @@ static CGFloat CHTFloorCGFloat(CGFloat value) {
 }
 
 - (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)path {
-  if ((NSUInteger)path.section >= [self.sectionItemAttributes count]) {
+  if (path.section >= [self.sectionItemAttributes count]) {
     return nil;
   }
-  if ((NSUInteger)path.item >= [self.sectionItemAttributes[path.section] count]) {
+  if (path.item >= [self.sectionItemAttributes[path.section] count]) {
     return nil;
   }
   return (self.sectionItemAttributes[path.section])[path.item];
@@ -430,7 +425,7 @@ static CGFloat CHTFloorCGFloat(CGFloat value) {
   NSInteger begin = 0, end = self.unionRects.count;
   NSMutableArray *attrs = [NSMutableArray array];
 
-  for (i = 0; (NSUInteger)i < self.unionRects.count; i++) {
+  for (i = 0; i < self.unionRects.count; i++) {
     if (CGRectIntersectsRect(rect, [self.unionRects[i] CGRectValue])) {
       begin = i * unionSize;
       break;
@@ -438,7 +433,7 @@ static CGFloat CHTFloorCGFloat(CGFloat value) {
   }
   for (i = self.unionRects.count - 1; i >= 0; i--) {
     if (CGRectIntersectsRect(rect, [self.unionRects[i] CGRectValue])) {
-      end = MIN(((NSUInteger)i + 1) * unionSize, self.allItemAttributes.count);
+      end = MIN((i + 1) * unionSize, self.allItemAttributes.count);
       break;
     }
   }
@@ -471,7 +466,7 @@ static CGFloat CHTFloorCGFloat(CGFloat value) {
   __block NSUInteger index = 0;
   __block CGFloat shortestHeight = MAXFLOAT;
 
-  [(NSArray *)self.columnHeights[section] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+  [self.columnHeights[section] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
     CGFloat height = [obj floatValue];
     if (height < shortestHeight) {
       shortestHeight = height;
@@ -491,7 +486,7 @@ static CGFloat CHTFloorCGFloat(CGFloat value) {
   __block NSUInteger index = 0;
   __block CGFloat longestHeight = 0;
 
-  [(NSArray *)self.columnHeights[section] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+  [self.columnHeights[section] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
     CGFloat height = [obj floatValue];
     if (height > longestHeight) {
       longestHeight = height;

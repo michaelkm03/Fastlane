@@ -132,4 +132,4 @@
 #import "INVector3.h"
 #import "ColorSpaceConversion.h"
 #import "VNoContentCollectionViewCellFactory.h"
-#import "CHTCollectionViewWaterfallLayout.h"
+#import "CHTCollectionViewWaterfallLayout+ColumnAccessor.h"
