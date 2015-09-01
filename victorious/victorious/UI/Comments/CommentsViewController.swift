@@ -67,7 +67,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             }
         }
     }
-    private var firstApperance = true
+    private var firstAppearance = true
     
     // MARK: Outlets
     
@@ -104,7 +104,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        if let keyboardBar = keyboardBar where !firstApperance && !keyboardBar.isEditing() {
+        if let keyboardBar = keyboardBar where !firstAppearance && !keyboardBar.isEditing() {
             collectionView.becomeFirstResponder()
         }
 
@@ -113,7 +113,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        if firstApperance {
+        if firstAppearance {
             collectionView.becomeFirstResponder()
             firstApperance = false
         }
