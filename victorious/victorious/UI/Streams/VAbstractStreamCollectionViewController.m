@@ -97,6 +97,8 @@ const CGFloat kVLoadNextPagePoint = .75f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.collectionView.accessibilityIdentifier = VAutomationIDentifierStreamCollectionView;
 
     [self.collectionView registerNib:[VFooterActivityIndicatorView nibForSupplementaryView]
           forSupplementaryViewOfKind:UICollectionElementKindSectionFooter

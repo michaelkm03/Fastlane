@@ -146,6 +146,8 @@
 	<string>victorious.VSequenceContentCellFactory</string>
 	<key>trending.shelf</key>
 	<string>victorious.VTrendingShelfCellFactory</string>
+	<key>list.shelf</key>
+	<string>victorious.VListShelfCellFactory</string>
 	<key>fullscreen.marqueeCell</key>
 	<string>VFullscreenMarqueeController</string>
 	<key>blurred.marqueeCell</key>
