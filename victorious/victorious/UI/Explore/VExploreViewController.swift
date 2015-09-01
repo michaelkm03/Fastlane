@@ -263,7 +263,13 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
         if let streamItem = event.streamItem as? VSequence {
             let streamID = ( event.stream.hasShelfID() && event.fromShelf ) ? event.stream.shelfId : event.stream.streamId
             
-            VContentViewPresenter.presentContentViewFromViewController(self, withDependencyManager: dependencyManager, forSequence: event.streamItem as? VSequence, inStreamWithID: streamID, commentID: nil, withPreviewImage: image)
+            VContentViewPresenter.presentContentViewFromViewController(
+                self, withDependencyManager: dependencyManager,
+                forSequence: event.streamItem as? VSequence,
+                inStreamWithID: streamID,
+                commentID: nil,
+                withPreviewImage: image
+            )
         }
     }
 }
