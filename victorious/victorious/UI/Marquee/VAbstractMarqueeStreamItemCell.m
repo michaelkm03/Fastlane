@@ -68,7 +68,7 @@
 
 - (BOOL)shouldSupportAutoplay
 {
-    return NO;
+    return YES;
 }
 
 - (void)updatePreviewViewForStreamItem:(VStreamItem *)streamItem
@@ -99,7 +99,7 @@
     // Turn off autoplay for explore marquee shelf
     if ([self.previewView isKindOfClass:[VBaseVideoSequencePreviewView class]])
     {
-        ((VBaseVideoSequencePreviewView *)self.previewView).onlyShowPreview = self.shouldSupportAutoplay;
+        ((VBaseVideoSequencePreviewView *)self.previewView).onlyShowPreview = !self.shouldSupportAutoplay;
     }
     
     [self.previewView setStreamItem:streamItem];

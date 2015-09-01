@@ -16,6 +16,6 @@ class ExploreMarqueeStreamItemCell: VInsetMarqueeStreamItemCell {
     }
     
     override var shouldSupportAutoplay: Bool {
-        return true
+        return false
     }
 }
