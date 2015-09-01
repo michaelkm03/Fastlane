@@ -43,16 +43,6 @@
  */
 @property (nonatomic, assign) BOOL inFocus;
 
-/**
- *  If YES, this preview view will only display the preview image for this content.
- */
-@property (nonatomic, assign) BOOL onlyShowPreview;
-
-/**
- *  Hides or shows the background that holds the image view. Defaults to hidden.
- *
- *  @parameter visible If YES, the background container is made visible without animation.
- */
 - (void)makeBackgroundContainerViewVisible:(BOOL)visible;
 
 @end
