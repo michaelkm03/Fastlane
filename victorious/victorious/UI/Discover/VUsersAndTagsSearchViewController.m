@@ -148,11 +148,6 @@ static NSInteger const kVMaxSearchResults = 1000;
     }
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-}
-
 - (BOOL)prefersStatusBarHidden
 {
     return YES;

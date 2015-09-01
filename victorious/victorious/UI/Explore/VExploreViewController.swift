@@ -51,7 +51,6 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         
         configureSearchBar()
         collectionView.backgroundColor = UIColor.whiteColor()
-//        navigationController?.delegate = self
         
         VObjectManager.sharedManager().getExplore({ (op, obj, results) -> Void in
             if let stream = results.last as? VStream {
