@@ -8,13 +8,13 @@
 
 import UIKit
 
-protocol SettingsButtonCellDelegate {
+protocol SettingsButtonCellDelegate: class {
     func buttonPressed( button: UIButton )
 }
 
 class SettingsButtonCell: UITableViewCell {
     
-    var delegate: SettingsButtonCellDelegate?
+    weak var delegate: SettingsButtonCellDelegate?
     
     @IBOutlet weak var button: UIButton!
     

@@ -82,6 +82,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         scrollPaginator.delegate = self
         commentsDataSourceSwitcher.dataSource.delegate = self
         keyboardBar = VKeyboardInputAccessoryView.defaultInputAccessoryViewWithDependencyManager(dependencyManager)
+        collectionView.accessoryView = keyboardBar
 
         noContentView = NSBundle.mainBundle().loadNibNamed("VNoContentView", owner: nil, options: nil).first as? VNoContentView
         if let noContentView = noContentView {
@@ -102,9 +103,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-
-        becomeFirstResponder()
-        collectionView.accessoryView = keyboardBar
+        collectionView.becomeFirstResponder()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -115,17 +114,13 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         dispatch_after(0.1){
             self.updateInsetForKeyboardBarState()
         }
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        
+
     }
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
 
-        self.resignFirstResponder()
+        collectionView.resignFirstResponder()
         collectionView.flashScrollIndicators()
         focusHelper?.endFocusOnAllCells()
     }
@@ -134,16 +129,6 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
     override func v_prefersNavigationBarHidden() -> Bool {
         return false
-    }
-    
-    // MARK: - UIResponder
-    
-    override func canBecomeFirstResponder() -> Bool {
-        return true
-    }
-    
-    override var inputAccessoryView: UIView! {
-        return keyboardBar
     }
     
     // MARK: - Internal Methods
@@ -505,5 +490,4 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         viewController.view.removeFromSuperview()
         keyboardBar?.attachmentsBarHidden = false
     }
-    
 }

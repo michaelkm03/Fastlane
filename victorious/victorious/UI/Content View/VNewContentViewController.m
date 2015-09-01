@@ -423,7 +423,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         inputAccessoryView.accessibilityIdentifier = VAutomationIdentifierContentViewCommentBar;
         self.textEntryView = inputAccessoryView;
         self.contentCollectionView.accessoryView = self.textEntryView;
-        [self.contentCollectionView becomeFirstResponder];
     }
     
     self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
