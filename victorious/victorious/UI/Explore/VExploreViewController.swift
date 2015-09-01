@@ -112,7 +112,8 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
         if let searchVC = VUsersAndTagsSearchViewController .newWithDependencyManager(dependencyManager) {
-            v_navigationController().innerNavigationController.pushViewController(searchVC, animated: true)
+            searchVC.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+            self.presentViewController(searchVC, animated: true, completion: nil)
         }
     }
     
