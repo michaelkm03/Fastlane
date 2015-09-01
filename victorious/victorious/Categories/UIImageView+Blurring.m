@@ -91,7 +91,6 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
                             UIImage *blurredImage = [image applyLightEffect];
                             dispatch_async(dispatch_get_main_queue(), ^
                                            {
-                                               weakSelf.alpha = 0.0f;
                                                [weakSelf animateImageToVisible:blurredImage withDuration:kDefaultAnimationDuration];
                                            });
                         });
