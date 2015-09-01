@@ -51,8 +51,8 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         super.viewDidLoad()
         navigationItem.v_supplementaryHeaderView = searchBar
         
-        automaticallyAdjustsScrollViewInsets = false;
-        extendedLayoutIncludesOpaqueBars = true;
+        automaticallyAdjustsScrollViewInsets = false
+        extendedLayoutIncludesOpaqueBars = true
         
         marqueeShelfFactory?.registerCellsWithCollectionView(self.collectionView)
         marqueeShelfFactory?.marqueeController?.setSelectionDelegate(self)
@@ -228,7 +228,6 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
                     delegate: nil,
                     cancelButtonTitle: NSLocalizedString("OK", comment: "")
                 )
-                return
             }
         }
     }
@@ -254,10 +253,8 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
             showContentView(forCellEvent: event, trackingInfo: extraTrackingInfo, previewImage: image)
         }
         // Navigating to a stream
-        else if streamItem is VStream {
-            if let stream = streamItem as? VStream {
-                navigate(toStream: stream, atStreamItem: nil)
-            }
+        else if let stream = streamItem as? VStream {
+            navigate(toStream: stream, atStreamItem: nil)
         }
     }
     
