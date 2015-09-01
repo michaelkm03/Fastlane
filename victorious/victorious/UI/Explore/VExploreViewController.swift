@@ -73,6 +73,11 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         super.viewDidAppear(animated)
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBarHidden = false
+    }
+    
     /// MARK: - UICollectionViewDataSource
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -113,6 +118,7 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
         if let searchVC = VUsersAndTagsSearchViewController .newWithDependencyManager(dependencyManager) {
+            self.navigationController?.navigationBarHidden = true
             navigationController?.pushViewController(searchVC, animated: true)
         }
     }
@@ -190,7 +196,7 @@ extension VExploreViewController: UINavigationControllerDelegate {
 
 class ExploreNavigationAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
-        return 0.25
+        return 0.5
     }
     
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
