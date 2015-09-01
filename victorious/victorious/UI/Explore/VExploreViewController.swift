@@ -12,13 +12,14 @@ import UIKit
 /// presented when "explore" button on the tab bar is tapped
 class VExploreViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate {
     
-    private lazy var searchBar = UISearchBar()
     struct Constants {
         static let trendingTopicShelfKey = "trendingShelf"
     }
     
     @IBOutlet weak private var collectionView: UICollectionView!
     private var trendingTopicShelfFactory: TrendingTopicShelfFactory?
+    private var searchBar = UISearchBar()
+
     
     // Array of shelves to be displayed before recent content
     var shelves: [Shelf] = []
@@ -122,17 +123,25 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         searchBar.placeholder = NSLocalizedString("Search people and hashtags", comment: "")
         if let searchTextField = searchBar.v_textField {
             if let dependencyManager = self.dependencyManager {
-                if let textFont = dependencyManager.fontForKey(VDependencyManagerLabel2FontKey) {
-                    searchTextField.font = textFont
-                }
-                if let textColor = dependencyManager.colorForKey(VDependencyManagerSecondaryTextColorKey) {
-                    searchTextField.textColor = textColor
-                }
-                if let backgroundColor = dependencyManager.colorForKey(VDependencyManagerAccentColorKey) {
-                    searchTextField.backgroundColor = backgroundColor
-                }
+                searchTextField.font = dependencyManager.textFont
+                searchTextField.textColor = dependencyManager.textColor
+                searchTextField.backgroundColor = dependencyManager.backgroundColor
             }
         }
+    }
+}
+
+private extension VDependencyManager {
+    var textFont: UIFont {
+        return fontForKey(VDependencyManagerLabel2FontKey)
+    }
+    
+    var textColor: UIColor {
+        return colorForKey(VDependencyManagerSecondaryTextColorKey)
+    }
+    
+    var backgroundColor: UIColor {
+        return colorForKey(VDependencyManagerAccentColorKey)
     }
 }
 
