@@ -82,7 +82,7 @@ class SequenceCommentsDataSource : CommentsDataSource {
         return 0
     }
     
-    var delegate : CommentsDataSourceDelegate? {
+    weak var delegate : CommentsDataSourceDelegate? {
         didSet {
             if delegate != nil {
                 loadFirstPage()
