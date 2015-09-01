@@ -903,6 +903,7 @@
 		C35266041B2A05EA001F093F /* VCreateSheetTransitionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C35266031B2A05EA001F093F /* VCreateSheetTransitionDelegate.m */; };
 		C35266071B2A0907001F093F /* VCreateSheetPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = C35266061B2A0907001F093F /* VCreateSheetPresentationController.m */; };
 		C35AB0A61AF9843700B2AE1B /* VCVideoPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = C35AB0A51AF9843700B2AE1B /* VCVideoPlayerView.m */; };
+		C38211421B9640A200359D9E /* StreamVisibilityTrackingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38211411B9640A200359D9E /* StreamVisibilityTrackingHelper.swift */; };
 		C38254B51B86B8B200EDBE91 /* TrendingTopicGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38254B41B86B8B200EDBE91 /* TrendingTopicGradientView.swift */; };
 		C39413B51B165F7800579A8E /* VPermissionAlertTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C39413B41B165F7800579A8E /* VPermissionAlertTextView.m */; };
 		C39413B81B17B38300579A8E /* VStreamCollectionViewParallaxFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C39413B71B17B38200579A8E /* VStreamCollectionViewParallaxFlowLayout.m */; };
@@ -2941,6 +2942,7 @@
 		C35266061B2A0907001F093F /* VCreateSheetPresentationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCreateSheetPresentationController.m; path = "Create Sheet/VCreateSheetPresentationController.m"; sourceTree = "<group>"; };
 		C35AB0A41AF9843700B2AE1B /* VCVideoPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCVideoPlayerView.h; sourceTree = "<group>"; };
 		C35AB0A51AF9843700B2AE1B /* VCVideoPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCVideoPlayerView.m; sourceTree = "<group>"; };
+		C38211411B9640A200359D9E /* StreamVisibilityTrackingHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamVisibilityTrackingHelper.swift; sourceTree = "<group>"; };
 		C38254B41B86B8B200EDBE91 /* TrendingTopicGradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingTopicGradientView.swift; sourceTree = "<group>"; };
 		C39413B31B165F7800579A8E /* VPermissionAlertTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPermissionAlertTextView.h; path = "UI/Permission Alert/VPermissionAlertTextView.h"; sourceTree = "<group>"; };
 		C39413B41B165F7800579A8E /* VPermissionAlertTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPermissionAlertTextView.m; path = "UI/Permission Alert/VPermissionAlertTextView.m"; sourceTree = "<group>"; };
@@ -7759,6 +7761,7 @@
 				F06B41CE1B7FE817008709E8 /* VTrendingShelfContentSeeAllCell.swift */,
 				F06B41781B7ADA4B008709E8 /* VTrendingUserShelfCollectionViewCell.swift */,
 				F06B417A1B7ADA4B008709E8 /* VTrendingUserShelfCollectionViewCell.xib */,
+				C38211411B9640A200359D9E /* StreamVisibilityTrackingHelper.swift */,
 			);
 			path = "Trending Shelf Cell";
 			sourceTree = "<group>";
@@ -9622,6 +9625,7 @@
 				A776EF1C1ACC99C20093992F /* VMultiplePickerViewController.m in Sources */,
 				A721E9241B572454000B7901 /* VComment+RestKit.m in Sources */,
 				A721E9111B572454000B7901 /* CIImage+VImage.m in Sources */,
+				C38211421B9640A200359D9E /* StreamVisibilityTrackingHelper.swift in Sources */,
 				A601FB5C1B4369550050536C /* VEditProfilePicturePresenter.m in Sources */,
 				D85E42811AFA9A0F00A13BD3 /* VImageSequencePreviewView.m in Sources */,
 				F03C13741B6C340A00287F4C /* VInStreamCommentsShowMoreAttributes.m in Sources */,

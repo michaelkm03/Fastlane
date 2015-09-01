@@ -13,8 +13,6 @@ import UIKit
 class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     
     private let kLoggedInChangedNotification = "com.getvictorious.LoggedInChangedNotification"
-    private let kStreamATFThresholdKey = "streamAtfViewThreshold"
-    private let streamTrackingHelper = VStreamTrackingHelper()
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -26,7 +24,9 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
         }
     }
     
-    var trackingMinRequiredCellVisibilityRatio: CGFloat = 0.0
+    lazy var streamItemVisibilityTrackingHelper: StreamVisibilityTrackingHelper = {
+        return StreamVisibilityTrackingHelper(collectionView: self.collectionView)
+    }()
     
     private let failureCellFactory = VNoContentCollectionViewCellFactory(acceptableContentClasses: nil)
     
@@ -35,6 +35,8 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
             if oldValue == shelf {
                 return
             }
+            
+            streamItemVisibilityTrackingHelper.stream = shelf
             
             if let items = shelf?.streamItems,
                 let streamItems = items.array as? [VStreamItem] {
@@ -66,7 +68,7 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
             
             if let dependencyManager = dependencyManager {
                 followControl.dependencyManager = dependencyManager
-                trackingMinRequiredCellVisibilityRatio = dependencyManager.numberForKey(kStreamATFThresholdKey) as CGFloat
+                streamItemVisibilityTrackingHelper.trackingMinRequiredCellVisibilityRatio = dependencyManager.minTrackingRequiredCellVisibilityRatio
                 dependencyManager.addBackgroundToBackgroundHost(self)
             }
         }
@@ -86,33 +88,12 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
-        trackVisibleSequences()
-    }
-    
-    func trackVisibleSequences() {
-        let streamVisibleRect = collectionView.bounds;
-        if let visibleCells = collectionView.visibleCells() as? [UICollectionViewCell] {
-            for cell in visibleCells {
-                let intersection = streamVisibleRect.rectByIntersecting(cell.frame)
-                let visibleWidthRatio = intersection.width / cell.frame.width
-                let visibleHeightRatio = intersection.height / cell.frame.height
-                let roundedRatio = ceil(visibleWidthRatio * 100 + visibleHeightRatio * 100) / 200
-                if roundedRatio >= trackingMinRequiredCellVisibilityRatio {
-                    if let indexPath = collectionView.indexPathForCell(cell), let shelf = shelf,
-                        let streamItem: VStreamItem = shelf.streamItems[indexPath.row] as? VStreamItem {
-                        let event = StreamCellContext(streamItem: streamItem, stream: shelf, fromShelf: false)
-                        streamTrackingHelper.onStreamCellDidBecomeVisibleWithCellEvent(event)
-                    }
-                }
-            }
-            
-        }
+        streamItemVisibilityTrackingHelper.trackVisibleSequences()
     }
     
     override func prepareForReuse() {
         collectionView.contentOffset = CGPoint.zeroPoint
     }
-    
 }
 
 extension VTrendingShelfCollectionViewCell : UICollectionViewDataSource {
@@ -140,7 +121,6 @@ extension VTrendingShelfCollectionViewCell : UICollectionViewDataSource {
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1;
     }
-    
 }
 
 extension VTrendingShelfCollectionViewCell: UICollectionViewDelegate {
@@ -178,5 +158,15 @@ extension VTrendingShelfCollectionViewCell: VBackgroundContainer {
     func backgroundContainerView() -> UIView {
         return contentView
     }
+}
+
+extension VDependencyManager {
     
+    private struct Constants {
+        static let kStreamATFThresholdKey = "streamAtfViewThreshold"
+    }
+    
+    var minTrackingRequiredCellVisibilityRatio: CGFloat {
+        return numberForKey(Constants.kStreamATFThresholdKey) as CGFloat
+    }
 }

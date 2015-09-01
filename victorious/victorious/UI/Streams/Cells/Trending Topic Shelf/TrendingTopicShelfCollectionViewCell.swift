@@ -43,6 +43,10 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
         return label
     }()
     
+    lazy var streamItemVisibilityTrackingHelper: StreamVisibilityTrackingHelper = {
+        return StreamVisibilityTrackingHelper(collectionView: self.collectionView)
+    }()
+    
     var shelf: Shelf? {
         didSet {
             if ( shelf == oldValue ) {
@@ -71,6 +75,7 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
                 dependencyManager.addBackgroundToBackgroundHost(self)
                 label.font = dependencyManager.titleFont
                 label.textColor = dependencyManager.titleColor
+                streamItemVisibilityTrackingHelper.trackingMinRequiredCellVisibilityRatio = dependencyManager.minTrackingRequiredCellVisibilityRatio
             }
         }
     }
@@ -102,7 +107,7 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
         collectionView.registerClass(TrendingTopicContentCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(TrendingTopicContentCollectionViewCell.self))
     }
     
-    //MARK: Helpers
+    // MARK: Helpers
     
     private func streamItems(shelf: Shelf?) -> NSOrderedSet? {
         return shelf?.streamItems
@@ -123,6 +128,12 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
         let totalHeight = totalTitleHeight + Constants.collectionViewHeight
         
         return CGSize(width: bounds.width, height: totalHeight)
+    }
+    
+    // MARK: Scroll Delegate
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        streamItemVisibilityTrackingHelper.trackVisibleSequences()
     }
 }
 
