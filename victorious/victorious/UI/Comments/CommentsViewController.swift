@@ -98,6 +98,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         }
         
         if let sequence = sequence, instreamPreviewURL = sequence.inStreamPreviewImageURL() {
+            
             imageView.setLightBlurredImageWithURL(instreamPreviewURL, placeholderImage: nil)
         }
     }
