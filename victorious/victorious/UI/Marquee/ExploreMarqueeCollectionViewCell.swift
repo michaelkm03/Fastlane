@@ -23,6 +23,7 @@ class ExploreMarqueeCollectionViewCell: VInsetMarqueeCollectionViewCell, VBackgr
         marqueeCollectionView.registerNib(ExploreMarqueeStreamItemCell.nibForCell(), forCellWithReuseIdentifier: ExploreMarqueeStreamItemCell.suggestedReuseIdentifier())
         let flowLayout = VExploreMarqueeCollectionViewFlowLayout()
         marqueeCollectionView.collectionViewLayout = flowLayout
+        marqueeCollectionView.decelerationRate = UIScrollViewDecelerationRateFast
     }
     
     override class func desiredSizeWithCollectionViewBounds(bounds: CGRect) -> CGSize {
