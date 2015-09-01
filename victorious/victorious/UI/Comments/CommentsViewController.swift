@@ -115,7 +115,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         super.viewDidAppear(animated)
         if firstAppearance {
             collectionView.becomeFirstResponder()
-            firstApperance = false
+            firstAppearance = false
         }
         
         // Do this here so that the keyboard bar animates in with pushes
