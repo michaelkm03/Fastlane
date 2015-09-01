@@ -157,7 +157,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, strong) VTransitionDelegate *repopulateTransitionDelegate;
 
 @property (nonatomic, strong) VCollectionViewCommentHighlighter *commentHighlighter;
-
+@property (nonatomic, assign) CGPoint offsetBeforeLandscape;
 @property (nonatomic, weak) IBOutlet VContentViewRotationHelper *rotationHelper;
 @property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
 @property (nonatomic, weak, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
@@ -338,10 +338,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
      {
          rotationUpdate();
      }
-                                 completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
-     {
-         rotationUpdate();
-     }];
+                                 completion:nil];
 }
 
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -351,9 +348,11 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     {
         [self.textEntryView stopEditing];
         [self.contentCollectionView resignFirstResponder];
+        self.offsetBeforeLandscape = self.contentCollectionView.contentOffset;
     }
     else
     {
+        self.contentCollectionView.contentOffset = self.offsetBeforeLandscape;
         [self.contentCollectionView becomeFirstResponder];
     }
 
