@@ -91,18 +91,21 @@ const CGFloat kMaximumLoopingTime = 30.0f;
     self.playingVideoBackgroundView.alpha = 0;
     self.videoView.alpha = 0;
     
-    self.assetURL = nil;
-    
-    self.HLSAsset = [sequence.firstNode httpLiveStreamingAsset];
-    
-    // Check HLS asset to see if we should autoplay and only if it's over 30 seconds
-    if ( self.HLSAsset.streamAutoplay.boolValue )
+    if ( !self.onlyShowPreview )
     {
-        // Check if autoplay is enabled before loading asset URL
-        if ([self.videoSettings isAutoplayEnabled])
+        self.assetURL = nil;
+        
+        self.HLSAsset = [sequence.firstNode httpLiveStreamingAsset];
+        
+        // Check HLS asset to see if we should autoplay and only if it's over 30 seconds
+        if ( self.HLSAsset.streamAutoplay.boolValue )
         {
-            self.trackingItem = sequence.tracking;
-            [self loadAssetURL:[NSURL URLWithString:self.HLSAsset.data] andLoop:NO];
+            // Check if autoplay is enabled before loading asset URL
+            if ([self.videoSettings isAutoplayEnabled])
+            {
+                self.trackingItem = sequence.tracking;
+                [self loadAssetURL:[NSURL URLWithString:self.HLSAsset.data] andLoop:NO];
+            }
         }
     }
 }
