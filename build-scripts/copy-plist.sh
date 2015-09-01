@@ -51,27 +51,24 @@ copyPListValue 'TWITTER_CONSUMER_SECRET'
 copyPListValue 'FlurryAPIKey'
 copyPListValue 'CreatorSalutation'
 
-########### Copy URL schemes
+
+########### Generate Facebook URL Scheme
 
 /usr/libexec/PlistBuddy -c "Delete CFBundleURLTypes" "$DESTINATION"
+/usr/libexec/PlistBuddy -c "Add CFBundleURLTypes Array" "$DESTINATION"
 
-N=0
-while [ 1 ]
-do
-    SCHEME=$(/usr/libexec/PlistBuddy -c "Print CFBundleURLTypes:$N:CFBundleURLSchemes:0" "$SOURCE" 2> /dev/null)
+if [ "$P_FLAG" != "-p" ]; then
+    PRODUCT_PREFIX="\${ProductPrefix}"
+fi
 
-    if [ "$SCHEME" == "" ]; then
-        break
-    fi
+FB_APPID=$(/usr/libexec/PlistBuddy -c "Print :FacebookAppID" "$SOURCE" 2> /dev/null)
+if [ "$FB_APPID" != "" ]; then
+    FB_SCHEME_SUFFIX="${PRODUCT_PREFIX}v$APP_ID"
+    /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:0:CFBundleURLSchemes Array" "$DESTINATION"
+    /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:0:CFBundleURLSchemes: string fb${FB_APPID}${FB_SCHEME_SUFFIX}" "$DESTINATION"
+    /usr/libexec/PlistBuddy -c "Set FacebookUrlSchemeSuffix $FB_SCHEME_SUFFIX" "$DESTINATION"
+fi
 
-    if [ $N == 0 ]; then
-        /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes Array" "$DESTINATION"
-    fi
-    /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:$N:CFBundleURLSchemes Array" "$DESTINATION"
-    /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:$N:CFBundleURLSchemes: string $SCHEME" "$DESTINATION"
-
-    let N=$N+1
-done
 
 ########### Generate Custom URL Scheme for app
 
@@ -81,6 +78,6 @@ fi
 
 CUSTOM_SCHEME="${PRODUCT_PREFIX}vapp${APP_ID}"
 
-/usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:$N:CFBundleURLName string com.getvictorious.deeplinking.scheme" "$DESTINATION"
-/usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:$N:CFBundleURLSchemes Array" "$DESTINATION"
-/usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:$N:CFBundleURLSchemes: string $CUSTOM_SCHEME" "$DESTINATION"
+/usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:1:CFBundleURLName string com.getvictorious.deeplinking.scheme" "$DESTINATION"
+/usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:1:CFBundleURLSchemes Array" "$DESTINATION"
+/usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:1:CFBundleURLSchemes: string $CUSTOM_SCHEME" "$DESTINATION"

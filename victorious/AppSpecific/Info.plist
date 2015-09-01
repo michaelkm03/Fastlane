@@ -31,7 +31,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb664946900317058</string>
+				<string>fb664946900317058${ProductPrefix}v1</string>
 			</array>
 		</dict>
 		<dict>
@@ -51,6 +51,8 @@
 	<string>664946900317058</string>
 	<key>FacebookDisplayName</key>
 	<string>VictoriousApp Dev</string>
+	<key>FacebookUrlSchemeSuffix</key>
+	<string>${ProductPrefix}v1</string>
 	<key>FlurryAPIKey</key>
 	<string>XXXXXXXXXX</string>
 	<key>LSRequiresIPhoneOS</key>
