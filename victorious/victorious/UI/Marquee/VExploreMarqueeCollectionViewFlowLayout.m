@@ -51,8 +51,7 @@
         }
     }
     
-    return CGPointMake(candidateAttributes.center.x - halfWidth, offset.y);
-    
+    return CGPointMake(floor(candidateAttributes.center.x - halfWidth), offset.y);
 }
 
 @end
