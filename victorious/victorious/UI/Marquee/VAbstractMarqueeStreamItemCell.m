@@ -90,6 +90,16 @@
     {
         [self.previewView setDependencyManager:self.dependencyManager];
     }
+    
+    // Turn off autoplay for explore marquee shelf
+    if ([self isKindOfClass:[ExploreMarqueeStreamItemCell class]])
+    {
+        if ([self.previewView isKindOfClass:[VBaseVideoSequencePreviewView class]])
+        {
+            ((VBaseVideoSequencePreviewView *)self.previewView).onlyShowPreview = YES;
+        }
+    }
+    
     [self.previewView setStreamItem:streamItem];
 }
 

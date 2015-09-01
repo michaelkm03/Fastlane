@@ -32,7 +32,7 @@ class ExploreMarqueeCollectionViewCell: VInsetMarqueeCollectionViewCell, VBackgr
 }
 
 extension ExploreMarqueeCollectionViewCell: VBackgroundContainer {
-    func backgroundContainerView() -> UIView! {
+    func backgroundContainerView() -> UIView {
         return contentView
     }
 }
