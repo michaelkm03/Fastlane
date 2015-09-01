@@ -15,7 +15,7 @@ class ExploreMarqueeStreamItemCell: VInsetMarqueeStreamItemCell {
         return CGSizeMake( bounds.width / 2, bounds.width / 2 )
     }
     
-    override var shouldOnlyShowPreview: Bool {
+    override var shouldSupportAutoplay: Bool {
         return true
     }
 }

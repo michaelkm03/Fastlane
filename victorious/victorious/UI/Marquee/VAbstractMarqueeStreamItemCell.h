@@ -33,7 +33,7 @@
 @property (nonatomic, strong) VDependencyManager *dependencyManager; ///< The dependencyManager that is used to style the cell and the content it displays
 @property (nonatomic, strong) VStreamItemPreviewView *previewView;
 @property (nonatomic, strong) UIView *dimmingContainer;
-@property (nonatomic, readonly) BOOL shouldOnlyShowPreview;
+@property (nonatomic, readonly) BOOL shouldSupportAutoplay;
 
 /*
  * A context object used for tracking purposes.
