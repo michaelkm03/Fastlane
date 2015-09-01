@@ -12,13 +12,12 @@
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
 {
-    return 0.5;
+    return 0.3;
 }
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
 {
-    UIViewController* toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-    UIViewController* fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     [[transitionContext containerView] addSubview:toViewController.view];
     toViewController.view.alpha = 0;
     
@@ -26,7 +25,6 @@
         toViewController.view.alpha = 1;
     } completion:^(BOOL finished) {
         [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
-        
     }];
 }
 

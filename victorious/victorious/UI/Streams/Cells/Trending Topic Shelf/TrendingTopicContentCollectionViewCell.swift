@@ -156,7 +156,7 @@ class TrendingTopicContentCollectionViewCell: VBaseCollectionViewCell {
 
 extension TrendingTopicContentCollectionViewCell: VBackgroundContainer {
     
-    func loadingBackgroundContainerView() -> UIView! {
+    func loadingBackgroundContainerView() -> UIView {
         return contentView
     }
 }

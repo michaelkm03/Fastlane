@@ -515,9 +515,16 @@ static const CGFloat kStatusBarHeight = 20.0f;
 
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController animationControllerForOperation:(UINavigationControllerOperation)operation fromViewController:(UIViewController *)fromVC toViewController:(UIViewController *)toVC
 {
-    if ([toVC isKindOfClass:[VUsersAndTagsSearchViewController class]] && [fromVC isKindOfClass:[VExploreViewController class]]) {
+    if ([toVC isKindOfClass:[VUsersAndTagsSearchViewController class]] && [fromVC isKindOfClass:[VExploreViewController class]])
+    {
         return [[VExploreNavigationControllerAnimator alloc] init];
     }
+    
+    if ([fromVC isKindOfClass:[VUsersAndTagsSearchViewController class]] && [toVC isKindOfClass:[VExploreViewController class]])
+    {
+        return [[VExploreNavigationControllerAnimator alloc] init];
+    }
+
     return nil;
 }
 

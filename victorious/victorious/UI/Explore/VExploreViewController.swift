@@ -181,34 +181,3 @@ extension VExploreViewController: VHashtagSelectionResponder {
         }
     }
 }
-
-extension VExploreViewController: UINavigationControllerDelegate {
-    func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if (toVC is VUsersAndTagsSearchViewController) && (fromVC is VExploreViewController) {
-            return ExploreNavigationAnimator()
-        }
-        else if (toVC is VExploreViewController) && (fromVC is VUsersAndTagsSearchViewController) {
-            return ExploreNavigationAnimator()
-        }
-        return nil
-    }
-}
-
-class ExploreNavigationAnimator: NSObject, UIViewControllerAnimatedTransitioning {
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
-        return 0.5
-    }
-    
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)
-        let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)
-        transitionContext.containerView().addSubview(toViewController!.view!)
-        toViewController!.view.alpha = 0
-        
-        UIView.animateWithDuration(transitionDuration(transitionContext), animations: { () -> Void in
-            toViewController!.view.alpha = 1
-            }) { (finished) -> Void in
-                transitionContext.completeTransition(!transitionContext.transitionWasCancelled())
-        }
-    }
-}
