@@ -15,8 +15,7 @@
 
 - (NSString *)messageWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    NSString *message = [dependencyManager stringForKey:@"profileImagePermission.message"];
-    return NSLocalizedString(message, @"");
+    return [dependencyManager stringForKey:@"profileImagePermission.message"];
 }
 
 - (void)trackPermission:(NSString *)trackingStatus

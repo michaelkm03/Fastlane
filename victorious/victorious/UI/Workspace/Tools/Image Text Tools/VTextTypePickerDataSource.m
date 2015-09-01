@@ -59,7 +59,7 @@
     UIFont *adjustedFont = [(UIFont *)textToolType.attributes[NSFontAttributeName] fontWithSize:cell.label.font.pointSize];
     NSMutableDictionary *mutableAttributes = [[NSMutableDictionary alloc] initWithDictionary:textToolType.attributes];
     mutableAttributes[NSFontAttributeName] = adjustedFont;
-    cell.label.attributedText = [[NSAttributedString alloc] initWithString:[NSLocalizedString(textToolType.title, @"") uppercaseStringWithLocale:[NSLocale currentLocale]]
+    cell.label.attributedText = [[NSAttributedString alloc] initWithString:[textToolType.title uppercaseStringWithLocale:[NSLocale currentLocale]]
                                                            attributes:mutableAttributes];
     return cell;
 }

@@ -68,7 +68,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     {
         viewController.dependencyManager = dependencyManager;
         viewController.messageCountCoordinator = [[VUnreadMessageCountCoordinator alloc] initWithObjectManager:[dependencyManager objectManager]];
-        viewController.title = NSLocalizedString(@"Messages", @"");
+        [dependencyManager configureNavigationItem:viewController.navigationItem];
         
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(inboxMessageNotification:) name:VInboxViewControllerInboxPushReceivedNotification object:nil];
@@ -107,8 +107,6 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [self.dependencyManager configureNavigationItem:self.navigationItem];
     
     [self updateNavigationItem];
     

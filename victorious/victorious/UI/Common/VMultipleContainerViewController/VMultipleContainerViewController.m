@@ -63,7 +63,6 @@ static NSString * const kInitialKey = @"initial";
         _selector.viewControllers = _viewControllers;
         _selector.delegate = self;
         self.navigationItem.v_supplementaryHeaderView = _selector;
-        self.title = NSLocalizedString([dependencyManager stringForKey:VDependencyManagerTitleKey], @"");
     }
     return self;
 }
