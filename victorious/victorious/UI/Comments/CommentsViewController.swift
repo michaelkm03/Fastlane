@@ -67,6 +67,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
             }
         }
     }
+    private var firstApperance = true
     
     // MARK: Outlets
     
@@ -82,6 +83,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         scrollPaginator.delegate = self
         commentsDataSourceSwitcher.dataSource.delegate = self
         keyboardBar = VKeyboardInputAccessoryView.defaultInputAccessoryViewWithDependencyManager(dependencyManager)
+        collectionView.accessoryView = keyboardBar
 
         noContentView = NSBundle.mainBundle().loadNibNamed("VNoContentView", owner: nil, options: nil).first as? VNoContentView
         if let noContentView = noContentView {
@@ -102,13 +104,19 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        if let keyboardBar = keyboardBar where !firstApperance && !keyboardBar.isEditing() {
+            collectionView.becomeFirstResponder()
+        }
 
-        becomeFirstResponder()
         collectionView.accessoryView = keyboardBar
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        if firstApperance {
+            collectionView.becomeFirstResponder()
+            firstApperance = false
+        }
         
         // Do this here so that the keyboard bar animates in with pushes
         focusHelper?.updateFocus()
@@ -134,16 +142,6 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
     override func v_prefersNavigationBarHidden() -> Bool {
         return false
-    }
-    
-    // MARK: - UIResponder
-    
-    override func canBecomeFirstResponder() -> Bool {
-        return true
-    }
-    
-    override var inputAccessoryView: UIView! {
-        return keyboardBar
     }
     
     // MARK: - Internal Methods
