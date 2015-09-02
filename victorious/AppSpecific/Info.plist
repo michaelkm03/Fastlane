@@ -29,9 +29,11 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.getvictorious.facebook</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb664946900317058${ProductPrefix}v1</string>
+				<string>fb664946900317058</string>
 			</array>
 		</dict>
 		<dict>
@@ -52,7 +54,7 @@
 	<key>FacebookDisplayName</key>
 	<string>VictoriousApp Dev</string>
 	<key>FacebookUrlSchemeSuffix</key>
-	<string>${ProductPrefix}v1</string>
+	<string>victorious</string>
 	<key>FlurryAPIKey</key>
 	<string>XXXXXXXXXX</string>
 	<key>LSRequiresIPhoneOS</key>

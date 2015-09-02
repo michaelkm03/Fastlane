@@ -8094,6 +8094,7 @@
 				BE171D741868BE64004E5202 /* Resources */,
 				03A00E601AE889BA00A2B733 /* Copy Environments Configuration */,
 				3FF8C50618A5A06A00812968 /* Set Build Number */,
+				03A765061B977ABB000139C5 /* Generate Facebook URL Scheme */,
 				03CE66F819B50C340011BB9E /* Objective Clean */,
 				03A058CA1AF09C4500CF39D1 /* Download Template */,
 				032948A81970BDA700208FBA /* Crashlytics */,
@@ -8544,6 +8545,20 @@
 			shellPath = /bin/sh;
 			shellScript = "if [ \"$DownloadTemplate\" == \"no\" ]; then\n    echo \"Skipping template download.\"\n    exit 0\nfi\n\nBUNDLE=\"$BUILT_PRODUCTS_DIR/$EXECUTABLE_FOLDER_PATH\"\n../build-scripts/downloadtemplate \"$BUNDLE\" \"$DefaultEnvironment\"\nexit $?";
 			showEnvVarsInLog = 0;
+		};
+		03A765061B977ABB000139C5 /* Generate Facebook URL Scheme */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate Facebook URL Scheme";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "INFOPLIST=\"$TARGET_BUILD_DIR/$INFOPLIST_PATH\"\nFACEBOOK_APPID=$(/usr/libexec/PlistBuddy -c \"Print :FacebookAppID\" \"$INFOPLIST\" 2> /dev/null)\n\nif [ \"$FACEBOOK_APPID\" == \"\" ]; then\n    exit\nfi\n\nDISPLAY_NAME=$(/usr/libexec/PlistBuddy -c \"Print :CFBundleDisplayName\" \"$INFOPLIST\" 2> /dev/null | sed 's/[^a-zA-Z0-9]//')\nSCHEME=\"fb${FACEBOOK_APPID}${DISPLAY_NAME}\"\n\nN=0\nwhile [ 1 ]\ndo\n    SCHEME_NAME=$(/usr/libexec/PlistBuddy -c \"Print CFBundleURLTypes:$N:CFBundleURLName\" \"$INFOPLIST\" 2> /dev/null)\n\n    if [ \"$SCHEME_NAME\" == \"\" ]; then\n        break\n    elif [ \"$SCHEME_NAME\" != \"com.getvictorious.facebook\" ]; then\n        let N=$N+1\n        continue\n    fi\n\n    /usr/libexec/PlistBuddy -c \"Set CFBundleURLTypes:$N:CFBundleURLSchemes:0 $SCHEME\" \"$INFOPLIST\"\n    break\ndone\n\n/usr/libexec/PlistBuddy -c \"Set FacebookUrlSchemeSuffix $DISPLAY_NAME\" \"$INFOPLIST\"\n";
 		};
 		03CE66F819B50C340011BB9E /* Objective Clean */ = {
 			isa = PBXShellScriptBuildPhase;

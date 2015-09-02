@@ -53,21 +53,15 @@ copyPListValue 'CreatorSalutation'
 
 
 ########### Generate Facebook URL Scheme
+## NOTE: This URL scheme will be modified at build time, but it needs to be set here initially.
 
 /usr/libexec/PlistBuddy -c "Delete CFBundleURLTypes" "$DESTINATION"
 /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes Array" "$DESTINATION"
 
-if [ "$P_FLAG" != "-p" ]; then
-    PRODUCT_PREFIX="\${ProductPrefix}"
-fi
-
 FB_APPID=$(/usr/libexec/PlistBuddy -c "Print :FacebookAppID" "$SOURCE" 2> /dev/null)
-if [ "$FB_APPID" != "" ]; then
-    FB_SCHEME_SUFFIX="${PRODUCT_PREFIX}v$APP_ID"
-    /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:0:CFBundleURLSchemes Array" "$DESTINATION"
-    /usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:0:CFBundleURLSchemes: string fb${FB_APPID}${FB_SCHEME_SUFFIX}" "$DESTINATION"
-    /usr/libexec/PlistBuddy -c "Set FacebookUrlSchemeSuffix $FB_SCHEME_SUFFIX" "$DESTINATION"
-fi
+/usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:0:CFBundleURLName string com.getvictorious.facebook" "$DESTINATION"
+/usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:0:CFBundleURLSchemes Array" "$DESTINATION"
+/usr/libexec/PlistBuddy -c "Add CFBundleURLTypes:0:CFBundleURLSchemes: string fb${FB_APPID}${FB_SCHEME_SUFFIX}" "$DESTINATION"
 
 
 ########### Generate Custom URL Scheme for app
