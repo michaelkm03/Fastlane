@@ -46,11 +46,11 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         super.viewDidLoad()
         
         // Make sure the bottom of view does not inset twice for the tab menu bar
-        self.automaticallyAdjustsScrollViewInsets = false;
-        self.extendedLayoutIncludesOpaqueBars = true;
+        automaticallyAdjustsScrollViewInsets = false;
+        extendedLayoutIncludesOpaqueBars = true;
         
-        self.configureSearchBar()
-        self.collectionView.backgroundColor = UIColor.whiteColor()
+        configureSearchBar()
+        collectionView.backgroundColor = UIColor.whiteColor()
         
         VObjectManager.sharedManager().getExplore({ (op, obj, results) -> Void in
             if let stream = results.last as? VStream {
@@ -70,6 +70,11 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBarHidden = false
     }
     
     /// MARK: - UICollectionViewDataSource
@@ -175,7 +180,7 @@ extension VExploreViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension VExploreViewController : VHashtagSelectionResponder {
+extension VExploreViewController: VHashtagSelectionResponder {
     
     func hashtagSelected(text: String!) {
         if let hashtag = text, stream = dependencyManager?.hashtagStreamWithHashtag(hashtag) {
