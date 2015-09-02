@@ -40,4 +40,6 @@
  */
 @property (nonatomic, strong) StreamCellContext *context;
 
+- (void)updatePreviewViewForStreamItem:(VStreamItem *)streamItem;
+
 @end

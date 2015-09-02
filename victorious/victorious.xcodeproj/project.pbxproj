@@ -706,6 +706,7 @@
 		A780ED5C1A933D9300A8CD5D /* VPhotoFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = A780ED511A933D9300A8CD5D /* VPhotoFilter.m */; };
 		A780ED5F1A933D9300A8CD5D /* VPhotoFilterSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = A780ED581A933D9300A8CD5D /* VPhotoFilterSerialization.m */; };
 		A7815E1B1B6C5D9F007797B7 /* SettingsButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7815E1A1B6C5D9F007797B7 /* SettingsButtonCell.swift */; };
+		A786F7821B96645500209453 /* ContentDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A786F7811B96645500209453 /* ContentDetailViewController.swift */; };
 		A78F17731B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78F17711B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift */; };
 		A78F17741B67F3AE009F6B8F /* ExperimentSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78F17721B67F3AE009F6B8F /* ExperimentSettingsViewController.swift */; };
 		A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = A790C8231A01980F00C4F208 /* VTrackingEvent.m */; };
@@ -2567,6 +2568,7 @@
 		A780ED581A933D9300A8CD5D /* VPhotoFilterSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPhotoFilterSerialization.m; sourceTree = "<group>"; };
 		A7814A0919E5FD0600D89B90 /* VPasswordValidationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPasswordValidationTests.m; sourceTree = "<group>"; };
 		A7815E1A1B6C5D9F007797B7 /* SettingsButtonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsButtonCell.swift; sourceTree = "<group>"; };
+		A786F7811B96645500209453 /* ContentDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContentDetailViewController.swift; path = "Content Detail/ContentDetailViewController.swift"; sourceTree = "<group>"; };
 		A78F17711B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperimentSettingsDataSource.swift; sourceTree = "<group>"; };
 		A78F17721B67F3AE009F6B8F /* ExperimentSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExperimentSettingsViewController.swift; sourceTree = "<group>"; };
 		A790C8221A01980F00C4F208 /* VTrackingEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingEvent.h; sourceTree = "<group>"; };
@@ -3843,6 +3845,7 @@
 				F07409801B059CAD00C44623 /* Coachmarks */,
 				0314D33E19B46B5E00FA363C /* Comments */,
 				0314D34819B46B5E00FA363C /* Common */,
+				A786F7801B96643F00209453 /* Content Detail */,
 				0314D35B19B46B5E00FA363C /* Content View */,
 				0314D38319B46B5E00FA363C /* Create Poll */,
 				C35265F91B28E349001F093F /* Create Sheet */,
@@ -6070,6 +6073,14 @@
 				A780ED581A933D9300A8CD5D /* VPhotoFilterSerialization.m */,
 			);
 			path = "Photo Filters";
+			sourceTree = "<group>";
+		};
+		A786F7801B96643F00209453 /* Content Detail */ = {
+			isa = PBXGroup;
+			children = (
+				A786F7811B96645500209453 /* ContentDetailViewController.swift */,
+			);
+			name = "Content Detail";
 			sourceTree = "<group>";
 		};
 		A78F17701B67F3AE009F6B8F /* Experiment Settings */ = {
@@ -9448,6 +9459,7 @@
 				F098D81D1A9E4A890003B6D4 /* VUserTag.m in Sources */,
 				A769C3E91A13176700698D0C /* VWebBrowserActions.m in Sources */,
 				A7299E921AA5331000B6BC1F /* VCardDirectoryCell.m in Sources */,
+				A786F7821B96645500209453 /* ContentDetailViewController.swift in Sources */,
 				A780ED5F1A933D9300A8CD5D /* VPhotoFilterSerialization.m in Sources */,
 				A721E9261B572454000B7901 /* VEndCard+RestKit.m in Sources */,
 				0314D0B419B4698800FA363C /* VObjectManager+Login.m in Sources */,

@@ -292,7 +292,21 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 {
     VStreamItem *item = self.marqueeItems[indexPath.row];
     
-    [self.selectionDelegate marquee:self selectedItem:item atIndexPath:indexPath previewImage:nil];
+    VAbstractMarqueeStreamItemCell *cell = (VAbstractMarqueeStreamItemCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    
+    ContentDetailViewController *contentDetail = [[ContentDetailViewController alloc] init];
+    contentDetail.options = [[ContentDetailOptions alloc] init];
+    contentDetail.options.assetPreviewView = cell.previewView;
+    contentDetail.options.dismissalCallback = ^
+    {
+        [cell updatePreviewViewForStreamItem:item];
+    };
+                                              
+    UIViewController *viewController = (UIViewController *)self.selectionDelegate;
+    [viewController presentViewController:contentDetail animated:NO completion:nil];
+    
+    //[self.selectionDelegate marquee:self selectedItem:item atIndexPath:indexPath previewImage:nil];
+    
     [self.autoScrollTimerManager invalidate];
 }
 
