@@ -22,7 +22,7 @@
 #import "VComment.h"
 #import "victorious-Swift.h"
 
-static const CGFloat kMinimumAspectRatio = 0.5f;
+static const CGFloat kAspectRectMargin = 120.0f;
 static const CGFloat kMaximumAspectRatio = 2.0f;
 
 @implementation VSequence (Fetcher)
@@ -177,6 +177,15 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
 
 - (CGFloat)previewAssetAspectRatio
 {
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGRect aspectContainerRect = UIEdgeInsetsInsetRect( screenRect, UIEdgeInsetsMake( kAspectRectMargin, 0, kAspectRectMargin, 0 ) );
+    return [self previewAssetAspectRatioWithinRect:aspectContainerRect];
+}
+
+- (CGFloat)previewAssetAspectRatioWithinRect:(CGRect)rect
+{
+    CGFloat minAspectRatio = CGRectGetWidth(rect) / CGRectGetHeight(rect);
+    
     VImageAssetFinder *assetFinder = [[VImageAssetFinder alloc] init];
     VImageAsset *previewAsset = [assetFinder largestAssetFromAssets:self.previewAssets];
     
@@ -190,27 +199,15 @@ static const CGFloat kMaximumAspectRatio = 2.0f;
         
         // Get aspect ratio of preview asset
         CGFloat aspectRatio = [previewAsset.width floatValue] / [previewAsset.height floatValue];
+        
         // Make sure aspect ratio is within bounds
-        return [self clamp:aspectRatio max:kMaximumAspectRatio min:kMinimumAspectRatio];
+        const BOOL isVideo = self.isVideo || self.isGifStyle.boolValue;
+        CGFloat min = isVideo ? minAspectRatio : CGFLOAT_MIN;
+        return CLAMP(min, aspectRatio, kMaximumAspectRatio);
     }
     
     return 1.0f;
 }
-
-- (CGFloat)clamp:(CGFloat)value max:(CGFloat)max min:(CGFloat)min
-{
-    if (value > max)
-    {
-        return max;
-    }
-    else if (value < min)
-    {
-        return min;
-    }
-    
-    return value;
-}
-
 
 - (NSArray *)initialImageURLs
 {

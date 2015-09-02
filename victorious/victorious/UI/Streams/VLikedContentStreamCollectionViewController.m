@@ -111,8 +111,8 @@ static NSString * const kNoLikedContentIconKey = @"noContentIcon";
             if ( [noContentView respondsToSelector:@selector(setDependencyManager:)] )
             {
                 noContentView.dependencyManager = self.dependencyManager;
-                noContentView.title = NSLocalizedString([self.dependencyManager stringForKey:kNoLikedContentTitleKey], @"");
-                noContentView.message = NSLocalizedString([self.dependencyManager stringForKey:kNoLikedContentSubtitleKey], @"");
+                noContentView.title = [self.dependencyManager stringForKey:kNoLikedContentTitleKey];
+                noContentView.message = [self.dependencyManager stringForKey:kNoLikedContentSubtitleKey];
                 noContentView.icon = [self.dependencyManager imageForKey:kNoLikedContentIconKey];
             }
             

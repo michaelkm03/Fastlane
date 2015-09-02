@@ -93,48 +93,8 @@
 - (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes
 {
     [super applyLayoutAttributes:layoutAttributes];
-    
-    [self updateContentToShrinkingLayout];
-}
 
-- (void)setShrinkingContentView:(UIView *)shrinkingContentView
-{
-    _shrinkingContentView = shrinkingContentView;
-    
-    [self updateContentToShrinkingLayout];
-}
-
-- (void)updateContentToShrinkingLayout
-{
-    if ( self.shrinkingContentView == nil )
-    {
-        return;
-    }
-    
-    UIInterfaceOrientation currentOrientation = [UIApplication sharedApplication].statusBarOrientation;
-    if ( UIInterfaceOrientationIsPortrait( currentOrientation ) )
-    {
-        self.shrinkingContentView.transform = CGAffineTransformIdentity;
-        const CGRect shrinkingFrame = self.shrinkingContentView.frame;
-        const CGRect currentFrame = [[self.contentView.layer presentationLayer] frame];
-        
-        if ( CGRectEqualToRect( currentFrame, CGRectZero ) )
-        {
-            return;
-        }
-        
-        const CGFloat translateY = (CGRectGetHeight(shrinkingFrame) - CGRectGetHeight(currentFrame)) * 0.5f;
-        const CGFloat scale = MIN( CGRectGetHeight(currentFrame) / CGRectGetHeight(shrinkingFrame), 1.0f );
-        
-        CGAffineTransform transform = CGAffineTransformIdentity;
-        transform = CGAffineTransformTranslate( transform, 0.0f, -translateY );
-        transform = CGAffineTransformScale( transform, scale, scale );
-        self.shrinkingContentView.transform = transform;
-    }
-    else
-    {
-        self.shrinkingContentView.transform = CGAffineTransformIdentity;
-    }
+    self.shrinkingContentView.frame = self.contentView.bounds;
 }
 
 #pragma mark - Rotation
@@ -158,7 +118,6 @@
     else
     {
         self.shrinkingContentView.autoresizingMask = 0;
-        [self updateContentToShrinkingLayout];
         [self.shrinkingContentView layoutIfNeeded];
     }
 }
@@ -169,7 +128,6 @@
 {
     [super layoutSubviews];
     [self.contentView bringSubviewToFront:self.animationImageView];
-    [self updateContentToShrinkingLayout];
 }
 
 #pragma mark - Public Methods

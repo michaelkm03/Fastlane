@@ -60,8 +60,7 @@
 
 - (NSString *)messageWithDependencyManager:(VDependencyManager *)dependencyManager
 {
-    NSString *message = [dependencyManager stringForKey:@"cameraPermission.message"];
-    return NSLocalizedString(message, @"");
+    return [dependencyManager stringForKey:@"cameraPermission.message"];
 }
 
 @end
