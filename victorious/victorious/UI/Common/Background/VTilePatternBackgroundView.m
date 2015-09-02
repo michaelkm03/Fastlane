@@ -78,8 +78,6 @@ static NSString * const kShimmerAnimationKey = @"shimmerAnimation";
     _image = image;
     
     [self.renderedImageCache removeAllObjects];
-    [self layoutSubviews];
-    self.tilePatternLayer.contents = (id)[self patternImage].CGImage;
 }
 
 - (void)setTiltParallaxEnabled:(BOOL)tiltParallaxEnabled
