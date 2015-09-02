@@ -43,8 +43,8 @@ class TrendingTopicShelfCollectionViewCell: VBaseCollectionViewCell {
         return label
     }()
     
-    lazy var streamItemVisibilityTrackingHelper: StreamVisibilityTrackingHelper = {
-        return StreamVisibilityTrackingHelper(collectionView: self.collectionView)
+    lazy var streamItemVisibilityTrackingHelper: ShelfVisibilityTrackingHelper = {
+        return ShelfVisibilityTrackingHelper(collectionView: self.collectionView)
     }()
     
     var shelf: Shelf? {

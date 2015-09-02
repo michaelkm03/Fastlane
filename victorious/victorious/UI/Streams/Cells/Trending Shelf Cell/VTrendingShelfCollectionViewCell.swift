@@ -24,8 +24,8 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
         }
     }
     
-    lazy var streamItemVisibilityTrackingHelper: StreamVisibilityTrackingHelper = {
-        return StreamVisibilityTrackingHelper(collectionView: self.collectionView)
+    lazy var streamItemVisibilityTrackingHelper: ShelfVisibilityTrackingHelper = {
+        return ShelfVisibilityTrackingHelper(collectionView: self.collectionView)
     }()
     
     private let failureCellFactory = VNoContentCollectionViewCellFactory(acceptableContentClasses: nil)
