@@ -92,6 +92,12 @@
     [self.previewView setStreamItem:streamItem];
 }
 
+- (void)restorePreviewView:(VStreamItemPreviewView *)previewView
+{
+    [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
+    [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
+}
+
 #pragma mark - VStreamCellComponentSpecialization
 
 + (NSString *)reuseIdentifierForStreamItem:(VStreamItem *)streamItem

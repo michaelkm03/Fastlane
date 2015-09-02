@@ -26,7 +26,7 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     // MARK: - Factory Method
     
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> CommentsViewController {
-        let vc: CommentsViewController = self.v_fromStoryboardInitialViewController()
+        let vc: CommentsViewController = self.v_initialViewControllerFromStoryboard()
         vc.dependencyManager = dependencyManager
         return vc
     }

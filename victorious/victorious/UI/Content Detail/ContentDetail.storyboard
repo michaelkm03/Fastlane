@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="oBW-N1-x8U">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <scenes>
+        <!--Content Detail View Controller-->
+        <scene sceneID="Y3G-ix-Q10">
+            <objects>
+                <viewController id="oBW-N1-x8U" customClass="ContentDetailViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="IDM-ek-u0A"/>
+                        <viewControllerLayoutGuide type="bottom" id="Dru-MK-d0p"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="zod-x0-kQv">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iEt-ka-RZ5" userLabel="Content">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="364"/>
+                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="364" id="YHq-9b-JBG"/>
+                                </constraints>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2nW-4f-3qt" userLabel="Ballistics">
+                                <rect key="frame" x="0.0" y="364" width="600" height="99"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="99" id="mxT-ud-8Sf"/>
+                                </constraints>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OAj-DV-XhC" userLabel="Comments">
+                                <rect key="frame" x="0.0" y="463" width="600" height="137"/>
+                                <color key="backgroundColor" red="1" green="0.035351606610000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Dru-MK-d0p" firstAttribute="top" secondItem="OAj-DV-XhC" secondAttribute="bottom" id="2Yk-Nb-bDa"/>
+                            <constraint firstItem="2nW-4f-3qt" firstAttribute="leading" secondItem="zod-x0-kQv" secondAttribute="leading" id="6P1-va-gM7"/>
+                            <constraint firstItem="OAj-DV-XhC" firstAttribute="top" secondItem="2nW-4f-3qt" secondAttribute="bottom" id="87t-vs-75S"/>
+                            <constraint firstAttribute="trailing" secondItem="iEt-ka-RZ5" secondAttribute="trailing" id="BxU-Ac-0tl"/>
+                            <constraint firstAttribute="trailing" secondItem="2nW-4f-3qt" secondAttribute="trailing" id="Fad-0z-wXG"/>
+                            <constraint firstItem="iEt-ka-RZ5" firstAttribute="leading" secondItem="zod-x0-kQv" secondAttribute="leading" id="JIx-vf-Ire"/>
+                            <constraint firstItem="OAj-DV-XhC" firstAttribute="leading" secondItem="zod-x0-kQv" secondAttribute="leading" id="ObX-l1-eut"/>
+                            <constraint firstAttribute="trailing" secondItem="OAj-DV-XhC" secondAttribute="trailing" id="kZN-9e-d9q"/>
+                            <constraint firstItem="2nW-4f-3qt" firstAttribute="top" secondItem="iEt-ka-RZ5" secondAttribute="bottom" id="kg2-ET-gfj"/>
+                            <constraint firstItem="iEt-ka-RZ5" firstAttribute="top" secondItem="IDM-ek-u0A" secondAttribute="bottom" constant="-20" id="p4h-nK-Vp4"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="ballisticsContainer" destination="2nW-4f-3qt" id="K7V-ON-HDN"/>
+                        <outlet property="commentsContainer" destination="OAj-DV-XhC" id="AMb-Au-bUM"/>
+                        <outlet property="contentContainer" destination="iEt-ka-RZ5" id="jmR-wK-Fk4"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FjZ-gu-wvV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="503" y="426"/>
+        </scene>
+    </scenes>
+</document>

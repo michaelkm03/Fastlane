@@ -290,16 +290,16 @@ static const CGFloat kDefaultMarqueeTimerFireDuration = 5.0f;
 //Let the container handle the selection.
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    VStreamItem *item = self.marqueeItems[indexPath.row];
+    //VStreamItem *item = self.marqueeItems[indexPath.row];
     
     VAbstractMarqueeStreamItemCell *cell = (VAbstractMarqueeStreamItemCell *)[collectionView cellForItemAtIndexPath:indexPath];
     
-    ContentDetailViewController *contentDetail = [[ContentDetailViewController alloc] init];
+    ContentDetailViewController *contentDetail = [ContentDetailViewController newWithDependencyManager:self.dependencyManager];
     contentDetail.options = [[ContentDetailOptions alloc] init];
     contentDetail.options.assetPreviewView = cell.previewView;
     contentDetail.options.dismissalCallback = ^
     {
-        [cell updatePreviewViewForStreamItem:item];
+        [cell restorePreviewView:cell.previewView];
     };
                                               
     UIViewController *viewController = (UIViewController *)self.selectionDelegate;
