@@ -66,8 +66,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
         return;
     }
     
-    CGFloat pageWidth = CGRectGetWidth(self.collectionView.bounds);
-    NSUInteger currentPage = ( self.collectionView.contentOffset.x / pageWidth ) + 1;
+    NSUInteger currentPage = ( self.collectionView.contentOffset.x / self.pageWidth ) + 1;
     CGFloat overshootAmount = kOffsetOvershoot;
     if (currentPage == self.marqueeItems.count)
     {
@@ -75,7 +74,7 @@ static const CGFloat kOffsetOvershoot = 20.0f;
         overshootAmount = - overshootAmount;
     }
     
-    CGPoint point = CGPointMake(pageWidth * currentPage + overshootAmount, self.collectionView.contentOffset.y);
+    CGPoint point = CGPointMake(self.pageWidth * currentPage + overshootAmount, self.collectionView.contentOffset.y);
     self.overshootTarget = point;
     point.x -= overshootAmount;
     self.offsetTarget = point;

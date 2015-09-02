@@ -13,4 +13,10 @@
  */
 @interface VInsetMarqueeCollectionViewFlowLayout : UICollectionViewFlowLayout
 
+/**
+    Calculate and returns the page width for marquee items
+    Subclass should overwrite this method if marquee item size is different
+ */
+- (CGFloat)getPageWidth;
+
 @end
