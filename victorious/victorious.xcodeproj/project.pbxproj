@@ -2466,8 +2466,8 @@
 		A769C3F61A13D69500698D0C /* WebBrowser.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = WebBrowser.storyboard; sourceTree = "<group>"; };
 		A769C3F81A13E7A400698D0C /* VSequenceWebContentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceWebContentTests.m; sourceTree = "<group>"; };
 		A769FE401ABC17C200888ED8 /* VFirstInstallTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFirstInstallTests.m; sourceTree = "<group>"; };
-		A769FE431ABCFCE900888ED8 /* VTrackingSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTrackingSettingsViewController.h; path = "Tracking Settings/VTrackingSettingsViewController.h"; sourceTree = "<group>"; };
-		A769FE441ABCFCE900888ED8 /* VTrackingSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTrackingSettingsViewController.m; path = "Tracking Settings/VTrackingSettingsViewController.m"; sourceTree = "<group>"; };
+		A769FE431ABCFCE900888ED8 /* VTrackingSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingSettingsViewController.h; sourceTree = "<group>"; };
+		A769FE441ABCFCE900888ED8 /* VTrackingSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingSettingsViewController.m; sourceTree = "<group>"; };
 		A769FE491ABD051A00888ED8 /* VTrackingEventLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrackingEventLog.h; sourceTree = "<group>"; };
 		A769FE4A1ABD051A00888ED8 /* VTrackingEventLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingEventLog.m; sourceTree = "<group>"; };
 		A76A069B1B87B13600D91214 /* ContentCreationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentCreationTests.swift; sourceTree = "<group>"; };
@@ -2590,8 +2590,8 @@
 		A7A2DFFD1A37813D00F8C705 /* VPurchaseActionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchaseActionCell.h; sourceTree = "<group>"; };
 		A7A2DFFE1A37813D00F8C705 /* VPurchaseActionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseActionCell.m; sourceTree = "<group>"; };
 		A7A2E0001A38C7B700F8C705 /* NSData+AESTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+AESTests.m"; sourceTree = "<group>"; };
-		A7A2E0031A38E44B00F8C705 /* VPurchaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPurchaseViewController.h; path = Purchases/VPurchaseViewController.h; sourceTree = "<group>"; };
-		A7A2E0041A38E44B00F8C705 /* VPurchaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPurchaseViewController.m; path = Purchases/VPurchaseViewController.m; sourceTree = "<group>"; };
+		A7A2E0031A38E44B00F8C705 /* VPurchaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchaseViewController.h; sourceTree = "<group>"; };
+		A7A2E0041A38E44B00F8C705 /* VPurchaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseViewController.m; sourceTree = "<group>"; };
 		A7A2E0101A391A7D00F8C705 /* VPurchaseRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchaseRecord.h; sourceTree = "<group>"; };
 		A7A2E0111A391A7D00F8C705 /* VPurchaseRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseRecord.m; sourceTree = "<group>"; };
 		A7A343D91A8A8452000F0BCF /* VCommentAlertHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCommentAlertHelper.h; sourceTree = "<group>"; };
@@ -2770,8 +2770,8 @@
 		A7F1CDA41A673DE9003CB936 /* VScrollPaginator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VScrollPaginator.m; sourceTree = "<group>"; };
 		A7F529511A9E66E000F7E41F /* VStreamTrackingHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamTrackingHelper.h; sourceTree = "<group>"; };
 		A7F529521A9E66E000F7E41F /* VStreamTrackingHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamTrackingHelper.m; sourceTree = "<group>"; };
-		A7F5936E1A39436000B5E3A2 /* VPurchaseStringMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPurchaseStringMaker.h; path = Purchases/VPurchaseStringMaker.h; sourceTree = "<group>"; };
-		A7F5936F1A39436000B5E3A2 /* VPurchaseStringMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPurchaseStringMaker.m; path = Purchases/VPurchaseStringMaker.m; sourceTree = "<group>"; };
+		A7F5936E1A39436000B5E3A2 /* VPurchaseStringMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchaseStringMaker.h; sourceTree = "<group>"; };
+		A7F5936F1A39436000B5E3A2 /* VPurchaseStringMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseStringMaker.m; sourceTree = "<group>"; };
 		A7F711DC1AE1D5A00086F729 /* VAbstractProfileEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractProfileEditViewController.h; sourceTree = "<group>"; };
 		A7F711DD1AE1D5A00086F729 /* VAbstractProfileEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractProfileEditViewController.m; sourceTree = "<group>"; };
 		A7F711DE1AE1D5A00086F729 /* VProfileEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VProfileEditViewController.h; sourceTree = "<group>"; };
@@ -2878,17 +2878,17 @@
 		BEA78BE419BFAE8C006A1ABC /* OCMStubRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMStubRecorder.h; sourceTree = "<group>"; };
 		BEC833BC19D364A500341EA9 /* VPollResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPollResult.h; sourceTree = "<group>"; };
 		BEC833BD19D364A500341EA9 /* VPollResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollResult.m; sourceTree = "<group>"; };
-		C30AA4D61B043E890010CEFE /* PermissionAlert.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = PermissionAlert.storyboard; path = "UI/Permission Alert/PermissionAlert.storyboard"; sourceTree = "<group>"; };
-		C30AA4D81B0517170010CEFE /* VPermissionAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPermissionAlertViewController.h; path = "UI/Permission Alert/VPermissionAlertViewController.h"; sourceTree = "<group>"; };
-		C30AA4D91B0517170010CEFE /* VPermissionAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPermissionAlertViewController.m; path = "UI/Permission Alert/VPermissionAlertViewController.m"; sourceTree = "<group>"; };
-		C30AA4DB1B055C000010CEFE /* VPermissionAlertPresentationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPermissionAlertPresentationController.h; path = "UI/Permission Alert/VPermissionAlertPresentationController.h"; sourceTree = "<group>"; };
-		C30AA4DC1B055C000010CEFE /* VPermissionAlertPresentationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPermissionAlertPresentationController.m; path = "UI/Permission Alert/VPermissionAlertPresentationController.m"; sourceTree = "<group>"; };
-		C30AA4DE1B055EC60010CEFE /* VPermissionAlertAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPermissionAlertAnimator.h; path = "UI/Permission Alert/VPermissionAlertAnimator.h"; sourceTree = "<group>"; };
-		C30AA4DF1B055EC60010CEFE /* VPermissionAlertAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPermissionAlertAnimator.m; path = "UI/Permission Alert/VPermissionAlertAnimator.m"; sourceTree = "<group>"; };
-		C30AA4E11B057D290010CEFE /* VButtonWithCircularEmphasis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VButtonWithCircularEmphasis.h; path = "UI/Permission Alert/VButtonWithCircularEmphasis.h"; sourceTree = "<group>"; };
-		C30AA4E21B057D290010CEFE /* VButtonWithCircularEmphasis.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VButtonWithCircularEmphasis.m; path = "UI/Permission Alert/VButtonWithCircularEmphasis.m"; sourceTree = "<group>"; };
-		C30AA4E71B0595A90010CEFE /* VRoundedImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VRoundedImageView.h; path = "UI/Permission Alert/VRoundedImageView.h"; sourceTree = "<group>"; };
-		C30AA4E81B0595A90010CEFE /* VRoundedImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRoundedImageView.m; path = "UI/Permission Alert/VRoundedImageView.m"; sourceTree = "<group>"; };
+		C30AA4D61B043E890010CEFE /* PermissionAlert.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PermissionAlert.storyboard; sourceTree = "<group>"; };
+		C30AA4D81B0517170010CEFE /* VPermissionAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPermissionAlertViewController.h; sourceTree = "<group>"; };
+		C30AA4D91B0517170010CEFE /* VPermissionAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPermissionAlertViewController.m; sourceTree = "<group>"; };
+		C30AA4DB1B055C000010CEFE /* VPermissionAlertPresentationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPermissionAlertPresentationController.h; sourceTree = "<group>"; };
+		C30AA4DC1B055C000010CEFE /* VPermissionAlertPresentationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPermissionAlertPresentationController.m; sourceTree = "<group>"; };
+		C30AA4DE1B055EC60010CEFE /* VPermissionAlertAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPermissionAlertAnimator.h; sourceTree = "<group>"; };
+		C30AA4DF1B055EC60010CEFE /* VPermissionAlertAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPermissionAlertAnimator.m; sourceTree = "<group>"; };
+		C30AA4E11B057D290010CEFE /* VButtonWithCircularEmphasis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VButtonWithCircularEmphasis.h; sourceTree = "<group>"; };
+		C30AA4E21B057D290010CEFE /* VButtonWithCircularEmphasis.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VButtonWithCircularEmphasis.m; sourceTree = "<group>"; };
+		C30AA4E71B0595A90010CEFE /* VRoundedImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRoundedImageView.h; sourceTree = "<group>"; };
+		C30AA4E81B0595A90010CEFE /* VRoundedImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRoundedImageView.m; sourceTree = "<group>"; };
 		C30AA4EE1B0678BB0010CEFE /* VPermission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPermission.h; path = Permissions/VPermission.h; sourceTree = "<group>"; };
 		C30AA4EF1B0678BB0010CEFE /* VPermission.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPermission.m; path = Permissions/VPermission.m; sourceTree = "<group>"; };
 		C30AA4F11B067C370010CEFE /* VPermissionCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPermissionCamera.h; path = Permissions/VPermissionCamera.h; sourceTree = "<group>"; };
@@ -2911,8 +2911,8 @@
 		C35266061B2A0907001F093F /* VCreateSheetPresentationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCreateSheetPresentationController.m; sourceTree = "<group>"; };
 		C35AB0A41AF9843700B2AE1B /* VCVideoPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCVideoPlayerView.h; sourceTree = "<group>"; };
 		C35AB0A51AF9843700B2AE1B /* VCVideoPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCVideoPlayerView.m; sourceTree = "<group>"; };
-		C39413B31B165F7800579A8E /* VPermissionAlertTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPermissionAlertTextView.h; path = "UI/Permission Alert/VPermissionAlertTextView.h"; sourceTree = "<group>"; };
-		C39413B41B165F7800579A8E /* VPermissionAlertTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPermissionAlertTextView.m; path = "UI/Permission Alert/VPermissionAlertTextView.m"; sourceTree = "<group>"; };
+		C39413B31B165F7800579A8E /* VPermissionAlertTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPermissionAlertTextView.h; sourceTree = "<group>"; };
+		C39413B41B165F7800579A8E /* VPermissionAlertTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPermissionAlertTextView.m; sourceTree = "<group>"; };
 		C39413B61B17B38200579A8E /* VStreamCollectionViewParallaxFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamCollectionViewParallaxFlowLayout.h; sourceTree = "<group>"; };
 		C39413B71B17B38200579A8E /* VStreamCollectionViewParallaxFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamCollectionViewParallaxFlowLayout.m; sourceTree = "<group>"; };
 		C39452411B715CDA009367EB /* StreamCellContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamCellContext.swift; sourceTree = "<group>"; };
@@ -3745,13 +3745,13 @@
 			children = (
 				03B3D3CE1A3BBCE900F0634A /* VBadgeBackgroundView.h */,
 				03B3D3CF1A3BBCE900F0634A /* VBadgeBackgroundView.m */,
+				C3345F601B59ACB30091D889 /* VMenuItemControl.h */,
+				C3345F611B59ACB30091D889 /* VMenuItemControl.m */,
 				037D2D561A1961F400947A22 /* VNavigationDestination.h */,
 				0330D4281A6ED98D007EEEE4 /* VNavigationDestinationsProvider.h */,
 				03B3D3D11A3BC4DD00F0634A /* VNumericalBadgeView.h */,
 				03B3D3D21A3BC4DD00F0634A /* VNumericalBadgeView.m */,
 				03F24A8E1A23FC620011D46A /* VProvidesNavigationMenuItemBadge.h */,
-				C3345F601B59ACB30091D889 /* VMenuItemControl.h */,
-				C3345F611B59ACB30091D889 /* VMenuItemControl.m */,
 			);
 			path = Menu;
 			sourceTree = "<group>";
@@ -5882,7 +5882,7 @@
 				A769FE431ABCFCE900888ED8 /* VTrackingSettingsViewController.h */,
 				A769FE441ABCFCE900888ED8 /* VTrackingSettingsViewController.m */,
 			);
-			name = "Tracking Settings";
+			path = "Tracking Settings";
 			sourceTree = "<group>";
 		};
 		A76A069E1B87B13600D91214 /* Utils */ = {
@@ -6146,7 +6146,7 @@
 				A7A2E0031A38E44B00F8C705 /* VPurchaseViewController.h */,
 				A7A2E0041A38E44B00F8C705 /* VPurchaseViewController.m */,
 			);
-			name = Purchases;
+			path = Purchases;
 			sourceTree = "<group>";
 		};
 		A7AEF96C1A83F1C300A3D3A0 /* Cells */ = {
@@ -6268,10 +6268,10 @@
 		A7BF9D111B5ECB1E002C0A98 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				A7815E1A1B6C5D9F007797B7 /* SettingsButtonCell.swift */,
+				A7DDA6E21B601C95005CE55E /* SettingsEmptyCell.swift */,
 				A7BF9D121B5ECB1E002C0A98 /* VSettingsSwitchCell.h */,
 				A7BF9D131B5ECB1E002C0A98 /* VSettingsSwitchCell.m */,
-				A7DDA6E21B601C95005CE55E /* SettingsEmptyCell.swift */,
-				A7815E1A1B6C5D9F007797B7 /* SettingsButtonCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -6424,14 +6424,14 @@
 			children = (
 				A7D378331AEF4ED5007FF197 /* Cell Container */,
 				A7D378361AEF4ED5007FF197 /* Protocols */,
+				A7D3783E1AEF4ED5007FF197 /* VAbstractUserProfileHeaderViewController.h */,
+				A7D3783F1AEF4ED5007FF197 /* VAbstractUserProfileHeaderViewController.m */,
 				A7D378381AEF4ED5007FF197 /* VFloatingUserProfileHeaderViewController.h */,
 				A7D378391AEF4ED5007FF197 /* VFloatingUserProfileHeaderViewController.m */,
 				A7D3783A1AEF4ED5007FF197 /* VFloatingUserProfileHeaderViewController.xib */,
 				A7D3783B1AEF4ED5007FF197 /* VStaticUserProfileHeaderViewController.h */,
 				A7D3783C1AEF4ED5007FF197 /* VStaticUserProfileHeaderViewController.m */,
 				A7D3783D1AEF4ED5007FF197 /* VStaticUserProfileHeaderViewController.xib */,
-				A7D3783E1AEF4ED5007FF197 /* VAbstractUserProfileHeaderViewController.h */,
-				A7D3783F1AEF4ED5007FF197 /* VAbstractUserProfileHeaderViewController.m */,
 			);
 			path = Headers;
 			sourceTree = "<group>";
@@ -6813,12 +6813,12 @@
 				F06F10D01AC3B3AB0062E1D1 /* VAbstractMarqueeCollectionViewCell.m */,
 				F06F10D21AC3B4E60062E1D1 /* VAbstractMarqueeController.h */,
 				F06F10D31AC3B4E60062E1D1 /* VAbstractMarqueeController.m */,
-				F0024E3F1B730D83000CF4FD /* VMarqueeController.h */,
-				F0024E3A1B730431000CF4FD /* VMarqueeCellFactory.swift */,
 				F089E3541AC3BB740076DC4D /* VAbstractMarqueeStreamItemCell.h */,
 				F089E3551AC3BB740076DC4D /* VAbstractMarqueeStreamItemCell.m */,
 				F0411E851B4AE6D800557176 /* VMarqueeCaptionView.h */,
 				F0411E861B4AE6D800557176 /* VMarqueeCaptionView.m */,
+				F0024E3A1B730431000CF4FD /* VMarqueeCellFactory.swift */,
+				F0024E3F1B730D83000CF4FD /* VMarqueeController.h */,
 				F0FFBA351AD5B1DC00283936 /* VMarqueeDataDelegate.h */,
 				F0FFBA361AD5B1EE00283936 /* VMarqueeSelectionDelegate.h */,
 			);
@@ -6854,21 +6854,20 @@
 			isa = PBXGroup;
 			children = (
 				C30AA4D61B043E890010CEFE /* PermissionAlert.storyboard */,
-				C30AA4D81B0517170010CEFE /* VPermissionAlertViewController.h */,
-				C30AA4D91B0517170010CEFE /* VPermissionAlertViewController.m */,
-				C30AA4DB1B055C000010CEFE /* VPermissionAlertPresentationController.h */,
-				C30AA4DC1B055C000010CEFE /* VPermissionAlertPresentationController.m */,
-				C30AA4DE1B055EC60010CEFE /* VPermissionAlertAnimator.h */,
-				C30AA4DF1B055EC60010CEFE /* VPermissionAlertAnimator.m */,
 				C30AA4E11B057D290010CEFE /* VButtonWithCircularEmphasis.h */,
 				C30AA4E21B057D290010CEFE /* VButtonWithCircularEmphasis.m */,
-				C30AA4E71B0595A90010CEFE /* VRoundedImageView.h */,
-				C30AA4E81B0595A90010CEFE /* VRoundedImageView.m */,
+				C30AA4DE1B055EC60010CEFE /* VPermissionAlertAnimator.h */,
+				C30AA4DF1B055EC60010CEFE /* VPermissionAlertAnimator.m */,
+				C30AA4DB1B055C000010CEFE /* VPermissionAlertPresentationController.h */,
+				C30AA4DC1B055C000010CEFE /* VPermissionAlertPresentationController.m */,
 				C39413B31B165F7800579A8E /* VPermissionAlertTextView.h */,
 				C39413B41B165F7800579A8E /* VPermissionAlertTextView.m */,
+				C30AA4D81B0517170010CEFE /* VPermissionAlertViewController.h */,
+				C30AA4D91B0517170010CEFE /* VPermissionAlertViewController.m */,
+				C30AA4E71B0595A90010CEFE /* VRoundedImageView.h */,
+				C30AA4E81B0595A90010CEFE /* VRoundedImageView.m */,
 			);
-			name = "Permission Alert";
-			path = ..;
+			path = "Permission Alert";
 			sourceTree = "<group>";
 		};
 		C30AA4EA1B06746C0010CEFE /* Permissions */ = {
@@ -6924,7 +6923,7 @@
 				C39864B51B22358D00694AB3 /* VFadeButton.h */,
 				C39864B61B22358D00694AB3 /* VFadeButton.m */,
 			);
-			name = "Bar Buttons";
+			path = "Bar Buttons";
 			sourceTree = "<group>";
 		};
 		C3E772241B4DD12A005809A5 /* Focus */ = {
@@ -7734,7 +7733,7 @@
 				BE11447819D49AA4006A6D65 /* VFullscreenMarqueeStreamItemCell.m */,
 				0390087319F3A0CF00FD7EDF /* VFullscreenMarqueeStreamItemCell.xib */,
 			);
-			name = Fullscreen;
+			path = Fullscreen;
 			sourceTree = "<group>";
 		};
 		F07409801B059CAD00C44623 /* Coachmarks */ = {
@@ -7840,7 +7839,7 @@
 				F0E0F1B21AE8BFC700143CBF /* VInsetMarqueeStreamItemCell.m */,
 				F0E0F1B91AE8C2AE00143CBF /* VInsetMarqueeStreamItemCell.xib */,
 			);
-			name = Inset;
+			path = Inset;
 			sourceTree = "<group>";
 		};
 		F0F04AF81B2DE0AE00F6F401 /* Publish */ = {
@@ -9892,7 +9891,6 @@
 				03669B8E1B6332D8003C2D8F /* vi */,
 			);
 			name = Purchases.storyboard;
-			path = Purchases;
 			sourceTree = "<group>";
 		};
 		03848F971B0A41090092C660 /* InfoPlist.strings */ = {
