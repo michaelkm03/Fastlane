@@ -46,8 +46,8 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         super.viewDidLoad()
         
         // Make sure the bottom of view does not inset twice for the tab menu bar
-        automaticallyAdjustsScrollViewInsets = false;
-        extendedLayoutIncludesOpaqueBars = true;
+        automaticallyAdjustsScrollViewInsets = false
+        extendedLayoutIncludesOpaqueBars = true
         
         configureSearchBar()
         collectionView.backgroundColor = UIColor.whiteColor()
@@ -135,12 +135,11 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         navigationItem.titleView = searchBar
         searchBar.delegate = self
         searchBar.placeholder = NSLocalizedString("Search people and hashtags", comment: "")
-        if let searchTextField = searchBar.v_textField {
-            if let dependencyManager = self.dependencyManager {
-                searchTextField.font = dependencyManager.textFont
-                searchTextField.textColor = dependencyManager.textColor
-                searchTextField.backgroundColor = dependencyManager.backgroundColor
-            }
+        if let searchTextField = searchBar.v_textField,
+            let dependencyManager = self.dependencyManager {
+            searchTextField.font = dependencyManager.textFont
+            searchTextField.textColor = dependencyManager.textColor
+            searchTextField.backgroundColor = dependencyManager.backgroundColor
         }
     }
 }
