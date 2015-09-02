@@ -4430,96 +4430,586 @@
         },
         "items": [
           {
-            "identifier": "Menu Explore",
-            "title": "Explore",
-            "destination": {
-              "name": "explore.screen",
-              "title": "Explore",
-              "canAddContent": false,
-              "background": {
-                "name": "solidColor.background",
-                "color": {
-                  "red": 100,
-                  "green": 100,
-                  "blue": 255,
-                  "alpha": 255
-                }
-               },
-              "id": "55d365637e1ab",
-              "hasHeaderParallax": true,
-              "trendingShelf": {
-                    "name": "trendingTopic.shelf",
+            "identifier":"Menu Explore",
+            "title":"Explore",
+            "id":"55dba251a3aa8",
+            "icon":{
+              "imageURL" : "D_home"
+            },
+            "selectedIcon": {
+              "imageURL" : "D_home_selected"
+              },
+            "destination":
+            {
+                "name":"explore.screen",
+                "font.label2":
+                {
+                    "fontName":"Oswald-Regular",
+                    "fontSize":12
+                },
+                "color.text.secondary":
+                {
+                    "red":0,
+                    "green":0,
+                    "blue":0,
+                    "alpha":1
+                },
+                "color.accent":
+                {
+                    "red":255,
+                    "green":255,
+                    "blue":255,
+                    "alpha":1
+                },
+                "background":
+                {
+                    "name":"solidColor.background",
+                    "color":
+                    {
+                        "red":255,
+                        "green":255,
+                        "blue":255,
+                        "alpha":255
+                    }
+                },
+                "destinationStream": {
+                  "name": "stream.screen",
+                  "title": null,
+                  "canAddContent": null,
+                  "commentsScreen": {
+                    "name": "comments.screen",
+                    "title": "Comments",
                     "background": {
-                        "name": "solidColor.background",
-                        "color": {
+                      "name": "solidColor.background",
+                      "color": {
                         "red": 255,
                         "green": 255,
                         "blue": 255,
                         "alpha": 255
-                        }
+                      }
                     },
-                  "loadingBackground": {
+                    "color.link": {
+                      "red": 184,
+                      "green": 54,
+                      "blue": 191,
+                      "alpha": 1
+                    },
+                    "color.text.content": {
+                      "red": 0,
+                      "green": 0,
+                      "blue": 0,
+                      "alpha": 255
+                    },
+                    "font.header": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 13
+                    },
+                    "font.label2": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 12
+                    },
+                    "play_video_icon": {
+                      "imageURL": "D_play_video_icon"
+                    },
+                    "tracking": {
+                      "view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/component_view\/comments%2Escreen"]
+                    },
+                    "commentBar": {
+                      "commentPrompt": "Leave a comment or a post",
+                      "commentConfirmationText": "Send",
+                      "gifIcon": {
+                        "imageURL": "GIF"
+                      },
+                      "imageIcon": {
+                        "imageURL": "Image"
+                      },
+                      "mainCommentBarBackground": {
+                        "name": "solidColor.background",
+                        "color": {
+                          "red": 255,
+                          "green": 255,
+                          "blue": 255,
+                          "alpha": 255
+                        }
+                      },
+                      "name": "standard.commentBar",
+                      "supplementaryCommentBarBackground": {
+                        "name": "solidColor.background",
+                        "color": {
+                          "red": 241,
+                          "green": 241,
+                          "blue": 241,
+                          "alpha": 255
+                        }
+                      },
+                      "videoIcon": {
+                        "imageURL": "Video"
+                      }
+                    },
+                    "id": "55e4d3886d5c2"
+                  },
+                  "background": {
                     "name": "solidColor.background",
                     "color": {
+                      "red": 241,
+                      "green": 241,
+                      "blue": 241,
+                      "alpha": 255
+                    }
+                  },
+                  "tracking": {
+                    "view": ["http:\/\/dev.getvictorious.com\/api\/tracking\/component_view\/stream%2Escreen"]
+                  },
+                  "createSequenceIcon": {
+                    "imageURL": "createContentButton"
+                  },
+                  "follow_user_icon": {
+                    "imageURL": "follow_user_icon"
+                  },
+                  "followed_user_icon": {
+                    "imageURL": "followed_user_icon"
+                  },
+                  "followed_user_background_icon": {
+                    "imageURL": "followed_user_background_icon"
+                  },
+                  "marqueeCell": {
+                    "name": "inset.marqueeCell",
+                    "font.header": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 15
+                    },
+                    "loadingBackground": {
+                      "name": "tilePattern.background",
+                      "color": {
                         "red": 56,
                         "green": 199,
                         "blue": 239,
                         "alpha": 1
-                    }
-                  },
-                    "font.label1": {
-                        "fontName": "OpenSans-SemiBold",
-                        "fontSize": 12
+                      },
+                      "image": {
+                        "imageURL": "geometric_pattern"
+                      },
+                      "tiltParallax": true,
+                      "shimmerAnimationActive": true
                     },
-                    "font.label2": {
-                        "fontName": "OpenSans-SemiBold",
-                        "fontSize": 8
+                    "orIcon": {
+                      "imageURL": "D_pollOr"
+                    },
+                    "color.standard.textPost": {
+                      "red": 56,
+                      "green": 199,
+                      "blue": 239,
+                      "alpha": 1
+                    },
+                    "background": {
+                      "name": "solidColor.background",
+                      "color": {
+                        "red": 48,
+                        "green": 169,
+                        "blue": 203,
+                        "alpha": 1
+                      }
                     },
                     "color.text": {
-                        "red": 0,
-                        "green": 0,
-                        "blue": 0,
-                        "alpha": 1
+                      "red": 255,
+                      "green": 255,
+                      "blue": 255,
+                      "alpha": 255
+                    },
+                    "font.paragraph": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 15
+                    },
+                    "font.heading1": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 20
                     }
-                  }
-            },
-            "icon": {
-              "imageSet": [
-                {
-                  "imageURL": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/icons/ios/toolbar_playlist1.png",
-                  "scale": 1
+                  },
+                  "streamCell": {
+                    "background": {
+                      "name": "solidColor.background",
+                      "color": {
+                        "red": 255,
+                        "green": 255,
+                        "blue": 255,
+                        "alpha": 255
+                      }
+                    },
+                    "color.accent.secondary": {
+                      "red": 241,
+                      "green": 241,
+                      "blue": 241,
+                      "alpha": 255
+                    },
+                    "color.text": {
+                      "red": 51,
+                      "green": 51,
+                      "blue": 51,
+                      "alpha": 255
+                    },
+                    "color.text.content": {
+                      "red": 102,
+                      "green": 102,
+                      "blue": 102,
+                      "alpha": 255
+                    },
+                    "color.link": {
+                      "red": 184,
+                      "green": 54,
+                      "blue": 191,
+                      "alpha": 1
+                    },
+                    "color.link.secondary": {
+                      "red": 241,
+                      "green": 241,
+                      "blue": 241,
+                      "alpha": 255
+                    },
+                    "font.label3": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 11
+                    },
+                    "loadingBackground": {
+                      "name": "tilePattern.background",
+                      "color": {
+                        "red": 56,
+                        "green": 199,
+                        "blue": 239,
+                        "alpha": 1
+                      },
+                      "image": {
+                        "imageURL": "geometric_pattern"
+                      },
+                      "tiltParallax": true,
+                      "shimmerAnimationActive": true
+                    },
+                    "name": "sleek.streamCell",
+                    "showComments": true,
+                    "color.standard.textPost": {
+                      "red": 56,
+                      "green": 199,
+                      "blue": 239,
+                      "alpha": 1
+                    },
+                    "orIcon": {
+                      "imageURL": "D_pollOr"
+                    },
+                    "comment_icon": {
+                      "imageURL": "D_comment_icon"
+                    },
+                    "share_icon": {
+                      "imageURL": "D_share_icon"
+                    },
+                    "gif_icon": {
+                      "imageURL": "D_gif_icon"
+                    },
+                    "meme_icon": {
+                      "imageURL": "D_meme_icon"
+                    },
+                    "repost_icon": {
+                      "imageURL": "D_repost_icon"
+                    },
+                    "repost_success_icon": {
+                      "imageURL": "D_repost_success_icon"
+                    },
+                    "likeButtonEnabled": true,
+                    "shouldShowComments": false,
+                    "open_image_icon": {
+                      "imageURL": "open_image_icon"
+                    },
+                    "watch_video_icon": {
+                      "imageURL": "watch_video_icon"
+                    },
+                    "watch_gif_icon": {
+                      "imageURL": "watch_gif_icon"
+                    },
+                    "color.text.secondary": {
+                      "red": 255,
+                      "green": 255,
+                      "blue": 255,
+                      "alpha": 255
+                    }
+                  },
+                  "listShelf": {
+                    "name": "list.shelf",
+                    "background": {
+                      "name": "solidColor.background",
+                      "color": {
+                        "red": 235,
+                        "green": 236,
+                        "blue": 240,
+                        "alpha": 255
+                      }
+                    },
+                    "font.label3": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 11
+                    },
+                    "color.text": {
+                      "red": 38,
+                      "green": 39,
+                      "blue": 38,
+                      "alpha": 255
+                    },
+                    "font.paragraph": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 13
+                    },
+                    "color.link": {
+                      "red": 255,
+                      "green": 255,
+                      "blue": 255,
+                      "alpha": 255
+                    },
+                    "font.header": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 18
+                    },
+                    "color.accent": {
+                      "red": 56,
+                      "green": 199,
+                      "blue": 239,
+                      "alpha": 1
+                    },
+                    "loadingBackground": {
+                      "name": "tilePattern.background",
+                      "color": {
+                        "red": 56,
+                        "green": 199,
+                        "blue": 239,
+                        "alpha": 1
+                      },
+                      "image": {
+                        "imageURL": "geometric_pattern"
+                      },
+                      "tiltParallax": true,
+                      "shimmerAnimationActive": true
+                    },
+                    "font.label2": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 12
+                    },
+                    "color.standard.textPost": {
+                      "red": 56,
+                      "green": 199,
+                      "blue": 239,
+                      "alpha": 1
+                    }
+                  },
+                  "trendingShelf": {
+                    "name": "trending.shelf",
+                    "background": {
+                      "name": "solidColor.background",
+                      "color": {
+                        "red": 235,
+                        "green": 236,
+                        "blue": 240,
+                        "alpha": 255
+                      }
+                    },
+                    "font.heading4": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 15
+                    },
+                    "color.text": {
+                      "red": 38,
+                      "green": 39,
+                      "blue": 38,
+                      "alpha": 255
+                    },
+                    "font.label2": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 12
+                    },
+                    "font.header": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 18
+                    },
+                    "font.heading2": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 20
+                    },
+                    "color.link.secondary": {
+                      "red": 235,
+                      "green": 236,
+                      "blue": 240,
+                      "alpha": 255
+                    },
+                    "color.accent": {
+                      "red": 56,
+                      "green": 199,
+                      "blue": 239,
+                      "alpha": 1
+                    },
+                    "color.link": {
+                      "red": 56,
+                      "green": 199,
+                      "blue": 239,
+                      "alpha": 1
+                    },
+                    "follow_user_icon": {
+                      "imageURL": "follow_user_icon"
+                    },
+                    "followed_user_icon": {
+                      "imageURL": "followed_user_icon"
+                    },
+                    "followed_user_background_icon": {
+                      "imageURL": "followed_user_background_icon"
+                    },
+                    "loadingBackground": {
+                      "name": "tilePattern.background",
+                      "color": {
+                        "red": 56,
+                        "green": 199,
+                        "blue": 239,
+                        "alpha": 1
+                      },
+                      "image": {
+                        "imageURL": "geometric_pattern"
+                      },
+                      "tiltParallax": true,
+                      "shimmerAnimationActive": true
+                    },
+                    "font.paragraph": {
+                      "fontName": "MavenPro-Regular",
+                      "fontSize": 13
+                    },
+                    "color.text.secondary": {
+                      "red": 255,
+                      "green": 255,
+                      "blue": 255,
+                      "alpha": 255
+                    },
+                    "color.standard.textPost": {
+                      "red": 56,
+                      "green": 199,
+                      "blue": 239,
+                      "alpha": 1
+                    }
+                  },
+                  "streamURL": "http:\/\/dev.getvictorious.com\/api\/sequence\/detail_list_by_stream_with_marquee\/%%SEQUENCE_ID%%\/0\/%%PAGE_NUM%%\/%%ITEMS_PER_PAGE%%",
+                  "destinationDirectory": null,
+                  "titleImage": null,
+                  "hasHeaderParallax": true,
+                  "accessoryScreens": []
                 },
+                "marqueeCell":
                 {
-                  "imageURL": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/icons/ios/toolbar_playlist1_@2x.png",
-                  "scale": 2
+                    "name":"explore.marqueeCell",
+                    "font.paragraph":
+                    {
+                        "fontName":"Oswald-Regular",
+                        "fontSize":15
+                    },
+                    "background":
+                    {
+                        "name":"solidColor.background",
+                        "color":
+                        {
+                            "red":255,
+                            "green":255,
+                            "blue":255,
+                            "alpha":1
+                        }
+                    },
+                    "loadingBackground":
+                    {
+                        "name":"tilePattern.background",
+                        "color":
+                        {
+                            "red":150,
+                            "green":195,
+                            "blue":137,
+                            "alpha":1
+                        },
+                        "image":
+                        {
+                            "imageURL":"geometric_pattern"
+                        },
+                        "tiltParallax":true,
+                        "shimmerAnimationActive":true
+                    },
+                    "font.heading1":
+                    {
+                        "fontName":"Oswald-Regular",
+                        "fontSize":20
+                    },
+                    "color.text":
+                    {
+                        "red":255,
+                        "green":255,
+                        "blue":255,
+                        "alpha":255
+                    }
                 },
+                "trendingTopics":
                 {
-                  "imageURL": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/icons/ios/toolbar_playlist1_@3x.png",
-                  "scale": 3
+                    "name":"trendingTopic.shelf",
+                    "background":
+                    {
+                        "name":"solidColor.background",
+                        "color":
+                        {
+                            "red":255,
+                            "green":255,
+                            "blue":255,
+                            "alpha":255
+                        }
+                    },
+                    "font.label1":
+                    {
+                        "fontName":"Oswald-Regular",
+                        "fontSize":13
+                    },
+                    "color.text":
+                    {
+                        "red":38,
+                        "green":39,
+                        "blue":38,
+                        "alpha":255
+                    },
+                    "font.label2":
+                    {
+                        "fontName":"Oswald-Regular",
+                        "fontSize":12
+                    }
+                },
+                "stream.title":"RECENT POSTS",
+                "color.text":
+                {
+                    "red":38,
+                    "green":39,
+                    "blue":38,
+                    "alpha":255
+                },
+                "font.heading2":
+                {
+                    "fontName":"Oswald-Regular",
+                    "fontSize":13
+                },
+                "loadingBackground":
+                {
+                    "name":"tilePattern.background",
+                    "color":
+                    {
+                        "red":150,
+                        "green":195,
+                        "blue":137,
+                        "alpha":1
+                    },
+                    "image":
+                    {
+                        "imageURL":"geometric_pattern"
+                    },
+                    "tiltParallax":true,
+                    "shimmerAnimationActive":true
+                },
+                "streamURL":"http://dev.getvictorious.com/api/sequence/feed/following/%%PAGE_NUM%%/%%ITEMS_PER_PAGE%%",
+                "tracking":
+                {
+                    "view":["https:\/\/api.getvictorious.com\/api\/tracking\/component_view\/explore%2Escreen"
+                    ]
                 }
-              ]
-            },
-            "selectedIcon": {
-              "imageSet": [
-                {
-                  "imageURL": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/icons/ios/toolbar_playlist1_selected.png",
-                  "scale": 1
-                },
-                {
-                  "imageURL": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/icons/ios/toolbar_playlist1_selected_@2x.png",
-                  "scale": 2
-                },
-                {
-                  "imageURL": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/_static/icons/ios/toolbar_playlist1_selected_@3x.png",
-                  "scale": 3
-                }
-              ]
-            },
-            "color.link": {
-              "red": 184,
-              "green": 54,
-              "blue": 191,
-              "alpha": 1
             },
             "color.link.secondary": {
               "red": 156,
@@ -4527,17 +5017,11 @@
               "blue": 162,
               "alpha": 1
             },
-            "color.text.secondary": {
-              "red": 0,
-              "green": 0,
-              "blue": 0,
-              "alpha": 1
-            },
-            "color.accent": {
-              "red": 255,
-              "green": 255,
-              "blue": 255,
-              "alpha": 1
+            "color.link": {
+                "red":49,
+                "green":198,
+                "blue":133,
+                "alpha":1
             }
           },
           {

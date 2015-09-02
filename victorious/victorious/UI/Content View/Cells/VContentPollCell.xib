@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -154,7 +154,6 @@
                 <outlet property="answerBThumbnail" destination="36J-hZ-MxW" id="o1x-LV-Z8j"/>
                 <outlet property="answerBVideoPlayerContainer" destination="AKp-ON-QNR" id="bGj-Sc-RLN"/>
                 <outlet property="numberOfVotersLabel" destination="cBg-45-xOC" id="N4P-Ky-CLK"/>
-                <outlet property="parallaxPatternView" destination="hiO-tg-gJb" id="O7W-ji-X58"/>
                 <outlet property="pollCountContainer" destination="MH8-gE-tUo" id="T54-j0-fKF"/>
             </connections>
             <point key="canvasLocation" x="350" y="174"/>

@@ -293,15 +293,14 @@
                                                      pathPattern:@"/api/sequence/feed/:category/:filtername"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-             
 #warning Testing
              [RKResponseDescriptor responseDescriptorWithMapping:[self feedPayloadMapping]
                                                           method:RKRequestMethodGET
                                                      pathPattern:@"/api/sequence/feed/:category"
                                                          keyPath:@"payload"
-                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]
              
-              ];
+             ];
 }
 
 @end

@@ -9,6 +9,7 @@ A set of global variables to be shared and set between the vams_prebuild and vam
 """
 import requests
 import subprocess
+from subprocess import Popen,PIPE
 import hashlib
 import sys
 
@@ -48,7 +49,7 @@ def init():
     _DEFAULT_USERAGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) ' \
                          'Chrome/43.0.2357.130 Safari/537.36 aid:11 uuid:FFFFFFFF-0000-0000-0000-FFFFFFFFFFFF build:1'
     _DEFAULT_HEADERS = ''
-    _DEFAULT_HEADER_DATE = subprocess.check_output("date", shell=True).rstrip()
+    _DEFAULT_HEADER_DATE = createDefaultHeaderDate()
 
     _PLATFORM_ANDROID = 'android'
     _PLATFORM_IOS = 'ios'
@@ -62,6 +63,21 @@ def init():
     _DEFAULT_LOCAL_PORT = '8887'
 
     _AUTH_TOKEN = ''
+
+
+def createDefaultHeaderDate():
+    """
+    Creates and sets the _DEFAULT_HEADER_DATE used in authentication
+
+    :return:
+        A date formatted string
+    """
+
+    date_obj = Popen(['date'], stdout=PIPE)
+    date_list = date_obj.communicate()[0].split()
+
+    return ' '.join(date_list)
+
 
 def authenticateUser(host):
     """

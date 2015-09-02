@@ -60,7 +60,6 @@
 {
     VNoContentCollectionViewCellFactory *testProvider = [[VNoContentCollectionViewCellFactory alloc] initWithAcceptableContentClasses:@[[NSDictionary class]]];
     XCTAssert([testProvider isKindOfClass:[VNoContentCollectionViewCellFactory class]], @"VNoContentCollectionViewCellFactory should return a fully formed VNoContentCollectionViewCellFactory from initWithAcceptableContentClasses");
-    XCTAssertThrows([[VNoContentCollectionViewCellFactory alloc] initWithAcceptableContentClasses:nil], @"VNoContentCollectionViewCellFactory should throw an error when init-ed with nil acceptableContentClasses");
 }
 
 - (void)testRegister

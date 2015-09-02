@@ -44,7 +44,6 @@ NSString * const VDependencyManagerPositionRight    = @"right";
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     NSString *title = [dependencyManager stringForKey:VDependencyManagerTitleKey];
-    title = NSLocalizedString(title, "");
     NSString *identifier = [dependencyManager stringForKey:VDependencyManagerIdentifierKey];
     UIImage *icon = [dependencyManager imageForKey:VDependencyManagerIconKey];
     UIImage *selectedIcon = [dependencyManager imageForKey:VDependencyManagerSelectedIconKey];
