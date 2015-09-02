@@ -4906,9 +4906,9 @@
                         "name":"solidColor.background",
                         "color":
                         {
-                            "red":128,
-                            "green":166,
-                            "blue":116,
+                            "red":255,
+                            "green":255,
+                            "blue":255,
                             "alpha":1
                         }
                     },
