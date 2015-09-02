@@ -458,8 +458,10 @@
 "LikesPluralFormat" = "%@ Likes";  // e.g. "20 Likes", where "Like" is a noun
 "LikersTitle" = "Likers";
 
-"posts" = "Posts";
-"HashtagPostsCountFormat" = "In %@ Posts";
+"postsFormat" = "%@ Post";
+"postsPluralFormat" = "%@ Posts";
+"HashtagPostsCountFormat" = "In %@ Post";
+"HashtagPostsCountPluralFormat" = "In %@ Posts";
 
 "Barcelona" = "Barcelona";
 "London" = "London";

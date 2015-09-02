@@ -106,15 +106,19 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
         var countsText = ""
         let hasFollowersCount = shelf.followersCount.integerValue != 0
         if shelf.postsCount.integerValue != 0 {
-            let postsCount = numberFormatter.stringForInteger(shelf.postsCount.integerValue)
-            countsText = postsCount + " " + NSLocalizedString("posts", comment: "")
+            let count = shelf.postsCount.integerValue
+            let postsCount = numberFormatter.stringForInteger(count)
+            let format = count == 1 ? NSLocalizedString("postsFormat", comment: "") : NSLocalizedString("postsPluralFormat", comment: "")
+            countsText = NSString(format: format, postsCount) as String
             if hasFollowersCount {
                 countsText += " • "
             }
         }
         if hasFollowersCount {
-            let followersCount = numberFormatter.stringForInteger(shelf.followersCount.integerValue)
-            countsText += followersCount + " " + NSLocalizedString("followers", comment: "")
+            let count = shelf.followersCount.integerValue
+            let followersCount = numberFormatter.stringForInteger(count)
+            let format = count == 1 ? NSLocalizedString("SuggestedFollowersSing", comment: "") : NSLocalizedString("SuggestedFollowersPlur", comment: "")
+            countsText += NSString(format: format, followersCount) as String
         }
         return countsText
     }
