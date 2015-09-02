@@ -77,6 +77,7 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
     
     __weak UIImageView *weakSelf = self;
     self.image = placeholderImage;
+    self.alpha = 0.0f;
     [self downloadImageWithURL:url toCallbackBlock:^(UIImage *image, NSError *error)
      {
          dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
@@ -90,7 +91,7 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
                             UIImage *blurredImage = [image applyLightEffect];
                             dispatch_async(dispatch_get_main_queue(), ^
                                            {
-                                               weakSelf.image = blurredImage;
+                                               [weakSelf animateImageToVisible:blurredImage withDuration:kDefaultAnimationDuration];
                                            });
                         });
      }];

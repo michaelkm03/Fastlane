@@ -13,7 +13,9 @@
 @interface VContentTextCell()
 
 @property (nonatomic, strong) VTextPostViewController *textPostViewController;
+
 @property (weak, nonatomic) IBOutlet UIView *contentContainer;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *widthConstraint;
 
 @end
 
@@ -34,10 +36,23 @@
         self.textPostViewController = [VTextPostViewController newWithDependencyManager:self.dependencyManager];
         [self.contentContainer addSubview:self.textPostViewController.view];
         self.textPostViewController.view.frame = self.contentContainer.bounds;
+        self.textPostViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
         [self.contentContainer v_addFitToParentConstraintsToSubview:self.textPostViewController.view];
-        self.shrinkingContentView = self.contentContainer;
     }
     self.textPostViewController.isTextSelectable = NO;
+}
+
+- (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes
+{
+    [super applyLayoutAttributes:layoutAttributes];
+    
+    self.widthConstraint.constant = CGRectGetWidth(layoutAttributes.bounds);
+    CGFloat scale = CGRectGetHeight(layoutAttributes.bounds) / CGRectGetWidth(self.contentView.bounds);
+    CGFloat adjustedHeight = CGRectGetHeight(self.contentContainer.bounds) * scale;
+    CGFloat topPadding = (CGRectGetHeight(self.contentContainer.bounds) - adjustedHeight) * 0.5f;
+    CGAffineTransform yTranslation = CGAffineTransformMakeTranslation(0, -topPadding);
+    CGAffineTransform scaleTransform = CGAffineTransformMakeScale(scale, scale);
+    self.contentContainer.transform = CGAffineTransformConcat(scaleTransform, yTranslation);
 }
 
 - (void)setTextContent:(NSString *)text
