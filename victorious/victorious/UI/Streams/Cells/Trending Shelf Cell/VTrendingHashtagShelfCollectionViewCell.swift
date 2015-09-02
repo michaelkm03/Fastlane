@@ -96,7 +96,10 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
     }
     
     private class func getPostsCountText(shelf: HashtagShelf) -> String {
-        return NSString(format: NSLocalizedString("HashtagPostsCountFormat", comment: ""), numberFormatter.stringForInteger(shelf.postsCount.integerValue)) as String
+        let count = shelf.postsCount.integerValue
+        let hashtagCount = numberFormatter.stringForInteger(shelf.postsCount.integerValue)
+        let format = count == 1 ? NSLocalizedString("HashtagPostsCountFormat", comment: "") : NSLocalizedString("HashtagPostsCountPluralFormat", comment: "")
+        return NSString(format: format, hashtagCount) as String
     }
     
     //MARK: - View management
