@@ -47,12 +47,12 @@
 "Save"                  =   "저장";
 "Continue"              =   "계속하기";
 "Loading..."            =   "불러오는 중...";
-"Finding fans to connect with..." = "연결할 팬을 찾는 중...";
+"Finding fans to connect with..." = "가장 많은 활동을 남긴 사람을 찾는 중";
 
 "Featured"              =   "엄선됨";
 "Recent"                =   "최근";
 "Following"             =   "팔로잉";
-"FOLLOWERS"             =   "팔로워";
+"FOLLOWERS"             =   "팔로워들";
 "FOLLOWING"             =   "팔로잉";
 "NumStreams"            =   "스트림 %@개";
 "NumItems"              =   "아이템 %@개";
@@ -81,11 +81,11 @@
 
 "Login"                 =   "로그인";
 
-"Log in here"           =   "여기서 로그인";
+"Log in here"           =   "여기서 로그인하세요";
 "Already Registered?"   =   "이미 가입하셨나요?";
-"Get Started"           =   "시작해봅시다!";
+"Get Started"           =   "시작";
 "Forgot Password?"      =   "비밀번호를 잊으셨나요?";
-"Reset here"            =   "여기서 초기화";
+"Reset here"            =   "초기화";
 "SetupButton"           =   "설정";
 "EmailValidation"       =   "이메일 주소가 틀렸습니다.";
 "Minimum 8 characters"  =   "최소 8자";
@@ -96,20 +96,20 @@
 "PasswordNotMatching"   =   "비밀번호가 일치하지 않습니다.";
 "PollAlreadyAnswered"   =   "이미 응답한 설문 조사입니다";
 "LoginFail"             =   "로그인 실패";
-"GenericFailMessage"    =   "이런! 뭔가 오류가 발생했습니다.";
+"GenericFailMessage"    =   "이런! 오류가 발생하였습니다";
 "FacebookLoginFailed"   =   "이런! 페이스북 로그인에 실패했습니다. 다시 시도하세요.";
 "NotLoggedInMessage"    =   "이런! 로그인하지 않은 상태인 것 같습니다.";
 "SignupFail"            =   "계정 생성 실패";
 "AccountUpdateFail"     =   "계정 업데이트 실패";
 "You're not logged in!" =   "로그인되어 있지 않습니다!";
 "ProfileNotLoggedInMessage" = "아직 볼 게 없습니다! 커뮤니티에 가입하신다니 기쁩니다. 계정을 만들어서 자신의 독특함을 뽐내보세요.";
-"ProfileSaveFail"       =   "서버 오류로 프로필 정보를 저장할 수 없었습니다.";
+"ProfileSaveFail"       =   "서버 오류로 인해 프로필 정보 저장에 실패하였습니다";
 "ProfileSave"           =   "프로필 업로드 중";
 "ProfileIncomplete"     =   "미완성 프로필";
-"ProfileAborted"        =   "프로필을 완성하기 전까지 몇몇 기능을 이용할 수 없습니다.";
+"ProfileAborted"        =   "프로필을 완성하기 전까지 몇 기능을 사용하실수 없습니다";
 "ProfileRequired"       =   "다음 정보를 제공해주세요:";
 "ProfileRequiredPhoto"  =   "프로필 이미지";
-"ProfileNameSpaces"     =   "프로필 이름은 공란으로만 구성할 수 없습니다.";
+"ProfileNameSpaces"     =   "프로필 이름은 빈칸으로만 구성할수 없습니다";
 "ProfileRequiredName"   =   "이름";
 "ProfileRequiredToS"    =   "사용자 약관에 동의하세요.";
 "ProfileRequiredTagLine"=   "한 마디";
@@ -152,7 +152,7 @@
 "NotFollowingTitle"     =   "이런! 아직 아무도 팔로우하지 않았습니다.";
 "NotFollowingMessage"   =   "스트림에서 다른 사람의 콘텐츠를 보려면 다른 사람을 팔로우하세요. 새 콘텐츠를 찾거나 친구를 만드는 데 아주 좋은 방법입니다.";
 
-"NoLikersMessage"       =   "마음에 드는 콘텐츠를 좋아요 표시해서 커뮤니티에게 뭘 중요하게 생각하는지 보여주세요.";
+"NoLikersMessage"       =   "마음에 드는 콘텐츠의 좋아요를 누르고 커뮤니티에게 뭘 중요하게 생각하는지 보여주세요.";
 "NoLikersTitle"         =   "아무도 이걸 좋아한다고 표시하지 않았습니다...아직은요!";
 
 "ProfileNoFollowersTitle"      =   "이 사용자의 첫 팔로워가 되세요.";
@@ -166,7 +166,7 @@
 "SuggestedFollowersPlur" =   "팔로워 %@명";
 "SuggestedFollowersK"    =   "팔로워 %@명";
 
-"NoRepostersTitle"      =   "첫 번째로 리포스트해보세요!";
+"NoRepostersTitle"      =   "첫 번째로 리포스트(퍼가기)해보세요!";
 "NoRepostersMessage"    =   "이 콘텐츠를 내 팔로워와 공유하세요!";
 
 "NoGiffersTitle"       =   "첫 번째로 GIF를 만드세요!";
@@ -189,9 +189,9 @@
 "FacebookFailed"        =   "페이스북에 연결할 수 없었습니다.";
 
 "Search people and hashtags"  =  "사람 또는 해시태그 검색";
-"No People Found In Search Title" = "사람을 찾을 수 없었습니다.";
+"No People Found In Search Title" = "사람을 찾을 수 없습니다";
 "No people found in search" = "검색어를 더 좁히거나 다시 시도하세요.";
-"No Hashtags Found In Search Title" = "태그를 찾을 수 없었습니다.";
+"No Hashtags Found In Search Title" = "태그를 찾을 수 없습니다";
 "No hashtags found in search" = "검색어를 더 좁히거나 다시 시도하세요.";
 
 "SearchFailed"          =   "검색 실패.";
@@ -215,7 +215,7 @@
 "LibraryCaptureFailed"  =   "라이브러리에 있는 아이템에 접근할 수 없습니다.";
 
 "NoTwitterTitle"        =   "트위터 계정을 찾을 수 없었습니다!";
-"NoTwitterMessage"      =   "기기 설정을 열어서 새 트위터 계정을 추가하세요.";
+"NoTwitterMessage"      =   "기기 설정에서 새 트위터 계정을 추가하세요";
 
 "SelectTwitter"         =   "트위터 계정 선택하기";
 
@@ -251,7 +251,7 @@
 "DuplicateVideoTitle"   =   "영상 복사하기";
 "DuplicateVideoBody"    =   "이미 업로드된 영상을 다시 업로드하려는 것 같습니다.";
 
-"Uploading"             =   "콘텐츠를 업로드 중...";
+"Uploading"             =   "콘텐츠 업로드 중...";
 "UploadFinalizing"      =   "글 작성을 완료하고 있습니다. 곧 표시됩니다.";
 "UploadFailed"          =   "죄송합니다. 글을 업로드할 수 없었습니다. 연결을 확인하시고 다시 시도하세요.";
 "UploadSuccess"         =   "성공! 글이 업로드되었습니다.";
@@ -351,7 +351,7 @@
 
 "Edit"                  =   "편집";
 "editProfileButton"     =   "프로필 편집";
-"followers"             =   "팔로워";
+"followers"             =   "팔로워들";
 "following"             =   "팔로잉";
 "follow"                =   "팔로우";
 
@@ -363,7 +363,7 @@
 "ResetPasswordErrorExpiredTitle" = "초기화 코드 사용 기간이 만료되었습니다.";
 "ResetPasswordErrorExpiredMessage" = "다른 초기화 코드를 요청하시고 다시 시도하세요.";
 
-"ResetPasswordErrorInvalidTitle" = "현재 비밀번호가 틀렸습니다.";
+"ResetPasswordErrorInvalidTitle" = "입력하신 비밀번호가 틀렸습니다.";
 "ResetPasswordErrorIncorrectTitle" = "비밀번호가 틀렸습니다.";
 "ResetPasswordErrorMessage" = "현재 비밀번호를 다시 입력하세요.";
 
@@ -390,7 +390,7 @@
 "EmailNotValid"         =   "이 계정을 생성하는 데 사용된 이메일을 입력하세요.";
 "Thanks"                =   "감사합니다!";
 "CannotVerify"          =   "계정을 인증할 수 없습니다.";
-"IncorrectCode"         =   "계정 인증에 사용된 코드가 틀렸습니다.";
+"IncorrectCode"         =   "계정 인증 코드가 일치하지 않습니다.";
 
 "Image Search"          =   "이미지 검색";
 "Pull up for more..."   =   "더 보려면 올리세요...";
@@ -404,7 +404,7 @@
 "InviteUsingEmail"      =   "이메일로 초대하기";
 "InviteUsingSMS"        =   "문자로 초대하기";
 "InviteFriendsSubject"  =   "%@의 새 앱 확인하기";
-"InviteFriendsBody"     =   "안녕하세요!\n\n%@에서 새 앱을 다운받았어요. 저희같은 사람들끼리 교류할 수 있는 커뮤니티예요. 여기서 지금 다운로드하세요:";
+"InviteFriendsBody"     =   "안녕하세요!\n\n%@에서 새 앱을 다운받았어요. 저희같은 사람들끼리 교류할 수 있는 커뮤니티예요. 지금 여기서 다운로드받으세요";
 
 "FindContacts"          =   "연락처에 있는 친구 찾기";
 "Access Your Contacts"  =   "연락처 이용하기";
@@ -490,9 +490,9 @@
 "SupportEmailSubjectWithName" = "%@에 대한 피드백";
 
 "DiscoverSuggestedPeopleError"  = "죄송합니다. 추천인을 불러올 수 없었습니다.";
-"DiscoverTrendingTagsError"     = "죄송합니다. 인기 있는 태그를 불러올 수 없었습니다.";
+"DiscoverTrendingTagsError"     = "죄송합니다. 트렌드 태그를 불러올 수 없었습니다.";
 "Suggested People"      = "추천인";
-"Trending Tags"         = "인기 있는 태그";
+"Trending Tags"         = "트렌드 태그";
 "%@ Voters"             = "투표자 %@명";
 "%@ Voter"              = "투표자 %@명";
 
@@ -516,7 +516,7 @@
 "OpenSafari"            = "사파리에서 열기";
 "ShareSMS"              = "문자로 전송";
 
-"Delete this content and select something else?" = "이 콘텐츠를 삭제하고 다른 걸 선택할까요?";
+"Delete this content and select something else?" = "이 콘텐츠를 삭제하고 다른 걸 선택하시겠습니까?";
 "Delete" = "삭제";
 "Cancel" = "취소";
 
@@ -541,7 +541,7 @@
 "ErrorPushNotificationsNotSavedMessage" = "나중에 다시 시도하세요.";
 
 "We need permission to access your photo library." = "사진 라이브러리 접근 권한이 필요합니다.";
-"We need access to this permission."               = "이 권한을 주셔야 합니다.";
+"We need access to this permission."               = "이 권한이 필요합니다.";
 "Maybe Later"                                      = "나중에요";
 
 "RestorePurchaseDescription"            = "다른 기기에서 이미 구매하셨나요?\n구매 복원하려면 아래를 누르세요.";
@@ -659,6 +659,7 @@
 "Watch Video" = "영상 보기";
 "Watch GIF" = "GIF 보기";
 
+"See all" = "모두 보기";
 "Show Previous Comments" = "이전 댓글 보기";
 "CommentsSingularFormat" = "댓글 %@개";  // e.g. "1 Comment"
 "CommentsPluralFormat" = "댓글 %@개";  // e.g. "20 Comments"

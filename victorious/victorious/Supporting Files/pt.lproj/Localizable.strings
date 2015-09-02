@@ -659,6 +659,7 @@
 "Watch Video" = "Assistir vídeo";
 "Watch GIF" = "Assistir GIF";
 
+"See all" = "Ver todos";
 "Show Previous Comments" = "Mostrar comentários anteriores";
 "CommentsSingularFormat" = "%@ comentário";  // e.g. "1 Comment"
 "CommentsPluralFormat" = "%@ comentários";  // e.g. "20 Comments"

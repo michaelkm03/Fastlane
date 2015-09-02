@@ -659,6 +659,7 @@
 "Watch Video" = "Xem Video";
 "Watch GIF" = "Xem ảnh động GIF";
 
+"See all" = "Xem tất cả";
 "Show Previous Comments" = "Hiện thị bình luận trước";
 "CommentsSingularFormat" = "%@ Bình luận";  // e.g. "1 Comment"
 "CommentsPluralFormat" = "%@ Bình luận";  // e.g. "20 Comments"

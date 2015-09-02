@@ -40,22 +40,20 @@
 "More"                  =   "詳細";
 "Quote" = "引用";
 "Meme"                  =   "ミーム";
-"Share"                 =   "共有";
 "Discover"              =   "発見";
 "Profile"               =   "プロフィール";
 "Settings"              =   "設定";
 "Save"                  =   "保存";
+"Share"                 =   "シェア";
 "Continue"              =   "続行";
 "Loading..."            =   "読み込み中…";
-"Finding fans to connect with..." = "繋がれるファンを検索中...";
+"Finding fans to connect with..." = "ファン検索中";
 
 "Featured"              =   "特集中";
 "Recent"                =   "新着";
 "Following"             =   "フォロー中";
 "FOLLOWERS"             =   "フォロワー";
 "FOLLOWING"             =   "フォロー中";
-"NumStreams"            =   "%@ 件のストリーム";
-"NumItems"              =   "%@ 個のアイテム";
 
 "Keep up to date with users and hashtags you're following here" = "こちらでフォローしているユーザーやハッシュタグの最新情報を入手しましょう";
 "View content from users and hashtags you're following here" = "こちらでフォローしているユーザーやハッシュタグのコンテンツを確認しましょう";
@@ -74,6 +72,8 @@
 "Tap here to create your first post" = "ここをタップして初めての投稿を作成しましょう";
 "Tap here to create a post" = "ここをタップして投稿を作成しましょう";
 "Tap here and create a post now!" = "ここをタップして、今すぐ投稿を作成しましょう！";
+"NumStreams"            =   "%@ ストリーム件数";
+"NumItems"              =   "%@ アイテム";
 
 "TimeSeparator"         =   ":";
 "InvalidTimePlaceholder"=   "-:--";
@@ -88,15 +88,15 @@
 "Reset here"            =   "リセットはこちら";
 "SetupButton"           =   "初期設定";
 "EmailValidation"       =   "無効なメールアドレスです";
-"Minimum 8 characters"  =   "最短8文字";
-"PasswordValidation"    =   "パスワードが8文字以下です";
 "UsernameValidation"    =   "ユーザー名が8文字以下です";
 "AgreeTOS"              =   "あなたの年齢が13歳以上であり、利用規約に同意されたことをクリックしてください";
 "InvalidCredentials"    =   "無効な認証情報です";
+"Minimum 8 characters"  =   "最小８文字";
+"PasswordValidation"    =   "パスワードは8文字以下です";
 "PasswordNotMatching"   =   "パスワードが一致しません";
 "PollAlreadyAnswered"   =   "アンケート結果はすでに回答済みです";
 "LoginFail"             =   "ログインに失敗";
-"GenericFailMessage"    =   "おっと！ 何か問題が起きたようです。";
+"GenericFailMessage"    =   "問題が起きたようです";
 "FacebookLoginFailed"   =   "Facebookでのログインに失敗。もう一度お試しください。";
 "NotLoggedInMessage"    =   "おっと！ まだログインされていないようです。";
 "SignupFail"            =   "アカウント作成に失敗";
@@ -111,15 +111,15 @@
 "ProfileRequiredPhoto"  =   "あなたのプロフィール画像";
 "ProfileNameSpaces"     =   "プロフィール名を空白にすることはできません。";
 "ProfileRequiredName"   =   "あなたのお名前";
-"ProfileRequiredToS"    =   "当社利用規約への同意";
 "ProfileRequiredTagLine"=   "あなたのキャッチフレーズ";
 "ProfileUpdateFailed"   =   "プロフィール更新に失敗";
+"ProfileRequiredToS"    =   "弊社利用規約に同意";
 "Profile load failed!"  =   "プロフィールの読み込みに失敗！";
 
 "User already exists"   =   "このユーザーはすでに存在します";
 "User already exists but the password is incorrect" = "既存のユーザーですがパスワードが間違っています。";
 "Invalid email address or password" = "無効なメールアドレスもしくはパスワードです";
-"Sorry, I can't display that right now" = "ごめんなさい、そちらは現在表示できません";
+"Sorry, I can't display that right now" = "現在表示できません";
 
 "WereSorry"             =   "ごめんなさい";
 "ErrorOccured"          =   "何かしらの理由でサーバーに接続できません。また後ほどお試しください！";
@@ -134,8 +134,8 @@
 "Missing Content Message"   =   "お探しのものを見つけられませんでした！";
 
 "MissingMedia"          =   "写真が2枚必要です。";
-"QuestionTextToShort"   =   "質問は長さ2文字以上を記入してください。";
-"AnswerTextToShort"     =   "解答は長さ2文字以上を記入してください。";
+"QuestionTextToShort"   =   "質問は２文字以上を記入してください";
+"AnswerTextToShort"     =   "回答は２文字以上を記入してください";
 
 "NoMessagesTitle"       =   "新着メッセージなし";
 "NoMessagesMessage"     =   "このアプリを利用している人なら誰にでもメッセージを送れます！ その人のプロフィールを開いて、画面右上の新規作成アイコンをクリックするだけ。";
@@ -144,12 +144,12 @@
 "NoNotificationsMessage"     =   "コメントやリミックス、新規コンテンツの投稿などでコミュニティに関わっていくことで、皆もあなたに関わってくれます。彼らの反応はこちらから見られます。";
 
 "NoCommentsTitle"       =   "最初のコメントを投稿しましょう！";
-"NoCommentsMessage"     =   "テキスト、写真もしくは動画コメントを投稿して、他の皆がなんていうか見てみましょう！";
+"NoCommentsMessage"     =   "テキスト、写真もしくは動画コメントを投稿して、ファンの反応を見てみましょう";
 
-"NoFollowersTitle"      =   "むむっ！ まだ誰もあなたをフォローしていません";
+"NoFollowersTitle"      =   "まだ誰もあなたをフォローしていません";
 "NoFollowersMessage"    =   "コメントやリミックス、新規コンテンツの投稿などでコミュニティに関わって、あなた自身のフォロワーを募りましょう。";
 
-"NotFollowingTitle"     =   "ああっと！ まだ誰もフォローしていません";
+"NotFollowingTitle"     =   "まだ誰もフォローしていません";
 "NotFollowingMessage"   =   "他の人をフォローして、あなたのストリーム上に彼らのコンテンツを表示できます。新たなコンテンツを探したり、新しい友達を作ったりするのに最適です。";
 
 "NoLikersMessage"       =   "お気に入りのコンテンツを「いいね」してあなたにとって大事なものをコミュニティーに見せよう。";
@@ -176,14 +176,14 @@
 "NoMemersMessage"     =   "ミームを作ってこのコンテンツを自分の作品にして他のファンとシェアしよう！";
 
 // strings for both UGC and creator
-"UGCSharePollFormat"    =   "このアンケートを見てみて！";       //Check out this poll! <URL>
-"UGCShareVideoFormat"   =   "この動画を見てみて！";      // Check out this video! <URL>
-"UGCShareGIFFormat"     =   "このGIFアニメを見てみて！";        // Check out this gif! <URL>
-"UGCShareImageFormat"   =   "この写真を見てみて！";      // Check out this photo! <URL>
-"UGCShareTextFormat"   =    "この投稿を見てみて！";      // Check out this post! <URL>
-"UGCShareLinkFormat"   =    "これを見てみて！";
+"UGCSharePollFormat"    =   "このアンケートを見て";       //Check out this poll! <URL>
+"UGCShareVideoFormat"   =   "この動画を見て！";      // Check out this video! <URL>
+"UGCShareGIFFormat"     =   "このGIFアニメを見て！";        // Check out this gif! <URL>
+"UGCShareImageFormat"   =   "この写真を見て";      // Check out this photo! <URL>
+"UGCShareTextFormat"   =    "この投稿を見て！";      // Check out this post! <URL>
+"UGCShareLinkFormat"   =    "これを見て！";
 
-"EmailShareSubjectFormat"   =   "%@アプリのこの投稿を見てみて！"; // Check out this post from the <creator name> app!
+"EmailShareSubjectFormat"   =   "%@アプリのこの投稿を見て！"; // Check out this post from the <creator name> app!
 
 "Facebook"              =   "Facebook";
 "FacebookFailed"        =   "Facebookに接続できませんでした。";
@@ -197,8 +197,8 @@
 "SearchFailed"          =   "検索に失敗しました。";
 "ImageDownloadFailed"   =   "画像のダウンロードに失敗しました。";
 
-"TwitterDeniedTitle"    =   "あなたのTwitterアカウントにアクセスできませんでした";
-"TwitterDenied"         =   "[設定] > [プライバシー] > [Twitter]からTwitterアカウントへのアクセスを許可してください";
+"TwitterDeniedTitle"    =   "あなたのツイッターアカウントにアクセスできませんでした";
+"TwitterDenied"         =   "[設定] > [プライバシー] > [ツイッター]からツイッターアカウントへのアクセスを許可してください";
 "TwitterTroubleshooting" =  "設定メニューであなたのTwitterアカウントの削除と再度追加をお試しください";
 
 "CameraRollDeniedTitle" =   "あなたの写真にアクセスできませんでした";
@@ -211,7 +211,7 @@
 "StillCaptureFailed"    =   "写真を撮影できませんでした";
 "VideoCaptureFailed"    =   "動画を撮影できませんでした";
 "VideoSaveFailed"       =   "動画を保存できませんでした";
-"VideoCoachMessage"     =   "長押しで録画開始";
+"VideoCoachMessage"     =   "ロングタップで録画開始";
 "LibraryCaptureFailed"  =   "ライブラリのアイテムにアクセスできません";
 
 "NoTwitterTitle"        =   "Twitterアカウントが見つかりません！";
@@ -225,7 +225,7 @@
 "ReportedTitle"         =   "了解！";
 "ReportContentMessage"  =   "このコンテンツは24時間以内に審査されます。";
 "ReportCommentMessage"  =   "このコンテンツは24時間以内に審査されます。";
-"ReportUserMessage"     =   "このユーザーは24時間以内に審査されます";
+"ReportUserMessage"     =   "このユーザーメッセージは24時間以内に審査されます";
 "CommentAlreadyReported" =  "コメントはすでに報告済みです";
 
 "BlockUser"             =   "ユーザーをブロック";
@@ -445,7 +445,7 @@
 "Version"               =   "バージョン %@";
 
 "ToSText"               =   "利用規約";
-"ToSAgreement"          =   "私の年齢は13歳以上であり、利用規約の内容に同意します";
+"ToSAgreement"          =   "私は13歳以上であり、利用規約の内容に同意します";
 
 "Privacy Policy"        =   "プライバシーポリシー";
 
@@ -493,13 +493,13 @@
 "DiscoverTrendingTagsError"     = "申し訳ありません、トレンド中のタグを読み込めませんでした。";
 "Suggested People"      = "提案されるユーザー";
 "Trending Tags"         = "トレンド中のタグ";
-"%@ Voters"             = "%@人の投票者";
+"%@ Voters"             = "%@投票者";
 "%@ Voter"              = "%@人の投票者";
 
 "HashtagSubscribeError"  = "申し訳ありません、このハッシュタグのフォロー開始時にエラーが発生しました。もう一度お試しください。";
 "HashtagUnsubscribeError"  = "申し訳ありません、このハッシュタグのフォロー解除時にエラーが発生しました。もう一度お試しください。";
 
-"NoFollowingHashtagsTitle"      =   "ああっと！ まだフォローしているタグがありません";
+"NoFollowingHashtagsTitle"      =   "まだフォローしているタグがありません";
 "NoFollowingHashtagsMessage"    =   "タグ付けされたアイテムをタップすることで、お気に入りコンテンツのリストを作成することができます。";
 
 "NoHashtagsTitle"      =   "こちらにハッシュタグがありません！";
@@ -610,7 +610,7 @@
 "Image" = "画像";
 "Video" = "動画";
 "Type your text here!" = "こちらにテキストを記入してください！";
-"GIF" = "GIF";
+"GIF" = "GIFアニメ";
 "GIF Search" = "GIF検索";
 "GIF MODE" = "GIFモード";
 "VIDEO MODE" = "動画モード";
@@ -659,6 +659,7 @@
 "Watch Video" = "動画を観る";
 "Watch GIF" = "GIFを観る";
 
+"See all" = "すべて見る";
 "Show Previous Comments" = "前のコメントを表示する";
 "CommentsSingularFormat" = "%@件のコメント";  // e.g. "1 Comment"
 "CommentsPluralFormat" = "%@件のコメント";  // e.g. "20 Comments"

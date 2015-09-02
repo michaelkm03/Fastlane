@@ -47,7 +47,7 @@
 "Save"                  =   "Guardar";
 "Continue"              =   "Continuar";
 "Loading..."            =   "Cargando...";
-"Finding fans to connect with..." = "Localizando aficionados para conectar...";
+"Finding fans to connect with..." = "Buscando aficionados para conectar...";
 
 "Featured"              =   "Destacado";
 "Recent"                =   "Reciente";
@@ -84,7 +84,7 @@
 "Log in here"           =   "Ingresa aquí";
 "Already Registered?"   =   "¿Ya estás registrado?";
 "Get Started"           =   "¡Empieza!";
-"Forgot Password?"      =   "Olvidaste tu contraseña";
+"Forgot Password?"      =   "¿Olvidaste tu contraseña?";
 "Reset here"            =   "Reiniciar aquí";
 "SetupButton"           =   "Establecer";
 "EmailValidation"       =   "Email inválido";
@@ -103,7 +103,7 @@
 "AccountUpdateFail"     =   "Error al actualizar la cuenta";
 "You're not logged in!" =   "¡No has ingresado!";
 "ProfileNotLoggedInMessage" = "¡Nada que ver aquí todavía! Estamos muy contentos de que te unas a nuestra comunidad. Crear una cuenta para mostrar a todos lo único que eres. ";
-"ProfileSaveFail"       =   "No pudo guardar la información de perfil debido a un error en el servidor";
+"ProfileSaveFail"       =   "La información de tu perfil no pudo ser guardado debido a un error en el servidor";
 "ProfileSave"           =   "Cargando tu perfil";
 "ProfileIncomplete"     =   "Perfil incompleto";
 "ProfileAborted"        =   "No podrás usar algunas funciones hasta que hayas completado tu perfil.";
@@ -211,7 +211,7 @@
 "StillCaptureFailed"    =   "No se pudo tomar la foto";
 "VideoCaptureFailed"    =   "No se pudo grabar el video";
 "VideoSaveFailed"       =   "No se pudo guardar el video";
-"VideoCoachMessage"     =   "Para grabar, presiona y mantén";
+"VideoCoachMessage"     =   "Presiona y sostén para vídeo";
 "LibraryCaptureFailed"  =   "No fue posible acceder al artículo en la biblioteca";
 
 "NoTwitterTitle"        =   "¡No se pudo encontrar una cuenta de Twitter";
@@ -300,7 +300,6 @@
 
 "ReplaceVideo"          =   "Reemplazar el video";
 
-"VideoPlayFailed"       =   "Error al reproducir el video";
 "See More"              =   "Ver más";
 "See all"               =   "Ver todo";
 "..."                   =   "...";
@@ -308,10 +307,11 @@
 "PostWillExpire"        =   "La publicación va a expirar";
 "CancelExpiration"      =   "¿Cancelar la expiración?";
 "CancelExirationConfirm" = "¿Estas seguro que deseas cancelar la fecha de expiración?";
+"VideoPlayFailed"       =   "Error al reproducir el vídeo";
 
 "Now"                   =   "Ahora";
 "SecondsAgo"            =   "%ds";
-"MinuteAgo"             =   "1 minuto";
+"MinuteAgo"             =   "1 min";
 "MinutesAgo"            =   "%dm";
 "HourAgo"               =   "1h";
 "HoursAgo"              =   "%dh";
@@ -378,7 +378,7 @@
 "ResetPasswordYesCancelButton" = "Sí, cancelar";
 "ResetPasswordNoContinueButton" = "No, continuar";
 
-"Error Resetting Password" = "Error al cancelar la contraseña";
+"Error Resetting Password" = "Error al cambiar la contraseña";
 "Please check your network connection or try again later." = "Por favor, comprueba la conexión de red o intenta de nuevo más tarde.";
 
 "EnterResetCodeMessage" =   "Se envió un correo  que contiene instrucciones cómo cambiar su contraseña..";
@@ -417,7 +417,7 @@
 "AccessCameraRestricted" =  "No se pudo acceder a la cámara debido a restricciones en su dispositivo.";
 "UnableSelectVideo"     = "Imposible seleccionar video.";
 
-"AccessContactsDenied"  =   "Para buscar amigos usando la libreta de direcciones, por favor, da acceso al ir a Configuración -> Privacidad -> Contactos";
+"AccessContactsDenied"  =   "Para buscar amigos usando el directorio, por favor, da acceso al ir a Configuración -> Privacidad -> Contactos";
 "AccessContactsRestricted" =  "Imposible acceder a los contactos debido a una limitación en tu dispositivo .";
 
 "FindFBFriends"         =   "Encontrar amigos de Facebook";
@@ -426,7 +426,7 @@
 
 "FindTwitterFriends"    =   "Amigos de Twitter";
 "Connect to Twitter"    =   "Conectar con Twitter";
-"TwitterSafety"         =   "No guardamos tus contraseñas y nunca publicamos algo sin tu permiso.";
+"TwitterSafety"         =   "No guardamos tus contraseñas y nunca publicaremos algo sin tu permiso.";
 
 "FindInstagramFriends"  =   "Encuentra amigos de Instagram";
 "Connect to Instagram"  =   "Connectar con Instagram";
@@ -449,7 +449,7 @@
 
 "Privacy Policy"        =   "Política de privacidad";
 
-"NoFriends"             =   "No hay coincidencias";
+"NoFriends"             =   "No hay amigos";
 "NoFriendsDetail"       =   "No pudimos encontrar amigos tuyos que usen nuestra app. ¡Invítalos!";
 
 "RTCUserPostedAtSyntax" =   "%@ a %@";// e.g. "Username at 0:04"
@@ -497,7 +497,7 @@
 "%@ Voter"              = "Votante %@";
 
 "HashtagSubscribeError"  = "Lo sentimos, se ha producido un error al intentar seguir este hashtag. Por favor, trata más tarde.";
-"HashtagUnsubscribeError"  = "Lo sentimos, se ha producido un error al intentar dejar de seguir este hashtag. Por favor,rata más tarde";
+"HashtagUnsubscribeError"  = "Lo sentimos, se ha producido un error al intentar dejar de seguir este hashtag. Por favor, trata más tarde";
 
 "NoFollowingHashtagsTitle"      =   "¡RUH-ROH! NO HAS SEGUIDO ETIQUETAS AUN";
 "NoFollowingHashtagsMessage"    =   "Crea una lista de tus contenidos favoritos escribiendo los elementos que han sido etiquetados.";
@@ -509,7 +509,7 @@
 "Device:"               = "Dispositivo";
 "OS Version:"           = "Versión OS";
 "App Version:"          = "Versión de la app";
-"AreYouSureYouWantToDelete" = "¿Estás seguro de eliminar?";
+"AreYouSureYouWantToDelete" = "¿Estás seguro que eliminarlo?";
 
 "ShareFacebook"         = "Compartir en Facebook";
 "ShareTwitter"          = "Compartir en Twitter";
@@ -523,9 +523,9 @@
 "PostFromCreator"       = "Publicado por %@";
 "PostFromFollowed"      = "Publicado por alguien a quien sigo";
 "NewComment"            = "No hay comentarios sobre mi publicación";
-"PostOnFollowedHashTag" = "Publicación en hashtag seguikdo";
+"PostOnFollowedHashTag" = "Publicación en hashtag seguido";
 "NewPrivateMessage"     = "No hay mensajes privados";
-"NewFollower"           = "Alguien me da seguimiento";
+"NewFollower"           = "Nuevo seguidor";
 "TagInComment"          = "Alguien me comenta";
 
 "Always" = "Siempre";
@@ -540,16 +540,16 @@
 "ErrorPushNotificationsNotSaved"        = "Error al guardar las preferencias";
 "ErrorPushNotificationsNotSavedMessage" = "Por favor, intentar más tarde.";
 
-"We need permission to access your photo library." = "Necesitamos permiso para acceder a tu biblioteca de fotografías.";
+"We need permission to access your photo library." = "Necesitamos permiso para acceder a tu archivo de fotografías.";
 "We need access to this permission."               = "Necesitamos acceder a este permiso.";
 "Maybe Later"                                      = "Tal vez luego";
 
 "RestorePurchaseDescription"            = "¿Ya lo compraste en otro dispositivo?\nToca abajo para restaurar todas tus compras.";
 "PurchaseErrorTitle"                    = "Error al hacer la comora";
 "PurchaseErrorProductNotAvailable"      = "Lo sentimos, error en las compras";
-"PurchaseErrorTransaction"              = "No puede completarse la transsación. Por favor, intentar más tarde.t";
+"PurchaseErrorTransaction"              = "No puede completarse la transacción. Por favor, intentar más tarde.";
 "RestorePurchasesNoPurchasesTitle"      = "No hay compras restauradas";
-"RestorePurchasesNoPurchases"           = "No pudimos encontrar Compras In-App para tu cuenta de iTunes.";
+"RestorePurchasesNoPurchases"           = "No pudimos encontrar compras In-App para tu cuenta de iTunes.";
 "ProductsRequestError"                  = "No pudimos cargar la información del producto desde la App Store. Inténtalo de nuevo más tarde.";
 "RestorePurchasesErrorTitle"            = "Error al restaurar las compras";
 "RestorePurchasesError"                 = "Erro al restaurar las compras en este momento. Por favor, intentar más tarde.";
@@ -572,10 +572,10 @@
 "AuthorizationContextRemix"                     = "Estamos muy contentos de ver lo que estás creando; saca una cuenta para que podamos ponerlo en tu perfil. ";
 "AuthorizationContextViewProfile"               = "¡Nada que ver aquí todavía! Estamos muy contentos de que te unas a nuestra comunidad. Crear una cuenta para mostrar a todos lo único que eres. ";
 "AuthorizationContextAddComment"                = "¡Únete a la conversación! Queremos escuchar lo que tienes que decir. ¡Crea una cuenta y estarás en el camino!";
-"AuthorizationContextInbox"                     = "Estamos muy contentos de que te unas a nuestra comunidad de fans y mensajes. ¡Solo con crea una cuenta para que puedas enviar y recibir mensajes!";
+"AuthorizationContextInbox"                     = "Estamos muy contentos de que te unas a nuestra comunidad de fans y mensajes. ¡ Sólo crea una cuenta para que puedas enviar y recibir mensajes!";
 "AuthorizationContextNotification"              = "Estamos tan emocionados de que te unas a nuestra comunidad y te comuniques con los fans. ¡Solo crea una cuenta y te notificaremos acerca de toda la información relevante!";
 
-"This will discard any content added to your post" = "Esto elimina cualquier contenido que hayas añadido a tu publicación";
+"This will discard any content added to your post" = "Esto eliminará cualquier contenido que hayas añadido a tu publicación";
 
 "No Color"  = "Sin Color";    // No color selected
 "Standard"  = "Normal";   // The default color before a selection is made
@@ -591,13 +591,14 @@
 "Black"     = "Negro";      // The color black
 
 "Video loading failed." = "Error al cargar el video";
-"Error Loading Next Video" = "Error Cargando el próximo video";
+
+"Error Loading Next Video" = "Error Cargando el próximo vídeo";
 "Failed to fetch products" = "Error al cargar los productos";
 
 "This will discard any content from the camera" = "Esto desechtará todo el contenido de la cámara";
 "Discard" = "Desechar";
-"Video failed to load" = "Error al cargar el video";
-"We encountered an error trying to edit this video." = "Detectamos un error al intentar editar este video.";
+"Video failed to load" = "Error al cargar el vídeo";
+"We encountered an error trying to edit this video." = "Detectamos un error al intentar editar este vídeo.";
 
 "No Photos" = "No hay fotos";
 "No Videos" = "No hay videos";
@@ -659,6 +660,7 @@
 "Watch Video" = "Ver video";
 "Watch GIF" = "Ver GIF";
 
+"See all" = "Ver todo";
 "Show Previous Comments" = "Mostrar comentarios anteriores";
 "CommentsSingularFormat" = "%@ Comentario";  // e.g. "1 Comment"
 "CommentsPluralFormat" = "%@ Comentarios";  // e.g. "20 Comments"
