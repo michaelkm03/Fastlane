@@ -110,11 +110,19 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     
     /// Mark: - UISearchBarDelegate
     
-    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+    func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
         if let searchVC = VUsersAndTagsSearchViewController .newWithDependencyManager(dependencyManager) {
-            searchVC.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-            self.presentViewController(searchVC, animated: true, completion: nil)
+            if let dependencyManager = self.dependencyManager {
+                
+                let navController = VNavigationController(dependencyManager: dependencyManager)
+                navController.innerNavigationController.setViewControllers([searchVC], animated: false)
+                navController.setNavigationBarHidden(true)
+                
+                navController.modalTransitionStyle = .CrossDissolve
+                self.presentViewController(navController, animated: true, completion: nil)
+            }
         }
+        return true
     }
     
     /// Mark: - Private Helper Methods
