@@ -124,7 +124,6 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
     class func desiredSize(collectionViewBounds: CGRect, shelf: ListShelf, dependencyManager: VDependencyManager) -> CGSize {
         let width = collectionViewBounds.width
         let length = cellSideLength(totalCellWidths(width))
-        let collectionViewSectionEdgeInsets = Constants.collectionViewSectionEdgeInsets
         let collectionViewHeight = self.collectionViewHeight(cellSideLength: length)
         let height = Constants.baseHeight + collectionViewHeight
         return CGSizeMake(width, height)
