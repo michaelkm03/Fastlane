@@ -42,7 +42,7 @@ class VListRecentShelfCollectionViewCell: VListShelfCollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        seeAllButton.setTitle(VListRecentShelfCollectionViewCell.kSeeAllButtonText as? String, forState: .Normal)
+        seeAllButton.setTitle(VListRecentShelfCollectionViewCell.kSeeAllButtonText as String, forState: .Normal)
         seeAllButton.setImage(VListRecentShelfCollectionViewCell.kSeeAllChevron, forState: .Normal)
     }
 
@@ -70,12 +70,12 @@ class VListRecentShelfCollectionViewCell: VListShelfCollectionViewCell {
     
 }
 
-extension VListRecentShelfCollectionViewCell : UICollectionViewDataSource {
+extension VListRecentShelfCollectionViewCell { // UICollectionViewDataSource methods
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if let shelf = shelf, let streamItems = shelf.streamItems.array as? [VStreamItem] {
-            var streamItem = streamItems[indexPath.row]
-            var identifier = VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
+            let streamItem = streamItems[indexPath.row]
+            let identifier = VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
             if let cell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as? VShelfContentCollectionViewCell {
                 cell.streamItem = streamItem
                 cell.dependencyManager = dependencyManager
@@ -101,7 +101,7 @@ extension VListRecentShelfCollectionViewCell : UICollectionViewDataSource {
     
 }
 
-extension VListRecentShelfCollectionViewCell : UICollectionViewDelegate {
+extension VListRecentShelfCollectionViewCell { // UICollectionViewDelegate methods
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if let shelf = shelf, let streamItem = shelf.streamItems[indexPath.row] as? VStreamItem {

@@ -43,9 +43,9 @@ class VListShelfContentCoverCell : VShelfContentCollectionViewCell {
         contentView.v_addFitToParentConstraintsToSubview(overlayView)
         overlayView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
         
-        dividerLineLeft.setTranslatesAutoresizingMaskIntoConstraints(false)
-        dividerLineRight.setTranslatesAutoresizingMaskIntoConstraints(false)
-        overlayLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        dividerLineLeft.translatesAutoresizingMaskIntoConstraints = false
+        dividerLineRight.translatesAutoresizingMaskIntoConstraints = false
+        overlayLabel.translatesAutoresizingMaskIntoConstraints = false
 
         overlayView.addSubview(dividerLineLeft)
         overlayView.addSubview(dividerLineRight)
@@ -78,7 +78,7 @@ class VListShelfContentCoverCell : VShelfContentCollectionViewCell {
     private func updateVisibility() {
         var hidden = true
         if let text = overlayText {
-            hidden = streamItem?.previewImagesObject == nil || count(text) == 0
+            hidden = streamItem?.previewImagesObject == nil || text.characters.count == 0
         }
         overlayView.hidden = hidden
     }
@@ -107,7 +107,7 @@ class VListShelfContentCoverCell : VShelfContentCollectionViewCell {
     
 }
 
-extension VListShelfContentCoverCell: VStreamCellComponentSpecialization {
+extension VListShelfContentCoverCell { // VStreamCellComponentSpecialization methods
     
     override class func reuseIdentifierForStreamItem(streamItem: VStreamItem, baseIdentifier: String?, dependencyManager: VDependencyManager?) -> String {
         let base = identifier(baseIdentifier, className: NSStringFromClass(self))

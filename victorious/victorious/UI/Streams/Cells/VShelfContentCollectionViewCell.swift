@@ -133,7 +133,7 @@ extension VShelfContentCollectionViewCell: VStreamCellComponentSpecialization {
         }
         
         if let itemSubType = streamItem.itemSubType {
-            var subType = itemSubType == "text" ? "image" : itemSubType
+            let subType = itemSubType == "text" ? "image" : itemSubType
             updatedIdentifier += "." + subType
         }
         

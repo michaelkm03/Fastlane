@@ -107,7 +107,7 @@ class VTrendingShelfCollectionViewCell: VBaseCollectionViewCell {
     }
     
     override func prepareForReuse() {
-        collectionView.contentOffset = CGPoint.zeroPoint
+        collectionView.contentOffset = CGPoint.zero
     }
     
 }
