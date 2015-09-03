@@ -7,19 +7,13 @@
 //
 
 #import "VExploreMarqueeCollectionViewFlowLayout.h"
-
-static const CGFloat marqueeShelfAspectRatio = 1.6; // Per the design of 320:197 on iPhone 5
+#import "victorious-Swift.h"
 
 @implementation VExploreMarqueeCollectionViewFlowLayout
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
-{
-    return YES;
-}
-
 - (CGFloat)getPageWidth
 {
-    return CGRectGetWidth(self.collectionView.bounds) / marqueeShelfAspectRatio;
+    return CGRectGetWidth(self.collectionView.bounds) / kExploreMarqueeShelfAspectRatio;
 }
 
 /*
