@@ -60,21 +60,15 @@ fi
 
 ### Modify Info.plist
 
-APP_ID=$(./build-scripts/get-app-id.sh "$FOLDER" "$CONFIGURATION" 2> /dev/null )
-if [ $? != 0 ]; then
-    echo "Could not read app ID from Info.plist"
-    exit 1
-fi
-
 if [ "$A_FLAG" == "-a" ]; then
     PRODUCT_PREFIX=`/usr/libexec/PlistBuddy -c "Print ProductPrefix" "$DEST_PATH/Info.plist"`
     if [ $? != 0 ]; then
         echo "ProductPrefix key not found in info.plist."
         exit 1
     fi
-    ./build-scripts/copy-plist.sh "$FOLDER/Info.plist" "$DEST_PATH/Info.plist" $APP_ID -p "$PRODUCT_PREFIX"
+    ./build-scripts/copy-plist.sh "$FOLDER/Info.plist" "$DEST_PATH/Info.plist" -p "$PRODUCT_PREFIX"
 else
-    ./build-scripts/copy-plist.sh "$FOLDER/Info.plist" "$DEST_PATH/Info.plist" $APP_ID
+    ./build-scripts/copy-plist.sh "$FOLDER/Info.plist" "$DEST_PATH/Info.plist"
 fi
 
 

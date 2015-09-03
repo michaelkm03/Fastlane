@@ -50,7 +50,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
     
     override var shelf: Shelf? {
         didSet {
-            if !VTrendingShelfCollectionViewCell.needsUpdate(fromShelf: oldValue, toShelf: shelf) {
+            if oldValue == shelf {
                 return
             }
             
@@ -65,7 +65,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
     
     override var dependencyManager: VDependencyManager? {
         didSet {
-            if !VTrendingShelfCollectionViewCell.needsUpdate(fromDependencyManager: oldValue, toDependencyManager: dependencyManager) {
+            if oldValue == dependencyManager {
                 return
             }
             
@@ -96,7 +96,10 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
     }
     
     private class func getPostsCountText(shelf: HashtagShelf) -> String {
-        return NSString(format: NSLocalizedString("HashtagPostsCountFormat", comment: ""), numberFormatter.stringForInteger(shelf.postsCount.integerValue)) as String
+        let count = shelf.postsCount.integerValue
+        let hashtagCount = numberFormatter.stringForInteger(shelf.postsCount.integerValue)
+        let format = count == 1 ? NSLocalizedString("HashtagPostsCountFormat", comment: "") : NSLocalizedString("HashtagPostsCountPluralFormat", comment: "")
+        return NSString(format: format, hashtagCount) as String
     }
     
     //MARK: - View management

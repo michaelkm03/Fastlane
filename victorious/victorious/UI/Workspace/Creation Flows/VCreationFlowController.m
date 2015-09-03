@@ -81,8 +81,7 @@ static NSString * const kStatusBaryStleKey = @"statusBarStyle";
 
 - (void)addCloseButtonToViewController:(UIViewController *)viewController
 {
-    NSString *closeText = [self.dependencyManager stringForKey:kCloseButtonTextKey];
-    closeText = closeText ? NSLocalizedString(closeText, nil) : NSLocalizedString(@"Cancel", nil);
+    NSString *closeText = [self.dependencyManager stringForKey:kCloseButtonTextKey] ?: NSLocalizedString(@"Cancel", nil);
     UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithTitle:closeText
                                                                     style:UIBarButtonItemStylePlain
                                                                    target:self

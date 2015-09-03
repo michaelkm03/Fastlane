@@ -28,7 +28,7 @@ static NSString * const kPromptTextLocalizedStringKey = @"Show Previous Comments
     self.promptTextView.contentInset = UIEdgeInsetsZero;
     self.promptTextView.textContainerInset = UIEdgeInsetsZero;
     self.promptTextView.textContainer.lineFragmentPadding = 0.0f;
-    self.promptTextView.text = NSLocalizedString(kPromptTextLocalizedStringKey, nil);;
+    self.promptTextView.text = NSLocalizedString(kPromptTextLocalizedStringKey, nil);
 }
 
 - (void)setupWithAttributes:(VInStreamCommentsShowMoreAttributes *)attributes andLinkDelegate:(id <CCHLinkTextViewDelegate>)linkDelegate

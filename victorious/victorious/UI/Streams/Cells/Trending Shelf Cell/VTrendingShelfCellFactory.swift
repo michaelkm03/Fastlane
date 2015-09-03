@@ -13,10 +13,11 @@ class VTrendingShelfCellFactory: NSObject {
     
     private let dependencyManager: VDependencyManager
     
-    required init!(dependencyManager: VDependencyManager!) {
+    private let failureCellFactory = VNoContentCollectionViewCellFactory(acceptableContentClasses: nil)
+
+    required init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager;
     }
-    
 }
 
 extension VTrendingShelfCellFactory: VStreamCellFactory {
@@ -24,6 +25,7 @@ extension VTrendingShelfCellFactory: VStreamCellFactory {
     func registerCellsWithCollectionView(collectionView: UICollectionView) {
         collectionView.registerNib(VTrendingUserShelfCollectionViewCell.nibForCell(), forCellWithReuseIdentifier: VTrendingUserShelfCollectionViewCell.suggestedReuseIdentifier())
         collectionView.registerNib(VTrendingHashtagShelfCollectionViewCell.nibForCell(), forCellWithReuseIdentifier: VTrendingHashtagShelfCollectionViewCell.suggestedReuseIdentifier())
+        failureCellFactory.registerNoContentCellWithCollectionView(collectionView)
     }
     
     func collectionView(collectionView: UICollectionView, cellForStreamItem streamItem: VStreamItem, atIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -39,9 +41,8 @@ extension VTrendingShelfCellFactory: VStreamCellFactory {
                 return cell
             }
         }
-        let cell = UICollectionViewCell()
         assertionFailure("VTrendingShelfCellFactory was provided a shelf that was neither a user shelf nor a hashtag shelf")
-        return cell
+        return failureCellFactory.noContentCellForCollectionView(collectionView, atIndexPath: indexPath)
     }
     
     private func setup(cell: VTrendingShelfCollectionViewCell, shelf: Shelf, dependencyManager: VDependencyManager) {

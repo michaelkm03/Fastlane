@@ -29,8 +29,7 @@ static CGFloat const kDesiredHeight = 43.0f;
     {
         self.saveContentLabel.font = [_dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
         self.saveContentLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-        NSString *saveText = [_dependencyManager stringForKey:kSaveTextKey];
-        self.saveContentLabel.text = NSLocalizedString(saveText, @"");
+        self.saveContentLabel.text = [_dependencyManager stringForKey:kSaveTextKey];
         self.contentView.backgroundColor = [_dependencyManager colorForKey:kOptionsContainerBackgroundKey];
         self.cameraRollSwitch.onTintColor = [_dependencyManager colorForKey:VDependencyManagerAccentColorKey];
     }

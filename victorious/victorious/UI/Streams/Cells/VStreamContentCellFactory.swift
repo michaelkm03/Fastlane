@@ -26,6 +26,7 @@ import UIKit
 class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
     
     private static let kTrendingShelfKey = "trendingShelf"
+    private static let kListShelfKey = "listShelf"
     
     /// The object that should recieve messages about marquee data and selection updates.
     weak var delegate: VStreamContentCellFactoryDelegate? {
@@ -40,6 +41,9 @@ class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
     
     private let trendingShelfFactory: VTrendingShelfCellFactory?
     
+    private let listShelfFactory: VListShelfCellFactory?
+    private let failureCellFactory = VNoContentCollectionViewCellFactory(acceptableContentClasses: nil)
+    
     /// The dependency manager used to style all cells from this factory
     private let dependencyManager: VDependencyManager
     
@@ -52,6 +56,7 @@ class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
         self.dependencyManager = dependencyManager
         marqueeCellFactory = VMarqueeCellFactory(dependencyManager: dependencyManager)
         trendingShelfFactory = dependencyManager.templateValueOfType(VTrendingShelfCellFactory.self, forKey: VStreamContentCellFactory.kTrendingShelfKey) as? VTrendingShelfCellFactory
+        listShelfFactory = dependencyManager.templateValueOfType(VListShelfCellFactory.self, forKey: VStreamContentCellFactory.kListShelfKey) as? VListShelfCellFactory
     }
     
     private func factoryForStreamItem(streamItem: VStreamItem) -> VStreamCellFactory? {
@@ -61,6 +66,8 @@ class VStreamContentCellFactory: NSObject, VHasManagedDependencies {
                 return marqueeCellFactory
             case VStreamItemSubTypeHashtag, VStreamItemSubTypeUser:
                 return trendingShelfFactory
+            case VStreamItemSubTypePlaylist, VStreamItemSubTypeRecent:
+                return listShelfFactory
             default: ()
             }
         }
@@ -74,6 +81,8 @@ extension VStreamContentCellFactory: VStreamCellFactory {
         defaultFactory()?.registerCellsWithCollectionView(collectionView)
         marqueeCellFactory.registerCellsWithCollectionView(collectionView)
         trendingShelfFactory?.registerCellsWithCollectionView(collectionView)
+        listShelfFactory?.registerCellsWithCollectionView(collectionView)
+        failureCellFactory.registerNoContentCellWithCollectionView(collectionView)
     }
     
     func collectionView(collectionView: UICollectionView, cellForStreamItem streamItem: VStreamItem, atIndexPath indexPath: NSIndexPath, inStream stream: VStream?) -> UICollectionViewCell {
@@ -86,7 +95,7 @@ extension VStreamContentCellFactory: VStreamCellFactory {
             }
         }
         assertionFailure("A cell was requested from a content cell factory with a nil default factory.")
-        return UICollectionViewCell()
+        return failureCellFactory.noContentCellForCollectionView(collectionView, atIndexPath: indexPath)
     }
     
     func collectionView(collectionView: UICollectionView, cellForStreamItem streamItem: VStreamItem, atIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -94,7 +103,7 @@ extension VStreamContentCellFactory: VStreamCellFactory {
             return factory.collectionView(collectionView, cellForStreamItem: streamItem, atIndexPath: indexPath)
         }
         assertionFailure("A cell was requested from a content cell factory with a nil default factory.")
-        return UICollectionViewCell()
+        return failureCellFactory.noContentCellForCollectionView(collectionView, atIndexPath: indexPath)
     }
     
     func sizeWithCollectionViewBounds(bounds: CGRect, ofCellForStreamItem streamItem: VStreamItem) -> CGSize {

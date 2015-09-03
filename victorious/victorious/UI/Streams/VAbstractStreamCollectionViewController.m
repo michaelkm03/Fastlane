@@ -31,8 +31,6 @@
 #import "VDependencyManager.h"
 #import "victorious-Swift.h"
 
-const CGFloat kVLoadNextPagePoint = .75f;
-
 @interface VAbstractStreamCollectionViewController () <VScrollPaginatorDelegate>
 
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
