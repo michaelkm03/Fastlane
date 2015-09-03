@@ -231,9 +231,15 @@ static NSString * const kEmailPermissionKey = @"email";
 
 - (BOOL)canOpenURL:(NSURL *)url
 {
-    NSString *scheme = url.scheme;
-    NSString *fbScheme = [NSString stringWithFormat:@"fb%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"FacebookAppID"]];
-    return [fbScheme isEqualToString:scheme];
+    static dispatch_once_t onceToken;
+    static NSRegularExpression *fbSchemeRegex;
+    dispatch_once(&onceToken, ^(void)
+    {
+        fbSchemeRegex = [NSRegularExpression regularExpressionWithPattern:@"^fb\\d+" options:NSRegularExpressionCaseInsensitive error:nil];
+    });
+    
+    NSString *scheme = url.scheme ?: @"";
+    return [[fbSchemeRegex matchesInString:scheme options:0 range:NSMakeRange(0, scheme.length)] count] > 0;
 }
 
 - (BOOL)isSessionValid

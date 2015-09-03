@@ -78,8 +78,6 @@ static NSString * const kShimmerAnimationKey = @"shimmerAnimation";
     _image = image;
     
     [self.renderedImageCache removeAllObjects];
-    [self layoutSubviews];
-    self.tilePatternLayer.contents = (id)[self patternImage].CGImage;
 }
 
 - (void)setTiltParallaxEnabled:(BOOL)tiltParallaxEnabled
@@ -229,10 +227,16 @@ static NSString * const kShimmerAnimationKey = @"shimmerAnimation";
         return self.image;
     }
     
+    if (self.image == nil)
+    {
+        return nil;
+    }
+    
     UIGraphicsBeginImageContext(self.image.size);
     {
-        CGContextSetFillColorWithColor(UIGraphicsGetCurrentContext(), blendColor.CGColor);
-        CGContextFillRect(UIGraphicsGetCurrentContext(), CGRectMake(0, 0, self.image.size.width, self.image.size.height));
+        CGContextRef currentContext = UIGraphicsGetCurrentContext();
+        CGContextSetFillColorWithColor(currentContext, blendColor.CGColor);
+        CGContextFillRect(currentContext, CGRectMake(0, 0, self.image.size.width, self.image.size.height));
         [self.image drawInRect:CGRectMake(0, 0, self.image.size.width, self.image.size.height) blendMode:kCGBlendModeColorDodge alpha:1.0f];
         renderedImage = UIGraphicsGetImageFromCurrentImageContext();
     }
