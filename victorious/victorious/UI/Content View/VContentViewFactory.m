@@ -14,6 +14,7 @@
 #import "VWebBrowserViewController.h"
 #import "NSURL+VCustomScheme.h"
 #import "VRootViewController.h"
+#import "victorious-Swift.h"
 #import "VDependencyManager+VTabScaffoldViewController.h"
 
 static NSString * const kContentViewComponentKey = @"contentView";
@@ -43,22 +44,22 @@ static NSString * const kSequenceIdKey = @"sequenceId";
     return nil;
 }
 
-- (UIViewController *)contentViewForSequence:(VSequence *)sequence inStreamWithID:(NSString *)streamId commentID:(NSNumber *)commentID placeholderImage:(UIImage *)placeholderImage
+- (UIViewController *)contentViewForContext:(ContentViewContext *)context
 {
-    if ( [sequence isWebContent] )
+    if ( [context.sequence isWebContent] )
     {
-        NSURL *sequenceContentURL = [NSURL URLWithString:sequence.webContentUrl];
-        return [self webContentViewControllerWithURL:sequenceContentURL sequence:sequence];
+        NSURL *sequenceContentURL = [NSURL URLWithString:context.sequence.webContentUrl];
+        return [self webContentViewControllerWithURL:sequenceContentURL sequence:context.sequence];
     }
     
-    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:sequence streamID:streamId depenencyManager:self.dependencyManager];
-    contentViewModel.deepLinkCommentId = commentID;
+    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithContext:context];
+    contentViewModel.deepLinkCommentId = context.commentId;
     
-    NSDictionary *dic = @{ kSequenceIdKey : sequence.remoteId};
+    NSDictionary *dict = @{ kSequenceIdKey : context.sequence.remoteId};
     
-    VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:dic];
+    VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:dict];
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel dependencyManager:childDependencyManager];
-    contentViewController.placeholderImage = placeholderImage;
+    contentViewController.placeholderImage = context.placeholderImage;
     
     if ( contentViewController == nil )
     {

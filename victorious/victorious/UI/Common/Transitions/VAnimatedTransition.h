@@ -58,8 +58,6 @@
  */
 @property (nonatomic, readonly) NSTimeInterval transitionOutDuration;
 
-@optional
-
 /**
  To save on performance and memory, return NO here if the transition doesn't need the snapshot
  */

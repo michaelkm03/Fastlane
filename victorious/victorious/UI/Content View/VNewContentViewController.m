@@ -6,177 +6,127 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VNewContentViewController.h"
-#import "VObjectManager+ContentCreation.h"
-
-// SubViews
-#import "VExperienceEnhancerBar.h"
-
-// Images
-#import "UIImage+ImageCreation.h"
-#import "UIImageView+Blurring.h"
-
-// Layout
-#import "VShrinkingContentLayout.h"
-#import "UIView+AutoLayout.h"
-
-// Cells
-#import "VContentCell.h"
-#import "VContentVideoCell.h"
-#import "VContentImageCell.h"
-#import "VContentPollCell.h"
-#import "VContentPollQuestionCell.h"
-#import "VContentPollBallotCell.h"
-#import "VContentCommentsCell.h"
-#import "VExperienceEnhancerBarCell.h"
-#import "VContentTextCell.h"
-
-// Supplementary Views
-#import "VSectionHandleReusableView.h"
-#import "VContentBackgroundSupplementaryView.h"
-
-// Input Accessory
-#import "VKeyboardInputAccessoryView.h"
-#import "UIActionSheet+VBlocks.h"
-
-// ViewControllers
-#import "VVideoLightboxViewController.h"
-#import "VImageLightboxViewController.h"
-#import "VUserProfileViewController.h"
-#import "VPurchaseViewController.h"
-
-// Media Attachments
-#import "VMediaAttachmentPresenter.h"
-
-// Transitioning
-#import "VLightboxTransitioningDelegate.h"
-
-// Logged in
-#import "VObjectManager+Login.h"
-#import "VLoginViewController.h"
-
-// Formatters
-#import "VElapsedTimeFormatter.h"
-#import "VComment+Fetcher.h"
-
-// Simple Models
-#import "VExperienceEnhancer.h"
-
-// Experiments
-#import "VDependencyManager+VTabScaffoldViewController.h"
-
-// Swift
+#import <SDWebImage/UIImageView+WebCache.h>
 #import "victorious-Swift.h"
 
-#import "VSequence+Fetcher.h"
-
-#import "VTransitionDelegate.h"
-#import "VEditCommentViewController.h"
-#import "VSimpleModalTransition.h"
-
-#import "VTracking.h"
-#import "VCollectionViewCommentHighlighter.h"
-#import "VScrollPaginator.h"
-#import "VSequenceActionController.h"
-#import "VContentViewRotationHelper.h"
-#import "VEndCard.h"
-#import "VContentRepopulateTransition.h"
+#import "UIActionSheet+VBlocks.h"
+#import "UIImage+ImageCreation.h"
+#import "UIImageView+Blurring.h"
+#import "UIView+AutoLayout.h"
 #import "VAbstractCommentHighlighter.h"
-#import "VEndCardActionModel.h"
-#import "VCommentAlertHelper.h"
-
-#import <SDWebImage/UIImageView+WebCache.h>
-
-#import "VInlineSearchTableViewController.h"
-#import "VTextAndMediaView.h"
-#import "VTagSensitiveTextView.h"
-#import "VTag.h"
-#import "VUserTag.h"
-#import "VHashtagStreamCollectionViewController.h"
-#import "VNavigationController.h"
 #import "VAuthorizedAction.h"
-#import "VNode+Fetcher.h"
-#import "VDependencyManager+VUserProfile.h"
-#import "VHashtagSelectionResponder.h"
-#import "VURLSelectionResponder.h"
-#import "VDependencyManager+VTabScaffoldViewController.h"
-#import "VContentViewFactory.h"
 #import "VCoachmarkDisplayer.h"
-#import "VDependencyManager+VCoachmarkManager.h"
 #import "VCoachmarkManager.h"
-#import "VSequenceExpressionsObserver.h"
-#import "VExperienceEnhancerResponder.h"
-#import "VDependencyManager+VTracking.h"
-#import "VCommentTextAndMediaView.h"
-
-// Cell focus
+#import "VCollectionViewCommentHighlighter.h"
 #import "VCollectionViewStreamFocusHelper.h"
+#import "VComment+Fetcher.h"
+#import "VCommentAlertHelper.h"
+#import "VCommentTextAndMediaView.h"
+#import "VContentBackgroundSupplementaryView.h"
+#import "VContentCell.h"
+#import "VContentCommentsCell.h"
+#import "VContentImageCell.h"
+#import "VContentPollBallotCell.h"
+#import "VContentPollCell.h"
+#import "VContentPollQuestionCell.h"
+#import "VContentRepopulateTransition.h"
+#import "VContentTextCell.h"
+#import "VContentVideoCell.h"
+#import "VContentViewFactory.h"
+#import "VContentViewRotationHelper.h"
+#import "VDependencyManager+VCoachmarkManager.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
+#import "VDependencyManager+VTracking.h"
+#import "VDependencyManager+VUserProfile.h"
+#import "VEditCommentViewController.h"
+#import "VElapsedTimeFormatter.h"
+#import "VEndCard.h"
+#import "VEndCardActionModel.h"
+#import "VExperienceEnhancer.h"
+#import "VExperienceEnhancerBar.h"
+#import "VExperienceEnhancerBarCell.h"
+#import "VExperienceEnhancerResponder.h"
+#import "VHashtagSelectionResponder.h"
+#import "VHashtagStreamCollectionViewController.h"
+#import "VImageLightboxViewController.h"
+#import "VInlineSearchTableViewController.h"
+#import "VKeyboardInputAccessoryView.h"
+#import "VLightboxTransitioningDelegate.h"
+#import "VLoginViewController.h"
+#import "VMediaAttachmentPresenter.h"
+#import "VNavigationController.h"
+#import "VNewContentViewController.h"
+#import "VNode+Fetcher.h"
+#import "VObjectManager+ContentCreation.h"
+#import "VObjectManager+Login.h"
+#import "VPurchaseViewController.h"
+#import "VScrollPaginator.h"
+#import "VSectionHandleReusableView.h"
+#import "VSequence+Fetcher.h"
+#import "VSequenceActionController.h"
+#import "VSequenceExpressionsObserver.h"
+#import "VShrinkingContentLayout.h"
+#import "VSimpleModalTransition.h"
+#import "VTag.h"
+#import "VTagSensitiveTextView.h"
+#import "VTextAndMediaView.h"
+#import "VTracking.h"
+#import "VTransitionDelegate.h"
+#import "VURLSelectionResponder.h"
+#import "VUserProfileViewController.h"
+#import "VUserTag.h"
+#import "VVideoLightboxViewController.h"
 
 #define HANDOFFENABLED 0
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate>
+@interface VNewContentViewController () <
+UICollectionViewDelegate,
+UICollectionViewDataSource,
+UICollectionViewDelegateFlowLayout,
+UITextFieldDelegate, UINavigationControllerDelegate, VKeyboardInputAccessoryViewDelegate,VContentVideoCellDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, VEndCardViewControllerDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate>
 
-@property (nonatomic, strong) NSUserActivity *handoffObject;
-
-@property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
-@property (nonatomic, strong) VPublishParameters *publishParameters;
+@property (nonatomic, assign) BOOL enteringRealTimeComment;
 @property (nonatomic, assign) BOOL hasAutoPlayed;
-
-@property (nonatomic, weak) IBOutlet VInputAccessoryCollectionView *contentCollectionView;
-@property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
-@property (nonatomic, weak) IBOutlet UIButton *closeButton;
-@property (nonatomic, weak) IBOutlet UIButton *moreButton;
-
-// Cells
-@property (nonatomic, weak) VContentCell *contentCell;
-@property (nonatomic, weak) VContentVideoCell *videoCell;
-@property (nonatomic, weak) VExperienceEnhancerBarCell *experienceEnhancerCell;
-@property (nonatomic, weak) VSectionHandleReusableView *handleView;
-@property (nonatomic, weak) VContentPollCell *pollCell;
-@property (nonatomic, weak) VContentPollBallotCell *ballotCell;
-@property (nonatomic, weak) VContentTextCell *textCell;
-
-// Text input
-@property (nonatomic, weak) VKeyboardInputAccessoryView *textEntryView;
+@property (nonatomic, assign) BOOL hasBeenPresented;
+@property (nonatomic, assign) BOOL shouldResumeEditingAfterClearActionSheet;
+@property (nonatomic, assign) CGPoint offsetBeforeLandscape;
+@property (nonatomic, assign) CGPoint offsetBeforeRemoval;
+@property (nonatomic, assign) CMTime realtimeCommentBeganTime;
+@property (nonatomic, strong) NSDate *videoLoadedDate;
+@property (nonatomic, strong) NSMutableArray *commentCellReuseIdentifiers;
+@property (nonatomic, strong) NSUserActivity *handoffObject;
+@property (nonatomic, strong) VAuthorizedAction *authorizedAction;
+@property (nonatomic, strong) VCollectionViewCommentHighlighter *commentHighlighter;
+@property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
+@property (nonatomic, strong) VContentLikeButton *likeButton;
 @property (nonatomic, strong) VElapsedTimeFormatter *elapsedTimeFormatter;
 @property (nonatomic, strong) VMediaAttachmentPresenter *mediaAttachmentPresenter;
-@property (nonatomic, assign) BOOL shouldResumeEditingAfterClearActionSheet;
-
-// Constraints
-@property (nonatomic, weak) NSLayoutConstraint *bottomKeyboardToContainerBottomConstraint;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *leadingCollectionViewToContainer;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *trailingCollectionViewToContainer;
-
-// RTC
-@property (nonatomic, assign) BOOL enteringRealTimeComment;
-@property (nonatomic, assign) CMTime realtimeCommentBeganTime;
-
+@property (nonatomic, strong) VPublishParameters *publishParameters;
+@property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
 @property (nonatomic, strong) VTransitionDelegate *modalTransitionDelegate;
 @property (nonatomic, strong) VTransitionDelegate *repopulateTransitionDelegate;
-
-@property (nonatomic, strong) VCollectionViewCommentHighlighter *commentHighlighter;
-@property (nonatomic, assign) CGPoint offsetBeforeLandscape;
+@property (nonatomic, strong, readwrite) VContentViewViewModel *viewModel;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *leadingCollectionViewToContainer;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *trailingCollectionViewToContainer;
+@property (nonatomic, weak) IBOutlet UIButton *closeButton;
+@property (nonatomic, weak) IBOutlet UIButton *moreButton;
+@property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
 @property (nonatomic, weak) IBOutlet VContentViewRotationHelper *rotationHelper;
+@property (nonatomic, weak) IBOutlet VInputAccessoryCollectionView *contentCollectionView;
 @property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
-@property (nonatomic, weak, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
-
-@property (nonatomic, strong) VAuthorizedAction *authorizedAction;
-
+@property (nonatomic, weak) NSLayoutConstraint *bottomKeyboardToContainerBottomConstraint;
 @property (nonatomic, weak) UIView *snapshotView;
-@property (nonatomic, assign) CGPoint offsetBeforeRemoval;
-@property (nonatomic, strong) NSDate *videoLoadedDate;
-
-@property (nonatomic, assign) BOOL hasBeenPresented;
-
-@property (nonatomic, strong) VSequenceExpressionsObserver *expressionsObserver;
-
-@property (nonatomic, strong) VContentLikeButton *likeButton;
-
-@property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
-
-@property (nonatomic, strong) NSMutableArray *commentCellReuseIdentifiers;
+@property (nonatomic, readwrite, weak) VContentCell *contentCell;
+@property (nonatomic, readwrite, weak) VExperienceEnhancerBarCell *experienceEnhancerCell;
+@property (nonatomic, weak) VContentPollBallotCell *ballotCell;
+@property (nonatomic, weak) VContentPollCell *pollCell;
+@property (nonatomic, weak) VContentTextCell *textCell;
+@property (nonatomic, weak) VContentVideoCell *videoCell;
+@property (nonatomic, weak) VKeyboardInputAccessoryView *textEntryView;
+@property (nonatomic, weak) VSectionHandleReusableView *handleView;
+@property (nonatomic, weak, readwrite) IBOutlet VSequenceActionController *sequenceActionController;
 
 @end
 
@@ -456,7 +406,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     self.commentCellReuseIdentifiers = [NSMutableArray new];
     
-    [self.viewModel reloadData];
+    //[self.viewModel reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -866,6 +816,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         case VContentViewSectionContent:
         {
             UICollectionViewCell *cell = [self contentCellForCollectionView:collectionView atIndexPath:indexPath];
+            cell.hidden = YES;
             if ( [cell isKindOfClass:[VContentCell class]] )
             {
                 [self configureLikeButtonWithContentCell:(VContentCell *)cell forSequence:self.viewModel.sequence];
@@ -1167,6 +1118,14 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (UICollectionViewCell *)contentCellForCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath
 {
+    VContentImageCell *imageCell = [collectionView dequeueReusableCellWithReuseIdentifier:[VContentImageCell suggestedReuseIdentifier]
+                                                                             forIndexPath:indexPath];
+    [imageCell.contentImageView sd_setImageWithURL:self.viewModel.imageURLRequest.URL
+                                  placeholderImage:self.placeholderImage?:nil];
+    self.contentCell = imageCell;
+    self.contentCell.endCardDelegate = self;
+    return imageCell;
+    
     switch (self.viewModel.type)
     {
         case VContentViewTypeInvalid:
@@ -1814,12 +1773,13 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)showNextSequence:(VSequence *)nextSequence
 {
-    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithSequence:nextSequence
-                                                                                     streamID:self.viewModel.streamId
-                                                                             depenencyManager:self.dependencyManager];
+    ContentViewContext *context = [[ContentViewContext alloc] init];
+    context.sequence = nextSequence;
+    context.streamId = self.viewModel.streamId;
+    context.dependencyManager = self.dependencyManager;
+    VContentViewViewModel *contentViewModel = [[VContentViewViewModel alloc] initWithContext:context];
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel
                                                                                                    dependencyManager:self.dependencyManager];
-    
     self.navigationController.delegate = contentViewController;
     contentViewController.transitioningDelegate = self.repopulateTransitionDelegate;
     [self.navigationController pushViewController:contentViewController animated:YES];

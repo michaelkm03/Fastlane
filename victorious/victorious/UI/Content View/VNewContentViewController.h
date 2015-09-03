@@ -12,7 +12,7 @@
 #import "VDependencyManager.h"
 #import "VHasManagedDependencies.h"
 
-@class VDependencyManager, VSequenceActionController, VAuthorizedAction;
+@class VDependencyManager, VSequenceActionController, VAuthorizedAction, VContentCell, VExperienceEnhancerBarCell;
 
 /**
  *  The content view controller.
@@ -41,5 +41,9 @@
 @property (nonatomic, strong) UIImage *placeholderImage;
 
 @property (nonatomic, weak, readonly) IBOutlet VSequenceActionController *sequenceActionController;
+
+
+@property (nonatomic, weak, readonly) VContentCell *contentCell;
+@property (nonatomic, weak, readonly) VExperienceEnhancerBarCell *experienceEnhancerCell;
 
 @end

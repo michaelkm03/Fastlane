@@ -14,7 +14,7 @@
 #import "VStreamCellTracking.h"
 #import "VHighlightContainer.h"
 
-@class VSequence;
+@class VSequence, VSequencePreviewView;
 
 /**
  *  VInsetStreamCollectionCell a.k.a. Template C Cell.

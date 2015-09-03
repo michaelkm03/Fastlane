@@ -53,6 +53,7 @@
 #import "VVideoSettings.h"
 #import "UIColor+VHex.h"
 #import "VEndCardModelBuilder.h"
+#import "victorious-Swift.h"
 
 @interface VContentViewViewModel ()
 
@@ -62,6 +63,7 @@
 @property (nonatomic, strong, readwrite) VAsset *currentAsset;
 @property (nonatomic, strong, readwrite) VRealtimeCommentsViewModel *realTimeCommentsViewModel;
 @property (nonatomic, strong, readwrite) VExperienceEnhancerController *experienceEnhancerController;
+@property (nonatomic, strong, readwrite) ContentViewContext *context;
 
 @property (nonatomic, strong) NSString *followersText;
 @property (nonatomic, assign, readwrite) VVideoCellViewModel *videoViewModel;
@@ -81,44 +83,44 @@
 
 #pragma mark - Initializers
 
-- (instancetype)initWithSequence:(VSequence *)sequence streamID:(NSString *)streamId depenencyManager:(VDependencyManager *)dependencyManager
+- (instancetype)initWithContext:(ContentViewContext *)context
 {
     self = [super init];
     if ( self != nil )
     {
-        _sequence = sequence;
+        _context = context;
         
-        _streamId = streamId ?: @"";
+        _sequence = context.sequence;
+        _streamId = context.streamId ?: @"";
+        _dependencyManager = context.dependencyManager;
         
-        _dependencyManager = dependencyManager;
-        
-        NSDictionary *configuration = @{ @"sequence" : sequence, @"voteTypes" : [dependencyManager voteTypes] };
-        VDependencyManager *childDependencyManager = [dependencyManager childDependencyManagerWithAddedConfiguration:configuration];
+        NSDictionary *configuration = @{ @"sequence" : _sequence, @"voteTypes" : [_dependencyManager voteTypes] };
+        VDependencyManager *childDependencyManager = [context.dependencyManager childDependencyManagerWithAddedConfiguration:configuration];
         _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithDependencyManager:childDependencyManager];
         
-        _currentNode = [sequence firstNode];
+        _currentNode = [_sequence firstNode];
         
-        if ([sequence isPoll])
+        if ([_sequence isPoll])
         {
             _type = VContentViewTypePoll;
         }
-        else if ([sequence isVideo] && ![sequence isGIFVideo])
+        else if ([_sequence isVideo] && ![_sequence isGIFVideo])
         {
             _type = VContentViewTypeVideo;
             _realTimeCommentsViewModel = [[VRealtimeCommentsViewModel alloc] init];
             _currentAsset = [_currentNode httpLiveStreamingAsset];
         }
-        else if ([sequence isGIFVideo])
+        else if ([_sequence isGIFVideo])
         {
             _type = VContentViewTypeGIFVideo;
             _currentAsset = [_currentNode mp4Asset];
         }
-        else if ([sequence isImage])
+        else if ([_sequence isImage])
         {
             _type = VContentViewTypeImage;
-            _currentAsset = [self mediaAssetFromSequence:sequence];
+            _currentAsset = [self mediaAssetFromSequence:_sequence];
         }
-        else if ( [sequence isText] )
+        else if ( [_sequence isText] )
         {
             _type = VContentViewTypeText;
             _currentAsset = [_currentNode textAsset];
@@ -127,10 +129,10 @@
         {
             // Fall back to image.
             _type = VContentViewTypeImage;
-            _currentAsset = [self mediaAssetFromSequence:sequence];
+            _currentAsset = [self mediaAssetFromSequence:_sequence];
         }
         
-        _hasReposted = [sequence.hasReposted boolValue];
+        _hasReposted = [_sequence.hasReposted boolValue];
         
         if ( _currentAsset == nil )
         {

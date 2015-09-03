@@ -48,7 +48,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
 @interface VSleekStreamCollectionCell () <VBackgroundContainer, CCHLinkTextViewDelegate, VSequenceCountsTextViewDelegate, AutoplayTracking>
 
-@property (nonatomic, strong) VSequencePreviewView *previewView;
+@property (nonatomic, readwrite) VSequencePreviewView *previewView;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) IBOutlet UIView *previewContainer;
 @property (nonatomic, weak) IBOutlet UIView *loadingBackgroundContainer;
@@ -389,6 +389,12 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
         [(VSequencePreviewView <VPreviewViewBackgroundHost> *)self.previewView updateToFitContent:YES withBackgroundSupplier:self.dependencyManager];
     }
     [self.previewView setSequence:sequence];
+}
+
+- (void)restorePreviewView:(VStreamItemPreviewView *)previewView
+{
+    [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
+    [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];
 }
 
 - (void)updateCaptionViewForSequence:(VSequence *)sequence

@@ -92,7 +92,7 @@
     [self.previewView setStreamItem:streamItem];
 }
 
-- (void)restorePreviewView:(VStreamItemPreviewView *)previewView
+- (void)restorePreviewView:(UIView *)previewView
 {
     [self.previewContainer insertSubview:self.previewView belowSubview:self.dimmingContainer];
     [self.previewContainer v_addFitToParentConstraintsToSubview:self.previewView];

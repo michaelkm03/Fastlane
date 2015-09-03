@@ -13,6 +13,8 @@
 #import "VAbstractFilter+RestKit.h"
 #import "VPublishParameters.h"
 
+@class ContentViewContext;
+
 @protocol VContentViewViewModelDelegate <NSObject>
 
 /**
@@ -94,7 +96,7 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
  *
  *  @return An initialized VContentViewModel.
  */
-- (instancetype)initWithSequence:(VSequence *)sequence streamID:(NSString *)streamId depenencyManager:(VDependencyManager *)dependencyManager;
+- (instancetype)initWithContext:(ContentViewContext *)context;
 
 - (void)reloadData;
 
@@ -106,6 +108,8 @@ NOTE: Currently this VContentViewViewModel only supports single node, single ass
          publishParameters:(VPublishParameters *)publishParameters
                   realTime:(CMTime)realTime
                 completion:(void (^)(BOOL succeeded))completion;
+
+@property (nonatomic, readonly) ContentViewContext *context;
 
 @property (nonatomic, readonly) NSURL *sourceURLForCurrentAssetData;
 

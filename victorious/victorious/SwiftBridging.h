@@ -41,6 +41,7 @@
 #import "VCommentTextAndMediaView.h"
 #import "VCompatibility.h"
 #import "VContentCommentsCell.h"
+#import "VContentViewFactory.h"
 #import "VDataCache.h"
 #import "VDefaultProfileButton.h"
 #import "VDependencyManager+VAccessoryScreens.h"

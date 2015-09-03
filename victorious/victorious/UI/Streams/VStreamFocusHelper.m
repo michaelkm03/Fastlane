@@ -65,7 +65,10 @@ static const CGFloat VDefaultFocusVisibilityRatio = 0.8f;
 {
     if ( [cell conformsToProtocol:@protocol(VCellFocus)] )
     {
-        [(id <VCellFocus>)cell setHasFocus:NO];
+        if ( self.selectedCell == nil || cell != self.selectedCell )
+        {
+            [(id <VCellFocus>)cell setHasFocus:NO];
+        }
     }
 }
 

@@ -32,6 +32,8 @@
  */
 @property (nonatomic, assign) UIEdgeInsets focusAreaInsets;
 
+@property (nonatomic, weak) UICollectionViewCell *selectedCell;
+
 /**
  Updates focus on all visible cells.
  */
