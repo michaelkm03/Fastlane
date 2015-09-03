@@ -9,6 +9,8 @@
 import UIKit
 
 class ExploreMarqueeController: VInsetMarqueeController {
+    
+    static let marqueeShelfAspectRatio: CGFloat = 1.6
 
     override func registerCollectionViewCellWithCollectionView(collectionView: UICollectionView) {
         collectionView.registerNib(ExploreMarqueeCollectionViewCell.nibForCell(), forCellWithReuseIdentifier: ExploreMarqueeCollectionViewCell.suggestedReuseIdentifier())
@@ -41,7 +43,7 @@ class ExploreMarqueeController: VInsetMarqueeController {
     
     override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         let streamItemCellWidth = ExploreMarqueeStreamItemCell.desiredSizeWithCollectionViewBounds(collectionView.bounds).width
-        let sideInset = streamItemCellWidth / 2
+        let sideInset = (collectionView.bounds.width - streamItemCellWidth) / 2
         return UIEdgeInsets(top: 0, left: sideInset, bottom: 0, right: sideInset)
     }
 }
