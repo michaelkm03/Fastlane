@@ -10,7 +10,7 @@ import UIKit
 
 /// Base view controller for the explore screen that gets
 /// presented when "explore" button on the tab bar is tapped
-class VExploreViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate, UICollectionViewDelegateFlowLayout {
+class VExploreViewController: VAbstractStreamCollectionViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate, UICollectionViewDelegateFlowLayout {
     
     private struct Constants {
         static let sequenceIDKey = "sequenceID"
@@ -19,7 +19,6 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
         static let destinationStreamKey = "destinationStream"
     }
     
-    @IBOutlet weak private var collectionView: UICollectionView!
     private var trendingTopicShelfFactory: TrendingTopicShelfFactory?
     private var marqueeShelfFactory: VMarqueeCellFactory?
     private var searchBar = UISearchBar()
@@ -49,10 +48,6 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Make sure the bottom of view does not inset twice for the tab menu bar
-        automaticallyAdjustsScrollViewInsets = false
-        extendedLayoutIncludesOpaqueBars = true
         
         configureSearchBar()
         collectionView.backgroundColor = UIColor.whiteColor()
@@ -162,7 +157,7 @@ private extension VDependencyManager {
 
 extension VExploreViewController: UICollectionViewDelegateFlowLayout {
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         if indexPath.section < shelves.count {
             let shelf = shelves[indexPath.section]
             
