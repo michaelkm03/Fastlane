@@ -147,4 +147,4 @@ copyFile "homeHeaderImage@2x.png"
 
 ### Remove Temp Directory
 
-rm -rf $TMP_FOLDER
+rm -rf $FOLDER
