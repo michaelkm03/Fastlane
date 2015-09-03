@@ -10,6 +10,8 @@ import UIKit
 
 @objc(ExploreMarqueeCollectionViewCell)
 class ExploreMarqueeCollectionViewCell: VInsetMarqueeCollectionViewCell, VBackgroundContainer {
+    
+    static let marqueeShelfAspectRatio: CGFloat = 1.6 // Per the design of 320:197 on iPhone 5
 
     override var dependencyManager: VDependencyManager? {
         didSet {
@@ -27,7 +29,7 @@ class ExploreMarqueeCollectionViewCell: VInsetMarqueeCollectionViewCell, VBackgr
     }
     
     override class func desiredSizeWithCollectionViewBounds(bounds: CGRect) -> CGSize {
-        return CGSizeMake(bounds.width, bounds.width / 2)
+        return CGSizeMake(bounds.width, bounds.width / marqueeShelfAspectRatio)
     }
 }
 
