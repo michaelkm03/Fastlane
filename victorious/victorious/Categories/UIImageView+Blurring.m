@@ -60,7 +60,11 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
                                                    progress:nil
                                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
      {
-         [weakSelf blurAndAnimateImageToVisible:image cacheURL:url withTintColor:tintColor andDuration:kDefaultAnimationDuration withConcurrentAnimations:nil];
+         [weakSelf blurAndAnimateImageToVisible:image
+                                       cacheURL:url
+                                  withTintColor:tintColor
+                                    andDuration:kDefaultAnimationDuration
+                       withConcurrentAnimations:nil];
      }];
 }
 
@@ -73,6 +77,7 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
     
     __weak UIImageView *weakSelf = self;
     self.image = placeholderImage;
+    self.alpha = 0.0f;
     [self downloadImageWithURL:url toCallbackBlock:^(UIImage *image, NSError *error)
      {
          dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
@@ -86,7 +91,7 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
                             UIImage *blurredImage = [image applyLightEffect];
                             dispatch_async(dispatch_get_main_queue(), ^
                                            {
-                                               weakSelf.image = blurredImage;
+                                               [weakSelf animateImageToVisible:blurredImage withDuration:kDefaultAnimationDuration];
                                            });
                         });
      }];
@@ -199,8 +204,12 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
      {
          if ( error == nil )
          {
-             objc_setAssociatedObject(weakSelf, &kAssociatedURLKey, image, OBJC_ASSOCIATION_ASSIGN);
-         }
+             UIImageView *strongSelf = weakSelf;
+             if ( strongSelf != nil && image != nil )
+             {
+                 objc_setAssociatedObject(strongSelf, &kAssociatedURLKey, image, OBJC_ASSOCIATION_ASSIGN);
+             }
+        }
          
          if ( callbackBlock != nil )
          {
@@ -209,7 +218,7 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
      }];
 }
 
-- (void)blurAndAnimateImageToVisible:(UIImage *)image withTintColor:(UIColor *)tintColor andDuration:(NSTimeInterval)duration withConcurrentAnimations:(void (^)(void))animations
+- (void)blurAndAnimateImageToVisible:(UIImage *)image withTintColor:(UIColor *)tintColor andDuration:(NSTimeInterval)duration withConcurrentAnimations:(nullable void (^)(void))animations
 {
     [self blurAndAnimateImageToVisible:image
                               cacheURL:nil
@@ -238,7 +247,7 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
     
     __weak UIImageView *weakSelf = self;
     self.alpha = 0.0f;
-    objc_setAssociatedObject(weakSelf, &kAssociatedImageKey, image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &kAssociatedImageKey, image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     [self blurImage:image withTintColor:tintColor toCallbackBlock:^(UIImage *blurredImage)
      {
          if ( ![objc_getAssociatedObject(weakSelf, &kAssociatedImageKey) isEqual:image] )

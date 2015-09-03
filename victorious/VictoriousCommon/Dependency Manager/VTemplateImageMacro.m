@@ -18,6 +18,11 @@ static NSString * const kMacroReplacement = @"XXXXX";
 
 @implementation VTemplateImageMacro
 
+- (instancetype)init
+{
+    return [self initWithJSON:@{ }];
+}
+
 - (instancetype)initWithJSON:(NSDictionary *)imageMacroJSON
 {
     self = [super init];

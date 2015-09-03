@@ -31,10 +31,6 @@
     }
     else
     {
-        if ( streamItem != nil )
-        {
-            NSAssert(false, @"Unable to handle stream item!");
-        }
         classType = [VFailureStreamItemPreviewView class];
     }
     
@@ -77,6 +73,12 @@
     {
         _displayReadyBlock(self);
     }
+}
+
+- (NSDictionary *)trackingInfo
+{
+    // Override in subclass
+    return @{};
 }
 
 #pragma mark - VStreamCellComponentSpecialization

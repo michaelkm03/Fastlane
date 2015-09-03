@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "VPublishParameters.h"
+
 @class VConversation, VMessage, VMessageTableDataSource, VObjectManager, VUnreadMessageCountCoordinator, VUser;
 
 @protocol VMessageTableDataDelegate <NSObject>
@@ -35,6 +37,7 @@
 @property (nonatomic, readonly) VConversation                 *conversation; ///< Might be nil if we haven't yet sent or received any messages from this user.
 @property (nonatomic, strong)   VObjectManager                *objectManager;
 @property (nonatomic, strong)  VUnreadMessageCountCoordinator *messageCountCoordinator;
+@property (nonatomic, copy) void (^afterUpdate)(); ///< A block to be called after a message is added
 
 /**
  Creates a new instance of the receiver, adds it as the dataSource
@@ -54,7 +57,7 @@
 /**
  Sends a new comment to the server and adds it to the table view
  */
-- (void)createMessageWithText:(NSString *)text mediaURL:(NSURL *)mediaURL completion:(void(^)(NSError *))completion;
+- (void)createMessageWithText:(NSString *)text publishParamaters:(VPublishParameters *)publishParameters completion:(void(^)(NSError *))completion;
 
 /**
  Starts a process that polls the server every few seconds for new messages

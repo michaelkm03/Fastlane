@@ -14,8 +14,9 @@
 #import "VSequence+Fetcher.h"
 #import "UIView+AutoLayout.h"
 #import "VStreamItemPreviewView.h"
+#import "UIResponder+VResponderChain.h"
 
-@interface VAbstractMarqueeStreamItemCell () <VSharedCollectionReusableViewMethods>
+@interface VAbstractMarqueeStreamItemCell () <VSharedCollectionReusableViewMethods, AutoplayTracking>
 
 @end
 
@@ -127,6 +128,25 @@
     }
     
     return nil;
+}
+
+#pragma mark - Autoplay tracking
+
+- (void)trackAutoplayEvent:(AutoplayTrackingEvent *__nonnull)event
+{
+    // Set context and continue walking up responder chain
+    event.context = self.context;
+    
+    id<AutoplayTracking>responder = [self.nextResponder v_targetConformingToProtocol:@protocol(AutoplayTracking)];
+    if (responder != nil)
+    {
+        [responder trackAutoplayEvent:event];
+    }
+}
+
+- (NSDictionary *__nonnull)additionalInfo
+{
+    return [self.previewView trackingInfo] ?: @{};
 }
 
 @end

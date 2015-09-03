@@ -12,6 +12,8 @@
 #import "VNode+Fetcher.h"
 #import "VSequence+Fetcher.h"
 #import "VAsset+Fetcher.h"
+#import "VImageAsset.h"
+#import "VImageAssetFinder.h"
 
 // Views + Helpers
 #import "VTextPostViewController.h"
@@ -20,7 +22,6 @@
 
 @interface VTextSequencePreviewView ()
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VTextPostViewController *textPostViewController;
 
 @end
@@ -33,7 +34,15 @@
 {
     [super setSequence:sequence];
     
-    VAsset *textAsset = [sequence.firstNode textAsset];
+    VImageAssetFinder *assetFinder = [[VImageAssetFinder alloc] init];
+    VAsset *textAsset = [assetFinder textAssetFromAssets:sequence.previewAssets];
+
+    if (textAsset == nil)
+    {
+        // fall back gracefully
+        textAsset = [sequence.firstNode textAsset];
+    }
+    
     if ( textAsset.data != nil )
     {
         NSString *text = textAsset.data;

@@ -8,6 +8,7 @@
 
 #import "VHasManagedDependencies.h"
 #import "VUserTaggingTextStorageDelegate.h"
+#import "VPublishParameters.h"
 
 @class VKeyboardBarViewController;
 
@@ -18,7 +19,7 @@
 
 @optional
 
-- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL;
+- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text publishParameters:(VPublishParameters *)publishParameters;
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar wouldLikeToBeResizedToHeight:(CGFloat)height;
 - (void)didCancelKeyboardBar:(VKeyboardBarViewController *)keyboardBar;
 - (BOOL)canPerformAuthorizedAction;
@@ -45,5 +46,6 @@
 - (IBAction)cameraPressed:(id)sender;
 - (void)clearKeyboardBar; ///< Clears all text and media from the keyboard bar
 - (void)setHideAccessoryBar:(BOOL)hideAccessoryBar; ///< Hides or shows the input accessory view.
+- (void)setReplyRecipient:(VUser *)user; ///< replies to a certain user
 
 @end

@@ -13,9 +13,10 @@ import UIKit
     
     /// The user selected a GIF image and wants to proceed with it in a creation flow.
     ///
+    /// :param: `gifSearchResult` The GIFSearchResult model selected.
     /// :param: `previewImage` A small, still image that is loaded into memory and ready to display
     /// :param: `capturedMediaURL` The file URL of the GIF's mp4 video asset downloaded to a file temporary location on the device
-    func GIFSelectedWithPreviewImage( previewImage: UIImage, capturedMediaURL: NSURL )
+    func GIFSearchResultSelected( gifSearchResult: GIFSearchResult, previewImage: UIImage, capturedMediaURL: NSURL )
 }
 
 /// View controller that allows users to search for GIF files using the Giphy API
@@ -53,9 +54,12 @@ class GIFSearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.collectionView.accessibilityIdentifier = AutomationId.GIFSearchCollection.rawValue
+        
         self.scrollPaginator.delegate = self
         
         self.searchBar.delegate = self
+        self.searchBar.accessibilityIdentifier = AutomationId.GIFSearchSearchbar.rawValue
         if let searchTextField = self.searchBar.v_textField {
             searchTextField.tintColor = self.dependencyManager?.colorForKey(VDependencyManagerLinkColorKey)
             searchTextField.font = self.dependencyManager?.fontForKey(VDependencyManagerHeading4FontKey)
@@ -84,7 +88,7 @@ class GIFSearchViewController: UIViewController {
             
             let selectedGIF = self.searchDataSource.sections[ indexPath.section ][ indexPath.row ]
             
-            var progressHUD = MBProgressHUD.showHUDAddedTo( self.view, animated: true )
+            let progressHUD = MBProgressHUD.showHUDAddedTo( self.view.window, animated: true )
             progressHUD.mode = .Indeterminate
             progressHUD.dimBackground = true
             progressHUD.show(true)
@@ -92,10 +96,12 @@ class GIFSearchViewController: UIViewController {
             self.mediaExporter.loadMedia( selectedGIF ) { (previewImage, mediaURL, error) in
                 
                 if let previewImage = previewImage, let mediaURL = mediaURL {
-                    self.delegate?.GIFSelectedWithPreviewImage( previewImage, capturedMediaURL: mediaURL )
+                    self.delegate?.GIFSearchResultSelected( selectedGIF,
+                        previewImage: previewImage,
+                        capturedMediaURL: mediaURL )
                 }
                 else {
-                    var progressHUD = MBProgressHUD.showHUDAddedTo( self.view, animated: true )
+                    let progressHUD = MBProgressHUD.showHUDAddedTo( self.view, animated: true )
                     progressHUD.mode = .Text
                     progressHUD.labelText = NSLocalizedString( "Error rendering GIF", comment:"" )
                     progressHUD.hide(true, afterDelay: 3.0)
@@ -103,6 +109,12 @@ class GIFSearchViewController: UIViewController {
                 
                 progressHUD.hide(true)
             }
+        }
+    }
+    
+    func selectCellAtSelectedIndexPath() {
+        if let indexPath = self.selectedIndexPath {
+            collectionView.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: .None)
         }
     }
     
@@ -146,7 +158,7 @@ class GIFSearchViewController: UIViewController {
     }
     
     private func titleViewWithTitle( text: String ) -> UIView {
-        var label = UILabel()
+        let label = UILabel()
         label.text = text
         label.font = UIFont.preferredFontForTextStyle( UIFontTextStyleHeadline )
         label.textColor = UIColor.whiteColor()
@@ -156,6 +168,7 @@ class GIFSearchViewController: UIViewController {
     
     private func updateNavigationItemState() {
         self.navigationItem.rightBarButtonItem?.enabled = selectedIndexPath != nil
+        self.navigationItem.rightBarButtonItem?.accessibilityIdentifier = AutomationId.GIFSearchNext.rawValue
     }
     
     /// Inserts a new section into the collection view that shows a fullsize preview video for the GIF search result

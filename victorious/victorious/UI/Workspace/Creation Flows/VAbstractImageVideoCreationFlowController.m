@@ -61,6 +61,7 @@ static NSString * const kCreationFlowSourceSearch = @"search";
 @property (nonatomic, strong) VPublishPresenter *publishPresenter;
 
 // These come from the workspace not capture
+@property (nonatomic, strong) NSURL *capturedMediaURL;
 @property (nonatomic, strong) NSURL *renderedMediaURL;
 @property (nonatomic, strong) UIImage *previewImage;
 
@@ -154,7 +155,6 @@ static NSString * const kCreationFlowSourceSearch = @"search";
     _workspaceViewController = [self workspaceViewControllerWithDependencyManager:self.dependencyManager];
     _workspaceViewController.adjustsCanvasViewFrameOnKeyboardAppearance = YES;
     _workspaceViewController.continueText = [self shouldShowPublishText] ? NSLocalizedString(@"Publish", @"") : NSLocalizedString(@"Next", @"");
-    _workspaceViewController.continueButtonEnabled = YES;
     
     __weak typeof(self) welf = self;
     _workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
@@ -164,7 +164,7 @@ static NSString * const kCreationFlowSourceSearch = @"search";
         {
             strongSelf.renderedMediaURL = renderedMediaURL;
             strongSelf.previewImage = previewImage;
-            [strongSelf afterEditingFinished];
+            [strongSelf afterEditingFinishedUseCapturedMediaURL:NO];
         }
         else
         {
@@ -192,7 +192,6 @@ static NSString * const kCreationFlowSourceSearch = @"search";
             strongSelf.interactivePopGestureRecognizer.delegate = nil;
             strongSelf.publishPresenter = nil;
             [strongSelf cleanupCapturedFile];
-            [strongSelf cleanupRenderedFile];
             
             // We're done!
             [strongSelf.creationFlowDelegate creationFlowController:strongSelf
@@ -213,13 +212,20 @@ static NSString * const kCreationFlowSourceSearch = @"search";
     };
 }
 
-- (void)afterEditingFinished
+- (void)afterEditingFinishedUseCapturedMediaURL:(BOOL)shouldUseCapturedMediaURL
 {
+    // Configure parameters
+    NSURL *mediaURL = shouldUseCapturedMediaURL ? self.capturedMediaURL : self.renderedMediaURL;
+    self.publishParameters.previewImage = self.previewImage;
+    self.publishParameters.mediaToUploadURL = mediaURL;
+    [self configurePublishParameters:self.publishParameters
+                       withWorkspace:self.workspaceViewController];
+    
     if ([self.creationFlowDelegate respondsToSelector:@selector(shouldShowPublishScreenForFlowController)])
     {
         if ( [self.creationFlowDelegate shouldShowPublishScreenForFlowController])
         {
-            [self toPublishScreenWithRenderedMediaURL:self.renderedMediaURL
+            [self toPublishScreenWithRenderedMediaURL:mediaURL
                                          previewImage:self.previewImage
                                         fromWorkspace:self.workspaceViewController];
         }
@@ -227,12 +233,12 @@ static NSString * const kCreationFlowSourceSearch = @"search";
         {
             [self.creationFlowDelegate creationFlowController:self
                                      finishedWithPreviewImage:self.previewImage
-                                             capturedMediaURL:self.renderedMediaURL];
+                                             capturedMediaURL:mediaURL];
         }
     }
     else
     {
-        [self toPublishScreenWithRenderedMediaURL:self.renderedMediaURL
+        [self toPublishScreenWithRenderedMediaURL:mediaURL
                                      previewImage:self.previewImage
                                     fromWorkspace:self.workspaceViewController];
     }
@@ -249,24 +255,21 @@ static NSString * const kCreationFlowSourceSearch = @"search";
     
     // Configure parameters
     self.publishParameters.source = [self sourceStringForSourceType:self.source];
-    self.publishParameters.mediaToUploadURL = renderedMediaURL;
     self.publishParameters.previewImage = previewImage;
     self.publishParameters.parentNodeID = self.parentNodeID;
     self.publishParameters.parentSequenceID = self.parentSequenceID;
     [self configurePublishParameters:self.publishParameters
                        withWorkspace:workspace];
     self.publishPresenter.publishParameters = self.publishParameters;
-
     [self.publishPresenter presentOnViewController:self];
 }
 
 - (void)cleanupCapturedFile
 {
-    [[NSFileManager defaultManager] removeItemAtURL:self.workspaceViewController.mediaURL
+    [[NSFileManager defaultManager] removeItemAtURL:self.capturedMediaURL
                                               error:nil];
 }
 
-// Only call me when you know rendered mediaURL is no longer valid and any calling classes havne't been provided this URL
 - (void)cleanupRenderedFile
 {
     [[NSFileManager defaultManager] removeItemAtURL:self.renderedMediaURL
@@ -283,14 +286,15 @@ static NSString * const kCreationFlowSourceSearch = @"search";
                        previewImage:(UIImage *)previewImage
                   shouldSkipTrimmer:(BOOL)shouldSkipTrimmerForContext
 {
+    self.capturedMediaURL = mediaURL;
+    self.previewImage = previewImage;
+    
     // If the user has permission to skip the trimmmer (API Driven)
     // Go straight to publish do not pass go, do not collect $200
     BOOL shouldSkipTrimmerForUser = [[[VObjectManager sharedManager] mainUser] shouldSkipTrimmer] && [self isKindOfClass:[VVideoCreationFlowController class]];
     if ( shouldSkipTrimmerForContext || shouldSkipTrimmerForUser )
     {
-        self.renderedMediaURL = mediaURL;
-        self.previewImage = previewImage;
-        [self afterEditingFinished];
+        [self afterEditingFinishedUseCapturedMediaURL:YES];
         
         // Since we're skipping the video camera clear the state
         if ([self.topViewController isKindOfClass:[VVideoCameraViewController class]])
@@ -325,7 +329,8 @@ static NSString * const kCreationFlowSourceSearch = @"search";
 - (void)gridViewController:(VAssetCollectionGridViewController *)gridViewController
              selectedAsset:(PHAsset *)asset
 {
-    MBProgressHUD *hudForView = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    MBProgressHUD *hudForView = [MBProgressHUD showHUDAddedTo:self.view.window animated:YES];
+    hudForView.dimBackground = YES;
     self.downloader = [self downloaderWithAsset:asset];
     __weak typeof(self) welf = self;
     [self.downloader downloadWithProgress:^(BOOL accurateProgress, double progress, NSString *progressText)
@@ -344,6 +349,12 @@ static NSString * const kCreationFlowSourceSearch = @"search";
          if (error == nil)
          {
              strongSelf.source = VCreationFlowSourceLibrary;
+             // We need to set this so that local videos preserve aspect ratio.
+             if (asset.mediaType == PHAssetMediaTypeVideo)
+             {
+                 strongSelf.publishParameters.width = asset.pixelWidth;
+                 strongSelf.publishParameters.height = asset.pixelHeight;
+             }
              [strongSelf captureFinishedWithMediaURL:downloadedFileURL
                                         previewImage:previewImage];
          }

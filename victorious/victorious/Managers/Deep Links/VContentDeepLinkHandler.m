@@ -11,16 +11,16 @@
 #import "VObjectManager+Sequence.h"
 #import "VDependencyManager+VObjectManager.h"
 #import "VContentDeepLinkHandler.h"
-#import "VScaffoldViewController.h"
 #import "NSURL+VPathHelper.h"
-#import "VDependencyManager+VScaffoldViewController.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
+#import "VTabScaffoldViewController.h"
 
 static NSString * const kContentDeeplinkURLHostComponent = @"content";
 static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
 
 @interface VContentDeepLinkHandler()
 
-@property (nonatomic, weak) VScaffoldViewController *scaffoldViewController;
+@property (nonatomic, weak) VTabScaffoldViewController *scaffoldViewController;
 @property (nonatomic, weak) VDependencyManager *dependencyManager;
 
 @end
@@ -40,6 +40,12 @@ static NSString * const kCommentDeeplinkURLHostComponent = @"comment";
         NSParameterAssert( _scaffoldViewController != nil );
     }
     return self;
+}
+
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
 }
 
 - (BOOL)requiresAuthorization

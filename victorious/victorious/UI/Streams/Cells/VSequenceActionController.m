@@ -21,8 +21,9 @@
 #import "VStreamCollectionViewController.h"
 #import "VReposterTableViewController.h"
 #import "VUserProfileViewController.h"
-#import "VCommentsContainerViewController.h"
 #import "VWorkspaceViewController.h"
+#import "VAbstractMediaLinkViewController.h"
+#import "VTabScaffoldViewController.h"
 
 #pragma mark-  Views
 #import "VNoContentView.h"
@@ -52,6 +53,8 @@
 #import "VUsersViewController.h"
 #import "VLikersDataSource.h"
 
+#import "victorious-swift.h"
+
 @interface VSequenceActionController ()
 
 @property (nonatomic, strong) UIViewController *viewControllerPresentingWorkspace;
@@ -63,9 +66,14 @@
 
 #pragma mark - Comments
 
-- (void)showCommentsFromViewController:(UIViewController *)viewController sequence:(VSequence *)sequence
+- (void)showCommentsFromViewController:(UIViewController *)viewController
+                              sequence:(VSequence *)sequence
+                   withSelectedComment:(VComment *)selectedComment
 {
-    [viewController.navigationController pushViewController:[self.dependencyManager commentsContainerWithSequence:sequence] animated:YES];
+    CommentsViewController *commentsViewController = [self.dependencyManager commentsViewController:sequence];
+    // If we are embedded in the root nav push on that, otherwise push on the nearest navigationcontroller
+    UINavigationController *navigationControllerToPushOn = viewController.rootNavigationController.innerNavigationController ?: viewController.navigationController;
+    [navigationControllerToPushOn pushViewController:commentsViewController animated:YES];
 }
 
 #pragma mark - User
@@ -78,6 +86,25 @@
     }
     
     return [self showProfile:sequence.user fromViewController:viewController];
+}
+
+- (BOOL)showProfileWithRemoteId:(NSNumber *)remoteId fromViewController:(UIViewController *)viewController
+{
+    if ( viewController == nil || viewController.navigationController == nil || remoteId == nil )
+    {
+        return NO;
+    }
+    
+    if ( [viewController isKindOfClass:[VUserProfileViewController class]] &&
+        [((VUserProfileViewController *)viewController).user.remoteId isEqual:remoteId] )
+    {
+        return NO;
+    }
+    
+    VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithRemoteId:remoteId];
+    [viewController.navigationController pushViewController:profileViewController animated:YES];
+    
+    return YES;
 }
 
 - (BOOL)showProfile:(VUser *)user fromViewController:(UIViewController *)viewController
@@ -96,6 +123,13 @@
     VUserProfileViewController *profileViewController = [self.dependencyManager userProfileViewControllerWithUser:user];
     [viewController.navigationController pushViewController:profileViewController animated:YES];
     
+    return YES;
+}
+
+- (BOOL)showMediaContentViewForUrl:(NSURL *)url withMediaLinkType:(VCommentMediaType)linkType fromViewController:(UIViewController *)viewController
+{
+    VAbstractMediaLinkViewController *mediaLinkViewController = [VAbstractMediaLinkViewController newWithMediaUrl:url andMediaLinkType:linkType];
+    [viewController presentViewController:mediaLinkViewController animated:YES completion:nil];
     return YES;
 }
 
@@ -221,7 +255,10 @@
 {
     if ([node.sequence.hasReposted boolValue])
     {
-        completion(YES);
+        if ( completion != nil )
+        {
+            completion(YES);
+        }
         return;
     }
     
@@ -231,20 +268,23 @@
      {
          if (!authorized)
          {
-             completion(NO);
+             if ( completion != nil )
+             {
+                 completion(NO);
+             }
              return;
          }
+         
+         // Optimistically update the data store for a successul repost
+         node.sequence.repostCount = @( node.sequence.repostCount.integerValue + 1 );
+         [self updateRepostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
+         node.sequence.hasReposted = @(YES);
+         [node.sequence.managedObjectContext save:nil];
+         
          [[VObjectManager sharedManager] repostNode:node
                                            withName:nil
                                        successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
           {
-              node.sequence.repostCount = @( node.sequence.repostCount.integerValue + 1 );
-              
-              [self updateRespostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
-              
-              node.sequence.hasReposted = @(YES);
-              [node.sequence.managedObjectContext save:nil];
-              
               if ( completion != nil )
               {
                   completion( YES );
@@ -254,8 +294,16 @@
           {
               if ( error.code == kVSequenceAlreadyReposted )
               {
-                  [self updateRespostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
+                  [self updateRepostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
                   node.sequence.hasReposted = @(YES);
+                  [node.sequence.managedObjectContext save:nil];
+              }
+              else
+              {
+                  // Undo the repost optimistically assumed successful in the data store
+                  node.sequence.repostCount = @( MAX( node.sequence.repostCount.integerValue - 1, 0 ) );
+                  [self updateRepostsForUser:[VObjectManager sharedManager].mainUser withSequence:node.sequence];
+                  node.sequence.hasReposted = @(NO);
                   [node.sequence.managedObjectContext save:nil];
               }
               
@@ -267,7 +315,7 @@
      }];
 }
 
-- (void)updateRespostsForUser:(VUser *)user withSequence:(VSequence *)sequence
+- (void)updateRepostsForUser:(VUser *)user withSequence:(VSequence *)sequence
 {
     NSError *error = nil;
     [user addRepostedSequencesObject:sequence];
@@ -290,6 +338,7 @@
     VUsersViewController *usersViewController = [[VUsersViewController alloc] initWithDependencyManager:childDependencyManager];
     usersViewController.title = NSLocalizedString( @"LikersTitle", nil );
     usersViewController.usersDataSource = [[VLikersDataSource alloc] initWithSequence:sequence];
+    usersViewController.usersViewContext = VUsersViewContextLikers;
     
     [viewController.navigationController pushViewController:usersViewController animated:YES];
 }

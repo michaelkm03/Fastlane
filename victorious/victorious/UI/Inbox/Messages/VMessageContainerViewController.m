@@ -31,7 +31,7 @@
 
 static const NSUInteger kCharacterLimit = 1024;
 
-@interface VMessageContainerViewController () <VAccessoryNavigationSource>
+@interface VMessageContainerViewController () <VAccessoryNavigationSource, VKeyboardBarDelegate>
 
 @property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
 
@@ -102,7 +102,6 @@ static const NSUInteger kCharacterLimit = 1024;
     if ( !self.presentingFromProfile )
     {
         VMessageViewController *messageVC = (VMessageViewController *)self.conversationTableViewController;
-        messageVC.shouldRefreshOnAppearance = YES;
         self.navigationItem.title = messageVC.otherUser.name;
     }
 }
@@ -227,12 +226,12 @@ static const NSUInteger kCharacterLimit = 1024;
     return _conversationTableViewController;
 }
 
-- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL
+- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text publishParameters:(VPublishParameters *)publishParameters
 {
     keyboardBar.sendButtonEnabled = NO;
     VMessageViewController *messageViewController = (VMessageViewController *)self.conversationTableViewController;
     self.busyView.hidden = NO;
-    [messageViewController.tableDataSource createMessageWithText:text mediaURL:mediaURL completion:^(NSError *error)
+    [messageViewController.tableDataSource createMessageWithText:text publishParamaters:publishParameters completion:^(NSError *error)
     {
         keyboardBar.sendButtonEnabled = YES;
         self.busyView.hidden = YES;
@@ -250,7 +249,18 @@ static const NSUInteger kCharacterLimit = 1024;
     }];
 }
 
-#pragma mark - I
+#pragma mark - Keyboard Delegate
+
+- (void)setKeyboardBarHeight:(CGFloat)keyboardBarHeight
+{
+    [super setKeyboardBarHeight:keyboardBarHeight];
+    
+    // Inset our focus area because of the keyboard bar
+    UIEdgeInsets focusAreaInsets = UIEdgeInsetsMake(0, 0, keyboardBarHeight, 0);
+    [(VMessageViewController *)self.conversationTableViewController setFocusAreaInset:focusAreaInsets];
+}
+
+#pragma mark - Authorization
 
 - (BOOL)requiresAuthorization
 {

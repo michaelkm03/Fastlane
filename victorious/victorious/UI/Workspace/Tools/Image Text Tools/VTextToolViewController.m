@@ -10,6 +10,7 @@
 #import "VCapitalizingTextStorage.h"
 
 static const CGFloat kTextRenderingSize = 512.0f;
+static const NSUInteger kCharacterLimit = 60;
 
 @interface VTextToolViewController () <UITextViewDelegate, NSTextStorageDelegate>
 
@@ -87,6 +88,12 @@ static const CGFloat kTextRenderingSize = 512.0f;
     UITapGestureRecognizer *tapToEditGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                        action:@selector(startEditing:)];
     [self.view addGestureRecognizer:tapToEditGesture];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self updateTextViewConstraintsForTextType:self.textType];
 }
 
 #pragma mark - Property Accessors
@@ -170,6 +177,15 @@ shouldChangeTextInRange:(NSRange)range
     if (styledFont != nil)
     {
         sizedAttributes[NSFontAttributeName] = styledFont;
+    }
+    
+    if (textView.text.length > kCharacterLimit)
+    {
+        UITextPosition *beginning = self.textView.beginningOfDocument;
+        UITextPosition *start = [self.textView positionFromPosition:beginning offset:kCharacterLimit];
+        UITextPosition *end = [self.textView positionFromPosition:start offset:(textView.text.length - kCharacterLimit)];
+        UITextRange *textRange = [self.textView textRangeFromPosition:start toPosition:end];
+        [self.textView replaceRange:textRange withText:@""];
     }
     
     NSRange selectedRange = textView.selectedRange;

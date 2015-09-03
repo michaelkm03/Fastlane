@@ -21,6 +21,28 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)videoViewPlayerDidBecomeReady:(VVideoView *)videoView;
 
+@optional
+
+/**
+ This video view's video reached the end
+ */
+- (void)videoDidReachEnd:(VVideoView *)videoView;
+
+/**
+ Called when the video's buffer is empty
+ */
+- (void)videoViewDidStartBuffering:(VVideoView *)videoView;
+
+/**
+ Called when the video's buffer is likely to keep up
+ */
+- (void)videoViewDidStopBuffering:(VVideoView *)videoView;
+
+/**
+ Called as the video view is playing with the amount of the video watched as a percentage
+ */
+- (void)videoView:(VVideoView *)videoView didProgressWithPercentComplete:(float)percent;
+
 @end
 
 /**
@@ -35,9 +57,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong, nullable) NSURL *itemURL;
 
-@property (nonatomic, weak) IBOutlet id<VVideoViewDelegate> delegate;
+@property (nonatomic, weak) id<VVideoViewDelegate> delegate;
 
 @property (nonatomic, assign) BOOL useAspectFit;
+
+@property (nonatomic, assign, readonly) BOOL playbackLikelyToKeepUp;
+@property (nonatomic, assign, readonly) BOOL playbackBufferEmpty;
 
 /**
  Set the URL of the asset to play.
@@ -59,14 +84,29 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)play;
 
-- (void)playFromStart;
+/**
+ Starts playing at current location.  If already playing, this is a no-op.
+ */
+- (void)playWithoutSeekingToBeginning;
 
 /**
  Pause playback.  If already paused, this is a no-op.
  */
 - (void)pause;
 
+/**
+ Pause playback at current location without restarting.  If already paused, this is a no-op.
+ */
+- (void)pauseWithoutSeekingToBeginning;
+
+- (void)playFromStart;
+
 - (void)reset;
+
+/**
+ Returns the current time of video playback;
+ */
+- (NSUInteger)currentTimeMilliseconds;
 
 NS_ASSUME_NONNULL_END
 

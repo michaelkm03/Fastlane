@@ -16,6 +16,9 @@
 /* Class = "UITableViewController"; title = "Server Environment"; ObjectID = "6fa-Sd-wUR"; */
 "6fa-Sd-wUR.title" = "Môi trường Máy chủ";
 
+/* Class = "UITableViewController"; title = "Experiments"; ObjectID = "6nd-lx-w31"; */
+"6nd-lx-w31.title" = "Thí nghiệm";
+
 /* Class = "UILabel"; text = "TITLE"; ObjectID = "8Fn-0A-Ctn"; */
 "8Fn-0A-Ctn.text" = "TIÊU ĐỀ";
 
@@ -39,6 +42,9 @@
 
 /* Class = "UILabel"; text = "Reset Coachmarks"; ObjectID = "FNb-Ni-uJN"; */
 "FNb-Ni-uJN.text" = "Đặt lại Dấu hướng dẫn";
+
+/* Class = "UINavigationItem"; title = "Experiments"; ObjectID = "HQs-Ej-k6O"; */
+"HQs-Ej-k6O.title" = "Thí nghiệm";
 
 /* Class = "UITextField"; placeholder = "Confirm Password"; ObjectID = "Hdx-TS-3uZ"; */
 "Hdx-TS-3uZ.placeholder" = "Xác nhận Mật khẩu";
@@ -76,6 +82,12 @@
 /* Class = "UILabel"; text = "Subtitle"; ObjectID = "U7G-Km-0yw"; */
 "U7G-Km-0yw.text" = "Phụ đề";
 
+/* Class = "UIButton"; normalTitle = "Reset Experiments"; ObjectID = "Ufb-HV-tDz"; */
+"Ufb-HV-tDz.normalTitle" = "Đặt lại Thí nghiệm";
+
+/* Class = "UILabel"; text = "TITLE"; ObjectID = "Uxb-Bx-b8P"; */
+"Uxb-Bx-b8P.text" = "TIÊU ĐỀ";
+
 /* Class = "UINavigationItem"; title = "Push Notifications"; ObjectID = "WVz-KR-Hhr"; */
 "WVz-KR-Hhr.title" = "Thông báo Đẩy";
 
@@ -93,6 +105,9 @@
 
 /* Class = "UINavigationItem"; title = "Privacy Policy"; ObjectID = "dAg-zH-vd2"; */
 "dAg-zH-vd2.title" = "Chính sách Bảo mật";
+
+/* Class = "UILabel"; text = "Experiments"; ObjectID = "f7G-BC-zp9"; */
+"f7G-BC-zp9.text" = "Thí nghiệm";
 
 /* Class = "UILabel"; text = "Always"; ObjectID = "iA5-m7-nZ8"; */
 "iA5-m7-nZ8.text" = "Luôn luôn";
@@ -136,6 +151,9 @@
 /* Class = "UILabel"; text = "Change Password"; ObjectID = "xmy-by-M88"; */
 "xmy-by-M88.text" = "Thay đổi Mật khẩu";
 
-/* Class = "UILabel"; text = "Autoplay Next Video"; ObjectID = "yLq-Ze-kTh"; */
-"yLq-Ze-kTh.text" = "Tự động Bật Video Tiếp theo";
+/* Class = "UILabel"; text = "Autoplay Videos"; ObjectID = "yLq-Ze-kTh"; */
+"yLq-Ze-kTh.text" = "Tự động Bật Video";
+
+/* Class = "UILabel"; text = "MESSAGE"; ObjectID = "zvz-SG-J7d"; */
+"zvz-SG-J7d.text" = "TIN NHẮN";
 

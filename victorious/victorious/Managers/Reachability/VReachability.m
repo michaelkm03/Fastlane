@@ -62,7 +62,7 @@ NSString * const kVReachabilityChangedNotification = @"kVReachabilityChangedNoti
 
 #pragma mark - Supporting functions
 
-#define kShouldPrintReachabilityFlags 1
+#define kShouldPrintReachabilityFlags 0
 
 static void PrintReachabilityFlags(SCNetworkReachabilityFlags flags, const char *comment)
 {
@@ -97,11 +97,14 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 
 #pragma mark - Reachability implementation
 
+@interface VReachability ()
+
+@property (nonatomic) BOOL alwaysReturnLocalWiFiStatus; //default is NO
+@property (nonatomic) SCNetworkReachabilityRef reachabilityRef;
+
+@end
+
 @implementation VReachability
-{
-	BOOL _alwaysReturnLocalWiFiStatus; //default is NO
-	SCNetworkReachabilityRef _reachabilityRef;
-}
 
 + (instancetype)reachabilityWithAddress:(const struct sockaddr_in *)hostAddress
 {
@@ -114,9 +117,10 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 		returnValue = [[self alloc] init];
 		if (returnValue != NULL)
 		{
-			returnValue->_reachabilityRef = reachability;
-			returnValue->_alwaysReturnLocalWiFiStatus = NO;
+			returnValue.reachabilityRef = reachability;
+			returnValue.alwaysReturnLocalWiFiStatus = NO;
 		}
+        CFRelease(reachability);
 	}
 	return returnValue;
 }
@@ -170,6 +174,21 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 	{
 		CFRelease(_reachabilityRef);
 	}
+}
+
+#pragma mark - Properties
+
+- (void)setReachabilityRef:(SCNetworkReachabilityRef)reachabilityRef
+{
+    if ( _reachabilityRef != NULL )
+    {
+        CFRelease(_reachabilityRef);
+    }
+    if ( reachabilityRef != NULL )
+    {
+        CFRetain(reachabilityRef);
+    }
+    _reachabilityRef = reachabilityRef;
 }
 
 #pragma mark - Network Flag Handling
@@ -265,6 +284,22 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 	}
     
 	return returnValue;
+}
+
+- (NSString *)reachabilityStatusDescription:(VNetworkStatus)status
+{
+    switch (status)
+    {
+        case VNetworkStatusReachableViaWiFi:
+            return @"wifi";
+            break;
+        case VNetworkStatusReachableViaWWAN:
+            return @"3g";
+            break;
+        case VNetworkStatusNotReachable:
+            return @"unknown";
+            break;
+    }
 }
 
 @end

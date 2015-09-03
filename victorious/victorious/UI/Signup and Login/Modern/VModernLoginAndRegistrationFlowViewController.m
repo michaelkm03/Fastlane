@@ -52,6 +52,7 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
 // Use this as a semaphore around asynchronous user interaction (navigation pushes, social logins, etc.)
 @property (nonatomic, assign) BOOL actionsDisabled;
 @property (nonatomic, assign) BOOL hasShownInitial;
+@property (nonatomic, assign) BOOL isRegisteredAsNewUser;
 @property (nonatomic, strong) VLoginFlowAPIHelper *loginFlowHelper;
 
 @end
@@ -214,14 +215,25 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     {
         return;
     }
-    [self.presentingViewController dismissViewControllerAnimated:YES
-                                                      completion:^
-     {
-         if (self.completionBlock != nil)
+
+    if (self.presentingViewController != nil)
+    {
+        [self.presentingViewController dismissViewControllerAnimated:YES
+                                                          completion:^
          {
-             self.completionBlock(NO);
-         }
-     }];
+             if (self.completionBlock != nil)
+             {
+                 self.completionBlock(NO);
+             }
+         }];
+    }
+    else
+    {
+        if (self.completionBlock != nil)
+        {
+            self.completionBlock(NO);
+        }
+    }
 }
 
 - (void)selectedLogin
@@ -260,11 +272,12 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     
     self.actionsDisabled = YES;
     
-    [self.loginFlowHelper selectedTwitterAuthorizationWithCompletion:^(BOOL success)
+    [self.loginFlowHelper selectedTwitterAuthorizationWithCompletion:^(BOOL success, BOOL isNewUser)
     {
         self.actionsDisabled = NO;
         if ( success )
         {
+            self.isRegisteredAsNewUser = isNewUser;
             [self continueRegistrationFlowAfterSocialRegistration];
         }
     }];
@@ -282,13 +295,13 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     
     self.actionsDisabled = YES;
     
-    [self.loginFlowHelper selectedFacebookAuthorizationWithCompletion:^(BOOL success)
+    [self.loginFlowHelper selectedFacebookAuthorizationWithCompletion:^(BOOL success, BOOL isNewUser)
     {
         self.actionsDisabled = NO;
         if ( success )
         {
+            self.isRegisteredAsNewUser = isNewUser;
             [self continueRegistrationFlowAfterSocialRegistration];
-            [self.permissionsTrackingHelper permissionsDidChange:VTrackingValueFacebookDidAllow permissionState:VTrackingValueAuthorized];
         }
         else
         {
@@ -517,14 +530,14 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
 - (void)continueRegistrationFlowAfterSocialRegistration
 {
     UIViewController *nextRegisterViewController = [self nextScreenInSocialRegistrationAfter:self.topViewController inArray:self.registrationScreens];
-    if ( nextRegisterViewController == nil )
-    {
-        [self onAuthenticationFinishedWithSuccess:YES];
-    }
-    else
+    if ( nextRegisterViewController != nil && self.isRegisteredAsNewUser )
     {
         [self pushViewController:nextRegisterViewController
                         animated:YES];
+    }
+    else
+    {
+        [self onAuthenticationFinishedWithSuccess:YES];
     }
 }
 
@@ -536,14 +549,24 @@ static NSString * const kForceRegistrationKey = @"forceRegistration";
     }
     
     [self.view endEditing:YES];
-    [self.presentingViewController dismissViewControllerAnimated:YES
-                                                      completion:^
-     {
-         if (self.completionBlock != nil)
+    if (self.presentingViewController != nil)
+    {
+        [self.presentingViewController dismissViewControllerAnimated:YES
+                                                          completion:^
          {
-             self.completionBlock(success);
-         }
-     }];
+             if (self.completionBlock != nil)
+             {
+                 self.completionBlock(success);
+             }
+         }];
+    }
+    else
+    {
+        if (self.completionBlock != nil)
+        {
+            self.completionBlock(success);
+        }
+    }
 }
 
 - (UIViewController *)nextScreenInSocialRegistrationAfter:(UIViewController *)currentViewController inArray:(NSArray *)array

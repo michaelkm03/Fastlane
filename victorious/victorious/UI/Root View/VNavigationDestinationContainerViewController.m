@@ -7,7 +7,7 @@
 //
 
 #import "VNavigationDestinationContainerViewController.h"
-#import "VTabMenuViewController.h"
+#import "VTabScaffoldViewController.h"
 
 @implementation VNavigationDestinationContainerViewController
 
@@ -22,6 +22,18 @@
         _navigationDestination = navigationdestination;
     }
     return self;
+}
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSString *)nibBundleOrNil
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
 }
 
 #pragma mark - UIViewController

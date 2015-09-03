@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VSideMenuViewController.h"
 #import "VDeeplinkReceiver.h"
 
 @class VSessionTimer;
@@ -58,6 +57,12 @@ extern NSString * const VApplicationDidBecomeActiveNotification;
  Please call this method from UIApplicationDelegate's method of the same name.
  */
 - (void)applicationOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation;
+
+/**
+ Handles local (user) notifications received by the application.  Designed to be called or forwarded
+ from the app delegate where the notificaitons are received.
+ */
+- (void)handleLocalNotification:(UILocalNotification *)localNotification;
 
 /**
  Opens a deeplink URL

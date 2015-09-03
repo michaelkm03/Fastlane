@@ -11,7 +11,7 @@ import Foundation
 // Provides the RestKit mapping and descriptors needed for GIFSearchResult model
 extension GIFSearchResult {
     
-    static var entityMapping: RKEntityMapping {
+    override static func entityMapping() -> RKEntityMapping {
         let propertyMap = [
             "gif_url"           : "gifUrl",
             "gif_size"          : "gifSize",
@@ -21,10 +21,11 @@ extension GIFSearchResult {
             "width"             : "width",
             "height"            : "height",
             "thumbnail"         : "thumbnailUrl",
-            "thumbnail_still"   : "thumbnailStillUrl" ]
+            "thumbnail_still"   : "thumbnailStillUrl",
+            "remote_id"         : "remoteId" ]
         
-        var store = RKObjectManager.sharedManager().managedObjectStore
-        var mapping = RKEntityMapping(forEntityForName: self.v_defaultEntityName, inManagedObjectStore: store )
+        let store = RKObjectManager.sharedManager().managedObjectStore
+        let mapping = RKEntityMapping(forEntityForName: self.v_defaultEntityName, inManagedObjectStore: store )
         mapping.addAttributeMappingsFromDictionary( propertyMap )
         mapping.identificationAttributes = [ "gifUrl", "mp4Url" ]
         return mapping
@@ -33,19 +34,19 @@ extension GIFSearchResult {
     static var descriptors: NSArray {
         return [
             RKResponseDescriptor(
-                mapping: self.entityMapping,
+                mapping: self.entityMapping(),
                 method: RKRequestMethod.GET,
                 pathPattern: "/api/image/gif_search/:search_term/:page/:perpage",
                 keyPath: "payload",
-                statusCodes: RKStatusCodeIndexSetForClass(UInt(RKStatusCodeClassSuccessful))
+                statusCodes: RKStatusCodeIndexSetForClass(.Successful)
             ),
             
             RKResponseDescriptor(
-                mapping: self.entityMapping,
+                mapping: self.entityMapping(),
                 method: RKRequestMethod.GET,
                 pathPattern: "/api/image/trending_gifs/:page/:perpage",
                 keyPath: "payload",
-                statusCodes: RKStatusCodeIndexSetForClass(UInt(RKStatusCodeClassSuccessful))
+                statusCodes: RKStatusCodeIndexSetForClass(.Successful)
             )
         ]
     }

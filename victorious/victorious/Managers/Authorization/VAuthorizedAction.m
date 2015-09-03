@@ -21,13 +21,18 @@ static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationVie
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) VObjectManager *objectManager;
-@property (nonatomic, strong) id presentingController;
-@property (nonatomic, strong) id loginController;
-@property (nonatomic, strong) UIView *replicantView;
+@property (nonatomic, strong) UIViewController *presentingController;
+@property (nonatomic, strong) UIViewController *loginController;
 
 @end
 
 @implementation VAuthorizedAction
+
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
 
 - (instancetype)initWithObjectManager:(VObjectManager *)objectManager
                     dependencyManager:(VDependencyManager *)dependencyManager
@@ -76,7 +81,6 @@ static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationVie
             [self showFailureAlertInViewController:presentingViewController];
         }
         
-        
         return NO;
     }
     else
@@ -86,37 +90,17 @@ static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationVie
     }
 }
 
-- (BOOL)prepareInViewController:(UIViewController *)presentingViewController
-                        context:(VAuthorizationContext)authorizationContext
-                     completion:(VAuthorizedActionCompletion)completionActionBlock
+- (UIViewController *)loginViewControllerWithContext:(VAuthorizationContext)authorizationContext
+                                      WithCompletion:(VAuthorizedActionCompletion)completion
 {
-    NSParameterAssert( completionActionBlock != nil );
-    NSParameterAssert( presentingViewController != nil );
-    NSAssert( self.objectManager != nil, @"Before calling, the `objectManager` property should be set directly or through `initWithObjectManager`." );
-    
+    // Nothing to show if we are already logged in so don't even create the loginVC.
     if (self.objectManager.mainUserLoggedIn)
     {
-        completionActionBlock(YES);
-        return YES;
+        return nil;
     }
     
-    UIViewController<VLoginRegistrationFlow> *loginFlowController = [self loginFlowControllerWithAuthorizationContext:authorizationContext andCompletionBlock:completionActionBlock];
-    if ( loginFlowController != nil )
-    {
-        UIView *replicant = [loginFlowController.view snapshotViewAfterScreenUpdates:YES];
-        [presentingViewController.view addSubview:replicant];
-        [presentingViewController.view v_addFitToParentConstraintsToSubview:replicant];
-        
-        self.presentingController = presentingViewController;
-        self.loginController = loginFlowController;
-        self.replicantView = replicant;
-    }
-    else
-    {
-        [self showFailureAlertInViewController:presentingViewController];
-    }
-    
-    return NO;
+    return [self loginFlowControllerWithAuthorizationContext:authorizationContext
+                                          andCompletionBlock:completion];
 }
 
 - (UIViewController <VLoginRegistrationFlow> *)loginFlowControllerWithAuthorizationContext:(VAuthorizationContext)authorizationContext andCompletionBlock:(VAuthorizedActionCompletion)completionActionBlock
@@ -144,23 +128,6 @@ static NSString * const kLoginAndRegistrationViewKey = @"loginAndRegistrationVie
     [viewController presentViewController:alertController
                                  animated:YES
                                completion:nil];
-}
-
-- (void)execute
-{
-    if (self.loginController == nil)
-    {
-        return;
-    }
-    [self.presentingController presentViewController:self.loginController
-                                                                animated:NO
-                                                              completion:^
-     {
-         [self.replicantView removeFromSuperview];
-         self.loginController = nil;
-         self.presentingController = nil;
-         self.replicantView = nil;
-     }];
 }
 
 @end

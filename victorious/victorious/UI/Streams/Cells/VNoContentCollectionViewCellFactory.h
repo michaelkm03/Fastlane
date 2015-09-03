@@ -22,6 +22,8 @@
  */
 - (instancetype)initWithAcceptableContentClasses:(NSArray *)acceptableClasses NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /**
     Registers no content cells with the provided collectionView
  

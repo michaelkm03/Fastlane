@@ -160,18 +160,18 @@
 
 - (void)presentCameraViewController
 {
-    self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager
+    self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencyManager:self.dependencyManager
                                                                           addedDependencies:@{VImageToolControllerInitialImageEditStateKey:@(VImageToolControllerInitialImageEditStateCrop),
                                                                                               VImageToolControllerShouldDisableTextOverlayKey:@(YES)}];
     self.attachmentPresenter.attachmentTypes = VMediaAttachmentOptionsImage;
     __weak typeof(self) welf = self;
-    self.attachmentPresenter.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
+    self.attachmentPresenter.resultHandler = ^void(BOOL success, VPublishParameters *publishParameters)
     {
         __strong typeof(welf) strongSelf = welf;
         
         [strongSelf dismissViewControllerAnimated:YES
                                        completion:nil];
-        [strongSelf didCaptureMediaWithURL:mediaURL previewImage:previewImage];
+        [strongSelf didCaptureMediaWithURL:publishParameters.mediaToUploadURL previewImage:publishParameters.previewImage];
     };
     [self.attachmentPresenter presentOnViewController:self];
 }

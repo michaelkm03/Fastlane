@@ -29,6 +29,8 @@
 #import "VStreamItem+Fetcher.h"
 #import "VEditorializationItem.h"
 
+#import "victorious-Swift.h"
+
 const NSInteger kTooManyNewMessagesErrorCode = 999;
 
 static const NSInteger kDefaultPageSize = 40;
@@ -98,7 +100,10 @@ static const NSInteger kUserSearchResultLimit = 20;
             {
                 NSMutableOrderedSet *comments = [[NSMutableOrderedSet alloc] initWithArray:resultObjects];
                 [comments addObjectsFromArray:sequence.comments.array];
-                sequenceInContext.comments = [comments copy];
+                if ( ![sequence.comments isEqualToOrderedSet:sequenceInContext.comments] )
+                {
+                    sequenceInContext.comments = [comments copy];
+                }
             }
             else
             {
@@ -451,7 +456,7 @@ static const NSInteger kUserSearchResultLimit = 20;
         NSString *apiPath = stream.apiPath;
         
         //Strip the marqueeItems and streamItems from the newly returned stream
-        BOOL marqueeNeedsUpdate = NO;
+        BOOL marqueeNeedsUpdate = marqueeItems.count != fullStream.marqueeItems.count;
         for (VStreamItem *marqueeItem in fullStream.marqueeItems )
         {
             VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:marqueeItem.objectID];
@@ -477,6 +482,12 @@ static const NSInteger kUserSearchResultLimit = 20;
             VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:streamItem.objectID];
             [self addEditorializationToStreamItem:streamItemInContext inStreamWithApiPath:apiPath usingHeadline:streamItem.headline inMarquee:NO];
             streamItem.headline = nil;
+            if ( [streamItem isKindOfClass:[Shelf class]] )
+            {
+                Shelf *shelf = (Shelf *)streamItem;
+                shelf.apiPath = shelf.streamUrl.v_pathComponent;
+                shelf.trackingIdentifier = shelf.remoteId;
+            }
             [streamItems addObject:streamItemInContext];
         }
         stream.streamItems = streamItems;
@@ -485,7 +496,9 @@ static const NSInteger kUserSearchResultLimit = 20;
             stream.marqueeItems = marqueeItems;
         }
         NSString *streamId = fullResponse[ @"stream_id" ];
+        NSString *shelfId = fullResponse[ @"shelf_id" ];
         stream.streamId = streamId;
+        stream.shelfId = shelfId;
         
         // Any extra parameters from the top-level of the response (i.e. above the "payload" field)
         stream.trackingIdentifier = streamId;

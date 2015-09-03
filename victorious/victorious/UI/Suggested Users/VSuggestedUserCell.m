@@ -127,23 +127,27 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
 
     if ( sender.controlState == VFollowControlStateFollowed )
     {
-        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:)
+        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
                                                                           withSender:nil];
+        NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
         
-        NSAssert(followResponder != nil, @"Need a VFollowingResponder higher up the chain to communicate following commands.");
         [followResponder unfollowUser:self.user
                   withAuthorizedBlock:authorizedBlock
-                        andCompletion:completionBlock];
+                        andCompletion:completionBlock
+                   fromViewController:nil
+                       withScreenName:VFollowSourceScreenRegistrationSuggestedUsers];
     }
     else
     {
-        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:)
+        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
                                                                           withSender:nil];
+        NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
         
-        NSAssert(followResponder != nil, @"Need a VFollowingResponder higher up the chain to communicate following commands.");
         [followResponder followUser:self.user
                 withAuthorizedBlock:authorizedBlock
-                      andCompletion:completionBlock];
+                      andCompletion:completionBlock
+                 fromViewController:nil
+                     withScreenName:VFollowSourceScreenRegistrationSuggestedUsers];
     }
 }
 

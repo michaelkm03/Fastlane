@@ -7,7 +7,7 @@
 //
 
 #import "UIViewController+VLayoutInsets.h"
-#import "VDependencyManager+VScaffoldViewController.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VMultipleContainer.h"
 #import "VMultipleContainerViewController.h"
 #import "VNavigationController.h"
@@ -73,7 +73,6 @@ static NSString * const kInitialKey = @"initial";
 - (void)loadView
 {
     self.view = [[UIView alloc] init];
-    
     self.flowLayout = [[UICollectionViewFlowLayout alloc] init];
     self.flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     self.flowLayout.sectionInset = UIEdgeInsetsZero;
@@ -156,6 +155,7 @@ static NSString * const kInitialKey = @"initial";
     
     id<VMultipleContainerChild> child = self.viewControllers[ self.selector.activeViewControllerIndex ];
     [child multipleContainerDidSetSelected:YES];
+    [self updateBadge];
 }
 
 #pragma mark - Rotation
@@ -192,7 +192,7 @@ static NSString * const kInitialKey = @"initial";
 - (void)v_setLayoutInsets:(UIEdgeInsets)layoutInsets
 {
     [super v_setLayoutInsets:layoutInsets];
-    [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *obj, NSUInteger idx, BOOL *stop)
+    [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *obj, NSUInteger index, BOOL *stop)
     {
         if ( [obj isKindOfClass:[UIViewController class]] )
         {
@@ -225,7 +225,6 @@ static NSString * const kInitialKey = @"initial";
     }
     [self displayViewControllerAtIndex:index animated:NO isDefaultSelection:YES];
     [self.selector setActiveViewControllerIndex:index];
-    [self.v_navigationController setNavigationBarHidden:NO];
 }
 
 #pragma mark - VMultipleContainerChildDelegate
@@ -308,7 +307,6 @@ static NSString * const kInitialKey = @"initial";
     viewControllerView.translatesAutoresizingMaskIntoConstraints = NO;
     [cell.contentView addSubview:viewControllerView];
     [viewController didMoveToParentViewController:self];
-    
     // TODO: Remove me once we no longer use UITVC sÜper hacky
     if ([viewController isKindOfClass:[UITableViewController class]])
     {
@@ -333,6 +331,11 @@ static NSString * const kInitialKey = @"initial";
 - (void)viewSelector:(VSelectorViewBase *)viewSelector didSelectViewControllerAtIndex:(NSUInteger)index
 {
     [self displayViewControllerAtIndex:index animated:NO isDefaultSelection:NO];
+}
+
+- (void)updateBadge
+{
+    [self.selector updateSelectorTitle];
 }
 
 #pragma mark - VProvidesNavigationMenuItemBadge
@@ -414,6 +417,17 @@ static NSString * const kInitialKey = @"initial";
 - (NSString *)screenIdentifier
 {
     return [self.dependencyManager stringForKey:VDependencyManagerIDKey];
+}
+
+#pragma mark - VTabMenuContainedViewControllerNavigation
+
+- (void)reselected
+{
+    id childViewController = [self children][self.selectedIndex];
+    if ( [childViewController conformsToProtocol:@protocol(VTabMenuContainedViewControllerNavigation)] )
+    {
+        [((id<VTabMenuContainedViewControllerNavigation>)childViewController) reselected];
+    }
 }
 
 @end

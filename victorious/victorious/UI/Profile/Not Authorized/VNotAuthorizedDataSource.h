@@ -42,6 +42,8 @@
  */
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView dependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /**
  *  A delegate conforming to VNotAuthorizedDataSourceDelegate.
  */

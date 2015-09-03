@@ -53,6 +53,9 @@
               @"preview.data"           : VSelectorName(previewData),
               @"stream_content_type" :   VSelectorName(streamContentType),
               @"has_reposted"   :   VSelectorName(hasReposted),
+              @"is_gif_style"   :   VSelectorName(isGifStyle),
+              @"type"                :   VSelectorName(itemType),
+              @"subtype"             :   VSelectorName(itemSubType),
     };
 }
 
@@ -81,12 +84,16 @@
     
     [mapping addPropertyMapping:previewAssetsMapping];
     
+    RKRelationshipMapping *recentCommentsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"recent_comments"
+                                                                                              toKeyPath:VSelectorName(recentComments)
+                                                                                            withMapping:[VComment inStreamEntityMapping]];
+    
+    [mapping addPropertyMapping:recentCommentsMapping];
+    
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(nodes) mapping:[VNode entityMapping]];
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(comments) mapping:[VComment entityMapping]];
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(user) mapping:[VUser simpleMapping]];
-    
-    [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"sequenceId"}];
-    
+        
     return mapping;
 }
 
@@ -99,6 +106,12 @@
                                                                                             withMapping:[VImageAsset entityMapping]];
     
     [mapping addPropertyMapping:previewAssetsMapping];
+    
+    RKRelationshipMapping *recentCommentsMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"recent_comments"
+                                                                                               toKeyPath:VSelectorName(recentComments)
+                                                                                             withMapping:[VComment inStreamEntityMapping]];
+    
+    [mapping addPropertyMapping:recentCommentsMapping];
     
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(nodes) mapping:[VNode entityMapping]];
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(comments) mapping:[VComment entityMapping]];
@@ -123,8 +136,6 @@
     [mapping addPropertyMapping:adBreaksMapping];
     [mapping addPropertyMapping:trackingMapping];
     [mapping addPropertyMapping:endCardMapping];
-    
-    [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"sequenceId"}];
     
     return mapping;
 }

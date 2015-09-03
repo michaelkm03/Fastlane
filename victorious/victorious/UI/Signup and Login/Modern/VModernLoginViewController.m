@@ -159,6 +159,9 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                                       target:self
                                                       action:@selector(login:)];
     self.navigationItem.rightBarButtonItem = self.nextButton;
+    
+    self.emailField.accessibilityIdentifier = VAutomationIdentifierLoginUsernameField;
+    self.passwordField.accessibilityIdentifier = VAutomationIdentifierLoginPasswordField;
 }
 
 - (void)viewDidAppear:(BOOL)animated

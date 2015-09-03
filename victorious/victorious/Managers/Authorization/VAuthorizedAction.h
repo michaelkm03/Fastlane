@@ -12,9 +12,13 @@
 
 @class VObjectManager, VDependencyManager;
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef void (^VAuthorizedActionCompletion)(BOOL authorized);
 
 @interface VAuthorizedAction : NSObject
+
+- (instancetype)init NS_UNAVAILABLE;
 
 /**
  Desginated initializer that provides the requires dependencies in order to present
@@ -44,14 +48,16 @@ typedef void (^VAuthorizedActionCompletion)(BOOL authorized);
                        completion:(VAuthorizedActionCompletion)completionActionBlock;
 
 /**
- *  Use this for forced registration. Takes a snapshot and adds it to the presentingViewControllers view hierarchy and removes after "-execute" is called. Execute must be called after the viewController hierarchy is prepared.
+ Provides calling code with a configured loginViewController. Or nil if the user is already logged in.
+ 
+ @param authorizationContext An authorization context appropriate for the current login context.
+ @param completion A completionblock for handling the results of logging in.
+ 
+ @return A configured loginViewController. Or nil if the user is already logged in.
  */
-- (BOOL)prepareInViewController:(UIViewController *)presentingViewController
-                        context:(VAuthorizationContext)authorizationContext
-                     completion:(VAuthorizedActionCompletion)completionActionBlock;
-/**
- *  Finishes the preparation work done in "-prepareInViewController:context:completion:"
- */
-- (void)execute;
+- (UIViewController *__nullable)loginViewControllerWithContext:(VAuthorizationContext)authorizationContext
+                                                WithCompletion:(VAuthorizedActionCompletion)completion;
 
 @end
+
+NS_ASSUME_NONNULL_END

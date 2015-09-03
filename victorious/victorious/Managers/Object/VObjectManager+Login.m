@@ -470,6 +470,8 @@ static NSString * const kVAppTrackingKey        = @"video_quality";
     
     [[[VStoredLogin alloc] init] clearLoggedInUserFromDisk];
     [[VUserManager sharedInstance] userDidLogout];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:self];
 }
 
 #pragma mark - Password reset

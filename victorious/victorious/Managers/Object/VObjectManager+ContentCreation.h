@@ -9,10 +9,13 @@
 #import "VObjectManager.h"
 #import "VConstants.h"
 #import "VUploadManager.h"
+#import "VPublishParameters.h"
 
 @class VSequence, VComment, VConversation, VAsset, VMessage, VNode, VPublishParameters;
 
-typedef void (^VRemixCompletionBlock) (BOOL completion, NSURL *remixMp4Url, NSError *error);
+NS_ASSUME_NONNULL_BEGIN
+
+typedef void (^VRemixCompletionBlock) (BOOL completion, NSURL *__nullable remixMp4Url, NSError *__nullable error);
 
 /**
  Notification posted when new content is created by the user and will be added to a filter
@@ -50,7 +53,7 @@ extern NSString * const VObjectManagerContentIndexKey;
                answer2Text:(NSString *)answer2Text
                  media1Url:(NSURL *)media1Url
                  media2Url:(NSURL *)media2Url
-                completion:(VUploadManagerTaskCompleteBlock)completionBlock;
+                completion:(nullable VUploadManagerTaskCompleteBlock)completionBlock;
 
 /**
  *  Upload a media with the given parameters object.
@@ -59,7 +62,7 @@ extern NSString * const VObjectManagerContentIndexKey;
  *  @param completionBlock   A completion block.
  */
 - (void)uploadMediaWithPublishParameters:(VPublishParameters *)publishParameters
-                              completion:(VUploadManagerTaskCompleteBlock)completionBlock;
+                              completion:(nullable VUploadManagerTaskCompleteBlock)completionBlock;
 
 /**
  Creates a new comment and posts it to the server
@@ -72,11 +75,11 @@ extern NSString * const VObjectManagerContentIndexKey;
  @param time Timestamp in seconds to post the realtime comment.  Use negative values for invalid times
  */
 - (AFHTTPRequestOperation *)addCommentWithText:(NSString *)text
-                                      mediaURL:(NSURL *)mediaURL
+                             publishParameters:(nullable VPublishParameters *)publishParameters
                                     toSequence:(VSequence *)sequence
-                                     andParent:(VComment *)parent
-                                  successBlock:(VSuccessBlock)success
-                                     failBlock:(VFailBlock)fail;
+                                     andParent:(nullable VComment *)parent
+                                  successBlock:(nullable VSuccessBlock)success
+                                     failBlock:(nullable VFailBlock)fail;
 
 
 /**
@@ -87,31 +90,31 @@ Creates a new realtime comment
  @param time Timestamp in seconds to post the realtime comment.  Use negative values for invalid times
  */
 - (AFHTTPRequestOperation *)addRealtimeCommentWithText:(NSString *)text
-                                              mediaURL:(NSURL *)mediaURL
-                                                toAsset:(VAsset *)asset
+                                     publishParameters:(VPublishParameters *)publishParameters
+                                               toAsset:(VAsset *)asset
                                                 atTime:(NSNumber *)time
-                                          successBlock:(VSuccessBlock)success
-                                             failBlock:(VFailBlock)fail;
+                                          successBlock:(nullable VSuccessBlock)success
+                                             failBlock:(nullable VFailBlock)fail;
 
 /**
  Creates a new message, but does not send it to the server.
  See sendMessage:successBlock:failBlock: for that.
  */
 - (VMessage *)messageWithText:(NSString *)text
-                 mediaURLPath:(NSString *)mediaURLPath;
+            publishParameters:(VPublishParameters *)publishParameters;
 
 /**
  Sends a new message to the server
  */
 - (AFHTTPRequestOperation *)sendMessage:(VMessage *)message
                                  toUser:(VUser *)user
-                           successBlock:(VSuccessBlock)success
-                              failBlock:(VFailBlock)fail;
+                           successBlock:(nullable VSuccessBlock)success
+                              failBlock:(nullable VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)repostNode:(VNode *)node
-                                       withName:(NSString *)name
-                                   successBlock:(VSuccessBlock)success
-                                      failBlock:(VFailBlock)fail;
+                                       withName:(nullable NSString *)name
+                                   successBlock:(nullable VSuccessBlock)success
+                                      failBlock:(nullable VFailBlock)fail;
 
 /**
  Creates a text post with supplied text, background color and image.
@@ -122,6 +125,8 @@ Creates a new realtime comment
                       mediaURL:(NSURL *)mediaToUploadURL
                   previewImage:(UIImage *)previewImage
                         forced:(BOOL)forced
-                    completion:(VUploadManagerTaskCompleteBlock)completionBlock;
+                    completion:(nullable VUploadManagerTaskCompleteBlock)completionBlock;
 
 @end
+
+NS_ASSUME_NONNULL_END

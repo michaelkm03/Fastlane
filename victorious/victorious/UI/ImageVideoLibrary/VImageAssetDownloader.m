@@ -15,6 +15,7 @@ NSString * const VImageAssetDownloaderErrorDomain = @"com.victorious.VImageAsset
 @interface VImageAssetDownloader ()
 
 @property (nonatomic, strong) PHAsset *asset;
+@property (nonatomic, strong) CIContext *context;
 
 @end
 
@@ -27,6 +28,8 @@ NSString * const VImageAssetDownloaderErrorDomain = @"com.victorious.VImageAsset
     if (self != nil)
     {
         _asset = asset;
+        _context = [CIContext contextWithOptions:@{kCIContextUseSoftwareRenderer:@(NO),
+                                                   kCIContextPriorityRequestLow:@(YES)}];
     }
     return self;
 }
@@ -40,11 +43,11 @@ NSString * const VImageAssetDownloaderErrorDomain = @"com.victorious.VImageAsset
                   completion:(void (^)(NSError *error, NSURL *downloadedFileURL, UIImage *previewImage))completion
 
 {
-    PHImageRequestOptions *fullSizeRequestOptions = [[PHImageRequestOptions alloc] init];
-    fullSizeRequestOptions.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
-    fullSizeRequestOptions.version = PHImageRequestOptionsVersionCurrent;
-    fullSizeRequestOptions.networkAccessAllowed = YES;
-    fullSizeRequestOptions.progressHandler = ^void(double progress, NSError *error, BOOL *stop, NSDictionary *info)
+    PHImageRequestOptions *requestOptions = [[PHImageRequestOptions alloc] init];
+    requestOptions.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
+    requestOptions.version = PHImageRequestOptionsVersionCurrent;
+    requestOptions.networkAccessAllowed = YES;
+    requestOptions.progressHandler = ^void(double progress, NSError *error, BOOL *stop, NSDictionary *info)
     {
         dispatch_async(dispatch_get_main_queue(), ^
         {
@@ -61,39 +64,27 @@ NSString * const VImageAssetDownloaderErrorDomain = @"com.victorious.VImageAsset
     }
 
     NSURL *urlForAsset = [self temporaryURLForAsset:self.asset];
-    [[PHImageManager defaultManager] requestImageDataForAsset:self.asset
-                                                      options:fullSizeRequestOptions
-                                                resultHandler:^(NSData *imageData, NSString *dataUTI, UIImageOrientation orientation, NSDictionary *info)
+    [[PHImageManager defaultManager] requestImageForAsset:self.asset
+                                               targetSize:CGSizeMake(600.0, 600.0)
+                                              contentMode:PHImageContentModeDefault
+                                                  options:requestOptions
+                                            resultHandler:^(UIImage *result, NSDictionary *info)
      {
-         if (imageData == nil)
-         {
-             NSError *downloadFailure = [NSError errorWithDomain:VImageAssetDownloaderErrorDomain
-                                                            code:0
-                                                        userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"ImageDownloadFailed", nil)}];
-             dispatch_async(dispatch_get_main_queue(), ^
-             {
-                 completion(downloadFailure, nil, nil);
-             });
-             return;
-         }
-         // This handler is always called on main thread per header
          dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
                         {
                             dispatch_async(dispatch_get_main_queue(), ^
                             {
-                                progressHandler(NO, 1.0f, NSLocalizedString(@"Exporting...", nil));
-                            });
-                            UIImage *imageFromData = [UIImage imageWithData:imageData];
-                            UIImage *imageWithProperOrientation = [[UIImage imageWithCGImage:imageFromData.CGImage scale:1.0f orientation:orientation] fixOrientation];
+                               progressHandler(NO, 1.0f, NSLocalizedString(@"Exporting...", nil));
+                           });
                             NSError *error;
-                            NSData *imageData = UIImageJPEGRepresentation(imageWithProperOrientation, 1.0f);
+                            NSData *imageData = UIImageJPEGRepresentation(result, 1.0f);
                             BOOL success = [imageData writeToURL:urlForAsset options:NSDataWritingAtomic error:&error];
                             
                             dispatch_async(dispatch_get_main_queue(), ^
                                            {
                                                if (success)
                                                {
-                                                   completion(nil, urlForAsset, imageWithProperOrientation);
+                                                   completion(nil, urlForAsset, result);
                                                }
                                                else
                                                {

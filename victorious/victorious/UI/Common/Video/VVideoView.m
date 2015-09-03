@@ -14,6 +14,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+static NSString * const kPlaybackBufferLikelyToKeepUpKey = @"playbackLikelyToKeepUp";
+static NSString * const kPlaybackBufferEmptyKey = @"playbackBufferEmpty";
+
 @interface VVideoView()
 
 @property (nonatomic, strong, nullable) AVPlayer *player;
@@ -21,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) AVPlayerItem *newestPlayerItem;
 @property (nonatomic, readonly) BOOL isPlayingVideo;
 @property (nonatomic, strong) VVideoUtils *videoUtils;
+@property (nonatomic, assign) BOOL wasPlayingVideo;
+@property (nonatomic, strong, nullable) id timeObserver;
 
 @end
 
@@ -29,6 +34,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    if (self.player.currentItem != nil)
+    {
+        [self.player removeTimeObserver:self.timeObserver];
+        self.timeObserver = nil;
+    }
 }
 
 - (void)reset
@@ -49,6 +60,16 @@ NS_ASSUME_NONNULL_BEGIN
 {
     _useAspectFit = useAspectFit;
     self.playerLayer.videoGravity = [self videoGravity];
+}
+
+- (BOOL)playbackBufferEmpty
+{
+    return [self.player.currentItem isPlaybackBufferEmpty];
+}
+
+- (BOOL)playbackLikelyToKeepUp
+{
+    return [self.player.currentItem isPlaybackLikelyToKeepUp];
 }
 
 - (NSString *)videoGravity
@@ -113,6 +134,7 @@ NS_ASSUME_NONNULL_BEGIN
     self.player.muted = audioMuted;
     
     _itemURL = itemURL;
+    
     self.newestPlayerItem = nil;
     self.playerLayer.opacity = 0.0f;
     [self.videoUtils createPlayerItemWithURL:itemURL loop:loop readyCallback:^(AVPlayerItem *playerItem, NSURL *composedItemURL, CMTime duration)
@@ -125,7 +147,7 @@ NS_ASSUME_NONNULL_BEGIN
      }];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(play)
+                                             selector:@selector(returnFromBackground)
                                                  name:UIApplicationWillEnterForegroundNotification
                                                object:nil];
 }
@@ -141,11 +163,59 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)didFinishAssetCreation:(AVPlayerItem *)playerItem
 {
+    [self.KVOController unobserve:self.player.currentItem keyPath:kPlaybackBufferLikelyToKeepUpKey];
+    [self.KVOController unobserve:self.player.currentItem keyPath:kPlaybackBufferEmptyKey];
+    
+    __weak VVideoView *weakSelf = self;
+    [self.KVOController observe:playerItem
+                       keyPaths:@[kPlaybackBufferLikelyToKeepUpKey]
+                        options:NSKeyValueObservingOptionNew
+                          block:^(id observer, AVPlayerItem *playerItem, NSDictionary *change)
+     {
+         __strong VVideoView *strongSelf = weakSelf;
+         if (strongSelf.player.currentItem.isPlaybackLikelyToKeepUp)
+         {
+             if ([strongSelf.delegate respondsToSelector:@selector(videoViewDidStopBuffering:)])
+             {
+                 [strongSelf.delegate videoViewDidStopBuffering:strongSelf];
+             }
+         }
+     }];
+    
+    [self.KVOController observe:playerItem
+                       keyPaths:@[kPlaybackBufferEmptyKey]
+                        options:NSKeyValueObservingOptionNew
+                          block:^(id observer, AVPlayerItem *playerItem, NSDictionary *change)
+     {
+         __strong VVideoView *strongSelf = weakSelf;
+         if (strongSelf.player.currentItem.isPlaybackBufferEmpty)
+         {
+             if ([strongSelf.delegate respondsToSelector:@selector(videoViewDidStartBuffering:)])
+             {
+                 [strongSelf.delegate videoViewDidStartBuffering:strongSelf];
+             }
+         }
+     }];
+
+	if (self.player.currentItem != nil)
+    {
+        [self.player removeTimeObserver:self.timeObserver];
+    }
+    
+    self.timeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 24)
+                                                                  queue:dispatch_get_main_queue()
+                                                             usingBlock:^(CMTime time)
+                         {
+                             __strong VVideoView *strongSelf = weakSelf;
+                             [strongSelf didPlayToTime:time];
+                         }];
+    
+    
     [self.player replaceCurrentItemWithPlayerItem:playerItem];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                 name:AVPlayerItemDidPlayToEndTimeNotification
-                                               object:playerItem];
+                                                    name:AVPlayerItemDidPlayToEndTimeNotification
+                                                  object:playerItem];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(playerItemDidReachEnd:)
@@ -161,6 +231,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)playerItemDidReachEnd:(NSNotification *)notification
 {
     [self.player.currentItem seekToTime:kCMTimeZero];
+    
+    if ([self.delegate respondsToSelector:@selector(videoDidReachEnd:)])
+    {
+        [self.delegate videoDidReachEnd:self];
+    }
 }
 
 - (BOOL)isPlayingVideo
@@ -168,13 +243,59 @@ NS_ASSUME_NONNULL_BEGIN
     return self.player.rate > 0;
 }
 
+- (void)returnFromBackground
+{
+    if ( self.wasPlayingVideo )
+    {
+        [self play];
+    }
+}
+
 - (void)play
+{
+    [self playAndSeekToBeginning:YES];
+}
+
+- (void)playWithoutSeekingToBeginning
+{
+    [self playAndSeekToBeginning:NO];
+}
+
+- (void)playAndSeekToBeginning:(BOOL)shouldSeek
 {
     if ( !self.isPlayingVideo )
     {
-        [self.player.currentItem seekToTime:kCMTimeZero];
+        if (shouldSeek)
+        {
+            [self.player.currentItem seekToTime:kCMTimeZero];
+        }
+        
         [self.player play];
     }
+    self.wasPlayingVideo = YES;
+}
+
+- (void)pause
+{
+    [self pauseAndSeekToBeginning:YES];
+}
+
+- (void)pauseWithoutSeekingToBeginning
+{
+    [self pauseAndSeekToBeginning:NO];
+}
+
+- (void)pauseAndSeekToBeginning:(BOOL)shouldSeek
+{
+    if ( self.isPlayingVideo )
+    {
+        if (shouldSeek)
+        {
+            [self.player.currentItem seekToTime:kCMTimeZero];
+        }
+        [self.player pause];
+    }
+    self.wasPlayingVideo = NO;
 }
 
 - (void)playFromStart
@@ -184,13 +305,21 @@ NS_ASSUME_NONNULL_BEGIN
     [self.player play];
 }
 
-- (void)pause
+- (void)didPlayToTime:(CMTime)time
 {
-    if ( self.isPlayingVideo )
+    Float64 durationInSeconds = CMTimeGetSeconds( self.player.currentItem.duration );
+    Float64 timeInSeconds     = CMTimeGetSeconds(time);
+    float percentElapsed      = timeInSeconds / durationInSeconds * 100.0f;
+    
+    if ([self.delegate respondsToSelector:@selector(videoView:didProgressWithPercentComplete:)])
     {
-        [self.player.currentItem seekToTime:kCMTimeZero];
-        [self.player pause];
+        [self.delegate videoView:self didProgressWithPercentComplete:percentElapsed];
     }
+}
+
+- (NSUInteger)currentTimeMilliseconds
+{
+    return (NSUInteger)(CMTimeGetSeconds( self.player.currentTime ) * 1000.0);
 }
 
 NS_ASSUME_NONNULL_END

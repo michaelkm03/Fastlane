@@ -25,7 +25,7 @@
 
 @interface VPurchaseViewController : UIViewController <VSimpleModalTransitionPresentedViewController, VHasManagedDependencies>
 
-@property (nonatomic, strong) id<VPurchaseViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<VPurchaseViewControllerDelegate> delegate;
 
 /**
  The vote type that a user is trying to unlock.  This is where the product identifier

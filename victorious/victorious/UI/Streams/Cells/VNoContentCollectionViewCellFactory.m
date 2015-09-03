@@ -22,10 +22,15 @@
     self = [super init];
     if ( self != nil )
     {
-        NSParameterAssert(acceptableClasses.count > 0);
         _acceptableClasses = acceptableClasses;
     }
     return self;
+}
+
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
 }
 
 - (void)registerNoContentCellWithCollectionView:(UICollectionView *)collectionView

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VFollowResponder.h"
 
 @class VDependencyManager;
 @class VUser;
@@ -21,13 +22,15 @@ typedef void (^VFollowHelperCompletion)(VUser *userActedOn);
 /**
  *  VFollowerCommandHandler executes requests from the responder chain to follow a particular user.
  */
-@interface VFollowingHelper : NSObject
+@interface VFollowingHelper : NSObject <VFollowResponder>
 
 /**
  *  Designated intializers for the class. Both parameters are required.
  */
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
                 viewControllerToPresentOn:(UIViewController *)viewControllerToPresentOn NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)init NS_UNAVAILABLE;
 
 /**
  *  Will present authorization on this viewController must not be nil 
@@ -47,13 +50,17 @@ typedef void (^VFollowHelperCompletion)(VUser *userActedOn);
  */
 - (void)followUser:(VUser *)user
 withAuthorizedBlock:(void (^)(void))authorizedBlock
-    andCompletion:(VFollowHelperCompletion)completion;
+     andCompletion:(VFollowHelperCompletion)completion
+fromViewController:(UIViewController *)viewControllerToPresentOn
+    withScreenName:(NSString *)screenName;
 
 /**
- * Follows the user passed in after any authorization.
+ * Unfollows the user passed in after any authorization.
  */
 - (void)unfollowUser:(VUser *)user
  withAuthorizedBlock:(void (^)(void))authorizedBlock
-      andCompletion:(VFollowHelperCompletion)completion;
+      andCompletion:(VFollowHelperCompletion)completion
+  fromViewController:(UIViewController *)viewControllerToPresentOn
+      withScreenName:(NSString *)screenName;
 
 @end

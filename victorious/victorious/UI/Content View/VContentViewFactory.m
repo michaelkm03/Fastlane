@@ -14,7 +14,7 @@
 #import "VWebBrowserViewController.h"
 #import "NSURL+VCustomScheme.h"
 #import "VRootViewController.h"
-#import "VDependencyManager+VScaffoldViewController.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
 
 static NSString * const kContentViewComponentKey = @"contentView";
 static NSString * const kSequenceIdKey = @"sequenceId";
@@ -37,6 +37,12 @@ static NSString * const kSequenceIdKey = @"sequenceId";
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (UIViewController *)contentViewForSequence:(VSequence *)sequence inStreamWithID:(NSString *)streamId commentID:(NSNumber *)commentID placeholderImage:(UIImage *)placeholderImage
 {
     if ( [sequence isWebContent] )
@@ -51,7 +57,6 @@ static NSString * const kSequenceIdKey = @"sequenceId";
     NSDictionary *dic = @{ kSequenceIdKey : sequence.remoteId};
     
     VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:dic];
-    NSLog(@"adding seq. id to dep. manager");
     VNewContentViewController *contentViewController = [VNewContentViewController contentViewControllerWithViewModel:contentViewModel dependencyManager:childDependencyManager];
     contentViewController.placeholderImage = placeholderImage;
     

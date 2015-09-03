@@ -26,7 +26,6 @@
 #import <Crashlytics/Crashlytics.h>
 
 #import "VFlurryTracking.h"
-#import "VGoogleAnalyticsTracking.h"
 #import "VPurchaseManager.h"
 #import "UIStoryboard+VMainStoryboard.h"
 
@@ -34,13 +33,13 @@
 @import MediaPlayer;
 @import CoreLocation;
 
-static BOOL isRunningTests(void) __attribute__((const));
+static BOOL shouldCompleteLaunch(void) __attribute__((const));
 
 @implementation VAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    if (isRunningTests())
+    if ( !shouldCompleteLaunch() )
     {
         return YES;
     }
@@ -61,8 +60,6 @@ static BOOL isRunningTests(void) __attribute__((const));
 
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
     
-    [[VTrackingManager sharedInstance] addDelegate:[[VGoogleAnalyticsTracking alloc] init]];
-    
     VFlurryTracking *flurryTracking = [[VFlurryTracking alloc] init];
     flurryTracking.unwantedParameterKeys = @[ VTrackingKeySequenceId, VTrackingKeyUrls, VTrackingKeyStreamId, VTrackingKeyTimeStamp ];
     [flurryTracking enable];
@@ -73,7 +70,21 @@ static BOOL isRunningTests(void) __attribute__((const));
     self.window.rootViewController = [storyboard instantiateInitialViewController];
     [self.window makeKeyAndVisible];
     
+    UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+    if ( localNotification != nil )
+    {
+        [[VRootViewController rootViewController] handleLocalNotification:localNotification];
+    }
+    
     return YES;
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)localNotification
+{
+    if ( [application applicationState] == UIApplicationStateInactive )
+    {
+        [[VRootViewController rootViewController] handleLocalNotification:localNotification];
+    }
 }
 
 - (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
@@ -148,9 +159,15 @@ static BOOL isRunningTests(void) __attribute__((const));
 
 #pragma mark -
 
-static BOOL isRunningTests(void)
+static BOOL shouldCompleteLaunch(void)
 {
     NSDictionary *environment = [[NSProcessInfo processInfo] environment];
     NSString *injectBundle = environment[@"XCInjectBundle"];
-    return [[injectBundle pathExtension] isEqualToString:@"xctest"];
+    if ( [[injectBundle pathExtension] isEqualToString:@"xctest"] )
+    {
+        NSBundle *testBundle = [NSBundle bundleWithPath:injectBundle];
+        NSNumber *shouldCompleteLaunchObject = [testBundle objectForInfoDictionaryKey:@"VShouldCompleteLaunch"];
+        return shouldCompleteLaunchObject == nil ? NO : shouldCompleteLaunchObject.boolValue;
+    }
+    return YES;
 }

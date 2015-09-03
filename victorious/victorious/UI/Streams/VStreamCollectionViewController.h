@@ -14,6 +14,7 @@
 #import "VSequenceActionsDelegate.h"
 #import "VNewContentViewController.h"
 #import "VAccessoryNavigationSource.h"
+#import "VTabMenuContainedViewControllerNavigation.h"
 
 extern NSString * const VStreamCollectionViewControllerStreamURLKey; ///< The key that identifies the stream URL path in VDependencyManager
 extern NSString * const VStreamCollectionViewControllerCellComponentKey; ///< A VDependencyManager key for the stream cell component
@@ -22,7 +23,7 @@ const CGFloat VStreamCollectionViewControllerCreateButtonHeight; ///< The height
 
 @class VStreamCollectionViewDataSource;
 
-@interface VStreamCollectionViewController : VAbstractStreamCollectionViewController <UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, VSequenceActionsDelegate, VHasManagedDependencies, VAccessoryNavigationSource>
+@interface VStreamCollectionViewController : VAbstractStreamCollectionViewController <UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, VSequenceActionsDelegate, VHasManagedDependencies, VAccessoryNavigationSource, VTabMenuContainedViewControllerNavigation>
 
 @property (nonatomic, weak) id<VSequenceActionsDelegate>actionDelegate;///<Optional param.  If this is not set, the collection view will act as the action delegate for the cells.  Use this if you are embedding this view controller somewhere (i.e. the page view controller)
 @property (nonatomic, strong) UIView *noContentView;///<Sets this view as the background if it cannot fetch items for the current steam.
@@ -37,11 +38,21 @@ const CGFloat VStreamCollectionViewControllerCreateButtonHeight; ///< The height
  */
 + (instancetype)streamViewControllerForStream:(VStream *)stream;
 
+- (void)showHashtagStreamWithHashtag:(NSString *)hashtag;
+
+- (void)navigateToStream:(VStream *)stream atStreamItem:(VStreamItem *)streamItem;
+
 /**
  *  For tracking purposes, each cell will only count as having been viewed if the ratio of its
  *  visible area is greater than or equal to this value.
  */
 @property (nonatomic, assign) float trackingMinRequiredCellVisibilityRatio;
+
+/**
+ *  The sequence action controller that will respond to actions taken on sequences
+ *  represented by cells within this collection view controller.
+ */
+@property (readonly, nonatomic) VSequenceActionController *sequenceActionController;
 
 /**
  Allows a context that instantiates a VUserProfileViewController to provide a class (possibly itself)

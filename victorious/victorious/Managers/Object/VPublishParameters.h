@@ -105,4 +105,20 @@
  */
 @property (nonatomic, copy) NSString *source;
 
+/**
+ *  An external identifier for the asset that identifies it with its souce, such as with
+ *  image search or GIF search.
+ */
+@property (nonatomic, copy) NSString *assetRemoteId;
+
+/**
+ *  The width of the asset if available
+ */
+@property (nonatomic, assign) NSInteger width;
+
+/**
+ *  The height of the asset if available
+ */
+@property (nonatomic, assign) NSInteger height;
+
 @end

@@ -37,6 +37,7 @@ NSString * const VObjectManagerContentWillBeCreatedNotification = @"VObjectManag
 NSString * const VObjectManagerContentWasCreatedNotification    = @"VObjectManagerContentWasCreatedNotification";
 NSString * const VObjectManagerContentFilterIDKey               = @"filterID";
 NSString * const VObjectManagerContentIndexKey                  = @"index";
+NSString * const VObjectManagerContentGIFParameter              = @"is_gif_style";
 
 @implementation VObjectManager (ContentCreation)
 
@@ -201,7 +202,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     
     NSMutableDictionary *parameters = [@{@"name": publishParameters.caption ?: [NSNull null],
                                          @"media_data": publishParameters.mediaToUploadURL,
-                                         @"is_gif_style": publishParameters.isGIF ? @"true" : @"false",
+                                         VObjectManagerContentGIFParameter: publishParameters.isGIF ? @"true" : @"false",
                                          @"did_crop": publishParameters.didCrop ? @"true" : @"false",
                                          @"did_trim": publishParameters.didTrim ? @"true" : @"false",
                                          } mutableCopy];
@@ -236,12 +237,21 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     
     if (publishParameters.shareToFacebook)
     {
-        parameters[@"facebook_access_token"] = [[VFacebookManager sharedFacebookManager] accessToken];
+        NSString *fbAccessToken = [[VFacebookManager sharedFacebookManager] accessToken];
+        if ( fbAccessToken != nil )
+        {
+            parameters[@"facebook_access_token"] = fbAccessToken;
+        }
     }
     if (publishParameters.shareToTwitter)
     {
-        parameters[@"twitter_access_token"] = [VTwitterManager sharedManager].oauthToken;
-        parameters[@"twitter_access_secret"] = [VTwitterManager sharedManager].secret;
+        NSString *twitterOauthToken = [VTwitterManager sharedManager].oauthToken;
+        NSString *twitterSecret = [VTwitterManager sharedManager].secret;
+        if ( twitterOauthToken != nil && twitterSecret != nil )
+        {
+            parameters[@"twitter_access_token"] = twitterOauthToken;
+            parameters[@"twitter_access_secret"] = twitterSecret;
+        }
     }
     
     if (publishParameters.parentNodeID && ![publishParameters.parentNodeID isEqualToNumber:@(0)])
@@ -256,6 +266,10 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     if (publishParameters.source != nil)
     {
         parameters[@"source"] = publishParameters.source;
+    }
+    if ( publishParameters.assetRemoteId != nil )
+    {
+        parameters[@"remote_id"] = publishParameters.assetRemoteId;
     }
     
     NSURL *endpoint = [NSURL URLWithString:@"/api/mediaupload/create" relativeToURL:self.baseURL];
@@ -346,14 +360,14 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 #pragma mark - Comment
 
 - (AFHTTPRequestOperation *)addRealtimeCommentWithText:(NSString *)text
-                                              mediaURL:(NSURL *)mediaURL
+                                     publishParameters:(VPublishParameters *)publishParameters
                                                 toAsset:(VAsset *)asset
                                                 atTime:(NSNumber *)time
                                           successBlock:(VSuccessBlock)success
                                              failBlock:(VFailBlock)fail
 {
     return [self addCommentWithText:text
-                           mediaURL:mediaURL
+                  publishParameters:(VPublishParameters *)publishParameters
                          toSequence:asset.node.sequence
                               asset:asset
                           andParent:nil
@@ -363,14 +377,14 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 }
 
 - (AFHTTPRequestOperation *)addCommentWithText:(NSString *)text
-                                      mediaURL:(NSURL *)mediaURL
+                             publishParameters:(VPublishParameters *)publishParameters
                                     toSequence:(VSequence *)sequence
                                      andParent:(VComment *)parent
                                   successBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail
 {
     return [self addCommentWithText:text
-                           mediaURL:mediaURL
+                  publishParameters:(VPublishParameters *)publishParameters
                          toSequence:sequence
                               asset:nil
                           andParent:parent
@@ -380,7 +394,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 }
 
 - (AFHTTPRequestOperation *)addCommentWithText:(NSString *)text
-                                      mediaURL:(NSURL *)mediaURL
+                             publishParameters:(VPublishParameters *)publishParameters
                                     toSequence:(VSequence *)sequence
                                          asset:(VAsset *)asset
                                      andParent:(VComment *)parent
@@ -391,6 +405,15 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     NSMutableDictionary *parameters = [@{@"sequence_id" : sequence.remoteId ?: [NSNull null],
                                          @"parent_id" : parent.remoteId.stringValue ?: [NSNull null],
                                          @"text" : text ?: [NSNull null]} mutableCopy];
+    
+    if (publishParameters.mediaToUploadURL != nil)
+    {
+        NSString *gifParameterValue = publishParameters.isGIF ? @"true" : @"false";
+        parameters[VObjectManagerContentGIFParameter] = gifParameterValue;
+    }
+    
+    NSURL *mediaURL = publishParameters.mediaToUploadURL;
+    
     NSDictionary *allURLs;
     if (mediaURL != nil)
     {
@@ -407,14 +430,13 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         VComment *newComment;
         NSDictionary *payload = fullResponse[kVPayloadKey];
         NSNumber *commentID = @([payload[@"id"] integerValue]);
+        BOOL shouldAutoplay = [payload[@"should_autoplay"] boolValue];
         //Use payload to populate the text to avoid empty text if textcontainer containing text adjusts it before this block is called
-        newComment = [self newCommentWithID:commentID onSequence:sequence text:payload[@"text"] mediaURLPath:[mediaURL absoluteString]];
+        newComment = [self newCommentWithID:commentID onSequence:sequence text:payload[@"text"] shouldAutoplay:shouldAutoplay mediaURLPath:[mediaURL absoluteString]];
         newComment.realtime = time;
+        newComment.mediaWidth = @(publishParameters.width);
+        newComment.mediaHeight = @(publishParameters.height);
         [self fetchCommentByID:[payload[@"id"] integerValue] successBlock:nil failBlock:nil];
-        if (asset)
-        {
-            [asset addCommentsObject: newComment];
-        }
         
         NSString *commentText = payload[@"text"];
         NSDictionary *params = @{ VTrackingKeyTextLength : @(commentText.length),
@@ -447,7 +469,8 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 
 - (VComment *)newCommentWithID:(NSNumber *)remoteID
                    onSequence:(VSequence *)sequence
-                         text:(NSString *)text
+                          text:(NSString *)text
+                shouldAutoplay:(BOOL)shouldAutoplay
                  mediaURLPath:(NSString *)mediaURLPath
 {
     VComment *tempComment = [sequence.managedObjectContext insertNewObjectForEntityForName:[VComment entityName]];
@@ -460,6 +483,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     tempComment.thumbnailUrl = [self localImageURLForVideo:mediaURLPath];
     tempComment.mediaUrl = mediaURLPath;
     tempComment.userId = self.mainUser.remoteId;
+    tempComment.shouldAutoplay = [NSNumber numberWithBool:shouldAutoplay];
     
     if ( tempComment.mediaUrl )
     {
@@ -491,12 +515,19 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                               failBlock:(VFailBlock)fail
 {
     //Set the parameters
-    NSDictionary *parameters = [@{@"to_user_id" : user.remoteId.stringValue ?: [NSNull null],
-                                  @"text" : message.text ?: [NSNull null]
-                                  } mutableCopy];
+    NSMutableDictionary *parameters = [@{@"to_user_id" : user.remoteId.stringValue ?: [NSNull null],
+                                         @"text" : message.text ?: [NSNull null]
+                                         } mutableCopy];
+    
+    if (message.mediaPath != nil)
+    {
+        NSString *gifParameterValue = message.shouldAutoplay.boolValue ? @"true" : @"false";
+        parameters[VObjectManagerContentGIFParameter] = gifParameterValue;
+    }
+
     NSDictionary *allURLs;
     NSURL *mediaURL;
-    if (message.mediaPath)
+    if (message.mediaPath != nil)
     {
         mediaURL = [NSURL URLWithString:message.mediaPath];
         allURLs = @{@"media_data": mediaURL};
@@ -536,7 +567,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 }
 
 - (VMessage *)messageWithText:(NSString *)text
-                 mediaURLPath:(NSString *)mediaURLPath
+            publishParameters:(VPublishParameters *)publishParameters
 {
     NSAssert([NSThread isMainThread], @"This method should be called only on the main thread");
     VMessage *tempMessage = [self.managedObjectStore.mainQueueManagedObjectContext insertNewObjectForEntityForName:[VMessage entityName]];
@@ -544,10 +575,13 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     //Use a copy of the inputs to prevent the text and mediaPath from changing when these parameters fall out of memory or are reused
     tempMessage.text = [text copy];
     tempMessage.postedAt = [NSDate dateWithTimeIntervalSinceNow:-1];
-    tempMessage.thumbnailPath = [self localImageURLForVideo:mediaURLPath];
-    tempMessage.mediaPath = [mediaURLPath copy];
+    tempMessage.thumbnailPath = [self localImageURLForVideo:[publishParameters.mediaToUploadURL absoluteString]];
+    tempMessage.mediaPath = [[publishParameters.mediaToUploadURL absoluteString] copy];
     tempMessage.sender = self.mainUser;
     tempMessage.senderUserId = self.mainUser.remoteId;
+    tempMessage.shouldAutoplay = [NSNumber numberWithBool:publishParameters.isGIF];
+    tempMessage.mediaWidth = [NSNumber numberWithInteger:publishParameters.width];
+    tempMessage.mediaHeight = [NSNumber numberWithInteger:publishParameters.height];
     
     return tempMessage;
 }

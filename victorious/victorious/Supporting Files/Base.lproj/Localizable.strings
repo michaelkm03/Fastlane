@@ -144,8 +144,6 @@
 
 "NoCommentsTitle"       =   "BE THE 1ST TO COMMENT!";
 "NoCommentsMessage"     =   "Post text, photo or video comments, and see what others say!";
-"LeaveACommentAt"       =   "Leave a comment at ";
-"LeaveAComment"          =   "Leave a comment";
 
 "NoFollowersTitle"      =   "WOMP WOMP! NO ONE HAS FOLLOWED YOU YET";
 "NoFollowersMessage"    =   "Build your own following by engaging with the community through commenting, remixing or posting new content.";
@@ -303,6 +301,7 @@
 
 "VideoPlayFailed"       =   "Video loading failed.";
 "See More"              =   "See More";
+"See all"               =   "See all";
 "..."                   =   "...";
 
 "PostWillExpire"        =   "Post Will Expire";
@@ -495,7 +494,8 @@
 "DiscoverTrendingTagsError"     = "Sorry, unable to load trending tags.";
 "Suggested People"      = "Suggested People";
 "Trending Tags"         = "Trending Tags";
-"Voters"                = "Voters";
+"%@ Voters"             = "%@ Voters";
+"%@ Voter"              = "%@ Voter";
 
 "HashtagSubscribeError"  = "Sorry, an error occurred attempting to follow this hashtag. Please try again.";
 "HashtagUnsubscribeError"  = "Sorry, an error occurred attempting to unfollow this hashtag. Please try again.";
@@ -659,6 +659,11 @@
 "Nice!" = "Nice!";
 "Edit photo" = "Edit photo";
 
+"Open Image" = "Open Image";
+"Watch Video" = "Watch Video";
+"Watch GIF" = "Watch GIF";
+
+"Show Previous Comments" = "Show Previous Comments";
 "CommentsSingularFormat" = "%@ Comment";  // e.g. "1 Comment"
 "CommentsPluralFormat" = "%@ Comments";  // e.g. "20 Comments"
 "LikesSingularFormat" = "%@ Like";  // e.g. "1 Like", where "Like" is a noun
@@ -673,3 +678,26 @@
 
 "NOTHING LIKED YET" = "NOTHING LIKED YET"; // Liked content no content view
 "Posts you like will appear here." = "Posts you like will appear here."; // Liked content no content view
+
+"posts" = "Posts";
+"HashtagPostsCountFormat" = "In %@ Posts";
+
+"Barcelona" = "Barcelona";
+"London" = "London";
+"Paris" = "Paris";
+"Oslo" = "Oslo";
+"Rio" = "Rio";
+"Sydney" = "Sydney";
+"Tokyo" = "Tokyo";
+"Rome" = "Rome";
+"New York" = "New York";
+"LA" = "LA";
+"Athens" = "Athens";
+"St. Moritz" = "St. Moritz";
+"Helsinki" = "Helsinki";
+"Seoul" = "Seoul";
+"Montreal" = "Montreal";
+
+"Use mobile data and Wi-Fi" = "Use mobile data and Wi-Fi";
+"Use Wi-Fi only" = "Use Wi-Fi only";
+"Never play videos automatically" = "Never play videos automatically";

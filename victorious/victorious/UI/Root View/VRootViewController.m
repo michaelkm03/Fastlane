@@ -11,12 +11,12 @@
 #import "VForceUpgradeViewController.h"
 #import "VDependencyManager+VDefaultTemplate.h"
 #import "VDependencyManager+VObjectManager.h"
-#import "VDependencyManager+VScaffoldViewController.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VInboxViewController.h"
 #import "VLoadingViewController.h"
 #import "VObjectManager.h"
 #import "VRootViewController.h"
-#import "VScaffoldViewController.h"
+#import "VTabScaffoldViewController.h"
 #import "VSessionTimer.h"
 #import "VThemeManager.h"
 #import "VTracking.h"
@@ -34,6 +34,7 @@
 #import "VHashtagResponder.h"
 #import "VFollowResponder.h"
 #import "VURLSelectionResponder.h"
+#import "victorious-Swift.h"
 
 NSString * const VApplicationDidBecomeActiveNotification = @"VApplicationDidBecomeActiveNotification";
 
@@ -97,8 +98,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     self.deepLinkReceiver = [[VDeeplinkReceiver alloc] init];
     self.applicationTracking = [[VApplicationTracking alloc] init];
     [[VTrackingManager sharedInstance] addDelegate:self.applicationTracking];
-    
-    [[VObjectManager sharedManager] resetSessionID];
     
     self.sessionTimer = [[VSessionTimer alloc] init];
     
@@ -238,7 +237,11 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     self.dependencyManager = dependencyManager;
     self.applicationTracking.dependencyManager = dependencyManager;
     
-    self.followHelper = [[VFollowingHelper alloc] initWithDependencyManager:self.dependencyManager viewControllerToPresentOn:self];
+    VTabScaffoldViewController *scaffold = [self.dependencyManager scaffoldViewController];
+    // Initialize followHelper with scaffold.dependencyManager so that it knows about LoginFlow information
+    // This is a result of the refactor of FollowResponder protocol (VRootViewController is the actual responder
+    // for follow actions)
+    self.followHelper = [[VFollowingHelper alloc] initWithDependencyManager:scaffold.dependencyManager viewControllerToPresentOn:self];
     self.hashtagHelper = [[VHashtagHelper alloc] init];
     
     NSDictionary *scaffoldConfig = [dependencyManager templateValueOfType:[NSDictionary class] forKey:VDependencyManagerScaffoldViewControllerKey];
@@ -261,7 +264,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     
-    VScaffoldViewController *scaffold = [self.dependencyManager scaffoldViewController];
     [self showViewController:scaffold animated:YES completion:^(void)
     {
         self.launchState = VAppLaunchStateLaunched;
@@ -269,7 +271,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         // VDeeplinkReceiver depends on scaffold being visible already, so make sure this is in this completion block
         [self.deepLinkReceiver receiveQueuedDeeplink];
     }];
-    [[VObjectManager sharedManager] setExperimentIDs:[self.dependencyManager stringForKey:VDependencyManagerExperimentKeyIDs]];
 }
 
 - (void)showViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(void(^)(void))completion
@@ -391,6 +392,15 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     }
 }
 
+- (void)handleLocalNotification:(UILocalNotification *)localNotification
+{
+    NSString *deeplinkUrlString = localNotification.userInfo[ [LocalNotificationScheduler deplinkURLKey] ];
+    if ( deeplinkUrlString != nil && deeplinkUrlString.length > 0 )
+    {
+        [[VRootViewController rootViewController] openURL:[NSURL URLWithString:deeplinkUrlString]];
+    }
+}
+
 - (void)openURL:(NSURL *)url
 {
     [self.deepLinkReceiver receiveDeeplink:url];
@@ -509,20 +519,33 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 #pragma mark - VFollowResponder
 
-- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowHelperCompletion)completion
+- (void)followUser:(VUser *)user
+withAuthorizedBlock:(void (^)(void))authorizedBlock
+     andCompletion:(VFollowHelperCompletion)completion
+fromViewController:(UIViewController *)viewControllerToPresentOn
+    withScreenName:(NSString *)screenName
 {
+    UIViewController *sourceViewController = viewControllerToPresentOn?:self;
+    
     [self.followHelper followUser:user
               withAuthorizedBlock:authorizedBlock
-                    andCompletion:completion];
+                    andCompletion:completion
+               fromViewController:sourceViewController
+                   withScreenName:screenName];
 }
 
 - (void)unfollowUser:(VUser *)user
  withAuthorizedBlock:(void (^)(void))authorizedBlock
        andCompletion:(VFollowHelperCompletion)completion
+  fromViewController:(UIViewController *)viewControllerToPresentOn withScreenName:(NSString *)screenName
 {
+    UIViewController *sourceViewController = viewControllerToPresentOn?:self;
+    
     [self.followHelper unfollowUser:user
                 withAuthorizedBlock:authorizedBlock
-                      andCompletion:completion];
+                      andCompletion:completion
+                 fromViewController:sourceViewController
+                     withScreenName:screenName];
 }
 
 #pragma mark - VHashtag

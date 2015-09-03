@@ -39,7 +39,6 @@ static char KVOContext;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mediaButtonLeftSpacingConstraint;
 @property (weak, nonatomic) IBOutlet UIButton *imageButton;
 @property (weak, nonatomic) IBOutlet UIButton *videoButton;
-@property (weak, nonatomic) IBOutlet UIButton *postButton;
 
 @property (weak, nonatomic) IBOutlet UILabel *questionPrompt;
 @property (weak, nonatomic) IBOutlet UILabel *leftAnswerPrompt;
@@ -118,22 +117,25 @@ static char KVOContext;
         [self.middleOrIconImageView setImage:orIcon];
     }
     
+    [self.imageButton setBackgroundColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]];
+    [self.videoButton setBackgroundColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]];
+    
     UIImage *newImage = [self.leftRemoveButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     [self.rightRemoveButton setImage:newImage forState:UIControlStateNormal];
     
     newImage = [self.leftRemoveButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     [self.leftRemoveButton setImage:newImage forState:UIControlStateNormal];
     
-    self.questionTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-    self.questionTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    self.questionTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    self.questionTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.questionTextView.font = [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
     self.questionTextView.inputAccessoryView = [self inputAccessoryViewForTextView:self.questionTextView];
 
     self.questionPrompt.text      = NSLocalizedString(@"Ask a question...", @"");
     self.questionPrompt.font      = [self.dependencyManager fontForKey:VDependencyManagerHeading2FontKey];
     
-    self.leftAnswerTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-    self.leftAnswerTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    self.leftAnswerTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    self.leftAnswerTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.leftAnswerTextView.font      = [self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
     [self.leftAnswerTextView addObserver:self
                               forKeyPath:NSStringFromSelector(@selector(contentSize))
@@ -143,8 +145,8 @@ static char KVOContext;
     self.leftAnswerTextView.inputAccessoryView = [self inputAccessoryViewForTextView:self.leftAnswerTextView];
     ((VContentInputAccessoryView *)self.leftAnswerTextView.inputAccessoryView).maxCharacterLength = VConstantsPollAnswerLength;
     
-    self.rightAnswerTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-    self.rightAnswerTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+    self.rightAnswerTextView.textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+    self.rightAnswerTextView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     self.rightAnswerTextView.font      = [self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
     [self.rightAnswerTextView addObserver:self
                                forKeyPath:NSStringFromSelector(@selector(contentSize))
@@ -175,13 +177,16 @@ static char KVOContext;
     self.rightAnswerPrompt.text      = NSLocalizedString(@"Vote that", @"");
     self.rightAnswerPrompt.font      = [self.dependencyManager fontForKey:VDependencyManagerHeading4FontKey];
     
-    self.postButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    [self.postButton setBackgroundImage:[UIImage resizeableImageWithColor:[self.dependencyManager colorForKey:VDependencyManagerLinkColorKey]] forState:UIControlStateNormal];
-    [self.postButton setBackgroundImage:[UIImage resizeableImageWithColor:[UIColor colorWithRed:0.6f green:0.6f blue:0.6f alpha:1.0f]] forState:UIControlStateDisabled];
-    [self.postButton setTitle:NSLocalizedString(@"Create Poll", @"Create Poll") forState:UIControlStateNormal];
-    self.postButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerButton1FontKey];
+    [self.navigationController.navigationBar setBarTintColor:[UIColor blackColor]];
+    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
     
-    [self.postButton setEnabled:YES];
+    NSString *nextText = NSLocalizedString(@"Publish", @"");
+    UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithTitle:nextText
+                                                                   style:UIBarButtonItemStylePlain
+                                                                  target:self
+                                                                  action:@selector(postButtonAction:)];
+    [self.navigationItem setRightBarButtonItem:nextButton];
 
     [self updateViewState];
 }
@@ -323,10 +328,10 @@ static char KVOContext;
     self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager];
     __weak typeof(self) welf = self;
     self.attachmentPresenter.attachmentTypes = attachmentOptions;
-    self.attachmentPresenter.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
+    self.attachmentPresenter.resultHandler = ^void(BOOL success, VPublishParameters *publishParameters)
     {
-        [welf imagePickerFinishedWithURL:mediaURL
-                            previewImage:previewImage];
+        [welf imagePickerFinishedWithURL:publishParameters.mediaToUploadURL
+                            previewImage:publishParameters.previewImage];
         [welf dismissViewControllerAnimated:YES
                                  completion:nil];
     };
@@ -502,11 +507,40 @@ static char KVOContext;
         [textView resignFirstResponder];
         return NO;
     }
+    
+    NSUInteger characterLimit = ((VContentInputAccessoryView *)textView.inputAccessoryView).maxCharacterLength;
+    if ((text.length + textView.text.length >  characterLimit) && (characterLimit > 0) )
+    {
+        return NO;
+    }
+    
     return YES;
 }
 
 - (void)textViewDidChange:(UITextView *)textView
 {
+}
+
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
+    if ( textView == self.questionTextView )
+    {
+        self.questionPrompt.hidden = YES;
+    }
+    else if ( textView == self.leftAnswerTextView )
+    {
+        self.leftAnswerPrompt.hidden = YES;
+    }
+    else if ( textView == self.rightAnswerTextView )
+    {
+        self.rightAnswerPrompt.hidden = YES;
+    }
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    textView.text = [textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
     if (textView == self.questionTextView)
     {
         self.questionPrompt.hidden = textView.text.length > 0;
@@ -519,11 +553,6 @@ static char KVOContext;
     {
         self.rightAnswerPrompt.hidden = textView.text.length > 0;
     }
-}
-
-- (void)textViewDidEndEditing:(UITextView *)textView
-{
-    textView.text = [textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
 #pragma mark -

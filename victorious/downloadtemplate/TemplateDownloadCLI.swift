@@ -7,13 +7,16 @@
 //
 
 import Cocoa
+import VictoriousCommon
 
 /// Provides a command-line interface to instantiating and running an instance of VTemplateDownloader
 class TemplateDownloadCLI: NSObject, VTemplateDownloadOperationDelegate {
     
     /// A URL to an application bundle where the template will be cached
     let bundleURL: NSURL
+    
     private let operationQueue = NSOperationQueue()
+    private let deviceID = "c314d794-1450-4e44-9c8f-2b3aba142405"
     
     init(bundleURL: NSURL) {
         self.bundleURL = bundleURL
@@ -36,11 +39,7 @@ class TemplateDownloadCLI: NSObject, VTemplateDownloadOperationDelegate {
             }
             println("Downloading template and images for environment: \(environment.name)")
             
-            let downloader = BasicTemplateDownloader(environment: environment)
-            downloader.requestDecorator.deviceID = "c314d794-1450-4e44-9c8f-2b3aba142405"
-            downloader.requestDecorator.buildNumber = bundleInfo.buildNumber
-            downloader.requestDecorator.versionNumber = bundleInfo.versionNumber
-            downloader.requestDecorator.locale = "en"
+            let downloader = BasicTemplateDownloader(environment: environment, deviceID: deviceID, buildNumber: bundleInfo.buildNumber, versionNumber: bundleInfo.versionNumber)
             
             let downloadOperation = VTemplateDownloadOperation(downloader: downloader, andDelegate: self)
             downloadOperation.dataCache = dataCache

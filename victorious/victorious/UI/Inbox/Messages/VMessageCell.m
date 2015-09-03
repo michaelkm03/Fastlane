@@ -7,10 +7,11 @@
 //
 
 #import "UIImage+ImageCreation.h"
-#import "VCommentTextAndMediaView.h"
+#import "VMessageTextAndMediaView.h"
 #import "VMessageCell.h"
 #import "UIImage+ImageCreation.h"
 #import "VDefaultProfileImageView.h"
+#import "victorious-Swift.h"
 
 NSString * const kVMessageCellNibName = @"VMessageCell";
 
@@ -22,7 +23,7 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
 
 @interface VMessageCell ()
 
-@property (nonatomic, weak, readwrite) IBOutlet VCommentTextAndMediaView *commentTextView;
+@property (nonatomic, weak, readwrite) IBOutlet VMessageTextAndMediaView *messageTextAndMediaView;
 @property (nonatomic, weak, readwrite) IBOutlet UILabel                  *timeLabel;
 @property (nonatomic, weak, readwrite) IBOutlet VDefaultProfileImageView *profileImageView;
 @property (nonatomic, weak, readwrite) IBOutlet UIImageView              *chatBubble;
@@ -43,10 +44,10 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
     [self resetView];
 }
 
-+ (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text withMedia:(BOOL)hasMedia
++ (CGFloat)estimatedHeightWithWidth:(CGFloat)width message:(VMessage *)message
 {
     CGFloat contentWidth = width - kTextInsets.left - kTextInsets.right;
-    return MAX([VCommentTextAndMediaView estimatedHeightWithWidth:contentWidth text:text withMedia:hasMedia] +
+    return MAX([VMessageTextAndMediaView estimatedHeightWithWidth:contentWidth message:message] +
                 kTextInsets.top +
                 kTextInsets.bottom,
                kMinimumCellHeight);
@@ -55,7 +56,7 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    self.commentTextView.preferredMaxLayoutWidth = CGRectGetWidth(self.contentView.bounds) - kTextInsets.left - kTextInsets.right;
+    self.messageTextAndMediaView.preferredMaxLayoutWidth = CGRectGetWidth(self.contentView.bounds) - kTextInsets.left - kTextInsets.right;
     [super layoutSubviews]; // two-pass layout because we're changing the preferredMaxLayoutWidth, above, which means constraints need to be re-calculated.
 }
 
@@ -179,9 +180,26 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
 - (void)resetView
 {
     self.chatBubble.tintColor = [UIColor whiteColor];
-    [self.commentTextView resetView];
+    [self.messageTextAndMediaView resetView];
     [self.profileImageView setup];
     self.profileImageOnRight = NO;
+}
+
+#pragma mark - focus
+
+- (void)setHasFocus:(BOOL)hasFocus
+{
+    self.messageTextAndMediaView.inFocus = hasFocus;
+}
+
+- (CGRect)contentArea
+{
+    CGRect mediaThumbnailFrame = self.messageTextAndMediaView.mediaAttachmentView.frame;
+    CGRect mediaFrame = CGRectMake(CGRectGetMinX(mediaThumbnailFrame),
+                                   CGRectGetMinY(self.messageTextAndMediaView.frame) + CGRectGetMinY(mediaThumbnailFrame),
+                                   CGRectGetWidth(mediaThumbnailFrame),
+                                   CGRectGetHeight(mediaThumbnailFrame));
+    return mediaFrame;
 }
 
 @end

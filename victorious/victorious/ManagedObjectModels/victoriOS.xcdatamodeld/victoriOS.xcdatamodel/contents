@@ -38,6 +38,7 @@
         <attribute name="audioMuted" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="backgroundColor" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="data" attributeType="String" syncable="YES"/>
+        <attribute name="duration" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="loop" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="mimeType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nodeId" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
@@ -46,26 +47,28 @@
         <attribute name="speed" optional="YES" attributeType="Float" defaultValueString="1" syncable="YES"/>
         <attribute name="streamAutoplay" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Comment" inverseName="asset" inverseEntity="Comment" syncable="YES"/>
         <relationship name="node" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Node" inverseName="assets" inverseEntity="Node" syncable="YES"/>
     </entity>
     <entity name="Comment" representedClassName="VComment" syncable="YES">
-        <attribute name="assetId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="assetOrientation" transient="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="assetOrientation" optional="YES" transient="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="dislikes" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="flags" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="likes" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
+        <attribute name="mediaHeight" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="mediaType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mediaUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mediaWidth" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="parentId" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <attribute name="postedAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="realtime" optional="YES" attributeType="Integer 32" defaultValueString="-1" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 64" minValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="sequenceId" attributeType="String" minValueString="0" syncable="YES"/>
+        <attribute name="shouldAutoplay" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="thumbnailUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
-        <relationship name="asset" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Asset" inverseName="comments" inverseEntity="Asset" syncable="YES"/>
+        <relationship name="commentMedia" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MediaAttachment" inverseName="comment" inverseEntity="MediaAttachment" syncable="YES"/>
+        <relationship name="inStreamSequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="recentComments" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="comments" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="comments" inverseEntity="User" syncable="YES"/>
     </entity>
@@ -96,6 +99,15 @@
         <relationship name="nextSequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="parentEndCard" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="parentSequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="endCard" inverseEntity="Sequence" syncable="YES"/>
     </entity>
+    <entity name="Experiment" representedClassName="victorious.Experiment" syncable="YES">
+        <attribute name="bucketCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="bucketType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="isEnabled" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="layerId" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="layerName" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="GIFSearchResult" representedClassName="victorious.GIFSearchResult" syncable="YES">
         <attribute name="frames" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="gifSize" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -103,6 +115,7 @@
         <attribute name="height" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="mp4Size" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="mp4Url" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="thumbnailStillUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="thumbnailUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="width" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -111,6 +124,10 @@
         <attribute name="count" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="tag" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="user" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="hashtags" inverseEntity="User" syncable="YES"/>
+    </entity>
+    <entity name="HashtagShelf" representedClassName="victorious.HashtagShelf" parentEntity="Shelf" syncable="YES">
+        <attribute name="hashtagTitle" attributeType="String" syncable="YES"/>
+        <attribute name="postsCount" attributeType="Integer 64" syncable="YES"/>
     </entity>
     <entity name="ImageAsset" representedClassName="VImageAsset" syncable="YES">
         <attribute name="height" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -138,15 +155,25 @@
         <attribute name="timeoutGotoNode" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <relationship name="relationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Interaction" inverseName="interactionAction" inverseEntity="Interaction" syncable="YES"/>
     </entity>
+    <entity name="MediaAttachment" representedClassName="VMediaAttachment" syncable="YES">
+        <attribute name="mediaURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mimeType" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="comment" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Comment" inverseName="commentMedia" inverseEntity="Comment" syncable="YES"/>
+        <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="mediaAttachments" inverseEntity="Message" syncable="YES"/>
+    </entity>
     <entity name="Message" representedClassName="VMessage" syncable="YES">
         <attribute name="isRead" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="mediaHeight" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="mediaPath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mediaWidth" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="postedAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 32" minValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="senderUserId" optional="YES" attributeType="Integer 32" minValueString="-1" defaultValueString="-1" syncable="YES"/>
+        <attribute name="shouldAutoplay" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="thumbnailPath" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="conversation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Conversation" inverseName="messages" inverseEntity="Conversation" syncable="YES"/>
+        <relationship name="mediaAttachments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MediaAttachment" inverseName="message" inverseEntity="MediaAttachment" syncable="YES"/>
         <relationship name="sender" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="messages" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="Node" representedClassName="VNode" syncable="YES">
@@ -196,26 +223,27 @@
         <relationship name="interaction" maxCount="1" deletionRule="Nullify" destinationEntity="Interaction" inverseName="rules" inverseEntity="Interaction" syncable="YES"/>
     </entity>
     <entity name="Sequence" representedClassName="VSequence" parentEntity="StreamItem" syncable="YES">
-        <attribute name="category" attributeType="String" syncable="YES"/>
-        <attribute name="commentCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="createdBy" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="commentCount" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="createdBy" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="expiresAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="gameStatus" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="gifCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="hasReposted" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="gifCount" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="hasReposted" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isComplete" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isGifStyle" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isLikedByMainUser" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="isRemix" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isRepost" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="likeCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="memeCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="nameEmbeddedInContent" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="parentUserId" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="permissionsMask" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="isRemix" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isRepost" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="likeCount" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="memeCount" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="nameEmbeddedInContent" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="parentUserId" optional="YES" attributeType="Integer 32" syncable="YES"/>
+        <attribute name="permissionsMask" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="previewData" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="previewType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="releasedAt" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="repostCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="repostCount" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="sequenceDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" attributeType="String" syncable="YES"/>
         <relationship name="adBreaks" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="AdBreak" inverseName="sequence" inverseEntity="AdBreak" syncable="YES"/>
@@ -227,24 +255,32 @@
         <relationship name="parentUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="childSequences" inverseEntity="User" syncable="YES"/>
         <relationship name="pollResults" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PollResult" inverseName="sequence" inverseEntity="PollResult" syncable="YES"/>
         <relationship name="previewAssets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ImageAsset" inverseName="sequences" inverseEntity="ImageAsset" syncable="YES"/>
+        <relationship name="recentComments" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Comment" inverseName="inStreamSequence" inverseEntity="Comment" syncable="YES"/>
         <relationship name="recentUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="recentSequences" inverseEntity="User" syncable="YES"/>
         <relationship name="reposters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="repostedSequences" inverseEntity="User" syncable="YES"/>
         <relationship name="tracking" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Tracking" inverseName="sequence" inverseEntity="Tracking" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="sequences" inverseEntity="User" syncable="YES"/>
         <relationship name="voteResults" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VoteResult" inverseName="sequence" inverseEntity="VoteResult" syncable="YES"/>
     </entity>
+    <entity name="Shelf" representedClassName="victorious.Shelf" parentEntity="Stream" syncable="YES">
+        <attribute name="streamUrl" attributeType="String" syncable="YES"/>
+        <attribute name="title" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Stream" representedClassName="VStream" parentEntity="StreamItem" syncable="YES">
         <attribute name="apiPath" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="count" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="count" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="filterName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="hashtag" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
         <attribute name="isUserPostAllowed" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="shelfId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="trackingIdentifier" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="marqueeItems" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="StreamItem" inverseName="marquees" inverseEntity="StreamItem" syncable="YES"/>
         <relationship name="streamItems" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="StreamItem" inverseName="streams" inverseEntity="StreamItem" syncable="YES"/>
     </entity>
     <entity name="StreamItem" representedClassName="VStreamItem" isAbstract="YES" syncable="YES">
         <attribute name="headline" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="itemSubType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="itemType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="previewImagesObject" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="remoteId" optional="YES" attributeType="String" defaultValueString="0" indexed="YES" syncable="YES"/>
@@ -298,6 +334,12 @@
         <relationship name="recentSequences" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Sequence" inverseName="recentUser" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="repostedSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="reposters" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="sequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="user" inverseEntity="Sequence" syncable="YES"/>
+        <relationship name="shelves" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UserShelf" inverseName="user" inverseEntity="UserShelf" syncable="YES"/>
+    </entity>
+    <entity name="UserShelf" representedClassName="victorious.UserShelf" parentEntity="Shelf" syncable="YES">
+        <attribute name="followersCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="postsCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="shelves" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="VoteResult" representedClassName="VVoteResult" syncable="YES">
         <attribute name="count" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -305,33 +347,38 @@
         <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="voteResults" inverseEntity="Sequence" syncable="YES"/>
     </entity>
     <elements>
-        <element name="AbstractFilter" positionX="1366" positionY="-600" width="128" height="105"/>
-        <element name="AdBreak" positionX="504" positionY="-322" width="128" height="90"/>
-        <element name="AdBreakFallback" positionX="891" positionY="-324" width="128" height="135"/>
-        <element name="Answer" positionX="727" positionY="99" width="128" height="178"/>
-        <element name="AnswerAction" positionX="718" positionY="330" width="128" height="75"/>
-        <element name="Asset" positionX="646" positionY="-441" width="128" height="240"/>
-        <element name="Comment" positionX="1078" positionY="38" width="128" height="315"/>
-        <element name="Conversation" positionX="1528" positionY="-468" width="128" height="148"/>
-        <element name="EditorializationItem" positionX="657" positionY="-612" width="128" height="120"/>
-        <element name="EndCard" positionX="693" positionY="-648" width="128" height="165"/>
-        <element name="GIFSearchResult" positionX="621" positionY="-648" width="128" height="180"/>
-        <element name="Hashtag" positionX="1087" positionY="-630" width="128" height="90"/>
-        <element name="ImageAsset" positionX="423" positionY="-594" width="128" height="135"/>
-        <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
-        <element name="InteractionAction" positionX="495" positionY="-162" width="128" height="105"/>
-        <element name="Message" positionX="1582" positionY="-271" width="128" height="180"/>
-        <element name="Node" positionX="817" positionY="-180" width="128" height="135"/>
-        <element name="NodeAction" positionX="835" positionY="-9" width="128" height="90"/>
-        <element name="Notification" positionX="1593" positionY="87" width="128" height="210"/>
-        <element name="NotificationSettings" positionX="621" positionY="-747" width="128" height="150"/>
-        <element name="PollResult" positionX="1582" positionY="-36" width="128" height="118"/>
-        <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
-        <element name="Sequence" positionX="1078" positionY="-540" width="128" height="585"/>
-        <element name="Stream" positionX="1069" positionY="-792" width="128" height="165"/>
-        <element name="StreamItem" positionX="871" positionY="-765" width="128" height="180"/>
-        <element name="Tracking" positionX="828" positionY="-630" width="128" height="225"/>
-        <element name="User" positionX="1321" positionY="-324" width="128" height="465"/>
+        <element name="AbstractFilter" positionX="0" positionY="0" width="128" height="105"/>
+        <element name="AdBreak" positionX="0" positionY="0" width="128" height="90"/>
+        <element name="AdBreakFallback" positionX="0" positionY="0" width="128" height="135"/>
+        <element name="Answer" positionX="0" positionY="0" width="128" height="180"/>
+        <element name="AnswerAction" positionX="0" positionY="0" width="128" height="75"/>
+        <element name="Asset" positionX="0" positionY="0" width="128" height="225"/>
+        <element name="Comment" positionX="0" positionY="0" width="128" height="360"/>
+        <element name="Conversation" positionX="0" positionY="0" width="128" height="165"/>
+        <element name="EditorializationItem" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="EndCard" positionX="0" positionY="0" width="128" height="165"/>
+        <element name="Experiment" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="GIFSearchResult" positionX="0" positionY="0" width="128" height="195"/>
+        <element name="Hashtag" positionX="0" positionY="0" width="128" height="90"/>
+        <element name="HashtagShelf" positionX="630" positionY="-639" width="128" height="75"/>
+        <element name="ImageAsset" positionX="0" positionY="0" width="128" height="135"/>
+        <element name="Interaction" positionX="0" positionY="0" width="128" height="195"/>
+        <element name="InteractionAction" positionX="0" positionY="0" width="128" height="105"/>
+        <element name="MediaAttachment" positionX="0" positionY="0" width="128" height="105"/>
+        <element name="Message" positionX="0" positionY="0" width="128" height="240"/>
+        <element name="Node" positionX="0" positionY="0" width="128" height="135"/>
+        <element name="NodeAction" positionX="0" positionY="0" width="128" height="90"/>
+        <element name="Notification" positionX="0" positionY="0" width="128" height="210"/>
+        <element name="NotificationSettings" positionX="0" positionY="0" width="128" height="150"/>
+        <element name="PollResult" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="Rule" positionX="0" positionY="0" width="128" height="75"/>
+        <element name="Sequence" positionX="0" positionY="0" width="128" height="600"/>
+        <element name="Shelf" positionX="639" positionY="-630" width="128" height="75"/>
+        <element name="Stream" positionX="1069" positionY="-792" width="128" height="180"/>
+        <element name="StreamItem" positionX="871" positionY="-765" width="128" height="210"/>
+        <element name="Tracking" positionX="828" positionY="-630" width="128" height="240"/>
+        <element name="User" positionX="1321" positionY="-324" width="128" height="480"/>
+        <element name="UserShelf" positionX="639" positionY="-630" width="128" height="90"/>
         <element name="VoteResult" positionX="864" positionY="164" width="128" height="90"/>
     </elements>
 </model>

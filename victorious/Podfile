@@ -1,13 +1,13 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
-platform :ios, '7.0'
+platform :ios, '8.1'
 
 inhibit_all_warnings!
 
 target :victorious do
-    pod 'RestKit', '~> 0.22.0'
-    pod 'TTTAttributedLabel', '~>1.8.1'
-    pod 'MBProgressHUD', '~> 0.8'
+    pod 'RestKit'
+    pod 'TTTAttributedLabel'
+    pod 'MBProgressHUD'
     pod 'FlurrySDK'
     pod 'KVOController'
     pod 'SDWebImage'
@@ -17,7 +17,7 @@ target :victorious do
 
     target :test do
         pod 'Nocilla', :git => 'https://github.com/TouchFrame/Nocilla.git', :branch => 'block-response'
-        link_with 'victoriousTests'
+        link_with 'victoriousTests', 'VictoriousCommonTests'
     end
 end
 
@@ -30,4 +30,8 @@ target :VictoriousCommonOSX do
     platform :osx, "10.10"
     pod 'IGDigest'
     link_with 'VictoriousCommonOSX'
+end
+
+target 'UIAutomationTests', :exclusive => true do
+  pod 'KIF', :git => 'https://github.com/TouchFrame/KIF.git'
 end

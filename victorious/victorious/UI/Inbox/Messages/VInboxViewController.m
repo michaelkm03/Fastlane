@@ -39,7 +39,11 @@
 #import "UIResponder+VResponderChain.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VTracking.h"
+#import "VBadgeResponder.h"
 #import "UIViewController+VAccessoryScreens.h"
+#import "VDependencyManager+VAccessoryScreens.h"
+#import "UIViewController+VRootNavigationController.h"
+#import "VNavigationController.h"
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 
@@ -47,7 +51,6 @@ static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 
 @property (strong, nonatomic) NSMutableDictionary *messageViewControllers;
 @property (strong, nonatomic) VUnreadMessageCountCoordinator *messageCountCoordinator;
-@property (nonatomic) NSInteger badgeNumber;
 @property (strong, nonatomic) RKManagedObjectRequestOperation *refreshRequest;
 @property (nonatomic, strong) VUser *userWithQueuedConversation;
 
@@ -103,12 +106,12 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 {
     [super viewDidLoad];
 
-    self.automaticallyAdjustsScrollViewInsets = YES;
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
     self.tableView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = VConversationCellHeight;
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    [self refresh:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -122,7 +125,10 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     [self.dependencyManager trackViewWillAppear:self];
     
     [self.refreshControl beginRefreshing];
+
     [self refresh:nil];
+    self.edgesForExtendedLayout = UIRectEdgeBottom;
+    self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(-CGRectGetHeight(self.navigationController.navigationBar.bounds), 0, 0, 0);
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -390,7 +396,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     else
     {
         detailVC.messageCountCoordinator = self.messageCountCoordinator;
-        [self.navigationController pushViewController:detailVC animated:YES];
+        [[self rootNavigationController].innerNavigationController pushViewController:detailVC animated:YES];
     }
 }
 
@@ -433,6 +439,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
         [self.tableView reloadData];
         [self setHasMessages:(self.fetchedResultsController.fetchedObjects.count > 0)];
         [self.messageCountCoordinator updateUnreadMessageCount];
+        [self updateBadges];
     };
 
     self.refreshRequest = [[VObjectManager sharedManager] loadConversationListWithPageType:VPageTypeFirst
@@ -474,6 +481,7 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
     VUserSearchViewController *userSearch = [VUserSearchViewController newWithDependencyManager:self.dependencyManager];
     userSearch.searchContext = VObjectManagerSearchContextMessage;
     userSearch.messageSearchDelegate = self;
+    userSearch.userSearchPresenter = VUserSearchPresenterMessages;
     
     //Create a navigation controller that will hold the user search view controller
     VNavigationController *navigationController = [[VNavigationController alloc] initWithDependencyManager:self.dependencyManager];
@@ -500,6 +508,11 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
 }
 
 #pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    self.tableView.scrollIndicatorInsets = UIEdgeInsetsZero;
+}
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
@@ -542,7 +555,26 @@ NSString * const VInboxViewControllerInboxPushReceivedNotification = @"VInboxCon
                                                                   successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
          {
              [self.messageCountCoordinator updateUnreadMessageCount];
+             [self updateBadges];
          } failBlock:nil];
+        
+        [self.dependencyManager.objectManager loadNotificationsListWithPageType:VPageTypeFirst
+                                                                   successBlock:^(NSOperation *__nullable operation, id  __nullable result, NSArray *__nonnull resultObjects)
+         {
+             [self updateBadges];
+         }
+                                                                      failBlock:nil];
+    }
+}
+
+- (void)updateBadges
+{
+    self.badgeNumber = self.messageCountCoordinator.unreadMessageCount;
+
+    id<VBadgeResponder> badgeResponder = [[self nextResponder] targetForAction:@selector(updateBadge) withSender:nil];
+    if (badgeResponder != nil)
+    {
+        [badgeResponder updateBadge];
     }
 }
 

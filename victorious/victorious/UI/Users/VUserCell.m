@@ -114,23 +114,27 @@ static const CGFloat kUserCellHeight = 51.0f;
     
     if (sender.controlState == VFollowControlStateFollowed)
     {
-        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:)
+        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
                                                                           withSender:nil];
-        NSAssert(followResponder != nil, @"VUserCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
+        NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
         
         [followResponder unfollowUser:self.user
                   withAuthorizedBlock:authorizedBlock
-                        andCompletion:completionBlock];
+                        andCompletion:completionBlock
+                   fromViewController:nil
+                       withScreenName:nil];
     }
     else
     {
-        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:)
+        id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
                                                                           withSender:nil];
-        NSAssert(followResponder != nil, @"VUserCell needs a VFollowingResponder higher up the chain to communicate following commands with.");
+        NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
         
         [followResponder followUser:self.user
-                  withAuthorizedBlock:authorizedBlock
-                        andCompletion:completionBlock];
+                withAuthorizedBlock:authorizedBlock
+                      andCompletion:completionBlock
+                 fromViewController:nil
+                     withScreenName:nil];
     }
 }
 

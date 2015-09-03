@@ -60,4 +60,9 @@
     [self.commentsUtilitiesDelegate editComment:comment];
 }
 
+- (void)replyToComment:(VComment *)comment
+{
+    [self.commentsUtilitiesDelegate replyToComment:comment];
+}
+
 @end

@@ -17,6 +17,9 @@
 #import "VThemeManager.h"
 #import "VAppDelegate.h"
 #import "VUserTaggingTextStorage.h"
+#import "VDependencyManager.h"
+#import "VTag.h"
+#import "VTagStringFormatter.h"
 
 static const CGFloat kTextInputFieldMaxLines = 3.0f;
 
@@ -26,7 +29,7 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
 @property (nonatomic, strong, readwrite) UITextView *textView;
 @property (weak, nonatomic) IBOutlet UIButton *mediaButton;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
-@property (nonatomic, strong) NSURL *mediaURL;
+@property (nonatomic, strong) VPublishParameters *publishParameters;
 @property (nonatomic, strong) VMediaAttachmentPresenter *attachmentPresenter;
 
 @property (nonatomic, assign, readonly) CGFloat maxTextFieldHeight;
@@ -55,6 +58,8 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
     [self addAccessoryBar];
     
     self.promptLabel.textColor = [UIColor lightGrayColor];
+    
+    self.mediaButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
     
     [self enableOrDisableSendButtonAsAppropriate];
 }
@@ -123,18 +128,26 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
     self.mediaButton.clipsToBounds = YES;
 }
 
+#pragma mark - public methods
+
+- (void)setReplyRecipient:(VUser *)user
+{
+    [self.textStorage repliedToUser:user];
+    self.promptLabel.hidden = (self.textStorage.textView.text != nil);
+}
+
 - (void)clearKeyboardBar
 {
     [self.mediaButton setImage:[UIImage imageNamed:@"MessageCamera"] forState:UIControlStateNormal];
     self.textView.text = nil;
-    self.mediaURL = nil;
+    self.publishParameters.mediaToUploadURL = nil;
     [self textViewDidChange:self.textView];
 }
 
 - (void)enableOrDisableSendButtonAsAppropriate
 {
-    NSString *stringWithoutSpace = [self.textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    self.sendButton.enabled = self.mediaURL || (stringWithoutSpace.length > 0);
+    NSString *textWithoutSpace = [self.textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    self.sendButton.enabled = self.publishParameters.mediaToUploadURL != nil || (textWithoutSpace.length > 0);
 }
 
 - (IBAction)sendButtonAction:(id)sender
@@ -149,10 +162,10 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
     
     [self.textView resignFirstResponder];
 
-    if ([self.delegate respondsToSelector:@selector(keyboardBar:didComposeWithText:mediaURL:)])
+    if ([self.delegate respondsToSelector:@selector(keyboardBar:didComposeWithText:publishParameters:)])
     {
         NSString *text = [self.textStorage databaseFormattedString];
-        [self.delegate keyboardBar:self didComposeWithText:text mediaURL:self.mediaURL];
+        [self.delegate keyboardBar:self didComposeWithText:text publishParameters:self.publishParameters];
     }
     if (self.shouldAutoClearOnCompose)
     {
@@ -165,7 +178,7 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
     [self.textView resignFirstResponder];
     [self.mediaButton setImage:[UIImage imageNamed:@"MessageCamera"] forState:UIControlStateNormal];
     self.textView.text = nil;
-    self.mediaURL = nil;
+    self.publishParameters.mediaToUploadURL = nil;
     
     if ([self.delegate respondsToSelector:@selector(didCancelKeyboardBar:)])
     {
@@ -187,24 +200,25 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
     {
         self.attachmentPresenter = [[VMediaAttachmentPresenter alloc] initWithDependencymanager:self.dependencyManager];
         __weak typeof(self) welf = self;
-        self.attachmentPresenter.attachmentTypes = VMediaAttachmentOptionsImage | VMediaAttachmentOptionsVideo;
-        self.attachmentPresenter.resultHandler = ^void(BOOL success, UIImage *previewImage, NSURL *mediaURL)
+        self.attachmentPresenter.attachmentTypes = VMediaAttachmentOptionsImage | VMediaAttachmentOptionsVideo | VMediaAttachmentOptionsGIF;
+        self.attachmentPresenter.resultHandler = ^void(BOOL success, VPublishParameters *publishParameters)
         {
+            __strong typeof(self) strongSelf = welf;
             if (success)
             {
-                welf.mediaURL = mediaURL;
-                [welf.mediaButton setImage:previewImage forState:UIControlStateNormal];
+                strongSelf.publishParameters = publishParameters;
+                [strongSelf.mediaButton setImage:publishParameters.previewImage forState:UIControlStateNormal];
             }
-            [welf dismissViewControllerAnimated:YES
+            [strongSelf dismissViewControllerAnimated:YES
                                      completion:^
              {
-                 [welf enableOrDisableSendButtonAsAppropriate];
+                 [strongSelf enableOrDisableSendButtonAsAppropriate];
              }];
         };
         [self.attachmentPresenter presentOnViewController:self];
     };
     
-    if (self.mediaURL == nil)
+    if (self.publishParameters.mediaToUploadURL == nil)
     {
         showCamera();
         return;
@@ -217,7 +231,7 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
     
     void (^clearMediaSelection)(void) = ^void(void)
     {
-        self.mediaURL = nil;
+        self.publishParameters.mediaToUploadURL = nil;
         [self.mediaButton setImage:[UIImage imageNamed:@"MessageCamera"] forState:UIControlStateNormal];
     };
     
@@ -293,19 +307,10 @@ static const CGFloat kTextInputFieldMaxLines = 3.0f;
 {
     if ([text isEqualToString:@"\n"])
     {
-        switch (textView.returnKeyType)
+        [textView resignFirstResponder];
+        if ([self.delegate respondsToSelector:@selector(didCancelKeyboardBar:)])
         {
-            case UIReturnKeyGo:
-            case UIReturnKeyDone:
-            case UIReturnKeySend:
-                [textView resignFirstResponder];
-                if ([self.delegate respondsToSelector:@selector(didCancelKeyboardBar:)])
-                {
-                    [self.delegate didCancelKeyboardBar:self];
-                }
-                return NO;
-            default:
-                break;
+            [self.delegate didCancelKeyboardBar:self];
         }
     }
     

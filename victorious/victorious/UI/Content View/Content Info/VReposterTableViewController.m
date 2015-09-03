@@ -19,13 +19,10 @@
 
 #import "VFollowResponder.h"
 
-#import "VFollowingHelper.h"
-
 @interface VReposterTableViewController () <VFollowResponder>
 
 @property (nonatomic, strong) NSArray *reposters;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) VFollowingHelper *followingHelper;
 
 @end
 
@@ -37,7 +34,6 @@
     if (self)
     {
         _dependencyManager = dependencyManager;
-        _followingHelper = [[VFollowingHelper alloc] initWithDependencyManager:dependencyManager viewControllerToPresentOn:self];
     }
     return self;
 }
@@ -188,18 +184,46 @@
     }
 }
 
-- (void)followUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowEventCompletion)completion
+- (void)followUser:(VUser *)user
+withAuthorizedBlock:(void (^)(void))authorizedBlock
+     andCompletion:(VFollowEventCompletion)completion
+fromViewController:(UIViewController *)viewControllerToPresentOn
+    withScreenName:(NSString *)screenName
 {
     NSDictionary *params = @{ VTrackingKeyContext : VTrackingValueReposters };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFollowUser parameters:params];
-    [self.followingHelper followUser:user withAuthorizedBlock:authorizedBlock andCompletion:completion];
+    
+    NSString *sourceScreen = screenName?:VFollowSourceScreenReposter;
+    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
+                                                                      withSender:nil];
+    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
+    
+    [followResponder followUser:user
+            withAuthorizedBlock:authorizedBlock
+                  andCompletion:completion
+             fromViewController:self
+                 withScreenName:sourceScreen];
 }
 
-- (void)unfollowUser:(VUser *)user withAuthorizedBlock:(void (^)(void))authorizedBlock andCompletion:(VFollowEventCompletion)completion
+- (void)unfollowUser:(VUser *)user
+ withAuthorizedBlock:(void (^)(void))authorizedBlock
+       andCompletion:(VFollowEventCompletion)completion
+  fromViewController:(UIViewController *)viewControllerToPresentOn
+      withScreenName:(NSString *)screenName
 {
     NSDictionary *params = @{ VTrackingKeyContext : VTrackingValueReposters };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidUnfollowUser parameters:params];
-    [self.followingHelper unfollowUser:user withAuthorizedBlock:authorizedBlock andCompletion:completion];
+    
+    NSString *sourceScreen = screenName?:VFollowSourceScreenReposter;
+    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
+                                                                      withSender:nil];
+    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
+    
+    [followResponder unfollowUser:user
+              withAuthorizedBlock:authorizedBlock
+                    andCompletion:completion
+               fromViewController:self
+                   withScreenName:sourceScreen];
 }
 
 @end

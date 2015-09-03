@@ -44,4 +44,6 @@
 @property (nonatomic, assign) BOOL disableSearching;
 @property (nonatomic, strong) UIFont *defaultFont;
 
+- (void)repliedToUser:(VUser *)user;
+
 @end

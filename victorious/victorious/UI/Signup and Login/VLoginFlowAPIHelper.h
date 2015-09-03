@@ -26,15 +26,17 @@
 - (instancetype)initWithViewControllerToPresentOn:(UIViewController *)viewController
                                 dependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /**
  *  The user has selected twitter authorization.
  */
-- (void)selectedTwitterAuthorizationWithCompletion:(void (^)(BOOL))completion;
+- (void)selectedTwitterAuthorizationWithCompletion:(void (^)(BOOL succeeded, BOOL isNewUser))completion;
 
 /**
  *  The user has selected facebook authorization.
  */
-- (void)selectedFacebookAuthorizationWithCompletion:(void (^)(BOOL))completion;
+- (void)selectedFacebookAuthorizationWithCompletion:(void (^)(BOOL succeeded, BOOL isNewUser))completion;
 
 /**
  *  The user has entered the passed email nad password and requested login.

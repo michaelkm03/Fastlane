@@ -3,16 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "ballistic-bg.png"
+      "filename" : "eb_circle.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "ballistic-bg@2x.png"
+      "filename" : "eb_circle@2x.png"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x"
+      "scale" : "3x",
+      "filename" : "eb_circle@3x.png"
     }
   ],
   "info" : {

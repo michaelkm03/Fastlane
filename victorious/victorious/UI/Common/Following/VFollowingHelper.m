@@ -16,6 +16,12 @@
 #import "VUser.h"
 #import "VObjectManager+Users.h"
 
+@interface VFollowingHelper ()
+
+@property (nonatomic, weak, readwrite) UIViewController *viewControllerToPresentAuthorizationOn;
+
+@end
+
 @implementation VFollowingHelper
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -33,11 +39,22 @@
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (void)followUser:(VUser *)user
 withAuthorizedBlock:(void (^)(void))authorizedBlock
      andCompletion:(VFollowHelperCompletion)completion
+fromViewController:(UIViewController *)viewControllerToPresentOn
+    withScreenName:(NSString *)screenName
 {
     NSParameterAssert(completion != nil);
+    NSParameterAssert(viewControllerToPresentOn != nil);
+    
+    self.viewControllerToPresentAuthorizationOn = viewControllerToPresentOn;
     
     [self withAuthorizationDo:^(BOOL authorized)
      {
@@ -74,15 +91,24 @@ withAuthorizedBlock:(void (^)(void))authorizedBlock
          };
          
          // Add user at backend
-         [[VObjectManager sharedManager] followUser:user successBlock:successBlock failBlock:failureBlock];
+         NSString *sourceScreen = screenName?:VFollowSourceScreenUnknown;
+         [[VObjectManager sharedManager] followUser:user
+                                       successBlock:successBlock
+                                          failBlock:failureBlock
+                                         fromScreen:sourceScreen];
      }];
 }
 
 - (void)unfollowUser:(VUser *)user
  withAuthorizedBlock:(void (^)(void))authorizedBlock
        andCompletion:(VFollowHelperCompletion)completion
+  fromViewController:(UIViewController *)viewControllerToPresentOn
+      withScreenName:(NSString *)screenName
 {
     NSParameterAssert(completion != nil);
+    NSParameterAssert(viewControllerToPresentOn != nil);
+    
+    self.viewControllerToPresentAuthorizationOn = viewControllerToPresentOn;
     
     [self withAuthorizationDo:^(BOOL authorized)
      {
@@ -115,7 +141,11 @@ withAuthorizedBlock:(void (^)(void))authorizedBlock
              completion(user);
          };
          
-         [[VObjectManager sharedManager] unfollowUser:user successBlock:successBlock failBlock:failureBlock];
+         NSString *sourceScreen = screenName?:VFollowSourceScreenUnknown;
+         [[VObjectManager sharedManager] unfollowUser:user
+                                         successBlock:successBlock
+                                            failBlock:failureBlock
+                                           fromScreen:sourceScreen];
      }];
 }
 

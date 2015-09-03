@@ -18,6 +18,7 @@
 @dynamic hashtag;
 @dynamic isUserPostAllowed;
 @dynamic trackingIdentifier;
+@dynamic shelfId;
 @dynamic marqueeItems;
 @dynamic streamItems;
 

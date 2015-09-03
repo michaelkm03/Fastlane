@@ -7,28 +7,129 @@
 //
 
 #import "VComment+Fetcher.h"
+#import "VComment+RestKit.h"
 #import "NSString+VParseHelp.h"
+#import "VMediaAttachment.h"
+#import "NSURL+MediaType.h"
+#import "VCompatibility.h"
 
 @implementation VComment (Fetcher)
+
+- (VCommentMediaType)commentMediaType
+{
+    if ([self hasMedia])
+    {
+        if ([self.mediaUrl v_hasVideoExtension]) // << Video media type
+        {
+            if ([[self shouldAutoplay] boolValue])
+            {
+                return VCommentMediaTypeGIF;
+            }
+            else
+            {
+                return VCommentMediaTypeVideo;
+            }
+        }
+        else // << Image media type
+        {
+            if (self.mediaType != nil && [self.mediaType isEqualToString:VConstantsMediaTypeVoteType])
+            {
+                return VCommentMediaTypeBallistic;
+            }
+            else
+            {
+                return VCommentMediaTypeImage;
+            }
+        }
+    }
+    
+    return VCommentMediaTypeNoMedia;
+}
+
+- (NSURL *)previewImageURL
+{
+    NSURL *url;
+    if (self.thumbnailUrl != nil && ![self.thumbnailUrl isEmpty])
+    {
+        url = [[NSURL alloc] initWithString:self.thumbnailUrl];
+    }
+    else if (self.mediaUrl != nil && ![self.mediaUrl isEmpty] && [self.mediaType isEqualToString:VConstantsMediaTypeImage])
+    {
+        url = [[NSURL alloc] initWithString:self.mediaUrl];
+    }
+    
+    return url;
+}
+
+- (NSURL *)properMediaURLGivenContentType
+{
+    switch ([self commentMediaType])
+    {
+        case VCommentMediaTypeGIF:
+            return [self mp4MediaURL];
+            break;
+        default:
+            return [NSURL URLWithString:self.mediaUrl];
+            break;
+    }
+}
+
+- (BOOL)hasMediaAttachment
+{
+    return [self commentMediaType] != VCommentMediaTypeNoMedia;
+}
+
+- (CGFloat)mediaAspectRatio
+{
+    if (self.mediaHeight == nil || self.mediaWidth == nil)
+    {
+        return 1;
+    }
+    
+    CGFloat mediaHeight = [self.mediaHeight floatValue];
+    CGFloat mediaWidth = [self.mediaWidth floatValue];
+    
+    CGFloat aspectRatio = 1.0f;
+    
+    if (mediaHeight > 0 && mediaWidth > 0)
+    {
+        aspectRatio = mediaHeight / mediaWidth;
+    }
+    
+    return CLAMP(0, aspectRatio, 2);
+}
+
+#pragma mark - Private Methods
 
 - (BOOL)hasMedia
 {
     return (self.mediaUrl && ![self.mediaUrl isEmpty]) || (self.thumbnailUrl && ![self.thumbnailUrl isEmpty]);
 }
 
-- (NSURL *)previewImageURL
+- (NSURL *)mp4MediaURL
 {
-    NSURL *url;
-    if (self.thumbnailUrl && ![self.thumbnailUrl isEmpty])
+    NSString *mediaDataURLString = [self commentMediaURLForMimeType:kmp4MimeType];
+    if ( mediaDataURLString == nil && [self.mediaUrl v_isExtensionMp4] )
     {
-        url = [[NSURL alloc] initWithString:self.thumbnailUrl];
+        mediaDataURLString = self.mediaUrl;
     }
-    else if (self.mediaUrl && ![self.mediaUrl isEmpty] && [self.mediaType isEqualToString:VConstantsMediaTypeImage])
-    {
-        url = [[NSURL alloc] initWithString:self.thumbnailUrl];
-    }
+    
+    return [NSURL URLWithString:mediaDataURLString];
+}
 
-    return url;
+- (NSString *)commentMediaURLForMimeType:(NSString *)mimeType
+{
+    __block NSString *mediaURLStringForMimeType = nil;
+    [self.commentMedia enumerateObjectsUsingBlock:^(VMediaAttachment *media, BOOL *stop)
+     {
+         if ([media.mimeType isEqualToString:mimeType])
+         {
+             mediaURLStringForMimeType = media.mediaURL;
+             *stop = YES;
+         }
+     }];
+    
+    return mediaURLStringForMimeType;
 }
 
 @end

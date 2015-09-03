@@ -27,7 +27,7 @@
 #import "VFindFriendsViewController.h"
 #import "VDependencyManager.h"
 #import "VBaseCollectionViewCell.h"
-#import "VDependencyManager+VScaffoldViewController.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
 #import "VNotAuthorizedDataSource.h"
 #import "VNotAuthorizedProfileCollectionViewCell.h"
 #import "VUserProfileHeader.h"
@@ -46,6 +46,7 @@
 #import "VFollowersDataSource.h"
 #import "VUserIsFollowingDataSource.h"
 #import "VDependencyManager+VTracking.h"
+#import "VFollowResponder.h"
 
 static void * VUserProfileViewContext = &VUserProfileViewContext;
 static void * VUserProfileAttributesContext =  &VUserProfileAttributesContext;
@@ -57,7 +58,7 @@ static const CGFloat MBProgressHUDCustomViewSide = 37.0f;
 
 static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
-@interface VUserProfileViewController () <VUserProfileHeaderDelegate, MBProgressHUDDelegate, VNotAuthorizedDataSourceDelegate, VNavigationViewFloatingControllerDelegate>
+@interface VUserProfileViewController () <VUserProfileHeaderDelegate, MBProgressHUDDelegate, VNotAuthorizedDataSourceDelegate, VNavigationViewFloatingControllerDelegate, VFollowResponder>
 
 @property (nonatomic, assign) BOOL didEndViewWillAppear;
 @property (nonatomic, assign) BOOL isMe;
@@ -494,38 +495,34 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)toggleFollowUser
 {
-    VFailBlock fail = ^(NSOperation *operation, NSError *error)
-    {
-        self.profileHeaderViewController.loading = NO;
-        [[[UIAlertView alloc] initWithTitle:nil
-                                    message:NSLocalizedString(@"UnfollowError", @"")
-                                   delegate:nil
-                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                          otherButtonTitles:nil] show];
-    };
-    
     if ( self.profileHeaderViewController.state == VUserProfileHeaderStateFollowingUser )
     {
         self.profileHeaderViewController.loading = YES;
-        [[VObjectManager sharedManager] unfollowUser:self.user
-                                        successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-         {
-             self.profileHeaderViewController.loading = NO;
-             self.profileHeaderViewController.state = VUserProfileHeaderStateNotFollowingUser;
-         }
-                                           failBlock:fail];
+        
+        [self unfollowUser:self.user withAuthorizedBlock:nil andCompletion:^(VUser *userActedOn)
+        {
+            self.profileHeaderViewController.loading = NO;
+            [self reloadUserFollowingRelationship];
+        }
+        fromViewController:self
+            withScreenName:nil
+         ];
     }
     else if ( self.profileHeaderViewController.state == VUserProfileHeaderStateNotFollowingUser )
     {
         [self stopObservingUserProfile];
         self.profileHeaderViewController.loading = YES;
-        [[VObjectManager sharedManager] followUser:self.user
-                                      successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
-         {
-             self.profileHeaderViewController.loading = NO;
-             self.profileHeaderViewController.state = VUserProfileHeaderStateFollowingUser;
-         }
-                                         failBlock:fail];
+        
+        [self followUser:self.user
+     withAuthorizedBlock:nil
+           andCompletion:^(VUser *userActedOn)
+        {
+            self.profileHeaderViewController.loading = NO;
+            [self reloadUserFollowingRelationship];
+        }
+      fromViewController:self
+          withScreenName:nil
+         ];
     }
 }
 
@@ -630,6 +627,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     VUsersViewController *usersViewController = [[VUsersViewController alloc] initWithDependencyManager:childDependencyManager];
     usersViewController.title = NSLocalizedString( @"followers", nil );
     usersViewController.usersDataSource = [[VFollowersDataSource alloc] initWithUser:self.user];
+    usersViewController.usersViewContext = VUsersViewContextFollowers;
     
     [self.navigationController pushViewController:usersViewController animated:YES];
 }
@@ -646,7 +644,7 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         VUsersViewController *usersViewController = [[VUsersViewController alloc] initWithDependencyManager:childDependencyManager];
         usersViewController.title = NSLocalizedString( @"Following", nil );
         usersViewController.usersDataSource = [[VUserIsFollowingDataSource alloc] initWithUser:self.user];
-        
+        usersViewController.usersViewContext = VUsersViewContextFollowing;
         [self.navigationController pushViewController:usersViewController animated:YES];
     }
 }
@@ -704,6 +702,16 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     
     // Hide title if necessary
     [self updateTitleVisibilityWithVerticalOffset:scrollView.contentOffset.y];
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    // Don't hide the title when we are back at top triggered by setContentOffset to CGPointZero
+    if ( self.collectionView.contentOffset.y == 0 )
+    {
+        NSString *title = [self.dependencyManager stringForKey:VDependencyManagerTitleKey];
+        self.navigationItem.title = title;
+    }
 }
 
 - (void)updateTitleVisibilityWithVerticalOffset:(CGFloat)verticalOffset
@@ -932,7 +940,12 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         }
         else
         {
-            ((VMessageContainerViewController *)menuItem.destination).otherUser = self.user;
+            // Make a new container with destination's dependencyManager, and push it to the navigation controller stack
+            VDependencyManager *destinationDependencyManager = ((VMessageContainerViewController *)menuItem.destination).dependencyManager;
+            VMessageContainerViewController *destinationMessageContainerVC = [VMessageContainerViewController messageViewControllerForUser:self.user dependencyManager: destinationDependencyManager];
+            [self.navigationController pushViewController:destinationMessageContainerVC animated:YES];
+            
+            return NO;
         }
     }
     else if ( [menuItem.destination isKindOfClass:[VFindFriendsViewController class]] )
@@ -952,6 +965,51 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 - (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url
 {
     return [[VProfileDeeplinkHandler alloc] initWithDependencyManager:self.dependencyManager];
+}
+
+#pragma mark - VTabMenuContainedViewControllerNavigation
+
+- (void)reselected
+{
+    [self floatingViewSelected:nil];
+}
+
+#pragma mark - VFollowResponder
+
+- (void)followUser:(VUser *)user
+withAuthorizedBlock:(void (^)(void))authorizedBlock
+     andCompletion:(VFollowEventCompletion)completion
+fromViewController:(UIViewController *)viewControllerToPresentOn
+    withScreenName:(NSString *)screenName
+{
+    NSString *sourceScreen = screenName?:VFollowSourceScreenProfile;
+    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(followUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
+                                                                      withSender:nil];
+    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
+    
+    [followResponder followUser:user
+            withAuthorizedBlock:authorizedBlock
+                  andCompletion:completion
+             fromViewController:self
+                 withScreenName:sourceScreen];
+}
+
+- (void)unfollowUser:(VUser *)user 
+ withAuthorizedBlock:(void (^)(void))authorizedBlock
+       andCompletion:(VFollowEventCompletion)completion
+  fromViewController:(UIViewController *)viewControllerToPresentOn
+      withScreenName:(NSString *)screenName
+{
+    NSString *sourceScreen = screenName?:VFollowSourceScreenProfile;
+    id<VFollowResponder> followResponder = [[self nextResponder] targetForAction:@selector(unfollowUser:withAuthorizedBlock:andCompletion:fromViewController:withScreenName:)
+                                                                      withSender:nil];
+    NSAssert(followResponder != nil, @"%@ needs a VFollowingResponder higher up the chain to communicate following commands with.", NSStringFromClass(self.class));
+    
+    [followResponder unfollowUser:user
+              withAuthorizedBlock:authorizedBlock
+                    andCompletion:completion
+               fromViewController:self
+                   withScreenName:sourceScreen];
 }
 
 @end

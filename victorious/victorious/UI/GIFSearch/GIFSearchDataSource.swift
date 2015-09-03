@@ -98,20 +98,21 @@ class GIFSearchDataSource: NSObject {
                     self.state = .Content
                 }
                 else {
-                    self.clear()
+                    if pageType == .First {
+                        self.clear()
+                    }
                     self.state = .Error
                     result.error = error
                 }
                 completion?( result )
             }
         )
-        
     }
     
     /// Fetches data from the server and repopulates its backing model collection
     ///
-    /// :param: `searchTerm` A string to be used for the GIF search on the server
-    /// :param: `completion` A closure to be call when the operation is complete
+    /// :param: searchTerm A string to be used for the GIF search on the server
+    /// :param: completion A closure to be call when the operation is complete
     func performSearch( searchText:String, pageType: VPageType, completion: ((ChangeResult?)->())? ) {
         
         // Only allow one next page load at a time
@@ -137,7 +138,9 @@ class GIFSearchDataSource: NSObject {
                     self.state = .Content
                 }
                 else {
-                    self.clear()
+                    if pageType == .First {
+                        self.clear()
+                    }
                     self.state = .Error
                     result.error = error
                 }

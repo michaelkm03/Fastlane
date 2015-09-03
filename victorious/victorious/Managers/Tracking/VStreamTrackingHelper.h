@@ -8,7 +8,7 @@
 
 @import Foundation;
 
-@class VStream, VSequence;
+@class VStream, VSequence, StreamCellContext, AutoplayTrackingEvent;
 
 /**
  A helper class that handles the somewhat complex state management rules relates
@@ -47,12 +47,12 @@
 /**
  Call this whenever a cell becomes visisble according to any applicable visibility threshold requirements.
  */
-- (void)onStreamCellDidBecomeVisibleWithStream:(VStream *)stream sequence:(VSequence *)sequence;
+- (void)onStreamCellDidBecomeVisibleWithCellEvent:(StreamCellContext *)event;
 
 /**
  Call this when a stream cell is selected and another view will be presented/pushed to show its content.
  */
-- (void)onStreamCellSelectedWithStream:(VStream *)stream sequence:(VSequence *)sequence;
+- (void)onStreamCellSelectedWithCellEvent:(StreamCellContext *)event additionalInfo:(NSDictionary *)info;
 
 /**
  Call this after a stream has been fetched from the server and all information necessary
@@ -69,5 +69,10 @@
  Call this when a stream view is shown as the initial, default view in a multiple view controller container.
  */
 - (void)viewControllerAppearedAsInitial:(VStream *)stream;
+
+/**
+ Call this to track autoplaying video inside a stream cell.
+ */
+- (void)trackAutoplayEvent:(AutoplayTrackingEvent *)event;
 
 @end

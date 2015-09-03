@@ -30,7 +30,7 @@
  Intended to be called when experience enhancer is interacted with by user.
  Increments the sessionVoteCount and totalVoteCount.
  */
-- (void)vote;
+- (BOOL)vote;
 
 @property (nonatomic, strong, readonly) NSArray *trackingUrls;
 
@@ -42,9 +42,35 @@
 @property (nonatomic, strong) NSArray *animationSequence;
 @property (nonatomic, assign) NSTimeInterval animationDuration;
 @property (nonatomic, assign) NSTimeInterval flightDuration;
+@property (nonatomic, assign) NSTimeInterval cooldownDuration; // <- in seconds
 @property (nonatomic, strong) UIImage *flightImage;
 @property (nonatomic, assign) UIViewContentMode contentMode;
 @property (nonatomic, readonly) VVoteType *voteType;
 @property (nonatomic, readonly) BOOL isBallistic;
+@property (nonatomic, readonly) NSDate *lastVoted;
+@property (nonatomic, readonly) NSDate *cooldownDate;
+
+/**
+ Determines if this experience enhancer is in the process
+ of cooling down
+ */
+- (BOOL)isCoolingDown;
+
+/**
+ A float between 0 and 1 representing how much of the cooldown
+ has been completed
+ */
+- (CGFloat)ratioOfCooldownComplete;
+
+/**
+ Number of seconds until cooldown is complete
+ */
+- (NSTimeInterval)secondsUntilCooldownIsOver;
+
+/**
+ Removes the cached last vote date for this experience enhancer
+ which will void the current cooldown period if there is one
+ */
+- (void)resetCooldownTimer;
 
 @end

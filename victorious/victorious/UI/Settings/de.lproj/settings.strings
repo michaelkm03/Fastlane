@@ -16,6 +16,9 @@
 /* Class = "UITableViewController"; title = "Server Environment"; ObjectID = "6fa-Sd-wUR"; */
 "6fa-Sd-wUR.title" = "Server-Umgebung";
 
+/* Class = "UITableViewController"; title = "Experiments"; ObjectID = "6nd-lx-w31"; */
+"6nd-lx-w31.title" = "Experimente";
+
 /* Class = "UILabel"; text = "TITLE"; ObjectID = "8Fn-0A-Ctn"; */
 "8Fn-0A-Ctn.text" = "TITEL";
 
@@ -39,6 +42,9 @@
 
 /* Class = "UILabel"; text = "Reset Coachmarks"; ObjectID = "FNb-Ni-uJN"; */
 "FNb-Ni-uJN.text" = "Coachmarks zurücksetzen";
+
+/* Class = "UINavigationItem"; title = "Experiments"; ObjectID = "HQs-Ej-k6O"; */
+"HQs-Ej-k6O.title" = "Experimente";
 
 /* Class = "UITextField"; placeholder = "Confirm Password"; ObjectID = "Hdx-TS-3uZ"; */
 "Hdx-TS-3uZ.placeholder" = "Passwort bestätigen";
@@ -79,6 +85,12 @@
 /* Class = "UILabel"; text = "Subtitle"; ObjectID = "U7G-Km-0yw"; */
 "U7G-Km-0yw.text" = "Untertitel";
 
+/* Class = "UIButton"; normalTitle = "Reset Experiments"; ObjectID = "Ufb-HV-tDz"; */
+"Ufb-HV-tDz.normalTitle" = "Experimente zurücksetzen";
+
+/* Class = "UILabel"; text = "TITLE"; ObjectID = "Uxb-Bx-b8P"; */
+"Uxb-Bx-b8P.text" = "TITEL";
+
 /* Class = "UINavigationItem"; title = "Push Notifications"; ObjectID = "WVz-KR-Hhr"; */
 "WVz-KR-Hhr.title" = "Push-Benachrichtigungen";
 
@@ -96,6 +108,9 @@
 
 /* Class = "UINavigationItem"; title = "Privacy Policy"; ObjectID = "dAg-zH-vd2"; */
 "dAg-zH-vd2.title" = "Datenschutzbestimmungen";
+
+/* Class = "UILabel"; text = "Experiments"; ObjectID = "f7G-BC-zp9"; */
+"f7G-BC-zp9.text" = "Experiemente";
 
 /* Class = "UILabel"; text = "Always"; ObjectID = "iA5-m7-nZ8"; */
 "iA5-m7-nZ8.text" = "Immer";
@@ -139,6 +154,9 @@
 /* Class = "UILabel"; text = "Change Password"; ObjectID = "xmy-by-M88"; */
 "xmy-by-M88.text" = "Passwort ändern";
 
-/* Class = "UILabel"; text = "Autoplay Next Video"; ObjectID = "yLq-Ze-kTh"; */
-"yLq-Ze-kTh.text" = "Nächstes Video automatisch";
+/* Class = "UILabel"; text = "Autoplay Videos"; ObjectID = "yLq-Ze-kTh"; */
+"yLq-Ze-kTh.text" = "Videos automatisch abspielen";
+
+/* Class = "UILabel"; text = "MESSAGE"; ObjectID = "zvz-SG-J7d"; */
+"zvz-SG-J7d.text" = "NACHRICHT";
 

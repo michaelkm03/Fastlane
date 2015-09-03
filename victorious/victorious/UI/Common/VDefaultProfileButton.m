@@ -16,6 +16,8 @@
 @interface VDefaultProfileButton ()
 
 @property (nonatomic, strong) NSURL *imageURL;
+@property (nonatomic, assign) CGFloat borderWidth;
+@property (nonatomic, strong) UIColor *borderColor;
 
 @end
 
@@ -46,6 +48,10 @@
     
     self.backgroundColor = [UIColor clearColor];
     self.tintColor = [UIColor darkGrayColor];
+    
+    self.borderWidth = 0.0f;
+    self.imageEdgeInsets = UIEdgeInsetsZero;
+    self.imageView.contentMode = UIViewContentModeScaleToFill;
 }
 
 - (void)setTintColor:(UIColor *)tintColor
@@ -68,9 +74,11 @@
                                                    progress:nil
                                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL)
      {
+         __strong typeof(weakSelf) strongSelf = weakSelf;
+         
          if (!image)
          {
-             [weakSelf setImage:[weakSelf placeholderImage] forState:controlState];
+             [strongSelf setImage:[strongSelf placeholderImage] forState:controlState];
              return;
          }
          
@@ -79,7 +87,7 @@
                             UIImage *roundedImage = [image roundedImageWithCornerRadius:image.size.height / 2];
                             dispatch_async(dispatch_get_main_queue(), ^
                                            {
-                                               [weakSelf setImage:roundedImage forState:controlState];
+                                               [strongSelf setImage:roundedImage forState:controlState];
                                            });
                         });
      }];
@@ -111,12 +119,30 @@
     return tintedImage;
 }
 
+- (void)addBorderWithWidth:(CGFloat)width andColor:(UIColor *)color
+{
+    self.borderWidth = width;
+    self.borderColor = color;
+    self.imageEdgeInsets = UIEdgeInsetsMake(width, width, width, width);
+}
+
 - (void)drawRect:(CGRect)rect
 {
-    // Draws a white background
+    // Draws a white background with a border around the icon if border width is > 0
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextAddEllipseInRect(context, rect);
-    CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
+    if ( self.borderWidth > 0.0f && self.borderColor != nil )
+    {
+        CGContextSetFillColorWithColor(context, self.borderColor.CGColor);
+        CGContextFillPath(context);
+        CGContextAddEllipseInRect(context, CGRectInset(rect, self.borderWidth, self.borderWidth));
+        CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
+    }
+    else
+    {
+        //Just fill with white
+        CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
+    }
     CGContextFillPath(context);
 }
 

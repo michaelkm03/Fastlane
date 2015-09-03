@@ -43,15 +43,15 @@ static const CGFloat kHandleDesiredHeight = 37.0f;
 - (void)setNumberOfComments:(NSInteger)numberOfComments
 {
     _numberOfComments = numberOfComments;
-    NSString *commentText = nil;
+    NSString *commentText = @"";
     
-    if (numberOfComments == 0)
+    if (numberOfComments == 1)
     {
-        commentText = NSLocalizedString(@"LeaveAComment", @"");
+        commentText = [NSString stringWithFormat:NSLocalizedString(@"CommentsSingularFormat", ""),  @(numberOfComments)];
     }
-    else
+    else if (numberOfComments > 1)
     {
-        commentText = [NSString stringWithFormat:@"%@ %@", @(numberOfComments), (numberOfComments > 1) ? NSLocalizedString(@"Comments", @"") : NSLocalizedString(@"Comment", @"")];
+        commentText = [NSString stringWithFormat:NSLocalizedString(@"CommentsPluralFormat", ""), @(numberOfComments)];
     }
 
     self.commentCountLabel.attributedText = [[NSAttributedString alloc] initWithString:commentText

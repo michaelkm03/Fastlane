@@ -14,10 +14,11 @@
 #import "VAbstractMarqueeController.h"
 #import "VUserProfileViewController.h"
 #import "VDirectoryCellFactory.h"
+#import "VDirectoryCellUpdateableFactory.h"
 #import "VStreamItem+Fetcher.h"
 #import "VStreamItem.h"
-#import "VDependencyManager+VScaffoldViewController.h"
-#import "VScaffoldViewController.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
+#import "VTabScaffoldViewController.h"
 #import "VStreamCollectionViewController.h"
 #import "VURLMacroReplacement.h"
 #import "VDirectoryCollectionFlowLayout.h"
@@ -30,10 +31,10 @@
 #import "VDependencyManager+VTracking.h"
 #import "VTracking.h"
 #import "UIViewController+VAccessoryScreens.h"
+#import "victorious-Swift.h"
 
 static NSString * const kStreamURLKey = @"streamURL";
 static NSString * const kMarqueeKey = @"marqueeCell";
-static NSString * const kDirectoryCellFactoryKey = @"directoryCell";
 
 static NSString * const kDestinationDirectoryKey = @"destinationDirectory";
 static NSString * const kStreamCollectionKey = @"destinationStream";
@@ -41,7 +42,7 @@ static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceNameKey = @"sequenceName";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
-@interface VDirectoryCollectionViewController () <VMarqueeSelectionDelegate, VMarqueeDataDelegate, VDirectoryCollectionFlowLayoutDelegate, VCoachmarkDisplayer>
+@interface VDirectoryCollectionViewController () <VMarqueeSelectionDelegate, VMarqueeDataDelegate, VDirectoryCollectionFlowLayoutDelegate, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate>
 
 @property (nonatomic, readwrite) UICollectionView *collectionView;
 @property (nonatomic, strong) NSObject <VDirectoryCellFactory> *directoryCellFactory;
@@ -87,10 +88,17 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     streamDirectory.title = stream.name;
     streamDirectory.dependencyManager = dependencyManager;
     streamDirectory.directoryCellFactory = directoryCellFactory;
+    if ( [directoryCellFactory isKindOfClass:[VStreamContentCellFactory class]] )
+    {
+        VStreamContentCellFactory *streamItemFactory = (VStreamContentCellFactory *)directoryCellFactory;
+        streamItemFactory.delegate = streamDirectory;
+    }
+    
     VDirectoryCollectionFlowLayout *flowLayout = streamDirectory.directoryCellFactory.collectionViewFlowLayout;
     flowLayout.delegate = streamDirectory;
-    streamDirectory.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
-    streamDirectory.marqueeController = [dependencyManager templateValueOfType:[VAbstractMarqueeController class] forKey:kMarqueeKey];
+    UICollectionViewFlowLayout *layout = flowLayout ?: [[UICollectionViewFlowLayout alloc] init];
+    streamDirectory.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
+    streamDirectory.marqueeController = marqueeController;
     streamDirectory.marqueeController.stream = stream;
     [streamDirectory.marqueeController registerCollectionViewCellWithCollectionView:streamDirectory.collectionView];
     streamDirectory.marqueeController.selectionDelegate = streamDirectory;
@@ -117,7 +125,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     NSString *path = [url v_pathComponent];
     VStream *stream = [VStream streamForPath:path inContext:dependencyManager.objectManager.managedObjectStore.mainQueueManagedObjectContext];
     stream.name = [dependencyManager stringForKey:VDependencyManagerTitleKey];
-    NSObject <VDirectoryCellFactory> *cellFactory = [dependencyManager templateValueConformingToProtocol:@protocol(VDirectoryCellFactory) forKey:kDirectoryCellFactoryKey];
+    NSObject <VDirectoryCellFactory> *cellFactory = [[VDirectoryContentCellFactory alloc] initWithDependencyManager:dependencyManager];
     return [self streamDirectoryForStream:stream dependencyManager:dependencyManager andDirectoryCellFactory:cellFactory];
 }
 
@@ -212,7 +220,11 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
                               VTrackingKeyRemoteId : streamItem.remoteId ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromMarquee parameters:params];
     
-    [self navigateToDisplayStreamItem:streamItem];
+    StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:streamItem
+                                                                      stream:self.currentStream
+                                                                   fromShelf:YES];
+    
+    [self navigateToDisplayStreamItemWithEvent:event];
 }
 
 - (void)marquee:(VAbstractMarqueeController *)marquee selectedUser:(VUser *)user atIndexPath:(NSIndexPath *)path
@@ -285,11 +297,18 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VStreamItem *streamItem = [self.streamDataSource itemAtIndexPath:indexPath];
-    [self navigateToDisplayStreamItem:streamItem];
+    
+    StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:streamItem
+                                                                      stream:self.currentStream
+                                                                   fromShelf:NO];
+    
+    [self navigateToDisplayStreamItemWithEvent:event];
 }
 
-- (void)navigateToDisplayStreamItem:(VStreamItem *)streamItem
+- (void)navigateToDisplayStreamItemWithEvent:(StreamCellContext *)event
 {
+    VStreamItem *streamItem = event.streamItem;
+    
     if ( streamItem.isSingleStream )
     {
         VStreamCollectionViewController *streamCollection = [self.dependencyManager templateValueOfType:[VStreamCollectionViewController class]
@@ -299,14 +318,9 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     }
     else if ( streamItem.isContent )
     {
-        NSString *streamId = self.marqueeController.stream.streamId;
-        VSequence *sequence = (VSequence *)streamItem;
-        NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId ?: @"",
-                                  VTrackingKeyTimeStamp : [NSDate date],
-                                  VTrackingKeyUrls : sequence.tracking.cellClick,
-                                  VTrackingKeyStreamId : streamId ?: @"" };
+        [self.streamTrackingHelper onStreamCellSelectedWithCellEvent:event additionalInfo:nil];
         
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromStream parameters:params];
+        NSString *streamId = [self.marqueeController.stream hasShelfID] && event.fromShelf ? self.marqueeController.stream.shelfId : self.marqueeController.stream.streamId;
         [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:(VSequence *)streamItem streamID:streamId commentId:nil placeHolderImage:nil];
     }
     else if ( [streamItem isKindOfClass:[VStream class]] )
@@ -345,7 +359,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     if ( ![self isMarqueeSection:indexPath.section] && [self.directoryCellFactory respondsToSelector:@selector(prepareCell:forDisplayInCollectionView:atIndexPath:)] )
     {
         //Allow directory cell factory to prepare cell for display
-        [self.directoryCellFactory prepareCell:cell forDisplayInCollectionView:localCollectionView atIndexPath:indexPath];
+        [(id <VDirectoryCellUpdeatableFactory>)self.directoryCellFactory prepareCell:cell forDisplayInCollectionView:localCollectionView atIndexPath:indexPath];
     }
 }
 
@@ -358,7 +372,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     
     if ( [scrollView isKindOfClass:[UICollectionView class]] && [self.directoryCellFactory respondsToSelector:@selector(collectionViewDidScroll:)] )
     {
-        [self.directoryCellFactory collectionViewDidScroll:(UICollectionView *)scrollView];
+        [(id <VDirectoryCellUpdeatableFactory>)self.directoryCellFactory collectionViewDidScroll:(UICollectionView *)scrollView];
     }
 }
 
@@ -367,6 +381,14 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 - (NSString *)screenIdentifier
 {
     return [self.dependencyManager stringForKey:VDependencyManagerIDKey];
+}
+
+#pragma mark - VTabMenuContainedViewControllerNavigation
+
+- (void)reselected
+{
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.collectionView setContentOffset:CGPointZero animated:YES];
 }
 
 @end

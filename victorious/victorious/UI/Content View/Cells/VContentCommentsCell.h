@@ -8,19 +8,20 @@
 
 #import "VSwipeCollectionViewCell.h"
 
+#import "VCellFocus.h"
+
 @class VComment, VCommentTextAndMediaView, VDependencyManager, VSequencePermissions;
 
 /**
  *  UICollectionViewCell for representing a general comment on an item.
  */
-@interface VContentCommentsCell : VSwipeCollectionViewCell
+@interface VContentCommentsCell : VSwipeCollectionViewCell <VCellFocus>
 
 @property (nonatomic, strong) VComment *comment;
 @property (nonatomic, readonly) NSURL *mediaURL;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VSequencePermissions *sequencePermissions;
 
-@property (nonatomic, copy) void (^onMediaTapped)();
 @property (nonatomic, copy) void (^onUserProfileTapped)();
 
 @property (nonatomic, readonly) UIImage *previewImage;
@@ -43,7 +44,7 @@
  *  @return The size required to display the cell at full size.
  */
 + (CGSize)sizeWithFullWidth:(CGFloat)width
-                commentBody:(NSString *)commentBody
+                    comment:(VComment *)comment
                    hasMedia:(BOOL)hasMedia
           dependencyManager:(VDependencyManager *)dependencyManager;
 

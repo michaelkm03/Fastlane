@@ -19,11 +19,9 @@
 - (BOOL)isQuiz;
 - (BOOL)isImage;
 - (BOOL)isVideo;
-- (BOOL)isOwnerContent;
 - (BOOL)isWebContent;
 - (BOOL)isPreviewWebContent;
 - (BOOL)isPreviewImageContent;
-- (BOOL)isAnnouncement;
 - (BOOL)isRemixableType;
 - (BOOL)isGIFVideo;
 - (BOOL)isText;
@@ -35,6 +33,8 @@
 - (NSNumber *)voteCountForVoteID:(NSNumber *)voteID;
 
 - (VAsset *)primaryAssetWithPreferredMimeType:(NSString *)mimeType;
+
+- (NSArray *)dateSortedComments;
 
 /**
  Retrieves the aspect ratio of the highest resolution

@@ -38,6 +38,12 @@
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView
 {
     [collectionView registerClass:[VTileOverlayCollectionCell class]
@@ -59,6 +65,7 @@
             [self.registeredReuseIdentifiers addObject:reuseIdentifierForSequence];
         }
     }
+    [self.noContentCollectionViewCellFactory registerNoContentCellWithCollectionView:collectionView];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath

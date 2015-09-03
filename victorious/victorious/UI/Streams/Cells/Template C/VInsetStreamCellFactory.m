@@ -42,6 +42,12 @@
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView
 {
     [self.noContentCollectionViewCellFactory registerNoContentCellWithCollectionView:collectionView];
@@ -51,10 +57,6 @@
 {
     for (VStreamItem *streamItem in streamItems)
     {
-        if (![streamItem isKindOfClass:[VSequence class]])
-        {
-            NSAssert(false, @"This factory can only handle sequences.");
-        }        
         NSString *reuseIdentifierForSequence = [VInsetStreamCollectionCell reuseIdentifierForStreamItem:streamItem
                                                                                          baseIdentifier:@""
                                                                                       dependencyManager:self.dependencyManager];
@@ -66,6 +68,7 @@
             [self.registeredReuseIdentifiers addObject:reuseIdentifierForSequence];
         }
     }
+    [self.noContentCollectionViewCellFactory registerNoContentCellWithCollectionView:collectionView];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath

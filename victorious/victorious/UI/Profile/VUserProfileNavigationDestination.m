@@ -8,7 +8,7 @@
 
 #import "VDependencyManager+VObjectManager.h"
 #import "VObjectManager+Users.h"
-#import "VScaffoldViewController.h"
+#import "VTabScaffoldViewController.h"
 #import "VUserProfileNavigationDestination.h"
 #import "VUserProfileViewController.h"
 #import "VUser.h"
@@ -34,6 +34,12 @@
         _objectManager = objectManager;
     }
     return self;
+}
+
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
 }
 
 #pragma mark VHasManagedDependencies

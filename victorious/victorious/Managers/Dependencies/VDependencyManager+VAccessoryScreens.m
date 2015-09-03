@@ -277,19 +277,19 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
 
 - (UIBarButtonItem *)barButtonItemFromNavigationItem:(UINavigationItem *)navigationItem forIdentifier:(NSString *)identifier
 {
-    __block VBarButtonItem *foundItem = nil;
+    VBarButtonItem *foundItem = nil;
     NSPredicate *searchPredicate = [NSPredicate predicateWithBlock:^BOOL(VBarButtonItem *item, NSDictionary *bindings)
                                     {
                                         return [item isKindOfClass:[VBarButtonItem class]] && [item.menuItem.identifier isEqualToString:identifier];
                                     }];
     
-    foundItem = [navigationItem.leftBarButtonItems filteredArrayUsingPredicate:searchPredicate].firstObject;
+    foundItem = (VBarButtonItem *)[navigationItem.leftBarButtonItems filteredArrayUsingPredicate:searchPredicate].firstObject;
     if ( foundItem != nil )
     {
         return foundItem;
     }
     
-    foundItem = [navigationItem.rightBarButtonItems filteredArrayUsingPredicate:searchPredicate].firstObject;
+    foundItem = (VBarButtonItem *)[navigationItem.rightBarButtonItems filteredArrayUsingPredicate:searchPredicate].firstObject;
     if ( foundItem != nil )
     {
         return foundItem;
@@ -338,7 +338,7 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
     }
     
     BOOL requiresAuthorization = NO;
-    VAuthorizationContext context;
+    VAuthorizationContext context = VAuthorizationContextDefault;
     
     // First check if the source requires authorization
     id <VAccessoryNavigationSource> source = (id <VAccessoryNavigationSource>)sourceViewController;

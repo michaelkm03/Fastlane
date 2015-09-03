@@ -6,8 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAutomation.h"
-#import "VScaffoldViewController.h"
+#import "VTabScaffoldViewController.h"
 #import "VStreamCollectionViewController.h"
 #import "VStreamCollectionViewDataSource.h"
 #import "VStreamCellFactory.h"
@@ -17,7 +16,6 @@
 
 //Controllers
 #import "VAlertController.h"
-#import "VCommentsContainerViewController.h"
 #import "VCreatePollViewController.h"
 #import "VUploadProgressViewController.h"
 #import "VUserProfileViewController.h"
@@ -27,7 +25,8 @@
 
 //Views
 #import "VNoContentView.h"
-#import "VStreamCellFocus.h"
+#import "VCellFocus.h"
+#import "VSleekStreamCellFactory.h"
 
 //Data models
 #import "VStream+Fetcher.h"
@@ -38,11 +37,13 @@
 
 //Managers
 #import "VDependencyManager+VObjectManager.h"
-#import "VDependencyManager+VScaffoldViewController.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
+#import "VDependencyManager+VNavigationMenuItem.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Discover.h"
 #import "VUploadManager.h"
+#import "VContentViewFactory.h"
 
 //Categories
 #import "NSArray+VMap.h"
@@ -58,6 +59,7 @@
 #import "VTracking.h"
 #import "VHashtagStreamCollectionViewController.h"
 #import "VAuthorizedAction.h"
+#import "VContentViewPresenter.h"
 
 #import "VFullscreenMarqueeSelectionDelegate.h"
 #import "VAbstractMarqueeController.h"
@@ -78,6 +80,9 @@
 #import "VDependencyManager+VTracking.h"
 #import "UIViewController+VAccessoryScreens.h"
 
+#import "VCollectionViewStreamFocusHelper.h"
+#import "victorious-Swift.h"
+
 const CGFloat VStreamCollectionViewControllerCreateButtonHeight = 44.0f;
 
 static NSString * const kCanAddContentKey = @"canAddContent";
@@ -94,8 +99,9 @@ static NSString * const kGifStreamKey = @"gifStream";
 static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
+static NSString * const kStreamCollectionKey = @"destinationStream";
 
-@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VMarqueeSelectionDelegate, VMarqueeDataDelegate, VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer>
+@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate, AutoplayTracking>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -105,11 +111,13 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 @property (strong, nonatomic) VUploadProgressViewController *uploadProgressViewController;
 @property (strong, nonatomic) NSLayoutConstraint *uploadProgressViewYconstraint;
 
-@property (strong, nonatomic) VSequenceActionController *sequenceActionController;
+@property (readwrite, nonatomic) VSequenceActionController *sequenceActionController;
 
 @property (nonatomic, assign) BOOL hasRefreshed;
 
 @property (nonatomic, strong) VCreationFlowPresenter *creationFlowPresenter;
+
+@property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
 
 @end
 
@@ -155,8 +163,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     VStreamCollectionViewController *streamCollectionVC = [self streamViewControllerForStream:stream];
     streamCollectionVC.dependencyManager = dependencyManager;
-    streamCollectionVC.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:stream];
-    streamCollectionVC.streamDataSource.delegate = streamCollectionVC;
     
     NSNumber *cellVisibilityRatio = [dependencyManager numberForKey:kStreamATFThresholdKey];
     if ( cellVisibilityRatio != nil )
@@ -211,6 +217,12 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     self.sequenceActionController.dependencyManager = self.dependencyManager;
     
     self.streamCellFactory = [self.dependencyManager templateValueConformingToProtocol:@protocol(VStreamCellFactory) forKey:VStreamCollectionViewControllerCellComponentKey];
+    
+    if ( [self.streamCellFactory isKindOfClass:[VStreamContentCellFactory class]] )
+    {
+        VStreamContentCellFactory *factory = (VStreamContentCellFactory *)self.streamCellFactory;
+        factory.delegate = self;
+    }
 
     if ([self.streamCellFactory respondsToSelector:@selector(registerCellsWithCollectionView:withStreamItems:)])
     {
@@ -241,6 +253,8 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     self.collectionView.dataSource = self.streamDataSource;
     self.streamDataSource.collectionView = self.collectionView;
+    
+    self.focusHelper = [[VCollectionViewStreamFocusHelper alloc] initWithCollectionView:self.collectionView];
     
     // Setup custom flow layout for parallax
     BOOL hasParallax = [[self.dependencyManager numberForKey:kHasHeaderParallaxKey] boolValue];
@@ -283,7 +297,12 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
          to rotate in case it's timer has been invalidated by the presentation of another viewController
          */
         [self.marqueeCellController enableTimer];
-    } 
+    }
+    
+    if ( [self.streamCellFactory isKindOfClass:[VSleekStreamCellFactory class]] )
+    {
+        [(VSleekStreamCellFactory *)self.streamCellFactory updateVisibleCellsInCollectionView:self.collectionView];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -294,7 +313,13 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     [self.collectionView flashScrollIndicators];
     [self updateCellVisibilityTracking];
-    [self updateCurrentlyPlayingMediaAsset];
+    
+    // Start any video cells that are on screen
+    [self.focusHelper updateFocus];
+    [self.marqueeCellController updateFocus];
+    
+    //Because a stream can be presented without refreshing, we need to refresh the user post icon here
+    [self updateNavigationItems];
 
     [[self.dependencyManager coachmarkManager] displayCoachmarkViewInViewController:self];
     
@@ -308,9 +333,15 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     [self.dependencyManager trackViewWillDisappear:self];
     
     [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
     
-    // Stop tracking marquee views
-    self.marqueeCellController.shouldTrackMarqueeCellViews = NO;
+    // Stop any video cells
+    [self.focusHelper endFocusOnAllCells];
+    [self.marqueeCellController endFocusOnAllCells];
 }
 
 - (BOOL)shouldAutorotate
@@ -345,8 +376,18 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)setCurrentStream:(VStream *)currentStream
 {
-    self.title = NSLocalizedString(currentStream.name, @"");
-    self.navigationItem.title = NSLocalizedString(currentStream.name, @"");
+    NSString *streamName = currentStream.name;
+    self.title = NSLocalizedString(streamName, @"");
+    self.navigationItem.title = NSLocalizedString(streamName, @"");
+    if ( self.streamDataSource == nil )
+    {
+        self.streamDataSource = [[VStreamCollectionViewDataSource alloc] initWithStream:currentStream];
+        self.streamDataSource.delegate = self;
+    }
+    else
+    {
+        self.streamDataSource.stream = currentStream;
+    }
     [super setCurrentStream:currentStream];
 }
 
@@ -372,10 +413,23 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     }
     
     // Set the size of the marquee on our navigation scroll delegate so it wont hide until we scroll past the marquee
-    if (self.streamDataSource.hasHeaderCell)
+    BOOL hasMarqueeShelfAtTop = NO;
+    NSArray *streamItems = [self.streamDataSource.stream.streamItems array];
+    if ( streamItems.count > 0 )
+    {
+        VStreamItem *streamItem = [streamItems firstObject];
+        hasMarqueeShelfAtTop = [streamItem.itemType isEqualToString:VStreamItemTypeShelf] && [streamItem.itemSubType isEqualToString:VStreamItemSubTypeMarquee];
+    }
+    
+    if (self.streamDataSource.hasHeaderCell || hasMarqueeShelfAtTop)
     {
         CGSize marqueeSize = [self.marqueeCellController desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
-        self.navigationControllerScrollDelegate.catchOffset = marqueeSize.height;
+        CGFloat offset = marqueeSize.height;
+        if ( hasMarqueeShelfAtTop )
+        {
+            offset += [self.streamCellFactory minimumLineSpacing];
+        }
+        self.navigationControllerScrollDelegate.catchOffset = offset;
     }
     else
     {
@@ -441,21 +495,43 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)marquee:(VAbstractMarqueeController *)marquee selectedItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)path previewImage:(UIImage *)image
 {
-    NSDictionary *params = @{ VTrackingKeyName : streamItem.name ?: @"",
-                              VTrackingKeyRemoteId : streamItem.remoteId ?: @"" };
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromMarquee parameters:params];
-    
-    if ( [streamItem isKindOfClass:[VSequence class]] )
+    UICollectionViewCell *cell = [marquee.collectionView cellForItemAtIndexPath:path];
+    [self navigateToStreamItem:streamItem fromStream:marquee.stream previewImage:image cell:cell];
+}
+
+- (void)navigateToStream:(VStream *)stream atStreamItem:(VStreamItem *)streamItem
+{
+    BOOL isShelf = [stream isShelf];
+    if ( [stream isSingleStream] || isShelf )
     {
-        [self showContentViewForSequence:(VSequence *)streamItem inStreamWithID:marquee.stream.streamId withPreviewImage:image];
+        VStreamCollectionViewController *streamCollection = nil;
+        NSMutableDictionary *baseConfiguration = [[NSMutableDictionary alloc] initWithDictionary:@{ kSequenceIDKey: stream.remoteId, VDependencyManagerTitleKey: stream.name, VDependencyManagerAccessoryScreensKey : @[] }];
+        
+        if ( isShelf )
+        {
+            [baseConfiguration addEntriesFromDictionary:@{ VStreamCollectionViewControllerStreamURLKey : stream.apiPath }];
+            VDependencyManager *dependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:baseConfiguration];
+            if ( [stream isKindOfClass:[HashtagShelf class]] )
+            {
+                HashtagShelf *hashtagShelf = (HashtagShelf *)stream;
+                streamCollection = [dependencyManager hashtagStreamWithHashtag:hashtagShelf.hashtagTitle];
+            }
+            else
+            {
+                streamCollection = [VStreamCollectionViewController newWithDependencyManager:dependencyManager];
+            }
+        }
+        else
+        {
+            VDependencyManager *dependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:baseConfiguration];
+            streamCollection = [VStreamCollectionViewController newWithDependencyManager:dependencyManager];
+        }
+        
+        streamCollection.currentStream = stream;
+        streamCollection.targetStreamItem = streamItem;
+        [self.navigationController pushViewController:streamCollection animated:YES];
     }
-    else if ( [streamItem isSingleStream] )
-    {
-        VStreamCollectionViewController *viewController = [VStreamCollectionViewController streamViewControllerForStream:(VStream *)streamItem];
-        viewController.dependencyManager = self.dependencyManager;
-        [self.navigationController pushViewController:viewController animated:YES];
-    }
-    else if ( [streamItem isStreamOfStreams] )
+    else if ( [stream isStreamOfStreams] )
     {
         VDirectoryCollectionViewController *directory = [self.dependencyManager templateValueOfType:[VDirectoryCollectionViewController class] forKey:kMarqueeDestinationDirectory];
         
@@ -471,12 +547,41 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
         }
         
         //Set the selected stream as the current stream in the directory
-        directory.currentStream = (VStream *)streamItem;
+        directory.currentStream = stream;
         
         //Update the directory title to match the streamItem
-        directory.title = streamItem.name;
+        directory.title = stream.name;
+        
+        directory.targetStreamItem = streamItem;
         
         [self.navigationController pushViewController:directory animated:YES];
+    }
+}
+
+- (void)navigateToStreamItem:(VStreamItem *)streamItem fromStream:(VStream *)stream previewImage:(UIImage *)image cell:(UICollectionViewCell *)cell
+{
+    NSDictionary *params = @{ VTrackingKeyName : streamItem.name ?: @"",
+                              VTrackingKeyRemoteId : streamItem.remoteId ?: @"" };
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromMarquee parameters:params];
+    
+    if ( [streamItem isKindOfClass:[VSequence class]] )
+    {
+        StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:streamItem
+                                                                          stream:stream
+                                                                       fromShelf:YES];
+
+        NSDictionary *extraTrackingInfo;
+        if ([cell conformsToProtocol:@protocol(AutoplayTracking)])
+        {
+            extraTrackingInfo = [(id<AutoplayTracking>)cell additionalInfo];
+        }
+        
+        [self showContentViewForCellEvent:event trackingInfo:extraTrackingInfo withPreviewImage:image];
+    }
+    else if ( [streamItem isKindOfClass:[VStream class]] )
+    {
+        VStream *stream = (VStream *)streamItem;
+        [self navigateToStream:stream atStreamItem:nil];
     }
 }
 
@@ -502,8 +607,19 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     }
     
     self.lastSelectedIndexPath = indexPath;
-    VSequence *sequence = (VSequence *)[self.streamDataSource itemAtIndexPath:indexPath];
-    [self showContentViewForSequence:sequence inStreamWithID:self.currentStream.streamId withPreviewImage:nil];
+    VStreamItem *streamItem = (VStreamItem *)[self.streamDataSource itemAtIndexPath:indexPath];
+    
+    StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:streamItem
+                                                                      stream:self.currentStream
+                                                                   fromShelf:NO];
+    
+    NSDictionary *extraTrackingInfo;
+    if ([cell conformsToProtocol:@protocol(AutoplayTracking)])
+    {
+        extraTrackingInfo = [(id<AutoplayTracking>)cell additionalInfo];
+    }
+    
+    [self showContentViewForCellEvent:event trackingInfo:extraTrackingInfo withPreviewImage:nil];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
@@ -528,10 +644,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ( [cell conformsToProtocol:@protocol(VStreamCellFocus)] )
-    {
-        [(id <VStreamCellFocus>)cell setHasFocus:NO];
-    }
+    [self.focusHelper endFocusOnCell:cell];
 }
 
 #pragma mark - Activity indivator footer
@@ -550,6 +663,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     {
         [self.streamCellFactory registerCellsWithCollectionView:self.collectionView withStreamItems:streamItems];
     }
+    [self updateCellVisibilityTracking];
 }
 
 - (UICollectionViewCell *)dataSource:(VStreamCollectionViewDataSource *)dataSource cellForIndexPath:(NSIndexPath *)indexPath
@@ -575,7 +689,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
                                     cellForStreamItem:sequence
                                           atIndexPath:indexPath];
     }
-
     
     [self preloadSequencesAfterIndexPath:indexPath forDataSource:dataSource];
     
@@ -599,7 +712,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)willCommentOnSequence:(VSequence *)sequenceObject fromView:(UIView *)commentView
 {
-    [self.sequenceActionController showCommentsFromViewController:self sequence:sequenceObject];
+    [self.sequenceActionController showCommentsFromViewController:self sequence:sequenceObject withSelectedComment:nil];
 }
 
 - (void)selectedUser:(VUser *)user onSequence:(VSequence *)sequence fromView:(UIView *)userSelectionView
@@ -714,13 +827,24 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     self.collectionView.backgroundView = newBackgroundView;
 }
 
-- (void)showContentViewForSequence:(VSequence *)sequence inStreamWithID:(NSString *)streamId withPreviewImage:(UIImage *)previewImage
+- (void)showContentViewForCellEvent:(StreamCellContext *)event trackingInfo:(NSDictionary *)trackingInfo withPreviewImage:(UIImage *)previewImage
 {
-    NSParameterAssert(sequence != nil);
+    NSParameterAssert(event.streamItem != nil);
     NSParameterAssert(self.currentStream != nil);
-    [self.streamTrackingHelper onStreamCellSelectedWithStream:self.currentStream sequence:sequence];
     
-    [[self.dependencyManager scaffoldViewController] showContentViewWithSequence:sequence streamID:streamId commentId:nil placeHolderImage:previewImage];
+    [self.streamTrackingHelper onStreamCellSelectedWithCellEvent:event additionalInfo:trackingInfo];
+    
+    if ( [event.streamItem isKindOfClass:[VSequence class]] )
+    {
+        NSString *streamID = [event.stream hasShelfID] && event.fromShelf ? event.stream.shelfId : event.stream.streamId;
+        
+        [VContentViewPresenter presentContentViewFromViewController:self
+                                              withDependencyManager:self.dependencyManager
+                                                        ForSequence:(VSequence *)event.streamItem
+                                                     inStreamWithID:streamID
+                                                          commentID:nil
+                                                   withPreviewImage:previewImage];
+    }
 }
 
 #pragma mark - Upload Progress View
@@ -787,13 +911,14 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 
 - (void)dataSourceDidChange
 {
-    self.hasRefreshed = YES;
-    [self updateNoContentViewAnimated:YES];
-    
-    // Allow cells to populate before we track which are visible before user scrolls
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
+    dispatch_async(dispatch_get_main_queue(), ^
     {
+        self.hasRefreshed = YES;
+        [self updateNoContentViewAnimated:YES];
+        
         [self updateCellVisibilityTracking];
+        [self.marqueeCellController updateFocus];
+        [self.focusHelper updateFocus];
     });
 }
 
@@ -883,7 +1008,7 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     [self updateCellVisibilityTracking];
     
-    [self updateCurrentlyPlayingMediaAsset];
+    [self.focusHelper updateFocus];
 }
 
 #pragma mark - Cell visibility
@@ -894,8 +1019,6 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
     
     NSArray *visibleCells = self.collectionView.visibleCells;
     
-    BOOL shouldTrackMarquee = NO;
-    
     for (UICollectionViewCell *cell in visibleCells)
     {
         if ( ![VNoContentCollectionViewCellFactory isNoContentCell:cell] )
@@ -905,63 +1028,10 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
             const CGFloat visibleRatio = CGRectGetHeight( intersection ) / CGRectGetHeight( cell.frame );
             [self collectionViewCell:cell didUpdateCellVisibility:visibleRatio];
         }
-        
-        if ([cell isKindOfClass:[VAbstractMarqueeCollectionViewCell class]])
-        {
-            shouldTrackMarquee = YES;
-        }
     }
     
-    self.marqueeCellController.shouldTrackMarqueeCellViews = shouldTrackMarquee;
     // Fire right away to catch any events while scrolling stream
     [self.marqueeCellController updateCellVisibilityTracking];
-}
-
-- (void)updateCurrentlyPlayingMediaAsset
-{
-    const CGRect streamVisibleRect = self.collectionView.bounds;
-    
-    // Was a video begins playing, all other visible cells will be paused
-    __block BOOL didPlayVideo = NO;
-    
-    NSArray *visibleCells = self.collectionView.visibleCells;
-    [visibleCells enumerateObjectsUsingBlock:^(UICollectionViewCell *cell, NSUInteger idx, BOOL *stop)
-     {
-         if ( [VNoContentCollectionViewCellFactory isNoContentCell:cell] )
-         {
-             return;
-         }
-         
-         id <VStreamCellFocus>focusCell;
-         if ( [cell conformsToProtocol:@protocol(VStreamCellFocus)] )
-         {
-             focusCell = (id <VStreamCellFocus>)cell;
-         }
-         
-         // Calculate visible ratio for just the media content of the cell
-         const CGRect contentFrameInCell = [focusCell contentArea];
-         
-         if ( CGRectGetHeight( contentFrameInCell ) > 0.0 )
-         {
-             const CGRect contentIntersection = CGRectIntersection( streamVisibleRect, cell.frame );
-             const float mediaContentVisibleRatio = CGRectGetHeight( contentIntersection ) / CGRectGetHeight( contentFrameInCell );
-             if ( mediaContentVisibleRatio >= 0.8f )
-             {
-                 if ( [cell conformsToProtocol:@protocol(VStreamCellFocus)] )
-                 {
-                     [(id <VStreamCellFocus>)cell setHasFocus:YES];
-                 }
-                 didPlayVideo = YES;
-             }
-             else
-             {
-                 if ( [cell conformsToProtocol:@protocol(VStreamCellFocus)] )
-                 {
-                     [(id <VStreamCellFocus>)cell setHasFocus:NO];
-                 }
-             }
-         }
-     }];
 }
 
 - (void)collectionViewCell:(UICollectionViewCell *)cell didUpdateCellVisibility:(CGFloat)visibiltyRatio
@@ -971,8 +1041,17 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
         if ([cell conformsToProtocol:@protocol(VStreamCellTracking)])
         {
             VSequence *sequenceToTrack = [(id<VStreamCellTracking>)cell sequenceToTrack];
-            [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithStream:self.currentStream
-                                                                     sequence:sequenceToTrack];
+            
+            StreamCellContext *event = [[StreamCellContext alloc] initWithStreamItem:sequenceToTrack
+                                                                              stream:self.currentStream
+                                                                           fromShelf:NO];
+            
+            [self.streamTrackingHelper onStreamCellDidBecomeVisibleWithCellEvent:event];
+        }
+        else if ( [cell isKindOfClass:[VTrendingShelfCollectionViewCell class]] )
+        {
+            VTrendingShelfCollectionViewCell *trendingShelf = (VTrendingShelfCollectionViewCell *)cell;
+            [trendingShelf trackVisibleSequences];
         }
     }
 }
@@ -1034,6 +1113,26 @@ static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 - (BOOL)selectorIsVisible
 {
     return !self.navigationController.navigationBarHidden;
+}
+
+#pragma mark - VTabMenuContainedViewControllerNavigation
+
+- (void)reselected
+{
+    [self.v_navigationController setNavigationBarHidden:NO];
+    [self.collectionView setContentOffset:CGPointZero animated:YES];
+}
+
+#pragma mark - Autoplay Tracking
+
+- (void)trackAutoplayEvent:(AutoplayTrackingEvent *__nonnull)event
+{
+    [self.streamTrackingHelper trackAutoplayEvent:event];
+}
+
+- (NSDictionary *__nonnull)additionalInfo
+{
+    return @{};
 }
 
 @end

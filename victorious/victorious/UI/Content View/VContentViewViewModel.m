@@ -64,7 +64,6 @@
 @property (nonatomic, strong, readwrite) VExperienceEnhancerController *experienceEnhancerController;
 
 @property (nonatomic, strong) NSString *followersText;
-@property (nonatomic, strong, readwrite) VHistogramDataSource *histogramDataSource;
 @property (nonatomic, assign, readwrite) VVideoCellViewModel *videoViewModel;
 
 @property (nonatomic, strong) NSMutableArray *adChain;
@@ -93,7 +92,9 @@
         
         _dependencyManager = dependencyManager;
         
-        _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithSequence:sequence voteTypes:[dependencyManager voteTypes]];
+        NSDictionary *configuration = @{ @"sequence" : sequence, @"voteTypes" : [dependencyManager voteTypes] };
+        VDependencyManager *childDependencyManager = [dependencyManager childDependencyManagerWithAddedConfiguration:configuration];
+        _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithDependencyManager:childDependencyManager];
         
         _currentNode = [sequence firstNode];
         
@@ -128,8 +129,6 @@
             _type = VContentViewTypeImage;
             _currentAsset = [self mediaAssetFromSequence:sequence];
         }
-        
-        _experienceEnhancerController = [[VExperienceEnhancerController alloc] initWithSequence:sequence voteTypes:[dependencyManager voteTypes]];
         
         _hasReposted = [sequence.hasReposted boolValue];
         
@@ -324,7 +323,6 @@
 {
     [self fetchPollData];
     [self fetchComments];
-    [self fetchHistogramData];
     [self fetchUserinfo];
     [self fetchSequenceData];
 }
@@ -365,25 +363,6 @@
              self.hasReposted = userInteractions.hasReposted;
          }];
     }
-}
-
-- (void)fetchHistogramData
-{
-    if (![self.sequence isVideo])
-    {
-        return;
-    }
-
-    [[VObjectManager sharedManager] fetchHistogramDataForSequence:self.sequence
-                                                        withAsset:self.currentAsset
-                                                   withCompletion:^(NSArray *histogramData, NSError *error)
-     {
-         if (histogramData)
-         {
-             self.histogramDataSource = [VHistogramDataSource histogramDataSourceWithDataPoints:histogramData];
-             [self.delegate didUpdateHistogramData];
-         }
-     }];
 }
 
 - (void)fetchPollData
@@ -523,7 +502,7 @@
 }
 
 - (void)addCommentWithText:(NSString *)text
-                  mediaURL:(NSURL *)mediaURL
+         publishParameters:(VPublishParameters *)publishParameters
                   realTime:(CMTime)realTime
                 completion:(void (^)(BOOL succeeded))completion
 {
@@ -531,7 +510,7 @@
     if (isnan(currentTime))
     {
         [[VObjectManager sharedManager] addCommentWithText:text
-                                                  mediaURL:mediaURL
+                                         publishParameters:publishParameters
                                                 toSequence:self.sequence
                                                  andParent:nil
                                               successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
@@ -552,7 +531,7 @@
     else
     {
         [[VObjectManager sharedManager] addRealtimeCommentWithText:text
-                                                          mediaURL:mediaURL
+                                                 publishParameters:publishParameters
                                                            toAsset:self.currentAsset
                                                             atTime:@(CMTimeGetSeconds(realTime))
                                                       successBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
@@ -856,11 +835,20 @@
 
 - (NSString *)numberOfVotersText
 {
-    if ( self.sequence.permissions.canShowVoteCount )
+    if ( !self.sequence.permissions.canShowVoteCount )
     {
         return nil;
     }
-    return [NSString stringWithFormat:@"%@ %@", [self.largeNumberFormatter stringForInteger:[self totalVotes]], NSLocalizedString(@"Voters", @"")];
+    
+    switch ([self totalVotes])
+    {
+        case 1:
+            return [NSString stringWithFormat:NSLocalizedString(@"%@ Voter", @""), [self.largeNumberFormatter stringForInteger:[self totalVotes]]];
+            break;
+        default:
+            return [NSString stringWithFormat:NSLocalizedString(@"%@ Voters", @""), [self.largeNumberFormatter stringForInteger:[self totalVotes]]];
+            break;
+    }
 }
 
 @end

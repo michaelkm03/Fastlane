@@ -35,6 +35,12 @@
     return self;
 }
 
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
+}
+
 - (void)registerCellsWithCollectionView:(UICollectionView *)collectionView
 {
     [collectionView registerNib:[VSleekStreamCollectionCell nibForCell] forCellWithReuseIdentifier:[VSleekStreamCollectionCell suggestedReuseIdentifier]];
@@ -46,10 +52,6 @@
 {
     for (VStreamItem *streamItem in streamItems)
     {
-        if (![streamItem isKindOfClass:[VSequence class]])
-        {
-            NSAssert(false, @"This factory can only handle sequences.");
-        }
         NSString *reuseIdentifierForSequence = [VSleekStreamCollectionCell reuseIdentifierForStreamItem:streamItem
                                                                                          baseIdentifier:@""
                                                                                       dependencyManager:self.dependencyManager];
@@ -61,6 +63,7 @@
             [self.registeredReuseIdentifiers addObject:reuseIdentifierForSequence];
         }
     }
+    [self.noContentCollectionViewCellFactory registerNoContentCellWithCollectionView:collectionView];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath
@@ -72,6 +75,7 @@
 {
     if ( [self.noContentCollectionViewCellFactory shouldDisplayNoContentCellForContentClass:[streamItem class]] )
     {
+        VLog(@"VSleekStreamCellFactory encountered an unsupported streamItem subclass and will display a no content cell");
         return [self.noContentCollectionViewCellFactory noContentCellForCollectionView:collectionView atIndexPath:indexPath];
     }
     
@@ -87,11 +91,15 @@
         [self.registeredReuseIdentifiers addObject:reuseIdentifierForSequence];
     }
     
+    StreamCellContext *context = [[StreamCellContext alloc] initWithStreamItem:streamItem stream:stream fromShelf:NO];
+    
     VSleekStreamCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifierForSequence
                                                                                  forIndexPath:indexPath];
+    cell.accessibilityIdentifier = VAutomationIdentifierStreamCell;
     cell.dependencyManager = self.dependencyManager;
     cell.sequence = sequence;
     cell.stream = stream;
+    cell.context = context;
     [self.dependencyManager addLoadingBackgroundToBackgroundHost:cell];
     [self.dependencyManager addBackgroundToBackgroundHost:cell];
     [self.dependencyManager addHighlightViewToHost:cell];
@@ -120,6 +128,28 @@
 - (UIEdgeInsets)sectionInsets
 {
     return UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
+}
+
+- (void)updateVisibleCellsInCollectionView:(UICollectionView *)collectionView
+{
+    NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+    for ( UICollectionViewCell *cell in collectionView.visibleCells )
+    {
+        if ( [cell isKindOfClass:[VSleekStreamCollectionCell class]] )
+        {
+            VSleekStreamCollectionCell *sleekCell = (VSleekStreamCollectionCell *)cell;
+            if ( sleekCell.needsRefresh )
+            {
+                [indexPaths addObject:[collectionView indexPathForCell:sleekCell]];
+                [sleekCell purgeSizeCacheValue];
+            }
+        }
+    }
+    
+    if ( indexPaths.count > 0 )
+    {
+        [collectionView reloadItemsAtIndexPaths:indexPaths];
+    }
 }
 
 @end

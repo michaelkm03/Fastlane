@@ -29,6 +29,8 @@ static NSString * const kAccountIdentifierDefaultsKey = @"com.getvictorious.VUse
 static NSString * const kKeychainServiceName          = @"com.getvictorious.VUserManager.LoginPassword";
 static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUserManager.TwitterAccountCreated";
 
+static const NSInteger kFacebookSystemLoginCancelledErrorCode = 5;
+
 @implementation VUserManager
 
 + (VUserManager *)sharedInstance
@@ -106,20 +108,30 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
 {
     void (^successBlock)() = ^(void)
     {
-        __block BOOL created = YES;
+        __block BOOL isNewUser = YES;
         VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
         {
+            NSDictionary *payload = ((NSDictionary *)fullResponse)[ @"payload" ];
+            isNewUser = ((NSNumber *)payload[ @"new_user" ]).boolValue;
+            
+            if ( isNewUser )
+            {
+                [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserPermissionDidChange
+                                                   parameters:@{ VTrackingKeyPermissionState : VTrackingValueFacebookDidAllow,
+                                                                 VTrackingKeyPermissionName : VTrackingValueAuthorized }];
+            }
+            
             VUser *user = [resultObjects firstObject];
             if ([user isKindOfClass:[VUser class]])
             {
-                NSString *eventName = created ? VTrackingEventSignupWithFacebookDidSucceed : VTrackingEventLoginWithFacebookDidSucceed;
+                NSString *eventName = isNewUser ? VTrackingEventSignupWithFacebookDidSucceed : VTrackingEventLoginWithFacebookDidSucceed;
                 [[VTrackingManager sharedInstance] trackEvent:eventName];
                 
                 [[NSUserDefaults standardUserDefaults] setInteger:kVLastLoginTypeFacebook
                                                            forKey:kLastLoginTypeUserDefaultsKey];
                 if (completion)
                 {
-                    completion(user, created);
+                    completion(user, isNewUser);
                 }
             }
             else if (errorBlock)
@@ -131,7 +143,7 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
         {
             if (error.code == kVAccountAlreadyExistsError)
             {
-                created = NO;
+                isNewUser = NO;
                 [[VObjectManager sharedManager] loginToFacebookWithToken:[[VFacebookManager sharedFacebookManager] accessToken]
                                                             SuccessBlock:success
                                                                failBlock:^(NSOperation *operation, NSError *error)
@@ -166,7 +178,14 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
     
     void (^failureBlock)() = ^(NSError *error)
     {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithFacebookDidFail];
+        BOOL systemLoginDidFail = error.code == kFacebookSystemLoginCancelledErrorCode;
+        BOOL webFallbackLoginDidFail = error == nil;
+        if ( systemLoginDidFail || webFallbackLoginDidFail )
+        {
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserPermissionDidChange
+                                               parameters:@{ VTrackingKeyPermissionState : VTrackingValueFacebookDidAllow,
+                                                             VTrackingKeyPermissionName : VTrackingValueDenied }];
+        }
         
         if (errorBlock)
         {
@@ -267,17 +286,17 @@ static NSString * const kTwitterAccountCreated        = @"com.getvictorious.VUse
             }
             else
             {
-                BOOL created = ![VObjectManager sharedManager].mainUserProfileComplete;
+                BOOL isNewUser = ![VObjectManager sharedManager].mainUserProfileComplete;
                 
                 [[NSUserDefaults standardUserDefaults] setInteger:kVLastLoginTypeTwitter   forKey:kLastLoginTypeUserDefaultsKey];
                 [[NSUserDefaults standardUserDefaults] setObject:twitterAccount.identifier forKey:kAccountIdentifierDefaultsKey];
                 
                 if (completion)
                 {
-                    completion(user, created);
+                    completion(user, isNewUser);
                 }
                 
-                [[VTrackingManager sharedInstance] trackEvent:created ? VTrackingEventSignupWithTwitterDidSucceed : VTrackingEventLoginWithTwitterDidSucceed];
+                [[VTrackingManager sharedInstance] trackEvent:isNewUser ? VTrackingEventSignupWithTwitterDidSucceed : VTrackingEventLoginWithTwitterDidSucceed];
             }
         };
         VFailBlock failed = ^(NSOperation *operation, NSError *error)

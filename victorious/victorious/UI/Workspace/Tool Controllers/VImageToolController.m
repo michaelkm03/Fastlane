@@ -14,6 +14,7 @@
 #import "VCropTool.h"
 #import "VFilterTool.h"
 #import "VTextTool.h"
+#import "NSURL+VTemporaryFiles.h"
 
 static const CGFloat kJPEGCompressionQuality    = 0.8f;
 
@@ -50,9 +51,7 @@ NSString * const VImageToolControllerShouldDisableTextOverlayKey = @"VImageToolC
 {
     NSParameterAssert(completion != nil);
     
-    NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-    NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
-    
+    NSURL *tempFile = [NSURL v_temporaryFileURLWithExtension:VConstantMediaExtensionJPG inDirectory:kWorkspaceDirectory];
     __weak typeof(self) welf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^
                    {

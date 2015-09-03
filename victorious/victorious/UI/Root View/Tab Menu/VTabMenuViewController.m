@@ -32,12 +32,16 @@
 #import "VCoachmarkDisplayResponder.h"
 
 #import "VCreateSheetViewController.h"
+#import "VDeepLinkHandler.h"
+#import "NSURL+VPathHelper.h"
 
 NSString * const kMenuKey = @"menu";
 
+static NSString * const kMenuDeeplinkURLHostComponent = @"menu";
+
 static const CGFloat kTabBarAnimationTimeInterval = 0.3;
 
-@interface VTabMenuViewController () <UITabBarControllerDelegate, VCoachmarkDisplayResponder>
+@interface VTabMenuViewController () <UITabBarControllerDelegate, VCoachmarkDisplayResponder, VDeeplinkSupporter, VDeeplinkHandler>
 
 @property (nonatomic, strong) UITabBarController *internalTabBarViewController;
 @property (nonatomic, strong) VNavigationDestinationContainerViewController *willSelectContainerViewController;
@@ -293,6 +297,48 @@ shouldSelectViewController:(VNavigationDestinationContainerViewController *)view
     [UIView animateWithDuration:animated ? kTabBarAnimationTimeInterval : 0 animations:^{
         self.internalTabBarViewController.tabBar.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight(self.internalTabBarViewController.tabBar.bounds));
     }];
+}
+
+#pragma mark - VDeeplinkSupporter
+
+- (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url
+{
+    if ( [self canDisplayContentForDeeplinkURL:url] )
+    {
+        return self;
+    }
+    return [super deepLinkHandlerForURL:url];
+}
+
+#pragma mark - VDeeplinkHandler
+
+- (BOOL)requiresAuthorization
+{
+    return NO;
+}
+
+- (void)displayContentForDeeplinkURL:(NSURL *)url completion:(VDeeplinkHandlerCompletionBlock)completion
+{
+    if ( [self canDisplayContentForDeeplinkURL:url] )
+    {
+        NSInteger index = [[url v_firstNonSlashPathComponent] integerValue];
+        UIViewController *viewController = self.internalTabBarViewController.viewControllers[ index ];
+        [self.internalTabBarViewController setSelectedViewController:viewController];
+        [self setNeedsStatusBarAppearanceUpdate];
+    }
+}
+
+- (BOOL)canDisplayContentForDeeplinkURL:(NSURL *)url
+{
+    const BOOL isHostValid = [url.host isEqualToString:kMenuDeeplinkURLHostComponent];
+    NSString *pathComponent = [url v_firstNonSlashPathComponent];
+    if ( pathComponent == nil )
+    {
+        return NO;
+    }
+    const NSInteger index = [pathComponent integerValue];
+    const BOOL isSectionValid = index >= 0 && index < (NSInteger)self.internalTabBarViewController.viewControllers.count;
+    return isHostValid && isSectionValid;
 }
 
 @end

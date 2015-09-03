@@ -28,7 +28,8 @@
                                   @"stream_autoplay" : VSelectorName(streamAutoplay),
                                   @"player_controls_disabled" : VSelectorName(playerControlsDisabled),
                                   @"audio_muted" : VSelectorName(audioMuted),
-                                  @"background_color" : VSelectorName(backgroundColor)
+                                  @"background_color" : VSelectorName(backgroundColor),
+                                  @"duration" : VSelectorName(duration)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
@@ -39,8 +40,6 @@
 //    mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
-
-    [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"assetId"}];
     
     return mapping;
 }

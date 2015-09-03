@@ -29,6 +29,7 @@
 #import "VImageSearchResultsFooterView.h"
 #import "VFooterActivityIndicatorView.h"
 #import "VDependencyManager.h"
+#import "victorious-Swift.h"
 
 const CGFloat kVLoadNextPagePoint = .75f;
 
@@ -170,6 +171,17 @@ const CGFloat kVLoadNextPagePoint = .75f;
             [self.collectionView.collectionViewLayout invalidateLayout];
         }
     }
+    
+    //This has to be performed here, after invalidating the collection view layout
+    if ( self.targetStreamItem != nil )
+    {
+        NSUInteger index = [self.currentStream.streamItems indexOfObject:self.targetStreamItem];
+        if ( index != NSNotFound && index < (NSUInteger)[self.collectionView numberOfItemsInSection:0] )
+        {
+            [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:NO];
+        }
+    }
+    self.targetStreamItem = nil;
 }
 
 - (void)addScrollDelegate

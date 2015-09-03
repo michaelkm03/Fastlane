@@ -63,7 +63,7 @@ static const CGFloat kAnimationPropogationDivisor = 3.5f;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForStreamItem:(VStreamItem *)streamItem atIndexPath:(NSIndexPath *)indexPath
-{
+{    
     NSString *identifier = [VCollectionsDirectoryCell suggestedReuseIdentifier];
     VCollectionsDirectoryCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     cell.stream = streamItem;
@@ -93,6 +93,11 @@ static const CGFloat kAnimationPropogationDivisor = 3.5f;
 
 - (void)prepareCell:(UICollectionViewCell *)cell forDisplayInCollectionView:(UICollectionView *)collectionView atIndexPath:(NSIndexPath *)indexPath
 {
+    if ( ![cell isKindOfClass:[VCollectionsDirectoryCell class]] )
+    {
+        return;
+    }
+    
     if ( self.shouldAnimateCells )
     {
         CGFloat collectionViewHeight = CGRectGetHeight(collectionView.bounds);

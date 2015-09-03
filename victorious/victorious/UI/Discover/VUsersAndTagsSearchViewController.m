@@ -71,7 +71,7 @@ static NSInteger const kVMaxSearchResults = 1000;
     return [storyboard instantiateViewControllerWithIdentifier:@"search"];
 }
 
-+ (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
++ (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
     VUsersAndTagsSearchViewController *usersAndTagsVC = [self usersAndTagsSearchViewController];
     usersAndTagsVC.dependencyManager = dependencyManager;
@@ -398,7 +398,7 @@ static NSInteger const kVMaxSearchResults = 1000;
         messageTitle = NSLocalizedString(@"No People Found In Search Title", @"");
         messageText = NSLocalizedString(@"No people found in search", @"");
         messageIcon = [[UIImage imageNamed:@"user-icon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        self.tagsSearchResultsVC.tableView.backgroundView = noResultsFoundView;
+        self.userSearchResultsVC.tableView.backgroundView = noResultsFoundView;
         self.userSearchResultsVC.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
     else if ( self.segmentControl.selectedSegmentIndex == 1 )

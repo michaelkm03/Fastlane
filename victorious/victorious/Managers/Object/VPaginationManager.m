@@ -62,8 +62,21 @@ NS_ASSUME_NONNULL_BEGIN
     {
         VAbstractFilter *filter = (VAbstractFilter *)[self.objectManager.managedObjectStore.mainQueueManagedObjectContext objectWithID:filterID];
         
-        filter.maxPageNumber = @([fullResponse[@"total_pages"] integerValue]);
-        filter.currentPageNumber = @([fullResponse[@"page_number"] integerValue]);
+        NSInteger maxPages = [fullResponse[@"total_pages"] integerValue];
+        NSArray *payloadContent = fullResponse[@"payload"][@"content"];
+        
+        // If this is a stream, check to make sure we have enough items to warrant a next page
+        if (payloadContent != nil && payloadContent.count == 0)
+        {
+            filter.maxPageNumber = filter.currentPageNumber;
+        }
+        else
+        {
+            filter.maxPageNumber = @(maxPages);
+        }
+        
+        NSInteger newCurrentPageNumber = [filter pageNumberForPageType:pageType];
+        filter.currentPageNumber = @(MIN(newCurrentPageNumber, maxPages));
         [filter.managedObjectContext saveToPersistentStore:nil];
         
         [self stopLoadingFilter:filter];

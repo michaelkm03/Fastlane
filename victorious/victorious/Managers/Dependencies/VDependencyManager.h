@@ -42,11 +42,11 @@ extern NSString * const VDependencyManagerButton2FontKey;
 extern NSString * const VDependencyManagerIDKey;
 
 // Keys for experiments (these should be retrieved with -numberForKey:, as a bool wrapped in an NSNumber)
-extern NSString * const VDependencyManagerHistogramEnabledKey;
 extern NSString * const VDependencyManagerProfileImageRequiredKey;
 extern NSString * const VDependencyManagerPauseVideoWhenCommentingKey;
 extern NSString * const VDependencyManagerLikeButtonEnabledKey;
 extern NSString * const VDependencyManagerExperimentKeyIDs;
+extern NSString * const VDependencyManagerAutoplaySettingsEnabled;
 
 // Keys for view controllers
 extern NSString * const VDependencyManagerScaffoldViewControllerKey; ///< The "scaffold" is the view controller that sits at the root of the view controller heirarchy
@@ -84,6 +84,8 @@ extern NSString * const VDependencyManagerEditTextWorkspaceKey;
 - (instancetype)initWithParentManager:(VDependencyManager *)parentManager
                         configuration:(NSDictionary *)configuration
     dictionaryOfClassesByTemplateName:(NSDictionary *)classesByTemplateName NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)init NS_UNAVAILABLE;
 
 /**
  Checks for an entry in internal configuration by provided key.

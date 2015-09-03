@@ -94,6 +94,8 @@ static NSString * const kStandardBackgroundColorKey = @"color.standard.textPost"
     
     [self updateTextIsSelectable];
     [self updateTextView];
+    
+    self.textPostTextView.accessibilityIdentifier = VAutomationIdentifierTextPostMainField;
 }
 
 - (void)viewDidLayoutSubviews

@@ -129,19 +129,13 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 
 #pragma mark - GIFSearchViewControllerDelegate
 
-- (void)GIFSelectedWithPreviewImage:(UIImage *)previewImage capturedMediaURL:(NSURL *)capturedMediaURL
+- (void)GIFSearchResultSelected:(GIFSearchResult *)result previewImage:(UIImage *)previewImage capturedMediaURL:(NSURL *)capturedMediaURL
 {
     self.source = VCreationFlowSourceSearch;
-    BOOL responds = [self.creationFlowDelegate respondsToSelector:@selector(shouldShowPublishScreenForFlowController)];
-    if ( !responds || (responds && [self.creationFlowDelegate shouldShowPublishScreenForFlowController]) )
-    {
-        [self setupPublishPresenter];
-        [self toPublishScreenWithRenderedMediaURL:capturedMediaURL previewImage:previewImage fromWorkspace:nil];
-    }
-    else
-    {
-        [self captureFinishedWithMediaURL:capturedMediaURL previewImage:previewImage shouldSkipTrimmer:YES];
-    }
+    self.publishParameters.width = result.width.integerValue;
+    self.publishParameters.height = result.height.integerValue;
+    self.publishParameters.assetRemoteId = result.remoteId;
+    [self captureFinishedWithMediaURL:capturedMediaURL previewImage:previewImage shouldSkipTrimmer:YES];
 }
 
 #pragma mark - VVideoCameraViewControllerDelegate

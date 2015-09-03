@@ -7,6 +7,7 @@
 //
 
 #import "VAbstractPresenter.h"
+#import "VPublishParameters.h"
 
 typedef NS_OPTIONS(NSUInteger, VMediaAttachmentOptions)
 {
@@ -15,10 +16,12 @@ typedef NS_OPTIONS(NSUInteger, VMediaAttachmentOptions)
     VMediaAttachmentOptionsGIF     = 1 << 2,
 };
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  A completion block for the media attachment presenter.
  */
-typedef void(^VMediaAttachmentResultHandler)(BOOL success, UIImage *previewImage, NSURL *mediaURL);
+typedef void(^VMediaAttachmentResultHandler)(BOOL success, VPublishParameters *__nullable publishParameters);
 
 /**
  *  A presenter for attaching media to various parts of the app. NOTE: When there are two ore more attachment types this 
@@ -28,9 +31,9 @@ typedef void(^VMediaAttachmentResultHandler)(BOOL success, UIImage *previewImage
 @interface VMediaAttachmentPresenter : VAbstractPresenter
 
 /**
- *  An extra initializer to injext extra dependencies into the dependency tree.
+ *  An extra initializer to inject extra dependencies into the dependency tree.
  */
-- (instancetype)initWithDependencymanager:(VDependencyManager *)dependencyManager
+- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
                         addedDependencies:(NSDictionary *)addedDependencies;
 
 /**
@@ -44,3 +47,5 @@ typedef void(^VMediaAttachmentResultHandler)(BOOL success, UIImage *previewImage
 @property (nonatomic, assign) VMediaAttachmentOptions attachmentTypes;
 
 @end
+
+NS_ASSUME_NONNULL_END

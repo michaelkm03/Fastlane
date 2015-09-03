@@ -44,4 +44,6 @@
  */
 - (instancetype)initWithURLs:(NSSet *)urls completion:(VDownloadOperationCompletion)completionBlock NS_DESIGNATED_INITIALIZER;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 @end

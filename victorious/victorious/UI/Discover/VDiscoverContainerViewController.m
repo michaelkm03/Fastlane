@@ -204,7 +204,7 @@
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSearchBar];
 
-    VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController initWithDependencyManager:self.dependencyManager];
+    VUsersAndTagsSearchViewController *searchViewController = [VUsersAndTagsSearchViewController newWithDependencyManager:self.dependencyManager];
     searchViewController.transitioningDelegate = self.transitionDelegate;
     [self.navigationController pushViewController:searchViewController animated:YES];
 }
@@ -280,6 +280,16 @@
 - (UIView *)backgroundContainerView
 {
     return self.view;
+}
+
+#pragma mark - VTabMenuContainedViewControllerNavigation
+
+- (void)reselected
+{
+    if ( [self.childViewController conformsToProtocol:@protocol(VTabMenuContainedViewControllerNavigation)] )
+    {
+        [((id<VTabMenuContainedViewControllerNavigation>)self.childViewController) reselected];
+    }
 }
 
 @end

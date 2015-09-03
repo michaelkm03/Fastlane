@@ -11,6 +11,8 @@
 
 @class VComment;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol VCommentCellUtilitiesDelegate <NSObject>
 
 /**
@@ -25,4 +27,12 @@
  */
 - (void)editComment:(VComment *)comment;
 
+/**
+ Used for replying to a comment, and requires the calling code to update
+ the UI.
+ */
+- (void)replyToComment:(VComment *)comment;
+
 @end
+
+NS_ASSUME_NONNULL_END

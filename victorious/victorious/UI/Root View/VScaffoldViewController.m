@@ -9,7 +9,6 @@
 #import <MBProgressHUD/MBProgressHUD.h>
 
 #import "VContentViewFactory.h"
-#import "VDeeplinkHandler.h"
 #import "VNavigationDestination.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Pagination.h"
@@ -29,6 +28,7 @@
 #import "VRootViewController.h"
 #import "VCoachmarkManager.h"
 #import "VRootViewController.h"
+#import "VContentViewPresenter.h"
 
 NSString * const VScaffoldViewControllerMenuComponentKey = @"menu";
 NSString * const VScaffoldViewControllerFirstTimeContentKey = @"firstTimeContent";
@@ -39,7 +39,7 @@ NSString * const VTrackingWelcomeGetStartedTapKey = @"get_started_tap";
 
 static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
 
-@interface VScaffoldViewController () <VLightweightContentViewControllerDelegate, VDeeplinkSupporter, VRootViewControllerContainedViewController>
+@interface VScaffoldViewController () <VLightweightContentViewControllerDelegate, VRootViewControllerContainedViewController>
 
 @property (nonatomic, assign, readwrite) BOOL hasBeenShown;
 @property (nonatomic, assign) BOOL isForcedRegistrationComplete;
@@ -169,27 +169,12 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
 
 - (void)showContentViewWithSequence:(id)sequence streamID:(NSString *)streamId commentId:(NSNumber *)commentID placeHolderImage:(UIImage *)placeholderImage
 {
-    VContentViewFactory *contentViewFactory = [self.dependencyManager contentViewFactory];
-    
-    NSString *reason = nil;
-    if ( ![contentViewFactory canDisplaySequence:sequence localizedReason:&reason] )
-    {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:reason preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"") style:UIAlertActionStyleDefault handler:nil]];
-        [self presentViewController:alertController animated:YES completion:nil];
-        return;
-    }
-    
-    UIViewController *contentView = [contentViewFactory contentViewForSequence:sequence inStreamWithID:streamId commentID:commentID placeholderImage:placeholderImage];
-    if ( contentView != nil )
-    {
-        if ( self.presentedViewController )
-        {
-            [self dismissViewControllerAnimated:NO completion:nil];
-        }
-        
-        [self presentViewController:contentView animated:YES completion:nil];
-    }
+    [VContentViewPresenter presentContentViewFromViewController:self
+                                          withDependencyManager:self.dependencyManager
+                                                    ForSequence:sequence
+                                                 inStreamWithID:streamId
+                                                      commentID:commentID
+                                               withPreviewImage:placeholderImage];
 }
 
 #pragma mark - VLightweightContentViewControllerDelegate
@@ -247,7 +232,12 @@ static NSString * const kShouldAutoShowLoginKey = @"showLoginOnStartup";
 
 - (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url
 {
-    return [[VContentDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager];
+    VContentDeepLinkHandler *contentDeepLinkHandler = [[VContentDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager];
+    if ( [contentDeepLinkHandler canDisplayContentForDeeplinkURL:url] )
+    {
+        return contentDeepLinkHandler;
+    }
+    return nil;
 }
 
 #pragma mark - Navigation

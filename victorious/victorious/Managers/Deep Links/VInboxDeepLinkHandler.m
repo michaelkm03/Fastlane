@@ -15,7 +15,7 @@
 #import "VObjectManager+DirectMessaging.h"
 #import "VInboxViewController.h"
 #import "VInboxViewController.h"
-#import "VDependencyManager+VScaffoldViewController.h"
+#import "VDependencyManager+VTabScaffoldViewController.h"
 
 @interface VInboxDeepLinkHandler()
 
@@ -39,6 +39,12 @@
         NSParameterAssert( _inboxViewController != nil );
     }
     return self;
+}
+
+- (instancetype)init
+{
+    NSAssert(NO, @"Use the designated initializer");
+    return nil;
 }
 
 - (BOOL)canDisplayContentForDeeplinkURL:(NSURL *)url

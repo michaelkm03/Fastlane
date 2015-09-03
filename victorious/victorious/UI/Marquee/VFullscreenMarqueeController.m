@@ -79,9 +79,12 @@
 {
     VFullscreenMarqueeCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[VFullscreenMarqueeCollectionCell suggestedReuseIdentifier]
                                                                                        forIndexPath:indexPath];
-    cell.dependencyManager = self.dependencyManager;
-    cell.marquee = self;    
-    [self enableTimer];
+    if ( cell.marquee != self )
+    {
+        cell.dependencyManager = self.dependencyManager;
+        cell.marquee = self;
+        [self enableTimer];
+    }
     return cell;
 }
 
