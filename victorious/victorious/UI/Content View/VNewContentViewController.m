@@ -562,7 +562,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
     
     if ( self.videoCell != nil && !self.videoCell.didFinishPlayingOnce  )
     {
-        NSDictionary *params = @{ VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStop,
+        NSDictionary *params = @{ VTrackingKeyUrls : self.viewModel.sequence.tracking.viewStop ?: @[],
                                   VTrackingKeyStreamId : self.viewModel.streamId,
                                   VTrackingKeyTimeCurrent : @( self.videoCell.currentTimeMilliseconds ) };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidStop parameters:params];
