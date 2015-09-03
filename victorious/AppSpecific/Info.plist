@@ -34,8 +34,6 @@
 	<string>664946900317058</string>
 	<key>FacebookDisplayName</key>
 	<string>VictoriousApp Dev</string>
-	<key>FacebookUrlSchemeSuffix</key>
-	<string>victorious</string>
 	<key>FlurryAPIKey</key>
 	<string>XXXXXXXXXX</string>
 	<key>LSRequiresIPhoneOS</key>
