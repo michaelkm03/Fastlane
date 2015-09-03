@@ -165,7 +165,7 @@ static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
 #ifdef V_RESET_PURCHASES
         else if ( indexPath.row == VPurchaseSettingsActionReset )
         {
-            [cell.button setTitle: @"Reset Purchases" forState:UIControlStateNormal];
+            [cell.button setTitle:NSLocalizedString(@"Reset Purchases", @"") forState:UIControlStateNormal];
             [cell setAction:^(VPurchaseActionCell *actionCell)
              {
                  [self.purchaseManager resetPurchases];

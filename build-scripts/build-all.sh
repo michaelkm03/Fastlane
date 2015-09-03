@@ -141,6 +141,9 @@ applyConfiguration(){
         return 1
     fi
 
+    # Create URL schemes
+    ./build-scripts/create-url-schemes.sh victorious.xcarchive/Products/Applications/victorious.app
+
     # Copy standard provisioning profile
     cp "$HOME/Library/MobileDevice/Provisioning Profiles/$DEFAULT_PROVISIONING_PROFILE_UUID.mobileprovision" "victorious.xcarchive/Products/Applications/victorious.app/embedded.mobileprovision"
 
