@@ -9,6 +9,8 @@
 import UIKit
 
 class ExploreMarqueeController: VInsetMarqueeController {
+    
+    static let marqueeShelfAspectRatio: CGFloat = 1.6
 
     override func registerCollectionViewCellWithCollectionView(collectionView: UICollectionView) {
         collectionView.registerNib(ExploreMarqueeCollectionViewCell.nibForCell(), forCellWithReuseIdentifier: ExploreMarqueeCollectionViewCell.suggestedReuseIdentifier())

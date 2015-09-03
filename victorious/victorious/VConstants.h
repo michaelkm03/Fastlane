@@ -38,7 +38,6 @@ static CGFloat    const VConstantsInputAccessoryHeight  = 44.0f;
 
 static CGFloat const kStreamDoublePollCellHeight = 214.0f;
 static CGFloat const kStreamViewCellHeight       = 320.0f;
-static CGFloat const kExploreMarqueeShelfAspectRatio = 1.6f;
 
 #pragma mark - Error Codes
 

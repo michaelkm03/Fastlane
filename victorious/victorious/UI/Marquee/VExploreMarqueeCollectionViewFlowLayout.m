@@ -13,7 +13,7 @@
 
 - (CGFloat)getPageWidth
 {
-    return CGRectGetWidth(self.collectionView.bounds) / kExploreMarqueeShelfAspectRatio;
+    return CGRectGetWidth(self.collectionView.bounds) / [[ExploreMarqueeController class] marqueeShelfAspectRatio];
 }
 
 /*
