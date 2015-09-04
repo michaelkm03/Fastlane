@@ -34,8 +34,8 @@ import Foundation
                         let streamItem = shelf.streamItems[indexPath.row] as? VStreamItem
                         
                         // If this shelf item is a stream, track the first sequence
-                        if let shelf = streamItem as? VStream {
-                            if let firstSequence = shelf.streamItems.firstObject as? VSequence {
+                        if let stream = streamItem as? VStream {
+                            if let firstSequence = stream.streamItems.firstObject as? VSequence {
                                 let event = StreamCellContext(streamItem: firstSequence, stream: shelf, fromShelf: false)
                                 streamTrackingHelper.onStreamCellDidBecomeVisibleWithCellEvent(event)
                             }

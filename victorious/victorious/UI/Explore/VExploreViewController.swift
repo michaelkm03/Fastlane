@@ -15,7 +15,7 @@ class VExploreViewController: UIViewController, UICollectionViewDataSource, UICo
     private struct Constants {
         static let sequenceIDKey = "sequenceID"
         static let marqueeDestinationDirectory = "destionationDirectory"
-        static let trendingTopicShelfKey = "trendingShelf"
+        static let trendingTopicShelfKey = "trendingTopics"
         static let destinationStreamKey = "destinationStream"
     }
     
