@@ -67,4 +67,9 @@ static const CGFloat VStreamMarqueeParallaxRatio = 0.5f;
  */
 - (void)updateNavigationItems;
 
+/**
+    
+ */
+- (BOOL)hasEnoughItemsToShowLoadingIndicatorInSection:(NSInteger)section;
+
 @end

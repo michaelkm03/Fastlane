@@ -43,7 +43,7 @@ extension VMarqueeCellFactory: VStreamCellFactory {
             }
             return controller.marqueeCellForCollectionView(collectionView, atIndexPath:indexPath)
         }
-        //assertionFailure("A marquee cell was requested from a factory with a nil marquee controller. Check marqueeCell in template response.")
+        assertionFailure("A marquee cell was requested from a factory with a nil marquee controller. Check marqueeCell in template response.")
         return failureCellFactory.noContentCellForCollectionView(collectionView, atIndexPath: indexPath)
     }
     

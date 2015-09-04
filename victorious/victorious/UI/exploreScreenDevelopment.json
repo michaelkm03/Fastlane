@@ -4448,6 +4448,12 @@
                     "fontName":"Oswald-Regular",
                     "fontSize":12
                 },
+                  "color.standard.textPost": {
+                  "red": 56,
+                  "green": 199,
+                  "blue": 239,
+                  "alpha": 1
+                  },
                 "color.text.secondary":
                 {
                     "red":255,

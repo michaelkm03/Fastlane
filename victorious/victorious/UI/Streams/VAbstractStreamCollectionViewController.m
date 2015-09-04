@@ -101,6 +101,9 @@
     [self.collectionView registerNib:[VFooterActivityIndicatorView nibForSupplementaryView]
           forSupplementaryViewOfKind:UICollectionElementKindSectionFooter
                  withReuseIdentifier:[VFooterActivityIndicatorView reuseIdentifier]];
+    [self.collectionView registerNib:[VFooterActivityIndicatorView nibForSupplementaryView]
+          forSupplementaryViewOfKind:CHTCollectionElementKindSectionFooter
+                 withReuseIdentifier:[VFooterActivityIndicatorView reuseIdentifier]];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
@@ -346,8 +349,14 @@
 {
     const BOOL canLoadNextPage = [self.streamDataSource canLoadNextPage];
     const BOOL isLastSection = section == MAX( [self.collectionView numberOfSections] - 1, 0);
-    const BOOL hasOneOrMoreItems = [collectionView numberOfItemsInSection:section] > 1;
+    const BOOL hasOneOrMoreItems = [self hasEnoughItemsToShowLoadingIndicatorInSection:section];
     return canLoadNextPage && isLastSection && hasOneOrMoreItems;
+}
+
+- (BOOL)hasEnoughItemsToShowLoadingIndicatorInSection:(NSInteger)section
+{
+    return [self.collectionView numberOfItemsInSection:section] > 1;
+
 }
 
 - (BOOL)shouldAnimateActivityViewFooter

@@ -19,6 +19,7 @@
 //Data Models
 #import "VStream+Fetcher.h"
 #import "VSequence.h"
+#import "CHTCollectionViewWaterfallLayout+ColumnAccessor.h"
 
 static char KVOContext;
 
@@ -201,13 +202,18 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView
            viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
-{    
-    if ( [self.delegate respondsToSelector:@selector(shouldDisplayActivityViewFooterForCollectionView:inSection:)] &&
+{
+    BOOL isFooter = kind == UICollectionElementKindSectionFooter || kind == CHTCollectionElementKindSectionFooter;
+    if ( isFooter && [self.delegate respondsToSelector:@selector(shouldDisplayActivityViewFooterForCollectionView:inSection:)] &&
         [self.delegate shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:indexPath.section] )
     {
         return [self.collectionView dequeueReusableSupplementaryViewOfKind:kind
                                                        withReuseIdentifier:[VFooterActivityIndicatorView reuseIdentifier]
                                                               forIndexPath:indexPath];
+    }
+    else if ( [self.delegate respondsToSelector:@selector(collectionView:viewForSupplementaryElementOfKind:atIndexPath:)] )
+    {
+        return [(id <UICollectionViewDataSource>)self.delegate collectionView:collectionView viewForSupplementaryElementOfKind:kind atIndexPath:indexPath];
     }
     
     return nil;

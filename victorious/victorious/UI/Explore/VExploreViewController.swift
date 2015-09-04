@@ -17,13 +17,14 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         static let marqueeDestinationDirectory = "destionationDirectory"
         static let trendingTopicShelfKey = "trendingTopics"
         static let destinationStreamKey = "destinationStream"
+        static let failureReusableViewIdentifier = "failureReusableView"
         
         static let interItemSpace: CGFloat = 1
         static let sectionEdgeInsets: UIEdgeInsets = UIEdgeInsetsMake(6, 0, 6, 0)
         static let recentSectionEdgeInsets: UIEdgeInsets = {
             var insets = sectionEdgeInsets
-            insets.left = 1
-            insets.right = 1
+            insets.left = 11
+            insets.right = 11
             return insets
         }()
         static let minimumContentAspectRatio: CGFloat = 0.5
@@ -85,6 +86,11 @@ class VExploreViewController: VAbstractStreamCollectionViewController, UISearchB
         trendingTopicShelfFactory?.registerCellsWithCollectionView(collectionView)
         streamShelfFactory?.registerCellsWithCollectionView(collectionView)
         failureCellFactory.registerNoContentCellWithCollectionView(collectionView)
+        collectionView.registerClass(RecentPostsExploreHeaderView.self, forSupplementaryViewOfKind: CHTCollectionElementKindSectionHeader, withReuseIdentifier: RecentPostsExploreHeaderView.suggestedReuseIdentifier())
+        collectionView.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: CHTCollectionElementKindSectionHeader, withReuseIdentifier: Constants.failureReusableViewIdentifier)
+        collectionView.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: Constants.failureReusableViewIdentifier)
+        collectionView.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: CHTCollectionElementKindSectionFooter, withReuseIdentifier: Constants.failureReusableViewIdentifier)
+        collectionView.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: Constants.failureReusableViewIdentifier)
         
         self.streamDataSource = VStreamCollectionViewDataSource(stream: currentStream)
         self.streamDataSource.delegate = self;
@@ -135,8 +141,8 @@ extension VExploreViewController : VStreamCollectionDataDelegate {
             //Try to create a "recent content" cell
             let identifier = VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
             if let cell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath:indexPath) as? VShelfContentCollectionViewCell {
-                cell.streamItem = streamItem
                 cell.dependencyManager = dependencyManager
+                cell.streamItem = streamItem
                 return cell
             }
         }
@@ -145,7 +151,7 @@ extension VExploreViewController : VStreamCollectionDataDelegate {
     
     override func dataSource(dataSource: VStreamCollectionViewDataSource!, hasNewStreamItems streamItems: [AnyObject]!) {
         if let streamItems = streamItems as? [VStreamItem] {
-            let recentItems = streamItems.filter({$0.itemType != "shelf"})
+            let recentItems = streamItems.filter({$0.itemType != VStreamItemTypeShelf})
             for streamItem in recentItems {
                 let identifier = VShelfContentCollectionViewCell.reuseIdentifierForStreamItem(streamItem, baseIdentifier: nil, dependencyManager: dependencyManager)
                 collectionView.registerClass(VShelfContentCollectionViewCell.self, forCellWithReuseIdentifier: identifier)
@@ -159,7 +165,7 @@ extension VExploreViewController : VStreamCollectionDataDelegate {
             var recentSectionLength = 0
             var rangeIndex = 0
             for streamItem in streamItems {
-                if streamItem.itemType == "shelf" {
+                if streamItem.itemType == VStreamItemTypeShelf {
                     if recentSectionLength != 0 {
                         //Create a new section range for the section that just ended
                         let rangeStart = streamItemIndexFor(NSIndexPath(forRow: 0, inSection: rangeIndex))
@@ -196,9 +202,13 @@ extension VExploreViewController : VStreamCollectionDataDelegate {
         }
     }
     
+    override func hasEnoughItemsToShowLoadingIndicatorInSection(section: Int) -> Bool {
+        return section == collectionView.numberOfSections() - 1
+    }
+    
     override func numberOfSectionsForDataSource(dataSource: VStreamCollectionViewDataSource!) -> Int {
         // Total number of shelves plus one section for recent content
-        return sectionRanges.count
+        return sectionRanges.count + 1
     }
     
     override func dataSource(dataSource: VStreamCollectionViewDataSource!, numberOfRowsInSection section: UInt) -> Int {
@@ -207,6 +217,20 @@ extension VExploreViewController : VStreamCollectionDataDelegate {
             return sectionRanges[convertedSection].range.length
         }
         return 0
+    }
+    
+    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+        if kind == CHTCollectionElementKindSectionHeader {
+            if let header = collectionView.dequeueReusableSupplementaryViewOfKind(CHTCollectionElementKindSectionHeader, withReuseIdentifier: RecentPostsExploreHeaderView.suggestedReuseIdentifier(), forIndexPath: indexPath) as? RecentPostsExploreHeaderView {
+                header.dependencyManager = dependencyManager
+                return header
+            }
+        }
+        return collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: Constants.failureReusableViewIdentifier, forIndexPath: indexPath) as! UICollectionReusableView
+    }
+    
+    override func shouldDisplayActivityViewFooterForCollectionView(collectionView: UICollectionView!, inSection section: Int) -> Bool {
+        return super.shouldDisplayActivityViewFooterForCollectionView(collectionView, inSection: section) && section == collectionView.numberOfSections() - 1
     }
 }
 
@@ -242,9 +266,22 @@ extension VExploreViewController: CHTCollectionViewDelegateWaterfallLayout {
         return failureCellFactory.cellSizeForCollectionViewBounds(collectionView.bounds)
     }
     
+    func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, heightForHeaderInSection section: Int) -> CGFloat {
+        if let dependencyManager = dependencyManager where isRecentContent(section) {
+            return RecentPostsExploreHeaderView.desiredHeight(dependencyManager)
+        }
+        return 0
+    }
+    
+    func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, heightForFooterInSection section: Int) -> CGFloat {
+        if section == collectionView.numberOfSections() - 1 {
+            return super.collectionView(collectionView, layout: collectionViewLayout, referenceSizeForFooterInSection: section).height
+        }
+        return 0
+    }
+    
     private func recentCellHeightAt(indexPath: NSIndexPath, forCollectionViewWidth width: CGFloat) -> CGFloat {
         let filter = VObjectManager.sharedManager().filterForStream(currentStream)
-        /// Warning: for testing
         let perPageNumber = filter.perPageNumber.integerValue
         let pageLocation = indexPath.row % perPageNumber
         let streamItem = streamItemFor(indexPath)

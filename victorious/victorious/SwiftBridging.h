@@ -144,3 +144,4 @@
 #import "ColorSpaceConversion.h"
 #import "VNoContentCollectionViewCellFactory.h"
 #import "CHTCollectionViewWaterfallLayout+ColumnAccessor.h"
+#import "VFooterActivityIndicatorView.h"
