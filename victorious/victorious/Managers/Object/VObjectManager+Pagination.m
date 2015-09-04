@@ -486,7 +486,7 @@ static const NSInteger kUserSearchResultLimit = 20;
                 Shelf *shelf = (Shelf *)streamItem;
                 shelf.apiPath = shelf.streamUrl.v_pathComponent;
                 shelf.trackingIdentifier = shelf.remoteId;
-                itemApiPath = [(Shelf *)streamItem apiPath];
+                itemApiPath = shelf.apiPath;
             }
             
             VStreamItem *streamItemInContext = (VStreamItem *)[stream.managedObjectContext objectWithID:streamItem.objectID];
