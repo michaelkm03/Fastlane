@@ -40,7 +40,7 @@ static const CGFloat VStreamMarqueeParallaxRatio = 0.5f;
 @property (nonatomic, strong) VNavigationControllerScrollDelegate *navigationControllerScrollDelegate;
 @property (nonatomic, strong) id<VNavigationViewFloatingController> navigationViewfloatingController;
 
-@property (nonatomic, strong) VStreamItem *targetStreamItem;
+@property (nonatomic, strong) VStreamItem *targetStreamItem; ///< The stream item that should be scroll to once this VC becomes visible
 
 /**
     Called by the refresh controller when the user activates it by scrolling up to the top.
@@ -68,8 +68,12 @@ static const CGFloat VStreamMarqueeParallaxRatio = 0.5f;
 - (void)updateNavigationItems;
 
 /**
-    
+    By default, returns YES when there is more than 1 item in the provided section.
+ 
+    @param section The section that will present the loading indicator footer if YES is returned.
+ 
+    @return YES if there are enough items to cause the loading indicator to show in the provided section.
  */
-- (BOOL)hasEnoughItemsToShowLoadingIndicatorInSection:(NSInteger)section;
+- (BOOL)hasEnoughItemsToShowLoadingIndicatorFooterInSection:(NSInteger)section;
 
 @end

@@ -74,6 +74,8 @@ extern NSString *const VStreamCollectionDataSourceDidChangeNotification;
 @property (nonatomic, weak) UICollectionView *collectionView; ///< The UICollectionView object to which the receiver is providing data
 @property (nonatomic, strong) VStream *stream;///< The stream object used to populate the collectionView
 @property (nonatomic) BOOL hasHeaderCell;///<If set to YES it will insert a section at index 0 with 1 row for the Marquee stream.
+@property (nonatomic) BOOL suppressShelves; //When YES, shelves from the stream will not be displayed
+@property (nonatomic, readonly) NSArray *visibleStreamItems;
 
 /**
  *  Initializes the data source with a default stream.

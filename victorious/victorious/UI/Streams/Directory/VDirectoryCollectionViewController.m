@@ -262,7 +262,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
         return [self.marqueeController desiredSizeWithCollectionViewBounds:localCollectionView.bounds];
     }
     
-    return [self.directoryCellFactory sizeWithCollectionViewBounds:localCollectionView.bounds ofCellForStreamItem:[self.currentStream.streamItems objectAtIndex:indexPath.row]];
+    return [self.directoryCellFactory sizeWithCollectionViewBounds:localCollectionView.bounds ofCellForStreamItem:[self.streamDataSource.visibleStreamItems objectAtIndex:indexPath.row]];
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
@@ -351,7 +351,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
         return (UICollectionViewCell *)[self.marqueeController marqueeCellForCollectionView:self.collectionView atIndexPath:indexPath];
     }
     
-    return [self.directoryCellFactory collectionView:self.collectionView cellForStreamItem:[self.currentStream.streamItems objectAtIndex:indexPath.row] atIndexPath:indexPath];
+    return [self.directoryCellFactory collectionView:self.collectionView cellForStreamItem:[self.streamDataSource.visibleStreamItems objectAtIndex:indexPath.row] atIndexPath:indexPath];
 }
 
 - (void)collectionView:(UICollectionView *)localCollectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath

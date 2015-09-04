@@ -161,7 +161,7 @@ extension VExploreViewController : VStreamCollectionDataDelegate {
     }
     
     private func updateSectionRanges() {
-        if let streamItems = currentStream.streamItems.array as? [VStreamItem] {
+        if let streamItems = streamDataSource.visibleStreamItems as? [VStreamItem] {
             var recentSectionLength = 0
             var rangeIndex = 0
             for streamItem in streamItems {
@@ -202,7 +202,7 @@ extension VExploreViewController : VStreamCollectionDataDelegate {
         }
     }
     
-    override func hasEnoughItemsToShowLoadingIndicatorInSection(section: Int) -> Bool {
+    override func hasEnoughItemsToShowLoadingIndicatorFooterInSection(section: Int) -> Bool {
         return section == collectionView.numberOfSections() - 1
     }
     
@@ -350,8 +350,8 @@ extension VExploreViewController: CHTCollectionViewDelegateWaterfallLayout {
     
     private func streamItemFor(indexPath: NSIndexPath) -> VStreamItem? {
         let index = streamItemIndexFor(indexPath)
-        if index < currentStream.streamItems.count {
-            return currentStream.streamItems[index] as? VStreamItem
+        if index < streamDataSource.visibleStreamItems.count {
+            return streamDataSource.visibleStreamItems[index] as? VStreamItem
         }
         return nil
     }
@@ -444,6 +444,7 @@ extension VExploreViewController : VMarqueeSelectionDelegate {
         else if stream == currentStream || stream.isSingleStream {
             //Tapped on a recent post
             streamCollection = dependencyManager?.templateValueOfType(VStreamCollectionViewController.self, forKey: Constants.destinationStreamKey, withAddedDependencies: configDict as [NSObject : AnyObject]) as? VStreamCollectionViewController
+            streamCollection?.streamDataSource.suppressShelves = stream == currentStream
         }
         
         // show the stream view controller if it has been instantiated

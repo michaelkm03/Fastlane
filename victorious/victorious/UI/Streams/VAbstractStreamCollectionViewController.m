@@ -178,7 +178,7 @@
     //This has to be performed here, after invalidating the collection view layout
     if ( self.targetStreamItem != nil )
     {
-        NSUInteger index = [self.currentStream.streamItems indexOfObject:self.targetStreamItem];
+        NSUInteger index = [self.streamDataSource.visibleStreamItems indexOfObject:self.targetStreamItem];
         if ( index != NSNotFound && index < (NSUInteger)[self.collectionView numberOfItemsInSection:0] )
         {
             [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:NO];
@@ -349,11 +349,11 @@
 {
     const BOOL canLoadNextPage = [self.streamDataSource canLoadNextPage];
     const BOOL isLastSection = section == MAX( [self.collectionView numberOfSections] - 1, 0);
-    const BOOL hasOneOrMoreItems = [self hasEnoughItemsToShowLoadingIndicatorInSection:section];
+    const BOOL hasOneOrMoreItems = [self hasEnoughItemsToShowLoadingIndicatorFooterInSection:section];
     return canLoadNextPage && isLastSection && hasOneOrMoreItems;
 }
 
-- (BOOL)hasEnoughItemsToShowLoadingIndicatorInSection:(NSInteger)section
+- (BOOL)hasEnoughItemsToShowLoadingIndicatorFooterInSection:(NSInteger)section
 {
     return [self.collectionView numberOfItemsInSection:section] > 1;
 

@@ -18,6 +18,7 @@
 
 //Data Models
 #import "VStream+Fetcher.h"
+#import "VStreamItem+Fetcher.h"
 #import "VSequence.h"
 #import "CHTCollectionViewWaterfallLayout+ColumnAccessor.h"
 
@@ -28,6 +29,7 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 @interface VStreamCollectionViewDataSource()
 
 @property (nonatomic) BOOL isLoading;
+@property (nonatomic, strong) NSArray *visibleStreamItems;
 
 @end
 
@@ -41,8 +43,9 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 - (instancetype)initWithStream:(VStream *)stream
 {
     self = [self init];
-    if (self)
+    if ( self != nil )
     {
+        self.visibleStreamItems = @[];
         self.stream = stream;
     }
     return self;
@@ -59,13 +62,43 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
     
     _stream = stream;
     
-    if (stream)
+    if ( stream != nil )
     {
         [stream addObserver:self
                  forKeyPath:NSStringFromSelector(@selector(streamItems))
                     options:(NSKeyValueObservingOptionPrior | NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
                     context:&KVOContext];
     }
+}
+
+- (void)setSuppressShelves:(BOOL)suppressShelves
+{
+    BOOL needsUpdate = _suppressShelves != suppressShelves;
+    _suppressShelves = suppressShelves;
+    if ( needsUpdate )
+    {
+        [self updateVisibleStreamItems];
+    }
+}
+
+- (void)updateVisibleStreamItems
+{
+    self.visibleStreamItems = self.suppressShelves ? [self streamItemsWithoutShelves] : self.stream.streamItems.array;
+    if ([self.delegate respondsToSelector:@selector(dataSource:hasNewStreamItems:)])
+    {
+        [self.delegate dataSource:self
+                hasNewStreamItems:self.visibleStreamItems];
+    }
+    [self.collectionView reloadData];
+    [[NSNotificationCenter defaultCenter] postNotificationName:VStreamCollectionDataSourceDidChangeNotification
+                                                        object:self];
+}
+
+- (NSArray *)streamItemsWithoutShelves
+{
+    return [self.stream.streamItems.array filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(VStreamItem *streamItem, NSDictionary *bindings) {
+        return ![streamItem.itemType isEqualToString:VStreamItemTypeShelf];
+    }]];
 }
 
 - (void)removeKVOObservers
@@ -80,13 +113,13 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
         return nil;
     }
     
-    return [self.stream.streamItems objectAtIndex:indexPath.row];
+    return [self.visibleStreamItems objectAtIndex:indexPath.row];
 }
 
 - (NSIndexPath *)indexPathForItem:(VStreamItem *)streamItem
 {
     NSInteger section = self.hasHeaderCell ? 1 : 0;
-    NSUInteger index = [self.stream.streamItems indexOfObject:streamItem];
+    NSUInteger index = [self.visibleStreamItems indexOfObject:streamItem];
     return [NSIndexPath indexPathForItem:(NSInteger)index inSection:section];
 }
 
@@ -99,7 +132,7 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 
 - (NSUInteger)count
 {
-    return self.stream.streamItems.count;
+    return self.visibleStreamItems.count;
 }
 
 - (void)unloadStream
@@ -225,14 +258,7 @@ NSString *const VStreamCollectionDataSourceDidChangeNotification = @"VStreamColl
 {
     if (object == self.stream && [keyPath isEqualToString:NSStringFromSelector(@selector(streamItems))])
     {
-        if ([self.delegate respondsToSelector:@selector(dataSource:hasNewStreamItems:)])
-        {
-            [self.delegate dataSource:self
-                    hasNewStreamItems:[self.stream.streamItems array]];
-        }
-        [self.collectionView reloadData];
-        [[NSNotificationCenter defaultCenter] postNotificationName:VStreamCollectionDataSourceDidChangeNotification
-                                                            object:self];
+        [self updateVisibleStreamItems];
     }
 }
 
